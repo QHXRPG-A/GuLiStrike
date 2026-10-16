@@ -164,6 +164,10 @@ bool DeriveSpawnCapabilities(const ObjectRecord& Source,const std::map<ObjectKey
     {
         const auto* C=FindCapability(Name);if (!C || (C->DeriveSpawn && !C->DeriveSpawn(Source,Objects,R,Child))) return false;
     }
-    return ValidateObjectCapabilities(Child);
+    // Capability payloads have already been decoded by their operation. Only
+    // ordinary Spawn payloads must be claimed as a child's frozen recipe.
+    bool PayloadClaimed=R.Kind!=TransactionKind::Spawn || R.CapabilityPayload.empty();
+    for (const auto& [Name,C]:Contracts().Values) if (C.FreezeSpawn && !C.FreezeSpawn(Source,Objects,R,Child,PayloadClaimed)) return false;
+    return PayloadClaimed && ValidateObjectCapabilities(Child);
 }
 }

@@ -17,6 +17,12 @@ struct OwnershipSettings
     double MinimumRelativeGap=.20;
     double MinimumGapMilliseconds=.5;
     std::uint32_t MaximumBackgroundBatch=32;
+    // Keep private capture work admitted inside its five-second window.
+    // Completed shards free slots on each poll; the membership deadline stays
+    // fixed and indivisible resource groups still enter together.
+    // Prepare enough metadata to overlap different recipients. Per-peer byte
+    // admission, bandwidth and transfer/member deadlines stay independent.
+    std::uint32_t MaximumLeaveBatch=256;
 };
 struct OwnershipMember
 {
@@ -99,6 +105,8 @@ private:
     bool RequestOne(ObjectKey Object,Id Target,HandoffReason Reason,double Now,double Reserved,Id Group);
     void Cancel(ObjectKey Object);
     void TryCommit(ObjectKey Object);
+    void IndexEntry(const OwnershipEntry& Entry);
+    void UnindexEntry(const OwnershipEntry& Entry);
     double Weight(Id Player) const;
     double Reserved(Id Player) const;
     double Estimate(ObjectKey Object,Id Target) const;
@@ -109,6 +117,10 @@ private:
     std::map<Id,Revision> Selections;
     std::map<Id,std::set<ObjectKey>> SelectionSets;
     std::map<ObjectKey,OwnershipEntry> Entries;
+    std::map<Id,std::set<ObjectKey>> GroupMembers;
+    std::map<ObjectKey,std::set<ObjectKey>> ParentWorkChildren;
+    mutable std::map<Id,double> ActiveWeights;
+    mutable bool WeightsValid=false;
     std::map<ObjectKey,OwnershipActivity> Activity;
     std::map<ObjectKey,ObjectHandoff> Pending;
     std::vector<HandoffAction> Actions;

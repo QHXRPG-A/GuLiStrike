@@ -24,23 +24,43 @@ def run(plan, args, records, read_state, write_json, states):
         return {(obj['stable_id'], obj['life']): obj for obj in state.get('wingman_states', []) if obj['life_state'] == 1}
 
     def wait(label, predicate):
-        deadline = time.monotonic() + args.gameplay_timeout
+        preparation = getattr(args,'continue_remaining',False) and label == 'all-members'
+        deadline = time.monotonic() + (args.preparation_timeout if preparation else args.gameplay_timeout)
         while time.monotonic() < deadline:
             refresh()
+            if preparation and any(o['definition']=='player/ship' and o['life']>=2
+                                   for entry,_ in endpoints for o in states.get(entry['name'],{}).get('scene_objects',[])):
+                from acceptance_session import PreparationSkipped
+                write_json(output / 'wingman-preparation-lost-carrier.json', states)
+                raise PreparationSkipped('A Ship died before the equipment/member fixture was complete')
             if all((entry['name'] in states for entry, _ in endpoints)) and predicate():
                 write_json(output / f'wingman-{len(stages) + 1:02d}-{label}.json', states)
                 stages.append(label)
                 return
             time.sleep(0.25)
         write_json(output / f'wingman-failed-{label}.json', states)
+        if preparation:
+            from acceptance_session import PreparationSkipped
+            raise PreparationSkipped('The actual fifty-member equipment fixture was not ready within its short setup window')
         raise RuntimeError(f'Production Wingman review timed out at {label}')
     if plan['formation'] != '3v3' or len(air) != 2:
         raise RuntimeError('The formal member recovery case requires Hybrid and six active seats')
-    control('ship_equipment')
-    wait('equipment-committed', lambda: all((states[entry['name']].get('ship_equipment_complete') for entry in air)))
-    for entry in air:
-        if not states[entry['name']].get('ship_equipment_committed'):
-            raise RuntimeError('A production Hangar choice did not commit')
+    prepared=getattr(args,'prepared_equipment',None)
+    if prepared:
+        by_player={record['player']:record for record in prepared}
+        for entry in air:
+            receipt=by_player.get(entry['player'])
+            if not receipt or not receipt['reply']['result'].get('committed') or not Path(receipt['evidence']).is_file() \
+                    or states[entry['name']].get('scene_ui',{}).get('ship_build_revision',0)<receipt['reply']['result']['revision']:
+                raise RuntimeError('The original Hangar receipt does not match the current fixed player/build')
+        write_json(output/'wingman-01-equipment-committed.json',{'prepared_receipts':prepared,'states':states})
+        stages.append('equipment-committed')
+    else:
+        control('ship_equipment')
+        wait('equipment-committed', lambda: all((states[entry['name']].get('ship_equipment_complete') for entry in air)))
+        for entry in air:
+            if not states[entry['name']].get('ship_equipment_committed'):
+                raise RuntimeError('A production Hangar choice did not commit')
     expected = 25 * len(air)
     wait('all-members', lambda: all((len(live(states[entry['name']])) == expected and all((member['entity'] for member in live(states[entry['name']]).values())) for entry, _ in endpoints)))
     before = live(states[endpoints[0][0]['name']])

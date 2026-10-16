@@ -162,6 +162,7 @@ void UGuLiBuildingPlacementComponent::BeginPlay()
 	{
 		Hybrid->OnTransactionCompleted.AddDynamic(this,&ThisClass::HandleHybridTransaction);
 		Hybrid->OnCommandCompleted.AddUObject(this,&ThisClass::HandleHybridPlacementCommand);
+        Hybrid->OnOwnershipStateApplied.AddUObject(this,&ThisClass::RebindHybridReceipts);
 	}
 }
 
@@ -172,6 +173,7 @@ void UGuLiBuildingPlacementComponent::EndPlay(const EEndPlayReason::Type EndPlay
 	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
 	{
 		Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);
+        Hybrid->OnOwnershipStateApplied.RemoveAll(this);
 		Hybrid->OnCommandCompleted.RemoveAll(this);
 	}
 	HybridPlacements.Reset(); HybridClientRequests.Reset(); HybridCommandRequests.Reset(); HybridRefundEvents.Reset();

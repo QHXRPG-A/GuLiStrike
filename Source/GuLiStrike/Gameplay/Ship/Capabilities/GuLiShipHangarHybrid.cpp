@@ -47,9 +47,15 @@ void UGuLiShipHangarCapabilityComponent::AdvanceHybrid(uint64 Tick,double)
         if (HybridSpawns.Contains(Slot)) continue;
         const auto Stable=GuLiHybridWingman::MemberKey(Manifest,Source.Key,Profile,Slot);const FGuLiHybridObjectState* Latest=nullptr;
         for (const auto& O:Directory) if (O.Key.Kind==Stable.Kind && O.Key.StableId==Stable.StableId && (!Latest || O.Key.LifeGeneration>Latest->Key.LifeGeneration)) Latest=&O;
-        if (Latest && Latest->LifeState<2) {HybridReplenishment.Remove(Slot);continue;}
+        const uint32 RetiredLife=H->GetLatestRetiredLife(Stable);
+        if (Latest && Latest->LifeState<2 && Latest->Key.LifeGeneration>RetiredLife) {HybridReplenishment.Remove(Slot);continue;}
         uint32 Generation=1;
-        if (Latest)
+        if (RetiredLife && (!Latest || RetiredLife>=Latest->Key.LifeGeneration))
+        {
+            if (RetiredLife==MAX_uint32) {H->Suspend(TEXT("Wingman life generation exhausted"));return;}
+            Generation=RetiredLife+1;
+        }
+        else if (Latest)
         {
             if (Latest->Key.LifeGeneration==MAX_uint32) {H->Suspend(TEXT("Wingman life generation exhausted"));return;}
             if (Latest->LifeState!=3)

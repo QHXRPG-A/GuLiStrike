@@ -99,7 +99,7 @@ bool UGuLiCombatEffectRuntimeSubsystem::SynchronizeEpoch()
 float UGuLiCombatEffectRuntimeSubsystem::BattleSeconds() const
 {
     const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
-    return Hybrid ? static_cast<float>(Hybrid->GetLogicalSeconds()) : GetWorld()->GetTimeSeconds();
+    return Hybrid ? static_cast<float>(Hybrid->GetLocalLogicalSeconds()) : GetWorld()->GetTimeSeconds();
 }
 
 bool UGuLiCombatEffectRuntimeSubsystem::PrepareContext(const FGuLiCombatEffectContext& Input, FGuLiCombatEffectContext& Output)

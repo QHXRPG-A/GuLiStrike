@@ -65,7 +65,7 @@ public:
     UPROPERTY(Config,EditAnywhere,Category="Ownership",meta=(ClampMin="0")) double MinimumLoadGapMilliseconds=0.5;
     UPROPERTY(Config,EditAnywhere,Category="Ownership",meta=(ClampMin="1",ClampMax="4096")) int32 MaximumBackgroundHandoffBatch=32;
     /** Per-peer socket payload budgets. Simulation never waits on these lanes. */
-    UPROPERTY(Config,EditAnywhere,Category="Transport",meta=(ClampMin="1000")) int32 ReliableBytesPerSecond=524288;
+    UPROPERTY(Config,EditAnywhere,Category="Transport",meta=(ClampMin="1000")) int32 ReliableBytesPerSecond=2097152;
     UPROPERTY(Config,EditAnywhere,Category="Transport",meta=(ClampMin="1000")) int32 MotionBytesPerSecond=160000;
     UPROPERTY(Config,EditAnywhere,Category="Transport",meta=(ClampMin="1000")) int32 HandoffBytesPerSecond=1048576;
 

@@ -71,6 +71,8 @@ public:
 		const FVector& Ground,float Yaw,const FGuid& OriginalBuilder,FString* Rejection=nullptr);
 	const FGuLiBuildingPlacementResult& GetLastPlacementReceipt() const { return LastPlacementReceipt; }
 	uint64 GetPlacementReceiptCount() const { return PlacementReceiptCount; }
+    TArray<FGuid> GetPendingPlacementEvents() const;
+    void RebindHybridReceipts();
 	uint64 GetCommittedPlacementCount() const { return CommittedPlacementCount; }
 	FGuLiResourceAmounts GetCommittedPlacementCost() const { return CommittedPlacementCost; }
 

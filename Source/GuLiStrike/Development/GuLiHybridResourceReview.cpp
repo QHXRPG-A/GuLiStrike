@@ -36,6 +36,13 @@ void UGuLiHybridReviewSubsystem::AppendResourceEvidence(const TSharedRef<FJsonOb
         V->SetNumberField(TEXT("behavior_result"),uint8(It->GetBehaviorResult()));V->SetNumberField(TEXT("cluster"),It->GetTargetClusterId());
         V->SetNumberField(TEXT("node"),It->GetMiningNodeId());V->SetBoolField(TEXT("mining"),It->IsMiningLaserActive());
         const auto* Travel=It->FindComponentByClass<UGuLiEngineeringTravelComponent>();V->SetStringField(TEXT("travel"),Travel->GetTravelDebug());
+        FTransform ReservedPose;
+        if (It->GetReservedMiningPose(ReservedPose))
+        {
+            TArray<TSharedPtr<FJsonValue>> Point;const auto Location=ReservedPose.GetLocation();
+            for (auto Number:{Location.X,Location.Y,Location.Z}) Point.Add(MakeShared<FJsonValueNumber>(Number));
+            V->SetArrayField(TEXT("reserved_work_position"),Point);
+        }
         FGuLiHybridMiningLease Lease;if (B && H && H->GetMiningLease(B->GetObjectKey(),Lease))
         {
             auto L=MakeShared<FJsonObject>();L->SetNumberField(TEXT("cluster"),Lease.ClusterId);L->SetNumberField(TEXT("sample"),Lease.Sample);

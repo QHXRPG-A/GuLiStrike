@@ -79,9 +79,18 @@ bool OwnerState::ConfigureResourceCatalog(std::map<std::uint32_t,OreDefinition> 
 {
     if (ResourceLedgerValue.Snapshot().Configured || MiningReservationsValue.Snapshot().Configured) return false;
     ResourceLedger Resources; MiningReservations Mining; std::map<std::uint32_t,std::uint32_t> NodeClusters;
-    for (const auto& [Node,V]:Nodes) NodeClusters.emplace(Node,V.Cluster);
+    std::map<std::uint32_t,ObjectKey> ClusterKeys;
+    std::map<ObjectKey,std::vector<std::uint32_t>> ByCluster;
+    for (const auto& [Node,V]:Nodes)
+    {
+        NodeClusters.emplace(Node,V.Cluster);
+        auto I=ClusterKeys.find(V.Cluster);
+        if (I==ClusterKeys.end()) I=ClusterKeys.emplace(V.Cluster,MiningClusterObject(V.Cluster)).first;
+        ByCluster[I->second].push_back(Node);
+    }
     if (!Resources.Configure(std::move(Nodes),std::move(Owners)) || !Mining.Configure(std::move(NodeClusters))) return false;
-    ResourceLedgerValue=std::move(Resources); MiningReservationsValue=std::move(Mining); return true;
+    ResourceLedgerValue=std::move(Resources); MiningReservationsValue=std::move(Mining);
+    ResourceClusterNodes=std::move(ByCluster);return true;
 }
 bool OwnerState::RegisterResourceActorProfile(ResourceInventoryKind Capability,ObjectKind Kind,const std::string& Definition,std::uint32_t Capacity,Tick Period)
 {
@@ -156,7 +165,7 @@ bool OwnerState::Remember(const TransactionRequest& Request, const CommitResult&
 {
     if ((StageSource?StageSource->Results.size():Results.size()) >= 1000000) { FailureReason = "Owner event capacity exhausted"; return false; }
     Results.emplace(Request.Header.Event, Result); RequestBodies.emplace(Request.Header.Event, RequestFingerprint(Request));
-    ResultDomains[Request.Header.Event]=DecisionDomain;return true;
+    IndexResultDomain(Request.Header.Event,DecisionDomain);return true;
 }
 CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery, Id NewToken)
 {
@@ -272,7 +281,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
         || AttackValue.Targets.contains(R.Target) || AttackValue.Targets.size() >= RuleValue.MaxTargets)
         return Reject(CommitStatus::InvalidRule);
     if (R.Kind!=TransactionKind::Upgrade && (!R.UpgradeNode.empty() || R.ExpectedUpgradeVersion)) return Reject(CommitStatus::BadRequest);
-    if (R.Kind!=TransactionKind::Capability && !R.CapabilityPayload.empty()) return Reject(CommitStatus::BadRequest);
+    if (R.Kind!=TransactionKind::Capability && R.Kind!=TransactionKind::Spawn && !R.CapabilityPayload.empty()) return Reject(CommitStatus::BadRequest);
     if (R.Kind==TransactionKind::Capability)
     {
         const auto* Contract=FindCapability(RuleValue.Capability);
@@ -488,7 +497,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
             if (!S.Completed || !R.Target.Valid() || R.Target.Kind!=RuleValue.SpawnKind || Previous.contains(R.Target)
                 || (R.Related.Valid() && R.Related!=R.Header.Object)) return Reject(CommitStatus::InvalidRule);
             if (Previous.size()>=100000) { Abort("Object directory capacity exhausted"); return Reject(CommitStatus::Paused); }
-            std::uint32_t LastGeneration=0, MaximumOrdinal=0, Children=0, FactionCount=0;
+            std::uint32_t LastGeneration=LastRetiredLife(R.Target.Kind,R.Target.StableId), MaximumOrdinal=0, Children=0, FactionCount=0;
             const auto& Index=IndexedSource();
             if (const auto I=Index.MaximumOrdinals.find(OrdinalScope(R.Target.Kind));I!=Index.MaximumOrdinals.end()) MaximumOrdinal=I->second;
             // ObjectKey ordering keeps all lives of one stable identity adjacent.
@@ -496,7 +505,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
                 && I->first.Kind==R.Target.Kind && I->first.StableId==R.Target.StableId;++I)
             {
                 if (I->second.Grant.State<Life::Dead) return Reject(CommitStatus::InvalidRule);
-                LastGeneration=I->first.Generation;
+                LastGeneration=std::max(LastGeneration,I->first.Generation);
             }
             if (RuleValue.MaximumLiveChildren || RuleValue.MaximumFactionObjects) for (const auto& K:Index.LivingObjects)
             {
@@ -672,8 +681,9 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
     Out.MiningRevision=MiningReservationsValue.Snapshot().Version;
     if (AttackIt==Attacks.end())
     {
-        NewAttack.Targets.insert(R.Target); Attacks.emplace(AttackId,std::move(NewAttack));
-        if (R.Kind!=TransactionKind::Damage) LastAttack[{R.Header.Object,R.RuleId}]=R.StartedAt;
+        NewAttack.Targets.insert(R.Target);IndexAttackDomain(AttackId,NewAttack.Source);Attacks.emplace(AttackId,std::move(NewAttack));
+        if (R.Kind!=TransactionKind::Damage)
+        {LastAttack[{R.Header.Object,R.RuleId}]=R.StartedAt;HistoryFragments[R.Header.Object].insert("cooldown/"+R.RuleId);}
     }
     else AttackIt->second.Targets.insert(R.Target);
     // Every committed transaction carries an authoritative balance at its ledger

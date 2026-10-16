@@ -1,4 +1,5 @@
 #include "Network/Private/GuLiHybridObjectStateEnvelope.h"
+#include "Network/Private/GuLiHybridPeerPayload.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Misc/AutomationTest.h"
@@ -36,6 +37,32 @@ bool FGuLiHybridObjectStateEnvelopeTests::RunTest(const FString&)
     const auto Saved=Parts;
     TestFalse(TEXT("Corrupt input does not overwrite the caller's last validated state"),Decode(Corrupt,4,Parts));
     TestTrue(TEXT("Validated output remains intact after rejection"),Parts.Family==Saved.Family && Parts.Components==Saved.Components && Parts.HasActor==Saved.HasActor);
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiHybridPeerPayloadTests,
+    "GuLiStrike.Network.PeerPayload",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiHybridPeerPayloadTests::RunTest(const FString&)
+{
+    GuLiNet::Message Original;Original.Header.Kind=GuLiNet::MessageKind::HandoffState;Original.Body.resize(65536);
+    for (size_t I=0;I<Original.Body.size();++I) Original.Body[I]=I%16<4?uint8((I/16)>>(8*(I%4))):uint8(I%7);
+    GuLiNet::Bytes Encoded;
+    TestTrue(TEXT("Repeated bounded private state uses lossless packing"),GuLiHybridPeerPayload::Pack(Original,Encoded));
+    TestTrue(TEXT("Packing reduces actual queued bytes"),Encoded.size()<Original.Body.size());
+    auto Decoded=Original;Decoded.Body=Encoded;
+    TestTrue(TEXT("Application bytes return exactly before handoff validation"),GuLiHybridPeerPayload::Unpack(Decoded) && Decoded.Body==Original.Body);
+    auto Truncated=Original;Truncated.Body=Encoded;if (!Truncated.Body.empty()) Truncated.Body.pop_back();
+    TestFalse(TEXT("Truncated encoded data is rejected before applying state"),GuLiHybridPeerPayload::Unpack(Truncated));
+    GuLiNet::Writer Invalid;Invalid.U32(GuLiHybridPeerPayload::Tag);Invalid.U32(1);Invalid.U8(1);Invalid.U32(uint32(GuLiNet::MaxMessageBytes+1));Invalid.Blob({});
+    auto Oversized=Original;Oversized.Body=Invalid.Take();
+    TestFalse(TEXT("Expanded size cannot exceed the existing message capacity"),GuLiHybridPeerPayload::Unpack(Oversized));
+    GuLiNet::Writer Collision;Collision.U32(GuLiHybridPeerPayload::Tag);Collision.U8(17);
+    auto Opaque=Original;Opaque.Header.Kind=GuLiNet::MessageKind::ObjectEvent;Opaque.Body=Collision.Take();
+    TestTrue(TEXT("An opaque family payload matching the transport tag is escaped"),GuLiHybridPeerPayload::Pack(Opaque,Encoded));
+    Decoded=Opaque;Decoded.Body=Encoded;
+    TestTrue(TEXT("Escape unwraps once and preserves opaque family bytes"),GuLiHybridPeerPayload::Unpack(Decoded) && Decoded.Body==Opaque.Body);
+    auto Small=Original;Small.Body={2,0,0,0};
+    TestFalse(TEXT("Small ordinary state needs no packing"),GuLiHybridPeerPayload::Pack(Small,Encoded));
+    TestTrue(TEXT("Raw state remains supported"),GuLiHybridPeerPayload::Unpack(Small) && Small.Body==GuLiNet::Bytes({2,0,0,0}));
     return true;
 }
 #endif

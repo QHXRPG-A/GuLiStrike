@@ -16,9 +16,17 @@
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
 #include "Gameplay/Cards/GuLiRogueCardPresentation.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/Units/GuLiExternalCharacterMovementComponent.h"
+#include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
+#include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
+#include "Gameplay/Resources/GuLiMiningSlots.h"
+#include "Components/CapsuleComponent.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
+#include "Gameplay/Ship/GuLiShipMovementComponent.h"
 #include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
+#include "Gameplay/Ship/Build/GuLiShipAssemblyComponent.h"
+#include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Gameplay/Resources/GuLiResourceInventorySubsystem.h"
 #include "Gameplay/Building/GuLiBuildingProductionComponent.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
@@ -32,6 +40,7 @@
 #include "EngineUtils.h"
 #include "Engine/GameInstance.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/UserWidget.h"
 #include "UnrealClient.h"
@@ -79,6 +88,84 @@ bool QueryPosition(UWorld& World,UGuLiHybridWorldSubsystem& H,const FGuLiHybridO
     auto* A=World.GetSubsystem<UGuLiBattleAuthoritySubsystem>();EGuLiTeam Team;uint16 Type;
     return A && A->GetTaskSoldierInfo(FGuLiSoldierId(O.Ordinal),Team,Type,P);
 }
+#if !UE_BUILD_SHIPPING
+bool PreparePosition(UWorld& World,UGuLiHybridWorldSubsystem& H,const FGuLiHybridObjectState& O,
+    const FVector& Requested,const FGuid& Token,bool Locked,bool FindNearby=false)
+{
+    if (O.Key.Kind==EGuLiHybridObjectKind::Ship)
+    {
+        auto* Ship=Cast<AGuLiStrikeShip>(H.FindBoundActor(O.Key));
+        auto* Movement=Ship?Ship->GetShipMovement():nullptr;
+        if (Locked || !Ship || !Ship->HasAuthority() || !Movement) return false;
+        // Reuse the production displacement path, including velocity reset,
+        // prediction barrier and canonical-history invalidation. No vitals,
+        // member lives, ownership or ability receipts are changed.
+        Ship->SubmitGameplayFlightInput(FVector::ZeroVector,0,false);
+        Movement->ApplyExternalDisplacement(FTransform(Ship->GetActorRotation(),Requested));
+        return Ship->GetActorLocation().Equals(Requested,1.0);
+    }
+    if (!Locked && O.Key.Kind==EGuLiHybridObjectKind::Miner)
+    {
+        auto* Miner=Cast<AGuLiMiningVehiclePawn>(H.FindBoundActor(O.Key));FTransform WorkPose;
+        if (Miner && Miner->HasAuthority() && Miner->GetReservedMiningPose(WorkPose)
+            && FVector::DistSquared2D(Requested,WorkPose.GetLocation())<=1.)
+        {
+            auto* Travel=Miner->FindComponentByClass<UGuLiEngineeringTravelComponent>();
+            if (!Travel || Travel->IsRouting()) return false;
+            // The reservation already supplied the legal vehicle pose. Rebase
+            // the existing work path after teleport instead of leaving the old
+            // path-following segment active. Ore, task, lease and cargo remain real.
+            WorkPose.SetScale3D(Miner->GetActorScale3D());
+            Miner->GetCharacterMovement()->StopMovementImmediately();
+            if (!Miner->SetActorTransform(WorkPose,false,nullptr,ETeleportType::TeleportPhysics)) return false;
+            return Travel->BeginWorkMove(WorkPose.GetLocation(),GULI_MINING_SLOT_ARRIVAL_RADIUS_CM);
+        }
+    }
+    auto* Army=World.GetSubsystem<UGuLiBattleAuthoritySubsystem>();FVector Surface;
+    if (!Army) return false;
+    if (!Army->ProjectExternalUnitLocation(Requested,Surface))
+    {
+        if (!FindNearby) return false;
+        bool Found=false;
+        // Development preparation only: an earlier avoidance position can
+        // lie just outside the navigation polygon. Never change play rules.
+        for (const double Radius:{100.,200.,400.,800.})
+        {
+            for (int32 I=0;I<8 && !Found;++I)
+            {
+                const double Angle=I*UE_DOUBLE_PI/4;
+                Found=Army->ProjectExternalUnitLocation(Requested+FVector(FMath::Cos(Angle)*Radius,FMath::Sin(Angle)*Radius,0),Surface);
+            }
+            if (Found) break;
+        }
+        if (!Found) return false;
+    }
+    if (O.Key.Kind==EGuLiHybridObjectKind::Soldier)
+    {
+        FGuLiMassExternalUnit Unit;Unit.Id=FGuLiSoldierId(O.Ordinal);
+        Unit.Transform=FTransform(FRotator(0,O.FacingYawDegrees,0),Surface);
+        return Army->ApplyExternalUnitState(TArray<FGuLiMassExternalUnit>{Unit},Token,false,Locked,true);
+    }
+    if (Locked) return false;
+    if (O.Key.Kind==EGuLiHybridObjectKind::GroundPlayer)
+    {
+        auto* Ground=Cast<AGuLiGroundMechCharacter>(H.FindBoundActor(O.Key));
+        auto* Movement=Ground?Cast<UGuLiExternalCharacterMovementComponent>(Ground->GetCharacterMovement()):nullptr;
+        if (!Movement || !Ground->HasAuthority()) return false;
+        Surface.Z+=Ground->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+5;
+        Movement->ApplyExternalDisplacement(FTransform(Ground->GetActorRotation(),Surface));return true;
+    }
+    if (O.Key.Kind==EGuLiHybridObjectKind::Engineer || O.Key.Kind==EGuLiHybridObjectKind::Miner)
+    {
+        auto* Character=Cast<ACharacter>(H.FindBoundActor(O.Key));
+        if (!Character || !Character->HasAuthority() || !Character->GetCharacterMovement()) return false;
+        Surface.Z+=Character->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()+5;
+        Character->GetCharacterMovement()->StopMovementImmediately();
+        return Character->SetActorLocation(Surface,false,nullptr,ETeleportType::TeleportPhysics);
+    }
+    return false;
+}
+#endif
 }
 
 void UGuLiHybridReviewSubsystem::BeginReviewStage(const FString& Id,uint32 Number)
@@ -107,6 +194,7 @@ void UGuLiHybridReviewSubsystem::BeginReviewStage(const FString& Id,uint32 Numbe
     ShipSceneInputs.Reset();bSceneShipInputApplied=false;
     EquipmentRequest.Invalidate();EquipmentNode=NAME_None;EquipmentDone=EquipmentCommitted=false;
     EngineerOrders.Reset();BuildingOrders.Reset();SceneActions.Reset();SceneSkillReplies.Reset();
+    SceneFinalSkillReplyCounts.Reset();SceneChoiceReplies.Reset();SceneChoiceReplyCounts.Reset();
 }
 
 void UGuLiHybridReviewSubsystem::SceneSkillResolved(const FGuLiActiveSkillReply& Reply)
@@ -115,6 +203,15 @@ void UGuLiHybridReviewSubsystem::SceneSkillResolved(const FGuLiActiveSkillReply&
     if (!SceneSkillReplies.Contains(Reply.RequestId) && SceneSkillReplies.Num()>=512)
     {Failure=TEXT("Skill receipt evidence capacity exceeded");return;}
     SceneSkillReplies.Add(Reply.RequestId,Reply);
+    if (Reply.Code!=EGuLiActiveSkillResultCode::PendingCommit && !Reply.Global.bPendingCommit)
+        ++SceneFinalSkillReplyCounts.FindOrAdd(Reply.RequestId);
+}
+void UGuLiHybridReviewSubsystem::SceneChoiceResolved(const FGuLiShipChoiceResult& Reply)
+{
+    if (!Reply.RequestId.IsValid()) return;
+    if (!SceneChoiceReplies.Contains(Reply.RequestId) && SceneChoiceReplies.Num()>=512)
+    {Failure=TEXT("Choice receipt evidence capacity exceeded");return;}
+    SceneChoiceReplies.Add(Reply.RequestId,Reply);++SceneChoiceReplyCounts.FindOrAdd(Reply.RequestId);
 }
 
 void UGuLiHybridReviewSubsystem::ObserveEffect(const FGuLiCombatEffectState& S,bool Reliable)
@@ -196,27 +293,63 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
     if (auto* Session=GetWorld()->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>())
     for (auto& [Id,A]:SceneActions)
     {
+        if (A.Player==PS->GetPlayerGuid() && A.Kind==TEXT("leave_match") && (A.Status==TEXT("queued") || A.Status==TEXT("submitted")))
+        {
+            if (A.Status==TEXT("queued"))
+            {
+                if (!Session->RequestLeave()) {A.Status=TEXT("rejected");A.Error=TEXT("Formal leave could not reach the control link");continue;}
+                A.Status=TEXT("submitted");
+            }
+            const auto* LocalMember=Session->GetMembers().FindByPredicate([&](const auto& M){return M.Player==A.Player;});
+            if (!LocalMember || LocalMember->bOnline || H->IsBattlePaused()) continue;
+            auto Receipt=MakeShared<FJsonObject>();
+            Receipt->SetStringField(TEXT("id"),Id.ToString(EGuidFormats::Digits));
+            Receipt->SetStringField(TEXT("player"),A.Player.ToString(EGuidFormats::Digits));
+            Receipt->SetStringField(TEXT("kind"),A.Kind);Receipt->SetStringField(TEXT("status"),TEXT("completed"));
+            Receipt->SetStringField(TEXT("stage_id"),StageId);Receipt->SetStringField(TEXT("scenario"),Scenario);
+            Receipt->SetBoolField(TEXT("departure_committed"),true);
+            const FString File=TEXT("leave-")+Id.ToString(EGuidFormats::Digits).ToLower()+TEXT(".json");
+            if (!Write(*File,Receipt)) {A.Status=TEXT("rejected");A.Error=TEXT("Formal quit receipt could not be persisted");continue;}
+            A.Status=TEXT("completed");NextWrite=0;PC->ConsoleCommand(TEXT("quit"),true);continue;
+        }
         if (A.Player!=PS->GetPlayerGuid() || A.Status!=TEXT("queued") || !A.Kind.StartsWith(TEXT("fault_"))) continue;
         bool Accepted=false;
         if (A.Kind==TEXT("fault_load_report") && (Scenario==TEXT("gameplay_merged") || Scenario.StartsWith(TEXT("fault_"))))
         {double Cost;if (A.Arguments->TryGetNumberField(TEXT("milliseconds"),Cost)) Accepted=Session->SetReviewLoadCost(Cost);}
         if (Scenario.StartsWith(TEXT("fault_")))
         {
-            FString Mode,Operation;double Count=1,Kind=0,Business=-1;
+            FString Mode,Operation;double Count=1,Kind=0,Business=-1,TargetKind=0;
             if (A.Kind==TEXT("fault_simulation_rate"))
             {double Rate;if (A.Arguments->TryGetNumberField(TEXT("rate"),Rate)) Accepted=H->SetReviewSimulationRate(Rate);}
             if (A.Kind==TEXT("fault_arm") && A.Arguments->TryGetStringField(TEXT("mode"),Mode))
             {
                 A.Arguments->TryGetNumberField(TEXT("count"),Count);A.Arguments->TryGetNumberField(TEXT("message_kind"),Kind);
                 A.Arguments->TryGetNumberField(TEXT("business_kind"),Business);
+                A.Arguments->TryGetNumberField(TEXT("target_kind"),TargetKind);
                 if (Count==FMath::FloorToDouble(Count) && Count>=1 && Count<=256 && Kind==FMath::FloorToDouble(Kind) && Kind>=0 && Kind<=MAX_uint16
-                    && Business==FMath::FloorToDouble(Business) && Business>=-1 && Business<=MAX_int32)
-                    Accepted=Session->ArmReviewFault(Id,FName(Mode),int32(Count),uint16(Kind),int32(Business));
+                    && Business==FMath::FloorToDouble(Business) && Business>=-1 && Business<=MAX_int32
+                    && TargetKind==FMath::FloorToDouble(TargetKind) && TargetKind>=0 && TargetKind<=uint8(EGuLiHybridObjectKind::BusinessWork))
+                {
+                    FString SourceText,PriorText;FGuid Source,Prior;double PriorEpoch=0;
+                    const bool ValidSource=!A.Arguments->TryGetStringField(TEXT("source"),SourceText) || FGuid::Parse(SourceText,Source);
+                    const bool HasPrior=A.Arguments->TryGetStringField(TEXT("prior_match"),PriorText);
+                    const bool ValidPrior=!HasPrior || (FGuid::Parse(PriorText,Prior) && Prior.IsValid()
+                        && A.Arguments->TryGetNumberField(TEXT("prior_epoch"),PriorEpoch) && PriorEpoch>=1 && PriorEpoch<=MAX_uint32 && PriorEpoch==FMath::FloorToDouble(PriorEpoch));
+                    if (ValidSource && ValidPrior) Accepted=Session->ArmReviewFault(Id,FName(Mode),int32(Count),uint16(Kind),int32(Business),Source,uint8(TargetKind),Prior,uint64(PriorEpoch));
+                    FString ReplayText;
+                    if (Accepted && A.Arguments->TryGetStringField(TEXT("replay_event"),ReplayText))
+                    {
+                        FGuid Replay;
+                        Accepted=Mode==TEXT("business_duplicate") && FGuid::Parse(ReplayText,Replay)
+                            && H->ReplayReviewBusinessRequest(Replay,int32(Count),A.Result,A.Error);
+                        Session->ReleaseReviewFault(Id);
+                    }
+                }
             }
             if (A.Kind==TEXT("fault_release") && A.Arguments->TryGetStringField(TEXT("operation"),Operation))
             {FGuid F;if (FGuid::Parse(Operation,F)) Accepted=Session->ReleaseReviewFault(F);}
         }
-        A.Status=Accepted?TEXT("completed"):TEXT("rejected");if (!Accepted) A.Error=TEXT("Review network fault operation denied");
+        A.Status=Accepted?TEXT("completed"):TEXT("rejected");if (!Accepted && A.Error.IsEmpty()) A.Error=TEXT("Review network fault operation denied");
     }
     if (!H->IsWorldReady() || H->IsBattlePaused() || !H->CanPublishFacts()) return;
     auto* Sync=PC->FindComponentByClass<UGuLiCommanderNetSyncComponent>();auto* Skills=PS->GetCommanderSkills();
@@ -227,6 +360,12 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
         if (Skills) Skills->OnSkillReply.AddUniqueDynamic(this,&ThisClass::SceneSkillResolved);
     }
     auto* Teleport=PC->FindComponentByClass<UGuLiTeleportInputComponent>();
+    auto* Build=PS->FindComponentByClass<UGuLiShipBuildComponent>();
+    if (SceneBuild.Get()!=Build)
+    {
+        if (SceneBuild.IsValid()) SceneBuild->OnChoiceResolved.RemoveDynamic(this,&ThisClass::SceneChoiceResolved);
+        SceneBuild=Build;if (Build) Build->OnChoiceResolved.AddUniqueDynamic(this,&ThisClass::SceneChoiceResolved);
+    }
     auto* Cards=PC->FindComponentByClass<UGuLiRogueCardPresentation>();
     for (auto& [Id,A]:SceneActions)
     {
@@ -236,10 +375,124 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
         {
             A.SubmittedAt=H->GetLogicalTick();A.SubmittedEpoch=GetWorld()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch();
             FVector P;const bool HasPoint=ReadPoint(*A.Arguments,TEXT("point"),P);
-            if (A.Kind==TEXT("resource_supply"))
+            if (A.Kind==TEXT("fixture_construction_progress"))
             {
 #if !UE_BUILD_SHIPPING
-                const auto* Actors=GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>();FString Color;double Amount=0;
+                const auto* Actors=GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>();FString Text;FGuid ObjectId;
+                if (!bEnableResourceSupply || !Actors || (Scenario!=TEXT("gameplay_merged") && !Scenario.StartsWith(TEXT("fault_")))
+                    || Actors->GetManifest().Numbers.FindRef(TEXT("acceptance/resource_supply"))!=1
+                    || !A.Arguments->TryGetStringField(TEXT("object"),Text) || !FGuid::Parse(Text,ObjectId))
+                {Reject(TEXT("Construction work preparation requires the explicit development profile"));continue;}
+                TArray<FGuLiHybridObjectState> All;H->GetObjects(All);
+                const auto* O=All.FindByPredicate([&](const auto& V){return V.Key.StableId==ObjectId && V.LifeState==1 && H->HasSimulation(V.Key);});
+                auto* Actor=O?H->FindBoundActor(O->Key):nullptr;
+                auto* Life=Actor?Actor->FindComponentByClass<UGuLiBuildingLifecycleComponent>():nullptr;
+                if (!O || O->Key.Kind!=EGuLiHybridObjectKind::Building || !Life || Life->IsCompleted()
+                    || Life->GetDefinition().ConstructionWork<=0)
+                {Reject(TEXT("Construction work preparation requires a local unfinished building"));continue;}
+                const float Before=Life->GetState().WorkDone,Required=Life->GetDefinition().ConstructionWork;
+                Life->AddConstructionWork(FMath::Max(0.f,Required-Before));
+                A.Result->SetStringField(TEXT("object"),Text);A.Result->SetNumberField(TEXT("before"),Before);
+                A.Result->SetNumberField(TEXT("applied"),Life->GetState().WorkDone);A.Result->SetNumberField(TEXT("required"),Required);
+                A.Result->SetStringField(TEXT("scope"),TEXT("Construction work is supplied as preparation. Committed completion, replacement and population transfer use normal gameplay. This is not construction-duration evidence."));
+                A.Status=TEXT("completed");
+#else
+                Reject(TEXT("Development work preparation is unavailable"));continue;
+#endif
+            }
+            else if (A.Kind==TEXT("fixture_positions"))
+            {
+#if !UE_BUILD_SHIPPING
+                const auto* Actors=GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>();
+                const TArray<TSharedPtr<FJsonValue>>* Positions=nullptr;
+                if (!bEnableResourceSupply || !Actors || (Scenario!=TEXT("gameplay_merged") && !Scenario.StartsWith(TEXT("fault_")))
+                    || Actors->GetManifest().Numbers.FindRef(TEXT("acceptance/resource_supply"))!=1
+                    || !A.Arguments->TryGetArrayField(TEXT("positions"),Positions) || Positions->IsEmpty() || Positions->Num()>64)
+                {Reject(TEXT("Batch positions require the explicit development profile and 1..64 stable objects"));continue;}
+                TArray<FGuLiHybridObjectState> All;H->GetObjects(All);TArray<TSharedPtr<FJsonValue>> Applied;
+                bool FindNearby=false;A.Arguments->TryGetBoolField(TEXT("find_nearby"),FindNearby);
+                bool AllowTerminal=false;A.Arguments->TryGetBoolField(TEXT("allow_terminal"),AllowTerminal);
+                TSet<FGuid> Seen;bool Valid=true;
+                for (const auto& Value:*Positions)
+                {
+                    const TSharedPtr<FJsonObject>* J=nullptr;FString Text;FGuid ObjectId,Token=Id;FVector Requested,Before,After;bool Locked=false;
+                    if (!Value->TryGetObject(J) || !J || !(*J)->TryGetStringField(TEXT("object"),Text) || !FGuid::Parse(Text,ObjectId)
+                        || Seen.Contains(ObjectId) || !ReadPoint(**J,TEXT("point"),Requested)) {Valid=false;break;}
+                    (*J)->TryGetBoolField(TEXT("locked"),Locked);FString TokenText;
+                    if ((*J)->TryGetStringField(TEXT("token"),TokenText) && (!FGuid::Parse(TokenText,Token) || !Token.IsValid())) {Valid=false;break;}
+                    double Generation=0;const bool HasGeneration=(*J)->TryGetNumberField(TEXT("generation"),Generation);
+                    if ((HasGeneration && (!FMath::IsFinite(Generation) || Generation<1 || Generation>MAX_uint32 || Generation!=FMath::FloorToDouble(Generation)))
+                        || (AllowTerminal && (!HasGeneration || Locked))) {Valid=false;break;}
+                    const auto* O=All.FindByPredicate([&](const auto& V){return V.Key.StableId==ObjectId
+                        && (!HasGeneration || V.Key.LifeGeneration==uint32(Generation))
+                        && ((V.LifeState==1 && H->HasSimulation(V.Key)) || (AllowTerminal && V.LifeState>=2));});
+                    // A real death can commit after the driver's live readback.
+                    // Cleanup acknowledges that exact terminal life without a
+                    // relocation, lock mutation, resurrection or simulated owner.
+                    if (O && AllowTerminal && O->LifeState>=2)
+                    {
+                        Seen.Add(ObjectId);auto Item=MakeShared<FJsonObject>();
+                        Item->SetStringField(TEXT("object"),ObjectId.ToString(EGuidFormats::Digits));
+                        Item->SetStringField(TEXT("token"),Token.ToString(EGuidFormats::Digits));
+                        Item->SetNumberField(TEXT("generation"),O->Key.LifeGeneration);Item->SetNumberField(TEXT("life"),O->LifeState);
+                        Item->SetStringField(TEXT("status"),TEXT("terminal_cleanup_skipped"));
+                        Applied.Add(MakeShared<FJsonValueObject>(Item));continue;
+                    }
+                    if (!O || !QueryPosition(*GetWorld(),*H,*O,Before) || !PreparePosition(*GetWorld(),*H,*O,Requested,Token,Locked,FindNearby)
+                        || !QueryPosition(*GetWorld(),*H,*O,After)) {Valid=false;break;}
+                    Seen.Add(ObjectId);auto Item=MakeShared<FJsonObject>();Item->SetStringField(TEXT("object"),ObjectId.ToString(EGuidFormats::Digits));
+                    Item->SetStringField(TEXT("token"),Token.ToString(EGuidFormats::Digits));Item->SetArrayField(TEXT("before"),Point(Before));
+                    Item->SetArrayField(TEXT("requested"),Point(Requested));Item->SetArrayField(TEXT("applied"),Point(After));
+                    Item->SetBoolField(TEXT("locked"),Locked);Applied.Add(MakeShared<FJsonValueObject>(Item));
+                }
+                A.Result->SetStringField(TEXT("fixture"),TEXT("development_positions"));A.Result->SetArrayField(TEXT("positions"),Applied);
+                A.Result->SetStringField(TEXT("scope"),TEXT("Preparation positions only; numeric state, damage, population, work and gameplay results are unchanged"));
+                if (!Valid) {Reject(TEXT("Batch preparation requires live objects at their unique simulator and valid navigation"));continue;}
+                A.Status=TEXT("completed");
+#else
+                Reject(TEXT("Development position preparation is unavailable"));continue;
+#endif
+            }
+            else if (A.Kind==TEXT("fixture_position"))
+            {
+#if !UE_BUILD_SHIPPING
+                FString ObjectText;FGuid ObjectId,Token=Id;bool Locked=false;
+                const auto* Actors=GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>();
+                if (!bEnableResourceSupply || !Actors || !HasPoint
+                    || (Scenario!=TEXT("gameplay_merged") && !Scenario.StartsWith(TEXT("fault_")))
+                    || Actors->GetManifest().Numbers.FindRef(TEXT("acceptance/resource_supply"))!=1
+                    || !A.Arguments->TryGetStringField(TEXT("object"),ObjectText) || !FGuid::Parse(ObjectText,ObjectId))
+                {Reject(TEXT("Position preparation requires the explicit development profile and a stable object"));continue;}
+                FString TokenText;
+                if (A.Arguments->TryGetStringField(TEXT("token"),TokenText) && (!FGuid::Parse(TokenText,Token) || !Token.IsValid()))
+                {Reject(TEXT("Invalid preparation restore token"));continue;}
+                A.Arguments->TryGetBoolField(TEXT("locked"),Locked);
+                TArray<FGuLiHybridObjectState> All;H->GetObjects(All);
+                const auto* O=All.FindByPredicate([&](const auto& V){return V.Key.StableId==ObjectId && V.LifeState==1 && H->HasSimulation(V.Key);});
+                FVector Before;
+                if (!O || !QueryPosition(*GetWorld(),*H,*O,Before))
+                {Reject(TEXT("Position preparation must run at the live object's unique simulator"));continue;}
+                bool FindNearby=false;A.Arguments->TryGetBoolField(TEXT("find_nearby"),FindNearby);
+                const bool Good=PreparePosition(*GetWorld(),*H,*O,P,Token,Locked,FindNearby);
+                if (!Good) {Reject(TEXT("Prepared position is unsupported, unavailable or outside navigation"));continue;}
+                FVector Actual;
+                if (!QueryPosition(*GetWorld(),*H,*O,Actual)) {Reject(TEXT("Prepared position readback failed"));continue;}
+                A.Result->SetStringField(TEXT("fixture"),TEXT("development_position"));
+                A.Result->SetStringField(TEXT("object"),ObjectId.ToString(EGuidFormats::Digits));
+                A.Result->SetStringField(TEXT("token"),Token.ToString(EGuidFormats::Digits));
+                A.Result->SetArrayField(TEXT("before"),Point(Before));A.Result->SetArrayField(TEXT("requested"),Point(P));
+                A.Result->SetArrayField(TEXT("applied"),Point(Actual));A.Result->SetBoolField(TEXT("locked"),Locked);
+                A.Result->SetNumberField(TEXT("health"),O->Health.Health);
+                A.Result->SetStringField(TEXT("scope"),TEXT("Preparation only; no damage, population, task, receipt or gameplay assertion is fabricated"));
+                A.Status=TEXT("completed");
+#else
+                Reject(TEXT("Development position preparation is unavailable"));continue;
+#endif
+            }
+            else if (A.Kind==TEXT("resource_supply"))
+            {
+#if !UE_BUILD_SHIPPING
+                const auto* Actors=GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>();FString Color,TeamText;double Amount=0;
                 if (!bEnableResourceSupply || !Actors || !PS->IsCommander()
                     || (Scenario!=TEXT("gameplay_merged") && !Scenario.StartsWith(TEXT("fault_")))
                     || Actors->GetManifest().Numbers.FindRef(TEXT("acceptance/resource_supply"))!=1
@@ -247,16 +500,25 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
                     || !A.Arguments->TryGetNumberField(TEXT("amount"),Amount) || Amount<1 || Amount>1024
                     || Amount!=FMath::FloorToDouble(Amount) || (int32(Amount)&(int32(Amount)-1))!=0)
                 {Reject(TEXT("Resource supply requires the explicit development profile and an exact configured denomination"));continue;}
+                EGuLiTeam SupplyTeam=PS->GetTeam();
+                if (A.Arguments->TryGetStringField(TEXT("team"),TeamText))
+                {
+                    if (TeamText==TEXT("Red")) SupplyTeam=EGuLiTeam::Red;
+                    else if (TeamText==TEXT("Blue")) SupplyTeam=EGuLiTeam::Blue;
+                    else {Reject(TEXT("Development supply team must be Red or Blue"));continue;}
+                }
                 const auto& Manifest=Actors->GetManifest();TArray<FGuLiHybridObjectState> All;H->GetObjects(All);
                 const FName Definition(*Manifest.Strings.FindRef(TEXT("army/root_definition")));
                 const auto* Source=All.FindByPredicate([&](const auto& O)
-                    {return O.Definition==Definition && O.LifeState==1 && O.Controller==A.Player && H->HasControl(O.Key);});
-                if (!Source) {Reject(TEXT("Resource supply has no controlled team source"));continue;}
+                    {return O.Definition==Definition && O.LifeState==1 && O.Team==SupplyTeam && H->HasSimulation(O.Key);});
+                if (!Source) {Reject(TEXT("Development supply must run on the actual team army simulator"));continue;}
                 const auto Before=H->GetTeamBalance(Source->Team);
                 FGuLiHybridEconomyRequest Request;Request.Source=Source->Key;Request.Event=Id;
                 Request.Rule=FName(*FString::Printf(TEXT("acceptance/resource_supply/%s/%d"),*Color,int32(Amount)));
                 Request.Operation=EGuLiHybridEconomyOperation::Credit;
                 A.Result->SetStringField(TEXT("fixture"),TEXT("development_resource_supply"));
+                A.Result->SetStringField(TEXT("source"),Source->Key.StableId.ToString(EGuidFormats::Digits));
+                A.Result->SetStringField(TEXT("supplier"),A.Player.ToString(EGuidFormats::Digits));
                 A.Result->SetStringField(TEXT("color"),Color);A.Result->SetNumberField(TEXT("amount"),Amount);
                 A.Result->SetNumberField(TEXT("before_blue"),Before.Blue);A.Result->SetNumberField(TEXT("before_red"),Before.Red);
                 A.Request=H->SubmitEconomyNative(Request,{});
@@ -280,7 +542,27 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
                 AGuLiHybridNetworkReviewActor* Entry=nullptr;
                 for (TActorIterator<AGuLiHybridNetworkReviewActor> It(GetWorld());It;++It) if (It->ActorHasTag(TEXT("HybridNetworkReview"))) {Entry=*It;break;}
                 if (!Valid || !Entry) {Reject(TEXT("Original map selection entry or controlled objects are missing"));continue;}
-                Entry->SelectObjects(Keys);A.Result->SetNumberField(TEXT("selected"),Keys.Num());A.Status=TEXT("completed");
+                bool CommandSelection=false;A.Arguments->TryGetBoolField(TEXT("command_selection"),CommandSelection);
+                if (CommandSelection)
+                {
+#if !UE_BUILD_SHIPPING
+                    TArray<FGuLiSoldierId> Soldiers;
+                    Valid=Sync && GetDefault<UGuLiHybridReviewSubsystem>()->bEnableResourceSupply && !Keys.IsEmpty();
+                    for (const auto& Key:Keys)
+                    {
+                        const auto* O=All.FindByPredicate([&](const auto& O){return O.Key==Key;});
+                        if (!O || O->Key.Kind!=EGuLiHybridObjectKind::Soldier || O->LifeState!=1 || !O->Ordinal) {Valid=false;break;}
+                        Soldiers.Add(FGuLiSoldierId(O->Ordinal));
+                    }
+                    if (!Valid || !Sync->PrepareReviewSoldierSelection(Soldiers,StageNumber*1000+SceneActions.Num()))
+                    {Reject(TEXT("Development command selection could not confirm the live controlled members"));continue;}
+                    A.Result->SetStringField(TEXT("fixture"),TEXT("development_command_selection"));
+#else
+                    Reject(TEXT("Development command selection is unavailable"));continue;
+#endif
+                }
+                else Entry->SelectObjects(Keys);
+                A.Result->SetNumberField(TEXT("selected"),Keys.Num());A.Status=TEXT("completed");
             }
             else if (A.Kind==TEXT("selection_type"))
             {
@@ -392,11 +674,17 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
                 A.Result->SetStringField(TEXT("previous_cards"),FString::Join(Cards->GetCandidateIds(),TEXT("|")));
                 Cards->Reroll();A.Status=TEXT("submitted");
             }
-            else if (A.Kind==TEXT("leave_match"))
+            else if (A.Kind==TEXT("ui_rebind"))
             {
-                // The same graceful quit command used by a local player. The
-                // coordinator observes the real connection closure itself.
-                A.Status=TEXT("completed");NextWrite=0;PC->ConsoleCommand(TEXT("quit"),true);
+                auto* HUD=Cast<AGuLiCommanderHUD>(PC->GetHUD());
+                if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || !HUD) {Reject(TEXT("UI rebind requires the rendered local HUD"));continue;}
+                HUD->RefreshLocalBindings();
+                if (auto* Placement=PC->FindComponentByClass<UGuLiBuildingPlacementComponent>()) Placement->RebindHybridReceipts();
+                if (Skills) Skills->RebindHybridRequests();
+                if (auto* Ship=Cast<AGuLiStrikeShip>(PC->GetPawn()))
+                    if (auto* Assembly=Ship->FindComponentByClass<UGuLiShipAssemblyComponent>();Assembly && Build)
+                        if (!Build->AdoptExistingShip(*Assembly)) {Reject(TEXT("Air UI context could not rebind its existing assembly"));continue;}
+                A.Result->SetNumberField(TEXT("bindings_generation"),double(HUD->GetLocalBindingGeneration()));A.Status=TEXT("completed");
             }
             else if (A.Kind==TEXT("review_entry"))
             {
@@ -493,10 +781,10 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
             }
             else if (A.Kind==TEXT("ship_equipment"))
             {
-                auto* Build=PS->FindComponentByClass<UGuLiShipBuildComponent>();FString Node;
-                if (!Build || !A.Arguments->TryGetStringField(TEXT("node"),Node)) {Reject(TEXT("Missing assembly input"));continue;}
-                const auto& S=Build->GetBuildState();A.Request=Id;
-                if (Build->RequestConfirmedChoice(Id,FName(Node),S.MatchEpoch,S.BuildRevision)!=Id) {Reject(TEXT("Assembly input was not retained"));continue;}
+                auto* ChoiceBuild=PS->FindComponentByClass<UGuLiShipBuildComponent>();FString Node;
+                if (!ChoiceBuild || !A.Arguments->TryGetStringField(TEXT("node"),Node)) {Reject(TEXT("Missing assembly input"));continue;}
+                const auto& S=ChoiceBuild->GetBuildState();A.Request=Id;
+                if (ChoiceBuild->RequestConfirmedChoice(Id,FName(Node),S.MatchEpoch,S.BuildRevision)!=Id) {Reject(TEXT("Assembly input was not retained"));continue;}
                 A.Status=TEXT("submitted");
             }
             else if (A.Kind==TEXT("weapon_input"))
@@ -521,7 +809,7 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
         if (A.Kind==TEXT("ship_equipment"))
         {
             FGuLiShipChoiceResult R;
-            if (const auto* Build=PS->FindComponentByClass<UGuLiShipBuildComponent>();Build && Build->FindChoiceResult(A.Request,R))
+            if (const auto* ChoiceBuild=PS->FindComponentByClass<UGuLiShipBuildComponent>();ChoiceBuild && ChoiceBuild->FindChoiceResult(A.Request,R))
             {A.Result->SetBoolField(TEXT("committed"),R.bCommitted);A.Result->SetNumberField(TEXT("revision"),double(R.BuildRevision));A.Error=R.Reason;A.Status=TEXT("completed");}
         }
         if (A.Kind==TEXT("building_place"))
@@ -561,6 +849,11 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
 void UGuLiHybridReviewSubsystem::AppendSceneEvidence(const TSharedRef<FJsonObject>& Json) const
 {
     if (Scenario.IsEmpty() || Scenario==TEXT("performance")) return;
+    auto Review=MakeShared<FJsonObject>();Review->SetStringField(TEXT("phase"),Phase);Review->SetStringField(TEXT("failure"),Failure);
+    if (const auto* ReviewPC=GetWorld()->GetFirstPlayerController())
+        if (const auto* ReviewPS=ReviewPC->GetPlayerState<AGuLiBattlePlayerState>())
+        {Review->SetStringField(TEXT("player"),ReviewPS->GetPlayerGuid().ToString(EGuidFormats::Digits));Review->SetBoolField(TEXT("battle_ready"),ReviewPS->IsBattleReady());}
+    Json->SetObjectField(TEXT("scene_review"),Review);
     TArray<TSharedPtr<FJsonValue>> Actions,CommandResults;
     for (const auto& [Id,A]:SceneActions)
     {
@@ -601,10 +894,41 @@ void UGuLiHybridReviewSubsystem::AppendSceneEvidence(const TSharedRef<FJsonObjec
     Json->SetArrayField(TEXT("blueprint_executions"),BlueprintCalls);
     const auto* PC=GetWorld()->GetFirstPlayerController();const auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
     auto UI=MakeShared<FJsonObject>();UI->SetBoolField(TEXT("can_present"),UGuLiNetworkSettings::CanPresent(GetWorld()));
+    if (const auto* Commander=Cast<AGuLiCommanderPlayerController>(PC))
+        UI->SetBoolField(TEXT("commander_can_issue_orders"),Commander->CanIssueCommanderOrders());
     UI->SetStringField(TEXT("controller"),PC?PC->GetClass()->GetPathName():TEXT(""));UI->SetBoolField(TEXT("hud"),PC && PC->GetHUD());
     UI->SetBoolField(TEXT("possessed"),PC && PC->GetPawn());
+    const auto Ids=[](const TArray<FGuid>& Values)
+    {TArray<TSharedPtr<FJsonValue>> Out;for (const auto& V:Values) Out.Add(MakeShared<FJsonValueString>(V.ToString(EGuidFormats::Digits)));return Out;};
+    if (const auto* Placement=PC?PC->FindComponentByClass<UGuLiBuildingPlacementComponent>():nullptr)
+    {
+        UI->SetArrayField(TEXT("pending_placement_events"),Ids(Placement->GetPendingPlacementEvents()));
+        UI->SetNumberField(TEXT("placement_receipt_count"),double(Placement->GetPlacementReceiptCount()));
+        auto Last=MakeShared<FJsonObject>();const auto& Receipt=Placement->GetLastPlacementReceipt();
+        Last->SetNumberField(TEXT("request"),Receipt.ClientRequestId);Last->SetBoolField(TEXT("accepted"),Receipt.WasAccepted());
+        Last->SetNumberField(TEXT("rejection"),uint8(Receipt.RejectReason));UI->SetObjectField(TEXT("placement_receipt"),Last);
+    }
+    if (const auto* HUD=PC?Cast<AGuLiCommanderHUD>(PC->GetHUD()):nullptr)
+    {
+        UI->SetNumberField(TEXT("bindings_generation"),double(HUD->GetLocalBindingGeneration()));
+        UI->SetNumberField(TEXT("building_feedback_receipts"),double(HUD->GetBuildingFeedbackReceiptCount()));
+    }
+    if (const auto* Skills=PS?PS->GetCommanderSkills():nullptr)
+        UI->SetArrayField(TEXT("pending_skill_requests"),Ids(Skills->GetPendingHybridRequests()));
+    TArray<TSharedPtr<FJsonValue>> SkillReplies,ChoiceReplies;
+    for (const auto& [Event,Count]:SceneFinalSkillReplyCounts)
+    {auto V=MakeShared<FJsonObject>();V->SetStringField(TEXT("event"),Event.ToString(EGuidFormats::Digits));V->SetNumberField(TEXT("final_count"),Count);SkillReplies.Add(MakeShared<FJsonValueObject>(V));}
+    for (const auto& [Event,Count]:SceneChoiceReplyCounts)
+    {
+        auto V=MakeShared<FJsonObject>();V->SetStringField(TEXT("event"),Event.ToString(EGuidFormats::Digits));V->SetNumberField(TEXT("final_count"),Count);
+        const auto& Reply=SceneChoiceReplies.FindChecked(Event);V->SetBoolField(TEXT("committed"),Reply.bCommitted);
+        V->SetNumberField(TEXT("revision"),double(Reply.BuildRevision));ChoiceReplies.Add(MakeShared<FJsonValueObject>(V));
+    }
+    UI->SetArrayField(TEXT("skill_final_receipts"),SkillReplies);UI->SetArrayField(TEXT("choice_final_receipts"),ChoiceReplies);
     if (const auto* Ship=PC?Cast<AGuLiStrikeShip>(PC->GetPawn()):nullptr)
     {
+        if (const auto* Assembly=Ship->FindComponentByClass<UGuLiShipAssemblyComponent>())
+            UI->SetArrayField(TEXT("pending_choice_requests"),Ids(Assembly->GetPendingHybridChoices()));
         TArray<TSharedPtr<FJsonValue>> Channels,Receipts;
         for (const auto& C:Ship->GetGroupAbilityConfig().WeaponChannels)
         {
@@ -714,7 +1038,10 @@ void UGuLiHybridReviewSubsystem::AppendSceneEvidence(const TSharedRef<FJsonObjec
         bool Entity=IsValid(Actor);
         J->SetStringField(TEXT("actor_class"),Actor?Actor->GetClass()->GetPathName():TEXT(""));
         if (O.Key.Kind==EGuLiHybridObjectKind::Soldier && Authority)
-        {EGuLiTeam Team;uint16 Type;Entity=Authority->GetTaskSoldierInfo(FGuLiSoldierId(O.Ordinal),Team,Type,Location);}
+        {
+            EGuLiTeam Team;uint16 Type;Entity=Authority->GetTaskSoldierInfo(FGuLiSoldierId(O.Ordinal),Team,Type,Location);
+            J->SetBoolField(TEXT("preparation_locked"),Authority->IsSoldierExternallyLocked(FGuLiSoldierId(O.Ordinal)));
+        }
         J->SetBoolField(TEXT("entity"),Entity);J->SetArrayField(TEXT("position"),Point(Location));
         if (Actor)
         {J->SetArrayField(TEXT("velocity"),Point(Actor->GetVelocity()));J->SetNumberField(TEXT("yaw"),Actor->GetActorRotation().Yaw);}

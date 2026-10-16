@@ -7,7 +7,7 @@ namespace GuLiNet
 {
 std::map<std::string,std::size_t> ClientWorld::WorkCounts() const
 {
-    return {{"pending",Pending.size()},{"retry",RetryWork.size()},{"active",WorkFlows.size()},
+    return {{"pending",Pending.size()},{"controlled_intents",PlayerIntents.size()},{"retry",RetryWork.size()},{"active",WorkFlows.size()},
         {"waiting_result",WaitingResults.size()},{"retained",KnownWork.size()},{"deferred_state",DeferredPeerStates.size()},
         {"publication_messages",PublicationIdentities.size()},{"publication_bytes",PublicationBytes}};
 }
@@ -15,10 +15,26 @@ std::vector<WorkDiagnostic> ClientWorld::WorkDiagnostics() const
 {
     std::vector<WorkDiagnostic> Out;
     auto Add=[&](Id Event,const char* Stage,const TransactionRequest& R)->WorkDiagnostic&
-    {WorkDiagnostic D;D.Event=Event;D.Stage=Stage;D.Source=R.Header.Object;D.Target=R.Target;Out.push_back(std::move(D));return Out.back();};
+    {
+        WorkDiagnostic D;D.Event=Event;D.Stage=Stage;D.Source=R.Header.Object;D.Target=R.Target;
+        D.RequestSender=R.Header.Sender;D.RequestOwnerVersion=R.Header.OwnerEpoch;D.RequestAt=R.Header.At;D.StartedAt=R.StartedAt;D.Rule=R.RuleId;
+        if (const auto O=Numbers.Objects().find(R.Header.Object);O!=Numbers.Objects().end())
+        {
+            D.NumericSourceKnown=true;D.NumericSourceLife=O->second.Grant.State;D.NumericSourceAge=O->second.LogicalAge;
+            D.NumericSourceOwner=O->second.Grant.Dormant?O->second.Grant.StateCustodian:O->second.Grant.SimOwner;
+            D.NumericSourceOwnerVersion=O->second.Grant.OwnerEpoch;
+        }
+        Out.push_back(std::move(D));return Out.back();
+    };
     std::size_t N=0;
+    for (const auto& [E,P]:PlayerIntents) {if (N++==8) break;Add(E,"controlled_intent",P.Request);}
+    N=0;
     for (const auto& [E,P]:Pending) {if (N++==8) break;Add(E,"request",P.Request);}
-    N=0;for (const auto& [E,R]:RetryWork) {if (N++==8) break;Add(E,"plan_retry",R.second);}
+    N=0;for (const auto& [E,R]:RetryWork)
+    {
+        if (N++==8) break;auto& D=Add(E,"plan_retry",R.second);
+        if (const auto Reason=PlanWaitReasons.find(E);Reason!=PlanWaitReasons.end()) D.WaitReason=Reason->second;
+    }
     N=0;for (const auto& [E,F]:WorkFlows)
     {
         if (N++==8) break;auto& D=Add(E,F.Decision?"commit":"prepare",F.Work.Request);
@@ -26,7 +42,7 @@ std::vector<WorkDiagnostic> ClientWorld::WorkDiagnostics() const
     }
     N=0;for (const auto& [E,R]:WaitingResults)
     {
-        if (N++==8) break;WorkDiagnostic D;D.Event=E;D.Stage="result_state";D.Target=R.Target;D.Status=R.Status;
+        if (N++==8) break;WorkDiagnostic D;D.Event=E;D.Stage="result_state";D.Target=R.Target;D.Status=R.Status;D.WaitReason=LastStateImportFailure;
         for (const auto& S:R.RequiredStates) if (const auto Version=Numbers.Version({S.Object,S.Capability});Version<S.Version)
         {D.Missing={S.Object,S.Capability};D.RequiredVersion=S.Version;D.CurrentVersion=Version;break;}
         Out.push_back(std::move(D));
@@ -57,9 +73,16 @@ bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R)
     if (WorkFlows.contains(R.Header.Event)) return true;
     // Observers consume reliable publications independently. Their receive
     // speed must not become a planning gate for this owner's resource chain.
-    if (MembershipPaused || Frozen.contains(Numbers.ExecutionDomain(R)))
-    {RetryWork[R.Header.Event]={Sender,R};return true;}
-    OwnerWork W;if (!Numbers.Plan(Sender,R,W)) {RetryWork[R.Header.Event]={Sender,R};return true;}
+    const auto Domain=Numbers.ExecutionDomain(R);
+    if (MembershipPaused || Frozen.contains(Domain) || Numbers.Busy(Domain))
+    {
+        PlanWaitReasons[R.Header.Event]=MembershipPaused?"membership_pause":Frozen.contains(Domain)?"execution_domain_frozen":"execution_domain_busy";
+        RetryWork[R.Header.Event]={Sender,R};return true;
+    }
+    OwnerWork W;std::string WaitReason;
+    if (!Numbers.Plan(Sender,R,W,&WaitReason))
+    {PlanWaitReasons[R.Header.Event]=std::move(WaitReason);RetryWork[R.Header.Event]={Sender,R};return true;}
+    PlanWaitReasons.erase(R.Header.Event);
     if (W.Changes.empty())
     {
         if (W.Result.Status==CommitStatus::Deferred || W.Result.Status==CommitStatus::Paused) {RetryWork[R.Header.Event]={Sender,R};return true;}
@@ -76,20 +99,19 @@ bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R)
     }
     const auto Event=Flow.Work.Event;const auto Encoded=EncodeOwnerWork(Flow.Work);WorkFlows.emplace(Event,std::move(Flow));
     auto& Current=WorkFlows.at(Event);bool Rejected=false;
-    KnownWork[Event]={Current.Work,false};
-    for (const auto P:Current.Participants)
-    {
-        if (P==Player)
-        {if (Numbers.Prepare(Player,Current.Work)) Current.Prepared.insert(Player);else Rejected=true;}
-        else SendMessage(P,MessageKind::WorkPrepare,Event,Current.Work.Source,Encoded);
-    }
+    // Reserve this planner's fragments before involving another owner. A
+    // rejected local prepare must not flood remote owners with prepare/cancel
+    // pairs for every hit waiting behind the same locked target.
+    if (Current.Participants.contains(Player))
+    {if (Numbers.Prepare(Player,Current.Work)) Current.Prepared.insert(Player);else Rejected=true;}
     if (Rejected)
     {
-        const auto Work=Current.Work;
-        for (const auto P:Current.Participants)
-        {if (P==Player) Numbers.Cancel(Player,Event,Work.Proposal);else SendMessage(P,MessageKind::WorkCancel,Event,Work.Source,ProposalIdentity(Work.Proposal));}
-        WorkFlows.erase(Event);RetryWork[Event]={Sender,R};return true;
+        Numbers.Cancel(Player,Event,Current.Work.Proposal);
+        WorkFlows.erase(Event);PlanWaitReasons[Event]="local_prepare_rejected";RetryWork[Event]={Sender,R};return true;
     }
+    KnownWork[Event]={Current.Work,false};
+    for (const auto P:Current.Participants) if (P!=Player)
+        SendMessage(P,MessageKind::WorkPrepare,Event,Current.Work.Source,Encoded);
     AdvanceWork(Event);return true;
 }
 void ClientWorld::AdvanceWork(Id Event)
@@ -124,6 +146,27 @@ void ClientWorld::AdvanceWork(Id Event)
 }
 bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
 {
+    if (V.Header.Kind==MessageKind::WorkStateRequest)
+    {
+        Reader R(V.Body);std::uint32_t Count;
+        if (!R.U32(Count) || !Count || Count>64) return false;
+        std::set<StateKey> Seen;std::set<ObjectKey> Selected;
+        for (std::uint32_t I=0;I<Count;++I)
+        {
+            StateKey Key;Revision Version;
+            if (!R.Key(Key.Object) || !Key.Object.Valid() || !R.Text(Key.Capability,256) || Key.Capability.empty()
+                || !R.U64(Version) || !Version || !Seen.insert(Key).second) return false;
+            // A repair is a read of this peer's committed numeric state. It
+            // cannot authorize a foreign object or synthesize a missing write.
+            if (Numbers.Owner(Key.Object)==Player && Numbers.Version(Key)>=Version) Selected.insert(Key.Object);
+        }
+        if (!R.Done()) return false;
+        if (Selected.empty()) return true;
+        const std::vector<ObjectKey> Keys(Selected.begin(),Selected.end());
+        const auto Values=Numbers.Export(Keys);
+        if (Values.size()>4096) return false;
+        return SendMessage(Sender,MessageKind::StateFragments,V.Header.Event,Keys.front(),Fragments(Values));
+    }
     if (V.Header.Kind==MessageKind::WorkState)
     {
         Reader R(V.Body);std::uint8_t Decided;Bytes Body;OwnerWork W;
@@ -194,7 +237,18 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
         else
         {
             if (!I->second.Decision || !Accepted) return false;
-            if (!Numbers.Import(Sender,Values)) return false;
+            // This planner already validated the exact decided birth. A shared
+            // group's owner need not own its parent. Admit only these proposal
+            // grants; unrelated unknown objects still require room admission.
+            std::map<ObjectKey,Authority> BirthGrants;
+            for (const auto& B:I->second.Work.Result.Births)
+                for (const auto& M:I->second.Work.Changes) if (M.After.Key.Object==B.Grant.Object && M.After.Key.Capability=="object")
+                {
+                    Reader R(M.After.Value);ObjectRecord O;
+                    if (!ReadObject(R,O) || !R.Done() || O.Grant.Object!=B.Grant.Object) return false;
+                    BirthGrants.emplace(B.Grant.Object,O.Grant);
+                }
+            if (!Numbers.Import(Sender,Values,false,&BirthGrants)) return false;
             RefreshRecords(Values);I->second.Committed.insert(Sender);
         }
         AdvanceWork(Event);return true;
@@ -279,7 +333,53 @@ void ClientWorld::PollNetwork(double Now)
         }
         AdvanceWork(E);
     }
+    for (auto I=PlanWaitReasons.begin();I!=PlanWaitReasons.end();)
+        if (!RetryWork.contains(I->first)) I=PlanWaitReasons.erase(I);else ++I;
     auto Results=std::exchange(WaitingResults,{});for (const auto& [E,R]:Results) ApplyCommit(R);
+    if (Now>=NextStateRepair)
+    {
+        NextStateRepair=Now+1.;
+        std::map<Id,std::map<StateKey,Revision>> Missing;
+        // A birth body can expire from the bounded defer queue before its
+        // control-plane grant arrives. Repair that authenticated live grant
+        // even when no local requester is waiting for the original result.
+        for (const auto& [K,Grant]:PendingGrants)
+        {
+            if (Grant.State!=Life::Alive || Directory.contains(K)) continue;
+            const Id Owner=Grant.Dormant?Grant.StateCustodian:Grant.SimOwner;
+            if (!Owner.Valid() || Owner==Player || !Members.contains(Owner) || !Members.at(Owner).Online) continue;
+            auto& Requests=Missing[Owner];
+            if (Requests.size()<64) Requests.emplace(StateKey{K,"object"},1);
+        }
+        const auto Collect=[&](const CommitResult& R)
+        {
+            for (const auto& Required:R.RequiredStates)
+            {
+                const StateKey Key{Required.Object,Required.Capability};
+                if (Numbers.Version(Key)>=Required.Version) continue;
+                Id Owner=Numbers.Owner(Key.Object);
+                if (!Owner.Valid())
+                    if (const auto Grant=PendingGrants.find(Key.Object);Grant!=PendingGrants.end())
+                        Owner=Grant->second.Dormant?Grant->second.StateCustodian:Grant->second.SimOwner;
+                const auto Use=[&](const ObjectRecord& O)
+                {if (!Owner.Valid() && O.Grant.Object==Key.Object) Owner=O.Grant.Dormant?O.Grant.StateCustodian:O.Grant.SimOwner;};
+                for (const auto& O:R.Objects) Use(O);
+                for (const auto& O:R.Births) Use(O);
+                if (R.FinalizedWork) Use(*R.FinalizedWork);
+                if (!Owner.Valid() || Owner==Player || !Members.contains(Owner) || !Members.at(Owner).Online) continue;
+                auto& Requests=Missing[Owner];
+                if (Requests.size()<64 || Requests.contains(Key)) Requests[Key]=std::max(Requests[Key],Required.Version);
+            }
+        };
+        for (const auto& [Event,R]:WaitingResults) Collect(R);
+        for (const auto& [Event,K]:KnownWork) if (K.Decided) Collect(K.Work.Result);
+        for (const auto& [Peer,Requests]:Missing)
+        {
+            Writer W;W.U32(static_cast<std::uint32_t>(Requests.size()));
+            for (const auto& [Key,Version]:Requests) {W.Key(Key.Object);W.Text(Key.Capability);W.U64(Version);}
+            SendMessage(Peer,MessageKind::WorkStateRequest,{},Requests.begin()->first.Object,W.Take());
+        }
+    }
     std::vector<ObjectHandoff> WaitingTransfers;
     for (const auto K:FreezeRequested) if (Transfers.contains(K)) WaitingTransfers.push_back(Transfers.at(K));
     for (const auto& T:WaitingTransfers) FreezeHandoff(T);

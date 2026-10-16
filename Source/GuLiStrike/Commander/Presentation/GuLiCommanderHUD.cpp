@@ -491,6 +491,8 @@ void AGuLiCommanderHUD::BindBuildingFeedback()
 		this,
 		&ThisClass::HandleBuildingFeedback);
 }
+void AGuLiCommanderHUD::RefreshLocalBindings()
+{BindBuildingFeedback();RefreshCommanderRole();++LocalBindingGeneration;}
 
 void AGuLiCommanderHUD::UnbindBuildingFeedback()
 {
@@ -508,6 +510,7 @@ void AGuLiCommanderHUD::HandleBuildingFeedback(
 	const FText& Message,
 	const EGuLiBuildingFeedbackTone Tone)
 {
+    ++BuildingFeedbackReceiptCount;
 	BuildingFeedbackMessage = Message;
 	BuildingFeedbackTone = Tone;
 	BuildingFeedbackExpireTime = GetWorld() ? GetWorld()->GetRealTimeSeconds() + 2.0 : 0.0;

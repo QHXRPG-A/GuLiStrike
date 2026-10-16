@@ -19,7 +19,7 @@ void UGuLiCombatEffectReplicationComponent::RebaseReceivedState(UWorld* World,ui
 {
     const auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
     if (!Hybrid) return;
-    const float Offset=static_cast<float>(Hybrid->GetLogicalSeconds()-double(OwnerTick)/60.);
+    const float Offset=static_cast<float>(Hybrid->GetLocalLogicalSeconds()-double(OwnerTick)/60.);
     State.StartTime+=Offset;State.SampleTime+=Offset;State.ActivationTime+=Offset;State.EndTime+=Offset;
 }
 
@@ -27,7 +27,7 @@ void UGuLiCombatEffectReplicationComponent::RebasePublishedState(UWorld* World,u
 {
     const auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
     if (!Hybrid) return;
-    const float Offset=static_cast<float>(double(ObjectTick)/60.-Hybrid->GetLogicalSeconds());
+    const float Offset=static_cast<float>(double(ObjectTick)/60.-Hybrid->GetLocalLogicalSeconds());
     State.StartTime+=Offset;State.SampleTime+=Offset;State.ActivationTime+=Offset;State.EndTime+=Offset;
 }
 
@@ -105,7 +105,7 @@ int32 UGuLiCombatEffectReplicationComponent::GetActiveFlightCount() const
 {
 	const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
 	const auto* Battle=GetWorld()->GetGameState();
-	const float Now=Hybrid?Hybrid->GetLogicalSeconds():Battle?Battle->GetServerWorldTimeSeconds():GetWorld()->GetTimeSeconds();
+	const float Now=Hybrid?Hybrid->GetLocalLogicalSeconds():Battle?Battle->GetServerWorldTimeSeconds():GetWorld()->GetTimeSeconds();
 	int32 Count=0;
 	for (const auto& Pair:ActiveFlights)
 		if (!Pair.Value.State.bAcceptanceAdditional || (Now>=Pair.Value.State.StartTime && Now<Pair.Value.State.EndTime)) ++Count;
@@ -119,7 +119,7 @@ int32 UGuLiCombatEffectReplicationComponent::GetAdditionalActiveFlightCount() co
 	// Wire recipes and the real pool use float seconds. Quantize the read clock
     // identically at an end/start boundary so a sub-tick rounding gap cannot
     // count neither the expired flight nor its already-admitted successor.
-	const float Now=Hybrid?Hybrid->GetLogicalSeconds():Battle?Battle->GetServerWorldTimeSeconds():GetWorld()->GetTimeSeconds();
+	const float Now=Hybrid?Hybrid->GetLocalLogicalSeconds():Battle?Battle->GetServerWorldTimeSeconds():GetWorld()->GetTimeSeconds();
 	int32 Count = 0;
 	for (const auto& Pair : ActiveFlights)
 		if (Pair.Value.State.bAcceptanceAdditional && Now>=Pair.Value.State.StartTime && Now<Pair.Value.State.EndTime) ++Count;

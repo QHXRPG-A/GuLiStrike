@@ -44,6 +44,23 @@ void OwnershipScheduler::RemoveMember(Id Player)
     {A.Selected=false;A.LastDeselection=ActiveSeconds(LastWallTime);}
     Members.erase(Player);Loads.erase(Player);Selections.erase(Player);SelectionSets.erase(Player);
 }
+void OwnershipScheduler::IndexEntry(const OwnershipEntry& O)
+{
+    if (O.Grant.OwnershipGroup.Valid()) GroupMembers[O.Grant.OwnershipGroup].insert(O.Grant.Object);
+    if (O.Policy==OwnershipPolicy::ParentWork && O.Parent.Valid()) ParentWorkChildren[O.Parent].insert(O.Grant.Object);
+    WeightsValid=false;
+}
+void OwnershipScheduler::UnindexEntry(const OwnershipEntry& O)
+{
+    auto Remove=[&](auto& Index,const auto& Key)
+    {
+        if (const auto I=Index.find(Key);I!=Index.end())
+        {I->second.erase(O.Grant.Object);if (I->second.empty()) Index.erase(I);}
+    };
+    if (O.Grant.OwnershipGroup.Valid()) Remove(GroupMembers,O.Grant.OwnershipGroup);
+    if (O.Policy==OwnershipPolicy::ParentWork && O.Parent.Valid()) Remove(ParentWorkChildren,O.Parent);
+    WeightsValid=false;
+}
 bool OwnershipScheduler::SetObject(OwnershipEntry O,double Now)
 {
     if (!O.Grant.Object.Valid() || O.Policy>OwnershipPolicy::ParentWork || !std::isfinite(Now) || Now<LastWallTime
@@ -58,12 +75,13 @@ bool OwnershipScheduler::SetObject(OwnershipEntry O,double Now)
             || O.Grant.StateCustodian!=Old->second.Grant.StateCustodian || O.Policy!=Old->second.Policy) Cancel(K);
         if (O.Grant.Controller!=Old->second.Grant.Controller)
         {Activity[K].Selected=false;Activity[K].LastDeselection=ActiveSeconds(Now);}
+        UnindexEntry(Old->second);
     }
     else Activity.emplace(K,OwnershipActivity{false,ActiveSeconds(Now),ActiveSeconds(Now)});
-    Entries[K]=std::move(O);return true;
+    IndexEntry(O);Entries[K]=std::move(O);return true;
 }
 void OwnershipScheduler::RemoveObject(ObjectKey K)
-{Cancel(K);Entries.erase(K);Activity.erase(K);}
+{Cancel(K);if (const auto I=Entries.find(K);I!=Entries.end()) UnindexEntry(I->second);Entries.erase(K);Activity.erase(K);}
 bool OwnershipScheduler::ReportLoad(Id Player,double Milliseconds)
 {
     if (!Members.contains(Player) || !std::isfinite(Milliseconds) || Milliseconds<0) return false;
@@ -122,13 +140,17 @@ bool OwnershipScheduler::Request(ObjectKey K,Id Target,HandoffReason Reason,doub
     if (!Entries.contains(K)) return false;
     std::vector<ObjectKey> Scope{K};std::set<ObjectKey> Seen{K};
     const Id Domain=Entries.at(K).Grant.OwnershipGroup;
-    if (Domain.Valid())
-        for (const auto& [Other,O]:Entries) if (Other!=K && O.Grant.OwnershipGroup==Domain
-            && O.Grant.State!=Life::Destroyed && O.Grant.SimOwner.Valid())
-        {Scope.push_back(Other);Seen.insert(Other);}
+    if (const auto DomainMembers=GroupMembers.find(Domain);Domain.Valid() && DomainMembers!=GroupMembers.end())
+        for (const auto& Other:DomainMembers->second)
+        {
+            const auto& O=Entries.at(Other);
+            if (Other!=K && O.Grant.State!=Life::Destroyed && O.Grant.SimOwner.Valid())
+            {Scope.push_back(Other);Seen.insert(Other);}
+        }
     for (std::size_t I=0;I<Scope.size();++I)
-        for (const auto& [Child,O]:Entries) if (O.Parent==Scope[I] && O.Policy==OwnershipPolicy::ParentWork
-            && O.Grant.State<Life::Dead && Seen.insert(Child).second) Scope.push_back(Child);
+        if (const auto Children=ParentWorkChildren.find(Scope[I]);Children!=ParentWorkChildren.end())
+            for (const auto& Child:Children->second)
+                if (Entries.at(Child).Grant.State<Life::Dead && Seen.insert(Child).second) Scope.push_back(Child);
     if (!Group.Valid())
     {
         if (const auto Existing=Pending.find(K);Existing!=Pending.end() && Existing->second.Target==Target) Group=Existing->second.Group;
@@ -224,6 +246,7 @@ void OwnershipScheduler::TryCommit(ObjectKey K)
         if (A.Dormant) A.StateCustodian=V.Target;else A.SimOwner=V.Target;
         A.OwnerEpoch=V.NextOwnerVersion;if (A.OwnershipGroup.Valid()) ++A.GroupEpoch;Pending.erase(V.Object);Actions.push_back({HandoffActionKind::Commit,V});
     }
+    WeightsValid=false;
 }
 bool OwnershipScheduler::Reject(Id Player,ObjectKey K,Revision Transfer)
 {
@@ -233,8 +256,14 @@ bool OwnershipScheduler::Reject(Id Player,ObjectKey K,Revision Transfer)
 }
 double OwnershipScheduler::Weight(Id Player) const
 {
-    double W=0;for (const auto& [K,O]:Entries) if (O.Grant.SimOwner==Player && O.Grant.State==Life::Alive && !O.Grant.Dormant)
-        W+=O.Grant.EstimatedCost;return W;
+    if (!WeightsValid)
+    {
+        ActiveWeights.clear();
+        for (const auto& [K,O]:Entries) if (O.Grant.State==Life::Alive && !O.Grant.Dormant)
+            ActiveWeights[O.Grant.SimOwner]+=O.Grant.EstimatedCost;
+        WeightsValid=true;
+    }
+    const auto I=ActiveWeights.find(Player);return I==ActiveWeights.end()?0:I->second;
 }
 double OwnershipScheduler::Reserved(Id Player) const
 {

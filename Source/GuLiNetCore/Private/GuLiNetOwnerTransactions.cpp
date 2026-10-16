@@ -52,10 +52,12 @@ OwnerState OwnerState::Stage(const TransactionRequest* Request,const std::vector
     auto Include=[&](const TransactionRequest& R)
     {
         if (const auto I=Results.find(R.Header.Event);I!=Results.end())
-        {V.Results.emplace(*I);V.RequestBodies.emplace(R.Header.Event,RequestBodies.at(R.Header.Event));V.ResultDomains.emplace(R.Header.Event,ResultDomains.at(R.Header.Event));}
-        if (const auto I=Attacks.find(AttackIdentity(R));I!=Attacks.end()) V.Attacks.emplace(*I);
+        {V.Results.emplace(*I);V.RequestBodies.emplace(R.Header.Event,RequestBodies.at(R.Header.Event));V.IndexResultDomain(R.Header.Event,ResultDomains.at(R.Header.Event));}
+        if (const auto I=Attacks.find(AttackIdentity(R));I!=Attacks.end())
+        {V.IndexAttackDomain(I->first,I->second.Source);V.Attacks.emplace(*I);}
         if (R.Kind!=TransactionKind::Damage)
-            if (const auto I=LastAttack.find({R.Header.Object,R.RuleId});I!=LastAttack.end()) V.LastAttack.emplace(*I);
+            if (const auto I=LastAttack.find({R.Header.Object,R.RuleId});I!=LastAttack.end())
+            {V.LastAttack.emplace(*I);V.HistoryFragments[R.Header.Object].insert("cooldown/"+R.RuleId);}
     };
     if (Request)
     {
@@ -71,7 +73,10 @@ bool OwnerState::ApplyValidated(const std::vector<StateFragment>& Fragments)
 {
     // The caller validated this exact ordered set on Stage() on the same room
     // thread. Applying it here preserves unrelated history and in-flight work.
-    for (const auto& F:Fragments) if (!ApplyFragment(F)) return false;
+    std::optional<ResourceLedgerState> Resources;
+    if (std::any_of(Fragments.begin(),Fragments.end(),UsesResourceLedger)) Resources=ResourceLedgerValue.Snapshot();
+    for (const auto& F:Fragments) if (!ApplyFragment(F,Resources?&*Resources:nullptr)) return false;
+    if (Resources && !ResourceLedgerValue.Restore(std::move(*Resources))) return false;
     return RebuildWorkIndex();
 }
 bool OwnerState::Configure(const RuntimeManifest& M,std::string& Error)
@@ -100,6 +105,36 @@ bool OwnerState::SetAuthority(const Authority& A)
     const auto I=Directory.find(A.Object);if (I==Directory.end()) return false;
     if (A.OwnerEpoch<I->second.Grant.OwnerEpoch || A.ControlEpoch<I->second.Grant.ControlEpoch) return false;
     const auto LifeState=std::max(I->second.Grant.State,A.State);I->second.Grant=A;I->second.Grant.State=LifeState;IndexRecord(I->second);return true;
+}
+void OwnerState::IndexResultDomain(Id Event,ObjectKey Domain)
+{
+    const auto Name="event/"+Event.ToString();
+    if (const auto Old=ResultDomains.find(Event);Old!=ResultDomains.end() && Old->second!=Domain)
+        HistoryFragments[Old->second].erase(Name);
+    ResultDomains[Event]=Domain;HistoryFragments[Domain].insert(Name);
+}
+void OwnerState::IndexAttackDomain(Id Event,ObjectKey Domain)
+{
+    const auto Name="attack/"+Event.ToString();
+    if (const auto Old=Attacks.find(Event);Old!=Attacks.end() && Old->second.Source!=Domain)
+        HistoryFragments[Old->second.Source].erase(Name);
+    HistoryFragments[Domain].insert(Name);
+}
+void OwnerState::ObserveTerminalAuthority(const Authority& A)
+{
+    if (A.Object.Valid() && A.State==Life::Destroyed)
+    {auto& Life=RetiredLives[{A.Object.Kind,A.Object.StableId}];Life=std::max(Life,A.Object.Generation);}
+}
+void OwnerState::ObserveObjectOrdinal(ObjectKind Kind,std::uint32_t Ordinal)
+{
+    if (!Ordinal) return;Kind=OrdinalScope(Kind);
+    auto& Maximum=MaximumOrdinals[Kind];Maximum=std::max(Maximum,Ordinal);
+    auto& Known=AnnouncedOrdinals[{Kind,Ordinal>>24}];Known=std::max(Known,Ordinal&0xffffffu);
+}
+std::uint32_t OwnerState::LastRetiredLife(ObjectKind Kind,Id Stable) const
+{
+    const auto& Known=IndexedSource().RetiredLives;const auto I=Known.find({Kind,Stable});
+    return I==Known.end()?0:I->second;
 }
 void OwnerState::IndexRecord(const ObjectRecord& O)
 {
@@ -130,8 +165,40 @@ Id OwnerState::MutationOwner(const OwnerWork& W,const StateMutation& M) const
 {
     const auto Existing=Directory.find(M.After.Key.Object);
     if (Existing!=Directory.end() && Owner(M.After.Key.Object).Valid()) return Owner(M.After.Key.Object);
-    for (const auto& B:W.Result.Births) if (B.Grant.Object==M.After.Key.Object) return Owner(W.Source);
+    // Continuations update custody in the decided state fragments. Event
+    // results remain immutable and can still name the original birth owner.
+    for (const auto& B:W.Changes) if (B.After.Key.Object==M.After.Key.Object && B.After.Key.Capability=="object")
+    {
+        Reader R(B.After.Value);ObjectRecord O;
+        if (ReadObject(R,O) && R.Done() && O.Grant.Object==M.After.Key.Object)
+        {
+            if (O.Grant.Policy==OwnershipPolicy::SharedGroup)
+            {
+                const auto Group=GroupAuthority(O.Grant.OwnershipGroup);
+                return Group?(Group->Dormant?Group->StateCustodian:Group->SimOwner):Id{};
+            }
+            return O.Grant.Dormant?O.Grant.StateCustodian:O.Grant.SimOwner;
+        }
+    }
     return {};
+}
+std::optional<Authority> OwnerState::GroupAuthority(Id Group) const
+{
+    Revision Latest=0;std::optional<Authority> Result;bool Conflicting=false;
+    const auto Visit=[&](const auto& Records)
+    {
+        for (const auto& [K,O]:Records)
+        {
+            const auto& A=O.Grant;if (A.OwnershipGroup!=Group || A.GroupEpoch<Latest) continue;
+            if (A.GroupEpoch>Latest) {Latest=A.GroupEpoch;Result.reset();Conflicting=false;}
+            if (!Latest || A.State==Life::Destroyed) continue;
+            const auto Owner=A.Dormant?A.StateCustodian:A.SimOwner;if (!Owner.Valid()) continue;
+            if (Result && (Result->Dormant?Result->StateCustodian:Result->SimOwner)!=Owner) Conflicting=true;
+            else Result=A;
+        }
+    };
+    Visit(PreviousObjects());if (StageSource) Visit(Directory);
+    return Conflicting?std::nullopt:Result;
 }
 bool OwnerState::Busy(ObjectKey K) const
 {for (const auto& [Key,Event]:Locks) if (Key.Object==K) return true;return false;}
@@ -200,14 +267,17 @@ std::set<StateKey> OwnerState::ChangedKeys(const TransactionRequest& Request,con
     for (const auto& [K,Owner]:Result.InventoryOwners) {Out.insert({K,"cargo"});Out.insert({K,"processor"});}
     return Out;
 }
-bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out)
+bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::string* WaitReason)
 {
     TraceScope Scope("GuLiHybrid_CorePlan");
+    const auto Wait=[&](std::string Reason) {if (WaitReason) *WaitReason=std::move(Reason);return false;};
+    if (WaitReason) WaitReason->clear();
     const auto Domain=ExecutionDomain(R);
-    if (!Domain.Valid() || Owner(Domain)!=Player || !R.Header.Event.Valid()) return false;
+    if (!Domain.Valid() || Owner(Domain)!=Player || !R.Header.Event.Valid()) return Wait("execution_authority");
     OwnerState Candidate=Stage(&R);Candidate.DecisionDomain=Domain;
     auto Result=Candidate.Evaluate(Sender,R,StableId("GuLiOwnerReservation/v1",R.Header.Event.ToString()));
-    if (Result.Status==CommitStatus::Deferred || Result.Status==CommitStatus::Paused) return false;
+    if (Result.Status==CommitStatus::Deferred || Result.Status==CommitStatus::Paused)
+        return Wait("evaluation_status/"+std::to_string(static_cast<unsigned>(Result.Status)));
     if (Result.Status==CommitStatus::Committed)
     {
         std::map<ObjectKey,ObjectRecord> Changes;
@@ -227,23 +297,42 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out)
                 if (!Directory.contains(K))
                 {
                     O.LogicalAge=O.BornAt;
-                    const auto Policy=OwnershipDefinitions.find(O.Definition);if (Policy==OwnershipDefinitions.end()) return false;
+                    const auto Policy=OwnershipDefinitions.find(O.Definition);if (Policy==OwnershipDefinitions.end()) return Wait("birth_definition");
                     O.Grant.Policy=Policy->second.Policy;O.Grant.ControllerSeat=Policy->second.ControllerSeat;O.Grant.RetireOnVacancy=Policy->second.RetireOnVacancy;
+                    if (O.Grant.Policy!=OwnershipPolicy::RetainedSource && O.Grant.Policy!=OwnershipPolicy::ParentWork)
+                    {
+                        O.Grant.Controller={};O.Grant.ControlEpoch=1;
+                        for (const auto& [MemberId,Member]:Players)
+                            if (Member.Faction==O.Grant.Faction && Member.Seat==O.Grant.ControllerSeat && IsLiveMember(MemberId))
+                            {O.Grant.Controller=MemberId;break;}
+                    }
                     O.Grant.OwnershipGroup=Policy->second.Group.empty()?Id{}:StableId("GuLiOwnershipGroup/v1",Policy->second.Group);
                     O.Grant.GroupEpoch=0;
-                    if (O.Grant.OwnershipGroup.Valid())
-                        for (const auto& [Other,V]:Directory) if (V.Grant.OwnershipGroup==O.Grant.OwnershipGroup)
-                        {O.Grant.GroupEpoch=V.Grant.GroupEpoch;break;}
                     O.Grant.SimOwner=Owner(R.Header.Object);O.Grant.OwnerEpoch=1;
+                    if (O.Grant.OwnershipGroup.Valid())
+                    {
+                        const auto Group=GroupAuthority(O.Grant.OwnershipGroup);
+                        if (!Group) return Wait("birth_group_authority");
+                        O.Grant.GroupEpoch=Group->GroupEpoch;
+                        if (O.Grant.Policy==OwnershipPolicy::SharedGroup)
+                        {
+                            O.Grant.SimOwner=Group->SimOwner;
+                            O.Grant.Dormant=Group->Dormant;O.Grant.StateCustodian=Group->StateCustodian;
+                        }
+                    }
                     if (O.Grant.Policy==OwnershipPolicy::ControllerPinned && O.Grant.SimOwner!=O.Grant.Controller) return false;
                     if (O.Grant.State==Life::Registered) O.Grant.State=Life::Alive;
                     if (O.Ordinal)
                     {
-                        if (O.Grant.SimOwner!=Player || !Players.contains(Player) || !Players.at(Player).OrdinalSlot) return false;
+                        // The planning client's ordinal namespace is unique even
+                        // when a grouped birth is materialized by another owner.
+                        if (!Players.contains(Player) || !Players.at(Player).OrdinalSlot) return false;
                         const auto Prefix=Players.at(Player).OrdinalSlot<<24;auto& Next=NextOrdinal[OrdinalScope(K.Kind)];
                         if (!Next) for (const auto& [Other,Record]:Directory)
                             if (OrdinalScope(Other.Kind)==OrdinalScope(K.Kind) && (Record.Ordinal>>24)==Players.at(Player).OrdinalSlot)
                                 Next=std::max(Next,Record.Ordinal&0xffffffu);
+                        if (const auto Known=AnnouncedOrdinals.find({OrdinalScope(K.Kind),Players.at(Player).OrdinalSlot});Known!=AnnouncedOrdinals.end())
+                            Next=std::max(Next,Known->second);
                         if (Next>=0xffffffu) return false;O.Ordinal=Prefix|++Next;
                     }
                 }
@@ -267,7 +356,8 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out)
     {
         const auto Before=CaptureFragment(K),After=Candidate.CaptureFragment(K);
         if (Before==After) continue;
-        if (After.empty() || Version(K)==UINT64_MAX) return false;
+        if (After.empty()) return Wait("missing_fragment/"+K.Capability+"/status/"+std::to_string(static_cast<unsigned>(Result.Status)));
+        if (Version(K)==UINT64_MAX) return Wait("state_version_exhausted");
         const auto O=Directory.find(K.Object);const Revision OwnerVersion=O==Directory.end()?0:O->second.Grant.OwnerEpoch;
         // The wire carries the expected version, not a second copy of the value.
         W.Changes.push_back({{K,1,Version(K),{}},{K,1,Version(K)+1,After},OwnerVersion});
@@ -278,7 +368,7 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out)
     for (auto& M:W.Changes) if (M.After.Key.Capability=="event/"+R.Header.Event.ToString()) M.After.Value=Candidate.CaptureFragment(M.After.Key);
     std::stable_sort(W.Changes.begin(),W.Changes.end(),[](const auto& A,const auto& B)
     {return A.After.Key.Capability=="object" && B.After.Key.Capability!="object";});
-    if (EncodeOwnerWork(W).empty()) return false;Out=std::move(W);return true;
+    if (EncodeOwnerWork(W).empty()) return Wait("work_encoding");Out=std::move(W);return true;
 }
 bool OwnerState::Prepare(Id Planner,const OwnerWork& W)
 {
@@ -295,6 +385,18 @@ bool OwnerState::Prepare(Id Planner,const OwnerWork& W)
     for (const auto& M:W.Changes) if (MutationOwner(W,M)==Player)
     {
         Participates=true;const auto A=Directory.find(M.After.Key.Object);
+        if (A==Directory.end() && M.After.Key.Capability=="object")
+        {
+            Reader R(M.After.Value);ObjectRecord Birth;
+            if (!ReadObject(R,Birth) || !R.Done()) return false;
+            if (Birth.Grant.Policy==OwnershipPolicy::SharedGroup)
+            {
+                const auto Group=GroupAuthority(Birth.Grant.OwnershipGroup);
+                if (!Group || Birth.Grant.GroupEpoch!=Group->GroupEpoch
+                    || Birth.Grant.SimOwner!=Group->SimOwner || Birth.Grant.Dormant!=Group->Dormant
+                    || Birth.Grant.StateCustodian!=Group->StateCustodian) return false;
+            }
+        }
         if (W.Continuation && Version(M.After.Key)>=M.After.Version) continue;
         if ((A==Directory.end()?0:A->second.Grant.OwnerEpoch)!=M.OwnerVersion || Version(M.Before.Key)!=M.Before.Version
             || (Locks.contains(M.Before.Key) && Locks.at(M.Before.Key)!=W.Event)) return false;
@@ -352,8 +454,14 @@ bool OwnerState::Resume(OwnerWork& W)
             {const auto LifeState=V.Grant.State;V.Grant=O->second.Grant;V.Grant.State=std::max(LifeState,V.Grant.State);}
             else
             {
-                V.Grant.SimOwner=Owner(W.Source);
-                if (!V.Grant.SimOwner.Valid()) return false;
+                if (V.Grant.Policy==OwnershipPolicy::SharedGroup)
+                {
+                    const auto Group=GroupAuthority(V.Grant.OwnershipGroup);if (!Group) return false;
+                    V.Grant.SimOwner=Group->SimOwner;V.Grant.Dormant=Group->Dormant;
+                    V.Grant.StateCustodian=Group->StateCustodian;V.Grant.GroupEpoch=Group->GroupEpoch;
+                }
+                else V.Grant.SimOwner=Owner(W.Source);
+                if (!(V.Grant.Dormant?V.Grant.StateCustodian:V.Grant.SimOwner).Valid()) return false;
                 // Result records describe the immutable decision. Current custody
                 // belongs in the state fragment, never in a rewritten event result.
             }
@@ -363,27 +471,60 @@ bool OwnerState::Resume(OwnerWork& W)
     return true;
 }
 bool OwnerState::Import(Id Sender,const std::vector<StateFragment>& Values,bool Handoff,
-    const std::map<ObjectKey,Authority>* AdmittedBirths)
+    const std::map<ObjectKey,Authority>* AdmittedBirths,std::string* ImportFailureReason)
+{
+    return ImportStream(Sender,[&](const FragmentVisitor& Visit)
+    {for (const auto& V:Values) if (!Visit(V)) return false;return true;},Handoff,AdmittedBirths,ImportFailureReason);
+}
+bool OwnerState::ImportStream(Id Sender,const FragmentSource& Read,bool Handoff,
+    const std::map<ObjectKey,Authority>* AdmittedBirths,std::string* ImportFailureReason)
 {
     TraceScope Scope("GuLiHybrid_CoreImport");
-    OwnerState Trial=Stage(nullptr,&Values);std::set<StateKey> Seen;std::vector<StateFragment> Accepted;
-    std::vector<const StateFragment*> Ordered;for (const auto& V:Values) Ordered.push_back(&V);
-    std::stable_sort(Ordered.begin(),Ordered.end(),[](const auto* A,const auto* B)
-    {return A->Key.Capability=="object" && B->Key.Capability!="object";});
-    for (const auto* Value:Ordered)
+    if (ImportFailureReason) ImportFailureReason->clear();
+    StateKey Failing;
+    const auto Reject=[&](std::string Reason)
+    {if (ImportFailureReason) *ImportFailureReason=std::move(Reason)+" object="+Failing.Object.StableId.ToString()+" capability="+Failing.Capability;return false;};
+    std::vector<StateFragment> Headers;
+    if (!Read || !Read([&](const StateFragment& V)
+        {Headers.push_back({V.Key,V.Schema,V.Version,{}});return true;})) return Reject("state-source-read");
+    std::set<StateKey> Accepted;
     {
-        const auto& V=*Value;
-        if (!Seen.insert(V.Key).second) return false;
+    OwnerState Trial=Stage(nullptr,&Headers);std::set<StateKey> Seen;
+    // Thousands of ore fragments share one resource snapshot. Validate the
+    // complete staged ledger once, retaining every per-fragment authority,
+    // version, payload and lock check before anything reaches live state.
+    std::optional<ResourceLedgerState> Resources;
+    if (std::any_of(Headers.begin(),Headers.end(),UsesResourceLedger)) Resources=Trial.ResourceLedgerValue.Snapshot();
+    // Replay the same immutable chunks in object-first order without retaining
+    // their full histories in a second expanded accepted-fragment vector.
+    for (const bool Objects:{true,false})
+    if (!Read([&](const StateFragment& V)->bool
+    {
+        if ((V.Key.Capability=="object")!=Objects) return true;
+        Failing=V.Key;
+        if (!Seen.insert(V.Key).second) return Reject("duplicate-key");
         // A handoff's final state may already contain this old owner's write.
         // Ignore that duplicate before checking the current write authority.
-        if (!Handoff && FindRecord(V.Key.Object) && V.Version<=Version(V.Key)) continue;
+        if (!Handoff && FindRecord(V.Key.Object) && V.Version<=Version(V.Key)) return true;
         if (Trial.Owner(V.Key.Object)!=Sender)
         {
-            if (V.Key.Capability!="object" || Trial.Directory.contains(V.Key.Object)) return false;
+            if (V.Key.Capability!="object" || Trial.Directory.contains(V.Key.Object)) return Reject("foreign-owner-state");
             Reader ReaderValue(V.Value);ObjectRecord Birth;
-            if (!ReadObject(ReaderValue,Birth) || !ReaderValue.Done() || Birth.Grant.Object!=V.Key.Object
-                || Birth.Grant.SimOwner!=Sender || Birth.Grant.OwnerEpoch!=1 || !Birth.Grant.SourceLease.Valid()
-                || !Trial.OwnershipDefinitions.contains(Birth.Definition)) return false;
+            if (!ReadObject(ReaderValue,Birth) || !ReaderValue.Done()) return Reject("invalid-birth-payload");
+            if (Birth.Grant.Object!=V.Key.Object) return Reject("birth-identity");
+            if (Birth.Grant.SimOwner!=Sender) return Reject("birth-sender");
+            if (!Birth.Grant.SourceLease.Valid()) return Reject("birth-source-lease");
+            if (!Trial.OwnershipDefinitions.contains(Birth.Definition)) return Reject("birth-definition");
+            const auto& Definition=Trial.OwnershipDefinitions.at(Birth.Definition);
+            if (Definition.Policy==OwnershipPolicy::SharedGroup)
+            {
+                const auto Group=StableId("GuLiOwnershipGroup/v1",Definition.Group);
+                const auto Current=GroupAuthority(Group);
+                if (!Current) return Reject("birth-group-unavailable");
+                if (Birth.Grant.Policy!=Definition.Policy || Birth.Grant.OwnershipGroup!=Group) return Reject("birth-group-identity");
+                if (Birth.Grant.GroupEpoch!=Current->GroupEpoch) return Reject("birth-group-version");
+                if ((Current->Dormant?Current->StateCustodian:Current->SimOwner)!=Sender) return Reject("birth-group-owner");
+            }
             // A child admitted before its source moved keeps its own owner.
             // The room's exact birth grant permits late delivery independently
             // of the source's current simulator; it cannot grant enemy control.
@@ -392,17 +533,37 @@ bool OwnerState::Import(Id Sender,const std::vector<StateFragment>& Values,bool 
                 if (const auto A=AdmittedBirths->find(Birth.Grant.Object);A!=AdmittedBirths->end())
                     Admitted=A->second.SimOwner==Sender && A->second.OwnerEpoch==Birth.Grant.OwnerEpoch
                         && A->second.SourceLease==Birth.Grant.SourceLease && A->second.Policy==Birth.Grant.Policy
-                        && A->second.Faction==Birth.Grant.Faction;
-            if (Trial.Owner(Birth.Parent)!=Sender && !Admitted) return false;
+                        && A->second.Faction==Birth.Grant.Faction && A->second.Controller==Birth.Grant.Controller
+                        && A->second.ControlEpoch==Birth.Grant.ControlEpoch && A->second.OwnershipGroup==Birth.Grant.OwnershipGroup
+                        && A->second.GroupEpoch==Birth.Grant.GroupEpoch;
+            if (Birth.Grant.OwnerEpoch!=1 && !Admitted) return Reject("birth-owner-version");
+            if (Trial.Owner(Birth.Parent)!=Sender && !Admitted) return Reject("birth-proof-missing-or-mismatched");
             Trial.Directory.emplace(V.Key.Object,Birth);
         }
-        if (V.Version<Version(V.Key)) {if (Handoff) return false;continue;}
-        if (Locks.contains(V.Key)) return false;
-        if (!Trial.ApplyFragment(V)) return false;
-        Accepted.push_back(V);
+        if (V.Version<Version(V.Key)) {if (Handoff) return Reject("old-handoff-state");return true;}
+        if (Locks.contains(V.Key)) return Reject("state-locked");
+        if (!Trial.ApplyFragment(V,Resources?&*Resources:nullptr)) return Reject("invalid-state-payload");
+        Accepted.insert(V.Key);return true;
+    }))
+    {
+        if (ImportFailureReason && !ImportFailureReason->empty()) return false;
+        return Reject("state-source-validation");
     }
-    if (!Trial.RebuildWorkIndex()) return false;
-    return ApplyValidated(Accepted);
+    if (Resources && !Trial.ResourceLedgerValue.Restore(std::move(*Resources))) return Reject("invalid-resource-state");
+    if (!Trial.RebuildWorkIndex()) return Reject("active-work-index");
+    }
+    // The staged numeric values are released before applying the validated cut.
+    // As in ApplyValidated, resources and the work index are committed once.
+    std::optional<ResourceLedgerState> Resources;
+    if (std::any_of(Headers.begin(),Headers.end(),[&](const auto& V){return Accepted.contains(V.Key) && UsesResourceLedger(V);}))
+        Resources=ResourceLedgerValue.Snapshot();
+    for (const bool Objects:{true,false})
+    if (!Read([&](const StateFragment& V)
+    {return (V.Key.Capability=="object")!=Objects || !Accepted.contains(V.Key) || ApplyFragment(V,Resources?&*Resources:nullptr);}))
+        return Reject("live-state-application");
+    if (Resources && !ResourceLedgerValue.Restore(std::move(*Resources))) return Reject("live-resource-state");
+    if (!RebuildWorkIndex()) return Reject("live-work-index");
+    return true;
 }
 std::optional<CommitResult> OwnerState::Result(Id Event) const
 {const auto I=Results.find(Event);return I==Results.end()?std::optional<CommitResult>{}:I->second;}

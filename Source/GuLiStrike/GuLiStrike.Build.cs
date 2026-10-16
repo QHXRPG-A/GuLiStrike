@@ -7,6 +7,8 @@ public class GuLiStrike : ModuleRules
 	public GuLiStrike(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		// State adapters keep translation-unit-local archive types and helpers.
+		bUseUnity = false;
 		CppStandard = CppStandardVersion.Cpp20;
 
 		PublicDependencyModuleNames.AddRange(new string[] {

@@ -14,9 +14,11 @@ struct FGuLiTransportByteCounters
 {
     uint64 SentBytes=0,ReceivedBytes=0,SentPackets=0,ReceivedPackets=0;
     uint64 SendFailures=0,RejectedPackets=0;
-    uint64 ReceiveQueueOverflows=0,ExpiredReceivePackets=0;
+    uint64 ReceiveQueueOverflows=0,ExpiredReceivePackets=0,CoalescedReceivePackets=0;
     uint64 QueuedReceiveBytes=0,QueuedReceivePackets=0;
     double OldestReceiveSeconds=0;
+    uint64 QueuedHandoffReceivePackets=0,QueuedHandoffReceiveBytes=0;
+    double OldestHandoffReceiveSeconds=0;
 };
 
 class IGuLiHybridTransport

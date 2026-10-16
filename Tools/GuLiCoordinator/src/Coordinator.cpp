@@ -6,11 +6,14 @@
 #include <boost/json.hpp>
 #include <chrono>
 #include <algorithm>
+#include <bit>
 #include <cmath>
 #include <limits>
 #include <deque>
 #include <fstream>
+#include <functional>
 #include <iostream>
+#include <optional>
 #include <random>
 #include <set>
 #include <sstream>
@@ -27,6 +30,10 @@ using namespace GuLiNet;
 namespace
 {
 double Now() { return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count(); }
+bool SameAuthorityEncoding(const Authority& A,const Authority& B)
+{
+    return A==B && std::bit_cast<std::uint64_t>(A.EstimatedCost)==std::bit_cast<std::uint64_t>(B.EstimatedCost);
+}
 Id NewId()
 {
     std::random_device Random; Id V;
@@ -187,10 +194,11 @@ struct Coordinator::State : std::enable_shared_from_this<Coordinator::State>
         std::map<std::pair<Id,Id>,Id> SavedPairKeys;
         std::map<Id,double> Disconnected;
         std::map<std::pair<Id,Id>,std::pair<bool,double>> PeerPresence;
-        std::map<ObjectKey,Bytes> PublishedGrants;
+        std::map<ObjectKey,Authority> PublishedGrants;
         std::map<Id,std::set<ObjectKey>> PendingRegistrationReceipts;
         Bytes SavedMetadata;
         std::vector<HandoffAction> OwnershipOutbox;
+        std::map<Revision,boost::json::object> MembershipDeadlineFailures;
         Revision PublishedMembership=0;
         RoomPhase PublishedPhase=RoomPhase::Preparing;
         std::uint64_t NextMessage=1;
@@ -236,6 +244,7 @@ struct Coordinator::State::Session : std::enable_shared_from_this<Session>
     http::request<http::string_body> Request;
     std::weak_ptr<State> Host;
     std::deque<std::shared_ptr<Bytes>> Writes;
+    std::function<std::optional<Message>()> DirectoryNext;
     Id Match, Player;
     bool Loopback = false;
     bool Bound = false;
@@ -246,6 +255,9 @@ struct Coordinator::State::Session : std::enable_shared_from_this<Session>
     { boost::system::error_code EC; const auto Endpoint = beast::get_lowest_layer(Socket).socket().remote_endpoint(EC); Loopback = !EC && Endpoint.address().is_loopback(); }
     void Start()
     {
+        boost::system::error_code OptionError;
+        beast::get_lowest_layer(Socket).socket().set_option(tcp::no_delay(true),OptionError);
+        if (OptionError) {Stop();return;}
         beast::get_lowest_layer(Socket).expires_after(std::chrono::seconds(10));
         http::async_read(Socket.next_layer(), Buffer, Request,
             [Self = shared_from_this()](boost::system::error_code EC, std::size_t)
@@ -262,6 +274,7 @@ struct Coordinator::State::Session : std::enable_shared_from_this<Session>
     void Stop()
     {
         if (Closed) return; Closed = true;
+        DirectoryNext={};
         boost::system::error_code EC; beast::get_lowest_layer(Socket).socket().close(EC);
         if (auto H = Host.lock(); H && Bound) H->Lost(Match, Player, this);
     }
@@ -323,6 +336,19 @@ struct Coordinator::State::Session : std::enable_shared_from_this<Session>
         if (!EncodeMessage(Value, *Wire) || QueuedBytes + Wire->size() > 16 * 1024 * 1024) { Stop(); return; }
         QueuedBytes += Wire->size(); Writes.push_back(Wire); if (Writes.size() == 1) Write();
     }
+    void ContinueDirectory()
+    {
+        if (Closed || !Writes.empty() || !DirectoryNext) return;
+        auto Next=DirectoryNext();
+        if (!Next) {DirectoryNext={};return;}
+        Send(*Next);
+    }
+    void StreamDirectory(std::function<std::optional<Message>()> Next)
+    {
+        if (Closed) return;
+        if (DirectoryNext) {Stop();return;}
+        DirectoryNext=std::move(Next);ContinueDirectory();
+    }
     void Write()
     {
         if (Closed || Writes.empty()) return;
@@ -333,6 +359,7 @@ struct Coordinator::State::Session : std::enable_shared_from_this<Session>
             Self->QueuedBytes -= Self->Writes.front()->size(); Self->Writes.pop_front();
             if (!Self->Writes.empty()) Self->Write();
             else if (Self->CloseAfterWrite) Self->Stop();
+            else Self->ContinueDirectory();
         });
     }
 };
@@ -392,15 +419,31 @@ void Coordinator::State::Roster(HostedRoom& R)
 }
 void Coordinator::State::Directory(HostedRoom& R,const std::shared_ptr<Session>& To)
 {
-    for (const auto& [K,O]:R.Core->Objects())
+    if (!To)
     {
-        auto V=Registration(R,O);
-        if (To) To->Send(V);else Broadcast(R,std::move(V));
+        for (const auto& [Player,Weak]:R.Connections) if (auto Connection=Weak.lock()) Directory(R,Connection);
+        return;
     }
-    Writer W;W.U32(static_cast<std::uint32_t>(R.Core->Objects().size()));W.U8(static_cast<std::uint8_t>(R.Core->Phase()));
-    W.U32(static_cast<std::uint32_t>(R.Core->Ownership().Transfers().size()));
-    for (const auto& [K,T]:R.Core->Ownership().Transfers()) W.Blob(EncodeHandoff(T));
-    auto End=Control(R,MessageKind::DirectoryComplete,W.Take());if (To) To->Send(End);else Broadcast(R,End);
+    // Snapshot keys only (bounded by the existing 100000-record room limit).
+    // Queue one unchanged registration after the previous write drains. A
+    // late directory must not synchronously overflow the16MiB socket queue.
+    // Read current grants at enqueue time so interleaved deltas cannot be
+    // followed by an older saved grant. Historical keys are never erased.
+    std::vector<ObjectKey> Keys;Keys.reserve(R.Core->Objects().size());
+    for (const auto& [K,O]:R.Core->Objects()) Keys.push_back(K);
+    const Id Match=R.Core->MatchId();
+    To->StreamDirectory([Weak=weak_from_this(),Match,Keys=std::move(Keys),Cursor=std::size_t{0},Ended=false]() mutable -> std::optional<Message>
+    {
+        const auto Owner=Weak.lock();if (!Owner) return std::nullopt;
+        const auto Found=Owner->Rooms.find(Match);if (Found==Owner->Rooms.end()) return std::nullopt;
+        auto& RoomValue=Found->second;
+        if (Cursor<Keys.size()) return Owner->Registration(RoomValue,RoomValue.Core->Objects().at(Keys[Cursor++]));
+        if (Ended) return std::nullopt;Ended=true;
+        Writer W;W.U32(static_cast<std::uint32_t>(RoomValue.Core->Objects().size()));W.U8(static_cast<std::uint8_t>(RoomValue.Core->Phase()));
+        W.U32(static_cast<std::uint32_t>(RoomValue.Core->Ownership().Transfers().size()));
+        for (const auto& [K,T]:RoomValue.Core->Ownership().Transfers()) W.Blob(EncodeHandoff(T));
+        return Owner->Control(RoomValue,MessageKind::DirectoryComplete,W.Take());
+    });
 }
 Message Coordinator::State::Registration(HostedRoom& R,const ObjectRegistration& O)
 {
@@ -453,7 +496,10 @@ void Coordinator::State::Join(const std::shared_ptr<Session>& C,Message V,Hello 
     R.Dirty=true;if (!Persist(R)) {C->Error("Metadata persistence unavailable");return;}
     C->Player=M.Player;C->Bound=true;R.Connections[M.Player]=C;R.Disconnected.erase(M.Player);
     Writer W;W.Identity(M.Player);W.Text(ConfigHash);W.Text(MapHash);C->Send(Control(R,MessageKind::Welcome,W.Take()));
-    Roster(R);Directory(R,C);SendMembership(R,C);
+    // Announce the join before its potentially large historical directory.
+    // The joining world must know it is importing peer state when directory
+    // completion arrives; otherwise initial readiness can expire first.
+    Roster(R);SendMembership(R,C);Directory(R,C);
     // A reattached control link receives the current grant directory. P2P keys,
     // logical ages and owner results are unchanged by reconnecting this socket.
     if (R.Core->Phase()==RoomPhase::Running) C->Send(Control(R,MessageKind::MembershipCommit));
@@ -509,6 +555,18 @@ void Coordinator::State::Handle(const std::shared_ptr<Session>& C,const Message&
         ObjectRegistration O;
         if (!ReadAuthority(Read,O.Grant) || !Read.Text(O.Definition,256) || !Read.U32(O.Ordinal) || !Read.Key(O.Parent) || !Read.Done()
             || O.Grant.Object!=V.Header.Object || !O.Parent.Valid()) return;
+        const bool ReviewBirth=O.Grant.Object.Kind==ObjectKind::BusinessWork || O.Grant.Object.Kind==ObjectKind::Building;
+        const auto ReviewDefinition=ReviewBirth?O.Definition:std::string{};
+        const auto RejectRegistration=[&](const std::string& Reason)
+        {
+            static unsigned Logged=0;if (!ReviewBirth || Logged>=16) return;++Logged;
+            const auto Member=Core.Members().find(C->Player);
+            std::cerr<<"Registration rejected reason="<<Reason<<" object="<<O.Grant.Object.StableId.ToString()
+                <<" definition="<<ReviewDefinition<<" ordinal="<<O.Ordinal<<" parent="<<O.Parent.StableId.ToString()
+                <<" creator="<<C->Player.ToString()<<" ready="<<(Member!=Core.Members().end() && Member->second.Ready)
+                <<" policy="<<unsigned(O.Grant.Policy)<<" group_version="<<O.Grant.GroupEpoch
+                <<" owner_version="<<O.Grant.OwnerEpoch<<" source_lease="<<O.Grant.SourceLease.Valid()<<std::endl;
+        };
         if (const auto Old=Core.Objects().find(O.Grant.Object);Old!=Core.Objects().end())
         {
             // A repeated registration still needs a receipt, even when the
@@ -518,16 +576,36 @@ void Coordinator::State::Handle(const std::shared_ptr<Session>& C,const Message&
             return;
         }
         const auto Parent=Core.Objects().find(O.Parent);
-        if (Parent==Core.Objects().end() || (Parent->second.Grant.Dormant?Parent->second.Grant.StateCustodian:Parent->second.Grant.SimOwner)!=C->Player) return;
+        if (Parent==Core.Objects().end()) {RejectRegistration("parent-not-registered");return;}
+        const bool ParentOwned=(Parent->second.Grant.Dormant?Parent->second.Grant.StateCustodian:Parent->second.Grant.SimOwner)==C->Player;
+        const bool Recovery=O.Grant.SimOwner!=C->Player && Core.CanRecoverBirth(O,C->Player);
+        if (O.Grant.SimOwner!=C->Player && !Recovery) {RejectRegistration("invalid-birth-recovery");return;}
+        bool GroupOwned=false;
+        const auto Definition=Core.ObjectDefinitions().find(O.Definition);
+        if (Definition!=Core.ObjectDefinitions().end() && Definition->second.Policy==OwnershipPolicy::SharedGroup)
+        {
+            const auto Group=StableId("GuLiOwnershipGroup/v1",Definition->second.Group);
+            const auto Authority=Core.OwnershipGroups().find(Group);
+            GroupOwned=Authority!=Core.OwnershipGroups().end() && Authority->second.Owner==C->Player
+                && O.Grant.Policy==OwnershipPolicy::SharedGroup && O.Grant.OwnershipGroup==Group
+                && (Recovery || (O.Grant.GroupEpoch==Authority->second.Version && O.Grant.SimOwner==C->Player
+                    && O.Grant.OwnerEpoch==1 && O.Grant.SourceLease.Valid()));
+            if (!GroupOwned) {RejectRegistration("group-authority");return;}
+        }
+        // A shared-group child's simulator can differ from its parent's.
+        // The configured group's current owner and epoch authorize this birth.
+        if (!ParentOwned && !GroupOwned && !Recovery) {RejectRegistration("creator-authority");return;}
         if (O.Ordinal)
         {
             // Ordinals keep their creator namespace when a decided birth is
             // delivered after that creator's departure and state takeover.
             const auto Slot=O.Ordinal>>24;
-            if (std::none_of(Core.Members().begin(),Core.Members().end(),[&](const auto& M){return M.second.OrdinalSlot==Slot;})) return;
-            for (const auto& [K,V]:Core.Objects()) if (OrdinalScope(K.Kind)==OrdinalScope(O.Grant.Object.Kind) && V.Ordinal==O.Ordinal) return;
+            if (std::none_of(Core.Members().begin(),Core.Members().end(),[&](const auto& M){return M.second.OrdinalSlot==Slot;}))
+            {RejectRegistration("ordinal-namespace");return;}
+            for (const auto& [K,V]:Core.Objects()) if (OrdinalScope(K.Kind)==OrdinalScope(O.Grant.Object.Kind) && V.Ordinal==O.Ordinal)
+            {RejectRegistration("ordinal-duplicate/"+K.StableId.ToString()+"/"+V.Definition);return;}
         }
-        if (!Core.Register(std::move(O),Time,C->Player)) return;
+        if (!Core.Register(std::move(O),Time,C->Player)) {RejectRegistration("room-registration");return;}
         break;
     }
     case MessageKind::ObjectEvent:
@@ -575,7 +653,7 @@ void Coordinator::State::Publish(HostedRoom& R,double Time)
     R.PendingRegistrationReceipts.clear();
     if (Core.Membership() && R.PublishedMembership!=Core.Membership()->Version)
     {R.PublishedMembership=Core.Membership()->Version;SendMembership(R);}
-    std::set<Id> CommittedGroups;
+    std::set<Id> CommittedGroups;bool CommittedIndependent=false;
     for (const auto& A:R.OwnershipOutbox)
     {
         Acceptance.ObserveOwnership({{"object",A.Transfer.Object.StableId.ToString()},{"transfer",A.Transfer.IdValue},
@@ -583,32 +661,62 @@ void Coordinator::State::Publish(HostedRoom& R,double Time)
             {"source",A.Transfer.Source.ToString()},{"target",A.Transfer.Target.ToString()},{"owner_version",A.Transfer.NextOwnerVersion}});
         if (A.Kind==HandoffActionKind::Commit)
         {
-            if (A.Transfer.Group.Valid() && !CommittedGroups.insert(A.Transfer.Group).second) continue;
+            if (A.Transfer.Group.Valid()) {if (!CommittedGroups.insert(A.Transfer.Group).second) continue;}
+            else {if (CommittedIndependent) continue;CommittedIndependent=true;}
             std::vector<const HandoffAction*> Batch;
             for (const auto& B:R.OwnershipOutbox) if (B.Kind==HandoffActionKind::Commit
-                && (A.Transfer.Group.Valid()?B.Transfer.Group==A.Transfer.Group:B.Transfer.IdValue==A.Transfer.IdValue)) Batch.push_back(&B);
+                && (A.Transfer.Group.Valid()?B.Transfer.Group==A.Transfer.Group:!B.Transfer.Group.Valid())) Batch.push_back(&B);
             Writer W;W.U32(static_cast<std::uint32_t>(Batch.size()));
             for (const auto* B:Batch) {W.Blob(EncodeHandoff(B->Transfer));WriteAuthority(W,Core.Objects().at(B->Transfer.Object).Grant);}
             Broadcast(R,Control(R,MessageKind::HandoffCommit,W.Take()));
         }
         else
         {
+        if (A.Kind==HandoffActionKind::PrepareTarget)
+        {
+            const auto& Object=Core.Objects().at(A.Transfer.Object);
+            // An initial assignment and its first handoff can share this
+            // publication. Receivers need that current grant before Prepare.
+            if (Object.Grant.OwnerEpoch==A.Transfer.PreviousOwnerVersion)
+            {
+                if (const auto Published=R.PublishedGrants.find(A.Transfer.Object);
+                    Published==R.PublishedGrants.end() || !SameAuthorityEncoding(Published->second,Object.Grant))
+                {
+                    Broadcast(R,Registration(R,Object));
+                    R.PublishedGrants[A.Transfer.Object]=Object.Grant;
+                }
+            }
+        }
         const auto Kind=A.Kind==HandoffActionKind::PrepareTarget?MessageKind::HandoffPrepare
             :A.Kind==HandoffActionKind::FreezeSource?MessageKind::HandoffFreeze
             :MessageKind::HandoffCancel;
         Writer W;W.Blob(EncodeHandoff(A.Transfer));
-        auto V=Control(R,Kind,W.Take());V.Header.Object=A.Transfer.Object;Broadcast(R,V);
+        auto V=Control(R,Kind,W.Take());V.Header.Object=A.Transfer.Object;
+        // Freeze has no observer-side work. Keep Prepare/Cancel and the final
+        // grants visible to everyone, but deliver this command only to its
+        // actual source so a large leave does not repeat ignored work sixfold.
+        if (A.Kind==HandoffActionKind::FreezeSource)
+        {
+            if (const auto I=R.Connections.find(A.Transfer.Source);I!=R.Connections.end())
+                if (const auto Source=I->second.lock()) Source->Send(V);
+        }
+        else Broadcast(R,V);
         }
 
     }
     R.OwnershipOutbox.clear();
     bool GrantsChanged=false;
-    for (const auto& [K,O]:Core.Objects())
+    for (const auto& K:Core.PendingDirectoryUpdates())
     {
-        Writer W;WriteAuthority(W,O.Grant);const auto Bytes=W.Take();
-        if (R.PublishedGrants[K]==Bytes) continue;R.PublishedGrants[K]=Bytes;GrantsChanged=true;
+        const auto Object=Core.Objects().find(K);
+        if (Object==Core.Objects().end()) {R.PublishedGrants.erase(K);continue;}
+        const auto& O=Object->second;
+        if (const auto Published=R.PublishedGrants.find(K);
+            Published!=R.PublishedGrants.end() && SameAuthorityEncoding(Published->second,O.Grant)) continue;
+        R.PublishedGrants[K]=O.Grant;GrantsChanged=true;
         Broadcast(R,Registration(R,O));
     }
+    Core.AcknowledgeDirectoryUpdates();
     if (Core.Membership() && R.PublishedMembership!=Core.Membership()->Version)
     {R.PublishedMembership=Core.Membership()->Version;SendMembership(R);}
     if (R.PublishedPhase!=Core.Phase())
@@ -638,20 +746,21 @@ void Coordinator::State::Publish(HostedRoom& R,double Time)
 void Coordinator::State::Poll()
 {
     const double Time=Now();boost::json::array RoomStates;bool AllReady=!Rooms.empty();
+    double ProposeMilliseconds=0,CorePollMilliseconds=0,PublishMilliseconds=0;
     const bool CaptureReviewState=Acceptance.NeedsSnapshot();
     for (auto& [Match,R]:Rooms)
     {
         auto& Core=*R.Core;
         for (const auto& [P,LostAt]:R.Disconnected)
         {
-            if (Time-LostAt<10 || Core.Membership() || !Core.Members().at(P).Online) continue;
+            if (Time-LostAt<10 || !Core.Members().at(P).Online) continue;
             unsigned Reports=0;bool Seen=false;
             for (const auto& [Other,Weak]:R.Connections) if (Other!=P && !Weak.expired())
             {
                 const auto Report=R.PeerPresence.find({Other,P});
                 if (Report!=R.PeerPresence.end() && Time-Report->second.second<3) {++Reports;Seen=Seen || Report->second.first;}
             }
-            if (Reports && !Seen) {Core.BeginLeave(P,true,Time);R.Dirty=true;break;}
+            if (Reports && !Seen && Core.BeginLeave(P,true,Time)) {Roster(R);R.Dirty=true;break;}
         }
         unsigned Red=0,Blue=0;
         for (const auto& [P,M]:Core.Members()) if (M.Online && M.Ready && M.Seat!=Role::Observer)
@@ -660,7 +769,8 @@ void Coordinator::State::Poll()
         if (InitialReady) Core.SetInitialRosterReady(true);
         if (InitialReady || Core.Phase()!=RoomPhase::Preparing)
         {
-            const auto Offers=Core.Propose(Time);
+            const double ProposeStarted=Now();const auto Offers=Core.Propose(Time);
+            ProposeMilliseconds+=(Now()-ProposeStarted)*1000;
             if (!Offers.empty())
             {
                 R.Dirty=true;if (!Persist(R)) continue;
@@ -672,7 +782,15 @@ void Coordinator::State::Poll()
                 }
             }
         }
-        Core.Poll(Time);Publish(R,Time);
+        if (const auto& Change=Core.Membership();Change && Time>=Change->Deadline)
+        {
+            R.MembershipDeadlineFailures.try_emplace(Change->Version,boost::json::object{
+                {"version",Change->Version},{"player",Change->Player.ToString()},
+                {"operation",unsigned(Change->Operation)},{"abrupt",Change->Abrupt}});
+            if (R.MembershipDeadlineFailures.size()>64) R.MembershipDeadlineFailures.erase(R.MembershipDeadlineFailures.begin());
+        }
+        const double CorePollStarted=Now();Core.Poll(Time);CorePollMilliseconds+=(Now()-CorePollStarted)*1000;
+        const double PublishStarted=Now();Publish(R,Time);PublishMilliseconds+=(Now()-PublishStarted)*1000;
         AllReady=AllReady && Core.Phase()==RoomPhase::Running;
         if (CaptureReviewState)
         {
@@ -697,11 +815,23 @@ void Coordinator::State::Poll()
             boost::json::object State{{"match",Match.ToString()},{"room_phase",unsigned(Core.Phase())},{"members",std::move(Members)},
                 {"objects",std::move(Objects)},{"handoffs",std::move(Transfers)},{"membership_paused",Core.Membership().has_value()},
                 {"directory_records",Core.Objects().size()},{"retired_transient_records",RetiredTransient}};
+            boost::json::array DeadlineFailures;
+            for (const auto& [Version,Failure]:R.MembershipDeadlineFailures) DeadlineFailures.emplace_back(Failure);
+            State["membership_deadline_failures"]=std::move(DeadlineFailures);
+            if (const auto& Change=Core.Membership())
+            {
+                boost::json::array Waiting;for (const auto& P:Change->Waiting) Waiting.emplace_back(P.ToString());
+                State["membership"]=boost::json::object{{"version",Change->Version},{"player",Change->Player.ToString()},
+                    {"operation",unsigned(Change->Operation)},{"abrupt",Change->Abrupt},{"seconds_remaining",Change->Deadline-Time},{"waiting",std::move(Waiting)}};
+            }
             if (!Core.Failure().empty()) State["failure"]=Core.Failure();RoomStates.emplace_back(std::move(State));
         }
     }
     Acceptance.Record("service_poll",(Now()-Time)*1000);
-    boost::json::object ReviewState{{"ready",AllReady}};
+    boost::json::object ReviewState{{"ready",AllReady},{"last_service_poll_ms",(Now()-Time)*1000}};
+    ReviewState["last_service_propose_ms"]=ProposeMilliseconds;
+    ReviewState["last_service_core_poll_ms"]=CorePollMilliseconds;
+    ReviewState["last_service_publish_ms"]=PublishMilliseconds;
     if (CaptureReviewState) ReviewState["rooms"]=std::move(RoomStates);
     if (Acceptance.Tick(std::move(ReviewState))) {Stopping=true;Context.stop();return;}
     Timer.expires_after(std::chrono::milliseconds(50));Timer.async_wait([Self=shared_from_this()](boost::system::error_code EC){if (!EC) Self->Poll();});

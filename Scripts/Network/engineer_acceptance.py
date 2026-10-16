@@ -3,6 +3,7 @@ from pathlib import Path
 import math
 import time
 import uuid
+import json
 from runtime_evidence import pending_object_handoffs
 
 def run(plan, args, records, read_state, write_json, initial):
@@ -11,7 +12,12 @@ def run(plan, args, records, read_state, write_json, initial):
     commanders = {team: next((e for e in clients if e['team'] == team and e['seat'] == 'Commander')) for team in ('Red', 'Blue')}
     baseline = initial
     reference = commanders['Red']
-    base = baseline[reference['name']]['engineer_states']
+    manifest=json.loads(Path(plan['manifest']).read_text(encoding='utf-8-sig'))
+    expected={o['id'].replace('-','').lower() for o in manifest['objects']
+              if manifest['strings'].get('adapter/definition/'+o['definition'])=='Engineer'}
+    def cohort(value):
+        return [v for v in value.get('engineer_states',[]) if v['stable_id'].replace('-','').lower() in expected]
+    base = cohort(baseline[reference['name']])
     if len(base) != 16 or len({v['ordinal'] for v in base}) != 16:
         raise RuntimeError('The formal startup must contain exactly sixteen distinct engineering actors')
     identity = lambda v: v['stable_id']
@@ -19,7 +25,7 @@ def run(plan, args, records, read_state, write_json, initial):
     positions = {v['ordinal']: v['position'] for v in base}
     owners = {}
     for e in clients:
-        for v in baseline[e['name']]['engineer_states']:
+        for v in cohort(baseline[e['name']]):
             if v['local_simulation']:
                 if v['ordinal'] in owners:
                     raise RuntimeError('An engineering object has multiple simulators')
@@ -65,7 +71,7 @@ def run(plan, args, records, read_state, write_json, initial):
                 time.sleep(0.2)
                 continue
             for e in clients:
-                objects = states[e['name']].get('engineer_states', [])
+                objects = cohort(states[e['name']])
                 if {v['ordinal']: identity(v) for v in objects} != identities:
                     raise RuntimeError('Engineering input changed or omitted a stable object identity')
             # Selection starts a real priority handoff. Its export/import boundary
@@ -81,7 +87,7 @@ def run(plan, args, records, read_state, write_json, initial):
             actual = {}
             entries = clients
             for e in entries:
-                for v in states[e['name']].get('engineer_states', []):
+                for v in cohort(states[e['name']]):
                     if v['local_simulation']:
                         if v['ordinal'] in actual:
                             raise RuntimeError('Duplicate active engineering simulator')

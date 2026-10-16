@@ -75,10 +75,14 @@ void UGuLiShipAssemblyComponent::AdvanceHybridChoices()
             Receipt=ChoiceReceipts.Find(Event);
         }
         if (!Receipt || !Receipt->Resolved || Receipt->Notified) continue;
-        Receipt->Notified=true;
         const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
         if (!Binding || !Binding->CanControl() || Binding->GetState().Controller!=Receipt->Requester) continue;
         const auto Result=Receipt->Result;
-        if (auto* Player=Ship().GetPlayerState<AGuLiBattlePlayerState>()) Player->GetShipBuild()->NotifyHybridChoiceResolved(*this,Result);
+        if (auto* Player=Ship().GetPlayerState<AGuLiBattlePlayerState>())
+            if (Player->GetShipBuild()->NotifyHybridChoiceResolved(*this,Result)) Receipt->Notified=true;
     }
+}
+TArray<FGuid> UGuLiShipAssemblyComponent::GetPendingHybridChoices() const
+{
+    TArray<FGuid> Out;for (const auto& [Event,Receipt]:ChoiceReceipts) if (!Receipt.Resolved) Out.Add(Event);return Out;
 }

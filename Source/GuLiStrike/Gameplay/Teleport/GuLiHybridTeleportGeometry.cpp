@@ -75,8 +75,14 @@ bool Plan(UWorld& W,const Net::State& S,Net::Command& C,bool Returning)
         else for (int32 Attempt=0;Attempt<257;++Attempt)
         {
             const FVector Offset=U.Original.GetLocation()-Transform(S.Source).GetLocation();
-            const float D=Attempt?FMath::Sqrt(float(Attempt))*FMath::Max(U.Body.Radius*2.1f,20.f):0,Angle=Attempt*2.39996323f;
-            const FVector Desired=Center+FVector(Offset.X+FMath::Cos(Angle)*D,Offset.Y+FMath::Sin(Angle)*D,0);FVector Ground;double Height=0;
+            const float Angle=Attempt*2.39996323f;
+            // Try the member's original offset first, then cover the allowed
+            // disk. Large bodies must not spend the fixed search budget on
+            // candidates that are already outside the destination radius.
+            const float SearchRadius=P.Radius*(Returning?4.f:1.f);
+            const float D=SearchRadius*FMath::Sqrt(float(Attempt)/256.f);
+            const FVector Preferred=Attempt?FVector::ZeroVector:FVector(Offset.X,Offset.Y,0);
+            const FVector Desired=Center+Preferred+FVector(FMath::Cos(Angle)*D,FMath::Sin(Angle)*D,0);FVector Ground;double Height=0;
             const bool Valid=U.Body.bAirborne?GuLiSkillTargeting::ResolveGround(W,Desired,Ground,&Height):GuLiLandingGround::Resolve(W,Desired,Ground,&Height,Cast<APawn>(U.Body.Actor.Get()));
             if (!Valid) {++GroundFailures;continue;}
             if (FVector::DistSquared2D(Ground,Center)>FMath::Square(P.Radius*(Returning?4.:1.))) {++OutsideRadius;continue;}

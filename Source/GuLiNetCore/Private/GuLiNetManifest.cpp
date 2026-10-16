@@ -315,6 +315,9 @@ bool HashManifest(const RuntimeManifest& V, ManifestHashes& Out, std::string& Er
     if (!ValidateManifest(V, Error)) return false;
     Writer Config(16 * 1024 * 1024), Map(16 * 1024 * 1024);
     Config.U32(V.Version); Config.U16(ProtocolVersion); Config.U32(HandoffVersion);
+    // Application payload packing is a negotiated configuration feature. An
+    // older adapter cannot join with a hash that promises this wire decoder.
+    Config.Text("peer-payload/zlib-1");
     WriteResources(Config, V.StartingRed); WriteResources(Config, V.StartingBlue);
     Config.U32(static_cast<std::uint32_t>(V.Rules.size()));
     for (const auto& [K, R] : V.Rules)

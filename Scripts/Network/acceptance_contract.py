@@ -33,6 +33,46 @@ SCENARIOS = {
 
 COMMON_GAMEPLAY = ("unique_simulation", "stable_ownership", "no_receive_republish",
                    "additional_flights", "logic_only")
+
+# Ten user-facing gameplay items. Every existing assertion belongs to exactly
+# one item; grouping changes execution/reporting, never the acceptance scope.
+GAMEPLAY_ITEMS = (
+    ("G01", "地图入口与六端运行基线", (
+        "map_entry", "unique_simulation", "stable_ownership", "additional_flights", "logic_only")),
+    ("G02", "Commander UI、选择与模拟归属", (
+        "resource_group", "commander_ui", "commander_selection_takeover", "selection_pinning",
+        "idle_offload", "handoff_state")),
+    ("G03", "建造、工程师与人口结算", (
+        "engineering", "construction", "replacement_population", "population_cancel_reject_death")),
+    ("G04", "生产、库存组合与生产蓝图", (
+        "production", "inventory_composition", "production_blueprints", "production_blueprint_execution")),
+    ("G05", "采矿运输、据点与供电", (
+        "mining_transport", "territory_supply", "supply_loss_resume")),
+    ("G06", "编队、技能、卡牌与传送", (
+        "mass_commands", "skills", "rogue", "rogue_cancel", "teleport", "spell_fields", "teleport_cancel")),
+    ("G07", "Mass、重防号与战斗结算", (
+        "mass_combat", "wm01", "machinegun_speed", "combat_event_correspondence")),
+    ("G08", "Ground 移动、战斗与 UI", (
+        "ground_movement", "ground_combat", "ground_query_presentation", "ground_ui")),
+    ("G09", "Air 装备、战斗、僚机与 UI", (
+        "ship_movement", "ship_equipment", "ship_combat", "wingman_combat", "wingman_air_combat",
+        "wingman_ground_combat", "wingman_cadence", "air_query_presentation", "air_ui")),
+    ("G10", "固定职责重连与通用内容", (
+        "fixed_reconnect", "fixed_role_rejections", "generic_content", "no_receive_republish")),
+)
+
+
+def validate_gameplay_items() -> None:
+    declared = [check for _, _, checks in GAMEPLAY_ITEMS for check in checks]
+    expected = set(SCENARIOS["gameplay_merged"][3] + COMMON_GAMEPLAY)
+    if len(GAMEPLAY_ITEMS) != 10 or len({key for key, _, _ in GAMEPLAY_ITEMS}) != 10:
+        raise RuntimeError("Gameplay must contain ten distinct test items")
+    if len(declared) != len(set(declared)) or set(declared) != expected:
+        raise RuntimeError("Gameplay item grouping duplicates or omits an existing assertion")
+
+
+validate_gameplay_items()
+
 DEPENDENCIES = {
     "authority": ("unique_simulation", "stable_ownership", "mass_commands", "fixed_reconnect", "fixed_role_rejections", "resource_group",
                   "member_loss", "fixed_role_rejections", "stale_authority_life_epoch"),

@@ -105,3 +105,8 @@ void UGuLiCommanderSkillComponent::RebindHybridRequests()
         // Keep listening across ownership changes; only the final result completes the request.
     }
 }
+TArray<FGuid> UGuLiCommanderSkillComponent::GetPendingHybridRequests() const
+{
+    TArray<FGuid> Out,Globals;HybridPending.GetKeys(Out);HybridGlobalRequests.GetKeys(Globals);
+    for (const auto& Event:Globals) Out.AddUnique(Event);return Out;
+}

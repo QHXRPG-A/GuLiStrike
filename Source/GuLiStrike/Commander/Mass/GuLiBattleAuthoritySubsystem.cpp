@@ -4101,6 +4101,40 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 	return true;
 }
 
+#if !UE_BUILD_SHIPPING
+bool UGuLiBattleAuthoritySubsystem::ResolveReviewSoldierSelection(const AGuLiBattlePlayerState& PlayerState,
+	TConstArrayView<FGuLiSoldierId> Members, uint32 RequestId, FGuLiCommanderSelectionState& InOutSelection)
+{
+	using namespace GuLiCommanderMassPrivate;
+	if (!AuthorityState || !AuthorityState->bPopulationSpawned || !IsAuthorityWorld() || !RequestId
+		|| !PlayerState.IsCommander() || !GuLiCommanderProtocol::IsPlayableTeam(PlayerState.GetTeam())
+		|| Members.IsEmpty() || Members.Num()>int32(GULI_MAX_CONTROL_COHORTS*GULI_CONTROL_COHORT_TARGET_SIZE)) return false;
+	TSet<FGuLiSoldierId> Unique;TArray<GuLiControlCohortBuilder::FCandidate> Candidates;
+	for (const auto Id:Members)
+	{
+		const auto* Index=AuthorityState->SoldierIndexById.Find(Id.Value);
+		if (!Index || !AuthorityState->Soldiers.IsValidIndex(*Index) || Unique.Contains(Id)) return false;
+		const auto& Soldier=AuthorityState->Soldiers[*Index];
+		if (!Soldier.CanAct() || Soldier.Team!=PlayerState.GetTeam()) return false;
+		Unique.Add(Id);Candidates.Add({Id,Soldier.Location});
+	}
+	TArray<TArray<FGuLiSoldierId>> Built;GuLiControlCohortBuilder::Build(Candidates,{},0.0f,Built);
+	FGuLiCommanderSelectionState Candidate;Candidate.SelectionRevision=InOutSelection.SelectionRevision+1;
+	if (!Candidate.SelectionRevision) ++Candidate.SelectionRevision;
+	Candidate.AcceptedClientRequestId=RequestId;
+	for (auto& MembersInCohort:Built)
+	{
+		auto& Cohort=Candidate.Cohorts.AddDefaulted_GetRef();
+		Cohort.CohortId=FGuLiControlCohortId(AllocateNonZero(AuthorityState->NextControlCohortId));
+		Cohort.MemberIds=MoveTemp(MembersInCohort);Cohort.AliveCount=uint8(Cohort.MemberIds.Num());
+		TArray<uint32,TInlineAllocator<SoldierCountPerFormation>> Orders;
+		for (const auto Id:Cohort.MemberIds) Orders.Add(AuthorityState->Soldiers[AuthorityState->SoldierIndexById.FindChecked(Id.Value)].ActiveOrderId);
+		Cohort.ActiveOrderId=GuLiCommanderNavigationPolicy::ResolveCommonActiveOrderId(Orders);
+	}
+	Candidate.Sanitize();InOutSelection=MoveTemp(Candidate);return true;
+}
+#endif
+
 // 保持已有控制组身份并刷新摘要：去掉无效/重复/异阵营成员，整组无人存活才移除。
 // 部分死亡成员仍留在 MemberIds；AliveCount 与共同 ActiveOrderId 是独立的动态摘要。
 bool UGuLiBattleAuthoritySubsystem::RefreshSelection(

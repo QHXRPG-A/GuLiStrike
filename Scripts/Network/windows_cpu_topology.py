@@ -77,6 +77,26 @@ def partition(cores: list[dict]) -> dict:
             "basis": "GetSystemCpuSetInformation; complete SMT siblings; higher efficiency class first"}
 
 
+def process_affinity(pid: int) -> int:
+    """Read an explicitly owned PID after UE has finished its startup reset."""
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenProcess.restype = wintypes.HANDLE
+    kernel.GetProcessAffinityMask.argtypes = [wintypes.HANDLE, ctypes.POINTER(ctypes.c_size_t), ctypes.POINTER(ctypes.c_size_t)]
+    kernel.GetProcessAffinityMask.restype = wintypes.BOOL
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    handle = kernel.OpenProcess(0x0400, False, pid)
+    if not handle:
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        actual, system = ctypes.c_size_t(), ctypes.c_size_t()
+        if not kernel.GetProcessAffinityMask(handle, ctypes.byref(actual), ctypes.byref(system)):
+            raise ctypes.WinError(ctypes.get_last_error())
+        return actual.value
+    finally:
+        kernel.CloseHandle(handle)
+
+
 def bind_process(pid: int, mask: int) -> int:
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
     kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]

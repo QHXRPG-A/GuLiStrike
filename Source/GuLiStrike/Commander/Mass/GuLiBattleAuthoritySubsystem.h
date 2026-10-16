@@ -331,6 +331,11 @@ public:
 		const FGuLiSelectionRequest& Request,
 		FGuLiCommanderSelectionState& InOutSelection,
 		FGuLiCommandAck& OutAck);
+#if !UE_BUILD_SHIPPING
+	/** Exact development preparation; validates live team members and builds real command cohorts. */
+	bool ResolveReviewSoldierSelection(const AGuLiBattlePlayerState& PlayerState,
+		TConstArrayView<FGuLiSoldierId> Members, uint32 RequestId, FGuLiCommanderSelectionState& InOutSelection);
+#endif
 
 	/**
 	 * Starts a budgeted world-frame command commit; shared corridors and random slots do not block admission.

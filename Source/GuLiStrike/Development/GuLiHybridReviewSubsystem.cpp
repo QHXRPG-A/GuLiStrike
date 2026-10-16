@@ -794,6 +794,7 @@ void UGuLiHybridReviewSubsystem::Deinitialize()
 {
     if (StateWrite.IsValid()) StateWrite.Get();
     if (SceneSkills.IsValid()) SceneSkills->OnSkillReply.RemoveDynamic(this,&ThisClass::SceneSkillResolved);
+    if (SceneBuild.IsValid()) SceneBuild->OnChoiceResolved.RemoveDynamic(this,&ThisClass::SceneChoiceResolved);
     if (EngineerSync.IsValid()) EngineerSync->OnCommandAckChanged.RemoveAll(this);
     if (auto* Pool=GetWorld()->GetSubsystem<UGuLiProjectilePoolSubsystem>()) Pool->OnState.RemoveAll(this);
     if (auto* Effects=GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>()) Effects->OnState.RemoveAll(this);

@@ -229,10 +229,15 @@ bool AGuLiMiningVehiclePawn::SelectMiningTarget()
     return false;
 }
 
+bool AGuLiMiningVehiclePawn::GetReservedMiningPose(FTransform& OutPose) const
+{
+    return GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->GetSlotPose(*this,MiningSlot,OutPose);
+}
+
 bool AGuLiMiningVehiclePawn::IsAtReservedMiningSlot() const
 {
     FTransform Pose;
-    return GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->GetSlotPose(*this,MiningSlot,Pose)
+    return GetReservedMiningPose(Pose)
         && FVector::DistSquared2D(GetActorLocation(),Pose.GetLocation()) <= FMath::Square(GULI_MINING_SLOT_WORK_TOLERANCE_CM);
 }
 

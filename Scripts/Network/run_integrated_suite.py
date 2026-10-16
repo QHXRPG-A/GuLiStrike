@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--diagnostic-trace',action='store_true')
     parser.add_argument('--coordinator-port',type=int,default=18787)
     parser.add_argument('--udp-base',type=int,default=19801)
+    parser.add_argument('--manifest',type=Path,help='Use one explicitly prepared, validated manifest for both G and F')
     args=parser.parse_args()
     output=args.output.resolve()
     if not output.is_relative_to(ROOT): raise RuntimeError('Evidence must stay in the project')
@@ -39,6 +40,8 @@ def main():
                 '--coordinator-port',str(args.coordinator_port),'--udp-base',str(args.udp_base)]
             if args.diagnostic_trace:
                 command.append('--diagnostic-trace')
+            if args.manifest:
+                command += ['--manifest',str(args.manifest.resolve())]
             completed=subprocess.run(command,cwd=ROOT)
             if completed.returncode: return completed.returncode
             paths=list(folder.glob('*/scenario.json'))

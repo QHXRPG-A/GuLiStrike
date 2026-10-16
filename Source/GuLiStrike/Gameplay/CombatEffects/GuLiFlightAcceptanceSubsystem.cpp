@@ -82,7 +82,8 @@ void UGuLiFlightAcceptanceSubsystem::AdvanceAutomaticLoad()
         EGuLiTeam Team; uint16 Unit=0; FVector Location;
         if (!Army->GetTaskSoldierInfo(FGuLiSoldierId(Source.Handle.LocalId),Team,Unit,Location)) continue;
         const auto* Skill=Data->GetUnitSkillConfigs().FindByPredicate([&](const FGuLiUnitSkillConfig& C)
-        { return C.UnitTypeId==Unit && C.SkillId==TEXT("Strafe") && C.SlotId==TEXT("BasicAttack") && C.bDefault; });
+        { return C.UnitTypeId==Unit && C.SlotId==TEXT("BasicAttack") && C.bDefault
+            && C.ProjectileSpeedCentimetersPerSecond==4800 && C.ProjectileLifetimeSeconds>0 && C.Damage>0; });
         if (Skill) Producers.Add({Source,*Skill});
     }
     Producers.Sort([](const FProducer& A,const FProducer& B){return A.Source.Handle.LocalId<B.Source.Handle.LocalId;});
@@ -108,7 +109,7 @@ void UGuLiFlightAcceptanceSubsystem::AdvanceAutomaticLoad()
         FGuLiHybridObjectState State;
         return Hybrid->GetObject(Key,State) && State.LifeState>=2;
     };
-    const float Now=Hybrid ? static_cast<float>(Hybrid->GetLogicalSeconds()) : GetWorld()->GetTimeSeconds();
+    const float Now=Hybrid ? static_cast<float>(Hybrid->GetLocalLogicalSeconds()) : GetWorld()->GetTimeSeconds();
     AutomaticLocalGoal=AutomaticLive=0;
     for (int32 Index=0;Index<AutomaticCount;++Index)
     {
@@ -421,7 +422,7 @@ FString UGuLiFlightAcceptanceSubsystem::GetLoadStatsJson() const
     if (bAutomaticLoad || AutomaticCount>0)
     {
         const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
-        const float Now=H?H->GetLogicalSeconds():GetWorld()->GetTimeSeconds();
+        const float Now=H?H->GetLocalLogicalSeconds():GetWorld()->GetTimeSeconds();
         TArray<FGuLiCombatEffectState> States;
         if (const auto* Pool=GetWorld()->GetSubsystem<UGuLiProjectilePoolSubsystem>()) Pool->AppendActiveSnapshot(States);
         int32 ActualAdditional=0,ActualOrdinary=0,ActualPrepared=0,ActualGoal=AutomaticLocalGoal;

@@ -83,6 +83,7 @@ public:
     FGuLiMoveEndpointIdsChanged OnMoveEndpointIdsChanged;
     FGuLiMoveReadyToSendSignature OnMoveReadyToSend;
 #if !UE_BUILD_SHIPPING
+    bool PrepareReviewSoldierSelection(TConstArrayView<FGuLiSoldierId> Members, uint32 RequestId);
     uint64 GetAcceptedPoseFrameCount() const { return AcceptedPoseFrameCount; }
     double GetLastAcceptedPoseReceiveTimeSeconds() const { return LastAcceptedPoseReceiveTimeSeconds; }
     TSharedRef<FJsonObject> GetReviewCommandEvidence() const;

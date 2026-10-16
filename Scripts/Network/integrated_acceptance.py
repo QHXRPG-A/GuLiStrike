@@ -13,7 +13,7 @@ from pathlib import Path
 import time
 import uuid
 
-from acceptance_session import AcceptanceSession
+from acceptance_session import AcceptanceSession, preparation
 
 
 def identity(value):
@@ -21,15 +21,18 @@ def identity(value):
 
 
 def entry(session, team, seat):
-    members = session.states[session.clients[0]["name"]].get("role_members", [])
+    reference = next((session.states[e['name']] for e in session.clients if e['name'] in session.states), {})
+    members = reference.get("role_members", [])
     player = next((identity(m["player"]) for m in members if m["online"] and m["team"] == team and m["role"] == seat), None)
     return next(e for e in session.clients if e["player"] == player)
 
 
 def objects(session, owner=False):
     if not owner:
-        return session.states[session.clients[0]["name"]].get("scene_objects", [])
-    return [o for e in session.clients for o in session.states[e["name"]].get("scene_objects", []) if o["local_simulation"]]
+        reference = next((session.states[e['name']] for e in session.clients if e['name'] in session.states), {})
+        return reference.get("scene_objects", [])
+    return [o for e in session.clients if e['name'] in session.states
+            for o in session.states[e["name"]].get("scene_objects", []) if o["local_simulation"]]
 
 
 def prove(session, name, condition, detail, *files):
@@ -46,6 +49,7 @@ def input_and_wait(session, kind, player, **values):
     return result, "input-" + operation + ".json"
 
 
+@preparation
 def prepare_cohort(session):
     # Measure the sustained cohort under a fixed real input before deliberately
     # testing handoff. Prefer each Commander's present objects. A Commander can
@@ -54,6 +58,7 @@ def prepare_cohort(session):
     # represented for the following three-owner stage.
     from integrated_ownership import directory, select
     session.begin("prepare-load-cohort")
+    session.control('gameplay',enable_mining=True)
     for team in ("Red", "Blue"):
         commander = entry(session, team, "Commander")
         keys = {key for key, obj in directory(session).items()
@@ -176,19 +181,33 @@ def rendered_ui(session, check):
     session.finish()
 
 
-def commander(session, selection=True):
-    from integrated_ownership import run_selection
-    if selection: run_selection(session)
+def engineering(session):
     session.begin("engineer-cross-owner-orders")
     session.legacy("engineer_acceptance","engineer")
-    prove(session,"engineering",True,"Two formal selections moved all sixteen engineers through all three team owners exactly once",
+    prove(session,"engineering",True,"Two formal selections moved all sixteen engineers under their unique current simulators exactly once",
           "engineer-baseline.json","engineer-final.json","engineer-timeline.json")
     session.finish()
+
+
+def mining_transport(session):
+    from population_combat_preparation import prepare_mining
+    prepare_mining(session)
     session.begin("mining-transport-and-processing")
+    from runtime_evidence import additional_flight_counts
+    with session.preparation('real additional-flight cohort before formal mining'):
+        session.wait('mining-flight-cohort', lambda: sum(additional_flight_counts({
+            e['name']: session.states[e['name']] for e in session.clients}).values()) == session.plan['extra_flights'])
     session.legacy("mining_acceptance","mining")
     prove(session,"mining_transport",True,"Formal orders extracted, transported, queued and processed ore; owner and receiving clients conserve it",
           "mining-baseline.json","mining-final.json","mining-timeline.json")
     session.finish()
+
+
+def commander(session, selection=True):
+    from integrated_ownership import run_selection
+    if selection: run_selection(session)
+    engineering(session)
+    mining_transport(session)
     from integrated_commander import run
     run(session)
 
@@ -200,6 +219,8 @@ def ground(session):
 
 
 def ground_combat(session):
+    from population_combat_preparation import prepare_ground_duel
+    prepare_ground_duel(session)
     session.begin("ground-formal-combat")
     session.legacy("ground_combat_acceptance","ground_combat")
     prove(session,"ground_combat",True,"Native aim/fire, swept hits, authoritative damage and one terminal death agree on six clients",
@@ -217,8 +238,10 @@ def air(session):
 
 def air_equipment(session):
     session.begin("ship-equipment-members-and-movement")
-    session.legacy("wingman_acceptance","ship_wingmen")
-    paths=[p.name for p in sorted(session.stage_output.glob("wingman-*.json"))]
+    session.legacy("wingman_acceptance","ship_wingmen",arguments={
+        'prepared_equipment':getattr(session,'prepared_equipment',None)})
+    paths=[p.name for p in sorted(session.stage_output.glob("wingman-*.json*"))
+           if p.suffix in ('.json', '.gz')]
     for check in ("ship_equipment","wingman_cadence"):
         prove(session,check,True,"Native assembly request committed; fifty members follow Ship controller grants with 30 Hz simulation/10 Hz publication",*paths)
     # The reused member driver also runs the ordinary eight-second flight input.
@@ -343,7 +366,7 @@ def run(plan,args,records,logs,read_state,write_json,initial,session=None):
             return {"status":"failed_regression" if failures else "passed_regression","measurement_valid":False,
                     "regression_stage":args.regression_stage,"failures":failures,
                     "scenario":str(session.output/"scenario.json"),"checks":result["checks"],
-                    "scope":"Only assertions with attached evidence passed; vehicle-combat omits role rotation and Ground rendered UI. Full G/F and performance remain unverified"}
+                    "scope":"Only the selected regression stages and assertions with attached evidence passed. Full G/F and performance remain unverified"}
         if getattr(args,"regression_stage",None)=="ownership":
             prepare_cohort(session)
             from integrated_ownership import run_selection
@@ -364,14 +387,23 @@ def run(plan,args,records,logs,read_state,write_json,initial,session=None):
             from integrated_faults import run as faults
             faults(session)
         result=session.publish()
+        if getattr(args, 'collect_only', False):
+            return {"status":"collected", "measurement_valid":False,
+                    "scenario":str(session.output/"scenario.json"), "checks":result["checks"],
+                    "scope":"Independent collection only; passed, skipped and unresolved items remain distinct. No G/F gate granted."}
         if result["status"]!="passed":
+            if result.get("test_items"):
+                incomplete=[item["id"]+" "+item["title"] for item in result["test_items"] if item["status"]!="passed"]
+                raise RuntimeError("G has incomplete test items: "+"; ".join(incomplete))
             raise RuntimeError("Scenario has unverified checks: "+", ".join(result["missing"]))
         return {"status":"passed","measurement_valid":False,"scenario":str(session.output/"scenario.json"),
-                "checks":result["checks"],"scope":"Integrated production gameplay/fault correctness; performance is a separate gate"}
+                "checks":result["checks"],"test_items":result.get("test_items",[]),
+                "scope":"Integrated production gameplay/fault correctness; performance is a separate gate"}
     except Exception as error:
         import traceback
         failure = str(error) or type(error).__name__
-        if session.stages: session.stages[-1].update(status="failed",failure=failure)
+        if session.stages and session.stages[-1]["status"]=="running":
+            session.stages[-1].update(status="failed",failure=failure)
         session.write_json(session.stage_output/"first-failure.json",{"failure":failure,
             "exception_type":type(error).__name__,"traceback":traceback.format_exc(),"states":session.states})
         session.publish()

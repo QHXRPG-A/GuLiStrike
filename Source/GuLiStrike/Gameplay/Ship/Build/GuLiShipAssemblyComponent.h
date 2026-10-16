@@ -91,6 +91,7 @@ public:
     FGuid RequestHybridChoice(FGuid RequestId,FName NodeId,int64 MatchEpoch,int64 ExpectedBuildRevision);
     bool FindHybridChoiceResult(FGuid RequestId,FGuLiShipChoiceResult& Result) const;
     void AdvanceHybridChoices();
+    TArray<FGuid> GetPendingHybridChoices() const;
     void AdvanceHybridCapabilities(uint64 LogicalTick,double DeltaSeconds);
 protected:
 	virtual void BeginPlay() override;

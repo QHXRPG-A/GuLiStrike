@@ -48,6 +48,14 @@ bool DecodeAcceptance(TConstArrayView<uint8> Bytes,FAcceptanceFlightPiece& Out)
 class FGuLiAutomaticFlightState final:public IGuLiHybridSharedStateAdapter
 {
     TWeakObjectPtr<UGuLiFlightAcceptanceSubsystem> Owner;
+    void ClearBindings(UGuLiFlightAcceptanceSubsystem& S,const TArray<FGuLiHybridObjectKey>& Objects) const
+    {
+        for (auto I=S.AutomaticSources.CreateIterator();I;++I) if (Objects.Contains(I.Value()))
+        {
+            S.AutomaticFlights.Remove(I.Key());S.AutomaticPreparedFlights.Remove(I.Key());
+            S.AutomaticGenerations.Remove(I.Key());I.RemoveCurrent();
+        }
+    }
     bool Merge(const TArray<FGuLiHybridSharedStatePiece>& Pieces,FAcceptanceFlightPiece& Out) const
     {
         const auto* S=Owner.Get(); if (!S || Pieces.IsEmpty()) return false;
@@ -57,18 +65,34 @@ class FGuLiAutomaticFlightState final:public IGuLiHybridSharedStateAdapter
         {
             FAcceptanceFlightPiece Data;
             if (Piece.Name!=AcceptanceFlightSystem || Piece.Version!=Version() || !Piece.Player.IsValid()
-                || !DecodeAcceptance(Piece.Bytes,Data) || Data.Count!=S->AutomaticCount || Data.Seed!=S->AutomaticSeed) return false;
+                || !DecodeAcceptance(Piece.Bytes,Data) || Data.Count!=S->AutomaticCount || Data.Seed!=S->AutomaticSeed)
+            {
+                UE_LOG(LogTemp,Error,TEXT("AcceptanceFlights import rejected: shape/config player=%s count=%d/%d seed=%d/%d"),
+                    *Piece.Player.ToString(),Data.Count,S->AutomaticCount,Data.Seed,S->AutomaticSeed);
+                return false;
+            }
             if (First) { Out.Enabled=Data.Enabled; Out.Count=Data.Count; Out.Seed=Data.Seed; First=false; }
             else if (Data.Enabled!=Out.Enabled) return false;
             for (const auto& Entry:Data.Entries)
             {
                 FGuLiHybridObjectState Source;
-                if (Indices.Contains(Entry.Index) || !H->GetObject(Entry.Source,Source)) return false;
+                if (Indices.Contains(Entry.Index) || !Piece.Objects.Contains(Entry.Source) || !H->GetObject(Entry.Source,Source))
+                {
+                    UE_LOG(LogTemp,Error,TEXT("AcceptanceFlights import rejected: source/scope index=%d source=%s/%u"),
+                        Entry.Index,*Entry.Source.StableId.ToString(),Entry.Source.LifeGeneration);
+                    return false;
+                }
                 for (const auto& Id:{Entry.Current,Entry.Prepared}) if (Id.IsValid())
                 {
                     FGuLiHybridObjectKey Key; Key.Kind=EGuLiHybridObjectKind::Flight; Key.StableId=Id; Key.LifeGeneration=1;
                     FGuLiHybridObjectState Flight;
-                    if (H->GetObject(Key,Flight) && Flight.Parent!=Entry.Source) return false;
+                    if (H->GetObject(Key,Flight) && Flight.Parent!=Entry.Source)
+                    {
+                        UE_LOG(LogTemp,Error,TEXT("AcceptanceFlights import rejected: parent index=%d flight=%s source=%s/%u parent=%s/%u"),
+                            Entry.Index,*Id.ToString(),*Entry.Source.StableId.ToString(),Entry.Source.LifeGeneration,
+                            *Flight.Parent.StableId.ToString(),Flight.Parent.LifeGeneration);
+                        return false;
+                    }
                 }
                 Out.Entries.Add(Entry); Indices.Add(Entry.Index);
             }
@@ -80,7 +104,12 @@ public:
     UObject* LifetimeOwner() const override { return Owner.Get(); }
     uint32 Version() const override { return AcceptanceFlightVersion; }
     bool UsesObject(const FGuLiHybridObjectKey& Key) const override
-    {const auto* S=Owner.Get();if (S) for (const auto& P:S->AutomaticSources) if (P.Value==Key) return true;return false;}
+    {
+        const auto* S=Owner.Get();
+        // Empty producer domains are authoritative too. A dead producer whose
+        // slots moved elsewhere must clear a recipient's old startup bindings.
+        return S && S->AutomaticCount>0 && Key.Kind==EGuLiHybridObjectKind::Soldier;
+    }
     bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const override
     {
         const auto* S=Owner.Get(); if (!S) return false;
@@ -98,13 +127,15 @@ public:
         auto* S=Owner.Get(); if (!S) return false;
         if (Stage==EGuLiHybridRestoreStage::Detach)
         {
-            for (auto I=S->AutomaticSources.CreateIterator();I;++I) if (Objects.Contains(I.Value()))
-            {S->AutomaticFlights.Remove(I.Key());S->AutomaticPreparedFlights.Remove(I.Key());S->AutomaticGenerations.Remove(I.Key());I.RemoveCurrent();}
+            ClearBindings(*S,Objects);
             return true;
         }
         if (Stage==EGuLiHybridRestoreStage::Create)
         {
             FAcceptanceFlightPiece Data; if (!Merge(Pieces,Data)) return false;
+            // Replace only this incoming producer scope. Retained flight
+            // entities keep their own original simulator and retirement path.
+            ClearBindings(*S,Objects);
             S->bAutomaticLoad=Data.Enabled;
             for (const auto& Entry:Data.Entries)
             {

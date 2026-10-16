@@ -5,6 +5,7 @@
 #include "Battle/Network/GuLiBattleTypes.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillTypes.h"
+#include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
 #include "GuLiHybridReviewSubsystem.generated.h"
 
 /** Opt-in local acceptance IPC. Helpers provide correctness state, never performance captures. */
@@ -41,9 +42,14 @@ private:
     TMap<FGuid,FSceneAction> SceneActions;
     TWeakObjectPtr<class UGuLiCommanderSkillComponent> SceneSkills;
     TMap<FGuid,FGuLiActiveSkillReply> SceneSkillReplies;
+    TMap<FGuid,uint32> SceneFinalSkillReplyCounts;
+    TWeakObjectPtr<UGuLiShipBuildComponent> SceneBuild;
+    TMap<FGuid,FGuLiShipChoiceResult> SceneChoiceReplies;
+    TMap<FGuid,uint32> SceneChoiceReplyCounts;
     struct FBlueprintExecution { FString Class,Function;uint64 Calls=0,Disabled=0,Enabled=0; };
     TMap<FString,FBlueprintExecution> BlueprintExecutions;
     UFUNCTION() void SceneSkillResolved(const FGuLiActiveSkillReply& Reply);
+    UFUNCTION() void SceneChoiceResolved(const FGuLiShipChoiceResult& Reply);
     void ReadSceneActions(const class FJsonObject& Control);
     void AdvanceSceneActions();
     void AppendSceneEvidence(const TSharedRef<class FJsonObject>& Json) const;

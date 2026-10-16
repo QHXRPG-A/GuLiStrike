@@ -55,12 +55,16 @@ public:
 
 	// 本地角色生命周期入口，由 PC 角色变化及 HUD BeginPlay 调用；不依赖 Canvas/bShowHUD。
 	void RefreshCommanderRole();
+    void RefreshLocalBindings();
+    uint64 GetLocalBindingGeneration() const { return LocalBindingGeneration; }
+    uint64 GetBuildingFeedbackReceiptCount() const { return BuildingFeedbackReceiptCount; }
 
 	/** Prevents world selection/move commands from leaking through the tactical HUD. */
 	bool IsScreenPositionOverCommanderUI(const FVector2D& ScreenPosition) const;
 	bool PickOverviewIcon(const FVector2D& ScreenPosition, FGuLiCommanderOverviewMarker& Out, bool bInspect = false);
 
 private:
+    uint64 LocalBindingGeneration=0,BuildingFeedbackReceiptCount=0;
 	void SceneLine(float X1, float Y1, float X2, float Y2, FLinearColor Color, float Width=1);
 	void SceneRect(FLinearColor Color, float X, float Y, float W, float H);
 	void SceneText(const FString& Text, FLinearColor Color, float X, float Y, UFont* Font=nullptr, float Scale=1, bool bScalePosition=false);

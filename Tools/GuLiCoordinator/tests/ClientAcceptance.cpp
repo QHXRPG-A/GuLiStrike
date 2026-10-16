@@ -6,6 +6,8 @@
 #include "GuLiNetCapability.h"
 #include "GuLiNetControlPoint.h"
 #include "GuLiNetResourceMaintenance.h"
+#include "GuLiNetLinearFlightRecipe.h"
+#include "GuLiNetRuntimeEffectRecipe.h"
 #include <algorithm>
 #include <array>
 #include <deque>
@@ -66,7 +68,7 @@ struct Fixture
     std::map<Id,Member> Members;std::map<std::pair<Id,ObjectKey>,Adapter*> Adapters;
     std::deque<Delivery> Queue;std::vector<Delivery> Metadata;double Now=0;bool RejectHandoffQueue=false;
     std::set<Id> RejectPublications;
-    Fixture()
+    explicit Fixture(RuntimeManifest Initial=Manifest()):Data(std::move(Initial))
     {
         std::string Error;Check(ValidateManifest(Data,Error),Error.c_str());
         for (unsigned N=0;N<6;++N)
@@ -106,9 +108,9 @@ struct Fixture
 void IndependentProgressAndValues()
 {
     Fixture F;auto& A=F.Client(1);auto& Slow=F.Client(2);
-    unsigned Applied=0,FirstReceipt=0,ReplayReceipt=0;
+    unsigned Applied=0,FirstReceipt=0,ReplayReceipt=0,ReorderedEffects=0;
     for (auto& [Player,Client]:F.Clients) Client->SetCommitCallback([&](const CommitResult& V)
-    {if (V.Event==ID(700)) ++Applied;});
+    {if (V.Event==ID(700)) ++Applied;if (V.Event==ID(702)) ++ReorderedEffects;});
     for (unsigned I=0;I<120;++I) A.Advance(1./60);
     Check(A.Now()>=119 && Slow.Now()==0,"a slow peer cannot hold the local clock");
     A.SetMembershipPaused(true);const auto Paused=A.Now();A.Advance(10);Check(A.Now()==Paused,"membership pauses simulation");A.SetMembershipPaused(false);
@@ -137,9 +139,28 @@ void IndependentProgressAndValues()
     Check(A.Submit(ChangedRequest,[&](const CommitResult& V){Check(V.Status==CommitStatus::BadRequest,"reusing an event with another target is rejected");++RejectedReceipt;}).Valid(),"submit a conflicting duplicate for rejection");NetworkOnly();
     Check(RejectedReceipt==1 && Applied==6 && A.PendingTransactions().empty()
         && F.Client(5).Objects().at(F.Key(4)).Vitals.Value==100,"rejected rebound also resolves without new side effects");
+    CommitResult EarlyRejection;EarlyRejection.Event=ID(702);EarlyRejection.Kind=TransactionKind::Damage;
+    EarlyRejection.Status=CommitStatus::BadRequest;EarlyRejection.StateDomain=F.Key(4);EarlyRejection.Target=F.Key(4);
+    Check(Slow.ApplyCommit(EarlyRejection) && Slow.UnsettledReceiptCount()==1 && ReorderedEffects==0,
+        "an unversioned delivery rejection is retained separately without consuming a gameplay completion");
+    auto Later=R;Later.Header.Event=ID(702);Later.Target=F.Key(4);unsigned LaterReceipt=0;
+    Check(A.Submit(Later,[&](const CommitResult& V){Check(V.Status==CommitStatus::Committed,"later real decision commits");++LaterReceipt;}).Valid(),
+        "submit the real event after a receiver saw only its malformed delivery rejection");NetworkOnly();
+    Check(LaterReceipt==1 && ReorderedEffects==6 && Slow.PendingTransactions().empty(),
+        "the real committed event still applies once on every receiver after an early rejection");
+    for (const auto& [P,C]:F.Clients) Check(C->Objects().at(F.Key(4)).Vitals.Value==75,
+        "an early rejection cannot suppress the later authoritative health change");
     TransactionRequest E;E.Header.Object=F.Key(1);E.Header.Event=ID(701);E.Kind=TransactionKind::Reserve;E.RuleId="reserve";E.Faction=Team::Red;
     E.ReservationKey={DeriveEconomyAccount(E.Header.Object),1};Check(F.Client(2).Submit(E,{}).Valid(),"remote owner submits team resource request");F.Step();
     for (const auto& [P,C]:F.Clients) Check(C->NumericState().TeamEconomy().Balance(Team::Red)==Resources{80,90,2},"team owner result and incremented account version reach all peers");
+    const std::array<ObjectKey,1> SourceKeys{F.Key(1)},AccountKeys{TeamAccountObject(Team::Red)};
+    const auto SourceHistory=F.Client(2).NumericState().Export(SourceKeys);
+    const auto AccountHistory=F.Client(1).NumericState().Export(AccountKeys);
+    const auto Has=[](const auto& Parts,const std::string& Name)
+    {return std::any_of(Parts.begin(),Parts.end(),[&](const auto& Part){return Part.Key.Capability==Name && !Part.Value.empty();});};
+    Check(Has(SourceHistory,"attack/"+ID(701).ToString()) && Has(SourceHistory,"cooldown/reserve")
+        && !Has(SourceHistory,"event/"+ID(701).ToString()) && Has(AccountHistory,"event/"+ID(701).ToString()),
+        "single-object export retains actual cross-owner attack/cooldown history and keeps its result on the account domain");
 }
 void ScopedHandoff()
 {
@@ -157,6 +178,176 @@ void ScopedHandoff()
     Message Late;Late.Header.Kind=MessageKind::Motion;Late.Header.Match=ID(100);Late.Header.Epoch=1;Late.Header.Sender=ID(2);
     Late.Header.Object=K;Late.Header.OwnerEpoch=1;Late.Header.At=999;Writer W;W.U64(999);Late.Body=W.Take();
     Check(!New.ReceivePeer(ID(2),Late),"old owner cannot overwrite the new simulation");
+
+    // Publication batching does not combine independent private cuts or change
+    // their transfer identities, sources, or target install acknowledgements.
+    std::vector<std::pair<ObjectHandoff,Authority>> Independent;
+    for (unsigned N:{2u,4u})
+    {
+        const auto Key=F.Key(N);const auto Source=F.Client(1).Objects().at(Key).Grant.SimOwner;
+        ObjectHandoff V;V.IdValue=10+N;V.Object=Key;V.Source=Source;V.Target=ID(1);
+        V.PreviousOwnerVersion=1;V.NextOwnerVersion=2;V.TargetPrepared=true;
+        for (auto& [P,C]:F.Clients) Check(C->PrepareHandoff(V),"prepare independent private transfer");
+        Check(F.Clients.at(Source)->FreezeHandoff(V),"freeze each independent private cut");
+        auto A=F.Clients.at(Source)->Objects().at(Key).Grant;A.SimOwner=ID(1);A.OwnerEpoch=2;
+        Independent.emplace_back(V,A);
+    }
+    F.Flush();
+    for (auto& [P,C]:F.Clients) Check(C->CommitHandoffs(Independent),"publish independently installed grants in one existing commit envelope");
+    F.Flush();
+    for (const auto& [V,A]:Independent)
+        Check(F.Client(1).HasSimulation(V.Object) && !F.Clients.at(V.Source)->HasSimulation(V.Object),
+            "batched publication retains unique authority for each independent transfer");
+
+    // A shared group receives one private cut despite independently ordered
+    // member prepares. Cancellation and commit detach that cut only once.
+    Fixture G;std::vector<ObjectKey> GroupKeys{G.Key(1)};
+    for (unsigned N=0;N<2;++N)
+    {
+        auto O=G.Client(2).Objects().at(G.Key(1));O.Grant.Object.StableId=ID(5500+N);O.Ordinal=100+N;
+        for (auto& [P,C]:G.Clients) Check(C->Install(O,true),"declare additional private group member");
+        GroupKeys.push_back(O.Grant.Object);
+    }
+    struct SharedCounter final:ISharedStateAdapter
+    {
+        std::vector<ObjectKey> Keys;unsigned Detaches=0;
+        std::uint32_t Version() const override {return 1;}
+        bool UsesObject(ObjectKey K) const override {return std::find(Keys.begin(),Keys.end(),K)!=Keys.end();}
+        bool Capture(const std::vector<ObjectKey>& Objects,Bytes& Out) const override
+        {Writer W;W.U32(static_cast<std::uint32_t>(Objects.size()));Out=W.Take();return true;}
+        bool Validate(const std::vector<PrivateSystemState>& Parts,const std::vector<ObjectKey>& Objects) const override
+        {std::uint32_t N;return Parts.size()==1 && Parts.front().Objects==Objects && [&]{Reader R(Parts.front().State);return R.U32(N) && N==Objects.size() && R.Done();}();}
+        bool Restore(const std::vector<PrivateSystemState>& Parts,const std::vector<ObjectKey>& Objects,RestoreStage Stage) override
+        {if (!Validate(Parts,Objects)) return false;if (Stage==RestoreStage::Detach) ++Detaches;return true;}
+    };
+    auto SourceSystem=std::make_unique<SharedCounter>();SourceSystem->Keys=GroupKeys;auto* SourceCount=SourceSystem.get();
+    auto TargetSystem=std::make_unique<SharedCounter>();TargetSystem->Keys=GroupKeys;auto* TargetCount=TargetSystem.get();
+    Check(G.Client(2).RegisterSystem("scoped-group",std::move(SourceSystem)) && G.Client(1).RegisterSystem("scoped-group",std::move(TargetSystem)),"register group private capability");
+    for (unsigned Round=0;Round<2;++Round)
+    {
+        std::vector<ObjectHandoff> Batch;
+        for (std::size_t I=0;I<GroupKeys.size();++I)
+        {
+            ObjectHandoff V;V.IdValue=900+Round*10+I;V.Object=GroupKeys[I];V.Source=ID(2);V.Target=ID(1);V.Group=ID(5600+Round);
+            V.PreviousOwnerVersion=1;V.NextOwnerVersion=2;Batch.push_back(V);
+            for (auto& [P,C]:G.Clients) if (P!=ID(1) || I==0) Check(C->PrepareHandoff(V),"prepare independently ordered group member");
+        }
+        for (auto V:Batch) {V.TargetPrepared=true;Check(G.Client(2).FreezeHandoff(V),"freeze group at admitted boundary");}
+        Check(std::count_if(G.Queue.begin(),G.Queue.end(),[](const auto& D){return D.Value.Header.Kind==MessageKind::HandoffState;})==1,"one shared cut serves all member identities");
+        G.Flush();Check(TargetCount->Detaches==Round*2,"early cut waits for every member prepare");
+        for (std::size_t I=1;I<Batch.size();++I) Check(G.Client(1).PrepareHandoff(Batch[I]),"non-leader prepare releases the early cut");
+        G.Flush();Check(TargetCount->Detaches==Round*2+1,"target restores the shared cut once");
+        const auto Age=G.Client(2).ObjectNow(GroupKeys.front());G.Step(2);
+        for (const auto& Key:GroupKeys) Check(!G.Client(1).HasSimulation(Key) && G.Client(2).ObjectNow(Key)==Age,"all cut members remain frozen before commit");
+        if (!Round)
+        {
+            for (auto& [P,C]:G.Clients) for (const auto& V:Batch) C->CancelHandoff(V);
+            Check(TargetCount->Detaches==2 && SourceCount->Detaches==0,"cancel detaches imported shared work only once");
+            G.Step();for (const auto& Key:GroupKeys) Check(G.Client(2).HasSimulation(Key),"cancel restores original group authority");
+        }
+        else
+        {
+            std::vector<std::pair<ObjectHandoff,Authority>> Commit;
+            for (const auto& V:Batch) {auto A=G.Client(2).Objects().at(V.Object).Grant;A.SimOwner=ID(1);A.OwnerEpoch=2;Commit.emplace_back(V,A);}
+            for (auto& [P,C]:G.Clients) Check(C->CommitHandoffs(Commit),"commit every acknowledged group member together");
+            Check(SourceCount->Detaches==1,"source shared work detaches once at commit");
+            G.Flush();for (const auto& Key:GroupKeys) Check(G.Client(1).HasSimulation(Key) && !G.Client(2).HasSimulation(Key),"retry grants unique group authority");
+        }
+    }
+    {
+        Fixture Birth;const ObjectKey Retired{ObjectKind::BusinessWork,ID(5800),1};
+        auto Child=Birth.Client(1).Objects().at(Birth.Key(0));Child.Grant.Object.StableId=ID(5801);
+        Child.Parent=Retired;Child.Ordinal=700;Child.Grant.SourceLease=ID(5802);
+        Check(Birth.Client(1).Install(Child,true),"source retains a real child with historical placement provenance");
+        ObjectHandoffState Cut;const std::array<ObjectKey,1> Keys{Child.Grant.Object};
+        Check(Birth.Client(1).CaptureObjects(Keys,ID(2),0,Cut),"capture child while retired work has no private cut");
+        auto Join=[&](std::optional<Life> ParentLife)
+        {
+            auto C=std::make_unique<ClientWorld>(ID(100),ID(2),1,[](const ObjectRecord&){return std::make_unique<Adapter>();},[](Id,Message){return true;});
+            std::string Error;Check(C->Configure(Birth.Data,Error),"joining child directory configuration");C->SetMembers(Birth.Members);
+            if (ParentLife)
+            {Authority A;A.Object=Retired;A.State=*ParentLife;A.OwnerEpoch=1;Check(C->InstallGrant(A),"coordinator parent lifecycle arrives before numeric state");}
+            Check(C->StageBootstrapDirectory({&Cut,1}),"stage actual child before linking its private state");return C;
+        };
+        auto Unknown=Join({});Check(!Unknown->ImportBootstrap({&Cut,1}),"unknown missing parent still rejects");
+        auto Alive=Join(Life::Alive);Check(!Alive->ImportBootstrap({&Cut,1}),"missing active placement work still rejects");
+        auto Destroyed=Join(Life::Destroyed);
+        Check(Destroyed->ImportBootstrap({&Cut,1}) && Destroyed->Objects().at(Child.Grant.Object).Parent==Retired
+            && !Destroyed->Objects().contains(Retired) && !Destroyed->HasSimulation(Child.Grant.Object),
+            "known retired placement provenance imports without inventing a parent or simulation authority");
+    }
+}
+void FrozenFlightAdmissionAndRequestTime()
+{
+    namespace Recipe=GuLiNet::LinearFlightRecipe;
+    ObjectRecord Source;Source.Grant.Object={ObjectKind::Soldier,ID(5700),1};Source.Definition="data/unit";
+    ObjectRecord Child;Child.Grant.Object={ObjectKind::Flight,ID(5701),1};Child.Parent=Source.Grant.Object;
+    Child.Grant.SourceLease=ID(5702);Child.Definition="effect/linear/test";
+    TransactionRequest R;R.Kind=TransactionKind::Spawn;R.Header.Object=Source.Grant.Object;R.Header.Event=Child.Grant.SourceLease;R.Target=Child.Grant.Object;
+    const std::map<ObjectKey,ObjectRecord> Objects{{Source.Grant.Object,Source}};
+    auto Missing=Child;Check(!DeriveSpawnCapabilities(Source,Objects,R,Missing),"a linear birth cannot commit without its original recipe");
+    Recipe::Recipe P{Child.Grant.Object,Source.Grant.Object,Child.Grant.SourceLease,{1,2,3,4}};
+    R.CapabilityPayload=Recipe::Encode(P);Check(DeriveSpawnCapabilities(Source,Objects,R,Child),"child-family admission does not require the producer to carry that capability");
+    Recipe::Recipe Read;Check(Recipe::Decode(Child.Capabilities.at(Recipe::Name).Data,Read) && Read.State==P.State,"core preserves the adapter's exact opaque recipe bytes");
+    auto Wrong=Child;Wrong.Parent.StableId=ID(5703);Wrong.Capabilities.clear();Check(!DeriveSpawnCapabilities(Source,Objects,R,Wrong),"recipe cannot move to a different parent");
+    Wrong=Child;Wrong.Grant.SourceLease=ID(5704);Wrong.Capabilities.clear();Check(!DeriveSpawnCapabilities(Source,Objects,R,Wrong),"recipe cannot change its admission event");
+    auto Changed=Child;Changed.Capabilities.at(Recipe::Name).Data.back()^=1;
+    const auto* Contract=FindCapability(Recipe::Name);Check(Contract && !Contract->ValidateTransition(Child,Changed),"committed launch recipe is immutable");
+    TransactionRequest Decoded;Check(DecodeTransaction(R.Header,EncodeTransaction(R),Decoded) && Decoded.CapabilityPayload==R.CapabilityPayload,"spawn payload survives the real transaction decoder");
+    auto Unclaimed=Child;Unclaimed.Definition="data/unit";Unclaimed.Grant.Object.Kind=ObjectKind::Soldier;Unclaimed.Capabilities.clear();
+    Check(!DeriveSpawnCapabilities(Source,Objects,R,Unclaimed),"unclaimed spawn payload cannot be silently ignored");
+    RuntimeManifest M;Rule Spawn;Spawn.Kind=TransactionKind::Spawn;Spawn.TargetDefinition=Child.Definition;M.Rules["linear"]=Spawn;
+    std::string Error;Check(InitializeManifestCapabilities(M,Error) && M.Numbers.at("capability/linear_flight_recipe/version")==1,"recipe compatibility version enters the manifest hash input");
+
+    auto BirthManifest=Manifest();Spawn.SourceDefinition="data/unit";Spawn.SpawnKind=ObjectKind::Flight;
+    Spawn.SpawnCost=.001;Spawn.MaxEffectLifetime=600;BirthManifest.Rules["linear"]=Spawn;
+    const std::string Policy="ownership/definition/"+Child.Definition+"/";
+    BirthManifest.Numbers[Policy+"ownership_policy"]=unsigned(OwnershipPolicy::RetainedSource);
+    BirthManifest.Numbers[Policy+"controller_seat"]=unsigned(Role::Observer);BirthManifest.Numbers[Policy+"retire_on_vacancy"]=0;
+    Fixture Birth(BirthManifest);TransactionRequest Admission;Admission.Header.Object=Birth.Key(0);Admission.Header.Event=ID(5715);
+    Admission.Kind=TransactionKind::Spawn;Admission.RuleId="linear";Admission.Faction=Team::Red;Admission.Target={ObjectKind::Flight,ID(5716),1};
+    P={Admission.Target,Admission.Header.Object,Admission.Header.Event,{1,2,3,4}};Admission.CapabilityPayload=Recipe::Encode(P);
+    Check(Birth.Client(1).Submit(Admission,{}).Valid(),"production client accepts a real birth request with an original recipe");Birth.Step();
+    for (const auto& [Player,Client]:Birth.Clients)
+        Check(Client->Objects().contains(Admission.Target) && Client->Objects().at(Admission.Target).Capabilities.contains(Recipe::Name),"birth and immutable recipe commit and publish together on every client");
+    Authority Retired;Retired.Object={ObjectKind::Flight,ID(5725),1};Retired.State=Life::Destroyed;Retired.OwnerEpoch=2;
+    Check(Birth.Client(1).InstallGrant(Retired,(1u<<24)|37u) && !Birth.Client(1).Objects().contains(Retired.Object)
+        && Birth.Client(1).NumericState().LastRetiredLife(ObjectKind::Flight,ID(5725))==1,
+        "terminal metadata records life history without inventing numeric state");
+    Admission.Header.Event=ID(5726);Admission.Target={ObjectKind::Flight,ID(5725),2};
+    P={Admission.Target,Admission.Header.Object,Admission.Header.Event,{1,2,3,4}};Admission.CapabilityPayload=Recipe::Encode(P);
+    Check(Birth.Client(1).Submit(Admission,{}).Valid(),"new life can be submitted from retained terminal metadata");Birth.Step();
+    for (const auto& [Player,Client]:Birth.Clients)
+        Check(Client->Objects().contains(Admission.Target) && Client->Objects().at(Admission.Target).Grant.Object.Generation==2,
+            "new positive generation really commits and publishes after missing old private state");
+    Check((Birth.Client(1).Objects().at(Admission.Target).Ordinal&0xffffffu)>37,
+        "rejoining planner does not reuse a historical ordinal absent from its numeric directory");
+
+    namespace RuntimeRecipe=GuLiNet::RuntimeEffectRecipe;
+    auto EffectManifest=Manifest();Spawn.TargetDefinition="effect/runtime/test";Spawn.SpawnKind=ObjectKind::Field;
+    EffectManifest.Rules["runtime"]=Spawn;const std::string EffectPolicy="ownership/definition/effect/runtime/test/";
+    EffectManifest.Numbers[EffectPolicy+"ownership_policy"]=unsigned(OwnershipPolicy::RetainedSource);
+    EffectManifest.Numbers[EffectPolicy+"controller_seat"]=unsigned(Role::Observer);EffectManifest.Numbers[EffectPolicy+"retire_on_vacancy"]=0;
+    Fixture Effects(EffectManifest);Admission.Header.Object=Effects.Key(0);Admission.Header.Event=ID(5717);
+    Admission.RuleId="runtime";Admission.Target={ObjectKind::Field,ID(5718),1};
+    RuntimeRecipe::Recipe EffectRecipe{Admission.Target,Admission.Header.Object,Admission.Header.Event,{5,6,7,8}};
+    Admission.CapabilityPayload=RuntimeRecipe::Encode(EffectRecipe);
+    Check(Effects.Client(1).Submit(Admission,{}).Valid(),"runtime effect uses the same production birth request path");Effects.Step();
+    for (const auto& [Player,Client]:Effects.Clients)
+        Check(Client->Objects().contains(Admission.Target) && Client->Objects().at(Admission.Target).Capabilities.contains(RuntimeRecipe::Name),"runtime effect and original recipe publish atomically to every client");
+    auto BadEffect=Effects.Client(1).Objects().at(Admission.Target);BadEffect.Parent.StableId=ID(5719);
+    Check(!FindCapability(RuntimeRecipe::Name)->ValidateState(BadEffect,BadEffect.Capabilities.at(RuntimeRecipe::Name)),"runtime recipe cannot be rebound to another source");
+
+    Fixture F;F.Step(20);const auto K=F.Key(1);TransactionRequest Work;Work.Header.Object=K;Work.Header.Event=ID(5710);
+    Work.Header.At=Work.StartedAt=5;Work.Kind=TransactionKind::Reserve;Work.RuleId="reserve";Work.Faction=Team::Red;
+    Work.ReservationKey={DeriveEconomyAccount(K),1};
+    Check(F.Client(2).Submit(Work,{},true).Valid(),"resume an original request without replacing its logical time");
+    Check(F.Client(2).PendingTransactions().front().Header.At==5,"queued resume retains the original request fingerprint time");
+    F.Step();const auto Before=F.Client(2).DuplicateResults();const auto Balance=F.Client(1).NumericState().TeamEconomy().Balance(Team::Red);
+    Check(F.Client(2).Submit(Work,{},true).Valid(),"resubmit the same original request at a later current clock");F.Step();
+    Check(F.Client(2).DuplicateResults()==Before+1 && F.Client(1).NumericState().TeamEconomy().Balance(Team::Red)==Balance,"original time replay deduplicates without another debit");
+    Work.Header.Event=ID(5711);Work.Header.At=F.Client(2).ObjectNow(K)+1;
+    Check(!F.Client(2).Submit(Work,{},true).Valid(),"resume cannot claim a future source-object age");
 }
 void CommittedPublicationBackpressure()
 {
@@ -254,6 +445,7 @@ void BoundedHandoffLaneAdmission()
     Message M;M.Header.Kind=MessageKind::HandoffState;M.Header.Match=ID(100);M.Header.Epoch=1;
     M.Header.Sender=ID(1);M.Header.Object={ObjectKind::Soldier,ID(20),1};M.Header.Event=ID(1500);M.Body=Bytes(1800,1);
     Check(Tx.CanQueueHandoff() && Tx.Queue(M,0),"one snapshot larger than the admission window enters an empty lane");
+    Check(!Tx.HasTransmittedReliable(Lane::Handoff,1),"queued birth/state is not yet on the wire");
     auto Next=M;Next.Header.Event=ID(1501);
     Check(!Tx.CanQueueHandoff() && !Tx.Queue(Next,0) && Tx.SentThrough(Lane::Handoff)==1,
         "backpressure does not allocate a reliable sequence or stack another state");
@@ -262,10 +454,14 @@ void BoundedHandoffLaneAdmission()
         const double Now=I*.1;
         Tx.Pump(Now,[&](std::span<const std::uint8_t> B){Check(B.size()<=1000,"handoff keeps datagram bound");
             return Rx.Receive(B,Now,[&](auto A){Acks.emplace_back(A.begin(),A.end());return true;},[&](Message V){Received.push_back(V.Header.Event);});});
+        if (!I) Check(!Tx.HasTransmittedReliable(Lane::Handoff,1),"partial first transmission cannot release metadata");
+        if (!Acks.empty()) Check(Tx.HasTransmittedReliable(Lane::Handoff,1),"complete first send releases metadata before any ACK");
         for (const auto& A:Acks) Check(Tx.Receive(A,Now,[](auto){return true;},[](auto){}),"deliver admission-window ACK");
         Acks.clear();
     }
     Check(Received==std::vector<Id>{ID(1500)} && Tx.CanQueueHandoff() && Tx.Metrics().QueuedBytes==0,"acknowledgement releases lane admission");
+    Check(Tx.HasTransmittedReliable(Lane::Handoff,1) && !Tx.HasTransmittedReliable(Lane::Handoff,2),
+        "acknowledged reliable sends stay complete; future sequences do not");
     Check(Tx.Queue(Next,2.1) && Tx.SentThrough(Lane::Handoff)==2,"next snapshot enters without a sequence hole");
 }
 void CommanderActivityPolicy()
@@ -305,11 +501,25 @@ void OrderedReliableTransport()
     std::reverse(Packets.begin(),Packets.end());
     for (const auto& P:Packets)
     {
+        Message Partial;Check(!InspectDatagramMessage(P,Partial),"a fragment cannot prove a transmitted application header");
         auto Ack=[&](std::span<const std::uint8_t> B){Acks.emplace_back(B.begin(),B.end());return true;};
         auto Apply=[&](Message M){Received.push_back(M.Header.Event);};
         Check(Rx.Receive(P,1,Ack,Apply),"reordered fragment received");Check(Rx.Receive(P,1,Ack,Apply),"duplicate fragment received");
     }
     Check(Received==std::vector<Id>{ID(1000),ID(1001),ID(1002)},"reliable order and duplicate suppression");
+    for (const auto& P:Acks) {Message Ack;Check(!InspectDatagramMessage(P,Ack),"ACK is not application transmission evidence");}
+    PeerChannel Single(ID(81));Message Small;Small.Header.Kind=MessageKind::Motion;Small.Header.Match=ID(100);
+    Small.Header.Epoch=1;Small.Header.Sender=ID(1);Small.Header.Object={ObjectKind::Soldier,ID(30),2};
+    Small.Header.OwnerEpoch=7;Small.Header.At=11;Small.Body=Bytes(20,3);bool Inspected=false;
+    Check(Single.Queue(Small,0),"queue complete motion for actual-send evidence");
+    Single.Pump(0,[&](auto Packet)
+    {
+        Message Actual;Check(InspectDatagramMessage(Packet,Actual),"complete motion exposes its actual wire header");
+        Check(Actual.Header.Match==Small.Header.Match && Actual.Header.Object==Small.Header.Object
+            && Actual.Header.OwnerEpoch==7 && Actual.Header.At==11 && Actual.Body==Small.Body,"wire evidence retains identity, life and ownership");
+        Inspected=true;return true;
+    });
+    Check(Inspected,"application evidence requires an actual send callback");
 }
 void LatestStateDuringFragmentedSend()
 {
@@ -353,13 +563,192 @@ void RoomMetadata()
     Check(Restored.Objects().at(O.Grant.Object).Grant.SimOwner==Owner && Restored.Phase()==RoomPhase::Running,"restart preserves running ownership");
     auto Reconnect=Restored.Members().at(ID(1));Check(Restored.Join(Reconnect,"config","map",6,Error),"control reconnect");
     Check(!Restored.Membership() && Restored.Phase()==RoomPhase::Running,"control reconnect does not pause the match");
+    {
+        Room Balanced(ID(103),"config","map");
+        Check(Balanced.ConfigureDefinitions({{"data/unit",{OwnershipPolicy::CommanderActivity,Role::Commander,false}}}),"leave reservation definitions");
+        for (unsigned N=1;N<=3;++N)
+        {Member M;M.Player=ID(N);M.Faction=Team::Red;M.Seat=Role(N-1);
+            Check(Balanced.Join(M,"config","map",0,Error) && Balanced.Ready(M.Player),"leave reservation roster");}
+        for (unsigned N=0;N<6;++N)
+        {ObjectRegistration V;V.Grant.Object={ObjectKind::Soldier,ID(5000+N),1};V.Grant.Faction=Team::Red;V.Definition="data/unit";
+            Check(Balanced.Register(V,0,ID(1)),"one source owns the departure wave");}
+        Balanced.SetInitialRosterReady(true);Balanced.Poll(0);
+        Check(Balanced.BeginLeave(ID(1),false,1),"start balanced departure before any installation");
+        std::map<Id,unsigned> Destinations;
+        for (const auto& [K,T]:Balanced.Ownership().Transfers()) ++Destinations[T.Target];
+        Check(Destinations[ID(2)]==3 && Destinations[ID(3)]==3,
+            "queued custody reservations balance equal-cost work across available receivers before grants commit");
+    }
+    {
+        OwnershipSettings Config;Config.MaximumLeaveBatch=2;
+        Room Queued(ID(102),"config","map",{},Config);
+        Check(Queued.ConfigureDefinitions({{"data/unit",{OwnershipPolicy::CommanderActivity,Role::Commander,false}}}),"queued departure definitions");
+        for (unsigned N=1;N<=2;++N)
+        {Member M;M.Player=ID(N);M.Faction=Team::Red;M.Seat=Role(N-1);
+            Check(Queued.Join(M,"config","map",0,Error) && Queued.Ready(M.Player),"queued departure roster");}
+        std::vector<ObjectKey> Owned;
+        for (unsigned N=0;N<7;++N)
+        {ObjectRegistration V;V.Grant.Object={ObjectKind::Soldier,ID(1000+N),1};V.Grant.Faction=Team::Red;V.Definition="data/unit";
+            Check(Queued.Register(V,0),"queued departure object");}
+        for (const auto& A:Queued.Propose(0)) Check(Queued.CommitAssignment(A.ProposedOwner,A.Object,A.ProposedEpoch,0),"queued initial grant");
+        Queued.SetInitialRosterReady(true);Queued.Poll(0);
+        for (const auto& [K,V]:Queued.Objects()) if (V.Grant.SimOwner==ID(1)) Owned.push_back(K);
+        Check(Owned.size()>2 && Queued.BeginLeave(ID(1),false,1),"queued source owns more objects than one window");
+        const auto Version=Queued.Membership()->Version;const auto Deadline=Queued.Membership()->Deadline;
+        Check(Queued.Ownership().Transfers().size()==2,"only one bounded transfer window starts timers");
+        Queued.MembershipReady(ID(1),Version,1);Queued.MembershipReady(ID(2),Version,1);
+        unsigned Waves=0;
+        while (Queued.Membership() && Waves<8)
+        {
+            const double At=1.+(++Waves)*.1;Queued.Propose(At);const auto Pending=Queued.Ownership().Transfers();
+            Check(!Pending.empty() && Pending.size()<=2 && Queued.Membership()->Deadline==Deadline,"queued departure retains membership deadline and transfer window");
+            for (const auto& [K,T]:Pending)
+            {Check(T.Deadline>At && T.Deadline<=At+5,"active transfer keeps original five-second deadline");
+                Check(Queued.Ownership().TargetPrepared(T.Target,K,T.IdValue) && Queued.Ownership().SourceFrozen(T.Source,K,T.IdValue,123)
+                    && Queued.Ownership().TargetInstalled(T.Target,K,T.IdValue,123),"queued state installs");}
+            Queued.Poll(At);Check(Queued.Membership().has_value(),"unpublished/deferred custody cannot finish departure");
+            Queued.TakeOwnershipActions(At);Queued.Poll(At);
+        }
+        Check(!Queued.Membership() && Waves>1 && Queued.Phase()==RoomPhase::Running,"queued departure drains all windows before completion");
+        for (const auto& K:Owned) Check(Queued.Objects().at(K).Grant.SimOwner==ID(2),"all queued private custody committed");
+    }
+    {
+        const auto Key=O.Grant.Object;const auto& Grant=Restored.Objects().at(Key).Grant;
+        Check(Restored.UpdateLifecycle(Owner,Key,Grant.OwnerEpoch,Life::Destroyed,6),"retired metadata retains its historical owner");
+        Check(Restored.BeginLeave(Owner,false,7),"retired owner can leave normally");
+        Check(Restored.Ownership().Transfers().empty(),"destroyed history never requests a nonexistent private-state transfer");
+        const auto Version=Restored.Membership()->Version;
+        for (unsigned N=1;N<=3;++N) Restored.MembershipReady(ID(N),Version,7);
+        Check(Restored.Phase()==RoomPhase::Running && !Restored.Members().at(Owner).Online,"retired history does not delay departure completion");
+    }
+    {
+        Room Departures(ID(101),"config","map");
+        Check(Departures.ConfigureDefinitions({{"data/unit",{OwnershipPolicy::CommanderActivity,Role::Commander,false}}}),"departure definitions");
+        for (unsigned N=1;N<=4;++N)
+        {Member M;M.Player=ID(N);M.Faction=N<=3?Team::Red:Team::Blue;M.Seat=N<=3?Role(N-1):Role::Commander;
+            Check(Departures.Join(M,"config","map",0,Error) && Departures.Ready(M.Player),"departure roster");}
+        for (unsigned N=0;N<3;++N)
+        {ObjectRegistration V;V.Grant.Object={ObjectKind::Soldier,ID(30+N),1};V.Grant.Faction=Team::Red;V.Definition="data/unit";
+            Check(Departures.Register(V,0),"departure unit");}
+        for (const auto& A:Departures.Propose(0)) Check(Departures.CommitAssignment(A.ProposedOwner,A.Object,A.ProposedEpoch,0),"departure initial grant");
+        Departures.SetInitialRosterReady(true);Departures.Poll(0);
+        Check(Departures.BeginLeave(ID(1),true,1),"first abrupt departure");
+        const auto Version=Departures.Membership()->Version;const double Deadline=Departures.Membership()->Deadline;
+        Check(!Departures.Propose(1).empty(),"another departing peer can already have an outstanding assignment");
+        Check(Departures.BeginLeave(ID(2),true,1.1) && Departures.BeginLeave(ID(3),true,1.2),"concurrent departures join the active roster change");
+        Check(Departures.Membership()->Version==Version && Departures.Membership()->Deadline==Deadline,"concurrent loss does not restart the membership deadline");
+        Check(Departures.Propose(1.3).empty(),"offline teammates are no longer assignment candidates");
+        Check(Departures.MembershipReady(ID(4),Version,1.3) && Departures.Phase()==RoomPhase::Running,"remaining team can finish the roster change");
+        Departures.Poll(2);Departures.Poll(32);
+        Check(Departures.Phase()==RoomPhase::Aborted && Departures.Failure().find("Empty team")!=std::string::npos,"empty team reaches its existing terminal interval");
+    }
 }
 void IndivisibleGroupsAndFixedRoles()
 {
     Room R(ID(5000),"config","map");std::string Error;
+    {
+        Room Carrier(ID(5003),"config","map");
+        Check(Carrier.ConfigureDefinitions({{"ship",{OwnershipPolicy::ControllerPinned,Role::Air,false}},
+            {"wingman",{OwnershipPolicy::ControllerPinned,Role::Air,true}},
+            {"flight",{OwnershipPolicy::RetainedSource,Role::Observer,false}}}),"pinned carrier definition");
+        for (unsigned N:{1u,3u,4u})
+        {
+            Member M;M.Player=ID(N);M.Faction=N<4?Team::Red:Team::Blue;M.Seat=N==3?Role::Air:Role::Commander;
+            Check(Carrier.Join(M,"config","map",0,Error) && Carrier.Ready(M.Player),"pinned carrier roster");
+        }
+        ObjectRegistration O;O.Grant.Object={ObjectKind::Ship,ID(5400),1};O.Grant.Faction=Team::Red;O.Definition="ship";
+        const auto Key=O.Grant.Object;Check(Carrier.Register(O,0),"pinned carrier declaration");
+        for (const auto& A:Carrier.Propose(0)) Check(A.ProposedOwner==ID(3)
+            && Carrier.CommitAssignment(A.ProposedOwner,A.Object,A.ProposedEpoch,0),"original Air carrier authority");
+        ObjectRegistration Member;Member.Grant.Object={ObjectKind::Wingman,ID(5410),1};Member.Grant.Faction=Team::Red;
+        Member.Grant.Controller=Member.Grant.SimOwner=ID(3);Member.Grant.OwnerEpoch=1;Member.Grant.State=Life::Alive;
+        Member.Grant.Policy=OwnershipPolicy::ControllerPinned;Member.Grant.SourceLease=ID(5411);Member.Definition="wingman";Member.Parent=Key;
+        Check(Carrier.Register(Member,0,ID(3)),"registered member before vacancy");
+        auto Unannounced=Member;Unannounced.Grant.Object.StableId=ID(5412);Unannounced.Grant.SourceLease=ID(5413);
+        Check(!Carrier.CanRecoverBirth(Unannounced,ID(1)),"live producer cannot be impersonated by its parent custodian");
+        Carrier.SetInitialRosterReady(true);Carrier.Poll(0);
+        const auto Original=Carrier.Members().at(ID(3));
+        Check(Carrier.BeginLeave(ID(3),true,.1),"abrupt Air vacancy");
+        const auto LeaveVersion=Carrier.Membership()->Version;
+        for (auto P:{ID(1),ID(4)}) Carrier.MembershipReady(P,LeaveVersion,.1);
+        Check(!Carrier.Membership() && Carrier.Objects().at(Key).Grant.Dormant
+            && Carrier.Objects().at(Key).Grant.StateCustodian==ID(1),"vacant carrier retained by a live custodian");
+        Check(Carrier.CanRecoverBirth(Unannounced,ID(1)) && !Carrier.CanRecoverBirth(Unannounced,ID(4))
+            && Carrier.Register(Unannounced,.15,ID(1)),"only actual parent custodian recovers a committed orphan birth");
+        const auto RecoveredMember=Carrier.Objects().at(Unannounced.Grant.Object).Grant;
+        Check(RecoveredMember.State==Life::Destroyed && RecoveredMember.OwnerEpoch==2,
+            "vacancy policy retires recovered old-tenure member under a newer authority");
+        ObjectRegistration Flight;Flight.Grant=Member.Grant;Flight.Grant.Object={ObjectKind::Flight,ID(5414),1};
+        Flight.Grant.Policy=OwnershipPolicy::RetainedSource;Flight.Grant.SourceLease=ID(5415);Flight.Definition="flight";Flight.Parent=Member.Grant.Object;
+        Check(Carrier.CanRecoverBirth(Flight,ID(1)) && Carrier.Register(Flight,.16,ID(1)),
+            "recovery follows a real retired-parent chain to the current carrier custodian");
+        const auto RecoveredFlight=Carrier.Objects().at(Flight.Grant.Object).Grant;
+        Check(RecoveredFlight.OwnerEpoch==2 && RecoveredFlight.SimOwner==ID(1) && RecoveredFlight.Controller==ID(3)
+            && RecoveredFlight.SourceLease==Flight.Grant.SourceLease && RecoveredFlight.State==Life::Alive,
+            "retained work preserves original provenance and rejects the old owner version");
+        Check(Carrier.Join(Original,"config","map",.2,Error) && Carrier.Ready(ID(3)),"original Air ready again");
+        const auto JoinVersion=Carrier.Membership()->Version;
+        // No scheduling poll between the final bootstrap ACK and completion.
+        for (auto P:{ID(1),ID(4),ID(3)}) Carrier.MembershipReady(P,JoinVersion,.2);
+        Check(Carrier.Membership().has_value() && Carrier.Ownership().Transfers().size()==1,
+            "final ready receipt cannot resume before pinned private custody returns");
+        const auto Transfer=Carrier.Ownership().Transfers().at(Key);
+        Check(Transfer.Source==ID(1) && Transfer.Target==ID(3)
+            && Carrier.Ownership().TargetPrepared(ID(3),Key,Transfer.IdValue)
+            && Carrier.Ownership().SourceFrozen(ID(1),Key,Transfer.IdValue,5400)
+            && Carrier.Ownership().TargetInstalled(ID(3),Key,Transfer.IdValue,5400),"pinned private state returns through the normal handoff");
+        Carrier.TakeOwnershipActions(.3);Carrier.Poll(.3);
+        const auto& Grant=Carrier.Objects().at(Key).Grant;
+        Check(!Carrier.Membership() && Carrier.Phase()==RoomPhase::Running && !Grant.Dormant
+            && Grant.Controller==ID(3) && Grant.SimOwner==ID(3) && !Grant.StateCustodian.Valid(),
+            "resumed fixed Air seat owns its active original carrier");
+    }
     const std::map<std::string,OwnershipDefinition> Definitions{
         {"resource",{OwnershipPolicy::SharedGroup,Role::Commander,false,"match/resources"}},
         {"unit",{OwnershipPolicy::CommanderActivity,Role::Commander,false}}};
+    {
+        Room Fresh(ID(5002),"config","map");Check(Fresh.ConfigureDefinitions(Definitions),"unassigned startup group definitions");
+        Member Ground;Ground.Player=ID(2);Ground.Faction=Team::Red;Ground.Seat=Role::Ground;
+        Check(Fresh.Join(Ground,"config","map",0,Error) && Fresh.Ready(Ground.Player),"startup helper ready before allocation");
+        ObjectRegistration O;O.Grant.Object={ObjectKind::Building,ID(5300),1};O.Grant.Faction=Team::Red;O.Definition="resource";
+        Check(Fresh.Register(O,0),"startup unassigned resource");Fresh.Poll(0);
+        Member Commander;Commander.Player=ID(1);Commander.Faction=Team::Red;Commander.Seat=Role::Commander;
+        Check(Fresh.Join(Commander,"config","map",.1,Error) && Fresh.Ready(Commander.Player),"Commander ready before first offers");
+        const auto Offers=Fresh.Propose(.1);Check(Offers.size()==1 && Offers.front().ProposedOwner==Commander.Player,"first group allocation prefers ready Commander");
+        Check(Fresh.CommitAssignment(Offers.front().ProposedOwner,Offers.front().Object,Offers.front().ProposedEpoch,.1),"first group grant committed");
+        const auto G=Fresh.OwnershipGroups().at(StableId("GuLiOwnershipGroup/v1","match/resources"));
+        Check(G.Owner==Commander.Player && Fresh.Objects().at(O.Grant.Object).Grant.SimOwner==G.Owner
+            && Fresh.Objects().at(O.Grant.Object).Grant.GroupEpoch==G.Version && Fresh.Ownership().Transfers().empty(),"unowned startup has coherent group metadata without a needless state transfer");
+    }
+    {
+        // A helper can become ready before the rendered Commander. Its actual
+        // group custody must remain authoritative until a complete transfer.
+        Room Early(ID(5001),"config","map");Check(Early.ConfigureDefinitions(Definitions),"early group definitions");
+        Member Ground;Ground.Player=ID(2);Ground.Faction=Team::Red;Ground.Seat=Role::Ground;
+        Check(Early.Join(Ground,"config","map",0,Error) && Early.Ready(Ground.Player),"helper ready first");
+        std::vector<ObjectKey> Initial;
+        for (unsigned N=0;N<2;++N)
+        {ObjectRegistration O;O.Grant.Object={ObjectKind::Building,ID(5200+N),1};O.Grant.Faction=Team::Red;O.Definition="resource";
+            Check(Early.Register(O,0),"early resource declaration");Initial.push_back(O.Grant.Object);}
+        const auto Offers=Early.Propose(0);Check(Offers.size()==2,"early initial offers");
+        Check(Early.CommitAssignment(Offers[0].ProposedOwner,Offers[0].Object,Offers[0].ProposedEpoch,0),"helper initial custody");
+        Member Commander;Commander.Player=ID(1);Commander.Faction=Team::Red;Commander.Seat=Role::Commander;
+        Check(Early.Join(Commander,"config","map",.1,Error) && Early.Ready(Commander.Player),"Commander ready later");
+        Early.Propose(.1);const auto Pending=Early.Ownership().Transfers();
+        Check(Pending.size()==1,"already owned startup state uses a real group handoff");
+        for (const auto& [K,T]:Pending)
+            Check(T.Source==Ground.Player && T.Target==Commander.Player
+                && Early.Ownership().TargetPrepared(T.Target,K,T.IdValue)
+                && Early.Ownership().SourceFrozen(T.Source,K,T.IdValue,900)
+                && Early.Ownership().TargetInstalled(T.Target,K,T.IdValue,900),"startup group state imported");
+        Early.TakeOwnershipActions(.2);
+        Check(!Early.CommitAssignment(Offers[1].ProposedOwner,Offers[1].Object,Offers[1].ProposedEpoch,.2),"old initial offer cannot split the committed group");
+        for (const auto& A:Early.Propose(.3)) Check(A.ProposedOwner==Commander.Player
+            && Early.CommitAssignment(A.ProposedOwner,A.Object,A.ProposedEpoch,.3),"unassigned state follows current group authority");
+        const auto Group=StableId("GuLiOwnershipGroup/v1","match/resources");const auto Authority=Early.OwnershipGroups().at(Group);
+        for (const auto& K:Initial) Check(Early.Objects().at(K).Grant.SimOwner==Authority.Owner
+            && Early.Objects().at(K).Grant.GroupEpoch==Authority.Version && Authority.Owner==Commander.Player,"group metadata and actual startup grants agree");
+    }
     Check(R.ConfigureDefinitions(Definitions),"generic group definitions");
     for (unsigned N:{1u,2u,4u})
     {Member M;M.Player=ID(N);M.Faction=N<4?Team::Red:Team::Blue;M.Seat=N==2?Role::Ground:Role::Commander;
@@ -484,8 +873,17 @@ void ScopedFragmentIsolation()
         auto A=O.Grant;A.SimOwner=A.Controller=ID(1);A.OwnerEpoch=A.ControlEpoch=1;A.State=Life::Alive;
         Check(State.SetAuthority(A),"install fragment test owner");
     }
-    Check(State.ConfigureResourceCatalog({{1,{1,0,Commodity::Blue,3}}},{Team::Red})
+    Check(State.ConfigureResourceCatalog({{1,{1,0,Commodity::Blue,3}},{2,{1,0,Commodity::Blue,3}},{3,{9,0,Commodity::Red,3}}},{Team::Red})
         && State.RegisterResourceMiner(K,10),"configure inventory fragment dependency");
+    for (const auto Cluster:{1u,9u})
+    {auto V=State.Objects().at(K);V.Grant.Object=MiningClusterObject(Cluster);V.Ordinal=0;
+        Check(State.Install(V),"install numeric resource-cluster shard");}
+    const std::array<ObjectKey,1> ClusterCut{MiningClusterObject(1)};
+    const auto ClusterFragments=State.Export(ClusterCut);
+    const auto Has=[&](const char* Name){return std::count_if(ClusterFragments.begin(),ClusterFragments.end(),
+        [&](const auto& V){return V.Key.Capability==Name;});};
+    Check(Has("ore/1")==1 && Has("ore/2")==1 && Has("leases/1")==1 && !Has("ore/3") && !Has("leases/9"),
+        "sparse cluster export contains its own ore and one lease fragment without another cluster");
     auto Object=State.Objects().at(K);Object.Vitals.Value=75;
     auto Fragment=[](const ObjectRecord& O,Revision Version)
     {Writer W;WriteObject(W,O);return StateFragment{{O.Grant.Object,"object"},1,Version,W.Take()};};
@@ -499,6 +897,20 @@ void ScopedFragmentIsolation()
     Check(State.Objects().at(K).Vitals.Value==75 && State.WorldResources().Snapshot().Miners.at(K).Cargo.Blue==2
         && State.WorldResources().Snapshot().Remaining.at(1)==3 && State.Objects().at(Parent).Vitals.Value==100,
         "scoped import preserves unrelated world state");
+    Check(State.RegisterResourceMiner(Parent,10),"configure another inventory in the same imported ledger");
+    const auto CargoFragment=[](ObjectKey Key,std::int32_t Amount,Revision Version)
+    {Writer W;W.U8(1);W.U32(10);WriteResources(W,{Amount,0});W.U64(60);W.U64(60);W.U64(2);
+        return StateFragment{{Key,"cargo"},1,Version,W.Take()};};
+    const auto BeforeBatch=EncodeResourceLedger(State.WorldResources().Snapshot());
+    Check(!State.Import(ID(1),{CargoFragment(K,3,2),CargoFragment(Parent,11,1)}),
+        "final resource batch validation rejects a later over-capacity inventory");
+    Check(EncodeResourceLedger(State.WorldResources().Snapshot())==BeforeBatch && State.Version({K,"cargo"})==1,
+        "invalid final batch cannot leak an earlier inventory or fragment version");
+    Check(State.Import(ID(1),{CargoFragment(K,3,2),CargoFragment(Parent,4,1)})
+        && State.WorldResources().Snapshot().Miners.at(K).Cargo.Blue==3
+        && State.WorldResources().Snapshot().Miners.at(Parent).Cargo.Blue==4
+        && State.WorldResources().Snapshot().Remaining.at(1)==3,
+        "one validated resource batch imports both inventories and preserves unrelated ore");
     auto Birth=State.Objects().at(Parent);Birth.Grant.Object.StableId=ID(3000);Birth.Parent=Parent;Birth.Grant.SourceLease=ID(3001);Birth.Ordinal=0;
     Check(State.Import(ID(1),{Fragment(Birth,1)}),"newborn authorization resolves a parent outside the fragment set");
     FrozenWorkRecipe Recipe;auto& R=Recipe.Request;R.Kind=TransactionKind::Upgrade;R.RuleId="upgrade";R.Faction=Team::Red;
@@ -688,6 +1100,12 @@ void LateBirthAcrossHandoff()
     const std::vector<StateFragment> ForgedParts{{{Forged.Grant.Object,"object"},1,1,Invalid.Take()}};
     OwnerState Observer(ID(100),ID(3));std::string Error;Check(Observer.Configure(F.Data,Error),"late birth rejection setup");
     Check(Observer.SetAuthority(Grant) && !Observer.Import(ID(2),ForgedParts),"old source owner cannot invent an unadmitted child");
+    auto Recovered=Birth;Recovered.Grant.SimOwner=ID(3);Recovered.Grant.OwnerEpoch=2;
+    Writer RecoveredBody;WriteObject(RecoveredBody,Recovered);
+    const std::vector<StateFragment> RecoveredParts{{{Recovered.Grant.Object,"object"},1,1,RecoveredBody.Take()}};
+    Check(!Observer.Import(ID(3),RecoveredParts),"new owner version requires the exact room admission");
+    const std::map<ObjectKey,Authority> Admitted{{Recovered.Grant.Object,Recovered.Grant}};
+    Check(Observer.Import(ID(3),RecoveredParts,false,&Admitted),"a receiver missing the original birth accepts its exact recovered grant and state");
 }
 void ResourceCopyIsolation()
 {
@@ -710,6 +1128,7 @@ int main()
 {
     try
     {
+        FrozenFlightAdmissionAndRequestTime();
         IndependentProgressAndValues();ScopedHandoff();CommittedPublicationBackpressure();PendingWorkStaysAtFrozenBoundary();HandoffBackpressureKeepsSourceRunning();BoundedHandoffLaneAdmission();CommanderActivityPolicy();OrderedReliableTransport();LatestStateDuringFragmentedSend();RoomMetadata();IndivisibleGroupsAndFixedRoles();FinalEventAfterMetadata();DelayedAcknowledgementFairness();ScopedFragmentIsolation();PlannedStateIsolation();ResourceCopyIsolation();ControlPointSupplyProjection();LateBirthAcrossHandoff();
         TargetOwnerSettlesDamageIndependently();ReliableCapacityWithBatchedAcknowledgements();SlowObserverCannotBlockOwnerEconomy();
         std::cout<<"Client ownership contracts passed; protocol="<<ProtocolVersion<<" manifest="<<ManifestVersion<<" handoff="<<HandoffVersion<<'\n';return 0;

@@ -61,6 +61,12 @@ bool InspectDatagramLane(std::span<const std::uint8_t> Packet,Lane& Out)
     PacketHeader H;std::span<const std::uint8_t> Body;
     if (!ReadPacket(Packet,H,Body)) return false;Out=H.Stream;return true;
 }
+bool InspectDatagramMessage(std::span<const std::uint8_t> Packet,Message& Out)
+{
+    PacketHeader H;std::span<const std::uint8_t> Body;
+    return ReadPacket(Packet,H,Body) && !(H.Flags&AckFlag) && H.Count==1 && H.Index==0
+        && H.Total==Body.size() && DecodeMessage(Body,Out);
+}
 bool PeerChannel::Queue(const Message& Value, double Now)
 {
     TraceScope Scope("GuLiHybrid_QueuePeerMessage");
@@ -102,12 +108,16 @@ bool PeerChannel::Queue(const Message& Value, double Now)
 bool PeerChannel::CanQueueHandoff() const
 {
     // Admission precedes the object's freeze. Keep at most a quarter-second
-    // of configured lane capacity waiting; one larger snapshot may enter an
-    // empty lane. Never accumulate repeated five-second transfer attempts.
+    // of configured lane capacity awaiting its first transmission; one larger
+    // snapshot may enter an empty lane. Reliable storage awaiting ACK remains
+    // bounded by the unchanged total queue and reliable send window.
     const double WindowBytes=std::max<double>(MaxDatagramBytes,Budget.BytesPerSecond[static_cast<std::size_t>(Lane::Handoff)]*.25);
     std::size_t Bytes=0;
-    for (const auto& [K,V]:Pending) if (K.first==Lane::Handoff)
-    {Bytes+=V.Wire.size();if (Bytes>=WindowBytes) return false;}
+    for (const auto& [K,V]:Pending) if (K.first==Lane::Handoff && !V.Attempts)
+    {
+        const auto Sent=std::min(V.Wire.size(),std::size_t(V.NextFragment)*FragmentBytes);
+        Bytes+=V.Wire.size()-Sent;if (Bytes>=WindowBytes) return false;
+    }
     return !HasFailed() && Pending.size()<Budget.MaxPendingMessages && Counters.QueuedBytes<Budget.MaxQueuedBytes;
 }
 bool PeerChannel::Receive(std::span<const std::uint8_t> Wire, double Now, const SendPacket& Ack, const Deliver& Apply)
@@ -278,5 +288,14 @@ std::vector<Message> PeerChannel::Unacknowledged() const
     for (const auto& [KeyValue, Value] : Pending)
     { (void)KeyValue; if (ReliableMessage(Value.Value.Header.Kind)) Out.push_back(Value.Value); }
     return Out;
+}
+bool PeerChannel::HasTransmittedReliable(Lane Stream,std::uint64_t Sequence) const
+{
+    const auto Index=static_cast<std::size_t>(Stream);
+    if (HasFailed() || Index>=NextSequence.size() || Stream==Lane::Motion
+        || !Sequence || Sequence>=NextSequence[Index]) return false;
+    const auto I=Pending.find({Stream,Sequence});
+    // Reliable entries leave Pending only after complete reassembly is ACKed.
+    return I==Pending.end() || I->second.Attempts>0;
 }
 }

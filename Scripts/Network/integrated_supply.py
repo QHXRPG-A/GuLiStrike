@@ -33,6 +33,18 @@ def capture(session):
     key=target['id']
     old_children={o['id']:o['simulator'] for o in objects(session) if o['parent']==key and o['life']<2}
     select(session,commander,army)
+    with session.preparation('capture party positions at the authored control point'):
+        from population_combat_preparation import positions
+        requests=[]
+        # Arrive just outside the center in a compact ring. Capture progress,
+        # faction settlement and inherited facility supply remain untouched.
+        for index,unit in enumerate(army):
+            angle=math.tau*index/max(1,len(army));point=list(target['position'])
+            point[0]+=900*math.cos(angle);point[1]+=900*math.sin(angle)
+            requests.append((unit,point,False,None))
+        prepared=positions(session,requests)
+        session.write_json(session.stage_output/'capture-position-preparation.json',{'positions':prepared,
+            'scope':'User-authorized positions; actual capture, ownership and power still run through the production rules.'})
     _,receipt=order(session,commander,target['position'])
     def captured():
         for e in session.clients:
@@ -46,6 +58,13 @@ def capture(session):
     prove(session,'territory_supply',captured(),
           'Formal movement captured an authored territory; its real facilities inherited the faction without moving existing simulators',
           receipt,'capture-input.json','territory-captured.json')
+    with session.preparation('return surviving capture party after actual capture'):
+        living={(o['id'],o.get('generation')):o for o in objects(session,True) if o['life']==1}
+        requests=[(living[key],value['object']['position'],False,None) for value in prepared
+                  if (key:=(value['object']['id'],value['object'].get('generation'))) in living]
+        restored=positions(session,requests,find_nearby=True) if requests else []
+        session.write_json(session.stage_output/'capture-party-restoration.json',{'positions':restored,
+            'scope':'Return surviving same-generation preparation participants after the real capture proof; ownership, power and capture progress are untouched.'})
     session.finish()
 
 
@@ -59,7 +78,8 @@ def unpaid(session):
                 and o['parent'] in directory and control_point(directory[o['parent']])
                 and float(manifest['numbers'].get(o['definition']+'/ProductionCount',0))>0
                 and not o['supplied'] and not o.get('producing',False)]
-    session.wait('unpaid-facility',lambda:bool(unpaid()),timeout=45)
+    with session.preparation('unpaid facility prerequisite'):
+        session.wait('unpaid-facility',lambda:bool(unpaid()),timeout=45)
     facility=unpaid()[0];facility_key=facility['id']
     def age():
         return next(o['logical_age'] for e in session.clients for o in session.states[e['name']]['objects']

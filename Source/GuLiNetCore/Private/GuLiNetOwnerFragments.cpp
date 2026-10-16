@@ -149,10 +149,18 @@ Bytes OwnerState::CaptureFragment(const StateKey& K) const
     }
     return {};
 }
-bool OwnerState::ApplyFragment(const StateFragment& F)
+bool OwnerState::UsesResourceLedger(const StateFragment& F)
+{
+    const auto& N=F.Key.Capability;
+    return N=="cargo" || N=="processor" || N.starts_with("ore/") || N.starts_with("territory/");
+}
+bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* ResourceBatch)
 {
     if (F.Schema!=1 || !F.Key.Object.Valid() || F.Key.Capability.empty()) return false;
     const auto& K=F.Key;const auto& N=K.Capability;Reader R(F.Value);
+    std::optional<ResourceLedgerState> SingleResources;
+    if (!ResourceBatch && UsesResourceLedger(F)) SingleResources=ResourceLedgerValue.Snapshot();
+    auto* LedgerState=ResourceBatch?ResourceBatch:(SingleResources?&*SingleResources:nullptr);
     if (N=="object")
     {
         ObjectRecord O;if (!ReadObject(R,O) || !R.Done() || O.Grant.Object!=K.Object || !UpgradeStateAllowed(O)) return false;
@@ -183,7 +191,7 @@ bool OwnerState::ApplyFragment(const StateFragment& F)
     }
     else if (N=="cargo" || N=="processor")
     {
-        auto S=ResourceLedgerValue.Snapshot();std::uint8_t Team;std::uint32_t Size;
+        auto& S=*LedgerState;std::uint8_t Team;std::uint32_t Size;
         if (N=="cargo")
         {
             MinerInventory V;
@@ -211,7 +219,7 @@ bool OwnerState::ApplyFragment(const StateFragment& F)
             if (Blue>INT32_MAX || Red>INT32_MAX) return false;
             S.Processed.Blue=static_cast<std::int32_t>(Blue);S.Processed.Red=static_cast<std::int32_t>(Red);
         }
-        S.Version=std::max(S.Version,F.Version);if (!ResourceLedgerValue.Restore(std::move(S))) return false;
+        S.Version=std::max(S.Version,F.Version);
     }
     else if (N=="tasks")
     {
@@ -224,18 +232,17 @@ bool OwnerState::ApplyFragment(const StateFragment& F)
         std::uint32_t Index=0;Id Event;
         if (SuffixNumber(N,"ore/",Index))
         {
-            auto S=ResourceLedgerValue.Snapshot();const auto I=S.Nodes.find(Index);std::uint8_t Remaining;std::uint32_t Held;
+            auto& S=*LedgerState;const auto I=S.Nodes.find(Index);std::uint8_t Remaining;std::uint32_t Held;
             if (I==S.Nodes.end() || K.Object!=MiningClusterObject(I->second.Cluster) || !R.U8(Remaining) || Remaining>I->second.Initial
                 || !R.U32(Held) || Held>Remaining || !R.Done()) return false;
             S.Remaining[Index]=Remaining;if (Held) HeldOre[Index]=Held;else HeldOre.erase(Index);
-            S.Version=std::max(S.Version,F.Version);if (!ResourceLedgerValue.Restore(std::move(S))) return false;
+            S.Version=std::max(S.Version,F.Version);
         }
         else if (SuffixNumber(N,"territory/",Index))
         {
-            auto S=ResourceLedgerValue.Snapshot();std::uint8_t Owner;
+            auto& S=*LedgerState;std::uint8_t Owner;
             if (K.Object!=TerritoryStateObject(Index) || Index>=S.Owners.size() || !R.U8(Owner) || Owner>2 || !R.Done()) return false;
             S.Owners[Index]=static_cast<Team>(Owner);S.Version=std::max(S.Version,F.Version);
-            if (!ResourceLedgerValue.Restore(std::move(S))) return false;
         }
         else if (SuffixNumber(N,"leases/",Index))
         {
@@ -261,7 +268,7 @@ bool OwnerState::ApplyFragment(const StateFragment& F)
             CommitResult V;Bytes B,Request;
             if (!R.Blob(B) || !DecodeCommit(B,V) || V.Event!=Event || V.StateDomain!=K.Object
                 || !R.Blob(Request) || !R.Done()) return false;
-            Results.insert_or_assign(Event,std::move(V));RequestBodies.insert_or_assign(Event,std::move(Request));ResultDomains[Event]=K.Object;
+            Results.insert_or_assign(Event,std::move(V));RequestBodies.insert_or_assign(Event,std::move(Request));IndexResultDomain(Event,K.Object);
         }
         else if (SuffixId(N,"attack/",Event))
         {
@@ -270,12 +277,14 @@ bool OwnerState::ApplyFragment(const StateFragment& F)
                 || !R.U64(A.Lifetime) || !R.U32(A.MaximumTargets) || !Count(R,Size,MaximumEffectTargets)) return false;
             for (std::uint32_t I=0;I<Size;++I) {ObjectKey T;if (!R.Key(T) || !A.Targets.insert(T).second) return false;}
             if (!R.Done() || A.Targets.size()>A.MaximumTargets || !Rules.contains(A.RuleId)) return false;
-            Attacks.insert_or_assign(Event,std::move(A));
+            IndexAttackDomain(Event,A.Source);Attacks.insert_or_assign(Event,std::move(A));
         }
         else if (N.starts_with("cooldown/"))
-        {Tick At;if (!R.U64(At) || !R.Done() || !Rules.contains(N.substr(9))) return false;LastAttack[{K.Object,N.substr(9)}]=At;}
+        {Tick At;if (!R.U64(At) || !R.Done() || !Rules.contains(N.substr(9))) return false;
+         LastAttack[{K.Object,N.substr(9)}]=At;HistoryFragments[K.Object].insert(N);}
         else return false;
     }
+    if (SingleResources && !ResourceLedgerValue.Restore(std::move(*SingleResources))) return false;
     Versions[K]=F.Version;return true;
 }
 std::set<StateKey> OwnerState::FragmentKeys(std::span<const ObjectKey> Keys) const
@@ -287,15 +296,19 @@ std::set<StateKey> OwnerState::FragmentKeys(std::span<const ObjectKey> Keys) con
         if (K==TeamAccountObject(Team::Red) || K==TeamAccountObject(Team::Blue)) Out.insert({K,"account"});
         if (R.Miners.contains(K)) Out.insert({K,"cargo"});if (R.Factories.contains(K)) Out.insert({K,"processor"});
     }
-    for (const auto& [Node,V]:R.Nodes)
-    {
-        const auto K=MiningClusterObject(V.Cluster);if (!Objects.contains(K)) continue;
-        Out.insert({K,"ore/"+std::to_string(Node)});Out.insert({K,"leases/"+std::to_string(V.Cluster)});
-    }
-    for (std::uint32_t I=0;I<R.Owners.size();++I) if (Objects.contains(TerritoryStateObject(I))) Out.insert({TerritoryStateObject(I),"territory/"+std::to_string(I)});
-    for (const auto& [E,K]:ResultDomains) if (Objects.contains(K)) Out.insert({K,"event/"+E.ToString()});
-    for (const auto& [E,V]:Attacks) if (Objects.contains(V.Source)) Out.insert({V.Source,"attack/"+E.ToString()});
-    for (const auto& [K,At]:LastAttack) if (Objects.contains(K.first)) Out.insert({K.first,"cooldown/"+K.second});
+    // Ore and territory fragments cannot belong to a flight, player or unit.
+    // A leave exports hundreds of individual flights: hashing all 6240 ore
+    // keys for each cut can exhaust the unchanged membership deadline.
+    for (const auto& K:Keys) if (K.Kind==ObjectKind::ResourceNode)
+        if (const auto I=IndexedSource().ResourceClusterNodes.find(K);I!=IndexedSource().ResourceClusterNodes.end())
+        {
+            for (const auto Node:I->second) Out.insert({K,"ore/"+std::to_string(Node)});
+            if (!I->second.empty()) Out.insert({K,"leases/"+std::to_string(IndexedSource().ResourceLedgerValue.Snapshot().Nodes.at(I->second.front()).Cluster)});
+        }
+    if (std::any_of(Keys.begin(),Keys.end(),[](const auto& K){return K.Kind==ObjectKind::Territory;}))
+        for (std::uint32_t I=0;I<R.Owners.size();++I) if (Objects.contains(TerritoryStateObject(I))) Out.insert({TerritoryStateObject(I),"territory/"+std::to_string(I)});
+    for (const auto& K:Objects) if (const auto History=HistoryFragments.find(K);History!=HistoryFragments.end())
+        for (const auto& Name:History->second) Out.insert({K,Name});
     return Out;
 }
 std::vector<StateFragment> OwnerState::Export(std::span<const ObjectKey> Objects) const

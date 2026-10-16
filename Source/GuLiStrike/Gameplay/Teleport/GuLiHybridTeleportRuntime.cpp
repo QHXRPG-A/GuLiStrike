@@ -161,7 +161,19 @@ public:
                 if (!R.IsCommitted()) UE_LOG(LogTemp,Warning,TEXT("Relocation request %s rejected status=%d stage=%d step=%u expected=%llu current=%llu age=%llu deadline=%llu payload=%d"),
                     *P.Event.ToString(),uint8(R.Status),uint8(S.Stage),S.Step,P.Expected,Record.RelationRevision,At,S.Deadline,P.Payload.Num());
                 if (!R.IsCommitted() && P.Automatic && P.Expected==Record.RelationRevision)
-                {H->Suspend(TEXT("An automatic relocation transition was finally rejected"));return;}
+                {
+                    Net::Command Attempt;bool Rejected=false;
+                    if (Net::Decode({P.Payload.GetData(),SIZE_T(P.Payload.Num())},Attempt)
+                        && Attempt.Op==Net::Operation::Advance && S.Stage==Net::Phase::Locking)
+                    {
+                        // Member acknowledgements advance independently of the
+                        // caster revision. A late rejection invalidates an
+                        // already queued Advance; the next operation is Return.
+                        if (!Acknowledged(S,Rejected)) return;
+                        if (Rejected) {Private.Pending.RemoveAt(0);return;}
+                    }
+                    H->Suspend(TEXT("An automatic relocation transition was finally rejected"));return;
+                }
                 Private.Pending.RemoveAt(0);return;
             }
             if (P.Submitted) return;

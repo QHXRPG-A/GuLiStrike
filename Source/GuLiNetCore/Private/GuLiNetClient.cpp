@@ -20,8 +20,24 @@ bool ClientWorld::Configure(const RuntimeManifest& M,std::string& Error)
 }
 void ClientWorld::StoreRecord(const ObjectRecord& O)
 {
-    const auto K=O.Grant.Object;Directory[K]=O;
+    const auto K=O.Grant.Object;const auto Old=Directory.find(K);
+    if (Old==Directory.end() || Old->second.Grant!=O.Grant) DirectoryHashDirty=true;
+    Directory[K]=O;
     if (O.Grant.State==Life::Alive) SimulationCandidates.insert(K);else SimulationCandidates.erase(K);
+}
+const std::string& ClientWorld::DirectoryHash() const
+{
+    if (DirectoryHashDirty)
+    {
+        // This local digest includes the complete retained directory, not a
+        // wire message. 100000 fixed-size authorities fit the existing 16 MiB
+        // bound. Never turn a Writer overflow into a valid empty-input hash.
+        Writer W(MaxPrivateStateBytes);
+        for (const auto& [K,O]:Directory) WriteAuthority(W,O.Grant);
+        CachedDirectoryHash=W.Good()?Sha256(W.Take()):std::string{};
+        DirectoryHashDirty=false;
+    }
+    return CachedDirectoryHash;
 }
 void ClientWorld::SetMembers(std::map<Id,Member> Values) {Members=std::move(Values);Numbers.SetMembers(Members);}
 bool ClientWorld::RegisterSystem(std::string Name,std::unique_ptr<ISharedStateAdapter> Adapter)
@@ -29,7 +45,7 @@ bool ClientWorld::RegisterSystem(std::string Name,std::unique_ptr<ISharedStateAd
     if (Name.empty() || !Adapter || !Adapter->Version() || Systems.contains(Name)) return false;
     Systems.emplace(std::move(Name),std::move(Adapter));return true;
 }
-bool ClientWorld::Install(ObjectRecord R,bool Commit)
+bool ClientWorld::PrepareAdapterRecord(const ObjectRecord& R,const PrivateObjectState* Private)
 {
     const auto K=R.Grant.Object;if (!Failure.empty() || !K.Valid()) return false;
     const auto Old=Directory.find(K);
@@ -39,9 +55,15 @@ bool ClientWorld::Install(ObjectRecord R,bool Commit)
     {
         auto A=Create(R);if (!A || !A->Version()) return false;
         for (const auto& Name:A->RequiredSystems()) if (!Systems.contains(Name)) {A->Release();return false;}
-        if (!A->Prepare(R)) {A->Release();return false;}
+        if (Private && (Private->Record.Grant.Object!=K || Private->AdapterVersion!=A->Version())) {A->Release();return false;}
+        if (!(Private?A->PrepareRestore(R,Private->State):A->Prepare(R))) {A->Release();return false;}
         Adapters.emplace(K,std::move(A));
     }
+    return true;
+}
+bool ClientWorld::Install(ObjectRecord R,bool Commit)
+{
+    if (!PrepareAdapterRecord(R)) return false;const auto K=R.Grant.Object;
     if (!Commit) return true;
     if (!Numbers.Install(R)) return false;
     StoreRecord(Numbers.Objects().at(K));
@@ -49,8 +71,10 @@ bool ClientWorld::Install(ObjectRecord R,bool Commit)
     {A->second->SetAuthority(R.Grant,HasSimulation(K));A->second->ApplyLedger(Directory.at(K),Numbers.Version({K,"object"}),false);}
     return true;
 }
-bool ClientWorld::InstallGrant(const Authority& Grant)
+bool ClientWorld::InstallGrant(const Authority& Grant,std::uint32_t Ordinal)
 {
+    Numbers.ObserveTerminalAuthority(Grant);
+    Numbers.ObserveObjectOrdinal(Grant.Object.Kind,Ordinal);
     const auto I=Directory.find(Grant.Object);if (I==Directory.end()) {PendingGrants[Grant.Object]=Grant;return true;}
     const bool Changed=I->second.Grant.OwnerEpoch!=Grant.OwnerEpoch;
     if (!Numbers.SetAuthority(Grant)) return false;
@@ -58,6 +82,19 @@ bool ClientWorld::InstallGrant(const Authority& Grant)
     if (Changed) {MotionApplied.erase(Grant.Object);PublicStateApplied.erase(Grant.Object);}
     if (const auto A=Adapters.find(Grant.Object);A!=Adapters.end()) A->second->SetAuthority(I->second.Grant,HasSimulation(Grant.Object));
     return true;
+}
+bool ClientWorld::SetBootstrapMaterializationDeferred(bool Value)
+{
+    BootstrapMaterializationDeferred=Value;if (Value) return true;
+    for (const auto& K:DeferredMaterialization)
+    {
+        const auto O=Numbers.Objects().find(K);if (O==Numbers.Objects().end()) continue;
+        // StageBootstrapDirectory has prepared historical provenance through
+        // PrepareRestore. Reapply the current ledger, then resume strict mode.
+        if (!Install(O->second,true))
+        {Cancel("Unable to materialize restored object: "+O->second.Definition+" ordinal="+std::to_string(O->second.Ordinal));return false;}
+    }
+    DeferredMaterialization.clear();return true;
 }
 bool ClientWorld::HasSimulation(ObjectKey K,bool Dead) const
 {
@@ -269,11 +306,13 @@ void ClientWorld::RecordReceiveRejection(const Message& V)
 {
     // Keep bounded examples per message kind so startup motion cannot hide
     // later state/transaction failures behind the first sixteen samples.
-    if (ReceiveRejections.size()>=96 || std::count_if(ReceiveRejections.begin(),ReceiveRejections.end(),
-        [&](const auto& R){return R.Header.Kind==V.Header.Kind;})>=8) return;
     ReceiveRejection R;R.Header=V.Header;R.ReceivedAt=Now();R.BodyBytes=V.Body.size();
     if (const auto O=Directory.find(V.Header.Object);O!=Directory.end())
     {R.ObjectKnown=true;R.Materialized=O->second.Materialized;R.State=O->second.Grant.State;}
+    if (RecentRejections.size()>=64) RecentRejections.erase(RecentRejections.begin());
+    RecentRejections.push_back(R);
+    if (ReceiveRejections.size()>=96 || std::count_if(ReceiveRejections.begin(),ReceiveRejections.end(),
+        [&](const auto& Previous){return Previous.Header.Kind==V.Header.Kind;})>=8) return;
     ReceiveRejections.push_back(std::move(R));
 }
 bool ClientWorld::ReceivePeer(Id Sender,const Message& V)
@@ -346,7 +385,11 @@ bool ClientWorld::ReceivePeer(Id Sender,const Message& V)
         else IncomingCommands.push_back(std::move(Original));return true;
     }
     if (V.Header.Kind==MessageKind::HandoffState)
-    {ObjectHandoffState S;return DecodeHandoffState(V.Body,S) && InstallHandoff(Sender,S);}
+    {
+        ObjectHandoffState S;
+        if (!DecodeHandoffState(V.Body,S)) {RecordReceiveRejection(V);return HandoffIssue("receive/decode");}
+        return InstallHandoff(Sender,S);
+    }
     const auto A=Adapters.find(V.Header.Object);if (A==Adapters.end()) {++UnknownMotionLives;RecordReceiveRejection(V);return false;}
     if (V.Header.Kind==MessageKind::MotionAcknowledgment)
     {
@@ -358,16 +401,20 @@ bool ClientWorld::ReceivePeer(Id Sender,const Message& V)
     {
         auto& S=MotionStats[V.Header.Object];++S.Received;S.Sender=Sender;S.LastReceived=V.Header.At;S.ReceivedOwnerEpoch=V.Header.OwnerEpoch;
         const auto& O=Directory.at(V.Header.Object);S.ExpectedOwnerEpoch=O.Grant.OwnerEpoch;S.ExpectedSender=O.Grant.SimOwner;
-        if (!ValidatePeer(Sender,V.Header,Domain::Simulation,true)) {++S.AuthorityRejected;return false;}
+        if (!ValidatePeer(Sender,V.Header,Domain::Simulation,true)) {++S.AuthorityRejected;RecordReceiveRejection(V);return false;}
         auto& Applied=V.Header.Kind==MessageKind::Motion?MotionApplied:PublicStateApplied;
         if (const auto Last=Applied.find(V.Header.Object);Last!=Applied.end() && V.Header.At<=Last->second) {++S.Stale;return true;}
         const bool Good=V.Header.Kind==MessageKind::Motion?A->second->ApplyMotion(V.Body,V.Header.At):A->second->ApplyPublicState(V.Body,V.Header.At);
         if (!Good) {++S.InvalidState;return false;}
-        Applied[V.Header.Object]=V.Header.At;Directory.at(V.Header.Object).LogicalAge=V.Header.At;
+        Applied[V.Header.Object]=V.Header.At;
+        auto& Age=Directory.at(V.Header.Object).LogicalAge;Age=std::max(Age,V.Header.At);Numbers.SetLogicalAge(V.Header.Object,Age);
         ++S.Applied;S.LastApplied=V.Header.At;return true;
     }
     if (V.Header.Kind==MessageKind::ObjectEvent)
-        return ValidatePeer(Sender,V.Header,Domain::Simulation,true) && A->second->ApplyObjectEvent(V.Body,V.Header.At);
+    {
+        if (!ValidatePeer(Sender,V.Header,Domain::Simulation,true) || !A->second->ApplyObjectEvent(V.Body,V.Header.At)) return false;
+        auto& Age=Directory.at(V.Header.Object).LogicalAge;Age=std::max(Age,V.Header.At);Numbers.SetLogicalAge(V.Header.Object,Age);return true;
+    }
     return false;
 }
 bool ClientWorld::ImportPeerState(Id Sender,const Message& V)
@@ -376,7 +423,10 @@ bool ClientWorld::ImportPeerState(Id Sender,const Message& V)
     std::vector<StateFragment> Parts;
     for (std::uint32_t I=0;I<Count;++I)
     {StateFragment P;if (!ReadStateFragment(R,P)) return false;Parts.push_back(std::move(P));}
-    if (!R.Done() || !Numbers.Import(Sender,Parts,false,&PendingGrants)) return false;
+    if (!R.Done()) return false;
+    std::string Reason;
+    if (!Numbers.Import(Sender,Parts,false,&PendingGrants,&Reason))
+    {LastStateImportFailure=std::move(Reason);return false;}
     RefreshRecords(Parts);return true;
 }
 void ClientWorld::RetryPeerStates()
@@ -392,13 +442,15 @@ void ClientWorld::RetryPeerStates()
         else ++I;
     }
 }
-Id ClientWorld::Submit(TransactionRequest R,TransactionCallback Callback)
+Id ClientWorld::Submit(TransactionRequest R,TransactionCallback Callback,bool PreserveOriginalTime)
 {
     if (!Failure.empty() || !R.Header.Event.Valid() || Pending.contains(R.Header.Event) || !HasSimulation(R.Header.Object,true)) return {};
     const auto& O=Directory.at(R.Header.Object);R.Header.Kind=MessageKind::Transaction;R.Header.Match=Match;R.Header.Epoch=Epoch();R.Header.Sender=Player;
-    R.Header.OwnerEpoch=O.Grant.OwnerEpoch;R.Header.ControlEpoch=O.Grant.ControlEpoch;R.Header.At=O.LogicalAge;R.Header.Sequence=Sequence++;
+    if (PreserveOriginalTime && (R.Header.At>O.LogicalAge || R.StartedAt>R.Header.At)) return {};
+    R.Header.OwnerEpoch=O.Grant.OwnerEpoch;R.Header.ControlEpoch=O.Grant.ControlEpoch;
+    if (!PreserveOriginalTime) R.Header.At=O.LogicalAge;R.Header.Sequence=Sequence++;
     if (!R.RootEvent.Valid()) R.RootEvent=R.Header.Event;
-    if (!R.StartedAt) R.StartedAt=O.LogicalAge;
+    if (!R.StartedAt) R.StartedAt=R.Header.At;
     if (R.Kind==TransactionKind::Damage && !Numbers.FreezeDamage(R)) return {};
     const Id Event=R.Header.Event;Pending.emplace(Event,PendingTransaction{std::move(R),std::move(Callback),0});return Event;
 }
@@ -423,10 +475,19 @@ Id ClientWorld::SubmitAdmitted(TransactionRequest R)
 }
 void ClientWorld::RefreshRecords(std::span<const StateFragment> Fragments,bool Effects)
 {
+    // A committed batch can contain both a newborn and its admitted parent.
+    // Publish the complete directory before any adapter resolves those links;
+    // ObjectKey order places buildings before BusinessWork parents.
+    std::set<ObjectKey> NewRecords;
     for (const auto& F:Fragments) if (F.Key.Capability=="object")
     {
         const auto O=Numbers.Objects().find(F.Key.Object);if (O==Numbers.Objects().end()) continue;
-        const bool New=!Directory.contains(F.Key.Object);StoreRecord(O->second);
+        if (!Directory.contains(F.Key.Object)) NewRecords.insert(F.Key.Object);
+        StoreRecord(O->second);
+    }
+    for (const auto& F:Fragments) if (F.Key.Capability=="object")
+    {
+        const auto O=Numbers.Objects().find(F.Key.Object);if (O==Numbers.Objects().end()) continue;
         if (Numbers.Owner(F.Key.Object)==Player && (!PublishedLife.contains(F.Key.Object) || PublishedLife.at(F.Key.Object)!=O->second.Grant.State))
         {
             Writer W;W.U8(static_cast<std::uint8_t>(O->second.Grant.State));
@@ -436,12 +497,15 @@ void ClientWorld::RefreshRecords(std::span<const StateFragment> Fragments,bool E
         {const auto Grant=G->second;PendingGrants.erase(G);InstallGrant(Grant);}
         if (O->second.Materialized && !Adapters.contains(F.Key.Object))
             if (!Install(O->second,true))
-            {Cancel("Unable to materialize committed object: "+O->second.Definition+" ordinal="+std::to_string(O->second.Ordinal));return;}
+            {
+                if (BootstrapMaterializationDeferred) DeferredMaterialization.insert(F.Key.Object);
+                else {Cancel("Unable to materialize committed object: "+O->second.Definition+" ordinal="+std::to_string(O->second.Ordinal));return;}
+            }
         if (const auto A=Adapters.find(F.Key.Object);A!=Adapters.end())
         // Import can ignore an older fragment. The adapter receives the current
         // numeric record, so its revision must describe that same record.
         {A->second->SetAuthority(O->second.Grant,HasSimulation(F.Key.Object));A->second->ApplyLedger(O->second,Numbers.Version(F.Key),Effects);}
-        if (New && Numbers.Owner(F.Key.Object)==Player)
+        if (NewRecords.contains(F.Key.Object) && Numbers.Owner(F.Key.Object)==Player)
         {Writer W;WriteAuthority(W,O->second.Grant);W.Text(O->second.Definition);W.U32(O->second.Ordinal);W.Key(O->second.Parent);SendMessage({},MessageKind::RegisterObject,{},F.Key.Object,W.Take());}
     }
 }
@@ -449,13 +513,25 @@ bool ClientWorld::ApplyCommit(const CommitResult& R)
 {
     for (const auto& S:R.RequiredStates) if (Numbers.Version({S.Object,S.Capability})<S.Version)
     {WaitingResults[R.Event]=R;return true;}
-    PlayerIntents.erase(R.Event);
-    KnownWork.erase(R.Event);
     auto ResolvePending=[&]
     {
         if (const auto P=Pending.find(R.Event);P!=Pending.end())
         {auto Callback=std::move(P->second.Callback);Pending.erase(P);if (Callback) Callback(R);}
     };
+    // A malformed or stale delivery can be rejected before any ledger
+    // decision exists. Resolve that request without consuming the event's
+    // one gameplay completion; its real committed publication may arrive later.
+    if (!R.StateVersion && R.Status!=CommitStatus::Committed && R.Status!=CommitStatus::Duplicate)
+    {
+        ++UnsettledReceiptTotal;
+        if (UnsettledReceiptEvidence.size()>=128) UnsettledReceiptEvidence.pop_front();
+        UnsettledReceiptEvidence.push_back(R);
+        if (R.Status!=CommitStatus::Deferred && R.Status!=CommitStatus::Paused)
+        {PlayerIntents.erase(R.Event);ResolvePending();}
+        return true;
+    }
+    PlayerIntents.erase(R.Event);
+    KnownWork.erase(R.Event);
     const bool First=ObservedCommits.insert(R.Event).second;
     // A rebound requester can register after this replica already observed the
     // decision. Finish that delivery without applying gameplay effects twice.

@@ -10,6 +10,8 @@
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/Private/GuLiHybridStateArchive.h"
 #include "Network/Private/GuLiHybridReflectedState.h"
+#include "Network/Private/GuLiHybridObjectConversions.h"
+#include "GuLiNetRuntimeEffectRecipe.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Combat/GuLiLogicalMissileSubsystem.h"
 #include "Engine/World.h"
@@ -34,6 +36,7 @@ struct FRecord
     TArray<FHit> Hits;
     TArray<FGuLiCombatEffectState> PendingPublic;
     bool Admitted=false,Finished=false,Published=false,TerminalPublished=false,RetirementSubmitted=false;
+    uint64 RetirementAt=0;bool RetirementPrepared=false;
 };
 struct FCooldown { FGuLiHybridObjectKey Member,Carrier;FName Slot;FGuLiWingmanBurstCooldown Value; };
 struct FPiece { uint32 Epoch=0;double At=0;TArray<FRecord> Records;TArray<FCooldown> Cooldowns; };
@@ -71,6 +74,7 @@ void Record(FGuLiHybridStateArchive& A,FRecord& R)
     A.Value(I.bHoming);A.Value(I.HomingTurnRate);
     A.Array(R.PendingPublic,4,[](auto& W,auto& S){State(W,S);});
     A.Value(R.Admitted);A.Value(R.Finished);A.Value(R.Published);A.Value(R.TerminalPublished);A.Value(R.RetirementSubmitted);
+    A.Value(R.RetirementAt);A.Value(R.RetirementPrepared);
     A.Array(R.Hits,MaximumPendingHits,[](auto& W,auto& H)
     {W.Value(H.Target);W.Value(H.Event);W.Value(H.Root);W.Value(H.Location);W.Value(H.StartedAt);W.Value(H.Submitted);W.Value(H.Resolved);
      if (!H.Target.IsValid() || !H.Event.IsValid() || !H.Root.IsValid() || (H.Resolved && !H.Submitted)) W.Reject();});
@@ -80,7 +84,8 @@ void Record(FGuLiHybridStateArchive& A,FRecord& R)
         || (I.State.EffectId!=R.Key.StableId && I.State.EffectId!=Event(R.Key,TEXT("/field")))
         || I.Context.SkillId.IsNone() || I.Context.Damage<=0 || I.Context.MatchEpoch!=I.State.MatchEpoch
         || I.Interval<=0 || I.Duration<0 || I.FrozenRadius<0 || I.DeliveredPulses<0 || I.HomingTurnRate<0
-        || (R.TerminalPublished && !R.Finished) || (R.RetirementSubmitted && !R.Finished)) A.Reject();
+        || (R.TerminalPublished && !R.Finished) || (R.RetirementPrepared && !R.Finished)
+        || (R.RetirementSubmitted && !R.RetirementPrepared)) A.Reject();
 }
 void Piece(FGuLiHybridStateArchive& A,FPiece& P)
 {
@@ -112,9 +117,15 @@ struct FGuLiHybridEffectRuntime final:FGCObject
     TMap<FGuid,FRecord> Records;
     TMap<FGuid,FGuid> ByPresentation;
     bool Restoring=false;
+    bool Includes(const TArray<FGuLiHybridObjectKey>& Objects,const FRecord& R) const
+    {
+        if (Objects.Contains(R.Key)) return true;
+        if (R.Admitted || !Objects.Contains(R.Source)) return false;
+        FGuLiHybridObjectState Existing;return !Hybrid->GetObject(R.Key,Existing);
+    }
     bool UsesObject(const FGuLiHybridObjectKey& K) const
     {
-        for (const auto& P:Records) if (!P.Value.Admitted && P.Value.Source==K) return true;
+        for (const auto& P:Records) if (Includes({K},P.Value)) return true;
         if (!Runtime.IsValid() || !Hybrid.IsValid()) return false;
         for (const auto& P:Runtime->WingmanBurstCooldowns)
         {FGuLiHybridObjectKey Member;if (Hybrid->ResolveTarget(GuLiCombatTargets::MakeWingmanTargetHandle(P.Key),Member) && Member==K) return true;}
@@ -145,8 +156,8 @@ struct FGuLiHybridEffectRuntime final:FGCObject
     bool Rebind(FRecord& R)
     {
         auto& I=R.Instance;auto& S=I.State;
-        if (!Resolve(R.Source,I.Context.Source)
-            || (R.Target.IsValid() && !Resolve(R.Target,I.Context.Target))) return false;
+        if (!ResolveStored(R.Source,I.Context.Source)
+            || (R.Target.IsValid() && !ResolveStored(R.Target,I.Context.Target))) return false;
         S.Source=I.Context.Source;S.Target=I.Context.Target;
         S.MatchEpoch=I.Context.MatchEpoch=I.Context.WeaponBinding.MatchEpoch=Epoch();I.SourceLease={};
         I.Projectile=S.ProjectileDefinition.LoadSynchronous();I.Field=S.FieldDefinition.LoadSynchronous();
@@ -154,6 +165,12 @@ struct FGuLiHybridEffectRuntime final:FGCObject
         if ((!S.ProjectileDefinition.IsNull() && !I.Projectile) || (!S.FieldDefinition.IsNull() && !I.Field)
             || (!S.GroundWarningStyle.IsNull() && !I.GroundWarningStyle)) return false;
         I.CurveCoefficients.Initialize(S);return true;
+    }
+    bool ResolveStored(const FGuLiHybridObjectKey& Key,FGuLiTargetHandle& Target) const
+    {
+        FGuLiTargetHandle Current;
+        if (Resolve(Key,Current)) {Target=Current;return true;}
+        return Target.IsValid();
     }
     bool ApplyPublic(const FGuLiCombatEffectState& S,bool Bootstrap)
     {
@@ -166,12 +183,13 @@ struct FGuLiHybridEffectRuntime final:FGCObject
     bool PublishState(FRecord& R,FGuLiCombatEffectState State,bool Reliable,bool Bootstrap=false)
     {
         State.MatchEpoch=Epoch();
-        if (!Resolve(R.Source,State.Source) || (R.Target.IsValid() && !Resolve(R.Target,State.Target))) return false;
+        if (!ResolveStored(R.Source,State.Source) || (R.Target.IsValid() && !ResolveStored(R.Target,State.Target))) return false;
         if (!R.Admitted || !ApplyPublic(State,Bootstrap)) return false;
         if (Bootstrap) return true;
         UGuLiCombatEffectReplicationComponent::RebasePublishedState(Runtime->GetWorld(),Hybrid->GetObjectLogicalTick(R.Key),State);
-        FGuLiHybridStateArchive A(16*1024);uint32 Version=GuLiEffectRuntimeContract::Version;A.Value(Version);
+        FGuLiHybridStateArchive A(GuLiNet::MaxMessageBytes-256);uint32 Version=GuLiEffectRuntimeContract::Version;A.Value(Version);
         auto Source=R.Source,Target=R.Target;A.Value(Source);A.Value(Target);GuLiEffectState::State(A,State);
+        TArray<uint8> Private;if (!EncodeRecord(R,Private)) return false;A.Bytes(Private,GuLiNet::MaxMessageBytes-512);
         TArray<uint8> Bytes;if (!A.Finish(Bytes)) return false;
         const auto Event=GuLiEffectState::Event(R.Key,TEXT("/public/")+State.EffectId.ToString(EGuidFormats::Digits)
             +TEXT("/")+LexToString(State.Sequence)+TEXT("/")+LexToString(uint8(State.Phase)));
@@ -188,15 +206,55 @@ struct FGuLiHybridEffectRuntime final:FGCObject
     }
     bool Receive(const FGuLiHybridObjectState& O,TConstArrayView<uint8> Bytes,uint64 CapturedEpoch=0,TOptional<uint64> OwnerTick={})
     {
-        FGuLiHybridStateArchive A(Bytes,16*1024);uint32 Version=0;FGuLiHybridObjectKey Source,Target;FGuLiCombatEffectState S;
+        FGuLiHybridStateArchive A(Bytes,GuLiNet::MaxMessageBytes-256);uint32 Version=0;FGuLiHybridObjectKey Source,Target;FGuLiCombatEffectState S;
         A.Value(Version);A.Value(Source);A.Value(Target);GuLiEffectState::State(A,S);
+        TArray<uint8> Private;A.Bytes(Private,GuLiNet::MaxMessageBytes-512);
         if (!A.Done() || Version!=GuLiEffectRuntimeContract::Version || Source!=O.Parent
             || S.MatchEpoch!=(CapturedEpoch?CapturedEpoch:Epoch())
-            || (S.EffectId!=O.Key.StableId && S.EffectId!=GuLiEffectState::Event(O.Key,TEXT("/field")))) return false;
+            || (S.EffectId!=O.Key.StableId && S.EffectId!=GuLiEffectState::Event(O.Key,TEXT("/field")))
+            || !CacheRecord(O,Private,false)) return false;
         if (O.LifeState>=2 && S.Phase!=EGuLiCombatEffectPhase::Finished) return true;
-        if (!Resolve(Source,S.Source) || (Target.IsValid() && !Resolve(Target,S.Target))) return false;
+        if (!ResolveStored(Source,S.Source) || (Target.IsValid() && !ResolveStored(Target,S.Target))) return false;
         if (OwnerTick.IsSet()) UGuLiCombatEffectReplicationComponent::RebaseReceivedState(Runtime->GetWorld(),OwnerTick.GetValue(),S);
         S.MatchEpoch=Epoch();return ApplyPublic(S,CapturedEpoch!=0);
+    }
+    bool EncodeRecord(const FRecord& R,TArray<uint8>& Bytes) const
+    {
+        GuLiEffectState::FPiece P;P.Epoch=Epoch();P.At=Hybrid->GetLocalLogicalSeconds();auto Copy=R;
+        if (const auto* Live=Runtime->Effects.Find(R.Instance.State.EffectId)) Copy.Instance=*Live;
+        P.Records.Add(Copy);FGuLiHybridStateArchive A(GuLiNet::MaxMessageBytes-1024);GuLiEffectState::Piece(A,P);return A.Finish(Bytes);
+    }
+    bool CacheRecord(const FGuLiHybridObjectState& O,TConstArrayView<uint8> Bytes,bool Birth)
+    {
+        GuLiEffectState::FPiece P;
+        if (!GuLiEffectState::Decode(Bytes,P) || P.Epoch!=Epoch() || P.Records.Num()!=1 || !P.Cooldowns.IsEmpty()) return false;
+        auto R=P.Records[0];if (R.Key!=O.Key || R.Source!=O.Parent || R.Admission!=O.SpawnEvent) return false;
+        if (O.LifeState==3) return true;
+        if (auto* Old=Records.Find(O.Key.StableId))
+        {
+            if (Old->Key!=R.Key || Old->Source!=R.Source || Old->Admission!=R.Admission) return false;
+            if (Birth || O.SimulationOwner==Player() || (Old->Instance.State.EffectId==R.Instance.State.EffectId && Old->Instance.State.Sequence>R.Instance.State.Sequence)) return true;
+            ByPresentation.Remove(Old->Instance.State.EffectId);
+        }
+        else if (Records.Num()>=int32(GuLiEffectRuntimeContract::MaximumRecords)) return false;
+        const float Offset=float(Hybrid->GetLocalLogicalSeconds()-P.At);auto Rebase=[&](FGuLiCombatEffectState& S)
+        {S.StartTime+=Offset;S.SampleTime+=Offset;S.ActivationTime+=Offset;S.EndTime+=Offset;};
+        Rebase(R.Instance.State);R.Instance.LastCorrection+=Offset;for (auto& S:R.PendingPublic) Rebase(S);
+        // Observers do not inherit the former owner's pending send queue.
+        // Same-event work keeps its original pulse age when it is resubmitted.
+        for (auto& H:R.Hits) if (!H.Resolved) H.Submitted=false;
+        R.Admitted=true;R.RetirementSubmitted=false;R.TerminalPublished=false;
+        ByPresentation.Add(R.Instance.State.EffectId,R.Key.StableId);Records.Add(R.Key.StableId,MoveTemp(R));return true;
+    }
+    bool CacheBirth(const FGuLiHybridObjectState& O)
+    {
+        const auto* Cap=O.Capabilities.Find(FName(UTF8_TO_TCHAR(GuLiNet::RuntimeEffectRecipe::Name)));
+        GuLiNet::RuntimeEffectRecipe::Recipe Recipe;
+        if (!Cap || Cap->Version!=GuLiNet::RuntimeEffectRecipe::Version
+            || !GuLiNet::RuntimeEffectRecipe::Decode(std::span<const uint8>(Cap->Data.GetData(),Cap->Data.Num()),Recipe)
+            || Recipe.Effect!=GuLiNetBridge::ToCore(O.Key) || Recipe.Source!=GuLiNetBridge::ToCore(O.Parent)
+            || Recipe.Admission!=GuLiNetBridge::ToCore(O.SpawnEvent)) return false;
+        return CacheRecord(O,MakeArrayView(Recipe.State.data(),int32(Recipe.State.size())),true);
     }
     void Activate(FRecord& R,const FGuLiHybridObjectState& O)
     {
@@ -204,7 +262,7 @@ struct FGuLiHybridEffectRuntime final:FGCObject
         if (R.Admitted && Runtime->Effects.Contains(R.Instance.State.EffectId)) return;
         if (!R.Admitted)
         {
-            const float Shift=FMath::Max(0.f,float(Hybrid->GetLogicalSeconds())-R.Instance.State.StartTime);
+            const float Shift=FMath::Max(0.f,float(Hybrid->GetLocalLogicalSeconds())-R.Instance.State.StartTime);
             auto& S=R.Instance.State;S.StartTime+=Shift;S.SampleTime+=Shift;S.ActivationTime+=Shift;S.EndTime+=Shift;
             R.Instance.LastCorrection+=Shift;R.Admitted=true;
         }
@@ -249,45 +307,72 @@ struct FGuLiHybridEffectRuntime final:FGCObject
                 Request.DamageEventId=Hit.Event;Request.ShotId=R->Key.StableId;Request.RootEventId=Hit.Root;
                 Request.SkillId=R->Instance.Context.SkillId;Request.WeaponBinding=R->Instance.Context.WeaponBinding;
                 Request.Damage=R->Instance.Context.Damage;Request.HitLocation=Hit.Location;
-                Hit.Submitted=Hybrid->SubmitDamage(Request,Hit.StartedAt,{},&R->Key).IsValid();
+                Hit.Submitted=Hybrid->SubmitDamage(Request,Hit.StartedAt,{},&R->Key,Hit.StartedAt).IsValid();
             }
             if (!R->Finished) continue;
             if (!R->TerminalPublished && !Hybrid->IsBattlePaused()) R->TerminalPublished=Publish(*R,true);
             if (Settled && R->TerminalPublished && !R->RetirementSubmitted && !Hybrid->IsBattlePaused())
             {
+                if (!R->RetirementPrepared)
+                {
+                    R->RetirementAt=Hybrid->GetObjectLogicalTick(R->Key);R->RetirementPrepared=true;
+                    if (!Publish(*R,true)) {R->RetirementPrepared=false;continue;}
+                }
                 FGuLiHybridObjectRequest Request;Request.Source=Request.Target=R->Key;Request.Event=R->Retirement;
                 Request.Operation=EGuLiHybridObjectOperation::Destroy;Request.Rule=FName(*(TEXT("retire/")+O.Definition.ToString()));
-                Request.ExpectedRelationRevision=O.RelationRevision;
+                Request.ExpectedRelationRevision=O.RelationRevision;Request.OriginalAt=R->RetirementAt;
                 R->RetirementSubmitted=Hybrid->SubmitObjectOperationNative(Request,{}).IsValid();
             }
         }
     }
     bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const
     {
-        GuLiEffectState::FPiece P;P.Epoch=Epoch();P.At=Hybrid->GetLogicalSeconds();
+        GuLiEffectState::FPiece P;P.Epoch=Epoch();P.At=Hybrid->GetLocalLogicalSeconds();
         for (const auto& Entry:Records)
         {
             const auto& R=Entry.Value;
-            if (R.Admitted?!Objects.Contains(R.Key):!Objects.Contains(R.Source)) continue;
+            if (!Includes(Objects,R)) continue;
             FGuLiHybridTransactionResult Admission;
             if (!R.Admitted && Hybrid->FindTransactionResult(R.Admission,Admission) && !Admission.IsCommitted()) continue;
             auto Copy=R;if (const auto* Live=Runtime->Effects.Find(R.Instance.State.EffectId)) Copy.Instance=*Live;
             for (auto& Hit:Copy.Hits) {FGuLiDamageCommitResult Result;if (Hybrid->FindDamageResult(Hit.Event,Result)) Hit.Resolved=true;}
             P.Records.Add(MoveTemp(Copy));
         }
-        for (const auto& Key:Objects) if (Key.Kind==EGuLiHybridObjectKind::Field && !P.Records.ContainsByPredicate([&](const auto& R){return R.Key==Key;})) return false;
-        for (const auto& E:Runtime->WingmanBurstCooldowns)
+        for (const auto& Key:Objects) if (Key.Kind==EGuLiHybridObjectKind::Field && !P.Records.ContainsByPredicate([&](const auto& R){return R.Key==Key;}))
         {
-            FGuLiHybridObjectKey Member;if (!Hybrid->ResolveTarget(GuLiCombatTargets::MakeWingmanTargetHandle(E.Key),Member)) return false;
-            if (!Objects.Contains(Member)) continue;
-            for (const auto& Entry:E.Value)
+            static uint32 Reported=0;if (Reported++<64) UE_LOG(LogNet,Error,TEXT("Combat effect private record missing id=%s epoch=%u records=%d owned=%d"),*Key.StableId.ToString(),P.Epoch,Records.Num(),Objects.Num());return false;
+        }
+        for (const auto& Key:Objects) if (Key.Kind==EGuLiHybridObjectKind::Wingman)
+        {
+            FGuLiHybridObjectState Object;FGuLiWingmanHandle Emitter;
+            if (!Hybrid->GetObject(Key,Object) || !GuLiHybridWingman::Resolve(Manifest,Object,Emitter)) return false;
+            const auto* Slots=Runtime->WingmanBurstCooldowns.Find(Emitter);if (!Slots) continue;
+            for (const auto& Entry:*Slots)
             {
-                GuLiEffectState::FCooldown C;C.Member=Member;C.Slot=Entry.Key;C.Value=Entry.Value;
+                GuLiEffectState::FCooldown C;C.Member=Key;C.Slot=Entry.Key;C.Value=Entry.Value;
                 if (!Hybrid->ResolveTarget(C.Value.Carrier,C.Carrier)) return false;P.Cooldowns.Add(C);
             }
         }
         P.Records.Sort([](const auto& A,const auto& B){return A.Key.StableId<B.Key.StableId;});
-        FGuLiHybridStateArchive A(GuLiEffectRuntimeContract::MaximumBytes);GuLiEffectState::Piece(A,P);return A.Finish(Bytes);
+        FGuLiHybridStateArchive A(GuLiEffectRuntimeContract::MaximumBytes);GuLiEffectState::Piece(A,P);
+        const bool Valid=A.Finish(Bytes);
+        if (!Valid)
+        {
+            static TSet<FGuLiHybridObjectKey> Reported;
+            for (const auto& Original:P.Records)
+            {
+                if (Reported.Num()>=64 || Reported.Contains(Original.Key)) continue;
+                auto Copy=Original;TArray<uint8> One;FGuLiHybridStateArchive Check(GuLiEffectRuntimeContract::MaximumBytes);
+                GuLiEffectState::Record(Check,Copy);const bool RecordValid=Check.Finish(One);
+                if (RecordValid && Copy.Instance.State.SampleTime<=P.At+.001) continue;
+                Reported.Add(Copy.Key);const auto& S=Copy.Instance.State;
+                UE_LOG(LogNet,Error,TEXT("Combat effect private capture invalid id=%s record_ok=%d state_ok=%d kind=%d phase=%d start=%.9f sample=%.9f end=%.9f capture=%.9f finished=%d terminal=%d retirement=%d/%d pending_public=%d hits=%d"),
+                    *Copy.Key.StableId.ToString(EGuidFormats::Digits),RecordValid,S.IsWellFormed(),int32(S.Kind),int32(S.Phase),
+                    double(S.StartTime),double(S.SampleTime),double(S.EndTime),P.At,Copy.Finished,Copy.TerminalPublished,
+                    Copy.RetirementPrepared,Copy.RetirementSubmitted,Copy.PendingPublic.Num(),Copy.Hits.Num());
+            }
+        }
+        return Valid;
     }
     bool Validate(const TArray<FGuLiHybridSharedStatePiece>& Pieces,const TArray<FGuLiHybridObjectKey>& Objects) const
     {
@@ -312,10 +397,9 @@ struct FGuLiHybridEffectRuntime final:FGCObject
     {
         if (Stage==EGuLiHybridRestoreStage::Detach)
         {
-            Restoring=true;
             for (auto It=Records.CreateIterator();It;++It)
             {
-                const auto& R=It.Value();if (!Objects.Contains(R.Key) && (R.Admitted || !Objects.Contains(R.Source))) continue;
+                const auto& R=It.Value();if (!Includes(Objects,R)) continue;
                 Runtime->Effects.Remove(R.Instance.State.EffectId);ByPresentation.Remove(R.Instance.State.EffectId);It.RemoveCurrent();
             }
             for (auto It=Runtime->WingmanBurstCooldowns.CreateIterator();It;++It)
@@ -324,6 +408,7 @@ struct FGuLiHybridEffectRuntime final:FGCObject
         }
         if (Stage==EGuLiHybridRestoreStage::Create)
         {
+            Restoring=true;
             for (const auto& Piece:Pieces)
             {
                 GuLiEffectState::FPiece P;if (!GuLiEffectState::Decode(Piece.Bytes,P)) return false;
@@ -331,13 +416,13 @@ struct FGuLiHybridEffectRuntime final:FGCObject
                 {
                     FGuLiHybridObjectState O;const bool Registered=Hybrid->GetObject(R.Key,O);
                     if (Registered && O.LifeState==3) continue;
-                    if (!Objects.Contains(R.Key) && (R.Admitted || !Objects.Contains(R.Source))) continue;
+                    if (!Includes(Objects,R)) continue;
                     if (Registered && !R.Admitted)
                     {
                         const float Shift=FMath::Max(0.f,float(P.At)-R.Instance.State.StartTime);auto& S=R.Instance.State;
                         S.StartTime+=Shift;S.SampleTime+=Shift;S.ActivationTime+=Shift;S.EndTime+=Shift;R.Admitted=true;
                     }
-                    const float Offset=float(Hybrid->GetLogicalSeconds()-P.At);auto Rebase=[&](FGuLiCombatEffectState& S)
+                    const float Offset=float(Hybrid->GetLocalLogicalSeconds()-P.At);auto Rebase=[&](FGuLiCombatEffectState& S)
                     {S.StartTime+=Offset;S.SampleTime+=Offset;S.ActivationTime+=Offset;S.EndTime+=Offset;};
                     Rebase(R.Instance.State);R.Instance.LastCorrection+=Offset;for (auto& S:R.PendingPublic) Rebase(S);
                     ByPresentation.Add(R.Instance.State.EffectId,R.Key.StableId);Records.Add(R.Key.StableId,MoveTemp(R));
@@ -347,14 +432,14 @@ struct FGuLiHybridEffectRuntime final:FGCObject
         }
         if (Stage==EGuLiHybridRestoreStage::Link)
         {
-            for (auto& Entry:Records) if ((Objects.Contains(Entry.Value.Key) || (!Entry.Value.Admitted && Objects.Contains(Entry.Value.Source))) && !Rebind(Entry.Value)) return false;
+            for (auto& Entry:Records) if (Includes(Objects,Entry.Value) && !Rebind(Entry.Value)) return false;
             for (const auto& Piece:Pieces)
             {
                 GuLiEffectState::FPiece P;if (!GuLiEffectState::Decode(Piece.Bytes,P)) return false;
                 for (auto C:P.Cooldowns)
                 {
                     if (!Objects.Contains(C.Member)) continue;
-                    C.Value.OrbitEntryTime+=float(Hybrid->GetLogicalSeconds()-P.At);
+                    C.Value.OrbitEntryTime+=float(Hybrid->GetLocalLogicalSeconds()-P.At);
                     FGuLiHybridObjectState Member;FGuLiWingmanHandle Emitter;
                     if (!Hybrid->GetObject(C.Member,Member) || !GuLiHybridWingman::Resolve(Manifest,Member,Emitter)
                         || !Hybrid->ResolveObjectTarget(C.Carrier,C.Value.Carrier)) return false;
@@ -366,7 +451,7 @@ struct FGuLiHybridEffectRuntime final:FGCObject
         if (Stage!=EGuLiHybridRestoreStage::Activate) return false;
         for (auto& Entry:Records)
         {
-            auto& R=Entry.Value;if (!Objects.Contains(R.Key) && (R.Admitted || !Objects.Contains(R.Source))) continue;FGuLiHybridObjectState O;
+            auto& R=Entry.Value;if (!Includes(Objects,R)) continue;FGuLiHybridObjectState O;
             if (Hybrid->GetObject(R.Key,O))
             {if (Objects.Contains(R.Key) && !R.Finished) Activate(R,O);if (R.Admitted) Publish(R,true,true);}
         }
@@ -384,7 +469,7 @@ public:
     UObject* LifetimeOwner() const override {const auto S=State.Pin();return S?S->Runtime.Get():nullptr;}
     uint32 Version() const override {return GuLiEffectRuntimeContract::Version;}
     TArray<FName> RequiredSharedStateSystems() const override {return {GuLiEffectState::System};}
-    bool Prepare(const FGuLiHybridObjectState& O) override {const auto S=State.Pin();if (!S || !S->Supported(O)) return false;Object=O;return true;}
+    bool Prepare(const FGuLiHybridObjectState& O) override {const auto S=State.Pin();if (!S || !S->Supported(O) || !S->CacheBirth(O)) return false;Object=O;return true;}
     void SetAuthority(const FGuLiHybridObjectState& O,bool Local) override
     {Object=O;const auto S=State.Pin();if (S && Local && !S->Restoring) if (auto* R=S->Records.Find(O.Key.StableId)) S->Activate(*R,O);}
     void Advance(uint64,double) override {}
@@ -475,6 +560,11 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::AdmitHybridEffect(FGuLiRuntimeCombatEff
     R.Admission=GuLiEffectState::Event(Key,TEXT("/admission"));R.Retirement=GuLiEffectState::Event(Key,TEXT("/retirement"));
     FGuLiHybridObjectRequest Request;Request.Source=Source;Request.Target=Key;Request.Event=R.Admission;Request.Rule=FName(*Rule);
     Request.Operation=EGuLiHybridObjectOperation::Spawn;Request.Location=R.Instance.State.Location;
+    TArray<uint8> Birth;if (!S->EncodeRecord(R,Birth)) return {};
+    GuLiNet::RuntimeEffectRecipe::Recipe Frozen{GuLiNetBridge::ToCore(Key),GuLiNetBridge::ToCore(Source),GuLiNetBridge::ToCore(R.Admission),
+        GuLiNet::Bytes(Birth.GetData(),Birth.GetData()+Birth.Num())};
+    const auto Payload=GuLiNet::RuntimeEffectRecipe::Encode(Frozen);if (Payload.empty()) return {};
+    Request.CapabilityPayload.Append(Payload.data(),int32(Payload.size()));
     S->ByPresentation.Add(Id,Id);S->Records.Add(Id,R);
     if (!H->SubmitObjectOperationNative(Request,{}).IsValid()) {S->Records.Remove(Id);S->ByPresentation.Remove(Id);return {};}
     return Id;

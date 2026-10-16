@@ -5,6 +5,8 @@ public class GuLiNetCore : ModuleRules
     public GuLiNetCore(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = PCHUsageMode.NoPCHs;
+        // Portable translation units have independent internal helpers.
+        bUseUnity = false;
         CppStandard = CppStandardVersion.Cpp20;
         if (Target.LinkType == TargetLinkType.Modular)
         {

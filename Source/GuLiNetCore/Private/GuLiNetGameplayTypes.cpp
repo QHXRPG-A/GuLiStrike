@@ -99,7 +99,7 @@ bool DecodeTransaction(const Envelope& Header, std::span<const std::uint8_t> Byt
         || !R.Blob(V.CapabilityPayload,MaximumCapabilityBytes)
         || !R.F32(V.DamageAmount) || !std::isfinite(V.DamageAmount) || V.DamageAmount<0
         || (Kind!=static_cast<std::uint8_t>(TransactionKind::Damage) && V.DamageAmount!=0)
-        || (Kind!=static_cast<std::uint8_t>(TransactionKind::Capability) && !V.CapabilityPayload.empty())
+        || (Kind!=static_cast<std::uint8_t>(TransactionKind::Capability) && Kind!=static_cast<std::uint8_t>(TransactionKind::Spawn) && !V.CapabilityPayload.empty())
         || (Kind!=static_cast<std::uint8_t>(TransactionKind::AdmitWork) && !V.Admission.empty())
         || (Kind!=static_cast<std::uint8_t>(TransactionKind::Upgrade) && (!V.UpgradeNode.empty() || V.ExpectedUpgradeVersion)) || !R.Done()) return false;
     V.Header = Header; V.Kind = static_cast<TransactionKind>(Kind); V.Faction = static_cast<Team>(Faction);

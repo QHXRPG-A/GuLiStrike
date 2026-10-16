@@ -164,6 +164,9 @@ struct GULISTRIKE_API FGuLiHybridObjectRequest
     UPROPERTY(EditAnywhere,BlueprintReadWrite) int64 ExpectedRelationRevision=0;
     /** Frozen source-object age for surviving effects; zero starts at admission. Never a world/controller clock. */
     uint64 StartedAt=0;
+    /** Immutable admission payload, interpreted by the spawned capability family. */
+    TArray<uint8> CapabilityPayload;
+    TOptional<uint64> OriginalAt;
 };
 
 /** Amounts are resolved by a manifest rule; callers cannot submit an arbitrary price or credit. */
@@ -265,6 +268,7 @@ public:
     virtual TArray<FName> RequiredSharedStateSystems() const { return {}; }
     virtual TArray<FGuLiHybridObjectKey> RestoreDependencies(TConstArrayView<uint8>) const { return {}; }
     virtual bool Prepare(const FGuLiHybridObjectState& State) = 0;
+    virtual bool PrepareRestore(const FGuLiHybridObjectState& State,TConstArrayView<uint8> PrivateState) {return Prepare(State);}
     virtual void SetAuthority(const FGuLiHybridObjectState& State, bool bLocalSimulation) = 0;
     virtual void Advance(uint64 LogicalTick, double DeltaSeconds) = 0;
     virtual bool Execute(const FGuLiHybridCommand& Command, const FGuLiHybridCommandMember& Member) = 0;
@@ -313,6 +317,9 @@ public:
     bool ResolveTarget(const FGuLiTargetHandle& Target, FGuLiHybridObjectKey& Out) const;
     bool ResolveObjectTarget(const FGuLiHybridObjectKey& Key,FGuLiTargetHandle& Out) const;
     bool GetObject(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
+    /** Current object or authenticated exact-life retired metadata; never grants an entity or simulation. */
+    bool GetObjectMetadata(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
+    uint32 GetLatestRetiredLife(const FGuLiHybridObjectKey& Stable) const;
     void GetObjects(TArray<FGuLiHybridObjectState>& Out) const;
     bool HasSimulation(const FGuLiHybridObjectKey& Key, bool bRetainedSource = false) const;
     bool HasControl(const FGuLiHybridObjectKey& Key) const;
@@ -331,7 +338,7 @@ public:
     bool PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body);
     bool PublishMotionAcknowledgment(const FGuLiHybridObjectKey& Key,const TArray<uint8>& Body);
     FGuid SubmitDamage(const FGuLiDamageRequest& Request, uint64 StartedAt,
-        TFunction<void(const FGuLiDamageCommitResult&)> Callback = {},const FGuLiHybridObjectKey* EffectAuthority=nullptr);
+        TFunction<void(const FGuLiDamageCommitResult&)> Callback = {},const FGuLiHybridObjectKey* EffectAuthority=nullptr,TOptional<uint64> OriginalAt={});
     bool FindDamageResult(const FGuid& Event,FGuLiDamageCommitResult& Out) const;
     UFUNCTION(BlueprintCallable,Category="Hybrid|Transactions") FGuid SubmitResourceOperation(const FGuLiHybridResourceRequest& Request);
     FGuid SubmitResourceOperationNative(const FGuLiHybridResourceRequest& Request,TFunction<void(const FGuLiHybridTransactionResult&)> Callback);
@@ -369,6 +376,8 @@ public:
     /** Receipt/freshness time on this client, independent of the active object and its owner history. */
     uint64 GetLocalLogicalTick() const;
     double GetLogicalSeconds() const;
+    /** Shared pool/presentation time; never switches to an active producer's object age. */
+    double GetLocalLogicalSeconds() const;
     bool IsBattlePaused() const;
     /** Only membership transitions pause battle; networking remains active. */
     bool CanPublishFacts() const;
@@ -377,6 +386,8 @@ public:
     TSharedRef<FJsonObject> GetReviewCommandResult(const FGuid& Event) const;
     FString GetReviewEvidenceJson() const;
     bool SetReviewSimulationRate(double Rate);
+    /** Replay a recorded resource request through its real owner, retaining the original body and logical time. */
+    bool ReplayReviewBusinessRequest(FGuid Event,int32 Count,TSharedPtr<FJsonObject>& Evidence,FString& Error);
     const FString& GetFailure() const;
     void Suspend(const FString& Reason);
     FGuLiHybridWorldFailure OnFailure;

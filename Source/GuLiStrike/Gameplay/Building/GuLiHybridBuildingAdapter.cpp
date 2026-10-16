@@ -75,9 +75,15 @@ class FGuLiHybridBuildingAdapter final : public IGuLiHybridSimulationAdapter
         if (!RestoredBuilder.IsValid() && Record.Parent.Kind==EGuLiHybridObjectKind::BusinessWork)
         {
             FGuLiHybridObjectState Work;
-            if (!W->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetObject(Record.Parent,Work)
-                || Work.Team!=Record.Team || !Work.Controller.IsValid()) return false;
-            Builder=Work.Controller;
+            // Placement work may retire before an observer receives this
+            // committed building. Its admitted controller already identifies
+            // the builder; a query copy must not depend on transient work.
+            if (W->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetObject(Record.Parent,Work))
+            {
+                if (Work.Team!=Record.Team || !Work.Controller.IsValid()) return false;
+                Builder=Work.Controller;
+            }
+            if (!Builder.IsValid()) return false;
         }
         auto* Class=GetGuLiHybridBuildingClass(*D);
         if (!Class || !Class->IsChildOf(AGuLiPlacedBuilding::StaticClass())
@@ -121,6 +127,13 @@ public:
     uint32 Version() const override { return GuLiHybridBuilding::StateVersion; }
     bool Prepare(const FGuLiHybridObjectState& State) override
     { Record=State; bSpawnNotificationPending=State.LifeState==0 && State.SpawnEvent.IsValid(); return Create(); }
+    bool PrepareRestore(const FGuLiHybridObjectState& State,TConstArrayView<uint8> Bytes) override
+    {
+        Record=State;GuLiHybridBuilding::FPrivate V;
+        if (!GuLiHybridBuilding::Decode(Bytes,V) || V.Key!=State.Key || V.Definition!=GuLiHybridBuilding::Definition(State.Definition)) return false;
+        bSpawnNotificationPending=State.LifeState==0 && State.SpawnEvent.IsValid();
+        return Create(V.Builder);
+    }
     void SetAuthority(const FGuLiHybridObjectState& State,bool Local) override
     {
         Record=State; bLocal=Local; if (auto* P=Actor.Get()) P->FindComponentByClass<UGuLiHybridActorComponent>()->Install(State,Local);

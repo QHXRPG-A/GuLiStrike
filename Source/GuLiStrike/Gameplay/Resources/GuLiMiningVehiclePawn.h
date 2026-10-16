@@ -50,6 +50,8 @@ public:
 		const UGuLiResourceEconomyConfig& Config,
 		AGuLiResourceFactoryActor& InFactory);
 	bool FindReachableMiningApproach(uint32 NodeId, FVector& OutApproach, float& OutPathLength) const;
+    /** Read the current validated reservation, without issuing or changing a lease. */
+    bool GetReservedMiningPose(FTransform& OutPose) const;
 	UFUNCTION(BlueprintPure, Category="Resources|Mining")
 	virtual int32 GetUnitTypeId() const override { return UnitTypeId; }
 	bool StartManagedTask(const FGuLiMiningCommand& Command, bool bAutomatic);

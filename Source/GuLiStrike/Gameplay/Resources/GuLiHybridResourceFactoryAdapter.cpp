@@ -60,13 +60,18 @@ class FGuLiHybridResourceFactoryAdapter final : public IGuLiHybridSimulationAdap
         if (!Config || !D || GetGuLiHybridBuildingFamily(*D)!=TEXT("ResourceFactory") || Record.Health.MaxHealth!=D->MaxHealth
             || !Record.Ordinal) return false;
         const bool Manual=Record.Parent.Kind==EGuLiHybridObjectKind::BusinessWork;
-        FGuid Builder=RestoredBuilder;
-        if (Manual && !Builder.IsValid())
+        FGuid Builder=RestoredBuilder.IsValid()?RestoredBuilder:Record.Controller;
+        if (Manual && !RestoredBuilder.IsValid())
         {
             FGuLiHybridObjectState Work;
-            if (!W->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetObject(Record.Parent,Work)
-                || Work.Team!=Record.Team || !Work.Controller.IsValid()) return false;
-            Builder=Work.Controller;
+            // A retired placement work is not required to materialize its
+            // already admitted building on a receiving client.
+            if (W->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetObject(Record.Parent,Work))
+            {
+                if (Work.Team!=Record.Team || !Work.Controller.IsValid()) return false;
+                Builder=Work.Controller;
+            }
+            if (!Builder.IsValid()) return false;
         }
         auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(W);FNavLocation Ground;
         const FVector Direction=FVector(-Record.Location.X,-Record.Location.Y,0).GetSafeNormal();
@@ -111,6 +116,13 @@ public:
     uint32 Version() const override {return GuLiHybridFactory::Version;}
     bool Prepare(const FGuLiHybridObjectState& V) override
     {Record=V;bSpawnNotificationPending=V.LifeState==0 && V.SpawnEvent.IsValid();return Create();}
+    bool PrepareRestore(const FGuLiHybridObjectState& State,TConstArrayView<uint8> Bytes) override
+    {
+        Record=State;GuLiHybridFactory::FPrivate V;
+        if (!GuLiHybridFactory::Decode(Bytes,V) || V.Key!=State.Key) return false;
+        bSpawnNotificationPending=State.LifeState==0 && State.SpawnEvent.IsValid();
+        return Create(V.Builder);
+    }
     void SetAuthority(const FGuLiHybridObjectState& V,bool Local) override
     {Record=V;bLocal=Local;LastApplied=LastPublished=0;if (auto* P=Actor.Get()) P->FindComponentByClass<UGuLiHybridActorComponent>()->Install(V,Local);}
     void Advance(uint64 At,double Delta) override

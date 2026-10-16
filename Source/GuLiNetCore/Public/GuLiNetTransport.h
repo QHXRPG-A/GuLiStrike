@@ -37,6 +37,9 @@ struct TransportMetrics
 
 // Read-only diagnostics use the same packet decoder as reliable delivery.
 GULINETCORE_API bool InspectDatagramLane(std::span<const std::uint8_t> Packet,Lane& Out);
+// Only complete one-fragment application messages; acknowledgments and partial
+// fragments cannot prove that an application header was actually transmitted.
+GULINETCORE_API bool InspectDatagramMessage(std::span<const std::uint8_t> Packet,Message& Out);
 
 // One authenticated directed connection. The adapter binds the peer before calling Receive.
 // Acks acknowledge complete reassembly, never a gameplay transaction.
@@ -55,6 +58,9 @@ public:
     const TransportMetrics& Metrics() const { return Counters; }
     std::vector<Message> Unacknowledged() const;
     std::uint64_t SentThrough(Lane Stream) const { return NextSequence[static_cast<std::size_t>(Stream)] - 1; }
+    // A reliable queue admission is not a transmission. This becomes true
+    // after every fragment's first successful send, without waiting for ACKs.
+    bool HasTransmittedReliable(Lane Stream,std::uint64_t Sequence) const;
     std::uint64_t ReceivedThrough(Lane Stream) const { return ReliableThrough[static_cast<std::size_t>(Stream)]; }
 private:
     using Key = std::pair<Lane, std::uint64_t>;

@@ -14,8 +14,23 @@ Bytes Room::ExportMetadata() const
         W.U8(static_cast<std::uint8_t>(M.Carrier));W.U64(M.SeatVersion);W.U32(M.OrdinalSlot);
         W.Text(M.ProductUserId);W.Text(M.Endpoint);W.U8(M.Online?1:0);W.U8(M.Ready?1:0);
     }
-    W.U32(static_cast<std::uint32_t>(Directory.size()));
-    for (const auto& [K,O]:Directory) {WriteAuthority(W,O.Grant);W.Text(O.Definition);W.U32(O.Ordinal);W.Key(O.Parent);}
+    // Kind plus the first identity byte partitions the existing map order.
+    // Rebuild only changed ranges, retaining every historical record verbatim.
+    for (const auto Bucket:DirtyMetadataBuckets)
+    {
+        ObjectKey First;First.Kind=static_cast<ObjectKind>(Bucket>>8);
+        First.StableId.Words[0]=static_cast<std::uint32_t>(Bucket&255)<<24;
+        Writer Part(32*1024*1024);
+        for (auto I=Directory.lower_bound(First);I!=Directory.end() && MetadataBucket(I->first)==Bucket;++I)
+        {
+            const auto& O=I->second;WriteAuthority(Part,O.Grant);Part.Text(O.Definition);Part.U32(O.Ordinal);Part.Key(O.Parent);
+        }
+        if (!Part.Good()) return {};
+        auto Encoded=Part.Take();
+        if (Encoded.empty()) MetadataBuckets.erase(Bucket);else MetadataBuckets.insert_or_assign(Bucket,std::move(Encoded));
+    }
+    DirtyMetadataBuckets.clear();W.U32(static_cast<std::uint32_t>(Directory.size()));
+    for (const auto& [Bucket,Encoded]:MetadataBuckets) {W.Raw(Encoded);if (!W.Good()) return {};}
     W.U32(static_cast<std::uint32_t>(Groups.size()));
     for (const auto& [Key,G]:Groups) {W.Identity(Key);W.Identity(G.Owner);W.U64(G.Version);}
     W.U8(MembershipValue?1:0);
@@ -53,6 +68,7 @@ bool Room::ImportMetadata(std::span<const std::uint8_t> Data,double Now)
         if (!ReadAuthority(R,O.Grant) || !R.Text(O.Definition) || !R.U32(O.Ordinal) || !R.Key(O.Parent)
             || !Definitions.contains(O.Definition) || !Trial.Directory.emplace(O.Grant.Object,O).second
             || !Trial.Scheduler.SetObject({O.Grant,O.Grant.Policy,O.Parent},Now)) return false;
+        Trial.MarkDirectoryChanged(O.Grant.Object);
     }
     if (!R.U32(Count) || Count>4096) return false;
     for (std::uint32_t I=0;I<Count;++I)

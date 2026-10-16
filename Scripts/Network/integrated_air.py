@@ -6,7 +6,38 @@ from pathlib import Path
 from integrated_acceptance import entry, identity, input_and_wait, objects, prove
 
 
+def prepare_ship_combat(session):
+    from population_combat_preparation import position
+    from acceptance_session import PreparationSkipped
+    with session.preparation('occupied Ship positions for actual combat'):
+        session.begin('ship-combat-position-preparation')
+        ships={o['team']:o for o in objects(session,True) if o['definition']=='player/ship' and o['life']==1}
+        if set(ships)!={1,2}: raise PreparationSkipped('Two living occupied Ships are needed before combat')
+        session.ship_combat_homes={team:list(obj['position']) for team,obj in ships.items()}
+        receipts=[]
+        for team,y in ((1,3000),(2,-3000)):
+            reply,path=position(session,ships[team],[8000,y,6500])
+            receipts.append({'team':team,'input':path,'result':reply})
+        session.write_json(session.stage_output/'ship-combat-position-readback.json',{
+            'receipts':receipts,'scope':'Positions only, through the existing authoritative displacement path. Equipment, members, targeting and committed damage are unchanged.'})
+        session.finish()
+
+
+def restore_ship(session,team):
+    from population_combat_preparation import position
+    homes=getattr(session,'ship_combat_homes',{})
+    ship=next((o for o in objects(session,True) if o['definition']=='player/ship' and o['team']==team and o['life']==1),None)
+    if ship is None or team not in homes: return
+    with session.preparation('return Ship after its recorded combat proof'):
+        session.begin('ship-'+str(team)+'-return-preparation')
+        result,path=position(session,ship,homes[team])
+        session.write_json(session.stage_output/'ship-return-readback.json',{'input':path,'result':result,
+            'scope':'Position restoration after real combat evidence. No healing, resurrection, cooldown, target receipt or ownership mutation.'})
+        session.finish()
+
+
 def run(session):
+    if getattr(session.args,'continue_remaining',False): prepare_ship_combat(session)
     session.begin("ship-weapon-and-member-combat")
     pilots={team:entry(session,team,"Air") for team in ("Red","Blue")}
     def ships():
@@ -39,6 +70,7 @@ def run(session):
         session.control()
         session.write_json(session.stage_output/'flight-input-timeline.json',route)
     session.finish()
+    if getattr(session.args,'continue_remaining',False): restore_ship(session,2)
 
 
 def focus_combat(session,enemy,domain,drive=None):
@@ -74,7 +106,7 @@ def focus_combat(session,enemy,domain,drive=None):
             if decision and decision["kind"]==0 and decision["status"] in (0,1) \
                     and identity(decision["target"])==identity(hit["target"]) \
                     and decision["applied_damage"]+decision["absorbed_damage"]>0 \
-                    and len(session.result_observers.get(event,set()))==len(session.clients):
+                    and session.observed_by_active(event):
                 out.append({"hit":hit,"decision":decision})
         return out
     label=domain+"-member-commits"
@@ -105,6 +137,14 @@ def ground_attack(session):
     # The production targeting API accepts both actual ground carriers. Prefer
     # the large player target when present, retaining its real health/collision.
     enemy=min(targets,key=lambda o:(o['definition']!='player/ground',math.dist(o["position"],ship["position"])))
+    if getattr(session.args,'continue_remaining',False):
+        from population_combat_preparation import position
+        with session.preparation('ground target beside the actual Air combat position'):
+            result,receipt=position(session,enemy,[ship['position'][0]+2500,ship['position'][1],enemy['position'][2]],find_nearby=True)
+            session.write_json(session.stage_output/'air-ground-target-preparation.json',{
+                'target':enemy['id'],'input':receipt,'result':result,
+                'scope':'Target position only; native target selection, member weapons, geometry and committed damage remain required.'})
+            enemy=next(o for o in objects(session,True) if o['id']==enemy['id'] and o['life']==1)
     pilot=entry(session,'Red','Air');route=[]
     def drive():
         own=next((o for o in objects(session,True) if o['id']==ship['id'] and o['life']==1),None)
@@ -125,3 +165,4 @@ def ground_attack(session):
         session.control()
         session.write_json(session.stage_output/'ground-target-flight-inputs.json',route)
     session.finish()
+    if getattr(session.args,'continue_remaining',False): restore_ship(session,1)

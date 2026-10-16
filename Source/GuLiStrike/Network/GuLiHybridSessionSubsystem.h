@@ -57,8 +57,11 @@ public:
     uint64 GetPeerQueuedBytes(const FGuid& Peer) const;
     TSharedRef<class FJsonObject> GetNetworkCaptureSnapshot() const;
     /** Development review only; requires an explicit LocalUdp acceptance run. */
-    bool ArmReviewFault(FGuid Operation,FName Mode,int32 Count=1,uint16 KindFilter=0,int32 BusinessKind=-1);
+    bool ArmReviewFault(FGuid Operation,FName Mode,int32 Count=1,uint16 KindFilter=0,int32 BusinessKind=-1,FGuid SourceFilter={},uint8 TargetKindFilter=0,FGuid PriorMatch={},uint64 PriorEpoch=0);
     bool ReleaseReviewFault(FGuid Operation);
+    /** Uses the same opt-in receipt hold for a local numeric result notification. */
+    bool HoldReviewLocalReceipt(const FGuLiHybridMessage& Message);
+    FGuLiHybridControlReceived OnReviewReceiptReleased;
     FGuLiHybridControlReceived OnControl;
     FGuLiHybridPeerReceived OnPeer;
     FGuLiHybridSessionFailure OnFailure;

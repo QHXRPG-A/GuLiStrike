@@ -85,6 +85,12 @@ struct WorkDiagnostic
     std::size_t Participants=0,Prepared=0,Committed=0;
     StateKey Missing;
     Revision RequiredVersion=0,CurrentVersion=0;
+    Id RequestSender,NumericSourceOwner;
+    Revision RequestOwnerVersion=0,NumericSourceOwnerVersion=0;
+    Tick RequestAt=0,StartedAt=0,NumericSourceAge=0;
+    bool NumericSourceKnown=false;
+    Life NumericSourceLife=Life::Registered;
+    std::string Rule,WaitReason;
 };
 GULINETCORE_API Bytes EncodeCommandReceipt(const CommandReceipt& Value);
 GULINETCORE_API bool DecodeCommandReceipt(std::span<const std::uint8_t> Data, CommandReceipt& Out);
@@ -101,6 +107,9 @@ public:
     virtual std::vector<ObjectKey> RestoreDependencies(std::span<const std::uint8_t>) const { return {}; }
     // Prepare allocates a dormant local entity or a query/presentation proxy.
     virtual bool Prepare(const ObjectRecord& Record) = 0;
+    // Restore preparation can read immutable provenance absent from a current
+    // controller grant. It allocates the same dormant/query entity only.
+    virtual bool PrepareRestore(const ObjectRecord& Record,std::span<const std::uint8_t> PrivateState) {return Prepare(Record);}
     virtual void SetAuthority(const Authority& Grant, bool LocalSimulation) = 0;
     virtual void Advance(Tick At, double DeltaSeconds) = 0;
     virtual bool Command(const FrozenCommand& Command, const CommandMember& Member) = 0;
@@ -160,7 +169,11 @@ public:
     bool Configure(const RuntimeManifest& Manifest,std::string& Error);
     void SetMembers(std::map<Id,Member> Members);
     bool Install(ObjectRecord Record,bool Commit);
-    bool InstallGrant(const Authority& Grant);
+    // Cold joins receive numeric births before their complete private restore
+    // directory. Ordinary active-room materialization remains strict.
+    bool SetBootstrapMaterializationDeferred(bool Value);
+    bool IsBootstrapMaterializationDeferred() const {return BootstrapMaterializationDeferred;}
+    bool InstallGrant(const Authority& Grant,std::uint32_t Ordinal=0);
     bool CommitHandoffs(std::span<const std::pair<ObjectHandoff,Authority>> Group);
     const std::map<ObjectKey,ObjectHandoff>& ActiveHandoffs() const {return Transfers;}
     bool RegisterSystem(std::string Name,std::unique_ptr<ISharedStateAdapter> Adapter);
@@ -171,7 +184,9 @@ public:
     void SetCommandReceiptCallback(std::function<void(const CommandReceipt&)> Callback) {OnCommandReceipt=std::move(Callback);}
     void SetHandoffAdmission(std::function<bool(Id)> Ready) {HandoffAdmission=std::move(Ready);}
     void SetCommitCallback(TransactionCallback Callback) {OnCommit=std::move(Callback);}
-    Id Submit(TransactionRequest Request,TransactionCallback Callback);
+    const std::deque<CommitResult>& UnsettledReceipts() const {return UnsettledReceiptEvidence;}
+    std::uint64_t UnsettledReceiptCount() const {return UnsettledReceiptTotal;}
+    Id Submit(TransactionRequest Request,TransactionCallback Callback,bool PreserveOriginalTime=false);
     Id SubmitAdmitted(TransactionRequest Request);
     Id SubmitControlled(TransactionRequest Request,bool Admit);
     bool PublishObjectEvent(ObjectKey Object,Id Event,Bytes Body);
@@ -190,6 +205,9 @@ public:
     void FinishBootstrap();
     bool CaptureObjects(std::span<const ObjectKey> Keys,Id Target,Revision Transfer,ObjectHandoffState& Out) const;
     bool ImportObjects(const ObjectHandoffState& State);
+    bool ImportBootstrap(std::span<const ObjectHandoffState> Parts);
+    using BootstrapNumericSource=std::function<bool(Id,const OwnerState::FragmentVisitor&)>;
+    bool ImportBootstrap(std::span<const ObjectHandoffState> Parts,const BootstrapNumericSource& ReadNumeric);
     bool StageBootstrapDirectory(std::span<const ObjectHandoffState> Parts);
     bool RebuildFromReplica(ObjectKey Object);
     void Cancel(std::string Reason);
@@ -202,11 +220,14 @@ public:
     bool ExplicitlyPaused() const {return MembershipPaused;}
     bool CanPublishFacts() const {return Failure.empty() && !MembershipPaused;}
     const std::map<ObjectKey,ObjectRecord>& Objects() const {return Directory;}
+    const std::string& DirectoryHash() const;
     const OwnerState& NumericState() const {return Numbers;}
     const std::map<ObjectKey,MotionReceiveStats>& MotionDiagnostics() const {return MotionStats;}
     std::uint64_t RejectedMotionLives() const {return UnknownMotionLives;}
     std::uint64_t RejectedStateImports() const {return FailedStateImports;}
+    const std::string& LastStateImportFailureReason() const {return LastStateImportFailure;}
     const std::vector<ReceiveRejection>& FirstReceiveRejections() const {return ReceiveRejections;}
+    const std::vector<ReceiveRejection>& RecentReceiveRejections() const {return RecentRejections;}
     const std::map<std::string,std::uint64_t>& HandoffDiagnostics() const {return HandoffIssues;}
     const std::map<std::string,std::uint64_t>& HandoffMeasurements() const {return HandoffSizes;}
     std::uint64_t DuplicateResults() const {return DuplicateResultCount;}
@@ -216,6 +237,8 @@ public:
     std::map<std::string,std::size_t> WorkCounts() const;
     std::vector<WorkDiagnostic> WorkDiagnostics() const;
 private:
+    bool PrepareAdapterRecord(const ObjectRecord& Record,const PrivateObjectState* Private=nullptr);
+    bool ImportObjectsImpl(const ObjectHandoffState& State,bool NumericPrepared);
     mutable std::map<std::string,std::uint64_t> HandoffIssues;
     mutable std::map<std::string,std::uint64_t> HandoffSizes;
     void MeasureHandoff(const std::string& Part,std::uint64_t Bytes) const
@@ -253,11 +276,16 @@ private:
     std::deque<DeferredPeerState> DeferredPeerStates;
     std::size_t DeferredPeerStateBytes=0;
     std::vector<ReceiveRejection> ReceiveRejections;
+    std::vector<ReceiveRejection> RecentRejections;
     void RecordReceiveRejection(const Message& Value);
     std::map<Id,Member> Members;
     std::map<ObjectKey,ObjectRecord> Directory;
+    mutable std::string CachedDirectoryHash;
+    mutable bool DirectoryHashDirty=true;
     std::set<ObjectKey> SimulationCandidates;
     std::map<ObjectKey,std::unique_ptr<IObjectAdapter>> Adapters;
+    bool BootstrapMaterializationDeferred=false;
+    std::set<ObjectKey> DeferredMaterialization;
     std::map<std::string,std::unique_ptr<ISharedStateAdapter>> Systems;
     std::map<ObjectKey,Tick> MotionApplied,PublicStateApplied;
     std::map<ObjectKey,MotionReceiveStats> MotionStats;
@@ -276,6 +304,8 @@ private:
     std::function<void(const CommandReceipt&)> OnCommandReceipt;
     std::function<bool(Id)> HandoffAdmission;
     TransactionCallback OnCommit;
+    std::deque<CommitResult> UnsettledReceiptEvidence;
+    std::uint64_t UnsettledReceiptTotal=0;
     struct PendingTransaction {TransactionRequest Request;TransactionCallback Callback;double RetryAt=0;};
     std::map<Id,PendingTransaction> Pending;
     struct PlayerIntent {TransactionRequest Request;bool Admit=false;double RetryAt=0;};
@@ -295,14 +325,22 @@ private:
     struct WorkEvidence {OwnerWork Work;bool Decided=false;};
     std::map<Id,WorkEvidence> KnownWork;
     double NextWorkRetry=0;
+    double NextStateRepair=0;
+    std::string LastStateImportFailure;
     std::map<Id,std::pair<Id,TransactionRequest>> RetryWork;
+    std::map<Id,std::string> PlanWaitReasons;
     std::map<ObjectKey,ObjectHandoff> Transfers;
     bool CommittingOwnershipGroup=false;
-    std::map<Revision,ObjectHandoffState> IncomingStates;
+    // A bounded group cut is stored once even though every member retains its
+    // own transfer acknowledgment and owner version.
+    struct IncomingHandoff {ObjectHandoffState State;bool Detached=false;};
+    struct OutgoingHandoff {Bytes State;Revision Identity=0;bool Detached=false;};
+    std::map<Revision,std::shared_ptr<IncomingHandoff>> IncomingStates;
     std::map<ObjectKey,ObjectHandoff> CompletedTransfers;
     std::map<Revision,std::pair<double,ObjectHandoffState>> EarlyHandoffStates;
     std::set<ObjectKey> Frozen,FreezeRequested;
-    std::map<ObjectKey,Bytes> OutgoingStates;
+    std::map<ObjectKey,std::shared_ptr<OutgoingHandoff>> OutgoingStates;
+    std::map<Id,std::size_t> OutgoingCaptureLimits;
     std::map<ObjectKey,Authority> PendingGrants;
     std::map<ObjectKey,std::vector<Message>> HandoffCommands;
 };

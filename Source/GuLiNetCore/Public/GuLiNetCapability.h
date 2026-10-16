@@ -49,6 +49,9 @@ struct CapabilityContract
     // the same owner work protocol; the network never knows population rules.
     std::function<bool(const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&)> ProjectChanges;
     std::function<bool(std::map<ObjectKey,ObjectRecord>&)> InitializeOwnedState;
+    // Admission supplied by the spawned family itself, including families
+    // whose producer does not carry that child's capability.
+    std::function<bool(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,ObjectRecord&,bool&)> FreezeSpawn;
 };
 GULINETCORE_API bool RegisterCapability(CapabilityContract Contract);
 GULINETCORE_API const CapabilityContract* FindCapability(const std::string& Name);

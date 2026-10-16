@@ -3,30 +3,105 @@ from pathlib import Path
 from integrated_acceptance import entry, identity
 
 
+def transition_sample(session):
+    import time
+    fields=('player','join','sent','imported','acked','elapsed','capture_objects','capture_offset',
+            'capture_splits','send_part','send_parts_total','blocked','captured_state_bytes',
+            'captured_staged_bytes','received_state_bytes','directory_expected','directory_received')
+    return {'monotonic':time.monotonic(),
+            'rooms':[{**{k:r.get(k) for k in ('membership','membership_paused','membership_deadline_failures',
+                                         'directory_records','retired_transient_records')},
+                      'handoff_progress':{'count':len(r.get('handoffs',[])),
+                          'targets':{t:sum(v.get('target')==t for v in r.get('handoffs',[]))
+                                     for t in sorted({v.get('target','') for v in r.get('handoffs',[])})},
+                          'ready':sum(bool(v.get('target_prepared')) for v in r.get('handoffs',[])),
+                          'frozen':sum(bool(int(v.get('frozen_state',0))) for v in r.get('handoffs',[])),
+                          'installed':sum(bool(int(v.get('installed_state',0))) for v in r.get('handoffs',[]))}}
+                     for r in session.states.get('server',{}).get('rooms',[])],
+            'clients':{name:{'pid':state.get('pid'),
+                       'membership':{k:state.get('membership_details',{}).get(k) for k in fields},
+                       'issues':state.get('handoff_issues',{}),'measurements':state.get('handoff_measurements',{}),
+                       'network':{'receive_queue_overflows':state.get('network',{}).get('receive_queue_overflows'),
+                           'peers':[{k:v for k,v in p.items() if k=='peer' or k.startswith('lane_3_')}
+                                    for p in state.get('network',{}).get('peers',[])]}}
+                       for name,state in session.states.items() if name!='server'}}
+
+
+def require_membership_deadline(session):
+    for room in session.states.get('server',{}).get('rooms',[]):
+        if room.get('membership_deadline_failures'):
+            session.write_json(session.stage_output/'member-transition-deadline.json',session.states)
+            from runtime_evidence import RuntimeEvidenceUnavailable
+            raise RuntimeEvidenceUnavailable('Coordinator applied the existing 15-second membership deadline: '
+                +str(room['membership_deadline_failures'][-1]))
+        membership=room.get('membership') or {}
+        if room.get('membership_paused') and membership.get('seconds_remaining',0)<0:
+            session.write_json(session.stage_output/'member-transition-deadline.json',session.states)
+            from runtime_evidence import RuntimeEvidenceUnavailable
+            raise RuntimeEvidenceUnavailable('Member transition exceeded its existing 15-second deadline')
+
+
 def leave(session, item, abrupt=False):
     _,process=next((e,p) for e,p in session.records if e['name']==item['name'])
     if abrupt:
         session.stop_owned(item['name'])
     else:
         session.expected_stopped.add(item['name'])
+        timeline=[transition_sample(session)]
         operation=session.operation('leave_match',item['player'])
-        session.wait('exit-'+item['name'],lambda:process.poll() is not None,timeout=30)
-        last=session.read_state(Path(item['directory'])/'state.json',session.plan['run_id'],process.pid)
-        receipt=next((a for a in last.get('review_actions',[]) if identity(a['id'])==operation),{})
-        if process.returncode!=0 or receipt.get('status')!='completed':
-            raise RuntimeError('Normal exit lacks a committed leave receipt')
-        session.write_json(session.stage_output/('exit-receipt-'+item['name']+'.json'),last)
+        def exiting():
+            timeline.append(transition_sample(session))
+            if process.poll() is not None: return True
+            require_membership_deadline(session)
+            return False
+        try:
+            session.wait('exit-'+item['name'],exiting,timeout=30)
+        except RuntimeError as error:
+            if process.poll() is None: session.expected_stopped.discard(item['name'])
+            from runtime_evidence import RuntimeEvidenceUnavailable
+            raise RuntimeEvidenceUnavailable('Normal departure did not complete; dependent role/room checks cannot continue: '+str(error)) from error
+        finally:
+            session.write_json(session.stage_output/('exit-transition-'+operation+'.json'),
+                               {'player':item['player'],'operation':operation,'timeline':timeline})
+        import json
+        receipt_path=Path(item['directory'])/('leave-'+operation+'.json')
+        receipt=json.loads(receipt_path.read_text(encoding='utf-8-sig'))
+        if process.returncode!=0 or receipt.get('schema')!=1 or receipt.get('run_id')!=session.plan['run_id'] \
+                or receipt.get('pid')!=process.pid or receipt.get('status')!='completed' \
+                or identity(receipt.get('id',''))!=operation or identity(receipt.get('player',''))!=item['player'] \
+                or receipt.get('stage_id')!=session.stage_id or receipt.get('kind')!='leave_match':
+            raise RuntimeError('Normal exit lacks its published formal quit receipt')
+        session.write_json(session.stage_output/('exit-receipt-'+item['name']+'.json'),receipt)
     session.control()
-    session.wait('member-left-'+item['name'],lambda:session.settled() and all(any(
-        identity(m['player'])==item['player'] and not m['online'] for m in v.get('role_members',[]))
-        for n,v in session.states.items() if n!='server'))
+    def departed():
+        require_membership_deadline(session)
+        return session.settled() and all(any(
+            identity(m['player'])==item['player'] and not m['online'] for m in v.get('role_members',[]))
+            for n,v in session.states.items() if n!='server')
+    try:
+        session.wait('member-left-'+item['name'],departed)
+    except RuntimeError as error:
+        from runtime_evidence import RuntimeEvidenceUnavailable
+        raise RuntimeEvidenceUnavailable('Member exit did not converge; the shared room cannot support dependent stages: '+str(error)) from error
     return process.pid
 
 
 def returned(session, item):
-    session.wait('fixed-role-return-'+item['name'],lambda:session.settled() and all(any(
-        identity(m['player'])==item['player'] and m['online'] and m['role']==item['launch_seat']
-        for m in v.get('role_members',[])) for n,v in session.states.items() if n!='server'))
+    observed_online=False
+    launch_seat=item.get('launch_seat',item['seat'])
+    def active():
+        nonlocal observed_online
+        require_membership_deadline(session)
+        rooms=session.states.get('server',{}).get('rooms',[])
+        member=next((m for r in rooms for m in r.get('members',[]) if identity(m['player'])==item['player']),None)
+        if member and member['online']: observed_online=True
+        if observed_online and member and not member['online']:
+            from runtime_evidence import RuntimeEvidenceUnavailable
+            raise RuntimeEvidenceUnavailable('Coordinator rejected the replacement admission; dependent room checks cannot continue')
+        return session.settled() and all(any(
+            identity(m['player'])==item['player'] and m['online'] and m['role']==launch_seat
+            for m in v.get('role_members',[])) for n,v in session.states.items() if n!='server')
+    session.wait('fixed-role-return-'+item['name'],active)
     session.sync_seats()
 
 
@@ -58,8 +133,9 @@ def fixed_reconnect(session, abrupt=False):
     old=leave(session,pilot,abrupt)
     from admission_probe import reject
     import uuid
-    negative=[reject(session,pilot['player'],pilot['team'],'Ground','Role is locked for this match'),
-              reject(session,uuid.uuid4().hex,pilot['team'],'Ground','Role seat occupied')]
+    negative=[reject(session,pilot['player'],pilot['team'],'Ground','Role is locked for this match')]
+    negative.extend(getattr(session,'preliminary_admission_paths',[]) or
+                    [reject(session,uuid.uuid4().hex,pilot['team'],'Ground','Role seat occupied')])
     session.wait('vacant-ship',lambda:all(any(o['definition']=='player/ship' and o['team']==1 and o['dormant'] for o in s['scene_objects'])
         and all(m['life_state']==3 and not m['entity'] for m in s.get('wingman_states',[]) if m['team']=='Red') for n,s in session.states.items() if n!='server'))
     # A real new client fills the vacant original seat. The old identity must

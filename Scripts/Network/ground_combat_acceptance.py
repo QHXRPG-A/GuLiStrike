@@ -34,9 +34,16 @@ def run(plan, args, records, read_state, write_json, initial):
     corridor_x = max((float(v['x']) for v in mass)) + 4000
     center_y = (source['position'][1] + enemy['position'][1]) / 2
     routes = {shooter['name']: [[corridor_x, source['position'][1]], [corridor_x, center_y], [-2000, center_y]], target['name']: [[corridor_x, enemy['position'][1]], [corridor_x, center_y], [2000, center_y]]}
+    fast_setup=getattr(args,'continue_remaining',False)
+    if fast_setup:
+        # Position setup already supplied a clear lane. Preserve the original
+        # >100 cm real movement assertion without the unrelated map-wide tour.
+        routes={shooter['name']:[[source['position'][0]+400,source['position'][1]]],target['name']:[]}
     route_index = {name: 0 for name in routes}
     input_start = {e['name']: states[e['name']]['logical_tick'] for e in (shooter, target)}
-    write_json(output / 'ground-combat-route.json', {'schema': 1, 'routes': routes, 'rocket_period_ticks': 600, 'rocket_held_ticks': 180, 'waypoint_tolerance_cm': 600})
+    write_json(output / 'ground-combat-route.json', {'schema': 1, 'routes': routes, 'rocket_period_ticks': 0 if fast_setup else 600,
+               'rocket_held_ticks': 0 if fast_setup else 180, 'waypoint_tolerance_cm': 100 if fast_setup else 600,
+               'scope':'Prepared short lane plus original real movement/fire/death assertions' if fast_setup else 'Original authored approach route'})
     deadline = time.monotonic() + args.gameplay_timeout
     stage = 'approach'
     terminal_at = None
@@ -65,13 +72,14 @@ def run(plan, args, records, read_state, write_json, initial):
             dx = enemy['position'][0] - source['position'][0]
             dy = enemy['position'][1] - source['position'][1]
             distance = math.hypot(dx, dy)
-            fire = enemy['alive'] and distance <= 4500
+            fire = enemy['alive'] and distance <= 4500 and (not fast_setup or math.dist(initial_position,source['position'])>120)
             stage = 'fire' if fire else 'approach' if enemy['alive'] else 'confirm_death'
             inputs = []
-            for entry, actor, aim, held in ((shooter, source, enemy['position'], fire), (target, enemy, source['position'], False)):
+            return_fire = fire and getattr(args, 'target_return_fire', False)
+            for entry, actor, aim, held in ((shooter, source, enemy['position'], fire), (target, enemy, source['position'], return_fire)):
                 name = entry['name']
                 index = route_index[name]
-                while index < len(routes[name]) and math.dist(actor['position'][:2], routes[name][index]) <= 600:
+                while index < len(routes[name]) and math.dist(actor['position'][:2], routes[name][index]) <= (100 if fast_setup else 600):
                     index += 1
                 route_index[name] = index
                 pursuing = entry is shooter and index == len(routes[name]) and enemy['alive'] and not held
@@ -87,7 +95,7 @@ def run(plan, args, records, read_state, write_json, initial):
                 # The authored route can meet terrain on any leg. Continue
                 # using the real periodic thrust input, including pursuit of
                 # an opponent that has not reached its planned meeting point.
-                rocket = moving and (elapsed % 600 < 180)
+                rocket = moving and not fast_setup and (elapsed % 600 < 180)
                 inputs.append({'player': entry['player'], 'move_x': move[0], 'move_y': move[1], 'aim_x': aim[0], 'aim_y': aim[1], 'aim_z': aim[2], 'sprint': True, 'fire': held, 'rocket': rocket})
             control = {'schema': 1, 'run_id': plan['run_id'], 'phase': 'ground_combat', 'ground_inputs': inputs}
             write_json(output / 'control.json', control)

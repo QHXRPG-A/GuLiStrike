@@ -111,7 +111,7 @@ void UGuLiCombatEffectPresentationSubsystem::BeginEpoch(uint32 NewEpoch)
 
 float UGuLiCombatEffectPresentationSubsystem::ServerTime() const
 {
-	if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) return static_cast<float>(Hybrid->GetLogicalSeconds());
+	if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) return static_cast<float>(Hybrid->GetLocalLogicalSeconds());
 	const AGameStateBase* State = GetWorld()->GetGameState();
 	return State ? State->GetServerWorldTimeSeconds() : GetWorld()->GetTimeSeconds();
 }

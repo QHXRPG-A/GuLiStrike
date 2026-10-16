@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import math
+import re
 import time
 import uuid
 from runtime_evidence import additional_flight_counts, pending_object_handoffs
@@ -122,6 +123,11 @@ def run(plan, args, records, read_state, write_json, initial, required_balance=N
     depleted_waiting = {}
     depletion_transitions = []
     funding_returns = {}
+    initial_events={v['event'].replace('-','').lower() for e in clients
+                    for v in initial[e['name']].get('client_results',[])}
+    processed_events={team:set() for team in ('Red','Blue')}
+    transit_prepared=set()
+    transit_preparation=[]
     deadline = time.monotonic() + args.gameplay_timeout
     try:
         while time.monotonic() < deadline:
@@ -179,7 +185,17 @@ def run(plan, args, records, read_state, write_json, initial, required_balance=N
             remaining = states[reference['name']].get('resource_query', {}).get('remaining_raw')
             if remaining is None:
                 raise RuntimeError('Missing actual remaining-ore evidence')
-            processed_by_team = {team: sum((states[reference['name']]['economy'][team][color] - balance[team][color] for color in ('blue', 'red'))) for team in ('Red', 'Blue')}
+            # Upkeep and production may spend output immediately. Count actual
+            # committed processing events rather than net treasury growth.
+            # One successful Process settlement consumes one FIFO raw unit.
+            hosts={o['id'].replace('-','').lower():o for o in states[reference['name']].get('scene_objects',[])}
+            for endpoint in clients:
+                for result in states[endpoint['name']].get('client_results',[]):
+                    event=result['event'].replace('-','').lower()
+                    host=hosts.get(result.get('target','').replace('-','').lower())
+                    if result.get('kind')==11 and result.get('status') in (0,1) and event not in initial_events and host and host['team'] in (1,2):
+                        processed_events['Red' if host['team']==1 else 'Blue'].add(event)
+            processed_by_team={team:len(events) for team,events in processed_events.items()}
             extracted = initial_raw - remaining
             extracted_peak = max(extracted_peak, extracted)
             cargo_seen |= cargo > 0
@@ -191,6 +207,37 @@ def run(plan, args, records, read_state, write_json, initial, required_balance=N
                     if set(receipt['accepted_actors']) != set(order['actors']):
                         raise RuntimeError(f'{team} formal mining input rejected: {receipt}')
                     accepted.add(order['command'])
+            if manifest.get('strings',{}).get('acceptance/preparation')=='gf-fast-spatial-v2' and not freeze_at:
+                actions=[]
+                for team,faction in (('Red',1),('Blue',2)):
+                    if team in transit_prepared or processed_by_team[team]>=2: continue
+                    if not all(o['command'] in accepted for o in orders if o['player']==commanders[team]['player']): continue
+                    candidates=[]
+                    for key,value in active.items():
+                        cargo_amount=value['cargo_blue']+value['cargo_red']
+                        goal=re.search(r'Goal=X=([-+0-9.]+) Y=([-+0-9.]+) Z=([-+0-9.]+)',value.get('travel',''))
+                        if value['team']==faction and key in moved and cargo_amount>0 and value['task_state'] in (3,4) and goal:
+                            point=[float(goal.group(i)) for i in (1,2,3)]
+                            if math.dist(value['position'][:2],point[:2])>2000:candidates.append((cargo_amount,key,value,point))
+                    selected=[];amount=0
+                    for cargo_amount,key,value,point in sorted(candidates,reverse=True,key=lambda v:v[0]):
+                        selected.append((key,value,point));amount+=cargo_amount
+                        if amount>=2:break
+                    if amount<2: continue
+                    for key,value,point in selected:
+                        operation=uuid.uuid4().hex
+                        actions.append({'id':operation,'kind':'fixture_position','player':value['simulator'].replace('-','').lower(),
+                                        'object':key,'point':point,'locked':False})
+                        transit_preparation.append({'operation':operation,'source':key,'before':value,'requested_dock':point,
+                            'real_movement_before_preparation':math.dist(positions[key],value['position']),
+                            'scope':'Real movement and cargo already observed. Skip long travel setup only; native docking, delivery, FIFO, processing and conservation are still required.'})
+                    order={'player':commanders[team]['player'],'command':getattr(args,'command_base',0)+20000+len(orders)+1,
+                        'actors':sorted(v['ordinal'] for _,v,_ in selected),'intent':'Return',
+                        'x':selected[0][2][0],'y':selected[0][2][1],'z':selected[0][2][2]}
+                    orders.append(order);transit_prepared.add(team)
+                if actions:
+                    control['actions']=control.get('actions',[])+actions;control['unit_orders']=orders
+                    write_json(output/'control.json',control)
             sample = {'monotonic_seconds': time.monotonic(), 'remaining_raw': remaining, 'cargo': cargo, 'queue': queue, 'processed_by_team': processed_by_team, 'moved_miners': len(moved), 'epochs': {e['name']: states[e['name']].get('epoch') for e in clients}, 'additional_flights': flight_counts(states) if extra_flights else {}}
             timeline.append(sample)
             enough = len(accepted) == len(orders) and cargo_seen and queue_seen and all((v >= 2 for v in processed_by_team.values()))
@@ -233,6 +280,23 @@ def run(plan, args, records, read_state, write_json, initial, required_balance=N
                         if len(orders)>128: raise RuntimeError('Mining preparation exceeded its bounded formal order budget')
                         control['unit_orders']=orders
                         write_json(output/'control.json',control)
+            if required_balance is None and not freeze_at and not enough:
+                # Two real processed units per team satisfy this assertion.
+                # Use the normal Return order once enough ore has been mined,
+                # rather than requiring an unrelated full-cargo work cycle.
+                for team,faction in (('Red',1),('Blue',2)):
+                    if team in funding_returns or processed_by_team[team]>=2: continue
+                    miners=[m for m in active.values() if m['team']==faction]
+                    if not all(o['command'] in accepted for o in orders if o['player']==commanders[team]['player']): continue
+                    returning=[m for m in miners if m['cargo_blue']+m['cargo_red']>0 and m['task_state'] not in (3,4)]
+                    if sum(m['cargo_blue']+m['cargo_red'] for m in returning)<2: continue
+                    last=next(o for o in reversed(orders) if o['player']==commanders[team]['player'])
+                    order={'player':commanders[team]['player'],'command':getattr(args,'command_base',0)+20000+len(orders)+1,
+                           'actors':sorted(m['ordinal'] for m in returning),'intent':'Return',
+                           'x':last['x'],'y':last['y'],'z':last['z']}
+                    funding_returns[team]={'order':order,'carried':sum(m['cargo_blue']+m['cargo_red'] for m in returning),
+                                          'purpose':'Actual minimum extraction, transport and processing; no full-cargo requirement'}
+                    orders.append(order);control['unit_orders']=orders;write_json(output/'control.json',control)
             if enough and freeze_at is None:
                 freeze_at = time.monotonic()
                 control['enable_mining'] = False
@@ -285,3 +349,6 @@ def run(plan, args, records, read_state, write_json, initial, required_balance=N
         write_json(output / 'mining-timeline.json', {'schema': 1, 'run_id': plan['run_id'], 'samples': timeline})
         write_json(output / 'mining-depletion-transitions.json', {'completed':depletion_transitions,'waiting':depleted_waiting})
         write_json(output / 'mining-funding-return-inputs.json', funding_returns)
+        write_json(output / 'mining-transit-preparation.json', {'preparations':transit_preparation,
+            'actions':[a for value in states.values() for a in value.get('review_actions',[])
+                       if a.get('id','').replace('-','').lower() in {v['operation'] for v in transit_preparation}]})

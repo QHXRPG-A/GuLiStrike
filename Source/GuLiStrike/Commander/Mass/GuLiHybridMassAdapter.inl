@@ -365,13 +365,20 @@ public:
         if (Stage==EGuLiHybridRestoreStage::Link)
         {
             auto* S=Soldier(); auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(Self->GetWorld());
-            const auto* Data=Nav?GuLiCommanderMassPrivate::GetCommanderNavigationData(*Nav):nullptr; if (!S || !Data) return false;
-            FNavLocation Ground;
-            if (!GuLiCommanderMassPrivate::ProjectPointToCommanderNavigation(*Nav,*Data,S->Location,FVector(150,150,5000),Ground)
-                || FVector::DistSquared2D(S->Location,Ground.Location)>FMath::Square(150.)) return false;
+            const auto* Data=Nav?GuLiCommanderMassPrivate::GetCommanderNavigationData(*Nav):nullptr; if (!S) return false;
+            const bool NeedsRoute=!bRestoringQuery && (S->MoveIntent.IsValid() || S->bHasFinalDestination);
+            FNavLocation Ground(S->Location),Projected;
+            const bool HasGround=Nav && Data
+                && GuLiCommanderMassPrivate::ProjectPointToCommanderNavigation(*Nav,*Data,S->Location,FVector(150,150,5000),Projected)
+                && FVector::DistSquared2D(S->Location,Projected.Location)<=FMath::Square(150.);
+            // An idle newborn can legitimately occupy a retiring foundation's
+            // nav cutout. Preserve its pose and invalid nav ref until ordinary
+            // planning recovers; query copies never need a local route.
+            if (!HasGround && NeedsRoute) return false;
+            if (HasGround) Ground=Projected;
             S->LastValidNavLocation=Ground;
-            if (S->bHasFinalDestination && !GuLiCommanderMassPrivate::ProjectPointToCommanderNavigation(*Nav,*Data,S->FinalDestination.Location,FVector(150,150,5000),S->FinalDestination)) return false;
-            if (S->MoveIntent && S->RouteGoal)
+            if (NeedsRoute && S->bHasFinalDestination && !GuLiCommanderMassPrivate::ProjectPointToCommanderNavigation(*Nav,*Data,S->FinalDestination.Location,FVector(150,150,5000),S->FinalDestination)) return false;
+            if (NeedsRoute && S->MoveIntent && S->RouteGoal)
                 S->SharedRoute=Self->AuthorityState->SharedRoutes.Request(S->RouteGoal,Ground,S->bAutomaticAdvance,*Data,Self->AuthorityState->NavigationGeneration);
             S->DirectDock={}; S->ActiveNavigation.Reset(); S->FinalDestinationNavigationGeneration=Self->AuthorityState->NavigationGeneration;
             Self->RegisterCombatLedgerTarget(S->SoldierId);

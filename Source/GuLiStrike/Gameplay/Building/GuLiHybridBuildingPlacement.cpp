@@ -48,6 +48,18 @@ template<class T> void Pending(FGuLiHybridStateArchive& A,TArray<T>& Jobs)
 }
 }
 
+TArray<FGuid> UGuLiBuildingPlacementComponent::GetPendingPlacementEvents() const
+{TArray<FGuid> Events;HybridClientRequests.GetKeys(Events);return Events;}
+void UGuLiBuildingPlacementComponent::RebindHybridReceipts()
+{
+    auto* H=GetWorld()?GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;if (!H) return;
+    H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);
+    H->OnTransactionCompleted.AddUniqueDynamic(this,&ThisClass::HandleHybridTransaction);
+    H->OnCommandCompleted.RemoveAll(this);H->OnCommandCompleted.AddUObject(this,&ThisClass::HandleHybridPlacementCommand);
+    TArray<FGuid> Commands;HybridCommandRequests.GetKeys(Commands);
+    for (const auto& Event:Commands) {FGuLiHybridCommandResult R;if (H->FindCommandResult(Event,R)) HandleHybridPlacementCommand(R);}
+    for (const auto& Event:GetPendingPlacementEvents()) {FGuLiHybridTransactionResult R;if (H->FindTransactionResult(Event,R)) HandleHybridTransaction(R);}
+}
 bool UGuLiBuildingPlacementComponent::RouteHybridPlacement(const FGuLiBuildingPlacementRequest& Request)
 {
     auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>(); const auto* Pawn=GetPlacementPawn();

@@ -16,7 +16,7 @@ import subprocess
 import time
 import uuid
 from windows_cpu_topology import bind_process, discover, partition, sample_process
-from runtime_evidence import read_json_shared
+from runtime_evidence import read_json_shared, RuntimeEvidenceUnavailable
 from acceptance_contract import SCENARIOS, freeze_baseline, validate_manifest_contract, validate_gate
 ROOT = Path(__file__).resolve().parents[2]
 ENGINE = Path('D:/UnrealEngine-5.7/Engine/Binaries/Win64')
@@ -41,9 +41,11 @@ def read_state(path: Path, run_id: str, pid: int) -> dict | None:
     except (FileNotFoundError, PermissionError):
         return None
     if result.get('schema') != 1 or result.get('run_id') != run_id or result.get('pid') != pid:
-        raise RuntimeError(f'Stale or incompatible runtime evidence: {path}')
+        raise RuntimeEvidenceUnavailable(f'Stale or incompatible runtime evidence: {path}')
     if result.get('failure'):
-        raise RuntimeError(f"{path.parent.name}: {result['failure']}")
+        raise RuntimeEvidenceUnavailable(f"{path.parent.name}: {result['failure']}")
+    if result.get('scene_review',{}).get('failure'):
+        raise RuntimeEvidenceUnavailable(f"{path.parent.name}: {result['scene_review']['failure']}")
     return result
 
 def verify_additional_flights(plan: dict, states: dict) -> None:
@@ -92,6 +94,22 @@ def verify_player_simulation(plan: dict, states: dict) -> None:
             raise RuntimeError('Dormant carrier private state does not have exactly one custodian')
 
 def build_plan(args: argparse.Namespace, cpu: dict, mode: str, formation: str, population: int, repeat: int) -> dict:
+    if args.case in ('gameplay_merged', 'fault_merged'):
+        # Functional acceptance shares the already allocated client CPUs.
+        # Keep the service and OS reserve, total CPU pool, load and deadlines.
+        # The isolated partition remains the input for performance cases.
+        client_roles = ['rendered', *[f'logic{i}' for i in range(1, 6)]]
+        client_mask = 0
+        client_cores = []
+        for role in client_roles:
+            client_mask |= cpu['masks'][role]
+            client_cores.extend(cpu['cores'][role])
+        if client_mask & (cpu['masks']['server'] | cpu['masks']['system_reserve']):
+            raise RuntimeError('Functional client pool overlaps the service or system reserve')
+        cpu = {**cpu, 'policy': 'functional_shared_clients', 'original_partition': cpu,
+               'masks': {**cpu['masks'], **{role: client_mask for role in client_roles}},
+               'cores': {**cpu['cores'], **{role: client_cores for role in client_roles}},
+               'basis': cpu['basis'] + '; functional G/F clients share their original union; service and system reserve unchanged'}
     red, blue = map(int, formation.split('v'))
     run_id = str(uuid.uuid4())
     output = Path(args.output).resolve() / f'{mode}-{formation}-n{population}-r{repeat}-{run_id[:8]}'
@@ -132,7 +150,7 @@ def build_plan(args: argparse.Namespace, cpu: dict, mode: str, formation: str, p
             command.extend(['-trace=cpu,frame,gpu,bookmark', '-statnamedevents',
                             '-tracefile='+str(directory/'frames.utrace')])
         processes.append({'name': f'client{index + 1}', 'team': team, 'seat': role, 'player': player, 'participating': participating, 'rendered': rendered, 'sample': rendered, 'mask': mask, 'command': command, 'directory': str(directory)})
-    return {'schema': 1, 'run_id': run_id, 'room': room, 'mode': mode, 'transport': 'LocalUdp', 'formation': formation, 'population': population, 'extra_flights': 500 if population == 600 else 0, 'repeat': repeat, 'map': MAP, 'manifest': str(manifest), 'profile': profile, 'seed': args.seed, 'case': args.case, 'warmup_seconds': args.warmup, 'capture_seconds': args.capture, 'cpu_partition': cpu, 'output': str(output), 'processes': processes, 'performance_scope': 'Only server and rendered-client PIDs; never extrapolate six-client cost or double-count connection ends'}
+    return {'schema': 1, 'run_id': run_id, 'room': room, 'mode': mode, 'transport': 'LocalUdp', 'formation': formation, 'population': population, 'extra_flights': 500 if population == 600 else 0, 'repeat': repeat, 'map': MAP, 'manifest': str(manifest), 'profile': profile, 'seed': args.seed, 'case': args.case, 'warmup_seconds': args.warmup, 'capture_seconds': args.capture, 'cpu_partition': cpu, 'output': str(output), 'processes': processes, 'performance_scope': 'Functional G/F uses a shared client CPU pool; no performance verdict' if cpu.get('policy') == 'functional_shared_clients' else 'Only server and rendered-client PIDs; never extrapolate six-client cost or double-count connection ends'}
 
 def check_preconditions(args: argparse.Namespace, plan: dict) -> None:
     if os.name != 'nt':
@@ -175,10 +193,16 @@ def check_preconditions(args: argparse.Namespace, plan: dict) -> None:
             raise RuntimeError('Integrated acceptance requires the approved 600 + 500 load')
         expected_rendered={"vehicle-combat":"Air","air-combat":"Air","ground-combat":"Ground"}.get(
             getattr(args,"regression_stage",None),SCENARIOS.get(args.case,(None,None,None))[2])
+        if getattr(args, 'collect_groups', None):
+            expected_rendered={'G08':'Ground','G09':'Air'}.get(args.collect_groups[0], 'Commander')
+        if getattr(args, 'continue_remaining', False):
+            expected_rendered = args.render_role
+        if getattr(args, 'collect_ui_role', None):
+            expected_rendered=args.collect_ui_role
         if args.case in SCENARIOS and args.render_role != expected_rendered:
             raise RuntimeError('Rendered role differs from the integrated scenario')
         plan['baseline'] = freeze_baseline(ROOT, manifest_path)
-        if args.case == 'steady' or (args.case in SCENARIOS and SCENARIOS[args.case][1] == 'fault'):
+        if args.case == 'steady' or (args.case in SCENARIOS and SCENARIOS[args.case][1] == 'fault' and not getattr(args, 'collect_only', False)):
             gate_folder = getattr(args, 'gates', None)
             if not gate_folder:
                 raise RuntimeError("This phase requires the current build's gameplay gate evidence")
@@ -217,7 +241,8 @@ def check_preconditions(args: argparse.Namespace, plan: dict) -> None:
         with socket.socket(socket.AF_INET, carrier) as probe:
             probe.bind(('127.0.0.1', port))
 
-def launch(plan: dict, args: argparse.Namespace) -> dict:
+def launch(plan: dict, args: argparse.Namespace, writer=None) -> dict:
+    write_json = writer or globals()['write_json']
     output = Path(plan['output'])
     output.mkdir(parents=True, exist_ok=False)
     records = []
@@ -225,6 +250,10 @@ def launch(plan: dict, args: argparse.Namespace) -> dict:
     metrics = []
     states = {}
     result = {'run_id': plan['run_id'], 'status': 'failed', 'measurement_valid': False, 'failure': '', 'forced_cleanup': []}
+    staggered = getattr(args, 'stagger_commander_registration', False)
+    startup_deadline = time.monotonic() + args.startup_timeout if staggered else None
+    registration_observed = False
+    plan['startup_order'] = 'rendered-commander-registration-first' if staggered else 'concurrent'
     write_json(output / 'launch.json', plan)
     initial_control = {'schema': 1, 'run_id': plan['run_id'], 'phase': 'prepare'}
     if args.case in SCENARIOS or args.case == 'steady':
@@ -232,6 +261,22 @@ def launch(plan: dict, args: argparse.Namespace) -> dict:
     write_json(output / 'control.json', initial_control)
     try:
         for entry in plan['processes']:
+            if staggered and not registration_observed and entry['name'] != 'server' and not entry['rendered']:
+                server_entry, server_process = next((e, p) for e, p in records if e['name'] == 'server')
+                rendered_entry, rendered_process = next((e, p) for e, p in records if e['rendered'])
+                while time.monotonic() < startup_deadline:
+                    if server_process.poll() is not None or rendered_process.poll() is not None:
+                        raise RuntimeError('An owned process exited before Commander registration')
+                    observation = read_state(Path(server_entry['directory']) / 'state.json', plan['run_id'], server_process.pid)
+                    if observation and any(identity_member.get('online') and identity_member.get('seat') == 0
+                            and identity_member.get('player', '').lower() == rendered_entry['player']
+                            for room_state in observation.get('rooms', []) for identity_member in room_state.get('members', [])):
+                        write_json(output / 'commander-registration-before-helpers.json', observation)
+                        registration_observed = True
+                        break
+                    time.sleep(.15)
+                else:
+                    raise RuntimeError('Rendered Commander registration exceeded the original startup deadline')
             directory = Path(entry['directory'])
             directory.mkdir()
             stream = (directory / 'stdout.log').open('wb')
@@ -245,7 +290,7 @@ def launch(plan: dict, args: argparse.Namespace) -> dict:
             entry['observed_mask'] = bind_process(process.pid, entry['mask'])
             entry['pid'] = process.pid
             write_json(output / 'launch.json', plan)
-        deadline = time.monotonic() + args.startup_timeout
+        deadline = startup_deadline if staggered else time.monotonic() + args.startup_timeout
         states = {}
         integrated_session = None
         bootstrap_barrier = False
@@ -263,6 +308,7 @@ def launch(plan: dict, args: argparse.Namespace) -> dict:
                 ready &= bool(state and state.get(initialized) and (state.get('participating') == entry['participating']))
             if integrated_session:
                 integrated_session.states = states
+                integrated_session.enforce_affinities()
                 clients = [states[e['name']] for e in integrated_session.clients]
                 for state in clients:
                     if state: integrated_session.collect_decisions(state)
@@ -276,6 +322,9 @@ def launch(plan: dict, args: argparse.Namespace) -> dict:
         else:
             write_json(output / 'readiness.json', states)
             raise RuntimeError('Runtime readiness timed out; missing factories, startup data or review entry are not a gameplay pass')
+        if integrated_session:
+            integrated_session.states = states
+            integrated_session.enforce_affinities()
         write_json(output / 'readiness.json', states)
         verify_player_simulation(plan, states)
         verify_additional_flights(plan, states)
@@ -443,9 +492,19 @@ def main() -> int:
     parser.add_argument('--seed', type=int, default=20261011)
     parser.add_argument('--case', choices=('bootstrap', 'ground', 'ground_combat', 'ship', 'ship_wingmen', 'engineer', 'construction', 'factory_construction', 'mining', 'flights', 'steady', *SCENARIOS), default='gameplay_merged')
     parser.add_argument('--gates', help='Directory containing current-build gameplay/fault evidence')
+    parser.add_argument('--collect-only', action='store_true', help='Collect independent G/F evidence without granting or requiring a complete G gate')
+    parser.add_argument('--continue-remaining', action='store_true', help='Collect remaining G03/G08/G09/G10 as one bounded task, continuing unfinished work in replacement rooms')
+    parser.add_argument('--resume-summary', help='Select only unresolved branches from a prior remaining-summary.json; never inherit its pass evidence')
+    parser.add_argument('--collect-groups', nargs='+', choices=tuple('G'+str(i).zfill(2) for i in range(1,11)), help='Collect selected existing G groups in a fresh six-client room')
+    parser.add_argument('--collect-steps', nargs='+', help='Resume only named existing G steps after shared evidence was interrupted')
+    parser.add_argument('--collect-fault-steps', nargs='+', help='Collect named existing F phases in a fresh room after shared evidence was interrupted')
+    parser.add_argument('--collect-ui-role', choices=('Commander','Ground','Air'), help='Collect one existing pending-request UI branch using its initially rendered fixed seat')
+    parser.add_argument('--preparation-timeout', type=float, default=45, help='Short budget for setup; unresolved preparation is skipped, never passed')
     parser.add_argument('--etw-helper')
     parser.add_argument('--etw-calibration')
     parser.add_argument('--diagnostic-trace', action='store_true', help='CPU/GPU frame diagnosis on the rendered PID only; not a valid performance round')
+    parser.add_argument('--stagger-commander-registration', action='store_true',
+                        help='Wait for the rendered Commander to register before launching helpers, within the original startup deadline')
     parser.add_argument('--regression-stage', choices=('ownership','gameplay-remaining','commander-remaining','abilities-combat','vehicle-combat','ground-combat','air-combat','g-remaining-sweep'), help='Run the affected combined stages plus real preparation; never grants a full gameplay gate')
     parser.add_argument('--startup-timeout', type=float, default=180)
     parser.add_argument('--gameplay-timeout', type=float, default=300)
@@ -455,10 +514,36 @@ def main() -> int:
     parser.add_argument('--coordinator-port', type=int, default=8787)
     parser.add_argument('--udp-base', type=int, default=18801)
     args = parser.parse_args()
+    if args.resume_summary and (not args.continue_remaining or not args.collect_only):
+        parser.error('--resume-summary requires --continue-remaining --collect-only')
+    if args.continue_remaining:
+        if (not args.collect_only or args.case != 'gameplay_merged' or args.regression_stage
+                or args.collect_steps or args.collect_fault_steps or args.collect_ui_role
+                or args.stagger_commander_registration
+                or (args.collect_groups and set(args.collect_groups) != {'G03', 'G08', 'G09', 'G10'})
+                or args.formation not in ('all', '3v3') or args.population not in ('all', '600')
+                or args.repeat not in (None, 1)):
+            parser.error('--continue-remaining requires the four remaining G groups, --collect-only, six seats and 600 units; step filters and repeated matrices are not supported')
+        args.collect_groups = ['G03', 'G08', 'G09', 'G10']
+        args.render_role = 'Air' if args.resume_summary else 'Ground'
+    if args.collect_only and (args.case not in SCENARIOS or args.regression_stage):
+        parser.error('Independent collection is restricted to the existing G/F scenarios')
+    if args.collect_groups and (not args.collect_only or args.case != 'gameplay_merged'):
+        parser.error('Selecting G groups requires gameplay_merged --collect-only')
+    if args.collect_steps and (not args.collect_only or not args.collect_groups):
+        parser.error('Selecting steps requires explicit G collection groups')
+    if args.collect_fault_steps and (not args.collect_only or args.case != 'fault_merged'):
+        parser.error('Selecting F phases requires fault_merged --collect-only')
+    if args.collect_ui_role and (not args.collect_only or args.case != 'fault_merged' or args.collect_fault_steps != ['ui-rebind']):
+        parser.error('An individual UI role requires only the existing ui-rebind F collection phase')
+    if args.preparation_timeout <= 0:
+        parser.error('Invalid preparation budget')
     if args.diagnostic_trace and args.case == 'steady':
         parser.error('A diagnostic full trace is separate from the final performance matrix')
     if args.regression_stage and args.case != 'gameplay_merged':
         parser.error('A targeted regression requires gameplay_merged and cannot run as a performance or fault gate')
+    if args.stagger_commander_registration and args.render_role != 'Commander':
+        parser.error('Staggered Commander registration requires the Commander rendered seat')
     if args.repeat is None:
         args.repeat = 3 if args.case == 'steady' else 1
     if args.repeat < 1 or args.warmup < 0 or args.capture <= 0 or (args.startup_timeout <= 0) or (args.gameplay_timeout <= 0):
@@ -473,9 +558,17 @@ def main() -> int:
     formations = formation_scope if args.formation == 'all' else (args.formation,)
     populations = population_scope if args.population == 'all' else (int(args.population),)
     cpu = partition(discover())
+    if args.continue_remaining:
+        from integrated_continuation import execute
+        return execute(args, cpu)
     results = []
     for mode, formation, population, repeat in itertools.product(modes, formations, populations, range(1, args.repeat + 1)):
         plan = build_plan(args, cpu, mode, formation, population, repeat)
+        plan['collection']={'enabled':args.collect_only,'groups':args.collect_groups,
+                            'steps':args.collect_steps,
+                            'fault_steps':args.collect_fault_steps,'ui_role':args.collect_ui_role,
+                            'preparation_timeout':args.preparation_timeout,
+                            'policy':'Existing preparation cheats with readback; short-term unresolved setup is skipped. No collection run grants a G/F gate.'}
         if args.dry_run:
             print(json.dumps(plan, ensure_ascii=False, indent=2))
             continue
@@ -483,7 +576,7 @@ def main() -> int:
         result = launch(plan, args)
         results.append(result)
         print(json.dumps({'output': plan['output'], **result}, ensure_ascii=False), flush=True)
-        if result['status'] not in ('passed', 'passed_regression', 'passed_bootstrap', 'passed_ground', 'passed_ground_combat', 'passed_ship', 'passed_ship_wingmen', 'passed_engineer', 'passed_construction', 'passed_factory_construction', 'passed_mining', 'passed_flights'):
+        if result['status'] not in ('passed', 'collected', 'passed_regression', 'passed_bootstrap', 'passed_ground', 'passed_ground_combat', 'passed_ship', 'passed_ship_wingmen', 'passed_engineer', 'passed_construction', 'passed_factory_construction', 'passed_mining', 'passed_flights'):
             return 1
     return 0
 if __name__ == '__main__':

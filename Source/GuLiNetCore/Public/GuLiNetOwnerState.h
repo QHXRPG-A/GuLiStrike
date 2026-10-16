@@ -1,6 +1,7 @@
 #pragma once
 #include "GuLiNetGameplayTypes.h"
 #include <optional>
+#include <functional>
 
 namespace GuLiNet
 {
@@ -60,19 +61,28 @@ public:
     bool Install(const ObjectRecord& Record);
     void SetMembers(std::map<Id,Member> Members) {Players=std::move(Members);}
     bool SetAuthority(const Authority& Grant);
+    void ObserveTerminalAuthority(const Authority& Grant);
+    void ObserveObjectOrdinal(ObjectKind Kind,std::uint32_t Ordinal);
+    std::uint32_t LastRetiredLife(ObjectKind Kind,Id Stable) const;
     void SetLogicalAge(ObjectKey Object,Tick Age);
     Id Owner(ObjectKey Object) const;
     Id MutationOwner(const OwnerWork& Work,const StateMutation& Mutation) const;
     bool Busy(ObjectKey Object) const;
     ObjectKey ExecutionDomain(const TransactionRequest& Request) const;
     bool FreezeDamage(TransactionRequest& Request) const;
-    bool Plan(Id AuthenticatedSender,const TransactionRequest& Request,OwnerWork& Out);
+    bool Plan(Id AuthenticatedSender,const TransactionRequest& Request,OwnerWork& Out,std::string* WaitReason=nullptr);
     bool Prepare(Id Planner,const OwnerWork& Work);
     bool Commit(Id Planner,const OwnerWork& Work);
     void Cancel(Id Planner,Id Event,Id Proposal);
     bool Resume(OwnerWork& Work);
     bool Import(Id Owner,const std::vector<StateFragment>& Fragments,bool Handoff=false,
-        const std::map<ObjectKey,Authority>* AdmittedBirths=nullptr);
+        const std::map<ObjectKey,Authority>* AdmittedBirths=nullptr,std::string* ImportFailureReason=nullptr);
+    using FragmentVisitor=std::function<bool(const StateFragment&)>;
+    // Synchronous repeatable reads of one immutable cut. Payloads need only
+    // remain resident for the visitor call; all validation precedes live writes.
+    using FragmentSource=std::function<bool(const FragmentVisitor&)>;
+    bool ImportStream(Id Owner,const FragmentSource& Read,bool Handoff=false,
+        const std::map<ObjectKey,Authority>* AdmittedBirths=nullptr,std::string* ImportFailureReason=nullptr);
     std::vector<StateFragment> Export(std::span<const ObjectKey> Objects) const;
     std::vector<StateFragment> Published(const OwnerWork& Work) const;
     std::optional<CommitResult> Result(Id Event) const;
@@ -96,14 +106,18 @@ private:
     void Abort(std::string Reason) {FailureReason=std::move(Reason);}
     Revision NextDecisionVersion() const {return Version({DecisionDomain,"object"})+1;}
     Bytes CaptureFragment(const StateKey& Key) const;
-    bool ApplyFragment(const StateFragment& Fragment);
+    static bool UsesResourceLedger(const StateFragment& Fragment);
+    bool ApplyFragment(const StateFragment& Fragment,ResourceLedgerState* ResourceBatch=nullptr);
     std::set<StateKey> FragmentKeys(std::span<const ObjectKey> Objects) const;
     std::set<StateKey> ChangedKeys(const TransactionRequest& Request,const CommitResult& Result) const;
     bool RebuildWorkIndex();
     OwnerState Stage(const TransactionRequest* Request=nullptr,const std::vector<StateFragment>* Fragments=nullptr) const;
     const ObjectRecord* FindRecord(ObjectKey Key) const;
+    std::optional<Authority> GroupAuthority(Id Group) const;
     ObjectRecord* EditRecord(ObjectKey Key);
     void IndexRecord(const ObjectRecord& Record);
+    void IndexResultDomain(Id Event,ObjectKey Domain);
+    void IndexAttackDomain(Id Event,ObjectKey Domain);
     const OwnerState& IndexedSource() const {return StageSource?StageSource->IndexedSource():*this;}
     const std::map<ObjectKey,ObjectRecord>& PreviousObjects() const {return StageSource?StageSource->PreviousObjects():Directory;}
     bool ApplyValidated(const std::vector<StateFragment>& Fragments);
@@ -114,6 +128,9 @@ private:
     std::string FailureReason;
     std::map<Id,Member> Players;
     std::map<ObjectKey,ObjectRecord> Directory;
+    // Authority history is metadata, not a fabricated numeric tombstone.
+    std::map<std::pair<ObjectKind,Id>,std::uint32_t> RetiredLives;
+    std::map<std::pair<ObjectKind,std::uint32_t>,std::uint32_t> AnnouncedOrdinals;
     // Retired records remain available to in-flight work and deduplication;
     // frequent simulation queries must not traverse that historical directory.
     std::set<ObjectKey> LivingObjects,ShieldObjects;
@@ -123,10 +140,16 @@ private:
     Economy EconomyLedger;
     ResourceLedger ResourceLedgerValue;
     MiningReservations MiningReservationsValue;
+    // Immutable catalog index: a resource cut never hashes every ore node to
+    // discover the handful belonging to one selected cluster object.
+    std::map<ObjectKey,std::vector<std::uint32_t>> ResourceClusterNodes;
     std::map<std::tuple<ObjectKind,std::string,ResourceInventoryKind>,std::pair<std::uint32_t,Tick>> ResourceActorProfiles;
     std::map<Id,CommitResult> Results;
     std::map<Id,Bytes> RequestBodies;
     std::map<Id,ObjectKey> ResultDomains;
+    // Derived per-object history keys; exports retain every decision without
+    // rescanning the entire room history for each individual private cut.
+    std::map<ObjectKey,std::set<std::string>> HistoryFragments;
     struct Attack
     {
         ObjectKey Source;std::string RuleId;Tick Started=0;std::set<ObjectKey> Targets;

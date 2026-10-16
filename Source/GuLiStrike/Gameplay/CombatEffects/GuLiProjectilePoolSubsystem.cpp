@@ -145,6 +145,7 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::ActivateLaunch(const FGu
 	Slot.SourceLease = Lease; Slot.Context = R.Context; Slot.SweepRadius = R.SweepRadius;
 	FGuLiCombatEffectState& State = Slot.State;
 	State = {}; State.Kind = EGuLiCombatEffectKind::LinearProjectile;
+	State.SlotId=R.Context.WeaponBinding.SlotId;
 	State.EffectId = R.Context.ShotId; State.MatchEpoch = Epoch; State.Sequence = 1;
 	State.Source = R.Context.Emitter.IsValid() ? GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter) : R.Context.Source;
 	// Classify only after freezing the source identity; recycled slots have no
@@ -192,7 +193,7 @@ bool UGuLiProjectilePoolSubsystem::Release(const FGuLiProjectilePoolHandle Handl
 {
 	if (!Matches(Handle)) return false;
     const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
-    const float Now=Hybrid ? static_cast<float>(Hybrid->GetLogicalSeconds()) : GetWorld()->GetTimeSeconds();
+    const float Now=Hybrid ? static_cast<float>(Hybrid->GetLocalLogicalSeconds()) : GetWorld()->GetTimeSeconds();
     return Retire(Handle,Reason,Slots[Handle.Slot].State.Location,Now);
 }
 

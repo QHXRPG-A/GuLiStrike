@@ -35,6 +35,8 @@ public:
 	UFUNCTION(BlueprintPure, Category="Commander|Skills") int32 GetGlobalSkillLevel(FName SkillId) const;
 	bool SetServerGlobalSkillLevel(FName SkillId, int32 Level);
 	void CopyMatchStateFrom(const UGuLiCommanderSkillComponent& Other);
+    TArray<FGuid> GetPendingHybridRequests() const;
+    void RebindHybridRequests();
 	/** Retains the reflected entry name; routes locally through object-owner commands. */
 
 	UFUNCTION() void ServerRequestSkill(const FGuLiActiveSkillRequest& Request);
@@ -69,7 +71,6 @@ private:
     TMap<FGuid,FHybridPendingSkill> HybridPending;
     FGuid RouteHybridUnitSkillRequest(const FGuLiActiveSkillRequest& Request);
     void HandleHybridSkillResult(const FGuLiHybridCommandResult&);
-    void RebindHybridRequests();
     TMap<FGuid,FReceipt> HybridGlobalRequests;
     FGuLiActiveSkillReply RequestHybridGlobal(const FGuLiActiveSkillRequest& Request);
     UFUNCTION() void CompleteHybridGlobal(const FGuLiHybridTransactionResult& Result);

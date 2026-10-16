@@ -47,7 +47,7 @@ public:
     FGuid RequestConfirmedChoice(FGuid RequestId,FName NodeId,int64 MatchEpoch,int64 ExpectedBuildRevision);
     UFUNCTION(BlueprintPure,Category="Ship|Build") bool FindChoiceResult(FGuid RequestId,FGuLiShipChoiceResult& Result) const;
     UPROPERTY(BlueprintAssignable,Category="Ship|Build") FGuLiShipChoiceResolved OnChoiceResolved;
-    void NotifyHybridChoiceResolved(const UGuLiShipAssemblyComponent& Assembly,const FGuLiShipChoiceResult& Result);
+    bool NotifyHybridChoiceResolved(const UGuLiShipAssemblyComponent& Assembly,const FGuLiShipChoiceResult& Result);
 	bool RestoreShip(UGuLiShipAssemblyComponent& Assembly, FString& Error);
 	void CopyMatchStateFrom(const UGuLiShipBuildComponent& Other);
     bool AdoptExistingShip(UGuLiShipAssemblyComponent& Assembly);

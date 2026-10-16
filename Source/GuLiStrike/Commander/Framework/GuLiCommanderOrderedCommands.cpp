@@ -73,6 +73,17 @@ void UGuLiCommanderNetSyncComponent::SubmitOrderedSelection(FGuLiSelectionReques
 
 }
 
+#if !UE_BUILD_SHIPPING
+bool UGuLiCommanderNetSyncComponent::PrepareReviewSoldierSelection(TConstArrayView<FGuLiSoldierId> Members, uint32 RequestId)
+{
+    auto* Player=GetBattlePlayerState();auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+    auto Candidate=SelectionState;
+    if (!IsSoldierStreamReady() || !Player || !Authority
+        || !Authority->ResolveReviewSoldierSelection(*Player,Members,RequestId,Candidate)) return false;
+    SelectionState=MoveTemp(Candidate);bOrderedSelectionValid=true;NotifySelectionChanged();return true;
+}
+#endif
+
 bool UGuLiCommanderNetSyncComponent::SubmitPanelSelection(FGuLiPanelSelectionRequest Request)
 {
 	// Portraits display a confirmed snapshot. Do not reinterpret a stale tile after another selection intent.

@@ -118,8 +118,8 @@ bool UGuLiShipBuildComponent::FindChoiceResult(FGuid RequestId,FGuLiShipChoiceRe
     {const auto* Assembly=CurrentAssembly.Get();return Assembly && Assembly->FindHybridChoiceResult(RequestId,Result);}
     const auto* Found=Requests.Find(RequestId);if (!Found) return false;Result=Found->Result;return true;
 }
-void UGuLiShipBuildComponent::NotifyHybridChoiceResolved(const UGuLiShipAssemblyComponent& Assembly,const FGuLiShipChoiceResult& Result)
-{if (CurrentAssembly.Get()==&Assembly) OnChoiceResolved.Broadcast(Result);}
+bool UGuLiShipBuildComponent::NotifyHybridChoiceResolved(const UGuLiShipAssemblyComponent& Assembly,const FGuLiShipChoiceResult& Result)
+{if (CurrentAssembly.Get()!=&Assembly) return false;OnChoiceResolved.Broadcast(Result);return true;}
 bool UGuLiShipBuildComponent::AdoptExistingShip(UGuLiShipAssemblyComponent& Assembly)
 {
     if (!GetOwner()->HasAuthority() || bCommitting || !Assembly.Catalog) return false;

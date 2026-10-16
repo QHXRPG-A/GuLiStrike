@@ -36,6 +36,9 @@ inline constexpr std::uint16_t ProtocolVersion = 31;
 inline constexpr std::uint32_t HandoffVersion = 2;
 inline constexpr std::size_t MaxDatagramBytes = 1000;
 inline constexpr std::size_t MaxMessageBytes = 4 * 1024 * 1024;
+// A private cut retains its full decision history. The native lossless
+// transport envelope must still fit MaxMessageBytes before it can be queued.
+inline constexpr std::size_t MaxPrivateStateBytes = 16 * 1024 * 1024;
 inline constexpr Tick TicksPerSecond = 60;
 inline constexpr std::uint32_t MassSimulationHz = 10;
 inline constexpr std::uint32_t WingmanSimulationHz = 30;
@@ -106,6 +109,7 @@ struct Authority
     // Authored ownership domain, independent of faction and input authority.
     Id OwnershipGroup;
     Revision GroupEpoch = 0;
+    friend bool operator==(const Authority&, const Authority&) = default;
 };
 
 inline bool HasPrivateCustody(const Authority& A, Id Player)
