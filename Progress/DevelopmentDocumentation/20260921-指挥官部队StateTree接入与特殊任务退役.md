@@ -5,12 +5,16 @@ work_id: WORK-20260921-005
 kind: development
 role: root
 title: 指挥官部队StateTree接入与特殊任务退役 — 技术方案
-areas: [commander, resources, building]
-categories: [gameplay]
+areas:
+- commander
+- resources
+- building
+categories:
+- gameplay
 status: done
 verification: partial
 created: '2026-09-21'
-updated: "2026-10-05"
+updated: '2026-10-05'
 summary: 原10Hz任务入口统一驱动Actor和Mass StateTree；工程车已接通矿位/建造位、预算路径和四点卸货，32辆配置完成返厂专项，完整功能与长期性能仍待验。
 next_action: 在LVL_CommanderMassPrototype补齐矿位、施工、改令及通道异常矩阵，再完成新逻辑10/30台负载与30分钟性能验收，并收集玩家效果反馈。
 relations:
@@ -26,11 +30,11 @@ status_note: 2026-09-22经用户明确授权完成源码Editor构建并加载，
 
 本次返厂简化取消入口距离门槛、厂内进出路线和停靠预约；矿车直接走向厂内四个无占用卸货点，失败换点、再换厂，上传后完成一轮。工程车相互忽略物理碰撞及Crowd避让，完工厂代理碰撞正确关闭，包括赠品清场恢复场景。具体实现与构建证据见[本次归档](../Archive/20260922-工程车四点返厂简化与32辆专项验证.md)，当前行为与参数见[资源经济](../Gameplay/资源经济.md)。
 
-源码版`D:/UnrealEngine-5.7`的`GuLiStrikeEditor Win64 Development`最终构建退出0，引擎与项目BuildId一致，新启动编辑器已加载项目模块。三棵原资产编译保存后分别为Mass18/Miner57/Builder18个状态，Soldiers 1/2/3/4引用保持；不再生成EnterFactory/ExitFactory，保留运输安全退出分支。[树结果](../../outputs/engineering-navigation/factory-unloading-20260922/archive-tree-assets.json)。
+源码版`D:/UnrealEngine-5.7`的`GuLiStrikeEditor Win64 Development`最终构建退出0，引擎与项目BuildId一致，新启动编辑器已加载项目模块。三棵原资产编译保存后分别为Mass18/Miner57/Builder18个状态，Soldiers 1/2/3/4引用保持；不再生成EnterFactory/ExitFactory，保留运输安全退出分支。树结果（历史附件已清理；原路径：`../../outputs/engineering-navigation/factory-unloading-20260922/archive-tree-assets.json`）。
 
-`/Game/Maps/LVL_CommanderMassPrototype`正常Commander入口已保存并核对实体，仍用`GuLiStrike/Review/CommanderStateTree`四个说明点，未改变原45个无关Actor。原型配置为500个Mass及每方8矿车＋8建造车，预计532个树实例；运行明确核对工程车32辆。地图保存与布局/绑定证据见[场景结果](../../outputs/engineering-navigation/factory-unloading-20260922/archive-scene-delivery.json)。
+`/Game/Maps/LVL_CommanderMassPrototype`正常Commander入口已保存并核对实体，仍用`GuLiStrike/Review/CommanderStateTree`四个说明点，未改变原45个无关Actor。原型配置为500个Mass及每方8矿车＋8建造车，预计532个树实例；运行明确核对工程车32辆。地图保存与布局/绑定证据见场景结果（历史附件已清理；原路径：`../../outputs/engineering-navigation/factory-unloading-20260922/archive-scene-delivery.json`）。
 
-经用户“现在编译、加载并验证”授权，最终PIE专项持续约156秒：两队同时返厂峰值各8辆，16矿车各2–3次共34次上传，6厂24点均有完整非局部路径。该场景没有待建建筑，未验证施工产出；查询计数不替代主线程分位或30分钟验收。[最终专项结果](../../outputs/engineering-navigation/factory-unloading-20260922/verification-result.json)。
+经用户“现在编译、加载并验证”授权，最终PIE专项持续约156秒：两队同时返厂峰值各8辆，16矿车各2–3次共34次上传，6厂24点均有完整非局部路径。该场景没有待建建筑，未验证施工产出；查询计数不替代主线程分位或30分钟验收。最终专项结果（历史附件已清理；原路径：`../../outputs/engineering-navigation/factory-unloading-20260922/verification-result.json`）。
 
 - [x] 完成四点返厂代码静态核对、授权构建及新模块加载。
 - [x] 更新现有StateTree与原型地图说明并保存，回读绑定及相关实体数据。

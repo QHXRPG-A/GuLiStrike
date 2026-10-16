@@ -28,7 +28,7 @@ status_note: ''
 
 # 2026-09-03 解决了：Ship UI v1 Figma 玩家实机成品稿
 
-- 对应开发文档：[指挥官与飞船共享 HUD 及 Ship UI v1](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship%20UI%20v1.md)
+- 对应开发文档：[指挥官与飞船共享 HUD 及 Ship UI v1](<../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md>)
 - 变更类型：文档 / Figma 设计
 - 归档范围：Figma Gate 1 阶段归档；UE 纯视觉 Gate 2 与完整逻辑 Gate 3 未实施
 

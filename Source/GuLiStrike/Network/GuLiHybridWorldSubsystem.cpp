@@ -404,7 +404,7 @@ bool UGuLiHybridWorldSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 }
 void UGuLiHybridWorldSubsystem::OnWorldBeginPlay(UWorld& World)
 {
-    Super::OnWorldBeginPlay(World); State->Config=UGuLiNetworkSettings::Resolve();
+    Super::OnWorldBeginPlay(World); State->Config=UGuLiNetworkSettings::Resolve(&World);
     FString ReviewCase;FParse::Value(FCommandLine::Get(),TEXT("GuLiAcceptanceCase="),ReviewCase);
     State->DetailedReview=ReviewCase.StartsWith(TEXT("fault_"));
     FGuLiHybridManifestData Manifest; FString CatalogError;

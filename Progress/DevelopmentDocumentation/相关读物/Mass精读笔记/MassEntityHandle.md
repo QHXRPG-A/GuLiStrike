@@ -12,7 +12,7 @@
 >
 > 阅读约定：源码摘录可省略外围代码；概念化定义、假设用法与错误示例明确标作“示意代码”，不表示项目已实现。
 
-[Mass 阅读目录](./README.md) · [UE 网络教材](../UE网络教材/README.md)
+[Mass 阅读目录](README.md) · [UE 网络教材](../UE网络教材/README.md)
 
 ## 一句话结论
 
@@ -105,7 +105,7 @@ if (EntityManager.IsEntityValid(Entity))
 
 源码：`Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp`
 
-> **当前源码摘录**：[FSoldierRuntime 的身份、数值和指令字段](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[FSoldierRuntime 的身份、数值和指令字段](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FMassEntityHandle Entity;
@@ -126,7 +126,7 @@ uint32 ActiveOrderId = 0u;
 
 公共头文件将它声明为 WorldSubsystem；控制组和编队仍是服务器记录，Handle 不进入网络协议：
 
-> **当前源码摘录**：[UGuLiBattleAuthoritySubsystem 声明起始；余下成员省略](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h)。
+> **当前源码摘录**：[UGuLiBattleAuthoritySubsystem 声明起始；余下成员省略](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h)。
 
 ~~~cpp
 UCLASS(Config = Game)
@@ -144,7 +144,7 @@ class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final : public UTickableWorld
 
 源码：`Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h`
 
-> **当前源码摘录**：[FGuLiSoldierId](D:/UE5.7/test1/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h)。
+> **当前源码摘录**：[FGuLiSoldierId](../../../../Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h)。
 
 ~~~cpp
 /** Stable, match-local soldier identity. Zero is invalid and values are never reused in a match. */
@@ -175,7 +175,7 @@ struct GULISTRIKE_API FGuLiSoldierId
 
 它的网络序列化实现：
 
-> **当前源码摘录**：[FGuLiSoldierId::NetSerialize](D:/UE5.7/test1/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp)。
+> **当前源码摘录**：[FGuLiSoldierId::NetSerialize](../../../../Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp)。
 
 ~~~cpp
 bool FGuLiSoldierId::NetSerialize(
@@ -206,7 +206,7 @@ bool FGuLiSoldierId::NetSerialize(
 
 源码：`UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation`
 
-> **当前源码摘录**：[TrySpawnAuthorityPopulation](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TrySpawnAuthorityPopulation](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 TArray<FMassEntityHandle> EntityHandles;
@@ -234,7 +234,7 @@ if (EntityHandles.Num() != TotalSoldierCount)
 
 随后每个 Handle 被绑定到一个新的 SoldierId：
 
-> **当前源码摘录**：[TrySpawnAuthorityPopulation 的逐兵身份初始化](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TrySpawnAuthorityPopulation 的逐兵身份初始化](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FSoldierRuntime& Soldier = AuthorityState->Soldiers.AddDefaulted_GetRef();
@@ -260,7 +260,7 @@ Soldier.Team = Team;
 
 固定步遍历中的代码：
 
-> **当前源码摘录**：[TickAuthority](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TickAuthority](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
@@ -285,7 +285,7 @@ FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMass
 
 客户端头文件保存：
 
-> **当前源码摘录**：[AGuLiCommanderPresentationActor 的镜像成员](D:/UE5.7/test1/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h)。
+> **当前源码摘录**：[AGuLiCommanderPresentationActor 的镜像成员](../../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h)。
 
 ~~~cpp
 FMassArchetypeHandle ClientMirrorArchetype;
@@ -294,7 +294,7 @@ TMap<FGuLiSoldierId, FMassEntityHandle> ClientMirrorEntities;
 
 客户端收到 Soldier FastArray 状态后，按 SoldierId 查本地 Handle；如果旧 Handle 已失效，就移除映射并创建新的本地 Entity：
 
-> **当前源码摘录**：[EnsureClientMirrorEntity](D:/UE5.7/test1/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。
+> **当前源码摘录**：[EnsureClientMirrorEntity](../../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。
 
 ~~~cpp
 if (const FMassEntityHandle* Existing = ClientMirrorEntities.Find(ReliableState.SoldierId))
@@ -341,7 +341,7 @@ ClientMirrorEntities.Add(ReliableState.SoldierId, Entity);
 
 真实死亡流程：
 
-> **当前源码摘录**：[ApplyDamage 的死亡分支末尾；此前已更新生命和指令](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[ApplyDamage 的死亡分支末尾；此前已更新生命和指令](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 EntityManager.RemoveFragmentFromEntity(
@@ -357,7 +357,7 @@ EntityManager.RemoveFragmentFromEntity(
 
 后续 30Hz 固定步仍用同一 Handle 读取 Health，并更新 5 秒残骸倒计时：
 
-> **当前源码摘录**：[TickAuthority](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TickAuthority](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 if (!Soldier.IsAlive())
@@ -389,7 +389,7 @@ if (!Soldier.IsAlive())
 
 服务器清理人口：
 
-> **当前源码摘录**：[DestroyAuthorityPopulation 的实体收集与销毁；外层条件见原函数](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[DestroyAuthorityPopulation 的实体收集与销毁；外层条件见原函数](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 TArray<FMassEntityHandle> Entities;
@@ -474,8 +474,8 @@ bool operator<(const FMassEntityHandle Other) const
 
 ## 关联阅读
 
-- 前置：[MassEntityElementTypes：Fragment、Tag 与 ConstShared 的真实使用](./MassEntityElementTypes.md)
-- 下一篇：[MassArchetypeTypes：Handle 指向的 Entity 如何按数据组合存放](./MassArchetypeTypes.md)
-- 后续：[MassEntityQuery 与 ExecutionContext：如何批量访问匹配 Entity](./MassEntityQuery与ExecutionContext.md)
+- 前置：[MassEntityElementTypes：Fragment、Tag 与 ConstShared 的真实使用](MassEntityElementTypes.md)
+- 下一篇：[MassArchetypeTypes：Handle 指向的 Entity 如何按数据组合存放](MassArchetypeTypes.md)
+- 后续：[MassEntityQuery 与 ExecutionContext：如何批量访问匹配 Entity](MassEntityQuery与ExecutionContext.md)
 - 技术方案：[20260827-Mass 双端同步架构草案](../../20260827-Mass双端同步架构草案.md)
 - 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)

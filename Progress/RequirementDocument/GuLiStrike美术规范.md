@@ -270,7 +270,7 @@ Ship 是用户明确指定的风格锚点，参考[内部线稿烘焙版](../../
 
 ## 10. 模型目录与区域材质接口（v1.7，2026-10-08）
 
-依据用户明确批准的[统一模型接口计划](20261008-统一模型目录与本地阵营改色.md)，全部玩法模型由 [Models Excel](../../Data/Excel/GuLiStrikeModels.xlsx) 维护稳定 ModelId、资源、Parts、Vector／Scalar 参数、ColorRegions；其他玩法配置只引用 ID，保持服务器身份和原装配。环境地编及特效目录范围不扩大；历史美术配置保留审核依据，不另建手写运行时配色 DataAsset。
+依据用户明确批准的[统一模型接口计划](20261008-统一模型目录与本地阵营改色.md)，全部玩法模型由 [Models Excel](../../data/Excel/GuLiStrikeModels.xlsx) 维护稳定 ModelId、资源、Parts、Vector／Scalar 参数、ColorRegions；其他玩法配置只引用 ID，保持服务器身份和原装配。环境地编及特效目录范围不扩大；历史美术配置保留审核依据，不另建手写运行时配色 DataAsset。
 
 - 不透明主体的既有区域使用顶点 Alpha=PaintRole/255，保留 RGB 底色、UV、几何、法线、骨架、动画和 LOD。角色 3／4 是浅／深队色，7 是浅队色灯，其他角色固定。材质先替换队色，再执行既有三档明暗和线稿，不整模染色。
 - 浅色 CPD 8–11、深色 12–15、启用 16、灯强度 17；受击 7 与 Mass 每实例动画槽保持。ModelParameters 表映射统一键到实际材质名，SSF Team Color 映射 TeamPrimary。程序读取实例 MID／CPD 的实际值，不将默认值当覆盖值。

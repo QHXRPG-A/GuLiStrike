@@ -8,7 +8,7 @@
 
 | 顺序 | 文档 | 要回答的问题 |
 |---|---|---|
-| 0 | [GAS 基础与 GuLiStrike 军队技能桥接](./00-GAS基础与GuLiStrike军队技能桥接.md) | ASC、Ability、Tag、Effect 等概念分别是什么，为什么项目让指挥官持有 ASC，却不为每名 Mass 小兵创建 ASC？ |
+| 0 | [GAS 基础与 GuLiStrike 军队技能桥接](00-GAS基础与GuLiStrike军队技能桥接.md) | ASC、Ability、Tag、Effect 等概念分别是什么，为什么项目让指挥官持有 ASC，却不为每名 Mass 小兵创建 ASC？ |
 
 ## 与其他读物衔接
 

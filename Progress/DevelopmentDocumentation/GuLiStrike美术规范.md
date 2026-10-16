@@ -117,7 +117,7 @@ Ship组件分批制作与审核入口：[首批双联炮/CIWS/Thor](20260917-Shi
 
 ## 2026-09-18 玩法地图光照复核
 
-用户反馈两张玩法地图局内偏暗，并指定参照Demo_Map。已按真实参考视口EV100=0校准局内曝光与后处理、清除空战旧压暗参数，经PIE截图和定向保存读回；模型材质、Demo及关卡布局保持。候选画面见[对照入口](../../TestResults/GameplayLighting_20260918/Review.html)，技术范围与待用户视觉确认见[实施记录](20260918-玩法地图对齐Demo光照.md)。这是两张关卡实例修正，不改变美术规范v1.2或其他资产审核状态。重防号拥挤另按实际占地不匹配诊断，未算作修复通过。
+用户反馈两张玩法地图局内偏暗，并指定参照Demo_Map。已按真实参考视口EV100=0校准局内曝光与后处理、清除空战旧压暗参数，经PIE截图和定向保存读回；模型材质、Demo及关卡布局保持。候选画面见对照入口（历史附件已清理；原路径：`../../TestResults/GameplayLighting_20260918/Review.html`），技术范围与待用户视觉确认见[实施记录](20260918-玩法地图对齐Demo光照.md)。这是两张关卡实例修正，不改变美术规范v1.2或其他资产审核状态。重防号拥挤另按实际占地不匹配诊断，未算作修复通过。
 
 ## 2026-09-19 重防号导弹指定2A爆炸
 
@@ -141,7 +141,7 @@ Ship组件分批制作与审核入口：[首批双联炮/CIWS/Thor](20260917-Shi
 
 用户随后明确选择当前“轻型装甲”成品作为地面玩家模型，并要求“PLEASE IMPLEMENT THIS PLAN”，完整批准模型导入、重防号高度适配、动画、增强输入和Demo_Map副本方案。本项据此直接导入当前`Mech_Lightest`，源blend SHA256为`97fe0d3954dbea27ce36ade02a1efbb19887fdd0a8b09fbde187619c7aa430aa`；不补写独立B视觉终验，不扩展其他七项候选的审核状态。具体接入和UE证据见[轻型装甲接入记录](20260919-轻型装甲地面玩家接入.md)，全局规范仍为v1.2。
 
-本项已导入`/Game/GuLiStrike/GroundMech`，4,824三角面、封闭驾驶区，模型基准高度748.3796cm，与重防号对齐。骨架与挂点、动画、增强输入、双端同步及源码构建技术验证通过；用户反馈WASD跳变后，修复本项目动画蓝图根位移提取配置，未修改原动画。当前[实机画面](../../TestResults/GroundMech/PIE_final.png)与[交付归档](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md)记录技术结果，不补写用户对最终外观的审核决定。
+本项已导入`/Game/GuLiStrike/GroundMech`，4,824三角面、封闭驾驶区，模型基准高度748.3796cm，与重防号对齐。骨架与挂点、动画、增强输入、双端同步及源码构建技术验证通过；用户反馈WASD跳变后，修复本项目动画蓝图根位移提取配置，未修改原动画。当前实机画面（历史附件已清理；原路径：`../../TestResults/GroundMech/PIE_final.png`）与[交付归档](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md)记录技术结果，不补写用户对最终外观的审核决定。
 
 ## 2026-09-19 SpiderMech撤回减面
 
@@ -186,13 +186,13 @@ Ship组件分批制作与审核入口：[首批双联炮/CIWS/Thor](20260917-Shi
 
 用户明确指定`/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_Smg_Loop`和`VFX_FireGun_Loop`作为已确认参考A，并批准先制作可播放候选、正式接入前完成视觉审核。项目副本为`/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet`及`NS_GroundMech_Muzzle`，前者保留源中央弹道材质与配色、去双侧散射及枪口层，后者提取枪口焰与近口火星并改为逐发有限寿命。
 
-当前B候选与炮管后坐已在`/Game/Maps/LVL_GroundMech_FireReview`实际播放，[62帧连续图、时间轴和采样](../../TestResults/GroundMech/Fire/Review.html)覆盖起始、回缩、复位和消散。Niagara及动画蓝图编译0错误/0警告，单发粒子、池回收和双端同步技术检查通过；没有用户对当前B的通过决定，正式玩家蓝图武器开关保持关闭。全局规范仍v1.2，不改变其他资产审核状态。具体源/目标、镜像枪口轴向修正及边界见[开发记录](20260920-玩家地面机甲开火与升级配置.md)。
+当前B候选与炮管后坐已在`/Game/Maps/LVL_GroundMech_FireReview`实际播放，62帧连续图、时间轴和采样（历史附件已清理；原路径：`../../TestResults/GroundMech/Fire/Review.html`）覆盖起始、回缩、复位和消散。Niagara及动画蓝图编译0错误/0警告，单发粒子、池回收和双端同步技术检查通过；没有用户对当前B的通过决定，正式玩家蓝图武器开关保持关闭。全局规范仍v1.2，不改变其他资产审核状态。具体源/目标、镜像枪口轴向修正及边界见[开发记录](20260920-玩家地面机甲开火与升级配置.md)。
 
 ## 2026-09-21 地面机甲双喷、飞行倾斜与下落确认
 
 用户指定`VFX_FireGun_Loop`、双喷口与15°飞行腿部倾斜，并已明确批准实施动画蓝图及空中战斗计划。当前版本为`ABP_GroundMech`图表20260921.1、源喷火资源和`FallGravityMultiplier=2`，没有新建或改造Blender模型；模型A/B不适用，既有参考及直接接入授权继续有效。
 
-本日用户针对“鼠标指向空处开火”和“最终连续画面：双喷、腿部倾斜和新版下落效果”明确“这两个我已经验证过了”。据此登记这两项当前UE实机结果通过，依据为[用户确认记录](../../TestResults/GroundMech/Animation/user-verification.json)；当前源码/配置摘要、技术采样与[实施记录](20260921-地面机甲动画蓝图与空中战斗.md)相互关联。旧[连续画面](../../TestResults/GroundMech/Animation/flight-before-fall-tuning.gif)仍明确标作下落调参前版本，不伪装成当前录像。
+本日用户针对“鼠标指向空处开火”和“最终连续画面：双喷、腿部倾斜和新版下落效果”明确“这两个我已经验证过了”。据此登记这两项当前UE实机结果通过，依据为用户确认记录（历史附件已清理；原路径：`../../TestResults/GroundMech/Animation/user-verification.json`）；当前源码/配置摘要、技术采样与[实施记录](20260921-地面机甲动画蓝图与空中战斗.md)相互关联。旧连续画面（历史附件已清理；原路径：`../../TestResults/GroundMech/Animation/flight-before-fall-tuning.gif`）仍明确标作下落调参前版本，不伪装成当前录像。
 
 此决定不扩展为容量条、其他机枪特效或机甲整体外观的独立终验。技术验证、性能边界与用户确认分记；全局美术规范仍为v1.2，没有新增通用风格规则。
 
@@ -392,7 +392,7 @@ B与预算例外待审核，正式UE导入、导出回读、引用/物理资产/
 
 [Alpha候选保存回读](../../ArtSource/ModelInterface_B_20261008/blender-saved-readback.json)证明14模型／34网格的原B几何、RGB、UV、法线、权重、变换和分区保持，护盾150顶灯面角色7。原交互Blender未重载；共享函数只在Review保存，原生候选接线尚未执行。扫荡者与两类占位建筑遮罩为明确待补项，没有登记成生效区域。
 
-[资源与装配核对](../../Data/Models/editor-static-validation.json)、[源代码和源表记录](../../Data/Models/static-source-review.json)、[三图32实体保存回读](../../Data/Models/acceptance-scenes-readback.json)分别留档。新USTRUCT／ModelId字段未在当前模块加载，[导入预检](../../Data/Models/import-preflight.json)在写资产前停止。没有编译、运行游戏、自动化测试或正式新涂装导入；全部新B及接口候选仍待具体审核，不改原SSF B_v2与LOD已审事实。本规范台账的done/passed仅表示规则维护完成。
+[资源与装配核对](../../data/Models/editor-static-validation.json)、[源代码和源表记录](../../data/Models/static-source-review.json)、[三图32实体保存回读](../../data/Models/acceptance-scenes-readback.json)分别留档。新USTRUCT／ModelId字段未在当前模块加载，[导入预检](../../data/Models/import-preflight.json)在写资产前停止。没有编译、运行游戏、自动化测试或正式新涂装导入；全部新B及接口候选仍待具体审核，不改原SSF B_v2与LOD已审事实。本规范台账的done/passed仅表示规则维护完成。
 
 ## 2026-10-08：v1.8 当前成品正式存储与黑块提亮
 

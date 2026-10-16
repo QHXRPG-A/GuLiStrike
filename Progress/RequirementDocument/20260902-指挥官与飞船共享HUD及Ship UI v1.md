@@ -179,7 +179,7 @@ Desktop Bridge 不具备 Metronome 能力，因此 Motion API 保持 Closed：�
 
 ## 关联
 
-- 上游：[指挥官 UI 与小兵血条视觉设计](./20260829-指挥官UI与小兵血条视觉设计.md)
-- 上游：[指挥官 HUD 逻辑接入与批量小兵血条](./20260829-指挥官HUD逻辑接入与批量小兵血条.md)
-- 上游：[DIY 飞船](./20260820-DIY飞船.md)
-- 下游：[开发文档](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md)
+- 上游：[指挥官 UI 与小兵血条视觉设计](20260829-指挥官UI与小兵血条视觉设计.md)
+- 上游：[指挥官 HUD 逻辑接入与批量小兵血条](20260829-指挥官HUD逻辑接入与批量小兵血条.md)
+- 上游：[DIY 飞船](20260820-DIY飞船.md)
+- 下游：[开发文档](<../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md>)

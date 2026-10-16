@@ -5,8 +5,15 @@ work_id: ''
 kind: archive
 role: root
 title: 车辆CharacterMovement与飞船僚机移动开销拆分
-areas: [performance, combat, wingman, presentation]
-categories: [art, gameplay, performance]
+areas:
+- performance
+- combat
+- wingman
+- presentation
+categories:
+- art
+- gameplay
+- performance
 status: recorded
 verification: partial
 created: '2026-10-10'
@@ -14,14 +21,18 @@ updated: '2026-10-10'
 summary: 剩余飞行物与表现管线记录；旧独立投射路径描述已清理。
 next_action: 若继续优化，先细分车辆与Ship组件类、僚机固定步和远端呈现计时，再按相同场景确认收益；三项计划整版FPS矩阵继续暂缓。
 relations:
-  work_items: [WORK-20261009-006, WORK-20261009-008, WORK-20261009-007]
-  related: [ARC-20261010-003]
+  work_items:
+  - WORK-20261009-006
+  - WORK-20261009-008
+  - WORK-20261009-007
+  related:
+  - ARC-20261010-003
 status_note: 用户要求分析CharacterMovement并区分有无飞船及僚机。仅做现有Trace和源码分析，当前只读探测PIE已结束；未重启、编译或修改生产代码资源地图。现有Trace无法单独量化Ship角色与僚机纯运动算法，未将不同场景作为收益对照。
 ---
 
 # 车辆 CharacterMovement 与飞船、僚机移动开销拆分
 
-复用已有两个30秒采样窗口，增加按完整引擎帧和World分支的移动Scope导出。完整报告、可复现脚本、CSV/Trace证据索引见[移动开销报告](../../outputs/performance/20261010-movement-cost-analysis/report.md)。本次是分析交付，没有实施新的优化。
+复用已有两个30秒采样窗口，增加按完整引擎帧和World分支的移动Scope导出。完整报告、可复现脚本、CSV/Trace证据索引见移动开销报告（历史附件已清理；原路径：`../../outputs/performance/20261010-movement-cost-analysis/report.md`）。本次是分析交付，没有实施新的优化。
 
 ## 主要结论
 

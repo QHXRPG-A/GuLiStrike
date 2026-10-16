@@ -17,7 +17,7 @@ categories:
 status: done
 verification: partial
 created: '2026-09-02'
-updated: "2026-09-21"
+updated: '2026-09-21'
 summary: UGuLiCommanderHUDWidget 会在外层 WidgetTree 中按 FName 查找文本、图片、按钮、进度填充和布局岛。若把这些节点移动到嵌套共享 WBP 内部，外层查找可能失效，且不一定产生明显编译错误。因此本轮只共享叶子资源和样式；共享复合
   WBP 仅供新 Ship UI 或无运行时引用的纯装饰区域，且必须在后续 UE 阶段单独验证
 next_action: 保留 Commander 全部既有数据、输入、MiniMap、Tooltip 和生命周期行为
@@ -28,7 +28,7 @@ status_note: 实施中
 
 # 指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案
 
-- 对应需求：[指挥官与飞船共享 HUD 及 Ship UI v1](../RequirementDocument/20260902-指挥官与飞船共享HUD及Ship UI v1.md)
+- 对应需求：[指挥官与飞船共享 HUD 及 Ship UI v1](<../RequirementDocument/20260902-指挥官与飞船共享HUD及Ship UI v1.md>)
 - 当前阶段：Figma Gate 1、UE 静态 Gate 2 已完成；完整逻辑 Gate 3 未开始
 
 ## 技术选型

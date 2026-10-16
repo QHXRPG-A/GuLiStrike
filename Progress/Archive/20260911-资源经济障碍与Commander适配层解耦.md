@@ -53,9 +53,9 @@ status_note: 范围验证通过。额外执行完整 Building 套件时，Buildi
 
 - 源码版 `D:\UnrealEngine-5.7`：`GuLiStrikeEditor`、`GuLiStrike`、`GuLiStrikeServer` 的 Win64 Development 构建均退出码 0。
 - Editor BuildId：引擎与项目均为 `ca32e40e-6f35-4046-b75e-aeb3f6da9927`。
-- [最终范围回归](../../TestResults/ResourceDecoupling/FinalAll/index.json)：资源、Commander、Navigation、Building 共 27/27 成功。
-- [双客户端 PIE](../../TestResults/WORK-20260911-003/ResourcePIE/dual-client.json)：16/16 成功；39 次采集后障碍保留，第 40 次后注销并开放，Mass 仍为 500，FIFO 入账、OwnerOnly、命令覆盖与 3 秒回 Auto 均通过，最终进程退出码 0。
-- [额外 Building 套件](../../TestResults/ResourceDecoupling/Building/index.json)：策略与 World 2 项成功；资产项 1 项失败，原因为当前 Outpost Source LOD BuildScale 为 1 而既有断言要求 20，且最终尺寸也不匹配。本次不改二进制资产。
+- 最终范围回归（历史附件已清理；原路径：`../../TestResults/ResourceDecoupling/FinalAll/index.json`）：资源、Commander、Navigation、Building 共 27/27 成功。
+- 双客户端 PIE（历史附件已清理；原路径：`../../TestResults/WORK-20260911-003/ResourcePIE/dual-client.json`）：16/16 成功；39 次采集后障碍保留，第 40 次后注销并开放，Mass 仍为 500，FIFO 入账、OwnerOnly、命令覆盖与 3 秒回 Auto 均通过，最终进程退出码 0。
+- 额外 Building 套件（历史附件已清理；原路径：`../../TestResults/ResourceDecoupling/Building/index.json`）：策略与 World 2 项成功；资产项 1 项失败，原因为当前 Outpost Source LOD BuildScale 为 1 而既有断言要求 20，且最终尺寸也不匹配。本次不改二进制资产。
 - 五个既有测试源文件 SHA-256 与改造前一致：Commander Network `D2C760DA...A00B2`、Building Asset `DBA9C58E...BE7E7`、Building Placement `4B98633E...1DCCA`、Building World `6DCA5B5B...4D9B6`、Resource `DEFA3D1B...6AF2`。
 - 静态依赖检查确认：Building→ResourceWorld、Mass→ResourceWorld、ResourceWorld→Mass/Commander 直接符号均已清零；旧的资源专用预留/障碍 API 已移除。
 

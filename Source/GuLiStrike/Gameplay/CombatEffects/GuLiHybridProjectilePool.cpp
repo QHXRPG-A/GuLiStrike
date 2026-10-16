@@ -608,7 +608,7 @@ void UGuLiProjectilePoolSubsystem::InitializeHybrid(FSubsystemCollectionBase& Co
     Collection.InitializeDependency<UGuLiHybridWorldSubsystem>();
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>(); if (!H) return;
     HybridState=MakeShared<FGuLiHybridProjectileState>(*this,*H); FString Error;
-    if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve().ManifestFile,HybridState->Manifest,Error)
+    if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve(GetWorld()).ManifestFile,HybridState->Manifest,Error)
         || !FGuLiHybridAdapterRegistry::Validate(HybridState->Manifest,Error)) { H->Suspend(Error); return; }
     if (!H->RegisterSharedStateSystem(GuLiLinearState::System,MakeShared<FGuLiLinearFlightSystem>(HybridState)))
         H->Suspend(TEXT("Linear flight factory or checkpoint registration failed"));

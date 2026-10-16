@@ -14,7 +14,7 @@
 >
 > 阅读约定：源码摘录可省略外围代码；概念化定义、假设用法与错误示例明确标作“示意代码”，不表示项目已实现。
 
-[Mass 阅读目录](./README.md) · [UE 网络教材](../UE网络教材/README.md)
+[Mass 阅读目录](README.md) · [UE 网络教材](../UE网络教材/README.md)
 
 ## 一句话结论
 
@@ -125,7 +125,7 @@ inline bool FMassArchetypeHandle::IsValid() const
 
 当前服务器把最终出生 Archetype Handle 存在：
 
-> **当前源码摘录**：[FGuLiBattleAuthorityState 的 Archetype 与士兵容器字段](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[FGuLiBattleAuthorityState 的 Archetype 与士兵容器字段](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 TWeakObjectPtr<UMassEntitySubsystem> MassEntitySubsystem;
@@ -137,7 +137,7 @@ TArray<GuLiCommanderMassPrivate::FSoldierRuntime> Soldiers;
 
 客户端则保存另一份：
 
-> **当前源码摘录**：[AGuLiCommanderPresentationActor 的镜像成员](D:/UE5.7/test1/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h)。
+> **当前源码摘录**：[AGuLiCommanderPresentationActor 的镜像成员](../../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h)。
 
 ~~~cpp
 FMassArchetypeHandle ClientMirrorArchetype;
@@ -152,7 +152,7 @@ TMap<FGuLiSoldierId, FMassEntityHandle> ClientMirrorEntities;
 
 ### 4.1 先列出普通 Fragment 与 Tag 类型
 
-> **当前源码摘录**：[TrySpawnAuthorityPopulation 的出生组成](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TrySpawnAuthorityPopulation 的出生组成](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
@@ -192,7 +192,7 @@ TArray<const UScriptStruct*> FragmentAndTagTypes = {
 
 ### 4.2 用 DebugName 创建基础 Archetype
 
-> **当前源码摘录**：[TrySpawnAuthorityPopulation](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TrySpawnAuthorityPopulation](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FMassArchetypeCreationParams ArchetypeParams;
@@ -220,7 +220,7 @@ if (!BaseAuthorityArchetype.IsValid())
 
 `MakeAuthoritySharedFragmentValues` 构造并校验 Movement、MovingAvoidance 两份 ConstShared 值，再 Sort；出生函数保存两套基础组成并选择 Even：
 
-> **当前源码摘录**：[TrySpawnAuthorityPopulation 保存双基础组成并绑定 ConstShared 类型](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TrySpawnAuthorityPopulation 保存双基础组成并绑定 ConstShared 类型](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 AuthorityState->RuntimeTuningEvenBaseArchetype = BaseAuthorityArchetype;
@@ -247,7 +247,7 @@ AuthorityState->AuthorityArchetype = EntityManager.GetOrCreateSuitableArchetype(
 
 ### 4.4 用最终 Archetype 和具体共享值批量创建
 
-> **当前源码摘录**：[TrySpawnAuthorityPopulation](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TrySpawnAuthorityPopulation](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 TArray<FMassEntityHandle> EntityHandles;
@@ -274,7 +274,7 @@ TSharedRef<FMassEntityManager::FEntityCreationContext>
 
 出生循环给每名 Soldier 写：
 
-> **当前源码摘录**：[TrySpawnAuthorityPopulation](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TrySpawnAuthorityPopulation](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FGuLiMassIdentityFragment& Identity = EntityManager.GetFragmentDataChecked<
@@ -291,7 +291,7 @@ Team 是 Identity Fragment 里的字段值，不是 Tag 类型。因此红方 25
 
 源码：`AGuLiCommanderPresentationActor::EnsureClientMirrorArchetype`
 
-> **当前源码摘录**：[EnsureClientMirrorArchetype](D:/UE5.7/test1/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。
+> **当前源码摘录**：[EnsureClientMirrorArchetype](../../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。
 
 ~~~cpp
 const TArray<const UScriptStruct*> FragmentAndTagTypes = {
@@ -339,7 +339,7 @@ Archetype 在这里直接表达“双端职责边界”，而不只是内存优�
 
 大多数状态变化只改值：
 
-> **当前源码摘录**：[ApplyDamage 先更新已有 Health 列，结构尚未变化](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[ApplyDamage 先更新已有 Health 列，结构尚未变化](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(
@@ -352,7 +352,7 @@ Health.bDead = Soldier.Health == 0u;
 
 死亡流程末尾才执行结构变化：
 
-> **当前源码摘录**：[ApplyDamage](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[ApplyDamage](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 EntityManager.RemoveFragmentFromEntity(
@@ -492,9 +492,9 @@ struct FArchetypeEntityRange
 
 ## 关联阅读
 
-- 前置：[MassEntityElementTypes：组成中的五种元素](./MassEntityElementTypes.md)
-- 前置：[MassEntityHandle：Entity 迁移时什么保持稳定](./MassEntityHandle.md)
-- 下一篇：[MassEntityQuery 与 ExecutionContext：Query 如何匹配这些 Archetype](./MassEntityQuery与ExecutionContext.md)
+- 前置：[MassEntityElementTypes：组成中的五种元素](MassEntityElementTypes.md)
+- 前置：[MassEntityHandle：Entity 迁移时什么保持稳定](MassEntityHandle.md)
+- 下一篇：[MassEntityQuery 与 ExecutionContext：Query 如何匹配这些 Archetype](MassEntityQuery与ExecutionContext.md)
 - 技术方案：[20260827-Mass 双端同步架构草案](../../20260827-Mass双端同步架构草案.md)
 - 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)
 - 玩法记录：[指挥官](../../../Gameplay/指挥官.md)

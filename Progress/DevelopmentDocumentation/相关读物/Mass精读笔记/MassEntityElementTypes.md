@@ -13,7 +13,7 @@
 >
 > 阅读约定：源码摘录可省略外围代码；概念化定义、假设用法与错误示例明确标作“示意代码”，不表示项目已实现。
 
-[Mass 阅读目录](./README.md) · [UE 网络教材](../UE网络教材/README.md)
+[Mass 阅读目录](README.md) · [UE 网络教材](../UE网络教材/README.md)
 
 ## 先说结论
 
@@ -83,7 +83,7 @@ struct FMassConstSharedFragment
 
 源码：`Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h`
 
-> **当前源码摘录**：[Identity / Health / SoldierStats / Order 声明](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
+> **当前源码摘录**：[Identity / Health / SoldierStats / Order 声明](../../../../Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
 
 ~~~cpp
 USTRUCT()
@@ -187,7 +187,7 @@ struct GULISTRIKE_API FGuLiMassOrderFragment : public FMassFragment
 
 源码：`UGuLiBattleAuthoritySubsystem::IssueMove`
 
-> **当前源码摘录**：[IssueMove 的成功批次提交段](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[IssueMove 的成功批次提交段](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 Soldier.ActiveOrderId = BatchOrderId;
@@ -216,7 +216,7 @@ Fragment 是数据，不是行为类。真正决定“什么时候写、谁有�
 
 源码：`UGuLiBattleAuthoritySubsystem::TickAuthority`
 
-> **当前源码摘录**：[TickAuthority](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TickAuthority](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FTransformFragment& Transform = EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
@@ -242,7 +242,7 @@ Order.bHasMoveTarget = Soldier.ActiveOrderId != 0u;
 
 源码：`GuLiCommanderMassFragments.h`
 
-> **当前源码摘录**：[ClientSnapshotMirror / ServerAuthority Tag](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
+> **当前源码摘录**：[ClientSnapshotMirror / ServerAuthority Tag](../../../../Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
 
 ~~~cpp
 /** Snapshot-driven client mirror. It intentionally carries no movement or avoidance tag. */
@@ -276,7 +276,7 @@ EntityQuery.AddTagRequirement<FGuLiServerAuthorityMassTag>(EMassFragmentPresence
 
 客户端镜像 Archetype 只有：
 
-> **当前源码摘录**：[EnsureClientMirrorArchetype](D:/UE5.7/test1/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。
+> **当前源码摘录**：[EnsureClientMirrorArchetype](../../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。
 
 ~~~cpp
 const TArray<const UScriptStruct*> FragmentAndTagTypes = {
@@ -307,7 +307,7 @@ const TArray<const UScriptStruct*> FragmentAndTagTypes = {
 
 源码：`UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation`
 
-> **当前源码摘录**：[GuLiCommanderMassPrivate::MakeAuthoritySharedFragmentValues](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[GuLiCommanderMassPrivate::MakeAuthoritySharedFragmentValues](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FMassMovementParameters MovementParameters;
@@ -352,7 +352,7 @@ return SharedValues;
 
 服务器的临时编队关系放在：
 
-> **当前源码摘录**：[FOrderFormationRuntime 的部分字段](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[FOrderFormationRuntime 的部分字段](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 uint32 FormationId = 0u;
@@ -387,7 +387,7 @@ ChunkFragment 适合“每个物理 Chunk 一份”的缓存、统计或粗筛�
 
 死亡流程最后还有一项真实的结构修改：
 
-> **当前源码摘录**：[ApplyDamage](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[ApplyDamage](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 EntityManager.RemoveFragmentFromEntity(
@@ -430,9 +430,9 @@ EntityManager.RemoveFragmentFromEntity(
 
 ## 关联阅读
 
-- 下一篇：[MassEntityHandle：本地句柄与网络稳定身份](./MassEntityHandle.md)
-- 后续：[MassArchetypeTypes：服务器权威体与客户端镜像为何是两套 Archetype](./MassArchetypeTypes.md)
-- 后续：[MassEntityQuery 与 ExecutionContext：避障捕获 Processor 的真实执行链](./MassEntityQuery与ExecutionContext.md)
+- 下一篇：[MassEntityHandle：本地句柄与网络稳定身份](MassEntityHandle.md)
+- 后续：[MassArchetypeTypes：服务器权威体与客户端镜像为何是两套 Archetype](MassArchetypeTypes.md)
+- 后续：[MassEntityQuery 与 ExecutionContext：避障捕获 Processor 的真实执行链](MassEntityQuery与ExecutionContext.md)
 - 技术方案：[20260827-Mass 双端同步架构草案](../../20260827-Mass双端同步架构草案.md)
 - 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)
 - 玩法记录：[指挥官](../../../Gameplay/指挥官.md)

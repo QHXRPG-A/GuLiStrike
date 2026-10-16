@@ -24,7 +24,7 @@ status_note: 以重启编辑器后的磁盘读取和既有2项部件测试为最
 
 # ShipComponent 正式部件蓝图 — 制作与迁移
 
-对应[需求](../RequirementDocument/20260912-ShipComponent正式部件蓝图.md)。完整资产表和配置说明见[使用说明](../../outputs/ship-component-blueprints/README.md)。
+对应[需求](../RequirementDocument/20260912-ShipComponent正式部件蓝图.md)。完整资产表和配置说明见使用说明（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/README.md`）。
 
 ## 制作方案
 
@@ -52,6 +52,6 @@ status_note: 以重启编辑器后的磁盘读取和既有2项部件测试为最
 
 批量热重载部件与父子飞船蓝图时，`UPackageTools::ReloadPackages`触发`BP_CombatAvatarFly01_DEADPACKAGE`与`REINST`默认对象冲突，编辑器崩溃。新资产和目录已提前保存，旧资产清理报告已写出。保留失败日志，改用正常启动编辑器重新读取磁盘，不重试同一热重载路径。
 
-证据在[制作目录](../../outputs/ship-component-blueprints/README.md)；原始备份位于`outputs/ship-component-blueprints/backups/`。
+证据在制作目录（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/README.md`）；原始备份位于`outputs/ship-component-blueprints/backups/`。
 
-最终状态见[验证报告](../../outputs/ship-component-blueprints/final-validation.json)和[增量归档](../Archive/20260912-ShipComponent部件蓝图与占位清理.md)。测试结束后回收临时世界、恢复帧率控制；编辑器保持原空战测试地图，未保存临时验收场景。
+最终状态见验证报告（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/final-validation.json`）和[增量归档](../Archive/20260912-ShipComponent部件蓝图与占位清理.md)。测试结束后回收临时世界、恢复帧率控制；编辑器保持原空战测试地图，未保存临时验收场景。

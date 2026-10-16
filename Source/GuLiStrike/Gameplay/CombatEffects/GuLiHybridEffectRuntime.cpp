@@ -515,7 +515,7 @@ void UGuLiCombatEffectRuntimeSubsystem::InitializeHybrid(FSubsystemCollectionBas
     if (!UGuLiNetworkSettings::IsHybrid(GetWorld())) return;
     Collection.InitializeDependency<UGuLiHybridWorldSubsystem>();auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
     if (!H) return;HybridEffects=MakeShared<FGuLiHybridEffectRuntime>(*this,*H);FString Error;
-    if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve().ManifestFile,HybridEffects->Manifest,Error)
+    if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve(GetWorld()).ManifestFile,HybridEffects->Manifest,Error)
         || !FGuLiHybridAdapterRegistry::Validate(HybridEffects->Manifest,Error)) {H->Suspend(Error);return;}
     if (!H->RegisterSharedStateSystem(GuLiEffectState::System,MakeShared<FGuLiHybridEffectSystem>(HybridEffects)))
         H->Suspend(TEXT("Combat effect checkpoint registration failed"));

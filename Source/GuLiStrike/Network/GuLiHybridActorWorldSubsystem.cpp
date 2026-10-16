@@ -15,7 +15,7 @@ void UGuLiHybridActorWorldSubsystem::Initialize(FSubsystemCollectionBase& Collec
 {
     Super::Initialize(Collection); Collection.InitializeDependency<UGuLiHybridWorldSubsystem>();
     FString Error;
-    if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve().ManifestFile,Manifest,Error))
+    if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve(GetWorld()).ManifestFile,Manifest,Error))
     { GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(Error); return; }
     auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
     TArray<FGuLiHybridAdapterFamily> Families;

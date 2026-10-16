@@ -32,6 +32,9 @@ struct FGuLiNetworkLaunchConfig
     FString ValidationError;
 };
 
+/** Optional host integration; an unbound provider preserves ordinary launch arguments. */
+DECLARE_DELEGATE_RetVal_TwoParams(bool, FGuLiWorldLaunchOverride, const UWorld*, FGuLiNetworkLaunchConfig&);
+
 UCLASS(Config=Game, DefaultConfig, meta=(DisplayName="GuLi Network"))
 class GULISTRIKE_API UGuLiNetworkSettings final : public UDeveloperSettings
 {
@@ -69,7 +72,8 @@ public:
     UPROPERTY(Config,EditAnywhere,Category="Transport",meta=(ClampMin="1000")) int32 MotionBytesPerSecond=160000;
     UPROPERTY(Config,EditAnywhere,Category="Transport",meta=(ClampMin="1000")) int32 HandoffBytesPerSecond=1048576;
 
-    static FGuLiNetworkLaunchConfig Resolve();
+    static FGuLiNetworkLaunchConfig Resolve(const UWorld* World = nullptr);
+    static FGuLiWorldLaunchOverride& WorldLaunchOverride();
     static bool IsHybrid(const UWorld* World);
     static bool IsLogicOnly();
     static bool CanPresent(const UWorld* World);

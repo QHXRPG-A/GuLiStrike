@@ -28,8 +28,8 @@ status_note: ''
 
 # Ship UI v1：NEONCTRL 局内静态 UI
 
-- 对应需求：[指挥官与飞船共享 HUD 及 Ship UI v1](../RequirementDocument/20260902-指挥官与飞船共享HUD及Ship%20UI%20v1.md)
-- 技术方案：[指挥官与飞船共享 HUD 及 Ship UI v1](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship%20UI%20v1.md)
+- 对应需求：[指挥官与飞船共享 HUD 及 Ship UI v1](<../RequirementDocument/20260902-指挥官与飞船共享HUD及Ship UI v1.md>)
+- 技术方案：[指挥官与飞船共享 HUD 及 Ship UI v1](<../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md>)
 - 完成范围：Figma Gate 1 之后的 UE 静态 Gate 2
 - 未完成范围：Ship 真实数据、HUD 生命周期、重生/切角、航向投影和动效等 Gate 3 逻辑
 

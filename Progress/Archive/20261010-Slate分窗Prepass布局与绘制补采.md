@@ -5,8 +5,12 @@ work_id: ''
 kind: archive
 role: root
 title: Slate分窗Prepass布局与绘制补采
-areas: [performance, ui]
-categories: [art, performance]
+areas:
+- performance
+- ui
+categories:
+- art
+- performance
 status: recorded
 verification: partial
 created: '2026-10-10'
@@ -14,7 +18,9 @@ updated: '2026-10-10'
 summary: 源码版Live Coding加载编辑器诊断后完成双客户端30秒分窗补采。编辑器主窗口扣除Client1视口为2.141ms，Client1与Client2视口UI为1.053与1.138ms，Slate合计4.791ms；编辑器占Slate约45%，占本次GT约8%。
 next_action: 本轮补采已完成；后续UI优化须分别处理布局失效、Paint和逻辑更新，并按具体改动重新测量，不据本轮动态场景推出打包版帧率。
 relations:
-  related: [ARC-20261010-003, ARC-20261010-005]
+  related:
+  - ARC-20261010-003
+  - ARC-20261010-005
 status_note: 用户要求开PIE补采并明确允许本次编译与加载诊断代码。完成根窗口和游戏视口Prepass计时、逐帧互斥归属、关闭回调参照及恢复状态核对；没有应用生产UI优化、恢复整版FPS矩阵或运行额外600单位500弹丸入口。新PIE负载随玩法变化，结果不能当作优化收益。
 ---
 
@@ -30,11 +36,11 @@ status_note: 用户要求开PIE补采并明确允许本次编译与加载诊断�
 |---|---|
 | [GuLiSlatePrepassDiagnostics.cpp](../../Source/GuLiStrikeEditor/Private/GuLiSlatePrepassDiagnostics.cpp) | 编辑器模块中的默认关闭诊断。显式Start绑定引擎已有BeginWidgetPrepass/EndWidgetPrepass，记录窗口及游戏视口根耗时；Stop和EndPIE解除回调并保存JSON。无引擎源码修改。 |
 | [GuLiStrikeEditor.Build.cs](../../Source/GuLiStrikeEditor/GuLiStrikeEditor.Build.cs) | 添加私有Slate/SlateCore依赖。 |
-| [补采和离线分析目录](../../outputs/performance/20261010-slate-prepass-live/report.md) | capture、export、analyze、构建核对、逐帧分类和完整报告。采样窗口内不截图、不盘点对象、不写资源。 |
+| 补采和离线分析目录（历史附件已清理；原路径：`../../outputs/performance/20261010-slate-prepass-live/report.md`） | capture、export、analyze、构建核对、逐帧分类和完整报告。采样窗口内不截图、不盘点对象、不写资源。 |
 
 源码引擎 `D:/UnrealEngine-5.7`，目标 `GuLiStrikeEditor Win64 Development`，正在运行的源码Editor PID21532。通过 `LiveCoding.Compile` 编译新增诊断CPP，UBT记录 `Result: Succeeded`，Live Coding补丁链接和创建成功。编译经编辑器发起，宿主未独立取得子进程数字退出码；证据是UBT成功状态、补丁记录和原生命令的实际执行，未声称已完成普通DLL完整重建。
 
-引擎与项目模块清单BuildId一致：`dd3ee083-a0fd-45c8-814e-67fe5ef95e31`。Live Coding输出过 `.voltbl` 与新编译单元contributions诊断，随后成功创建补丁。烟雾采集及正式补采都实际记录了四个预期根目标，计时配对错误为0。诊断源码SHA256为 `82CEFC1C96B3DF5E02A1C970B541C29E70AA731BE069ED563F9C089536CCC197`。证据见[构建与加载核对](../../outputs/performance/20261010-slate-prepass-live/build/verified.json)。
+引擎与项目模块清单BuildId一致：`dd3ee083-a0fd-45c8-814e-67fe5ef95e31`。Live Coding输出过 `.voltbl` 与新编译单元contributions诊断，随后成功创建补丁。烟雾采集及正式补采都实际记录了四个预期根目标，计时配对错误为0。诊断源码SHA256为 `82CEFC1C96B3DF5E02A1C970B541C29E70AA731BE069ED563F9C089536CCC197`。证据见构建与加载核对（历史附件已清理；原路径：`../../outputs/performance/20261010-slate-prepass-live/build/verified.json`）。
 
 ## 分窗结果
 
@@ -67,4 +73,4 @@ status_note: 用户要求开PIE补采并明确允许本次编译与加载诊断�
 - 首次with-probe只完成采样准备，因UE自动写UTF-16 JSON造成解码错误，立即停止回调。脚本补齐BOM识别和异常清理后有效补采完成；失败准备目录无有效Trace/CSV，排除性能结论。
 - 收尾核对Trace关闭、三个World计数均停止、`r.GPUCsvStatsEnabled`恢复为0、三个PIE World均未暂停。PIE留给用户继续操作。没有改动或保存地图、资产，无新增玩法验收场景需求。
 
-采样/身份、逐帧明细、原生回调数据、Trace、CSV和日志集中于[完整报告](../../outputs/performance/20261010-slate-prepass-live/report.md)，控制变量和构建证据见[audit.json](../../outputs/performance/20261010-slate-prepass-live/audit.json)，收尾见[恢复状态](../../outputs/performance/20261010-slate-prepass-live/restored-live-state.json)。离线使用Launcher的UnrealInsights分析源码Editor Trace，未运行Launcher Editor，也未用其作为构建证据。
+采样/身份、逐帧明细、原生回调数据、Trace、CSV和日志集中于完整报告（历史附件已清理；原路径：`../../outputs/performance/20261010-slate-prepass-live/report.md`），控制变量和构建证据见audit.json（历史附件已清理；原路径：`../../outputs/performance/20261010-slate-prepass-live/audit.json`），收尾见恢复状态（历史附件已清理；原路径：`../../outputs/performance/20261010-slate-prepass-live/restored-live-state.json`）。离线使用Launcher的UnrealInsights分析源码Editor Trace，未运行Launcher Editor，也未用其作为构建证据。

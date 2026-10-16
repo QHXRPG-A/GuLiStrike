@@ -49,11 +49,11 @@ status_note: 用户于2026-09-09决定空战问题暂不扩修，本归档如实
 
 ## 验证
 
-- `GuLiStrike.Wingman`全量自动化完成95/95：93成功、2项既有预期警告、0失败。证据：[最终报告](../../TestResults/WORK-20260909-002/ClientOwnedContinuityFinal/index.json)。
-- Relay死亡竞态定向回归23/23通过；正常帧中的服务器确认死亡成员被过滤，伪造或换代身份仍拒绝。证据：[Relay报告](../../TestResults/WORK-20260909-002/ClientAuthRelayTestsPostDeathFilter/Report/index.json)。
-- UE StateTree资产审计为ready：六个任务、六个条件、根转移齐全，任务不写Transform或Velocity。证据：[资产审计](../../TestResults/WingmanPlan/WingmanStateTreeAsset/state_tree_asset_audit.json)。
+- `GuLiStrike.Wingman`全量自动化完成95/95：93成功、2项既有预期警告、0失败。证据：最终报告（历史附件已清理；原路径：`../../TestResults/WORK-20260909-002/ClientOwnedContinuityFinal/index.json`）。
+- Relay死亡竞态定向回归23/23通过；正常帧中的服务器确认死亡成员被过滤，伪造或换代身份仍拒绝。证据：Relay报告（历史附件已清理；原路径：`../../TestResults/WORK-20260909-002/ClientAuthRelayTestsPostDeathFilter/Report/index.json`）。
+- UE StateTree资产审计为ready：六个任务、六个条件、根转移齐全，任务不写Transform或Velocity。证据：资产审计（历史附件已清理；原路径：`../../TestResults/WingmanPlan/WingmanStateTreeAsset/state_tree_asset_audit.json`）。
 - 200 Actor门禁通过：25架Owner模拟加175架Remote插值，P50 0.324ms、P95 0.4248ms、最大0.6368ms。
-- 300秒双进程PIE的持续飞行子门禁全部通过：两端各25架Owner Pawn/StateTree持续存在，Relay Active，5秒静止违规0，普通/原子Candidate拒绝0，服务器Wingman Movement写入0；Ship最大位移约219.9m，最大旋转约180°。证据：[长测报告](../../TestResults/WingmanPlan/ListenMultiprocessSmoke/runs/20260909-160541-normal/index.json)。
+- 300秒双进程PIE的持续飞行子门禁全部通过：两端各25架Owner Pawn/StateTree持续存在，Relay Active，5秒静止违规0，普通/原子Candidate拒绝0，服务器Wingman Movement写入0；Ship最大位移约219.9m，最大旋转约180°。证据：长测报告（历史附件已清理；原路径：`../../TestResults/WingmanPlan/ListenMultiprocessSmoke/runs/20260909-160541-normal/index.json`）。
 - 源码版`GuLiStrikeEditor Win64 Development`和`GuLiStrike Win64 Development`构建退出码均为0。引擎与项目`UnrealEditor.modules` BuildId均为`9872a344-2108-49e2-b40c-34c4e2c3ccfe`。
 
 ## 遗留问题

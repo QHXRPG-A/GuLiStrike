@@ -45,7 +45,7 @@ void UGuLiFlightAcceptanceSubsystem::OnWorldBeginPlay(UWorld& World)
     if (UGuLiNetworkSettings::IsHybrid(&World))
     {
         FGuLiHybridManifestData Manifest; FString Error;
-        if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve().ManifestFile,Manifest,Error)
+        if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve(&World).ManifestFile,Manifest,Error)
             || !FGuLiHybridAdapterRegistry::Validate(Manifest,Error)
             || Manifest.Strings.FindRef(TEXT("startup/acceptance_flight_adapter"))!=TEXT("2"))
         { LoadFailure=TEXT("Hybrid additional flights require the versioned flight factory and handoff adapter"); return; }

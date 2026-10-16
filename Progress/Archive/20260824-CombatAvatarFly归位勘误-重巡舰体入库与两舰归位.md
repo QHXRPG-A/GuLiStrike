@@ -29,7 +29,7 @@ status_note: ''
 
 - 对应开发文档：无（资产整理 + 配置勘误，附属于 [DIY 飞船](../DevelopmentDocumentation/20260820-DIY飞船.md)）
 - 变更类型：内容资产 | 蓝图 | Blender
-- **勘误**：本日早前归档 CombatAvatarFly两舰资产归位与01主控3C设置（原件已并入[总归档](./20260825-飞船3C与相机避障总归档-0824至0825.md)） 把 fly-01（space_mouse_fbx 战机）/fly-02（监视无人机）误当成了目标舰。用户澄清：两艘"无组件飞船"= **无畏舰裸舰体 SM_Dreadnought_Hull** + **尚在 Blender 未导出的重巡舰体 scifi_heavy_cruiser_maelstrom.001**。本次已全部回退并按正确对象重做。
+- **勘误**：本日早前归档 CombatAvatarFly两舰资产归位与01主控3C设置（原件已并入[总归档](20260825-飞船3C与相机避障总归档-0824至0825.md)） 把 fly-01（space_mouse_fbx 战机）/fly-02（监视无人机）误当成了目标舰。用户澄清：两艘"无组件飞船"= **无畏舰裸舰体 SM_Dreadnought_Hull** + **尚在 Blender 未导出的重巡舰体 scifi_heavy_cruiser_maelstrom.001**。本次已全部回退并按正确对象重做。
 
 ## 变更清单
 

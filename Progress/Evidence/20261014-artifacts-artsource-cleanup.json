@@ -1,0 +1,127 @@
+{
+  "Date": "2026-10-14",
+  "Authorization": "User requested a major cleanup of Artifacts and ArtSource; all files not threatening game runtime may be deleted.",
+  "InitialInventory": [
+    {
+      "Name": "Artifacts",
+      "Files": 6443,
+      "Bytes": 51536418150.0
+    },
+    {
+      "Name": "ArtSource",
+      "Files": 12530,
+      "Bytes": 17824288068.0
+    }
+  ],
+  "Plan": {
+    "inspected_files": 18973,
+    "planned_delete_files": 18868,
+    "planned_delete_bytes": 69360121818,
+    "retained_files": 105,
+    "retained_bytes": 584400,
+    "retained_by_root": {
+      "Artifacts": {
+        "files": 16,
+        "bytes": 103821
+      },
+      "ArtSource": {
+        "files": 89,
+        "bytes": 480579
+      }
+    },
+    "retention_rule": "Keep only existing Markdown entry points linked by project documentation or skills, including their Markdown dependencies; delete all other non-runtime files in the two approved roots.",
+    "editor_audit": "not_run: local UnrealMCPython connection refused; static source, config, data, plugin descriptors and package-location audit completed."
+  },
+  "Result": {
+    "DeletedFiles": 18868,
+    "DeletedBytes": 69360121818,
+    "DeletedGiB": 64.597,
+    "RemovedEmptyDirectories": 1573,
+    "RetainedFiles": 105,
+    "FailureCount": 0,
+    "Failures": [],
+    "FreeBytesAfter": 842056589312,
+    "ByRoot": [
+      {
+        "Root": "Artifacts",
+        "Files": 6427,
+        "Bytes": 51536314329.0
+      },
+      {
+        "Root": "ArtSource",
+        "Files": 12441,
+        "Bytes": 17823807489.0
+      }
+    ]
+  },
+  "Verification": {
+    "deleted_files": 18868,
+    "deleted_bytes": 69360121818,
+    "deleted_gib": 64.597,
+    "remaining_files": 105,
+    "remaining_bytes": 584400,
+    "remaining_by_root": {
+      "Artifacts": {
+        "files": 16,
+        "bytes": 103821
+      },
+      "ArtSource": {
+        "files": 89,
+        "bytes": 480579
+      }
+    },
+    "unexpected_remaining_files": [],
+    "missing_retained_files": [],
+    "retained_hash_mismatches": [],
+    "blocked_paths": [],
+    "unrelated_tracked_status_changes": [],
+    "failure_count": 0,
+    "disk_free_increase_bytes": 52435296256,
+    "editor_audit": "not_run: TCP 127.0.0.1:12029 connection refused",
+    "game_runtime_test": "not_run",
+    "compile_or_package": "not_run",
+    "deletion_scope": [
+      "D:\\UE5.7\\test1\\Artifacts",
+      "D:\\UE5.7\\test1\\ArtSource"
+    ],
+    "runtime_content_modified": false,
+    "cleanup_verified": true
+  },
+  "StaticAudit": {
+    "SourceAndPluginSources": "Direct target references occur only in editor geometry export/paint import, report output, migration backups and diagnostic helpers; runtime target paths not found.",
+    "Configuration": "No ArtSource/Artifacts reference, external content mount, or non-asset staging configuration found in Config or project/plugin descriptors.",
+    "Data": "Matches in Data are authoring/validation evidence records; Data/Json has no target references.",
+    "BinaryPolicy": "UE packages were inspected by file metadata and paths only; package contents were never read.",
+    "Scope": "Only files under the two exact approved roots were deleted using PowerShell literal paths; reparse points rejected; changed files skipped; empty directories removed without recursive deletion.",
+    "SourceSnapshots": [
+      {
+        "Path": "GuLiStrike.uproject",
+        "SHA256": "9217950BC2CADFB6A4232256F10F7ACEA9C15BA833B1A1EDA7B53695167D8931"
+      },
+      {
+        "Path": "Config/DefaultGame.ini",
+        "SHA256": "C8AA4958B3C40856EDD75D7721347646C2E937DD8D2D2AF5972D8089C9745CB5"
+      },
+      {
+        "Path": "Source/GuLiStrike/Gameplay/Models/GuLiModelAuthoringLibrary.cpp",
+        "SHA256": "B707C1D80C5CD1E1B199162E4905E6922245D4201769432F39F80D692CD74372"
+      },
+      {
+        "Path": "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeAssetCommands.cpp",
+        "SHA256": "6303EABB2E4D03E3AB86C28830BA57C3253A12C96B660802425CCEF832261AEB"
+      },
+      {
+        "Path": "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeHierarchy.cpp",
+        "SHA256": "59B61D64C8D4F31C9762A864494DA07AE69638F670B143D4E2198EA2B7BB8665"
+      }
+    ]
+  },
+  "Documentation": {
+    "PreexistingErrors": 115,
+    "ErrorsAfterDeletion": 115,
+    "NewErrorsAfterDeletion": 0,
+    "Warnings": 18
+  },
+  "DetailedManifestsTemporaryDirectory": "C:\\Users\\a\\AppData\\Local\\Temp\\GuLiCleanup-20261014-8a8c1a81a01a439fb9fdc6dec75661bb",
+  "RestoreNote": "No file-content backup was created. Tracked files can be restored from Git; ignored or untracked source files require an existing external backup or regeneration."
+}

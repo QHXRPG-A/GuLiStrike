@@ -2,6 +2,7 @@
 
 #include "GuLiResourceAuthoringLibrary.h"
 #include "GuLiNavigationBakeLibrary.h"
+#include "GuLiLocalPIESubsystem.h"
 
 #include "Editor.h"
 #include "Features/IModularFeatures.h"
@@ -43,6 +44,9 @@ public:
 			OutReason = Navigation.Message;
 			return false;
 		}
+		if (!bIsSimulateInEditor && GEditor)
+			if (auto* Local=GEditor->GetEditorSubsystem<UGuLiLocalPIESubsystem>())
+				return Local->PrepareForPIE(OutReason);
 		return true;
 	}
 

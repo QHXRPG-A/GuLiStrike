@@ -12,7 +12,7 @@
 >
 > 阅读约定：源码摘录可省略外围代码；概念化定义、假设用法与错误示例明确标作“示意代码”，不表示项目已实现。
 
-[Mass 阅读目录](./README.md) · [UE 网络教材](../UE网络教材/README.md)
+[Mass 阅读目录](README.md) · [UE 网络教材](../UE网络教材/README.md)
 
 ## 先说最重要的事实
 
@@ -60,7 +60,7 @@ Commander 权威模拟使用 30Hz 固定步，但 Epic Mass Avoidance 跟随 Mas
 
 项目将 Mass 世界处理阶段的 Force 与固定步消费分开，避免直接共用未清理的累积列。固定步仍会按自身节拍读取最近一次快照；桥接 Fragment 不意味着两套调度已锁定为一一对应。当前使用：
 
-> **当前源码摘录**：[FGuLiMassAvoidanceOutputFragment](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
+> **当前源码摘录**：[FGuLiMassAvoidanceOutputFragment](../../../../Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
 
 ~~~cpp
 /** Latest Epic Mass avoidance acceleration captured once per world frame for 30 Hz authority use. */
@@ -476,7 +476,7 @@ View 的寿命只覆盖当前 Chunk 回调：
 
 源码：`UGuLiBattleAuthoritySubsystem::TickAuthority`
 
-> **当前源码摘录**：[TickAuthority](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[TickAuthority](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput = EntityManager.GetFragmentDataChecked<
@@ -566,7 +566,7 @@ Forces[It].Value = FVector::ZeroVector;
 
 当前真实的：
 
-> **当前源码摘录**：[ApplyDamage](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+> **当前源码摘录**：[ApplyDamage](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 EntityManager.RemoveFragmentFromEntity(
@@ -711,9 +711,9 @@ StateReplicator 属性复制 + NetSync 姿态 RPC
 
 ## 关联阅读
 
-- 前置：[MassEntityElementTypes：Requirement 中的 Fragment 与 Tag 属于哪一类](./MassEntityElementTypes.md)
-- 前置：[MassEntityHandle：Context Entity 与本地句柄边界](./MassEntityHandle.md)
-- 前置：[MassArchetypeTypes：Query 实际缓存和匹配什么](./MassArchetypeTypes.md)
+- 前置：[MassEntityElementTypes：Requirement 中的 Fragment 与 Tag 属于哪一类](MassEntityElementTypes.md)
+- 前置：[MassEntityHandle：Context Entity 与本地句柄边界](MassEntityHandle.md)
+- 前置：[MassArchetypeTypes：Query 实际缓存和匹配什么](MassArchetypeTypes.md)
 - 技术方案：[20260827-Mass 双端同步架构草案](../../20260827-Mass双端同步架构草案.md)
 - 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)
 - 玩法记录：[指挥官](../../../Gameplay/指挥官.md)

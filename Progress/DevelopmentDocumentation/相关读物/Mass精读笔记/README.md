@@ -8,11 +8,11 @@
 
 | 顺序 | 笔记 | 要回答的问题 |
 |---|---|---|
-| 1 | [MassEntityElementTypes](./MassEntityElementTypes.md) | Fragment、Tag 与 Shared 数据分别归谁拥有？ |
-| 2 | [MassEntityHandle](./MassEntityHandle.md) | 为什么本地句柄不能当网络 SoldierId？ |
-| 3 | [MassArchetypeTypes](./MassArchetypeTypes.md) | 组成、共享值、死亡与调参迁移如何关联？ |
-| 4 | [MassEntityQuery 与 ExecutionContext](./MassEntityQuery与ExecutionContext.md) | 避让捕获如何按 Chunk 读写数据？ |
-| 5 | [GuLiBattleAuthoritySubsystem](./GuLiBattleAuthoritySubsystem.md) | 选兵、移动、固定步和网络快照如何串起来？ |
+| 1 | [MassEntityElementTypes](MassEntityElementTypes.md) | Fragment、Tag 与 Shared 数据分别归谁拥有？ |
+| 2 | [MassEntityHandle](MassEntityHandle.md) | 为什么本地句柄不能当网络 SoldierId？ |
+| 3 | [MassArchetypeTypes](MassArchetypeTypes.md) | 组成、共享值、死亡与调参迁移如何关联？ |
+| 4 | [MassEntityQuery 与 ExecutionContext](MassEntityQuery与ExecutionContext.md) | 避让捕获如何按 Chunk 读写数据？ |
+| 5 | [GuLiBattleAuthoritySubsystem](GuLiBattleAuthoritySubsystem.md) | 选兵、移动、固定步和网络快照如何串起来？ |
 
 想先看玩法全貌，可以先读第 5 篇的流程图，再按 1–4 补齐数据概念。
 

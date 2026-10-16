@@ -11,8 +11,16 @@
 #include "Development/GuLiHybridReviewSubsystem.h"
 #endif
 
-FGuLiNetworkLaunchConfig UGuLiNetworkSettings::Resolve()
+FGuLiWorldLaunchOverride& UGuLiNetworkSettings::WorldLaunchOverride()
 {
+    static FGuLiWorldLaunchOverride Provider;
+    return Provider;
+}
+
+FGuLiNetworkLaunchConfig UGuLiNetworkSettings::Resolve(const UWorld* World)
+{
+    FGuLiNetworkLaunchConfig Hosted;
+    if (World && WorldLaunchOverride().IsBound() && WorldLaunchOverride().Execute(World, Hosted)) return Hosted;
     const auto* S = GetDefault<UGuLiNetworkSettings>(); FGuLiNetworkLaunchConfig C;
     C.Mode = EGuLiNetworkMode::Hybrid; C.Transport = S->Transport; C.CoordinatorUrl = S->CoordinatorUrl;
     C.ClientRunMode = S->ClientRunMode;

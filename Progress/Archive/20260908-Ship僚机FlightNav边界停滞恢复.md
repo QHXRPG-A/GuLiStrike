@@ -49,9 +49,9 @@ status_note: passed仅覆盖本次停滞恢复补丁及已授权验证；未迁�
 ## 验证
 
 - 使用源码引擎 `D:\UnrealEngine-5.7` 构建 `GuLiStrikeEditor Win64 Development` 成功，退出码0。
-- [攻击自动化](../../TestResults/ShipAirCombatLevel/AutomationStoppedRecoveryFinal_Attack_20260908/index.json) 7/7；[Relay运动包络](../../TestResults/ShipAirCombatLevel/AutomationStoppedRecoveryFinal_RelayEnvelope_20260908/index.json) 1/1。
-- [主动对空分析](../../TestResults/ShipAirCombatLevel/active_dogfight_stoppage_analysis.json)：250.63秒、690个采样点；25架均在689/689个相邻区间移动，最长停滞0秒。末端目标为Air，累计3306发机枪、3420次伤害提交，Relay Active，普通/原子拒绝0，服务器运动写入0。
-- [主动对地分析](../../TestResults/ShipAirCombatLevel/active_ground_stoppage_analysis.json)：85.83秒、300个采样点；25架均在299/299个相邻区间移动，最长停滞0秒。末端导弹累计445，Relay Active，普通/原子拒绝0。
+- 攻击自动化（历史附件已清理；原路径：`../../TestResults/ShipAirCombatLevel/AutomationStoppedRecoveryFinal_Attack_20260908/index.json`） 7/7；Relay运动包络（历史附件已清理；原路径：`../../TestResults/ShipAirCombatLevel/AutomationStoppedRecoveryFinal_RelayEnvelope_20260908/index.json`） 1/1。
+- 主动对空分析（历史附件已清理；原路径：`../../TestResults/ShipAirCombatLevel/active_dogfight_stoppage_analysis.json`）：250.63秒、690个采样点；25架均在689/689个相邻区间移动，最长停滞0秒。末端目标为Air，累计3306发机枪、3420次伤害提交，Relay Active，普通/原子拒绝0，服务器运动写入0。
+- 主动对地分析（历史附件已清理；原路径：`../../TestResults/ShipAirCombatLevel/active_ground_stoppage_analysis.json`）：85.83秒、300个采样点；25架均在299/299个相邻区间移动，最长停滞0秒。末端导弹累计445，Relay Active，普通/原子拒绝0。
 - 当前运行日志中 `GULI_WINGMAN_INTEGRATION_REJECT`、`GULI_WINGMAN_SPATIAL_REJECT`、`SpeedDelta`、`CarrierDistance`、非零 `dropped_steps` 和Relay撤销计数均为0。PIE已恢复为空中目标并保留运行。
 
 ## 遗留问题

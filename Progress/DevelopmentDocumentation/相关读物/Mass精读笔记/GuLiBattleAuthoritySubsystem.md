@@ -280,7 +280,7 @@ NavMesh生成代次变化也不再在回调里同步查询全部活动单位。�
 
 速度有三个层次需要区分：请求中的新值、`PendingMovementSpeedCmPerSecond`、当前已提交的 `MovementSpeedCentimetersPerSecond`。最后一次请求覆盖尚未提交的速度意图；固定步前先改新值再恢复旧值，会取消过期的 Pending。
 
-`ApplyPendingMovementSpeed` 在固定步开头生成新的 const-shared 参数，将实体迁移到交替的 Even/Odd Archetype，再重新读取 Fragment、限制已有速度、更新 MoveTarget。不能跨迁移继续使用旧 Fragment 引用。当前调参循环迁移全部有效实体，没有为尸体单独保留已删除的导航障碍格列；不要把死亡后的组成描述理解为跨调参永久不变，参见 [Archetype 迁移边界](./MassArchetypeTypes.md)。完成后通过 `NotifyMovementSpeedCommitted` 通知运行时调参子系统；后者核对当前目标并经 CommanderGameState 发布已提交速度，客户端表现预测不会直接读取尚未提交的目标值。
+`ApplyPendingMovementSpeed` 在固定步开头生成新的 const-shared 参数，将实体迁移到交替的 Even/Odd Archetype，再重新读取 Fragment、限制已有速度、更新 MoveTarget。不能跨迁移继续使用旧 Fragment 引用。当前调参循环迁移全部有效实体，没有为尸体单独保留已删除的导航障碍格列；不要把死亡后的组成描述理解为跨调参永久不变，参见 [Archetype 迁移边界](MassArchetypeTypes.md)。完成后通过 `NotifyMovementSpeedCommitted` 通知运行时调参子系统；后者核对当前目标并经 CommanderGameState 发布已提交速度，客户端表现预测不会直接读取尚未提交的目标值。
 
 `ApplyDamage` 是服务端 C++ 扣血入口。死亡时清除活动指令和速度，移除导航障碍网格 Fragment，记录死亡模拟时间。默认 5 秒后本地残骸 Transform 缩放归零，**不删除 SoldierId，也不立即销毁 Entity**。
 
@@ -357,4 +357,4 @@ NavMesh生成代次变化也不再在回调里同步查询全部活动单位。�
 
 2026-08-30 的注释、57 处排版及当时词法核对属于[初次整理归档](../../../Archive/20260830-战斗权威子系统中文注释与导读.md)，不再作为本轮任务清单。当前文档修订过程见[本次文档归档](../../../Archive/20260831-网络教材与Mass精读笔记同步修订.md)。
 
-[Mass 阅读目录](./README.md) · [网络教材第 07 章：士兵发送](../UE网络教材/07-士兵状态与姿态发送.md) · [第 08 章：客户端重建](../UE网络教材/08-客户端重建与平滑.md)
+[Mass 阅读目录](README.md) · [网络教材第 07 章：士兵发送](../UE网络教材/07-士兵状态与姿态发送.md) · [第 08 章：客户端重建](../UE网络教材/08-客户端重建与平滑.md)

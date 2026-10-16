@@ -5,8 +5,12 @@ work_id: ''
 kind: archive
 role: root
 title: 服务器StateTree条件查询与集中调度瓶颈分析
-areas: [performance, commander]
-categories: [gameplay, performance]
+areas:
+- performance
+- commander
+categories:
+- gameplay
+- performance
 status: recorded
 verification: partial
 created: '2026-10-10'
@@ -14,7 +18,8 @@ updated: '2026-10-10'
 summary: 复用实战30秒Trace与CSV，Mass StateTree摊销1.558ms/引擎帧，执行帧平均5.447ms、P95 7.034ms；条件检查占已记录内部成本61.64%，发现重复事实读取和推进组线性查找。
 next_action: 后续优化优先建立士兵到推进组索引、每轮行为快照与稳定单位错峰，补齐子Scope及同场景复测，保持任务和即时转移合同。
 relations:
-  related: [ARC-20261010-003]
+  related:
+  - ARC-20261010-003
 status_note: 用户本轮要求分析服务器StateTree，未修改玩法源码、资源或地图，未构建或重启PIE。本轮探测时PIE已结束；计时来自前一轮保存的实战捕获，当前资产通过只读检查。具体FindGroup函数占比尚未单独计时。
 ---
 
@@ -67,4 +72,4 @@ status_note: 用户本轮要求分析服务器StateTree，未修改玩法源码�
 
 本轮只生成诊断报告和导出数据，没有生产逻辑修改。构建、功能测试和对应 Map 新场景交付不适用；没有优化前后收益或玩家验收结论。后续子Scope应分别记录条件、Facts、Group Lookup、上下文、请求提交和业务执行，并伴随单位／组／条件／转移／待处理数，验证改令、取消、死亡、空组、组重排、自动重试及 Actor 采矿／建造任务合同。
 
-证据：[完整报告](../../outputs/performance/20261010-server-statetree-analysis/report.md)、[机器分析](../../outputs/performance/20261010-server-statetree-analysis/analysis.json)、[事件导出](../../outputs/performance/20261010-server-statetree-analysis/statetree-events.csv)、[逐帧分组](../../outputs/performance/20261010-server-statetree-analysis/processor-by-frame.json)、[最新资产读回](../../outputs/performance/20261010-server-statetree-analysis/hierarchy-readback.json)、[可复现分析脚本](../../outputs/performance/20261010-server-statetree-analysis/analyze.py)。
+证据：完整报告（历史附件已清理；原路径：`../../outputs/performance/20261010-server-statetree-analysis/report.md`）、机器分析（历史附件已清理；原路径：`../../outputs/performance/20261010-server-statetree-analysis/analysis.json`）、事件导出（历史附件已清理；原路径：`../../outputs/performance/20261010-server-statetree-analysis/statetree-events.csv`）、逐帧分组（历史附件已清理；原路径：`../../outputs/performance/20261010-server-statetree-analysis/processor-by-frame.json`）、最新资产读回（历史附件已清理；原路径：`../../outputs/performance/20261010-server-statetree-analysis/hierarchy-readback.json`）、可复现分析脚本（历史附件已清理；原路径：`../../outputs/performance/20261010-server-statetree-analysis/analyze.py`）。

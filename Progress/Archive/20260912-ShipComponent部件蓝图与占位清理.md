@@ -37,7 +37,7 @@ status_note: 本轮仅制作部件及装配配置；升级依赖、互斥和火�
 | `Scripts/author_ship_component_blueprints.py` | 可重用的配置、基线快照、蓝图制作和保护校验脚本 |
 | `Source/GuLiStrike/Gameplay/Ship/Tests/GuLiShipPartVisualTests.cpp` | 两处旧Laser资源路径切换为新Thor蓝图，既有断言与测试范围不变 |
 
-完整蓝图、模型与槽位对照见[使用说明](../../outputs/ship-component-blueprints/README.md)。父蓝图原4个默认占位装配已清除；本轮没有选择出生升级组或自动装满舰体。
+完整蓝图、模型与槽位对照见使用说明（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/README.md`）。父蓝图原4个默认占位装配已清除；本轮没有选择出生升级组或自动装满舰体。
 
 ## 配置边界
 
@@ -51,10 +51,10 @@ status_note: 本轮仅制作部件及装配配置；升级依赖、互斥和火�
 - 14个部件和两个飞船蓝图编译保存通过，0错误、0警告；冷启动读取结果与配置一致，4个旧资产已不存在。
 - 22个网格、7个Skeleton和82个Socket保持一致：无畏舰49个安装点、母舰体7个安装点、骨骼炮台16个炮口、Thor／燃烧弹舱10个炮口。网格、材质、Skeleton及其安装原点未重写。
 - 源码引擎`D:\UnrealEngine-5.7`构建`GuLiStrikeEditor Win64 Development`成功，退出码0。引擎、项目及5个项目插件的BuildId均为`26d441ba-b96a-4e7b-b104-c2c6cd3e663c`；本轮未新增运行期C++，未额外构建Game目标。
-- 既有`GuLiStrike.Ship.Parts.InstallationRollback`与`VisualLifecycleAndSockets`均成功，0错误、0警告，见[自动化结果](../../outputs/ship-component-blueprints/Automation/index.json)。
-- 测试后回收临时世界，恢复帧率控制；[最终校验](../../outputs/ship-component-blueprints/final-validation.json)显示无未保存资产或地图，原空战测试地图保持打开。
+- 既有`GuLiStrike.Ship.Parts.InstallationRollback`与`VisualLifecycleAndSockets`均成功，0错误、0警告，见自动化结果（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/Automation/index.json`）。
+- 测试后回收临时世界，恢复帧率控制；最终校验（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/final-validation.json`）显示无未保存资产或地图，原空战测试地图保持打开。
 
-批量热重载父子飞船蓝图时，UE发生`DEADPACKAGE／REINST`默认对象冲突并崩溃；所有改动在此前已保存。保留`editor-reload-failure.log`，不重试同一热重载，改以正常重启后的[磁盘读取结果](../../outputs/ship-component-blueprints/cold-load-validation.json)验收。恢复窗口后，等待交互帧率的既有测试正常执行完成。
+批量热重载父子飞船蓝图时，UE发生`DEADPACKAGE／REINST`默认对象冲突并崩溃；所有改动在此前已保存。保留`editor-reload-failure.log`，不重试同一热重载，改以正常重启后的磁盘读取结果（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/cold-load-validation.json`）验收。恢复窗口后，等待交互帧率的既有测试正常执行完成。
 
 ## 交付与后续
 
