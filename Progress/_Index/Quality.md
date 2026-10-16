@@ -14,7 +14,7 @@
 | 路径 | 代码 | 说明 |
 |---|---|---|
 | Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md | oversize | 91.3KB，建议阈值 80KB |
-| Progress/Archive/20261016-CS-P2P整合归档.md | oversize | 916.3KB，建议阈值 80KB |
+| Progress/Archive/20261016-CS-P2P整合归档.md | oversize | 920.7KB，建议阈值 80KB |
 | Progress/DevelopmentDocumentation/20260820-DIY飞船.md | large_task_list | 26 个任务项 |
 | Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md | large_task_list | 46 个任务项 |
 | Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md | oversize | 44.9KB，建议阈值 30KB |
