@@ -14,7 +14,7 @@
 | 路径 | 代码 | 说明 |
 |---|---|---|
 | Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md | oversize | 91.3KB，建议阈值 80KB |
-| Progress/Archive/20261016-CS-P2P整合归档.md | oversize | 974.6KB，建议阈值 80KB |
+| Progress/Archive/20261016-CS-P2P整合归档.md | oversize | 975.7KB，建议阈值 80KB |
 | Progress/DevelopmentDocumentation/20260820-DIY飞船.md | large_task_list | 26 个任务项 |
 | Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md | large_task_list | 46 个任务项 |
 | Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md | oversize | 44.9KB，建议阈值 30KB |
@@ -23,7 +23,7 @@
 | Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md | oversize | 32.5KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md | oversize | 30.4KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md | oversize | 35.1KB，建议阈值 30KB |
-| Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md | oversize | 54.0KB，建议阈值 30KB |
+| Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md | oversize | 54.4KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/GuLiStrike美术规范.md | oversize | 70.2KB，建议阈值 30KB |
 | Progress/Gameplay/战斗.md | oversize | 35.7KB，建议阈值 30KB |
 | Progress/Gameplay/飞船.md | oversize | 61.4KB，建议阈值 30KB |
