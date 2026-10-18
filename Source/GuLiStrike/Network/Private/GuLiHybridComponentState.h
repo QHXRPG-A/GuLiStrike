@@ -42,6 +42,17 @@ private:
     FGuLiHybridComponentCapability Capability;
 };
 
+/** Private to one object adapter. Weak identities survive no world or restore boundary. */
+struct FGuLiHybridComponentBindingContext final
+{
+    struct FData;
+    TUniquePtr<FData> Data;
+    FGuLiHybridComponentBindingContext();
+    ~FGuLiHybridComponentBindingContext();
+    void Reset();
+};
+enum class EGuLiHybridPublicCapture : uint8 { Absent, Captured, Invalid };
+
 /** Actor adapters aggregate registered component capabilities without knowing unit definitions. */
 class FGuLiHybridComponentState final
 {
@@ -50,19 +61,20 @@ public:
     static constexpr uint32 PublicMotionHz=10;
     static bool BindContracts(FGuLiHybridManifestData& Manifest,FString& Error);
     static bool ValidateContracts(const FGuLiHybridManifestData& Manifest,FString& Error);
-    static bool Capture(const AActor& Actor,TArray<uint8>& Out);
-    static bool Validate(const AActor& Actor,TConstArrayView<uint8> Bytes);
-    static bool Restore(AActor& Actor,TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage);
-    static bool Advance(AActor& Actor,uint64 Tick,double Delta);
-    static bool ApplyLedger(AActor& Actor,const FGuLiHybridObjectState& State,uint64 Revision,bool Effects);
-    static bool PrepareRestore(AActor& Actor,TConstArrayView<uint8> Bytes);
-    static bool HasPublicState(const AActor& Actor);
-    static bool CapturePublic(const AActor& Actor,TArray<uint8>& Out);
-    static bool ValidatePublic(const AActor& Actor,TConstArrayView<uint8> Bytes);
-    static bool ApplyPublic(AActor& Actor,TConstArrayView<uint8> Bytes);
+    static bool Capture(const AActor& Actor,TArray<uint8>& Out,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool Validate(const AActor& Actor,TConstArrayView<uint8> Bytes,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool Restore(AActor& Actor,TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool Advance(AActor& Actor,uint64 Tick,double Delta,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool ApplyLedger(AActor& Actor,const FGuLiHybridObjectState& State,uint64 Revision,bool Effects,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool PrepareRestore(AActor& Actor,TConstArrayView<uint8> Bytes,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool HasPublicState(const AActor& Actor,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool CapturePublic(const AActor& Actor,TArray<uint8>& Out,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool ValidatePublic(const AActor& Actor,TConstArrayView<uint8> Bytes,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static bool ApplyPublic(AActor& Actor,TConstArrayView<uint8> Bytes,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static EGuLiHybridPublicCapture TryCapturePublic(const AActor& Actor,TArray<uint8>& Out,FGuLiHybridComponentBindingContext* Context=nullptr);
     /** Counts native and inherited Blueprint component templates without spawning an actor. */
     static int32 CountComponentTemplates(const UClass& ActorClass,const UClass& ComponentClass);
     static bool BindDefinitionLayout(FGuLiHybridManifestData& Manifest,const FString& Definition,const UClass& ActorClass,FString& Error);
-    static bool ValidateDefinitionLayout(const FGuLiHybridManifestData& Manifest,const FString& Definition,const AActor& Actor);
+    static bool ValidateDefinitionLayout(const FGuLiHybridManifestData& Manifest,const FString& Definition,const AActor& Actor,FGuLiHybridComponentBindingContext* Context=nullptr);
     static TArray<FGuLiHybridObjectKey> RestoreDependencies(TConstArrayView<uint8> Bytes);
 };

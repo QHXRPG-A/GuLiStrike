@@ -84,13 +84,75 @@ bool EncodeMessage(const Message& Value, Bytes& Out)
     W.U64(H.OwnerEpoch); W.U64(H.ControlEpoch); W.U64(H.Sequence); W.U64(H.At);
     W.Blob(Value.Body); Out = W.Take(); return !Out.empty();
 }
-bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out)
+namespace
+{
+constexpr std::uint32_t CompactPeerMagic=0x474c4e50;
+void VarUInt(Writer& W,std::uint64_t V)
+{
+    while (V>=128) {W.U8(static_cast<std::uint8_t>(V)|128);V>>=7;}
+    W.U8(static_cast<std::uint8_t>(V));
+}
+bool VarUInt(Reader& R,std::uint64_t& Out)
+{
+    Out=0;
+    for (unsigned I=0;I<10;++I)
+    {
+        std::uint8_t V;if (!R.U8(V)||(I==9&&V>1)) return false;
+        Out|=std::uint64_t(V&127)<<(I*7);
+        if (!(V&128)) return !I||V!=0; // reject overlong/non-canonical representations
+    }
+    return false;
+}
+bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
+{
+    Message M;auto& H=M.Header;std::uint8_t Kind,Flags,ObjectKindValue=0;std::uint64_t Generation=0,Size=0;
+    if (!R.U8(Kind)||Kind<unsigned(MessageKind::Hello)||Kind>unsigned(MessageKind::WorkState)
+        ||!R.U8(Flags)||(Flags&~15u)) return false;
+    if (Flags&4) {if (!Context.Match.Valid()) return false;H.Match=Context.Match;}
+    else if (!R.Identity(H.Match)) return false;
+    if (!VarUInt(R,H.Epoch)) return false;
+    if (Flags&8) {if (!Context.Sender.Valid()) return false;H.Sender=Context.Sender;}
+    else if (!R.Identity(H.Sender)) return false;
+    H.Kind=MessageKind(Kind);
+    if ((Flags&1)&&!R.Identity(H.Event)) return false;
+    if (Flags&2)
+    {
+        if (!R.U8(ObjectKindValue)||ObjectKindValue>unsigned(ObjectKind::BusinessWork)
+            ||!R.Identity(H.Object.StableId)||!VarUInt(R,Generation)||Generation>UINT32_MAX) return false;
+        H.Object.Kind=ObjectKind(ObjectKindValue);H.Object.Generation=static_cast<std::uint32_t>(Generation);
+    }
+    if (!VarUInt(R,H.OwnerEpoch)||!VarUInt(R,H.ControlEpoch)||!VarUInt(R,H.Sequence)||!VarUInt(R,H.At)
+        ||!VarUInt(R,Size)||Size>MaxMessageBytes-CanonicalMessageHeaderBytes) return false;
+    std::span<const std::uint8_t> Body;if (!R.Raw(static_cast<std::size_t>(Size),Body)||!R.Done()) return false;
+    M.Body.assign(Body.begin(),Body.end());Out=std::move(M);return true;
+}
+}
+bool EncodePeerMessage(const Message& M,Bytes& Out,PeerMessageContext Context)
+{
+    const auto& H=M.Header;
+    if (M.Body.size()>MaxMessageBytes-CanonicalMessageHeaderBytes || H.Kind<MessageKind::Hello || H.Kind>MessageKind::WorkState
+        || H.Object.Kind>ObjectKind::BusinessWork) return false;
+    const bool Event=H.Event!=Id{},Object=H.Object!=ObjectKey{};
+    const bool Match=Context.Match.Valid()&&H.Match==Context.Match,Sender=Context.Sender.Valid()&&H.Sender==Context.Sender;
+    Writer W;W.U32(CompactPeerMagic);W.U16(ProtocolVersion);W.U8(static_cast<std::uint8_t>(H.Kind));
+    W.U8((Event?1:0)|(Object?2:0)|(Match?4:0)|(Sender?8:0));
+    if (!Match) W.Identity(H.Match);VarUInt(W,H.Epoch);if (!Sender) W.Identity(H.Sender);
+    if (Event) W.Identity(H.Event);
+    if (Object) {W.U8(static_cast<std::uint8_t>(H.Object.Kind));W.Identity(H.Object.StableId);VarUInt(W,H.Object.Generation);}
+    VarUInt(W,H.OwnerEpoch);VarUInt(W,H.ControlEpoch);VarUInt(W,H.Sequence);VarUInt(W,H.At);VarUInt(W,M.Body.size());W.Raw(M.Body);
+    Out=W.Take();
+    // Extreme counters can be wider as varints; never inflate a wire message.
+    if (Out.size()>=M.Body.size()+CanonicalMessageHeaderBytes) return EncodeMessage(M,Out);
+    return !Out.empty();
+}
+bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out,PeerMessageContext Context)
 {
     if (Value.size() > MaxMessageBytes) return false;
     Reader R(Value); Message Result; auto& H = Result.Header;
     std::uint32_t Magic; std::uint16_t Version, Kind;
-    if (!R.U32(Magic) || Magic != 0x474c4e43 || !R.U16(Version) || Version != ProtocolVersion
-        || !R.U16(Kind) || Kind < static_cast<std::uint16_t>(MessageKind::Hello)
+    if (!R.U32(Magic) || !R.U16(Version) || Version != ProtocolVersion) return false;
+    if (Magic==CompactPeerMagic) return DecodePeerMessage(R,Out,Context);
+    if (Magic!=0x474c4e43 || !R.U16(Kind) || Kind < static_cast<std::uint16_t>(MessageKind::Hello)
         || Kind > static_cast<std::uint16_t>(MessageKind::WorkState)) return false;
     H.Kind = static_cast<MessageKind>(Kind);
     if (!R.Identity(H.Match) || !R.U64(H.Epoch) || !R.Identity(H.Sender) || !R.Identity(H.Event)

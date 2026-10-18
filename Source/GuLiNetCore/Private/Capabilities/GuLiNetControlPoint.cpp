@@ -131,15 +131,15 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& Out)
         // capability, but owns no resource-catalog mutation or new revision.
         if (C.Resources.Snapshot().Owners[P.Index]!=P.Owner) Out.TerritoryOwners.emplace(P.Index,P.Owner);
         SetControlPoint(Out.Objects.at(R.Target),P);
-        if (Playable(P.Owner)) for (const auto& [Key,O]:C.Objects)
+        const auto UpdateChild=[&](const ObjectKey& Key,const ObjectRecord& O)
         {
             if (O.Parent!=R.Target || O.Grant.State>=Life::Dead
-                || (O.Grant.Faction==P.Owner && O.Supplied==Point.Supplied)) continue;
-            if (O.RelationVersion==UINT64_MAX) return CommitStatus::InvalidRule;
+                || (O.Grant.Faction==P.Owner && O.Supplied==Point.Supplied)) return true;
+            if (O.RelationVersion==UINT64_MAX) return false;
             auto Next=O;Next.Supplied=Point.Supplied;
             if (O.Grant.Faction!=P.Owner)
             {
-                if (O.Grant.ControlEpoch==UINT64_MAX) return CommitStatus::InvalidRule;
+                if (O.Grant.ControlEpoch==UINT64_MAX) return false;
                 Id Controller;
                 for (const auto& [Id,M]:C.Members) if (M.Online && M.Ready && M.Seat!=Role::Observer && M.Faction==P.Owner)
                 {if (!Controller.Valid() || M.Seat==Role::Commander) Controller=Id;if (M.Seat==Role::Commander) break;}
@@ -148,6 +148,19 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& Out)
             // Capture changes who can order a facility, not which process is
             // already simulating it. Existing ownership remains fixed.
             Out.Objects.emplace(Key,std::move(Next));
+            return true;
+        };
+        if (Playable(P.Owner))
+        {
+            if (C.LiveChildren)
+            {
+                for (const auto Key:*C.LiveChildren)
+                {
+                    const auto I=C.Objects.find(Key);
+                    if (I==C.Objects.end() || !UpdateChild(Key,I->second)) return CommitStatus::InvalidRule;
+                }
+            }
+            else for (const auto& [Key,O]:C.Objects) if (!UpdateChild(Key,O)) return CommitStatus::InvalidRule;
         }
     }
     for (auto& [_,O]:Out.Objects) ++O.RelationVersion;

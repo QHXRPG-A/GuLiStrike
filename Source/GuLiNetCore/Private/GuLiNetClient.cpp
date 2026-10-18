@@ -1,6 +1,7 @@
 #include "GuLiNetClient.h"
 #include "GuLiNetManifest.h"
 #include "GuLiNetHash.h"
+#include "GuLiNetTrace.h"
 #include <algorithm>
 #include <cmath>
 #include <utility>
@@ -21,9 +22,44 @@ bool ClientWorld::Configure(const RuntimeManifest& M,std::string& Error)
 void ClientWorld::StoreRecord(const ObjectRecord& O)
 {
     const auto K=O.Grant.Object;const auto Old=Directory.find(K);
+    if (Old!=Directory.end() && Old->second==O) return;
     if (Old==Directory.end() || Old->second.Grant!=O.Grant) DirectoryHashDirty=true;
+    if (Old!=Directory.end())
+    {
+        const auto& Previous=Old->second;
+        if (Previous.Parent.Valid() && Previous.Grant.Policy==OwnershipPolicy::ParentWork && Previous.Grant.State<Life::Dead
+            && (Previous.Parent!=O.Parent || O.Grant.Policy!=OwnershipPolicy::ParentWork || O.Grant.State>=Life::Dead))
+        {
+            const auto Children=LiveParentWork.find(Previous.Parent);
+            if (Children!=LiveParentWork.end()) {Children->second.erase(K);if (Children->second.empty()) LiveParentWork.erase(Children);}
+        }
+        if (Previous.Grant.Faction!=O.Grant.Faction || Previous.Grant.State==Life::Destroyed || O.Grant.State==Life::Destroyed
+            || Previous.Capabilities.size()!=O.Capabilities.size())
+            for (const auto& [Name,Value]:Previous.Capabilities)
+            {
+                const auto I=CapabilityObjects.find({Previous.Grant.Faction,Name});
+                if (I!=CapabilityObjects.end()) {I->second.erase(K);if (I->second.empty()) CapabilityObjects.erase(I);}
+            }
+        else for (const auto& [Name,Value]:Previous.Capabilities) if (!O.Capabilities.contains(Name))
+        {
+            const auto I=CapabilityObjects.find({Previous.Grant.Faction,Name});
+            if (I!=CapabilityObjects.end()) {I->second.erase(K);if (I->second.empty()) CapabilityObjects.erase(I);}
+        }
+        if (Previous.Grant.Policy==OwnershipPolicy::CommanderActivity)
+        {const auto I=CommanderDefinitionCounts.find(Previous.Definition);if (I!=CommanderDefinitionCounts.end() && !--I->second) CommanderDefinitionCounts.erase(I);}
+    }
     Directory[K]=O;
+    if (O.Parent.Valid() && O.Grant.Policy==OwnershipPolicy::ParentWork && O.Grant.State<Life::Dead) LiveParentWork[O.Parent].insert(K);
+    if (O.Grant.State!=Life::Destroyed) for (const auto& [Name,Value]:O.Capabilities) CapabilityObjects[{O.Grant.Faction,Name}].insert(K);
+    if (O.Grant.Policy==OwnershipPolicy::CommanderActivity) ++CommanderDefinitionCounts[O.Definition];
     if (O.Grant.State==Life::Alive) SimulationCandidates.insert(K);else SimulationCandidates.erase(K);
+    if (OnRecord) OnRecord(O);
+}
+const ObjectRecord* ClientWorld::FindTeamCapability(Team Faction,const std::string& Capability) const
+{
+    const auto I=CapabilityObjects.find({Faction,Capability});if (I==CapabilityObjects.end()) return nullptr;
+    for (const auto& Key:I->second) if (const auto O=Directory.find(Key);O!=Directory.end() && O->second.Grant.State!=Life::Destroyed) return &O->second;
+    return nullptr;
 }
 const std::string& ClientWorld::DirectoryHash() const
 {
@@ -56,7 +92,11 @@ bool ClientWorld::PrepareAdapterRecord(const ObjectRecord& R,const PrivateObject
         auto A=Create(R);if (!A || !A->Version()) return false;
         for (const auto& Name:A->RequiredSystems()) if (!Systems.contains(Name)) {A->Release();return false;}
         if (Private && (Private->Record.Grant.Object!=K || Private->AdapterVersion!=A->Version())) {A->Release();return false;}
-        if (!(Private?A->PrepareRestore(R,Private->State):A->Prepare(R))) {A->Release();return false;}
+        if (!(Private?A->PrepareRestore(R,Private->State):A->Prepare(R)))
+        {
+            if (!Private && A->IsPreparationPending()) PreparingApplications[K]=NetworkTime+.1;
+            else {A->Release();return false;}
+        }
         Adapters.emplace(K,std::move(A));
     }
     return true;
@@ -79,12 +119,17 @@ bool ClientWorld::InstallGrant(const Authority& Grant,std::uint32_t Ordinal)
     const bool Changed=I->second.Grant.OwnerEpoch!=Grant.OwnerEpoch;
     if (!Numbers.SetAuthority(Grant)) return false;
     StoreRecord(Numbers.Objects().at(Grant.Object));
-    if (Changed) {MotionApplied.erase(Grant.Object);PublicStateApplied.erase(Grant.Object);}
+    if (Changed)
+    {
+        MotionApplied.erase(Grant.Object);PublicStateApplied.erase(Grant.Object);
+        PendingMotion.erase({Grant.Object,MessageKind::Motion});PendingMotion.erase({Grant.Object,MessageKind::ComponentState});
+    }
     if (const auto A=Adapters.find(Grant.Object);A!=Adapters.end()) A->second->SetAuthority(I->second.Grant,HasSimulation(Grant.Object));
     return true;
 }
 bool ClientWorld::SetBootstrapMaterializationDeferred(bool Value)
 {
+    if (!Value && !PreparingApplications.empty()) return false;
     BootstrapMaterializationDeferred=Value;if (Value) return true;
     for (const auto& K:DeferredMaterialization)
     {
@@ -99,7 +144,7 @@ bool ClientWorld::SetBootstrapMaterializationDeferred(bool Value)
 bool ClientWorld::HasSimulation(ObjectKey K,bool Dead) const
 {
     const auto I=Directory.find(K);
-    if (!Failure.empty() || I==Directory.end() || Frozen.contains(K) || CommittingOwnershipGroup) return false;const auto& A=I->second.Grant;
+    if (!Failure.empty() || I==Directory.end() || Frozen.contains(K) || PreparingApplications.contains(K) || CommittingOwnershipGroup) return false;const auto& A=I->second.Grant;
     return !A.Dormant && A.SimOwner==Player && A.OwnerEpoch && (A.Policy!=OwnershipPolicy::ControllerPinned || A.Controller==Player)
         && (A.State==Life::Alive || (Dead && A.State==Life::Dead));
 }
@@ -107,6 +152,42 @@ bool ClientWorld::HasControl(ObjectKey K) const
 {
     const auto I=Directory.find(K);return I!=Directory.end() && I->second.Grant.Controller==Player
         && I->second.Grant.ControlEpoch && I->second.Grant.State==Life::Alive && !I->second.Grant.Dormant;
+}
+bool ClientWorld::AwaitingApplications(const CommitResult& R) const
+{
+    for (const auto& O:R.Births) if (PreparingApplications.contains(O.Grant.Object)) return true;
+    for (const auto& O:R.Objects) if (PreparingApplications.contains(O.Grant.Object)) return true;
+    return R.Target.Valid() && PreparingApplications.contains(R.Target);
+}
+void ClientWorld::CompleteApplication(ObjectKey Key,bool Ready,std::uint32_t Version,const std::vector<std::string>& Required)
+{
+    const auto A=Adapters.find(Key);if (A==Adapters.end() || !PreparingApplications.contains(Key)) return;
+    A->second->PreparationCompleted(Ready,Version,Required);
+    if (!Ready)
+    {
+        if (!BootstrapMaterializationDeferred) Cancel("Committed object application failed: "+Key.StableId.ToString());
+        PreparingApplications[Key]=NetworkTime+.1;return;
+    }
+    for (const auto& Name:Required) if (!Systems.contains(Name)) {Cancel("Prepared object requires missing shared state: "+Name);return;}
+    PreparingApplications.erase(Key);
+    if (const auto O=Directory.find(Key);O!=Directory.end())
+    {A->second->SetAuthority(O->second.Grant,HasSimulation(Key));A->second->ApplyLedger(O->second,Numbers.Version({Key,"object"}),false);}
+    if (const auto I=PendingHandoffReadiness.find(Key);I!=PendingHandoffReadiness.end())
+    {const auto Transfer=I->second;PendingHandoffReadiness.erase(I);if (Transfers.contains(Key)&&Transfers.at(Key).IdValue==Transfer.IdValue) PrepareHandoff(Transfer);}
+}
+void ClientWorld::CompleteMotionApplication(ObjectKey Key,MessageKind Kind,Tick At,Revision OwnerVersion,bool Good)
+{
+    const auto O=Directory.find(Key);
+    if (O==Directory.end() || O->second.Grant.OwnerEpoch!=OwnerVersion) return;
+    if (Kind==MessageKind::ObjectEvent)
+    {if (Good) {auto& Age=O->second.LogicalAge;Age=std::max(Age,At);Numbers.SetLogicalAge(Key,Age);}return;}
+    auto& S=MotionStats[Key];
+    const auto PendingApply=PendingMotion.find({Key,Kind});if (PendingApply!=PendingMotion.end() && PendingApply->second<=At) PendingMotion.erase(PendingApply);
+    if (!Good) {++S.InvalidState;return;}
+    auto& Applied=Kind==MessageKind::Motion?MotionApplied:PublicStateApplied;
+    if (const auto Last=Applied.find(Key);Last!=Applied.end() && Last->second>=At) return;
+    Applied[Key]=At;auto& Age=O->second.LogicalAge;Age=std::max(Age,At);Numbers.SetLogicalAge(Key,Age);
+    ++S.Applied;S.LastApplied=At;
 }
 Tick ClientWorld::ObjectNow(ObjectKey K) const
 {const auto O=Directory.find(K);return O==Directory.end()?0:O->second.LogicalAge;}
@@ -151,6 +232,7 @@ bool ClientWorld::Broadcast(MessageKind Kind,Id Event,ObjectKey K,const Bytes& B
 }
 void ClientWorld::FlushPublications()
 {
+    TraceScope Scope("GuLiHybrid_CoreFlushPublications");
     for (auto I=Publications.begin();I!=Publications.end();)
     {
         const auto M=Members.find(I->first);const bool Online=M!=Members.end() && M->second.Online;
@@ -168,9 +250,39 @@ bool ClientWorld::PublishObjectEvent(ObjectKey K,Id Event,Bytes Body)
     return Event.Valid() && !Body.empty() && CanPublishFacts() && HasSimulation(K)
         && Broadcast(MessageKind::ObjectEvent,Event,K,Body);
 }
+bool ClientWorld::PublishDirectoryLife(ObjectKey K,Revision Version)
+{
+    const auto O=Directory.find(K);if (O==Directory.end() || O->second.Grant.SimOwner!=Player || O->second.Grant.OwnerEpoch!=Version) return false;
+    Writer W;W.U8(std::uint8_t(O->second.Grant.State));return SendMessage({},MessageKind::ObjectEvent,{},K,W.Take());
+}
 bool ClientWorld::ApplyCommand(Id Sender,const Envelope& H,const FrozenCommand& C)
 {
+    ApplicationPending=false;
     if (H.Match!=Match || H.Epoch!=Epoch() || H.Sender!=Sender || C.Event!=H.Event || !C.Event.Valid()) return false;
+    if (PrepareCommands)
+    {
+        const auto Rejected=[&]{if (CancelCommands) CancelCommands(C);return false;};
+        std::vector<CommandMember> Eligible;
+        for (const auto& M:C.Members)
+        {
+            const auto O=Directory.find(M.Object);if (O==Directory.end()) return Rejected();const auto& A=O->second.Grant;
+            if (A.Controller==Sender && A.ControlEpoch==M.ControlEpoch && A.SimOwner!=Player)
+            {
+                const auto T=CompletedTransfers.find(M.Object);
+                if (T!=CompletedTransfers.end() && T->second.Source==Player && T->second.PreviousOwnerVersion==M.OwnerEpoch
+                    && T->second.NextOwnerVersion==A.OwnerEpoch && T->second.Target==A.SimOwner) continue;
+            }
+            if (A.Controller!=Sender||A.ControlEpoch!=M.ControlEpoch||A.OwnerEpoch!=M.OwnerEpoch||A.SimOwner!=Player) return Rejected();
+            if (!Frozen.contains(M.Object) && !PreparingApplications.contains(M.Object) && !Commands.contains({C.Event,M.Object})
+                && A.State==Life::Alive && !A.Dormant && Adapters.contains(M.Object)) Eligible.push_back(M);
+        }
+        if (!Eligible.empty())
+        {
+            const auto Status=PrepareCommands(C,Eligible);
+            ApplicationPending=Status==ApplicationStatus::Pending;
+            if (Status!=ApplicationStatus::Ready) return false;
+        }
+    }
     CommandReceipt Receipt;Receipt.Event=C.Event;Receipt.At=Now();
     for (const auto& M:C.Members)
     {
@@ -198,7 +310,7 @@ bool ClientWorld::ApplyCommand(Id Sender,const Envelope& H,const FrozenCommand& 
         if (Executed==Commands.end())
         {
             const auto Adapter=Adapters.find(M.Object);ActiveObject=M.Object;
-            const bool Accepted=A.State==Life::Alive && !A.Dormant && Adapter!=Adapters.end() && Adapter->second->Command(C,M);
+            const bool Accepted=A.State==Life::Alive && !A.Dormant && !PreparingApplications.contains(M.Object) && Adapter!=Adapters.end() && Adapter->second->Command(C,M);
             ActiveObject={};Executed=Commands.emplace(Key,CommandOutcome{ObjectNow(M.Object),Accepted}).first;
             if (Accepted)
             {
@@ -218,9 +330,20 @@ bool ClientWorld::ApplyCommand(Id Sender,const Envelope& H,const FrozenCommand& 
 }
 void ClientWorld::DrainCommands()
 {
+    TraceScope Scope("GuLiHybrid_CoreDrainCommands");
     if (MembershipPaused) return;
     auto Queue=std::exchange(IncomingCommands,{});
-    for (const auto& M:Queue) {FrozenCommand C;if (DecodeCommand(M.Body,C)) ApplyCommand(M.Header.Sender,M.Header,C);}
+    std::set<ObjectKey> Waiting;
+    for (auto& M:Queue)
+    {
+        FrozenCommand C;if (!DecodeCommand(M.Body,C)) continue;
+        const bool Blocked=std::any_of(C.Members.begin(),C.Members.end(),[&](const auto& V){return Waiting.contains(V.Object);});
+        if (Blocked || (!ApplyCommand(M.Header.Sender,M.Header,C) && ApplicationPending))
+        {
+            for (const auto& V:C.Members) Waiting.insert(V.Object);
+            IncomingCommands.push_back(std::move(M));
+        }
+    }
 }
 bool ClientWorld::Route(const FrozenCommand& Input)
 {
@@ -263,6 +386,7 @@ void ClientWorld::CompleteCommandReceipt(const CommandReceipt& Receipt)
 }
 void ClientWorld::FlushCommandOutbox()
 {
+    TraceScope Scope("GuLiHybrid_CoreCommandOutbox");
     std::vector<Id> Events;
     for (const auto& [E,C]:CommandOutbox) if (C.RetryAt<=NetworkTime) Events.push_back(E);
     for (const auto E:Events)
@@ -404,8 +528,10 @@ bool ClientWorld::ReceivePeer(Id Sender,const Message& V)
         if (!ValidatePeer(Sender,V.Header,Domain::Simulation,true)) {++S.AuthorityRejected;RecordReceiveRejection(V);return false;}
         auto& Applied=V.Header.Kind==MessageKind::Motion?MotionApplied:PublicStateApplied;
         if (const auto Last=Applied.find(V.Header.Object);Last!=Applied.end() && V.Header.At<=Last->second) {++S.Stale;return true;}
+        if (const auto Last=PendingMotion.find({V.Header.Object,V.Header.Kind});Last!=PendingMotion.end() && V.Header.At<=Last->second) {++S.Stale;return true;}
         const bool Good=V.Header.Kind==MessageKind::Motion?A->second->ApplyMotion(V.Body,V.Header.At):A->second->ApplyPublicState(V.Body,V.Header.At);
         if (!Good) {++S.InvalidState;return false;}
+        if (A->second->DefersMotionResult()) {PendingMotion[{V.Header.Object,V.Header.Kind}]=V.Header.At;return true;}
         Applied[V.Header.Object]=V.Header.At;
         auto& Age=Directory.at(V.Header.Object).LogicalAge;Age=std::max(Age,V.Header.At);Numbers.SetLogicalAge(V.Header.Object,Age);
         ++S.Applied;S.LastApplied=V.Header.At;return true;
@@ -413,6 +539,7 @@ bool ClientWorld::ReceivePeer(Id Sender,const Message& V)
     if (V.Header.Kind==MessageKind::ObjectEvent)
     {
         if (!ValidatePeer(Sender,V.Header,Domain::Simulation,true) || !A->second->ApplyObjectEvent(V.Body,V.Header.At)) return false;
+        if (A->second->DefersMotionResult()) return true;
         auto& Age=Directory.at(V.Header.Object).LogicalAge;Age=std::max(Age,V.Header.At);Numbers.SetLogicalAge(V.Header.Object,Age);return true;
     }
     return false;
@@ -431,6 +558,7 @@ bool ClientWorld::ImportPeerState(Id Sender,const Message& V)
 }
 void ClientWorld::RetryPeerStates()
 {
+    TraceScope Scope("GuLiHybrid_CoreRetryPeerStates");
     for (auto I=DeferredPeerStates.begin();I!=DeferredPeerStates.end();)
     {
         const bool Applied=ImportPeerState(I->Sender,I->Value);
@@ -454,27 +582,31 @@ Id ClientWorld::Submit(TransactionRequest R,TransactionCallback Callback,bool Pr
     if (R.Kind==TransactionKind::Damage && !Numbers.FreezeDamage(R)) return {};
     const Id Event=R.Header.Event;Pending.emplace(Event,PendingTransaction{std::move(R),std::move(Callback),0});return Event;
 }
-Id ClientWorld::SubmitControlled(TransactionRequest R,bool Admit)
+Id ClientWorld::SubmitControlled(TransactionRequest R,bool Admit,bool PreserveOriginalTime)
 {
     if (!CanPublishFacts() || !R.Header.Event.Valid() || !HasControl(R.Header.Object) || R.Kind==TransactionKind::Damage) return {};
-    if (HasSimulation(R.Header.Object)) return Admit?SubmitAdmitted(std::move(R)):Submit(std::move(R),{});
+    if (HasSimulation(R.Header.Object)) return Admit?SubmitAdmitted(std::move(R),PreserveOriginalTime):Submit(std::move(R),{},PreserveOriginalTime);
     const Id Event=R.Header.Event;if (ObservedCommits.contains(Event)) return Event;
     PlayerIntents.try_emplace(Event,PlayerIntent{std::move(R),Admit,0});return Event;
 }
-Id ClientWorld::SubmitAdmitted(TransactionRequest R)
+Id ClientWorld::SubmitAdmitted(TransactionRequest R,bool PreserveOriginalTime)
 {
     if (!CanAdmitWork(R.Kind) || !HasSimulation(R.Header.Object,true) || !R.Header.Event.Valid()) return {};
     const auto& O=Directory.at(R.Header.Object);R.Header.Match=Match;R.Header.Epoch=Epoch();R.Header.Sender=Player;R.Header.Kind=MessageKind::Transaction;
-    R.Header.OwnerEpoch=O.Grant.OwnerEpoch;R.Header.ControlEpoch=O.Grant.ControlEpoch;R.Header.At=O.LogicalAge;R.Header.Sequence=Sequence++;
-    if (!R.StartedAt) R.StartedAt=O.LogicalAge;if (!R.RootEvent.Valid()) R.RootEvent=R.Header.Event;
+    R.Header.OwnerEpoch=O.Grant.OwnerEpoch;R.Header.ControlEpoch=O.Grant.ControlEpoch;
+    if (PreserveOriginalTime && (R.Header.At>O.LogicalAge || R.StartedAt>R.Header.At)) return {};
+    if (!PreserveOriginalTime) R.Header.At=O.LogicalAge;R.Header.Sequence=Sequence++;
+    if (!R.StartedAt) R.StartedAt=R.Header.At;if (!R.RootEvent.Valid()) R.RootEvent=R.Header.Event;
     Bytes Admission;if (!EncodeMessage({R.Header,EncodeTransaction(R)},Admission)) return {};
-    TransactionRequest Work;Work.Header.Object=R.Header.Object;Work.Header.Event=StableId("GuLiTransactionAdmission/v1",R.Header.Event.ToString());
+    TransactionRequest Work;Work.Header.Object=R.Header.Object;Work.Header.At=R.Header.At;Work.Header.Event=StableId("GuLiTransactionAdmission/v1",R.Header.Event.ToString());
     Work.Kind=TransactionKind::AdmitWork;Work.Target={ObjectKind::BusinessWork,StableId("GuLiTransactionWork/v1",R.Header.Event.ToString()),1};
     Work.RootEvent=R.Header.Event;Work.StartedAt=R.StartedAt;Work.RuleId=R.RuleId;Work.Faction=R.Faction;Work.Admission=std::move(Admission);
-    return Submit(std::move(Work),{}).Valid()?R.Header.Event:Id{};
+    return Submit(std::move(Work),{},PreserveOriginalTime).Valid()?R.Header.Event:Id{};
 }
 void ClientWorld::RefreshRecords(std::span<const StateFragment> Fragments,bool Effects)
 {
+    TraceScope Scope("GuLiHybrid_CoreRefreshRecords");
+    if (OnFragments) OnFragments(Fragments);
     // A committed batch can contain both a newborn and its admitted parent.
     // Publish the complete directory before any adapter resolves those links;
     // ObjectKey order places buildings before BusinessWork parents.
@@ -509,10 +641,17 @@ void ClientWorld::RefreshRecords(std::span<const StateFragment> Fragments,bool E
         {Writer W;WriteAuthority(W,O->second.Grant);W.Text(O->second.Definition);W.U32(O->second.Ordinal);W.Key(O->second.Parent);SendMessage({},MessageKind::RegisterObject,{},F.Key.Object,W.Take());}
     }
 }
+bool ClientWorld::CommitDependenciesReady(const CommitResult& R) const
+{
+    if (AwaitingApplications(R)) return false;
+    for (const auto& S:R.RequiredStates) if (Numbers.Version({S.Object,S.Capability})<S.Version)
+        return false;
+    return true;
+}
 bool ClientWorld::ApplyCommit(const CommitResult& R)
 {
-    for (const auto& S:R.RequiredStates) if (Numbers.Version({S.Object,S.Capability})<S.Version)
-    {WaitingResults[R.Event]=R;return true;}
+    TraceScope Scope("GuLiHybrid_CoreApplyCommit");
+    if (!CommitDependenciesReady(R)) {WaitingResults[R.Event]=R;return true;}
     auto ResolvePending=[&]
     {
         if (const auto P=Pending.find(R.Event);P!=Pending.end())
@@ -541,9 +680,10 @@ bool ClientWorld::ApplyCommit(const CommitResult& R)
     if (R.Target.Valid()) Changed.insert(R.Target);
     for (const auto& [K,H]:R.Barriers) Changed.insert(K);
     if (R.FinalizedWork) Changed.insert(R.FinalizedWork->Grant.Object);
+    for (const auto& K:Changed) if (const auto O=Numbers.Objects().find(K);O!=Numbers.Objects().end()) StoreRecord(O->second);
     for (const auto& K:Changed)
     {
-        const auto O=Numbers.Objects().find(K);if (O==Numbers.Objects().end()) continue;StoreRecord(O->second);
+        const auto O=Numbers.Objects().find(K);if (O==Numbers.Objects().end()) continue;
         if (const auto A=Adapters.find(K);A!=Adapters.end())
         {A->second->SetAuthority(O->second.Grant,HasSimulation(K));A->second->ApplyLedger(O->second,Numbers.Version({K,"object"}),true);}
     }
@@ -575,6 +715,7 @@ std::uint32_t ClientWorld::Advance(double Delta)
             ActiveObject={};
         }
         for (const auto& [Name,A]:Systems) A->Advance(Now()-Steps+I+1,1.0/TicksPerSecond);
+        if (LogicalStepBoundary) LogicalStepBoundary();
     }
     return Steps;
 }

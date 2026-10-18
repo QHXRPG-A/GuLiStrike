@@ -6,6 +6,8 @@
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/Border.h"
+#include "Components/InvalidationBox.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Components/ButtonSlot.h"
 #include "Components/SizeBox.h"
 #include "Components/ScaleBox.h"
@@ -75,7 +77,18 @@ UCanvasPanel* UGuLiCommanderHUDWidget::MakeConsolePanel(UCanvasPanel* Parent, FN
 	Border->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	auto* Panel = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass(), Name);
 	Panel->SetVisibility(ESlateVisibility::SelfHitTestInvisible); Border->SetContent(Panel);
-	PlaceConsoleWidget(Parent, Border, Position, Size);
+    // Keep the named panel and its Border parent intact for input geometry and styling.
+    // The minimap already owns a cache, and the context/tooltip/modal layers move independently.
+    const bool Cache=UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::HUDCache)
+        && Name!=TEXT("SB_MapDesign") && Name!=TEXT("C_Context");
+    if (Cache)
+    {
+        auto* Invalidation=WidgetTree->ConstructWidget<UInvalidationBox>(UInvalidationBox::StaticClass(),
+            *FString(Name.ToString()+TEXT("_Cache")));
+        Invalidation->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+        Invalidation->SetContent(Border);PlaceConsoleWidget(Parent,Invalidation,Position,Size);
+    }
+    else PlaceConsoleWidget(Parent, Border, Position, Size);
 	InteractionIslands.Add(Panel);
 	return Panel;
 }
@@ -103,6 +116,7 @@ UGuLiCommanderActionButton* UGuLiCommanderHUDWidget::MakeActionButton(FName Name
 	if (ConsoleTheme) Button->Icon->SetBrushFromTexture(ConsoleTheme->FindIcon(IconKey),true);
 	Button->Icon->SetVisibility(IconKey.IsNone() ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible);
 	auto* IconFit=WidgetTree->ConstructWidget<UScaleBox>(); IconFit->SetStretch(EStretch::ScaleToFit);
+	IconFit->SetClipping(EWidgetClipping::ClipToBounds);
 	IconFit->SetVisibility(ESlateVisibility::HitTestInvisible); IconFit->SetContent(Button->Icon);
 	auto* IconSlot = Content->AddChildToCanvas(IconFit); IconSlot->SetAnchors(FAnchors(.5f,0));
 	IconSlot->SetAlignment(FVector2D(.5f,0)); IconSlot->SetPosition(FVector2D(0,5)); IconSlot->SetSize(FVector2D(28,28));
@@ -163,7 +177,10 @@ void UGuLiCommanderHUDWidget::BuildConsoleLayout()
 	Root->SetVisibility(ESlateVisibility::SelfHitTestInvisible); WidgetTree->RootWidget = Root;
 	SetIsFocusable(true);
 	// One bottom design surface scales down on narrow displays. Wide displays keep the panel readable.
-	auto* Scale = WidgetTree->ConstructWidget<UScaleBox>(); Scale->SetStretch(EStretch::ScaleToFit);
+	auto* Scale = WidgetTree->ConstructWidget<UScaleBox>(UScaleBox::StaticClass(),TEXT("SB_CommandDockScale"));
+    CommandDockScale=UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::HUDCache)?Scale:nullptr;
+    LastDockAvailableSize=FVector2D(-1);
+    Scale->SetStretch(CommandDockScale?EStretch::UserSpecified:EStretch::ScaleToFit);
 	Scale->SetStretchDirection(EStretchDirection::DownOnly); Scale->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	auto* ScaleSlot = Root->AddChildToCanvas(Scale); ScaleSlot->SetAnchors(FAnchors(0,1,1,1));
 	ScaleSlot->SetOffsets(FMargin(16,-292,16,276));
@@ -210,6 +227,7 @@ void UGuLiCommanderHUDWidget::BuildConsoleLayout()
 	PortraitImage=WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(),TEXT("I_UnitTypePortrait"));
 	PortraitImage->SetVisibility(ESlateVisibility::HitTestInvisible);
 	auto* PortraitFit=WidgetTree->ConstructWidget<UScaleBox>(); PortraitFit->SetStretch(EStretch::ScaleToFit); PortraitFit->SetContent(PortraitImage);
+	PortraitFit->SetClipping(EWidgetClipping::ClipToBounds);
 	PlaceConsoleWidget(Detail,PortraitFit,{8,6},{180,82});
 	SelectionDetails=MakeConsoleText(TEXT("TXT_UnitTypeName"),GuLiGameText::Text(TEXT("UI.ConsoleLayout.004")),14);
 	PlaceConsoleWidget(Detail,SelectionDetails,{10,91},{176,22});
@@ -306,4 +324,16 @@ void UGuLiCommanderHUDWidget::BuildConsoleLayout()
 	TooltipBody->AddChildToVerticalBox(ActionTooltipText);
 	PlaceConsoleWidget(Root,ActionTooltip,{0,0},{380,160},400);
 	ActionTooltip->SetVisibility(ESlateVisibility::Collapsed);
+}
+
+void UGuLiCommanderHUDWidget::NativeTick(const FGeometry& Geometry, float DeltaSeconds)
+{
+    Super::NativeTick(Geometry,DeltaSeconds);
+    if (!CommandDockScale) return;
+    // HUD-local dimensions already include the viewport DPI scale. The dock's authored
+    // available height is 276; only viewport/DPI changes can alter the resulting scale.
+    const FVector2D Available(FMath::Max(0.,Geometry.GetLocalSize().X-32.),276.);
+    if (Available==LastDockAvailableSize) return;
+    LastDockAvailableSize=Available;
+    CommandDockScale->SetUserSpecifiedScale(FMath::Min3(1.,Available.X/1888.,Available.Y/276.));
 }

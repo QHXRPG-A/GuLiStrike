@@ -25,6 +25,7 @@
 #include "Misc/FileHelper.h"
 #include "Misc/Parse.h"
 #include "Misc/Paths.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 namespace GuLiLinearState
 {
@@ -262,6 +263,17 @@ struct FGuLiHybridProjectileState
     }
     bool Publish(FRecord& V,bool Bootstrap)
     {
+        // A numeric readback can activate a flight at the final tick of a
+        // catch-up batch before its earlier shared steps reach Service().
+        // Keep the publication pending until that actual sample is current;
+        // do not replay local effects or attempt an invalid private encoding.
+        const auto& Geometry=Pool->Matches(V.Handle)?Pool->Slots[V.Handle.Slot].State:V.Geometry;
+        if (!Bootstrap && Geometry.Phase!=EGuLiCombatEffectPhase::Waiting
+            && Geometry.SampleTime>Hybrid->GetLocalLogicalSeconds()+.001)
+        {
+            TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_WaitForPublicationStep);
+            return false;
+        }
         FGuLiFlightEvent E; E.State=V.Geometry; E.bBootstrap=Bootstrap;
         if (!UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(Pool->GetWorld(),E)) return false;
         if (Bootstrap) return true;

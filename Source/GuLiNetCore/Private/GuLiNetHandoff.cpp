@@ -1,5 +1,6 @@
 #include "GuLiNetClient.h"
 #include "GuLiNetHash.h"
+#include "GuLiNetTrace.h"
 #include <algorithm>
 #include <charconv>
 #include <chrono>
@@ -103,10 +104,27 @@ bool DecodeHandoffState(std::span<const std::uint8_t> Data,ObjectHandoffState& O
 }
 bool ClientWorld::CaptureObjects(std::span<const ObjectKey> Keys,Id Target,Revision Transfer,ObjectHandoffState& Out) const
 {
+    TraceScope Trace("GuLiHybrid_CoreCaptureObjects");
+    CapturePending=false;
+    const auto Waiting=[&](const char* Reason){CapturePending=true;return HandoffIssue(Reason);};
     const auto Started=std::chrono::steady_clock::now();
     ObjectHandoffState S;S.Match=Match;S.Source=Player;S.Target=Target;S.Transfer=Transfer;
     std::set<ObjectKey> Scope(Keys.begin(),Keys.end());std::map<std::string,std::vector<ObjectKey>> Shared;
     if (Scope.empty() || Scope.size()!=Keys.size()) return HandoffIssue("capture/scope");
+    for (const auto K:Keys)
+    {
+        const auto O=Directory.find(K);if (O==Directory.end() || !HasPrivateCustody(O->second.Grant,Player)) return HandoffIssue("capture/custody");
+        if (Numbers.Busy(K) || PreparingApplications.contains(K)) return Waiting("capture/busy-numeric");
+        for (const auto& [E,W]:WorkFlows) for (const auto& M:W.Work.Changes) if (M.After.Key.Object==K) return Waiting("capture/busy-work");
+    }
+    // An ordered application barrier follows all numeric and custody checks.
+    if (CaptureApplications) switch (CaptureApplications(Keys))
+    {
+        case CaptureApplicationStatus::Pending:return Waiting("capture/application-pending");
+        case CaptureApplicationStatus::TooLarge:return HandoffIssue("capture/encoding");
+        case CaptureApplicationStatus::Invalid:return HandoffIssue("capture/application-batch");
+        default:break;
+    }
     for (const auto& K:Keys)
     {
         const auto O=Directory.find(K);if (O==Directory.end() || !HasPrivateCustody(O->second.Grant,Player)) return HandoffIssue("capture/custody");
@@ -181,6 +199,7 @@ bool ClientWorld::PrepareHandoff(const ObjectHandoff& T)
     Transfers[T.Object]=T;
     if (T.Target!=Player) return true;
     if (!Install(O->second,false)) return HandoffIssue("prepare/adapter");
+    if (PreparingApplications.contains(T.Object)) {PendingHandoffReadiness[T.Object]=T;return true;}
     const bool Ready=SendMessage({},MessageKind::HandoffReady,{},T.Object,EncodeHandoff(T));
     for (auto Early=EarlyHandoffStates.begin();Early!=EarlyHandoffStates.end();++Early)
         if (std::any_of(Early->second.second.Objects.begin(),Early->second.second.Objects.end(),[&](const auto& P){return P.Record.Grant.Object==T.Object;}))
@@ -189,6 +208,7 @@ bool ClientWorld::PrepareHandoff(const ObjectHandoff& T)
 }
 bool ClientWorld::FreezeHandoff(const ObjectHandoff& T)
 {
+    TraceScope Trace("GuLiHybrid_CoreFreezeHandoff");
     if (T.Source!=Player || Numbers.Owner(T.Object)!=Player || Directory.at(T.Object).Grant.OwnerEpoch!=T.PreviousOwnerVersion) return false;
     Transfers[T.Object]=T;FreezeRequested.insert(T.Object);
     if (const auto Sent=OutgoingStates.find(T.Object);Sent!=OutgoingStates.end())
@@ -220,9 +240,8 @@ bool ClientWorld::FreezeHandoff(const ObjectHandoff& T)
     else Keys.push_back(T.Object);
     if (Keys.empty()) return true;
     if (Keys.size()>Limit) Keys.resize(Limit);
-    for (const auto& Parent:Keys) for (const auto& [K,O]:Directory)
-        if (O.Parent==Parent && O.Grant.Policy==OwnershipPolicy::ParentWork
-            && O.Grant.State<Life::Dead && HasPrivateCustody(O.Grant,Player))
+    for (const auto& Parent:Keys) if (const auto Children=LiveParentWork.find(Parent);Children!=LiveParentWork.end())
+        for (const auto K:Children->second) if (HasPrivateCustody(Directory.at(K).Grant,Player))
         {
             const auto Child=Transfers.find(K);
             if (Child==Transfers.end() || Child->second.Target!=T.Target || Child->second.Group!=T.Group) return true;
@@ -236,6 +255,7 @@ bool ClientWorld::FreezeHandoff(const ObjectHandoff& T)
         const auto Before=EncodingFailures();
         if (CaptureObjects(Keys,T.Target,Transfers.at(Keys.front()).IdValue,S)) break;
         const bool EncodingFailed=EncodingFailures()>Before;
+        if (CapturePending && !EncodingFailed) return true;
         if (Keys.size()==1)
         {if (EncodingFailed) HandoffIssue("capture/singleton-encoding");return true;}
         Keys.resize(Keys.size()/2);
@@ -265,6 +285,7 @@ bool ClientWorld::FreezeHandoff(const ObjectHandoff& T)
 }
 bool ClientWorld::StageBootstrapDirectory(std::span<const ObjectHandoffState> Parts)
 {
+    ApplicationPending=false;
     std::map<ObjectKey,const PrivateObjectState*> Captured;
     for (const auto& S:Parts)
     {
@@ -286,6 +307,14 @@ bool ClientWorld::StageBootstrapDirectory(std::span<const ObjectHandoffState> Pa
         {const auto A=G->second;PendingGrants.erase(G);if (!InstallGrant(A)) return HandoffIssue("bootstrap/directory-grant/"+A.Object.StableId.ToString());}
     }
     std::set<ObjectKey> Preparing,Prepared;
+    if (PrepareApplications)
+    {
+        std::vector<PrivateObjectState> Objects;std::vector<PrivateSystemState> Shared;
+        for (const auto& S:Parts) {Objects.insert(Objects.end(),S.Objects.begin(),S.Objects.end());Shared.insert(Shared.end(),S.Systems.begin(),S.Systems.end());}
+        const auto Status=PrepareApplications(Objects,Shared);
+        ApplicationPending=Status==ApplicationStatus::Pending;
+        if (Status!=ApplicationStatus::Ready) return ApplicationPending?false:HandoffIssue("bootstrap/application-preflight");
+    }
     std::function<bool(ObjectKey)> Prepare=[&](ObjectKey K)
     {
         if (Prepared.contains(K)) return true;
@@ -308,6 +337,7 @@ bool ClientWorld::ImportBootstrap(std::span<const ObjectHandoffState> Parts)
 }
 bool ClientWorld::ImportBootstrap(std::span<const ObjectHandoffState> Parts,const BootstrapNumericSource& ReadNumeric)
 {
+    ApplicationPending=false;
     // All directory keys have already been declared. Import each source's
     // numeric cut once, then retain the existing per-part adapter validation,
     // dependency order and four private restore stages. No wire format changes.
@@ -319,20 +349,45 @@ bool ClientWorld::ImportBootstrap(std::span<const ObjectHandoffState> Parts,cons
         Sources.insert(S.Source);
         for (const auto& P:S.Objects) ObjectHeaders.push_back({{P.Record.Grant.Object,"object"},1,0,{}});
     }
+    Writer Identity;for (const auto& S:Parts) {Identity.Identity(S.Source);Identity.Blob(EncodeHandoffState(S));}
+    const auto Key=Sha256(Identity.Take());auto& Continuation=BootstrapContinuations[Key];
     const auto Started=std::chrono::steady_clock::now();
+    if (!Continuation.NumericReady)
+    {
     for (const auto Source:Sources)
         if (!Numbers.ImportStream(Source,[&](const OwnerState::FragmentVisitor& Visit){return ReadNumeric(Source,Visit);},true))
             return HandoffIssue("bootstrap/numeric");
     HandoffSizes["bootstrap/numeric/microseconds"]+=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-Started).count();
     RefreshRecords(ObjectHeaders);
     if (!Failure.empty()) return false;
-    for (const auto& S:Parts) if (!ImportObjectsImpl(S,true)) return false;
+    Continuation.NumericReady=true;
+    }
+    while (Continuation.Part<Parts.size())
+    {
+        if (!ImportObjectsImpl(Parts[Continuation.Part],true))
+        {if (!ApplicationPending) BootstrapContinuations.erase(Key);return false;}
+        ++Continuation.Part;
+    }
+    BootstrapContinuations.erase(Key);
     return true;
 }
 bool ClientWorld::ImportObjectsImpl(const ObjectHandoffState& S,bool NumericPrepared)
 {
+    ApplicationPending=false;
     if (S.Version!=HandoffVersion || S.Match!=Match || S.Target!=Player || !Members.contains(S.Source)) return false;
+    for (const auto& P:S.Objects) if (!HasPrivateCustody(P.Record.Grant,S.Source)) return false;
+    const auto ContinuationKey=Sha256(EncodeHandoffState(S));
+    auto Continue=ImportContinuations.find(ContinuationKey);
+    if (Continue==ImportContinuations.end() && PrepareApplications)
+    {
+        const auto Status=PrepareApplications(S.Objects,S.Systems);
+        ApplicationPending=Status==ApplicationStatus::Pending;
+        if (Status!=ApplicationStatus::Ready) return ApplicationPending?false:HandoffIssue("import/application-preflight");
+    }
     std::vector<ObjectKey> Keys;std::map<std::string,std::vector<ObjectKey>> Required;
+    std::vector<const PrivateObjectState*> Ordered;
+    if (Continue==ImportContinuations.end())
+    {
     for (const auto& P:S.Objects)
     {
         const auto K=P.Record.Grant.Object;
@@ -358,7 +413,7 @@ bool ClientWorld::ImportObjectsImpl(const ObjectHandoffState& S,bool NumericPrep
             for (const auto& K:R->second) if (std::find(Part.Objects.begin(),Part.Objects.end(),K)==Part.Objects.end()) return false;
         Required[Part.Name]=Part.Objects;
     }
-    std::vector<const PrivateObjectState*> Ordered;std::set<ObjectKey> Visiting,Visited;
+    std::set<ObjectKey> Visiting,Visited;
     std::function<bool(const PrivateObjectState&)> Visit=[&](const PrivateObjectState& P)
     {
         const auto K=P.Record.Grant.Object;if (Visited.contains(K)) return true;if (!Visiting.insert(K).second) return false;
@@ -399,6 +454,15 @@ bool ClientWorld::ImportObjectsImpl(const ObjectHandoffState& S,bool NumericPrep
     {Frozen.insert(P.Record.Grant.Object);Numbers.SetLogicalAge(P.Record.Grant.Object,P.Record.LogicalAge);}
     RefreshRecords(S.Numeric);
     for (const auto& P:S.Objects) Directory.at(P.Record.Grant.Object).LogicalAge=P.Record.LogicalAge;
+    ImportContinuation C;C.Keys=Keys;C.Required=Required;C.SharedState=S.Systems;for (const auto* P:Ordered) C.Order.push_back(P->Record.Grant.Object);
+    Continue=ImportContinuations.emplace(ContinuationKey,std::move(C)).first;
+    }
+    else
+    {
+        Keys=Continue->second.Keys;Required=Continue->second.Required;
+        for (const auto K:Continue->second.Order)
+            Ordered.push_back(&*std::find_if(S.Objects.begin(),S.Objects.end(),[&](const auto& P){return P.Record.Grant.Object==K;}));
+    }
     auto AbortImport=[&]()
     {
         // Failed preparation never grants simulation. Remove partially linked private
@@ -410,10 +474,19 @@ bool ClientWorld::ImportObjectsImpl(const ObjectHandoffState& S,bool NumericPrep
             Frozen.erase(K);
             if (const auto A=Adapters.find(K);A!=Adapters.end()) A->second->SetAuthority(Directory.at(K).Grant,false);
         }
-        return false;
+        ImportContinuations.erase(ContinuationKey);return false;
     };
-    for (const auto Stage:{RestoreStage::Detach,RestoreStage::Create,RestoreStage::Link,RestoreStage::Activate})
+    const RestoreStage Stages[]={RestoreStage::Detach,RestoreStage::Create,RestoreStage::Link,RestoreStage::Activate};
+    for (;Continue->second.Stage<4;++Continue->second.Stage)
     {
+        const auto Stage=Stages[Continue->second.Stage];
+        if (RestoreApplications)
+        {
+            std::vector<ObjectKey> Order;for (const auto* P:Ordered) if (P->Record.Materialized) Order.push_back(P->Record.Grant.Object);
+            const auto Status=RestoreApplications(S,Order,Required,Stage);
+            ApplicationPending=Status==ApplicationStatus::Pending;
+            if (Status!=ApplicationStatus::Ready) return ApplicationPending?false:AbortImport();
+        }
         for (const auto* P:Ordered) if (P->Record.Materialized)
         {
             const auto Previous=ActiveObject;ActiveObject=P->Record.Grant.Object;
@@ -438,6 +511,7 @@ bool ClientWorld::ImportObjectsImpl(const ObjectHandoffState& S,bool NumericPrep
         for (const auto& M:S.IncomingCommands) IncomingCommands.push_back(M);
         for (const auto& R:S.Pending) Pending.try_emplace(R.Header.Event,PendingTransaction{R,{},0});
     }
+    ImportContinuations.erase(ContinuationKey);
     return true;
 }
 bool ClientWorld::InstallHandoff(Id Sender,const ObjectHandoffState& S)
@@ -473,7 +547,12 @@ bool ClientWorld::InstallHandoff(Id Sender,const ObjectHandoffState& S)
         const auto Started=std::chrono::steady_clock::now();const bool Imported=ImportObjects(S);
         HandoffSizes["import/microseconds"]+=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-Started).count();
         ++HandoffSizes["import/attempts"];
-        if (!Imported) return false;Cut=std::make_shared<IncomingHandoff>();Cut->State=S;
+        if (!Imported)
+        {
+            if (ApplicationPending) {EarlyHandoffStates.try_emplace(S.Transfer,NetworkTime,S);return true;}
+            return false;
+        }
+        Cut=std::make_shared<IncomingHandoff>();Cut->State=S;
     }
     const auto Digest=StateIdentity(Body);bool Accepted=true;
     for (const auto& P:S.Objects)
@@ -603,7 +682,18 @@ bool ClientWorld::CommitHandoff(const ObjectHandoff& T,const Authority& Grant)
 }
 void ClientWorld::CancelHandoff(const ObjectHandoff& T)
 {
+    PendingHandoffReadiness.erase(T.Object);
     const auto TransferIt=Transfers.find(T.Object);if (TransferIt==Transfers.end() || TransferIt->second.IdValue!=T.IdValue) return;
+    if (ApplicationCancelled) ApplicationCancelled(T.Object);
+    for (auto I=EarlyHandoffStates.begin();I!=EarlyHandoffStates.end();)
+        if (std::any_of(I->second.second.Objects.begin(),I->second.second.Objects.end(),[&](const auto& P){return P.Record.Grant.Object==T.Object;})) I=EarlyHandoffStates.erase(I);else ++I;
+    for (auto I=ImportContinuations.begin();I!=ImportContinuations.end();)
+        if (std::find(I->second.Keys.begin(),I->second.Keys.end(),T.Object)!=I->second.Keys.end())
+        {
+            for (const auto& P:I->second.SharedState) if (const auto A=Systems.find(P.Name);A!=Systems.end()) A->second->Restore({P},P.Objects,RestoreStage::Detach);
+            I=ImportContinuations.erase(I);
+        }
+        else ++I;
     if (T.Target==Player)
     {
         if (const auto S=IncomingStates.find(T.IdValue);S!=IncomingStates.end() && !S->second->Detached)
@@ -643,13 +733,25 @@ void ClientWorld::CancelHandoff(const ObjectHandoff& T)
 }
 bool ClientWorld::RebuildFromReplica(ObjectKey K)
 {
-    const auto I=Adapters.find(K);if (I==Adapters.end()) return !Directory.at(K).Materialized;
-    I->second->ResetControlInput();I->second->SetAuthority(Directory.at(K).Grant,HasSimulation(K));
+    ApplicationPending=false;
+    const auto O=Directory.find(K);if (O==Directory.end()) {RebuildApplications.erase(K);return false;}
+    const auto I=Adapters.find(K);if (I==Adapters.end()) return !O->second.Materialized;
+    const auto Latest=LatestCommands.find(K);
+    const auto Identity=std::tuple{O->second.Grant.OwnerEpoch,O->second.Grant.ControlEpoch,Latest==LatestCommands.end()?Id{}:Latest->second.Event};
+    if (const auto Rebuild=RebuildApplications.find(K);Rebuild==RebuildApplications.end()||Rebuild->second!=Identity)
+    {I->second->ResetControlInput();I->second->SetAuthority(O->second.Grant,HasSimulation(K));RebuildApplications[K]=Identity;}
     if (const auto C=LatestCommands.find(K);C!=LatestCommands.end())
     {
         auto Command=C->second;auto& M=Command.Members.front();M.OwnerEpoch=Directory.at(K).Grant.OwnerEpoch;M.ControlEpoch=Directory.at(K).Grant.ControlEpoch;
-        return I->second->Command(Command,M);
+        if (PrepareCommands)
+        {
+            const auto Status=PrepareCommands(Command,std::span<const CommandMember>(&M,1));
+            ApplicationPending=Status==ApplicationStatus::Pending;
+            if (Status!=ApplicationStatus::Ready) {if (!ApplicationPending) RebuildApplications.erase(K);return false;}
+        }
+        const bool Applied=I->second->Command(Command,M);RebuildApplications.erase(K);return Applied;
     }
+    RebuildApplications.erase(K);
     return true;
 }
 void ClientWorld::ReconcileHandoffs(std::span<const ObjectHandoff> Active)

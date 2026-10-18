@@ -1,4 +1,5 @@
 #include "GuLiNetClient.h"
+#include "GuLiNetAsyncClient.h"
 #include "GuLiNetRoom.h"
 #include "GuLiNetManifest.h"
 #include "GuLiNetTransport.h"
@@ -8,11 +9,15 @@
 #include "GuLiNetResourceMaintenance.h"
 #include "GuLiNetLinearFlightRecipe.h"
 #include "GuLiNetRuntimeEffectRecipe.h"
+#include "GuLiNetReplacement.h"
 #include <algorithm>
 #include <array>
 #include <deque>
 #include <iostream>
 #include <stdexcept>
+#include <future>
+#include <thread>
+#include <atomic>
 
 using namespace GuLiNet;
 namespace
@@ -232,7 +237,19 @@ void ScopedHandoff()
             V.PreviousOwnerVersion=1;V.NextOwnerVersion=2;Batch.push_back(V);
             for (auto& [P,C]:G.Clients) if (P!=ID(1) || I==0) Check(C->PrepareHandoff(V),"prepare independently ordered group member");
         }
+        bool CaptureReady=false;unsigned CaptureAttempts=0;
+        G.Client(2).SetApplicationBatches({},[&](std::span<const ObjectKey> Keys)
+        {
+            ++CaptureAttempts;Check(Keys.size()==GroupKeys.size(),"pending group retains complete ordered cut");
+            return CaptureReady?ClientWorld::CaptureApplicationStatus::Ready:ClientWorld::CaptureApplicationStatus::Pending;
+        },{});
         for (auto V:Batch) {V.TargetPrepared=true;Check(G.Client(2).FreezeHandoff(V),"freeze group at admitted boundary");}
+        CaptureAttempts=0;G.Client(2).PollNetwork(G.Now);
+        Check(CaptureAttempts==1,"one pending capture retry per group per owner turn");
+        Check(G.Client(2).WorkCounts().at("freeze_requested")==GroupKeys.size(),"pending capture keeps every member runnable");
+        CaptureReady=true;G.Client(2).PollNetwork(G.Now);
+        Check(CaptureAttempts==2 && G.Client(2).WorkCounts().at("freeze_requested")==0,"ready cut completes without duplicate member capture");
+        G.Client(2).SetApplicationBatches({},{},{});
         Check(std::count_if(G.Queue.begin(),G.Queue.end(),[](const auto& D){return D.Value.Header.Kind==MessageKind::HandoffState;})==1,"one shared cut serves all member identities");
         G.Flush();Check(TargetCount->Detaches==Round*2,"early cut waits for every member prepare");
         for (std::size_t I=1;I<Batch.size();++I) Check(G.Client(1).PrepareHandoff(Batch[I]),"non-leader prepare releases the early cut");
@@ -348,6 +365,12 @@ void FrozenFlightAdmissionAndRequestTime()
     Check(F.Client(2).DuplicateResults()==Before+1 && F.Client(1).NumericState().TeamEconomy().Balance(Team::Red)==Balance,"original time replay deduplicates without another debit");
     Work.Header.Event=ID(5711);Work.Header.At=F.Client(2).ObjectNow(K)+1;
     Check(!F.Client(2).Submit(Work,{},true).Valid(),"resume cannot claim a future source-object age");
+    // A queued admitted request must retain the same time on both wire layers.
+    Work.Header.Event=ID(5720);Work.Header.At=Work.StartedAt=5;Work.Kind=TransactionKind::Process;Work.Target=K;
+    Check(F.Client(2).SubmitAdmitted(Work,true).Valid(),"queue an admitted resource fact after its original source age");
+    const auto AdmissionRequest=F.Client(2).PendingTransactions().back();Message OriginalMessage;TransactionRequest OriginalRequest;
+    Check(DecodeMessage(AdmissionRequest.Admission,OriginalMessage) && DecodeTransaction(OriginalMessage.Header,OriginalMessage.Body,OriginalRequest),"decode the queued admission's original request");
+    Check(AdmissionRequest.Header.At==OriginalMessage.Header.At && OriginalMessage.Header.At==5 && OriginalRequest.StartedAt==5,"queued admission wrapper and frozen fact retain one original clock boundary");
 }
 void CommittedPublicationBackpressure()
 {
@@ -845,6 +868,17 @@ void ReliableCapacityWithBatchedAcknowledgements()
     }
     std::cout<<"Batched ACK capacity delivered="<<Delivered<<'/'<<Produced<<" peak_queue_bytes="<<Peak<<'\n';
     Check(Delivered==Produced && Tx.Unacknowledged().empty(),"a budget-compliant reliable stream drains after a slow peer's ACK batch");
+    // A slow transaction worker can receive more than 4096 small application
+    // confirmations while still remaining well inside its control byte budget.
+    std::promise<void> ReleaseWorker;
+    const auto WorkerGate=ReleaseWorker.get_future().share();
+    AsyncClientWorld Async(ID(100),ID(1),1,
+        [](const ObjectRecord&){return std::make_unique<Adapter>();},
+        [](Id,Message,Bytes,bool){return true;},{},false,[WorkerGate]{WorkerGate.wait();});
+    struct FReleaseOnExit {std::promise<void>& Event;~FReleaseOnExit(){Event.set_value();}} Release{ReleaseWorker};
+    for (unsigned N=0;N<8192;++N) Async.SetMembershipPaused((N&1)!=0);
+    Async.PumpApplications();
+    Check(Async.Error().empty(),"small reliable application confirmations must use their byte budget, not a 4096-entry cutoff");
 }
 void FinalEventAfterMetadata()
 {
@@ -1123,14 +1157,373 @@ void ResourceCopyIsolation()
         "processing and deduplication history stay private to the committing branch");
     Check(Base.SetTerritoryOwner(0,Team::Blue) && Trial.Snapshot().Owners[0]==Team::Red,"the original can mutate independently too");
 }
+void AsyncContinuationAndGameplayDelivery(unsigned Workers=0)
+{
+    Fixture F;const auto Main=std::this_thread::get_id();std::map<ObjectKey,Adapter*> Applied;
+    AsyncClientWorld A(ID(100),ID(1),1,[&](const ObjectRecord& O)
+        {Check(std::this_thread::get_id()==Main,"scene creation stays on caller thread");auto P=std::make_unique<Adapter>();Applied[O.Grant.Object]=P.get();return P;},
+        [](Id,Message,Bytes,bool){return true;},{},false,{},0,{true,true,true,Workers?MakeGameplayTaskPool(Workers):nullptr});
+    auto Until=[&](auto Predicate,const char* Why)
+    {
+        const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+        do {A.PumpApplications();if (Predicate()) return;std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+        while (std::chrono::steady_clock::now()<End);
+        std::cerr<<"async failure: "<<Why<<" world="<<A.Error()<<" pending="<<A.PendingTransactions().size()<<'\n';
+        const auto Stats=A.Statistics();std::cerr<<"inputs="<<Stats.InputBytes<<" output="<<Stats.OutputBytes<<" reserved="<<Stats.ResultReservedBytes<<'\n';
+        std::string Diagnosis;
+        for (unsigned Try=0;Try<100;++Try)
+        {
+            if (A.Inspect("failure",[](ClientWorld& C){std::string S="paused="+std::to_string(C.IsPaused());for (const auto& [K,V]:C.WorkCounts()) S+=" "+K+"="+std::to_string(V);return S;},Diagnosis)) break;
+            A.PumpApplications();std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+        std::cerr<<Diagnosis<<'\n';
+        for (const auto& [K,O]:A.Objects()) if (K.Kind==ObjectKind::Soldier)
+            std::cerr<<K.StableId.ToString()<<" owner="<<O.Grant.SimOwner.ToString()<<" control="<<O.Grant.Controller.ToString()
+                <<" epochs="<<O.Grant.OwnerEpoch<<'/'<<O.Grant.ControlEpoch<<" executions="<<Applied.at(K)->Executions<<'\n';
+        Check(false,Why);
+    };
+    std::string Error;Check(A.Configure(F.Data,Error),"async configure accepted");A.SetMembers(F.Members);
+    for (const auto& [K,O]:F.Client(1).Objects()) Check(A.Install(O,true),"async directory install accepted");
+    A.SetMembershipPaused(false);
+    Until([&]{return A.HasSimulation(F.Key(0))&&!A.IsBootstrapMaterializationDeferred();},"async creation confirms without blocking worker");
+    FrozenCommand Command;Command.Event=ID(4800);Command.Operation="move";Command.Members.push_back({F.Key(0),1,1});
+    Check(A.Route(Command),"async command accepted");A.Advance(1./60.);
+    // Withhold GT applications deliberately. The old MainCall would stop the
+    // worker before this independent inspection could run.
+    std::atomic<bool> Inspected=false;std::string Inspection;
+    A.Inspect("pending-command-progress",[&](ClientWorld&){Inspected=true;return std::string("ready");},Inspection);
+    const auto Deadline=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+    while (!Inspected && std::chrono::steady_clock::now()<Deadline) std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    Check(Inspected,"pending command cannot block independent worker inputs");
+    Until([&]{return A.CommandResult(Command.Event).has_value();},"command resumes after its application acknowledgment");
+    Check(Applied.at(F.Key(0))->Executions==1,"command applies exactly once");
+    auto Other=F.Client(1).Objects().at(F.Key(2));Other.Grant.SimOwner=ID(1);
+    Check(A.Install(Other,true),"install another local command domain");
+    Until([&]{return A.HasSimulation(F.Key(2));},"second local domain ready");
+    FrozenCommand Multi=Command;Multi.Event=ID(4801);Multi.Members.push_back({F.Key(2),1,1,1});
+    Check(A.Route(Multi),"one event addresses two independent objects");A.Advance(1./60.);
+    Until([&]{return A.CommandResult(Multi.Event).has_value();},"multi-object command confirms");
+    const auto FirstExecutions=Applied.at(F.Key(0))->Executions,OtherExecutions=Applied.at(F.Key(2))->Executions;
+    Check(A.RebuildFromReplica(F.Key(0))&&A.RebuildFromReplica(F.Key(2)),"enqueue both replica rebuilds");
+    Until([&]
+    {
+        return Applied.at(F.Key(0))->Executions==FirstExecutions+1&&Applied.at(F.Key(2))->Executions==OtherExecutions+1;
+    },"same event rebuilds separate object subsets without sharing application results");
+    Check(Applied.at(F.Key(0))->Executions==FirstExecutions+1&&Applied.at(F.Key(2))->Executions==OtherExecutions+1,
+        "each restored object replays its latest command once");
+    struct Calculation final:IGameplayCalculation
+    {
+        bool CanRunParallel() const override {return true;}
+        std::atomic<bool> Computed=false;std::thread::id Thread;unsigned Value=0;
+        void Compute() override {Thread=std::this_thread::get_id();Value=100;Computed=true;}
+    };
+    auto Work=std::make_shared<Calculation>();unsigned Completed=0;
+    if (Workers)
+    {
+        struct HeldCalculation final:IGameplayCalculation
+        {
+            bool CanRunParallel() const override {return true;}
+            std::atomic<bool> Started=false,Release=false;
+            void Compute() override
+            {
+                Started=true;const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(3);
+                while (!Release&&std::chrono::steady_clock::now()<End) std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            }
+        };
+        auto Held=std::make_shared<HeldCalculation>();auto Following=std::make_shared<Calculation>();
+        struct OwnerCalculation final:IGameplayCalculation
+        {
+            std::atomic<bool> Computed=false;std::thread::id Thread;
+            void Compute() override {Thread=std::this_thread::get_id();Computed=true;}
+        };
+        auto Stateful=std::make_shared<OwnerCalculation>();std::thread::id OwnerThread;
+        std::vector<unsigned> ApplicationOrder;std::atomic<bool> Independent=false;std::string Value;
+        Check(A.SubmitGameplay("held",Held,1024,1024,[&]{ApplicationOrder.push_back(1);})
+            &&A.SubmitGameplay("following",Following,1024,1024,[&]{ApplicationOrder.push_back(2);})
+            &&A.SubmitGameplay("codec-owner",Stateful,1024,1024,[&]{ApplicationOrder.push_back(3);}),"admit independent pool work");
+        Until([&]{return Held->Started.load();},"pool starts without a main-thread wait");
+        A.Inspect("pool-progress",[&](ClientWorld&){OwnerThread=std::this_thread::get_id();Independent=true;return std::string("ready");},Value);
+        const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(1);
+        while ((!Independent||!Stateful->Computed||(Workers>1&&!Following->Computed))&&std::chrono::steady_clock::now()<End)
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        A.PumpApplications();const bool StayedOrdered=ApplicationOrder.empty();Held->Release=true;
+        Check(Independent,"in-flight computation cannot block transaction-owner inputs");
+        Check(Stateful->Computed&&Stateful->Thread==OwnerThread&&OwnerThread!=Main,"stateful codecs keep their network-owner affinity");
+        Check(Workers==1||Following->Computed,"independent computations can finish out of order");
+        Check(StayedOrdered,"completion does not cross an earlier uncompleted batch");
+        Until([&]{return ApplicationOrder.size()==3;},"pool results drain in admission order");
+        Check(ApplicationOrder==std::vector<unsigned>{1,2,3},"ordered application survives parallel completion");
+    }
+    Check(A.SubmitGameplay("movement",Work,1024,1024,[&]
+        {Check(std::this_thread::get_id()==Main && Work->Thread!=Main,"compute/application thread ownership");Applied.at(F.Key(0))->Position+=Work->Value;++Completed;}),"gameplay batch reserves its result before admission");
+    Check(!A.SubmitGameplay("movement",Work,1024,1024,[]{}),"one unconfirmed batch per dependency group");
+    Check(!A.SubmitGameplay("too-large",Work,1024,65ull*1024*1024,[]{}),"oversized result is rejected before computation");
+    ObjectHandoffState Cut;const std::array<ObjectKey,1> Keys{F.Key(0)};
+    Until([&]{return A.CaptureObjects(Keys,ID(2),0,Cut);},"capture waits for applied movement and its confirmation");
+    Check(Completed==1 && Work->Computed && !A.HasPendingGameplay("movement"),"accepted gameplay completes once and releases the dependency group");
+    Reader Captured(Cut.Objects.front().State);std::uint64_t Position=0;
+    Check(Captured.U64(Position)&&Position==Applied.at(F.Key(0))->Position,"private cut includes acknowledged movement result");
+    F.Step(2);ObjectHandoffState Import;const std::array<ObjectKey,1> Remote{F.Key(1)};
+    Check(F.Client(2).CaptureObjects(Remote,ID(1),0,Import),"prepare existing-format private state");
+    const std::array<ObjectHandoffState,1> Parts{Import};
+    Until([&]{return A.StageBootstrapDirectory(Parts);},"preflight resumes across GT confirmations");
+    Until([&]{return A.ImportBootstrap(Parts,[&](Id Source,const OwnerState::FragmentVisitor& Visit)
+        {if (Source!=Import.Source) return false;for (const auto& V:Import.Numeric) if (!Visit(V)) return false;return true;});},"four restore stages resume without blocking");
+    Check(Applied.at(F.Key(1))->Position==F.Adapters.at({ID(2),F.Key(1)})->Position,"restored private state matches captured source");
+    Check(A.Error().empty(),"resumable paths retain a healthy world");
+    auto LargeA=std::make_shared<Calculation>(),LargeB=std::make_shared<Calculation>(),Refused=std::make_shared<Calculation>();
+    unsigned LargeApplied=0;
+    Check(A.SubmitGameplay("capacity-a",LargeA,20ull*1024*1024,31ull*1024*1024,[&]{++LargeApplied;})
+        &&A.SubmitGameplay("capacity-b",LargeB,20ull*1024*1024,31ull*1024*1024,[&]{++LargeApplied;}),"reserve two near-capacity reliable results");
+    Check(!A.SubmitGameplay("capacity-c",Refused,1024,4ull*1024*1024,[]{}),"backpressure refuses new computation before admission");
+    std::atomic<bool> ControlRan=false;
+    struct Confirmation final:IGameplayCalculation {std::atomic<bool>& Done;explicit Confirmation(std::atomic<bool>& D):Done(D){}void Compute() override {Done=true;}};
+    Check(A.ConfirmGameplay(std::make_shared<Confirmation>(ControlRan),128),"control lane accepts confirmation under data backpressure");
+    const auto ComputeEnd=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+    while ((!LargeA->Computed||!LargeB->Computed||!ControlRan)&&std::chrono::steady_clock::now()<ComputeEnd)
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    Check(LargeA->Computed&&LargeB->Computed&&ControlRan,"accepted calculations and control progress without GT pumping");
+    Check(A.Statistics().InputBytes>=40ull*1024*1024,"computed snapshots retain the shared input budget until application confirmation");
+    Until([&]{return LargeApplied==2&&ControlRan&&!A.HasPendingGameplay("capacity-b");},"near-capacity results and controls drain without a mutual wait");
+    Check(!Refused->Computed&&A.Error().empty(),"refused work never computes and accepted results remain reliable");
+    ObjectHandoffState CapacityCut;
+    Check(!A.CaptureObjects(Keys,ID(2),0,CapacityCut),"new capture starts asynchronously");
+    const auto CaptureDeadline=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+    while (A.Statistics().OutputBytes<32ull*1024*1024&&std::chrono::steady_clock::now()<CaptureDeadline)
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    Check(A.Statistics().OutputBytes>=32ull*1024*1024,"capture reservation is queued before stress output");
+    std::string LargeObservation;bool ObservationDone=false,CutDone=false;
+    A.Inspect("capture-capacity",[](ClientWorld&){return std::string(40ull*1024*1024,'x');},LargeObservation);
+    Until([&]
+    {
+        if (!ObservationDone) ObservationDone=A.Inspect("capture-capacity",[](ClientWorld&){return std::string{};},LargeObservation);
+        if (!CutDone) CutDone=A.CaptureObjects(Keys,ID(2),0,CapacityCut);
+        return ObservationDone&&CutDone;
+    },"GT capture transfers capacity before its worker acknowledgment, avoiding the output/control cycle");
+    Check(LargeObservation.size()==40ull*1024*1024&&A.Statistics().OutputPeak<=64ull*1024*1024,
+        "capture and large reliable output finish inside the 64 MiB budget");
+    unsigned AfterStop=0;auto Last=std::make_shared<Calculation>();
+    Check(A.SubmitGameplay("shutdown",Last,1024,1024,[&]{++AfterStop;}),"admit final batch before shutdown");
+    A.Stop();Check(AfterStop==0,"shutdown revokes callbacks and joins without pumping the scene");
+}
+void BoundedReliableApplicationAdmission()
+{
+    QueueLimits Limits;Limits.MaxReassemblyBytes=500;Limits.ResendSeconds=.01;
+    PeerChannel Sender(ID(8000),Limits),Receiver(ID(8000),Limits);
+    std::deque<Bytes> Wire,Acks;std::vector<Id> Delivered;bool Ready=false;
+    const auto Apply=[&](const Message& M)
+    {if (M.Header.Kind==MessageKind::Command&&!Ready) return false;Delivered.push_back(M.Header.Event);return true;};
+    const auto Ack=[&](std::span<const std::uint8_t> B){Acks.emplace_back(B.begin(),B.end());return true;};
+    const auto Receive=[&](double At)
+    {
+        while (!Wire.empty()) {auto B=std::move(Wire.front());Wire.pop_front();Receiver.ReceiveWithAdmission(B,At,Ack,Apply);}
+        while (!Acks.empty()) {auto B=std::move(Acks.front());Acks.pop_front();Sender.Receive(B,At,[](auto){return true;},[](auto){});}
+    };
+    Message M;M.Header.Kind=MessageKind::Command;M.Header.Match=ID(100);M.Header.Sender=ID(1);M.Body.resize(280,42);
+    for (unsigned N=0;N<3;++N) {M.Header.Event=ID(8100+N);Check(Sender.Queue(M,0),"queue reliable application");}
+    Sender.Pump(.1,[&](auto B){Wire.emplace_back(B.begin(),B.end());return true;});Receive(.1);
+    Check(Delivered.empty()&&Receiver.ReceivedThrough(Lane::Control)==0,"ACK cannot advance the application boundary");
+    Check(Receiver.Metrics().PendingDeliveryMessages==1&&Receiver.Metrics().PendingDeliveryBytes<=500,
+        "ACKed backpressured message remains bounded and retained");
+    Check(Sender.Unacknowledged().size()==2,"overflow messages remain sender-owned until receiver capacity returns");
+    M.Header.Kind=MessageKind::HandoffState;M.Header.Event=ID(8200);M.Body={1};
+    Check(Sender.Queue(M,.2),"independent lane accepted");Sender.Pump(.2,[&](auto B){Wire.emplace_back(B.begin(),B.end());return true;});Receive(.2);
+    Check(Delivered==std::vector<Id>{ID(8200)},"blocked application lane does not block independent delivery");
+    Ready=true;Receiver.DrainDeliveries(Apply);
+    for (unsigned I=1;I<40&&Delivered.size()<4;++I)
+    {Sender.Pump(.2+I*.02,[&](auto B){Wire.emplace_back(B.begin(),B.end());return true;});Receive(.2+I*.02);Receiver.DrainDeliveries(Apply);}
+    Check(Delivered==std::vector<Id>{ID(8200),ID(8100),ID(8101),ID(8102)},"retained and retried messages finish once in lane order");
+    Check(Receiver.Metrics().PendingDeliveryMessages==0&&Sender.Unacknowledged().empty(),"all reliable storage drains after recovery");
+}
+void CompactPeerEnvelopeRoundTrip()
+{
+    std::uint64_t Original=0,Compact=0;
+    for (unsigned Kind=unsigned(MessageKind::Hello);Kind<=unsigned(MessageKind::WorkState);++Kind)
+        for (unsigned Variant=0;Variant<5;++Variant)
+    {
+        Message M;auto& H=M.Header;H.Kind=MessageKind(Kind);H.Match=ID(100);H.Sender=ID(1);H.Epoch=1;H.Sequence=5000;H.At=90000;
+        if (Variant!=1) H.Object={ObjectKind::Flight,ID(9010),Variant==3?UINT32_MAX:1u};
+        if (Variant!=2) H.Event=ID(9100+Kind);
+        H.OwnerEpoch=H.ControlEpoch=Variant==3?UINT64_MAX:2;
+        if (Variant==3) H.At=H.Epoch=H.Sequence=UINT64_MAX;
+        if (Variant==4) {H.Object.Kind=ObjectKind::None;H.Object.Generation=0;H.Event={};}
+        M.Body=Bytes(Variant==3?4096:48,std::uint8_t(Kind));Bytes A,B,C;
+        Check(EncodeMessage(M,A)&&EncodePeerMessage(M,B),"encode canonical and compact message");
+        Message R;Check(DecodeMessage(B,R)&&EncodeMessage(R,C)&&C==A,"compact transport preserves every canonical byte including identities");
+        Check(B.size()<=A.size(),"compact representation never inflates worst-case counters");
+        Bytes Bound;Check(EncodePeerMessage(M,Bound,{H.Match,H.Sender})&&DecodeMessage(Bound,R,{H.Match,H.Sender})
+            &&EncodeMessage(R,C)&&C==A,"authenticated connection identities reconstruct canonical bytes");
+        Check(!DecodeMessage(Bound,R),"connection-relative envelope is rejected without its authenticated context");
+        auto Foreign=M;Foreign.Header.Match=ID(9999);Foreign.Header.Sender=ID(9998);Bytes CanonicalForeign;
+        Check(EncodePeerMessage(Foreign,Bound,{H.Match,H.Sender})&&DecodeMessage(Bound,R,{H.Match,H.Sender})
+            &&EncodeMessage(R,C)&&EncodeMessage(Foreign,CanonicalForeign)&&C==CanonicalForeign,
+            "explicit stale match/sender survive encoding and remain available to rejection checks");
+        if (Variant==0) {Original+=A.size();Compact+=B.size();}
+        for (std::size_t N=0;N<B.size();++N) Check(!DecodeMessage(std::span(B).first(N),R),"truncated compact message rejected");
+        B.push_back(0);Check(!DecodeMessage(B,R),"trailing compact bytes rejected");
+    }
+    Message M;M.Header.Epoch=1;Bytes B;Check(EncodePeerMessage(M,B),"encode zero identity test");
+    Message R;auto Bad=B;Bad[7]=16;Check(!DecodeMessage(Bad,R),"unknown compact flags rejected");
+    Bad=B;Bad[24]=0x81;Bad.insert(Bad.begin()+25,0);Check(!DecodeMessage(Bad,R),"noncanonical varint rejected");
+    Bad=B;Bad[24]=0x80;Bad.insert(Bad.begin()+25,9,0x80);Check(!DecodeMessage(Bad,R),"overflow varint rejected");
+    Check(Compact*100<=Original*80,"representative small sync message envelope saves at least twenty percent");
+    PeerChannel Sender(ID(9001),{},{ID(100),ID(1),ID(2)}),Receiver(ID(9001),{},{ID(100),ID(2),ID(1)});
+    PeerChannel ForeignConnection(ID(9002),{},{ID(101),ID(2),ID(1)});
+    M.Header.Kind=MessageKind::TransactionResult;M.Header.Match=ID(100);M.Header.Sender=ID(1);M.Header.Event=ID(9010);M.Header.Sequence=1;M.Body={1,2,3};
+    Check(Sender.Queue(M,0),"bound connection accepts peer envelope");unsigned Delivered=0;
+    Sender.Pump(0,[&](auto Packet)
+    {
+        const auto Ack=[](auto){return true;};const auto Apply=[&](const Message& V)
+        {Bytes A,C;Check(EncodeMessage(M,A)&&EncodeMessage(V,C)&&A==C,"bound channel reconstructs original identity and content");++Delivered;};
+        Check(!ForeignConnection.Receive(Packet,0,Ack,Apply),"wrong connection cannot supply identity context");
+        Check(Receiver.Receive(Packet,0,Ack,Apply),"authenticated bound channel receives compact envelope");return true;
+    });
+    Check(Delivered==1,"bound reliable peer message delivered once");
+    std::cout<<"Compact envelope fixture: "<<Original<<" -> "<<Compact<<" bytes (fixture only, live traffic measured separately)\n";
+}
+void AsyncSharedClockAndLazyDirectory()
+{
+    for (const bool Reduced:{false,true})
+    {
+        Fixture F;AsyncClientWorld A(ID(100),ID(1),1,[](const ObjectRecord&){return std::make_unique<Adapter>();},
+            [](Id,Message,Bytes,bool){return true;},{},false,{},0,{false,Reduced,Reduced,{}});
+        auto Until=[&](auto P)
+        {
+            const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+            while (std::chrono::steady_clock::now()<End) {A.PumpApplications();if (P()) return;std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+            Check(false,"async shared context setup/application timed out");
+        };
+        std::string Error;Check(A.Configure(F.Data,Error),"clock test configure");A.SetMembers(F.Members);
+        for (const auto& [K,O]:F.Client(1).Objects()) Check(A.Install(O,true),"clock test install");
+        A.SetMembershipPaused(false);Until([&]{return A.HasSimulation(F.Key(0))&&!A.IsBootstrapMaterializationDeferred();});
+        struct System final:ISharedStateAdapter
+        {
+            AsyncClientWorld& World;Tick Last=0;unsigned Calls=0;explicit System(AsyncClientWorld& W):World(W){}
+            std::uint32_t Version() const override {return 1;}
+            void Advance(Tick At,double) override {Check(World.Now()==At&&World.ContextNow()==At,"shared publication uses its actual applied logical step");Last=At;++Calls;}
+            bool Capture(const std::vector<ObjectKey>&,Bytes&) const override {return true;}
+            bool Validate(const std::vector<PrivateSystemState>&,const std::vector<ObjectKey>&) const override {return true;}
+            bool Restore(const std::vector<PrivateSystemState>&,const std::vector<ObjectKey>&,RestoreStage) override {return true;}
+        };
+        auto S=std::make_unique<System>(A);auto* View=S.get();Check(A.RegisterSystem("clock",std::move(S)),"shared clock registration");
+        A.Advance(4./60.);Until([&]{return View->Calls>=4;});Check(A.Now()>=View->Last,"publication outside callback cannot precede applied geometry");
+        const auto Expected=[&]{Writer W(MaxPrivateStateBytes);for (const auto& [K,O]:A.Objects()) WriteAuthority(W,O.Grant);return Sha256(W.Take());};
+        Check(A.DirectoryHash()==Expected(),"lazy review digest equals canonical applied directory");const auto Before=A.DirectoryHash();
+        auto Changed=A.Objects().at(F.Key(0));++Changed.Grant.ControlEpoch;
+        Check(A.Install(Changed,true),"update grant after cached digest");Until([&]{return A.Objects().at(F.Key(0)).Grant.ControlEpoch==Changed.Grant.ControlEpoch;});
+        Check(A.DirectoryHash()==Expected()&&A.DirectoryHash()!=Before,"lazy hash invalidates on authority changes");
+        const auto Stats=A.Statistics();Check(Stats.InputKinds[unsigned(AsyncInputKind::Simulation)].Accepted>0,"bounded per-kind admission diagnostics count simulation work");
+        // The normal path must retain stale-life protection without repeatedly
+        // putting the full combat history into every main-thread readback.
+        for (unsigned Batch=0;Batch<32;++Batch)
+        {
+            for (unsigned I=0;I<32;++I)
+            {
+                Authority Dead;Dead.Object={ObjectKind::Flight,ID(20000+Batch*32+I),3};
+                Dead.State=Life::Destroyed;Dead.OwnerEpoch=2;
+                Check(A.InstallGrant(Dead),"retain retired flight without a live adapter");
+            }
+            Until([&]{return A.NumericState().LastRetiredLife(ObjectKind::Flight,ID(20000+Batch*32+31))==3;});
+        }
+        const auto Calls=View->Calls;A.Advance(4./60.);Until([&]{return View->Calls>=Calls+4;});
+        for (unsigned I=0;I<1024;++I)
+            Check(A.NumericState().LastRetiredLife(ObjectKind::Flight,ID(20000+I))==3,"unchanged publication preserves every retired lifetime");
+        Check(A.Statistics().OutputPeak<1024*1024,"ordinary readback remains bounded with 1024 retired flights in both paths");
+    }
+}
+void IndexedCrossObjectValidation()
+{
+    Fixture F;auto& A=F.Client(1);const auto Parent=F.Key(0);
+    auto Child=A.Objects().at(Parent);Child.Grant.Object.StableId=ID(8450);Child.Ordinal=8450;
+    Child.Parent=Parent;Child.Grant.Policy=OwnershipPolicy::ParentWork;
+    for (auto& [P,C]:F.Clients) Check(C->Install(Child,true),"install live dependent work before handoff");
+    ObjectHandoff T;T.IdValue=8451;T.Object=Parent;T.Source=ID(1);T.Target=ID(2);T.Group=ID(8452);
+    T.PreviousOwnerVersion=1;T.NextOwnerVersion=2;T.TargetPrepared=true;
+    for (auto& [P,C]:F.Clients) Check(C->PrepareHandoff(T),"prepare indexed parent handoff");
+    Check(A.FreezeHandoff(T),"parent waits for its live child");
+    Check(std::none_of(F.Queue.begin(),F.Queue.end(),[](const auto& D){return D.Value.Header.Kind==MessageKind::HandoffState;}),"unprepared live child prevents private cut");
+    Child.Grant.State=Life::Dead;
+    Check(A.Install(Child,true),"terminal grant removes dependent from live index");
+    Check(A.FreezeHandoff(T),"retired child no longer blocks parent");
+    Check(std::count_if(F.Queue.begin(),F.Queue.end(),[](const auto& D){return D.Value.Header.Kind==MessageKind::HandoffState;})==1,"one parent cut after child termination");
+
+    auto Source=F.Client(2).Objects().at(F.Key(1));Source.Grant.State=Life::Destroyed;
+    auto Target=Source;Target.Grant.SourceLease=ID(8460);Target.Parent=Source.Grant.Object;
+    Target.Grant.Object=Replacement::Child(Source.Grant.Object,Target.Grant.SourceLease,ObjectKind::Soldier);
+    GuLiNet::Writer W;W.Key(Target.Grant.Object);Source.Capabilities[Replacement::Capability]={Replacement::Version,W.Take()};
+    Target.Capabilities.clear();
+    std::map<ObjectKey,ObjectRecord> Previous{{Source.Grant.Object,Source},{Target.Grant.Object,Target}};
+    std::map<std::string,std::set<ObjectKey>> Members{{Replacement::Capability,{Source.Grant.Object}}};
+    const std::array<ObjectRecord,1> Same{Target};
+    Check(ValidateCapabilityMutation(Previous,Same) && ValidateCapabilityMutation(Previous,Same,&Members),"indexed and full validation accept complete historical replacement pair");
+    Target.Grant.SourceLease=ID(8461);const std::array<ObjectRecord,1> Bad{Target};
+    Check(!ValidateCapabilityMutation(Previous,Bad) && !ValidateCapabilityMutation(Previous,Bad,&Members),"indexed validation still checks unchanged retired source against changed child");
+}
+void WaitingReceiptDependencyRecovery()
+{
+    Fixture F;auto& C=F.Client(1);unsigned Completed=0;
+    C.SetCommitCallback([&](const CommitResult& R){if (R.Event.Words[3]>=10000) ++Completed;});
+    CommitResult R;R.Status=CommitStatus::Committed;R.StateVersion=1;
+    const auto Version=C.NumericState().Version({F.Key(3),"object"});R.RequiredStates.push_back({F.Key(3),"object",Version+1});
+    for (unsigned I=0;I<2048;++I) {R.Event=ID(10000+I);Check(C.ApplyCommit(R),"retain state-dependent receipt");}
+    for (unsigned I=0;I<100;++I) C.PollNetwork(I*.01);
+    Check(!Completed&&C.WorkCounts().at("waiting_result")==2048,"missing dependencies neither complete nor discard receipts");
+    TransactionRequest Hit;Hit.Header.Object=F.Key(0);Hit.Header.Event=ID(9000);Hit.Kind=TransactionKind::Damage;Hit.Target=F.Key(3);Hit.RuleId="hit";Hit.Faction=Team::Red;
+    Check(C.Submit(Hit,{}).Valid(),"formal damage supplies next target state");F.Step(20);
+    Check(Completed==2048&&C.WorkCounts().at("waiting_result")==0,"blocked receipts complete once after real state delivery");
+    for (unsigned I=0;I<2048;++I) {R.Event=ID(10000+I);Check(C.ApplyCommit(R),"replay receipt");}
+    Check(Completed==2048,"retry preserves once-only completion");
+}
+void ReducedFragmentAndMiningEquivalence()
+{
+    MiningReservations R;Check(R.Configure({{1,1},{2,1},{3,9}}),"configure indexed mining history");
+    const ObjectKey A{ObjectKind::Soldier,ID(20),1},B{ObjectKind::Soldier,ID(21),1};
+    const auto Verify=[&]
+    {
+        for (const auto Cluster:{0u,1u,9u})
+        {
+            std::set<ObjectKey> Leases;std::set<Id> Decisions;
+            for (const auto& [K,V]:R.Snapshot().Leases) if (V.Cluster==Cluster) Leases.insert(K);
+            for (const auto& [K,V]:R.Snapshot().Decisions) if (V.Outcome.Lease.Cluster==Cluster) Decisions.insert(K);
+            Check(Leases==R.LeasesForCluster(Cluster)&&Decisions==R.DecisionsForCluster(Cluster),"cluster indexes preserve full historical selection");
+        }
+        MiningReservations Copy;Check(Copy.Restore(R.Snapshot()),"restore rebuilds derived indexes");
+        Check(EncodeMiningReservations(Copy.Snapshot())==EncodeMiningReservations(R.Snapshot()),"derived indexes do not alter serialized bytes");
+        for (const auto Cluster:{0u,1u,9u}) Check(Copy.LeasesForCluster(Cluster)==R.LeasesForCluster(Cluster)
+            &&Copy.DecisionsForCluster(Cluster)==R.DecisionsForCluster(Cluster),"restored cluster index agrees");
+    };
+    auto Claim=R.ClaimPosition(A,1,0,1,ID(4900));Check(Claim.IsCommitted(),"claim first position");Verify();
+    Check(R.ClaimPosition(B,1,0,1,ID(4901)).Status==MiningReservationStatus::Occupied,"retain failed claim history");Verify();
+    Check(R.ClaimNode(A,Claim.Lease.Token,1,ID(4902)).IsCommitted(),"claim indexed node");Verify();
+    auto Branch=R;Check(R.Release(A,Claim.Lease.Token,ID(4903)).IsCommitted(),"release indexed lease");Verify();
+    Check(Branch.Snapshot().Leases.size()==1,"index changes keep trial state isolated");
+    Check(R.ClaimPosition(A,9,2,2,ID(4904)).IsCommitted()&&R.AbandonSource(A),"source death removes lease without dropping decision history");Verify();
+    Fixture F;auto& State=F.Client(1).NumericState();
+    std::vector<ObjectKey> Keys;for (const auto& [K,O]:State.Objects()) Keys.push_back(K);
+    const auto Compare=[&]
+    {
+        auto Reference=State;Reference.SetReducedWork(false);auto Optimized=State;Optimized.SetReducedWork(true);
+        const auto Baseline=Reference.Export(Keys);const auto First=Optimized.Export(Keys);const auto Cached=Optimized.Export(Keys);
+        const auto Encode=[](const auto& Values){Writer W;for (const auto& V:Values) WriteStateFragment(W,V);return W.Take();};
+        Check(Encode(Baseline)==Encode(First)&&Encode(First)==Encode(Cached),"cached fragments preserve exact wire bytes and hashes");
+    };
+    Compare();F.Client(1).SetReducedWork(true);
+    TransactionRequest Reserve;Reserve.Header.Object=F.Key(0);Reserve.Header.Event=ID(4905);Reserve.Kind=TransactionKind::Reserve;
+    Reserve.RuleId="reserve";Reserve.Faction=Team::Red;Reserve.ReservationKey={DeriveEconomyAccount(F.Key(0)),1};
+    Check(F.Client(1).Submit(Reserve,{}).Valid(),"commit changes to an encoded account");F.Step();Compare();
+}
 }
 int main()
 {
     try
     {
+        CompactPeerEnvelopeRoundTrip();BoundedReliableApplicationAdmission();AsyncSharedClockAndLazyDirectory();IndexedCrossObjectValidation();WaitingReceiptDependencyRecovery();
         FrozenFlightAdmissionAndRequestTime();
         IndependentProgressAndValues();ScopedHandoff();CommittedPublicationBackpressure();PendingWorkStaysAtFrozenBoundary();HandoffBackpressureKeepsSourceRunning();BoundedHandoffLaneAdmission();CommanderActivityPolicy();OrderedReliableTransport();LatestStateDuringFragmentedSend();RoomMetadata();IndivisibleGroupsAndFixedRoles();FinalEventAfterMetadata();DelayedAcknowledgementFairness();ScopedFragmentIsolation();PlannedStateIsolation();ResourceCopyIsolation();ControlPointSupplyProjection();LateBirthAcrossHandoff();
         TargetOwnerSettlesDamageIndependently();ReliableCapacityWithBatchedAcknowledgements();SlowObserverCannotBlockOwnerEconomy();
+        AsyncContinuationAndGameplayDelivery();
+        for (const auto Workers:{1u,2u,4u}) AsyncContinuationAndGameplayDelivery(Workers);
+        ReducedFragmentAndMiningEquivalence();
         std::cout<<"Client ownership contracts passed; protocol="<<ProtocolVersion<<" manifest="<<ManifestVersion<<" handoff="<<HandoffVersion<<'\n';return 0;
     }
     catch (const std::exception& E) {std::cerr<<E.what()<<'\n';return 1;}

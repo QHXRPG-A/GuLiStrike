@@ -335,13 +335,15 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
                     const bool HasPrior=A.Arguments->TryGetStringField(TEXT("prior_match"),PriorText);
                     const bool ValidPrior=!HasPrior || (FGuid::Parse(PriorText,Prior) && Prior.IsValid()
                         && A.Arguments->TryGetNumberField(TEXT("prior_epoch"),PriorEpoch) && PriorEpoch>=1 && PriorEpoch<=MAX_uint32 && PriorEpoch==FMath::FloorToDouble(PriorEpoch));
-                    if (ValidSource && ValidPrior) Accepted=Session->ArmReviewFault(Id,FName(Mode),int32(Count),uint16(Kind),int32(Business),Source,uint8(TargetKind),Prior,uint64(PriorEpoch));
+                    if (ValidSource && ValidPrior) Accepted=A.Error==TEXT("Recorded business replay pending")
+                        || Session->ArmReviewFault(Id,FName(Mode),int32(Count),uint16(Kind),int32(Business),Source,uint8(TargetKind),Prior,uint64(PriorEpoch));
                     FString ReplayText;
                     if (Accepted && A.Arguments->TryGetStringField(TEXT("replay_event"),ReplayText))
                     {
                         FGuid Replay;
                         Accepted=Mode==TEXT("business_duplicate") && FGuid::Parse(ReplayText,Replay)
                             && H->ReplayReviewBusinessRequest(Replay,int32(Count),A.Result,A.Error);
+                        if (!Accepted && A.Error==TEXT("Recorded business replay pending")) continue;
                         Session->ReleaseReviewFault(Id);
                     }
                 }
@@ -507,11 +509,15 @@ void UGuLiHybridReviewSubsystem::AdvanceSceneActions()
                     else if (TeamText==TEXT("Blue")) SupplyTeam=EGuLiTeam::Blue;
                     else {Reject(TEXT("Development supply team must be Red or Blue"));continue;}
                 }
-                const auto& Manifest=Actors->GetManifest();TArray<FGuLiHybridObjectState> All;H->GetObjects(All);
+                const auto& Manifest=Actors->GetManifest();FGuLiHybridObjectState SourceState;
                 const FName Definition(*Manifest.Strings.FindRef(TEXT("army/root_definition")));
-                const auto* Source=All.FindByPredicate([&](const auto& O)
-                    {return O.Definition==Definition && O.LifeState==1 && O.Team==SupplyTeam && H->HasSimulation(O.Key);});
-                if (!Source) {Reject(TEXT("Development supply must run on the actual team army simulator"));continue;}
+                const auto Root=H->GetTeamCapabilityKey(SupplyTeam,TEXT("army_state"));
+                if (!H->GetObjectView(Root,SourceState) || SourceState.Definition!=Definition || SourceState.LifeState!=1
+                    || SourceState.Team!=SupplyTeam || (!H->HasSimulation(Root) && !H->HasControl(Root)))
+                {Reject(TEXT("Development supply requires the actual team army simulator or controller"));continue;}
+                // The fixed Commander can use the existing controlled request
+                // route while the indivisible resource group changes simulator.
+                const auto* Source=&SourceState;
                 const auto Before=H->GetTeamBalance(Source->Team);
                 FGuLiHybridEconomyRequest Request;Request.Source=Source->Key;Request.Event=Id;
                 Request.Rule=FName(*FString::Printf(TEXT("acceptance/resource_supply/%s/%d"),*Color,int32(Amount)));

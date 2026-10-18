@@ -9,6 +9,9 @@ class IGuLiHybridEntityCapability
 {
 public:
     virtual ~IGuLiHybridEntityCapability()=default;
+    // Game-thread eligibility only. Event/ledger/restore callbacks still run
+    // immediately and must wake any capability that opts out of periodic work.
+    virtual bool HasPeriodicWork() const {return true;}
     virtual void Advance(uint64 At,double Delta)=0;
     virtual bool Capture(TArray<uint8>& Out) const=0;
     virtual bool Validate(TConstArrayView<uint8> Bytes) const=0;
@@ -39,6 +42,8 @@ public:
     static bool ValidateManifest(const FGuLiHybridManifestData& M,FString& Error);
     bool Prepare(UWorld& World,const FGuLiHybridObjectState& Object,const FGuLiHybridManifestData& Manifest);
     void Advance(uint64 At,double Delta);
+    bool HasPeriodicWork() const;
+    bool IsEmpty() const {return Entries.IsEmpty();}
     void ApplyLedger(const FGuLiHybridObjectState& Object);
     bool AcceptMotion(uint64 At) const;
     TOptional<bool> Command(const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M);

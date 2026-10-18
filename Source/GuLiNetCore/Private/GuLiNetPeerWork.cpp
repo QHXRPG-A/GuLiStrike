@@ -1,4 +1,5 @@
 #include "GuLiNetClient.h"
+#include "GuLiNetTrace.h"
 #include <algorithm>
 #include <cmath>
 #include <utility>
@@ -9,7 +10,9 @@ std::map<std::string,std::size_t> ClientWorld::WorkCounts() const
 {
     return {{"pending",Pending.size()},{"controlled_intents",PlayerIntents.size()},{"retry",RetryWork.size()},{"active",WorkFlows.size()},
         {"waiting_result",WaitingResults.size()},{"retained",KnownWork.size()},{"deferred_state",DeferredPeerStates.size()},
-        {"publication_messages",PublicationIdentities.size()},{"publication_bytes",PublicationBytes}};
+        {"publication_messages",PublicationIdentities.size()},{"publication_bytes",PublicationBytes},
+        {"command_outbox",CommandOutbox.size()},{"incoming_commands",IncomingCommands.size()},
+        {"freeze_requested",FreezeRequested.size()}};
 }
 std::vector<WorkDiagnostic> ClientWorld::WorkDiagnostics() const
 {
@@ -56,6 +59,8 @@ Bytes Fragments(const std::vector<StateFragment>& Values)
 Bytes ProposalIdentity(Id Proposal) {Writer W;W.Identity(Proposal);return W.Take();}
 Bytes Evidence(const OwnerWork& Work,bool Decided)
 {Writer W;W.U8(Decided);W.Blob(EncodeOwnerWork(Work));return W.Take();}
+Bytes EncodedEvidence(const Bytes& Work,bool Decided)
+{Writer W;W.U8(Decided);W.Blob(Work);return W.Take();}
 Bytes Acknowledge(Id Event,Id Proposal,bool Accepted,const std::vector<StateFragment>& Values={})
 {Writer W;W.Identity(Event);W.Identity(Proposal);W.U8(Accepted?1:0);W.Blob(Fragments(Values));return W.Take();}
 bool ReadAcknowledgment(std::span<const std::uint8_t> Data,Id& Event,Id& Proposal,bool& Accepted,std::vector<StateFragment>& Out)
@@ -69,6 +74,7 @@ bool ReadAcknowledgment(std::span<const std::uint8_t> Data,Id& Event,Id& Proposa
 }
 bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R)
 {
+    TraceScope Scope("GuLiHybrid_CoreStartWork");
     if (Numbers.Owner(Numbers.ExecutionDomain(R))!=Player) return false;
     if (WorkFlows.contains(R.Header.Event)) return true;
     // Observers consume reliable publications independently. Their receive
@@ -90,14 +96,17 @@ bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R)
         else SendMessage(Sender,MessageKind::TransactionResult,W.Event,W.Result.StateDomain,EncodeCommit(W.Result));
         return true;
     }
+    if (ReserveApplicationResult && !ReserveApplicationResult(W))
+    {PlanWaitReasons[R.Header.Event]="application_output_backpressure";RetryWork[R.Header.Event]={Sender,R};return true;}
     WorkFlow Flow;Flow.Work=std::move(W);Flow.Requester=Sender;Flow.RetryAt=NetworkTime+.5;
     for (const auto& M:Flow.Work.Changes)
     {
         const auto Owner=Numbers.MutationOwner(Flow.Work,M);
-        if (!Owner.Valid() || !Members.contains(Owner) || !Members.at(Owner).Online) {RetryWork[R.Header.Event]={Sender,R};return true;}
+        if (!Owner.Valid() || !Members.contains(Owner) || !Members.at(Owner).Online)
+        {if (ReleaseApplicationResult) ReleaseApplicationResult(R.Header.Event);RetryWork[R.Header.Event]={Sender,R};return true;}
         Flow.Participants.insert(Owner);
     }
-    const auto Event=Flow.Work.Event;const auto Encoded=EncodeOwnerWork(Flow.Work);WorkFlows.emplace(Event,std::move(Flow));
+    const auto Event=Flow.Work.Event;Flow.Encoding=EncodeOwnerWork(Flow.Work);WorkFlows.emplace(Event,std::move(Flow));
     auto& Current=WorkFlows.at(Event);bool Rejected=false;
     // Reserve this planner's fragments before involving another owner. A
     // rejected local prepare must not flood remote owners with prepare/cancel
@@ -107,23 +116,26 @@ bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R)
     if (Rejected)
     {
         Numbers.Cancel(Player,Event,Current.Work.Proposal);
+        if (ReleaseApplicationResult) ReleaseApplicationResult(Event);
         WorkFlows.erase(Event);PlanWaitReasons[Event]="local_prepare_rejected";RetryWork[Event]={Sender,R};return true;
     }
     KnownWork[Event]={Current.Work,false};
     for (const auto P:Current.Participants) if (P!=Player)
-        SendMessage(P,MessageKind::WorkPrepare,Event,Current.Work.Source,Encoded);
+        SendMessage(P,MessageKind::WorkPrepare,Event,Current.Work.Source,Current.Encoding);
     AdvanceWork(Event);return true;
 }
 void ClientWorld::AdvanceWork(Id Event)
 {
+    TraceScope Scope("GuLiHybrid_CoreAdvanceWork");
     auto I=WorkFlows.find(Event);if (I==WorkFlows.end()) return;auto& F=I->second;
     if (!F.Decision && F.Prepared==F.Participants)
     {
         F.Decision=true;KnownWork[Event]={F.Work,true};
         // A single owner's prepare/commit is one synchronous local operation.
         // Only distributed work needs a recoverable decision between commits.
-        if (F.Participants.size()>1) Broadcast(MessageKind::WorkState,Event,F.Work.Source,Evidence(F.Work,true));
-        const auto Bytes=EncodeOwnerWork(F.Work);
+        if (F.Encoding.empty()) F.Encoding=EncodeOwnerWork(F.Work);
+        if (F.Participants.size()>1) Broadcast(MessageKind::WorkState,Event,F.Work.Source,EncodedEvidence(F.Encoding,true));
+        const auto& Bytes=F.Encoding;
         for (const auto P:F.Participants)
         {
             if (P==Player)
@@ -140,8 +152,10 @@ void ClientWorld::AdvanceWork(Id Event)
     }
     if (F.Decision && F.Committed==F.Participants)
     {
+        if (AwaitingApplications(F.Work.Result)) {F.RetryAt=NetworkTime+.01;return;}
         const auto Result=F.Work.Result;WorkFlows.erase(I);RetryWork.erase(Event);KnownWork.erase(Event);
         ApplyCommit(Result);Broadcast(MessageKind::TransactionResult,Event,Result.StateDomain,EncodeCommit(Result));
+        if (ReleaseApplicationResult) ReleaseApplicationResult(Event);
     }
 }
 bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
@@ -187,7 +201,8 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
             bool FrozenObject=false;std::vector<ObjectKey> Owned;
             for (const auto& M:W.Changes) if (Numbers.MutationOwner(W,M)==Player)
             {FrozenObject|=Frozen.contains(M.After.Key.Object);Owned.push_back(M.After.Key.Object);}
-            const bool Good=!FrozenObject && Numbers.Prepare(Sender,W);
+            const bool Budget=!ReserveApplicationResult || ReserveApplicationResult(W);
+            const bool Good=Budget && !FrozenObject && Numbers.Prepare(Sender,W);
             std::vector<StateFragment> Changed;
             if (!Good)
             {
@@ -195,22 +210,26 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
                 for (auto& P:Current) for (const auto& M:W.Changes) if (M.After.Key==P.Key) {Changed.push_back(std::move(P));break;}
             }
             if (Good) KnownWork[W.Event]={W,W.Continuation};
+            else if (Budget && ReleaseApplicationResult) ReleaseApplicationResult(W.Event);
             SendMessage(Sender,MessageKind::WorkPrepared,W.Event,W.Source,Acknowledge(W.Event,W.Proposal,Good,Changed));return true;
         }
+        if (ReserveApplicationResult && !ReserveApplicationResult(W)) return false;
         const bool Good=Numbers.Commit(Sender,W);const auto Published=Good?Numbers.Published(W):std::vector<StateFragment>{};
         if (Good)
         {
             KnownWork[W.Event]={W,true};Broadcast(MessageKind::WorkState,W.Event,W.Source,Evidence(W,true));
             Broadcast(MessageKind::StateFragments,W.Event,W.Source,Fragments(Published));RefreshRecords(Published);
         }
-        SendMessage(Sender,MessageKind::WorkReceipt,W.Event,W.Source,Acknowledge(W.Event,W.Proposal,Good,Published));return true;
+        SendMessage(Sender,MessageKind::WorkReceipt,W.Event,W.Source,Acknowledge(W.Event,W.Proposal,Good,Published));
+        if (ReleaseApplicationResult) ReleaseApplicationResult(W.Event);return true;
     }
     if (V.Header.Kind==MessageKind::WorkCancel)
     {
         Reader R(V.Body);Id Proposal;if (!R.Identity(Proposal) || !R.Done()) return false;
         Numbers.Cancel(Sender,V.Header.Event,Proposal);
         const auto K=KnownWork.find(V.Header.Event);
-        if (K!=KnownWork.end() && K->second.Work.Proposal==Proposal && !K->second.Decided) KnownWork.erase(K);
+        if (K!=KnownWork.end() && K->second.Work.Initiator==Sender && K->second.Work.Proposal==Proposal && !K->second.Decided)
+        {KnownWork.erase(K);if (ReleaseApplicationResult) ReleaseApplicationResult(V.Header.Event);}
         return true;
     }
     if (V.Header.Kind==MessageKind::WorkPrepared || V.Header.Kind==MessageKind::WorkReceipt)
@@ -229,6 +248,7 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
                 for (const auto P:I->second.Participants)
                 {if (P==Player) Numbers.Cancel(Player,Event,W.Proposal);else SendMessage(P,MessageKind::WorkCancel,Event,W.Source,ProposalIdentity(W.Proposal));}
                 WorkFlows.erase(I);
+                if (ReleaseApplicationResult) ReleaseApplicationResult(Event);
                 if (!Values.empty() && Numbers.Import(Sender,Values)) RefreshRecords(Values);
                 RetryWork[Event]={Requester,W.Request};return true;
             }
@@ -258,6 +278,8 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
 void ClientWorld::PollNetwork(double Now)
 {
     if (!std::isfinite(Now) || Now<NetworkTime || !Failure.empty()) return;NetworkTime=Now;
+    for (auto& [Key,Retry]:PreparingApplications) if (Retry<=Now)
+    {Retry=Now+.1;if (const auto A=Adapters.find(Key);A!=Adapters.end()) A->second->RetryPreparation();}
     FlushPublications();
     RetryPeerStates();
     FlushCommandOutbox();
@@ -269,6 +291,18 @@ void ClientWorld::PollNetwork(double Now)
         {Writer W;W.U8(I.Admit?1:0);W.Blob(EncodeTransaction(I.Request));SendMessage(Numbers.Owner(K),MessageKind::TransactionIntent,E,K,W.Take());}
     }
     for (auto I=EarlyHandoffStates.begin();I!=EarlyHandoffStates.end();) if (Now-I->second.first>10) I=EarlyHandoffStates.erase(I);else ++I;
+    std::vector<Revision> ReadyImports;
+    for (const auto& [ID,Entry]:EarlyHandoffStates)
+        if (std::all_of(Entry.second.Objects.begin(),Entry.second.Objects.end(),[&](const auto& P)
+            {return Transfers.contains(P.Record.Grant.Object);}) && !Entry.second.Objects.empty()
+            && Transfers.at(Entry.second.Objects.front().Record.Grant.Object).IdValue==ID) ReadyImports.push_back(ID);
+    for (const auto ID:ReadyImports)
+    {
+        auto Entry=std::move(EarlyHandoffStates.at(ID));EarlyHandoffStates.erase(ID);
+        InstallHandoff(Entry.second.Source,Entry.second);
+        if (auto I=EarlyHandoffStates.find(ID);I!=EarlyHandoffStates.end()) I->second.first=Entry.first;
+    }
+    DrainCommands();
     // Network retries and acknowledgments continue during membership pauses.
     // They do not depend on any simulator's logical age.
     // Both the exporting and importing side retain pending work while frozen.
@@ -285,6 +319,7 @@ void ClientWorld::PollNetwork(double Now)
     }
     if (Now>=NextWorkRetry)
     {
+        TraceScope Scope("GuLiHybrid_CoreRetryWork");
         NextWorkRetry=Now+.1;
         auto Retry=std::exchange(RetryWork,{});
         for (const auto& [E,R]:Retry) if (!WorkFlows.contains(E)) StartWork(R.first,R.second);
@@ -294,6 +329,7 @@ void ClientWorld::PollNetwork(double Now)
             if (!K.Decided) {Numbers.Cancel(K.Work.Initiator,E,K.Work.Proposal);continue;}
             if (Numbers.Owner(Numbers.ExecutionDomain(K.Work.Request))!=Player || WorkFlows.contains(E)) continue;
             auto W=K.Work;if (!Numbers.Resume(W)) continue;
+            if (ReserveApplicationResult && !ReserveApplicationResult(W)) continue;
             WorkFlow F;F.Work=W;F.Requester=Player;F.RetryAt=Now;
             for (const auto& M:W.Changes) {const Id Owner=Numbers.MutationOwner(W,M);if (Owner.Valid()) F.Participants.insert(Owner);}
             if (F.Participants.empty()) continue;
@@ -315,11 +351,14 @@ void ClientWorld::PollNetwork(double Now)
             for (const auto P:F.Participants)
             {if (P==Player) Numbers.Cancel(Player,E,Old.Proposal);else SendMessage(P,MessageKind::WorkCancel,E,Old.Source,ProposalIdentity(Old.Proposal));}
             if (!F.Decision)
-            {const auto Requester=F.Requester;WorkFlows.erase(I);RetryWork[E]={Requester,Old.Request};continue;}
+            {const auto Requester=F.Requester;WorkFlows.erase(I);if (ReleaseApplicationResult) ReleaseApplicationResult(E);RetryWork[E]={Requester,Old.Request};continue;}
             if (!Numbers.Resume(F.Work)) continue;
+            F.Encoding.clear();
+            if (ReserveApplicationResult && !ReserveApplicationResult(F.Work)) continue;
             F.Participants=std::move(CurrentOwners);F.Prepared.clear();F.Committed.clear();F.Decision=false;KnownWork[E]={F.Work,true};
         }
-        const auto Body=EncodeOwnerWork(F.Work);
+        if (F.Encoding.empty()) F.Encoding=EncodeOwnerWork(F.Work);
+        const auto& Body=F.Encoding;
         for (const auto Peer:F.Participants)
         {
             if (Peer==Player)
@@ -335,9 +374,21 @@ void ClientWorld::PollNetwork(double Now)
     }
     for (auto I=PlanWaitReasons.begin();I!=PlanWaitReasons.end();)
         if (!RetryWork.contains(I->first)) I=PlanWaitReasons.erase(I);else ++I;
-    auto Results=std::exchange(WaitingResults,{});for (const auto& [E,R]:Results) ApplyCommit(R);
+    // Keep blocked results in place. Rebuilding this entire map on every poll
+    // repeatedly copies birth records and capability payloads during combat.
+    // Freeze the ready identities before callbacks; newly queued work keeps the
+    // original next-poll boundary and final completion still goes through ApplyCommit.
+    std::vector<Id> ReadyResults;
+    for (const auto& [E,R]:WaitingResults)
+        if (CommitDependenciesReady(R)) ReadyResults.push_back(E);
+    for (const auto E:ReadyResults)
+    {
+        const auto I=WaitingResults.find(E);if (I==WaitingResults.end()) continue;
+        auto Result=std::move(I->second);WaitingResults.erase(I);ApplyCommit(Result);
+    }
     if (Now>=NextStateRepair)
     {
+        TraceScope Scope("GuLiHybrid_CoreStateRepair");
         NextStateRepair=Now+1.;
         std::map<Id,std::map<StateKey,Revision>> Missing;
         // A birth body can expire from the bounded defer queue before its
@@ -382,6 +433,18 @@ void ClientWorld::PollNetwork(double Now)
     }
     std::vector<ObjectHandoff> WaitingTransfers;
     for (const auto K:FreezeRequested) if (Transfers.contains(K)) WaitingTransfers.push_back(Transfers.at(K));
-    for (const auto& T:WaitingTransfers) FreezeHandoff(T);
+    std::set<std::tuple<Id,Id,Id>> BlockedGroups;
+    for (const auto& T:WaitingTransfers)
+    {
+        // A successful cut removes all its members. A pending cut has already
+        // inspected this group's next ordered batch: retrying once per member
+        // cannot advance its application barrier during this same owner turn.
+        if (!FreezeRequested.contains(T.Object)) continue;
+        const auto Group=std::tuple{T.Group,T.Source,T.Target};
+        if (T.Group.Valid() && BlockedGroups.contains(Group)) continue;
+        const auto Before=FreezeRequested.size();
+        FreezeHandoff(T);
+        if (T.Group.Valid() && FreezeRequested.size()>=Before) BlockedGroups.insert(Group);
+    }
 }
 }

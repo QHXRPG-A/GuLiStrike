@@ -24,6 +24,8 @@ struct FGuLiNetworkLaunchConfig
     EGuLiTeam Team = EGuLiTeam::Red;
     EGuLiCommanderRole Role = EGuLiCommanderRole::Commander;
     int32 LocalUdpPort = 0;
+    uint32 HotspotMask = 0; // Local diagnostics only, excluded from manifest and handshake.
+    uint32 GameplayWorkers = 2;
     FString ProductId, SandboxId, DeploymentId, ClientId, ClientSecret;
     double ConnectionTimeout = 10;
     double ReadyTimeout = 5;

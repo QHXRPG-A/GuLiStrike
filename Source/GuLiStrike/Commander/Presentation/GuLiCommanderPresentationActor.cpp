@@ -196,6 +196,31 @@ namespace GuLiCommanderPresentation
 			+ FMath::Max(0.0, SecondsSinceReceipt);
 	}
 
+	void AdvancePoseRenderClock(FGuLiCommanderPresentedSoldier& Soldier,
+		const double FallbackServerNow, const double LocalNow, const float DeltaSeconds,
+		const float BackTimeSeconds)
+	{
+		// P2P owners and their delivery queues advance independently. The freshest
+		// army-wide frame must not drive a slower stream past its interpolation buffer.
+		const double StreamServerNow = !Soldier.Samples.IsEmpty()
+			&& Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds > 0.0
+			? ExtrapolateMeasuredServerNow(Soldier.Samples.Last().ServerTimeSeconds,
+				LocalNow - Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds)
+			: FallbackServerNow;
+		const double Target = CalculateRenderServerTime(StreamServerNow, BackTimeSeconds);
+		if (Soldier.bRenderClockInitialized)
+		{
+			const double FrameSeconds = FMath::Max(0.0, double(DeltaSeconds));
+			Soldier.RenderServerTimeSeconds += FMath::Clamp(
+				Target - Soldier.RenderServerTimeSeconds, FrameSeconds * 0.9, FrameSeconds * 1.1);
+		}
+		else
+		{
+			Soldier.RenderServerTimeSeconds = Target;
+			Soldier.bRenderClockInitialized = true;
+		}
+	}
+
 	// 优先连接统计中的有效 RTT，缺失时退回 PlayerState ping；毫秒/秒转换在此集中处理。
 	float SelectClockRoundTripMilliseconds(
 		const float ConnectionAverageLagSeconds,
@@ -1264,6 +1289,14 @@ bool AGuLiCommanderPresentationActor::TryGetSoldierPresentationDiagnostics(
 }
 
 #if WITH_DEV_AUTOMATION_TESTS
+void AGuLiCommanderPresentationActor::TestOnly_AdvancePoseRenderClock(
+	FGuLiCommanderPresentedSoldier& Soldier, double FallbackServerNow,
+	double LocalNow, float DeltaSeconds, float BackTimeSeconds)
+{
+	GuLiCommanderPresentation::AdvancePoseRenderClock(
+		Soldier, FallbackServerNow, LocalNow, DeltaSeconds, BackTimeSeconds);
+}
+
 double AGuLiCommanderPresentationActor::TestOnly_EstimateServerNowAtPoseReceipt(
 	const double SampleServerTimeSeconds,
 	const float RoundTripMilliseconds)
@@ -2233,6 +2266,8 @@ void AGuLiCommanderPresentationActor::BindRosterSource(AGuLiSoldierStateReplicat
 void AGuLiCommanderPresentationActor::HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta)
 {
 	bReconcilePool |= Delta.bReset;
+    if (Delta.bReset) for (auto& Pair:SoldierInstanceHandles) Pair.Value.SceneUIGeneration=NextSceneUIGeneration++;
+    bool Urgent=Delta.bReset || !Delta.Added.IsEmpty() || !Delta.Removed.IsEmpty();
 	for (const auto Id : Delta.Added)
 	{
 		PendingPoolIds.Add(Id); PendingStateIds.Add(Id); PendingMirrorStates.Add(Id); DirtyRingColorIds.Add(Id);
@@ -2240,7 +2275,16 @@ void AGuLiCommanderPresentationActor::HandleRosterDelta(const FGuLiSoldierRoster
 	for (const auto Id : Delta.Removed) PendingRemovedIds.Add(Id);
 	for (const auto& Pair : Delta.Changed)
 	{
-		if (auto* Soldier = PresentedSoldiers.Find(Pair.Key))
+        if (EnumHasAnyFlags(Pair.Value,EGuLiSoldierStateChange(uint8(EGuLiSoldierStateChange::All)&~uint8(EGuLiSoldierStateChange::Order))))
+        {
+            Urgent=true;
+            if (auto* Handle=SoldierInstanceHandles.Find(Pair.Key))
+            {
+                ++Handle->SceneUIUrgentRevision;
+                if (EnumHasAnyFlags(Pair.Value,EGuLiSoldierStateChange::Life)) Handle->SceneUIGeneration=NextSceneUIGeneration++;
+            }
+        }
+        if (auto* Soldier = PresentedSoldiers.Find(Pair.Key))
 		{
 			++Soldier->PoseRevision;
 			Soldier->bPresentationStateDirty |= EnumHasAnyFlags(Pair.Value,
@@ -2257,6 +2301,7 @@ void AGuLiCommanderPresentationActor::HandleRosterDelta(const FGuLiSoldierRoster
 		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Type | EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Life))
 			DirtyRingColorIds.Add(Pair.Key);
 	}
+    if (Urgent) UGuLiSceneUISourceRegistry::Notify(this);
 	bPoolChangesPending |= Delta.bReset || !Delta.Added.IsEmpty() || !Delta.Removed.IsEmpty();
 }
 
@@ -2446,6 +2491,7 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(AGuLiSoldierState
 			}
 			if (!bReuse) { CachedRingTransforms.Add(Hidden); CachedRingColors.Add(FLinearColor(-1, -1, -1, -1)); }
 			auto& Handle = SoldierInstanceHandles.Add(Id);
+            Handle.SceneUIGeneration=NextSceneUIGeneration++;
 			Handle.RequestedUnitTypeId = State->UnitTypeId; Handle.BatchUnitTypeId = BatchId; Handle.BatchTeam = State->Team;
 			Handle.UnitInstanceIndex = UnitIndex; Handle.RingInstanceIndex = RingIndex;
 			PendingStateIds.Add(Id); DirtyRingColorIds.Add(Id);
@@ -2557,25 +2603,11 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 				MaximumAdaptiveInterpolationBackTimeSeconds,
 				Soldier.SmoothedPoseReceiptIntervalSeconds,
 				Soldier.SmoothedPoseReceiptJitterSeconds);
-		const double TargetRenderServerTimeSeconds = GuLiCommanderPresentation::CalculateRenderServerTime(
-			EstimatedServerTimeSeconds,
-			AdaptiveInterpolationBackTimeSeconds);
 		if (bServerClockInitialized)
 		{
-			if (Soldier.bRenderClockInitialized)
-			{
-				// Adjust playback rate to follow the adaptive buffer without replaying
-				// past motion or skipping ahead when the required delay changes.
-				const double FrameSeconds = static_cast<double>(DeltaSeconds);
-				Soldier.RenderServerTimeSeconds += FMath::Clamp(
-					TargetRenderServerTimeSeconds - Soldier.RenderServerTimeSeconds,
-					FrameSeconds * 0.9, FrameSeconds * 1.1);
-			}
-			else
-			{
-				Soldier.RenderServerTimeSeconds = TargetRenderServerTimeSeconds;
-				Soldier.bRenderClockInitialized = true;
-			}
+			GuLiCommanderPresentation::AdvancePoseRenderClock(Soldier,
+				EstimatedServerTimeSeconds, LocalNowSeconds, DeltaSeconds,
+				AdaptiveInterpolationBackTimeSeconds);
 		}
 		const double RenderServerTimeSeconds = Soldier.RenderServerTimeSeconds;
 		Soldier.LastRenderClockLocalTime = LocalNowSeconds;
@@ -2872,7 +2904,8 @@ void AGuLiCommanderPresentationActor::GatherSceneUIRings(TArray<FGuLiSceneUIRing
 		const auto& Transform = CachedRingTransforms[Slot];
 		if (Transform.GetScale3D().IsNearlyZero()) continue;
 		auto& Ring = Out.AddDefaulted_GetRef();
-		Ring.Center = Transform.GetLocation();
+		Ring.Key={this,Pair.Key.Value,Pair.Value.SceneUIGeneration};Ring.UrgentRevision=Pair.Value.SceneUIUrgentRevision;
+        Ring.Center = Transform.GetLocation();
 		Ring.OuterRadiusCm = GetUnitAvoidanceRadius(Pair.Value.RequestedUnitTypeId);
 		Ring.Team = Pair.Value.BatchTeam;
 		Ring.bSelected = ViewSelection.Contains(Pair.Key);
@@ -2887,14 +2920,15 @@ void AGuLiCommanderPresentationActor::RefreshPredictionCrowding(
 	TArray<FBody> Bodies;
 	Bodies.Reserve(PresentedSoldiers.Num());
 	float MaxRadius = 0.0f;
-	// Evaluate one common playback time before applying any client's prediction.
-	const double SampleTime = EstimatedServerTimeSeconds - InterpolationBackTimeSeconds;
+	// Crowding follows each displayed stream, before applying local prediction.
 	for (const auto& State : Replicator.GetItems())
 	{
 		if (!State.IsAlive() || State.bPhased) continue;
 		auto* Soldier = PresentedSoldiers.Find(State.SoldierId);
 		if (!Soldier) continue;
 		FTransform Pose;
+		const double SampleTime = Soldier->bRenderClockInitialized ? Soldier->RenderServerTimeSeconds
+			: EstimatedServerTimeSeconds - InterpolationBackTimeSeconds;
 		if (!EvaluateAuthoritativeTransform(*Soldier, SampleTime, Pose)) continue;
 		const float Radius = GetUnitAvoidanceRadius(State.UnitTypeId);
 		if (Pose.GetLocation().ContainsNaN() || !FMath::IsFinite(Radius) || Radius <= 0.0f) continue;

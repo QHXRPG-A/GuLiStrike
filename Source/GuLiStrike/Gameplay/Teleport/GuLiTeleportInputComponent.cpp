@@ -74,6 +74,7 @@ bool UGuLiTeleportInputComponent::SetServerLevel(int32 NewLevel)
 }
 void UGuLiTeleportInputComponent::ActivateAiming()
 {
+    OnHUDStateChanged.Broadcast();
 	auto* PC = GetCommander();
 	if (!PC || !PC->IsLocalController() || !PC->CanIssueCommanderOrders()) { return; }
 	if (bArmed) { CancelTeleport(); return; }
@@ -86,6 +87,7 @@ void UGuLiTeleportInputComponent::ActivateAiming()
 }
 void UGuLiTeleportInputComponent::ClearLocalAim()
 {
+    OnHUDStateChanged.Broadcast();
 	bArmed = false;
 	if (Preview) { Preview->Destroy(); Preview = nullptr; }
 	if (auto* PC = GetCommander(); PC && PC->CommanderCursorWidget) { PC->CommanderCursorWidget->SetTeleportMode(false); }
@@ -102,7 +104,7 @@ bool UGuLiTeleportInputComponent::HandlePrimaryAction()
 	if (!bArmed) { return false; }
 	auto* PC = GetCommander();
 	if (!PC || !PC->CanIssueCommanderOrders() || PC->IsCursorOverCommanderUI() || IsHUDHovered()) { return true; }
-	FVector Point; if (!PC->TraceGroundUnderCursor(Point)) { Feedback = GuLiGameText::Text(TEXT("UI.TeleportInputComponent.168")); return true; }
+	FVector Point; if (!PC->TraceGroundUnderCursor(Point)) { Feedback = GuLiGameText::Text(TEXT("UI.TeleportInputComponent.168"));OnHUDStateChanged.Broadcast();return true; }
 	const auto State = QueryState();
 	if (!CurrentCastId.IsValid() && !bSourcePending)
 	{ bSourcePending = true; ServerSubmit(FGuid::NewGuid(), EGuLiTeleportCommand::Source,{},Point); }
@@ -129,6 +131,7 @@ void UGuLiTeleportInputComponent::ServerSubmit(FGuid RequestId, EGuLiTeleportCom
         auto* Skills=PS->GetCommanderSkills();if (BoundSkills.Get()!=Skills)
         {if (BoundSkills.IsValid()) BoundSkills->OnSkillReply.RemoveDynamic(this,&ThisClass::HandleHybridSkillReply);BoundSkills=Skills;Skills->OnSkillReply.AddDynamic(this,&ThisClass::HandleHybridSkillReply);}
         PendingHybridRequests.Add(RequestId,Command);
+        OnHUDStateChanged.Broadcast();
     }
 	PS->GetCommanderSkills()->ServerRequestSkill(Request);
 }
@@ -139,6 +142,7 @@ void UGuLiTeleportInputComponent::HandleHybridSkillReply(const FGuLiActiveSkillR
 }
 void UGuLiTeleportInputComponent::ClientResult(EGuLiTeleportCommand Command, bool bSucceeded, FGuid CastId, const FString& Error)
 {
+    OnHUDStateChanged.Broadcast();
 	Feedback = Error;
 	if (Command == EGuLiTeleportCommand::Source)
 	{
@@ -151,7 +155,16 @@ void UGuLiTeleportInputComponent::ClientResult(EGuLiTeleportCommand Command, boo
 bool UGuLiTeleportInputComponent::IsHUDHovered() const { return HUD && HUD->IsHovered(); }
 FText UGuLiTeleportInputComponent::GetStatusText() const
 {
-	const auto S = QueryState();
+    FGuLiTeleportCastState State;int32 Level=1;FText Text;ReadHUDState(State,Level,Text);return Text;
+}
+void UGuLiTeleportInputComponent::ReadHUDState(FGuLiTeleportCastState& State,int32& Level,FText& Text) const
+{
+    const auto* PC=GetCommander();const auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+    Level=1;State=PS&&GetWorld()?GuLiHybridTeleport::Query(*GetWorld(),PS->GetTeam(),Level):FGuLiTeleportCastState{};
+    Text=FormatStatusText(State,Level);
+}
+FText UGuLiTeleportInputComponent::FormatStatusText(const FGuLiTeleportCastState& S,int32 Level) const
+{
 	const double Remaining = FMath::Max(0.0,S.Deadline-AGuLiTeleportFieldActor::GetSynchronizedTime(*GetWorld()));
 	if (S.Phase == EGuLiTeleportPhase::Windup) { return FText::FromString(GuLiGameText::Format(TEXT("UI.TeleportInputComponent.164"), {FString::Printf(TEXT("%.1f"), Remaining)})); }
 	if (S.Phase == EGuLiTeleportPhase::AwaitingDestination) { return FText::FromString(GuLiGameText::Format(TEXT("UI.TeleportInputComponent.165"), {FString::Printf(TEXT("%.1f"), Remaining), FString::Printf(TEXT("%d"), S.ParticipantCount), FString(Feedback.IsEmpty()?TEXT(""):*FString::Printf(TEXT("\n%s"),*Feedback))})); }
@@ -159,9 +172,9 @@ FText UGuLiTeleportInputComponent::GetStatusText() const
 	if (S.Phase == EGuLiTeleportPhase::Returning) { return FText::FromString(GuLiGameText::Text(TEXT("UI.TeleportInputComponent.170"))); }
 	if (!Feedback.IsEmpty()) { return FText::FromString(Feedback); }
 	const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
-	const auto* Config = Data ? Data->FindTeleportFieldConfig(GetLevel()) : nullptr;
+	const auto* Config = Data ? Data->FindTeleportFieldConfig(Level) : nullptr;
 	const int32 RadiusMeters = Config ? FMath::RoundToInt(Config->RadiusCentimeters / 100.f) : 0;
-	return FText::FromString(bArmed ? GuLiGameText::Text(TEXT("UI.TeleportInputComponent.171")) : (GetLevel() == 4
+	return FText::FromString(bArmed ? GuLiGameText::Text(TEXT("UI.TeleportInputComponent.171")) : (Level == 4
 		? GuLiGameText::Format(TEXT("UI.TeleportInputComponent.166"), {FString::Printf(TEXT("%d"), RadiusMeters)})
 		: GuLiGameText::Format(TEXT("UI.TeleportInputComponent.167"), {FString::Printf(TEXT("%d"), RadiusMeters)})));
 }

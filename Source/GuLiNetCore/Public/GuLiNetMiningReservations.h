@@ -2,6 +2,7 @@
 #include "GuLiNetProtocol.h"
 #include <map>
 #include <set>
+#include <memory>
 
 namespace GuLiNet
 {
@@ -64,7 +65,9 @@ public:
     MiningReservationOutcome Release(ObjectKey Source,Id Token,Id Event);
     bool AbandonSource(ObjectKey Source);
     bool OwnsNode(ObjectKey Source,Id Token,std::uint32_t Node) const;
-    const MiningReservationState& Snapshot() const { return State; }
+    const MiningReservationState& Snapshot() const { return Value->State; }
+    const std::set<ObjectKey>& LeasesForCluster(std::uint32_t Cluster) const;
+    const std::set<Id>& DecisionsForCluster(std::uint32_t Cluster) const;
     bool Restore(MiningReservationState Value);
 private:
     MiningReservationOutcome Begin(MiningReservationOperation Operation,ObjectKey Source,Id Event,
@@ -72,10 +75,17 @@ private:
     MiningReservationOutcome Finish(MiningReservationOutcome Value,Bytes Fingerprint);
     void RemoveIndexes(const MiningPositionLease& Value);
     void RebuildIndexes();
-    MiningReservationState State;
-    std::map<std::pair<std::uint32_t,std::uint8_t>,ObjectKey> PositionOwners;
-    std::map<std::uint32_t,ObjectKey> NodeOwners;
-    std::set<std::uint32_t> Clusters;
+    struct Storage
+    {
+        MiningReservationState State;
+        std::map<std::pair<std::uint32_t,std::uint8_t>,ObjectKey> PositionOwners;
+        std::map<std::uint32_t,ObjectKey> NodeOwners;
+        std::set<std::uint32_t> Clusters;
+        std::map<std::uint32_t,std::set<ObjectKey>> ClusterLeases;
+        std::map<std::uint32_t,std::set<Id>> ClusterDecisions;
+    };
+    std::shared_ptr<Storage> Value=std::make_shared<Storage>();
+    Storage& Write() {if (Value.use_count()!=1) Value=std::make_shared<Storage>(*Value);return *Value;}
 };
 GULINETCORE_API bool ValidMiningReservations(const MiningReservationState& State);
 GULINETCORE_API Bytes EncodeMiningReservationOutcome(const MiningReservationOutcome& Value);

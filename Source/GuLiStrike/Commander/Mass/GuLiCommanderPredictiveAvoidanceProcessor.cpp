@@ -1,5 +1,9 @@
 #include "Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+#include "GuLiNetAsyncClient.h"
+#include "MassEntitySubsystem.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 
@@ -28,6 +32,9 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 	struct FProcessorAgent
 	{
 		FMassEntityHandle Entity;
+        FGuLiHybridObjectKey Object;
+        uint64 OwnerEpoch=0,ControlEpoch=0;
+        FGuLiObstacleRegionStamp ObstacleRegion;
 		FAgentSnapshot Agent;
 		FPredictiveParameters Parameters;
 		FNearestCandidateList Candidates;
@@ -45,6 +52,7 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 		bool bForced = false;
 		bool bSolved = false;
 		bool bCached = false;
+        bool bNeedsReset = false;
 	};
 	struct FWorkspace
 	{
@@ -115,6 +123,404 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 	}
 }
 
+
+namespace GuLiCommanderPredictiveAvoidancePrivate
+{
+    struct FMeasurements
+    {
+        TArray<TPair<FName,double>> Values;
+        void Record(FName Name,double Value) { Values.Emplace(Name,Value); }
+    };
+    struct FKernelTiming
+    {
+        FMeasurements& Values;FName Name;double Started=FPlatformTime::Seconds();
+        FKernelTiming(FMeasurements& V,FName N):Values(V),Name(N) {}
+        ~FKernelTiming() { Values.Record(Name,(FPlatformTime::Seconds()-Started)*1000.); }
+    };
+    // This owns only value snapshots and solver caches. No World, registry,
+    // processor, fragment view, Actor or adapter is reachable from Compute.
+    struct FAsyncWorkspace final : FWorkspace, GuLiNet::IGameplayCalculation
+    {
+        bool CanRunParallel() const override {return true;}
+        FPhaseAdvanceResult PhaseAdvance;
+        double CurrentWorldSeconds=0;
+        int32 MaximumBucketOccupancy=0;
+        FMeasurements Measurements;
+        TArray<int32> ApplicationIndices;
+        TSharedPtr<const FGuLiDynamicObstacleSnapshot,ESPMode::ThreadSafe> Obstacles;
+        void Compute() override
+        {
+            TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_WorkerPredictiveAvoidance);
+            auto* Workspace=this;Measurements.Values.Reset();
+            float MaximumAgentRadius=0,MaximumAgentSpeed=0;
+            PolicyAgents.Reset();PolicyAgents.Reserve(Agents.Num());
+            for (int32 I=0;I<Agents.Num();++I)
+            {
+                auto& E=Agents[I];E.PolicyIndex=I;PolicyAgents.Add(E.Agent);
+                if (E.Agent.bParticipates&&!E.Agent.bEnvironment)
+                {MaximumAgentRadius=FMath::Max(MaximumAgentRadius,E.Agent.Radius);MaximumAgentSpeed=FMath::Max(MaximumAgentSpeed,E.Agent.MaximumSpeed);}
+            }
+            const float GridCellSize=FMath::Max(SpatialCellSizeCentimeters,MaximumAgentRadius*2.f);
+            {FKernelTiming Timing(Measurements,TEXT("Avoidance.GridMs"));MaximumBucketOccupancy=BuildSpatialGrid(PolicyAgents,SpatialGrid,GridCellSize);}
+            const auto& QueryGrid=SpatialGrid;
+	for (int32 Index = 0; Index < Agents.Num(); ++Index)
+	{
+		const FProcessorAgent& Entry = Agents[Index];
+		PolicyAgents[Entry.PolicyIndex] = Entry.Agent;
+		if (Entry.Agent.bParticipates && !Entry.Agent.bEnvironment)
+			MaximumAgentSpeed = FMath::Max(MaximumAgentSpeed, Entry.Agent.MaximumSpeed);
+	}
+	for (auto It = Workspace->ZeroResults.CreateIterator(); It; ++It)
+		if (!AgentIndexByEntity.Contains(It.Key())) It.RemoveCurrent();
+	Workspace->CellMotionSignatures.Reset();
+	{
+		FKernelTiming Timing(Measurements, TEXT("Avoidance.CachePrepareMs"));
+		Workspace->AgentMotionHashes.SetNumUninitialized(PolicyAgents.Num());
+		for (int32 I=0; I<PolicyAgents.Num(); ++I) Workspace->AgentMotionHashes[I]=MotionHash(PolicyAgents[I]);
+		for (const auto& Cell : QueryGrid.OrderedCells)
+		{
+			uint64 Signature = 0;
+			for (int32 Index : *Cell.Bucket) Signature += Workspace->AgentMotionHashes[Index];
+			Workspace->CellMotionSignatures.Add(Cell.Key, Signature);
+		}
+	}
+	uint64 CacheHits = 0, CacheInvalidations = 0, CacheExpirations = 0, GuardVisits = 0, GuardChecks = 0, QueryTrends = 0;
+
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveAvoidanceCandidateQuery);
+		FKernelTiming Timing(Measurements, TEXT("Avoidance.QueryMs"));
+		uint64 Visits = 0, Exact = 0, Solves = 0, Forced = 0;
+		uint64 CellLookups=0,CellHits=0,SparseComparisons=0,Duplicates=0,Unique=0,Retained=0,Consumed=0,Verified=0,Mismatches=0;
+		uint64 RadiusBins[3]={},SpeedBins[3]={}; double QueryReachSum=0;
+		for (int32 AgentIndex = 0; AgentIndex < Agents.Num(); ++AgentIndex)
+		{
+			FProcessorAgent& Entry = Agents[AgentIndex];
+			if (!Entry.bShouldReceive && Workspace->ZeroResults.Remove(Entry.Entity)) ++CacheInvalidations;
+			if (!Entry.bReceiver || !ShouldSolve(
+				PhaseAdvance.PhaseMask,
+				Entry.SoldierId,
+				Entry.OrderRevision,
+				Entry.LastProcessedOrderRevision,
+				Entry.bShouldReceive))
+			{
+				continue;
+			}
+
+			Entry.bForced = Entry.OrderRevision != Entry.LastProcessedOrderRevision;
+			const uint32 Phase = ResolveSolvePhase(Entry.SoldierId);
+			const bool bScheduledPhase = (PhaseAdvance.PhaseMask & (1u << Phase)) != 0u;
+			Entry.SolveSequence = bScheduledPhase
+				? PhaseAdvance.SequenceByPhase[Phase]
+				: PhaseAdvance.LastSequence;
+			const float Reach = FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
+				+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
+				+ Entry.Parameters.PredictiveAvoidanceDistance);
+			{
+				if (const auto* Cached = Workspace->ZeroResults.Find(Entry.Entity))
+				{
+					const double Age = CurrentWorldSeconds - Cached->CreatedAt;
+					const bool bExpired = Age < 0 || Age >= GuLiMassMovementTuning::GetCacheLifetimeSeconds();
+					const int32 Range = FMath::CeilToInt(Reach / GridCellSize);
+					const FIntPoint Cell = MakeSpatialCell(Entry.Agent.Location, GridCellSize);
+					const bool bCurrent = !Entry.bForced && IsZeroCacheCurrent(*Cached, Entry.Agent, CurrentWorldSeconds,
+						GuLiMassMovementTuning::GetCacheLifetimeSeconds(), Entry.OrderRevision, Entry.Parameters.PredictiveAvoidanceTime,
+						GuLiMassMovementTuning::GetCandidateLimit(), GridCellSize, {Cell.X - Range, Cell.Y - Range}, {Cell.X + Range, Cell.Y + Range},
+						RegionSignature(Entry.Agent, Cached->MinimumCell, Cached->MaximumCell, GridCellSize, Workspace->CellMotionSignatures))
+						&& IsNearRegionSafe(Entry.Agent, PolicyAgents, QueryGrid, GridCellSize, MaximumAgentRadius, MaximumAgentSpeed,
+							Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks);
+					if (bCurrent)
+					{
+						Entry.bSolved = true; Entry.bCached = true; ++CacheHits;
+						continue;
+					}
+					Workspace->ZeroResults.Remove(Entry.Entity); ++CacheInvalidations; CacheExpirations += bExpired ? 1 : 0;
+				}
+			}
+			const FCandidateQueryMetrics Metrics = SelectNearestCandidates(
+				Entry.PolicyIndex,
+				PolicyAgents,
+				QueryGrid,
+				Entry.Candidates,
+				FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
+					+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
+					+ Entry.Parameters.PredictiveAvoidanceDistance),
+				MaximumHeightDifferenceCentimeters, GridCellSize, Entry.Parameters.PredictiveAvoidanceTime,
+				&Workspace->QueryScratch);
+			Visits += Metrics.BucketEntriesVisited; Exact += Metrics.ExactCandidates; ++Solves; Forced += Entry.bForced ? 1 : 0;
+			QueryTrends += Metrics.TrendEvaluations;
+			CellLookups+=Metrics.CellLookups; CellHits+=Metrics.CellHits; Duplicates+=Metrics.EnvironmentDuplicates; Unique+=Metrics.UniqueVisits;
+			SparseComparisons+=Metrics.SparseComparisons;
+			Retained+=Metrics.RetainedCandidates; Consumed+=Metrics.ConsumedCandidates; Verified+=Metrics.VerifiedPrefixes; Mismatches+=Metrics.PrefixMismatches;
+			++RadiusBins[Entry.Agent.Radius<=150.f ? 0 : Entry.Agent.Radius<=300.f ? 1 : 2];
+			++SpeedBins[Entry.Agent.MaximumSpeed<=800.f ? 0 : Entry.Agent.MaximumSpeed<=1600.f ? 1 : 2];
+			QueryReachSum+=FMath::Max(DetectionDistanceCentimeters,Entry.Agent.Radius+MaximumAgentRadius
+				+(Entry.Agent.MaximumSpeed+MaximumAgentSpeed)*Entry.Parameters.PredictiveAvoidanceTime+Entry.Parameters.PredictiveAvoidanceDistance);
+			Entry.CandidateCount = Metrics.ExactCandidates;
+			Entry.bSolved = true;
+		}
+		if (auto* Capture = &Measurements)
+		{
+			Capture->Record(TEXT("Avoidance.BucketVisits"), double(Visits));
+			Capture->Record(TEXT("Avoidance.ExactCandidates"), double(Exact));
+			Capture->Record(TEXT("Avoidance.Solves"), double(Solves));
+			Capture->Record(TEXT("Avoidance.ActualQueries"), double(Solves));
+			Capture->Record(TEXT("Avoidance.Forced"), double(Forced));
+			Capture->Record(TEXT("Avoidance.CellLookups"),double(CellLookups)); Capture->Record(TEXT("Avoidance.CellHits"),double(CellHits));
+			Capture->Record(TEXT("Avoidance.SparseComparisons"),double(SparseComparisons));
+			Capture->Record(TEXT("Avoidance.EnvironmentDuplicates"),double(Duplicates)); Capture->Record(TEXT("Avoidance.UniqueVisits"),double(Unique));
+			Capture->Record(TEXT("Avoidance.Retained"),double(Retained)); Capture->Record(TEXT("Avoidance.Consumed"),double(Consumed));
+			Capture->Record(TEXT("Avoidance.VerifiedPrefixes"),double(Verified)); Capture->Record(TEXT("Avoidance.PrefixMismatches"),double(Mismatches));
+			Capture->Record(TEXT("Avoidance.QueryReachSumCm"),QueryReachSum);
+			Capture->Record(TEXT("Avoidance.RadiusLE150"),double(RadiusBins[0])); Capture->Record(TEXT("Avoidance.RadiusLE300"),double(RadiusBins[1])); Capture->Record(TEXT("Avoidance.RadiusGT300"),double(RadiusBins[2]));
+			Capture->Record(TEXT("Avoidance.SpeedLE800"),double(SpeedBins[0])); Capture->Record(TEXT("Avoidance.SpeedLE1600"),double(SpeedBins[1])); Capture->Record(TEXT("Avoidance.SpeedGT1600"),double(SpeedBins[2]));
+		}
+	}
+
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveAvoidanceSolve);
+		FKernelTiming Timing(Measurements, TEXT("Avoidance.SolveMs"));
+		for (FProcessorAgent& Entry : Agents)
+		{
+			if (!Entry.bSolved || Entry.bCached)
+			{
+				continue;
+			}
+			Entry.SolvedOutput = CalculatePredictiveAvoidance(
+				Entry.Agent,
+				PolicyAgents,
+				Entry.Candidates,
+				Entry.Parameters,
+				Entry.PathFade,
+				Entry.ColliderEvaluations);
+			if (Entry.SolvedOutput.IsZero() && Entry.Agent.DesiredVelocity.SizeSquared2D() > 1)
+			{
+				bool bSafe = true;
+				const FVector OwnVelocity = Entry.Agent.DesiredVelocity;
+				for (const auto& Candidate : Entry.Candidates)
+				{
+					const auto& Other = PolicyAgents[Candidate.AgentIndex];
+					const FVector OtherVelocity = Other.DesiredVelocity.IsNearlyZero() ? Other.Velocity : Other.DesiredVelocity;
+					const FVector P = (Entry.Agent.Location - Other.Location) * FVector(1, 1, 0);
+					const double Closing = -FVector::DotProduct(P.GetSafeNormal2D(), OwnVelocity - OtherVelocity);
+					if (Other.bEnvironment || Candidate.bOverlapping || !SimilarReuseMotion(OwnVelocity, OtherVelocity)
+						|| Closing > .1 * OwnVelocity.Size2D()) { bSafe = false; break; }
+				}
+				if (bSafe && IsNearRegionSafe(Entry.Agent, PolicyAgents, QueryGrid, GridCellSize, MaximumAgentRadius, MaximumAgentSpeed,
+					Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks))
+				{
+					const float Reach = FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
+						+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
+						+ Entry.Parameters.PredictiveAvoidanceDistance);
+					const int32 Range = FMath::CeilToInt(Reach / GridCellSize);
+					const FIntPoint Cell = MakeSpatialCell(Entry.Agent.Location, GridCellSize);
+					auto& Cache = Workspace->ZeroResults.FindOrAdd(Entry.Entity);
+					Cache.Location = Entry.Agent.Location; Cache.Velocity = Entry.Agent.Velocity; Cache.DesiredVelocity = Entry.Agent.DesiredVelocity;
+					Cache.Identity = Entry.Agent.StableKey;
+					Cache.OrderRevision = Entry.OrderRevision; Cache.CreatedAt = CurrentWorldSeconds;
+					Cache.Horizon = Entry.Parameters.PredictiveAvoidanceTime; Cache.CandidateLimit = GuLiMassMovementTuning::GetCandidateLimit();
+					Cache.Radius = Entry.Agent.Radius; Cache.CellSize = GridCellSize;
+					Cache.MinimumCell = {Cell.X - Range, Cell.Y - Range}; Cache.MaximumCell = {Cell.X + Range, Cell.Y + Range};
+					Cache.MotionSignature = RegionSignature(Entry.Agent, Cache.MinimumCell, Cache.MaximumCell,
+						GridCellSize, Workspace->CellMotionSignatures);
+				}
+			}
+		}
+	}
+	if (auto* Capture = &Measurements)
+	{
+		uint64 SolveTrends = 0; for (const auto& Entry : Agents) SolveTrends += Entry.ColliderEvaluations;
+		Capture->Record(TEXT("Avoidance.TrendEvaluations"), double(QueryTrends + SolveTrends));
+		Capture->Record(TEXT("Avoidance.QueryTrendEvaluations"), double(QueryTrends));
+		Capture->Record(TEXT("Avoidance.CacheHits"), double(CacheHits));
+		Capture->Record(TEXT("Avoidance.CacheInvalidations"), double(CacheInvalidations));
+		Capture->Record(TEXT("Avoidance.CacheExpirations"), double(CacheExpirations));
+		Capture->Record(TEXT("Avoidance.CacheGuardVisits"), double(GuardVisits));
+		Capture->Record(TEXT("Avoidance.CacheGuardChecks"), double(GuardChecks));
+	}
+
+            ApplicationIndices.Reset();
+            for (int32 Index=0;Index<Agents.Num();++Index)
+            {
+                auto& E=Agents[Index];
+                if (!E.bReceiver || (!E.bSolved&&!E.bNeedsReset)) continue;
+                ApplicationIndices.Add(Index);
+                if (!E.bSolved || !Obstacles) continue;
+                const float Reach=FMath::Max(DetectionDistanceCentimeters,E.Agent.Radius+MaximumAgentRadius
+                    +(E.Agent.MaximumSpeed+MaximumAgentSpeed)*E.Parameters.PredictiveAvoidanceTime+E.Parameters.PredictiveAvoidanceDistance);
+                E.ObstacleRegion=Obstacles->CaptureRegion(E.Agent.Location,E.Agent.Location,Reach);
+            }
+        }
+    };
+}
+
+void UGuLiCommanderPredictiveAvoidanceProcessor::ExecuteBackground(FMassEntityManager& EntityManager,FMassExecutionContext& Context)
+{
+    using namespace GuLiCommanderAvoidancePolicy;
+    using namespace GuLiCommanderPredictiveAvoidancePrivate;
+    auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();if (!Hybrid) return;
+    const auto Due=AdvancePhases(Context.GetDeltaTimeSeconds(),FixedStepAccumulatorSeconds,NextSolveSequence);
+    PendingPhaseMask|=Due.PhaseMask;
+    for (uint32 I=0;I<SolvePhaseCount;++I) if (Due.PhaseMask&(1u<<I)) PendingPhaseSequences[I]=Due.SequenceByPhase[I];
+    if (Hybrid->HasPendingGameplayCalculation(TEXT("MassPredictiveAvoidance")) || !PendingPhaseMask) return;
+    if (!AsyncWorkspace) AsyncWorkspace=std::make_shared<FAsyncWorkspace>();
+    auto Work=AsyncWorkspace;auto& Agents=Work->Agents;auto& AgentIndexByEntity=Work->AgentIndexByEntity;
+    Agents.Reset();AgentIndexByEntity.Reset();
+    Work->PhaseAdvance.PhaseMask=PendingPhaseMask;Work->PhaseAdvance.LastSequence=NextSolveSequence;
+    for (uint32 I=0;I<SolvePhaseCount;++I) Work->PhaseAdvance.SequenceByPhase[I]=PendingPhaseSequences[I];
+    Work->CurrentWorldSeconds=World->GetTimeSeconds();
+    const double CurrentWorldSeconds=Work->CurrentWorldSeconds;
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveSnapshot);
+		ObstacleQuery.ForEachEntityChunk(Context, [&Agents, &AgentIndexByEntity](FMassExecutionContext& ChunkContext)
+		{
+			const TConstArrayView<FTransformFragment> Transforms =
+				ChunkContext.GetFragmentView<FTransformFragment>();
+			const TConstArrayView<FAgentRadiusFragment> Radii =
+				ChunkContext.GetFragmentView<FAgentRadiusFragment>();
+			const TConstArrayView<FMassVelocityFragment> Velocities =
+				ChunkContext.GetFragmentView<FMassVelocityFragment>();
+			const TConstArrayView<FMassMoveTargetFragment> MoveTargets =
+				ChunkContext.GetFragmentView<FMassMoveTargetFragment>();
+			const TConstArrayView<FGuLiMassIdentityFragment> Identities =
+				ChunkContext.GetFragmentView<FGuLiMassIdentityFragment>();
+			const TConstArrayView<FGuLiMassHealthFragment> Health =
+				ChunkContext.GetFragmentView<FGuLiMassHealthFragment>();
+
+			for (FMassExecutionContext::FEntityIterator It = ChunkContext.CreateEntityIterator(); It; ++It)
+			{
+				FProcessorAgent& Entry = Agents.AddDefaulted_GetRef();
+				Entry.Entity = ChunkContext.GetEntity(It);
+				Entry.SoldierId = Identities.IsEmpty() ? 0u : Identities[It].SoldierId.Value;
+				Entry.Agent.StableKey = Entry.Entity.AsNumber();
+				Entry.Agent.Location = Transforms[It].GetTransform().GetLocation();
+				Entry.Agent.Velocity = Velocities.IsEmpty()
+					? FVector::ZeroVector
+					: Velocities[It].Value;
+				Entry.Agent.Radius = Radii[It].Radius;
+				Entry.Agent.bParticipates = Health.IsEmpty() || (!Health[It].bDead && !Health[It].bPhased);
+				Entry.Agent.bMoving = MoveTargets.IsEmpty()
+					|| MoveTargets[It].GetCurrentAction() == EMassMovementAction::Move;
+				Entry.Agent.DesiredVelocity = !MoveTargets.IsEmpty() && Entry.Agent.bMoving
+					? MoveTargets[It].Forward * MoveTargets[It].DesiredSpeed.Get() : FVector::ZeroVector;
+				Entry.Agent.MaximumSpeed = FMath::Max(Entry.Agent.Velocity.Size2D(), Entry.Agent.DesiredVelocity.Size2D());
+				AgentIndexByEntity.Add(Entry.Entity, Agents.Num() - 1);
+			}
+		});
+
+		if (auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
+		{
+			const auto Snapshot=Registry->GetSnapshot();
+			for (const auto& Obstacle : Snapshot->Obstacles)
+			{
+				auto& Entry=Agents.AddDefaulted_GetRef();
+				Entry.Agent.StableKey=(uint64(1)<<63)|Obstacle.Handle.Value;
+				Entry.Agent.Location=Obstacle.Location; Entry.Agent.Radius=Obstacle.RadiusCentimeters;
+				Entry.Agent.bParticipates=true; Entry.Agent.bEnvironment=true;
+			}
+		}
+
+	ReceiverQuery.ForEachEntityChunk(
+		Context,
+		[&Agents, &AgentIndexByEntity, CurrentWorldSeconds](FMassExecutionContext& ChunkContext)
+		{
+			const TConstArrayView<FGuLiMassIdentityFragment> Identities =
+				ChunkContext.GetFragmentView<FGuLiMassIdentityFragment>();
+			const TConstArrayView<FGuLiMassHealthFragment> Health =
+				ChunkContext.GetFragmentView<FGuLiMassHealthFragment>();
+			const TConstArrayView<FGuLiMassOrderFragment> Orders =
+				ChunkContext.GetFragmentView<FGuLiMassOrderFragment>();
+			const TConstArrayView<FMassMoveTargetFragment> MoveTargets =
+				ChunkContext.GetFragmentView<FMassMoveTargetFragment>();
+			const TArrayView<FGuLiMassAvoidanceStateFragment> States =
+				ChunkContext.GetMutableFragmentView<FGuLiMassAvoidanceStateFragment>();
+			const auto Outputs=ChunkContext.GetFragmentView<FGuLiMassAvoidanceOutputFragment>();
+			const FMassMovingAvoidanceParameters& AvoidanceParameters =
+				ChunkContext.GetConstSharedFragment<FMassMovingAvoidanceParameters>();
+			const FMassMovementParameters& MovementParameters =
+				ChunkContext.GetConstSharedFragment<FMassMovementParameters>();
+
+			for (FMassExecutionContext::FEntityIterator It = ChunkContext.CreateEntityIterator(); It; ++It)
+			{
+				const int32* AgentIndex = AgentIndexByEntity.Find(ChunkContext.GetEntity(It));
+				if (!AgentIndex || !Agents.IsValidIndex(*AgentIndex))
+				{
+					continue;
+				}
+				FProcessorAgent& Entry = Agents[*AgentIndex];
+				Entry.bReceiver = true;
+				Entry.SoldierId = Identities[It].SoldierId.Value;
+				Entry.OrderRevision = Orders[It].OrderRevision;
+				Entry.LastProcessedOrderRevision = States[It].LastProcessedOrderRevision;
+				Entry.bShouldReceive = !Health[It].bDead && !Health[It].bPhased
+					&& Entry.SoldierId != 0u
+					&& Orders[It].bHasMoveTarget
+					&& MoveTargets[It].GetCurrentAction() == EMassMovementAction::Move;
+				Entry.Agent.bMoving = Entry.bShouldReceive;
+                Entry.bNeedsReset=!Entry.bShouldReceive && (States[It].LastProcessedOrderRevision!=Entry.OrderRevision
+                    || !Outputs[It].Value.IsZero());
+				Entry.Parameters = MakePredictiveParameters(AvoidanceParameters, MovementParameters);
+				// Initial population may share parameters with smaller units; use the actual fragment radius.
+				Entry.Parameters.PredictiveAvoidanceDistance = Entry.Agent.Radius * 0.35f;
+				Entry.Agent.MaximumSpeed = FMath::Max(Entry.Agent.MaximumSpeed, Entry.Parameters.MaximumSpeed);
+				Entry.PathFade = CalculatePathFade(
+					CurrentWorldSeconds,
+					MoveTargets[It].GetCurrentActionStartTime(),
+					MoveTargets[It].GetPreviousAction() == EMassMovementAction::Move,
+					MoveTargets[It].IntentAtGoal == EMassMovementAction::Stand,
+					MoveTargets[It].DistanceToGoal,
+					MoveTargets[It].DesiredSpeed.Get(),
+					AvoidanceParameters);
+			}
+		});
+
+    auto* Authority=World->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+    for (auto& E:Agents) if (E.bReceiver && Authority && (E.bNeedsReset || ShouldSolve(Work->PhaseAdvance.PhaseMask,
+        E.SoldierId,E.OrderRevision,E.LastProcessedOrderRevision,E.bShouldReceive)))
+    {
+        FGuLiHybridObjectState View;
+        if (Hybrid->ResolveTarget(Authority->MakeSoldierTargetHandle(FGuLiSoldierId{E.SoldierId}),E.Object)
+            && Hybrid->GetObjectView(E.Object,View)) {E.OwnerEpoch=View.OwnerEpoch;E.ControlEpoch=View.ControlEpoch;}
+    }
+    if (auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()) Work->Obstacles=Registry->GetSnapshot();
+    const TWeakObjectPtr<UGuLiCommanderPredictiveAvoidanceProcessor> Weak(this);
+    const uint64 Bytes=1024+uint64(Agents.Num())*4096;
+    if (Hybrid->SubmitGameplayCalculation(TEXT("MassPredictiveAvoidance"),Work,Bytes,Bytes,[Weak,Work]
+    {
+        auto* Self=Weak.Get();if (!Self||!Self->World) return;
+        auto* Mass=Self->World->GetSubsystem<UMassEntitySubsystem>();if (!Mass) return;
+        auto& Manager=Mass->GetMutableEntityManager();auto* H=Self->World->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        auto* Registry=Self->World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+        const auto CurrentObstacles=Registry?Registry->GetSnapshot().ToSharedPtr():TSharedPtr<const FGuLiDynamicObstacleSnapshot,ESPMode::ThreadSafe>{};
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PredictiveApply);
+        for (const int32 Index:Work->ApplicationIndices)
+        {
+            const auto& E=Work->Agents[Index];
+            if (!E.bReceiver || !Manager.IsEntityValid(E.Entity)) continue;
+            auto* Order=Manager.GetFragmentDataPtr<FGuLiMassOrderFragment>(E.Entity);
+            auto* Health=Manager.GetFragmentDataPtr<FGuLiMassHealthFragment>(E.Entity);
+            auto* Identity=Manager.GetFragmentDataPtr<FGuLiMassIdentityFragment>(E.Entity);
+            auto* Output=Manager.GetFragmentDataPtr<FGuLiMassAvoidanceOutputFragment>(E.Entity);
+            auto* State=Manager.GetFragmentDataPtr<FGuLiMassAvoidanceStateFragment>(E.Entity);
+            if (!Order||!Health||!Identity||!Output||!State||Identity->SoldierId.Value!=E.SoldierId) continue;
+            FGuLiHybridObjectState View;
+            const bool Current=!E.Object.IsValid() || (H && H->GetObjectView(E.Object,View)
+                && View.OwnerEpoch==E.OwnerEpoch && View.ControlEpoch==E.ControlEpoch && H->HasSimulation(E.Object));
+            // A stale result cannot clear the new owner's or new command's output.
+            if (!Current || Order->OrderRevision!=E.OrderRevision) continue;
+            if (Health->bDead||Health->bPhased
+                || (E.bSolved&&CurrentObstacles&&!CurrentObstacles->IsRegionCurrent(E.ObstacleRegion)))
+            {Output->Value=FVector::ZeroVector;State->LastProcessedOrderRevision=~Order->OrderRevision;continue;}
+            if (!E.bShouldReceive) {Output->Value=FVector::ZeroVector;State->LastProcessedOrderRevision=E.OrderRevision;continue;}
+            if (!E.bSolved) continue;
+            Output->Value=E.SolvedOutput;State->LastProcessedOrderRevision=E.OrderRevision;
+            State->LastSolveSequence=E.SolveSequence;++State->SolveCount;
+            State->ForcedSolveCount+=E.bForced?1u:0u;State->CandidateCount+=E.CandidateCount;
+            State->ColliderEvaluationCount+=uint64(E.ColliderEvaluations);
+            State->MaximumObservedBucketOccupancy=FMath::Max(State->MaximumObservedBucketOccupancy,Work->MaximumBucketOccupancy);
+        }
+        if (auto* Perf=Self->World->GetSubsystem<UGuLiPerformanceSubsystem>())
+            for (const auto& V:Work->Measurements.Values) Perf->Record(V.Key,V.Value);
+    })) PendingPhaseMask=0;
+}
 UGuLiCommanderPredictiveAvoidanceProcessor::~UGuLiCommanderPredictiveAvoidanceProcessor() = default;
 
 UGuLiCommanderPredictiveAvoidanceProcessor::UGuLiCommanderPredictiveAvoidanceProcessor()
@@ -183,6 +589,8 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 	{
 		return;
 	}
+	if (UGuLiHotspotOptions::Enabled(World,EGuLiHotspot::GameplayWorker))
+    {ExecuteBackground(EntityManager,Context);return;}
 	const FPhaseAdvanceResult PhaseAdvance = AdvancePhases(
 		Context.GetDeltaTimeSeconds(),
 		FixedStepAccumulatorSeconds,

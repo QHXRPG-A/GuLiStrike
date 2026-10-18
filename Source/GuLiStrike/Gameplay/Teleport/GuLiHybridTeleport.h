@@ -8,4 +8,5 @@ namespace GuLiHybridTeleport
     FGuid SetLevel(UWorld& World,EGuLiTeam Team,FName Skill,int32 Level);
     bool ReadRuntime(UWorld& World,EGuLiTeam Team,FName Skill,FGuLiActiveSkillRuntime& Out);
     FGuLiTeleportCastState Query(UWorld& World,EGuLiTeam Team);
+    FGuLiTeleportCastState Query(UWorld& World,EGuLiTeam Team,int32& Level);
 }

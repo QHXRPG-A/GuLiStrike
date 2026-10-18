@@ -204,6 +204,10 @@ struct FGuLiAuthorityMoveDelta
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiAuthorityMoveDeltaSignature, const FGuLiAuthorityMoveDelta&);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiAuthorityMoveEndpointsChanged, const FGuLiMoveEndpointDelta&);
+#if !UE_BUILD_SHIPPING
+// Diagnostic only: stamped after authoritative Mass transform writes, on the game thread.
+DECLARE_MULTICAST_DELEGATE_FourParams(FGuLiAuthorityPositionApplied, FGuLiSoldierId, uint32, const FVector&, double);
+#endif
 
 /** One completed request's bounded diagnostics; candidate failures are aggregated, never spammed. */
 struct FGuLiMoveCohortPlanningDebug
@@ -272,6 +276,9 @@ public:
 	FGuLiSoldierRetiringSignature OnSoldierRetiring;
 	FGuLiAuthorityMoveEndpointsChanged OnMoveEndpointsChanged;
 	FGuLiAuthorityMoveDeltaSignature OnAuthorityMoveDelta;
+#if !UE_BUILD_SHIPPING
+	FGuLiAuthorityPositionApplied OnPositionApplied;
+#endif
 	const FGuLiMoveEndpointSnapshot* FindActiveMoveEndpoint(FGuLiSoldierId SoldierId) const;
 	FGuLiMovePlanHandle FindMovePlan(const AGuLiBattlePlayerState& Owner, uint32 ClientCommandId) const;
 	bool ConsumeMovePlanProgress(FGuLiMovePlanHandle Handle, FGuLiMovePlanProgress& OutProgress);

@@ -24,7 +24,7 @@ struct FSnapshot
 };
 GULISTRIKE_API void BeginCapture();
 GULISTRIKE_API void EndCapture();
-GULISTRIKE_API const FSnapshot& GetSnapshot();
+GULISTRIKE_API FSnapshot GetSnapshot();
 GULISTRIKE_API void RecordDecoded(const FGuLiSoldierPoseChunk& Chunk);
 GULISTRIKE_API void RecordFailure();
 GULISTRIKE_API void RecordEncoded(uint32 Absolute, uint32 Delta, uint32 Bytes);
@@ -36,5 +36,6 @@ public:
 private:
 	EScope Scope;
 	double Started;
+    uint64 Generation=0;
 };
 }

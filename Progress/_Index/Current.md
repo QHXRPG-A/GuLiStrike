@@ -37,7 +37,6 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, network | — | 直接在原地图普通PIE试玩；主端职责开局前选择，局内固定。完整G→F及性能仍按独立工作安排。 | 2026-10-17 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | commander, navigation, performance, presentation | 9/10 (90%) | 玩家通过原地图固定优化入口核对窄路、墙边、拥堵和重防号转向观感；网络协议整改另立任务。 | 2026-10-11 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | combat, performance, presentation, ui | 10/11 (91%) | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | commander, navigation, resources | 4/4 (100%) | 本轮容量调整已编译；重新开启独立服务端PIE，核对自动增援后的Crowd容量及工程车避让。 | 2026-10-11 |
@@ -74,6 +73,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, network | — | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-10-18 |
 | [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-10-09 |

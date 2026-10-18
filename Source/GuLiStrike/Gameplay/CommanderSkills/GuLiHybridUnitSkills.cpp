@@ -26,7 +26,16 @@ bool Execute(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridCommand&
     if (!A.Done() || !I.Allocations.IsValidIndex(int32(M.Slot))) return false;
     FVector Ground=FVector::ZeroVector;const bool Valid=I.HasGround && GuLiSkillTargeting::ResolveGround(W,I.Ground,Ground);
     auto* Authority=W.GetSubsystem<UGuLiBattleAuthoritySubsystem>();
-    return Authority && Authority->ExecuteHybridUnitSkill(O.Key,C.Event,Valid,Ground,I.Allocations[M.Slot],I.Batch).Code==EGuLiActiveSkillResultCode::Succeeded;
+    if (!Authority) return false;
+    auto Result=Authority->ExecuteHybridUnitSkill(O.Key,C.Event,Valid,Ground,I.Allocations[M.Slot],I.Batch);
+    // Execution uses the Hybrid clock. The HUD consumes deadlines in local world time.
+    const auto* H=W.GetSubsystem<UGuLiHybridWorldSubsystem>();
+    Result.ReadyAtServerSeconds=W.GetTimeSeconds()+FMath::Max(0.,Result.ReadyAtServerSeconds-(H?H->GetLogicalSeconds():0.));
+    for (auto It=W.GetPlayerControllerIterator();It;++It)
+        if (auto* PC=It->Get();PC && PC->IsLocalController())
+            if (auto* PS=PC->GetPlayerState<AGuLiBattlePlayerState>())
+                if (auto* Skills=PS->GetCommanderSkills()) Skills->RecordLocalHybridUnitSkillResult(C.Event,M,Result);
+    return Result.Code==EGuLiActiveSkillResultCode::Succeeded;
 }
 const FGuLiHybridCommandRegistration UnitSkills({TEXT("UnitSkill"),Version,Execute});
 }
@@ -80,12 +89,28 @@ FGuid UGuLiCommanderSkillComponent::RouteHybridUnitSkillRequest(const FGuLiActiv
     if (C.Members.IsEmpty()) return {};FGuLiHybridStateArchive Archive;SerializeSkillInput(Archive,I);if (!Archive.Finish(C.Arguments)) return {};
     HybridPending.Add(C.Event,MoveTemp(Pending));if (!H->RouteCommand(C)) {HybridPending.Remove(C.Event);return {};}return C.Event;
 }
+void UGuLiCommanderSkillComponent::RecordLocalHybridUnitSkillResult(FGuid Event,
+    const FGuLiHybridCommandMember& Member,const FGuLiActiveSkillUnitResult& Result)
+{
+    auto* P=HybridPending.Find(Event);if (!P || !P->Waiting.Contains(Member.Key.StableId)) return;
+    const auto* Unit=P->Units.Find(Member.Key.StableId);
+    if (!Unit || Unit->SoldierId!=Result.SoldierId || Unit->SkillId!=Result.SkillId) return;
+    P->LocalResults.Add(Member.Key.StableId,{Member.Key,Member.ControlEpoch,Member.OwnerEpoch,Result});
+}
 void UGuLiCommanderSkillComponent::HandleHybridSkillResult(const FGuLiHybridCommandResult& R)
 {
     RejectHybridGlobalCommand(R);
     auto* P=HybridPending.Find(R.Event);if (!P) return;
-    for (const auto& M:R.Members) if (auto* U=P->Units.Find(M.Key.StableId))
-    {U->Code=M.bAccepted?EGuLiActiveSkillResultCode::Succeeded:EGuLiActiveSkillResultCode::ExecutionFailed;U->Execution.bSucceeded=M.bAccepted;P->Waiting.Remove(M.Key.StableId);}
+    for (const auto& M:R.Members) if (P->Waiting.Contains(M.Key.StableId)) if (auto* U=P->Units.Find(M.Key.StableId))
+    {
+        const auto* Local=P->LocalResults.Find(M.Key.StableId);
+        if (Local && Local->Key==M.Key && Local->ControlEpoch==M.ControlEpoch && Local->OwnerEpoch==M.OwnerEpoch
+            && (Local->Result.Code==EGuLiActiveSkillResultCode::Succeeded)==M.bAccepted)
+            *U=Local->Result;
+        else
+        {U->Code=M.bAccepted?EGuLiActiveSkillResultCode::Succeeded:EGuLiActiveSkillResultCode::ExecutionFailed;U->Execution.bSucceeded=M.bAccepted;}
+        P->Waiting.Remove(M.Key.StableId);
+    }
     if (!P->Waiting.IsEmpty()) return;FGuLiActiveSkillReply Reply;Reply.RequestId=R.Event;
     Reply.MatchEpoch=P->Request.MatchEpoch;P->Units.GenerateValueArray(Reply.Units);
     Reply.Units.Sort([](const auto& A,const auto& B){return A.SoldierId.Value<B.SoldierId.Value;});

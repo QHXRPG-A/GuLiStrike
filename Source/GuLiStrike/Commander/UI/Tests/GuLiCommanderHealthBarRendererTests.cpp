@@ -7,6 +7,7 @@
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Components/SceneComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 
@@ -177,15 +178,43 @@ bool FGuLiCommanderHealthBarSizingPolicyTest::RunTest(const FString& Parameters)
 		FVector(120.0f, 120.0f, 150.0f),
 		230.0f);
 	TestEqual(
-		TEXT("Soldier A health bar uses its own mesh top plus padding"),
+		TEXT("Soldier A health bar uses its mesh top plus the current 4cm padding"),
 		FRenderer::TestOnly_CalculateSoldierHeightOffset(SoldierABounds),
-		120.0f);
+		104.0f);
 	TestEqual(
-		TEXT("WM01 health bar uses its distinct mesh top plus padding"),
+		TEXT("WM01 health bar uses its distinct mesh top plus the current 4cm padding"),
 		FRenderer::TestOnly_CalculateSoldierHeightOffset(WM01Bounds),
-		270.0f);
+		254.0f);
 
 	return true;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiSceneUIPositionLifetimeTest,
+    "GuLiStrike.Commander.UI.SceneUI.PositionSamplingLifetimes",
+    EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiSceneUIPositionLifetimeTest::RunTest(const FString&)
+{
+    auto* Source=NewObject<USceneComponent>();FGuLiSceneUIPositionCache Cache;
+    FGuLiSceneUIElementKey Key{Source,7,1};FVector Actual(1),Out;uint32 Reads=0;
+    auto Read=[&](FVector& P){++Reads;P=Actual;return true;};
+    auto Sample=[&](double T,uint64 Revision,bool Selected)
+    {Cache.Begin();const bool Good=Cache.Resolve(Key,Revision,Selected,T,Read,Out);Cache.End();return Good;};
+    TestTrue(TEXT("New identity is available immediately"),Sample(0,1,false));
+    Actual=FVector(2);Sample(.05,1,false);
+    TestEqual(TEXT("Ordinary motion holds within 100ms"),Out,FVector(1));
+    Sample(.101,1,false);TestEqual(TEXT("Ordinary position updates after 100ms"),Out,Actual);
+    Actual=FVector(3);Sample(.11,2,false);TestEqual(TEXT("Damage/teleport revision bypasses interval"),Out,Actual);
+    Actual=FVector(4);Sample(.12,2,true);TestEqual(TEXT("Selection takes current pose"),Out,Actual);
+    Actual=FVector(5);Sample(.13,2,true);TestEqual(TEXT("Selected pose advances every frame"),Out,Actual);
+    Actual=FVector(6);Sample(.14,2,false);TestEqual(TEXT("Deselection cannot expose the old sampled pose"),Out,Actual);
+    ++Key.Generation;Actual=FVector(7);Sample(.15,2,false);
+    TestEqual(TEXT("Reused slot has a new lifetime and fresh pose"),Out,Actual);
+    TestEqual(TEXT("Old lifetime was removed"),Cache.Samples.Num(),1);
+    Cache.Begin();Cache.End();TestEqual(TEXT("Death/removal clears unseen entries"),Cache.Samples.Num(),0);
+    TestEqual(TEXT("Only the held ordinary sample avoided a source read"),Reads,7u);
+    Sample(.16,2,false);Cache.Reset();TestEqual(TEXT("Source/world rebind clears entries"),Cache.Samples.Num(),0);
+    return true;
 }
 
 #endif

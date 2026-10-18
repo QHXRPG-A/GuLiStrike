@@ -1,4 +1,5 @@
 #pragma once
+#include "GuLiNetSharedCatalog.h"
 #include "GuLiNetGameplayTypes.h"
 #include <optional>
 #include <functional>
@@ -91,6 +92,10 @@ public:
     const Economy& TeamEconomy() const {return EconomyLedger;}
     const ResourceLedger& WorldResources() const {return ResourceLedgerValue;}
     const MiningReservations& MiningPositions() const {return MiningReservationsValue;}
+    const auto& RetiredLifeView() const {return RetiredLives;}
+    void SetReducedWork(bool Enabled) {ReducedWork=Enabled;FragmentCache.clear();FragmentCacheBytes=0;}
+    auto ConsumeRetiredLifeChanges() {auto Changes=std::move(RetiredLifeChanges);RetiredLifeChanges.clear();return Changes;}
+    const auto& LockView() const {return Locks;}
 private:
     bool IsLiveMember(Id Player) const;
     bool Authorize(Id Sender,const Envelope& Header,Domain Field,bool AllowDead=false) const;
@@ -106,6 +111,11 @@ private:
     void Abort(std::string Reason) {FailureReason=std::move(Reason);}
     Revision NextDecisionVersion() const {return Version({DecisionDomain,"object"})+1;}
     Bytes CaptureFragment(const StateKey& Key) const;
+    Bytes CaptureFragmentUncached(const StateKey& Key) const;
+    bool ReducedWork=false;
+    struct FragmentEncoding {Revision Version=0,DataVersion=0;Bytes Value;};
+    mutable std::map<StateKey,FragmentEncoding> FragmentCache;
+    mutable std::size_t FragmentCacheBytes=0;
     static bool UsesResourceLedger(const StateFragment& Fragment);
     bool ApplyFragment(const StateFragment& Fragment,ResourceLedgerState* ResourceBatch=nullptr);
     std::set<StateKey> FragmentKeys(std::span<const ObjectKey> Objects) const;
@@ -126,24 +136,29 @@ private:
     ObjectKey DecisionDomain;
     const OwnerState* StageSource=nullptr;
     std::string FailureReason;
-    std::map<Id,Member> Players;
+    SharedCatalog<Id,Member> Players;
     std::map<ObjectKey,ObjectRecord> Directory;
     // Authority history is metadata, not a fabricated numeric tombstone.
     std::map<std::pair<ObjectKind,Id>,std::uint32_t> RetiredLives;
+    std::map<std::pair<ObjectKind,Id>,std::uint32_t> RetiredLifeChanges;
     std::map<std::pair<ObjectKind,std::uint32_t>,std::uint32_t> AnnouncedOrdinals;
     // Retired records remain available to in-flight work and deduplication;
     // frequent simulation queries must not traverse that historical directory.
     std::set<ObjectKey> LivingObjects,ShieldObjects;
+    std::map<ObjectKey,std::set<ObjectKey>> LiveChildren;
+    std::map<ObjectKey,ObjectKey> IndexedParents;
+    std::map<std::string,std::set<ObjectKey>> MutationMembers;
+    std::map<ObjectKey,std::set<std::string>> IndexedMutationCapabilities;
     std::map<ObjectKind,std::uint32_t> MaximumOrdinals;
-    std::map<std::string,Rule> Rules;
-    std::map<std::string,CompiledUpgradeCatalog> UpgradeCatalogs;
+    SharedCatalog<std::string,Rule> Rules;
+    SharedCatalog<std::string,CompiledUpgradeCatalog> UpgradeCatalogs;
     Economy EconomyLedger;
     ResourceLedger ResourceLedgerValue;
     MiningReservations MiningReservationsValue;
     // Immutable catalog index: a resource cut never hashes every ore node to
     // discover the handful belonging to one selected cluster object.
     std::map<ObjectKey,std::vector<std::uint32_t>> ResourceClusterNodes;
-    std::map<std::tuple<ObjectKind,std::string,ResourceInventoryKind>,std::pair<std::uint32_t,Tick>> ResourceActorProfiles;
+    SharedCatalog<std::tuple<ObjectKind,std::string,ResourceInventoryKind>,std::pair<std::uint32_t,Tick>> ResourceActorProfiles;
     std::map<Id,CommitResult> Results;
     std::map<Id,Bytes> RequestBodies;
     std::map<Id,ObjectKey> ResultDomains;
@@ -169,6 +184,6 @@ private:
     std::set<Id> Finished;
     std::map<Team,std::set<EconomyKey>> FinalizedAccounts;
     std::map<ObjectKind,std::uint32_t> NextOrdinal;
-    std::map<std::string,OwnershipDefinition> OwnershipDefinitions;
+    SharedCatalog<std::string,OwnershipDefinition> OwnershipDefinitions;
 };
 }

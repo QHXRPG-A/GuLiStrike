@@ -22,7 +22,7 @@ OwnerState OwnerState::Stage(const TransactionRequest* Request,const std::vector
     TraceScope Scope("GuLiHybrid_CoreStage");
     // Simulation state is isolated; transport queues and the unbounded event
     // history are not part of a numeric transaction's staging value.
-    OwnerState V(Match,Player,MatchEpoch);V.StageSource=this;V.DecisionDomain=DecisionDomain;
+    OwnerState V(Match,Player,MatchEpoch);V.StageSource=this;V.DecisionDomain=DecisionDomain;V.ReducedWork=ReducedWork;
     V.Players=Players;
     {
         TraceScope Copy("GuLiHybrid_CoreStageObjects");
@@ -84,7 +84,9 @@ bool OwnerState::Configure(const RuntimeManifest& M,std::string& Error)
     if (!Directory.empty() || !SetRules(M.Rules) || !BeginEconomy(M.StartingRed,M.StartingBlue)) return false;
     std::map<std::string,CompiledUpgradeCatalog> Catalogs;
     if (!ReadUpgradeCatalogs(M,Catalogs,Error) || !ConfigureUpgradeCatalogs(Catalogs)) return false;
-    if (!ReadOwnershipDefinitions(M,OwnershipDefinitions,Error) || !RuntimeObjects(M,Directory,Error) || !ConfigureOwnerResources(*this,M,Error)
+    std::map<std::string,OwnershipDefinition> Definitions;
+    if (!ReadOwnershipDefinitions(M,Definitions,Error)) return false;OwnershipDefinitions=std::move(Definitions);
+    if (!RuntimeObjects(M,Directory,Error) || !ConfigureOwnerResources(*this,M,Error)
         || !InitializeOwnedCapabilityState(Directory)) return false;
     for (const auto& [K,O]:Directory) {if (!ValidateObjectCapabilities(O)) return false;IndexRecord(O);}
     return true;
@@ -123,7 +125,10 @@ void OwnerState::IndexAttackDomain(Id Event,ObjectKey Domain)
 void OwnerState::ObserveTerminalAuthority(const Authority& A)
 {
     if (A.Object.Valid() && A.State==Life::Destroyed)
-    {auto& Life=RetiredLives[{A.Object.Kind,A.Object.StableId}];Life=std::max(Life,A.Object.Generation);}
+    {
+        const auto Key=std::pair{A.Object.Kind,A.Object.StableId};auto& Life=RetiredLives[Key];
+        if (A.Object.Generation>Life) {Life=A.Object.Generation;if (!StageSource) RetiredLifeChanges[Key]=Life;}
+    }
 }
 void OwnerState::ObserveObjectOrdinal(ObjectKind Kind,std::uint32_t Ordinal)
 {
@@ -140,6 +145,24 @@ void OwnerState::IndexRecord(const ObjectRecord& O)
 {
     if (StageSource) return; // A staged transaction reads the immutable live index.
     const auto K=O.Grant.Object;
+    const bool LiveChild=O.Parent.Valid() && O.Grant.State<Life::Dead;
+    if (const auto Old=IndexedParents.find(K);Old!=IndexedParents.end() && (!LiveChild || Old->second!=O.Parent))
+    {
+        const auto Group=LiveChildren.find(Old->second);
+        if (Group!=LiveChildren.end()) {Group->second.erase(K);if (Group->second.empty()) LiveChildren.erase(Group);}
+        IndexedParents.erase(Old);
+    }
+    if (LiveChild) {IndexedParents[K]=O.Parent;LiveChildren[O.Parent].insert(K);}
+    // Only contracts with cross-object invariants need a membership index;
+    // retired replacement sources remain indexed, unrelated flight history does not.
+    if (const auto Old=IndexedMutationCapabilities.find(K);Old!=IndexedMutationCapabilities.end())
+    {
+        for (auto Name=Old->second.begin();Name!=Old->second.end();)
+            if (!O.Capabilities.contains(*Name)) {MutationMembers[*Name].erase(K);Name=Old->second.erase(Name);} else ++Name;
+        if (Old->second.empty()) IndexedMutationCapabilities.erase(Old);
+    }
+    for (const auto& [Name,Value]:O.Capabilities) if (const auto* C=FindCapability(Name);C && C->ValidateMutation)
+    {MutationMembers[Name].insert(K);IndexedMutationCapabilities[K].insert(Name);}
     if (O.Grant.State<Life::Dead) LivingObjects.insert(K);else LivingObjects.erase(K);
     if (O.Grant.State==Life::Alive && O.Supplied && O.ShieldRadius>0) ShieldObjects.insert(K);else ShieldObjects.erase(K);
     auto& Maximum=MaximumOrdinals[OrdinalScope(K.Kind)];Maximum=std::max(Maximum,O.Ordinal);
@@ -275,7 +298,8 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::
     const auto Domain=ExecutionDomain(R);
     if (!Domain.Valid() || Owner(Domain)!=Player || !R.Header.Event.Valid()) return Wait("execution_authority");
     OwnerState Candidate=Stage(&R);Candidate.DecisionDomain=Domain;
-    auto Result=Candidate.Evaluate(Sender,R,StableId("GuLiOwnerReservation/v1",R.Header.Event.ToString()));
+    CommitResult Result;
+    {TraceScope Evaluate("GuLiHybrid_CoreEvaluate");Result=Candidate.Evaluate(Sender,R,StableId("GuLiOwnerReservation/v1",R.Header.Event.ToString()));}
     if (Result.Status==CommitStatus::Deferred || Result.Status==CommitStatus::Paused)
         return Wait("evaluation_status/"+std::to_string(static_cast<unsigned>(Result.Status)));
     if (Result.Status==CommitStatus::Committed)

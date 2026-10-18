@@ -166,4 +166,10 @@ bool UGuLiCommanderSkillComponent::CopyServerRequestReceipt(FGuid RequestId, FGu
 }
 #endif
 void UGuLiCommanderSkillComponent::ClientReceiveReply(const FGuLiActiveSkillReply& Reply)
-{ LastReply = Reply; OnSkillReply.Broadcast(Reply); }
+{
+    LastReply=Reply;
+    // Publish the new deadline before HUD subscribers read their shared display state.
+    if (!Reply.Units.IsEmpty() && Reply.MatchEpoch==RuntimeEpoch && BoundSelection.IsValid())
+        RefreshSelectedUnitSkills(BoundSelection->GetSelectionState());
+    OnSkillReply.Broadcast(Reply);
+}

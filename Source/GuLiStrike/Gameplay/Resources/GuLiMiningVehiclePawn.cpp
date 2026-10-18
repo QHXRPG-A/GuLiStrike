@@ -74,7 +74,8 @@ void AGuLiMiningVehiclePawn::BeginPlay()
 	}
 	SetActorTickEnabled(false);
 	GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->RegisterVehicle(*this);
-	if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) H->OnTransactionCompleted.AddDynamic(this,&ThisClass::ApplyHybridResourceResult);
+	if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+    {if (!H->SubscribeObjectReceipt(this,GetResourceSubsystem()->GetSettlementKey(this),[this](const auto& R){ApplyHybridResourceResult(R);})) H->OnTransactionCompleted.AddDynamic(this,&ThisClass::ApplyHybridResourceResult);}
 	FindComponentByClass<UGuLiEngineeringTravelComponent>()->OnTransportStarted.AddWeakLambda(this, [this]() { SetMiningVisual(false); });
 	FindComponentByClass<UGuLiEngineeringTravelComponent>()->OnTransportEnded.AddWeakLambda(this, [this]()
 	{
@@ -533,7 +534,7 @@ void AGuLiMiningVehiclePawn::OnRep_MiningVisual()
 
 void AGuLiMiningVehiclePawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::ApplyHybridResourceResult);
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) {H->UnsubscribeObjectReceipt(this);H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::ApplyHybridResourceResult);}
     GetResourceSubsystem()->OnResourceSettlement.RemoveAll(this);
     if (UGuLiHybridActorComponent::HasSimulation(this))
     {

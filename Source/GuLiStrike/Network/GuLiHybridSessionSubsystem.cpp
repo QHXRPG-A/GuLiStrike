@@ -55,7 +55,7 @@ struct UGuLiHybridSessionSubsystem::FState
     TSharedPtr<IGuLiHybridTransport> Transport;
     TSharedPtr<IWebSocket> Socket;
     TSharedPtr<FMailbox, ESPMode::ThreadSafe> Mailbox;
-    std::map<GuLiNet::Id, std::unique_ptr<GuLiNet::PeerChannel>> Channels;
+    std::map<GuLiNet::Id, std::shared_ptr<GuLiNet::PeerChannel>> Channels;
     std::map<GuLiNet::Id, GuLiNet::Id> PairKeys;
     struct FMotionSlot {GuLiNet::Message Latest;double NextSend=0;bool Pending=false;};
     std::map<std::tuple<GuLiNet::Id,GuLiNet::ObjectKey,GuLiNet::MessageKind>,FMotionSlot> MotionOutbox;
@@ -98,7 +98,8 @@ struct UGuLiHybridSessionSubsystem::FState
         double Armed=0,PacketAt=0;
         FGuid PacketPeer;
         TArray<uint8> Packet;
-        TArray<TPair<FGuid,FGuLiHybridMessage>> Controls;
+        struct FHeldControl {FGuid Key;FGuLiHybridMessage Value;TArray<uint8> Packed;bool Prepared=false,Encoded=false;};
+        TArray<FHeldControl> Controls;
         TArray<TPair<FGuid,FGuLiHybridMessage>> Receipts;
         TArray<FGuLiHybridMessage> LocalReceipts;
         TArray<TSharedPtr<FJsonValue>> Evidence;
@@ -146,7 +147,7 @@ struct UGuLiHybridSessionSubsystem::FState
         {
             if (!Transport->Send(Peer,MakeArrayView(P.data(),int32(P.size())))) return false;
             GuLiNet::Message Actual;
-            if (Fault.IsStale() && GuLiNet::InspectDatagramMessage(P,Actual))
+            if (Fault.IsStale() && GuLiNet::InspectDatagramMessage(P,Actual,{GuLiNetBridge::ToCore(Config.RoomId),GuLiNetBridge::ToCore(Identity.Player)}))
                 for (auto& Pending:Fault.Stale)
                 {
                     const auto& A=Actual.Header;const auto& B=Pending.Value.Header;
@@ -195,7 +196,7 @@ void UGuLiHybridSessionSubsystem::Initialize(FSubsystemCollectionBase& Collectio
 void UGuLiHybridSessionSubsystem::Deinitialize()
 {
     FTSTicker::GetCoreTicker().RemoveTicker(Ticker); Stop();
-    OnControl.Clear(); OnPeer.Clear(); OnFailure.Clear(); OnRosterChanged.Clear();OnReviewReceiptReleased.Clear();
+    OnControl.Clear(); OnPeer.Clear();AdmitPeer.Unbind();CanAdmitPeer.Unbind(); OnFailure.Clear(); OnRosterChanged.Clear();OnReviewReceiptReleased.Clear();
     Super::Deinitialize();
 }
 bool UGuLiHybridSessionSubsystem::Start(const FGuLiNetworkLaunchConfig& Config, FString& Error)
@@ -371,6 +372,14 @@ bool UGuLiHybridSessionSubsystem::SendControl(FGuLiHybridMessage Value)
 }
 bool UGuLiHybridSessionSubsystem::SendPeer(const FGuid& Peer, FGuLiHybridMessage Value)
 {
+    return SendPeerInternal(Peer,MoveTemp(Value),{},false,false);
+}
+bool UGuLiHybridSessionSubsystem::SendPeerPrepared(const FGuid& Peer,FGuLiHybridMessage Value,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes)
+{
+    return SendPeerInternal(Peer,MoveTemp(Value),Packed,true,bPacked,ReferenceBytes);
+}
+bool UGuLiHybridSessionSubsystem::SendPeerInternal(const FGuid& Peer,FGuLiHybridMessage Value,TConstArrayView<uint8> Prepared,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes)
+{
     if (!State->Active || !State->Transport || !State->Epoch || (!State->Error.IsEmpty() && !State->Reconnecting)) return false;
     const auto Id = GuLiNetBridge::ToCore(Peer); const auto It = State->Channels.find(Id);
     if (It == State->Channels.end()) return false;
@@ -380,8 +389,9 @@ bool UGuLiHybridSessionSubsystem::SendPeer(const FGuid& Peer, FGuLiHybridMessage
         || Core.Header.Kind==GuLiNet::MessageKind::WorkPrepare;
     if (Transaction && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core) && Fault.Mode==TEXT("work_hold"))
     {
-        if (Fault.Bytes+Value.Body.Num()>16*1024*1024) return false;
-        Fault.Controls.Add({Peer,Value});Fault.Bytes+=Value.Body.Num();--Fault.Remaining;++Fault.Intercepted;Fault.Record(Core);return true;
+        if (Fault.Bytes+Value.Body.Num()+Prepared.Num()>16*1024*1024) return false;
+        FState::FReviewFault::FHeldControl Held;Held.Key=Peer;Held.Value=Value;Held.Prepared=bPrepared;Held.Encoded=bPacked;Held.Packed.Append(Prepared.GetData(),Prepared.Num());
+        Fault.Controls.Add(MoveTemp(Held));Fault.Bytes+=Value.Body.Num()+Prepared.Num();--Fault.Remaining;++Fault.Intercepted;Fault.Record(Core);return true;
     }
     const bool Motion=Core.Header.Kind==GuLiNet::MessageKind::Motion || Core.Header.Kind==GuLiNet::MessageKind::ComponentState;
     bool Queued=false;
@@ -399,9 +409,17 @@ bool UGuLiHybridSessionSubsystem::SendPeer(const FGuid& Peer, FGuLiHybridMessage
     else
     {
         GuLiNet::Bytes Packed;
-        if (GuLiHybridPeerPayload::Pack(Core,Packed))
+        const bool PackedBody=bPrepared?bPacked:GuLiHybridPeerPayload::Pack(Core,Packed,&ReferenceBytes);
+        if (bPrepared && bPacked) Packed.assign(Prepared.GetData(),Prepared.GetData()+Prepared.Num());
+        if (PackedBody)
         {
-            const auto WireBytes=Packed.size();Queued=It->second->Queue({Core.Header,std::move(Packed)},FPlatformTime::Seconds());
+            const auto WireBytes=Packed.size();
+            if (!ReferenceBytes)
+            {
+                // Legacy callers/fault replay do not carry measurement metadata.
+                GuLiNet::Bytes Ignored;GuLiHybridPeerPayload::Pack(Core,Ignored,&ReferenceBytes);
+            }
+            Queued=It->second->Queue({Core.Header,std::move(Packed),ReferenceBytes},FPlatformTime::Seconds());
             if (Queued) {++State->PackedMessages;State->PackedOriginalBytes+=Core.Body.size();State->PackedWireBytes+=WireBytes;}
         }
         else Queued=It->second->Queue(Core,FPlatformTime::Seconds());
@@ -427,7 +445,8 @@ bool UGuLiHybridSessionSubsystem::SendPeer(const FGuid& Peer, FGuLiHybridMessage
     }
     if (Queued && Transaction && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core) && Fault.Mode==TEXT("business_duplicate"))
     {
-        if (It->second->Queue(Core,FPlatformTime::Seconds())) {--Fault.Remaining;++Fault.Intercepted;++Fault.Sent;Fault.Record(Core);}
+        auto Duplicate=Core;if (bPrepared&&bPacked) Duplicate.Body.assign(Prepared.GetData(),Prepared.GetData()+Prepared.Num());
+        if (It->second->Queue(Duplicate,FPlatformTime::Seconds())) {--Fault.Remaining;++Fault.Intercepted;++Fault.Sent;Fault.Record(Core);}
     }
     if (Queued && Fault.Accepts(Value.Kind) && Value.Kind==uint16(GuLiNet::MessageKind::Motion)
         && (Fault.Mode!=TEXT("stale_life") || Value.LifeGeneration>1)
@@ -520,10 +539,15 @@ bool UGuLiHybridSessionSubsystem::ReleaseReviewFault(FGuid Operation)
     if (!Operation.IsValid() || Fault.Operation!=Operation || !State->Transport) return false;
     const auto HeldMode=Fault.Mode;Fault.Mode=NAME_None;
     Fault.Stale.Reset();
-    for (const auto& V:Fault.Controls) if (!SendPeer(V.Key,V.Value)) {Fault.Mode=HeldMode;return false;} else {++Fault.Sent;++Fault.Released;}
+    for (const auto& V:Fault.Controls)
+        if (!(V.Prepared?SendPeerPrepared(V.Key,V.Value,V.Packed,V.Encoded):SendPeer(V.Key,V.Value))) {Fault.Mode=HeldMode;return false;} else {++Fault.Sent;++Fault.Released;}
     Fault.Controls.Reset();
-    auto Receipts=MoveTemp(Fault.Receipts);Fault.Receipts.Reset();
-    for (const auto& V:Receipts) {OnPeer.Broadcast(V.Key,V.Value);++Fault.Released;}
+    while (!Fault.Receipts.IsEmpty())
+    {
+        const auto& V=Fault.Receipts[0];
+        if (!AdmitPeer.IsBound() || !AdmitPeer.Execute(V.Key,V.Value)) {Fault.Mode=HeldMode;return false;}
+        OnPeer.Broadcast(V.Key,V.Value);Fault.Bytes-=V.Value.Body.Num();Fault.Receipts.RemoveAt(0,1,EAllowShrinking::No);++Fault.Released;
+    }
     auto LocalReceipts=MoveTemp(Fault.LocalReceipts);Fault.LocalReceipts.Reset();
     for (const auto& V:LocalReceipts) {OnReviewReceiptReleased.Broadcast(V);++Fault.Released;}
     if (!Fault.Packet.IsEmpty())
@@ -543,6 +567,8 @@ bool UGuLiHybridSessionSubsystem::HoldReviewLocalReceipt(const FGuLiHybridMessag
 #endif
     return false;
 }
+bool UGuLiHybridSessionSubsystem::IsReviewReceiptHoldArmed() const
+{return State->Fault.Mode==TEXT("receipt_hold") && State->Fault.Remaining>0;}
 TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot() const
 {
     check(IsInGameThread());
@@ -587,6 +613,19 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
         P->SetNumberField(TEXT("queued_bytes"),double(M.QueuedBytes)); P->SetNumberField(TEXT("oldest_queue_ms"),M.OldestSeconds*1000.);
         P->SetNumberField(TEXT("retransmit_bytes"),double(M.RetransmitBytes)); P->SetNumberField(TEXT("replaced_motion"),double(M.ReplacedStates));
         P->SetNumberField(TEXT("rejected_packets"),double(M.RejectedPackets));
+        P->SetNumberField(TEXT("delivery_backpressure"),double(M.DeliveryBackpressure));
+        P->SetNumberField(TEXT("pending_delivery_bytes"),double(M.PendingDeliveryBytes));
+        P->SetNumberField(TEXT("pending_delivery_messages"),double(M.PendingDeliveryMessages));
+        TArray<TSharedPtr<FJsonValue>> Encodings;
+        for (size_t Kind=1;Kind<M.Encodings.size();++Kind)
+        {
+            const auto& E=M.Encodings[Kind];if (!E.Messages) continue;auto J=MakeShared<FJsonObject>();
+            J->SetNumberField(TEXT("kind"),Kind);J->SetNumberField(TEXT("messages"),double(E.Messages));
+            J->SetNumberField(TEXT("canonical_bytes"),double(E.Canonical));J->SetNumberField(TEXT("encoded_bytes"),double(E.Encoded));
+            J->SetNumberField(TEXT("body_bytes"),double(E.Body));Encodings.Add(MakeShared<FJsonValueObject>(J));
+        }
+        P->SetArrayField(TEXT("first_sent_encoding"),Encodings);
+        P->SetStringField(TEXT("encoding_byte_basis"),TEXT("Same first-transmitted messages: previous canonical header and >=512-byte compression versus compact header and >=128-byte compression with stateless identity dictionary; no ACK/retry/UDP/IP bytes"));
         P->SetNumberField(TEXT("duplicate_packets"),double(M.DuplicatePackets));P->SetNumberField(TEXT("out_of_order_messages"),double(M.OutOfOrderMessages));
         P->SetNumberField(TEXT("sent_bytes"),double(M.SentBytes)); P->SetNumberField(TEXT("received_bytes"),double(M.ReceivedBytes));
         P->SetNumberField(TEXT("handoff_sent_bytes"),double(M.SentLaneBytes[static_cast<size_t>(GuLiNet::Lane::Handoff)]));
@@ -694,7 +733,9 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
                     Limits.BytesPerSecond[0]=FMath::Max(1000,Settings->ReliableBytesPerSecond);
                     Limits.BytesPerSecond[1]=FMath::Max(1000,Settings->MotionBytesPerSecond);
                     Limits.BytesPerSecond[3]=FMath::Max(1000,Settings->HandoffBytesPerSecond);
-                    State->Channels[Player] = std::make_unique<GuLiNet::PeerChannel>(PairKey,Limits); State->PairKeys[Player] = PairKey;
+                    State->Channels[Player] = std::make_shared<GuLiNet::PeerChannel>(PairKey,Limits,
+                        GuLiNet::PeerChannelBinding{GuLiNetBridge::ToCore(State->Config.RoomId),GuLiNetBridge::ToCore(State->Identity.Player),Player});
+                    State->PairKeys[Player] = PairKey;
                 }
             }
             if (!Valid || !R.Done()) { Fail(TEXT("Invalid coordinator roster")); continue; }
@@ -723,30 +764,52 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
         if (!State->Active || State->Generation != Generation) return true;
     }
     TArray<TPair<FGuid, FGuLiHybridMessage>> Received;
+    const auto Admit=[this,Now,&Received](const FGuid& Sender,const GuLiNet::Message& Packed)
+    {
+        const auto Id=GuLiNetBridge::ToCore(Sender);
+        if (Packed.Header.Sender!=Id || Packed.Header.Match!=GuLiNetBridge::ToCore(State->Config.RoomId) || Packed.Header.Epoch!=State->Epoch)
+        {
+            if (Packed.Header.Epoch!=State->Epoch) ++State->ReviewEpochRejected;else ++State->ReviewIdentityRejected;
+            if (State->ReviewHeaderRejections.Num()>=64) State->ReviewHeaderRejections.RemoveAt(0,1,EAllowShrinking::No);
+            State->ReviewHeaderRejections.Add(MakeShared<FJsonValueObject>(FState::FReviewFault::Header(Packed)));return true;
+        }
+        State->LastPeerSeen[Id]=Now;
+        if (Packed.Header.Kind==GuLiNet::MessageKind::Heartbeat) return true;
+        uint64 PlainBytes=0;
+        if (!GuLiHybridPeerPayload::PlainSize(Packed,PlainBytes))
+        {++State->PayloadDecodeFailures;State->Error=TEXT("Invalid bounded peer payload envelope");return true;}
+        if (!AdmitPeer.IsBound() || !CanAdmitPeer.IsBound() || !CanAdmitPeer.Execute(uint16(Packed.Header.Kind),PlainBytes)) return false;
+        auto V=Packed;
+        if (!GuLiHybridPeerPayload::Unpack(V))
+        {++State->PayloadDecodeFailures;State->Error=TEXT("Invalid bounded peer payload envelope");return true;}
+        auto Value=GuLiNetBridge::ToUE(V);auto& Fault=State->Fault;
+        if (V.Header.Kind==GuLiNet::MessageKind::TransactionResult && Fault.Mode==TEXT("receipt_hold")
+            && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(V) && Fault.Bytes+Value.Body.Num()<=16*1024*1024)
+        {Fault.Bytes+=Value.Body.Num();Fault.Receipts.Emplace(Sender,MoveTemp(Value));--Fault.Remaining;++Fault.Intercepted;Fault.Record(V);return true;}
+        if (!AdmitPeer.Execute(Sender,Value)) return false;
+        if (OnPeer.IsBound()) Received.Emplace(Sender,MoveTemp(Value));return true;
+    };
     if (State->Transport)
     {
-        State->Transport->Poll([this, Now, &Received](const FGuid& Sender, const TArray<uint8>& Bytes)
+        State->Transport->Poll([this, Now, &Admit](const FGuid& Sender, const TArray<uint8>& Bytes)
         {
             const auto Id = GuLiNetBridge::ToCore(Sender); const auto It = State->Channels.find(Id); if (It == State->Channels.end()) return;
-            It->second->Receive(std::span<const uint8>(Bytes.GetData(), Bytes.Num()), Now,
+            const auto Channel=It->second;
+            const bool Valid=Channel->ReceiveWithAdmission(std::span<const uint8>(Bytes.GetData(), Bytes.Num()), Now,
                 [this, Sender](std::span<const uint8> Packet) { return State->SendDatagram(Sender,Packet); },
-                [this, Sender, Id, Now, &Received](GuLiNet::Message V)
-                {
-                    if (V.Header.Sender == Id && V.Header.Match == GuLiNetBridge::ToCore(State->Config.RoomId) && V.Header.Epoch == State->Epoch)
-                    {
-                        State->LastPeerSeen[Id]=Now;
-                        if (!GuLiHybridPeerPayload::Unpack(V))
-                        {++State->PayloadDecodeFailures;State->Error=TEXT("Invalid bounded peer payload envelope");return;}
-                        if (V.Header.Kind!=GuLiNet::MessageKind::Heartbeat) Received.Emplace(Sender,GuLiNetBridge::ToUE(V));
-                    }
-                    else
-                    {
-                        if (V.Header.Epoch!=State->Epoch) ++State->ReviewEpochRejected;else ++State->ReviewIdentityRejected;
-                        if (State->ReviewHeaderRejections.Num()>=64) State->ReviewHeaderRejections.RemoveAt(0,1,EAllowShrinking::No);
-                        State->ReviewHeaderRejections.Add(MakeShared<FJsonValueObject>(FState::FReviewFault::Header(V)));
-                    }
-                });
+                [&](const GuLiNet::Message& V){return Admit(Sender,V);});
+            if (Valid) State->LastPeerSeen[Id]=Now;
         });
+        if (!State->Active || State->Generation!=Generation) return true;
+        // Retry retained reliable deliveries even if no more datagrams arrive.
+        // Shared ownership keeps a channel alive if a failure callback ends the session.
+        const auto Channels=State->Channels;
+        for (const auto& [Peer,Channel]:Channels)
+        {
+            const auto Sender=GuLiNetBridge::ToUE(Peer);
+            Channel->DrainDeliveries([&](const GuLiNet::Message& V){return Admit(Sender,V);});
+            if (!State->Active || State->Generation!=Generation) return true;
+        }
         for (auto It=State->MotionOutbox.begin();It!=State->MotionOutbox.end();)
         {
             if (!State->Channels.contains(std::get<0>(It->first)) || (!It->second.Pending && Now>It->second.NextSend+1))
@@ -776,10 +839,6 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
     }
     for (const auto& V : Received)
     {
-        auto& Fault=State->Fault;const auto Core=GuLiNetBridge::ToCore(V.Value);
-        if (Core.Header.Kind==GuLiNet::MessageKind::TransactionResult && Fault.Mode==TEXT("receipt_hold")
-            && Fault.Accepts(V.Value.Kind) && Fault.MatchesBusiness(Core) && Fault.Bytes+V.Value.Body.Num()<=16*1024*1024)
-        {Fault.Receipts.Add(V);Fault.Bytes+=V.Value.Body.Num();--Fault.Remaining;++Fault.Intercepted;Fault.Record(Core);continue;}
         OnPeer.Broadcast(V.Key, V.Value);
         if (!State->Active || State->Generation != Generation) return true;
     }

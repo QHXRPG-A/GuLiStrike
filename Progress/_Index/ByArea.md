@@ -510,9 +510,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-17 |
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | verification | 2026-10-17 |
-| [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-17 |
+| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
+| [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
 | [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-10-16 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-10-16 |
 | [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-10-16 |
@@ -762,9 +762,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-17 |
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | verification | 2026-10-17 |
-| [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-17 |
+| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
+| [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
 | [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-10-16 |
 | [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-10-16 |
 | [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-10-16 |
@@ -1572,9 +1572,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-17 |
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | verification | 2026-10-17 |
-| [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-17 |
+| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
+| [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
 | [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-10-16 |
 | [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-10-16 |
 | [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-10-16 |

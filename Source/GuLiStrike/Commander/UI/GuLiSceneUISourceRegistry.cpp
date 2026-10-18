@@ -1,6 +1,7 @@
 #include "Commander/UI/GuLiSceneUISourceRegistry.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -34,7 +35,9 @@ void UGuLiSceneUISourceRegistry::ActorSpawned(AActor* Actor)
 	if (!IsValid(Actor)) return;
 	Actor->OnEndPlay.AddUniqueDynamic(this, &ThisClass::ActorEnded);
 	// A pawn is retained even before its replicated identity arrives. The view decides whether to draw it.
-	if (Actor->IsA<APawn>()) RegisterSource(Actor, EGuLiSceneUISourceKind::PawnRing);
+	// The spectator camera's camera/frustum bounds are not a unit footprint.
+	if (Actor->IsA<APawn>() && !Actor->IsA<AGuLiCommanderCameraPawn>())
+		RegisterSource(Actor, EGuLiSceneUISourceKind::PawnRing);
 	if (Actor->IsA<AGuLiCommanderPresentationActor>()) RegisterSource(Actor, EGuLiSceneUISourceKind::Presentation);
 	RegisterSource(Actor, EGuLiSceneUISourceKind::OutlineActor);
 	Pending.AddUnique(Actor);
@@ -62,7 +65,7 @@ void UGuLiSceneUISourceRegistry::RegisterSource(UObject* Source, const EGuLiScen
 {
 	if (!IsValid(Source) || Source->IsTemplate() || Source->GetWorld() != GetWorld()) return;
 	if (Sources.ContainsByPredicate([&](const auto& S) { return S.Object.Get() == Source && S.Kind == Kind; })) return;
-	Sources.Add({Source, Kind, NextGeneration++, ++ContentRevision}); ++MembershipRevision;
+	++ContentRevision;Sources.Add({Source,Kind,NextGeneration++,ContentRevision,ContentRevision,PoseRevision}); ++MembershipRevision;
 }
 void UGuLiSceneUISourceRegistry::UnregisterSource(const UObject* Source)
 {
@@ -74,7 +77,8 @@ void UGuLiSceneUISourceRegistry::NotifyChanged(UObject* Source, const EGuLiScene
 	if (!IsValid(Source) || Source->IsTemplate() || Source->GetWorld() != GetWorld()) return;
 	if (Change == EGuLiSceneUIChange::Membership) ++MembershipRevision;
 	if (Change == EGuLiSceneUIChange::Pose) ++PoseRevision; else ++ContentRevision;
-	for (auto& Entry : Sources) if (Entry.Object.Get() == Source) ++Entry.Revision;
+	for (auto& Entry : Sources) if (Entry.Object.Get() == Source)
+    {++Entry.Revision;if (Change==EGuLiSceneUIChange::Pose) ++Entry.PoseRevision;else ++Entry.ContentRevision;}
 }
 void UGuLiSceneUISourceRegistry::GetSnapshot(TArray<FGuLiSceneUISource>& Out) const
 {
@@ -96,4 +100,18 @@ FString UGuLiSceneUISourceRegistry::GetRegistryStatsJson() const
 {
  return FString::Printf(TEXT("{\"sources\":%d,\"discovery_iterations\":%llu,\"membership_revision\":%llu,\"content_revision\":%llu,\"pose_revision\":%llu}"),
  Sources.Num(), DiscoveryIterations, MembershipRevision, ContentRevision, PoseRevision);
+}
+
+uint64 UGuLiSceneUISourceRegistry::GetSourceRevision(const UObject* Source,EGuLiSceneUIChange Change) const
+{
+    for (const auto& Entry:Sources) if (Entry.Object.Get()==Source)
+        return Change==EGuLiSceneUIChange::Pose?Entry.PoseRevision:Entry.ContentRevision;
+    return 0;
+}
+
+void UGuLiSceneUISourceRegistry::GetSourceRevisions(const UObject* Source,uint64& Content,uint64& Pose) const
+{
+    Content=Pose=0;
+    for (const auto& Entry:Sources) if (Entry.Object.Get()==Source)
+    {Content=Entry.ContentRevision;Pose=Entry.PoseRevision;return;}
 }

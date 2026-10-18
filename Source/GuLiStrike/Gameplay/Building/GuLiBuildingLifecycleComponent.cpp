@@ -31,12 +31,16 @@ void UGuLiBuildingLifecycleComponent::BeginPlay()
 			Health->OnDeath.AddDynamic(this, &ThisClass::HandleDeath);
 	if (State.InstanceId) RegisterInstance();
 	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
-		Hybrid->OnTransactionCompleted.AddDynamic(this,&ThisClass::HandleHybridTransaction);
+	{
+        const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
+        if (!Binding||!Hybrid->SubscribeObjectReceipt(this,Binding->GetObjectKey(),[this](const auto& R){HandleHybridTransaction(R);}))
+            Hybrid->OnTransactionCompleted.AddDynamic(this,&ThisClass::HandleHybridTransaction);
+    }
 }
 void UGuLiBuildingLifecycleComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
 	if (auto* Registry = GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()) Registry->Unregister(*this);
-	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);
+	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) {Hybrid->UnsubscribeObjectReceipt(this);Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);}
 	Super::EndPlay(Reason);
 }
 

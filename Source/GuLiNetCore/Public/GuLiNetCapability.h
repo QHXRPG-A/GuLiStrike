@@ -14,6 +14,8 @@ struct CapabilityContext
     const Economy& Accounts;
     const ResourceLedger& Resources;
     const std::map<Id,Member>& Members;
+    // Optional committed index for Request.Target; null retains standalone callers.
+    const std::set<ObjectKey>* LiveChildren=nullptr;
 };
 // Prepared changes are isolated until the generic scheduler has validated ALL
 // of them. Rejected work cannot partially debit an account or change ownership.
@@ -44,7 +46,7 @@ struct CapabilityContract
     std::function<bool(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&)> ValidateCreation;
     bool AcceptsRetainedSource=false;
     // Cross-object invariants inspect the entire staged delta before commit.
-    std::function<bool(const std::map<ObjectKey,ObjectRecord>&,std::span<const ObjectRecord>)> ValidateMutation;
+    std::function<bool(const std::map<ObjectKey,ObjectRecord>&,std::span<const ObjectRecord>,const std::set<ObjectKey>*)> ValidateMutation;
     // Capability-owned cross-object accounting. The output is routed through
     // the same owner work protocol; the network never knows population rules.
     std::function<bool(const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&)> ProjectChanges;
@@ -58,11 +60,13 @@ GULINETCORE_API const CapabilityContract* FindCapability(const std::string& Name
 GULINETCORE_API bool ValidateObjectCapabilities(const ObjectRecord& Object);
 GULINETCORE_API bool InitializeManifestCapabilities(RuntimeManifest& Manifest,std::string& Error);
 GULINETCORE_API bool ValidateManifestCapabilities(const RuntimeManifest& Manifest,std::string& Error);
-GULINETCORE_API bool ValidateCapabilityCommit(const CommitResult& Result,const std::map<ObjectKey,ObjectRecord>& Previous);
+GULINETCORE_API bool ValidateCapabilityCommit(const CommitResult& Result,const std::map<ObjectKey,ObjectRecord>& Previous,
+    const std::map<std::string,std::set<ObjectKey>>* MutationMembers=nullptr);
 GULINETCORE_API Team ObjectAffiliation(const ObjectRecord& Object);
 GULINETCORE_API bool ResolveCapabilityRule(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const std::string&,Rule&);
 GULINETCORE_API bool DeriveSpawnCapabilities(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,ObjectRecord&);
-GULINETCORE_API bool ValidateCapabilityMutation(const std::map<ObjectKey,ObjectRecord>& Previous,std::span<const ObjectRecord> Changes);
+GULINETCORE_API bool ValidateCapabilityMutation(const std::map<ObjectKey,ObjectRecord>& Previous,std::span<const ObjectRecord> Changes,
+    const std::map<std::string,std::set<ObjectKey>>* MutationMembers=nullptr);
 GULINETCORE_API bool ProjectCapabilityChanges(const std::map<ObjectKey,ObjectRecord>& Previous,std::map<ObjectKey,ObjectRecord>& Changes);
 GULINETCORE_API bool InitializeOwnedCapabilityState(std::map<ObjectKey,ObjectRecord>& Objects);
 }

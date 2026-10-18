@@ -1,4 +1,6 @@
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "Commander/UI/GuLiCommanderHUDDataSubsystem.h"
+#include "Commander/UI/GuLiCommanderHUDValueUpdates.h"
 #include "Gameplay/Data/GuLiGameText.h"
 #include "Commander/UI/GuLiCommanderUITheme.h"
 #include "Commander/UI/GuLiCommanderActionButton.h"
@@ -39,7 +41,8 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	const bool Ready=Sync->IsSoldierStreamReady() && GS && (!Roster || Roster->GetSnapshotMatchEpoch()==GS->GetMatchEpoch());
     const auto* Inspected=Presentation.Members.FindByPredicate([&](const auto& R){return R.Type==uint32(InspectionType);});
     const FName InspectedDefinition=Inspected?Inspected->Definition:NAME_None;
-	Presentation=BuildGuLiCommanderUIPresentation(GetWorld(),CachedSelection,Roster,Ready);
+    if (auto* Data=GetHUDData()) Presentation=Data->Read(EGuLiHUDData::Selection).Selection;
+    else Presentation=BuildGuLiCommanderUIPresentation(GetWorld(),CachedSelection,Roster,Ready);
     if (!InspectedDefinition.IsNone())
     {
         const auto* Next=Presentation.Members.FindByPredicate([&](const auto& R){return R.Definition==InspectedDefinition;});
@@ -67,8 +70,8 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	for(UGuLiCommanderActionButton* B:TypeButtons)
 	{
 		const int32 Count=B->Argument?Presentation.Types.FindRef(uint32(B->Argument)):Presentation.Members.Num();
-		B->Label->SetText(FText::FromString(FString::Printf(TEXT("%s %d"),B->Argument?*Name(uint32(B->Argument)):GuLiGameText::Text(TEXT("UI.ConsoleView.045")),Count)));
-		B->SetBackgroundColor(B->Argument==InspectionType?FLinearColor(.3f,.9f,1):FLinearColor::White);
+		GuLiHUDSetText(B->Label,FText::FromString(FString::Printf(TEXT("%s %d"),B->Argument?*Name(uint32(B->Argument)):GuLiGameText::Text(TEXT("UI.ConsoleView.045")),Count)));
+		GuLiHUDSetBackground(B,B->Argument==InspectionType?FLinearColor(.3f,.9f,1):FLinearColor::White);
 	}
 	VisibleMemberIndices.Reset();
 	for(int32 I=0;I<Presentation.Members.Num();++I)
@@ -90,20 +93,20 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	}
 	const int32 Pages=FMath::Max(1,FMath::DivideAndRoundUp(VisiblePortraitGroups.Num(),24));
 	PortraitPage=FMath::Clamp(PortraitPage,0,Pages-1);
-	PageCaption->SetText(FText::FromString(FString::Printf(TEXT("%d / %d"),PortraitPage+1,Pages)));
+	GuLiHUDSetText(PageCaption,FText::FromString(FString::Printf(TEXT("%d / %d"),PortraitPage+1,Pages)));
 	for(int32 Cell=0;Cell<PortraitButtons.Num();++Cell)
 	{
 		auto* B=PortraitButtons[Cell].Get(); const int32 Index=PortraitPage*24+Cell;
 		const bool Has=VisiblePortraitGroups.IsValidIndex(Index);
-		B->SetVisibility(Has?ESlateVisibility::Visible:ESlateVisibility::Hidden);
-		PortraitHealth[Cell]->SetVisibility(Has?ESlateVisibility::HitTestInvisible:ESlateVisibility::Hidden);
+		GuLiHUDSetVisibility(B,Has?ESlateVisibility::Visible:ESlateVisibility::Hidden);
+		GuLiHUDSetVisibility(PortraitHealth[Cell],Has?ESlateVisibility::HitTestInvisible:ESlateVisibility::Hidden);
 		if(!Has) continue;
 		const auto& Group=VisiblePortraitGroups[Index];
 		const auto& Row=Presentation.Members[Group.MemberIndices[0]];
-		B->Label->SetText(FText::AsNumber(Group.MemberIndices.Num()));
-		if(ConsoleTheme) B->Icon->SetBrushFromTexture(Row.Object.IsValid()?ConsoleTheme->FindIcon(TEXT("Unit")):ConsoleTheme->FindPortrait(uint16(Row.Type)),true);
+		GuLiHUDSetText(B->Label,FText::AsNumber(Group.MemberIndices.Num()));
+		if(ConsoleTheme) GuLiHUDSetTexture(B->Icon,Row.Object.IsValid()?ConsoleTheme->FindIcon(TEXT("Unit")):ConsoleTheme->FindPortrait(uint16(Row.Type)),true);
 		B->SetDescription(FText::GetEmpty());
-		B->SetIsEnabled(!Sync->HasUnresolvedSelectionIntent());
+		GuLiHUDSetEnabled(B,!Sync->HasUnresolvedSelectionIntent());
 		float GroupHealth=0,GroupMaximumHealth=0;
 		for(const int32 GroupMemberIndex:Group.MemberIndices)
 		{
@@ -111,10 +114,10 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 			GroupMaximumHealth+=Presentation.Members[GroupMemberIndex].MaximumHealth;
 		}
 		const float HealthPercent=GroupMaximumHealth>0?GroupHealth/GroupMaximumHealth:0;
-		PortraitHealth[Cell]->SetPercent(HealthPercent);
-		PortraitHealth[Cell]->SetFillColorAndOpacity(GroupMaximumHealth>0 && HealthPercent<.35f?FLinearColor(1,.18f,.13f):FLinearColor(.12f,.78f,.5f));
+		GuLiHUDSetPercent(PortraitHealth[Cell],HealthPercent);
+		GuLiHUDSetFillColor(PortraitHealth[Cell],GroupMaximumHealth>0 && HealthPercent<.35f?FLinearColor(1,.18f,.13f):FLinearColor(.12f,.78f,.5f));
 	}
-	SelectionCaption->SetText(FText::FromString(Presentation.bSyncing?GuLiGameText::Text(TEXT("UI.ConsoleView.048")):
+	GuLiHUDSetText(SelectionCaption,FText::FromString(Presentation.bSyncing?GuLiGameText::Text(TEXT("UI.ConsoleView.048")):
 		GuLiGameText::Format(TEXT("UI.ConsoleView.035"), {FString::Printf(TEXT("%d"), Presentation.Members.Num()), FString::Printf(TEXT("%d"), VisibleMemberIndices.Num())})));
 	float HP=0,Max=0,Shield=0,MaxShield=0;
 	for(int32 Index:VisibleMemberIndices) { const auto& Row=Presentation.Members[Index]; HP+=Row.Health; Max+=Row.MaximumHealth; Shield+=Row.Shield; MaxShield+=Row.MaximumShield; }
@@ -122,7 +125,7 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	const FString Detail=Presentation.Members.IsEmpty()?GuLiGameText::Text(TEXT("UI.ConsoleView.049")):Type?Name(Type):GuLiGameText::Text(TEXT("UI.ConsoleView.050"));
 	auto Attribute=[this](FName Key,bool Visible,const FString& Value)
 	{
-		if(auto* Row=AttributeRows.FindRef(Key).Get()) { Row->SetVisibility(Visible?ESlateVisibility::Visible:ESlateVisibility::Collapsed); Row->Label->SetText(FText::FromString(Value)); }
+		if(auto* Row=AttributeRows.FindRef(Key).Get()) { GuLiHUDSetVisibility(Row,Visible?ESlateVisibility::Visible:ESlateVisibility::Collapsed); GuLiHUDSetText(Row->Label,FText::FromString(Value)); }
 	};
 	const auto* Def=Type && Data && Type<=MAX_uint16?Data->FindDefinition(uint16(Type)):nullptr;
 	Attribute(TEXT("Health"),!VisibleMemberIndices.IsEmpty(),FString::Printf(TEXT("%.0f / %.0f"),HP,Max));
@@ -130,17 +133,21 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	Attribute(TEXT("Speed"),Def!=nullptr,Def?FString::Printf(TEXT("%.1f m/s"),Def->MovementSpeedCmPerSecond/100):TEXT(""));
 	Attribute(TEXT("Defense"),Def!=nullptr,Def?FString::Printf(TEXT("%.0f"),Def->Defense):TEXT(""));
 	Attribute(TEXT("CargoBlue"),false,TEXT("")); Attribute(TEXT("CargoRed"),false,TEXT(""));
-	if(Presentation.Members.Num()==1)
-	{
-		const auto& Row=Presentation.Members[0];
-		if(auto* PS=CommanderPlayerState.Get()) if(const auto* Private=PS->FindMiningVehiclePrivateState(Row.Actor))
-		{ Attribute(TEXT("CargoBlue"),true,FString::FromInt(Private->Cargo.Blue)); Attribute(TEXT("CargoRed"),true,FString::FromInt(Private->Cargo.Red)); }
-	}
-	SelectionDetails->SetText(FText::FromString(Detail)); SelectionHealth->SetPercent(Max>0?HP/Max:0);
-	if(ConsoleTheme) PortraitImage->SetBrushFromTexture(Type && Type<=MAX_uint16?ConsoleTheme->FindPortrait(uint16(Type)):ConsoleTheme->FindIcon(TEXT("Unit")),true);
-	PortraitImage->SetRenderOpacity(Presentation.Members.IsEmpty()?.3f:float(.96+.04*FMath::Sin(GetWorld()->GetRealTimeSeconds()*1.4)));
+    RefreshSelectionCargo();
+	GuLiHUDSetText(SelectionDetails,FText::FromString(Detail)); GuLiHUDSetPercent(SelectionHealth,Max>0?HP/Max:0);
+	if(ConsoleTheme) GuLiHUDSetTexture(PortraitImage,Type && Type<=MAX_uint16?ConsoleTheme->FindPortrait(uint16(Type)):ConsoleTheme->FindIcon(TEXT("Unit")),true);
+	GuLiHUDSetOpacity(PortraitImage,Presentation.Members.IsEmpty()?.3f:float(.96+.04*FMath::Sin(GetWorld()->GetRealTimeSeconds()*1.4)));
 }
 
+void UGuLiCommanderHUDWidget::RefreshSelectionCargo()
+{
+    auto* Model=GetHUDData();if (!Model) return;const auto& V=Model->Read(EGuLiHUDData::Resources);
+    for (const FName Name:{FName(TEXT("CargoBlue")),FName(TEXT("CargoRed"))}) if (auto* Row=AttributeRows.FindRef(Name).Get())
+    {
+        GuLiHUDSetVisibility(Row,V.bHasSelectedCargo?ESlateVisibility::Visible:ESlateVisibility::Collapsed);
+        if (V.bHasSelectedCargo) GuLiHUDSetText(Row->Label,FText::AsNumber(Name==TEXT("CargoBlue")?V.SelectedCargo.Blue:V.SelectedCargo.Red));
+    }
+}
 void UGuLiCommanderHUDWidget::CycleInspectionType()
 {
 	if(!CommanderController.IsValid() || bMenuOpen) return;
@@ -156,6 +163,8 @@ void UGuLiCommanderHUDWidget::RefreshConsoleContext()
 	const bool Ready=PC->CanIssueCommanderOrders();
 	auto* PS=CommanderPlayerState.Get(); auto* Skills=PS?PS->GetCommanderSkills():nullptr;
 	const auto* SkillCatalog=Skills?Skills->GetSkillCatalog():nullptr;
+    auto* HUDModel=GetHUDData();const FGuLiCommanderHUDReadState EmptyView;
+    const auto& HUDView=HUDModel?HUDModel->Read(EGuLiHUDData::Context):EmptyView;
 	int32 Miners=0, Builders=0, Vehicles=0, SkillUnits=0, SkillReady=0;
 	double NextReady=DBL_MAX;
 	const auto* GS=GetWorld()->GetGameState(); const double Now=GS?GS->GetServerWorldTimeSeconds():0;
@@ -166,7 +175,7 @@ void UGuLiCommanderHUDWidget::RefreshConsoleContext()
 		Builders+=Policy && Policy->Behavior==EGuLiCommanderBehavior::Construction?1:0;
 		Vehicles+=Row.Actor.IsValid()?1:0;
 	}
-	if(Skills && SkillCatalog) for(const auto& View:Skills->GetSelectedUnitSkills())
+	if(Skills && SkillCatalog) for(const auto& View:HUDView.UnitSkills)
 		if(SkillCatalog->FindSkill(View.Runtime.SkillId))
 		{ ++SkillUnits; SkillReady+=View.Runtime.ReadyAt<=Now?1:0; NextReady=FMath::Min(NextReady,FMath::Max(0.,View.Runtime.ReadyAt-Now)); }
 	const FName SelectionActions[]={TEXT("Move"),TEXT("Stop"),TEXT("Skill"),TEXT("Focus"),TEXT("Tasks"),TEXT("Mine"),TEXT("Return"),TEXT("Construct"),TEXT("Transit")};
@@ -179,9 +188,9 @@ void UGuLiCommanderHUDWidget::RefreshConsoleContext()
 		if(Action==TEXT("Transit")) Eligible=Vehicles;
 		if(Action==TEXT("Skill")) Eligible=SkillReady;
 		const bool Applicable=Selected && Eligible>0;
-		B->SetIsEnabled(Ready && Applicable);
-		B->Icon->SetRenderOpacity(Ready && Applicable?1.f:.28f);
-		B->SetBackgroundColor(PC->GetHUDTargetIntent()==Action?FLinearColor(.3f,.9f,1):FLinearColor::White);
+		GuLiHUDSetEnabled(B,Ready && Applicable);
+		GuLiHUDSetOpacity(B->Icon,Ready && Applicable?1.f:.28f);
+		GuLiHUDSetBackground(B,PC->GetHUDTargetIntent()==Action?FLinearColor(.3f,.9f,1):FLinearColor::White);
 		FString Tip;
 		if(Action==TEXT("Move")) Tip=GuLiGameText::Text(TEXT("UI.ConsoleView.051"));
 		else if(Action==TEXT("Stop")) Tip=GuLiGameText::Text(TEXT("UI.ConsoleView.052"));
@@ -208,41 +217,43 @@ void UGuLiCommanderHUDWidget::RefreshConsoleContext()
 	for(int32 I=0;I<GroupButtons.Num();++I)
 	{
 		const int32 Count=Counts.IsValidIndex(I)?Counts[I]:0;
-		GroupCounts[I]->SetText(Count>0?FText::AsNumber(Count):FText::GetEmpty());
-		GroupButtons[I]->Label->SetColorAndOpacity(Count>0?FLinearColor(.8f,.92f,.96f):FLinearColor(.32f,.4f,.45f));
-		GroupButtons[I]->SetBackgroundColor((Sync->GetRelatedControlGroups() & (1<<I))?FLinearColor(.3f,.9f,1):FLinearColor::White);
+		GuLiHUDSetText(GroupCounts[I],Count>0?FText::AsNumber(Count):FText::GetEmpty());
+		GuLiHUDSetColor(GroupButtons[I]->Label,Count>0?FLinearColor(.8f,.92f,.96f):FLinearColor(.32f,.4f,.45f));
+		GuLiHUDSetBackground(GroupButtons[I],(Sync->GetRelatedControlGroups() & (1<<I))?FLinearColor(.3f,.9f,1):FLinearColor::White);
 	}
 	auto* Building=PC->GetBuildingPlacementComponent(); auto* Teleport=PC->FindComponentByClass<UGuLiTeleportInputComponent>();
-	const bool Build=Building && Building->IsBuildModeActive(); const bool Transit=Teleport && (Teleport->IsAiming() || Teleport->QueryState().IsActive());
-	ContextPanel->GetParent()->SetVisibility((Build || Transit) && !bMenuOpen?ESlateVisibility::SelfHitTestInvisible:ESlateVisibility::Collapsed);
-	ContextCaption->SetText(Build?FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.062"))+Building->GetPlacementStatusText().ToString()):
-		Teleport?FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.063"))+Teleport->GetStatusText().ToString()):FText::GetEmpty());
+	const bool Build=Building && Building->IsBuildModeActive(); const bool Transit=Teleport && (HUDView.bTeleportAiming || HUDView.Teleport.IsActive());
+	GuLiHUDSetVisibility(ContextPanel->GetParent(),(Build || Transit) && !bMenuOpen?ESlateVisibility::SelfHitTestInvisible:ESlateVisibility::Collapsed);
+    if (Build || Transit) GuLiHUDSetText(ContextCaption,Build?FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.062"))+Building->GetPlacementStatusText().ToString()):
+        Teleport?FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.063"))+HUDView.TeleportText.ToString()):FText::GetEmpty());
 	for(int32 I=1;I<=7;++I)
 	{
 		auto* B=Cast<UGuLiCommanderActionButton>(FindRuntimeWidget(*FString::Printf(TEXT("BTN_Building_%d"),I))); if(!B) continue;
-		B->SetVisibility(Build?ESlateVisibility::Visible:ESlateVisibility::Collapsed);
+		GuLiHUDSetVisibility(B,Build?ESlateVisibility::Visible:ESlateVisibility::Collapsed);
 		const auto* Catalog=Building?Building->GetBuildingCatalog():nullptr;
 		const auto* Def=Catalog?Catalog->FindDefinition(EGuLiBuildingType(I)):nullptr;
-		B->SetIsEnabled(Def && Ready);
+		GuLiHUDSetEnabled(B,Def && Ready);
 		if(Def)
 		{
-			B->Label->SetText(Def->DisplayName);
+			GuLiHUDSetText(B->Label,Def->DisplayName);
 			B->SetDescription(FText::FromString(GuLiGameText::Format(TEXT("UI.ConsoleView.039"), {FString(*Def->DisplayName.ToString()), FString::Printf(TEXT("%d"), Def->Cost.Blue), FString::Printf(TEXT("%d"), Def->Cost.Red), FString(*Def->Description.ToString())})));
-			B->SetBackgroundColor(Building->GetSelectedBuildingDefinitionId()==Def->DefinitionId?FLinearColor(.3f,.9f,1):FLinearColor::White);
+			GuLiHUDSetBackground(B,Building->GetSelectedBuildingDefinitionId()==Def->DefinitionId?FLinearColor(.3f,.9f,1):FLinearColor::White);
 		}
 	}
 	for(const FName Name:{FName(TEXT("Build")),FName(TEXT("Teleport"))})
-		if(auto* B=Cast<UButton>(FindRuntimeWidget(*(FString(TEXT("BTN_Cmd_"))+Name.ToString())))) B->SetIsEnabled(Ready);
+		if(auto* B=Cast<UButton>(FindRuntimeWidget(*(FString(TEXT("BTN_Cmd_"))+Name.ToString())))) GuLiHUDSetEnabled(B,Ready);
 	if(auto* B=Cast<UGuLiCommanderActionButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Teleport"))); B && Teleport)
-	{ B->SetDescription(FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.064"))+Teleport->GetStatusText().ToString())); B->SetBackgroundColor(Transit?FLinearColor(.3f,.9f,1):FLinearColor::White); }
+	{ B->SetDescription(FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.064"))+HUDView.TeleportText.ToString())); GuLiHUDSetBackground(B,Transit?FLinearColor(.3f,.9f,1):FLinearColor::White); }
 	if(auto* B=Cast<UGuLiCommanderActionButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Build"))); B && Building)
-	{ B->SetDescription(FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.065"))+Building->GetPlacementStatusText().ToString())); B->SetBackgroundColor(Build?FLinearColor(.3f,.9f,1):FLinearColor::White); }
+	{ B->SetDescription(FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.065"))+Building->GetPlacementStatusText().ToString())); GuLiHUDSetBackground(B,Build?FLinearColor(.3f,.9f,1):FLinearColor::White); }
 }
 
 void UGuLiCommanderHUDWidget::RefreshConsoleTasks()
 {
 	auto* Sync=NetSyncComponent.Get(); if(!Sync || !TaskText || !TaskRows) return;
-	const auto& Summaries=Sync->GetTaskSummaries();
+    auto* HUDModel=GetHUDData();const FGuLiCommanderHUDReadState EmptyView;
+    const auto& HUDView=HUDModel?HUDModel->Read(EGuLiHUDData::Tasks):EmptyView;
+	const auto& Summaries=HUDView.Tasks;
 	auto StateName=[](EGuLiTaskStatus Status)->const TCHAR*
 	{
 		switch(Status) { case EGuLiTaskStatus::Waiting:return GuLiGameText::Text(TEXT("UI.ConsoleView.066")); case EGuLiTaskStatus::Running:return GuLiGameText::Text(TEXT("UI.ConsoleView.067"));
@@ -266,10 +277,10 @@ void UGuLiCommanderHUDWidget::RefreshConsoleTasks()
 	if(Stopped) Status+=GuLiGameText::Format(TEXT("UI.ConsoleView.041"), {FString::Printf(TEXT("%d"), Stopped)});
 	if(Safe) Status+=GuLiGameText::Format(TEXT("UI.ConsoleView.042"), {FString::Printf(TEXT("%d"), Safe)});
 	if(Summaries.Num()==1 && !Summaries[0].Tasks.IsEmpty()) Status+=FString::Printf(TEXT(" · [%s] %s"),Summaries[0].Tasks[0].bAutomatic?GuLiGameText::Text(TEXT("UI.ConsoleView.074")):GuLiGameText::Text(TEXT("UI.ConsoleView.075")),*Summaries[0].Tasks[0].DisplayName);
-	const FString Feedback=Sync->GetLastTaskFeedback(); if(!Feedback.IsEmpty()) Status+=TEXT(" · ")+Feedback;
+	const FString& Feedback=HUDView.TaskFeedback; if(!Feedback.IsEmpty()) Status+=TEXT(" · ")+Feedback;
 	if(auto* PS=CommanderPlayerState.Get())
 	{
-		const auto Reply=PS->GetCommanderSkills()->GetLastReply();
+		const auto& Reply=HUDView.SkillReply;
 		if(Reply.RequestId.IsValid() && Reply.RequestId!=LastSkillReceipt)
 		{
 			LastSkillReceipt=Reply.RequestId; SkillFeedbackUntil=GetWorld()->GetRealTimeSeconds()+8;
@@ -297,8 +308,10 @@ void UGuLiCommanderHUDWidget::RefreshConsoleTasks()
 	if(auto* PC=CommanderController.Get(); PC && !PC->GetHUDTargetIntent().IsNone())
 		Status=FString(PC->GetHUDTargetIntent()==TEXT("Skill")?GuLiGameText::Text(TEXT("UI.ConsoleView.082")):
 			GuLiGameText::Text(TEXT("UI.ConsoleView.083")))+TEXT("  |  ")+Status;
-	TaskCaption->SetText(FText::FromString(Status)); TaskCaption->SetToolTipText(FText::FromString(Status));
-	TaskCaption->SetColorAndOpacity(Safe?FLinearColor(1,.68f,.2f):Stopped?FLinearColor(1,.4f,.28f):FLinearColor(.7f,.87f,.94f));
+    GuLiHUDSetText(TaskCaption,FText::FromString(Status));
+    if (!TaskCaption->GetToolTipText().EqualTo(FText::FromString(Status))) TaskCaption->SetToolTipText(FText::FromString(Status));
+	GuLiHUDSetColor(TaskCaption,Safe?FLinearColor(1,.68f,.2f):Stopped?FLinearColor(1,.4f,.28f):FLinearColor(.7f,.87f,.94f));
+    if (!bTaskDrawerOpen) return;
 	FString Description=Status+TEXT("\n");
 	for(const auto& S:Summaries)
 	{
@@ -308,30 +321,28 @@ void UGuLiCommanderHUDWidget::RefreshConsoleTasks()
 		if(!S.Error.IsEmpty()) Description+=S.Error+TEXT("\n");
 	}
 	// Compatibility text remains a truthful full summary, and doubles as readable accessibility content.
-	FString Signature=Description;
+    FString Signature=FString::FromInt(Prefix);TaskLocations.Reset();
 	for(int32 I=0;I<Prefix;++I)
 	{
 		const auto& T=Summaries[0].Tasks[I];
 		Description+=FString::Printf(TEXT("%d. [%s] %s · %s\n"),I+1,T.bAutomatic?GuLiGameText::Text(TEXT("UI.ConsoleView.074")):GuLiGameText::Text(TEXT("UI.ConsoleView.075")),*T.DisplayName,StateName(T.Status));
-		Signature+=FString::Printf(TEXT("%d/%s/%s"),T.bHasLocation,*FVector(T.Location).ToString(),StateName(T.Status));
+        Signature+=FString::Printf(TEXT("/%d/%d:%s/%d"),T.bHasLocation,T.DisplayName.Len(),*T.DisplayName,FVector(T.Location).ContainsNaN());
+        TaskLocations.Add(T.Location);
 	}
-	Signature+=Description;
+    GuLiHUDSetText(TaskText,FText::FromString(Description));
 	if(Signature!=LastTaskDescription)
 	{
-		LastTaskDescription=Signature; TaskText->SetText(FText::FromString(Description));
+        LastTaskDescription=Signature;
 		while(TaskRows->GetChildrenCount()>1) TaskRows->RemoveChildAt(TaskRows->GetChildrenCount()-1);
-		TaskLocations.Reset();
 		for(int32 I=0;I<Prefix;++I)
 		{
-			const auto& Task=Summaries[0].Tasks[I]; TaskLocations.Add(Task.Location);
+            const auto& Task=Summaries[0].Tasks[I];
 			auto* B=MakeActionButton(NAME_None,FString::Printf(TEXT("%d · %s · %s"),I+1,*Task.DisplayName,Task.bHasLocation?GuLiGameText::Text(TEXT("UI.ConsoleLayout.015")):GuLiGameText::Text(TEXT("UI.ConsoleView.088"))),TEXT("TaskLocation"),I);
-			B->SetIsEnabled(Task.bHasLocation && !FVector(Task.Location).ContainsNaN());
+			GuLiHUDSetEnabled(B,Task.bHasLocation && !FVector(Task.Location).ContainsNaN());
 			auto* Box=WidgetTree->ConstructWidget<USizeBox>(); Box->SetHeightOverride(34); Box->SetContent(B);
 			TaskRows->AddChildToVerticalBox(Box)->SetPadding(FMargin(0,3));
 		}
 	}
-	RefreshConsoleContext();
-	RefreshActionTooltipAtCursor();
 }
 
 void UGuLiCommanderHUDWidget::RefreshActionTooltipAtCursor()
@@ -349,18 +360,22 @@ void UGuLiCommanderHUDWidget::RefreshActionTooltipAtCursor()
 
 void UGuLiCommanderHUDWidget::ShowActionTooltip(UGuLiCommanderActionButton* Button)
 {
-	HoveredAction=Button;
+	const bool ChangedButton=HoveredAction.Get()!=Button;HoveredAction=Button;
 	if(!ActionTooltip || !ActionTooltipText || !ActionTooltipTitle) return;
-	if(!Button || Button->Description.IsEmpty() || bMenuOpen) { ActionTooltip->SetVisibility(ESlateVisibility::Collapsed); return; }
+	if(!Button || Button->Description.IsEmpty() || bMenuOpen) { GuLiHUDSetVisibility(ActionTooltip,ESlateVisibility::Collapsed); return; }
 	FString Title,Body;
 	if(!Button->Description.ToString().Split(TEXT("\n"),&Title,&Body)) Title=Button->Description.ToString();
-	ActionTooltipTitle->SetText(FText::FromString(Title)); ActionTooltipText->SetText(FText::FromString(Body));
-	ActionTooltip->SetVisibility(ESlateVisibility::HitTestInvisible); ActionTooltip->ForceLayoutPrepass();
+	const bool Changed=ChangedButton || ActionTooltip->GetVisibility()==ESlateVisibility::Collapsed
+        || !ActionTooltipTitle->GetText().EqualTo(FText::FromString(Title)) || !ActionTooltipText->GetText().EqualTo(FText::FromString(Body))
+        || LastTooltipViewport!=GetCachedGeometry().GetLocalSize();
+    GuLiHUDSetText(ActionTooltipTitle,FText::FromString(Title)); GuLiHUDSetText(ActionTooltipText,FText::FromString(Body));
+    GuLiHUDSetVisibility(ActionTooltip,ESlateVisibility::HitTestInvisible);
+    if (Changed) {ActionTooltip->ForceLayoutPrepass();LastTooltipViewport=GetCachedGeometry().GetLocalSize();}
 	const auto& RootGeometry=GetCachedGeometry(); const auto& ButtonGeometry=Button->GetCachedGeometry();
 	const FBox2D Anchor(RootGeometry.AbsoluteToLocal(ButtonGeometry.LocalToAbsolute(FVector2D::ZeroVector)),
 		RootGeometry.AbsoluteToLocal(ButtonGeometry.LocalToAbsolute(ButtonGeometry.GetLocalSize())));
 	const FBox2D Bounds=GuLiCommanderHUDLayout::PlaceTooltip(Anchor,FVector2D(380,ActionTooltipTitle->GetDesiredSize().Y+ActionTooltipText->GetDesiredSize().Y+34),RootGeometry.GetLocalSize());
-	if(auto* CanvasSlot=Cast<UCanvasPanelSlot>(ActionTooltip->Slot)) { CanvasSlot->SetPosition(Bounds.Min); CanvasSlot->SetSize(Bounds.GetSize()); }
+	if(auto* CanvasSlot=Cast<UCanvasPanelSlot>(ActionTooltip->Slot)) { if (CanvasSlot->GetPosition()!=Bounds.Min) CanvasSlot->SetPosition(Bounds.Min); if (CanvasSlot->GetSize()!=Bounds.GetSize()) CanvasSlot->SetSize(Bounds.GetSize()); }
 }
 
 void UGuLiCommanderHUDWidget::HandleUIAction(FName Action,int32 Argument)
@@ -373,12 +388,12 @@ void UGuLiCommanderHUDWidget::HandleUIAction(FName Action,int32 Argument)
 	if(Action==TEXT("Help"))
 	{
 		SetMenuOpen(true); bHelpOpen=true; bQuitConfirmation=false;
-		MenuCaption->SetText(FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.089")))); return;
+		GuLiHUDSetText(MenuCaption,FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.089")))); return;
 	}
 	if(Action==TEXT("Quit"))
 	{
 		if(bQuitConfirmation) UKismetSystemLibrary::QuitGame(this,PC,EQuitPreference::Quit,false);
-		else { bQuitConfirmation=true; bHelpOpen=false; MenuCaption->SetText(FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.090")))); }
+		else { bQuitConfirmation=true; bHelpOpen=false; GuLiHUDSetText(MenuCaption,FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.090")))); }
 		return;
 	}
 	if(bMenuOpen) return;
@@ -393,14 +408,15 @@ void UGuLiCommanderHUDWidget::HandleUIAction(FName Action,int32 Argument)
 			Shift?EGuLiPanelSelectionAction::RemoveGroup:EGuLiPanelSelectionAction::SingleGroup,Argument); return;
 	}
 	if(Action==TEXT("Group")) { PC->RecallControlGroupFromUI(Argument,ClickModifiers.IsControlDown(),ClickModifiers.IsShiftDown(),ClickModifiers.IsAltDown()); return; }
-	if(Action==TEXT("Tasks")) { bTaskDrawerOpen=!bTaskDrawerOpen; TaskPanel->SetVisibility(bTaskDrawerOpen?ESlateVisibility::Visible:ESlateVisibility::Collapsed); return; }
+	if(Action==TEXT("Tasks")) { bTaskDrawerOpen=!bTaskDrawerOpen; GuLiHUDSetVisibility(TaskPanel,bTaskDrawerOpen?ESlateVisibility::Visible:ESlateVisibility::Collapsed);
+        if (bTaskDrawerOpen) {InvalidateHUDData(EGuLiHUDData::Tasks);FlushHUDData(EGuLiHUDData::Tasks);}return; }
 	if(Action==TEXT("TaskLocation"))
 	{
 		if(TaskLocations.IsValidIndex(Argument)) if(auto* Camera=PC->GetPawn<AGuLiCommanderCameraPawn>()) Camera->JumpToWorldLocation(TaskLocations[Argument]);
 		return;
 	}
 	if(Action==TEXT("Building")) { PC->GetBuildingPlacementComponent()->SelectBuildingType(EGuLiBuildingType(Argument)); RefreshConsoleContext(); return; }
-	PC->InvokeHUDCommand(Action); RefreshConsoleContext();
+	PC->InvokeHUDCommand(Action); InvalidateHUDData(EGuLiHUDData::Context|EGuLiHUDData::Tasks);FlushHUDData(EGuLiHUDData::Context|EGuLiHUDData::Tasks);
 }
 
 bool UGuLiCommanderHUDWidget::RequestPortraitSelection(EGuLiPanelSelectionAction Action,int32 PageSlot)
@@ -420,8 +436,8 @@ void UGuLiCommanderHUDWidget::SetMenuOpen(bool bOpen)
 {
 	auto* PC=CommanderController.Get(); if(!PC || !MenuLayer || (bOpen && !PC->IsCommanderViewActive())) return;
 	bMenuOpen=bOpen; bQuitConfirmation=bHelpOpen=false;
-	MenuLayer->SetVisibility(bOpen?ESlateVisibility::Visible:ESlateVisibility::Collapsed);
-	MenuCaption->SetText(FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.091"))));
+	GuLiHUDSetVisibility(MenuLayer,bOpen?ESlateVisibility::Visible:ESlateVisibility::Collapsed);
+	GuLiHUDSetText(MenuCaption,FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.091"))));
 	if(bOpen) { FInputModeUIOnly Mode; Mode.SetWidgetToFocus(TakeWidget()); Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); PC->SetInputMode(Mode); SetKeyboardFocus(); }
 	else { FInputModeGameAndUI Mode; Mode.SetHideCursorDuringCapture(false); PC->SetInputMode(Mode); UWidgetBlueprintLibrary::SetFocusToGameViewport(); }
 	ShowActionTooltip(nullptr);
@@ -431,11 +447,11 @@ bool UGuLiCommanderHUDWidget::DismissTopLayer()
 {
 	if(bMenuOpen)
 	{
-		if(bHelpOpen||bQuitConfirmation) { bHelpOpen=bQuitConfirmation=false; MenuCaption->SetText(FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.091")))); }
+		if(bHelpOpen||bQuitConfirmation) { bHelpOpen=bQuitConfirmation=false; GuLiHUDSetText(MenuCaption,FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleView.091")))); }
 		else SetMenuOpen(false);
 		return true;
 	}
-	if(bTaskDrawerOpen) { bTaskDrawerOpen=false; TaskPanel->SetVisibility(ESlateVisibility::Collapsed); return true; }
+	if(bTaskDrawerOpen) { bTaskDrawerOpen=false; GuLiHUDSetVisibility(TaskPanel,ESlateVisibility::Collapsed); return true; }
 	return false;
 }
 FReply UGuLiCommanderHUDWidget::NativeOnKeyDown(const FGeometry& Geometry,const FKeyEvent& Event)

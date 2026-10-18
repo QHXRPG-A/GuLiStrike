@@ -19,6 +19,7 @@ struct QueueLimits
     std::uint64_t ReliableSendWindow = 512;
     double ResendSeconds = 0.3;
     double ReliableTimeoutSeconds = 15;
+    bool CompactPeerEnvelope = true;
 };
 struct TransportMetrics
 {
@@ -33,13 +34,23 @@ struct TransportMetrics
     std::array<double,4> OldestLaneSeconds{},OldestPayloadSeconds{};
     std::size_t QueuedBytes = 0;
     double OldestSeconds = 0;
+    std::uint64_t DeliveryBackpressure = 0;
+    std::size_t PendingDeliveryBytes = 0, PendingDeliveryMessages = 0;
+    struct MessageBytes {std::uint64_t Messages=0,Canonical=0,Encoded=0,Body=0;};
+    // First successful transmission, not queue admission. Both sizes refer to
+    // the identical logical message, excluding fragments, retries and ACKs.
+    std::array<MessageBytes,static_cast<std::size_t>(MessageKind::WorkState)+1> Encodings{};
 };
 
 // Read-only diagnostics use the same packet decoder as reliable delivery.
 GULINETCORE_API bool InspectDatagramLane(std::span<const std::uint8_t> Packet,Lane& Out);
 // Only complete one-fragment application messages; acknowledgments and partial
 // fragments cannot prove that an application header was actually transmitted.
-GULINETCORE_API bool InspectDatagramMessage(std::span<const std::uint8_t> Packet,Message& Out);
+GULINETCORE_API bool InspectDatagramMessage(std::span<const std::uint8_t> Packet,Message& Out,PeerMessageContext Context={});
+
+// Immutable authenticated roster binding for this connection key. Omitted
+// identities are reconstructed only after that exact key has been verified.
+struct PeerChannelBinding {Id Match,LocalPlayer,RemotePlayer;};
 
 // One authenticated directed connection. The adapter binds the peer before calling Receive.
 // Acks acknowledge complete reassembly, never a gameplay transaction.
@@ -48,10 +59,15 @@ class GULINETCORE_API PeerChannel
 public:
     using SendPacket = std::function<bool(std::span<const std::uint8_t>)>;
     using Deliver = std::function<void(Message)>;
-    explicit PeerChannel(Id ConnectionKey, QueueLimits Limits = {});
+    // False retains a complete reliable message in the bounded ordering inbox.
+    // ACK means reassembled; ReceivedThrough advances only after application admission.
+    using TryDeliver = std::function<bool(const Message&)>;
+    explicit PeerChannel(Id ConnectionKey, QueueLimits Limits = {},PeerChannelBinding Binding={});
     bool Queue(const Message& Value, double NowSeconds);
     bool CanQueueHandoff() const;
     bool Receive(std::span<const std::uint8_t> Packet, double NowSeconds, const SendPacket& Ack, const Deliver& Apply);
+    bool ReceiveWithAdmission(std::span<const std::uint8_t> Packet,double NowSeconds,const SendPacket& Ack,const TryDeliver& Apply);
+    void DrainDeliveries(const TryDeliver& Apply);
     void Pump(double NowSeconds, const SendPacket& Send);
     bool HasFailed() const { return !Failure.empty(); }
     const std::string& Error() const { return Failure; }
@@ -85,6 +101,7 @@ private:
         std::size_t Count = 0;
     };
     Id Connection;
+    const PeerChannelBinding Binding;
     QueueLimits Budget;
     TransportMetrics Counters;
     std::map<Key, Outbound> Pending;

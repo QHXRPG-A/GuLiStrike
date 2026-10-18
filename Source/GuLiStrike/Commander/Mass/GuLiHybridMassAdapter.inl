@@ -5,6 +5,8 @@
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Network/GuLiHybridActorWorldSubsystem.h"
 #include "Gameplay/Units/GuLiExternalControlRegistry.h"
+#include "Network/Private/GuLiHybridMessageConversions.h"
+#include <deque>
 
 namespace GuLiHybridMass
 {
@@ -119,6 +121,106 @@ void Present(UWorld& World,const FGuLiSoldierPoseChunk& Chunk)
     if (auto* Controller=World.GetFirstPlayerController())
         if (auto* Net=Controller->FindComponentByClass<UGuLiCommanderNetSyncComponent>()) Net->ApplyHybridPoseChunk(Chunk);
 }
+struct FDecodedPose final:GuLiNet::IObjectMotionOutput
+{FGuLiSoldierPoseChunk Chunk;TArray<uint8> Acknowledgment;};
+struct FWorkerPoseCodec final:GuLiNet::IObjectMotionCodec
+{
+    uint32 Ordinal=0,ReceiveOwner=0,ReceiveEpoch=0,SendOwner=0,SendEpoch=0,Displacement=0;
+    uint64 SendGeneration=0;
+    TMap<FGuid,GuLiCommanderPoseCodec::FSender> Senders;
+    GuLiCommanderPoseCodec::FReceiver Receiver;
+    explicit FWorkerPoseCodec(uint32 Id):Ordinal(Id) {}
+    void PrepareSend(uint32 Owner,uint32 Epoch,uint32 Floor)
+    {
+        if (SendOwner!=Owner||SendEpoch!=Epoch) {Senders.Reset();SendOwner=Owner;SendEpoch=Epoch;Displacement=Floor;++SendGeneration;}
+        else if (Displacement!=Floor)
+        {const FGuLiSoldierId Id(Ordinal);for (auto& S:Senders) S.Value.Forget(MakeArrayView(&Id,1));Displacement=Floor;++SendGeneration;}
+    }
+    std::shared_ptr<GuLiNet::IObjectMotionOutput> Decode(std::span<const uint8> Bytes,GuLiNet::Revision Owner,GuLiNet::Revision Epoch,bool& Valid) override
+    {
+        Valid=false;if (Owner>MAX_uint32||Epoch>MAX_uint32) return {};
+        if (ReceiveOwner!=Owner||ReceiveEpoch!=Epoch) {Receiver.Reset(uint32(Owner),uint32(Epoch));ReceiveOwner=uint32(Owner);ReceiveEpoch=uint32(Epoch);}
+        FGuLiEncodedPoseBlock Block;Block.Data.Append(Bytes.data(),int32(Bytes.size()));auto Out=std::make_shared<FDecodedPose>();
+        const auto Result=Receiver.Decode(Block,Out->Chunk);
+        if (Result==GuLiCommanderPoseCodec::EDecodeResult::Duplicate||Result==GuLiCommanderPoseCodec::EDecodeResult::TooOld||Result==GuLiCommanderPoseCodec::EDecodeResult::MissingBaseline)
+        {Valid=true;return {};}
+        if (Result!=GuLiCommanderPoseCodec::EDecodeResult::Decoded||Out->Chunk.Samples.Num()!=1||Out->Chunk.Samples[0].SoldierId.Value!=Ordinal) return {};
+        FGuLiPoseAcknowledgment Ack;
+        if (Receiver.BuildAcknowledgment(Ack))
+        {FGuLiHybridStateArchive A;A.Value(Ack.ProtocolVersion);A.Value(Ack.SyncGeneration);A.Value(Ack.MatchEpoch);A.Value(Ack.LatestSequence);for (auto& B:Ack.ReceivedBits) A.Value(B);A.Finish(Out->Acknowledgment);}
+        Valid=true;return Out;
+    }
+    bool Feedback(GuLiNet::Id Peer,std::span<const uint8> Bytes) override
+    {
+        auto* Sender=Senders.Find(GuLiNetBridge::ToUE(Peer));if (!Sender) return false;
+        FGuLiPoseAcknowledgment Ack;FGuLiHybridStateArchive A({Bytes.data(),int32(Bytes.size())});
+        A.Value(Ack.ProtocolVersion);A.Value(Ack.SyncGeneration);A.Value(Ack.MatchEpoch);A.Value(Ack.LatestSequence);
+        for (auto& B:Ack.ReceivedBits) A.Value(B);return A.Done()&&Sender->Confirm(Ack);
+    }
+};
+struct FPoseInput
+{
+    FGuLiHybridObjectKey Key;uint64 At=0,Owner=0,Control=0;
+    uint32 Epoch=0,SimTick=0,Displacement=0;
+    FVector Position,Velocity;float Facing=0,Upper=0,Pitch[2]{},VATPhase=0,VATRate=0;
+    FGuLiQuantizedSoldierPose Value;TArray<FGuid> Peers;
+    std::shared_ptr<FWorkerPoseCodec> Codec;
+};
+struct FPoseBatch final:GuLiNet::IGameplayCalculation
+{
+    struct FSend {FGuid Peer;GuLiCommanderPoseCodec::FPreparedBlock Prepared;uint64 Generation=0;bool Admitted=false;};
+    struct FOutput {FGuLiSoldierPoseChunk Chunk;TArray<FSend> Sends;bool Valid=false;};
+    TSet<FGuLiHybridObjectKey> Keys;TArray<FPoseInput> Inputs;TArray<FOutput> Outputs;
+    void Compute() override
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_WorkerMassPoseEncode);
+        Outputs.SetNum(Inputs.Num());
+        for (int32 I=0;I<Inputs.Num();++I)
+        {
+            const auto& V=Inputs[I];auto& O=Outputs[I];auto& Chunk=O.Chunk;
+            Chunk.AuthorityEpoch=V.Epoch;Chunk.FrameSequence=uint32(V.At/6);Chunk.ServerSimTick=V.SimTick;Chunk.ServerTimeSeconds=float(double(V.At)/60.);
+            auto P=V.Value;if (!GuLiCommanderPoseCodec::Quantize(V.Position,V.Velocity,V.Facing,P)) continue;
+            P.UpperYaw=FRotator::CompressAxisToShort(V.Upper);P.LeftGunPitch=int16(FMath::RoundToInt(V.Pitch[0]*100));P.RightGunPitch=int16(FMath::RoundToInt(V.Pitch[1]*100));
+            P.VATPhase=uint16(FMath::RoundToInt(FMath::Clamp(V.VATPhase,0.f,1.f)*65535));P.VATRate=uint16(FMath::RoundToInt(FMath::Clamp(V.VATRate,0.f,255.f)*256));
+            Chunk.Samples.Add(P);V.Codec->PrepareSend(uint32(V.Owner),V.Epoch,V.Displacement);
+            for (const auto& Peer:V.Peers)
+            {
+                auto* Sender=V.Codec->Senders.Find(Peer);if (!Sender) {Sender=&V.Codec->Senders.Add(Peer);Sender->Reset(uint32(V.Owner),V.Epoch);}
+                FSend Send;Send.Peer=Peer;Send.Generation=V.Codec->SendGeneration;
+                if (Sender->Prepare(Chunk,700,Send.Prepared)) O.Sends.Add(MoveTemp(Send));
+            }
+            O.Valid=true;
+        }
+    }
+};
+struct FPoseConfirmation final:GuLiNet::IGameplayCalculation
+{
+    std::shared_ptr<FPoseBatch> Batch;
+    void Compute() override
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_WorkerPoseSendConfirmation);
+        for (int32 I=0;I<Batch->Inputs.Num();++I) for (const auto& S:Batch->Outputs[I].Sends)
+        {
+            auto& Codec=*Batch->Inputs[I].Codec;
+            if (S.Admitted&&S.Generation==Codec.SendGeneration)
+                if (auto* Sender=Codec.Senders.Find(S.Peer)) Sender->Commit(S.Prepared);
+        }
+    }
+};
+struct FPosePipeline
+{
+    std::deque<std::shared_ptr<FPoseBatch>> Pending;uint64 PendingBytes=0;
+    bool Queue(FPoseInput Input)
+    {
+        const uint64 Bytes=2048+Input.Peers.Num()*2048;if (PendingBytes+Bytes>64ull*1024*1024) return false;
+        // Newborns have different object ages. Group the ordered step by
+        // unique object identity, not adjacent equal ages, or a mixed-life
+        // army degenerates into hundreds of tiny queued batches.
+        if (Pending.empty()||Pending.back()->Keys.Contains(Input.Key)) Pending.push_back(std::make_shared<FPoseBatch>());
+        Pending.back()->Keys.Add(Input.Key);
+        Pending.back()->Inputs.Add(MoveTemp(Input));PendingBytes+=Bytes;return true;
+    }
+};
 }
 
 class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter
@@ -130,6 +232,7 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter
     uint64 LastPublished=0;
     TMap<FGuid,GuLiCommanderPoseCodec::FSender> Senders;
     GuLiCommanderPoseCodec::FReceiver Receiver;
+    std::shared_ptr<GuLiHybridMass::FWorkerPoseCodec> WorkerCodec;
     GuLiCommanderMassPrivate::FSoldierRuntime* Soldier() const
     {
         auto* Self=Authority.Get(); const auto* I=Self && Self->AuthorityState?Self->AuthorityState->SoldierIndexById.Find(Record.Ordinal):nullptr;
@@ -138,11 +241,16 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter
     void ReadModel()
     {
         auto* Self=Authority.Get(); if (!Self || !UGuLiNetworkSettings::CanPresent(Self->GetWorld())) return;
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_MassReadModelPublish);
         auto* World=Self->GetWorld(); auto* Battle=World->GetGameState<AGuLiBattleGameState>(); if (!Battle || !Battle->GetMatchEpoch()) return;
-        AGuLiSoldierStateReplicator* R=nullptr;
-        for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It) { R=*It; break; }
+        const bool Reduced=UGuLiHotspotOptions::Enabled(World,EGuLiHotspot::ReducedWork);
+        AGuLiSoldierStateReplicator* R=Reduced&&Self->AuthorityState?Self->AuthorityState->HybridReadModel.Get():nullptr;
+        if (R && (R->GetWorld()!=World || R->IsActorBeingDestroyed())) R=nullptr;
+        if (!R) for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It)
+            if (!It->IsActorBeingDestroyed()) {R=*It;break;}
         if (!R) { R=World->SpawnActor<AGuLiSoldierStateReplicator>(); if (R) R->SetReplicates(false); }
         if (!R) return;
+        if (Reduced&&Self->AuthorityState) Self->AuthorityState->HybridReadModel=R;
         if (R->GetSnapshotMatchEpoch()!=Battle->GetMatchEpoch())
         { TArray<FGuLiSoldierStateItem> All; Self->BuildSoldierStateSnapshot(All); R->ApplyAuthoritySnapshot(All,Battle->GetMatchEpoch()); }
         else { FGuLiSoldierStateItem Item; if (Self->BuildSoldierState(FGuLiSoldierId(Record.Ordinal),Item)) R->ApplyAuthorityDelta(MakeArrayView(&Item,1),Battle->GetMatchEpoch()); }
@@ -175,6 +283,21 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter
         LastPublished=At; auto* World=Self->GetWorld(); auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
         auto* Session=World->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>();
         if (!Hybrid || !Session || Hybrid->GetLogicalTick()/6>MAX_uint32) return;
+        if (UGuLiHotspotOptions::Enabled(World,EGuLiHotspot::GameplayWorker))
+        {
+            if (!WorkerCodec) WorkerCodec=std::make_shared<GuLiHybridMass::FWorkerPoseCodec>(Record.Ordinal);
+            auto& Pipeline=Self->AuthorityState->PosePipeline;if (!Pipeline) Pipeline=std::make_shared<GuLiHybridMass::FPosePipeline>();
+            GuLiHybridMass::FPoseInput V;V.Codec=WorkerCodec;V.Key=Record.Key;V.At=At;V.Owner=Record.OwnerEpoch;V.Control=Record.ControlEpoch;
+            V.Epoch=World->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch();V.SimTick=Self->AuthorityState->ServerSimTick;V.Displacement=S->DisplacementFrameFloor;
+            V.Position=S->Location;V.Velocity=S->Velocity;V.Facing=S->FacingYawDegrees;V.Upper=S->MechanicalPose.bInitialized?S->MechanicalPose.UpperYawDegrees:S->FacingYawDegrees;
+            V.Pitch[0]=S->MechanicalPose.GunPitchDegrees[0];V.Pitch[1]=S->MechanicalPose.GunPitchDegrees[1];V.VATPhase=S->VATPlayback.Phase;V.VATRate=S->VATPlayback.Rate;
+            auto& P=V.Value;P.SoldierId=S->SoldierId;P.ActiveOrderId=S->ActiveOrderId;P.HoverBlendStartMilliseconds=S->MechanicalPose.HoverBlendStartMilliseconds;
+            P.HoverBlendFromWeight=S->MechanicalPose.HoverBlendFromWeight;P.bHoverIdleTarget=S->MechanicalPose.bHoverIdleTarget;P.VATClip=S->VATPlayback.Clip;
+            P.State=S->IsAlive()?(S->ActiveOrderId?EGuLiSoldierPoseState::Moving:EGuLiSoldierPoseState::Idle):EGuLiSoldierPoseState::Destroyed;
+            P.Flags=S->DisplacementFrameFloor&&int32(uint32(At/6)-S->DisplacementFrameFloor)<3?GULI_SOLDIER_POSE_FLAG_TELEPORT:0;
+            for (const auto& M:Session->GetMembers()) if (M.bOnline&&M.bReady&&M.Player!=Session->GetLocalPlayerId()) V.Peers.Add(M.Player);
+            if (!Pipeline->Queue(std::move(V))) LastPublished=0;ReadModel();return;
+        }
         FGuLiSoldierPoseChunk Chunk; Chunk.AuthorityEpoch=World->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch();
         Chunk.FrameSequence=static_cast<uint32>(At/6); Chunk.ServerSimTick=Self->AuthorityState->ServerSimTick;
         Chunk.ServerTimeSeconds=static_cast<float>(double(At)/60.);
@@ -258,6 +381,9 @@ public:
         if (!Authority.IsValid() || !bLocal) return;
         Publish(At);
     }
+    uint32 AdvancePeriod() const override {return 6;} // Publish is due at the existing 10 Hz boundary.
+    std::shared_ptr<GuLiNet::IObjectMotionCodec> CreateMotionCodec() override
+    {if (!WorkerCodec) WorkerCodec=std::make_shared<GuLiHybridMass::FWorkerPoseCodec>(Record.Ordinal);return WorkerCodec;}
     bool Execute(const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M) override
     {
         auto* Self=Authority.Get(); auto* S=Soldier(); if (!Self || !S || !S->CanSimulate() || M.Key!=Record.Key) return false;
@@ -288,6 +414,15 @@ public:
         if (Result==GuLiCommanderPoseCodec::EDecodeResult::Duplicate || Result==GuLiCommanderPoseCodec::EDecodeResult::TooOld
             || Result==GuLiCommanderPoseCodec::EDecodeResult::MissingBaseline) return true;
         if (Result!=GuLiCommanderPoseCodec::EDecodeResult::Decoded || Chunk.Samples.Num()!=1 || Chunk.Samples[0].SoldierId.Value!=Record.Ordinal) return false;
+        GuLiHybridMass::FDecodedPose Decoded;Decoded.Chunk=MoveTemp(Chunk);FGuLiPoseAcknowledgment Ack;
+        if (Receiver.BuildAcknowledgment(Ack))
+        {FGuLiHybridStateArchive A;A.Value(Ack.ProtocolVersion);A.Value(Ack.SyncGeneration);A.Value(Ack.MatchEpoch);A.Value(Ack.LatestSequence);for (auto& Bits:Ack.ReceivedBits) A.Value(Bits);A.Finish(Decoded.Acknowledgment);}
+        return ApplyDecodedMotion(Decoded,At);
+    }
+    bool ApplyDecodedMotion(const GuLiNet::IObjectMotionOutput& Value,uint64) override
+    {
+        const auto& Decoded=static_cast<const GuLiHybridMass::FDecodedPose&>(Value);const auto& Chunk=Decoded.Chunk;
+        auto* S=Soldier();auto* Self=Authority.Get();if (!S||!Self||bLocal||Chunk.Samples.Num()!=1||Chunk.Samples[0].SoldierId.Value!=Record.Ordinal) return false;
         const auto& P=Chunk.Samples[0]; S->Location=P.GetWorldLocationCentimeters(); S->Velocity=P.GetVelocityCentimetersPerSecond(); S->FacingYawDegrees=FRotator::DecompressAxisFromByte(P.FacingYaw);
         S->ActiveOrderId=P.ActiveOrderId; S->MechanicalPose.UpperYawDegrees=FRotator::DecompressAxisFromShort(P.UpperYaw);
         S->MechanicalPose.GunPitchDegrees[0]=P.LeftGunPitch*.01f; S->MechanicalPose.GunPitchDegrees[1]=P.RightGunPitch*.01f;
@@ -297,13 +432,7 @@ public:
         auto& Manager=Self->AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
         if (Manager.IsEntityValid(S->Entity))
         { Manager.GetFragmentDataChecked<FTransformFragment>(S->Entity).SetTransform(FTransform(FRotator(0,S->FacingYawDegrees,0),S->Location)); Manager.GetFragmentDataChecked<FMassVelocityFragment>(S->Entity).Value=S->Velocity; }
-        FGuLiPoseAcknowledgment Ack;
-        if (Receiver.BuildAcknowledgment(Ack))
-        {
-            FGuLiHybridStateArchive A; A.Value(Ack.ProtocolVersion); A.Value(Ack.SyncGeneration); A.Value(Ack.MatchEpoch); A.Value(Ack.LatestSequence);
-            for (auto& Bits : Ack.ReceivedBits) A.Value(Bits); TArray<uint8> Body;
-            if (A.Finish(Body)) Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotionAcknowledgment(Record.Key,Body);
-        }
+        if (!Decoded.Acknowledgment.IsEmpty()) Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotionAcknowledgment(Record.Key,Decoded.Acknowledgment);
         GuLiHybridMass::Present(*Self->GetWorld(),Chunk); ReadModel(); return true;
     }
     bool ApplyMotionFeedback(const FGuid& Peer,TConstArrayView<uint8> Bytes) override
@@ -422,7 +551,36 @@ public:
     void Advance(uint64,double Delta) override
     {
         if (auto* Self=Authority.Get())
-        {TGuardValue<bool> Scope(Self->bAdvancingHybrid,true);Self->Tick(static_cast<float>(Delta));}
+        {
+            TGuardValue<bool> Scope(Self->bAdvancingHybrid,true);Self->Tick(static_cast<float>(Delta));
+            if (!UGuLiHotspotOptions::Enabled(Self->GetWorld(),EGuLiHotspot::GameplayWorker)||!Self->AuthorityState) return;
+            auto* H=Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();auto& Pipeline=Self->AuthorityState->PosePipeline;
+            if (!Pipeline||Pipeline->Pending.empty()||H->HasPendingGameplayCalculation(TEXT("MassPose"))) return;
+            auto Batch=Pipeline->Pending.front();const uint64 Bytes=1024+Batch->Inputs.Num()*8192;
+            const TWeakObjectPtr<UGuLiBattleAuthoritySubsystem> Weak(Self);
+            if (H->SubmitGameplayCalculation(TEXT("MassPose"),Batch,Bytes,Bytes,[Weak,Batch,Bytes]
+            {
+                auto* A=Weak.Get();if (!A||!A->AuthorityState) return;auto* World=A->GetWorld();auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_MainMassPoseDelivery);
+                for (int32 I=0;I<Batch->Inputs.Num();++I)
+                {
+                    const auto& V=Batch->Inputs[I];auto& O=Batch->Outputs[I];const auto* Index=A->AuthorityState->SoldierIndexById.Find(V.Value.SoldierId.Value);
+                    FGuLiHybridObjectState R;
+                    if (!Index||!Hybrid->GetObjectView(V.Key,R)||R.OwnerEpoch!=V.Owner||R.ControlEpoch!=V.Control||!Hybrid->HasSimulation(V.Key)) continue;
+                    const auto& S=A->AuthorityState->Soldiers[*Index];
+                    if (S.HybridKey!=V.Key||S.DisplacementFrameFloor!=V.Displacement||S.ActiveOrderId!=V.Value.ActiveOrderId||S.IsAlive()!=(V.Value.State!=EGuLiSoldierPoseState::Destroyed)) continue;
+                    if (!O.Valid) {Hybrid->Suspend(TEXT("Hybrid Mass pose exceeds quantization bounds"));continue;}
+                    for (auto& Send:O.Sends) Send.Admitted=Hybrid->PublishMotionTo(V.Key,Send.Peer,Send.Prepared.Block.Data,V.At);
+                    GuLiHybridMass::Present(*World,O.Chunk);
+                }
+                auto Ack=std::make_shared<GuLiHybridMass::FPoseConfirmation>();Ack->Batch=Batch;
+                if (!Hybrid->ConfirmGameplayCalculation(Ack,Bytes)) Hybrid->Suspend(TEXT("Pose send confirmation capacity exhausted"));
+            }))
+            {
+                for (const auto& V:Batch->Inputs) Pipeline->PendingBytes-=2048+V.Peers.Num()*2048;
+                Pipeline->Pending.pop_front();
+            }
+        }
     }
     bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const override
     {

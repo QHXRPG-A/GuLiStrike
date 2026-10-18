@@ -6,6 +6,7 @@
 #include "Network/GuLiHybridActorWorldSubsystem.h"
 #include "Network/Private/GuLiHybridComponentState.h"
 #include "Gameplay/Resources/Private/GuLiHybridResourceInventoryState.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Engine/World.h"
 
 namespace
@@ -53,12 +54,14 @@ bool UGuLiResourceInventoryComponent::BindEntity(UWorld& World,const FGuLiHybrid
     bCargo=A->GetManifest().Numbers.Contains(P+TEXT("cargo/capacity"));
     bProcessing=A->GetManifest().Numbers.Contains(P+TEXT("processor/capacity"));
     if ((!bCargo && !bProcessing) || !ConfigureFromManifest()) return false;
-    World.GetSubsystem<UGuLiHybridWorldSubsystem>()->OnTransactionCompleted.AddDynamic(this,&ThisClass::ApplyCommittedResource);return true;
+    auto* Hybrid=World.GetSubsystem<UGuLiHybridWorldSubsystem>();
+    if (!Hybrid->SubscribeObjectReceipt(this,GetInventoryKey(),[this](const auto& R){ApplyCommittedResource(R);}))
+        Hybrid->OnTransactionCompleted.AddDynamic(this,&ThisClass::ApplyCommittedResource);return true;
 }
 void UGuLiResourceInventoryComponent::UnbindEntity()
 {
     if (auto* W=EntityWorld.Get()) if (auto* H=W->GetSubsystem<UGuLiHybridWorldSubsystem>())
-        H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::ApplyCommittedResource);
+        {H->UnsubscribeObjectReceipt(this);H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::ApplyCommittedResource);}
     EntityKey={};EntityDefinition=NAME_None;EntityWorld.Reset();
 }
 void UGuLiResourceInventoryComponent::BeginPlay()
@@ -66,12 +69,13 @@ void UGuLiResourceInventoryComponent::BeginPlay()
     Super::BeginPlay();
     if (UGuLiNetworkSettings::IsHybrid(GetWorld()) && !ConfigureFromManifest())
     {GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Resource capability differs from its exported definition"));return;}
-    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) H->OnTransactionCompleted.AddDynamic(this,&ThisClass::ApplyCommittedResource);
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+    {if (!H->SubscribeObjectReceipt(this,GetInventoryKey(),[this](const auto& R){ApplyCommittedResource(R);})) H->OnTransactionCompleted.AddDynamic(this,&ThisClass::ApplyCommittedResource);}
     else if (auto* R=GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()) R->OnResourceSettlement.AddUObject(this,&ThisClass::ApplyCommittedResource);
 }
 void UGuLiResourceInventoryComponent::EndPlay(EEndPlayReason::Type Reason)
 {
-    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::ApplyCommittedResource);
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) {H->UnsubscribeObjectReceipt(this);H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::ApplyCommittedResource);}
     if (auto* R=GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()) R->OnResourceSettlement.RemoveAll(this);
     Super::EndPlay(Reason);
 }
@@ -139,6 +143,7 @@ void UGuLiResourceInventoryComponent::ApplyResourceResult(const FGuLiHybridTrans
 }
 void UGuLiResourceInventoryComponent::AdvanceLogical(float Delta)
 {
+    const bool Reduced=UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::ReducedWork);
     RefreshCommittedInventory();
     if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
     {
@@ -146,11 +151,14 @@ void UGuLiResourceInventoryComponent::AdvanceLogical(float Delta)
         if (PendingCargo.IsValid() && H->FindTransactionResult(PendingCargo,R)) ApplyResourceResult(R);
         if (PendingEvent.IsValid() && H->FindTransactionResult(PendingEvent,R)) ApplyResourceResult(R);
     }
+    // The revision lookup and pending receipt above are the wakeup conditions.
+    // Empty/cargo-only inventories have no accumulator or scene work to advance.
+    if (Reduced&&(!bProcessing||Queue.IsEmpty())) return;
     auto* Resources=GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();auto* Owner=GetOwner();
     const auto* Life=Owner?Owner->FindComponentByClass<UGuLiBuildingLifecycleComponent>():nullptr;
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();FGuLiHybridObjectState Object;
     const auto Key=GetInventoryKey();
-    const bool CanAdvance=H?H->HasSimulation(Key) && H->GetObject(Key,Object) && Object.bCompleted
+    const bool CanAdvance=H?H->HasSimulation(Key) && (Reduced?H->GetObjectView(Key,Object):H->GetObject(Key,Object)) && Object.bCompleted
         :Owner && UGuLiHybridActorComponent::HasSimulation(Owner) && (!Life || Life->IsCompleted());
     if (!Resources || !bProcessing || !CanAdvance || Queue.IsEmpty()) return;
     if (!Queue[0].DeliveryEvent.IsValid())

@@ -25,6 +25,8 @@ struct FGuLiHybridMember
 };
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiHybridControlReceived, const FGuLiHybridMessage&);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiHybridPeerReceived, const FGuid&, const FGuLiHybridMessage&);
+DECLARE_DELEGATE_RetVal_TwoParams(bool,FGuLiHybridPeerAdmit,const FGuid&,const FGuLiHybridMessage&);
+DECLARE_DELEGATE_RetVal_TwoParams(bool,FGuLiHybridPeerCapacity,uint16,uint64);
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiHybridSessionFailure, const FString&);
 DECLARE_MULTICAST_DELEGATE(FGuLiHybridRosterChanged);
 
@@ -42,6 +44,7 @@ public:
     void Stop();
     bool SendControl(FGuLiHybridMessage Message);
     bool SendPeer(const FGuid& Peer, FGuLiHybridMessage Message);
+    bool SendPeerPrepared(const FGuid& Peer,FGuLiHybridMessage Message,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes=0);
     bool CanQueueHandoff(const FGuid& Peer) const;
     bool BroadcastPeer(const FGuLiHybridMessage& Message);
     bool IsConnected() const;
@@ -61,12 +64,16 @@ public:
     bool ReleaseReviewFault(FGuid Operation);
     /** Uses the same opt-in receipt hold for a local numeric result notification. */
     bool HoldReviewLocalReceipt(const FGuLiHybridMessage& Message);
+    bool IsReviewReceiptHoldArmed() const;
     FGuLiHybridControlReceived OnReviewReceiptReleased;
     FGuLiHybridControlReceived OnControl;
     FGuLiHybridPeerReceived OnPeer;
+    FGuLiHybridPeerAdmit AdmitPeer;
+    FGuLiHybridPeerCapacity CanAdmitPeer;
     FGuLiHybridSessionFailure OnFailure;
     FGuLiHybridRosterChanged OnRosterChanged;
 private:
+    bool SendPeerInternal(const FGuid& Peer,FGuLiHybridMessage Message,TConstArrayView<uint8> Packed,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes=0);
     struct FState;
     struct FStateDeleter { void operator()(FState* Value) const; };
     TUniquePtr<FState,FStateDeleter> State;

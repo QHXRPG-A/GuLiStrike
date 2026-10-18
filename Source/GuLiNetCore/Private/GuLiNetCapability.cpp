@@ -1,6 +1,7 @@
 #include "GuLiNetCapability.h"
 #include "GuLiNetManifest.h"
 #include <cmath>
+#include <algorithm>
 
 namespace GuLiNet
 {
@@ -33,8 +34,9 @@ bool ReadCapabilityStates(Reader& R,CapabilityStates& Out)
     if (!R.U32(Count) || Count>MaximumObjectCapabilities) return false;
     for (std::uint32_t I=0;I<Count;++I)
     {
-        std::string Name;CapabilityState V;
-        if (!R.Text(Name,192) || !ValidName(Name) || !R.U32(V.Version) || !R.Blob(V.Data,MaximumCapabilityBytes)) return false;
+        std::string Name;CapabilityState V;Bytes Data;
+        if (!R.Text(Name,192) || !ValidName(Name) || !R.U32(V.Version) || !R.Blob(Data,MaximumCapabilityBytes)) return false;
+        V.Data=std::move(Data);
         Total+=V.Data.size();const auto* C=FindCapability(Name);
         if (Total>MaximumCapabilityBytes || !C || C->Version!=V.Version || !Values.emplace(Name,std::move(V)).second) return false;
     }
@@ -92,13 +94,17 @@ bool ValidateManifestCapabilities(const RuntimeManifest& M,std::string& Error)
     for (const auto& [_,C]:Contracts().Values) if (C.ValidateManifest && !C.ValidateManifest(M,Error)) return false;
     return true;
 }
-bool ValidateCapabilityCommit(const CommitResult& R,const std::map<ObjectKey,ObjectRecord>& Previous)
+bool ValidateCapabilityCommit(const CommitResult& R,const std::map<ObjectKey,ObjectRecord>& Previous,const std::map<std::string,std::set<ObjectKey>>* MutationMembers)
 {
     const auto* C=FindCapability(R.Capability);
     if (!C || R.Kind!=TransactionKind::Capability || R.Objects.empty() || R.Objects.size()>MaximumCapabilityObjects) return false;
     std::set<ObjectKey> Keys;
     std::set<std::pair<ObjectKind,std::uint32_t>> Ordinals;
-    for (const auto& [K,O]:Previous) if (O.Ordinal) Ordinals.emplace(OrdinalScope(K.Kind),O.Ordinal);
+    // Existing-object mutations cannot introduce an ordinal. Building the
+    // entire historical set for every territory sample scaled with dead flights.
+    const bool CreatesOrdinal=std::any_of(R.Objects.begin(),R.Objects.end(),[&](const auto& O)
+        {return O.Ordinal&&!Previous.contains(O.Grant.Object);});
+    if (CreatesOrdinal) for (const auto& [K,O]:Previous) if (O.Ordinal) Ordinals.emplace(OrdinalScope(K.Kind),O.Ordinal);
     for (const auto& Next:R.Objects)
     {
         const auto I=Previous.find(Next.Grant.Object);
@@ -118,13 +124,19 @@ bool ValidateCapabilityCommit(const CommitResult& R,const std::map<ObjectKey,Obj
         }
         else if (!C->ValidateTransition(I->second,Next)) return false;
     }
-    return ValidateCapabilityMutation(Previous,R.Objects);
+    return ValidateCapabilityMutation(Previous,R.Objects,MutationMembers);
 }
-bool ValidateCapabilityMutation(const std::map<ObjectKey,ObjectRecord>& Previous,std::span<const ObjectRecord> Changes)
+bool ValidateCapabilityMutation(const std::map<ObjectKey,ObjectRecord>& Previous,std::span<const ObjectRecord> Changes,const std::map<std::string,std::set<ObjectKey>>* MutationMembers)
 {
     if (!Contracts().Valid) return false;
-    for (const auto& [_,C]:Contracts().Values)
-        if (C.ValidateMutation && !C.ValidateMutation(Previous,Changes)) return false;
+    static const std::set<ObjectKey> Empty;
+    for (const auto& [Name,C]:Contracts().Values) if (C.ValidateMutation)
+    {
+        const std::set<ObjectKey>* Members=nullptr;
+        if (MutationMembers)
+        {const auto I=MutationMembers->find(Name);Members=I==MutationMembers->end()?&Empty:&I->second;}
+        if (!C.ValidateMutation(Previous,Changes,Members)) return false;
+    }
     return true;
 }
 Team ObjectAffiliation(const ObjectRecord& O)

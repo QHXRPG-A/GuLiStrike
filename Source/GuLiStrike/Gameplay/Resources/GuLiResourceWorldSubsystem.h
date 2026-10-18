@@ -84,6 +84,7 @@ public:
     void UnregisterHybridOutpost(AGuLiTerritoryOutpostActor& Outpost,int32 Index);
     void ApplyHybridControlPoint(const FGuLiHybridObjectState& State,bool Effects);
     FIntPoint GetHybridCaptureCounts(uint64 LogicalTick,int32 Territory);
+    bool TryGetHybridCaptureCounts(uint64 LogicalTick,uint64 AfterTick,int32 Territory,FIntPoint& Out);
 	FGuLiHybridObjectKey GetSettlementKey(const AActor* Actor) const;
 	uint64 GetSettlementTick() const;
 	FGuid SubmitResourceSettlement(const FGuLiHybridResourceRequest& Request);
@@ -158,6 +159,9 @@ private:
     uint64 HybridCaptureTick=UINT64_MAX;
     uint32 HybridCaptureEpoch=0;
     TArray<FIntPoint> HybridCaptureCounts;
+    uint64 BackgroundCaptureTick=0;
+    uint32 BackgroundCaptureEpoch=0;
+    TArray<FIntPoint> BackgroundCaptureCounts;
 	float MaintenanceAccumulator = 0;
 	float ActiveMaintenancePeriod = 0;
 	FGuid MaintenanceAccount;

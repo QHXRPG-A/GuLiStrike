@@ -58,7 +58,7 @@ bool Transition(const ObjectRecord& Before,const ObjectRecord& After)
     Copy.RelationVersion=Before.RelationVersion;Copy.Supplied=Before.Supplied;Copy.Capabilities[Capability]=Before.Capabilities.at(Capability);
     Writer X,Y;WriteObject(X,Before);WriteObject(Y,Copy);return X.Take()==Y.Take();
 }
-bool Mutation(const std::map<ObjectKey,ObjectRecord>& Before,std::span<const ObjectRecord> Changes)
+bool Mutation(const std::map<ObjectKey,ObjectRecord>& Before,std::span<const ObjectRecord> Changes,const std::set<ObjectKey>* Members)
 {
     std::map<ObjectKey,const ObjectRecord*> Overlay;
     for (const auto& O:Changes) if (!Overlay.emplace(O.Grant.Object,&O).second) return false;
@@ -78,7 +78,12 @@ bool Mutation(const std::map<ObjectKey,ObjectRecord>& Before,std::span<const Obj
             return Overlay.contains(K) && !Before.contains(K) && Target->Parent==O.Grant.Object && Target->Grant.Faction==O.Grant.Faction;
         return true;
     };
-    for (const auto& [K,O]:Before) if (!Overlay.contains(K) && !Check(O)) return false;
+    if (Members)
+    {
+        for (const auto K:*Members) if (!Overlay.contains(K))
+        {const auto I=Before.find(K);if (I==Before.end() || !Check(I->second)) return false;}
+    }
+    else for (const auto& [K,O]:Before) if (!Overlay.contains(K) && !Check(O)) return false;
     for (const auto& [_,O]:Overlay) if (!Check(*O)) return false;
     return true;
 }

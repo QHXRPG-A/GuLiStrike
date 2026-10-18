@@ -163,6 +163,7 @@ struct FGuLiCommanderSoldierInstanceHandle
 	EGuLiTeam BatchTeam = EGuLiTeam::Unassigned;
 	int32 UnitInstanceIndex = INDEX_NONE;
 	int32 RingInstanceIndex = INDEX_NONE;
+    uint64 SceneUIGeneration=0,SceneUIUrgentRevision=1;
 };
 
 /** Non-UObject state owned by one (UnitTypeId, Team) ISM batch. */
@@ -327,6 +328,8 @@ public:
 		const FString& KeyOrAll);
 
 #if WITH_DEV_AUTOMATION_TESTS
+	static void TestOnly_AdvancePoseRenderClock(FGuLiCommanderPresentedSoldier& Soldier,
+		double FallbackServerNow, double LocalNow, float DeltaSeconds, float BackTimeSeconds);
 	/** Pure clock helpers used to prove that RTT/2 is removed before the 100 ms render delay. */
 	static double TestOnly_EstimateServerNowAtPoseReceipt(
 		double SampleServerTimeSeconds,
@@ -569,6 +572,7 @@ private:
 	bool bPoolChangesPending = false;
 	TArray<int32> DirtyRingTransformSlots;
 	TMap<FGuLiSoldierId, FGuLiCommanderSoldierInstanceHandle> SoldierInstanceHandles;
+    uint64 NextSceneUIGeneration=1;
 	TArray<int32> FreeRingInstanceIndices;
 	TMap<uint32, FGuLiCommanderUnitInstanceBatchState> UnitInstanceBatchStates;
 	TSet<uint16> LoggedMissingUnitBatchTypes;

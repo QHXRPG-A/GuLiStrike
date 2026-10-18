@@ -1,4 +1,5 @@
 #pragma once
+#include "GuLiNetSharedBytes.h"
 #include "GuLiNetProtocol.h"
 
 namespace GuLiNet
@@ -8,7 +9,7 @@ namespace GuLiNet
 struct CapabilityState
 {
     std::uint32_t Version=0;
-    Bytes Data;
+    SharedBytes Data;
     bool operator==(const CapabilityState&) const=default;
 };
 using CapabilityStates=std::map<std::string,CapabilityState>;

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "GuLiNetTypes.h"
 
 namespace GuLiNet
@@ -11,6 +12,7 @@ struct Health
     float MaximumShield = 0;
     std::uint32_t Version = 0;
     bool Dead = false;
+    friend bool operator==(const Health&,const Health&)=default;
 };
 struct DamageDelta
 {
@@ -71,10 +73,11 @@ public:
     bool Add(Team Faction, const Resources& Amount);
     bool Reserve(Team Faction, EconomyKey Key, const Resources& Cost, Id Token, Reservation& Out);
     bool Finalize(const Reservation& Value, bool Refund);
-    const EconomyState& Snapshot() const { return State; }
+    const EconomyState& Snapshot() const { return *Storage; }
     bool Restore(EconomyState Value);
 private:
     Resources& MutableBalance(Team Faction);
-    EconomyState State;
+    std::shared_ptr<EconomyState> Storage=std::make_shared<EconomyState>();
+    EconomyState& Write() {if (Storage.use_count()!=1) Storage=std::make_shared<EconomyState>(*Storage);return *Storage;}
 };
 }

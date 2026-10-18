@@ -12,6 +12,9 @@
 #include "HAL/IConsoleManager.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
+#include "GuLiNetAsyncClient.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 namespace
 {
@@ -99,6 +102,62 @@ void UGuLiResourceWorldSubsystem::ApplyHybridControlPoint(const FGuLiHybridObjec
         OnTerritoryOwnershipChanged.Broadcast(C.Index,Previous,C.Owner);
         Capture->OnCaptureRewardRequested.Broadcast(C.Index,C.Owner);
     }
+}
+namespace
+{
+struct FControlPointCalculation final:GuLiNet::IGameplayCalculation
+{
+    bool CanRunParallel() const override {return true;}
+    struct FUnit {FVector Position;FGuLiHybridObjectKey Key;EGuLiTeam Team;uint64 Owner=0,Control=0,Relation=0;int32 Territory=INDEX_NONE;};
+    TArray<FUnit> Units;TArray<FVector> Centers;TArray<FIntPoint> Counts;
+    uint64 Tick=0;uint32 Epoch=0;
+    void Compute() override
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_WorkerControlPointCounts);
+        Counts.Init(FIntPoint::ZeroValue,Centers.Num());
+        for (auto& U:Units) for (int32 I=0;I<Centers.Num();++I)
+            if (FMath::Abs(U.Position.X-Centers[I].X)<=GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM
+                && FMath::Abs(U.Position.Y-Centers[I].Y)<=GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM)
+            {U.Territory=I;if (U.Team==EGuLiTeam::Red) ++Counts[I].X;else if (U.Team==EGuLiTeam::Blue) ++Counts[I].Y;break;}
+    }
+};
+}
+bool UGuLiResourceWorldSubsystem::TryGetHybridCaptureCounts(uint64 Tick,uint64 AfterTick,int32 Territory,FIntPoint& Out)
+{
+    if (!UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::GameplayWorker)) {Out=GetHybridCaptureCounts(Tick,Territory);return true;}
+    const auto* Battle=GetWorld()->GetGameState<AGuLiBattleGameState>();const uint32 Epoch=Battle?Battle->GetMatchEpoch():0;
+    if (BackgroundCaptureEpoch==Epoch && BackgroundCaptureTick>AfterTick && BackgroundCaptureCounts.IsValidIndex(Territory))
+    {Out=BackgroundCaptureCounts[Territory];return true;}
+    auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    if (!H||!MapDefinition||H->HasPendingGameplayCalculation(TEXT("ControlPointCounts"))) return false;
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_ControlPointSnapshot);
+    auto Work=std::make_shared<FControlPointCalculation>();Work->Tick=Tick;Work->Epoch=Epoch;
+    for (const auto& T:MapDefinition->Territories) Work->Centers.Add(T.Center);
+    TArray<FGuLiCombatTargetSnapshot> Targets;GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()->GetTargetSnapshots(Targets);
+    for (const auto& T:Targets)
+    {
+        if (!T.bAlive||(T.Handle.Kind!=EGuLiTargetKind::CommanderSoldier&&T.Handle.Kind!=EGuLiTargetKind::GroundActor)) continue;
+        if (const auto* A=T.CollisionActor.Get())
+        {if (A->FindComponentByClass<UGuLiBuildingLifecycleComponent>()) continue;const auto* C=A->FindComponentByClass<UGuLiExternalUnitControlComponent>();if (C&&C->IsPhased()) continue;}
+        FGuLiHybridObjectKey Key;FGuLiHybridObjectState V;
+        if (!H->ResolveTarget(T.Handle,Key)||!H->GetObjectView(Key,V)||V.bPhased) continue;
+        Work->Units.Add({T.Location,Key,T.Team,V.OwnerEpoch,V.ControlEpoch,V.RelationRevision});
+    }
+    const TWeakObjectPtr<UGuLiResourceWorldSubsystem> Weak(this);const uint64 Bytes=1024+Work->Units.Num()*256+Work->Centers.Num()*64;
+    H->SubmitGameplayCalculation(TEXT("ControlPointCounts"),Work,Bytes,Bytes,[Weak,Work]
+    {
+        auto* Self=Weak.Get();if (!Self) return;auto* World=Self->GetWorld();
+        const auto* B=World->GetGameState<AGuLiBattleGameState>();if (!B||B->GetMatchEpoch()!=Work->Epoch) return;
+        auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        // An emergency life/control change invalidates this sample instead of counting a stale participant.
+        for (const auto& U:Work->Units) if (U.Territory!=INDEX_NONE)
+        {
+            FGuLiHybridObjectState V;
+            if (!Hybrid->GetObjectView(U.Key,V)||V.LifeState!=1||V.bPhased||V.OwnerEpoch!=U.Owner||V.ControlEpoch!=U.Control||V.RelationRevision!=U.Relation) return;
+        }
+        Self->BackgroundCaptureEpoch=Work->Epoch;Self->BackgroundCaptureTick=Work->Tick;Self->BackgroundCaptureCounts=Work->Counts;
+    });
+    return false;
 }
 FIntPoint UGuLiResourceWorldSubsystem::GetHybridCaptureCounts(uint64 Tick,int32 Territory)
 {

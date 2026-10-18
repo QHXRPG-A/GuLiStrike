@@ -20,12 +20,16 @@ void UGuLiBuildingProductionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
-		Hybrid->OnTransactionCompleted.AddDynamic(this,&ThisClass::HandleHybridTransaction);
+	{
+        const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
+        if (!Binding||!Hybrid->SubscribeObjectReceipt(this,Binding->GetObjectKey(),[this](const auto& R){HandleHybridTransaction(R);}))
+            Hybrid->OnTransactionCompleted.AddDynamic(this,&ThisClass::HandleHybridTransaction);
+    }
 }
 void UGuLiBuildingProductionComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
 	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
-		Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);
+		{Hybrid->UnsubscribeObjectReceipt(this);Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);}
 	HybridJobs.Reset(); Super::EndPlay(Reason);
 }
 void UGuLiBuildingProductionComponent::InitializeProduction()

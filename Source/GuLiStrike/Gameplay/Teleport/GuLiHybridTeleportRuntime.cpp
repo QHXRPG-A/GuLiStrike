@@ -8,6 +8,8 @@
 #include "Gameplay/Skills/GuLiHybridArmy.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Engine/World.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 namespace GuLiHybridTeleport
 {
 namespace
@@ -38,13 +40,53 @@ struct FBodyPrivate
 class FBody final:public IGuLiHybridEntityCapability
 {
     TWeakObjectPtr<UWorld> World;FGuLiHybridObjectState Record;FBodyPrivate Private;FDelegateHandle Post;
+    bool bOptimize=false,bRestoreDetached=false,bReducedAdvance=false,bPeriodicWork=true;
+    mutable bool bDecoded=false,bDecodeValid=false;
+    mutable uint32 CachedVersion=0;
+    mutable TArray<uint8> CachedBytes;
+    mutable Net::Body CachedBody;
+    TWeakObjectPtr<UGuLiHotspotOptions> Metrics;
+    bool ReadBody(Net::Body& Out) const
+    {
+        const auto* C=Record.Capabilities.Find(TEXT("relocation_body"));
+        if (bOptimize && bDecoded && CachedVersion==(C?C->Version:0) && (!C?CachedBytes.IsEmpty():CachedBytes==C->Data))
+        {if (Metrics.IsValid()) ++Metrics->BodyDecodeHits;Out=CachedBody;return bDecodeValid;}
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_TeleportBodyDecode);
+        if (Metrics.IsValid()) ++Metrics->BodyDecodes;
+        bDecodeValid=Read(Record,TEXT("relocation_body"),Out);
+        if (bOptimize) {bDecoded=true;CachedVersion=C?C->Version:0;CachedBytes=C?C->Data:TArray<uint8>();CachedBody=Out;}
+        return bDecodeValid;
+    }
+    void RefreshSubscription()
+    {
+        Net::Body B;
+        bool bValidBody=false;
+        // An outstanding acknowledgement must keep polling final results and
+        // version-conflict retries. Actual application remains PostActor work,
+        // including on remote objects and while a root has not arrived yet.
+        if (bReducedAdvance)
+        {bValidBody=ReadBody(B);bPeriodicWork=!bValidBody || (B.Step && B.Acknowledged!=B.Step);}
+        bool Needed=!bOptimize;
+        if (bOptimize && !bRestoreDetached && World.IsValid() && Record.LifeState<2)
+        {
+            if (!bReducedAdvance) bValidBody=ReadBody(B);
+            // Invalid data must still reach the original failure path. A missing root
+            // never completes an application and therefore keeps this subscription.
+            Needed=!bValidBody || (B.Step && (Private.Cast!=GuLiNetBridge::ToUE(B.Cast) || Private.Step!=B.Step));
+        }
+        if (Needed && !Post.IsValid()) Post=FWorldDelegates::OnWorldPostActorTick.AddRaw(this,&FBody::ApplyAfterActors);
+        else if (!Needed && Post.IsValid()) {FWorldDelegates::OnWorldPostActorTick.Remove(Post);Post.Reset();}
+    }
     UGuLiHybridWorldSubsystem* Hybrid() const {return World.IsValid()?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;}
     bool Decode(TConstArrayView<uint8> B,FBodyPrivate& P) const
     {FGuLiHybridStateArchive A(B,1024);P.Archive(A);return A.Done()&&P.Key==Record.Key;}
     void ApplyAfterActors(UWorld* W,ELevelTick,float)
     {
-        if (W!=World.Get()||Record.LifeState>=2) return;Net::Body B;
-        if (!Read(Record,TEXT("relocation_body"),B)) {Hybrid()->Suspend(TEXT("Invalid external body state"));return;}
+        if (W!=World.Get()||Record.LifeState>=2) return;
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_TeleportPostActor);
+        if (Metrics.IsValid()) ++Metrics->BodyCallbacks;
+        Net::Body B;
+        if (!ReadBody(B)) {Hybrid()->Suspend(TEXT("Invalid external body state"));return;}
         if (!B.Step||(Private.Cast==GuLiNetBridge::ToUE(B.Cast)&&Private.Step==B.Step)) return;
         auto* Endpoints=W->GetSubsystem<UGuLiExternalControlRegistry>();FGuLiExternalBody Q;
         if (!Endpoints||!Endpoints->Query(Record.Key,Q)) {Hybrid()->Suspend(TEXT("A required external-control endpoint is missing"));return;}
@@ -62,17 +104,24 @@ class FBody final:public IGuLiHybridEntityCapability
         if (Accepted) Accepted=Endpoints->Apply(Record.Key,Control);
         Private.Cast=Control.Token;Private.Step=B.Step;Private.Accepted=Accepted;Private.Submitted=false;Private.Request.Invalidate();
         if (B.Phased) Private.Original=Q.Transform;
+        if (Metrics.IsValid()) ++Metrics->BodyApplications;
+        RefreshSubscription();
     }
 public:
     FBody(UWorld& W,const FGuLiHybridObjectState& O):World(&W),Record(O)
-    {Private.Key=O.Key;Post=FWorldDelegates::OnWorldPostActorTick.AddRaw(this,&FBody::ApplyAfterActors);}
+    {
+        Private.Key=O.Key;Metrics=W.GetSubsystem<UGuLiHotspotOptions>();
+        bReducedAdvance=Metrics.IsValid() && Metrics->Has(EGuLiHotspot::ReducedWork);
+        bOptimize=Metrics.IsValid() && Metrics->Has(EGuLiHotspot::TeleportIdle);RefreshSubscription();
+    }
     ~FBody() override {FWorldDelegates::OnWorldPostActorTick.Remove(Post);}
-    void ApplyLedger(const FGuLiHybridObjectState& O) override {Record=O;}
+    bool HasPeriodicWork() const override {return !bReducedAdvance || bPeriodicWork;}
+    void ApplyLedger(const FGuLiHybridObjectState& O) override {Record=O;RefreshSubscription();}
     bool AcceptMotion(uint64 At) const override
-    {Net::Body B;return Read(Record,TEXT("relocation_body"),B) && (!B.Step || (B.Acknowledged==B.Step && At>B.AppliedAt));}
+    {Net::Body B;return ReadBody(B) && (!B.Step || (B.Acknowledged==B.Step && At>B.AppliedAt));}
     void Advance(uint64,double) override
     {
-        auto* H=Hybrid();Net::Body B;if (!H||!Read(Record,TEXT("relocation_body"),B)||!B.Step||B.Acknowledged==B.Step
+        auto* H=Hybrid();Net::Body B;if (!H||!ReadBody(B)||!B.Step||B.Acknowledged==B.Step
             ||Private.Cast!=GuLiNetBridge::ToUE(B.Cast)||Private.Step!=B.Step||!H->CanPublishFacts()) return;
         FGuLiHybridTransactionResult R;
         if (Private.Request.IsValid() && H->FindTransactionResult(Private.Request,R))
@@ -96,7 +145,13 @@ public:
     bool Capture(TArray<uint8>& Out) const override {auto P=Private;FGuLiHybridStateArchive A(1024);P.Archive(A);return A.Finish(Out);}
     bool Validate(TConstArrayView<uint8> B) const override {FBodyPrivate P;return Decode(B,P);}
     bool Restore(TConstArrayView<uint8> B,EGuLiHybridRestoreStage Stage) override
-    {FBodyPrivate P;if (!Decode(B,P)) return false;if (Stage==EGuLiHybridRestoreStage::Link) Private=P;return true;}
+    {
+        FBodyPrivate P;if (!Decode(B,P)) return false;
+        if (Stage==EGuLiHybridRestoreStage::Detach) bRestoreDetached=true;
+        if (Stage==EGuLiHybridRestoreStage::Link) Private=P;
+        if (Stage==EGuLiHybridRestoreStage::Activate) bRestoreDetached=false;
+        RefreshSubscription();return true;
+    }
 };
 struct FPending {FGuid Event;TArray<uint8> Payload;bool Prepared=false,Submitted=false;uint64 Expected=0;bool Automatic=false;};
 struct FCastPrivate
@@ -249,8 +304,12 @@ bool ReadRuntime(UWorld& W,EGuLiTeam Team,FName Skill,FGuLiActiveSkillRuntime& O
     Out.ActiveCastId=S.Stage!=Net::Phase::Idle&&S.Stage!=Net::Phase::Finished&&S.Profiles.at(S.ProfileId).Skill==ID?GuLiNetBridge::ToUE(S.Cast):FGuid();return true;
 }
 FGuLiTeleportCastState Query(UWorld& W,EGuLiTeam Team)
+{int32 Level=1;return Query(W,Team,Level);}
+FGuLiTeleportCastState Query(UWorld& W,EGuLiTeam Team,int32& Level)
 {
-    FGuLiTeleportCastState V;FGuLiHybridObjectState O;Net::State S;if (!Root(W,Team,O,S)||!S.Profiles.contains(S.ProfileId)) return V;
+    Level=1;FGuLiTeleportCastState V;FGuLiHybridObjectState O;Net::State S;if (!Root(W,Team,O,S)) return V;
+    for (const auto& [Skill,Value]:S.Levels) if (FName(UTF8_TO_TCHAR(Skill.c_str()))==TEXT("Teleport")) {Level=int32(Value);break;}
+    if (!S.Profiles.contains(S.ProfileId)) return V;
     const auto& P=S.Profiles.at(S.ProfileId);V.CastId=GuLiNetBridge::ToUE(S.Cast);V.CommanderId=O.Controller;V.Team=Team;
     V.MatchEpoch=W.GetGameState<AGuLiBattleGameState>()?W.GetGameState<AGuLiBattleGameState>()->GetMatchEpoch():0;
     V.Config.Level=P.Level;V.Config.RadiusCentimeters=P.Radius;V.Config.WindupSeconds=float(P.Windup)/60;V.Config.MaxTargetWaitSeconds=float(P.Wait)/60;

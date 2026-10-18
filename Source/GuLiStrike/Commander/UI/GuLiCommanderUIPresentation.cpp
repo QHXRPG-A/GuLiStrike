@@ -24,7 +24,7 @@ FGuLiCommanderUIPresentation BuildGuLiCommanderUIPresentation(UWorld* World,
 		Row.Health = State->Health; Row.MaximumHealth = State->MaxHealth; Row.bTransporting = State->bPhased;
 	}
 	TSet<FGuLiControllableActorId> Pending(Selection.ActorIds);
-	for (TActorIterator<APawn> It(World); It; ++It)
+	for (TActorIterator<APawn> It(World); It && !Pending.IsEmpty(); ++It)
 	{
 		const auto* Vehicle = Cast<IGuLiEngineeringVehicle>(*It);
 		if (!Vehicle || !Pending.Remove(Vehicle->GetStableActorId())) continue;
@@ -39,13 +39,11 @@ FGuLiCommanderUIPresentation BuildGuLiCommanderUIPresentation(UWorld* World,
 	View.bSyncing |= !Pending.IsEmpty();
     if (auto* H=World->GetSubsystem<UGuLiHybridWorldSubsystem>())
     {
-        TArray<FGuLiHybridObjectState> All;H->GetObjects(All);TArray<FName> Definitions;
-        for (const auto& O:All) if (O.OwnershipPolicy==uint8(EGuLiHybridOwnershipPolicy::CommanderActivity)) Definitions.AddUnique(O.Definition);
-        Definitions.Sort(FNameLexicalLess());
+        TArray<FName> Definitions;H->GetCommanderDefinitions(Definitions);
         const auto* A=World->GetSubsystem<UGuLiHybridActorWorldSubsystem>();
         for (const auto& K:Selection.Objects)
         {
-            FGuLiHybridObjectState O;if (!H->GetObject(K,O)) {View.bSyncing=true;continue;}
+            FGuLiHybridObjectState O;if (!H->GetObjectView(K,O)) {View.bSyncing=true;continue;}
             if (O.LifeState!=1) continue;
             auto& Row=View.Members.AddDefaulted_GetRef();Row.Object=K;Row.Definition=O.Definition;Row.Ordinal=O.Ordinal;
             Row.Type=65536u+uint32(Definitions.IndexOfByKey(O.Definition));

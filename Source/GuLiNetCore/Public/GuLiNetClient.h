@@ -96,6 +96,15 @@ GULINETCORE_API Bytes EncodeCommandReceipt(const CommandReceipt& Value);
 GULINETCORE_API bool DecodeCommandReceipt(std::span<const std::uint8_t> Data, CommandReceipt& Out);
 
 // Implemented in a world-specific adapter. No engine type crosses this boundary.
+struct GULINETCORE_API IObjectMotionOutput {virtual ~IObjectMotionOutput()=default;};
+/** Plain-data codec exclusively accessed by the existing room worker. */
+class GULINETCORE_API IObjectMotionCodec
+{
+public:
+    virtual ~IObjectMotionCodec()=default;
+    virtual std::shared_ptr<IObjectMotionOutput> Decode(std::span<const std::uint8_t>,Revision Owner,Revision Match,bool& Valid)=0;
+    virtual bool Feedback(Id,std::span<const std::uint8_t>)=0;
+};
 class GULINETCORE_API IObjectAdapter
 {
 public:
@@ -107,11 +116,18 @@ public:
     virtual std::vector<ObjectKey> RestoreDependencies(std::span<const std::uint8_t>) const { return {}; }
     // Prepare allocates a dormant local entity or a query/presentation proxy.
     virtual bool Prepare(const ObjectRecord& Record) = 0;
+    virtual bool IsPreparationPending() const {return false;}
+    virtual void RetryPreparation() {}
+    virtual void PreparationCompleted(bool,std::uint32_t,const std::vector<std::string>&) {}
+    virtual bool DefersMotionResult() const {return false;}
     // Restore preparation can read immutable provenance absent from a current
     // controller grant. It allocates the same dormant/query entity only.
     virtual bool PrepareRestore(const ObjectRecord& Record,std::span<const std::uint8_t> PrivateState) {return Prepare(Record);}
     virtual void SetAuthority(const Authority& Grant, bool LocalSimulation) = 0;
     virtual void Advance(Tick At, double DeltaSeconds) = 0;
+    virtual std::uint32_t AdvancePeriod() const {return 1;} // Internal eligibility; zero means no periodic work.
+    virtual std::shared_ptr<IObjectMotionCodec> CreateMotionCodec() {return {};}
+    virtual bool ApplyDecodedMotion(const IObjectMotionOutput&,Tick) {return false;}
     virtual bool Command(const FrozenCommand& Command, const CommandMember& Member) = 0;
     virtual bool ApplyMotion(std::span<const std::uint8_t> Body, Tick At) = 0;
     virtual bool ApplyObjectEvent(std::span<const std::uint8_t> Body,Tick At) { return ApplyMotion(Body,At); }
@@ -187,8 +203,8 @@ public:
     const std::deque<CommitResult>& UnsettledReceipts() const {return UnsettledReceiptEvidence;}
     std::uint64_t UnsettledReceiptCount() const {return UnsettledReceiptTotal;}
     Id Submit(TransactionRequest Request,TransactionCallback Callback,bool PreserveOriginalTime=false);
-    Id SubmitAdmitted(TransactionRequest Request);
-    Id SubmitControlled(TransactionRequest Request,bool Admit);
+    Id SubmitAdmitted(TransactionRequest Request,bool PreserveOriginalTime=false);
+    Id SubmitControlled(TransactionRequest Request,bool Admit,bool PreserveOriginalTime=false);
     bool PublishObjectEvent(ObjectKey Object,Id Event,Bytes Body);
     bool ApplyCommit(const CommitResult& Result);
     // Only initial readiness and membership join/leave use this world pause.
@@ -220,8 +236,37 @@ public:
     bool ExplicitlyPaused() const {return MembershipPaused;}
     bool CanPublishFacts() const {return Failure.empty() && !MembershipPaused;}
     const std::map<ObjectKey,ObjectRecord>& Objects() const {return Directory;}
+    const ObjectRecord* FindTeamCapability(Team Faction,const std::string& Capability) const;
+    const std::map<std::string,std::size_t>& CommanderDefinitions() const {return CommanderDefinitionCounts;}
+    void SetRecordObserver(std::function<void(const ObjectRecord&)> Observer) {OnRecord=std::move(Observer);}
+    void SetFragmentObserver(std::function<void(std::span<const StateFragment>)> Observer) {OnFragments=std::move(Observer);}
+    enum class ApplicationStatus : std::uint8_t {Pending,Ready,Rejected};
+    using ApplicationPreflight=std::function<ApplicationStatus(std::span<const PrivateObjectState>,std::span<const PrivateSystemState>)>;
+    using ApplicationRestore=std::function<ApplicationStatus(const ObjectHandoffState&,std::span<const ObjectKey>,
+        const std::map<std::string,std::vector<ObjectKey>>&,RestoreStage)>;
+    enum class CaptureApplicationStatus : std::uint8_t {Pending,Ready,Invalid,TooLarge};
+    void SetApplicationBatches(ApplicationPreflight Prepare,std::function<CaptureApplicationStatus(std::span<const ObjectKey>)> Capture,ApplicationRestore Restore)
+    {PrepareApplications=std::move(Prepare);CaptureApplications=std::move(Capture);RestoreApplications=std::move(Restore);}
+    void SetApplicationCommands(std::function<ApplicationStatus(const FrozenCommand&,std::span<const CommandMember>)> Apply) {PrepareCommands=std::move(Apply);}
+    void SetCommandApplicationCancellation(std::function<void(const FrozenCommand&)> Cancel) {CancelCommands=std::move(Cancel);}
+    bool LastApplicationPending() const {return ApplicationPending;}
+    void ResetApplicationPending() {ApplicationPending=false;}
+    void SetLogicalStepBoundary(std::function<void()> Callback) {LogicalStepBoundary=std::move(Callback);}
+    void SetApplicationCancellation(std::function<void(ObjectKey)> Callback) {ApplicationCancelled=std::move(Callback);}
+    bool IsRequestPending(Id Event) const {return Pending.contains(Event)||PlayerIntents.contains(Event);}
+    bool PublishDirectoryLife(ObjectKey,Revision OwnerVersion);
+    bool LastCapturePending() const {return CapturePending;}
+    bool IsApplyingOwnershipGroup() const {return CommittingOwnershipGroup;}
+    void SetApplicationResultBudget(std::function<bool(const OwnerWork&)> Reserve,std::function<void(Id)> Release)
+    {ReserveApplicationResult=std::move(Reserve);ReleaseApplicationResult=std::move(Release);}
+    const std::set<ObjectKey>& FrozenObjects() const {return Frozen;}
+    const std::map<ObjectKey,double>& PendingApplications() const {return PreparingApplications;}
+    void CompleteApplication(ObjectKey,bool,std::uint32_t,const std::vector<std::string>&);
+    void CompleteMotionApplication(ObjectKey,MessageKind,Tick,Revision,bool);
     const std::string& DirectoryHash() const;
     const OwnerState& NumericState() const {return Numbers;}
+    void SetReducedWork(bool Enabled) {Numbers.SetReducedWork(Enabled);}
+    auto ConsumeRetiredLifeChanges() {return Numbers.ConsumeRetiredLifeChanges();}
     const std::map<ObjectKey,MotionReceiveStats>& MotionDiagnostics() const {return MotionStats;}
     std::uint64_t RejectedMotionLives() const {return UnknownMotionLives;}
     std::uint64_t RejectedStateImports() const {return FailedStateImports;}
@@ -280,6 +325,36 @@ private:
     void RecordReceiveRejection(const Message& Value);
     std::map<Id,Member> Members;
     std::map<ObjectKey,ObjectRecord> Directory;
+    std::map<ObjectKey,std::set<ObjectKey>> LiveParentWork;
+    std::map<std::pair<Team,std::string>,std::set<ObjectKey>> CapabilityObjects;
+    std::map<std::string,std::size_t> CommanderDefinitionCounts;
+    std::function<void(const ObjectRecord&)> OnRecord;
+    std::function<void(std::span<const StateFragment>)> OnFragments;
+    ApplicationPreflight PrepareApplications;
+    std::function<CaptureApplicationStatus(std::span<const ObjectKey>)> CaptureApplications;
+    mutable bool CapturePending=false;
+    std::function<bool(const OwnerWork&)> ReserveApplicationResult;
+    std::function<void(Id)> ReleaseApplicationResult;
+    ApplicationRestore RestoreApplications;
+    std::function<ApplicationStatus(const FrozenCommand&,std::span<const CommandMember>)> PrepareCommands;
+    std::function<void(const FrozenCommand&)> CancelCommands;
+    bool ApplicationPending=false;
+    std::function<void()> LogicalStepBoundary;
+    std::function<void(ObjectKey)> ApplicationCancelled;
+    struct ImportContinuation
+    {
+        std::vector<ObjectKey> Keys,Order;
+        std::map<std::string,std::vector<ObjectKey>> Required;
+        std::vector<PrivateSystemState> SharedState;
+        std::uint8_t Stage=0;
+    };
+    std::map<std::string,ImportContinuation> ImportContinuations;
+    struct BootstrapContinuation {bool NumericReady=false;std::size_t Part=0;};
+    std::map<std::string,BootstrapContinuation> BootstrapContinuations;
+    std::map<ObjectKey,double> PreparingApplications;
+    std::map<std::pair<ObjectKey,MessageKind>,Tick> PendingMotion;
+    bool AwaitingApplications(const CommitResult& Result) const;
+    bool CommitDependenciesReady(const CommitResult& Result) const;
     mutable std::string CachedDirectoryHash;
     mutable bool DirectoryHashDirty=true;
     std::set<ObjectKey> SimulationCandidates;
@@ -297,6 +372,7 @@ private:
     std::map<Id,OutgoingCommand> CommandOutbox;
     std::size_t CommandOutboxBytes=0;
     std::map<ObjectKey,FrozenCommand> LatestCommands;
+    std::map<ObjectKey,std::tuple<Revision,Revision,Id>> RebuildApplications;
     struct Publication {Message Value;std::string Identity;std::size_t Bytes=0;};
     std::map<Id,std::deque<Publication>> Publications;
     std::set<std::pair<Id,std::string>> PublicationIdentities;
@@ -316,6 +392,7 @@ private:
     struct WorkFlow
     {
         OwnerWork Work;
+        Bytes Encoding;
         Id Requester;
         std::set<Id> Participants,Prepared,Committed;
         bool Decision=false;
@@ -342,6 +419,7 @@ private:
     std::map<ObjectKey,std::shared_ptr<OutgoingHandoff>> OutgoingStates;
     std::map<Id,std::size_t> OutgoingCaptureLimits;
     std::map<ObjectKey,Authority> PendingGrants;
+    std::map<ObjectKey,ObjectHandoff> PendingHandoffReadiness;
     std::map<ObjectKey,std::vector<Message>> HandoffCommands;
 };
 }

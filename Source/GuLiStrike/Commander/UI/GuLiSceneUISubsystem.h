@@ -14,6 +14,7 @@ class GULISTRIKE_API UGuLiSceneUISubsystem : public ULocalPlayerSubsystem, publi
 public:
 	static UGuLiSceneUIWidget* ForController(APlayerController* Controller);
 	UGuLiSceneUIWidget* GetOrCreate(APlayerController* Controller);
+    UGuLiSceneUIWidget* GetWidget() const { return Widget; }
 	virtual void Deinitialize() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual bool IsTickable() const override;

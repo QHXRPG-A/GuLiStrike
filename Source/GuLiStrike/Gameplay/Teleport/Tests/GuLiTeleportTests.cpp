@@ -13,6 +13,12 @@
 #include "Materials/MaterialInterface.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/ScopeExit.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
+#include "Network/Private/GuLiHybridEntityState.h"
+#include "Network/Private/GuLiHybridObjectConversions.h"
+#include "Network/GuLiHybridManifest.h"
+#include "GuLiNetRelocation.h"
+#include "HAL/IConsoleManager.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiTeleportConfigurationTest,"GuLiStrike.Teleport.ConfigurationAndBoundaries",
 	EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
@@ -79,5 +85,71 @@ bool FGuLiTeleportPawnIdentityCameraTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Action lock removed"),Control->AreActionsLocked());
 	TestEqual(TEXT("Recovery release does not reset displacement history"),Movement->GetDisplacementRevision(),2u);
 	return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiTeleportPeriodicEligibilityTest,"GuLiStrike.Teleport.PeriodicEligibilityAndRestore",
+    EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FGuLiTeleportPeriodicEligibilityTest::RunTest(const FString&)
+{
+    auto* Option=IConsoleManager::Get().FindConsoleVariable(TEXT("gs.Perf.HotspotMask"));
+    if (!TestNotNull(TEXT("Development options"),Option)) return false;
+    const int32 Previous=Option->GetInt();
+    ON_SCOPE_EXIT {Option->Set(Previous,ECVF_SetByCode);};
+    for (const int32 Mask:{31,95})
+    {
+        Option->Set(Mask,ECVF_SetByCode);
+        auto* World=UWorld::CreateWorld(EWorldType::Game,false);
+        if (!TestNotNull(TEXT("Isolated capability world"),World)) return false;
+        GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
+        ON_SCOPE_EXIT {World->DestroyWorld(false);GEngine->DestroyWorldContext(World);};
+        const bool Reduced=(Mask&64)!=0;
+        if (!TestEqual(TEXT("Per-world eligibility option is latched"),
+            World->GetSubsystem<UGuLiHotspotOptions>()->Has(EGuLiHotspot::ReducedWork),Reduced)) return false;
+
+        FGuLiHybridObjectState Object;
+        Object.Key.Kind=EGuLiHybridObjectKind::Soldier;Object.Key.StableId=FGuid::NewGuid();
+        Object.Definition=TEXT("unit/2");Object.LifeState=1;
+        GuLiNet::Relocation::Body Body;
+        const auto SetBody=[&]
+        {
+            auto& Capability=Object.Capabilities.FindOrAdd(TEXT("relocation_body"));
+            Capability.Version=GuLiNet::Relocation::Version;
+            const auto Bytes=GuLiNet::Relocation::Encode(Body);
+            Capability.Data.Reset();Capability.Data.Append(Bytes.data(),int32(Bytes.size()));
+        };
+        SetBody();
+        FGuLiHybridManifestData Manifest;FString Error;
+        if (!TestTrue(TEXT("Production relocation capability binds"),
+            FGuLiHybridEntityState::Bind(Manifest,Object.Definition.ToString(),TEXT("RelocationBody"),Error))) return false;
+        FGuLiHybridEntityState Entity;
+        if (!TestTrue(TEXT("Production body is prepared"),Entity.Prepare(*World,Object,Manifest))) return false;
+        TestEqual(TEXT("Only the reduced path sleeps an idle body"),Entity.HasPeriodicWork(),!Reduced);
+        TArray<uint8> IdleSnapshot;
+        TestTrue(TEXT("Idle private state remains capturable"),Entity.Capture(IdleSnapshot));
+
+        Body.Root=GuLiNetBridge::ToCore(Object.Key);Body.Cast=GuLiNetBridge::ToCore(FGuid::NewGuid());
+        Body.Step=1;Body.Locked=true;SetBody();Entity.ApplyLedger(Object);
+        TestTrue(TEXT("A new ledger step wakes immediately"),Entity.HasPeriodicWork());
+        TestFalse(TEXT("Motion stays blocked until the actual step is acknowledged"),Entity.AcceptMotion(100));
+        for (const auto Stage:{EGuLiHybridRestoreStage::Detach,EGuLiHybridRestoreStage::Create,
+             EGuLiHybridRestoreStage::Link,EGuLiHybridRestoreStage::Activate})
+            TestTrue(TEXT("Existing handoff format restores across all stages"),Entity.Restore(IdleSnapshot,Stage));
+        TestTrue(TEXT("An older private snapshot cannot sleep an outstanding public step"),Entity.HasPeriodicWork());
+
+        Body.Acknowledged=Body.Step;Body.AppliedAt=100;SetBody();Entity.ApplyLedger(Object);
+        TestEqual(TEXT("Acknowledged work can sleep again"),Entity.HasPeriodicWork(),!Reduced);
+        TestFalse(TEXT("The acknowledged application tick remains protected"),Entity.AcceptMotion(100));
+        TestTrue(TEXT("Newer motion is accepted after acknowledgement"),Entity.AcceptMotion(101));
+        ++Body.Step;SetBody();Entity.ApplyLedger(Object);
+        TestTrue(TEXT("A later return/release step wakes the same body"),Entity.HasPeriodicWork());
+        Object.Capabilities.FindChecked(TEXT("relocation_body")).Data.Pop();Entity.ApplyLedger(Object);
+        TestTrue(TEXT("Invalid data cannot be hidden by idle eligibility"),Entity.HasPeriodicWork());
+
+        ++Object.Key.LifeGeneration;Body={};SetBody();
+        TestTrue(TEXT("A reused identity prepares a new body"),Entity.Prepare(*World,Object,Manifest));
+        TestEqual(TEXT("Old pending work does not leak into the new life"),Entity.HasPeriodicWork(),!Reduced);
+        Entity.Reset();
+        TestFalse(TEXT("Released capabilities leave no periodic work"),Entity.HasPeriodicWork());
+    }
+    return true;
 }
 #endif

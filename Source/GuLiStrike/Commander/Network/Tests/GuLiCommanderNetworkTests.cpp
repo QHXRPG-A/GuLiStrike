@@ -173,8 +173,8 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
 
-	TestEqual(TEXT("Grouped portrait selection requires battle protocol version 17"),
-		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(17u));
+	TestEqual(TEXT("Commander serialization uses the current shared battle protocol (independent of Hybrid protocol 31)"),
+		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(26u));
 	TestEqual(TEXT("Control granularity remains capped at 25 soldiers"),
 		GULI_CONTROL_COHORT_TARGET_SIZE, static_cast<uint32>(25u));
 	TestEqual(TEXT("Authoritative pose contract is captured at 10 Hz"),
@@ -801,6 +801,43 @@ bool FGuLiCommanderPresentationServerClockTest::RunTest(const FString& Parameter
 			100.0f,
 			0.01f));
 	TestFalse(TEXT("The fallback source is reported as PlayerState"), bFromConnectionStats);
+	// Same room, two independent pose streams: the remote stream arrives 400 ms
+	// behind local capture. Both must interpolate at render cadence, without the
+	// local stream forcing the remote one into capped extrapolation and repeated holds.
+	FGuLiCommanderPresentedSoldier LocalStream, RemoteStream;
+	bool bMonotonic = true, bBuffered = true, bIndependent = true;
+	for (int32 Frame = 0; Frame < 180; ++Frame)
+	{
+		const double Now = 10.0 + Frame / 60.0;
+		if (Frame % 6 == 0)
+		{
+			for (auto* Stream : {&LocalStream, &RemoteStream})
+			{
+				auto& Sample = Stream->Samples.AddDefaulted_GetRef();
+				Sample.ServerTimeSeconds = Now - (Stream == &RemoteStream ? 0.4 : 0.0);
+				Stream->PreviousAdaptivePoseReceiptLocalTimeSeconds = Now;
+			}
+		}
+		for (auto* Stream : {&LocalStream, &RemoteStream})
+		{
+			const double Previous = Stream->RenderServerTimeSeconds;
+			AGuLiCommanderPresentationActor::TestOnly_AdvancePoseRenderClock(
+				*Stream, Now, Now, 1.f / 60.f, 0.12f);
+			bMonotonic &= Stream->RenderServerTimeSeconds > Previous;
+			bBuffered &= Stream->RenderServerTimeSeconds < Stream->Samples.Last().ServerTimeSeconds;
+		}
+		bIndependent &= FMath::IsNearlyEqual(
+			LocalStream.RenderServerTimeSeconds - RemoteStream.RenderServerTimeSeconds, 0.4, 1.e-5);
+	}
+	TestTrue(TEXT("Both owner streams advance on every render frame"), bMonotonic);
+	TestTrue(TEXT("Slower delivery retains an interpolation buffer despite newer local frames"), bBuffered);
+	TestTrue(TEXT("Owner streams retain their own receipt time bases"), bIndependent);
+	const double BeforeGap = RemoteStream.RenderServerTimeSeconds;
+	AGuLiCommanderPresentationActor::TestOnly_AdvancePoseRenderClock(
+		RemoteStream, 1000.0, 13.0, 1.f / 60.f, 0.2f);
+	TestTrue(TEXT("Other owners and buffer changes cannot jump or rewind the displayed clock"),
+		RemoteStream.RenderServerTimeSeconds > BeforeGap
+		&& RemoteStream.RenderServerTimeSeconds - BeforeGap <= (1.1 / 60.0 + 1.e-6));
 	return true;
 }
 

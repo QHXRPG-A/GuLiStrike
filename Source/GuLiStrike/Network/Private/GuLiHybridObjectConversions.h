@@ -18,7 +18,7 @@ inline FGuLiHybridObjectKey ToUE(const GuLiNet::ObjectKey& V)
     FGuLiHybridObjectKey O; O.Kind=static_cast<EGuLiHybridObjectKind>(V.Kind);
     O.StableId=ToUE(V.StableId); O.LifeGeneration=V.Generation; return O;
 }
-inline FGuLiHybridObjectState ToUE(const GuLiNet::ObjectRecord& V)
+inline FGuLiHybridObjectState ToUEView(const GuLiNet::ObjectRecord& V)
 {
     FGuLiHybridObjectState O; O.Key=ToUE(V.Grant.Object); O.Controller=ToUE(V.Grant.Controller);
     O.SimulationOwner=ToUE(V.Grant.SimOwner); O.ControlEpoch=V.Grant.ControlEpoch; O.OwnerEpoch=V.Grant.OwnerEpoch;
@@ -32,6 +32,11 @@ inline FGuLiHybridObjectState ToUE(const GuLiNet::ObjectRecord& V)
     O.bCompleted=V.Completed; O.bSupplied=V.Supplied; O.bPhased=V.Phased;
     O.Parent=ToUE(V.Parent); O.RelationRevision=V.RelationVersion;
     O.Affiliation=ToUE(GuLiNet::ObjectAffiliation(V));
+    return O;
+}
+inline FGuLiHybridObjectState ToUE(const GuLiNet::ObjectRecord& V)
+{
+    auto O=ToUEView(V);
     for (const auto& [Name,Value]:V.Capabilities)
     {
         auto& C=O.Capabilities.Add(FName(UTF8_TO_TCHAR(Name.c_str())));C.Version=Value.Version;

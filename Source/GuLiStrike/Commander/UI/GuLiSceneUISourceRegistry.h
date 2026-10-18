@@ -10,7 +10,7 @@ struct FGuLiSceneUISource
 {
 	TWeakObjectPtr<UObject> Object;
 	EGuLiSceneUISourceKind Kind = EGuLiSceneUISourceKind::PawnRing;
-	uint64 Generation = 0, Revision = 0;
+	uint64 Generation = 0, Revision = 0, ContentRevision = 0, PoseRevision = 0;
 };
 
 /** World inventory only; selection, view team, materials and projection belong to LocalPlayer. */
@@ -27,6 +27,8 @@ public:
 	void NotifyChanged(UObject* Source, EGuLiSceneUIChange Change = EGuLiSceneUIChange::Content);
 	void GetSnapshot(TArray<FGuLiSceneUISource>& Out) const;
 	uint64 GetSourceRevision(const UObject* Source) const;
+    uint64 GetSourceRevision(const UObject* Source,EGuLiSceneUIChange Change) const;
+    void GetSourceRevisions(const UObject* Source,uint64& Content,uint64& Pose) const;
 	uint64 GetMembershipRevision() const { return MembershipRevision; }
 	uint64 GetContentRevision() const { return ContentRevision; }
 	uint64 GetPoseRevision() const { return PoseRevision; }

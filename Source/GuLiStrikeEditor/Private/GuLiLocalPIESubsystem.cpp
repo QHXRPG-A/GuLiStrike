@@ -178,9 +178,9 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     }
     if (!Ready) return Fail(TEXT("The owned Coordinator did not become ready."));
     const FString Project=FPaths::GetProjectFilePath();
-    const FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=Blue -GuLiRole=Commander -GuLiClientRunMode=LogicOnly -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
+    const FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=Blue -GuLiRole=Commander -GuLiClientRunMode=LogicOnly -GuLiHotspotMask=%u -GuLiGameplayWorkers=%u -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
         *Project,LocalMap,*Config.RoomId.ToString(EGuidFormats::Digits),*State->Peer.ToString(EGuidFormats::Digits),
-        *Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")));
+        Config.HotspotMask,Config.GameplayWorkers,*Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")));
     if (!Launch(Client,Args,State->Logic,State->LogicPid)) return Fail(TEXT("Could not start the owned logic client."));
     UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] room=%s editor=%u logic=%u coordinator=%u role=%s"),
         *Config.RoomId.ToString(),FPlatformProcess::GetCurrentProcessId(),State->LogicPid,State->CoordinatorPid,

@@ -288,7 +288,10 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
         if (!Contract || Contract->Version!=RuleValue.CapabilityVersion
             || !Source->Capabilities.contains(Contract->Name)) return Reject(CommitStatus::InvalidRule);
         CapabilityDelta Delta;
-        const auto Status=Contract->Prepare({R,RuleValue,(*Source),Previous,EconomyLedger,ResourceLedgerValue,Players},Delta);
+        static const std::set<ObjectKey> EmptyChildren;
+        const auto Children=IndexedSource().LiveChildren.find(R.Target);
+        const auto* ChildKeys=StageSource?(Children==IndexedSource().LiveChildren.end()?&EmptyChildren:&Children->second):nullptr;
+        const auto Status=Contract->Prepare({R,RuleValue,(*Source),Previous,EconomyLedger,ResourceLedgerValue,Players,ChildKeys},Delta);
         if (Status!=CommitStatus::Committed) return Reject(Status);
         CommitResult PreparedResult=Out;PreparedResult.Capability=Contract->Name;
         for (const auto& [Key,Object]:Delta.Objects)
@@ -309,7 +312,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
                 return Reject(CommitStatus::InvalidRule);
         }
         if (Previous.size()+NewCount>100000) return Reject(CommitStatus::InvalidRule);
-        if (!ValidateCapabilityCommit(PreparedResult,Previous)) return Reject(CommitStatus::InvalidRule);
+        if (!ValidateCapabilityCommit(PreparedResult,Previous,StageSource?&IndexedSource().MutationMembers:nullptr)) return Reject(CommitStatus::InvalidRule);
         // Ordinary spawn, batch spawn and affiliation changes use exactly the
         // same declared inventory profiles. Prepare before publishing ANY part
         // of the capability delta; failed registration cannot leave an orphan.
@@ -623,7 +626,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
             ++Changed.RelationVersion;
         }
         std::optional<ResourceLedger> SpawnResources;
-        if (!ValidateCapabilityMutation(Previous,std::span<const ObjectRecord>(&Changed,1))) return Reject(CommitStatus::InvalidRule);
+        if (!ValidateCapabilityMutation(Previous,std::span<const ObjectRecord>(&Changed,1),StageSource?&IndexedSource().MutationMembers:nullptr)) return Reject(CommitStatus::InvalidRule);
         if (R.Kind==TransactionKind::Spawn && !PrepareResourceActor(Changed,true,SpawnResources)) return Reject(CommitStatus::InvalidRule);
         if (Payment)
         {

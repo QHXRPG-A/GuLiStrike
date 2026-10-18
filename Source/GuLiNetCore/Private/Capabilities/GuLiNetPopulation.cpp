@@ -54,7 +54,7 @@ void WriteCounts(ObjectRecord& O,const Counts& C)
     for (const auto& [Group,N]:C) {W.Text(Group);W.U32(N.first);W.U32(N.second);}
     O.Capabilities[AccountCapability]={1,W.Take()};
 }
-bool ValidateClaims(const std::map<ObjectKey,ObjectRecord>&,std::span<const ObjectRecord> Changes)
+bool ValidateClaims(const std::map<ObjectKey,ObjectRecord>&,std::span<const ObjectRecord> Changes,const std::set<ObjectKey>*)
 {
     for (const auto& O:Changes) if (O.Capabilities.contains(Capability))
     {Claim C;if (!Read(O,C) || !Playable(O.Grant.Faction)) return false;}

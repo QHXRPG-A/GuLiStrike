@@ -58,9 +58,9 @@ namespace GuLiCommanderHUDQA
 		const FString EvidenceDirectory = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("outputs/commander-ring-hud-20260830"));
 		FString Output = FPaths::ConvertRelativePathToFull(Args.Num() > 1 ? Args[1].TrimQuotes() : EvidenceDirectory / TEXT("hud-qa.json"));
 		FPaths::CollapseRelativeDirectories(Output);
-		if (!FPaths::IsUnderDirectory(Output, EvidenceDirectory) || FPaths::GetExtension(Output) != TEXT("json"))
+		if ((FPaths::IsUnderDirectory(Output,FPaths::ConvertRelativePathToFull(FPaths::ProjectDir())) && !FPaths::IsUnderDirectory(Output,EvidenceDirectory)) || FPaths::GetExtension(Output)!=TEXT("json"))
 		{
-			UE_LOG(LogTemp, Error, TEXT("Commander HUD QA reports must be JSON files under %s"), *EvidenceDirectory);
+			UE_LOG(LogTemp, Error, TEXT("Commander HUD QA reports must be JSON outside the project or under %s"), *EvidenceDirectory);
 			return;
 		}
 		TSharedRef<FJsonObject> Report = MakeShared<FJsonObject>();

@@ -8,6 +8,7 @@ class AGuLiTeleportFieldActor;
 class AGuLiCommanderPlayerController;
 class UGuLiCommanderSkillComponent;
 struct FGuLiActiveSkillReply;
+DECLARE_MULTICAST_DELEGATE(FGuLiTeleportHUDStateChanged);
 
 UCLASS()
 class GULISTRIKE_API UGuLiTeleportHUDWidget : public UUserWidget
@@ -35,9 +36,12 @@ public:
 	bool HandlePrimaryAction();
 	bool IsHUDHovered() const;
 	UFUNCTION(BlueprintPure, Category="Commander|Teleport") FText GetStatusText() const;
+    void ReadHUDState(FGuLiTeleportCastState& State,int32& Level,FText& Text) const;
+    FGuLiTeleportHUDStateChanged OnHUDStateChanged;
 	int32 GetLevel() const;
 	UFUNCTION(BlueprintCallable, Category="Commander|Teleport") void ServerSubmit(FGuid RequestId, EGuLiTeleportCommand Command, FGuid CastId, FVector Point);
 private:
+    FText FormatStatusText(const FGuLiTeleportCastState& State,int32 Level) const;
 	UFUNCTION() void ClientResult(EGuLiTeleportCommand Command, bool bSucceeded, FGuid CastId, const FString& Error);
 	void ClearLocalAim();
 	AGuLiCommanderPlayerController* GetCommander() const;

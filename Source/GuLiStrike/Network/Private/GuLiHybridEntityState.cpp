@@ -54,6 +54,8 @@ bool FGuLiHybridEntityState::Prepare(UWorld& W,const FGuLiHybridObjectState& O,c
     return true;
 }
 void FGuLiHybridEntityState::Advance(uint64 At,double Delta) {for (auto& E:Entries) E.Instance->Advance(At,Delta);}
+bool FGuLiHybridEntityState::HasPeriodicWork() const
+{for (const auto& E:Entries) if (E.Instance->HasPeriodicWork()) return true;return false;}
 void FGuLiHybridEntityState::ApplyLedger(const FGuLiHybridObjectState& O) {for (auto& E:Entries) E.Instance->ApplyLedger(O);}
 bool FGuLiHybridEntityState::AcceptMotion(uint64 At) const {for (const auto& E:Entries) if (!E.Instance->AcceptMotion(At)) return false;return true;}
 TOptional<bool> FGuLiHybridEntityState::Command(const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M)

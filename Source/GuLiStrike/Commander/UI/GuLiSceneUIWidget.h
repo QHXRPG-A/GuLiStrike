@@ -80,10 +80,12 @@ private:
 	TSharedPtr<FGuLiSceneUIWidgetData> Data;
 	uint64 SourceMembershipRevision = 0;
 	uint64 OutlineMembershipRevision = 0;
-	uint64 RingContentRevision = 0, RingPoseRevision = 0;
+	uint64 RingContentRevision = 0, RingPoseRevision = 0, RingMembershipRevision = 0;
 	TArray<TWeakObjectPtr<AActor>> OutlineActorSources;
 	TWeakObjectPtr<AActor> PlacementListSource;
 	TArray<TWeakObjectPtr<class UMeshComponent>> PlacementMeshes;
 	float OutlineListRefreshRemaining = 0;
 	bool bModalHidden = false;
+    bool bCachePaint = false;
+    void BackgroundChanged();
 };

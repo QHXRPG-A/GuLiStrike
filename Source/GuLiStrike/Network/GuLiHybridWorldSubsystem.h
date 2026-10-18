@@ -5,9 +5,13 @@
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Gameplay/Economy/GuLiEconomyTypes.h"
 #include "Network/GuLiHybridSessionSubsystem.h"
+#include <memory>
+#include <functional>
 #include "GuLiHybridWorldSubsystem.generated.h"
 
+struct FGuLiHybridComponentBindingContext;
 class FJsonObject;
+namespace GuLiNet {struct PreparedCommit;struct ClientQueryDelta;class IGameplayCalculation;class IObjectMotionCodec;struct IObjectMotionOutput;}
 
 struct FGuLiHybridOwnershipMetrics
 {
@@ -271,6 +275,9 @@ public:
     virtual bool PrepareRestore(const FGuLiHybridObjectState& State,TConstArrayView<uint8> PrivateState) {return Prepare(State);}
     virtual void SetAuthority(const FGuLiHybridObjectState& State, bool bLocalSimulation) = 0;
     virtual void Advance(uint64 LogicalTick, double DeltaSeconds) = 0;
+    virtual uint32 AdvancePeriod() const {return 1;}
+    virtual std::shared_ptr<GuLiNet::IObjectMotionCodec> CreateMotionCodec() {return {};}
+    virtual bool ApplyDecodedMotion(const GuLiNet::IObjectMotionOutput&,uint64) {return false;}
     virtual bool Execute(const FGuLiHybridCommand& Command, const FGuLiHybridCommandMember& Member) = 0;
     virtual bool ApplyMotion(TConstArrayView<uint8> Bytes, uint64 LogicalTick) = 0;
 
@@ -292,6 +299,7 @@ DECLARE_MULTICAST_DELEGATE(FGuLiHybridWorldReady);
 DECLARE_MULTICAST_DELEGATE(FGuLiHybridResourceDirectoryChanged);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiHybridResourceNodeChanged,uint32,uint8);
 DECLARE_MULTICAST_DELEGATE(FGuLiHybridMiningReservationsChanged);
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiHybridObjectChanged,const FGuLiHybridObjectKey&);
 
 /** Per-World authority, logical time and state. Session callbacks are revoked on travel. */
 UCLASS()
@@ -306,6 +314,13 @@ public:
     virtual void Deinitialize() override;
     virtual void Tick(float DeltaTime) override;
     virtual TStatId GetStatId() const override;
+    bool SubscribeObjectReceipt(UObject* Listener,const FGuLiHybridObjectKey& Key,TFunction<void(const FGuLiHybridTransactionResult&)> Callback);
+    void UnsubscribeObjectReceipt(UObject* Listener);
+    bool SubmitGameplayCalculation(FName DependencyGroup,std::shared_ptr<GuLiNet::IGameplayCalculation> Work,
+        uint64 InputBytes,uint64 MaximumResultBytes,std::function<void()> Apply);
+    bool HasPendingGameplayCalculation(FName DependencyGroup) const;
+    bool ConfirmGameplayCalculation(std::shared_ptr<GuLiNet::IGameplayCalculation> Work,uint64 Bytes);
+    void ApplyLateGameplay(UWorld* World,ELevelTick TickType,float DeltaSeconds);
     bool RegisterFactory(EGuLiHybridObjectKind Kind, UObject& LifetimeOwner, FGuLiHybridAdapterFactory Factory);
     bool RegisterSharedStateSystem(FName Name,TSharedPtr<IGuLiHybridSharedStateAdapter> Adapter);
     void UnregisterFactories(const UObject& LifetimeOwner);
@@ -317,6 +332,14 @@ public:
     bool ResolveTarget(const FGuLiTargetHandle& Target, FGuLiHybridObjectKey& Out) const;
     bool ResolveObjectTarget(const FGuLiHybridObjectKey& Key,FGuLiTargetHandle& Out) const;
     bool GetObject(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
+    /** Lightweight applied facts; excludes capability, upgrade and private-work payloads. */
+    bool GetObjectView(const FGuLiHybridObjectKey& Key,FGuLiHybridObjectState& Out) const;
+    bool GetTeamCapabilityObject(EGuLiTeam Team,FName Capability,FGuLiHybridObjectState& Out) const;
+    FGuLiHybridObjectKey GetTeamCapabilityKey(EGuLiTeam Team,FName Capability) const;
+    void BeginHUDQueryScope();
+    void EndHUDQueryScope();
+    void GetCommanderDefinitions(TArray<FName>& Out) const;
+    FGuLiHybridObjectChanged OnObjectChanged;
     /** Current object or authenticated exact-life retired metadata; never grants an entity or simulation. */
     bool GetObjectMetadata(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
     uint32 GetLatestRetiredLife(const FGuLiHybridObjectKey& Stable) const;
@@ -328,14 +351,15 @@ public:
     UFUNCTION(BlueprintCallable,Category="Hybrid|Ownership") void SetCommanderSelection(const TArray<FGuLiHybridObjectKey>& Objects);
     UFUNCTION(BlueprintCallable,Category="Hybrid|Ownership") void ReportDirectOperation(const TArray<FGuLiHybridObjectKey>& Objects);
     FGuLiHybridOwnershipMetrics GetOwnershipMetrics() const;
+    TSharedRef<FJsonObject> GetTransactionCaptureSnapshot() const;
     FGuLiHybridCommandCompleted OnCommandCompleted;
     bool PublishMotion(const FGuLiHybridObjectKey& Key, const TArray<uint8>& Body);
     /** Shared 10 Hz public-capability pump, including families without movement. */
-    void PublishComponentMotionIfDue(const FGuLiHybridObjectKey& Key);
+    void PublishComponentMotionIfDue(const FGuLiHybridObjectKey& Key,FGuLiHybridComponentBindingContext* Context=nullptr);
     /** Reliable simulator-owned event for any registered object family. The
      * family decodes its payload; the transport does not classify content. */
     bool PublishEffect(const FGuLiHybridObjectKey& Key,const FGuid& Event,const TArray<uint8>& Body);
-    bool PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body);
+    bool PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body,uint64 CapturedTick=MAX_uint64);
     bool PublishMotionAcknowledgment(const FGuLiHybridObjectKey& Key,const TArray<uint8>& Body);
     FGuid SubmitDamage(const FGuLiDamageRequest& Request, uint64 StartedAt,
         TFunction<void(const FGuLiDamageCommitResult&)> Callback = {},const FGuLiHybridObjectKey* EffectAuthority=nullptr,TOptional<uint64> OriginalAt={});
@@ -399,11 +423,23 @@ private:
     struct FStateDeleter { void operator()(FState* Value) const; };
     TUniquePtr<FState,FStateDeleter> State;
     void HandleControl(const FGuLiHybridMessage& Message);
-    void HandlePeer(const FGuid& Sender, const FGuLiHybridMessage& Message);
+    bool HandlePeer(const FGuid& Sender, const FGuLiHybridMessage& Message);
+    bool CanAdmitPeer(uint16 Kind,uint64 BodyBytes) const;
     void HandleFailure(const FString& Error);
     void TryWorldReady();
     void SynchronizeGameplayRoster();
     void PumpMembership();
     void RefreshQueryState();
-    void HandleCommit(const FGuLiHybridMessage& Message);
+    void ApplyQueryDelta(const GuLiNet::ClientQueryDelta& Delta);
+    void HandlePreparedCommit(const GuLiNet::PreparedCommit& Commit);
+    void ApplyPreparedCommit(const GuLiNet::PreparedCommit& Commit);
+    void HandleReleasedCommit(const FGuLiHybridMessage& Message);
+};
+
+class FGuLiHybridHUDReadScope
+{
+    UGuLiHybridWorldSubsystem* World;
+public:
+    explicit FGuLiHybridHUDReadScope(UGuLiHybridWorldSubsystem* InWorld):World(InWorld) {if (World) World->BeginHUDQueryScope();}
+    ~FGuLiHybridHUDReadScope() {if (World) World->EndHUDQueryScope();}
 };

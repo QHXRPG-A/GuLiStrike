@@ -552,13 +552,16 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::AdmitHybridEffect(FGuLiRuntimeCombatEff
         || !H->GetObject(Source,Parent) || (Instance.Context.Target.IsValid() && !H->ResolveTarget(Instance.Context.Target,Target))
         || S->Records.Num()>=int32(GuLiEffectRuntimeContract::MaximumRecords)) return {};
     const auto Rule=TEXT("admit/runtime/")+FGuLiHybridManifest::MakeDamageRuleId(Parent.Definition.ToString(),Instance.Context.SkillId,Instance.Context.WeaponBinding.SlotId);
-    if (!S->Manifest.Rules.ContainsByPredicate([&](const auto& R){return R.Id==Rule && R.SpawnKind==EGuLiHybridObjectKind::Field;})) return {};
+    const auto* AdmissionRule=S->Manifest.Rules.FindByPredicate([&](const auto& R){return R.Id==Rule && R.SpawnKind==EGuLiHybridObjectKind::Field;});
+    if (!AdmissionRule) return {};
     const FGuid Id=Instance.State.EffectId;if (!Id.IsValid() || S->Records.Contains(Id)) return {};
     FGuLiHybridObjectKey Key;Key.Kind=EGuLiHybridObjectKind::Field;Key.StableId=Id;
     GuLiEffectState::FRecord R;R.Key=Key;R.Source=Source;R.Target=Target;R.Instance=MoveTemp(Instance);
     R.Instance.SourceLease={};R.Instance.State.SourceTeam=Parent.Team;
     R.Admission=GuLiEffectState::Event(Key,TEXT("/admission"));R.Retirement=GuLiEffectState::Event(Key,TEXT("/retirement"));
-    FGuLiHybridObjectRequest Request;Request.Source=Source;Request.Target=Key;Request.Event=R.Admission;Request.Rule=FName(*Rule);
+    // FName/FString matching ignores case; the portable rule map does not.
+    // Army profiles normalize names, so submit the exact hashed manifest ID.
+    FGuLiHybridObjectRequest Request;Request.Source=Source;Request.Target=Key;Request.Event=R.Admission;Request.Rule=FName(*AdmissionRule->Id);
     Request.Operation=EGuLiHybridObjectOperation::Spawn;Request.Location=R.Instance.State.Location;
     TArray<uint8> Birth;if (!S->EncodeRecord(R,Birth)) return {};
     GuLiNet::RuntimeEffectRecipe::Recipe Frozen{GuLiNetBridge::ToCore(Key),GuLiNetBridge::ToCore(Source),GuLiNetBridge::ToCore(R.Admission),

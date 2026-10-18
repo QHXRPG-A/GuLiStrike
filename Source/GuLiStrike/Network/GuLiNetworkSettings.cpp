@@ -7,6 +7,7 @@
 #include "Misc/Parse.h"
 #include "Misc/Paths.h"
 #include "Misc/App.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #if !UE_BUILD_SHIPPING
 #include "Development/GuLiHybridReviewSubsystem.h"
 #endif
@@ -24,6 +25,8 @@ FGuLiNetworkLaunchConfig UGuLiNetworkSettings::Resolve(const UWorld* World)
     const auto* S = GetDefault<UGuLiNetworkSettings>(); FGuLiNetworkLaunchConfig C;
     C.Mode = EGuLiNetworkMode::Hybrid; C.Transport = S->Transport; C.CoordinatorUrl = S->CoordinatorUrl;
     C.ClientRunMode = S->ClientRunMode;
+    C.HotspotMask = UGuLiHotspotOptions::ResolveLaunchMask();
+    C.GameplayWorkers = UGuLiHotspotOptions::ResolveGameplayWorkers();
     C.ManifestFile = S->ManifestFile.FilePath.IsEmpty() ? FPaths::ProjectConfigDir() / TEXT("Hybrid/RuntimeManifest-600.json") : S->ManifestFile.FilePath;
     C.RoomId = S->RoomId; C.DevelopmentPlayerId = S->DevelopmentPlayerId; C.Team = S->Team; C.Role = S->Role;
     C.LocalUdpPort = S->LocalUdpPort; C.ProductId = S->ProductId; C.SandboxId = S->SandboxId;

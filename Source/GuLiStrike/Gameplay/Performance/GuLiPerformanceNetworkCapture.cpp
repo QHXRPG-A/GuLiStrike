@@ -43,6 +43,7 @@ void UGuLiPerformanceSubsystem::CaptureNetworkSample()
         Row->SetObjectField(TEXT("hybrid_transport"),Session->GetNetworkCaptureSnapshot());
     if (const auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>())
     {
+        Row->SetObjectField(TEXT("async_transactions"),Hybrid->GetTransactionCaptureSnapshot());
         const auto M=Hybrid->GetOwnershipMetrics();auto H=MakeShared<FJsonObject>();
         H->SetNumberField(TEXT("committed"),double(M.Committed));
         H->SetNumberField(TEXT("received_payload_bytes"),double(M.ReceivedPayloadBytes));

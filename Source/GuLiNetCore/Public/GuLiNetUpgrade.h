@@ -54,6 +54,7 @@ struct UpgradeSelection
 {
     Revision CatalogVersion=0,Version=0;
     std::vector<std::string> Chosen;
+    friend bool operator==(const UpgradeSelection&,const UpgradeSelection&)=default;
 };
 using UpgradeSelections=std::map<std::string,UpgradeSelection>;
 struct CompiledUpgradeCatalog

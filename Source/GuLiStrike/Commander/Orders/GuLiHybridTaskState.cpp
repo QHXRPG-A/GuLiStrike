@@ -1,4 +1,5 @@
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Commander/Mass/Navigation/GuLiSharedMoveRoutes.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
@@ -161,7 +162,10 @@ public:
         // the deduplication clock for their tasks or navigation.
         Self->AdvanceHybrid(LocalTick,float(Delta));
         if (auto* Crowd=Cast<UGuLiGroundCrowdManager>(UCrowdManager::GetCurrent(Self->GetWorld())))
+        {
+            TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_CrowdAdvance);
             Crowd->AdvanceHybrid(LocalTick,float(Delta));
+        }
     }
     bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const override
     {

@@ -84,8 +84,8 @@ namespace GuLiHybridArmy
 {
 bool FindRoot(UWorld& W,EGuLiTeam Team,FGuLiHybridObjectState& Out)
 {
-    auto* H=W.GetSubsystem<UGuLiHybridWorldSubsystem>();if (!H) return false;TArray<FGuLiHybridObjectState> Objects;H->GetObjects(Objects);
-    const auto* O=Objects.FindByPredicate([&](const auto& O){return O.Team==Team && O.Capabilities.Contains(TEXT("army_state"));});if (!O) return false;Out=*O;return true;
+    const auto* H=W.GetSubsystem<UGuLiHybridWorldSubsystem>();
+    return H && H->GetTeamCapabilityObject(Team,TEXT("army_state"),Out);
 }
 FGuid Request(UWorld& W,EGuLiTeam Team,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session,FString Choice,uint32 Expected,uint16 Unit,FName Slot)
 {

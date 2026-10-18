@@ -373,15 +373,14 @@ def fund(session, desired, team="Red"):
         from integrated_remaining import PrerequisiteMissing
         raise PrerequisiteMissing('Resource preparation is blocked by its first failed request: '+blocked)
     session.begin('development-resource-supply-'+team.lower())
-    # The army source belongs to the indivisible resource group. Run this
-    # opt-in development credit on its real simulator, using its own clock.
+    # Keep the fixed Commander as caller. The native opt-in credit uses the
+    # existing controlled request route if the resource-group simulator moves.
     definition=manifest['strings']['army/root_definition']
     source=next((o for o in session.states[commander['name']]['objects']
                  if o['definition']==definition and o['life']==1
                  and identity(o['controller'])==commander['player'] and not o.get('dormant')),None)
     if not source: raise RuntimeError('Development supply has no living team army source')
-    supplier=next((e for e in session.clients if e['player']==identity(source['simulation_owner'])),None)
-    if not supplier: raise RuntimeError('Development supply has no active resource-group simulator')
+    supplier=commander
     receipts=[];events=[]
     for color,deficit in missing.items():
         while deficit:

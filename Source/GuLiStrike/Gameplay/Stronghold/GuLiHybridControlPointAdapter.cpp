@@ -81,7 +81,8 @@ public:
             else return;
         }
         if (Tick<Point.SampledAt+Point.SamplePeriod) return;
-        const auto Counts=World()->GetSubsystem<UGuLiResourceWorldSubsystem>()->GetHybridCaptureCounts(Tick,Point.Index);
+        FIntPoint Counts;
+        if (!World()->GetSubsystem<UGuLiResourceWorldSubsystem>()->TryGetHybridCaptureCounts(Tick,Point.SampledAt,Point.Index,Counts)) return;
         const uint32 Red=uint32(Counts.X),Blue=uint32(Counts.Y);
         const auto Event=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/ControlPointRequests"),EGuLiHybridObjectKind::Territory,
             Record.Key.StableId.ToString(EGuidFormats::Digits)+FString::Printf(TEXT("/%u/%llu/%llu"),Record.Key.LifeGeneration,Tick,Record.RelationRevision)).StableId;

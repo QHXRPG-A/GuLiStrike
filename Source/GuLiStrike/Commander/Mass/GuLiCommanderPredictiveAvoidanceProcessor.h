@@ -5,9 +5,10 @@
 #include "CoreMinimal.h"
 #include "MassEntityQuery.h"
 #include "MassProcessor.h"
+#include <memory>
 #include "GuLiCommanderPredictiveAvoidanceProcessor.generated.h"
 
-namespace GuLiCommanderPredictiveAvoidancePrivate { struct FWorkspace; }
+namespace GuLiCommanderPredictiveAvoidancePrivate { struct FWorkspace; struct FAsyncWorkspace; }
 
 /**
  * Commander-only predictive avoidance. It snapshots participants into a project-owned
@@ -31,6 +32,10 @@ protected:
 	virtual void Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context) override;
 
 private:
+	void ExecuteBackground(FMassEntityManager&,FMassExecutionContext&);
+    std::shared_ptr<GuLiCommanderPredictiveAvoidancePrivate::FAsyncWorkspace> AsyncWorkspace;
+    uint8 PendingPhaseMask=0;
+    uint64 PendingPhaseSequences[3]={};
 	TObjectPtr<UWorld> World;
 	FMassEntityQuery ObstacleQuery;
 	FMassEntityQuery ReceiverQuery;

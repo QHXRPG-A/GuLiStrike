@@ -141,6 +141,7 @@ public:
     // Component capabilities own construction/production progression and their
     // public samples. A new combination does not add another family payload.
     void Advance(uint64,double) override {}
+    uint32 AdvancePeriod() const override {return 0;}
     bool Execute(const FGuLiHybridCommand&,const FGuLiHybridCommandMember&) override { return false; }
     bool ApplyMotion(TConstArrayView<uint8> Bytes,uint64) override {return Bytes.IsEmpty();}
     void ApplyLedger(const FGuLiHybridObjectState& State,uint64 Revision,bool Effects) override

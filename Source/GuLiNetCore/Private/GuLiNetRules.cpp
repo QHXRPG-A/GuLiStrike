@@ -60,21 +60,21 @@ bool Debit(Resources& Balance, const Resources& Cost)
     if (!Cost.Positive() || !CanAfford(Balance, Cost)) return false;
     Balance.Blue -= Cost.Blue; Balance.Red -= Cost.Red; Balance.Version = NextRevision(Balance.Version); return true;
 }
-Resources& Economy::MutableBalance(Team Faction) { return Faction == Team::Red ? State.Red : State.Blue; }
+Resources& Economy::MutableBalance(Team Faction) { auto& State=Write(); return Faction == Team::Red ? State.Red : State.Blue; }
 bool Economy::Begin(const Resources& Red, const Resources& Blue)
-{
+{ auto& State=Write();
     if (State.Active || !Red.Nonnegative() || !Blue.Nonnegative()) return false;
     State = {}; State.Active = true; State.Red = Red; State.Blue = Blue;
     State.Red.Version = State.Blue.Version = 1; return true;
 }
-bool Economy::Open() { if (!State.Active) return false; State.Open = true; return true; }
-void Economy::End() { State = {}; }
+bool Economy::Open() { auto& State=Write(); if (!State.Active) return false; State.Open = true; return true; }
+void Economy::End() { auto& State=Write(); State = {}; }
 Resources Economy::Balance(Team Faction) const
-{ return !State.Active || !Playable(Faction) ? Resources{} : Faction == Team::Red ? State.Red : State.Blue; }
+{ const auto& State=*Storage; return !State.Active || !Playable(Faction) ? Resources{} : Faction == Team::Red ? State.Red : State.Blue; }
 bool Economy::Add(Team Faction, const Resources& Amount)
-{ return State.Active && Playable(Faction) && Credit(MutableBalance(Faction), Amount); }
+{ auto& State=Write(); return State.Active && Playable(Faction) && Credit(MutableBalance(Faction), Amount); }
 bool Economy::Reserve(Team Faction, EconomyKey Key, const Resources& Cost, Id Token, Reservation& Out)
-{
+{ auto& State=Write();
     Out = {};
     if (!State.Active || !State.Open || !Playable(Faction) || !Key.Account.Valid() || !Key.Request
         || !Cost.Positive() || State.Finalized.contains(Key)) return false;
@@ -88,7 +88,7 @@ bool Economy::Reserve(Team Faction, EconomyKey Key, const Resources& Cost, Id To
     Out = {Token, Key, Faction, Cost}; State.Pending.emplace(Key, Out); return true;
 }
 bool Economy::Finalize(const Reservation& Value, bool Refund)
-{
+{ auto& State=Write();
     if (!State.Active || !Value.Token.Valid()) return false;
     auto It = State.Pending.find(Value.Key);
     if (It == State.Pending.end() || It->second.Token != Value.Token || It->second.Faction != Value.Faction
@@ -103,7 +103,7 @@ bool Economy::Finalize(const Reservation& Value, bool Refund)
     State.Finalized.insert(Value.Key); State.Pending.erase(It); return true;
 }
 bool Economy::Restore(EconomyState Value)
-{
+{ auto& State=Write();
     if (!Value.Red.Nonnegative() || !Value.Blue.Nonnegative() || (Value.Open && !Value.Active)) return false;
     for (const auto& [Key, Pending] : Value.Pending)
         if (Key != Pending.Key || !Key.Account.Valid() || !Key.Request || !Pending.Token.Valid()

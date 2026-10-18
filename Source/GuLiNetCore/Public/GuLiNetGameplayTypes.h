@@ -34,6 +34,7 @@ struct ObjectRecord
     UpgradeSelections Upgrades;
     CapabilityStates Capabilities;
     bool Materialized = true;
+    friend bool operator==(const ObjectRecord&,const ObjectRecord&)=default;
 };
 enum class TransactionKind : std::uint8_t { Damage, Credit, Reserve, Commit, Refund, Spawn, Complete, Destroy, Relation, Extract, Deliver, Process, ClaimMiningPosition, ReleaseMiningPosition, ClaimMiningNode, AdmitWork, Upgrade, Capability };
 constexpr bool IsResourceTransaction(TransactionKind Kind) { return Kind>=TransactionKind::Extract && Kind<=TransactionKind::Process; }

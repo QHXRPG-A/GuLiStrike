@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 
@@ -13,6 +14,7 @@
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Components/SceneComponent.h"
@@ -172,7 +174,8 @@ void AGuLiCommanderHealthBarRenderer::GatherSceneUIBars(TArray<FGuLiSceneUIHealt
 	{
 		if (CachedVisibleValues[Slot] <= 0 || CachedTransforms[Slot].GetScale3D().IsNearlyZero()) continue;
 		auto& Bar = Out.AddDefaulted_GetRef();
-		Bar.Center = CachedTransforms[Slot].GetLocation();
+		Bar.Key={this,uint64(Slot)+1,SlotGenerations[Slot]};
+        Bar.Center = CachedTransforms[Slot].GetLocation();
 		Bar.Fraction = FMath::Clamp(CachedHealthFractions[Slot], 0.f, 1.f);
 		Bar.bSelected = CachedSelectedValues[Slot] > 0;
 	}
@@ -319,6 +322,7 @@ void AGuLiCommanderHealthBarRenderer::BindPresentationActor(
 	{
 		return;
 	}
+	PositionSamples.Reset();
 
 	if (AGuLiCommanderPresentationActor* Previous = PresentationActor.Get())
 	{
@@ -412,8 +416,13 @@ void AGuLiCommanderHealthBarRenderer::RefreshSoldierActivity(FGuLiSoldierId Id)
 		Index = &SoldierInstanceIndices.Add(Id, Slot);
 	}
 	PendingActivityIds.Remove(Id);
-	ActiveSoldierStates.Add(Id, *State);
-	ActiveHitStartTimes.Add(Id, HitStart);
+    const auto* Previous=ActiveSoldierStates.Find(Id);
+    if (!Previous || Previous->Health!=State->Health || Previous->MaxHealth!=State->MaxHealth
+        || Previous->DisplacementFrameFloor!=State->DisplacementFrameFloor || Previous->Team!=State->Team
+        || Previous->UnitTypeId!=State->UnitTypeId || ActiveHitStartTimes.FindRef(Id)!=HitStart)
+        ++SlotUrgentRevisions[*Index];
+    ActiveSoldierStates.Add(Id, *State);
+    ActiveHitStartTimes.Add(Id, HitStart);
 	ResolveSoldierHeightOffset(State->UnitTypeId);
 }
 
@@ -466,7 +475,8 @@ void AGuLiCommanderHealthBarRenderer::ReleaseInstanceSlot(int32 Index)
 {
 	if (!CachedTransforms.IsValidIndex(Index)) return;
 	WriteInstance(Index, GuLiCommanderHealthBars::MakeHiddenTransform(), -1.0f, 0.0f, 0.0f);
-	FreeInstanceSlots.AddUnique(Index);
+    PositionSamples.Samples.Remove({this,uint64(Index)+1,SlotGenerations[Index]});
+    FreeInstanceSlots.AddUnique(Index);
 }
 
 void AGuLiCommanderHealthBarRenderer::HandleActorBarChanged(TWeakObjectPtr<AActor> Actor)
@@ -499,20 +509,28 @@ void AGuLiCommanderHealthBarRenderer::HandleActorBarChanged(TWeakObjectPtr<AActo
 
 void AGuLiCommanderHealthBarRenderer::HandleActorHealthChanged(float Health, float MaxHealth)
 {
-	for (const auto& Pair : ActorHealthProviders)
-		if (const auto* Provider = Pair.Value.Get())
-			ActorHealthFractions.Add(Pair.Key, Provider->IsAlive()
-				? CalculateHealthFraction(Provider->GetHealthState().Health, Provider->GetHealthState().MaxHealth) : 0.0f);
+    for (const auto& Pair:ActorHealthProviders) if (const auto* Provider=Pair.Value.Get())
+    {
+        const float Value=Provider->IsAlive()?CalculateHealthFraction(Provider->GetHealthState().Health,Provider->GetHealthState().MaxHealth):0;
+        if (ActorHealthFractions.FindRef(Pair.Key)!=Value)
+            if (const auto* Slot=ActorInstanceIndices.Find(Pair.Key)) ++SlotUrgentRevisions[*Slot];
+        ActorHealthFractions.Add(Pair.Key,Value);
+    }
 }
 
 int32 AGuLiCommanderHealthBarRenderer::AllocateInstanceSlot()
 {
-	if (!FreeInstanceSlots.IsEmpty()) return FreeInstanceSlots.Pop(EAllowShrinking::No);
+    if (!FreeInstanceSlots.IsEmpty())
+    {
+        const int32 Slot=FreeInstanceSlots.Pop(EAllowShrinking::No);
+        SlotGenerations[Slot]=NextSlotGeneration++;SlotUrgentRevisions[Slot]=1;return Slot;
+    }
 	const FTransform Hidden = GuLiCommanderHealthBars::MakeHiddenTransform();
 	const int32 Index = HealthBarInstances->AddInstance(Hidden, true);
 	if (Index != INDEX_NONE)
 	{
 		CachedTransforms.Add(Hidden);
+        SlotGenerations.Add(NextSlotGeneration++);SlotUrgentRevisions.Add(1);
 		CachedHealthFractions.Add(-2.0f);
 		CachedSelectedValues.Add(-1.0f);
 		CachedVisibleValues.Add(-1.0f);
@@ -613,19 +631,28 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 		Out = FTransform(Rotation, Location, HealthBarBaseScale * FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1));
 		return true;
 	};
-	VisibleInstanceCount = 0;
-	for (const auto& Pair : SoldierInstanceIndices)
+    const bool LimitPositions=UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::AuxiliaryPosition);
+    const double PositionTime=FPlatformTime::Seconds();PositionSamples.Begin();
+    VisibleInstanceCount = 0;
+    for (const auto& Pair : SoldierInstanceIndices)
 	{
 		const auto& State = ActiveSoldierStates.FindChecked(Pair.Key);
 		const bool bSelected = SelectedSoldiers.Contains(Pair.Key);
 		float Opacity = bSelected ? 1.0f : UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - ActiveHitStartTimes.FindChecked(Pair.Key));
 		FTransform Transform = Hidden, Soldier;
 		bool bVisible = false;
-		if (Presentation && Opacity > 0 && State.IsAlive() && !State.bPhased && Presentation->TryGetPresentedVisualTransform(Pair.Key, Soldier))
-		{
-			const FVector Location = Soldier.TransformPosition(FVector(0, 0, SoldierHeightOffsetsCentimeters.FindRef(State.UnitTypeId)));
-			bVisible = MakeBarTransform(Location, Transform);
-		}
+        if (Presentation && Opacity>0 && State.IsAlive() && !State.bPhased)
+        {
+            auto Read=[&](FVector& Out)
+            {
+                if (!Presentation->TryGetPresentedVisualTransform(Pair.Key,Soldier)) return false;
+                Out=Soldier.TransformPosition(FVector(0,0,SoldierHeightOffsetsCentimeters.FindRef(State.UnitTypeId)));return true;
+            };
+            FVector Location;
+            const bool Valid=LimitPositions?PositionSamples.Resolve({this,uint64(Pair.Value)+1,SlotGenerations[Pair.Value]},
+                SlotUrgentRevisions[Pair.Value],bSelected,PositionTime,Read,Location):Read(Location);
+            bVisible=Valid && MakeBarTransform(Location,Transform);
+        }
 		WriteInstance(Pair.Value, Transform, CalculateHealthFraction(State.Health, State.MaxHealth), bSelected ? 1.0f : 0.0f, bVisible ? Opacity : 0.0f);
 		if (bVisible) ++VisibleInstanceCount;
 	}
@@ -640,16 +667,25 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 		bool bVisible = false;
 		if (Actor && !Actor->IsHidden() && Health != 0 && Opacity > 0 && !UGuLiExternalUnitControlComponent::IsActorPhased(Actor))
 		{
-			FBox Bounds(ForceInit); float ModelSize = 0;
-			if (UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(Actor, Bounds, ModelSize))
-			{
-				auto Location = Bounds.GetCenter(); Location.Z = Bounds.Max.Z + GuLiCommanderHealthBars::HeightPaddingCentimeters;
-				bVisible = MakeBarTransform(Location, Transform);
-			}
+            auto Read=[&](FVector& Out)
+            {
+                FBox Bounds(ForceInit);float ModelSize=0;
+                if (!UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(Actor,Bounds,ModelSize)) return false;
+                Out=Bounds.GetCenter();Out.Z=Bounds.Max.Z+GuLiCommanderHealthBars::HeightPaddingCentimeters;return true;
+            };
+            const auto* External=Actor->FindComponentByClass<UGuLiExternalUnitControlComponent>();
+            const uint64 Urgent=HashCombineFast(GetTypeHash(SlotUrgentRevisions[Pair.Value]),GetTypeHash(External?External->GetState().Revision:0));
+            const auto* Vehicle=Cast<IGuLiEngineeringVehicle>(Actor);
+            const bool Selected=Vehicle && BoundNetSync.IsValid() && BoundNetSync->GetSelectionState().ActorIds.Contains(Vehicle->GetStableActorId());
+            FVector Location;
+            const bool Valid=LimitPositions?PositionSamples.Resolve({this,uint64(Pair.Value)+1,SlotGenerations[Pair.Value]},
+                Urgent,Selected,PositionTime,Read,Location):Read(Location);
+            bVisible=Valid && MakeBarTransform(Location,Transform);
 		}
-		WriteInstance(Pair.Value, Transform, Health, 0, bVisible ? Opacity : 0);
-		if (bVisible) ++VisibleInstanceCount;
-	}
+        WriteInstance(Pair.Value, Transform, Health, 0, bVisible ? Opacity : 0);
+        if (bVisible) ++VisibleInstanceCount;
+    }
+    PositionSamples.End();
 }
 
 void AGuLiCommanderHealthBarRenderer::HideAllInstances()

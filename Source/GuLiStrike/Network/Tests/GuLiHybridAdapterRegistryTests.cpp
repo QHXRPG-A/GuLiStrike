@@ -1,6 +1,7 @@
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Network/GuLiHybridActorWorldSubsystem.h"
 #include "Network/Private/GuLiHybridComponentState.h"
+#include "Network/Private/GuLiHybridPeerPayload.h"
 #include "Gameplay/Building/GuLiHybridBuildingAdapter.h"
 #include "Gameplay/Building/GuLiBuildingTypes.h"
 #include "Engine/StaticMesh.h"
@@ -60,7 +61,57 @@ bool FGuLiHybridAdapterRegistryTests::RunTest(const FString&)
     TestTrue(TEXT("Territory capture cannot silently become ordinary placed-building state"),GetGuLiHybridBuildingFamily(Building).IsNone());
     Building.Category=EGuLiBuildingCategory::Tower;
     Building.CompletionUnitTypeId=17;
-    TestTrue(TEXT("An unmigrated construction-to-unit capability is explicit"),GetGuLiHybridBuildingFamily(Building).IsNone());
+    TestEqual(TEXT("Construction-to-unit uses the migrated placed-building family; manifest export validates its target unit"),
+        GetGuLiHybridBuildingFamily(Building),FName(TEXT("PlacedBuilding")));
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiHybridSmallPeerPayloadTests,
+    "GuLiStrike.Network.SmallPeerPayload",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiHybridSmallPeerPayloadTests::RunTest(const FString&)
+{
+    for (const uint32 Size:{127u,128u,192u,511u,512u})
+    {
+        GuLiNet::Message M;M.Header.Kind=GuLiNet::MessageKind::Transaction;M.Body.resize(Size);
+        for (uint32 I=0;I<Size;++I) M.Body[I]=uint8(I%16);
+        const auto Original=M.Body;GuLiNet::Bytes Encoded;
+        const bool Packed=GuLiHybridPeerPayload::Pack(M,Encoded);
+        TestEqual(TEXT("Small reliable compression threshold"),Packed,Size>=128);
+        if (Packed)
+        {
+            TestTrue(TEXT("Encoding is smaller"),Encoded.size()<Original.size());
+            M.Body=Encoded;uint64 Plain=0;
+            TestTrue(TEXT("Admission reads expanded length without decode"),GuLiHybridPeerPayload::PlainSize(M,Plain));
+            TestEqual(TEXT("Expanded bytes match original"),Plain,uint64(Size));
+            TestTrue(TEXT("Small compressed message decodes"),GuLiHybridPeerPayload::Unpack(M));
+            TestTrue(TEXT("Every original payload byte preserved"),M.Body==Original);
+            M.Body=Encoded;M.Body[4]=0xff;
+            TestFalse(TEXT("Unknown compressed schema rejected before allocation"),GuLiHybridPeerPayload::PlainSize(M,Plain));
+            TestFalse(TEXT("Unknown compressed schema rejected before decode"),GuLiHybridPeerPayload::Unpack(M));
+        }
+    }
+    GuLiNet::Message Escaped;Escaped.Header.Kind=GuLiNet::MessageKind::Transaction;GuLiNet::Writer W;
+    W.U32(GuLiHybridPeerPayload::Tag);W.U32(123);Escaped.Body=W.Take();const auto Original=Escaped.Body;GuLiNet::Bytes Encoded;
+    TestTrue(TEXT("Uncompressed tag collision still escaped"),GuLiHybridPeerPayload::Pack(Escaped,Encoded));Escaped.Body=std::move(Encoded);
+    TestTrue(TEXT("Escaped body still decodes"),GuLiHybridPeerPayload::Unpack(Escaped)&&Escaped.Body==Original);
+    GuLiNet::Message Identified;Identified.Header.Kind=GuLiNet::MessageKind::ObjectEvent;
+    Identified.Header.Match={{0x94325187,0x71245632,0xaabc39d4,0xd0f12346}};
+    Identified.Header.Sender={{0x86c01423,0xd873a9b0,0x36d87344,0x03ab51ff}};
+    Identified.Header.Event={{0x59b90abc,0x8712439c,0x45ef1259,0x78591931}};
+    Identified.Header.Object={GuLiNet::ObjectKind::Flight,{{0xe801abff,0x46dbb973,0x7b01f393,0x894a0136}},7};
+    GuLiNet::Writer IdentityBody;IdentityBody.Identity(Identified.Header.Match);IdentityBody.Identity(Identified.Header.Sender);
+    IdentityBody.Identity(Identified.Header.Event);IdentityBody.Key(Identified.Header.Object);
+    IdentityBody.Text("event/"+Identified.Header.Event.ToString());IdentityBody.Text("linear_flight");
+    for (uint32 I=0;I<300;++I) IdentityBody.U8(uint8((I*37+11)%251));
+    Identified.Body=IdentityBody.Take();const auto Plain=Identified.Body;size_t ReferenceBytes=0;
+    TestTrue(TEXT("Header dictionary packing succeeds"),GuLiHybridPeerPayload::Pack(Identified,Encoded,&ReferenceBytes));
+    TestEqual(TEXT("Short old-baseline body remains uncompressed"),ReferenceBytes,Plain.size());
+    TestTrue(TEXT("Header dictionary selected"),Encoded.size()>8 && Encoded[8]==2);
+    Identified.Body=Encoded;++Identified.Header.Sequence;++Identified.Header.At;
+    TestTrue(TEXT("Transport sequence and clock do not affect dictionary"),GuLiHybridPeerPayload::Unpack(Identified)&&Identified.Body==Plain);
+    Identified.Body=Encoded;++Identified.Header.Event.Words[3];
+    TestFalse(TEXT("Wrong identity dictionary cannot decode"),GuLiHybridPeerPayload::Unpack(Identified));
+    --Identified.Header.Event.Words[3];Identified.Body=Encoded;Identified.Body.pop_back();
+    TestFalse(TEXT("Truncated dictionary stream rejected"),GuLiHybridPeerPayload::Unpack(Identified));
     return true;
 }
 #endif

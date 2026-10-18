@@ -86,25 +86,34 @@ bool ValidMiningReservations(const MiningReservationState& S)
 }
 void MiningReservations::RebuildIndexes()
 {
-    PositionOwners.clear(); NodeOwners.clear(); Clusters.clear();
+    auto& Data=Write(); auto& State=Data.State; auto& PositionOwners=Data.PositionOwners; auto& NodeOwners=Data.NodeOwners; auto& Clusters=Data.Clusters;
+    PositionOwners.clear(); NodeOwners.clear(); Clusters.clear();Data.ClusterLeases.clear();Data.ClusterDecisions.clear();
     for (const auto& [Node,Cluster]:State.NodeClusters) { (void)Node; Clusters.insert(Cluster); }
     for (const auto& [Source,V]:State.Leases)
-    { PositionOwners.emplace(std::make_pair(V.Cluster,V.Sample),Source); if (V.Node) NodeOwners.emplace(V.Node,Source); }
+    { PositionOwners.emplace(std::make_pair(V.Cluster,V.Sample),Source); if (V.Node) NodeOwners.emplace(V.Node,Source);Data.ClusterLeases[V.Cluster].insert(Source); }
+    for (const auto& [Event,D]:State.Decisions) Data.ClusterDecisions[D.Outcome.Lease.Cluster].insert(Event);
 }
+const std::set<ObjectKey>& MiningReservations::LeasesForCluster(std::uint32_t Cluster) const
+{static const std::set<ObjectKey> Empty;const auto I=Value->ClusterLeases.find(Cluster);return I==Value->ClusterLeases.end()?Empty:I->second;}
+const std::set<Id>& MiningReservations::DecisionsForCluster(std::uint32_t Cluster) const
+{static const std::set<Id> Empty;const auto I=Value->ClusterDecisions.find(Cluster);return I==Value->ClusterDecisions.end()?Empty:I->second;}
 bool MiningReservations::Configure(std::map<std::uint32_t,std::uint32_t> Nodes)
 {
+    auto& Data=Write(); auto& State=Data.State;
     if (State.Configured) return false;
     MiningReservationState V; V.Configured=true; V.NodeClusters=std::move(Nodes);
     if (!ValidMiningReservations(V)) return false; State=std::move(V); RebuildIndexes(); return true;
 }
 bool MiningReservations::Restore(MiningReservationState V)
 {
+    auto& Data=Write(); auto& State=Data.State;
     if (!ValidMiningReservations(V) || (State.Configured && (!V.Configured || V.NodeClusters!=State.NodeClusters))) return false;
     State=std::move(V); RebuildIndexes(); return true;
 }
 MiningReservationOutcome MiningReservations::Begin(MiningReservationOperation Op,ObjectKey Source,Id Event,
     std::uint32_t Cluster,std::uint8_t Sample,std::uint32_t Task,Id Token,std::uint32_t Node,Bytes& Fingerprint) const
 {
+    const auto& Data=*Value; const auto& State=Data.State;
     MiningReservationOutcome V; V.Event=Event; V.Source=Source; V.Operation=Op;
     if (!State.Configured || !SourceKey(Source) || !Event.Valid()) return V;
     Writer W(160); W.U8(static_cast<std::uint8_t>(Op)); W.Key(Source); W.U32(Cluster); W.U8(Sample); W.U32(Task); W.Identity(Token); W.U32(Node); Fingerprint=W.Take();
@@ -117,12 +126,16 @@ MiningReservationOutcome MiningReservations::Begin(MiningReservationOperation Op
 }
 MiningReservationOutcome MiningReservations::Finish(MiningReservationOutcome V,Bytes Fingerprint)
 {
-    V.Version=++State.Version; State.Decisions.emplace(V.Event,MiningReservationDecision{std::move(Fingerprint),V}); return V;
+    auto& Data=Write(); auto& State=Data.State;
+    V.Version=++State.Version; State.Decisions.emplace(V.Event,MiningReservationDecision{std::move(Fingerprint),V});Data.ClusterDecisions[V.Lease.Cluster].insert(V.Event);return V;
 }
 void MiningReservations::RemoveIndexes(const MiningPositionLease& V)
-{ PositionOwners.erase(std::make_pair(V.Cluster,V.Sample)); if (V.Node) NodeOwners.erase(V.Node); }
+{
+    auto& Data=Write(); auto& PositionOwners=Data.PositionOwners; auto& NodeOwners=Data.NodeOwners; PositionOwners.erase(std::make_pair(V.Cluster,V.Sample)); if (V.Node) NodeOwners.erase(V.Node);
+    if (auto I=Data.ClusterLeases.find(V.Cluster);I!=Data.ClusterLeases.end()) {I->second.erase(V.Source);if (I->second.empty()) Data.ClusterLeases.erase(I);} }
 MiningReservationOutcome MiningReservations::ClaimPosition(ObjectKey Source,std::uint32_t Cluster,std::uint8_t Sample,std::uint32_t Task,Id Event)
 {
+    auto& Data=Write(); auto& State=Data.State; auto& PositionOwners=Data.PositionOwners; auto& Clusters=Data.Clusters;
     Bytes Fingerprint; auto V=Begin(MiningReservationOperation::ClaimPosition,Source,Event,Cluster,Sample,Task,{},0,Fingerprint);
     if (V.Status!=MiningReservationStatus::Deferred || State.Decisions.size()>=MaximumDecisions || State.Version==UINT64_MAX) return V;
     const auto Existing=State.Leases.find(Source); if (Existing!=State.Leases.end()) V.Lease=Existing->second;
@@ -135,10 +148,11 @@ MiningReservationOutcome MiningReservations::ClaimPosition(ObjectKey Source,std:
     { V.Status=MiningReservationStatus::Committed; return Finish(V,std::move(Fingerprint)); }
     if (Existing!=State.Leases.end()) RemoveIndexes(Existing->second);
     V.Lease={Source,Cluster,Task,Sample,Event,0,State.Version+1}; State.Leases[Source]=V.Lease;
-    PositionOwners[{Cluster,Sample}]=Source; V.Status=MiningReservationStatus::Committed; return Finish(V,std::move(Fingerprint));
+    PositionOwners[{Cluster,Sample}]=Source;Data.ClusterLeases[Cluster].insert(Source);V.Status=MiningReservationStatus::Committed; return Finish(V,std::move(Fingerprint));
 }
 MiningReservationOutcome MiningReservations::ClaimNode(ObjectKey Source,Id Token,std::uint32_t Node,Id Event)
 {
+    auto& Data=Write(); auto& State=Data.State; auto& NodeOwners=Data.NodeOwners;
     Bytes Fingerprint; auto V=Begin(MiningReservationOperation::ClaimNode,Source,Event,0,0,0,Token,Node,Fingerprint);
     if (V.Status!=MiningReservationStatus::Deferred || State.Decisions.size()>=MaximumDecisions || State.Version==UINT64_MAX) return V;
     const auto I=State.Leases.find(Source); if (I!=State.Leases.end()) V.Lease=I->second;
@@ -154,6 +168,7 @@ MiningReservationOutcome MiningReservations::ClaimNode(ObjectKey Source,Id Token
 }
 MiningReservationOutcome MiningReservations::Release(ObjectKey Source,Id Token,Id Event)
 {
+    auto& Data=Write(); auto& State=Data.State;
     Bytes Fingerprint; auto V=Begin(MiningReservationOperation::Release,Source,Event,0,0,0,Token,0,Fingerprint);
     if (V.Status!=MiningReservationStatus::Deferred || State.Decisions.size()>=MaximumDecisions || State.Version==UINT64_MAX) return V;
     const auto I=State.Leases.find(Source); if (I!=State.Leases.end()) V.Lease=I->second;
@@ -164,6 +179,7 @@ MiningReservationOutcome MiningReservations::Release(ObjectKey Source,Id Token,I
 }
 bool MiningReservations::AbandonSource(ObjectKey Source)
 {
+    auto& Data=Write(); auto& State=Data.State;
     if (!State.Configured || !SourceKey(Source)) return false;
     const auto I=State.Leases.find(Source); if (I==State.Leases.end()) return true;
     if (State.Version==UINT64_MAX) return false;
@@ -171,6 +187,7 @@ bool MiningReservations::AbandonSource(ObjectKey Source)
 }
 bool MiningReservations::OwnsNode(ObjectKey Source,Id Token,std::uint32_t Node) const
 {
+    const auto& Data=*Value; const auto& State=Data.State; const auto& NodeOwners=Data.NodeOwners;
     const auto I=State.Leases.find(Source);
     return Node && I!=State.Leases.end() && I->second.Token==Token && I->second.Node==Node
         && NodeOwners.contains(Node) && NodeOwners.at(Node)==Source;

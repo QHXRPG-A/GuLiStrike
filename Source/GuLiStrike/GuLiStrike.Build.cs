@@ -10,6 +10,7 @@ public class GuLiStrike : ModuleRules
 		// State adapters keep translation-unit-local archive types and helpers.
 		bUseUnity = false;
 		CppStandard = CppStandardVersion.Cpp20;
+		AddEngineThirdPartyPrivateStaticDependencies(Target, "zlib");
 
 		PublicDependencyModuleNames.AddRange(new string[] {
 			"Core",
@@ -33,7 +34,7 @@ public class GuLiStrike : ModuleRules
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
-			"GuLiNetCore", "EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "WebSockets",
+			"GuLiNetCore", "EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "WebSockets", "TraceLog",
 			"GuLiFlightNavigationRuntime", "RenderCore", "RHI",
 			// Commander 网络合同使用 FastArray 与自定义 NetSerialize。
 			"NetCore",

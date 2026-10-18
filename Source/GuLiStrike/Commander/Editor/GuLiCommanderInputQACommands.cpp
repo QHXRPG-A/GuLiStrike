@@ -46,7 +46,7 @@ struct FRun : TSharedFromThis<FRun>
 	EGuLiCommanderSelectionShape OldShape = EGuLiCommanderSelectionShape::Box;
 	uint32 User = 0, SelectionRevision = 0;
 	int32 Step = 0, CheckCount = 0;
-	bool bPassed = true;
+	bool bPassed = true, bConsoleLayout = false;
 
 	TSharedRef<FJsonObject> Observe(const FString& Action)
 	{
@@ -79,24 +79,21 @@ struct FRun : TSharedFromThis<FRun>
 	{
 		UButton* Button = HUD.IsValid() ? Cast<UButton>(HUD->GetWidgetFromName(Name)) : nullptr;
 		const auto Slate = Button ? Button->GetCachedWidget() : TSharedPtr<SWidget>();
-		FWidgetPath Path;
 		auto& App = FSlateApplication::Get();
-		if (!Slate || !Button->GetIsEnabled() || !App.GeneratePathToWidgetUnchecked(Slate.ToSharedRef(), Path))
+		if (!Slate || !Button->GetIsEnabled())
 		{
 			Observe(TEXT("button path unavailable: ") + Name.ToString())->SetBoolField(TEXT("passed"), false);
 			bPassed = false; return;
 		}
-		const FGeometry& Geometry = Path.Widgets.Last().Geometry;
+		const FGeometry& Geometry = Button->GetCachedGeometry();
 		const FVector2D Position = Geometry.LocalToAbsolute(Geometry.GetLocalSize() * 0.5f);
 		TSet<FKey> Buttons;
 		const FPointerEvent MoveEvent(User, FSlateApplication::CursorPointerIndex, Position, Position, Buttons, FKey(), 0.0f, FModifierKeysState());
-		// GeneratePathToWidgetUnchecked produces a layout/focus path with NO virtual
-		// pointer entries. Slate pointer routing indexes one entry per widget. Use the
-		// same weak-to-pointer-path conversion as UWidgetInteractionComponent.
-		FWidgetPath PointerPath;
-		if (FWeakWidgetPath(Path).ToWidgetPath(PointerPath, FWeakWidgetPath::EInterruptedPathHandling::ReturnInvalid, &MoveEvent)
-			!= FWeakWidgetPath::EPathResolutionResult::Live || !PointerPath.IsValid()
-			|| PointerPath.Widgets.Num() != Path.Widgets.Num() || PointerPath.GetLastWidget() != Slate.ToSharedRef())
+		// Use the live hit-test grid, including children cached by invalidation roots.
+		// A recursive layout path cannot discover those children and would also skip
+		// the occlusion/input checks exercised by a real click at this coordinate.
+		FWidgetPath PointerPath = App.LocateWindowUnderMouse(Position, App.GetInteractiveTopLevelWindows(), false, User);
+		if (!PointerPath.IsValid() || !PointerPath.ContainsWidget(Slate.Get()))
 		{
 			Observe(TEXT("pointer path unavailable: ") + Name.ToString())->SetBoolField(TEXT("passed"), false);
 			bPassed = false; return;
@@ -120,16 +117,50 @@ struct FRun : TSharedFromThis<FRun>
 		Observe(Name)->SetBoolField(TEXT("passed"), bMatch);
 		bPassed &= bMatch; ++CheckCount;
 	}
+	void CheckCondition(const TCHAR* Name, bool bMatch)
+	{ Observe(Name)->SetBoolField(TEXT("passed"), bMatch); bPassed &= bMatch; ++CheckCount; }
+	void CheckVisible(const FName Name, bool bExpected)
+	{
+		const auto* Widget=HUD->GetWidgetFromName(Name);
+		CheckCondition(*Name.ToString(),Widget && Widget->IsVisible()==bExpected);
+	}
+	void AdvanceConsole()
+	{
+		switch (Step++)
+		{
+		case 0: Click(TEXT("BTN_Cmd_Move")); break;
+		case 1: Check(TEXT("move click"),ERadius::Small,EMode::Move); break;
+		case 2: Click(TEXT("BTN_Cmd_Tasks")); break;
+		case 3: CheckVisible(TEXT("C_TaskDrawer"),true); break;
+		case 4: Click(TEXT("BTN_CloseTasks")); break;
+		case 5: CheckVisible(TEXT("C_TaskDrawer"),false); break;
+		case 6: Click(TEXT("BTN_Cmd_Menu")); break;
+		case 7: CheckVisible(TEXT("C_MenuModal"),true); break;
+		case 8: CheckCondition(TEXT("modal blocks gameplay commands"),!PC->CanIssueCommanderOrders()); break;
+		case 9: Click(TEXT("BTN_Menu_0")); break;
+		case 10: CheckVisible(TEXT("C_MenuModal"),false); break;
+		case 11: CheckCondition(TEXT("resume restores gameplay commands"),PC->CanIssueCommanderOrders()); break;
+		case 12: Click(TEXT("BTN_Cmd_Build")); break;
+		case 13: CheckVisible(TEXT("C_Context_Frame"),true); break;
+		case 14: Click(TEXT("BTN_Cmd_Build")); break;
+		case 15: CheckVisible(TEXT("C_Context_Frame"),false); break;
+		case 16: Click(TEXT("BTN_Cmd_Move")); break;
+		case 17: Check(TEXT("closed layers preserve selection and move input"),ERadius::Small,EMode::Move); break;
+		default: Finish(); return;
+		}
+		if (!bPassed) Finish(TEXT("Observed current HUD input result differed from the expected state"));
+	}
 	void Finish(const FString& Reason = FString())
 	{
 		const TSharedRef<FRun> KeepAlive = AsShared();
 		if (World.IsValid()) World->GetTimerManager().ClearTimer(Timer);
 		FEditorDelegates::PrePIEEnded.Remove(EndPIEHandle);
-		for (const FKey InKey : {EKeys::Add, EKeys::Equals, EKeys::LeftShift}) if (HeldKeys.Contains(InKey)) Key(InKey, false, true);
+		for (const FKey InKey : {EKeys::Add, EKeys::Equals, EKeys::LeftShift, EKeys::Escape}) if (HeldKeys.Contains(InKey)) Key(InKey, false, true);
 		auto& App = FSlateApplication::Get();
 		if (const auto SlateUser = App.GetUser(User)) SlateUser->ReleaseCapture(FSlateApplication::CursorPointerIndex);
 		if (PC.IsValid())
 		{
+			if (bConsoleLayout && HUD.IsValid()) for (int32 I=0;I<3 && HUD->DismissTopLayer();++I) {}
 			PC->SetSelectionRadiusPreset(OldRadius);
 			PC->ActivateSelectionTool();
 			if (PC->GetSelectionShape() != OldShape) PC->ToggleSelectionShape();
@@ -153,7 +184,8 @@ struct FRun : TSharedFromThis<FRun>
 	void EndPIE(bool) { Finish(TEXT("PIE ended before completion")); }
 	void Advance()
 	{
-		if (!PC.IsValid() || !HUD.IsValid() || !HUD->IsInViewport() || !PC->CanIssueCommanderOrders()) { Finish(TEXT("Runtime sources became unavailable")); return; }
+		if (!PC.IsValid() || !HUD.IsValid() || !HUD->IsInViewport() || !PC->IsCommanderViewActive()) { Finish(TEXT("Runtime sources became unavailable")); return; }
+		if (bConsoleLayout) { AdvanceConsole(); return; }
 		switch (Step++)
 		{
 		case 0: Click(TEXT("BTN_Cmd_Select")); break;
@@ -195,8 +227,8 @@ void Start(const TArray<FString>& Args)
 	FString Output = Args[0].TrimQuotes();
 	if (FPaths::IsRelative(Output)) { UE_LOG(LogGuLiStrike, Error, TEXT("Slate QA requires an absolute outputs/*.json path.")); return; }
 	FPaths::NormalizeFilename(Output); FPaths::CollapseRelativeDirectories(Output);
-	if (!FPaths::IsUnderDirectory(Output, FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("outputs"))) || !FPaths::GetExtension(Output).Equals(TEXT("json"), ESearchCase::IgnoreCase))
-	{ UE_LOG(LogGuLiStrike, Error, TEXT("Slate QA output must be JSON beneath Project/outputs.")); return; }
+	if ((FPaths::IsUnderDirectory(Output,FPaths::ConvertRelativePathToFull(FPaths::ProjectDir())) && !FPaths::IsUnderDirectory(Output,FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()/TEXT("outputs")))) || !FPaths::GetExtension(Output).Equals(TEXT("json"),ESearchCase::IgnoreCase))
+	{ UE_LOG(LogGuLiStrike, Error, TEXT("Slate QA output must be JSON outside the project or beneath Project/outputs.")); return; }
 	UGuLiCommanderHUDWidget* HUD = nullptr;
 	for (TObjectIterator<UGuLiCommanderHUDWidget> It; It; ++It) if (It->GetWorld() == World && It->GetOwningPlayer() == PC && It->IsInViewport()) { HUD = *It; break; }
 	auto& App = FSlateApplication::Get();
@@ -210,11 +242,12 @@ void Start(const TArray<FString>& Args)
 	ActiveRun = MakeShared<FRun>();
 	FRun& Run = *ActiveRun;
 	Run.World = World; Run.PC = PC; Run.HUD = HUD; Run.Output = Output; Run.User = User;
+	Run.bConsoleLayout = HUD->GetWidgetFromName(TEXT("BTN_Cmd_Menu")) && !HUD->GetWidgetFromName(TEXT("BTN_Cmd_Select"));
 	Run.OldFocus = App.GetUserFocusedWidget(User); Run.OldRadius = PC->GetSelectionRadiusPreset(); Run.OldMode = PC->GetCommanderToolMode();
 	Run.OldShape = PC->GetSelectionShape();
 	if (PC->GetSelectionShape() != EGuLiCommanderSelectionShape::Box) PC->ToggleSelectionShape();
 	Run.SelectionRevision = PC->GetCommanderNetSyncComponent()->GetSelectionState().SelectionRevision;
-	Run.Report->SetStringField(TEXT("scope"), TEXT("Actual viewport Slate button paths, pointer down/up, focused key down/up and normal PlayerInput ticks. No OS injection; direct widget paths bypass coordinate hit testing and platform mouse preprocessors."));
+	Run.Report->SetStringField(TEXT("scope"), TEXT("Actual viewport coordinate hit-test paths, pointer down/up and normal PlayerInput ticks. Current console HUD checks movement, drawer open/close, modal blocking/resume and build palette open/close. Legacy HUD also checks focused keys. Editor Escape stops PIE and is outside this probe. No OS injection; platform mouse preprocessors are outside this probe."));
 	Run.Report->SetStringField(TEXT("world"), World->GetPathName()); Run.Report->SetStringField(TEXT("hud"), HUD->GetPathName());
 	Run.Report->SetBoolField(TEXT("os_input_injected"), false);
 	PC->SetSelectionRadiusPreset(ERadius::Small);

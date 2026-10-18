@@ -1,5 +1,6 @@
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Engine/World.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
@@ -13,6 +14,7 @@ void UGuLiPerformanceSubsystem::BeginCapture()
 {
 	if (!UGuLiNetworkSettings::CanCapturePerformance(GetWorld())) return;
 	Counters.Reset(); NetworkSamples.Reset(); DroppedNetworkSamples = 0;
+    SampleCounters.Reset();DroppedIndividualSamples=0;
     DroppedFrameSamples=0;
 	FirstFrame = LastFrame = GFrameCounter; bCapturing = true; CaptureNetworkSample();
 }
@@ -21,8 +23,11 @@ void UGuLiPerformanceSubsystem::EndCapture()
 	if (bCapturing) CaptureNetworkSample();
 	LastFrame=GFrameCounter; bCapturing=false;
 }
-void UGuLiPerformanceSubsystem::Tick(float)
-{ if (bCapturing && FPlatformTime::Seconds() - LastNetworkSample >= 1.0) CaptureNetworkSample(); }
+void UGuLiPerformanceSubsystem::Tick(float DeltaTime)
+{
+    if (bCapturing && FPlatformTime::Seconds() - LastNetworkSample >= 1.0) CaptureNetworkSample();
+    TickHotspot(DeltaTime);
+}
 TStatId UGuLiPerformanceSubsystem::GetStatId() const
 { RETURN_QUICK_DECLARE_CYCLE_STAT(GuLiPerformanceCapture, STATGROUP_Tickables); }
 void UGuLiPerformanceSubsystem::Record(const FName Name, const double Value, const UObject* LocalPlayer)
@@ -42,13 +47,37 @@ void UGuLiPerformanceSubsystem::Record(const FName Name, const double Value, con
 	if (!C.Calls || C.Frame != GFrameCounter) C.FrameQpc = FPlatformTime::Cycles64();
 	C.Frame = GFrameCounter; C.FrameTotal += Value; C.Total += Value; ++C.Calls;
 }
+void UGuLiPerformanceSubsystem::RecordSample(FName Name,double Value)
+{
+    check(IsInGameThread());if (!bCapturing || !FMath::IsFinite(Value)) return;
+    auto& C=SampleCounters.FindOrAdd(Name);
+    if (C.Values.Num()>=1048576) {++DroppedIndividualSamples;return;}
+    C.Values.Add(Value);C.Total+=Value;
+}
 FString UGuLiPerformanceSubsystem::GetCaptureJson() const
 {
 	auto Root = MakeShared<FJsonObject>();
 	Root->SetStringField(TEXT("world"), GetWorld()->GetPathName());
+    if (const auto* H=GetWorld()->GetSubsystem<UGuLiHotspotOptions>())
+    {
+        Root->SetNumberField(TEXT("hotspot_mask"),H->GetMask());
+        Root->SetNumberField(TEXT("gameplay_workers"),H->GetGameplayWorkers());
+        auto Counts=MakeShared<FJsonObject>();
+        Counts->SetNumberField(TEXT("contract_rebuilds"),double(H->ContractRebuilds));
+        Counts->SetNumberField(TEXT("binding_rebuilds"),double(H->BindingRebuilds));
+        Counts->SetNumberField(TEXT("binding_hits"),double(H->BindingHits));
+        Counts->SetNumberField(TEXT("public_captures"),double(H->PublicCaptures));
+        Counts->SetNumberField(TEXT("public_absent"),double(H->PublicAbsent));
+        Counts->SetNumberField(TEXT("body_decodes"),double(H->BodyDecodes));
+        Counts->SetNumberField(TEXT("body_decode_hits"),double(H->BodyDecodeHits));
+        Counts->SetNumberField(TEXT("body_callbacks"),double(H->BodyCallbacks));
+        Counts->SetNumberField(TEXT("body_applications"),double(H->BodyApplications));
+        Root->SetObjectField(TEXT("hotspot_cumulative"),Counts);
+    }
 	const uint64 Frames = FMath::Max(uint64(1), (bCapturing ? GFrameCounter : LastFrame) - FirstFrame + 1);
 	Root->SetNumberField(TEXT("engine_frames"), double(Frames));
 	Root->SetBoolField(TEXT("capturing"), bCapturing);
+    AppendHotspotCapture(Root);
     Root->SetNumberField(TEXT("qpc_frequency"),1.0/FPlatformTime::GetSecondsPerCycle64());
     Root->SetNumberField(TEXT("frame_samples_dropped"),double(DroppedFrameSamples));
     Root->SetBoolField(TEXT("capture_valid"),IsCaptureValid());
@@ -78,6 +107,15 @@ FString UGuLiPerformanceSubsystem::GetCaptureJson() const
 		Values->SetObjectField(Pair.Key, V);
 	}
 	Root->SetObjectField(TEXT("counters"), Values);
+    auto Individual=MakeShared<FJsonObject>();
+    for (const auto& [Name,C]:SampleCounters)
+    {
+        if (C.Values.IsEmpty()) continue;auto Ordered=C.Values;Ordered.Sort();auto J=MakeShared<FJsonObject>();
+        J->SetNumberField(TEXT("samples"),Ordered.Num());J->SetNumberField(TEXT("mean"),C.Total/Ordered.Num());
+        J->SetNumberField(TEXT("p95"),Ordered[FMath::Clamp(FMath::CeilToInt(Ordered.Num()*.95)-1,0,Ordered.Num()-1)]);
+        J->SetNumberField(TEXT("peak"),Ordered.Last());Individual->SetObjectField(Name.ToString(),J);
+    }
+    Root->SetObjectField(TEXT("sample_metrics"),Individual);Root->SetNumberField(TEXT("individual_samples_dropped"),double(DroppedIndividualSamples));
 	Root->SetArrayField(TEXT("network_samples"), NetworkSamples);
 	Root->SetNumberField(TEXT("network_samples_dropped"), DroppedNetworkSamples);
 	Root->SetStringField(TEXT("network_counter_basis"), TEXT("Cumulative application counters; UE connection deltas per wall second; decimal KB. Never add both ends of a connection."));

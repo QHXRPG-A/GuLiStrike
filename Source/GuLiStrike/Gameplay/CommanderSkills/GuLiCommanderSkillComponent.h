@@ -9,6 +9,7 @@ class AGuLiBattlePlayerState;
 class AGuLiCommanderPlayerController;
 class UGuLiCommanderNetSyncComponent;
 struct FGuLiHybridCommandResult;
+struct FGuLiHybridCommandMember;
 struct FGuLiHybridTransactionResult;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGuLiActiveSkillReplyEvent, const FGuLiActiveSkillReply&, Reply);
@@ -37,6 +38,9 @@ public:
 	void CopyMatchStateFrom(const UGuLiCommanderSkillComponent& Other);
     TArray<FGuid> GetPendingHybridRequests() const;
     void RebindHybridRequests();
+    /** Preserve owner-local details until the matching command receipt confirms completion. */
+    void RecordLocalHybridUnitSkillResult(FGuid Event,const FGuLiHybridCommandMember& Member,
+        const FGuLiActiveSkillUnitResult& Result);
 	/** Retains the reflected entry name; routes locally through object-owner commands. */
 
 	UFUNCTION() void ServerRequestSkill(const FGuLiActiveSkillRequest& Request);
@@ -67,7 +71,19 @@ private:
 	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> BoundSelection;
 	struct FReceipt { FGuLiActiveSkillRequest Request; FGuLiActiveSkillReply Reply; };
 	TMap<FGuid, FReceipt> Receipts;
-    struct FHybridPendingSkill {FGuLiActiveSkillRequest Request;TMap<FGuid,FGuLiActiveSkillUnitResult> Units;TSet<FGuid> Waiting;};
+    struct FLocalUnitSkillResult
+    {
+        FGuLiHybridObjectKey Key;
+        uint64 ControlEpoch=0,OwnerEpoch=0;
+        FGuLiActiveSkillUnitResult Result;
+    };
+    struct FHybridPendingSkill
+    {
+        FGuLiActiveSkillRequest Request;
+        TMap<FGuid,FGuLiActiveSkillUnitResult> Units;
+        TSet<FGuid> Waiting;
+        TMap<FGuid,FLocalUnitSkillResult> LocalResults;
+    };
     TMap<FGuid,FHybridPendingSkill> HybridPending;
     FGuid RouteHybridUnitSkillRequest(const FGuLiActiveSkillRequest& Request);
     void HandleHybridSkillResult(const FGuLiHybridCommandResult&);

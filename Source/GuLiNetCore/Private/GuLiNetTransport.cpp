@@ -45,7 +45,7 @@ bool ReadPacket(std::span<const std::uint8_t> Wire, PacketHeader& H, std::span<c
     return Size == Expected;
 }
 }
-PeerChannel::PeerChannel(Id ConnectionKey, QueueLimits Limits) : Connection(ConnectionKey), Budget(Limits)
+PeerChannel::PeerChannel(Id ConnectionKey, QueueLimits Limits,PeerChannelBinding Bound) : Connection(ConnectionKey),Binding(Bound), Budget(Limits)
 {
     if (!Connection.Valid() || Budget.ResendSeconds <= 0 || Budget.ReliableTimeoutSeconds <= 0)
         Failure = "Invalid peer channel configuration";
@@ -61,23 +61,24 @@ bool InspectDatagramLane(std::span<const std::uint8_t> Packet,Lane& Out)
     PacketHeader H;std::span<const std::uint8_t> Body;
     if (!ReadPacket(Packet,H,Body)) return false;Out=H.Stream;return true;
 }
-bool InspectDatagramMessage(std::span<const std::uint8_t> Packet,Message& Out)
+bool InspectDatagramMessage(std::span<const std::uint8_t> Packet,Message& Out,PeerMessageContext Context)
 {
     PacketHeader H;std::span<const std::uint8_t> Body;
     return ReadPacket(Packet,H,Body) && !(H.Flags&AckFlag) && H.Count==1 && H.Index==0
-        && H.Total==Body.size() && DecodeMessage(Body,Out);
+        && H.Total==Body.size() && DecodeMessage(Body,Out,Context);
 }
 bool PeerChannel::Queue(const Message& Value, double Now)
 {
     TraceScope Scope("GuLiHybrid_QueuePeerMessage");
     if (HasFailed() || !std::isfinite(Now)) return false;
+    if (Value.Header.Kind<MessageKind::Hello || Value.Header.Kind>MessageKind::WorkState) return false;
     if (Value.Header.Kind==MessageKind::HandoffState && !CanQueueHandoff()) return false;
     const Lane Stream = MessageLane(Value.Header.Kind);
     const bool Reliable = ReliableMessage(Value.Header.Kind);
     auto& Sequence = NextSequence[static_cast<std::size_t>(Stream)];
     if (Sequence == UINT64_MAX) { Failure = "Peer stream sequence exhausted"; return false; }
     Message Sequenced = Value; Sequenced.Header.Sequence = Sequence;
-    Bytes Wire; if (!EncodeMessage(Sequenced, Wire)) return false;
+    Bytes Wire; if (!(Budget.CompactPeerEnvelope?EncodePeerMessage(Sequenced,Wire,{Binding.Match,Binding.LocalPlayer}):EncodeMessage(Sequenced, Wire))) return false;
     double FirstQueued=Now; std::uint64_t ServiceOrder=Sequence;
     const StateQueueKey StateKey{Stream,Value.Header.Kind,Value.Header.Object};
     if (!Reliable)
@@ -121,6 +122,10 @@ bool PeerChannel::CanQueueHandoff() const
     return !HasFailed() && Pending.size()<Budget.MaxPendingMessages && Counters.QueuedBytes<Budget.MaxQueuedBytes;
 }
 bool PeerChannel::Receive(std::span<const std::uint8_t> Wire, double Now, const SendPacket& Ack, const Deliver& Apply)
+{
+    return ReceiveWithAdmission(Wire,Now,Ack,[&](const Message& M){Apply(M);return true;});
+}
+bool PeerChannel::ReceiveWithAdmission(std::span<const std::uint8_t> Wire,double Now,const SendPacket& Ack,const TryDeliver& Apply)
 {
     Counters.ReceivedBytes += Wire.size();
     PacketHeader H; std::span<const std::uint8_t> Body;
@@ -173,7 +178,7 @@ bool PeerChannel::Receive(std::span<const std::uint8_t> Wire, double Now, const 
     Bytes Complete; Complete.reserve(In.TotalBytes);
     for (const auto& Part : In.Fragments) Complete.insert(Complete.end(), Part.begin(), Part.end());
     Message Value;
-    const bool Decoded = DecodeMessage(Complete, Value) && MessageLane(Value.Header.Kind) == H.Stream
+    const bool Decoded = DecodeMessage(Complete, Value,{Binding.Match,Binding.RemotePlayer}) && MessageLane(Value.Header.Kind) == H.Stream
         && ReliableMessage(Value.Header.Kind) == In.Reliable && Value.Header.Sequence == H.Sequence;
     ReassemblyReserved -= In.TotalBytes; Partial.erase(It);
     if (!Decoded) { ++Counters.RejectedPackets; return false; }
@@ -185,16 +190,28 @@ bool PeerChannel::Receive(std::span<const std::uint8_t> Wire, double Now, const 
         OrderedBytes+=Complete.size();Ordered.emplace(K,std::pair{std::move(Value),Complete.size()});
         Beyond.insert(H.Sequence);
         SendAck();
-        while (Through!=UINT64_MAX)
-        {
-            const auto Next=Ordered.find({H.Stream,Through+1});if (Next==Ordered.end()) break;
-            auto Delivered=std::move(Next->second.first);OrderedBytes-=Next->second.second;Ordered.erase(Next);
-            Beyond.erase(++Through);Apply(std::move(Delivered));
-        }
+        Counters.PendingDeliveryBytes=OrderedBytes;Counters.PendingDeliveryMessages=Ordered.size();
+        DrainDeliveries(Apply);
         return true;
     }
     else Window.Observe(H.Sequence);
-    SendAck(); Apply(std::move(Value)); return true;
+    SendAck(); Apply(Value); return true;
+}
+void PeerChannel::DrainDeliveries(const TryDeliver& Apply)
+{
+    if (HasFailed()) return;
+    for (std::size_t LaneIndex=0;LaneIndex<ReliableThrough.size();++LaneIndex)
+    {
+        auto& Through=ReliableThrough[LaneIndex];
+        while (Through!=UINT64_MAX)
+        {
+            const auto Next=Ordered.find({static_cast<Lane>(LaneIndex),Through+1});if (Next==Ordered.end()) break;
+            if (!Apply(Next->second.first)) {++Counters.DeliveryBackpressure;break;}
+            OrderedBytes-=Next->second.second;Ordered.erase(Next);
+            ReliableBeyond[LaneIndex].erase(++Through);
+        }
+    }
+    Counters.PendingDeliveryBytes=OrderedBytes;Counters.PendingDeliveryMessages=Ordered.size();
 }
 void PeerChannel::Pump(double Now, const SendPacket& Send)
 {
@@ -267,6 +284,13 @@ void PeerChannel::Pump(double Now, const SendPacket& Send)
                 Connection, It->first.second, Value.NextFragment, Count, static_cast<std::uint32_t>(Value.Wire.size())},
                 std::span<const std::uint8_t>(Value.Wire).subspan(Offset, Size));
             if (!Send(Packet)) break;
+            if (!Value.Attempts && !Value.NextFragment)
+            {
+                auto& Encoding=Counters.Encodings[static_cast<std::size_t>(Value.Value.Header.Kind)];
+                ++Encoding.Messages;Encoding.Canonical+=CanonicalMessageHeaderBytes+
+                    (Value.Value.ReferenceBodyBytes?Value.Value.ReferenceBodyBytes:Value.Value.Body.size());
+                Encoding.Encoded+=Value.Wire.size();Encoding.Body+=Value.Value.Body.size();
+            }
             if (!Value.NextFragment) UnindexState();
             Available -= Packet.size(); Counters.SentBytes += Packet.size();
             Counters.SentLaneBytes[static_cast<std::size_t>(It->first.first)]+=Packet.size();

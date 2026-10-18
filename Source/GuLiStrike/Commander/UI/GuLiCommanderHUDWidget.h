@@ -26,9 +26,12 @@ class UGuLiCommanderActionButton;
 class UGuLiCommanderUITheme;
 class UProgressBar;
 class UBorder;
+class UScaleBox;
 enum class EGuLiCommanderToolMode : uint8;
 enum class EGuLiCommanderSelectionShape : uint8;
 namespace GuLiOrderNetworkProbe { struct FRun; }
+class UGuLiCommanderHUDDataSubsystem;
+enum class EGuLiHUDData : uint8;
 
 /** Authored button/icon names keep shortcut layout in UMG and behavior in C++. */
 USTRUCT(BlueprintType)
@@ -110,6 +113,7 @@ protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual FReply NativeOnKeyDown(const FGeometry& Geometry, const FKeyEvent& Event) override;
 	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& Geometry, float DeltaSeconds) override;
 	virtual void NativeDestruct() override;
 	virtual FReply NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
@@ -119,8 +123,16 @@ protected:
 	TArray<FGuLiCommanderShortcutEntry> ShortcutEntries;
 
 private:
+    UPROPERTY(Transient) TObjectPtr<UScaleBox> CommandDockScale;
+    FVector2D LastDockAvailableSize = FVector2D(-1);
+    UGuLiCommanderHUDDataSubsystem* GetHUDData();
+    void InvalidateHUDData(EGuLiHUDData Groups);
+    void FlushHUDData(EGuLiHUDData Groups);
+    TWeakObjectPtr<UGuLiCommanderHUDDataSubsystem> HUDData;
+    FDelegateHandle HUDDataHandle;
 	void BuildConsoleLayout();
 	void RefreshConsoleSelection();
+    void RefreshSelectionCargo();
 	void RefreshConsoleContext();
 	void RefreshConsoleTasks();
 	void HandleUIAction(FName Action, int32 Argument);
@@ -142,7 +154,10 @@ private:
 	FGuid LastSkillReceipt;
 	FString SkillFeedback;
 	double SkillFeedbackUntil = 0;
+    double LastOrdinaryRefresh=-1;
+    bool bOrdinaryHUDRefresh=false;
 	TWeakObjectPtr<UGuLiCommanderActionButton> HoveredAction;
+    FVector2D LastTooltipViewport=FVector2D::ZeroVector;
 	TArray<FVector> TaskLocations;
 	UPROPERTY(EditDefaultsOnly, Category="Commander|UI") TObjectPtr<UGuLiCommanderUITheme> ConsoleTheme;
 	UPROPERTY(Transient) TArray<TObjectPtr<UGuLiCommanderActionButton>> PortraitButtons;

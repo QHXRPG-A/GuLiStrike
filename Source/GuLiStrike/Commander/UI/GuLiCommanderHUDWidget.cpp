@@ -1,6 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "Commander/UI/GuLiCommanderHUDDataSubsystem.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+#include "Commander/UI/GuLiCommanderHUDValueUpdates.h"
+#include "Engine/LocalPlayer.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Gameplay/Data/GuLiGameText.h"
 
 #include "Blueprint/SlateBlueprintLibrary.h"
@@ -164,7 +170,7 @@ void UGuLiCommanderHUDWidget::NativeConstruct()
 	RefreshInitialState();
 	if (UWorld* World = GetWorld())
 	{
-		World->GetTimerManager().SetTimer(TaskRefreshTimer, this, &ThisClass::RefreshTaskPanel, .2f, true);
+		World->GetTimerManager().SetTimer(TaskRefreshTimer, this, &ThisClass::RefreshTaskPanel, .2f, false);
 		World->GetTimerManager().SetTimer(
 			SourceResolveTimer,
 			this,
@@ -182,6 +188,8 @@ void UGuLiCommanderHUDWidget::NativeConstruct()
 
 void UGuLiCommanderHUDWidget::NativeDestruct()
 {
+    if (auto* Data=HUDData.Get()) Data->OnUrgent.Remove(HUDDataHandle);
+    HUDData.Reset();HUDDataHandle.Reset();
 	PendingActionModifiers = FModifierKeysState();
 	if (bMenuOpen) SetMenuOpen(false);
 	if (UWorld* World = GetWorld())
@@ -373,20 +381,44 @@ void UGuLiCommanderHUDWidget::RefreshInitialState()
 		CachedCommandAck = FGuLiCommandAck();
 		CachedSelectionMatchEpoch = 0u;
 	}
-	RefreshElapsedTime();
-	RefreshPlayerState();
-	RefreshSoldierStates(
-		SoldierStateReplicator.IsValid()
-			? SoldierStateReplicator->GetSnapshotRevision()
-			: 0u);
-	RefreshCommandControls();
-	RefreshTaskPanel();
+    InvalidateHUDData(EGuLiHUDData::All);
+    RefreshElapsedTime();FlushHUDData(EGuLiHUDData::All);
+}
+
+UGuLiCommanderHUDDataSubsystem* UGuLiCommanderHUDWidget::GetHUDData()
+{
+    auto* PC=CommanderController.Get();auto* LP=PC?PC->GetLocalPlayer():nullptr;
+    auto* Data=LP?LP->GetSubsystem<UGuLiCommanderHUDDataSubsystem>():nullptr;
+    if (!Data) return nullptr;
+    Data->Bind(PC,SoldierStateReplicator.Get());
+    if (HUDData.Get()!=Data)
+    {
+        if (auto* Old=HUDData.Get()) Old->OnUrgent.Remove(HUDDataHandle);
+        HUDData=Data;HUDDataHandle=Data->OnUrgent.AddUObject(this,&ThisClass::FlushHUDData);
+    }
+    return Data;
+}
+void UGuLiCommanderHUDWidget::InvalidateHUDData(EGuLiHUDData Groups)
+{if (auto* Data=GetHUDData()) Data->Invalidate(Groups);}
+void UGuLiCommanderHUDWidget::FlushHUDData(EGuLiHUDData Groups)
+{
+    if (Groups==EGuLiHUDData::None) return;
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderHUD_ApplyReadState);
+    FGuLiHybridHUDReadScope QueryScope(GetWorld()?GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr);
+    if (auto* Perf=GetWorld()?GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>():nullptr;Perf&&Perf->IsCapturing())
+        Perf->Record(bOrdinaryHUDRefresh?TEXT("CommanderHUDOrdinaryRefresh"):TEXT("CommanderHUDImmediateRefresh"),1);
+    FGuLiPerformanceScope Perf(GetWorld(),TEXT("CommanderHUDRefresh"),CommanderController.IsValid()?CommanderController->GetLocalPlayer():nullptr);
+    if (EnumHasAnyFlags(Groups,EGuLiHUDData::Resources|EGuLiHUDData::Roster)) RefreshCoreAndRoster();
+    if (EnumHasAnyFlags(Groups,EGuLiHUDData::Selection)) RefreshUnitTypeCard();
+    if (EnumHasAnyFlags(Groups,EGuLiHUDData::Context)) RefreshCommandControls();
+    if (EnumHasAnyFlags(Groups,EGuLiHUDData::Tasks)) RefreshConsoleTasks();
 }
 
 void UGuLiCommanderHUDWidget::RefreshSelection(
 	const FGuLiCommanderSelectionState& Selection)
 {
 	CachedSelection = Selection;
+    InvalidateHUDData(EGuLiHUDData::Selection|EGuLiHUDData::Context|EGuLiHUDData::Tasks);
 	CachedSelectionMatchEpoch = GetCurrentMatchEpoch();
 	if (Selection.Cohorts.IsEmpty() && Selection.ActorIds.IsEmpty() && Selection.Objects.IsEmpty())
 	{
@@ -399,7 +431,8 @@ void UGuLiCommanderHUDWidget::RefreshSelection(
 void UGuLiCommanderHUDWidget::RefreshCommandAck(const FGuLiCommandAck& Ack)
 {
 	CachedCommandAck = Ack;
-	RefreshUnitTypeCard();
+    InvalidateHUDData(EGuLiHUDData::Tasks|EGuLiHUDData::Context);
+    FlushHUDData(EGuLiHUDData::Tasks|EGuLiHUDData::Context);
 }
 
 void UGuLiCommanderHUDWidget::RefreshSoldierStates(const uint32 SnapshotRevision)
@@ -421,26 +454,22 @@ void UGuLiCommanderHUDWidget::RefreshSoldierStates(const uint32 SnapshotRevision
 			}
 		}
 	}
-	RefreshCoreAndRoster();
-	RefreshUnitTypeCard();
-	RefreshCommandControls();
 }
 
 void UGuLiCommanderHUDWidget::RefreshPlayerState()
 {
-	RefreshCoreAndRoster();
-	RefreshUnitTypeCard();
-	RefreshCommandControls();
+    InvalidateHUDData(EGuLiHUDData::Resources|EGuLiHUDData::Roster|EGuLiHUDData::Context);
 }
 
 void UGuLiCommanderHUDWidget::HandlePlayerStateChanged()
 {
 	RefreshPlayerState();
+    FlushHUDData(EGuLiHUDData::Context);
 }
 
 void UGuLiCommanderHUDWidget::HandleResourcePrivateStateChanged()
 {
-	RefreshPlayerState();
+    InvalidateHUDData(EGuLiHUDData::Resources);
 }
 
 void UGuLiCommanderHUDWidget::RefreshElapsedTime()
@@ -459,7 +488,6 @@ void UGuLiCommanderHUDWidget::RefreshElapsedTime()
 			TEXT("%02d:%02d"),
 			ElapsedSeconds / 60,
 			ElapsedSeconds % 60)));
-	RefreshUnitTypeCard();
 }
 
 void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
@@ -483,22 +511,9 @@ void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
 	int32 BlueAlive = 0;
 	int32 RedTotal = 0;
 	int32 RedAlive = 0;
-	if (const AGuLiSoldierStateReplicator* Replicator = SoldierStateReplicator.Get())
-	{
-		for (const FGuLiSoldierStateItem& Soldier : Replicator->GetItems())
-		{
-			if (Soldier.Team == EGuLiTeam::Blue)
-			{
-				++BlueTotal;
-				BlueAlive += Soldier.IsAlive() ? 1 : 0;
-			}
-			else if (Soldier.Team == EGuLiTeam::Red)
-			{
-				++RedTotal;
-				RedAlive += Soldier.IsAlive() ? 1 : 0;
-			}
-		}
-	}
+    auto* Data=GetHUDData();const FGuLiCommanderHUDReadState EmptyView;
+    const auto& View=Data?Data->Read(EGuLiHUDData::Resources|EGuLiHUDData::Roster):EmptyView;
+    BlueTotal=View.BlueTotal;BlueAlive=View.BlueAlive;RedTotal=View.RedTotal;RedAlive=View.RedAlive;
 	InitialBlueRoster = FMath::Max(InitialBlueRoster, BlueTotal);
 	InitialRedRoster = FMath::Max(InitialRedRoster, RedTotal);
 
@@ -525,9 +540,10 @@ void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
 		bRosterReady && Initial > 0 ? static_cast<float>(Alive) / static_cast<float>(Initial) : 0.0f);
 	if (PlayerState)
 	{
-		const FGuLiResourceAmounts Inventory = PlayerState->GetResourceInventory();
+		const FGuLiResourceAmounts Inventory = View.Inventory;
 		SetText(TEXT("TXT_Energy"), FText::FromString(GuLiGameText::Format(TEXT("UI.HUDWidget.092"), {FString::Printf(TEXT("%d"), Inventory.Blue), FString::Printf(TEXT("%d"), Inventory.Red)})));
 	}
+    RefreshSelectionCargo();
 }
 
 uint32 UGuLiCommanderHUDWidget::GetCurrentMatchEpoch() const
@@ -804,7 +820,7 @@ void UGuLiCommanderHUDWidget::SetText(
 {
 	if (UTextBlock* Text = FindText(WidgetName))
 	{
-		Text->SetText(Value);
+        GuLiHUDSetText(Text,Value);
 	}
 }
 
@@ -814,8 +830,9 @@ void UGuLiCommanderHUDWidget::SetImageFraction(
 {
 	if (UImage* Image = FindImage(WidgetName))
 	{
-		Image->SetRenderTransformPivot(FVector2D(0.0f, 0.5f));
-		Image->SetRenderScale(FVector2D(FMath::Clamp(Fraction, 0.0f, 1.0f), 1.0f));
+        const FVector2D Pivot(0.f,.5f),Scale(FMath::Clamp(Fraction,0.f,1.f),1.f);
+        if (Image->GetRenderTransformPivot()!=Pivot) {Image->SetRenderTransformPivot(Pivot);GuLiHUDRecordWrite(Image);}
+        if (Image->GetRenderTransform().Scale!=Scale) {Image->SetRenderScale(Scale);GuLiHUDRecordWrite(Image);}
 	}
 }
 

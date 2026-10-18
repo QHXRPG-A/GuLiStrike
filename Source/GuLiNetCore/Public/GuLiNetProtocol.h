@@ -31,7 +31,13 @@ struct Envelope
     std::uint64_t Sequence = 0;
     Tick At = 0;
 };
-struct Message { Envelope Header; Bytes Body; };
+struct Message
+{
+    Envelope Header;Bytes Body;
+    // Local measurement only: the same body's previous transport encoding size.
+    // Not serialized, hashed, received or used for admission/queue budgets.
+    std::size_t ReferenceBodyBytes=0;
+};
 
 // Explicit little-endian, bounded wire values; never memcpy native structs or UE archives.
 class GULINETCORE_API Writer
@@ -80,7 +86,12 @@ private:
     bool Valid = true;
 };
 GULINETCORE_API bool EncodeMessage(const Message& Value, Bytes& Out);
-GULINETCORE_API bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out);
+// Lossless peer transport envelope only. Canonical records, hashes and
+// coordinator messages continue to use EncodeMessage and their original bytes.
+inline constexpr std::size_t CanonicalMessageHeaderBytes=121;
+struct PeerMessageContext {Id Match,Sender;};
+GULINETCORE_API bool EncodePeerMessage(const Message& Value,Bytes& Out,PeerMessageContext Context={});
+GULINETCORE_API bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out,PeerMessageContext Context={});
 GULINETCORE_API Lane MessageLane(MessageKind Kind);
 GULINETCORE_API bool ReliableMessage(MessageKind Kind);
 GULINETCORE_API void WriteHealth(Writer& Out, const Health& Value);

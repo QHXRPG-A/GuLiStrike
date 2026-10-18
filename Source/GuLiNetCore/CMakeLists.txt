@@ -10,6 +10,8 @@ add_library(GuLiNetCore STATIC
     Private/GuLiNetHash.cpp
     Private/GuLiNetManifest.cpp
     Private/GuLiNetClient.cpp
+    Private/GuLiNetAsyncClient.cpp
+    Private/GuLiNetGameplayPool.cpp
     Private/GuLiNetCommand.cpp
     Private/GuLiNetHandoff.cpp
     Private/GuLiNetPeerWork.cpp
@@ -33,6 +35,8 @@ add_library(GuLiNetCore STATIC
     Private/GuLiNetUpgrade.cpp)
 target_include_directories(GuLiNetCore PUBLIC Public)
 target_compile_features(GuLiNetCore PUBLIC cxx_std_20)
+find_package(Threads REQUIRED)
+target_link_libraries(GuLiNetCore PUBLIC Threads::Threads)
 target_compile_definitions(GuLiNetCore PUBLIC GULINETCORE_STANDALONE=1)
 set_target_properties(GuLiNetCore PROPERTIES POSITION_INDEPENDENT_CODE ON)
 if(MSVC)

@@ -4,6 +4,8 @@
 #include "GuLiPerformanceSubsystem.generated.h"
 
 class FJsonValue;
+class FJsonObject;
+struct FGuLiHotspotCapture;
 
 /** Opt-in counters are owned by a World; view counters include the LocalPlayer identity. */
 UCLASS()
@@ -18,10 +20,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Performance") void BeginCapture();
 	UFUNCTION(BlueprintCallable, Category="Performance") void EndCapture();
 	UFUNCTION(BlueprintPure, Category="Performance") FString GetCaptureJson() const;
+    /** Explicit development capture preparation; never invoked by ordinary PIE. */
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareHotspotWorkload(const FString& FrozenJson,bool Interaction);
+    /** Preparation only: select exact live controlled units without changing gameplay state. */
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareHotspotSelection(const TArray<int32>& Soldiers);
+    /** Explicit transient spatial preparation; native weapons and damage remain unchanged. */
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareHotspotCombat(int32 LocalUnits);
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) bool StartHotspotWindow();
 	void Record(FName Name, double Value, const UObject* LocalPlayer = nullptr);
+    void RecordSample(FName Name,double Value);
 	bool IsCapturing() const { return bCapturing; }
-    bool IsCaptureValid() const { return DroppedFrameSamples==0 && DroppedNetworkSamples==0; }
+    bool IsCaptureValid() const { return DroppedFrameSamples==0 && DroppedNetworkSamples==0 && DroppedIndividualSamples==0; }
 private:
+    TSharedPtr<FGuLiHotspotCapture> Hotspot;
+    void TickHotspot(float DeltaTime);
+    void AppendHotspotCapture(const TSharedRef<FJsonObject>& Root) const;
 	struct FCounter
 	{
 		double Total = 0, FrameTotal = 0;
@@ -30,6 +43,9 @@ private:
 		TArray<uint64> FrameTimes, FrameIds;
 	};
 	TMap<FString, FCounter> Counters;
+    struct FSampleCounter {double Total=0;TArray<double> Values;};
+    TMap<FName,FSampleCounter> SampleCounters;
+    uint64 DroppedIndividualSamples=0;
 	uint64 FirstFrame = 0, LastFrame = 0;
 	bool bCapturing = false;
 	TArray<TSharedPtr<FJsonValue>> NetworkSamples;
