@@ -110,7 +110,7 @@ namespace
 Bytes EncodeCommitWithStatus(const CommitResult& V,CommitStatus Status)
 {
     Writer W; W.Identity(V.Event); W.U8(static_cast<std::uint8_t>(V.Kind)); W.U8(static_cast<std::uint8_t>(V.Faction));
-    W.U8(static_cast<std::uint8_t>(Status)); W.U64(V.StateVersion);W.Key(V.StateDomain);
+    W.U8(static_cast<std::uint8_t>(Status));W.Identity(V.ResourceGroup);W.U64(V.ResourceEpoch); W.U64(V.StateVersion);W.Key(V.StateDomain);
     W.Key(V.Target); W.U8(ValidHealth(V.Vitals) ? 1 : 0); if (ValidHealth(V.Vitals)) WriteHealth(W, V.Vitals);
     WriteResources(W, V.Balance); WriteReservation(W, V.Reserved);
     W.F32(V.Damage.Applied); W.F32(V.Damage.Absorbed); W.U8(V.Damage.Killed ? 1 : 0);
@@ -140,8 +140,8 @@ bool DecodeCommit(std::span<const std::uint8_t> BytesValue, CommitResult& Out)
 {
     Reader R(BytesValue); CommitResult V; std::uint8_t Status, Kind, Faction, HasHealth, Killed; std::uint32_t Count;
     if (!R.Identity(V.Event) || !R.U8(Kind) || Kind>static_cast<std::uint8_t>(TransactionKind::Capability)
-        || !R.U8(Faction) || Faction>2 || !R.U8(Status) || Status > static_cast<std::uint8_t>(CommitStatus::Paused)
-        || !R.U64(V.StateVersion) || !R.Key(V.StateDomain) || !R.Key(V.Target) || !R.U8(HasHealth) || HasHealth > 1
+        || !R.U8(Faction) || Faction>2 || !R.U8(Status) || Status > static_cast<std::uint8_t>(CommitStatus::Interrupted)
+        || !R.Identity(V.ResourceGroup) || !R.U64(V.ResourceEpoch) || !R.U64(V.StateVersion) || !R.Key(V.StateDomain) || !R.Key(V.Target) || !R.U8(HasHealth) || HasHealth > 1
         || (HasHealth && !ReadHealth(R, V.Vitals)) || !ReadResources(R, V.Balance) || !ReadReservation(R, V.Reserved)
         || !R.F32(V.Damage.Applied) || !R.F32(V.Damage.Absorbed) || !R.U8(Killed) || Killed > 1
         || !R.Identity(V.DeathEvent) || !R.Identity(V.RewardEvent) || !ReadCount(R, Count, 4096)) return false;

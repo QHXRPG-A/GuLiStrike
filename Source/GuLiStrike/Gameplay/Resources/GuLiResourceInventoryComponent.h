@@ -58,6 +58,7 @@ public:
     bool CaptureState(FGuLiHybridResourceInventoryState& Out) const;
     bool ValidateState(const FGuLiHybridResourceInventoryState& State) const;
     bool RestoreState(const FGuLiHybridResourceInventoryState& State);
+    void ResetResourceRequests(uint64 Epoch);
 private:
     bool RefreshCommittedInventory();
     UFUNCTION() void ApplyCommittedResource(const FGuLiHybridTransactionResult& Result);

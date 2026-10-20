@@ -11,6 +11,10 @@
 #include "Network/GuLiNetworkSettings.h"
 #include "NavigationSystem.h"
 #include "Engine/World.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
+#if !UE_BUILD_SHIPPING
+#include "Development/GuLiHybridReviewSubsystem.h"
+#endif
 
 UGuLiBuildingProductionComponent::UGuLiBuildingProductionComponent()
 {
@@ -37,12 +41,32 @@ void UGuLiBuildingProductionComponent::InitializeProduction()
 	const auto& Life = *GetOwner()->FindComponentByClass<UGuLiBuildingLifecycleComponent>();
 	ObservedTeam = Life.GetTeam();
 }
+#if !UE_BUILD_SHIPPING
+bool UGuLiBuildingProductionComponent::PrepareDevelopmentProductionCycle()
+{
+    const auto* Life=GetOwner()->FindComponentByClass<UGuLiBuildingLifecycleComponent>();
+    if (!Life || !Life->IsCompleted() || !UGuLiHybridActorComponent::HasSimulation(GetOwner())
+        || !GuLiResources::IsPlayableTeam(Life->GetTeam()) || !Life->GetDefinition().HasProductionCapability()
+        || Life->GetDefinition().ProductionSeconds<=0) return false;
+    // Prime only the prerequisite timer. The next ordinary logical advance
+    // still performs navigation, admission, payment, population and birth.
+    if (HybridJobs.IsEmpty())
+    {ObservedTeam=Life->GetTeam();CycleSeconds=Life->GetDefinition().ProductionSeconds;}
+    return true;
+}
+#endif
 void UGuLiBuildingProductionComponent::AdvanceHybridProduction(float Dt)
 {
 	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiHybridActorComponent::HasSimulation(GetOwner())
 		|| !FMath::IsFinite(Dt) || Dt<=0) return;
 	const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
 	auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+#if !UE_BUILD_SHIPPING
+    // Opt-in functional fixture: pause unrelated factories without changing
+    // production numbers, population rules, pending receipts or saved state.
+    if (const auto* Review=GetWorld()->GetSubsystem<UGuLiHybridReviewSubsystem>();
+        Review && !Review->IsProductionEnabled(Binding->GetObjectKey().StableId)) return;
+#endif
 	const auto& Life=*GetOwner()->FindComponentByClass<UGuLiBuildingLifecycleComponent>();
 	const auto& D=Life.GetDefinition();
 	if (!D.HasProductionCapability()) return;
@@ -54,7 +78,8 @@ void UGuLiBuildingProductionComponent::AdvanceHybridProduction(float Dt)
 	HybridJobs.RemoveAll([&](const auto& Job)
 	{
 		FGuLiHybridObjectState State;
-		return Hybrid->GetObject(Job.Target,State) && State.SpawnEvent==Job.Event && State.Parent==Binding->GetObjectKey();
+        const bool Found=Hybrid->GetObjectView(Job.Target,State);
+        return Found && State.SpawnEvent==Job.Event && State.Parent==Binding->GetObjectKey();
 	});
 	if (HybridJobs.IsEmpty())
 	{
@@ -101,6 +126,24 @@ void UGuLiBuildingProductionComponent::AdvanceHybridProduction(float Dt)
 }
 void UGuLiBuildingProductionComponent::HandleHybridTransaction(const FGuLiHybridTransactionResult& Result)
 {
-	if (Result.Status==EGuLiHybridTransactionStatus::Deferred || Result.Status==EGuLiHybridTransactionStatus::Paused) return;
+    if (Result.Status==EGuLiHybridTransactionStatus::Deferred || Result.Status==EGuLiHybridTransactionStatus::Paused
+        || Result.Status==EGuLiHybridTransactionStatus::Interrupted) return;
 	HybridJobs.RemoveAll([&](const auto& Job){ return Job.Event==Result.Event; });
+}
+void UGuLiBuildingProductionComponent::ResetResourceRequests(uint64)
+{
+    auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
+    if (!H || !Binding) return;
+    HybridJobs.RemoveAll([&](const auto& Job)
+    {
+        FGuLiHybridObjectState State;
+        return H->GetObject(Job.Target,State) && State.SpawnEvent==Job.Event && State.Parent==Binding->GetObjectKey();
+    });
+    for (auto& Job:HybridJobs)
+    {
+        Job.bSubmitted=false;Job.Event=FGuid::NewGuid();
+        Job.Target=FGuLiHybridManifest::MakeStableKey(GetWorld()->GetOutermost()->GetName(),Job.Target.Kind,
+            TEXT("production/")+Job.Event.ToString(EGuidFormats::Digits));
+    }
 }

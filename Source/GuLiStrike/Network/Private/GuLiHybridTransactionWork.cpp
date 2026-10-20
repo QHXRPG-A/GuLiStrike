@@ -69,6 +69,7 @@ public:
 
 
     void Release() override {Private={};}
+    void ResetResourceRequests(uint64) override {Private.Submitted=false;Private.SubmittedAt=0;}
 };
 const FGuLiHybridAdapterRegistration TransactionWorkFamily({TEXT("TransactionWork"),EGuLiHybridObjectKind::BusinessWork,WorkVersion,
     [](UGuLiHybridActorWorldSubsystem& World,const FGuLiHybridObjectState&)->TSharedPtr<IGuLiHybridSimulationAdapter>

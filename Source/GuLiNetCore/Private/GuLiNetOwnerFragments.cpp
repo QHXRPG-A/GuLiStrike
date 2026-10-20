@@ -72,7 +72,7 @@ Revision OwnerState::Version(const StateKey& K) const
 Bytes OwnerState::CaptureFragment(const StateKey& K) const
 {
     TraceScope Scope("GuLiHybrid_CoreCaptureFragment");
-    if (!ReducedWork||StageSource||(K.Capability!="account"&&!K.Capability.starts_with("leases/"))) return CaptureFragmentUncached(K);
+    if (StageSource||(K.Capability!="account"&&!K.Capability.starts_with("leases/"))) return CaptureFragmentUncached(K);
     const Revision DataVersion=K.Capability=="account"?EconomyLedger.Balance(K.Object==TeamAccountObject(Team::Red)?Team::Red:Team::Blue).Version:MiningReservationsValue.Snapshot().Version;
     const Revision Current=Version(K);const auto I=FragmentCache.find(K);
     if (I!=FragmentCache.end()&&I->second.Version==Current&&I->second.DataVersion==DataVersion) return I->second.Value;
@@ -132,21 +132,18 @@ Bytes OwnerState::CaptureFragmentUncached(const StateKey& K) const
     if (SuffixNumber(N,"leases/",Index))
     {
         if (K.Object!=MiningClusterObject(Index)) return {};
-        const auto& S=MiningReservationsValue.Snapshot();std::uint32_t Size=0;
-        if (ReducedWork)
+        const auto& S=MiningReservationsValue.Snapshot();
+        const auto WriteSnapshotLeases=[&]
         {
-            const auto& Leases=MiningReservationsValue.LeasesForCluster(Index);const auto& Decisions=MiningReservationsValue.DecisionsForCluster(Index);
-            W.U32(static_cast<std::uint32_t>(Leases.size()));for (const auto& Key:Leases) WriteLease(W,S.Leases.at(Key));
-            W.U32(static_cast<std::uint32_t>(Decisions.size()));for (const auto E:Decisions)
-            {const auto& D=S.Decisions.at(E);W.Identity(E);W.Blob(D.Fingerprint);W.Blob(EncodeMiningReservationOutcome(D.Outcome));}
-            return W.Take();
-        }
-        for (const auto& [Key,V]:S.Leases) if (V.Cluster==Index) ++Size;
-        W.U32(Size);for (const auto& [Key,V]:S.Leases) if (V.Cluster==Index) WriteLease(W,V);
-        Size=0;for (const auto& [E,D]:S.Decisions) if (D.Outcome.Lease.Cluster==Index) ++Size;
-        W.U32(Size);for (const auto& [E,D]:S.Decisions) if (D.Outcome.Lease.Cluster==Index)
-        {W.Identity(E);W.Blob(D.Fingerprint);W.Blob(EncodeMiningReservationOutcome(D.Outcome));}
-        return W.Take();
+            std::uint32_t CountValue=0;for (const auto& [Source,L]:S.SnapshotLeases) if (L.Cluster==Index) ++CountValue;
+            if (!CountValue) return;
+            W.U32(CountValue);for (const auto& [Source,L]:S.SnapshotLeases) if (L.Cluster==Index) WriteLease(W,L);
+        };
+        const auto& Leases=MiningReservationsValue.LeasesForCluster(Index);const auto& Decisions=MiningReservationsValue.DecisionsForCluster(Index);
+        W.U32(static_cast<std::uint32_t>(Leases.size()));for (const auto& Key:Leases) WriteLease(W,S.Leases.at(Key));
+        W.U32(static_cast<std::uint32_t>(Decisions.size()));for (const auto E:Decisions)
+        {const auto& D=S.Decisions.at(E);W.Identity(E);W.Blob(D.Fingerprint);W.Blob(EncodeMiningReservationOutcome(D.Outcome));}
+        WriteSnapshotLeases();return W.Take();
     }
     if (N=="tasks")
     {
@@ -179,7 +176,7 @@ bool OwnerState::UsesResourceLedger(const StateFragment& F)
     const auto& N=F.Key.Capability;
     return N=="cargo" || N=="processor" || N.starts_with("ore/") || N.starts_with("territory/");
 }
-bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* ResourceBatch)
+bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* ResourceBatch,MiningReservationState* MiningBatch)
 {
     if (F.Schema!=1 || !F.Key.Object.Valid() || F.Key.Capability.empty()) return false;
     const auto& K=F.Key;const auto& N=K.Capability;Reader R(F.Value);
@@ -272,14 +269,12 @@ bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* Resou
         else if (SuffixNumber(N,"leases/",Index))
         {
             if (K.Object!=MiningClusterObject(Index)) return false;
-            auto S=MiningReservationsValue.Snapshot();std::uint32_t Size;
-            if (ReducedWork)
+            std::optional<MiningReservationState> SingleMining;
+            if (!MiningBatch) SingleMining=MiningReservationsValue.Snapshot();
+            auto& S=MiningBatch?*MiningBatch:*SingleMining;std::uint32_t Size;
+            if (!MiningBatch) std::erase_if(S.SnapshotLeases,[&](const auto& P){return P.second.Cluster==Index;});
+            if (!MiningBatch)
             {for (const auto K0:MiningReservationsValue.LeasesForCluster(Index)) S.Leases.erase(K0);for (const auto E:MiningReservationsValue.DecisionsForCluster(Index)) S.Decisions.erase(E);}
-            else
-            {
-                for (auto I=S.Leases.begin();I!=S.Leases.end();) if (I->second.Cluster==Index) I=S.Leases.erase(I);else ++I;
-                for (auto I=S.Decisions.begin();I!=S.Decisions.end();) if (I->second.Outcome.Lease.Cluster==Index) I=S.Decisions.erase(I);else ++I;
-            }
             if (!Count(R,Size)) return false;
             for (std::uint32_t I=0;I<Size;++I)
             {MiningPositionLease V;if (!ReadLease(R,V) || V.Cluster!=Index || !S.Leases.emplace(V.Source,V).second) return false;S.Version=std::max(S.Version,V.Version);}
@@ -291,7 +286,13 @@ bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* Resou
                     || V.Outcome.Lease.Cluster!=Index || V.Outcome.Event!=E || !S.Decisions.emplace(E,V).second) return false;
                 S.Version=std::max(S.Version,V.Outcome.Version);
             }
-            if (!R.Done() || !MiningReservationsValue.Restore(std::move(S))) return false;
+            if (!R.Done())
+            {
+                if (!Count(R,Size)) return false;
+                for (std::uint32_t I=0;I<Size;++I)
+                {MiningPositionLease L;if (!ReadLease(R,L)||L.Cluster!=Index||!S.SnapshotLeases.emplace(L.Source,L).second) return false;}
+            }
+            if (!R.Done() || (!MiningBatch&&!MiningReservationsValue.Restore(std::move(S)))) return false;
         }
         else if (SuffixId(N,"event/",Event))
         {
@@ -317,7 +318,7 @@ bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* Resou
     if (SingleResources && !ResourceLedgerValue.Restore(std::move(*SingleResources))) return false;
     Versions[K]=F.Version;return true;
 }
-std::set<StateKey> OwnerState::FragmentKeys(std::span<const ObjectKey> Keys) const
+std::set<StateKey> OwnerState::FragmentKeys(std::span<const ObjectKey> Keys,bool History) const
 {
     std::set<StateKey> Out;const std::set<ObjectKey> Objects(Keys.begin(),Keys.end());const auto& R=ResourceLedgerValue.Snapshot();
     for (const auto& K:Keys)
@@ -337,8 +338,8 @@ std::set<StateKey> OwnerState::FragmentKeys(std::span<const ObjectKey> Keys) con
         }
     if (std::any_of(Keys.begin(),Keys.end(),[](const auto& K){return K.Kind==ObjectKind::Territory;}))
         for (std::uint32_t I=0;I<R.Owners.size();++I) if (Objects.contains(TerritoryStateObject(I))) Out.insert({TerritoryStateObject(I),"territory/"+std::to_string(I)});
-    for (const auto& K:Objects) if (const auto History=HistoryFragments.find(K);History!=HistoryFragments.end())
-        for (const auto& Name:History->second) Out.insert({K,Name});
+    if (History) for (const auto& K:Objects) if (const auto Found=HistoryFragments.find(K);Found!=HistoryFragments.end())
+        for (const auto& Name:Found->second) Out.insert({K,Name});
     return Out;
 }
 std::vector<StateFragment> OwnerState::Export(std::span<const ObjectKey> Objects) const

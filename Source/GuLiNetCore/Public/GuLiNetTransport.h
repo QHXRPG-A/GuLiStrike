@@ -39,7 +39,7 @@ struct TransportMetrics
     struct MessageBytes {std::uint64_t Messages=0,Canonical=0,Encoded=0,Body=0;};
     // First successful transmission, not queue admission. Both sizes refer to
     // the identical logical message, excluding fragments, retries and ACKs.
-    std::array<MessageBytes,static_cast<std::size_t>(MessageKind::WorkState)+1> Encodings{};
+    std::array<MessageBytes,static_cast<std::size_t>(MessageKind::ResourceSnapshotInstalled)+1> Encodings{};
 };
 
 // Read-only diagnostics use the same packet decoder as reliable delivery.

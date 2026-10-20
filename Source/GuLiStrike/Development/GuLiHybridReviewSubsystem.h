@@ -27,7 +27,11 @@ public:
     /** The opt-in acceptance fixture holds autonomous mining until its input
      * phase. Ordinary matches do not create this subsystem. */
     bool IsAutonomousMiningEnabled() const { return bAutonomousMining && (Phase==TEXT("gameplay") || Phase==TEXT("steady") || Phase==TEXT("capture") || Phase==TEXT("finish_capture")); }
+    /** Explicit fixture gate only; defaults open and is never serialized as gameplay. */
+    bool IsProductionEnabled(FGuid Object) const { return !bProductionPreparationGate || PreparedProduction.Contains(Object); }
 private:
+    bool bProductionPreparationGate=false;
+    TSet<FGuid> PreparedProduction;
     FString Directory,Run,Phase=TEXT("prepare"),Failure;
     FString Scenario,StageId=TEXT("prepare");
     uint32 StageNumber=0;

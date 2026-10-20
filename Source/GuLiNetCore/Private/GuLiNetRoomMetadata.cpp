@@ -32,13 +32,16 @@ Bytes Room::ExportMetadata() const
     DirtyMetadataBuckets.clear();W.U32(static_cast<std::uint32_t>(Directory.size()));
     for (const auto& [Bucket,Encoded]:MetadataBuckets) {W.Raw(Encoded);if (!W.Good()) return {};}
     W.U32(static_cast<std::uint32_t>(Groups.size()));
-    for (const auto& [Key,G]:Groups) {W.Identity(Key);W.Identity(G.Owner);W.U64(G.Version);}
+    for (const auto& [Key,G]:Groups) {W.Identity(Key);W.Identity(G.Owner);W.U64(G.Version);W.Identity(G.Backup);W.U64(G.RequestEpoch);}
     W.U8(MembershipValue?1:0);
     if (MembershipValue)
     {
         const auto& M=*MembershipValue;W.U64(M.Version);W.Identity(M.Player);W.U8(static_cast<std::uint8_t>(M.Operation));
         W.U8(M.Abrupt?1:0);W.U32(static_cast<std::uint32_t>(M.Waiting.size()));for (Id P:M.Waiting) W.Identity(P);
     }
+    // A process restart loses the active installation acknowledgements and its
+    // monotonic deadline. Persist that fact; never restart a five-second budget.
+    W.U8(ResourceRecoveries.empty()?0:1);
     return W.Take();
 }
 bool Room::ImportMetadata(std::span<const std::uint8_t> Data,double Now)
@@ -74,7 +77,7 @@ bool Room::ImportMetadata(std::span<const std::uint8_t> Data,double Now)
     for (std::uint32_t I=0;I<Count;++I)
     {
         Id Key;OwnershipGroupAuthority G;
-        if (!R.Identity(Key) || !Key.Valid() || !R.Identity(G.Owner) || !R.U64(G.Version)
+        if (!R.Identity(Key) || !Key.Valid() || !R.Identity(G.Owner) || !R.U64(G.Version) || !R.Identity(G.Backup) || !R.U64(G.RequestEpoch) || !G.RequestEpoch
             || !Trial.Groups.emplace(Key,G).second) return false;
     }
     for (const auto& [K,O]:Trial.Directory) if (O.Grant.OwnershipGroup.Valid())
@@ -92,8 +95,12 @@ bool Room::ImportMetadata(std::span<const std::uint8_t> Data,double Now)
         for (std::uint32_t I=0;I<Count;++I) {Id P;if (!R.Identity(P) || !Trial.Players.contains(P) || !M.Waiting.insert(P).second) return false;}
         Trial.MembershipValue=std::move(M);Trial.Scheduler.SetMembershipPaused(true,Now);
     }
-    if (!R.Done() || (Phase==static_cast<std::uint8_t>(RoomPhase::MembershipChanging))!=(HasMembership!=0)) return false;
+    std::uint8_t InterruptedRecovery;
+    if (!R.U8(InterruptedRecovery)||InterruptedRecovery>1||!R.Done()
+        ||(Phase==static_cast<std::uint8_t>(RoomPhase::MembershipChanging))!=(HasMembership!=0)) return false;
     Trial.CurrentPhase=static_cast<RoomPhase>(Phase);Trial.FailureReason=std::move(Failure);Trial.NextMembership=MembershipCounter;
-    Trial.InitialRosterReady=Initial!=0;Trial.Scheduler.SetNextTransferId(TransferCounter);*this=std::move(Trial);return true;
+    Trial.InitialRosterReady=Initial!=0;Trial.Scheduler.SetNextTransferId(TransferCounter);
+    if (InterruptedRecovery) Trial.Abort("Coordinator restarted during resource snapshot installation");
+    *this=std::move(Trial);return true;
 }
 }

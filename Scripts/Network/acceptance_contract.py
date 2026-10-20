@@ -25,8 +25,8 @@ SCENARIOS = {
         "wingman_cadence", "air_query_presentation", "air_ui")),
     "fault_merged": ("F", "fault", "Commander", (
         "independent_progress", "transport_duplicate_reorder", "business_idempotence",
-        "stale_authority_life_epoch", "pending_work_handoff", "newborn_handoff",
-        "capability_handoff", "retained_source_work", "ground_ui_rebind", "ground_handoff_stability",
+        "stale_authority_life_epoch", "pending_work_handoff", "newborn_handoff", "resource_owner_process_loss", "resource_backup_process_loss",
+        "capability_handoff", "carried_cargo_handoff", "commander_ui_selection_handoff", "retained_source_work", "ground_ui_rebind", "ground_handoff_stability",
         "member_loss", "fixed_role_rejections", "wingman_vacancy_rebirth",
         "member_join", "service_disconnect", "service_restart", "commander_air_ui_rebind", "empty_team")),
 }
@@ -133,8 +133,8 @@ def freeze_baseline(root: Path, manifest: Path) -> dict:
 def validate_manifest_contract(manifest: dict, population: int) -> None:
     """Require registered mechanisms, not names invented for a coverage label."""
     strings, numbers = manifest.get("strings", {}), manifest.get("numbers", {})
-    if (manifest.get("protocol_version"), manifest.get("schema"), manifest.get("handoff_version")) != (31, 24, 2):
-        raise RuntimeError("The acceptance suite requires protocol 31 / manifest 24 / object handoff 2")
+    if (manifest.get("protocol_version"), manifest.get("schema"), manifest.get("handoff_version")) != (32, 24, 3):
+        raise RuntimeError("The acceptance suite requires protocol 32 / manifest 24 / object handoff 3")
     if int(float(numbers.get("acceptance/population", -1))) != population:
         raise RuntimeError("Acceptance population differs from the exported manifest")
     definitions = {key.removeprefix("adapter/definition/"): value for key, value in strings.items()

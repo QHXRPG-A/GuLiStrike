@@ -44,6 +44,10 @@ struct MiningReservationState
     std::map<std::uint32_t,std::uint32_t> NodeClusters;
     std::map<ObjectKey,MiningPositionLease> Leases;
     std::map<Id,MiningReservationDecision> Decisions;
+    // Authenticated current-cut anchors, bounded by the still-active leases.
+    // They contain no request body or completed outcome. New epoch decisions
+    // are checked against these anchors until the lease is replaced/released.
+    std::map<ObjectKey,MiningPositionLease> SnapshotLeases;
 };
 struct MiningReservationDirectory
 {

@@ -73,10 +73,18 @@ public:
     explicit FMiningOperationsAdapter(UGuLiMiningVehicleManager& V):Owner(&V) {}
     UObject* LifetimeOwner() const override {return Owner.Get();}
     uint32 Version() const override {return ::Version;}
+    void ResetResourceRequests(const TArray<FGuLiHybridObjectKey>& Objects,uint64) override
+    {if (Owner.IsValid()) Owner->ResetHybridMiningRequests(Objects);}
 
 
     bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Out) const override
     {return Owner.IsValid() && Owner->CaptureHybridMiningOperations(Objects,Out);}
+    bool CaptureCurrent(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Out) const override
+    {
+        TArray<uint8> B;TArray<FOperation> Operations;TArray<FRejectedRecipe> Rejections;
+        if (!Capture(Objects,B)||!Decode(B,Operations,&Rejections)) return false;
+        return Encode({},MoveTemp(Rejections),Out);
+    }
     bool Validate(const TArray<FGuLiHybridSharedStatePiece>& Pieces,const TArray<FGuLiHybridObjectKey>&) const override
     {for (const auto& P:Pieces) if (P.Version!=Version() || !Owner.IsValid() || !Owner->ValidateHybridMiningOperations(P.Bytes)) return false; return true;}
     bool Restore(const TArray<FGuLiHybridSharedStatePiece>& Pieces,const TArray<FGuLiHybridObjectKey>& Local,EGuLiHybridRestoreStage Stage) override
@@ -105,6 +113,8 @@ struct UGuLiMiningVehicleManager::FHybridState { TArray<FOperation> Operations; 
 void UGuLiMiningVehicleManager::FHybridStateDeleter::operator()(FHybridState* Value) const {delete Value;}
 UGuLiMiningVehicleManager::UGuLiMiningVehicleManager():HybridState(new FHybridState) {}
 UGuLiMiningVehicleManager::~UGuLiMiningVehicleManager()=default;
+void UGuLiMiningVehicleManager::ResetHybridMiningRequests(const TArray<FGuLiHybridObjectKey>& Objects)
+{HybridState->Operations.RemoveAll([&](const FOperation& V){return Objects.Contains(V.Request.Source);});}
 void UGuLiMiningVehicleManager::InitializeHybridOperations()
 {
     if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())

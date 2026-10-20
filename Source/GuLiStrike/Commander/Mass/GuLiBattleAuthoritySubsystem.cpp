@@ -2063,7 +2063,7 @@ bool FGuLiMovementWorkerFrozenInputTest::RunTest(const FString&)
     {
         Work=std::make_shared<FMovementCalculation>(Input);bool Applied=false;
         GuLiNet::AsyncClientWorld Worker(Match,Player,1,[](const auto&)->std::unique_ptr<GuLiNet::IObjectAdapter>{return {};},
-            [](auto,auto,auto,bool){return true;},{},false,{},0,{true,true,true,Threads?GuLiNet::MakeGameplayTaskPool(Threads):nullptr});
+            [](auto,auto,auto,bool){return true;},{},false,{},0,{true,Threads?GuLiNet::MakeGameplayTaskPool(Threads):nullptr});
         TestTrue(TEXT("Frozen calculation admitted to the owner or bounded pool"),Worker.SubmitGameplay("frozen-movement",Work,65536,65536,[&]{Applied=true;}));
         const double Deadline=FPlatformTime::Seconds()+5;
         while (!Applied&&FPlatformTime::Seconds()<Deadline) {Worker.PumpApplications();FPlatformProcess::SleepNoStats(.001f);}
@@ -2331,7 +2331,7 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 		return;
 	}
 	// 可走性采样按世界帧分配预算，放在固定步循环外，避免补帧时成倍增加 NavMesh 查询。
-	if (!UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::ReducedWork) || AuthorityState->NavigationBudgetFrame!=GFrameCounter)
+	if (AuthorityState->NavigationBudgetFrame!=GFrameCounter)
 	{
 		AuthorityState->NavigationBudgetFrame=GFrameCounter;
 		AuthorityState->PlanningBudget.Reset(MovePlanningMilliseconds, MovePositionQueriesPerFrame, MovePathQueriesPerFrame);
@@ -5236,24 +5236,24 @@ bool UGuLiBattleAuthoritySubsystem::RegisterCombatLedgerTarget(
 	Adapter.ReadSnapshot = [WeakThis, SoldierId, Handle](FGuLiCombatTargetSnapshot& OutSnapshot)
 	{
 		const UGuLiBattleAuthoritySubsystem* Authority = WeakThis.Get();
-		FGuLiSoldierCombatDebug Debug;
-		if (!Authority || Authority->IsSoldierPhased(SoldierId) || !Authority->TryGetSoldierCombatDebug(SoldierId, Debug))
-		{
-			return false;
-		}
-		OutSnapshot = FGuLiCombatTargetSnapshot{};
-		OutSnapshot.Handle = Handle;
-		OutSnapshot.Team = Debug.Team;
-		OutSnapshot.Location = Debug.Location;
-		OutSnapshot.CollisionRadius = Authority->MemberAgentRadiusCentimeters;
-		if (const auto* Data = Authority->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
-			if (const auto* Definition = Data->FindSoldierDefinition(Debug.UnitTypeId))
+		if (!Authority) return false;
+		const auto* State=Authority->AuthorityState.Get();
+		const int32* Index=State?State->SoldierIndexById.Find(SoldierId.Value):nullptr;
+		if (!Index || !State->Soldiers.IsValidIndex(*Index)) return false;
+		const auto& Soldier=State->Soldiers[*Index];
+		if (Soldier.bPhased) return false;
+		// Read the current lifetime directly. Snapshot users do not need weapon
+		// profiles, cooldowns or the rest of the combat debug presentation.
+		OutSnapshot={};OutSnapshot.Handle=Handle;OutSnapshot.Team=Soldier.Team;
+		OutSnapshot.Location=Soldier.Location;OutSnapshot.Health=Soldier.Health;
+		OutSnapshot.bAlive=Soldier.Health>0.f;
+		OutSnapshot.CollisionRadius=Authority->MemberAgentRadiusCentimeters;
+		if (const auto* Data=Authority->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+			if (const auto* Definition=Data->FindSoldierDefinition(Soldier.UnitTypeId))
 			{
-				const FBox Bounds = Definition->GetModelBoundsCentimeters();
-				if (Bounds.IsValid) OutSnapshot.CollisionRadius = FMath::Max(Bounds.GetExtent().X, Bounds.GetExtent().Y);
+				const FBox Bounds=Definition->GetModelBoundsCentimeters();
+				if (Bounds.IsValid) OutSnapshot.CollisionRadius=FMath::Max(Bounds.GetExtent().X,Bounds.GetExtent().Y);
 			}
-		OutSnapshot.Health = Debug.Health;
-		OutSnapshot.bAlive = Debug.Health > 0.0f;
 		return !OutSnapshot.Location.ContainsNaN();
 	};
 

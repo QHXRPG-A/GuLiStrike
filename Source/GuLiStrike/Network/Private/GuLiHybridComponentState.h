@@ -28,6 +28,10 @@ struct FGuLiHybridComponentCapability
     // Export authored component capabilities without adding a class/model switch
     // to the manifest pipeline. Called for native and inherited SCS templates.
     bool (*ExportDefinition)(const UActorComponent&,FGuLiHybridManifestData&,const FString&,FString&)=nullptr;
+    // Optional live eligibility, checked immediately before each logical callback.
+    // Omission keeps the original cadence; no eligibility result is retained.
+    bool (*NeedsLogicalAdvance)(const UActorComponent&,uint64)=nullptr;
+    void (*ResetResourceRequests)(UActorComponent&,uint64)=nullptr;
 };
 
 class FGuLiHybridComponentCapabilityRegistration final
@@ -64,6 +68,7 @@ public:
     static bool Capture(const AActor& Actor,TArray<uint8>& Out,FGuLiHybridComponentBindingContext* Context=nullptr);
     static bool Validate(const AActor& Actor,TConstArrayView<uint8> Bytes,FGuLiHybridComponentBindingContext* Context=nullptr);
     static bool Restore(AActor& Actor,TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage,FGuLiHybridComponentBindingContext* Context=nullptr);
+    static void ResetResourceRequests(AActor& Actor,uint64 Epoch,FGuLiHybridComponentBindingContext* Context=nullptr);
     static bool Advance(AActor& Actor,uint64 Tick,double Delta,FGuLiHybridComponentBindingContext* Context=nullptr);
     static bool ApplyLedger(AActor& Actor,const FGuLiHybridObjectState& State,uint64 Revision,bool Effects,FGuLiHybridComponentBindingContext* Context=nullptr);
     static bool PrepareRestore(AActor& Actor,TConstArrayView<uint8> Bytes,FGuLiHybridComponentBindingContext* Context=nullptr);

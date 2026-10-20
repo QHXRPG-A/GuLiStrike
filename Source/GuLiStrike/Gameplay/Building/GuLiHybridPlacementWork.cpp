@@ -49,7 +49,12 @@ class FGuLiHybridPlacementWork final : public IGuLiHybridSimulationAdapter
     bool Local=false;
     UWorld* World() const {return Owner.IsValid()?Owner->GetWorld():nullptr;}
     UGuLiHybridWorldSubsystem* Hybrid() const {auto* W=World();return W?W->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;}
-    FGuid Event(const TCHAR* Operation) const {return GuLiHybridPlacementEvent(*World(),Record.Key.StableId,Operation);}
+    FGuid Event(const TCHAR* Operation) const
+    {
+        const auto Epoch=Hybrid()->GetResourceRequestEpoch(Record.Key);
+        const FString Name=Epoch<=1?FString(Operation):FString::Printf(TEXT("%s/epoch/%llu"),Operation,Epoch);
+        return GuLiHybridPlacementEvent(*World(),Record.Key.StableId,*Name);
+    }
     GuLiPlacementWork::FPrivate Initial(const FGuLiHybridObjectState& V) const
     {
         GuLiPlacementWork::FPrivate P; P.Key=V.Key;
@@ -62,7 +67,8 @@ class FGuLiHybridPlacementWork final : public IGuLiHybridSimulationAdapter
     FGuid CurrentEvent() const {return Event(Pending.Stage==0?TEXT("reserve"):Pending.Stage==1?TEXT("spawn"):Pending.Stage==2?TEXT("refund"):TEXT("retire"));}
     void ApplyReceipt(const FGuLiHybridTransactionResult& R)
     {
-        if (R.Event!=CurrentEvent() || R.Status==EGuLiHybridTransactionStatus::Deferred || R.Status==EGuLiHybridTransactionStatus::Paused) return;
+        if (R.Event!=CurrentEvent() || R.Status==EGuLiHybridTransactionStatus::Deferred || R.Status==EGuLiHybridTransactionStatus::Paused
+            || R.Status==EGuLiHybridTransactionStatus::Interrupted) return;
         Pending.Submitted=false;
         if (Pending.Stage==0)
         {
@@ -81,6 +87,16 @@ public:
     explicit FGuLiHybridPlacementWork(UGuLiHybridActorWorldSubsystem& V):Owner(&V){}
     UObject* LifetimeOwner() const override {return Owner.Get();}
     uint32 Version() const override {return GuLiPlacementWork::Version;}
+    void ResetResourceRequests(uint64) override
+    {
+        Pending.Submitted=false;auto* H=Hybrid();if (!H) return;
+        FGuLiHybridObjectState Child;
+        if (H->GetObject(Pending.Target,Child) && Child.Parent==Record.Key && Child.SpawnEvent.IsValid())
+        {Pending.Stage=3;return;}
+        FGuid Token;const bool Reserved=H->GetCommittedReservation(Record.Key,Pending.Reservation,Token);
+        if (Pending.Stage==0 && Reserved) {Pending.Token=Token;Pending.Stage=1;}
+        if (Pending.Stage==2 && !Reserved) Pending.Stage=3;
+    }
     bool Prepare(const FGuLiHybridObjectState& V) override
     {
         const auto D=GuLiPlacementWork::Definition(V.Definition);

@@ -52,7 +52,10 @@ const FGuLiHybridComponentCapabilityRegistration ConstructionCapability({TEXT("C
     [](const UActorComponent& Component,TConstArrayView<uint8> Bytes)
     {FGuLiHybridConstructionPublicState State;return DecodePublic(Bytes,State) && CastChecked<UGuLiBuildingLifecycleComponent>(&Component)->ValidateHybridConstructionPublic(State);},
     [](UActorComponent& Component,TConstArrayView<uint8> Bytes)
-    {FGuLiHybridConstructionPublicState State;return DecodePublic(Bytes,State) && CastChecked<UGuLiBuildingLifecycleComponent>(&Component)->ApplyHybridConstructionPublic(State);}});
+    {FGuLiHybridConstructionPublicState State;return DecodePublic(Bytes,State) && CastChecked<UGuLiBuildingLifecycleComponent>(&Component)->ApplyHybridConstructionPublic(State);},nullptr,
+    [](const UActorComponent& Component,uint64)
+    {return CastChecked<UGuLiBuildingLifecycleComponent>(&Component)->GetState().Phase==EGuLiBuildingPhase::UnderConstruction;},
+    [](UActorComponent& C,uint64 E){CastChecked<UGuLiBuildingLifecycleComponent>(&C)->ResetResourceRequests(E);}});
 }
 
 TArray<FGuLiHybridObjectKey> UGuLiBuildingLifecycleComponent::GetConstructionContributors() const

@@ -14,6 +14,7 @@
 #include "GuLiNetLinearFlightRecipe.h"
 #include "Gameplay/Wingman/Private/GuLiHybridWingmanIdentity.h"
 #include "Gameplay/CombatEffects/GuLiLinearFlightContract.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
@@ -323,17 +324,19 @@ struct FGuLiHybridProjectileState
             || Recipe.Admission!=GuLiNetBridge::ToCore(O.SpawnEvent)) return false;
         return CacheRecord(O,MakeArrayView(Recipe.State.data(),int32(Recipe.State.size())),true);
     }
-    void Service()
+    void Service(const FGuLiHybridObjectKey* Changed=nullptr)
     {
         if (bRestoring || !Pool.IsValid() || !Hybrid.IsValid() || !Hybrid->GetFailure().IsEmpty()) return;
-        TArray<FGuLiHybridObjectKey> Keys; Records.GetKeys(Keys);
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_LinearFlightService);
+        TArray<FGuLiHybridObjectKey> Keys;
+        if (Changed) Keys.Add(*Changed);else Records.GetKeys(Keys);
         for (const auto& Key:Keys)
         {
             auto* V=Records.Find(Key); if (!V || !V->bRecipe) continue;
             if (V->bAdmitted && !V->bFinished && Pool->Matches(V->Handle))
             { if (!V->bLaunchPublished && !Hybrid->IsBattlePaused()) V->bLaunchPublished=Publish(*V,false); continue; }
             FGuLiHybridObjectState O;
-            const bool Registered=Hybrid->GetObject(Key,O);
+            const bool Registered=Hybrid->GetObjectView(Key,O);
             if (Registered && O.LifeState==GuLiLinearState::Destroyed) {Discard(*V,TEXT("discard-numeric-destroyed"));continue;}
             if (!V->bAdmitted && !Registered)
             {
@@ -725,5 +728,11 @@ void UGuLiProjectilePoolSubsystem::RetireHybrid(const FGuLiCombatEffectState& St
     if (Target)
     { if (!S->Hybrid->ResolveTarget(*Target,V->HitTarget)) { S->Hybrid->Suspend(TEXT("Flight hit lacks a stable target")); return; } V->bHit=true;V->DamageAt=S->Hybrid->GetObjectLogicalTick(Key); }
     if (Reason==EGuLiCombatEffectEndReason::Blocked) ++Stats.Blocked;
-    V->bTerminalPublished=S->Publish(*V,false); OnState.Broadcast(V->Geometry,true); S->Service();
+    V->bTerminalPublished=S->Publish(*V,false); OnState.Broadcast(V->Geometry,true);
+    // The shared logical step services every record before stepping the pool.
+    // Retiring one slot changes only this record; transaction results are applied
+    // by the ordered main-thread pump, never in this synchronous pool traversal.
+    // Preserve immediate hit/retirement submission without rescanning every other
+    // admitted or waiting flight for each projectile that finishes in the step.
+    S->Service(bStepping?&Key:nullptr);
 }

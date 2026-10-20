@@ -253,8 +253,22 @@ void UGuLiCommanderNetSyncComponent::PruneControlGroup(FGuLiCommanderControlGrou
     const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
     Group.Objects.RemoveAll([&](const auto& K){return !H || !H->HasControl(K);});
 	const auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
-	Group.Soldiers.RemoveAll([&](auto Id) { EGuLiTeam Actual; uint16 Type; FVector Position;
-		return !Authority->GetTaskSoldierInfo(Id, Actual, Type, Position) || Actual != Team; });
+	Group.Soldiers.RemoveAll([&](auto Id)
+    {
+        EGuLiTeam Actual;uint16 Type;FVector Position;
+        if (Authority && Authority->GetTaskSoldierInfo(Id,Actual,Type,Position))
+        {
+            FGuLiHybridObjectKey Key;
+            if (H && H->ResolveTarget(Authority->MakeSoldierTargetHandle(Id),Key)) SelectionSoldierLives.Add(Id,Key);
+            return Actual!=Team;
+        }
+        // Handoff restoration temporarily removes the UE entity. It does not
+        // end its exact Hybrid life or the commander's control of that life.
+        const auto* Key=SelectionSoldierLives.Find(Id);FGuLiHybridObjectState State;
+        if (Key && H && H->GetObjectView(*Key,State) && State.LifeState==1
+            && State.Team==Team && H->HasControl(*Key)) return false;
+        SelectionSoldierLives.Remove(Id);return true;
+    });
 	TSet<FGuLiControllableActorId> Live;
 	for (TActorIterator<APawn> It(GetWorld()); It; ++It)
 		if (const auto* Vehicle = Cast<IGuLiEngineeringVehicle>(*It); Vehicle && Vehicle->GetTeam() == Team)

@@ -90,10 +90,16 @@ void AGuLiMiningVehiclePawn::InitializeVehicle(
 	const UGuLiResourceEconomyConfig& Config,
 	AGuLiResourceFactoryActor& InFactory)
 {
+    InitializeVehicleState(InTeam,InStableActorId,Unit,Config,&InFactory);
+}
+
+void AGuLiMiningVehiclePawn::InitializeVehicleState(EGuLiTeam InTeam,FGuLiControllableActorId InStableActorId,
+    const FGuLiSoldierDefinition& Unit,const UGuLiResourceEconomyConfig& Config,AGuLiResourceFactoryActor* InFactory)
+{
 	Team = InTeam;
 	StableActorId = InStableActorId;
 	UnitTypeId = Unit.UnitTypeId;
-	Factory = &InFactory;
+	Factory = InFactory;
 	SpeedCentimetersPerSecond = Unit.MovementSpeedCmPerSecond;
 	MiningRatePerSecond = Config.MiningRatePerSecond;
 	CargoCapacity = Config.CargoCapacity;
@@ -104,7 +110,7 @@ void AGuLiMiningVehiclePawn::InitializeVehicle(
     PresentationDefinition.ActorClass = Unit.PresentationClass;
     PresentationDefinition.Scale = Unit.PresentationScale;
     OnRep_Presentation();
-    InFactory.RegisterMiningVehicle(*this);
+    if (InFactory) InFactory->RegisterMiningVehicle(*this);
 	if (HasAuthority() && !GetController()) SpawnDefaultController();
 	if (HasAuthority()) CastChecked<AGuLiEngineeringAIController>(GetController())->ConfigureVehicleNavigation();
 	if (UGuLiHybridActorComponent::HasSimulation(this))

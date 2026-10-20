@@ -42,7 +42,8 @@ const FGuLiHybridComponentCapabilityRegistration ProductionCapability({TEXT("Pro
     [](const UActorComponent& Component,TConstArrayView<uint8> Bytes)
     {float Cycle=0;bool Producing=false;return DecodePublic(Bytes,Cycle,Producing) && CastChecked<UGuLiBuildingProductionComponent>(&Component)->ValidateHybridProductionMotion(Cycle,Producing);},
     [](UActorComponent& Component,TConstArrayView<uint8> Bytes)
-    {float Cycle=0;bool Producing=false;return DecodePublic(Bytes,Cycle,Producing) && CastChecked<UGuLiBuildingProductionComponent>(&Component)->ApplyHybridProductionMotion(Cycle,Producing);}});
+    {float Cycle=0;bool Producing=false;return DecodePublic(Bytes,Cycle,Producing) && CastChecked<UGuLiBuildingProductionComponent>(&Component)->ApplyHybridProductionMotion(Cycle,Producing);},nullptr,nullptr,
+    [](UActorComponent& C,uint64 E){CastChecked<UGuLiBuildingProductionComponent>(&C)->ResetResourceRequests(E);}});
 }
 bool UGuLiBuildingProductionComponent::CaptureHybridProduction(FGuLiHybridProductionPrivateState& Out) const
 {

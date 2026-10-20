@@ -38,6 +38,7 @@ public:
     {return Value->BindEntity(*Host->GetWorld(),O) && Host->Bind(Key,*Value.Get());}
     ~FInventory() override {if (Host.IsValid()) Host->Unbind(Key,*Value.Get());Value->UnbindEntity();}
     void Advance(uint64,double Delta) override {Value->AdvanceLogical(float(Delta));}
+    void ResetResourceRequests(uint64 Epoch) override {Value->ResetResourceRequests(Epoch);}
     bool Capture(TArray<uint8>& Out) const override
     {FGuLiHybridResourceInventoryState S;if (!Value->CaptureState(S)) return false;FGuLiHybridStateArchive A(1024*1024);S.Serialize(A);return A.Finish(Out);}
     bool Validate(TConstArrayView<uint8> B) const override {FGuLiHybridResourceInventoryState S;return Decode(B,S);}

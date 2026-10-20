@@ -48,6 +48,7 @@
 
 static TAutoConsoleVariable<int32> CVarSceneUIProjectionCache(TEXT("gs.SceneUI.ProjectionCache"),1,TEXT("0 rebuilds the leaf geometry every paint for comparison."));
 static TAutoConsoleVariable<int32> CVarSceneUISplitLeaves(TEXT("gs.SceneUI.SplitLeaves"),1,TEXT("Separate world geometry, HUD, render targets and world panels. Resolved when the widget is constructed."));
+static TAutoConsoleVariable<int32> CVarSceneUIIndexedGeometry(TEXT("gs.SceneUI.IndexedGeometry"),0,TEXT("Share ring and quad vertices without changing triangles. Candidate; 0 retains the comparison path."));
 
 struct FGuLiSceneUIWidgetData
 {
@@ -71,6 +72,7 @@ struct FGuLiSceneUIWidgetData
 		FIntRect CachedRect, CachedViewRect;
 		FVector2D CachedSize = FVector2D::ZeroVector;
 		FSlateRenderTransform CachedTransform;
+		bool bCachedIndexed = false;
 		TArray<TSharedPtr<FBatch>> Batches;
 	};
 	TArray<FShape> HUDShapes, PendingHUDShapes;
@@ -159,7 +161,7 @@ struct FViewBatch
 	FVector2D Scale, Inset;
 	FIntRect Rect;
 	int32 BatchIndex = 0, Layer;
-	bool bBuild = true, bFullyContained = false;
+	bool bBuild = true, bFullyContained = false, bIndexed = false;
 	FSlateResourceHandle White;
 
 	FViewBatch(const FGeometry& InGeometry, FSlateWindowElementList& InElements,
@@ -173,15 +175,17 @@ struct FViewBatch
 		Scale = Geometry.GetLocalSize() / FVector2D(FMath::Max(1, ViewRect.Width()), FMath::Max(1, ViewRect.Height()));
 		Inset = FVector2D(Rect.Min - ViewRect.Min);
 		White = FSlateApplication::Get().GetRenderer()->GetResourceHandle(*FCoreStyle::Get().GetBrush("WhiteBrush"));
+		bIndexed = CVarSceneUIIndexedGeometry.GetValueOnGameThread() != 0;
 		bBuild = !CVarSceneUIProjectionCache.GetValueOnGameThread() || Data.CachedRevision != Revision || !Data.CachedMatrix.Equals(Matrix, 0)
 			|| Data.CachedRect != Rect || Data.CachedViewRect != ViewRect || Data.CachedSize != Geometry.GetLocalSize()
-			|| !(Data.CachedTransform == Geometry.GetAccumulatedRenderTransform());
+			|| !(Data.CachedTransform == Geometry.GetAccumulatedRenderTransform()) || Data.bCachedIndexed != bIndexed;
 		if (bBuild)
 		{
 			for (auto& Batch : Data.Batches) { Batch->Vertices.Reset(); Batch->Indices.Reset(); }
 			Data.CachedRevision = Revision; Data.CachedMatrix = Matrix;
 			Data.CachedRect = Rect; Data.CachedViewRect = ViewRect; Data.CachedSize = Geometry.GetLocalSize();
 			Data.CachedTransform = Geometry.GetAccumulatedRenderTransform();
+			Data.bCachedIndexed = bIndexed;
 		}
 	}
 
@@ -194,22 +198,38 @@ struct FViewBatch
 		Pixels = ToPixels(P);
 		return !Pixels.ContainsNaN();
 	}
-	void Triangle(const FVector2D& A, const FVector2D& B, const FVector2D& C, const FLinearColor& Color)
+	FGuLiSceneUIWidgetData::FBatch& WritableBatch(int32 VertexCount)
 	{
-		if (!bBuild || Color.A <= 0) return;
 		if (BatchIndex >= Data.Batches.Num()) Data.Batches.Add(MakeShared<FGuLiSceneUIWidgetData::FBatch>());
-		if (Data.Batches[BatchIndex]->Vertices.Num() + 3 > 60000)
+		if (Data.Batches[BatchIndex]->Vertices.Num() + VertexCount > 60000)
 		{
 			++BatchIndex;
 			if (BatchIndex >= Data.Batches.Num()) Data.Batches.Add(MakeShared<FGuLiSceneUIWidgetData::FBatch>());
 		}
-		auto& Batch = *Data.Batches[BatchIndex];
+		return *Data.Batches[BatchIndex];
+	}
+	void Triangle(const FVector2D& A, const FVector2D& B, const FVector2D& C, const FLinearColor& Color)
+	{
+		if (!bBuild || Color.A <= 0) return;
+		auto& Batch = WritableBatch(3);
 		const int32 First = Batch.Vertices.Num();
 		const FColor Tint = Opaque(Color).ToFColorSRGB();
 		for (const auto& P : {A, B, C})
 			Batch.Vertices.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(
 				Geometry.GetAccumulatedRenderTransform(), FVector2f(P * Scale), FVector2f::ZeroVector, Tint));
 		Batch.Indices.Add(First); Batch.Indices.Add(First + 1); Batch.Indices.Add(First + 2);
+	}
+	void Quad(const FVector2D& A, const FVector2D& B, const FVector2D& C, const FVector2D& D, const FLinearColor& Color)
+	{
+		if (!bIndexed) { Triangle(A,B,C,Color); Triangle(A,C,D,Color); return; }
+		if (!bBuild || Color.A <= 0) return;
+		auto& Batch = WritableBatch(4);
+		const int32 First = Batch.Vertices.Num();
+		const FColor Tint = Opaque(Color).ToFColorSRGB();
+		for (const auto& P : {A,B,C,D})
+			Batch.Vertices.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(
+				Geometry.GetAccumulatedRenderTransform(), FVector2f(P * Scale), FVector2f::ZeroVector, Tint));
+		for (const int32 Offset : {0,1,2,0,2,3}) Batch.Indices.Add(First+Offset);
 	}
 	void WorldTriangle(const FVector& A, const FVector& B, const FVector& C, const FLinearColor& Color)
 	{
@@ -248,7 +268,7 @@ struct FViewBatch
 	{
 		if (Color.A <= 0) return;
 		const FVector2D D = (B - A).GetSafeNormal(), N(-D.Y * Width * .5, D.X * Width * .5);
-		Triangle(A - N, A + N, B + N, Color); Triangle(A - N, B + N, B - N, Color);
+		Quad(A - N, A + N, B + N, B - N, Color);
 	}
 	void WorldLine(const FVector& A, const FVector& B, float Width, const FLinearColor& Color)
 	{
@@ -260,8 +280,7 @@ struct FViewBatch
 	{
 		if (!bBuild || Position.X + Size.X < Inset.X || Position.Y + Size.Y < Inset.Y
 			|| Position.X > Inset.X + Rect.Width() || Position.Y > Inset.Y + Rect.Height()) return;
-		Triangle(Position, Position + FVector2D(Size.X, 0), Position + Size, Color);
-		Triangle(Position, Position + Size, Position + FVector2D(0, Size.Y), Color);
+		Quad(Position, Position + FVector2D(Size.X, 0), Position + Size, Position + FVector2D(0, Size.Y), Color);
 	}
 	void Ring(const FGuLiSceneUIRing& R, const FLinearColor& Color)
 	{
@@ -288,7 +307,22 @@ struct FViewBatch
 				if (A.W<=.00001 || B.W<=.00001) return;
 				InnerPoints[I]=ToPixels(A); OuterPoints[I]=ToPixels(B);
 			}
-			for (int32 I=0; I<Directions.Num(); ++I)
+			if (bIndexed)
+			{
+				auto& Batch = WritableBatch(2*Directions.Num());
+				const int32 First = Batch.Vertices.Num();
+				const FColor Tint = Opaque(Color).ToFColorSRGB();
+				for (int32 I=0; I<Directions.Num(); ++I)
+					for (const auto& P : {InnerPoints[I],OuterPoints[I]})
+						Batch.Vertices.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(
+							Geometry.GetAccumulatedRenderTransform(), FVector2f(P*Scale), FVector2f::ZeroVector, Tint));
+				for (int32 I=0; I<Directions.Num(); ++I)
+				{
+					const int32 J=(I+1)%Directions.Num();
+					for (const int32 Offset : {2*I,2*I+1,2*J+1,2*I,2*J+1,2*J}) Batch.Indices.Add(First+Offset);
+				}
+			}
+			else for (int32 I=0; I<Directions.Num(); ++I)
 			{ const int32 J=(I+1)%Directions.Num(); Triangle(InnerPoints[I],OuterPoints[I],OuterPoints[J],Color); Triangle(InnerPoints[I],OuterPoints[J],InnerPoints[J],Color); }
 		}
 		else for (int32 I=0; I<Directions.Num(); ++I)
@@ -975,3 +1009,88 @@ void UGuLiSceneUIWidget::BackgroundChanged()
     ++Data->BackgroundRevision;++Data->ContentRevision;
     InvalidatePaintPart(EGuLiSceneUIPaintPart::Background);
 }
+
+#if WITH_DEV_AUTOMATION_TESTS
+#include "Misc/AutomationTest.h"
+#include "Misc/ScopeExit.h"
+#include "Widgets/SWindow.h"
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiSceneUIIndexedGeometryTest,
+    "GuLiStrike.Commander.UI.SceneUI.IndexedGeometryEquivalence",
+    EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiSceneUIIndexedGeometryTest::RunTest(const FString&)
+{
+    auto* Option=CVarSceneUIIndexedGeometry.AsVariable();
+    const int32 Previous=Option->GetInt();
+    ON_SCOPE_EXIT { Option->Set(Previous,ECVF_SetByConsole); };
+    const FGeometry Geometry=FGeometry::MakeRoot(FVector2D(1920,1080),FSlateLayoutTransform(1.25f),
+        FSlateRenderTransform(FScale2D(1.2f,.8f),FVector2f(3.25f,-8.5f)));
+    FSlateWindowElementList Elements(SNew(SWindow));
+    FSceneViewProjectionData Projection;
+    Projection.SetViewRectangle(FIntRect(0,0,1600,900));
+    Projection.SetConstrainedViewRectangle(FIntRect(50,30,1550,870));
+    Projection.ViewOrigin=FVector::ZeroVector;
+    Projection.ViewRotationMatrix=FMatrix::Identity;
+    Projection.ProjectionMatrix=FScaleMatrix(FVector(.001));
+    FGuLiSceneUIWidgetData::FGeometryCache Cache;
+    TArray<FSlateVertex> Reference;
+    int32 ReferenceVertices=0;
+    for (int32 Indexed : {0,1})
+    {
+        Option->Set(Indexed,ECVF_SetByConsole);
+        FViewBatch View(Geometry,Elements,Cache,1,Projection,0);
+        TestTrue(TEXT("Changing representation invalidates the existing geometry cache"),View.bBuild);
+        for (int32 I=0;I<600;++I)
+        {
+            FGuLiSceneUIRing Ring;
+            Ring.Center=FVector((I%5)*80-160,(I%7)*60-180,500);
+            Ring.OuterRadiusCm=100;Ring.bSelected=I%3==0;
+            View.Ring(Ring,FLinearColor(.1f,.6f,.9f,1));
+        }
+        // Boundary clipping, near-plane rejection, zero radius and transparent input
+        // all retain the original triangle path and submission order.
+        for (const FVector Center : {FVector(980,0,500),FVector(0,980,500),FVector(0,0,-50),FVector(3000,0,500)})
+        {
+            FGuLiSceneUIRing Ring;Ring.Center=Center;Ring.OuterRadiusCm=100;Ring.bSelected=true;
+            View.Ring(Ring,FLinearColor(.8f,.2f,.1f,.5f));
+            Ring.OuterRadiusCm=0;View.Ring(Ring,FLinearColor::White);
+        }
+        View.Line(FVector2D(10,15),FVector2D(200,250),2,FLinearColor::White);
+        View.Line(FVector2D(20,20),FVector2D(20,20),3,FLinearColor::White);
+        View.Box(FVector2D(100,150),FVector2D(180,20),FLinearColor(.2f,.3f,.4f));
+        View.Box(FVector2D(100,150),FVector2D(180,20),FLinearColor::Transparent);
+        TArray<FSlateVertex> Expanded;int32 VertexCount=0;
+        for (const auto& Batch:Cache.Batches)
+        {
+            TestTrue(TEXT("Every batch respects the existing index limit"),Batch->Vertices.Num()<=60000);
+            VertexCount+=Batch->Vertices.Num();
+            for (const SlateIndex Index:Batch->Indices)
+            {
+                if (!Batch->Vertices.IsValidIndex(Index)) {AddError(TEXT("Out-of-range Slate vertex index"));return false;}
+                Expanded.Add(Batch->Vertices[Index]);
+            }
+        }
+        if (!Indexed) {Reference=MoveTemp(Expanded);ReferenceVertices=VertexCount;}
+        else
+        {
+            TestTrue(TEXT("Shared vertices reduce vertex work by at least half"),VertexCount<ReferenceVertices/2);
+            if (!TestEqual(TEXT("Triangle count and order are preserved"),Expanded.Num(),Reference.Num())) return false;
+            bool Equal=true;
+            for (int32 I=0;I<Expanded.Num() && Equal;++I)
+            {
+                const auto& A=Reference[I];const auto& B=Expanded[I];
+                Equal=A.Position==B.Position && A.Color==B.Color && A.SecondaryColor==B.SecondaryColor;
+                for (int32 UV=0;UV<4;++UV) Equal=Equal && A.TexCoords[UV]==B.TexCoords[UV];
+            }
+            TestTrue(TEXT("Every submitted triangle has identical transformed positions, UVs and colors"),Equal);
+        }
+        FViewBatch Reuse(Geometry,Elements,Cache,1,Projection,0);
+        TestFalse(TEXT("Unchanged input reuses geometry"),Reuse.bBuild);
+    }
+    FViewBatch Removed(Geometry,Elements,Cache,2,Projection,0);
+    TestTrue(TEXT("Source removal invalidates geometry"),Removed.bBuild);
+    for (const auto& Batch:Cache.Batches) TestTrue(TEXT("No stale triangles after source removal"),Batch->Indices.IsEmpty());
+    return !HasAnyErrors();
+}
+#endif

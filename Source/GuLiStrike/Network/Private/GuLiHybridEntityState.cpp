@@ -53,7 +53,12 @@ bool FGuLiHybridEntityState::Prepare(UWorld& W,const FGuLiHybridObjectState& O,c
     }
     return true;
 }
-void FGuLiHybridEntityState::Advance(uint64 At,double Delta) {for (auto& E:Entries) E.Instance->Advance(At,Delta);}
+void FGuLiHybridEntityState::Advance(uint64 At,double Delta)
+{
+    // Re-evaluate immediately before each callback: an earlier callback can
+    // wake another capability during this same ordered logical step.
+    for (auto& E:Entries) if (E.Instance->HasPeriodicWork()) E.Instance->Advance(At,Delta);
+}
 bool FGuLiHybridEntityState::HasPeriodicWork() const
 {for (const auto& E:Entries) if (E.Instance->HasPeriodicWork()) return true;return false;}
 void FGuLiHybridEntityState::ApplyLedger(const FGuLiHybridObjectState& O) {for (auto& E:Entries) E.Instance->ApplyLedger(O);}

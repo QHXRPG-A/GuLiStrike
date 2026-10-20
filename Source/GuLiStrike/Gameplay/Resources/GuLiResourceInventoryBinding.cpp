@@ -89,9 +89,12 @@ const FGuLiHybridManifestRegistration InventoryProfiles({TEXT("ResourceInventory
     {
         TArray<FGuLiHybridAdapterFamily> Families;if (!FGuLiHybridAdapterRegistry::GetFamilies(Families,Error)) return false;
         TArray<FString> Cargo,Processors;
-        for (const auto& Pair:M.Strings) if (Pair.Key.StartsWith(TEXT("resource/component/")))
+        TArray<FString> Definitions;
+        for (const auto& Pair:M.Strings) if (Pair.Key.StartsWith(TEXT("resource/component/"))) Definitions.Add(Pair.Key.RightChop(19));
+        Definitions.Sort();
+        for (const auto& D:Definitions)
         {
-            const auto D=Pair.Key.RightChop(19);const auto Family=FName(*M.Strings.FindRef(TEXT("adapter/definition/")+D));
+            const auto Family=FName(*M.Strings.FindRef(TEXT("adapter/definition/")+D));
             const auto* F=Families.FindByPredicate([&](const auto& V){return V.Name==Family;});
             if (!F) {Error=TEXT("Inventory has no registered simulation family: ")+D;return false;}
             if (F->OwnershipPolicy==EGuLiHybridOwnershipPolicy::ControllerPinned)

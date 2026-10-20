@@ -12,7 +12,7 @@ namespace
 Bytes RequestFingerprint(const TransactionRequest& V)
 {
     // An ownership handoff may change delivery metadata, never the original work identity.
-    Writer W; W.Key(V.Header.Object); W.U64(V.Header.At); W.Blob(EncodeTransaction(V)); return W.Take();
+    Writer W; W.Key(V.Header.Object);W.Identity(V.Header.ResourceGroup);W.U64(V.Header.ResourceEpoch); W.U64(V.Header.At); W.Blob(EncodeTransaction(V)); return W.Take();
 }
 }
 bool OwnerState::ConfigureUpgradeCatalogs(const std::map<std::string,CompiledUpgradeCatalog>& Values)
@@ -171,7 +171,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
 {
     const auto& Previous=PreviousObjects();
     TransactionRequest R=Delivery;
-    CommitResult Out; Out.Event = R.Header.Event; Out.Target = R.Target; Out.Kind=R.Kind; Out.Faction=R.Faction;Out.StateDomain=DecisionDomain;
+    CommitResult Out;Out.ResourceGroup=R.Header.ResourceGroup;Out.ResourceEpoch=R.Header.ResourceEpoch; Out.Event = R.Header.Event; Out.Target = R.Target; Out.Kind=R.Kind; Out.Faction=R.Faction;Out.StateDomain=DecisionDomain;
     bool FinalDecision=false;
     ObjectRecord* ClosingWork=nullptr;FrozenWorkRecipe Admitted;
     if (R.Kind==TransactionKind::AdmitWork)
@@ -217,11 +217,19 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
     if (!R.Admission.empty()) return Reject(CommitStatus::BadRequest);
     if (SourceGrant->Definition==TransactionWorkDefinition)
     {
+        const auto ResumedEvent=[&]()
+        {
+            const auto G=ResourceEpochs.find(ResourceGroupFor(Admitted.Request));
+            return G==ResourceEpochs.end()||G->second==Admitted.Request.Header.ResourceEpoch?Admitted.Request.Header.Event:
+                StableId("GuLiResourceContinuation/v1",SourceGrant->Grant.Object.StableId.ToString()+":"+std::to_string(G->second));
+        };
         if (SourceGrant->Grant.State!=Life::Alive || !DecodeFrozenWork((*SourceGrant),Admitted)
-            || Delivery.Header.Event!=Admitted.Request.Header.Event || Delivery.Header.At<SourceGrant->BornAt
+            || Delivery.Header.Event!=ResumedEvent() || Delivery.Header.At<SourceGrant->BornAt
             || EncodeTransaction(Delivery)!=EncodeTransaction(Admitted.Request))
         {FinalDecision=false;return Reject(CommitStatus::BadRequest);}
         ClosingWork=SourceGrant;R=Admitted.Request;
+        R.Header.Event=Delivery.Header.Event;R.Header.ResourceGroup=Delivery.Header.ResourceGroup;R.Header.ResourceEpoch=Delivery.Header.ResourceEpoch;
+        if (Admitted.Resource.Event.Valid()) Admitted.Resource.Event=Delivery.Header.Event;
     }
     else if (ActiveWorks.contains(R.Header.Object)
         && (CanAdmitWork(R.Kind) || R.Kind==TransactionKind::Reserve || R.ReservationToken.Valid()))

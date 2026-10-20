@@ -12,6 +12,7 @@ inline GuLiNet::Message ToCore(const FGuLiHybridMessage& V)
     H.Event = ToCore(V.Event); H.Object = {static_cast<GuLiNet::ObjectKind>(V.ObjectKind), ToCore(V.ObjectId), V.LifeGeneration};
     H.Epoch = V.MatchEpoch; H.OwnerEpoch = V.OwnerEpoch; H.ControlEpoch = V.ControlEpoch;
     H.Sequence = V.Sequence; H.At = V.LogicalTick;
+    H.ResourceGroup=ToCore(V.ResourceGroup);H.ResourceEpoch=V.ResourceEpoch;
     if (!V.Body.IsEmpty()) Out.Body.assign(V.Body.GetData(), V.Body.GetData() + V.Body.Num());
     return Out;
 }
@@ -22,6 +23,7 @@ inline FGuLiHybridMessage ToUE(const GuLiNet::Message& V)
     Out.ObjectKind = static_cast<uint8>(H.Object.Kind); Out.ObjectId = ToUE(H.Object.StableId); Out.LifeGeneration = H.Object.Generation;
     Out.MatchEpoch = H.Epoch; Out.OwnerEpoch = H.OwnerEpoch; Out.ControlEpoch = H.ControlEpoch;
     Out.Sequence = H.Sequence; Out.LogicalTick = H.At;
+    Out.ResourceGroup=ToUE(H.ResourceGroup);Out.ResourceEpoch=H.ResourceEpoch;
     if (!V.Body.empty()) Out.Body.Append(V.Body.data(), static_cast<int32>(V.Body.size())); return Out;
 }
 }

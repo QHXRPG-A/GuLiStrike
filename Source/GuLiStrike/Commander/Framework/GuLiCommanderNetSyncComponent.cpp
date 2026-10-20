@@ -124,8 +124,15 @@ void UGuLiCommanderNetSyncComponent::NotifySelectionChanged()
     if (auto* H=GetWorld()?GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr)
     {
         TArray<FGuLiHybridObjectKey> Selected=SelectionState.Objects;const auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+        TSet<FGuLiSoldierId> Tracked;
+        for (const auto& Group:ControlGroups) for (const auto Id:Group.Soldiers) Tracked.Add(Id);
         if (Authority) for (const auto& Cohort:SelectionState.Cohorts) for (const auto Id:Cohort.MemberIds)
-        {FGuLiHybridObjectKey K;if (H->ResolveTarget(Authority->MakeSoldierTargetHandle(Id),K)) Selected.AddUnique(K);}
+        {
+            Tracked.Add(Id);FGuLiHybridObjectKey K;
+            if (H->ResolveTarget(Authority->MakeSoldierTargetHandle(Id),K)) SelectionSoldierLives.Add(Id,K);
+            if (const auto* Life=SelectionSoldierLives.Find(Id)) Selected.AddUnique(*Life);
+        }
+        for (auto It=SelectionSoldierLives.CreateIterator();It;++It) if (!Tracked.Contains(It.Key())) It.RemoveCurrent();
         TArray<FGuLiHybridObjectState> Objects;H->GetObjects(Objects);
         for (const auto& O:Objects) if (const auto* Vehicle=Cast<IGuLiEngineeringVehicle>(H->FindBoundActor(O.Key));
             Vehicle && SelectionState.ActorIds.Contains(Vehicle->GetStableActorId())) Selected.AddUnique(O.Key);

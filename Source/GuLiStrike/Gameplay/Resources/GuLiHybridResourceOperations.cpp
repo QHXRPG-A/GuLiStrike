@@ -12,7 +12,8 @@ FGuLiResourceAmounts AGuLiMiningVehiclePawn::GetCargo() const
 }
 void AGuLiMiningVehiclePawn::ApplyHybridResourceResult(const FGuLiHybridTransactionResult& R)
 {
-    if (R.Status==EGuLiHybridTransactionStatus::Deferred || R.Status==EGuLiHybridTransactionStatus::Paused) return;
+    if (R.Status==EGuLiHybridTransactionStatus::Deferred || R.Status==EGuLiHybridTransactionStatus::Paused
+        || R.Status==EGuLiHybridTransactionStatus::Interrupted) return;
     auto* Inventory=FindComponentByClass<UGuLiResourceInventoryComponent>();Inventory->ApplyResourceResult(R);
     auto* Resources=GetResourceSubsystem(); const auto Key=Resources->GetSettlementKey(this); if (!Key.IsValid()) return;
     const bool Pending=R.Event==PendingResourceEvent;
@@ -33,6 +34,6 @@ void AGuLiMiningVehiclePawn::ApplyHybridResourceResult(const FGuLiHybridTransact
     }
     if (!Pending) return;
     PendingResourceEvent.Invalidate(); PendingResourceOperation=0;
-    if (!R.IsCommitted() && UGuLiHybridActorComponent::HasSimulation(this))
+    if (!R.IsCommitted() && R.Status!=EGuLiHybridTransactionStatus::Interrupted && UGuLiHybridActorComponent::HasSimulation(this))
     {SetMiningVisual(false); BehaviorResult=EGuLiCommanderWorkResult::TargetLost;}
 }

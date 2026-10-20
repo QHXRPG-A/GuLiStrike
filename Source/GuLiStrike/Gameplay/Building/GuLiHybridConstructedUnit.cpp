@@ -20,7 +20,9 @@ const FGuLiHybridComponentCapabilityRegistration Conversion({TEXT("ConstructedUn
         if (S==EGuLiHybridRestoreStage::Link) return V->RestoreHybrid(B,true);
         if (S==EGuLiHybridRestoreStage::Activate) V->ActivateHybridRestore();return true;
     },nullptr,[](UActorComponent& C,uint64 Tick,double){CastChecked<UGuLiConstructedUnitComponent>(&C)->AdvanceHybrid(Tick);},
-    [](UActorComponent& C,const FGuLiHybridObjectState& S,uint64,bool){return CastChecked<UGuLiConstructedUnitComponent>(&C)->ApplyHybridLedger(S);}});
+    [](UActorComponent& C,const FGuLiHybridObjectState& S,uint64,bool){return CastChecked<UGuLiConstructedUnitComponent>(&C)->ApplyHybridLedger(S);},
+    nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,
+    [](UActorComponent& C,uint64 E){CastChecked<UGuLiConstructedUnitComponent>(&C)->ResetResourceRequests(E);}});
 }
 bool UGuLiConstructedUnitComponent::CaptureHybrid(TArray<uint8>& Bytes) const
 {
@@ -50,6 +52,11 @@ void UGuLiConstructedUnitComponent::AdvanceHybrid(uint64 Tick)
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
     if (!Binding || !H || !Life || !Binding->CanSimulate() || !H->CanPublishFacts()
         || Binding->GetState().LifeState!=1 || !Life->IsCompleted() || Life->GetDefinition().CompletionUnitTypeId<=0) return;
+    if (bRestoreActivationPending)
+    {
+        bRestoreActivationPending=false;
+        if (bConversionStarted) {const auto At=EarliestConversionTick;bConversionStarted=false;BeginConversion();EarliestConversionTick=At;}
+    }
     if (!bConversionStarted) BeginConversion();
     if (!bNavigationRebuilt || Tick<EarliestConversionTick || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
     if (HybridConversionEvent.IsValid())

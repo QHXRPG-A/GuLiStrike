@@ -123,6 +123,9 @@ public:
 
 private:
 	friend class FGuLiHybridMinerAdapter;
+	/** Restore creates the pawn before the Link stage binds its saved factory. */
+	void InitializeVehicleState(EGuLiTeam InTeam,FGuLiControllableActorId InStableActorId,
+		const FGuLiSoldierDefinition& Unit,const UGuLiResourceEconomyConfig& Config,AGuLiResourceFactoryActor* InFactory);
 	bool PrepareHybridMiningStep();
 	void AdvanceHybridMining(float DeltaSeconds);
 	UFUNCTION() void ApplyHybridResourceResult(const FGuLiHybridTransactionResult& Result);

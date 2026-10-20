@@ -243,14 +243,13 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter
         auto* Self=Authority.Get(); if (!Self || !UGuLiNetworkSettings::CanPresent(Self->GetWorld())) return;
         TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_MassReadModelPublish);
         auto* World=Self->GetWorld(); auto* Battle=World->GetGameState<AGuLiBattleGameState>(); if (!Battle || !Battle->GetMatchEpoch()) return;
-        const bool Reduced=UGuLiHotspotOptions::Enabled(World,EGuLiHotspot::ReducedWork);
-        AGuLiSoldierStateReplicator* R=Reduced&&Self->AuthorityState?Self->AuthorityState->HybridReadModel.Get():nullptr;
+        AGuLiSoldierStateReplicator* R=Self->AuthorityState?Self->AuthorityState->HybridReadModel.Get():nullptr;
         if (R && (R->GetWorld()!=World || R->IsActorBeingDestroyed())) R=nullptr;
         if (!R) for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It)
             if (!It->IsActorBeingDestroyed()) {R=*It;break;}
         if (!R) { R=World->SpawnActor<AGuLiSoldierStateReplicator>(); if (R) R->SetReplicates(false); }
         if (!R) return;
-        if (Reduced&&Self->AuthorityState) Self->AuthorityState->HybridReadModel=R;
+        if (Self->AuthorityState) Self->AuthorityState->HybridReadModel=R;
         if (R->GetSnapshotMatchEpoch()!=Battle->GetMatchEpoch())
         { TArray<FGuLiSoldierStateItem> All; Self->BuildSoldierStateSnapshot(All); R->ApplyAuthoritySnapshot(All,Battle->GetMatchEpoch()); }
         else { FGuLiSoldierStateItem Item; if (Self->BuildSoldierState(FGuLiSoldierId(Record.Ordinal),Item)) R->ApplyAuthorityDelta(MakeArrayView(&Item,1),Battle->GetMatchEpoch()); }

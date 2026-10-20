@@ -2,6 +2,7 @@
 #include "Engine/World.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 
@@ -12,21 +13,56 @@ bool UGuLiPerformanceSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 }
 void UGuLiPerformanceSubsystem::BeginCapture()
 {
+    CaptureDeadline=0;
 	if (!UGuLiNetworkSettings::CanCapturePerformance(GetWorld())) return;
 	Counters.Reset(); NetworkSamples.Reset(); DroppedNetworkSamples = 0;
     SampleCounters.Reset();DroppedIndividualSamples=0;
     DroppedFrameSamples=0;
 	FirstFrame = LastFrame = GFrameCounter; bCapturing = true; CaptureNetworkSample();
 }
+bool UGuLiPerformanceSubsystem::BeginTimedCapture(float Seconds)
+{
+    if (bCapturing || bHotspotPending || !FMath::IsFinite(Seconds) || Seconds<1 || Seconds>60) return false;
+    BeginCapture();if (!bCapturing) return false;CaptureDeadline=FPlatformTime::Seconds()+Seconds;return true;
+}
+bool UGuLiPerformanceSubsystem::BeginLongObservation(float Seconds)
+{
+#if !UE_BUILD_SHIPPING
+    if (ObservationDeadline>0 || !FMath::IsFinite(Seconds) || Seconds<1 || Seconds>3600) return false;
+    ObservationSamples.Reset();DroppedObservationSamples=0;ObservationRequested=Seconds;
+    ObservationStarted=FPlatformTime::Seconds();ObservationDeadline=ObservationStarted+Seconds;
+    CaptureNetworkSample(true);return true;
+#else
+    return false;
+#endif
+}
+FString UGuLiPerformanceSubsystem::GetLongObservationJson() const
+{
+    auto Root=MakeShared<FJsonObject>();
+    Root->SetBoolField(TEXT("complete"),ObservationStarted>0 && ObservationDeadline==0);
+    Root->SetNumberField(TEXT("requested_seconds"),ObservationRequested);
+    Root->SetNumberField(TEXT("started_seconds"),ObservationStarted);
+    Root->SetNumberField(TEXT("sampled_seconds"),FMath::Max(0.,LastObservationSample-ObservationStarted));
+    Root->SetNumberField(TEXT("dropped_samples"),DroppedObservationSamples);
+    Root->SetArrayField(TEXT("network_samples"),ObservationSamples);
+    AppendContinuousHotspot(Root);
+    FString Json;FJsonSerializer::Serialize(Root,TJsonWriterFactory<>::Create(&Json));return Json;
+}
 void UGuLiPerformanceSubsystem::EndCapture()
 {
 	if (bCapturing) CaptureNetworkSample();
 	LastFrame=GFrameCounter; bCapturing=false;
+    CaptureDeadline=0;
 }
 void UGuLiPerformanceSubsystem::Tick(float DeltaTime)
 {
+    if (ObservationDeadline>0 && FPlatformTime::Seconds()>=ObservationDeadline)
+    {CaptureNetworkSample(true);ObservationDeadline=0;}
+    if (bCapturing && CaptureDeadline>0 && FPlatformTime::Seconds()>=CaptureDeadline) EndCapture();
     if (bCapturing && FPlatformTime::Seconds() - LastNetworkSample >= 1.0) CaptureNetworkSample();
+    if (ObservationDeadline>0 && FPlatformTime::Seconds()-LastObservationSample>=1.0) CaptureNetworkSample(true);
     TickHotspot(DeltaTime);
+    TickContinuousHotspot();
 }
 TStatId UGuLiPerformanceSubsystem::GetStatId() const
 { RETURN_QUICK_DECLARE_CYCLE_STAT(GuLiPerformanceCapture, STATGROUP_Tickables); }
@@ -58,6 +94,10 @@ FString UGuLiPerformanceSubsystem::GetCaptureJson() const
 {
 	auto Root = MakeShared<FJsonObject>();
 	Root->SetStringField(TEXT("world"), GetWorld()->GetPathName());
+    // Readback is requested outside the native timing window. This census uses
+    // simulation authority and life, never render instances or faction alone.
+    if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+        Root->SetObjectField(TEXT("simulation_census"),Hybrid->GetSimulationCensus());
     if (const auto* H=GetWorld()->GetSubsystem<UGuLiHotspotOptions>())
     {
         Root->SetNumberField(TEXT("hotspot_mask"),H->GetMask());

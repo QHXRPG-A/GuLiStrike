@@ -10,6 +10,7 @@ std::map<std::string,std::size_t> ClientWorld::WorkCounts() const
 {
     return {{"pending",Pending.size()},{"controlled_intents",PlayerIntents.size()},{"retry",RetryWork.size()},{"active",WorkFlows.size()},
         {"waiting_result",WaitingResults.size()},{"retained",KnownWork.size()},{"deferred_state",DeferredPeerStates.size()},
+        {"waiting_result_authority",DeferredPeerReceipts.size()},{"waiting_result_authority_bytes",DeferredPeerReceiptBytes},
         {"publication_messages",PublicationIdentities.size()},{"publication_bytes",PublicationBytes},
         {"command_outbox",CommandOutbox.size()},{"incoming_commands",IncomingCommands.size()},
         {"freeze_requested",FreezeRequested.size()}};
@@ -50,6 +51,13 @@ std::vector<WorkDiagnostic> ClientWorld::WorkDiagnostics() const
         {D.Missing={S.Object,S.Capability};D.RequiredVersion=S.Version;D.CurrentVersion=Version;break;}
         Out.push_back(std::move(D));
     }
+    N=0;for (const auto& [Key,Receipt]:DeferredPeerReceipts)
+    {
+        if (N++==8) break;WorkDiagnostic D;D.Event=Key.second;D.Stage="result_authority";
+        D.Source=Receipt.Result.StateDomain;D.Target=Receipt.Result.Target;D.RequestSender=Key.first;
+        D.RequestOwnerVersion=Receipt.Header.OwnerEpoch;D.WaitReason="original domain authority and state unavailable";
+        Out.push_back(std::move(D));
+    }
     return Out;
 }
 namespace
@@ -75,6 +83,7 @@ bool ReadAcknowledgment(std::span<const std::uint8_t> Data,Id& Event,Id& Proposa
 bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R)
 {
     TraceScope Scope("GuLiHybrid_CoreStartWork");
+    if (!Numbers.CurrentResourceRequest(R)||!ResourceMessageCurrent(R.Header)) return false;
     if (Numbers.Owner(Numbers.ExecutionDomain(R))!=Player) return false;
     if (WorkFlows.contains(R.Header.Event)) return true;
     // Observers consume reliable publications independently. Their receive
@@ -278,10 +287,12 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
 void ClientWorld::PollNetwork(double Now)
 {
     if (!std::isfinite(Now) || Now<NetworkTime || !Failure.empty()) return;NetworkTime=Now;
+    PollResourceSnapshots();
     for (auto& [Key,Retry]:PreparingApplications) if (Retry<=Now)
     {Retry=Now+.1;if (const auto A=Adapters.find(Key);A!=Adapters.end()) A->second->RetryPreparation();}
     FlushPublications();
     RetryPeerStates();
+    RetryPeerReceipts();
     FlushCommandOutbox();
     for (auto& [E,I]:PlayerIntents) if (I.RetryAt<=Now && HasControl(I.Request.Header.Object))
     {
@@ -290,17 +301,25 @@ void ClientWorld::PollNetwork(double Now)
         else
         {Writer W;W.U8(I.Admit?1:0);W.Blob(EncodeTransaction(I.Request));SendMessage(Numbers.Owner(K),MessageKind::TransactionIntent,E,K,W.Take());}
     }
-    for (auto I=EarlyHandoffStates.begin();I!=EarlyHandoffStates.end();) if (Now-I->second.first>10) I=EarlyHandoffStates.erase(I);else ++I;
+    for (auto I=EarlyHandoffStates.begin();I!=EarlyHandoffStates.end();) if (Now-I->second.ReceivedAt>10) I=EarlyHandoffStates.erase(I);else ++I;
     std::vector<Revision> ReadyImports;
     for (const auto& [ID,Entry]:EarlyHandoffStates)
-        if (std::all_of(Entry.second.Objects.begin(),Entry.second.Objects.end(),[&](const auto& P)
-            {return Transfers.contains(P.Record.Grant.Object);}) && !Entry.second.Objects.empty()
-            && Transfers.at(Entry.second.Objects.front().Record.Grant.Object).IdValue==ID) ReadyImports.push_back(ID);
+    {
+        // This retained cut is immutable. A pending GT request cannot change
+        // until an ordered reply or cancellation arrives on the owner thread.
+        // New network packets still take the full validation path immediately.
+        if (!Entry.WaitingApplications.empty() && ApplicationProgressRevision
+            && std::all_of(Entry.WaitingApplications.begin(),Entry.WaitingApplications.end(),
+                [&](const auto& P){return P.second==ApplicationProgressRevision(P.first);})) continue;
+        if (std::all_of(Entry.Cut->State.Objects.begin(),Entry.Cut->State.Objects.end(),[&](const auto& P)
+            {return Transfers.contains(P.Record.Grant.Object);}) && !Entry.Cut->State.Objects.empty()
+            && Transfers.at(Entry.Cut->State.Objects.front().Record.Grant.Object).IdValue==ID) ReadyImports.push_back(ID);
+    }
     for (const auto ID:ReadyImports)
     {
         auto Entry=std::move(EarlyHandoffStates.at(ID));EarlyHandoffStates.erase(ID);
-        InstallHandoff(Entry.second.Source,Entry.second);
-        if (auto I=EarlyHandoffStates.find(ID);I!=EarlyHandoffStates.end()) I->second.first=Entry.first;
+        const auto Source=Entry.Cut->State.Source;InstallHandoffCut(Source,std::move(Entry.Cut));
+        if (auto I=EarlyHandoffStates.find(ID);I!=EarlyHandoffStates.end()) I->second.ReceivedAt=Entry.ReceivedAt;
     }
     DrainCommands();
     // Network retries and acknowledgments continue during membership pauses.
@@ -423,6 +442,14 @@ void ClientWorld::PollNetwork(double Now)
             }
         };
         for (const auto& [Event,R]:WaitingResults) Collect(R);
+        for (const auto& [Key,Receipt]:DeferredPeerReceipts)
+        {
+            Collect(Receipt.Result);
+            // Querying a body conveys no write authority. Its normal import
+            // still needs the original parent or exact room birth grant.
+            auto& Requests=Missing[Key.first];const StateKey Domain{Receipt.Result.StateDomain,"object"};
+            if (Requests.size()<64 || Requests.contains(Domain)) Requests[Domain]=std::max<Revision>(Requests[Domain],1);
+        }
         for (const auto& [Event,K]:KnownWork) if (K.Decided) Collect(K.Work.Result);
         for (const auto& [Peer,Requests]:Missing)
         {

@@ -21,6 +21,7 @@ struct GULINETCORE_API ClientNumericView
     ValueView<ResourceLedgerState> ResourcesView;
     ValueView<MiningReservationDirectory> MiningView;
     Balances Accounts;
+    std::map<EconomyKey,Reservation> Reservations;
     Revision ResourceDirectoryRevision=0,MiningDirectoryRevision=0;
     std::map<StateKey,Revision> Versions;
     std::map<std::pair<ObjectKind,Id>,std::uint32_t> Retired;
@@ -64,8 +65,6 @@ struct PreparedCommit
 struct AsyncExecutionOptions
 {
     bool GameplayWorker=false;
-    bool ReducedWork=false;
-    bool IncrementalDelivery=false;
     std::shared_ptr<IGameplayTaskExecutor> GameplayExecutor;
 };
 
@@ -116,6 +115,12 @@ public:
     void Stop();
     bool Configure(const RuntimeManifest&,std::string& Error);
     void SetMembers(std::map<Id,Member>);
+    void SetResourceGroups(std::map<Id,ResourceGroupState>);
+    const std::map<Id,ResourceGroupState>& ResourceGroups() const;
+    bool StampObjectPublication(Envelope&) const;
+    bool HasResourceRecovery() const;
+    bool IsCurrentResourceResult(const CommitResult&) const;
+    Id ContinuationEvent(const ObjectRecord&) const;
     bool Install(ObjectRecord,bool Commit);
     bool InstallGrant(const Authority&,std::uint32_t Ordinal=0);
     bool CanReceivePeer(std::size_t BodyBytes) const;
@@ -179,6 +184,7 @@ public:
     const std::vector<ReceiveRejection>& RecentReceiveRejections() const;
     const std::map<std::string,std::uint64_t>& HandoffDiagnostics() const;
     const std::map<std::string,std::uint64_t>& HandoffMeasurements() const;
+    const std::map<Id,ResourceSnapshotStatus>& ResourceSnapshotStatuses() const;
     std::uint64_t DuplicateResults() const;
     std::size_t ExecutedCommandCount() const;
     std::size_t ExecutedCommandCount(ObjectKind) const;

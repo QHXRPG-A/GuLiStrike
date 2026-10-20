@@ -17,6 +17,7 @@
 #include "Network/Private/GuLiHybridEntityState.h"
 #include "Network/Private/GuLiHybridObjectConversions.h"
 #include "Network/GuLiHybridManifest.h"
+#include "Network/GuLiHybridActorComponent.h"
 #include "GuLiNetRelocation.h"
 #include "HAL/IConsoleManager.h"
 
@@ -66,7 +67,16 @@ bool FGuLiTeleportPawnIdentityCameraTest::RunTest(const FString& Parameters)
 	if (!TestNotNull(TEXT("Generic control"),Control)||!TestNotNull(TEXT("Versioned movement"),Movement)||!TestNotNull(TEXT("Blue translucent material"),Blue)||!Mesh) return false;
 	const auto* OriginalMaterial=Mesh->GetMaterial(0); const FGuid Token=FGuid::NewGuid();
 	const FTransform Source=Pawn->GetActorTransform();
-	TestTrue(TEXT("Capture commits"),Control->ApplyOwnedState(Token,true,true,Source,true,Blue));
+	TestFalse(TEXT("An isolated Pawn cannot submit authority-only control"),Control->ApplyOwnedState(Token,true,true,Source,true,Blue));
+    // This isolated test covers committed-state presentation. Authority admission
+    // and the relocation transaction are exercised by the multiplayer review.
+    if (!UGuLiHybridActorComponent::Find(Pawn))
+    {
+        auto* Identity=NewObject<UGuLiHybridActorComponent>(Pawn);Pawn->AddInstanceComponent(Identity);Identity->RegisterComponent();
+    }
+    FGuLiExternalUnitControlState Applied;Applied.OwnerToken=Token;Applied.bPhased=true;Applied.bActionsLocked=true;
+    Applied.Baseline=Source;Applied.DisplacementRevision=1;Applied.Revision=1;Applied.PhaseMaterial=Blue;
+    Applied.RestoreMovementMode=Movement->MovementMode;Control->ApplyHybridState(Applied);
 	TestFalse(TEXT("Phased pawn remains visible"),Pawn->IsHidden());
 	TestTrue(TEXT("Phased body uses blue material"),Mesh->GetMaterial(0)==Blue);
 	TestFalse(TEXT("Phased body has no collision"),Pawn->GetActorEnableCollision());
@@ -74,14 +84,15 @@ bool FGuLiTeleportPawnIdentityCameraTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Camera still follows the same Pawn"),PC->GetViewTarget()==Pawn && PC->GetPawn()==Pawn);
 	TestFalse(TEXT("Another field cannot take a locked participant"),Control->ApplyOwnedState(FGuid::NewGuid(),true,true,Source,true,Blue));
 	const FTransform Target(FRotator(0,70,0),FVector(40000,10000,100));
-	TestTrue(TEXT("Landing commits"),Control->ApplyOwnedState(Token,false,true,Target,true));
+    Applied.bPhased=false;Applied.Baseline=Target;++Applied.DisplacementRevision;++Applied.Revision;Control->ApplyHybridState(Applied);
 	TestTrue(TEXT("Original Pawn moved in place"),Pawn->GetActorTransform().Equals(Target));
 	TestTrue(TEXT("Original material is restored"),Mesh->GetMaterial(0)==OriginalMaterial);
+	TestTrue(TEXT("Landing restores the original Pawn collision"),Pawn->GetActorEnableCollision());
 	TestTrue(TEXT("Recovery allows incoming damage"),Pawn->CanBeDamaged());
 	TestTrue(TEXT("Recovery keeps actions locked"),Control->AreActionsLocked());
 	TestTrue(TEXT("Camera retains its target and look rotation"),PC->GetViewTarget()==Pawn && PC->GetControlRotation().Equals(FRotator(-20,35,0)));
 	TestEqual(TEXT("Capture and landing each invalidate prior movement"),Movement->GetDisplacementRevision(),2u);
-	TestTrue(TEXT("Recovery release succeeds"),Control->ApplyOwnedState(Token,false,false,Target,false));
+    Applied.bActionsLocked=false;++Applied.Revision;Control->ApplyHybridState(Applied);
 	TestFalse(TEXT("Action lock removed"),Control->AreActionsLocked());
 	TestEqual(TEXT("Recovery release does not reset displacement history"),Movement->GetDisplacementRevision(),2u);
 	return true;
@@ -93,17 +104,14 @@ bool FGuLiTeleportPeriodicEligibilityTest::RunTest(const FString&)
     auto* Option=IConsoleManager::Get().FindConsoleVariable(TEXT("gs.Perf.HotspotMask"));
     if (!TestNotNull(TEXT("Development options"),Option)) return false;
     const int32 Previous=Option->GetInt();
-    ON_SCOPE_EXIT {Option->Set(Previous,ECVF_SetByCode);};
-    for (const int32 Mask:{31,95})
+    ON_SCOPE_EXIT {Option->SetWithCurrentPriority(Previous);};
+    for (const int32 Mask:{0,31})
     {
-        Option->Set(Mask,ECVF_SetByCode);
+        Option->SetWithCurrentPriority(Mask);
         auto* World=UWorld::CreateWorld(EWorldType::Game,false);
         if (!TestNotNull(TEXT("Isolated capability world"),World)) return false;
         GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
         ON_SCOPE_EXIT {World->DestroyWorld(false);GEngine->DestroyWorldContext(World);};
-        const bool Reduced=(Mask&64)!=0;
-        if (!TestEqual(TEXT("Per-world eligibility option is latched"),
-            World->GetSubsystem<UGuLiHotspotOptions>()->Has(EGuLiHotspot::ReducedWork),Reduced)) return false;
 
         FGuLiHybridObjectState Object;
         Object.Key.Kind=EGuLiHybridObjectKind::Soldier;Object.Key.StableId=FGuid::NewGuid();
@@ -122,7 +130,7 @@ bool FGuLiTeleportPeriodicEligibilityTest::RunTest(const FString&)
             FGuLiHybridEntityState::Bind(Manifest,Object.Definition.ToString(),TEXT("RelocationBody"),Error))) return false;
         FGuLiHybridEntityState Entity;
         if (!TestTrue(TEXT("Production body is prepared"),Entity.Prepare(*World,Object,Manifest))) return false;
-        TestEqual(TEXT("Only the reduced path sleeps an idle body"),Entity.HasPeriodicWork(),!Reduced);
+        TestFalse(TEXT("Idle body sleeps independently of remaining diagnostic options"),Entity.HasPeriodicWork());
         TArray<uint8> IdleSnapshot;
         TestTrue(TEXT("Idle private state remains capturable"),Entity.Capture(IdleSnapshot));
 
@@ -136,7 +144,7 @@ bool FGuLiTeleportPeriodicEligibilityTest::RunTest(const FString&)
         TestTrue(TEXT("An older private snapshot cannot sleep an outstanding public step"),Entity.HasPeriodicWork());
 
         Body.Acknowledged=Body.Step;Body.AppliedAt=100;SetBody();Entity.ApplyLedger(Object);
-        TestEqual(TEXT("Acknowledged work can sleep again"),Entity.HasPeriodicWork(),!Reduced);
+        TestFalse(TEXT("Acknowledged work can sleep again"),Entity.HasPeriodicWork());
         TestFalse(TEXT("The acknowledged application tick remains protected"),Entity.AcceptMotion(100));
         TestTrue(TEXT("Newer motion is accepted after acknowledgement"),Entity.AcceptMotion(101));
         ++Body.Step;SetBody();Entity.ApplyLedger(Object);
@@ -146,7 +154,7 @@ bool FGuLiTeleportPeriodicEligibilityTest::RunTest(const FString&)
 
         ++Object.Key.LifeGeneration;Body={};SetBody();
         TestTrue(TEXT("A reused identity prepares a new body"),Entity.Prepare(*World,Object,Manifest));
-        TestEqual(TEXT("Old pending work does not leak into the new life"),Entity.HasPeriodicWork(),!Reduced);
+        TestFalse(TEXT("Old pending work does not leak into the new life"),Entity.HasPeriodicWork());
         Entity.Reset();
         TestFalse(TEXT("Released capabilities leave no periodic work"),Entity.HasPeriodicWork());
     }

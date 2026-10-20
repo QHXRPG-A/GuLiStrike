@@ -124,31 +124,70 @@ def run_selection(session):
     session.finish()
 
 
+def run_ui_selection_handoff(session):
+    """The visible command cohort must survive its actual ownership takeover."""
+    session.begin('commander-ui-cohort-through-handoff')
+    commander=entry(session,'Red','Commander')
+    try:
+        loads(session,{'Commander':5.,'Ground':.1,'Air':.1})
+        select(session,commander,set())
+        def remote():
+            return sorted((o for o in objects(session,True) if o['kind']==1 and o['team']==1 and o['life']==1
+                and identity(o['simulator'])!=commander['player']),key=lambda o:o['ordinal'])
+        session.wait('remote-live-cohort',lambda:bool(remote()))
+        chosen=remote()[:12];keys={identity(o['id']) for o in chosen};ordinals={o['ordinal'] for o in chosen}
+        before={k:copy.deepcopy(directory(session)[k]) for k in keys}
+        action,receipt=input_and_wait(session,'selection_objects',commander['player'],
+            objects=[o['id'] for o in chosen],command_selection=True)
+        missing=[]
+        def installed():
+            if not same_owners(session,keys,commander['player']) or not session.settled(): return False
+            shown=set(session.states[commander['name']]['scene_ui']['selected_soldiers'])
+            if not ordinals.issubset(shown):
+                missing.append(session.states[commander['name']]['snapshot_finished_qpc'])
+                if len(set(missing))>=2:
+                    raise RuntimeError('A live selected command cohort was removed from the UI during ownership takeover')
+                return False
+            replicas=[[o for e in session.clients for o in session.states[e['name']]['scene_objects']
+                if identity(o['id'])==key] for key in keys]
+            return all(len(values)==len(session.clients) and sum(o['local_simulation'] for o in values)==1
+                and all(o['life']==1 and o['entity'] for o in values) for values in replicas)
+        session.wait('owned-and-visibly-selected',installed,timeout=60)
+        session.write_json(session.stage_output/'ui-handoff-contract.json',{'before':before,'selected_ordinals':sorted(ordinals),
+            'transfers':history(session,keys),'selection_input':action})
+        prove(session,'commander_ui_selection_handoff',installed(),
+            'The same command cohort remains visibly selected after real takeover, with one simulator per live identity',
+            receipt,'owned-and-visibly-selected.json','ui-handoff-contract.json')
+    finally:
+        loads(session,{'Commander':-1.,'Ground':-1.,'Air':-1.})
+    session.finish()
+
+
 def run_handoff_faults(session):
-    from integrated_faults import arm, release, fault
-    from integrated_commander import buildings, teleport_and_cards
-    import json
-    from pathlib import Path
-    manifest=json.loads(Path(session.plan['manifest']).read_text(encoding='utf-8-sig'))
-    if manifest.get('strings',{}).get('acceptance/preparation')=='gf-fast-spatial-v2':
-        from integrated_commander import construct, prepare_population, fund, production
-        from population_combat_preparation import prepare_mining
-        admitted={}
-        for definition in (4,101,102):
-            with session.preparation('resource handoff host '+str(definition)):
-                construct(session,definition,(0,0),admitted)
-        if not all(any(o['parent']==admitted[d] and o['life']==1 and o['entity']
-                       for o in objects(session,True)) for d in (4,101)):
-            prepare_population(session,8)
-        fund(session,{'blue':128,'red':128})
-        with session.preparation('resource handoff real production births'):
-            production(session,admitted)
-        prepare_mining(session)
-        resource_work_handoff(session,admitted)
-        return
-    # Real authored production and capability work supplies entities to transfer.
-    admitted=buildings(session)
-    teleport_and_cards(session)
+    from integrated_commander import construct, production, production_fixture, prepare_construction_site, prepare_population
+    from population_combat_preparation import prepare_mining
+    # The default 600-unit fixture must prepare the same real business hosts
+    # as the fast spatial profile. Missing prerequisites are never a pass.
+    # Do not rerun unrelated unfunded-placement or modal-card assertions in a
+    # room that has already accumulated resources and other business history.
+    session.population_preparation_only=True
+    admitted={}
+    # Reuse authored completed hosts and stop unrelated factories from eating
+    # prepared population. Re-enable ordinary production before the exit test.
+    with production_fixture(session,[]):
+        prepare_construction_site(session)
+        import json
+        from pathlib import Path
+        manifest=json.loads(Path(session.plan['manifest']).read_text(encoding='utf-8-sig'))
+        batch=sum(int(float(manifest['numbers'][f'building/{definition}/ProductionCount'])) for definition in (4,101))
+        prepare_population(session,batch,target_limit=64)
+        for definition,offset in ((4,(0,1200)),(101,(0,-1200)),(102,(3600,-2400))):
+            hosts=[o for o in objects(session,True) if o['definition']==f'building/{definition}'
+                   and o['team']==1 and o['life']==1 and o['entity'] and o['completed']]
+            if hosts: admitted[definition]=min(hosts,key=lambda o:o['ordinal'])['id']
+            else: construct(session,definition,offset,admitted)
+        production(session,admitted)
+    prepare_mining(session)
     resource_work_handoff(session, admitted)
 
 
@@ -232,22 +271,23 @@ def resource_work_handoff(session, admitted):
         def pending():
             events={identity(v['event']) for v in fault(session,owner).get('messages',[])}
             return any(identity(o.get('inventory',{}).get('pending','0')) in events for o in objects(session,True))
-        if manifest.get('strings',{}).get('acceptance/preparation')=='gf-fast-spatial-v2':
-            from integrated_commander import deliver_inventory
-            host=next(o for o in objects(session,True) if o['id']==admitted[102] and o['life']==1
-                and o['completed'] and o.get('inventory',{}).get('processing'))
-            # Cargo extraction, positioning and actual delivery each retain
-            # their existing short preparation scopes. They must not consume
-            # the separate budget for observing the held processing receipt.
-            deliver_inventory(session,host,wait_for_processing=False)
+        from integrated_commander import deliver_inventory
+        host=next(o for o in objects(session,True) if o['id']==admitted[102] and o['life']==1
+            and o['completed'] and o.get('inventory',{}).get('processing'))
+        # Both profiles retain real extraction and public delivery. The
+        # position fixture only removes the unrelated long approach.
+        deliver_inventory(session,host,wait_for_processing=False)
         with session.preparation('Actual pending processing work for handoff'):
             session.wait('original-processing-pending',pending)
         events={identity(v['event']) for v in fault(session,owner)['messages']}
         sources={identity(o['id']):copy.deepcopy(o) for o in objects(session,True)
                  if identity(o.get('inventory',{}).get('pending','0')) in events}
         prior={event:copy.deepcopy(session.decisions[event]) for event in events if event in session.decisions}
+        carried=deliver_inventory(session,host,prepare_only=True)
+        cargo={color:carried['inventory'][color] for color in ('blue','red')}
         session.write_json(session.stage_output/'pending-work-before-departure.json',{'owner':owner['player'],
-            'events':sorted(events),'sources':sources,'decisions':prior,'group':before,'newborns':newborns})
+            'events':sorted(events),'sources':sources,'decisions':prior,'group':before,'newborns':newborns,
+            'carried_cargo':carried})
         # Production shutdown exports the committed numeric/private group. The
         # former process's held local notification cannot stand in for import.
         old_pid=leave(session,owner);held=None;departed=True
@@ -263,31 +303,76 @@ def resource_work_handoff(session, admitted):
                 grants.add((identity(numeric['simulation_owner']),numeric['group_version'],identity(numeric['ownership_group'])))
             return bool(active) and len(grants)==1 and next(iter(grants))[0]!=owner['player'] and session.settled()
         session.wait('whole-group-imported',installed)
-        def replayed():
+        def resumed():
             active={identity(o['id']):o for o in objects(session,True)}
-            return all(event in session.decisions for event in events) and all(
+            return all(
                 key in active and identity(active[key].get('inventory',{}).get('pending','0')) not in events for key in sources)
-        session.wait('original-work-replayed',replayed)
+        session.wait('snapshot-work-resumed',resumed)
+        quit_receipt=json.loads((session.stage_output/('exit-receipt-'+owner['name']+'.json')).read_text(encoding='utf-8-sig'))
+        final_audit=quit_receipt.get('final_network_evidence',{})
+        interrupted=final_audit.get('local_submission_rejections',[])
+        for event in events:
+            if sum(identity(v['event'])==event and v['status']==14 for v in interrupted)!=1:
+                raise RuntimeError('The held old resource request lacks exactly one connection-interrupted notification: '+event)
         active={identity(o['id']):o for o in objects(session,True)}
+        transported=active.get(identity(carried['id']))
+        if not transported or transported['generation']!=carried['generation'] or transported['ordinal']!=carried['ordinal'] \
+                or any(transported['inventory'][color]!=cargo[color] for color in cargo):
+            raise RuntimeError('A stopped loaded miner lost its stable life or original cargo during handoff')
+        new_owner=next(e for e in session.clients if e['player']==identity(transported['simulator']))
+        delivery,delivery_input=input_and_wait(session,'inventory_delivery',new_owner['player'],source=carried['id'],target=host['id'])
+        if not delivery['result'].get('committed'): raise RuntimeError('The imported loaded miner could not continue its public delivery')
+        delivery_event=identity(delivery['request'])
+        session.wait('imported-cargo-delivered',lambda:delivery_event in session.decisions
+            and session.decisions[delivery_event]['kind']==10 and session.decisions[delivery_event]['status']==0
+            and identity(session.decisions[delivery_event]['target'])==identity(host['id'])
+            and identity(session.decisions[delivery_event].get('work_source','0'))==identity(carried['id'])
+            and session.observed_by_active(delivery_event))
+        session.write_json(session.stage_output/'carried-cargo-handoff-contract.json',{'before':carried,'imported':transported,
+            'delivery_input':delivery_input,'decision':session.decisions[delivery_event]})
         moved={k for k in before if k in active and identity(active[k]['simulator'])!=owner['player']}
-        transfers=[t for t in history(session,moved) if t['owner_version']>before[identity(t['object'])]['owner_version']]
-        imported={identity(t['object']):t for t in transfers if t['frozen_state']==t['installed_state'] and int(t['installed_state'])}
+        snapshots={name:state.get('resource_snapshots',[]) for name,state in session.states.items() if name!='server'}
+        snapshots[owner['name']]=final_audit.get('resource_snapshots',[])
+        installed=[]
+        for name,groups in snapshots.items():
+            cuts=[g for g in groups if int(g.get('installed_recovery',0)) and len(g.get('digest',''))==64]
+            if len(cuts)!=1: raise RuntimeError(name+': missing unique, complete resource snapshot installation evidence')
+            installed.append(cuts[0])
+        identities={(g['group'],g['installed_recovery'],g['snapshot'],g['snapshot_epoch'],g['sample'],g['digest']) for g in installed}
+        if len(identities)!=1: raise RuntimeError('Clients did not install the identical complete resource snapshot')
+        imported=[{identity(o['id']):o for o in g['installed_objects']} for g in installed]
         capability_keys={k for k in moved if before[k].get('capabilities')}
-        valid=bool(capability_keys) and capability_keys.issubset(imported) and all(
-            set(before[k]['capabilities']).issubset(imported[k].get('capabilities',[])) for k in capability_keys)
+        valid=bool(capability_keys) and all(capability_keys.issubset(part) for part in imported) and all(
+            set(before[k]['capabilities']).issubset(active[k].get('capabilities',[])) for k in capability_keys)
         if any(session.decisions[event]['decision_hash']!=d['decision_hash'] for event,d in prior.items()):
             raise RuntimeError('Handoff changed the original work decision')
         session.write_json(session.stage_output/'resource-group-import-contract.json',{'old_pid':old_pid,
-            'original_events':sorted(events),'decisions':{e:session.decisions[e] for e in events},'imports':list(imported.values()),
+            'original_events':sorted(events),'decisions':{e:session.decisions[e] for e in events if e in session.decisions},
+            'interrupted_notifications':[v for v in interrupted if identity(v['event']) in events],
+            'snapshots':snapshots,
             'moved':sorted(moved),'capability_hosts':sorted(capability_keys),'newborns':newborns})
         evidence=[session.stage_output/p for p in ('pending-work-before-departure.json','whole-group-imported.json',
-                 'original-work-replayed.json','resource-group-import-contract.json')]
-        session.prove('pending_work_handoff',valid and bool(sources),'Original pending processing event resolved after whole resource-group private import, retaining its immutable decision',evidence)
-        session.prove('capability_handoff',valid,'Every resource capability host in the migrated group has a validated matching frozen/imported private-state digest',evidence)
+                 'snapshot-work-resumed.json','resource-group-import-contract.json')]
+        session.prove('pending_work_handoff',valid and bool(sources),'Every held old processing request was interrupted once; current snapshot tasks resumed without replaying the old request',evidence)
+        session.prove('capability_handoff',valid,'Every resource capability host belongs to the identical complete snapshot installed on every client',evidence)
         session.prove('newborn_handoff',valid and all(k in moved and active[k]['generation']==v['generation'] for k,v in newborns.items()),
                       'Real producer newborns migrated with their resource group and retained their stable life identity',evidence)
+        session.prove('carried_cargo_handoff',valid and bool(sum(cargo.values())),
+            'A real loaded miner retained its exact cargo and stable life through group import, then delivered it at the new simulator',
+            evidence+[session.stage_output/p for p in ('carried-cargo-before-handoff.json','imported-cargo-delivered.json','carried-cargo-handoff-contract.json')])
     finally:
-        if held: release(session,owner,held)
+        if held:
+            # Preserve the membership/contract failure if the original process
+            # exits while the fault cleanup is being requested.
+            import sys,traceback
+            original=sys.exc_info()[1]
+            try:
+                release(session,owner,held)
+            except RuntimeError as cleanup_error:
+                session.write_json(session.stage_output/'handoff-fault-cleanup-failure.json',{
+                    'failure':str(cleanup_error),'original_failure':str(original) if original else None,
+                    'traceback':traceback.format_exc()})
+                if original is None: raise
         if departed:
             # A failed assertion must not leave five clients behind and let
             # unrelated UI phases accidentally continue with a missing seat.

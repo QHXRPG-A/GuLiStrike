@@ -14,9 +14,210 @@
 #include "Misc/AutomationTest.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "UObject/CoreNet.h"
+#include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
+#include "Gameplay/Skills/GuLiHybridArmy.h"
+#include "Network/Private/GuLiHybridObjectConversions.h"
+#include "GuLiNetArmy.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
+#include "Network/GuLiHybridManifest.h"
+#include "HAL/IConsoleManager.h"
+#include <algorithm>
+
+struct FGuLiCombatEffectRuntimeTestAccess
+{
+	static bool ResolveField(UGuLiCombatEffectRuntimeSubsystem& Runtime, UGuLiSpellFieldDefinition* Definition,
+		const FGuLiCombatEffectContext& Input, FGuLiSpellFieldConfig& Config, FGuLiCombatEffectContext& Output)
+	{ return Runtime.ResolveFieldConfig(Definition, Input, Config, Output); }
+};
 
 namespace GuLiCombatEffectTests
 {
+	class FWaitForHybridField final : public IAutomationLatentCommand
+	{
+	public:
+		FWaitForHybridField(FAutomationTestBase& InTest, UGuLiHybridWorldSubsystem& InHybrid,
+			UGuLiDamageLedgerSubsystem& InLedger, const FGuLiHybridObjectState& InTarget,
+			FGuLiTargetHandle InHandle, FGuid Effect, float InDamage)
+			: Test(InTest), Hybrid(&InHybrid), Ledger(&InLedger), Target(InTarget), Handle(InHandle), Damage(InDamage)
+		{
+			// This is the public stable identity of pulse zero for this exact life.
+			Event = FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/EffectEvents"), EGuLiHybridObjectKind::Field,
+				Effect.ToString(EGuidFormats::Digits) + TEXT("/1/hit/0/")
+				+ Target.Key.StableId.ToString(EGuidFormats::Digits) + TEXT("/") + LexToString(Target.Key.LifeGeneration)).StableId;
+		}
+		virtual bool Update() override
+		{
+			if (!Hybrid.IsValid() || !Ledger.IsValid() || !Hybrid->IsWorldReady() || Hybrid->IsBattlePaused())
+			{ Test.AddError(TEXT("Hybrid field fixture lost its ready authoritative world")); return true; }
+			FGuLiDamageCommitResult Result;
+			if (Hybrid->FindDamageResult(Event, Result))
+			{
+				FGuLiHybridObjectState Applied; FGuLiCombatTargetSnapshot Presented;
+				if (!Test.TestTrue(TEXT("real field damage has a committed final receipt"),
+					Result.Status == EGuLiDamageCommitStatus::Committed || Result.Status == EGuLiDamageCommitStatus::Duplicate)
+					|| !Test.TestTrue(TEXT("receipt sees the applied Hybrid target"), Hybrid->GetObjectView(Target.Key, Applied))
+					|| !Test.TestTrue(TEXT("receipt sees the applied gameplay target"), Ledger->TryGetTargetSnapshot(Handle, Presented))) return true;
+				const float Remaining = Target.Health.Health - Damage;
+				if (!Test.TestEqual(TEXT("field commits exactly the authoritative skill damage"), Result.AppliedDamage, Damage)
+					|| !Test.TestEqual(TEXT("final receipt carries exact remaining health"), Result.RemainingHealth, Remaining)
+					|| !Test.TestEqual(TEXT("Hybrid state is applied before receipt delivery"), Applied.Health.Health, Remaining)
+					|| !Test.TestEqual(TEXT("gameplay query observes the actual damage"), Presented.Health, Remaining)
+					|| !Test.TestEqual(TEXT("instant field changes health exactly once"), Applied.Health.Revision, Target.Health.Revision + 1)) return true;
+				if (CommittedAt == 0) { CommittedAt = FPlatformTime::Seconds(); CommitOrdinal = Result.CommitOrdinal; }
+				if (!Test.TestEqual(TEXT("repeated delivery preserves the final decision"), Result.CommitOrdinal, CommitOrdinal)) return true;
+				return FPlatformTime::Seconds() - CommittedAt >= 2;
+			}
+			if (FPlatformTime::Seconds() - Started > 15)
+			{ Test.AddError(TEXT("Real Hybrid field creation did not produce its required damage receipt within 15 seconds")); return true; }
+			return false;
+		}
+	private:
+		FAutomationTestBase& Test;
+		TWeakObjectPtr<UGuLiHybridWorldSubsystem> Hybrid;
+		TWeakObjectPtr<UGuLiDamageLedgerSubsystem> Ledger;
+		FGuLiHybridObjectState Target;
+		FGuLiTargetHandle Handle;
+		FGuid Event;
+		float Damage;
+		double Started = FPlatformTime::Seconds(), CommittedAt = 0;
+		uint64 CommitOrdinal = 0;
+	};
+
+	bool StartHybridFieldCheck(FAutomationTestBase& Test)
+	{
+		for (const FWorldContext& Context : GEngine->GetWorldContexts())
+		{
+			UWorld* World = Context.World();
+			if (!World || !World->IsGameWorld()) continue;
+			auto* Hybrid = World->GetSubsystem<UGuLiHybridWorldSubsystem>();
+			auto* Army = World->GetSubsystem<UGuLiArmySkillSubsystem>();
+			auto* Ledger = World->GetSubsystem<UGuLiDamageLedgerSubsystem>();
+			auto* Runtime = World->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();
+			if (!Hybrid || !Hybrid->IsWorldReady() || Hybrid->IsBattlePaused() || !Army || !Ledger || !Runtime) continue;
+			TArray<FGuLiHybridObjectState> Objects; Hybrid->GetObjects(Objects);
+			for (const auto& Source : Objects)
+			{
+				if (Source.Definition != TEXT("unit/2") || Source.LifeState != 1 || !Hybrid->HasSimulation(Source.Key)) continue;
+				const auto* Profile = Army->FindResolvedSkill(Source.Team, 2, TEXT("MissileLauncher"));
+				if (!Profile || !Profile->bUnlocked || !Profile->bEquipped || Profile->SkillId != TEXT("WM01_HomingMissile") || Profile->Damage <= 0) continue;
+				FGuLiTargetHandle SourceHandle;
+				if (!Hybrid->ResolveObjectTarget(Source.Key, SourceHandle)) continue;
+				for (const auto& Target : Objects)
+				{
+					if (Target.Definition != TEXT("unit/1") || Target.LifeState != 1 || Target.Team == Source.Team
+						|| Target.Health.Shield != 0 || Target.Health.Health <= Profile->Damage || Target.bPhased) continue;
+					FGuLiTargetHandle TargetHandle; FGuLiCombatTargetSnapshot Snapshot;
+					if (!Hybrid->ResolveObjectTarget(Target.Key, TargetHandle) || !Ledger->TryGetTargetSnapshot(TargetHandle, Snapshot)
+						|| !Snapshot.bAlive || Snapshot.Health != Target.Health.Health) continue;
+					// Use a quiet target in the fresh room so unrelated combat cannot
+					// masquerade as the field's one required committed hit.
+					if (Objects.ContainsByPredicate([&](const auto& O) { return O.LifeState == 1 && O.Team == Source.Team
+						&& O.Key.Kind == EGuLiHybridObjectKind::Soldier && FVector::DistSquared(O.Location, Snapshot.Location) < FMath::Square(6000.f); })) continue;
+					auto* Visual = LoadObject<UGuLiSpellFieldDefinition>(nullptr,
+						TEXT("/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_MissileExplosion.DA_WM01_MissileExplosion"));
+					if (!Test.TestNotNull(TEXT("replicable production field asset"), Visual)) return false;
+					FGuLiCombatEffectContext Input; Input.Source = SourceHandle; Input.Target = TargetHandle;
+					Input.MatchEpoch = Ledger->GetMatchEpoch(); Input.SkillId = Profile->SkillId;
+					Input.WeaponBinding = FGuLiWeaponBindingKey::Army(Input.MatchEpoch, Source.Team, 2, TEXT("MissileLauncher"));
+					Input.ProfileRevision = Profile->Revision; Input.LoadoutRevision = Army->GetLoadoutRevision();
+					Input.EffectConfigId = TEXT("WM01_MissileExplosion"); Input.Damage = Profile->Damage;
+					const FGuid Effect = Runtime->CreateSpellField(Visual, Input, Snapshot.Location);
+					if (!Test.TestTrue(TEXT("Authority-resolved global field launches through the shared runtime"), Effect.IsValid())) return false;
+					Test.AddInfo(FString::Printf(TEXT("Hybrid field source=%s target=%s effect=%s damage=%.3f initial_health=%.3f"),
+						*Source.Key.StableId.ToString(), *Target.Key.StableId.ToString(), *Effect.ToString(), Profile->Damage, Target.Health.Health));
+					FAutomationTestFramework::Get().EnqueueLatentCommand(MakeShared<FWaitForHybridField>(Test, *Hybrid, *Ledger, Target, TargetHandle, Effect, Profile->Damage));
+					return true;
+				}
+			}
+		}
+		Test.AddError(TEXT("Prerequisite missing: run SpellFieldTableConfig in a fresh ready Hybrid room with a locally simulated WM01 missile source and a quiet enemy unit/1. An isolated target registry is not simulation authority."));
+		return false;
+	}
+
+	class FPrepareHybridField final : public IAutomationLatentCommand
+	{
+	public:
+		explicit FPrepareHybridField(FAutomationTestBase& InTest) : Test(InTest) {}
+		virtual bool Update() override
+		{
+			if (!Started)
+			{
+				// Editor automation tears down a pre-existing PIE before RunTest.
+				// Start this test's owned room only after that framework boundary.
+				Started=FPlatformTime::Seconds();
+				if (!IConsoleManager::Get().ProcessUserConsoleInput(TEXT("gs.Commander.QA.StartPIE standalone 2359 1748"),*GLog,nullptr))
+				{Test.AddError(TEXT("Hybrid field PIE preparation command is unavailable"));return true;}
+				return false;
+			}
+			for (const auto& Context:GEngine->GetWorldContexts())
+			{
+				auto* World=Context.World();if (!World || !World->IsGameWorld()) continue;
+				auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
+				if (!Hybrid || !Hybrid->IsWorldReady() || Hybrid->IsBattlePaused()) continue;
+				TArray<FGuLiHybridObjectState> Objects;Hybrid->GetObjects(Objects);
+				int32 Local=0,Remote=0;
+				for (const auto& O:Objects) if (O.Key.Kind==EGuLiHybridObjectKind::Soldier && O.LifeState==1)
+				{if (Hybrid->HasSimulation(O.Key)) ++Local;else ++Remote;}
+				if (Local<300 || Remote<300) continue;
+				const int32 Weapon=PrepareWeapon(*World,*Hybrid);
+				if (Weapon<0) return true;
+				if (!Weapon) continue;
+				Test.AddInfo(FString::Printf(TEXT("Real Hybrid field room ready: local=%d remote=%d"),Local,Remote));
+				StartHybridFieldCheck(Test);return true;
+			}
+			if (FPlatformTime::Seconds()-Started>90)
+			{Test.AddError(TEXT("Hybrid field owned room did not become ready within 90 seconds"));return true;}
+			return false;
+		}
+	private:
+		FAutomationTestBase& Test;
+		double Started=0;
+		FGuid PreparationRequest;
+		int32 PreparationRequests=0;
+		int32 PrepareWeapon(UWorld& World,UGuLiHybridWorldSubsystem& Hybrid)
+		{
+			if (PreparationRequest.IsValid())
+			{
+				FGuLiHybridTransactionResult Receipt;
+				if (!Hybrid.FindTransactionResult(PreparationRequest,Receipt)) return 0;
+				if (!Receipt.IsCommitted())
+				{Test.AddError(TEXT("Field weapon preparation was rejected by the real army authority"));return -1;}
+				PreparationRequest.Invalidate();
+			}
+			FGuLiHybridObjectState Root;GuLiNet::Army::State State;
+			if (!GuLiHybridArmy::FindRoot(World,EGuLiTeam::Red,Root) || !Hybrid.HasControl(Root.Key)) return 0;
+			const auto* Capability=Root.Capabilities.Find(TEXT("army_state"));
+			if (!Capability || !GuLiNet::Army::DecodeState({Capability->Data.GetData(),SIZE_T(Capability->Data.Num())},State)) return 0;
+			const auto* Army=World.GetSubsystem<UGuLiArmySkillSubsystem>();
+			const auto* Profile=Army?Army->FindResolvedSkill(EGuLiTeam::Red,2,TEXT("MissileLauncher")):nullptr;
+			const bool Unlocked=Profile && Profile->bUnlocked && Profile->bEquipped;
+			if (Unlocked && State.Current.PresentationClosed) return 1;
+			if (++PreparationRequests>16)
+			{Test.AddError(TEXT("Field weapon preparation exceeded its bounded native request budget"));return -1;}
+			EGuLiHybridArmyOperation Operation;FString Choice;
+			if (Unlocked) Operation=EGuLiHybridArmyOperation::ClosePresentation;
+			else
+			{
+				for (const auto& Id:State.Current.Candidates)
+				{
+					const auto Card=State.Definitions.Cards.find(Id);if (Card==State.Definitions.Cards.end()) continue;
+					for (const auto& Unlock:Card->second.Effect.Unlocks)
+						if (Unlock.SlotName=="missilelauncher" && std::find(Unlock.Units.begin(),Unlock.Units.end(),2)!=Unlock.Units.end())
+						{Choice=UTF8_TO_TCHAR(Id.c_str());break;}
+					if (!Choice.IsEmpty()) break;
+				}
+				Operation=!Choice.IsEmpty()?EGuLiHybridArmyOperation::Choose:
+					!State.Current.Session.Valid() || State.Current.Finished?EGuLiHybridArmyOperation::Offer:EGuLiHybridArmyOperation::Reroll;
+			}
+			// Native fixture preparation bypasses player animations and waiting,
+			// while the unchanged owner validates and commits the real unlock.
+			PreparationRequest=GuLiHybridArmy::Request(World,EGuLiTeam::Red,Operation,FGuid::NewGuid(),
+				GuLiNetBridge::ToUE(State.Current.Session),Choice);
+			if (!PreparationRequest.IsValid()) {Test.AddError(TEXT("Field weapon preparation could not submit its native input"));return -1;}
+			return 0;
+		}
+	};
+
 	struct FTarget { FGuLiCombatTargetSnapshot Snapshot; };
 	struct FFixture
 	{
@@ -165,9 +366,16 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 	auto ResolvedContext = F.Context(Source, &Target);
 	ResolvedContext.EffectConfigId = Field->ConfigId;
 	ResolvedContext.Damage = 45.0f;
-	TestTrue(TEXT("Authority-resolved global field launches through the shared runtime"),
+	FGuLiSpellFieldConfig ResolvedField; FGuLiCombatEffectContext Output;
+	if (!TestTrue(TEXT("explicit table field resolves the caller's modified payload"),
+		FGuLiCombatEffectRuntimeTestAccess::ResolveField(*F.Runtime, Visual, ResolvedContext, ResolvedField, Output))) return false;
+	TestEqual(TEXT("Shared runtime preserves skill-modified damage with an explicit field id"), Output.Damage, 45.0f);
+	TestFalse(TEXT("an isolated target registry cannot manufacture Hybrid simulation authority"),
 		F.Runtime->CreateSpellField(Visual, ResolvedContext, FVector::ZeroVector).IsValid());
-	TestEqual(TEXT("Shared runtime preserves skill-modified damage with an explicit field id"), Target.Snapshot.Health, 55.0f);
+	TestEqual(TEXT("unauthorized field creation cannot change target health"), Target.Snapshot.Health, 100.0f);
+	// Final damage is frozen by the real army authority, not the caller's float.
+	// Keep creation and exact health/receipt assertions on that normal pipeline.
+	FAutomationTestFramework::Get().EnqueueLatentCommand(MakeShared<GuLiCombatEffectTests::FPrepareHybridField>(*this));
 	return true;
 }
 

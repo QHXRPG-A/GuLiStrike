@@ -35,7 +35,8 @@ const FGuLiHybridComponentCapabilityRegistration InventoryCapability({TEXT("Reso
     [](UActorComponent& Component,uint64,double Delta)
     {CastChecked<UGuLiResourceInventoryComponent>(&Component)->AdvanceLogical(float(Delta));},nullptr,nullptr,nullptr,nullptr,nullptr,
     [](const UActorComponent& C,FGuLiHybridManifestData& M,const FString& D,FString& E)
-    {return CastChecked<UGuLiResourceInventoryComponent>(&C)->ExportDefinition(M,D,E);}});
+    {return CastChecked<UGuLiResourceInventoryComponent>(&C)->ExportDefinition(M,D,E);},nullptr,
+    [](UActorComponent& C,uint64 E){CastChecked<UGuLiResourceInventoryComponent>(&C)->ResetResourceRequests(E);}});
 }
 
 UGuLiResourceInventoryComponent::UGuLiResourceInventoryComponent() {PrimaryComponentTick.bCanEverTick=false;}
@@ -124,7 +125,8 @@ void UGuLiResourceInventoryComponent::ApplyResourceResult(const FGuLiHybridTrans
     const auto Key=GetInventoryKey();if (!Key.IsValid()) return;
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();const bool Pending=R.Event==PendingEvent;
     const auto Fail=[&](const TCHAR* Reason){if (H) H->Suspend(Reason);else ensureMsgf(false,TEXT("%s"),Reason);};
-    if (R.Status==EGuLiHybridTransactionStatus::Deferred || R.Status==EGuLiHybridTransactionStatus::Paused) return;
+    if (R.Status==EGuLiHybridTransactionStatus::Deferred || R.Status==EGuLiHybridTransactionStatus::Paused
+        || R.Status==EGuLiHybridTransactionStatus::Interrupted) return;
     // Receipts from independent workers can arrive in a different order. The
     // committed capability projection already contains their ordered state;
     // never replay FIFO deltas or compare unrelated work-decision versions.
@@ -137,13 +139,12 @@ void UGuLiResourceInventoryComponent::ApplyResourceResult(const FGuLiHybridTrans
         NextProcessingTick=PendingAt+uint64(FMath::CeilToDouble(60./RatePerSecond));
     }
 
-    if (Pending && !R.IsCommitted())
+    if (Pending && !R.IsCommitted() && R.Status!=EGuLiHybridTransactionStatus::Interrupted)
         Fail(TEXT("Admitted processing was finally rejected; retain its inventory for reconciliation instead of resubmitting every tick"));
     if (Pending) PendingEvent.Invalidate();
 }
 void UGuLiResourceInventoryComponent::AdvanceLogical(float Delta)
 {
-    const bool Reduced=UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::ReducedWork);
     RefreshCommittedInventory();
     if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
     {
@@ -153,12 +154,12 @@ void UGuLiResourceInventoryComponent::AdvanceLogical(float Delta)
     }
     // The revision lookup and pending receipt above are the wakeup conditions.
     // Empty/cargo-only inventories have no accumulator or scene work to advance.
-    if (Reduced&&(!bProcessing||Queue.IsEmpty())) return;
+    if (!bProcessing||Queue.IsEmpty()) return;
     auto* Resources=GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();auto* Owner=GetOwner();
     const auto* Life=Owner?Owner->FindComponentByClass<UGuLiBuildingLifecycleComponent>():nullptr;
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();FGuLiHybridObjectState Object;
     const auto Key=GetInventoryKey();
-    const bool CanAdvance=H?H->HasSimulation(Key) && (Reduced?H->GetObjectView(Key,Object):H->GetObject(Key,Object)) && Object.bCompleted
+    const bool CanAdvance=H?H->HasSimulation(Key) && H->GetObjectView(Key,Object) && Object.bCompleted
         :Owner && UGuLiHybridActorComponent::HasSimulation(Owner) && (!Life || Life->IsCompleted());
     if (!Resources || !bProcessing || !CanAdvance || Queue.IsEmpty()) return;
     if (!Queue[0].DeliveryEvent.IsValid())
@@ -198,4 +199,18 @@ bool UGuLiResourceInventoryComponent::RestoreState(const FGuLiHybridResourceInve
     Accumulator=State.Accumulator;Queue=State.Queue;PendingEvent=State.PendingEvent;PendingAt=State.PendingAt;
     NextProcessingTick=State.NextProcessingTick;AppliedRevision=State.AppliedRevision;
     Cargo=State.Cargo;PendingCargo=State.PendingCargo;CargoRevision=State.CargoRevision;return true;
+}
+void UGuLiResourceInventoryComponent::ResetResourceRequests(uint64)
+{
+    FGuLiHybridInventoryView View;
+    if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();H && H->GetCommittedInventory(GetInventoryKey(),View))
+    {
+        if (PendingEvent.IsValid() && View.NextProcessing>PendingAt) Accumulator=FMath::Max(0.f,Accumulator-1.f);
+        NextProcessingTick=View.NextProcessing;
+        // Restoring an older complete snapshot can decrease these versions.
+        CargoRevision=AppliedRevision=0;RefreshCommittedInventory();
+    }
+    PendingEvent.Invalidate();PendingCargo.Invalidate();PendingAt=0;
+    // Current inventory and cooldown came from the same installed snapshot.
+    // Do not refund, replay a delivery, or credit elapsed pause time.
 }

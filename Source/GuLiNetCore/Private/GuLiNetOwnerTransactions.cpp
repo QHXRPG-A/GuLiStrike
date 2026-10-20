@@ -22,8 +22,8 @@ OwnerState OwnerState::Stage(const TransactionRequest* Request,const std::vector
     TraceScope Scope("GuLiHybrid_CoreStage");
     // Simulation state is isolated; transport queues and the unbounded event
     // history are not part of a numeric transaction's staging value.
-    OwnerState V(Match,Player,MatchEpoch);V.StageSource=this;V.DecisionDomain=DecisionDomain;V.ReducedWork=ReducedWork;
-    V.Players=Players;
+    OwnerState V(Match,Player,MatchEpoch);V.StageSource=this;V.DecisionDomain=DecisionDomain;
+    V.Players=Players;V.ResourceEpochs=ResourceEpochs;
     {
         TraceScope Copy("GuLiHybrid_CoreStageObjects");
         // Decided fragments isolate their writes immediately. Numeric planning
@@ -69,15 +69,31 @@ OwnerState OwnerState::Stage(const TransactionRequest* Request,const std::vector
     }
     return V;
 }
-bool OwnerState::ApplyValidated(const std::vector<StateFragment>& Fragments)
+bool OwnerState::ApplyValidated(const std::vector<StateFragment>& Fragments,std::string* CurrentStateFailure)
 {
     // The caller validated this exact ordered set on Stage() on the same room
     // thread. Applying it here preserves unrelated history and in-flight work.
     std::optional<ResourceLedgerState> Resources;
     if (std::any_of(Fragments.begin(),Fragments.end(),UsesResourceLedger)) Resources=ResourceLedgerValue.Snapshot();
-    for (const auto& F:Fragments) if (!ApplyFragment(F,Resources?&*Resources:nullptr)) return false;
-    if (Resources && !ResourceLedgerValue.Restore(std::move(*Resources))) return false;
-    return RebuildWorkIndex();
+    std::optional<MiningReservationState> Mining;
+    std::set<ObjectKey> ReplacedMining;
+    for (const auto& F:Fragments) if (F.Key.Capability.starts_with("leases/")) ReplacedMining.insert(F.Key.Object);
+    if (!ReplacedMining.empty())
+    {
+        Mining=MiningReservationsValue.Snapshot();
+        const auto Replaced=[&](std::uint32_t Cluster){return ReplacedMining.contains(MiningClusterObject(Cluster));};
+        std::erase_if(Mining->Leases,[&](const auto& P){return Replaced(P.second.Cluster);});
+        std::erase_if(Mining->SnapshotLeases,[&](const auto& P){return Replaced(P.second.Cluster);});
+        std::erase_if(Mining->Decisions,[&](const auto& P){return Replaced(P.second.Outcome.Lease.Cluster);});
+    }
+    for (const auto& F:Fragments) if (!ApplyFragment(F,Resources?&*Resources:nullptr,Mining?&*Mining:nullptr))
+    {if (CurrentStateFailure) *CurrentStateFailure="fragment/"+F.Key.Capability+"/"+F.Key.Object.StableId.ToString();return false;}
+    if (Resources && !ResourceLedgerValue.Restore(std::move(*Resources)))
+    {if (CurrentStateFailure) *CurrentStateFailure="resource-ledger";return false;}
+    if (Mining && !MiningReservationsValue.Restore(std::move(*Mining)))
+    {if (CurrentStateFailure) *CurrentStateFailure="mining-ledger";return false;}
+    if (!RebuildWorkIndex()) {if (CurrentStateFailure) *CurrentStateFailure="work-index";return false;}
+    return true;
 }
 bool OwnerState::Configure(const RuntimeManifest& M,std::string& Error)
 {
@@ -294,6 +310,7 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::
 {
     TraceScope Scope("GuLiHybrid_CorePlan");
     const auto Wait=[&](std::string Reason) {if (WaitReason) *WaitReason=std::move(Reason);return false;};
+    if (!CurrentResourceRequest(R)) return Wait("sealed_resource_epoch");
     if (WaitReason) WaitReason->clear();
     const auto Domain=ExecutionDomain(R);
     if (!Domain.Valid() || Owner(Domain)!=Player || !R.Header.Event.Valid()) return Wait("execution_authority");
@@ -311,6 +328,7 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::
         if (!ProjectCapabilityChanges(Directory,Changes))
         {
             Candidate=Stage(&R);Candidate.DecisionDomain=Domain;Result={};Result.Event=R.Header.Event;Result.Kind=R.Kind;
+            Result.ResourceGroup=R.Header.ResourceGroup;Result.ResourceEpoch=R.Header.ResourceEpoch;
             Result.Faction=R.Faction;Result.Target=R.Target;Result.StateDomain=Domain;Result.StateVersion=Candidate.NextDecisionVersion();
             Result.Status=CommitStatus::InsufficientResources;Candidate.Remember(R,Result);
         }
@@ -397,7 +415,7 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::
 bool OwnerState::Prepare(Id Planner,const OwnerWork& W)
 {
     TraceScope Scope("GuLiHybrid_CorePrepare");
-    if (W.Initiator!=Planner || W.Event!=W.Request.Header.Event || Owner(ExecutionDomain(W.Request))!=Planner || !IsLiveMember(Planner)) return false;
+    if (!CurrentResourceRequest(W.Request) || W.Initiator!=Planner || W.Event!=W.Request.Header.Event || Owner(ExecutionDomain(W.Request))!=Planner || !IsLiveMember(Planner)) return false;
     const auto Encoded=EncodeOwnerWork(W);if (Encoded.empty()) return false;
     if (Cancelled.contains({W.Event,W.Proposal})) return false;
     if (const auto I=Prepared.find(W.Event);I!=Prepared.end() && W.Continuation
@@ -437,6 +455,7 @@ bool OwnerState::Prepare(Id Planner,const OwnerWork& W)
 bool OwnerState::Commit(Id Planner,const OwnerWork& W)
 {
     TraceScope Scope("GuLiHybrid_CoreCommit");
+    if (!CurrentResourceRequest(W.Request)) return false;
     if (Finished.contains(W.Event)) return true;
     const auto I=Prepared.find(W.Event);
     if (I==Prepared.end() || I->second.first!=Planner || I->second.second!=EncodeOwnerWork(W)) return false;
@@ -463,7 +482,7 @@ void OwnerState::Cancel(Id Planner,Id Event,Id Proposal)
 }
 bool OwnerState::Resume(OwnerWork& W)
 {
-    if (Owner(ExecutionDomain(W.Request))!=Player || (W.Initiator!=Player && IsLiveMember(W.Initiator))) return false;
+    if (!CurrentResourceRequest(W.Request) || Owner(ExecutionDomain(W.Request))!=Player || (W.Initiator!=Player && IsLiveMember(W.Initiator))) return false;
     // A decided operation keeps its values and event identity. Only custody
     // changes; no rule is evaluated a second time during a takeover.
     W.Initiator=Player;W.Continuation=true;W.Proposal=StableId("GuLiOwnerProposal/v1",Player.ToString()+W.Event.ToString()+std::to_string(NextProposal++));
@@ -495,16 +514,17 @@ bool OwnerState::Resume(OwnerWork& W)
     return true;
 }
 bool OwnerState::Import(Id Sender,const std::vector<StateFragment>& Values,bool Handoff,
-    const std::map<ObjectKey,Authority>* AdmittedBirths,std::string* ImportFailureReason)
+    const std::map<ObjectKey,Authority>* AdmittedBirths,std::string* ImportFailureReason,ImportStats* Stats)
 {
     return ImportStream(Sender,[&](const FragmentVisitor& Visit)
-    {for (const auto& V:Values) if (!Visit(V)) return false;return true;},Handoff,AdmittedBirths,ImportFailureReason);
+    {for (const auto& V:Values) if (!Visit(V)) return false;return true;},Handoff,AdmittedBirths,ImportFailureReason,Stats);
 }
 bool OwnerState::ImportStream(Id Sender,const FragmentSource& Read,bool Handoff,
-    const std::map<ObjectKey,Authority>* AdmittedBirths,std::string* ImportFailureReason)
+    const std::map<ObjectKey,Authority>* AdmittedBirths,std::string* ImportFailureReason,ImportStats* Stats)
 {
     TraceScope Scope("GuLiHybrid_CoreImport");
     if (ImportFailureReason) ImportFailureReason->clear();
+    if (Stats) *Stats={};
     StateKey Failing;
     const auto Reject=[&](std::string Reason)
     {if (ImportFailureReason) *ImportFailureReason=std::move(Reason)+" object="+Failing.Object.StableId.ToString()+" capability="+Failing.Capability;return false;};
@@ -566,6 +586,17 @@ bool OwnerState::ImportStream(Id Sender,const FragmentSource& Read,bool Handoff,
         }
         if (V.Version<Version(V.Key)) {if (Handoff) return Reject("old-handoff-state");return true;}
         if (Locks.contains(V.Key)) return Reject("state-locked");
+        // Event decisions already delivered by normal state publication are
+        // immutable. Prove the complete canonical payload is identical after
+        // the current custody, version, duplicate-key and lock checks. Reuse
+        // the validated live value without decoding and indexing it twice.
+        // Unknown, changed or malformed fragments still take full staging.
+        if (Handoff && V.Schema==1 && V.Key.Capability.starts_with("event/")
+            && V.Version==Version(V.Key) && !V.Value.empty() && CaptureFragment(V.Key)==V.Value)
+        {
+            if (Stats) {++Stats->ReusedHistory;Stats->ReusedHistoryBytes+=V.Value.size();}
+            return true;
+        }
         if (!Trial.ApplyFragment(V,Resources?&*Resources:nullptr)) return Reject("invalid-state-payload");
         Accepted.insert(V.Key);return true;
     }))

@@ -54,6 +54,7 @@ public:
 	void AddConstructionWork(float Work);
 	void ApplyHybridState(const FGuLiHybridObjectState& Record, bool bBusinessEffects);
 	void AdvanceHybridConstruction(uint64 LogicalTick);
+    void ResetResourceRequests(uint64) {HybridCompletionEvent.Invalidate();}
 	void AdvanceHybridContributors(uint64 LogicalTick,float DeltaSeconds);
 	bool CaptureHybridConstruction(FGuLiHybridConstructionPrivateState& Out) const;
 	bool ValidateHybridConstruction(const FGuLiHybridConstructionPrivateState& In) const;

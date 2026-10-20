@@ -94,7 +94,7 @@ struct UGuLiHybridSessionSubsystem::FState
         uint16 KindFilter=0;
         int32 BusinessKind=-1;
         uint8 TargetKindFilter=0;
-        uint64 Intercepted=0,Sent=0,Released=0,Bytes=0;
+        uint64 Intercepted=0,Sent=0,Released=0,Bytes=0,RetainedRetries=0;
         double Armed=0,PacketAt=0;
         FGuid PacketPeer;
         TArray<uint8> Packet;
@@ -387,11 +387,27 @@ bool UGuLiHybridSessionSubsystem::SendPeerInternal(const FGuid& Peer,FGuLiHybrid
     const auto Core=GuLiNetBridge::ToCore(Value);auto& Fault=State->Fault;
     const bool Transaction=Core.Header.Kind==GuLiNet::MessageKind::Transaction || Core.Header.Kind==GuLiNet::MessageKind::HitFact
         || Core.Header.Kind==GuLiNet::MessageKind::WorkPrepare;
-    if (Transaction && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core) && Fault.Mode==TEXT("work_hold"))
+    if (Transaction && Fault.Mode==TEXT("work_hold"))
     {
-        if (Fault.Bytes+Value.Body.Num()+Prepared.Num()>16*1024*1024) return false;
-        FState::FReviewFault::FHeldControl Held;Held.Key=Peer;Held.Value=Value;Held.Prepared=bPrepared;Held.Encoded=bPacked;Held.Packed.Append(Prepared.GetData(),Prepared.Num());
-        Fault.Controls.Add(MoveTemp(Held));Fault.Bytes+=Value.Body.Num()+Prepared.Num();--Fault.Remaining;++Fault.Intercepted;Fault.Record(Core);return true;
+        // The fault budget counts distinct retained messages. A retry of an
+        // already retained message must remain held until explicit release,
+        // even after admission is full; otherwise retries bypass the fixture.
+        const bool Retained=Fault.Controls.ContainsByPredicate([&](const auto& Held)
+        {
+            const auto& V=Held.Value;
+            return Held.Key==Peer && V.Kind==Value.Kind && V.Match==Value.Match && V.Sender==Value.Sender
+                && V.Event==Value.Event && V.ObjectId==Value.ObjectId && V.ObjectKind==Value.ObjectKind
+                && V.LifeGeneration==Value.LifeGeneration && V.MatchEpoch==Value.MatchEpoch
+                && V.OwnerEpoch==Value.OwnerEpoch && V.ControlEpoch==Value.ControlEpoch
+                && V.LogicalTick==Value.LogicalTick && V.Body==Value.Body;
+        });
+        if (Retained) {++Fault.RetainedRetries;return true;}
+        if (Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core))
+        {
+            if (Fault.Bytes+Value.Body.Num()+Prepared.Num()>16*1024*1024) return false;
+            FState::FReviewFault::FHeldControl Held;Held.Key=Peer;Held.Value=Value;Held.Prepared=bPrepared;Held.Encoded=bPacked;Held.Packed.Append(Prepared.GetData(),Prepared.Num());
+            Fault.Controls.Add(MoveTemp(Held));Fault.Bytes+=Value.Body.Num()+Prepared.Num();--Fault.Remaining;++Fault.Intercepted;Fault.Record(Core);return true;
+        }
     }
     const bool Motion=Core.Header.Kind==GuLiNet::MessageKind::Motion || Core.Header.Kind==GuLiNet::MessageKind::ComponentState;
     bool Queued=false;
@@ -650,6 +666,7 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
         J->SetStringField(TEXT("mode"),F.Mode.ToString());J->SetNumberField(TEXT("intercepted"),double(F.Intercepted));J->SetNumberField(TEXT("injected_sends"),double(F.Sent));
         J->SetNumberField(TEXT("released"),double(F.Released));J->SetNumberField(TEXT("held_controls"),F.Controls.Num());J->SetNumberField(TEXT("held_receipts"),F.Receipts.Num());
         J->SetNumberField(TEXT("held_local_receipts"),F.LocalReceipts.Num());
+        J->SetNumberField(TEXT("retained_retries"),double(F.RetainedRetries));
         J->SetNumberField(TEXT("held_bytes"),double(F.Bytes));J->SetArrayField(TEXT("messages"),F.Evidence);
         J->SetArrayField(TEXT("transmitted_messages"),F.Transmitted);Root->SetObjectField(TEXT("review_fault"),J);
     }

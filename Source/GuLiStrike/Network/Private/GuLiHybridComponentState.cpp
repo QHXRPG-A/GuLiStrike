@@ -96,7 +96,7 @@ struct FGuLiHybridComponentBindingContext::FData
     TWeakObjectPtr<const AActor> Actor;
     uint64 Registration=0;
     TArray<FIdentity> Identities;
-    TSharedPtr<const TArray<FBinding>> Bound, Public;
+    TSharedPtr<const TArray<FBinding>> Bound, Public, Logical;
 };
 FGuLiHybridComponentBindingContext::FGuLiHybridComponentBindingContext()=default;
 FGuLiHybridComponentBindingContext::~FGuLiHybridComponentBindingContext()=default;
@@ -125,7 +125,7 @@ bool Templates(const UClass& Class,TArray<FTemplate>& Out)
 }
 FString LayoutEntry(const FGuLiHybridComponentCapability& C,FName Instance,const UActorComponent& Component)
 {return C.Name.ToString()+TEXT(":")+FString::FromInt(C.Version)+TEXT(":")+Instance.ToString()+TEXT(":")+Component.GetClass()->GetPathName();}
-bool Bindings(const AActor& Actor,FBindings& Out,FGuLiHybridComponentBindingContext* Context=nullptr,bool Public=false)
+bool Bindings(const AActor& Actor,FBindings& Out,FGuLiHybridComponentBindingContext* Context=nullptr,bool Public=false,bool Logical=false)
 {
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_ComponentBindings);
     auto* Metrics=Actor.GetWorld()?Actor.GetWorld()->GetSubsystem<UGuLiHotspotOptions>():nullptr;
@@ -143,7 +143,7 @@ bool Bindings(const AActor& Actor,FBindings& Out,FGuLiHybridComponentBindingCont
     if (Current)
     {
         if (Metrics) ++Metrics->BindingHits;
-        Out.Lease=Public?Data->Public:Data->Bound;return true;
+        Out.Lease=Public?Data->Public:Logical?Data->Logical:Data->Bound;return true;
     }
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_ComponentBindingRebuild);
     if (Metrics) ++Metrics->BindingRebuilds;
@@ -162,16 +162,19 @@ bool Bindings(const AActor& Actor,FBindings& Out,FGuLiHybridComponentBindingCont
     if (!Cached)
     {
         if (Public) Bound.RemoveAll([](const auto& B){return !B.Capability.CapturePublic;});
+        if (Logical) Bound.RemoveAll([](const auto& B){return !B.Capability.AdvanceLogical;});
         Out.Local=MoveTemp(Bound);return true;
     }
     auto PublicBindings=MakeShared<TArray<FBinding>>();
+    auto LogicalBindings=MakeShared<TArray<FBinding>>();
     for (const auto& B:Bound) if (B.Capability.CapturePublic) PublicBindings->Add(B);
+    for (const auto& B:Bound) if (B.Capability.AdvanceLogical) LogicalBindings->Add(B);
     auto Shared=MakeShared<TArray<FBinding>>(MoveTemp(Bound));
-    Out.Lease=Public?PublicBindings:Shared;
+    Out.Lease=Public?PublicBindings:Logical?LogicalBindings:Shared;
     if (Cached)
     {
         auto Next=MakeUnique<FGuLiHybridComponentBindingContext::FData>();
-        Next->Actor=&Actor;Next->Registration=RegistrationRevision();Next->Bound=Shared;Next->Public=PublicBindings;
+        Next->Actor=&Actor;Next->Registration=RegistrationRevision();Next->Bound=Shared;Next->Public=PublicBindings;Next->Logical=LogicalBindings;
         for (auto* C:Components) if (C) Next->Identities.Add({C,C->GetClass(),C->GetFName()});
         Context->Data=MoveTemp(Next);
     }
@@ -253,16 +256,22 @@ bool FGuLiHybridComponentState::Validate(const AActor& Actor,TConstArrayView<uin
 bool FGuLiHybridComponentState::Advance(AActor& Actor,uint64 Tick,double Delta,FGuLiHybridComponentBindingContext* Context)
 {
     if (!FMath::IsFinite(Delta) || Delta<0) return false;
-    FBindings Bound;if (!Bindings(Actor,Bound,Context)) return false;
+    FBindings Bound;if (!Bindings(Actor,Bound,Context,false,true)) return false;
     {
         TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_ComponentLogicalCallbacks);
         for (const auto& B:Bound)
         {
             if (!B.Component.IsValid()) return false;
-            if (B.Capability.AdvanceLogical) B.Capability.AdvanceLogical(*B.Component,Tick,Delta);
+            if (B.Capability.AdvanceLogical && (!B.Capability.NeedsLogicalAdvance
+                || B.Capability.NeedsLogicalAdvance(*B.Component,Tick))) B.Capability.AdvanceLogical(*B.Component,Tick,Delta);
         }
     }
     return true;
+}
+void FGuLiHybridComponentState::ResetResourceRequests(AActor& Actor,uint64 Epoch,FGuLiHybridComponentBindingContext* Context)
+{
+    FBindings Bound;if (!Bindings(Actor,Bound,Context)) return;
+    for (const auto& B:Bound) if (B.Component.IsValid()&&B.Capability.ResetResourceRequests) B.Capability.ResetResourceRequests(*B.Component.Get(),Epoch);
 }
 bool FGuLiHybridComponentState::Restore(AActor& Actor,TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage,FGuLiHybridComponentBindingContext* Context)
 {

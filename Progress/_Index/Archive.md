@@ -4,6 +4,9 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-10-20 | [会话临时文件隔离与源码交付范围](../Archive/20261020-会话临时文件隔离与源码交付范围.md) | network, commander, performance | partial | 按用户要求整理项目提交；4804个临时文件已移至项目外隔离目录，提供手动一键删除脚本。正式证据、源码和冻结回退版本保留，清理不改变原有验证结论。 |
+| 2026-10-20 | [资源备用快照调整为5秒](../Archive/20261020-资源备用快照调整为5秒.md) | network, commander, performance | partial | 按用户要求将周期资源副本从100ms改为5秒；首次副本及退出最终采集保持即时。源码UE5.7重编、离线周期边界及完整核心契约通过，编辑器已加载新DLL；未重测性能。 |
+| 2026-10-20 | [Hybrid唯一同步路径与Mass时钟卡顿修复](../Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md) | network, commander, performance | partial | 删除旧同步路径并编译；离线复现和修复快照屏障占住逻辑时钟、累计时间丢失。600单位移动写入774→113ms，本地665个Mass最新168ms。完整Hybrid8.12ms，窗口消息长停顿触发原因及玩家反馈仍待确认。 |
 | 2026-10-16 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | network, commander, combat | partial | 本会话归档与交付收尾完成，保全93份来源及历次独有事实；清理实际范围、平台拒绝及GitHub交付另记。 |
 | 2026-10-14 | [Artifacts 与 ArtSource 运行时安全清理](../Archive/20261014-Artifacts与ArtSource运行时安全清理.md) | tools | partial | 根据用户授权清理两个目录的非运行时文件，删除 18,868 个文件、1,573 个空目录，逻辑大小 64.597 GiB，仅保留 105 份被文档引用的 Markdown 说明。运行资源未改动，安全性依据静态引用核对，未运行游戏。 |
 | 2026-10-11 | [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | commander, navigation, presentation, performance | partial | Mass优化、原地图与报告共104个文件已上传GitHub main，远端提交核对一致；87个临时文件约85.4 MB的删除被自动审批策略拦截，未删除任何文件。 |

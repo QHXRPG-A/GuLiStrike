@@ -6,6 +6,8 @@
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Gameplay/Building/GuLiBuildingProductionComponent.h"
+#include "UObject/UObjectIterator.h"
 #include "Editor.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
@@ -25,6 +27,19 @@
 #if PLATFORM_WINDOWS
 #include "Windows/WindowsHWrapper.h"
 #endif
+
+FString UGuLiLocalPIESubsystem::PreparePerformanceProduction(const TArray<FString>& AlreadyPrepared)
+{
+    TArray<TSharedPtr<FJsonValue>> Prepared;
+    UWorld* World=GEditor?GEditor->PlayWorld:nullptr;
+    if (World && World->WorldType==EWorldType::PIE &&
+        UWorld::RemovePIEPrefix(World->GetOutermost()->GetName())==TEXT("/Game/Maps/LVL_CommanderMassPrototype"))
+        for (TObjectIterator<UGuLiBuildingProductionComponent> It;It;++It)
+            if (It->GetWorld()==World && !AlreadyPrepared.Contains(It->GetPathName()) && It->PrepareDevelopmentProductionCycle())
+                Prepared.Add(MakeShared<FJsonValueString>(It->GetPathName()));
+    auto Result=MakeShared<FJsonObject>();Result->SetArrayField(TEXT("primed"),Prepared);
+    FString Text;auto Writer=TJsonWriterFactory<>::Create(&Text);FJsonSerializer::Serialize(Result,Writer);return Text;
+}
 
 namespace
 {
@@ -65,10 +80,12 @@ struct UGuLiLocalPIESubsystem::FState
     FProcHandle Coordinator,Logic;
     uint32 CoordinatorPid=0,LogicPid=0;
     FString Directory,Error;
+    TArray<TSharedPtr<FJsonValue>> Shutdown;
+    bool CleanupComplete=false;
     double Started=0;
     bool Active=false,Began=false;
 #if PLATFORM_WINDOWS
-    HANDLE Job=nullptr;
+    HANDLE Job=nullptr,StopEvent=nullptr;
 #endif
 };
 void UGuLiLocalPIESubsystem::FStateDeleter::operator()(FState* Value) const { delete Value; }
@@ -118,7 +135,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     const auto* Settings=GetDefault<UGuLiLocalPIESettings>();
     if (!GEditor || !IsLocalMap(EditorWorld()) || !Settings->bEnabled) return true;
     if (State->Active) return true;
-    State->Error.Reset();State->Began=false;
+    State->Error.Reset();State->Began=false;State->Shutdown.Reset();State->CleanupComplete=false;
     auto Fail=[&](const FString& Why)
     { State->Error=Why;Error=Why;StopChildren();UE_LOG(LogTemp,Error,TEXT("[GuLiLocalPIE] %s"),*Why);return false; };
     if (Settings->MainRole!=EGuLiCommanderRole::Commander && Settings->MainRole!=EGuLiCommanderRole::Ground
@@ -151,7 +168,13 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     State->Directory=FPaths::Combine(FPlatformProcess::UserTempDir(),TEXT("GuLiStrikePIE"),Config.RoomId.ToString(EGuidFormats::Digits));
     if (!IFileManager::Get().MakeDirectory(*State->Directory,true)) return Fail(TEXT("Could not create the local session directory."));
     State->Active=true;State->Started=FPlatformTime::Seconds();
+    FString StopArguments,ClientStopArguments;
 #if PLATFORM_WINDOWS
+    const FString StopName=TEXT("Local\\GuLiStrikePIEStop_")+Config.RoomId.ToString(EGuidFormats::Digits);
+    State->StopEvent=CreateEventW(nullptr,1,0,*StopName);
+    if (!State->StopEvent) return Fail(TEXT("Could not create the owned local PIE stop event."));
+    StopArguments=FString::Printf(TEXT(" --local-stop-event \"%s\""),*StopName);
+    ClientStopArguments=FString::Printf(TEXT(" -GuLiLocalStopEvent=\"%s\""),*StopName);
     State->Job=CreateJobObjectW(nullptr,nullptr);
     JOBOBJECT_EXTENDED_LIMIT_INFORMATION Limits{};Limits.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
     if (!State->Job || !SetInformationJobObject(State->Job,JobObjectExtendedLimitInformation,&Limits,sizeof(Limits)))
@@ -167,7 +190,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
         return true;
     };
     const FString ServerArgs=FString::Printf(TEXT("--dev --bind 127.0.0.1 --port %d --expected-red 1 --expected-blue 1 --manifest \"%s\" --database \"%s\""),
-        Settings->CoordinatorPort,*Config.ManifestFile,*(State->Directory/TEXT("room.sqlite")));
+        Settings->CoordinatorPort,*Config.ManifestFile,*(State->Directory/TEXT("room.sqlite")))+StopArguments;
     if (!Launch(Server,ServerArgs,State->Coordinator,State->CoordinatorPid)) return Fail(TEXT("Could not start the owned Coordinator."));
     bool Ready=false;
     const double Deadline=FPlatformTime::Seconds()+5;
@@ -180,7 +203,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     const FString Project=FPaths::GetProjectFilePath();
     const FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=Blue -GuLiRole=Commander -GuLiClientRunMode=LogicOnly -GuLiHotspotMask=%u -GuLiGameplayWorkers=%u -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
         *Project,LocalMap,*Config.RoomId.ToString(EGuidFormats::Digits),*State->Peer.ToString(EGuidFormats::Digits),
-        Config.HotspotMask,Config.GameplayWorkers,*Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")));
+        Config.HotspotMask,Config.GameplayWorkers,*Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")))+ClientStopArguments;
     if (!Launch(Client,Args,State->Logic,State->LogicPid)) return Fail(TEXT("Could not start the owned logic client."));
     UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] room=%s editor=%u logic=%u coordinator=%u role=%s"),
         *Config.RoomId.ToString(),FPlatformProcess::GetCurrentProcessId(),State->LogicPid,State->CoordinatorPid,
@@ -198,19 +221,36 @@ void UGuLiLocalPIESubsystem::StopChildren()
 {
     State->Active=false;
 #if PLATFORM_WINDOWS
-    if (State->Job) { CloseHandle(State->Job);State->Job=nullptr; }
+    if (State->StopEvent) SetEvent(State->StopEvent);
+    const double Deadline=FPlatformTime::Seconds()+15;
+    while (FPlatformTime::Seconds()<Deadline
+        && ((State->Logic.IsValid() && FPlatformProcess::IsProcRunning(State->Logic))
+            || (State->Coordinator.IsValid() && FPlatformProcess::IsProcRunning(State->Coordinator))))
+        FPlatformProcess::Sleep(0.02f);
 #endif
     for (FProcHandle* Handle:{&State->Logic,&State->Coordinator}) if (Handle->IsValid())
     {
-        if (FPlatformProcess::IsProcRunning(*Handle)) FPlatformProcess::TerminateProc(*Handle,true);
-        // Termination is asynchronous on Windows. Wait for the owned child to
-        // release its log/database handles before deleting this room's files.
+        const bool Forced=FPlatformProcess::IsProcRunning(*Handle);
+        if (Forced) FPlatformProcess::TerminateProc(*Handle,true);
         FPlatformProcess::WaitForProc(*Handle);
+        int32 Code=0;const bool HasCode=FPlatformProcess::GetProcReturnCode(*Handle,&Code);
+        auto Result=MakeShared<FJsonObject>();const bool Logic=Handle==&State->Logic;
+        Result->SetStringField(TEXT("role"),Logic?TEXT("logic"):TEXT("coordinator"));
+        Result->SetNumberField(TEXT("pid"),Logic?State->LogicPid:State->CoordinatorPid);
+        Result->SetBoolField(TEXT("forced"),Forced);Result->SetBoolField(TEXT("has_exit_code"),HasCode);
+        Result->SetNumberField(TEXT("exit_code"),Code);State->Shutdown.Add(MakeShared<FJsonValueObject>(Result));
+        UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] stop role=%s forced=%d has_exit_code=%d exit_code=%d"),
+            Logic?TEXT("logic"):TEXT("coordinator"),Forced,HasCode,Code);
         FPlatformProcess::CloseProc(*Handle);Handle->Reset();
     }
+#if PLATFORM_WINDOWS
+    // Keep the job as a crash/timeout safety net until normal shutdown finishes.
+    if (State->Job) {CloseHandle(State->Job);State->Job=nullptr;}
+    if (State->StopEvent) {CloseHandle(State->StopEvent);State->StopEvent=nullptr;}
+#endif
     // This directory was generated below the OS temp root for this room only.
     if (!State->Directory.IsEmpty() && FPaths::IsUnderDirectory(State->Directory,FPlatformProcess::UserTempDir()))
-        IFileManager::Get().DeleteDirectory(*State->Directory,false,true);
+        State->CleanupComplete=IFileManager::Get().DeleteDirectory(*State->Directory,false,true);
     State->Directory.Reset();State->Began=false;
 }
 bool UGuLiLocalPIESubsystem::Tick(float)
@@ -239,6 +279,8 @@ FString UGuLiLocalPIESubsystem::GetSessionStatus() const
     J->SetBoolField(TEXT("logic_running"),State->Logic.IsValid() && FPlatformProcess::IsProcRunning(State->Logic));
     J->SetBoolField(TEXT("coordinator_running"),State->Coordinator.IsValid() && FPlatformProcess::IsProcRunning(State->Coordinator));
     J->SetStringField(TEXT("session_directory"),State->Directory);
+    J->SetArrayField(TEXT("shutdown"),State->Shutdown);
+    J->SetBoolField(TEXT("cleanup_complete"),State->CleanupComplete);
     UWorld* World=GEditor?GEditor->PlayWorld.Get():nullptr;
     if (World)
     {

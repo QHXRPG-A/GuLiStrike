@@ -24,6 +24,8 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | combat, commander, network, performance | 6/7 (86%) | 核对玩家响应反馈及窗口停顿触发条件；继续削减周期逻辑、StateTree和快照成本。长测及PIE故障矩阵按用户要求取消。 | 2026-10-20 |
+| [Slate 布局与绘制 2.5 ms 优化实施](../DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md) | performance, ui | 3/5 (60%) | 继续同镜头移动和交火复测，独立覆盖俯瞰批处理热点及动态UI正确性；保留历史失败，不据静止单对启用候选。 | 2026-10-19 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | assets, network, ship, ui | 25/26 (96%) | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-10-10 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | building, combat, network, vfx | 6/6 (100%) | 跟踪既有导弹夹具和挂点断言失配；地面弹丸、配色与5Hz专项留待后续安排。 | 2026-09-21 |
 | [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | combat, commander, network, ui | 5/6 (83%) | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |

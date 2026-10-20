@@ -510,6 +510,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
+| [Hybrid 世界更新平均不超过 5 ms](../RequirementDocument/20261018-Hybrid世界更新5ms.md) | requirement | approved | 2026-10-19 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -762,6 +764,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
+| [会话临时文件隔离与源码交付范围](../Archive/20261020-会话临时文件隔离与源码交付范围.md) | archive | recorded | 2026-10-20 |
+| [资源备用快照调整为5秒](../Archive/20261020-资源备用快照调整为5秒.md) | archive | recorded | 2026-10-20 |
+| [Hybrid唯一同步路径与Mass时钟卡顿修复](../Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md) | archive | recorded | 2026-10-20 |
+| [Hybrid 世界更新平均不超过 5 ms](../RequirementDocument/20261018-Hybrid世界更新5ms.md) | requirement | approved | 2026-10-19 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -1572,6 +1579,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
+| [会话临时文件隔离与源码交付范围](../Archive/20261020-会话临时文件隔离与源码交付范围.md) | archive | recorded | 2026-10-20 |
+| [资源备用快照调整为5秒](../Archive/20261020-资源备用快照调整为5秒.md) | archive | recorded | 2026-10-20 |
+| [Hybrid唯一同步路径与Mass时钟卡顿修复](../Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md) | archive | recorded | 2026-10-20 |
+| [Hybrid 世界更新平均不超过 5 ms](../RequirementDocument/20261018-Hybrid世界更新5ms.md) | requirement | approved | 2026-10-19 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -1843,6 +1855,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
+| [会话临时文件隔离与源码交付范围](../Archive/20261020-会话临时文件隔离与源码交付范围.md) | archive | recorded | 2026-10-20 |
+| [资源备用快照调整为5秒](../Archive/20261020-资源备用快照调整为5秒.md) | archive | recorded | 2026-10-20 |
+| [Hybrid唯一同步路径与Mass时钟卡顿修复](../Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md) | archive | recorded | 2026-10-20 |
+| [Slate 布局与绘制平均低于 2.5 ms](../RequirementDocument/20261018-Slate布局绘制2.5ms.md) | requirement | approved | 2026-10-19 |
+| [Hybrid 世界更新平均不超过 5 ms](../RequirementDocument/20261018-Hybrid世界更新5ms.md) | requirement | approved | 2026-10-19 |
+| [Slate 布局与绘制 2.5 ms 优化实施](../DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md) | development | in_progress | 2026-10-19 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-16 |
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
@@ -2437,6 +2456,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Slate 布局与绘制平均低于 2.5 ms](../RequirementDocument/20261018-Slate布局绘制2.5ms.md) | requirement | approved | 2026-10-19 |
+| [Slate 布局与绘制 2.5 ms 优化实施](../DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md) | development | in_progress | 2026-10-19 |
 | [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-10-16 |
 | [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-10-16 |
 | [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-10-16 |

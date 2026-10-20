@@ -8,6 +8,7 @@
 #include "MassStateTreeExecutionContext.h"
 #include "MassEntityManager.h"
 #include "Engine/World.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 
 namespace
 {
@@ -26,7 +27,8 @@ namespace
 	{
 		const auto* Tasks = Context.GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
 		if (!Tasks || !Tasks->HasState(Unit)) return false;
-		const uint32 Facts = Tasks->GetBehaviorFacts(Unit);
+		const uint32 Mask=Required|Forbidden;
+		const uint32 Facts = Mask?Tasks->GetBehaviorFacts(Unit,Mask):0;
 		return (Facts & Required) == Required && (Facts & Forbidden) == 0
 			&& (Phase == EGuLiCommanderWorkPhase::Any || Tasks->GetWorkPhase(Unit) == Phase)
 			&& (Result == EGuLiCommanderWorkResult::Any || Tasks->GetWorkResult(Unit) == Result);

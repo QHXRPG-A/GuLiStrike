@@ -32,6 +32,7 @@ struct FGuLiHybridInventoryView
     FGuLiResourceAmounts Cargo;
     TArray<FDelivery> Queue;
     uint64 CargoVersion=0,ProcessingVersion=0;
+    uint64 NextExtraction=0,NextProcessing=0;
 };
 struct FGuLiHybridCapabilityState
 {
@@ -92,7 +93,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiHybridCommandCompleted,const FGuLiHybri
 UENUM(BlueprintType)
 enum class EGuLiHybridTransactionStatus : uint8
 { Committed, Duplicate, Deferred, BadRequest, WrongEpoch, Unauthorized, MissingObject,
-  TargetDead, FriendlyFire, TooOld, InvalidRule, InsufficientResources, InvalidReservation, Paused };
+  TargetDead, FriendlyFire, TooOld, InvalidRule, InsufficientResources, InvalidReservation, Paused, Interrupted };
 
 UENUM(BlueprintType)
 enum class EGuLiHybridEconomyOperation : uint8 { None, Credit, Reserve, Commit, Refund };
@@ -250,8 +251,10 @@ public:
     virtual UObject* LifetimeOwner() const = 0;
     virtual uint32 Version() const = 0;
     virtual bool UsesObject(const FGuLiHybridObjectKey&) const { return false; }
+    virtual void ResetResourceRequests(const TArray<FGuLiHybridObjectKey>&,uint64) {}
     virtual void Advance(uint64 LogicalTick,double DeltaSeconds) {}
     virtual bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const = 0;
+    virtual bool CaptureCurrent(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const {return Capture(Objects,Bytes);}
     virtual bool Validate(const TArray<FGuLiHybridSharedStatePiece>& Pieces,
         const TArray<FGuLiHybridObjectKey>& LocalObjects) const = 0;
     virtual bool Restore(const TArray<FGuLiHybridSharedStatePiece>& Pieces,
@@ -292,6 +295,7 @@ public:
     virtual bool RestoreQuery(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage) { return false; }
     virtual void Release() = 0;
     virtual void ResetControlInput() {}
+    virtual void ResetResourceRequests(uint64) {}
 };
 using FGuLiHybridAdapterFactory = TFunction<TSharedPtr<IGuLiHybridSimulationAdapter>(const FGuLiHybridObjectState&)>;
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiHybridWorldFailure, const FString&);
@@ -328,6 +332,7 @@ public:
     void UnbindActor(const FGuLiHybridObjectKey& Key,const AActor& Actor);
     uint32 GetActorTaskGeneration(uint32 Ordinal) const;
     AActor* FindBoundActor(const FGuLiHybridObjectKey& Key) const;
+    uint64 GetActorBindingRevision() const;
     bool BindTarget(const FGuLiTargetHandle& Target, const FGuLiHybridObjectKey& Key);
     bool ResolveTarget(const FGuLiTargetHandle& Target, FGuLiHybridObjectKey& Out) const;
     bool ResolveObjectTarget(const FGuLiHybridObjectKey& Key,FGuLiTargetHandle& Out) const;
@@ -344,6 +349,8 @@ public:
     bool GetObjectMetadata(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
     uint32 GetLatestRetiredLife(const FGuLiHybridObjectKey& Stable) const;
     void GetObjects(TArray<FGuLiHybridObjectState>& Out) const;
+    /** Development readback: count authoritative live work without copying capability records. */
+    TSharedRef<FJsonObject> GetSimulationCensus() const;
     bool HasSimulation(const FGuLiHybridObjectKey& Key, bool bRetainedSource = false) const;
     bool HasControl(const FGuLiHybridObjectKey& Key) const;
     uint64 GetObjectLogicalTick(const FGuLiHybridObjectKey& Key) const;
@@ -391,6 +398,8 @@ public:
     UFUNCTION(BlueprintCallable,Category="Hybrid|Transactions") FGuid SubmitUpgrade(const FGuLiHybridUpgradeRequest& Request);
     FGuid SubmitUpgradeNative(const FGuLiHybridUpgradeRequest& Request,TFunction<void(const FGuLiHybridTransactionResult&)> Callback);
     UFUNCTION(BlueprintPure, Category="Hybrid|Transactions") FGuLiResourceAmounts GetTeamBalance(EGuLiTeam Team) const;
+    uint64 GetResourceRequestEpoch(const FGuLiHybridObjectKey& Source) const;
+    bool GetCommittedReservation(const FGuLiHybridObjectKey& Source,uint64 Request,FGuid& Token) const;
     UPROPERTY(BlueprintAssignable, Category="Hybrid|Transactions") FGuLiHybridTransactionCompleted OnTransactionCompleted;
     UFUNCTION(BlueprintPure,Category="Hybrid|Transactions") bool FindTransactionResult(const FGuid& Event,FGuLiHybridTransactionResult& Out) const;
     UFUNCTION(BlueprintPure,Category="Hybrid|Transactions") bool IsRequestPending(FGuid Event) const;
@@ -429,7 +438,6 @@ private:
     void TryWorldReady();
     void SynchronizeGameplayRoster();
     void PumpMembership();
-    void RefreshQueryState();
     void ApplyQueryDelta(const GuLiNet::ClientQueryDelta& Delta);
     void HandlePreparedCommit(const GuLiNet::PreparedCommit& Commit);
     void ApplyPreparedCommit(const GuLiNet::PreparedCommit& Commit);

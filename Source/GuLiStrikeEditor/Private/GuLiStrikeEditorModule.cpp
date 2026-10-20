@@ -10,6 +10,8 @@
 #include "Modules/ModuleManager.h"
 #include "UObject/ObjectSaveContext.h"
 
+void StopGuLiSlateWindowCapture();
+
 class FGuLiStrikeEditorModule final : public IModuleInterface, public IPIEAuthorizer
 {
 public:
@@ -21,6 +23,7 @@ public:
 
 	virtual void ShutdownModule() override
 	{
+		StopGuLiSlateWindowCapture();
 		FEditorDelegates::PreSaveWorldWithContext.Remove(PreSaveWorldHandle);
 		if (IModularFeatures::Get().IsModularFeatureAvailable(IPIEAuthorizer::GetModularFeatureName()))
 		{

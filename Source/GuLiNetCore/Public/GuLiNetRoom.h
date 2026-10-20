@@ -44,6 +44,9 @@ public:
     void AcknowledgeDirectoryUpdates() {DirectoryUpdates.clear();}
     const std::map<ObjectKey,Assignment>& Offers() const {return PendingAssignments;}
     const std::map<Id,OwnershipGroupAuthority>& OwnershipGroups() const {return Groups;}
+    std::map<Id,ResourceGroupState> ResourceGroups() const;
+    bool ResourceSnapshotInstalled(Id Player,Id Group,Revision Recovery,Revision Number,const std::string& Digest,
+        std::span<const ObjectRegistration> Objects,double Now);
     const std::map<std::string,OwnershipDefinition>& ObjectDefinitions() const {return Definitions;}
     const std::optional<MembershipChange>& Membership() const {return MembershipValue;}
 private:
@@ -56,6 +59,18 @@ private:
     void ScheduleLeaveTransfers(double Now);
     void RefreshControllers(double Now);
     void RefreshGroups(double Now);
+    void RefreshResourceBackups();
+    bool InResourceRecovery(ObjectKey Object) const;
+    Id ResourceGroupOf(ObjectKey Object) const;
+    struct ResourceRecovery
+    {
+        ResourceGroupState State;
+        std::set<Id> Waiting;
+        Revision Number=0;
+        std::string Digest;
+        std::vector<ObjectRegistration> Objects;
+    };
+    std::map<Id,ResourceRecovery> ResourceRecoveries;
     Id GroupDestination(Id Group,Id Exclude={}) const;
     Id Match;
     std::string ConfigurationHash,LevelHash,FailureReason;

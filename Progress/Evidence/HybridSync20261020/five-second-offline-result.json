@@ -1,0 +1,71 @@
+{
+  "schema": "hybrid-resource-offline/v1",
+  "scope": "production C++ core, in-memory transport; no UE/PIE",
+  "passed": true,
+  "static": {
+    "checks": {
+      "sending_and_latest_are_single_slots": true,
+      "latest_pending_replaces_obsolete_version": true,
+      "backup_keeps_two_complete_cuts": true,
+      "integrity_before_storage": true,
+      "bounded_snapshot_size": true,
+      "request_epoch_cleanup": true,
+      "sync_switches_removed": true,
+      "polling_projection_removed": true,
+      "unique_build_identity": true,
+      "result_rings_no_front_erase": true
+    },
+    "passed": true,
+    "source_sha256": {
+      "Source/GuLiNetCore/Public/GuLiNetClient.h": "558621ddf2ffda0594020cc2dd92232c504063793fd0ba7b6d140a261398d7f6",
+      "Source/GuLiNetCore/Private/GuLiNetResourceSnapshot.cpp": "086e01f625588f4782143f222c9796275b493a0f0053ef73509a15c143c9c111",
+      "Source/GuLiNetCore/Private/GuLiNetResourceRecovery.cpp": "c823c0baa0816d04b0a1f1788477741473789a7e1dbc1c5be38bd27754015363",
+      "Source/GuLiNetCore/Private/GuLiNetCurrentState.cpp": "717f50f98329719fecb9c8a43bc0d3758b4ccd356f6cc443604fc8b862a8a53c",
+      "Source/GuLiNetCore/Private/GuLiNetAsyncClient.cpp": "433ded470baf209cf98ffc9d2b2e749359955adcb141da7492cd470b50849418",
+      "Source/GuLiNetCore/Public/GuLiNetAsyncClient.h": "99e2f69956e1d0cd90c2c0bd9899d1a0b3962f3bda2aeea890380ba94d8e9995",
+      "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp": "3778617f97a4f8ed41fa31258a01c5ef6e851a36efd872c69de800ebbb6b8a0b",
+      "Source/GuLiStrike/Gameplay/Performance/GuLiHotspotOptions.cpp": "eac5d03970e7877fe7bf3d6f25808913def34459a4c8d0141bbcf07e86fa5ad4"
+    }
+  },
+  "commands": [
+    {
+      "args": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "--build",
+        "D:\\UE5.7\\PerformanceCaptures\\20261019-HybridSyncReplacement-v1\\core-receipt-regression\\build",
+        "--config",
+        "Release",
+        "--target",
+        "GuLiNetCoreAcceptance",
+        "--parallel",
+        "4"
+      ],
+      "exit_code": 0,
+      "log": "build.log"
+    },
+    {
+      "args": [
+        "D:\\UE5.7\\PerformanceCaptures\\20261019-HybridSyncReplacement-v1\\core-receipt-regression\\build\\Release\\GuLiNetCoreAcceptance.exe"
+      ],
+      "exit_code": 0,
+      "log": "contracts.log"
+    }
+  ],
+  "contracts": {
+    "Resource snapshot full/delta/integrity/retention contracts passed": true,
+    "Async snapshot capture clock retention and orphan release contracts passed": true,
+    "Resource interruption and complete-install activation contracts passed": true,
+    "Resource interruption cutpoint passed phase=0": true,
+    "Resource interruption cutpoint passed phase=1": true,
+    "Resource interruption cutpoint passed phase=2": true,
+    "Resource interruption cutpoint passed phase=3": true,
+    "Resource disconnected backup bounds passed": true,
+    "Abrupt rollback and consecutive resource recovery contracts passed lethal=0": true,
+    "Abrupt rollback and consecutive resource recovery contracts passed lethal=1": true,
+    "Resource history scaling:": true,
+    "Current mining lease restore, exclusivity, continuation and release contracts passed": true,
+    "Async current mining snapshot readback and callback order contracts passed": true,
+    "Client ownership contracts passed; protocol=32 manifest=24 handoff=3": true
+  },
+  "binary_sha256": "962514ec286e07bd32590031897d68d9ac7378ddfb4fc03058f532a143c284ea"
+}

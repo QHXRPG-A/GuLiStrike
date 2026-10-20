@@ -89,6 +89,9 @@ public:
     TSharedRef<FJsonObject> GetReviewCommandEvidence() const;
 #endif
 private:
+    // Selection is attached to an exact life, not the temporary Mass entity
+    // that is detached/recreated while that life changes simulation owner.
+    mutable TMap<FGuLiSoldierId,FGuLiHybridObjectKey> SelectionSoldierLives;
     struct FHybridInput
     {
         FGuLiUnitTaskCommand Command;

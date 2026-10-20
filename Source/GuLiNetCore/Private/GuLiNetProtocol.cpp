@@ -81,7 +81,7 @@ bool EncodeMessage(const Message& Value, Bytes& Out)
     Writer W; const auto& H = Value.Header;
     W.U32(0x474c4e43); W.U16(ProtocolVersion); W.U16(static_cast<std::uint16_t>(H.Kind));
     W.Identity(H.Match); W.U64(H.Epoch); W.Identity(H.Sender); W.Identity(H.Event); W.Key(H.Object);
-    W.U64(H.OwnerEpoch); W.U64(H.ControlEpoch); W.U64(H.Sequence); W.U64(H.At);
+    W.U64(H.OwnerEpoch); W.U64(H.ControlEpoch); W.U64(H.Sequence); W.U64(H.At);W.Identity(H.ResourceGroup);W.U64(H.ResourceEpoch);
     W.Blob(Value.Body); Out = W.Take(); return !Out.empty();
 }
 namespace
@@ -106,7 +106,7 @@ bool VarUInt(Reader& R,std::uint64_t& Out)
 bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
 {
     Message M;auto& H=M.Header;std::uint8_t Kind,Flags,ObjectKindValue=0;std::uint64_t Generation=0,Size=0;
-    if (!R.U8(Kind)||Kind<unsigned(MessageKind::Hello)||Kind>unsigned(MessageKind::WorkState)
+    if (!R.U8(Kind)||Kind<unsigned(MessageKind::Hello)||Kind>unsigned(MessageKind::ResourceSnapshotInstalled)
         ||!R.U8(Flags)||(Flags&~15u)) return false;
     if (Flags&4) {if (!Context.Match.Valid()) return false;H.Match=Context.Match;}
     else if (!R.Identity(H.Match)) return false;
@@ -121,7 +121,7 @@ bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
             ||!R.Identity(H.Object.StableId)||!VarUInt(R,Generation)||Generation>UINT32_MAX) return false;
         H.Object.Kind=ObjectKind(ObjectKindValue);H.Object.Generation=static_cast<std::uint32_t>(Generation);
     }
-    if (!VarUInt(R,H.OwnerEpoch)||!VarUInt(R,H.ControlEpoch)||!VarUInt(R,H.Sequence)||!VarUInt(R,H.At)
+    if (!VarUInt(R,H.OwnerEpoch)||!VarUInt(R,H.ControlEpoch)||!VarUInt(R,H.Sequence)||!VarUInt(R,H.At)||!R.Identity(H.ResourceGroup)||!VarUInt(R,H.ResourceEpoch)
         ||!VarUInt(R,Size)||Size>MaxMessageBytes-CanonicalMessageHeaderBytes) return false;
     std::span<const std::uint8_t> Body;if (!R.Raw(static_cast<std::size_t>(Size),Body)||!R.Done()) return false;
     M.Body.assign(Body.begin(),Body.end());Out=std::move(M);return true;
@@ -130,7 +130,7 @@ bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
 bool EncodePeerMessage(const Message& M,Bytes& Out,PeerMessageContext Context)
 {
     const auto& H=M.Header;
-    if (M.Body.size()>MaxMessageBytes-CanonicalMessageHeaderBytes || H.Kind<MessageKind::Hello || H.Kind>MessageKind::WorkState
+    if (M.Body.size()>MaxMessageBytes-CanonicalMessageHeaderBytes || H.Kind<MessageKind::Hello || H.Kind>MessageKind::ResourceSnapshotInstalled
         || H.Object.Kind>ObjectKind::BusinessWork) return false;
     const bool Event=H.Event!=Id{},Object=H.Object!=ObjectKey{};
     const bool Match=Context.Match.Valid()&&H.Match==Context.Match,Sender=Context.Sender.Valid()&&H.Sender==Context.Sender;
@@ -139,7 +139,7 @@ bool EncodePeerMessage(const Message& M,Bytes& Out,PeerMessageContext Context)
     if (!Match) W.Identity(H.Match);VarUInt(W,H.Epoch);if (!Sender) W.Identity(H.Sender);
     if (Event) W.Identity(H.Event);
     if (Object) {W.U8(static_cast<std::uint8_t>(H.Object.Kind));W.Identity(H.Object.StableId);VarUInt(W,H.Object.Generation);}
-    VarUInt(W,H.OwnerEpoch);VarUInt(W,H.ControlEpoch);VarUInt(W,H.Sequence);VarUInt(W,H.At);VarUInt(W,M.Body.size());W.Raw(M.Body);
+    VarUInt(W,H.OwnerEpoch);VarUInt(W,H.ControlEpoch);VarUInt(W,H.Sequence);VarUInt(W,H.At);W.Identity(H.ResourceGroup);VarUInt(W,H.ResourceEpoch);VarUInt(W,M.Body.size());W.Raw(M.Body);
     Out=W.Take();
     // Extreme counters can be wider as varints; never inflate a wire message.
     if (Out.size()>=M.Body.size()+CanonicalMessageHeaderBytes) return EncodeMessage(M,Out);
@@ -153,11 +153,11 @@ bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out,PeerMessage
     if (!R.U32(Magic) || !R.U16(Version) || Version != ProtocolVersion) return false;
     if (Magic==CompactPeerMagic) return DecodePeerMessage(R,Out,Context);
     if (Magic!=0x474c4e43 || !R.U16(Kind) || Kind < static_cast<std::uint16_t>(MessageKind::Hello)
-        || Kind > static_cast<std::uint16_t>(MessageKind::WorkState)) return false;
+        || Kind > static_cast<std::uint16_t>(MessageKind::ResourceSnapshotInstalled)) return false;
     H.Kind = static_cast<MessageKind>(Kind);
     if (!R.Identity(H.Match) || !R.U64(H.Epoch) || !R.Identity(H.Sender) || !R.Identity(H.Event)
         || !R.Key(H.Object) || !R.U64(H.OwnerEpoch) || !R.U64(H.ControlEpoch) || !R.U64(H.Sequence)
-        || !R.U64(H.At) || !R.Blob(Result.Body) || !R.Done()) return false;
+        || !R.U64(H.At) || !R.Identity(H.ResourceGroup) || !R.U64(H.ResourceEpoch) || !R.Blob(Result.Body) || !R.Done()) return false;
     Out = std::move(Result); return true;
 }
 Lane MessageLane(MessageKind K)
@@ -165,7 +165,7 @@ Lane MessageLane(MessageKind K)
     if (K == MessageKind::Motion || K == MessageKind::MotionAcknowledgment || K == MessageKind::ComponentState) return Lane::Motion;
     // Birth fragments, object events and retirement share one ordered stream.
     // An event must never overtake its registration on a different lane.
-    if (K == MessageKind::HandoffState || K == MessageKind::BootstrapState || K == MessageKind::BootstrapRequest) return Lane::Handoff;
+    if (K == MessageKind::HandoffState || K == MessageKind::BootstrapState || K == MessageKind::BootstrapRequest || K == MessageKind::ResourceSnapshot || K == MessageKind::ResourceSnapshotInstall) return Lane::Handoff;
     return Lane::Control;
 }
 bool ReliableMessage(MessageKind K) { return K != MessageKind::Motion && K != MessageKind::MotionAcknowledgment && K != MessageKind::ComponentState; }

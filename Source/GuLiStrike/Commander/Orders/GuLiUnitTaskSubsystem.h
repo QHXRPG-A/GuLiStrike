@@ -55,7 +55,7 @@ public:
 	/** StateTree adapters observe these facts and enqueue versioned operations; no business mutation during Mass queries. */
 	EGuLiCommanderWorkPhase GetWorkPhase(FGuLiTaskUnitId Unit) const;
 	EGuLiCommanderWorkResult GetWorkResult(FGuLiTaskUnitId Unit) const;
-	uint32 GetBehaviorFacts(FGuLiTaskUnitId Unit) const;
+	uint32 GetBehaviorFacts(FGuLiTaskUnitId Unit,uint32 Mask=MAX_uint32) const;
 	bool NeedsBehaviorStep(FGuLiTaskUnitId Unit) const;
 	void RequestBehaviorStep(FGuLiTaskUnitId Unit, EGuLiCommanderBehaviorStep Step);
 	FGuLiCommanderOperationToken BeginBehaviorOperation(FGuLiTaskUnitId Unit, EGuLiCommanderControlState Control);
@@ -66,6 +66,7 @@ public:
 	void WaitBehaviorRound(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token);
 	void ReportBehaviorError(FGuLiTaskUnitId Unit, const FString& Error);
 private:
+    friend class UGuLiPerformanceSubsystem;
     friend class FGuLiHybridTaskState;
     friend class FGuLiHybridMassAdapter;
     friend class FGuLiHybridEngineerAdapter;

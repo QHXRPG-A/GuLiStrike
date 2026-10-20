@@ -71,7 +71,7 @@ bool PeerChannel::Queue(const Message& Value, double Now)
 {
     TraceScope Scope("GuLiHybrid_QueuePeerMessage");
     if (HasFailed() || !std::isfinite(Now)) return false;
-    if (Value.Header.Kind<MessageKind::Hello || Value.Header.Kind>MessageKind::WorkState) return false;
+    if (Value.Header.Kind<MessageKind::Hello || Value.Header.Kind>MessageKind::ResourceSnapshotInstalled) return false;
     if (Value.Header.Kind==MessageKind::HandoffState && !CanQueueHandoff()) return false;
     const Lane Stream = MessageLane(Value.Header.Kind);
     const bool Reliable = ReliableMessage(Value.Header.Kind);

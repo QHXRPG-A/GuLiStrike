@@ -14,7 +14,7 @@ namespace GuLiHybridPeerPayload
 {
 inline constexpr uint32 Tag=0x47555a50,Version=1;
 inline size_t PlainLimit(GuLiNet::MessageKind Kind)
-{return Kind==GuLiNet::MessageKind::HandoffState?GuLiNet::MaxPrivateStateBytes:GuLiNet::MaxMessageBytes;}
+{return (Kind==GuLiNet::MessageKind::HandoffState||Kind==GuLiNet::MessageKind::ResourceSnapshot||Kind==GuLiNet::MessageKind::ResourceSnapshotInstall)?GuLiNet::MaxPrivateStateBytes:GuLiNet::MaxMessageBytes;}
 // Stateless dictionary: only protocol vocabulary and immutable message identity.
 // No previous packet, acknowledgment or evictable baseline is needed to decode.
 inline GuLiNet::Bytes Dictionary(const GuLiNet::Envelope& H)

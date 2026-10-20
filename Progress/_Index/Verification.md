@@ -4,6 +4,8 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | in_progress | partial | 核对玩家响应反馈及窗口停顿触发条件；继续削减周期逻辑、StateTree和快照成本。长测及PIE故障矩阵按用户要求取消。 | 2026-10-20 |
+| [Slate 布局与绘制 2.5 ms 优化实施](../DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md) | in_progress | partial | 继续同镜头移动和交火复测，独立覆盖俯瞰批处理热点及动态UI正确性；保留历史失败，不据静止单对启用候选。 | 2026-10-19 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | done | partial | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-10-18 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | verification | partial | 玩家通过原地图固定优化入口核对窄路、墙边、拥堵和重防号转向观感；网络协议整改另立任务。 | 2026-10-11 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | verification | partial | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-11 |

@@ -12,6 +12,8 @@ struct FGuLiHybridMessage
     uint8 ObjectKind = 0;
     uint32 LifeGeneration = 0;
     uint64 MatchEpoch = 0, OwnerEpoch = 0, ControlEpoch = 0, Sequence = 0, LogicalTick = 0;
+    FGuid ResourceGroup;
+    uint64 ResourceEpoch = 0;
     TArray<uint8> Body;
 };
 struct FGuLiHybridMember

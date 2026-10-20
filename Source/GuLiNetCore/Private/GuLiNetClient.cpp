@@ -143,6 +143,7 @@ bool ClientWorld::SetBootstrapMaterializationDeferred(bool Value)
 }
 bool ClientWorld::HasSimulation(ObjectKey K,bool Dead) const
 {
+    if (const auto G=ResourceAuthorities.find(ObjectResourceGroup(K));G!=ResourceAuthorities.end()&&G->second.Recovery) return false;
     const auto I=Directory.find(K);
     if (!Failure.empty() || I==Directory.end() || Frozen.contains(K) || PreparingApplications.contains(K) || CommittingOwnershipGroup) return false;const auto& A=I->second.Grant;
     return !A.Dormant && A.SimOwner==Player && A.OwnerEpoch && (A.Policy!=OwnershipPolicy::ControllerPinned || A.Controller==Player)
@@ -209,7 +210,7 @@ bool ClientWorld::SendMessage(Id Peer,MessageKind Kind,Id Event,ObjectKey K,Byte
 {
     Envelope H;H.Kind=Kind;H.Match=Match;H.Epoch=Epoch();H.Sender=Player;H.Event=Event;H.Object=K;H.At=ObjectNow(K);H.Sequence=Sequence++;
     if (const auto O=Directory.find(K);O!=Directory.end()) {H.OwnerEpoch=O->second.Grant.OwnerEpoch;H.ControlEpoch=O->second.Grant.ControlEpoch;}
-    return Transmit(Peer,{H,std::move(Body)});
+    StampPublication(H);return Transmit(Peer,{H,std::move(Body)});
 }
 bool ClientWorld::Broadcast(MessageKind Kind,Id Event,ObjectKey K,const Bytes& Body)
 {
@@ -217,7 +218,7 @@ bool ClientWorld::Broadcast(MessageKind Kind,Id Event,ObjectKey K,const Bytes& B
     {
         Envelope H;H.Kind=Kind;H.Match=Match;H.Epoch=Epoch();H.Sender=Player;H.Event=Event;H.Object=K;H.At=ObjectNow(K);H.Sequence=Sequence++;
         if (const auto O=Directory.find(K);O!=Directory.end()) {H.OwnerEpoch=O->second.Grant.OwnerEpoch;H.ControlEpoch=O->second.Grant.ControlEpoch;}
-        Message V{H,Body};auto& Queue=Publications[Peer];
+        StampPublication(H);Message V{H,Body};auto& Queue=Publications[Peer];
         if (Queue.empty() && Transmit(Peer,V)) continue;
         // A numeric commit has already happened. Transport backpressure cannot
         // discard its state or receipt. Keep publications in causal order until
@@ -443,6 +444,9 @@ bool ClientWorld::ReceivePeer(Id Sender,const Message& V)
 {
     if (!Failure.empty() || Sender!=V.Header.Sender || V.Header.Match!=Match || V.Header.Epoch!=Epoch()
         || !Members.contains(Sender) || !Members.at(Sender).Online) return false;
+    if (V.Header.Kind==MessageKind::ResourceSnapshot||V.Header.Kind==MessageKind::ResourceSnapshotStored||V.Header.Kind==MessageKind::ResourceSnapshotInstall)
+        return ReceiveResourceSnapshot(Sender,V);
+    if (!ResourceMessageCurrent(V.Header)) {++HandoffSizes["resource/stale_messages_rejected"];return false;}
     if (V.Header.Kind==MessageKind::CommandState)
     {
         FrozenCommand C;if (!ValidatePeer(Sender,V.Header,Domain::Simulation,true) || !DecodeCommand(V.Body,C)
@@ -469,8 +473,24 @@ bool ClientWorld::ReceivePeer(Id Sender,const Message& V)
     if ((V.Header.Kind>=MessageKind::WorkPrepare && V.Header.Kind<=MessageKind::WorkStateRequest) || V.Header.Kind==MessageKind::WorkState) return ReceiveWork(Sender,V);
     if (V.Header.Kind==MessageKind::TransactionResult)
     {
-        CommitResult R;if (!DecodeCommit(V.Body,R) || Numbers.Owner(R.StateDomain)!=Sender || V.Header.Object!=R.StateDomain
-            || !Directory.contains(R.StateDomain) || Directory.at(R.StateDomain).Grant.OwnerEpoch!=V.Header.OwnerEpoch) return false;
+        CommitResult R;if (!DecodeCommit(V.Body,R) || R.Event!=V.Header.Event || V.Header.Object!=R.StateDomain
+            || !R.StateDomain.Valid() || !V.Header.OwnerEpoch) return false;
+        if (!Directory.contains(R.StateDomain))
+        {
+            // Result, domain body and room authority travel independently.
+            // Retain an undecided delivery until the original authority can
+            // be checked; it cannot authorize its own source via its payload.
+            const auto Key=std::pair{Sender,R.Event};
+            if (const auto Previous=DeferredPeerReceipts.find(Key);Previous!=DeferredPeerReceipts.end())
+                return Previous->second.Header.Object==V.Header.Object && Previous->second.Header.OwnerEpoch==V.Header.OwnerEpoch
+                    && Previous->second.Header.Epoch==V.Header.Epoch && EncodeCommit(Previous->second.Result)==V.Body;
+            if (DeferredPeerReceipts.size()>=256 || V.Body.size()>8*1024*1024-DeferredPeerReceiptBytes)
+            {RecordReceiveRejection(V);Cancel("Pending receipt authority capacity exceeded");return false;}
+            DeferredPeerReceiptBytes+=V.Body.size();
+            DeferredPeerReceipts.emplace(Key,DeferredPeerReceipt{V.Header,std::move(R),V.Body.size()});return true;
+        }
+        if (Numbers.Owner(R.StateDomain)!=Sender || Directory.at(R.StateDomain).Grant.OwnerEpoch!=V.Header.OwnerEpoch)
+        {RecordReceiveRejection(V);return false;}
         return ApplyCommit(R);
     }
     if (V.Header.Kind==MessageKind::StateFragments)
@@ -570,8 +590,30 @@ void ClientWorld::RetryPeerStates()
         else ++I;
     }
 }
+void ClientWorld::RetryPeerReceipts()
+{
+    if (DeferredPeerReceipts.empty()) return;
+    std::vector<std::pair<Id,Id>> Ready;
+    for (const auto& [Key,Receipt]:DeferredPeerReceipts)
+        if (Receipt.Header.Epoch!=Epoch() || !Members.contains(Key.first) || !Members.at(Key.first).Online
+            || Directory.contains(Receipt.Result.StateDomain)) Ready.push_back(Key);
+    for (const auto& Key:Ready)
+    {
+        const auto I=DeferredPeerReceipts.find(Key);if (I==DeferredPeerReceipts.end()) continue;
+        auto Receipt=std::move(I->second);DeferredPeerReceiptBytes-=Receipt.Bytes;DeferredPeerReceipts.erase(I);
+        const auto Domain=Directory.find(Receipt.Result.StateDomain);
+        if (Receipt.Header.Epoch!=Epoch() || !Members.contains(Key.first) || !Members.at(Key.first).Online
+            || Domain==Directory.end() || Numbers.Owner(Receipt.Result.StateDomain)!=Key.first
+            || Domain->second.Grant.OwnerEpoch!=Receipt.Header.OwnerEpoch)
+        {RecordReceiveRejection({Receipt.Header,EncodeCommit(Receipt.Result)});continue;}
+        // ApplyCommit still waits for every required state/application and
+        // owns the event's exactly-once callback. No elapsed-time fallback.
+        ApplyCommit(Receipt.Result);
+    }
+}
 Id ClientWorld::Submit(TransactionRequest R,TransactionCallback Callback,bool PreserveOriginalTime)
 {
+    if (!StampResourceRequest(R)) return {};
     if (!Failure.empty() || !R.Header.Event.Valid() || Pending.contains(R.Header.Event) || !HasSimulation(R.Header.Object,true)) return {};
     const auto& O=Directory.at(R.Header.Object);R.Header.Kind=MessageKind::Transaction;R.Header.Match=Match;R.Header.Epoch=Epoch();R.Header.Sender=Player;
     if (PreserveOriginalTime && (R.Header.At>O.LogicalAge || R.StartedAt>R.Header.At)) return {};
@@ -584,6 +626,7 @@ Id ClientWorld::Submit(TransactionRequest R,TransactionCallback Callback,bool Pr
 }
 Id ClientWorld::SubmitControlled(TransactionRequest R,bool Admit,bool PreserveOriginalTime)
 {
+    if (!StampResourceRequest(R)) return {};
     if (!CanPublishFacts() || !R.Header.Event.Valid() || !HasControl(R.Header.Object) || R.Kind==TransactionKind::Damage) return {};
     if (HasSimulation(R.Header.Object)) return Admit?SubmitAdmitted(std::move(R),PreserveOriginalTime):Submit(std::move(R),{},PreserveOriginalTime);
     const Id Event=R.Header.Event;if (ObservedCommits.contains(Event)) return Event;
@@ -591,6 +634,7 @@ Id ClientWorld::SubmitControlled(TransactionRequest R,bool Admit,bool PreserveOr
 }
 Id ClientWorld::SubmitAdmitted(TransactionRequest R,bool PreserveOriginalTime)
 {
+    if (!StampResourceRequest(R)) return {};
     if (!CanAdmitWork(R.Kind) || !HasSimulation(R.Header.Object,true) || !R.Header.Event.Valid()) return {};
     const auto& O=Directory.at(R.Header.Object);R.Header.Match=Match;R.Header.Epoch=Epoch();R.Header.Sender=Player;R.Header.Kind=MessageKind::Transaction;
     R.Header.OwnerEpoch=O.Grant.OwnerEpoch;R.Header.ControlEpoch=O.Grant.ControlEpoch;
@@ -599,6 +643,7 @@ Id ClientWorld::SubmitAdmitted(TransactionRequest R,bool PreserveOriginalTime)
     if (!R.StartedAt) R.StartedAt=R.Header.At;if (!R.RootEvent.Valid()) R.RootEvent=R.Header.Event;
     Bytes Admission;if (!EncodeMessage({R.Header,EncodeTransaction(R)},Admission)) return {};
     TransactionRequest Work;Work.Header.Object=R.Header.Object;Work.Header.At=R.Header.At;Work.Header.Event=StableId("GuLiTransactionAdmission/v1",R.Header.Event.ToString());
+    Work.Header.ResourceGroup=R.Header.ResourceGroup;Work.Header.ResourceEpoch=R.Header.ResourceEpoch;
     Work.Kind=TransactionKind::AdmitWork;Work.Target={ObjectKind::BusinessWork,StableId("GuLiTransactionWork/v1",R.Header.Event.ToString()),1};
     Work.RootEvent=R.Header.Event;Work.StartedAt=R.StartedAt;Work.RuleId=R.RuleId;Work.Faction=R.Faction;Work.Admission=std::move(Admission);
     return Submit(std::move(Work),{},PreserveOriginalTime).Valid()?R.Header.Event:Id{};
@@ -651,6 +696,8 @@ bool ClientWorld::CommitDependenciesReady(const CommitResult& R) const
 bool ClientWorld::ApplyCommit(const CommitResult& R)
 {
     TraceScope Scope("GuLiHybrid_CoreApplyCommit");
+    if (R.ResourceGroup.Valid())
+    {const auto G=ResourceAuthorities.find(R.ResourceGroup);if (G==ResourceAuthorities.end()||G->second.RequestEpoch!=R.ResourceEpoch||G->second.Recovery) return false;}
     if (!CommitDependenciesReady(R)) {WaitingResults[R.Event]=R;return true;}
     auto ResolvePending=[&]
     {

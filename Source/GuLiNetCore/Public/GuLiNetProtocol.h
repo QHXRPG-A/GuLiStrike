@@ -14,7 +14,8 @@ enum class MessageKind : std::uint16_t
     ComponentState,
     SelectionActivity,DirectOperation,HandoffPrepare,HandoffReady,HandoffFreeze,
     HandoffState,HandoffInstalled,HandoffCommit,HandoffCancel,HandoffCommands,
-    WorkPrepare,WorkPrepared,WorkCommit,WorkReceipt,WorkCancel,WorkStateRequest,PeerStatus,CommandState,TransactionIntent,WorkState
+    WorkPrepare,WorkPrepared,WorkCommit,WorkReceipt,WorkCancel,WorkStateRequest,PeerStatus,CommandState,TransactionIntent,WorkState,
+    ResourceGroups,ResourceSnapshot,ResourceSnapshotStored,ResourceSnapshotInstall,ResourceSnapshotInstalled
 };
 enum class Lane : std::uint8_t { Control,Motion,Effects,Handoff };
 
@@ -30,6 +31,8 @@ struct Envelope
     Revision ControlEpoch = 0;
     std::uint64_t Sequence = 0;
     Tick At = 0;
+    Id ResourceGroup;
+    Revision ResourceEpoch = 0;
 };
 struct Message
 {
@@ -88,7 +91,7 @@ private:
 GULINETCORE_API bool EncodeMessage(const Message& Value, Bytes& Out);
 // Lossless peer transport envelope only. Canonical records, hashes and
 // coordinator messages continue to use EncodeMessage and their original bytes.
-inline constexpr std::size_t CanonicalMessageHeaderBytes=121;
+inline constexpr std::size_t CanonicalMessageHeaderBytes=145;
 struct PeerMessageContext {Id Match,Sender;};
 GULINETCORE_API bool EncodePeerMessage(const Message& Value,Bytes& Out,PeerMessageContext Context={});
 GULINETCORE_API bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out,PeerMessageContext Context={});
