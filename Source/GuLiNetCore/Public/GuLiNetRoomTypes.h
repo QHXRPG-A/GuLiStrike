@@ -1,5 +1,6 @@
 #pragma once
 #include "GuLiNetProtocol.h"
+#include "GuLiNetResourceSnapshot.h"
 
 namespace GuLiNet
 {
@@ -38,6 +39,8 @@ struct OwnershipGroupAuthority
 {
     Id Owner;
     Revision Version=0;
+    Id Backup;
+    Revision RequestEpoch=1;
 };
 struct ObjectRegistration
 {

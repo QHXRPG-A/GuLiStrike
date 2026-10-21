@@ -1,4 +1,5 @@
 #include "Gameplay/Building/GuLiBuildingVisuals.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingTypes.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
@@ -52,9 +53,11 @@ UMeshComponent* GuLiBuildingVisuals::CopyMesh(AActor& Owner, USceneComponent& Pa
 	Copy->SetupAttachment(&Parent);
 	Copy->SetRelativeTransform(RelativeTransform);
 	for (int32 Index = 0; Index < Copy->GetNumMaterials(); ++Index)
-		Copy->SetMaterial(Index, Override ? Override : Source.GetMaterial(Index));
+		Copy->SetMaterial(Index, Override ? Override
+			: UGuLiCommanderLODSubsystem::GetMaterialForPresentationCopy(Source, Index));
 	Owner.AddInstanceComponent(Copy);
 	Copy->RegisterComponent();
+	UGuLiCommanderLODSubsystem::NotifyMeshChanged(Copy);
 	return Copy;
 }
 

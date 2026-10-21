@@ -1,0 +1,973 @@
+{
+  "root": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020",
+  "files": [
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-08-background\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 943395586,
+      "mtime_ns": 1792494732988700900,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-08-background\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-08-background\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-08-background\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-09-cache\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 951474134,
+      "mtime_ns": 1792495842306898500,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-09-cache\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-09-cache\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-09-cache\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-09-cache\\r1-sha_cache\\analysis\\game-thread-events.csv",
+      "bytes": 951505361,
+      "mtime_ns": 1792495842431599100,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-09-cache\\r1-sha_cache\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-09-cache\\r1-sha_cache\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-09-cache\\r1-sha_cache\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-11-foreground\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 922020200,
+      "mtime_ns": 1792496862745722300,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-11-foreground\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-11-foreground\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-11-foreground\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-11-foreground\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 32563877,
+      "mtime_ns": 1792496850862829100,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-11-foreground\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-11-foreground\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-11-foreground\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-16-layout\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1138624414,
+      "mtime_ns": 1792500124744294200,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-16-layout\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-16-layout\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-16-layout\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-16-layout\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 43279155,
+      "mtime_ns": 1792500114319385400,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-16-layout\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-16-layout\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-16-layout\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-19-viewport-trace\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 909937871,
+      "mtime_ns": 1792502383121017100,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-19-viewport-trace\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-19-viewport-trace\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-19-viewport-trace\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-19-viewport-trace\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 43258596,
+      "mtime_ns": 1792502374009379400,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-19-viewport-trace\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-19-viewport-trace\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-19-viewport-trace\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-20-editor-paused\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 43924337,
+      "mtime_ns": 1792503060622243800,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-20-editor-paused\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-20-editor-paused\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-20-editor-paused\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-21-editor-minimized\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 43979826,
+      "mtime_ns": 1792503536377276300,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-21-editor-minimized\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-21-editor-minimized\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-21-editor-minimized\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1082417106,
+      "mtime_ns": 1792504023149990600,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis-explosions\\explosion-events.csv",
+      "bytes": 12564952,
+      "mtime_ns": 1792504131553989600,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis-explosions\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis-explosions\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 46072736,
+      "mtime_ns": 1792504013533656700,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\diag-22-preview-only\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-33-editor-visible\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1009804064,
+      "mtime_ns": 1792551332877770600,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-33-editor-visible\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-33-editor-visible\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-33-editor-visible\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-33-editor-visible\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 35858110,
+      "mtime_ns": 1792551322901201500,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-33-editor-visible\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-33-editor-visible\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-33-editor-visible\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-34-editor-minimized\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1149464828,
+      "mtime_ns": 1792551334645496000,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-34-editor-minimized\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-34-editor-minimized\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-34-editor-minimized\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-34-editor-minimized\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 46560898,
+      "mtime_ns": 1792551323614979800,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-34-editor-minimized\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-34-editor-minimized\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\env-34-editor-minimized\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-diagnostic-44\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1226314525,
+      "mtime_ns": 1792557605217346300,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-diagnostic-44\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-diagnostic-44\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-diagnostic-44\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-diagnostic-44\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 46434988,
+      "mtime_ns": 1792557594291388000,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-diagnostic-44\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-diagnostic-44\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-diagnostic-44\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\move-diagnostic-40\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1160236010,
+      "mtime_ns": 1792555490034343800,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\move-diagnostic-40\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\move-diagnostic-40\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\move-diagnostic-40\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\move-diagnostic-40\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 45404474,
+      "mtime_ns": 1792555581555150900,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\move-diagnostic-40\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\move-diagnostic-40\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\move-diagnostic-40\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-01\\r1-baseline\\analysis\\game-thread-events.csv",
+      "bytes": 1057514155,
+      "mtime_ns": 1792489921949295900,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-01\\r1-baseline\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-01\\r1-baseline\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-01\\r1-baseline\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-01\\r1-baseline\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 26941269,
+      "mtime_ns": 1792490066142024900,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-01\\r1-baseline\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-01\\r1-baseline\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-01\\r1-baseline\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-baseline\\analysis\\game-thread-events.csv",
+      "bytes": 1113448786,
+      "mtime_ns": 1792490881664585000,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-baseline\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-baseline\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-baseline\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-baseline\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 30164971,
+      "mtime_ns": 1792490931636312400,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-baseline\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-baseline\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-baseline\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 897175362,
+      "mtime_ns": 1792490821294752300,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 31041289,
+      "mtime_ns": 1792490862718863600,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-02\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1065609182,
+      "mtime_ns": 1792506397675847200,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 38534340,
+      "mtime_ns": 1792506495847017300,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-copied_receive\\analysis\\game-thread-events.csv",
+      "bytes": 1069857195,
+      "mtime_ns": 1792506397744180600,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-copied_receive\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-copied_receive\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-copied_receive\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-copied_receive\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 39611766,
+      "mtime_ns": 1792506495910865900,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-copied_receive\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-copied_receive\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-23-native-receive\\r1-copied_receive\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1103796316,
+      "mtime_ns": 1792508063423185500,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 42650090,
+      "mtime_ns": 1792508346263899200,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-fresh_compressor\\analysis\\game-thread-events.csv",
+      "bytes": 1106376444,
+      "mtime_ns": 1792508063437709700,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-fresh_compressor\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-fresh_compressor\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-fresh_compressor\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-fresh_compressor\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 41016774,
+      "mtime_ns": 1792508346189032200,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-fresh_compressor\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-fresh_compressor\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-24-compressor\\r1-fresh_compressor\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1100607405,
+      "mtime_ns": 1792517219471945800,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 37675369,
+      "mtime_ns": 1792517999536823100,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-empty_slate\\analysis\\game-thread-events.csv",
+      "bytes": 1053095745,
+      "mtime_ns": 1792517218946458000,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-empty_slate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-empty_slate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-empty_slate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-empty_slate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 34736834,
+      "mtime_ns": 1792517999221792500,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-empty_slate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-empty_slate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-26-empty-slate\\r1-empty_slate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-28-lifecycle\\r1-tree_lifecycle\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 36573812,
+      "mtime_ns": 1792546622471661400,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-28-lifecycle\\r1-tree_lifecycle\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-28-lifecycle\\r1-tree_lifecycle\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-28-lifecycle\\r1-tree_lifecycle\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-30-navigation-fairness\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 999298595,
+      "mtime_ns": 1792549111601590900,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-30-navigation-fairness\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-30-navigation-fairness\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-30-navigation-fairness\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-30-navigation-fairness\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 34598999,
+      "mtime_ns": 1792549254725442800,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-30-navigation-fairness\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-30-navigation-fairness\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-30-navigation-fairness\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-candidate\\analysis\\game-thread-events.csv",
+      "bytes": 1031370080,
+      "mtime_ns": 1792549732429027100,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-candidate\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-candidate\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-candidate\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 34685708,
+      "mtime_ns": 1792549717067442400,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-candidate\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-candidate\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-candidate\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-full_soft_pairs\\analysis\\game-thread-events.csv",
+      "bytes": 988646615,
+      "mtime_ns": 1792549730596540200,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-full_soft_pairs\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-full_soft_pairs\\analysis\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-full_soft_pairs\\analysis\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-full_soft_pairs\\analysis-gpu\\gpu-queue-events.csv",
+      "bytes": 32331229,
+      "mtime_ns": 1792549715765088800,
+      "kind": "regenerable_trace_export",
+      "retained_trace": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-full_soft_pairs\\session.utrace",
+      "retained_summary": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-full_soft_pairs\\analysis-gpu\\summary.json",
+      "regenerate": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-32-active-soft-pairs\\r1-full_soft_pairs\\analysis-gpu\\export-commands.txt"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\build-28-source-manifest.before-failed-build.json",
+      "bytes": 6561,
+      "mtime_ns": 1792550640494148500,
+      "kind": "archived_source_backup",
+      "sha256": "1b5b4520721acc665787898d7ab18c3a755744c4b3cddec738c05db0f8e70e3a",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\LaunchEngineLoop.before-17.cpp",
+      "bytes": 241526,
+      "mtime_ns": 1788402747628341900,
+      "kind": "archived_source_backup",
+      "sha256": "39ed3881f6772edca9b6ce986a08415bd7f07b1b612af2664762bf5eb32cec08",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\capture-preparation-31\\GuLiHotspotCapture.cpp.before.txt",
+      "bytes": 41884,
+      "mtime_ns": 1792554587119281300,
+      "kind": "archived_source_backup",
+      "sha256": "3fc4efdeccd5fe346ac9cc21796d392218a73f1feeee74d7407f34a1fb1306bb",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-timing-40\\diagnose_commander_response.py.before",
+      "bytes": 14043,
+      "mtime_ns": 1792559621397169900,
+      "kind": "archived_source_backup",
+      "sha256": "21d4c352bc86a230a4b1a2671565e3f33e402d89f9747b94fb08283574d2de93",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-timing-40\\GuLiCommanderHybridCommands.cpp.before",
+      "bytes": 20451,
+      "mtime_ns": 1792561153740996400,
+      "kind": "archived_source_backup",
+      "sha256": "f1e991c74338302d12f50297df0aba71aadf470beb48860c2894745269307201",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-timing-40\\GuLiHybridWorldSubsystem.cpp.before",
+      "bytes": 177206,
+      "mtime_ns": 1792559621397169900,
+      "kind": "archived_source_backup",
+      "sha256": "c060248210d61b55dea7fd064b0514dd10a109ac9fcbcdfae5f892013f4a0eec",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-timing-40\\GuLiNetAsyncClient.cpp.before",
+      "bytes": 123753,
+      "mtime_ns": 1792520075537712900,
+      "kind": "archived_source_backup",
+      "sha256": "c13681c804132465591b1fdb4d67e01b47e795c52e5640026ef41dd03c1325bd",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-timing-40\\GuLiNetAsyncClient.h.before",
+      "bytes": 11332,
+      "mtime_ns": 1792520153953427200,
+      "kind": "archived_source_backup",
+      "sha256": "8b4b14ed31dd44299c05f3bb6250912eda71b359df8f01af3be7c1f667ac1182",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-timing-40\\GuLiNetClient.cpp.before",
+      "bytes": 46903,
+      "mtime_ns": 1792408853063915100,
+      "kind": "archived_source_backup",
+      "sha256": "896c8b41152b21e41387bc6cfa049266dde2e0dd8105868c11736942d58bf54b",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-timing-40\\GuLiNetClient.h.before",
+      "bytes": 26711,
+      "mtime_ns": 1792425277787615500,
+      "kind": "archived_source_backup",
+      "sha256": "ce4e96fe47ab941a729f8ad28b6312549ea63d366f6256a3a628d898499201a9",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fast-compression-41\\capture_hybrid_cpu.py.before",
+      "bytes": 22247,
+      "mtime_ns": 1792560576827416600,
+      "kind": "archived_source_backup",
+      "sha256": "1aa3d7a9151b7a46ff44012fbc6119ac1e4748e2e353aab04c32fa9a347f40e5",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fast-compression-41\\diagnose_commander_response.py.before",
+      "bytes": 15103,
+      "mtime_ns": 1792561992626157800,
+      "kind": "archived_source_backup",
+      "sha256": "98271042cafa9cf6a3b7ddff24c0d5e8ea4b8fb90d1d03b99e18a6eb57b5805e",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fast-compression-41\\GuLiHybridAdapterRegistryTests.cpp.before",
+      "bytes": 10587,
+      "mtime_ns": 1792507256883386400,
+      "kind": "archived_source_backup",
+      "sha256": "58fa487a9ba3d6aae0cb1f430d7b1dc8d510f3027bf42242994770df491d65ca",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fast-compression-41\\GuLiHybridPeerPayload.h.before",
+      "bytes": 7802,
+      "mtime_ns": 1792507186929210300,
+      "kind": "archived_source_backup",
+      "sha256": "fb23bfe274d62722814fc82ecb68f8f7433dc3beb9262f21469e16d1fc41a3ce",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fast-compression-41\\GuLiHybridWorldSubsystem.cpp.before",
+      "bytes": 177785,
+      "mtime_ns": 1792562049568487400,
+      "kind": "archived_source_backup",
+      "sha256": "b4ffa9933926cf9dc7a2e62c2bb8b761f1dfd18f4062fe18388c077625aaf0d5",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fast-compression-41\\GuLiLocalPIESubsystem.cpp.before",
+      "bytes": 21804,
+      "mtime_ns": 1792507186931210000,
+      "kind": "archived_source_backup",
+      "sha256": "db3c8fd2bfcef0f340f93214bccbc76b53b6215a835acb05db86ff54e04b61b5",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-service-34\\GuLiHybridProjectilePool.before.cpp",
+      "bytes": 51658,
+      "mtime_ns": 1792520075541718100,
+      "kind": "archived_source_backup",
+      "sha256": "401acf3c1c95526d7822560ccbb09872e2ee53b71caea275e7ade6a6a0261f86",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-service-35\\capture_hybrid_cpu.before.py",
+      "bytes": 20597,
+      "mtime_ns": 1792556513210231700,
+      "kind": "archived_source_backup",
+      "sha256": "97a1920de577b76c3d9d3a10d8b0dacf95d429f4560102b7a7c478c332b7078d",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\flight-service-35\\GuLiHybridProjectilePool.before.cpp",
+      "bytes": 52483,
+      "mtime_ns": 1792557344236499000,
+      "kind": "archived_source_backup",
+      "sha256": "e49128eebffb94af5c5af95896547ab47a711dcdc15ea627b0ff264543c27eeb",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\ground-mass-explosion-third\\GuLiCommanderPresentationActor.cpp.before.txt",
+      "bytes": 134116,
+      "mtime_ns": 1792537261409986500,
+      "kind": "archived_source_backup",
+      "sha256": "bd38e79d2ffa8663f8027fe10475fd77183cfd0c77ca14f89584d865cac4084f",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\ground-mass-explosion-third\\GuLiUnitFeedbackSubsystem.cpp.before.txt",
+      "bytes": 20006,
+      "mtime_ns": 1792537261408982600,
+      "kind": "archived_source_backup",
+      "sha256": "810bf0182a432150406b546948dedea64e84e34f5fcc87f1071ca32b18bfafc9",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\ground-mass-explosion-third\\GuLiUnitFeedbackSubsystem.h.before.txt",
+      "bytes": 7360,
+      "mtime_ns": 1792537261398459900,
+      "kind": "archived_source_backup",
+      "sha256": "556ffd082f31299db311ee7ae92e68b9e787a9d96536ae6325106989cd5afc4e",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\immediate-movement-23\\GuLiBattleAuthoritySubsystem.cpp.before.txt",
+      "bytes": 332773,
+      "mtime_ns": 1792538450027806400,
+      "kind": "archived_source_backup",
+      "sha256": "c3acca400b0669638bbc902c50476feb12da769cf8542850ae0af33594c52bb3",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\immediate-movement-23\\GuLiBattleAuthoritySubsystem.h.before.txt",
+      "bytes": 31019,
+      "mtime_ns": 1792538450029874200,
+      "kind": "archived_source_backup",
+      "sha256": "df17ab0e154764ddeb5e666dedbb17aecc6028d936e3d8eee91b29fdf597efc1",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\immediate-movement-23\\GuLiCommanderNavigationPolicy.cpp.before.txt",
+      "bytes": 34871,
+      "mtime_ns": 1792538450031874400,
+      "kind": "archived_source_backup",
+      "sha256": "ab2216413309906649a3c6ffd59390f7c83484ae252d776fd96f95bb10cb6d4c",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\immediate-movement-23\\GuLiCommanderNavigationPolicy.h.before.txt",
+      "bytes": 14188,
+      "mtime_ns": 1792538450030874300,
+      "kind": "archived_source_backup",
+      "sha256": "9ad3b355ca41448b6f0b18b21105ec546c1b55a80a9d7bde680b911a97ba2279",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\immediate-movement-23\\GuLiCommanderNavigationPolicyTests.cpp.before.txt",
+      "bytes": 39686,
+      "mtime_ns": 1792538450031874400,
+      "kind": "archived_source_backup",
+      "sha256": "e98fda1687f2ca7758c113f4c10cff2b381f002c41531328988ad5011cdd798b",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\immediate-movement-23\\GuLiHybridMassAdapter.inl.before.txt",
+      "bytes": 54456,
+      "mtime_ns": 1792538450029874200,
+      "kind": "archived_source_backup",
+      "sha256": "a0e987040755a1c90cac6828bb63398c6be6cc8056d93ea482c37815b0d5a0a9",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\input-selection-37\\diagnose_commander_response.py.before",
+      "bytes": 13566,
+      "mtime_ns": 1792559161327992900,
+      "kind": "archived_source_backup",
+      "sha256": "947662e2c5a2d9a01bc5f2db037178d4b938927aa17dfdaa3c4ddcf1a21594fc",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\input-selection-37\\GuLiCommanderHybridCommands.cpp.before",
+      "bytes": 16829,
+      "mtime_ns": 1792515363380901400,
+      "kind": "archived_source_backup",
+      "sha256": "21e08905d929e0e8b07b3b4d7fc1614568cbae6b5ed2685535b6f2fc65f61239",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\input-selection-37\\GuLiHybridWorldSubsystem.cpp.before",
+      "bytes": 176992,
+      "mtime_ns": 1792556513209231400,
+      "kind": "archived_source_backup",
+      "sha256": "e7903481b4c5a060c73ccb37aedbc0657194a8bd3af81c8967c47bbd625a63c3",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\input-selection-37\\GuLiHybridWorldSubsystem.h.before",
+      "bytes": 26218,
+      "mtime_ns": 1792552330372768200,
+      "kind": "archived_source_backup",
+      "sha256": "5760a068455a3d6ffa5b9f4025faa15ffe8959d3862d4ba09de339f4ce833f52",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\input-selection-39\\GuLiCommanderHybridCommands.before.cpp",
+      "bytes": 19829,
+      "mtime_ns": 1792559644928519300,
+      "kind": "archived_source_backup",
+      "sha256": "afa3f61acff5b9eee3ac65d14ab41c996cff71429d2b44eb1c11504305fbbfff",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\local-pose-24\\GuLiBattleAuthoritySubsystem.cpp.before.txt",
+      "bytes": 336537,
+      "mtime_ns": 1792547035965523900,
+      "kind": "archived_source_backup",
+      "sha256": "c503aa6bebe201160776ce12eb00d239e8a9ad547c8d2ad56275926d625d8bdb",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\local-pose-24\\GuLiBattleAuthoritySubsystem.h.before.txt",
+      "bytes": 31073,
+      "mtime_ns": 1792547035975589700,
+      "kind": "archived_source_backup",
+      "sha256": "89d9bbef7ba4fe6e02b60769a4284a06625636a68f42543c1240e04666fddf20",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\local-pose-24\\GuLiCommanderMechanicalPresentation.cpp.before.txt",
+      "bytes": 17315,
+      "mtime_ns": 1792547035977594700,
+      "kind": "archived_source_backup",
+      "sha256": "d36769d3c9772675d0ca29cad740c0611fcc4227bfecc69e67a2719e462efd2b",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\local-pose-24\\GuLiCommanderPresentationActor.cpp.before.txt",
+      "bytes": 134126,
+      "mtime_ns": 1792547035976594700,
+      "kind": "archived_source_backup",
+      "sha256": "732ea0c9188109b966ecab069557571f9670b05c774db53f655162360166023a",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\local-pose-24\\GuLiCommanderPresentationActor.h.before.txt",
+      "bytes": 29288,
+      "mtime_ns": 1792547035976594700,
+      "kind": "archived_source_backup",
+      "sha256": "6ee975ffe027d20b5788a79e45afef64548467b2cbfcc7d153b2a959dd66c2aa",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\local-pose-24\\GuLiHybridMassAdapter.inl.before.txt",
+      "bytes": 55131,
+      "mtime_ns": 1792547035975589700,
+      "kind": "archived_source_backup",
+      "sha256": "513b673f38b8d9791a2eafa716ebdba3cb0546435b0c3db34255bfe8de681bf7",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\navigation-30\\capture_hybrid_cpu.py.before.txt",
+      "bytes": 19823,
+      "mtime_ns": 1792554097965958500,
+      "kind": "archived_source_backup",
+      "sha256": "29db16c224756bc1509add63d780a90057f72a72a72b788f9167c7b8d8c93cfd",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\navigation-30\\GuLiHybridWorldSubsystem.cpp.before.txt",
+      "bytes": 175299,
+      "mtime_ns": 1792554097955364400,
+      "kind": "archived_source_backup",
+      "sha256": "ddff70c4a9ce73992997c87e347e6f0c0d8b97fff9d903943879954a502b207a",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\navigation-30\\GuLiSharedMoveRoutes.cpp.before.txt",
+      "bytes": 10623,
+      "mtime_ns": 1792554097955364400,
+      "kind": "archived_source_backup",
+      "sha256": "33c6495b1d2d82fe04ebe52057577adde1dcd195bb9c6481a5ed758d20c2a04d",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\navigation-fairness-26\\GuLiBattleAuthoritySubsystem.cpp.before.txt",
+      "bytes": 337715,
+      "mtime_ns": 1792548557131977300,
+      "kind": "archived_source_backup",
+      "sha256": "7e5c982c086fccc73eea36022677ba5c018a698d7ef8dc83fa0cf8f045e3548a",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\peer-service-36\\capture_hybrid_cpu.before.py",
+      "bytes": 20789,
+      "mtime_ns": 1792557728164249500,
+      "kind": "archived_source_backup",
+      "sha256": "57eae79d7e0dc3307b34f8ff8d8ad5afb1d93045b692669c85daa065f374dc74",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\peer-service-36\\GuLiHybridSessionSubsystem.before.cpp",
+      "bytes": 61674,
+      "mtime_ns": 1792505586290625500,
+      "kind": "archived_source_backup",
+      "sha256": "601e7d855affb2285aa45f230a9f68a7f3d6665c4083b060d85a529d5288dc69",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\peer-service-36\\GuLiNetTransport.before.cpp",
+      "bytes": 18258,
+      "mtime_ns": 1792408853529373700,
+      "kind": "archived_source_backup",
+      "sha256": "83455b4cb48905f8e693d3e3df04cb3ba440c080a65ff3d75799017f4fb3d9ed",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\peer-service-36\\GuLiNetTransport.before.h",
+      "bytes": 5914,
+      "mtime_ns": 1792408853539385400,
+      "kind": "archived_source_backup",
+      "sha256": "81b2878448158116bee35c5d66fbbe35c68d5793026ee7a7ab597812b4711a32",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\response-48-preparation\\diagnose_commander_response.before.py",
+      "bytes": 10826,
+      "mtime_ns": 1792547187739566300,
+      "kind": "archived_source_backup",
+      "sha256": "959512c6c067e21a78f683da6ef5916c77bd289d454119973fabb2331cffda27",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\scheduling-29\\capture_hybrid_cpu.py.before.txt",
+      "bytes": 19642,
+      "mtime_ns": 1792552330294057700,
+      "kind": "archived_source_backup",
+      "sha256": "306385bcaef4e3abef73f8d8899dbca44fbe8a759954d7faa9eb98c990fb58c4",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\scheduling-29\\GuLiHybridMassAdapter.inl.before.txt",
+      "bytes": 55077,
+      "mtime_ns": 1792552330293504700,
+      "kind": "archived_source_backup",
+      "sha256": "03587626d616d296112fc4a2e1cc88d459ff76909b721a90c8f357d16d4a0db2",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\scheduling-29\\GuLiHybridWorldSubsystem.cpp.before.txt",
+      "bytes": 174097,
+      "mtime_ns": 1792552330283605000,
+      "kind": "archived_source_backup",
+      "sha256": "89cfe58e8ccef526de19cd1741fcd869ae61a60f5ca3e867f32c95a38dac1887",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\scheduling-29\\GuLiHybridWorldSubsystem.h.before.txt",
+      "bytes": 26133,
+      "mtime_ns": 1792552330283605000,
+      "kind": "archived_source_backup",
+      "sha256": "93afa2f58d8d752b2e1cab25cfeb6614d339a426c9589f33e028c9ec39f33a5c",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\scheduling-32\\capture_hybrid_cpu.py.before.txt",
+      "bytes": 20352,
+      "mtime_ns": 1792555687798000200,
+      "kind": "archived_source_backup",
+      "sha256": "e80f4134924ab36cb686d5f37d1f7d2c2ace4fd6cc4a6685f6e159f2e0ab786b",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\scheduling-32\\GuLiHybridWorldSubsystem.cpp.before.txt",
+      "bytes": 175299,
+      "mtime_ns": 1792555687796495600,
+      "kind": "archived_source_backup",
+      "sha256": "8f9c9ea07d553af3ed6b65562edba6a088eb7ba083ab1f27dba40fcd160c0f1e",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\scheduling-33\\capture_hybrid_cpu.py.before.txt",
+      "bytes": 20529,
+      "mtime_ns": 1792556513124895500,
+      "kind": "archived_source_backup",
+      "sha256": "4e02842e78b6feffde6aff3ebe95533e50a0b9b49b040eddbba1add00fa33c1c",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\scheduling-33\\GuLiHybridWorldSubsystem.cpp.before.txt",
+      "bytes": 176106,
+      "mtime_ns": 1792556513124895500,
+      "kind": "archived_source_backup",
+      "sha256": "d7cfa9530d28eb6ec1c88f260d3c3c23874e6d178223d96182141583e5298121",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\soft-pairs-27\\capture_hybrid_cpu.py.before.txt",
+      "bytes": 15618,
+      "mtime_ns": 1792549161513502700,
+      "kind": "archived_source_backup",
+      "sha256": "0684f5b41074eb8680d642fc41ed8962f334feedc360382bba2db6f88e6b83dc",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\soft-pairs-27\\GuLiBattleAuthoritySubsystem.cpp.before.txt",
+      "bytes": 338802,
+      "mtime_ns": 1792549161513502700,
+      "kind": "archived_source_backup",
+      "sha256": "6aeda1687e5dff22ed8cc8f06e21eb16fb120ee15db5d8af44429566043afc05",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\soft-pairs-27\\GuLiCommanderNavigationPolicy.cpp.before.txt",
+      "bytes": 35408,
+      "mtime_ns": 1792549161502528900,
+      "kind": "archived_source_backup",
+      "sha256": "9fe2b0179c1302ffea08b0cbb88860a1e32ff097da52ecf6f4ba65da8e983b93",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\soft-pairs-27\\GuLiCommanderNavigationPolicy.h.before.txt",
+      "bytes": 14493,
+      "mtime_ns": 1792549161512476400,
+      "kind": "archived_source_backup",
+      "sha256": "24cae71ec66f9f5e07f47198e0bc0e745afa40049128c0f6ba1cf8b553246901",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\vat-submit-38\\capture_hybrid_cpu.py.before",
+      "bytes": 21298,
+      "mtime_ns": 1792559749707362100,
+      "kind": "archived_source_backup",
+      "sha256": "bfb6c57a787dad1e07a6099ec4f7b27e854b7ffa576f149bba34c299769daf57",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\vat-submit-38\\GuLiVATAnimation.cpp.before",
+      "bytes": 12632,
+      "mtime_ns": 1791649296818388100,
+      "kind": "archived_source_backup",
+      "sha256": "9ff0a9cd3b40e76151d9239c6296810fe85e0480751c35864ba08f1a92a576bf",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\window-state-28\\author_hybrid_cpu_review_entry.before-update.py",
+      "bytes": 9362,
+      "mtime_ns": 1792549821594443600,
+      "kind": "archived_source_backup",
+      "sha256": "3115fdf1c480d6fded8cea1774c5f22c8ae3b957626d7a6dbde1293294e0dbee",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\window-state-28\\capture_hybrid_cpu.py.before.txt",
+      "bytes": 16856,
+      "mtime_ns": 1792550459502745200,
+      "kind": "archived_source_backup",
+      "sha256": "eacd94a55ab51a73e62dceff418b3770869411787fbb5c0b1cc984fe96dbe954",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\window-state-28\\GuLiPerformanceSubsystem.cpp.before.txt",
+      "bytes": 12648,
+      "mtime_ns": 1792550459501745900,
+      "kind": "archived_source_backup",
+      "sha256": "e26d90b369f0c12318762ba59bca9de26d383228599c7f0998d7858f6059fd48",
+      "retained_archive": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\adoption-42\\historical-source-backups.zip"
+    }
+  ],
+  "directories": [
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\offline-01\\build",
+      "files": 120,
+      "bytes": 50567845,
+      "kind": "standalone_cmake_generated_build",
+      "retained_parent_logs": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\offline-01"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\peer-service-36\\build",
+      "files": 114,
+      "bytes": 44821639,
+      "kind": "standalone_cmake_generated_build",
+      "retained_parent_logs": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\peer-service-36"
+    }
+  ],
+  "retained": [
+    "raw .utrace",
+    "native profile samples",
+    "summaries",
+    "build/test logs",
+    "source archives",
+    "map and art source"
+  ],
+  "planned_bytes": 25032264950
+}

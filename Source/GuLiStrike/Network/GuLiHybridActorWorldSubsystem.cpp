@@ -1,9 +1,21 @@
 #include "Network/GuLiHybridActorWorldSubsystem.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
+#include "Network/Private/GuLiHybridEntityState.h"
 #include "Engine/World.h"
+#include "HAL/IConsoleManager.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
+
+namespace
+{
+TAutoConsoleVariable<int32> EntityLayoutCache(TEXT("gs.Hybrid.EntityLayoutCache"),1,
+    TEXT("Prepare immutable entity capability names once per World at startup. 0 scans the manifest at each object birth for comparison."));
+}
+bool UGuLiHybridActorWorldSubsystem::IsEntityLayoutCacheEnabled() const
+{return EntityLayoutCache.GetValueOnGameThread()!=0;}
+const TArray<FName>* UGuLiHybridActorWorldSubsystem::FindEntityCapabilityNames(FName Definition) const
+{return IsEntityLayoutCacheEnabled()?EntityCapabilityNames.Find(Definition):nullptr;}
 
 bool UGuLiHybridActorWorldSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -17,6 +29,10 @@ void UGuLiHybridActorWorldSubsystem::Initialize(FSubsystemCollectionBase& Collec
     FString Error;
     if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve(GetWorld()).ManifestFile,Manifest,Error))
     { GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(Error); return; }
+    // Manifest is private and immutable until this World is deinitialized.
+    const double IndexStart=FPlatformTime::Seconds();
+    FGuLiHybridEntityState::BuildDefinitionIndex(Manifest,EntityCapabilityNames);
+    EntityCapabilityIndexBuildMilliseconds=(FPlatformTime::Seconds()-IndexStart)*1000.;
     auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
     TArray<FGuLiHybridAdapterFamily> Families;
     if (!FGuLiHybridAdapterRegistry::GetFamilies(Families,Error))
@@ -48,5 +64,5 @@ void UGuLiHybridActorWorldSubsystem::Initialize(FSubsystemCollectionBase& Collec
 void UGuLiHybridActorWorldSubsystem::Deinitialize()
 {
     if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) Hybrid->UnregisterFactories(*this);
-    Manifest={}; Super::Deinitialize();
+    EntityCapabilityNames.Reset();EntityCapabilityIndexBuildMilliseconds=0;Manifest={}; Super::Deinitialize();
 }

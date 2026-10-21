@@ -13,7 +13,7 @@ areas:
 status: done
 verification: passed
 created: '2026-09-17'
-updated: '2026-10-09'
+updated: '2026-10-21'
 summary: 保留全项目22色色库和原审核历史；v1.11记录扫荡者B_v1放行、正式UV遮罩且原Alpha保持、双方实际召唤自动改色通过，两类占位开关关闭。
 next_action: 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。
 relations:
@@ -25,7 +25,11 @@ categories:
 
 # GuLiStrike 美术规范 — 维护与验收台账
 
-当前规则唯一来源：[《GuLiStrike 美术规范》v1.11](../RequirementDocument/GuLiStrike美术规范.md)。本文件记录建立过程与审核证据，不复制另一份造型、爆炸或配色色表。
+当前规则唯一来源：[《GuLiStrike 美术规范》v1.12](../RequirementDocument/GuLiStrike美术规范.md)。本文件记录建立过程与审核证据，不复制另一份造型、爆炸或配色色表。
+
+## 2026-10-21：地面Mass死亡爆炸尺寸
+
+用户明确要求“地面Mass单位摧毁的爆炸特效缩小到原来的1/3”。当前模型相对尺寸在Mass专用死亡入口乘1/3，资源原有0.6参数保持，未修改颜色、Niagara资产、寿命或玩法。源码Editor build-22通过；不做读图测试，玩家核验入口见[本次增量](../Archive/20261021-Mass爆炸缩放与响应等待对照.md)。此为用户指定尺寸修订，技术完成不表示玩家视觉已通过。
 
 ## 本次落实
 

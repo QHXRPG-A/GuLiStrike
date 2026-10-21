@@ -29,16 +29,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-21 |
 | [十四模型仅配色 Blender 成品 B_v1](../RequirementDocument/20261008-十四模型仅配色Blender成品B_v1.md) | requirement | approved | 2026-10-09 |
 | [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2](../RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md) | requirement | superseded | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
 | [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | development | verification | 2026-10-09 |
 | [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | development | done | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [全项目统一色库与美术技能接入](../Archive/20261008-全项目统一色库与美术技能接入.md) | archive | recorded | 2026-10-08 |
 | [十四模型配色 Blender 成品 B_v1 交付](../Archive/20261008-十四模型配色Blender成品B_v1交付.md) | archive | recorded | 2026-10-08 |
@@ -192,6 +192,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-21 |
+| [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-21 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-10-16 |
 | [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-10-16 |
 | [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-10-16 |
@@ -204,14 +207,12 @@
 | [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2](../RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md) | requirement | superseded | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | development | verification | 2026-10-09 |
 | [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | development | done | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
@@ -510,6 +511,24 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
+| [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
+| [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
+| [弹丸网络服务与选区读取优化](../Archive/20261021-弹丸网络服务与选区读取优化.md) | archive | recorded | 2026-10-21 |
+| [本机命令调度诊断与路线索引对照](../Archive/20261021-本机命令调度诊断与路线索引对照.md) | archive | recorded | 2026-10-21 |
+| [编辑器窗口开销与交火基准校正](../Archive/20261021-编辑器窗口开销与交火基准校正.md) | archive | recorded | 2026-10-21 |
+| [导航优先队列与软避让工作量修复](../Archive/20261021-导航优先队列与软避让工作量修复.md) | archive | recorded | 2026-10-21 |
+| [Mass本机移动与直接呈现阶段记录](../Archive/20261021-Mass本机移动与直接呈现.md) | archive | recorded | 2026-10-21 |
+| [Mass爆炸缩放与响应等待对照](../Archive/20261021-Mass爆炸缩放与响应等待对照.md) | archive | recorded | 2026-10-21 |
+| [弹丸生命周期查询复用](../Archive/20261021-弹丸生命周期查询复用.md) | archive | recorded | 2026-10-21 |
+| [同步姿态发布顺序修复](../Archive/20261021-同步姿态发布顺序修复.md) | archive | recorded | 2026-10-21 |
+| [Hybrid压缩复用与指令反馈记录](../Archive/20261021-Hybrid压缩复用与指令反馈记录.md) | archive | recorded | 2026-10-21 |
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
+| [Hybrid原生消息接收优化记录](../Archive/20261020-Hybrid原生消息接收优化记录.md) | archive | recorded | 2026-10-20 |
+| [Hybrid对象准备索引与前台复测](../Archive/20261020-Hybrid对象准备索引与前台复测.md) | archive | recorded | 2026-10-20 |
+| [Hybrid交火CPU优化阶段记录](../Archive/20261020-Hybrid交火CPU优化阶段记录.md) | archive | recorded | 2026-10-20 |
+| [Hybrid 世界更新平均不超过 5 ms](../RequirementDocument/20261018-Hybrid世界更新5ms.md) | requirement | approved | 2026-10-19 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -762,6 +781,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
+| [UI CPU优化与四档LOD](../RequirementDocument/20261020-UI CPU优化与四档LOD.md) | requirement | approved | 2026-10-20 |
+| [UI CPU优化与四档LOD — 实施与验收](../DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md) | development | in_progress | 2026-10-20 |
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
+| [会话临时文件隔离与源码交付范围](../Archive/20261020-会话临时文件隔离与源码交付范围.md) | archive | recorded | 2026-10-20 |
+| [资源备用快照调整为5秒](../Archive/20261020-资源备用快照调整为5秒.md) | archive | recorded | 2026-10-20 |
+| [Hybrid唯一同步路径与Mass时钟卡顿修复](../Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md) | archive | recorded | 2026-10-20 |
+| [Hybrid 世界更新平均不超过 5 ms](../RequirementDocument/20261018-Hybrid世界更新5ms.md) | requirement | approved | 2026-10-19 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -1255,6 +1282,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-10-16 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
@@ -1572,6 +1600,28 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
+| [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
+| [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
+| [弹丸网络服务与选区读取优化](../Archive/20261021-弹丸网络服务与选区读取优化.md) | archive | recorded | 2026-10-21 |
+| [本机命令调度诊断与路线索引对照](../Archive/20261021-本机命令调度诊断与路线索引对照.md) | archive | recorded | 2026-10-21 |
+| [编辑器窗口开销与交火基准校正](../Archive/20261021-编辑器窗口开销与交火基准校正.md) | archive | recorded | 2026-10-21 |
+| [导航优先队列与软避让工作量修复](../Archive/20261021-导航优先队列与软避让工作量修复.md) | archive | recorded | 2026-10-21 |
+| [Mass本机移动与直接呈现阶段记录](../Archive/20261021-Mass本机移动与直接呈现.md) | archive | recorded | 2026-10-21 |
+| [Mass爆炸缩放与响应等待对照](../Archive/20261021-Mass爆炸缩放与响应等待对照.md) | archive | recorded | 2026-10-21 |
+| [弹丸生命周期查询复用](../Archive/20261021-弹丸生命周期查询复用.md) | archive | recorded | 2026-10-21 |
+| [同步姿态发布顺序修复](../Archive/20261021-同步姿态发布顺序修复.md) | archive | recorded | 2026-10-21 |
+| [Slate空操作优化与响应测量](../Archive/20261021-Slate空操作优化与响应测量.md) | archive | recorded | 2026-10-21 |
+| [Hybrid压缩复用与指令反馈记录](../Archive/20261021-Hybrid压缩复用与指令反馈记录.md) | archive | recorded | 2026-10-21 |
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
+| [Hybrid原生消息接收优化记录](../Archive/20261020-Hybrid原生消息接收优化记录.md) | archive | recorded | 2026-10-20 |
+| [Hybrid对象准备索引与前台复测](../Archive/20261020-Hybrid对象准备索引与前台复测.md) | archive | recorded | 2026-10-20 |
+| [Hybrid交火CPU优化阶段记录](../Archive/20261020-Hybrid交火CPU优化阶段记录.md) | archive | recorded | 2026-10-20 |
+| [会话临时文件隔离与源码交付范围](../Archive/20261020-会话临时文件隔离与源码交付范围.md) | archive | recorded | 2026-10-20 |
+| [资源备用快照调整为5秒](../Archive/20261020-资源备用快照调整为5秒.md) | archive | recorded | 2026-10-20 |
+| [Hybrid唯一同步路径与Mass时钟卡顿修复](../Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md) | archive | recorded | 2026-10-20 |
+| [Hybrid 世界更新平均不超过 5 ms](../RequirementDocument/20261018-Hybrid世界更新5ms.md) | requirement | approved | 2026-10-19 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -1843,6 +1893,37 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
+| [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
+| [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
+| [弹丸网络服务与选区读取优化](../Archive/20261021-弹丸网络服务与选区读取优化.md) | archive | recorded | 2026-10-21 |
+| [本机命令调度诊断与路线索引对照](../Archive/20261021-本机命令调度诊断与路线索引对照.md) | archive | recorded | 2026-10-21 |
+| [编辑器窗口开销与交火基准校正](../Archive/20261021-编辑器窗口开销与交火基准校正.md) | archive | recorded | 2026-10-21 |
+| [导航优先队列与软避让工作量修复](../Archive/20261021-导航优先队列与软避让工作量修复.md) | archive | recorded | 2026-10-21 |
+| [Mass本机移动与直接呈现阶段记录](../Archive/20261021-Mass本机移动与直接呈现.md) | archive | recorded | 2026-10-21 |
+| [Mass爆炸缩放与响应等待对照](../Archive/20261021-Mass爆炸缩放与响应等待对照.md) | archive | recorded | 2026-10-21 |
+| [弹丸生命周期查询复用](../Archive/20261021-弹丸生命周期查询复用.md) | archive | recorded | 2026-10-21 |
+| [同步姿态发布顺序修复](../Archive/20261021-同步姿态发布顺序修复.md) | archive | recorded | 2026-10-21 |
+| [Slate空操作优化与响应测量](../Archive/20261021-Slate空操作优化与响应测量.md) | archive | recorded | 2026-10-21 |
+| [Hybrid压缩复用与指令反馈记录](../Archive/20261021-Hybrid压缩复用与指令反馈记录.md) | archive | recorded | 2026-10-21 |
+| [UI CPU优化与四档LOD](../RequirementDocument/20261020-UI CPU优化与四档LOD.md) | requirement | approved | 2026-10-20 |
+| [保持玩法与表现的15ms帧时间优化](../RequirementDocument/20261020-保持玩法与表现的15ms帧时间优化.md) | requirement | approved | 2026-10-20 |
+| [一键截帧与CPU分析插件](../RequirementDocument/20261020-一键截帧与CPU分析插件.md) | requirement | approved | 2026-10-20 |
+| [UI CPU优化与四档LOD — 实施与验收](../DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md) | development | in_progress | 2026-10-20 |
+| [保持玩法与表现的15ms帧时间优化 — 实施记录](../DevelopmentDocumentation/20261020-保持玩法与表现的15ms帧时间优化.md) | development | verification | 2026-10-20 |
+| [一键截帧与CPU分析插件 — 技术方案](../DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md) | development | in_progress | 2026-10-20 |
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
+| [Hybrid原生消息接收优化记录](../Archive/20261020-Hybrid原生消息接收优化记录.md) | archive | recorded | 2026-10-20 |
+| [Hybrid对象准备索引与前台复测](../Archive/20261020-Hybrid对象准备索引与前台复测.md) | archive | recorded | 2026-10-20 |
+| [Hybrid交火CPU优化阶段记录](../Archive/20261020-Hybrid交火CPU优化阶段记录.md) | archive | recorded | 2026-10-20 |
+| [诊断工具开销优化与15ms复测](../Archive/20261020-诊断工具开销优化与15ms复测.md) | archive | recorded | 2026-10-20 |
+| [会话临时文件隔离与源码交付范围](../Archive/20261020-会话临时文件隔离与源码交付范围.md) | archive | recorded | 2026-10-20 |
+| [资源备用快照调整为5秒](../Archive/20261020-资源备用快照调整为5秒.md) | archive | recorded | 2026-10-20 |
+| [Hybrid唯一同步路径与Mass时钟卡顿修复](../Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md) | archive | recorded | 2026-10-20 |
+| [Slate 布局与绘制平均低于 2.5 ms](../RequirementDocument/20261018-Slate布局绘制2.5ms.md) | requirement | approved | 2026-10-19 |
+| [Hybrid 世界更新平均不超过 5 ms](../RequirementDocument/20261018-Hybrid世界更新5ms.md) | requirement | approved | 2026-10-19 |
+| [Slate 布局与绘制 2.5 ms 优化实施](../DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md) | development | in_progress | 2026-10-19 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-16 |
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
@@ -2084,18 +2165,18 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-21 |
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [十四模型仅配色 Blender 成品 B_v1](../RequirementDocument/20261008-十四模型仅配色Blender成品B_v1.md) | requirement | approved | 2026-10-09 |
 | [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2](../RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md) | requirement | superseded | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | development | verification | 2026-10-09 |
 | [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | development | done | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | development | done | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [扫荡者原橙区队色Blender候选交付](../Archive/20261009-扫荡者原橙区队色Blender候选交付.md) | archive | recorded | 2026-10-09 |
@@ -2431,12 +2512,23 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [保持玩法与表现的15ms帧时间优化](../RequirementDocument/20261020-保持玩法与表现的15ms帧时间优化.md) | requirement | approved | 2026-10-20 |
+| [一键截帧与CPU分析插件](../RequirementDocument/20261020-一键截帧与CPU分析插件.md) | requirement | approved | 2026-10-20 |
+| [保持玩法与表现的15ms帧时间优化 — 实施记录](../DevelopmentDocumentation/20261020-保持玩法与表现的15ms帧时间优化.md) | development | verification | 2026-10-20 |
+| [一键截帧与CPU分析插件 — 技术方案](../DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md) | development | in_progress | 2026-10-20 |
+| [诊断工具开销优化与15ms复测](../Archive/20261020-诊断工具开销优化与15ms复测.md) | archive | recorded | 2026-10-20 |
 | [Artifacts 与 ArtSource 运行时安全清理](../Archive/20261014-Artifacts与ArtSource运行时安全清理.md) | archive | recorded | 2026-10-14 |
 
 ## ui
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
+| [Slate空操作优化与响应测量](../Archive/20261021-Slate空操作优化与响应测量.md) | archive | recorded | 2026-10-21 |
+| [UI CPU优化与四档LOD](../RequirementDocument/20261020-UI CPU优化与四档LOD.md) | requirement | approved | 2026-10-20 |
+| [UI CPU优化与四档LOD — 实施与验收](../DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md) | development | in_progress | 2026-10-20 |
+| [Slate 布局与绘制平均低于 2.5 ms](../RequirementDocument/20261018-Slate布局绘制2.5ms.md) | requirement | approved | 2026-10-19 |
+| [Slate 布局与绘制 2.5 ms 优化实施](../DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md) | development | in_progress | 2026-10-19 |
 | [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-10-16 |
 | [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-10-16 |
 | [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-10-16 |
@@ -2635,6 +2727,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-21 |
+| [Mass爆炸缩放与响应等待对照](../Archive/20261021-Mass爆炸缩放与响应等待对照.md) | archive | recorded | 2026-10-21 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-10-16 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-10-12 |
 | [客户端表现管线技能与枪口批量化](../RequirementDocument/20261010-客户端表现管线技能与枪口批量化.md) | requirement | approved | 2026-10-10 |
@@ -2650,11 +2745,9 @@
 | [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
 | [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
 | [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-09 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
 | [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | development | verification | 2026-10-09 |
 | [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-09 |
 | [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
 | [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
 | [四项特效视觉确认与正式引用切换](../Archive/20261009-四项特效视觉确认与正式引用切换.md) | archive | recorded | 2026-10-09 |

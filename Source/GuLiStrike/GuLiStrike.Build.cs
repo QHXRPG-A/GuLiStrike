@@ -34,6 +34,7 @@ public class GuLiStrike : ModuleRules
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
+			"ApplicationCore", // Foreground-state evidence during explicitly requested performance captures.
 			"GuLiNetCore", "EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "WebSockets", "TraceLog",
 			"GuLiFlightNavigationRuntime", "RenderCore", "RHI",
 			// Commander 网络合同使用 FastArray 与自定义 NetSerialize。

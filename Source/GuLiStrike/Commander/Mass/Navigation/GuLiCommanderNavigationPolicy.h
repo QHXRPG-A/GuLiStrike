@@ -125,6 +125,11 @@ namespace GuLiCommanderNavigationPolicy
 		float MinimumDeltaSeconds,
 		float MaximumDeltaSeconds = MaximumMovementUpdateDeltaSeconds);
 
+	/** Consume only time after the last applied movement, including a partial command step. */
+	GULISTRIKE_API float ResolveUnconsumedMovementDeltaSeconds(
+		double CurrentSimulationSeconds, double LastMovementUpdateSimulationSeconds,
+		float MaximumDeltaSeconds = MaximumMovementUpdateDeltaSeconds);
+
 	/** Cell coordinate for the dedicated short-range manual-avoidance grid. */
 	GULISTRIKE_API FIntPoint MakeAvoidanceSpatialCell(
 		const FVector& Location,
@@ -144,13 +149,16 @@ namespace GuLiCommanderNavigationPolicy
 		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
 		TArray<FVector>& OutAvoidanceVelocities);
 
-	/** Simultaneous, bounded velocity corrections; stopped units yield only to friendly pressure. */
+	/** Simultaneous, bounded velocity corrections; stopped units yield only to friendly pressure.
+	 * Active-pair mode excludes pairs whose two velocities are invariantly zero.
+	 * All valid agents stay in the neighbor index, including stationary obstacles. */
 	GULISTRIKE_API FManualAvoidanceMetrics SolveSoftAvoidanceVelocities(
 		TConstArrayView<FManualAvoidanceAgent> Agents,
 		float MaximumHeightDifferenceCentimeters,
 		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
 		TArray<FVector>& OutVelocities,
-		const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry* SharedGeometry = nullptr);
+		const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry* SharedGeometry = nullptr,
+		bool bOnlyActivePairs = false);
 
 	/**
 	 * Finds the exact Commander SupportedAgent config. A Default-only list returns

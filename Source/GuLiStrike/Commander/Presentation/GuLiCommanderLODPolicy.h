@@ -2,13 +2,30 @@
 
 #include "CoreMinimal.h"
 
-/** Shared presentation policy, not a mesh LOD index or a replicated gameplay state. */
+/** Effect resource detail, independent of presentation tiers and MeshLOD indices. */
 enum class EGuLiCommanderLODLevel : uint8
 {
 	Full = 0,
 	Reduced = 1,
 	Minimal = 2
 };
+
+/** Runtime presentation tiers shared by units, buildings and player vehicles. */
+enum class EGuLiPresentationTier : uint8
+{
+	Full = 0,
+	MeshReduced = 1,
+	Tactical = 2,
+	Overview = 3
+};
+
+namespace GuLiPresentationLOD
+{
+	GULISTRIKE_API EGuLiPresentationTier Resolve(float TargetHeightMeters, float MeshReducedHeightMeters,
+		float TacticalHeightMeters, bool bOverview);
+	GULISTRIKE_API EGuLiCommanderLODLevel EffectDetail(EGuLiPresentationTier Tier);
+	GULISTRIKE_API bool ReduceMesh(EGuLiPresentationTier Tier);
+}
 
 enum class EGuLiCommanderLODReason : uint8
 {
@@ -31,6 +48,7 @@ struct GULISTRIKE_API FGuLiCommanderLODSettings
 	float MidEnterScreen = .003f;
 	float MidHoldScreen = .002f;
 	float MinimumResidenceSeconds = .35f;
+	float MeshReducedStartHeightMeters = 100.f;
 
 	bool Validate(FString& Error) const;
 	EGuLiCommanderLODLevel Classify(double Distance, float Screen,

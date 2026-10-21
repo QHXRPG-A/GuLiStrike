@@ -12,13 +12,16 @@
 #include "Network/Private/GuLiHybridReflectedState.h"
 #include "Network/Private/GuLiHybridObjectConversions.h"
 #include "GuLiNetLinearFlightRecipe.h"
+#include "GuLiNetAsyncClient.h"
 #include "Gameplay/Wingman/Private/GuLiHybridWingmanIdentity.h"
 #include "Gameplay/CombatEffects/GuLiLinearFlightContract.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "Subsystems/SubsystemCollection.h"
 #include "HAL/FileManager.h"
+#include "HAL/IConsoleManager.h"
 #include "HAL/PlatformMisc.h"
 #include "HAL/PlatformProcess.h"
 #include "Misc/CommandLine.h"
@@ -29,6 +32,10 @@
 
 namespace GuLiLinearState
 {
+TAutoConsoleVariable<int32> FlightServiceFastPath(TEXT("gs.Hybrid.FlightServiceFastPath"),1,
+    TEXT("Read only current applied flight lifetime/owner until local transition work needs the full view; reuse nested service key buffers. 0 selects the comparison path."));
+TAutoConsoleVariable<int32> CacheFlightLifecycleLookup(TEXT("gs.Hybrid.CacheFlightLifecycleLookup"),1,
+    TEXT("Reuse the current client's exact-life directory lookup for flights. Reads current owner/lifetime on every service. 0 selects tree lookup."));
 constexpr uint32 Version=GuLiLinearFlightContract::StateVersion;
 constexpr uint32 MaximumRecords=16384;
 constexpr uint32 MaximumBytes=16*1024*1024;
@@ -48,6 +55,8 @@ struct FRecord
     bool bRecipe=false,bAdmitted=false,bFinished=false,bHit=false,bDamageSubmitted=false,bDamageResolved=false,bRetirementSubmitted=false;
     bool bLaunchPublished=false,bTerminalPublished=false;
     bool bRetirementPrepared=false;
+    // Local lookup address only; Record() deliberately excludes this cursor.
+    GuLiNet::ObjectReadCursor LifecycleLookup;
 };
 struct FPrevious { FGuLiHybridObjectKey Key; FVector Position=FVector::ZeroVector; };
 struct FHistory { FGuid Group; uint8 Domain=0; float Time=0; TArray<FPrevious> Targets; };
@@ -138,6 +147,9 @@ struct FGuLiHybridProjectileState
     TWeakObjectPtr<UGuLiProjectilePoolSubsystem> Pool;
     TWeakObjectPtr<UGuLiHybridWorldSubsystem> Hybrid;
     TMap<FGuLiHybridObjectKey,FRecord> Records;
+    // Separate buffers preserve snapshot traversal when a callback reenters Service.
+    TArray<TUniquePtr<TArray<FGuLiHybridObjectKey>>> ServiceKeyBuffers;
+    int32 ServiceDepth=0;
     bool bRestoring=false;
     FGuLiHybridManifestData Manifest;
     FGuLiHybridProjectileState(UGuLiProjectilePoolSubsystem& P,UGuLiHybridWorldSubsystem& H):Pool(&P),Hybrid(&H) {}
@@ -232,6 +244,7 @@ struct FGuLiHybridProjectileState
     }
     void Activate(FRecord& V,const FGuLiHybridObjectState& Object)
     {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_Activate);
         auto* P=Pool.Get(); if (!P || V.bFinished || !V.bRecipe || Object.SimulationOwner!=LocalPlayer() || Object.LifeState!=GuLiLinearState::Alive) return;
         if (!V.bAdmitted) Trace(TEXT("admission-observed"),V);
         if (!V.bAdmitted && !bRestoring)
@@ -263,6 +276,7 @@ struct FGuLiHybridProjectileState
     }
     bool Publish(FRecord& V,bool Bootstrap)
     {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_Publish);
         // A numeric readback can activate a flight at the final tick of a
         // catch-up batch before its earlier shared steps reach Service().
         // Keep the publication pending until that actual sample is current;
@@ -282,7 +296,10 @@ struct FGuLiHybridProjectileState
         if (E.bHasMuzzle) E.Muzzle.ServerTime+=E.State.SampleTime-Sample;
         TArray<uint8> Bytes; if (GuLiFlightWire::EncodeBatch(MakeArrayView(&E,1),Bytes)!=1) return false;
         TArray<uint8> Private;
-        if (!EncodeRecord(V,Private)) return false;
+        {
+            TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_EncodePrivate);
+            if (!EncodeRecord(V,Private)) return false;
+        }
         GuLiNet::Writer Wire;Wire.U32(GuLiLinearState::EventTag);Wire.U32(GuLiLinearState::Version);
         Wire.Blob(std::span<const uint8>(Bytes.GetData(),Bytes.Num()));Wire.Blob(std::span<const uint8>(Private.GetData(),Private.Num()));
         if (!Wire.Good()) return false;const auto Body=Wire.Take();Bytes.Reset();Bytes.Append(Body.data(),int32(Body.size()));
@@ -323,36 +340,69 @@ struct FGuLiHybridProjectileState
             || Recipe.Admission!=GuLiNetBridge::ToCore(O.SpawnEvent)) return false;
         return CacheRecord(O,MakeArrayView(Recipe.State.data(),int32(Recipe.State.size())),true);
     }
-    void Service()
+    void Service(const FGuLiHybridObjectKey* Changed=nullptr)
     {
         if (bRestoring || !Pool.IsValid() || !Hybrid.IsValid() || !Hybrid->GetFailure().IsEmpty()) return;
-        TArray<FGuLiHybridObjectKey> Keys; Records.GetKeys(Keys);
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_LinearFlightService);
+        const bool FastPath=GuLiLinearState::FlightServiceFastPath.GetValueOnGameThread()!=0;
+        const bool CachedLookup=FastPath && GuLiLinearState::CacheFlightLifecycleLookup.GetValueOnGameThread()!=0;
+        const FGuid Local=FastPath?LocalPlayer():FGuid{};
+        const int32 Depth=ServiceDepth;
+        TGuardValue<int32> DepthGuard(ServiceDepth,Depth+1);
+        while (FastPath && ServiceKeyBuffers.Num()<=Depth) ServiceKeyBuffers.Add(MakeUnique<TArray<FGuLiHybridObjectKey>>());
+        TArray<FGuLiHybridObjectKey> ComparisonKeys;
+        TArray<FGuLiHybridObjectKey>& Keys=FastPath?*ServiceKeyBuffers[Depth]:ComparisonKeys;
+        Keys.Reset();
+        {
+            TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_ServiceKeys);
+            if (Changed) Keys.Add(*Changed);else Records.GetKeys(Keys);
+        }
         for (const auto& Key:Keys)
         {
             auto* V=Records.Find(Key); if (!V || !V->bRecipe) continue;
             if (V->bAdmitted && !V->bFinished && Pool->Matches(V->Handle))
             { if (!V->bLaunchPublished && !Hybrid->IsBattlePaused()) V->bLaunchPublished=Publish(*V,false); continue; }
             FGuLiHybridObjectState O;
-            const bool Registered=Hybrid->GetObject(Key,O);
+            bool Registered;
+            {
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_ReadLifecycle);
+                Registered=FastPath
+                    ?Hybrid->GetObjectLifecycle(Key,O.SimulationOwner,O.LifeState,CachedLookup?&V->LifecycleLookup:nullptr)
+                    :Hybrid->GetObjectView(Key,O);
+            }
             if (Registered && O.LifeState==GuLiLinearState::Destroyed) {Discard(*V,TEXT("discard-numeric-destroyed"));continue;}
             if (!V->bAdmitted && !Registered)
             {
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_AdmissionResult);
                 FGuLiHybridTransactionResult R;
                 if (Hybrid->FindTransactionResult(V->Admission,R) && !R.IsCommitted()
                     && R.Status!=EGuLiHybridTransactionStatus::Deferred && R.Status!=EGuLiHybridTransactionStatus::Paused)
                 { Discard(*V,TEXT("discard-admission-rejected")); continue; }
             }
-            if (!Registered || O.SimulationOwner!=LocalPlayer()) continue;
+            if (!Registered || O.SimulationOwner!=(FastPath?Local:LocalPlayer())) continue;
+            // Activation only consumes the current owner and lifetime. A
+            // finished record waiting for its already-submitted retirement
+            // also needs no definition/health/relationship projection.
+            // Keep the read at this point for every path that uses those fields.
+            const bool NeedsView=V->bFinished
+                && ((!V->bDamageResolved && V->bHit) || !V->bRetirementSubmitted);
+            if (FastPath && NeedsView)
+            {
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_ReadView);
+                if (!Hybrid->GetObjectView(Key,O)) continue;
+            }
             if (!V->bFinished) { Activate(*V,O); continue; }
             if (V->Recipe.Context.Source.Kind==EGuLiTargetKind::None && !Rebind(*V)) continue;
             if (!V->bTerminalPublished && !Hybrid->IsBattlePaused()) V->bTerminalPublished=Publish(*V,false);
             if (V->bHit && !V->bDamageResolved)
             {
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_DamageResult);
                 FGuLiDamageCommitResult Result;
                 if (Hybrid->FindDamageResult(V->Damage,Result))
                 { V->bDamageResolved=true; if (Result.Status==EGuLiDamageCommitStatus::Committed) ++Pool->Stats.Hits; }
                 else if (!V->bDamageSubmitted && !Hybrid->IsBattlePaused())
                 {
+                    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_SubmitDamage);
                     FGuLiDamageRequest R; R.MatchEpoch=CurrentEpoch(); R.DamageEventId=V->Damage;
                     R.ShotId=V->Key.StableId; R.RootEventId=V->Recipe.Context.RootEventId; R.Source=V->Recipe.Context.Source;
                     R.WeaponBinding=V->Recipe.Context.WeaponBinding; R.SkillId=V->Recipe.Context.SkillId;
@@ -373,6 +423,7 @@ struct FGuLiHybridProjectileState
                 FGuLiHybridObjectRequest R; R.Source=R.Target=Key; R.Event=V->Retirement;
                 R.Rule=FName(*(TEXT("retire/")+O.Definition.ToString())); R.Operation=EGuLiHybridObjectOperation::Destroy;
                 R.ExpectedRelationRevision=O.RelationRevision;R.OriginalAt=V->RetirementAt;
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_SubmitRetirement);
                 V->bRetirementSubmitted=Hybrid->SubmitObjectOperationNative(R,{}).IsValid();
             }
         }
@@ -546,6 +597,11 @@ public:
     bool Prepare(const FGuLiHybridObjectState& O) override { const auto S=State.Pin(); if (!S || !S->Supported(O) || !S->CacheBirth(O)) return false; Object=O; return true; }
     void SetAuthority(const FGuLiHybridObjectState& O,bool Local) override
     { Object=O; if (const auto S=State.Pin()) if (auto* V=S->Records.Find(O.Key); V && Local && !S->bRestoring) S->Activate(*V,O); }
+    // The shared LinearFlights system owns the original simulation cadence.
+    // Per-object age and ledger delivery continue even when this empty family
+    // callback is skipped; actor/entity work retains the bridge's own eligibility.
+    uint32 AdvancePeriod() const override
+    {return GuLiLinearState::FlightServiceFastPath.GetValueOnGameThread()!=0?0:1;}
     void Advance(uint64,double) override {}
     bool Execute(const FGuLiHybridCommand&,const FGuLiHybridCommandMember&) override { return false; }
     bool ApplyMotion(TConstArrayView<uint8> Bytes,uint64 At) override
@@ -725,5 +781,11 @@ void UGuLiProjectilePoolSubsystem::RetireHybrid(const FGuLiCombatEffectState& St
     if (Target)
     { if (!S->Hybrid->ResolveTarget(*Target,V->HitTarget)) { S->Hybrid->Suspend(TEXT("Flight hit lacks a stable target")); return; } V->bHit=true;V->DamageAt=S->Hybrid->GetObjectLogicalTick(Key); }
     if (Reason==EGuLiCombatEffectEndReason::Blocked) ++Stats.Blocked;
-    V->bTerminalPublished=S->Publish(*V,false); OnState.Broadcast(V->Geometry,true); S->Service();
+    V->bTerminalPublished=S->Publish(*V,false); OnState.Broadcast(V->Geometry,true);
+    // The shared logical step services every record before stepping the pool.
+    // Retiring one slot changes only this record; transaction results are applied
+    // by the ordered main-thread pump, never in this synchronous pool traversal.
+    // Preserve immediate hit/retirement submission without rescanning every other
+    // admitted or waiting flight for each projectile that finishes in the step.
+    S->Service(bStepping?&Key:nullptr);
 }

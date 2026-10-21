@@ -1,0 +1,14 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "GuLi Frame Profiler",
+  "Description": "Alt+/ records five seconds of CPU trace, captures the viewport and produces a local report.",
+  "Category": "Profiling",
+  "EnabledByDefault": true,
+  "CanContainContent": false,
+  "Modules": [
+    { "Name": "GuLiFrameProfiler", "Type": "Editor", "LoadingPhase": "PostEngineInit", "PlatformAllowList": ["Win64"] }
+  ],
+  "Plugins": [{ "Name": "RenderDocPlugin", "Enabled": true }]
+}

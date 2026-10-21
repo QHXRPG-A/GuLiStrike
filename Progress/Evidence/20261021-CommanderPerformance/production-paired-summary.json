@@ -1,0 +1,97 @@
+{
+  "method": "nearest-rank P95 of all retained native intervals, not average of round P95s",
+  "rounds": [
+    {
+      "round": 1,
+      "standard_compression": {
+        "n": 1828,
+        "mean_ms": 16.409650546879686,
+        "p95_ms": 29.784198850393295,
+        "peak_ms": 59.06740203499794
+      },
+      "fast_compression": {
+        "n": 1835,
+        "mean_ms": 16.341767902676352,
+        "p95_ms": 25.86210146546364,
+        "peak_ms": 55.10830134153366
+      },
+      "mean_delta_ms": -0.06788264420333334,
+      "p95_delta_ms": -3.922097384929657
+    },
+    {
+      "round": 2,
+      "standard_compression": {
+        "n": 1791,
+        "mean_ms": 16.748030262826077,
+        "p95_ms": 29.092200100421906,
+        "peak_ms": 62.34459951519966
+      },
+      "fast_compression": {
+        "n": 1800,
+        "mean_ms": 16.664433889091015,
+        "p95_ms": 27.108997106552124,
+        "peak_ms": 59.390097856521606
+      },
+      "mean_delta_ms": -0.08359637373506246,
+      "p95_delta_ms": -1.9832029938697815
+    },
+    {
+      "round": 3,
+      "standard_compression": {
+        "n": 1802,
+        "mean_ms": 16.639546558393224,
+        "p95_ms": 29.86700087785721,
+        "peak_ms": 96.77499905228615
+      },
+      "fast_compression": {
+        "n": 1755,
+        "mean_ms": 17.090904615034066,
+        "p95_ms": 30.1394984126091,
+        "peak_ms": 55.282700806856155
+      },
+      "mean_delta_ms": 0.45135805664084216,
+      "p95_delta_ms": 0.2724975347518921
+    }
+  ],
+  "combined": {
+    "standard_compression": {
+      "n": 5421,
+      "mean_ms": 16.597865024652677,
+      "p95_ms": 29.397401958703995,
+      "peak_ms": 96.77499905228615
+    },
+    "fast_compression": {
+      "n": 5390,
+      "mean_ms": 16.69344391487193,
+      "p95_ms": 27.648601680994034,
+      "peak_ms": 59.390097856521606
+    }
+  },
+  "identity": {
+    "map_size": 98091605,
+    "map_mtime_ns": 1792564482083816500,
+    "engine_exe_size": 505856,
+    "engine_exe_mtime_ns": 1792518080983696800,
+    "modules": {
+      "GuLiStrike": {
+        "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+        "file_timestamp": "2026-10-21T06:29:23.000Z",
+        "build_id": "d4757e21-eaef-492e-b079-c8c0056c493d"
+      },
+      "GuLiNetCore": {
+        "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+        "file_timestamp": "2026-10-21T06:28:13.000Z",
+        "build_id": "d4757e21-eaef-492e-b079-c8c0056c493d"
+      }
+    }
+  },
+  "combined_p95_not_worse": true,
+  "comparison_rounds": 3,
+  "response_target_ms": 20,
+  "full_goal_pass": false,
+  "remaining_gates": [
+    "local click to green feedback and actual movement strictly < 20ms, without RTT allowance",
+    "CPU/GPU attribution and workload invariants",
+    "separate player visual acceptance"
+  ]
+}

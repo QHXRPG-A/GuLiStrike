@@ -161,6 +161,7 @@ bool UGuLiResourceWorldSubsystem::TryGetHybridCaptureCounts(uint64 Tick,uint64 A
 }
 FIntPoint UGuLiResourceWorldSubsystem::GetHybridCaptureCounts(uint64 Tick,int32 Territory)
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_ControlPointCounts);
     const auto* Battle=GetWorld()->GetGameState<AGuLiBattleGameState>();const uint32 Epoch=Battle?Battle->GetMatchEpoch():0;
     if (HybridCaptureTick!=Tick || HybridCaptureEpoch!=Epoch)
     {
@@ -177,7 +178,9 @@ FIntPoint UGuLiResourceWorldSubsystem::GetHybridCaptureCounts(uint64 Tick,int32 
             }
             const int32 Index=FindTerritoryIndex(Target.Location);if (!HybridCaptureCounts.IsValidIndex(Index)) continue;
             FGuLiHybridObjectKey Key;FGuLiHybridObjectState State;
-            if (!H || !H->ResolveTarget(Target.Handle,Key) || !H->GetObject(Key,State) || State.bPhased) continue;
+            if (!H || !H->ResolveTarget(Target.Handle,Key)) continue;
+            const bool Read=H->GetObjectView(Key,State);
+            if (!Read || State.bPhased) continue;
             if (Target.Team==EGuLiTeam::Red) ++HybridCaptureCounts[Index].X;else if (Target.Team==EGuLiTeam::Blue) ++HybridCaptureCounts[Index].Y;
         }
     }

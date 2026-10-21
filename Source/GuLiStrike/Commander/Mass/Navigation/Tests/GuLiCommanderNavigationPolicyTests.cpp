@@ -868,7 +868,7 @@ namespace GuLiCommanderNavigationPolicyTests
 			10.0,
 			FixedDeltaSeconds);
 		TestTrue(
-			TEXT("The immediate first update preserves one 10 Hz step"),
+			TEXT("A regular first update preserves one 10 Hz step"),
 			FMath::IsNearlyEqual(FirstUpdateDelta, FixedDeltaSeconds, KINDA_SMALL_NUMBER));
 		const float SteadyUpdateDelta = ResolveMovementUpdateDeltaSeconds(
 			10.1,
@@ -886,6 +886,41 @@ namespace GuLiCommanderNavigationPolicyTests
 		TestTrue(
 			TEXT("The current fastest Soldier can still advance 360 cm per steady update"),
 			FMath::IsNearlyEqual(3600.0f * SteadyUpdateDelta, 360.0f, KINDA_SMALL_NUMBER));
+		return true;
+	}
+
+	IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+		FCommanderPartialMovementTimeTest,
+		"GuLiStrike.Commander.Mass.Navigation.PartialMovementTime",
+		EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+	bool FCommanderPartialMovementTimeTest::RunTest(const FString& Parameters)
+	{
+		(void)Parameters;
+		constexpr double Step = 0.1, LogicalStep = 1.0 / 60.0;
+		for (int32 Phase = 0; Phase < 6; ++Phase)
+		{
+			const double Accepted = 10.0 + Phase * LogicalStep;
+			const double ImmediateAt = FMath::Min(10.0 + Step, Accepted + LogicalStep);
+			const float Immediate = ResolveUnconsumedMovementDeltaSeconds(ImmediateAt, Accepted);
+			const float Remainder = ResolveUnconsumedMovementDeltaSeconds(10.0 + Step, ImmediateAt);
+			TestTrue(TEXT("Every command phase can consume the current logical step"),
+				FMath::IsNearlyEqual(Immediate, float(LogicalStep), KINDA_SMALL_NUMBER));
+			TestTrue(TEXT("Immediate plus regular movement consumes exactly time after admission"),
+				FMath::IsNearlyEqual(Immediate + Remainder, float(10.0 + Step - Accepted), KINDA_SMALL_NUMBER));
+			TestEqual(TEXT("The same logical timestamp cannot move a unit twice"),
+				ResolveUnconsumedMovementDeltaSeconds(ImmediateAt, ImmediateAt), 0.0f);
+			// Ownership restoration rebases both timestamps by the same offset.
+			TestTrue(TEXT("Ownership clock rebasing preserves the remaining movement credit"),
+				FMath::IsNearlyEqual(Remainder,
+					ResolveUnconsumedMovementDeltaSeconds(3.0 + Step, ImmediateAt - 7.0), KINDA_SMALL_NUMBER));
+		}
+		TestEqual(TEXT("Future movement credit is not integrated backwards"),
+			ResolveUnconsumedMovementDeltaSeconds(1.0, 1.02), 0.0f);
+		TestTrue(TEXT("Long stalls retain the maximum 100 ms movement step"),
+			FMath::IsNearlyEqual(ResolveUnconsumedMovementDeltaSeconds(12.0, 10.0), 0.1f));
+		TestEqual(TEXT("Nonfinite timestamps cannot create movement"),
+			ResolveUnconsumedMovementDeltaSeconds(std::numeric_limits<double>::quiet_NaN(), 0.0), 0.0f);
 		return true;
 	}
 

@@ -200,6 +200,7 @@ struct Coordinator::State : std::enable_shared_from_this<Coordinator::State>
         std::vector<HandoffAction> OwnershipOutbox;
         std::map<Revision,boost::json::object> MembershipDeadlineFailures;
         Revision PublishedMembership=0;
+        Bytes PublishedResourceGroups;
         RoomPhase PublishedPhase=RoomPhase::Preparing;
         std::uint64_t NextMessage=1;
         bool Dirty=true;
@@ -250,6 +251,7 @@ struct Coordinator::State::Session : std::enable_shared_from_this<Session>
     bool Bound = false;
     bool Closed = false;
     bool CloseAfterWrite = false;
+    bool Writing = false;
     std::size_t QueuedBytes = 0;
     explicit Session(tcp::socket S, std::shared_ptr<State> H) : Socket(std::move(S)), Host(H)
     { boost::system::error_code EC; const auto Endpoint = beast::get_lowest_layer(Socket).socket().remote_endpoint(EC); Loopback = !EC && Endpoint.address().is_loopback(); }
@@ -334,14 +336,20 @@ struct Coordinator::State::Session : std::enable_shared_from_this<Session>
         if (Closed) return;
         auto Wire = std::make_shared<Bytes>();
         if (!EncodeMessage(Value, *Wire) || QueuedBytes + Wire->size() > 16 * 1024 * 1024) { Stop(); return; }
-        QueuedBytes += Wire->size(); Writes.push_back(Wire); if (Writes.size() == 1) Write();
+        QueuedBytes += Wire->size(); Writes.push_back(Wire); Write();
     }
     void ContinueDirectory()
     {
-        if (Closed || !Writes.empty() || !DirectoryNext) return;
-        auto Next=DirectoryNext();
-        if (!Next) {DirectoryNext={};return;}
-        Send(*Next);
+        // A small bounded look-ahead keeps a large historical directory moving
+        // even while live grants/rosters keep the socket queue nonempty. Each
+        // record still gets its grant and sequence at enqueue time, before any
+        // later delta, and all messages retain the existing FIFO wire format.
+        while (!Closed && !CloseAfterWrite && DirectoryNext && QueuedBytes<64*1024)
+        {
+            auto Next=DirectoryNext();
+            if (!Next) {DirectoryNext={};return;}
+            Send(*Next);
+        }
     }
     void StreamDirectory(std::function<std::optional<Message>()> Next)
     {
@@ -351,15 +359,17 @@ struct Coordinator::State::Session : std::enable_shared_from_this<Session>
     }
     void Write()
     {
-        if (Closed || Writes.empty()) return;
+        if (Closed || Writing || Writes.empty()) return;
+        Writing=true;
         Socket.async_write(asio::buffer(*Writes.front()), [Self = shared_from_this()](boost::system::error_code EC, std::size_t Size)
         {
+            Self->Writing=false;
             if (auto Host=Self->Host.lock()) Host->Acceptance.Sent(Size);
             if (EC) { Self->Stop(); return; }
             Self->QueuedBytes -= Self->Writes.front()->size(); Self->Writes.pop_front();
-            if (!Self->Writes.empty()) Self->Write();
-            else if (Self->CloseAfterWrite) Self->Stop();
-            else Self->ContinueDirectory();
+            if (Self->Writes.empty() && Self->CloseAfterWrite) {Self->Stop();return;}
+            Self->ContinueDirectory();
+            Self->Write();
         });
     }
 };
@@ -415,6 +425,9 @@ void Coordinator::State::Roster(HostedRoom& R)
             W.Identity(P==Recipient?Id{}:R.PairKeys.at(std::minmax(P,Recipient)));
         }
         C->Send(Control(R,MessageKind::Roster,W.Take()));
+        Writer Groups;const auto Values=R.Core->ResourceGroups();Groups.U32(static_cast<std::uint32_t>(Values.size()));
+        for (const auto& [Key,G]:Values) WriteResourceGroup(Groups,G);
+        C->Send(Control(R,MessageKind::ResourceGroups,Groups.Take()));
     }
 }
 void Coordinator::State::Directory(HostedRoom& R,const std::shared_ptr<Session>& To)
@@ -425,8 +438,8 @@ void Coordinator::State::Directory(HostedRoom& R,const std::shared_ptr<Session>&
         return;
     }
     // Snapshot keys only (bounded by the existing 100000-record room limit).
-    // Queue one unchanged registration after the previous write drains. A
-    // late directory must not synchronously overflow the16MiB socket queue.
+    // Queue a bounded slice of unchanged registrations as writes drain. A
+    // late directory must not synchronously overflow the 16MiB socket queue.
     // Read current grants at enqueue time so interleaved deltas cannot be
     // followed by an older saved grant. Historical keys are never erased.
     std::vector<ObjectKey> Keys;Keys.reserve(R.Core->Objects().size());
@@ -547,6 +560,15 @@ void Coordinator::State::Handle(const std::shared_ptr<Session>& C,const Message&
     }
     case MessageKind::HandoffCancel:
     {Revision Transfer;if (Read.U64(Transfer) && Read.Done()) Core.Ownership().Reject(C->Player,V.Header.Object,Transfer);break;}
+    case MessageKind::ResourceSnapshotInstalled:
+    {
+        Id Group;Revision Recovery,Number;std::string Digest;std::uint32_t Count;std::vector<ObjectRegistration> Objects;
+        if (!Read.Identity(Group)||!Read.U64(Recovery)||!Read.U64(Number)||!Read.Text(Digest,64)||!Read.U32(Count)||!Count||Count>4096) return;
+        for (std::uint32_t I=0;I<Count;++I)
+        {ObjectRegistration O;if (!ReadAuthority(Read,O.Grant)||!Read.Text(O.Definition,256)||!Read.U32(O.Ordinal)||!Read.Key(O.Parent)) return;Objects.push_back(std::move(O));}
+        if (!Read.Done()||!Core.ResourceSnapshotInstalled(C->Player,Group,Recovery,Number,Digest,Objects,Time)) return;
+        break;
+    }
     case MessageKind::MembershipReady:
     {Revision Version;if (Read.U64(Version) && Read.Done()) Core.MembershipReady(C->Player,Version,Time);break;}
     case MessageKind::Leave: if (Read.Done()) Core.BeginLeave(C->Player,false,Time);break;
@@ -643,6 +665,9 @@ void Coordinator::State::Lost(Id Match,Id Player,Session* Expected)
 void Coordinator::State::Publish(HostedRoom& R,double Time)
 {
     auto& Core=*R.Core;const auto Actions=Core.TakeOwnershipActions(Time);
+    Writer Groups;const auto Values=Core.ResourceGroups();Groups.U32(static_cast<std::uint32_t>(Values.size()));
+    for (const auto& [Key,G]:Values) WriteResourceGroup(Groups,G);
+    auto GroupBytes=Groups.Take();
     R.OwnershipOutbox.insert(R.OwnershipOutbox.end(),Actions.begin(),Actions.end());
     if (!Persist(R)) return;
     for (const auto& [Player,Keys]:R.PendingRegistrationReceipts)
@@ -717,6 +742,10 @@ void Coordinator::State::Publish(HostedRoom& R,double Time)
         Broadcast(R,Registration(R,O));
     }
     Core.AcknowledgeDirectoryUpdates();
+    // Ordered control delivery installs every grant before releasing the group
+    // recovery fence. An installed snapshot alone never activates a simulator.
+    if (GroupBytes!=R.PublishedResourceGroups)
+    {R.PublishedResourceGroups=GroupBytes;Broadcast(R,Control(R,MessageKind::ResourceGroups,std::move(GroupBytes)));}
     if (Core.Membership() && R.PublishedMembership!=Core.Membership()->Version)
     {R.PublishedMembership=Core.Membership()->Version;SendMembership(R);}
     if (R.PublishedPhase!=Core.Phase())
@@ -737,10 +766,12 @@ void Coordinator::State::Publish(HostedRoom& R,double Time)
         // Full reconciliation is a join/readiness boundary. Ready peers already
         // receive ordered handoff deltas; resending the whole transfer set on
         // every projectile birth/retirement amplifies a large selection burst.
+        // A joining connection's stream emits its own final boundary. An
+        // interleaved delta must not announce completion before its directory.
         const auto End=Control(R,MessageKind::DirectoryComplete,W.Take());
         for (const auto& [Player,Weak]:R.Connections)
             if (const auto Member=Core.Members().find(Player);Member!=Core.Members().end() && !Member->second.Ready)
-                if (auto Connection=Weak.lock()) Connection->Send(End);
+                if (auto Connection=Weak.lock();Connection && !Connection->DirectoryNext) Connection->Send(End);
     }
 }
 void Coordinator::State::Poll()

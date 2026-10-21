@@ -76,3 +76,8 @@ ArtSource/Mechs/RSGMechStyle_20261003/**/*.log -whitespace
 TestResults/FlightEvents20261004/*.log -whitespace
 TestResults/NetworkLive20261003/*.log -whitespace
 TestResults/AssetMigration20261002/*.log -whitespace
+
+# Unified patch context intentionally contains a leading space before source tabs.
+Scripts/Performance/engine-slate-empty-operations.patch -whitespace
+# Preserve the exact compact evidence bytes recorded in the delivery manifest.
+Progress/Evidence/20261021-CommanderPerformance/** -text -whitespace

@@ -14,6 +14,9 @@ add_library(GuLiNetCore STATIC
     Private/GuLiNetGameplayPool.cpp
     Private/GuLiNetCommand.cpp
     Private/GuLiNetHandoff.cpp
+    Private/GuLiNetResourceSnapshot.cpp
+    Private/GuLiNetCurrentState.cpp
+    Private/GuLiNetResourceRecovery.cpp
     Private/GuLiNetPeerWork.cpp
     Private/GuLiNetGameplayTypes.cpp
     Private/GuLiNetOwnerState.cpp

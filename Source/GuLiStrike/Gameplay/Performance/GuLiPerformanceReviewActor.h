@@ -17,6 +17,10 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 	UFUNCTION(BlueprintCallable, Category="Performance Review") void StartComparison();
 	UFUNCTION(BlueprintCallable, Category="Performance Review") void StopComparison();
+	/** Opt-in camera entry for four-tier UI/mesh review. Never starts automatically. */
+	UPROPERTY(EditAnywhere, Category="Performance Review|Four Tier") bool bFourTierReview = false;
+	UPROPERTY(EditAnywhere, Category="Performance Review|Four Tier") float ReviewHeightMeters = 133.4f;
+	UPROPERTY(EditAnywhere, Category="Performance Review|Four Tier") bool bReviewOverview = false;
 	UPROPERTY(EditAnywhere, Category="Performance Review") TSoftObjectPtr<UNiagaraSystem> System;
 	UPROPERTY(EditAnywhere, Category="Performance Review") FVector BaseScale = FVector::OneVector;
 	UPROPERTY(EditAnywhere, Category="Performance Review") FVector RelativeBeamEnd = FVector(1600,0,0);

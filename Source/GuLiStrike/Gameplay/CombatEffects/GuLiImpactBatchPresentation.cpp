@@ -238,6 +238,7 @@ void UGuLiImpactBatchPresentation::PublishFrame(uint64 FrameNumber)
 		Capture->Record(TEXT("Impact.Active"),GetActiveCount()); Capture->Record(TEXT("Impact.Components"),GetComponentCount());
 		Capture->Record(TEXT("Impact.AcceptedTotal"),double(Accepted)); Capture->Record(TEXT("Impact.PublishedTotal"),double(Published));
 		Capture->Record(TEXT("Impact.FallbacksTotal"),double(Fallbacks)); Capture->Record(TEXT("Impact.UnknownBoundsTotal"),double(UnknownBounds));
+		Capture->Record(TEXT("Impact.DuplicatesTotal"),double(Duplicates)); Capture->Record(TEXT("Impact.CulledTotal"),double(Culled));
 	}
 }
 

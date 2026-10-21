@@ -24,7 +24,7 @@ def reject(session, player, team, role, expected):
     body=bytes((0,1 if team=='Red' else 2,('Commander','Ground','Air').index(role)))
     body+=b''.join(text(v) for v in (manifest['config_hash'],manifest['map_hash'],'127.0.0.1:1','',''))
     wire=struct.pack('<IHH',0x474c4e43,protocol,1)+identity(session.plan['room'])+struct.pack('<Q',0)+identity(player)
-    wire+=bytes(16+21)+struct.pack('<4Q',0,0,1,0)+struct.pack('<I',len(body))+body
+    wire+=bytes(16+21)+struct.pack('<4Q',0,0,1,0)+bytes(24)+struct.pack('<I',len(body))+body
     with socket.create_connection(('127.0.0.1',session.args.coordinator_port),timeout=10) as connection:
         key=base64.b64encode(os.urandom(16)).decode()
         connection.sendall(('GET /v1/match HTTP/1.1\r\nHost: 127.0.0.1\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Version: 13\r\nSec-WebSocket-Key: '+key+'\r\n\r\n').encode())
@@ -51,9 +51,9 @@ def reject(session, player, team, role, expected):
         elif size==127: size=struct.unpack('>Q',read(8))[0]
         if size>65536: raise RuntimeError('Oversized admission result')
         response=read(size)
-    if len(response)<125 or struct.unpack_from('<IHH',response)!=(0x474c4e43,protocol,3):
+    if len(response)<149 or struct.unpack_from('<IHH',response)!=(0x474c4e43,protocol,3):
         raise RuntimeError('Invalid request was admitted instead of rejected')
-    length=struct.unpack_from('<I',response,121)[0];reason=response[125:125+length].decode()
+    length=struct.unpack_from('<I',response,145)[0];reason=response[149:149+length].decode()
     result={'player':player,'team':team,'role':role,'reason':reason,'expected':expected,'response_sha256':hashlib.sha256(response).hexdigest()}
     path=session.stage_output/('admission-'+uuid.uuid4().hex+'.json');session.write_json(path,result)
     if reason!=expected: raise RuntimeError('Wrong admission decision: '+reason)

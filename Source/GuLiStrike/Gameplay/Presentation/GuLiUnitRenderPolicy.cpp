@@ -1,4 +1,5 @@
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 
 #include "Components/MeshComponent.h"
 #include "GameFramework/Actor.h"
@@ -56,6 +57,7 @@ void GuLiUnitRenderPolicy::Apply(UMeshComponent& Component)
 {
 	ApplyReflectionExclusions(Component);
 	ApplyBodyMaterials(Component);
+	UGuLiCommanderLODSubsystem::NotifyMeshChanged(&Component);
 }
 
 void GuLiUnitRenderPolicy::ApplyToActor(AActor* Actor)
@@ -64,4 +66,5 @@ void GuLiUnitRenderPolicy::ApplyToActor(AActor* Actor)
 	TInlineComponentArray<UMeshComponent*> Meshes;
 	Actor->GetComponents(Meshes, true);
 	for (UMeshComponent* Mesh : Meshes) Apply(*Mesh);
+	UGuLiCommanderLODSubsystem::NotifyActorChanged(Actor);
 }

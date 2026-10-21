@@ -4,6 +4,25 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-10-21 | [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | performance, network, combat, ui | partial | 采用快速小消息压缩正式默认并清理五类实验；三轮合并P95 29.40至27.65ms、均值16.60至16.69ms，释放25.03GB临时数据。 |
+| 2026-10-21 | [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | performance, network, combat | partial | VAT完整数据319979次比较零差异，但整帧16.38至16.33ms且P95变差，保持关闭；纯兵种输入默认优化后入队0.315ms、绿线6.373ms，完整响应仍失败。 |
+| 2026-10-21 | [弹丸网络服务与选区读取优化](../Archive/20261021-弹丸网络服务与选区读取优化.md) | performance, network, combat | partial | 发布编码和可靠包排序实验完成生产对照；24成员语义输入到入队10.24降至0.26ms。合并最新整帧单轮16.42至17.05ms，三项默认关闭，目标未完成。 |
+| 2026-10-21 | [本机命令调度诊断与路线索引对照](../Archive/20261021-本机命令调度诊断与路线索引对照.md) | performance, network, combat | partial | 路线索引单轮16.36至16.12ms；帧尾应用提前接手但未证明整帧收益，两种实验模式默认关闭。保存完整CPU/GPU及命令阶段证据。 |
+| 2026-10-21 | [编辑器窗口开销与交火基准校正](../Archive/20261021-编辑器窗口开销与交火基准校正.md) | performance, network, combat | partial | 同构建窗口对照复现23.07至17.28ms差异，Slate布局/绘制4.63至1.22ms；补齐窗口条件记录，环境差值不作为代码收益。 |
+| 2026-10-21 | [导航优先队列与软避让工作量修复](../Archive/20261021-导航优先队列与软避让工作量修复.md) | performance, network, combat | partial | 修复后发部队导航饥饿，119万次避让速度比较一致；同构建单轮交火24.26降至22.32ms，15ms和完整20ms目标未达成。 |
+| 2026-10-21 | [Mass本机移动与直接呈现阶段记录](../Archive/20261021-Mass本机移动与直接呈现.md) | performance, network, combat | partial | 本机手动移动在60Hz逻辑步推进，直接使用已提交姿态；单次全前台语义输入的首次模型位移17.97ms，原2cm观察32.68ms，最终目标未验收。 |
+| 2026-10-21 | [Mass爆炸缩放与响应等待对照](../Archive/20261021-Mass爆炸缩放与响应等待对照.md) | performance, network, combat, vfx | partial | 地面Mass死亡爆炸缩至当前1/3并完成源码Editor构建；有效发布顺序对照排除约100ms的陈旧姿态等待，模型响应仍146.55ms。 |
+| 2026-10-21 | [弹丸生命周期查询复用](../Archive/20261021-弹丸生命周期查询复用.md) | performance, network, combat | partial | 弹丸服务复用同客户端同完整对象身份的目录节点，逐次读取最新生命状态和所有权；build-21通过，前台仍不可用，收益待测。 |
+| 2026-10-21 | [同步姿态发布顺序修复](../Archive/20261021-同步姿态发布顺序修复.md) | performance, network, combat | partial | 同步Mass姿态改为本逻辑步位移完成后采样，保持原10Hz发布；build-20通过，前台准备失败，尚未测得收益。 |
+| 2026-10-21 | [Slate空操作优化与响应测量](../Archive/20261021-Slate空操作优化与响应测量.md) | performance, ui, network | partial | 三轮配对确认空Slate操作优化每帧节省约1.1ms；有效语义响应测得当帧绿线9.82ms、模型移动提交202.89ms，两个最终目标继续实施。 |
+| 2026-10-21 | [Hybrid压缩复用与指令反馈记录](../Archive/20261021-Hybrid压缩复用与指令反馈记录.md) | performance, network, combat | partial | 压缩上下文复用完成单轮配对；即时绿线与当帧规划已编译交付，前台响应计时因Windows拒绝访问未执行，两个性能目标仍未验收。 |
+| 2026-10-20 | [Hybrid原生消息接收优化记录](../Archive/20261020-Hybrid原生消息接收优化记录.md) | performance, network, combat | partial | build-14接收路径减少两次正文容器转换，单条Scope约下降10.25%；单轮Trace整帧20.101到19.948ms，15ms与最终三轮验收尚未达成。 |
+| 2026-10-20 | [Hybrid对象准备索引与前台复测](../Archive/20261020-Hybrid对象准备索引与前台复测.md) | performance, network, combat | partial | 能力定义索引将30秒窗口内准备累计耗时1.507秒降至0.003秒；补充实际预览逐帧前台检查，发现编辑器额外绘制影响整帧结果，最新诊断19.370ms，15ms未达成。 |
+| 2026-10-20 | [Hybrid交火CPU优化阶段记录](../Archive/20261020-Hybrid交火CPU优化阶段记录.md) | performance, network, combat | partial | build-09一轮有效前台配对平均24.776→23.412ms、P95 43.221→36.804ms；60Hz时钟及命中特效过期检查通过，平均15ms和三轮验收未完成。 |
+| 2026-10-20 | [诊断工具开销优化与15ms复测](../Archive/20261020-诊断工具开销优化与15ms复测.md) | performance, tools | partial | 保持600单位、32建筑与原画质，平均帧时间由25.929ms降至13.567ms和13.586ms；GPU功能回归通过，玩家复核待确认。 |
+| 2026-10-20 | [会话临时文件隔离与源码交付范围](../Archive/20261020-会话临时文件隔离与源码交付范围.md) | network, commander, performance | partial | 按用户要求整理项目提交；4804个临时文件已移至项目外隔离目录，提供手动一键删除脚本。正式证据、源码和冻结回退版本保留，清理不改变原有验证结论。 |
+| 2026-10-20 | [资源备用快照调整为5秒](../Archive/20261020-资源备用快照调整为5秒.md) | network, commander, performance | partial | 按用户要求将周期资源副本从100ms改为5秒；首次副本及退出最终采集保持即时。源码UE5.7重编、离线周期边界及完整核心契约通过，编辑器已加载新DLL；未重测性能。 |
+| 2026-10-20 | [Hybrid唯一同步路径与Mass时钟卡顿修复](../Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md) | network, commander, performance | partial | 删除旧同步路径并编译；离线复现和修复快照屏障占住逻辑时钟、累计时间丢失。600单位移动写入774→113ms，本地665个Mass最新168ms。完整Hybrid8.12ms，窗口消息长停顿触发原因及玩家反馈仍待确认。 |
 | 2026-10-16 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | network, commander, combat | partial | 本会话归档与交付收尾完成，保全93份来源及历次独有事实；清理实际范围、平台拒绝及GitHub交付另记。 |
 | 2026-10-14 | [Artifacts 与 ArtSource 运行时安全清理](../Archive/20261014-Artifacts与ArtSource运行时安全清理.md) | tools | partial | 根据用户授权清理两个目录的非运行时文件，删除 18,868 个文件、1,573 个空目录，逻辑大小 64.597 GiB，仅保留 105 份被文档引用的 Markdown 说明。运行资源未改动，安全性依据静态引用核对，未运行游戏。 |
 | 2026-10-11 | [Mass会话GitHub交付与临时文件清理受阻](../Archive/20261011-Mass会话GitHub交付与临时文件清理受阻.md) | commander, navigation, presentation, performance | partial | Mass优化、原地图与报告共104个文件已上传GitHub main，远端提交核对一致；87个临时文件约85.4 MB的删除被自动审批策略拦截，未删除任何文件。 |

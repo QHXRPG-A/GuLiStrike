@@ -1,4 +1,5 @@
 #include "Gameplay/Building/GuLiBuildingConstructionVisualComponent.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Building/GuLiBuildingVisuals.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
@@ -144,8 +145,8 @@ bool UGuLiBuildingConstructionVisualComponent::BeginConstruction()
 		auto* Ghost = GuLiBuildingVisuals::CopyMesh(*GetOwner(), *GhostRoot, *Source, Relative, HologramMaterial, true);
 		if (!Solid || !Ghost)
 		{
-			if (Solid) Solid->DestroyComponent();
-			if (Ghost) Ghost->DestroyComponent();
+			if (Solid) { UGuLiCommanderLODSubsystem::ForgetMesh(Solid); Solid->DestroyComponent(); }
+			if (Ghost) { UGuLiCommanderLODSubsystem::ForgetMesh(Ghost); Ghost->DestroyComponent(); }
 			continue;
 		}
 		Solids.Add(Solid); Ghosts.Add(Ghost);
@@ -191,7 +192,8 @@ void UGuLiBuildingConstructionVisualComponent::FinishConstruction()
 	bConstructing = false; bFinishing = true;
 	DisplayedProgress = TargetProgress = 1.0f;
 	RestoreOriginals();
-	for (UMeshComponent* Solid : Solids) if (Solid) Solid->DestroyComponent();
+	for (UMeshComponent* Solid : Solids) if (Solid)
+	{ UGuLiCommanderLODSubsystem::ForgetMesh(Solid); Solid->DestroyComponent(); }
 	Solids.Reset();
 	if (SolidRoot) SolidRoot->DestroyComponent();
 	SolidRoot = nullptr;
@@ -233,8 +235,10 @@ void UGuLiBuildingConstructionVisualComponent::ClearPresentation()
 void UGuLiBuildingConstructionVisualComponent::ClearMeshes()
 {
 	RestoreOriginals();
-	for (UMeshComponent* Mesh : Solids) if (Mesh) Mesh->DestroyComponent();
-	for (UMeshComponent* Mesh : Ghosts) if (Mesh) Mesh->DestroyComponent();
+	for (UMeshComponent* Mesh : Solids) if (Mesh)
+	{ UGuLiCommanderLODSubsystem::ForgetMesh(Mesh); Mesh->DestroyComponent(); }
+	for (UMeshComponent* Mesh : Ghosts) if (Mesh)
+	{ UGuLiCommanderLODSubsystem::ForgetMesh(Mesh); Mesh->DestroyComponent(); }
 	Solids.Reset(); Ghosts.Reset();
 	if (SolidRoot) SolidRoot->DestroyComponent();
 	if (GhostRoot) GhostRoot->DestroyComponent();

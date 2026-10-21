@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingProductionComponent.h"
 #include "Gameplay/Building/GuLiConstructedUnitComponent.h"
 #include "Gameplay/Building/GuLiBuildingShieldComponent.h"
@@ -154,6 +155,7 @@ void AGuLiPlacedBuilding::ApplyDefinition(const FGuLiBuildingDefinition& Definit
 	NavigationModifier->RefreshNavigationModifiers();
 	if (bNeedsVisualUpdate)
 		FindComponentByClass<UGuLiBuildingConstructionVisualComponent>()->RefreshVisualSources();
+	UGuLiCommanderLODSubsystem::NotifyMeshChanged(VisualMesh);
 }
 
 void AGuLiPlacedBuilding::OnRep_BuildingState()

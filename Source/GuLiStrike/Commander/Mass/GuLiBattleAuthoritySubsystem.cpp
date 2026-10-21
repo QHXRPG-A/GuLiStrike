@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Commander/Mass/GuLiSoldierLocalPose.h"
 #include "GuLiNetRules.h"
 #include "GuLiNetAsyncClient.h"
 #include "GuLiNetGameplayPool.h"
@@ -13,6 +14,7 @@
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 
 void RegisterGuLiHybridMassAdapters(UGuLiBattleAuthoritySubsystem& Authority);
+class FGuLiHybridMassAdapter;
 namespace GuLiHybridMass {struct FPosePipeline;}
 #include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
@@ -26,6 +28,7 @@ namespace GuLiHybridMass {struct FPosePipeline;}
 #include "Commander/Network/GuLiCommanderPoseCodec.h"
 
 #include "Algo/MinElement.h"
+#include "Algo/BinarySearch.h"
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "Async/Async.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
@@ -97,11 +100,15 @@ DEFINE_LOG_CATEGORY_STATIC(LogGuLiCommanderMass, Log, All);
 CSV_DEFINE_CATEGORY(GuLiCommanderAuthority, true);
 
 // 本文件是 Commander 的服务端战斗权威入口：维护独立士兵、解析选兵/移动意图，
-// 以 10 Hz 推进权威状态，每步求解全部士兵位置并生成网络快照。
+// 常规战斗以 10 Hz 推进；本机手动移动按 Hybrid 逻辑步消费时间。
 // SoldierId 跨网络，Mass Entity 句柄只在本地使用。
 // 建议阅读顺序：生命周期与生成 -> ResolveSelection -> BeginMovePlanning -> TickAuthority -> 快照输出。
 namespace GuLiCommanderMassPrivate
 {
+	TAutoConsoleVariable<int32> ImmediateMovement(TEXT("gs.Commander.ImmediateMovement"), 1,
+		TEXT("Advance local manual Hybrid movement on each 60 Hz logical step. Combat and network pose publication remain at 10 Hz."));
+	TAutoConsoleVariable<int32> ActiveSoftPairs(TEXT("gs.Commander.ActiveSoftPairs"), 1,
+		TEXT("Local manual movement soft avoidance: 0 all pairs, 1 active endpoints only, 2 compare both outputs (diagnostic overhead)."));
 	// 2 队 × 10 个出生方阵 × 25 人 = 500 人；出生方阵只是摆放规则，不是永久编制。
 	constexpr int32 SpawnFormationsPerTeam = 10;
 	constexpr int32 TeamCount = 2;
@@ -2063,7 +2070,7 @@ bool FGuLiMovementWorkerFrozenInputTest::RunTest(const FString&)
     {
         Work=std::make_shared<FMovementCalculation>(Input);bool Applied=false;
         GuLiNet::AsyncClientWorld Worker(Match,Player,1,[](const auto&)->std::unique_ptr<GuLiNet::IObjectAdapter>{return {};},
-            [](auto,auto,auto,bool){return true;},{},false,{},0,{true,true,true,Threads?GuLiNet::MakeGameplayTaskPool(Threads):nullptr});
+            [](auto,auto,auto,bool){return true;},{},false,{},0,{true,Threads?GuLiNet::MakeGameplayTaskPool(Threads):nullptr});
         TestTrue(TEXT("Frozen calculation admitted to the owner or bounded pool"),Worker.SubmitGameplay("frozen-movement",Work,65536,65536,[&]{Applied=true;}));
         const double Deadline=FPlatformTime::Seconds()+5;
         while (!Applied&&FPlatformTime::Seconds()<Deadline) {Worker.PumpApplications();FPlatformProcess::SleepNoStats(.001f);}
@@ -2093,6 +2100,8 @@ struct FGuLiBattleAuthorityState
 	TMap<uint32, int32> SoldierIndexById;
 	TArray<GuLiCommanderMassPrivate::FOrderFormationRuntime> OrderFormations;
 	TArray<TUniquePtr<GuLiCommanderMassPrivate::FMovePlanningJob>> MovePlanningJobs;
+	// Local scheduling only. Identity, order and authority are checked again before use.
+	TSet<uint32> ImmediateMoveIds;
 	GuLiCommanderMassPrivate::FMoveReservationLedger MoveReservations;
 	FGuLiNavigationWorkBudget PlanningBudget;
 	uint64 NavigationBudgetFrame=MAX_uint64;
@@ -2104,6 +2113,9 @@ struct FGuLiBattleAuthorityState
 	TArray<TWeakPtr<FGuLiSharedMoveIntent>> MoveIntents;
 	int32 SharedDiscoveryCursor[2] = {}, SharedDiscoveryRemaining[2] = {}, IntentCursor = 0;
 	uint64 SharedDiscoveryFrame[2] = {MAX_uint64,MAX_uint64};
+	TSet<uint32> SharedPriorityVisited;
+	uint64 SharedPriorityFrame = MAX_uint64;
+	uint32 LastPrioritySoldierId = 0;
 	uint64 NextPlanId = 1;
 	uint32 PlanningCursor[2] = {};
 	TWeakObjectPtr<const AGuLiBattlePlayerState> LastManualOwner;
@@ -2124,6 +2136,13 @@ struct FGuLiBattleAuthorityState
 	TArray<GuLiCommanderNavigationPolicy::FManualAvoidanceAgent> ManualAvoidanceAgents;
     bool bMovementStepPending=false;
     std::shared_ptr<GuLiHybridMass::FPosePipeline> PosePipeline;
+    struct FPendingPosePublish
+    {
+        TWeakPtr<FGuLiHybridMassAdapter> Adapter;
+        uint64 Tick=0, OwnerEpoch=0, ControlEpoch=0;
+    };
+    // Within one logical step only. Never serialized or retained across custody changes.
+    TArray<FPendingPosePublish> PendingPosePublishes, DispatchPosePublishes;
     // Local presentation identity only; never included in an ownership snapshot.
     TWeakObjectPtr<AGuLiSoldierStateReplicator> HybridReadModel;
     std::shared_ptr<GuLiCommanderMassPrivate::FMovementCalculation> MovementCalculation;
@@ -2331,13 +2350,16 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 		return;
 	}
 	// 可走性采样按世界帧分配预算，放在固定步循环外，避免补帧时成倍增加 NavMesh 查询。
-	if (!UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::ReducedWork) || AuthorityState->NavigationBudgetFrame!=GFrameCounter)
+	if (AuthorityState->NavigationBudgetFrame!=GFrameCounter)
 	{
 		AuthorityState->NavigationBudgetFrame=GFrameCounter;
 		AuthorityState->PlanningBudget.Reset(MovePlanningMilliseconds, MovePositionQueriesPerFrame, MovePathQueriesPerFrame);
 		AuthorityState->CommitBudget.Reset(MoveCommitMilliseconds, 0, 0, FMath::Max(25, MoveCommitMembersPerFrame));
 	}
 	auto& Budget = AuthorityState->PlanningBudget;
+	const bool bImmediateMovement = bAdvancingHybrid
+		&& GuLiCommanderMassPrivate::ImmediateMovement.GetValueOnGameThread() != 0
+		&& !UGuLiHotspotOptions::Enabled(GetWorld(), EGuLiHotspot::GameplayWorker);
 	FGuLiNavigationWorkBudget::FAllowance Shares[4]={{.0010,16,2},{.0004,16,2},{.0003,24,0},{.0003,8,0}};
 	auto RunCategory=[&](int32 Category,FGuLiNavigationWorkBudget::FAllowance& Allowance)
 	{
@@ -2347,7 +2369,10 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 		{
 			if (auto* Tasks=GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()) Tasks->PumpMoveAdmissions(Budget);
 			TickMovePlanning(Budget.Projections,Budget.Paths,true);
-			TickSharedNavigation(0);
+			if (bImmediateMovement) CommitReadyMovePlans();
+			TArray<uint32> Priority = bImmediateMovement ? AuthorityState->ImmediateMoveIds.Array() : TArray<uint32>{};
+			Priority.Sort();
+			TickSharedNavigation(0, Priority);
 		}
 		else if (Category==1) { TickMovePlanning(Budget.Projections,Budget.Paths,false); TickSharedNavigation(1); }
 		else if (Category==2) TickSharedNavigation(2);
@@ -2368,8 +2393,26 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 			auto& Used=AuthorityState->CategoryUsage[C]; Used.UsedSeconds+=Borrowed.UsedSeconds;
 			Used.UsedProjections+=Borrowed.UsedProjections; Used.UsedPaths+=Borrowed.UsedPaths;
 		}
-	// Discrete command state commits on this world frame. Location integration retains its 10 Hz cadence.
+	// Validation and routing keep the shared per-frame budget. Newly committed
+	// manual commands are visited directly instead of waiting for the discovery cursor.
 	CommitReadyMovePlans();
+	if (bImmediateMovement && !AuthorityState->ImmediateMoveIds.IsEmpty())
+	{
+		for (auto It = AuthorityState->ImmediateMoveIds.CreateIterator(); It; ++It)
+		{
+			const int32* Index = AuthorityState->SoldierIndexById.Find(*It);
+			const auto* S = Index ? &AuthorityState->Soldiers[*Index] : nullptr;
+			if (!S || !S->CanSimulate() || !S->ActiveOrderId || !S->MoveIntent
+				|| S->bAutomaticAdvance) It.RemoveCurrent();
+		}
+		if (!AuthorityState->ImmediateMoveIds.IsEmpty())
+		{
+			TArray<uint32> Priority = AuthorityState->ImmediateMoveIds.Array();
+			Priority.Sort();
+			TickSharedNavigation(2);
+			TickSharedNavigation(0, Priority);
+		}
+	}
 	if (auto* Tasks=GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()) Tasks->ConsumeMoveProgress();
 	PublishMoveEndpointChanges();
 
@@ -2402,6 +2445,12 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 	{
 		TickAuthority(GuLiCommanderMassPrivate::FixedStepSeconds);
 		AuthorityState->FixedStepAccumulator -= GuLiCommanderMassPrivate::FixedStepSeconds;
+	}
+	if (bImmediateMovement && !AuthorityState->bMovementStepPending
+		&& !AuthorityState->ImmediateMoveIds.IsEmpty() && AuthorityState->FixedStepAccumulator > UE_DOUBLE_SMALL_NUMBER)
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_ImmediateMovement);
+		TickAuthority(static_cast<float>(AuthorityState->FixedStepAccumulator), true);
 	}
 	PublishMoveEndpointChanges();
 	CSV_CUSTOM_STAT(GuLiCommanderAuthority, PlanningMs, AuthorityState->PlanningBudget.Elapsed()*1000., ECsvCustomStatOp::Set);
@@ -2482,6 +2531,7 @@ void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 	}
 
 	AuthorityState->Soldiers.Reset();
+	AuthorityState->ImmediateMoveIds.Reset();
 	AuthorityState->SoldierIndexById.Reset();
 	AuthorityState->OrderFormations.Reset();
 	AuthorityState->MovePlanningJobs.Reset();
@@ -2500,6 +2550,9 @@ void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 	AuthorityState->MoveIntents.Reset();
 	AuthorityState->SharedRoutes = {};
 	AuthorityState->IntentCursor = 0;
+	AuthorityState->SharedPriorityVisited.Reset();
+	AuthorityState->SharedPriorityFrame = MAX_uint64;
+	AuthorityState->LastPrioritySoldierId = 0;
 	for (int32 I=0; I<2; ++I) { AuthorityState->SharedDiscoveryCursor[I]=0; AuthorityState->SharedDiscoveryFrame[I]=MAX_uint64; }
 	AuthorityState->CombatSamples.Reset();
 	AuthorityState->CombatChannels.Reset();
@@ -2710,6 +2763,15 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 				S.NoProgressSeconds=0; S.BestWaypointDistanceCentimeters=TNumericLimits<float>::Max();
 				S.LastProgressPathPointIndex=INDEX_NONE; S.bNavigationBudgetPending=false;
 				S.bForceMovementUpdate=true; S.LastMovementUpdateSimulationSeconds=A.SimulationSeconds;
+				if (!Job.bAutomatic && bAdvancingHybrid
+					&& ImmediateMovement.GetValueOnGameThread() != 0
+					&& !UGuLiHotspotOptions::Enabled(World, EGuLiHotspot::GameplayWorker))
+				{
+					// A command cannot consume time that elapsed before its admission.
+					S.LastMovementUpdateSimulationSeconds += A.FixedStepAccumulator;
+					A.ImmediateMoveIds.Add(S.SoldierId.Value);
+					A.SharedPriorityVisited.Remove(S.SoldierId.Value);
+				}
 				S.CurrentNavigationWaypoint=Intent->Click; S.CommandAcceptedAt=FPlatformTime::Seconds();
 				S.DirectionAppliedAt=S.FirstDisplacementAt=0; S.MoveTrace=Trace; ++S.StateRevision;
 				auto& Order=Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(S.Entity);
@@ -2735,7 +2797,7 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 	}
 }
 
-void UGuLiBattleAuthoritySubsystem::TickSharedNavigation(int32 Category)
+void UGuLiBattleAuthoritySubsystem::TickSharedNavigation(int32 Category, TConstArrayView<uint32> PriorityIds)
 {
 	using namespace GuLiCommanderMassPrivate;
 	if (!AuthorityState) return;
@@ -2784,10 +2846,40 @@ void UGuLiBattleAuthoritySubsystem::TickSharedNavigation(int32 Category)
 	}
 	if (A.SharedDiscoveryFrame[Category]!=GFrameCounter)
 	{ A.SharedDiscoveryFrame[Category]=GFrameCounter; A.SharedDiscoveryRemaining[Category]=A.Soldiers.Num(); }
-	int32 Work=0;
-	while (A.SharedDiscoveryRemaining[Category]>0 && !A.Soldiers.IsEmpty() && Budget.CanWork() && Work++<32)
+	if (A.SharedPriorityFrame!=GFrameCounter)
 	{
-		auto& Cursor=A.SharedDiscoveryCursor[Category]; Cursor%=A.Soldiers.Num(); auto& S=A.Soldiers[Cursor++]; --A.SharedDiscoveryRemaining[Category];
+		A.SharedPriorityFrame=GFrameCounter;
+		A.SharedPriorityVisited.Reset();
+	}
+	// Continue after the last visited ID across slices and frames. Restarting at
+	// index zero makes every 32-member slice revisit the same moving units and
+	// can indefinitely starve a later command. Each priority unit is visited at
+	// most once per world frame; a newly committed command clears that visit.
+	int32 Work=0, PriorityRemaining=PriorityIds.Num();
+	int32 PriorityCursor=Algo::UpperBound(PriorityIds,A.LastPrioritySoldierId);
+	while ((PriorityRemaining>0 || A.SharedDiscoveryRemaining[Category]>0)
+		&& !A.Soldiers.IsEmpty() && Budget.CanWork() && Work<32)
+	{
+		int32 SoldierIndex;
+		if (PriorityRemaining>0)
+		{
+			PriorityCursor%=PriorityIds.Num();
+			const uint32 Id=PriorityIds[PriorityCursor++];
+			--PriorityRemaining;
+			if (A.SharedPriorityVisited.Contains(Id)) continue;
+			A.SharedPriorityVisited.Add(Id);
+			A.LastPrioritySoldierId=Id;
+			const int32* Found=A.SoldierIndexById.Find(Id);
+			if (!Found) continue;
+			SoldierIndex=*Found;
+		}
+		else
+		{
+			auto& Cursor=A.SharedDiscoveryCursor[Category]; Cursor%=A.Soldiers.Num();
+			SoldierIndex=Cursor++; --A.SharedDiscoveryRemaining[Category];
+		}
+		++Work;
+		auto& S=A.Soldiers[SoldierIndex];
 		if (!S.MoveIntent || !S.ActiveOrderId || !S.CanSimulate() || S.bAutomaticAdvance!=(Category==1)
 			|| !Data->IsNodeRefValid(S.LastValidNavLocation.NodeRef)) continue;
 		if (S.bAttackMoveHolding) continue;
@@ -3404,14 +3496,15 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 		A.RecoveryWork.Remove(Id);
 	}
 }
-// 固定步：提交配置 -> 编队速度 -> 10 Hz 避让缓存/全员位移 -> 按批次收尾 -> 统一攻击/伤害。
+// 常规步：配置、移动、导航修复、战斗。即时步复用相同导航/避让/碰撞约束，
+// 只处理正在执行的手动移动，不推进战斗时钟，也不重复消费已积分的移动时间。
 // 实际位置由这里积分并写回 Fragment；导航策略函数负责判定，不直接改世界状态。
-void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
+void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds, const bool bImmediateCommands)
 {
 	CSV_SCOPED_TIMING_STAT(GuLiCommanderAuthority, FixedStep);
 	using namespace GuLiCommanderMassPrivate;
 	check(AuthorityState);
-    const bool bWorker=UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::GameplayWorker);
+    const bool bWorker=!bImmediateCommands && UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::GameplayWorker);
     std::shared_ptr<FMovementCalculation> Work;
 #if !UE_BUILD_SHIPPING
 	const double StepStartedAt = FPlatformTime::Seconds();
@@ -3423,9 +3516,12 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		return;
 	}
 
-	ResetRogueMovementForMatch();
-	ApplyPendingMovementSpeed();
-	CommitCombatProfiles();
+	if (!bImmediateCommands)
+	{
+		ResetRogueMovementForMatch();
+		ApplyPendingMovementSpeed();
+		CommitCombatProfiles();
+	}
 	float MaximumUnitMovementSpeed=MovementSpeedCentimetersPerSecond;
 	for (const auto& Unit : AuthorityState->Soldiers) MaximumUnitMovementSpeed=FMath::Max(MaximumUnitMovementSpeed,GetUnitMovementSpeed(Unit.Team,Unit.UnitTypeId));
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
@@ -3439,10 +3535,15 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		FindFProperty<FFloatProperty>(ARecastNavMesh::StaticClass(), TEXT("AgentMaxSlope"));
 	const float MaximumSurfaceSlopeDegrees = CommanderRecast && MaximumSlopeProperty
 		? MaximumSlopeProperty->GetPropertyValue_InContainer(CommanderRecast) : 0.0f;
-	AuthorityState->SimulationSeconds += FixedDeltaSeconds;
-	++AuthorityState->ServerSimTick;
+	if (!bImmediateCommands)
+	{
+		AuthorityState->SimulationSeconds += FixedDeltaSeconds;
+		++AuthorityState->ServerSimTick;
+	}
+	const double MovementSimulationSeconds = AuthorityState->SimulationSeconds
+		+ (bImmediateCommands ? AuthorityState->FixedStepAccumulator : 0.0);
 
-	auto SetTerminalNavigationState = [this, World, &EntityManager](
+	auto SetTerminalNavigationState = [this, World, &EntityManager, MovementSimulationSeconds](
 		FSoldierRuntime& Soldier,
 		const EGuLiSoldierNavigationState TerminalState,
 		const EGuLiSoldierNavigationFailure Failure)
@@ -3460,12 +3561,12 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			Soldier.Location = Soldier.LastValidNavLocation.Location;
 			Soldier.LastFailedOrderId = FinishedOrderId;
 			Soldier.NavigationFailure = Failure;
-			Soldier.FailureSimulationSeconds = AuthorityState->SimulationSeconds;
+			Soldier.FailureSimulationSeconds = MovementSimulationSeconds;
 		}
 		Soldier.NavigationState = TerminalState;
 		Soldier.ActiveOrderId = 0u;
 		Soldier.Velocity = FVector::ZeroVector;
-		Soldier.LastMovementUpdateSimulationSeconds = AuthorityState->SimulationSeconds;
+		Soldier.LastMovementUpdateSimulationSeconds = MovementSimulationSeconds;
 		Soldier.bForceMovementUpdate = false;
 		Soldier.CurrentNavigationWaypoint = Soldier.Location;
 		++Soldier.StateRevision;
@@ -3541,7 +3642,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		});
 	const bool bNeedsGroundMechYieldUpdate = bHasGroundMechObstacle
 		|| AuthorityState->GroundMechYieldingSoldiers > 0;
-	if (!bWorker && bNeedsGroundMechYieldUpdate)
+	if (!bWorker && !bImmediateCommands && bNeedsGroundMechYieldUpdate)
 	{
 		struct FGroundMechYieldPressure
 		{
@@ -3732,7 +3833,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			GroundMechYieldVelocities[SoldierIndex] = ToTarget / Distance * Speed;
 		}
 	}
-	if (!bWorker) AuthorityState->GroundMechYieldingSoldiers = GroundMechYieldingSoldiers;
+	if (!bWorker && !bImmediateCommands) AuthorityState->GroundMechYieldingSoldiers = GroundMechYieldingSoldiers;
 
 	// Yielding is capped per mech, but checking each yielded step against every soldier
 	// would still turn the path into O(yielders * soldiers). Build one current-position
@@ -3782,6 +3883,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	{
 		FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
         if (Soldier.HybridKey.IsValid() && !Soldier.bLocalSimulation) continue;
+		if (bImmediateCommands && (!AuthorityState->ImmediateMoveIds.Contains(Soldier.SoldierId.Value)
+			|| Soldier.bAutomaticAdvance)) continue;
 		const bool bHasMovingOrder = Soldier.CanSimulate()
 			&& !Soldier.bAttackMoveHolding
 			&& Soldier.ActiveOrderId != 0u
@@ -3790,7 +3893,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				|| Soldier.NavigationState == EGuLiSoldierNavigationState::PersonalPathRecovery);
 		if (!bHasMovingOrder)
 		{
-			Soldier.LastMovementUpdateSimulationSeconds = AuthorityState->SimulationSeconds;
+			Soldier.LastMovementUpdateSimulationSeconds = MovementSimulationSeconds;
 			Soldier.bForceMovementUpdate = false;
 			continue;
 		}
@@ -3804,15 +3907,17 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			continue;
 		}
 
+		const float MoveDelta = bAdvancingHybrid
+			? GuLiCommanderNavigationPolicy::ResolveUnconsumedMovementDeltaSeconds(
+				MovementSimulationSeconds, Soldier.LastMovementUpdateSimulationSeconds)
+			: GuLiCommanderNavigationPolicy::ResolveMovementUpdateDeltaSeconds(
+				MovementSimulationSeconds, Soldier.LastMovementUpdateSimulationSeconds, FixedDeltaSeconds);
+		if (MoveDelta <= UE_SMALL_NUMBER) continue;
 		bRunsMovementUpdate[SoldierIndex] = true;
 		bForcedMovementUpdate[SoldierIndex] = bWasForced;
-		MovementUpdateDeltaSeconds[SoldierIndex] =
-			GuLiCommanderNavigationPolicy::ResolveMovementUpdateDeltaSeconds(
-				AuthorityState->SimulationSeconds,
-				Soldier.LastMovementUpdateSimulationSeconds,
-				FixedDeltaSeconds);
-		Soldier.LastMovementUpdateSimulationSeconds = AuthorityState->SimulationSeconds;
-		Soldier.bForceMovementUpdate = false;
+		MovementUpdateDeltaSeconds[SoldierIndex] = MoveDelta;
+		Soldier.LastMovementUpdateSimulationSeconds = MovementSimulationSeconds;
+		Soldier.bForceMovementUpdate = bImmediateCommands;
 	}
 
 	for (int32 I=0; I<AuthorityState->Soldiers.Num(); ++I)
@@ -3933,7 +4038,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		Agent.bParticipates = S.IsPresent() && EntityManager.IsEntityValid(S.Entity);
 		Agent.bReceivesAvoidance = Agent.bParticipates && S.CanSimulate()
 			&& bReceivesAvoidance[I] && !bSuppressMovementForStep[I] && !S.bAttackMoveHolding;
-		Agent.bCanBePushed = Agent.bParticipates && S.CanSimulate() && !S.bGroundMechYielding
+		Agent.bCanBePushed = !bImmediateCommands && Agent.bParticipates && S.CanSimulate() && !S.bGroundMechYielding
 			&& (!S.ActiveOrderId || S.bAttackMoveHolding);
 		if (Agent.bReceivesAvoidance && !bWorker)
 		{
@@ -3970,9 +4075,37 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				}
 			Geometry = AcquireAvoidanceGeometry(Scratch);
 		}
+		const int32 PairMode = bImmediateCommands ? ActiveSoftPairs.GetValueOnGameThread() : 0;
 		const auto Metrics = GuLiCommanderNavigationPolicy::SolveSoftAvoidanceVelocities(
 			AuthorityState->ManualAvoidanceAgents, AvoidanceAgentHeightCentimeters,
-			AuthorityState->ManualAvoidanceSpatialGrid, AuthorityState->CachedManualAvoidanceVelocities, Geometry.Get());
+			AuthorityState->ManualAvoidanceSpatialGrid, AuthorityState->CachedManualAvoidanceVelocities,
+			Geometry.Get(), PairMode != 0);
+		if (PairMode >= 2)
+		{
+			GuLiCommanderNavigationPolicy::FManualAvoidanceSpatialGrid ReferenceGrid;
+			TArray<FVector> ReferenceVelocities;
+			GuLiCommanderNavigationPolicy::SolveSoftAvoidanceVelocities(
+				AuthorityState->ManualAvoidanceAgents, AvoidanceAgentHeightCentimeters,
+				ReferenceGrid, ReferenceVelocities, Geometry.Get(), false);
+			int32 Mismatches = 0;
+			double MaximumError = 0;
+			for (int32 I = 0; I < ReferenceVelocities.Num(); ++I)
+			{
+				const FVector Difference = ReferenceVelocities[I] - AuthorityState->CachedManualAvoidanceVelocities[I];
+				const bool bMismatch = Difference.ContainsNaN() || !Difference.IsNearlyZero(1.e-6);
+				Mismatches += bMismatch ? 1 : 0;
+				MaximumError = FMath::Max(MaximumError, Difference.ContainsNaN()
+					? TNumericLimits<double>::Max() : Difference.Size());
+			}
+			if (auto* Perf = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>())
+			{
+				Perf->Record(TEXT("Avoidance.SoftVerifiedUnits"), double(ReferenceVelocities.Num()));
+				Perf->Record(TEXT("Avoidance.SoftMismatches"), double(Mismatches));
+				Perf->Record(TEXT("Avoidance.SoftMaximumError"), MaximumError);
+			}
+			// A diagnostic mismatch must not change the running simulation.
+			if (Mismatches) AuthorityState->CachedManualAvoidanceVelocities = MoveTemp(ReferenceVelocities);
+		}
 		if (auto* Perf = GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>())
 		{
 			Perf->Record(TEXT("Avoidance.SoftCandidatePairs"), double(Metrics.CandidatePairs));
@@ -4021,6 +4154,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
     const double PreparationMilliseconds=(FPlatformTime::Seconds()-StepStartedAt)*1000.;
 #endif
     auto ApplyMovement=[this,Weak,Work,FixedDeltaSeconds,MaximumUnitMovementSpeed,MaximumSurfaceSlopeDegrees,
+		bImmediateCommands,
         bRunsMovementUpdate=MoveTemp(bRunsMovementUpdate),MovementUpdateDeltaSeconds=MoveTemp(MovementUpdateDeltaSeconds),
         bSuppressMovementForStep=MoveTemp(bSuppressMovementForStep),FormationBySoldierId=MoveTemp(FormationBySoldierId),
         GroundMechYieldVelocities=MoveTemp(GroundMechYieldVelocities),bGroundMechYieldReturning=MoveTemp(bGroundMechYieldReturning),
@@ -4065,6 +4199,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	for (int32 CurrentSoldierIndex=0;CurrentSoldierIndex<AuthorityState->Soldiers.Num();++CurrentSoldierIndex)
     {
         FSoldierRuntime& Soldier=AuthorityState->Soldiers[CurrentSoldierIndex];
+		if (bImmediateCommands && !bRunsMovementUpdate[CurrentSoldierIndex]) continue;
         const int32* CapturedIndex=Work?SnapshotIndices.Find(Soldier.SoldierId.Value):nullptr;
         if (Work&&!CapturedIndex) continue;
         const int32 SoldierIndex=Work?*CapturedIndex:CurrentSoldierIndex;
@@ -4398,7 +4533,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		Order.OrderRevision = Soldier.StateRevision;
 		Order.bHasMoveTarget = Soldier.ActiveOrderId != 0u;
 #if !UE_BUILD_SHIPPING
-        if (OnPositionApplied.IsBound())
+        if (OnPositionApplied.IsBound() && Soldier.FirstDisplacementAt > 0)
             OnPositionApplied.Broadcast(Soldier.SoldierId,Soldier.MoveTrace.Command,Soldier.Location,FPlatformTime::Seconds());
 #endif
 	}
@@ -4428,18 +4563,27 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	}
 
 	// Movement, arrival and recovery state are authoritative before combat samples positions.
-	CommitReadyNavigationRepairs();
-	DetectNavigationRepairs();
-	TickSoldierCombat();
-	RetireExpiredSoldiers();
+	if (!bImmediateCommands)
+	{
+		CommitReadyNavigationRepairs();
+		DetectNavigationRepairs();
+		TickSoldierCombat();
+		RetireExpiredSoldiers();
+	}
 #if !UE_BUILD_SHIPPING
 	const double StepMilliseconds = Work?PreparationMilliseconds+(FPlatformTime::Seconds()-ApplyStartedAt)*1000.
         :(FPlatformTime::Seconds() - StepStartedAt) * 1000.0;
-	++PerformanceCounters.Steps;
-	PerformanceCounters.SimulationMilliseconds += StepMilliseconds;
-	PerformanceCounters.MaxSimulationMilliseconds = FMath::Max(
-		PerformanceCounters.MaxSimulationMilliseconds,
-		StepMilliseconds);
+	if (!bImmediateCommands)
+	{
+		++PerformanceCounters.Steps;
+		PerformanceCounters.SimulationMilliseconds += StepMilliseconds;
+		PerformanceCounters.MaxSimulationMilliseconds = FMath::Max(
+			PerformanceCounters.MaxSimulationMilliseconds, StepMilliseconds);
+	}
+	else if (auto* Perf = World->GetSubsystem<UGuLiPerformanceSubsystem>())
+	{
+		Perf->Record(TEXT("Movement.ImmediateMs"), StepMilliseconds);
+	}
 #endif
 
         if (Work) {AuthorityState->bMovementStepPending=false;AuthorityState->MovementCalculation.reset();AuthorityState->MovementApplication={};}
@@ -5236,24 +5380,24 @@ bool UGuLiBattleAuthoritySubsystem::RegisterCombatLedgerTarget(
 	Adapter.ReadSnapshot = [WeakThis, SoldierId, Handle](FGuLiCombatTargetSnapshot& OutSnapshot)
 	{
 		const UGuLiBattleAuthoritySubsystem* Authority = WeakThis.Get();
-		FGuLiSoldierCombatDebug Debug;
-		if (!Authority || Authority->IsSoldierPhased(SoldierId) || !Authority->TryGetSoldierCombatDebug(SoldierId, Debug))
-		{
-			return false;
-		}
-		OutSnapshot = FGuLiCombatTargetSnapshot{};
-		OutSnapshot.Handle = Handle;
-		OutSnapshot.Team = Debug.Team;
-		OutSnapshot.Location = Debug.Location;
-		OutSnapshot.CollisionRadius = Authority->MemberAgentRadiusCentimeters;
-		if (const auto* Data = Authority->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
-			if (const auto* Definition = Data->FindSoldierDefinition(Debug.UnitTypeId))
+		if (!Authority) return false;
+		const auto* State=Authority->AuthorityState.Get();
+		const int32* Index=State?State->SoldierIndexById.Find(SoldierId.Value):nullptr;
+		if (!Index || !State->Soldiers.IsValidIndex(*Index)) return false;
+		const auto& Soldier=State->Soldiers[*Index];
+		if (Soldier.bPhased) return false;
+		// Read the current lifetime directly. Snapshot users do not need weapon
+		// profiles, cooldowns or the rest of the combat debug presentation.
+		OutSnapshot={};OutSnapshot.Handle=Handle;OutSnapshot.Team=Soldier.Team;
+		OutSnapshot.Location=Soldier.Location;OutSnapshot.Health=Soldier.Health;
+		OutSnapshot.bAlive=Soldier.Health>0.f;
+		OutSnapshot.CollisionRadius=Authority->MemberAgentRadiusCentimeters;
+		if (const auto* Data=Authority->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+			if (const auto* Definition=Data->FindSoldierDefinition(Soldier.UnitTypeId))
 			{
-				const FBox Bounds = Definition->GetModelBoundsCentimeters();
-				if (Bounds.IsValid) OutSnapshot.CollisionRadius = FMath::Max(Bounds.GetExtent().X, Bounds.GetExtent().Y);
+				const FBox Bounds=Definition->GetModelBoundsCentimeters();
+				if (Bounds.IsValid) OutSnapshot.CollisionRadius=FMath::Max(Bounds.GetExtent().X,Bounds.GetExtent().Y);
 			}
-		OutSnapshot.Health = Debug.Health;
-		OutSnapshot.bAlive = Debug.Health > 0.0f;
 		return !OutSnapshot.Location.ContainsNaN();
 	};
 
@@ -5666,6 +5810,28 @@ bool UGuLiBattleAuthoritySubsystem::TryGetSoldierTransform(
 	return true;
 }
 
+bool UGuLiBattleAuthoritySubsystem::TryGetLocalSoldierPose(
+	const FGuLiSoldierId SoldierId, FGuLiSoldierLocalPose& OutPose) const
+{
+	if (!AuthorityState || !GetWorld()) return false;
+	const int32* Index = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+	if (!Index) return false;
+	const auto& S = AuthorityState->Soldiers[*Index];
+	const auto* Hybrid = GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	if (!S.HybridKey.IsValid() || !S.bLocalSimulation || S.bAutomaticAdvance
+		|| !Hybrid || !Hybrid->HasSimulation(S.HybridKey)) return false;
+	// Return only committed state. Rendering never integrates movement or issues a command.
+	OutPose.Transform = FTransform(FRotator(0.0f, S.FacingYawDegrees, 0.0f), S.Location);
+	OutPose.Velocity = S.Velocity;
+	OutPose.Mechanical = S.MechanicalPose;
+	OutPose.VAT = S.VATPlayback;
+	OutPose.ActiveOrderId = S.ActiveOrderId;
+	OutPose.ServerTimeSeconds = double(Hybrid->GetObjectLogicalTick(S.HybridKey)) / 60.0;
+	OutPose.AnimationAheadSeconds = FMath::Clamp(AuthorityState->FixedStepAccumulator,
+		0.0, double(GuLiCommanderMassPrivate::FixedStepSeconds));
+	return true;
+}
+
 void UGuLiBattleAuthoritySubsystem::BuildGroundAvoidanceSnapshot(TArray<FGuLiGroundAvoidanceBody>& OutBodies) const
 {
 	OutBodies.Reset();
@@ -5988,6 +6154,7 @@ bool UGuLiBattleAuthoritySubsystem::TryGetSoldierNavigationDebug(
 	OutDebug.LastFailedOrderId = Soldier.LastFailedOrderId;
 	OutDebug.Location = Soldier.Location;
 	OutDebug.Velocity = Soldier.Velocity;
+	OutDebug.bLocalSimulation = Soldier.bLocalSimulation;
 	OutDebug.LastValidNavLocation = Soldier.LastValidNavLocation.Location;
 	OutDebug.NavigationNodeRef = Soldier.LastValidNavLocation.NodeRef;
 	OutDebug.NavigationGeneration = AuthorityState->NavigationGeneration;

@@ -64,7 +64,8 @@ struct FGuLiSceneUILine
 {
 	FVector Start = FVector::ZeroVector;
 	FVector End = FVector::ZeroVector;
-	bool operator==(const FGuLiSceneUILine& R) const { return Start==R.Start && End==R.End; }
+	uint32 Order = 0, PreviewCommand = 0;
+	bool operator==(const FGuLiSceneUILine& R) const { return Start==R.Start && End==R.End && Order==R.Order && PreviewCommand==R.PreviewCommand; }
 };
 
 /** Existing Ship widgets remain their data/render sources, with no scene pass. */

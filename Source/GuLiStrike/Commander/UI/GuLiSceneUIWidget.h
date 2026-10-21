@@ -40,6 +40,7 @@ public:
 	void AddWorldLine(const FVector& Start, const FVector& End, FLinearColor Color, float Width=1);
 	bool ProjectWorldLineToScreen(const FVector& Start, const FVector& End, FVector2D& A, FVector2D& B) const;
 	FVector2D ToPlayerScreen(const FVector2D& ViewportPosition) const;
+	bool HasLocalMovePreview() const;
 	void PaintSceneUI(const FGeometry& Geometry, FSlateWindowElementList& Elements, int32 Layer,
 		EGuLiSceneUIPaintPart Part = EGuLiSceneUIPaintPart::Combined) const;
 

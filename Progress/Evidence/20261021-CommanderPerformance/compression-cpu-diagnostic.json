@@ -1,0 +1,182 @@
+{
+  "58": {
+    "worker_top": [
+      {
+        "timer": "GuLiHybrid_WorkerPayloadCompression",
+        "calls": 15334,
+        "inclusive_ms": 1163.1119999999999,
+        "exclusive_ms": 1163.1119999999999,
+        "per_call_us": 75.85183252902048
+      },
+      {
+        "timer": "GuLiHybrid_CoreCommit",
+        "calls": 4162,
+        "inclusive_ms": 746.042,
+        "exclusive_ms": 689.714,
+        "per_call_us": 179.25084094185488
+      },
+      {
+        "timer": "simulation",
+        "calls": 441,
+        "inclusive_ms": 653.892,
+        "exclusive_ms": 652.635,
+        "per_call_us": 1482.748299319728
+      },
+      {
+        "timer": "GuLiHybrid_CoreEvaluate",
+        "calls": 4142,
+        "inclusive_ms": 641.818,
+        "exclusive_ms": 641.818,
+        "per_call_us": 154.9536455818445
+      },
+      {
+        "timer": "GuLiHybrid_CorePrepare",
+        "calls": 4174,
+        "inclusive_ms": 523.043,
+        "exclusive_ms": 486.137,
+        "per_call_us": 125.30977479635843
+      },
+      {
+        "timer": "GuLiHybrid_ResourceSnapshotMaintenance",
+        "calls": 1780,
+        "inclusive_ms": 357.553,
+        "exclusive_ms": 299.41499999999996,
+        "per_call_us": 200.87247191011235
+      },
+      {
+        "timer": "GuLiHybrid_CorePlan",
+        "calls": 4143,
+        "inclusive_ms": 930.314,
+        "exclusive_ms": 154.03300000000002,
+        "per_call_us": 224.55080859280716
+      },
+      {
+        "timer": "GuLiHybrid_TransactionWorker",
+        "calls": 1781,
+        "inclusive_ms": 5339.633,
+        "exclusive_ms": 133.779,
+        "per_call_us": 2998.109489051095
+      }
+    ],
+    "gt_top": [
+      {
+        "timer": "GuLiCommanderPresentation_Interpolation",
+        "calls": 437,
+        "inclusive_ms": 311.454,
+        "exclusive_ms": 259.721,
+        "per_call_us": 712.7093821510298
+      },
+      {
+        "timer": "UWorld_Tick",
+        "calls": 875,
+        "inclusive_ms": 4198.092,
+        "exclusive_ms": 257.147,
+        "per_call_us": 4797.819428571429
+      },
+      {
+        "timer": "GuLiHybrid_PumpPeerPackets",
+        "calls": 437,
+        "inclusive_ms": 208.82899999999998,
+        "exclusive_ms": 199.95,
+        "per_call_us": 477.8695652173913
+      },
+      {
+        "timer": "GuLiHybrid_MainCaptureBarrier",
+        "calls": 24,
+        "inclusive_ms": 188.43099999999998,
+        "exclusive_ms": 186.301,
+        "per_call_us": 7851.291666666667
+      }
+    ]
+  },
+  "59": {
+    "worker_top": [
+      {
+        "timer": "GuLiHybrid_WorkerPayloadCompression",
+        "calls": 15728,
+        "inclusive_ms": 811.779,
+        "exclusive_ms": 811.779,
+        "per_call_us": 51.61361902339776
+      },
+      {
+        "timer": "GuLiHybrid_ResourceSnapshotMaintenance",
+        "calls": 2005,
+        "inclusive_ms": 756.9169999999999,
+        "exclusive_ms": 670.6959999999999,
+        "per_call_us": 377.5147132169576
+      },
+      {
+        "timer": "GuLiHybrid_CoreCommit",
+        "calls": 4265,
+        "inclusive_ms": 725.179,
+        "exclusive_ms": 666.0509999999999,
+        "per_call_us": 170.03024618991793
+      },
+      {
+        "timer": "GuLiHybrid_CoreEvaluate",
+        "calls": 4248,
+        "inclusive_ms": 626.088,
+        "exclusive_ms": 626.088,
+        "per_call_us": 147.38418079096044
+      },
+      {
+        "timer": "GuLiHybrid_CorePrepare",
+        "calls": 4279,
+        "inclusive_ms": 517.62,
+        "exclusive_ms": 481.428,
+        "per_call_us": 120.9675157747137
+      },
+      {
+        "timer": "simulation",
+        "calls": 418,
+        "inclusive_ms": 431.713,
+        "exclusive_ms": 430.65,
+        "per_call_us": 1032.8062200956938
+      },
+      {
+        "timer": "GuLiHybrid_TransactionWorker",
+        "calls": 2006,
+        "inclusive_ms": 5268.6320000000005,
+        "exclusive_ms": 304.993,
+        "per_call_us": 2626.4366899302095
+      },
+      {
+        "timer": "GuLiHybrid_CorePlan",
+        "calls": 4248,
+        "inclusive_ms": 904.745,
+        "exclusive_ms": 147.333,
+        "per_call_us": 212.98140301318267
+      }
+    ],
+    "gt_top": [
+      {
+        "timer": "GuLiHybrid_MainCaptureBarrier",
+        "calls": 62,
+        "inclusive_ms": 347.506,
+        "exclusive_ms": 343.48,
+        "per_call_us": 5604.935483870968
+      },
+      {
+        "timer": "UWorld_Tick",
+        "calls": 835,
+        "inclusive_ms": 4223.12,
+        "exclusive_ms": 252.78400000000002,
+        "per_call_us": 5057.62874251497
+      },
+      {
+        "timer": "GuLiCommanderPresentation_Interpolation",
+        "calls": 417,
+        "inclusive_ms": 302.39300000000003,
+        "exclusive_ms": 252.465,
+        "per_call_us": 725.1630695443645
+      },
+      {
+        "timer": "GuLiHybrid_PumpPeerPackets",
+        "calls": 417,
+        "inclusive_ms": 229.066,
+        "exclusive_ms": 220.34599999999998,
+        "per_call_us": 549.3189448441246
+      }
+    ]
+  }
+}

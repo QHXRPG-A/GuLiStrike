@@ -168,7 +168,7 @@ def prepare_mining_approach(session, key):
         'scope':'User-authorized travel preparation to this miner\'s actual reserved work position. Original task/lease, extraction, cargo, delivery, processing and conservation remain production state.'})
 
 
-def run(session, targets, free, slots):
+def run(session, targets, free, slots, completed=None):
     pilot=entry(session,'Blue','Ground')
     def actor():
         return next(g for g in session.states[pilot['name']]['ground_states'] if g['team']==2)
@@ -195,7 +195,7 @@ def run(session, targets, free, slots):
         def released():
             nonlocal population_waiting
             source=actor()
-            if free()>=slots:
+            if (completed() if completed else free()>=slots):
                 return any(e not in initial_events and d['kind']==0 and d['status']==0
                     and d['state_domain'] in targets and int(identity(d['death_event']),16)
                     and session.observed_by_active(e) for e,d in session.decisions.items())
@@ -251,7 +251,11 @@ def run(session, targets, free, slots):
             returned=positions(session,homes,find_nearby=True,allow_terminal=True) if homes else []
             session.write_json(session.stage_output/'survivor-home-restoration.json',{'positions':returned,
                 'scope':'After unlock, restore near the original positions using explicit bounded preparation navigation search; native receipts record actual applied points.'})
-            if actor()['alive']: position(session,source_object,source_home,find_nearby=True)
+            if actor()['alive']:
+                # Returning the shooter is a separate native teleport. Do not
+                # charge its readback to the survivors' already-used tail.
+                session.preparation_deadline=time.monotonic()+15
+                position(session,source_object,source_home,find_nearby=True)
         finally:
             session.preparation_deadline=previous_deadline
 

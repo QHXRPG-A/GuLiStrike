@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "saved": true,
+  "default_inactive": true,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "related_entities": [
+    {
+      "label": "PerfHybridCPU_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_72",
+      "class": "Note",
+      "position_cm": [
+        10139.4320904,
+        -55434.2763966,
+        1101.7790833
+      ],
+      "editor_only": true,
+      "text": "Hybrid交火CPU与指令响应验证入口（默认停用，不自动开始游玩）\n地图：/Game/Maps/LVL_CommanderMassPrototype；当前正式配置采用快速小消息压缩。\n阶段参考：build-41同构建单轮标准/快速压缩16.2188/16.2310ms，P95 26.3908/26.0135ms；单轮不代表稳定收益。\n当前目标：指挥官从点击到绿线提交、全部受令本机Mass单位实际起步及模型提交均严格小于20ms，不增加网络延迟容差。完整目标尚未通过。\n在项目根目录使用新输出目录：\npython Scripts/Performance/capture_hybrid_cpu.py --output D:/UE5.7/PerformanceCaptures/GuLiStrike/ManualHybridCPUReview --variants standard_compression,candidate --rounds 3 --no-trace --editor-window-state minimized\n初始600单位，固定原生交火输入；至少预热10秒，逻辑第3600步开始记录30秒；2359×1748视口、相机目标高度133.4米。\n计时前最小化编辑器主窗口、激活游戏预览；逐帧核对两项窗口条件。计时中不切窗口、截图、枚举对象、移动镜头或改变负载。脚本结束后恢复开关并关闭所属会话。\n正式快速压缩：gs.Hybrid.FastSmallPayloadCompression默认1；可靠消息正文不超过64KiB时使用无损低压缩级别，大正文保持标准级别；协议、校验、身份和队列字节预算保持。0为独立回退，在新会话生效并传递给逻辑客户端。\n正式UI：gs.SceneUI.IndexedGeometry=1，gs.SceneUI.OptimizedPaint=1；分别置0用于回退。Slate.EnableGlobalInvalidation保持0。\n四档：LOD0高度35–100米；LOD1为100–300米，仅施加资源LOD1精度上限；LOD2为300–700米综合精简；LOD3为总览。描边仅LOD0。gs.Commander.MeshLOD=0独立回退网格约束。\n本机响应：立即意图绿线、纯兵种选区索引、60Hz手动移动与直接本机姿态、移动后同步发布、就绪路线索引及活动端点软避让均保持正式默认；完整成员/身份/权限校验和混合选区回退保留。\n结果应用保持常规顺序；弹丸发布保持完整编码；可靠包保持完整排序；VAT保持逐字段提交。未采用的对应实验分支已移除。\nCPU回退：gs.Hybrid.FlightServiceFastPath、gs.Hybrid.CacheFlightLifecycleLookup、gs.Hybrid.YieldBetweenCaptureCuts、gs.Hybrid.FastPackCacheKey、gs.Hybrid.NativePeerSend、gs.Hybrid.NativePeerReceive、gs.Hybrid.EntityLayoutCache、gs.Hybrid.ReusePayloadCompressor；正式默认1。锁定项重开会话生效。\n开局资源准备：gs.CombatEffects.PreloadImpacts=1、gs.CombatEffects.PrecompileDestruction=1；专用逻辑客户端不创建视觉表现。\n引擎Slate补丁：Scripts/Performance/engine-slate-empty-operations.patch，应用于源码UE5.7的LaunchEngineLoop.cpp；Slate.SkipEmptyLocalPlayerOperations默认1，0回退。焦点、鼠标锁定、捕获、拖拽和导航照常处理。\n计时脚本临时设t.IdleWhenNotForeground=0、Slate.bAllowThrottling=0；结束恢复，未将编辑器测试窗口条件设为全局生产配置。\n响应诊断：python Scripts/Performance/diagnose_commander_response.py --output 新目录 --editor-log 当前编辑器日志 --members 24 --combat\n诊断从真实控制器语义入口起算；--trace仅诊断用，默认关闭。它不能替代操作系统鼠标点击至显示器呈现的完整测量。\n玩家在本图选择静止编队并右键移动，检查绿线与起步；连续改令、停止、混合选区、受击、死亡、出生、交接和会话退出后反馈须正确更新和清理。\n绿线不伪造接受回执；60Hz逻辑推进、伤害、动画、相机、全部单位及弹丸均保留。地面Mass死亡爆炸按用户要求缩至1/3。\n用户自行核验UI外观响应、四档模型及部件、描边、特效与移动观感。助手不截图读图或目检；技术与性能数据不能代替视觉验收。\n正式配置与阶段证据：Progress/DevelopmentDocumentation/20261021-交火优化正式版本交付.md。\n指令阶段诊断：Progress/DevelopmentDocumentation/20261021-本机指令交付与规划调度.md。"
+    }
+  ]
+}

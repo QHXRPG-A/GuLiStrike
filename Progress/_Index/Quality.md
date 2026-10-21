@@ -2,12 +2,17 @@
 
 > 自动生成，请勿手改。运行 `progress_docs.py build` 刷新。
 
-- 错误：0
+- 错误：4
 - 提示：19
 
 ## 错误
 
-暂无。
+| 路径 | 代码 | 说明 |
+|---|---|---|
+| Progress/Archive/20261016-CS-P2P整合归档.md | broken_markdown_link | D:/UE5.7/PerformanceCaptures/20261017-Hotspots-v1/report.md |
+| Progress/Archive/20261016-CS-P2P整合归档.md | broken_markdown_link | D:/UE5.7/PerformanceCaptures/20261018-VisualRegression-v1/report.md |
+| Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md | broken_markdown_link | D:/UE5.7/PerformanceCaptures/20261017-Hotspots-v1/report.md |
+| Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md | broken_markdown_link | D:/UE5.7/PerformanceCaptures/20261018-VisualRegression-v1/report.md |
 
 ## 提示
 
@@ -24,11 +29,11 @@
 | Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md | oversize | 30.4KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md | oversize | 35.1KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md | oversize | 54.4KB，建议阈值 30KB |
-| Progress/DevelopmentDocumentation/GuLiStrike美术规范.md | oversize | 70.2KB，建议阈值 30KB |
+| Progress/DevelopmentDocumentation/GuLiStrike美术规范.md | oversize | 70.7KB，建议阈值 30KB |
 | Progress/Gameplay/战斗.md | oversize | 35.7KB，建议阈值 30KB |
 | Progress/Gameplay/飞船.md | oversize | 61.4KB，建议阈值 30KB |
 | Progress/RequirementDocument/20260826-5v5大战场玩法草案.md | oversize | 36.7KB，建议阈值 20KB |
 | Progress/RequirementDocument/20260827-Mass双端同步架构草案.md | oversize | 24.9KB，建议阈值 20KB |
 | Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md | oversize | 27.7KB，建议阈值 20KB |
 | Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md | oversize | 28.7KB，建议阈值 20KB |
-| Progress/RequirementDocument/GuLiStrike美术规范.md | oversize | 41.7KB，建议阈值 20KB |
+| Progress/RequirementDocument/GuLiStrike美术规范.md | oversize | 41.8KB，建议阈值 20KB |

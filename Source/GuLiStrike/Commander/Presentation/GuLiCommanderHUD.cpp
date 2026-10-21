@@ -6,6 +6,7 @@
 
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Commander/Presentation/GuLiCommanderRouteLineComponent.h"
 #include "Commander/Framework/GuLiCommanderPlayerState.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
@@ -1429,6 +1430,14 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 	}
 	if (State == EGuLiCommandLineState::Accepted)
 	{
+		return;
+	}
+	if (State==EGuLiCommandLineState::Pending && UGuLiCommanderRouteLineComponent::IsImmediateFeedbackEnabled())
+	{
+		// Soldier previews use the same solid green per-unit route layer. Other
+		// selected objects retain a local center-to-target feedback line.
+		if (SceneUI.IsValid() && !SceneUI->HasLocalMovePreview())
+			SceneUI->AddWorldLine(Start,End,FLinearColor(.08f,.94f,.20f,1),1.5f);
 		return;
 	}
 

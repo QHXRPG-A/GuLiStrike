@@ -19,6 +19,7 @@
 #include "Commander/Framework/GuLiCommanderGameState.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Commander/Mass/GuLiSoldierLocalPose.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
@@ -41,6 +42,7 @@
 #include "MassEntitySubsystem.h"
 #include "Materials/MaterialInterface.h"
 #include "Misc/ConfigCacheIni.h"
+#include "HAL/IConsoleManager.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "ProfilingDebugging/CsvProfiler.h"
 #if !UE_BUILD_SHIPPING
@@ -54,6 +56,8 @@ CSV_DEFINE_CATEGORY(GuLiCommanderPresentation, true);
 
 namespace GuLiCommanderPresentation
 {
+	TAutoConsoleVariable<int32> LocalAuthorityPose(TEXT("gs.Commander.LocalAuthorityPose"), 1,
+		TEXT("Present committed local manual Mass poses without network publication or playback-buffer delay."));
 	void DisableUnitDistanceCulling(UInstancedStaticMeshComponent& Component)
 	{
 		Component.SetCullDistances(0, 0);
@@ -431,6 +435,7 @@ UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::EnsureUnitTeamBa
 	GuLiUnitRenderPolicy::Apply(*Component);
 	AddInstanceComponent(Component);
 	Component->RegisterComponentWithWorld(GetWorld());
+	UGuLiCommanderLODSubsystem::NotifyMeshChanged(Component);
 	const uint32 Key = MakeUnitBatchKey(UnitTypeId, Team);
 	UnitInstancesByBatch.Add(Key, Component);
 	UnitInstanceBatchStates.FindOrAdd(Key);
@@ -878,6 +883,20 @@ bool AGuLiCommanderPresentationActor::TryGetAuthoritativeSoldierTransform(
 	OutTransform = Soldier->AuthoritativeTransform;
 	return true;
 }
+#if !UE_BUILD_SHIPPING
+bool AGuLiCommanderPresentationActor::TryGetSubmittedSoldierTransform(FGuLiSoldierId Id,FTransform& Out,
+	bool* bOutLocalAuthorityPose) const
+{
+	const auto* Soldier=PresentedSoldiers.Find(Id);const auto* Handle=SoldierInstanceHandles.Find(Id);
+	if (bOutLocalAuthorityPose) *bOutLocalAuthorityPose = Soldier && Soldier->bUsingLocalPose;
+	if (!Soldier || !Handle || !Soldier->bMainViewVisible || bNetworkPresentationHidden) return false;
+	const auto Key=MakeUnitBatchKey(Handle->BatchUnitTypeId,Handle->BatchTeam);
+	const auto* Batch=UnitInstanceBatchStates.Find(Key);const auto* Component=FindUnitInstancesByBatch(Key);
+	return Batch && Component && Component->IsRegistered() && Component->IsVisible()
+		&& !Batch->DirtyTransformSlots.Contains(Handle->UnitInstanceIndex)
+		&& Component->GetInstanceTransform(Handle->UnitInstanceIndex,Out,true) && !Out.GetScale3D().IsNearlyZero();
+}
+#endif
 
 // 预测距离由已发布速度、持续时间和上限计算；不在客户端执行权威导航或写 Authority。
 void AGuLiCommanderPresentationActor::BeginPredictedMove(
@@ -1767,6 +1786,32 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 	}
 }
 
+bool AGuLiCommanderPresentationActor::ReadLocalAuthorityPose(const FGuLiSoldierId SoldierId,
+	FGuLiCommanderPresentedSoldier& Soldier, FTransform& OutTransform) const
+{
+	if (GuLiCommanderPresentation::LocalAuthorityPose.GetValueOnGameThread() == 0 || !GetWorld()) return false;
+	const auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+	FGuLiSoldierLocalPose Pose;
+	if (!Authority || !Authority->TryGetLocalSoldierPose(SoldierId, Pose)) return false;
+	OutTransform = Pose.Transform;
+	Soldier.RenderServerTimeSeconds = Pose.ServerTimeSeconds;
+	Soldier.bRenderClockInitialized = true;
+	auto& Local = Soldier.LocalPose;
+	Local.Location = Pose.Transform.GetLocation();
+	Local.FacingYawDegrees = Pose.Transform.Rotator().Yaw;
+	Local.Velocity = Pose.Velocity;
+	Local.ServerTimeSeconds = Pose.ServerTimeSeconds - Pose.AnimationAheadSeconds;
+	Local.UpperYawDegrees = Pose.Mechanical.bInitialized ? Pose.Mechanical.UpperYawDegrees : Local.FacingYawDegrees;
+	for (int32 Side = 0; Side < 2; ++Side) Local.GunPitchDegrees[Side] = Pose.Mechanical.GunPitchDegrees[Side];
+	Local.HoverBlendStartMilliseconds = Pose.Mechanical.HoverBlendStartMilliseconds;
+	Local.HoverBlendFromWeight = Pose.Mechanical.HoverBlendFromWeight;
+	Local.bHoverIdleTarget = Pose.Mechanical.bHoverIdleTarget;
+	Local.VATPlayback = Pose.VAT;
+	Local.ActiveOrderId = Pose.ActiveOrderId;
+	Local.State = Pose.ActiveOrderId ? EGuLiSoldierPoseState::Moving : EGuLiSoldierPoseState::Idle;
+	return true;
+}
+
 bool AGuLiCommanderPresentationActor::EvaluateAuthoritativeTransform(
 	FGuLiCommanderPresentedSoldier& Soldier,
 	const double RenderServerTimeSeconds,
@@ -2149,6 +2194,8 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 	for (TPair<FGuLiSoldierId, FGuLiCommanderPresentedSoldier>& Pair : PresentedSoldiers)
 	{
 		Pair.Value.Samples.Reset();
+		Pair.Value.LocalPose = {};
+		Pair.Value.bUsingLocalPose = false;
 		Pair.Value.MechanicalPose = {}; Pair.Value.MechanicalVisual = {}; Pair.Value.MechanicalFrame = {}; Pair.Value.PreviousMechanicalFrame = {};
 		Pair.Value.PendingRecoil.Reset();
 		Pair.Value.DisplacementFrameFloor = 0;
@@ -2597,13 +2644,16 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		const bool bResetMechanical = !Soldier.bHasPresentedTransform || Soldier.bResetPresentationOnNextPose;
 
 		FTransform AuthoritativeTransform;
+		const bool bLocalPose = ReadLocalAuthorityPose(ReliableState.SoldierId, Soldier, AuthoritativeTransform);
+		Soldier.bPresentationStateDirty |= bLocalPose != Soldier.bUsingLocalPose;
+		Soldier.bUsingLocalPose = bLocalPose;
 		const float AdaptiveInterpolationBackTimeSeconds =
 			GuLiCommanderPresentation::CalculateAdaptiveInterpolationBackTime(
 				InterpolationBackTimeSeconds,
 				MaximumAdaptiveInterpolationBackTimeSeconds,
 				Soldier.SmoothedPoseReceiptIntervalSeconds,
 				Soldier.SmoothedPoseReceiptJitterSeconds);
-		if (bServerClockInitialized)
+		if (!bLocalPose && bServerClockInitialized)
 		{
 			GuLiCommanderPresentation::AdvancePoseRenderClock(Soldier,
 				EstimatedServerTimeSeconds, LocalNowSeconds, DeltaSeconds,
@@ -2613,7 +2663,12 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		Soldier.LastRenderClockLocalTime = LocalNowSeconds;
 		FVector BoundsPosition = Soldier.PresentedTransform.GetLocation();
 		float BoundsYaw = Soldier.PresentedTransform.Rotator().Yaw;
-		if (!Soldier.Samples.IsEmpty())
+		if (bLocalPose)
+		{
+			BoundsPosition = AuthoritativeTransform.GetLocation();
+			BoundsYaw = AuthoritativeTransform.Rotator().Yaw;
+		}
+		else if (!Soldier.Samples.IsEmpty())
 		{
 			const auto& Latest = Soldier.Samples.Last();
 			BoundsPosition = Latest.Location + Latest.Velocity * FMath::Clamp(RenderServerTimeSeconds - Latest.ServerTimeSeconds, 0.0, double(MaximumExtrapolationSeconds));
@@ -2631,11 +2686,11 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			|| bResetMechanical || Soldier.bPresentationStateDirty || LocalNowSeconds >= Soldier.NextPresentationLocalTime;
 		const float PresentationDt = Soldier.LastPresentationLocalTime < 0 ? DeltaSeconds
 			: float(FMath::Max(0.0, LocalNowSeconds - Soldier.LastPresentationLocalTime));
-		if (bUpdatePresentation && bServerClockInitialized
-			&& EvaluateAuthoritativeTransform(
+		if (bUpdatePresentation && (bLocalPose || bServerClockInitialized)
+			&& (bLocalPose || EvaluateAuthoritativeTransform(
 				Soldier,
 				RenderServerTimeSeconds,
-				AuthoritativeTransform))
+				AuthoritativeTransform)))
 		{
 			Soldier.AuthoritativeTransform = AuthoritativeTransform;
 			Soldier.bHasAuthoritativeTransform = true;
@@ -2646,7 +2701,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 				PredictionTraceRequestedOffset = FVector::ZeroVector;
 			}
 #endif
-			ApplyPrediction(ReliableState.SoldierId, LocalNowSeconds, PresentedTransform);
+			if (!bLocalPose) ApplyPrediction(ReliableState.SoldierId, LocalNowSeconds, PresentedTransform);
 			if (Contacts)
 				Contacts->ApplyContactPresentation(ReliableState.SoldierId, PresentedTransform);
 			if (Soldier.bHasPresentedTransform && !Soldier.bResetPresentationOnNextPose && !bReentered)
@@ -2719,7 +2774,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			// Match actual model size, not the unscaled source or the whole ISM batch.
 			FTransform VisualPose = Soldier.PresentedTransform;
 			TryGetPresentedVisualTransform(ReliableState.SoldierId, VisualPose);
-			UnitFeedback->PlayDestruction(Bounds.IsValid
+			UnitFeedback->PlayGroundMassDestruction(Bounds.IsValid
 				? VisualPose.TransformPosition(Bounds.GetCenter()) : VisualPose.GetLocation(),
 				Bounds.IsValid ? static_cast<float>(Bounds.GetExtent().GetMax()) : 0.0f);
 		}
@@ -3014,6 +3069,7 @@ void AGuLiCommanderPresentationActor::UpdatePhasedInstances(const TMap<uint16,TA
      Material = D->VATDefinition->PhaseMaterial;
    GuLiMechanicalAnimation::ConfigureOverlay(*Component, Material);
    Component->RegisterComponent();
+   UGuLiCommanderLODSubsystem::NotifyMeshChanged(Component);
   }
   auto& Cached = CachedPhasedTransforms.FindOrAdd(Pair.Key);
   if (GuLiCommanderPresentation::AreTransformsEqual(Cached,Pair.Value)) continue;
@@ -3058,6 +3114,7 @@ void AGuLiCommanderPresentationActor::UpdateWreckInstances(const TMap<uint16,TAr
 			GuLiMechanicalAnimation::ConfigureOverlay(*Component, UnitMaterial);
 			AddInstanceComponent(Component);
 			Component->RegisterComponent();
+			UGuLiCommanderLODSubsystem::NotifyMeshChanged(Component);
 		}
 		auto& Cached = CachedWreckTransforms.FindOrAdd(Pair.Key);
 		if (GuLiCommanderPresentation::AreTransformsEqual(Cached, Pair.Value)) continue;
@@ -3107,6 +3164,7 @@ void AGuLiCommanderPresentationActor::UpdateHitFlashInstances(
 			GuLiMechanicalAnimation::ConfigureOverlay(*Component, UnitMaterial);
 			AddInstanceComponent(Component);
 			Component->RegisterComponent();
+			UGuLiCommanderLODSubsystem::NotifyMeshChanged(Component);
 		}
 		// Only currently flashing soldiers are drawn in this extra pass, grouped by model.
 		if (Component->GetInstanceCount() != Pair.Value.Num())

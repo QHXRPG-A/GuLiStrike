@@ -68,7 +68,7 @@ bool OwnerState::CloseWork(ObjectRecord& Work,CommitResult& Out,Tick At)
 CommitResult OwnerState::AdmitWork(Id Sender,const TransactionRequest& R)
 {
     const auto& Previous=PreviousObjects();
-    CommitResult Out;Out.Event=R.Header.Event;Out.Kind=TransactionKind::AdmitWork;Out.Target=R.Target;Out.Faction=R.Faction;Out.StateDomain=DecisionDomain;
+    CommitResult Out;Out.ResourceGroup=R.Header.ResourceGroup;Out.ResourceEpoch=R.Header.ResourceEpoch;Out.Event=R.Header.Event;Out.Kind=TransactionKind::AdmitWork;Out.Target=R.Target;Out.Faction=R.Faction;Out.StateDomain=DecisionDomain;
     Message M;FrozenWorkRecipe Recipe;
     const bool Parsed=DecodeMessage(R.Admission,M) && DecodeTransaction(M.Header,M.Body,Recipe.Request);
     if (Parsed) {Out.WorkEvent=M.Header.Event;Out.WorkOperation=Recipe.Request.Kind;}

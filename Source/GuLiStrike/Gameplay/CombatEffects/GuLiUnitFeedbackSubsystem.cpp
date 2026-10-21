@@ -16,13 +16,21 @@
 #include "Engine/StreamableManager.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "HAL/IConsoleManager.h"
 #include "HAL/PlatformTime.h"
 #include "Materials/MaterialInterface.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
+
+namespace
+{
+TAutoConsoleVariable<int32> PrecompileDestruction(TEXT("gs.CombatEffects.PrecompileDestruction"),1,
+    TEXT("Prepare pending Niagara compilation when destruction resources finish loading. Does not spawn or simulate effects. 0 keeps on-demand compilation."));
+}
 
 bool UGuLiUnitFeedbackSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -65,13 +73,32 @@ void UGuLiUnitFeedbackSubsystem::FinishLoading()
 {
 	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
 	for (const auto& Asset : Settings->ExplosionVfxIds)
-		if (GuLiVfx::Load<UNiagaraSystem>(this, Asset, false)) LoadedExplosions.AddUnique(Asset);
+		if (auto* System=GuLiVfx::Load<UNiagaraSystem>(this, Asset, false))
+		{ LoadedExplosions.AddUnique(Asset); PrepareExplosionCompilation(System); }
 	for (const auto& Asset : Settings->WingmanExplosionVfxIds)
-		if (GuLiVfx::Load<UNiagaraSystem>(this, Asset, false)) LoadedWingmanExplosions.AddUnique(Asset);
+		if (auto* System=GuLiVfx::Load<UNiagaraSystem>(this, Asset, false))
+		{ LoadedWingmanExplosions.AddUnique(Asset); PrepareExplosionCompilation(System); }
 	const float Now = GetWorld()->GetTimeSeconds();
 	for (const auto& Pending : PendingExplosions)
-		if (Pending.ExpireTime >= Now) SpawnExplosion(Pending.Location, Pending.UnitSize, Pending.bWingman);
+		if (Pending.ExpireTime >= Now) SpawnExplosion(Pending.Location, Pending.UnitSize, Pending.bWingman, Pending.ScaleMultiplier);
 	PendingExplosions.Reset();
+}
+
+void UGuLiUnitFeedbackSubsystem::PrepareExplosionCompilation(UNiagaraSystem* System)
+{
+#if WITH_EDITORONLY_DATA
+	if (!System || PrecompileDestruction.GetValueOnGameThread()==0) return;
+	// Loading leaves editor Niagara scripts pending on demand. Submit the same
+	// non-forced compilation before the first death, without creating a component
+	// or consuming the cosmetic random stream. Cooked resources need no compile.
+	if (System->NeedsRequestCompile())
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiUnitFeedback_PrepareExplosionCompilation);
+		++ExplosionCompileRequests;
+		System->RequestCompile(false);
+	}
+	if (System->HasOutstandingCompilationRequests(true)) PreparingExplosionSystems.AddUnique(System);
+#endif
 }
 
 bool UGuLiUnitFeedbackSubsystem::IsWithinCullDistance(const FVector& Location) const
@@ -194,6 +221,11 @@ void UGuLiUnitFeedbackSubsystem::PlayDestruction(FVector Location, float UnitSiz
 	QueueDestruction(Location, UnitSize, false);
 }
 
+void UGuLiUnitFeedbackSubsystem::PlayGroundMassDestruction(FVector Location, float UnitSize)
+{
+	QueueDestruction(Location, UnitSize, false, 1.0f / 3.0f);
+}
+
 AGuLiUnitWreck* UGuLiUnitFeedbackSubsystem::AllocateWreck(const FVector& Location)
 {
 	if (!WreckMaterial || !GetWorld() || GetWorld()->bIsTearingDown || !IsWithinCullDistance(Location)) return nullptr;
@@ -224,17 +256,18 @@ bool UGuLiUnitFeedbackSubsystem::ShouldRenderExplosion(const FVector& Location) 
 	return IsWithinCullDistance(Location);
 }
 
-void UGuLiUnitFeedbackSubsystem::QueueDestruction(const FVector& Location, float UnitSize, bool bWingman)
+void UGuLiUnitFeedbackSubsystem::QueueDestruction(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier)
 {
-	if (!ShouldRenderExplosion(Location) || !FMath::IsFinite(UnitSize)) return;
+	if (!ShouldRenderExplosion(Location) || !FMath::IsFinite(UnitSize)
+		|| !FMath::IsFinite(ScaleMultiplier) || ScaleMultiplier <= 0.0f) return;
 	const auto& Variants = bWingman ? LoadedWingmanExplosions : LoadedExplosions;
 	if (Variants.IsEmpty())
 	{
 		if (LoadHandle && !LoadHandle->HasLoadCompleted() && PendingExplosions.Num() < 64)
-			PendingExplosions.Add({Location, UnitSize, static_cast<float>(GetWorld()->GetTimeSeconds()) + 1.0f, bWingman});
+			PendingExplosions.Add({Location, UnitSize, static_cast<float>(GetWorld()->GetTimeSeconds()) + 1.0f, bWingman, ScaleMultiplier});
 		return;
 	}
-	SpawnExplosion(Location, UnitSize, bWingman);
+	SpawnExplosion(Location, UnitSize, bWingman, ScaleMultiplier);
 }
 
 void UGuLiUnitFeedbackSubsystem::ApplyWingmanFeedback(const FGuLiWingmanHandle& Wingman, const FVector& Location, bool bDestroyed, float HealthFraction)
@@ -281,14 +314,14 @@ void UGuLiUnitFeedbackSubsystem::ApplyWingmanFeedback(const FGuLiWingmanHandle& 
 	if (Pawn) FlashActor(Pawn, HealthFraction);
 }
 
-void UGuLiUnitFeedbackSubsystem::SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman)
+void UGuLiUnitFeedbackSubsystem::SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier)
 {
 	const auto& Variants = bWingman ? LoadedWingmanExplosions : LoadedExplosions;
 	if (Variants.IsEmpty() || !ShouldRenderExplosion(Location)
 		|| ActiveExplosions.Num() >= FMath::Max(1, GetDefault<UGuLiUnitFeedbackSettings>()->MaximumConcurrentExplosions)) return;
 	const int32 VfxId = Variants[CosmeticRandom.RandRange(0, Variants.Num() - 1)];
 	UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, VfxId, false);
-	const FVector Scale = GuLiVfx::Scale(this, VfxId, FVector(CalculateDestructionScale(UnitSize)));
+	const FVector Scale = GuLiVfx::Scale(this, VfxId, FVector(CalculateDestructionScale(UnitSize))) * ScaleMultiplier;
 	if (!System || !UGuLiVfxRegistrySubsystem::IsValidScale(Scale)) return;
 	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
 	const FName ScaleParameter = bWingman ? Settings->WingmanExplosionScaleParameter : Settings->GroundExplosionScaleParameter;
@@ -317,7 +350,8 @@ void UGuLiUnitFeedbackSubsystem::HandleExplosionFinished(UNiagaraComponent* Comp
 
 bool UGuLiUnitFeedbackSubsystem::IsTickable() const
 {
-	return !IsTemplate() && GetWorld() && (!ActiveHits.IsEmpty() || !ActiveExplosions.IsEmpty() || !ActorHealthBars.IsEmpty());
+	return !IsTemplate() && GetWorld() && (!ActiveHits.IsEmpty() || !ActiveExplosions.IsEmpty()
+		|| !ActorHealthBars.IsEmpty() || !PreparingExplosionSystems.IsEmpty());
 }
 
 TStatId UGuLiUnitFeedbackSubsystem::GetStatId() const
@@ -327,6 +361,17 @@ TStatId UGuLiUnitFeedbackSubsystem::GetStatId() const
 
 void UGuLiUnitFeedbackSubsystem::Tick(float DeltaTime)
 {
+#if WITH_EDITORONLY_DATA
+	// Finalize ready compilation without waiting. The original activation path
+	// still handles an effect requested before preparation has completed.
+	PreparingExplosionSystems.RemoveAllSwap([](const TWeakObjectPtr<UNiagaraSystem>& Weak)
+	{
+		auto* System=Weak.Get();
+		if (!System) return true;
+		System->PollForCompilationComplete();
+		return !System->HasOutstandingCompilationRequests(true);
+	});
+#endif
 	const float Now = GetWorld()->GetTimeSeconds();
 	if (Now >= NextHealthBarCleanupTime)
 	{
@@ -380,6 +425,7 @@ void UGuLiUnitFeedbackSubsystem::Deinitialize()
 		}
 	ActiveHits.Reset(); ActiveExplosions.Reset(); LoadedExplosions.Reset(); PendingExplosions.Reset();
 	LoadedWingmanExplosions.Reset();
+	PreparingExplosionSystems.Reset();
 	ActorHealthBars.Reset();
 	DestroyedWingmen.Reset(); DestroyedWingmanOrder.Reset();
 	HitMaterial = nullptr; InstancedHitMaterial = nullptr;

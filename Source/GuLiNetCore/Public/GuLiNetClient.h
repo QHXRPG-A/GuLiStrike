@@ -1,6 +1,7 @@
 #pragma once
 #include "GuLiNetOwnerState.h"
 #include "GuLiNetOwnership.h"
+#include "GuLiNetResourceSnapshot.h"
 #include <functional>
 #include <memory>
 
@@ -27,12 +28,14 @@ public:
     // Runs independently on this client; it has no peer-clock precondition.
     virtual void Advance(Tick At,double DeltaSeconds) {}
     virtual bool Capture(const std::vector<ObjectKey>& Objects, Bytes& State) const = 0;
+    virtual bool CaptureCurrent(const std::vector<ObjectKey>& Objects,Bytes& State) const {return Capture(Objects,State);}
     virtual bool Validate(const std::vector<PrivateSystemState>& Shards,
         const std::vector<ObjectKey>& LocalObjects) const = 0;
     virtual bool Restore(const std::vector<PrivateSystemState>& Shards,
         const std::vector<ObjectKey>& LocalObjects, RestoreStage Stage) = 0;
     virtual bool RestoreQuery(const std::vector<PrivateSystemState>&,
         const std::vector<ObjectKey>&,RestoreStage) {return true;}
+    virtual void ResetResourceRequests(std::span<const ObjectKey>,Revision) {}
 
 };
 struct CommandMember
@@ -126,6 +129,9 @@ public:
     virtual void SetAuthority(const Authority& Grant, bool LocalSimulation) = 0;
     virtual void Advance(Tick At, double DeltaSeconds) = 0;
     virtual std::uint32_t AdvancePeriod() const {return 1;} // Internal eligibility; zero means no periodic work.
+    // Evaluated immediately before the main-thread callback, after ordered commands,
+    // receipts and restores. The logical clock advances even when no callback is due.
+    virtual bool NeedsAdvanceOnMain(Tick) const {return true;}
     virtual std::shared_ptr<IObjectMotionCodec> CreateMotionCodec() {return {};}
     virtual bool ApplyDecodedMotion(const IObjectMotionOutput&,Tick) {return false;}
     virtual bool Command(const FrozenCommand& Command, const CommandMember& Member) = 0;
@@ -140,6 +146,10 @@ public:
     virtual bool RestoreQuery(std::span<const std::uint8_t> PrivateState, RestoreStage Stage) { return true; }
     virtual void Release() = 0;
     virtual void ResetControlInput() {}
+    // An authenticated current-state cut starts a new application version
+    // domain. Ordinary publications must still remain monotonic inside it.
+    virtual void BeginResourceRestore(Revision) {}
+    virtual void ResetResourceRequests(Revision) {}
 };
 struct PrivateObjectState
 {
@@ -152,6 +162,10 @@ struct ObjectHandoffState
     std::uint32_t Version=HandoffVersion;
     Id Match,Source,Target;
     Revision Transfer=0;
+    bool CurrentOnly=false;
+    Id ResourceGroup;
+    Revision ResourceEpoch=0;
+    Bytes CurrentIdentity;
     std::vector<PrivateObjectState> Objects;
     std::vector<PrivateSystemState> Systems;
     std::vector<StateFragment> Numeric;
@@ -184,6 +198,13 @@ public:
     ClientWorld& operator=(const ClientWorld&)=delete;
     bool Configure(const RuntimeManifest& Manifest,std::string& Error);
     void SetMembers(std::map<Id,Member> Members);
+    void SetResourceGroups(std::map<Id,ResourceGroupState> Groups);
+    const std::map<Id,ResourceGroupState>& ResourceGroups() const {return ResourceAuthorities;}
+    bool HasResourceRecovery() const;
+    std::map<Id,ResourceSnapshotStatus> ResourceSnapshotStatuses(bool IncludeObjects=false) const;
+    bool StampResourceRequest(TransactionRequest&) const;
+    Id ContinuationEvent(const ObjectRecord&) const;
+    void StampPublication(Envelope&) const;
     bool Install(ObjectRecord Record,bool Commit);
     // Cold joins receive numeric births before their complete private restore
     // directory. Ordinary active-room materialization remains strict.
@@ -198,6 +219,7 @@ public:
     bool ReceivePeer(Id AuthenticatedSender,const Message& Value);
     bool Route(const FrozenCommand& Command);
     void SetCommandReceiptCallback(std::function<void(const CommandReceipt&)> Callback) {OnCommandReceipt=std::move(Callback);}
+    void SetCommandTimingObserver(std::function<void(const char*,Id,std::size_t)> Callback) {CommandTiming=std::move(Callback);}
     void SetHandoffAdmission(std::function<bool(Id)> Ready) {HandoffAdmission=std::move(Ready);}
     void SetCommitCallback(TransactionCallback Callback) {OnCommit=std::move(Callback);}
     const std::deque<CommitResult>& UnsettledReceipts() const {return UnsettledReceiptEvidence;}
@@ -219,7 +241,7 @@ public:
     void ReconcileHandoffs(std::span<const ObjectHandoff> Active);
     std::optional<CommandReceipt> CommandResult(Id Event) const;
     void FinishBootstrap();
-    bool CaptureObjects(std::span<const ObjectKey> Keys,Id Target,Revision Transfer,ObjectHandoffState& Out) const;
+    bool CaptureObjects(std::span<const ObjectKey> Keys,Id Target,Revision Transfer,ObjectHandoffState& Out,bool CurrentOnly=false) const;
     bool ImportObjects(const ObjectHandoffState& State);
     bool ImportBootstrap(std::span<const ObjectHandoffState> Parts);
     using BootstrapNumericSource=std::function<bool(Id,const OwnerState::FragmentVisitor&)>;
@@ -245,7 +267,7 @@ public:
     using ApplicationRestore=std::function<ApplicationStatus(const ObjectHandoffState&,std::span<const ObjectKey>,
         const std::map<std::string,std::vector<ObjectKey>>&,RestoreStage)>;
     enum class CaptureApplicationStatus : std::uint8_t {Pending,Ready,Invalid,TooLarge};
-    void SetApplicationBatches(ApplicationPreflight Prepare,std::function<CaptureApplicationStatus(std::span<const ObjectKey>)> Capture,ApplicationRestore Restore)
+    void SetApplicationBatches(ApplicationPreflight Prepare,std::function<CaptureApplicationStatus(std::span<const ObjectKey>,bool)> Capture,ApplicationRestore Restore)
     {PrepareApplications=std::move(Prepare);CaptureApplications=std::move(Capture);RestoreApplications=std::move(Restore);}
     void SetApplicationCommands(std::function<ApplicationStatus(const FrozenCommand&,std::span<const CommandMember>)> Apply) {PrepareCommands=std::move(Apply);}
     void SetCommandApplicationCancellation(std::function<void(const FrozenCommand&)> Cancel) {CancelCommands=std::move(Cancel);}
@@ -253,6 +275,7 @@ public:
     void ResetApplicationPending() {ApplicationPending=false;}
     void SetLogicalStepBoundary(std::function<void()> Callback) {LogicalStepBoundary=std::move(Callback);}
     void SetApplicationCancellation(std::function<void(ObjectKey)> Callback) {ApplicationCancelled=std::move(Callback);}
+    void SetApplicationProgressRevision(std::function<std::uint64_t(ObjectKey)> Read) {ApplicationProgressRevision=std::move(Read);}
     bool IsRequestPending(Id Event) const {return Pending.contains(Event)||PlayerIntents.contains(Event);}
     bool PublishDirectoryLife(ObjectKey,Revision OwnerVersion);
     bool LastCapturePending() const {return CapturePending;}
@@ -265,7 +288,6 @@ public:
     void CompleteMotionApplication(ObjectKey,MessageKind,Tick,Revision,bool);
     const std::string& DirectoryHash() const;
     const OwnerState& NumericState() const {return Numbers;}
-    void SetReducedWork(bool Enabled) {Numbers.SetReducedWork(Enabled);}
     auto ConsumeRetiredLifeChanges() {return Numbers.ConsumeRetiredLifeChanges();}
     const std::map<ObjectKey,MotionReceiveStats>& MotionDiagnostics() const {return MotionStats;}
     std::uint64_t RejectedMotionLives() const {return UnknownMotionLives;}
@@ -282,8 +304,30 @@ public:
     std::map<std::string,std::size_t> WorkCounts() const;
     std::vector<WorkDiagnostic> WorkDiagnostics() const;
 private:
+    std::map<Id,ResourceGroupState> ResourceAuthorities;
+    struct ResourceReplica
+    {
+        ResourceSnapshotStore Store;
+        std::optional<ResourceSnapshot> Sending,LatestPending,Acknowledged;
+        std::optional<ObjectHandoffState> Installing;
+        std::string InstallIdentity;
+        std::set<Id> InstallSent;
+        Revision NextNumber=1,Recovery=0,InstalledRecovery=0;
+        ResourceSnapshotStatus Evidence;
+        double NextCapture=0,SentAt=0,InstallStarted=0;
+        bool Sent=false,InstalledAck=false;
+    };
+    std::map<Id,ResourceReplica> ResourceReplicas;
+    void PollResourceSnapshots();
+    bool ReceiveResourceSnapshot(Id,const Message&);
+    std::vector<ObjectKey> ResourceObjects(Id Group,Id Owner) const;
+    Id ObjectResourceGroup(ObjectKey) const;
+    void InterruptResourceRequests(Id Group,Revision Epoch);
+    bool ResourceMessageCurrent(const Envelope&) const;
+    struct IncomingHandoff;
+    bool InstallHandoffCut(Id Sender,std::shared_ptr<IncomingHandoff> Cut);
     bool PrepareAdapterRecord(const ObjectRecord& Record,const PrivateObjectState* Private=nullptr);
-    bool ImportObjectsImpl(const ObjectHandoffState& State,bool NumericPrepared);
+    bool ImportObjectsImpl(const ObjectHandoffState& State,bool NumericPrepared,const std::string* EncodedIdentity=nullptr);
     mutable std::map<std::string,std::uint64_t> HandoffIssues;
     mutable std::map<std::string,std::uint64_t> HandoffSizes;
     void MeasureHandoff(const std::string& Part,std::uint64_t Bytes) const
@@ -306,6 +350,7 @@ private:
     void StoreRecord(const ObjectRecord& Record);
     bool ImportPeerState(Id Sender,const Message& Value);
     void RetryPeerStates();
+    void RetryPeerReceipts();
     Id Match,Player;
     Factory Create;
     Send Transmit;
@@ -320,6 +365,9 @@ private:
     struct DeferredPeerState {Id Sender;Message Value;double Expires=0;};
     std::deque<DeferredPeerState> DeferredPeerStates;
     std::size_t DeferredPeerStateBytes=0;
+    struct DeferredPeerReceipt {Envelope Header;CommitResult Result;std::size_t Bytes=0;};
+    std::map<std::pair<Id,Id>,DeferredPeerReceipt> DeferredPeerReceipts;
+    std::size_t DeferredPeerReceiptBytes=0;
     std::vector<ReceiveRejection> ReceiveRejections;
     std::vector<ReceiveRejection> RecentRejections;
     void RecordReceiveRejection(const Message& Value);
@@ -331,16 +379,18 @@ private:
     std::function<void(const ObjectRecord&)> OnRecord;
     std::function<void(std::span<const StateFragment>)> OnFragments;
     ApplicationPreflight PrepareApplications;
-    std::function<CaptureApplicationStatus(std::span<const ObjectKey>)> CaptureApplications;
+    std::function<CaptureApplicationStatus(std::span<const ObjectKey>,bool)> CaptureApplications;
     mutable bool CapturePending=false;
     std::function<bool(const OwnerWork&)> ReserveApplicationResult;
     std::function<void(Id)> ReleaseApplicationResult;
     ApplicationRestore RestoreApplications;
     std::function<ApplicationStatus(const FrozenCommand&,std::span<const CommandMember>)> PrepareCommands;
     std::function<void(const FrozenCommand&)> CancelCommands;
+    std::function<void(const char*,Id,std::size_t)> CommandTiming;
     bool ApplicationPending=false;
     std::function<void()> LogicalStepBoundary;
     std::function<void(ObjectKey)> ApplicationCancelled;
+    std::function<std::uint64_t(ObjectKey)> ApplicationProgressRevision;
     struct ImportContinuation
     {
         std::vector<ObjectKey> Keys,Order;
@@ -410,11 +460,23 @@ private:
     bool CommittingOwnershipGroup=false;
     // A bounded group cut is stored once even though every member retains its
     // own transfer acknowledgment and owner version.
-    struct IncomingHandoff {ObjectHandoffState State;bool Detached=false;};
+    struct IncomingHandoff
+    {
+        // The wire-derived value and its full canonical encoding never change
+        // while preflight and the four engine stages wait for acknowledgments.
+        ObjectHandoffState State;Bytes Encoding;std::string Hash;Revision Identity=0;
+        bool Detached=false;
+    };
     struct OutgoingHandoff {Bytes State;Revision Identity=0;bool Detached=false;};
     std::map<Revision,std::shared_ptr<IncomingHandoff>> IncomingStates;
     std::map<ObjectKey,ObjectHandoff> CompletedTransfers;
-    std::map<Revision,std::pair<double,ObjectHandoffState>> EarlyHandoffStates;
+    struct EarlyHandoff
+    {
+        double ReceivedAt=0;
+        std::shared_ptr<IncomingHandoff> Cut;
+        std::map<ObjectKey,std::uint64_t> WaitingApplications;
+    };
+    std::map<Revision,EarlyHandoff> EarlyHandoffStates;
     std::set<ObjectKey> Frozen,FreezeRequested;
     std::map<ObjectKey,std::shared_ptr<OutgoingHandoff>> OutgoingStates;
     std::map<Id,std::size_t> OutgoingCaptureLimits;

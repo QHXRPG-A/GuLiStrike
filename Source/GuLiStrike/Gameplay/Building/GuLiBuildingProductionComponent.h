@@ -15,9 +15,13 @@ public:
 	UGuLiBuildingProductionComponent();
 	void InitializeProduction();
 	void AdvanceHybridProduction(float DeltaSeconds);
+#if !UE_BUILD_SHIPPING
+    bool PrepareDevelopmentProductionCycle();
+#endif
 	bool CaptureHybridProduction(FGuLiHybridProductionPrivateState& Out) const;
 	bool ValidateHybridProduction(const FGuLiHybridProductionPrivateState& State) const;
 	bool RestoreHybridProduction(const FGuLiHybridProductionPrivateState& State);
+    void ResetResourceRequests(uint64 Epoch);
 	bool ValidateHybridProductionMotion(float Cycle,bool Producing) const;
 	bool ApplyHybridProductionMotion(float Cycle,bool Producing);
 	UFUNCTION(BlueprintPure, Category="Building") float GetCycleSeconds() const { return CycleSeconds; }

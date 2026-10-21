@@ -82,6 +82,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Unit Feedback") void FlashActor(AActor* Actor, float HealthFraction = -1.0f);
 	UFUNCTION(BlueprintCallable, Category="Unit Feedback") void ClearActorFlash(AActor* Actor);
 	UFUNCTION(BlueprintCallable, Category="Unit Feedback") void PlayDestruction(FVector Location, float UnitSize = 0.0f);
+	/** Ground Mass deaths use one third of the model-relative explosion size. */
+	void PlayGroundMassDestruction(FVector Location, float UnitSize);
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") float CalculateDestructionScale(float UnitSize) const;
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") float GetReferenceUnitSize() const { return ReferenceUnitSize; }
 	static bool GetActorVisualBounds(const AActor* Actor, FBox& OutWorldBounds, float& OutSize);
@@ -91,6 +93,8 @@ public:
 	FGuLiActorHealthBarChanged OnActorHealthBarChanged;
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetActiveExplosionCount() const { return ActiveExplosions.Num(); }
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetLoadedExplosionCount() const { return LoadedExplosions.Num(); }
+	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetPendingExplosionCompileCount() const { return PreparingExplosionSystems.Num(); }
+	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetExplosionCompileRequestCount() const { return ExplosionCompileRequests; }
 	UMaterialInterface* GetInstancedHitMaterial() const { return InstancedHitMaterial; }
 	UMaterialInterface* GetWreckMaterial() const { return WreckMaterial; }
 	UFUNCTION(BlueprintCallable, Category="Unit Feedback") AGuLiUnitWreck* SpawnActorWreck(AActor* Source, FVector InitialVelocity, bool bFalling);
@@ -100,15 +104,18 @@ public:
 private:
 	UFUNCTION() void HandleExplosionFinished(UNiagaraComponent* Component);
 	void FinishLoading();
+	void PrepareExplosionCompilation(UNiagaraSystem* System);
 	bool ShouldRenderExplosion(const FVector& Location) const;
-	void QueueDestruction(const FVector& Location, float UnitSize, bool bWingman);
-	void SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman);
+	void QueueDestruction(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier = 1.0f);
+	void SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier);
 	AGuLiUnitWreck* AllocateWreck(const FVector& Location);
 	float ReferenceUnitSize = 0.0f;
 	TMap<TWeakObjectPtr<AActor>, FGuLiActorHitHealthBar> ActorHealthBars;
 	float NextHealthBarCleanupTime = 0.0f;
-	struct FPendingExplosion { FVector Location; float UnitSize; float ExpireTime; bool bWingman; };
+	struct FPendingExplosion { FVector Location; float UnitSize; float ExpireTime; bool bWingman; float ScaleMultiplier; };
 	TArray<FPendingExplosion> PendingExplosions;
+	TArray<TWeakObjectPtr<UNiagaraSystem>> PreparingExplosionSystems;
+	int32 ExplosionCompileRequests=0;
 	TSharedPtr<FStreamableHandle> LoadHandle;
 	FRandomStream CosmeticRandom;
 	TSet<FGuLiWingmanHandle> DestroyedWingmen;

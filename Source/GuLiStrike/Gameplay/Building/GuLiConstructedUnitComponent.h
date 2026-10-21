@@ -25,6 +25,7 @@ public:
 	bool CaptureHybrid(TArray<uint8>& Bytes) const;
 	bool RestoreHybrid(TConstArrayView<uint8> Bytes,bool Apply);
 	void ActivateHybridRestore();
+    void ResetResourceRequests(uint64) {HybridConversionEvent.Invalidate();bRestoreActivationPending=true;}
 	bool ApplyHybridLedger(const FGuLiHybridObjectState& State);
 	UFUNCTION(BlueprintPure, Category="Construction") FGuLiSoldierId GetConvertedSoldierId() const { return ConvertedSoldierId; }
 private:
@@ -38,6 +39,7 @@ private:
 	bool bConversionStarted = false;
 	bool bNavigationRebuilt = false;
 	bool bVisualRetired = false;
+    bool bRestoreActivationPending=false;
 	uint64 EarliestConversionTick=0;
 	FGuid HybridConversionEvent;
 };

@@ -71,7 +71,7 @@ bool PeerChannel::Queue(const Message& Value, double Now)
 {
     TraceScope Scope("GuLiHybrid_QueuePeerMessage");
     if (HasFailed() || !std::isfinite(Now)) return false;
-    if (Value.Header.Kind<MessageKind::Hello || Value.Header.Kind>MessageKind::WorkState) return false;
+    if (Value.Header.Kind<MessageKind::Hello || Value.Header.Kind>MessageKind::ResourceSnapshotInstalled) return false;
     if (Value.Header.Kind==MessageKind::HandoffState && !CanQueueHandoff()) return false;
     const Lane Stream = MessageLane(Value.Header.Kind);
     const bool Reliable = ReliableMessage(Value.Header.Kind);
@@ -233,14 +233,18 @@ void PeerChannel::Pump(double Now, const SendPacket& Send)
     struct Service {Key Identity;double Due;std::uint64_t Order;};
     std::vector<Service> Order; Order.reserve(Pending.size());
     for (const auto& [K,V]:Pending) Order.push_back({K,K.first==Lane::Motion?V.FirstQueued:V.NextAttempt,V.ServiceOrder});
-    std::sort(Order.begin(),Order.end(),[](const Service& A,const Service& B)
+    const auto Earlier=[](const Service& A,const Service& B)
     {
         if (A.Identity.first!=B.Identity.first) return A.Identity.first<B.Identity.first;
         // Service the oldest due attempt, including first transmissions. Sorting
         // only by sequence lets a slow ACK consume the entire lane with retries
         // while later requests never receive their first transmission.
         return std::tie(A.Due,A.Order)<std::tie(B.Due,B.Order);
-    });
+    };
+    {
+        TraceScope SortScope("GuLiHybrid_PeerServiceOrder");
+        std::sort(Order.begin(),Order.end(),Earlier);
+    }
     std::array<std::uint64_t,4> FirstUnacknowledged{};
     for (const auto& [K,V]:Pending) if (ReliableMessage(V.Value.Header.Kind))
     {auto& First=FirstUnacknowledged[static_cast<std::size_t>(K.first)];if (!First) First=K.second;}

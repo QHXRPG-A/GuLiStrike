@@ -1,4 +1,5 @@
 #include "Network/GuLiHybridWorldSubsystem.h"
+#include "GuLiStrike.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/Private/GuLiGameplayComputePool.h"
 #include "Network/Private/GuLiHybridObjectConversions.h"
@@ -7,7 +8,9 @@
 #include "Network/Private/GuLiHybridPeerPayload.h"
 #include "GuLiNetHash.h"
 #include "GuLiNetAsyncClient.h"
+#include "Commander/Network/GuLiMoveLatency.h"
 #include "HAL/PlatformProcess.h"
+#include "HAL/IConsoleManager.h"
 #include "HAL/PlatformTLS.h"
 #include "Trace/Trace.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
@@ -39,6 +42,40 @@ namespace
 {
 using namespace GuLiNet;
 using namespace GuLiNetBridge;
+TAutoConsoleVariable<int32> YieldBetweenCaptureCuts(TEXT("gs.Hybrid.YieldBetweenCaptureCuts"),1,
+    TEXT("Advance retained logical time between completed private-state cuts. Latched when the Hybrid client starts; 0 selects the comparison path."));
+bool ResolveCaptureYield()
+{
+    int32 Value=YieldBetweenCaptureCuts.GetValueOnGameThread();
+    FParse::Value(FCommandLine::Get(),TEXT("GuLiYieldBetweenCaptureCuts="),Value);
+    return Value!=0;
+}
+TAutoConsoleVariable<int32> FastPackCacheKey(TEXT("gs.Hybrid.FastPackCacheKey"),1,
+    TEXT("Use a lightweight local compression-cache index with full byte equality. Protocol integrity hashes are unchanged. Latched at client creation."));
+TAutoConsoleVariable<int32> NativePeerSend(TEXT("gs.Hybrid.NativePeerSend"),1,
+    TEXT("Queue prepared native peer messages without copying through UE message containers. 0 selects the comparison bridge."));
+TAutoConsoleVariable<int32> ReusePayloadCompressor(TEXT("gs.Hybrid.ReusePayloadCompressor"),1,
+    TEXT("Reuse one transaction-worker zlib workspace, resetting all stream state for each packet. Latched at client creation; 0 uses fresh compressors."));
+TAutoConsoleVariable<int32> FastSmallPayloadCompression(TEXT("gs.Hybrid.FastSmallPayloadCompression"),1,
+    TEXT("Use zlib best-speed for reliable bodies up to 64 KiB. Lossless wire codecs and larger private cuts are unchanged. Latched at client creation; 0 is the comparison path."));
+bool ResolveFastSmallPayloadCompression()
+{
+    int32 Value=FastSmallPayloadCompression.GetValueOnGameThread();
+    FParse::Value(FCommandLine::Get(),TEXT("GuLiFastSmallPayloadCompression="),Value);
+    return Value!=0;
+}
+bool ResolveFastPackCacheKey()
+{
+    int32 Value=FastPackCacheKey.GetValueOnGameThread();
+    FParse::Value(FCommandLine::Get(),TEXT("GuLiFastPackCacheKey="),Value);
+    return Value!=0;
+}
+bool ResolveCompressorReuse()
+{
+    int32 Value=ReusePayloadCompressor.GetValueOnGameThread();
+    FParse::Value(FCommandLine::Get(),TEXT("GuLiReusePayloadCompressor="),Value);
+    return Value!=0;
+}
 TConstArrayView<uint8> View(std::span<const uint8> B) { return MakeArrayView(B.data(),static_cast<int32>(B.size())); }
 Bytes StageBootstrapBody(Bytes Body)
 {
@@ -69,6 +106,15 @@ TSharedPtr<FJsonValue> MakeCommitEvidence(uint64 Sequence,const CommitResult& V,
     J->SetStringField(TEXT("event"),ToUE(V.Event).ToString(EGuidFormats::Digits));J->SetNumberField(TEXT("kind"),uint8(V.Kind));J->SetNumberField(TEXT("status"),uint8(V.Status));
     J->SetStringField(TEXT("state_domain"),ToUE(V.StateDomain.StableId).ToString(EGuidFormats::Digits));J->SetNumberField(TEXT("state_version"),double(V.StateVersion));
     J->SetStringField(TEXT("target"),ToUE(V.Target.StableId).ToString(EGuidFormats::Digits));
+    J->SetNumberField(TEXT("faction"),uint8(V.Faction));
+    auto Balance=MakeShared<FJsonObject>();Balance->SetNumberField(TEXT("blue"),V.Balance.Blue);
+    Balance->SetNumberField(TEXT("red"),V.Balance.Red);Balance->SetNumberField(TEXT("version"),double(V.Balance.Version));
+    J->SetObjectField(TEXT("balance"),Balance);
+    auto Payment=MakeShared<FJsonObject>();Payment->SetStringField(TEXT("token"),ToUE(V.Reserved.Token).ToString(EGuidFormats::Digits));
+    Payment->SetStringField(TEXT("account"),ToUE(V.Reserved.Key.Account).ToString(EGuidFormats::Digits));
+    Payment->SetStringField(TEXT("request"),LexToString(V.Reserved.Key.Request));
+    Payment->SetNumberField(TEXT("blue"),V.Reserved.Cost.Blue);Payment->SetNumberField(TEXT("red"),V.Reserved.Cost.Red);
+    J->SetObjectField(TEXT("payment"),Payment);
     J->SetNumberField(TEXT("applied_damage"),V.Damage.Applied);J->SetNumberField(TEXT("absorbed_damage"),V.Damage.Absorbed);
     J->SetNumberField(TEXT("remaining_health"),V.Vitals.Value);J->SetBoolField(TEXT("killed"),V.Damage.Killed);
     J->SetStringField(TEXT("death_event"),ToUE(V.DeathEvent).ToString(EGuidFormats::Digits));J->SetStringField(TEXT("reward_event"),ToUE(V.RewardEvent).ToString(EGuidFormats::Digits));
@@ -116,6 +162,8 @@ class FObjectBridge final : public IObjectAdapter
     TMap<FName,TArray<uint8>> AppliedCapabilities;
     FGuLiHybridEntityState Entities;
     mutable FGuLiHybridComponentBindingContext ComponentBindings;
+    mutable uint64 ActorBindingRevision=MAX_uint64;
+    mutable TWeakObjectPtr<AActor> ActorBinding;
     bool ValidActorLayout() const
     {
         const auto* Actor=BoundActor();if (!Actor) return true;
@@ -126,11 +174,17 @@ class FObjectBridge final : public IObjectAdapter
     AActor* BoundActor() const
     {
         auto* W=Owner.IsValid()?Owner->GetWorld():nullptr;auto* H=W?W->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
-        return H?H->FindBoundActor(State.Key):nullptr;
+        if (!H) return nullptr;
+        const uint64 Revision=H->GetActorBindingRevision();
+        if (ActorBindingRevision!=Revision)
+        {ActorBinding=H->FindBoundActor(State.Key);ActorBindingRevision=Revision;}
+        auto* Actor=ActorBinding.Get();
+        return Actor && !Actor->IsActorBeingDestroyed()?Actor:nullptr;
     }
     bool PrepareObject(const ObjectRecord& R,std::span<const uint8> Private={})
     {
         State=ToUE(R);
+        ActorBindingRevision=MAX_uint64;ActorBinding.Reset();
         // Cache one small timer name per definition, never per object or frame.
         SimulationTraceName=FName(*(TEXT("GuLiSim_Object/")+State.Definition.ToString()));
         const auto* Actors=Owner.IsValid()?Owner->GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>():nullptr;
@@ -140,7 +194,7 @@ class FObjectBridge final : public IObjectAdapter
         else if (!Private.empty() && !GuLiHybridObjectState::Decode(Private,Version(),Restored)) Failure=TEXT("private preparation envelope");
         else if (!(Private.empty()?Adapter->Prepare(State):Adapter->PrepareRestore(State,View(Restored.Family)))) Failure=TEXT("family materialization");
         else if (!ValidActorLayout()) Failure=TEXT("component layout");
-        else if (!Entities.Prepare(*Owner->GetWorld(),State,Actors->GetManifest())) Failure=TEXT("entity capabilities");
+        else if (!Entities.Prepare(*Owner->GetWorld(),State,Actors->GetManifest(),Actors->FindEntityCapabilityNames(State.Definition))) Failure=TEXT("entity capabilities");
         else if (!FGuLiHybridLedgerBindingRegistration::Apply(*Owner->GetWorld(),State,AppliedCapabilities,false)) Failure=TEXT("committed capability application");
         if (!Failure) return true;
         UE_LOG(LogTemp,Log,TEXT("Hybrid object preparation pending: object=%s definition=%s ordinal=%u stage=%s"),
@@ -160,23 +214,32 @@ class FObjectBridge final : public IObjectAdapter
     }
     bool RestoreParts(std::span<const uint8> Bytes,RestoreStage Stage,bool Query)
     {
+        const auto Fail=[&](const TCHAR* Reason)
+        {
+            UE_LOG(LogTemp,Log,TEXT("Hybrid object restore failed: object=%s definition=%s ordinal=%u stage=%u query=%d reason=%s"),
+                *State.Key.StableId.ToString(EGuidFormats::Digits),*State.Definition.ToString(),State.Ordinal,unsigned(Stage),Query,Reason);
+            return false;
+        };
         GuLiHybridObjectState::FParts V;
-        if (!Owner.IsValid() || !GuLiHybridObjectState::Decode(Bytes,Version(),V)) return false;
+        if (!Owner.IsValid() || !GuLiHybridObjectState::Decode(Bytes,Version(),V)) return Fail(TEXT("private envelope"));
         if (Stage==RestoreStage::Create)
         {
             TMap<FName,TArray<uint8>> Applications;
             if (!FGuLiHybridLedgerBindingRegistration::Restore(View(V.Applications),Applications)
-                || !FGuLiHybridLedgerBindingRegistration::ValidateCursors(State,Applications)) return false;
+                || !FGuLiHybridLedgerBindingRegistration::ValidateCursors(State,Applications)) return Fail(TEXT("capability cursors"));
             AppliedCapabilities=MoveTemp(Applications);
         }
         if (!(Query?Adapter->RestoreQuery(View(V.Family),static_cast<EGuLiHybridRestoreStage>(Stage))
-            :Adapter->Restore(View(V.Family),static_cast<EGuLiHybridRestoreStage>(Stage)))) return false;
-        if (!Entities.Restore(View(V.Entities),static_cast<EGuLiHybridRestoreStage>(Stage))) return false;
+            :Adapter->Restore(View(V.Family),static_cast<EGuLiHybridRestoreStage>(Stage)))) return Fail(TEXT("family state"));
+        if (!Entities.Restore(View(V.Entities),static_cast<EGuLiHybridRestoreStage>(Stage))) return Fail(TEXT("entity state"));
         if (Stage==RestoreStage::Detach) {ComponentBindings.Reset();return true;}
-        auto* Actor=BoundActor();if ((Actor!=nullptr)!=V.HasActor) return false;
+        auto* Actor=BoundActor();if ((Actor!=nullptr)!=V.HasActor) return Fail(TEXT("actor presence"));
         // All objects must exist before a capability links references to another object.
-        if (Stage==RestoreStage::Create) return ValidActorLayout() && (!Actor || FGuLiHybridComponentState::PrepareRestore(*Actor,View(V.Components),&ComponentBindings));
-        return !Actor || FGuLiHybridComponentState::Restore(*Actor,View(V.Components),static_cast<EGuLiHybridRestoreStage>(Stage),&ComponentBindings);
+        if (Stage==RestoreStage::Create)
+            return (ValidActorLayout() && (!Actor || FGuLiHybridComponentState::PrepareRestore(*Actor,View(V.Components),&ComponentBindings)))
+                || Fail(TEXT("component preparation"));
+        return (!Actor || FGuLiHybridComponentState::Restore(*Actor,View(V.Components),static_cast<EGuLiHybridRestoreStage>(Stage),&ComponentBindings))
+            || Fail(TEXT("component state"));
     }
 public:
     explicit FObjectBridge(TSharedPtr<IGuLiHybridSimulationAdapter> V) : Adapter(MoveTemp(V)), Owner(Adapter->LifetimeOwner()) {}
@@ -213,14 +276,13 @@ public:
         TRACE_CPUPROFILER_EVENT_SCOPE_TEXT(SimulationTraceName);
         if (!Owner.IsValid()) return;
         auto* W=Owner->GetWorld();auto* H=W?W->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
-        const bool Reduced=UGuLiHotspotOptions::Enabled(W,EGuLiHotspot::ReducedWork);
-        auto* Actor=H?H->FindBoundActor(State.Key):nullptr;
+        auto* Actor=BoundActor();
         const uint32 Period=Adapter->AdvancePeriod();
-        const bool FamilyDue=!Reduced || (Period && At%Period==0);
+        const bool FamilyDue=Period && At%Period==0;
         // Recheck on the game thread after all preceding ledger/command/restore
         // callbacks. Never cache this decision on the transaction owner: a new
         // relocation step must wake on the very next original logical tick.
-        if (Reduced && !Actor && !FamilyDue && !Entities.HasPeriodicWork()) return;
+        if (!Actor && !FamilyDue && !Entities.HasPeriodicWork()) return;
         {
             TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_ObjectComponents);
             if (Actor)
@@ -229,10 +291,19 @@ public:
         }
         if (FamilyDue) {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_ObjectFamily);Adapter->Advance(At,Delta);}
         {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_ObjectEntities);Entities.Advance(At,Delta);}
+        // Component motion belongs to a bound Actor. Mass poses and entity
+        // capabilities have their own publication paths, including relocation.
+        if (Actor)
         {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_ObjectPublicMotion);if (H) H->PublishComponentMotionIfDue(State.Key,&ComponentBindings);}
     }
     uint32 AdvancePeriod() const override
     {return BoundActor()||!Entities.IsEmpty()?1:Adapter->AdvancePeriod();}
+    bool NeedsAdvanceOnMain(Tick At) const override
+    {
+        if (!Owner.IsValid()) return false;
+        const uint32 Period=Adapter->AdvancePeriod();
+        return (Period && At%Period==0) || BoundActor() || Entities.HasPeriodicWork();
+    }
     std::shared_ptr<IObjectMotionCodec> CreateMotionCodec() override {return Adapter->CreateMotionCodec();}
     bool ApplyDecodedMotion(const IObjectMotionOutput& V,Tick At) override
     {return Owner.IsValid()&&(!Entities.AcceptMotion(At)||Adapter->ApplyDecodedMotion(V,At));}
@@ -290,7 +361,15 @@ public:
     bool RestoreQuery(std::span<const uint8> B,RestoreStage Stage) override
     { return RestoreParts(B,Stage,true); }
     void ResetControlInput() override { if (Owner.IsValid()) Adapter->ResetControlInput(); }
-    void Release() override { ComponentBindings.Reset();Entities.Reset();if (Owner.IsValid()) Adapter->Release(); }
+    void BeginResourceRestore(Revision) override
+    {AppliedCapabilities.Reset();ComponentBindings.Reset();}
+    void ResetResourceRequests(Revision E) override
+    {
+        if (!Owner.IsValid()) return;
+        Adapter->ResetResourceRequests(E);Entities.ResetResourceRequests(E);
+        if (auto* Actor=BoundActor()) FGuLiHybridComponentState::ResetResourceRequests(*Actor,E,&ComponentBindings);
+    }
+    void Release() override { ActorBindingRevision=MAX_uint64;ActorBinding.Reset();ComponentBindings.Reset();Entities.Reset();if (Owner.IsValid()) Adapter->Release(); }
 };
 class FSharedStateBridge final : public ISharedStateAdapter
 {
@@ -310,6 +389,13 @@ class FSharedStateBridge final : public ISharedStateAdapter
         return Out;
     }
 public:
+    void ResetResourceRequests(std::span<const ObjectKey> Objects,Revision E) override
+    {if (Owner.IsValid()) Adapter->ResetResourceRequests(Keys(std::vector<ObjectKey>(Objects.begin(),Objects.end())),E);}
+    bool CaptureCurrent(const std::vector<ObjectKey>& Objects,Bytes& Out) const override
+    {
+        TArray<uint8> B;if (!Owner.IsValid() || !Adapter->CaptureCurrent(Keys(Objects),B)) return false;
+        Out.assign(B.GetData(),B.GetData()+B.Num());return true;
+    }
     FSharedStateBridge(FName Name,TSharedPtr<IGuLiHybridSharedStateAdapter> V)
         : Adapter(MoveTemp(V)),Owner(Adapter->LifetimeOwner()),SimulationTraceName(*(TEXT("GuLiSim_Shared/")+Name.ToString())) {}
     uint32 Version() const override { return Owner.IsValid() ? Adapter->Version() : 0; }
@@ -393,15 +479,17 @@ struct UGuLiHybridWorldSubsystem::FState
     TMap<FGuLiHybridObjectKey,FGuLiHybridObjectState> RetiredTargetMetadata;
     uint64 RetiredTargetLookups=0;
     TMap<FGuLiHybridObjectKey,TWeakObjectPtr<AActor>> Actors;
+    uint64 ActorBindingRevision=0;
     TMap<uint32,FGuLiHybridObjectKey> ActorTaskKeys;
     TWeakObjectPtr<UGuLiHybridSessionSubsystem> Session;
     FGuLiNetworkLaunchConfig Config;
     std::unique_ptr<AsyncClientWorld> Client;
+    bool bReusePayloadCompressor=false;
+    bool bFastSmallPayloadCompression=false;
     AsyncClientStats LastAsyncStats;
     double UnreportedSimulationMilliseconds=0;
     uint32 HUDQueryDepth=0;
     uint64 FullObjectCopies=0,HUDFullObjectCopies=0;
-    Revision LastResourceQueryRevision=~Revision{},LastMiningQueryRevision=~Revision{};
     std::map<ObjectKey,ObjectRecord> WaitingDirectory;
     std::set<ObjectKey> DirectoryKeys;
     std::set<ObjectKey> CoordinatorDirectoryKeys;
@@ -429,6 +517,7 @@ struct UGuLiHybridWorldSubsystem::FState
     std::set<ObjectKey> RequiredDirectoryKeys;
     uint32 ExpectedObjects=0;
     bool DirectoryComplete=false, Ready=false,DirectoryResumePending=false;
+    bool RequiredDirectoryValidated=false;
     double NextReadySend=0,NextBirthRecovery=0;
     uint64 BirthRecoveryAnnouncements=0;
     double DirectoryStarted=0;
@@ -472,6 +561,7 @@ void UGuLiHybridWorldSubsystem::OnWorldBeginPlay(UWorld& World)
     State->Session=Session;
     Session->OnControl.AddUObject(this,&ThisClass::HandleControl);
     Session->AdmitPeer.BindUObject(this,&ThisClass::HandlePeer);
+    Session->AdmitNativePeer.BindUObject(this,&ThisClass::HandleNativePeer);
     Session->CanAdmitPeer.BindUObject(this,&ThisClass::CanAdmitPeer);
     Session->OnReviewReceiptReleased.AddUObject(this,&ThisClass::HandleReleasedCommit);
     Session->OnFailure.AddUObject(this,&ThisClass::HandleFailure);
@@ -482,7 +572,7 @@ void UGuLiHybridWorldSubsystem::Deinitialize()
     FWorldDelegates::OnWorldPostActorTick.RemoveAll(this);
     if (auto* Session=State->Session.Get())
     {
-        Session->OnControl.RemoveAll(this); Session->AdmitPeer.Unbind();Session->CanAdmitPeer.Unbind(); Session->OnFailure.RemoveAll(this);
+        Session->OnControl.RemoveAll(this); Session->AdmitPeer.Unbind();Session->AdmitNativePeer.Unbind();Session->CanAdmitPeer.Unbind(); Session->OnFailure.RemoveAll(this);
         Session->OnReviewReceiptReleased.RemoveAll(this);
         Message Leave; Leave.Header.Kind=MessageKind::Leave; Session->SendControl(ToUE(Leave)); Session->Stop();
     }
@@ -511,7 +601,8 @@ bool UGuLiHybridWorldSubsystem::HasPendingGameplayCalculation(FName Group) const
 {return State->Client && State->Client->HasPendingGameplay(TCHAR_TO_UTF8(*Group.ToString()));}
 void UGuLiHybridWorldSubsystem::ApplyLateGameplay(UWorld* World,ELevelTick,float)
 {
-    if (World==GetWorld() && State->Client && UGuLiHotspotOptions::Enabled(World,EGuLiHotspot::GameplayWorker))
+    if (World==GetWorld() && State->Client
+        && UGuLiHotspotOptions::Enabled(World,EGuLiHotspot::GameplayWorker))
         State->Client->PumpApplications();
 }
 bool UGuLiHybridWorldSubsystem::RegisterFactory(EGuLiHybridObjectKind Kind,UObject& Owner,FGuLiHybridAdapterFactory Create)
@@ -541,18 +632,22 @@ bool UGuLiHybridWorldSubsystem::BindTarget(const FGuLiTargetHandle& Target,const
 bool UGuLiHybridWorldSubsystem::BindActor(const FGuLiHybridObjectKey& Key,AActor& Actor,uint32 Ordinal)
 {
     if (!Key.IsValid() || Actor.GetWorld()!=GetWorld() || Actor.IsActorBeingDestroyed()) return false;
-    if (const auto* Existing=State->Actors.Find(Key); Existing && Existing->IsValid() && Existing->Get()!=&Actor) return false;
+    const auto* Existing=State->Actors.Find(Key);
+    if (Existing && Existing->IsValid() && Existing->Get()!=&Actor) return false;
+    const bool Changed=!Existing || Existing->Get()!=&Actor;
     if (Ordinal)
     {
         if (!Ordinal) return false;
         if (const auto* Old=State->ActorTaskKeys.Find(Ordinal); Old && *Old!=Key && FindBoundActor(*Old)) return false;
         State->ActorTaskKeys.Add(Ordinal,Key);
     }
-    State->Actors.Add(Key,&Actor); return true;
+    if (Changed) {State->Actors.Add(Key,&Actor);++State->ActorBindingRevision;}
+    return true;
 }
 void UGuLiHybridWorldSubsystem::UnbindActor(const FGuLiHybridObjectKey& Key,const AActor& Actor)
 {
-    if (const auto* Existing=State->Actors.Find(Key); Existing && Existing->Get()==&Actor) State->Actors.Remove(Key);
+    if (const auto* Existing=State->Actors.Find(Key); Existing && Existing->Get()==&Actor)
+    {State->Actors.Remove(Key);++State->ActorBindingRevision;}
 }
 uint32 UGuLiHybridWorldSubsystem::GetActorTaskGeneration(uint32 Ordinal) const
 {
@@ -560,11 +655,17 @@ uint32 UGuLiHybridWorldSubsystem::GetActorTaskGeneration(uint32 Ordinal) const
     // still addresses the old life after its UE handle has been released.
     const auto* Key=State->ActorTaskKeys.Find(Ordinal); return Key?Key->LifeGeneration:0;
 }
+bool UGuLiHybridWorldSubsystem::ResolveActorTaskKey(uint32 Ordinal,FGuLiHybridObjectKey& Out) const
+{
+    const auto* Key=State->ActorTaskKeys.Find(Ordinal);if (!Key) return false;
+    Out=*Key;return true;
+}
 AActor* UGuLiHybridWorldSubsystem::FindBoundActor(const FGuLiHybridObjectKey& Key) const
 {
     const auto* Existing=State->Actors.Find(Key); auto* Actor=Existing?Existing->Get():nullptr;
     return Actor && !Actor->IsActorBeingDestroyed()?Actor:nullptr;
 }
+uint64 UGuLiHybridWorldSubsystem::GetActorBindingRevision() const {return State->ActorBindingRevision;}
 bool UGuLiHybridWorldSubsystem::ResolveTarget(const FGuLiTargetHandle& Target,FGuLiHybridObjectKey& Out) const
 { const auto* K=State->Targets.Find(Target); if (!K) return false; Out=*K; return true; }
 uint32 UGuLiHybridWorldSubsystem::GetLatestRetiredLife(const FGuLiHybridObjectKey& Stable) const
@@ -589,6 +690,21 @@ bool UGuLiHybridWorldSubsystem::GetObjectView(const FGuLiHybridObjectKey& Key,FG
     if (!State->Client) return false;
     const auto I=State->Client->Objects().find(ToCore(Key));if (I==State->Client->Objects().end()) return false;
     Out=ToUEView(I->second);return true;
+}
+bool UGuLiHybridWorldSubsystem::GetObjectLifecycle(const FGuLiHybridObjectKey& Key,FGuid& SimulationOwner,uint8& LifeState,GuLiNet::ObjectReadCursor* Lookup) const
+{
+    if (!State->Client) return false;
+    const ObjectRecord* Record=nullptr;
+    if (Lookup) Record=State->Client->FindObject(ToCore(Key),*Lookup);
+    else
+    {
+        const auto I=State->Client->Objects().find(ToCore(Key));
+        if (I!=State->Client->Objects().end()) Record=&I->second;
+    }
+    if (!Record) return false;
+    SimulationOwner=ToUE(Record->Grant.SimOwner);
+    LifeState=static_cast<uint8>(Record->Grant.State);
+    return true;
 }
 FGuLiHybridObjectKey UGuLiHybridWorldSubsystem::GetTeamCapabilityKey(EGuLiTeam Team,FName Capability) const
 {
@@ -617,6 +733,52 @@ void UGuLiHybridWorldSubsystem::GetObjects(TArray<FGuLiHybridObjectState>& Out) 
     Out.Reset(); if (!State->Client) return;
     Out.Reserve(static_cast<int32>(State->Client->Objects().size()));
     for (const auto& [K,O] : State->Client->Objects()) { (void)K; Out.Add(ToUE(O)); }
+}
+TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetSimulationCensus() const
+{
+    auto Root=MakeShared<FJsonObject>();auto Definitions=MakeShared<FJsonObject>();
+    if (const auto* Options=GetWorld()->GetSubsystem<UGuLiHotspotOptions>())
+        Root->SetObjectField(TEXT("sync_identity"),Options->GetSyncIdentity());
+    auto Teams=MakeShared<FJsonObject>();
+    const Id Local=State->Session.IsValid()?ToCore(State->Session->GetLocalPlayerId()):Id{};
+    struct FCounts {uint64 Total=0,Alive=0,LocalOwned=0,PeerOwned=0,Simulating=0,Dormant=0,Dead=0,Destroyed=0;};
+    std::map<std::string,FCounts> ByDefinition,ByTeam;
+    uint64 Soldiers=0,LocalSoldiers=0,PeerSoldiers=0;
+    if (State->Client) for (const auto& [K,O]:State->Client->Objects())
+    {
+        const bool Alive=O.Grant.State==Life::Alive,Owned=O.Grant.SimOwner==Local;
+        const bool Simulating=State->Client->HasSimulation(K);
+        const auto Count=[&](FCounts& C)
+        {
+            ++C.Total;C.Alive+=Alive;C.LocalOwned+=Alive&&Owned;
+            C.PeerOwned+=Alive&&!Owned&&O.Grant.SimOwner.Valid();C.Simulating+=Simulating;
+            C.Dormant+=O.Grant.Dormant;C.Dead+=O.Grant.State==Life::Dead;C.Destroyed+=O.Grant.State==Life::Destroyed;
+        };
+        Count(ByDefinition[O.Definition]);Count(ByTeam[std::to_string(uint8(O.Grant.Faction))]);
+        if (K.Kind==ObjectKind::Soldier && Alive)
+        {++Soldiers;LocalSoldiers+=Simulating;PeerSoldiers+=!Owned&&O.Grant.SimOwner.Valid();}
+    }
+    const auto Write=[](const auto& Source,const TSharedRef<FJsonObject>& Destination)
+    {
+        for (const auto& [Name,C]:Source)
+        {
+            auto J=MakeShared<FJsonObject>();J->SetNumberField(TEXT("total"),double(C.Total));
+            J->SetNumberField(TEXT("alive"),double(C.Alive));J->SetNumberField(TEXT("local_alive_owned"),double(C.LocalOwned));
+            J->SetNumberField(TEXT("peer_alive_owned"),double(C.PeerOwned));J->SetNumberField(TEXT("local_simulation"),double(C.Simulating));
+            J->SetNumberField(TEXT("dormant"),double(C.Dormant));J->SetNumberField(TEXT("dead"),double(C.Dead));
+            J->SetNumberField(TEXT("destroyed"),double(C.Destroyed));Destination->SetObjectField(UTF8_TO_TCHAR(Name.c_str()),J);
+        }
+    };
+    Write(ByDefinition,Definitions);Write(ByTeam,Teams);
+    Root->SetBoolField(TEXT("ready"),State->Client && CanPublishFacts());
+    Root->SetStringField(TEXT("local_player"),ToUE(Local).ToString(EGuidFormats::Digits));
+    Root->SetNumberField(TEXT("live_soldiers"),double(Soldiers));Root->SetNumberField(TEXT("local_simulating_soldiers"),double(LocalSoldiers));
+    Root->SetNumberField(TEXT("peer_alive_soldiers"),double(PeerSoldiers));
+    Root->SetNumberField(TEXT("directory_records"),State->Client?double(State->Client->Objects().size()):0);
+    Root->SetNumberField(TEXT("retired_target_records"),State->RetiredTargetMetadata.Num());
+    Root->SetNumberField(TEXT("logical_tick"),double(GetLogicalTick()));
+    Root->SetObjectField(TEXT("by_definition"),Definitions);Root->SetObjectField(TEXT("by_team"),Teams);
+    return Root;
 }
 void UGuLiHybridWorldSubsystem::BeginHUDQueryScope() {check(IsInGameThread());++State->HUDQueryDepth;}
 void UGuLiHybridWorldSubsystem::EndHUDQueryScope() {check(IsInGameThread() && State->HUDQueryDepth);--State->HUDQueryDepth;}
@@ -729,6 +891,34 @@ TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetReviewEvidenceSnapshot() c
     auto HandoffMeasurements=MakeShared<FJsonObject>();
     if (State->Client) for (const auto& [Part,Value]:State->Client->HandoffMeasurements()) HandoffMeasurements->SetNumberField(UTF8_TO_TCHAR(Part.c_str()),double(Value));
     Root->SetObjectField(TEXT("handoff_measurements"),HandoffMeasurements);
+    Root->SetStringField(TEXT("resource_recovery_implementation"),TEXT("current-snapshot-v3"));
+    TArray<TSharedPtr<FJsonValue>> ResourceSnapshots;
+    if (State->Client) for (const auto& [Key,V]:State->Client->ResourceSnapshotStatuses())
+    {
+        auto Item=MakeShared<FJsonObject>();const auto& G=V.Authority;
+        Item->SetStringField(TEXT("group"),UTF8_TO_TCHAR(Key.ToString().c_str()));
+        Item->SetStringField(TEXT("owner"),UTF8_TO_TCHAR(G.Owner.ToString().c_str()));
+        Item->SetStringField(TEXT("backup"),UTF8_TO_TCHAR(G.Backup.ToString().c_str()));
+        Item->SetStringField(TEXT("request_epoch"),LexToString(G.RequestEpoch));
+        Item->SetStringField(TEXT("owner_version"),LexToString(G.OwnerVersion));
+        Item->SetStringField(TEXT("recovering"),LexToString(G.Recovery));
+        Item->SetStringField(TEXT("installed_recovery"),LexToString(V.InstalledRecovery));
+        Item->SetStringField(TEXT("snapshot"),LexToString(V.InstalledSnapshot));
+        Item->SetStringField(TEXT("snapshot_epoch"),LexToString(V.InstalledEpoch));
+        Item->SetStringField(TEXT("sample"),LexToString(V.InstalledSample));
+        Item->SetStringField(TEXT("digest"),UTF8_TO_TCHAR(V.InstalledDigest.c_str()));
+        Item->SetNumberField(TEXT("complete_copies"),V.CompleteCopies);Item->SetNumberField(TEXT("stored_bytes"),double(V.StoredBytes));
+        Item->SetNumberField(TEXT("queued_versions"),V.QueuedVersions);
+        TArray<TSharedPtr<FJsonValue>> InstalledObjects;
+        for (const auto K:V.InstalledObjects)
+        {
+            auto Object=MakeShared<FJsonObject>();Object->SetStringField(TEXT("id"),UTF8_TO_TCHAR(K.StableId.ToString().c_str()));
+            Object->SetNumberField(TEXT("kind"),unsigned(K.Kind));Object->SetNumberField(TEXT("generation"),K.Generation);
+            InstalledObjects.Add(MakeShared<FJsonValueObject>(Object));
+        }
+        Item->SetArrayField(TEXT("installed_objects"),InstalledObjects);ResourceSnapshots.Add(MakeShared<FJsonValueObject>(Item));
+    }
+    Root->SetArrayField(TEXT("resource_snapshots"),ResourceSnapshots);
     Root->SetNumberField(TEXT("executed_commands"),State->Client?double(State->Client->ExecutedCommandCount()):0);
     Root->SetNumberField(TEXT("rejected_motion_lives"),State->Client?double(State->Client->RejectedMotionLives()):0);
     Root->SetNumberField(TEXT("rejected_state_imports"),State->Client?double(State->Client->RejectedStateImports()):0);
@@ -1031,6 +1221,7 @@ TStatId UGuLiHybridWorldSubsystem::GetStatId() const
 
 void UGuLiHybridWorldSubsystem::TryWorldReady()
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_WorldReady);
     if (!State->Client || !State->DirectoryComplete || !State->Failure.IsEmpty()
         || State->Client->IsBootstrapMaterializationDeferred()) return;
     for (auto It=State->WaitingDirectory.begin(); It!=State->WaitingDirectory.end();)
@@ -1038,7 +1229,14 @@ void UGuLiHybridWorldSubsystem::TryWorldReady()
         if (State->Client->Install(It->second,true)) It=State->WaitingDirectory.erase(It); else ++It;
     }
     if (!State->WaitingDirectory.empty() || State->DirectoryKeys.size()<State->ExpectedObjects) return;
-    for (const auto& Key:State->RequiredDirectoryKeys) if (!State->Client->Objects().contains(Key)) return;
+    // This client's directory retains retired records and never removes keys.
+    // New coordinator registrations invalidate the presence check below; roster
+    // acknowledgement/reconnect retries still run on every readiness attempt.
+    if (!State->RequiredDirectoryValidated)
+    {
+        for (const auto& Key:State->RequiredDirectoryKeys) if (!State->Client->Objects().contains(Key)) return;
+        State->RequiredDirectoryValidated=true;
+    }
     const auto* Member=State->Session->GetMembers().FindByPredicate([&](const FGuLiHybridMember& M)
     { return M.Player==State->Session->GetLocalPlayerId() && M.bOnline; });
     const double Now=FPlatformTime::Seconds();
@@ -1062,7 +1260,7 @@ void UGuLiHybridWorldSubsystem::Tick(float Delta)
         TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_ApplyCompletedWork);
         State->Client->PollNetwork(FPlatformTime::Seconds());
     }
-    RefreshQueryState();
+
     if (State->DirectoryResumePending)
     {
         if (State->Client->SetBootstrapMaterializationDeferred(false)) State->DirectoryResumePending=false;
@@ -1108,6 +1306,7 @@ void UGuLiHybridWorldSubsystem::Tick(float Delta)
 
 void UGuLiHybridWorldSubsystem::SynchronizeGameplayRoster()
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_SynchronizeGameplayRoster);
     auto* Session=State->Session.Get(); auto* World=GetWorld();
     auto* Battle=World ? World->GetGameState<AGuLiBattleGameState>() : nullptr;
     if (!Session || !State->Client || !Battle || !State->Failure.IsEmpty()) return;
@@ -1163,6 +1362,7 @@ bool UGuLiHybridWorldSubsystem::PublishMotion(const FGuLiHybridObjectKey& Key,co
     const auto& A=State->Client->Objects().at(ToCore(Key)).Grant;
     Message M; M.Header.Kind=MessageKind::Motion; M.Header.Object=A.Object; M.Header.OwnerEpoch=A.OwnerEpoch;
     M.Header.ControlEpoch=A.ControlEpoch; M.Header.At=GetObjectLogicalTick(Key);
+    if (!State->Client->StampObjectPublication(M.Header)) {++Stats.ClockBlocked;return false;}
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
     const bool Queued=State->Session->BroadcastPeer(ToUE(M));
     if (Queued) ++Stats.Accepted; else ++Stats.QueueFailed;
@@ -1192,6 +1392,7 @@ void UGuLiHybridWorldSubsystem::PublishComponentMotionIfDue(const FGuLiHybridObj
     }
     Message M;M.Header.Kind=MessageKind::ComponentState;M.Header.Object=K;M.Header.OwnerEpoch=O.Grant.OwnerEpoch;
     M.Header.ControlEpoch=O.Grant.ControlEpoch;M.Header.At=Now;M.Body.assign(Public.GetData(),Public.GetData()+Public.Num());
+    if (!State->Client->StampObjectPublication(M.Header)) return;
     if (State->Session->BroadcastPeer(ToUE(M))) State->PublicMotionPublished[K]={State->Client->Epoch(),O.Grant.OwnerEpoch,Now};
 }
 bool UGuLiHybridWorldSubsystem::PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body,uint64 CapturedTick)
@@ -1200,6 +1401,7 @@ bool UGuLiHybridWorldSubsystem::PublishMotionTo(const FGuLiHybridObjectKey& Key,
     const auto& A=State->Client->Objects().at(ToCore(Key)).Grant;
     Message M; M.Header.Kind=MessageKind::Motion; M.Header.Object=A.Object; M.Header.OwnerEpoch=A.OwnerEpoch;
     M.Header.ControlEpoch=A.ControlEpoch; M.Header.At=CapturedTick==MAX_uint64?GetObjectLogicalTick(Key):CapturedTick;
+    if (!State->Client->StampObjectPublication(M.Header)) return false;
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
     return State->Session->SendPeer(Peer,ToUE(M));
 }
@@ -1215,6 +1417,7 @@ bool UGuLiHybridWorldSubsystem::PublishMotionAcknowledgment(const FGuLiHybridObj
     if (!State->Session.IsValid() || Body.Num()>256 || !GetObject(Key,Object) || HasSimulation(Key)) return false;
     Message M; M.Header.Kind=MessageKind::MotionAcknowledgment; M.Header.Object=ToCore(Key);
     M.Header.OwnerEpoch=Object.OwnerEpoch; M.Header.ControlEpoch=Object.ControlEpoch; M.Header.At=GetLogicalTick();
+    if (!State->Client || !State->Client->StampObjectPublication(M.Header)) return false;
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
     return State->Session->SendPeer(Object.SimulationOwner,ToUE(M));
 }
@@ -1317,7 +1520,9 @@ FGuid UGuLiHybridWorldSubsystem::SubmitAdmittedWork(const FGuLiHybridObjectKey& 
     if (!State->Client || !CanPublishFacts() || !HasSimulation(Work)) return {};
     const auto I=State->Client->Objects().find(ToCore(Work));FrozenWorkRecipe Recipe;
     if (I==State->Client->Objects().end() || !DecodeFrozenWork(I->second,Recipe)) return {};
-    auto Request=Recipe.Request;Request.Header.Object=ToCore(Work);Request.Header.At=GetObjectLogicalTick(Work);
+    auto Request=Recipe.Request;Request.Header.Event=State->Client->ContinuationEvent(I->second);
+    Request.Header.ResourceGroup={};Request.Header.ResourceEpoch=0;
+    Request.Header.Object=ToCore(Work);Request.Header.At=GetObjectLogicalTick(Work);
     return ToUE(State->Client->Submit(std::move(Request),{}));
 }
 bool UGuLiHybridWorldSubsystem::GetMiningLease(const FGuLiHybridObjectKey& Source,FGuLiHybridMiningLease& Lease) const
@@ -1466,10 +1671,31 @@ FGuLiResourceAmounts UGuLiHybridWorldSubsystem::GetTeamBalance(EGuLiTeam Team) c
 {
     return Team==EGuLiTeam::Red ? ToUE(State->Red) : Team==EGuLiTeam::Blue ? ToUE(State->Blue) : FGuLiResourceAmounts{};
 }
+uint64 UGuLiHybridWorldSubsystem::GetResourceRequestEpoch(const FGuLiHybridObjectKey& Source) const
+{
+    if (!State->Client) return 0;
+    auto K=ToCore(Source);std::set<ObjectKey> Seen;
+    const auto& Objects=State->Client->Objects();const auto& Groups=State->Client->ResourceGroups();
+    while (K.Valid() && Seen.size()<64 && Seen.insert(K).second)
+    {
+        const auto O=Objects.find(K);if (O==Objects.end()) break;
+        if (const auto G=Groups.find(O->second.Grant.OwnershipGroup);G!=Groups.end()) return G->second.RequestEpoch;
+        K=O->second.Parent;
+    }
+    return 0;
+}
+bool UGuLiHybridWorldSubsystem::GetCommittedReservation(const FGuLiHybridObjectKey& Source,uint64 Request,FGuid& Token) const
+{
+    if (!State->Client) return false;
+    const auto& Pending=State->Client->NumericState().Reservations;
+    const auto I=Pending.find({DeriveEconomyAccount(ToCore(Source)),Request});
+    if (I==Pending.end()) return false;Token=ToUE(I->second.Token);return true;
+}
 void UGuLiHybridWorldSubsystem::HandlePreparedCommit(const PreparedCommit& Prepared)
 {
     if (!State->Client) return;
-    if (State->Session.IsValid() && State->Session->IsReviewReceiptHoldArmed())
+    if (Prepared.Result.Status==CommitStatus::Interrupted) State->HeldCommits.erase(Prepared.Result.Event);
+    if (Prepared.Result.Status!=CommitStatus::Interrupted && State->Session.IsValid() && State->Session->IsReviewReceiptHoldArmed())
     {
         Message M;M.Header.Kind=MessageKind::TransactionResult;M.Header.Event=Prepared.Result.Event;M.Header.Object=Prepared.Result.StateDomain;M.Body=Prepared.Encoding;
         if (State->Session->HoldReviewLocalReceipt(ToUE(M))) {State->HeldCommits[Prepared.Result.Event]=Prepared;return;}
@@ -1484,7 +1710,9 @@ void UGuLiHybridWorldSubsystem::HandleReleasedCommit(const FGuLiHybridMessage& M
 void UGuLiHybridWorldSubsystem::ApplyPreparedCommit(const PreparedCommit& Prepared)
 {
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_MainReceipt);
-    const auto& Result=Prepared.Result;const bool bLocalRejected=Prepared.LocalRejection;
+    const auto& Result=Prepared.Result;
+    if (!State->Client||!State->Client->IsCurrentResourceResult(Result)) return;
+    const bool bLocalRejected=Prepared.LocalRejection||Result.Status==CommitStatus::Interrupted;
     if (CapturesGameplayEvidence())
     {
         if (bLocalRejected)
@@ -1503,7 +1731,7 @@ void UGuLiHybridWorldSubsystem::ApplyPreparedCommit(const PreparedCommit& Prepar
             State->ResultEvidence.push_back(MakeCommitEvidence(++State->ResultEvidenceSequence,Result,Prepared.ResultHash,Prepared.DecisionHash));
         }
     }
-    RefreshQueryState();
+
         if (Result.Kind==TransactionKind::Damage && Result.Status!=CommitStatus::Deferred && Result.Status!=CommitStatus::Paused)
         {
             const FGuid Event=ToUE(Result.Event); FGuLiDamageCommitResult Out;
@@ -1516,9 +1744,7 @@ void UGuLiHybridWorldSubsystem::ApplyPreparedCommit(const PreparedCommit& Prepar
             {
                 if (State->DamageResultOrder.Num()>=16384)
                 {
-                    if (UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::IncrementalDelivery))
                     {State->DamageResults.Remove(State->DamageResultOrder[State->DamageResultHead]);State->DamageResultOrder[State->DamageResultHead]=Event;State->DamageResultHead=(State->DamageResultHead+1)%16384;}
-                    else {State->DamageResults.Remove(State->DamageResultOrder[0]);State->DamageResultOrder.RemoveAt(0,1,EAllowShrinking::No);State->DamageResultOrder.Add(Event);}
                 }
                 else State->DamageResultOrder.Add(Event);
             }
@@ -1565,16 +1791,13 @@ void UGuLiHybridWorldSubsystem::ApplyPreparedCommit(const PreparedCommit& Prepar
             {
                 if (State->TransactionResultOrder.Num()>=16384)
                 {
-                    if (UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::IncrementalDelivery))
                     {State->TransactionResults.Remove(State->TransactionResultOrder[State->TransactionResultHead]);State->TransactionResultOrder[State->TransactionResultHead]=Out.Event;State->TransactionResultHead=(State->TransactionResultHead+1)%16384;}
-                    else {State->TransactionResults.Remove(State->TransactionResultOrder[0]);State->TransactionResultOrder.RemoveAt(0,1,EAllowShrinking::No);State->TransactionResultOrder.Add(Out.Event);}
                 }
                 else State->TransactionResultOrder.Add(Out.Event);
             }
             State->TransactionResults.Add(Out.Event,Out);
             if (auto* Found=State->TransactionCallbacks.Find(Out.Event)) { Callback=MoveTemp(*Found); State->TransactionCallbacks.Remove(Out.Event); }
             if (Callback) Callback(Out);
-            if (UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::IncrementalDelivery))
             {
                 std::set<ObjectKey> Keys{Result.StateDomain,Result.Target,Result.Resource.Source,Result.Mining.Source};
                 for (const auto& O:Result.Objects) {Keys.insert(O.Grant.Object);Keys.insert(O.Parent);}
@@ -1593,7 +1816,7 @@ void UGuLiHybridWorldSubsystem::ApplyPreparedCommit(const PreparedCommit& Prepar
 }
 bool UGuLiHybridWorldSubsystem::SubscribeObjectReceipt(UObject* Listener,const FGuLiHybridObjectKey& Key,TFunction<void(const FGuLiHybridTransactionResult&)> Callback)
 {
-    if (!Listener||!Key.IsValid()||!Callback||!UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::IncrementalDelivery)) return false;
+    if (!Listener||!Key.IsValid()||!Callback) return false;
     UnsubscribeObjectReceipt(Listener);auto L=MakeShared<FState::FReceiptListener>();L->Owner=Listener;L->Callback=MoveTemp(Callback);
     State->ObjectReceiptListeners[ToCore(Key)].Add(MoveTemp(L));return true;
 }
@@ -1610,7 +1833,6 @@ void UGuLiHybridWorldSubsystem::ApplyQueryDelta(const ClientQueryDelta& Delta)
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_MainResourceDelta);
     const auto& N=State->Client->NumericState();const auto& R=N.WorldResources().Snapshot();const auto& M=N.MiningPositions().Snapshot();
     State->Red=N.TeamEconomy().Balance(Team::Red);State->Blue=N.TeamEconomy().Balance(Team::Blue);
-    State->LastResourceQueryRevision=N.ResourceDirectoryRevision;State->LastMiningQueryRevision=N.MiningDirectoryRevision;
     const bool ResourceChanged=Delta.ResourceSeed||Delta.OwnersChanged||!Delta.Remaining.empty();
     if (Delta.ResourceSeed) State->ResourceView.Remaining.clear();
     for (const auto& [K,V]:Delta.Remaining) State->ResourceView.Remaining[K]=V;
@@ -1628,43 +1850,6 @@ void UGuLiHybridWorldSubsystem::ApplyQueryDelta(const ClientQueryDelta& Delta)
     else for (const auto& [K,V]:Delta.Remaining) OnResourceNodeChanged.Broadcast(K,V);
     if (Delta.MiningChanged) OnMiningReservationsChanged.Broadcast();
 }
-void UGuLiHybridWorldSubsystem::RefreshQueryState()
-{
-    if (!State->Client) return;const auto& N=State->Client->NumericState();
-    if (UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::IncrementalDelivery)) return; // Applied by the ordered query delta before receipts.
-    const auto& Resources=N.WorldResources().Snapshot();const auto& Mining=N.MiningPositions().Snapshot();
-    if (State->LastResourceQueryRevision!=N.ResourceDirectoryRevision)
-    {
-    State->LastResourceQueryRevision=N.ResourceDirectoryRevision;
-    const bool DirectoryChanged=State->ResourceView.Configured!=Resources.Configured
-        || State->ResourceView.Remaining.size()!=Resources.Remaining.size() || State->ResourceView.Owners!=Resources.Owners;
-    TArray<TPair<uint32,uint8>> ChangedNodes;
-    for (const auto& [Node,Amount]:Resources.Remaining)
-    {
-        const auto Old=State->ResourceView.Remaining.find(Node);
-        if (Old==State->ResourceView.Remaining.end() || Old->second!=Amount) ChangedNodes.Emplace(Node,Amount);
-    }
-    if (DirectoryChanged || !ChangedNodes.IsEmpty())
-    {
-        State->ResourceView.Configured=Resources.Configured;++State->ResourceView.Version;
-        State->ResourceView.Remaining=Resources.Remaining;State->ResourceView.Owners=Resources.Owners;
-        // Observers read the new projection. Ordinary object/flight transactions
-        // do not invalidate the baked resource scene or rebuild its navigation.
-        if (DirectoryChanged) OnResourceDirectoryChanged.Broadcast();
-        else for (const auto& Node:ChangedNodes) OnResourceNodeChanged.Broadcast(Node.Key,Node.Value);
-    }
-    }
-    if (State->LastMiningQueryRevision!=N.MiningDirectoryRevision)
-    {
-    State->LastMiningQueryRevision=N.MiningDirectoryRevision;
-    if (State->MiningView.Configured!=Mining.Configured || State->MiningView.Leases!=Mining.Leases)
-    {
-        State->MiningView.Configured=Mining.Configured;++State->MiningView.Version;State->MiningView.Leases=Mining.Leases;
-        OnMiningReservationsChanged.Broadcast();
-    }
-    }
-    State->Red=N.TeamEconomy().Balance(Team::Red);State->Blue=N.TeamEconomy().Balance(Team::Blue);
-}
 TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetTransactionCaptureSnapshot() const
 {
     auto Async=MakeShared<FJsonObject>();const auto A=State->Client?State->Client->Statistics():AsyncClientStats{};
@@ -1677,6 +1862,19 @@ TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetTransactionCaptureSnapshot
     Async->SetNumberField(TEXT("full_object_copies"),double(State->FullObjectCopies));Async->SetNumberField(TEXT("hud_full_object_copies"),double(State->HUDFullObjectCopies));
     Async->SetNumberField(TEXT("inputs"),double(A.Inputs));Async->SetNumberField(TEXT("applications"),double(A.Applications));
     Async->SetNumberField(TEXT("logical_steps"),double(A.SimulationSteps));Async->SetNumberField(TEXT("simulation_ms"),A.SimulationMilliseconds);
+    Async->SetBoolField(TEXT("capture_yield_enabled"),A.CaptureYieldEnabled);
+    Async->SetBoolField(TEXT("fast_pack_cache_key_enabled"),A.FastPackCacheKeyEnabled);
+    Async->SetBoolField(TEXT("native_peer_send_enabled"),NativePeerSend.GetValueOnGameThread()!=0);
+    Async->SetBoolField(TEXT("native_peer_receive_enabled"),State->Session.IsValid() && State->Session->IsNativePeerReceiveEnabled());
+    Async->SetBoolField(TEXT("reuse_payload_compressor_enabled"),State->bReusePayloadCompressor);
+    Async->SetBoolField(TEXT("fast_small_payload_compression_enabled"),State->bFastSmallPayloadCompression);
+    if (const auto* Actors=GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>())
+    {
+        Async->SetBoolField(TEXT("entity_layout_cache_enabled"),Actors->IsEntityLayoutCacheEnabled());
+        Async->SetNumberField(TEXT("entity_layout_definitions"),Actors->GetEntityCapabilityDefinitionCount());
+        Async->SetNumberField(TEXT("entity_layout_build_ms"),Actors->GetEntityCapabilityIndexBuildMilliseconds());
+    }
+    Async->SetNumberField(TEXT("capture_yield_advances"),double(A.CaptureYieldAdvances));
     Async->SetStringField(TEXT("input_byte_basis"),TEXT("Admission budget estimate, including retained gameplay snapshots; not socket bytes or measured heap allocation"));
     Async->SetNumberField(TEXT("queued_input_bytes"),double(A.QueuedInputBytes));
     Async->SetNumberField(TEXT("gameplay_admitted_bytes"),double(A.GameplayAdmittedBytes));
@@ -1696,6 +1894,9 @@ TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetTransactionCaptureSnapshot
     auto Receipts=MakeShared<FJsonObject>();for (const auto& [K,N]:A.ReceiptKinds)
         Receipts->SetNumberField(FString::Printf(TEXT("%u/%u"),unsigned(K>>8),unsigned(K&255)),double(N));
     Async->SetObjectField(TEXT("request_kind_rule"),Rules);Async->SetObjectField(TEXT("receipt_kind_status"),Receipts);
+    if (State->Client)
+        for (const auto& [Name,Count]:State->Client->WorkCounts())
+            Async->SetNumberField(TEXT("core_")+FString(UTF8_TO_TCHAR(Name.c_str())),double(Count));
     return Async;
 }
 bool UGuLiHybridWorldSubsystem::GetCommittedInventory(const FGuLiHybridObjectKey& Key,FGuLiHybridInventoryView& Out,
@@ -1704,10 +1905,11 @@ bool UGuLiHybridWorldSubsystem::GetCommittedInventory(const FGuLiHybridObjectKey
     Out={};if (!State->Client || !Key.IsValid()) return false;
     const auto& Resources=State->Client->NumericState().WorldResources().Snapshot();const auto K=ToCore(Key);
     if (const auto I=Resources.Miners.find(K);I!=Resources.Miners.end())
-    {Out.CargoVersion=I->second.Version;if (Out.CargoVersion>AfterCargoVersion) Out.Cargo=ToUE(I->second.Cargo);}
+    {Out.CargoVersion=I->second.Version;Out.NextExtraction=I->second.NextExtraction;if (Out.CargoVersion>AfterCargoVersion) Out.Cargo=ToUE(I->second.Cargo);}
     if (const auto I=Resources.Factories.find(K);I!=Resources.Factories.end())
     {
         Out.ProcessingVersion=I->second.Version;
+        Out.NextProcessing=I->second.NextProcessing;
         if (Out.ProcessingVersion>AfterProcessingVersion)
             for (const auto& Entry:I->second.Queue)
                 Out.Queue.Add({ToUE(Entry.Event),ToUE(Entry.Source),ToUE(Entry.Beneficiary),ToUE(Entry.Amount)});
@@ -1724,6 +1926,15 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
         auto* Battle=GetWorld()->GetGameState<AGuLiBattleGameState>();
         if (!Battle || !Battle->ApplyHybridMatchIdentity(Session->GetRoomId(),V.Header.Epoch)) {Suspend(TEXT("Hybrid match identity unavailable"));return;}
         const TWeakObjectPtr<UGuLiHybridWorldSubsystem> Weak(this);
+        State->bReusePayloadCompressor=ResolveCompressorReuse();
+        State->bFastSmallPayloadCompression=ResolveFastSmallPayloadCompression();
+        // Only TransmitWorker invokes this packer. AsyncClientWorld joins that
+        // worker before releasing the callback and its private workspace.
+        const auto Compressor=State->bReusePayloadCompressor
+            ?std::make_shared<GuLiHybridPeerPayload::FDeflateContext>():nullptr;
+        const bool FastCompression=State->bFastSmallPayloadCompression;
+        const auto FastCompressor=State->bReusePayloadCompressor&&FastCompression
+            ?std::make_shared<GuLiHybridPeerPayload::FDeflateContext>(Z_BEST_SPEED):nullptr;
         State->Client=std::make_unique<AsyncClientWorld>(ToCore(Session->GetRoomId()),ToCore(Session->GetLocalPlayerId()),V.Header.Epoch,
             [Weak](const ObjectRecord& O)->std::unique_ptr<IObjectAdapter>
             {
@@ -1731,18 +1942,41 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
                 auto* F=Self->State->Factories.Find(static_cast<EGuLiHybridObjectKind>(O.Grant.Object.Kind));
                 if (!F || !F->Owner.IsValid()) return {};auto A=F->Create(ToUE(O));
                 return A && IsValid(A->LifetimeOwner())?std::make_unique<FObjectBridge>(MoveTemp(A)):nullptr;
-            },[Weak](Id To,Message M,Bytes Packed,bool bPacked)
+            },[Weak](Id To,const Message& M,const Bytes& Packed,bool bPacked)
             {
                 auto* Self=Weak.Get();auto* S=Self?Self->State->Session.Get():nullptr;
-                const bool Accepted=S && (To.Valid()?S->SendPeerPrepared(ToUE(To),ToUE(M),MakeArrayView(Packed.data(),int32(Packed.size())),bPacked,M.ReferenceBodyBytes):S->SendControl(ToUE(M)));
+                bool Accepted=false;
+                if (S)
+                {
+                    if (!To.Valid()) Accepted=S->SendControl(ToUE(M));
+                    else if (NativePeerSend.GetValueOnGameThread()!=0)
+                        Accepted=S->SendPeerPreparedNative(ToUE(To),M,View(Packed),bPacked,M.ReferenceBodyBytes);
+                    else Accepted=S->SendPeerPrepared(ToUE(To),ToUE(M),View(Packed),bPacked,M.ReferenceBodyBytes);
+                }
                 if (Accepted && M.Header.Kind==MessageKind::HandoffState) Self->State->HandoffQueuedBytes+=M.Body.size();
                 return Accepted;
-            },[](Message& M,Bytes& Packed){return GuLiHybridPeerPayload::Pack(M,Packed,&M.ReferenceBodyBytes);},CapturesGameplayEvidence(),
+            },[Compressor,FastCompressor,FastCompression](Message& M,Bytes& Packed)
+            {
+                // Keep large private-cut packing and all admission limits intact.
+                if (FastCompression && M.Body.size()<=65536)
+                {
+                    GuLiHybridPeerPayload::FDeflateContext Fresh(Z_BEST_SPEED);
+                    return GuLiHybridPeerPayload::Pack(M,Packed,&M.ReferenceBodyBytes,FastCompressor?FastCompressor.get():&Fresh);
+                }
+                return GuLiHybridPeerPayload::Pack(M,Packed,&M.ReferenceBodyBytes,Compressor.get());
+            },CapturesGameplayEvidence(),
             []{FPlatformProcess::SetThreadName(TEXT("GuLiTransactions"));UE::Trace::ThreadRegister(TEXT("GuLiTransactions"),FPlatformTLS::GetCurrentThreadId(),0);},FPlatformTime::Seconds(),
             AsyncExecutionOptions{UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::GameplayWorker),
-                UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::ReducedWork),UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::IncrementalDelivery),
                 UGuLiHotspotOptions::Enabled(GetWorld(),EGuLiHotspot::ParallelGameplay)
-                    ?AcquireGuLiGameplayComputePool(UGuLiNetworkSettings::Resolve(GetWorld()).GameplayWorkers):nullptr});
+                    ?AcquireGuLiGameplayComputePool(UGuLiNetworkSettings::Resolve(GetWorld()).GameplayWorkers):nullptr,
+                ResolveCaptureYield(),ResolveFastPackCacheKey(),
+                [](const char* Stage,Id Event,std::size_t Value)
+                {
+                    if (GuLiMoveLatency::IsEnabled())
+                        UE_LOG(LogGuLiStrike,Display,TEXT("HybridCommandTiming stage=%s clock=%.6f thread=%u event=%s value=%llu"),
+                            UTF8_TO_TCHAR(Stage),FPlatformTime::Seconds(),FPlatformTLS::GetCurrentThreadId(),
+                            *ToUE(Event).ToString(EGuidFormats::Digits),static_cast<uint64>(Value));
+                }});
         State->Client->SetHandoffAdmission([Weak](Id Target)
         {const auto* Self=Weak.Get();const auto* S=Self?Self->State->Session.Get():nullptr;return S && S->CanQueueHandoff(ToUE(Target));});
         State->Client->SetTimingObserver([Weak](const char* Name,double Value)
@@ -1788,12 +2022,12 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
             ++Self->State->HandoffCount;if (const auto* Start=Self->State->HandoffStarted.Find(ToUE(T.Object.StableId))) Self->State->LastHandoffMilliseconds=(FPlatformTime::Seconds()-*Start)*1000;
             Self->State->Handoffs.erase(T.Object);Self->State->HandoffStarted.Remove(ToUE(T.Object.StableId));
         }
-        Self->RefreshQueryState();Self->OnOwnershipStateApplied.Broadcast();
+        Self->OnOwnershipStateApplied.Broadcast();
         });
         for (const auto& [Name,Adapter]:State->SharedStateSystems)
             if (!State->Client->RegisterSystem(TCHAR_TO_UTF8(*Name.ToString()),std::make_unique<FSharedStateBridge>(Name,Adapter)))
             {Suspend(TEXT("Object handoff capability registration failed"));return;}
-        State->DirectoryStarted=FPlatformTime::Seconds();RefreshQueryState();return;
+        State->DirectoryStarted=FPlatformTime::Seconds();return;
     }
     if (!State->Client) return;
     switch (V.Header.Kind)
@@ -1815,6 +2049,7 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
         if (!ReadAuthority(R,Grant) || !R.Text(Definition) || !R.U32(Ordinal) || !R.Key(Parent) || !R.Done() || Grant.Object!=V.Header.Object)
         {Suspend(TEXT("Invalid ownership directory"));return;}
         State->DirectoryKeys.insert(Grant.Object);State->CoordinatorDirectoryKeys.insert(Grant.Object);
+        State->RequiredDirectoryValidated=false;
         if (Grant.State==Life::Destroyed)
         {
             State->RequiredDirectoryKeys.erase(Grant.Object);
@@ -1916,6 +2151,27 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
         if (!R.Done() || !State->Client->CommitHandoffs(Batch)) return;
         break;
     }
+    case MessageKind::ResourceGroups:
+    {
+        uint32 Count;std::map<Id,ResourceGroupState> Groups;
+        if (!R.U32(Count)||Count>4096) return;
+        for (uint32 I=0;I<Count;++I) {ResourceGroupState G;if (!ReadResourceGroup(R,G)||!Groups.emplace(G.Group,G).second) return;}
+        if (!R.Done()) return;
+        std::vector<PreparedCommit> Interrupted;
+        for (auto I=State->HeldCommits.begin();I!=State->HeldCommits.end();)
+        {
+            const auto G=Groups.find(I->second.Result.ResourceGroup);
+            if (G==Groups.end() || G->second.RequestEpoch<=I->second.Result.ResourceEpoch) {++I;continue;}
+            PreparedCommit P;P.Result.Event=I->first;P.Result.Kind=I->second.Result.Kind;
+            P.Result.StateDomain=I->second.Result.StateDomain;P.Result.Target=I->second.Result.Target;P.Result.Faction=I->second.Result.Faction;
+            P.Result.Status=CommitStatus::Interrupted;P.Result.ResourceGroup=G->first;P.Result.ResourceEpoch=G->second.RequestEpoch;
+            P.LocalRejection=true;P.LocalRejectionReason="Connection interrupted; restored snapshot is authoritative";
+            P.Encoding=EncodeCommit(P.Result);Interrupted.push_back(std::move(P));I=State->HeldCommits.erase(I);
+        }
+        State->Client->SetResourceGroups(std::move(Groups));
+        for (const auto& P:Interrupted) ApplyPreparedCommit(P);
+        break;
+    }
     case MessageKind::MembershipBegin:
     {
         Revision Version;uint8 Op,Abrupt;Id Player;
@@ -1951,7 +2207,7 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
         State->BootstrapOutgoing.clear();
         State->BootstrapCaptureKeys.clear();State->BootstrapCaptureQueue.clear();State->BootstrapPreparedParts.clear();State->BootstrapReadSource.reset();
         State->Client->FinishBootstrap();State->Client->SetMembershipPaused(false);State->MembershipVersion=0;
-        RefreshQueryState();OnOwnershipStateApplied.Broadcast();break;
+        OnOwnershipStateApplied.Broadcast();break;
     case MessageKind::MatchResult:
     {std::string Reason;if (R.Text(Reason)) Suspend(UTF8_TO_TCHAR(Reason.c_str()));break;}
     default:break;
@@ -2036,8 +2292,20 @@ void UGuLiHybridWorldSubsystem::PumpMembership()
                 if (State->BootstrapCaptureQueue.empty())
                 {if (State->BootstrapOutgoing.empty()) State->BootstrapOutgoing.emplace_back();State->BootstrapCaptureComplete=true;break;}
                 const auto [Offset,Count]=State->BootstrapCaptureQueue.front();State->BootstrapCaptureOffset=uint32(Offset);
+                // An already committed terminal application can finish after
+                // membership pause and after this cohort was enumerated. Its
+                // terminal identity is in the Coordinator directory; it has no
+                // private simulation left to capture. Keep every live key and
+                // all custody checks, including unexpected ownership changes.
+                std::vector<ObjectKey> CurrentKeys;CurrentKeys.reserve(Count);
+                for (size_t I=Offset;I<Offset+Count;++I)
+                {
+                    const auto K=State->BootstrapCaptureKeys[I];const auto O=State->Client->Objects().find(K);
+                    if (O==State->Client->Objects().end() || O->second.Grant.State!=Life::Destroyed) CurrentKeys.push_back(K);
+                }
+                if (CurrentKeys.empty()) {State->BootstrapCaptureQueue.pop_front();continue;}
                 ObjectHandoffState Cut;
-                const bool Captured=State->Client->CaptureObjects(std::span<const ObjectKey>(State->BootstrapCaptureKeys.data()+Offset,Count),State->MembershipPlayer,0,Cut);
+                const bool Captured=State->Client->CaptureObjects(CurrentKeys,State->MembershipPlayer,0,Cut);
                 if (!Captured && State->Client->IsOperationPending()) {State->BootstrapBlocked=TEXT("capture/application-ack");return;}
                 const auto& Stored=State->Client->CapturedStagedEncoding();
                 if (!Captured || Stored.empty() || Stored.size()>MaxMessageBytes-256)
@@ -2047,7 +2315,10 @@ void UGuLiHybridWorldSubsystem::PumpMembership()
                         State->BootstrapCaptureQueue.pop_front();const size_t Half=Count/2;++State->BootstrapCaptureSplits;
                         State->BootstrapCaptureQueue.emplace_front(Offset+Half,Count-Half);State->BootstrapCaptureQueue.emplace_front(Offset,Half);continue;
                     }
-                    State->BootstrapBlocked=TEXT("capture/private-state-unavailable");return;
+                    const auto K=CurrentKeys.front();const auto O=State->Client->Objects().find(K);
+                    State->BootstrapBlocked=FString::Printf(TEXT("capture/private-state-unavailable kind=%u id=%s life=%d owner=%s"),
+                        unsigned(K.Kind),UTF8_TO_TCHAR(K.StableId.ToString().c_str()),O==State->Client->Objects().end()?-1:int(O->second.Grant.State),
+                        O==State->Client->Objects().end()?TEXT("missing"):UTF8_TO_TCHAR(O->second.Grant.SimOwner.ToString().c_str()));return;
                 }
                 State->BootstrapCapturedBytes+=State->Client->CapturedEncoding().size();State->BootstrapCapturedStagedBytes+=Stored.size();
                 if (State->BootstrapCapturedStagedBytes>64ull*1024*1024) {Suspend(TEXT("Bootstrap source exceeds the existing restore capacity"));return;}
@@ -2132,10 +2403,11 @@ void UGuLiHybridWorldSubsystem::PumpMembership()
                 State->BootstrapSources.insert(Peer);Writer Ack;Ack.U64(State->MembershipVersion);
                 Message M;M.Header.Kind=MessageKind::BootstrapRequest;M.Body=Ack.Take();if (!S->SendPeer(ToUE(Peer),ToUE(M))) return;
             }
-            State->BootstrapStates.clear();State->BootstrapStateBytes=State->BootstrapStagedBytes=0;RefreshQueryState();
+            State->BootstrapStates.clear();State->BootstrapStateBytes=State->BootstrapStagedBytes=0;
         }
         else if (!State->BootstrapSources.contains(State->MembershipPlayer)) return;
     }
+    else if (State->Client->HasResourceRecovery()) return;
     else if (State->MembershipAbrupt)
     {
         // The query proxy already holds the last received pose and values.
@@ -2202,7 +2474,17 @@ bool UGuLiHybridWorldSubsystem::HandlePeer(const FGuid& Peer,const FGuLiHybridMe
         }
         return true;
     }
-    const bool Admitted=State->Client->ReceivePeer(Sender,V);
+    return HandleNativePeer(Peer,V);
+}
+bool UGuLiHybridWorldSubsystem::HandleNativePeer(const FGuid& Peer,const GuLiNet::Message& V)
+{
+    if (!State->Client) return false;
+    // Bootstrap retains the existing bounded staging and membership path.
+    if (V.Header.Kind==MessageKind::BootstrapRequest || V.Header.Kind==MessageKind::BootstrapState)
+        return HandlePeer(Peer,ToUE(V));
+    // ReceivePeer copies into its own input work item. On rejection the peer
+    // channel still retains its message; this borrowed view never escapes.
+    const bool Admitted=State->Client->ReceivePeer(ToCore(Peer),V);
     if (Admitted && V.Header.Kind==MessageKind::HandoffState) State->HandoffBytes+=V.Body.size();
     return Admitted;
 }

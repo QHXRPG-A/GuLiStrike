@@ -20,6 +20,7 @@ public class GuLiStrikeEditor : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new[]
 		{
+			"GuLiFrameProfiler",
 			"AssetRegistry",
 			"BlueprintGraph",
 			"GeometryCore", "GeometryAlgorithms", "MeshDescription", "StaticMeshDescription",

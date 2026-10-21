@@ -1,9 +1,55 @@
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Engine/World.h"
+#include "Engine/GameViewportClient.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
+#include "HAL/PlatformApplicationMisc.h"
+#include "Misc/CoreDelegates.h"
+#include "Misc/StringBuilder.h"
+#include "ProfilingDebugging/TraceAuxiliary.h"
+#include "GenericPlatform/GenericWindow.h"
+#include "Widgets/SWindow.h"
+#if WITH_EDITOR
+#include "Framework/Docking/TabManager.h"
+#endif
+
+namespace
+{
+bool IsGameViewportForeground(const UWorld* World)
+{
+    auto* Viewport=World?World->GetGameViewport():nullptr;
+    const auto Window=Viewport?Viewport->GetWindow():nullptr;
+    const auto NativeWindow=Window.IsValid()?Window->GetNativeWindow():nullptr;
+    // The editor and standalone PIE share a process. Only this World's native
+    // viewport window establishes the foreground condition for that capture.
+    return NativeWindow.IsValid() && NativeWindow->IsForegroundWindow();
+}
+enum class EEditorRootState : uint8 { Unavailable, Visible, Minimized, Hidden };
+constexpr const TCHAR* EditorRootStateNames[] = { TEXT("unavailable"), TEXT("visible"), TEXT("minimized"), TEXT("hidden") };
+constexpr const TCHAR* EditorRootCounterNames[] = {
+    TEXT("Capture.EditorRootUnavailableFrames"), TEXT("Capture.EditorRootVisibleFrames"),
+    TEXT("Capture.EditorRootMinimizedFrames"), TEXT("Capture.EditorRootHiddenFrames") };
+EEditorRootState GetEditorRootState(const UWorld* World)
+{
+#if WITH_EDITOR
+    if (GIsEditor)
+    {
+        // Direct lookup of the known root; no actor/window enumeration during timing.
+        const auto Root = FGlobalTabmanager::Get()->GetRootWindow();
+        auto* Viewport = World ? World->GetGameViewport() : nullptr;
+        const auto GameWindow = Viewport ? Viewport->GetWindow() : nullptr;
+        const auto Native = Root.IsValid() && Root != GameWindow ? Root->GetNativeWindow() : nullptr;
+        if (Native.IsValid())
+            return Native->IsMinimized() ? EEditorRootState::Minimized
+                : Native->IsVisible() ? EEditorRootState::Visible : EEditorRootState::Hidden;
+    }
+#endif
+    return EEditorRootState::Unavailable;
+}
+}
 
 bool UGuLiPerformanceSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -12,21 +58,79 @@ bool UGuLiPerformanceSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 }
 void UGuLiPerformanceSubsystem::BeginCapture()
 {
+    StopFrameIntervals();
+    CaptureDeadline=0;
 	if (!UGuLiNetworkSettings::CanCapturePerformance(GetWorld())) return;
 	Counters.Reset(); NetworkSamples.Reset(); DroppedNetworkSamples = 0;
     SampleCounters.Reset();DroppedIndividualSamples=0;
     DroppedFrameSamples=0;
 	FirstFrame = LastFrame = GFrameCounter; bCapturing = true; CaptureNetworkSample();
+    CaptureFrameHandle=FCoreDelegates::OnBeginFrame.AddWeakLambda(this,[this]
+    {
+        if (!bCapturing) return;
+        const double Now=FPlatformTime::Seconds();
+        if (PreviousCaptureFrameSeconds>0)
+            Record(TEXT("Capture.FrameIntervalMs"),(Now-PreviousCaptureFrameSeconds)*1000.);
+        PreviousCaptureFrameSeconds=Now;
+    });
+}
+void UGuLiPerformanceSubsystem::StopFrameIntervals()
+{
+    FCoreDelegates::OnBeginFrame.Remove(CaptureFrameHandle);CaptureFrameHandle.Reset();
+    PreviousCaptureFrameSeconds=0;
+}
+bool UGuLiPerformanceSubsystem::BeginTimedCapture(float Seconds)
+{
+    if (bCapturing || bHotspotPending || !FMath::IsFinite(Seconds) || Seconds<1 || Seconds>60) return false;
+    BeginCapture();if (!bCapturing) return false;CaptureDeadline=FPlatformTime::Seconds()+Seconds;return true;
+}
+bool UGuLiPerformanceSubsystem::BeginLongObservation(float Seconds)
+{
+#if !UE_BUILD_SHIPPING
+    if (ObservationDeadline>0 || !FMath::IsFinite(Seconds) || Seconds<1 || Seconds>3600) return false;
+    ObservationSamples.Reset();DroppedObservationSamples=0;ObservationRequested=Seconds;
+    ObservationStarted=FPlatformTime::Seconds();ObservationDeadline=ObservationStarted+Seconds;
+    CaptureNetworkSample(true);return true;
+#else
+    return false;
+#endif
+}
+FString UGuLiPerformanceSubsystem::GetLongObservationJson() const
+{
+    auto Root=MakeShared<FJsonObject>();
+    Root->SetBoolField(TEXT("complete"),ObservationStarted>0 && ObservationDeadline==0);
+    Root->SetNumberField(TEXT("requested_seconds"),ObservationRequested);
+    Root->SetNumberField(TEXT("started_seconds"),ObservationStarted);
+    Root->SetNumberField(TEXT("sampled_seconds"),FMath::Max(0.,LastObservationSample-ObservationStarted));
+    Root->SetNumberField(TEXT("dropped_samples"),DroppedObservationSamples);
+    Root->SetArrayField(TEXT("network_samples"),ObservationSamples);
+    AppendContinuousHotspot(Root);
+    FString Json;FJsonSerializer::Serialize(Root,TJsonWriterFactory<>::Create(&Json));return Json;
 }
 void UGuLiPerformanceSubsystem::EndCapture()
 {
+    StopFrameIntervals();
 	if (bCapturing) CaptureNetworkSample();
 	LastFrame=GFrameCounter; bCapturing=false;
+    CaptureDeadline=0;
 }
 void UGuLiPerformanceSubsystem::Tick(float DeltaTime)
 {
+    if (ObservationDeadline>0 && FPlatformTime::Seconds()>=ObservationDeadline)
+    {CaptureNetworkSample(true);ObservationDeadline=0;}
+    if (bCapturing && CaptureDeadline>0 && FPlatformTime::Seconds()>=CaptureDeadline) EndCapture();
+    if (bCapturing)
+    {
+        Record(FPlatformApplicationMisc::IsThisApplicationForeground()
+            ? TEXT("Capture.ForegroundFrames") : TEXT("Capture.BackgroundFrames"), 1);
+        Record(IsGameViewportForeground(GetWorld())
+            ? TEXT("Capture.ViewportForegroundFrames") : TEXT("Capture.ViewportBackgroundFrames"), 1);
+        Record(EditorRootCounterNames[uint8(GetEditorRootState(GetWorld()))], 1);
+    }
     if (bCapturing && FPlatformTime::Seconds() - LastNetworkSample >= 1.0) CaptureNetworkSample();
+    if (ObservationDeadline>0 && FPlatformTime::Seconds()-LastObservationSample>=1.0) CaptureNetworkSample(true);
     TickHotspot(DeltaTime);
+    TickContinuousHotspot();
 }
 TStatId UGuLiPerformanceSubsystem::GetStatId() const
 { RETURN_QUICK_DECLARE_CYCLE_STAT(GuLiPerformanceCapture, STATGROUP_Tickables); }
@@ -58,6 +162,19 @@ FString UGuLiPerformanceSubsystem::GetCaptureJson() const
 {
 	auto Root = MakeShared<FJsonObject>();
 	Root->SetStringField(TEXT("world"), GetWorld()->GetPathName());
+    Root->SetBoolField(TEXT("application_foreground"),FPlatformApplicationMisc::IsThisApplicationForeground());
+    Root->SetBoolField(TEXT("viewport_foreground"),IsGameViewportForeground(GetWorld()));
+    Root->SetStringField(TEXT("foreground_basis"),TEXT("native_game_viewport_window_v1"));
+    Root->SetStringField(TEXT("editor_window_state"),EditorRootStateNames[uint8(GetEditorRootState(GetWorld()))]);
+    Root->SetStringField(TEXT("editor_window_basis"),TEXT("native_editor_root_window_v1"));
+    TStringBuilder<2048> TraceChannels;
+    FTraceAuxiliary::GetActiveChannelsString(TraceChannels);
+    Root->SetBoolField(TEXT("trace_connected"),FTraceAuxiliary::IsConnected());
+    Root->SetStringField(TEXT("trace_channels"),FString(TraceChannels.ToView()));
+    // Readback is requested outside the native timing window. This census uses
+    // simulation authority and life, never render instances or faction alone.
+    if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+        Root->SetObjectField(TEXT("simulation_census"),Hybrid->GetSimulationCensus());
     if (const auto* H=GetWorld()->GetSubsystem<UGuLiHotspotOptions>())
     {
         Root->SetNumberField(TEXT("hotspot_mask"),H->GetMask());

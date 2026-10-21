@@ -1,0 +1,244 @@
+{
+  "scope": "Snapshot capture barrier and deferred simulation time; gameplay rate stays 60 Hz; no old/new optimization speedup claim",
+  "build": {
+    "implementation": "hybrid-sync-unique-v2",
+    "core_sha256": "82a85c80582f41b5d46ad775e77ff515f3657f63dedcad161a59a822168b290e"
+  },
+  "offline_before": "offline-clock-before",
+  "offline_after": "offline-clock-after-02",
+  "runtime": [
+    {
+      "capture": "quick-600-01/interaction-01-B",
+      "clock": {
+        "ticks": 825,
+        "wall_seconds": 30.00543100014329,
+        "world_seconds": 30.021236900240183,
+        "wall_hz": 27.495022484298268,
+        "world_hz": 27.480546612434868
+      },
+      "movement_write": {
+        "n": 48,
+        "mean_ms": 774.0106035489589,
+        "p95_ms": 1228.2711006700993,
+        "peak_ms": 1228.2871007919312
+      },
+      "observed_displacement": {
+        "n": 48,
+        "mean_ms": 780.9298764914274,
+        "p95_ms": 1231.97939991951,
+        "peak_ms": 1231.97939991951
+      },
+      "final_receipt": {
+        "n": 2,
+        "mean_ms": 32.0982001721859,
+        "p95_ms": 35.390302538871765,
+        "peak_ms": 35.390302538871765
+      }
+    },
+    {
+      "capture": "clockfix-600-01/interaction",
+      "clock": {
+        "ticks": 1453,
+        "wall_seconds": 30.009203400462866,
+        "world_seconds": 24.285928808152676,
+        "wall_hz": 48.418479511441774,
+        "world_hz": 59.82888327961476
+      },
+      "movement_write": {
+        "n": 48,
+        "mean_ms": 142.1819954024007,
+        "p95_ms": 143.73090118169785,
+        "peak_ms": 143.73749867081642
+      },
+      "observed_displacement": {
+        "n": 48,
+        "mean_ms": 145.62651600378254,
+        "p95_ms": 146.89010009169579,
+        "peak_ms": 146.89020067453384
+      },
+      "final_receipt": {
+        "n": 2,
+        "mean_ms": 29.552649706602097,
+        "p95_ms": 32.06560015678406,
+        "peak_ms": 32.06560015678406
+      }
+    },
+    {
+      "capture": "final-600-01/interaction",
+      "clock": {
+        "ticks": 1476,
+        "wall_seconds": 30.004392500966787,
+        "world_seconds": 24.555453408509493,
+        "wall_hz": 49.19279735300226,
+        "world_hz": 60.10884732792204
+      },
+      "movement_write": {
+        "n": 48,
+        "mean_ms": 113.38118300773203,
+        "p95_ms": 128.64350154995918,
+        "peak_ms": 128.64970043301582
+      },
+      "observed_displacement": {
+        "n": 48,
+        "mean_ms": 117.64816000747184,
+        "p95_ms": 131.92220032215118,
+        "peak_ms": 131.92220032215118
+      },
+      "final_receipt": {
+        "n": 2,
+        "mean_ms": 50.07609911262989,
+        "p95_ms": 71.06930017471313,
+        "peak_ms": 71.06930017471313
+      }
+    },
+    {
+      "capture": "response-high-01/interaction",
+      "clock": {
+        "ticks": 1476,
+        "wall_seconds": 30.0061245970428,
+        "world_seconds": 24.406668320298195,
+        "wall_hz": 49.18995771101559,
+        "world_hz": 60.475275880750225
+      },
+      "movement_write": {
+        "n": 48,
+        "mean_ms": 139.22442868351936,
+        "p95_ms": 149.4252011179924,
+        "peak_ms": 149.42950010299683
+      },
+      "observed_displacement": {
+        "n": 48,
+        "mean_ms": 178.8967844719688,
+        "p95_ms": 199.08970221877098,
+        "peak_ms": 199.08970221877098
+      },
+      "final_receipt": {
+        "n": 2,
+        "mean_ms": 107.36445151269436,
+        "p95_ms": 173.7894006073475,
+        "peak_ms": 173.7894006073475
+      }
+    },
+    {
+      "capture": "response-high-02/interaction",
+      "clock": {
+        "ticks": 1470,
+        "wall_seconds": 30.00651179999113,
+        "world_seconds": 24.556634820997715,
+        "wall_hz": 48.98936636815061,
+        "world_hz": 59.86162235645752
+      },
+      "movement_write": {
+        "n": 48,
+        "mean_ms": 622.8756208438426,
+        "p95_ms": 1343.4741981327534,
+        "peak_ms": 1343.4817977249622
+      },
+      "observed_displacement": {
+        "n": 48,
+        "mean_ms": 672.1751607644061,
+        "p95_ms": 1365.7371997833252,
+        "peak_ms": 1365.737397223711
+      },
+      "final_receipt": {
+        "n": 2,
+        "mean_ms": 561.1531510949135,
+        "p95_ms": 1044.089000672102,
+        "peak_ms": 1044.089000672102
+      }
+    },
+    {
+      "capture": "response-window-message-01/interaction",
+      "clock": {
+        "ticks": 1837,
+        "wall_seconds": 30.030455000698566,
+        "world_seconds": 30.18844100087881,
+        "wall_hz": 61.17123433385434,
+        "world_hz": 60.85110522754466,
+        "first_second_catchup_ticks": 94,
+        "after_first_sample_hz": 60.07730470269335
+      },
+      "movement_write": {
+        "n": 48,
+        "mean_ms": 168.09466970153153,
+        "p95_ms": 240.13639986515045,
+        "peak_ms": 240.1445023715496
+      },
+      "observed_displacement": {
+        "n": 48,
+        "mean_ms": 179.85598859377205,
+        "p95_ms": 255.32080233097076,
+        "peak_ms": 255.32099977135658
+      },
+      "final_receipt": {
+        "n": 2,
+        "mean_ms": 106.36314935982227,
+        "p95_ms": 143.87889951467514,
+        "peak_ms": 143.87889951467514
+      }
+    }
+  ],
+  "window_hitch": {
+    "capture": "final-600-01/interaction",
+    "frame_start_seconds": 86.277684,
+    "frame_ms": 5851.1228,
+    "win_pump_messages_ms": 5772.488,
+    "editor_only_paint_ms": 325.004,
+    "cause_boundary": "Windows message handling, with nested editor paint; exact initiating message not yet observed. Not attributed to Mass simulation."
+  },
+  "status": "Snapshot simulation-time loss reproduced and repaired; latest high-load window has no multi-second Windows message-pump stall, earlier stalls retained and initiating OS message unconfirmed. Player response acceptance remains pending.",
+  "current_hotspots": {
+    "game_thread": {
+      "n": 1490,
+      "mean_ms": 20.104968523489934,
+      "p95_ms": 42.7479,
+      "peak_ms": 81.8607
+    },
+    "hybrid_target": {
+      "limit_mean_ms": 5.0,
+      "actual": {
+        "n": 1490,
+        "mean_ms": 8.118449798657556,
+        "p95_ms": 30.98079999999867,
+        "peak_ms": 65.79060000001911
+      },
+      "cpu_ms_per_second": 403.78909868491263,
+      "scope": "All Hybrid/GuLiSim GT scopes, including transport dispatch, plus moved movement/combat and the complete predictive avoidance processor root; union of trace ancestry. Worker CPU is separate.",
+      "scope_version": 5,
+      "met": false,
+      "logical_steps": 1833,
+      "ms_per_logical_step": 6.599285433715089,
+      "timing_met": false
+    },
+    "simulation_clock": {
+      "available": true,
+      "nominal_hz": 60.0,
+      "maintained": false,
+      "wall_seconds": 30.030455000698566,
+      "logical_ticks": 1837,
+      "actual_hz": 61.17123433385434,
+      "world_seconds": 30.18844100087881,
+      "world_hz": 60.85110522754466,
+      "wall_world_gap_seconds": -0.15798600018024445,
+      "game_time_rate_maintained": false,
+      "tolerance": "1% or six ticks for asynchronous boundary readback; not a changed gameplay rate",
+      "interpretation": "World time distinguishes dropped simulation time from an engine pause or clamped long frame. Real-time acceptance still uses wall time; a world-time pass does not erase a hitch."
+    },
+    "slate_full_pie": {
+      "actual": {
+        "n": 1490,
+        "mean_ms": 4.794785234899333,
+        "p95_ms": 6.448300000000005,
+        "peak_ms": 8.97940000000001
+      },
+      "scope": "GT Time and Widgets / DrawWindows / Prepass / DrawWindow ancestry union, plus explicitly attributed window work outside those scopes. Includes every window and shared work in this process.",
+      "cpu_ms_per_second": 238.47927331001958
+    },
+    "client_slate": {
+      "n": 1490,
+      "mean_ms": 1.4215393288590625,
+      "p95_ms": 2.900699999999998,
+      "peak_ms": 3.854100000000004
+    }
+  }
+}

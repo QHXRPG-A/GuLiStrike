@@ -82,33 +82,44 @@ class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter
     UWorld* World() const {return Owner.IsValid()?Owner->GetWorld():nullptr;}
     const FGuLiSoldierDefinition* Definition() const
     {const auto* Data=World()?World()->GetSubsystem<UGuLiUnitDataSubsystem>():nullptr; return Data?Data->FindDefinition(uint16(GuLiHybridMiner::Type(Record.Definition))):nullptr;}
-    bool Create()
+    bool Create(bool bRestoring=false)
     {
         if (Pawn.IsValid()) return true;
         auto* W=World(); const auto* D=Definition(); auto* Resources=W?W->GetSubsystem<UGuLiResourceWorldSubsystem>():nullptr;
         const auto* Config=Resources?Resources->GetEconomyConfig():nullptr;
-        if (!D || !Config || !D->ActorClass || !D->ActorClass->IsChildOf(AGuLiMiningVehiclePawn::StaticClass()) || !Record.Ordinal) return false;
-        auto* Factory=Resources->FindNearestFriendlyFactory(Record.Team,Record.Location);
-        if (!Factory)
+        const auto Failed=[&](const TCHAR* Reason)
+        {
+            if (bRestoring) UE_LOG(LogTemp,Log,TEXT("Hybrid miner restore creation failed: object=%s ordinal=%u reason=%s recordHealth=%.3f definitionHealth=%.3f"),
+                *Record.Key.StableId.ToString(),Record.Ordinal,Reason,double(Record.Health.MaxHealth),D?double(D->MaxHealth):-1.);
+            return false;
+        };
+        if (!D || !Config || !D->ActorClass || !D->ActorClass->IsChildOf(AGuLiMiningVehiclePawn::StaticClass()) || !Record.Ordinal) return Failed(TEXT("world or definition"));
+        // Snapshot restoration materializes every object before linking saved
+        // references. A miner may have no factory, or its factory's lifecycle
+        // may not yet be restored; never choose a substitute during this stage.
+        auto* Factory=bRestoring?nullptr:Resources->FindNearestFriendlyFactory(Record.Team,Record.Location);
+        if (!bRestoring && !Factory)
         {
             auto* H=W->GetSubsystem<UGuLiHybridWorldSubsystem>();
             for (const auto& O:Owner->GetManifest().Objects) if (O.Team==Record.Team
                 && Owner->GetManifest().Strings.FindRef(TEXT("adapter/definition/")+O.Definition)==TEXT("ResourceFactory"))
                 if (auto* Candidate=Cast<AGuLiResourceFactoryActor>(H->FindBoundActor(O.Key))) {Factory=Candidate; break;}
         }
-        if (!Factory) return false; // The directory is retried after factory preparation.
+        if (!bRestoring && !Factory) return Failed(TEXT("factory dependency")); // The directory is retried after factory preparation.
         const auto* Health=Owner->GetManifest().Numbers.Find(FString::Printf(TEXT("miner_adapter/%u/health"),D->UnitTypeId));
-        if (!Health || *Health!=D->MaxHealth || Record.Health.MaxHealth!=D->MaxHealth) return false;
+        if (!Health || *Health!=D->MaxHealth || Record.Health.MaxHealth!=D->MaxHealth) return Failed(TEXT("health contract"));
         const FTransform Transform(FRotator(0,Record.FacingYawDegrees,0),Record.Location);
         auto* P=W->SpawnActorDeferred<AGuLiMiningVehiclePawn>(D->ActorClass,Transform,nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-        if (!P) return false; Pawn=P; P->AutoPossessAI=EAutoPossessAI::Disabled;
+        if (!P) return Failed(TEXT("actor spawn")); Pawn=P; P->AutoPossessAI=EAutoPossessAI::Disabled;
         P->FindComponentByClass<UGuLiActorDamageReceiverComponent>()->bDestroyOwnerOnDeath=false;
         auto* Binding=NewObject<UGuLiHybridActorComponent>(P); P->AddInstanceComponent(Binding); Binding->Install(Record,bLocal); Binding->RegisterComponent();
-        P->InitializeVehicle(Record.Team,FGuLiControllableActorId(Record.Ordinal),*D,*Config,*Factory); P->FinishSpawning(Transform);
+        if (bRestoring) P->InitializeVehicleState(Record.Team,FGuLiControllableActorId(Record.Ordinal),*D,*Config,nullptr);
+        else P->InitializeVehicle(Record.Team,FGuLiControllableActorId(Record.Ordinal),*D,*Config,*Factory);
+        P->FinishSpawning(Transform);
         P->SetReplicates(false); P->SetReplicateMovement(false); P->SetActorTickEnabled(false);
         P->GetCharacterMovement()->SetComponentTickEnabled(false); P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->SetComponentTickEnabled(false);
         if (!P->GetController()) P->SpawnDefaultController(); auto* AI=Cast<AGuLiEngineeringAIController>(P->GetController());
-        if (!AI) {Release(); return false;}
+        if (!AI) {Release(); return Failed(TEXT("controller spawn"));}
         AI->ConfigureVehicleNavigation(); AI->SetActorTickEnabled(false); AI->GetPathFollowingComponent()->SetComponentTickEnabled(false);
         Resources->EnableHybridMiningSimulation(); ApplyLedger(Record,0,false); return true;
     }
@@ -117,7 +128,7 @@ class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter
         GuLiHybridMiner::FPrivate V;
         if (!GuLiHybridMiner::Decode(Bytes,V) || V.Key!=Record.Key || V.Type!=GuLiHybridMiner::Type(Record.Definition)) return false;
         if (Stage==EGuLiHybridRestoreStage::Detach) {Release(); return true;}
-        if (Stage==EGuLiHybridRestoreStage::Create) return Create();
+        if (Stage==EGuLiHybridRestoreStage::Create) return Create(true);
         auto* P=Pawn.Get(); if (!P) return false;
         if (Stage==EGuLiHybridRestoreStage::Link)
         {
@@ -158,6 +169,20 @@ public:
     explicit FGuLiHybridMinerAdapter(UGuLiHybridActorWorldSubsystem& V):Owner(&V) {}
     ~FGuLiHybridMinerAdapter() override {Release();}
     UObject* LifetimeOwner() const override {return Owner.Get();}
+    void ResetResourceRequests(uint64) override
+    {
+        if (auto* P=Pawn.Get())
+        {
+            FGuLiHybridInventoryView V;
+            if (World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetCommittedInventory(Record.Key,V))
+            {
+                if (P->PendingResourceEvent.IsValid() && P->PendingResourceOperation==1 && V.NextExtraction>P->PendingResourceAt)
+                    P->MiningAccumulator=FMath::Max(0.f,P->MiningAccumulator-1.f);
+                P->NextExtractionTick=V.NextExtraction;P->LastResourceLedger=V.CargoVersion;
+            }
+            P->PendingResourceEvent.Invalidate();P->PendingResourceOperation=0;P->PendingResourceAt=0;
+        }
+    }
     uint32 Version() const override {return GuLiHybridMiner::Version;}
     TArray<FName> RequiredSharedStateSystems() const override {return {TEXT("CommanderTasks"),TEXT("MiningSlots")};}
     TArray<FGuLiHybridObjectKey> RestoreDependencies(TConstArrayView<uint8> Bytes) const override
@@ -168,6 +193,12 @@ public:
         return Out;
     }
     bool Prepare(const FGuLiHybridObjectState& V) override {Record=V; return Create();}
+    bool PrepareRestore(const FGuLiHybridObjectState& V,TConstArrayView<uint8> Bytes) override
+    {
+        GuLiHybridMiner::FPrivate Private;
+        if (!GuLiHybridMiner::Decode(Bytes,Private) || Private.Key!=V.Key || Private.Type!=GuLiHybridMiner::Type(V.Definition)) return false;
+        Record=V;return Create(true);
+    }
     void SetAuthority(const FGuLiHybridObjectState& V,bool Local) override
     {
         Record=V; bLocal=Local; LastApplied=LastPublished=0;

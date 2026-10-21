@@ -69,10 +69,48 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiHybridSmallPeerPayloadTests,
     "GuLiStrike.Network.SmallPeerPayload",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FGuLiHybridSmallPeerPayloadTests::RunTest(const FString&)
 {
+    GuLiHybridPeerPayload::FDeflateContext Context;
+    GuLiHybridPeerPayload::FDeflateContext FastContext(Z_BEST_SPEED);
+    const auto CheckReuse=[&](const GuLiNet::Message& Message)
+    {
+        GuLiHybridPeerPayload::FDeflateContext FreshFast(Z_BEST_SPEED);
+        GuLiNet::Bytes Fast,FreshFastBytes;
+        const bool PackedFast=GuLiHybridPeerPayload::Pack(Message,Fast,nullptr,&FastContext);
+        const bool PackedFreshFast=GuLiHybridPeerPayload::Pack(Message,FreshFastBytes,nullptr,&FreshFast);
+        TestEqual(TEXT("Fast workspace reset preserves packing decision"),PackedFast,PackedFreshFast);
+        if (PackedFast && PackedFreshFast)
+        {
+            TestTrue(TEXT("Fast streams retain no previous packet dictionary"),Fast==FreshFastBytes);
+            auto Decoded=Message;Decoded.Body=Fast;uint64 PlainSize=0;
+            TestTrue(TEXT("Fast packets keep bounded admission and exact application bytes"),
+                GuLiHybridPeerPayload::PlainSize(Decoded,PlainSize) && PlainSize==Message.Body.size()
+                && GuLiHybridPeerPayload::Unpack(Decoded) && Decoded.Body==Message.Body);
+            Decoded.Body=Fast;Decoded.Body.pop_back();
+            TestFalse(TEXT("Fast truncated packets remain rejected"),GuLiHybridPeerPayload::Unpack(Decoded));
+            if (Fast.size()>8 && Fast[8]==2)
+            {
+                Decoded=Message;Decoded.Body=Fast;++Decoded.Header.Event.Words[3];
+                TestFalse(TEXT("Fast dictionary packets still require exact identity"),GuLiHybridPeerPayload::Unpack(Decoded));
+            }
+        }
+        GuLiNet::Bytes Fresh,Reused;size_t FreshReference=0,ReusedReference=0;
+        const bool A=GuLiHybridPeerPayload::Pack(Message,Fresh,&FreshReference);
+        const bool B=GuLiHybridPeerPayload::Pack(Message,Reused,&ReusedReference,&Context);
+        TestEqual(TEXT("Reset workspace preserves the packing decision"),B,A);
+        TestEqual(TEXT("Reset workspace preserves reference byte accounting"),ReusedReference,FreshReference);
+        if (A && B)
+        {
+            TestTrue(TEXT("Reset workspace preserves every wire byte"),Fresh==Reused);
+            auto Decoded=Message;Decoded.Body=Reused;
+            TestTrue(TEXT("Reused workspace packets decode independently"),
+                GuLiHybridPeerPayload::Unpack(Decoded) && Decoded.Body==Message.Body);
+        }
+    };
     for (const uint32 Size:{127u,128u,192u,511u,512u})
     {
         GuLiNet::Message M;M.Header.Kind=GuLiNet::MessageKind::Transaction;M.Body.resize(Size);
         for (uint32 I=0;I<Size;++I) M.Body[I]=uint8(I%16);
+        CheckReuse(M);
         const auto Original=M.Body;GuLiNet::Bytes Encoded;
         const bool Packed=GuLiHybridPeerPayload::Pack(M,Encoded);
         TestEqual(TEXT("Small reliable compression threshold"),Packed,Size>=128);
@@ -112,6 +150,20 @@ bool FGuLiHybridSmallPeerPayloadTests::RunTest(const FString&)
     TestFalse(TEXT("Wrong identity dictionary cannot decode"),GuLiHybridPeerPayload::Unpack(Identified));
     --Identified.Header.Event.Words[3];Identified.Body=Encoded;Identified.Body.pop_back();
     TestFalse(TEXT("Truncated dictionary stream rejected"),GuLiHybridPeerPayload::Unpack(Identified));
+    // Alternate dictionaries, incompressible data and large private payloads
+    // through the same workspace; no prior packet may influence the wire.
+    for (uint32 Pass=0;Pass<8;++Pass)
+    {
+        auto M=Identified;M.Body=Plain;
+        M.Header.Event.Words[3]+=Pass;M.Header.Object.Generation+=Pass;
+        CheckReuse(M);
+        M.Header.Kind=GuLiNet::MessageKind::HandoffState;
+        M.Body.resize(Pass%2?65536:4096);uint32 Noise=Pass+1;
+        for (auto& Byte:M.Body) {Noise=1664525u*Noise+1013904223u;Byte=uint8(Noise>>24);}
+        CheckReuse(M);
+        for (size_t I=0;I<M.Body.size();++I) M.Body[I]=I%16<4?uint8((I/16)>>(8*(I%4))):uint8(I%7);
+        CheckReuse(M);
+    }
     return true;
 }
 #endif

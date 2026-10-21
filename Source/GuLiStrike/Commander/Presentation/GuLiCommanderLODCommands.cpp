@@ -57,7 +57,7 @@ namespace GuLiCommanderLODCommands
 					if (Args[0].Equals(TEXT("all"), ESearchCase::IgnoreCase) || Value.Key.Equals(Args[0], ESearchCase::IgnoreCase)) PrintSetting(Value);
 			}
 		}));
-	FAutoConsoleCommandWithWorldAndArgs Stats(TEXT("gs.Commander.LOD.Stats"), TEXT("Read per-consumer target/applied LOD counts: [consumer]"),
+	FAutoConsoleCommandWithWorldAndArgs Stats(TEXT("gs.Commander.LOD.Stats"), TEXT("Read effect-resource quality counts (Full/Reduced/Minimal): [consumer]"),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args, UWorld* World)
 		{
 			if (Args.Num() > 1) { UE_LOG(LogTemp, Warning, TEXT("Usage: gs.Commander.LOD.Stats [consumer]")); return; }
@@ -71,12 +71,18 @@ namespace GuLiCommanderLODCommands
 				if (!Args.IsEmpty() && !Entry.Key.ToString().Equals(Args[0], ESearchCase::IgnoreCase)) continue;
 				++Matched;
 				const auto& S = Entry.Value;
-				UE_LOG(LogTemp, Display, TEXT("consumer=%s objects=%d visible=%d target[0/1/2]=%d/%d/%d applied[0/1/2]=%d/%d/%d culled[no_view/frustum/invalid/distance/screen]=%d/%d/%d/%d/%d budget_limited=%d transition_pending=%d unavailable=%d age_frames=%llu"),
+				UE_LOG(LogTemp, Display, TEXT("consumer=%s objects=%d visible=%d effect_target[Full/Reduced/Minimal]=%d/%d/%d effect_applied[Full/Reduced/Minimal]=%d/%d/%d culled[no_view/frustum/invalid/distance/screen]=%d/%d/%d/%d/%d budget_limited=%d transition_pending=%d unavailable=%d age_frames=%llu"),
 					*Entry.Key.ToString(), S.Objects, S.Visible, S.Target[0], S.Target[1], S.Target[2], S.Applied[0], S.Applied[1], S.Applied[2],
 					S.NoView, S.FrustumCulled, S.InvalidBounds, S.DistanceCulled, S.ScreenCulled, S.BudgetDowngraded,
 					S.TransitionPending, S.ResourcesUnavailable, GFrameCounter - S.ReportFrame);
 			}
 			if (!Matched) UE_LOG(LogTemp, Display, TEXT("No active consumer reports. WM01MissileBatches reports only when the missile pool runs."));
+		}));
+	FAutoConsoleCommandWithWorldAndArgs MeshStats(TEXT("gs.Commander.MeshLOD.Stats"), TEXT("Read four-tier mesh registration, effective caps and resource fallbacks."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>&, UWorld* World)
+		{
+			if (const auto* LOD = Resolve(World))
+				UE_LOG(LogTemp, Display, TEXT("%s"), *LOD->GetMeshLODStatsJson());
 		}));
 }
 #endif

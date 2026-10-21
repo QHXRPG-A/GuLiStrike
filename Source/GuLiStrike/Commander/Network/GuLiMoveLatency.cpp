@@ -27,9 +27,9 @@ GuLiMoveLatency::FContext GuLiMoveLatency::Context(const UObject* Object, uint32
 	if (Player) Result.Player=Player->GetPlayerGuid();
 	return Result;
 }
-void GuLiMoveLatency::Record(const TCHAR* Stage, const FContext& C, int32 Members, const TCHAR* Detail)
+void GuLiMoveLatency::Record(const TCHAR* Stage, const FContext& C, int32 Members, const TCHAR* Detail, double AtSeconds)
 {
 	if (!IsEnabled()) return;
-	UE_LOG(LogGuLiStrike,Display,TEXT("MassMoveLatency stage=%s clock=%.6f player=%s epoch=%u command=%u execution=%u plan=%llu batch=%u members=%d %s"),
-		Stage,FPlatformTime::Seconds(),*C.Player.ToString(EGuidFormats::Digits),C.Epoch,C.Command,C.Execution,C.Plan,C.Batch,Members,Detail);
+	UE_LOG(LogGuLiStrike,Display,TEXT("MassMoveLatency stage=%s clock=%.6f frame=%llu player=%s epoch=%u command=%u execution=%u plan=%llu batch=%u members=%d %s"),
+		Stage,AtSeconds>0?AtSeconds:FPlatformTime::Seconds(),GFrameCounter,*C.Player.ToString(EGuidFormats::Digits),C.Epoch,C.Command,C.Execution,C.Plan,C.Batch,Members,Detail);
 }

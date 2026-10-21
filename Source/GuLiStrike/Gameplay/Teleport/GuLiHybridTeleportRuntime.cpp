@@ -40,7 +40,7 @@ struct FBodyPrivate
 class FBody final:public IGuLiHybridEntityCapability
 {
     TWeakObjectPtr<UWorld> World;FGuLiHybridObjectState Record;FBodyPrivate Private;FDelegateHandle Post;
-    bool bOptimize=false,bRestoreDetached=false,bReducedAdvance=false,bPeriodicWork=true;
+    bool bOptimize=false,bRestoreDetached=false,bPeriodicWork=true;
     mutable bool bDecoded=false,bDecodeValid=false;
     mutable uint32 CachedVersion=0;
     mutable TArray<uint8> CachedBytes;
@@ -60,16 +60,13 @@ class FBody final:public IGuLiHybridEntityCapability
     void RefreshSubscription()
     {
         Net::Body B;
-        bool bValidBody=false;
         // An outstanding acknowledgement must keep polling final results and
         // version-conflict retries. Actual application remains PostActor work,
         // including on remote objects and while a root has not arrived yet.
-        if (bReducedAdvance)
-        {bValidBody=ReadBody(B);bPeriodicWork=!bValidBody || (B.Step && B.Acknowledged!=B.Step);}
+        const bool bValidBody=ReadBody(B);bPeriodicWork=!bValidBody || (B.Step && B.Acknowledged!=B.Step);
         bool Needed=!bOptimize;
         if (bOptimize && !bRestoreDetached && World.IsValid() && Record.LifeState<2)
         {
-            if (!bReducedAdvance) bValidBody=ReadBody(B);
             // Invalid data must still reach the original failure path. A missing root
             // never completes an application and therefore keeps this subscription.
             Needed=!bValidBody || (B.Step && (Private.Cast!=GuLiNetBridge::ToUE(B.Cast) || Private.Step!=B.Step));
@@ -111,11 +108,10 @@ public:
     FBody(UWorld& W,const FGuLiHybridObjectState& O):World(&W),Record(O)
     {
         Private.Key=O.Key;Metrics=W.GetSubsystem<UGuLiHotspotOptions>();
-        bReducedAdvance=Metrics.IsValid() && Metrics->Has(EGuLiHotspot::ReducedWork);
         bOptimize=Metrics.IsValid() && Metrics->Has(EGuLiHotspot::TeleportIdle);RefreshSubscription();
     }
     ~FBody() override {FWorldDelegates::OnWorldPostActorTick.Remove(Post);}
-    bool HasPeriodicWork() const override {return !bReducedAdvance || bPeriodicWork;}
+    bool HasPeriodicWork() const override {return bPeriodicWork;}
     void ApplyLedger(const FGuLiHybridObjectState& O) override {Record=O;RefreshSubscription();}
     bool AcceptMotion(uint64 At) const override
     {Net::Body B;return ReadBody(B) && (!B.Step || (B.Acknowledged==B.Step && At>B.AppliedAt));}
@@ -123,6 +119,15 @@ public:
     {
         auto* H=Hybrid();Net::Body B;if (!H||!ReadBody(B)||!B.Step||B.Acknowledged==B.Step
             ||Private.Cast!=GuLiNetBridge::ToUE(B.Cast)||Private.Step!=B.Step||!H->CanPublishFacts()) return;
+        // The caster transaction publishes its root and member changes to
+        // independently owned objects. A body can arrive before the root on
+        // this simulator. Wait for that exact root step before acknowledging;
+        // the authoritative capability contract must still reject mismatches.
+        FGuLiHybridObjectState RootObject;Net::State RootState;
+        if (!H->GetObject(GuLiNetBridge::ToUE(B.Root),RootObject) || !Read(RootObject,TEXT("relocation_cast"),RootState)
+            || RootState.Cast!=B.Cast || RootState.Step!=B.Step
+            || std::find(RootState.Members.begin(),RootState.Members.end(),GuLiNetBridge::ToCore(Record.Key))==RootState.Members.end())
+            return;
         FGuLiHybridTransactionResult R;
         if (Private.Request.IsValid() && H->FindTransactionResult(Private.Request,R))
         {
@@ -131,7 +136,12 @@ public:
             // was in flight. Keep its final decision and retry with a fresh identity.
             if (Private.Expected!=Record.RelationRevision || Private.OwnerEpoch!=Record.OwnerEpoch)
             {Private.Request.Invalidate();Private.Submitted=false;}
-            else {H->Suspend(TEXT("External-control acknowledgement was rejected"));return;}
+            else
+            {
+                UE_LOG(LogTemp,Error,TEXT("[GuLiTeleport] acknowledgement rejected object=%s event=%s status=%u body_step=%u root_step=%u relation=%llu owner=%llu"),
+                    *Record.Key.StableId.ToString(),*Private.Request.ToString(),uint32(R.Status),B.Step,RootState.Step,Private.Expected,Private.OwnerEpoch);
+                H->Suspend(TEXT("External-control acknowledgement was rejected"));return;
+            }
         }
         if (Private.Submitted) return;
         if (!Private.Request.IsValid())

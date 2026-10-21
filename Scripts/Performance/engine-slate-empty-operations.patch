@@ -1,0 +1,87 @@
+diff --git a/Engine/Source/Runtime/Launch/Private/LaunchEngineLoop.cpp b/Engine/Source/Runtime/Launch/Private/LaunchEngineLoop.cpp
+index f10f96800..5f83f03b9 100644
+--- a/Engine/Source/Runtime/Launch/Private/LaunchEngineLoop.cpp
++++ b/Engine/Source/Runtime/Launch/Private/LaunchEngineLoop.cpp
+@@ -5175,6 +5175,24 @@ void FEngineLoop::Exit()
+ void FEngineLoop::ProcessLocalPlayerSlateOperations() const
+ {
+ 	FSlateApplication& SlateApp = FSlateApplication::Get();
++	static TAutoConsoleVariable<int32> SkipEmptyOperations(
++		TEXT("Slate.SkipEmptyLocalPlayerOperations"), 1,
++		TEXT("Avoid arranging a viewport path when a local player's reply contains no operation."));
++	const auto IsEmptyOperation = [](const FReply& Reply)
++	{
++		// Unhandled replies can still contain operations. Check every request
++		// consumed by ProcessExternalReply/ProcessReply, not just IsEventHandled.
++		return !Reply.IsEventHandled()
++			&& !Reply.ShouldReleaseMouse() && !Reply.ShouldSetUserFocus()
++			&& !Reply.ShouldReleaseUserFocus() && !Reply.ShouldUseHighPrecisionMouse()
++			&& !Reply.ShouldReleaseMouseLock() && Reply.ShouldThrottle()
++			&& !Reply.ShouldEndDragDrop() && !Reply.GetRequestedMousePos().IsSet()
++			&& !Reply.GetMouseCaptor().IsValid() && !Reply.GetMouseLockWidget().IsValid()
++			&& !Reply.GetUserFocusRecepient().IsValid()
++			&& !Reply.GetNavigationDestination().IsValid()
++			&& Reply.GetNavigationType() == EUINavigation::Invalid
++			&& !Reply.GetDragDropContent().IsValid() && !Reply.GetDetectDragRequest().IsValid();
++	};
+ 
+ 	// For all the game worlds drill down to the player controller for each game viewport and process it's slate operation
+ 	for ( const FWorldContext& Context : GEngine->GetWorldContexts() )
+@@ -5188,27 +5206,38 @@ void FEngineLoop::ProcessLocalPlayerSlateOperations() const
+ 			if ( ViewportWidget.IsValid() )
+ 			{
+ 				FWidgetPath PathToWidget;
+-				SlateApp.GeneratePathToWidgetUnchecked(ViewportWidget.ToSharedRef(), PathToWidget);
+-
+-				if (PathToWidget.IsValid())
++				bool bPathAttempted = false;
++				for (FConstPlayerControllerIterator Iterator = CurWorld->GetPlayerControllerIterator(); Iterator; ++Iterator)
+ 				{
+-					for (FConstPlayerControllerIterator Iterator = CurWorld->GetPlayerControllerIterator(); Iterator; ++Iterator)
++					APlayerController* PlayerController = Iterator->Get();
++					ULocalPlayer* LocalPlayer = PlayerController ? Cast<ULocalPlayer>(PlayerController->Player) : nullptr;
++					if (!LocalPlayer)
+ 					{
+-						APlayerController* PlayerController = Iterator->Get();
+-						if (PlayerController)
+-						{
+-							if (ULocalPlayer* LocalPlayer = Cast<ULocalPlayer>(PlayerController->Player))
+-							{
+-								TOptional<int32> UserIndex = SlateApp.GetUserIndexForController(LocalPlayer->GetControllerId());
+-								if (UserIndex.IsSet())
+-								{
+-									FReply& TheReply = LocalPlayer->GetSlateOperations();
+-									SlateApp.ProcessExternalReply(PathToWidget, TheReply, UserIndex.GetValue());
+-
+-									TheReply = FReply::Unhandled();
+-								}
+-							}
+-						}
++						continue;
++					}
++					const TOptional<int32> UserIndex = SlateApp.GetUserIndexForController(LocalPlayer->GetControllerId());
++					if (!UserIndex.IsSet())
++					{
++						continue;
++					}
++					FReply& TheReply = LocalPlayer->GetSlateOperations();
++					if (SkipEmptyOperations.GetValueOnGameThread()
++						&& SlateApp.GetUser(FMath::Max(0, UserIndex.GetValue())).IsValid()
++						&& IsEmptyOperation(TheReply))
++					{
++						continue;
++					}
++					// Geometry stays current whenever an operation exists. Never retain
++					// an arranged path across frames, viewport replacement or reparenting.
++					if (!bPathAttempted)
++					{
++						SlateApp.GeneratePathToWidgetUnchecked(ViewportWidget.ToSharedRef(), PathToWidget);
++						bPathAttempted = true;
++					}
++					if (PathToWidget.IsValid())
++					{
++						SlateApp.ProcessExternalReply(PathToWidget, TheReply, UserIndex.GetValue());
++						TheReply = FReply::Unhandled();
+ 					}
+ 				}
+ 			}

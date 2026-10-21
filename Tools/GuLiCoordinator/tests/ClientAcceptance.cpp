@@ -27,12 +27,18 @@ void Check(bool Value,const char* Why) {if (!Value) throw std::runtime_error(Why
 struct Adapter final:IObjectAdapter
 {
     bool Local=false;std::uint64_t Position=0,Executions=0,LastTick=0;
+    unsigned MainPeriod=1,WorkerPeriod=1;bool WakeOnCommand=false,MainAwake=false;
+    mutable unsigned Captures=0;
+    std::vector<std::string> SharedSystems;
     Revision AppliedVersion=0;float AppliedHealth=0;
     std::uint32_t Version() const override {return 1;}
+    std::vector<std::string> RequiredSystems() const override {return SharedSystems;}
     bool Prepare(const ObjectRecord&) override {return true;}
     void SetAuthority(const Authority&,bool Simulate) override {Local=Simulate;}
-    void Advance(Tick At,double) override {if (Local) {++Position;LastTick=At;}}
-    bool Command(const FrozenCommand&,const CommandMember&) override {++Executions;return true;}
+    std::uint32_t AdvancePeriod() const override {return WorkerPeriod;}
+    bool NeedsAdvanceOnMain(Tick At) const override {return MainAwake || (MainPeriod && At%MainPeriod==0);}
+    void Advance(Tick At,double) override {if (Local) {++Position;LastTick=At;MainAwake=false;}}
+    bool Command(const FrozenCommand&,const CommandMember&) override {++Executions;MainAwake|=WakeOnCommand;return true;}
     bool ApplyMotion(std::span<const std::uint8_t> Bytes,Tick) override
     {Reader R(Bytes);return R.U64(Position) && R.Done();}
     bool ApplyObjectEvent(std::span<const std::uint8_t> Data,Tick At) override
@@ -43,7 +49,9 @@ struct Adapter final:IObjectAdapter
     }
     void ApplyLedger(const ObjectRecord& O,Revision V,bool) override
     {Check(V>=AppliedVersion,"adapter numeric revision cannot regress");AppliedVersion=V;AppliedHealth=O.Vitals.Value;}
-    bool Capture(Bytes& Out) const override {Writer W;W.U64(Position);W.U64(Executions);W.U64(LastTick);Out=W.Take();return true;}
+    void BeginResourceRestore(Revision E) override
+    {Check(E>0&&!Local,"snapshot version boundary requires fenced simulation");AppliedVersion=0;}
+    bool Capture(Bytes& Out) const override {++Captures;Writer W;W.U64(Position);W.U64(Executions);W.U64(LastTick);Out=W.Take();return true;}
     bool Validate(std::span<const std::uint8_t> B) const override {Reader R(B);std::uint64_t V;return R.U64(V)&&R.U64(V)&&R.U64(V)&&R.Done();}
     bool Restore(std::span<const std::uint8_t> B,RestoreStage Stage) override
     {if (Stage!=RestoreStage::Create) return Validate(B);Reader R(B);return R.U64(Position)&&R.U64(Executions)&&R.U64(LastTick)&&R.Done();}
@@ -71,7 +79,7 @@ struct Fixture
     struct Delivery {Id To,From;Message Value;};
     RuntimeManifest Data=Manifest();std::map<Id,std::unique_ptr<ClientWorld>> Clients;
     std::map<Id,Member> Members;std::map<std::pair<Id,ObjectKey>,Adapter*> Adapters;
-    std::deque<Delivery> Queue;std::vector<Delivery> Metadata;double Now=0;bool RejectHandoffQueue=false;
+    std::deque<Delivery> Queue;std::vector<Delivery> Metadata;double Now=0;bool RejectHandoffQueue=false,RejectResourceSnapshots=false;
     std::set<Id> RejectPublications;
     explicit Fixture(RuntimeManifest Initial=Manifest()):Data(std::move(Initial))
     {
@@ -83,6 +91,7 @@ struct Fixture
             auto World=std::make_unique<ClientWorld>(ID(100),P,1,[this,P](const ObjectRecord& O)
             {auto A=std::make_unique<Adapter>();Adapters[{P,O.Grant.Object}]=A.get();return A;},
             [this,P](Id To,Message V){if (RejectHandoffQueue && V.Header.Kind==MessageKind::HandoffState) return false;
+                if (RejectResourceSnapshots && V.Header.Kind==MessageKind::ResourceSnapshot) return false;
                 if (RejectPublications.contains(To) && (V.Header.Kind==MessageKind::StateFragments || V.Header.Kind==MessageKind::ObjectEvent)) return false;
                 if (To.Valid()) Queue.push_back({To,P,std::move(V)});else Metadata.push_back({{},P,std::move(V)});return true;});
             Check(World->Configure(Data,Error),Error.c_str());World->SetMembers(Members);
@@ -238,7 +247,7 @@ void ScopedHandoff()
             for (auto& [P,C]:G.Clients) if (P!=ID(1) || I==0) Check(C->PrepareHandoff(V),"prepare independently ordered group member");
         }
         bool CaptureReady=false;unsigned CaptureAttempts=0;
-        G.Client(2).SetApplicationBatches({},[&](std::span<const ObjectKey> Keys)
+        G.Client(2).SetApplicationBatches({},[&](std::span<const ObjectKey> Keys,bool)
         {
             ++CaptureAttempts;Check(Keys.size()==GroupKeys.size(),"pending group retains complete ordered cut");
             return CaptureReady?ClientWorld::CaptureApplicationStatus::Ready:ClientWorld::CaptureApplicationStatus::Pending;
@@ -251,9 +260,37 @@ void ScopedHandoff()
         Check(CaptureAttempts==2 && G.Client(2).WorkCounts().at("freeze_requested")==0,"ready cut completes without duplicate member capture");
         G.Client(2).SetApplicationBatches({},{},{});
         Check(std::count_if(G.Queue.begin(),G.Queue.end(),[](const auto& D){return D.Value.Header.Kind==MessageKind::HandoffState;})==1,"one shared cut serves all member identities");
+        ObjectHandoffState OriginalCut;
+        const auto Packet=std::find_if(G.Queue.begin(),G.Queue.end(),[](const auto& D){return D.Value.Header.Kind==MessageKind::HandoffState;});
+        Check(DecodeHandoffState(Packet->Value.Body,OriginalCut),"retain the exact private group cut for duplicate validation");
         G.Flush();Check(TargetCount->Detaches==Round*2,"early cut waits for every member prepare");
+        bool ImportReady=false;unsigned ImportAttempts=0;std::map<ObjectKey,std::uint64_t> ApplicationProgress;
+        G.Client(1).SetApplicationProgressRevision([&](ObjectKey K){return ApplicationProgress[K];});
+        G.Client(1).SetApplicationBatches([&](auto,auto)
+        {++ImportAttempts;return ImportReady?ClientWorld::ApplicationStatus::Ready:ClientWorld::ApplicationStatus::Pending;},{},{});
         for (std::size_t I=1;I<Batch.size();++I) Check(G.Client(1).PrepareHandoff(Batch[I]),"non-leader prepare releases the early cut");
+        const auto AttemptsBefore=ImportAttempts;
+        const auto EncodingsBefore=G.Client(1).HandoffMeasurements().at("receive/canonical_encodings");
+        for (unsigned I=0;I<10;++I) G.Client(1).PollNetwork(G.Now);
+        Check(G.Client(1).HandoffMeasurements().at("receive/canonical_encodings")==EncodingsBefore,
+            "pending engine replies retain the exact immutable cut without recoding its history");
+        auto ChangedPending=OriginalCut;ChangedPending.Objects.front().State.front()^=1;
+        Check(!G.Client(1).InstallHandoff(ID(2),ChangedPending),"a pending transfer rejects changed private state before application");
+        Check(ImportAttempts==AttemptsBefore,
+            "reduced work waits for a real application reply instead of rechecking the retained cut");
+        const auto AttemptsAfterPoll=ImportAttempts;
+        ++ApplicationProgress[G.Key(0)];G.Client(1).PollNetwork(G.Now);
+        Check(ImportAttempts==AttemptsAfterPoll,"an unrelated application reply cannot wake this private cut");
+        ++ApplicationProgress[GroupKeys.front()];G.Client(1).PollNetwork(G.Now);
+        Check(ImportAttempts>AttemptsBefore,"application invalidation wakes the retained cut immediately");
+        ImportReady=true;++ApplicationProgress[GroupKeys.front()];G.Client(1).PollNetwork(G.Now);
+        G.Client(1).SetApplicationBatches({},{},{});G.Client(1).SetApplicationProgressRevision({});
         G.Flush();Check(TargetCount->Detaches==Round*2+1,"target restores the shared cut once");
+        Check(G.Client(1).InstallHandoff(ID(2),OriginalCut) && TargetCount->Detaches==Round*2+1,
+            "identical group replay acknowledges without applying private state twice");
+        auto ChangedCut=OriginalCut;ChangedCut.Objects.back().State.push_back(0x7f);
+        Check(!G.Client(1).InstallHandoff(ID(2),ChangedCut) && TargetCount->Detaches==Round*2+1,
+            "a changed later group member is rejected through repeated installation");
         const auto Age=G.Client(2).ObjectNow(GroupKeys.front());G.Step(2);
         for (const auto& Key:GroupKeys) Check(!G.Client(1).HasSimulation(Key) && G.Client(2).ObjectNow(Key)==Age,"all cut members remain frozen before commit");
         if (!Round)
@@ -782,21 +819,41 @@ void IndivisibleGroupsAndFixedRoles()
         Check(R.Register(O,0),"resource member declaration");Keys.push_back(O.Grant.Object);}
     for (const auto& A:R.Propose(0)) Check(A.ProposedOwner==ID(1) && R.CommitAssignment(A.ProposedOwner,A.Object,A.ProposedEpoch,0),"one host across both factions and neutral state");
     R.SetInitialRosterReady(true);R.Poll(0);Check(R.Phase()==RoomPhase::Running,"group ready");
+    {
+        Room Lost(ID(5003),"config","map");Check(Lost.ConfigureDefinitions(Definitions),"abrupt resource group definitions");
+        for (const auto& [P,M]:R.Members()) Check(Lost.Join(M,"config","map",0,Error)&&Lost.Ready(P),"abrupt resource roster");
+        for (const auto K:Keys) {auto O=R.Objects().at(K);O.Grant.SimOwner={};O.Grant.OwnerEpoch=0;Check(Lost.Register(O,0),"abrupt resource declaration");}
+        for (const auto& A:Lost.Propose(0)) Check(Lost.CommitAssignment(A.ProposedOwner,A.Object,A.ProposedEpoch,0),"abrupt initial grant");
+        Lost.SetInitialRosterReady(true);Lost.Poll(0);
+        const auto Group=StableId("GuLiOwnershipGroup/v1","match/resources");
+        const auto Before=Lost.ResourceGroups().at(Group);
+        Check(Before.Owner==ID(1)&&Before.Backup==ID(2),"backup is a Ground storage custodian, not the next Commander");
+        std::vector<ObjectRegistration> Cut;for (const auto K:Keys) Cut.push_back(Lost.Objects().at(K));
+        Check(Lost.BeginLeave(ID(1),true,1),"abrupt resource owner exit");
+        const auto Recovery=Lost.ResourceGroups().at(Group);
+        Check(Recovery.Publisher==ID(2)&&Recovery.Target==ID(4)&&Recovery.Deadline==6,
+            "storage custodian publishes directly to the final simulation owner within the same budget");
+        for (const auto P:{ID(2),ID(4)}) Check(Lost.ResourceSnapshotInstalled(P,Group,Recovery.Recovery,1,std::string(64,'b'),Cut,1.1),"abrupt complete cut installed");
+        const auto Version=Lost.Membership()->Version;
+        for (const auto P:{ID(2),ID(4)}) Check(Lost.MembershipReady(P,Version,1.2),"abrupt member ready");
+        Lost.Propose(1.3);
+        Check(Lost.Phase()==RoomPhase::Running&&Lost.Ownership().Transfers().empty(),"snapshot recovery must not immediately start a second full-state group handoff");
+        for (const auto K:Keys) Check(Lost.Objects().at(K).Grant.SimOwner==ID(4),"only final Commander receives recovered simulation authority");
+    }
     Check(R.Objects().at(Keys[2]).Grant.Controller==ID(4),"host does not gain enemy command");
     auto Wrong=R.Members().at(ID(2));Wrong.Seat=Role::Air;
     Check(!R.Join(Wrong,"config","map",.1,Error) && Error=="Role is locked for this match","online role mutation refused");
     Check(R.BeginLeave(ID(1),false,1),"graceful group host exit");
-    auto Pending=R.Ownership().Transfers();Check(Pending.size()==Keys.size(),"group moves as one batch");
-    unsigned Installed=0;
-    for (const auto& [K,T]:Pending)
+    const auto Group=StableId("GuLiOwnershipGroup/v1","match/resources");const auto Recovery=R.ResourceGroups().at(Group);
+    Check(R.Ownership().Transfers().empty() && Recovery.Target==ID(4) && Recovery.RequestEpoch==2
+        && Recovery.Deadline==6,"resource exit uses one snapshot epoch and the original five-second budget");
+    std::vector<ObjectRegistration> Cut;for (const auto K:Keys) Cut.push_back(R.Objects().at(K));
+    for (auto P:{ID(1),ID(2)})
     {
-        Check(T.Target==ID(4),"remaining Commander preferred across factions");
-        Check(R.Ownership().TargetPrepared(T.Target,K,T.IdValue) && R.Ownership().SourceFrozen(T.Source,K,T.IdValue,100+Installed),"group state captured");
-        Check(R.Ownership().TargetInstalled(T.Target,K,T.IdValue,100+Installed),"group state installed");++Installed;
-        if (Installed<Keys.size()) Check(R.Ownership().Transfers().size()==Keys.size(),"no member commits before complete group");
+        Check(R.ResourceSnapshotInstalled(P,Group,Recovery.Recovery,1,std::string(64,'a'),Cut,1.1),"complete snapshot installation acknowledged");
+        for (const auto K:Keys) Check(R.Objects().at(K).Grant.SimOwner==ID(1),"no group member activates before every client installs");
     }
-    auto Actions=R.TakeOwnershipActions(1);
-    Check(std::count_if(Actions.begin(),Actions.end(),[](const auto& A){return A.Kind==HandoffActionKind::Commit;})==Keys.size(),"all group grants commit together");
+    Check(R.ResourceSnapshotInstalled(ID(4),Group,Recovery.Recovery,1,std::string(64,'a'),Cut,1.2),"last snapshot installation commits all group grants");
     for (auto P:{ID(1),ID(2),ID(4)}) R.MembershipReady(P,R.Membership()->Version,1);
     for (const auto& K:Keys) Check(R.Objects().at(K).Grant.SimOwner==ID(4) && R.Objects().at(K).Grant.GroupEpoch==2,"group host/version move together");
     auto Return=R.Members().at(ID(1));Return.Seat=Role::Air;
@@ -809,6 +866,323 @@ void IndivisibleGroupsAndFixedRoles()
     Check(!R.Join(Return,"config","map",3,Error) && Error=="Role seat occupied","returning identity cannot displace replacement");
     for (const auto& K:Keys) Check(R.Objects().at(K).Grant.SimOwner==ID(4),"another Commander joining does not migrate a Commander-owned group");
     Room Copy(ID(5000),"config","map");Check(Copy.ConfigureDefinitions(Definitions) && Copy.ImportMetadata(R.ExportMetadata(),4),"group and fixed seats persist without gameplay data");
+}
+void CurrentResourceSnapshotContracts()
+{
+    Message Hello;Hello.Header.Kind=MessageKind::Hello;Bytes Wire;
+    Check(EncodeMessage(Hello,Wire),"encode current protocol hello");
+    Wire[4]=31;Wire[5]=0;Message Rejected;
+    Check(!DecodeMessage(Wire,Rejected),"protocol 31 cannot enter a protocol 32 room");
+    ResourceSnapshot A;A.Match=ID(7000);A.Group=ID(7001);A.Owner=ID(1);A.OwnerVersion=A.RequestEpoch=A.Number=1;
+    A.Sample=60;A.CapturedUtcMicroseconds=1000000;A.Parts={{"object",Bytes(128,1)},{"tasks",Bytes(64,2)}};A.Digest=ResourceSnapshotDigest(A);
+    ResourceSnapshotStore Store;const auto Full=DiffResourceSnapshot(A,nullptr);ResourceSnapshotDelta Decoded;
+    const auto Encoded=EncodeResourceSnapshotDelta(Full);
+    Check(DecodeResourceSnapshotDelta(Encoded,Decoded)&&Store.Receive(Decoded,1)==ResourceSnapshotStore::Result::Installed,"complete resource baseline validates");
+    Check(Store.Receive(Decoded,2)==ResourceSnapshotStore::Result::Duplicate&&Store.CompletedAt()==1,"duplicate does not refresh replica age");
+    auto Corrupt=Decoded;Corrupt.Value.Parts.at("object")[0]^=1;
+    Check(Store.Receive(Corrupt,2)==ResourceSnapshotStore::Result::Rejected&&Store.Latest()->Digest==A.Digest,"corrupt duplicate cannot replace or acknowledge a complete cut");
+    auto Truncated=Encoded;Truncated.pop_back();Check(!DecodeResourceSnapshotDelta(Truncated,Decoded),"incomplete snapshot cannot be restored");
+    auto B=A;B.Number=2;B.Sample=66;B.Parts.erase("tasks");B.Parts["cargo"]={3,4};B.Digest=ResourceSnapshotDigest(B);
+    auto Delta=DiffResourceSnapshot(B,&A);ResourceSnapshotStore Empty;
+    Check(Empty.Receive(Delta,2)==ResourceSnapshotStore::Result::MissingBaseline,"missing delta baseline fails closed");
+    Check(Store.Receive(Delta,2)==ResourceSnapshotStore::Result::Installed&&Store.Latest()->Parts==B.Parts,"delta installation preserves complete current state and deletions");
+    auto C=B;C.Number=3;C.Sample=72;C.Digest=ResourceSnapshotDigest(C);
+    Check(Store.Receive(DiffResourceSnapshot(C,&B),3)==ResourceSnapshotStore::Result::Installed
+        && !Store.Find(A.Number,A.Digest)&&Store.Find(B.Number,B.Digest),"backup retains exactly the last two complete versions");
+    auto Wrong=DiffResourceSnapshot(C,nullptr);Wrong.Value.RequestEpoch=0;
+    Check(Store.Receive(Wrong,4)==ResourceSnapshotStore::Result::Rejected,"invalid epoch cannot enter snapshot storage");
+    Check(Store.Receive(Full,4)==ResourceSnapshotStore::Result::Rejected,"older complete cut never replaces a newer cut");
+    const auto Bound=Store.BytesHeld();
+    for (unsigned N=4;N<1028;++N)
+    {
+        auto Next=*Store.Latest();Next.Number=N;Next.Sample+=6;Next.Digest=ResourceSnapshotDigest(Next);
+        Check(Store.Receive(DiffResourceSnapshot(Next,Store.Latest()),N)==ResourceSnapshotStore::Result::Installed
+            &&Store.Size()==2&&Store.BytesHeld()==Bound,"unchanged current payload retains two versions with constant storage");
+    }
+    std::cout<<"Resource snapshot full/delta/integrity/retention contracts passed\n";
+}
+void ResourceEpochAndRecoveryContracts()
+{
+    Fixture F;const Id Group=ID(7100);const std::vector<ObjectKey> Scope{F.Key(0),TeamAccountObject(Team::Red)};
+    ResourceGroupState G;G.Group=Group;G.Owner=ID(1);G.Backup=ID(2);G.OwnerVersion=G.RequestEpoch=1;
+    for (auto& [P,C]:F.Clients)
+    {
+        for (const auto K:Scope)
+        {
+            auto O=C->Objects().at(K);O.Grant.Policy=OwnershipPolicy::SharedGroup;O.Grant.OwnershipGroup=Group;O.Grant.GroupEpoch=1;O.Grant.SimOwner=ID(1);
+            Check(C->Install(O,true),"resource epoch fixture grant");
+        }
+        C->SetResourceGroups({{Group,G}});
+    }
+    F.Step(4);
+    Check(!F.Client(2).HasSimulation(F.Key(0)),"backup storage does not acquire simulation authority");
+    TransactionRequest Pending;Pending.Header.Object=F.Key(0);Pending.Header.Event=ID(7101);Pending.Kind=TransactionKind::Reserve;
+    Pending.RuleId="reserve";Pending.Faction=Team::Red;Pending.ReservationKey={DeriveEconomyAccount(F.Key(0)),1};
+    unsigned Interrupted=0;
+    Check(F.Client(1).Submit(Pending,[&](const auto& R){Check(R.Status==CommitStatus::Interrupted,"unfinished request receives interruption");++Interrupted;}).Valid(),"queue resource request before membership pause");
+    auto Late=std::move(F.Queue);F.Queue.clear();
+    G.Recovery=9;G.PreviousOwner=G.Publisher=ID(1);G.Target=ID(2);G.RequestEpoch=2;G.Deadline=F.Now+5;
+    for (auto& [P,C]:F.Clients) {C->SetResourceGroups({{Group,G}});C->SetResourceGroups({{Group,G}});}
+    Check(Interrupted==1&&F.Client(1).PendingTransactions().empty(),"epoch closure interrupts once and releases pending requests");
+    for (auto& D:Late) if (D.Value.Header.ResourceGroup==Group)
+        Check(!F.Clients.at(D.To)->ReceivePeer(D.From,D.Value),"late old-epoch message is rejected");
+    for (auto& [P,C]:F.Clients) Check(!C->HasSimulation(F.Key(0)),"all clients remain fenced during installation");
+    F.Step(10);
+    std::set<Id> Installed;Revision Number=0;std::string Digest;
+    for (const auto& D:F.Metadata) if (D.Value.Header.Kind==MessageKind::ResourceSnapshotInstalled)
+    {
+        Reader R(D.Value.Body);Id K;Revision Recovery,N;std::string Hash;
+        Check(R.Identity(K)&&R.U64(Recovery)&&R.U64(N)&&R.Text(Hash)&&K==Group&&Recovery==9,"resource installation acknowledgment identity");
+        if (Number) Check(Number==N&&Digest==Hash,"every peer installs the identical complete cut");
+        Number=N;Digest=Hash;Installed.insert(D.From);
+    }
+    if (Installed.size()!=F.Clients.size())
+        for (const auto& [P,C]:F.Clients) {std::cerr<<"resource client="<<P.ToString()<<" error="<<C->Error()<<'\n';for (const auto& [K,N]:C->HandoffDiagnostics()) std::cerr<<K<<"="<<N<<'\n';}
+    Check(Installed.size()==F.Clients.size(),"every peer acknowledges complete resource installation");
+    for (auto& [P,C]:F.Clients)
+    {
+        for (const auto K:Scope)
+        {auto A=C->Objects().at(K).Grant;A.SimOwner=ID(2);++A.OwnerEpoch;A.GroupEpoch=2;Check(C->InstallGrant(A),"install new resource owner grant");}
+    }
+    G.Owner=ID(2);G.Backup=ID(3);G.OwnerVersion=2;G.Recovery=0;G.PreviousOwner=G.Publisher=G.Target={};G.Deadline=0;
+    for (auto& [P,C]:F.Clients) {C->SetResourceGroups({{Group,G}});C->SetMembershipPaused(false);}
+    Check(!F.Client(1).HasSimulation(F.Key(0))&&F.Client(2).HasSimulation(F.Key(0)),"only the installed new owner resumes simulation");
+    auto Next=Pending;Next.Header.Event=ID(7102);Next.ReservationKey.Request=2;unsigned Completed=0;
+    Check(F.Client(2).Submit(Next,[&](const auto& R){Check(R.Status==CommitStatus::Committed,"new epoch resource request commits");++Completed;}).Valid(),"submit fresh resource request after recovery");
+    F.Step(10);Check(Completed==1&&Interrupted==1,"new requests progress without replaying the interrupted request");
+    std::cout<<"Resource interruption and complete-install activation contracts passed\n";
+}
+void ResourceInterruptionCutpoints()
+{
+    for (unsigned Cutpoint=0;Cutpoint<4;++Cutpoint)
+    {
+        Fixture F;const Id Group=ID(7400);const std::vector<ObjectKey> Scope{F.Key(0),TeamAccountObject(Team::Red)};
+        ResourceGroupState G;G.Group=Group;G.Owner=ID(1);G.Backup=ID(2);G.OwnerVersion=G.RequestEpoch=1;
+        for (auto& [P,C]:F.Clients)
+        {
+            for (const auto K:Scope)
+            {auto O=C->Objects().at(K);O.Grant.Policy=OwnershipPolicy::SharedGroup;O.Grant.OwnershipGroup=Group;
+                O.Grant.GroupEpoch=1;O.Grant.SimOwner=ID(1);Check(C->Install(O,true),"cutpoint resource grant");}
+            C->SetResourceGroups({{Group,G}});
+        }
+        F.Step(4);
+        TransactionRequest Hit;Hit.Header.Object=F.Key(3);Hit.Header.Event=ID(7401+Cutpoint);
+        Hit.Kind=TransactionKind::Damage;Hit.Target=F.Key(0);Hit.RuleId="hit";Hit.Faction=Team::Blue;
+        unsigned Interrupted=0,Completed=0;
+        Check(F.Client(4).Submit(Hit,[&](const auto& R)
+            {if (R.Status==CommitStatus::Interrupted) ++Interrupted;else ++Completed;}).Valid(),"submit real distributed damage before exit");
+        bool Reached=Cutpoint==0;
+        if (Cutpoint==1)
+        {
+            // Single-owner resource writes prepare and commit atomically during
+            // ReceivePeer. Exercise their prepared numeric boundary directly.
+            const auto Requests=F.Client(4).PendingTransactions();OwnerWork Prepared;
+            auto Numbers=F.Client(1).NumericState();
+            Check(Requests.size()==1&&Numbers.Plan(ID(4),Requests.front(),Prepared)
+                &&Numbers.Prepare(ID(1),Prepared)&&!Numbers.LockView().empty(),"reach real numeric prepare before commit");
+            Numbers.SealResourceEpoch(Group,2);
+            Check(Numbers.LockView().empty()&&!Numbers.Commit(ID(1),Prepared),"sealing prepared work releases locks and prevents its commit");
+            Reached=true;
+        }
+        if (Cutpoint>=2) F.Client(4).PollNetwork(F.Now+.01);
+        for (unsigned N=0;!Reached&&N<512&&!F.Queue.empty();++N)
+        {
+            // Stop at real protocol boundaries; neither commits nor receipts are fabricated.
+            const auto& Next=F.Queue.front();
+            if (Cutpoint==3&&Next.Value.Header.Kind==MessageKind::TransactionResult
+                &&Next.Value.Header.Event==Hit.Header.Event&&Next.To==ID(4)) {Reached=true;break;}
+            auto D=std::move(F.Queue.front());F.Queue.pop_front();
+            Check(F.Clients.at(D.To)->ReceivePeer(D.From,D.Value),"deliver pre-exit work normally");
+            if (Cutpoint==2&&F.Client(1).Objects().at(F.Key(0)).Vitals.Value==75
+                &&F.Client(2).Objects().at(F.Key(0)).Vitals.Value==100) Reached=true;
+        }
+        const auto Pending=F.Client(4).PendingTransactions();
+        if (!Reached||Completed||Pending.empty()) std::cerr<<"cutpoint="<<Cutpoint<<" reached="<<Reached<<" completed="<<Completed
+            <<" pending="<<Pending.size()<<" owner_health="<<F.Client(1).Objects().at(F.Key(0)).Vitals.Value
+            <<" observer_health="<<F.Client(2).Objects().at(F.Key(0)).Vitals.Value<<" queued="<<F.Queue.size()<<'\n';
+        Check(Reached&&Completed==0&&std::any_of(Pending.begin(),Pending.end(),[&](const auto& R){return R.Header.Event==Hit.Header.Event;}),"reach requested unfinished resource boundary");
+        const auto Health=F.Client(1).Objects().at(F.Key(0)).Vitals.Value;
+        auto Late=std::move(F.Queue);F.Queue.clear();
+        G.Recovery=20+Cutpoint;G.PreviousOwner=G.Publisher=ID(1);G.Target=ID(2);G.RequestEpoch=2;G.Deadline=F.Now+5;
+        for (auto& [P,C]:F.Clients) {C->SetResourceGroups({{Group,G}});C->SetResourceGroups({{Group,G}});}
+        Check(Interrupted==1&&Completed==0&&F.Client(4).PendingTransactions().empty(),"each unfinished phase interrupts exactly once");
+        for (const auto& D:Late) if (D.Value.Header.ResourceGroup==Group)
+            Check(!F.Clients.at(D.To)->ReceivePeer(D.From,D.Value),"old work and results reject after epoch closure");
+        F.Step(10);
+        for (auto& [P,C]:F.Clients)
+        {
+            Check(C->Error().empty()&&C->Objects().at(F.Key(0)).Vitals.Value==Health,"restore the selected current value without refund or duplicate damage");
+            Check(C->NumericState().LockView().empty(),"exit releases temporary transaction locks");
+        }
+        Check(Interrupted==1&&Completed==0&&F.Client(4).PendingTransactions().empty(),"polling cannot resurrect an interrupted player request");
+        std::cout<<"Resource interruption cutpoint passed phase="<<Cutpoint<<" snapshot_health="<<Health<<'\n';
+    }
+}
+void ResourceSnapshotQueueBounds()
+{
+    Fixture F;const Id Group=ID(7500);ResourceGroupState G;G.Group=Group;G.Owner=ID(1);G.Backup=ID(2);G.OwnerVersion=G.RequestEpoch=1;
+    for (auto& [P,C]:F.Clients)
+    {
+        auto O=C->Objects().at(F.Key(0));O.Grant.Policy=OwnershipPolicy::SharedGroup;O.Grant.OwnershipGroup=Group;
+        O.Grant.GroupEpoch=1;Check(C->Install(O,true),"bounded backup fixture");C->SetResourceGroups({{Group,G}});
+    }
+    F.RejectResourceSnapshots=true;
+    F.Step(1);
+    Check(F.Client(1).HandoffMeasurements().at("resource/captured_versions")==1,"first backup is immediate");
+    F.Now+=4.8;F.Step(1);
+    Check(F.Client(1).HandoffMeasurements().at("resource/captured_versions")==1,"periodic backup does not capture before five seconds");
+    F.Now+=.2;F.Step(1);
+    Check(F.Client(1).HandoffMeasurements().at("resource/captured_versions")==2,"periodic backup resumes after five seconds");
+    for (unsigned N=0;N<512;++N)
+    {
+        // Advance the offline clock directly; do not wait in real time to prepare replicas.
+        F.Now+=5.;F.Step(1);const auto Status=F.Client(1).ResourceSnapshotStatuses().at(Group);
+        Check(Status.QueuedVersions<=2,"disconnected backup cannot accumulate snapshot versions");
+    }
+    Check(F.Client(1).ResourceSnapshotStatuses().at(Group).QueuedVersions==2,"one sending and one latest pending version survive backpressure");
+    F.RejectResourceSnapshots=false;F.Step(8);
+    Check(F.Client(2).ResourceSnapshotStatuses().at(Group).CompleteCopies==2,"reconnected backup receives complete bounded copies");
+    const auto Captured=F.Client(1).HandoffMeasurements().at("resource/captured_versions");
+    const auto Transmitted=F.Client(1).HandoffMeasurements().at("resource/transmitted_versions");
+    Check(Captured>500&&Transmitted<20,"obsolete pending versions are replaced, never replayed after connection returns");
+    std::cout<<"Resource disconnected backup bounds passed captured="<<Captured<<" transmitted="<<Transmitted<<'\n';
+}
+void AbruptResourceRecoveryContracts(bool Lethal)
+{
+    auto M=Manifest();M.Rules.at("hit").Damage=Lethal?100:25;
+    Fixture F(std::move(M));const Id Group=ID(7300);const std::vector<ObjectKey> Scope{F.Key(0),TeamAccountObject(Team::Red)};
+    ResourceGroupState G;G.Group=Group;G.Owner=ID(1);G.Backup=ID(2);G.OwnerVersion=G.RequestEpoch=1;
+    for (auto& [P,C]:F.Clients)
+    {
+        for (const auto K:Scope)
+        {auto O=C->Objects().at(K);O.Grant.Policy=OwnershipPolicy::SharedGroup;O.Grant.OwnershipGroup=Group;
+            O.Grant.GroupEpoch=1;O.Grant.SimOwner=ID(1);Check(C->Install(O,true),"abrupt resource fixture grant");}
+        C->SetResourceGroups({{Group,G}});
+    }
+    F.Step(3);F.Now+=5.;F.Step(3);
+    Check(F.Client(2).ResourceSnapshotStatuses().at(Group).CompleteCopies==2,"designated backup retains two complete cuts");
+    F.RejectResourceSnapshots=true;
+    TransactionRequest Debit;Debit.Header.Object=F.Key(0);Debit.Header.Event=ID(7301);Debit.Kind=TransactionKind::Reserve;
+    Debit.RuleId="reserve";Debit.Faction=Team::Red;Debit.ReservationKey={DeriveEconomyAccount(F.Key(0)),1};
+    Check(F.Client(1).Submit(Debit,{}).Valid(),"commit a debit after the last stored cut");
+    TransactionRequest Hit;Hit.Header.Object=F.Key(3);Hit.Header.Event=ID(7302);Hit.Kind=TransactionKind::Damage;
+    Hit.Target=F.Key(0);Hit.RuleId="hit";Hit.Faction=Team::Blue;
+    Check(F.Client(4).Submit(Hit,{}).Valid(),"commit damage after the last stored cut");F.Step(10);
+    for (const auto& [P,C]:F.Clients)
+        Check(C->Objects().at(F.Key(0)).Vitals.Value==(Lethal?0:75)
+            &&C->Objects().at(F.Key(0)).Grant.State==(Lethal?Life::Dead:Life::Alive)
+            &&C->NumericState().TeamEconomy().Balance(Team::Red).Blue==80,
+            "all peers observed changes beyond the recoverable backup");
+    F.Members.at(ID(1)).Online=false;
+    G.Recovery=10;G.PreviousOwner=ID(1);G.Publisher=G.Target=ID(2);G.Abrupt=true;G.RequestEpoch=2;G.Deadline=F.Now+5;
+    for (auto& [P,C]:F.Clients) if (P!=ID(1))
+    {
+        C->SetMembers(F.Members);
+        for (const auto K:Scope)
+        {auto A=C->Objects().at(K).Grant;A.SimOwner={};A.Controller={};++A.ControlEpoch;
+            Check(C->InstallGrant(A),"fence disconnected owner and revoke its control before installation");}
+        C->SetResourceGroups({{Group,G}});
+    }
+    F.Step(10);
+    std::set<Id> Installed;
+    for (const auto& D:F.Metadata) if (D.Value.Header.Kind==MessageKind::ResourceSnapshotInstalled) Installed.insert(D.From);
+    Check(Installed.size()==5,"every surviving peer installs the latest complete backup");
+    for (const auto& [P,C]:F.Clients) if (P!=ID(1))
+        Check(C->Objects().at(F.Key(0)).Vitals.Value==100&&C->Objects().at(F.Key(0)).Grant.State==Life::Alive
+            &&F.Adapters.at({P,F.Key(0)})->AppliedHealth==100
+            &&C->Objects().at(F.Key(0)).Grant.ControlEpoch==2&&!C->Objects().at(F.Key(0)).Grant.Controller.Valid()
+            &&C->NumericState().TeamEconomy().Balance(Team::Red).Blue==100
+            &&C->NumericState().TeamEconomy().Snapshot().Pending.empty()&&!C->HasSimulation(F.Key(0)),
+            "abrupt recovery rolls all clients back to the same exact cut without early activation");
+    for (auto& [P,C]:F.Clients) if (P!=ID(1)) for (const auto K:Scope)
+    {auto A=C->Objects().at(K).Grant;A.SimOwner=ID(2);++A.OwnerEpoch;A.GroupEpoch=2;Check(C->InstallGrant(A),"commit recovered resource grants");}
+    G.Owner=ID(2);G.Backup=ID(3);G.OwnerVersion=2;G.Recovery=0;G.PreviousOwner=G.Publisher=G.Target={};G.Abrupt=false;G.Deadline=0;
+    for (auto& [P,C]:F.Clients) if (P!=ID(1)) {C->SetResourceGroups({{Group,G}});C->SetMembershipPaused(false);}
+    for (const auto& [P,C]:F.Clients) if (P!=ID(1))
+        Check(C->HasSimulation(F.Key(0))==(P==ID(2)),"the restored living object has exactly one simulator");
+    Check(F.Client(3).ResourceSnapshotStatuses().at(Group).CompleteCopies==2,"new backup retains the received cut and its committed authority version before another owner tick");
+    // The newly installed owner can disconnect before publishing any new version.
+    F.Metadata.clear();F.Members.at(ID(2)).Online=false;
+    G.Recovery=11;G.PreviousOwner=ID(2);G.Publisher=G.Target=ID(3);G.Abrupt=true;G.RequestEpoch=3;G.Deadline=F.Now+5;
+    for (auto& [P,C]:F.Clients) if (F.Members.at(P).Online)
+    {
+        C->SetMembers(F.Members);
+        for (const auto K:Scope) {auto A=C->Objects().at(K).Grant;A.SimOwner={};Check(C->InstallGrant(A),"fence consecutive disconnected owner");}
+        C->SetResourceGroups({{Group,G}});
+    }
+    F.Step(10);Installed.clear();
+    for (const auto& D:F.Metadata) if (D.Value.Header.Kind==MessageKind::ResourceSnapshotInstalled) Installed.insert(D.From);
+    Check(Installed.size()==4,"immediate consecutive owner loss restores the retained complete cut");
+    std::cout<<"Abrupt rollback and consecutive resource recovery contracts passed lethal="<<Lethal<<'\n';
+}
+void CurrentStateHistoryIndependence()
+{
+    Fixture F;const std::vector<ObjectKey> Keys{F.Key(0),TeamAccountObject(Team::Red)};
+    TransactionRequest R;R.Header.Object=F.Key(0);R.Header.Event=ID(7200);R.Kind=TransactionKind::Reserve;
+    R.RuleId="reserve";R.Faction=Team::Red;R.ReservationKey={DeriveEconomyAccount(F.Key(0)),1};
+    Check(F.Client(1).Submit(R,{}).Valid(),"create one live reservation");F.Step();
+    const auto Encode=[](const auto& Fragments){Writer W(MaxPrivateStateBytes);for (const auto& V:Fragments) WriteStateFragment(W,V);return W.Take();};
+    const auto Before=F.Client(1).NumericState().ExportCurrent(Keys);
+    const auto BeforeAge=F.Client(1).NumericState().Objects().at(F.Key(0)).LogicalAge;
+    const auto CurrentBytes=Encode(Before).size(),HistoryBytes=Encode(F.Client(1).NumericState().Export(Keys)).size();
+    for (unsigned N=0;N<256;++N)
+    {auto Extra=R;Extra.Header.Event=ID(7201+N);Extra.RuleId="missing-rule";Check(F.Client(1).Submit(Extra,{}).Valid(),"create completed request history");F.Step(2);}
+    const auto After=F.Client(1).NumericState().ExportCurrent(Keys);
+    const auto AfterBytes=Encode(After).size(),AfterHistory=Encode(F.Client(1).NumericState().Export(Keys)).size();
+    Check(CurrentBytes==AfterBytes&&AfterHistory>HistoryBytes+256*100,"current-state encoding size is independent of completed request history");
+    auto Receiver=F.Client(2).NumericState();const auto Identity=F.Client(1).NumericState().ExportCurrentIdentity(Keys);
+    const auto IdentityBytes=Receiver.ExportCurrentIdentity(Keys).size();
+    for (unsigned N=0;N<256;++N)
+    {Authority A;A.Object={ObjectKind::BusinessWork,ID(7600+N),1};A.State=Life::Destroyed;Receiver.ObserveTerminalAuthority(A);}
+    Check(Receiver.ExportCurrentIdentity(Keys).size()==IdentityBytes,
+        "identity guards exclude unrelated completed work tombstones");
+    const auto Balance=Receiver.TeamEconomy().Balance(Team::Red);auto Broken=After;
+    std::erase_if(Broken,[&](const auto& V){return V.Key.Object==F.Key(0)&&V.Key.Capability=="tasks";});
+    Check(!Receiver.ReplaceCurrent(ID(1),Keys,Broken,Identity)&&Receiver.TeamEconomy().Balance(Team::Red)==Balance,
+        "missing required current capability rejects before changing live state");
+    Check(Receiver.ReplaceCurrent(ID(1),Keys,After,Identity)
+        &&Receiver.TeamEconomy().Snapshot().Pending.size()==1
+        &&Receiver.TeamEconomy().Balance(Team::Red)==F.Client(1).NumericState().TeamEconomy().Balance(Team::Red),
+        "current snapshot preserves the committed debit and active reservation");
+    Check(Receiver.ReplaceCurrent(ID(1),Keys,Before,Identity)
+        &&Receiver.Objects().at(F.Key(0)).LogicalAge==BeforeAge,
+        "an older complete cut restores its exact logical sampling point");
+    std::cout<<"Resource history scaling: current_bytes="<<CurrentBytes<<" -> "<<AfterBytes
+        <<" history_bytes="<<HistoryBytes<<" -> "<<AfterHistory<<" completed_requests=256\n";
+}
+void CurrentMiningLeaseContracts()
+{
+    const ObjectKey Miner{ObjectKind::Miner,ID(7950),1},Other{ObjectKind::Miner,ID(7951),1};
+    MiningReservations Before;
+    Check(Before.Configure({{1,1},{2,1},{3,9}}),"configure current mining lease contract");
+    const auto Claim=Before.ClaimPosition(Miner,1,0,1,ID(7952));
+    Check(Claim.IsCommitted()&&Before.ClaimNode(Miner,Claim.Lease.Token,1,ID(7953)).IsCommitted(),"establish real mining occupancy");
+    auto Current=Before.Snapshot();Current.Decisions.clear();
+    Check(!ValidMiningReservations(Current),"unproven ordinary lease fragments still require an admission");
+    Current.SnapshotLeases=Current.Leases;
+    MiningReservations Restored;Check(Restored.Restore(Current),"complete current-cut occupancy is valid without old decisions");
+    Check(Restored.Snapshot().Decisions.empty()&&Restored.Snapshot().SnapshotLeases.size()==1
+        &&Restored.OwnsNode(Miner,Claim.Lease.Token,1),"only the active lease survives the request epoch boundary");
+    MiningReservationState Decoded;
+    Check(DecodeMiningReservations(EncodeMiningReservations(Restored.Snapshot()),Decoded)&&Decoded.Decisions.empty()
+        &&Decoded.SnapshotLeases==Current.SnapshotLeases,"bounded current lease anchors round trip without historical outcomes");
+    auto Invalid=Current;Invalid.SnapshotLeases.at(Miner).Node=2;
+    Check(!ValidMiningReservations(Invalid),"a current lease cannot contradict its selected snapshot");
+    Invalid=Current;auto Duplicate=Invalid.Leases.at(Miner);Duplicate.Source=Other;Duplicate.Token=ID(7954);
+    Invalid.Leases[Other]=Duplicate;Invalid.SnapshotLeases[Other]=Duplicate;
+    Check(!ValidMiningReservations(Invalid),"snapshot restore retains exclusive mining positions and nodes");
+    const auto Next=Restored.ClaimNode(Miner,Claim.Lease.Token,2,ID(7955));
+    Check(Next.IsCommitted()&&Restored.OwnsNode(Miner,Claim.Lease.Token,2)&&ValidMiningReservations(Restored.Snapshot()),
+        "a new request advances the restored lease using the new epoch ledger");
+    Check(Restored.Release(Miner,Claim.Lease.Token,ID(7956)).IsCommitted()
+        &&Restored.Snapshot().SnapshotLeases.empty()&&ValidMiningReservations(Restored.Snapshot()),
+        "release discards the current lease anchor");
+    Check(Restored.Restore(Current)&&Restored.ClaimPosition(Miner,9,1,2,ID(7957)).IsCommitted()
+        &&Restored.Snapshot().SnapshotLeases.empty()&&ValidMiningReservations(Restored.Snapshot()),
+        "replacement uses a new admission and discards the previous anchor");
+    Check(Restored.Restore(Current)&&Restored.AbandonSource(Miner)&&Restored.Snapshot().SnapshotLeases.empty()
+        &&ValidMiningReservations(Restored.Snapshot()),"death releases restored occupancy and its anchor");
+    std::cout<<"Current mining lease restore, exclusivity, continuation and release contracts passed\n";
 }
 void DelayedAcknowledgementFairness()
 {
@@ -912,6 +1286,58 @@ void ScopedFragmentIsolation()
     for (const auto Cluster:{1u,9u})
     {auto V=State.Objects().at(K);V.Grant.Object=MiningClusterObject(Cluster);V.Ordinal=0;
         Check(State.Install(V),"install numeric resource-cluster shard");}
+    MiningReservations Occupancy;
+    Check(Occupancy.Configure({{1,1},{2,1},{3,9}}),"configure live mining reservation fixture");
+    const auto Lease=Occupancy.ClaimPosition(K,1,0,1,ID(3100));
+    Check(Lease.IsCommitted()&&Occupancy.ClaimNode(K,Lease.Lease.Token,1,ID(3101)).IsCommitted(),"create a real occupied mining node");
+    Writer Occupied;Occupied.U32(static_cast<std::uint32_t>(Occupancy.Snapshot().Leases.size()));
+    for (const auto& [Source,L]:Occupancy.Snapshot().Leases)
+    {Occupied.Key(L.Source);Occupied.U32(L.Cluster);Occupied.U8(L.Sample);Occupied.U32(L.Task);Occupied.Identity(L.Token);Occupied.U32(L.Node);Occupied.U64(L.Version);}
+    Occupied.U32(static_cast<std::uint32_t>(Occupancy.Snapshot().Decisions.size()));
+    for (const auto& [Event,D]:Occupancy.Snapshot().Decisions)
+    {Occupied.Identity(Event);Occupied.Blob(D.Fingerprint);Occupied.Blob(EncodeMiningReservationOutcome(D.Outcome));}
+    Check(State.Import(ID(1),{{{MiningClusterObject(1),"leases/1"},1,1,Occupied.Take()}}),"install authenticated mining state through normal fragment validation");
+    {
+        std::vector<ObjectKey> Scope;for (const auto& [Key,O]:State.Objects()) if (HasPrivateCustody(O.Grant,ID(1))) Scope.push_back(Key);
+        auto Receiver=State;std::string Failure;
+        const auto Current=State.ExportCurrent(Scope);const auto Identity=State.ExportCurrentIdentity(Scope);
+        if (!Receiver.ReplaceCurrent(ID(1),Scope,Current,Identity,&Failure)) throw std::runtime_error(Failure);
+        Check(EncodeResourceLedger(Receiver.WorldResources().Snapshot())==EncodeResourceLedger(State.WorldResources().Snapshot()),
+            "complete current numeric snapshot preserves configured ore and empty inventories");
+        Check(Receiver.MiningPositions().OwnsNode(K,Lease.Lease.Token,1),"current snapshot retains an occupied mining node without old request receipts");
+        const auto Moved=Occupancy.ClaimPosition(K,9,1,2,ID(3102));
+        Check(Moved.IsCommitted()&&Occupancy.ClaimNode(K,Moved.Lease.Token,3,ID(3103)).IsCommitted(),
+            "advance the same miner to another cluster after the selected recovery cut");
+        const auto MiningFragment=[&](std::uint32_t Cluster)
+        {
+            const auto& Mining=Occupancy.Snapshot();Writer W;std::uint32_t Count=0;
+            for (const auto& [Source,L]:Mining.Leases) if (L.Cluster==Cluster) ++Count;
+            W.U32(Count);
+            for (const auto& [Source,L]:Mining.Leases) if (L.Cluster==Cluster)
+            {W.Key(L.Source);W.U32(L.Cluster);W.U8(L.Sample);W.U32(L.Task);W.Identity(L.Token);W.U32(L.Node);W.U64(L.Version);}
+            Count=0;for (const auto& [Event,D]:Mining.Decisions) if (D.Outcome.Lease.Cluster==Cluster) ++Count;
+            W.U32(Count);
+            for (const auto& [Event,D]:Mining.Decisions) if (D.Outcome.Lease.Cluster==Cluster)
+            {W.Identity(Event);W.Blob(D.Fingerprint);W.Blob(EncodeMiningReservationOutcome(D.Outcome));}
+            return StateFragment{{MiningClusterObject(Cluster),"leases/"+std::to_string(Cluster)},1,2,W.Take()};
+        };
+        Check(Receiver.Import(ID(1),{MiningFragment(1),MiningFragment(9)})
+            &&Receiver.MiningPositions().OwnsNode(K,Moved.Lease.Token,3),"apply a real cross-cluster reservation change");
+        for (const bool Reverse:{false,true})
+        {
+            auto Recovery=Receiver;auto Cut=Current;if (Reverse) std::reverse(Cut.begin(),Cut.end());
+            Check(Recovery.ReplaceCurrent(ID(1),Scope,Cut,Identity,&Failure)
+                &&Recovery.MiningPositions().OwnsNode(K,Lease.Lease.Token,1)
+                &&Recovery.MiningPositions().Snapshot().Decisions.empty(),
+                "restore a miner's older cluster atomically in either fragment order without old decisions");
+        }
+        auto Invalid=Current;
+        for (auto& F:Invalid) if (F.Key.Capability=="leases/9") F=MiningFragment(9);
+        const auto Before=EncodeMiningReservations(Receiver.MiningPositions().Snapshot());
+        Check(!Receiver.ReplaceCurrent(ID(1),Scope,Invalid,Identity,&Failure)
+            &&EncodeMiningReservations(Receiver.MiningPositions().Snapshot())==Before,
+            "a duplicate miner in two snapshot clusters rejects the complete batch without partial state");
+    }
     const std::array<ObjectKey,1> ClusterCut{MiningClusterObject(1)};
     const auto ClusterFragments=State.Export(ClusterCut);
     const auto Has=[&](const char* Name){return std::count_if(ClusterFragments.begin(),ClusterFragments.end(),
@@ -964,6 +1390,87 @@ void ScopedFragmentIsolation()
     Check(!State.Import(ID(1),{Fragment(Object,3),Fragment(InvalidWork,1)}),"invalid work reference rejects all staged changes");
     Check(State.Objects().at(K).Vitals.Value==50 && State.Objects().at(Work.Grant.Object).FrozenWork==Work.FrozenWork,
         "failed work validation cannot leak a partial object update");
+}
+void AsyncCurrentMiningReadback()
+{
+    // Numeric-only resource shards must invalidate readback without relying on
+    // a materialized actor's BeginResourceRestore callback.
+    auto M=Manifest();for (auto& [K,O]:M.Objects) O.Materialized=false;
+    M.Numbers["resource_map/node_count"]=2;M.Numbers["resource_map/Clusters/count"]=1;
+    M.Numbers["resource_map/Territories/count"]=1;M.Numbers["resource_map/Territories[0]/InitialOwner"]=1;
+    for (const auto& [Name,Value]:std::map<std::string,double>{{"ClusterId",1},{"TerritoryIndex",0},{"ResourceType",0},{"FirstNodeIndex",0},{"NodeCount",2}})
+        M.Numbers["resource_map/Clusters[0]/"+Name]=Value;
+    for (unsigned N=1;N<=2;++N)
+    {const auto P="ore/"+std::to_string(N)+"/";M.Numbers[P+"cluster"]=1;M.Numbers[P+"type"]=0;M.Numbers[P+"amount"]=3;}
+    OwnerState Source(ID(100),ID(1));std::string Error;Check(Source.Configure(M,Error),"configure numeric-only recovery world");
+    std::vector<ObjectKey> Scope;
+    for (const auto& [K,O]:Source.Objects())
+    {
+        auto A=O.Grant;A.SimOwner=A.Controller=ID(1);A.OwnerEpoch=A.ControlEpoch=1;A.State=Life::Alive;
+        Check(Source.SetAuthority(A),"install numeric-only resource ownership");Scope.push_back(K);
+    }
+    const ObjectKey Miner{ObjectKind::Soldier,ID(20),1};MiningReservations Mining;
+    Check(Mining.Configure({{1,1},{2,1}}),"configure readback mining catalog");
+    const auto Lease=Mining.ClaimPosition(Miner,1,0,1,ID(3300));
+    Check(Lease.IsCommitted()&&Mining.ClaimNode(Miner,Lease.Lease.Token,1,ID(3301)).IsCommitted(),"claim initial readback node");
+    const auto Capture=[&](Revision Epoch)
+    {
+        const auto& V=Mining.Snapshot();Writer W;W.U32(static_cast<std::uint32_t>(V.Leases.size()));
+        for (const auto& [K,L]:V.Leases)
+        {W.Key(L.Source);W.U32(L.Cluster);W.U8(L.Sample);W.U32(L.Task);W.Identity(L.Token);W.U32(L.Node);W.U64(L.Version);}
+        W.U32(static_cast<std::uint32_t>(V.Decisions.size()));
+        for (const auto& [E,D]:V.Decisions) {W.Identity(E);W.Blob(D.Fingerprint);W.Blob(EncodeMiningReservationOutcome(D.Outcome));}
+        Check(Source.Import(ID(1),{{{MiningClusterObject(1),"leases/1"},1,Epoch,W.Take()}}),"apply real mining changes before capture");
+        ObjectHandoffState S;S.Match=ID(100);S.Source=ID(1);S.Target=ID(2);S.CurrentOnly=true;S.ResourceEpoch=Epoch;
+        for (const auto& [K,O]:Source.Objects()) S.Objects.push_back({O,0,{}});
+        S.Numeric=Source.ExportCurrent(Scope);S.CurrentIdentity=Source.ExportCurrentIdentity(Scope);return S;
+    };
+    const auto Older=Capture(1);
+    Check(Mining.ClaimNode(Miner,Lease.Lease.Token,2,ID(3302)).IsCommitted(),"advance real mining occupancy after the older cut");
+    const auto Newer=Capture(2);
+    {
+        AsyncClientWorld A(ID(100),ID(2),1,[](const ObjectRecord&){return std::make_unique<Adapter>();},
+            [](Id,Message,Bytes,bool){return true;},{},false,{},0,{false,{}});
+        const auto Until=[&](auto Done)
+        {
+            const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+            while (std::chrono::steady_clock::now()<End) {A.PumpApplications();if (Done()) return;std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+            Check(false,"numeric-only recovery readback timed out");
+        };
+        Check(A.Configure(M,Error),"configure async numeric-only receiver");
+        Member Member1;Member1.Player=ID(1);Member1.Faction=Team::Red;Member1.Ready=true;
+        auto Member2=Member1;Member2.Player=ID(2);A.SetMembers({{ID(1),Member1},{ID(2),Member2}});
+        for (const auto& [K,O]:Source.Objects()) Check(A.Install(O,true),"install numeric-only receiver record");
+        Until([&]{return A.Objects().size()==Scope.size()&&!A.IsBootstrapMaterializationDeferred();});
+        unsigned Observed=0;
+        A.SetQueryObserver([&](const ClientQueryDelta& D)
+        {
+            if (!D.MiningChanged) return;++Observed;
+            for (const auto& [K,L]:D.Leases) Check(A.NumericState().MiningPositions().Snapshot().Leases.at(K)==L,
+                "mining query callback sees the restored complete read mirror");
+        });
+        const auto Install=[&](const ObjectHandoffState& Cut,const char* Name)
+        {
+            std::string Result;
+            Until([&]
+            {
+                if (!A.Inspect(Name,[Cut](ClientWorld& C){return C.ImportObjects(Cut)?"done":C.LastApplicationPending()?"pending":"failed";},Result)) return false;
+                Check(Result!="failed","authenticated numeric-only cut imports");return Result=="done";
+            });
+        };
+        Install(Newer,"newer mining cut");const auto Version=A.NumericState().MiningPositions().Snapshot().Version;
+        Check(A.NumericState().MiningPositions().Snapshot().Leases.at(Miner).Node==2,"newer mining cut reaches the main thread");
+        const auto Query=A.NumericState().MiningDirectoryRevision;
+        Install(Older,"older mining cut");
+        std::cout<<"Async mining restore version="<<Version<<" -> "
+            <<A.NumericState().MiningPositions().Snapshot().Version<<" node="<<A.NumericState().MiningPositions().Snapshot().Leases.at(Miner).Node
+            <<" query="<<Query<<" -> "<<A.NumericState().MiningDirectoryRevision<<" callbacks="<<Observed<<'\n';
+        Check(A.NumericState().MiningPositions().Snapshot().Version==Version
+            &&A.NumericState().MiningPositions().Snapshot().Leases.at(Miner).Node==1
+            &&A.NumericState().MiningDirectoryRevision>Query&&Observed==2,
+            "same aggregate version does not hide recovered mining state in the ordered incremental delivery");
+    }
+    std::cout<<"Async current mining snapshot readback and callback order contracts passed\n";
 }
 void PlannedStateIsolation()
 {
@@ -1157,12 +1664,194 @@ void ResourceCopyIsolation()
         "processing and deduplication history stay private to the committing branch");
     Check(Base.SetTerritoryOwner(0,Team::Blue) && Trial.Snapshot().Owners[0]==Team::Red,"the original can mutate independently too");
 }
+void AsyncExternalSendBindsPackingIdentity(bool FastCacheKey)
+{
+    // Bootstrap callers provide a body/kind; the session binds the actual
+    // room and sender before transmission. An identity-based codec must see
+    // those same fields before it produces or reuses cached compressed bytes.
+    const auto Encode=[](const Message& M)
+    {
+        Writer W;W.Identity(M.Header.Match);W.Identity(M.Header.Sender);W.U64(M.Header.Epoch);
+        W.Identity(M.Header.Event);W.Key(M.Header.Object);W.Blob(M.Body);return W.Take();
+    };
+    unsigned Delivered=0,Compressed=0;
+    const std::array<std::uint8_t,8> Contents{17,17,18,17,18,19,19,17};
+    AsyncClientWorld A(ID(100),ID(1),7,[](const ObjectRecord&){return std::make_unique<Adapter>();},
+        [&](Id Peer,const Message& M,const Bytes& Packed,bool Encoded)
+        {
+            Check(Peer==ID(2),"external peer destination remains unchanged");
+            Check(Delivered<Contents.size() && M.Body==Bytes(1024,Contents[Delivered]),
+                "same envelope with different equal-sized bodies retains exact delivery order");
+            Check(M.Header.Match==ID(100) && M.Header.Sender==ID(1) && M.Header.Epoch==7,
+                "native transport receives canonical identity without rewriting its borrowed buffers");
+            Check(Encoded && Packed==Encode(M),"external messages bind transport identity before codec/cache");
+            ++Delivered;return true;
+        },[&](Message& M,Bytes& Packed){++Compressed;Packed=Encode(M);return true;},
+        false,{},0,{false,{},true,FastCacheKey});
+    for (unsigned I=0;I<Contents.size();++I)
+    {
+        Message M;M.Header.Kind=MessageKind::BootstrapState;M.Header.Event=ID(6000);
+        M.Header.Object={ObjectKind::Soldier,ID(6001),1};M.Body.resize(1024,Contents[I]);
+        if (I%2) {M.Header.Match=ID(91);M.Header.Sender=ID(92);M.Header.Epoch=99;}
+        Check(A.SendPeer(ID(2),std::move(M)),"admit external bootstrap message");
+    }
+    const auto Deadline=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+    while (Delivered<Contents.size() && std::chrono::steady_clock::now()<Deadline)
+    {A.PumpApplications();std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+    Check(Delivered==Contents.size() && A.Error().empty(),"all external messages retain order and payload");A.Stop();
+    Check(Compressed==3,"both cache indexes reuse only the three exact payload variants");
+}
+void AsyncIndependentOutboundProgress()
+{
+    {
+        bool Blocked=true;std::map<Id,std::vector<unsigned>> Delivered;
+        AsyncClientWorld A(ID(100),ID(1),1,[](const ObjectRecord&){return std::make_unique<Adapter>();},
+            [&](Id Peer,const Message& M,const Bytes&,bool)
+            {
+                if (Peer==ID(2) && Blocked) return false;
+                Delivered[Peer].push_back(M.Body.at(0));return true;
+            },{},false,{},0,{false,{}});
+        for (unsigned N=1;N<=2;++N) for (const auto Peer:{ID(2),ID(3)})
+        {
+            Message M;M.Header.Kind=MessageKind::BootstrapState;M.Body={static_cast<std::uint8_t>(N)};
+            Check(A.SendPeer(Peer,std::move(M)),"admit interleaved bootstrap destinations");
+        }
+        const auto Until=[&](auto Predicate)
+        {
+            const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+            while (std::chrono::steady_clock::now()<End)
+            {A.PumpApplications();if (Predicate()) return true;std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+            return false;
+        };
+        Check(Until([&]{return A.Statistics().InputKinds[unsigned(AsyncInputKind::PeerSend)].Processed==4;}),"all sends reach worker");
+        Check(Until([&]{return Delivered[ID(3)].size()==2;}),"blocked destination cannot hold independent peer bootstrap");
+        Check(Delivered[ID(2)].empty(),"blocked messages remain undelivered");
+        Blocked=false;
+        Check(Until([&]{return Delivered[ID(2)].size()==2 && Delivered[ID(3)].size()==2
+            && A.Statistics().OutputBytes==0;}),"unblocked peers drain retained bytes");
+        for (const auto Peer:{ID(2),ID(3)})
+            Check(Delivered[Peer]==std::vector<unsigned>({1,2}),"each peer retains exact order and once-only delivery");
+        for (unsigned I=0;I<4;++I) A.PumpApplications();
+        Check(Delivered[ID(2)].size()==2 && Delivered[ID(3)].size()==2,"later pumps do not replay completed sends");
+        A.Stop();
+    }
+}
+void AsyncMainAdvanceEligibility(std::uint32_t WorkerPeriod=1)
+{
+    Fixture F;std::map<ObjectKey,Adapter*> Applied;
+    AsyncClientWorld A(ID(100),ID(1),1,[&](const ObjectRecord& O)
+        {auto P=std::make_unique<Adapter>();P->WorkerPeriod=WorkerPeriod;P->MainPeriod=WorkerPeriod?6:0;P->WakeOnCommand=true;Applied[O.Grant.Object]=P.get();return P;},
+        [](Id,Message,Bytes,bool){return true;},{},false,{},0,{true,{}});
+    auto Until=[&](auto Predicate,const char* Why)
+    {
+        const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+        do {A.PumpApplications();if (Predicate()) return;std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+        while (std::chrono::steady_clock::now()<End);
+        Check(false,Why);
+    };
+    std::string Error;Check(A.Configure(F.Data,Error),"eligibility configure");A.SetMembers(F.Members);
+    for (const auto& [K,O]:F.Client(1).Objects()) Check(A.Install(O,true),"eligibility install");
+    A.SetMembershipPaused(false);
+    Until([&]{return A.HasSimulation(F.Key(0))&&!A.IsBootstrapMaterializationDeferred();},"eligibility ready");
+    const auto Step=[&]
+    {
+        const auto Before=A.ObjectNow(F.Key(0));A.Advance(1./60.);
+        Until([&]{return A.ObjectNow(F.Key(0))>Before;},"skipped callbacks still advance the logical clock");
+    };
+    for (unsigned I=0;I<12;++I) Step();
+    auto* Scene=Applied.at(F.Key(0));
+    if (!WorkerPeriod)
+    {
+        Check(A.ObjectNow(F.Key(0))==12 && A.Objects().at(F.Key(0)).LogicalAge==12
+            && Scene->Position==0 && Scene->LastTick==0,
+            "registration with no periodic work still publishes every main-thread object clock step");
+        A.Stop();return;
+    }
+    Check(A.ObjectNow(F.Key(0))==12 && Scene->Position==2 && Scene->LastTick==12,
+        "60 Hz object age retains the existing 10 Hz due callbacks");
+    FrozenCommand Command;Command.Event=ID(4990);Command.Operation="move";Command.Members.push_back({F.Key(0),1,1});
+    Check(A.Route(Command),"idle object accepts its normal command");
+    Until([&]{return A.CommandResult(Command.Event).has_value();},"idle object command receipt does not wait for periodic work");
+    Check(Scene->Executions==1 && Scene->MainAwake,"command wakes the main adapter exactly once");
+    Step();
+    Check(Scene->Position==3 && Scene->LastTick==13 && !Scene->MainAwake,
+        "command wake is observed on the immediately following logical step");
+    for (unsigned I=0;I<5;++I) Step();
+    Check(Scene->Position==4 && Scene->LastTick==18 && A.Error().empty(),"waking does not shift the periodic cadence");
+    Scene->MainPeriod=0;
+    for (unsigned I=0;I<5;++I) Step();
+    Check(A.ObjectNow(F.Key(0))==23 && Scene->Position==4 && Scene->LastTick==18,
+        "an empty family callback can be disabled without skipping any object clock step");
+    A.Stop();
+}
+void SharedMembershipImport()
+{
+    struct Shared final:ISharedStateAdapter
+    {
+        std::vector<ObjectKey> Keys;unsigned Restores=0;
+        std::uint32_t Version() const override {return 1;}
+        bool UsesObject(ObjectKey K) const override {return std::find(Keys.begin(),Keys.end(),K)!=Keys.end();}
+        bool Capture(const std::vector<ObjectKey>& Objects,Bytes& Out) const override
+        {Writer W;W.U32(static_cast<std::uint32_t>(Objects.size()));Out=W.Take();return true;}
+        bool Validate(const std::vector<PrivateSystemState>& Parts,const std::vector<ObjectKey>& Objects) const override
+        {std::uint32_t Count=0;return Parts.size()==1 && Parts.front().Objects==Objects
+            && [&]{Reader R(Parts.front().State);return R.U32(Count)&&Count==Objects.size()&&R.Done();}();}
+        bool Restore(const std::vector<PrivateSystemState>& Parts,const std::vector<ObjectKey>& Objects,RestoreStage) override
+        {if (!Validate(Parts,Objects)) return false;++Restores;return true;}
+        bool RestoreQuery(const std::vector<PrivateSystemState>& Parts,const std::vector<ObjectKey>& Objects,RestoreStage Stage) override
+        {return Restore(Parts,Objects,Stage);}
+    };
+    Fixture F;auto Extra=F.Client(2).Objects().at(F.Key(1));Extra.Grant.Object.StableId=ID(6270);Extra.Ordinal=77;
+    for (auto& [P,C]:F.Clients) Check(C->Install(Extra,true),"declare related source in the same private cut");
+    const std::vector<ObjectKey> Keys{F.Key(1),Extra.Grant.Object};
+    F.Adapters.at({ID(2),F.Key(1)})->SharedSystems={"recorded-work"};
+    F.Adapters.at({ID(1),F.Key(1)})->SharedSystems={"recorded-work"};
+    auto Source=std::make_unique<Shared>();Source->Keys=Keys;
+    Check(F.Client(2).RegisterSystem("recorded-work",std::move(Source)),"register required and incidental shared members");
+    ObjectHandoffState Cut;Check(F.Client(2).CaptureObjects(Keys,ID(1),0,Cut),"capture shared member superset");
+    Check(Cut.Systems.size()==1 && Cut.Systems.front().Objects==Keys,"private cut retains the related source too");
+    auto Target=std::make_unique<Shared>();auto* TargetPtr=Target.get();
+    Check(F.Client(1).RegisterSystem("recorded-work",std::move(Target)),"register exact-membership validator");
+    auto Bad=Cut;Bad.Systems.front().Objects.erase(Bad.Systems.front().Objects.begin());
+    TargetPtr->Capture(Bad.Systems.front().Objects,Bad.Systems.front().State);
+    Check(!F.Client(1).ImportObjects(Bad),"a missing required shared member still rejects");
+    Bad=Cut;Bad.Systems.front().Objects.push_back(F.Key(0));
+    TargetPtr->Capture(Bad.Systems.front().Objects,Bad.Systems.front().State);
+    Check(!F.Client(1).ImportObjects(Bad),"a shared member outside the private cut still rejects");
+    Check(TargetPtr->Restores==0,"invalid membership cannot reach private restoration");
+    Check(F.Client(1).ImportObjects(Cut),"validate the complete declared shared cut, not only its required subset");
+    Check(TargetPtr->Restores==4,"all four restore stages retain the complete shared membership");
+    {
+        AsyncExecutionOptions Options;
+        AsyncClientWorld A(ID(100),ID(1),1,[&](const ObjectRecord& O)
+            {auto P=std::make_unique<Adapter>();if (O.Grant.Object==F.Key(1)) P->SharedSystems={"recorded-work"};return P;},
+            [](Id,Message,Bytes,bool){return true;},{},false,{},0,Options);
+        auto System=std::make_unique<Shared>();auto* SystemPtr=System.get();
+        Check(A.RegisterSystem("recorded-work",std::move(System)),"register async shared validation");
+        std::string Error;Check(A.Configure(F.Data,Error),"configure async shared cut target");A.SetMembers(F.Members);
+        for (const auto& [K,O]:F.Client(1).Objects()) Check(A.Install(O,true),"install shared cut directory");
+        A.SetMembershipPaused(false);
+        const auto Until=[&](auto Predicate,const char* Why)
+        {
+            const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+            do {A.PumpApplications();if (Predicate()) return;std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+            while (std::chrono::steady_clock::now()<End);Check(false,Why);
+        };
+        Until([&]{return !A.IsBootstrapMaterializationDeferred()&&A.HasSimulation(F.Key(0));},"shared import target ready");
+        const std::array<ObjectHandoffState,1> Parts{Cut};
+        Until([&]{return A.StageBootstrapDirectory(Parts);},"shared import preflight ready");
+        Until([&]{return A.ImportBootstrap(Parts,[&](Id SourceId,const OwnerState::FragmentVisitor& Visit)
+            {if (SourceId!=Cut.Source) return false;for (const auto& V:Cut.Numeric) if (!Visit(V)) return false;return true;});},
+            "async shared cut accepts required plus incidental members");
+        Check(SystemPtr->Restores==4 && A.Error().empty(),"async shared cut restores exactly four stages without an error");
+    }
+}
 void AsyncContinuationAndGameplayDelivery(unsigned Workers=0)
 {
     Fixture F;const auto Main=std::this_thread::get_id();std::map<ObjectKey,Adapter*> Applied;
     AsyncClientWorld A(ID(100),ID(1),1,[&](const ObjectRecord& O)
         {Check(std::this_thread::get_id()==Main,"scene creation stays on caller thread");auto P=std::make_unique<Adapter>();Applied[O.Grant.Object]=P.get();return P;},
-        [](Id,Message,Bytes,bool){return true;},{},false,{},0,{true,true,true,Workers?MakeGameplayTaskPool(Workers):nullptr});
+        [](Id,Message,Bytes,bool){return true;},{},false,{},0,{true,Workers?MakeGameplayTaskPool(Workers):nullptr});
     auto Until=[&](auto Predicate,const char* Why)
     {
         const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
@@ -1302,9 +1991,115 @@ void AsyncContinuationAndGameplayDelivery(unsigned Workers=0)
     },"GT capture transfers capacity before its worker acknowledgment, avoiding the output/control cycle");
     Check(LargeObservation.size()==40ull*1024*1024&&A.Statistics().OutputPeak<=64ull*1024*1024,
         "capture and large reliable output finish inside the 64 MiB budget");
+    if (!Workers)
+    {
+        const auto CapturesBefore=Applied.at(F.Key(0))->Captures;
+        ObjectHandoffState DelayedCut;
+        Check(!A.CaptureObjects(Keys,ID(2),42,DelayedCut),"start a delayed application capture");
+        const auto QueuedUntil=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+        while (A.Statistics().OutputBytes<32ull*1024*1024&&std::chrono::steady_clock::now()<QueuedUntil)
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        Check(A.Statistics().OutputBytes>=32ull*1024*1024,"delayed capture reached the GT queue");
+        std::this_thread::sleep_for(std::chrono::milliseconds(600));
+        Until([&]{return A.CaptureObjects(Keys,ID(2),42,DelayedCut);},"a delayed acknowledgment retains its fresh capture result");
+        Check(Applied.at(F.Key(0))->Captures==CapturesBefore+1,
+            "GT queue delay cannot expire the private cut before its first consumption");
+        // A capture fence can coalesce many ordinary frame deltas. Passing the
+        // sum through BattleClock's per-call four-step clamp loses game time.
+        const auto ClockBefore=A.Now();A.Advance(.5/60.);ObjectHandoffState ClockCut;
+        Check(!A.CaptureObjects(Keys,ID(2),43,ClockCut),"start a clock-retention capture");
+        const auto ClockQueued=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+        while (A.Statistics().OutputBytes<32ull*1024*1024&&std::chrono::steady_clock::now()<ClockQueued)
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        Check(A.Statistics().OutputBytes>=32ull*1024*1024,"clock-retention capture is waiting for GT");
+        for (unsigned Frame=0;Frame<20;++Frame) A.Advance(1./60.);
+        Until([&]{return A.CaptureObjects(Keys,ID(2),43,ClockCut);},"consume the clock-retention capture");
+        Until([&]{return A.Now()>=ClockBefore+20;},"capture fence must retain all twenty submitted logical steps");
+        Check(A.Now()==ClockBefore+20,"capture catch-up neither loses nor invents simulation time");
+        A.Advance(.5/60.);
+        Until([&]{return A.Now()==ClockBefore+21;},"four-step slicing must preserve the clock's pre-existing fractional tick");
+
+        // A periodic snapshot requester can disappear or change scope after a
+        // birth/command. Its completed cut must not hold a half-second lease on
+        // unrelated simulation while waiting for a consumer that will not return.
+        std::string Abandoned;bool Begun=false;
+        Until([&]
+        {
+            return A.Inspect("abandoned-periodic-cut",[&](ClientWorld& C)
+            {ObjectHandoffState Ignored;Begun=!C.CaptureObjects(Keys,ID(2),44,Ignored);return std::string("requested");},Abandoned);
+        },"queue an explicitly unconsumed periodic cut");
+        Check(Begun,"orphaned snapshot began asynchronously");
+        const auto OrphanClock=A.Now();A.Advance(1./60.);
+        const auto ResumeBy=std::chrono::steady_clock::now()+std::chrono::milliseconds(200);
+        while (A.Now()==OrphanClock&&std::chrono::steady_clock::now()<ResumeBy)
+        {A.PumpApplications();std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+        Check(A.Now()==OrphanClock+1,"completed orphaned capture cannot impose a 500 ms simulation stall");
+        std::cout<<"Async snapshot capture clock retention and orphan release contracts passed\n";
+    }
     unsigned AfterStop=0;auto Last=std::make_shared<Calculation>();
     Check(A.SubmitGameplay("shutdown",Last,1024,1024,[&]{++AfterStop;}),"admit final batch before shutdown");
     A.Stop();Check(AfterStop==0,"shutdown revokes callbacks and joins without pumping the scene");
+}
+void AsyncCaptureChainClockProgress(bool Yield)
+{
+    Fixture F;std::map<ObjectKey,Adapter*> Applied;
+    AsyncClientWorld A(ID(100),ID(1),1,[&](const ObjectRecord& O)
+        {auto P=std::make_unique<Adapter>();Applied[O.Grant.Object]=P.get();return P;},
+        [](Id,Message,Bytes,bool){return true;},{},false,{},0,{false,nullptr,Yield});
+    const auto Until=[&](auto Predicate,const char* Why)
+    {
+        const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
+        do {A.PumpApplications();if (Predicate()) return;std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+        while (std::chrono::steady_clock::now()<End);
+        Check(false,Why);
+    };
+    std::string Error;Check(A.Configure(F.Data,Error),"capture chain configure");
+    A.SetMembers(F.Members);
+    for (const auto& [K,O]:F.Client(1).Objects()) Check(A.Install(O,true),"capture chain install");
+    A.SetMembershipPaused(false);
+    Until([&]{return A.HasSimulation(F.Key(0))&&!A.IsBootstrapMaterializationDeferred();},"capture chain ready");
+    const std::array<ObjectKey,1> Keys{F.Key(0)};
+    constexpr unsigned Count=8,Steps=24;
+    std::array<ObjectHandoffState,Count> Cuts;
+    std::array<bool,Count> Done{};
+    for (unsigned I=0;I<Count;++I)
+        Check(!A.CaptureObjects(Keys,ID(2),100+I,Cuts[I]),"queue serial private cuts");
+    const auto QueuedBy=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+    while (A.Statistics().OutputBytes<32ull*1024*1024&&std::chrono::steady_clock::now()<QueuedBy)
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    Check(A.Statistics().OutputBytes>=32ull*1024*1024,"first cut holds the simulation clock");
+    const auto Before=A.Now();
+    for (unsigned I=0;I<Steps;++I) A.Advance(1./60.);
+    // Confirm the input order without pumping the first private capture.
+    std::atomic<bool> InputsReady=false;std::string Observation;
+    A.Inspect("capture-chain-inputs",[&](ClientWorld&){InputsReady=true;return std::string("ready");},Observation);
+    const auto InputsBy=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+    while (!InputsReady&&std::chrono::steady_clock::now()<InputsBy)
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    Check(InputsReady,"all ordinary frame deltas precede capture acknowledgments");
+    Until([&]
+    {
+        bool Complete=true;
+        for (unsigned I=0;I<Count;++I)
+        {
+            if (!Done[I]) Done[I]=A.CaptureObjects(Keys,ID(2),100+I,Cuts[I]);
+            Complete&=Done[I];
+        }
+        return Complete;
+    },"all serial captures complete");
+    Tick First=0,Last=0;
+    for (unsigned I=0;I<Count;++I)
+    {
+        Reader R(Cuts[I].Objects.front().State);std::uint64_t Position=0,Executions=0,At=0;
+        Check(R.U64(Position)&&R.U64(Executions)&&R.U64(At)&&R.Done(),"captured adapter bytes remain valid");
+        Check(At==Cuts[I].Objects.front().Record.LogicalAge,"private adapter and numeric state share the same logical cut");
+        if (!I) First=At;
+        Check(At>=Last,"serial cut clocks never regress");Last=At;
+    }
+    Check(Yield?Last>First:Last==First,"simulation advances between cuts only with capture fairness enabled");
+    Until([&]{return A.Now()>=Before+Steps;},"every submitted step eventually applies");
+    Check(A.Now()==Before+Steps&&A.Error().empty(),"capture scheduling neither loses nor invents logical time");
+    std::cout<<"Async capture chain clock progress passed yield="<<Yield<<" first="<<First<<" last="<<Last<<" total="<<Steps<<'\n';
 }
 void BoundedReliableApplicationAdmission()
 {
@@ -1338,7 +2133,7 @@ void BoundedReliableApplicationAdmission()
 void CompactPeerEnvelopeRoundTrip()
 {
     std::uint64_t Original=0,Compact=0;
-    for (unsigned Kind=unsigned(MessageKind::Hello);Kind<=unsigned(MessageKind::WorkState);++Kind)
+    for (unsigned Kind=unsigned(MessageKind::Hello);Kind<=unsigned(MessageKind::ResourceSnapshotInstalled);++Kind)
         for (unsigned Variant=0;Variant<5;++Variant)
     {
         Message M;auto& H=M.Header;H.Kind=MessageKind(Kind);H.Match=ID(100);H.Sender=ID(1);H.Epoch=1;H.Sequence=5000;H.At=90000;
@@ -1383,10 +2178,9 @@ void CompactPeerEnvelopeRoundTrip()
 }
 void AsyncSharedClockAndLazyDirectory()
 {
-    for (const bool Reduced:{false,true})
     {
         Fixture F;AsyncClientWorld A(ID(100),ID(1),1,[](const ObjectRecord&){return std::make_unique<Adapter>();},
-            [](Id,Message,Bytes,bool){return true;},{},false,{},0,{false,Reduced,Reduced,{}});
+            [](Id,Message,Bytes,bool){return true;},{},false,{},0,{false,{}});
         auto Until=[&](auto P)
         {
             const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(5);
@@ -1428,7 +2222,7 @@ void AsyncSharedClockAndLazyDirectory()
         const auto Calls=View->Calls;A.Advance(4./60.);Until([&]{return View->Calls>=Calls+4;});
         for (unsigned I=0;I<1024;++I)
             Check(A.NumericState().LastRetiredLife(ObjectKind::Flight,ID(20000+I))==3,"unchanged publication preserves every retired lifetime");
-        Check(A.Statistics().OutputPeak<1024*1024,"ordinary readback remains bounded with 1024 retired flights in both paths");
+        Check(A.Statistics().OutputPeak<1024*1024,"ordinary readback remains bounded with 1024 retired flights in the unique synchronous path");
     }
 }
 void IndexedCrossObjectValidation()
@@ -1474,7 +2268,122 @@ void WaitingReceiptDependencyRecovery()
     for (unsigned I=0;I<2048;++I) {R.Event=ID(10000+I);Check(C.ApplyCommit(R),"replay receipt");}
     Check(Completed==2048,"retry preserves once-only completion");
 }
-void ReducedFragmentAndMiningEquivalence()
+void ReceiptBeforeDomainAuthority()
+{
+    Fixture F;auto& Receiver=F.Client(5);unsigned Completed=0;
+    auto Domain=F.Client(2).Objects().at(F.Key(1));Domain.Grant.Object.StableId=ID(4910);
+    Domain.Grant.SourceLease=ID(4911);Domain.Parent=F.Key(1);Domain.Ordinal=4910;
+    CommitResult R;R.Event=ID(4912);R.StateDomain=Domain.Grant.Object;R.Target=Domain.Grant.Object;
+    R.Status=CommitStatus::Committed;R.StateVersion=1;R.Kind=TransactionKind::Spawn;
+    R.Objects.push_back(Domain);R.RequiredStates.push_back({Domain.Grant.Object,"object",1});
+    Receiver.SetCommitCallback([&](const CommitResult& V)
+    {
+        if (V.Event!=R.Event) return;
+        Check(Receiver.Objects().contains(Domain.Grant.Object)
+            && Receiver.NumericState().Version({Domain.Grant.Object,"object"})>=1,
+            "late receipt callback reads the authenticated applied domain state");
+        ++Completed;
+    });
+    Envelope H;H.Kind=MessageKind::TransactionResult;H.Match=ID(100);H.Epoch=1;H.Sender=ID(2);
+    H.Object=Domain.Grant.Object;H.OwnerEpoch=1;H.Event=R.Event;
+    const Message Result{H,EncodeCommit(R)};
+    CommitResult Decoded;Check(DecodeCommit(Result.Body,Decoded),"early receipt has a valid original wire encoding");
+    Check(Receiver.ReceivePeer(ID(2),Result),"receipt before its domain grant must be retained, not dropped");
+    Check(Receiver.ReceivePeer(ID(2),Result) && !Completed,"duplicate early receipt remains once-only and waits for authority");
+    Check(Receiver.WorkCounts().at("waiting_result_authority")==1,"retries cannot consume additional pending receipt slots");
+    auto Forged=Result;Forged.Header.Sender=ID(4);
+    Check(Receiver.ReceivePeer(ID(4),Forged) && !Completed,"unverified identity cannot produce a callback before the grant");
+    Receiver.PollNetwork(6.);
+    Check(!Completed,"elapsed time alone cannot authorize a pending receipt");
+    Check(std::any_of(F.Queue.begin(),F.Queue.end(),[&](const auto& D)
+        {return D.From==ID(5) && D.To==ID(2) && D.Value.Header.Kind==MessageKind::WorkStateRequest;}),
+        "pending authority receipt requests its original domain body through normal state repair");
+    Check(Receiver.InstallGrant(Domain.Grant),"install original room authority after the result");
+    Writer Body;Body.U32(1);Writer Record;WriteObject(Record,Domain);
+    WriteStateFragment(Body,{{Domain.Grant.Object,"object"},1,1,Record.Take()});
+    auto StateHeader=H;StateHeader.Kind=MessageKind::StateFragments;
+    Check(Receiver.ReceivePeer(ID(2),{StateHeader,Body.Take()}),"original owner publishes the delayed domain body");
+    Receiver.PollNetwork(6.1);
+    Check(Completed==1,"delayed authority and state release the exact final receipt once");
+    Check(Receiver.WorkCounts().at("waiting_result_authority")==0
+        && Receiver.WorkCounts().at("waiting_result_authority_bytes")==0,"successful receipt releases its bounded authority queue");
+    Check(Receiver.ReceivePeer(ID(2),Result) && Completed==1,"late repeated result cannot duplicate callbacks");
+    Check(!Receiver.ReceivePeer(ID(4),Forged) && Completed==1,"a different owner cannot impersonate the result authority");
+}
+void PrivateRestoreRetainsNumericHistory()
+{
+    auto ManifestValue=Manifest();Rule Credit;Credit.Kind=TransactionKind::Credit;
+    Credit.SourceDefinition="data/unit";Credit.Amount={1,0};ManifestValue.Rules["history-credit"]=Credit;
+    Fixture F(ManifestValue);constexpr unsigned Count=6000;
+    TransactionRequest R;R.Kind=TransactionKind::Credit;R.Header.Object=F.Key(0);
+    R.RuleId="history-credit";R.Faction=Team::Red;
+    for (unsigned I=0;I<Count;++I)
+    {
+        R.Header.Event=ID(60000+I);
+        Check(F.Client(1).Submit(R,{}).Valid(),"admit real numeric history credit");F.Step(1);
+        const auto Result=F.Client(1).NumericState().Result(R.Header.Event);
+        Check(Result && Result->Status==CommitStatus::Committed,"history fixture uses committed transactions");
+    }
+    const ObjectKey Account=TeamAccountObject(Team::Red);
+    const std::array<ObjectKey,2> Keys{F.Key(0),Account};ObjectHandoffState Cut;
+    Check(F.Client(1).CaptureObjects(Keys,ID(2),0,Cut),"capture object and full committed account history");
+    Check(EncodeHandoffState(Cut).size()>2*1024*1024,"history fixture exceeds a small engine application batch");
+    const StateKey LastEvent{Account,"event/"+ID(60000+Count-1).ToString()};
+    const auto Expected=std::find_if(Cut.Numeric.begin(),Cut.Numeric.end(),[&](const auto& V){return V.Key==LastEvent;})->Value;
+    {
+        auto Observed=F.Client(2).NumericState();OwnerState::ImportStats Stats;
+        Check(Observed.Import(ID(1),Cut.Numeric,true,nullptr,nullptr,&Stats),"observer imports the complete original handoff");
+        Check(Stats.ReusedHistory==Count && Stats.ReusedHistoryBytes>2*1024*1024,
+            "already published exact history is reused without reparsing or reindexing");
+        const auto Encode=[](const auto& Values){Writer W;for (const auto& V:Values) WriteStateFragment(W,V);return W.Take();};
+        const auto Before=Encode(Observed.Export(Keys));
+        Check(!Observed.Import(ID(3),Cut.Numeric,true),"equal history cannot bypass current sender authority");
+        auto Corrupted=Cut.Numeric;
+        const auto Last=std::find_if(Corrupted.begin(),Corrupted.end(),[&](const auto& V){return V.Key==LastEvent;});
+        Last->Value.pop_back();
+        Check(!Observed.Import(ID(1),Corrupted,true),"equal versions cannot bypass complete history payload validation");
+        Corrupted=Cut.Numeric;
+        std::find_if(Corrupted.begin(),Corrupted.end(),[&](const auto& V){return V.Key==LastEvent;})->Schema=2;
+        Check(!Observed.Import(ID(1),Corrupted,true),"equal history cannot bypass schema validation");
+        Corrupted=Cut.Numeric;Corrupted.push_back(Corrupted.back());
+        Check(!Observed.Import(ID(1),Corrupted,true),"equal history cannot bypass duplicate key rejection");
+        Check(Encode(Observed.Export(Keys))==Before,"failed history imports preserve every prior value and decision");
+    }
+    Adapter* View=nullptr;
+    AsyncClientWorld A(ID(100),ID(2),1,[&](const ObjectRecord& O)
+        {auto V=std::make_unique<Adapter>();if (O.Grant.Object==F.Key(0)) View=V.get();return V;},
+        [](Id,const Message&,const Bytes&,bool){return true;});
+    const auto Until=[&](auto Predicate,const char* Why)
+    {
+        const auto End=std::chrono::steady_clock::now()+std::chrono::seconds(8);
+        while (std::chrono::steady_clock::now()<End)
+        {A.PumpApplications();if (Predicate()) return;std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+        Check(false,Why);
+    };
+    std::string Error;Check(A.Configure(F.Data,Error),"history restore configure");A.SetMembers(F.Members);
+    for (const auto& [K,O]:F.Client(2).Objects()) Check(A.Install(O,true),"history restore authority");
+    A.SetMembershipPaused(false);Until([&]{return !A.IsBootstrapMaterializationDeferred()&&View;},"history restore adapters ready");
+    const std::array<ObjectHandoffState,1> Parts{Cut};
+    Until([&]{return A.StageBootstrapDirectory(Parts);},"history restore directory prepared");
+    Until([&]{return A.ImportBootstrap(Parts,[&](Id Source,const OwnerState::FragmentVisitor& Visit)
+        {if (Source!=Cut.Source) return false;for (const auto& V:Cut.Numeric) if (!Visit(V)) return false;return true;});},
+        "all four private stages restore while numeric history remains owner-side");
+    Check(View->Position==F.Adapters.at({ID(1),F.Key(0)})->Position,"history optimization preserves private actor state");
+    std::string Evidence;
+    Until([&]{return A.Inspect("restored-history",[&](ClientWorld& C)
+    {
+        Check(C.NumericState().TeamEconomy().Balance(Team::Red).Blue==100+Count,"full balance retained during private restore");
+        for (unsigned I=0;I<Count;++I) Check(C.NumericState().Result(ID(60000+I)).has_value(),"every original final decision remains available");
+        const auto Exported=C.NumericState().Export(Keys);
+        const auto Last=std::find_if(Exported.begin(),Exported.end(),[&](const auto& V){return V.Key==LastEvent;});
+        Check(Last!=Exported.end()&&Last->Value==Expected,
+            "restored original decision and request fingerprint keep exact bytes");
+        return std::string("complete");
+    },Evidence);},"inspect complete restored numeric history");
+    Check(Evidence=="complete"&&A.Error().empty(),"history and private restore both completed");
+    Check(A.Statistics().OutputPeak<1024*1024,"large numeric history cannot consume the engine restoration output budget");
+}
+void FragmentCacheAndMiningIndexes()
 {
     MiningReservations R;Check(R.Configure({{1,1},{2,1},{3,9}}),"configure indexed mining history");
     const ObjectKey A{ObjectKind::Soldier,ID(20),1},B{ObjectKind::Soldier,ID(21),1};
@@ -1502,12 +2411,16 @@ void ReducedFragmentAndMiningEquivalence()
     std::vector<ObjectKey> Keys;for (const auto& [K,O]:State.Objects()) Keys.push_back(K);
     const auto Compare=[&]
     {
-        auto Reference=State;Reference.SetReducedWork(false);auto Optimized=State;Optimized.SetReducedWork(true);
-        const auto Baseline=Reference.Export(Keys);const auto First=Optimized.Export(Keys);const auto Cached=Optimized.Export(Keys);
+        const auto First=State.Export(Keys);const auto Cached=State.Export(Keys);
         const auto Encode=[](const auto& Values){Writer W;for (const auto& V:Values) WriteStateFragment(W,V);return W.Take();};
-        Check(Encode(Baseline)==Encode(First)&&Encode(First)==Encode(Cached),"cached fragments preserve exact wire bytes and hashes");
+        Check(Encode(First)==Encode(Cached),"cached fragments preserve exact wire bytes and hashes");
+        const auto Account=std::find_if(Cached.begin(),Cached.end(),[](const auto& V){return V.Key.Object==TeamAccountObject(Team::Red)&&V.Key.Capability=="account";});
+        Check(Account!=Cached.end(),"cached export contains the team account");
+        Reader Read(Account->Value);std::uint8_t TeamValue;Resources Balance;
+        Check(Read.U8(TeamValue)&&TeamValue==unsigned(Team::Red)&&ReadResources(Read,Balance)
+            &&Balance==State.TeamEconomy().Balance(Team::Red),"account cache matches the current ledger after a real commit");
     };
-    Compare();F.Client(1).SetReducedWork(true);
+    Compare();
     TransactionRequest Reserve;Reserve.Header.Object=F.Key(0);Reserve.Header.Event=ID(4905);Reserve.Kind=TransactionKind::Reserve;
     Reserve.RuleId="reserve";Reserve.Faction=Team::Red;Reserve.ReservationKey={DeriveEconomyAccount(F.Key(0)),1};
     Check(F.Client(1).Submit(Reserve,{}).Valid(),"commit changes to an encoded account");F.Step();Compare();
@@ -1517,13 +2430,21 @@ int main()
 {
     try
     {
-        CompactPeerEnvelopeRoundTrip();BoundedReliableApplicationAdmission();AsyncSharedClockAndLazyDirectory();IndexedCrossObjectValidation();WaitingReceiptDependencyRecovery();
+        CurrentResourceSnapshotContracts();
+        ResourceEpochAndRecoveryContracts();
+        ResourceInterruptionCutpoints();ResourceSnapshotQueueBounds();
+        AbruptResourceRecoveryContracts(false);AbruptResourceRecoveryContracts(true);
+        CurrentStateHistoryIndependence();
+        CurrentMiningLeaseContracts();
+        ReceiptBeforeDomainAuthority();
+        CompactPeerEnvelopeRoundTrip();BoundedReliableApplicationAdmission();AsyncSharedClockAndLazyDirectory();IndexedCrossObjectValidation();WaitingReceiptDependencyRecovery();PrivateRestoreRetainsNumericHistory();
         FrozenFlightAdmissionAndRequestTime();
-        IndependentProgressAndValues();ScopedHandoff();CommittedPublicationBackpressure();PendingWorkStaysAtFrozenBoundary();HandoffBackpressureKeepsSourceRunning();BoundedHandoffLaneAdmission();CommanderActivityPolicy();OrderedReliableTransport();LatestStateDuringFragmentedSend();RoomMetadata();IndivisibleGroupsAndFixedRoles();FinalEventAfterMetadata();DelayedAcknowledgementFairness();ScopedFragmentIsolation();PlannedStateIsolation();ResourceCopyIsolation();ControlPointSupplyProjection();LateBirthAcrossHandoff();
+        IndependentProgressAndValues();ScopedHandoff();CommittedPublicationBackpressure();PendingWorkStaysAtFrozenBoundary();HandoffBackpressureKeepsSourceRunning();BoundedHandoffLaneAdmission();CommanderActivityPolicy();OrderedReliableTransport();LatestStateDuringFragmentedSend();RoomMetadata();IndivisibleGroupsAndFixedRoles();FinalEventAfterMetadata();DelayedAcknowledgementFairness();ScopedFragmentIsolation();AsyncCurrentMiningReadback();PlannedStateIsolation();ResourceCopyIsolation();ControlPointSupplyProjection();LateBirthAcrossHandoff();
         TargetOwnerSettlesDamageIndependently();ReliableCapacityWithBatchedAcknowledgements();SlowObserverCannotBlockOwnerEconomy();
-        AsyncContinuationAndGameplayDelivery();
+        AsyncExternalSendBindsPackingIdentity(false);AsyncExternalSendBindsPackingIdentity(true);AsyncIndependentOutboundProgress();AsyncMainAdvanceEligibility();AsyncMainAdvanceEligibility(0);SharedMembershipImport();AsyncContinuationAndGameplayDelivery();
+        AsyncCaptureChainClockProgress(false);AsyncCaptureChainClockProgress(true);
         for (const auto Workers:{1u,2u,4u}) AsyncContinuationAndGameplayDelivery(Workers);
-        ReducedFragmentAndMiningEquivalence();
+        FragmentCacheAndMiningIndexes();
         std::cout<<"Client ownership contracts passed; protocol="<<ProtocolVersion<<" manifest="<<ManifestVersion<<" handoff="<<HandoffVersion<<'\n';return 0;
     }
     catch (const std::exception& E) {std::cerr<<E.what()<<'\n';return 1;}

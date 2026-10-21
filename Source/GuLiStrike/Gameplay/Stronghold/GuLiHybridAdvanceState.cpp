@@ -104,12 +104,14 @@ public:
         TSet<uint32> Selected;for (const auto& K:Local) {FGuLiHybridObjectState O;if (!H->GetObject(K,O)) return false;Selected.Add(O.Ordinal);}
         if (Stage==EGuLiHybridRestoreStage::Detach)
         {
+            Self->bGroupIndexDirty=true;
             for (auto& G:Self->Groups) G.Soldiers.RemoveAll([&](auto Id){return Selected.Contains(Id.Value);});
             Self->Groups.RemoveAll([](const auto& G){return G.Soldiers.IsEmpty();});
             Self->DecisionCursor=Self->Groups.IsEmpty()?0:Self->DecisionCursor%Self->Groups.Num();return true;
         }
         if (Stage==EGuLiHybridRestoreStage::Create)
         {
+            Self->bGroupIndexDirty=true;
             for (const auto& P:Pieces)
             {
                 FSnapshot S;if (!Decode(P.Bytes,S)) return false;

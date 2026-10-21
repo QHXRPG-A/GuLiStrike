@@ -1,4 +1,5 @@
 #include "Gameplay/Building/GuLiGroundAccessRampComponent.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingTypes.h"
 #include "Engine/BlueprintGeneratedClass.h"
 #include "Engine/SCS_Node.h"
@@ -32,6 +33,7 @@ void UGuLiGroundAccessRampComponent::BeginPlay()
 	Super::BeginPlay();
 	if (auto* Model=GuLiModels::Load<UStaticMesh>(this,GuLiModelIds::ResourceFactory_AccessRamp)) SetStaticMesh(Model);
 	RefreshGroundFit();
+	UGuLiCommanderLODSubsystem::NotifyMeshChanged(this);
 }
 
 bool UGuLiGroundAccessRampComponent::ResolveGroundEdge(UWorld& World, const FTransform& Building,

@@ -1,6 +1,7 @@
 #include "Gameplay/Presentation/GuLiVATAnimation.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/Texture2D.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 bool UGuLiVATDefinition::IsValidDefinition() const
 {
@@ -190,6 +191,7 @@ void GuLiVATAnimation::WriteInstance(UInstancedStaticMeshComponent& C, int32 Ind
 	const UGuLiVATDefinition& D, const FGuLiVATPlayback& P, const FGuLiVATPlayback& Before,
 	const FGuLiMechanicalAnimationState& Aim, float BodyYaw, bool bReset, const FVector& Velocity)
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiVAT_WriteCustomData);
 	if (C.NumCustomDataFloats < CustomDataFloatCount || Index < 0) return;
 	float Frame = D.TextureFrame(P.Clip, P.Phase), OtherFrame = Frame, Blend = 0;
 	if (D.bDirectionalBlend && D.Clips.IsValidIndex(P.Clip) && D.Clips[P.Clip].StrideCentimeters > 0)
@@ -207,6 +209,9 @@ void GuLiVATAnimation::WriteInstance(UInstancedStaticMeshComponent& C, int32 Ind
 	const float Values[4] = {Frame,
 		FMath::DegreesToRadians(FMath::FindDeltaAngleDegrees(BodyYaw, Aim.UpperYawDegrees)),
 		FMath::DegreesToRadians(Aim.GunPitchDegrees[0]), FMath::DegreesToRadians(Aim.GunPitchDegrees[1])};
+	const float Extra[2] = {OtherFrame, Blend};
+	{
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiVAT_ScalarInstanceData);
 	for (int32 Field = 0; Field < 4; ++Field)
 	{
 		const float Previous = bReset ? Values[Field] : C.PerInstanceSMCustomData.IsValidIndex(Index * C.NumCustomDataFloats + FirstCustomData + Field)
@@ -214,7 +219,6 @@ void GuLiVATAnimation::WriteInstance(UInstancedStaticMeshComponent& C, int32 Ind
 		C.SetCustomDataValue(Index, FirstCustomData + 4 + Field, Previous, false);
 		C.SetCustomDataValue(Index, FirstCustomData + Field, Values[Field], false);
 	}
-	const float Extra[2] = {OtherFrame, Blend};
 	for (int32 Field = 0; Field < 2; ++Field)
 	{
 		const int32 Slot = 59+Field;
@@ -222,5 +226,6 @@ void GuLiVATAnimation::WriteInstance(UInstancedStaticMeshComponent& C, int32 Ind
 			? C.PerInstanceSMCustomData[Index*C.NumCustomDataFloats+Slot] : Extra[Field];
 		C.SetCustomDataValue(Index,61+Field,Previous,false);
 		C.SetCustomDataValue(Index,Slot,Extra[Field],false);
+	}
 	}
 }

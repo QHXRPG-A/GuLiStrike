@@ -1,0 +1,63 @@
+{
+  "method": "nearest-rank P95 of all retained native intervals, not average of round P95s",
+  "rounds": [
+    {
+      "round": 1,
+      "standard_compression": {
+        "n": 1849,
+        "mean_ms": 16.218785722394966,
+        "p95_ms": 26.39079838991165,
+        "peak_ms": 57.25809931755066
+      },
+      "fast_compression": {
+        "n": 1848,
+        "mean_ms": 16.230968937874486,
+        "p95_ms": 26.01350098848343,
+        "peak_ms": 51.827698945999146
+      },
+      "mean_delta_ms": 0.012183215479520726,
+      "p95_delta_ms": -0.37729740142822266
+    }
+  ],
+  "combined": {
+    "standard_compression": {
+      "n": 1849,
+      "mean_ms": 16.218785722394966,
+      "p95_ms": 26.39079838991165,
+      "peak_ms": 57.25809931755066
+    },
+    "fast_compression": {
+      "n": 1848,
+      "mean_ms": 16.230968937874486,
+      "p95_ms": 26.01350098848343,
+      "peak_ms": 51.827698945999146
+    }
+  },
+  "identity": {
+    "map_size": 98100727,
+    "map_mtime_ns": 1792562564369672900,
+    "engine_exe_size": 505856,
+    "engine_exe_mtime_ns": 1792518080983696800,
+    "modules": {
+      "GuLiStrike": {
+        "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+        "file_timestamp": "2026-10-21T06:00:34.000Z",
+        "build_id": "d4757e21-eaef-492e-b079-c8c0056c493d"
+      },
+      "GuLiNetCore": {
+        "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+        "file_timestamp": "2026-10-21T05:53:31.000Z",
+        "build_id": "d4757e21-eaef-492e-b079-c8c0056c493d"
+      }
+    }
+  },
+  "all_candidate_rounds_under_15ms": false,
+  "combined_p95_not_worse": true,
+  "frame_target_pass": false,
+  "full_goal_pass": false,
+  "remaining_gates": [
+    "local click to green feedback and actual movement strictly < 20ms, without RTT allowance",
+    "CPU/GPU attribution and workload invariants",
+    "separate player visual acceptance"
+  ]
+}

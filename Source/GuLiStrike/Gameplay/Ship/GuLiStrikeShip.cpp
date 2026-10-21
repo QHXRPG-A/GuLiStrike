@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiStrikeShip.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "Gameplay/Capabilities/GuLiLogicalCooldownComponent.h"
@@ -1166,7 +1167,11 @@ bool AGuLiStrikeShip::ApplyTuningRow()
 
 	HullMass = Row->HullMass;
 	HullModelId = Row->HullModelId;
-	if (auto* Model = GuLiModels::Load<UStaticMesh>(this, HullModelId)) HullMesh->SetStaticMesh(Model);
+	if (auto* Model = GuLiModels::Load<UStaticMesh>(this, HullModelId))
+	{
+		HullMesh->SetStaticMesh(Model);
+		UGuLiCommanderLODSubsystem::NotifyMeshChanged(HullMesh);
+	}
 	BaseMaxSpeed = Row->BaseMaxSpeed;
 	BaseAcceleration = Row->BaseAcceleration;
 	NominalThrustRatio = Row->NominalThrustRatio;

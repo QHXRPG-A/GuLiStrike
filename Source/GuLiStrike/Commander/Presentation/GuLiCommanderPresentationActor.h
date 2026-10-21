@@ -64,7 +64,7 @@ struct FGuLiCommanderBufferedSoldierPose
 };
 
 /** Client-only interpolation state. It intentionally contains no Mass movement fragments. */
-// 每个 SoldierId 的客户端缓存，最多保留有限历史样本；AuthoritativeTransform 是样本求值结果，不是服务器实时对象。
+// 每个 SoldierId 的客户端缓存：远端保留有限历史样本，本机手动移动使用只读权威姿态。
 struct FGuLiCommanderPresentedSoldier
 {
 	struct FRecoilCue { float ServerTime = 0; float FromCentimeters = 0; uint8 Side = 0; };
@@ -74,6 +74,8 @@ struct FGuLiCommanderPresentedSoldier
 	FGuLiMechanicalAnimationFrame MechanicalFrame, PreviousMechanicalFrame;
 	TArray<FRecoilCue> PendingRecoil;
 	TArray<FGuLiCommanderBufferedSoldierPose> Samples;
+	FGuLiCommanderBufferedSoldierPose LocalPose;
+	bool bUsingLocalPose = false;
 	uint32 DisplacementFrameFloor = 0;
 	FTransform AuthoritativeTransform = FTransform::Identity;
 	FTransform PresentedTransform = FTransform::Identity;
@@ -288,6 +290,9 @@ public:
 	void ResolvePredictedMove(const FGuLiCommandAck& Ack);
 
 #if !UE_BUILD_SHIPPING
+	/** Read the actual ISM slot after this actor's submission; excludes hidden/offscreen slots. */
+	bool TryGetSubmittedSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform,
+		bool* bOutLocalAuthorityPose = nullptr) const;
 	/** Temporary diagnostic override; does not change config, server movement or prediction timing. */
 	bool StartPredictionTrace(bool bDisableDisplacement, uint32 SoldierId, float DurationSeconds);
 	bool StopPredictionTrace(FString& OutCsvPath);
@@ -406,6 +411,8 @@ private:
 	bool EvaluateAuthoritativeTransform(
 		FGuLiCommanderPresentedSoldier& Soldier,
 		double RenderServerTimeSeconds,
+		FTransform& OutTransform) const;
+	bool ReadLocalAuthorityPose(FGuLiSoldierId SoldierId, FGuLiCommanderPresentedSoldier& Soldier,
 		FTransform& OutTransform) const;
 	void ApplyPrediction(
 		FGuLiSoldierId SoldierId,

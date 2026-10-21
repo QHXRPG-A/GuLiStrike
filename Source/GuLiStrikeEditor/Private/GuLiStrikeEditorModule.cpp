@@ -10,17 +10,26 @@
 #include "Modules/ModuleManager.h"
 #include "UObject/ObjectSaveContext.h"
 
+void StopGuLiSlateWindowCapture();
+void RegisterGuLiFrameProfilerContext();
+void UnregisterGuLiFrameProfilerContext();
+void StopGuLiFrameProfilerIdleProbe();
+
 class FGuLiStrikeEditorModule final : public IModuleInterface, public IPIEAuthorizer
 {
 public:
 	virtual void StartupModule() override
 	{
+		RegisterGuLiFrameProfilerContext();
 		IModularFeatures::Get().RegisterModularFeature(IPIEAuthorizer::GetModularFeatureName(), this);
 		PreSaveWorldHandle = FEditorDelegates::PreSaveWorldWithContext.AddRaw(this, &FGuLiStrikeEditorModule::ValidateCookNavigation);
 	}
 
 	virtual void ShutdownModule() override
 	{
+		StopGuLiFrameProfilerIdleProbe();
+		UnregisterGuLiFrameProfilerContext();
+		StopGuLiSlateWindowCapture();
 		FEditorDelegates::PreSaveWorldWithContext.Remove(PreSaveWorldHandle);
 		if (IModularFeatures::Get().IsModularFeatureAvailable(IPIEAuthorizer::GetModularFeatureName()))
 		{

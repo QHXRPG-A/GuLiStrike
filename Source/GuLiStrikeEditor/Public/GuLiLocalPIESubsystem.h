@@ -33,6 +33,9 @@ public:
     virtual void Deinitialize() override;
     bool PrepareForPIE(FString& Error);
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Local PIE") FString GetSessionStatus() const;
+    /** Explicit performance fixture only; ordinary production commits remain unchanged. */
+    UFUNCTION(BlueprintCallable, Category="GuLiStrike|Local PIE", meta=(DevelopmentOnly))
+    FString PreparePerformanceProduction(const TArray<FString>& AlreadyPrepared);
 private:
     struct FState;
     struct FStateDeleter { void operator()(FState* Value) const; };

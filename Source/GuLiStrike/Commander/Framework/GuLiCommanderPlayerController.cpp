@@ -893,9 +893,10 @@ bool AGuLiCommanderPlayerController::BuildSelectionFrustum(FGuLiSelectionRequest
 	return true;
 }
 
-// 先展示 Pending，再发移动意图；成功返回只表示本地提交路径完成。
+// Local feedback is drawn in the input frame; acceptance and movement remain authoritative.
 bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 {
+	const double InputSeconds = FPlatformTime::Seconds();
 	if (!GuLiCommanderToolPolicy::AllowsWorldIntent(IsCursorOverCommanderUI()))
 	{
 		return false;
@@ -981,15 +982,7 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 		break;
 	}
 #endif
-	LatestMoveIntentCommandId = Request.ClientCommandId;
-	PendingMoveTarget = GroundLocation;
-	CommandLineStart = FindConfirmedSelectionCenter();
-	CommandLineEnd = GroundLocation;
-	CommandLineState = EGuLiCommandLineState::Pending;
-	CommandLineFadeDurationSeconds = 2.5f;
-	CommandLineExpireTime = GetWorld()
-		? GetWorld()->GetTimeSeconds() + static_cast<double>(CommandLineFadeDurationSeconds)
-		: 0.0;
+	BeginLocalMoveFeedback(Request.ClientCommandId, GroundLocation, InputSeconds);
 	FGuLiUnitTaskCommand Command;
 	Command.CommandId = Request.ClientCommandId; Command.SelectionRevision = Request.SelectionRevision;
 	Command.Target = Request.Target; Command.ClusterId = Request.TargetClusterId; Command.TerritoryId = Request.TargetTerritoryId;

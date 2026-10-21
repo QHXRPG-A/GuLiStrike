@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiStrikeShipPartComponent.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "GuLiStrikeShip.h"
 #include "GuLiStrike.h"
@@ -54,7 +55,12 @@ void UGuLiStrikeShipPartComponent::DestroyVisualMesh()
 {
 	UMeshComponent* Previous = VisualMeshComponent;
 	VisualMeshComponent = nullptr;
-	if (IsValid(Previous)) { Previous->DestroyComponent(); }
+	if (IsValid(Previous))
+	{
+		if (auto* Policy = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>() : nullptr)
+			Policy->UnregisterMesh(Previous);
+		Previous->DestroyComponent();
+	}
 }
 
 bool UGuLiStrikeShipPartComponent::RebuildVisualMesh()
@@ -102,6 +108,7 @@ bool UGuLiStrikeShipPartComponent::RebuildVisualMesh()
 	Visual->RegisterComponentWithWorld(GetWorld());
 	GuLiObjectScale::ApplyOutlineScale(Visual);
 	if (!Visual->IsRegistered()) { DestroyVisualMesh(); return false; }
+	UGuLiCommanderLODSubsystem::NotifyMeshChanged(Visual);
 	return true;
 }
 

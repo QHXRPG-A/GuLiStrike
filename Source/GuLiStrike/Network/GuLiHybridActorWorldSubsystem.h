@@ -14,6 +14,12 @@ public:
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
     const FGuLiHybridManifestData& GetManifest() const { return Manifest; }
+    const TArray<FName>* FindEntityCapabilityNames(FName Definition) const;
+    bool IsEntityLayoutCacheEnabled() const;
+    int32 GetEntityCapabilityDefinitionCount() const {return EntityCapabilityNames.Num();}
+    double GetEntityCapabilityIndexBuildMilliseconds() const {return EntityCapabilityIndexBuildMilliseconds;}
 private:
     FGuLiHybridManifestData Manifest;
+    TMap<FName,TArray<FName>> EntityCapabilityNames;
+    double EntityCapabilityIndexBuildMilliseconds=0;
 };

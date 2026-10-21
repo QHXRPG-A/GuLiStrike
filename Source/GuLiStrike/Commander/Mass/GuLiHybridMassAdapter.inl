@@ -11,6 +11,8 @@
 namespace GuLiHybridMass
 {
 using namespace GuLiCommanderMassPrivate;
+TAutoConsoleVariable<int32> PublishAfterMovement(TEXT("gs.Commander.PublishPoseAfterMovement"),1,
+    TEXT("Sample due synchronous Mass poses after the shared movement step. Keeps 10 Hz publication and the existing wire format. 0 selects the comparison ordering."));
 constexpr uint32 ObjectVersion=2,SystemVersion=3;
 const FName SystemName(TEXT("CommanderMass"));
 struct FPrivate
@@ -223,13 +225,16 @@ struct FPosePipeline
 };
 }
 
-class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter
+class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter, public TSharedFromThis<FGuLiHybridMassAdapter>
 {
     TWeakObjectPtr<UGuLiBattleAuthoritySubsystem> Authority;
     FGuLiHybridObjectState Record;
     FGuLiTargetHandle RegisteredTarget;
     bool bLocal=false,bRestoringQuery=false;
     uint64 LastPublished=0;
+#if !UE_BUILD_SHIPPING
+    uint32 LastReportedMoveCommand=0;
+#endif
     TMap<FGuid,GuLiCommanderPoseCodec::FSender> Senders;
     GuLiCommanderPoseCodec::FReceiver Receiver;
     std::shared_ptr<GuLiHybridMass::FWorkerPoseCodec> WorkerCodec;
@@ -243,14 +248,13 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter
         auto* Self=Authority.Get(); if (!Self || !UGuLiNetworkSettings::CanPresent(Self->GetWorld())) return;
         TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_MassReadModelPublish);
         auto* World=Self->GetWorld(); auto* Battle=World->GetGameState<AGuLiBattleGameState>(); if (!Battle || !Battle->GetMatchEpoch()) return;
-        const bool Reduced=UGuLiHotspotOptions::Enabled(World,EGuLiHotspot::ReducedWork);
-        AGuLiSoldierStateReplicator* R=Reduced&&Self->AuthorityState?Self->AuthorityState->HybridReadModel.Get():nullptr;
+        AGuLiSoldierStateReplicator* R=Self->AuthorityState?Self->AuthorityState->HybridReadModel.Get():nullptr;
         if (R && (R->GetWorld()!=World || R->IsActorBeingDestroyed())) R=nullptr;
         if (!R) for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It)
             if (!It->IsActorBeingDestroyed()) {R=*It;break;}
         if (!R) { R=World->SpawnActor<AGuLiSoldierStateReplicator>(); if (R) R->SetReplicates(false); }
         if (!R) return;
-        if (Reduced&&Self->AuthorityState) Self->AuthorityState->HybridReadModel=R;
+        if (Self->AuthorityState) Self->AuthorityState->HybridReadModel=R;
         if (R->GetSnapshotMatchEpoch()!=Battle->GetMatchEpoch())
         { TArray<FGuLiSoldierStateItem> All; Self->BuildSoldierStateSnapshot(All); R->ApplyAuthoritySnapshot(All,Battle->GetMatchEpoch()); }
         else { FGuLiSoldierStateItem Item; if (Self->BuildSoldierState(FGuLiSoldierId(Record.Ordinal),Item)) R->ApplyAuthorityDelta(MakeArrayView(&Item,1),Battle->GetMatchEpoch()); }
@@ -318,6 +322,16 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter
             // Leave room for the application envelope and transport fragmentation header.
             if (Sender->Prepare(Chunk,700,Prepared) && Hybrid->PublishMotionTo(Record.Key,Member.Player,Prepared.Block.Data)) Sender->Commit(Prepared);
         }
+#if !UE_BUILD_SHIPPING
+        if (GuLiMoveLatency::IsEnabled() && S->FirstDisplacementAt>0 && S->MoveTrace.Command
+            && LastReportedMoveCommand!=S->MoveTrace.Command)
+        {
+            LastReportedMoveCommand=S->MoveTrace.Command;
+            GuLiMoveLatency::Record(TEXT("pose-publish"),S->MoveTrace,1,
+                *FString::Printf(TEXT("soldier=%u tick=%llu simTick=%u order=%u"),
+                    S->SoldierId.Value,At,Chunk.ServerSimTick,P.ActiveOrderId));
+        }
+#endif
         GuLiHybridMass::Present(*World,Chunk); ReadModel();
     }
 public:
@@ -369,9 +383,20 @@ public:
         auto* Self=Authority.Get(); if (!Self) return;
         if (R.OwnerEpoch>MAX_uint32) { Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Hybrid Mass ownership exceeds pose codec generation")); return; }
         const bool Changed=Record.OwnerEpoch!=R.OwnerEpoch || bLocal!=Local; Record=R; bLocal=Local;
-        if (auto* S=Soldier()) S->bLocalSimulation=Local;
+        if (auto* S=Soldier())
+        {
+            S->bLocalSimulation=Local;
+            if (!Local) Self->AuthorityState->ImmediateMoveIds.Remove(S->SoldierId.Value);
+            else if (Changed && S->ActiveOrderId && S->MoveIntent && !S->bAutomaticAdvance)
+                Self->AuthorityState->ImmediateMoveIds.Add(S->SoldierId.Value);
+        }
         if (Changed)
-        { Senders.Reset(); Receiver.Reset(static_cast<uint32>(R.OwnerEpoch),Self->GetWorld()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch()); LastPublished=0; }
+        {
+            Senders.Reset(); Receiver.Reset(static_cast<uint32>(R.OwnerEpoch),Self->GetWorld()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch()); LastPublished=0;
+#if !UE_BUILD_SHIPPING
+            LastReportedMoveCommand=0;
+#endif
+        }
         if (Local && R.LifeState==1)
             if (auto* Tasks=Self->GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())
             { const FGuLiSoldierId Id(R.Ordinal); Tasks->RegisterSoldiers(R.Team,MakeArrayView(&Id,1)); }
@@ -379,7 +404,21 @@ public:
     void Advance(uint64 At,double Delta) override
     {
         if (!Authority.IsValid() || !bLocal) return;
+        auto* Self=Authority.Get();
+        if (Self->AuthorityState && GuLiHybridMass::PublishAfterMovement.GetValueOnGameThread()!=0
+            && !UGuLiHotspotOptions::Enabled(Self->GetWorld(),EGuLiHotspot::GameplayWorker))
+        {
+            // Object callbacks precede shared-state callbacks. Only defer sampling
+            // within this logical step, so its timestamp describes the new pose.
+            Self->AuthorityState->PendingPosePublishes.Add({AsShared(),At,Record.OwnerEpoch,Record.ControlEpoch});
+            return;
+        }
         Publish(At);
+    }
+    void PublishCompletedMovement(uint64 At,uint64 OwnerEpoch,uint64 ControlEpoch)
+    {
+        if (bLocal && !bRestoringQuery && Record.OwnerEpoch==OwnerEpoch && Record.ControlEpoch==ControlEpoch)
+            Publish(At);
     }
     uint32 AdvancePeriod() const override {return 6;} // Publish is due at the existing 10 Hz boundary.
     std::shared_ptr<GuLiNet::IObjectMotionCodec> CreateMotionCodec() override
@@ -394,6 +433,9 @@ public:
         { if (!GuLiHybridState::DecodeTaskCommand(C.Arguments,Command,Pitch,Radius)) return false; }
         else if (C.Operation==TEXT("Move")) { Command.CommandId=GetTypeHash(C.Event)|1; Command.Kind=EGuLiUnitTaskKind::Move; Command.Target=M.Destination; }
         else return false;
+        if (GuLiMoveLatency::IsEnabled())
+            GuLiMoveLatency::Record(TEXT("owner-command"),GuLiMoveLatency::Context(Owner,Command.CommandId),1,
+                *FString::Printf(TEXT("soldier=%u"),Record.Ordinal));
         auto Intent=Self->CreateSharedMoveIntent(Command.Target,GetTypeHash(C.Event));
         Intent->AssignedPoints.Add(Record.Ordinal,FNavLocation(M.Destination)); Intent->bMetadataReady=true; Intent->bExhausted=true; Intent->WantedPoints=1;
         Intent->Pitch=Pitch; Intent->GeneratedRadius=Radius;
@@ -514,7 +556,14 @@ public:
             RegisteredTarget=Self->MakeSoldierTargetHandle(S->SoldierId);
             return Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->BindTarget(Self->MakeSoldierTargetHandle(S->SoldierId),Record.Key);
         }
-        if (Stage==EGuLiHybridRestoreStage::Activate) { Senders.Reset(); Receiver.Reset(static_cast<uint32>(Record.OwnerEpoch),Self->GetWorld()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch()); LastPublished=0; ReadModel(); }
+        if (Stage==EGuLiHybridRestoreStage::Activate)
+        {
+            Senders.Reset(); Receiver.Reset(static_cast<uint32>(Record.OwnerEpoch),Self->GetWorld()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch()); LastPublished=0;
+            if (const auto* S=Soldier(); bLocal && !bRestoringQuery && S && S->ActiveOrderId
+                && S->MoveIntent && !S->bAutomaticAdvance)
+                Self->AuthorityState->ImmediateMoveIds.Add(S->SoldierId.Value);
+            ReadModel();
+        }
         return true;
     }
     bool RestoreQuery(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage) override
@@ -530,7 +579,7 @@ public:
         if (Manager.IsEntityValid(Entity)) Manager.DestroyEntity(Entity);
         const int32 Index=State.SoldierIndexById.FindChecked(Id.Value); State.Soldiers.RemoveAtSwap(Index,1,EAllowShrinking::No); State.SoldierIndexById.Remove(Id.Value);
         if (State.Soldiers.IsValidIndex(Index)) State.SoldierIndexById.FindChecked(State.Soldiers[Index].SoldierId.Value)=Index;
-        State.MoveReservations.Remove(Id.Value); Senders.Reset();
+        State.MoveReservations.Remove(Id.Value); State.ImmediateMoveIds.Remove(Id.Value); Senders.Reset();
     }
 };
 
@@ -553,6 +602,16 @@ public:
         if (auto* Self=Authority.Get())
         {
             TGuardValue<bool> Scope(Self->bAdvancingHybrid,true);Self->Tick(static_cast<float>(Delta));
+            if (Self->AuthorityState)
+            {
+                auto& State=*Self->AuthorityState;
+                check(State.DispatchPosePublishes.IsEmpty());
+                Swap(State.PendingPosePublishes,State.DispatchPosePublishes);
+                for (const auto& Pending:State.DispatchPosePublishes)
+                    if (const auto Adapter=Pending.Adapter.Pin())
+                        Adapter->PublishCompletedMovement(Pending.Tick,Pending.OwnerEpoch,Pending.ControlEpoch);
+                State.DispatchPosePublishes.Reset();
+            }
             if (!UGuLiHotspotOptions::Enabled(Self->GetWorld(),EGuLiHotspot::GameplayWorker)||!Self->AuthorityState) return;
             auto* H=Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();auto& Pipeline=Self->AuthorityState->PosePipeline;
             if (!Pipeline||Pipeline->Pending.empty()||H->HasPendingGameplayCalculation(TEXT("MassPose"))) return;

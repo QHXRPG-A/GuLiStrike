@@ -49,6 +49,7 @@ public:
 	bool CaptureHybridMiningOperations(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const;
 	bool ValidateHybridMiningOperations(TConstArrayView<uint8> Bytes) const;
 	bool RestoreHybridMiningOperations(TConstArrayView<uint8> Bytes,const TArray<FGuLiHybridObjectKey>& Objects);
+    void ResetHybridMiningRequests(const TArray<FGuLiHybridObjectKey>& Objects);
 private:
 	struct FHybridState;
 	struct FHybridStateDeleter { void operator()(FHybridState* Value) const; };

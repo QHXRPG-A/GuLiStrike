@@ -1,6 +1,7 @@
 #include "Network/Private/GuLiHybridEntityState.h"
 #include "Network/Private/GuLiHybridStateArchive.h"
 #include "Network/GuLiHybridManifest.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 namespace
 {
 constexpr uint32 Schema=1,Limit=2*1024*1024;
@@ -23,6 +24,11 @@ bool Archive(FGuLiHybridStateArchive& A,TArray<FPiece>& Parts)
     return A.Good();
 }
 FString Prefix(const FString& D) {return TEXT("entity_capability/")+D+TEXT("/");}
+void CollectDefinitionNames(const FGuLiHybridManifestData& M,const FString& P,TArray<FName>& Names)
+{
+    for (const auto& N:M.Numbers) if (N.Key.StartsWith(P)) Names.Add(FName(*N.Key.RightChop(P.Len())));
+    Names.Sort([](FName A,FName B){return A.LexicalLess(B);});
+}
 }
 FGuLiHybridEntityCapabilityRegistration::FGuLiHybridEntityCapabilityRegistration(FGuLiHybridEntityCapabilityContract V):Contract(MoveTemp(V)) {Registry().Add(this);}
 FGuLiHybridEntityCapabilityRegistration::~FGuLiHybridEntityCapabilityRegistration() {Registry().Remove(this);}
@@ -41,19 +47,38 @@ bool FGuLiHybridEntityState::ValidateManifest(const FGuLiHybridManifestData& M,F
     }
     return true;
 }
-bool FGuLiHybridEntityState::Prepare(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridManifestData& M)
+void FGuLiHybridEntityState::BuildDefinitionIndex(const FGuLiHybridManifestData& M,TMap<FName,TArray<FName>>& Out)
 {
-    Entries.Reset();const auto P=Prefix(O.Definition.ToString());TArray<FName> Names;
-    for (const auto& N:M.Numbers) if (N.Key.StartsWith(P)) Names.Add(FName(*N.Key.RightChop(P.Len())));
-    Names.Sort([](FName A,FName B){return A.LexicalLess(B);});
-    for (FName N:Names)
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_BuildEntityDefinitionIndex);
+    Out.Reset();const FString DefinitionPrefix=TEXT("adapter/definition/");
+    for (const auto& Entry:M.Strings) if (Entry.Key.StartsWith(DefinitionPrefix))
+    {
+        const FName Definition(*Entry.Key.RightChop(DefinitionPrefix.Len()));
+        auto& Names=Out.FindOrAdd(Definition);Names.Reset();
+        // Preserve the same prefix matching and ordering as the uncached path,
+        // including nested definition names and definitions with no capabilities.
+        CollectDefinitionNames(M,Prefix(Definition.ToString()),Names);
+    }
+}
+bool FGuLiHybridEntityState::Prepare(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridManifestData& M,
+    const TArray<FName>* DefinitionNames)
+{
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_MainPrepareEntities);
+    Entries.Reset();const auto P=Prefix(O.Definition.ToString());TArray<FName> UncachedNames;
+    if (!DefinitionNames) CollectDefinitionNames(M,P,UncachedNames);
+    for (FName N:DefinitionNames?*DefinitionNames:UncachedNames)
     {
         const auto* C=Find(N);if (!C || M.Numbers.FindRef(P+N.ToString())!=C->Version) return false;
         auto V=C->Create(W,O,M);if (!V) return false;Entries.Add({N,C->Version,MoveTemp(V)});
     }
     return true;
 }
-void FGuLiHybridEntityState::Advance(uint64 At,double Delta) {for (auto& E:Entries) E.Instance->Advance(At,Delta);}
+void FGuLiHybridEntityState::Advance(uint64 At,double Delta)
+{
+    // Re-evaluate immediately before each callback: an earlier callback can
+    // wake another capability during this same ordered logical step.
+    for (auto& E:Entries) if (E.Instance->HasPeriodicWork()) E.Instance->Advance(At,Delta);
+}
 bool FGuLiHybridEntityState::HasPeriodicWork() const
 {for (const auto& E:Entries) if (E.Instance->HasPeriodicWork()) return true;return false;}
 void FGuLiHybridEntityState::ApplyLedger(const FGuLiHybridObjectState& O) {for (auto& E:Entries) E.Instance->ApplyLedger(O);}

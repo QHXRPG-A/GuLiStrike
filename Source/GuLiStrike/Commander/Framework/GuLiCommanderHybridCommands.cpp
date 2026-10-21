@@ -8,9 +8,20 @@
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Network/GuLiHybridManifest.h"
 #include "Commander/Orders/Private/GuLiHybridTaskCommand.h"
+#include "Commander/Network/GuLiMoveLatency.h"
 #include "NavigationSystem.h"
 #include "Engine/World.h"
 #include "Dom/JsonObject.h"
+#include "HAL/IConsoleManager.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
+
+namespace
+{
+TAutoConsoleVariable<int32> CVarImmediateInputPlanning(TEXT("gs.Commander.ImmediateInputPlanning"),1,
+    TEXT("Start the head command's normal bounded planning in its submission frame; retain one planning budget per frame and FIFO order."));
+TAutoConsoleVariable<int32> CVarIndexedInputSelection(TEXT("gs.Commander.IndexedInputSelection"),1,
+    TEXT("0: enumerate the applied directory; 1: read exact lives for complete pure-soldier selections, otherwise enumerate; 2: compare both and retain the directory result on mismatch. Does not change command authorization."));
+}
 
 #if !UE_BUILD_SHIPPING
 TSharedRef<FJsonObject> UGuLiCommanderNetSyncComponent::GetReviewCommandEvidence() const
@@ -42,10 +53,14 @@ void UGuLiCommanderNetSyncComponent::CompleteHybridCommand(FGuLiCommandAck Ack,c
     PendingCommandAcks.Add(Ack);
     if (PendingCommandAcks.Num()>256) PendingCommandAcks.RemoveAt(0,PendingCommandAcks.Num()-256,EAllowShrinking::No);
     TGuardValue<bool> Scope(bDispatchingTaskReceipt,Ack.CommandKind==EGuLiCommandKind::Move);
+    if (Ack.CommandKind==EGuLiCommandKind::Move && GuLiMoveLatency::IsEnabled())
+        GuLiMoveLatency::Record(TEXT("local-receipt"),GuLiMoveLatency::Context(this,Ack.ClientCommandId),0,
+            Ack.IsAccepted()?TEXT("accepted"):TEXT("rejected"));
     OnCommandAckChanged.Broadcast(Ack);
 }
 bool UGuLiCommanderNetSyncComponent::SubmitHybridTask(FGuLiUnitTaskCommand Command)
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_SubmitHybridTask);
     auto* World=GetWorld(); auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
     auto* Player=GetBattlePlayerState(); auto* Tasks=World?World->GetSubsystem<UGuLiUnitTaskSubsystem>():nullptr;
     auto Reject=[&](EGuLiCommandAckResult Result,const TCHAR* Why)
@@ -56,6 +71,8 @@ bool UGuLiCommanderNetSyncComponent::SubmitHybridTask(FGuLiUnitTaskCommand Comma
     PruneSelection();
     Command.SelectionRevision=SelectionState.SelectionRevision;
     Tasks->BuildContextCommand(SelectionState,Command);
+    if (GuLiMoveLatency::IsEnabled())
+        GuLiMoveLatency::Record(TEXT("local-input-validated"),GuLiMoveLatency::Context(this,Command.CommandId));
     if (!Command.IsWellFormed() || !bOrderedSelectionValid) return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Invalid task or selection"));
     const auto* Special=GuLiCommanderBehavior::FindPolicyByWireId(*World,Command.SpecialTaskId);
     const FName Intent=Command.TargetIntent;
@@ -82,18 +99,74 @@ bool UGuLiCommanderNetSyncComponent::SubmitHybridTask(FGuLiUnitTaskCommand Comma
     TSet<uint32> Soldiers,Actors;
     for (const auto& Cohort : Input.Selection.Cohorts) for (const auto Id : Cohort.MemberIds) Soldiers.Add(Id.Value);
     for (const auto Id : Input.Selection.ActorIds) Actors.Add(Id.Value);
-    TArray<FGuLiHybridObjectState> Objects; Hybrid->GetObjects(Objects);
-    Objects.Sort([](const auto& A,const auto& B){ if (A.Key.Kind!=B.Key.Kind) return A.Key.Kind<B.Key.Kind; return A.Ordinal<B.Ordinal; });
+    const auto Selected=[&](const auto& O)
+    {
+        return Input.Selection.Objects.Contains(O.Key) || (O.Key.Kind==EGuLiHybridObjectKind::Soldier?Soldiers.Contains(O.Ordinal)
+            :Actors.Contains(O.Ordinal) && (O.Key.Kind==EGuLiHybridObjectKind::Engineer || O.Key.Kind==EGuLiHybridObjectKind::Miner));
+    };
+    const auto Order=[](const auto& A,const auto& B){if (A.Key.Kind!=B.Key.Kind) return A.Key.Kind<B.Key.Kind;return A.Ordinal<B.Ordinal;};
+    const int32 LookupMode=CVarIndexedInputSelection.GetValueOnGameThread();
+    const bool IndexedSelection=LookupMode && (LookupMode==2 || (Actors.IsEmpty() && Input.Selection.Objects.IsEmpty()));
+    TArray<FGuLiHybridObjectState> Objects;
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_FreezeSelection);
+        if (IndexedSelection)
+        {
+            // The selection cache survives a temporary Mass detach during handoff.
+            // Never resolve a missing selected life to a newer object with the same ordinal.
+            TSet<FGuLiHybridObjectKey> Keys;
+            Keys.Reserve(Soldiers.Num()+Actors.Num()+Input.Selection.Objects.Num());
+            for (const uint32 Id:Soldiers)
+                if (const auto* Key=SelectionSoldierLives.Find(FGuLiSoldierId{Id})) Keys.Add(*Key);
+            for (const uint32 Id:Actors)
+            {
+                FGuLiHybridObjectKey Key;
+                if (Hybrid->ResolveActorTaskKey(Id,Key)) Keys.Add(Key);
+            }
+            for (const auto& Key:Input.Selection.Objects) Keys.Add(Key);
+            Objects.Reserve(Keys.Num());
+            for (const auto& Key:Keys)
+            {
+                FGuLiHybridObjectState O;
+                if (Hybrid->GetObjectView(Key,O) && Selected(O)) Objects.Add(MoveTemp(O));
+            }
+            Objects.Sort(Order);
+        }
+        // Only the complete, unambiguous soldier lookup is the normal fast path.
+        // Mixed selection and unavailable lifecycle bindings keep the full query.
+        bool Complete=Objects.Num()==Soldiers.Num()+Actors.Num()+Input.Selection.Objects.Num();
+        for (int32 I=1;Complete && I<Objects.Num();++I)
+            Complete=Objects[I-1].Key.Kind!=Objects[I].Key.Kind || Objects[I-1].Ordinal!=Objects[I].Ordinal;
+        if (!IndexedSelection || !Complete || LookupMode==2)
+        {
+            TArray<FGuLiHybridObjectState> Directory;Hybrid->GetObjects(Directory);
+            const int32 DirectoryCount=Directory.Num();
+            Directory.Sort(Order);
+            Directory.RemoveAll([&](const auto& O){return !Selected(O);});
+            if (LookupMode==2)
+            {
+                bool Same=Objects.Num()==Directory.Num();
+                for (int32 I=0;Same && I<Objects.Num();++I)
+                {
+                    const auto& A=Objects[I];const auto& B=Directory[I];
+                    Same=A.Key==B.Key && A.Ordinal==B.Ordinal && A.Team==B.Team && A.Location==B.Location
+                        && A.Definition==B.Definition && A.ControlEpoch==B.ControlEpoch && A.OwnerEpoch==B.OwnerEpoch;
+                }
+                UE_LOG(LogTemp,Display,TEXT("CommanderSelectionLookup command=%u directory=%d selected=%d comparison=%s"),
+                    Command.CommandId,DirectoryCount,Objects.Num(),Same?TEXT("equal"):TEXT("mismatch"));
+                if (!Same) Objects=MoveTemp(Directory);
+            }
+            else Objects=MoveTemp(Directory);
+        }
+    }
+    if (GuLiMoveLatency::IsEnabled())
+        GuLiMoveLatency::Record(TEXT("local-selection-frozen"),GuLiMoveLatency::Context(this,Command.CommandId),Objects.Num());
     auto* Authority=World->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
     Input.Intent=Authority?Authority->CreateSharedMoveIntent(Command.Target,Command.CommandId):nullptr;
     if (!Input.Intent) return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Movement planner is unavailable"));
     const auto* Data=World->GetSubsystem<UGuLiCommanderDataSubsystem>();
     for (const auto& O : Objects)
     {
-        const bool Soldier=O.Key.Kind==EGuLiHybridObjectKind::Soldier;
-        const bool Selected=Input.Selection.Objects.Contains(O.Key) || (Soldier?Soldiers.Contains(O.Ordinal):Actors.Contains(O.Ordinal)
-            && (O.Key.Kind==EGuLiHybridObjectKind::Engineer || O.Key.Kind==EGuLiHybridObjectKind::Miner));
-        if (!Selected) continue;
         if (!Hybrid->HasControl(O.Key) || O.Team!=Player->GetTeam()) return Reject(EGuLiCommandAckResult::Unauthorized,TEXT("Selected object is not controlled by this player"));
         auto& M=Input.Frozen.Members.AddDefaulted_GetRef(); M.Key=O.Key; M.ControlEpoch=O.ControlEpoch; M.OwnerEpoch=O.OwnerEpoch;
         M.Slot=Input.Frozen.Members.Num()-1; M.Destination=O.Location;
@@ -110,7 +183,14 @@ bool UGuLiCommanderNetSyncComponent::SubmitHybridTask(FGuLiUnitTaskCommand Comma
     if (Input.Frozen.Members.Num()!=Soldiers.Num()+Actors.Num()+Input.Selection.Objects.Num() || Input.Frozen.Members.IsEmpty())
         return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Frozen selection has missing objects"));
     Input.Intent->WantedPoints=Input.Frozen.Members.Num(); Input.Intent->bMetadataReady=true;
-    HybridSubmittedCommands.Add(Command.CommandId,Command); HybridInputs.Add(MoveTemp(Input));
+    HybridSubmittedCommands.Add(Command.CommandId,Command);
+    // Publish the frozen local intent before formation planning or network delivery.
+    // Listeners may draw feedback, but must not move units or fabricate a receipt.
+    OnLocalTaskSubmitted.Broadcast(Command,Input.Selection);
+    HybridInputs.Add(MoveTemp(Input));
+    if (GuLiMoveLatency::IsEnabled())
+        GuLiMoveLatency::Record(TEXT("local-queued"),GuLiMoveLatency::Context(this,Command.CommandId));
+    if (CVarImmediateInputPlanning.GetValueOnGameThread()) TickHybridInputs();
     return true;
 }
 void UGuLiCommanderNetSyncComponent::TickHybridInputs()
@@ -127,10 +207,16 @@ void UGuLiCommanderNetSyncComponent::TickHybridInputs()
         for (const auto& [Event,Pending] : HybridPendingCommands)
         { FGuLiCommandAck Ack; InitializeAck(Ack,Pending.Command.CommandId,EGuLiCommandKind::Move); Ack.Result=EGuLiCommandAckResult::Cancelled; CompleteHybridCommand(Ack,TEXT("The room session changed before this command completed")); }
         HybridInputs.Reset(); HybridPendingCommands.Reset(); HybridCompletedCommands.Reset(); HybridSubmittedCommands.Reset();
+        LastHybridInputPlanFrame=MAX_uint64;
         HybridInputEpoch=Battle->GetMatchEpoch();
     }
     // Membership changes may pause input. Ordinary handoffs keep the command identity and membership.
     if (!Hybrid->CanPublishFacts() || HybridInputs.IsEmpty()) return;
+    if (CVarImmediateInputPlanning.GetValueOnGameThread())
+    {
+        if (LastHybridInputPlanFrame==GFrameCounter) return;
+        LastHybridInputPlanFrame=GFrameCounter;
+    }
     auto& Input=HybridInputs[0];
     const bool NeedsSlots=Input.Command.Kind==EGuLiUnitTaskKind::Move && Input.Command.Disposition!=EGuLiTaskDisposition::Stop;
     if (NeedsSlots)
@@ -152,7 +238,7 @@ void UGuLiCommanderNetSyncComponent::TickHybridInputs()
     for (auto& M : Input.Frozen.Members)
     {
         FGuLiHybridObjectState O;
-        if (!Hybrid->GetObject(M.Key,O) || !Hybrid->HasControl(M.Key) || O.ControlEpoch!=M.ControlEpoch)
+        if (!Hybrid->GetObjectView(M.Key,O) || !Hybrid->HasControl(M.Key) || O.ControlEpoch!=M.ControlEpoch)
         { FGuLiCommandAck Ack; InitializeAck(Ack,Input.Command.CommandId,EGuLiCommandKind::Move); Ack.Result=EGuLiCommandAckResult::Cancelled; CompleteHybridCommand(Ack,TEXT("Authorization changed while preparing the frozen command")); HybridInputs.RemoveAt(0); return; }
         M.Destination=NeedsSlots?Input.Intent->AssignedPoints.FindChecked(M.Slot+1).Location:FVector(Input.Command.Target);
         M.OwnerEpoch=O.OwnerEpoch;
@@ -169,7 +255,12 @@ void UGuLiCommanderNetSyncComponent::TickHybridInputs()
     if (!HybridPendingCommands.Contains(Input.Frozen.Event)) HybridPendingCommands.Add(Input.Frozen.Event,MoveTemp(Pending));
     FGuLiMoveRequest Preview; Preview.ClientCommandId=Input.Command.CommandId; Preview.Target=Input.Command.Target;
     if (!Input.bPreviewPublished && Input.Command.Disposition!=EGuLiTaskDisposition::Stop)
+    {
+        if (GuLiMoveLatency::IsEnabled())
+            GuLiMoveLatency::Record(TEXT("local-route"),GuLiMoveLatency::Context(this,Input.Command.CommandId),Input.Frozen.Members.Num(),
+                *FString::Printf(TEXT("event=%s"),*Input.Frozen.Event.ToString(EGuidFormats::Digits)));
         OnMoveReadyToSend.Broadcast(Preview,Input.Selection);
+    }
     Input.bPreviewPublished=true;
     // Backpressure only delays this command. Reusing its event identity makes a partial send safe to retry.
     if (!Hybrid->RouteCommand(Input.Frozen)) return;

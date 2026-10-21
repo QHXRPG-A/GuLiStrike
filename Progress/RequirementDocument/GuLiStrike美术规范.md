@@ -15,13 +15,13 @@ categories:
 status: approved
 verification: passed
 created: '2026-09-17'
-updated: '2026-10-09'
-summary: 统一全项目22色色库、三档明暗、场景UI与双审；新增扫荡者原橙区可变、其余原配色固定及UV精确遮罩例外，排除两类占位改色制作。
+updated: '2026-10-21'
+summary: 保留全项目色库与已审资产规则；v1.12按用户要求将地面Mass单位死亡爆炸线性尺寸缩至当前1/3。
 next_action: 后续视觉资源制作先读全项目统一色库，按资产版本记录所选配色、例外与对应审核证据。
 relations:
   development: DEV-20260917-001
-status_note: v1.11保留全项目色库及资产例外；用户已放行扫荡者B_v1导入，正式材质用原UV精确遮罩、原网格Alpha保持，双方实际召唤自动改色通过。两类占位开关关闭；规范维护通过不等于全部美术、性能或游戏验收通过。
-art_revision: '1.11'
+status_note: v1.12新增地面Mass爆炸1/3尺寸规则，玩家视觉待核验；v1.11保留全项目色库及资产例外；用户已放行扫荡者B_v1导入，正式材质用原UV精确遮罩、原网格Alpha保持，双方实际召唤自动改色通过。两类占位开关关闭；规范维护通过不等于全部美术、性能或游戏验收通过。
+art_revision: '1.12'
 ---
 
 # GuLiStrike 美术规范
@@ -186,7 +186,7 @@ Ship 是用户明确指定的风格锚点，参考[内部线稿烘焙版](../../
 
 | 用途 | 用户指定源资源 | 当前项目副本与约束 |
 |---|---|---|
-| 地面单位摧毁 | `/Game/_VFXResources/Niagara_System/NS_Explosion_03` | `/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03`；有地面环，全部渲染范围为2026-09-17调整前的0.6。只应用一次。 |
+| 地面单位摧毁 | `/Game/_VFXResources/Niagara_System/NS_Explosion_03` | `/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03`；有地面环，资源保持2026-09-17的渲染倍率0.6；2026-10-21地面Mass死亡入口在完整模型相对尺寸上另乘1/3，含地面环。各倍率仅应用一次，其他调用入口保持。 |
 | 僚机摧毁 | `/Game/_VFXResources/Niagara_System/NS_Explosion_05` | 同目录 `NS_WingmanDestruction_05`；有空中扩散环，当前尺寸与完整节奏保持。 |
 | 僚机对地轰炸 | `/Game/_VFXResources/Niagara_System/NS_Explosion_01` | 同目录 `NS_WingmanBombardment_01`；收小原有环状扩散层，不再叠加额外波环，保持主火球与完整烟火变化。 |
 

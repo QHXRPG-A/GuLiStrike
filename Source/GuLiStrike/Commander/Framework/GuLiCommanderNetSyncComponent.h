@@ -31,6 +31,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(
 	const FGuLiMoveEndpointFastArray&);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiMoveReadyToSendSignature,
 	const FGuLiMoveRequest&, const FGuLiCommanderSelectionState&);
+/** Local intent only; admission and authoritative movement still complete separately. */
+DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiLocalTaskSubmittedSignature,
+	const FGuLiUnitTaskCommand&, const FGuLiCommanderSelectionState&);
 
 /** Local input, selection and presentation view. P2P delivery belongs to the World session. */
 UCLASS(ClassGroup=(GuLiStrike), meta=(BlueprintSpawnableComponent))
@@ -82,6 +85,7 @@ public:
     FGuLiMoveEndpointsChangedSignature OnMoveEndpointsChanged;
     FGuLiMoveEndpointIdsChanged OnMoveEndpointIdsChanged;
     FGuLiMoveReadyToSendSignature OnMoveReadyToSend;
+    FGuLiLocalTaskSubmittedSignature OnLocalTaskSubmitted;
 #if !UE_BUILD_SHIPPING
     bool PrepareReviewSoldierSelection(TConstArrayView<FGuLiSoldierId> Members, uint32 RequestId);
     uint64 GetAcceptedPoseFrameCount() const { return AcceptedPoseFrameCount; }
@@ -89,6 +93,9 @@ public:
     TSharedRef<FJsonObject> GetReviewCommandEvidence() const;
 #endif
 private:
+    // Selection is attached to an exact life, not the temporary Mass entity
+    // that is detached/recreated while that life changes simulation owner.
+    mutable TMap<FGuLiSoldierId,FGuLiHybridObjectKey> SelectionSoldierLives;
     struct FHybridInput
     {
         FGuLiUnitTaskCommand Command;
@@ -109,6 +116,7 @@ private:
     TMap<FGuid,FGuLiCommandAck> HybridCompletedCommands;
     TWeakObjectPtr<UGuLiHybridWorldSubsystem> HybridCommandWorld;
     uint32 HybridInputEpoch=0;
+    uint64 LastHybridInputPlanFrame=MAX_uint64;
     void TickHybridInputs();
     bool SubmitHybridTask(FGuLiUnitTaskCommand Command);
     void HandleHybridCommandResult(const FGuLiHybridCommandResult& Result);

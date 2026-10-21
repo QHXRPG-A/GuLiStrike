@@ -15,6 +15,7 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "HAL/PlatformTime.h"
+#include "HAL/IConsoleManager.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Engine/World.h"
 #include "UObject/Package.h"
@@ -24,6 +25,8 @@
 
 namespace
 {
+TAutoConsoleVariable<int32> NativePeerReceive(TEXT("gs.Hybrid.NativePeerReceive"),1,
+    TEXT("Admit decoded native peer messages without copying through UE containers. Latched at session start; 0 selects the comparison bridge."));
 enum class ESocketEvent : uint8 { Connected, Message, Failed };
 struct FSocketEvent { ESocketEvent Kind; TArray<uint8> Bytes; FString Error; };
 struct FMailbox
@@ -71,6 +74,8 @@ struct UGuLiHybridSessionSubsystem::FState
     uint64 MotionOutboxBytes=0;
     uint64 SubmittedControlBytes=0;
     uint64 PackedMessages=0,PackedOriginalBytes=0,PackedWireBytes=0,PayloadDecodeFailures=0;
+    bool bNativePeerReceive=false;
+    uint64 NativePeerAdmissions=0,CopiedPeerAdmissions=0;
     std::map<GuLiNet::Id,double> LastPeerSeen;
     TArray<FGuLiHybridMember> Members;
     FString Error, ConfigHash, MapHash;
@@ -94,7 +99,7 @@ struct UGuLiHybridSessionSubsystem::FState
         uint16 KindFilter=0;
         int32 BusinessKind=-1;
         uint8 TargetKindFilter=0;
-        uint64 Intercepted=0,Sent=0,Released=0,Bytes=0;
+        uint64 Intercepted=0,Sent=0,Released=0,Bytes=0,RetainedRetries=0;
         double Armed=0,PacketAt=0;
         FGuid PacketPeer;
         TArray<uint8> Packet;
@@ -196,12 +201,15 @@ void UGuLiHybridSessionSubsystem::Initialize(FSubsystemCollectionBase& Collectio
 void UGuLiHybridSessionSubsystem::Deinitialize()
 {
     FTSTicker::GetCoreTicker().RemoveTicker(Ticker); Stop();
-    OnControl.Clear(); OnPeer.Clear();AdmitPeer.Unbind();CanAdmitPeer.Unbind(); OnFailure.Clear(); OnRosterChanged.Clear();OnReviewReceiptReleased.Clear();
+    OnControl.Clear(); OnPeer.Clear();AdmitPeer.Unbind();AdmitNativePeer.Unbind();CanAdmitPeer.Unbind(); OnFailure.Clear(); OnRosterChanged.Clear();OnReviewReceiptReleased.Clear();
     Super::Deinitialize();
 }
 bool UGuLiHybridSessionSubsystem::Start(const FGuLiNetworkLaunchConfig& Config, FString& Error)
 {
     Stop(); State->Config = Config; State->Error.Reset(); State->ConfigHash.Reset(); State->MapHash.Reset();
+    int32 ReceiveOption=NativePeerReceive.GetValueOnGameThread();
+    FParse::Value(FCommandLine::Get(),TEXT("GuLiNativePeerReceive="),ReceiveOption);
+    State->bNativePeerReceive=ReceiveOption!=0;
     auto Reject = [&](const TCHAR* Why) { Error = Why; State->Error = Error; return false; };
     if (!Config.ValidationError.IsEmpty()) return Reject(*Config.ValidationError);
     if (Config.Mode != EGuLiNetworkMode::Hybrid || !Config.RoomId.IsValid()) return Reject(TEXT("Hybrid requires an explicit valid room identity"));
@@ -244,6 +252,7 @@ void UGuLiHybridSessionSubsystem::Stop()
     State->SimulationCost = 0;State->SimulationFrames=0;State->ReviewLoadCost=-1; State->LastHeartbeat = 0;
     State->SubmittedControlBytes=0;
     State->PackedMessages=State->PackedOriginalBytes=State->PackedWireBytes=State->PayloadDecodeFailures=0;
+    State->NativePeerAdmissions=State->CopiedPeerAdmissions=0;
     State->Epoch = 0; State->NextControlSequence = 1;
     State->ControlInterruptions=State->ControlReconnects=0;State->LastInterruption.Reset();
     State->Fault={};State->ReviewEpochRejected=State->ReviewIdentityRejected=0;State->ReviewHeaderRejections.Reset();
@@ -378,21 +387,20 @@ bool UGuLiHybridSessionSubsystem::SendPeerPrepared(const FGuid& Peer,FGuLiHybrid
 {
     return SendPeerInternal(Peer,MoveTemp(Value),Packed,true,bPacked,ReferenceBytes);
 }
-bool UGuLiHybridSessionSubsystem::SendPeerInternal(const FGuid& Peer,FGuLiHybridMessage Value,TConstArrayView<uint8> Prepared,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes)
+bool UGuLiHybridSessionSubsystem::SendPeerPreparedNative(const FGuid& Peer,const GuLiNet::Message& Core,TConstArrayView<uint8> Prepared,bool bPacked,SIZE_T ReferenceBytes)
+{
+    // Bind noncanonical callers and preserve all explicit fault fixtures through
+    // the existing bridge. The usual worker path already has these identities.
+    if (!State->Fault.Mode.IsNone() || Core.Header.Match!=GuLiNetBridge::ToCore(State->Config.RoomId)
+        || Core.Header.Sender!=GuLiNetBridge::ToCore(State->Identity.Player) || Core.Header.Epoch!=State->Epoch)
+        return SendPeerPrepared(Peer,GuLiNetBridge::ToUE(Core),Prepared,bPacked,ReferenceBytes);
+    return QueuePeerPayload(Peer,Core,Prepared,true,bPacked,ReferenceBytes);
+}
+bool UGuLiHybridSessionSubsystem::QueuePeerPayload(const FGuid& Peer,const GuLiNet::Message& Core,TConstArrayView<uint8> Prepared,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes)
 {
     if (!State->Active || !State->Transport || !State->Epoch || (!State->Error.IsEmpty() && !State->Reconnecting)) return false;
-    const auto Id = GuLiNetBridge::ToCore(Peer); const auto It = State->Channels.find(Id);
-    if (It == State->Channels.end()) return false;
-    Value.Match = State->Config.RoomId; Value.Sender = State->Identity.Player; Value.MatchEpoch = State->Epoch;
-    const auto Core=GuLiNetBridge::ToCore(Value);auto& Fault=State->Fault;
-    const bool Transaction=Core.Header.Kind==GuLiNet::MessageKind::Transaction || Core.Header.Kind==GuLiNet::MessageKind::HitFact
-        || Core.Header.Kind==GuLiNet::MessageKind::WorkPrepare;
-    if (Transaction && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core) && Fault.Mode==TEXT("work_hold"))
-    {
-        if (Fault.Bytes+Value.Body.Num()+Prepared.Num()>16*1024*1024) return false;
-        FState::FReviewFault::FHeldControl Held;Held.Key=Peer;Held.Value=Value;Held.Prepared=bPrepared;Held.Encoded=bPacked;Held.Packed.Append(Prepared.GetData(),Prepared.Num());
-        Fault.Controls.Add(MoveTemp(Held));Fault.Bytes+=Value.Body.Num()+Prepared.Num();--Fault.Remaining;++Fault.Intercepted;Fault.Record(Core);return true;
-    }
+    const auto Id=GuLiNetBridge::ToCore(Peer);const auto It=State->Channels.find(Id);
+    if (It==State->Channels.end()) return false;
     const bool Motion=Core.Header.Kind==GuLiNet::MessageKind::Motion || Core.Header.Kind==GuLiNet::MessageKind::ComponentState;
     bool Queued=false;
     if (Motion)
@@ -443,6 +451,40 @@ bool UGuLiHybridSessionSubsystem::SendPeerInternal(const FGuid& Peer,FGuLiHybrid
             }
         }
     }
+    return Queued;
+}
+bool UGuLiHybridSessionSubsystem::SendPeerInternal(const FGuid& Peer,FGuLiHybridMessage Value,TConstArrayView<uint8> Prepared,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes)
+{
+    if (!State->Active || !State->Transport || !State->Epoch || (!State->Error.IsEmpty() && !State->Reconnecting)) return false;
+    const auto Id = GuLiNetBridge::ToCore(Peer); const auto It = State->Channels.find(Id);
+    if (It == State->Channels.end()) return false;
+    Value.Match = State->Config.RoomId; Value.Sender = State->Identity.Player; Value.MatchEpoch = State->Epoch;
+    const auto Core=GuLiNetBridge::ToCore(Value);auto& Fault=State->Fault;
+    const bool Transaction=Core.Header.Kind==GuLiNet::MessageKind::Transaction || Core.Header.Kind==GuLiNet::MessageKind::HitFact
+        || Core.Header.Kind==GuLiNet::MessageKind::WorkPrepare;
+    if (Transaction && Fault.Mode==TEXT("work_hold"))
+    {
+        // The fault budget counts distinct retained messages. A retry of an
+        // already retained message must remain held until explicit release,
+        // even after admission is full; otherwise retries bypass the fixture.
+        const bool Retained=Fault.Controls.ContainsByPredicate([&](const auto& Held)
+        {
+            const auto& V=Held.Value;
+            return Held.Key==Peer && V.Kind==Value.Kind && V.Match==Value.Match && V.Sender==Value.Sender
+                && V.Event==Value.Event && V.ObjectId==Value.ObjectId && V.ObjectKind==Value.ObjectKind
+                && V.LifeGeneration==Value.LifeGeneration && V.MatchEpoch==Value.MatchEpoch
+                && V.OwnerEpoch==Value.OwnerEpoch && V.ControlEpoch==Value.ControlEpoch
+                && V.LogicalTick==Value.LogicalTick && V.Body==Value.Body;
+        });
+        if (Retained) {++Fault.RetainedRetries;return true;}
+        if (Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core))
+        {
+            if (Fault.Bytes+Value.Body.Num()+Prepared.Num()>16*1024*1024) return false;
+            FState::FReviewFault::FHeldControl Held;Held.Key=Peer;Held.Value=Value;Held.Prepared=bPrepared;Held.Encoded=bPacked;Held.Packed.Append(Prepared.GetData(),Prepared.Num());
+            Fault.Controls.Add(MoveTemp(Held));Fault.Bytes+=Value.Body.Num()+Prepared.Num();--Fault.Remaining;++Fault.Intercepted;Fault.Record(Core);return true;
+        }
+    }
+    const bool Queued=QueuePeerPayload(Peer,Core,Prepared,bPrepared,bPacked,ReferenceBytes);
     if (Queued && Transaction && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core) && Fault.Mode==TEXT("business_duplicate"))
     {
         auto Duplicate=Core;if (bPrepared&&bPacked) Duplicate.Body.assign(Prepared.GetData(),Prepared.GetData()+Prepared.Num());
@@ -602,6 +644,9 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
     Root->SetNumberField(TEXT("peer_payload_original_bytes"),double(State->PackedOriginalBytes));
     Root->SetNumberField(TEXT("peer_payload_encoded_bytes"),double(State->PackedWireBytes));
     Root->SetNumberField(TEXT("peer_payload_decode_failures"),double(State->PayloadDecodeFailures));
+    Root->SetBoolField(TEXT("native_peer_receive_enabled"),State->bNativePeerReceive);
+    Root->SetNumberField(TEXT("native_peer_admissions"),double(State->NativePeerAdmissions));
+    Root->SetNumberField(TEXT("copied_peer_admissions"),double(State->CopiedPeerAdmissions));
     Root->SetNumberField(TEXT("control_received_application_bytes"),State->Mailbox ? double(State->Mailbox->ReceivedApplicationBytes.load()) : 0);
     Root->SetStringField(TEXT("control_byte_basis"),TEXT("WebSocket application bytes; submitted bytes are queued by UE, not proof of socket delivery"));
     TArray<TSharedPtr<FJsonValue>> Peers;
@@ -650,6 +695,7 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
         J->SetStringField(TEXT("mode"),F.Mode.ToString());J->SetNumberField(TEXT("intercepted"),double(F.Intercepted));J->SetNumberField(TEXT("injected_sends"),double(F.Sent));
         J->SetNumberField(TEXT("released"),double(F.Released));J->SetNumberField(TEXT("held_controls"),F.Controls.Num());J->SetNumberField(TEXT("held_receipts"),F.Receipts.Num());
         J->SetNumberField(TEXT("held_local_receipts"),F.LocalReceipts.Num());
+        J->SetNumberField(TEXT("retained_retries"),double(F.RetainedRetries));
         J->SetNumberField(TEXT("held_bytes"),double(F.Bytes));J->SetArrayField(TEXT("messages"),F.Evidence);
         J->SetArrayField(TEXT("transmitted_messages"),F.Transmitted);Root->SetObjectField(TEXT("review_fault"),J);
     }
@@ -657,6 +703,7 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
     Root->SetNumberField(TEXT("rejected_delivery_identity"),double(State->ReviewIdentityRejected));
     Root->SetArrayField(TEXT("recent_header_rejections"),State->ReviewHeaderRejections);return Root;
 }
+bool UGuLiHybridSessionSubsystem::IsNativePeerReceiveEnabled() const { return State->bNativePeerReceive; }
 bool UGuLiHybridSessionSubsystem::NetworkTick(float)
 {
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_NetworkTick);
@@ -775,19 +822,37 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
         }
         State->LastPeerSeen[Id]=Now;
         if (Packed.Header.Kind==GuLiNet::MessageKind::Heartbeat) return true;
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_AdmitPeerPayload);
         uint64 PlainBytes=0;
         if (!GuLiHybridPeerPayload::PlainSize(Packed,PlainBytes))
         {++State->PayloadDecodeFailures;State->Error=TEXT("Invalid bounded peer payload envelope");return true;}
-        if (!AdmitPeer.IsBound() || !CanAdmitPeer.IsBound() || !CanAdmitPeer.Execute(uint16(Packed.Header.Kind),PlainBytes)) return false;
+        const bool bNative=State->bNativePeerReceive && AdmitNativePeer.IsBound();
+        if ((!bNative && !AdmitPeer.IsBound()) || !CanAdmitPeer.IsBound()
+            || !CanAdmitPeer.Execute(uint16(Packed.Header.Kind),PlainBytes)) return false;
         auto V=Packed;
         if (!GuLiHybridPeerPayload::Unpack(V))
         {++State->PayloadDecodeFailures;State->Error=TEXT("Invalid bounded peer payload envelope");return true;}
-        auto Value=GuLiNetBridge::ToUE(V);auto& Fault=State->Fault;
+        auto& Fault=State->Fault;
         if (V.Header.Kind==GuLiNet::MessageKind::TransactionResult && Fault.Mode==TEXT("receipt_hold")
-            && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(V) && Fault.Bytes+Value.Body.Num()<=16*1024*1024)
-        {Fault.Bytes+=Value.Body.Num();Fault.Receipts.Emplace(Sender,MoveTemp(Value));--Fault.Remaining;++Fault.Intercepted;Fault.Record(V);return true;}
-        if (!AdmitPeer.Execute(Sender,Value)) return false;
-        if (OnPeer.IsBound()) Received.Emplace(Sender,MoveTemp(Value));return true;
+            && Fault.Accepts(uint16(V.Header.Kind)) && Fault.MatchesBusiness(V) && Fault.Bytes+V.Body.size()<=16*1024*1024)
+        {
+            auto Value=GuLiNetBridge::ToUE(V);Fault.Bytes+=Value.Body.Num();Fault.Receipts.Emplace(Sender,MoveTemp(Value));
+            --Fault.Remaining;++Fault.Intercepted;Fault.Record(V);return true;
+        }
+        if (bNative)
+        {
+            if (!AdmitNativePeer.Execute(Sender,V)) return false;
+            ++State->NativePeerAdmissions;
+            if (OnPeer.IsBound()) Received.Emplace(Sender,GuLiNetBridge::ToUE(V));
+        }
+        else
+        {
+            auto Value=GuLiNetBridge::ToUE(V);
+            if (!AdmitPeer.Execute(Sender,Value)) return false;
+            ++State->CopiedPeerAdmissions;
+            if (OnPeer.IsBound()) Received.Emplace(Sender,MoveTemp(Value));
+        }
+        return true;
     };
     if (State->Transport)
     {

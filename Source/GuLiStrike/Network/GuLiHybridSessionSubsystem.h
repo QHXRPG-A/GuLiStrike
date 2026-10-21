@@ -5,6 +5,8 @@
 #include "Containers/Ticker.h"
 #include "GuLiHybridSessionSubsystem.generated.h"
 
+namespace GuLiNet { struct Message; }
+
 struct FGuLiHybridMessage
 {
     uint16 Kind = 0;
@@ -12,6 +14,8 @@ struct FGuLiHybridMessage
     uint8 ObjectKind = 0;
     uint32 LifeGeneration = 0;
     uint64 MatchEpoch = 0, OwnerEpoch = 0, ControlEpoch = 0, Sequence = 0, LogicalTick = 0;
+    FGuid ResourceGroup;
+    uint64 ResourceEpoch = 0;
     TArray<uint8> Body;
 };
 struct FGuLiHybridMember
@@ -26,6 +30,7 @@ struct FGuLiHybridMember
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiHybridControlReceived, const FGuLiHybridMessage&);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiHybridPeerReceived, const FGuid&, const FGuLiHybridMessage&);
 DECLARE_DELEGATE_RetVal_TwoParams(bool,FGuLiHybridPeerAdmit,const FGuid&,const FGuLiHybridMessage&);
+DECLARE_DELEGATE_RetVal_TwoParams(bool,FGuLiHybridNativePeerAdmit,const FGuid&,const GuLiNet::Message&);
 DECLARE_DELEGATE_RetVal_TwoParams(bool,FGuLiHybridPeerCapacity,uint16,uint64);
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiHybridSessionFailure, const FString&);
 DECLARE_MULTICAST_DELEGATE(FGuLiHybridRosterChanged);
@@ -45,10 +50,12 @@ public:
     bool SendControl(FGuLiHybridMessage Message);
     bool SendPeer(const FGuid& Peer, FGuLiHybridMessage Message);
     bool SendPeerPrepared(const FGuid& Peer,FGuLiHybridMessage Message,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes=0);
+    bool SendPeerPreparedNative(const FGuid& Peer,const GuLiNet::Message& Message,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes=0);
     bool CanQueueHandoff(const FGuid& Peer) const;
     bool BroadcastPeer(const FGuLiHybridMessage& Message);
     bool IsConnected() const;
     bool IsReconnecting() const;
+    bool IsNativePeerReceiveEnabled() const;
     const FString& GetError() const;
     FGuid GetLocalPlayerId() const;
     FGuid GetRoomId() const;
@@ -69,11 +76,14 @@ public:
     FGuLiHybridControlReceived OnControl;
     FGuLiHybridPeerReceived OnPeer;
     FGuLiHybridPeerAdmit AdmitPeer;
+    // Borrowed only for this synchronous call; the receiver owns any queued copy.
+    FGuLiHybridNativePeerAdmit AdmitNativePeer;
     FGuLiHybridPeerCapacity CanAdmitPeer;
     FGuLiHybridSessionFailure OnFailure;
     FGuLiHybridRosterChanged OnRosterChanged;
 private:
     bool SendPeerInternal(const FGuid& Peer,FGuLiHybridMessage Message,TConstArrayView<uint8> Packed,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes=0);
+    bool QueuePeerPayload(const FGuid& Peer,const GuLiNet::Message& Message,TConstArrayView<uint8> Packed,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes);
     struct FState;
     struct FStateDeleter { void operator()(FState* Value) const; };
     TUniquePtr<FState,FStateDeleter> State;

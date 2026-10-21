@@ -21,6 +21,7 @@ struct GULINETCORE_API ClientNumericView
     ValueView<ResourceLedgerState> ResourcesView;
     ValueView<MiningReservationDirectory> MiningView;
     Balances Accounts;
+    std::map<EconomyKey,Reservation> Reservations;
     Revision ResourceDirectoryRevision=0,MiningDirectoryRevision=0;
     std::map<StateKey,Revision> Versions;
     std::map<std::pair<ObjectKind,Id>,std::uint32_t> Retired;
@@ -44,6 +45,9 @@ struct AsyncClientStats
     double LastQueueMilliseconds=0,MaximumQueueMilliseconds=0;
     double WorkerMilliseconds=0,MainApplyMilliseconds=0,SimulationMilliseconds=0;
     std::uint64_t SimulationSteps=0;
+    std::uint64_t CaptureYieldAdvances=0;
+    bool CaptureYieldEnabled=true;
+    bool FastPackCacheKeyEnabled=true;
     std::array<AsyncInputStats,static_cast<std::size_t>(AsyncInputKind::Count)> InputKinds{};
     std::uint64_t GameplayAdmittedBytes=0,QueuedInputBytes=0;
     double OldestInputMilliseconds=0,OldestControlMilliseconds=0;
@@ -64,9 +68,12 @@ struct PreparedCommit
 struct AsyncExecutionOptions
 {
     bool GameplayWorker=false;
-    bool ReducedWork=false;
-    bool IncrementalDelivery=false;
     std::shared_ptr<IGameplayTaskExecutor> GameplayExecutor;
+    bool YieldBetweenCaptureCuts=true;
+    bool FastPackCacheKey=true;
+    // Optional process-local diagnostics. Invoked on both owner and caller
+    // threads; the callback must be thread-safe and must not access scene state.
+    std::function<void(const char*,Id,std::size_t)> CommandTiming;
 };
 
 /** Changed query fields, delivered after the complete read mirror and before callbacks. */
@@ -91,6 +98,21 @@ public:
     virtual bool CanRunParallel() const {return false;}
 };
 
+/** Caller-thread lookup only; never serialized and never owns a record.
+ * The directory retains exact-life records until its client is destroyed.
+ * FindObject validates the client generation and key before reusing the address.
+ */
+class ObjectReadCursor
+{
+public:
+    ObjectReadCursor()=default;
+private:
+    friend class AsyncClientWorld;
+    std::uint64_t Generation=0;
+    ObjectKey Key;
+    const ObjectRecord* Record=nullptr;
+};
+
 /** Game-thread facade. One ordered worker exclusively owns ClientWorld and OwnerState.
  * Object/system adapters live in the caller's registry. Worker proxies submit
  * data-only application requests; only PumpApplications invokes those adapters.
@@ -100,7 +122,9 @@ class GULINETCORE_API AsyncClientWorld final
 public:
     using Factory=ClientWorld::Factory;
     using TransactionCallback=ClientWorld::TransactionCallback;
-    using Send=std::function<bool(Id,Message,Bytes,bool)>;
+    // The ordered outbox owns both buffers through this synchronous call, and
+    // retains them after rejection. A successful transport queues its own copy.
+    using Send=std::function<bool(Id,const Message&,const Bytes&,bool)>;
     using Pack=std::function<bool(Message&,Bytes&)>;
     using CommitCallback=std::function<void(const PreparedCommit&)>;
     AsyncClientWorld(Id Match,Id Player,Revision Epoch,Factory Create,Send Transmit,Pack Compress={},bool Evidence=false,
@@ -116,6 +140,12 @@ public:
     void Stop();
     bool Configure(const RuntimeManifest&,std::string& Error);
     void SetMembers(std::map<Id,Member>);
+    void SetResourceGroups(std::map<Id,ResourceGroupState>);
+    const std::map<Id,ResourceGroupState>& ResourceGroups() const;
+    bool StampObjectPublication(Envelope&) const;
+    bool HasResourceRecovery() const;
+    bool IsCurrentResourceResult(const CommitResult&) const;
+    Id ContinuationEvent(const ObjectRecord&) const;
     bool Install(ObjectRecord,bool Commit);
     bool InstallGrant(const Authority&,std::uint32_t Ordinal=0);
     bool CanReceivePeer(std::size_t BodyBytes) const;
@@ -167,6 +197,10 @@ public:
     const std::string& Error() const;
     const std::string& DirectoryHash() const;
     const std::map<ObjectKey,ObjectRecord>& Objects() const;
+    /** Current applied record, including tombstones. Missing objects are retried.
+     * The returned pointer is for immediate caller-thread reads, not ownership.
+     */
+    const ObjectRecord* FindObject(ObjectKey,ObjectReadCursor&) const;
     const ObjectRecord* FindTeamCapability(Team,const std::string&) const;
     const std::map<std::string,std::size_t>& CommanderDefinitions() const;
     const ClientNumericView& NumericState() const;
@@ -179,6 +213,7 @@ public:
     const std::vector<ReceiveRejection>& RecentReceiveRejections() const;
     const std::map<std::string,std::uint64_t>& HandoffDiagnostics() const;
     const std::map<std::string,std::uint64_t>& HandoffMeasurements() const;
+    const std::map<Id,ResourceSnapshotStatus>& ResourceSnapshotStatuses() const;
     std::uint64_t DuplicateResults() const;
     std::size_t ExecutedCommandCount() const;
     std::size_t ExecutedCommandCount(ObjectKind) const;

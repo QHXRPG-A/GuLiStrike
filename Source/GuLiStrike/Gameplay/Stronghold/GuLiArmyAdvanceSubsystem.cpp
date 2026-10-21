@@ -7,6 +7,7 @@
 #include "NavigationSystem.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 
 void RegisterGuLiHybridAdvanceState(UGuLiArmyAdvanceSubsystem& Self);
 namespace
@@ -44,6 +45,7 @@ void UGuLiArmyAdvanceSubsystem::Deinitialize()
 {
 	if (auto* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld()))
 		Nav->OnNavigationGenerationFinishedDelegate.RemoveDynamic(this,&UGuLiArmyAdvanceSubsystem::OnNavigationGenerated);
+	GroupIndex.Reset();bGroupIndexDirty=true;
 	Super::Deinitialize();
 }
 void UGuLiArmyAdvanceSubsystem::OnNavigationGenerated(ANavigationData* Data)
@@ -64,15 +66,27 @@ void UGuLiArmyAdvanceSubsystem::ActivateTaskMember(EGuLiTeam Team, FGuLiSoldierI
 	{
 		if (Group.Soldiers.Contains(Soldier)) return;
 		if (Group.Team == Team && Group.Source == SourceTerritory && Group.Target == INDEX_NONE && Group.NextDecisionTime == 0 && Group.Soldiers.Num() < 25)
-		{ Group.Soldiers.Add(Soldier); return; }
+		{ Group.Soldiers.Add(Soldier); bGroupIndexDirty=true; return; }
 	}
 	auto& Group = Groups.AddDefaulted_GetRef(); Group.Team = Team; Group.Source = SourceTerritory; Group.Soldiers.Add(Soldier);
+	bGroupIndexDirty=true;
 }
 
 UGuLiArmyAdvanceSubsystem::FAdvanceGroup* UGuLiArmyAdvanceSubsystem::FindGroup(FGuLiSoldierId Soldier)
-{ return Groups.FindByPredicate([Soldier](const auto& Group) { return Group.Soldiers.Contains(Soldier); }); }
+{ return const_cast<FAdvanceGroup*>(static_cast<const UGuLiArmyAdvanceSubsystem*>(this)->FindGroup(Soldier)); }
 const UGuLiArmyAdvanceSubsystem::FAdvanceGroup* UGuLiArmyAdvanceSubsystem::FindGroup(FGuLiSoldierId Soldier) const
-{ return Groups.FindByPredicate([Soldier](const auto& Group) { return Group.Soldiers.Contains(Soldier); }); }
+{
+    if (bGroupIndexDirty)
+    {
+        GroupIndex.Reset();
+        for (int32 Index=0;Index<Groups.Num();++Index)
+            for (const auto Id:Groups[Index].Soldiers)
+                if (!GroupIndex.Contains(Id)) GroupIndex.Add(Id,Index); // Preserve first-match semantics.
+        bGroupIndexDirty=false;
+    }
+    const auto* Index=GroupIndex.Find(Soldier);
+    return Index?&Groups[*Index]:nullptr;
+}
 EGuLiCommanderWorkPhase UGuLiArmyAdvanceSubsystem::GetBehaviorPhase(FGuLiSoldierId Soldier) const
 { const auto* Group = FindGroup(Soldier); return Group ? Group->Phase : EGuLiCommanderWorkPhase::Any; }
 EGuLiCommanderWorkResult UGuLiArmyAdvanceSubsystem::GetBehaviorResult(FGuLiSoldierId Soldier) const
@@ -142,8 +156,8 @@ void UGuLiArmyAdvanceSubsystem::Tick(float)
         for (auto& Group : Groups) { Group.Unreachable.Reset(); Group.NextDecisionTime = 0; }
     }
     for (auto& Group : Groups)
-        Group.Soldiers.RemoveAll([&](auto Id) { return !Authority.IsAutomaticallyAdvancing(Id) || !Tasks.MayAdvance(Id); });
-    Groups.RemoveAll([](const auto& Group) { return Group.Soldiers.IsEmpty(); });
+        bGroupIndexDirty |= Group.Soldiers.RemoveAll([&](auto Id) { return !Authority.IsAutomaticallyAdvancing(Id) || !Tasks.MayAdvance(Id); })>0;
+    bGroupIndexDirty |= Groups.RemoveAll([](const auto& Group) { return Group.Soldiers.IsEmpty(); })>0;
     const double Now = AdvanceTime(*GetWorld());
     // Observe and pace shared groups only. Target choice, orders, stage completion and retries are StateTree operations.
     for (int32 Visit = 0; Visit < Groups.Num(); ++Visit)
@@ -163,7 +177,7 @@ void UGuLiArmyAdvanceSubsystem::SelectBehaviorTarget(FGuLiSoldierId Soldier)
     auto& Resources = *GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
     if (!Resources.IsRuntimeReady() || !Resources.IsResourceWorldActive()) return;
     auto& Tasks = *GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
-    Group->Soldiers.RemoveAll([&](auto Id) { return !Tasks.MayAdvance(Id); });
+    bGroupIndexDirty |= Group->Soldiers.RemoveAll([&](auto Id) { return !Tasks.MayAdvance(Id); })>0;
     if (Group->Soldiers.IsEmpty()) return;
     ObserveGroup(*Group);
     if (Group->bLocked) return;
@@ -194,7 +208,7 @@ void UGuLiArmyAdvanceSubsystem::MoveToBehaviorTarget(FGuLiSoldierId Soldier)
         || Group->Result != EGuLiCommanderWorkResult::TargetReady) return;
     auto& Authority = *GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
     auto& Tasks = *GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
-    Group->Soldiers.RemoveAll([&](auto Id) { return !Tasks.MayAdvance(Id); });
+    bGroupIndexDirty |= Group->Soldiers.RemoveAll([&](auto Id) { return !Tasks.MayAdvance(Id); })>0;
     if (Group->Soldiers.IsEmpty()) return;
     --RemainingMoveQueries;
     const auto Handle = Authority.BeginAutomaticMovePlanning(Group->Team, Group->Soldiers, Group->Approach);
@@ -219,7 +233,7 @@ void UGuLiArmyAdvanceSubsystem::CompleteBehaviorStage(FGuLiSoldierId Soldier)
     if (!Group || Group->Result != EGuLiCommanderWorkResult::Complete) return;
     auto& Tasks = *GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
     for (auto Id : Group->Soldiers) Tasks.NotifyAdvanceStage(Id);
-    Group->Soldiers.RemoveAll([&](auto Id) { return !Tasks.MayAdvance(Id); });
+    bGroupIndexDirty |= Group->Soldiers.RemoveAll([&](auto Id) { return !Tasks.MayAdvance(Id); })>0;
     Group->Phase = EGuLiCommanderWorkPhase::AdvanceSelecting;
     Group->Result = EGuLiCommanderWorkResult::None; Group->NextDecisionTime = 0;
 }

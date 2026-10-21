@@ -22,6 +22,7 @@ struct FGuLiActiveSkillRuntime;
 struct FGuLiCommanderInitialSpawnSlot;
 struct FGuLiSoldierDefinition;
 struct FGuLiSharedMoveIntent;
+struct FGuLiSoldierLocalPose;
 namespace GuLiCommanderAvoidancePolicy { struct FAgentSnapshot; struct FSharedAvoidanceGeometry; }
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRetiringSignature, const FGuLiSoldierStateItem&);
@@ -95,6 +96,7 @@ struct FGuLiSoldierNavigationDebug
 	int32 PersonalPathRetries = 0;
 	bool bHasFinalSlot = false;
 	bool bMoving = false;
+	bool bLocalSimulation = false;
 };
 
 /** Aggregate fixed-step navigation diagnostics. Querying this does not mutate simulation state. */
@@ -477,6 +479,8 @@ public:
 	 * 返回 true 仅表示找到记录，不能据此判断士兵仍存活或残骸仍可见。
 	 */
 	bool TryGetSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
+	/** Only an active local Hybrid simulation can provide this unbuffered, read-only pose. */
+	bool TryGetLocalSoldierPose(FGuLiSoldierId SoldierId, FGuLiSoldierLocalPose& OutPose) const;
 
 	/** Reuses the caller-owned array and captures finite locations of living authoritative Soldiers. */
 	void BuildLivingSoldierLocationSnapshot(TArray<FVector>& OutLocations) const;
@@ -523,8 +527,8 @@ private:
 	/** 在生命周期允许时销毁本地 Mass 实体，并清空索引、编队与部队生成标记。 */
 	void DestroyAuthorityPopulation();
 
-	/** 执行一个固定步：提交待生效速度、更新编队、积分士兵位移，再按批次收尾。 */
-	void TickAuthority(float FixedDeltaSeconds);
+	/** 常规步推进战斗；即时步只推进已提交指令的未消费移动时间。 */
+	void TickAuthority(float FixedDeltaSeconds, bool bImmediateCommands = false);
 	void PrepareNextMoveBatch(uint64 PlanId);
 	void RefreshSoldierNavigationState(FGuLiSoldierId SoldierId);
 	void PublishMoveEndpointChanges();
@@ -539,7 +543,7 @@ private:
 
 	/** 每世界帧按预算采样可走性、提交纯数据后台构建，并核对版本后接收流场结果。 */
 	void TickLocalFlowFields();
-	void TickSharedNavigation(int32 Category);
+	void TickSharedNavigation(int32 Category, TConstArrayView<uint32> PriorityIds = {});
 
 	/** Advances candidate projection/routing budgets once per rendered world frame. */
 	void TickMovePlanning(int32& RemainingProjectionBudget, int32& RemainingPathBudget, bool bManualFirst);

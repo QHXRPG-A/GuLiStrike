@@ -8,6 +8,8 @@
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+#include "GameFramework/PlayerController.h"
 
 AGuLiPerformanceReviewActor::AGuLiPerformanceReviewActor()
 {
@@ -22,6 +24,18 @@ void AGuLiPerformanceReviewActor::StartComparison()
 {
 	if (!GetWorld() || GetNetMode()==NM_DedicatedServer) return;
 	StopComparison();
+	if (bFourTierReview)
+	{
+		for (auto It=GetWorld()->GetPlayerControllerIterator(); It; ++It)
+			if (auto* PC=It->Get(); PC && PC->IsLocalController())
+				if (auto* Camera=Cast<AGuLiCommanderCameraPawn>(PC->GetViewTarget()))
+				{
+					Camera->SetRequestedHeightMeters(bReviewOverview
+						? Camera->GetCameraConfig().TacticalMaximumHeightMeters : ReviewHeightMeters);
+					if (bReviewOverview) Camera->AddZoomInput(1);
+				}
+		return;
+	}
 	if (bCatalogImpacts || bCatalogMuzzles) { Elapsed=0; PendingImpactEvents=0; if (!bCatalogMuzzles) ImpactSerial=0; bActive=true; SetActorTickEnabled(true); return; }
 	auto* Loaded=System.LoadSynchronous(); if (!Loaded) return;
 	Effect->SetAsset(Loaded); Effect->SetWorldScale3D(BaseScale); Elapsed=0; bActive=true;

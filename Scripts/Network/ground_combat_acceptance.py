@@ -64,6 +64,8 @@ def run(plan, args, records, read_state, write_json, initial):
             states = current
             source = ground(states[shooter['name']], 1)
             enemy = ground(states[shooter['name']], 2)
+            if enemy['alive'] and not source['alive']:
+                raise RuntimeError('The real Ground shooter died before its required target; the kill cannot complete in this life')
             if enemy['health_target'] != target_id:
                 raise RuntimeError('Ground combat changed the target life identity')
             if any((states[e['name']].get('epoch') != initial_epoch for e in clients)):

@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiUnitWreck.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 
@@ -47,6 +48,7 @@ void AGuLiUnitWreck::ConfigureVisual(UMeshComponent* Mesh, const FTransform& Tra
 	AddInstanceComponent(Mesh);
 	Mesh->RegisterComponent();
 	Mesh->SetWorldTransform(Transform);
+	UGuLiCommanderLODSubsystem::NotifyMeshChanged(Mesh);
 }
 
 bool AGuLiUnitWreck::InitializeFromActor(AActor* Source, UMaterialInterface* Material)

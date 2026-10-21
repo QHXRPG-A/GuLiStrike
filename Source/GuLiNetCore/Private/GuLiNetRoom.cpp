@@ -128,6 +128,27 @@ bool Room::BeginLeave(Id Player,bool Abrupt,double Now)
     if (MembershipValue)
     {if (!Abrupt) return false;MembershipValue->Waiting.erase(Player);}
     else if (!BeginMembership(Player,MembershipOperation::Leave,Abrupt,Now)) return false;
+    for (auto& [Key,G]:Groups) if (G.Owner==Player && !ResourceRecoveries.contains(Key))
+    {
+        if (G.RequestEpoch==UINT64_MAX) {Abort("Resource request epoch exhausted");return false;}
+        // The backup stores and publishes the cut; it need not simulate it.
+        // Install directly on the normal final destination so FinishMembership
+        // does not immediately schedule another full-state group transfer.
+        const Id Target=GroupDestination(Key,Player);
+        if (!Target.Valid() || (Abrupt&&(!G.Backup.Valid()||!Live(G.Backup))))
+        {Abort("Resource owner lost without an available snapshot custodian");return false;}
+        ResourceRecovery V;auto& S=V.State;S.Group=Key;S.Owner=G.Owner;S.Backup=G.Backup;S.OwnerVersion=G.Version;
+        S.RequestEpoch=++G.RequestEpoch;S.Recovery=MembershipValue->Version;S.PreviousOwner=Player;
+        S.Publisher=Abrupt?G.Backup:Player;S.Target=Target;S.Abrupt=Abrupt;S.Deadline=Now+Settings.ReadyTimeoutSeconds;
+        for (const auto& [P,Member]:Players) if (Member.Online&&(!Abrupt||P!=Player)) V.Waiting.insert(P);
+        ResourceRecoveries.emplace(Key,std::move(V));
+    }
+    for (auto& [Key,V]:ResourceRecoveries) if (Abrupt)
+    {
+        V.Waiting.erase(Player);
+        if (Player==V.State.Publisher||Player==V.State.Target)
+        {Abort("Resource snapshot publisher or install target disconnected during recovery");return false;}
+    }
     if (Abrupt) {M->second.Online=false;M->second.Ready=false;Scheduler.RemoveMember(Player);}
     for (auto& [K,O]:Directory)
     {
@@ -179,7 +200,7 @@ void Room::ScheduleLeaveTransfers(double Now)
             if (A.OwnershipGroup.Valid() || A.Policy==OwnershipPolicy::ParentWork)
             {
                 const auto Before=Scheduler.Transfers().size();
-                if (Scheduler.Transfer(K,To,HandoffReason::Leave,Now)) Admitted(To,Before);
+            if (!InResourceRecovery(K)&&Scheduler.Transfer(K,To,HandoffReason::Leave,Now)) Admitted(To,Before);
                 continue;
             }
             // Ordinary custody uses the existing atomic group/cut protocol as
@@ -210,7 +231,7 @@ bool Room::MembershipReady(Id Player,Revision Version,double Now)
 }
 void Room::FinishMembership(double Now)
 {
-    if (!MembershipValue || !MembershipValue->Waiting.empty() || !PendingAssignments.empty()) return;
+    if (!MembershipValue || !MembershipValue->Waiting.empty() || !PendingAssignments.empty() || !ResourceRecoveries.empty()) return;
     // The last ready receipt may arrive before the next scheduling poll. A
     // returning pinned controller must recover private custody while this
     // membership change still permits that handoff, before resuming the room.
@@ -369,6 +390,7 @@ void Room::RefreshGroups(double Now)
     const Id Exclude=MembershipValue && MembershipValue->Operation==MembershipOperation::Leave?MembershipValue->Player:Id{};
     for (auto& [Key,G]:Groups)
     {
+        if (ResourceRecoveries.contains(Key)) continue;
         const Id Wanted=GroupDestination(Key,Exclude);if (!Wanted.Valid() || Wanted==G.Owner) continue;
         const bool UnassignedStartup=CurrentPhase==RoomPhase::Preparing && std::none_of(Directory.begin(),Directory.end(),[&](const auto& Entry)
         {const auto& A=Entry.second.Grant;return A.OwnershipGroup==Key && A.State<Life::Dead
@@ -386,6 +408,7 @@ void Room::RefreshGroups(double Now)
             {Scheduler.Transfer(K,Wanted,HandoffReason::SharedGroup,Now);break;}
         }
     }
+    RefreshResourceBackups();
 }
 std::vector<Assignment> Room::Propose(double Now)
 {
@@ -402,7 +425,7 @@ std::vector<Assignment> Room::Propose(double Now)
     for (const auto& [K,O]:Directory)
     {
         const auto& A=O.Grant;
-        if (A.State>=Life::Dead || A.Dormant || A.SimOwner.Valid() || PendingAssignments.contains(K) || A.OwnerEpoch==UINT64_MAX
+        if (InResourceRecovery(K) || A.State>=Life::Dead || A.Dormant || A.SimOwner.Valid() || PendingAssignments.contains(K) || A.OwnerEpoch==UINT64_MAX
             || (A.Policy==OwnershipPolicy::ControllerPinned && !A.Controller.Valid())) continue;
         const Id Exclude=MembershipValue && MembershipValue->Operation==MembershipOperation::Leave?MembershipValue->Player:Id{};
         const auto Best=Destination(A,Exclude);if (!Best.Valid()) continue;
@@ -462,6 +485,8 @@ bool Room::ImportMember(Member M)
 void Room::Abort(std::string Reason) {FailureReason=std::move(Reason);CurrentPhase=RoomPhase::Aborted;}
 void Room::Poll(double Now)
 {
+    for (const auto& [Key,R]:ResourceRecoveries) if (Now>=R.State.Deadline)
+    {Abort("Resource snapshot installation exceeded the original five second handoff deadline");return;}
     Scheduler.Poll(Now);
     for (auto I=PendingAssignments.begin();I!=PendingAssignments.end();)
         if (I->second.Deadline<=Now) I=PendingAssignments.erase(I);else ++I;

@@ -7,9 +7,52 @@ import math
 from pathlib import Path
 import struct
 import time
+import uuid
+from contextlib import contextmanager
 
 from integrated_acceptance import entry, identity, input_and_wait, objects, prove
 from acceptance_session import preparation
+
+
+def set_production_fixture(session, allowed):
+    """Explicit cheats pause competing factories, with a readback on every peer."""
+    keys=None if allowed is None else sorted({identity(key) for key in allowed})
+    actions=[{'id':uuid.uuid4().hex,'kind':'fixture_production_gate','player':e['player'],
+              'enabled':keys is not None,'allowed':keys or []} for e in session.clients
+             if e['name'] not in session.expected_stopped]
+    session.control('gameplay',actions=actions)
+    def applied():
+        for action in actions:
+            result=session.action(action['id'])
+            if result and result['status']=='rejected':
+                raise RuntimeError('Production preparation rejected: '+str(result))
+            if not result or result['status']!='completed': return False
+        return all((view:=s.get('preparation_production',{})).get('enabled')==(keys is not None)
+                   and sorted(identity(k) for k in view.get('allowed',[]))==(keys or [])
+                   for name,s in session.states.items() if name!='server')
+    label='production-fixture-'+actions[0]['id'][:8]
+    session.wait(label,applied,timeout=30)
+    session.write_json(session.stage_output/(label+'-inputs.json'),{'actions':actions,
+        'results':[session.action(a['id']) for a in actions],
+        'scope':'User-authorized preparation cheat. Only these exact producers advance; existing commits still settle. No price, population rule, birth, damage or receipt assertion changes.'})
+    session.prepared_production=keys
+
+
+@contextmanager
+def production_fixture(session, allowed):
+    previous=getattr(session,'prepared_production',None)
+    wanted=None if allowed is None else sorted({identity(key) for key in allowed})
+    if previous==wanted:
+        yield
+        return
+    set_production_fixture(session,wanted)
+    try:
+        yield
+    finally:
+        deadline=session.preparation_deadline
+        session.preparation_deadline=None
+        try: set_production_fixture(session,previous)
+        finally: session.preparation_deadline=deadline
 
 
 def current(session, key):
@@ -161,29 +204,70 @@ def prepare_teleport_source(session,commander,army):
     return point
 
 
+@preparation
+def prepare_teleport_destination(session, commander, source):
+    root=next(o for o in objects(session,True) if o['team']==1 and 'relocation_cast' in o.get('capabilities',{}))
+    radius=relocation_radius(root,skill='Teleport')
+    candidates=[{'point':[x,y,source[2]]} for y in (6000,12000,24000,36000,48000,60000)
+                for x in (10000,-10000,16000,-16000,0)]
+    inspected,receipt=input_and_wait(session,'fixture_landing_ground',commander['player'],candidates=candidates)
+    occupied=[o['position'] for o in objects(session,True) if o['life']==1
+              and 'relocation_body' in o.get('capabilities',{})]
+    choices=[]
+    for candidate in inspected['result']['candidates']:
+        if not candidate['valid']: continue
+        point=candidate['ground']
+        clearance=min((math.dist(point[:2],p[:2]) for p in occupied),default=float('inf'))
+        if math.dist(point[:2],source[:2])>2000 and clearance>radius+1000:
+            choices.append((point,clearance))
+    if not choices:
+        from acceptance_session import PreparationSkipped
+        raise PreparationSkipped('No production-valid landing ground with room for the real collected cohort')
+    destination,clearance=choices[0]
+    session.write_json(session.stage_output/'teleport-route.json',{'source':source,'destination':destination,
+        'profile_radius_cm':radius,'nearest_body_cm':clearance,'native_query_input':receipt,
+        'scope':'Read-only production ground preflight before collection. Actual collision-safe placement and all endpoint acknowledgements remain required.'})
+    return destination,radius
+
+
 def teleport_landing(session):
     session.begin("teleport-collection-and-landing")
     commander=entry(session,"Red","Commander")
     army=[o for o in objects(session,True) if o["kind"]==1 and o["team"]==1 and o["life"]==1 and o["health"]>0]
     source=prepare_teleport_source(session,commander,army)
+    destination,radius=prepare_teleport_destination(session,commander,source)
     # The two-point tactical input performs collection, phase-out and relocation.
     source_operation,receipt=begin_teleport(session,commander,source,'teleport-collected')
     phased={o["id"]:o["position"] for o in objects(session,True) if o["phased"]}
     if not phased: raise RuntimeError("Teleport collection has no phased real objects")
-    # A fixed +4500 offset is still inside the dense 600-unit/summon array.
-    # Use the same outside-array corridor as the real Ground input route.
-    # Landing geometry and collision remain authoritative at submission.
-    occupied=[o for o in objects(session,True) if o['life']==1 and 'relocation_body' in o.get('capabilities',{})]
-    destination=list(source);destination[0]=max(o['position'][0] for o in occupied)+4000
-    session.write_json(session.stage_output/'teleport-route.json',{
-        'source':source,'destination':destination,'array_max_x':destination[0]-4000,
-        'scope':'Spatial input preparation; actual ground, collision and committed relocation still required'})
+    originals={o['id']:o for o in objects(session,True) if o['id'] in phased}
+    frozen={key:relocation_body(o) for key,o in originals.items()}
+    cast=session.states[commander['name']]['scene_ui']['teleport']['cast']
     reply,release=input_and_wait(session,"teleport_destination",commander["player"],point=destination)
-    session.wait("teleport-landed",lambda: session.states[commander["name"]]["scene_ui"]["teleport"].get("landed")
-        and all(not o["phased"] and math.dist(o["position"],phased[o["id"]])>1000 for o in objects(session,True) if o["id"] in phased))
+    def landed():
+        ui=session.states[commander['name']]['scene_ui'];state=ui['teleport']
+        if state['cast']!=cast or not state.get('landed') or state['phase']!=5 or not ui['commander_can_issue_orders']: return False
+        replicas={key:[] for key in phased};placements={}
+        for endpoint in session.clients:
+            actual={o['id']:o for o in session.states[endpoint['name']]['scene_objects']}
+            if not set(phased).issubset(actual): return False
+            for key in phased:
+                obj=actual[key];body=relocation_body(obj);replicas[key].append(obj)
+                if obj['phased'] or obj['life']!=1 or not obj['entity'] or obj['generation']!=originals[key]['generation'] \
+                        or obj['ordinal']!=originals[key]['ordinal'] or math.dist(obj['position'],phased[key])<=1000 \
+                        or body['cast']!=identity(cast) or body['locked'] or body['phased'] or not body['accepted'] \
+                        or body['step']<3 or body['ack']!=body['step'] or body['original']!=frozen[key]['original'] \
+                        or math.dist(body['destination'][:2],destination[:2])>radius*4+.01: return False
+                if key in placements and placements[key]!=body['destination']: return False
+                placements[key]=body['destination']
+        return all(sum(o['local_simulation'] for o in values)==1 for values in replicas.values())
+    session.wait("teleport-landed",landed)
     source_final=teleport_source_receipt(session,source_operation)
-    prove(session,"teleport",bool(phased),"Two formal inputs collected, phased and relocated the same stable identities",
-          receipt,"teleport-collected.json",release,"teleport-landed.json",source_final)
+    session.write_json(session.stage_output/'landing-placement-contract.json',{'cast':cast,'source':source,'destination':destination,
+        'profile_radius_cm':radius,'frozen':frozen,
+        'landed':{o['id']:relocation_body(o) for o in objects(session,True) if o['id'] in phased}})
+    prove(session,"teleport",bool(phased) and landed(),"Two formal inputs relocated the same lives, released input/action locks and acknowledged matching placements on six endpoints with one simulator per life",
+          receipt,"teleport-collected.json",release,"teleport-landed.json",'landing-placement-contract.json',source_final)
     # Spatial field observations are checked independently of successful UI input.
     collected=json.loads((session.stage_output/"teleport-collected.json").read_text(encoding="utf-8"))
     field_states=collected[commander["name"]].get("scene_fields",[])
@@ -263,7 +347,7 @@ def relocation_body(obj):
         'original':struct.unpack_from('<3d',raw,68),'destination':struct.unpack_from('<3d',raw,116)}
 
 
-def relocation_radius(obj):
+def relocation_radius(obj, *, skill=None, level=None):
     cap=obj['capabilities']['relocation_cast'];raw=base64.b64decode(cap['data'],validate=True);offset=0
     if cap['version']!=1: raise RuntimeError('Unsupported relocation cast evidence contract')
     def read(fmt):
@@ -274,10 +358,24 @@ def relocation_radius(obj):
         size=read('I')[0];value=raw[offset:offset+size].decode('utf-8');offset+=size;return value
     profiles={}
     for _ in range(read('I')[0]):
-        key=text();text();read('I');profiles[key]=read('3d')[0];read('4QB')
-    for fmt in ('Q','I'):
-        for _ in range(read('I')[0]): text();read(fmt)
-    read('8I');return profiles[text()]
+        key=text();profile_skill=text();profile_level=read('I')[0];radius=read('3d')[0];read('4QB')
+        profiles[key]={'skill':profile_skill,'level':profile_level,'radius':radius}
+    for _ in range(read('I')[0]): text();read('Q')
+    levels={}
+    for _ in range(read('I')[0]):
+        key=text();levels[key]=read('I')[0]
+    read('8I');active=text()
+    if skill is not None:
+        # Before a real cast starts, ProfileId is legitimately empty. Select
+        # its authored profile using the actual current skill tier instead.
+        actual_level=levels.get(skill)
+        if actual_level is None or (level is not None and level!=actual_level):
+            raise RuntimeError('Requested teleport tier differs from the actual caster state')
+        matching=[p for p in profiles.values() if p['skill']==skill and p['level']==actual_level]
+        if len(matching)!=1: raise RuntimeError('The current teleport skill tier has no unique authored relocation profile')
+        return matching[0]['radius']
+    if active not in profiles: raise RuntimeError('No active relocation profile after collection')
+    return profiles[active]['radius']
 
 
 def teleport_cancel(session):
@@ -353,7 +451,7 @@ def mine_funds(session, desired):
 
 
 @preparation
-def fund(session, desired, team="Red"):
+def fund(session, desired, team="Red", batch=True):
     """Explicit development setup; credits are never proof of mined income."""
     from pathlib import Path
     manifest=json.loads(Path(session.plan['manifest']).read_text(encoding='utf-8-sig'))
@@ -381,10 +479,16 @@ def fund(session, desired, team="Red"):
                  and identity(o['controller'])==commander['player'] and not o.get('dormant')),None)
     if not source: raise RuntimeError('Development supply has no living team army source')
     supplier=commander
-    receipts=[];events=[]
+    receipts=[];events=[];operations=[]
     for color,deficit in missing.items():
         while deficit:
             amount=1<<min(10,deficit.bit_length()-1)
+            if batch:
+                import uuid
+                operations.append({'id':uuid.uuid4().hex,'kind':'resource_supply','player':supplier['player'],
+                                   'team':team,'color':color,'amount':amount})
+                deficit-=amount
+                continue
             try:
                 reply,evidence=input_and_wait(session,'resource_supply',supplier['player'],team=team,color=color,amount=amount)
             except RuntimeError as error:
@@ -394,6 +498,27 @@ def fund(session, desired, team="Red"):
             if not reply['result'].get('committed'):
                 raise RuntimeError('Development supply was not committed by the team owner')
             receipts.append(evidence);events.append(identity(reply['request']));deficit-=amount
+    if operations:
+        # All credits still use the same bounded denominations and normal
+        # controlled transaction route. Avoid a full six-client snapshot
+        # round trip between denominations while live producers refill slots.
+        session.control('gameplay',actions=operations)
+        def supplied():
+            replies=[session.action(op['id']) for op in operations]
+            if not all(r and r['status']=='completed' for r in replies): return False
+            if not all(r['result'].get('committed') for r in replies):
+                raise RuntimeError('Batched development supply was not committed by the team owner')
+            events[:]=[identity(r['request']) for r in replies]
+            return True
+        try:
+            session.wait('supply-batch-committed',supplied)
+        except RuntimeError as error:
+            session.blocked_resource_supply=getattr(session,'blocked_resource_supply',{})
+            session.blocked_resource_supply[team]=session.stage_id+': '+str(error)
+            raise
+        receipts.append('supply-batch-input.json')
+        session.write_json(session.stage_output/receipts[-1],{
+            'inputs':operations,'results':[session.action(op['id']) for op in operations]})
     def committed():
         return all(event in session.decisions and session.decisions[event]['kind']==1
                    and session.decisions[event]['status']==0
@@ -401,7 +526,8 @@ def fund(session, desired, team="Red"):
     session.wait('supply-committed',committed)
     session.write_json(session.stage_output/'supply-provenance.json',{
         'fixture':'development_resource_supply','team':team,'requested_minimum':desired,'amount_added':missing,
-        'balance_before':before,'source':source,'supplier':supplier['player'],'inputs':receipts,'commits':[session.decisions[event] for event in events],
+        'balance_before':before,'balance_after':session.states[commander['name']]['economy'][team],
+        'source':source,'supplier':supplier['player'],'inputs':receipts,'commits':[session.decisions[event] for event in events],
         'scope':'Preparation only. Not mining, processing, production, refund or population evidence.'})
     session.finish()
     # The next gameplay stage records a fresh post-supply baseline.
@@ -419,11 +545,59 @@ def place(session, definition, team="Red", offset=(1200,0), point=None):
     result,receipt=input_and_wait(session,"building_place",ground["player"],definition=definition,point=point)
     if not result["result"].get("accepted"):
         raise RuntimeError("Production placement was rejected: "+json.dumps(result))
-    session.wait("admitted-"+str(definition),lambda: any(o["id"] not in before and o["definition"]=="building/"+str(definition) for o in objects(session)))
-    building=next(o for o in objects(session) if o["id"] not in before and o["definition"]=="building/"+str(definition))
+    submitted={identity(e) for e in result['result'].get('submitted_events',[])}
+    if not submitted: raise RuntimeError('Placement input did not report its original transaction identities')
+    # Territory gifts can create the same building definition during this
+    # input. Only the events submitted by this exact request prove placement.
+    def births():
+        return [o for o in objects(session) if o['id'] not in before
+                and o['definition']=='building/'+str(definition)
+                and identity(o.get('spawn_event','0')) in submitted]
+    session.wait("admitted-"+str(definition),lambda:bool(births()))
+    admitted=births()
+    if len(admitted)!=1: raise RuntimeError('One placement input created multiple buildings')
+    building=admitted[0]
     with session.preparation('admitted construction owner'):
         session.wait('admitted-owner-'+str(definition),lambda:(now:=current(session,building['id'])) is not None and now.get('entity'))
+    verify_placement_payment(session,building,manifest,definition)
     return current(session,building['id']),receipt
+
+
+def verify_placement_payment(session, building, manifest, definition):
+    """Prove the actual voucher debit and single finalization by ledger revision."""
+    event=identity(building['spawn_event'])
+    session.wait('placement-payment-'+str(definition),lambda:event in session.decisions
+                 and session.observed_by_active(event))
+    birth=session.decisions[event]
+    cost={c:int(float(manifest['numbers'][f'building/{definition}/Cost/{c.capitalize()}'])) for c in ('blue','red')}
+    payment=birth.get('payment')
+    if birth['status']!=0 or not payment or any(payment[c]!=cost[c] for c in cost):
+        raise RuntimeError('Actual placement payment differs from the unchanged catalog cost')
+    token=identity(payment['token'])
+    if not int(token,16): raise RuntimeError('Paid placement has no committed reservation token')
+    reserves=[d for d in session.decisions.values() if d['kind']==2 and d['status']==0
+              and identity(d.get('payment',{}).get('token','0'))==token]
+    closures=[d for d in session.decisions.values() if d['kind'] in (3,4,5) and d['status']==0
+              and identity(d.get('payment',{}).get('token','0'))==token]
+    if len(reserves)!=1 or len(closures)!=1 or identity(closures[0]['event'])!=event:
+        raise RuntimeError('Placement voucher was missing, duplicated, refunded or finalized more than once')
+    reserve=reserves[0]
+    if not session.observed_by_active(identity(reserve['event'])):
+        session.wait('placement-reserve-on-six-'+str(definition),lambda:session.observed_by_active(identity(reserve['event'])))
+    def predecessor(decision):
+        version=decision['balance']['version']-1
+        values={(d['balance']['blue'],d['balance']['red']) for d in session.decisions.values()
+                if d['status']==0 and d.get('faction')==decision['faction'] and d.get('balance',{}).get('version')==version}
+        if len(values)!=1: raise RuntimeError('Missing or conflicting predecessor balance for the placement payment')
+        return dict(zip(('blue','red'),next(iter(values))))
+    before_reserve=predecessor(reserve);before_birth=predecessor(birth)
+    if any(before_reserve[c]-reserve['balance'][c]!=cost[c] for c in cost):
+        raise RuntimeError('Placement did not debit its exact catalog cost once')
+    if any(before_birth[c]!=birth['balance'][c] for c in cost):
+        raise RuntimeError('Placement charged resources again while finalizing its voucher')
+    session.write_json(session.stage_output/('placement-payment-contract-'+str(definition)+'.json'),{
+        'cost':cost,'reserve':reserve,'birth':birth,'before_reserve':before_reserve,'before_birth':before_birth,
+        'scope':'Original catalog price, adjacent committed account revisions, one debit and one voucher finalization observed on six clients.'})
 
 
 def population(o):
@@ -436,13 +610,67 @@ def population(o):
     return group,units,limit
 
 
+def prepare_population(session, slots, completed=None, target_limit=25, before_combat=None):
+    allowed=getattr(session,'prepared_production',None)
+    with production_fixture(session,[] if allowed is None else allowed):
+        return _prepare_population(session,slots,completed,target_limit,before_combat)
+
+
 @preparation
-def prepare_population(session, slots):
+def _prepare_population(session, slots, completed=None, target_limit=25, before_combat=None):
+    """Use explicit retirement fixtures for headroom; keep a separate real death."""
+    def free():
+        claims=[population(o) for o in objects(session) if o['team']==1 and o['life']<2 and population(o)]
+        return claims[0][2]-sum(c[1] for c in claims) if claims else 0
+    if (completed() if completed else free()>=slots): return
+    # One actual death proves the gameplay release contract. Killing an entire
+    # army just to set up unrelated production is no longer a prerequisite.
+    if (not getattr(session,'population_preparation_only',False)
+            and not getattr(session,'population_death_evidence',None) and before_combat is None):
+        with production_fixture(session,[]):
+            _verify_population_death(session,free()+1,target_limit=1)
+    session.begin('population-headroom-cheat')
+    if before_combat: before_combat()
+    manifest=json.loads(Path(session.plan['manifest']).read_text(encoding='utf-8-sig'))
+    initial={identity(o['id']) for o in manifest['objects'] if o['kind']==1 and o['team']==1}
+    wanted=max(0,slots-free())
+    candidates=sorted((o for o in objects(session,True) if o['life']==1 and o['team']==1
+        and identity(o['id']) in initial and population(o)),key=lambda o:o['ordinal'],reverse=True)
+    chosen=[];released=0
+    for obj in candidates:
+        if released>=wanted: break
+        chosen.append(obj);released+=population(obj)[1]
+    if released<wanted or len(chosen)>target_limit:
+        raise RuntimeError('Bounded population fixture has insufficient live startup claims')
+    actions=[{'id':uuid.uuid4().hex,'kind':'fixture_retire','player':identity(o['controller']),'object':o['id']} for o in chosen]
+    for start in range(0,len(actions),16):
+        batch=actions[start:start+16]
+        session.control('gameplay',actions=batch)
+        def retired():
+            for action in batch:
+                result=session.action(action['id'])
+                if result and (result['status']=='rejected' or result['status']=='completed' and not result['result'].get('committed')):
+                    raise RuntimeError('Population fixture retirement rejected: '+str(result))
+                if not result or result['status']!='completed': return False
+                event=identity(result['request']);decision=session.decisions.get(event)
+                if not decision or decision['kind']!=7 or decision['status']!=0 or not session.observed_by_active(event): return False
+                if any(not any(o['id']==action['object'] and o['life']==3 for o in session.states[e['name']]['scene_objects']) for e in session.clients): return False
+            return True
+        session.wait('population-fixture-retired-on-six-'+str(start//16),retired,timeout=30)
+    session.write_json(session.stage_output/'population-cheat.json',{'required_free':slots,'actions':actions,
+        'results':[session.action(a['id']) for a in actions],
+        'scope':'Test-only startup retirement supplies headroom. Never counted as weapon damage or death-release evidence; that assertion retains its independent real death.'})
+    session.wait('population-ready',completed if completed else lambda:free()>=slots,timeout=30)
+    session.finish()
+
+
+@preparation
+def _verify_population_death(session, slots, completed=None, target_limit=25, before_combat=None):
     """Prepare isolated targets, then release production slots through real fire."""
     def free():
         claims=[population(o) for o in objects(session) if o['team']==1 and o['life']<2 and population(o)]
         return claims[0][2]-sum(c[1] for c in claims) if claims else 0
-    if free()>=slots: return
+    if (completed() if completed else free()>=slots): return
     session.begin('combat-population-preparation')
     from pathlib import Path
     manifest=json.loads(Path(session.plan['manifest']).read_text(encoding='utf-8-sig'))
@@ -459,23 +687,39 @@ def prepare_population(session, slots):
     definition=min({o['definition'] for o in eligible},key=lambda d:min(o['health'] for o in eligible if o['definition']==d))
     if speeds.get(definition,0)<=0: raise RuntimeError('Movement definition is absent from the frozen asset readback')
     # Real producers can consume freed slots before the next shared readback.
-    # Keep the original bounded target buffer; stop firing at actual headroom.
-    group=sorted((o for o in eligible if o['definition']==definition),key=lambda o:(o['health'],o['ordinal']))[:25]
+    # A long mixed room may require more real deaths than the requested free
+    # capacity. This only expands the bounded target input, never the assertion
+    # or health/damage/population rules. Stop firing at actual headroom.
+    if not 1<=target_limit<=64: raise ValueError('Population target preparation exceeds one bounded batch')
+    group=sorted((o for o in eligible if o['definition']==definition),key=lambda o:(o['health'],o['ordinal']))[:target_limit]
     weakest=[o for o in group if o['health']==group[0]['health']]
-    if len(weakest)>=slots:
+    if completed is None and len(weakest)>=slots:
         # Use the whole remaining weak buffer, never just the required count.
         # Healthy front-row bodies otherwise block shots at the prepared weak
         # targets while real automatic production consumes the released slots.
         group=weakest
-    input_and_wait(session,'selection_objects',commander['player'],objects=sorted(o['id'] for o in group))
     cohort={o['id'] for o in group}
-    if len(cohort)<slots-free() or len(cohort)>25:
+    if len(cohort)<slots-free() or len(cohort)>target_limit:
         raise RuntimeError('Explicit targets cannot prepare the required population headroom')
-    session.wait('prepared-target-owners',lambda: all(identity(o['simulator'])==commander['player']
-        for o in objects(session,True) if o['id'] in cohort) and len([o for o in objects(session,True) if o['id'] in cohort])==len(cohort))
+    session.write_json(session.stage_output/'population-input-budget.json',{
+        'required_free_slots':slots,'initial_free_slots':free(),'actual_target_count':len(cohort),
+        'target_limit':target_limit,'preparation_seconds':session.args.preparation_timeout,
+        'scope':'Real original lives and normal weapon damage. Unrelated producers are explicitly paused; all requested free slots or the original actual-birth predicate are still required.'})
+    lives={o['id']:o['generation'] for o in group}
+    active={e['player'] for e in session.clients if e['name'] not in session.expected_stopped}
+    def original_owners_ready():
+        # Spatial preparation already routes each batch to its real owner.
+        # Do not manufacture a separate selection migration just to shoot a
+        # population target; handoff has its own unchanged gameplay assertions.
+        copies=[o for o in objects(session,True) if o['id'] in cohort]
+        return all(sum(o['id']==key and o['generation']==generation and o['life']==1
+                       and identity(o['simulator']) in active for o in copies)==1
+                   for key,generation in lives.items()) and len(copies)==len(cohort)
+    session.wait('prepared-target-owners',original_owners_ready)
+    if before_combat: before_combat()
     from population_combat_preparation import run as release_through_combat
     try:
-        release_through_combat(session,cohort,free,slots)
+        release_through_combat(session,cohort,free,slots,completed=completed)
     finally:
         deaths=[d for d in new_decisions(session) if d['kind']==0 and d['status']==0
                 and d['state_domain'] in cohort and int(identity(d['death_event']),16)
@@ -588,7 +832,46 @@ def placement_cancel_and_reject(session):
     session.finish()
 
 
+def prepare_conversion_placement(session, definition, offset):
+    """Queue the normal input at real headroom before cleanup lets factories refill it."""
+    commander=entry(session,'Red','Commander')
+    claims=[population(o) for o in objects(session) if o['team']==1 and o['life']<2 and population(o)]
+    if claims and claims[0][2]-sum(c[1] for c in claims)>=1:
+        session.begin('conversion-admission-preparation')
+        building,receipt=place(session,definition,offset=offset)
+        receipt=session.stage_output/receipt
+        session.finish()
+        return building,receipt
+    previous={o['id'] for o in objects(session)}
+    pawn=next(o for o in objects(session,True) if o['definition']=='player/ground' and o['team']==1)
+    point=list(pawn['position']);point[0]+=offset[0];point[1]+=offset[1]
+    pending={};evidence={}
+    def arm():
+        pending['operation']=session.operation('building_place',commander['player'],
+            definition=definition,point=point,wait_for_population=True)
+    def completed():
+        if not pending: return False
+        result=session.action(pending['operation'])
+        if not result or result['status']!='completed': return False
+        if not result['result'].get('accepted'):
+            raise RuntimeError('Population-scheduled placement was rejected: '+json.dumps(result))
+        matches=[o for o in objects(session,True) if o['id'] not in previous and o['definition']=='building/'+str(definition)
+                 and o['team']==1 and o['life']==1 and o['entity']]
+        if len(matches)!=1: return False
+        evidence.update(building=matches[0],result=result)
+        return True
+    prepare_population(session,1,completed=completed,target_limit=25,before_combat=arm)
+    receipt=session.stage_output/'population-scheduled-placement.json'
+    session.write_json(receipt,{**evidence,'scope':'The unchanged placement input was submitted by the native driver only after a real committed population slot appeared; normal cost, footprint, ownership and birth admission still apply.'})
+    return evidence['building'],receipt
+
+
 def construct(session, definition, offset, admitted):
+    with production_fixture(session,[]):
+        return _construct(session,definition,offset,admitted)
+
+
+def _construct(session, definition, offset, admitted):
     """One real construction item; admission survives a later assertion failure."""
     manifest=json.loads(__import__('pathlib').Path(session.plan["manifest"]).read_text(encoding="utf-8-sig"))
     if manifest.get('strings',{}).get('acceptance/preparation')=='gf-fast-spatial-v2' and definition in (4,101,102,5):
@@ -606,11 +889,20 @@ def construct(session, definition, offset, admitted):
         session.finish()
     # Obtain the shared production headroom when first needed. A building
     # without a unit conversion does not require repeating the duel first.
-    desired={c:int(float(manifest['numbers'][f'building/{definition}/Cost/{c.capitalize()}']))+128 for c in ('blue','red')}
-    fund(session,desired)
-    if float(manifest['numbers'].get(f'building/{definition}/CompletionUnitTypeId',0))>0:
-        # Ongoing native producers can consume a single released slot before
-        # admission. Release a small real combat reserve, never inject claims.
+    # Keep the initial unfunded/ordinary-construction pair free of surplus credits.
+    # Conversion and later logistics retain the same upkeep reserve: funding exactly
+    # the building price races legitimate territory maintenance while finding
+    # the footprint. These are explicit fixture credits, not gameplay prices.
+    reserve=0 if definition==1 else 128
+    desired={c:int(float(manifest['numbers'][f'building/{definition}/Cost/{c.capitalize()}']))+reserve for c in ('blue','red')}
+    conversion=float(manifest['numbers'].get(f'building/{definition}/CompletionUnitTypeId',0))>0
+    if conversion and not getattr(session.args,'continue_remaining',False):
+        prepare_population(session,25,target_limit=50)
+    fund(session,desired,batch=True)
+    prepared_placement=prepare_conversion_placement(session,definition,offset) if (
+        float(manifest['numbers'].get(f'building/{definition}/CompletionUnitTypeId',0))>0
+        and not getattr(session.args,'continue_remaining',False)) else None
+    if float(manifest['numbers'].get(f'building/{definition}/CompletionUnitTypeId',0))>0 and prepared_placement is None:
         prepare_population(session,8)
     session.begin("construction-"+str(definition))
     commander=entry(session,'Red','Commander')
@@ -625,7 +917,10 @@ def construct(session, definition, offset, admitted):
         session.wait('construction-workers-grouped',lambda: all(
             o['id'] in group and identity(o['simulator'])==resource_owner
             for o in objects(session,True) if o['id'] in worker_keys))
-    if definition == 8 and getattr(session.args, 'continue_remaining', False):
+    if prepared_placement:
+        building,receipt=prepared_placement
+        verify_placement_payment(session,building,manifest,definition)
+    elif definition == 8 and getattr(session.args, 'continue_remaining', False):
         from acceptance_session import PreparationSkipped
         from population_combat_preparation import position
         with session.preparation('conversion footprint and nearby Ground position'):
@@ -675,6 +970,7 @@ def construct(session, definition, offset, admitted):
                 except RuntimeError as error:
                     from runtime_evidence import RuntimeEvidenceUnavailable
                     if isinstance(error,(RuntimeEvidenceUnavailable,PreparationSkipped)): raise
+                    if 'Production placement was rejected:' in str(error): raise
                     errors.append(str(error))
             else:
                 session.write_json(session.stage_output/'placement-preparation-skipped.json',{'attempts':errors})
@@ -764,18 +1060,61 @@ def construct(session, definition, offset, admitted):
 
 
 def production(session, admitted):
+    with production_fixture(session,[admitted[4],admitted[101]]):
+        return _production(session,admitted)
+
+
+def _production(session, admitted):
     manifest=json.loads(__import__('pathlib').Path(session.plan['manifest']).read_text(encoding='utf-8-sig'))
     if manifest.get('strings',{}).get('acceptance/preparation')=='gf-fast-spatial-v2':
         live={o['id']:o for o in objects(session,True) if o['life']==1 and o['entity']}
         existing={o['parent'] for o in live.values() if o['definition']=='unit/101' and o.get('parent') in live
                   and live[o['parent']]['definition']=='building/4' and o['team']==1}
         if existing: admitted[4]=min(existing)
-    session.begin("production-births")
     producers={admitted[4],admitted[101]}
+    def born():
+        return all(any(o['parent']==p and o['life']==1 and o['entity'] for o in objects(session,True)) for p in producers)
+    # Reserve the complete real production batch before waking its hosts;
+    # otherwise these same hosts can consume headroom while preparation waits
+    # for it. The final assertion still requires these exact parents.
+    fund(session,{'blue':128,'red':128})
+    if not born():
+        batch=sum(int(float(manifest['numbers'][f'building/{definition}/ProductionCount'])) for definition in (4,101))
+        preparation_only=getattr(session,'population_preparation_only',False)
+        if preparation_only:
+            with production_fixture(session,[]):
+                prepare_population(session,batch,target_limit=64)
+        else:
+            prepare_population(session,batch,completed=born,target_limit=64)
+        if preparation_only:
+            for parent in sorted(producers):
+                host=current(session,parent)
+                if not host: raise RuntimeError('Production preparation lost its real host')
+                input_and_wait(session,'fixture_production_progress',identity(host['simulator']),object=parent)
+    session.begin("production-births")
     with session.preparation('completed production hosts'):
         session.wait('production-hosts-ready',lambda:all((host:=current(session,p)) is not None and host['completed'] for p in producers))
-    session.wait("production-births",lambda: all(any(o["parent"]==p and o["life"]==1 and o["entity"] for o in objects(session,True)) for p in producers))
-    prove(session,"production",True,"Both ordinary and data-only producer definitions created real children through lifecycle commits","production-births.json")
+    session.wait("production-births",born)
+    children={p:min((o for o in objects(session,True) if o['parent']==p and o['life']==1 and o['entity']),key=lambda o:o['ordinal']) for p in producers}
+    def committed_births():
+        for parent,child in children.items():
+            event=identity(child['spawn_event']);decision=session.decisions.get(event)
+            if not decision or decision['kind']!=5 or decision['status']!=0 or identity(decision['target'])!=identity(child['id']) \
+                    or identity(decision['state_domain'])!=identity(parent) or not session.observed_by_active(event): return False
+            replicas=[next((o for o in session.states[e['name']]['scene_objects'] if o['id']==child['id']),None) for e in session.clients]
+            if any(not o or o['parent']!=parent or o['generation']!=child['generation'] or o['life']!=1 or not o['entity'] for o in replicas): return False
+            if sum(o['local_simulation'] for o in replicas)!=1: return False
+            expected=int(float(manifest['numbers'].get('population/definition/'+child['definition']+'/units',0)))
+            if any((population(o)[1] if population(o) else 0)!=expected for o in replicas):
+                raise RuntimeError('Produced child population differs from the unchanged definition')
+        return True
+    session.wait('production-committed-on-six',committed_births)
+    session.write_json(session.stage_output/'production-birth-contract.json',{'children':children,
+        'decisions':{p:session.decisions[identity(o['spawn_event'])] for p,o in children.items()},
+        'rules':[r for r in manifest['rules'] if r['id'] in ('produce/building/4','produce/building/101')],
+        'scope':'Original parent, stable life, committed birth, catalog population claim and exactly one simulator on all six endpoints.'})
+    prove(session,"production",True,"Both ordinary and data-only producers created real children with matching final receipts and population claims on six endpoints",
+          "production-births.json","production-committed-on-six.json","production-birth-contract.json")
     # These factories were manually placed. Their production policy does not
     # require territory supply, so their births cannot prove the separate
     # territory_supply/supply_loss_resume assertions. Both remain mandatory.
@@ -816,9 +1155,14 @@ def inventory_combination(session, definition):
 
 
 def buildings(session):
+    with production_fixture(session,[]):
+        return _buildings(session)
+
+
+def _buildings(session):
     prepare_construction_site(session)
     placement_cancel_and_reject(session)
-    prepare_population(session,25)
+    prepare_population(session,25,target_limit=50)
     admitted={}
     for definition,offset in zip((1,8,4,101,102,5),((1200,0),(-1200,0),(0,1200),(0,-1200),(1200,1100),(-1200,-1100))):
         construct(session,definition,offset,admitted)
@@ -828,11 +1172,59 @@ def buildings(session):
     return admitted
 
 
-def deliver_inventory(session,target,wait_for_processing=True):
-    """A real loaded vehicle navigates to a capability host, then uses its public interaction API."""
-    continuing=bool(getattr(session.args,'resume_summary',None))
-    original_start=session.last_decision
-    original_processed=sum(session.states[entry(session,'Red','Commander')['name']]['resources']['processed_'+c] for c in ('blue','red'))
+def stop_inventory_actor(session, commander, obj, label):
+    """Select an Actor and use the player's normal Stop command before docking."""
+    session.input_ordinal=getattr(session,'input_ordinal',0)+1
+    task={'player':commander['player'],'command':session.stage_number*100000+session.input_ordinal,
+          'actors':[obj['ordinal']],'intent':'Move',
+          'x':obj['position'][0],'y':obj['position'][1],'z':obj['position'][2]}
+    session.control('gameplay',enable_mining=True,unit_orders=[task])
+    def selected():
+        order=next((o for o in session.states[commander['name']].get('engineer_orders',[]) if o['command']==task['command']),None)
+        if not order or not order['resolved']: return False
+        if order['accepted_actors']!=[obj['ordinal']]: raise RuntimeError('Inventory actor selection/task was rejected: '+str(order))
+        return session.states[commander['name']]['scene_ui']['selected_actors']==[obj['ordinal']]
+    session.wait(label+'-actor-selected',selected)
+    selection=next(o for o in session.states[commander['name']]['engineer_orders'] if o['command']==task['command'])
+    session.input_ordinal+=1
+    stopped,receipt=input_and_wait(session,'unit_task',commander['player'],point=obj['position'],intent='Move',
+        command=session.stage_number*100000+session.input_ordinal,disposition='Stop')
+    if stopped['result'].get('accepted',0)<1: raise RuntimeError('Inventory Actor did not accept its ordinary Stop command')
+    session.write_json(session.stage_output/(label+'-stop-input.json'),{'selection':label+'-actor-selected.json',
+        'selection_result':selection,'input':receipt,'result':stopped,'object':obj['id'],
+        'scope':'Public Actor selection and Stop task only; cargo, authority, delivery and processing are unchanged.'})
+    return task
+
+
+def inventory_source_retained(session,source,target,decision_start,label):
+    """A public Stop cannot undo a delivery committed while selection was pending."""
+    if current(session,source['id']) is None:
+        session.wait(label+'-owner-ready',lambda:current(session,source['id']) is not None,timeout=30)
+    carrier=current(session,source['id'])
+    if carrier['inventory']['blue']+carrier['inventory']['red']>0:
+        return True
+    def committed_deliveries():
+        return [(event,d) for event,d in session.decisions.items() if d['sequence']>decision_start
+                and d['kind']==10 and d['status']==0 and identity(d.get('work_source','0'))==identity(source['id'])
+                and session.observed_by_active(event)]
+    # Unexplained cargo loss must fail preparation. Only a real delivery seen
+    # by every endpoint can explain why a new mined load is needed here.
+    session.wait(label+'-cargo-delivery-committed',lambda:bool(committed_deliveries()),timeout=30)
+    session.write_json(session.stage_output/(label+'-cargo-drained.json'),{
+        'source_before':source,'source_after':current(session,source['id']),'intended_target':target['id'],
+        'deliveries':[{'event':event,'decision':d,'observed_pids':sorted(session.result_observers[event])}
+                      for event,d in committed_deliveries()],
+        'scope':'Preparation lost its load during normal input. This receipt does not satisfy the requested target delivery; a new real mined load is required.'})
+    return False
+
+
+def prepare_inventory_source(session,target,attempt):
+    commander=entry(session,'Red' if target['team']==1 else 'Blue','Commander')
+    # A mobile processing carrier has its own autonomous mining journey.
+    # Stop both parties using their normal commands; stopping only the loaded
+    # source lets a unit/102 host leave before the docking interaction.
+    if target['definition']=='unit/102':
+        stop_inventory_actor(session,commander,current(session,target['id']),'delivery-host')
     session.control("gameplay",enable_mining=True)
     with session.preparation('enable mining before querying live deposits'):
         session.wait('inventory-mining-ready',lambda:all(session.states[e['name']].get('mining_ready') for e in session.clients),timeout=15)
@@ -880,21 +1272,66 @@ def deliver_inventory(session,target,wait_for_processing=True):
         session.wait("cargo-"+suffix,lambda:bool(loaded()))
     source=min(loaded(),key=lambda o:math.dist(o["position"],target["position"]))
     commander=entry(session,"Red" if target["team"]==1 else "Blue","Commander")
-    session.input_ordinal=getattr(session,"input_ordinal",0)+1
-    task={"player":commander["player"],"command":session.stage_number*100000+session.input_ordinal,
-          "actors":[source["ordinal"]],"intent":"Move",
-          "x":target["position"][0]-760,"y":target["position"][1],"z":target["position"][2]}
-    session.control("gameplay",enable_mining=True,unit_orders=[task])
+    decision_start=session.last_decision
+    task=stop_inventory_actor(session,commander,source,'delivery')
+    if not inventory_source_retained(session,source,target,decision_start,f'delivery-attempt-{attempt}-stopped'):
+        return None
     with session.preparation('loaded miner position beside its inventory target'):
         from population_combat_preparation import position
-        point=list(target['position']);point[0]-=760
-        prepared,prepared_input=position(session,current(session,source['id']),point)
+        from acceptance_session import PreparationSkipped
+        attempts=[]
+        for index in range(8):
+            angle=math.pi+index*math.tau/8
+            host=current(session,target['id'])
+            point=list(host['position']);point[0]+=700*math.cos(angle);point[1]+=700*math.sin(angle)
+            try:
+                prepared,prepared_input=position(session,current(session,source['id']),point)
+                attempts.append({'point':point,'input':prepared_input,'result':prepared})
+                break
+            except PreparationSkipped as error:
+                if 'Prepared position is unsupported, unavailable or outside navigation' not in str(error): raise
+                attempts.append({'point':point,'rejection':str(error)})
+                session.write_json(session.stage_output/'delivery-position-candidates.json',attempts)
+        else: raise PreparationSkipped('No legal docking position among eight native navigation candidates')
         session.write_json(session.stage_output/'delivery-position-preparation.json',{'input':prepared_input,'result':prepared,
+            'attempts':attempts,
             'scope':'Spatial setup only; the original cargo is retained and delivery/processing still require real committed results.'})
-    session.control('gameplay',enable_mining=True,unit_orders=[task])
+    session.control('gameplay',enable_mining=True)
     session.wait("docked-"+suffix,lambda: (carrier:=current(session,source["id"])) is not None
         and (host:=current(session,target["id"])) is not None
         and math.dist(carrier["position"][:2],host["position"][:2])<=790)
+    if not inventory_source_retained(session,source,target,decision_start,f'delivery-attempt-{attempt}-docked'):
+        return None
+    return source,task
+
+
+def deliver_inventory(session,target,wait_for_processing=True,prepare_only=False):
+    """Prepare real mined cargo, then require the original delivery and processing."""
+    suffix=target['id']
+    continuing=bool(getattr(session.args,'resume_summary',None))
+    original_start=session.last_decision
+    original_processed=sum(session.states[entry(session,'Red','Commander')['name']]['resources']['processed_'+c] for c in ('blue','red'))
+    # One shared preparation budget bounds all attempts. Stop/selection can
+    # race an already running unload; neither cargo nor receipts are injected.
+    with session.preparation('stable real cargo before inventory interaction'):
+        for attempt in range(1,4):
+            prepared=prepare_inventory_source(session,target,attempt)
+            if prepared is not None:
+                source,task=prepared
+                break
+            if continuing:
+                from acceptance_session import PreparationSkipped
+                raise PreparationSkipped('The shared prepared inventory cargo was delivered before the requested interaction')
+        else:
+            from acceptance_session import PreparationSkipped
+            raise PreparationSkipped('Three genuine cargo loads were delivered before inventory preparation completed')
+    if prepare_only:
+        carrier=current(session,source['id'])
+        if carrier['inventory']['blue']+carrier['inventory']['red']<=0:
+            raise RuntimeError('The prepared handoff carrier no longer holds its real extracted cargo')
+        session.write_json(session.stage_output/'carried-cargo-before-handoff.json',{'source':carrier,'target':target,
+            'scope':'Real mined cargo, stopped and docked through original input. No delivery is submitted until the resource-group handoff commits.'})
+        return carrier
     # Direct input can transfer the vehicle to Commander before docking.
     # Route the interaction to the actual committed simulator at that point.
     owner=next(e for e in session.clients if e["player"]==identity(current(session,source["id"])["simulator"]))

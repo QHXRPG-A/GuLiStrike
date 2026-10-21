@@ -7,6 +7,7 @@
 #include "Network/GuLiHybridManifest.h"
 #include "Network/Private/GuLiHybridComponentState.h"
 #include "Network/Private/GuLiHybridStateArchive.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
@@ -72,7 +73,7 @@ struct FGuLiHybridFacilities
             if (!Job.Target.IsValid()) Job.Target=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/StrongholdGifts"),EGuLiHybridObjectKind::Building,
                 Source.Key.StableId.ToString(EGuidFormats::Digits)+FString::Printf(TEXT("/%u/%d"),Source.Key.LifeGeneration,Index));
             FGuLiHybridObjectState Object;
-            if (H->GetObject(Job.Target,Object))
+            if (H->GetObjectView(Job.Target,Object))
             {
                 if (Object.Parent!=Source.Key || Object.Definition!=FName(*FString::Printf(TEXT("building/%d"),Slot.DefinitionId)))
                 {H->Suspend(TEXT("Gift slot resolved to an unrelated object"));return;}
@@ -113,8 +114,11 @@ struct FGuLiHybridFacilities
             const FGuid Accepted=H->SubmitObjectOperation(Request);if (Accepted.IsValid()) {Job.Event=Accepted;Job.Submitted=true;}
         }
     }
+    static bool NeedsAdvance(const UActorComponent& Component,uint64 Tick)
+    {return Tick>=CastChecked<UGuLiStrongholdFacilitiesComponent>(&Component)->HybridNextAttempt;}
 };
 static const FGuLiHybridComponentCapabilityRegistration FacilitiesCapability({TEXT("StrongholdFacilities"),FGuLiHybridFacilities::Version,
     []()->const UClass* {return UGuLiStrongholdFacilitiesComponent::StaticClass();},FGuLiHybridFacilities::Capture,
     [](const UActorComponent& C,TConstArrayView<uint8> Bytes) {FGuLiHybridFacilities::FState V;return FGuLiHybridFacilities::Decode(C,Bytes,V);},
-    FGuLiHybridFacilities::Restore,nullptr,FGuLiHybridFacilities::Advance});
+    FGuLiHybridFacilities::Restore,nullptr,FGuLiHybridFacilities::Advance,nullptr,nullptr,nullptr,nullptr,nullptr,nullptr,
+    FGuLiHybridFacilities::NeedsAdvance});

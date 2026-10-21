@@ -7,6 +7,7 @@ entry. Missing or failed evidence stops the run; process survival is not a pass.
 from __future__ import annotations
 import argparse
 import csv
+import hashlib
 import itertools
 import json
 import os
@@ -117,6 +118,8 @@ def build_plan(args: argparse.Namespace, cpu: dict, mode: str, formation: str, p
     profile = getattr(args, 'profile', None)
     manifest = Path(args.manifest).resolve() if args.manifest else ROOT / f"Config/Hybrid/{('AcceptanceManifest' if profile else 'RuntimeManifest')}-{population}.json"
     common = ['-game', '-NoSound', '-NoSplash', '-NoLiveCoding', '-Unattended', '-NoScreenMessages', '-DisablePlugins=Fab', f'-GuLiNetMode={mode}', f'-GuLiAcceptanceRun={run_id}', f'-GuLiAcceptancePopulation={population}', f'-GuLiAcceptanceExtraFlights={(500 if population == 600 else 0)}', f'-GuLiAcceptanceFormation={formation}', f'-GuLiAcceptanceSeed={args.seed}', f'-GuLiAcceptanceCase={args.case}', f'-GuLiManifest={manifest}']
+    common.extend([f'-GuLiHotspotMask={getattr(args,"hotspot_mask",31)}',
+                   f'-GuLiGameplayWorkers={getattr(args,"gameplay_workers",2)}'])
     if profile:
         common.append('-CustomConfig=' + profile)
     cvars = 't.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0'
@@ -202,6 +205,10 @@ def check_preconditions(args: argparse.Namespace, plan: dict) -> None:
         if args.case in SCENARIOS and args.render_role != expected_rendered:
             raise RuntimeError('Rendered role differs from the integrated scenario')
         plan['baseline'] = freeze_baseline(ROOT, manifest_path)
+        plan['baseline']['launch_options']={'hotspot_mask':getattr(args,'hotspot_mask',31),
+                                             'gameplay_workers':getattr(args,'gameplay_workers',2)}
+        plan['baseline'].pop('identity')
+        plan['baseline']['identity']=hashlib.sha256(json.dumps(plan['baseline'],sort_keys=True).encode()).hexdigest()
         if args.case == 'steady' or (args.case in SCENARIOS and SCENARIOS[args.case][1] == 'fault' and not getattr(args, 'collect_only', False)):
             gate_folder = getattr(args, 'gates', None)
             if not gate_folder:
@@ -315,7 +322,10 @@ def launch(plan: dict, args: argparse.Namespace, writer=None) -> dict:
                 if not bootstrap_barrier and clients and all((s and s.get('world_ready') and (s.get('waiting_adapters') == 0) and (s.get('pending_assignments') == 0) for s in clients)) and sum(s.get('flight_load',{}).get('live_additional',0) for s in clients)==plan['extra_flights']:
                     integrated_session.control()
                     bootstrap_barrier = True
-                ready &= bool(bootstrap_barrier and integrated_session.settled())
+                # The first barrier can start ownership transfers. Require
+                # the actual current native flight count again at admission.
+                ready &= bool(bootstrap_barrier and integrated_session.settled()
+                    and sum(s.get('flight_load',{}).get('live_additional',0) for s in clients if s)==plan['extra_flights'])
             if ready:
                 break
             time.sleep(0.5)
@@ -457,13 +467,26 @@ def launch(plan: dict, args: argparse.Namespace, writer=None) -> dict:
                    'read_errors': read_errors})
     finally:
         write_json(output / 'control.json', {'schema': 1, 'run_id': plan['run_id'], 'phase': 'stop'})
-        deadline = time.monotonic() + 8
+        stopped_at = time.monotonic()
+        deadline = stopped_at + 60
+        result['shutdown'] = {}
         while time.monotonic() < deadline and any((process.poll() is None for _, process in records)):
+            for entry, process in records:
+                if process.poll() is not None and entry['name'] not in result['shutdown']:
+                    elapsed = time.monotonic() - stopped_at
+                    result['shutdown'][entry['name']] = {'seconds': elapsed, 'exit_code': process.returncode,
+                        'exceeded_previous_8s_grace': elapsed > 8, 'forced': False}
             time.sleep(0.2)
         for entry, process in records:
             if process.poll() is None:
+                result['shutdown'][entry['name']] = {'seconds': time.monotonic() - stopped_at,
+                    'exit_code': None, 'exceeded_previous_8s_grace': True, 'forced': True}
                 process.terminate()
                 result['forced_cleanup'].append(entry['name'])
+            elif entry['name'] not in result['shutdown']:
+                elapsed = time.monotonic() - stopped_at
+                result['shutdown'][entry['name']] = {'seconds': elapsed, 'exit_code': process.returncode,
+                    'exceeded_previous_8s_grace': elapsed > 8, 'forced': False}
             try:
                 process.wait(timeout=5)
             except subprocess.TimeoutExpired:
@@ -490,6 +513,9 @@ def main() -> int:
     parser.add_argument('--warmup', type=float, default=30)
     parser.add_argument('--capture', type=float, default=60)
     parser.add_argument('--seed', type=int, default=20261011)
+    parser.add_argument('--hotspot-mask',type=int,choices=range(512),default=31,
+                        help='Candidate options latched identically by every functional client')
+    parser.add_argument('--gameplay-workers',type=int,choices=(1,2,4),default=2)
     parser.add_argument('--case', choices=('bootstrap', 'ground', 'ground_combat', 'ship', 'ship_wingmen', 'engineer', 'construction', 'factory_construction', 'mining', 'flights', 'steady', *SCENARIOS), default='gameplay_merged')
     parser.add_argument('--gates', help='Directory containing current-build gameplay/fault evidence')
     parser.add_argument('--collect-only', action='store_true', help='Collect independent G/F evidence without granting or requiring a complete G gate')

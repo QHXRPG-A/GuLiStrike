@@ -5,13 +5,19 @@
 #if WITH_EDITOR
 
 #include "Editor.h"
+#include "Engine/GameViewportClient.h"
+#include "Engine/World.h"
+#include "Framework/Application/SlateApplication.h"
 #include "HAL/IConsoleManager.h"
+#include "Misc/App.h"
 #include "String/LexFromString.h"
 #include "PlayInEditorDataTypes.h"
 #include "Settings/LevelEditorPlaySettings.h"
 #include "UObject/Package.h"
 #include "UObject/StrongObjectPtr.h"
 #include "UObject/UObjectGlobals.h"
+#include "Widgets/SViewport.h"
+#include "Widgets/SWindow.h"
 
 namespace GuLiCommanderSelectionPIE
 {
@@ -136,6 +142,23 @@ namespace GuLiCommanderSelectionPIE
 		TEXT("gs.Commander.QA.StartPIE"),
 		TEXT("Queue standalone (1 player) or clients (2 players + dedicated server) in separate in-process PIE windows. Optional width height default to 1280 720. Uses transient Play settings; never saves a map."),
 		FConsoleCommandWithArgsDelegate::CreateStatic(&StartPIE));
+
+	FAutoConsoleCommand FocusPIECommand(
+		TEXT("gs.Commander.QA.FocusPIE"),
+		TEXT("Request foreground and input focus for the current visible PIE window before an authorized measurement."),
+		FConsoleCommandDelegate::CreateLambda([]
+		{
+			UWorld* World=GEditor?GEditor->PlayWorld:nullptr;
+			if (!World || !World->GetGameViewport() || !FSlateApplication::IsInitialized()) return;
+			const auto Viewport=World->GetGameViewport()->GetGameViewportWidget();
+			if (!Viewport) return;
+			auto& App=FSlateApplication::Get();
+			const auto Window=App.FindWidgetWindow(Viewport.ToSharedRef());
+			if (!Window || !Window->IsVisible() || App.GetActiveModalWindow()) return;
+			Window->BringToFront(true);
+			App.SetAllUserFocus(Viewport);
+			UE_LOG(LogGuLiStrike,Display,TEXT("Commander QA PIE focus requested; application_foreground=%d"),FApp::HasFocus());
+		}));
 }
 
 #endif // WITH_EDITOR

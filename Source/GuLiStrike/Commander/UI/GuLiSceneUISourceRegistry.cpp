@@ -2,6 +2,7 @@
 #include "Network/GuLiNetworkSettings.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+#include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -47,6 +48,7 @@ void UGuLiSceneUISourceRegistry::ActorSpawned(AActor* Actor)
 void UGuLiSceneUISourceRegistry::DiscoverActor(AActor* Actor)
 {
 	if (!IsValid(Actor)) return;
+	UGuLiCommanderLODSubsystem::NotifyActorChanged(Actor);
 	if (auto* Halo = Actor->FindComponentByClass<UGuLiOutpostPresentationComponent>())
 		RegisterSource(Halo, EGuLiSceneUISourceKind::OutpostHalo);
 }
@@ -57,6 +59,7 @@ void UGuLiSceneUISourceRegistry::DiscoverPending()
 }
 void UGuLiSceneUISourceRegistry::ActorEnded(AActor* Actor, EEndPlayReason::Type)
 {
+	UGuLiCommanderLODSubsystem::ForgetActor(Actor);
 	Sources.RemoveAllSwap([Actor](const FGuLiSceneUISource& S)
 	{ const auto* Component = Cast<UActorComponent>(S.Object.Get()); return S.Object.Get() == Actor || (Component && Component->GetOwner() == Actor) || !S.Object.IsValid(); });
 	++MembershipRevision; ++ContentRevision; ++PoseRevision;
@@ -75,7 +78,12 @@ void UGuLiSceneUISourceRegistry::UnregisterSource(const UObject* Source)
 void UGuLiSceneUISourceRegistry::NotifyChanged(UObject* Source, const EGuLiSceneUIChange Change)
 {
 	if (!IsValid(Source) || Source->IsTemplate() || Source->GetWorld() != GetWorld()) return;
-	if (Change == EGuLiSceneUIChange::Membership) ++MembershipRevision;
+	if (Change == EGuLiSceneUIChange::Membership)
+	{
+		++MembershipRevision;
+		if (auto* Actor = Cast<AActor>(Source)) UGuLiCommanderLODSubsystem::NotifyActorChanged(Actor);
+		else if (auto* Component = Cast<UActorComponent>(Source)) UGuLiCommanderLODSubsystem::NotifyActorChanged(Component->GetOwner());
+	}
 	if (Change == EGuLiSceneUIChange::Pose) ++PoseRevision; else ++ContentRevision;
 	for (auto& Entry : Sources) if (Entry.Object.Get() == Source)
     {++Entry.Revision;if (Change==EGuLiSceneUIChange::Pose) ++Entry.PoseRevision;else ++Entry.ContentRevision;}

@@ -39,6 +39,8 @@ static TAutoConsoleVariable<int32> CVarGuLiMissileClusterEnabled(TEXT("gs.Missil
 	TEXT("Production WM01 GPU rendering, enabled by default. 0 forces the fallback visual for diagnostics; gameplay is unchanged."));
 static TAutoConsoleVariable<int32> CVarGuLiWingmanWarnings(TEXT("gs.WingmanFlight.Warnings"),1,
 	TEXT("Local wingman ground warnings; 0 isolates flight presentation cost without changing authority."));
+static TAutoConsoleVariable<int32> CVarGuLiPreloadImpacts(TEXT("gs.CombatEffects.PreloadImpacts"),1,
+	TEXT("Prepare the existing impact channel and tier resources at world initialization, before the first hit. 0 selects lazy preparation."));
 
 bool UGuLiCombatEffectPresentationSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -51,11 +53,13 @@ void UGuLiCombatEffectPresentationSubsystem::Initialize(FSubsystemCollectionBase
 	Super::Initialize(Collection);
 	Collection.InitializeDependency<UGuLiCommanderDataSubsystem>();
 	Collection.InitializeDependency<UGuLiCommanderLODSubsystem>();
+	Collection.InitializeDependency<UGuLiVfxRegistrySubsystem>();
 	CommanderData = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	MissileClusters = NewObject<UGuLiMissileClusterPresentation>(this);
 	ImpactBatches = NewObject<UGuLiImpactBatchPresentation>(this);
 	MuzzleBatches = NewObject<UGuLiMuzzleBatchPresentation>(this);
 	WingmanFlights = NewObject<UGuLiWingmanProjectilePresentation>(this);
+	if (CVarGuLiPreloadImpacts.GetValueOnGameThread()!=0) ImpactBatches->Prepare(GetCatalog());
 	if (UGuLiNetworkSettings::CanPresent(GetWorld()))
 	{
 		Collection.InitializeDependency<UGuLiGroundWarningSubsystem>();
@@ -569,8 +573,15 @@ void UGuLiCombatEffectPresentationSubsystem::RefreshGuidanceWarning(const FGuid&
 void UGuLiCombatEffectPresentationSubsystem::PlayMachineGunImpact(const FGuLiCombatEffectState& State)
 {
 	if (State.Kind != EGuLiCombatEffectKind::LinearProjectile
-		|| (State.EndReason != EGuLiCombatEffectEndReason::Impact && State.EndReason != EGuLiCombatEffectEndReason::Blocked)
-		|| ServerTime() - State.SampleTime > 0.5f || !GetCatalog()) return;
+		|| (State.EndReason != EGuLiCombatEffectEndReason::Impact && State.EndReason != EGuLiCombatEffectEndReason::Blocked)) return;
+	const float Age=ServerTime()-State.SampleTime;
+	if (auto* Perf=GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>();Perf && Perf->IsCapturing())
+	{
+		Perf->Record(TEXT("Impact.Attempts"),1);
+		Perf->RecordSample(TEXT("Impact.AgeMs"),Age*1000.);
+		if (Age>0.5f) Perf->Record(TEXT("Impact.TooOld"),1);
+	}
+	if (Age>0.5f || !GetCatalog()) return;
 	const FGuLiEffectVisualVariant& Impact = Catalog->MachineGunImpact;
 	if (Impact.VfxId > 0 && FMath::IsFinite(Impact.MaximumLifetime) && Impact.MaximumLifetime > 0.0f)
 	{

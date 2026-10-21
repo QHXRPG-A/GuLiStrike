@@ -1,0 +1,66 @@
+{
+  "standard_compression": {
+    "sample_seconds": 30.007019098848104,
+    "network_deltas": {
+      "datagram_sent_bytes": 47564524,
+      "datagram_received_bytes": 36858590,
+      "peer_payload_encoded_messages": 57306,
+      "peer_payload_original_bytes": 136215000,
+      "peer_payload_encoded_bytes": 34349499,
+      "peer_payload_decode_failures": 0,
+      "datagram_send_failures": 0,
+      "receive_queue_overflows": 0,
+      "control_interruptions": 0
+    },
+    "async_deltas": {
+      "worker_ms": 20052.050299999315,
+      "main_apply_ms": 2202.412000000028,
+      "simulation_ms": 8041.804699999982,
+      "logical_steps": 1800,
+      "input_rejected": 0,
+      "result_backpressure": 0
+    },
+    "response_probe_count": 48,
+    "moved_units": 48,
+    "displacement_timing": "authoritative_mass_write_and_ordered_next_tick_observation_v3",
+    "command_final_receipt_latency_ms": {
+      "900001": 19.371699541807175,
+      "900002": 29.973700642585754
+    },
+    "cleanup_complete": true,
+    "logic_launch_option_confirmed": null,
+    "logic_launch_evidence": "Source propagation checked; owned logic log removed by normal session cleanup, no independent live child-option readback in this capture."
+  },
+  "fast_compression": {
+    "sample_seconds": 30.005072198808193,
+    "network_deltas": {
+      "datagram_sent_bytes": 51150905,
+      "datagram_received_bytes": 38489565,
+      "peer_payload_encoded_messages": 57914,
+      "peer_payload_original_bytes": 137894810,
+      "peer_payload_encoded_bytes": 37547471,
+      "peer_payload_decode_failures": 0,
+      "datagram_send_failures": 0,
+      "receive_queue_overflows": 0,
+      "control_interruptions": 0
+    },
+    "async_deltas": {
+      "worker_ms": 18596.346199999287,
+      "main_apply_ms": 2226.7365000000577,
+      "simulation_ms": 8012.61659999995,
+      "logical_steps": 1800,
+      "input_rejected": 0,
+      "result_backpressure": 0
+    },
+    "response_probe_count": 48,
+    "moved_units": 48,
+    "displacement_timing": "authoritative_mass_write_and_ordered_next_tick_observation_v3",
+    "command_final_receipt_latency_ms": {
+      "900001": 24.50699731707573,
+      "900002": 34.14679691195488
+    },
+    "cleanup_complete": true,
+    "logic_launch_option_confirmed": null,
+    "logic_launch_evidence": "Source propagation checked; owned logic log removed by normal session cleanup, no independent live child-option readback in this capture."
+  }
+}

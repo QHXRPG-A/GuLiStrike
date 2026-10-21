@@ -26,7 +26,7 @@ namespace
 	constexpr int32 Lanes[] = {0, 8, 24};
 	constexpr int32 Ids[] = {GuLiVfxIds::WM01MissileClusterMinimal, GuLiVfxIds::WM01MissileClusterLite, GuLiVfxIds::WM01MissileClusterFull};
 	const FName LODConsumer(TEXT("WM01MissileBatches"));
-	// The legacy Niagara quality array runs in the opposite direction to public LOD0/1/2.
+	// Niagara resource indices run in the opposite order to Full/Reduced/Minimal effect quality.
 	int32 ToNiagaraQuality(const EGuLiCommanderLODLevel Level)
 	{
 		switch (Level)

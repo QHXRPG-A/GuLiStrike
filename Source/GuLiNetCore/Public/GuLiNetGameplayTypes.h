@@ -51,7 +51,7 @@ enum class RelationKind : std::uint8_t { None, Supply, Phase, Parent };
 enum class CommitStatus : std::uint8_t
 {
     Committed, Duplicate, Deferred, BadRequest, WrongEpoch, Unauthorized, MissingObject,
-    TargetDead, FriendlyFire, TooOld, InvalidRule, InsufficientResources, InvalidReservation, Paused
+    TargetDead, FriendlyFire, TooOld, InvalidRule, InsufficientResources, InvalidReservation, Paused, Interrupted
 };
 // Per effect/pulse target limit, independent from a client's pending receipt queue.
 inline constexpr std::uint32_t MaximumEffectTargets = 4096;
@@ -117,6 +117,8 @@ struct StateRequirement {ObjectKey Object;std::string Capability;Revision Versio
 struct CommitResult
 {
     Id Event;
+    Id ResourceGroup;
+    Revision ResourceEpoch=0;
     TransactionKind Kind = TransactionKind::Damage;
     Team Faction = Team::None;
     CommitStatus Status = CommitStatus::BadRequest;

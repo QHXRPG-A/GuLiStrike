@@ -13,5 +13,5 @@ namespace GuLiMoveLatency
 	};
 	GULISTRIKE_API bool IsEnabled();
 	GULISTRIKE_API FContext Context(const UObject* Object, uint32 Command = 0, uint32 Batch = 0);
-	GULISTRIKE_API void Record(const TCHAR* Stage, const FContext& Context, int32 Members = 0, const TCHAR* Detail = TEXT(""));
+	GULISTRIKE_API void Record(const TCHAR* Stage, const FContext& Context, int32 Members = 0, const TCHAR* Detail = TEXT(""), double AtSeconds = 0);
 }

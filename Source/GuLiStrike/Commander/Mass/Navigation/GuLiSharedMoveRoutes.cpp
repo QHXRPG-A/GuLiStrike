@@ -2,6 +2,13 @@
 #include "NavigationSystem.h"
 #include "NavMesh/NavMeshPath.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "HAL/IConsoleManager.h"
+
+namespace
+{
+TAutoConsoleVariable<int32> CompleteReadyRoutes(TEXT("gs.Commander.CompleteReadyRoutes"),1,
+	TEXT("Index a completed shared path within its remaining work slice. Keeps the same time/query budgets; 0 defers indexing to a later visit."));
+}
 
 bool FGuLiDirectMoveCheck::Matches(const ANavigationData& NavData, uint32 NavGeneration,
 	const FNavLocation& Position, const FNavLocation& Destination) const
@@ -130,6 +137,7 @@ void FGuLiSharedMoveRoutePool::Tick(bool bAutomatic, UNavigationSystemV1& System
 	{
 		Cursor %= Routes.Num(); auto& R=*Routes[Cursor++];
 		if (R.bAutomatic!=bAutomatic) continue;
+		bool bQueried=false;
 		if (R.State==FGuLiSharedMoveRoute::EState::Queued)
 		{
 			if (!Budget.TakePath()) return;
@@ -160,8 +168,8 @@ void FGuLiSharedMoveRoutePool::Tick(bool bAutomatic, UNavigationSystemV1& System
 				CachedBytes-=R.Bytes(); R.Navigation={}; R.PolygonIndex.Empty(); R.Portals.Empty();
 				R.State=FGuLiSharedMoveRoute::EState::Unavailable; CachedBytes+=R.Bytes();
 			}
-			// One non-preemptible engine query per short work slice.
-			return;
+			bQueried=true;
+			if (CompleteReadyRoutes.GetValueOnGameThread()==0) return;
 		}
 		if (R.State==FGuLiSharedMoveRoute::EState::Indexing)
 		{
@@ -179,6 +187,9 @@ void FGuLiSharedMoveRoutePool::Tick(bool bAutomatic, UNavigationSystemV1& System
 			if (R.IndexCursor==R.Navigation.Nodes.Num()) { R.State=FGuLiSharedMoveRoute::EState::Ready; R.ReadyAt=FPlatformTime::Seconds(); }
 			CachedBytes=CachedBytes-Before+R.Bytes();
 		}
+		// A completed query may finish its cheap index while this same slice has
+		// time left. Never issue a second non-preemptible query in this call.
+		if (bQueried) return;
 	}
 }
 

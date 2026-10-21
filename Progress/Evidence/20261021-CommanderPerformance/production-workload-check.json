@@ -1,0 +1,459 @@
+{
+  "basis": "First-to-last native network sample differences; paired gameplay histories differ. Native windows end at frame boundaries: round 1 standard has 1801 steps, other windows have 1800, all consistent with 60 Hz within two endpoint steps. Not OS click-to-display acceptance.",
+  "rows": [
+    {
+      "round": 1,
+      "variant": "standard_compression",
+      "frame_intervals": {
+        "n": 1828,
+        "mean_ms": 16.409650546879686,
+        "p95_ms": 29.784198850393295,
+        "peak_ms": 59.06740203499794
+      },
+      "foreground_frames": 1829,
+      "background_frames": 0,
+      "editor_frames": {
+        "unavailable": 0,
+        "visible": 0,
+        "minimized": 1829,
+        "hidden": 0
+      },
+      "capture_seconds": 30.00832610204816,
+      "logical_steps": 1801,
+      "network_seconds": 30.00832450017333,
+      "network_deltas": {
+        "datagram_sent_bytes": 49551527,
+        "datagram_received_bytes": 37955254,
+        "peer_payload_encoded_messages": 59721,
+        "peer_payload_original_bytes": 142418125,
+        "peer_payload_encoded_bytes": 35993355,
+        "peer_payload_decode_failures": 0,
+        "datagram_send_failures": 0,
+        "receive_queue_overflows": 0,
+        "control_interruptions": 0
+      },
+      "async_deltas": {
+        "worker_ms": 21642.431199999344,
+        "main_apply_ms": 2278.190700000031,
+        "simulation_ms": 8017.4050999999745,
+        "logical_steps": 1801,
+        "input_rejected": 0,
+        "result_backpressure": 0
+      },
+      "response_probe_count": 48,
+      "moved_units": 48,
+      "movement_receipts": {
+        "900001": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        },
+        "900002": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        }
+      },
+      "live_units_at_end": 546,
+      "visual_deltas": {
+        "received_shots": 0,
+        "dropped_shots": 0,
+        "shots_too_old": 0,
+        "muzzle_accepted": 0,
+        "muzzle_born": 0,
+        "muzzle_expired": 0,
+        "muzzle_pose_unresolved": 0
+      },
+      "peak_peer_queue_bytes": 212899,
+      "cleanup_complete": true,
+      "source": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-63-production\\r1-standard_compression",
+      "profile_sha256": "eda128c8d6d56d16e793c007f2ce3e2edecafa068f845d33d7832b22a2dea169"
+    },
+    {
+      "round": 1,
+      "variant": "fast_compression",
+      "frame_intervals": {
+        "n": 1835,
+        "mean_ms": 16.341767902676352,
+        "p95_ms": 25.86210146546364,
+        "peak_ms": 55.10830134153366
+      },
+      "foreground_frames": 1836,
+      "background_frames": 0,
+      "editor_frames": {
+        "unavailable": 0,
+        "visible": 0,
+        "minimized": 1836,
+        "hidden": 0
+      },
+      "capture_seconds": 30.005740098655224,
+      "logical_steps": 1800,
+      "network_seconds": 30.005741599947214,
+      "network_deltas": {
+        "datagram_sent_bytes": 51057792,
+        "datagram_received_bytes": 38552788,
+        "peer_payload_encoded_messages": 57827,
+        "peer_payload_original_bytes": 137576326,
+        "peer_payload_encoded_bytes": 37456137,
+        "peer_payload_decode_failures": 0,
+        "datagram_send_failures": 0,
+        "receive_queue_overflows": 0,
+        "control_interruptions": 0
+      },
+      "async_deltas": {
+        "worker_ms": 18273.329099999297,
+        "main_apply_ms": 2215.66640000004,
+        "simulation_ms": 8143.9100999999555,
+        "logical_steps": 1800,
+        "input_rejected": 0,
+        "result_backpressure": 0
+      },
+      "response_probe_count": 48,
+      "moved_units": 48,
+      "movement_receipts": {
+        "900001": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        },
+        "900002": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        }
+      },
+      "live_units_at_end": 561,
+      "visual_deltas": {
+        "received_shots": 0,
+        "dropped_shots": 0,
+        "shots_too_old": 0,
+        "muzzle_accepted": 0,
+        "muzzle_born": 0,
+        "muzzle_expired": 0,
+        "muzzle_pose_unresolved": 0
+      },
+      "peak_peer_queue_bytes": 296884,
+      "cleanup_complete": true,
+      "source": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-63-production\\r1-fast_compression",
+      "profile_sha256": "d212d83670a60d54e938885a71ef151438666e537c00cf6c72feaf1b204fd69d"
+    },
+    {
+      "round": 2,
+      "variant": "standard_compression",
+      "frame_intervals": {
+        "n": 1791,
+        "mean_ms": 16.748030262826077,
+        "p95_ms": 29.092200100421906,
+        "peak_ms": 62.34459951519966
+      },
+      "foreground_frames": 1792,
+      "background_frames": 0,
+      "editor_frames": {
+        "unavailable": 0,
+        "visible": 0,
+        "minimized": 1792,
+        "hidden": 0
+      },
+      "capture_seconds": 30.011803399771452,
+      "logical_steps": 1800,
+      "network_seconds": 30.011807799339294,
+      "network_deltas": {
+        "datagram_sent_bytes": 47772057,
+        "datagram_received_bytes": 37176841,
+        "peer_payload_encoded_messages": 57665,
+        "peer_payload_original_bytes": 136820881,
+        "peer_payload_encoded_bytes": 34528805,
+        "peer_payload_decode_failures": 0,
+        "datagram_send_failures": 0,
+        "receive_queue_overflows": 0,
+        "control_interruptions": 0
+      },
+      "async_deltas": {
+        "worker_ms": 20185.564799999287,
+        "main_apply_ms": 2293.736500000029,
+        "simulation_ms": 8271.849499999975,
+        "logical_steps": 1800,
+        "input_rejected": 0,
+        "result_backpressure": 0
+      },
+      "response_probe_count": 48,
+      "moved_units": 48,
+      "movement_receipts": {
+        "900001": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        },
+        "900002": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        }
+      },
+      "live_units_at_end": 560,
+      "visual_deltas": {
+        "received_shots": 0,
+        "dropped_shots": 0,
+        "shots_too_old": 0,
+        "muzzle_accepted": 0,
+        "muzzle_born": 0,
+        "muzzle_expired": 0,
+        "muzzle_pose_unresolved": 0
+      },
+      "peak_peer_queue_bytes": 223047,
+      "cleanup_complete": true,
+      "source": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-63-production\\r2-standard_compression",
+      "profile_sha256": "bdccb60db28fdea5e1382c84bd9f015ba32f85e00e42ac9d02ae27d77074277c"
+    },
+    {
+      "round": 2,
+      "variant": "fast_compression",
+      "frame_intervals": {
+        "n": 1800,
+        "mean_ms": 16.664433889091015,
+        "p95_ms": 27.108997106552124,
+        "peak_ms": 59.390097856521606
+      },
+      "foreground_frames": 1801,
+      "background_frames": 0,
+      "editor_frames": {
+        "unavailable": 0,
+        "visible": 0,
+        "minimized": 1801,
+        "hidden": 0
+      },
+      "capture_seconds": 30.008397601544857,
+      "logical_steps": 1800,
+      "network_seconds": 30.00839789956808,
+      "network_deltas": {
+        "datagram_sent_bytes": 50564379,
+        "datagram_received_bytes": 38511679,
+        "peer_payload_encoded_messages": 57390,
+        "peer_payload_original_bytes": 136233579,
+        "peer_payload_encoded_bytes": 37038936,
+        "peer_payload_decode_failures": 0,
+        "datagram_send_failures": 0,
+        "receive_queue_overflows": 0,
+        "control_interruptions": 0
+      },
+      "async_deltas": {
+        "worker_ms": 18272.392099999553,
+        "main_apply_ms": 2306.028599999964,
+        "simulation_ms": 8111.340000000031,
+        "logical_steps": 1800,
+        "input_rejected": 0,
+        "result_backpressure": 0
+      },
+      "response_probe_count": 48,
+      "moved_units": 48,
+      "movement_receipts": {
+        "900001": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        },
+        "900002": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        }
+      },
+      "live_units_at_end": 558,
+      "visual_deltas": {
+        "received_shots": 0,
+        "dropped_shots": 0,
+        "shots_too_old": 0,
+        "muzzle_accepted": 0,
+        "muzzle_born": 0,
+        "muzzle_expired": 0,
+        "muzzle_pose_unresolved": 0
+      },
+      "peak_peer_queue_bytes": 206050,
+      "cleanup_complete": true,
+      "source": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-63-production\\r2-fast_compression",
+      "profile_sha256": "1bc69ccc54b30eea8e2d672f1e380ae428754e32edfb201617c58006fe774780"
+    },
+    {
+      "round": 3,
+      "variant": "standard_compression",
+      "frame_intervals": {
+        "n": 1802,
+        "mean_ms": 16.639546558393224,
+        "p95_ms": 29.86700087785721,
+        "peak_ms": 96.77499905228615
+      },
+      "foreground_frames": 1803,
+      "background_frames": 0,
+      "editor_frames": {
+        "unavailable": 0,
+        "visible": 0,
+        "minimized": 1803,
+        "hidden": 0
+      },
+      "capture_seconds": 30.00181619822979,
+      "logical_steps": 1800,
+      "network_seconds": 30.001818098127842,
+      "network_deltas": {
+        "datagram_sent_bytes": 48865096,
+        "datagram_received_bytes": 36440822,
+        "peer_payload_encoded_messages": 58872,
+        "peer_payload_original_bytes": 140434841,
+        "peer_payload_encoded_bytes": 35477786,
+        "peer_payload_decode_failures": 0,
+        "datagram_send_failures": 0,
+        "receive_queue_overflows": 0,
+        "control_interruptions": 0
+      },
+      "async_deltas": {
+        "worker_ms": 20895.45899999937,
+        "main_apply_ms": 2277.9282000000403,
+        "simulation_ms": 8138.403599999961,
+        "logical_steps": 1800,
+        "input_rejected": 0,
+        "result_backpressure": 0
+      },
+      "response_probe_count": 48,
+      "moved_units": 48,
+      "movement_receipts": {
+        "900001": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        },
+        "900002": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        }
+      },
+      "live_units_at_end": 571,
+      "visual_deltas": {
+        "received_shots": 0,
+        "dropped_shots": 0,
+        "shots_too_old": 0,
+        "muzzle_accepted": 0,
+        "muzzle_born": 0,
+        "muzzle_expired": 0,
+        "muzzle_pose_unresolved": 0
+      },
+      "peak_peer_queue_bytes": 201548,
+      "cleanup_complete": true,
+      "source": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-63-production\\r3-standard_compression",
+      "profile_sha256": "0048cb3a4410f8ef775237856293a235cc4ab7217763782481640f40281f8061"
+    },
+    {
+      "round": 3,
+      "variant": "fast_compression",
+      "frame_intervals": {
+        "n": 1755,
+        "mean_ms": 17.090904615034066,
+        "p95_ms": 30.1394984126091,
+        "peak_ms": 55.282700806856155
+      },
+      "foreground_frames": 1756,
+      "background_frames": 0,
+      "editor_frames": {
+        "unavailable": 0,
+        "visible": 0,
+        "minimized": 1756,
+        "hidden": 0
+      },
+      "capture_seconds": 30.00621009990573,
+      "logical_steps": 1800,
+      "network_seconds": 30.006213903427124,
+      "network_deltas": {
+        "datagram_sent_bytes": 51638387,
+        "datagram_received_bytes": 38555596,
+        "peer_payload_encoded_messages": 58320,
+        "peer_payload_original_bytes": 139397767,
+        "peer_payload_encoded_bytes": 37983859,
+        "peer_payload_decode_failures": 0,
+        "datagram_send_failures": 0,
+        "receive_queue_overflows": 0,
+        "control_interruptions": 0
+      },
+      "async_deltas": {
+        "worker_ms": 18775.438699999253,
+        "main_apply_ms": 2245.5590000000134,
+        "simulation_ms": 8419.867999999991,
+        "logical_steps": 1800,
+        "input_rejected": 0,
+        "result_backpressure": 0
+      },
+      "response_probe_count": 48,
+      "moved_units": 48,
+      "movement_receipts": {
+        "900001": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        },
+        "900002": {
+          "replies": 1,
+          "accepted": true,
+          "result": 0
+        }
+      },
+      "live_units_at_end": 556,
+      "visual_deltas": {
+        "received_shots": 0,
+        "dropped_shots": 0,
+        "shots_too_old": 0,
+        "muzzle_accepted": 0,
+        "muzzle_born": 0,
+        "muzzle_expired": 0,
+        "muzzle_pose_unresolved": 0
+      },
+      "peak_peer_queue_bytes": 220898,
+      "cleanup_complete": true,
+      "source": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\pair-63-production\\r3-fast_compression",
+      "profile_sha256": "e392b1f6a0839dbe55bd8d33a2dd87c599e1d35fea57ed66f369c6ebd4cf2c19"
+    }
+  ],
+  "combined": {
+    "standard_compression": {
+      "network_deltas": {
+        "datagram_sent_bytes": 146188680,
+        "datagram_received_bytes": 111572917,
+        "peer_payload_encoded_messages": 176258,
+        "peer_payload_original_bytes": 419673847,
+        "peer_payload_encoded_bytes": 105999946,
+        "peer_payload_decode_failures": 0,
+        "datagram_send_failures": 0,
+        "receive_queue_overflows": 0,
+        "control_interruptions": 0
+      },
+      "async_deltas": {
+        "worker_ms": 62723.454999998,
+        "main_apply_ms": 6849.8554000001,
+        "simulation_ms": 24427.65819999991,
+        "logical_steps": 5401,
+        "input_rejected": 0,
+        "result_backpressure": 0
+      }
+    },
+    "fast_compression": {
+      "network_deltas": {
+        "datagram_sent_bytes": 153260558,
+        "datagram_received_bytes": 115620063,
+        "peer_payload_encoded_messages": 173537,
+        "peer_payload_original_bytes": 413207672,
+        "peer_payload_encoded_bytes": 112478932,
+        "peer_payload_decode_failures": 0,
+        "datagram_send_failures": 0,
+        "receive_queue_overflows": 0,
+        "control_interruptions": 0
+      },
+      "async_deltas": {
+        "worker_ms": 55321.15989999811,
+        "main_apply_ms": 6767.254000000017,
+        "simulation_ms": 24675.118099999978,
+        "logical_steps": 5400,
+        "input_rejected": 0,
+        "result_backpressure": 0
+      }
+    }
+  },
+  "all_workload_guards_passed": true,
+  "all_clean_shutdown": true
+}

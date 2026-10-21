@@ -20,7 +20,8 @@ const FGuLiCommanderPresentedSoldier* AGuLiCommanderPresentationActor::GetQueryS
 	if (!Source || Source->bMainViewVisible || !GuLiClientPresentation::OffscreenUnitsEnabled() || !GetWorld()) return Source;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_DemandPose);
 	const double Now = GetWorld()->GetTimeSeconds();
-	const double RenderTime = Source->RenderServerTimeSeconds + FMath::Clamp(Now - Source->LastRenderClockLocalTime, 0.0, .25);
+	const double RenderTime = Source->RenderServerTimeSeconds + (Source->bUsingLocalPose ? 0.0
+		: FMath::Clamp(Now - Source->LastRenderClockLocalTime, 0.0, .25));
 	auto& Cached = DemandPoses.FindOrAdd(Id);
 	if (Cached.Frame == GFrameCounter && Cached.Revision == Source->PoseRevision && Cached.RenderTime == RenderTime) return &Cached.Soldier;
 	Cached.Frame = GFrameCounter; Cached.Revision = Source->PoseRevision; Cached.RenderTime = RenderTime;
@@ -28,10 +29,12 @@ const FGuLiCommanderPresentedSoldier* AGuLiCommanderPresentationActor::GetQueryS
 	auto& Pose = Cached.Soldier;
 	Pose.RenderServerTimeSeconds = RenderTime;
 	FTransform Current;
-	if (!EvaluateAuthoritativeTransform(Pose, RenderTime, Current)) return Source;
+	if (Pose.bUsingLocalPose)
+		Current = FTransform(FRotator(0.0, Pose.LocalPose.FacingYawDegrees, 0.0), Pose.LocalPose.Location);
+	else if (!EvaluateAuthoritativeTransform(Pose, RenderTime, Current)) return Source;
 	Pose.AuthoritativeTransform = Current;
 	// Query evaluation cannot consume prediction/recoil queues or write an ISM instance.
-	const_cast<AGuLiCommanderPresentationActor*>(this)->ApplyPrediction(Id, Now, Current, false);
+	if (!Pose.bUsingLocalPose) const_cast<AGuLiCommanderPresentationActor*>(this)->ApplyPrediction(Id, Now, Current, false);
 	if (auto* Contacts = GetWorld()->GetSubsystem<UGuLiGroundMassContactSubsystem>()) Contacts->ApplyContactPresentation(Id, Current);
 	const FTransform Before = Pose.PresentedTransform;
 	Pose.PresentedTransform = Current; Pose.bHasPresentedTransform = true;
@@ -106,10 +109,10 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 		Soldier.PreviousVATPlayback = Soldier.VATPlayback;
 		const auto& Samples = Soldier.Samples;
 		FVector VATVelocity = FVector::ZeroVector;
-		if (!Samples.IsEmpty())
+		if (Soldier.bUsingLocalPose || !Samples.IsEmpty())
 		{
-			const auto* A = &Samples[0]; const auto* B = A;
-			for (const auto& Sample : Samples)
+			const auto* A = Soldier.bUsingLocalPose ? &Soldier.LocalPose : &Samples[0]; const auto* B = A;
+			if (!Soldier.bUsingLocalPose) for (const auto& Sample : Samples)
 			{
 				B = &Sample;
 				if (Sample.ServerTimeSeconds >= Soldier.RenderServerTimeSeconds) break;
@@ -164,11 +167,11 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 		const double PreviousPoseTime = Soldier.MechanicalVisual.PoseTime;
 		const bool bResetVisual = bResetPose;
 		const auto& Samples = Soldier.Samples;
-		if (!Samples.IsEmpty())
+		if (Soldier.bUsingLocalPose || !Samples.IsEmpty())
 		{
-			const auto* A = &Samples[0];
+			const auto* A = Soldier.bUsingLocalPose ? &Soldier.LocalPose : &Samples[0];
 			const auto* B = A;
-			for (const auto& Sample : Samples)
+			if (!Soldier.bUsingLocalPose) for (const auto& Sample : Samples)
 			{
 				B = &Sample;
 				if (Sample.ServerTimeSeconds >= Soldier.RenderServerTimeSeconds) break;

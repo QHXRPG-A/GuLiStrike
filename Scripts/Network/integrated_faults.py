@@ -1,4 +1,4 @@
-"""Real peer faults and ownership transfer; no periodic world snapshot or rollback."""
+"""Real peer faults, ownership transfer and current-state resource recovery."""
 from __future__ import annotations
 import copy
 import json
@@ -355,10 +355,6 @@ def service_restart(session):
 
 
 def ownership_handoff(session):
-    manifest=json.loads(Path(session.plan['manifest']).read_text(encoding='utf-8-sig'))
-    if getattr(session.args,'collect_only',False) and manifest.get('strings',{}).get('acceptance/preparation')!='gf-fast-spatial-v2':
-        from acceptance_session import PreparationSkipped
-        raise PreparationSkipped('Resource work/newborn handoff needs the admitted production and loaded-inventory fixtures skipped in G; do not repeat that preparation here.')
     from integrated_ownership import run_handoff_faults
     run_handoff_faults(session)
 
@@ -385,9 +381,22 @@ def retained_source_work(session):
                 'aim_x':aim[0],'aim_y':aim[1],'aim_z':aim[2],'sprint':False,'fire':True,'rocket':False}])
             session.wait('original-native-hit-held',lambda:fault(session,source).get('intercepted',0)>0)
         session.control()
-        session.legacy('ground_combat_acceptance','ground_combat',arguments={'target_return_fire':True,'history_route_required':False})
+        # The original Blue hit is already held above. Keep that source from
+        # creating hundreds of extra hits while Red performs the real kill:
+        # continued return fire exhausts the bounded hold and kills Red first.
+        # This preserves the required attack-before-death ordering and does
+        # not change health, damage, cadence or the all-client death assertion.
+        # The duel already has a validated clear lane. Use the existing short
+        # approach fixture, retaining real movement, fire and all-client death;
+        # the unrelated map-wide tour can take a fleeing target out of sight.
+        session.legacy('ground_combat_acceptance','ground_combat',arguments={'target_return_fire':False,'history_route_required':False,'continue_remaining':True})
         session.refresh()
         events={identity(m['event']) for m in fault(session,source).get('messages',[])}
+        session.write_json(session.stage_output/'post-source-death-before-release.json',{
+            'source':source_object['id'],'fault':fault(session,source),'original_events':sorted(events),
+            'already_decided':{e:session.decisions[e] for e in events if e in session.decisions},
+            'source_lives':{e['name']:next((o for o in session.states[e['name']]['scene_objects']
+                if o['id']==source_object['id']),None) for e in session.clients}})
         if not events or any(e in session.decisions for e in events):
             raise RuntimeError('Source death requires original hit work held before its damage decision')
         dead=all(any(o['id']==source_object['id'] and o['life']>=2 for o in session.states[e['name']]['scene_objects']) for e in session.clients)
@@ -449,16 +458,43 @@ def ground_handoff_stability(session):
     session.prove('ground_handoff_stability',True,'Three native Ground routes and real object handoffs, each followed by 60 seconds without a world pause/reset',paths)
 
 
+def hybrid_sync_mixed(session):
+    """The synchronization regression shares one room and its accumulated history."""
+    from integrated_acceptance import prepare_cohort
+    from integrated_ownership import resource_group, run_selection, run_ui_selection_handoff, resource_work_handoff
+    from integrated_commander import buildings, teleport_landing, teleport_cancel
+    from integrated_roles import fixed_reconnect
+    from integrated_supply import unpaid
+    prepare_cohort(session)
+    resource_group(session)
+    run_selection(session)
+    run_ui_selection_handoff(session)
+    unpaid(session)
+    admitted=buildings(session)
+    teleport_landing(session)
+    teleport_cancel(session)
+    resource_work_handoff(session,admitted)
+    fixed_reconnect(session)
+    # Deliberate source death is last; production setup needs the living Blue
+    # Ground participant to release population through real weapon damage.
+    retained_source_work(session)
+
+
 def run(session):
     from integrated_ui_rebind import run as ui_rebind
+    from integrated_resource_recovery import owner_process_loss, backup_process_loss
     from integrated_remaining import attempt
     from runtime_evidence import RuntimeEvidenceUnavailable
-    from integrated_ownership import verify_member_join, ordinary_handoff_faults
+    from integrated_ownership import verify_member_join, ordinary_handoff_faults, run_ui_selection_handoff
     failures=[]
-    phases=[('independent-progress',independent_progress),('transport',transport),
+    phases=[('hybrid-sync-mixed',hybrid_sync_mixed),
+            ('selection-ui-handoff',run_ui_selection_handoff),
+            ('independent-progress',independent_progress),('transport',transport),
             ('service-restart',service_restart),('ground-handoff-stability',ground_handoff_stability),
             ('business-idempotence',business_duplicates),
             ('ordinary-handoff',ordinary_handoff_faults),('ownership-handoff',ownership_handoff),
+            ('resource-owner-process-loss',owner_process_loss),
+            ('resource-backup-process-loss',backup_process_loss),
             # Population setup needs the living Blue Ground shooter. Complete
             # resource/newborn preparation before deliberately killing it.
             ('retained-source-work',retained_source_work),
@@ -467,6 +503,10 @@ def run(session):
             ('ui-rebind',ui_rebind),('member-loss-rejoin',role_lifecycle),
             ('stale-versions',stale_versions),('member-join',verify_member_join),('empty-team',empty_team)]
     requested=getattr(session.args,'collect_fault_steps',None)
+    if not requested:
+        # This focused composition is opt-in. The existing full F suite keeps
+        # its own independent preparation and assertion sequence.
+        phases=[phase for phase in phases if phase[0] not in ('hybrid-sync-mixed','selection-ui-handoff')]
     if requested:
         available={label for label,_ in phases}
         if set(requested)-available:
@@ -481,8 +521,11 @@ def run(session):
     if manifest.get('strings',{}).get('acceptance/preparation')=='gf-fast-spatial-v2' and any(name=='ownership-handoff' for name,_ in phases):
         def prepare_hosts(s):
             from integrated_commander import prepare_construction_site,prepare_population,construct,fund
+            # This fault case checks snapshot recovery. A separate gameplay
+            # case owns the real death-release assertion; never fake its proof.
+            s.population_preparation_only=True
             prepare_construction_site(s)
-            prepare_population(s,1)
+            prepare_population(s,32,target_limit=50)
             admitted={}
             for definition,offset in ((4,(0,1200)),(101,(0,-1200)),(102,(3600,-2400))):
                 construct(s,definition,offset,admitted)

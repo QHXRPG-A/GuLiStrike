@@ -212,6 +212,7 @@ private:
 	bool TryIssueSelectionAtCursor();
 	// 本地创建移动请求并启动有限表现预测；网络结果稍后通过 ACK 更新。
 	bool TryIssueMoveAtCursor();
+	void BeginLocalMoveFeedback(uint32 CommandId, const FVector& Target, double InputSeconds);
 	void ClearSelection();
 	void ZoomCameraIn();
 	void ZoomCameraOut();

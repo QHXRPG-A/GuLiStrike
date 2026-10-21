@@ -1,5 +1,6 @@
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
+#include "Commander/Network/GuLiMoveLatency.h"
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
@@ -34,13 +35,24 @@ void AGuLiCommanderPlayerController::HandleLocalMenu()
 }
 bool AGuLiCommanderPlayerController::IssueMapMove(const FVector& Point,bool bAppend)
 {
+	const double InputSeconds=FPlatformTime::Seconds();
 	if(!CanIssueCommanderOrders() || Point.ContainsNaN() || (!HasConfirmedSelection() && !NetSyncComponent->HasUnresolvedSelectionIntent())) return false;
 	FGuLiUnitTaskCommand Command; Command.CommandId=AllocateMoveCommandId();
 	Command.SelectionRevision=NetSyncComponent->GetSelectionState().SelectionRevision;
 	Command.Target=Point; Command.bGroundMoveOnly=true;
 	Command.Disposition=bAppend?EGuLiTaskDisposition::Append:EGuLiTaskDisposition::Replace;
-	LatestMoveIntentCommandId=Command.CommandId; NetSyncComponent->SubmitOrderedTask(Command);
+	BeginLocalMoveFeedback(Command.CommandId,Point,InputSeconds);
+	NetSyncComponent->SubmitOrderedTask(Command);
 	if(!bAppend) ActivateSelectionTool(); return true;
+}
+void AGuLiCommanderPlayerController::BeginLocalMoveFeedback(uint32 CommandId,const FVector& Target,double InputSeconds)
+{
+	LatestMoveIntentCommandId=CommandId;PendingMoveTarget=Target;
+	CommandLineStart=FindConfirmedSelectionCenter();CommandLineEnd=Target;
+	CommandLineState=EGuLiCommandLineState::Pending;CommandLineFadeDurationSeconds=2.5f;
+	CommandLineExpireTime=GetWorld()?GetWorld()->GetTimeSeconds()+CommandLineFadeDurationSeconds:0.;
+	if (GuLiMoveLatency::IsEnabled())
+		GuLiMoveLatency::Record(TEXT("local-input"),GuLiMoveLatency::Context(this,CommandId),0,TEXT("controller input; not OS delivery"),InputSeconds);
 }
 void AGuLiCommanderPlayerController::InvokeHUDCommand(FName Action)
 {

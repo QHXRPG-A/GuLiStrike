@@ -5,6 +5,7 @@
 
 static TAutoConsoleVariable<int32> CVarWorldEffectBounds(TEXT("gs.Effects.BoundsCull"),1,TEXT("0 conservatively admits world-effect bounds for a runtime comparison."));
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+#include "Commander/UI/GuLiSceneUISourceRegistry.h"
 
 #include "CoreGlobals.h"
 #include "Engine/GameViewportClient.h"
@@ -32,7 +33,8 @@ namespace GuLiCommanderLOD
 		{TEXT("mid.hold_distance_cm"), &FGuLiCommanderLODSettings::MidHoldDistance},
 		{TEXT("mid.enter_screen"), &FGuLiCommanderLODSettings::MidEnterScreen},
 		{TEXT("mid.hold_screen"), &FGuLiCommanderLODSettings::MidHoldScreen},
-		{TEXT("minimum_residence_seconds"), &FGuLiCommanderLODSettings::MinimumResidenceSeconds}
+		{TEXT("minimum_residence_seconds"), &FGuLiCommanderLODSettings::MinimumResidenceSeconds},
+		{TEXT("mesh_reduced.start_height_m"), &FGuLiCommanderLODSettings::MeshReducedStartHeightMeters}
 	};
 	const FField* FindField(const FString& Key)
 	{
@@ -86,10 +88,21 @@ void UGuLiCommanderLODSubsystem::Initialize(FSubsystemCollectionBase& Collection
 		ConfigKeys.Reset();
 	}
 	EffectiveSettings = BaselineSettings;
+	Collection.InitializeDependency<UGuLiSceneUISourceRegistry>();
+	if (auto* Sources = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>())
+	{
+		TArray<FGuLiSceneUISource> Snapshot;
+		Sources->GetSnapshot(Snapshot);
+		for (const auto& Source : Snapshot)
+			if (auto* Actor = Cast<AActor>(Source.Object.Get())) PendingMeshActors.AddUnique(Actor);
+	}
 }
 
 void UGuLiCommanderLODSubsystem::Deinitialize()
 {
+	for (auto& Pair : MeshEntries) RestoreMeshEntry(Pair.Value);
+	MeshEntries.Reset();
+	PendingMeshActors.Reset();
 	Views.Reset();
 	ConsumerStats.Reset();
 	OverrideKeys.Reset();
@@ -121,7 +134,12 @@ void UGuLiCommanderLODSubsystem::EnsureViews()
 		View.Position = Projection.ViewOrigin;
 		View.ProjectionScale = Scale;
 		if (const auto* Camera = Cast<AGuLiCommanderCameraPawn>(Controller->GetViewTarget()); Camera && Camera->HasCameraConfig())
-			View.CameraLevel = static_cast<EGuLiCommanderLODLevel>(Camera->GetCameraTier());
+		{
+			View.PresentationTier = GuLiPresentationLOD::Resolve(Camera->GetTargetHeightMeters(),
+				EffectiveSettings.MeshReducedStartHeightMeters, Camera->GetCameraConfig().TacticalStartHeightMeters,
+				Camera->IsOverviewPresentation());
+			View.CameraLevel = GuLiPresentationLOD::EffectDetail(View.PresentationTier.GetValue());
+		}
 		GetViewFrustumBounds(View.Frustum, Projection.ComputeViewProjectionMatrix(), true);
 	}
 	ViewUpdateMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.;
@@ -284,6 +302,7 @@ bool UGuLiCommanderLODSubsystem::SetSetting(const FString& Key, const FString& V
 	Candidate.*(Field->Member) = Parsed;
 	if (!Candidate.Validate(Error)) return false;
 	EffectiveSettings = Candidate;
+	ViewFrame = MAX_uint64;
 	OverrideKeys.Add(Field->Key);
 	return true;
 }
@@ -293,6 +312,7 @@ bool UGuLiCommanderLODSubsystem::ResetSetting(const FString& KeyOrAll, FString& 
 	if (KeyOrAll.Equals(TEXT("all"), ESearchCase::IgnoreCase))
 	{
 		EffectiveSettings = BaselineSettings;
+		ViewFrame = MAX_uint64;
 		OverrideKeys.Reset();
 		Error.Reset();
 		return true;
@@ -303,6 +323,7 @@ bool UGuLiCommanderLODSubsystem::ResetSetting(const FString& KeyOrAll, FString& 
 	Candidate.*(Field->Member) = BaselineSettings.*(Field->Member);
 	if (!Candidate.Validate(Error)) { Error += TEXT(" Reset all to restore the complete baseline."); return false; }
 	EffectiveSettings = Candidate;
+	ViewFrame = MAX_uint64;
 	OverrideKeys.Remove(Field->Key);
 	return true;
 }

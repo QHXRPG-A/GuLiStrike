@@ -52,6 +52,9 @@ private:
 	const FAdvanceGroup* FindGroup(FGuLiSoldierId Soldier) const;
 	void ObserveGroup(FAdvanceGroup& Group);
 	TArray<FAdvanceGroup> Groups;
+	// Derived lookup only; checkpoints continue to store the ordered groups.
+	mutable TMap<FGuLiSoldierId,int32> GroupIndex;
+	mutable bool bGroupIndexDirty = true;
 	uint32 DecisionCursor = 0;
 	int32 RemainingMoveQueries = 4;
 	TArray<EGuLiTeam> ObservedOwners;

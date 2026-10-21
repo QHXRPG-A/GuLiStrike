@@ -1,5 +1,6 @@
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Gameplay/Data/GuLiGameText.h"
 #include "Commander/Orders/GuLiUnitTaskSettings.h"
 #include "Commander/Behavior/GuLiCommanderBehaviorSchema.h"
@@ -512,7 +513,7 @@ EGuLiCommanderWorkResult UGuLiUnitTaskSubsystem::GetWorkResult(FGuLiTaskUnitId U
 	return Work ? Work->GetBehaviorResult() : EGuLiCommanderWorkResult::None;
 }
 
-uint32 UGuLiUnitTaskSubsystem::GetBehaviorFacts(FGuLiTaskUnitId Unit) const
+uint32 UGuLiUnitTaskSubsystem::GetBehaviorFacts(FGuLiTaskUnitId Unit,uint32 Mask) const
 {
 	using namespace GuLiCommanderBehaviorFacts;
 	const auto* State = States.Find(Unit); if (!State) return 0;
@@ -541,21 +542,21 @@ uint32 UGuLiUnitTaskSubsystem::GetBehaviorFacts(FGuLiTaskUnitId Unit) const
 			break;
 		}
 	}
-	if (GetTaskSeconds() >= State->NextAutomaticTime)
+	if ((Mask & AutomaticReady) && GetTaskSeconds() >= State->NextAutomaticTime)
 		if (const auto* Policy = GuLiCommanderBehavior::FindPolicy(*GetWorld(), State->Context.UnitTypeId); Policy && Policy->bAutoActivate)
 			for (const auto& Entry : State->AutomaticBehaviors)
 				if (!Entry.bConsumed && Entry.BehaviorId == Policy->GetWireId()) { Facts |= AutomaticReady; break; }
-	if (const auto* Miner = Cast<AGuLiMiningVehiclePawn>(State->Context.Pawn.Get()))
+	if (const auto* Miner = (Mask & (Cargo|RetryReady|WorkComplete|ReturnFirst))?Cast<AGuLiMiningVehiclePawn>(State->Context.Pawn.Get()):nullptr)
 	{
 		if (Miner->GetCargo().Blue + Miner->GetCargo().Red > 0) Facts |= Cargo;
 		if (Miner->IsBehaviorRetryReady()) Facts |= RetryReady;
 		if (Miner->IsManagedTaskComplete()) Facts |= WorkComplete;
 		if (Miner->NeedsReturnBeforeMining()) Facts |= ReturnFirst;
 	}
-	if (const auto* Pawn = State->Context.Pawn.Get())
+	if (const auto* Pawn = (Mask & Suspended)?State->Context.Pawn.Get():nullptr)
 		if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(Pawn)
 			|| Pawn->FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsRouting()) Facts |= Suspended;
-	if (State->ActiveOperation.IsValid())
+	if ((Mask & (ControlChanged|OperationStale)) && State->ActiveOperation.IsValid())
 	{
 		const auto Desired = State->bCancelPending ? EGuLiCommanderControlState::SafeExit
 			: State->bStopped ? EGuLiCommanderControlState::Stopped
@@ -563,7 +564,7 @@ uint32 UGuLiUnitTaskSubsystem::GetBehaviorFacts(FGuLiTaskUnitId Unit) const
 		if (State->OperationControl != Desired) Facts |= ControlChanged;
 		if (!IsBehaviorOperationCurrent(Unit, State->ActiveOperation)) Facts |= OperationStale;
 	}
-	return Facts;
+	return Facts & Mask;
 }
 
 bool UGuLiUnitTaskSubsystem::NeedsBehaviorStep(FGuLiTaskUnitId Unit) const
@@ -834,7 +835,28 @@ void UGuLiUnitTaskSubsystem::AdvanceTasks(float DeltaTime)
 		if (auto* Mass = GetWorld()->GetSubsystem<UMassEntitySubsystem>(); Mass && MassTreeProcessor)
 		{
 			UE::Mass::FProcessingContext Context(Mass->GetMutableEntityManager(), Round == 0 ? BehaviorDelta : 0.f);
-			UE::Mass::Executor::Run(*MassTreeProcessor, Context);
+			if (Round>0)
+			{
+				// Round zero also releases instances whose task state disappeared.
+				// Later zero-time rounds only revisit unfinished local state trees.
+				TArray<FMassEntityHandle> Entities;
+				auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+				if (Authority) for (const auto& Pair:States)
+				{
+					FMassEntityHandle Entity;
+					if (!Pair.Key.bActor && !Pair.Value.bBehaviorStepDone && HasTaskSimulation(Pair.Value)
+						&& Authority->FindSoldierEntity(FGuLiSoldierId(Pair.Key.Id),Entity)) Entities.Add(Entity);
+				}
+				TArray<FMassArchetypeEntityCollection> Collections;
+				UE::Mass::Utils::CreateEntityCollections(Mass->GetEntityManager(),Entities,
+					FMassArchetypeEntityCollection::NoDuplicates,Collections);
+				if (!Collections.IsEmpty())
+				{
+					UMassProcessor* Processor=MassTreeProcessor;
+					UE::Mass::Executor::RunProcessorsView(MakeArrayView(&Processor,1),Context,Collections);
+				}
+			}
+			else UE::Mass::Executor::Run(*MassTreeProcessor, Context);
 		}
 		CommitBehaviorRequests();
 		bool bPending = false;

@@ -76,24 +76,32 @@ public:
     bool Commit(Id Planner,const OwnerWork& Work);
     void Cancel(Id Planner,Id Event,Id Proposal);
     bool Resume(OwnerWork& Work);
+    struct ImportStats {std::uint64_t ReusedHistory=0,ReusedHistoryBytes=0;};
     bool Import(Id Owner,const std::vector<StateFragment>& Fragments,bool Handoff=false,
-        const std::map<ObjectKey,Authority>* AdmittedBirths=nullptr,std::string* ImportFailureReason=nullptr);
+        const std::map<ObjectKey,Authority>* AdmittedBirths=nullptr,std::string* ImportFailureReason=nullptr,ImportStats* Stats=nullptr);
     using FragmentVisitor=std::function<bool(const StateFragment&)>;
     // Synchronous repeatable reads of one immutable cut. Payloads need only
     // remain resident for the visitor call; all validation precedes live writes.
     using FragmentSource=std::function<bool(const FragmentVisitor&)>;
     bool ImportStream(Id Owner,const FragmentSource& Read,bool Handoff=false,
-        const std::map<ObjectKey,Authority>* AdmittedBirths=nullptr,std::string* ImportFailureReason=nullptr);
+        const std::map<ObjectKey,Authority>* AdmittedBirths=nullptr,std::string* ImportFailureReason=nullptr,ImportStats* Stats=nullptr);
     std::vector<StateFragment> Export(std::span<const ObjectKey> Objects) const;
+    std::vector<StateFragment> ExportCurrent(std::span<const ObjectKey> Objects) const;
+    Bytes ExportCurrentIdentity(std::span<const ObjectKey> Objects) const;
+    bool ReplaceCurrent(Id Source,std::span<const ObjectKey> Scope,const std::vector<StateFragment>& Fragments,std::span<const std::uint8_t> Identity={},std::string* CurrentStateFailure=nullptr);
+    void SealResourceEpoch(Id Group,Revision Epoch);
+    void SetResourceEpoch(Id Group,Revision Epoch);
+    Id ResourceGroupFor(const TransactionRequest& Request) const;
+    bool CurrentResourceRequest(const TransactionRequest& Request) const;
     std::vector<StateFragment> Published(const OwnerWork& Work) const;
     std::optional<CommitResult> Result(Id Event) const;
+    const CommitResult* FindResult(Id Event) const {const auto I=Results.find(Event);return I==Results.end()?nullptr:&I->second;}
     Revision Version(const StateKey& Key) const;
     const std::map<ObjectKey,ObjectRecord>& Objects() const {return Directory;}
     const Economy& TeamEconomy() const {return EconomyLedger;}
     const ResourceLedger& WorldResources() const {return ResourceLedgerValue;}
     const MiningReservations& MiningPositions() const {return MiningReservationsValue;}
     const auto& RetiredLifeView() const {return RetiredLives;}
-    void SetReducedWork(bool Enabled) {ReducedWork=Enabled;FragmentCache.clear();FragmentCacheBytes=0;}
     auto ConsumeRetiredLifeChanges() {auto Changes=std::move(RetiredLifeChanges);RetiredLifeChanges.clear();return Changes;}
     const auto& LockView() const {return Locks;}
 private:
@@ -112,15 +120,15 @@ private:
     Revision NextDecisionVersion() const {return Version({DecisionDomain,"object"})+1;}
     Bytes CaptureFragment(const StateKey& Key) const;
     Bytes CaptureFragmentUncached(const StateKey& Key) const;
-    bool ReducedWork=false;
     struct FragmentEncoding {Revision Version=0,DataVersion=0;Bytes Value;};
     mutable std::map<StateKey,FragmentEncoding> FragmentCache;
     mutable std::size_t FragmentCacheBytes=0;
     static bool UsesResourceLedger(const StateFragment& Fragment);
-    bool ApplyFragment(const StateFragment& Fragment,ResourceLedgerState* ResourceBatch=nullptr);
-    std::set<StateKey> FragmentKeys(std::span<const ObjectKey> Objects) const;
+    bool ApplyFragment(const StateFragment& Fragment,ResourceLedgerState* ResourceBatch=nullptr,MiningReservationState* MiningBatch=nullptr);
+    std::set<StateKey> FragmentKeys(std::span<const ObjectKey> Objects,bool History=true) const;
     std::set<StateKey> ChangedKeys(const TransactionRequest& Request,const CommitResult& Result) const;
     bool RebuildWorkIndex();
+    bool MergeCurrentIdentity(std::span<const std::uint8_t> Identity);
     OwnerState Stage(const TransactionRequest* Request=nullptr,const std::vector<StateFragment>* Fragments=nullptr) const;
     const ObjectRecord* FindRecord(ObjectKey Key) const;
     std::optional<Authority> GroupAuthority(Id Group) const;
@@ -130,7 +138,7 @@ private:
     void IndexAttackDomain(Id Event,ObjectKey Domain);
     const OwnerState& IndexedSource() const {return StageSource?StageSource->IndexedSource():*this;}
     const std::map<ObjectKey,ObjectRecord>& PreviousObjects() const {return StageSource?StageSource->PreviousObjects():Directory;}
-    bool ApplyValidated(const std::vector<StateFragment>& Fragments);
+    bool ApplyValidated(const std::vector<StateFragment>& Fragments,std::string* CurrentStateFailure=nullptr);
     Id Match,Player;
     Revision MatchEpoch=1;
     ObjectKey DecisionDomain;
@@ -185,5 +193,6 @@ private:
     std::map<Team,std::set<EconomyKey>> FinalizedAccounts;
     std::map<ObjectKind,std::uint32_t> NextOrdinal;
     SharedCatalog<std::string,OwnershipDefinition> OwnershipDefinitions;
+    std::map<Id,Revision> ResourceEpochs;
 };
 }

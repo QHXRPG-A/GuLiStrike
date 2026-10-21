@@ -58,6 +58,15 @@ namespace GuLiCommanderNavigationPolicy
 			MaximumDeltaSeconds);
 	}
 
+	float ResolveUnconsumedMovementDeltaSeconds(const double CurrentSimulationSeconds,
+		const double LastMovementUpdateSimulationSeconds, const float MaximumDeltaSeconds)
+	{
+		if (!FMath::IsFinite(CurrentSimulationSeconds) || !FMath::IsFinite(LastMovementUpdateSimulationSeconds)
+			|| !FMath::IsFinite(MaximumDeltaSeconds) || MaximumDeltaSeconds <= 0.0f) return 0.0f;
+		return static_cast<float>(FMath::Clamp(CurrentSimulationSeconds - LastMovementUpdateSimulationSeconds,
+			0.0, static_cast<double>(MaximumDeltaSeconds)));
+	}
+
 	FIntPoint MakeAvoidanceSpatialCell(
 		const FVector& Location,
 		const float CellSizeCentimeters)
@@ -205,7 +214,8 @@ namespace GuLiCommanderNavigationPolicy
 		const float MaximumHeightDifferenceCentimeters,
 		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
 		TArray<FVector>& OutVelocities,
-		const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry* SharedGeometry)
+		const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry* SharedGeometry,
+		const bool bOnlyActivePairs)
 	{
 		constexpr float RecoverySeconds = 0.5f;
 		constexpr float PassiveSpeedScale = 0.25f;
@@ -252,7 +262,15 @@ namespace GuLiCommanderNavigationPolicy
 		struct FPair { int32 A, B; FVector Normal; float Penetration; };
 		TArray<FPair> Pairs;
 		TArray<const GuLiCommanderAvoidancePolicy::FAvoidanceBucket*, TInlineAllocator<64>> SharedBuckets;
-		for (int32 I = 0; I < Agents.Num(); ++I) if (IsValid(Agents[I]))
+		// An agent that neither receives avoidance nor yields starts and remains at
+		// zero velocity. Two such agents cannot affect any solve iteration. Keep
+		// them in the index as obstacles, but query from active endpoints only.
+		auto IsActive = [](const FManualAvoidanceAgent& A)
+		{
+			return A.bReceivesAvoidance || A.bCanBePushed;
+		};
+		for (int32 I = 0; I < Agents.Num(); ++I)
+			if (IsValid(Agents[I]) && (!bOnlyActivePairs || IsActive(Agents[I])))
 		{
 			const auto& A = Agents[I];
 			const auto Cell = MakeAvoidanceSpatialCell(A.Location, CellSize);
@@ -262,15 +280,21 @@ namespace GuLiCommanderNavigationPolicy
 			{
 					++Metrics.BucketEntriesVisited;
 					const auto& B = Agents[J];
-					if (A.StableSoldierId >= B.StableSoldierId
+					if (A.StableSoldierId == B.StableSoldierId
+						|| (A.StableSoldierId > B.StableSoldierId && (!bOnlyActivePairs || IsActive(B)))
 						|| FMath::Abs(A.Location.Z - B.Location.Z) >= MaximumHeightDifferenceCentimeters) return;
 					++Metrics.CandidatePairs;
-					const FVector Delta = (A.Location - B.Location) * FVector(1, 1, 0);
+					// A stationary lower-ID neighbor is found from the active higher ID.
+					// Canonicalize before computing the normal, including coincident points,
+					// so pair order and floating-point operations match the full solve.
+					const int32 First = A.StableSoldierId < B.StableSoldierId ? I : J;
+					const int32 Second = First == I ? J : I;
+					const FVector Delta = (Agents[First].Location - Agents[Second].Location) * FVector(1, 1, 0);
 					const float Distance = Delta.Size2D();
 					const float Penetration = A.RadiusCentimeters + B.RadiusCentimeters - Distance;
 					if (Penetration < -(A.MaximumSpeed + B.MaximumSpeed) * RecoverySeconds) return;
 					if (Penetration > 0.0f) ++Metrics.OverlapPairs;
-					Pairs.Add({I, J, Distance > UE_KINDA_SMALL_NUMBER ? Delta / Distance
+					Pairs.Add({First, Second, Distance > UE_KINDA_SMALL_NUMBER ? Delta / Distance
 						: FVector(-1, 0, 0), Penetration});
 			};
 			if (SharedGeometry)
