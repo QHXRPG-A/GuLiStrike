@@ -11,7 +11,7 @@ status: in_progress
 verification: partial
 created: '2026-10-20'
 updated: '2026-10-21'
-summary: 快速小消息压缩正式代码已上传main；当前推进20–30ms本机指令响应且性能不退化，响应目标尚未达成。
+summary: 名单重复复制修复及响应诊断代码已上传main，通过源码编译与既有协议验收；继续推进20–30ms本机指令响应，完整目标尚未达成。
 next_action: 名单复制修复已通过编译与既有协议验收，继续检查回执匹配及起步提交成本；插队待用户判断，全部成员响应稳定达到30ms后再做配对性能复核。
 relations:
   requirement: REQ-20261020-004
