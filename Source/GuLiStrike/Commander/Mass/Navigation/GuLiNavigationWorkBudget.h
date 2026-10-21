@@ -92,13 +92,13 @@ struct FGuLiNavigationWorkBudget
 		FAllowance& Share;
 		int32 WorldProjections, WorldPaths, StartProjections, StartPaths;
 		double WorldLimit, Started, Granted;
-		FSlice(FGuLiNavigationWorkBudget& In, FAllowance& InShare)
+		FSlice(FGuLiNavigationWorkBudget& In, FAllowance& InShare, double MaximumSeconds = .0002)
 			: Budget(In), Share(InShare), WorldProjections(In.Projections), WorldPaths(In.Paths),
 			  WorldLimit(In.LimitSeconds), Started(In.Elapsed())
 		{
 			StartProjections = In.Projections = FMath::Min3(In.Projections, FMath::Max(0, Share.Projections), 8);
 			StartPaths = In.Paths = FMath::Min3(In.Paths, FMath::Max(0, Share.Paths), 1);
-			Granted = FMath::Min(.0002, FMath::Max(0., Share.Seconds));
+			Granted = FMath::Min(FMath::Max(0., MaximumSeconds), FMath::Max(0., Share.Seconds));
 			In.LimitSeconds = FMath::Min(WorldLimit, Started + Granted);
 		}
 		~FSlice()

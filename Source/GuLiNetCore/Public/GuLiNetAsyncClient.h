@@ -48,6 +48,7 @@ struct AsyncClientStats
     std::uint64_t CaptureYieldAdvances=0;
     bool CaptureYieldEnabled=true;
     bool FastPackCacheKeyEnabled=true;
+    std::uint64_t CommandWakeRequests=0,CommandWakePumps=0;
     std::array<AsyncInputStats,static_cast<std::size_t>(AsyncInputKind::Count)> InputKinds{};
     std::uint64_t GameplayAdmittedBytes=0,QueuedInputBytes=0;
     double OldestInputMilliseconds=0,OldestControlMilliseconds=0;
@@ -74,6 +75,14 @@ struct AsyncExecutionOptions
     // Optional process-local diagnostics. Invoked on both owner and caller
     // threads; the callback must be thread-safe and must not access scene state.
     std::function<void(const char*,Id,std::size_t)> CommandTiming;
+    // Nonblocking notification from either execution thread. Schedule
+    // PumpCommandApplications on the caller thread; never touch scene state
+    // or wait for it in this callback.
+    std::function<void(std::uint64_t)> CommandApplicationReady;
+    // Local cooperative scheduling only; no protocol or gameplay value changes.
+    std::size_t NetworkRetryBatchLimit=0;
+    bool DeferPeerTransactions=false;
+    bool ReuseResourceValidationSnapshot=false;
 };
 
 /** Changed query fields, delivered after the complete read mirror and before callbacks. */
@@ -133,6 +142,7 @@ public:
     AsyncClientWorld(const AsyncClientWorld&)=delete;
     AsyncClientWorld& operator=(const AsyncClientWorld&)=delete;
     void PumpApplications();
+    void PumpCommandApplications(std::uint64_t WorldGeneration);
     bool SubmitGameplay(std::string DependencyGroup,std::shared_ptr<IGameplayCalculation>,
         std::size_t InputBytes,std::size_t MaximumResultBytes,std::function<void()> Apply);
     bool HasPendingGameplay(const std::string& DependencyGroup) const;

@@ -1,0 +1,467 @@
+{
+  "purpose": "response diagnostic, not frame-performance acceptance",
+  "input_boundary": "Controller semantic TimerManager entry; not OS click or display scanout",
+  "target_ms": 30,
+  "preferred_ms": 20,
+  "adopted": false,
+  "reason": "One candidate response pass, but another candidate probe still exceeds 100 ms for a member; final performance and visual validation pending.",
+  "cases": {
+    "wake_43": {
+      "command_wake": 1,
+      "late_presentation": null,
+      "trace": false,
+      "viewport": [
+        2359,
+        1748
+      ],
+      "foreground_frames": 463,
+      "background_frames": 0,
+      "editor_state_valid": true,
+      "idle_probe_eligible": true,
+      "all_probe_units_locally_simulated_at_input": true,
+      "local_semantic_20ms_pass": false,
+      "local_semantic_30ms_pass": false,
+      "first_motion_30ms_pass": false,
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-wake-43\\response-wake-3",
+      "members": 24,
+      "stage_ranges_ms": {
+        "local-green-submit": {
+          "count": 1,
+          "min": 20.49800008535385,
+          "max": 20.49800008535385,
+          "frames": [
+            0
+          ]
+        },
+        "owner-command": {
+          "count": 24,
+          "min": 5.830001085996628,
+          "max": 6.022002547979355,
+          "frames": [
+            0
+          ]
+        },
+        "direction": {
+          "count": 24,
+          "min": 9.134002029895782,
+          "max": 9.174000471830368,
+          "frames": [
+            0
+          ]
+        },
+        "local-first-mass-write": {
+          "count": 24,
+          "min": 10.309003293514252,
+          "max": 10.569002479314804,
+          "frames": [
+            0
+          ]
+        },
+        "local-mass-write": {
+          "count": 24,
+          "min": 10.378003120422363,
+          "max": 105.54100200533867,
+          "frames": [
+            0,
+            8
+          ]
+        },
+        "local-first-model-submit": {
+          "count": 24,
+          "min": 34.397002309560776,
+          "max": 34.44899991154671,
+          "frames": [
+            1
+          ]
+        },
+        "local-model-submit": {
+          "count": 24,
+          "min": 34.40900146961212,
+          "max": 110.2760024368763,
+          "frames": [
+            1,
+            8
+          ]
+        }
+      },
+      "delivery_ms": {
+        "async-post": 0.3390014171600342,
+        "worker-route": 2.12700292468071,
+        "application-emitted": 2.249002456665039,
+        "application-start": 5.806002765893936
+      },
+      "application_queue_ms": 3.557000309228897
+    },
+    "wake_trace_43": {
+      "command_wake": 1,
+      "late_presentation": null,
+      "trace": true,
+      "viewport": [
+        2359,
+        1748
+      ],
+      "foreground_frames": 407,
+      "background_frames": 0,
+      "editor_state_valid": true,
+      "idle_probe_eligible": true,
+      "all_probe_units_locally_simulated_at_input": true,
+      "local_semantic_20ms_pass": false,
+      "local_semantic_30ms_pass": false,
+      "first_motion_30ms_pass": false,
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-wake-43\\response-wake-trace",
+      "members": 24,
+      "stage_ranges_ms": {
+        "local-green-submit": {
+          "count": 1,
+          "min": 29.70699965953827,
+          "max": 29.70699965953827,
+          "frames": [
+            0
+          ]
+        },
+        "owner-command": {
+          "count": 24,
+          "min": 20.56199684739113,
+          "max": 20.756997168064117,
+          "frames": [
+            0
+          ]
+        },
+        "direction": {
+          "count": 24,
+          "min": 24.028997868299484,
+          "max": 24.067997932434082,
+          "frames": [
+            0
+          ]
+        },
+        "local-first-mass-write": {
+          "count": 24,
+          "min": 24.30099993944168,
+          "max": 26.49499848484993,
+          "frames": [
+            0
+          ]
+        },
+        "local-mass-write": {
+          "count": 24,
+          "min": 24.334996938705444,
+          "max": 26.5439972281456,
+          "frames": [
+            0
+          ]
+        },
+        "local-first-model-submit": {
+          "count": 24,
+          "min": 62.073998153209686,
+          "max": 62.1429979801178,
+          "frames": [
+            1
+          ]
+        },
+        "local-model-submit": {
+          "count": 24,
+          "min": 62.084998935461044,
+          "max": 62.144000083208084,
+          "frames": [
+            1
+          ]
+        }
+      },
+      "delivery_ms": {
+        "async-post": 0.6049983203411102,
+        "worker-route": 6.441999226808548,
+        "application-emitted": 7.964000105857849,
+        "application-start": 20.5409973859787
+      },
+      "application_queue_ms": 12.57699728012085
+    },
+    "baseline_44": {
+      "command_wake": 0,
+      "late_presentation": 0,
+      "trace": false,
+      "viewport": [
+        2359,
+        1748
+      ],
+      "foreground_frames": 473,
+      "background_frames": 0,
+      "editor_state_valid": true,
+      "idle_probe_eligible": true,
+      "all_probe_units_locally_simulated_at_input": true,
+      "local_semantic_20ms_pass": false,
+      "local_semantic_30ms_pass": false,
+      "first_motion_30ms_pass": false,
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-phase-44\\response-baseline",
+      "members": 24,
+      "stage_ranges_ms": {
+        "local-green-submit": {
+          "count": 1,
+          "min": 10.283999145030975,
+          "max": 10.283999145030975,
+          "frames": [
+            0
+          ]
+        },
+        "owner-command": {
+          "count": 24,
+          "min": 15.960000455379486,
+          "max": 16.164999455213547,
+          "frames": [
+            1
+          ]
+        },
+        "direction": {
+          "count": 24,
+          "min": 18.897999078035355,
+          "max": 18.93400028347969,
+          "frames": [
+            1
+          ]
+        },
+        "local-first-mass-write": {
+          "count": 24,
+          "min": 19.173000007867813,
+          "max": 22.798001766204834,
+          "frames": [
+            1
+          ]
+        },
+        "local-mass-write": {
+          "count": 24,
+          "min": 19.207000732421875,
+          "max": 23.02199974656105,
+          "frames": [
+            1
+          ]
+        },
+        "local-first-model-submit": {
+          "count": 24,
+          "min": 31.752999871969223,
+          "max": 31.821999698877335,
+          "frames": [
+            1
+          ]
+        },
+        "local-model-submit": {
+          "count": 24,
+          "min": 31.762000173330307,
+          "max": 31.82300180196762,
+          "frames": [
+            1
+          ]
+        }
+      },
+      "delivery_ms": {
+        "async-post": 0.30399858951568604,
+        "worker-route": 2.236001193523407,
+        "application-emitted": 2.514999359846115,
+        "application-start": 15.946000814437866
+      },
+      "application_queue_ms": 13.431001454591751
+    },
+    "phase_44_first": {
+      "command_wake": 1,
+      "late_presentation": 1,
+      "trace": false,
+      "viewport": [
+        2359,
+        1748
+      ],
+      "foreground_frames": 472,
+      "background_frames": 0,
+      "editor_state_valid": true,
+      "idle_probe_eligible": true,
+      "all_probe_units_locally_simulated_at_input": true,
+      "local_semantic_20ms_pass": false,
+      "local_semantic_30ms_pass": false,
+      "first_motion_30ms_pass": false,
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-phase-44\\response-phase-1",
+      "members": 24,
+      "stage_ranges_ms": {
+        "local-green-submit": {
+          "count": 1,
+          "min": 11.288002133369446,
+          "max": 11.288002133369446,
+          "frames": [
+            0
+          ]
+        },
+        "owner-command": {
+          "count": 24,
+          "min": 17.09900051355362,
+          "max": 17.305001616477966,
+          "frames": [
+            1
+          ]
+        },
+        "direction": {
+          "count": 24,
+          "min": 19.788000732660294,
+          "max": 108.55299979448318,
+          "frames": [
+            1,
+            9
+          ]
+        },
+        "local-first-mass-write": {
+          "count": 24,
+          "min": 21.046001464128494,
+          "max": 108.8469997048378,
+          "frames": [
+            1,
+            9
+          ]
+        },
+        "local-mass-write": {
+          "count": 24,
+          "min": 21.11700177192688,
+          "max": 108.87400060892105,
+          "frames": [
+            1,
+            9
+          ]
+        },
+        "local-first-model-submit": {
+          "count": 24,
+          "min": 34.7290001809597,
+          "max": 114.24199864268303,
+          "frames": [
+            1,
+            9
+          ]
+        },
+        "local-model-submit": {
+          "count": 24,
+          "min": 34.73899886012077,
+          "max": 114.24500122666359,
+          "frames": [
+            1,
+            9
+          ]
+        }
+      },
+      "delivery_ms": {
+        "async-post": 0.34900009632110596,
+        "worker-route": 11.305000633001328,
+        "application-emitted": 13.363000005483627,
+        "application-start": 17.064999788999557
+      },
+      "application_queue_ms": 3.70199978351593
+    },
+    "phase_44_second": {
+      "command_wake": 1,
+      "late_presentation": 1,
+      "trace": false,
+      "viewport": [
+        2359,
+        1748
+      ],
+      "foreground_frames": 476,
+      "background_frames": 0,
+      "editor_state_valid": true,
+      "idle_probe_eligible": true,
+      "all_probe_units_locally_simulated_at_input": true,
+      "local_semantic_20ms_pass": false,
+      "local_semantic_30ms_pass": true,
+      "first_motion_30ms_pass": true,
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-phase-44\\response-phase-3",
+      "members": 24,
+      "stage_ranges_ms": {
+        "local-green-submit": {
+          "count": 1,
+          "min": 18.918000161647797,
+          "max": 18.918000161647797,
+          "frames": [
+            0
+          ]
+        },
+        "owner-command": {
+          "count": 24,
+          "min": 12.634001672267914,
+          "max": 12.821000069379807,
+          "frames": [
+            0
+          ]
+        },
+        "direction": {
+          "count": 24,
+          "min": 14.666002243757248,
+          "max": 14.705002307891846,
+          "frames": [
+            0
+          ]
+        },
+        "local-first-mass-write": {
+          "count": 24,
+          "min": 14.941003173589706,
+          "max": 26.26200020313263,
+          "frames": [
+            0,
+            1
+          ]
+        },
+        "local-mass-write": {
+          "count": 24,
+          "min": 14.987003058195114,
+          "max": 26.31400153040886,
+          "frames": [
+            0,
+            1
+          ]
+        },
+        "local-first-model-submit": {
+          "count": 24,
+          "min": 17.018001526594162,
+          "max": 29.86700087785721,
+          "frames": [
+            0,
+            1
+          ]
+        },
+        "local-model-submit": {
+          "count": 24,
+          "min": 17.024002969264984,
+          "max": 29.86999973654747,
+          "frames": [
+            0,
+            1
+          ]
+        }
+      },
+      "delivery_ms": {
+        "async-post": 0.33700093626976013,
+        "worker-route": 3.4720003604888916,
+        "application-emitted": 3.6640018224716187,
+        "application-start": 12.614000588655472
+      },
+      "application_queue_ms": 8.949998766183853
+    }
+  },
+  "trace_finding": {
+    "source": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-wake-43\\response-wake-trace\\insights\\response-events.csv",
+    "clock_basis": "FPlatformTime::Seconds minus trace_clock.monotonic_origin_seconds (QPC origin plus 2**24)",
+    "presentation_ms": [
+      21.001,
+      22.036
+    ],
+    "following_wake_ms": [
+      22.063,
+      27.221
+    ],
+    "first_mass_write_ms": [
+      24.301,
+      26.495
+    ],
+    "next_presentation_ms": [
+      60.938,
+      61.923
+    ],
+    "conclusion": "The following logical batch ran after this frame presentation, so first model movement was observed next frame."
+  },
+  "excluded_attempts": {
+    "command-wake-43/response-wake-1": "Editor system menu blocked bridge before setup; no timing.",
+    "command-wake-43/response-wake-2": "Foreground timeout before timing; owned room stopped.",
+    "command-phase-44/response-phase-2": "Python cannot reflect hidden native TickGroup=6; preflight stopped before timing. Script now records this reflection error instead of failing the response probe."
+  }
+}

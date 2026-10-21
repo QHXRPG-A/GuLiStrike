@@ -178,6 +178,7 @@ bool OwnerState::UsesResourceLedger(const StateFragment& F)
 }
 bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* ResourceBatch,MiningReservationState* MiningBatch)
 {
+    TraceScope ApplyScope("GuLiHybrid_CoreApplyFragment");
     if (F.Schema!=1 || !F.Key.Object.Valid() || F.Key.Capability.empty()) return false;
     const auto& K=F.Key;const auto& N=K.Capability;Reader R(F.Value);
     std::optional<ResourceLedgerState> SingleResources;
@@ -185,7 +186,15 @@ bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* Resou
     auto* LedgerState=ResourceBatch?ResourceBatch:(SingleResources?&*SingleResources:nullptr);
     if (N=="object")
     {
-        ObjectRecord O;if (!ReadObject(R,O) || !R.Done() || O.Grant.Object!=K.Object || !UpgradeStateAllowed(O)) return false;
+        ObjectRecord O;
+        {
+            TraceScope DecodeScope("GuLiHybrid_CoreReadObjectFragment");
+            if (!ReadObject(R,O) || !R.Done() || O.Grant.Object!=K.Object) return false;
+        }
+        {
+            TraceScope UpgradeScope("GuLiHybrid_CoreValidateObjectUpgrades");
+            if (!UpgradeStateAllowed(O)) return false;
+        }
         // A gameplay publication cannot revoke a newer coordinator grant.
         if (const auto Old=Directory.find(K.Object);Old!=Directory.end())
         {
@@ -197,6 +206,7 @@ bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* Resou
     }
     else if (N=="account")
     {
+        TraceScope AccountScope("GuLiHybrid_CoreApplyAccountFragment");
         std::uint8_t TeamValue;Resources Balance;std::uint32_t Size;
         if (!R.U8(TeamValue) || TeamValue<1 || TeamValue>2 || K.Object!=TeamAccountObject(static_cast<Team>(TeamValue))
             || !ReadResources(R,Balance) || !Count(R,Size)) return false;
@@ -296,6 +306,7 @@ bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* Resou
         }
         else if (SuffixId(N,"event/",Event))
         {
+            TraceScope EventScope("GuLiHybrid_CoreApplyEventFragment");
             CommitResult V;Bytes B,Request;
             if (!R.Blob(B) || !DecodeCommit(B,V) || V.Event!=Event || V.StateDomain!=K.Object
                 || !R.Blob(Request) || !R.Done()) return false;

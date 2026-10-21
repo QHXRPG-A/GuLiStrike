@@ -1,4 +1,5 @@
 #include "GuLiNetClient.h"
+#include "GuLiNetCommandSubset.h"
 #include "GuLiNetHash.h"
 #include "GuLiNetTrace.h"
 #include <algorithm>
@@ -725,8 +726,8 @@ bool ClientWorld::CommitHandoff(const ObjectHandoff& T,const Authority& Grant)
         for (auto I=IncomingCommands.begin();I!=IncomingCommands.end();)
         {
             FrozenCommand C;if (!DecodeCommand(I->Body,C)) {I=IncomingCommands.erase(I);continue;}
-            auto One=C;std::erase_if(One.Members,[&](const auto& M){return M.Object!=T.Object;});
-            if (!One.Members.empty()) QueueHandoffCommand(T.Object,{I->Header,EncodeCommand(One)});
+            const auto Member=std::find_if(C.Members.begin(),C.Members.end(),[&](const auto& M){return M.Object==T.Object;});
+            if (Member!=C.Members.end()) QueueHandoffCommand(T.Object,{I->Header,EncodeCommand(CommandWithMembers(C,{*Member}))});
             std::erase_if(C.Members,[&](const auto& M){return M.Object==T.Object;});
             if (C.Members.empty()) I=IncomingCommands.erase(I);else {I->Body=EncodeCommand(C);++I;}
         }
@@ -780,8 +781,8 @@ void ClientWorld::CancelHandoff(const ObjectHandoff& T)
         for (auto I=IncomingCommands.begin();I!=IncomingCommands.end();)
         {
             FrozenCommand C;if (!DecodeCommand(I->Body,C)) {I=IncomingCommands.erase(I);continue;}
-            auto One=C;std::erase_if(One.Members,[&](const auto& M){return M.Object!=T.Object;});
-            if (!One.Members.empty()) HandoffCommands[T.Object].push_back({I->Header,EncodeCommand(One)});
+            const auto Member=std::find_if(C.Members.begin(),C.Members.end(),[&](const auto& M){return M.Object==T.Object;});
+            if (Member!=C.Members.end()) HandoffCommands[T.Object].push_back({I->Header,EncodeCommand(CommandWithMembers(C,{*Member}))});
             std::erase_if(C.Members,[&](const auto& M){return M.Object==T.Object;});
             if (C.Members.empty()) I=IncomingCommands.erase(I);else {I->Body=EncodeCommand(C);++I;}
         }

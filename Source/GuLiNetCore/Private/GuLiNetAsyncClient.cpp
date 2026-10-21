@@ -239,6 +239,10 @@ struct AsyncClientWorld::State
     std::atomic<bool> Stopping=false;
     std::thread Worker;
     std::uint64_t OutputSequence=0,AppliedSequence=0;
+    std::uint64_t CommandWakeSequence=0; // protected by Mutex
+    bool CommandWakeQueued=false; // protected by Mutex
+    bool Pumping=false,CommandWakeDeferred=false; // caller thread only
+    bool WakeNextCommandSimulation=false; // ordered worker only
     std::uint64_t InputSequence=0;
     std::size_t InputBytes=0,OutputBytes=0,ControlBytes=0;
     std::size_t ResultReservedBytes=0;
@@ -322,7 +326,7 @@ struct AsyncClientWorld::State
         Stats.ControlBytes=ControlBytes;Stats.ControlPeak=std::max(Stats.ControlPeak,std::uint64_t(ControlBytes));
         Stats.InputBytes=InputBytes;Stats.InputPeak=std::max(Stats.InputPeak,std::uint64_t(InputBytes));Wake.notify_all();return true;
     }
-    bool Emit(std::function<void()> Fn,std::size_t Bytes=256,bool RetainedOutbound=false,Id Reservation={})
+    bool Emit(std::function<void()> Fn,std::size_t Bytes=256,bool RetainedOutbound=false,Id Reservation={},bool CommandWake=false)
     {
         // Every non-simulation observation is a fence. A batch never crosses
         // a command, ledger update, receipt, lifecycle change or capture.
@@ -340,7 +344,22 @@ struct AsyncClientWorld::State
         if (auto I=ResultReservations.find(Reservation);I!=ResultReservations.end())
         {const auto Consumed=std::min(Bytes,I->second.second);I->second.second-=Consumed;ResultReservedBytes-=Consumed;}
         Applications.push_back({std::move(Fn),Bytes,++OutputSequence,Seconds(),RetainedOutbound,Match,MatchEpoch,Generation});OutputBytes+=Bytes;
-        Stats.ResultReservedBytes=ResultReservedBytes;Stats.OutputBytes=OutputBytes+ResultReservedBytes;Stats.OutputPeak=std::max(Stats.OutputPeak,std::uint64_t(Stats.OutputBytes));Wake.notify_all();return true;
+        Stats.ResultReservedBytes=ResultReservedBytes;Stats.OutputBytes=OutputBytes+ResultReservedBytes;Stats.OutputPeak=std::max(Stats.OutputPeak,std::uint64_t(Stats.OutputBytes));
+        Lock.unlock();Wake.notify_all();
+        if (CommandWake) NotifyCommandReady();
+        return true;
+    }
+    void NotifyCommandReady()
+    {
+        if (!Options.CommandApplicationReady) return;
+        bool Notify=false;
+        {
+            std::lock_guard Lock(Mutex);
+            if (Stopping) return;
+            CommandWakeSequence=OutputSequence;
+            if (!CommandWakeQueued) {CommandWakeQueued=true;Notify=true;++Stats.CommandWakeRequests;}
+        }
+        if (Notify) Options.CommandApplicationReady(Generation);
     }
     template<class T> const T* RequestMain(std::shared_ptr<Reply<T>>& Result,std::function<T()> Fn,std::size_t Bytes=256,
         const std::set<ObjectKey>* Scope=nullptr)
@@ -392,6 +411,7 @@ struct AsyncClientWorld::State
     void PublishDiagnostics();
     void Run();
     void Pump();
+    void PumpCommands(std::uint64_t WorldGeneration);
     void Shutdown();
     void DispatchComputes();
     void CompleteComputes();
@@ -955,6 +975,8 @@ void AsyncClientWorld::State::Run()
     if (InitializeWorker) InitializeWorker();
     Core=std::make_unique<ClientWorld>(Match,Player,MatchEpoch,[this](const ObjectRecord& R){return MakeProxy(R);},[this](Id Peer,Message M)
     {return TransmitWorker(Peer,std::move(M));});
+    Core->SetPeerTransactionDeferral(Options.DeferPeerTransactions);
+    Core->SetResourceValidationSnapshotReuse(Options.ReuseResourceValidationSnapshot);
     Core->SetRecordObserver([this](const ObjectRecord& R){ChangedRecords[R.Grant.Object]=R;ResourceKeys.insert({R.Grant.Object,"object"});++ObjectRevisions[R.Grant.Object];});
     Core->SetFragmentObserver([this](std::span<const StateFragment> Fs)
     {
@@ -980,7 +1002,13 @@ void AsyncClientWorld::State::Run()
     Core->SetHandoffAdmission([this](Id Peer){const auto I=SendAdmission.find(Peer);return I!=SendAdmission.end()&&I->second;});
     Core->SetApplicationBatches([this](auto O,auto S){return PrepareBatch(O,S);},[this](auto K,bool Current){return CaptureBatch(K,Current);},
         [this](const auto& S,auto K,const auto& Systems,auto Stage){return RestoreBatch(S,K,Systems,Stage);});
-    Core->SetLogicalStepBoundary([this]{FlushSimulation();});
+    Core->SetLogicalStepBoundary([this]
+    {
+        FlushSimulation();
+        // A step may contain several batches separated by lifecycle fences.
+        // Wake only after the whole following step, including shared systems.
+        if (std::exchange(WakeNextCommandSimulation,false)) NotifyCommandReady();
+    });
     Core->SetApplicationProgressRevision([this](ObjectKey K)
     {const auto I=ApplicationProgress.find(K);return I==ApplicationProgress.end()?0:I->second;});
     Core->SetApplicationCancellation([this](ObjectKey K)
@@ -1019,7 +1047,7 @@ void AsyncClientWorld::State::Run()
         {
             if (Options.CommandTiming) Options.CommandTiming("application-prepare",Command.Event,Missing.size());
             const auto Size=Command.Arguments.size()+Missing.size()*256+1024;
-            Publish();Emit([this,Command,Missing=std::move(Missing)]
+            Publish();const bool Queued=Emit([this,Command,Missing=std::move(Missing)]
             {
                 if (Options.CommandTiming) Options.CommandTiming("application-start",Command.Event,Missing.size());
                 TraceScope Scope("GuLiHybrid_MainCommandBatch");std::vector<std::pair<std::shared_ptr<Reply<bool>>,bool>> Results;
@@ -1035,7 +1063,10 @@ void AsyncClientWorld::State::Run()
                 const auto Bytes=Results.size()*64+128;
                 Post([Results=std::move(Results)](ClientWorld&)
                 {for (const auto& [R,Value]:Results) {R->Value=Value;R->Ready=true;}},Bytes,true);
-            },Size);
+            },Size,false,{},true);
+            // Wake once more for the first following logical step. It uses
+            // the original elapsed time and FIFO, without adding a sim step.
+            if (Queued && Options.CommandApplicationReady) WakeNextCommandSimulation=true;
             if (Options.CommandTiming) Options.CommandTiming("application-emitted",Command.Event,Members.size());
         }
         if (!Ready) return ClientWorld::ApplicationStatus::Pending;
@@ -1046,7 +1077,8 @@ void AsyncClientWorld::State::Run()
     {
         {
             std::unique_lock Lock(Mutex);
-            if (Inputs.empty()&&Controls.empty() && !(DeferredAdvanceSeconds>0 && CaptureBarriers.empty()))
+            if (Inputs.empty()&&Controls.empty() && !(DeferredAdvanceSeconds>0 && CaptureBarriers.empty())
+                && !Core->HasPendingNetworkRetryBatch())
                 Wake.wait_for(Lock,std::chrono::milliseconds(10),[&]{return Stopping||!Inputs.empty()||!Controls.empty();});
             if (Stopping) break;
             if (!QueueFailure.empty()) Core->Cancel(QueueFailure);
@@ -1116,7 +1148,7 @@ void AsyncClientWorld::State::Run()
                     if (Ready||!Core->LastApplicationPending()) I=PendingRebuilds.erase(I);else ++I;
                 }
                 DispatchComputes();CompleteComputes();
-                {TraceScope Poll("GuLiHybrid_WorkerNetworkMaintenance");Core->PollNetwork(Seconds()+TimeOffset);}
+                {TraceScope Poll("GuLiHybrid_WorkerNetworkMaintenance");Core->PollNetwork(Seconds()+TimeOffset,Options.NetworkRetryBatchLimit);}
                 AdvanceCaptures();AdvanceAfterCaptureBarrier(true);
             }
             MetaDirty=true;Publish();PublishDiagnostics();
@@ -1131,7 +1163,10 @@ void AsyncClientWorld::State::Run()
 }
 void AsyncClientWorld::State::Pump()
 {
-    CheckMain();const auto Started=Steady::now();const auto PreviousSimulation=Stats.SimulationMilliseconds;std::deque<Application> Ready;
+    CheckMain();
+    if (Pumping) {CommandWakeDeferred=true;return;}
+    Pumping=true;
+    const auto Started=Steady::now();const auto PreviousSimulation=Stats.SimulationMilliseconds;std::deque<Application> Ready;
     std::size_t ReleasedBytes=0,AppliedCount=0;double MaximumDelay=0;
     const auto ReleaseBatch=[&]
     {
@@ -1148,7 +1183,7 @@ void AsyncClientWorld::State::Pump()
     }
     {TraceScope Scope("GuLiHybrid_MainApplyBatch");for (auto& Job:Ready)
     {
-        assert(Job.Sequence==++AppliedSequence);
+        ++AppliedSequence;assert(Job.Sequence==AppliedSequence);
         double Delay;
         {TraceScope OutputTiming("GuLiHybrid_MainOutputTiming");Delay=(Seconds()-Job.Enqueued)*1000.;if (TimingObserver) TimingObserver("HybridOutputQueueWait",Delay);}
         if (Job.Room==Match && Job.Epoch==MatchEpoch && Job.Generation==Generation)
@@ -1179,7 +1214,29 @@ void AsyncClientWorld::State::Pump()
         const auto Copy=Admission;
         if (Post([this,Admission=std::move(Admission)](ClientWorld&) mutable {SendAdmission=std::move(Admission);},256,true)) LastSendAdmission=Copy;
     }
-    std::lock_guard Lock(Mutex);Stats.MainApplyMilliseconds+=std::max(0.,Milliseconds(Started)-(Stats.SimulationMilliseconds-PreviousSimulation));
+    bool Notify=false;
+    {
+        std::lock_guard Lock(Mutex);Stats.MainApplyMilliseconds+=std::max(0.,Milliseconds(Started)-(Stats.SimulationMilliseconds-PreviousSimulation));
+        if (CommandWakeDeferred && CommandWakeSequence>AppliedSequence && !CommandWakeQueued && !Stopping
+            && Options.CommandApplicationReady)
+        {CommandWakeQueued=true;Notify=true;++Stats.CommandWakeRequests;}
+    }
+    CommandWakeDeferred=false;Pumping=false;
+    if (Notify) Options.CommandApplicationReady(Generation);
+}
+void AsyncClientWorld::State::PumpCommands(std::uint64_t WorldGeneration)
+{
+    CheckMain();
+    if (WorldGeneration!=Generation) return;
+    {
+        std::lock_guard Lock(Mutex);CommandWakeQueued=false;
+        if (Stopping || CommandWakeSequence<=AppliedSequence) return;
+        if (Pumping) {CommandWakeDeferred=true;return;}
+        ++Stats.CommandWakePumps;
+    }
+    // Consume the existing ordered queue, including all causal predecessors.
+    // No command is extracted out of order and an already consumed wake is free.
+    TraceScope Scope("GuLiHybrid_CommandApplicationWake");Pump();
 }
 void AsyncClientWorld::State::Shutdown()
 {
@@ -1340,21 +1397,32 @@ ClientWorld::CaptureApplicationStatus AsyncClientWorld::State::CaptureBatch(std:
             return;
         }
         std::size_t Size=1024;bool TooLarge=false;
-        for (const auto K:Keys)
         {
-            const auto I=Context.find(K);if (I==Context.end()) continue;auto* A=Object(K,I->second.first);if (!A) continue;
-            const auto Previous=AppliedContext;const auto PreviousTick=AppliedContextTick;AppliedContext=K;AppliedContextTick=I->second.second;
-            auto& Out=Result.Objects[K];Out.Good=A->Capture(Out.Value);AppliedContext=Previous;AppliedContextTick=PreviousTick;
-            Size+=Out.Value.size()+256;if (Size>MaxPrivateStateBytes) {TooLarge=true;break;}
-            for (const auto& Name:A->RequiredSystems()) Shared[Name].push_back(K);
+            TraceScope ObjectsScope("GuLiHybrid_MainCaptureObjects");
+            for (const auto K:Keys)
+            {
+                const auto I=Context.find(K);if (I==Context.end()) continue;auto* A=Object(K,I->second.first);if (!A) continue;
+                const auto Previous=AppliedContext;const auto PreviousTick=AppliedContextTick;AppliedContext=K;AppliedContextTick=I->second.second;
+                auto& Out=Result.Objects[K];Out.Good=A->Capture(Out.Value);AppliedContext=Previous;AppliedContextTick=PreviousTick;
+                Size+=Out.Value.size()+256;if (Size>MaxPrivateStateBytes) {TooLarge=true;break;}
+                for (const auto& Name:A->RequiredSystems()) Shared[Name].push_back(K);
+            }
         }
-        if (!TooLarge) for (const auto& [Name,A]:MainSystems) for (const auto K:Keys) if (A->UsesObject(K))
-        {Result.Systems[Name].Uses.insert(K);if (std::find(Shared[Name].begin(),Shared[Name].end(),K)==Shared[Name].end()) Shared[Name].push_back(K);}
-        if (!TooLarge) for (const auto& [Name,Ks]:Shared)
+        if (!TooLarge)
         {
-            auto& Out=Result.Systems[Name];Out.Keys=Ks;const auto A=MainSystems.find(Name);
-            Out.Good=A!=MainSystems.end()&&(Cut->CurrentOnly?A->second->CaptureCurrent(Ks,Out.Value):A->second->Capture(Ks,Out.Value));
-            Size+=Out.Value.size()+Ks.size()*128+256;if (Size>MaxPrivateStateBytes) {TooLarge=true;break;}
+            TraceScope MembershipScope("GuLiHybrid_MainCaptureSystemMembership");
+            for (const auto& [Name,A]:MainSystems) for (const auto K:Keys) if (A->UsesObject(K))
+            {Result.Systems[Name].Uses.insert(K);if (std::find(Shared[Name].begin(),Shared[Name].end(),K)==Shared[Name].end()) Shared[Name].push_back(K);}
+        }
+        if (!TooLarge)
+        {
+            TraceScope SystemsScope("GuLiHybrid_MainCaptureSystems");
+            for (const auto& [Name,Ks]:Shared)
+            {
+                auto& Out=Result.Systems[Name];Out.Keys=Ks;const auto A=MainSystems.find(Name);
+                Out.Good=A!=MainSystems.end()&&(Cut->CurrentOnly?A->second->CaptureCurrent(Ks,Out.Value):A->second->Capture(Ks,Out.Value));
+                Size+=Out.Value.size()+Ks.size()*128+256;if (Size>MaxPrivateStateBytes) {TooLarge=true;break;}
+            }
         }
         if (TooLarge) Result={};
         Post([this,Cut,Result=std::move(Result),TooLarge](ClientWorld&) mutable
@@ -1490,6 +1558,7 @@ AsyncClientWorld::AsyncClientWorld(Id M,Id P,Revision E,Factory F,Send SendValue
 AsyncClientWorld::~AsyncClientWorld() {Stop();}
 void AsyncClientWorld::Stop() {if (S) S->Shutdown();}
 void AsyncClientWorld::PumpApplications() {S->Pump();}
+void AsyncClientWorld::PumpCommandApplications(std::uint64_t WorldGeneration) {S->PumpCommands(WorldGeneration);}
 bool AsyncClientWorld::ConfirmGameplay(std::shared_ptr<IGameplayCalculation> Confirmation,std::size_t Bytes)
 {S->CheckMain();return Confirmation&&S->Post([Confirmation=std::move(Confirmation)](ClientWorld&){Confirmation->Compute();},Bytes,true);}
 bool AsyncClientWorld::HasPendingGameplay(const std::string& Group) const

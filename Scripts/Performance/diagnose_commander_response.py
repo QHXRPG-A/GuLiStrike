@@ -34,6 +34,14 @@ def all_units_within_limit(units, limit=20):
                               for stages in units.values() for row in stages.values())
 
 
+def complete_response_total(green, units):
+    """Cumulative time to the last required submission; never sum milestones."""
+    rows = [row for stages in units.values() for row in stages.values()]
+    if green is None or not rows or any(row is None for row in rows):
+        return None
+    return max(green['ms'], *(row['ms'] for row in rows))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
@@ -47,6 +55,17 @@ def main():
     parser.add_argument("--recipe", type=Path)
     parser.add_argument("--trace", action="store_true", help="CPU/GPU trace for diagnosis only")
     parser.add_argument("--fast-compression", type=int, choices=(0, 1), default=1)
+    parser.add_argument("--command-wake", type=int, choices=(0, 1), default=0)
+    parser.add_argument("--late-presentation", type=int, choices=(0, 1), default=0)
+    parser.add_argument("--movement-clock-soldier", type=int, default=0,
+                        help="Diagnostic log for one SoldierId; 0 disables")
+    parser.add_argument("--network-retry-batch", type=int, choices=range(0, 65), default=0)
+    parser.add_argument("--defer-peer-transactions", type=int, choices=(0, 1), default=0)
+    parser.add_argument("--batch-move-admissions", type=int, choices=(0, 1), default=0)
+    parser.add_argument("--reuse-resource-validation-snapshot", type=int, choices=(0, 1), default=0)
+    parser.add_argument("--direct-capture-membership", type=int, choices=(0, 1, 2), default=0)
+    parser.add_argument("--foreground-timeout", type=float, default=45,
+                        help="Preparation timeout only; timed warmup and capture are unchanged")
     parser.add_argument("--selection-lookup", type=int, choices=(0, 1, 2), default=1,
                         help="0 directory baseline, 1 selected lives, 2 equality diagnostic")
     args = parser.parse_args()
@@ -59,6 +78,14 @@ def main():
               "gs.Commander.LocalAuthorityPose": args.local_pose,
               "gs.Commander.IndexedInputSelection": args.selection_lookup,
               "gs.Hybrid.FastSmallPayloadCompression": args.fast_compression,
+              "gs.Hybrid.CommandApplicationWake": args.command_wake,
+              "gs.Commander.PresentationAfterCommands": args.late_presentation,
+              "gs.Commander.MovementClockSoldier": args.movement_clock_soldier,
+              "gs.Hybrid.NetworkRetryBatchLimit": args.network_retry_batch,
+              "gs.Hybrid.DeferPeerTransactions": args.defer_peer_transactions,
+              "gs.Commander.BatchMoveAdmissions": args.batch_move_admissions,
+              "gs.Hybrid.ReuseResourceValidationSnapshot": args.reuse_resource_validation_snapshot,
+              "gs.Hybrid.DirectCaptureMembership": args.direct_capture_membership,
               "guli.Commander.MoveLatencyDiagnostics": 0,
               "t.IdleWhenNotForeground": 0, "Slate.bAllowThrottling": 0}
     previous = editor("r={k:unreal.SystemLibrary.get_console_variable_float_value(k) for k in "
@@ -83,7 +110,7 @@ def main():
         save(args.output / "session.json", state)
         print(json.dumps({"phase": "foreground-preparation", "out": str(args.output)}), flush=True)
         commands(["gs.Commander.QA.FocusPIE", "gs.GM.Commander.Camera.Height 133.4"])
-        deadline = time.monotonic() + 45
+        deadline = time.monotonic() + args.foreground_timeout
         while not profile()["viewport_foreground"]:
             assert time.monotonic() < deadline, "Preview did not become foreground"
             time.sleep(1)
@@ -119,8 +146,16 @@ def main():
             "w=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_game_world()\n"
             "pc=unreal.GameplayStatics.get_player_controller(w,0)\np=" + PERF + "\n"
             f"selection=json.loads(p.prepare_hotspot_selection({expected!r}))\n"
+            "presenters=unreal.GameplayStatics.get_all_actors_of_class(w,unreal.GuLiCommanderPresentationActor)\n"
+            "presentation_ticks=[]\n"
+            "for a in presenters:\n"
+            "    tick={'actor':a.get_path_name()}\n"
+            "    try: tick['group']=str(a.get_editor_property('primary_actor_tick').get_editor_property('tick_group'))\n"
+            "    except TypeError as error: tick['group_reflection_error']=str(error)\n"
+            "    presentation_ticks.append(tick)\n"
             "r={'selection':selection,'can_issue_orders':pc.can_issue_commander_orders(),"
-            "'stream_ready':pc.get_commander_net_sync_component().is_soldier_stream_ready()}"
+            "'stream_ready':pc.get_commander_net_sync_component().is_soldier_stream_ready(),"
+            "'presentation_ticks':presentation_ticks}"
         )
         save(args.output / "input-preflight.json", preflight)
         assert preflight["can_issue_orders"] and preflight["stream_ready"], preflight
@@ -177,6 +212,14 @@ def main():
                    "purpose": "command_diagnostic", "combat_prepared": args.combat, "trace": args.trace,
                    "command_event": event.group(1) if event else None,
                    "fast_compression": args.fast_compression,
+                   "command_wake": args.command_wake,
+                   "late_presentation": args.late_presentation,
+                   "network_retry_batch": args.network_retry_batch,
+                   "defer_peer_transactions": args.defer_peer_transactions,
+                   "batch_move_admissions": args.batch_move_admissions,
+                   "reuse_resource_validation_snapshot": args.reuse_resource_validation_snapshot,
+                   "direct_capture_membership": args.direct_capture_membership,
+                   "movement_clock_soldier": args.movement_clock_soldier,
                    "input_phase": "TimerManager callback before Tickable subsystems; not OS/player-input polling",
                    "expected_soldiers": expected,
                    "selection_lookup": args.selection_lookup,
@@ -190,7 +233,8 @@ def main():
                    "background_frames": after["counters"].get("Capture.ViewportBackgroundFrames", {}).get("total", 0),
                    "stages": [{"stage": r["stage"], "ms": (r["clock"]-start["clock"])*1000,
                                "frames": r["frame"]-start["frame"], "detail": r["detail"]} for r in matching],
-                   "local_response_limit_ms": 20.0, "os_click_to_display_acceptance": False}
+                   "local_response_limit_ms": 30.0, "preferred_response_limit_ms": 20.0,
+                   "os_click_to_display_acceptance": False}
         summary["all_probe_units_locally_simulated_at_input"] = (
             len(eligible) == len(expected) and all("localSimulation=1 " in r["detail"] for r in eligible))
         summary['editor_minimized_frames'] = after['counters'].get('Capture.EditorRootMinimizedFrames', {}).get('total', 0)
@@ -209,12 +253,24 @@ def main():
             and all_units_within_limit(measured) and green_pass)
         first = unit_stage_results(summary['stages'], expected, ('local-first-mass-write', 'local-first-model-submit'))
         summary['unit_1cm_stages'] = first
+        summary['response_totals_ms'] = {
+            'first_motion_1cm': complete_response_total(green, first),
+            'existing_observation_2cm': complete_response_total(green, measured),
+        }
         summary["motion_thresholds_cm"] = {"first_motion": 1, "existing_observation": 2}
         summary["first_motion_20ms_pass"] = bool(
             summary["idle_probe_eligible"] and summary["all_probe_units_locally_simulated_at_input"]
             and summary['editor_state_valid']
             and summary["foreground_frames"] > 0 and summary["background_frames"] == 0
             and all_units_within_limit(first) and green_pass)
+        green_30 = green is not None and 0 <= green['ms'] < 30 and green['frames'] == 0
+        common_response = (summary["idle_probe_eligible"]
+            and summary["all_probe_units_locally_simulated_at_input"] and summary['editor_state_valid']
+            and summary["foreground_frames"] > 0 and summary["background_frames"] == 0)
+        summary["local_semantic_30ms_pass"] = bool(common_response
+            and all_units_within_limit(measured, 30) and green_30)
+        summary["first_motion_30ms_pass"] = bool(common_response
+            and all_units_within_limit(first, 30) and green_30)
         save(args.output / "summary.json", summary)
         print(json.dumps({k: v for k, v in summary.items() if k not in
                           ('stages', 'authority_sources', 'unit_1cm_stages', 'unit_2cm_stages')},

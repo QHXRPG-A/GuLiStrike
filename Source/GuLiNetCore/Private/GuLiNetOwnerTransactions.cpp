@@ -23,6 +23,7 @@ OwnerState OwnerState::Stage(const TransactionRequest* Request,const std::vector
     // Simulation state is isolated; transport queues and the unbounded event
     // history are not part of a numeric transaction's staging value.
     OwnerState V(Match,Player,MatchEpoch);V.StageSource=this;V.DecisionDomain=DecisionDomain;
+    V.ReuseResourceValidationSnapshot=ReuseResourceValidationSnapshot;
     V.Players=Players;V.ResourceEpochs=ResourceEpochs;
     {
         TraceScope Copy("GuLiHybrid_CoreStageObjects");
@@ -68,6 +69,30 @@ OwnerState OwnerState::Stage(const TransactionRequest* Request,const std::vector
         {FrozenWorkRecipe W;if (DecodeFrozenWork(I->second,W)) Include(W.Request);}
     }
     return V;
+}
+bool OwnerState::ValidateFragments(const std::vector<StateFragment>& Fragments)
+{
+    auto Remaining=ReuseResourceValidationSnapshot?std::count_if(Fragments.begin(),Fragments.end(),UsesResourceLedger):0;
+    if (Remaining<2)
+    {
+        for (const auto& F:Fragments) if (!ApplyFragment(F)) return false;
+        return true;
+    }
+    TraceScope Scope("GuLiHybrid_CoreReuseResourceValidationSnapshot");
+    auto Resources=ResourceLedgerValue.Snapshot();
+    // Only the isolated trial uses this scratch ledger. Keep every intermediate
+    // validation and fragment order: a later write cannot repair an invalid one.
+    for (const auto& F:Fragments)
+    {
+        if (!ApplyFragment(F,Remaining?&Resources:nullptr)) return false;
+        if (UsesResourceLedger(F))
+        {
+            if (--Remaining)
+            {if (!ValidResourceLedger(Resources)) return false;}
+            else if (!ResourceLedgerValue.Restore(std::move(Resources))) return false;
+        }
+    }
+    return true;
 }
 bool OwnerState::ApplyValidated(const std::vector<StateFragment>& Fragments,std::string* CurrentStateFailure)
 {
@@ -448,7 +473,7 @@ bool OwnerState::Prepare(Id Planner,const OwnerWork& W)
     std::vector<StateFragment> Local;
     for (const auto& M:W.Changes) if (MutationOwner(W,M)==Player && !(W.Continuation && Version(M.After.Key)>=M.After.Version)) Local.push_back(M.After);
     OwnerState Trial=Stage(nullptr,&Local);
-    for (const auto& F:Local) if (!Trial.ApplyFragment(F)) return false;
+    if (!Trial.ValidateFragments(Local)) return false;
     for (const auto& M:W.Changes) if (MutationOwner(W,M)==Player && !(W.Continuation && Version(M.After.Key)>=M.After.Version)) Locks[M.Before.Key]=W.Event;
     Prepared.emplace(W.Event,std::pair{Planner,Encoded});return true;
 }
@@ -466,7 +491,7 @@ bool OwnerState::Commit(Id Planner,const OwnerWork& W)
         Local.push_back(M.After);
     }
     OwnerState Trial=Stage(nullptr,&Local);
-    for (const auto& F:Local) if (!Trial.ApplyFragment(F)) return false;
+    if (!Trial.ValidateFragments(Local)) return false;
     if (!Trial.RebuildWorkIndex()) return false;
     if (!ApplyValidated(Local)) return false;
     Cancel(Planner,W.Event,W.Proposal);Finished.insert(W.Event);return true;

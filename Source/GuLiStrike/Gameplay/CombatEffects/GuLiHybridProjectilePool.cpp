@@ -657,7 +657,30 @@ public:
     UObject* LifetimeOwner() const override { const auto S=State.Pin(); return S?S->Pool.Get():nullptr; }
     uint32 Version() const override { return GuLiLinearState::Version; }
     bool UsesObject(const FGuLiHybridObjectKey& K) const override
-    {if (const auto S=State.Pin()) for (const auto& P:S->Records) if (S->Includes({K},P.Value)) return true;return false;}
+    {
+        const auto S=State.Pin();if (!S) return false;
+        const auto Comparison=[&]
+        {for (const auto& P:S->Records) if (S->Includes({K},P.Value)) return true;return false;};
+        static const auto* Option=IConsoleManager::Get().FindConsoleVariable(TEXT("gs.Hybrid.DirectCaptureMembership"));
+        const int32 Mode=Option?Option->GetInt():0;if (!Mode) return Comparison();
+        const bool Direct=[&]
+        {
+            if (const auto* R=S->Records.Find(K);R && R->Key==K) return true;
+            // Unregistered recipes still follow their source. Registered
+            // flights follow their own complete key, including life generation.
+            for (const auto& P:S->Records)
+            {
+                const auto& R=P.Value;if (R.bAdmitted || R.Source!=K) continue;
+                FGuLiHybridObjectState Flight;if (!S->Hybrid->GetObject(R.Key,Flight)) return true;
+            }
+            return false;
+        }();
+        if (Mode!=2) return Direct;
+        const bool Original=Comparison();
+        if (Direct==Original) {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCapture_LinearMembershipEqual);}
+        else {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCapture_LinearMembershipMismatch);ensureAlwaysMsgf(false,TEXT("Linear flight capture membership differs"));}
+        return Original;
+    }
     void Advance(uint64 At,double) override
     { if (const auto S=State.Pin()) { S->Service(); if (!(At%2)) S->Pool->Step(static_cast<float>(At)/60.f); } }
     bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const override

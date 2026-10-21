@@ -23,10 +23,14 @@ DEFAULTS = {"gs.Hybrid.FlightServiceFastPath": 1, "gs.Hybrid.YieldBetweenCapture
             "gs.Hybrid.CacheFlightLifecycleLookup": 1, "gs.Commander.ImmediateMovement": 1,
             "gs.Commander.LocalAuthorityPose": 1, "gs.Commander.ActiveSoftPairs": 1,
             "gs.Commander.CompleteReadyRoutes": 1, "gs.Commander.IndexedInputSelection": 1,
-            "gs.Hybrid.FastSmallPayloadCompression": 1}
+            "gs.Hybrid.FastSmallPayloadCompression": 1,
+            "gs.Hybrid.CommandApplicationWake": 0,
+            "gs.Commander.PresentationAfterCommands": 0}
 OPTIONS = tuple(DEFAULTS)
 OVERRIDES = {
     "candidate": {}, "fast_compression": {},
+    "command_wake": {"gs.Hybrid.CommandApplicationWake": 1},
+    "command_phase": {"gs.Hybrid.CommandApplicationWake": 1, "gs.Commander.PresentationAfterCommands": 1},
     "standard_compression": {"gs.Hybrid.FastSmallPayloadCompression": 0},
     "sha_cache": {"gs.Hybrid.FastPackCacheKey": 0},
     "copied_peer": {"gs.Hybrid.NativePeerSend": 0},

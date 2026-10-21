@@ -1,0 +1,149 @@
+{
+  "schema": "guli-capture-membership-evidence/v1",
+  "work_id": "WORK-20261020-004",
+  "goal_achieved": false,
+  "candidate_default": 0,
+  "no_priority_reordering": true,
+  "paired_frame_performance": "not_run",
+  "visual_acceptance": "user_only_pending",
+  "runs": [
+    {
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\capture-cost-52\\response-capture-trace",
+      "summary_sha256": "a1f0c0ce5484758034285e8f059b936f2a45fff4b715097cea1bc74295da6c1e",
+      "capture_summary_sha256": "b47171cda673e3ac6f45284ec7a0fd65be640897f2b9eb0094e1777a78923e2d",
+      "trace": true,
+      "members": 24,
+      "foreground_frames": 405,
+      "background_frames": 0,
+      "totals_ms": {
+        "first_motion_1cm": 54.030001163482666,
+        "existing_observation_2cm": 54.03200164437294
+      },
+      "membership_mode": 0,
+      "scopes": {
+        "GuLiHybrid_MainCaptureBarrier": {
+          "n": 92,
+          "mean_ms": 7.425946739130435,
+          "max_ms": 12.5863,
+          "sum_inclusive_ms": 683.1871
+        },
+        "GuLiHybrid_MainCaptureObjects": {
+          "n": 92,
+          "mean_ms": 0.8386782608695652,
+          "max_ms": 1.7496,
+          "sum_inclusive_ms": 77.1584
+        },
+        "GuLiHybrid_MainCaptureSystemMembership": {
+          "n": 92,
+          "mean_ms": 6.484946739130435,
+          "max_ms": 11.3111,
+          "sum_inclusive_ms": 596.6151
+        },
+        "GuLiHybrid_MainCaptureSystems": {
+          "n": 92,
+          "mean_ms": 0.09931195652173912,
+          "max_ms": 0.1849,
+          "sum_inclusive_ms": 9.1367
+        }
+      }
+    },
+    {
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\capture-membership-53\\response-equality-trace",
+      "summary_sha256": "4ce4e8bee7eb88b3b45cb410e8c5b210ed288de04a265e052212720e3d844e21",
+      "capture_summary_sha256": "f2c53a02789f7869b8f29363b32e0c1f4dc5518f2458939ea4fefd9bc6a8c3d2",
+      "trace": true,
+      "members": 24,
+      "foreground_frames": 408,
+      "background_frames": 0,
+      "totals_ms": {
+        "first_motion_1cm": 30.737999826669693,
+        "existing_observation_2cm": 46.75799980759621
+      },
+      "membership_mode": 2,
+      "scopes": {
+        "GuLiCapture_EffectMembershipEqual": {
+          "n": 28559,
+          "mean_ms": 1.587240449595574e-05,
+          "max_ms": 0.0172,
+          "sum_inclusive_ms": 0.4533
+        },
+        "GuLiCapture_LinearMembershipEqual": {
+          "n": 28559,
+          "mean_ms": 2.750096291886971e-05,
+          "max_ms": 0.0188,
+          "sum_inclusive_ms": 0.7854
+        },
+        "GuLiHybrid_MainCaptureBarrier": {
+          "n": 98,
+          "mean_ms": 7.033395918367346,
+          "max_ms": 13.332,
+          "sum_inclusive_ms": 689.2728
+        },
+        "GuLiHybrid_MainCaptureObjects": {
+          "n": 98,
+          "mean_ms": 0.8966010204081633,
+          "max_ms": 1.6654,
+          "sum_inclusive_ms": 87.8669
+        },
+        "GuLiHybrid_MainCaptureSystemMembership": {
+          "n": 98,
+          "mean_ms": 6.033566326530612,
+          "max_ms": 12.0063,
+          "sum_inclusive_ms": 591.2895
+        },
+        "GuLiHybrid_MainCaptureSystems": {
+          "n": 98,
+          "mean_ms": 0.10011836734693878,
+          "max_ms": 0.1939,
+          "sum_inclusive_ms": 9.8116
+        }
+      }
+    },
+    {
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\capture-membership-53\\response-direct-trace",
+      "summary_sha256": "75e8a16a8d30285e7aa84e793d169b7e854f357124ffee41c2c6f68cbfad3755",
+      "capture_summary_sha256": "e4058fa9f9612e8376c09a2d6855a1d0cbf9a528edc48b1bc5bd7fdb76057411",
+      "trace": true,
+      "members": 24,
+      "foreground_frames": 411,
+      "background_frames": 0,
+      "totals_ms": {
+        "first_motion_1cm": 47.75799810886383,
+        "existing_observation_2cm": 47.76099696755409
+      },
+      "membership_mode": 1,
+      "scopes": {
+        "GuLiHybrid_MainCaptureBarrier": {
+          "n": 122,
+          "mean_ms": 1.8075155737704918,
+          "max_ms": 3.2504,
+          "sum_inclusive_ms": 220.5169
+        },
+        "GuLiHybrid_MainCaptureObjects": {
+          "n": 122,
+          "mean_ms": 0.9536647540983606,
+          "max_ms": 1.9313,
+          "sum_inclusive_ms": 116.3471
+        },
+        "GuLiHybrid_MainCaptureSystemMembership": {
+          "n": 122,
+          "mean_ms": 0.7499483606557378,
+          "max_ms": 1.3898000000000001,
+          "sum_inclusive_ms": 91.4937
+        },
+        "GuLiHybrid_MainCaptureSystems": {
+          "n": 122,
+          "mean_ms": 0.10106393442622952,
+          "max_ms": 0.21139999999999998,
+          "sum_inclusive_ms": 12.3298
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Capture counts differ; these are diagnostic scope observations, not paired whole-frame performance gains.",
+    "Mode 2 equality covers encountered inputs, not every lifecycle edge case.",
+    "Response starts at TimerManager controller semantic entry, not OS click or scanout.",
+    "Direct run early submissions around 29 ms refer to 1 cm observation only; complete 1 cm and 2 cm totals remain about 47.76 ms."
+  ]
+}

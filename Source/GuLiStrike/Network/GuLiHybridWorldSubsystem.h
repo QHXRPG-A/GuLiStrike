@@ -281,6 +281,8 @@ public:
     virtual uint32 AdvancePeriod() const {return 1;}
     virtual std::shared_ptr<GuLiNet::IObjectMotionCodec> CreateMotionCodec() {return {};}
     virtual bool ApplyDecodedMotion(const GuLiNet::IObjectMotionOutput&,uint64) {return false;}
+    // Per-object execution carries only Member in Command.Members; routing
+    // retains the full frozen selection and original slot identities.
     virtual bool Execute(const FGuLiHybridCommand& Command, const FGuLiHybridCommandMember& Member) = 0;
     virtual bool ApplyMotion(TConstArrayView<uint8> Bytes, uint64 LogicalTick) = 0;
 

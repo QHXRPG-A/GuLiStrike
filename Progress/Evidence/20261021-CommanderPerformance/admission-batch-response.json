@@ -1,0 +1,271 @@
+{
+  "work_id": "WORK-20261020-004",
+  "evidence_root": "D:/UE5.7/PerformanceCaptures/GuLiStrike/hybrid-cpu-20261020",
+  "measurement_basis": "controller semantic input to all 24 selected local units; cumulative milestones, not summed",
+  "os_click_to_scanout_verified": false,
+  "performance_acceptance_run": false,
+  "visual_acceptance": "user only; assistant did not inspect images",
+  "candidate_default": {
+    "gs.Commander.BatchMoveAdmissions": 0
+  },
+  "runs": {
+    "admission-batch-49/response-batch-1": {
+      "trace": false,
+      "soldiers": [
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174
+      ],
+      "all_local": true,
+      "all_idle": true,
+      "foreground_frames": 450,
+      "background_frames": 0,
+      "editor_minimized_frames": 450,
+      "response_totals_ms": {
+        "first_motion_1cm": 48.67800325155258,
+        "existing_observation_2cm": 48.681002110242844
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "stages_ms": {
+        "local-green-submit": {
+          "n": 1,
+          "first": 16.94600284099579,
+          "last": 16.94600284099579
+        },
+        "owner-command": {
+          "n": 24,
+          "first": 12.986000627279282,
+          "last": 13.183999806642532
+        },
+        "admission": {
+          "n": 1,
+          "first": 20.086999982595444,
+          "last": 20.086999982595444
+        },
+        "direction": {
+          "n": 24,
+          "first": 20.284000784158707,
+          "last": 20.323000848293304
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 20.559001713991165,
+          "last": 39.92300108075142
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 20.601000636816025,
+          "last": 45.65200209617615
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 31.35400265455246,
+          "last": 48.67800325155258
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 31.369000673294067,
+          "last": 48.681002110242844
+        }
+      },
+      "command_delivery_ms": {
+        "async-post": 0.4660002887248993,
+        "worker-route": 0.47999992966651917,
+        "application-emitted": 0.6210021674633026,
+        "application-start": 12.963000684976578
+      },
+      "evidence_sha256": {
+        "summary.json": "f09145cd7a345ea2a3a6ab5dd60f793d1c86947744ad2ca615de0c166efd092d",
+        "command-delivery.json": "0a7592376cc977501c1f851b11ff1e1e7fc5f5a7ff87eccae34ecf7edd50f817",
+        "stages.json": "68d2285f9315f1f392ca16e2cb7d64cf9959bb2856df19e4e7ba8d5555460363"
+      }
+    },
+    "admission-batch-49/response-clock174-trace": {
+      "trace": true,
+      "soldiers": [
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174
+      ],
+      "all_local": true,
+      "all_idle": true,
+      "foreground_frames": 300,
+      "background_frames": 0,
+      "editor_minimized_frames": 300,
+      "response_totals_ms": {
+        "first_motion_1cm": 39.19900208711624,
+        "existing_observation_2cm": 73.36600124835968
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "stages_ms": {
+        "local-green-submit": {
+          "n": 1,
+          "first": 17.383001744747162,
+          "last": 17.383001744747162
+        },
+        "owner-command": {
+          "n": 24,
+          "first": 13.670001178979874,
+          "last": 13.875000178813934
+        },
+        "admission": {
+          "n": 1,
+          "first": 23.855000734329224,
+          "last": 23.855000734329224
+        },
+        "direction": {
+          "n": 24,
+          "first": 24.125002324581146,
+          "last": 24.160999804735184
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 25.36800131201744,
+          "last": 25.64600110054016
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 25.439001619815826,
+          "last": 62.85500153899193
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 39.14500027894974,
+          "last": 39.19900208711624
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 39.15800154209137,
+          "last": 73.36600124835968
+        }
+      },
+      "command_delivery_ms": {
+        "async-post": 0.3290027379989624,
+        "worker-route": 0.7690005004405975,
+        "application-emitted": 0.883001834154129,
+        "application-start": 13.640999794006348
+      },
+      "evidence_sha256": {
+        "summary.json": "05b32ac88f7a6211fc70100437dd733307ffaa685e08960611104952c5bc2082",
+        "command-delivery.json": "585b1ba49549da085bdf60df26b7484d6f4304023498003bbd8026592b07f426",
+        "stages.json": "5f3f21bc0763c30bc707f062554e8f5234cba4112c3494705c687ddd958d18e8"
+      }
+    }
+  },
+  "trace_causal_windows": {
+    "prior_logical_batches": [
+      {
+        "start_ms": 0.7185001463767549,
+        "end_ms": 3.8525001463654007,
+        "duration_ms": 3.1338
+      },
+      {
+        "start_ms": 3.856500146412145,
+        "end_ms": 6.698500146399056,
+        "duration_ms": 2.8417
+      },
+      {
+        "start_ms": 6.929500146384271,
+        "end_ms": 9.643500146410133,
+        "duration_ms": 2.714
+      }
+    ],
+    "command_application_wake": [
+      {
+        "start_ms": 13.625500146360991,
+        "end_ms": 14.43850014641157,
+        "duration_ms": 0.8129
+      },
+      {
+        "start_ms": 19.781500146393682,
+        "end_ms": 32.15750014641117,
+        "duration_ms": 12.3757
+      }
+    ],
+    "following_logical_batch": [
+      {
+        "start_ms": 20.61350014639629,
+        "end_ms": 31.371500146406106,
+        "duration_ms": 10.7575
+      }
+    ],
+    "main_presentation": [
+      {
+        "start_ms": 14.54450014637132,
+        "end_ms": 15.490500146370323,
+        "duration_ms": 0.9460999999999999
+      },
+      {
+        "start_ms": 38.15950014637792,
+        "end_ms": 39.07850014638825,
+        "duration_ms": 0.9196
+      }
+    ],
+    "worker_long_transactions": [
+      {
+        "start_ms": 5.675500146367085,
+        "end_ms": 10.974500146403443,
+        "duration_ms": 5.2992
+      },
+      {
+        "start_ms": 10.976500146398394,
+        "end_ms": 13.550500146379818,
+        "duration_ms": 2.5738
+      }
+    ],
+    "conclusion": "Command output at 0.883 ms missed the FIFO snapshot opened at 0.715 ms; three prior logical batches ran before command application at 13.641 ms. First following logical batch started at 20.614 ms; model presentation started at 38.160 ms. Do not add overlapping scopes or use this trace for performance gain."
+  },
+  "build": {
+    "exit_code": 0,
+    "result": "Succeeded",
+    "build_id": "d4757e21-eaef-492e-b079-c8c0056c493d",
+    "module_manifests": 218,
+    "source_manifest_sha256": "66fd3b1d5ccc129e14206741e72719e729944fa471c079a683477d99a64f114c",
+    "build-49-verification.json_sha256": "3082f49df045a97914080c58f53d4e25e7f17b2d9b9f5ee515c380a87612e2f0",
+    "build-49.log_sha256": "96f29b6604bc820b310685bbfa8195fee907b77f689f00f55aca462005743a57"
+  }
+}

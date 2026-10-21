@@ -61,6 +61,7 @@ public:
     bool BeginEconomy(Resources Red,Resources Blue);
     bool Install(const ObjectRecord& Record);
     void SetMembers(std::map<Id,Member> Members) {Players=std::move(Members);}
+    void SetResourceValidationSnapshotReuse(bool Enabled) {ReuseResourceValidationSnapshot=Enabled;}
     bool SetAuthority(const Authority& Grant);
     void ObserveTerminalAuthority(const Authority& Grant);
     void ObserveObjectOrdinal(ObjectKind Kind,std::uint32_t Ordinal);
@@ -125,6 +126,7 @@ private:
     mutable std::size_t FragmentCacheBytes=0;
     static bool UsesResourceLedger(const StateFragment& Fragment);
     bool ApplyFragment(const StateFragment& Fragment,ResourceLedgerState* ResourceBatch=nullptr,MiningReservationState* MiningBatch=nullptr);
+    bool ValidateFragments(const std::vector<StateFragment>& Fragments);
     std::set<StateKey> FragmentKeys(std::span<const ObjectKey> Objects,bool History=true) const;
     std::set<StateKey> ChangedKeys(const TransactionRequest& Request,const CommitResult& Result) const;
     bool RebuildWorkIndex();
@@ -143,6 +145,7 @@ private:
     Revision MatchEpoch=1;
     ObjectKey DecisionDomain;
     const OwnerState* StageSource=nullptr;
+    bool ReuseResourceValidationSnapshot=false;
     std::string FailureReason;
     SharedCatalog<Id,Member> Players;
     std::map<ObjectKey,ObjectRecord> Directory;

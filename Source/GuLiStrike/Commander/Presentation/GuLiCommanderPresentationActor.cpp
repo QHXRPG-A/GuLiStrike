@@ -56,6 +56,8 @@ CSV_DEFINE_CATEGORY(GuLiCommanderPresentation, true);
 
 namespace GuLiCommanderPresentation
 {
+    TAutoConsoleVariable<int32> PresentationAfterCommands(TEXT("gs.Commander.PresentationAfterCommands"), 0,
+        TEXT("Run the existing presentation pass after PostUpdateWork command applications. Latched at BeginPlay; no extra presentation pass."));
 	TAutoConsoleVariable<int32> LocalAuthorityPose(TEXT("gs.Commander.LocalAuthorityPose"), 1,
 		TEXT("Present committed local manual Mass poses without network publication or playback-buffer delay."));
 	void DisableUnitDistanceCulling(UInstancedStaticMeshComponent& Component)
@@ -341,6 +343,11 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 		SetActorTickEnabled(false);
 		return;
 	}
+	// Command wakes can finish during PostUpdateWork. Keep one presentation
+	// pass, after that group's work, so committed poses reach this frame's ISMs.
+	// Dependent route/health components retain their actor tick prerequisites.
+	if (GuLiCommanderPresentation::PresentationAfterCommands.GetValueOnGameThread() != 0)
+		SetTickGroup(TG_LastDemotable);
 	check(InterpolationBackTimeSeconds > 1.0f / static_cast<float>(GULI_POSE_CAPTURE_RATE_HZ));
 	check(MaximumAdaptiveInterpolationBackTimeSeconds >= InterpolationBackTimeSeconds);
 	InitializePresentationPerformanceSettings();

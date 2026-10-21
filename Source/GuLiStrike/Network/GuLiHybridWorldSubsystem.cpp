@@ -9,6 +9,7 @@
 #include "GuLiNetHash.h"
 #include "GuLiNetAsyncClient.h"
 #include "Commander/Network/GuLiMoveLatency.h"
+#include "Async/Async.h"
 #include "HAL/PlatformProcess.h"
 #include "HAL/IConsoleManager.h"
 #include "HAL/PlatformTLS.h"
@@ -58,6 +59,16 @@ TAutoConsoleVariable<int32> ReusePayloadCompressor(TEXT("gs.Hybrid.ReusePayloadC
     TEXT("Reuse one transaction-worker zlib workspace, resetting all stream state for each packet. Latched at client creation; 0 uses fresh compressors."));
 TAutoConsoleVariable<int32> FastSmallPayloadCompression(TEXT("gs.Hybrid.FastSmallPayloadCompression"),1,
     TEXT("Use zlib best-speed for reliable bodies up to 64 KiB. Lossless wire codecs and larger private cuts are unchanged. Latched at client creation; 0 is the comparison path."));
+TAutoConsoleVariable<int32> CommandApplicationWake(TEXT("gs.Hybrid.CommandApplicationWake"),0,
+    TEXT("Schedule the caller-thread FIFO when a command and its following logical batch become ready. Latched at client creation; no waiting or extra simulation steps."));
+TAutoConsoleVariable<int32> NetworkRetryBatchLimit(TEXT("gs.Hybrid.NetworkRetryBatchLimit"),0,
+    TEXT("Maximum transaction retry starts per maintenance phase. 0 keeps a full pass. Latched at client creation; deferred identities remain queued."));
+TAutoConsoleVariable<int32> DeferPeerTransactions(TEXT("gs.Hybrid.DeferPeerTransactions"),0,
+    TEXT("Retain received transaction facts for bounded maintenance instead of computing them inside the input queue. Latched at client creation; combine with NetworkRetryBatchLimit."));
+TAutoConsoleVariable<int32> ReuseResourceValidationSnapshot(TEXT("gs.Hybrid.ReuseResourceValidationSnapshot"),0,
+    TEXT("Reuse one isolated resource snapshot within each transaction validation, retaining every intermediate check and fragment order. Latched at client creation."));
+TAutoConsoleVariable<int32> DirectCaptureMembership(TEXT("gs.Hybrid.DirectCaptureMembership"),0,
+    TEXT("Query flight/effect capture membership without per-record single-key arrays. 0 comparison, 1 direct identity lookup, 2 compare both and retain comparison results."));
 bool ResolveFastSmallPayloadCompression()
 {
     int32 Value=FastSmallPayloadCompression.GetValueOnGameThread();
@@ -159,6 +170,7 @@ class FObjectBridge final : public IObjectAdapter
     TWeakObjectPtr<UObject> Owner;
     FGuLiHybridObjectState State;
     FName SimulationTraceName;
+    FName CaptureTraceName;
     TMap<FName,TArray<uint8>> AppliedCapabilities;
     FGuLiHybridEntityState Entities;
     mutable FGuLiHybridComponentBindingContext ComponentBindings;
@@ -187,6 +199,7 @@ class FObjectBridge final : public IObjectAdapter
         ActorBindingRevision=MAX_uint64;ActorBinding.Reset();
         // Cache one small timer name per definition, never per object or frame.
         SimulationTraceName=FName(*(TEXT("GuLiSim_Object/")+State.Definition.ToString()));
+        CaptureTraceName=FName(*(TEXT("GuLiCapture_Object/")+State.Definition.ToString()));
         const auto* Actors=Owner.IsValid()?Owner->GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>():nullptr;
         const TCHAR* Failure=nullptr;
         GuLiHybridObjectState::FParts Restored;
@@ -310,7 +323,7 @@ public:
     bool Command(const FrozenCommand& C,const CommandMember& M) override
     {
         if (!Owner.IsValid() || !Owner->GetWorld()) return false;
-        const auto Command=ToUE(C);const auto Member=ToUE(M);
+        const auto Command=ToUECommandMember(C,M);const auto& Member=Command.Members[0];
         const auto Capability=Entities.Command(Command,Member);
         if (Capability.IsSet())
         {
@@ -342,6 +355,7 @@ public:
     }
     bool Capture(Bytes& Out) const override
     {
+        TRACE_CPUPROFILER_EVENT_SCOPE_TEXT(CaptureTraceName);
         TArray<uint8> Data; if (!Owner.IsValid() || !Adapter->Capture(Data) || Data.IsEmpty()) return false;
         return Wrap(Data,Out);
     }
@@ -376,6 +390,8 @@ class FSharedStateBridge final : public ISharedStateAdapter
     TSharedPtr<IGuLiHybridSharedStateAdapter> Adapter;
     TWeakObjectPtr<UObject> Owner;
     FName SimulationTraceName;
+    FName CaptureTraceName;
+    FName CaptureCurrentTraceName;
     static TArray<FGuLiHybridObjectKey> Keys(const std::vector<ObjectKey>& Objects)
     { TArray<FGuLiHybridObjectKey> Out; for (const auto& K : Objects) Out.Add(ToUE(K)); return Out; }
     static TArray<FGuLiHybridSharedStatePiece> Pieces(const std::vector<PrivateSystemState>& Shards)
@@ -393,17 +409,21 @@ public:
     {if (Owner.IsValid()) Adapter->ResetResourceRequests(Keys(std::vector<ObjectKey>(Objects.begin(),Objects.end())),E);}
     bool CaptureCurrent(const std::vector<ObjectKey>& Objects,Bytes& Out) const override
     {
+        TRACE_CPUPROFILER_EVENT_SCOPE_TEXT(CaptureCurrentTraceName);
         TArray<uint8> B;if (!Owner.IsValid() || !Adapter->CaptureCurrent(Keys(Objects),B)) return false;
         Out.assign(B.GetData(),B.GetData()+B.Num());return true;
     }
     FSharedStateBridge(FName Name,TSharedPtr<IGuLiHybridSharedStateAdapter> V)
-        : Adapter(MoveTemp(V)),Owner(Adapter->LifetimeOwner()),SimulationTraceName(*(TEXT("GuLiSim_Shared/")+Name.ToString())) {}
+        : Adapter(MoveTemp(V)),Owner(Adapter->LifetimeOwner()),SimulationTraceName(*(TEXT("GuLiSim_Shared/")+Name.ToString())),
+          CaptureTraceName(*(TEXT("GuLiCapture_Shared/")+Name.ToString())),
+          CaptureCurrentTraceName(*(TEXT("GuLiCapture_CurrentShared/")+Name.ToString())) {}
     uint32 Version() const override { return Owner.IsValid() ? Adapter->Version() : 0; }
     bool UsesObject(ObjectKey Key) const override { return Owner.IsValid() && Adapter->UsesObject(ToUE(Key)); }
     void Advance(Tick At,double DeltaSeconds) override
     { TRACE_CPUPROFILER_EVENT_SCOPE_TEXT(SimulationTraceName);if (Owner.IsValid()) Adapter->Advance(At,DeltaSeconds); }
     bool Capture(const std::vector<ObjectKey>& Objects,Bytes& Out) const override
     {
+        TRACE_CPUPROFILER_EVENT_SCOPE_TEXT(CaptureTraceName);
         TArray<uint8> Data;
         if (!Owner.IsValid() || !Adapter->Capture(Keys(Objects),Data) || Data.IsEmpty()) return false;
         Out.assign(Data.GetData(),Data.GetData()+Data.Num()); return true;
@@ -1864,6 +1884,8 @@ TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetTransactionCaptureSnapshot
     Async->SetNumberField(TEXT("logical_steps"),double(A.SimulationSteps));Async->SetNumberField(TEXT("simulation_ms"),A.SimulationMilliseconds);
     Async->SetBoolField(TEXT("capture_yield_enabled"),A.CaptureYieldEnabled);
     Async->SetBoolField(TEXT("fast_pack_cache_key_enabled"),A.FastPackCacheKeyEnabled);
+    Async->SetNumberField(TEXT("command_wake_requests"),double(A.CommandWakeRequests));
+    Async->SetNumberField(TEXT("command_wake_pumps"),double(A.CommandWakePumps));
     Async->SetBoolField(TEXT("native_peer_send_enabled"),NativePeerSend.GetValueOnGameThread()!=0);
     Async->SetBoolField(TEXT("native_peer_receive_enabled"),State->Session.IsValid() && State->Session->IsNativePeerReceiveEnabled());
     Async->SetBoolField(TEXT("reuse_payload_compressor_enabled"),State->bReusePayloadCompressor);
@@ -1935,6 +1957,16 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
         const bool FastCompression=State->bFastSmallPayloadCompression;
         const auto FastCompressor=State->bReusePayloadCompressor&&FastCompression
             ?std::make_shared<GuLiHybridPeerPayload::FDeflateContext>(Z_BEST_SPEED):nullptr;
+        std::function<void(std::uint64_t)> CommandWake;
+        if (CommandApplicationWake.GetValueOnGameThread()!=0)
+            CommandWake=[Weak](std::uint64_t Generation)
+            {
+                AsyncTask(ENamedThreads::GameThread,[Weak,Generation]
+                {
+                    auto* Self=Weak.Get();
+                    if (Self && Self->State->Client) Self->State->Client->PumpCommandApplications(Generation);
+                });
+            };
         State->Client=std::make_unique<AsyncClientWorld>(ToCore(Session->GetRoomId()),ToCore(Session->GetLocalPlayerId()),V.Header.Epoch,
             [Weak](const ObjectRecord& O)->std::unique_ptr<IObjectAdapter>
             {
@@ -1976,7 +2008,8 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
                         UE_LOG(LogGuLiStrike,Display,TEXT("HybridCommandTiming stage=%s clock=%.6f thread=%u event=%s value=%llu"),
                             UTF8_TO_TCHAR(Stage),FPlatformTime::Seconds(),FPlatformTLS::GetCurrentThreadId(),
                             *ToUE(Event).ToString(EGuidFormats::Digits),static_cast<uint64>(Value));
-                }});
+                },std::move(CommandWake),static_cast<std::size_t>(FMath::Clamp(NetworkRetryBatchLimit.GetValueOnGameThread(),0,64)),
+                DeferPeerTransactions.GetValueOnGameThread()!=0,ReuseResourceValidationSnapshot.GetValueOnGameThread()!=0});
         State->Client->SetHandoffAdmission([Weak](Id Target)
         {const auto* Self=Weak.Get();const auto* S=Self?Self->State->Session.Get():nullptr;return S && S->CanQueueHandoff(ToUE(Target));});
         State->Client->SetTimingObserver([Weak](const char* Name,double Value)

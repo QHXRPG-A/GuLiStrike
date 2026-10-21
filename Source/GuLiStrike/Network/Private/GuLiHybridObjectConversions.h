@@ -65,4 +65,12 @@ inline FGuLiHybridCommand ToUE(const GuLiNet::FrozenCommand& V)
     if (!V.Arguments.empty()) O.Arguments.Append(V.Arguments.data(),static_cast<int32>(V.Arguments.size()));
     for (const auto& M : V.Members) O.Members.Add(ToUE(M)); return O;
 }
+// Object execution already receives its exact member. Keep the original batch
+// in the protocol layer; do not convert its entire selection for every object.
+inline FGuLiHybridCommand ToUECommandMember(const GuLiNet::FrozenCommand& V,const GuLiNet::CommandMember& Member)
+{
+    FGuLiHybridCommand O; O.Event=ToUE(V.Event); O.LogicalTick=V.At; O.Operation=FName(UTF8_TO_TCHAR(V.Operation.c_str()));
+    if (!V.Arguments.empty()) O.Arguments.Append(V.Arguments.data(),static_cast<int32>(V.Arguments.size()));
+    O.Members.Add(ToUE(Member)); return O;
+}
 }

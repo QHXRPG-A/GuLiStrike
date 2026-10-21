@@ -148,6 +148,9 @@ void ClientWorld::InterruptResourceRequests(Id Group,Revision Epoch)
     {if (ReleaseApplicationResult) ReleaseApplicationResult(I->first);I=WorkFlows.erase(I);}else ++I;
     std::erase_if(KnownWork,[&](const auto& P){return Affected(P.second.Work.Request);});
     std::erase_if(RetryWork,[&](const auto& P){return Affected(P.second.second);});
+    std::erase_if(WorkRetryRound,[&](Id E){return !RetryWork.contains(E);});
+    std::erase_if(ReadyPeerWork,[&](Id E){return !RetryWork.contains(E);});
+    std::erase_if(ReadyPeerWorkIdentities,[&](Id E){return !RetryWork.contains(E);});
     std::erase_if(WaitingResults,[&](const auto& P){return P.second.ResourceGroup==Group;});
     for (auto I=DeferredPeerReceipts.begin();I!=DeferredPeerReceipts.end();) if (I->second.Header.ResourceGroup==Group)
     {DeferredPeerReceiptBytes-=I->second.Bytes;I=DeferredPeerReceipts.erase(I);}else ++I;

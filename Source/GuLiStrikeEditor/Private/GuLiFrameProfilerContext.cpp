@@ -77,18 +77,18 @@ private:
     TWeakObjectPtr<UWorld> Target;
     bool Active=false,OwnNative=false,OwnSlate=false,ReadyAtStart=false;
 };
-TUniquePtr<FProjectCaptureContext> Context;
+TUniquePtr<FProjectCaptureContext> GuLiFrameProfilerContext;
 }
 
 void RegisterGuLiFrameProfilerContext()
 {
-    Context=MakeUnique<FProjectCaptureContext>();
-    IModularFeatures::Get().RegisterModularFeature(IGuLiFrameProfilerContext::GetFeatureName(),Context.Get());
+    GuLiFrameProfilerContext=MakeUnique<FProjectCaptureContext>();
+    IModularFeatures::Get().RegisterModularFeature(IGuLiFrameProfilerContext::GetFeatureName(),GuLiFrameProfilerContext.Get());
 }
 void UnregisterGuLiFrameProfilerContext()
 {
-    if (!Context) return;
-    if (Context->IsActive()) Context->End();
-    IModularFeatures::Get().UnregisterModularFeature(IGuLiFrameProfilerContext::GetFeatureName(),Context.Get());
-    Context.Reset();
+    if (!GuLiFrameProfilerContext) return;
+    if (GuLiFrameProfilerContext->IsActive()) GuLiFrameProfilerContext->End();
+    IModularFeatures::Get().UnregisterModularFeature(IGuLiFrameProfilerContext::GetFeatureName(),GuLiFrameProfilerContext.Get());
+    GuLiFrameProfilerContext.Reset();
 }

@@ -1,0 +1,446 @@
+{
+  "work_id": "WORK-20261020-004",
+  "evidence_root": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020",
+  "measurement_basis": "controller semantic input to all 24 local Mass units and model instance submission; cumulative milestones, not a sum",
+  "os_click_to_scanout_verified": false,
+  "performance_acceptance_run": false,
+  "visual_acceptance": "user only; not run by assistant",
+  "candidate_defaults": {
+    "gs.Hybrid.NetworkRetryBatchLimit": 0,
+    "gs.Hybrid.DeferPeerTransactions": 0,
+    "gs.Hybrid.CommandApplicationWake": 0,
+    "gs.Commander.PresentationAfterCommands": 0
+  },
+  "runs": {
+    "movement-clock-45/response-170": {
+      "trace": false,
+      "foreground": 460,
+      "background": 0,
+      "all_local": true,
+      "all_idle": true,
+      "editor_minimized": true,
+      "stages_ms": {
+        "local-green-submit": {
+          "n": 1,
+          "first": 13.252999633550644,
+          "last": 13.252999633550644
+        },
+        "owner-command": {
+          "n": 24,
+          "first": 28.402000665664673,
+          "last": 28.67799997329712
+        },
+        "admission": {
+          "n": 2,
+          "first": 106.61900043487549,
+          "last": 106.87499865889549
+        },
+        "direction": {
+          "n": 24,
+          "first": 107.2000004351139,
+          "last": 107.2390004992485
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 107.55199939012527,
+          "last": 122.17500060796738
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 107.58699849247932,
+          "last": 122.22399935126305
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 113.01299929618835,
+          "last": 136.6420015692711
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 113.01900073885918,
+          "last": 136.64399832487106
+        }
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "total_ms": 136.64399832487106,
+      "total_1cm_ms": 136.6420015692711,
+      "evidence_sha256": {
+        "summary.json": "25f10b4f060c5e30f525855153a63d432ebafd16a12b794982fbd1bd4a140417",
+        "command-delivery.json": "c96e9ecc31ca4227d9d9c67200b3b5d5b2d76e0d3e63e40d948be5b4d672f7a4"
+      }
+    },
+    "movement-clock-45/response-170-2": {
+      "trace": false,
+      "foreground": 473,
+      "background": 0,
+      "all_local": true,
+      "all_idle": true,
+      "editor_minimized": true,
+      "stages_ms": {
+        "local-green-submit": {
+          "n": 1,
+          "first": 8.111000061035156,
+          "last": 8.111000061035156
+        },
+        "owner-command": {
+          "n": 24,
+          "first": 84.80300009250641,
+          "last": 85.06200090050697
+        },
+        "admission": {
+          "n": 1,
+          "first": 91.12100303173065,
+          "last": 91.12100303173065
+        },
+        "direction": {
+          "n": 24,
+          "first": 91.47000312805176,
+          "last": 102.4480015039444
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 91.8320007622242,
+          "last": 102.75300219655037
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 91.8780006468296,
+          "last": 102.7819998562336
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 123.51199984550476,
+          "last": 123.5710009932518
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 123.51900339126587,
+          "last": 123.57200309634209
+        }
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "total_ms": 123.57200309634209,
+      "total_1cm_ms": 123.5710009932518,
+      "evidence_sha256": {
+        "summary.json": "933c92c354965bf60376d7fd101d7403dd5c63307985f3750351345aecd21f18",
+        "command-delivery.json": "87a4d70024c52b9cfb890f4ea96adaa7314f915e976cf9ab14e6dca669077d58"
+      }
+    },
+    "admission-wake-46/response-off-2": {
+      "trace": false,
+      "foreground": 478,
+      "background": 0,
+      "all_local": true,
+      "all_idle": true,
+      "editor_minimized": true,
+      "stages_ms": {
+        "owner-command": {
+          "n": 24,
+          "first": 6.216999143362045,
+          "last": 6.40999898314476
+        },
+        "admission": {
+          "n": 2,
+          "first": 8.708998560905457,
+          "last": 48.023998737335205
+        },
+        "local-green-submit": {
+          "n": 1,
+          "first": 21.82300016283989,
+          "last": 21.82300016283989
+        },
+        "direction": {
+          "n": 24,
+          "first": 48.27899858355522,
+          "last": 48.319000750780106
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 48.56700077652931,
+          "last": 52.241001278162
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 48.58800023794174,
+          "last": 52.24800109863281
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 65.48300012946129,
+          "last": 65.55400043725967
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 65.49400091171265,
+          "last": 65.55499881505966
+        }
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "total_ms": 65.55499881505966,
+      "total_1cm_ms": 65.55400043725967,
+      "evidence_sha256": {
+        "summary.json": "dce8797a35f808eba0e7cebc7db792c91f4faf312f369f0605a7ba9c4ad6728a",
+        "command-delivery.json": "bb67fc0a8f0744cac9b85e7d3bc10ab86ec90c5e40c707d8ae83cefbc8e48204"
+      }
+    },
+    "admission-wake-46/response-on": {
+      "trace": false,
+      "foreground": 462,
+      "background": 0,
+      "all_local": true,
+      "all_idle": true,
+      "editor_minimized": true,
+      "stages_ms": {
+        "owner-command": {
+          "n": 24,
+          "first": 11.783000081777573,
+          "last": 11.964000761508942
+        },
+        "local-green-submit": {
+          "n": 1,
+          "first": 18.33600178360939,
+          "last": 18.33600178360939
+        },
+        "admission": {
+          "n": 2,
+          "first": 25.265000760555267,
+          "last": 25.522999465465546
+        },
+        "direction": {
+          "n": 24,
+          "first": 25.7750004529953,
+          "last": 25.829002261161804
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 26.1090025305748,
+          "last": 34.04700011014938
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 26.142001152038574,
+          "last": 34.230999648571014
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 43.00900176167488,
+          "last": 43.074000626802444
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 43.01900044083595,
+          "last": 43.07600110769272
+        }
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "total_ms": 43.07600110769272,
+      "total_1cm_ms": 43.074000626802444,
+      "evidence_sha256": {
+        "summary.json": "82bcde80b7d924fd66d51a8f6c617a03c739a02196a298dd1dec26c728fddb5f",
+        "command-delivery.json": "8a1ba5369ba60aee9d8f1808b83c5710530f8255228450850d5c322b4799e3f4"
+      }
+    },
+    "retry-batch-47/response-batch2-1": {
+      "trace": false,
+      "foreground": 430,
+      "background": 0,
+      "all_local": true,
+      "all_idle": true,
+      "editor_minimized": true,
+      "stages_ms": {
+        "local-green-submit": {
+          "n": 1,
+          "first": 10.972999036312103,
+          "last": 10.972999036312103
+        },
+        "owner-command": {
+          "n": 24,
+          "first": 23.57499673962593,
+          "last": 23.77699688076973
+        },
+        "admission": {
+          "n": 2,
+          "first": 30.98899871110916,
+          "last": 31.215999275445938
+        },
+        "direction": {
+          "n": 24,
+          "first": 31.390998512506485,
+          "last": 31.429000198841095
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 31.78899735212326,
+          "last": 38.42199966311455
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 31.841997057199478,
+          "last": 38.61000016331673
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 50.43099820613861,
+          "last": 50.49999803304672
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 50.44299736618996,
+          "last": 50.501998513937
+        }
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "total_ms": 50.501998513937,
+      "total_1cm_ms": 50.49999803304672,
+      "evidence_sha256": {
+        "summary.json": "9acd4cc6ce7cbc0e3734ad40466665ef9ac1eafd06584c97c31808705cc1e299",
+        "command-delivery.json": "2e87d1d00e67f99dc1dac5379450f043563c60a0d248a6c7e49f614384f19c39"
+      }
+    },
+    "retry-batch-47/response-batch2-trace": {
+      "trace": true,
+      "foreground": 273,
+      "background": 0,
+      "all_local": true,
+      "all_idle": true,
+      "editor_minimized": true,
+      "stages_ms": {
+        "local-green-submit": {
+          "n": 1,
+          "first": 13.450998812913895,
+          "last": 13.450998812913895
+        },
+        "owner-command": {
+          "n": 24,
+          "first": 19.113998860120773,
+          "last": 19.425999373197556
+        },
+        "admission": {
+          "n": 2,
+          "first": 38.22899982333183,
+          "last": 38.44999894499779
+        },
+        "direction": {
+          "n": 24,
+          "first": 38.649000227451324,
+          "last": 38.68599981069565
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 38.940999656915665,
+          "last": 53.070999681949615
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 38.97500038146973,
+          "last": 53.25999855995178
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 62.82299757003784,
+          "last": 62.88899853825569
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 62.83299997448921,
+          "last": 62.89000064134598
+        }
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "total_ms": 62.89000064134598,
+      "total_1cm_ms": 62.88899853825569,
+      "evidence_sha256": {
+        "summary.json": "457227da6ebcd01b7fde58f996be552b9975c8734d6546fe75c9e9fb07f5009e",
+        "command-delivery.json": "68812be371f0a6216fe5d925a5f44d2ed1f450fcffa7b6d3b463a9fe36ad3bc1"
+      }
+    },
+    "peer-work-48/response-defer-1": {
+      "trace": false,
+      "foreground": 463,
+      "background": 0,
+      "all_local": true,
+      "all_idle": true,
+      "editor_minimized": true,
+      "stages_ms": {
+        "owner-command": {
+          "n": 24,
+          "first": 9.306002408266068,
+          "last": 9.50000062584877
+        },
+        "admission": {
+          "n": 2,
+          "first": 12.952003628015518,
+          "last": 58.36200341582298
+        },
+        "local-green-submit": {
+          "n": 1,
+          "first": 32.5700007379055,
+          "last": 32.5700007379055
+        },
+        "direction": {
+          "n": 24,
+          "first": 58.57600271701813,
+          "last": 58.615002781152725
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "first": 58.84600058197975,
+          "last": 61.69800087809563
+        },
+        "local-mass-write": {
+          "n": 24,
+          "first": 58.86800214648247,
+          "last": 61.702001839876175
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "first": 68.10500100255013,
+          "last": 68.17100197076797
+        },
+        "local-model-submit": {
+          "n": 24,
+          "first": 68.11400130391121,
+          "last": 68.17200034856796
+        }
+      },
+      "pass_30ms_1cm": false,
+      "pass_30ms_2cm": false,
+      "total_ms": 68.17200034856796,
+      "worker_input_queue_ms": 0.2840012311935425,
+      "total_1cm_ms": 68.17100197076797,
+      "evidence_sha256": {
+        "summary.json": "4857be697ab0fd28df4882c4011b5a6509feb1b4bd306861ba50bec9de7cae73",
+        "command-delivery.json": "8388fb54d5bfd30b6cd53c66c800e9eb8cd8139f8b9635cfd82786b9ba9d6953"
+      }
+    }
+  },
+  "builds": {
+    "47": {
+      "exit_code": 0,
+      "result": "Succeeded",
+      "build_id": "d4757e21-eaef-492e-b079-c8c0056c493d",
+      "native_source_count": 938,
+      "changed_after_build": []
+    },
+    "48": {
+      "exit_code": 0,
+      "result": "Succeeded",
+      "build_id": "d4757e21-eaef-492e-b079-c8c0056c493d",
+      "native_source_count": 938,
+      "changed_after_build": []
+    }
+  },
+  "protocol_acceptance": {
+    "build47_exit": 0,
+    "build48_exit": 0,
+    "latest_log": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\peer-work-48\\acceptance-final.log",
+    "initial47_failure": "test asserted command application immediately after Route enqueue; fixed to observe next normal owner turn while transactions remain"
+  },
+  "next_action": "distinguish admission per-frame budget, logical batch delivery and model scheduling; no stable response acceptance yet"
+}

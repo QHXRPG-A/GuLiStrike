@@ -1,0 +1,90 @@
+{
+  "schema": "guli-command-copy-fix/v1",
+  "work_id": "WORK-20261020-004",
+  "date": "2026-10-21",
+  "bug": "Per-member command handling copied or converted the complete member list before retaining one member.",
+  "implementation": {
+    "single_member_delivery": "construct metadata plus the exact member without reading source Members",
+    "routing": "create owner metadata only on first insertion, append only its routed members",
+    "handoff": "select the decoded unique member before copying; preserve remaining members and queue order",
+    "ue_execution": "convert exactly the supplied member; original frozen batch remains in the protocol layer",
+    "always_enabled": true,
+    "new_priority_reordering": false,
+    "new_protocol_version": false
+  },
+  "source_sha256": {
+    "Source/GuLiNetCore/Private/GuLiNetCommandSubset.h": "4c4d92cd7e1c43d5cb356b6e9d3dbe2bc88deb22002a1cacf2f200c6038ab888",
+    "Source/GuLiNetCore/Private/GuLiNetClient.cpp": "292ec408f9b6bae896dc8b650ec3e745b5e98ed4ace5e0a28c5f335988aab538",
+    "Source/GuLiNetCore/Private/GuLiNetHandoff.cpp": "e3d867784b23bd95e081b1db4e1953da8b0aa6cc24a7a2436f869834e00114ed",
+    "Source/GuLiStrike/Network/Private/GuLiHybridObjectConversions.h": "f3a43acbd634de6dbaba7fa3e45ebb1bbc75ed94c74b4f84ea07a93e7b4b7c01",
+    "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp": "378849b0e24f356a114165c44338c94d768c903478fe079030127624c768f468",
+    "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.h": "c7c1a1b7cbb076e832142d04e44827aee58f2991dbf20ab7d09e611f5ffe4d71"
+  },
+  "validation": {
+    "source_review": "Metadata Event/At/Operation/Arguments and full member identity/epochs/Slot/XYZ retained. Existing UE command consumers use supplied member and payload, not the original full selection. No borrowed cross-thread state introduced.",
+    "diff_check_exit": 0,
+    "portable_build_exit": 0,
+    "existing_acceptance": {
+      "reuse_exit": 0,
+      "baseline_exit": 0
+    },
+    "new_test_cases_added": false,
+    "editor_build": {
+      "exit_code": 0,
+      "result": "Succeeded",
+      "build_id": "d4757e21-eaef-492e-b079-c8c0056c493d",
+      "native_source_count": 939,
+      "changed_after_build": [],
+      "actions": 204,
+      "seconds": 97.81
+    },
+    "module_manifests_matched": 218,
+    "live_response_measurement": "not_run_for_build_54",
+    "scaling_curve": "not_run",
+    "whole_frame_performance": "not_run",
+    "visual_acceptance": "user_only_pending"
+  },
+  "map": {
+    "saved": true,
+    "default_inactive": true,
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "entities": [
+      {
+        "label": "PerfHybridCPU_Entry",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_72",
+        "position_cm": [
+          10139.4320904,
+          -55434.2763966,
+          1101.7790833
+        ],
+        "editor_only": true
+      }
+    ],
+    "source_script": "Scripts/Performance/author_hybrid_cpu_review_entry.py"
+  },
+  "remaining_costs": [
+    "Receipt matching retains nested searches.",
+    "Path planning, shared frame budgets and presentation still affect all-member latency.",
+    "Command payload copies remain; this change removes repeated full member-list work, not every possible superlinear cost."
+  ],
+  "cleanup": {
+    "success": true,
+    "deleted_files": 231.0,
+    "deleted_bytes": 276751183.0,
+    "remaining_targets": [],
+    "scope": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020",
+    "preserved": "Original traces, native samples, summaries, source archives, build/test logs, export commands, project assets and art sources"
+  },
+  "external_evidence_root": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\command-copy-54",
+  "evidence_sha256": {
+    "command-copy-54\\acceptance-baseline.log": "316b1463e827c1cdacae08bb410c7c541ac9ae862b285027d58334a1c8829ca0",
+    "command-copy-54\\acceptance-reuse.log": "c287775ea6c4b21327d1159cf3d9139f570036b5ce14be6fbe4f96c936620fd8",
+    "command-copy-54\\portable-build.log": "57ec473d48565758ed3db6989747d135bf77c386d4d19cec7ce25ba5b0adb65b",
+    "command-copy-54\\map-entry.json": "22db2b7c1dfde2cf03bd0acddeb2979493169273f7bc3fda2b57ac475afd82a4",
+    "command-copy-54\\cleanup-plan.json": "efdf1c62c19a53d0735053a125d096df7b47a816ac6fdcd207886fa08bf2dab4",
+    "command-copy-54\\cleanup-result.json": "261627c0775fdad71a9e4012f476afb5ef7ffe126bedda236e979bd256e699b5",
+    "build-54.log": "9ca54e9ca9343d67e94b511364f83449eca85ee035b437c9489626e467bd57f0",
+    "build-54-source-manifest.json": "a032e97083683c3d7b2d0b6ba8cf45a6578fd81b9fcb2300a4afe3588d4eacc8",
+    "build-54-verification.json": "9aa857c1a34746fdd5a67c63a4c335ee57e81d5063410f23c6a7afadf5aa46b8"
+  }
+}

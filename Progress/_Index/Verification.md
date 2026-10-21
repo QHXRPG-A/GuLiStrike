@@ -4,7 +4,7 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | in_progress | partial | 以已上传main的正式代码继续20ms本机指令响应；LFS额度恢复后补传本地资源提交。 | 2026-10-21 |
+| [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | in_progress | partial | 名单复制修复已通过编译与既有协议验收，继续检查回执匹配及起步提交成本；插队待用户判断，全部成员响应稳定达到30ms后再做配对性能复核。 | 2026-10-21 |
 | [UI CPU优化与四档LOD — 实施与验收](../DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md) | in_progress | partial | 补齐文档清理与场景交付记录；视觉效果由用户自行核验，未完成的配对性能验收保持未验证，不自动恢复检查。 | 2026-10-20 |
 | [保持玩法与表现的15ms帧时间优化 — 实施记录](../DevelopmentDocumentation/20261020-保持玩法与表现的15ms帧时间优化.md) | verification | partial | 在已保存的 /Game/Maps/LVL_CommanderMassPrototype 中由玩家复核操作与视觉一致性。 | 2026-10-20 |
 | [一键截帧与CPU分析插件 — 技术方案](../DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md) | in_progress | partial | 玩家确认快捷键焦点、文本框及弹窗行为；常驻 GPU 标记的默认策略单独处理。 | 2026-10-20 |

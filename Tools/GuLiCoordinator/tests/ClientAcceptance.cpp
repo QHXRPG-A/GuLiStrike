@@ -22,6 +22,7 @@
 using namespace GuLiNet;
 namespace
 {
+bool ReuseResourceValidationSnapshot=false;
 Id ID(unsigned N) {return {{0x47554c49,0,0,N}};}
 void Check(bool Value,const char* Why) {if (!Value) throw std::runtime_error(Why);}
 struct Adapter final:IObjectAdapter
@@ -95,6 +96,7 @@ struct Fixture
                 if (RejectPublications.contains(To) && (V.Header.Kind==MessageKind::StateFragments || V.Header.Kind==MessageKind::ObjectEvent)) return false;
                 if (To.Valid()) Queue.push_back({To,P,std::move(V)});else Metadata.push_back({{},P,std::move(V)});return true;});
             Check(World->Configure(Data,Error),Error.c_str());World->SetMembers(Members);
+            World->SetResourceValidationSnapshotReuse(ReuseResourceValidationSnapshot);
             std::vector<ObjectRecord> Records;for (const auto& [K,O]:World->Objects()) Records.push_back(O);
             for (auto& O:Records)
             {
@@ -2383,6 +2385,63 @@ void PrivateRestoreRetainsNumericHistory()
     Check(Evidence=="complete"&&A.Error().empty(),"history and private restore both completed");
     Check(A.Statistics().OutputPeak<1024*1024,"large numeric history cannot consume the engine restoration output budget");
 }
+void BoundedTransactionRetryProgress()
+{
+    auto M=Manifest();M.Rules.at("hit").Damage=1;
+    Fixture F(M);auto& Source=F.Client(1);auto& Target=F.Client(4);
+    Target.SetPeerTransactionDeferral(true);
+    unsigned Completed=0;bool AdmitResults=false;std::vector<Id> Attempts;
+    Target.SetApplicationResultBudget([&](const OwnerWork& W){Attempts.push_back(W.Event);return AdmitResults;},[](Id){});
+    const auto Submit=[&](unsigned Event)
+    {
+        TransactionRequest R;R.Header.Object=F.Key(0);R.Header.Event=ID(Event);R.Kind=TransactionKind::Damage;
+        R.Target=F.Key(3);R.RuleId="hit";R.Faction=Team::Red;
+        Check(Source.Submit(R,[&](const CommitResult& C){Check(C.Status==CommitStatus::Committed,"retained retry commits");++Completed;}).Valid(),"submit bounded retry");
+    };
+    for (unsigned N=0;N<9;++N) Submit(50010+N);
+    std::set<Id> Sent;
+    for (unsigned Pass=0;Pass<5;++Pass)
+    {
+        const auto Before=F.Queue.size();Source.PollNetwork(1.,2);
+        unsigned Transactions=0;
+        for (std::size_t I=Before;I<F.Queue.size();++I) if (F.Queue[I].Value.Header.Kind==MessageKind::Transaction)
+        {++Transactions;Check(Sent.insert(F.Queue[I].Value.Header.Event).second,"one attempt per due pass");}
+        Check(Transactions<=2,"pending retry batch is bounded");
+        if (Pass==0)
+        {
+            Submit(50001); // New smaller keys must not starve the remainder of the due set.
+            FrozenCommand C;C.Event=ID(50050);C.Operation="move";C.Members.push_back({F.Key(0),1,1});
+            Check(Source.Route(C),"command proceeds between retry batches");
+        }
+        if (Pass==1) Check(F.Adapters.at({ID(1),F.Key(0)})->Executions==1&&Source.HasPendingNetworkRetryBatch(),
+            "command executes on the next owner turn while transaction retries remain");
+        const auto BeforeTick=Source.Now();Source.Advance(1./60);
+        Check(Source.Now()>BeforeTick,"simulation proceeds between retry batches");
+    }
+    Check(Sent.size()==10&&!Source.HasPendingNetworkRetryBatch(),"round-robin scheduling reaches every due identity");
+    F.Flush();Check(Target.WorkCounts().at("retry")==10,"backpressure retains every transaction");
+    Check(Attempts.empty(),"peer receive queues transaction work without planning it inline");
+    Attempts.clear();
+    for (unsigned Pass=0;Pass<5;++Pass)
+    {
+        const auto Before=Attempts.size();Target.PollNetwork(1.,2);
+        Check(Attempts.size()-Before<=2,"failed work retry batch is bounded");
+    }
+    Check(Attempts.size()==10&&std::set<Id>(Attempts.begin(),Attempts.end()).size()==10,
+        "a failed first retry cannot monopolize the continuation queue");
+    Check(!Target.HasPendingNetworkRetryBatch()&&Target.WorkCounts().at("retry")==10,
+        "a completed blocked round sleeps until its retry deadline without losing work");
+    Target.PollNetwork(1.,2);Check(Attempts.size()==10,"blocked retries do not busy-spin at the same deadline");
+    AdmitResults=true;
+    for (unsigned Pass=0;Pass<100&&Completed<10;++Pass)
+    {
+        const double Now=1.2+Pass*.01;
+        for (auto& [P,C]:F.Clients) C->PollNetwork(Now,2);
+        F.Flush();
+    }
+    Check(Completed==10&&Source.PendingTransactions().empty(),"every retained request completes exactly once after recovery");
+    for (const auto& [P,C]:F.Clients) Check(C->Objects().at(F.Key(3)).Vitals.Value==90,"retry slicing preserves final gameplay value");
+}
 void FragmentCacheAndMiningIndexes()
 {
     MiningReservations R;Check(R.Configure({{1,1},{2,1},{3,9}}),"configure indexed mining history");
@@ -2426,10 +2485,16 @@ void FragmentCacheAndMiningIndexes()
     Check(F.Client(1).Submit(Reserve,{}).Valid(),"commit changes to an encoded account");F.Step();Compare();
 }
 }
-int main()
+int main(int argc,char** argv)
 {
     try
     {
+        for (int I=1;I<argc;++I)
+        {
+            Check(std::string_view(argv[I])=="--reuse-resource-validation-snapshot","unknown acceptance option");
+            ReuseResourceValidationSnapshot=true;
+        }
+        std::cout<<"Fixture resource validation snapshot reuse="<<ReuseResourceValidationSnapshot<<'\n';
         CurrentResourceSnapshotContracts();
         ResourceEpochAndRecoveryContracts();
         ResourceInterruptionCutpoints();ResourceSnapshotQueueBounds();
@@ -2444,7 +2509,7 @@ int main()
         AsyncExternalSendBindsPackingIdentity(false);AsyncExternalSendBindsPackingIdentity(true);AsyncIndependentOutboundProgress();AsyncMainAdvanceEligibility();AsyncMainAdvanceEligibility(0);SharedMembershipImport();AsyncContinuationAndGameplayDelivery();
         AsyncCaptureChainClockProgress(false);AsyncCaptureChainClockProgress(true);
         for (const auto Workers:{1u,2u,4u}) AsyncContinuationAndGameplayDelivery(Workers);
-        FragmentCacheAndMiningIndexes();
+        BoundedTransactionRetryProgress();FragmentCacheAndMiningIndexes();
         std::cout<<"Client ownership contracts passed; protocol="<<ProtocolVersion<<" manifest="<<ManifestVersion<<" handoff="<<HandoffVersion<<'\n';return 0;
     }
     catch (const std::exception& E) {std::cerr<<E.what()<<'\n';return 1;}

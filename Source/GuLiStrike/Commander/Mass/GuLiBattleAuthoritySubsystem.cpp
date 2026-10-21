@@ -109,6 +109,10 @@ namespace GuLiCommanderMassPrivate
 		TEXT("Advance local manual Hybrid movement on each 60 Hz logical step. Combat and network pose publication remain at 10 Hz."));
 	TAutoConsoleVariable<int32> ActiveSoftPairs(TEXT("gs.Commander.ActiveSoftPairs"), 1,
 		TEXT("Local manual movement soft avoidance: 0 all pairs, 1 active endpoints only, 2 compare both outputs (diagnostic overhead)."));
+#if !UE_BUILD_SHIPPING
+	TAutoConsoleVariable<int32> MovementClockSoldier(TEXT("gs.Commander.MovementClockSoldier"), 0,
+		TEXT("With move latency diagnostics, log one SoldierId's logical movement clock for 250 ms after admission. 0 disables."));
+#endif
 	// 2 队 × 10 个出生方阵 × 25 人 = 500 人；出生方阵只是摆放规则，不是永久编制。
 	constexpr int32 SpawnFormationsPerTeam = 10;
 	constexpr int32 TeamCount = 2;
@@ -2349,6 +2353,13 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 	{
 		return;
 	}
+#if !UE_BUILD_SHIPPING
+	const int32 ClockSoldierId = GuLiMoveLatency::IsEnabled()
+		? GuLiCommanderMassPrivate::MovementClockSoldier.GetValueOnGameThread() : 0;
+	const int32* ClockIndex = ClockSoldierId > 0 ? AuthorityState->SoldierIndexById.Find(ClockSoldierId) : nullptr;
+	const FVector ClockStart = ClockIndex ? AuthorityState->Soldiers[*ClockIndex].Location : FVector::ZeroVector;
+	const double ClockLast = ClockIndex ? AuthorityState->Soldiers[*ClockIndex].LastMovementUpdateSimulationSeconds : 0.0;
+#endif
 	// 可走性采样按世界帧分配预算，放在固定步循环外，避免补帧时成倍增加 NavMesh 查询。
 	if (AuthorityState->NavigationBudgetFrame!=GFrameCounter)
 	{
@@ -2361,10 +2372,12 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 		&& GuLiCommanderMassPrivate::ImmediateMovement.GetValueOnGameThread() != 0
 		&& !UGuLiHotspotOptions::Enabled(GetWorld(), EGuLiHotspot::GameplayWorker);
 	FGuLiNavigationWorkBudget::FAllowance Shares[4]={{.0010,16,2},{.0004,16,2},{.0003,24,0},{.0003,8,0}};
+	static const auto* AdmissionBatchVariable = IConsoleManager::Get().FindConsoleVariable(TEXT("gs.Commander.BatchMoveAdmissions"));
+	const bool bBatchAdmissions = AdmissionBatchVariable && AdmissionBatchVariable->GetInt()!=0;
 	auto RunCategory=[&](int32 Category,FGuLiNavigationWorkBudget::FAllowance& Allowance)
 	{
 		if (!Budget.CanWork() || Allowance.Seconds<=0) return;
-		FGuLiNavigationWorkBudget::FSlice Slice(Budget,Allowance);
+		FGuLiNavigationWorkBudget::FSlice Slice(Budget,Allowance,Category==0 && bBatchAdmissions ? .0005 : .0002);
 		if (Category==0)
 		{
 			if (auto* Tasks=GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()) Tasks->PumpMoveAdmissions(Budget);
@@ -2454,6 +2467,26 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 	}
 	PublishMoveEndpointChanges();
 	CSV_CUSTOM_STAT(GuLiCommanderAuthority, PlanningMs, AuthorityState->PlanningBudget.Elapsed()*1000., ECsvCustomStatOp::Set);
+#if !UE_BUILD_SHIPPING
+	if (const int32* Index = ClockSoldierId > 0 ? AuthorityState->SoldierIndexById.Find(ClockSoldierId) : nullptr)
+	{
+		const auto& S = AuthorityState->Soldiers[*Index];
+		const double Now = FPlatformTime::Seconds();
+		if (S.CommandAcceptedAt > 0.0 && Now - S.CommandAcceptedAt < .25)
+		{
+			const FString Detail = FString::Printf(TEXT("soldier=%u delta=%.6f sim=%.6f remainder=%.6f lastBefore=%.6f lastAfter=%.6f stepCm=%.4f totalCm=%.4f speed=%.3f immediate=%d local=%d order=%u nav=%d route=%llu routeState=%d covered=%d ready=%.6f budgetPending=%d"),
+				S.SoldierId.Value, DeltaTime, AuthorityState->SimulationSeconds, AuthorityState->FixedStepAccumulator,
+				ClockLast, S.LastMovementUpdateSimulationSeconds, FVector::Dist2D(ClockStart, S.Location),
+				FVector::Dist2D(S.CommandStartLocation, S.Location), S.Velocity.Size2D(),
+				AuthorityState->ImmediateMoveIds.Contains(S.SoldierId.Value), S.bLocalSimulation, S.ActiveOrderId,
+				int32(S.NavigationState), S.SharedRoute ? S.SharedRoute->Handle : 0,
+				S.SharedRoute ? int32(S.SharedRoute->State) : -1,
+				S.SharedRoute && S.SharedRoute->PolygonIndex.Contains(S.LastValidNavLocation.NodeRef),
+				S.SharedRoute ? S.SharedRoute->ReadyAt : 0.0, S.bNavigationBudgetPending);
+			GuLiMoveLatency::Record(TEXT("movement-clock"), S.MoveTrace, 1, *Detail, Now);
+		}
+	}
+#endif
 	CSV_CUSTOM_STAT(GuLiCommanderAuthority, PositionChecks, MovePositionQueriesPerFrame-AuthorityState->PlanningBudget.Projections, ECsvCustomStatOp::Set);
 	CSV_CUSTOM_STAT(GuLiCommanderAuthority, PlanningPaths, MovePathQueriesPerFrame-AuthorityState->PlanningBudget.Paths, ECsvCustomStatOp::Set);
 	CSV_CUSTOM_STAT(GuLiCommanderAuthority, CommitMs, AuthorityState->CommitBudget.Elapsed()*1000., ECsvCustomStatOp::Set);

@@ -513,6 +513,10 @@
 |---|---|---|---|
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [指令名单复制修复与清理](../Archive/20261021-指令名单复制修复与清理.md) | archive | recorded | 2026-10-21 |
+| [接纳合批与资源验证副本阶段记录](../Archive/20261021-接纳合批与资源验证副本阶段记录.md) | archive | recorded | 2026-10-21 |
+| [事务分批与本机响应阶段记录](../Archive/20261021-事务分批与本机响应阶段记录.md) | archive | recorded | 2026-10-21 |
+| [指令就绪通知与呈现调序阶段记录](../Archive/20261021-指令就绪通知与呈现调序阶段记录.md) | archive | recorded | 2026-10-21 |
 | [正式代码推送main与LFS资源分离](../Archive/20261021-正式代码推送main与LFS资源分离.md) | archive | recorded | 2026-10-21 |
 | [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
 | [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
@@ -1604,6 +1608,10 @@
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
 | [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [指令名单复制修复与清理](../Archive/20261021-指令名单复制修复与清理.md) | archive | recorded | 2026-10-21 |
+| [接纳合批与资源验证副本阶段记录](../Archive/20261021-接纳合批与资源验证副本阶段记录.md) | archive | recorded | 2026-10-21 |
+| [事务分批与本机响应阶段记录](../Archive/20261021-事务分批与本机响应阶段记录.md) | archive | recorded | 2026-10-21 |
+| [指令就绪通知与呈现调序阶段记录](../Archive/20261021-指令就绪通知与呈现调序阶段记录.md) | archive | recorded | 2026-10-21 |
 | [正式代码推送main与LFS资源分离](../Archive/20261021-正式代码推送main与LFS资源分离.md) | archive | recorded | 2026-10-21 |
 | [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
 | [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
@@ -1898,6 +1906,10 @@
 |---|---|---|---|
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [指令名单复制修复与清理](../Archive/20261021-指令名单复制修复与清理.md) | archive | recorded | 2026-10-21 |
+| [接纳合批与资源验证副本阶段记录](../Archive/20261021-接纳合批与资源验证副本阶段记录.md) | archive | recorded | 2026-10-21 |
+| [事务分批与本机响应阶段记录](../Archive/20261021-事务分批与本机响应阶段记录.md) | archive | recorded | 2026-10-21 |
+| [指令就绪通知与呈现调序阶段记录](../Archive/20261021-指令就绪通知与呈现调序阶段记录.md) | archive | recorded | 2026-10-21 |
 | [正式代码推送main与LFS资源分离](../Archive/20261021-正式代码推送main与LFS资源分离.md) | archive | recorded | 2026-10-21 |
 | [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
 | [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
@@ -2334,6 +2346,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
 | [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-10-16 |
 | [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-10-16 |
 | [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-10-16 |

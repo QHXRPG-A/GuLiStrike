@@ -1,0 +1,929 @@
+{
+  "schema": "guli-commander-response-evidence/v1",
+  "work_id": "WORK-20261020-004",
+  "goal_achieved": false,
+  "priority_reordering_implemented": false,
+  "performance_non_regression": "not_run_until_response_stable",
+  "visual_acceptance": "user_only_pending",
+  "clock_origin": "Controller semantic entry in TimerManager callback, not OS mouse input or display scanout",
+  "candidate": {
+    "cvar": "gs.Hybrid.ReuseResourceValidationSnapshot",
+    "default": 0,
+    "latched_at_client_creation": true,
+    "preserves_fragment_order": true,
+    "preserves_intermediate_ledger_validation": true,
+    "resource_immutable_catalog": "ApplyFragment never mutates Nodes/Configured/Owners size; final Restore retains catalog check",
+    "reuses_snapshot_for_two_or_more_resource_fragments": true,
+    "runtime_trigger_count_in_250ms_trace": 4,
+    "no_proven_performance_gain": true
+  },
+  "protocol_regression": {
+    "baseline_exit_code": 0,
+    "fixture_reuse_exit_code": 0,
+    "scope": "Existing ClientAcceptance suite; candidate enabled in synchronous Fixture clients only. Direct OwnerState and asynchronous cases keep defaults. No new adversarial multi-resource Prepare/Commit scenario added; intermediate rejection equivalence is source review, not asserted runtime coverage."
+  },
+  "runs": [
+    {
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fragment-cost-50\\response-trace",
+      "trace": true,
+      "expected_units": 24,
+      "foreground_frames": 289,
+      "background_frames": 0,
+      "editor_minimized_frames": 289,
+      "all_local_at_input": true,
+      "idle_probe_eligible": true,
+      "totals_ms": {
+        "first_motion_1cm": 40.254998952150345,
+        "existing_observation_2cm": 40.25699943304062
+      },
+      "stages": {
+        "local-green-submit": {
+          "n": 1,
+          "min_ms": 23.506999015808105,
+          "max_ms": 23.506999015808105
+        },
+        "owner-command": {
+          "n": 24,
+          "min_ms": 15.531998127698898,
+          "max_ms": 15.804000198841095
+        },
+        "admission": {
+          "n": 1,
+          "min_ms": 20.135998725891113,
+          "max_ms": 20.135998725891113
+        },
+        "direction": {
+          "n": 24,
+          "min_ms": 20.35599946975708,
+          "max_ms": 33.63899886608124
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "min_ms": 20.633000880479813,
+          "max_ms": 34.00399908423424
+        },
+        "local-mass-write": {
+          "n": 24,
+          "min_ms": 20.67200094461441,
+          "max_ms": 34.0379998087883
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "min_ms": 40.15300050377846,
+          "max_ms": 40.254998952150345
+        },
+        "local-model-submit": {
+          "n": 24,
+          "min_ms": 40.1649996638298,
+          "max_ms": 40.25699943304062
+        }
+      },
+      "cpu_costs": {
+        "GuLiHybrid_CorePrepare": {
+          "n": 200,
+          "mean_ms": 0.115196,
+          "max_ms": 3.7420999999999998,
+          "sum_inclusive_ms": 23.0392
+        },
+        "GuLiHybrid_CoreCommit": {
+          "n": 199,
+          "mean_ms": 0.14224874371859297,
+          "max_ms": 4.2097999999999995,
+          "sum_inclusive_ms": 28.3075
+        },
+        "GuLiHybrid_CoreApplyFragment": {
+          "n": 3281,
+          "mean_ms": 0.010493294727217311,
+          "max_ms": 2.3781000000000003,
+          "sum_inclusive_ms": 34.4285
+        },
+        "GuLiHybrid_CoreReadObjectFragment": {
+          "n": 876,
+          "mean_ms": 0.0014602739726027397,
+          "max_ms": 0.0126,
+          "sum_inclusive_ms": 1.2792
+        },
+        "GuLiHybrid_CoreValidateObjectUpgrades": {
+          "n": 876,
+          "mean_ms": 3.458904109589041e-05,
+          "max_ms": 0.0006,
+          "sum_inclusive_ms": 0.030299999999999997
+        },
+        "GuLiHybrid_CoreApplyEventFragment": {
+          "n": 872,
+          "mean_ms": 0.007136238532110092,
+          "max_ms": 0.14200000000000002,
+          "sum_inclusive_ms": 6.2228
+        },
+        "GuLiHybrid_ControlPointCounts": {
+          "n": 51,
+          "mean_ms": 0.22181960784313723,
+          "max_ms": 0.9464,
+          "sum_inclusive_ms": 11.3128
+        },
+        "GuLiHybrid_ControlPointTargetSnapshots": {
+          "n": 16,
+          "mean_ms": 0.15850625,
+          "max_ms": 0.2172,
+          "sum_inclusive_ms": 2.5361
+        },
+        "GuLiHybrid_ControlPointMembership": {
+          "n": 16,
+          "mean_ms": 0.547125,
+          "max_ms": 0.728,
+          "sum_inclusive_ms": 8.754
+        }
+      }
+    },
+    {
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace",
+      "trace": true,
+      "expected_units": 24,
+      "foreground_frames": 391,
+      "background_frames": 0,
+      "editor_minimized_frames": 391,
+      "all_local_at_input": true,
+      "idle_probe_eligible": true,
+      "totals_ms": {
+        "first_motion_1cm": 52.73500084877014,
+        "existing_observation_2cm": 52.737001329660416
+      },
+      "stages": {
+        "local-green-submit": {
+          "n": 1,
+          "min_ms": 21.309003233909607,
+          "max_ms": 21.309003233909607
+        },
+        "owner-command": {
+          "n": 24,
+          "min_ms": 17.598003149032593,
+          "max_ms": 17.81400293111801
+        },
+        "admission": {
+          "n": 1,
+          "min_ms": 24.540003389120102,
+          "max_ms": 24.540003389120102
+        },
+        "direction": {
+          "n": 24,
+          "min_ms": 24.991001933813095,
+          "max_ms": 25.0450000166893
+        },
+        "local-first-mass-write": {
+          "n": 24,
+          "min_ms": 25.2780020236969,
+          "max_ms": 37.70100325345993
+        },
+        "local-mass-write": {
+          "n": 24,
+          "min_ms": 25.31900256872177,
+          "max_ms": 37.90700063109398
+        },
+        "local-first-model-submit": {
+          "n": 24,
+          "min_ms": 52.629001438617706,
+          "max_ms": 52.73500084877014
+        },
+        "local-model-submit": {
+          "n": 24,
+          "min_ms": 52.64100059866905,
+          "max_ms": 52.737001329660416
+        }
+      },
+      "cpu_costs": {
+        "GuLiHybrid_CoreReuseResourceValidationSnapshot": {
+          "n": 4,
+          "mean_ms": 2.10135,
+          "max_ms": 2.4705999999999997,
+          "sum_inclusive_ms": 8.4054
+        },
+        "GuLiHybrid_CorePrepare": {
+          "n": 130,
+          "mean_ms": 0.06436538461538462,
+          "max_ms": 2.7613999999999996,
+          "sum_inclusive_ms": 8.3675
+        },
+        "GuLiHybrid_CoreCommit": {
+          "n": 129,
+          "mean_ms": 0.1429798449612403,
+          "max_ms": 5.0343,
+          "sum_inclusive_ms": 18.444399999999998
+        },
+        "GuLiHybrid_CoreApplyFragment": {
+          "n": 2367,
+          "mean_ms": 0.00382581326573722,
+          "max_ms": 0.0853,
+          "sum_inclusive_ms": 9.0557
+        },
+        "GuLiHybrid_CoreReadObjectFragment": {
+          "n": 612,
+          "mean_ms": 0.0016248366013071895,
+          "max_ms": 0.0812,
+          "sum_inclusive_ms": 0.9944
+        },
+        "GuLiHybrid_CoreValidateObjectUpgrades": {
+          "n": 612,
+          "mean_ms": 3.627450980392156e-05,
+          "max_ms": 0.00019999999999999998,
+          "sum_inclusive_ms": 0.022199999999999998
+        },
+        "GuLiHybrid_CoreApplyEventFragment": {
+          "n": 657,
+          "mean_ms": 0.006161187214611873,
+          "max_ms": 0.028900000000000002,
+          "sum_inclusive_ms": 4.0479
+        },
+        "GuLiHybrid_ControlPointCounts": {
+          "n": 11,
+          "mean_ms": 0.31535454545454544,
+          "max_ms": 0.7327,
+          "sum_inclusive_ms": 3.4689
+        },
+        "GuLiHybrid_ControlPointTargetSnapshots": {
+          "n": 5,
+          "mean_ms": 0.13198,
+          "max_ms": 0.13799999999999998,
+          "sum_inclusive_ms": 0.6598999999999999
+        },
+        "GuLiHybrid_ControlPointMembership": {
+          "n": 5,
+          "mean_ms": 0.5607800000000001,
+          "max_ms": 0.5938,
+          "sum_inclusive_ms": 2.8039
+        }
+      }
+    }
+  ],
+  "main_thread_findings": [
+    {
+      "parent": [
+        1.8877018666216827,
+        15.74820186662862,
+        13.8605
+      ],
+      "largest_direct_children": [
+        [
+          "GuLiHybrid_MainDispatchJob",
+          1.8915018666234573,
+          12.7484
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          15.07720186663164,
+          0.0589
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          14.733701866632032,
+          0.041100000000000005
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          15.602801866620553,
+          0.0388
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          15.49960186662247,
+          0.0294
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          14.674001866623598,
+          0.0288
+        ]
+      ],
+      "inclusive_aggregates": [
+        [
+          "GuLiHybrid_MainDispatchJob",
+          [
+            251,
+            13.76219999999997,
+            12.7484
+          ]
+        ],
+        [
+          "GuLiHybrid_MainCaptureBarrier",
+          [
+            1,
+            12.7476,
+            12.7476
+          ]
+        ],
+        [
+          "GuLiHybrid_MainApplyLedger",
+          [
+            54,
+            0.24780000000000002,
+            0.041
+          ]
+        ],
+        [
+          "GuLiHybrid_MainTransactionReceipt",
+          [
+            34,
+            0.18749999999999997,
+            0.0286
+          ]
+        ],
+        [
+          "GuLiHybrid_MainReceipt",
+          [
+            34,
+            0.1572,
+            0.0242
+          ]
+        ],
+        [
+          "GuLiHybrid_MainPrepareDispatch",
+          [
+            4,
+            0.1437,
+            0.0586
+          ]
+        ],
+        [
+          "GuLiHybrid_MainPrepareObject",
+          [
+            4,
+            0.14200000000000002,
+            0.0579
+          ]
+        ],
+        [
+          "GuLiHybrid_MainReadDelta",
+          [
+            37,
+            0.1388,
+            0.0106
+          ]
+        ],
+        [
+          "GuLiSim_ComponentBindings",
+          [
+            95,
+            0.1385,
+            0.0322
+          ]
+        ],
+        [
+          "GuLiHybrid_MainPoseApply",
+          [
+            7,
+            0.0884,
+            0.0292
+          ]
+        ],
+        [
+          "GuLiHybrid_MainOutputTiming",
+          [
+            251,
+            0.07250000000000008,
+            0.0035
+          ]
+        ],
+        [
+          "GuLiSim_MassReadModelPublish",
+          [
+            20,
+            0.0664,
+            0.0257
+          ]
+        ],
+        [
+          "GuLiCommanderRoster_ApplyDelta",
+          [
+            6,
+            0.053899999999999997,
+            0.022099999999999998
+          ]
+        ],
+        [
+          "GuLiHybrid_MainObjectEventApply",
+          [
+            4,
+            0.0511,
+            0.022699999999999998
+          ]
+        ],
+        [
+          "HandleHybridTransaction",
+          [
+            135,
+            0.035899999999999946,
+            0.0054
+          ]
+        ]
+      ]
+    },
+    {
+      "parent": [
+        17.564401866621893,
+        18.188601866626186,
+        0.6242
+      ],
+      "largest_direct_children": [
+        [
+          "GuLiHybrid_MainDispatchJob",
+          17.571001866627967,
+          0.248
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          17.914001866628837,
+          0.043699999999999996
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          18.083101866622542,
+          0.039799999999999995
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          18.1520018666248,
+          0.0231
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          17.975201866633483,
+          0.022500000000000003
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          17.845501866631253,
+          0.021500000000000002
+        ]
+      ],
+      "inclusive_aggregates": [
+        [
+          "GuLiHybrid_MainDispatchJob",
+          [
+            91,
+            0.5863999999999995,
+            0.248
+          ]
+        ],
+        [
+          "GuLiHybrid_MainCommandBatch",
+          [
+            1,
+            0.23650000000000002,
+            0.23650000000000002
+          ]
+        ],
+        [
+          "GuLiHybrid_MainPrepareDispatch",
+          [
+            4,
+            0.10830000000000001,
+            0.0434
+          ]
+        ],
+        [
+          "GuLiHybrid_MainPrepareObject",
+          [
+            4,
+            0.1066,
+            0.0427
+          ]
+        ],
+        [
+          "GuLiHybrid_MainReadDelta",
+          [
+            22,
+            0.05780000000000002,
+            0.009300000000000001
+          ]
+        ],
+        [
+          "GuLiHybrid_MainTransactionReceipt",
+          [
+            7,
+            0.05219999999999999,
+            0.0212
+          ]
+        ],
+        [
+          "GuLiHybrid_MainReceipt",
+          [
+            7,
+            0.0452,
+            0.0185
+          ]
+        ],
+        [
+          "GuLiHybrid_MainDiagnosticsSnapshot",
+          [
+            1,
+            0.0395,
+            0.0395
+          ]
+        ],
+        [
+          "GuLiHybrid_MainApplyLedger",
+          [
+            10,
+            0.03490000000000001,
+            0.0112
+          ]
+        ],
+        [
+          "GuLiHybrid_MainOutputTiming",
+          [
+            91,
+            0.027700000000000013,
+            0.0023
+          ]
+        ],
+        [
+          "HandleHybridTransaction",
+          [
+            35,
+            0.012900000000000005,
+            0.0048
+          ]
+        ],
+        [
+          "GuLiHybrid_MainSetAuthority",
+          [
+            9,
+            0.0084,
+            0.0023
+          ]
+        ],
+        [
+          "CompleteHybridGlobal",
+          [
+            14,
+            0.003300000000000001,
+            0.0007
+          ]
+        ],
+        [
+          "GuLiHybrid_MainOutboundEnqueue",
+          [
+            30,
+            0.0032999999999999982,
+            0.00039999999999999996
+          ]
+        ],
+        [
+          "GuLiSim_ComponentBindings",
+          [
+            4,
+            0.003,
+            0.0014
+          ]
+        ]
+      ]
+    },
+    {
+      "parent": [
+        21.84010186662988,
+        26.80080186662792,
+        4.9607
+      ],
+      "largest_direct_children": [
+        [
+          "GuLiHybrid_MainDispatchJob",
+          22.06270186663062,
+          4.738
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          21.86610186662108,
+          0.076
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          21.97660186662631,
+          0.0415
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          21.84520186662553,
+          0.0195
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          22.045401866620296,
+          0.0162
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          21.95760186663165,
+          0.0156
+        ]
+      ],
+      "inclusive_aggregates": [
+        [
+          "GuLiHybrid_MainDispatchJob",
+          [
+            20,
+            4.9492,
+            4.738
+          ]
+        ],
+        [
+          "GuLiHybrid_MainLogicalBatch",
+          [
+            1,
+            4.7376,
+            4.7376
+          ]
+        ],
+        [
+          "GuLiHybrid_MainSharedSimulation",
+          [
+            9,
+            2.7713,
+            1.4786000000000001
+          ]
+        ],
+        [
+          "GuLiHybrid_MainSimulation",
+          [
+            110,
+            1.7152999999999985,
+            0.7342
+          ]
+        ],
+        [
+          "GuLiSim_Shared/CommanderMass",
+          [
+            1,
+            1.4785,
+            1.4785
+          ]
+        ],
+        [
+          "GuLiSim_ObjectFamily",
+          [
+            106,
+            1.4162999999999988,
+            0.7315
+          ]
+        ],
+        [
+          "GuLiSim_Shared/LinearFlights",
+          [
+            1,
+            0.9383,
+            0.9383
+          ]
+        ],
+        [
+          "GuLiHybrid_LinearFlightService",
+          [
+            1,
+            0.9372999999999999,
+            0.9372999999999999
+          ]
+        ],
+        [
+          "GuLiSim_Object/territory/7",
+          [
+            49,
+            0.8679999999999993,
+            0.7342
+          ]
+        ],
+        [
+          "GuLiHybrid_ControlPointCounts",
+          [
+            5,
+            0.7152999999999999,
+            0.7148
+          ]
+        ],
+        [
+          "GuLiHybrid_ControlPointMembership",
+          [
+            1,
+            0.5805,
+            0.5805
+          ]
+        ],
+        [
+          "GuLiCommander_ImmediateMovement",
+          [
+            1,
+            0.4929,
+            0.4929
+          ]
+        ],
+        [
+          "GuLiSim_Object/unit/3",
+          [
+            16,
+            0.43270000000000014,
+            0.0697
+          ]
+        ],
+        [
+          "MassExecutor_RunProcessorsView",
+          [
+            1,
+            0.40650000000000003,
+            0.40650000000000003
+          ]
+        ],
+        [
+          "GuLiCommanderMassStateTreeProcessor_0",
+          [
+            1,
+            0.40349999999999997,
+            0.40349999999999997
+          ]
+        ]
+      ]
+    },
+    {
+      "parent": [
+        33.954001866632666,
+        49.42630186663166,
+        15.472299999999999
+      ],
+      "largest_direct_children": [
+        [
+          "GuLiHybrid_MainDispatchJob",
+          33.95730186662149,
+          10.676100000000002
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          44.636101866629474,
+          3.2445999999999997
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          47.9232018666238,
+          0.5931000000000001
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          48.630001866627026,
+          0.0764
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          48.545501866627205,
+          0.0279
+        ],
+        [
+          "GuLiHybrid_MainDispatchJob",
+          48.85720186662468,
+          0.027100000000000003
+        ]
+      ],
+      "inclusive_aggregates": [
+        [
+          "GuLiHybrid_MainDispatchJob",
+          [
+            226,
+            15.385099999999984,
+            10.676100000000002
+          ]
+        ],
+        [
+          "GuLiHybrid_MainLogicalBatch",
+          [
+            2,
+            13.919699999999999,
+            10.6755
+          ]
+        ],
+        [
+          "GuLiHybrid_MainSharedSimulation",
+          [
+            18,
+            9.945199999999998,
+            5.100099999999999
+          ]
+        ],
+        [
+          "GuLiSim_Shared/CommanderMass",
+          [
+            2,
+            5.5139,
+            5.0999
+          ]
+        ],
+        [
+          "GuLiHybrid_MainSimulation",
+          [
+            463,
+            3.427199999999998,
+            0.6446
+          ]
+        ],
+        [
+          "GuLiSim_Shared/CommanderTasks",
+          [
+            2,
+            3.1035999999999997,
+            2.8674999999999997
+          ]
+        ],
+        [
+          "GuLiSim_ObjectFamily",
+          [
+            455,
+            2.386100000000002,
+            0.6309
+          ]
+        ],
+        [
+          "GuLiCommander_MovementApply",
+          [
+            3,
+            2.3504,
+            2.2464
+          ]
+        ],
+        [
+          "GuLiCommander_SoldierCombat",
+          [
+            1,
+            1.9393,
+            1.9393
+          ]
+        ],
+        [
+          "MassExecutor Run",
+          [
+            1,
+            1.7574,
+            1.7574
+          ]
+        ],
+        [
+          "MassExecutor_RunProcessorsView",
+          [
+            1,
+            1.7569000000000001,
+            1.7569000000000001
+          ]
+        ],
+        [
+          "GuLiCommanderMassStateTreeProcessor_0",
+          [
+            1,
+            1.7534,
+            1.7534
+          ]
+        ],
+        [
+          "GuLiCommander_ManualAvoidanceRefresh",
+          [
+            3,
+            1.5153999999999999,
+            1.1635
+          ]
+        ],
+        [
+          "GuLiSim_Shared/LinearFlights",
+          [
+            2,
+            1.2597,
+            0.6836
+          ]
+        ],
+        [
+          "GuLiHybrid_LinearFlightService",
+          [
+            2,
+            1.2431,
+            0.6677000000000001
+          ]
+        ]
+      ]
+    }
+  ],
+  "hashes": {
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\build-50.log": "24f819c7d3b4d1ccdbc513de16964c80d295fe177972fd790eb1aca07bab37aa",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\build-50-verification.json": "3082f49df045a97914080c58f53d4e25e7f17b2d9b9f5ee515c380a87612e2f0",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\build-51.log": "babdd2a71d06719f94354a70bfa289dabfacc7ef1d5b9533b459e7e8092aa2ed",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\build-51-verification.json": "3082f49df045a97914080c58f53d4e25e7f17b2d9b9f5ee515c380a87612e2f0",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\before-sha256.json": "4a266de4113be7df03b3ed2788a92312fcabcc14791cd1aa7c355f93ef204b4b",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\acceptance-baseline.log": "316b1463e827c1cdacae08bb410c7c541ac9ae862b285027d58334a1c8829ca0",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\acceptance-reuse.log": "c287775ea6c4b21327d1159cf3d9139f570036b5ce14be6fbe4f96c936620fd8",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\map-entry.json": "ae96439fb594bd7ad283b1dd7639fe876c704f42065881b16f13a7b5f348b99b",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\restored.json": "79d5da725057f3eb1f2d27ff95384dbe2cfb0ac60545f2e2e7f893ee23acfb17",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fragment-cost-50\\response-trace\\summary.json": "fb1a83ac7a8b7c467e0fe72f8d0ded1ba7b55ff2883502ede1b325dc09f4d5dd",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fragment-cost-50\\response-trace\\stages.json": "b9d7b7f55a1d7361026c5256d660fb0432bb79d7982439d6420accd9822c1067",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fragment-cost-50\\response-trace\\settings-before.json": "01d7621e9c2ef998c62bcce8ab43cd82a938a49d7b787e0a6611439664e215ce",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fragment-cost-50\\response-trace\\stopped.json": "f622c3431f3195c0f2d3ebbf2868a04d21361f9085a6c073ae96b4422bab2d1d",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fragment-cost-50\\response-trace\\insights\\cost-summary.json": "6775ee1f1b39409e423e7746ba79f20ebd364424dc998ab1d92349ea3cea457e",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fragment-cost-50\\response-trace\\insights\\clock.json": "284c52f532a4d0c4b93db907f71884280e352ecf82fd47e85e96b8086d840f08",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\fragment-cost-50\\response-trace\\insights\\response-all-threads.csv": "1d3f9e7386e368f1ab68ec2f8b21c9fdd4fe95b9a265e7ec786e1f4000b9a97d",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace\\summary.json": "70eec17396c594b4840f5c5fe54e23f4852cc7f51ff5f801af431535750b8ea3",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace\\stages.json": "d65748ced51dff7d12e843d72a7f03f8bf95ad330c7c939c74f6aa5691c3f8f9",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace\\settings-before.json": "5a8088aab21b92b2f06e32815a037eda19df8563c61e5935e422907555b74347",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace\\stopped.json": "d0957df1bb614cf10581420953dccda64d34e29fe44dfe0eb2a2e4ff892a209e",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace\\insights\\cost-summary.json": "639746d88627102fcbb300bbbb39bea6a165a56e5cf04598c1d30ff12d0f35c6",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace\\insights\\clock.json": "757cce817607ea9b5f041386c6b24bdb495ab4fab678b7c75b34695430d22182",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace\\insights\\response-all-threads.csv": "28233ffae15991dc325f3b0311bbfc0671b3e4f7eabc4a3ac0db23f039e58028",
+    "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\resource-validation-51\\response-reuse-trace\\insights\\main-batches.json": "23a8367fc14491f429ffc2458eb75cbb7473abe164f0407f8b49aa60aa4c4908"
+  }
+}

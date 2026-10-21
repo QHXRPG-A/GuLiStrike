@@ -18,6 +18,8 @@
 #include "Engine/GameInstance.h"
 #include "Subsystems/SubsystemCollection.h"
 #include "UObject/GCObject.h"
+#include "HAL/IConsoleManager.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 namespace GuLiEffectState
 {
@@ -125,7 +127,35 @@ struct FGuLiHybridEffectRuntime final:FGCObject
     }
     bool UsesObject(const FGuLiHybridObjectKey& K) const
     {
-        for (const auto& P:Records) if (Includes({K},P.Value)) return true;
+        const auto Comparison=[&]
+        {for (const auto& P:Records) if (Includes({K},P.Value)) return true;return false;};
+        static const auto* Option=IConsoleManager::Get().FindConsoleVariable(TEXT("gs.Hybrid.DirectCaptureMembership"));
+        const int32 Mode=Option?Option->GetInt():0;
+        bool HasRecord=false;
+        if (!Mode) HasRecord=Comparison();
+        else
+        {
+            HasRecord=[&]
+            {
+                // This map is indexed by StableId; always check the entire key
+                // so a different kind or life cannot inherit the captured state.
+                if (const auto* R=Records.Find(K.StableId);R && R->Key==K) return true;
+                for (const auto& P:Records)
+                {
+                    const auto& R=P.Value;if (R.Admitted || R.Source!=K) continue;
+                    FGuLiHybridObjectState Effect;if (!Hybrid->GetObject(R.Key,Effect)) return true;
+                }
+                return false;
+            }();
+            if (Mode==2)
+            {
+                const bool Original=Comparison();
+                if (HasRecord==Original) {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCapture_EffectMembershipEqual);}
+                else {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCapture_EffectMembershipMismatch);ensureAlwaysMsgf(false,TEXT("Combat effect capture membership differs"));}
+                HasRecord=Original;
+            }
+        }
+        if (HasRecord) return true;
         if (!Runtime.IsValid() || !Hybrid.IsValid()) return false;
         for (const auto& P:Runtime->WingmanBurstCooldowns)
         {FGuLiHybridObjectKey Member;if (Hybrid->ResolveTarget(GuLiCombatTargets::MakeWingmanTargetHandle(P.Key),Member) && Member==K) return true;}

@@ -231,7 +231,12 @@ public:
     bool ApplyCommit(const CommitResult& Result);
     // Only initial readiness and membership join/leave use this world pause.
     void SetMembershipPaused(bool Value);
-    void PollNetwork(double MonotonicSeconds);
+    // Zero preserves an unbounded retry pass. A positive caller-local limit
+    // resumes each retry phase fairly without discarding or aging unvisited work.
+    void PollNetwork(double MonotonicSeconds,std::size_t RetryBatchLimit=0);
+    bool HasPendingNetworkRetryBatch() const {return RetryBatchPending;}
+    void SetPeerTransactionDeferral(bool Enabled) {DeferPeerTransactions=Enabled;}
+    void SetResourceValidationSnapshotReuse(bool Enabled) {Numbers.SetResourceValidationSnapshotReuse(Enabled);}
     std::uint32_t Advance(double WallDeltaSeconds);
     bool PrepareHandoff(const ObjectHandoff& Transfer);
     bool FreezeHandoff(const ObjectHandoff& Transfer);
@@ -340,7 +345,7 @@ private:
     void FlushCommandOutbox();
     void CompleteCommandReceipt(const CommandReceipt& Receipt);
     void QueueHandoffCommand(ObjectKey Object,Message Value);
-    bool StartWork(Id Sender,const TransactionRequest& Request);
+    bool StartWork(Id Sender,const TransactionRequest& Request,bool Defer=false);
     void AdvanceWork(Id Event);
     bool ReceiveWork(Id Sender,const Message& Value);
     bool SendMessage(Id Peer,MessageKind Kind,Id Event,ObjectKey Object,Bytes Body);
@@ -455,6 +460,12 @@ private:
     double NextStateRepair=0;
     std::string LastStateImportFailure;
     std::map<Id,std::pair<Id,TransactionRequest>> RetryWork;
+    Id PendingRetryCursor,IntentRetryCursor;
+    std::deque<Id> WorkRetryRound;
+    bool RetryBatchPending=false;
+    bool DeferPeerTransactions=false;
+    std::deque<Id> ReadyPeerWork;
+    std::set<Id> ReadyPeerWorkIdentities;
     std::map<Id,std::string> PlanWaitReasons;
     std::map<ObjectKey,ObjectHandoff> Transfers;
     bool CommittingOwnershipGroup=false;

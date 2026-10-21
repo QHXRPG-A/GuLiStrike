@@ -35,6 +35,7 @@
 #include "AIController.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
 #include "Network/GuLiHybridActorComponent.h"
+#include "HAL/IConsoleManager.h"
 
 void RegisterGuLiHybridTaskState(UGuLiUnitTaskSubsystem& Tasks);
 
@@ -42,6 +43,8 @@ DEFINE_LOG_CATEGORY_STATIC(LogGuLiMoveOrders, Log, All);
 
 namespace
 {
+	TAutoConsoleVariable<int32> BatchMoveAdmissions(TEXT("gs.Commander.BatchMoveAdmissions"),0,
+		TEXT("Admit up to the existing 25-member move batch together, using a 0.5 ms manual slice within unchanged frame/category budgets. 0 keeps 8-member/0.2 ms slices."));
 	bool IsUnfinishedMove(const FGuLiTaskExecution& Task)
 	{
 		return !Task.bAutomatic && Task.Command.Kind == EGuLiUnitTaskKind::Move
@@ -895,10 +898,32 @@ void UGuLiUnitTaskSubsystem::PumpMoveAdmissions(FGuLiNavigationWorkBudget& Budge
 	auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	auto* Mass = GetWorld()->GetSubsystem<UMassEntitySubsystem>();
 	if (!Authority || !Mass || !MassTreeProcessor) return;
+#if !UE_BUILD_SHIPPING
+	static const auto* ClockVariable = IConsoleManager::Get().FindConsoleVariable(TEXT("gs.Commander.MovementClockSoldier"));
+	const int32 ClockId = GuLiMoveLatency::IsEnabled() && ClockVariable ? ClockVariable->GetInt() : 0;
+	auto RecordAdmissionClock = [&](const TCHAR* Stage)
+	{
+		if (ClockId <= 0) return;
+		const auto ClockUnit = FGuLiTaskUnitId::Soldier(FGuLiSoldierId(ClockId), GetWorld());
+		const auto* S = States.Find(ClockUnit);
+		if (!S) return;
+		const auto* Task = S->PendingMove.IsSet() ? &*S->PendingMove : S->Active.IsSet() ? &*S->Active : nullptr;
+		if (S->Queue.IsEmpty() && (!Task || Task->bStarted)) return;
+		const uint32 Command = !S->Queue.IsEmpty() ? S->Queue[0].CommandId : Task->Command.CommandId;
+		const FString Detail = FString::Printf(TEXT("soldier=%u queued=%d commands=%d active=%d started=%d done=%d stopped=%d cancel=%d ready=%d budgetMs=%.3f"),
+			ClockUnit.Id, AdmissionQueued.Contains(ClockUnit), S->Queue.Num(), S->Active.IsSet(), Task && Task->bStarted,
+			S->bBehaviorStepDone, S->bStopped, S->bCancelPending, ReadyAdmissions.Contains(ClockUnit),
+			Budget.Elapsed()*1000.);
+		GuLiMoveLatency::Record(Stage, GuLiMoveLatency::Context(S->Owner.Get(), Command), 1, *Detail);
+	};
+	RecordAdmissionClock(TEXT("admission-pump-begin"));
+#endif
 	TGuardValue<bool> PumpGuard(bPumpingAdmissions,true);
 	TArray<FGuLiTaskUnitId> Woken;
 	TArray<FMassEntityHandle> Entities;
-	const int32 Count=FMath::Min3(8,AdmissionRemaining,AdmissionQueued.Num());
+	const int32 MaximumBatch = BatchMoveAdmissions.GetValueOnGameThread()!=0 ? 25 : 8;
+	const int32 Count=FMath::Min3(MaximumBatch,AdmissionRemaining,AdmissionQueued.Num());
+	Woken.Reserve(Count); Entities.Reserve(Count);
 	for (int32 N=0; N<Count && Budget.CanWork() && !AdmissionOwners.IsEmpty(); ++N)
 	{
 		--AdmissionRemaining;
@@ -939,6 +964,9 @@ void UGuLiUnitTaskSubsystem::PumpMoveAdmissions(FGuLiNavigationWorkBudget& Budge
 			ReadyAdmissions.AddUnique(Id);
 		else if (State->bCancelPending || !State->bBehaviorStepDone) QueueMoveAdmission(Id);
 	}
+#if !UE_BUILD_SHIPPING
+	RecordAdmissionClock(TEXT("admission-pump-end"));
+#endif
 	StartMoveBatches(Budget);
 }
 

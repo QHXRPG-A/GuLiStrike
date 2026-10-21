@@ -1,4 +1,5 @@
 #include "GuLiNetClient.h"
+#include "GuLiNetCommandSubset.h"
 #include "GuLiNetManifest.h"
 #include "GuLiNetHash.h"
 #include "GuLiNetTrace.h"
@@ -296,7 +297,7 @@ bool ClientWorld::ApplyCommand(Id Sender,const Envelope& H,const FrozenCommand& 
             if (T!=CompletedTransfers.end() && T->second.Source==Player && T->second.PreviousOwnerVersion==M.OwnerEpoch
                 && T->second.NextOwnerVersion==A.OwnerEpoch && T->second.Target==A.SimOwner)
             {
-                auto One=C;auto Member=M;Member.OwnerEpoch=A.OwnerEpoch;One.Members={Member};
+                auto Member=M;Member.OwnerEpoch=A.OwnerEpoch;auto One=CommandWithMembers(C,{Member});
                 Bytes Original;if (!EncodeMessage({H,EncodeCommand(One)},Original)) return false;
                 Writer W;W.U64(T->second.IdValue);W.Blob(Original);
                 if (!SendMessage(T->second.Target,MessageKind::HandoffCommands,C.Event,M.Object,W.Take())) return false;
@@ -306,7 +307,7 @@ bool ClientWorld::ApplyCommand(Id Sender,const Envelope& H,const FrozenCommand& 
         if (A.Controller!=Sender || A.ControlEpoch!=M.ControlEpoch || A.OwnerEpoch!=M.OwnerEpoch || A.SimOwner!=Player) return false;
         if (Frozen.contains(M.Object))
         {
-            FrozenCommand One=C;One.Members={M};Message Queued{H,EncodeCommand(One)};
+            auto One=CommandWithMembers(C,{M});Message Queued{H,EncodeCommand(One)};
             QueueHandoffCommand(M.Object,std::move(Queued));continue;
         }
         const auto Key=std::pair{C.Event,M.Object};auto Executed=Commands.find(Key);
@@ -318,7 +319,7 @@ bool ClientWorld::ApplyCommand(Id Sender,const Envelope& H,const FrozenCommand& 
             if (Accepted)
             {
                 ++CommandExecutions;++CommandExecutionsByKind[M.Object.Kind];
-                auto One=C;One.Members={M};LatestCommands[M.Object]=One;
+                auto& One=LatestCommands[M.Object];One=CommandWithMembers(C,{M});
                 Broadcast(MessageKind::CommandState,C.Event,M.Object,EncodeCommand(One));
             }
         }
@@ -407,12 +408,13 @@ void ClientWorld::FlushCommandOutbox()
             const auto Transfer=Transfers.find(M.Object);
             if (Transfer!=Transfers.end() && Transfer->second.Target==Player && M.OwnerEpoch==Transfer->second.PreviousOwnerVersion)
             {
-                auto One=PendingCommand.Value;One.Members={M};
+                auto One=CommandWithMembers(PendingCommand.Value,{M});
                 Envelope H;H.Kind=MessageKind::Command;H.Match=Match;H.Epoch=Epoch();H.Sender=Player;H.Event=E;H.At=One.At;
                 QueueHandoffCommand(M.Object,{H,EncodeCommand(One)});continue;
             }
-            auto [Batch,New]=Routed.try_emplace(O->second.Grant.SimOwner,PendingCommand.Value);
-            if (New) Batch->second.Members.clear();Batch->second.Members.push_back(M);
+            auto [Batch,New]=Routed.try_emplace(O->second.Grant.SimOwner);
+            if (New) Batch->second=CommandWithMembers(PendingCommand.Value,{});
+            Batch->second.Members.push_back(M);
         }
         for (const auto& [Peer,C]:Routed)
         {
@@ -472,7 +474,7 @@ bool ClientWorld::ReceivePeer(Id Sender,const Message& V)
     if (V.Header.Kind==MessageKind::Transaction || V.Header.Kind==MessageKind::HitFact)
     {
         TransactionRequest R;if (!DecodeTransaction(V.Header,V.Body,R)) return false;
-        return StartWork(Sender,R);
+        return StartWork(Sender,R,DeferPeerTransactions);
     }
     if ((V.Header.Kind>=MessageKind::WorkPrepare && V.Header.Kind<=MessageKind::WorkStateRequest) || V.Header.Kind==MessageKind::WorkState) return ReceiveWork(Sender,V);
     if (V.Header.Kind==MessageKind::TransactionResult)

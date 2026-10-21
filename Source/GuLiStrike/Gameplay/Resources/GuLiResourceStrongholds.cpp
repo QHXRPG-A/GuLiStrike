@@ -166,8 +166,13 @@ FIntPoint UGuLiResourceWorldSubsystem::GetHybridCaptureCounts(uint64 Tick,int32 
     if (HybridCaptureTick!=Tick || HybridCaptureEpoch!=Epoch)
     {
         HybridCaptureTick=Tick;HybridCaptureEpoch=Epoch;HybridCaptureCounts.Init(FIntPoint::ZeroValue,MapDefinition?MapDefinition->Territories.Num():0);
-        TArray<FGuLiCombatTargetSnapshot> Targets;GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()->GetTargetSnapshots(Targets);
+        TArray<FGuLiCombatTargetSnapshot> Targets;
+        {
+            TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_ControlPointTargetSnapshots);
+            GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()->GetTargetSnapshots(Targets);
+        }
         auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_ControlPointMembership);
         for (const auto& Target:Targets)
         {
             if (!Target.bAlive || (Target.Handle.Kind!=EGuLiTargetKind::CommanderSoldier && Target.Handle.Kind!=EGuLiTargetKind::GroundActor)) continue;

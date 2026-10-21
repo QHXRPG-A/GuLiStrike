@@ -80,12 +80,25 @@ bool ReadAcknowledgment(std::span<const std::uint8_t> Data,Id& Event,Id& Proposa
     if (!Parts.Done()) return false;Accepted=Status!=0;return true;
 }
 }
-bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R)
+bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R,bool Defer)
 {
     TraceScope Scope("GuLiHybrid_CoreStartWork");
     if (!Numbers.CurrentResourceRequest(R)||!ResourceMessageCurrent(R.Header)) return false;
     if (Numbers.Owner(Numbers.ExecutionDomain(R))!=Player) return false;
     if (WorkFlows.contains(R.Header.Event)) return true;
+    if (Defer)
+    {
+        // Retain the validated request in the existing recoverable retry set.
+        // Receive bursts must not execute every transaction before a queued
+        // local command or simulation input can reach the owner thread.
+        const bool New=RetryWork.insert_or_assign(R.Header.Event,std::pair{Sender,R}).second;
+        if (New)
+        {
+            ReadyPeerWork.push_back(R.Header.Event);ReadyPeerWorkIdentities.insert(R.Header.Event);
+            RetryBatchPending=true;
+        }
+        return true;
+    }
     // Observers consume reliable publications independently. Their receive
     // speed must not become a planning gate for this owner's resource chain.
     const auto Domain=Numbers.ExecutionDomain(R);
@@ -284,8 +297,26 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
     }
     return false;
 }
-void ClientWorld::PollNetwork(double Now)
+namespace
 {
+template<class F>
+bool VisitRetryBatch(const std::vector<Id>& Events,Id& Cursor,std::size_t Limit,F&& Visit)
+{
+    if (Events.empty()) return false;
+    const auto Start=Limit?std::size_t(std::upper_bound(Events.begin(),Events.end(),Cursor)-Events.begin()):0;
+    const auto Count=Limit?std::min(Limit,Events.size()):Events.size();
+    for (std::size_t N=0;N<Count;++N)
+    {
+        const auto Event=Events[(Start+N)%Events.size()];
+        if (Limit) Cursor=Event;
+        Visit(Event);
+    }
+    return Count<Events.size();
+}
+}
+void ClientWorld::PollNetwork(double Now,std::size_t RetryBatchLimit)
+{
+    RetryBatchPending=false;
     if (!std::isfinite(Now) || Now<NetworkTime || !Failure.empty()) return;NetworkTime=Now;
     PollResourceSnapshots();
     for (auto& [Key,Retry]:PreparingApplications) if (Retry<=Now)
@@ -294,13 +325,16 @@ void ClientWorld::PollNetwork(double Now)
     RetryPeerStates();
     RetryPeerReceipts();
     FlushCommandOutbox();
-    for (auto& [E,I]:PlayerIntents) if (I.RetryAt<=Now && HasControl(I.Request.Header.Object))
+    std::vector<Id> IntentEvents;
+    for (const auto& [E,I]:PlayerIntents) if (I.RetryAt<=Now && HasControl(I.Request.Header.Object)) IntentEvents.push_back(E);
+    RetryBatchPending|=VisitRetryBatch(IntentEvents,IntentRetryCursor,RetryBatchLimit,[&](Id E)
     {
+        const auto Found=PlayerIntents.find(E);if (Found==PlayerIntents.end()) return;auto& I=Found->second;
         I.RetryAt=Now+.5;const auto K=I.Request.Header.Object;
         if (HasSimulation(K)) {if (I.Admit) SubmitAdmitted(I.Request);else Submit(I.Request,{});}
         else
         {Writer W;W.U8(I.Admit?1:0);W.Blob(EncodeTransaction(I.Request));SendMessage(Numbers.Owner(K),MessageKind::TransactionIntent,E,K,W.Take());}
-    }
+    });
     for (auto I=EarlyHandoffStates.begin();I!=EarlyHandoffStates.end();) if (Now-I->second.ReceivedAt>10) I=EarlyHandoffStates.erase(I);else ++I;
     std::vector<Revision> ReadyImports;
     for (const auto& [ID,Entry]:EarlyHandoffStates)
@@ -328,21 +362,42 @@ void ClientWorld::PollNetwork(double Now)
     // Neither may send it past the captured boundary before ownership commits.
     std::vector<Id> Events;for (const auto& [E,P]:Pending)
         if (P.RetryAt<=Now && !Frozen.contains(P.Request.Header.Object)) Events.push_back(E);
-    for (const auto E:Events)
+    RetryBatchPending|=VisitRetryBatch(Events,PendingRetryCursor,RetryBatchLimit,[&](Id E)
     {
-        const auto I=Pending.find(E);if (I==Pending.end()) continue;auto& P=I->second;P.RetryAt=Now+.5;
+        const auto I=Pending.find(E);if (I==Pending.end()) return;auto& P=I->second;P.RetryAt=Now+.5;
         const auto Domain=Numbers.ExecutionDomain(P.Request);const auto Peer=Numbers.Owner(Domain);
-        if (!Peer.Valid()) continue;
+        if (!Peer.Valid()) return;
         if (Peer==Player) StartWork(Player,P.Request);
         else Transmit(Peer,{P.Request.Header,EncodeTransaction(P.Request)});
-    }
-    if (Now>=NextWorkRetry)
+    });
+    if (Now>=NextWorkRetry || !WorkRetryRound.empty())
     {
         TraceScope Scope("GuLiHybrid_CoreRetryWork");
-        NextWorkRetry=Now+.1;
-        auto Retry=std::exchange(RetryWork,{});
-        for (const auto& [E,R]:Retry) if (!WorkFlows.contains(E)) StartWork(R.first,R.second);
-        for (auto& [E,K]:KnownWork)
+        const bool NewRound=WorkRetryRound.empty();
+        if (NewRound) NextWorkRetry=Now+.1;
+        if (!RetryBatchLimit && !DeferPeerTransactions)
+        {
+            WorkRetryRound.clear();
+            auto Retry=std::exchange(RetryWork,{});
+            for (const auto& [E,R]:Retry) if (!WorkFlows.contains(E)) StartWork(R.first,R.second);
+        }
+        else
+        {
+            // Freeze identities once per retry round. Failed starts can requeue
+            // themselves, but cannot monopolize later slices of this round.
+            if (NewRound) for (const auto& [E,R]:RetryWork)
+                if (!ReadyPeerWorkIdentities.contains(E)) WorkRetryRound.push_back(E);
+            const auto Count=RetryBatchLimit?RetryBatchLimit:WorkRetryRound.size();
+            for (std::size_t N=0;N<Count && !WorkRetryRound.empty();++N)
+            {
+                const auto E=WorkRetryRound.front();WorkRetryRound.pop_front();
+                const auto I=RetryWork.find(E);if (I==RetryWork.end()) continue;
+                auto Request=std::move(I->second);RetryWork.erase(I);
+                if (!WorkFlows.contains(E)) StartWork(Request.first,Request.second);
+            }
+        }
+        RetryBatchPending|=!WorkRetryRound.empty();
+        if (NewRound) for (auto& [E,K]:KnownWork)
         {
             if (Members.contains(K.Work.Initiator) && Members.at(K.Work.Initiator).Online) continue;
             if (!K.Decided) {Numbers.Cancel(K.Work.Initiator,E,K.Work.Proposal);continue;}
@@ -356,6 +411,18 @@ void ClientWorld::PollNetwork(double Now)
             WorkFlows.emplace(E,std::move(F));K.Work=std::move(W);
         }
     }
+    // Newly received facts get a bounded first attempt without the failed-work
+    // retry delay. Their FIFO and the frozen retry round are independent, so
+    // continuous arrivals cannot starve previously blocked transactions.
+    const auto PeerCount=RetryBatchLimit?RetryBatchLimit:ReadyPeerWork.size();
+    for (std::size_t N=0;N<PeerCount && !ReadyPeerWork.empty();++N)
+    {
+        const auto E=ReadyPeerWork.front();ReadyPeerWork.pop_front();ReadyPeerWorkIdentities.erase(E);
+        const auto I=RetryWork.find(E);if (I==RetryWork.end()) continue;
+        auto Request=std::move(I->second);RetryWork.erase(I);
+        if (!WorkFlows.contains(E)) StartWork(Request.first,Request.second);
+    }
+    RetryBatchPending|=!ReadyPeerWork.empty();
     Events.clear();for (const auto& [E,F]:WorkFlows) if (F.RetryAt<=Now) Events.push_back(E);
     for (const auto E:Events)
     {
