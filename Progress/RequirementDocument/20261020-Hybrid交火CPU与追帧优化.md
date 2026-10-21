@@ -12,7 +12,7 @@ verification: not_applicable
 created: '2026-10-20'
 updated: '2026-10-21'
 summary: 当前目标为指挥官本机点击至绿线、真实起步及模型提交严格小于20ms；先交付快速压缩正式版并清理、推送GitHub。
-next_action: 落实所选正式版本及GitHub交付，再继续消除本机指令排队。
+next_action: 以已上传main的正式代码继续消除本机指令排队；LFS额度恢复后补齐资源。
 relations:
   development: DEV-20261020-004
 status_note: 用户将当前目标限定为20ms响应；15ms为历史帧预算，不再作为当前推进目标。沿用编译与复测授权，禁止读图测试。

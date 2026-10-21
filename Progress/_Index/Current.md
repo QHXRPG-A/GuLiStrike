@@ -24,7 +24,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | combat, network, performance | 14/14 (100%) | 用户恢复GitHub仓库LFS额度后重试正式版推送，再继续20ms本机指令响应。 | 2026-10-21 |
+| [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | combat, network, performance | 14/14 (100%) | 以已上传main的正式代码继续20ms本机指令响应；LFS额度恢复后补传本地资源提交。 | 2026-10-21 |
 | [UI CPU优化与四档LOD — 实施与验收](../DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md) | commander, performance, ui | 7/12 (58%) | 补齐文档清理与场景交付记录；视觉效果由用户自行核验，未完成的配对性能验收保持未验证，不自动恢复检查。 | 2026-10-20 |
 | [一键截帧与CPU分析插件 — 技术方案](../DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md) | performance, tools | 7/7 (100%) | 玩家确认快捷键焦点、文本框及弹窗行为；常驻 GPU 标记的默认策略单独处理。 | 2026-10-20 |
 | [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | combat, commander, network, performance | 6/7 (86%) | 核对玩家响应反馈及窗口停顿触发条件；继续削减周期逻辑、StateTree和快照成本。长测及PIE故障矩阵按用户要求取消。 | 2026-10-20 |

@@ -12,11 +12,11 @@ verification: partial
 created: '2026-10-20'
 updated: '2026-10-21'
 summary: 采用快速小消息压缩正式配置：单轮16.23ms、P95 26.01ms；清理未采用实验。当前目标仅为完整20ms本机响应，尚未达成。
-next_action: 用户恢复GitHub仓库LFS额度后重试正式版推送，再继续20ms本机指令响应。
+next_action: 以已上传main的正式代码继续20ms本机指令响应；LFS额度恢复后补传本地资源提交。
 relations:
   requirement: REQ-20261020-004
   children: [DEV-20261020-004-D01, DEV-20261020-004-D02, DEV-20261020-004-D03, DEV-20261020-004-D04, DEV-20261020-004-D05, DEV-20261020-004-D06, DEV-20261020-004-D07]
-status_note: 正式版编译与三轮复核完成并已本地提交；GitHub因LFS预算拒绝上传，需账户侧恢复。完整20ms与视觉仍待验。
+status_note: 正式版代码、配置与文档已正常推送main；地图、材质和美术源包因LFS额度仍保留本地。完整20ms与视觉仍待验。
 ---
 
 # Hybrid交火CPU与追帧优化 — 实施记录

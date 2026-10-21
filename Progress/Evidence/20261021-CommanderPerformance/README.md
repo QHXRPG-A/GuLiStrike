@@ -14,4 +14,6 @@
 
 完整原始数据保留于`D:/UE5.7/PerformanceCaptures/GuLiStrike/hybrid-cpu-20261020`。历史源备份已验证后合并为`adoption-42`下的ZIP，不属于正式代码。正式版本依赖项目内保存、应用于外部源码UE5.7的Slate补丁。
 
-GitHub上传状态见`github-delivery.json`：本次上传被服务端LFS预算限制拒绝，代码已本地提交，远端未更新。
+当前代码上传回执见`github-main-code-delivery.json`：272个源码、配置、脚本和文档文件已正常推送至远端`main`，代码提交为`3e16822e38dcec2068395086b3440695a5340c2b`。地图、材质与美术源包共70个文件保留为本地后续资源提交，LFS额度恢复后再同步；远端尚不是本机完整资产副本。
+
+`github-delivery.json`保留首次完整推送被LFS预算拒绝的历史回执，不能用它判断后续代码上传状态。此次拆分没有改变正式源码和本机资产内容，未强推或跳过LFS。

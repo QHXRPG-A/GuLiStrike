@@ -513,6 +513,7 @@
 |---|---|---|---|
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [正式代码推送main与LFS资源分离](../Archive/20261021-正式代码推送main与LFS资源分离.md) | archive | recorded | 2026-10-21 |
 | [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
 | [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
 | [弹丸网络服务与选区读取优化](../Archive/20261021-弹丸网络服务与选区读取优化.md) | archive | recorded | 2026-10-21 |
@@ -1601,7 +1602,9 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
+| [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [正式代码推送main与LFS资源分离](../Archive/20261021-正式代码推送main与LFS资源分离.md) | archive | recorded | 2026-10-21 |
 | [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
 | [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
 | [弹丸网络服务与选区读取优化](../Archive/20261021-弹丸网络服务与选区读取优化.md) | archive | recorded | 2026-10-21 |
@@ -1895,6 +1898,7 @@
 |---|---|---|---|
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [正式代码推送main与LFS资源分离](../Archive/20261021-正式代码推送main与LFS资源分离.md) | archive | recorded | 2026-10-21 |
 | [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
 | [VAT提交对照与纯兵种输入优化](../Archive/20261021-VAT提交对照与纯兵种输入优化.md) | archive | recorded | 2026-10-21 |
 | [弹丸网络服务与选区读取优化](../Archive/20261021-弹丸网络服务与选区读取优化.md) | archive | recorded | 2026-10-21 |
@@ -2523,6 +2527,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [正式代码推送main与LFS资源分离](../Archive/20261021-正式代码推送main与LFS资源分离.md) | archive | recorded | 2026-10-21 |
 | [交火优化正式版与清理交付](../Archive/20261021-交火优化正式版与清理交付.md) | archive | recorded | 2026-10-21 |
 | [Slate空操作优化与响应测量](../Archive/20261021-Slate空操作优化与响应测量.md) | archive | recorded | 2026-10-21 |
 | [UI CPU优化与四档LOD](../RequirementDocument/20261020-UI CPU优化与四档LOD.md) | requirement | approved | 2026-10-20 |
