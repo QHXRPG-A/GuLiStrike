@@ -232,12 +232,26 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter, public
     FGuLiTargetHandle RegisteredTarget;
     bool bLocal=false,bRestoringQuery=false;
     uint64 LastPublished=0;
+    uint32 PoseOwner=0,PoseEpoch=0;
 #if !UE_BUILD_SHIPPING
     uint32 LastReportedMoveCommand=0;
 #endif
     TMap<FGuid,GuLiCommanderPoseCodec::FSender> Senders;
     GuLiCommanderPoseCodec::FReceiver Receiver;
     std::shared_ptr<GuLiHybridMass::FWorkerPoseCodec> WorkerCodec;
+    bool EnsurePoseSession()
+    {
+        const auto* Self=Authority.Get();const auto* World=Self?Self->GetWorld():nullptr;
+        const auto* Battle=World?World->GetGameState<AGuLiBattleGameState>():nullptr;
+        if (!Battle || !Record.OwnerEpoch || Record.OwnerEpoch>MAX_uint32 || !Battle->GetMatchEpoch()) return false;
+        const uint32 Owner=uint32(Record.OwnerEpoch),Epoch=Battle->GetMatchEpoch();
+        if (PoseOwner!=Owner || PoseEpoch!=Epoch)
+        {
+            PoseOwner=Owner;PoseEpoch=Epoch;
+            Senders.Reset();Receiver.Reset(PoseOwner,PoseEpoch);LastPublished=0;
+        }
+        return true;
+    }
     GuLiCommanderMassPrivate::FSoldierRuntime* Soldier() const
     {
         auto* Self=Authority.Get(); const auto* I=Self && Self->AuthorityState?Self->AuthorityState->SoldierIndexById.Find(Record.Ordinal):nullptr;
@@ -283,7 +297,7 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter, public
     }
     void Publish(uint64 At)
     {
-        auto* S=Soldier(); auto* Self=Authority.Get(); if (!S || !Self || At%6 || At==LastPublished) return;
+        auto* S=Soldier(); auto* Self=Authority.Get(); if (!S || !Self || At%6 || !EnsurePoseSession() || At==LastPublished) return;
         LastPublished=At; auto* World=Self->GetWorld(); auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
         auto* Session=World->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>();
         if (!Hybrid || !Session || Hybrid->GetLogicalTick()/6>MAX_uint32) return;
@@ -390,13 +404,20 @@ public:
             else if (Changed && S->ActiveOrderId && S->MoveIntent && !S->bAutomaticAdvance)
                 Self->AuthorityState->ImmediateMoveIds.Add(S->SoldierId.Value);
         }
+        // Newborns are prepared with their final owner already installed. Their
+        // first remote SetAuthority need not change Record or bLocal, but still
+        // must initialize the codec session before accepting their first pose.
         if (Changed)
         {
-            Senders.Reset(); Receiver.Reset(static_cast<uint32>(R.OwnerEpoch),Self->GetWorld()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch()); LastPublished=0;
+            PoseOwner=PoseEpoch=0;
+            Senders.Reset();Receiver.Reset();LastPublished=0;
 #if !UE_BUILD_SHIPPING
             LastReportedMoveCommand=0;
 #endif
         }
+        // During initial directory installation a grant or match epoch can still
+        // be zero. Publish/receive retry initialization once both are available.
+        EnsurePoseSession();
         if (Local && R.LifeState==1)
             if (auto* Tasks=Self->GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())
             { const FGuLiSoldierId Id(R.Ordinal); Tasks->RegisterSoldiers(R.Team,MakeArrayView(&Id,1)); }
@@ -450,7 +471,7 @@ public:
     }
     bool ApplyMotion(TConstArrayView<uint8> Bytes,uint64 At) override
     {
-        auto* S=Soldier(); auto* Self=Authority.Get(); if (!S || !Self || bLocal) return false;
+        auto* S=Soldier(); auto* Self=Authority.Get(); if (!S || !Self || bLocal || !EnsurePoseSession()) return false;
         FGuLiEncodedPoseBlock Block; Block.Data.Append(Bytes.GetData(),Bytes.Num()); FGuLiSoldierPoseChunk Chunk;
         const auto Result=Receiver.Decode(Block,Chunk);
         if (Result==GuLiCommanderPoseCodec::EDecodeResult::Duplicate || Result==GuLiCommanderPoseCodec::EDecodeResult::TooOld
@@ -558,7 +579,8 @@ public:
         }
         if (Stage==EGuLiHybridRestoreStage::Activate)
         {
-            Senders.Reset(); Receiver.Reset(static_cast<uint32>(Record.OwnerEpoch),Self->GetWorld()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch()); LastPublished=0;
+            PoseOwner=PoseEpoch=0;Senders.Reset();Receiver.Reset();LastPublished=0;
+            EnsurePoseSession();
             if (const auto* S=Soldier(); bLocal && !bRestoringQuery && S && S->ActiveOrderId
                 && S->MoveIntent && !S->bAutomaticAdvance)
                 Self->AuthorityState->ImmediateMoveIds.Add(S->SoldierId.Value);

@@ -486,6 +486,13 @@ void UGuLiHybridReviewSubsystem::Tick(float DeltaSeconds)
     if (auto* Session=GetWorld()->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>())
         if (UGuLiNetworkSettings::IsHybrid(GetWorld())) Json->SetObjectField(TEXT("network"),Session->GetNetworkCaptureSnapshot());
     FString ReviewCase; FParse::Value(FCommandLine::Get(),TEXT("GuLiAcceptanceCase="),ReviewCase);
+    if (ReviewCase==TEXT("combat-diagnostics"))
+        if (const auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
+        {
+            TSharedPtr<FJsonObject> Units;
+            if (FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Authority->GetMoveResponseDiagnostics()),Units) && Units)
+                Json->SetObjectField(TEXT("soldier_diagnostics"),Units);
+        }
 
     int32 ExpectedAdditional=0;
     FParse::Value(FCommandLine::Get(),TEXT("GuLiAcceptanceExtraFlights="),ExpectedAdditional);

@@ -1,0 +1,163 @@
+{
+  "success": true,
+  "files_deleted": 22,
+  "bytes_deleted": 19868527.0,
+  "logic_snapshots_archived": 3,
+  "preserved": "Source baselines, raw original captures, failure/success JSON, build logs and map assets",
+  "files": [
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\LocalPIE\\2E2FC7B0488F473CD0B6F788FC72607D\\Logic\\state.json",
+      "sha256": "F936B15A59F16A33414BC7EF5C4F8E380B22B653195E0C4EFAAE0331F8807D8E",
+      "bytes": 5061172,
+      "kind": "owned_logic_snapshot",
+      "backup": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\raw-local-pie\\2E2FC7B0488F473CD0B6F788FC72607D\\state.json"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\LocalPIE\\A1F59273457424DF5CD0EAADDB04A9B4\\Logic\\state.json",
+      "sha256": "E8EDF4A2567E689B38AEE331E38C1F95A8318F31464F1D937243D37129C676AE",
+      "bytes": 5096650,
+      "kind": "owned_logic_snapshot",
+      "backup": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\raw-local-pie\\A1F59273457424DF5CD0EAADDB04A9B4\\state.json"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\LocalPIE\\446FBFEF4A83FC78AEACB69CB7D00C1C\\Logic\\state.json",
+      "sha256": "D082363D6F152F26BDA5756A796B0EBA5CDD3079F92866321CE2FE403279D057",
+      "bytes": 23262,
+      "kind": "owned_logic_snapshot",
+      "backup": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\raw-local-pie\\446FBFEF4A83FC78AEACB69CB7D00C1C\\state.json"
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\authority-diagnostics-stage.cpp",
+      "sha256": "0DCE2908589C7180B4F63CF8F7AD736EB024951E0FBB870991BC678F4AD4AF35",
+      "bytes": 345231,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\combat-move-input-57.py",
+      "sha256": "DED2E5FFC8CA6606DE030928423CB34EF225E1DBB5A27CFF59B589EC31CC99DC",
+      "bytes": 776,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\final-session-command.log",
+      "sha256": "2992C7F406D6375400299E933E62A001F87C930E2E63A02CA7598044966DEDB7",
+      "bytes": 1814,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\main-after-57-command.log",
+      "sha256": "F1DB3FD6584E7E384B1FE4755148A0E9CCA9C7C79A4A13D29A02320CFFB9A17D",
+      "bytes": 2117861,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\main-sweeper-before-command.log",
+      "sha256": "541C37EC2A6A371D2A708BC3C1BB2873F09D5481046180299364EFCD0A9B4F83",
+      "bytes": 1274887,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\map-entry-command.log",
+      "sha256": "D104B51CC75815506DF2D0A061CC9CE58F1C02600FD49DE9D2CA78056EF9E606",
+      "bytes": 3994,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\nav-final-57-command.log",
+      "sha256": "3E28423F1B0AEBC3BBB630A37F6CC84019CDC06AD81D795B5A906AD81D22DD87",
+      "bytes": 23922,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\nav-read-summon-57.py",
+      "sha256": "F898EB7B19140BD1E82003AA5937A5AC829E5002EB7D7863FADD7EC91C08F10E",
+      "bytes": 866,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\nav-rebuild-after-57-command.log",
+      "sha256": "DFD55E3DAC4833241E095B0979DF6BFE5C2328F2AA58660FF19804DE0E1FD3C7",
+      "bytes": 24460,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\pioneer-snapshot-command.log",
+      "sha256": "4EF0FFABA0CA6651322C4EF01DDEECE866943CCC6205D568BCC35F449AAAB6E7",
+      "bytes": 642901,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\preparation-57-command.log",
+      "sha256": "85CEFF8C56B12A2B90A334EE600E9E2267C887996E05922CC59F2EDED4A8547A",
+      "bytes": 27509,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\hybrid-cpu-20261020\\bugfix-55\\prepare-57.py",
+      "sha256": "6C07CAEC95F21F6394C615F4D932E3C9CCA89B780E23E208C5D0C96F5A2194BD",
+      "bytes": 1110,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\bug-triage-20261021-context-command.log",
+      "sha256": "26CDFE107B38A0827B74B2EC532975D009F3375CB6F83C43D19DCBC425A7BBDD",
+      "bytes": 9828,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\bug-triage-20261021-current-command.log",
+      "sha256": "0884F953E393B6CB36E1608A5201BFF3AAF3EE8FCA119E8E604057490318061C",
+      "bytes": 1228984,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\bug-triage-20261021-network-command.log",
+      "sha256": "55EA5F91211DC931176D1C132FB1725851A7976ECA401CBABBACAE2582FCCB82",
+      "bytes": 64687,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\bug-triage-20261021-review-read.py",
+      "sha256": "EB05E78879AB17C5376F9D0FC40C4766470B60F6DB1B3615CA6E74BE944BD6D0",
+      "bytes": 909,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\bug-triage-20261021-second-command.log",
+      "sha256": "D83EA7B9394792D854AF663CF7DD7CA278CB02902FE95CF2C6FB2E25E3265657",
+      "bytes": 1237985,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\bug-triage-20261021-selection-command.log",
+      "sha256": "A96E1C9605F9CF66BB4BC0905FD52F67E36D4A980C2E3D77BE818BC27BFA8A11",
+      "bytes": 1253374,
+      "kind": "derived_temporary",
+      "backup": null
+    },
+    {
+      "path": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\bug-triage-20261021-worlds-command.log",
+      "sha256": "C068A8E06245FD891608E9CF891CDD74B1251857F9A025E554BA5E20A185E900",
+      "bytes": 1426345,
+      "kind": "derived_temporary",
+      "backup": null
+    }
+  ]
+}

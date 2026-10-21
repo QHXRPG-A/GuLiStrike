@@ -27,6 +27,7 @@
 #include "Misc/FileHelper.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
 #include "MassEntityHandle.h"
 #include "Gameplay/Building/GuLiBuildingProductionComponent.h"
@@ -100,6 +101,31 @@ bool UGuLiComponentSkillQALibrary::SelectRadius(APlayerController* Controller, F
 	Request.Modifier = bAdd ? EGuLiSelectionModifier::Add : EGuLiSelectionModifier::Replace;
 	TGuardValue<bool> ScriptGuard(GAllowActorScriptExecutionInEditor, false);
 	Sync->SubmitSelectionRequest(Request); return true;
+}
+bool UGuLiComponentSkillQALibrary::PrepareSoldierPositions(APlayerController* Controller,
+	const TArray<int64>& Ids, const TArray<FVector>& Positions)
+{
+	UWorld* World=Controller?Controller->GetWorld():nullptr;
+	if (!World || !World->IsPlayInEditor() || !Controller->IsLocalController()
+		|| !World->GetMapName().Contains(TEXT("LVL_CommanderMassPrototype"))
+		|| Ids.IsEmpty() || Ids.Num()>25 || Ids.Num()!=Positions.Num()) return false;
+	auto* Authority=World->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+	const auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	if (!Authority || !Hybrid || !Hybrid->CanPublishFacts()) return false;
+	TArray<FGuLiMassExternalUnit> Units;TSet<int64> Seen;
+	for (int32 I=0;I<Ids.Num();++I)
+	{
+		if (Ids[I]<1 || Ids[I]>MAX_uint32 || Seen.Contains(Ids[I]) || Positions[I].ContainsNaN()) return false;
+		Seen.Add(Ids[I]);const FGuLiSoldierId Id{uint32(Ids[I])};
+		const auto Key=Authority->MakeSoldierTargetHandle(Id);FGuLiHybridObjectKey Object;
+		FTransform Previous;
+		if (!Hybrid->ResolveTarget(Key,Object) || !Hybrid->HasSimulation(Object)
+			|| !Authority->TryGetSoldierTransform(Id,Previous)) return false;
+		FVector Surface;if (!Authority->ProjectExternalUnitLocation(Positions[I],Surface)) return false;
+		auto& Unit=Units.AddDefaulted_GetRef();Unit.Id=Id;
+		Previous.SetLocation(Surface);Unit.Transform=Previous;
+	}
+	return Authority->ApplyExternalUnitState(Units,FGuid::NewGuid(),false,false,true);
 }
 bool UGuLiComponentSkillQALibrary::SubmitSkill(UGuLiCommanderSkillComponent* Component, FGuid RequestId,
 	FName GlobalSkillId, int64 SelectionRevision, bool bHasPoint, FVector Point)

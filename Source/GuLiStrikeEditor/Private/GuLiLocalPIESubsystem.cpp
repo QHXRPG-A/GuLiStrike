@@ -45,6 +45,8 @@ FString UGuLiLocalPIESubsystem::PreparePerformanceProduction(const TArray<FStrin
 namespace
 {
 const TCHAR* LocalMap=TEXT("/Game/Maps/LVL_CommanderMassPrototype");
+TAutoConsoleVariable<int32> LogicDiagnostics(TEXT("gs.LocalPIE.LogicDiagnostics"),0,
+    TEXT("Opt-in correctness snapshots from the owned logic client on the next PIE launch; never use for performance sampling."));
 UWorld* EditorWorld()
 {
     if (GEditor) for (const auto& Context:GEditor->GetWorldContexts())
@@ -211,9 +213,13 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
         CVarValue(TEXT("gs.Hybrid.FastSmallPayloadCompression")),
         CVarValue(TEXT("gs.Hybrid.FlightServiceFastPath")),CVarValue(TEXT("gs.Hybrid.NativePeerSend")),
         CVarValue(TEXT("gs.Hybrid.EntityLayoutCache")));
-    const FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=Blue -GuLiRole=Commander -GuLiClientRunMode=LogicOnly -GuLiHotspotMask=%u -GuLiGameplayWorkers=%u -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
+    FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=Blue -GuLiRole=Commander -GuLiClientRunMode=LogicOnly -GuLiHotspotMask=%u -GuLiGameplayWorkers=%u -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
         *Project,LocalMap,*Config.RoomId.ToString(EGuidFormats::Digits),*State->Peer.ToString(EGuidFormats::Digits),
         Config.HotspotMask,Config.GameplayWorkers,*Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")))+ClientStopArguments+CpuOptions;
+    if (LogicDiagnostics.GetValueOnGameThread()!=0)
+        Args+=FString::Printf(TEXT(" -GuLiAcceptanceRun=%s -GuLiAcceptanceCase=combat-diagnostics -GuLiAcceptanceDirectory=\"%s\""),
+            *Config.RoomId.ToString(EGuidFormats::Digits),
+            *FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()/TEXT("TestResults/LocalPIE")/Config.RoomId.ToString(EGuidFormats::Digits)/TEXT("Logic")));
     if (!Launch(Client,Args,State->Logic,State->LogicPid)) return Fail(TEXT("Could not start the owned logic client."));
     UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] room=%s editor=%u logic=%u coordinator=%u role=%s"),
         *Config.RoomId.ToString(),FPlatformProcess::GetCurrentProcessId(),State->LogicPid,State->CoordinatorPid,

@@ -30,6 +30,7 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-10-21 |
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-10-21 |
 | [十四模型仅配色 Blender 成品 B_v1](../RequirementDocument/20261008-十四模型仅配色Blender成品B_v1.md) | requirement | approved | 2026-10-09 |
 | [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
@@ -70,7 +71,6 @@
 | [彼之矛顶点动画制作与首轮源码交付](../Archive/20261005-彼之矛顶点动画制作与首轮源码交付.md) | archive | recorded | 2026-10-05 |
 | [ControlRig 机甲美术统一](../RequirementDocument/20261004-ControlRig机甲美术统一.md) | requirement | approved | 2026-10-04 |
 | [先驱号步态减速与移动点击精度](../RequirementDocument/20261003-先驱号步态减速与移动点击精度.md) | requirement | approved | 2026-10-04 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [ControlRig 机甲美术统一 — 制作与审核记录](../DevelopmentDocumentation/20261004-ControlRig机甲美术统一.md) | development | verification | 2026-10-04 |
 | [先驱号步态减速与移动点击精度 — 实施记录](../DevelopmentDocumentation/20261003-先驱号步态减速与移动点击精度.md) | development | done | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
@@ -511,8 +511,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [扫荡者远端姿态与导航恢复修复](../RequirementDocument/20261021-扫荡者远端姿态与导航恢复修复.md) | requirement | approved | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
+| [扫荡者远端姿态与导航恢复修复](../DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md) | development | verification | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [扫荡者姿态与斜坡导航恢复](../Archive/20261021-扫荡者姿态与斜坡导航恢复.md) | archive | recorded | 2026-10-21 |
 | [指令名单复制修复与清理](../Archive/20261021-指令名单复制修复与清理.md) | archive | recorded | 2026-10-21 |
 | [接纳合批与资源验证副本阶段记录](../Archive/20261021-接纳合批与资源验证副本阶段记录.md) | archive | recorded | 2026-10-21 |
 | [事务分批与本机响应阶段记录](../Archive/20261021-事务分批与本机响应阶段记录.md) | archive | recorded | 2026-10-21 |
@@ -584,7 +588,6 @@
 | [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | done | 2026-10-05 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | done | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | archive | recorded | 2026-10-04 |
 | [飞行物启停同步与实际时间预算实施验收](../Archive/20261004-飞行物启停同步与实际时间预算实施验收.md) | archive | recorded | 2026-10-04 |
@@ -787,6 +790,8 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-10-21 |
 | [UI CPU优化与四档LOD](../RequirementDocument/20261020-UI CPU优化与四档LOD.md) | requirement | approved | 2026-10-20 |
 | [UI CPU优化与四档LOD — 实施与验收](../DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md) | development | in_progress | 2026-10-20 |
 | [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | development | in_progress | 2026-10-20 |
@@ -881,7 +886,6 @@
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |
 | [绿色引导线实时连接优化](../RequirementDocument/绿色引导线实时连接优化.md) | requirement | approved | 2026-10-04 |
 | [先驱号步态减速与移动点击精度](../RequirementDocument/20261003-先驱号步态减速与移动点击精度.md) | requirement | approved | 2026-10-04 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [绿色引导线实时连接优化 — 技术方案](../DevelopmentDocumentation/绿色引导线实时连接优化.md) | development | done | 2026-10-04 |
 | [先驱号步态减速与移动点击精度 — 实施记录](../DevelopmentDocumentation/20261003-先驱号步态减速与移动点击精度.md) | development | done | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
@@ -1009,7 +1013,6 @@
 | [Mass分帧寻路与避障稳定性](../RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md) | requirement | approved | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-24 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-09-24 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-24 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | development | verification | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-24 |
@@ -1242,12 +1245,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
 | [扫荡者橙区正式导入与自动改色](../Archive/20261009-扫荡者橙区正式导入与自动改色.md) | archive | recorded | 2026-10-09 |
 | [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | done | 2026-10-05 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入 — 实施记录](../DevelopmentDocumentation/20261003-先驱号VAT导入与Q召唤接入.md) | development | done | 2026-10-04 |
 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | archive | recorded | 2026-10-04 |
 | [先驱号 VAT 导入与 Q 召唤接入](../RequirementDocument/20261003-先驱号VAT导入与Q召唤接入.md) | requirement | approved | 2026-10-03 |
@@ -1514,6 +1517,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [扫荡者远端姿态与导航恢复修复](../RequirementDocument/20261021-扫荡者远端姿态与导航恢复修复.md) | requirement | approved | 2026-10-21 |
+| [扫荡者远端姿态与导航恢复修复](../DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md) | development | verification | 2026-10-21 |
+| [扫荡者姿态与斜坡导航恢复](../Archive/20261021-扫荡者姿态与斜坡导航恢复.md) | archive | recorded | 2026-10-21 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-14 |
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
@@ -1605,9 +1611,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [扫荡者远端姿态与导航恢复修复](../RequirementDocument/20261021-扫荡者远端姿态与导航恢复修复.md) | requirement | approved | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
 | [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-10-21 |
+| [扫荡者远端姿态与导航恢复修复](../DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md) | development | verification | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
+| [扫荡者姿态与斜坡导航恢复](../Archive/20261021-扫荡者姿态与斜坡导航恢复.md) | archive | recorded | 2026-10-21 |
 | [指令名单复制修复与清理](../Archive/20261021-指令名单复制修复与清理.md) | archive | recorded | 2026-10-21 |
 | [接纳合批与资源验证副本阶段记录](../Archive/20261021-接纳合批与资源验证副本阶段记录.md) | archive | recorded | 2026-10-21 |
 | [事务分批与本机响应阶段记录](../Archive/20261021-事务分批与本机响应阶段记录.md) | archive | recorded | 2026-10-21 |
@@ -1674,7 +1685,6 @@
 | [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | development | done | 2026-10-05 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | done | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算](../RequirementDocument/20261004-飞行物批量启停同步与实际时间网络预算.md) | requirement | approved | 2026-10-04 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-04 |
 | [先驱号初代开发通过与 GitHub 交付](../Archive/20261004-先驱号初代开发通过与GitHub交付.md) | archive | recorded | 2026-10-04 |
 | [飞行物启停同步与实际时间预算实施验收](../Archive/20261004-飞行物启停同步与实际时间预算实施验收.md) | archive | recorded | 2026-10-04 |
 | [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-10-03 |
@@ -1690,7 +1700,6 @@
 | [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-29 |
 | [Mass分帧寻路与避障稳定性](../RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md) | requirement | approved | 2026-09-24 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-09-24 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-24 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | development | verification | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-24 |
@@ -1905,6 +1914,7 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [Hybrid交火CPU与追帧优化](../RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md) | requirement | approved | 2026-10-21 |
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-10-21 |
 | [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | development | in_progress | 2026-10-21 |
 | [指令名单复制修复与清理](../Archive/20261021-指令名单复制修复与清理.md) | archive | recorded | 2026-10-21 |
 | [接纳合批与资源验证副本阶段记录](../Archive/20261021-接纳合批与资源验证副本阶段记录.md) | archive | recorded | 2026-10-21 |
@@ -2037,7 +2047,6 @@
 | [重防号升级特效尺寸适配](../Archive/20260928-重防号升级特效尺寸适配.md) | archive | recorded | 2026-09-28 |
 | [选牌白模修复与批量升级特效](../Archive/20260928-选牌白模修复与批量升级特效.md) | archive | recorded | 2026-09-28 |
 | [Mass分帧寻路与避障稳定性](../RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md) | requirement | approved | 2026-09-24 |
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-09-24 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | development | verification | 2026-09-24 |
 | [Mass同址卡死复现与R2修复](../Archive/20260924-Mass同址卡死复现与R2修复.md) | archive | recorded | 2026-09-24 |
 | [Mass导航恢复编译与加载](../Archive/20260924-Mass导航恢复编译与加载.md) | archive | recorded | 2026-09-24 |

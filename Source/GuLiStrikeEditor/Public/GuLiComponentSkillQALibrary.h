@@ -40,6 +40,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static bool SubmitSkill(UGuLiCommanderSkillComponent* Component, FGuid RequestId, FName GlobalSkillId, int64 SelectionRevision, bool bHasPoint, FVector Point);
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static void PressQ(UGuLiCommanderSkillComponent* Component, bool bHasPoint, FVector Point);
 	UFUNCTION(BlueprintPure, Category="GuLiStrike|Editor|Skills") static FString SelectionSnapshot(APlayerController* Controller);
+	/** Explicit PIE preparation only. Preserves health, ownership and combat rules. */
+	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Preparation", meta=(DevelopmentOnly))
+	static bool PrepareSoldierPositions(APlayerController* Controller, const TArray<int64>& Ids, const TArray<FVector>& Positions);
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static bool CommitShipChoice(UGuLiShipBuildComponent* Component, FName NodeId, FString& Error);
 	UFUNCTION(BlueprintPure, Category="GuLiStrike|Editor|Skills") static FString WingmanSnapshot(UObject* WorldContext);
 };

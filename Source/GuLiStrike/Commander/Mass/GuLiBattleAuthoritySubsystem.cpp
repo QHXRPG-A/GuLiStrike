@@ -314,6 +314,16 @@ namespace GuLiCommanderMassPrivate
 		Depth = FMath::Min(DepthX, DepthY);
 	}
 
+	bool CanRebindNavigationAtCurrentLocation(const FGuLiDynamicObstacleSnapshot& Obstacles,
+		const FSoldierRuntime& Soldier, const FVector& Projected)
+	{
+		const float Radius=Soldier.AvoidanceRadiusCentimeters;
+		return !Projected.ContainsNaN() && !Soldier.Location.ContainsNaN() && FMath::IsFinite(Radius) && Radius>0.f
+			&& FVector::DistSquared2D(Projected,Soldier.Location)<=FMath::Square(NavigationRepairDistanceToleranceCentimeters)
+			&& FMath::Abs(Projected.Z-Soldier.Location.Z)<=MaximumSurfaceStepZCentimeters
+			&& Obstacles.IsSegmentClear(Soldier.Location,Soldier.Location,Radius);
+	}
+
 	// A rebuilt tile can strand a body just outside the new walkable surface. Permit only a
 	// short, collision-checked escape, including outward depenetration from a new building.
 	bool IsNavigationRepairSegmentClear(UWorld& World, const FGuLiDynamicObstacleSnapshot& Obstacles,
@@ -1020,6 +1030,7 @@ namespace GuLiCommanderMassPrivate
 		FVector Source = FVector::ZeroVector;
 		FNavLocation Target;
 		int32 Candidate = 0;
+		bool bNodeOnly = false;
 	};
 
 
@@ -2133,7 +2144,7 @@ struct FGuLiBattleAuthorityState
 	TSet<uint32> RemovedEndpointIds;
 	TMap<uint32,GuLiCommanderMassPrivate::FNavigationRecoveryWork> RecoveryWork;
 	TQueue<uint32> RecoveryQueue, ReadyRecoveryQueue;
-	uint64 RecoveryQueries=0, RecoveryFailures=0, RecoveryRepairs=0;
+	uint64 RecoveryQueries=0, RecoveryFailures=0, RecoveryRepairs=0, RecoveryRebinds=0;
 	double NextPlanningDiagnostic=0;
 	TMap<FIntPoint, TArray<int32>> SpatialGrid;
 	GuLiCommanderNavigationPolicy::FManualAvoidanceSpatialGrid ManualAvoidanceSpatialGrid;
@@ -2570,6 +2581,7 @@ void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 	AuthorityState->MovePlanningJobs.Reset();
 	AuthorityState->RecoveryWork.Reset(); AuthorityState->RecoveryQueue.Empty(); AuthorityState->ReadyRecoveryQueue.Empty();
 	AuthorityState->RecoveryDetectionSteps=0; AuthorityState->RecoveryQueries=0; AuthorityState->RecoveryFailures=0; AuthorityState->RecoveryRepairs=0;
+	AuthorityState->RecoveryRebinds=0;
 	AuthorityState->SpatialGrid.Reset();
 	AuthorityState->ManualAvoidanceSpatialGrid.Reset();
 	AuthorityState->AvoidanceGeometry.Reset();
@@ -3440,9 +3452,13 @@ void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs()
 			Probe += FVector(FMath::Cos(Angle), FMath::Sin(Angle), 0) * (NavigationRepairRingStepCentimeters * Ring);
 			Extent = NavigationRepairRingStepCentimeters * .5f;
 		}
-		const bool bValid = ProjectPointToCommanderNavigation(*System, *Data, Probe,
-			FVector(Extent, Extent, MaximumSurfaceStepZCentimeters), Work->Target)
-			&& IsNavigationRepairSegmentClear(*World, *Obstacles, Soldier, Work->Target.Location);
+		const bool bProjected = ProjectPointToCommanderNavigation(*System, *Data, Probe,
+			FVector(Extent, Extent, MaximumSurfaceStepZCentimeters), Work->Target);
+		// No body moves when a rebuilt tile only changes the node handle. A sphere
+		// around a valid foot point can overlap a slope even while the unit stands still.
+		Work->bNodeOnly = bProjected && CanRebindNavigationAtCurrentLocation(*Obstacles,Soldier,Work->Target.Location);
+		const bool bValid = bProjected && (Work->bNodeOnly
+			|| IsNavigationRepairSegmentClear(*World, *Obstacles, Soldier, Work->Target.Location));
 		if (bValid) A.ReadyRecoveryQueue.Enqueue(Id);
 		else if (++Work->Candidate < NavigationRepairCandidates) A.RecoveryQueue.Enqueue(Id);
 		else
@@ -3483,7 +3499,8 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 		{ A.RecoveryWork.Remove(Id); continue; }
 		--A.CommitBudget.Members;
 		// Physics/obstacles can change between projection and this fixed-step commit.
-		if (!IsNavigationRepairSegmentClear(*World, *Obstacles, Soldier, Work->Target.Location))
+		if (!(Work->bNodeOnly ? CanRebindNavigationAtCurrentLocation(*Obstacles,Soldier,Work->Target.Location)
+			: IsNavigationRepairSegmentClear(*World, *Obstacles, Soldier, Work->Target.Location)))
 		{
 			if (++A.RecoveryWork.FindChecked(Id).Candidate < NavigationRepairCandidates) A.RecoveryQueue.Enqueue(Id);
 			else { ++A.RecoveryFailures; A.RecoveryWork.Remove(Id); }
@@ -3491,8 +3508,9 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 		}
 
 		const FVector Previous = Soldier.Location;
-		Soldier.Location = Work->Target.Location;
-		Soldier.LastValidNavLocation = Work->Target;
+		if (Work->bNodeOnly) ++A.RecoveryRebinds;
+		else Soldier.Location = Work->Target.Location;
+		Soldier.LastValidNavLocation = FNavLocation(Soldier.Location,Work->Target.NodeRef);
 		Soldier.Velocity = FVector::ZeroVector;
 		Soldier.SharedRoute.Reset(); Soldier.RouteCursor = 0;
 		Soldier.DirectDock = {}; Soldier.ActiveNavigation.Reset(); Soldier.PersonalPathPoints.Reset();
@@ -6827,7 +6845,14 @@ FString UGuLiBattleAuthoritySubsystem::GetMoveResponseDiagnostics() const
 	Root->SetNumberField(TEXT("recovery_detection_steps"),double(A.RecoveryDetectionSteps));
 	Root->SetNumberField(TEXT("recovery_queries"),double(A.RecoveryQueries));
 	Root->SetNumberField(TEXT("recovery_repairs"),double(A.RecoveryRepairs));
+	Root->SetNumberField(TEXT("recovery_rebinds"),double(A.RecoveryRebinds));
 	Root->SetStringField(TEXT("movement_pipeline"),TEXT("immediate-shared-navmesh"));
+	const auto* Skills=GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
+	Root->SetNumberField(TEXT("loadout_revision"),Skills?Skills->GetLoadoutRevision():0);
+	Root->SetNumberField(TEXT("combat_revision"),A.CommittedCombatRevision);
+	Root->SetNumberField(TEXT("resolved_profiles"),Skills?Skills->GetResolvedSkills().Num():0);
+	auto* Navigation=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	const auto* NavigationData=Navigation?GetCommanderNavigationData(*Navigation):nullptr;
 	Root->SetNumberField(TEXT("shared_queries"),double(A.SharedRoutes.Queries));
 	Root->SetNumberField(TEXT("shared_failures"),double(A.SharedRoutes.FailedQueries));
 	Root->SetNumberField(TEXT("shared_hits"),double(A.SharedRoutes.CacheHits));
@@ -6854,6 +6879,36 @@ FString UGuLiBattleAuthoritySubsystem::GetMoveResponseDiagnostics() const
 		S->SetNumberField(TEXT("id"),Unit.SoldierId.Value); S->SetNumberField(TEXT("team"),uint8(Unit.Team));
 		S->SetNumberField(TEXT("unit_type"),Unit.UnitTypeId);
 		S->SetBoolField(TEXT("alive"),Unit.IsAlive()); S->SetBoolField(TEXT("can_act"),Unit.CanAct());
+		S->SetBoolField(TEXT("local_simulation"),Unit.bLocalSimulation);
+		S->SetBoolField(TEXT("can_simulate"),Unit.CanSimulate());
+		S->SetBoolField(TEXT("present"),Unit.IsPresent()); S->SetBoolField(TEXT("phased"),Unit.bPhased);
+		S->SetBoolField(TEXT("actions_locked"),Unit.bExternalActionsLocked);
+		S->SetBoolField(TEXT("automatic_fire"),Unit.bAllowAutomaticFire);
+		S->SetNumberField(TEXT("health"),Unit.Health);
+		S->SetBoolField(TEXT("nav_valid"),NavigationData && NavigationData->IsNodeRefValid(Unit.LastValidNavLocation.NodeRef));
+		TArray<TSharedPtr<FJsonValue>> Weapons;
+		for (const auto& Weapon:Unit.Weapons)
+		{
+			auto W=MakeShared<FJsonObject>(); W->SetStringField(TEXT("slot"),Weapon.SlotId.ToString());
+			W->SetStringField(TEXT("stop"),GuLiSoldierCombat::LexToString(Weapon.Attack.StopReason));
+			W->SetNumberField(TEXT("target"),Weapon.Attack.TargetId.Value);
+			W->SetNumberField(TEXT("shots"),double(Weapon.Attack.ShotsFired));
+			W->SetNumberField(TEXT("next_fire"),Weapon.Attack.NextFireSeconds);
+			const auto* Profile=Unit.WeaponProfiles && Unit.WeaponProfiles->IsValidIndex(Weapon.ProfileIndex)
+				? &(*Unit.WeaponProfiles)[Weapon.ProfileIndex]:nullptr;
+			W->SetBoolField(TEXT("profile_valid"),Profile!=nullptr);
+			if (Profile)
+			{
+				W->SetNumberField(TEXT("range_cm"),Profile->RangeCentimeters);
+				W->SetNumberField(TEXT("damage"),Profile->Damage);
+				W->SetNumberField(TEXT("rate"),Profile->AttackRatePerSecond);
+				W->SetBoolField(TEXT("unlocked"),Profile->bUnlocked); W->SetBoolField(TEXT("equipped"),Profile->bEquipped);
+				W->SetNumberField(TEXT("trigger"),uint8(Profile->TriggerMode));
+				W->SetStringField(TEXT("executor"),Profile->ExecutorId.ToString());
+			}
+			Weapons.Add(MakeShared<FJsonValueObject>(W));
+		}
+		S->SetArrayField(TEXT("weapons"),Weapons);
 		S->SetNumberField(TEXT("order"),Unit.ActiveOrderId); S->SetNumberField(TEXT("revision"),Unit.StateRevision);
 		S->SetNumberField(TEXT("task_version"),double(Unit.TaskGeneration)); S->SetBoolField(TEXT("automatic"),Unit.bAutomaticAdvance);
 		S->SetNumberField(TEXT("nav_state"),uint8(Unit.NavigationState)); S->SetBoolField(TEXT("budget_pending"),Unit.bNavigationBudgetPending);

@@ -1024,7 +1024,9 @@ TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetReviewEvidenceSnapshot() c
         auto J=MakeShared<FJsonObject>();J->SetStringField(TEXT("id"),ToUE(Key.StableId).ToString(EGuidFormats::Digits));
         J->SetNumberField(TEXT("generation"),Key.Generation);J->SetNumberField(TEXT("received"),double(D.Received));
         J->SetNumberField(TEXT("applied"),double(D.Applied));J->SetNumberField(TEXT("authority_rejected"),double(D.AuthorityRejected));
-        J->SetNumberField(TEXT("stale"),double(D.Stale));Receivers.Add(MakeShared<FJsonValueObject>(J));
+        J->SetNumberField(TEXT("stale"),double(D.Stale));J->SetNumberField(TEXT("invalid_state"),double(D.InvalidState));
+        J->SetNumberField(TEXT("last_received_tick"),double(D.LastReceived));J->SetNumberField(TEXT("last_applied_tick"),double(D.LastApplied));
+        Receivers.Add(MakeShared<FJsonValueObject>(J));
     }
     Root->SetArrayField(TEXT("motion_receivers"),Receivers);
 
