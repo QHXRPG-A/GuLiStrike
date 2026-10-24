@@ -30,7 +30,9 @@ const FGuLiCommanderPresentedSoldier* AGuLiCommanderPresentationActor::GetQueryS
 	Pose.RenderServerTimeSeconds = RenderTime;
 	FTransform Current;
 	if (Pose.bUsingLocalPose)
-		Current = FTransform(FRotator(0.0, Pose.LocalPose.FacingYawDegrees, 0.0), Pose.LocalPose.Location);
+	{
+		if (!ReadLocalAuthorityPose(Id, Pose, Current)) return Source;
+	}
 	else if (!EvaluateAuthoritativeTransform(Pose, RenderTime, Current)) return Source;
 	Pose.AuthoritativeTransform = Current;
 	// Query evaluation cannot consume prediction/recoil queues or write an ISM instance.
@@ -111,7 +113,8 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 		FVector VATVelocity = FVector::ZeroVector;
 		if (Soldier.bUsingLocalPose || !Samples.IsEmpty())
 		{
-			const auto* A = Soldier.bUsingLocalPose ? &Soldier.LocalPose : &Samples[0]; const auto* B = A;
+			const auto* A = Soldier.bUsingLocalPose ? &Soldier.PreviousLocalPose : &Samples[0];
+			const auto* B = Soldier.bUsingLocalPose ? &Soldier.LocalPose : A;
 			if (!Soldier.bUsingLocalPose) for (const auto& Sample : Samples)
 			{
 				B = &Sample;
@@ -169,8 +172,8 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 		const auto& Samples = Soldier.Samples;
 		if (Soldier.bUsingLocalPose || !Samples.IsEmpty())
 		{
-			const auto* A = Soldier.bUsingLocalPose ? &Soldier.LocalPose : &Samples[0];
-			const auto* B = A;
+			const auto* A = Soldier.bUsingLocalPose ? &Soldier.PreviousLocalPose : &Samples[0];
+			const auto* B = Soldier.bUsingLocalPose ? &Soldier.LocalPose : A;
 			if (!Soldier.bUsingLocalPose) for (const auto& Sample : Samples)
 			{
 				B = &Sample;

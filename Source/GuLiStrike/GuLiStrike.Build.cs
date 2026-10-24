@@ -34,6 +34,7 @@ public class GuLiStrike : ModuleRules
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
+			"PhysicsCore", // Ore instances reuse and validate the models' simple collision.
 			"ApplicationCore", // Foreground-state evidence during explicitly requested performance captures.
 			"GuLiNetCore", "EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "WebSockets", "TraceLog",
 			"GuLiFlightNavigationRuntime", "RenderCore", "RHI",

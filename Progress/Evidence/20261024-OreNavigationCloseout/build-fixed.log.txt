@@ -1,0 +1,34 @@
+Using bundled DotNet SDK version: 8.0.412 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" GuLiStrikeEditor Win64 Development -Project=D:\UE5.7\test1\GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Waiting for 'git status' command to complete
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from Launch unity file: LaunchEngineLoop.cpp
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiBattleGameMode.cpp, GuLiHybridPlayerManifest.cpp, GuLiCommanderGameMode.cpp, GuLiCommanderPlayerController.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiCommanderPredictiveAvoidanceProcessor.cpp, GuLiCommanderAvoidancePolicy.cpp, GuLiCommanderAvoidancePolicyTests.cpp, GuLiCommanderHUD.cpp, GuLiCommanderLandscapeQuerySubsystem.cpp, GuLiHybridResourceReview.cpp, GuLiOreNavigationReview.cpp, GuLiClientFlightPresentation.cpp, AnimNode_GuLiGroundMechAim.cpp, AnimNode_GuLiGroundMechGrounding.cpp, GuLiGroundMechAnimInstance.cpp, GuLiGroundMechCharacter.cpp, GuLiGroundMechConfiguration.cpp, GuLiGroundMechRocketComponent.cpp, GuLiGroundMechWeaponComponent.cpp, GuLiHybridGroundAdapter.cpp, GuLiDynamicObstacleRegistry.cpp, GuLiOreObstacleIndex.cpp, GuLiGroundGridData.cpp, GuLiGroundGridSubsystem.cpp, GuLiHybridMiningSlots.cpp, GuLiMiningSlots.cpp, GuLiOreCollisionField.cpp, GuLiOreObstacleUpdates.cpp, GuLiResourceActors.cpp, GuLiResourceBuildingCompatibility.cpp, GuLiResourceMapDefinition.cpp, GuLiResourceRequests.cpp, GuLiResourceWorldSubsystem.cpp, GuLiResourceTests.cpp
+[Adaptive Build] Excluded from GuLiStrikeEditor unity file: GuLiGridAuthoringLibrary.cpp, GuLiGroundMechAnimationEditorLibrary.cpp, GuLiMapDesignAuthoringLibrary.cpp, GuLiResourceAuthoringLibrary.cpp
+[Adaptive Build] Excluded from GuLiMapAuthoringCore unity file: GuLiMapAuthoring.cpp, GuLiMapDensity.cpp, GuLiMapFields.cpp, GuLiMapGeometry.cpp
+[Adaptive Build] Excluded from GuLiMapAuthoringEditor unity file: GuLiMapAuthoringSubsystem.cpp, GuLiMapMarker.cpp, GuLiMapStandaloneImport.cpp, GuLiMapVisualization.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 31.82 GB available: limiting max parallel actions to 21
+Using Unreal Build Accelerator local executor to run 5 action(s)
+  Storage capacity 40Gb
+---- Starting trace: 261024_184544 ----
+UbaSessionServer - Disable remote execution (remote sessions will finish current processes)
+[1/5] Compile [x64] GuLiOreCollisionField.cpp
+[2/5] Link [x64] UnrealEditor-GuLiStrike.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.exp
+[3/5] Link [x64] UnrealEditor-GuLiStrikeEditor.dll
+[4/5] Link [x64] UnrealEditor-GuLiStrike.dll
+[5/5] WriteMetadata GuLiStrikeEditor.target [NoUba]
+
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 4.0kb
+Total time in Unreal Build Accelerator local executor: 6.43 seconds
+
+Result: Succeeded
+Total execution time: 9.08 seconds

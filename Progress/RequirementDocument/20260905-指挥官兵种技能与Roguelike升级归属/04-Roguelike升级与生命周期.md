@@ -23,7 +23,10 @@ relations:
   parent: REQ-20260905-001
 status_note: 草案，待确认；不是已批准的开发任务
 split_order: 4
-split_segment_sha256: 40cf3b4851ec0c4c6029ff249e8cfeac4d1a79781010d3727a6ecefbe5b7ec00
+split_segment_sha256: 56fd26cae0569a02bbdd72fd268dfd9d84f836c451601ff3d066dfc8c15da1f6
+split_legacy_segment_sha256: 40cf3b4851ec0c4c6029ff249e8cfeac4d1a79781010d3727a6ecefbe5b7ec00
+split_pre_consolidation_segment_sha256: 56fd26cae0569a02bbdd72fd268dfd9d84f836c451601ff3d066dfc8c15da1f6
+split_contract_updated: '2026-10-21'
 ---
 
 # 指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属 · Roguelike 升级与生命周期

@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pie_worlds": 0,
+    "actors": 33,
+    "classes": {
+      "CameraActor": 4,
+      "TargetPoint": 25,
+      "Note": 4
+    },
+    "dirty_maps": [
+      "/Game/Maps/LVL_CommanderMassPrototype"
+    ],
+    "role_restored": "GROUND",
+    "new_class_loaded": true,
+    "cvars": {
+      "t.IdleWhenNotForeground": 0.0,
+      "Slate.bAllowThrottling": 1.0
+    },
+    "session": {
+      "active": false,
+      "error": "",
+      "room": "E00008B0431C599FFB9180ACB92441D5",
+      "role": "Commander",
+      "editor_pid": 29580,
+      "logic_pid": 69464,
+      "coordinator_pid": 67364,
+      "logic_running": false,
+      "coordinator_running": false,
+      "session_directory": "",
+      "shutdown": [
+        {
+          "role": "logic",
+          "pid": 69464,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        },
+        {
+          "role": "coordinator",
+          "pid": 67364,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        }
+      ],
+      "cleanup_complete": true
+    }
+  }
+}

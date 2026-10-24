@@ -12,6 +12,7 @@
 #include "NavigationSystem.h"
 #include "Engine/World.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 #if !UE_BUILD_SHIPPING
 #include "Development/GuLiHybridReviewSubsystem.h"
 #endif
@@ -34,6 +35,7 @@ void UGuLiBuildingProductionComponent::EndPlay(const EEndPlayReason::Type Reason
 {
 	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
 		{Hybrid->UnsubscribeObjectReceipt(this);Hybrid->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::HandleHybridTransaction);}
+	for (const auto& J:HybridJobs) ReleaseGridBirth(J.Target,!J.bSubmitted);
 	HybridJobs.Reset(); Super::EndPlay(Reason);
 }
 void UGuLiBuildingProductionComponent::InitializeProduction()
@@ -74,6 +76,8 @@ void UGuLiBuildingProductionComponent::AdvanceHybridProduction(float Dt)
 	bProducing=Life.IsCompleted() && GuLiResources::IsPlayableTeam(ObservedTeam)
 		&& (Life.GetState().Origin!=EGuLiBuildingOrigin::Gift || Binding->GetState().bSupplied);
 	if (!bProducing) return;
+    if (const auto* Grid=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();Grid && Grid->IsReady())
+    {AdvanceGridProduction(Dt);return;}
 	// A transferred owner state can contain a completed job whose receipt is still in flight.
 	HybridJobs.RemoveAll([&](const auto& Job)
 	{
@@ -128,20 +132,39 @@ void UGuLiBuildingProductionComponent::HandleHybridTransaction(const FGuLiHybrid
 {
     if (Result.Status==EGuLiHybridTransactionStatus::Deferred || Result.Status==EGuLiHybridTransactionStatus::Paused
         || Result.Status==EGuLiHybridTransactionStatus::Interrupted) return;
-	HybridJobs.RemoveAll([&](const auto& Job){ return Job.Event==Result.Event; });
+	HybridJobs.RemoveAll([&](const auto& Job)
+    {
+        if (Job.Event!=Result.Event) return false;
+        if (const auto* G=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady())
+        {
+            FGuLiHybridObjectState Born;
+            if (Result.IsCommitted() && (!GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetObjectView(Job.Target,Born) || Born.LifeState==0)) return false;
+            if (!Result.IsCommitted()) {++GridRemaining;GridRetryAt=UGuLiHybridActorComponent::BattleSeconds(GetOwner())+5.+GetTypeHash(Job.Target)%60/60.;}
+        }
+        ReleaseGridBirth(Job.Target);return true;
+    });
 }
 void UGuLiBuildingProductionComponent::ResetResourceRequests(uint64)
 {
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
     const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
     if (!H || !Binding) return;
+    const auto* Grid=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();
+    const bool bGrid=Grid && Grid->IsReady();
     HybridJobs.RemoveAll([&](const auto& Job)
     {
         FGuLiHybridObjectState State;
-        return H->GetObject(Job.Target,State) && State.SpawnEvent==Job.Event && State.Parent==Binding->GetObjectKey();
+        const bool Completed=H->GetObjectView(Job.Target,State) && State.SpawnEvent==Job.Event
+            && State.Parent==Binding->GetObjectKey() && (!bGrid || State.LifeState!=0);
+        if (Completed && bGrid) ReleaseGridBirth(Job.Target);
+        return Completed;
     });
     for (auto& Job:HybridJobs)
     {
+        FGuLiHybridObjectState Registered;
+        if (bGrid && H->GetObjectView(Job.Target,Registered) && Registered.SpawnEvent==Job.Event
+            && Registered.Parent==Binding->GetObjectKey()) continue;
+        ReleaseGridBirth(Job.Target);
         Job.bSubmitted=false;Job.Event=FGuid::NewGuid();
         Job.Target=FGuLiHybridManifest::MakeStableKey(GetWorld()->GetOutermost()->GetName(),Job.Target.Kind,
             TEXT("production/")+Job.Event.ToString(EGuidFormats::Digits));

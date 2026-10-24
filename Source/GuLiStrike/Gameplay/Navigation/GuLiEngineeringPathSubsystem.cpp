@@ -5,6 +5,7 @@
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
 #include "Network/GuLiHybridActorComponent.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 
 namespace
 {
@@ -16,8 +17,18 @@ bool UGuLiEngineeringPathSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	const UWorld* World = Cast<UWorld>(Outer);
 	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld() && World->GetNetMode()!=NM_Client;
 }
-void UGuLiEngineeringPathSubsystem::Enqueue(UGuLiEngineeringTravelComponent& Travel) { Queue.AddUnique(&Travel); }
-void UGuLiEngineeringPathSubsystem::Cancel(UGuLiEngineeringTravelComponent& Travel) { Queue.Remove(&Travel); }
+bool UGuLiEngineeringPathSubsystem::Enqueue(UGuLiEngineeringTravelComponent& Travel)
+{
+    if (QueueIndex.Contains(&Travel)) return true;
+    if (Queue.Num()>=32768) return false;
+    QueueIndex.Add(&Travel,Queue.Add(&Travel));return true;
+}
+void UGuLiEngineeringPathSubsystem::Cancel(UGuLiEngineeringTravelComponent& Travel)
+{
+    const auto* Found=QueueIndex.Find(&Travel);if (!Found) return;const int32 I=*Found;
+    QueueIndex.Remove(&Travel);Queue.RemoveAtSwap(I,1,EAllowShrinking::No);
+    if (Queue.IsValidIndex(I)) QueueIndex.FindChecked(Queue[I])=I;
+}
 void UGuLiEngineeringPathSubsystem::RecordPathQuery(EGuLiEngineeringPathOrigin Origin, double Milliseconds)
 {
 	++ActualQueries[int32(Origin)]; ActualQueryMilliseconds[int32(Origin)]+=Milliseconds;
@@ -28,16 +39,23 @@ void UGuLiEngineeringPathSubsystem::Tick(float)
 {
 	if (const auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>(); Hybrid && (Hybrid->IsBattlePaused() || !Hybrid->CanPublishFacts())) return;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiEngineering_PathBudget);
-	const double Start = FPlatformTime::Seconds(); LastFrameQueries = 0;
+    auto* Grid=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();
+    auto& Budget=Grid->FrameBudget();
+    FGuLiNavigationWorkBudget::FScope Scope(Budget);
+    LastFrameQueries = 0;
 	int32 Remaining = Queue.Num();
 	while (Remaining-- > 0 && !Queue.IsEmpty() && LastFrameQueries < FMath::Max(1,QueriesPerFrame.GetValueOnGameThread())
-		&& (FPlatformTime::Seconds()-Start)*1000 < FMath::Max(.1f,BudgetMs.GetValueOnGameThread()))
+		&& Budget.CanWork() && Budget.Projections>0)
 	{
-		auto Item = Queue[0]; Queue.RemoveAt(0,1,EAllowShrinking::No);
+		WorkCursor%=Queue.Num();auto Item=Queue[WorkCursor];QueueIndex.Remove(Item);
+        Queue.RemoveAtSwap(WorkCursor,1,EAllowShrinking::No);
+        if (Queue.IsValidIndex(WorkCursor)) QueueIndex.FindChecked(Queue[WorkCursor])=WorkCursor;
 		auto* Travel = Item.Get(); if (!Travel) continue;
-		if (!UGuLiHybridActorComponent::HasSimulation(Travel->GetOwner())) { Queue.AddUnique(Item); continue; }
+		if (!UGuLiHybridActorComponent::HasSimulation(Travel->GetOwner())) { Enqueue(*Travel);++WorkCursor;continue; }
 		const double Before = FPlatformTime::Seconds();
+		const double RemainingSeconds=FMath::Max(0.,Budget.WorldLimitSeconds-Budget.Elapsed());
 		const bool bQueried = Travel->ProcessQueuedPath();
+		Budget.RecordQuery(Before,RemainingSeconds);
 		if (bQueried)
 		{
 			const double Elapsed = (FPlatformTime::Seconds()-Before)*1000;
@@ -47,11 +65,11 @@ void UGuLiEngineeringPathSubsystem::Tick(float)
 			if (QueueWaitSamples.Num()<2048) QueueWaitSamples.Add(Travel->GetLastQueueWaitMilliseconds());
 			else { QueueWaitSamples[QueueWaitCursor]=Travel->GetLastQueueWaitMilliseconds(); QueueWaitCursor=(QueueWaitCursor+1)%2048; }
 		}
-		if (Travel->HasQueuedPath()) Queue.AddUnique(Item);
+		if (Travel->HasQueuedPath()) { Enqueue(*Travel);++WorkCursor; }
 	}
 }
 TStatId UGuLiEngineeringPathSubsystem::GetStatId() const { RETURN_QUICK_DECLARE_CYCLE_STAT(UGuLiEngineeringPathSubsystem,STATGROUP_Tickables); }
-void UGuLiEngineeringPathSubsystem::Deinitialize() { Queue.Reset(); Super::Deinitialize(); }
+void UGuLiEngineeringPathSubsystem::Deinitialize() { Queue.Reset();QueueIndex.Reset(); Super::Deinitialize(); }
 FString UGuLiEngineeringPathSubsystem::GetBudgetDebug() const
 {
 	return FString::Printf(TEXT("Queued=%d FrameRequests=%d Requests=%llu ServiceMs=%.3f MaxServiceMs=%.3f MaxWaitMs=%.3f ManualQueries=%llu WorkQueries=%llu RepathQueries=%llu ManualMs=%.3f WorkMs=%.3f RepathMs=%.3f MaxQueryMs=%.3f OverBudgetQueries=%llu QueueCapacityBytes=%llu WaitSamples=%d WaitCapacityBytes=%llu"),

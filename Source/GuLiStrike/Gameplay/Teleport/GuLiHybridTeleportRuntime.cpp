@@ -1,5 +1,8 @@
 #include "Gameplay/Teleport/GuLiHybridTeleport.h"
 #include "Gameplay/Teleport/Private/GuLiHybridTeleportState.h"
+#include "Gameplay/Teleport/Private/GuLiGridLandingPlan.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+#include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
 #include "Network/Private/GuLiHybridEntityState.h"
 #include "Network/Private/GuLiHybridStateArchive.h"
@@ -33,13 +36,17 @@ struct FBodyPrivate
     FGuLiHybridObjectKey Key;FGuid Cast,Request;uint32 Step=0;FTransform Original;
     uint64 Expected=0,OwnerEpoch=0;
     bool Accepted=true,Submitted=false;
+    FGuid LandingCast;uint32 LandingStep=0;uint64 LandingAt=0;double LandingBlocked=0;
     void Archive(FGuLiHybridStateArchive& A)
-    {uint32 V=1;A.Value(V);A.Value(Key);A.Value(Cast);A.Value(Request);A.Value(Step);A.Value(Original);A.Value(Expected);A.Value(OwnerEpoch);A.Value(Accepted);A.Value(Submitted);
-        if (V!=1||!Key.IsValid()||(Step&&!Cast.IsValid())||(Submitted&&!Request.IsValid())) A.Reject();}
+    {uint32 V=2;A.Value(V);A.Value(Key);A.Value(Cast);A.Value(Request);A.Value(Step);A.Value(Original);A.Value(Expected);A.Value(OwnerEpoch);A.Value(Accepted);A.Value(Submitted);
+        A.Value(LandingCast);A.Value(LandingStep);A.Value(LandingAt);A.Value(LandingBlocked);
+        if (V!=2||!Key.IsValid()||(Step&&!Cast.IsValid())||(Submitted&&!Request.IsValid())
+            || !FMath::IsFinite(LandingBlocked) || LandingBlocked<0 || LandingBlocked>60) A.Reject();}
 };
 class FBody final:public IGuLiHybridEntityCapability
 {
     TWeakObjectPtr<UWorld> World;FGuLiHybridObjectState Record;FBodyPrivate Private;FDelegateHandle Post;
+    uint64 RecoveredLandingEpoch=0;
     bool bOptimize=false,bRestoreDetached=false,bPeriodicWork=true;
     mutable bool bDecoded=false,bDecodeValid=false;
     mutable uint32 CachedVersion=0;
@@ -75,6 +82,18 @@ class FBody final:public IGuLiHybridEntityCapability
         else if (!Needed && Post.IsValid()) {FWorldDelegates::OnWorldPostActorTick.Remove(Post);Post.Reset();}
     }
     UGuLiHybridWorldSubsystem* Hybrid() const {return World.IsValid()?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;}
+    void RecoverLanding(const Net::Body& B)
+    {
+        if (RecoveredLandingEpoch==Record.OwnerEpoch || B.Phased || !B.Displace || B.Airborne || B.FollowParent
+            || B.Acknowledged==B.Step || !Private.Accepted || Private.Step!=B.Step || Private.Cast!=GuLiNetBridge::ToUE(B.Cast)) return;
+        auto* H=Hybrid();auto* G=World->GetSubsystem<UGuLiGroundGridSubsystem>();
+        if (!G || !G->IsReady() || !G->Network() || !H->HasSimulation(Record.Key)) return;
+        FGuLiExternalBody Body;if (!World->GetSubsystem<UGuLiExternalControlRegistry>()->Query(Record.Key,Body)) return;
+        const int32 Size=GuLiGrid::FootprintFromDiameter(Body.Radius*2.);
+        const auto R=GuLiGrid::FRect::At(G->Snapshot()->AnchorAt(Transform(B.Destination).GetLocation(),Size),Size);
+        G->Traffic().Admit(Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),R,{},Size);
+        G->Network()->RecoverPlacement(Record,Record.Key,R,Size,true);RecoveredLandingEpoch=Record.OwnerEpoch;
+    }
     bool Decode(TConstArrayView<uint8> B,FBodyPrivate& P) const
     {FGuLiHybridStateArchive A(B,1024);P.Archive(A);return A.Done()&&P.Key==Record.Key;}
     void ApplyAfterActors(UWorld* W,ELevelTick,float)
@@ -96,9 +115,53 @@ class FBody final:public IGuLiHybridEntityCapability
             Accepted=!Q.bLocked && (!B.Vehicle||P.Vehicles) && (!B.Airborne||Q.Altitude<=P.MaximumHeight)
                 && (B.FollowParent||FVector::DistSquared2D(Q.Transform.GetLocation(),Transform(S.Source).GetLocation())<=FMath::Square(P.Radius));
         }
+        auto* Grid=W->GetSubsystem<UGuLiGroundGridSubsystem>();
+        const bool GridGround=Grid && Grid->IsReady() && !Q.bAirborne && !Q.bFollowParent;
+        if (GridGround && B.Displace && !B.Phased)
+        {
+            if (!Hybrid()->HasSimulation(Record.Key))
+            {
+                // Remote endpoints follow the owner's accepted placement, never a speculative landing.
+                if (B.Acknowledged!=B.Step) return;Accepted=B.Accepted;
+            }
+            else
+            {
+                const auto Cast=GuLiNetBridge::ToUE(B.Cast);const uint64 Now=Hybrid()->GetObjectLogicalTick(Record.Key);
+                if (Private.LandingCast!=Cast || Private.LandingStep!=B.Step)
+                {Private.LandingCast=Cast;Private.LandingStep=B.Step;Private.LandingBlocked=0;Private.LandingAt=Now;}
+                const double Delta=Now>=Private.LandingAt?FMath::Min(1.,double(Now-Private.LandingAt)/60.):0.;
+                Private.LandingAt=Now;
+                auto& Work=Grid->FrameBudget();FGuLiNavigationWorkBudget::FScope Scope(Work);
+                if (!Work.TakeProjection()) return;
+                const int32 Size=GuLiGrid::FootprintFromDiameter(Q.Radius*2.);const auto Point=Transform(B.Destination).GetLocation();
+                const auto Rect=GuLiGrid::FRect::At(Grid->Snapshot()->AnchorAt(Point,Size),Size);
+                const auto Permit=GuLiGrid::Unoccupied(*Grid,Point,Size,Record.Key) && Grid->Network()
+                    ?Grid->Network()->PermitPlacement(Record.Key,Record.Key,Rect,Size,uint8(Record.Team)):EGuLiGridPermit::Blocked;
+                if (Permit==EGuLiGridPermit::Pending) return;
+                if (Permit==EGuLiGridPermit::Blocked)
+                {
+                    Private.LandingBlocked+=Delta;if (Private.LandingBlocked<GuLiGrid::BlockedTimeout) return;
+                    Accepted=false;if (Grid->Network()) Grid->Network()->Withdraw(Record.Key);
+                }
+            }
+        }
         FGuLiExternalControl Control;Control.Token=GuLiNetBridge::ToUE(B.Cast);Control.Step=B.Step;Control.LogicalTick=Hybrid()->GetObjectLogicalTick(Record.Key);Control.bPhased=B.Phased;
         Control.bLocked=B.Locked;Control.bDisplace=B.Displace;Control.Transform=Transform(B.Destination);
         if (Accepted) Accepted=Endpoints->Apply(Record.Key,Control);
+        if (GridGround && Accepted)
+        {
+            if (B.Phased)
+            {
+                Grid->Traffic().Remove(Record.Key,Record.SimulationOwner,Record.OwnerEpoch);
+                if (Grid->Network() && Hybrid()->HasSimulation(Record.Key)) Grid->Network()->Withdraw(Record.Key);
+            }
+            else if (B.Displace)
+            {
+                const int32 Size=GuLiGrid::FootprintFromDiameter(Q.Radius*2.);
+                Grid->Traffic().Admit(Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),
+                    GuLiGrid::FRect::At(Grid->Snapshot()->AnchorAt(Control.Transform.GetLocation(),Size),Size),{},Size);
+            }
+        }
         Private.Cast=Control.Token;Private.Step=B.Step;Private.Accepted=Accepted;Private.Submitted=false;Private.Request.Invalidate();
         if (B.Phased) Private.Original=Q.Transform;
         if (Metrics.IsValid()) ++Metrics->BodyApplications;
@@ -119,6 +182,7 @@ public:
     {
         auto* H=Hybrid();Net::Body B;if (!H||!ReadBody(B)||!B.Step||B.Acknowledged==B.Step
             ||Private.Cast!=GuLiNetBridge::ToUE(B.Cast)||Private.Step!=B.Step||!H->CanPublishFacts()) return;
+        RecoverLanding(B);
         // The caster transaction publishes its root and member changes to
         // independently owned objects. A body can arrive before the root on
         // this simulator. Wait for that exact root step before acknowledging;
@@ -158,7 +222,7 @@ public:
     {
         FBodyPrivate P;if (!Decode(B,P)) return false;
         if (Stage==EGuLiHybridRestoreStage::Detach) bRestoreDetached=true;
-        if (Stage==EGuLiHybridRestoreStage::Link) Private=P;
+        if (Stage==EGuLiHybridRestoreStage::Link) {Private=P;RecoveredLandingEpoch=0;}
         if (Stage==EGuLiHybridRestoreStage::Activate) bRestoreDetached=false;
         RefreshSubscription();return true;
     }
@@ -178,6 +242,17 @@ struct FCastPrivate
 class FCaster final:public IGuLiHybridEntityCapability
 {
     TWeakObjectPtr<UWorld> World;FGuLiHybridObjectState Record;FCastPrivate Private;
+    TUniquePtr<FGridLandingPlan> LandingPlan;
+    ELandingPlan PrepareLanding(const Net::State& S,Net::Command& C,bool Returning)
+    {
+        if (auto* G=World->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady())
+        {
+            if (!LandingPlan) LandingPlan=MakeUnique<FGridLandingPlan>();
+            const auto R=LandingPlan->Advance(*World.Get(),S,C,Returning);
+            if (R!=ELandingPlan::Pending) LandingPlan.Reset();return R;
+        }
+        return Plan(*World.Get(),S,C,Returning)?ELandingPlan::Ready:ELandingPlan::Failed;
+    }
     TWeakObjectPtr<AGuLiTeleportFieldActor> Visual;
     UGuLiHybridWorldSubsystem* Hybrid() const {return World.IsValid()?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;}
     bool Decode(TConstArrayView<uint8> B,FCastPrivate& P) const {FGuLiHybridStateArchive A(B,2*1024*1024);P.Archive(A);return A.Done()&&P.Key==Record.Key;}
@@ -250,7 +325,11 @@ public:
                 {
                     bool Rejected=false;
                     if (C.Op==Net::Operation::Destination || S.Stage!=Net::Phase::Locking || Acknowledged(S,Rejected))
-                        if (!Plan(*World.Get(),S,C,C.Op==Net::Operation::Return)) C.Members.clear();
+                    {
+                        const auto Result=PrepareLanding(S,C,C.Op==Net::Operation::Return);
+                        if (Result==ELandingPlan::Pending) return;
+                        if (Result==ELandingPlan::Failed) C.Members.clear();
+                    }
                 }
                 P.Payload=Bytes(C);P.Expected=Record.RelationRevision;P.Prepared=true;
             }
@@ -266,9 +345,11 @@ public:
             && (S.Stage!=Net::Phase::Locking || All) && At>=Private.RetryAt)
         {
             C.Op=Net::Operation::Return;C.Point=S.Source;Needed=true;
-            if (!Plan(*World.Get(),S,C,true))
+            const auto Result=PrepareLanding(S,C,true);
+            if (Result==ELandingPlan::Pending) return;
+            if (Result==ELandingPlan::Failed)
             {
-                Private.RetryAt=At+15;
+                Private.RetryAt=At+300+GetTypeHash(Record.Key)%60;
                 return;
             }
         }
@@ -286,9 +367,10 @@ public:
     bool Capture(TArray<uint8>& Out) const override {auto P=Private;FGuLiHybridStateArchive A(2*1024*1024);P.Archive(A);return A.Finish(Out);}
     bool Validate(TConstArrayView<uint8> B) const override {FCastPrivate P;return Decode(B,P);}
     bool Restore(TConstArrayView<uint8> B,EGuLiHybridRestoreStage Stage) override
-    {FCastPrivate P;if (!Decode(B,P)) return false;if (Stage==EGuLiHybridRestoreStage::Link) Private=MoveTemp(P);return true;}
+    {FCastPrivate P;if (!Decode(B,P)) return false;if (Stage==EGuLiHybridRestoreStage::Detach) LandingPlan.Reset();
+        if (Stage==EGuLiHybridRestoreStage::Link) Private=MoveTemp(P);return true;}
 };
-const FGuLiHybridEntityCapabilityRegistration BodyContract({TEXT("RelocationBody"),1,
+const FGuLiHybridEntityCapabilityRegistration BodyContract({TEXT("RelocationBody"),2,
     [](UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridManifestData&)->TSharedPtr<IGuLiHybridEntityCapability>{return MakeShared<FBody>(W,O);}});
 const FGuLiHybridEntityCapabilityRegistration CastContract({TEXT("RelocationCast"),1,
     [](UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridManifestData&)->TSharedPtr<IGuLiHybridEntityCapability>{return MakeShared<FCaster>(W,O);}});

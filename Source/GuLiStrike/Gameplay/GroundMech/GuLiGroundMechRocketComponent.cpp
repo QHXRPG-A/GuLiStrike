@@ -6,6 +6,7 @@
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/MeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
@@ -187,7 +188,7 @@ void UGuLiGroundMechRocketComponent::CreatePresentation()
 {
     if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || !bConfigured) return;
     auto* Mech = CastChecked<AGuLiGroundMechCharacter>(GetOwner());
-    auto* Armor = Mech->GetArmor();
+    auto* Armor = Mech->GetJetAttachmentMesh();
     if (!bJetsCreated && JetSystem)
     {
         bJetsCreated = true;
@@ -249,7 +250,7 @@ void UGuLiGroundMechRocketComponent::UpdatePresentation(float Delta)
     for (auto* Jet : {LeftJet.Get(), RightJet.Get()})
     {
         if (!Jet) continue;
-        const FQuat BaseRotation = Mech->GetArmor()->GetSocketQuaternion(Jet->GetAttachSocketName())
+        const FQuat BaseRotation = Mech->GetJetAttachmentMesh()->GetSocketQuaternion(Jet->GetAttachSocketName())
             * FRotator(Configuration.JetPitchDegrees, 0.f, 0.f).Quaternion();
         Jet->SetWorldRotation(Steering * BaseRotation);
     }

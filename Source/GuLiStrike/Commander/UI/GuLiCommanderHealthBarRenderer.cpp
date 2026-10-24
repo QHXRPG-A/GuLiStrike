@@ -3,6 +3,7 @@
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridWorldSubsystem.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 
 #include "GuLiStrike.h"
@@ -359,7 +360,29 @@ void AGuLiCommanderHealthBarRenderer::HandleSelectionChanged(
 	RebuildSelectedSoldiers(Selection);
 	Affected.Append(SelectedSoldiers);
 	for (auto Id : Affected) RefreshSoldierActivity(Id);
+	RefreshSelectedActors(Selection);
 	UpdateTickActivity();
+}
+
+void AGuLiCommanderHealthBarRenderer::RefreshSelectedActors(const FGuLiCommanderSelectionState& Selection)
+{
+	TSet<TWeakObjectPtr<AActor>> Next;
+	const auto* Hybrid = GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	if (Hybrid) for (const auto Id : Selection.ActorIds)
+	{
+		FGuLiHybridObjectKey Key;
+		if (Hybrid->ResolveActorTaskKey(Id.Value, Key))
+			if (auto* Actor = Hybrid->FindBoundActor(Key); Actor && Cast<IGuLiEngineeringVehicle>(Actor)) Next.Add(Actor);
+	}
+	TArray<TWeakObjectPtr<AActor>> Changed;
+	for (auto Actor : SelectedActors) if (!Next.Contains(Actor)) Changed.Add(Actor);
+	for (auto Actor : Next) if (!SelectedActors.Contains(Actor) || !ActorInstanceIndices.Contains(Actor)) Changed.Add(Actor);
+	SelectedActors = MoveTemp(Next);
+	for (auto Actor : Changed)
+	{
+		HandleActorBarChanged(Actor);
+		if (const auto* Slot = ActorInstanceIndices.Find(Actor)) ++SlotUrgentRevisions[*Slot];
+	}
 }
 
 void AGuLiCommanderHealthBarRenderer::RebuildSelectedSoldiers(
@@ -466,6 +489,7 @@ void AGuLiCommanderHealthBarRenderer::MaintainActivity()
 	for (auto Id : Pending) RefreshSoldierActivity(Id);
 	// A selected unit with unavailable dependencies/slot allocation remains retryable.
 	for (auto Id : SelectedSoldiers) if (!SoldierInstanceIndices.Contains(Id)) RefreshSoldierActivity(Id);
+	if (BoundNetSync.IsValid()) RefreshSelectedActors(BoundNetSync->GetSelectionState());
 	RefreshActorInstancePool();
 	UpdateTickActivity();
 	CSV_CUSTOM_STAT(GuLiCommanderHealthBars, DataCacheBytes, float(CachedTransforms.GetAllocatedSize() + ActiveSoldierStates.GetAllocatedSize() + ActiveHitStartTimes.GetAllocatedSize() + SoldierInstanceIndices.GetAllocatedSize() + ActorInstanceIndices.GetAllocatedSize()), ECsvCustomStatOp::Set);
@@ -483,7 +507,7 @@ void AGuLiCommanderHealthBarRenderer::HandleActorBarChanged(TWeakObjectPtr<AActo
 {
 	const auto* Feedback = BoundFeedback.Get();
 	const auto* Bar = Feedback ? Feedback->GetActorHealthBars().Find(Actor) : nullptr;
-	if (!Actor.IsValid() || !Bar)
+	if (!Actor.IsValid() || (!Bar && !SelectedActors.Contains(Actor)))
 	{
 		if (const auto* Index = ActorInstanceIndices.Find(Actor)) ReleaseInstanceSlot(*Index);
 		if (const auto* Provider = ActorHealthProviders.Find(Actor); Provider && Provider->IsValid())
@@ -501,8 +525,10 @@ void AGuLiCommanderHealthBarRenderer::HandleActorBarChanged(TWeakObjectPtr<AActo
 			ActorHealthProviders.Add(Actor, Health);
 			if (Health) Health->OnHealthChanged.AddUniqueDynamic(this, &ThisClass::HandleActorHealthChanged);
 		}
-		ActorHealthFractions.Add(Actor, Bar->HealthFraction);
-		HandleActorHealthChanged(0, 0);
+		const auto* Provider = ActorHealthProviders.FindRef(Actor).Get();
+		ActorHealthFractions.Add(Actor, Provider
+			? (Provider->IsAlive() ? CalculateHealthFraction(Provider->GetHealthState().Health, Provider->GetHealthState().MaxHealth) : 0.f)
+			: (Bar ? Bar->HealthFraction : 0.f));
 	}
 	UpdateTickActivity();
 }
@@ -544,7 +570,7 @@ void AGuLiCommanderHealthBarRenderer::RefreshActorInstancePool()
 	TArray<TWeakObjectPtr<AActor>> Existing;
 	ActorInstanceIndices.GetKeys(Existing);
 	for (auto Actor : Existing)
-		if (!Actor.IsValid() || !BoundFeedback->GetActorHealthBars().Contains(Actor)) HandleActorBarChanged(Actor);
+		if (!Actor.IsValid() || (!SelectedActors.Contains(Actor) && !BoundFeedback->GetActorHealthBars().Contains(Actor))) HandleActorBarChanged(Actor);
 	for (const auto& Pair : BoundFeedback->GetActorHealthBars())
 		if (!ActorInstanceIndices.Contains(Pair.Key)) HandleActorBarChanged(Pair.Key);
 }
@@ -662,7 +688,8 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 		auto* Actor = Pair.Key.Get();
 		const auto* Bar = Feedback ? Feedback->GetActorHealthBars().Find(Pair.Key) : nullptr;
 		const float Health = ActorHealthFractions.FindRef(Pair.Key);
-		const float Opacity = Bar ? UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - Bar->StartTime) : 0.0f;
+		const bool Selected = SelectedActors.Contains(Pair.Key);
+		const float Opacity = Selected ? 1.0f : (Bar ? UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - Bar->StartTime) : 0.0f);
 		FTransform Transform = Hidden;
 		bool bVisible = false;
 		if (Actor && !Actor->IsHidden() && Health != 0 && Opacity > 0 && !UGuLiExternalUnitControlComponent::IsActorPhased(Actor))
@@ -675,14 +702,12 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
             };
             const auto* External=Actor->FindComponentByClass<UGuLiExternalUnitControlComponent>();
             const uint64 Urgent=HashCombineFast(GetTypeHash(SlotUrgentRevisions[Pair.Value]),GetTypeHash(External?External->GetState().Revision:0));
-            const auto* Vehicle=Cast<IGuLiEngineeringVehicle>(Actor);
-            const bool Selected=Vehicle && BoundNetSync.IsValid() && BoundNetSync->GetSelectionState().ActorIds.Contains(Vehicle->GetStableActorId());
             FVector Location;
             const bool Valid=LimitPositions?PositionSamples.Resolve({this,uint64(Pair.Value)+1,SlotGenerations[Pair.Value]},
                 Urgent,Selected,PositionTime,Read,Location):Read(Location);
             bVisible=Valid && MakeBarTransform(Location,Transform);
 		}
-        WriteInstance(Pair.Value, Transform, Health, 0, bVisible ? Opacity : 0);
+        WriteInstance(Pair.Value, Transform, Health, Selected ? 1.f : 0.f, bVisible ? Opacity : 0);
         if (bVisible) ++VisibleInstanceCount;
     }
     PositionSamples.End();

@@ -12,6 +12,7 @@
 #include "NavigationData.h"
 #include "NavModifierComponent.h"
 #include "Network/GuLiHybridActorComponent.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 
 UGuLiConstructedUnitComponent::UGuLiConstructedUnitComponent()
 {
@@ -45,6 +46,11 @@ void UGuLiConstructedUnitComponent::BeginConversion()
         const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
         if (!Binding) {bConversionStarted=false;return;}
         EarliestConversionTick=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetObjectLogicalTick(Binding->GetObjectKey())+12;
+    }
+    if (auto* G=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady())
+    {
+        // Keep the site reserved until the atomic building-to-unit ledger replacement.
+        bNavigationRebuilt=true;SetComponentTickEnabled(false);return;
     }
 	// Preserve the physical site while its forbidden NavMesh footprint is rebuilt.
 	auto* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());

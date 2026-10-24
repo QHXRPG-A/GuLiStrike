@@ -33,7 +33,7 @@ gs.LocalPIE.LogicDiagnostics 默认0；显式设1后重开PIE才记录敌方逻�
 技术复测：build-57，扫荡者远端40包全部应用，无无效状态；原9单位全部恢复节点并实际移动。
 用户自行核验模型、开火、受击和移动观感。助手禁止截图读图或视口目检。
 本轮不代表20–30ms响应或15ms整帧目标达标。
-开发记录：Progress/DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md。
+开发记录：Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261021-001。
 """
 
 with unreal.ScopedEditorTransaction("Commander combat and navigation review entry"):

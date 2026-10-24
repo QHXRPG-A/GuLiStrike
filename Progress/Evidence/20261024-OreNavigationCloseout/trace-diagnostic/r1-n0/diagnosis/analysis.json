@@ -1,0 +1,239 @@
+{
+  "case": "r1-n0",
+  "interval_ms": 130.0194002687931,
+  "after_trigger_ms": 7612.4218,
+  "window": [
+    756.3790212997312,
+    756.5090407
+  ],
+  "clock": {
+    "start_cycle": 2092862941305,
+    "cycle_frequency": 10000000,
+    "qpc_origin_seconds": 209286.2941305,
+    "monotonic_origin_seconds": 16986502.2941305
+  },
+  "threads": {
+    "GPU0-Graphics0": [
+      {
+        "timer": "Frame",
+        "calls": 2,
+        "inclusive_ms": 129.99440026874254,
+        "exclusive_ms": 118.24700026877812
+      },
+      {
+        "timer": "RenderGraphExecute",
+        "calls": 6,
+        "inclusive_ms": 10.857999999960809,
+        "exclusive_ms": 3.5302999999620037
+      },
+      {
+        "timer": "Scene",
+        "calls": 3,
+        "inclusive_ms": 6.726299999998804,
+        "exclusive_ms": 2.851999999984095
+      },
+      {
+        "timer": "SceneRender",
+        "calls": 3,
+        "inclusive_ms": 10.930599999964425,
+        "exclusive_ms": 0.7977000000036144
+      },
+      {
+        "timer": "MainPass",
+        "calls": 5,
+        "inclusive_ms": 0.4209,
+        "exclusive_ms": 0.24070000000000003
+      },
+      {
+        "timer": "PostPass",
+        "calls": 5,
+        "inclusive_ms": 0.3368,
+        "exclusive_ms": 0.22929999999999998
+      },
+      {
+        "timer": "LumenReflections",
+        "calls": 2,
+        "inclusive_ms": 0.21180000001470908,
+        "exclusive_ms": 0.21180000001470908
+      },
+      {
+        "timer": "FVirtualShadowMapArray::BuildPageAllocation",
+        "calls": 2,
+        "inclusive_ms": 0.2141,
+        "exclusive_ms": 0.19880000000000003
+      },
+      {
+        "timer": "Nanite::DrawGeometry",
+        "calls": 5,
+        "inclusive_ms": 1.0150000000000001,
+        "exclusive_ms": 0.1856
+      },
+      {
+        "timer": "RayTracingScene",
+        "calls": 2,
+        "inclusive_ms": 0.18080000000000002,
+        "exclusive_ms": 0.18080000000000002
+      },
+      {
+        "timer": "SlateUI Title = %s",
+        "calls": 2,
+        "inclusive_ms": 0.17930000000000001,
+        "exclusive_ms": 0.16599999999999998
+      },
+      {
+        "timer": "VirtualTextureUpdate",
+        "calls": 2,
+        "inclusive_ms": 0.1492,
+        "exclusive_ms": 0.1492
+      }
+    ],
+    "GPU0-Compute0": [
+      {
+        "timer": "SceneRender",
+        "calls": 3,
+        "inclusive_ms": 10.698600000048323,
+        "exclusive_ms": 4.383899999985965
+      },
+      {
+        "timer": "RayTracingDynamicGeometryUpdate",
+        "calls": 2,
+        "inclusive_ms": 3.2031,
+        "exclusive_ms": 3.2031
+      },
+      {
+        "timer": "RenderGraphExecute",
+        "calls": 6,
+        "inclusive_ms": 7.023200000062359,
+        "exclusive_ms": 0.8449000000986108
+      },
+      {
+        "timer": "ContrastAdaptiveShading",
+        "calls": 2,
+        "inclusive_ms": 0.7837999999999999,
+        "exclusive_ms": 0.7837999999999999
+      },
+      {
+        "timer": "Frame",
+        "calls": 2,
+        "inclusive_ms": 11.889600000048326,
+        "exclusive_ms": 0.48250000000000104
+      },
+      {
+        "timer": "FXSystemPreRender",
+        "calls": 2,
+        "inclusive_ms": 0.46110000000000007,
+        "exclusive_ms": 0.46110000000000007
+      },
+      {
+        "timer": "LumenScreenProbeGather",
+        "calls": 2,
+        "inclusive_ms": 0.8117000000328918,
+        "exclusive_ms": 0.4104000000328917
+      },
+      {
+        "timer": "UpdateRadianceCaches",
+        "calls": 2,
+        "inclusive_ms": 0.36960000000000004,
+        "exclusive_ms": 0.36960000000000004
+      },
+      {
+        "timer": "Scene",
+        "calls": 3,
+        "inclusive_ms": 6.178299999963748,
+        "exclusive_ms": 0.21779999993590612
+      },
+      {
+        "timer": "Radiosity",
+        "calls": 2,
+        "inclusive_ms": 0.1834,
+        "exclusive_ms": 0.1834
+      },
+      {
+        "timer": "TranslucencyVolumeLighting",
+        "calls": 1,
+        "inclusive_ms": 0.1119,
+        "exclusive_ms": 0.1119
+      },
+      {
+        "timer": "CullTiles",
+        "calls": 2,
+        "inclusive_ms": 0.1055,
+        "exclusive_ms": 0.1055
+      }
+    ],
+    "GameThread": [
+      {
+        "timer": "GameThreadWaitForTask",
+        "calls": 1,
+        "inclusive_ms": 119.1425,
+        "exclusive_ms": 119.1425
+      },
+      {
+        "timer": "Slate::Prepass",
+        "calls": 1,
+        "inclusive_ms": 1.6949,
+        "exclusive_ms": 1.671
+      },
+      {
+        "timer": "Slate_PaintSlowPath",
+        "calls": 2,
+        "inclusive_ms": 2.1024,
+        "exclusive_ms": 1.3849000000000027
+      },
+      {
+        "timer": "GuLiHybrid_PumpPeerPackets",
+        "calls": 1,
+        "inclusive_ms": 1.3394,
+        "exclusive_ms": 1.3173
+      },
+      {
+        "timer": "UWorld_Tick",
+        "calls": 2,
+        "inclusive_ms": 3.1723,
+        "exclusive_ms": 0.6209999999999971
+      },
+      {
+        "timer": "GuLiCommanderPresentation_Interpolation",
+        "calls": 1,
+        "inclusive_ms": 0.579,
+        "exclusive_ms": 0.5184000000000025
+      },
+      {
+        "timer": "GuLiSceneUI_Update",
+        "calls": 1,
+        "inclusive_ms": 0.3185,
+        "exclusive_ms": 0.288
+      },
+      {
+        "timer": "FViewport_Draw",
+        "calls": 1,
+        "inclusive_ms": 0.3411,
+        "exclusive_ms": 0.26380000000000003
+      },
+      {
+        "timer": "Presentation",
+        "calls": 49,
+        "inclusive_ms": 0.2903,
+        "exclusive_ms": 0.2433
+      },
+      {
+        "timer": "GuLiHybrid_NetworkTick",
+        "calls": 1,
+        "inclusive_ms": 1.7587,
+        "exclusive_ms": 0.2384000000000029
+      },
+      {
+        "timer": "Tick_Engine",
+        "calls": 1,
+        "inclusive_ms": 4.6344,
+        "exclusive_ms": 0.2318000000000016
+      },
+      {
+        "timer": "GuLiHybrid_MainPoseApply",
+        "calls": 15,
+        "inclusive_ms": 0.25980000000000003,
+        "exclusive_ms": 0.19840000000000002
+      }
+    ]
+  }
+}

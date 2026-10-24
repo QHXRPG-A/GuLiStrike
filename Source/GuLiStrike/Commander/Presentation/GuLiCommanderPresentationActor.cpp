@@ -20,6 +20,7 @@
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Mass/GuLiSoldierLocalPose.h"
+#include "Commander/GuLiCommanderSimulationTiming.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
@@ -1800,10 +1801,51 @@ bool AGuLiCommanderPresentationActor::ReadLocalAuthorityPose(const FGuLiSoldierI
 	const auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	FGuLiSoldierLocalPose Pose;
 	if (!Authority || !Authority->TryGetLocalSoldierPose(SoldierId, Pose)) return false;
-	OutTransform = Pose.Transform;
-	Soldier.RenderServerTimeSeconds = Pose.ServerTimeSeconds;
+	const double Now = GetWorld()->GetTimeSeconds();
+	const double Dt = FMath::Max(0.0, Now - Soldier.LastRenderClockLocalTime);
+	const bool bDisplaced = Soldier.bUsingLocalPose
+		&& Soldier.LocalDisplacementRevision != Pose.DisplacementRevision;
+	const bool bReset = !Soldier.bUsingLocalPose || !Soldier.bHasPresentedTransform
+		|| Soldier.bResetPresentationOnNextPose || bDisplaced;
+	if (bDisplaced) Soldier.bResetPresentationOnNextPose = true;
+	if (bReset || !Pose.Transform.Equals(Soldier.LocalBlendTarget, 0.01f))
+	{
+		// Smooth committed positions only: no additional navigation, authority
+		// movement, network publication or extrapolation through obstacles.
+		Soldier.LocalBlendFrom = bReset ? Pose.Transform : Soldier.PresentedTransform;
+		Soldier.LocalBlendTarget = Pose.Transform;
+		// Include the first displayed frame in the horizon. Otherwise a sample
+		// received one render frame after the last snaps straight to its endpoint,
+		// then freezes on the next frame without a simulation update.
+		Soldier.LocalBlendDuration = bReset ? 0.0 : FMath::Clamp(
+			Now - Soldier.LocalMovementReceipt + Dt,
+			FMath::Min(2.0 * Dt, double(MaximumExtrapolationSeconds)), double(MaximumExtrapolationSeconds));
+		Soldier.LocalMovementReceipt = Now;
+	}
+	Soldier.LocalMovementTime = Pose.MovementTimeSeconds;
+	const float Blend = Soldier.LocalBlendDuration > UE_DOUBLE_SMALL_NUMBER
+		? float(FMath::Clamp((Now - Soldier.LocalMovementReceipt + Dt) / Soldier.LocalBlendDuration, 0.0, 1.0)) : 1.0f;
+	OutTransform.Blend(Soldier.LocalBlendFrom, Soldier.LocalBlendTarget, Blend);
+	// Root movement already interpolates committed transforms above. Mechanical
+	// samples need their own one-step playback window: rendering ahead of B made
+	// aim interpolation clamp to 1 on every frame (10 Hz upper/gun pose jumps).
+	// This changes presentation time only, never simulation or pose publication.
+	const double AnimationClock = FMath::Max(0.0,
+		Pose.ServerTimeSeconds - double(GuLiCommanderSimulationTiming::StepSeconds));
+	if (bReset || AnimationClock > Soldier.LocalClockSample)
+	{
+		Soldier.LocalClockSample = AnimationClock;
+		Soldier.LocalClockReceipt = Now;
+	}
+	const double ClockTarget = Soldier.LocalClockSample
+		+ FMath::Clamp(Now - Soldier.LocalClockReceipt, 0.0, double(MaximumExtrapolationSeconds));
+	Soldier.RenderServerTimeSeconds = bReset ? ClockTarget
+		: Soldier.RenderServerTimeSeconds + FMath::Clamp(ClockTarget - Soldier.RenderServerTimeSeconds, 0.0, Dt * 1.1);
 	Soldier.bRenderClockInitialized = true;
+	Soldier.LocalDisplacementRevision = Pose.DisplacementRevision;
 	auto& Local = Soldier.LocalPose;
+	if (bReset || Pose.ServerTimeSeconds - Pose.AnimationAheadSeconds > Local.ServerTimeSeconds)
+		Soldier.PreviousLocalPose = Local;
 	Local.Location = Pose.Transform.GetLocation();
 	Local.FacingYawDegrees = Pose.Transform.Rotator().Yaw;
 	Local.Velocity = Pose.Velocity;
@@ -1816,6 +1858,7 @@ bool AGuLiCommanderPresentationActor::ReadLocalAuthorityPose(const FGuLiSoldierI
 	Local.VATPlayback = Pose.VAT;
 	Local.ActiveOrderId = Pose.ActiveOrderId;
 	Local.State = Pose.ActiveOrderId ? EGuLiSoldierPoseState::Moving : EGuLiSoldierPoseState::Idle;
+	if (bReset) Soldier.PreviousLocalPose = Local;
 	return true;
 }
 
@@ -2648,10 +2691,11 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(ReliableState.SoldierId);
 		const bool bAlive = ReliableState.IsAlive();
 		const FTransform PreviousMechanicalRoot = Soldier.PresentedTransform;
-		const bool bResetMechanical = !Soldier.bHasPresentedTransform || Soldier.bResetPresentationOnNextPose;
+		bool bResetMechanical = !Soldier.bHasPresentedTransform || Soldier.bResetPresentationOnNextPose;
 
 		FTransform AuthoritativeTransform;
 		const bool bLocalPose = ReadLocalAuthorityPose(ReliableState.SoldierId, Soldier, AuthoritativeTransform);
+		bResetMechanical |= Soldier.bResetPresentationOnNextPose;
 		Soldier.bPresentationStateDirty |= bLocalPose != Soldier.bUsingLocalPose;
 		Soldier.bUsingLocalPose = bLocalPose;
 		const float AdaptiveInterpolationBackTimeSeconds =

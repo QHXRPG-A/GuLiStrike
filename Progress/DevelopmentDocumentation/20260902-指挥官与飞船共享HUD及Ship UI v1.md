@@ -317,5 +317,5 @@ Desktop Bridge 没有 Metronome 能力，Motion API 因此保持 **Closed**。�
 - 自动化：`outputs/review/neonctrl-ui/automation/CommanderUI/index.json`（9/9 Success）
 - 视觉证据：`outputs/review/neonctrl-ui/WBP_ShipHUD_1920x1080.png`、`outputs/review/neonctrl-ui/runtime/WBP_CommanderHUD_1920x1080.png`
 - 完整逻辑接入：未开始（代码冻结）
-- 归档记录：[Ship UI v1 Figma 玩家实机成品稿](../Archive/20260903-ShipUIv1-Figma玩家实机稿.md)（Figma Gate 1 阶段归档；三阶段整体尚未完成）
-- Gate 2 归档：[Ship UI v1 NEONCTRL 静态 UI](../Archive/20260904-ShipUIv1-NEONCTRL静态UI.md)
+- 归档记录：[Ship UI v1 Figma 玩家实机成品稿](../Archive/9月归档清单.md#arc-20260903-001)（Figma Gate 1 阶段归档；三阶段整体尚未完成）
+- Gate 2 归档：[Ship UI v1 NEONCTRL 静态 UI](../Archive/9月归档清单.md#arc-20260904-001)

@@ -42,6 +42,9 @@ static bool AppendGroundStartup(UWorld& World,FGuLiHybridManifestData& Data,FStr
     if (!Upgrade || !Skill || Upgrade->FireRate<=0 || Upgrade->FireRate>30 || Upgrade->Damage<=0 || Skill->ProjectileLifetime<=0)
     { Error=TEXT("Invalid initial Ground weapon configuration"); return false; }
     Data.Strings.Add(TEXT("startup/ground_class"),GroundClass->GetPathName());
+    FGuLiGroundMechConfiguration Configuration;
+    if (!Configuration.Load(Error)) return false;
+    Data.Strings.Add(TEXT("ground/mobility_configuration"),Configuration.Fingerprint);
     if (!FGuLiHybridComponentState::BindDefinitionLayout(Data,TEXT("player/ground"),*GroundClass,Error)) return false;
     Data.Strings.Add(TEXT("startup/ground_upgrade"),Weapon->CurrentUpgradeId);
     Data.Numbers.Add(TEXT("startup/ground_health"),Health->GetConfiguredMaxHealth());

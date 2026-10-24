@@ -196,6 +196,7 @@ private:
 	bool ProcessMoveCommandAck(const FGuLiCommandAck& Ack);
 	void RestoreCommanderCursor();
 	void HandleSecondaryActionAtCursor();
+	void HandleSecondaryReleased();
 	// 键盘入口单独守角色门；public tool/radius helper 仍可用于本地复位和纯逻辑测试。
 	void HandleActivateSelectionToolInput();
 	void HandleStepSelectionRadiusInput();
@@ -277,6 +278,7 @@ private:
 	EGuLiCommandLineState CommandLineState = EGuLiCommandLineState::None;
 	bool bCommanderInputModeInitialized = false;
 	bool bGroundInputActive = false;
+	bool bGroundCursorFree = false;
 	UPROPERTY(Transient)
 	TObjectPtr<UInputMappingContext> BattleCommandMappings;
 	UPROPERTY(Transient)

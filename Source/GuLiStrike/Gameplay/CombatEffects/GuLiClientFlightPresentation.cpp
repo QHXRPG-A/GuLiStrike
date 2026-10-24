@@ -72,7 +72,7 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 		{
 			for (TActorIterator<APawn> It(GetWorld()); It; ++It)
 				if (auto* Weapon=It->FindComponentByClass<UGuLiGroundMechWeaponComponent>(); Weapon && Weapon->SourceHandle==State.Source)
-				{ Weapon->PlayFlightShot(State.EffectId,Event.Muzzle.ServerTime); break; }
+				{ Weapon->PlayFlightShot(State.EffectId,Event.Muzzle.ServerTime,Event.Muzzle.MuzzleIndex); break; }
 		}
 		else ApplyShots({Event.Muzzle});
 	}

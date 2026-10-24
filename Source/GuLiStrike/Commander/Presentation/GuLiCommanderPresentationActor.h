@@ -75,6 +75,15 @@ struct FGuLiCommanderPresentedSoldier
 	TArray<FRecoilCue> PendingRecoil;
 	TArray<FGuLiCommanderBufferedSoldierPose> Samples;
 	FGuLiCommanderBufferedSoldierPose LocalPose;
+	FGuLiCommanderBufferedSoldierPose PreviousLocalPose;
+	FTransform LocalBlendFrom = FTransform::Identity;
+	FTransform LocalBlendTarget = FTransform::Identity;
+	double LocalMovementTime = -1.0;
+	double LocalMovementReceipt = -1.0;
+	double LocalBlendDuration = 0.0;
+	double LocalClockSample = -1.0;
+	double LocalClockReceipt = 0.0;
+	uint32 LocalDisplacementRevision = 0;
 	bool bUsingLocalPose = false;
 	uint32 DisplacementFrameFloor = 0;
 	FTransform AuthoritativeTransform = FTransform::Identity;

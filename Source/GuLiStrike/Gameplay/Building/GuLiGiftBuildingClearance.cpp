@@ -196,7 +196,7 @@ bool FGuLiGiftBuildingClearance::Commit(AActor& Building, const AActor& Supporti
 				{ OutFailure = TEXT("Gift clearance projection budget exhausted; retry another candidate."); return false; }
 				FVector Projected;
 				double SurfaceHeight = 0;
-				if (!GuLiLandingGround::Resolve(S.World,Destination,Projected,&SurfaceHeight,Unit.Pawn.Get())) continue;
+                if (!GuLiLandingGround::Resolve(S.World,Destination,Projected,&SurfaceHeight,Unit.Pawn.Get(),FMath::Max(1,FMath::FloorToInt32(Unit.Radius*2./300.+1.e-6)))) continue;
 				Destination = Unit.Soldier.IsValid() ? Projected
 					: FVector(Projected.X,Projected.Y,SurfaceHeight+Unit.HalfHeight+3);
 			}

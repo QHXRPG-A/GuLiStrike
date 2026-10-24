@@ -50,13 +50,13 @@ bool UGuLiBuildingLifecycleComponent::BuildNextConstructionSlot()
 	auto* Prototype=ConstructionPrototype.Get();
 	if (!Prototype || !CastChecked<IGuLiEngineeringVehicle>(Prototype)->GetEngineeringTravelBounds().IsValid) return false;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiConstruction_BuildSlot);
-	const FVector Extent=GetDefinition().CollisionExtent;
+	const FVector Extent(GetDefinition().FootprintCells*150.);
 	const double Clearance=FMath::Max(Prototype->GetCapsuleComponent()->GetScaledCapsuleRadius(),
 		Prototype->GetNavAgentPropertiesRef().AgentRadius)+80;
 	const FVector Local[] = {FVector(Extent.X+Clearance,0,0),FVector(0,Extent.Y+Clearance,0),
 		FVector(-Extent.X-Clearance,0,0),FVector(0,-Extent.Y-Clearance,0)};
 	const FVector Ground=GetGroundLocation();
-	const FVector Desired=Ground+GetOwner()->GetActorQuat().RotateVector(Local[NextSlotSample++]);
+	const FVector Desired=Ground+Local[NextSlotSample++];
 	FTransform Pose;
 	if (GuLiWorkPosition::ProjectPose(*Prototype,Desired,(Ground-Desired).Rotation(),Pose))
 	{ FGuLiConstructionSlot Slot; Slot.Pose=Pose; ConstructionSlots.Add(MoveTemp(Slot)); }

@@ -10,6 +10,7 @@
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 
 FString UGuLiMiningVehicleManager::GetSlotDebug() const
 {
@@ -63,11 +64,19 @@ void UGuLiMiningVehicleManager::DirtySlots(const FBox& Bounds)
 	const auto* Resources = GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
 	const auto* Map = Resources ? Resources->GetMapDefinition() : nullptr;
 	if (!Map) return;
+	const auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+	const bool Opening=Registry && Registry->IsOpeningStaticRegion();
 	for (auto& Pair : SlotProfiles)
 		for (int32 I=0; I<Pair.Value.Clusters.Num(); ++I)
 			if (Bounds.ExpandBy(3000).IsInsideXY(Map->Clusters[I].Center))
 			{
 				auto& Cluster = Pair.Value.Clusters[I];
+				if (Opening && Cluster.Slots.ContainsByPredicate([](const auto& Slot){return Slot.Owner.IsValid();}))
+				{
+					// Removing a body cannot invalidate an occupied legal pose or its current lease.
+					Cluster.bRefreshAfterRelease=true; continue;
+				}
+				Cluster.bRefreshAfterRelease=false;
 				Cluster.Slots.Reset(); Cluster.NextSample=0; Cluster.bPending=true; ++Cluster.Generation;
 			}
 }
@@ -77,7 +86,8 @@ void UGuLiMiningVehicleManager::Tick(float)
 	if (GetWorld()->GetNetMode()==NM_Client) return;
 	const auto* Resources = GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
 	const auto* Map = Resources ? Resources->GetMapDefinition() : nullptr;
-	if (!Map || !Resources->IsMiningRuntimeReady() || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
+	auto* Grid=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();const bool GridReady=Grid && Grid->IsReady();
+	if (!Map || !Resources->IsMiningRuntimeReady() || !GridReady && UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMining_BuildSlots);
 	for (AGuLiMiningVehiclePawn* Vehicle : Vehicles)
 		if (IsValid(Vehicle) && Vehicle->GetUnitTypeId()>0 && Vehicle->GetTravelBounds().IsValid)
@@ -87,11 +97,14 @@ void UGuLiMiningVehicleManager::Tick(float)
 			if (Profile.Clusters.IsEmpty()) Profile.Clusters.SetNum(Map->Clusters.Num());
 		}
 	const double Start = FPlatformTime::Seconds(); int32 Samples=0;
+	FGuLiNavigationWorkBudget LocalBudget;LocalBudget.Reset(1.,8,0);
+	auto& Budget=GridReady?Grid->FrameBudget():LocalBudget;
+	FGuLiNavigationWorkBudget::FScope Scope(Budget);
 	for (auto& Pair : SlotProfiles)
 	{
 		auto& Profile=Pair.Value; auto* Vehicle=Profile.Prototype.Get(); if (!Vehicle) continue;
 		int32 Inspected=0;
-		while (Inspected++<Profile.Clusters.Num() && Samples<8 && FPlatformTime::Seconds()-Start<.001)
+		while (Inspected++<Profile.Clusters.Num() && Samples<8 && Budget.CanWork() && FPlatformTime::Seconds()-Start<.0002)
 		{
 			// Prepare active work first within the same bounded sample/time budget.
 			// A requested cluster must not wait behind the whole map's cache bake.
@@ -103,14 +116,24 @@ void UGuLiMiningVehicleManager::Tick(float)
 				Profile.RequestedClusters.Add(Index);
 			}
 			else {Index=Profile.BuildCursor;Profile.BuildCursor=(Profile.BuildCursor+1)%Profile.Clusters.Num();}
-			auto& Slots=Profile.Clusters[Index]; if (!Slots.bPending) continue;
+			auto& Slots=Profile.Clusters[Index];
+			if (Slots.bRefreshAfterRelease && !Slots.Slots.ContainsByPredicate([](const auto& Slot){return Slot.Owner.IsValid();})
+				&& !UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld()))
+			{
+				Slots.bRefreshAfterRelease=false; Slots.Slots.Reset(); Slots.NextSample=0; Slots.bPending=true; ++Slots.Generation;
+			}
+			if (!Slots.bPending) continue;
 			const auto& Cluster=Map->Clusters[Index];
 			if (Resources->IsClusterEmpty(Cluster.ClusterId)) { Slots.bPending=false; continue; }
+			if (!Budget.TakeProjection()) break;
 			const int32 Sample=Slots.NextSample++; ++Samples;
 			const double Radius=Cluster.ObstacleRadiusCentimeters+Vehicle->GetNavAgentPropertiesRef().AgentRadius+30;
-			const FVector Direction=FVector::ForwardVector.RotateAngleAxis(Sample*45.f,FVector::UpVector);
+			FVector Direction=FVector::ForwardVector.RotateAngleAxis(Sample*45.f,FVector::UpVector);
+			FVector Desired=Cluster.Center+Direction*Radius;
+			// Work poses retain clearance around the quantized collision bodies;
+			// snapping the approach against the ore boundary removed that clearance.
 			FTransform Pose;
-			if (GuLiWorkPosition::ProjectPose(*Vehicle,Cluster.Center+Direction*Radius,(-Direction).Rotation(),Pose))
+			if (GuLiWorkPosition::ProjectPose(*Vehicle,Desired,(-Direction).Rotation(),Pose))
 			{
 				FGuLiMiningSlot Slot; Slot.Pose=Pose; Slot.OriginalSample=static_cast<uint8>(Sample);
 				for (int32 N=0; N<Cluster.NodeCount; ++N)

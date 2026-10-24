@@ -34,7 +34,7 @@ public:
     /** Preparation only: select exact live controlled units without changing gameplay state. */
     UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareHotspotSelection(const TArray<int32>& Soldiers);
     /** Explicit transient spatial preparation; native weapons and damage remain unchanged. */
-    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareHotspotCombat(int32 LocalUnits,int32 UnitType=0,int32 SkipLocalUnits=0);
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareHotspotCombat(int32 LocalUnits,int32 UnitType=0,int32 SkipLocalUnits=0,int32 EnemyActorId=0);
     /** Transient fixture positions only; ordinary capture, gifts and production do the work. */
     UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareHotspotTerritories(int32 NeutralTerritories);
     UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) bool StartHotspotWindow();

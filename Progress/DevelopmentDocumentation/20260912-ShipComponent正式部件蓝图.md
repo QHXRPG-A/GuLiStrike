@@ -54,4 +54,4 @@ status_note: 以重启编辑器后的磁盘读取和既有2项部件测试为最
 
 证据在制作目录（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/README.md`）；原始备份位于`outputs/ship-component-blueprints/backups/`。
 
-最终状态见验证报告（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/final-validation.json`）和[增量归档](../Archive/20260912-ShipComponent部件蓝图与占位清理.md)。测试结束后回收临时世界、恢复帧率控制；编辑器保持原空战测试地图，未保存临时验收场景。
+最终状态见验证报告（历史附件已清理；原路径：`../../outputs/ship-component-blueprints/final-validation.json`）和[增量归档](../Archive/9月归档清单.md#arc-20260912-006)。测试结束后回收临时世界、恢复帧率控制；编辑器保持原空战测试地图，未保存临时验收场景。

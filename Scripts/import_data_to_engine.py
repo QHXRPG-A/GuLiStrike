@@ -13,7 +13,7 @@ Note:    MCPython TCP 服务是排队异步执行——连接立刻关闭、脚�
     - WIRING: DT 资产名 -> 要赋值的 CDO 属性名（目前统一赋到 BP_GuLiStrikeShip）；
     - 文件末尾的"部件蓝图 PartId"步骤是飞船系统专属逻辑。
 
-路线（踩坑记录见 Progress/Archive/20260822-数据管线开发总归档-0821至0822.md）：
+路线（踩坑记录见 Progress/Archive/8月归档清单.md#arc-20260822-003）：
   - 资产：create_asset(DataTableFactory+struct) 首次建 DT —— 安全，已验证。
   - 行数据：CSVImportFactory + AutomatedImportSettings(ImportRowStruct/ImportType)，
     经 AssetImportTask 导入 CSV 侧车（JSON 数据先在本脚本内转 CSV；向量列用
@@ -55,6 +55,10 @@ CONFIG_WIRED_TABLES = {
     "DT_GuLiStrikeModels_MaterialParameters",
     "DT_GuLiStrikeModels_ColorRegions",
     "DT_GuLiStrikeMech_Visuals",
+    "DT_GuLiStrikeMech_Mobility",
+    "DT_GuLiStrikeMech_Gait",
+    "DT_GuLiStrikeMech_GroundIK",
+    "DT_GuLiStrikeMech_Camera",
     "DT_GuLiStrikeRogueCards_Cards",
     "DT_GuLiStrikeVfx_Effects",
     "DT_GuLiStrikeGameTexts_Texts",
@@ -110,6 +114,11 @@ def preflight(manifest, selected):
         issues.extend(scope['report']['errors'])
     if issues:
         raise RuntimeError('Import preflight failed before any asset mutation:\n' + '\n'.join(issues[:30]))
+    mech_tables={'DT_GuLiStrikeMech_'+s for s in ('Mobility','Gait','GroundIK','Camera')}
+    if mech_tables.intersection(selected) and not globals().get('GULI_SKIP_MECH_POST_IMPORT',False):
+        world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+        if world.get_path_name().split('.')[0]!='/Game/Maps/LVL_CommanderMassPrototype':
+            raise RuntimeError('Ground tuning also exports its network configuration: open LVL_CommanderMassPrototype before import; no tables changed')
     return {'tables': selected, 'native_schema': 'loaded fields verified', 'models': 'validated when referenced'}
 
 
@@ -269,7 +278,7 @@ def import_table(table_name, table_cfg):
                 if isinstance(sv, dict):  # 向量
                     ev_vec = parse_vec(ev) if ev is not None else None
                     ok_row = ok_row and ev_vec is not None and all(
-                        round(a, 3) == round(float(b), 3) for a, b in zip(ev_vec, [sv["X"], sv["Y"], sv["Z"]]))
+                        math.isclose(a,float(b),rel_tol=5e-6,abs_tol=1e-3) for a, b in zip(ev_vec, [sv["X"], sv["Y"], sv["Z"]]))
                 elif isinstance(sv, bool):
                     ok_row = ok_row and bool(ev) == sv
                 elif isinstance(sv, list):
@@ -534,6 +543,12 @@ try:
         part_ids[name] = part_id
     report["part_ids"] = part_ids
     mark("part-ids-done")
+
+    if any('DT_GuLiStrikeMech_'+s in selected for s in ('Mobility','Gait','GroundIK','Camera')) and not globals().get('GULI_SKIP_MECH_POST_IMPORT',False):
+        scope={'__name__':'ground_tuning_import'}
+        with open(f'{PROJECT}/Scripts/GroundMech/MechaDestroyer/sync_mobility_assets.py',encoding='utf8') as source:
+            exec(compile(source.read(),'sync_mobility_assets.py','exec'),scope)
+        report['ground_mobility']=scope['sync_mobility_assets']()
 
     # --- 孤儿资产警告：目录里不在 manifest 之列的 DataTable ---
     expected = set(manifest["tables"].keys())

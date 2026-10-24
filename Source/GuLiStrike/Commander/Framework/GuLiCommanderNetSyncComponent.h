@@ -56,6 +56,8 @@ public:
     void SubmitControlGroup(uint8 Slot, bool bSet, bool bAppend, bool bSteal, bool bFocus);
     bool HasUnresolvedSelectionIntent() const { return false; } // Selection is resolved synchronously in this local World.
     bool IsMoveCommandPending(uint32 CommandId) const;
+    void RecordMoveInput(uint32 CommandId, double InputSeconds);
+    const FString& GetMoveResponseText() const { return MoveResponseText; }
     const FGuLiCommanderSelectionState& GetSelectionState() const { return SelectionState; }
     const FGuLiCommandAck& GetLastCommandAck() const { return LastCommandAck; }
     const TArray<FGuLiUnitTaskSummary>& GetTaskSummaries() const;
@@ -93,6 +95,24 @@ public:
     TSharedRef<FJsonObject> GetReviewCommandEvidence() const;
 #endif
 private:
+    struct FMoveResponseMember
+    {
+        FGuLiTaskUnitId Unit;
+        FVector Start = FVector::ZeroVector;
+        uint32 PreviousOrder = 0;
+        bool bAccepted = false, bRemoteArmed = false;
+    };
+    TMap<FGuLiHybridObjectKey,FMoveResponseMember> MoveResponsePending;
+    uint32 MoveResponseCommand = 0, MoveInputCommand = 0, MoveResponseEpoch = 0;
+    int32 MoveResponseTotal = 0, MoveResponseStarted = 0, MoveResponseFailed = 0;
+    double MoveInputAt = 0, MoveResponseInputAt = 0, MoveResponseLastStartAt = 0, MoveResponseTextAt = 0;
+    bool bMoveResponseFrozen = false, bMoveResponseRemote = false;
+    FString MoveResponseText;
+    void BeginMoveResponse(const FGuLiUnitTaskCommand& Command);
+    void FreezeMoveResponse(const FGuLiUnitTaskCommand& Command, TConstArrayView<FGuLiHybridObjectState> Objects);
+    void TickMoveResponse();
+    void RefreshMoveResponseText(double Now);
+    void RejectMoveResponse(uint32 CommandId);
     // Selection is attached to an exact life, not the temporary Mass entity
     // that is detached/recreated while that life changes simulation owner.
     mutable TMap<FGuLiSoldierId,FGuLiHybridObjectKey> SelectionSoldierLives;

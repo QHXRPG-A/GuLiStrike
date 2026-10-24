@@ -12,6 +12,7 @@
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "NavigationSystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 #include "Engine/World.h"
 
 namespace GuLiHybridFactory
@@ -73,10 +74,10 @@ class FGuLiHybridResourceFactoryAdapter final : public IGuLiHybridSimulationAdap
             }
             if (!Builder.IsValid()) return false;
         }
-        auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(W);FNavLocation Ground;
+        FNavLocation Ground;
         const FVector Direction=FVector(-Record.Location.X,-Record.Location.Y,0).GetSafeNormal();
         FVector Dock=Record.Location+Direction*Config->FactoryDockOffsetCentimeters;
-        if (Nav && Nav->ProjectPointToNavigation(Dock,Ground,FVector(100,100,100000))) Dock=Ground.Location;
+        if (GuLiGrid::ProjectBody(*W,Dock,1,FVector(300,300,100000),Ground)) Dock=Ground.Location;
         const FTransform Transform(FRotator(0,Record.FacingYawDegrees,0),Record.Location);
         auto* Class=GetGuLiHybridBuildingClass(*D);
         if (!Class || !Class->IsChildOf(AGuLiResourceFactoryActor::StaticClass())

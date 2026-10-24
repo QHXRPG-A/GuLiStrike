@@ -88,6 +88,7 @@ private:
 	void UnbindRuntimeDependencies();
 	void HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection);
 	void RebuildSelectedSoldiers(const FGuLiCommanderSelectionState& Selection);
+	void RefreshSelectedActors(const FGuLiCommanderSelectionState& Selection);
 	void EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator);
 	int32 AllocateInstanceSlot();
 	void RefreshActorInstancePool();
@@ -144,6 +145,7 @@ private:
 	TMap<TWeakObjectPtr<AActor>, int32> ActorInstanceIndices;
 	TSet<FGuLiSoldierId> PendingActivityIds;
 	TSet<FGuLiSoldierId> SelectedSoldiers;
+	TSet<TWeakObjectPtr<AActor>> SelectedActors;
 	TArray<FTransform> CachedTransforms;
 	TArray<float> CachedHealthFractions;
 	TArray<float> CachedSelectedValues;

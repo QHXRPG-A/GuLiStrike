@@ -15,6 +15,7 @@ class UGuLiResourceEconomyConfig;
 class UGuLiResourceWorldSubsystem;
 class AGuLiResourceFactoryActor;
 class UGuLiMiningPresentationComponent;
+class UGuLiEngineeringPoseComponent;
 struct FGuLiSoldierDefinition;
 namespace GuLiOrderBusinessProbe { struct FRun; }
 
@@ -65,6 +66,7 @@ public:
 	EGuLiCommanderWorkPhase GetBehaviorPhase() const;
 	EGuLiCommanderWorkResult GetBehaviorResult() const { return BehaviorResult; }
 	bool IsBehaviorRetryReady() const;
+    bool ReplanGridWork();
 	bool NeedsReturnBeforeMining() const { return bManualReturnOrder || (ControlMode == EGuLiMiningControlMode::Auto && GetCargoTotal() > 0); }
 	bool IssuePlayerCommand(const FGuLiMiningCommand& Command, EGuLiTeam RequestingTeam);
 	/** A placement displacement invalidates the old path/task, retaining cargo and ownership. */
@@ -140,6 +142,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UChildActorComponent> VehiclePresentation;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiEngineeringPoseComponent> MovementPresentation;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UGuLiMiningPresentationComponent> MiningPresentation;

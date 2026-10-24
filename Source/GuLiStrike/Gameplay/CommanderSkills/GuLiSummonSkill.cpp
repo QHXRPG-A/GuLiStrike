@@ -6,6 +6,7 @@
 #include "Network/GuLiHybridManifest.h"
 #include "Network/Private/GuLiHybridObjectConversions.h"
 #include "GuLiNetObjectBatch.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 
 bool UGuLiSummonSkillExecutor::ValidateDefinition(const FGuLiActiveSkillDefinition& D, FString& Error) const
 {
@@ -37,16 +38,24 @@ FGuLiActiveSkillExecutionResult UGuLiSummonSkillExecutor::Execute(
     if (World)
     {
         auto* H=World->GetSubsystem<UGuLiHybridWorldSubsystem>();FGuLiHybridObjectKey Key;FGuLiHybridObjectState O;TArray<FVector> Locations;
-        if (!C || !Authority || !H || !H->ResolveTarget(Context.Source,Key) || !H->GetObject(Key,O) || !H->HasSimulation(Key)
-            || !Authority->PlanSummonPlacement(Context.GetExecutionTeam(),Context.SoldierId,uint16(C->UnitTypeId),C->Count,C->ClearanceCentimeters,C->OuterRings,C->CandidatesPerRing,Locations,Result.Error)) return Result;
+        if (!C || !Authority || !H || !H->ResolveTarget(Context.Source,Key) || !H->GetObject(Key,O) || !H->HasSimulation(Key)) return Result;
+        auto* Grid=World->GetSubsystem<UGuLiGroundGridSubsystem>();FGuLiGridBirthBatch* Prepared=nullptr;
+        if (Grid && Grid->IsReady())
+        {
+            Prepared=Grid->BirthPlans.Find(Key);
+            if (!Prepared || Prepared->Request!=Context.RequestId || Prepared->bSubmitted || Prepared->Positions.Num()!=C->Count)
+            {Result.Error=TEXT("Summon placement is not prepared");return Result;}
+            Locations=Prepared->Positions;
+        }
+        else if (!Authority->PlanSummonPlacement(Context.GetExecutionTeam(),Context.SoldierId,uint16(C->UnitTypeId),C->Count,C->ClearanceCentimeters,C->OuterRings,C->CandidatesPerRing,Locations,Result.Error)) return Result;
         std::vector<GuLiNet::ObjectBatch::Placement> Placements;
         for (const auto& P:Locations) Placements.push_back({P.X,P.Y,P.Z,float(Context.SourceTransform.Rotator().Yaw)});
         const auto Payload=GuLiNet::ObjectBatch::Encode(Placements);
-        const auto Event=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/Summon"),EGuLiHybridObjectKind::BusinessWork,
-            Context.RequestId.ToString(EGuidFormats::Digits)+TEXT("/")+Key.StableId.ToString(EGuidFormats::Digits)).StableId;
+        const auto Event=GuLiGridBirths::EventId(Context.RequestId,Key);
         const FName Rule(*(TEXT("summon/")+O.Definition.ToString()+TEXT("/")+Context.SkillId.ToString().ToLower()));
         Result.EffectId=H->SubmitCapability(Key,Event,Rule,O.RelationRevision,MakeArrayView(Payload.data(),int32(Payload.size())),O.Team);
-        Result.bSucceeded=Result.EffectId.IsValid();if (!Result.bSucceeded) Result.Error=TEXT("Summon batch could not enter the transaction queue");return Result;
+        Result.bSucceeded=Result.EffectId.IsValid();if (Prepared && Result.bSucceeded) Prepared->bSubmitted=true;
+        if (!Result.bSucceeded) Result.Error=TEXT("Summon batch could not enter the transaction queue");return Result;
     }
 	Result.Error=TEXT("Summon world is unavailable.");
 	return Result;

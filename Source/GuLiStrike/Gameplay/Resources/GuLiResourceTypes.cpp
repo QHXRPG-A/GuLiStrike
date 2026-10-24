@@ -101,6 +101,8 @@ bool FGuLiResourceClusterDefinition::IsWellFormed(const int32 TotalNodeCount, FS
 	if (ClusterId == 0u || TerritoryIndex >= GULI_RESOURCE_TERRITORY_COUNT
 		|| Center.ContainsNaN() || !FMath::IsFinite(ObstacleRadiusCentimeters)
 		|| ObstacleRadiusCentimeters <= 0.0f || NodeCount != GULI_RESOURCE_NODES_PER_CLUSTER
+        || FootprintCells<1 || FootprintCells>64 || !FMath::IsNearlyEqual(ObstacleRadiusCentimeters,FootprintCells*150.f)
+        || !FMath::IsFinite(SourceCollisionDiameterCm) || SourceCollisionDiameterCm<=0
 		|| FirstNodeIndex + NodeCount > static_cast<uint32>(TotalNodeCount))
 	{
 		return SetError(OutError, TEXT("Cluster identity, territory, transform, obstacle, or node span is invalid."));
@@ -128,9 +130,9 @@ bool FGuLiResourceSpawnAnchors::IsWellFormed() const
 {
 	return !RedFactory.ContainsNaN() && !RedAssembly.ContainsNaN()
 		&& !BlueFactory.ContainsNaN() && !BlueAssembly.ContainsNaN()
-		&& FVector2D(RedFactory).Equals(FVector2D(0.0, GULI_RESOURCE_FACTORY_ANCHOR_Y_CM), 1.0)
+		&& FVector2D(RedFactory).Equals(FVector2D(GULI_RESOURCE_FACTORY_ANCHOR_X_CM, GULI_RESOURCE_FACTORY_ANCHOR_Y_CM), 1.0)
 		&& FVector2D(RedAssembly).Equals(FVector2D(0.0, GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM), 1.0)
-		&& FVector2D(BlueFactory).Equals(FVector2D(0.0, -GULI_RESOURCE_FACTORY_ANCHOR_Y_CM), 1.0)
+		&& FVector2D(BlueFactory).Equals(FVector2D(-GULI_RESOURCE_FACTORY_ANCHOR_X_CM, -GULI_RESOURCE_FACTORY_ANCHOR_Y_CM), 1.0)
 		&& FVector2D(BlueAssembly).Equals(FVector2D(0.0, -GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM), 1.0);
 }
 

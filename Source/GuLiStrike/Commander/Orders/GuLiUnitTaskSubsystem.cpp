@@ -413,14 +413,22 @@ bool UGuLiUnitTaskSubsystem::StartVehicleMove(FGuLiUnitTaskState& State, FGuLiTa
 	const auto Preparation = Travel->PrepareReplacementMove(Task.ExecutionId, Task.Command.Target, 100, Prepared);
 	Task.bPlanning = Preparation == EGuLiEngineeringPathPreparation::Pending;
 	if (Preparation != EGuLiEngineeringPathPreparation::Ready) return false;
+	bool Started=false;
 	if (auto* Miner = Cast<AGuLiMiningVehiclePawn>(Pawn))
 	{
 		FGuLiMiningCommand Command; Command.RequestId = Task.ExecutionId; Command.SelectionRevision = 1;
 		Command.Type = EGuLiMiningOrderType::Move; Command.Target = Task.Command.Target;
-		return Miner->StartPreparedManagedMove(Command, Prepared);
+		Started=Miner->StartPreparedManagedMove(Command, Prepared);
 	}
-	Travel->CancelGroundMove();
-	return Travel->CommitGroundMove(Prepared);
+	else
+	{
+		Travel->CancelGroundMove();
+		Started=Travel->CommitGroundMove(Prepared);
+	}
+	if (Started)
+		GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->SetEngineeringMoveResponseCommand(
+			FGuLiSoldierId(uint32(Travel->GetMassEntityId())),Task.Command.CommandId);
+	return Started;
 }
 bool UGuLiUnitTaskSubsystem::Cancel(FGuLiUnitTaskState& State)
 {

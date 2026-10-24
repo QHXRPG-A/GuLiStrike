@@ -16,5 +16,5 @@ namespace GuLiLandingGround
 	// Authority requires navigation for this pawn, or commander Mass navigation
 	// when Pawn is null, on the same physical surface. Clients check support only.
 	bool Resolve(UWorld& World, const FVector& Point, FVector& OutNavLocation,
-		double* OutSurfaceHeight = nullptr, const APawn* Pawn = nullptr);
+        double* OutSurfaceHeight = nullptr, const APawn* Pawn = nullptr,int32 FootprintCells=0);
 }

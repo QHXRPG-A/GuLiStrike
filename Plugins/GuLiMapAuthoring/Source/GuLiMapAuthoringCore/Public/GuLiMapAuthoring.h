@@ -49,6 +49,8 @@ namespace GuLiMap
     GULIMAPAUTHORINGCORE_API FString Guid(const FGuid& Value);
     GULIMAPAUTHORINGCORE_API FString Number(double Value);
     GULIMAPAUTHORINGCORE_API FString CanonicalJson(const TSharedPtr<FJsonValue>& Value);
+    /** Shared legacy type serializer; standalone catalogs also include unused configured types. */
+    GULIMAPAUTHORINGCORE_API TSharedRef<FJsonObject> TypeJson(const UGuLiMapTypeDefinition& Type);
     GULIMAPAUTHORINGCORE_API TSharedRef<FJsonValue> VectorJson(const FVector& Value);
     GULIMAPAUTHORINGCORE_API bool ReadVector(const TSharedPtr<FJsonValue>& Value, FVector& Out);
     GULIMAPAUTHORINGCORE_API bool CheckKeys(const FJsonObject& Object, const TArray<FString>& Allowed, FString& Error);

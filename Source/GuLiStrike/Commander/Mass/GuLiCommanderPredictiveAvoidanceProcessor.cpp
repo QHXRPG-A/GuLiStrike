@@ -1,4 +1,5 @@
 #include "Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.h"
+#include "Gameplay/Units/GuLiEngineeringCollision.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
@@ -64,18 +65,19 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 		TMap<FMassEntityHandle, FZeroResultCache> ZeroResults;
 		TMap<FIntPoint, uint64> CellMotionSignatures;
 		TArray<uint64> AgentMotionHashes;
+		TSharedPtr<const FGuLiOreObstacleIndex,ESPMode::ThreadSafe> Ore;
 	};
 
 	uint64 MotionHash(const FAgentSnapshot& A)
 	{
 		uint64 H = A.StableKey * 1099511628211ull;
 		auto Add = [&H](const auto& V) { H = (H ^ FCrc::MemCrc32(&V, sizeof(V))) * 1099511628211ull; };
-		Add(A.Velocity); Add(A.DesiredVelocity); Add(A.Radius); Add(A.bMoving); Add(A.bParticipates);
+		Add(A.Velocity); Add(A.DesiredVelocity); Add(A.Radius); Add(A.bMoving); Add(A.bParticipates); Add(A.bEngineering);
 		if (A.bEnvironment) Add(A.Location);
 		return H;
 	}
 	uint64 RegionSignature(const FAgentSnapshot& A, FIntPoint Minimum, FIntPoint Maximum,
-		float CellSize, const TMap<FIntPoint, uint64>& Cells)
+		float CellSize, const TMap<FIntPoint, uint64>& Cells,const FGuLiOreObstacleIndex* Ore)
 	{
 		const FIntPoint OwnCell = MakeSpatialCell(A.Location, CellSize);
 		const uint64 OwnHash = MotionHash(A);
@@ -87,13 +89,13 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 			if (Found && OwnCell == FIntPoint(X, Y)) Value -= OwnHash;
 			Signature = (Signature ^ Value) * 1099511628211ull;
 		}
-		return Signature;
+		return (Signature^(Ore?Ore->Revision:0))*1099511628211ull;
 	}
 	// This checks ALL nearby entries, not the six prediction candidates. It covers
 	// the next 10 Hz interval and never omits an imminent unit/environment contact.
 	bool IsNearRegionSafe(const FAgentSnapshot& A, TConstArrayView<FAgentSnapshot> Agents,
 		const FAvoidanceSpatialGrid& Grid, float CellSize, float MaximumRadius, float MaximumSpeed,
-		float Padding, FCandidateQueryScratch& Scratch, uint64& Visits, uint64& Checks)
+		float Padding, FCandidateQueryScratch& Scratch, uint64& Visits, uint64& Checks,const FGuLiOreObstacleIndex* Ore)
 	{
 		const FVector Velocity = A.DesiredVelocity.IsNearlyZero() ? A.Velocity : A.DesiredVelocity;
 		const float Reach = A.Radius + MaximumRadius + Padding + (A.MaximumSpeed + MaximumSpeed) * .1f;
@@ -104,10 +106,11 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 		for (const auto* Bucket : Scratch.Buckets) for (const int32 Index : *Bucket)
 		{
 			const auto& B = Agents[Index];
-			if (B.StableKey == A.StableKey || !B.bParticipates) continue;
+			if (B.StableKey == A.StableKey || !B.bParticipates
+				|| GuLiEngineeringCollision::IgnoresPeer(A.bEngineering, B.bEngineering)) continue;
 			if (B.bEnvironment && !Scratch.VisitEnvironment(Index)) continue;
 			++Visits;
-			if (FMath::Abs(A.Location.Z - B.Location.Z) > MaximumHeightDifferenceCentimeters) continue;
+			if (FMath::Abs(A.Location.Z - B.Location.Z) > MaximumHeightDifferenceCentimeters+B.HalfHeight) continue;
 			const FVector P = (A.Location - B.Location) * FVector(1, 1, 0);
 			const double R = A.Radius + B.Radius + Padding;
 			if (P.SizeSquared2D() > FMath::Square(R + (A.MaximumSpeed + B.MaximumSpeed) * .1)) continue;
@@ -118,6 +121,17 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 			const double ClosestTime = V.SizeSquared() > UE_SMALL_NUMBER
 				? FMath::Clamp(-FVector::DotProduct(P, V) / V.SizeSquared(), 0.0, .1) : 0;
 			if ((P + V * ClosestTime).SizeSquared2D() <= R * R) return false;
+		}
+		if (Ore)
+		{
+			// Conservatively avoid zero-result reuse near ore; do not add ore to dynamic motion signatures.
+			Ore->Query(A.Location,A.Radius+Padding+A.MaximumSpeed*.1f,Scratch.OreNodes);
+			for (uint32 Id:Scratch.OreNodes)
+			{
+				++Visits;
+				const auto* Node=Ore->Find(Id);
+				if (Node && FMath::Abs(A.Location.Z-Node->Obstacle.Location.Z)<=MaximumHeightDifferenceCentimeters+Node->HalfHeight) return false;
+			}
 		}
 		return true;
 	}
@@ -152,6 +166,7 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
         {
             TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_WorkerPredictiveAvoidance);
             auto* Workspace=this;Measurements.Values.Reset();
+            Ore=Obstacles?Obstacles->Ore:nullptr;
             float MaximumAgentRadius=0,MaximumAgentSpeed=0;
             PolicyAgents.Reset();PolicyAgents.Reserve(Agents.Num());
             for (int32 I=0;I<Agents.Num();++I)
@@ -225,9 +240,9 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 					const bool bCurrent = !Entry.bForced && IsZeroCacheCurrent(*Cached, Entry.Agent, CurrentWorldSeconds,
 						GuLiMassMovementTuning::GetCacheLifetimeSeconds(), Entry.OrderRevision, Entry.Parameters.PredictiveAvoidanceTime,
 						GuLiMassMovementTuning::GetCandidateLimit(), GridCellSize, {Cell.X - Range, Cell.Y - Range}, {Cell.X + Range, Cell.Y + Range},
-						RegionSignature(Entry.Agent, Cached->MinimumCell, Cached->MaximumCell, GridCellSize, Workspace->CellMotionSignatures))
+						RegionSignature(Entry.Agent, Cached->MinimumCell, Cached->MaximumCell, GridCellSize, Workspace->CellMotionSignatures,Workspace->Ore.Get()))
 						&& IsNearRegionSafe(Entry.Agent, PolicyAgents, QueryGrid, GridCellSize, MaximumAgentRadius, MaximumAgentSpeed,
-							Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks);
+							Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks,Workspace->Ore.Get());
 					if (bCurrent)
 					{
 						Entry.bSolved = true; Entry.bCached = true; ++CacheHits;
@@ -245,7 +260,7 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 					+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
 					+ Entry.Parameters.PredictiveAvoidanceDistance),
 				MaximumHeightDifferenceCentimeters, GridCellSize, Entry.Parameters.PredictiveAvoidanceTime,
-				&Workspace->QueryScratch);
+				&Workspace->QueryScratch,Workspace->Ore.Get());
 			Visits += Metrics.BucketEntriesVisited; Exact += Metrics.ExactCandidates; ++Solves; Forced += Entry.bForced ? 1 : 0;
 			QueryTrends += Metrics.TrendEvaluations;
 			CellLookups+=Metrics.CellLookups; CellHits+=Metrics.CellHits; Duplicates+=Metrics.EnvironmentDuplicates; Unique+=Metrics.UniqueVisits;
@@ -298,7 +313,7 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 				const FVector OwnVelocity = Entry.Agent.DesiredVelocity;
 				for (const auto& Candidate : Entry.Candidates)
 				{
-					const auto& Other = PolicyAgents[Candidate.AgentIndex];
+					const auto& Other = ResolveCandidate(PolicyAgents,Candidate);
 					const FVector OtherVelocity = Other.DesiredVelocity.IsNearlyZero() ? Other.Velocity : Other.DesiredVelocity;
 					const FVector P = (Entry.Agent.Location - Other.Location) * FVector(1, 1, 0);
 					const double Closing = -FVector::DotProduct(P.GetSafeNormal2D(), OwnVelocity - OtherVelocity);
@@ -306,7 +321,7 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 						|| Closing > .1 * OwnVelocity.Size2D()) { bSafe = false; break; }
 				}
 				if (bSafe && IsNearRegionSafe(Entry.Agent, PolicyAgents, QueryGrid, GridCellSize, MaximumAgentRadius, MaximumAgentSpeed,
-					Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks))
+					Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks,Workspace->Ore.Get()))
 				{
 					const float Reach = FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
 						+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
@@ -321,7 +336,7 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 					Cache.Radius = Entry.Agent.Radius; Cache.CellSize = GridCellSize;
 					Cache.MinimumCell = {Cell.X - Range, Cell.Y - Range}; Cache.MaximumCell = {Cell.X + Range, Cell.Y + Range};
 					Cache.MotionSignature = RegionSignature(Entry.Agent, Cache.MinimumCell, Cache.MaximumCell,
-						GridCellSize, Workspace->CellMotionSignatures);
+						GridCellSize, Workspace->CellMotionSignatures,Workspace->Ore.Get());
 				}
 			}
 		}
@@ -390,6 +405,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::ExecuteBackground(FMassEntityMa
 				FProcessorAgent& Entry = Agents.AddDefaulted_GetRef();
 				Entry.Entity = ChunkContext.GetEntity(It);
 				Entry.SoldierId = Identities.IsEmpty() ? 0u : Identities[It].SoldierId.Value;
+				Entry.Agent.bEngineering = !Identities.IsEmpty() && Identities[It].bEngineering;
 				Entry.Agent.StableKey = Entry.Entity.AsNumber();
 				Entry.Agent.Location = Transforms[It].GetTransform().GetLocation();
 				Entry.Agent.Velocity = Velocities.IsEmpty()
@@ -409,11 +425,12 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::ExecuteBackground(FMassEntityMa
 		if (auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
 		{
 			const auto Snapshot=Registry->GetSnapshot();
+			Work->Obstacles=Snapshot;
 			for (const auto& Obstacle : Snapshot->Obstacles)
 			{
 				auto& Entry=Agents.AddDefaulted_GetRef();
 				Entry.Agent.StableKey=(uint64(1)<<63)|Obstacle.Handle.Value;
-				Entry.Agent.Location=Obstacle.Location; Entry.Agent.Radius=Obstacle.RadiusCentimeters;
+				Entry.Agent.Location=Obstacle.Location; Entry.Agent.Radius=Obstacle.RadiusCentimeters; Entry.Agent.HalfHeight=Obstacle.HalfHeight;
 				Entry.Agent.bParticipates=true; Entry.Agent.bEnvironment=true;
 			}
 		}
@@ -636,6 +653,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				FProcessorAgent& Entry = Agents.AddDefaulted_GetRef();
 				Entry.Entity = ChunkContext.GetEntity(It);
 				Entry.SoldierId = Identities.IsEmpty() ? 0u : Identities[It].SoldierId.Value;
+				Entry.Agent.bEngineering = !Identities.IsEmpty() && Identities[It].bEngineering;
 				Entry.Agent.StableKey = Entry.Entity.AsNumber();
 				Entry.Agent.Location = Transforms[It].GetTransform().GetLocation();
 				Entry.Agent.Velocity = Velocities.IsEmpty()
@@ -655,11 +673,12 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 		if (auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
 		{
 			const auto Snapshot=Registry->GetSnapshot();
+			Workspace->Ore=Snapshot->Ore;
 			for (const auto& Obstacle : Snapshot->Obstacles)
 			{
 				auto& Entry=Agents.AddDefaulted_GetRef();
 				Entry.Agent.StableKey=(uint64(1)<<63)|Obstacle.Handle.Value;
-				Entry.Agent.Location=Obstacle.Location; Entry.Agent.Radius=Obstacle.RadiusCentimeters;
+				Entry.Agent.Location=Obstacle.Location; Entry.Agent.Radius=Obstacle.RadiusCentimeters; Entry.Agent.HalfHeight=Obstacle.HalfHeight;
 				Entry.Agent.bParticipates=true; Entry.Agent.bEnvironment=true;
 			}
 		}
@@ -812,9 +831,9 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 					const bool bCurrent = !Entry.bForced && IsZeroCacheCurrent(*Cached, Entry.Agent, CurrentWorldSeconds,
 						GuLiMassMovementTuning::GetCacheLifetimeSeconds(), Entry.OrderRevision, Entry.Parameters.PredictiveAvoidanceTime,
 						GuLiMassMovementTuning::GetCandidateLimit(), GridCellSize, {Cell.X - Range, Cell.Y - Range}, {Cell.X + Range, Cell.Y + Range},
-						RegionSignature(Entry.Agent, Cached->MinimumCell, Cached->MaximumCell, GridCellSize, Workspace->CellMotionSignatures))
+						RegionSignature(Entry.Agent, Cached->MinimumCell, Cached->MaximumCell, GridCellSize, Workspace->CellMotionSignatures,Workspace->Ore.Get()))
 						&& IsNearRegionSafe(Entry.Agent, PolicyAgents, QueryGrid, GridCellSize, MaximumAgentRadius, MaximumAgentSpeed,
-							Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks);
+							Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks,Workspace->Ore.Get());
 					if (bCurrent)
 					{
 						Entry.bSolved = true; Entry.bCached = true; ++CacheHits;
@@ -832,7 +851,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 					+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
 					+ Entry.Parameters.PredictiveAvoidanceDistance),
 				MaximumHeightDifferenceCentimeters, GridCellSize, Entry.Parameters.PredictiveAvoidanceTime,
-				&Workspace->QueryScratch);
+				&Workspace->QueryScratch,Workspace->Ore.Get());
 			Visits += Metrics.BucketEntriesVisited; Exact += Metrics.ExactCandidates; ++Solves; Forced += Entry.bForced ? 1 : 0;
 			QueryTrends += Metrics.TrendEvaluations;
 			CellLookups+=Metrics.CellLookups; CellHits+=Metrics.CellHits; Duplicates+=Metrics.EnvironmentDuplicates; Unique+=Metrics.UniqueVisits;
@@ -885,7 +904,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				const FVector OwnVelocity = Entry.Agent.DesiredVelocity;
 				for (const auto& Candidate : Entry.Candidates)
 				{
-					const auto& Other = PolicyAgents[Candidate.AgentIndex];
+					const auto& Other = ResolveCandidate(PolicyAgents,Candidate);
 					const FVector OtherVelocity = Other.DesiredVelocity.IsNearlyZero() ? Other.Velocity : Other.DesiredVelocity;
 					const FVector P = (Entry.Agent.Location - Other.Location) * FVector(1, 1, 0);
 					const double Closing = -FVector::DotProduct(P.GetSafeNormal2D(), OwnVelocity - OtherVelocity);
@@ -893,7 +912,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 						|| Closing > .1 * OwnVelocity.Size2D()) { bSafe = false; break; }
 				}
 				if (bSafe && IsNearRegionSafe(Entry.Agent, PolicyAgents, QueryGrid, GridCellSize, MaximumAgentRadius, MaximumAgentSpeed,
-					Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks))
+					Entry.Parameters.PredictiveAvoidanceDistance, Workspace->QueryScratch, GuardVisits, GuardChecks,Workspace->Ore.Get()))
 				{
 					const float Reach = FMath::Max(DetectionDistanceCentimeters, Entry.Agent.Radius + MaximumAgentRadius
 						+ (Entry.Agent.MaximumSpeed + MaximumAgentSpeed) * Entry.Parameters.PredictiveAvoidanceTime
@@ -908,7 +927,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 					Cache.Radius = Entry.Agent.Radius; Cache.CellSize = GridCellSize;
 					Cache.MinimumCell = {Cell.X - Range, Cell.Y - Range}; Cache.MaximumCell = {Cell.X + Range, Cell.Y + Range};
 					Cache.MotionSignature = RegionSignature(Entry.Agent, Cache.MinimumCell, Cache.MaximumCell,
-						GridCellSize, Workspace->CellMotionSignatures);
+						GridCellSize, Workspace->CellMotionSignatures,Workspace->Ore.Get());
 				}
 			}
 		}

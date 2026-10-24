@@ -45,6 +45,11 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier", meta = (Units = "cm"))
 	float MassAvoidanceRadiusCm = 0.0f;
 
+	/** Frozen from authored collision once; all consumers use this resolved footprint. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Grid") int32 FootprintCells = 1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Grid") float SourceCollisionDiameterCm = 300.f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Grid") float GridDimensionScale = 1.f;
+
 	float GetMassAvoidanceRadius(const float DefaultRadius) const
 	{
 		return MassAvoidanceRadiusCm > 0.0f ? MassAvoidanceRadiusCm : DefaultRadius;

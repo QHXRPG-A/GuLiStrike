@@ -12,5 +12,6 @@ public class GuLiStrikeEditorTarget : TargetRules
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
 		ExtraModuleNames.Add("GuLiStrike");
 		ExtraModuleNames.Add("GuLiStrikeEditor");
+		ExtraModuleNames.Add("GuLiStrikeAnimGraph");
 	}
 }

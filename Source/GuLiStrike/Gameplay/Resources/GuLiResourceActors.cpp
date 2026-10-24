@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Resources/GuLiResourceActors.h"
+#include "Gameplay/Resources/GuLiOreCollisionField.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Engine/StaticMesh.h"
 #include "Gameplay/Stronghold/GuLiStrongholdCaptureComponent.h"
@@ -278,64 +279,43 @@ AGuLiOreClusterObstacleActor::AGuLiOreClusterObstacleActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = false;
-	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("ClusterCollision"));
-	RootComponent = CollisionSphere;
-	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	CollisionSphere->SetCollisionObjectType(ECC_WorldStatic);
-	CollisionSphere->SetCollisionResponseToAllChannels(ECR_Block);
-	CollisionSphere->SetGenerateOverlapEvents(false);
-	CollisionSphere->SetCanEverAffectNavigation(true);
-	// A removable ore cluster changes walkability, not the underlying terrain geometry.
-	CollisionSphere->bDynamicObstacle = true;
-	CollisionSphere->SetAreaClassOverride(UNavArea_Null::StaticClass());
-	NavModifier = CreateDefaultSubobject<UNavModifierComponent>(TEXT("ClusterNavAreaNull"));
-	NavModifier->SetAreaClass(UNavArea_Null::StaticClass());
-	NavModifier->ForceNavigationRelevancy(true);
+	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+	RootComponent = SceneRoot;
+	NavModifier = CreateDefaultSubobject<UGuLiOreNavigationComponent>(TEXT("OreNodeNavAreas"));
 }
 
 void AGuLiOreClusterObstacleActor::InitializeObstacle(
 	const uint16 InClusterId,
 	const float RadiusCentimeters)
 {
-	ClusterId = InClusterId;
-	const float Radius = FMath::Max(1.0f, RadiusCentimeters);
-	if (CollisionSphere->IsRegistered())
-	{
-		if (!FMath::IsNearlyEqual(CollisionSphere->GetUnscaledSphereRadius(), Radius))
-		{
-			CollisionSphere->SetSphereRadius(Radius, true);
-			NavModifier->UpdateNavigationBounds();
-			NavModifier->RefreshNavigationModifiers();
-		}
-	}
-	else
-	{
-		// Deferred spawn registers the final footprint once, without a default-radius dirty area.
-		CollisionSphere->InitSphereRadius(Radius);
-	}
+	// Compatibility for synthetic single-obstacle callers. Resource startup uses InitializeNodes.
+	FGuLiOreNodeObstacle Node; Node.NodeId=1; Node.ClusterId=InClusterId;
+	Node.Obstacle.Location=GetActorLocation(); Node.Obstacle.RadiusCentimeters=FMath::Max(1.f,RadiusCentimeters);
+	Node.HalfHeight=Node.Obstacle.RadiusCentimeters;
+	const uint8 Remaining=1;
+	InitializeNodes(InClusterId,MakeArrayView(&Node,1),MakeArrayView(&Remaining,1));
 }
 
 void AGuLiOreClusterObstacleActor::SetObstacleEnabled(const bool bEnabled)
 {
-	if (bObstacleEnabled == bEnabled)
-	{
-		return;
-	}
-	bObstacleEnabled = bEnabled;
-	CollisionSphere->SetCollisionEnabled(bEnabled
-		? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
-	// Dynamic shape modifiers can remain relevant without physical collision.
-	// Remove both navigation exporters when a cluster is depleted.
-	CollisionSphere->SetCanEverAffectNavigation(bEnabled);
-	NavModifier->SetNavigationRelevancy(bEnabled);
-	NavModifier->RefreshNavigationModifiers();
-	SetActorHiddenInGame(!bEnabled);
+	NavModifier->SetNodesEnabled(bEnabled);
 }
 
 float AGuLiOreClusterObstacleActor::GetObstacleRadius() const
 {
-	return CollisionSphere ? CollisionSphere->GetScaledSphereRadius() : 0.0f;
+	return ObstacleRadius;
 }
+
+bool AGuLiOreClusterObstacleActor::IsObstacleEnabled() const { return NavModifier->GetAliveCount()>0; }
+void AGuLiOreClusterObstacleActor::InitializeNodes(uint16 InClusterId,
+	TConstArrayView<FGuLiOreNodeObstacle> Nodes,TConstArrayView<uint8> Remaining)
+{
+	ClusterId=InClusterId; ObstacleRadius=0;
+	for (const auto& Node:Nodes)
+		ObstacleRadius=FMath::Max(ObstacleRadius,float(FVector::Dist2D(GetActorLocation(),Node.Obstacle.Location))+Node.Obstacle.RadiusCentimeters);
+	NavModifier->InitializeNodes(Nodes,Remaining);
+}
+void AGuLiOreClusterObstacleActor::RemoveNodes(TConstArrayView<uint32> NodeIds) { NavModifier->RemoveNodes(NodeIds); }
 
 
 AGuLiTerritoryOutpostActor::AGuLiTerritoryOutpostActor()

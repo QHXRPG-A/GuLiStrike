@@ -1,6 +1,6 @@
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
+#include "Gameplay/Units/GuLiEngineeringCollision.h"
 #include "Commander/UI/GuLiSceneUISourceRegistry.h"
-#include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Stronghold/GuLiStrongholdTransitPresentationComponent.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
@@ -22,6 +22,8 @@
 #include "Net/UnrealNetwork.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+#include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
 
 UGuLiEngineeringTravelComponent::UGuLiEngineeringTravelComponent()
 {
@@ -35,6 +37,11 @@ void UGuLiEngineeringTravelComponent::BeginPlay()
 	if (auto* Registry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>()) Registry->RegisterSource(GetOwner(), EGuLiSceneUISourceKind::PawnRing);
 	Control = GetOwner()->FindComponentByClass<UGuLiExternalUnitControlComponent>();
 	check(Control && Cast<IGuLiEngineeringVehicle>(GetOwner()));
+    // All current and future engineering carriers receive the same peer collision policy.
+    auto* Body=CastChecked<ACharacter>(GetOwner())->GetCapsuleComponent();
+    Body->SetMaskFilterOnBodyInstance(Body->GetMaskFilterOnBodyInstance(0) | GuLiEngineeringCollision::VehicleMask);
+    Body->SetMoveIgnoreMask(Body->GetMoveIgnoreMask() | GuLiEngineeringCollision::VehicleMask);
+    EnsureMassEntity();
 }
 UGuLiResourceWorldSubsystem& UGuLiEngineeringTravelComponent::Resources() const
 { return *GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>(); }
@@ -139,6 +146,32 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
 {
 	const auto& Pawn = *CastChecked<ACharacter>(GetOwner());
 	const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdTransit(State.TransitFieldId);
+    if (auto* G=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady())
+    {
+        auto& Budget=G->FrameBudget();FGuLiNavigationWorkBudget::FScope Scope(Budget);
+        const auto* Binding=UGuLiHybridActorComponent::Find(&Pawn);if (!Binding || !G->Network()) return false;
+        const auto& O=Binding->GetState();const auto S=G->Snapshot();
+        const int32 Size=GuLiGrid::FootprintFromDiameter(Pawn.GetCapsuleComponent()->GetScaledCapsuleRadius()*2.);
+        static const FIntPoint Directions[]={{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1}};
+        if (!bGridExitPending)
+            for (int32 Attempt=0;Attempt<8 && Budget.TakeProjection();++Attempt)
+            {
+                const int32 I=ExitCandidateCursor++%32;const auto D=Directions[I%8];
+                const double Offset=(FMath::CeilToInt32(Config.ExitRadius/300.)+Size+I/8)*300.;
+                FVector P;
+                if (!S->Project(FVector(State.ExitCenter)+FVector(D.X*Offset,D.Y*Offset,0),Size,FVector(300,300,5000),P)
+                    || !GuLiGrid::Unoccupied(*G,P,Size,O.Key)) continue;
+                GridExitPoint=P;bGridExitPending=true;break;
+            }
+        if (!bGridExitPending) return false;
+        const auto Permit=G->Network()->PermitPlacement(O.Key,O.Key,GuLiGrid::FRect::At(S->AnchorAt(GridExitPoint,Size),Size),Size,uint8(O.Team));
+        if (Permit==EGuLiGridPermit::Blocked || !GuLiGrid::Unoccupied(*G,GridExitPoint,Size,O.Key))
+        {G->Network()->Withdraw(O.Key);bGridExitPending=false;return false;}
+        if (Permit!=EGuLiGridPermit::Granted) return false;
+        const auto Facing=(FVector(State.FinalGroundTarget)-GridExitPoint).Rotation();
+        Transform=FTransform(FRotator(0,Facing.Yaw,0),GridExitPoint+FVector(0,0,Pawn.GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
+        bGridExitPending=false;return true;
+    }
 	auto* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	if (!Navigation) return false;
 	const auto* Data = Navigation->GetNavDataForProps(Pawn.GetNavAgentPropertiesRef(),State.ExitCenter);
@@ -207,6 +240,7 @@ void UGuLiEngineeringTravelComponent::ExitTransit(const FTransform& Transform, d
 }
 void UGuLiEngineeringTravelComponent::AdvanceHybrid(float Dt)
 {
+    RefreshMassAuthority();
 	if (UGuLiNetworkSettings::IsHybrid(GetWorld()) && UGuLiHybridActorComponent::HasSimulation(GetOwner())
 		&& ActivateRestoredTravel()) AdvanceTravel(Dt);
 }
@@ -215,6 +249,7 @@ void UGuLiEngineeringTravelComponent::ApplyHybridTransitMotion(const FGuLiStrong
 	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiHybridActorComponent::Find(GetOwner())) return;
 	const bool Changed=State.Phase!=Transit.Phase || State.JourneyId!=Transit.JourneyId || State.StartServerTime!=Transit.StartServerTime;
 	State=Transit; if (Changed) OnRep_State();
+    RefreshMassAuthority();
 }
 void UGuLiEngineeringTravelComponent::AdvanceTravel(float Dt)
 {

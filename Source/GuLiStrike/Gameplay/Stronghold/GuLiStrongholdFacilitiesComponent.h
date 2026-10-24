@@ -21,6 +21,7 @@ struct FGuLiHybridGiftJob
     FTransform Placement;
     uint32 Attempt=0;
     bool Submitted=false;
+    bool Prepared=false;
 };
 
 UCLASS()
@@ -30,6 +31,9 @@ class GULISTRIKE_API UGuLiStrongholdFacilitiesComponent : public UActorComponent
 public:
 	UGuLiStrongholdFacilitiesComponent();
 	void InitializeFacilities();
+    void RecoverGridGifts();
+    void ReleaseGridGifts();
+    virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 
 	const TArray<FGuLiStrongholdGiftSlot>& GetSlots() const { return Slots; }
 private:

@@ -1,5 +1,9 @@
 # 轻型装甲地面玩家
 
+2026-10-24补正：用户PIE反馈动画全失/枪口偏向，原因是冷启动时自定义姿势节点未保留。Ground默认蓝图现通过软引用在角色解析时加载，图已恢复；完整重启后直接读取34节点及姿势通过。`inspect_b2_animation_camera.py`不再重建/编译/保存被查资产，结果见`animation_camera_cold_load_audit_20261024.json`。真实PIE与视觉等待用户复验。
+
+> **2026-10-24 当前基线：** 玩家Ground/ModelId4001使用`MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2`、`ABP_GroundMech_A4B2`和14段适配动画。已修复Walk/Run空采样和单侧开火断线，增加双枪独立5cm后坐及当前帧瞄准。鼠标转越肩镜头、中心准星，地面A/D横移，W/S前后；相机初始距离1084.42cm、FOV90。实际试玩使用`/Game/Maps/LVL_CommanderMassPrototype`与GuLi Local PIE的`MainRole=Ground`；地图和资源已保存，当前未启动PIE。FireReview仅保留编辑器红蓝展示，直接PIE会停在Observer。编译和姿势数据检查通过，视觉及实际操作由用户验收，详见[交付说明](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/UE_DELIVERY.md)。本次修复入口为`MechaDestroyer/fix_b2_animation_camera.py`，限定资产/姿势核对为`inspect_b2_animation_camera.py`，需先加载对应源码Editor构建。下文旧入口、Style_v9、相机/输入数值和此前实测均为历史记录。
+
 在源码版 UE5.7 中打开 `/Game/Maps/LVL_GroundMech_Demo`，使用普通单人 PIE。地图配置 `BP_GroundMech_DemoMode`，优先分配 Ground 身份；正式战局通过现有 `RolePawnClasses` 使用 `BP_GroundMech_Light`。
 
 | 操作 | 行为 |

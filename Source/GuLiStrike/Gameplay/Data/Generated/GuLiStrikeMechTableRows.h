@@ -212,3 +212,283 @@ struct FGuLiStrikeMechVisualsRow : public FTableRowBase
 	int32 ModelId = 0;
 
 };
+
+/** DataTable DT_GuLiStrikeMech_Mobility 的行结构（源: GuLiStrikeMech.xlsx / Mobility）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeMechMobilityRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	FString Note;
+
+	/** WalkSpeed (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float WalkSpeed = 0.0f;
+
+	/** SprintSpeed (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float SprintSpeed = 0.0f;
+
+	/** Acceleration (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float Acceleration = 0.0f;
+
+	/** Braking (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float Braking = 0.0f;
+
+	/** MovingTurnRate (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float MovingTurnRate = 0.0f;
+
+	/** TurnStartDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float TurnStartDegrees = 0.0f;
+
+	/** TurnStopDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float TurnStopDegrees = 0.0f;
+
+	/** TurnMovementThreshold (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float TurnMovementThreshold = 0.0f;
+
+	/** GunYawLimit (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float GunYawLimit = 0.0f;
+
+	/** GunPitchUpLimit (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float GunPitchUpLimit = 0.0f;
+
+	/** GunPitchDownLimit (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float GunPitchDownLimit = 0.0f;
+
+};
+
+/** DataTable DT_GuLiStrikeMech_Gait 的行结构（源: GuLiStrikeMech.xlsx / Gait）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeMechGaitRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	FString Note;
+
+	/** Asset (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	TSoftObjectPtr<UObject> Asset;
+
+	/** ReferenceSpeed (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float ReferenceSpeed = 0.0f;
+
+	/** MinStrideScale (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float MinStrideScale = 0.0f;
+
+	/** MaxStrideScale (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float MaxStrideScale = 0.0f;
+
+	/** MinPlayRate (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float MinPlayRate = 0.0f;
+
+	/** MaxPlayRate (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float MaxPlayRate = 0.0f;
+
+	/** BasePlayRate (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float BasePlayRate = 0.0f;
+
+	/** TransitionSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float TransitionSeconds = 0.0f;
+
+	/** SpeedSmoothingSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float SpeedSmoothingSeconds = 0.0f;
+
+	/** TurnDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float TurnDegrees = 0.0f;
+
+	/** RecoilCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float RecoilCentimeters = 0.0f;
+
+};
+
+/** DataTable DT_GuLiStrikeMech_GroundIK 的行结构（源: GuLiStrikeMech.xlsx / GroundIK）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeMechGroundIKRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	FString Note;
+
+	/** Enabled (bool, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	bool Enabled = false;
+
+	/** TraceUp (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float TraceUp = 0.0f;
+
+	/** TraceDown (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float TraceDown = 0.0f;
+
+	/** MaxFootCorrection (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MaxFootCorrection = 0.0f;
+
+	/** PelvisDown (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float PelvisDown = 0.0f;
+
+	/** PelvisUp (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float PelvisUp = 0.0f;
+
+	/** MaxTiltDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MaxTiltDegrees = 0.0f;
+
+	/** SoleOffset (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float SoleOffset = 0.0f;
+
+	/** PlantThreshold (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float PlantThreshold = 0.0f;
+
+	/** ReleaseThreshold (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float ReleaseThreshold = 0.0f;
+
+	/** BlendInSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float BlendInSeconds = 0.0f;
+
+	/** BlendOutSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float BlendOutSeconds = 0.0f;
+
+	/** InterpSpeed (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float InterpSpeed = 0.0f;
+
+	/** LockReleaseDistance (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float LockReleaseDistance = 0.0f;
+
+	/** ContactHeightTolerance (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float ContactHeightTolerance = 0.0f;
+
+	/** ContactBlendHeight (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float ContactBlendHeight = 0.0f;
+
+	/** HeelLeftX/HeelLeftY/HeelLeftZ (float) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	FVector HeelLeft = FVector::ZeroVector;
+
+	/** ToeLeftX/ToeLeftY/ToeLeftZ (float) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	FVector ToeLeft = FVector::ZeroVector;
+
+	/** HeelRightX/HeelRightY/HeelRightZ (float) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	FVector HeelRight = FVector::ZeroVector;
+
+	/** ToeRightX/ToeRightY/ToeRightZ (float) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	FVector ToeRight = FVector::ZeroVector;
+
+};
+
+/** DataTable DT_GuLiStrikeMech_Camera 的行结构（源: GuLiStrikeMech.xlsx / Camera）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeMechCameraRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	FString Note;
+
+	/** ArmLength (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float ArmLength = 0.0f;
+
+	/** SocketOffsetX/SocketOffsetY/SocketOffsetZ (float) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	FVector SocketOffset = FVector::ZeroVector;
+
+	/** PitchDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float PitchDegrees = 0.0f;
+
+	/** YawDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float YawDegrees = 0.0f;
+
+	/** FieldOfView (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float FieldOfView = 0.0f;
+
+	/** TransitionSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float TransitionSeconds = 0.0f;
+
+	/** Sensitivity (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float Sensitivity = 0.0f;
+
+	/** MinPitchDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MinPitchDegrees = 0.0f;
+
+	/** MaxPitchDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MaxPitchDegrees = 0.0f;
+
+	/** MinDistance (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MinDistance = 0.0f;
+
+	/** MaxDistance (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float MaxDistance = 0.0f;
+
+	/** ZoomStep (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float ZoomStep = 0.0f;
+
+};

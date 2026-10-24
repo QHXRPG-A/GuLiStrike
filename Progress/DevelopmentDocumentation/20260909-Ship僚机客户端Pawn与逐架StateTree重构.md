@@ -123,4 +123,4 @@ status_note: Pawn/Movement/UE StateTree/Actor池、僚机Mass清理及v13合同�
 - [需求](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md)
 - [前置开发案](20260908-Ship僚机空地统一匈牙利自动选敌.md)
 - [当前飞船玩法](../Gameplay/飞船.md)
-- [实施归档](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md)
+- [实施归档](../Archive/9月归档清单.md#arc-20260909-003)

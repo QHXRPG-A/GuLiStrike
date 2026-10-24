@@ -3,6 +3,7 @@
 #include "NavMesh/NavMeshPath.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "HAL/IConsoleManager.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 
 namespace
 {
@@ -93,7 +94,63 @@ void FGuLiSharedMoveIntent::Generate(const ANavigationData& NavData, uint32 Gene
 
 bool FGuLiSharedMoveIntent::InDockingArea(const FVector& Position) const
 {
-	return bMetadataReady && FVector::DistSquared2D(Position,Click) <= FMath::Square(GeneratedRadius+Pitch);
+	// A single square slot or engineering work point has no generated ring/Pitch.
+	// It still needs a nonzero area for the budgeted, verified final connection.
+	// This margin does not change square slot spacing or arrival acceptance.
+	return bMetadataReady && FVector::DistSquared2D(Position,Click)
+		<= FMath::Square(GeneratedRadius+FMath::Max(Pitch,float(GuLiGrid::CellSize)));
+}
+void FGuLiSharedMoveIntent::GenerateGrid(UGuLiGroundGridSubsystem& Grid,const ANavigationData& NavData,FGuLiNavigationWorkBudget& Budget)
+{
+    const auto Snapshot=Grid.Snapshot();if (!Snapshot || bGridSlotsReady) return;
+    FGuLiNavigationWorkBudget::FScope Scope(Budget);
+    if (!GridSlots)
+    {
+        GridSlots=Grid.CreateSlotWorkspace();if (!GridSlots) return;
+        GridRestoreCursor=GridBuildCursor=0;
+        AssignedPoints.GenerateKeyArray(GridRestoreMembers);
+    }
+    while (!bGridMetadataReady && GridBuildCursor<UnassignedMembers.Num() && Budget.CanWork())
+    {
+        const uint32 Id=UnassignedMembers[GridBuildCursor++];
+        if (AssignedPoints.Contains(Id)) continue;
+        const int32* Size=GridSizes.Find(Id);
+        if (!Size || !GridSlots->Add(Id,*Size)) { bExhausted=true;bGridSlotsReady=true;GridSlots.Reset();return; }
+    }
+    if (!bGridMetadataReady)
+    {
+        if (GridBuildCursor<UnassignedMembers.Num() || !Budget.CanWork()) return;
+        GridSlots->Freeze(*Snapshot,Click);bGridMetadataReady=true;
+    }
+    while (GridRestoreCursor<GridRestoreMembers.Num() && Budget.CanWork())
+    {
+        const uint32 Id=GridRestoreMembers[GridRestoreCursor++];const int32* Size=GridSizes.Find(Id);
+        if (!Size) { bExhausted=true;bGridSlotsReady=true;GridSlots.Reset();return; }
+        GridSlots->Occupy(Snapshot->AnchorAt(AssignedPoints.FindChecked(Id).Location,*Size),*Size);
+    }
+    if (GridRestoreCursor<GridRestoreMembers.Num()) return;
+    uint32 Id;FIntPoint Anchor;int32 Size;FNavLocation Accepted;
+    const auto Navigable=[&](uint32,FIntPoint Cell,int32 Footprint)
+    {
+        // Next charges one candidate projection. Keep exact formation XY and obtain a real polygon reference.
+        FGuLiNavigationWorkBudget::FQueryScope Query(Budget);
+        const FVector Point=Snapshot->Center(Cell,Footprint);
+        if (!NavData.ProjectPoint(Point,Accepted,FVector(.1,.1,5000),NavData.GetDefaultQueryFilter(),nullptr)
+            || !Accepted.NodeRef || !NavData.IsNodeRefValid(Accepted.NodeRef)
+            || FVector::DistSquared2D(Point,Accepted.Location)>.01) return false;
+        Accepted.Location.X=Point.X;Accepted.Location.Y=Point.Y;return true;
+    };
+    while (GridSlots->Next(*Snapshot,Budget,Id,Anchor,Size,Navigable))
+    {
+        AssignedPoints.Add(Id,Accepted);
+        GeneratedRadius=FMath::Max(GeneratedRadius,float(FVector::Dist2D(Accepted.Location,Click)));
+    }
+    if (GridSlots->IsFinished())
+    {
+        UnassignedMembers.RemoveAll([this](uint32 K){return AssignedPoints.Contains(K);});
+        bGridSlotsReady=true;bExhausted=true;bMetadataReady=true;
+        GridSlots.Reset();GridRestoreMembers.Empty();
+    }
 }
 
 TSharedPtr<FGuLiSharedRouteGoal> FGuLiSharedMoveRoutePool::Goal(const FVector& Target)

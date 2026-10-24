@@ -6,6 +6,7 @@
 
 struct FMassMovingAvoidanceParameters;
 struct FMassMovementParameters;
+struct FGuLiOreObstacleIndex;
 
 /**
  * Pure, deterministic policy used by the Commander Mass predictive-avoidance processor.
@@ -44,6 +45,8 @@ namespace GuLiCommanderAvoidancePolicy
 		bool bEnvironment = false;
 		FVector DesiredVelocity = FVector::ZeroVector;
 		float MaximumSpeed = 0.0f;
+		bool bEngineering = false;
+		float HalfHeight = 0;
 	};
 
 	/** One exact-range collider, selected by distance and stable identity before CPA. */
@@ -54,7 +57,11 @@ namespace GuLiCommanderAvoidancePolicy
 		uint64 StableKey = 0u;
 		bool bOverlapping = false;
 		double TimeToCollision = TNumericLimits<double>::Max();
+		bool bStaticOre = false;
+		FAgentSnapshot StaticCollider;
 	};
+	inline const FAgentSnapshot& ResolveCandidate(TConstArrayView<FAgentSnapshot> Agents,const FNearestCandidate& Candidate)
+	{ return Candidate.bStaticOre ? Candidate.StaticCollider : Agents[Candidate.AgentIndex]; }
 
 	/** Query work counters. Bucket visits measure actual local lookup work before exact filtering. */
 	struct GULISTRIKE_API FCandidateQueryMetrics
@@ -113,6 +120,7 @@ namespace GuLiCommanderAvoidancePolicy
 	struct GULISTRIKE_API FCandidateQueryScratch
 	{
 		TArray<uint32> EnvironmentMarks;
+		TArray<uint32> OreNodes;
 		TArray<const FAvoidanceBucket*, TInlineAllocator<64>> Buckets;
 		uint32 Generation = 0;
 		void BeginQuery(int32 Count);
@@ -171,7 +179,8 @@ namespace GuLiCommanderAvoidancePolicy
 		float MaximumHeightDifference = MaximumHeightDifferenceCentimeters,
 		float CellSize = SpatialCellSizeCentimeters,
 		float TimeHorizon = 0.5f,
-		FCandidateQueryScratch* Scratch = nullptr);
+		FCandidateQueryScratch* Scratch = nullptr,
+		const FGuLiOreObstacleIndex* Ore = nullptr);
 
 	/** Copies only CPA-related values; separation stiffness and distance are intentionally ignored. */
 	GULISTRIKE_API FPredictiveParameters MakePredictiveParameters(

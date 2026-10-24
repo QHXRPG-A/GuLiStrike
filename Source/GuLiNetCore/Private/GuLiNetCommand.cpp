@@ -25,7 +25,7 @@ bool DecodeCommandReceipt(std::span<const std::uint8_t> Data, CommandReceipt& Ou
 }
 Bytes EncodeCommand(const FrozenCommand& V)
 {
-    Writer W; W.Identity(V.Event); W.U64(V.At); W.Text(V.Operation); W.Blob(V.Arguments);
+    Writer W; W.Identity(V.Event); W.U64(V.At);W.U64(V.AcceptedSequence); W.Text(V.Operation); W.Blob(V.Arguments);
     W.U32(static_cast<std::uint32_t>(V.Members.size()));
     for (const auto& M : V.Members)
     { W.Key(M.Object); W.U64(M.ControlEpoch); W.U64(M.OwnerEpoch); W.U32(M.Slot); W.F64(M.X); W.F64(M.Y); W.F64(M.Z); }
@@ -34,7 +34,7 @@ Bytes EncodeCommand(const FrozenCommand& V)
 bool DecodeCommand(std::span<const std::uint8_t> Data, FrozenCommand& Out)
 {
     Reader R(Data); FrozenCommand V; std::uint32_t Count;
-    if (!R.Identity(V.Event) || !V.Event.Valid() || !R.U64(V.At) || !R.Text(V.Operation,128) || V.Operation.empty()
+    if (!R.Identity(V.Event) || !V.Event.Valid() || !R.U64(V.At) || !R.U64(V.AcceptedSequence) || !R.Text(V.Operation,128) || V.Operation.empty()
         || !R.Blob(V.Arguments,65536) || !R.U32(Count) || !Count || Count>4096) return false;
     std::set<ObjectKey> Objects; std::set<std::uint32_t> Slots;
     for (std::uint32_t I=0; I<Count; ++I)

@@ -1,11 +1,14 @@
 #include "Battle/Combat/GuLiHybridTargetBinding.h"
+#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
+#include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
@@ -21,7 +24,7 @@
 
 namespace GuLiHybridMiner
 {
-constexpr uint32 Version=4;
+constexpr uint32 Version=5;
 struct FPrivate
 {
     FGuLiHybridObjectKey Key,Factory;
@@ -72,12 +75,12 @@ int32 Type(FName Name)
 
 /** Formal miner Actor. Only its assigned simulator advances the production
  * StateTree, navigation and geometry; money and cargo wait for the ledger. */
-class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter
+class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter, public TSharedFromThis<FGuLiHybridMinerAdapter>
 {
     TWeakObjectPtr<UGuLiHybridActorWorldSubsystem> Owner;
     TWeakObjectPtr<AGuLiMiningVehiclePawn> Pawn;
     FGuLiHybridObjectState Record;
-    bool bLocal=false;
+    bool bLocal=false,bPoseQueued=false;
     uint64 LastApplied=0,LastPublished=0;
     UWorld* World() const {return Owner.IsValid()?Owner->GetWorld():nullptr;}
     const FGuLiSoldierDefinition* Definition() const
@@ -120,7 +123,7 @@ class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter
         P->GetCharacterMovement()->SetComponentTickEnabled(false); P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->SetComponentTickEnabled(false);
         if (!P->GetController()) P->SpawnDefaultController(); auto* AI=Cast<AGuLiEngineeringAIController>(P->GetController());
         if (!AI) {Release(); return Failed(TEXT("controller spawn"));}
-        AI->ConfigureVehicleNavigation(); AI->SetActorTickEnabled(false); AI->GetPathFollowingComponent()->SetComponentTickEnabled(false);
+        AI->SetActorTickEnabled(false); AI->GetPathFollowingComponent()->SetComponentTickEnabled(false);
         Resources->EnableHybridMiningSimulation(); ApplyLedger(Record,0,false); return true;
     }
     bool RestoreImpl(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage)
@@ -155,6 +158,7 @@ class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter
             P->PendingResourceEvent=V.PendingEvent; P->PendingResourceOperation=V.PendingOperation; P->PendingResourceAt=V.PendingAt;
             P->NextExtractionTick=V.NextExtraction; P->LastResourceLedger=V.ResourceLedger;
             if (!P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->RestoreHybridTravel(V.Travel,false)) return false;
+            P->MovementPresentation->ResetToAuthority();
             LastApplied=LastPublished=0;
         }
         if (Stage==EGuLiHybridRestoreStage::Activate)
@@ -184,7 +188,7 @@ public:
         }
     }
     uint32 Version() const override {return GuLiHybridMiner::Version;}
-    TArray<FName> RequiredSharedStateSystems() const override {return {TEXT("CommanderTasks"),TEXT("MiningSlots")};}
+    TArray<FName> RequiredSharedStateSystems() const override {return {TEXT("CommanderTasks"),TEXT("CommanderMass"),TEXT("MiningSlots")};}
     TArray<FGuLiHybridObjectKey> RestoreDependencies(TConstArrayView<uint8> Bytes) const override
     {
         GuLiHybridMiner::FPrivate V;TArray<FGuLiHybridObjectKey> Out;
@@ -205,6 +209,8 @@ public:
         if (auto* P=Pawn.Get())
         {
             P->FindComponentByClass<UGuLiHybridActorComponent>()->Install(V,Local);
+            P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->RefreshMassAuthority();
+            P->MovementPresentation->ResetToAuthority();
             if (Local && V.LifeState==1) {P->bTaskManaged=true; P->ControlMode=EGuLiMiningControlMode::PlayerOrder; World()->GetSubsystem<UGuLiUnitTaskSubsystem>()->RegisterActor(*P);}
         }
     }
@@ -213,10 +219,21 @@ public:
         auto* P=Pawn.Get(); if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         if (!P->PrepareHybridMiningStep()) return;
         const float Dt=static_cast<float>(Delta);
-        auto* AI=CastChecked<AGuLiEngineeringAIController>(P->GetController());
-        auto* Follow=CastChecked<UGuLiEngineeringCrowdFollowingComponent>(AI->GetPathFollowingComponent()); Follow->RefreshParticipation();
-        Follow->TickComponent(Dt,LEVELTICK_All,nullptr); P->GetCharacterMovement()->TickComponent(Dt,LEVELTICK_All,nullptr);
         P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->AdvanceHybrid(Dt); P->AdvanceHybridMining(Dt);
+        GuLiGrid::ObserveRemoteBody(*World(),Record,P->GetActorLocation(),Definition()->FootprintCells,
+            P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->GetTransitState().Phase==EGuLiTransitPhase::Ground);
+        if (At<LastPublished+6 || bPoseQueued) return;
+        bPoseQueued=true;const uint64 Epoch=Record.OwnerEpoch;
+        TWeakPtr<FGuLiHybridMinerAdapter> Weak=StaticCastSharedRef<FGuLiHybridMinerAdapter>(AsShared());
+        World()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->QueueEngineeringPosePublish([Weak,At,Epoch]
+        {
+            if (auto Self=Weak.Pin())
+            {Self->bPoseQueued=false;if (Self->Record.OwnerEpoch==Epoch) Self->PublishPose(At);}
+        });
+    }
+    void PublishPose(uint64 At)
+    {
+        auto* P=Pawn.Get();if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         if (At<LastPublished+6) return;
         FGuLiHybridStateArchive A(65536); uint32 Schema=Version(); A.Value(Schema);
         auto Position=P->GetActorLocation(); auto Rotation=P->GetActorQuat(); auto Velocity=P->GetCharacterMovement()->Velocity;
@@ -239,7 +256,8 @@ public:
             if (auto* Candidate=Cast<AGuLiBattlePlayerState>(Entry); Candidate && Candidate->GetPlayerGuid()==Record.Controller) {Player=Candidate;break;}
         if (!Player) return false;
         FGuLiCommanderSelectionState Selection; Selection.SelectionRevision=Command.SelectionRevision=1;Selection.ActorIds.Add(FGuLiControllableActorId(Record.Ordinal));
-        FString Message;int32 Accepted=0,Rejected=0;return World()->GetSubsystem<UGuLiUnitTaskSubsystem>()->Submit(*Player,Selection,Command,Message,Accepted,Rejected) && Accepted==1;
+        FString Message;int32 Accepted=0,Rejected=0;const bool Submitted=World()->GetSubsystem<UGuLiUnitTaskSubsystem>()->Submit(*Player,Selection,Command,Message,Accepted,Rejected) && Accepted==1;
+        return Submitted;
     }
     bool ApplyMotion(TConstArrayView<uint8> Bytes,uint64 At) override
     {
@@ -250,6 +268,7 @@ public:
         A.Value(Mining);A.Value(Node);A.Value(Aim);if (Schema!=Version() || !A.Done()) return false;
         P->SetActorLocationAndRotation(Position,Rotation,false,nullptr,ETeleportType::TeleportPhysics);P->GetCharacterMovement()->Velocity=Velocity;
         P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->ApplyHybridTransitMotion(Transit);
+        GuLiGrid::ObserveRemoteBody(*World(),Record,Position,Definition()->FootprintCells,Transit.Phase==EGuLiTransitPhase::Ground);
         P->MiningVisual={};P->MiningVisual.bActive=Mining;P->MiningVisual.NodeId=Node;P->MiningVisual.Target=Aim;P->OnRep_MiningVisual();LastApplied=At;return true;
     }
     void ApplyLedger(const FGuLiHybridObjectState& V,uint64 Revision,bool Effects) override
@@ -257,6 +276,7 @@ public:
         Record=V;if (auto* P=Pawn.Get())
         {
             P->FindComponentByClass<UGuLiHybridActorComponent>()->Install(V,bLocal);
+            P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->RefreshMassAuthority();
             FGuLiTargetHandle Target;Target.Kind=EGuLiTargetKind::GroundActor;Target.AuthorityId=V.Key.StableId;Target.Generation=V.Key.LifeGeneration;Target.LocalId=V.Ordinal;
             P->CombatHealth->ApplyHybridHealth(Target,V.Team,V.Health,World()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch(),Revision,Effects);
             if (V.LifeState!=1) {P->GetCharacterMovement()->StopMovementImmediately();P->SetMiningVisual(false);}

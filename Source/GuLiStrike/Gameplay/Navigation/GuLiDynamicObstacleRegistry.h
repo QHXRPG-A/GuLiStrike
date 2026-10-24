@@ -7,6 +7,8 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "GuLiDynamicObstacleRegistry.generated.h"
 
+class ANavigationData;
+
 enum class EGuLiDynamicObstacleKind : uint8
 {
 	StaticWorld,
@@ -41,6 +43,39 @@ struct GULISTRIKE_API FGuLiDynamicObstacle
 	float RadiusCentimeters = 0.0f;
 	EGuLiDynamicObstacleKind Kind = EGuLiDynamicObstacleKind::StaticWorld;
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
+	float HalfHeight = 0.0f;
+};
+
+/** Initial convex collision footprint; shared by navigation, avoidance and placement. */
+struct GULISTRIKE_API FGuLiOreNodeObstacle
+{
+	uint32 NodeId = 0;
+	uint16 ClusterId = 0;
+	FGuLiDynamicObstacle Obstacle;
+	float HalfHeight = 0;
+};
+
+struct FGuLiOreObstacleChunk
+{
+	TArray<FGuLiOreNodeObstacle> Nodes;
+	uint32 AliveMask = 0;
+};
+
+struct FGuLiOreObstacleTopology
+{
+	TMap<FIntPoint,TArray<int32>> Cells;
+	TArray<FIntPoint> NodeAddresses;
+};
+
+/** Immutable static layer. Only ore changes copy affected cluster chunks; motion shares it unchanged. */
+struct GULISTRIKE_API FGuLiOreObstacleIndex
+{
+	uint64 Revision = 0;
+	int32 AliveCount = 0;
+	TSharedPtr<const FGuLiOreObstacleTopology,ESPMode::ThreadSafe> Topology;
+	TArray<TSharedPtr<const FGuLiOreObstacleChunk,ESPMode::ThreadSafe>> Chunks;
+	const FGuLiOreNodeObstacle* Find(uint32 NodeId) const;
+	void Query(const FVector& Position,float Radius,TArray<uint32>& Out) const;
 };
 
 /** Exact local dependencies, including empty cells an obstacle can subsequently enter. */
@@ -60,6 +95,10 @@ struct GULISTRIKE_API FGuLiDynamicObstacleSnapshot
 	TMap<FIntPoint,TArray<int32>> Cells;
 	TMap<uint32,int32> ByHandle;
 	TMap<FIntPoint,uint64> CellVersions;
+	TSharedPtr<const FGuLiOreObstacleIndex,ESPMode::ThreadSafe> Ore;
+	/** Query indices encode static ore separately; consumers must use these accessors. */
+	const FGuLiDynamicObstacle& GetObstacle(int32 QueryIndex) const;
+	const FGuLiDynamicObstacle* FindObstacle(uint32 Handle) const;
 	FGuLiObstacleRegionStamp CaptureRegion(const FVector& From, const FVector& To, float Radius) const;
 	bool IsRegionCurrent(const FGuLiObstacleRegionStamp& Stamp) const;
 	static FIntPoint Cell(const FVector& P) { return {FMath::FloorToInt32(P.X/CellSize),FMath::FloorToInt32(P.Y/CellSize)}; }
@@ -94,6 +133,7 @@ class GULISTRIKE_API UGuLiDynamicObstacleRegistrySubsystem final
 
 public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 	virtual void Deinitialize() override;
 
 	virtual FGuLiDynamicObstacleHandle RegisterObstacle(
@@ -113,9 +153,23 @@ public:
 	bool HasStaticChangesSince(uint32 Since, const FBox& Bounds) const;
 	/** Invalidate nearby route/work-position caches when existing world geometry changes. */
 	void NotifyStaticGeometryChanged(const FBox& Bounds);
+	void InitializeOreObstacles(TConstArrayView<FGuLiOreNodeObstacle> Nodes,TConstArrayView<uint8> Remaining);
+	void RemoveOreObstacles(TConstArrayView<uint32> NodeIds);
+	void ClearOreObstacles();
+	int32 GetAliveOreCount() const { return OreIndex ? OreIndex->AliveCount : 0; }
+	uint64 GetOrePublicationCount() const { return OrePublications; }
+	bool IsOpeningStaticRegion() const { return bOpeningStaticRegion; }
+	void FlushOreNavigationNotifications();
 
 private:
 	TSharedPtr<const FGuLiDynamicObstacleSnapshot,ESPMode::ThreadSafe> Snapshot;
+	TSharedPtr<const FGuLiOreObstacleIndex,ESPMode::ThreadSafe> OreIndex;
+	uint64 OrePublications = 0;
+	bool bOpeningStaticRegion=false;
+	bool bOreNavigationFinished=false;
+	TMap<int32,FBox> PendingOreNavigationRegions;
+	void NotifyStaticGeometryOpened(const FBox& Bounds);
+	UFUNCTION() void HandleOreNavigationFinished(ANavigationData* NavigationData);
 	TArray<FGuLiDynamicObstacle> Obstacles;
 	TMap<uint32, int32> IndexByHandle;
 	FGuLiDynamicObstaclesChanged ObstaclesChanged;

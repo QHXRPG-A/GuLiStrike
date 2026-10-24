@@ -10,6 +10,8 @@
 #include "Engine/DataTable.h"
 #include "Engine/World.h"
 #include "NavigationSystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+#include "Components/CapsuleComponent.h"
 
 static bool AppendResourceStartup(UWorld& World,FGuLiHybridManifestData& Data,FString& Error)
 {
@@ -26,13 +28,14 @@ static bool AppendResourceStartup(UWorld& World,FGuLiHybridManifestData& Data,FS
     }
     auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);const auto* Prototype=Found && Miner.ActorClass?Cast<ACharacter>(Miner.ActorClass->GetDefaultObject()):nullptr;
     const auto* NavData=Nav && Prototype?Nav->GetNavDataForProps(Prototype->GetNavAgentPropertiesRef()):nullptr;
-    if (!Map || !Factory || !Found || !Miner.ActorClass->IsChildOf(AGuLiMiningVehiclePawn::StaticClass()) || !NavData || Initial<0 || Initial>1024)
+    const auto* Grid=World.GetSubsystem<UGuLiGroundGridSubsystem>();
+    if (!Map || !Factory || !Found || !Miner.ActorClass->IsChildOf(AGuLiMiningVehiclePawn::StaticClass()) || (!NavData && !(Grid && Grid->IsReady())) || Initial<0 || Initial>1024)
     {Error=TEXT("Missing formal miner/factory startup configuration or navigation");return false;}
     uint32 Ordinal=0;for (const auto& O:Data.Objects) if (O.Key.Kind==EGuLiHybridObjectKind::Engineer || O.Key.Kind==EGuLiHybridObjectKind::Miner) Ordinal=FMath::Max(Ordinal,O.Ordinal);
     for (const auto Team:{EGuLiTeam::Red,EGuLiTeam::Blue})
     {
         const FVector Anchor=Team==EGuLiTeam::Red?Map->SpawnAnchors.RedFactory:Map->SpawnAnchors.BlueFactory;FNavLocation Ground;
-        if (!Nav->ProjectPointToNavigation(Anchor,Ground,FVector(100,100,100000),NavData) || FVector::DistSquared2D(Ground.Location,Anchor)>FMath::Square(100.))
+        if (!GuLiGrid::ProjectBody(World,Anchor,Factory->FootprintCells,FVector(300,300,100000),Ground,NavData))
         {Error=TEXT("Formal factory anchor has no navigable ground");return false;}
         auto& F=Data.Objects.AddDefaulted_GetRef();F.Team=Team;F.Ordinal=Team==EGuLiTeam::Red?101:102;F.Definition=FString::Printf(TEXT("building/%d"),Factory->DefinitionId);
         F.Key=FGuLiHybridManifest::MakeStableKey(Data.MapPackage,EGuLiHybridObjectKind::Building,FString::Printf(TEXT("initial/factory/%u"),uint8(Team)));
@@ -41,11 +44,12 @@ static bool AppendResourceStartup(UWorld& World,FGuLiHybridManifestData& Data,FS
         for (int32 Index=0;Index<Initial;++Index)
         {
             const FVector Desired=Assembly+GuLiResources::InitialEngineeringVehicleOffset(Team,Index,false);
-            if (!Nav->ProjectPointToNavigation(Desired,Ground,FVector(100,100,100000),NavData) || FVector::DistSquared2D(Ground.Location,Desired)>FMath::Square(100.))
+            if (!GuLiGrid::ProjectBody(World,Desired,Miner.FootprintCells,FVector(300,300,100000),Ground,NavData))
             {Error=FString::Printf(TEXT("Formal miner has no navigable startup ground: team=%u index=%d"),uint8(Team),Index);return false;}
             auto& O=Data.Objects.AddDefaulted_GetRef();O.Team=Team;O.Ordinal=++Ordinal;O.Definition=FString::Printf(TEXT("unit/%u"),Type);
             O.Key=FGuLiHybridManifest::MakeStableKey(Data.MapPackage,EGuLiHybridObjectKind::Miner,FString::Printf(TEXT("initial/miner/%u/%d"),uint8(Team),Index));
-            O.Location=Ground.Location+FVector(0,0,130);O.FacingYawDegrees=Team==EGuLiTeam::Red?-90:90;O.Health=Miner.MaxHealth;O.EstimatedCost=.5;
+            O.Location=Ground.Location+FVector(0,0,Prototype->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()*Miner.GridDimensionScale);
+            O.FacingYawDegrees=Team==EGuLiTeam::Red?-90:90;O.Health=Miner.MaxHealth;O.EstimatedCost=.5;
         }
     }
     auto Add=[&](const FString& Name,EGuLiHybridRuleKind Kind,const FString& Source)

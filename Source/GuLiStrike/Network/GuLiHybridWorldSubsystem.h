@@ -80,6 +80,7 @@ struct FGuLiHybridCommand
     FName Operation;
     TArray<uint8> Arguments;
     TArray<FGuLiHybridCommandMember> Members;
+    uint64 AcceptedSequence=0;
 };
 struct FGuLiHybridCommandResult
 {
@@ -253,6 +254,8 @@ public:
     virtual bool UsesObject(const FGuLiHybridObjectKey&) const { return false; }
     virtual void ResetResourceRequests(const TArray<FGuLiHybridObjectKey>&,uint64) {}
     virtual void Advance(uint64 LogicalTick,double DeltaSeconds) {}
+    /** Reliable, membership-authenticated input. The system validates object authority and its payload. */
+    virtual bool ReceiveEvent(const FGuid& Peer,const FGuid& Event,TConstArrayView<uint8> Bytes) { return false; }
     virtual bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const = 0;
     virtual bool CaptureCurrent(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const {return Capture(Objects,Bytes);}
     virtual bool Validate(const TArray<FGuLiHybridSharedStatePiece>& Pieces,
@@ -329,6 +332,7 @@ public:
     void ApplyLateGameplay(UWorld* World,ELevelTick TickType,float DeltaSeconds);
     bool RegisterFactory(EGuLiHybridObjectKind Kind, UObject& LifetimeOwner, FGuLiHybridAdapterFactory Factory);
     bool RegisterSharedStateSystem(FName Name,TSharedPtr<IGuLiHybridSharedStateAdapter> Adapter);
+    bool SendSharedStateEvent(FName System,const FGuid& Peer,const FGuid& Event,TConstArrayView<uint8> Bytes);
     void UnregisterFactories(const UObject& LifetimeOwner);
     bool BindActor(const FGuLiHybridObjectKey& Key,AActor& Actor,uint32 Ordinal=0);
     void UnbindActor(const FGuLiHybridObjectKey& Key,const AActor& Actor);
@@ -343,6 +347,8 @@ public:
     bool GetObject(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
     /** Lightweight applied facts; excludes capability, upgrade and private-work payloads. */
     bool GetObjectView(const FGuLiHybridObjectKey& Key,FGuLiHybridObjectState& Out) const;
+    /** Copies only the requested capability, never the object's upgrade/work collections. */
+    bool GetObjectCapability(const FGuLiHybridObjectKey& Key,FName Name,FGuLiHybridCapabilityState& Out) const;
     /** Exact applied lifetime and owner, without materializing reflected object fields. */
     bool GetObjectLifecycle(const FGuLiHybridObjectKey& Key,FGuid& SimulationOwner,uint8& LifeState,GuLiNet::ObjectReadCursor* Lookup=nullptr) const;
     bool GetTeamCapabilityObject(EGuLiTeam Team,FName Capability,FGuLiHybridObjectState& Out) const;

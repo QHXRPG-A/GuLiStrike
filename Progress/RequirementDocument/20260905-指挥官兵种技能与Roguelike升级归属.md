@@ -28,8 +28,11 @@ relations:
   - REQ-20260905-001-D04
   - REQ-20260905-001-D05
 status_note: 草案，待确认；不是已批准的开发任务
-split_payload_sha256: 5c2e5c0f9faad8359d9df5f9fc9484a7e7ecd96e0f6b98e1495ffd1c2011e2d4
+split_payload_sha256: e44302910a4b151b78f1d3ebbbfda8a613884703096359c65b196e4f3b9c0d6e
 split_children: 5
+split_legacy_payload_sha256: 5c2e5c0f9faad8359d9df5f9fc9484a7e7ecd96e0f6b98e1495ffd1c2011e2d4
+split_pre_consolidation_payload_sha256: e44302910a4b151b78f1d3ebbbfda8a613884703096359c65b196e4f3b9c0d6e
+split_contract_updated: '2026-10-21'
 ---
 
 # 指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属
@@ -53,5 +56,7 @@ split_children: 5
 
 ## 内容完整性
 
-- 拆分正文规范化 SHA-256：`5c2e5c0f9faad8359d9df5f9fc9484a7e7ecd96e0f6b98e1495ffd1c2011e2d4`
+- 拆分正文规范化 SHA-256：`e44302910a4b151b78f1d3ebbbfda8a613884703096359c65b196e4f3b9c0d6e`
 - 使用 `progress_docs.py split --check` 可重新拼接子页并核对哈希。
+
+> 2026-10-21文档整理：原合同与整理前现有正文已有差异；旧合同与当前正文哈希均已保留，原文备份见Progress/Evidence/20261021-DocumentConsolidation/link-migration-before.zip。本次只迁移至[9月归档清单](../Archive/9月归档清单.md)等新入口并重建当前合同，不追认旧正文与最初拆分版本一致。

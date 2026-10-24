@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
+#include "Gameplay/Units/GuLiEngineeringCollision.h"
 
 #include "NavigationData.h"
 #include "NavigationSystem.h"
@@ -156,6 +157,7 @@ namespace GuLiCommanderNavigationPolicy
 						}
 						const FManualAvoidanceAgent& Neighbor = Agents[NeighborIndex];
 						if (!Neighbor.bParticipates || Neighbor.StableSoldierId == 0u
+							|| GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Neighbor.bEngineering)
 							|| (!Agent.bReceivesAvoidance && !Neighbor.bReceivesAvoidance))
 						{
 							continue;
@@ -218,7 +220,7 @@ namespace GuLiCommanderNavigationPolicy
 		const bool bOnlyActivePairs)
 	{
 		constexpr float RecoverySeconds = 0.5f;
-		constexpr float PassiveSpeedScale = 0.25f;
+		constexpr float PassivePushWeight = 0.25f;
 		FManualAvoidanceMetrics Metrics;
 		InOutSpatialGrid.Reset();
 		OutVelocities.Init(FVector::ZeroVector, Agents.Num());
@@ -281,6 +283,7 @@ namespace GuLiCommanderNavigationPolicy
 					++Metrics.BucketEntriesVisited;
 					const auto& B = Agents[J];
 					if (A.StableSoldierId == B.StableSoldierId
+						|| GuLiEngineeringCollision::IgnoresPeer(A.bEngineering, B.bEngineering)
 						|| (A.StableSoldierId > B.StableSoldierId && (!bOnlyActivePairs || IsActive(B)))
 						|| FMath::Abs(A.Location.Z - B.Location.Z) >= MaximumHeightDifferenceCentimeters) return;
 					++Metrics.CandidatePairs;
@@ -353,17 +356,48 @@ namespace GuLiCommanderNavigationPolicy
 					&& (Pair.Penetration > 0.0f || (OutwardSpeed < 0.0
 						&& Pair.Penetration > -0.1f * (A.RadiusCentimeters + B.RadiusCentimeters)));
 				const float WeightA = A.bReceivesAvoidance ? 1.0f
-					: (A.bCanBePushed && bFriendlyPressure ? PassiveSpeedScale : 0.0f);
+					: (A.bCanBePushed && bFriendlyPressure ? PassivePushWeight : 0.0f);
 				const float WeightB = B.bReceivesAvoidance ? 1.0f
-					: (B.bCanBePushed && bFriendlyPressure ? PassiveSpeedScale : 0.0f);
+					: (B.bCanBePushed && bFriendlyPressure ? PassivePushWeight : 0.0f);
 				const float Weight = WeightA + WeightB;
 				if (Weight <= 0.0f) continue;
 				const double Correction = FMath::Max(0.0, Pair.Penetration / RecoverySeconds - OutwardSpeed);
 				OutVelocities[Pair.A] = (OutVelocities[Pair.A] + Pair.Normal * Correction * (WeightA / Weight))
-					.GetClampedToMaxSize(A.MaximumSpeed * (A.bReceivesAvoidance ? 1.0f : PassiveSpeedScale));
+					.GetClampedToMaxSize(A.MaximumSpeed);
 				OutVelocities[Pair.B] = (OutVelocities[Pair.B] - Pair.Normal * Correction * (WeightB / Weight))
-					.GetClampedToMaxSize(B.MaximumSpeed * (B.bReceivesAvoidance ? 1.0f : PassiveSpeedScale));
+					.GetClampedToMaxSize(B.MaximumSpeed);
 			}
+		}
+		// Pressure chooses a direction, not a fractional walking speed. Keep the
+		// existing trigger and pair weights; only passive friendly yields run at full speed.
+		bool bHasPassiveYield = false;
+		for (int32 I = 0; I < Agents.Num(); ++I)
+		{
+			const auto& A = Agents[I];
+			if (IsValid(A) && !A.bReceivesAvoidance && A.bCanBePushed
+				&& !OutVelocities[I].IsNearlyZero(1.0f))
+			{
+				OutVelocities[I] = OutVelocities[I].GetSafeNormal2D() * A.MaximumSpeed;
+				bHasPassiveYield = true;
+			}
+		}
+		// Normalizing must not undo enemy-contact braking. Reuse the captured pairs,
+		// with no new neighbor search, and only shorten an obstructed yield segment.
+		if (bHasPassiveYield) for (const FPair& Pair : Pairs)
+		{
+			const auto& A = Agents[Pair.A];
+			const auto& B = Agents[Pair.B];
+			if (A.Team != 0u && A.Team == B.Team) continue;
+			const double AllowedInwardSpeed = FMath::Max(0.0f, -Pair.Penetration / RecoverySeconds);
+			auto LimitPassive = [&](int32 Index, const FVector& Normal)
+			{
+				if (Agents[Index].bReceivesAvoidance || !Agents[Index].bCanBePushed) return;
+				const double Inward = FVector::DotProduct(OutVelocities[Index], Normal);
+				if (Inward < -AllowedInwardSpeed)
+					OutVelocities[Index] *= AllowedInwardSpeed / -Inward;
+			};
+			LimitPassive(Pair.A, Pair.Normal);
+			LimitPassive(Pair.B, -Pair.Normal);
 		}
 		return Metrics;
 	}

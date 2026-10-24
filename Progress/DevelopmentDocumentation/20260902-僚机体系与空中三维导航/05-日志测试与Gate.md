@@ -23,7 +23,10 @@ relations:
   parent: DEV-20260902-001
 status_note: 既定实现已收尾（Reward经济规则待玩法配置；源码Dedicated、完整Server Cook、20个真实Dedicated角色、2个拆分H4000角色及S9双10分钟运行已有通过记录；未追加的性能数值阈值不声明通过）
 split_order: 5
-split_segment_sha256: d78336d47129bc68dd75b078169854044985a420a1df1d1bb13f2b752d5688be
+split_segment_sha256: 5308fae34a948f476a0cf24df8556abea925a7868d56a98a3b7922ae261ba0f1
+split_legacy_segment_sha256: d78336d47129bc68dd75b078169854044985a420a1df1d1bb13f2b752d5688be
+split_pre_consolidation_segment_sha256: 5308fae34a948f476a0cf24df8556abea925a7868d56a98a3b7922ae261ba0f1
+split_contract_updated: '2026-10-21'
 ---
 
 # 僚机体系、空中三维导航与客户端校验转发 — 技术方案 · 日志、测试与 Gate

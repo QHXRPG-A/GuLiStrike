@@ -1,0 +1,61 @@
+{
+  "diff_check": {
+    "command": "git diff --check -- Source",
+    "exit_code": 0
+  },
+  "static_review": [
+    "input monotonic clock",
+    "frozen full membership includes engineers",
+    "matching command and actual displacement",
+    "failed/cancelled members never reduce denominator",
+    "no network messages or planning changes",
+    "one pending batch and cached HUD text",
+    "world/epoch teardown"
+  ],
+  "build": "GuLiStrikeEditor Win64 Development succeeded",
+  "pie": "not_run",
+  "visual": "not_run",
+  "performance": "not_run",
+  "sources": [
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderMoveResponse.cpp",
+      "sha256": "7ed9d7824a93573766dfff4f7a5dec556aba03bbdfb85e87e4bb8ee6a2f9b0dd"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h",
+      "sha256": "29a06ef7ce1dac6e2b60b25424ebfe8e74d83da09dcc453d34a68468bf4bd805"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp",
+      "sha256": "a3ed5f628bdf743918db461e2e9c11a027e94ac1c6fafd07654d1ab52f654497"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderHybridCommands.cpp",
+      "sha256": "c40b3b6a3b70e554cf180e328693fbca6237f3d4abf2e5c6317521f44fb307d5"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderUICommands.cpp",
+      "sha256": "2b46a20be024206c8b6d88be7844e7301d05b34dd4d681efa4f51ca3b3de3317"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp",
+      "sha256": "d27edbab0037af64aaa484f73c91505e44c95da321e7439a55784e029004f01d"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiMoveLatency.h",
+      "sha256": "0c0cd62a7cd8ed5e3cbbd94b7aa7ab78f6f654c019c537870eb79285c644502d"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h",
+      "sha256": "c362af27524aa52aa41107bb792bbdd32e37728bcf697c31f08f32a84f416523"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp",
+      "sha256": "4eeaa5c6392610f443f739a4dbf87d7292198edeb9721ae4bc97e0390e61482b"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp",
+      "sha256": "efc2638a0f4ccdcdc53b6eed552863cc792a793bdf81abaedb77e421269a56b7"
+    }
+  ]
+}

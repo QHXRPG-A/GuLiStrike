@@ -39,10 +39,11 @@ bool GuLiBuildingPlacementPolicy::IsBuildingRole(const EGuLiCommanderRole Role)
 	return Role == EGuLiCommanderRole::Commander || Role == EGuLiCommanderRole::Ground;
 }
 
-FVector GuLiBuildingPlacementPolicy::SnapGroundLocation(const FVector& Location)
+FVector GuLiBuildingPlacementPolicy::SnapGroundLocation(const FVector& Location,int32 FootprintCells)
 {
-	return FVector(FMath::GridSnap(Location.X, GridSizeCentimeters),
-		FMath::GridSnap(Location.Y, GridSizeCentimeters), Location.Z);
+    const double Offset=FootprintCells%2?0.:GridSizeCentimeters*.5;
+	return FVector(FMath::GridSnap(Location.X-Offset, GridSizeCentimeters)+Offset,
+		FMath::GridSnap(Location.Y-Offset, GridSizeCentimeters)+Offset, Location.Z);
 }
 
 float GuLiBuildingPlacementPolicy::SnapYaw(float YawDegrees)

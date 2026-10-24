@@ -2,6 +2,7 @@
 #include "Gameplay/Models/GuLiModelPresentationComponent.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
+#include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
 #include "Gameplay/Resources/GuLiResourceInventoryComponent.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
@@ -46,13 +47,12 @@ AGuLiMiningVehiclePawn::AGuLiMiningVehiclePawn(const FObjectInitializer& ObjectI
 	// while selecting the deliberately conservative CommanderSoldier nav agent.
 	GetCapsuleComponent()->InitCapsuleSize(130.0f, 130.0f);
     GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Block);
-	GetCapsuleComponent()->SetMaskFilterOnBodyInstance(GuLiEngineeringCollision::VehicleMask);
-	GetCapsuleComponent()->SetMoveIgnoreMask(GuLiEngineeringCollision::VehicleMask);
     GetCapsuleComponent()->SetCanEverAffectNavigation(false);
     VehiclePresentation = CreateDefaultSubobject<UChildActorComponent>(TEXT("VehiclePresentation"));
     VehiclePresentation->SetupAttachment(GetCapsuleComponent());
     VehiclePresentation->OnChildActorCreated().AddStatic(&GuLiUnitRenderPolicy::ApplyToActor);
     MiningPresentation = CreateDefaultSubobject<UGuLiMiningPresentationComponent>(TEXT("MiningPresentation"));
+	MovementPresentation = CreateDefaultSubobject<UGuLiEngineeringPoseComponent>(TEXT("MovementPresentation"));
 	AIControllerClass = AGuLiMiningVehicleAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	bUseControllerRotationYaw = false;
@@ -107,12 +107,16 @@ void AGuLiMiningVehiclePawn::InitializeVehicleState(EGuLiTeam InTeam,FGuLiContro
 	GraceSeconds = Config.PlayerOrderGraceSeconds;
 	AutoRetrySeconds = Config.AutoRetrySeconds;
 	GetCharacterMovement()->MaxWalkSpeed = SpeedCentimetersPerSecond;
+	const auto* SourceBody=GetClass()->GetDefaultObject<AGuLiMiningVehiclePawn>()->GetCapsuleComponent();
+	GetCapsuleComponent()->SetCapsuleSize(Unit.FootprintCells*150.f,
+		SourceBody->GetUnscaledCapsuleHalfHeight()*Unit.GridDimensionScale);
+	GetCharacterMovement()->NavAgentProps.AgentRadius=Unit.FootprintCells*150.f;
+	GetCharacterMovement()->NavAgentProps.AgentHeight=GetCapsuleComponent()->GetScaledCapsuleHalfHeight()*2.f;
     PresentationDefinition.ActorClass = Unit.PresentationClass;
     PresentationDefinition.Scale = Unit.PresentationScale;
     OnRep_Presentation();
     if (InFactory) InFactory->RegisterMiningVehicle(*this);
 	if (HasAuthority() && !GetController()) SpawnDefaultController();
-	if (HasAuthority()) CastChecked<AGuLiEngineeringAIController>(GetController())->ConfigureVehicleNavigation();
 	if (UGuLiHybridActorComponent::HasSimulation(this))
 	{
 		bTaskManaged = true; ControlMode = EGuLiMiningControlMode::PlayerOrder;
@@ -152,6 +156,9 @@ void AGuLiMiningVehiclePawn::AdvanceHybridMining(const float DeltaSeconds)
 {
     if (!UGuLiHybridActorComponent::HasSimulation(this) || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return;
     if (FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsRouting()) return;
+    // A commander move completes through travel, independently of ore cache or
+    // reservation readiness, so its task can pop and resume the automatic policy.
+    if (TaskState == EGuLiMiningTaskState::PlayerMoving) { TickPlayerMoving(); return; }
     const auto* Resources = GetResourceSubsystem();
     if (!Resources || !Resources->IsMiningRuntimeReady()) return;
     const bool bRetryingNode = (TaskState == EGuLiMiningTaskState::MovingToCluster || TaskState == EGuLiMiningTaskState::Mining)
@@ -164,7 +171,6 @@ void AGuLiMiningVehiclePawn::AdvanceHybridMining(const float DeltaSeconds)
     case EGuLiMiningTaskState::Mining: TickMining(DeltaSeconds); break;
     case EGuLiMiningTaskState::ReturningToFactory: TickReturningToFactory(); break;
     case EGuLiMiningTaskState::Docking: TickDocking(DeltaSeconds); break;
-    case EGuLiMiningTaskState::PlayerMoving: TickPlayerMoving(); break;
     default: break;
     }
 }
@@ -183,6 +189,7 @@ bool AGuLiMiningVehiclePawn::BeginMoveTo(const FVector& Target, const float Acce
 void AGuLiMiningVehiclePawn::SetEngineeringPresentationVisible(bool bVisible)
 {
 	bVisible=bVisible && GuLiClientPresentation::CanPresent(GetWorld());
+	MovementPresentation->SetPresentationVisible(bVisible);
 	if (AActor* Child = VehiclePresentation->GetChildActor()) Child->SetActorHiddenInGame(!bVisible);
 }
 
@@ -515,6 +522,7 @@ FGuLiMiningVehiclePrivateState AGuLiMiningVehiclePawn::MakePrivateState() const
 void AGuLiMiningVehiclePawn::OnRep_Presentation()
 {
     check(PresentationDefinition.ActorClass);
+	MovementPresentation->ReleaseVisual();
     VehiclePresentation->SetRelativeScale3D(FVector(PresentationDefinition.Scale));
     VehiclePresentation->SetRelativeLocation(FVector(-17.62378f * PresentationDefinition.Scale, 0,
         -GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - 3.2254f * PresentationDefinition.Scale));
@@ -530,6 +538,9 @@ void AGuLiMiningVehiclePawn::OnRep_Presentation()
         TravelBounds += VisualMesh->CalcBounds(VisualMesh->GetComponentTransform().GetRelativeTransform(GetActorTransform())).GetBox();
     }
     OnRep_MiningVisual();
+	MovementPresentation->InitializeVisual(*VehiclePresentation, TravelBounds);
+	MovementPresentation->OnDisplayedPoseChanged.RemoveAll(MiningPresentation.Get());
+	MovementPresentation->OnDisplayedPoseChanged.AddUObject(MiningPresentation.Get(), &UGuLiMiningPresentationComponent::RefreshDisplayedAim);
     SetEngineeringPresentationVisible(!FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsInTransit());
 }
 

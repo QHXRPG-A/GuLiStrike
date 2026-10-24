@@ -115,4 +115,4 @@ status_note: 用户于2026-09-09批准完整实施方案，并进一步确认拥
 - [技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md)
 - [前置统一选敌开发案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md)
 - [当前飞船玩法](../Gameplay/飞船.md)
-- [实施归档](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md)
+- [实施归档](../Archive/9月归档清单.md#arc-20260909-003)

@@ -80,6 +80,20 @@ void UGuLiHybridReviewSubsystem::AppendResourceEvidence(const TSharedRef<FJsonOb
     }
     Json->SetBoolField(TEXT("mining_enabled"),IsAutonomousMiningEnabled());Json->SetArrayField(TEXT("miner_states"),Miners);Json->SetArrayField(TEXT("factory_states"),Factories);
     Json->SetBoolField(TEXT("mining_ready"),Resources && Resources->IsMiningRuntimeReady());
+    if (Resources)
+    {
+        const auto Stats=Resources->GetOreObstacleStats();
+        auto Ore=MakeShared<FJsonObject>();
+        Ore->SetNumberField(TEXT("pending_nodes"),Stats.PendingNodes);
+        Ore->SetNumberField(TEXT("oldest_wait_ms"),Stats.OldestWaitMilliseconds);
+        Ore->SetNumberField(TEXT("last_batch_nodes"),Stats.LastBatchNodes);
+        Ore->SetNumberField(TEXT("last_batch_gt_ms"),Stats.LastBatchMilliseconds);
+        Ore->SetNumberField(TEXT("collision_alive"),Stats.AliveCollisionNodes);
+        Ore->SetNumberField(TEXT("avoidance_alive"),Stats.AliveAvoidanceNodes);
+        Ore->SetNumberField(TEXT("index_publications"),double(Stats.IndexPublications));
+        Ore->SetNumberField(TEXT("world_generation"),double(Stats.WorldGeneration));
+        Json->SetObjectField(TEXT("ore_obstacles"),Ore);
+    }
     if (const auto* Manager=GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()) Json->SetStringField(TEXT("mining_slots"),Manager->GetSlotDebug());
     TArray<TSharedPtr<FJsonValue>> Clusters;
     if (const auto* Map=Resources?Resources->GetMapDefinition():nullptr) for (const auto& C:Map->Clusters)

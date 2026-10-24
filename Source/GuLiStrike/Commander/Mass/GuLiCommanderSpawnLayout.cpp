@@ -4,12 +4,14 @@
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+#include "Engine/World.h"
 
 bool UGuLiBattleAuthoritySubsystem::BuildInitialArmySpawnLayout(
 	const TArray<FGuLiSoldierDefinition>& Definitions,
 	const FVector& RedAssembly, const FVector& BlueAssembly,
 	TArray<FGuLiCommanderInitialSpawnSlot>& OutSlots, FString& OutError,
-	const float InwardInsetCentimeters, const int32 Population) const
+	const float InwardInsetCentimeters, const int32 Population,UWorld* AuthoringWorld) const
 {
 	OutSlots.Reset();
 	OutError.Reset();
@@ -25,6 +27,8 @@ bool UGuLiBattleAuthoritySubsystem::BuildInitialArmySpawnLayout(
 		return false;
 	}
 	constexpr int32 Columns = 5;
+    auto* World=AuthoringWorld?AuthoringWorld:GetWorld();
+    const auto GridData=World?GuLiGrid::AuthoredSnapshot(*World):nullptr;
 	float GroupSpacing = GroupSpacingCentimeters;
 	for (int32 Index = 0; Index < FMath::Min(2, Definitions.Num()); ++Index)
 	{
@@ -69,6 +73,11 @@ bool UGuLiBattleAuthoritySubsystem::BuildInitialArmySpawnLayout(
 				Slot.RadiusCentimeters = Radius;
 				Slot.Location = Anchor + FRotator(0, Yaw, 0).RotateVector(
 					GuLiCommanderNavigationPolicy::MakeFormationSlotOffset(Member, Spacing));
+                if (GridData)
+                {
+                    const auto A=GridData->AnchorAt(Anchor,Definition.FootprintCells);
+                    Slot.Location=GridData->Center(A+FIntPoint(Member%5,Member/5)*Definition.FootprintCells,Definition.FootprintCells);
+                }
 			}
 		}
 	}

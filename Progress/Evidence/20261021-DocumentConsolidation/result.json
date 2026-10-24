@@ -1,0 +1,3677 @@
+{
+  "date": "2026-10-21",
+  "sources": 300,
+  "source_groups": {
+    "september": 250,
+    "recent": 50
+  },
+  "zip_verification": {
+    "september": {
+      "path": "Progress/Archive/202609-归档.zip",
+      "documents": 250,
+      "bytes": 841138,
+      "sha256": "78e4ae1c3de30682e44302afbdae5e6a98c76b06973f3fb1e946c9408ed5fc9d",
+      "crc": "passed",
+      "all_source_sha256": "passed"
+    },
+    "recent": {
+      "path": "Progress/Archive/20261021-近期优化原文.zip",
+      "documents": 50,
+      "bytes": 262240,
+      "sha256": "9a5ac98a2c7e3b4da4375f0b5edc4653142ea47dd0cfdd0c2b1bc12e1e18f74d",
+      "crc": "passed",
+      "all_source_sha256": "passed"
+    }
+  },
+  "source_redirects": {
+    "Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md": "Progress/Archive/9月归档清单.md#arc-20260901-001",
+    "Progress/Archive/20260903-ShipUIv1-Figma玩家实机稿.md": "Progress/Archive/9月归档清单.md#arc-20260903-001",
+    "Progress/Archive/20260903-指挥官与地面机甲最小建造系统.md": "Progress/Archive/9月归档清单.md#arc-20260903-002",
+    "Progress/Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md": "Progress/Archive/9月归档清单.md#arc-20260903-003",
+    "Progress/Archive/20260904-ShipUIv1-NEONCTRL静态UI.md": "Progress/Archive/9月归档清单.md#arc-20260904-001",
+    "Progress/Archive/20260904-僚机世界空间近距编队与租约恢复.md": "Progress/Archive/9月归档清单.md#arc-20260904-002",
+    "Progress/Archive/20260904-指挥官大规模移动导航与避让降载.md": "Progress/Archive/9月归档清单.md#arc-20260904-003",
+    "Progress/Archive/20260904-指挥官相机稳定巡航.md": "Progress/Archive/9月归档清单.md#arc-20260904-004",
+    "Progress/Archive/20260904-飞船世界空间环绕HUD与技能准星.md": "Progress/Archive/9月归档清单.md#arc-20260904-005",
+    "Progress/Archive/20260905-僚机FlightNav弧线验证与局部恢复.md": "Progress/Archive/9月归档清单.md#arc-20260905-001",
+    "Progress/Archive/20260905-据点巨构替换占位资源.md": "Progress/Archive/9月归档清单.md#arc-20260905-002",
+    "Progress/Archive/20260905-据点混凝土巨构模型首版.md": "Progress/Archive/9月归档清单.md#arc-20260905-003",
+    "Progress/Archive/20260906-双机甲可调Socket创建.md": "Progress/Archive/9月归档清单.md#arc-20260906-001",
+    "Progress/Archive/20260906-双机甲尺度修复与ControlRig草稿.md": "Progress/Archive/9月归档清单.md#arc-20260906-002",
+    "Progress/Archive/20260906-双机甲骨骼副本与绑定问题核查.md": "Progress/Archive/9月归档清单.md#arc-20260906-003",
+    "Progress/Archive/20260906-指挥官武器特效与独立法术场.md": "Progress/Archive/9月归档清单.md#arc-20260906-004",
+    "Progress/Archive/20260907-Ship僚机三维往返缠斗与随机转向.md": "Progress/Archive/9月归档清单.md#arc-20260907-001",
+    "Progress/Archive/20260907-Ship僚机俯冲轰炸与对空机枪落地.md": "Progress/Archive/9月归档清单.md#arc-20260907-002",
+    "Progress/Archive/20260907-Ship僚机源码版构建门禁勘误.md": "Progress/Archive/9月归档清单.md#arc-20260907-007",
+    "Progress/Archive/20260907-WM01骨架同步与物理包围盒修复.md": "Progress/Archive/9月归档清单.md#arc-20260907-003",
+    "Progress/Archive/20260907-地图标注插件维护Skill.md": "Progress/Archive/9月归档清单.md#arc-20260907-004",
+    "Progress/Archive/20260907-地图标注插件首版实现与验证.md": "Progress/Archive/9月归档清单.md#arc-20260907-005",
+    "Progress/Archive/20260907-地图标记删除崩溃空指针修复.md": "Progress/Archive/9月归档清单.md#arc-20260907-006",
+    "Progress/Archive/20260908-Ship僚机FlightNav边界停滞恢复.md": "Progress/Archive/9月归档清单.md#arc-20260908-002",
+    "Progress/Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md": "Progress/Archive/9月归档清单.md#arc-20260908-003",
+    "Progress/Archive/20260908-Ship空中部队原型关卡与三倍航速.md": "Progress/Archive/9月归档清单.md#arc-20260908-001",
+    "Progress/Archive/20260909-Ship僚机俯冲轰炸门槛简化.md": "Progress/Archive/9月归档清单.md#arc-20260909-005",
+    "Progress/Archive/20260909-Ship僚机全员参战与索敌范围显示.md": "Progress/Archive/9月归档清单.md#arc-20260909-002",
+    "Progress/Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md": "Progress/Archive/9月归档清单.md#arc-20260909-003",
+    "Progress/Archive/20260909-资源加工厂Blender模型与门动画阶段交付.md": "Progress/Archive/9月归档清单.md#arc-20260909-001",
+    "Progress/Archive/20260909-资源加工厂UE正式资源接入与验收.md": "Progress/Archive/9月归档清单.md#arc-20260909-004",
+    "Progress/Archive/20260910-Ship僚机取消固定6秒轰炸进场.md": "Progress/Archive/9月归档清单.md#arc-20260910-002",
+    "Progress/Archive/20260910-Ship僚机战斗表现HUD与相机调整.md": "Progress/Archive/9月归档清单.md#arc-20260910-001",
+    "Progress/Archive/20260910-僚机飞行双尾焰与拖尾接入.md": "Progress/Archive/9月归档清单.md#arc-20260910-003",
+    "Progress/Archive/20260910-双矿单位矿模型UE导入交付.md": "Progress/Archive/9月归档清单.md#arc-20260910-007",
+    "Progress/Archive/20260910-双矿单位矿模型与Blender审核交付.md": "Progress/Archive/9月归档清单.md#arc-20260910-005",
+    "Progress/Archive/20260910-地图资源密度涂绘与确定性导出.md": "Progress/Archive/9月归档清单.md#arc-20260910-006",
+    "Progress/Archive/20260910-游戏内GM分页浮层面板.md": "Progress/Archive/9月归档清单.md#arc-20260910-004",
+    "Progress/Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md": "Progress/Archive/9月归档清单.md#arc-20260911-010",
+    "Progress/Archive/20260911-指挥官传送配置归并与范围扩展.md": "Progress/Archive/9月归档清单.md#arc-20260911-008",
+    "Progress/Archive/20260911-指挥官双点传送技能验收.md": "Progress/Archive/9月归档清单.md#arc-20260911-007",
+    "Progress/Archive/20260911-红蓝矿棋盘与自动采矿闭环.md": "Progress/Archive/9月归档清单.md#arc-20260911-011",
+    "Progress/Archive/20260911-资源经济障碍与Commander适配层解耦.md": "Progress/Archive/9月归档清单.md#arc-20260911-012",
+    "Progress/Archive/20260911-飞船骨骼部件接入与Socket保留.md": "Progress/Archive/9月归档清单.md#arc-20260911-009",
+    "Progress/Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md": "Progress/Archive/9月归档清单.md#arc-20260912-003",
+    "Progress/Archive/20260912-ShipComponent部件蓝图与占位清理.md": "Progress/Archive/9月归档清单.md#arc-20260912-006",
+    "Progress/Archive/20260912-僚机视觉插值与远端稳定显示.md": "Progress/Archive/9月归档清单.md#arc-20260912-002",
+    "Progress/Archive/20260912-矿车Dock私有代理与500人姿态流修复.md": "Progress/Archive/9月归档清单.md#arc-20260912-001",
+    "Progress/Archive/20260912-空战测试关卡远端地面单位.md": "Progress/Archive/9月归档清单.md#arc-20260912-005",
+    "Progress/Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md": "Progress/Archive/9月归档清单.md#arc-20260912-004",
+    "Progress/Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md": "Progress/Archive/9月归档清单.md#arc-20260913-006",
+    "Progress/Archive/20260913-僚机Big17爆炸范围缩放修正.md": "Progress/Archive/9月归档清单.md#arc-20260913-003",
+    "Progress/Archive/20260913-僚机对地轰炸Big17爆炸特效.md": "Progress/Archive/9月归档清单.md#arc-20260913-002",
+    "Progress/Archive/20260913-僚机空爆随机二选一与销毁特效五倍.md": "Progress/Archive/9月归档清单.md#arc-20260913-007",
+    "Progress/Archive/20260913-单位受击白光与摧毁爆炸.md": "Progress/Archive/9月归档清单.md#arc-20260913-001",
+    "Progress/Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md": "Progress/Archive/9月归档清单.md#arc-20260913-004",
+    "Progress/Archive/20260913-激光采矿与矿车进出厂及受击接入.md": "Progress/Archive/9月归档清单.md#arc-20260913-005",
+    "Progress/Archive/20260914-僚机直线激光炮弹池与最终数值.md": "Progress/Archive/9月归档清单.md#arc-20260914-006",
+    "Progress/Archive/20260914-冲击波外径上限与重复缩放修正.md": "Progress/Archive/9月归档清单.md#arc-20260914-001",
+    "Progress/Archive/20260914-单位铁锈残骸与僚机物理坠落.md": "Progress/Archive/9月归档清单.md#arc-20260914-002",
+    "Progress/Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md": "Progress/Archive/9月归档清单.md#arc-20260914-007",
+    "Progress/Archive/20260914-次级单位武器独立Excel重构.md": "Progress/Archive/9月归档清单.md#arc-20260914-004",
+    "Progress/Archive/20260914-法术场统一入口与武器ID引用.md": "Progress/Archive/9月归档清单.md#arc-20260914-005",
+    "Progress/Archive/20260914-空中通道联机与特效增量验收.md": "Progress/Archive/9月归档清单.md#arc-20260914-008",
+    "Progress/Archive/20260914-飞船组件文档资源引用与覆盖盘点.md": "Progress/Archive/9月归档清单.md#arc-20260914-003",
+    "Progress/Archive/20260915-Ship组件能力与指挥官技能去GAS重构.md": "Progress/Archive/9月归档清单.md#arc-20260915-001",
+    "Progress/Archive/20260915-客户端CPU-GPU剖析与压测相机勘误.md": "Progress/Archive/9月归档清单.md#arc-20260915-004",
+    "Progress/Archive/20260915-导航预烘焙与PIE启动优化.md": "Progress/Archive/9月归档清单.md#arc-20260915-011",
+    "Progress/Archive/20260915-工程车动态避让与建筑矿体导航修复.md": "Progress/Archive/9月归档清单.md#arc-20260915-010",
+    "Progress/Archive/20260915-指挥官10Hz循环与移动容量实测.md": "Progress/Archive/9月归档清单.md#arc-20260915-003",
+    "Progress/Archive/20260915-指挥官姿态协议9压缩与六轮对比.md": "Progress/Archive/9月归档清单.md#arc-20260915-007",
+    "Progress/Archive/20260915-指挥官姿态压测移动人数口径勘误.md": "Progress/Archive/9月归档清单.md#arc-20260915-008",
+    "Progress/Archive/20260915-指挥官旧姿态协议残留清理.md": "Progress/Archive/9月归档清单.md#arc-20260915-009",
+    "Progress/Archive/20260915-指挥官移动下行数据占比实测.md": "Progress/Archive/9月归档清单.md#arc-20260915-005",
+    "Progress/Archive/20260915-空战原型关卡开局安装僚机仓.md": "Progress/Archive/9月归档清单.md#arc-20260915-002",
+    "Progress/Archive/20260915-阵营独立通道与点击据点即时运输修复.md": "Progress/Archive/9月归档清单.md#arc-20260915-006",
+    "Progress/Archive/20260916-GPU渲染降耗实施与三组对照.md": "Progress/Archive/9月归档清单.md#arc-20260916-004",
+    "Progress/Archive/20260916-Ship内部线稿烘焙遮罩.md": "Progress/Archive/9月归档清单.md#arc-20260916-007",
+    "Progress/Archive/20260916-Ship动漫低模风格Blender样板交付.md": "Progress/Archive/9月归档清单.md#arc-20260916-005",
+    "Progress/Archive/20260916-Ship风格样板追加线稿.md": "Progress/Archive/9月归档清单.md#arc-20260916-006",
+    "Progress/Archive/20260916-僚机动漫爆炸样板制作与接入.md": "Progress/Archive/9月归档清单.md#arc-20260916-008",
+    "Progress/Archive/20260916-客户端CPU修复后六轮复测验收.md": "Progress/Archive/9月归档清单.md#arc-20260916-003",
+    "Progress/Archive/20260916-客户端CPU增量维护与10Hz刷新实施.md": "Progress/Archive/9月归档清单.md#arc-20260916-001",
+    "Progress/Archive/20260916-扫荡者UE导入与重防号参考重建.md": "Progress/Archive/9月归档清单.md#arc-20260916-009",
+    "Progress/Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md": "Progress/Archive/9月归档清单.md#arc-20260916-002",
+    "Progress/Archive/20260917-Ship三组件原型冻结与参考审核A材料.md": "Progress/Archive/9月归档清单.md#arc-20260917-006",
+    "Progress/Archive/20260917-Ship三组件原网格材质与连接分色修正.md": "Progress/Archive/9月归档清单.md#arc-20260917-007",
+    "Progress/Archive/20260917-Ship三组件材质审核B通过与FBX交付.md": "Progress/Archive/9月归档清单.md#arc-20260917-008",
+    "Progress/Archive/20260917-Ship全组件表面交付与UE正式替换.md": "Progress/Archive/9月归档清单.md#arc-20260917-017",
+    "Progress/Archive/20260917-Ship剩余四组件原型与火焰标识参考A.md": "Progress/Archive/9月归档清单.md#arc-20260917-016",
+    "Progress/Archive/20260917-Ship干扰与护盾参考配色区分.md": "Progress/Archive/9月归档清单.md#arc-20260917-012",
+    "Progress/Archive/20260917-Ship干扰装置深蓝白黄参考修订.md": "Progress/Archive/9月归档清单.md#arc-20260917-013",
+    "Progress/Archive/20260917-Ship玩家蓝图补保存与独立读回.md": "Progress/Archive/9月归档清单.md#arc-20260917-002",
+    "Progress/Archive/20260917-Ship第三批支援组件原型与参考审核A.md": "Progress/Archive/9月归档清单.md#arc-20260917-011",
+    "Progress/Archive/20260917-Ship第三批支援组件原模型材质成品审核B.md": "Progress/Archive/9月归档清单.md#arc-20260917-014",
+    "Progress/Archive/20260917-Ship第三批材质B通过与静态FBX交付.md": "Progress/Archive/9月归档清单.md#arc-20260917-015",
+    "Progress/Archive/20260917-Ship第二批原型冻结与参考审核A候选.md": "Progress/Archive/9月归档清单.md#arc-20260917-009",
+    "Progress/Archive/20260917-Ship第二批原模型材质制作与成品审核B.md": "Progress/Archive/9月归档清单.md#arc-20260917-010",
+    "Progress/Archive/20260917-Ship组件制作临时资源回收清理.md": "Progress/Archive/9月归档清单.md#arc-20260917-018",
+    "Progress/Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md": "Progress/Archive/9月归档清单.md#arc-20260917-001",
+    "Progress/Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md": "Progress/Archive/9月归档清单.md#arc-20260917-022",
+    "Progress/Archive/20260917-地面玩法定稿与弹速基线核查.md": "Progress/Archive/9月归档清单.md#arc-20260917-019",
+    "Progress/Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md": "Progress/Archive/9月归档清单.md#arc-20260917-003",
+    "Progress/Archive/20260917-松树林与三单位独立试摆.md": "Progress/Archive/9月归档清单.md#arc-20260917-023",
+    "Progress/Archive/20260917-美术规范建立与制作技能接入.md": "Progress/Archive/9月归档清单.md#arc-20260917-004",
+    "Progress/Archive/20260917-自然资源包参考与植被贴片工艺.md": "Progress/Archive/9月归档清单.md#arc-20260917-020",
+    "Progress/Archive/20260917-进度面板分类筛选与文档分类元数据.md": "Progress/Archive/9月归档清单.md#arc-20260917-005",
+    "Progress/Archive/20260917-重防号Q导弹通用预警与切图断言修复.md": "Progress/Archive/9月归档清单.md#arc-20260917-021",
+    "Progress/Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md": "Progress/Archive/9月归档清单.md#arc-20260918-004",
+    "Progress/Archive/20260918-建筑World测试数据与环境更新复跑.md": "Progress/Archive/9月归档清单.md#arc-20260918-005",
+    "Progress/Archive/20260918-指挥官体型净距源表与接入分析完成.md": "Progress/Archive/9月归档清单.md#arc-20260918-008",
+    "Progress/Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md": "Progress/Archive/9月归档清单.md#arc-20260918-009",
+    "Progress/Archive/20260918-本会话临时文件清理.md": "Progress/Archive/9月归档清单.md#arc-20260918-007",
+    "Progress/Archive/20260918-松树林v1审核通过与原图原位重构授权.md": "Progress/Archive/9月归档清单.md#arc-20260918-002",
+    "Progress/Archive/20260918-松树林原Demo地图全资源适配交付候选.md": "Progress/Archive/9月归档清单.md#arc-20260918-003",
+    "Progress/Archive/20260918-松树林风格适配v1候选.md": "Progress/Archive/9月归档清单.md#arc-20260918-001",
+    "Progress/Archive/20260918-玩法光照对齐与重防号拥挤诊断.md": "Progress/Archive/9月归档清单.md#arc-20260918-006",
+    "Progress/Archive/20260919-Mass体型净距运行时接入与验证记录.md": "Progress/Archive/9月归档清单.md#arc-20260919-001",
+    "Progress/Archive/20260919-SpiderMech恢复原网格并整理色块.md": "Progress/Archive/9月归档清单.md#arc-20260919-009",
+    "Progress/Archive/20260919-两组机甲风格参考与低模方向.md": "Progress/Archive/9月归档清单.md#arc-20260919-005",
+    "Progress/Archive/20260919-撤回严格净距并适配重防号模型大小.md": "Progress/Archive/9月归档清单.md#arc-20260919-002",
+    "Progress/Archive/20260919-机甲与武器参考降低红蓝饱和度.md": "Progress/Archive/9月归档清单.md#arc-20260919-006",
+    "Progress/Archive/20260919-机甲与武器整批同步UE及总结.md": "Progress/Archive/9月归档清单.md#arc-20260919-015",
+    "Progress/Archive/20260919-机甲整件分色与黑蓝配色修订.md": "Progress/Archive/9月归档清单.md#arc-20260919-011",
+    "Progress/Archive/20260919-机甲线稿三渲二与对称配色修订.md": "Progress/Archive/9月归档清单.md#arc-20260919-010",
+    "Progress/Archive/20260919-源模型机甲制作与SpiderMech减面.md": "Progress/Archive/9月归档清单.md#arc-20260919-007",
+    "Progress/Archive/20260919-轻型机甲与Spider同步UE.md": "Progress/Archive/9月归档清单.md#arc-20260919-014",
+    "Progress/Archive/20260919-轻型机甲弧面头甲与散热结构细化.md": "Progress/Archive/9月归档清单.md#arc-20260919-012",
+    "Progress/Archive/20260919-轻型机甲排气口浮空修复.md": "Progress/Archive/9月归档清单.md#arc-20260919-013",
+    "Progress/Archive/20260919-轻型装甲地面玩家接入与根位移修复.md": "Progress/Archive/9月归档清单.md#arc-20260919-008",
+    "Progress/Archive/20260919-重防号导弹范围与特效调整.md": "Progress/Archive/9月归档清单.md#arc-20260919-003",
+    "Progress/Archive/20260919-重防号爆炸追加四倍缩放.md": "Progress/Archive/9月归档清单.md#arc-20260919-004",
+    "Progress/Archive/20260920-指挥官任务与远端碰撞改动集成复验.md": "Progress/Archive/9月归档清单.md#arc-20260920-003",
+    "Progress/Archive/20260920-指挥官头像分组与导航重定位勘误.md": "Progress/Archive/9月归档清单.md#arc-20260920-006",
+    "Progress/Archive/20260920-指挥官部队操作与特殊任务系统.md": "Progress/Archive/9月归档清单.md#arc-20260920-002",
+    "Progress/Archive/20260920-星际指挥官界面与游戏文本表.md": "Progress/Archive/9月归档清单.md#arc-20260920-005",
+    "Progress/Archive/20260920-机甲Mass碰撞复审修复与验证.md": "Progress/Archive/9月归档清单.md#arc-20260920-004",
+    "Progress/Archive/20260920-玩家机枪开火与Excel升级候选.md": "Progress/Archive/9月归档清单.md#arc-20260920-001",
+    "Progress/Archive/20260921-FireReview双阵营靶场静态交付.md": "Progress/Archive/9月归档清单.md#arc-20260921-007",
+    "Progress/Archive/20260921-FireReview导航阻塞与资产校验修复.md": "Progress/Archive/9月归档清单.md#arc-20260921-008",
+    "Progress/Archive/20260921-地面机甲动画与空中战斗阶段实现.md": "Progress/Archive/9月归档清单.md#arc-20260921-003",
+    "Progress/Archive/20260921-地面机甲动画空战与下落调参验收.md": "Progress/Archive/9月归档清单.md#arc-20260921-005",
+    "Progress/Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md": "Progress/Archive/9月归档清单.md#arc-20260921-002",
+    "Progress/Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md": "Progress/Archive/9月归档清单.md#arc-20260921-009",
+    "Progress/Archive/20260921-地面机甲辅助瞄准编译与配置落地.md": "Progress/Archive/9月归档清单.md#arc-20260921-010",
+    "Progress/Archive/20260921-外部特效与蓝图资源包迁移.md": "Progress/Archive/9月归档清单.md#arc-20260921-014",
+    "Progress/Archive/20260921-指挥官MassStateTree类型登记修复.md": "Progress/Archive/9月归档清单.md#arc-20260921-012",
+    "Progress/Archive/20260921-指挥官StateTree条件属性分类修复.md": "Progress/Archive/9月归档清单.md#arc-20260921-013",
+    "Progress/Archive/20260921-指挥官StateTree迁移与场景交付.md": "Progress/Archive/9月归档清单.md#arc-20260921-011",
+    "Progress/Archive/20260921-机枪统一受击实现与验证边界.md": "Progress/Archive/9月归档清单.md#arc-20260921-001",
+    "Progress/Archive/20260921-机枪统一受击补全实机验收.md": "Progress/Archive/9月归档清单.md#arc-20260921-004",
+    "Progress/Archive/20260921-统一特效目录与ID迁移静态验收.md": "Progress/Archive/9月归档清单.md#arc-20260921-006",
+    "Progress/Archive/20260922-4.2km地图与7x7据点重布局交付.md": "Progress/Archive/9月归档清单.md#arc-20260922-005",
+    "Progress/Archive/20260922-FlightNav边界复核与收紧.md": "Progress/Archive/9月归档清单.md#arc-20260922-006",
+    "Progress/Archive/20260922-三张视差3D卡牌演示场景交付.md": "Progress/Archive/9月归档清单.md#arc-20260922-002",
+    "Progress/Archive/20260922-三维动态卡牌与视差卡牌资产迁移.md": "Progress/Archive/9月归档清单.md#arc-20260922-001",
+    "Progress/Archive/20260922-卡牌窗口焦点原生接口补齐.md": "Progress/Archive/9月归档清单.md#arc-20260922-003",
+    "Progress/Archive/20260922-工程车四点返厂简化与32辆专项验证.md": "Progress/Archive/9月归档清单.md#arc-20260922-004",
+    "Progress/Archive/20260923-1.8km战场与建造车自主接单.md": "Progress/Archive/9月归档清单.md#arc-20260923-002",
+    "Progress/Archive/20260923-3.2km地形与9x9据点及Mass出生修复.md": "Progress/Archive/9月归档清单.md#arc-20260923-001",
+    "Progress/Archive/20260923-Mass分帧寻路与基础避障源码交付.md": "Progress/Archive/9月归档清单.md#arc-20260923-016",
+    "Progress/Archive/20260923-Mass分帧寻路与基础避障编译交付.md": "Progress/Archive/9月归档清单.md#arc-20260923-017",
+    "Progress/Archive/20260923-Mass协议19运行监控与残余阻塞.md": "Progress/Archive/9月归档清单.md#arc-20260923-015",
+    "Progress/Archive/20260923-Mass复制流量与同帧突发定位.md": "Progress/Archive/9月归档清单.md#arc-20260923-012",
+    "Progress/Archive/20260923-Mass姿态RPC发送预算饱和诊断.md": "Progress/Archive/9月归档清单.md#arc-20260923-011",
+    "Progress/Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md": "Progress/Archive/9月归档清单.md#arc-20260923-010",
+    "Progress/Archive/20260923-Mass按连接预算分批同步源码实现.md": "Progress/Archive/9月归档清单.md#arc-20260923-013",
+    "Progress/Archive/20260923-Mass按连接预算分批同步编译交付.md": "Progress/Archive/9月归档清单.md#arc-20260923-014",
+    "Progress/Archive/20260923-Mass首条绿线延迟现场诊断.md": "Progress/Archive/9月归档清单.md#arc-20260923-019",
+    "Progress/Archive/20260923-Mass验证场景PIE阻塞修复.md": "Progress/Archive/9月归档清单.md#arc-20260923-018",
+    "Progress/Archive/20260923-客户端Mass硬校正修复编译交付.md": "Progress/Archive/9月归档清单.md#arc-20260923-007",
+    "Progress/Archive/20260923-客户端Mass硬校正最小修复.md": "Progress/Archive/9月归档清单.md#arc-20260923-006",
+    "Progress/Archive/20260923-客户端Mass行走顿挫分析.md": "Progress/Archive/9月归档清单.md#arc-20260923-005",
+    "Progress/Archive/20260923-客户端连续纠偏与性能HUD交付.md": "Progress/Archive/9月归档清单.md#arc-20260923-009",
+    "Progress/Archive/20260923-电源模式与Mass残余跳步诊断.md": "Progress/Archive/9月归档清单.md#arc-20260923-008",
+    "Progress/Archive/20260923-红方移动修复源码Editor构建.md": "Progress/Archive/9月归档清单.md#arc-20260923-004",
+    "Progress/Archive/20260923-红方移动超时诊断与导航引用修复.md": "Progress/Archive/9月归档清单.md#arc-20260923-003",
+    "Progress/Archive/20260924-Mass三阶段耗时与百人响应实测.md": "Progress/Archive/9月归档清单.md#arc-20260924-001",
+    "Progress/Archive/20260924-Mass即时移动与随机站位交付.md": "Progress/Archive/9月归档清单.md#arc-20260924-002",
+    "Progress/Archive/20260924-Mass同址卡死复现与R2修复.md": "Progress/Archive/9月归档清单.md#arc-20260924-006",
+    "Progress/Archive/20260924-Mass导航失效10Hz恢复修复.md": "Progress/Archive/9月归档清单.md#arc-20260924-004",
+    "Progress/Archive/20260924-Mass导航恢复编译与加载.md": "Progress/Archive/9月归档清单.md#arc-20260924-005",
+    "Progress/Archive/20260924-Mass随机站位玩家验收.md": "Progress/Archive/9月归档清单.md#arc-20260924-003",
+    "Progress/Archive/20260924-尼亚加拉辉光与HUDuiPRO资源迁入.md": "Progress/Archive/9月归档清单.md#arc-20260924-008",
+    "Progress/Archive/20260924-工程车传送地面校验与建筑屋顶禁行.md": "Progress/Archive/9月归档清单.md#arc-20260924-007",
+    "Progress/Archive/20260926-指挥官StateTree分层资产与审核交付.md": "Progress/Archive/9月归档清单.md#arc-20260926-002",
+    "Progress/Archive/20260926-指挥官StateTree分层重构源码阶段.md": "Progress/Archive/9月归档清单.md#arc-20260926-001",
+    "Progress/Archive/20260926-重防号分层卡牌与可编辑文案交付.md": "Progress/Archive/9月归档清单.md#arc-20260926-003",
+    "Progress/Archive/20260927-重防号卡牌干净视觉图三张重绘预览.md": "Progress/Archive/9月归档清单.md#arc-20260927-001",
+    "Progress/Archive/20260928-升级光粒独立随机散布.md": "Progress/Archive/9月归档清单.md#arc-20260928-020",
+    "Progress/Archive/20260928-升级细线改为短发光粒子.md": "Progress/Archive/9月归档清单.md#arc-20260928-019",
+    "Progress/Archive/20260928-坡面卡住与子弹超前显示现场诊断及源码修复.md": "Progress/Archive/9月归档清单.md#arc-20260928-016",
+    "Progress/Archive/20260928-指挥官StateTree中文描述补全.md": "Progress/Archive/9月归档清单.md#arc-20260928-002",
+    "Progress/Archive/20260928-肉鸽卡牌Excel与F4实战接入.md": "Progress/Archive/9月归档清单.md#arc-20260928-014",
+    "Progress/Archive/20260928-选牌白模修复与批量升级特效.md": "Progress/Archive/9月归档清单.md#arc-20260928-015",
+    "Progress/Archive/20260928-重防号前支架等长与前盘抬高审核候选.md": "Progress/Archive/9月归档清单.md#arc-20260928-008",
+    "Progress/Archive/20260928-重防号前方方块水平修订候选.md": "Progress/Archive/9月归档清单.md#arc-20260928-010",
+    "Progress/Archive/20260928-重防号前端连接下倾与四盘同高候选.md": "Progress/Archive/9月归档清单.md#arc-20260928-009",
+    "Progress/Archive/20260928-重防号升级特效尺寸适配.md": "Progress/Archive/9月归档清单.md#arc-20260928-018",
+    "Progress/Archive/20260928-重防号射速补腿与机动速度光线.md": "Progress/Archive/9月归档清单.md#arc-20260928-012",
+    "Progress/Archive/20260928-重防号干净牌面接入与双倍尺寸.md": "Progress/Archive/9月归档清单.md#arc-20260928-001",
+    "Progress/Archive/20260928-重防号支架外下倾30度审核候选.md": "Progress/Archive/9月归档清单.md#arc-20260928-007",
+    "Progress/Archive/20260928-重防号新版模型参考射速与机动重绘.md": "Progress/Archive/9月归档清单.md#arc-20260928-011",
+    "Progress/Archive/20260928-重防号新版美漫三牌UE替换.md": "Progress/Archive/9月归档清单.md#arc-20260928-013",
+    "Progress/Archive/20260928-重防号机动卡视差边缘覆盖修复.md": "Progress/Archive/9月归档清单.md#arc-20260928-004",
+    "Progress/Archive/20260928-重防号盘心承接与叉耳销轴审核候选.md": "Progress/Archive/9月归档清单.md#arc-20260928-006",
+    "Progress/Archive/20260928-重防号真实模型参考经典美漫三图重绘.md": "Progress/Archive/9月归档清单.md#arc-20260928-005",
+    "Progress/Archive/20260928-重防号美漫卡牌接入与四倍视差.md": "Progress/Archive/9月归档清单.md#arc-20260928-003",
+    "Progress/Archive/20260928-高速单位显示限速修复与原生PIE复验.md": "Progress/Archive/9月归档清单.md#arc-20260928-017",
+    "Progress/Archive/20260929-F4重选按钮与场景准备.md": "Progress/Archive/9月归档清单.md#arc-20260929-006",
+    "Progress/Archive/20260929-F4重选按钮原生编译.md": "Progress/Archive/9月归档清单.md#arc-20260929-007",
+    "Progress/Archive/20260929-Mass静态WPO与相机距离读数编译.md": "Progress/Archive/9月归档清单.md#arc-20260929-003",
+    "Progress/Archive/20260929-Mass静态WPO与相机距离采样交付.md": "Progress/Archive/9月归档清单.md#arc-20260929-002",
+    "Progress/Archive/20260929-指挥官统一三级LOD源码与场景交付.md": "Progress/Archive/9月归档清单.md#arc-20260929-011",
+    "Progress/Archive/20260929-肉鸽单行文案源码与编译.md": "Progress/Archive/9月归档清单.md#arc-20260929-010",
+    "Progress/Archive/20260929-肉鸽单行高亮Excel管线与接入修复.md": "Progress/Archive/9月归档清单.md#arc-20260929-012",
+    "Progress/Archive/20260929-重防号GPU悬浮喷流构建与视觉修订.md": "Progress/Archive/9月归档清单.md#arc-20260929-004",
+    "Progress/Archive/20260929-重防号v6正式模型替换.md": "Progress/Archive/9月归档清单.md#arc-20260929-001",
+    "Progress/Archive/20260929-重防号导弹v2放大与浓黑长烟迹候选.md": "Progress/Archive/9月归档清单.md#arc-20260929-013",
+    "Progress/Archive/20260929-重防号导弹仓与GPU烟迹候选接入.md": "Progress/Archive/9月归档清单.md#arc-20260929-008",
+    "Progress/Archive/20260929-重防号导弹候选冷加载修复与回读勘误.md": "Progress/Archive/9月归档清单.md#arc-20260929-014",
+    "Progress/Archive/20260929-重防号导弹卡牌原生编译.md": "Progress/Archive/9月归档清单.md#arc-20260929-005",
+    "Progress/Archive/20260929-重防号导弹集群原生构建与容量绑定.md": "Progress/Archive/9月归档清单.md#arc-20260929-009",
+    "Progress/Archive/20260930-Mass选择圈与软避障玩家验收通过.md": "Progress/Archive/9月归档清单.md#arc-20260930-025",
+    "Progress/Archive/20260930-Mass选择圈与软避障编译加载.md": "Progress/Archive/9月归档清单.md#arc-20260930-023",
+    "Progress/Archive/20260930-Mass选择圈与软避障静态及场景交付.md": "Progress/Archive/9月归档清单.md#arc-20260930-022",
+    "Progress/Archive/20260930-指挥官Camera表编译导入交付.md": "Progress/Archive/9月归档清单.md#arc-20260930-007",
+    "Progress/Archive/20260930-指挥官LOD会话临时文件清理.md": "Progress/Archive/9月归档清单.md#arc-20260930-005",
+    "Progress/Archive/20260930-指挥官切档即时触发与总览摆正.md": "Progress/Archive/9月归档清单.md#arc-20260930-009",
+    "Progress/Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md": "Progress/Archive/9月归档清单.md#arc-20260930-018",
+    "Progress/Archive/20260930-指挥官总览最小角度回正.md": "Progress/Archive/9月归档清单.md#arc-20260930-010",
+    "Progress/Archive/20260930-指挥官爆炸旧距离裁剪修复.md": "Progress/Archive/9月归档清单.md#arc-20260930-008",
+    "Progress/Archive/20260930-指挥官统一LOD有限PIE与夹具修正.md": "Progress/Archive/9月归档清单.md#arc-20260930-004",
+    "Progress/Archive/20260930-指挥官视觉距离裁剪修复编译加载.md": "Progress/Archive/9月归档清单.md#arc-20260930-019",
+    "Progress/Archive/20260930-指挥官边缘平移提前受限修复.md": "Progress/Archive/9月归档清单.md#arc-20260930-011",
+    "Progress/Archive/20260930-本会话卡牌临时文件清理.md": "Progress/Archive/9月归档清单.md#arc-20260930-002",
+    "Progress/Archive/20260930-机枪10度散布编译与场景交付.md": "Progress/Archive/9月归档清单.md#arc-20260930-027",
+    "Progress/Archive/20260930-机枪效果源码与对照场景准备.md": "Progress/Archive/9月归档清单.md#arc-20260930-020",
+    "Progress/Archive/20260930-机枪效果编译与资产应用.md": "Progress/Archive/9月归档清单.md#arc-20260930-021",
+    "Progress/Archive/20260930-重防号5至15米渐长尾焰正式应用.md": "Progress/Archive/9月归档清单.md#arc-20260930-017",
+    "Progress/Archive/20260930-重防号Q每圈60发审核通过.md": "Progress/Archive/9月归档清单.md#arc-20260930-026",
+    "Progress/Archive/20260930-重防号Q每圈60发构建与场景交付.md": "Progress/Archive/9月归档清单.md#arc-20260930-012",
+    "Progress/Archive/20260930-重防号导弹v3原生正式接入.md": "Progress/Archive/9月归档清单.md#arc-20260930-006",
+    "Progress/Archive/20260930-重防号导弹v3表驱动尺寸与数值候选.md": "Progress/Archive/9月归档清单.md#arc-20260930-001",
+    "Progress/Archive/20260930-重防号导弹会话临时文件清理.md": "Progress/Archive/9月归档清单.md#arc-20260930-003",
+    "Progress/Archive/20260930-重防号盘底喷焰渐长尾迹与导弹仓隐藏修复.md": "Progress/Archive/9月归档清单.md#arc-20260930-013",
+    "Progress/Archive/20260930-重防号航母式转向原生编译与加载.md": "Progress/Archive/9月归档清单.md#arc-20260930-015",
+    "Progress/Archive/20260930-重防号航母式转向玩家验收通过.md": "Progress/Archive/9月归档清单.md#arc-20260930-024",
+    "Progress/Archive/20260930-重防号航母式转向静态与场景交付.md": "Progress/Archive/9月归档清单.md#arc-20260930-014",
+    "Progress/Archive/20260930-重防号转向倾斜幅度减半.md": "Progress/Archive/9月归档清单.md#arc-20260930-016",
+    "Progress/RequirementDocument/20261018-Hybrid世界更新5ms.md": "Progress/RequirementDocument/20261021-近期性能优化.md#req-20261018-001",
+    "Progress/RequirementDocument/20261018-Slate布局绘制2.5ms.md": "Progress/RequirementDocument/20261021-近期性能优化.md#req-20261018-002",
+    "Progress/RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md": "Progress/RequirementDocument/20261021-近期性能优化.md#req-20261020-004",
+    "Progress/RequirementDocument/20261020-UI CPU优化与四档LOD.md": "Progress/RequirementDocument/20261021-近期性能优化.md#req-20261020-003",
+    "Progress/RequirementDocument/20261020-一键截帧与CPU分析插件.md": "Progress/RequirementDocument/20261021-近期性能优化.md#req-20261020-001",
+    "Progress/RequirementDocument/20261020-保持玩法与表现的15ms帧时间优化.md": "Progress/RequirementDocument/20261021-近期性能优化.md#req-20261020-002",
+    "Progress/RequirementDocument/20261021-扫荡者远端姿态与导航恢复修复.md": "Progress/RequirementDocument/20261021-近期性能优化.md#req-20261021-001",
+    "Progress/DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261018-001",
+    "Progress/DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261018-002",
+    "Progress/DevelopmentDocumentation/20261019-Hybrid世界更新5ms验证.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261018-001-d01",
+    "Progress/DevelopmentDocumentation/20261019-Hybrid同步正式替换验收.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261018-001-d02",
+    "Progress/DevelopmentDocumentation/20261019-资源模拟端快照接管.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261018-001-d03",
+    "Progress/DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004",
+    "Progress/DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-003",
+    "Progress/DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-001",
+    "Progress/DevelopmentDocumentation/20261020-保持玩法与表现的15ms帧时间优化.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-002",
+    "Progress/DevelopmentDocumentation/20261021-Hybrid压缩复用与指令响应.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d01",
+    "Progress/DevelopmentDocumentation/20261021-Mass本机移动与直接呈现.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d02",
+    "Progress/DevelopmentDocumentation/20261021-VAT实例提交CPU优化.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d06",
+    "Progress/DevelopmentDocumentation/20261021-事务分批与本机响应.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d08",
+    "Progress/DevelopmentDocumentation/20261021-交火优化正式版本交付.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d07",
+    "Progress/DevelopmentDocumentation/20261021-弹丸生命周期服务与交火CPU.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d05",
+    "Progress/DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261021-001",
+    "Progress/DevelopmentDocumentation/20261021-本机指令交付与规划调度.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d04",
+    "Progress/DevelopmentDocumentation/20261021-编辑器窗口开销与交火基准.md": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d03",
+    "Progress/Archive/20261020-Hybrid交火CPU优化阶段记录.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261020-005",
+    "Progress/Archive/20261020-Hybrid原生消息接收优化记录.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261020-007",
+    "Progress/Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261020-001",
+    "Progress/Archive/20261020-Hybrid对象准备索引与前台复测.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261020-006",
+    "Progress/Archive/20261020-会话临时文件隔离与源码交付范围.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261020-003",
+    "Progress/Archive/20261020-诊断工具开销优化与15ms复测.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261020-004",
+    "Progress/Archive/20261020-资源备用快照调整为5秒.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261020-002",
+    "Progress/Archive/20261021-Hybrid压缩复用与指令反馈记录.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-001",
+    "Progress/Archive/20261021-Mass本机移动与直接呈现.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-006",
+    "Progress/Archive/20261021-Mass爆炸缩放与响应等待对照.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-005",
+    "Progress/Archive/20261021-Slate空操作优化与响应测量.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-002",
+    "Progress/Archive/20261021-VAT提交对照与纯兵种输入优化.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-011",
+    "Progress/Archive/20261021-事务分批与本机响应阶段记录.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-015",
+    "Progress/Archive/20261021-交火优化正式版与清理交付.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-012",
+    "Progress/Archive/20261021-同步姿态发布顺序修复.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-003",
+    "Progress/Archive/20261021-导航优先队列与软避让工作量修复.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-007",
+    "Progress/Archive/20261021-弹丸生命周期查询复用.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-004",
+    "Progress/Archive/20261021-弹丸网络服务与选区读取优化.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-010",
+    "Progress/Archive/20261021-扫荡者姿态与斜坡导航恢复.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-018",
+    "Progress/Archive/20261021-指令名单复制修复与清理.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-017",
+    "Progress/Archive/20261021-指令就绪通知与呈现调序阶段记录.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-014",
+    "Progress/Archive/20261021-接纳合批与资源验证副本阶段记录.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-016",
+    "Progress/Archive/20261021-本机命令调度诊断与路线索引对照.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-009",
+    "Progress/Archive/20261021-正式代码推送main与LFS资源分离.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-013",
+    "Progress/Archive/20261021-编辑器窗口开销与交火基准校正.md": "Progress/Archive/20261021-近期性能优化整合归档.md#arc-20261021-008"
+  },
+  "link_replacements": [
+    {
+      "path": "Progress/Archive/20261001-机枪10度随机弹道审核通过.md",
+      "from": "20260930-机枪10度散布编译与场景交付.md",
+      "to": "9月归档清单.md#arc-20260930-027",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Archive/20261016-CS-P2P整合归档.md",
+      "from": "D:/UE5.7/PerformanceCaptures/20261018-VisualRegression-v1/report.md",
+      "to": "missing report path text",
+      "kind": "existing_broken_link"
+    },
+    {
+      "path": "Progress/Archive/20261016-CS-P2P整合归档.md",
+      "from": "D:/UE5.7/PerformanceCaptures/20261017-Hotspots-v1/report.md",
+      "to": "missing report path text",
+      "kind": "existing_broken_link"
+    },
+    {
+      "path": "Progress/Backlog/2026-09.md",
+      "from": "../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Backlog/2026-09.md",
+      "from": "../Archive/20260909-Ship僚机全员参战与索敌范围显示.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Backlog/2026-09.md",
+      "from": "../Archive/20260916-Ship动漫低模风格Blender样板交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260830-指挥官脚环优化与兵种面板.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260831-小兵客户端先行移动拖拽诊断.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260831-指挥官精确选兵与快捷提示栏.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/06-任务风险与结果.md",
+      "from": "../../Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260903-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md",
+      "from": "../Archive/20260903-ShipUIv1-Figma玩家实机稿.md",
+      "to": "../Archive/9月归档清单.md#arc-20260903-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md",
+      "from": "../Archive/20260904-ShipUIv1-NEONCTRL静态UI.md",
+      "to": "../Archive/9月归档清单.md#arc-20260904-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-飞船GAS与僚机技能归属.md",
+      "from": "../Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md",
+      "to": "../Archive/9月归档清单.md#arc-20260903-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260903-指挥官与地面机甲最小建造系统.md",
+      "from": "../Archive/20260903-指挥官与地面机甲最小建造系统.md",
+      "to": "../Archive/9月归档清单.md#arc-20260903-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md",
+      "from": "../Archive/20260904-僚机世界空间近距编队与租约恢复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260904-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md",
+      "from": "../Archive/20260904-指挥官相机稳定巡航.md",
+      "to": "../Archive/9月归档清单.md#arc-20260904-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260904-飞船世界空间环绕HUD与技能准星.md",
+      "from": "../Archive/20260904-飞船世界空间环绕HUD与技能准星.md",
+      "to": "../Archive/9月归档清单.md#arc-20260904-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260905-指挥官武器特效与独立法术场.md",
+      "from": "../Archive/20260906-指挥官武器特效与独立法术场.md",
+      "to": "../Archive/9月归档清单.md#arc-20260906-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260905-据点巨构导入与占位替换.md",
+      "from": "../Archive/20260905-据点巨构替换占位资源.md",
+      "to": "../Archive/9月归档清单.md#arc-20260905-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260905-据点混凝土巨构模型.md",
+      "from": "../Archive/20260905-据点混凝土巨构模型首版.md",
+      "to": "../Archive/9月归档清单.md#arc-20260905-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md",
+      "from": "../Archive/20260907-地图标注插件首版实现与验证.md",
+      "to": "../Archive/9月归档清单.md#arc-20260907-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md",
+      "from": "../Archive/20260907-地图标记删除崩溃空指针修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260907-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md",
+      "from": "../Archive/20260907-地图标注插件维护Skill.md",
+      "to": "../Archive/9月归档清单.md#arc-20260907-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md",
+      "from": "../Archive/20260906-双机甲骨骼副本与绑定问题核查.md",
+      "to": "../Archive/9月归档清单.md#arc-20260906-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md",
+      "from": "../Archive/20260906-双机甲尺度修复与ControlRig草稿.md",
+      "to": "../Archive/9月归档清单.md#arc-20260906-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md",
+      "from": "../Archive/20260906-双机甲可调Socket创建.md",
+      "to": "../Archive/9月归档清单.md#arc-20260906-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md",
+      "from": "../Archive/20260907-WM01骨架同步与物理包围盒修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260907-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md",
+      "from": "../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md",
+      "from": "../Archive/20260907-Ship僚机俯冲轰炸与对空机枪落地.md",
+      "to": "../Archive/9月归档清单.md#arc-20260907-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md",
+      "from": "../Archive/20260913-僚机对地轰炸Big17爆炸特效.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md",
+      "from": "../Archive/20260913-僚机Big17爆炸范围缩放修正.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md",
+      "from": "../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "from": "../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "from": "../Archive/20260909-Ship僚机全员参战与索敌范围显示.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md",
+      "from": "../Archive/20260908-Ship空中部队原型关卡与三倍航速.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260909-Ship僚机俯冲轰炸门槛简化.md",
+      "from": "../Archive/20260909-Ship僚机俯冲轰炸门槛简化.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md",
+      "from": "../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-僚机飞行尾焰与拖尾.md",
+      "from": "../Archive/20260910-僚机飞行双尾焰与拖尾接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-双矿单位矿模型UE导入.md",
+      "from": "../Archive/20260910-双矿单位矿模型UE导入交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-双矿单位矿模型与Blender审核.md",
+      "from": "../Archive/20260910-双矿单位矿模型与Blender审核交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md",
+      "from": "../Archive/20260910-地图资源密度涂绘与确定性导出.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-指挥官双点传送技能.md",
+      "from": "../Archive/20260911-指挥官双点传送技能验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md",
+      "from": "../Archive/20260910-游戏内GM分页浮层面板.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md",
+      "from": "../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md",
+      "from": "../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md",
+      "from": "../Archive/20260911-资源经济障碍与Commander适配层解耦.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md",
+      "from": "../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md",
+      "from": "../Archive/20260911-飞船骨骼部件接入与Socket保留.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md",
+      "from": "../Archive/20260912-ShipComponent部件蓝图与占位清理.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260912-僚机视觉插值与远端缓冲.md",
+      "from": "../Archive/20260912-僚机视觉插值与远端稳定显示.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260912-空战测试关卡远端地面单位.md",
+      "from": "../Archive/20260912-空战测试关卡远端地面单位.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260912-通用敌方描边与普通PIE僚机跳变修复.md",
+      "from": "../Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md",
+      "from": "../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md",
+      "from": "../Archive/20260914-单位铁锈残骸与僚机物理坠落.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md",
+      "from": "../Archive/20260914-冲击波外径上限与重复缩放修正.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md",
+      "from": "../Archive/20260913-僚机空爆随机二选一与销毁特效五倍.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md",
+      "from": "../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md",
+      "from": "../Archive/20260913-单位受击白光与摧毁爆炸.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-激光采矿与矿车进出厂.md",
+      "from": "../Archive/20260913-激光采矿与矿车进出厂及受击接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md",
+      "from": "../Archive/20260915-Ship组件能力与指挥官技能去GAS重构.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md",
+      "from": "../Archive/20260915-空战原型关卡开局安装僚机仓.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md",
+      "from": "../Archive/20260914-僚机直线激光炮弹池与最终数值.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md",
+      "from": "../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md",
+      "from": "../Archive/20260914-空中通道联机与特效增量验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md",
+      "from": "../Archive/20260915-阵营独立通道与点击据点即时运输修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md",
+      "from": "../Archive/20260914-法术场统一入口与武器ID引用.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md",
+      "from": "../Archive/20260914-次级单位武器独立Excel重构.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md",
+      "from": "../Archive/20260916-客户端CPU修复后六轮复测验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md",
+      "from": "../Archive/20260916-客户端CPU增量维护与10Hz刷新实施.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md",
+      "from": "../Archive/20260915-导航预烘焙与PIE启动优化.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md",
+      "from": "../Archive/20260915-客户端CPU-GPU剖析与压测相机勘误.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md",
+      "from": "../Archive/20260915-指挥官移动下行数据占比实测.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-GPU渲染降耗.md",
+      "from": "../Archive/20260916-GPU渲染降耗实施与三组对照.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md",
+      "from": "../Archive/20260916-Ship风格样板追加线稿.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md",
+      "from": "../Archive/20260916-Ship内部线稿烘焙遮罩.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md",
+      "from": "../Archive/20260916-Ship动漫低模风格Blender样板交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md",
+      "from": "../Archive/20260929-重防号v6正式模型替换.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md",
+      "from": "../Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md",
+      "from": "../Archive/20260917-Ship玩家蓝图补保存与独立读回.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md",
+      "from": "../Archive/20260916-扫荡者UE导入与重防号参考重建.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md",
+      "from": "../Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md",
+      "from": "../Archive/20260917-Ship三组件材质审核B通过与FBX交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md",
+      "from": "../Archive/20260917-Ship三组件原型冻结与参考审核A材料.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md",
+      "from": "../Archive/20260917-Ship三组件原网格材质与连接分色修正.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship剩余四组件原型与火焰标识参考A.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-016",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship全组件表面交付与UE正式替换.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-017",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship组件制作临时资源回收清理.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-018",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship第三批支援组件原型与参考审核A.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship干扰与护盾参考配色区分.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship干扰装置深蓝白黄参考修订.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-013",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship第三批支援组件原模型材质成品审核B.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship第三批材质B通过与静态FBX交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-015",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship第二批原型冻结与参考审核A候选.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md",
+      "from": "../Archive/20260917-Ship第二批原模型材质制作与成品审核B.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md",
+      "from": "../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-022",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md",
+      "from": "../Archive/20260918-松树林风格适配v1候选.md",
+      "to": "../Archive/9月归档清单.md#arc-20260918-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-进度面板分类筛选与文档分类元数据.md",
+      "from": "../Archive/20260917-进度面板分类筛选与文档分类元数据.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md",
+      "from": "../Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md",
+      "to": "../Archive/9月归档清单.md#arc-20260918-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md",
+      "from": "../Archive/20260918-指挥官体型净距源表与接入分析完成.md",
+      "to": "../Archive/9月归档清单.md#arc-20260918-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md",
+      "from": "../Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md",
+      "to": "../Archive/9月归档清单.md#arc-20260918-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md",
+      "from": "../Archive/20260918-松树林原Demo地图全资源适配交付候选.md",
+      "to": "../Archive/9月归档清单.md#arc-20260918-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md",
+      "from": "../Archive/20260918-建筑World测试数据与环境更新复跑.md",
+      "to": "../Archive/9月归档清单.md#arc-20260918-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md",
+      "from": "../Archive/20260919-Mass体型净距运行时接入与验证记录.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md",
+      "from": "../Archive/20260919-SpiderMech恢复原网格并整理色块.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md",
+      "from": "../Archive/20260919-机甲线稿三渲二与对称配色修订.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md",
+      "from": "../Archive/20260919-机甲整件分色与黑蓝配色修订.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md",
+      "from": "../Archive/20260919-轻型机甲弧面头甲与散热结构细化.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md",
+      "from": "../Archive/20260919-轻型机甲排气口浮空修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-013",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md",
+      "from": "../Archive/20260919-轻型机甲与Spider同步UE.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md",
+      "from": "../Archive/20260919-机甲与武器整批同步UE及总结.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-015",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md",
+      "from": "../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md",
+      "from": "../Archive/20260919-轻型机甲与Spider同步UE.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-地面机甲火箭跳.md",
+      "from": "../Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-地面机甲火箭跳.md",
+      "from": "../Archive/20260921-地面机甲动画空战与下落调参验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md",
+      "from": "../Archive/20260920-指挥官任务与远端碰撞改动集成复验.md",
+      "to": "../Archive/9月归档清单.md#arc-20260920-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md",
+      "from": "../Archive/20260920-指挥官部队操作与特殊任务系统.md",
+      "to": "../Archive/9月归档清单.md#arc-20260920-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-机枪子弹统一受击特效.md",
+      "from": "../Archive/20260921-机枪统一受击实现与验证边界.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-机枪子弹统一受击特效.md",
+      "from": "../Archive/20260921-机枪统一受击补全实机验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md",
+      "from": "../Archive/20260921-FireReview导航阻塞与资产校验修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md",
+      "from": "../Archive/20260921-地面机甲动画与空中战斗阶段实现.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md",
+      "from": "../Archive/20260921-地面机甲动画空战与下落调参验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md",
+      "from": "../Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md",
+      "from": "../Archive/20260921-地面机甲辅助瞄准编译与配置落地.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md",
+      "from": "../Archive/20260922-工程车四点返厂简化与32辆专项验证.md",
+      "to": "../Archive/9月归档清单.md#arc-20260922-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260923-客户端连续纠偏与性能HUD交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260923-电源模式与Mass残余跳步诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260923-红方移动修复源码Editor构建.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260923-1.8km战场与建造车自主接单.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260923-3.2km地形与9x9据点及Mass出生修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260922-4.2km地图与7x7据点重布局交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260922-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260922-FlightNav边界复核与收紧.md",
+      "to": "../Archive/9月归档清单.md#arc-20260922-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260923-Mass验证场景PIE阻塞修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-018",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260923-Mass首条绿线延迟现场诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass三阶段耗时与百人响应实测.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass即时移动与随机站位交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass随机站位玩家验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass导航失效10Hz恢复修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass导航恢复编译与加载.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass同址卡死复现与R2修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md",
+      "from": "../Archive/20260923-Mass协议19运行监控与残余阻塞.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-015",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md",
+      "from": "../Archive/20260923-Mass按连接预算分批同步源码实现.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-013",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md",
+      "from": "../Archive/20260923-Mass按连接预算分批同步编译交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md",
+      "from": "../Archive/20260923-Mass复制流量与同帧突发定位.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md",
+      "from": "../Archive/20260923-Mass姿态RPC发送预算饱和诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md",
+      "from": "../Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md",
+      "from": "../Archive/20260923-客户端连续纠偏与性能HUD交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md",
+      "from": "../Archive/20260923-客户端连续纠偏与性能HUD交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md",
+      "from": "../Archive/20260926-指挥官StateTree分层重构源码阶段.md",
+      "to": "../Archive/9月归档清单.md#arc-20260926-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md",
+      "from": "../Archive/20260926-指挥官StateTree分层资产与审核交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260926-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md",
+      "from": "../Archive/20260928-指挥官StateTree中文描述补全.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260929-重防号v6正式模型替换.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号新版美漫三牌UE替换.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-013",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号射速补腿与机动速度光线.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号新版模型参考射速与机动重绘.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号前方方块水平修订候选.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号机动卡视差边缘覆盖修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号美漫卡牌接入与四倍视差.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260926-重防号分层卡牌与可编辑文案交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260926-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md",
+      "from": "../Archive/20260929-F4重选按钮原生编译.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-指挥官统一三级LOD.md",
+      "from": "../Archive/20260930-指挥官视觉距离裁剪修复编译加载.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-指挥官统一三级LOD.md",
+      "from": "../Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-018",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md",
+      "from": "../Archive/20260929-肉鸽单行高亮Excel管线与接入修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+      "from": "../Archive/20260929-重防号导弹卡牌原生编译.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+      "from": "../Archive/20260929-F4重选按钮原生编译.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+      "from": "../Archive/20260929-重防号导弹仓与GPU烟迹候选接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+      "from": "../Archive/20260929-重防号导弹集群原生构建与容量绑定.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+      "from": "../Archive/20260929-重防号导弹候选冷加载修复与回读勘误.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+      "from": "../Archive/20260930-重防号导弹v3表驱动尺寸与数值候选.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+      "from": "../Archive/20260930-重防号导弹v3原生正式接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md",
+      "from": "../Archive/20260930-指挥官视觉距离裁剪修复编译加载.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md",
+      "from": "../Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-018",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md",
+      "from": "../Archive/20260930-重防号5至15米渐长尾焰正式应用.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-017",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-Mass选择圈同步与软避障修正.md",
+      "from": "../Archive/20260930-Mass选择圈与软避障玩家验收通过.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-025",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md",
+      "from": "../Archive/20260930-指挥官视觉距离裁剪修复编译加载.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md",
+      "from": "../Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-018",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-机枪10度随机弹道.md",
+      "from": "../Archive/20260930-机枪10度散布编译与场景交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-027",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-重防号Q每圈60发分批引导.md",
+      "from": "../Archive/20260930-重防号Q每圈60发审核通过.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-026",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-重防号Q每圈60发分批引导.md",
+      "from": "../Archive/20260930-重防号Q每圈60发审核通过.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-026",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-重防号航母式转向表现.md",
+      "from": "../Archive/20260930-重防号航母式转向玩家验收通过.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-024",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md",
+      "from": "D:/UE5.7/PerformanceCaptures/20261018-VisualRegression-v1/report.md",
+      "to": "missing report path text",
+      "kind": "existing_broken_link"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md",
+      "from": "D:/UE5.7/PerformanceCaptures/20261017-Hotspots-v1/report.md",
+      "to": "missing report path text",
+      "kind": "existing_broken_link"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20261021-Mass爆炸缩放与响应等待对照.md",
+      "to": "../Archive/20261021-近期性能优化整合归档.md#arc-20261021-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260929-重防号v6正式模型替换.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260917-美术规范建立与制作技能接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260917-自然资源包参考与植被贴片工艺.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-020",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260919-SpiderMech恢复原网格并整理色块.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260919-机甲整件分色与黑蓝配色修订.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260919-轻型机甲弧面头甲与散热结构细化.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260919-轻型机甲排气口浮空修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-013",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260919-轻型机甲与Spider同步UE.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260919-机甲与武器整批同步UE及总结.md",
+      "to": "../Archive/9月归档清单.md#arc-20260919-015",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "from": "../Archive/20260930-重防号5至15米渐长尾焰正式应用.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-017",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md",
+      "from": "../../../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../../../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md",
+      "from": "../../../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../../../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md",
+      "from": "../../../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../../../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md",
+      "from": "../../../Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md",
+      "to": "../../../Archive/9月归档清单.md#arc-20260916-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md",
+      "from": "../Archive/20260928-肉鸽卡牌Excel与F4实战接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md",
+      "from": "../Archive/20260928-选牌白模修复与批量升级特效.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-015",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md",
+      "from": "../Archive/20260928-重防号升级特效尺寸适配.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-018",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md",
+      "from": "../Archive/20260928-升级细线改为短发光粒子.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md",
+      "from": "../Archive/20260928-升级光粒独立随机散布.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-020",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Evidence/20261021-CommanderPerformance/README.md",
+      "from": "../../DevelopmentDocumentation/20261021-交火优化正式版本交付.md",
+      "to": "../../DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d07",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/Mass移动与避障.md",
+      "from": "../DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md",
+      "to": "../DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261021-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/Mass移动与避障.md",
+      "from": "../Archive/20260924-Mass即时移动与随机站位交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/Mass移动与避障.md",
+      "from": "../Archive/20260924-Mass随机站位玩家验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/先驱号.md",
+      "from": "../DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md",
+      "to": "../DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261021-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/地面机甲.md",
+      "from": "../Archive/20260921-地面机甲动画空战与下落调参验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260921-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/建筑.md",
+      "from": "../Archive/20260923-1.8km战场与建造车自主接单.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/建筑.md",
+      "from": "../Archive/20260915-阵营独立通道与点击据点即时运输修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/建筑.md",
+      "from": "../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/建筑.md",
+      "from": "../Archive/20260905-据点巨构替换占位资源.md",
+      "to": "../Archive/9月归档清单.md#arc-20260905-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260906-指挥官武器特效与独立法术场.md",
+      "to": "../Archive/9月归档清单.md#arc-20260906-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md",
+      "to": "../Archive/9月归档清单.md#arc-20260903-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-022",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260917-地面玩法定稿与弹速基线核查.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260914-冲击波外径上限与重复缩放修正.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260913-激光采矿与矿车进出厂及受击接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/01-战局选兵与移动.md",
+      "from": "../../Archive/20260922-工程车四点返厂简化与32辆专项验证.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260922-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/01-战局选兵与移动.md",
+      "from": "../../Archive/20260923-Mass按连接预算分批同步编译交付.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/02-UI表现与性能.md",
+      "from": "../../Archive/20260923-Mass按连接预算分批同步编译交付.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/02-UI表现与性能.md",
+      "from": "../../Archive/20260923-Mass复制流量与同帧突发定位.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/02-UI表现与性能.md",
+      "from": "../../Archive/20260923-Mass姿态RPC发送预算饱和诊断.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/02-UI表现与性能.md",
+      "from": "../../Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/03-数据技能与武器表现.md",
+      "from": "../../Archive/20260906-双机甲可调Socket创建.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260906-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/03-数据技能与武器表现.md",
+      "from": "../../Archive/20260906-指挥官武器特效与独立法术场.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260906-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-Mass协议19运行监控与残余阻塞.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-015",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-Mass按连接预算分批同步编译交付.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-Mass复制流量与同帧突发定位.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-Mass姿态RPC发送预算饱和诊断.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-电源模式与Mass残余跳步诊断.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-008",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-客户端连续纠偏与性能HUD交付.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-客户端Mass硬校正修复编译交付.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-客户端Mass硬校正最小修复.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-客户端Mass行走顿挫分析.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-红方移动修复源码Editor构建.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-1.8km战场与建造车自主接单.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260923-3.2km地形与9x9据点及Mass出生修复.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260922-工程车四点返厂简化与32辆专项验证.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260922-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260904-指挥官相机稳定巡航.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260904-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260904-指挥官大规模移动导航与避让降载.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260904-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/05-数值与演进.md",
+      "from": "../../Archive/20260922-工程车四点返厂简化与32辆专项验证.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260922-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/05-数值与演进.md",
+      "from": "../../Archive/20260923-1.8km战场与建造车自主接单.md",
+      "to": "../../Archive/9月归档清单.md#arc-20260923-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260930-指挥官视觉距离裁剪修复编译加载.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-Mass协议19运行监控与残余阻塞.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-015",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-Mass按连接预算分批同步编译交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-014",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-Mass复制流量与同帧突发定位.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-Mass姿态RPC发送预算饱和诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-客户端连续纠偏与性能HUD交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-009",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-客户端Mass硬校正修复编译交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-客户端Mass行走顿挫分析.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-红方移动超时诊断与导航引用修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260923-红方移动修复源码Editor构建.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "from": "../Archive/20260922-工程车四点返厂简化与32辆专项验证.md",
+      "to": "../Archive/9月归档清单.md#arc-20260922-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/次级单位技能与地面预警.md",
+      "from": "../Archive/20260930-重防号Q每圈60发审核通过.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-026",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260922-工程车四点返厂简化与32辆专项验证.md",
+      "to": "../Archive/9月归档清单.md#arc-20260922-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260923-1.8km战场与建造车自主接单.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260923-3.2km地形与9x9据点及Mass出生修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260922-工程车四点返厂简化与32辆专项验证.md",
+      "to": "../Archive/9月归档清单.md#arc-20260922-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260915-阵营独立通道与点击据点即时运输修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260911-资源经济障碍与Commander适配层解耦.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "from": "../Archive/20260913-激光采矿与矿车进出厂及受击接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260915-空战原型关卡开局安装僚机仓.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260912-空战测试关卡远端地面单位.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260914-冲击波外径上限与重复缩放修正.md",
+      "to": "../Archive/9月归档清单.md#arc-20260914-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260910-僚机飞行双尾焰与拖尾接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md",
+      "to": "../Archive/9月归档清单.md#arc-20260903-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260913-僚机Big17爆炸范围缩放修正.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260913-僚机对地轰炸Big17爆炸特效.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260912-ShipComponent部件蓝图与占位清理.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260912-僚机视觉插值与远端稳定显示.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260910-Ship僚机取消固定6秒轰炸进场.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260910-Ship僚机战斗表现HUD与相机调整.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260909-Ship僚机全员参战与索敌范围显示.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260908-Ship空中部队原型关卡与三倍航速.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260907-Ship僚机三维往返缠斗与随机转向.md",
+      "to": "../Archive/9月归档清单.md#arc-20260907-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260907-Ship僚机俯冲轰炸与对空机枪落地.md",
+      "to": "../Archive/9月归档清单.md#arc-20260907-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260830-指挥官脚环优化与兵种面板.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260831-小兵客户端先行移动拖拽诊断.md",
+      "from": "../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+      "to": "../Archive/9月归档清单.md#arc-20260901-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260904-指挥官相机稳定巡航.md",
+      "from": "../Archive/20260904-指挥官相机稳定巡航.md",
+      "to": "../Archive/9月归档清单.md#arc-20260904-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md",
+      "from": "../Archive/20260907-Ship僚机三维往返缠斗与随机转向.md",
+      "to": "../Archive/9月归档清单.md#arc-20260907-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "from": "../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "from": "../Archive/20260909-Ship僚机全员参战与索敌范围显示.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "from": "../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "from": "../Archive/20260909-Ship僚机全员参战与索敌范围显示.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260908-Ship空中部队原型关卡与三倍航速.md",
+      "from": "../Archive/20260908-Ship空中部队原型关卡与三倍航速.md",
+      "to": "../Archive/9月归档清单.md#arc-20260908-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md",
+      "from": "../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md",
+      "to": "../Archive/9月归档清单.md#arc-20260909-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md",
+      "from": "../Archive/20260910-Ship僚机战斗表现HUD与相机调整.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260910-僚机飞行尾焰与拖尾.md",
+      "from": "../Archive/20260910-僚机飞行双尾焰与拖尾接入.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260910-地图资源密度涂绘与导出.md",
+      "from": "../Archive/20260910-地图资源密度涂绘与确定性导出.md",
+      "to": "../Archive/9月归档清单.md#arc-20260910-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260910-指挥官双点传送技能.md",
+      "from": "../Archive/20260911-指挥官双点传送技能验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-007",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260911-Ship僚机对空攻击盘旋冷却循环.md",
+      "from": "../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md",
+      "to": "../Archive/9月归档清单.md#arc-20260911-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260912-空战测试关卡远端地面单位.md",
+      "from": "../Archive/20260912-空战测试关卡远端地面单位.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260912-通用敌方描边与普通PIE僚机跳变修复.md",
+      "from": "../Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260912-004",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md",
+      "from": "../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md",
+      "to": "../Archive/9月归档清单.md#arc-20260913-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md",
+      "from": "../Archive/20260916-客户端CPU修复后六轮复测验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260916-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260915-导航预烘焙与哈希判新.md",
+      "from": "../Archive/20260915-导航预烘焙与PIE启动优化.md",
+      "to": "../Archive/9月归档清单.md#arc-20260915-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md",
+      "from": "../Archive/20260917-地面玩法定稿与弹速基线核查.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md",
+      "from": "../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md",
+      "to": "../Archive/9月归档清单.md#arc-20260917-022",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md",
+      "from": "../Archive/20260918-玩法光照对齐与重防号拥挤诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260918-006",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260922-4.2km地图与7x7据点重布局交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260922-005",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260922-导航内存优化与对局容量预算.md",
+      "from": "../Archive/20260923-3.2km地形与9x9据点及Mass出生修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260923-Mass首条绿线延迟现场诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass三阶段耗时与百人响应实测.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass即时移动与随机站位交付.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-002",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md",
+      "from": "../Archive/20260924-Mass随机站位玩家验收.md",
+      "to": "../Archive/9月归档清单.md#arc-20260924-003",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260923-Mass历史插值与三倍速度纠偏.md",
+      "from": "../Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md",
+      "to": "../Archive/9月归档清单.md#arc-20260923-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260929-重防号v6正式模型替换.md",
+      "to": "../Archive/9月归档清单.md#arc-20260929-001",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号新版美漫三牌UE替换.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-013",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号射速补腿与机动速度光线.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-012",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号新版模型参考射速与机动重绘.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-011",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "from": "../Archive/20260928-重防号前方方块水平修订候选.md",
+      "to": "../Archive/9月归档清单.md#arc-20260928-010",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260929-重防号悬浮与GPU引擎喷流.md",
+      "from": "../Archive/20260930-指挥官视觉距离裁剪修复编译加载.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260929-重防号悬浮与GPU引擎喷流.md",
+      "from": "../Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-018",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260929-重防号悬浮与GPU引擎喷流.md",
+      "from": "../Archive/20260930-重防号5至15米渐长尾焰正式应用.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-017",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260930-指挥官三档镜头与总览LOD.md",
+      "from": "../Archive/20260930-指挥官视觉距离裁剪修复编译加载.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-019",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260930-指挥官三档镜头与总览LOD.md",
+      "from": "../Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-018",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260930-重防号Q每圈60发分批引导.md",
+      "from": "../Archive/20260930-重防号Q每圈60发审核通过.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-026",
+      "kind": "document_relocation"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260930-重防号航母式转向表现.md",
+      "from": "../Archive/20260930-重防号航母式转向玩家验收通过.md",
+      "to": "../Archive/9月归档清单.md#arc-20260930-024",
+      "kind": "document_relocation"
+    }
+  ],
+  "split_baseline": [
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md",
+      "children": 6,
+      "expected_sha256": "b6fa24986184bab79c9ed253e18651b7d0069da4c113fac3aa6fe42e5532a6c6",
+      "reconstructed_sha256": "d62626c785ce14ffb1d3d97f1c91daa82f42370be91973aace9040f7e7c8aa7a",
+      "errors": [
+        "segment hash mismatch: Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/01-架构与配置.md",
+        "segment hash mismatch: Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/04-战斗复制与表现.md",
+        "segment hash mismatch: Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/05-日志测试与Gate.md",
+        "reconstructed payload hash does not match the pre-split payload"
+      ]
+    },
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md",
+      "children": 5,
+      "expected_sha256": "5c2e5c0f9faad8359d9df5f9fc9484a7e7ecd96e0f6b98e1495ffd1c2011e2d4",
+      "reconstructed_sha256": "e44302910a4b151b78f1d3ebbbfda8a613884703096359c65b196e4f3b9c0d6e",
+      "errors": [
+        "segment hash mismatch: Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属/01-结论边界与实现基线.md",
+        "segment hash mismatch: Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属/04-Roguelike升级与生命周期.md",
+        "segment hash mismatch: Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属/05-同步验收与关联.md",
+        "reconstructed payload hash does not match the pre-split payload"
+      ]
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "children": 5,
+      "expected_sha256": "907313bfe1ae8f1689cbe7f0d39336b6845a401f35833922cf266326fddcfb46",
+      "reconstructed_sha256": "fe714606fa6865601292335278592cb0a8bba932b7068b0f0a3ee20faa0cb9ef",
+      "errors": [
+        "segment hash mismatch: Progress/Gameplay/指挥官/03-数据技能与武器表现.md",
+        "segment hash mismatch: Progress/Gameplay/指挥官/05-数值与演进.md",
+        "reconstructed payload hash does not match the pre-split payload"
+      ]
+    }
+  ],
+  "split_changes": [
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md",
+      "legacy_expected": "b6fa24986184bab79c9ed253e18651b7d0069da4c113fac3aa6fe42e5532a6c6",
+      "actual_before": "d62626c785ce14ffb1d3d97f1c91daa82f42370be91973aace9040f7e7c8aa7a",
+      "actual_after": "9dbe29dbf6be8bdf1b99d701a1527936428ac4d2c9bf8dc57fd06c2b9535c26c"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md",
+      "legacy_expected": "5c2e5c0f9faad8359d9df5f9fc9484a7e7ecd96e0f6b98e1495ffd1c2011e2d4",
+      "actual_before": "e44302910a4b151b78f1d3ebbbfda8a613884703096359c65b196e4f3b9c0d6e",
+      "actual_after": "e44302910a4b151b78f1d3ebbbfda8a613884703096359c65b196e4f3b9c0d6e"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "legacy_expected": "907313bfe1ae8f1689cbe7f0d39336b6845a401f35833922cf266326fddcfb46",
+      "actual_before": "fe714606fa6865601292335278592cb0a8bba932b7068b0f0a3ee20faa0cb9ef",
+      "actual_after": "11c3376b1d4502b770784cf749a82e1adfd697f41a2919345d617ca5d2637bf6"
+    }
+  ],
+  "files": [
+    {
+      "path": ".agents/skills/guli-map-authoring/references/architecture.md",
+      "before_sha256": "c03cc74d8aba25a143e4a511618c71a2a3f880cbeec81c9665ab7730a99295e9",
+      "after_sha256": "714a3b21f39bed5ec4b5192ab2d39ed3d234cf7622ace0f14b1a559020968c2a",
+      "after_bytes": 10732
+    },
+    {
+      "path": ".agents/skills/guli-map-authoring/references/maintenance.md",
+      "before_sha256": "9756058b3e991a54d3687da7cd834425c0c319702a52fb6d1ee21a6c00ba6d5b",
+      "after_sha256": "f6aa43b0723b0a8fa69ebb46af0e3c222855db162737b8a334cd0a04d05496bb",
+      "after_bytes": 9191
+    },
+    {
+      "path": ".agents/skills/guli-map-authoring/SKILL.md",
+      "before_sha256": "0708400a7d250d81c98db68f3f98692059bd3b76b101bd0dcd003a7ebc624ea7",
+      "after_sha256": "20dfff3715267a54ef3994fb370f073c759371e52742488443159cc15bc28339",
+      "after_bytes": 6338
+    },
+    {
+      "path": "Progress/Archive/20261001-机枪10度随机弹道审核通过.md",
+      "before_sha256": "8e521305678cdff988efd5959f8e47b55a176a78a8013158270e2b9e233364bf",
+      "after_sha256": "fdd6e1e8995fad002959cb6a613a1abf72cd255efc4655af0eb58d28e4426370",
+      "after_bytes": 1644
+    },
+    {
+      "path": "Progress/Archive/20261016-CS-P2P整合归档.md",
+      "before_sha256": "3bfcb003efa14b34eca8681e46cdd4e68c72d1e31c014f11851cefd174d1f165",
+      "after_sha256": "c43bf72d4d61d671361d206db050c14e7c8af1bcd1daee1311ff0b4ec6802728",
+      "after_bytes": 999189
+    },
+    {
+      "path": "Progress/Archive/20261021-近期性能优化整合归档.md",
+      "before_sha256": "a1ba12cddf9df4c8e9ef986ea8fdd62b641869df976c793b2fd64d4a09b135a5",
+      "after_sha256": "8a17821faba330de2d9b3fd51f11c5164ed7c89a8af7fcf3beaac200b17fd83b",
+      "after_bytes": 16287
+    },
+    {
+      "path": "Progress/Archive/9月归档清单.md",
+      "before_sha256": null,
+      "after_sha256": "c232c7d9674302baa39751d1c7dd389dcc6cc59a313dbdf17aea07b20339146d",
+      "after_bytes": 62337
+    },
+    {
+      "path": "Progress/Backlog/2026-09.md",
+      "before_sha256": "0a81c9e3067cbedb68ecfb046f07e8241a9d7b82082fa1f3b9fb6988de670f6d",
+      "after_sha256": "5096fb3e916e24d8c8d1a40e20637fa957e0b39d62089b7e6bb085c86a82133c",
+      "after_bytes": 146511
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260830-指挥官脚环优化与兵种面板.md",
+      "before_sha256": "66e97d17c7cf321f534e7db0896ccf92c57b04d6dc70e5d6c95af9cacd62ae67",
+      "after_sha256": "5800632da2236e9712811f5e30c1c768f7ac671b4eb94443026199d13d1d26f0",
+      "after_bytes": 5396
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260831-小兵客户端先行移动拖拽诊断.md",
+      "before_sha256": "6ccfb5d45d44e1989345eecd3355c3a96fb484ff6be66034e83dc31301667508",
+      "after_sha256": "8fbb9ab0c737ec62c1f49df0e64225a666a179995ddee896f3eaf8c8015c517d",
+      "after_bytes": 22157
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260831-指挥官精确选兵与快捷提示栏.md",
+      "before_sha256": "93a20a171539ad2b165ec000ffa6538d19617fa9a0e5ac9f788fe92294993506",
+      "after_sha256": "aa9785f3d3dbeecc8566da4ff434b0ef32322eb9a777b5894e2a754b98db30b4",
+      "after_bytes": 7755
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md",
+      "before_sha256": "742088a694342dd4b731b838c6d26a53786d504bc5ca8f16b8f98fdd54ab7d35",
+      "after_sha256": "8b06e67d9d8b4ae44ecbd975148f901e2ef24ec7918415ca05ac54810014a76f",
+      "after_bytes": 9638
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md",
+      "before_sha256": "26b33bb9b6c4751aeb439e8f37295799050a1270813190d08f00168240c1809a",
+      "after_sha256": "b5ca5d6cdb6e0a61015e3aa95d4494a3f36b096ce683b9d2d02f4d485f4bd200",
+      "after_bytes": 19797
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md",
+      "before_sha256": "2cae08d7a4e4d65de1f413d070a6670ce56c6c26eae5bdef2a20fd07d5948d2c",
+      "after_sha256": "fbadd599d0435068a68cee3a7065f11b70bd98465d1322d396bfe735d5d63ad9",
+      "after_bytes": 11952
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/01-架构与配置.md",
+      "before_sha256": "7f516a230509ce50fe7996704d346a2a782b887bcbae2488b7aea15b30a101bd",
+      "after_sha256": "07857d2906a8ffa9b674f814cc87bf0f3afa8ff25093749f03b1feb2d118de52",
+      "after_bytes": 20272
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/04-战斗复制与表现.md",
+      "before_sha256": "ebd27d1c1eef528f6044e40a29893f267fccf9434e2d5c551da7811432f0d30a",
+      "after_sha256": "10e9af4e1a37a0bcf4024c7ce749f49eef753a0de98640933d67d5e48690a8bf",
+      "after_bytes": 9539
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/05-日志测试与Gate.md",
+      "before_sha256": "6a240d0d6088a72cb431b5865827c131aefeae56b0db9d2c2274f48ba169886d",
+      "after_sha256": "43f48e2afe9d28600b05068d4e696b22b4235fbb44e0dd24753ecccb18e4bd19",
+      "after_bytes": 34727
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/06-任务风险与结果.md",
+      "before_sha256": "b8fafc2b08d2a032a12cc271d42847cf76d5dc82a00bfe064f55586a46ccfd61",
+      "after_sha256": "7509fc28c6bbbc92486aba9cde3bf72e9b516b5d340d0fbd114d0f26f0008be8",
+      "after_bytes": 7949
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md",
+      "before_sha256": "4259d4f27a78ca26fdcff41b068a28e951b9e2f0e03666dc00fc012c903052b1",
+      "after_sha256": "fa0a36b3900e3734e2b5b4ee2412a276f1823d4d7ade708630ed1eebd98dfc30",
+      "after_bytes": 2935
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md",
+      "before_sha256": "2e44c2daf7e102f8e77349b4cf597707d28976cd0c644b846acfed3127c164c8",
+      "after_sha256": "afefc95a8bfe907eaf0eb4b308c75294fdd036dd94753b4a4882d0b12e9f121a",
+      "after_bytes": 23398
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-飞船GAS与僚机技能归属.md",
+      "before_sha256": "e1a8d4a23ffa48ff8dafebccdb525617088bd0df25dfb2e179b76086988d29f2",
+      "after_sha256": "3fb9fbce5e6990542aa45c002c8899d08b7f3f0751963532896a8c3d115422c4",
+      "after_bytes": 18474
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260903-指挥官与地面机甲最小建造系统.md",
+      "before_sha256": "2d4fc76bcd2a68d3005a8ef0fdae86829192dac4bf3259579ab696346f0f2943",
+      "after_sha256": "07250286c1e43f562d24b755407e91fcf5260eaa556674b2d039081e4804347d",
+      "after_bytes": 6675
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md",
+      "before_sha256": "58564ea9a7907e44aa79ec2f2b828dbc1631f0994b9d215208ee0b6b00a7af86",
+      "after_sha256": "a2a1a39c3f3d58dbcdb5091b8b8c0554b9d1bf8efa0b5c303029b4dc33549b3d",
+      "after_bytes": 6209
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md",
+      "before_sha256": "7cd2994c7a2ef1690947fe08377e50b7ef7c240337b205025990fab8a7dd5e09",
+      "after_sha256": "9a38ab3837519e593565d553888b02a60d346e7d6fc7ce42b5cbc5f73b8a8eaf",
+      "after_bytes": 7915
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260904-飞船世界空间环绕HUD与技能准星.md",
+      "before_sha256": "99e8de0a244c940dbe3341476b9837148833620e8cfd5f722855c5aa9812d65f",
+      "after_sha256": "45b9aaea366efe0bb65dbf46dd46c87954e2e3accea3d30ea159ae05ac000c8c",
+      "after_bytes": 4478
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260905-指挥官武器特效与独立法术场.md",
+      "before_sha256": "285760ed75a2e729cd7d40508bf0a682da9cf94670127e998c8505f943a32860",
+      "after_sha256": "692946c9f4f7bedc51acba34ae86895167c6002000cb175f624b61c8197d72c5",
+      "after_bytes": 9322
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260905-据点巨构导入与占位替换.md",
+      "before_sha256": "1de304b9a1acc0b7991eec4068321ea3c567dd809f418dbb529c60cebd984a47",
+      "after_sha256": "e57a68390b7c8595736032a76c3e2689e167305705e272410466a7934a9edf67",
+      "after_bytes": 3979
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260905-据点混凝土巨构模型.md",
+      "before_sha256": "3e0e70edc2878061b5ea62f015f62eab704c24d91f5056769f38b633739d4a2b",
+      "after_sha256": "955b7f666d3bfa36cc374eaf0541c62a634ad7b300c63d2776be2923acda3b10",
+      "after_bytes": 4313
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md",
+      "before_sha256": "b67c88da3b28a7c82959ad2bcfae0e1f41022cbc738be80244ce4d92f83f37a7",
+      "after_sha256": "746f7bc817bbf9e1fcaf6c0c114ddcd89a0b440904541474506cca0eb2779a3e",
+      "after_bytes": 23123
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md",
+      "before_sha256": "6251e48e2191c7acad84da7f83242e6d50928b2bb787c6475a4ac35e1e70e6f1",
+      "after_sha256": "c34e6a54e3d2f607cb635e20c85e8a302bc3b05f4c18b0cb59e885ce709e3d56",
+      "after_bytes": 11127
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md",
+      "before_sha256": "e99db7cf80e301a83f05dd41db981c3796d3d07e463ed93d4797d7ff70bb55d4",
+      "after_sha256": "e327b41b1fe4c47245bdbac74d40d95a443175951cc41823231668a7e99a89ed",
+      "after_bytes": 14250
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md",
+      "before_sha256": "7a6615f82daac3e5277c111b1e3578690884dd85633f0a947aebdd55e553958c",
+      "after_sha256": "68b29e3d10300dc072ce33bb2225a81a0df2d25139d25a78001ed5a4c63b1784",
+      "after_bytes": 12302
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "before_sha256": "7420f16a605cc69ec577d7af310ba84b3c0d9eb1a9314404b99c9ac30d1d94e9",
+      "after_sha256": "b1e083f8bb2d9ee58fc81fffad41e5c6a7a70f776165beafe680187e70ee5d72",
+      "after_bytes": 24016
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md",
+      "before_sha256": "514522c097521757e15c9d5582256c859d565a4649e80519193e7cef01cc7613",
+      "after_sha256": "ae7653dc1415568c553a5b9a17d1bc3c6543ce762cc5ee755691b523710a8c5e",
+      "after_bytes": 12459
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260909-Ship僚机俯冲轰炸门槛简化.md",
+      "before_sha256": "f5f789ccd1624ece0dafa5d10be742c917c2ae62c4bb7bdb4f4652c429822eba",
+      "after_sha256": "b526e254ff40c938038fb1ccd48f1be27feb0f1138ce171e32059d967589c12f",
+      "after_bytes": 3206
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md",
+      "before_sha256": "f5778089a70a5030b372a17de3db25c7942c11426b915ada59c7d081c9bd5dd0",
+      "after_sha256": "29d4991698b05c92a5ac4a9cd3a7dd04c7f9d51798388f70cbea13a3d88d6535",
+      "after_bytes": 13978
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-僚机飞行尾焰与拖尾.md",
+      "before_sha256": "afd4b49a49937e20b7a1d2552f51377b1951340eccac9f40d77e644ffee8c38c",
+      "after_sha256": "a3b2ffdc1fe02c5a1da598ff7df91f2a036ed07c7fc87f9a448bb07e9e4cd4a1",
+      "after_bytes": 3491
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-双矿单位矿模型UE导入.md",
+      "before_sha256": "58ba275b2dc8a221fc3583e8fdcba1f1db4dcfeff84ddbeb87e25ad5da0e90f3",
+      "after_sha256": "51566ebd163f4ffae62f46dc56a1021076556a635415462b17e4ef299c50a7c2",
+      "after_bytes": 4453
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-双矿单位矿模型与Blender审核.md",
+      "before_sha256": "74006df580a39e262418d74c08d9af5f02702be55875d9b740a56de86b4f721a",
+      "after_sha256": "414641c10436a49ba4103da7e67e5dcca3d70c63462b969d7cd605dd75790a0d",
+      "after_bytes": 4520
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md",
+      "before_sha256": "d70cf54830f8f4405264af9dc638b1a6b6af8335d41f508a4c76b9563feeefcb",
+      "after_sha256": "895d883de8f06ab7a4893ed4b7819fab00358aa83e229038b1c96cc20a3913f1",
+      "after_bytes": 7120
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-指挥官双点传送技能.md",
+      "before_sha256": "d59938282978337ae8774107f80a85337e426bc088b18a799a2ee3d0a4296639",
+      "after_sha256": "3a15ff9784ba0f664d2666da5a6f052463ced833455a9afc91a4ba8ed54937e8",
+      "after_bytes": 9773
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md",
+      "before_sha256": "9327c2d7524b266aa8f5205bc511b6f39c8d91a383e964beb157abbd2d201d03",
+      "after_sha256": "ee32085600b5d638ad76c16ba669b11d46f6ec740b3e24da40c5e6e14b39dbe7",
+      "after_bytes": 6088
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md",
+      "before_sha256": "00ecb989329d03d23866526f8a93371561fefe6a017b02b75bd3fd922df0d969",
+      "after_sha256": "899578efe55ddb79f7e3a567a74cf45f5587283f6cfa75c3b41bd45c4ac85849",
+      "after_bytes": 6729
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md",
+      "before_sha256": "1778f3448f8f03969c2ae10656f751ffd6e63d2bb09fef1fd3ed555ee8f43224",
+      "after_sha256": "470ea5637bc8721fe63e517c2d5fa5985a3841faa0eaecf8b23b6499535db07b",
+      "after_bytes": 11052
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md",
+      "before_sha256": "5e9fc650345532c3b76bdec19db3f6b3e0efc9906b40fa6d2e1257b69bc5e503",
+      "after_sha256": "65112cb181d98b714bd316e6d21ad22a7909aaa047c3a283612f3aa8d5fbbc8d",
+      "after_bytes": 4248
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md",
+      "before_sha256": "26cab51443267ef79049530bc14f65080c87cceb9657d550e1130c04ecc19fb3",
+      "after_sha256": "0d4cde6cbc4d56bb8eb2fca405bdc971a3057ae53005f512a9e48b7c77f92180",
+      "after_bytes": 3643
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260912-僚机视觉插值与远端缓冲.md",
+      "before_sha256": "1a58a25d234fa49cfa313ea5e94a6b02a0e0e279d36c927e3119cb2d18fa7aab",
+      "after_sha256": "feddc01152e100116ed9189368606ae0216470984b1d282bc021fee6321d5c2f",
+      "after_bytes": 4014
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260912-空战测试关卡远端地面单位.md",
+      "before_sha256": "d92b69e75a3bb7b1762ae9aa6154a3f9411b928f4e1f06884f7cbf6dfa801981",
+      "after_sha256": "6b30f448f8022d4d76292b1b1d049ee290c0d9c6be67379d3a90763cb5cfcbe9",
+      "after_bytes": 4326
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260912-通用敌方描边与普通PIE僚机跳变修复.md",
+      "before_sha256": "ff51a39dd00c1e9ad28b406ede6609e12411ddb29d029223fa3225e225bc175a",
+      "after_sha256": "5bd7c05666f38aa464ded9ed971dcdc54d8bade4ffd56fb1ff5ce24943de7b72",
+      "after_bytes": 7694
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md",
+      "before_sha256": "60d9adf79b738040373e3ca465bf18be7d04fe08f818f6a3f767b87a5853eb16",
+      "after_sha256": "cc4ee241c09776b8ec2bffdb921a999b20e7ab1402f2753f270e0bef05f0a74b",
+      "after_bytes": 7314
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md",
+      "before_sha256": "2512de4006018b345f36af074ec86accc0033c4fe81865a8e3b8407bf2e25f6f",
+      "after_sha256": "afb956ceb54b80e065fd9386e82562eb33dcb89376e2e95e062b14aa5d1c5f92",
+      "after_bytes": 22093
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260913-激光采矿与矿车进出厂.md",
+      "before_sha256": "f96d9707465eb525f9ba6df26f95bc43e8db9f6fef991ab9cc235b9ecea6ca03",
+      "after_sha256": "1a09953d63d9c42b28c3a278e808f4b927a5fb20d42656faff7ea0a8d932b479",
+      "after_bytes": 5489
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md",
+      "before_sha256": "3120336f1a3f3b0c0c3b84d1f1639dcf4b0896af794a0ec93582c254bb499251",
+      "after_sha256": "febe58206370f8c7495f1f5b7c5e361ad4e4485142c23ce11c996c448833b250",
+      "after_bytes": 10407
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md",
+      "before_sha256": "412f3e6826a51e6b4af15c38418749ae2663374f9f9af49873eec85deba98ff3",
+      "after_sha256": "5df3b7b9dafd25015b63c06df1c38b556f0fc3b1117d08aebf8d6f80c316f121",
+      "after_bytes": 5748
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md",
+      "before_sha256": "4535c46d78dc100d918e8716b9069487333b462363e3372aae6816700640eaa6",
+      "after_sha256": "4daa302d09021c61e3af1c065fcf3a936308e988b516578127fa5a140b2c42c5",
+      "after_bytes": 33193
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md",
+      "before_sha256": "c0cd5fa0a8cff70b394a6e866f5f406540cb16991cbd0fdec38468741ab9290d",
+      "after_sha256": "98a5ef89caa562c46f8d4c1dafdad005aa060760337bc751414e27cce388b28d",
+      "after_bytes": 7181
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md",
+      "before_sha256": "357e2595e6b21fa4b2b0652ba3322bcf31eefaf79f997bd259efa4ffb01b439a",
+      "after_sha256": "2e0acb6cf52e4ff81ce9c8a87312a5dd27f910d22d6bcb919d6980c4fc1c9109",
+      "after_bytes": 10615
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md",
+      "before_sha256": "c2bf408059371cf2594bb18976b1a88a9e49a793dd271deadcb01625a47db3c2",
+      "after_sha256": "5b3180c255823886fd75b877db68d54012ceecd3465dbeb3c44ee2e0fd1092e3",
+      "after_bytes": 7643
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md",
+      "before_sha256": "47e873f6464dad14d3f594dffeb02f93913ae0d1b342f3030baa4c93fd565958",
+      "after_sha256": "7e55b9b01267f13f0b52f3b0a0f7f08cf04fd404b79ce71d84b1aeae4d945cf4",
+      "after_bytes": 12488
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-GPU渲染降耗.md",
+      "before_sha256": "f515fd835dcc3eb38661fefcc9bd7206b9f3336071679a076b136f18eed1c486",
+      "after_sha256": "87c6d4f1f25d1c5236bd07b9e4dbdd35301229f8c946a8c68453a9868f87f6f7",
+      "after_bytes": 6587
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md",
+      "before_sha256": "f9c4e022c634960298a79c36f155169338b6d9f7c932048e737495022bd729dd",
+      "after_sha256": "1b392d88d36a3bbd82ef0edbf29935ed3a58dabead2e16d5b87c50ce5bf75ec5",
+      "after_bytes": 7310
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md",
+      "before_sha256": "0c36c3d8578a121bd3ec0e4e8ad0518aca1671e732874ca4b48f79cd50e5948a",
+      "after_sha256": "c97efe01068ca0ba95959e3d1bc88f6340bb08db8f3e6bea271c3c05df98af3e",
+      "after_bytes": 12718
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md",
+      "before_sha256": "acbbf1f77dbb028e97857e749db890ff5bc7a388bd969e98965cfc1afe136f0e",
+      "after_sha256": "522b592b726e0225b9bfafb2f8b317696fe6deab9bf8ed987964c589295dd61c",
+      "after_bytes": 4597
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md",
+      "before_sha256": "d9a9d13fcd11643a064fed60f1ac8e9f8189febbfb8d5eac5e4804015ea94a41",
+      "after_sha256": "3110a66f4ff7854a5b5721e1200828eac12be0050d1dbe68ccfc64f8f7938b93",
+      "after_bytes": 12533
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md",
+      "before_sha256": "d21f592bc057dd21eda9e9d66a82b08b99485bffe2c2c7efe0deae5d6380fce8",
+      "after_sha256": "aa0fbec2628da0aca5a2f7f393d6319c4538253b5bc9b88322e47ce1b56b0bc8",
+      "after_bytes": 10121
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md",
+      "before_sha256": "3af722bc4761ff4a01316d301aed1167314b023dac337b56b351f5965f2da2d1",
+      "after_sha256": "fb084af2d1408f585955f899a145118ca83a09058674c308855628f6ca190f1c",
+      "after_bytes": 15180
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md",
+      "before_sha256": "ddf1c58d730743e3036da20a037afa29e119e721b6b592f79e8c95fd53a57ad1",
+      "after_sha256": "28851922ca150deb3bfa25fad76bdad92db280774f9967079d4ff40e8d79e9c0",
+      "after_bytes": 9441
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md",
+      "before_sha256": "4fd3c1cba37400aaedbad8dabfe99573d0b1a920ebb216878ace318dbe6f31d4",
+      "after_sha256": "0aa864a2487b6dd98fe3edcbbe4fa6a8561154ee329d17dac97588e04d92af6a",
+      "after_bytes": 6151
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md",
+      "before_sha256": "68d0f102c44ef27dc23201951ac0f4adf1ec842445adaecdd0329a37a2c4edb1",
+      "after_sha256": "6c7196be84cad30b50158cdc281b7af74d4c4f849c9929c4bc7f0e31737dee95",
+      "after_bytes": 9604
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260917-进度面板分类筛选与文档分类元数据.md",
+      "before_sha256": "e5a2448c943ef1dfe223bdb5968f4c314e071c621d8048c41de75c3c4b7f695f",
+      "after_sha256": "3fb9dba9309c4147190746c7dd7cdc0370b1a461ccde04167374968f82ef8974",
+      "after_bytes": 4308
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md",
+      "before_sha256": "fe52cacf9843969a65b4e6817fe278834a6fb4b8b850b38c60a46b7ef63d188f",
+      "after_sha256": "552158320ff992a36d8bd00d3226c2b5d3da33bbf453da354be4aeb572383a1e",
+      "after_bytes": 10172
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md",
+      "before_sha256": "becc5d7d5e070c8d76513cdeee9a0375c2927d8ab8c4af337be78b06e4d48f08",
+      "after_sha256": "775f49615ff8bcefd9bd5670be66b457a58944d5f657fd610869900ee9adc0dd",
+      "after_bytes": 21949
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md",
+      "before_sha256": "5f9b4a325cce1062e6b9e29d4935bdb0e7a136da5297e9427e31022b1d7a1127",
+      "after_sha256": "ca9444eea42488fd9bffc4acef64ebef343a17c808ad46d9fd14ee010489a308",
+      "after_bytes": 6233
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md",
+      "before_sha256": "270ca34c9fd719909ba46cf820b1d5e9561f127e5457d24758111a462a0fff16",
+      "after_sha256": "41bc80bfad9ab70573731581bb5868a94ccc8b8eb146e26a912fa166c44549b6",
+      "after_bytes": 16947
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md",
+      "before_sha256": "0588d166474d4a74b1e88460ab3992ce3c4749c78785fadeca07ab4704379c52",
+      "after_sha256": "073ad165cd7b40ea49cde355279a95972d5ebf14dbab52312f53d4d4479da917",
+      "after_bytes": 12442
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md",
+      "before_sha256": "812118619c8a46b8e4f932eef1c1b91b2d3b0cb2d8d7af08dff6edf815f5f8f3",
+      "after_sha256": "392cda1695c04c13be702b56b7dc243d054063150a59c5330e03fd3a01773af3",
+      "after_bytes": 23850
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md",
+      "before_sha256": "83f335e556b53a12f6a78ab9828935a281d77b2f9b5edfc658b36ef0ea5de051",
+      "after_sha256": "e58dfee382daa7af0b89d87b57d8f659c829822b21cc23c6151bae6d7f57dfa6",
+      "after_bytes": 7219
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-地面机甲火箭跳.md",
+      "before_sha256": "c2fea4c88af575b7ac03045e39485de3b1eae6c53a109ea36b3068c52e6342fd",
+      "after_sha256": "356bcf9beb19736be7fb835c9fb82c150f6a997ff886823f27dbbf861ceae6ae",
+      "after_bytes": 10424
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md",
+      "before_sha256": "4ce974255555c765d978a756e13bbdf289dcd7fb634607c4c9014d50c12c2c1e",
+      "after_sha256": "daa4c64b3a5c549ca1abaca1917eac449920c4fc67ab0d6e1d794564e17742c8",
+      "after_bytes": 14348
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260920-机枪子弹统一受击特效.md",
+      "before_sha256": "2b25d74929a515e3825f605bf8393e4db695cabccb7b1dae5caba7cca088b3b5",
+      "after_sha256": "5cbf5e3d3f696ee0fc625df165520e5709ff75d925983d8f114ce03da984f8cd",
+      "after_bytes": 14909
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md",
+      "before_sha256": "8938b183a6b8da993ca9f811448ec2b4e6d067c77b7009c1fd3f6c7c3301b796",
+      "after_sha256": "d827ac37e823d5935da743cf0332c54dded9b476776bbcfc34f8d2a31a286c3c",
+      "after_bytes": 11646
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md",
+      "before_sha256": "079d128935cd444c77f22d049ca0274b60198c1b47a27b00be7d19f30422247e",
+      "after_sha256": "5dd79553190ddc4220b9a6fd543312298636ec0c426245a8035fee6720cc177d",
+      "after_bytes": 12129
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md",
+      "before_sha256": "23f5c6e6adda0fda0213279ab27a2622deac1675da8045a1df79495776f7da1b",
+      "after_sha256": "4417660818b9b141f3c4121569d9415d66a5b9e6ae474918fced47ce2ee0f79b",
+      "after_bytes": 9191
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md",
+      "before_sha256": "c3acb0aaa7823587384e8015aea793b735053244c3f6943e1af9d9a50a3d719e",
+      "after_sha256": "0d6d5fe038fdc86f97117db033187b31ac154bb18f645ce98206795a54ff6915",
+      "after_bytes": 17154
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md",
+      "before_sha256": "b84103ddd41b32bf8a40683ecaa41353a2bcae6e7e18a24481a44b42d66cfc34",
+      "after_sha256": "63a39de0f7a4322aa08c28d23eb6735fa8846b63a235ca425bf6d9ba6680e3f6",
+      "after_bytes": 30265
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md",
+      "before_sha256": "a4c1970d762fd912d5e2d358f3298df7bb2f783d9493b917bf0eade7345a9846",
+      "after_sha256": "97f017019d3d6768a7e6fcbdff130c72da0fb85d428e34c0d4a4b7048fcc232c",
+      "after_bytes": 20174
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md",
+      "before_sha256": "845b6becb934d8c36902c21bbef27fdea67578f25ea6c7b0d07681c021dadb44",
+      "after_sha256": "5e31de3f764873d3c1dfb4e8b5b82bad7463d36c1bfc9b37ba75d6b5d78bb6cc",
+      "after_bytes": 11632
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md",
+      "before_sha256": "ac340aa4374525cd595e893350aedb8d9bad16b34d5b2267cd98ee8c44144a71",
+      "after_sha256": "f15177dde0cb8a679587c23791b01fef3bc1f1f700198286d150f31d65199386",
+      "after_bytes": 9037
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md",
+      "before_sha256": "78b51698c69dd111ad3bc62813dd3a602cd003f314441786dc4a9d00e8bed33a",
+      "after_sha256": "1ee3d2548226b74a1ec94ac1fac3b06b2a27933419fed8c3fdc24978342326db",
+      "after_bytes": 14772
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "before_sha256": "9d9242afc2543154df6def50268e13f24413289c5861043ca551eeb23801d0f3",
+      "after_sha256": "00cc40fa376deb4356e2bce20ddd4eb04c988968149613d3fddf7b8c5563451f",
+      "after_bytes": 23784
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-F4肉鸽卡牌重选.md",
+      "before_sha256": "4471c676f78fccc1db017046e93f0a65e3cd6d5c1b9fe0bf3ccaf2d8b0eff897",
+      "after_sha256": "0ea83e9c241d1c63b42ded8a3494e8e5b4989a110d62cce3898acdd08f4dce78",
+      "after_bytes": 5109
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-指挥官统一三级LOD.md",
+      "before_sha256": "40602d17656254d2c59baf896ab98a4012bed5412e8981b8ac780140a48fa998",
+      "after_sha256": "5ad12d69c066034c7f03f6640bea408c7cf8128acf748adcba418d703a4f1238",
+      "after_bytes": 18650
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md",
+      "before_sha256": "5b07e05093b1593ec4899094b565e79f97f591dc6a1b7ef0fc9d312682239732",
+      "after_sha256": "fb4a0abfd12f53e94884906bf142b3cd41bcea81d1d285b737949c7814334424",
+      "after_bytes": 6339
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md",
+      "before_sha256": "22b1c83be54fe7e17786a9c99ae5c248ba39247d8bf8b5426fdc2a782d42dab5",
+      "after_sha256": "dbe080fab298966520f30332d28773a840b1090bf974855d23faa8f69355aa9c",
+      "after_bytes": 31001
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md",
+      "before_sha256": "512027b7c6480a4ca0e0eec7081653d250bd29069485fe2db11a280b7747704d",
+      "after_sha256": "40895e5a01575fe150fdae785e4db14ad937d11d3fbf48506d48c1485ecf5577",
+      "after_bytes": 14862
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-Mass选择圈同步与软避障修正.md",
+      "before_sha256": "08ad7449ec4521016de755a57bb7d919fddd2f7cf590c5a160a3408b8c061869",
+      "after_sha256": "1e331a4ebf955e5522ac672cbedb95e4eb51ab3269b26083f1cd0cf1c13af2c3",
+      "after_bytes": 10225
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-指挥官三档镜头与总览LOD.md",
+      "before_sha256": "8c8b2f5847526209bcc7fd39c3e822bc952d9c359e632f00ab3fea7be0fa0f92",
+      "after_sha256": "87c687987848438e1a58c9e1c0e368db10faed7038d36b0de3c65fe35e7ad8be",
+      "after_bytes": 22664
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-机枪10度随机弹道.md",
+      "before_sha256": "9f695843c309e5590f1ab2f605860b6059a730b77ef22c0d5af3d0924be169e9",
+      "after_sha256": "ce2290b8f4158b59e7dd77f30faef7fe3be4cabfc9e73c46b3709e5a9d76e6b7",
+      "after_bytes": 8235
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-重防号Q每圈60发分批引导.md",
+      "before_sha256": "7ed0818366ab3e7c0ad0e15cb119297863fb793304a8305df5811e3668c5fcf1",
+      "after_sha256": "35cc70f6decb57d9a2aa0dbf4d5277571c5c8ef45be664606309a774254d0598",
+      "after_bytes": 8731
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260930-重防号航母式转向表现.md",
+      "before_sha256": "0be7acaeae15979d403a1e6ee83edf3dca6f7922d504ea3a9137496b598c721d",
+      "after_sha256": "8be962e046eb4659d8e6d60e26e98b7226718c8b601ff968bd7c23fe13720b9d",
+      "after_bytes": 10696
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md",
+      "before_sha256": "487fcfa51954e849aa02508d83daf766552acefbb2540846bcced3a41e9e4a6c",
+      "after_sha256": "288bf4b209ca6f0a212b4fd1d81a0a55985d0d6724c55fd110c3321389c4dd6a",
+      "after_bytes": 55787
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261021-近期性能优化.md",
+      "before_sha256": "65a44cb30c8f18fbd1b9372cd3e3e255e0517ec926b244e5d93be307aca60171",
+      "after_sha256": "51ba629c916f877434afdf37dafcf1d2a1e12b8d4a4c51649bce8b4bb4c49640",
+      "after_bytes": 18839
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "before_sha256": "927103beda2d3c2b3a791a07deccccffbbc5aca1a6a9dd3745f59c1a3b0320f1",
+      "after_sha256": "7c2692c85bd8afeef6215ac47140f9c4551d4d46aa029975b67771ded21cc428",
+      "after_bytes": 72278
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md",
+      "before_sha256": "c855f636893c7c610beec867795db16c4641312383a3f9942bf16f21a6b13990",
+      "after_sha256": "29dad70fea5191d7f8a4f3eeaae74dce05653df50b28606c3ba1234c51ee693b",
+      "after_bytes": 37347
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md",
+      "before_sha256": "95e64c34caf1d4df5c6e0c2fae96661a351dadaa36af010a52c0c95d49c2de32",
+      "after_sha256": "7b641c023f0665d4751f1468f1d1c910b91b6e1e0af68cb73c6084fa5a9755db",
+      "after_bytes": 31325
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md",
+      "before_sha256": "4cf3adc6627387d8b0645cb46990e3953a0d8a9ac0c9a87787f27b60f8ff3b13",
+      "after_sha256": "57cdef0842e696271f230d045e16fc291857d36d12f2875e40ac0c3cb2e0a080",
+      "after_bytes": 26222
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md",
+      "before_sha256": "b4d71a7c62de60a4de584dba9d54079902fd2ea52bf2b7ed888c02993ca1c51a",
+      "after_sha256": "363ca02d766d729637ea2e6b716fcaf18a4ce51cfc045d664c1a7e982abc593a",
+      "after_bytes": 25523
+    },
+    {
+      "path": "Progress/Evidence/20261021-CommanderPerformance/README.md",
+      "before_sha256": "883a24b0ec0c7e4a2b14b67f7c0965d6eb8c0cc7aa9bd6825629b3804b33dac2",
+      "after_sha256": "419b0231d53b9e1eadd4c99e97d05d44592abac7422d50bfddaa5c273d8e1e50",
+      "after_bytes": 3194
+    },
+    {
+      "path": "Progress/Gameplay/Mass移动与避障.md",
+      "before_sha256": "7bd2c9941214a9ee751a39a0a7bad3957ef926a51afb84591469808704a20340",
+      "after_sha256": "8c9a06461fe368e25a8adbbacbd3bb8eacfd7b745fca801861913b05ef379322",
+      "after_bytes": 6809
+    },
+    {
+      "path": "Progress/Gameplay/先驱号.md",
+      "before_sha256": "d5ec5d908c032b5b7c678a93e369262476db2ecd8abe55281956b4c361d9f09a",
+      "after_sha256": "39a498bb4786c62955c2dcbb04d58997e9ca8f082404ba7866b8a0b2d0b34279",
+      "after_bytes": 7484
+    },
+    {
+      "path": "Progress/Gameplay/地面机甲.md",
+      "before_sha256": "06691a162f6b9c7b2fccba8c965096cb3a8ab9dc9ed00d7e1931d7b938f0f6bf",
+      "after_sha256": "d099be5a2da450f9a94738964c4e919fd08b27d3730e6f866702ddb59b5495df",
+      "after_bytes": 15725
+    },
+    {
+      "path": "Progress/Gameplay/建筑.md",
+      "before_sha256": "1de4532f2e6e7d01e2b622befd8e9549a3e6c2daf8706c4f200cd3be6df6aa5e",
+      "after_sha256": "51b7d5cd010adab1f0f449de1f932cda47497749053613805bffc827e7be89e2",
+      "after_bytes": 17444
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "before_sha256": "c7edde50f7edfd42cb9c5c96d980390094adc0bf43062a07d12ecc35da049a6b",
+      "after_sha256": "0fe1cd145cb369d660881911f8b38dd2786aa158358a9bbbee21d647670b82c7",
+      "after_bytes": 36334
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/01-战局选兵与移动.md",
+      "before_sha256": "b3f4ee0ce993cbef23fe21c4a707bf7c1b21a28530aedb90d6d21797dcb78609",
+      "after_sha256": "fbc5e0f55695e4dbc404d7c374eccb1847b127b4f79b075265b1e529118c710c",
+      "after_bytes": 26627
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/02-UI表现与性能.md",
+      "before_sha256": "4302ea81e6f25f7c63f4c09416f9b0a3000316c49ecddb10cc104ca3c1b63398",
+      "after_sha256": "c5403f741ee644663910e7701daaf831f8397cfcddfbd1be3c025a9fde7c135b",
+      "after_bytes": 13450
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/03-数据技能与武器表现.md",
+      "before_sha256": "69d6e6e2600aa148d9e779973b943984ce798b23ab322eec9bfa3fd3c644c60e",
+      "after_sha256": "a231e11e8a07447bc54052c77ae6f26f0b50d510e9466bb701576d4e4ee809a3",
+      "after_bytes": 16824
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "before_sha256": "14301a727c16872de44a8617820e3f378a6fdf91146e1f6b7cb22d7ee9d12aae",
+      "after_sha256": "077bebeb45e300cd313dd3c6267e0042e4cb63c0c6b629493625ee6df15a2eab",
+      "after_bytes": 20719
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/05-数值与演进.md",
+      "before_sha256": "c496f892e24f1e905424778443175975ba5e9f5bd7b58a1049a3fecd7e8fd18d",
+      "after_sha256": "09b23d2c49ad060d00f4a03d830573f7adc1ab7b8d65939fd9e4433c8ebad920",
+      "after_bytes": 20113
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "before_sha256": "bcadad36df847a2f9ce443f4c334104b6de825479280bd0fe2eb27ad160a803d",
+      "after_sha256": "e81e01ce45cdcfe691c1e53ad3df7e52ff0969a92985b59d8d11ae421b903639",
+      "after_bytes": 16391
+    },
+    {
+      "path": "Progress/Gameplay/次级单位技能与地面预警.md",
+      "before_sha256": "62f14792f6b829a358030631e6d3a2f7ea0c099c703ceee959d683cf70576707",
+      "after_sha256": "cb4d8d9fd3d43d1a75fd91c4c8b1f7ac935e8246d2e69753da54d3c5297d595c",
+      "after_bytes": 9945
+    },
+    {
+      "path": "Progress/Gameplay/资源经济.md",
+      "before_sha256": "1c5705f04a289cb4b65615a6702d537d511a2062eaaefa6e61a2519aaef6788f",
+      "after_sha256": "8a599b02112b84502aba1b05c0e4f66b2fc84ea2649fa25bd57dfcf59c1ef383",
+      "after_bytes": 26542
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "before_sha256": "890290fb8cd023bd7602fef6ca5d9eba1592b845d1e2e3e57b680b8af4aeb9df",
+      "after_sha256": "50059982e9db781f9eb205116a72941c6b0f88f16c49bee81e013147fb57f229",
+      "after_bytes": 62507
+    },
+    {
+      "path": "Progress/README.md",
+      "before_sha256": "cb4dc6c484e275063503868aa75acccd3ebf26cafa77ca50b436f7dc3590b742",
+      "after_sha256": "6df43aba5f0ba260e96202edf48f61ce20000fee61aaec8d7ebe66f8bcc149b2",
+      "after_bytes": 4104
+    },
+    {
+      "path": "Progress/RequirementDocument/20260830-指挥官脚环优化与兵种面板.md",
+      "before_sha256": "5c8e2d34ffc92080c8d4f0697805a02428b0b507c2b71634875868870f8be63d",
+      "after_sha256": "c8864acb922e7611fc1f3aa3bbba793fb01a28d9f55b965046b9e635350f7520",
+      "after_bytes": 4191
+    },
+    {
+      "path": "Progress/RequirementDocument/20260831-小兵客户端先行移动拖拽诊断.md",
+      "before_sha256": "624b9fc2f1cb456d7dcc79de2e3de633b09f177f81d64d0f25485b1fcfa76c42",
+      "after_sha256": "0bbf47ca966b813febe0b890b05d749167ef4d6fac75f466dd2eb4cee9dc573f",
+      "after_bytes": 2688
+    },
+    {
+      "path": "Progress/RequirementDocument/20260904-指挥官相机稳定巡航.md",
+      "before_sha256": "c3e481c501922984f26235139a8419881f345d3bb2fc3f01f6c0b3b4deb629fb",
+      "after_sha256": "c80f9cf77ca74259375b95724f7cdd423ac4b08164c4ad8c5b070cebad2951c2",
+      "after_bytes": 6597
+    },
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属/01-结论边界与实现基线.md",
+      "before_sha256": "bdd5642f1aedd350152ad157ee7f9fe4efd090a83a5d9866d59b4c7c50f63049",
+      "after_sha256": "75f581103bead654d84003dff5af305380fe61cf0d0928800b82b25455010f6e",
+      "after_bytes": 11383
+    },
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属/04-Roguelike升级与生命周期.md",
+      "before_sha256": "a51b73e4c0cd8d1a129a3d6dc050c4f8b06f90587ae14c9390e197b35488ecdf",
+      "after_sha256": "4348f4ef58b8d9bcd363e90c47c5f3df0af456981b6afe439a88a0763f34b455",
+      "after_bytes": 15492
+    },
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属/05-同步验收与关联.md",
+      "before_sha256": "bd04493a68a42a19dadac72a5d34c1780395a8614625f76f2525b2964e20fe96",
+      "after_sha256": "05584a0dfe1b6572fe9a2b9bec11decb2f7a5ed4b363e03d561fd8d363f25857",
+      "after_bytes": 19192
+    },
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md",
+      "before_sha256": "2b920305b514b949bf5f01e146474035226f98e8ca55556d53619321d6db4dd5",
+      "after_sha256": "dbef558449b3f55b4d3a3c7b9ce54c371ed8437450ee182f4ac823b5e964f4ae",
+      "after_bytes": 2945
+    },
+    {
+      "path": "Progress/RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md",
+      "before_sha256": "b68e6967a2a49c37501906ae2f9a90cd043fd7ee04663f30c22f06ec3df22f0e",
+      "after_sha256": "4b06e02809c4f8cff91d46638254fc6f715ad11ad93c6f610f2703150d9a0417",
+      "after_bytes": 6160
+    },
+    {
+      "path": "Progress/RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+      "before_sha256": "8ac4abd755365008cb3219bac1c51251ec89441a3bb05cd5153b529b06ef20d1",
+      "after_sha256": "bf608c459445192d8a468211dc9cf1edbdd7b74a1dc8de873dc1e4e144746afa",
+      "after_bytes": 11173
+    },
+    {
+      "path": "Progress/RequirementDocument/20260908-Ship空中部队原型关卡与三倍航速.md",
+      "before_sha256": "bee3f58c8e078ca424b17dfbd55e872561bc08cc231bdcdfbcc5eca8dc024ada",
+      "after_sha256": "e07040a5f15610f5318609fd01c72dd5eb4f497e9b0ee77de91deaaf2ce0d32b",
+      "after_bytes": 3430
+    },
+    {
+      "path": "Progress/RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md",
+      "before_sha256": "1e92ff4c567926e4f4fc0745b1db389bc8c42827ed7bd47617f509650bf26a72",
+      "after_sha256": "fe1c6c097f41a5c2b70c11fd4f56bdfe325fe949038f635d003a8993286c73ff",
+      "after_bytes": 11456
+    },
+    {
+      "path": "Progress/RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md",
+      "before_sha256": "c6a7d7b6e503c226e5e0c82ab54b7cb8e04c7c9be627239cad452bee576ae546",
+      "after_sha256": "2c8384785a1330926e9771a655602359764f488d2bf80f19b376309852779415",
+      "after_bytes": 5192
+    },
+    {
+      "path": "Progress/RequirementDocument/20260910-僚机飞行尾焰与拖尾.md",
+      "before_sha256": "c7c7c9a2113b579cfa682991242d86e012b1a925fce863fbd10f830737c716b6",
+      "after_sha256": "1ecfe65d686a50877127b6f4d84df779c57b81c7c39317e81a89ded7ad481dcb",
+      "after_bytes": 1640
+    },
+    {
+      "path": "Progress/RequirementDocument/20260910-地图资源密度涂绘与导出.md",
+      "before_sha256": "b83b0694a637cbfcd52f76c90d5f57906c08754d2067592190a419ff87ba47bf",
+      "after_sha256": "ea7039fe0c65f565138deab382821af1ffa63401ea866369ef936a3db8b94b4b",
+      "after_bytes": 4016
+    },
+    {
+      "path": "Progress/RequirementDocument/20260910-指挥官双点传送技能.md",
+      "before_sha256": "24233ca8ef8d850875f1c143e4f18860af9c90e88a2cd88d8b8fac7178bd1e36",
+      "after_sha256": "c12ea64a1b2df10c39c5e76f65693583b7f84a33022e8586bfbb32ef5bf831c1",
+      "after_bytes": 4100
+    },
+    {
+      "path": "Progress/RequirementDocument/20260911-Ship僚机对空攻击盘旋冷却循环.md",
+      "before_sha256": "2d8d56fb1265101313afe9ff2bb2473272e20da6e79c4bbafeda46bc254b76d0",
+      "after_sha256": "2095fa725c3a091a5947e83cbcb5c45e55f12aae28884821af6659ca83b1422a",
+      "after_bytes": 4357
+    },
+    {
+      "path": "Progress/RequirementDocument/20260912-空战测试关卡远端地面单位.md",
+      "before_sha256": "65b48ed072831390eb85d72f324f381b6caf5f0c16442601bcf0caae4187e75c",
+      "after_sha256": "3392a0a638408d22103d981e47a88c9d097da1f2487c73fd7204aa90a23be432",
+      "after_bytes": 1699
+    },
+    {
+      "path": "Progress/RequirementDocument/20260912-通用敌方描边与普通PIE僚机跳变修复.md",
+      "before_sha256": "6ad3683fdb7c49841ecb069f7f611e07b44f8030b5c7c0c02092e326b4f13f4e",
+      "after_sha256": "04e10a38f980dbb7e41ece8d354fffe5663acab37f7e36d9ae2189ae6ba5b3b3",
+      "after_bytes": 2092
+    },
+    {
+      "path": "Progress/RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md",
+      "before_sha256": "16b3ce138d9ed3f4294018c9598127129bd93b51c3e023f205b6d179144302ed",
+      "after_sha256": "0fc10c162321b51023c00897b06aee263f2e0254cd741ceac59a00f05183316c",
+      "after_bytes": 3096
+    },
+    {
+      "path": "Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md",
+      "before_sha256": "af457e9b581fae39e8f00fabf01a3118e098524f74aceb7978e2d74cf41c519b",
+      "after_sha256": "9d465fb76e85df0dd8e9e4f4028b7b5d6f489809b37d5628d37b4fa8717d6aeb",
+      "after_bytes": 29402
+    },
+    {
+      "path": "Progress/RequirementDocument/20260915-导航预烘焙与哈希判新.md",
+      "before_sha256": "14ef0489e724cbe4441638c94f6dcd66460ab4045dd1fe1bde02f8812cd505d1",
+      "after_sha256": "735bc61b67bfd5967e694f4404b3800c86b6f31afa1d460edd484e93ca1d02e2",
+      "after_bytes": 3887
+    },
+    {
+      "path": "Progress/RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md",
+      "before_sha256": "685928106e7ce19166a8943af5b4f1f31305b8993c9f2c31776c6cc9b739cdc8",
+      "after_sha256": "49fe4061e0db6cc979f87c2ee9cdc14733f3a47743a7070c9d2fbd049ca4e852",
+      "after_bytes": 7590
+    },
+    {
+      "path": "Progress/RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md",
+      "before_sha256": "73e3bbbf7d0cfd3245ddcefcef46c8a98261fbfaccd8023a8945566db30d8903",
+      "after_sha256": "f2f5c47f0ba2f92de625f09ebc8713c510627b9a2747eba97d81027f61ce96f6",
+      "after_bytes": 3234
+    },
+    {
+      "path": "Progress/RequirementDocument/20260922-导航内存优化与对局容量预算.md",
+      "before_sha256": "96d6f0f5e31591fa286fdeeeff76daa083bbb56ae5f72ca93f541b6de7eb359d",
+      "after_sha256": "d83868b681b5d5e3333bff6aff9f9cc6bfff53ee2c73629a3c70e8bed2c60a57",
+      "after_bytes": 12729
+    },
+    {
+      "path": "Progress/RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md",
+      "before_sha256": "5953171b0fe9dbdfe390614aacb9cc9538b7ce7d81c57d952775215ebae89521",
+      "after_sha256": "1c81afa6788e2daeb612424630bff78e6c6282f27168448a340a4829a607773e",
+      "after_bytes": 6123
+    },
+    {
+      "path": "Progress/RequirementDocument/20260923-Mass历史插值与三倍速度纠偏.md",
+      "before_sha256": "8ed3210458e831019bf252e7ae5f265257c3d52b041bb86936c65a321e5aa768",
+      "after_sha256": "2d9f31851b8b18a81ceba785e041808979ccec3bd1b599c448244b3b330048ac",
+      "after_bytes": 4722
+    },
+    {
+      "path": "Progress/RequirementDocument/20260926-重防号塔罗风视差卡牌复刻验证.md",
+      "before_sha256": "6f40ceaa9c7abf87356e0a8e0881fc9dd40a7acd5b20c856febda104e4067796",
+      "after_sha256": "eddf1ddca6de5f703f8438eace8d21bf98e280542ffeb0c1f179d1861153c238",
+      "after_bytes": 15447
+    },
+    {
+      "path": "Progress/RequirementDocument/20260929-重防号悬浮与GPU引擎喷流.md",
+      "before_sha256": "31df403d1acdcb654241f21d9508e1b18a49b8b5c27f66709e0d5688fc6a826e",
+      "after_sha256": "6f07f35f0377d23e89b94e0ea3bbef096f929266ae86cc87ffbb579bb9557e22",
+      "after_bytes": 5603
+    },
+    {
+      "path": "Progress/RequirementDocument/20260930-指挥官三档镜头与总览LOD.md",
+      "before_sha256": "1f206a1f074d3354f9fdd18c87daa2ceb7d231191d2f4daed32157e3fba0773e",
+      "after_sha256": "f8e85c178f1f466c4cceaf8cb20db89054ed47577bc60bfe98d4ce586a761c62",
+      "after_bytes": 7730
+    },
+    {
+      "path": "Progress/RequirementDocument/20260930-重防号Q每圈60发分批引导.md",
+      "before_sha256": "7f4a3b5f21cc4dbbe2fdf0be13b7e285595f505b5b505fd0df90955afe25a8ab",
+      "after_sha256": "8de73439d28c4681a29b0522cd0e9b2d033859fd831498a40aa6564595504dd5",
+      "after_bytes": 3434
+    },
+    {
+      "path": "Progress/RequirementDocument/20260930-重防号航母式转向表现.md",
+      "before_sha256": "8e414bee853fdce0bfdab241ebe288fa0b2cdd46201391cb295a31df5d411d7c",
+      "after_sha256": "0fdc8904a9b3582762506646ac033269a9d42b6a179d4580e1be0b1d1f85087b",
+      "after_bytes": 3830
+    },
+    {
+      "path": "Progress/RequirementDocument/20261021-近期性能优化.md",
+      "before_sha256": "0d9cc5c635e0ff404a71b2c79f4200e645991626762ee14aa59050c8d27a7f82",
+      "after_sha256": "d8f7e71c7eedb2b5322be39e28e2f66e07397ec3d092094d1c32afd13f04425a",
+      "after_bytes": 10766
+    },
+    {
+      "path": "Scripts/Performance/author_commander_combat_navigation_entry.py",
+      "before_sha256": "3a54827710cc7e2972e3969b9b22e680df01c6a8562b6f3bfb949e214d22a060",
+      "after_sha256": "632a52cf6610995308e69123cd53647bb919bd57ca219067ceda978c09268240",
+      "after_bytes": 4040
+    },
+    {
+      "path": "Scripts/Performance/author_hybrid_cpu_review_entry.py",
+      "before_sha256": "5af6c5c7e2eb4bcf8dabb619f13f4e68776ebe1a02418b2fe376e10f9af11661",
+      "after_sha256": "752ac2be278c179a4719d8542fcdbed761ff4ffa6de692ac76090c65553b6cf1",
+      "after_bytes": 10139
+    }
+  ],
+  "applied": true,
+  "relocated_sources": [
+    "Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+    "Progress/Archive/20260903-ShipUIv1-Figma玩家实机稿.md",
+    "Progress/Archive/20260903-指挥官与地面机甲最小建造系统.md",
+    "Progress/Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md",
+    "Progress/Archive/20260904-ShipUIv1-NEONCTRL静态UI.md",
+    "Progress/Archive/20260904-僚机世界空间近距编队与租约恢复.md",
+    "Progress/Archive/20260904-指挥官大规模移动导航与避让降载.md",
+    "Progress/Archive/20260904-指挥官相机稳定巡航.md",
+    "Progress/Archive/20260904-飞船世界空间环绕HUD与技能准星.md",
+    "Progress/Archive/20260905-僚机FlightNav弧线验证与局部恢复.md",
+    "Progress/Archive/20260905-据点巨构替换占位资源.md",
+    "Progress/Archive/20260905-据点混凝土巨构模型首版.md",
+    "Progress/Archive/20260906-双机甲可调Socket创建.md",
+    "Progress/Archive/20260906-双机甲尺度修复与ControlRig草稿.md",
+    "Progress/Archive/20260906-双机甲骨骼副本与绑定问题核查.md",
+    "Progress/Archive/20260906-指挥官武器特效与独立法术场.md",
+    "Progress/Archive/20260907-Ship僚机三维往返缠斗与随机转向.md",
+    "Progress/Archive/20260907-Ship僚机俯冲轰炸与对空机枪落地.md",
+    "Progress/Archive/20260907-Ship僚机源码版构建门禁勘误.md",
+    "Progress/Archive/20260907-WM01骨架同步与物理包围盒修复.md",
+    "Progress/Archive/20260907-地图标注插件维护Skill.md",
+    "Progress/Archive/20260907-地图标注插件首版实现与验证.md",
+    "Progress/Archive/20260907-地图标记删除崩溃空指针修复.md",
+    "Progress/Archive/20260908-Ship僚机FlightNav边界停滞恢复.md",
+    "Progress/Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md",
+    "Progress/Archive/20260908-Ship空中部队原型关卡与三倍航速.md",
+    "Progress/Archive/20260909-Ship僚机俯冲轰炸门槛简化.md",
+    "Progress/Archive/20260909-Ship僚机全员参战与索敌范围显示.md",
+    "Progress/Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md",
+    "Progress/Archive/20260909-资源加工厂Blender模型与门动画阶段交付.md",
+    "Progress/Archive/20260909-资源加工厂UE正式资源接入与验收.md",
+    "Progress/Archive/20260910-Ship僚机取消固定6秒轰炸进场.md",
+    "Progress/Archive/20260910-Ship僚机战斗表现HUD与相机调整.md",
+    "Progress/Archive/20260910-僚机飞行双尾焰与拖尾接入.md",
+    "Progress/Archive/20260910-双矿单位矿模型UE导入交付.md",
+    "Progress/Archive/20260910-双矿单位矿模型与Blender审核交付.md",
+    "Progress/Archive/20260910-地图资源密度涂绘与确定性导出.md",
+    "Progress/Archive/20260910-游戏内GM分页浮层面板.md",
+    "Progress/Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md",
+    "Progress/Archive/20260911-指挥官传送配置归并与范围扩展.md",
+    "Progress/Archive/20260911-指挥官双点传送技能验收.md",
+    "Progress/Archive/20260911-红蓝矿棋盘与自动采矿闭环.md",
+    "Progress/Archive/20260911-资源经济障碍与Commander适配层解耦.md",
+    "Progress/Archive/20260911-飞船骨骼部件接入与Socket保留.md",
+    "Progress/Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md",
+    "Progress/Archive/20260912-ShipComponent部件蓝图与占位清理.md",
+    "Progress/Archive/20260912-僚机视觉插值与远端稳定显示.md",
+    "Progress/Archive/20260912-矿车Dock私有代理与500人姿态流修复.md",
+    "Progress/Archive/20260912-空战测试关卡远端地面单位.md",
+    "Progress/Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md",
+    "Progress/Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md",
+    "Progress/Archive/20260913-僚机Big17爆炸范围缩放修正.md",
+    "Progress/Archive/20260913-僚机对地轰炸Big17爆炸特效.md",
+    "Progress/Archive/20260913-僚机空爆随机二选一与销毁特效五倍.md",
+    "Progress/Archive/20260913-单位受击白光与摧毁爆炸.md",
+    "Progress/Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md",
+    "Progress/Archive/20260913-激光采矿与矿车进出厂及受击接入.md",
+    "Progress/Archive/20260914-僚机直线激光炮弹池与最终数值.md",
+    "Progress/Archive/20260914-冲击波外径上限与重复缩放修正.md",
+    "Progress/Archive/20260914-单位铁锈残骸与僚机物理坠落.md",
+    "Progress/Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md",
+    "Progress/Archive/20260914-次级单位武器独立Excel重构.md",
+    "Progress/Archive/20260914-法术场统一入口与武器ID引用.md",
+    "Progress/Archive/20260914-空中通道联机与特效增量验收.md",
+    "Progress/Archive/20260914-飞船组件文档资源引用与覆盖盘点.md",
+    "Progress/Archive/20260915-Ship组件能力与指挥官技能去GAS重构.md",
+    "Progress/Archive/20260915-客户端CPU-GPU剖析与压测相机勘误.md",
+    "Progress/Archive/20260915-导航预烘焙与PIE启动优化.md",
+    "Progress/Archive/20260915-工程车动态避让与建筑矿体导航修复.md",
+    "Progress/Archive/20260915-指挥官10Hz循环与移动容量实测.md",
+    "Progress/Archive/20260915-指挥官姿态协议9压缩与六轮对比.md",
+    "Progress/Archive/20260915-指挥官姿态压测移动人数口径勘误.md",
+    "Progress/Archive/20260915-指挥官旧姿态协议残留清理.md",
+    "Progress/Archive/20260915-指挥官移动下行数据占比实测.md",
+    "Progress/Archive/20260915-空战原型关卡开局安装僚机仓.md",
+    "Progress/Archive/20260915-阵营独立通道与点击据点即时运输修复.md",
+    "Progress/Archive/20260916-GPU渲染降耗实施与三组对照.md",
+    "Progress/Archive/20260916-Ship内部线稿烘焙遮罩.md",
+    "Progress/Archive/20260916-Ship动漫低模风格Blender样板交付.md",
+    "Progress/Archive/20260916-Ship风格样板追加线稿.md",
+    "Progress/Archive/20260916-僚机动漫爆炸样板制作与接入.md",
+    "Progress/Archive/20260916-客户端CPU修复后六轮复测验收.md",
+    "Progress/Archive/20260916-客户端CPU增量维护与10Hz刷新实施.md",
+    "Progress/Archive/20260916-扫荡者UE导入与重防号参考重建.md",
+    "Progress/Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md",
+    "Progress/Archive/20260917-Ship三组件原型冻结与参考审核A材料.md",
+    "Progress/Archive/20260917-Ship三组件原网格材质与连接分色修正.md",
+    "Progress/Archive/20260917-Ship三组件材质审核B通过与FBX交付.md",
+    "Progress/Archive/20260917-Ship全组件表面交付与UE正式替换.md",
+    "Progress/Archive/20260917-Ship剩余四组件原型与火焰标识参考A.md",
+    "Progress/Archive/20260917-Ship干扰与护盾参考配色区分.md",
+    "Progress/Archive/20260917-Ship干扰装置深蓝白黄参考修订.md",
+    "Progress/Archive/20260917-Ship玩家蓝图补保存与独立读回.md",
+    "Progress/Archive/20260917-Ship第三批支援组件原型与参考审核A.md",
+    "Progress/Archive/20260917-Ship第三批支援组件原模型材质成品审核B.md",
+    "Progress/Archive/20260917-Ship第三批材质B通过与静态FBX交付.md",
+    "Progress/Archive/20260917-Ship第二批原型冻结与参考审核A候选.md",
+    "Progress/Archive/20260917-Ship第二批原模型材质制作与成品审核B.md",
+    "Progress/Archive/20260917-Ship组件制作临时资源回收清理.md",
+    "Progress/Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md",
+    "Progress/Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md",
+    "Progress/Archive/20260917-地面玩法定稿与弹速基线核查.md",
+    "Progress/Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md",
+    "Progress/Archive/20260917-松树林与三单位独立试摆.md",
+    "Progress/Archive/20260917-美术规范建立与制作技能接入.md",
+    "Progress/Archive/20260917-自然资源包参考与植被贴片工艺.md",
+    "Progress/Archive/20260917-进度面板分类筛选与文档分类元数据.md",
+    "Progress/Archive/20260917-重防号Q导弹通用预警与切图断言修复.md",
+    "Progress/Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md",
+    "Progress/Archive/20260918-建筑World测试数据与环境更新复跑.md",
+    "Progress/Archive/20260918-指挥官体型净距源表与接入分析完成.md",
+    "Progress/Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md",
+    "Progress/Archive/20260918-本会话临时文件清理.md",
+    "Progress/Archive/20260918-松树林v1审核通过与原图原位重构授权.md",
+    "Progress/Archive/20260918-松树林原Demo地图全资源适配交付候选.md",
+    "Progress/Archive/20260918-松树林风格适配v1候选.md",
+    "Progress/Archive/20260918-玩法光照对齐与重防号拥挤诊断.md",
+    "Progress/Archive/20260919-Mass体型净距运行时接入与验证记录.md",
+    "Progress/Archive/20260919-SpiderMech恢复原网格并整理色块.md",
+    "Progress/Archive/20260919-两组机甲风格参考与低模方向.md",
+    "Progress/Archive/20260919-撤回严格净距并适配重防号模型大小.md",
+    "Progress/Archive/20260919-机甲与武器参考降低红蓝饱和度.md",
+    "Progress/Archive/20260919-机甲与武器整批同步UE及总结.md",
+    "Progress/Archive/20260919-机甲整件分色与黑蓝配色修订.md",
+    "Progress/Archive/20260919-机甲线稿三渲二与对称配色修订.md",
+    "Progress/Archive/20260919-源模型机甲制作与SpiderMech减面.md",
+    "Progress/Archive/20260919-轻型机甲与Spider同步UE.md",
+    "Progress/Archive/20260919-轻型机甲弧面头甲与散热结构细化.md",
+    "Progress/Archive/20260919-轻型机甲排气口浮空修复.md",
+    "Progress/Archive/20260919-轻型装甲地面玩家接入与根位移修复.md",
+    "Progress/Archive/20260919-重防号导弹范围与特效调整.md",
+    "Progress/Archive/20260919-重防号爆炸追加四倍缩放.md",
+    "Progress/Archive/20260920-指挥官任务与远端碰撞改动集成复验.md",
+    "Progress/Archive/20260920-指挥官头像分组与导航重定位勘误.md",
+    "Progress/Archive/20260920-指挥官部队操作与特殊任务系统.md",
+    "Progress/Archive/20260920-星际指挥官界面与游戏文本表.md",
+    "Progress/Archive/20260920-机甲Mass碰撞复审修复与验证.md",
+    "Progress/Archive/20260920-玩家机枪开火与Excel升级候选.md",
+    "Progress/Archive/20260921-FireReview双阵营靶场静态交付.md",
+    "Progress/Archive/20260921-FireReview导航阻塞与资产校验修复.md",
+    "Progress/Archive/20260921-地面机甲动画与空中战斗阶段实现.md",
+    "Progress/Archive/20260921-地面机甲动画空战与下落调参验收.md",
+    "Progress/Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md",
+    "Progress/Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md",
+    "Progress/Archive/20260921-地面机甲辅助瞄准编译与配置落地.md",
+    "Progress/Archive/20260921-外部特效与蓝图资源包迁移.md",
+    "Progress/Archive/20260921-指挥官MassStateTree类型登记修复.md",
+    "Progress/Archive/20260921-指挥官StateTree条件属性分类修复.md",
+    "Progress/Archive/20260921-指挥官StateTree迁移与场景交付.md",
+    "Progress/Archive/20260921-机枪统一受击实现与验证边界.md",
+    "Progress/Archive/20260921-机枪统一受击补全实机验收.md",
+    "Progress/Archive/20260921-统一特效目录与ID迁移静态验收.md",
+    "Progress/Archive/20260922-4.2km地图与7x7据点重布局交付.md",
+    "Progress/Archive/20260922-FlightNav边界复核与收紧.md",
+    "Progress/Archive/20260922-三张视差3D卡牌演示场景交付.md",
+    "Progress/Archive/20260922-三维动态卡牌与视差卡牌资产迁移.md",
+    "Progress/Archive/20260922-卡牌窗口焦点原生接口补齐.md",
+    "Progress/Archive/20260922-工程车四点返厂简化与32辆专项验证.md",
+    "Progress/Archive/20260923-1.8km战场与建造车自主接单.md",
+    "Progress/Archive/20260923-3.2km地形与9x9据点及Mass出生修复.md",
+    "Progress/Archive/20260923-Mass分帧寻路与基础避障源码交付.md",
+    "Progress/Archive/20260923-Mass分帧寻路与基础避障编译交付.md",
+    "Progress/Archive/20260923-Mass协议19运行监控与残余阻塞.md",
+    "Progress/Archive/20260923-Mass复制流量与同帧突发定位.md",
+    "Progress/Archive/20260923-Mass姿态RPC发送预算饱和诊断.md",
+    "Progress/Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md",
+    "Progress/Archive/20260923-Mass按连接预算分批同步源码实现.md",
+    "Progress/Archive/20260923-Mass按连接预算分批同步编译交付.md",
+    "Progress/Archive/20260923-Mass首条绿线延迟现场诊断.md",
+    "Progress/Archive/20260923-Mass验证场景PIE阻塞修复.md",
+    "Progress/Archive/20260923-客户端Mass硬校正修复编译交付.md",
+    "Progress/Archive/20260923-客户端Mass硬校正最小修复.md",
+    "Progress/Archive/20260923-客户端Mass行走顿挫分析.md",
+    "Progress/Archive/20260923-客户端连续纠偏与性能HUD交付.md",
+    "Progress/Archive/20260923-电源模式与Mass残余跳步诊断.md",
+    "Progress/Archive/20260923-红方移动修复源码Editor构建.md",
+    "Progress/Archive/20260923-红方移动超时诊断与导航引用修复.md",
+    "Progress/Archive/20260924-Mass三阶段耗时与百人响应实测.md",
+    "Progress/Archive/20260924-Mass即时移动与随机站位交付.md",
+    "Progress/Archive/20260924-Mass同址卡死复现与R2修复.md",
+    "Progress/Archive/20260924-Mass导航失效10Hz恢复修复.md",
+    "Progress/Archive/20260924-Mass导航恢复编译与加载.md",
+    "Progress/Archive/20260924-Mass随机站位玩家验收.md",
+    "Progress/Archive/20260924-尼亚加拉辉光与HUDuiPRO资源迁入.md",
+    "Progress/Archive/20260924-工程车传送地面校验与建筑屋顶禁行.md",
+    "Progress/Archive/20260926-指挥官StateTree分层资产与审核交付.md",
+    "Progress/Archive/20260926-指挥官StateTree分层重构源码阶段.md",
+    "Progress/Archive/20260926-重防号分层卡牌与可编辑文案交付.md",
+    "Progress/Archive/20260927-重防号卡牌干净视觉图三张重绘预览.md",
+    "Progress/Archive/20260928-升级光粒独立随机散布.md",
+    "Progress/Archive/20260928-升级细线改为短发光粒子.md",
+    "Progress/Archive/20260928-坡面卡住与子弹超前显示现场诊断及源码修复.md",
+    "Progress/Archive/20260928-指挥官StateTree中文描述补全.md",
+    "Progress/Archive/20260928-肉鸽卡牌Excel与F4实战接入.md",
+    "Progress/Archive/20260928-选牌白模修复与批量升级特效.md",
+    "Progress/Archive/20260928-重防号前支架等长与前盘抬高审核候选.md",
+    "Progress/Archive/20260928-重防号前方方块水平修订候选.md",
+    "Progress/Archive/20260928-重防号前端连接下倾与四盘同高候选.md",
+    "Progress/Archive/20260928-重防号升级特效尺寸适配.md",
+    "Progress/Archive/20260928-重防号射速补腿与机动速度光线.md",
+    "Progress/Archive/20260928-重防号干净牌面接入与双倍尺寸.md",
+    "Progress/Archive/20260928-重防号支架外下倾30度审核候选.md",
+    "Progress/Archive/20260928-重防号新版模型参考射速与机动重绘.md",
+    "Progress/Archive/20260928-重防号新版美漫三牌UE替换.md",
+    "Progress/Archive/20260928-重防号机动卡视差边缘覆盖修复.md",
+    "Progress/Archive/20260928-重防号盘心承接与叉耳销轴审核候选.md",
+    "Progress/Archive/20260928-重防号真实模型参考经典美漫三图重绘.md",
+    "Progress/Archive/20260928-重防号美漫卡牌接入与四倍视差.md",
+    "Progress/Archive/20260928-高速单位显示限速修复与原生PIE复验.md",
+    "Progress/Archive/20260929-F4重选按钮与场景准备.md",
+    "Progress/Archive/20260929-F4重选按钮原生编译.md",
+    "Progress/Archive/20260929-Mass静态WPO与相机距离读数编译.md",
+    "Progress/Archive/20260929-Mass静态WPO与相机距离采样交付.md",
+    "Progress/Archive/20260929-指挥官统一三级LOD源码与场景交付.md",
+    "Progress/Archive/20260929-肉鸽单行文案源码与编译.md",
+    "Progress/Archive/20260929-肉鸽单行高亮Excel管线与接入修复.md",
+    "Progress/Archive/20260929-重防号GPU悬浮喷流构建与视觉修订.md",
+    "Progress/Archive/20260929-重防号v6正式模型替换.md",
+    "Progress/Archive/20260929-重防号导弹v2放大与浓黑长烟迹候选.md",
+    "Progress/Archive/20260929-重防号导弹仓与GPU烟迹候选接入.md",
+    "Progress/Archive/20260929-重防号导弹候选冷加载修复与回读勘误.md",
+    "Progress/Archive/20260929-重防号导弹卡牌原生编译.md",
+    "Progress/Archive/20260929-重防号导弹集群原生构建与容量绑定.md",
+    "Progress/Archive/20260930-Mass选择圈与软避障玩家验收通过.md",
+    "Progress/Archive/20260930-Mass选择圈与软避障编译加载.md",
+    "Progress/Archive/20260930-Mass选择圈与软避障静态及场景交付.md",
+    "Progress/Archive/20260930-指挥官Camera表编译导入交付.md",
+    "Progress/Archive/20260930-指挥官LOD会话临时文件清理.md",
+    "Progress/Archive/20260930-指挥官切档即时触发与总览摆正.md",
+    "Progress/Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md",
+    "Progress/Archive/20260930-指挥官总览最小角度回正.md",
+    "Progress/Archive/20260930-指挥官爆炸旧距离裁剪修复.md",
+    "Progress/Archive/20260930-指挥官统一LOD有限PIE与夹具修正.md",
+    "Progress/Archive/20260930-指挥官视觉距离裁剪修复编译加载.md",
+    "Progress/Archive/20260930-指挥官边缘平移提前受限修复.md",
+    "Progress/Archive/20260930-本会话卡牌临时文件清理.md",
+    "Progress/Archive/20260930-机枪10度散布编译与场景交付.md",
+    "Progress/Archive/20260930-机枪效果源码与对照场景准备.md",
+    "Progress/Archive/20260930-机枪效果编译与资产应用.md",
+    "Progress/Archive/20260930-重防号5至15米渐长尾焰正式应用.md",
+    "Progress/Archive/20260930-重防号Q每圈60发审核通过.md",
+    "Progress/Archive/20260930-重防号Q每圈60发构建与场景交付.md",
+    "Progress/Archive/20260930-重防号导弹v3原生正式接入.md",
+    "Progress/Archive/20260930-重防号导弹v3表驱动尺寸与数值候选.md",
+    "Progress/Archive/20260930-重防号导弹会话临时文件清理.md",
+    "Progress/Archive/20260930-重防号盘底喷焰渐长尾迹与导弹仓隐藏修复.md",
+    "Progress/Archive/20260930-重防号航母式转向原生编译与加载.md",
+    "Progress/Archive/20260930-重防号航母式转向玩家验收通过.md",
+    "Progress/Archive/20260930-重防号航母式转向静态与场景交付.md",
+    "Progress/Archive/20260930-重防号转向倾斜幅度减半.md",
+    "Progress/Archive/20261020-Hybrid交火CPU优化阶段记录.md",
+    "Progress/Archive/20261020-Hybrid原生消息接收优化记录.md",
+    "Progress/Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md",
+    "Progress/Archive/20261020-Hybrid对象准备索引与前台复测.md",
+    "Progress/Archive/20261020-会话临时文件隔离与源码交付范围.md",
+    "Progress/Archive/20261020-诊断工具开销优化与15ms复测.md",
+    "Progress/Archive/20261020-资源备用快照调整为5秒.md",
+    "Progress/Archive/20261021-Hybrid压缩复用与指令反馈记录.md",
+    "Progress/Archive/20261021-Mass本机移动与直接呈现.md",
+    "Progress/Archive/20261021-Mass爆炸缩放与响应等待对照.md",
+    "Progress/Archive/20261021-Slate空操作优化与响应测量.md",
+    "Progress/Archive/20261021-VAT提交对照与纯兵种输入优化.md",
+    "Progress/Archive/20261021-事务分批与本机响应阶段记录.md",
+    "Progress/Archive/20261021-交火优化正式版与清理交付.md",
+    "Progress/Archive/20261021-同步姿态发布顺序修复.md",
+    "Progress/Archive/20261021-导航优先队列与软避让工作量修复.md",
+    "Progress/Archive/20261021-弹丸生命周期查询复用.md",
+    "Progress/Archive/20261021-弹丸网络服务与选区读取优化.md",
+    "Progress/Archive/20261021-扫荡者姿态与斜坡导航恢复.md",
+    "Progress/Archive/20261021-指令名单复制修复与清理.md",
+    "Progress/Archive/20261021-指令就绪通知与呈现调序阶段记录.md",
+    "Progress/Archive/20261021-接纳合批与资源验证副本阶段记录.md",
+    "Progress/Archive/20261021-本机命令调度诊断与路线索引对照.md",
+    "Progress/Archive/20261021-正式代码推送main与LFS资源分离.md",
+    "Progress/Archive/20261021-编辑器窗口开销与交火基准校正.md",
+    "Progress/DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md",
+    "Progress/DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md",
+    "Progress/DevelopmentDocumentation/20261019-Hybrid世界更新5ms验证.md",
+    "Progress/DevelopmentDocumentation/20261019-Hybrid同步正式替换验收.md",
+    "Progress/DevelopmentDocumentation/20261019-资源模拟端快照接管.md",
+    "Progress/DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md",
+    "Progress/DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md",
+    "Progress/DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md",
+    "Progress/DevelopmentDocumentation/20261020-保持玩法与表现的15ms帧时间优化.md",
+    "Progress/DevelopmentDocumentation/20261021-Hybrid压缩复用与指令响应.md",
+    "Progress/DevelopmentDocumentation/20261021-Mass本机移动与直接呈现.md",
+    "Progress/DevelopmentDocumentation/20261021-VAT实例提交CPU优化.md",
+    "Progress/DevelopmentDocumentation/20261021-事务分批与本机响应.md",
+    "Progress/DevelopmentDocumentation/20261021-交火优化正式版本交付.md",
+    "Progress/DevelopmentDocumentation/20261021-弹丸生命周期服务与交火CPU.md",
+    "Progress/DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md",
+    "Progress/DevelopmentDocumentation/20261021-本机指令交付与规划调度.md",
+    "Progress/DevelopmentDocumentation/20261021-编辑器窗口开销与交火基准.md",
+    "Progress/RequirementDocument/20261018-Hybrid世界更新5ms.md",
+    "Progress/RequirementDocument/20261018-Slate布局绘制2.5ms.md",
+    "Progress/RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md",
+    "Progress/RequirementDocument/20261020-UI CPU优化与四档LOD.md",
+    "Progress/RequirementDocument/20261020-一键截帧与CPU分析插件.md",
+    "Progress/RequirementDocument/20261020-保持玩法与表现的15ms帧时间优化.md",
+    "Progress/RequirementDocument/20261021-扫荡者远端姿态与导航恢复修复.md"
+  ],
+  "link_backup": "Progress/Evidence/20261021-DocumentConsolidation/link-migration-before.zip",
+  "link_backup_sha256": "56142ac497b47fc03cb281d7c4608cf5d47b166d5581cd9d546dffce46b430dc",
+  "only_documentation_and_document_references": true
+}

@@ -89,6 +89,7 @@ namespace GuLiCommanderNavigationPolicy
 		bool bCanBePushed = false;
 		/** Complete Mass identity, including generation; appended to preserve aggregate callers. */
 		uint64 StableEntityKey = 0u;
+		bool bEngineering = false;
 	};
 
 	/** Work counters produced by one manual-separation refresh. */

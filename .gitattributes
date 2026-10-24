@@ -81,3 +81,20 @@ TestResults/AssetMigration20261002/*.log -whitespace
 Scripts/Performance/engine-slate-empty-operations.patch -whitespace
 # Preserve the exact compact evidence bytes recorded in the delivery manifest.
 Progress/Evidence/20261021-CommanderPerformance/** -text -whitespace
+
+# Authored 3 m terrain buffers are binary migration inputs.
+ArtSource/Navigation/Grid300/Terrain/*.u8 filter=lfs diff=lfs merge=lfs -text
+ArtSource/Navigation/Grid300/Terrain/*.i32 filter=lfs diff=lfs merge=lfs -text
+ArtSource/Navigation/Grid300/Terrain/*.f32 filter=lfs diff=lfs merge=lfs -text
+# Migration manifests and archived build receipts retain their recorded bytes.
+ArtSource/Navigation/Grid300/** -text -whitespace
+Progress/Evidence/20261023-MoveResponseCloseout/** -text -whitespace
+Progress/Evidence/20261024-OreNavigationCloseout/** -text -whitespace
+
+# Standalone map designer inputs and recovery copies must retain exact bytes.
+ArtSource/MapDesigner/** -text -whitespace
+ArtSource/MapDesigner/**/*.u8 filter=lfs diff=lfs merge=lfs -text
+ArtSource/MapDesigner/**/*.i32 filter=lfs diff=lfs merge=lfs -text
+ArtSource/MapDesigner/**/*.f32 filter=lfs diff=lfs merge=lfs -text
+ArtSource/MapDesigner/**/*.f64 filter=lfs diff=lfs merge=lfs -text
+ArtSource/MapDesigner/**/*.gmap filter=lfs diff=lfs merge=lfs -text

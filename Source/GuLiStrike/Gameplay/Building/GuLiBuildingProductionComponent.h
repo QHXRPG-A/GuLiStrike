@@ -21,6 +21,7 @@ public:
 	bool CaptureHybridProduction(FGuLiHybridProductionPrivateState& Out) const;
 	bool ValidateHybridProduction(const FGuLiHybridProductionPrivateState& State) const;
 	bool RestoreHybridProduction(const FGuLiHybridProductionPrivateState& State);
+    void RecoverGridBirths();
     void ResetResourceRequests(uint64 Epoch);
 	bool ValidateHybridProductionMotion(float Cycle,bool Producing) const;
 	bool ApplyHybridProductionMotion(float Cycle,bool Producing);
@@ -32,6 +33,10 @@ private:
 	EGuLiTeam ObservedTeam = EGuLiTeam::Unassigned;
 	struct FHybridJob { FGuid Event; FGuLiHybridObjectKey Target; FVector Location; float FacingYaw=0; bool bSubmitted=false; };
 	TArray<FHybridJob> HybridJobs;
+    int32 GridRemaining=0,GridCandidate=0,GridJobCursor=0;
+    double GridRetryAt=0;
+    void AdvanceGridProduction(float DeltaSeconds);
+    void ReleaseGridBirth(const FGuLiHybridObjectKey& Target,bool bWithdraw=true);
 	UFUNCTION() void HandleHybridTransaction(const FGuLiHybridTransactionResult& Result);
 public:
 	virtual void BeginPlay() override;

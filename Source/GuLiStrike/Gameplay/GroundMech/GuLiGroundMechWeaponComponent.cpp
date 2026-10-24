@@ -3,6 +3,7 @@
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponAnimInstance.h"
+#include "Gameplay/GroundMech/GuLiGroundMechAnimInstance.h"
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -48,6 +49,12 @@ USkeletalMeshComponent* UGuLiGroundMechWeaponComponent::Gun() const
 	return Pawn ? Pawn->GetMachinegun() : nullptr;
 }
 
+FName UGuLiGroundMechWeaponComponent::MuzzleSocket(uint8 Index) const
+{
+	const auto* Pawn = Cast<AGuLiGroundMechCharacter>(GetOwner());
+	return Pawn && Pawn->UsesIntegratedBodyMesh() && Index == 1 ? FName(TEXT("Muzzle_L")) : FName(*ActiveSkill.MuzzleSocket);
+}
+
 void UGuLiGroundMechWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -60,12 +67,18 @@ void UGuLiGroundMechWeaponComponent::BeginPlay()
 		AddTickPrerequisiteComponent(Mech->GetMesh());
 	}
 	LoadConfiguration(CurrentUpgradeId);
-	if (Gun()) { Gun()->AddTickPrerequisiteComponent(this); Gun()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones; }
+	if (Gun())
+	{
+		// Integrated body is already a prerequisite of Weapon; avoid a cycle.
+		if (!CastChecked<AGuLiGroundMechCharacter>(GetOwner())->UsesIntegratedBodyMesh()) Gun()->AddTickPrerequisiteComponent(this);
+		Gun()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
+	}
 }
 
 bool UGuLiGroundMechWeaponComponent::LoadConfiguration(const FString& Id)
 {
 	if (!bWeaponEnabled || !UpgradeTable || !SkillTable) return false;
+	const bool Integrated = CastChecked<AGuLiGroundMechCharacter>(GetOwner())->UsesIntegratedBodyMesh();
 	const FGuLiStrikeMechUpgradesRow* Upgrade = nullptr;
 	for (const auto& Pair : UpgradeTable->GetRowMap())
 	{
@@ -88,13 +101,23 @@ bool UGuLiGroundMechWeaponComponent::LoadConfiguration(const FString& Id)
 		|| !FMath::IsFinite(Skill->AimAssistRadiusCentimeters) || Skill->AimAssistRadiusCentimeters < 0
 		|| (Skill->AimAssistEnabled && Skill->AimAssistRadiusCentimeters <= 0)
 		|| !FMath::IsFinite(Skill->RecoilTargetLocalZCentimeters) || !FMath::IsFinite(Skill->RecoilDuration)
-		|| Skill->RecoilDuration <= 0 || Gun()->GetBoneIndex(FName(Skill->RecoilBone)) == INDEX_NONE
+		|| Skill->RecoilDuration <= 0 || (!Integrated && Gun()->GetBoneIndex(FName(Skill->RecoilBone)) == INDEX_NONE)
 		|| !Gun()->DoesSocketExist(FName(Skill->MuzzleSocket))) return false;
 	auto* Curve = Cast<UCurveFloat>(Skill->RecoilCurve.LoadSynchronous());
 	auto* Animation = Skill->WeaponAnimation.LoadSynchronous();
 
 	auto* Muzzle = UGuLiNetworkSettings::CanPresent(GetWorld()) ? GuLiVfx::Load<UNiagaraSystem>(this, Skill->MuzzleVfxId) : nullptr;
-	if (!Curve || !Animation || !Animation->IsChildOf(UGuLiGroundMechWeaponAnimInstance::StaticClass())) return false;
+	if (!Curve) return false;
+	if (Integrated)
+	{
+		auto* BodyAnim = Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance());
+		if (!BodyAnim || !Gun()->DoesSocketExist(TEXT("Muzzle_L"))) return false;
+		BodyAnim->ConfigureIntegratedRecoil(Curve,Skill->RecoilDuration);
+		ActiveSkill = *Skill; ActiveUpgrade = *Upgrade; MuzzleSystem = Muzzle;
+		ConfiguredAnim.Reset(); bConfigured = true;
+		return true;
+	}
+	if (!Animation || !Animation->IsChildOf(UGuLiGroundMechWeaponAnimInstance::StaticClass())) return false;
 	ActiveSkill = *Skill; ActiveUpgrade = *Upgrade; MuzzleSystem = Muzzle;
 	if (Gun()->GetAnimClass() != Animation) Gun()->SetAnimInstanceClass(Animation);
 	auto* Anim = Cast<UGuLiGroundMechWeaponAnimInstance>(Gun()->GetAnimInstance());
@@ -223,13 +246,15 @@ bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 	FSceneViewProjectionData Projection;
 	float MouseX = 0, MouseY = 0;
 	if (!Viewport || !Viewport->HasFocus() || !Battle || Battle->GetMatchEpoch() == 0
-		|| !PC->GetMousePosition(MouseX, MouseY) || !LocalPlayer->GetProjectionData(Viewport, Projection)
+		|| !LocalPlayer->GetProjectionData(Viewport, Projection)
 		|| !Projection.IsValidViewRectangle())
 	{
 		ResetAimAssistSources();
 		return true;
 	}
 	const FIntRect ViewRect = Projection.GetConstrainedViewRect();
+	MouseX = (ViewRect.Min.X+ViewRect.Max.X)*.5f;
+	MouseY = (ViewRect.Min.Y+ViewRect.Max.Y)*.5f;
 	const auto InView = [&ViewRect](const FVector2D& Point)
 	{
 		return !Point.ContainsNaN() && Point.X >= ViewRect.Min.X && Point.X < ViewRect.Max.X
@@ -244,7 +269,7 @@ bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 	const FVector CameraRight = FVector(ViewToWorld.TransformVector(FVector::ForwardVector)).GetSafeNormal();
 	const FVector CameraForward = FVector(ViewToWorld.TransformVector(FVector::UpVector)).GetSafeNormal();
 	const FVector CameraOrigin = Projection.ViewOrigin;
-	const FVector Muzzle = Gun()->GetSocketLocation(FName(ActiveSkill.MuzzleSocket));
+	const FVector Muzzle = Gun()->GetSocketLocation(MuzzleSocket(ShotsFired & 1));
 	const double Range = FMath::Min(static_cast<double>(ActiveSkill.ProjectileSpeed) * ActiveSkill.ProjectileLifetime, 599999.0);
 	const EGuLiTeam OwnTeam = Mech->GetPlayerState<AGuLiBattlePlayerState>()->GetTeam();
 	TSet<FGuLiTargetHandle> SeenTargets;
@@ -339,9 +364,17 @@ void UGuLiGroundMechWeaponComponent::SetFireHeld(bool bHeld)
 	}
 }
 
+bool UGuLiGroundMechWeaponComponent::GetActualShotRay(FVector& Origin,FVector& Direction) const
+{
+	if (!bConfigured || !Gun()) return false;
+	const FTransform Socket=Gun()->GetSocketTransform(MuzzleSocket(ShotsFired&1));
+	Origin=Socket.GetLocation(); Direction=Socket.GetUnitAxis(EAxis::X); return true;
+}
+
 void UGuLiGroundMechWeaponComponent::AlignGun()
 {
 	if (!bConfigured || FVector(AimPoint).IsNearlyZero()) return;
+	if (CastChecked<AGuLiGroundMechCharacter>(GetOwner())->UsesIntegratedBodyMesh()) return;
 	auto* Mesh = Gun();
 	// Source art faces +Y. Two passes account for the muzzle offset from the mount pivot.
 	FVector Direction = (FVector(AimPoint) - Mesh->GetComponentLocation()).GetSafeNormal();
@@ -372,8 +405,12 @@ void UGuLiGroundMechWeaponComponent::TryFire()
 	Launch.Context.Damage = ActiveUpgrade.Damage;
 	Launch.Context.SkillId = FName(*CurrentUpgradeId);
 	Launch.Context.WeaponBinding.SlotId=TEXT("BasicAttack");
-	Launch.Position = Gun()->GetSocketLocation(FName(ActiveSkill.MuzzleSocket));
-	Launch.Direction = (FVector(AimPoint) - Launch.Position).GetSafeNormal();
+	const uint8 MuzzleIndex = CastChecked<AGuLiGroundMechCharacter>(GetOwner())->UsesIntegratedBodyMesh() ? (ShotsFired & 1) : 0;
+	Launch.Position = Gun()->GetSocketLocation(MuzzleSocket(MuzzleIndex));
+	const auto* Mech=Cast<AGuLiGroundMechCharacter>(GetOwner());
+	Launch.Direction = Mech && Mech->UsesIntegratedBodyMesh()
+		? Gun()->GetSocketTransform(MuzzleSocket(MuzzleIndex)).GetUnitAxis(EAxis::X)
+		: (FVector(AimPoint) - Launch.Position).GetSafeNormal();
 	Launch.MuzzleOffset = GetOwner()->GetActorTransform().InverseTransformPosition(Launch.Position);
 	Launch.Speed = ActiveSkill.ProjectileSpeed; Launch.Lifetime = ActiveSkill.ProjectileLifetime;
 	Launch.MaximumDistance = Launch.Speed * Launch.Lifetime; Launch.SweepRadius = ActiveSkill.SweepRadius;
@@ -384,32 +421,37 @@ void UGuLiGroundMechWeaponComponent::TryFire()
 	NextShotTime = NextShotTime > 0 && Now - NextShotTime <= 1./30. + 1.e-6 ? NextShotTime + Interval : Now + Interval;
 	FGuLiCombatShotCue Cue;
 	Cue.MatchEpoch = SourceEpoch; Cue.ShotId = Launch.Context.ShotId; Cue.Source = SourceHandle;
-	Cue.Start = Launch.Position; Cue.End = AimPoint; Cue.ServerTime = Now;
+	Cue.Start = Launch.Position; Cue.End = Launch.Position+Launch.Direction*FVector::Distance(Launch.Position,FVector(AimPoint)); Cue.ServerTime = Now;
 	Cue.MuzzleDirection = Launch.Direction; Cue.bMuzzleOnly = true;
+	Cue.MuzzleIndex = MuzzleIndex;
 	Cue.SlotId = TEXT("BasicAttack");
 	UGuLiCombatEffectReplicationComponent::AttachFlightMuzzle(GetWorld(),Cue);
-	PlayFlightShot(Cue.ShotId,Cue.ServerTime);
+	PlayFlightShot(Cue.ShotId,Cue.ServerTime,Cue.MuzzleIndex);
 }
 
-void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime)
+void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex)
 {
-	if (!bConfigured || SeenShots.Contains(ShotId)) return;
+	if (!bConfigured || MuzzleIndex > 1 || SeenShots.Contains(ShotId)) return;
 	if (SeenShots.Num() >= 256) SeenShots.Reset();
 	SeenShots.Add(ShotId);
 	const double Clock=UGuLiHybridActorComponent::BattleSeconds(GetOwner());
     const float Age = FMath::Max(0.f,float(Clock-ShotTime));
+	// The source barrel clip is longer than the recoil flash. Late accepted cues still seek
+	// the independent barrel player, but never replay an expired muzzle flash.
+	if (auto* BodyAnim = Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance())) BodyAnim->TriggerIntegratedRecoil(Age,MuzzleIndex);
 	if (Age >= ActiveSkill.RecoilDuration) return;
 	if (ConfiguredAnim.IsValid()) ConfiguredAnim->TriggerRecoil(Age);
 	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	++CosmeticShots;
-	if (auto* Effect = UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleSystem, Gun(), FName(ActiveSkill.MuzzleSocket),
+	const FName Socket = MuzzleSocket(MuzzleIndex);
+	if (auto* Effect = UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleSystem, Gun(), Socket,
 		FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget, false, false, ENCPoolMethod::ManualRelease, false))
 	{
 		Effect->SetUsingAbsoluteScale(true); Effect->SetWorldScale3D(GuLiVfx::Scale(this, ActiveSkill.MuzzleVfxId));
 		// The weapon mount mirrors X. Removing inherited scale also removes that
 		// reflection, so orient the unscaled effect along the actual socket axis.
 		Effect->SetUsingAbsoluteRotation(true);
-		Effect->SetWorldRotation(Gun()->GetSocketTransform(FName(ActiveSkill.MuzzleSocket)).TransformVector(FVector::ForwardVector).Rotation());
+		Effect->SetWorldRotation(Gun()->GetSocketTransform(Socket).TransformVector(FVector::ForwardVector).Rotation());
 		Effect->SetVariableFloat(TEXT("User.GlobleDuration"), .08f);
 		Effect->SetCastShadow(false); Effect->Activate(true); MuzzleEffects.Add(Effect);
 	}
@@ -422,7 +464,7 @@ void UGuLiGroundMechWeaponComponent::TickComponent(float DeltaSeconds, ELevelTic
 	{
 		UNiagaraComponent* Effect = MuzzleEffects[Index];
 		if (IsValid(Effect) && !Effect->IsComplete())
-			Effect->SetWorldRotation(Gun()->GetSocketTransform(FName(ActiveSkill.MuzzleSocket)).TransformVector(FVector::ForwardVector).Rotation());
+			Effect->SetWorldRotation(Gun()->GetSocketTransform(Effect->GetAttachSocketName()).TransformVector(FVector::ForwardVector).Rotation());
 		if (!IsValid(Effect) || Effect->IsComplete())
 		{ if (IsValid(Effect)) Effect->ReleaseToPool(); MuzzleEffects.RemoveAtSwap(Index); }
 	}

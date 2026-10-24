@@ -1,0 +1,16 @@
+{
+  "recorded_at_utc": "2026-10-24T11:29:28.808343+00:00",
+  "command": "git push origin main",
+  "exit_code": 1,
+  "remote": "https://github.com/QHXRPG-A/GuLiStrike.git",
+  "branch": "main",
+  "attempted_commit": "d8ecb28495edf762522b566f2be1c88dadd6eb6d",
+  "verified_remote_commit": "6c339e942b78b05670f6372e819aebe317fb701c",
+  "verification_command": "git ls-remote origin refs/heads/main",
+  "upload_progress": "0/100 LFS objects, 0 B",
+  "server_error": "This repository exceeded its LFS budget. The account responsible for the budget should increase it to restore access.",
+  "pushed": false,
+  "required_action": "Increase or remove the owning account LFS budget restriction, then retry normal git push.",
+  "history_rewritten": false,
+  "lfs_bypassed": false
+}

@@ -1,5 +1,9 @@
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
 #include "Gameplay/CommanderSkills/GuLiPointSkill.h"
+#include "Gameplay/CommanderSkills/GuLiSummonSkill.h"
+#include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+#include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
@@ -13,12 +17,37 @@
 
 namespace
 {
-constexpr uint32 Version=1;
+constexpr uint32 Version=2;
 struct FSkillInput {bool HasGround=false;FVector Ground=FVector::ZeroVector;FGuid Batch;TArray<int32> Allocations;};
 void SerializeSkillInput(FGuLiHybridStateArchive& A,FSkillInput& I)
 {
     uint32 SerializedVersion=Version;A.Value(SerializedVersion);A.Value(I.HasGround);A.Value(I.Ground);A.Value(I.Batch);A.Array(I.Allocations,2048,[](auto& A,int32& V){A.Value(V);});
     if (SerializedVersion!=Version || !I.Batch.IsValid() || I.Allocations.IsEmpty()) A.Reject();for (auto V:I.Allocations) if (V<INDEX_NONE || V>4096) A.Reject();
+}
+EGuLiHybridCommandPreparation Prepare(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M)
+{
+    auto* G=W.GetSubsystem<UGuLiGroundGridSubsystem>();if (!G || !G->IsReady()) return EGuLiHybridCommandPreparation::Ready;
+    auto* Army=W.GetSubsystem<UGuLiBattleAuthoritySubsystem>();EGuLiTeam Team;uint16 Type=0;FVector Position;
+    if (O.Key.Kind!=EGuLiHybridObjectKind::Soldier || !Army || !Army->GetTaskSoldierInfo(FGuLiSoldierId(O.Ordinal),Team,Type,Position))
+        return EGuLiHybridCommandPreparation::Ready;
+    const auto* Catalog=GetDefault<UGuLiCommanderSkillSettings>()->Catalog.LoadSynchronous();
+    const auto* Skill=Catalog?Catalog->FindAvailableUnitSkill(W,Team,Type):nullptr;
+    const auto* Config=Skill?Cast<UGuLiSummonSkillConfiguration>(Skill->Configuration):nullptr;
+    if (!Config) return EGuLiHybridCommandPreparation::Ready;
+    FSkillInput Input;FGuLiHybridStateArchive A(C.Arguments);SerializeSkillInput(A,Input);
+    if (!A.Done() || !Input.Allocations.IsValidIndex(int32(M.Slot))) return EGuLiHybridCommandPreparation::Rejected;
+    const auto* Data=W.GetSubsystem<UGuLiCommanderDataSubsystem>();
+    const auto* Unit=Data?Data->FindSoldierDefinition(uint16(Config->UnitTypeId)):nullptr;
+    const auto* Caster=Data?Data->FindSoldierDefinition(Type):nullptr;
+    if (!Unit || !Unit->UsesMass() || !Unit->bSummonOnly || !Caster) return EGuLiHybridCommandPreparation::Rejected;
+    const auto R=GuLiGridBirths::Prepare(*G,O,C.Event,Position,Caster->FootprintCells,Unit->FootprintCells,Config->Count,
+        Config->ClearanceCentimeters,Config->OuterRings,Config->CandidatesPerRing);
+    return R==EGuLiGridPermit::Granted?EGuLiHybridCommandPreparation::Ready:
+        R==EGuLiGridPermit::Pending?EGuLiHybridCommandPreparation::Pending:EGuLiHybridCommandPreparation::Rejected;
+}
+void Cancel(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridCommand& C,const FGuLiHybridCommandMember&)
+{
+    if (auto* G=W.GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady()) GuLiGridBirths::Cancel(*G,O.Key,C.Event);
 }
 bool Execute(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M)
 {
@@ -35,9 +64,10 @@ bool Execute(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridCommand&
         if (auto* PC=It->Get();PC && PC->IsLocalController())
             if (auto* PS=PC->GetPlayerState<AGuLiBattlePlayerState>())
                 if (auto* Skills=PS->GetCommanderSkills()) Skills->RecordLocalHybridUnitSkillResult(C.Event,M,Result);
-    return Result.Code==EGuLiActiveSkillResultCode::Succeeded;
+    const bool Success=Result.Code==EGuLiActiveSkillResultCode::Succeeded;
+    if (!Success) Cancel(W,O,C,M);return Success;
 }
-const FGuLiHybridCommandRegistration UnitSkills({TEXT("UnitSkill"),Version,Execute});
+const FGuLiHybridCommandRegistration UnitSkills({TEXT("UnitSkill"),Version,Execute,Prepare,Cancel});
 }
 FGuid UGuLiCommanderSkillComponent::RequestHybridUnitSkills(bool HasGround,FVector Ground)
 {

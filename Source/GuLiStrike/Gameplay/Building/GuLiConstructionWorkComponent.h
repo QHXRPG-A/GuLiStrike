@@ -32,6 +32,7 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 	void SelectPosition();
 	void RetryPosition();
+    bool ReplanGridWork();
 	bool IsTerminalFailure() const;
 	bool AssignBuilding(UGuLiBuildingLifecycleComponent& Building, bool bAutomatic = false);
 	bool PrepareBuilding(const UGuLiBuildingLifecycleComponent& Building, FVector& OutPosition, float& OutPathLength) const;

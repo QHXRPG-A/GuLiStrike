@@ -33,8 +33,8 @@
 
 阅读旧名称时注意：Commander GameMode/PlayerState/GameState 是公共类的兼容派生；默认网络子对象仍叫 CommanderNetSync，但只有一个对象。旧 `IsSyncReady()` 仍表示士兵流就绪，公共 `IsConnectionReady()` 不依赖 Mass。`ServerAcknowledgeFacts` 仍是占位接口。
 
-“可靠投递”“业务接令”“状态收敛”“画面已动”“最终抵达”是不同结论。项目实现由源码支撑，验收门槛和实际成绩分开列示；第 10 章及[公共框架实现归档](../../../Archive/20260831-公共战局框架与三类角色接入.md)明确记录通过、失败和未验证项。
+“可靠投递”“业务接令”“状态收敛”“画面已动”“最终抵达”是不同结论。项目实现由源码支撑，验收门槛和实际成绩分开列示；第 10 章及[公共框架实现归档](../../../Archive/8月归档清单.md#arc-20260831-002)明确记录通过、失败和未验证项。
 
 基础概念已对照 [Epic UE 5.7 RPC](https://dev.epicgames.com/documentation/en-us/unreal-engine/remote-procedure-calls-in-unreal-engine?application_version=5.7)、[所有权](https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-owner-and-owning-connection-in-unreal-engine?application_version=5.7)、[属性复制](https://dev.epicgames.com/documentation/en-us/unreal-engine/replicate-actor-properties-in-unreal-engine?application_version=5.7)核对；执行顺序页的 5.7 参数地址未取到正文；可读页面标为 5.8，检索缓存仍标为 5.7，仅作通用顺序规则的补充参考，不作为 5.7 专属行为的证据。
 
-进一步阅读：[Mass 阅读目录](../Mass精读笔记/README.md)串起元素、Handle、Archetype、Query 与 [Authority 导读](../Mass精读笔记/GuLiBattleAuthoritySubsystem.md)。两套文档共用当前源码基线；[本次文档修订归档](../../../Archive/20260831-网络教材与Mass精读笔记同步修订.md)只记录文档核对。
+进一步阅读：[Mass 阅读目录](../Mass精读笔记/README.md)串起元素、Handle、Archetype、Query 与 [Authority 导读](../Mass精读笔记/GuLiBattleAuthoritySubsystem.md)。两套文档共用当前源码基线；[本次文档修订归档](../../../Archive/8月归档清单.md#arc-20260831-004)只记录文档核对。

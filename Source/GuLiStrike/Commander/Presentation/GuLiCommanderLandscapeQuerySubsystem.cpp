@@ -7,6 +7,7 @@
 #include "CollisionQueryParams.h"
 #include "Engine/HitResult.h"
 #include "LandscapeProxy.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 
 namespace GuLiCommanderLandscapeQuery
 {
@@ -36,6 +37,15 @@ bool UGuLiCommanderLandscapeQuerySubsystem::TryGetBounds(FBox2D& OutBounds) cons
 {
 	EnsureCache();
 	OutBounds = CachedBounds;
+	if(const auto* Grid=GetWorld()?GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>():nullptr)
+	{
+		FBox2D Design;
+		if(Grid->TryGetAuthoredDesignBounds(Design)&&OutBounds.bIsValid)
+		{
+			OutBounds.Min=FVector2D(FMath::Max(OutBounds.Min.X,Design.Min.X),FMath::Max(OutBounds.Min.Y,Design.Min.Y));
+			OutBounds.Max=FVector2D(FMath::Min(OutBounds.Max.X,Design.Max.X),FMath::Min(OutBounds.Max.Y,Design.Max.Y));
+		}
+	}
 	return OutBounds.bIsValid
 		&& OutBounds.GetSize().X > UE_DOUBLE_SMALL_NUMBER
 		&& OutBounds.GetSize().Y > UE_DOUBLE_SMALL_NUMBER;
@@ -209,5 +219,11 @@ bool UGuLiCommanderLandscapeQuerySubsystem::TryGetWorldBounds(FBox& OutBounds) c
 {
 	EnsureCache();
 	OutBounds = CachedWorldBounds;
+	FBox2D XY;
+	if(OutBounds.IsValid&&TryGetBounds(XY))
+	{
+		OutBounds.Min.X=XY.Min.X;OutBounds.Min.Y=XY.Min.Y;
+		OutBounds.Max.X=XY.Max.X;OutBounds.Max.Y=XY.Max.Y;
+	}
 	return OutBounds.IsValid != 0;
 }

@@ -1,6 +1,6 @@
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
-#include "Gameplay/Units/GuLiEngineeringAIController.h"
+#include "AIController.h"
 #include "Gameplay/Navigation/GuLiEngineeringPathSubsystem.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "NavigationSystem.h"
@@ -12,20 +12,25 @@
 #include "Engine/World.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Network/GuLiHybridActorComponent.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
+#include "Components/CapsuleComponent.h"
+#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 
 FString UGuLiEngineeringTravelComponent::GetTravelDebug() const
 {
-	return FString::Printf(TEXT("Ground=%d Transit=%d Work=%d Legs=%d Unreachable=%d FailedPaths=%d FailedPathBytes=%llu PathPoints=%d Goal=%s"),
+	return FString::Printf(TEXT("Ground=%d Transit=%d Work=%d Legs=%d Unreachable=%d Mass=%u Goal=%s"),
 		int32(GroundStatus),int32(State.Phase),bWorkJourney,WorkLegs.Num(),bPathUnreachable,
-		FailedPaths.Num(),uint64(FailedPaths.GetAllocatedSize()),ActiveGroundPath.IsValid() ? ActiveGroundPath->GetPathPoints().Num() : 0,
+		MassEntityId.Value,
 		*GroundGoal.ToString());
 }
 
 void UGuLiEngineeringTravelComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
+    if (auto* Grid=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();Grid && Grid->IsReady())
+        Grid->Traffic().Remove(GridMotion.Key,GridMotion.Owner,GridMotion.Epoch);
 	if (auto* Service = GetWorld()->GetSubsystem<UGuLiEngineeringPathSubsystem>()) Service->Cancel(*this);
-	if (const auto* Pawn = Cast<APawn>(GetOwner()))
-		if (auto* AI = Cast<AAIController>(Pawn->GetController())) AI->GetPathFollowingComponent()->OnRequestFinished.RemoveAll(this);
+    if (auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()) Authority->DetachEngineeringMass(MassEntityId);
+    MassEntityId={};
 	Super::EndPlay(Reason);
 }
 bool UGuLiEngineeringTravelComponent::PrepareGroundMove(const FVector& Target, float Radius, FGuLiPreparedGroundMove& Out) const
@@ -58,25 +63,21 @@ bool UGuLiEngineeringTravelComponent::CommitGroundMove(const FGuLiPreparedGround
 	GroundGoal = Prepared.Request.GetGoalLocation(); GroundAcceptance = Prepared.Request.GetAcceptanceRadius();
 	if (Prepared.bNeedsPath)
 	{
-		bPathUnreachable=false; bGroundRepath=false;
+		bPathUnreachable=false;
 		GroundStatus = EGuLiEngineeringMoveStatus::WaitingForPath;
-		QueuedAt = FPlatformTime::Seconds(); ActiveGroundPath.Reset();
+		QueuedAt = FPlatformTime::Seconds();
 		GetWorld()->GetSubsystem<UGuLiEngineeringPathSubsystem>()->Enqueue(*this);
 		return true;
 	}
-	if (Prepared.bAlreadyAtGoal)
-	{ Controller().StopMovement(); ActiveGroundPath.Reset(); GroundStatus = EGuLiEngineeringMoveStatus::Arrived; return true; }
-	if (!Prepared.Path.IsValid() || !Prepared.Path->IsValid() || Prepared.Path->IsPartial()) return false;
-	ActiveGroundPath = Prepared.Path;
-	// Navigation invalidation is resubmitted through the same shared budget.
-	ActiveGroundPath->EnableRecalculationOnInvalidation(false);
-	Controller().GetPathFollowingComponent()->OnRequestFinished.RemoveAll(this);
-	Controller().GetPathFollowingComponent()->OnRequestFinished.AddUObject(this,&ThisClass::OnGroundMoveFinished);
-	GroundRequestId = Controller().RequestMove(Prepared.Request,Prepared.Path);
-	Controller().bAllowStrafe = true;
-	GroundStatus = GroundRequestId.IsValid() ? EGuLiEngineeringMoveStatus::Moving : EGuLiEngineeringMoveStatus::Failed;
-	return GroundRequestId.IsValid();
+    if (!EnsureMassEntity()) return false;
+    const bool Accepted=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->MoveEngineeringMass(
+        MassEntityId,GroundGoal,GroundAcceptance,GridMotion.State.BlockedSeconds);
+    if (Accepted) GridMotion.State.BlockedSeconds=0;
+    bPathUnreachable=!Accepted;
+    GroundStatus=Accepted?EGuLiEngineeringMoveStatus::Moving:EGuLiEngineeringMoveStatus::Failed;
+    return Accepted;
 }
+
 bool UGuLiEngineeringTravelComponent::HasQueuedPath() const
 {
 	return ReplacementTaskId ? ReplacementStatus == EGuLiEngineeringPathPreparation::Pending : IsWaitingForPath();
@@ -91,15 +92,7 @@ EGuLiEngineeringPathPreparation UGuLiEngineeringTravelComponent::PrepareReplacem
 		ReplacementStatus=EGuLiEngineeringPathPreparation::Pending; ReplacementQueuedAt=FPlatformTime::Seconds();
 		GetWorld()->GetSubsystem<UGuLiEngineeringPathSubsystem>()->Enqueue(*this);
 	}
-	if (ReplacementStatus == EGuLiEngineeringPathPreparation::Ready)
-	{
-		if (!ReplacementPath.bAlreadyAtGoal && (!ReplacementPath.Path.IsValid() || !ReplacementPath.Path->IsValid()))
-		{
-			ReplacementStatus=EGuLiEngineeringPathPreparation::Pending; ReplacementQueuedAt=FPlatformTime::Seconds();
-			GetWorld()->GetSubsystem<UGuLiEngineeringPathSubsystem>()->Enqueue(*this);
-		}
-		else Out=ReplacementPath;
-	}
+	if (ReplacementStatus == EGuLiEngineeringPathPreparation::Ready) Out=ReplacementPath;
 	return ReplacementStatus;
 }
 void UGuLiEngineeringTravelComponent::CancelReplacementMove()
@@ -111,109 +104,29 @@ void UGuLiEngineeringTravelComponent::CancelReplacementMove()
 		if (IsWaitingForPath()) Service->Enqueue(*this);
 	}
 }
-bool UGuLiEngineeringTravelComponent::ProcessQueuedPath()
-{
-	if (!HasQueuedPath()) return false;
-	const auto* Pawn=Cast<APawn>(GetOwner());
-	if (!Pawn || !UGuLiHybridActorComponent::HasSimulation(Pawn) || !Pawn->GetController())
-	{
-		if (ReplacementTaskId) ReplacementStatus=EGuLiEngineeringPathPreparation::Failed;
-		else GroundStatus=EGuLiEngineeringMoveStatus::Failed;
-		return false;
-	}
-	if (Control->AreActionsLocked() || IsRouting()) return false;
-	auto* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
-	if (!Nav || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return false;
-	bool bSuccess=false;
-	if (ReplacementTaskId)
-	{
-		const bool bQueried=ComputeQueuedPath(ReplacementGoal,ReplacementRadius,ReplacementQueuedAt,ReplacementPath,bSuccess);
-		ReplacementStatus=bSuccess ? EGuLiEngineeringPathPreparation::Ready : EGuLiEngineeringPathPreparation::Failed;
-		if (!bSuccess)
-			if (auto* Crowd=Cast<UGuLiEngineeringCrowdFollowingComponent>(Controller().GetPathFollowingComponent())) Crowd->RefreshParticipation();
-		return bQueried;
-	}
-	FGuLiPreparedGroundMove Prepared;
-	const bool bQueried=ComputeQueuedPath(GroundGoal,GroundAcceptance,QueuedAt,Prepared,bSuccess);
-	if (!bSuccess || !CommitGroundMove(Prepared))
-	{
-		bPathUnreachable=!bSuccess; GroundStatus=EGuLiEngineeringMoveStatus::Failed;
-		if (auto* Crowd=Cast<UGuLiEngineeringCrowdFollowingComponent>(Controller().GetPathFollowingComponent())) Crowd->RefreshParticipation();
-		if (bWorkJourney && !WorkLegs.IsEmpty()) { WorkLegs.Reset(); MoveOnGround(WorkGoal,WorkAcceptance); }
-	}
-	return bQueried;
-}
-bool UGuLiEngineeringTravelComponent::ComputeQueuedPath(const FVector& Target, float Radius, double RequestTime,
-	FGuLiPreparedGroundMove& Prepared, bool& bSuccess)
-{
-	bSuccess=false; Prepared={};
-	auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
-	const auto* Pawn = CastChecked<APawn>(GetOwner());
-	const uint32 Profile=HashCombine(GetTypeHash(Controller().GetDefaultNavigationFilterClass().Get()),
-		HashCombine(GetTypeHash(Pawn->GetNavAgentPropertiesRef().AgentRadius),GetTypeHash(Pawn->GetNavAgentPropertiesRef().AgentHeight)));
-	if (FailureProfile!=Profile) { FailedPaths.Reset(); FailureProfile=Profile; }
-	const FVector Start = Pawn->GetNavAgentLocation();
-	const auto* Obstacles=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
-	const uint32 Revision = Obstacles->GetStaticRevision();
-	const double Now = UGuLiHybridActorComponent::BattleSeconds(GetOwner());
-	FailedPaths.RemoveAll([&](const auto& Failure) {
-		FBox Bounds(ForceInit); Bounds+=Failure.Start; Bounds+=Failure.Goal;
-		return Failure.RetryAt<=Now || Obstacles->HasStaticChangesSince(Failure.Revision,Bounds.ExpandBy(2000)); });
-	if (FailedPaths.ContainsByPredicate([&](const auto& F) { return F.Start.Equals(Start,100) && F.Goal.Equals(Target,1); })) return false;
-	LastQueueWaitMilliseconds = (FPlatformTime::Seconds()-RequestTime)*1000;
-	if (!PrepareGroundMove(Target,Radius,Prepared)) return false;
-	Prepared.bNeedsPath = false;
-	FNavLocation Goal;
-	const auto* Data = Nav->GetNavDataForProps(Pawn->GetNavAgentPropertiesRef(),Start);
-	bool bReady = Data && Nav->ProjectPointToNavigation(Target,Goal,FVector(100,100,5000),Data);
-	if (bReady)
-	{
-		Prepared.Request.SetGoalLocation(Goal.Location);
-		Prepared.bAlreadyAtGoal = Controller().GetPathFollowingComponent()->HasReached(Prepared.Request);
-		if (!Prepared.bAlreadyAtGoal)
-		{
-			FPathFindingQuery Query;
-			if (Controller().BuildPathfindingQuery(Prepared.Request,Query))
-			{
-				TRACE_CPUPROFILER_EVENT_SCOPE(GuLiEngineering_ActualPathQuery);
-				const double Before=FPlatformTime::Seconds();
-				Controller().FindPathForMoveRequest(Prepared.Request,Query,Prepared.Path);
-				const auto Origin=ReplacementTaskId ? EGuLiEngineeringPathOrigin::Manual : bGroundRepath
-					? EGuLiEngineeringPathOrigin::Repath : bWorkJourney ? EGuLiEngineeringPathOrigin::Work : EGuLiEngineeringPathOrigin::Manual;
-				GetWorld()->GetSubsystem<UGuLiEngineeringPathSubsystem>()->RecordPathQuery(Origin,(FPlatformTime::Seconds()-Before)*1000);
-			}
-			bReady = Prepared.Path.IsValid() && Prepared.Path->IsValid() && !Prepared.Path->IsPartial();
-			if (bReady) Prepared.Path->EnableRecalculationOnInvalidation(false);
-		}
-	}
-	bSuccess=bReady;
-	if (!bReady)
-	{
-		FailedPaths.Add({Start,Target,TNumericLimits<double>::Max(),Revision});
-		if (FailedPaths.Num()>32) FailedPaths.RemoveAt(0);
-	}
-	return true;
-}
-void UGuLiEngineeringTravelComponent::OnGroundMoveFinished(FAIRequestID Id, const FPathFollowingResult& Result)
-{
-	if (Id != GroundRequestId || GroundStatus != EGuLiEngineeringMoveStatus::Moving) return;
-	bPathUnreachable=false;
-	if (ActiveGroundPath.IsValid() && !ActiveGroundPath->IsValid())
-	{ MoveOnGround(GroundGoal,GroundAcceptance); bGroundRepath=true; return; }
-	GroundStatus = Result.IsSuccess() ? EGuLiEngineeringMoveStatus::Arrived : EGuLiEngineeringMoveStatus::Failed;
-}
 void UGuLiEngineeringTravelComponent::TickGroundMove()
 {
-	if (Control->AreActionsLocked()) return;
-	if (GroundStatus == EGuLiEngineeringMoveStatus::Moving && ActiveGroundPath.IsValid() && !ActiveGroundPath->IsValid())
-	{ Controller().StopMovement(); MoveOnGround(GroundGoal,GroundAcceptance); bGroundRepath=true; }
-	if (bWorkJourney && GroundStatus == EGuLiEngineeringMoveStatus::Arrived && !WorkLegs.IsEmpty()) AdvanceWorkRoute();
+    RefreshMassAuthority();if (!MassEntityId.IsValid() || Control->AreActionsLocked()) return;
+    if (GroundStatus==EGuLiEngineeringMoveStatus::Moving)
+    {
+        FGuLiSoldierNavigationDebug Debug;
+        if (GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->TryGetSoldierNavigationDebug(MassEntityId,Debug))
+        {
+            if (Debug.State==EGuLiSoldierNavigationState::Arrived) GroundStatus=EGuLiEngineeringMoveStatus::Arrived;
+            else if (Debug.State==EGuLiSoldierNavigationState::Blocked || !Debug.ActiveOrderId)
+            {GroundStatus=EGuLiEngineeringMoveStatus::Failed;bPathUnreachable=true;}
+        }
+    }
+    if (bWorkJourney && GroundStatus==EGuLiEngineeringMoveStatus::Arrived && !WorkLegs.IsEmpty()) AdvanceWorkRoute();
 }
 void UGuLiEngineeringTravelComponent::CancelGroundMove()
 {
+    GridMotion={};
+    if (MassEntityId.IsValid() && (GroundStatus==EGuLiEngineeringMoveStatus::Moving || GroundStatus==EGuLiEngineeringMoveStatus::WaitingForPath))
+        if (auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()) Authority->StopTaskSoldiers(MakeArrayView(&MassEntityId,1));
 	if (auto* Service = GetWorld()->GetSubsystem<UGuLiEngineeringPathSubsystem>()) Service->Cancel(*this);
 	ReplacementTaskId=0; ReplacementPath={};
-	GroundStatus = EGuLiEngineeringMoveStatus::Idle; ActiveGroundPath.Reset();
+	GroundStatus = EGuLiEngineeringMoveStatus::Idle;
 	WorkLegs.Reset(); bWorkJourney = false;
 }
 bool UGuLiEngineeringTravelComponent::StopAtSafePoint()
@@ -223,10 +136,4 @@ bool UGuLiEngineeringTravelComponent::StopAtSafePoint()
 	if (const auto* Pawn=Cast<APawn>(GetOwner())) if (auto* AI=Cast<AAIController>(Pawn->GetController())) AI->StopMovement();
 	if (auto* Character = Cast<ACharacter>(GetOwner())) Character->GetCharacterMovement()->StopMovementImmediately();
 	return true;
-}
-bool UGuLiEngineeringTravelComponent::FindGroundPath(const FVector& Target, float& Length) const
-{
-	// Compatibility callers may inspect the current prepared path, never initiate a hidden query.
-	if (!Target.Equals(GroundGoal,1) || !ActiveGroundPath.IsValid() || !ActiveGroundPath->IsValid()) return false;
-	Length = ActiveGroundPath->GetLength(); return true;
 }

@@ -18,6 +18,7 @@ public:
 	bool InitializePresentation(AActor* Actor);
 	bool CalculateMuzzles(const FVector& Target, const FTransform& VehiclePose, FVector& Left, FVector& Right) const;
 	void AimAt(const FVector& Target);
+	void RefreshDisplayedAim();
 	void ApplyMining(bool bActive, const FVector& Target);
 	UFUNCTION(BlueprintPure, Category="Mining|Diagnostics") FString GetPresentationDiagnosticsJson() const;
 	bool IsReady() const { return Presentation.IsValid() && Pivots[0].IsValid() && Pivots[1].IsValid(); }

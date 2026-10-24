@@ -1,0 +1,823 @@
+{
+  "schema": "guli-monthly-archive/v1",
+  "date": "2026-10-22",
+  "month": "2026-08",
+  "files": [
+    {
+      "path": "Progress/Archive/20260816-资产整合-Marketplace资产包统一归档至Assets.md",
+      "bytes": 5800,
+      "sha256": "f204454200aeb81ddb1606017ff9a5ef06044dc00297f4804b6ac906d8f91928",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260816-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-16 解决了：Marketplace 资产包统一整合至 Content/Assets",
+        "areas": [
+          "vfx",
+          "assets"
+        ],
+        "categories": [
+          "art"
+        ],
+        "status": "recorded",
+        "verification": "passed",
+        "created": "2026-08-16",
+        "updated": "2026-08-16",
+        "summary": "8 个资产包、共 4,482 个资产全部迁入 /Game/Assets/，迁移后逐包资产计数与迁移前注册表基线精确一致，加载抽查（BP / 材质 / 动画 / ParagonSample 地图）全部通过，无缺失引用告警",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260821-DIY飞船开发总归档-0820至0821.md",
+      "bytes": 7519,
+      "sha256": "adddf31a5e28ea301c246ab0246a3fa4415562c7b52f0e39febf9a5a6d9075e6",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260821-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-20 ~ 08-21 解决了：DIY 飞船两天开发总归档（MVP → 手感调校 → 架构演进）",
+        "areas": [
+          "ship",
+          "network",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "not_run",
+        "created": "2026-08-21",
+        "updated": "2026-08-21",
+        "summary": "① MVP 落地（0820 上午）：用户定稿装配模型（主体=Character / 部件=组件 / 槽位=socket / 兼容=名字集合）。修复 virgon 9 个空材质槽（槽名即原始材质名的确定性映射）；用\"每材质组几何质心\"交叉验证舰体朝向（+X=艏部，bridge 与 bridgewindow 质心重合证明映射成立）；发现 fly-01\"散件\"实为材质实例，部件网格改用 Parag…",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260822-修复LVL_Main按Play无飞船可控制.md",
+      "bytes": 3711,
+      "sha256": "d0200c4e42c93905f34fa10f10c44aecf2c34f477306887c4e15da5013ed86f7",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260822-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-22 解决了：LVL_Main 按 Play 不生成可控飞船",
+        "areas": [
+          "ship",
+          "vfx",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "not_run",
+        "created": "2026-08-22",
+        "updated": "2026-08-22",
+        "summary": "诊断（先定位链条断点，再动手）",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260822-数据管线v2-Excel元数据驱动自动生成行结构.md",
+      "bytes": 6504,
+      "sha256": "9b10ad5d14e4c190ee056c30bbb39f7713a8b770c1803c7e93edf2e904c69fd7",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260822-002",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-22 解决了：数据管线 v2 —— Excel 三行元数据驱动，自动生成 C++ 行结构",
+        "areas": [
+          "commander",
+          "ship",
+          "data-pipeline",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "not_run",
+        "created": "2026-08-22",
+        "updated": "2026-08-22",
+        "summary": "用户把表格式改成三行元数据（第 1 行列名 / 第 2 行类型 intfloatboolstrsoftclass / 第 3 行必要性 NecessaryOptional，数据从第 4 行起；每表必有标准三列 id/name/Note），要求消灭手写的 GuLiStrikeShipData.h 与 Tools/DataPipeline/tables.json",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260822-数据管线开发总归档-0821至0822.md",
+      "bytes": 10590,
+      "sha256": "26b2ad52e1d98e9dd486d3a39e422b8281b116c183485176c51116e874a668fb",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260822-003",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-21~22 解决了：Excel→JSON→DataTable 数据管线（MVP → 通用化 → 校验配置化）",
+        "areas": [
+          "ship",
+          "data-pipeline",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-22",
+        "updated": "2026-08-22",
+        "summary": "管线形态：Excel →（系统 Python + openpyxl 校验导出）→ JSON（入库）→（编辑器 Python 经 UnrealMCPython TCP 12029）→ DataTable 资产 → 运行时 InstallPart/BeginPlay 查行应用",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260821-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260824-CombatAvatarFly归位勘误-重巡舰体入库与两舰归位.md",
+      "bytes": 4806,
+      "sha256": "f7ce0ba1855bc93766e43b8d3f1b08b0d3f3c11f3fd9295c0913bb899151bd2b",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260824-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，无畏舰/重巡分驻 01/02 文件夹",
+        "areas": [
+          "commander",
+          "ship",
+          "data-pipeline",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "not_run",
+        "created": "2026-08-24",
+        "updated": "2026-09-05",
+        "summary": "2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，无畏舰/重巡分驻 01/02 文件夹",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260820-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260824-第一批飞船组件拆分入库-总归档.md",
+      "bytes": 4729,
+      "sha256": "a3cc98e32fc53b5a5350d8508c6982321e8cfd8b9ddf18d733cd9d99b0112022",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260824-002",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-24 第一批飞船组件拆分入库（总归档）",
+        "areas": [
+          "commander",
+          "ship",
+          "data-pipeline",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-24",
+        "updated": "2026-08-24",
+        "summary": "A 阵营无畏舰（Dreadnought Vengeance）：SMDreadnoughtHull（舰体 16,312 三角形）+ 6 武器件——SMSCTwinBarrelTurret ×1,240 / BottomTwin ×1,240 / SingleBarrel ×1,130 / CIWS ×654 / ShieldGenerator ×312 / MissileBay ×368",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260824-第二轮资产整合-总归档.md",
+      "bytes": 4800,
+      "sha256": "ba662217aaa6aa297379ccabcae04b761476697f36e90587f462d762bb9efb6d",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260824-003",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-22~24 第二轮资产整合（总归档）",
+        "areas": [
+          "ship",
+          "vfx",
+          "combat",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-24",
+        "updated": "2026-08-24",
+        "summary": "/Game 顶层从 15 个目录收敛至 6 个（Assets / GuLiStrike / LevelPrototyping / Maps / TripoModels）",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md",
+      "bytes": 5286,
+      "sha256": "85ee37848e48d678c3fc32a63ab27124f8d2c2fc2fac7482b7ce92dd7d3b5302",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260825-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-25 解决了：相机/避障参数进表（新增 Camera sheet）+ 蓝图覆盖值清理",
+        "areas": [
+          "ship",
+          "network",
+          "data-pipeline",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-25",
+        "updated": "2026-08-25",
+        "summary": "ApplyCameraRow() 语义与 ApplyTuningRow() 一致：无表/无预设/无行 → 保持类默认 + Warning；表值覆盖后把 SpringArm-TargetArmLength 同步为 CameraDefaultArmLength（随后 DesiredArmLength 从臂长起步的初始化自然吃到表值）",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260821-001",
+            "WORK-20260820-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260825-相机避障函数化-Tick去散落逻辑.md",
+      "bytes": 2603,
+      "sha256": "ed28b676098075ceb1967507d3afdbd6b32d311309a28be21d928ea3deb844fb",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260825-002",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-25 解决了：相机避障逻辑提取为 ResolveCameraArmCollision()，Tick 去散落逻辑",
+        "areas": [
+          "ship"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "passed",
+        "created": "2026-08-25",
+        "updated": "2026-08-25",
+        "summary": "应用户要求\"相机避障封装成函数、Tick 不留散落逻辑\"。这是此前\"避障下放专职组件\"评估的轻量替代：不动组件归属、不改数据流，只做函数化收拢——DesiredArmLength/HullBoundingRadius/各 Camera 参数仍为飞船成员，将来若真做组件化，这个函数就是现成的搬迁单元。Tick 现在读作：避障 → 偏航惯性 → 自动转向 → 压弯 → 清输入，五段一目了然",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260820-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260825-飞船3C与相机避障总归档-0824至0825.md",
+      "bytes": 10070,
+      "sha256": "4c908bd89bebb7bbf8614ed72a4f03390813502f3f6823cb740f75b58f86fb81",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260825-003",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-24~25 总归档：飞船 3C 与相机避障体系（滚轮缩放 / 舰体避障六轮演进 / 命中过滤）",
+        "areas": [
+          "ship",
+          "data-pipeline",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-25",
+        "updated": "2026-08-25",
+        "summary": "2026-08-24~25 总归档：飞船 3C 与相机避障体系（滚轮缩放 / 舰体避障六轮演进 / 命中过滤）",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260820-001",
+            "WORK-20260821-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "bytes": 50746,
+      "sha256": "23da73257e10d08b621992e80c02462c8f604e01505b3f4b9c4c1af781b6a5df",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260827-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-27 总归档：Mass 动态 25 人控制组与双端平滑同步",
+        "areas": [
+          "commander",
+          "ui",
+          "network",
+          "data-pipeline",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-27",
+        "updated": "2026-08-28",
+        "summary": "本轮把早期“永久 25 人 CommandGroup + 5Hz 组摘要直驱客户端”的原型，迁移为“500 名永久独立 Soldier + 每次选择临时生成最多 25 人 ControlCohort + 每次命令生成独立 OrderFormation”的服务端权威架构",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260827-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260827-爆炸特效统一归拢至AssetsVFXExplosions.md",
+      "bytes": 5550,
+      "sha256": "13fd1ac25ac0cfde9694e5f178a508bab180f5fcf89627e40924fdd01c641bd3",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260827-002",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "爆炸特效统一归拢至 /Game/Assets/VFX/Explosions",
+        "areas": [
+          "ship",
+          "ui",
+          "data-pipeline",
+          "vfx",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-27",
+        "updated": "2026-08-27",
+        "summary": "日期：2026-08-27 执行方式：UnrealMCPython 实时通道 + 独立编辑器进程 -ExecutePythonScript",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260827-飞船与场景模型尺寸归一.md",
+      "bytes": 5347,
+      "sha256": "9533f46dca58f52dc131bec1d80203f49cb274f3f3ebcfef216a5eed7f576520",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260827-003",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-27 解决了：飞船与场景模型尺寸归一",
+        "areas": [
+          "ship",
+          "network",
+          "data-pipeline",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "not_run",
+        "created": "2026-08-27",
+        "updated": "2026-08-27",
+        "summary": "场景中三组已人工标定的实例缩放已烘焙到模型资源，关卡 Actor Scale 全部归一为 1；当前玩家飞船仅在子蓝图取消根组件 0.3 倍缩放，父蓝图保持不变。运行时飞船使用缩小为原资源 0.5 的 Dreadnought 舰体，因此最终尺寸为改动前的 5/3，并同步更新舰体偏移、相机参数和出生高度",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260827-002"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260828-Commander指令术语统一.md",
+      "bytes": 3253,
+      "sha256": "ceca192f318740036544c3e80ad052e12946ce18f4520cf95fdc219ce4af8922",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260828-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-28 解决了：Commander 的 Order 中文术语统一",
+        "areas": [
+          "commander",
+          "network",
+          "assets",
+          "learning"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "not_run",
+        "created": "2026-08-28",
+        "updated": "2026-08-28",
+        "summary": "2026-08-28 解决了：Commander 的 Order 中文术语统一",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260828-指挥官3C与运行时GM调参.md",
+      "bytes": 8913,
+      "sha256": "8def17424255d8fbaa0e65df57256d3ed2ee2d3be4d164caa52dd7f4242b85a4",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260828-002",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-28 归档：指挥官 3C、Soldier 数据化与运行时 GM 调参",
+        "areas": [
+          "commander",
+          "ship",
+          "ui",
+          "network",
+          "data-pipeline"
+        ],
+        "categories": [
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-28",
+        "updated": "2026-08-28",
+        "summary": "本轮把 Commander 原型从“代码常量 + 终点恢复方阵 + 固定朝向小地图”推进为“单兵种表驱动 + 共享目标松散到达 + heading-up 小地图”，并补上当前 World 会话级 gs.GM. 调参系统",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260828-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260829-指挥官UI与HUD逻辑接入总归档.md",
+      "bytes": 12878,
+      "sha256": "af47e67ff4e5b52f282693cb3de21d9c15c8e1bfe5d691f76e8e9c82f82a6dd9",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260829-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-29 解决了：指挥官 UI 视觉三轮设计与 HUD 逻辑接入（总归档）",
+        "areas": [
+          "commander",
+          "ui",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "passed",
+        "created": "2026-08-29",
+        "updated": "2026-08-31",
+        "summary": "2026-08-29 解决了：指挥官 UI 视觉三轮设计与 HUD 逻辑接入（总归档）",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260829-002",
+            "WORK-20260829-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260829-指挥官小兵表现层两阶段性能优化.md",
+      "bytes": 6152,
+      "sha256": "2d86df59327317b0883920794252a96e838ef033c30821ca229f357528d7c3cc",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260829-002",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "指挥官小兵表现层两阶段性能优化",
+        "areas": [
+          "commander",
+          "ship",
+          "network",
+          "data-pipeline",
+          "combat"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "passed",
+        "created": "2026-08-29",
+        "updated": "2026-08-29",
+        "summary": "首次通过 MCP 的 GameThread TaskGraph 回调同步执行 Material Merge 时，MaterialBaking 为等待纹理流送再次泵 GameThread TaskGraph，触发 TaskGraph recursion guard；改用 CoreTicker 仍存在 MaterialBaking 内部 nested CoreTicker 的重入风险。最终命令通…",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260829-003"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260830-战斗权威子系统中文注释与导读.md",
+      "bytes": 4072,
+      "sha256": "d6366fbd336b814661e60749c26335b761d6a797189e3639a0468cdcdd57e317",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260830-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-30 解决了：战斗权威子系统缺少中文阅读说明及赋值后换行影响阅读",
+        "areas": [
+          "commander",
+          "network",
+          "combat",
+          "assets",
+          "learning"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "passed",
+        "created": "2026-08-30",
+        "updated": "2026-08-30",
+        "summary": "2026-08-30 解决了：战斗权威子系统缺少中文阅读说明及赋值后换行影响阅读",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260831-UE网络中文注释与项目教材.md",
+      "bytes": 8773,
+      "sha256": "2dc31d735c2687c8f57cf6d347cbe537fab69a005ac1da938f10870647cc1c6f",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260831-001",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-31 解决了：补齐项目网络链路中文注释并编写实战教材",
+        "areas": [
+          "commander",
+          "network",
+          "learning"
+        ],
+        "categories": [
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-31",
+        "updated": "2026-08-31",
+        "summary": "基于实施时工作区保存内存基线，保留此前已有的 C++、UI、协议及其他未提交变更。覆盖 33 个源文件，仅补充/翻译中文注释并整理 64 处赋值运算符后的悬空换行；参数仍允许分行",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260831-公共战局框架与三类角色接入.md",
+      "bytes": 20147,
+      "sha256": "e85c14b828c4fa550e0c722d6967e3cb60d2ea7218c360909c464786f3322cad",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260831-002",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-31 公共战局框架与三类角色接入",
+        "areas": [
+          "commander",
+          "ship",
+          "ui",
+          "network",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-31",
+        "updated": "2026-08-31",
+        "summary": "源码本轮修改/新增共 45 个 .h/.cpp，蓝图资产修改 4 个。没有新增地图、输入资产、测试文件、演示 Actor 资产或插件；没有更改全局默认地图。保存了工作区原有改动，不回退历史草稿之外的用户内容；不修改旧归档",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260831-001"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260831-基地建造玩法探索草案落档.md",
+      "bytes": 3684,
+      "sha256": "e5a5c40a766d4b2e7afbde588f0817bf15531b2e953515e27c05d9d28feb6565",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260831-003",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-31 解决了：将基地建造玩法探索草案保存到项目并建立索引",
+        "areas": [
+          "building",
+          "assets"
+        ],
+        "categories": [
+          "art",
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-31",
+        "updated": "2026-08-31",
+        "summary": "2026-08-31 解决了：将基地建造玩法探索草案保存到项目并建立索引",
+        "next_action": "",
+        "relations": {
+          "work_items": [
+            "WORK-20260831-002"
+          ]
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260831-网络教材与Mass精读笔记同步修订.md",
+      "bytes": 8892,
+      "sha256": "774bb46295405a8c5635cd0602473d88e560f4eddcaf2e423c4fd77a5a844a37",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260831-004",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-31｜UE 网络教材与 Mass 精读笔记同步修订",
+        "areas": [
+          "commander",
+          "ship",
+          "network",
+          "learning"
+        ],
+        "categories": [
+          "gameplay"
+        ],
+        "status": "recorded",
+        "verification": "partial",
+        "created": "2026-08-31",
+        "updated": "2026-08-31",
+        "summary": "本轮共写入 19 份 Markdown：16 份既有教材/笔记、1 份新增 Mass README、Progress 索引和本归档。没有写入源码、配置、蓝图、地图、旧归档或范围外文档，也没有创建临时脚本、备份及散落报告",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    },
+    {
+      "path": "Progress/Archive/20260831-网络教材理论篇改编.md",
+      "bytes": 5456,
+      "sha256": "c56fa4fcc1421231dfd2db0f2949693097fc9ff14b12b665fac440f66ee3d8bb",
+      "metadata": {
+        "schema": "guli-progress/v1",
+        "id": "ARC-20260831-005",
+        "work_id": "",
+        "kind": "archive",
+        "role": "root",
+        "title": "2026-08-31 解决了：UE4 网络概念教程改编为 UE 5.7 源码版（教材新增理论篇）",
+        "areas": [
+          "network",
+          "assets",
+          "learning"
+        ],
+        "categories": [
+          "art"
+        ],
+        "status": "recorded",
+        "verification": "not_run",
+        "created": "2026-08-31",
+        "updated": "2026-08-31",
+        "summary": "用户提供知乎文章全文（Jerish《关于网络同步的理解与思考[概念理解]》，基于 UE4），要求改编为 UE5 版本存放于 UE网络教材/，保留原文行文风格与通用部分。改编原则：章节结构、问答体例、示例（NPC 宝藏多播、宝箱属性回调、Gate 粒子、ClientRestart 骑乘 NPC）与口语化行文保留原文；所有涉及引擎行为的论断逐条到 C:\\Program Files\\Epic Ga…",
+        "next_action": "",
+        "relations": {
+          "work_items": []
+        },
+        "status_note": ""
+      }
+    }
+  ],
+  "existing_packages": [
+    {
+      "path": "Progress/Archive/202609-归档.zip",
+      "sha256": "78e4ae1c3de30682e44302afbdae5e6a98c76b06973f3fb1e946c9408ed5fc9d"
+    },
+    {
+      "path": "Progress/Archive/20261021-近期优化原文.zip",
+      "sha256": "9a5ac98a2c7e3b4da4375f0b5edc4653142ea47dd0cfdd0c2b1bc12e1e18f74d"
+    }
+  ]
+}

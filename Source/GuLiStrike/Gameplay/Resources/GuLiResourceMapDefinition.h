@@ -49,6 +49,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Bake")
 	float BakedObjectScale = 1.0f;
 
+    /** Zero identifies packages that have not undergone the explicit integer-grid migration. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Bake")
+    float BakedGridCellCm = 0.0f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Bake")
 	int32 DeterministicSeed = GULI_RESOURCE_BAKE_SEED;
 
@@ -65,6 +69,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Board")
 	FVector2D PlayableMaximum = FVector2D(GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM);
+
+    /** Opt-in by standalone imports; legacy canonical bounds validation remains unchanged. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Board")
+    bool bHasAuthoredPlayableBounds = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Spawn")
 	FGuLiResourceSpawnAnchors SpawnAnchors;

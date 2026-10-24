@@ -13,5 +13,7 @@ struct FGuLiSoldierLocalPose
 	FGuLiVATPlayback VAT;
 	double ServerTimeSeconds = 0.0;
 	double AnimationAheadSeconds = 0.0;
+	double MovementTimeSeconds = 0.0;
+	uint32 DisplacementRevision = 0;
 	uint32 ActiveOrderId = 0;
 };

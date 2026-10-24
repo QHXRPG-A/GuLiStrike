@@ -106,7 +106,7 @@ bool VarUInt(Reader& R,std::uint64_t& Out)
 bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
 {
     Message M;auto& H=M.Header;std::uint8_t Kind,Flags,ObjectKindValue=0;std::uint64_t Generation=0,Size=0;
-    if (!R.U8(Kind)||Kind<unsigned(MessageKind::Hello)||Kind>unsigned(MessageKind::ResourceSnapshotInstalled)
+    if (!R.U8(Kind)||Kind<unsigned(MessageKind::Hello)||Kind>=unsigned(MessageKind::Count)
         ||!R.U8(Flags)||(Flags&~15u)) return false;
     if (Flags&4) {if (!Context.Match.Valid()) return false;H.Match=Context.Match;}
     else if (!R.Identity(H.Match)) return false;
@@ -130,7 +130,7 @@ bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
 bool EncodePeerMessage(const Message& M,Bytes& Out,PeerMessageContext Context)
 {
     const auto& H=M.Header;
-    if (M.Body.size()>MaxMessageBytes-CanonicalMessageHeaderBytes || H.Kind<MessageKind::Hello || H.Kind>MessageKind::ResourceSnapshotInstalled
+    if (M.Body.size()>MaxMessageBytes-CanonicalMessageHeaderBytes || H.Kind<MessageKind::Hello || H.Kind>=MessageKind::Count
         || H.Object.Kind>ObjectKind::BusinessWork) return false;
     const bool Event=H.Event!=Id{},Object=H.Object!=ObjectKey{};
     const bool Match=Context.Match.Valid()&&H.Match==Context.Match,Sender=Context.Sender.Valid()&&H.Sender==Context.Sender;
@@ -153,7 +153,7 @@ bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out,PeerMessage
     if (!R.U32(Magic) || !R.U16(Version) || Version != ProtocolVersion) return false;
     if (Magic==CompactPeerMagic) return DecodePeerMessage(R,Out,Context);
     if (Magic!=0x474c4e43 || !R.U16(Kind) || Kind < static_cast<std::uint16_t>(MessageKind::Hello)
-        || Kind > static_cast<std::uint16_t>(MessageKind::ResourceSnapshotInstalled)) return false;
+        || Kind >= static_cast<std::uint16_t>(MessageKind::Count)) return false;
     H.Kind = static_cast<MessageKind>(Kind);
     if (!R.Identity(H.Match) || !R.U64(H.Epoch) || !R.Identity(H.Sender) || !R.Identity(H.Event)
         || !R.Key(H.Object) || !R.U64(H.OwnerEpoch) || !R.U64(H.ControlEpoch) || !R.U64(H.Sequence)

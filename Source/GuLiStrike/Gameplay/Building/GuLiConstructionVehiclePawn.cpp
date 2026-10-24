@@ -1,6 +1,7 @@
 #include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
+#include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
 #include "Gameplay/Building/GuLiConstructionWorkComponent.h"
 #include "Gameplay/Building/GuLiConstructionPresentationComponent.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
@@ -24,8 +25,6 @@ AGuLiConstructionVehiclePawn::AGuLiConstructionVehiclePawn(const FObjectInitiali
 {
 	bReplicates = false; bAlwaysRelevant = true; SetReplicateMovement(false);
 	GetCapsuleComponent()->InitCapsuleSize(130,130);
-	GetCapsuleComponent()->SetMaskFilterOnBodyInstance(GuLiEngineeringCollision::VehicleMask);
-	GetCapsuleComponent()->SetMoveIgnoreMask(GuLiEngineeringCollision::VehicleMask);
 	GetCapsuleComponent()->SetCanEverAffectNavigation(false);
 	GetCharacterMovement()->SetUpdateNavAgentWithOwnersCollisions(false);
 	GetCharacterMovement()->NavAgentProps.AgentRadius = GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM;
@@ -42,6 +41,8 @@ AGuLiConstructionVehiclePawn::AGuLiConstructionVehiclePawn(const FObjectInitiali
 	Presentation = CreateDefaultSubobject<UChildActorComponent>(TEXT("Presentation"));
 	Presentation->SetupAttachment(GetCapsuleComponent());
 	Presentation->OnChildActorCreated().AddStatic(&GuLiUnitRenderPolicy::ApplyToActor);
+	MovementPresentation = CreateDefaultSubobject<UGuLiEngineeringPoseComponent>(TEXT("MovementPresentation"));
+	ConstructionPresentation->AddTickPrerequisiteComponent(MovementPresentation);
 }
 void AGuLiConstructionVehiclePawn::InitializeVehicle(EGuLiTeam InTeam, FGuLiControllableActorId InId,
 	const FGuLiSoldierDefinition& Definition)
@@ -50,15 +51,21 @@ void AGuLiConstructionVehiclePawn::InitializeVehicle(EGuLiTeam InTeam, FGuLiCont
 	Team = InTeam; StableId = InId; BaseSpeed = Definition.MovementSpeedCmPerSecond;
 	UnitTypeId = Definition.UnitTypeId;
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+	const auto* SourceBody=GetClass()->GetDefaultObject<AGuLiConstructionVehiclePawn>()->GetCapsuleComponent();
+	GetCapsuleComponent()->SetCapsuleSize(Definition.FootprintCells*150.f,
+		SourceBody->GetUnscaledCapsuleHalfHeight()*Definition.GridDimensionScale);
+	GetCharacterMovement()->NavAgentProps.AgentRadius=Definition.FootprintCells*150.f;
+	GetCharacterMovement()->NavAgentProps.AgentHeight=GetCapsuleComponent()->GetScaledCapsuleHalfHeight()*2.f;
 	PresentationClass = Definition.PresentationClass; PresentationScale = Definition.PresentationScale; OnRep_Definition();
 
 }
 void AGuLiConstructionVehiclePawn::OnRep_Definition()
 {
 	if (!PresentationClass) return; // The replicated class may arrive before the scalar fields.
+	MovementPresentation->ReleaseVisual();
 	Presentation->SetChildActorClass(PresentationClass);
 	Presentation->SetRelativeScale3D(FVector(PresentationScale));
-	Presentation->SetRelativeLocation(FVector(0,0,-130));
+	Presentation->SetRelativeLocation(FVector(0,0,-GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
 	AActor* Child = Presentation->GetChildActor(); check(Child);
 	UGuLiModelPresentationComponent::InstallForPresentationActor(Child);
 	Child->SetActorEnableCollision(false);
@@ -70,11 +77,13 @@ void AGuLiConstructionVehiclePawn::OnRep_Definition()
 		GuLiUnitRenderPolicy::Apply(*VisualMesh);
 		TravelBounds += VisualMesh->CalcBounds(VisualMesh->GetComponentTransform().GetRelativeTransform(GetActorTransform())).GetBox();
 	}
-	SetEngineeringPresentationVisible(!Travel->IsInTransit());
 	ConstructionPresentation->InitializePresentation(Child);
+	MovementPresentation->InitializeVisual(*Presentation, TravelBounds);
+	SetEngineeringPresentationVisible(!Travel->IsInTransit());
 }
 void AGuLiConstructionVehiclePawn::SetEngineeringPresentationVisible(bool bVisible)
 {
+	MovementPresentation->SetPresentationVisible(bVisible);
 	if (AActor* Child = Presentation->GetChildActor()) Child->SetActorHiddenInGame(!bVisible);
 	if (!bVisible) ConstructionPresentation->HideBeams();
 }

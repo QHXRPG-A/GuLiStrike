@@ -266,7 +266,19 @@ void UGuLiLocalPIESubsystem::StopChildren()
 #endif
     // This directory was generated below the OS temp root for this room only.
     if (!State->Directory.IsEmpty() && FPaths::IsUnderDirectory(State->Directory,FPlatformProcess::UserTempDir()))
+    {
+        // Keep the failed child's final diagnostics before removing the owned room.
+        // One fixed file bounds retention; successful sessions do not overwrite it.
+        const FString LogicLog=State->Directory/TEXT("logic.log");
+        if (!State->Error.IsEmpty() && IFileManager::Get().FileExists(*LogicLog))
+        {
+            const FString Retained=FPaths::ConvertRelativePathToFull(FPaths::ProjectLogDir()/TEXT("GuLiLocalPIE-last-failure.log"));
+            const bool Saved=IFileManager::Get().Copy(*Retained,*LogicLog,true,false,false)==COPY_OK;
+            UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] failure_log_saved=%d room=%s path=%s"),
+                Saved,*State->Config.RoomId.ToString(EGuidFormats::Digits),*Retained);
+        }
         State->CleanupComplete=IFileManager::Get().DeleteDirectory(*State->Directory,false,true);
+    }
     State->Directory.Reset();State->Began=false;
 }
 bool UGuLiLocalPIESubsystem::Tick(float)

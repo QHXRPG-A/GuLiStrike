@@ -20,6 +20,7 @@ class AGuLiMiningVehiclePawn;
 class AGuLiConstructionVehiclePawn;
 class AGuLiOreClusterObstacleActor;
 class AGuLiOreFieldActor;
+class AGuLiOreCollisionFieldActor;
 class AGuLiResourceFactoryActor;
 class AGuLiResourceWorldState;
 class AGuLiTerritoryOutpostActor;
@@ -29,6 +30,13 @@ class UGuLiResourceMapDefinition;
 
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FGuLiTerritoryOwnershipChanged, int32, EGuLiTeam, EGuLiTeam);
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiResourceSettlement, const FGuLiHybridTransactionResult&);
+
+struct FGuLiOreObstacleStats
+{
+	int32 PendingNodes=0, LastBatchNodes=0, AliveCollisionNodes=0, AliveAvoidanceNodes=0;
+	double OldestWaitMilliseconds=0, LastBatchMilliseconds=0;
+	uint64 WorldGeneration=0, IndexPublications=0;
+};
 
 /** Match-scoped authority for ore, territory and factories; economy is a separate service. */
 UCLASS(Config = Game)
@@ -53,6 +61,11 @@ public:
 	bool IsMiningRuntimeReady() const;
 	void EnableHybridMiningSimulation() { bHybridMiningSimulationSupported=true; }
 	void GetHybridQuerySceneCounts(int32& CollisionClusters,int32& EnabledClusters,int32& VisualComponents) const;
+	FGuLiOreObstacleStats GetOreObstacleStats() const;
+	UFUNCTION(BlueprintPure, Category="Resources|Navigation")
+	FString GetOreObstacleDiagnostics() const;
+	/** Rebuild local projections from the existing committed Hybrid directory; never edits resource state. */
+	bool RequestOreObstacleResync();
 	UFUNCTION(BlueprintPure, Category = "Resources|Runtime")
 	bool IsResourceWorldActive() const { return bResourceWorldActive; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Runtime")
@@ -124,6 +137,8 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<AGuLiOreFieldActor> OreField;
+	UPROPERTY(Transient)
+	TObjectPtr<AGuLiOreCollisionFieldActor> OreCollisionField;
 
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<AGuLiOreClusterObstacleActor>> ClusterObstacles;
@@ -136,7 +151,17 @@ private:
 
 	TArray<uint8> NodeRemaining;
 	TArray<int32> ClusterRemaining;
-	TArray<FGuLiDynamicObstacleHandle> ClusterObstacleHandles;
+	struct FPendingOreRemoval { uint32 NodeId; uint64 Generation; double QueuedAt; };
+	TArray<FPendingOreRemoval> PendingOreRemovals;
+	TSet<uint32> QueuedOreNodes;
+	int32 OreRemovalHead=0;
+	double OreBatchDueAt=0;
+	uint64 OreWorldGeneration=1;
+	int32 LastOreBatchNodes=0;
+	double LastOreBatchMilliseconds=0;
+	UPROPERTY(Config) float OreBatchWindowSeconds=0.2f;
+	UPROPERTY(Config) int32 OreBatchMaxNodesPerFrame=64;
+	UPROPERTY(Config) float OreBatchSoftBudgetMilliseconds=0.5f;
 	bool bWorldBeginPlay = false;
 	bool bResourceWorldActive = false;
 	bool bRuntimeReady = false;
@@ -175,10 +200,11 @@ private:
 	bool RefreshHybridQueryScene();
 	void HandleHybridResourceDirectory();
 	void HandleHybridResourceNode(uint32 NodeId,uint8 Remaining);
-	void RefreshHybridClusterObstacle(int32 Index);
+	bool InitializeNodeObstacles();
+	void ProcessPendingOreRemovals();
+	void ResetPendingOreRemovals();
 
 	FVector ProjectAnchorToGround(const FVector& Anchor) const;
 	void HandleWorldStateChanged();
 	void HandleOreNodeChanged(uint32 NodeId, uint8 Remaining);
-	void DisableDepletedCluster(uint16 ClusterId);
 };

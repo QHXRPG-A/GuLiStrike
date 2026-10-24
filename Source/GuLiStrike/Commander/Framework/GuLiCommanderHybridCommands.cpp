@@ -10,6 +10,8 @@
 #include "Commander/Orders/Private/GuLiHybridTaskCommand.h"
 #include "Commander/Network/GuLiMoveLatency.h"
 #include "NavigationSystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
 #include "Engine/World.h"
 #include "Dom/JsonObject.h"
 #include "HAL/IConsoleManager.h"
@@ -49,6 +51,7 @@ TSharedRef<FJsonObject> UGuLiCommanderNetSyncComponent::GetReviewCommandEvidence
 
 void UGuLiCommanderNetSyncComponent::CompleteHybridCommand(FGuLiCommandAck Ack,const FString& Message)
 {
+    if (Ack.CommandKind==EGuLiCommandKind::Move && !Ack.IsAccepted()) RejectMoveResponse(Ack.ClientCommandId);
     LastCommandAck=Ack; LastTaskFeedback=Message;
     PendingCommandAcks.Add(Ack);
     if (PendingCommandAcks.Num()>256) PendingCommandAcks.RemoveAt(0,PendingCommandAcks.Num()-256,EAllowShrinking::No);
@@ -71,6 +74,7 @@ bool UGuLiCommanderNetSyncComponent::SubmitHybridTask(FGuLiUnitTaskCommand Comma
     PruneSelection();
     Command.SelectionRevision=SelectionState.SelectionRevision;
     Tasks->BuildContextCommand(SelectionState,Command);
+    BeginMoveResponse(Command);
     if (GuLiMoveLatency::IsEnabled())
         GuLiMoveLatency::Record(TEXT("local-input-validated"),GuLiMoveLatency::Context(this,Command.CommandId));
     if (!Command.IsWellFormed() || !bOrderedSelectionValid) return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Invalid task or selection"));
@@ -177,12 +181,15 @@ bool UGuLiCommanderNetSyncComponent::SubmitHybridTask(FGuLiUnitTaskCommand Comma
         const auto* Unit=Data?Data->FindSoldierDefinition(static_cast<uint16>(Type)):nullptr;
         const auto* Actor=Hybrid->FindBoundActor(O.Key);
         if (!Unit && !Actor) return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Selected object has no command footprint"));
+        Input.Intent->GridSizes.Add(M.Slot+1,Unit?Unit->FootprintCells:
+            GuLiGrid::FootprintFromDiameter(2.*Actor->GetSimpleCollisionRadius()));
         const auto Bounds=Unit?Unit->GetModelBoundsCentimeters():Actor->GetComponentsBoundingBox(true);
         Input.Intent->Pitch=FMath::Max(Input.Intent->Pitch,FMath::Max(1.f,static_cast<float>(FMath::Max(Bounds.GetSize().X,Bounds.GetSize().Y))));
     }
     if (Input.Frozen.Members.Num()!=Soldiers.Num()+Actors.Num()+Input.Selection.Objects.Num() || Input.Frozen.Members.IsEmpty())
         return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Frozen selection has missing objects"));
     Input.Intent->WantedPoints=Input.Frozen.Members.Num(); Input.Intent->bMetadataReady=true;
+    FreezeMoveResponse(Command,Objects);
     HybridSubmittedCommands.Add(Command.CommandId,Command);
     // Publish the frozen local intent before formation planning or network delivery.
     // Listeners may draw feedback, but must not move units or fabricate a receipt.
@@ -221,6 +228,7 @@ void UGuLiCommanderNetSyncComponent::TickHybridInputs()
     const bool NeedsSlots=Input.Command.Kind==EGuLiUnitTaskKind::Move && Input.Command.Disposition!=EGuLiTaskDisposition::Stop;
     if (NeedsSlots)
     {
+        auto* Grid=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();
         auto* Navigation=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
         const auto* Nav=Navigation?Navigation->GetNavDataForAgentName(TEXT("CommanderSoldier")):nullptr;
         if (!Nav)
@@ -229,8 +237,10 @@ void UGuLiCommanderNetSyncComponent::TickHybridInputs()
             Ack.Result=EGuLiCommandAckResult::InvalidTarget;
             CompleteHybridCommand(Ack,TEXT("Navigation is unavailable for this move"));HybridInputs.RemoveAt(0);return;
         }
-        FGuLiNavigationWorkBudget Budget; Budget.Reset(1.,64,0); FGuLiNavigationWorkBudget::FScope Scope(Budget);
-        Input.Intent->Generate(*Nav,1,Budget);
+        auto& Budget=Grid->FrameBudget();
+        FGuLiNavigationWorkBudget::FScope Scope(Budget);
+        if (Grid->IsReady()) Input.Intent->GenerateGrid(*Grid,*Nav,Budget);
+        else Input.Intent->Generate(*Nav,1,Budget);
         if (!Input.Intent->UnassignedMembers.IsEmpty() && !Input.Intent->bExhausted) return;
         if (!Input.Intent->UnassignedMembers.IsEmpty())
         { FGuLiCommandAck Ack; InitializeAck(Ack,Input.Command.CommandId,EGuLiCommandKind::Move); Ack.Result=EGuLiCommandAckResult::InvalidTarget; CompleteHybridCommand(Ack,TEXT("The full selection cannot fit on navigable formation slots")); HybridInputs.RemoveAt(0); return; }
@@ -269,6 +279,13 @@ void UGuLiCommanderNetSyncComponent::TickHybridInputs()
 void UGuLiCommanderNetSyncComponent::HandleHybridCommandResult(const FGuLiHybridCommandResult& Result)
 {
     auto* Pending=HybridPendingCommands.Find(Result.Event); if (!Pending) return;
+    if (Pending->Command.CommandId==MoveResponseCommand)
+        for (const auto& M:Result.Members)
+            if (auto* Member=MoveResponsePending.Find(M.Key))
+            {
+                if (M.bAccepted) Member->bAccepted=true;
+                else { MoveResponsePending.Remove(M.Key); ++MoveResponseFailed; MoveResponseTextAt=0; }
+            }
     for (const auto& M : Result.Members) if (auto* Value=Pending->Results.Find(M.Key))
     { if (Value->IsSet() && Value->GetValue()!=M.bAccepted) { HybridCommandWorld->Suspend(TEXT("Conflicting Hybrid command receipt")); return; } *Value=M.bAccepted; }
     for (const auto& [Key,Value] : Pending->Results) if (!Value.IsSet()) return;

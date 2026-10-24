@@ -53,6 +53,7 @@ struct FrozenCommand
     std::string Operation;
     Bytes Arguments;
     std::vector<CommandMember> Members;
+    std::uint64_t AcceptedSequence=0;
 };
 struct CommandOutcome
 {
@@ -135,6 +136,10 @@ public:
     virtual std::shared_ptr<IObjectMotionCodec> CreateMotionCodec() {return {};}
     virtual bool ApplyDecodedMotion(const IObjectMotionOutput&,Tick) {return false;}
     virtual bool Command(const FrozenCommand& Command, const CommandMember& Member) = 0;
+    enum class CommandPreparation : std::uint8_t {Ready,Pending,Rejected};
+    // Optional bounded application preparation; does not acknowledge or execute the command.
+    virtual CommandPreparation PrepareCommand(const FrozenCommand&,const CommandMember&) {return CommandPreparation::Ready;}
+    virtual void CancelCommandPreparation(const FrozenCommand&,const CommandMember&) {}
     virtual bool ApplyMotion(std::span<const std::uint8_t> Body, Tick At) = 0;
     virtual bool ApplyObjectEvent(std::span<const std::uint8_t> Body,Tick At) { return ApplyMotion(Body,At); }
     virtual bool ApplyPublicState(std::span<const std::uint8_t>,Tick) { return false; }

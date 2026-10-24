@@ -97,6 +97,16 @@ JSON、CSV、DataTable是生成物，不作为日常数值维护入口。
 历史的 `migrate_secondary_weapon_tables.py` 识别统一法术场版本后会退出，避免再次拆出 `WeaponFields`。
 本次归并脚本为 `Scripts/consolidate_spell_field_source.py`，完成后重复运行不覆写数值。
 
+## Ground 机动与表现配置（2026-10-24）
+
+`Data/Excel/GuLiStrikeMech.xlsx` 新增 `Mobility`、`Gait`、`GroundIK`、`Camera`，沿用 JSON/CSV、自动生成行结构和 DataTable 流程；技能表继续维护喷气、燃料与空中移动。生成物不作为调数入口。
+
+修改源表后运行 `python Tools/DataPipeline/export_data_from_excel.py`。停止PIE，在 `/Game/Maps/LVL_CommanderMassPrototype` 执行 `python Scripts/commander_editor_python.py --file Scripts/GroundMech/MechaDestroyer/import_mobility_tables.py --timeout 50`。定向入口调用标准导入器并逐字段回读，随后更新混合空间、BP相机默认值和200/600网络清单；支撑曲线容差改变时自动重新派生曲线。其他地图会在导入前拒绝，避免导出错误场景的网络清单。
+
+出生时冻结配置快照，重新进入游戏后生效；普通数值导入不编译C++，不重建动画图。新增字段需要导出并编译后再导入。首次安装图使用 `install_ground_mobility.py`，日常导入不调用。动画更换后可用 `bake_ground_contacts.py` 读取原始轨道和真实脚底生成标定报告，再用 `author_mobility_tables.py --calibration <报告路径>` 把派生标定数值写回Excel并重新导出；不维护第二份独立数值源。
+
+详细字段、基准、运行版本和验证边界见[Ground机动交付](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/GROUND_MOBILITY_DELIVERY.md)。
+
 ## 游戏文本（2026-09-20）
 
 肉鸽卡牌的文案和高亮均维护于Excel：`GuLiStrikeGameTexts.xlsx/Texts`保存说明及`Unit`/`Gain`标签；`GuLiStrikeRogueCardUI.xlsx/TextStyles`保存字体、字号、字重、sRGB颜色与描边。项目导出器生成JSON和原生行类型后，在空闲UE运行`Scripts/Cards/apply_single_line_card_text.py`，原地填充公共文本与样式数据表、重建StringTable并派生UMG样式表。脚本不固定样式值；首次新增类型需要编译，后续只改样式值无需重编译。当前说明单行、黄色加粗，不显示叠加/获取次数解释；校验与结果见[单行文案记录](../../Progress/DevelopmentDocumentation/20260929-肉鸽卡牌单行文案与高亮.md)。

@@ -34,6 +34,7 @@
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 
 #if WITH_EDITOR
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
@@ -78,6 +79,8 @@ namespace GuLiBuildingPlacement
 	{
 		return false;
 	}
+    if (auto* G=World->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady()
+        && !GuLiGrid::Unoccupied(*G,GroundLocation,Definition.FootprintCells)) return false;
 	const FVector QueryExtent(
 		Definition.CollisionExtent.X + GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
 		Definition.CollisionExtent.Y + GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
@@ -573,12 +576,12 @@ bool UGuLiBuildingPlacementComponent::TraceLocalGround(
 			RayOrigin + RayDirection.GetSafeNormal() * TraceDistance,
 			FCollisionObjectQueryParams(ECC_WorldStatic),
 			QueryParams) || !IsLegalGroundHit(OutHit)) return false;
-	return TracePlacementGround(GuLiBuildingPlacementPolicy::SnapGroundLocation(OutHit.ImpactPoint), OutHit);
+	return TracePlacementGround(OutHit.ImpactPoint, OutHit);
 }
 
 bool UGuLiBuildingPlacementComponent::TracePlacementGround(
 	const FVector& DesiredLocation,
-	FHitResult& OutHit) const
+	FHitResult& OutHit,int32 FootprintCells) const
 {
 	UWorld* World = GetWorld();
 	APlayerController* PlayerController = GetOwningPlayerController();
@@ -594,7 +597,13 @@ bool UGuLiBuildingPlacementComponent::TracePlacementGround(
 		QueryParams.AddIgnoredActor(Pawn);
 	}
 	GuLiBuildingPlacement::IgnoreBuildings(*World, QueryParams);
-	const FVector Snapped = GuLiBuildingPlacementPolicy::SnapGroundLocation(DesiredLocation);
+    if (FootprintCells<=0)
+    {
+        const auto* Catalog=UGuLiBuildingCatalog::LoadDefaultCatalog();
+        const auto* Definition=Catalog?Catalog->FindById(SelectedBuildingDefinitionId):nullptr;
+        FootprintCells=Definition?Definition->FootprintCells:1;
+    }
+	const FVector Snapped = GuLiBuildingPlacementPolicy::SnapGroundLocation(DesiredLocation,FootprintCells);
 	const FVector Start = Snapped + FVector::UpVector
 		* GuLiBuildingPlacement::PlacementGroundTraceUpCentimeters;
 	const FVector End = Snapped - FVector::UpVector
@@ -649,6 +658,7 @@ bool UGuLiBuildingPlacementComponent::IsPlacementAreaClear(
 	const AActor* SupportingActor) const
 {
     auto* World=GetWorld(); if (!World || !GuLiBuildingPlacement::AreaQueryClear(*World,Definition,GroundLocation,YawDegrees,SupportingActor,PreviewActor)) return false;
+    if (const auto* G=World->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady()) return true;
     const FVector Extent(Definition.CollisionExtent.X+GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
         Definition.CollisionExtent.Y+GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
         FMath::Max(1.f,Definition.CollisionExtent.Z-GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters));
@@ -773,7 +783,9 @@ bool UGuLiBuildingPlacementComponent::ValidateAdmittedPlacement(UWorld& World,co
     if (FVector::DistSquared(Hit.ImpactPoint,Ground)>FMath::Square(GuLiBuildingPlacement::GroundContactToleranceCentimeters)) return Reject(TEXT("ground-contact"));
     if (!GuLiBuildingPlacement::AreaQueryClear(World,Definition,Ground,Yaw,Hit.GetActor(),nullptr)) return Reject(TEXT("actor-overlap"));
     TArray<FVector> Soldiers;
-    if (const auto* Authority=World.GetSubsystem<UGuLiBattleAuthoritySubsystem>()) Authority->BuildLivingSoldierLocationSnapshot(Soldiers);
+    const auto* Grid=World.GetSubsystem<UGuLiGroundGridSubsystem>();
+    if (!Grid || !Grid->IsReady())
+        if (const auto* Authority=World.GetSubsystem<UGuLiBattleAuthoritySubsystem>()) Authority->BuildLivingSoldierLocationSnapshot(Soldiers);
     const FVector Extent(Definition.CollisionExtent.X+GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
         Definition.CollisionExtent.Y+GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters,
         FMath::Max(1.f,Definition.CollisionExtent.Z-GuLiBuildingPlacement::CollisionGroundEpsilonCentimeters));
@@ -863,7 +875,7 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidatePlac
 		return EGuLiBuildingPlacementRejectReason::UnauthorizedRole;
 
 	FHitResult GroundHit;
-	if (!TracePlacementGround(FVector(Request.DesiredGroundLocation), GroundHit))
+	if (!TracePlacementGround(FVector(Request.DesiredGroundLocation), GroundHit,OutDefinition->FootprintCells))
 	{
 		return EGuLiBuildingPlacementRejectReason::NoGround;
 	}
@@ -1003,7 +1015,7 @@ bool UGuLiBuildingPlacementComponent::EditorQAFindClearDefinition(int32 Definiti
 	for (const auto& Candidate:Candidates)
 	{
 		FHitResult Hit;
-		if (TracePlacementGround(Candidate,Hit) && ValidateSpatialCandidate(*Definition,Hit,GuLiBuildingPlacementPolicy::SnapYaw(Yaw))==EGuLiBuildingPlacementRejectReason::None)
+		if (TracePlacementGround(Candidate,Hit,Definition->FootprintCells) && ValidateSpatialCandidate(*Definition,Hit,GuLiBuildingPlacementPolicy::SnapYaw(Yaw))==EGuLiBuildingPlacementRejectReason::None)
 		{Ground=Hit.ImpactPoint; return true;}
 	}
 	return false;

@@ -1,6 +1,6 @@
 # 指挥官性能正式版证据
 
-当前配置与使用说明见[正式版本交付](../../DevelopmentDocumentation/20261021-交火优化正式版本交付.md)。本目录只保存适合随项目提交的计时、验证与清理摘要；未包含截图、原始Trace或个人认证信息。
+当前配置与使用说明见[正式版本交付](../../DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d07)。本目录只保存适合随项目提交的计时、验证与清理摘要；未包含截图、原始Trace或个人认证信息。
 
 - `selection-pair-61.json`及`selection-pair-61-network.json`：用户指定的两版16.22/16.23ms取舍证据。该单轮的15ms字段为历史采集口径，当前目标是完整20ms响应。
 - `production-paired-summary.json`及`production-workload-check.json`：清理后同build-42的三轮正常对照。P95按合并原生帧间隔重新排序计算，不能平均各轮P95。

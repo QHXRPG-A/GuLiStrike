@@ -83,7 +83,7 @@ bool GuLiBuildingVisuals::CreatePreviewMeshes(AActor& Owner, USceneComponent& Pa
 			if (auto* Copy = CopyMesh(Owner, Parent, *Source, Transform, Material)) OutMeshes.Add(Copy);
 		for (USCS_Node* Child : Node->GetChildNodes()) Visit(Child, Transform);
 	};
-	const FTransform Scale(FQuat::Identity, FVector::ZeroVector, FVector(FactoryScale));
+	const FTransform Scale(FQuat::Identity, FVector::ZeroVector, FVector(Definition.PresentationScale));
 	for (USCS_Node* Root : Class->SimpleConstructionScript->GetRootNodes()) Visit(Root, Scale);
 	return !OutMeshes.IsEmpty();
 }

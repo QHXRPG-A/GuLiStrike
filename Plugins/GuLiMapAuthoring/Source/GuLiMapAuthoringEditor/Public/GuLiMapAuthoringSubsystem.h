@@ -23,6 +23,12 @@ public:
     UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring") FGuLiMapResult EnsureDensityMap(double CellSizeCm = 2500.0);
     UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring") FGuLiMapResult GetDensitySnapshot();
     UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring") FGuLiMapResult UpdateDensityCells(const FString& PatchJson);
+    /** Includes unused types and offline enum options; leaves the legacy v1 layout contract unchanged. */
+    UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring|Standalone") FGuLiMapResult GetStandaloneTypeCatalog();
+    /** Full candidate validation and baseline comparison; never changes world or packages. */
+    UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring|Standalone") FGuLiMapResult PreviewStandaloneSnapshot(const FString& Directory);
+    /** GUID-preserving, full-snapshot authoring import in one editor transaction. Does not save. */
+    UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring|Standalone") FGuLiMapResult ApplyStandaloneSnapshot(const FString& Directory);
     UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring") bool SaveAuthoringPackages();
     UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring") void OpenPanel();
     UFUNCTION(BlueprintCallable, Category="GuLi|Map Authoring") void ClosePanel();

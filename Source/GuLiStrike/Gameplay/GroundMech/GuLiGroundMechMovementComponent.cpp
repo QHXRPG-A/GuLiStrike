@@ -13,6 +13,9 @@
 #include "Gameplay/GroundMech/GuLiGroundMechAbilities.h"
 #include "AbilitySystemComponent.h"
 #include "Engine/GameInstance.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+#include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
 
 namespace
 {
@@ -703,6 +706,8 @@ void UGuLiGroundMechMovementComponent::UpdateGroundMechObstacle(const float Delt
 {
 	if (!CharacterOwner || !CharacterOwner->HasAuthority() || !GetWorld())
 		return;
+    if (const auto* Binding=UGuLiHybridActorComponent::Find(CharacterOwner))
+        GuLiGrid::ObserveRemoteBody(*GetWorld(),Binding->GetState(),CharacterOwner->GetActorLocation(),1,IsMovingOnGround());
 	const AGuLiBattlePlayerState *State = CharacterOwner->GetPlayerState<AGuLiBattlePlayerState>();
 	const EGuLiTeam Team = State ? State->GetTeam() : EGuLiTeam::Unassigned;
 	const bool bShouldRegister = IsMovingOnGround() && (Team == EGuLiTeam::Red || Team == EGuLiTeam::Blue);

@@ -47,13 +47,16 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 	OutError.Reset();
 	if (MapPackage.IsNone() || LayoutVersion != GULI_RESOURCE_LAYOUT_VERSION
 		|| !FMath::IsNearlyEqual(BakedObjectScale, GULI_RESOURCE_OBJECT_SCALE)
+        || !FMath::IsNearlyEqual(BakedGridCellCm,300.f)
 		|| DeterministicSeed != GULI_RESOURCE_BAKE_SEED || SourceHash.IsEmpty()
 		|| LayoutHash.IsEmpty() || !SpawnAnchors.IsWellFormed())
 	{
 		return FailResourceDefinition(OutError, TEXT("Bake metadata, fixed seed, or spawn anchors are missing/invalid."));
 	}
-	if (!PlayableMinimum.Equals(FVector2D(-GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM), 0.1f)
-		|| !PlayableMaximum.Equals(FVector2D(GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM), 0.1f))
+	if ((!bHasAuthoredPlayableBounds && (!PlayableMinimum.Equals(FVector2D(-GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM), 0.1f)
+		|| !PlayableMaximum.Equals(FVector2D(GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM), 0.1f)))
+        || (bHasAuthoredPlayableBounds && (PlayableMinimum.ContainsNaN() || PlayableMaximum.ContainsNaN()
+            || PlayableMaximum.X<=PlayableMinimum.X || PlayableMaximum.Y<=PlayableMinimum.Y)))
 	{
 		return FailResourceDefinition(OutError, FString::Printf(
 			TEXT("Playable bounds must be the canonical %.0f x %.0f cm square."),
@@ -173,9 +176,9 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 		for (int32 Right = Left + 1; Right < Clusters.Num(); ++Right)
 		{
 			if (FVector::DistSquared2D(Clusters[Left].Center, Clusters[Right].Center)
-				< FMath::Square(5500.0f))
+				< FMath::Square(GULI_RESOURCE_CLUSTER_MINIMUM_SPACING_CM))
 			{
-				return FailResourceDefinition(OutError, TEXT("Two cluster centers are closer than 55 m."));
+				return FailResourceDefinition(OutError, TEXT("Two cluster centers are closer than 51 m."));
 			}
 		}
 	}
@@ -233,10 +236,13 @@ FString UGuLiResourceMapDefinition::CalculateLayoutHash() const
 	HashString(Hash, MapPackage.ToString());
 	HashValue(Hash, LayoutVersion);
 	HashValue(Hash, BakedObjectScale);
+    HashValue(Hash, BakedGridCellCm);
 	HashValue(Hash, DeterministicSeed);
 	HashString(Hash, SourceHash);
 	HashValue(Hash, PlayableMinimum);
 	HashValue(Hash, PlayableMaximum);
+    // Keep every pre-existing asset hash byte-identical until explicit standalone opt-in.
+    if(bHasAuthoredPlayableBounds)HashValue(Hash,bHasAuthoredPlayableBounds);
 	HashValue(Hash, SpawnAnchors.RedFactory);
 	HashValue(Hash, SpawnAnchors.RedAssembly);
 	HashValue(Hash, SpawnAnchors.BlueFactory);
@@ -260,6 +266,7 @@ FString UGuLiResourceMapDefinition::CalculateLayoutHash() const
 		HashValue(Hash, Cluster.ResourceType);
 		HashValue(Hash, Cluster.Center);
 		HashValue(Hash, Cluster.ObstacleRadiusCentimeters);
+        HashValue(Hash, Cluster.FootprintCells);HashValue(Hash, Cluster.SourceCollisionDiameterCm);
 		HashValue(Hash, Cluster.FirstNodeIndex);
 		HashValue(Hash, Cluster.NodeCount);
 	}

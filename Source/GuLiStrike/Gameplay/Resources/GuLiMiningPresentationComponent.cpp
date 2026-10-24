@@ -66,6 +66,11 @@ void UGuLiMiningPresentationComponent::AimAt(const FVector& Target)
 		Pivot->SetWorldRotation((Target - Pivot->GetComponentLocation()).Rotation());
 }
 
+void UGuLiMiningPresentationComponent::RefreshDisplayedAim()
+{
+	if (bLatestActive && bAppliedVisible) AimAt(LatestTarget);
+}
+
 void UGuLiMiningPresentationComponent::ApplyMining(const bool bActive, const FVector& Target)
 {
 	AActor* Actor=Presentation.Get(); if (!Actor || !IsReady()) return;

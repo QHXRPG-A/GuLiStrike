@@ -18,9 +18,16 @@
 #include "NavigationData.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 
 namespace
 {
+    bool Separated(FVector2D A,FVector2D B,double Distance,bool bGrid)
+    {
+        const FVector2D Delta=A-B;
+        return bGrid?FMath::Max(FMath::Abs(Delta.X),FMath::Abs(Delta.Y))>=Distance
+            :Delta.SizeSquared()>=FMath::Square(Distance);
+    }
 	bool Ground(UWorld& World, const FVector2D& XY, FVector& Out, float& Slope)
 	{
 		FHitResult Hit;
@@ -69,9 +76,7 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Po
 		if (Definition.UsesMass()) Mass.Add(Definition);
 		else
 		{
-			const FBox Bounds = Definition.GetModelBoundsCentimeters();
-			const FVector Extent = Bounds.IsValid ? Bounds.GetExtent() : FVector(180.0f);
-			ActorRadii.Add(Definition.UnitTypeId, FMath::Max(180.0f, static_cast<float>(FVector2D(Extent).Size())));
+            ActorRadii.Add(Definition.UnitTypeId,Definition.FootprintCells*150.f);
 		}
 	}
 	Mass.Sort([](const auto& A, const auto& B) { return A.UnitTypeId < B.UnitTypeId; });
@@ -86,7 +91,7 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Po
 	{
 		if (!GetDefault<UGuLiBattleAuthoritySubsystem>()->BuildInitialArmySpawnLayout(Mass, Red, Blue, Slots, OutError,
 			GULI_RESOURCE_INITIAL_ARMY_INSET_CM,
-			Population>0 ? Population : GuLiCommanderInitialSpawn::Population)) return false;
+			Population>0 ? Population : GuLiCommanderInitialSpawn::Population,&World)) return false;
 	}
 	else
 	{
@@ -110,6 +115,9 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Po
 				Slot.Team = Point->Team; Slot.UnitTypeId = Definition->UnitTypeId;
 				Slot.FormationIndex = Formation; Slot.SlotIndex = Index;
 				Slot.Location = Point->GetActorLocation() + (Point->GetSlotLocation(Index) - Point->GetActorLocation()) * SpacingScale;
+                if (const auto S=GuLiGrid::AuthoredSnapshot(World))
+                    Slot.Location=S->Center(S->AnchorAt(Point->GetActorLocation(),Definition->FootprintCells)
+                        + FIntPoint(Index%Point->Columns,Index/Point->Columns)*Definition->FootprintCells,Definition->FootprintCells);
 				Slot.FacingYawDegrees = Point->GetActorRotation().Yaw; Slot.RadiusCentimeters = Radius;
 			}
 		}
@@ -129,7 +137,7 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Po
 	{
 		const FVector Assembly = Team == EGuLiTeam::Red ? Red : Blue;
 		const float Sign = Team == EGuLiTeam::Red ? 1.0f : -1.0f;
-		Reservations.Add({ FVector2D(0, Sign * GULI_RESOURCE_FACTORY_ANCHOR_Y_CM),
+		Reservations.Add({ FVector2D(Sign*GULI_RESOURCE_FACTORY_ANCHOR_X_CM, Sign * GULI_RESOURCE_FACTORY_ANCHOR_Y_CM),
 			GULI_RESOURCE_FACTORY_OBSTACLE_HALF_EXTENT_CM * UE_SQRT_2, TEXT("InitialFactory"), true });
 		for (const bool bConstruction : { false, true })
 		{
@@ -171,9 +179,10 @@ bool FGuLiInitialArmyAuthoring::IsOreClear(const FVector2D& Center) const
 
 bool FGuLiInitialArmyAuthoring::PlaceLoadOnNavigation(UWorld& World,const UGuLiResourceMapDefinition& Definition,FString& OutError)
 {
+	const bool bGrid=GuLiGrid::AuthoredSnapshot(World).IsValid();
 	auto* Navigation=FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);
 	const auto* NavData=Navigation ? Navigation->GetNavDataForAgentName(TEXT("CommanderSoldier")) : nullptr;
-	if (!NavData || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(&World))
+	if (!bGrid && (!NavData || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(&World)))
 	{ OutError=TEXT("Load placement requires finished CommanderSoldier navigation."); return false; }
 	TArray<FGuLiCommanderInitialSpawnSlot> Placed;
 	auto TrySlot=[&](FGuLiCommanderInitialSpawnSlot& Slot,const TArray<FGuLiCommanderInitialSpawnSlot>& Group)->bool
@@ -181,25 +190,26 @@ bool FGuLiInitialArmyAuthoring::PlaceLoadOnNavigation(UWorld& World,const UGuLiR
 		FVector GroundPoint; float Slope=0; FNavLocation Nav;
 		const float Correction=GuLiCommanderInitialSpawn::MaximumProjectionCorrection;
 		if (!Ground(World,FVector2D(Slot.Location),GroundPoint,Slope) || Slope>15.f
-			|| !Navigation->ProjectPointToNavigation(GroundPoint,Nav,FVector(Correction,Correction,
-				GuLiCommanderInitialSpawn::ProjectionVerticalExtent),NavData)
+			|| !GuLiGrid::ProjectBody(World,GroundPoint,GuLiGrid::FootprintFromDiameter(Slot.RadiusCentimeters*2.),
+                FVector(Correction,Correction,GuLiCommanderInitialSpawn::ProjectionVerticalExtent),Nav,NavData)
 			|| FVector::Dist2D(GroundPoint,Nav.Location)>Correction) return false;
 		const FVector2D XY(Nav.Location);
 		if (FMath::Abs(XY.X)+Slot.RadiusCentimeters>GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM
 			|| FMath::Abs(XY.Y)+Slot.RadiusCentimeters>GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM) return false;
 		for (const auto& Cluster : Definition.Clusters)
-			if (FVector2D::DistSquared(XY,FVector2D(Cluster.Center))<FMath::Square(Slot.RadiusCentimeters+Cluster.ObstacleRadiusCentimeters+Correction)) return false;
+			if (!Separated(XY,FVector2D(Cluster.Center),Slot.RadiusCentimeters+Cluster.ObstacleRadiusCentimeters+Correction,bGrid)) return false;
 		for (const auto& Reserve : Reservations)
-			if (Reserve.bBlocksArmy && FVector2D::DistSquared(XY,Reserve.Center)<FMath::Square(Slot.RadiusCentimeters+Reserve.Radius+Correction)) return false;
+			if (Reserve.bBlocksArmy && !Separated(XY,Reserve.Center,Slot.RadiusCentimeters+Reserve.Radius+Correction,bGrid)) return false;
 		auto Separate=[&](const auto& Other)
-		{ return FVector::DistSquared2D(Nav.Location,Other.Location)>=FMath::Square(FMath::Max(
-			GuLiCommanderInitialSpawn::MinimumSeparation,Slot.RadiusCentimeters+Other.RadiusCentimeters)); };
+		{ return Separated(XY,FVector2D(Other.Location),FMath::Max(
+			GuLiCommanderInitialSpawn::MinimumSeparation,Slot.RadiusCentimeters+Other.RadiusCentimeters),bGrid); };
 		for (const auto& Other : Placed) if (!Separate(Other)) return false;
 		for (const auto& Other : Group) if (!Separate(Other)) return false;
 		TArray<FOverlapResult> Overlaps; FCollisionObjectQueryParams Objects;
 		Objects.AddObjectTypesToQuery(ECC_WorldStatic); Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
 		World.OverlapMultiByObjectType(Overlaps,GroundPoint+FVector(0,0,Slot.RadiusCentimeters+10.f),FQuat::Identity,
-			Objects,FCollisionShape::MakeSphere(Slot.RadiusCentimeters),FCollisionQueryParams(SCENE_QUERY_STAT(GuLiLoadPlacement),false));
+			Objects,bGrid?FCollisionShape::MakeBox(FVector(Slot.RadiusCentimeters)):FCollisionShape::MakeSphere(Slot.RadiusCentimeters),
+            FCollisionQueryParams(SCENE_QUERY_STAT(GuLiLoadPlacement),false));
 		for (const auto& O : Overlaps)
 			if (const auto* A=O.GetActor(); A && !A->IsEditorOnly() && !A->IsA<ALandscapeProxy>() && !A->IsA<AVolume>()) return false;
 		Slot.Location=Nav.Location; return true;
@@ -240,9 +250,10 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 	int32& OutValidSlots, FString& OutError) const
 {
 	OutValidSlots = 0; OutError.Reset();
+	const bool bGrid=GuLiGrid::AuthoredSnapshot(World).IsValid();
 	auto* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);
 	const auto* NavData = Navigation ? Navigation->GetNavDataForAgentName(TEXT("CommanderSoldier")) : nullptr;
-	if (!NavData || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(&World))
+	if (!bGrid && (!NavData || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(&World)))
 	{
 		OutError = TEXT("Initial army audit requires finished CommanderSoldier navigation."); return false;
 	}
@@ -256,8 +267,8 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 		const float Correction = GuLiCommanderInitialSpawn::MaximumProjectionCorrection;
 		if (!Ground(World, FVector2D(Slot.Location), OnGround, Slope) || Slope > 15.0f)
 			Failure = TEXT("ground missing or steeper than 15 degrees");
-		else if (!Navigation->ProjectPointToNavigation(Slot.Location, Nav,
-			FVector(Correction, Correction, GuLiCommanderInitialSpawn::ProjectionVerticalExtent), NavData)
+		else if (!GuLiGrid::ProjectBody(World,Slot.Location,GuLiGrid::FootprintFromDiameter(Slot.RadiusCentimeters*2.),
+			FVector(Correction, Correction, GuLiCommanderInitialSpawn::ProjectionVerticalExtent),Nav,NavData)
 			|| FVector::Dist2D(Slot.Location, Nav.Location) > Correction)
 			Failure = TEXT("CommanderSoldier projection exceeds 150 cm");
 		else
@@ -267,20 +278,18 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 				|| FMath::Abs(XY.Y) + Slot.RadiusCentimeters > GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM)
 				Failure = TEXT("slot extends outside battlefield");
 			for (const auto& Cluster : Definition.Clusters)
-				if (FVector2D::DistSquared(XY, FVector2D(Cluster.Center)) < FMath::Square(
-					Slot.RadiusCentimeters + Cluster.ObstacleRadiusCentimeters + Correction))
+				if (!Separated(XY,FVector2D(Cluster.Center),Slot.RadiusCentimeters+Cluster.ObstacleRadiusCentimeters+Correction,bGrid))
 				{
 					Failure = FString::Printf(TEXT("overlaps ore cluster %u"), Cluster.ClusterId); break;
 				}
 			for (const auto& Reserve : Reservations)
-				if (Reserve.bBlocksArmy && FVector2D::DistSquared(XY, Reserve.Center)
-					< FMath::Square(Slot.RadiusCentimeters + Reserve.Radius + Correction))
+				if (Reserve.bBlocksArmy && !Separated(XY,Reserve.Center,Slot.RadiusCentimeters+Reserve.Radius+Correction,bGrid))
 				{
 					Failure = TEXT("overlaps ") + Reserve.Label; break;
 				}
 			for (int32 Index = 0; Index < Projected.Num(); ++Index)
-				if (FVector::DistSquared2D(Nav.Location, Projected[Index]) < FMath::Square(FMath::Max(
-					GuLiCommanderInitialSpawn::MinimumSeparation, Slot.RadiusCentimeters + Slots[Index].RadiusCentimeters)))
+				if (!Separated(XY,FVector2D(Projected[Index]),FMath::Max(
+					GuLiCommanderInitialSpawn::MinimumSeparation,Slot.RadiusCentimeters+Slots[Index].RadiusCentimeters),bGrid))
 				{
 					Failure = TEXT("insufficient separation from ") + SlotName(Slots[Index]); break;
 				}
@@ -288,7 +297,7 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 			FCollisionObjectQueryParams Objects;
 			Objects.AddObjectTypesToQuery(ECC_WorldStatic); Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
 			World.OverlapMultiByObjectType(Overlaps, OnGround + FVector(0, 0, Slot.RadiusCentimeters + 10.0f),
-				FQuat::Identity, Objects, FCollisionShape::MakeSphere(Slot.RadiusCentimeters),
+				FQuat::Identity, Objects, bGrid?FCollisionShape::MakeBox(FVector(Slot.RadiusCentimeters)):FCollisionShape::MakeSphere(Slot.RadiusCentimeters),
 				FCollisionQueryParams(SCENE_QUERY_STAT(GuLiInitialArmyOccupancy), false));
 			for (const auto& Overlap : Overlaps)
 			{

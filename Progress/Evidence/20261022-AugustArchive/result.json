@@ -1,0 +1,355 @@
+{
+  "date": "2026-10-22",
+  "month": "2026-08",
+  "documents": 24,
+  "source_bytes": 210281,
+  "package": {
+    "path": "Progress/Archive/202608-归档.zip",
+    "bytes": 116457,
+    "sha256": "40862d1c157e3e5628d96bcfa577b87dc66dcf6ecbab7e2563942f8c381fccf9",
+    "per_source_hashes": "passed"
+  },
+  "inventory": {
+    "path": "Progress/Archive/8月归档清单.md",
+    "id": "ARC-20261022-001",
+    "bytes": 8937
+  },
+  "redirects": {
+    "Progress/Archive/20260816-资产整合-Marketplace资产包统一归档至Assets.md": "Progress/Archive/8月归档清单.md#arc-20260816-001",
+    "Progress/Archive/20260821-DIY飞船开发总归档-0820至0821.md": "Progress/Archive/8月归档清单.md#arc-20260821-001",
+    "Progress/Archive/20260822-修复LVL_Main按Play无飞船可控制.md": "Progress/Archive/8月归档清单.md#arc-20260822-001",
+    "Progress/Archive/20260822-数据管线v2-Excel元数据驱动自动生成行结构.md": "Progress/Archive/8月归档清单.md#arc-20260822-002",
+    "Progress/Archive/20260822-数据管线开发总归档-0821至0822.md": "Progress/Archive/8月归档清单.md#arc-20260822-003",
+    "Progress/Archive/20260824-CombatAvatarFly归位勘误-重巡舰体入库与两舰归位.md": "Progress/Archive/8月归档清单.md#arc-20260824-001",
+    "Progress/Archive/20260824-第一批飞船组件拆分入库-总归档.md": "Progress/Archive/8月归档清单.md#arc-20260824-002",
+    "Progress/Archive/20260824-第二轮资产整合-总归档.md": "Progress/Archive/8月归档清单.md#arc-20260824-003",
+    "Progress/Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md": "Progress/Archive/8月归档清单.md#arc-20260825-001",
+    "Progress/Archive/20260825-相机避障函数化-Tick去散落逻辑.md": "Progress/Archive/8月归档清单.md#arc-20260825-002",
+    "Progress/Archive/20260825-飞船3C与相机避障总归档-0824至0825.md": "Progress/Archive/8月归档清单.md#arc-20260825-003",
+    "Progress/Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md": "Progress/Archive/8月归档清单.md#arc-20260827-001",
+    "Progress/Archive/20260827-爆炸特效统一归拢至AssetsVFXExplosions.md": "Progress/Archive/8月归档清单.md#arc-20260827-002",
+    "Progress/Archive/20260827-飞船与场景模型尺寸归一.md": "Progress/Archive/8月归档清单.md#arc-20260827-003",
+    "Progress/Archive/20260828-Commander指令术语统一.md": "Progress/Archive/8月归档清单.md#arc-20260828-001",
+    "Progress/Archive/20260828-指挥官3C与运行时GM调参.md": "Progress/Archive/8月归档清单.md#arc-20260828-002",
+    "Progress/Archive/20260829-指挥官UI与HUD逻辑接入总归档.md": "Progress/Archive/8月归档清单.md#arc-20260829-001",
+    "Progress/Archive/20260829-指挥官小兵表现层两阶段性能优化.md": "Progress/Archive/8月归档清单.md#arc-20260829-002",
+    "Progress/Archive/20260830-战斗权威子系统中文注释与导读.md": "Progress/Archive/8月归档清单.md#arc-20260830-001",
+    "Progress/Archive/20260831-UE网络中文注释与项目教材.md": "Progress/Archive/8月归档清单.md#arc-20260831-001",
+    "Progress/Archive/20260831-公共战局框架与三类角色接入.md": "Progress/Archive/8月归档清单.md#arc-20260831-002",
+    "Progress/Archive/20260831-基地建造玩法探索草案落档.md": "Progress/Archive/8月归档清单.md#arc-20260831-003",
+    "Progress/Archive/20260831-网络教材与Mass精读笔记同步修订.md": "Progress/Archive/8月归档清单.md#arc-20260831-004",
+    "Progress/Archive/20260831-网络教材理论篇改编.md": "Progress/Archive/8月归档清单.md#arc-20260831-005"
+  },
+  "link_replacements": [
+    {
+      "path": "Progress/DevelopmentDocumentation/20260820-DIY飞船.md",
+      "from": "../Archive/20260821-DIY飞船开发总归档-0820至0821.md",
+      "to": "../Archive/8月归档清单.md#arc-20260821-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260821-数据管线Excel配置.md",
+      "from": "../Archive/20260822-数据管线开发总归档-0821至0822.md",
+      "to": "../Archive/8月归档清单.md#arc-20260822-003"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260821-数据管线Excel配置.md",
+      "from": "../Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md",
+      "to": "../Archive/8月归档清单.md#arc-20260825-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+      "from": "../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md",
+      "from": "../Archive/20260827-飞船与场景模型尺寸归一.md",
+      "to": "../Archive/8月归档清单.md#arc-20260827-003"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260829-指挥官HUD逻辑接入与批量小兵血条.md",
+      "from": "../Archive/20260829-指挥官UI与HUD逻辑接入总归档.md",
+      "to": "../Archive/8月归档清单.md#arc-20260829-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md",
+      "from": "../Archive/20260829-指挥官小兵表现层两阶段性能优化.md",
+      "to": "../Archive/8月归档清单.md#arc-20260829-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260831-公共战局框架与三类角色接入.md",
+      "from": "../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md",
+      "from": "../../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md",
+      "from": "../../../Archive/20260830-战斗权威子系统中文注释与导读.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260830-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md",
+      "from": "../../../Archive/20260831-网络教材与Mass精读笔记同步修订.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-004"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md",
+      "from": "../../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md",
+      "from": "../../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md",
+      "from": "../../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md",
+      "from": "../../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/README.md",
+      "from": "../../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/README.md",
+      "from": "../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260827-001"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/README.md",
+      "from": "../../../Archive/20260831-网络教材与Mass精读笔记同步修订.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-004"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md",
+      "from": "../../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/UE网络教材/README.md",
+      "from": "../../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/UE网络教材/README.md",
+      "from": "../../../Archive/20260831-网络教材与Mass精读笔记同步修订.md",
+      "to": "../../../Archive/8月归档清单.md#arc-20260831-004"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "from": "../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "from": "../../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "from": "../Archive/20260831-公共战局框架与三类角色接入.md",
+      "to": "../Archive/8月归档清单.md#arc-20260831-002"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260829-指挥官UI与小兵血条视觉设计.md",
+      "from": "../Archive/20260829-指挥官UI与HUD逻辑接入总归档.md",
+      "to": "../Archive/8月归档清单.md#arc-20260829-001"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260829-指挥官小兵表现层两阶段性能优化.md",
+      "from": "../Archive/20260829-指挥官小兵表现层两阶段性能优化.md",
+      "to": "../Archive/8月归档清单.md#arc-20260829-002"
+    }
+  ],
+  "split_changes": [
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "before": "11c3376b1d4502b770784cf749a82e1adfd697f41a2919345d617ca5d2637bf6",
+      "after": "a229342d261369eebf196b252b0abb6f7e84bc0c9e6a0f8e719888ebafe55bb9",
+      "children": [
+        {
+          "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+          "before": "78655c13ae6f7930d96303433ba686eab3b9334b401b4cf7ffc6d188cc0214e7",
+          "after": "d703d4f96802fca1818e6c76dd84493576405b87e0afec9bf0002a81f94eb68f"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "Progress/Archive/8月归档清单.md",
+      "before_sha256": null,
+      "after_sha256": "4d7e96ef373659f0e116f146c6c0ca8d8b3dd9cfc965908d837909d55ce2f018"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260820-DIY飞船.md",
+      "before_sha256": "db9dc4e982484300eba82cf7ef1b138761615cc6ba43afb7a3dc908fe735c106",
+      "after_sha256": "e9e319582ea22ee221f6fe5f1472a5cce8127a01ff4b48c06dde4a09f0432c8a"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260821-数据管线Excel配置.md",
+      "before_sha256": "2f7b473b4d6ec26640b1f71f12474aa775e6723c0c9895912267e2d4fe951117",
+      "after_sha256": "5a4b3630acc00f6c0e8c98f3558658cec6c9eedee387c97d0717aeb4bced82b7"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+      "before_sha256": "9724a20a12d9c1a575c9e70ade105c546da91bc83ba7290f61cc0513a7e2428e",
+      "after_sha256": "344e444c9d50bb51f63bfe379dfc90b7c57d2afb14d6ea8617d2d447976ee331"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md",
+      "before_sha256": "6d6727ecf0239a0c35f05f2ab921a3f795f11207fc46259f9eb3d99049609f82",
+      "after_sha256": "73434e49ccac49e2f9c841e19cc8b4e3e1f11fa9febd9513fe1df4b74490046d"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260829-指挥官HUD逻辑接入与批量小兵血条.md",
+      "before_sha256": "c8412ab6b632ade87996ea4781c4acba3e0d796da6a0077adfa89d752c0bd2b9",
+      "after_sha256": "f83ffa5eaa79d956e3a687f5d6d2615fda0cda3b68ec46aeaa82a00f91291ae2"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md",
+      "before_sha256": "b88d923cefe39122f113d5097aa418d1e8425062fe91a2a66c895cd8fec96dc1",
+      "after_sha256": "d15e5974d55c2f9f9180a8334a4abce0235d76d2d44fab72c0a417661929c9d7"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20260831-公共战局框架与三类角色接入.md",
+      "before_sha256": "2083fb1fe157963d4102d4787e7a474f21c99f82bf274324b023706088cac61a",
+      "after_sha256": "7bf9219439cef8a2f3df443124411c9fe073bae7f5d994df86e96f29c3d2537e"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md",
+      "before_sha256": "7b641c023f0665d4751f1468f1d1c910b91b6e1e0af68cb73c6084fa5a9755db",
+      "after_sha256": "2d73645b13202f83eb65fb48925093a67d7ce39758808f3c2897b23e72514290"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md",
+      "before_sha256": "20d3409cb45000e9848b8a46f5ae01156594c7c7e2417638a98c78c898b4883c",
+      "after_sha256": "e973ae78fff199e3a54e4638aa58b0d81be2568cef604849df96f1b233301ff1"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md",
+      "before_sha256": "3af8a3c3773239315f173ad85b5a332969cdf68d3765acef7cd61397735fd274",
+      "after_sha256": "a0b55f796a514e194907069bd145ea65b130c12c0222c5a6489baf5dc97623b4"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md",
+      "before_sha256": "ce4b264c16598e68759b9bf17ad19886cbb07caac9c0d25bcab620dd771f4367",
+      "after_sha256": "a489c9d824f37f5fd815ad6e7d29e31b2bb9b7c7e8ebf054d703de6995acbc70"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md",
+      "before_sha256": "becf893dd404516bc847e1b7d3ed0c758e8b6a9d1ece3a71b07c06133a27c5c5",
+      "after_sha256": "f8caac7766833ddc3cdf4f556db33a6e6de3d2622a8abecccb17f81e5f21a5d6"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/Mass精读笔记/README.md",
+      "before_sha256": "43a644503b44ebeca9dc705399bcf41180e65fabb9014e43cc7941fac32e719f",
+      "after_sha256": "8088321ee68d4d8c4248948555d913c99069b5bb5e8997da8641297cbde86bd4"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md",
+      "before_sha256": "081f0729be4c31852821526ea3e67f2a11799b117a019fcd1bb1fbe9ec8be435",
+      "after_sha256": "e41ad884f7ca1e558d61ee028e64ded49ac40d37bb176a5f9940aa5a8924bf78"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/相关读物/UE网络教材/README.md",
+      "before_sha256": "1cfde04b191fd4c59aa9dd0692cdecbae67cdfe4fb6b2a84adf627f08621097f",
+      "after_sha256": "180d5c81e2164c714457d3d414900270c68a0800017b64c13b828a03de419a3d"
+    },
+    {
+      "path": "Progress/Gameplay/战斗.md",
+      "before_sha256": "0fe1cd145cb369d660881911f8b38dd2786aa158358a9bbbee21d647670b82c7",
+      "after_sha256": "aa96ca1689abd57c4d1d445d307db247962530ffc4fba1489bea687c0293fc2e"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官/04-验证边界.md",
+      "before_sha256": "077bebeb45e300cd313dd3c6267e0042e4cb63c0c6b629493625ee6df15a2eab",
+      "after_sha256": "c997b1bfe4bccc8aded5453ec7542c610c75501b5156e32d431dab57655a41f3"
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "before_sha256": "e81e01ce45cdcfe691c1e53ad3df7e52ff0969a92985b59d8d11ae421b903639",
+      "after_sha256": "9ed3099bbc5d169cb0605e2fb51245b3c77a09e6bbbbd70552d7d86ddefd4483"
+    },
+    {
+      "path": "Progress/Gameplay/飞船.md",
+      "before_sha256": "50059982e9db781f9eb205116a72941c6b0f88f16c49bee81e013147fb57f229",
+      "after_sha256": "0c9cee36f953e16020be2b800381f16f3dfc21e7b07e36a6ced17e49d049b5fc"
+    },
+    {
+      "path": "Progress/README.md",
+      "before_sha256": "6df43aba5f0ba260e96202edf48f61ce20000fee61aaec8d7ebe66f8bcc149b2",
+      "after_sha256": "e4e2d1072ab2ecd8592386a54ae90da22b7bfc27da3840d020b27f86f075d3ec"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260829-指挥官UI与小兵血条视觉设计.md",
+      "before_sha256": "ca15854e7aaa32fc8544a387ad822c118a27af6f7bd0704ef9ca6b924c751ed9",
+      "after_sha256": "7033a96f6bdee84b311f538ebacaf25a92717ebdba56760a6ccefe364b6ff9c1"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260829-指挥官小兵表现层两阶段性能优化.md",
+      "before_sha256": "1ceabe8bf69b372397e71c7a2f129a86b0e3ff7e5c70e24d00ee631deb6dd914",
+      "after_sha256": "65435a5ac66c26eef1b9448186fdaf9a658a712ccc18d7b852ed4f73846526c0"
+    },
+    {
+      "path": "Scripts/import_data_to_engine.py",
+      "before_sha256": "68bf9e8247d0f9a6e324119adfe8c38b050faec2dd76f91f566971637e15d1a8",
+      "after_sha256": "3ff952293f87503eab49c7b95508c4a156624675898260b1ef86ea36d1dac1bb"
+    }
+  ],
+  "applied": true,
+  "loose_originals_transferred_to_verified_zip": 24,
+  "reference_backup": "Progress/Evidence/20261022-AugustArchive/link-migration-before.zip",
+  "reference_backup_sha256": "dd94a673d89c37319d3213192f49535ae96eb67e287dda48b3fc2ccc976714da"
+}

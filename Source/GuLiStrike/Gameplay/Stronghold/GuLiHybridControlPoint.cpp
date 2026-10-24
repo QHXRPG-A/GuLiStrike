@@ -2,10 +2,16 @@
 #include "Network/Private/GuLiHybridMessageConversions.h"
 #include "GuLiNetControlPoint.h"
 
-FGuLiHybridControlPointState GuLiHybridControlPoint::Read(const FGuLiHybridObjectState& O)
+namespace
+{
+FName ControlPointName()
+{
+    static const FName Name(UTF8_TO_TCHAR(GuLiNet::ControlPointCapability));
+    return Name;
+}
+FGuLiHybridControlPointState ReadControlPointCapability(const FGuLiHybridCapabilityState* Data)
 {
     FGuLiHybridControlPointState Result;
-    const auto* Data=O.Capabilities.Find(FName(UTF8_TO_TCHAR(GuLiNet::ControlPointCapability)));
     if (!Data || Data->Version!=GuLiNet::ControlPointCapabilityVersion) return Result;
     GuLiNet::ControlPointState P;GuLiNet::Reader Reader({Data->Data.GetData(),static_cast<size_t>(Data->Data.Num())});
     if (!GuLiNet::ReadControlPoint(Reader,P) || !Reader.Done() || !P.Enabled()) return Result;
@@ -13,6 +19,16 @@ FGuLiHybridControlPointState GuLiHybridControlPoint::Read(const FGuLiHybridObjec
     Result.Red=P.Red;Result.Blue=P.Blue;Result.SampledAt=P.SampledAt;Result.SamplePeriod=P.SamplePeriod;
     Result.FirstCapture=GuLiNetBridge::ToUE(P.FirstCapture);
     return Result;
+}
+}
+FGuLiHybridControlPointState GuLiHybridControlPoint::Read(const FGuLiHybridObjectState& O)
+{
+    return ReadControlPointCapability(O.Capabilities.Find(ControlPointName()));
+}
+FGuLiHybridControlPointState GuLiHybridControlPoint::Read(const UGuLiHybridWorldSubsystem& World,const FGuLiHybridObjectKey& Key)
+{
+    FGuLiHybridCapabilityState Data;
+    return World.GetObjectCapability(Key,ControlPointName(),Data) ? ReadControlPointCapability(&Data) : FGuLiHybridControlPointState{};
 }
 FGuid GuLiHybridControlPoint::Submit(UGuLiHybridWorldSubsystem& H,const FGuLiHybridObjectState& O,FGuid Event,
     uint32 Red,uint32 Blue)

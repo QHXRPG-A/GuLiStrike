@@ -59,7 +59,7 @@ Core `StartupModule` 注册内置几何，Shutdown 清空 exporter/validator/geo
 
 Panel 用 `AddSP` 绑定 Selection、PropertyChanged、MapChange 和 AssetRegistry 事件，析构时解除并注销 Undo client。刷新通过 active timer 合并请求；同步选择期间用守卫避免递归。
 
-组件/Actor 生命周期是高风险边界：UE 的选择缓存和 HitProxy 可能比删除/GC 后的组件多活一帧。`DrawVisualization` 和 `VisProxyHandleClick` 必须先 `IsValid(Component)`，再检查 Owner；其他回调同样不能默认弱引用仍有效。2026-09-07 的删除崩溃正是此处空组件解引用，修复记录在 `Progress/Archive/20260907-地图标记删除崩溃空指针修复.md`。
+组件/Actor 生命周期是高风险边界：UE 的选择缓存和 HitProxy 可能比删除/GC 后的组件多活一帧。`DrawVisualization` 和 `VisProxyHandleClick` 必须先 `IsValid(Component)`，再检查 Owner；其他回调同样不能默认弱引用仍有效。2026-09-07 的删除崩溃正是此处空组件解引用，修复记录在 [20260907-地图标记删除崩溃空指针修复](../../../../Progress/Archive/9月归档清单.md#arc-20260907-006)。
 
 ## 创建、身份与字段迁移
 

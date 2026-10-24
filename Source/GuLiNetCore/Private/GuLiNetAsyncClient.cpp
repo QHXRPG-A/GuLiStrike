@@ -268,6 +268,13 @@ struct AsyncClientWorld::State
     using CommandKey=std::tuple<Id,ObjectKey,Revision,Revision>;
     struct CommandRequest {std::shared_ptr<Reply<bool>> Result;std::shared_ptr<std::atomic<bool>> Active;};
     std::map<CommandKey,CommandRequest> CommandRequests;
+    struct CommandEntry {CommandMember Member;std::uint64_t Token;Tick At;CommandRequest Request;};
+    struct CommandBatch {FrozenCommand Command;std::deque<CommandEntry> Entries;std::size_t Bytes=0;};
+    std::deque<CommandBatch> DeferredCommands; // Caller thread only; one command copy per batch.
+    std::size_t DeferredCommandBytes=0,DeferredCommandMembers=0;
+    static constexpr std::size_t MaximumDeferredCommandMembers=8192,MaximumDeferredCommandBytes=16*1024*1024;
+    std::optional<bool> ApplyCommandEntry(const FrozenCommand& C,const CommandEntry& E);
+    void RetryDeferredCommands();
     std::map<ObjectKey,std::shared_ptr<std::atomic<std::uint64_t>>> ApplicationGenerations;
     struct PendingBoolean {std::shared_ptr<Reply<bool>> Result;std::function<bool(ClientWorld&)> Run;};
     std::deque<PendingBoolean> PendingBooleans;
@@ -1029,8 +1036,7 @@ void AsyncClientWorld::State::Run()
     });
     Core->SetApplicationCommands([this](const FrozenCommand& Command,std::span<const CommandMember> Members)
     {
-        struct Entry {CommandMember Member;std::uint64_t Token;Tick At;CommandRequest Request;};
-        std::vector<Entry> Missing;bool Ready=true;
+        std::vector<CommandEntry> Missing;bool Ready=true;
         for (const auto& M:Members)
         {
             const CommandKey K{Command.Event,M.Object,M.OwnerEpoch,M.ControlEpoch};
@@ -1047,18 +1053,34 @@ void AsyncClientWorld::State::Run()
         {
             if (Options.CommandTiming) Options.CommandTiming("application-prepare",Command.Event,Missing.size());
             const auto Size=Command.Arguments.size()+Missing.size()*256+1024;
-            Publish();const bool Queued=Emit([this,Command,Missing=std::move(Missing)]
+            Publish();const bool Queued=Emit([this,Command,Missing=std::move(Missing)]() mutable
             {
                 if (Options.CommandTiming) Options.CommandTiming("application-start",Command.Event,Missing.size());
                 TraceScope Scope("GuLiHybrid_MainCommandBatch");std::vector<std::pair<std::shared_ptr<Reply<bool>>,bool>> Results;
+                CommandBatch Deferred;
                 for (const auto& E:Missing)
                 {
-                    const auto& M=E.Member;const auto Old=AppliedContext;const auto OldTick=AppliedContextTick;
-                    AppliedContext=M.Object;AppliedContextTick=E.At;
-                    auto* A=Object(M.Object,E.Token);const auto O=Directory.find(M.Object);
-                    const bool Current=E.Request.Active->load()&&O!=Directory.end()&&O->second.Grant.OwnerEpoch==M.OwnerEpoch
-                        &&O->second.Grant.ControlEpoch==M.ControlEpoch&&O->second.Grant.State==Life::Alive&&!O->second.Grant.Dormant;
-                    Results.emplace_back(E.Request.Result,Current&&A&&A->Command(Command,M));AppliedContext=Old;AppliedContextTick=OldTick;
+                    const auto Result=ApplyCommandEntry(Command,E);
+                    if (Result) Results.emplace_back(E.Request.Result,*Result);
+                    else Deferred.Entries.push_back(E);
+                }
+                if (!Deferred.Entries.empty())
+                {
+                    const auto Bytes=Command.Arguments.size()+Command.Members.size()*sizeof(CommandMember)+Deferred.Entries.size()*256+1024;
+                    if (DeferredCommandMembers+Deferred.Entries.size()>MaximumDeferredCommandMembers
+                        || DeferredCommandBytes+Bytes>MaximumDeferredCommandBytes)
+                    {
+                        for (const auto& E:Deferred.Entries)
+                        {
+                            if (auto* A=Object(E.Member.Object,E.Token)) A->CancelCommandPreparation(Command,E.Member);
+                            Results.emplace_back(E.Request.Result,false);
+                        }
+                    }
+                    else
+                    {
+                        DeferredCommandBytes+=Bytes;DeferredCommandMembers+=Deferred.Entries.size();
+                        Deferred.Bytes=Bytes;Deferred.Command=std::move(Command);DeferredCommands.push_back(std::move(Deferred));
+                    }
                 }
                 const auto Bytes=Results.size()*64+128;
                 Post([Results=std::move(Results)](ClientWorld&)
@@ -1161,6 +1183,53 @@ void AsyncClientWorld::State::Run()
     }
     Core.reset();
 }
+std::optional<bool> AsyncClientWorld::State::ApplyCommandEntry(const FrozenCommand& C,const CommandEntry& E)
+{
+    const auto& M=E.Member;const auto Old=AppliedContext;const auto OldTick=AppliedContextTick;
+    AppliedContext=M.Object;AppliedContextTick=E.At;
+    auto* A=Object(M.Object,E.Token);const auto O=Directory.find(M.Object);
+    if (O!=Directory.end()) AppliedContextTick=std::max(E.At,O->second.LogicalAge);
+    const bool Current=E.Request.Active->load()&&O!=Directory.end()&&O->second.Grant.OwnerEpoch==M.OwnerEpoch
+        &&O->second.Grant.ControlEpoch==M.ControlEpoch&&O->second.Grant.SimOwner==Player
+        &&O->second.Grant.State==Life::Alive&&!O->second.Grant.Dormant;
+    std::optional<bool> Result=false;
+    if (Current&&A)
+    {
+        const auto Prepared=A->PrepareCommand(C,M);
+        if (Prepared==IObjectAdapter::CommandPreparation::Pending) Result.reset();
+        else if (Prepared==IObjectAdapter::CommandPreparation::Ready)
+        {
+            Result=A->Command(C,M);
+            if (!*Result) A->CancelCommandPreparation(C,M);
+        }
+        else A->CancelCommandPreparation(C,M);
+    }
+    else if (A) A->CancelCommandPreparation(C,M);
+    AppliedContext=Old;AppliedContextTick=OldTick;return Result;
+}
+void AsyncClientWorld::State::RetryDeferredCommands()
+{
+    if (DeferredCommands.empty()) return;
+    TraceScope Scope("GuLiHybrid_MainCommandPreparation");
+    const auto Start=Steady::now();std::size_t Remaining=std::min<std::size_t>(64,DeferredCommandMembers);
+    std::vector<std::pair<std::shared_ptr<Reply<bool>>,bool>> Results;
+    while (Remaining--&&!DeferredCommands.empty()&&Milliseconds(Start)<.25)
+    {
+        auto Batch=std::move(DeferredCommands.front());DeferredCommands.pop_front();
+        auto E=std::move(Batch.Entries.front());Batch.Entries.pop_front();
+        const auto Result=ApplyCommandEntry(Batch.Command,E);
+        if (Result) {Results.emplace_back(E.Request.Result,*Result);--DeferredCommandMembers;}
+        else Batch.Entries.push_back(std::move(E));
+        if (Batch.Entries.empty()) DeferredCommandBytes-=Batch.Bytes;
+        else DeferredCommands.push_back(std::move(Batch));
+    }
+    if (!Results.empty())
+    {
+        const auto Bytes=Results.size()*64+128;
+        Post([Results=std::move(Results)](ClientWorld&)
+        {for (const auto& [R,Value]:Results) {R->Value=Value;R->Ready=true;}},Bytes,true);
+    }
+}
 void AsyncClientWorld::State::Pump()
 {
     CheckMain();
@@ -1193,6 +1262,7 @@ void AsyncClientWorld::State::Pump()
         if (AppliedCount>=64) ReleaseBatch();
     }}
     ReleaseBatch();
+    RetryDeferredCommands();
     // Keep a failed enqueue and all later messages to that same peer in order.
     // Independent destinations have separate reliable channels: one unavailable
     // peer must not hold their bootstrap/receipts behind its transport credit.

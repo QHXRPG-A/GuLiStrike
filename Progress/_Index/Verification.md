@@ -4,13 +4,10 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [扫荡者远端姿态与导航恢复修复](../DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md) | verification | partial | 用户在原型图核验扫荡者受攻击和所选单位的移动效果。 | 2026-10-21 |
-| [Hybrid交火CPU与追帧优化 — 实施记录](../DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md) | in_progress | partial | 名单复制修复已通过编译与既有协议验收，继续检查回执匹配及起步提交成本；插队待用户判断，全部成员响应稳定达到30ms后再做配对性能复核。 | 2026-10-21 |
-| [UI CPU优化与四档LOD — 实施与验收](../DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md) | in_progress | partial | 补齐文档清理与场景交付记录；视觉效果由用户自行核验，未完成的配对性能验收保持未验证，不自动恢复检查。 | 2026-10-20 |
-| [保持玩法与表现的15ms帧时间优化 — 实施记录](../DevelopmentDocumentation/20261020-保持玩法与表现的15ms帧时间优化.md) | verification | partial | 在已保存的 /Game/Maps/LVL_CommanderMassPrototype 中由玩家复核操作与视觉一致性。 | 2026-10-20 |
-| [一键截帧与CPU分析插件 — 技术方案](../DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md) | in_progress | partial | 玩家确认快捷键焦点、文本框及弹窗行为；常驻 GPU 标记的默认策略单独处理。 | 2026-10-20 |
-| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | in_progress | partial | 核对玩家响应反馈及窗口停顿触发条件；继续削减周期逻辑、StateTree和快照成本。长测及PIE故障矩阵按用户要求取消。 | 2026-10-20 |
-| [Slate 布局与绘制 2.5 ms 优化实施](../DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md) | in_progress | partial | 继续同镜头移动和交火复测，独立覆盖俯瞰批处理热点及动态UI正确性；保留历史失败，不据静止单对启用候选。 | 2026-10-19 |
+| [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | done | partial | — | 2026-10-24 |
+| [GuLi 独立地图设计器 — 技术方案与交付](../DevelopmentDocumentation/20261024-GuLi独立地图设计器.md) | verification | partial | 用户通过 Tools/MapDesigner/start.cmd 验收交互和视觉，完成设计后将导出目录交给助手应用 UE。 | 2026-10-24 |
+| [地面机甲 MechaDestroyer 替换与风格化 — 实施记录](../DevelopmentDocumentation/20261023-地面机甲MechaDestroyer替换与风格化.md) | verification | partial | 用户在LVL_CommanderMassPrototype以Ground复验越界瞄准稳定、浮空右键及W与右键转速同步。 | 2026-10-24 |
+| [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | in_progress | partial | 减少回执匹配、前置快照与起步提交成本；候选维持各自默认状态，全部成员响应稳定达标后再复核整帧性能，玩家效果独立验收。 | 2026-10-21 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | done | partial | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-10-18 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | verification | partial | 玩家通过原地图固定优化入口核对窄路、墙边、拥堵和重防号转向观感；网络协议整改另立任务。 | 2026-10-11 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | verification | partial | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-11 |

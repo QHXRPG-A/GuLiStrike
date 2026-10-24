@@ -28,7 +28,7 @@
 
 符号化根因：`FGuLiMapVisualizer::DrawVisualization` 由 `UUnrealEdEngine::DrawComponentVisualizers` 调用时收到 nullptr component，旧代码直接 `C->GetOwner()`。修复是在绘制入口检查 Component/Owner，并在 `VisProxyHandleClick` 安全解析弱组件和过期 HitProxy。
 
-证据：`Data/MapAuthoringValidation/DeleteCrash-20260907/` 和 `Progress/Archive/20260907-地图标记删除崩溃空指针修复.md`。若同症状复现，先确认运行 DLL 是修复后构建，不要默认又是相同根因；重新取 CrashGUID 和栈。
+证据：`Data/MapAuthoringValidation/DeleteCrash-20260907/` 和 [20260907-地图标记删除崩溃空指针修复](../../../../Progress/Archive/9月归档清单.md#arc-20260907-006)。若同症状复现，先确认运行 DLL 是修复后构建，不要默认又是相同根因；重新取 CrashGUID 和栈。
 
 ## 修改原则
 

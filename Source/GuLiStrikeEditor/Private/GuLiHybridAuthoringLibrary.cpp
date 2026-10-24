@@ -9,6 +9,7 @@
 #include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 #include "Editor.h"
 #include "Engine/DataTable.h"
 #include "Engine/World.h"
@@ -262,14 +263,19 @@ FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifest(int32 Population,cons
         if (!Valid || Definitions.Contains(D.UnitTypeId)) return Report(false,TEXT("Invalid or duplicate Soldiers row: ")+Name.ToString(),File,0,0,0);
         Definitions.Add(D.UnitTypeId,D);
     }
+    const auto Grid=GuLiGrid::AuthoredSnapshot(*World);
     auto* Navigation=FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
     const auto* NavData=Navigation ? Navigation->GetNavDataForAgentName(TEXT("CommanderSoldier")) : nullptr;
     uint32 Ordinal=0;
     for (const auto& Slot : Army.Slots)
     {
         FNavLocation Projected;
-        if (!Navigation || !NavData || !Navigation->ProjectPointToNavigation(Slot.Location,Projected,
-            FVector(Slot.RadiusCentimeters,Slot.RadiusCentimeters,GuLiCommanderInitialSpawn::ProjectionVerticalExtent),NavData))
+        const bool bProjected=Grid
+            ? Grid->Project(Slot.Location,Definitions.FindChecked(Slot.UnitTypeId).FootprintCells,
+                FVector(0,0,GuLiCommanderInitialSpawn::ProjectionVerticalExtent),Projected.Location)
+            : Navigation && NavData && Navigation->ProjectPointToNavigation(Slot.Location,Projected,
+                FVector(Slot.RadiusCentimeters,Slot.RadiusCentimeters,GuLiCommanderInitialSpawn::ProjectionVerticalExtent),NavData);
+        if (!bProjected)
             return Report(false,TEXT("Navigation changed during export"),File,Data.Objects.Num(),0,0);
         auto& O=Data.Objects.AddDefaulted_GetRef(); O.Ordinal=++Ordinal; O.Team=Slot.Team;
         const FString AuthoredId=FString::Printf(TEXT("army/%u/%d/%d"),static_cast<uint8>(Slot.Team),Slot.FormationIndex,Slot.SlotIndex);

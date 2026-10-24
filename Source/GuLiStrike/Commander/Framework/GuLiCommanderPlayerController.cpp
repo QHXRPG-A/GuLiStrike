@@ -255,6 +255,11 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 			Enhanced.BindAction(Action,ETriggerEvent::Completed,this,&ThisClass::HandlePrimaryReleased);
 			Enhanced.BindAction(Action,ETriggerEvent::Canceled,this,&ThisClass::HandlePrimaryReleased);
 		}
+		if (Name==TEXT("Secondary"))
+		{
+			Enhanced.BindAction(Action,ETriggerEvent::Completed,this,&ThisClass::HandleSecondaryReleased);
+			Enhanced.BindAction(Action,ETriggerEvent::Canceled,this,&ThisClass::HandleSecondaryReleased);
+		}
 	}
 	Enhanced.BindAction(LoadObject<UInputAction>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/Input/IA_Battle_Teleport")),
 		ETriggerEvent::Started,TeleportInput.Get(),&UGuLiTeleportInputComponent::ActivateAiming);
@@ -476,7 +481,8 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 
 bool AGuLiCommanderPlayerController::CanUseGroundMechFireInput() const
 {
-	return IsLocalController() && !IsMoveInputIgnored() && !IsCursorOverCommanderUI()
+	return IsLocalController() && !IsMoveInputIgnored() && !IsLookInputIgnored() && !IsCommanderMenuOpen()
+		&& !bRogueCardModal && (!bShowMouseCursor || !IsCursorOverCommanderUI())
 		&& (!TeleportInput || !TeleportInput->IsAiming())
 		&& (!BuildingPlacementComponent || !BuildingPlacementComponent->IsBuildModeActive());
 }
@@ -546,6 +552,8 @@ void AGuLiCommanderPlayerController::HandlePrimaryReleased()
 
 void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 {
+	// Cancel/menus own this press. A canceled operation must not also arm shoulder aim.
+	HandleSecondaryReleased();
 	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); return; }
 	if (BuildingPlacementComponent && BuildingPlacementComponent->HandleCancelAction())
 	{
@@ -554,6 +562,8 @@ void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 	}
 	if (!IsCommanderViewActive())
 	{
+		if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetPawn()); Mech && CanUseGroundMechFireInput())
+			Mech->SetShoulderAimHeld(true);
 		return;
 	}
 
@@ -565,6 +575,11 @@ void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 	{
 		ActivateSelectionTool();
 	}
+}
+
+void AGuLiCommanderPlayerController::HandleSecondaryReleased()
+{
+	if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetPawn())) Mech->SetShoulderAimHeld(false);
 }
 
 // 只在本地指挥角色中解释这些快捷键；共享 helper 本身不绑定 World/PlayerState。
@@ -1261,13 +1276,20 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	const bool bShouldEnable = IsCommanderViewActive();
 	const auto* State=GetPlayerState<AGuLiBattlePlayerState>();
 	const bool bGround=State && State->GetBattleRole()==EGuLiCommanderRole::Ground;
-	if (bCommanderInputModeInitialized && bCommanderInputActive == bShouldEnable && bGroundInputActive==bGround)
+	const bool bFreeCursor = bGround && (IsCommanderMenuOpen() || IsMoveInputIgnored() || IsLookInputIgnored()
+		|| (TeleportInput && TeleportInput->IsAiming())
+		|| (BuildingPlacementComponent && BuildingPlacementComponent->IsBuildModeActive()));
+	if (bCommanderInputModeInitialized && bCommanderInputActive == bShouldEnable && bGroundInputActive==bGround
+		&& bGroundCursorFree==bFreeCursor)
 	{
 		return;
 	}
 	bCommanderInputModeInitialized = true;
 	bCommanderInputActive = bShouldEnable;
 	bGroundInputActive = bGround;
+	bGroundCursorFree = bFreeCursor;
+	if (bFreeCursor)
+		if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetPawn())) Mech->GetWeapon()->SetFireHeld(false);
 	if (BattleInputSubsystem.IsValid())
 	{
 		BattleInputSubsystem->RemoveMappingContext(BattleCommandMappings);
@@ -1285,10 +1307,10 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	{
 		CommanderHUD->RefreshCommanderRole();
 	}
-	bShowMouseCursor = bShouldEnable || bGround;
-	bEnableClickEvents = bShouldEnable || bGround;
-	bEnableMouseOverEvents = bShouldEnable || bGround;
-	DefaultMouseCursor=bGround?EMouseCursor::Crosshairs:EMouseCursor::Default;
+	bShowMouseCursor = bShouldEnable || bFreeCursor;
+	bEnableClickEvents = bShowMouseCursor;
+	bEnableMouseOverEvents = bShowMouseCursor;
+	DefaultMouseCursor=EMouseCursor::Default;
 	if (bShouldEnable && UGuLiNetworkSettings::CanPresent(GetWorld()))
 	{
 		if (UGameViewportClient* Viewport = GetWorld() ? GetWorld()->GetGameViewport() : nullptr)
@@ -1307,14 +1329,17 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	{
 		CancelSelectionDrag();
 		RestoreCommanderCursor();
-		if (bGround)
+		if (bFreeCursor)
 		{
 			FInputModeGameAndUI InputMode;
 			InputMode.SetHideCursorDuringCapture(false);
-			InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::LockOnCapture);
+			InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 			SetInputMode(InputMode);
 		}
-		else SetInputMode(FInputModeGameOnly());
+		else
+		{
+			FInputModeGameOnly InputMode; InputMode.SetConsumeCaptureMouseDown(false); SetInputMode(InputMode);
+		}
 		CommandLineState = EGuLiCommandLineState::None;
 		PendingMoveCommandId = 0u;
 		LatestMoveIntentCommandId = 0u;

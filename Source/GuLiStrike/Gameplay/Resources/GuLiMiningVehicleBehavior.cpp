@@ -5,6 +5,32 @@
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Engine/World.h"
 #include "Network/GuLiHybridActorComponent.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+
+bool AGuLiMiningVehiclePawn::ReplanGridWork()
+{
+    if (!bTaskManaged || bManagedTaskComplete || !UGuLiHybridActorComponent::HasSimulation(this)) return false;
+    auto* Travel=FindComponentByClass<UGuLiEngineeringTravelComponent>();
+    auto* Grid=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();if (!Grid || !Grid->IsReady()) return false;
+    if (TaskState==EGuLiMiningTaskState::ReturningToFactory || TaskState==EGuLiMiningTaskState::Docking)
+    {
+        if (!IsValid(Factory) || Factory->GetTeam()!=Team) {BeginGrace(false);Travel->StopAtSafePoint();return false;}
+        const auto Points=Factory->GetUnloadPoints();int32 Best=INDEX_NONE;
+        for (int32 I=0;I<Points.Num();++I)
+            if (GuLiGrid::Unoccupied(*Grid,Points[I],1,UGuLiHybridActorComponent::Find(this)->GetObjectKey())
+                && (Best==INDEX_NONE || FVector::DistSquared2D(GetActorLocation(),Points[I])<FVector::DistSquared2D(GetActorLocation(),Points[Best]))) Best=I;
+        if (Best==INDEX_NONE) return false;
+        TaskState=EGuLiMiningTaskState::ReturningToFactory;BehaviorResult=EGuLiCommanderWorkResult::Running;
+        return Travel->BeginWorkMove(Points[Best],50);
+    }
+    auto* Manager=GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>();
+    if (MiningSlot.IsValid()) {Manager->ReleaseSlot(*this,MiningSlot);MiningSlot={};TargetNodeId=0;SetMiningVisual(false);}
+    FGuLiMiningSlotReservation Next;FVector Position;
+    if (Manager->TryReserveSlot(*this,TargetClusterId,MiningTaskVersion,Next,Position)!=EGuLiWorkPositionAvailability::Available) return false;
+    MiningSlot=Next;BehaviorApproach=Position;TargetClusterId=Next.Cluster;bWaitingForMiningSlot=false;
+    TaskState=EGuLiMiningTaskState::MovingToCluster;BehaviorResult=EGuLiCommanderWorkResult::Running;
+    return Travel->BeginWorkMove(Position,GULI_MINING_SLOT_ARRIVAL_RADIUS_CM);
+}
 
 EGuLiCommanderWorkPhase AGuLiMiningVehiclePawn::GetBehaviorPhase() const
 {

@@ -18,6 +18,10 @@ struct GULISTRIKE_API FGuLiMassIdentityFragment : public FMassFragment
 
 	UPROPERTY(Transient)
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
+
+	/** Immutable movement category assigned by the shared engineering attachment path. */
+	UPROPERTY(Transient)
+	bool bEngineering = false;
 };
 
 /** Server-authoritative health and the five-second destroyed presentation window. */

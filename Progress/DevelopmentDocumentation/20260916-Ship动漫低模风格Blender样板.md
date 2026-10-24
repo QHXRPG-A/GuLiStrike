@@ -76,7 +76,7 @@ status_note: Blender样板交付完成；验证范围为来源、几何尺寸、
 - [线稿检查记录](../../ArtSource/Ships/ShipStylizedStudy_20260916/lineart_report.json)
 - [线稿追加脚本](../../Scripts/Blender/add_ship_stylized_lineart.py)
 - [无描边工程备份](../../ArtSource/Ships/ShipStylizedStudy_20260916/GuLiStrike_Ship_AnimeStudy_NoLines.blend)
-- [线稿追加归档](../Archive/20260916-Ship风格样板追加线稿.md)
+- [线稿追加归档](../Archive/9月归档清单.md#arc-20260916-006)
 
 ## 追加：装甲内部线条烘焙遮罩
 
@@ -96,11 +96,11 @@ status_note: Blender样板交付完成；验证范围为来源、几何尺寸、
 - [烘焙与几何记录](../../ArtSource/Ships/ShipStylizedStudy_20260916/lineart_bake_report.json)
 - [实体线稿备份](../../ArtSource/Ships/ShipStylizedStudy_20260916/GuLiStrike_Ship_AnimeStudy_GeometricLines.blend)
 - [遮罩生成脚本](../../Scripts/Blender/bake_ship_lineart_mask.py)、[实时接入脚本](../../Scripts/Blender/apply_ship_baked_lineart.py)
-- [本次增量归档](../Archive/20260916-Ship内部线稿烘焙遮罩.md)
+- [本次增量归档](../Archive/9月归档清单.md#arc-20260916-007)
 
 本次交付仍为Blender样板；未进行UE导入、材质适配或运行性能测试。减少几何的同时新增贴图采样，不将三角面减少比例等同于帧率提升。
 
 ## 关联
 
 - [需求](../RequirementDocument/20260916-Ship动漫低模风格Blender样板.md)
-- [阶段归档](../Archive/20260916-Ship动漫低模风格Blender样板交付.md)
+- [阶段归档](../Archive/9月归档清单.md#arc-20260916-005)

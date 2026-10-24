@@ -47,6 +47,7 @@ bool AGuLiCommanderPlayerController::IssueMapMove(const FVector& Point,bool bApp
 }
 void AGuLiCommanderPlayerController::BeginLocalMoveFeedback(uint32 CommandId,const FVector& Target,double InputSeconds)
 {
+	if (NetSyncComponent) NetSyncComponent->RecordMoveInput(CommandId,InputSeconds);
 	LatestMoveIntentCommandId=CommandId;PendingMoveTarget=Target;
 	CommandLineStart=FindConfirmedSelectionCenter();CommandLineEnd=Target;
 	CommandLineState=EGuLiCommandLineState::Pending;CommandLineFadeDurationSeconds=2.5f;

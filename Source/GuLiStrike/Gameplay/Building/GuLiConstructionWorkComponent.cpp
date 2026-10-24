@@ -117,6 +117,19 @@ void UGuLiConstructionWorkComponent::RetryPosition()
     CancelOrder(Travel->WasPathUnreachable() ? TEXT("施工位不可达，退单") : TEXT("施工位或路径失效，退单"),
         true, Travel->WasPathUnreachable());
 }
+bool UGuLiConstructionWorkComponent::ReplanGridWork()
+{
+    if (IsTerminalFailure() || Target->IsCompleted())
+    {CancelOrder(TEXT("暂停期间工单已结束"));return false;}
+    auto& Vehicle=*CastChecked<ACharacter>(GetOwner());
+    if (Reservation.IsValid()) Target->ReleaseConstructionSlot(Vehicle,Reservation);
+    Reservation={};bApplyingWork=false;bHybridSlotAcknowledged=false;PublishConstructionActivity(false);
+    FGuLiConstructionSlotIntent Next;FVector Position;
+    if (!QueryPosition(*Target,Next,Position)) return false;
+    Intent=Next;WorkPosition=Position;bMoveRequested=true;bMoveFailed=false;
+    OrderReason=TEXT("保留工单，从当前位置重新选择施工位");
+    return GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()->BeginWorkMove(Position,50);
+}
 
 bool UGuLiConstructionWorkComponent::IsRejectionCurrent(const FRejected& R,const UGuLiBuildingLifecycleComponent& Building) const
 {

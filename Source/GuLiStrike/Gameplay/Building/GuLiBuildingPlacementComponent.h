@@ -130,7 +130,7 @@ private:
 	bool EnsurePreviewForDefinition(const FGuLiBuildingDefinition& Definition);
 
 	bool TraceLocalGround(FHitResult& OutHit, float& OutYawDegrees) const;
-	bool TracePlacementGround(const FVector& DesiredLocation, FHitResult& OutHit) const;
+	bool TracePlacementGround(const FVector& DesiredLocation, FHitResult& OutHit,int32 FootprintCells=0) const;
 	bool IsLegalGroundHit(const FHitResult& Hit) const;
 	bool IsLineOfSightClear(
 		const FVector& GroundLocation,

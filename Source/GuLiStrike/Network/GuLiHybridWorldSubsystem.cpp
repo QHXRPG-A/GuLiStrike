@@ -1,4 +1,6 @@
 #include "Network/GuLiHybridWorldSubsystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
 #include "GuLiStrike.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/Private/GuLiGameplayComputePool.h"
@@ -338,6 +340,22 @@ public:
             Result.IsSet()?TEXT("command capability"):TEXT("object adapter"),*GetNameSafe(BoundActor()));
         return Accepted;
     }
+    CommandPreparation PrepareCommand(const FrozenCommand& C,const CommandMember& M) override
+    {
+        if (!Owner.IsValid() || !Owner->GetWorld()) return CommandPreparation::Rejected;
+        if (!FGuLiHybridCommandRegistration::HasPreparation(FName(UTF8_TO_TCHAR(C.Operation.c_str())))) return CommandPreparation::Ready;
+        const auto Command=ToUECommandMember(C,M);
+        const auto R=FGuLiHybridCommandRegistration::Prepare(*Owner->GetWorld(),State,Command,Command.Members[0]);
+        return R==EGuLiHybridCommandPreparation::Ready?CommandPreparation::Ready:
+            R==EGuLiHybridCommandPreparation::Pending?CommandPreparation::Pending:CommandPreparation::Rejected;
+    }
+    void CancelCommandPreparation(const FrozenCommand& C,const CommandMember& M) override
+    {
+        if (!Owner.IsValid() || !Owner->GetWorld()) return;
+        if (!FGuLiHybridCommandRegistration::HasPreparation(FName(UTF8_TO_TCHAR(C.Operation.c_str())))) return;
+        const auto Command=ToUECommandMember(C,M);
+        FGuLiHybridCommandRegistration::Cancel(*Owner->GetWorld(),State,Command,Command.Members[0]);
+    }
     bool ApplyMotion(std::span<const uint8> B,Tick At) override {return Owner.IsValid() && (!Entities.AcceptMotion(At) || Adapter->ApplyMotion(View(B),At));}
     bool ApplyPublicState(std::span<const uint8> B,Tick At) override
     {auto* Actor=BoundActor();return Owner.IsValid() && (!Entities.AcceptMotion(At) || (Actor && FGuLiHybridComponentState::ApplyPublic(*Actor,View(B),&ComponentBindings)));}
@@ -643,6 +661,19 @@ bool UGuLiHybridWorldSubsystem::RegisterSharedStateSystem(FName Name,TSharedPtr<
     if (State->Client && !State->Client->RegisterSystem(TCHAR_TO_UTF8(*Name.ToString()),std::make_unique<FSharedStateBridge>(Name,Adapter))) return false;
     State->SharedStateSystems.Add(Name,MoveTemp(Adapter)); return true;
 }
+bool UGuLiHybridWorldSubsystem::SendSharedStateEvent(FName System,const FGuid& Peer,const FGuid& Event,TConstArrayView<uint8> Body)
+{
+    if (!State->Client || !State->Session.IsValid() || !CanPublishFacts() || !Peer.IsValid()
+        || !Event.IsValid() || System.IsNone() || Body.IsEmpty() || Body.Num()>512*1024) return false;
+    if (Peer==State->Session->GetLocalPlayerId())
+    {
+        const auto* Adapter=State->SharedStateSystems.Find(System);
+        return Adapter && IsValid((*Adapter)->LifetimeOwner()) && (*Adapter)->ReceiveEvent(Peer,Event,Body);
+    }
+    Writer W;W.Text(TCHAR_TO_UTF8(*System.ToString()));W.Raw(std::span<const uint8>(Body.GetData(),Body.Num()));
+    Message M;M.Header.Kind=MessageKind::SharedStateEvent;M.Header.Event=ToCore(Event);M.Body=W.Take();
+    return !M.Body.empty() && State->Client->SendPeer(ToCore(Peer),std::move(M));
+}
 bool UGuLiHybridWorldSubsystem::BindTarget(const FGuLiTargetHandle& Target,const FGuLiHybridObjectKey& Key)
 {
     if (!Target.IsValid() || !Key.IsValid()) return false;
@@ -726,6 +757,13 @@ bool UGuLiHybridWorldSubsystem::GetObjectLifecycle(const FGuLiHybridObjectKey& K
     LifeState=static_cast<uint8>(Record->Grant.State);
     return true;
 }
+bool UGuLiHybridWorldSubsystem::GetObjectCapability(const FGuLiHybridObjectKey& Key,FName Name,FGuLiHybridCapabilityState& Out) const
+{
+    if (!State->Client) return false;
+    const auto O=State->Client->Objects().find(ToCore(Key));if (O==State->Client->Objects().end()) return false;
+    const auto C=O->second.Capabilities.find(TCHAR_TO_UTF8(*Name.ToString()));if (C==O->second.Capabilities.end()) return false;
+    Out.Version=C->second.Version;Out.Data.Reset();Out.Data.Append(C->second.Data.data(),int32(C->second.Data.size()));return true;
+}
 FGuLiHybridObjectKey UGuLiHybridWorldSubsystem::GetTeamCapabilityKey(EGuLiTeam Team,FName Capability) const
 {
     if (!State->Client) return {};const auto* O=State->Client->FindTeamCapability(ToCore(Team),TCHAR_TO_UTF8(*Capability.ToString()));
@@ -807,7 +845,9 @@ bool UGuLiHybridWorldSubsystem::HasControl(const FGuLiHybridObjectKey& Key) cons
 bool UGuLiHybridWorldSubsystem::RouteCommand(const FGuLiHybridCommand& Command)
 {
     if (!State->Client) return false;
-    TArray<FGuLiHybridObjectKey> Objects;for (const auto& Member:Command.Members) Objects.AddUnique(Member.Key);
+    TArray<FGuLiHybridObjectKey> Objects;Objects.Reserve(Command.Members.Num());
+    TSet<FGuLiHybridObjectKey> Seen;
+    for (const auto& Member:Command.Members) if (!Seen.Contains(Member.Key)) {Seen.Add(Member.Key);Objects.Add(Member.Key);}
     ReportDirectOperation(Objects);
     return State->Client->Route(ToCore(Command));
 }
@@ -2455,6 +2495,7 @@ void UGuLiHybridWorldSubsystem::PumpMembership()
 bool UGuLiHybridWorldSubsystem::CanAdmitPeer(uint16 Kind,uint64 BodyBytes) const
 {
     if (!State->Client) return false;
+    if (MessageKind(Kind)==MessageKind::SharedStateEvent) return BodyBytes<=512*1024+260;
     if (MessageKind(Kind)==MessageKind::BootstrapRequest || MessageKind(Kind)==MessageKind::BootstrapState) return true;
     return State->Client->CanReceivePeer(BodyBytes);
 }
@@ -2514,6 +2555,18 @@ bool UGuLiHybridWorldSubsystem::HandlePeer(const FGuid& Peer,const FGuLiHybridMe
 bool UGuLiHybridWorldSubsystem::HandleNativePeer(const FGuid& Peer,const GuLiNet::Message& V)
 {
     if (!State->Client) return false;
+    if (V.Header.Kind==MessageKind::SharedStateEvent)
+    {
+        const auto* Session=State->Session.Get();
+        if (!Session || V.Header.Match!=ToCore(Session->GetRoomId()) || V.Header.Epoch!=Session->GetMatchEpoch()
+            || V.Header.Sender!=ToCore(Peer) || !V.Header.Event.Valid() || V.Body.size()>512*1024+260
+            || !Session->GetMembers().ContainsByPredicate([&](const auto& M){return M.Player==Peer && M.bOnline && M.bReady;})) return true;
+        Reader R(V.Body);std::string Name;std::span<const uint8> Body;
+        if (!R.Text(Name,256) || Name.empty() || !R.Raw(R.Remaining(),Body) || Body.empty()) return true;
+        const auto* Adapter=State->SharedStateSystems.Find(FName(UTF8_TO_TCHAR(Name.c_str())));
+        if (!Adapter || !IsValid((*Adapter)->LifetimeOwner())) return true;
+        return (*Adapter)->ReceiveEvent(Peer,ToUE(V.Header.Event),MakeArrayView(Body.data(),int32(Body.size())));
+    }
     // Bootstrap retains the existing bounded staging and membership path.
     if (V.Header.Kind==MessageKind::BootstrapRequest || V.Header.Kind==MessageKind::BootstrapState)
         return HandlePeer(Peer,ToUE(V));

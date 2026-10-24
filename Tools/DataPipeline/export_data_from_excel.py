@@ -753,6 +753,50 @@ def validate_model_references(tables):
             raise SheetError(f'ColorRegions: 无效区域编码 {key}')
 
 
+def validate_mech_mobility(tables):
+    """Validate the complete Ground tuning contract before any generated output is touched."""
+    def rows(sheet):
+        entry=tables.get('DT_GuLiStrikeMech_'+sheet)
+        if not entry: raise SheetError('GuLiStrikeMech 缺少 '+sheet)
+        result={r['Name']:r for r in entry['rows']}
+        if any(type(r['Id']) is not int or r['Id']<=0 for r in result.values()):
+            raise SheetError(sheet+': id 必须是正整数')
+        for row in result.values():
+            for key,value in row.items():
+                if isinstance(value,(int,float)) and not math.isfinite(value):
+                    raise SheetError(f'{sheet}/{row["Name"]}.{key}: 必须有限')
+        return result
+    def require(condition,message):
+        if not condition: raise SheetError('Ground mobility: '+message)
+    m,ik,c,g=rows('Mobility'),rows('GroundIK'),rows('Camera'),rows('Gait')
+    require(set(m)==set(ik)=={'Default'},'Mobility/GroundIK 必须是唯一 Default 行')
+    require(set(c)=={'Free','Aim'},'Camera 必须有 Free/Aim 行')
+    m=m['Default']; ik=ik['Default']
+    require(0<m['WalkSpeed']<=m['SprintSpeed']<=10000,'移动速度单位 cm/s，范围 (0,10000]')
+    require(0<m['Acceleration']<=100000 and 0<m['Braking']<=100000,'加速/制动单位 cm/s²')
+    require(0<m['MovingTurnRate']<=1440 and 0<=m['TurnMovementThreshold']<m['WalkSpeed'],'移动转向/原地速度阈值无效')
+    require(0<m['TurnStopDegrees']<m['TurnStartDegrees']<180,'转身结束阈值必须小于开始阈值')
+    require(0<m['GunYawLimit']<180 and 0<m['GunPitchUpLimit']<90 and 0<m['GunPitchDownLimit']<90,'枪臂角度范围无效')
+    required={'Idle','WalkForward','WalkBackward','StrafeLeft','StrafeRight','RunForward','RunBackward','TurnLeft','TurnRight','JumpStart','JumpLoop','Shoot','WalkBlend','RunBlend'}
+    require(set(g)==required,'Gait 缺少或多出配置行')
+    for name,r in g.items():
+        require(bool(re.fullmatch(r'/Game/[A-Za-z0-9_/]+\.[A-Za-z0-9_]+',r['Asset'])),f'{name}: 动画完整软引用无效')
+        require(0<r['ReferenceSpeed']<=10000 and 0<r['MinStrideScale']<=1<=r['MaxStrideScale']<=2,f'{name}: 标定速度或步幅上下限无效')
+        require(0<r['MinPlayRate']<=r['BasePlayRate']<=r['MaxPlayRate']<=64,f'{name}: 播放倍率上下限无效')
+        require(0<r['TransitionSeconds']<=2 and 0<r['SpeedSmoothingSeconds']<=2,f'{name}: 过渡单位秒，范围 (0,2]')
+        require(0<=r['RecoilCentimeters']<=50 and abs(r['TurnDegrees'])<=180,f'{name}: 后坐或转角无效')
+    require(0<ik['TraceUp']<=500 and 0<ik['TraceDown']<=500 and 0<ik['MaxFootCorrection']<=ik['TraceDown'],'IK 探测/高度修正单位 cm')
+    require(0<=ik['PelvisDown']<=ik['MaxFootCorrection'] and 0<=ik['PelvisUp']<=ik['MaxFootCorrection'],'骨盆补偿超出脚部修正范围')
+    require(0<=ik['MaxTiltDegrees']<=60 and 0<=ik['ReleaseThreshold']<ik['PlantThreshold']<=1,'IK 倾斜或支撑滞回范围无效')
+    require(all(0<ik[k]<=1000 for k in ['BlendInSeconds','BlendOutSeconds','InterpSpeed','LockReleaseDistance','ContactHeightTolerance','ContactBlendHeight']),'IK 混合和锁定参数必须为正')
+    for key in ['HeelLeft','ToeLeft','HeelRight','ToeRight']:
+        require(all(math.isfinite(v) and abs(v)<1000 for v in ik[key].values()),key+': 骨骼局部坐标单位 cm')
+    for name,r in c.items():
+        require(0<r['MinDistance']<=r['ArmLength']<=r['MaxDistance']<=10000,f'{name}: 相机距离上下限无效')
+        require(-89<=r['MinPitchDegrees']<=r['PitchDegrees']<=r['MaxPitchDegrees']<=89 and -180<=r['YawDegrees']<=180,f'{name}: 相机角度无效')
+        require(10<=r['FieldOfView']<=120 and 0<r['TransitionSeconds']<=2 and 0<r['Sensitivity']<=10 and 0<r['ZoomStep']<=1000,f'{name}: FOV/秒/灵敏度/缩放单位或范围无效')
+
+
 def main():
     workbooks = [w for w in sorted(EXCEL_DIR.glob("*.xlsx")) if not w.name.startswith("~$")]
     if not workbooks:
@@ -786,8 +830,8 @@ def main():
                     if FIELD_REFERENCE_COLUMN not in [cell.value for cell in ws[1]]:
                         raise SheetError("缺少“产生的法术场”列（int / Optional，引用 Fields.id）")
                 is_mech = stem == "GuLiStrikeMech"
-                if is_mech and ws.title not in ("升级表", "技能表", "Visuals"):
-                    raise SheetError("机甲表仅接受升级表、技能表和 Visuals")
+                if is_mech and ws.title not in ("升级表", "技能表", "Visuals", "Mobility", "Gait", "GroundIK", "Camera"):
+                    raise SheetError("机甲表仅接受升级表、技能表、Visuals、Mobility、Gait、GroundIK、Camera")
                 rows, props = export_game_texts(ws) if stem == "GuLiStrikeGameTexts" else \
                     export_sheet(ws, allow_text_id=(is_mech and ws.title == "升级表") or stem == "GuLiStrikeRogueCards")
                 if consolidated and stem != SECONDARY_WORKBOOK:
@@ -798,7 +842,7 @@ def main():
                 identity_stem, identity_sheet = SECONDARY_TABLE_IDENTITIES.get(ws.title, (stem, ws.title)) \
                     if stem == SECONDARY_WORKBOOK else (stem, ws.title)
                 if is_mech:
-                    identity_sheet = {"升级表": "Upgrades", "技能表": "Skills", "Visuals": "Visuals"}[ws.title]
+                    identity_sheet = {"升级表": "Upgrades", "技能表": "Skills"}.get(ws.title, ws.title)
                 if stem == "GuLiStrikeCommander" and ws.title == "Camera":
                     identity_sheet = "Camera"
                     if len(rows) != 1 or rows[0]['Name'] != 'Default' or rows[0]['Id'] != 1:
@@ -852,6 +896,7 @@ def main():
             validate_vfx_references(tables)
             validate_projectile_visual_profiles(tables)
             validate_model_references(tables)
+            validate_mech_mobility(tables)
             if any(name.startswith('DT_GuLiStrikeMech_') for name in tables):
                 if not all(name in tables for name in ('DT_GuLiStrikeMech_Upgrades','DT_GuLiStrikeMech_Skills')):
                     raise SheetError('GuLiStrikeMech.xlsx必须同时包含升级表与技能表')

@@ -1,7 +1,11 @@
 #include "Battle/Combat/GuLiHybridTargetBinding.h"
+#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Network/GuLiHybridManifestRegistry.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+#include "Components/CapsuleComponent.h"
 #include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
+#include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
 #include "Gameplay/Building/GuLiConstructionWorkComponent.h"
 #include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
@@ -25,7 +29,7 @@
 
 namespace GuLiHybridEngineer
 {
-constexpr uint32 Version=2;
+constexpr uint32 Version=3;
 struct FPose
 {
     FVector Position=FVector::ZeroVector,Velocity=FVector::ZeroVector;
@@ -66,12 +70,12 @@ bool Supported(const FGuLiSoldierDefinition& D)
 }
 
 /** Production engineer Actor, private travel/work recipes, and authenticated work facts. */
-class FGuLiHybridEngineerAdapter final : public IGuLiHybridSimulationAdapter
+class FGuLiHybridEngineerAdapter final : public IGuLiHybridSimulationAdapter, public TSharedFromThis<FGuLiHybridEngineerAdapter>
 {
     TWeakObjectPtr<UGuLiHybridActorWorldSubsystem> Owner;
     TWeakObjectPtr<AGuLiConstructionVehiclePawn> Pawn;
     FGuLiHybridObjectState Record;
-    bool bLocal=false;
+    bool bLocal=false,bPoseQueued=false;
     uint64 LastApplied=0,LastPublished=0;
     UWorld* World() const {return Owner.IsValid()?Owner->GetWorld():nullptr;}
     const FGuLiSoldierDefinition* Definition() const
@@ -92,7 +96,7 @@ class FGuLiHybridEngineerAdapter final : public IGuLiHybridSimulationAdapter
         P->GetCharacterMovement()->SetComponentTickEnabled(false); P->Travel->SetComponentTickEnabled(false); P->Work->SetComponentTickEnabled(false);
         P->SpawnDefaultController(); auto* AI=Cast<AGuLiEngineeringAIController>(P->GetController());
         if (!AI) {Release(); return false;}
-        AI->ConfigureVehicleNavigation(); AI->SetActorTickEnabled(false); AI->GetPathFollowingComponent()->SetComponentTickEnabled(false);
+        AI->SetActorTickEnabled(false); AI->GetPathFollowingComponent()->SetComponentTickEnabled(false);
         ApplyLedger(Record,0,false); return true;
     }
     GuLiHybridEngineer::FPose ReadPose() const
@@ -115,6 +119,7 @@ class FGuLiHybridEngineerAdapter final : public IGuLiHybridSimulationAdapter
         {
             ApplyPose(V.Pose); P->LastTransitRequestId=V.TransitRequest;
             if (!P->Travel->RestoreHybridTravel(V.Travel,false) || !P->Work->RestoreHybridWork(V.Work)) return false;
+            P->MovementPresentation->ResetToAuthority();
             LastApplied=LastPublished=0;
         }
         if (Stage==EGuLiHybridRestoreStage::Activate)
@@ -131,7 +136,7 @@ public:
     ~FGuLiHybridEngineerAdapter() override {Release();}
     UObject* LifetimeOwner() const override {return Owner.Get();}
     uint32 Version() const override {return GuLiHybridEngineer::Version;}
-    TArray<FName> RequiredSharedStateSystems() const override {return {TEXT("CommanderTasks")};}
+    TArray<FName> RequiredSharedStateSystems() const override {return {TEXT("CommanderTasks"),TEXT("CommanderMass")};}
     bool Prepare(const FGuLiHybridObjectState& V) override {Record=V; return Create();}
     void SetAuthority(const FGuLiHybridObjectState& V,bool Local) override
     {
@@ -139,6 +144,8 @@ public:
         if (auto* P=Pawn.Get())
         {
             P->FindComponentByClass<UGuLiHybridActorComponent>()->Install(V,Local);
+            P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->RefreshMassAuthority();
+            P->MovementPresentation->ResetToAuthority();
             if (Local && V.LifeState==1) World()->GetSubsystem<UGuLiUnitTaskSubsystem>()->RegisterActor(*P);
         }
     }
@@ -146,11 +153,22 @@ public:
     {
         auto* P=Pawn.Get(); if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         const float Dt=static_cast<float>(Delta);
-        auto* AI=CastChecked<AGuLiEngineeringAIController>(P->GetController());
-        auto* Follow=CastChecked<UGuLiEngineeringCrowdFollowingComponent>(AI->GetPathFollowingComponent()); Follow->RefreshParticipation();
-        Follow->TickComponent(Dt,LEVELTICK_All,nullptr); P->GetCharacterMovement()->TickComponent(Dt,LEVELTICK_All,nullptr);
         P->Travel->AdvanceHybrid(Dt); P->Work->AdvanceHybrid(Dt);
         P->Work->ApplyHybridWorkFact(P->Work->GetHybridWorkFact(At));
+        GuLiGrid::ObserveRemoteBody(*World(),Record,P->GetActorLocation(),Definition()->FootprintCells,
+            P->Travel->GetTransitState().Phase==EGuLiTransitPhase::Ground);
+        if (At<LastPublished+6 || bPoseQueued) return;
+        bPoseQueued=true;const uint64 Epoch=Record.OwnerEpoch;
+        TWeakPtr<FGuLiHybridEngineerAdapter> Weak=StaticCastSharedRef<FGuLiHybridEngineerAdapter>(AsShared());
+        World()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->QueueEngineeringPosePublish([Weak,At,Epoch]
+        {
+            if (auto Self=Weak.Pin())
+            {Self->bPoseQueued=false;if (Self->Record.OwnerEpoch==Epoch) Self->PublishPose(At);}
+        });
+    }
+    void PublishPose(uint64 At)
+    {
+        auto* P=Pawn.Get();if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         if (At<LastPublished+6) return;
         FGuLiHybridStateArchive A(65536); uint32 Version=GuLiHybridEngineer::Version; A.Value(Version);
         auto Pose=ReadPose(); GuLiHybridEngineer::Pose(A,Pose); auto Transit=P->Travel->GetTransitState(); GuLiHybridEngineeringState::Transit(A,Transit);
@@ -173,7 +191,8 @@ public:
         FGuLiCommanderSelectionState Selection; Selection.SelectionRevision=Command.SelectionRevision=1;
         Selection.ActorIds.Add(FGuLiControllableActorId(Record.Ordinal));
         FString Message; int32 Accepted=0,Rejected=0;
-        return World()->GetSubsystem<UGuLiUnitTaskSubsystem>()->Submit(*Player,Selection,Command,Message,Accepted,Rejected) && Accepted==1;
+        const bool Submitted=World()->GetSubsystem<UGuLiUnitTaskSubsystem>()->Submit(*Player,Selection,Command,Message,Accepted,Rejected) && Accepted==1;
+        return Submitted;
     }
     bool ApplyMotion(TConstArrayView<uint8> Bytes,uint64 At) override
     {
@@ -184,6 +203,7 @@ public:
         GuLiHybridEngineer::Fact(A,Fact);
         if (Version!=GuLiHybridEngineer::Version || !A.Done()) return false;
         ApplyPose(Pose); P->Travel->ApplyHybridTransitMotion(Transit);
+        GuLiGrid::ObserveRemoteBody(*World(),Record,Pose.Position,Definition()->FootprintCells,Transit.Phase==EGuLiTransitPhase::Ground);
         // Stream order uses producer ticks; freshness is measured on this receiver's logical clock.
         Fact.At=World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetLocalLogicalTick();
         if (!P->Work->ApplyHybridWorkFact(Fact)) return false;
@@ -194,6 +214,7 @@ public:
         Record=V; if (auto* P=Pawn.Get())
         {
             P->FindComponentByClass<UGuLiHybridActorComponent>()->Install(V,bLocal);
+            P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->RefreshMassAuthority();
             FGuLiTargetHandle Target; Target.Kind=EGuLiTargetKind::GroundActor; Target.AuthorityId=V.Key.StableId;
             Target.Generation=V.Key.LifeGeneration; Target.LocalId=V.Ordinal;
             P->FindComponentByClass<UGuLiCombatHealthComponent>()->ApplyHybridHealth(Target,V.Team,V.Health,
@@ -251,7 +272,8 @@ static bool AppendEngineerCatalog(UWorld& World,FGuLiHybridManifestData& Data,FS
     const auto* D=Definitions.Find(Type); auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);
     const auto* Prototype=D?Cast<ACharacter>(D->ActorClass->GetDefaultObject()):nullptr;
     const auto* NavData=Nav && Prototype?Nav->GetNavDataForProps(Prototype->GetNavAgentPropertiesRef()):nullptr;
-    if (!Map || !D || !NavData || Initial<0 || Initial>1024) {Error=TEXT("Invalid production engineer startup/configuration"); return false;}
+    const auto* Grid=World.GetSubsystem<UGuLiGroundGridSubsystem>();
+    if (!Map || !D || (!NavData && !(Grid && Grid->IsReady())) || Initial<0 || Initial>1024) {Error=TEXT("Invalid production engineer startup/configuration"); return false;}
     uint32 Ordinal=0;
     for (const auto& O:Data.Objects) if (O.Key.Kind==EGuLiHybridObjectKind::Engineer || O.Key.Kind==EGuLiHybridObjectKind::Miner) Ordinal=FMath::Max(Ordinal,O.Ordinal);
     for (const auto Team:{EGuLiTeam::Red,EGuLiTeam::Blue}) for (int32 Index=0; Index<Initial; ++Index)
@@ -259,12 +281,12 @@ static bool AppendEngineerCatalog(UWorld& World,FGuLiHybridManifestData& Data,FS
         const FVector Assembly=Team==EGuLiTeam::Red?Map->SpawnAnchors.RedAssembly:Map->SpawnAnchors.BlueAssembly;
         const FVector Desired=Assembly+GuLiResources::InitialEngineeringVehicleOffset(Team,Index,true);
         FNavLocation Ground;
-        if (!Nav->ProjectPointToNavigation(Desired,Ground,FVector(100,100,100000),NavData)
-            || FVector::DistSquared2D(Ground.Location,Desired)>FMath::Square(100.))
+        if (!GuLiGrid::ProjectBody(World,Desired,D->FootprintCells,FVector(300,300,100000),Ground,NavData))
         {Error=FString::Printf(TEXT("Production engineer startup has no navigable ground: team=%u index=%d"),uint8(Team),Index); return false;}
         auto& O=Data.Objects.AddDefaulted_GetRef(); O.Team=Team; O.Ordinal=++Ordinal;
         O.Key=FGuLiHybridManifest::MakeStableKey(Data.MapPackage,EGuLiHybridObjectKind::Engineer,FString::Printf(TEXT("initial/engineer/%u/%d"),uint8(Team),Index));
-        O.Definition=FString::Printf(TEXT("unit/%u"),Type); O.Location=Ground.Location+FVector(0,0,130); O.Health=D->MaxHealth;
+        O.Definition=FString::Printf(TEXT("unit/%u"),Type);
+        O.Location=Ground.Location+FVector(0,0,Prototype->GetCapsuleComponent()->GetScaledCapsuleHalfHeight()*D->GridDimensionScale);O.Health=D->MaxHealth;
     }
     Data.Numbers.Add(TEXT("startup/engineer_count"),Initial*2);
     Data.Strings.FindOrAdd(TEXT("startup/coverage"))+=TEXT(",Engineer");

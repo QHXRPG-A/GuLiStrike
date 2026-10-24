@@ -21,6 +21,21 @@ bool FGuLiHybridCommandRegistration::AppendVersions(FGuLiHybridManifestData& M,F
     TMap<FName,const FGuLiHybridGameplayCommand*> Values;if (!Collect(Values,Error)) return false;
     for (const auto& [Name,V]:Values) M.Numbers.Add(TEXT("command/")+Name.ToString().ToLower()+TEXT("/version"),V->Version);return true;
 }
+EGuLiHybridCommandPreparation FGuLiHybridCommandRegistration::Prepare(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M)
+{
+    for (const auto* V:Commands()) if (V->Operation==C.Operation)
+        return V->Prepare?V->Prepare(W,O,C,M):EGuLiHybridCommandPreparation::Ready;
+    return EGuLiHybridCommandPreparation::Ready;
+}
+bool FGuLiHybridCommandRegistration::HasPreparation(FName Operation)
+{
+    for (const auto* V:Commands()) if (V->Operation==Operation) return V->Prepare!=nullptr;
+    return false;
+}
+void FGuLiHybridCommandRegistration::Cancel(UWorld& W,const FGuLiHybridObjectState& O,const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M)
+{
+    for (const auto* V:Commands()) if (V->Operation==C.Operation && V->Cancel) {V->Cancel(W,O,C,M);return;}
+}
 bool FGuLiHybridCommandRegistration::Validate(const FGuLiHybridManifestData& M,FString& Error)
 {
     FGuLiHybridManifestData Required;if (!AppendVersions(Required,Error)) return false;

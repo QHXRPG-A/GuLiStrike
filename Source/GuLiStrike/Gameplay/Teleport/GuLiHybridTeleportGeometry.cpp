@@ -3,6 +3,7 @@
 #include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
+#include "Gameplay/Navigation/Grid/GuLiGridTypes.h"
 namespace GuLiHybridTeleport
 {
 bool Collect(UWorld& W,const FGuLiHybridObjectState& Root,const Net::State& S,Net::Command& C)
@@ -83,7 +84,8 @@ bool Plan(UWorld& W,const Net::State& S,Net::Command& C,bool Returning)
             const float D=SearchRadius*FMath::Sqrt(float(Attempt)/256.f);
             const FVector Preferred=Attempt?FVector::ZeroVector:FVector(Offset.X,Offset.Y,0);
             const FVector Desired=Center+Preferred+FVector(FMath::Cos(Angle)*D,FMath::Sin(Angle)*D,0);FVector Ground;double Height=0;
-            const bool Valid=U.Body.bAirborne?GuLiSkillTargeting::ResolveGround(W,Desired,Ground,&Height):GuLiLandingGround::Resolve(W,Desired,Ground,&Height,Cast<APawn>(U.Body.Actor.Get()));
+            const bool Valid=U.Body.bAirborne?GuLiSkillTargeting::ResolveGround(W,Desired,Ground,&Height):GuLiLandingGround::Resolve(W,Desired,Ground,&Height,
+                Cast<APawn>(U.Body.Actor.Get()),GuLiGrid::FootprintFromDiameter(U.Body.Radius*2.));
             if (!Valid) {++GroundFailures;continue;}
             if (FVector::DistSquared2D(Ground,Center)>FMath::Square(P.Radius*(Returning?4.:1.))) {++OutsideRadius;continue;}
             if (!U.Body.bGroundPivot) Ground.Z=Height;

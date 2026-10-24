@@ -23,7 +23,7 @@ metadata:
 1. 当前 `.uplugin`、`Build.cs`、Public 头文件和 Private 实现是行为/API 的最高事实源。
 2. `Plugins/GuLiMapAuthoring/README.md` 是用户操作手册。
 3. `Progress/DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md` 是设计合同和当前验收状态。
-4. `Progress/Archive/20260907-地图标注插件首版实现与验证.md` 及后续同主题归档保存历史证据。
+4. [20260907-地图标注插件首版实现与验证](../../../Progress/Archive/9月归档清单.md#arc-20260907-005) 及后续同主题归档保存历史证据。
 5. 本 Skill 是导航与维护知识；若与源码冲突，先依据源码和实际证据纠正 Skill，不要让旧说明反向约束真实实现。
 
 ## 不可破坏的合同

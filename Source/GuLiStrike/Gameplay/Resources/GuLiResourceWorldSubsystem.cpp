@@ -16,6 +16,11 @@
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Gameplay/Resources/GuLiResourceActors.h"
+#include "Gameplay/Resources/GuLiOreCollisionField.h"
+#include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "HAL/PlatformTime.h"
+#include "HAL/IConsoleManager.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "AI/NavigationSystemBase.h"
@@ -24,7 +29,6 @@
 #include "EngineUtils.h"
 #include "DrawDebugHelpers.h"
 #include "NavigationSystem.h"
-#include "NavMesh/RecastNavMesh.h"
 #include "Engine/StaticMesh.h"
 #include "Subsystems/SubsystemCollection.h"
 
@@ -62,6 +66,13 @@ namespace
 		0,
 		TEXT("Draw the canonical 7x7 board, Outpost_RxCy labels and public Territory ownership."),
 		ECVF_Cheat);
+	FAutoConsoleCommandWithWorld OreObstacleStatsCommand(TEXT("gs.Resources.OreObstacleStats"),
+		TEXT("Print pending ore removals, batch GT cost, live nodes and static-index publications."),
+		FConsoleCommandWithWorldDelegate::CreateLambda([](UWorld* World)
+		{
+			if (const auto* Resources=World?World->GetSubsystem<UGuLiResourceWorldSubsystem>():nullptr)
+				UE_LOG(LogGuLiResources,Display,TEXT("%s"),*Resources->GetOreObstacleDiagnostics());
+		}));
 #endif
 
 }
@@ -142,11 +153,13 @@ void UGuLiResourceWorldSubsystem::Deinitialize()
 		Hybrid->OnResourceDirectoryChanged.RemoveAll(this); Hybrid->OnResourceNodeChanged.RemoveAll(this);
 	}
 	if (WorldState) { WorldState->OnStateChanged().RemoveAll(this); WorldState->OreNodeChanged.RemoveAll(this); }
-	ClusterObstacleHandles.Reset();
+	ResetPendingOreRemovals();
+	if (auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()) Registry->ClearOreObstacles();
 	Factories.Reset();
 	Outposts.Reset();
 	ClusterObstacles.Reset();
 	OreField = nullptr;
+	OreCollisionField = nullptr;
 	WorldState = nullptr;
 	MapDefinition = nullptr;
 	EconomyConfig = nullptr;
@@ -179,14 +192,24 @@ void UGuLiResourceWorldSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 
 void UGuLiResourceWorldSubsystem::Tick(const float DeltaTime)
 {
-    if (!bWorldBeginPlay || !bResourceWorldActive || bFatalInitializationError || !bHybridDirectoryDirty) return;
-    FString Layout; int32 Nodes=0; uint64 Revision=0;
-    auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
-    if (!Hybrid || !Hybrid->GetResourceDirectoryMetadata(Layout,Nodes,Revision)) return;
-    if (!RefreshHybridQueryScene())
+    if (!bWorldBeginPlay || !bResourceWorldActive || bFatalInitializationError) return;
+    FGuLiPerformanceScope Scope(GetWorld(),TEXT("Ore.ResourceTickMs"));
+    if (bHybridDirectoryDirty)
     {
-        bFatalInitializationError=true; Hybrid->Suspend(InitializationError);
-        UE_LOG(LogGuLiResources,Error,TEXT("Resource query initialization failed: %s"),*InitializationError);
+        FString Layout; int32 Nodes=0; uint64 Revision=0;
+        auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        if (!Hybrid || !Hybrid->GetResourceDirectoryMetadata(Layout,Nodes,Revision)) return;
+        if (!RefreshHybridQueryScene())
+        {
+            bFatalInitializationError=true; Hybrid->Suspend(InitializationError);
+            UE_LOG(LogGuLiResources,Error,TEXT("Resource query initialization failed: %s"),*InitializationError);
+            return;
+        }
+    }
+    if (bHybridQuerySceneReady)
+    {
+        ProcessPendingOreRemovals();
+        if (auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()) Registry->FlushOreNavigationNotifications();
     }
 }
 
@@ -274,22 +297,7 @@ bool UGuLiResourceWorldSubsystem::RefreshHybridQueryScene()
 		}
 		else OreField->ApplyReplicatedState();
 	}
-	if (ClusterObstacles.IsEmpty())
-	{
-		auto* Obstacles=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
-		if (!Obstacles) { InitializationError=TEXT("Missing resource collision/navigation registry"); return false; }
-		ClusterObstacleHandles.SetNum(MapDefinition->Clusters.Num());
-		for (const auto& Cluster:MapDefinition->Clusters)
-		{
-			const FTransform Transform(FRotator::ZeroRotator,Cluster.Center);
-			auto* Proxy=World->SpawnActorDeferred<AGuLiOreClusterObstacleActor>(AGuLiOreClusterObstacleActor::StaticClass(),Transform,
-				nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-			if (!Proxy) { InitializationError=TEXT("Could not create all resource collision/navigation proxies"); return false; }
-			Proxy->SetReplicates(false); Proxy->InitializeObstacle(Cluster.ClusterId,Cluster.ObstacleRadiusCentimeters);
-			Proxy->FinishSpawning(Transform); ClusterObstacles.Add(Proxy);
-		}
-	}
-	for (int32 I=0;I<ClusterObstacles.Num();++I) RefreshHybridClusterObstacle(I);
+	if (!InitializeNodeObstacles()) return false;
 	bHybridQuerySceneReady=true; bHybridDirectoryDirty=false; bReplicatedStateDirty=false;
     TArray<FGuLiHybridObjectState> Objects;Hybrid->GetObjects(Objects);
     for (const auto& O:Objects) if (GuLiHybridControlPoint::Read(O).Index!=INDEX_NONE) ApplyHybridControlPoint(O,false);
@@ -299,7 +307,11 @@ bool UGuLiResourceWorldSubsystem::RefreshHybridQueryScene()
 		Nodes,ClusterObstacles.Num(),OreField?OreField->GetHISMComponentCount():0,Revision);
 	return true;
 }
-void UGuLiResourceWorldSubsystem::HandleHybridResourceDirectory() { bHybridDirectoryDirty=true; }
+void UGuLiResourceWorldSubsystem::HandleHybridResourceDirectory()
+{
+	check(IsInGameThread());
+	ResetPendingOreRemovals(); bHybridDirectoryDirty=true;
+}
 bool UGuLiResourceWorldSubsystem::IsMiningRuntimeReady() const
 {
     if (bFatalInitializationError) return false;
@@ -317,18 +329,6 @@ void UGuLiResourceWorldSubsystem::HandleHybridResourceNode(uint32 NodeId,uint8 R
 		bFatalInitializationError=true; InitializationError=TEXT("Committed ore result cannot be applied to the query scene");
 		if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) Hybrid->Suspend(InitializationError);
 	}
-}
-void UGuLiResourceWorldSubsystem::RefreshHybridClusterObstacle(int32 Index)
-{
-	if (!ClusterObstacles.IsValidIndex(Index) || !ClusterObstacles[Index] || !ClusterObstacleHandles.IsValidIndex(Index)) return;
-	auto* Obstacles=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>(); if (!Obstacles) return;
-	const bool Enabled=ClusterRemaining[Index]>0; ClusterObstacles[Index]->SetObstacleEnabled(Enabled);
-	auto& Handle=ClusterObstacleHandles[Index];
-	if (Enabled && !Handle.IsValid())
-	{
-		const auto& Cluster=MapDefinition->Clusters[Index]; Handle=Obstacles->RegisterObstacle(Cluster.Center,Cluster.ObstacleRadiusCentimeters);
-	}
-	else if (!Enabled && Handle.IsValid()) { Obstacles->UnregisterObstacle(Handle); Handle.Reset(); }
 }
 void UGuLiResourceWorldSubsystem::GetHybridQuerySceneCounts(int32& CollisionClusters,int32& EnabledClusters,int32& VisualComponents) const
 {
@@ -415,6 +415,7 @@ uint32 UGuLiResourceWorldSubsystem::FindNearestMiningNode(const uint16 ClusterId
 void UGuLiResourceWorldSubsystem::IgnoreMiningNavigationProxies(FCollisionQueryParams& Params) const
 {
     for (const AGuLiOreClusterObstacleActor* Proxy : ClusterObstacles) Params.AddIgnoredActor(Proxy);
+    if (OreCollisionField) Params.AddIgnoredActor(OreCollisionField);
 }
 
 bool UGuLiResourceWorldSubsystem::IsClusterEmpty(const int32 ClusterId) const
@@ -427,19 +428,6 @@ int32 UGuLiResourceWorldSubsystem::GetClusterRemainingRaw(const int32 ClusterId)
 {
 	const int32 Index = static_cast<int32>(ClusterId) - 1;
 	return ClusterRemaining.IsValidIndex(Index) ? ClusterRemaining[Index] : 0;
-}
-
-void UGuLiResourceWorldSubsystem::DisableDepletedCluster(const uint16 ClusterId)
-{
-	const int32 Index = static_cast<int32>(ClusterId) - 1;
-	check(ClusterObstacles.IsValidIndex(Index) && ClusterObstacles[Index]);
-	check(ClusterObstacleHandles.IsValidIndex(Index) && ClusterObstacleHandles[Index].IsValid());
-	ClusterObstacles[Index]->SetObstacleEnabled(false);
-	UGuLiDynamicObstacleRegistrySubsystem* Obstacles =
-		GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
-	check(Obstacles);
-	Obstacles->UnregisterObstacle(ClusterObstacleHandles[Index]);
-	ClusterObstacleHandles[Index].Reset();
 }
 
 FGuLiResourceAmounts UGuLiResourceWorldSubsystem::GetTeamInventory(const EGuLiTeam Team) const
@@ -456,13 +444,22 @@ void UGuLiResourceWorldSubsystem::HandleWorldStateChanged()
 
 void UGuLiResourceWorldSubsystem::HandleOreNodeChanged(uint32 NodeId,uint8 Remaining)
 {
+    check(IsInGameThread());
     if (!MapDefinition || NodeId==0 || !NodeRemaining.IsValidIndex(NodeId-1)) return;
+    const uint8 Previous=NodeRemaining[NodeId-1];
     if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
     {
         const int32 Cluster=MapDefinition->Nodes[NodeId-1].ClusterId-1;
         if (ClusterRemaining.IsValidIndex(Cluster)) ClusterRemaining[Cluster]+=int32(Remaining)-int32(NodeRemaining[NodeId-1]);
         NodeRemaining[NodeId-1]=Remaining;
-        if (UGuLiNetworkSettings::IsHybrid(GetWorld())) RefreshHybridClusterObstacle(Cluster);
     }
     if (OreField) OreField->ApplyNodeAmount(NodeId,Remaining);
+    if (Previous>0 && Remaining==0 && !QueuedOreNodes.Contains(NodeId))
+    {
+        const double Now=FPlatformTime::Seconds();
+        if (QueuedOreNodes.IsEmpty()) OreBatchDueAt=Now+FMath::Max(0.f,OreBatchWindowSeconds);
+        QueuedOreNodes.Add(NodeId);
+        PendingOreRemovals.Add({NodeId,OreWorldGeneration,Now});
+    }
+    else if (Previous==0 && Remaining>0) HandleHybridResourceDirectory();
 }

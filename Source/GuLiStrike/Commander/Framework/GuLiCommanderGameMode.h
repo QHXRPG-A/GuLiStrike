@@ -16,4 +16,10 @@ class AGuLiCommanderGameMode : public AGuLiBattleGameMode
 public:
 	AGuLiCommanderGameMode();
 
+protected:
+	virtual UClass* ResolveConfiguredPawnClass(EGuLiCommanderRole AssignedRole) const override;
+	/** Keep the Ground Blueprint out of native class construction/module registration. */
+	UPROPERTY(EditDefaultsOnly, Category="Battle|Spawning")
+	TSoftClassPtr<APawn> DefaultGroundPawnClass;
+
 };

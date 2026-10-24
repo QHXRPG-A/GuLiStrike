@@ -30,6 +30,7 @@ void UGuLiCommanderNetSyncComponent::TickComponent(float DeltaTime,ELevelTick Ti
     Super::TickComponent(DeltaTime,TickType,TickFunction);
     TickHybridInputs();
     TickOrderedCommands();
+    TickMoveResponse();
 }
 void UGuLiCommanderNetSyncComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
@@ -37,6 +38,7 @@ void UGuLiCommanderNetSyncComponent::EndPlay(const EEndPlayReason::Type Reason)
     HybridInputs.Reset(); HybridPendingCommands.Reset(); HybridSubmittedCommands.Reset();
     HybridCompletedCommands.Reset(); HybridCommandWorld.Reset(); PendingPoseChunks.Reset();
     ClearLocalMoveEndpoints();
+    MoveResponsePending.Reset(); MoveResponseText.Reset();
     Super::EndPlay(Reason);
 }
 bool UGuLiCommanderNetSyncComponent::IsSoldierStreamReady() const { return IsConnectionReady(); }

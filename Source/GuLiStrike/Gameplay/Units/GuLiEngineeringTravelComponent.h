@@ -2,17 +2,17 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "AITypes.h"
-#include "NavigationPath.h"
 #include "UObject/Interface.h"
 #include "Gameplay/Units/GuLiEngineeringCommandTypes.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "Gameplay/Stronghold/GuLiStrongholdTransitTypes.h"
+#include "Gameplay/Navigation/Grid/GuLiGridMotion.h"
+#include "Commander/Network/GuLiCommanderTypes.h"
 #include "GuLiEngineeringTravelComponent.generated.h"
 class UGuLiExternalUnitControlComponent;
 class UGuLiStrongholdTransitPresentationComponent;
 class UGuLiResourceWorldSubsystem;
 class AAIController;
-struct FPathFollowingResult;
 enum class EGuLiEngineeringMoveStatus : uint8 { Idle, WaitingForPath, Moving, Arrived, Failed };
 enum class EGuLiEngineeringPathPreparation : uint8 { Pending, Ready, Failed };
 
@@ -40,12 +40,10 @@ struct FGuLiPreparedTransit
 	FVector ClickLocation = FVector::ZeroVector;
 };
 
-/** A complete path prepared without disturbing the currently executing move. */
+/** Validated endpoint prepared without disturbing the executing Mass move. */
 struct FGuLiPreparedGroundMove
 {
 	FAIMoveRequest Request;
-	FNavPathSharedPtr Path;
-	bool bAlreadyAtGoal = false;
 	bool bNeedsPath = false;
 };
 
@@ -79,7 +77,9 @@ public:
 	bool PrepareGroundMove(const FVector& Target, float AcceptanceRadius, FGuLiPreparedGroundMove& Out) const;
 	bool CommitGroundMove(const FGuLiPreparedGroundMove& Prepared);
 	bool StopAtSafePoint();
-	bool FindGroundPath(const FVector& Target, float& OutLength) const;
+    bool EnsureMassEntity();
+    void RefreshMassAuthority();
+    UFUNCTION(BlueprintPure, Category="Engineering|Navigation") int64 GetMassEntityId() const {return MassEntityId.Value;}
 	EGuLiTransitOrderResult PrepareTransport(const FGuLiStrongholdTransitOrder& Order, FGuLiPreparedTransit& Out) const;
 	void BeginTransport(const FGuLiPreparedTransit& Prepared);
 	bool IsInTransit() const { return State.IsPhased(); }
@@ -100,16 +100,15 @@ private:
 	TArray<int32> PassedNodes;
 	float ExitQueryAccumulator = 0;
 	mutable int32 ExitCandidateCursor = 0;
+    mutable bool bGridExitPending=false;
+    mutable FVector GridExitPoint=FVector::ZeroVector;
 	EGuLiEngineeringMoveStatus GroundStatus = EGuLiEngineeringMoveStatus::Idle;
 	FVector GroundGoal = FVector::ZeroVector;
 	float GroundAcceptance = 100;
-	FNavPathSharedPtr ActiveGroundPath;
-	FAIRequestID GroundRequestId;
 	double QueuedAt = 0;
 	double LastQueueWaitMilliseconds = 0;
 	bool bWorkJourney = false;
 	bool bPathUnreachable = false;
-	bool bGroundRepath = false;
 	FVector WorkGoal = FVector::ZeroVector;
 	float WorkAcceptance = 100;
 	struct FTransitLeg { int32 Source; int32 Target; FVector Entry; };
@@ -120,20 +119,17 @@ private:
 	mutable TArray<int32> RouteParents;
 	mutable TArray<int32> RouteSources;
 	mutable EGuLiTeam RouteCacheTeam = EGuLiTeam::Unassigned;
-	struct FFailedPath { FVector Start; FVector Goal; double RetryAt; uint32 Revision; };
-	TArray<FFailedPath> FailedPaths;
-	uint32 FailureProfile = 0;
 	uint32 ReplacementTaskId = 0;
 	FVector ReplacementGoal = FVector::ZeroVector;
 	float ReplacementRadius = 100;
 	double ReplacementQueuedAt = 0;
 	EGuLiEngineeringPathPreparation ReplacementStatus = EGuLiEngineeringPathPreparation::Pending;
 	FGuLiPreparedGroundMove ReplacementPath;
-	bool ComputeQueuedPath(const FVector& Target, float Radius, double RequestTime, FGuLiPreparedGroundMove& Out, bool& bSuccess);
 	double PlanWorkRoute(const FVector& Target, TArray<FTransitLeg>* Out) const;
 	void AdvanceWorkRoute();
 	void TickGroundMove();
-	void OnGroundMoveFinished(FAIRequestID RequestId, const FPathFollowingResult& Result);
+    FGuLiGridMotion GridMotion;
+    FGuLiSoldierId MassEntityId;
 	UGuLiResourceWorldSubsystem& Resources() const;
 	IGuLiEngineeringVehicle& Vehicle() const;
 	AAIController& Controller() const;

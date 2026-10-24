@@ -63,6 +63,10 @@ struct GULISTRIKE_API FGuLiBuildingDefinition
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") EGuLiBuildingCategory Category = EGuLiBuildingCategory::General;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") FText Description;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") FVector MeshScale = FVector::OneVector;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building|Grid") int32 FootprintCells = 1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building|Grid") float SourceCollisionDiameterCm = 300.f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building|Grid") float GridDimensionScale = 1.f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building|Grid") float PresentationScale = .2f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float MaxHealth = 1000;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float MaxShield = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 BuildLevel = 1;
@@ -154,8 +158,8 @@ enum class EGuLiBuildingFeedbackTone : uint8
 
 namespace GuLiBuildingPlacementPolicy
 {
-	inline constexpr double GridSizeCentimeters = 100.0;
-	GULISTRIKE_API FVector SnapGroundLocation(const FVector& Location);
+	inline constexpr double GridSizeCentimeters = 300.0;
+	GULISTRIKE_API FVector SnapGroundLocation(const FVector& Location,int32 FootprintCells=1);
 	GULISTRIKE_API float SnapYaw(float YawDegrees);
 	inline constexpr float GroundMaximumRangeCentimeters = 2000.0f;
 	inline constexpr float MaximumSlopeDegrees = 15.0f;

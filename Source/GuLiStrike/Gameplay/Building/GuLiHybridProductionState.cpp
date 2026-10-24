@@ -6,6 +6,7 @@
 #include "Network/GuLiHybridActorWorldSubsystem.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Network/GuLiHybridManifest.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 namespace
 {
@@ -13,7 +14,7 @@ bool DecodeProduction(TConstArrayView<uint8> Bytes,FGuLiHybridProductionPrivateS
 {FGuLiHybridStateArchive A(Bytes,32768);Out.Serialize(A);return A.Done();}
 bool DecodePublic(TConstArrayView<uint8> Bytes,float& Cycle,bool& Producing)
 {FGuLiHybridStateArchive A(Bytes,32);A.Value(Cycle);A.Value(Producing);return A.Done();}
-const FGuLiHybridComponentCapabilityRegistration ProductionCapability({TEXT("Production"),3,
+const FGuLiHybridComponentCapabilityRegistration ProductionCapability({TEXT("Production"),4,
     []()->const UClass* {return UGuLiBuildingProductionComponent::StaticClass();},
     [](const UActorComponent& Component,TArray<uint8>& Bytes)
     {
@@ -48,6 +49,7 @@ const FGuLiHybridComponentCapabilityRegistration ProductionCapability({TEXT("Pro
 bool UGuLiBuildingProductionComponent::CaptureHybridProduction(FGuLiHybridProductionPrivateState& Out) const
 {
     Out={};Out.Cycle=CycleSeconds;Out.ObservedTeam=ObservedTeam;Out.Producing=bProducing;
+    Out.GridRemaining=GridRemaining;Out.GridCandidate=GridCandidate;Out.GridRetryDelay=FMath::Max(0.,GridRetryAt-UGuLiHybridActorComponent::BattleSeconds(GetOwner()));
     for (const auto& J:HybridJobs) Out.Jobs.Add({J.Event,J.Target,J.Location,J.FacingYaw,J.bSubmitted});
     return ValidateHybridProduction(Out);
 }
@@ -64,14 +66,18 @@ bool UGuLiBuildingProductionComponent::ValidateHybridProduction(const FGuLiHybri
             FString::Printf(TEXT("unit/%d"),Definition.ProductionUnitId),Family,Error)
             || State.Jobs.ContainsByPredicate([&](const auto& J){return J.Target.Kind!=Family.Kind;})) return false;
     }
-    return State.Cycle<=FMath::Max(0.f,Definition.ProductionSeconds)
+    return State.GridRemaining+State.Jobs.Num()<=FMath::Max(0,Definition.ProductionCount)
+        && State.Cycle<=FMath::Max(0.f,Definition.ProductionSeconds)
         && (Definition.HasProductionCapability() || (!State.Producing && State.Jobs.IsEmpty()));
 }
 bool UGuLiBuildingProductionComponent::RestoreHybridProduction(const FGuLiHybridProductionPrivateState& State)
 {
     if (!ValidateHybridProduction(State)) return false;
+    for (const auto& J:HybridJobs) ReleaseGridBirth(J.Target,!J.bSubmitted);
     CycleSeconds=State.Cycle;ObservedTeam=State.ObservedTeam;bProducing=State.Producing;HybridJobs.Reset();
+    GridRemaining=State.GridRemaining;GridCandidate=State.GridCandidate;GridRetryAt=UGuLiHybridActorComponent::BattleSeconds(GetOwner())+State.GridRetryDelay;
     for (const auto& J:State.Jobs) HybridJobs.Add({J.Event,J.Target,J.Location,J.FacingYaw,J.Submitted});
+    RecoverGridBirths();
     return true;
 }
 bool UGuLiBuildingProductionComponent::ValidateHybridProductionMotion(float Cycle,bool Producing) const

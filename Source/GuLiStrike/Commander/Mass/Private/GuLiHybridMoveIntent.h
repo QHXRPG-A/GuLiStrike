@@ -30,6 +30,15 @@ inline void MoveIntent(FGuLiHybridStateArchive& A,TSharedPtr<FGuLiSharedMoveInte
     A.Random(V.Random); A.Value(V.Pitch); A.Value(V.GeneratedRadius); A.Value(V.WantedPoints);
     A.Value(V.MetadataCursor); A.Value(V.Ring); A.Value(V.Step); A.Value(V.CoverageGeneration);
     A.Value(V.bMetadataReady); A.Value(V.bExhausted);
+    A.Value(V.AcceptedSequence);A.Value(V.CommandIdentity);
+    TArray<uint32> Sized;
+    if (!A.IsReading()) { V.GridSizes.GenerateKeyArray(Sized);Sized.Sort(); }
+    A.Array(Sized,32768,[&](auto& Ar,uint32& K)
+    {
+        Ar.Value(K);int32 Size=Ar.IsReading()?0:V.GridSizes.FindChecked(K);Ar.Value(Size);
+        if (!K || Size<1 || Size>64 || Ar.IsReading() && V.GridSizes.Contains(K)) Ar.Reject();
+        if (Ar.IsReading() && Ar.Good()) V.GridSizes.Add(K,Size);
+    });
     if (V.Pitch<0 || V.GeneratedRadius<0 || V.WantedPoints<0 || V.WantedPoints>10000
         || V.MetadataCursor<0 || V.Ring<0 || V.Step<0) A.Reject();
 }

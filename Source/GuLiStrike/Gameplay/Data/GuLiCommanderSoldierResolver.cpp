@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Data/GuLiCommanderSoldierResolver.h"
+#include "Gameplay/Navigation/Grid/GuLiGridTypes.h"
+#include "Components/CapsuleComponent.h"
 #include "StateTree.h"
 
 #include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
@@ -238,6 +240,17 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		return Resolved;
 	}
 	Resolved.PresentationScale = Row->PresentationScale;
+	// Always derive from authored data/CDO, never an already scaled live instance.
+	Resolved.SourceCollisionDiameterCm = 2.f * Resolved.GetMassAvoidanceRadius(150.f);
+	if (Resolved.ActorClass)
+	{
+		if (const auto* Body=Resolved.ActorClass->GetDefaultObject<AActor>()->FindComponentByClass<UCapsuleComponent>())
+			Resolved.SourceCollisionDiameterCm=2.f*Body->GetScaledCapsuleRadius();
+	}
+	Resolved.FootprintCells=GuLiGrid::FootprintFromDiameter(Resolved.SourceCollisionDiameterCm);
+	Resolved.GridDimensionScale=float(GuLiGrid::ScaleFromDiameter(Resolved.SourceCollisionDiameterCm));
+	Resolved.MassAvoidanceRadiusCm=Resolved.FootprintCells*150.f;
+	Resolved.PresentationScale*=Resolved.GridDimensionScale;
 	Resolved.bSummonOnly = Row->bSummonOnly;
 	Resolved.VATDefinition = Cast<UGuLiVATDefinition>(ModelDefinition.VATDefinition.LoadSynchronous());
 	if (!ModelDefinition.VATDefinition.IsNull() && (!Resolved.VATDefinition || !Resolved.VATDefinition->IsValidDefinition()))

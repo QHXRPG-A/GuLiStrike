@@ -177,6 +177,29 @@ void Validate(const FGuLiMapSnapshot& S,TArray<FGuLiMapIssue>& Issues)
     }
     ValidateDensity(S,Issues);
 }
+TSharedRef<FJsonObject> TypeJson(const UGuLiMapTypeDefinition& T)
+{
+    auto J=MakeShared<FJsonObject>();
+    J->SetStringField(TEXT("type_id"),T.TypeId.ToString()); J->SetStringField(TEXT("asset_path"),T.GetPathName()); J->SetStringField(TEXT("display_name"),T.DisplayName);
+    J->SetStringField(TEXT("editor_icon"),T.EditorIcon.ToString());
+    J->SetField(TEXT("color_rgb"),VectorJson(FVector(T.Color.R,T.Color.G,T.Color.B))); J->SetNumberField(TEXT("color_alpha"),T.Color.A);
+    TArray<TSharedPtr<FJsonValue>> Shapes,Defs,Defaults; TArray<FName> ShapeNames=T.AllowedShapes; ShapeNames.Sort(FNameLexicalLess());
+    for (FName N:ShapeNames) Shapes.Add(Str(N.ToString())); J->SetArrayField(TEXT("allowed_shapes"),Shapes);
+    for (const auto& D:Fields(T.DefaultParameters))
+    {
+        auto F=MakeShared<FJsonObject>(); F->SetStringField(TEXT("field_id"),Guid(D.ID)); F->SetStringField(TEXT("field_key"),D.Name.ToString());
+        F->SetStringField(TEXT("field_type"),FieldType(D)); F->SetStringField(TEXT("value_type_object"),D.ValueTypeObject?D.ValueTypeObject->GetPathName():TEXT(""));
+        F->SetField(TEXT("default"),FieldValue(T.DefaultParameters,D));
+        for (const auto& Rule:T.FieldRules) if (Rule.FieldId==D.ID)
+        {
+            F->SetStringField(TEXT("display_name"),Rule.DisplayName); F->SetBoolField(TEXT("required"),Rule.bRequired);
+            if (Rule.bUseMinimum) F->SetNumberField(TEXT("minimum"),Rule.Minimum); if (Rule.bUseMaximum) F->SetNumberField(TEXT("maximum"),Rule.Maximum);
+        }
+        Defs.Add(Obj(F));
+    }
+    for (const auto& R:T.DefaultRegions) Defaults.Add(Obj(RegionJson(R,FTransform::Identity)));
+    J->SetArrayField(TEXT("fields"),Defs); J->SetArrayField(TEXT("default_regions"),Defaults); return J;
+}
 bool BuildFiles(const FGuLiMapSnapshot& Input,TMap<FString,FString>& Out,TArray<FGuLiMapIssue>& Issues)
 {
     Validate(Input,Issues); if (HasErrors(Issues)) return false;
@@ -243,26 +266,7 @@ bool BuildFiles(const FGuLiMapSnapshot& Input,TMap<FString,FString>& Out,TArray<
     TArray<FString> TypeKeys; Types.GetKeys(TypeKeys); TypeKeys.Sort();
     for (const auto& K:TypeKeys)
     {
-        const auto& T=*Types[K]; auto J=MakeShared<FJsonObject>();
-        J->SetStringField(TEXT("type_id"),K); J->SetStringField(TEXT("asset_path"),T.GetPathName()); J->SetStringField(TEXT("display_name"),T.DisplayName);
-        J->SetStringField(TEXT("editor_icon"),T.EditorIcon.ToString());
-        J->SetField(TEXT("color_rgb"),VectorJson(FVector(T.Color.R,T.Color.G,T.Color.B))); J->SetNumberField(TEXT("color_alpha"),T.Color.A);
-        TArray<TSharedPtr<FJsonValue>> Shapes,Defs,Defaults; TArray<FName> ShapeNames=T.AllowedShapes; ShapeNames.Sort(FNameLexicalLess());
-        for (FName N:ShapeNames) Shapes.Add(Str(N.ToString())); J->SetArrayField(TEXT("allowed_shapes"),Shapes);
-        for (const auto& D:Fields(T.DefaultParameters))
-        {
-            auto F=MakeShared<FJsonObject>(); F->SetStringField(TEXT("field_id"),Guid(D.ID)); F->SetStringField(TEXT("field_key"),D.Name.ToString());
-            F->SetStringField(TEXT("field_type"),FieldType(D)); F->SetStringField(TEXT("value_type_object"),D.ValueTypeObject?D.ValueTypeObject->GetPathName():TEXT(""));
-            F->SetField(TEXT("default"),FieldValue(T.DefaultParameters,D));
-            for (const auto& Rule:T.FieldRules) if (Rule.FieldId==D.ID)
-            {
-                F->SetStringField(TEXT("display_name"),Rule.DisplayName); F->SetBoolField(TEXT("required"),Rule.bRequired);
-                if (Rule.bUseMinimum) F->SetNumberField(TEXT("minimum"),Rule.Minimum); if (Rule.bUseMaximum) F->SetNumberField(TEXT("maximum"),Rule.Maximum);
-            }
-            Defs.Add(Obj(F));
-        }
-        for (const auto& R:T.DefaultRegions) Defaults.Add(Obj(RegionJson(R,FTransform::Identity)));
-        J->SetArrayField(TEXT("fields"),Defs); J->SetArrayField(TEXT("default_regions"),Defaults); TypeArray.Add(Obj(J));
+        TypeArray.Add(Obj(TypeJson(*Types[K])));
     }
     Root->SetArrayField(TEXT("types"),TypeArray); Root->SetArrayField(TEXT("markers"),Markers);
     if (!JsonFinite(Obj(Root))) { Issues.Emplace(TEXT("Serializer produced non-finite or missing data.")); return false; }

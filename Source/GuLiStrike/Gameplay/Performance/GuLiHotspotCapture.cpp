@@ -187,7 +187,7 @@ FString UGuLiPerformanceSubsystem::PrepareHotspotSelection(const TArray<int32>& 
 #endif
 }
 
-FString UGuLiPerformanceSubsystem::PrepareHotspotCombat(int32 LocalUnits,int32 UnitType,int32 SkipLocalUnits)
+FString UGuLiPerformanceSubsystem::PrepareHotspotCombat(int32 LocalUnits,int32 UnitType,int32 SkipLocalUnits,int32 EnemyActorId)
 {
 #if !UE_BUILD_SHIPPING
     if (bCapturing || LocalUnits<1 || LocalUnits>150 || UnitType<0 || UnitType>MAX_uint16 || SkipLocalUnits<0 || SkipLocalUnits>10000)
@@ -202,11 +202,16 @@ FString UGuLiPerformanceSubsystem::PrepareHotspotCombat(int32 LocalUnits,int32 U
         && (UnitType?O.Definition==FName(*FString::Printf(TEXT("unit/%d"),UnitType)):(O.Definition==TEXT("unit/1")||O.Definition==TEXT("unit/2"))))
         {if (Skipped++<SkipLocalUnits) continue;Sources.Add(O);if (Sources.Num()==LocalUnits) break;}
     if (Sources.Num()!=LocalUnits) return TEXT("{\"error\":\"Insufficient live locally simulated combat units\"}");
-    const auto* Enemy=Objects.FindByPredicate([&](const auto& O){return O.Key.Kind==EGuLiHybridObjectKind::Soldier
-        &&O.LifeState==1&&O.Team!=Sources[0].Team&&O.Team!=EGuLiTeam::Unassigned&&O.Definition==TEXT("unit/2");});
+    const auto* Enemy=Objects.FindByPredicate([&](const auto& O){return O.LifeState==1
+        &&O.Team!=Sources[0].Team&&O.Team!=EGuLiTeam::Unassigned
+        && (EnemyActorId>0 ? (O.Ordinal==uint32(EnemyActorId)
+            && (O.Key.Kind==EGuLiHybridObjectKind::Miner || O.Key.Kind==EGuLiHybridObjectKind::Engineer))
+            : (O.Key.Kind==EGuLiHybridObjectKind::Soldier && O.Definition==TEXT("unit/2")));});
     if (!Enemy) return TEXT("{\"error\":\"No live enemy combat anchor\"}");
     EGuLiTeam EnemyTeam;uint16 EnemyType=0;FVector EnemyPosition;
-    if (!Army->GetTaskSoldierInfo(FGuLiSoldierId(Enemy->Ordinal),EnemyTeam,EnemyType,EnemyPosition))
+    const auto* EnemyActor=EnemyActorId>0 ? H->FindBoundActor(Enemy->Key) : nullptr;
+    if (EnemyActor) EnemyPosition=EnemyActor->GetActorLocation();
+    else if (EnemyActorId>0 || !Army->GetTaskSoldierInfo(FGuLiSoldierId(Enemy->Ordinal),EnemyTeam,EnemyType,EnemyPosition))
         return TEXT("{\"error\":\"Enemy applied entity position is unavailable\"}");
     TArray<FGuLiMassExternalUnit> Units;TArray<TSharedPtr<FJsonValue>> Rows;
     TArray<FVector> Before;

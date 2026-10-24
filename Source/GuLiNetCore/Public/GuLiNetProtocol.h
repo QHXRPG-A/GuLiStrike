@@ -15,7 +15,11 @@ enum class MessageKind : std::uint16_t
     SelectionActivity,DirectOperation,HandoffPrepare,HandoffReady,HandoffFreeze,
     HandoffState,HandoffInstalled,HandoffCommit,HandoffCancel,HandoffCommands,
     WorkPrepare,WorkPrepared,WorkCommit,WorkReceipt,WorkCancel,WorkStateRequest,PeerStatus,CommandState,TransactionIntent,WorkState,
-    ResourceGroups,ResourceSnapshot,ResourceSnapshotStored,ResourceSnapshotInstall,ResourceSnapshotInstalled
+    ResourceGroups,ResourceSnapshot,ResourceSnapshotStored,ResourceSnapshotInstall,ResourceSnapshotInstalled,
+    SharedStateEvent,
+    // Keep last: exclusive bound for message validation and per-kind storage.
+    // This sentinel is never transmitted and does not change existing wire IDs.
+    Count
 };
 enum class Lane : std::uint8_t { Control,Motion,Effects,Handoff };
 

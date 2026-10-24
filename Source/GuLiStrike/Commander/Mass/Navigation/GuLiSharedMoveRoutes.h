@@ -3,8 +3,10 @@
 #include "CoreMinimal.h"
 #include "NavigationData.h"
 #include "Commander/Mass/Navigation/GuLiNavigationDependency.h"
+#include "Gameplay/Navigation/Grid/GuLiGridSlots.h"
 
 class UNavigationSystemV1;
+class UGuLiGroundGridSubsystem;
 struct FGuLiSharedRouteGoal;
 
 /** A direct leg is usable only from the checked foot position, on the same navigation generation. */
@@ -63,7 +65,16 @@ struct FGuLiSharedMoveIntent
 	uint32 CoverageGeneration = 0;
 	bool bMetadataReady = false;
 	bool bExhausted = false;
+    // Rebuilt lazily after recovery; already accepted square slots remain frozen.
+    TSharedPtr<FGuLiGridSlots> GridSlots;
+    TMap<uint32,int32> GridSizes;
+    uint64 AcceptedSequence=0;
+    FGuid CommandIdentity;
+    int32 GridRestoreCursor=0,GridBuildCursor=0;
+    TArray<uint32> GridRestoreMembers;
+    bool bGridMetadataReady=false,bGridSlotsReady=false;
 	void Generate(const ANavigationData& Data, uint32 Generation, FGuLiNavigationWorkBudget& Budget);
+    void GenerateGrid(UGuLiGroundGridSubsystem& Grid,const ANavigationData& NavData,FGuLiNavigationWorkBudget& Budget);
 	bool InDockingArea(const FVector& Position) const;
 };
 

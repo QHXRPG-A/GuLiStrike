@@ -47,9 +47,9 @@ CPU回退：gs.Hybrid.FlightServiceFastPath、gs.Hybrid.CacheFlightLifecycleLook
 名单修复手动复核：分别选择24人和更大编队下达移动、改令、停止，核验每个成员收到对应目标与槽位；编队完整性和逐成员回执保持。此次没有运行不同人数的计时曲线，也没有实施最高优先级插队。
 绿线不伪造接受回执；60Hz逻辑推进、伤害、动画、相机、全部单位及弹丸均保留。地面Mass死亡爆炸按用户要求缩至1/3。
 用户自行核验UI外观响应、四档模型及部件、描边、特效与移动观感。助手不截图读图或目检；技术与性能数据不能代替视觉验收。
-正式配置与阶段证据：Progress/DevelopmentDocumentation/20261021-交火优化正式版本交付.md。
-指令阶段诊断：Progress/DevelopmentDocumentation/20261021-本机指令交付与规划调度.md。
-事务调度与最新总耗时：Progress/DevelopmentDocumentation/20261021-事务分批与本机响应.md。"""
+正式配置与阶段证据：Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d07。
+指令阶段诊断：Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d04。
+事务调度与最新总耗时：Progress/DevelopmentDocumentation/20261021-近期性能优化.md#dev-20261020-004-d08。"""
 
 with unreal.ScopedEditorTransaction("Hybrid CPU review entry"):
     if matches:

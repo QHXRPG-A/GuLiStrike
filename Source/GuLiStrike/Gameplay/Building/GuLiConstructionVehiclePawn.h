@@ -6,6 +6,7 @@
 class UChildActorComponent;
 class UGuLiConstructionWorkComponent;
 class UGuLiConstructionPresentationComponent;
+class UGuLiEngineeringPoseComponent;
 class UGuLiBuildingLifecycleComponent;
 struct FGuLiSoldierDefinition;
 
@@ -33,6 +34,7 @@ private:
 	FBox TravelBounds = FBox(ForceInit);
 	uint32 LastTransitRequestId = 0;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UChildActorComponent> Presentation;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiEngineeringPoseComponent> MovementPresentation;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiEngineeringTravelComponent> Travel;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiConstructionWorkComponent> Work;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiConstructionPresentationComponent> ConstructionPresentation;

@@ -110,8 +110,17 @@ void AGuLiResourceFactoryActor::InitializeFactory(
 	Team = InTeam;
 	StableActorId = InId.IsValid() ? InId : FGuLiControllableActorId(InTeam == EGuLiTeam::Red ? 101u : 102u);
 	Lifecycle->InitializeBuilding(DefinitionId, TerritoryIndex, Origin, bCompleted, Builder);
+	const auto& Definition=Lifecycle->GetDefinition();
+	CollisionBox->SetBoxExtent(Definition.CollisionExtent);
+	Presentation->SetRelativeScale3D(FVector(Definition.PresentationScale));
+	const auto* Source=GetClass()->GetDefaultObject<AGuLiResourceFactoryActor>();
+	for (int32 Index=0;Index<UnloadPoints.Num();++Index)
+		if (Source->UnloadPoints.IsValidIndex(Index))
+			UnloadPoints[Index]->SetRelativeLocation(Source->UnloadPoints[Index]->GetRelativeLocation()*Definition.GridDimensionScale);
 	RefreshConstructionCollision();
 	DockPoint = InDockPoint;
+	// Keep the authored interior unload points, scaled together with the factory.
+	// The placement grid must not relocate them to a row outside the entrance.
 	OnRep_DockPoint();
     Inventory->ConfigureProcessing(Config.FactoryProcessingRatePerSecond,FName(FString::Printf(TEXT("mining/process/building/%d"),DefinitionId)));
 	PresentationClass = GuLiModels::LoadClass<AActor>(this, Config.FactoryModelId);

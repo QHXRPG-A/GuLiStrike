@@ -1,11 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiResourceAuthoringLibrary.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridData.h"
 #include "GuLiInitialArmyAuthoring.h"
 #include "GuLiCommanderIslandAuthoringLibrary.h"
 
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 #include "GuLiMapAuthoring.h"
 #include "GuLiMapAuthoringSubsystem.h"
 #include "GuLiMapDensityMap.h"
@@ -53,7 +55,7 @@ namespace GuLiResourceAuthoring
 	constexpr TCHAR EconomyPackage[] =
 		TEXT("/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy");
 	constexpr float TerritoryBoundaryMargin = GULI_RESOURCE_TERRITORY_BOUNDARY_MARGIN_CM;
-	constexpr float MinimumClusterSpacing = 5500.0f;
+	constexpr float MinimumClusterSpacing = GULI_RESOURCE_CLUSTER_MINIMUM_SPACING_CM;
 	constexpr float OutpostExclusionRadius = 6500.0f;
 	constexpr float MaximumSlopeDegrees = 15.0f;
 	constexpr double Pi = UE_DOUBLE_PI;
@@ -183,6 +185,10 @@ namespace GuLiResourceAuthoring
 			return false;
 		}
 		AppendMapIssues(Issues, Result);
+		if(const auto* Grid=LoadObject<UGuLiGroundGridData>(nullptr,TEXT("/Game/GuLiStrike/Data/Navigation/DA_CommanderGroundGrid.DA_CommanderGroundGrid"));Grid&&Grid->bHasAuthoredDesignBounds)
+		{
+			OutFiles.Add(TEXT("standalone_terrain_source.json"),FString::Printf(TEXT("{\"source_hash\":\"%s\",\"cells\":[%d,%d],\"origin\":[%.17g,%.17g]}\n"),*Grid->SourceHash,Grid->Cells.X,Grid->Cells.Y,Grid->Origin.X,Grid->Origin.Y));
+		}
 		return !GuLiMap::HasErrors(Issues);
 	}
 
@@ -446,6 +452,8 @@ namespace GuLiResourceAuthoring
 
 	bool IsNavigable(UWorld& World, const FVector& Location)
 	{
+        if (const auto Grid=GuLiGrid::AuthoredSnapshot(World))
+            return Grid->Fits(Grid->AnchorAt(Location,3),3);
 		const UNavigationSystemV1* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);
 		if (!Navigation) return false;
 		const FName AgentNames[] = { TEXT("Default"), TEXT("CommanderSoldier") };
@@ -468,9 +476,12 @@ namespace GuLiResourceAuthoring
 		const FVector2D XY, FVector& OutCenter)
 	{
 		FVector Normal;
-		return !IsExplicitlyExcluded(World, XY)
-			&& InitialArmy.IsOreClear(XY)
-			&& TraceGround(World, XY, OutCenter, Normal)
+        FVector2D Sample=XY;
+        if (const auto Grid=GuLiGrid::AuthoredSnapshot(World))
+        {const auto P=Grid->Center(Grid->AnchorAt(FVector(XY,0),3),3);Sample=FVector2D(P);}
+		return !IsExplicitlyExcluded(World, Sample)
+			&& InitialArmy.IsOreClear(Sample)
+			&& TraceGround(World, Sample, OutCenter, Normal)
 			&& OutCenter.Z > 0.0
 			&& IsNavigable(World, OutCenter)
 			&& IsSpatiallyClear(World, OutCenter);
@@ -526,7 +537,8 @@ namespace GuLiResourceAuthoring
 		for (int32 SampleY = 0; SampleY < 3; ++SampleY)
 		for (int32 SampleX = 0; SampleX < 3; ++SampleX)
 		{
-			const FVector2D Location((CellX + Fractions[SampleX]) * CellSize, (CellY + Fractions[SampleY]) * CellSize);
+			const FVector2D Location(FMath::GridSnap((CellX + Fractions[SampleX]) * CellSize,300.),
+                FMath::GridSnap((CellY + Fractions[SampleY]) * CellSize,300.));
 			const FVector2D Local = Location - Center;
 			if (FMath::Abs(Local.X) > GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - TerritoryBoundaryMargin
 				|| FMath::Abs(Local.Y) > GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - TerritoryBoundaryMargin) continue;
@@ -578,8 +590,8 @@ namespace GuLiResourceAuthoring
 		{
 			FVector Location;
 			FVector Normal;
-			if (!TraceGround(World, PrimaryCenter + Node.LocalOffset * GULI_RESOURCE_OBJECT_SCALE, Location, Normal)
-				|| !TraceGround(World, MirrorCenter - Node.LocalOffset * GULI_RESOURCE_OBJECT_SCALE, Location, Normal))
+			if (!TraceGround(World, PrimaryCenter + Node.LocalOffset * (GULI_RESOURCE_OBJECT_SCALE*GULI_RESOURCE_ORE_GRID_SCALE), Location, Normal)
+				|| !TraceGround(World, MirrorCenter - Node.LocalOffset * (GULI_RESOURCE_OBJECT_SCALE*GULI_RESOURCE_ORE_GRID_SCALE), Location, Normal))
 			{
 				return false;
 			}
@@ -822,6 +834,7 @@ namespace GuLiResourceAuthoring
 		// navigation clearance has changed. Cluster array order is NOT symmetry-pair order.
 		// A partially written, failed bake must never enter this certified-layout fast path.
 		const bool bRetainCenters = Definition.SourceHash == SourceHash
+			&& FMath::IsNearlyEqual(Definition.BakedGridCellCm,300.f)
 			&& Definition.LayoutVersion == GULI_RESOURCE_LAYOUT_VERSION
 			&& Definition.Territories.Num() == GULI_RESOURCE_TERRITORY_COUNT
 			&& Definition.Clusters.Num() == GULI_RESOURCE_CLUSTER_COUNT
@@ -830,46 +843,8 @@ namespace GuLiResourceAuthoring
 			&& Definition.DeterministicSeed == GULI_RESOURCE_BAKE_SEED;
 		if (bRetainCenters)
 		{
-			const bool bAlreadyScaled = FMath::IsNearlyEqual(
-				Definition.BakedObjectScale, GULI_RESOURCE_OBJECT_SCALE);
-			if (!bAlreadyScaled && !FMath::IsNearlyEqual(Definition.BakedObjectScale, 1.0f))
-			{
-				OutError = TEXT("Unknown baked object scale; refusing to compound an unrecognized migration.");
-				return false;
-			}
-			TArray<FGuLiResourceNodeDefinition> RegroundNodes = Definition.Nodes;
-			for (FGuLiResourceNodeDefinition& Node : RegroundNodes)
-			{
-				const FGuLiResourceClusterDefinition* Cluster = Definition.FindCluster(Node.ClusterId);
-				if (!Cluster)
-				{
-					OutError = TEXT("Cannot retain ore layout: invalid node ClusterId.");
-					return false;
-				}
-				FVector2D NodeXY(Node.WorldTransform.GetLocation());
-				if (!bAlreadyScaled)
-				{
-					const float Ratio = GULI_RESOURCE_OBJECT_SCALE / Definition.BakedObjectScale;
-					const FVector2D CenterXY(Cluster->Center);
-					NodeXY = CenterXY + (NodeXY - CenterXY) * Ratio;
-					Node.WorldTransform.SetScale3D(Node.WorldTransform.GetScale3D() * Ratio);
-				}
-				FVector Location, SurfaceNormal;
-				if (!TraceGround(World, NodeXY, Location, SurfaceNormal))
-				{
-					OutError = FString::Printf(TEXT("Retained node %u ground projection failed."), Node.NodeId);
-					return false;
-				}
-				Node.WorldTransform.SetLocation(Location);
-			}
-			Definition.Nodes = MoveTemp(RegroundNodes);
-			for (FGuLiResourceClusterDefinition& Cluster : Definition.Clusters)
-			{
-				Cluster.ObstacleRadiusCentimeters = GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM;
-			}
-			Definition.LayoutVersion = GULI_RESOURCE_LAYOUT_VERSION;
-			Definition.BakedObjectScale = GULI_RESOURCE_OBJECT_SCALE;
-			Definition.LayoutHash = Definition.CalculateLayoutHash();
+            // A certified grid layout is immutable when its source is unchanged. In particular,
+            // per-node regrounding would destroy the whole-cluster uniform migration in Z.
 			return Definition.ValidateDefinition(OutError);
 		}
 		TArray<FClusterBakeSeed> BakedClusters;
@@ -877,18 +852,26 @@ namespace GuLiResourceAuthoring
 		Definition.MapPackage = FName(*Snapshot.MapPackage);
 		Definition.LayoutVersion = GULI_RESOURCE_LAYOUT_VERSION;
 		Definition.BakedObjectScale = GULI_RESOURCE_OBJECT_SCALE;
+        Definition.BakedGridCellCm = 300.f;
 		Definition.DeterministicSeed = GULI_RESOURCE_BAKE_SEED;
 		Definition.SourceHash = SourceHash;
 		Definition.PlayableMinimum = FVector2D(-GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM);
 		Definition.PlayableMaximum = FVector2D(GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM);
+        Definition.bHasAuthoredPlayableBounds=false;
+        if(const auto* Grid=LoadObject<UGuLiGroundGridData>(nullptr,TEXT("/Game/GuLiStrike/Data/Navigation/DA_CommanderGroundGrid.DA_CommanderGroundGrid"));Grid&&Grid->bHasAuthoredDesignBounds)
+        {
+            Definition.PlayableMinimum=Grid->Origin;Definition.PlayableMaximum=Grid->Origin+FVector2D(Grid->Cells)*Grid->CellSizeCentimeters;
+            Definition.bHasAuthoredPlayableBounds=true;
+        }
 		FVector* Anchors[] = { &Definition.SpawnAnchors.RedFactory, &Definition.SpawnAnchors.RedAssembly,
 			&Definition.SpawnAnchors.BlueFactory, &Definition.SpawnAnchors.BlueAssembly };
 		const double Y[] = { GULI_RESOURCE_FACTORY_ANCHOR_Y_CM, GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM,
 			-GULI_RESOURCE_FACTORY_ANCHOR_Y_CM, -GULI_RESOURCE_ASSEMBLY_ANCHOR_Y_CM };
+        const double X[]={GULI_RESOURCE_FACTORY_ANCHOR_X_CM,0.,-GULI_RESOURCE_FACTORY_ANCHOR_X_CM,0.};
 		for (int32 Index = 0; Index < UE_ARRAY_COUNT(Anchors); ++Index)
 		{
 			FVector Normal;
-			if (!TraceGround(World, FVector2D(0, Y[Index]), *Anchors[Index], Normal) || Anchors[Index]->Z <= 0.0
+			if (!TraceGround(World, FVector2D(X[Index], Y[Index]), *Anchors[Index], Normal) || Anchors[Index]->Z <= 0.0
 				|| Normal.Z < FMath::Cos(FMath::DegreesToRadians(3.0)))
 			{
 				OutError = TEXT("Factory and assembly anchors require flat land above sea level.");
@@ -994,7 +977,7 @@ namespace GuLiResourceAuthoring
 				const FNodePattern& PatternNode = (*Pattern)[LocalIndex];
 				const FVector2D Offset = ClusterSeed.bMirrored
 					? -PatternNode.LocalOffset : PatternNode.LocalOffset;
-				const FVector2D NodeXY = FVector2D(ClusterSeed.Center) + Offset * GULI_RESOURCE_OBJECT_SCALE;
+				const FVector2D NodeXY = FVector2D(ClusterSeed.Center) + Offset * (GULI_RESOURCE_OBJECT_SCALE*GULI_RESOURCE_ORE_GRID_SCALE);
 				FVector NodeLocation;
 				FVector SurfaceNormal;
 				if (!TraceGround(World, NodeXY, NodeLocation, SurfaceNormal))
@@ -1014,7 +997,7 @@ namespace GuLiResourceAuthoring
 				Node.WorldTransform = FTransform(
 					FRotator(0.0f, Yaw, 0.0f),
 					NodeLocation,
-					FVector(PatternNode.UniformScale * GULI_RESOURCE_OBJECT_SCALE));
+					FVector(PatternNode.UniformScale * (GULI_RESOURCE_OBJECT_SCALE*GULI_RESOURCE_ORE_GRID_SCALE)));
 			}
 		}
 		Definition.LayoutHash = Definition.CalculateLayoutHash();
@@ -1055,6 +1038,7 @@ namespace GuLiResourceAuthoring
 
 	bool ConfigureNavigationBounds(UWorld& World, FString& OutError)
 	{
+        if (GuLiGrid::AuthoredSnapshot(World)) return true;
 		TArray<ANavMeshBoundsVolume*> Volumes;
 		for (TActorIterator<ANavMeshBoundsVolume> It(&World); It; ++It) Volumes.Add(*It);
 		if (Volumes.Num() != 1)
@@ -1390,11 +1374,13 @@ FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::BakeCurrentMap(const bool
 	Definition->MapPackage = Candidate->MapPackage;
 	Definition->LayoutVersion = Candidate->LayoutVersion;
 	Definition->BakedObjectScale = Candidate->BakedObjectScale;
+    Definition->BakedGridCellCm = Candidate->BakedGridCellCm;
 	Definition->DeterministicSeed = Candidate->DeterministicSeed;
 	Definition->SourceHash = Candidate->SourceHash;
 	Definition->LayoutHash = Candidate->LayoutHash;
 	Definition->PlayableMinimum = Candidate->PlayableMinimum;
 	Definition->PlayableMaximum = Candidate->PlayableMaximum;
+    Definition->bHasAuthoredPlayableBounds=Candidate->bHasAuthoredPlayableBounds;
 	Definition->SpawnAnchors = Candidate->SpawnAnchors;
 	Definition->Territories = MoveTemp(Candidate->Territories);
 	Definition->Clusters = MoveTemp(Candidate->Clusters);

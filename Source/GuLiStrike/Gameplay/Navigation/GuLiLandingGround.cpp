@@ -9,6 +9,10 @@
 #include "Engine/HitResult.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
+#include "Components/CapsuleComponent.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 bool GuLiLandingGround::IsWalkableSupport(const FHitResult& Hit, const UCharacterMovementComponent* Movement)
 {
@@ -24,9 +28,19 @@ bool GuLiLandingGround::IsWalkableSupport(const FHitResult& Hit, const UCharacte
 }
 
 bool GuLiLandingGround::Resolve(UWorld& World, const FVector& Point, FVector& OutNavLocation,
-	double* OutSurfaceHeight, const APawn* Pawn)
+    double* OutSurfaceHeight, const APawn* Pawn,int32 FootprintCells)
 {
 	if (Point.ContainsNaN() || Point.GetAbsMax() > 10000000) return false;
+    if (auto* G=World.GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady())
+    {
+        const auto* Capsule=Pawn?Pawn->FindComponentByClass<UCapsuleComponent>():nullptr;
+        const int32 Size=FootprintCells>0?FootprintCells:Capsule?GuLiGrid::FootprintFromDiameter(Capsule->GetScaledCapsuleRadius()*2.):1;
+        if (Size>64) return false;
+        if (!G->Snapshot()->Project(Point,Size,FVector(300,300,50000),OutNavLocation)) return false;
+        const auto* Binding=Pawn?UGuLiHybridActorComponent::Find(Pawn):nullptr;
+        if (!GuLiGrid::Unoccupied(*G,OutNavLocation,Size,Binding?Binding->GetObjectKey():FGuLiHybridObjectKey{})) return false;
+        if (OutSurfaceHeight) *OutSurfaceHeight=OutNavLocation.Z;return true;
+    }
 	FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiLandingGround), false);
 	for (TActorIterator<APawn> It(&World); It; ++It) Query.AddIgnoredActor(*It);
 	const FCollisionObjectQueryParams Objects(ECC_WorldStatic);

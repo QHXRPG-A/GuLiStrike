@@ -223,7 +223,10 @@ EGuLiWorkPositionAvailability UGuLiMiningVehicleManager::TryReserveHybridSlot(AG
     const auto* Obstacles=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();int32 VisibilityChecks=0;
     Rejections.RemoveAll([&](FRejectedSlot& R)
     {
-        if (R.RetryAt<=Now || R.Slot.Task!=Task || R.NavRevision!=Obstacles->GetStaticRevision()
+        FBox Dependency(R.Start,R.Start); Dependency+=R.FailedPose.GetLocation();
+        const bool GeometryChanged=Obstacles->HasStaticChangesSince(R.NavRevision,Dependency.ExpandBy(3000.f));
+        R.NavRevision=Obstacles->GetStaticRevision();
+        if (R.RetryAt<=Now || R.Slot.Task!=Task || GeometryChanged
             || (R.Failure==EGuLiMiningSlotFailure::Movement && !R.Start.Equals(Vehicle.GetActorLocation(),100))
             || (R.Failure==EGuLiMiningSlotFailure::NoVisibleNodes && R.ClusterRemaining!=Resources->GetClusterRemainingRaw(R.Slot.Cluster))) return true;
         if (R.Failure==EGuLiMiningSlotFailure::NoVisibleNodes && R.NextVisibilityCheck<=Now && VisibilityChecks++<2

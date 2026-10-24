@@ -7,6 +7,7 @@
 #include "GuLiNetReplacement.h"
 #include "Engine/World.h"
 #include "NavigationSystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 
 namespace
 {
@@ -58,7 +59,8 @@ void UGuLiConstructedUnitComponent::AdvanceHybrid(uint64 Tick)
         if (bConversionStarted) {const auto At=EarliestConversionTick;bConversionStarted=false;BeginConversion();EarliestConversionTick=At;}
     }
     if (!bConversionStarted) BeginConversion();
-    if (!bNavigationRebuilt || Tick<EarliestConversionTick || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
+    const auto* G=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();
+    if (!bNavigationRebuilt || Tick<EarliestConversionTick || (!G || !G->IsReady()) && UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
     if (HybridConversionEvent.IsValid())
     {
         FGuLiHybridTransactionResult R;

@@ -20,7 +20,7 @@ public:
 protected:
     UPROPERTY(EditDefaultsOnly,Category="Battle|Spawning")
     TMap<EGuLiCommanderRole,TSubclassOf<APawn>> RolePawnClasses;
+    virtual UClass* ResolveConfiguredPawnClass(EGuLiCommanderRole AssignedRole) const;
 private:
-    UClass* ResolveConfiguredPawnClass(EGuLiCommanderRole AssignedRole) const;
     bool HasCurrentRoleSlot(const AGuLiBattlePlayerState& State) const;
 };

@@ -53,6 +53,7 @@ inline FGuLiHybridObjectState ToUE(const GuLiNet::ObjectRecord& V)
 inline GuLiNet::FrozenCommand ToCore(const FGuLiHybridCommand& V)
 {
     GuLiNet::FrozenCommand O; O.Event=ToCore(V.Event); O.At=V.LogicalTick; O.Operation=TCHAR_TO_UTF8(*V.Operation.ToString());
+    O.AcceptedSequence=V.AcceptedSequence;
     if (!V.Arguments.IsEmpty()) O.Arguments.assign(V.Arguments.GetData(),V.Arguments.GetData()+V.Arguments.Num());
     for (const auto& M : V.Members) O.Members.push_back({ToCore(M.Key),M.ControlEpoch,M.OwnerEpoch,M.Slot,M.Destination.X,M.Destination.Y,M.Destination.Z});
     return O;
@@ -62,6 +63,7 @@ inline FGuLiHybridCommandMember ToUE(const GuLiNet::CommandMember& M)
 inline FGuLiHybridCommand ToUE(const GuLiNet::FrozenCommand& V)
 {
     FGuLiHybridCommand O; O.Event=ToUE(V.Event); O.LogicalTick=V.At; O.Operation=FName(UTF8_TO_TCHAR(V.Operation.c_str()));
+    O.AcceptedSequence=V.AcceptedSequence;
     if (!V.Arguments.empty()) O.Arguments.Append(V.Arguments.data(),static_cast<int32>(V.Arguments.size()));
     for (const auto& M : V.Members) O.Members.Add(ToUE(M)); return O;
 }
@@ -70,6 +72,7 @@ inline FGuLiHybridCommand ToUE(const GuLiNet::FrozenCommand& V)
 inline FGuLiHybridCommand ToUECommandMember(const GuLiNet::FrozenCommand& V,const GuLiNet::CommandMember& Member)
 {
     FGuLiHybridCommand O; O.Event=ToUE(V.Event); O.LogicalTick=V.At; O.Operation=FName(UTF8_TO_TCHAR(V.Operation.c_str()));
+    O.AcceptedSequence=V.AcceptedSequence;
     if (!V.Arguments.empty()) O.Arguments.Append(V.Arguments.data(),static_cast<int32>(V.Arguments.size()));
     O.Members.Add(ToUE(Member)); return O;
 }

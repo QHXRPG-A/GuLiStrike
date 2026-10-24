@@ -1,0 +1,585 @@
+Using bundled DotNet SDK version: 8.0.412 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" GuLiStrikeEditor Win64 Development -Project=D:\UE5.7\test1\GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Invalidating makefile for GuLiStrikeEditor (source file added)
+[Tripo3DUEBridge] Found zlib version: 1.3
+Project 'GuLiStrikeEditor' depends on plugin 'StructUtils' which was deprecated in 5.5 and will soon be removed. Please update your dependencies.
+Warning: Plugin 'VibeUE' does not list plugin 'StructUtils' as a dependency, but module 'VibeUE' depends on module 'StructUtils'.
+Warning: Plugin 'VibeUE' does not list plugin 'GameplayTagsEditor' as a dependency, but module 'VibeUE' depends on module 'GameplayTagsEditor'.
+Warning: Plugin 'Tripo3DUEBridge' does not list plugin 'Interchange' as a dependency, but module 'Tripo3DUEBridge' depends on module 'InterchangePipelines'.
+UHT compiled-in object format Default
+Parsing headers for GuLiStrikeEditor
+  Running Internal UnrealHeaderTool D:\UE5.7\test1\GuLiStrike.uproject D:\UE5.7\test1\Intermediate\Build\Win64\GuLiStrikeEditor\Development\GuLiStrikeEditor.uhtmanifest -WarningsAsErrors
+UHT processed GuLiStrikeEditor in 7.3665599 seconds (9 files written)
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from Launch unity file: LaunchEngineLoop.cpp
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiBattleGameMode.cpp, GuLiHybridPlayerManifest.cpp, GuLiCommanderGameMode.cpp, GuLiCommanderPlayerController.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiCommanderPredictiveAvoidanceProcessor.cpp, GuLiCommanderAvoidancePolicy.cpp, GuLiCommanderAvoidancePolicyTests.cpp, GuLiCommanderHUD.cpp, GuLiCommanderLandscapeQuerySubsystem.cpp, GuLiHybridResourceReview.cpp, GuLiOreNavigationReview.cpp, GuLiClientFlightPresentation.cpp, AnimNode_GuLiGroundMechAim.cpp, AnimNode_GuLiGroundMechGrounding.cpp, GuLiGroundMechAnimInstance.cpp, GuLiGroundMechCharacter.cpp, GuLiGroundMechConfiguration.cpp, GuLiGroundMechRocketComponent.cpp, GuLiGroundMechWeaponComponent.cpp, GuLiHybridGroundAdapter.cpp, GuLiDynamicObstacleRegistry.cpp, GuLiOreObstacleIndex.cpp, GuLiGroundGridData.cpp, GuLiGroundGridSubsystem.cpp, GuLiHybridMiningSlots.cpp, GuLiMiningSlots.cpp, GuLiOreCollisionField.cpp, GuLiOreObstacleUpdates.cpp, GuLiResourceActors.cpp, GuLiResourceBuildingCompatibility.cpp, GuLiResourceMapDefinition.cpp, GuLiResourceRequests.cpp, GuLiResourceWorldSubsystem.cpp, GuLiResourceTests.cpp
+[Adaptive Build] Excluded from GuLiStrikeEditor unity file: GuLiGridAuthoringLibrary.cpp, GuLiGroundMechAnimationEditorLibrary.cpp, GuLiMapDesignAuthoringLibrary.cpp, GuLiResourceAuthoringLibrary.cpp
+[Adaptive Build] Excluded from GuLiMapAuthoringCore unity file: GuLiMapAuthoring.cpp, GuLiMapDensity.cpp, GuLiMapFields.cpp, GuLiMapGeometry.cpp
+[Adaptive Build] Excluded from GuLiMapAuthoringEditor unity file: GuLiMapAuthoringSubsystem.cpp, GuLiMapMarker.cpp, GuLiMapStandaloneImport.cpp, GuLiMapVisualization.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 3.5 GB available: limiting max parallel actions to 2
+Using Unreal Build Accelerator local executor to run 506 action(s)
+  Storage capacity 40Gb
+---- Starting trace: 261024_183732 ----
+UbaServer - Listening on 0.0.0.0:1345
+[1/506] Compile [x64] AnimNode_GuLiGroundMechAim.cpp
+[2/506] Compile [x64] AnimNode_GuLiGroundMechGrounding.cpp
+[3/506] Compile [x64] BlinkVFX.cpp
+[4/506] Compile [x64] BuildingAssetTests.cpp
+[5/506] Compile [x64] BuildingPlacementPolicyTests.cpp
+[6/506] Compile [x64] GuLiActorDamageReceiverComponent.cpp
+[7/506] Compile [x64] GuLiArmySkillSubsystem.cpp
+[8/506] Compile [x64] GuLiAwaitHybridTransaction.cpp
+[9/506] Compile [x64] GuLiArmyAdvanceSubsystem.cpp
+[10/506] Compile [x64] GuLiBattleGameMode.cpp
+[11/506] Compile [x64] GuLiBattleGameState.cpp
+[12/506] Compile [x64] GuLiBattlePlayerController.cpp
+[13/506] Compile [x64] GuLiBattlePlayerState.cpp
+[14/506] Compile [x64] GuLiBiZhiMaoReviewActor.cpp
+[15/506] Compile [x64] GuLiBuildingAssetBakingLibrary.cpp
+[16/506] Compile [x64] GuLiBuildingCatalog.cpp
+[17/506] Compile [x64] GuLiBuildingConstructionContour.cpp
+[18/506] Compile [x64] GuLiBuildingConstructionSlots.cpp
+[19/506] Compile [x64] GuLiBattleAuthoritySubsystem.cpp
+[20/506] Compile [x64] GuLiBuildingConstructionVisualComponent.cpp
+[21/506] Compile [x64] GuLiBuildingLifecycleComponent.cpp
+[22/506] Compile [x64] GuLiBuildingPlacementPreview.cpp
+[23/506] Compile [x64] GuLiBuildingProductionComponent.cpp
+[24/506] Compile [x64] GuLiBuildingPlacementComponent.cpp
+[25/506] Compile [x64] GuLiBuildingRegistrySubsystem.cpp
+[26/506] Compile [x64] GuLiBuildingShieldComponent.cpp
+[27/506] Compile [x64] GuLiBuildingTypes.cpp
+[28/506] Compile [x64] GuLiBuildingVisuals.cpp
+[29/506] Compile [x64] GuLiCardRevealViewportLibrary.cpp
+[30/506] Compile [x64] GuLiBuildingSpawner.cpp
+[31/506] Compile [x64] GuLiClientFlightPool.cpp
+[32/506] Compile [x64] GuLiClientPresentationPolicy.cpp
+[33/506] Compile [x64] GuLiClientFlightPresentation.cpp
+[34/506] Compile [x64] GuLiCombatDamageLedger.cpp
+[35/506] Compile [x64] GuLiCombatEffectDefinition.cpp
+[36/506] Compile [x64] GuLiCombatEffectLaserPresentation.cpp
+[37/506] Compile [x64] GuLiCombatEffectAuthoringLibrary.cpp
+[38/506] Compile [x64] GuLiCombatEffectPresentationSubsystem.cpp
+[39/506] Compile [x64] GuLiCombatEffectReplicationComponent.cpp
+[40/506] Compile [x64] GuLiCombatEffectRuntimeSubsystem.cpp
+[41/506] Compile [x64] GuLiCombatEffectRuntimeTests.cpp
+[42/506] Compile [x64] GuLiCombatEffectTypes.cpp
+[43/506] Compile [x64] GuLiCommanderActionButton.cpp
+[44/506] Compile [x64] GuLiCommanderAbilityBridge.cpp
+[45/506] Compile [x64] GuLiCommanderAvoidancePolicy.cpp
+[46/506] Compile [x64] GuLiCommanderAvoidancePolicyTests.cpp
+[47/506] Compile [x64] GuLiCommanderCameraGeometry.cpp
+[48/506] Compile [x64] GuLiCommanderBehaviorSchema.cpp
+[49/506] Compile [x64] GuLiCommanderCameraPolicyTests.cpp
+[50/506] Compile [x64] GuLiCommanderCameraPawn.cpp
+[51/506] Compile [x64] GuLiCommanderConsoleLayout.cpp
+[52/506] Compile [x64] GuLiCommanderConsoleView.cpp
+[53/506] Compile [x64] GuLiCommanderCrowdAssetCommands.cpp
+[54/506] Compile [x64] GuLiCommanderCrowdAssetTests.cpp
+[55/506] Compile [x64] GuLiCommanderDataSettings.cpp
+[56/506] Compile [x64] GuLiCommanderCursorWidget.cpp
+[57/506] Compile [x64] GuLiCommanderDataSubsystem.cpp
+[58/506] Compile [x64] GuLiCommanderDeploymentPoint.cpp
+[59/506] Compile [x64] GuLiCommanderDestinationPlanner.cpp
+[60/506] Compile [x64] GuLiCommanderDebugCommands.cpp
+[61/506] Compile [x64] GuLiCommanderDestinationPlannerTests.cpp
+[62/506] Compile [x64] GuLiCommanderEditorCommands.cpp
+[63/506] Compile [x64] GuLiCommanderGameState.cpp
+[64/506] Compile [x64] GuLiCommanderGameMode.cpp
+[65/506] Compile [x64] GuLiCommanderHUDDataSubsystem.cpp
+[66/506] Compile [x64] GuLiCommanderHUD.cpp
+[67/506] Compile [x64] GuLiCommanderHUDQACommands.cpp
+[68/506] Compile [x64] GuLiCommanderHUDWidget.cpp
+[69/506] Compile [x64] GuLiCommanderHUDWidgetTests.cpp
+[70/506] Compile [x64] GuLiCommanderHealthBarRendererTests.cpp
+[71/506] Compile [x64] GuLiCommanderHealthBarRenderer.cpp
+[72/506] Compile [x64] GuLiCommanderInputQACommands.cpp
+[73/506] Compile [x64] GuLiCommanderLODCommands.cpp
+[74/506] Compile [x64] GuLiCommanderLODPolicy.cpp
+[75/506] Compile [x64] GuLiCommanderHybridCommands.cpp
+[76/506] Compile [x64] GuLiCommanderLODSubsystem.cpp
+[77/506] Compile [x64] GuLiCommanderMassFragments.cpp
+[78/506] Compile [x64] GuLiCommanderLandscapeQuerySubsystem.cpp
+[79/506] Compile [x64] GuLiCommanderMassStateTreeProcessor.cpp
+[80/506] Compile [x64] GuLiCommanderMechanicalPresentation.cpp
+[81/506] Compile [x64] GuLiCommanderMeshLODTests.cpp
+[82/506] Compile [x64] GuLiCommanderMiniMapTransform.cpp
+[83/506] Compile [x64] GuLiCommanderMeshLOD.cpp
+D:\UE5.7\test1\Source\GuLiStrike\Commander\Presentation\GuLiCommanderMeshLOD.cpp(133,29): warning C4996: 'UStaticMesh::NaniteSettings': Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+		&& Static->GetStaticMesh()->NaniteSettings.bEnabled && !Static->bDisallowNanite;
+		                          ^
+[84/506] Compile [x64] GuLiCommanderMiniMapTransformTests.cpp
+[85/506] Compile [x64] GuLiCommanderMoveEndpointHUDTests.cpp
+[86/506] Compile [x64] GuLiCommanderMiniMapWidget.cpp
+[87/506] Compile [x64] GuLiCommanderMoveResponse.cpp
+[88/506] Compile [x64] GuLiCommanderNavigationPolicy.cpp
+[89/506] Compile [x64] GuLiCommanderNavigationPolicyTests.cpp
+[90/506] Compile [x64] GuLiCommanderNetSyncComponent.cpp
+[91/506] Compile [x64] GuLiCommanderNetworkTests.cpp
+[92/506] Compile [x64] GuLiCommanderOrderedCommands.cpp
+[93/506] Compile [x64] GuLiCommanderOverviewOverlay.cpp
+[94/506] Compile [x64] GuLiCommanderOverviewSubsystem.cpp
+[95/506] Compile [x64] GuLiCommanderPlayerState.cpp
+[96/506] Compile [x64] GuLiCommanderPoseCodec.cpp
+[97/506] Compile [x64] GuLiCommanderPoseMetrics.cpp
+[98/506] Compile [x64] GuLiCommanderPlayerController.cpp
+[99/506] Compile [x64] GuLiCommanderPredictionQACommands.cpp
+[100/506] Compile [x64] GuLiCommanderPredictiveAvoidanceProcessor.cpp
+[101/506] Compile [x64] GuLiCommanderPresentationActor.cpp
+[102/506] Compile [x64] GuLiCommanderPresentationCommands.cpp
+[103/506] Compile [x64] GuLiCommanderPresentationPerformanceSettings.cpp
+[104/506] Compile [x64] GuLiCommanderPresentationPerformanceTests.cpp
+[105/506] Compile [x64] GuLiCommanderResourceAdapter.cpp
+[106/506] Compile [x64] GuLiCommanderRingBenchmarkCommands.cpp
+[107/506] Compile [x64] GuLiCommanderRingAssetCommands.cpp
+[108/506] Compile [x64] GuLiCommanderRogueCardNetwork.cpp
+[109/506] Compile [x64] GuLiCommanderSelectionPIECommands.cpp
+[110/506] Compile [x64] GuLiCommanderRouteLineComponent.cpp
+[111/506] Compile [x64] GuLiCommanderSelectionQuery.cpp
+[112/506] Compile [x64] GuLiCommanderSelectionQueryTests.cpp
+[113/506] Compile [x64] GuLiCommanderSelectionPointerQACommands.cpp
+[114/506] Compile [x64] GuLiCommanderSkillCatalog.cpp
+[115/506] Compile [x64] GuLiCommanderSkillTests.cpp
+[116/506] Compile [x64] GuLiCommanderSkillComponent.cpp
+[117/506] Compile [x64] GuLiCommanderSkillTypes.cpp
+[118/506] Compile [x64] GuLiCommanderSoldierDefinition.cpp
+[119/506] Compile [x64] GuLiCommanderSoldierResolver.cpp
+[120/506] Compile [x64] GuLiCommanderSoldierResolverTests.cpp
+[121/506] Compile [x64] GuLiCommanderSpawnLayout.cpp
+[122/506] Compile [x64] GuLiCommanderStateTreeAssetCommands.cpp
+[123/506] Compile [x64] GuLiCommanderStateTreeComponent.cpp
+[124/506] Compile [x64] GuLiCommanderStateTreeHierarchy.cpp
+[125/506] Compile [x64] GuLiCommanderStateTreeNodes.cpp
+[126/506] Compile [x64] GuLiCommanderTaskButton.cpp
+[127/506] Compile [x64] GuLiCommanderToolModeTests.cpp
+[128/506] Compile [x64] GuLiCommanderTaskPanel.cpp
+[129/506] Compile [x64] GuLiCommanderTypes.cpp
+[130/506] Compile [x64] GuLiCommanderUIPresentation.cpp
+[131/506] Compile [x64] GuLiCommanderUICommands.cpp
+[132/506] Compile [x64] GuLiCommanderUITheme.cpp
+[133/506] Compile [x64] GuLiCommanderUnitTypeSummary.cpp
+[134/506] Compile [x64] GuLiCommanderWorkTypes.cpp
+[135/506] Compile [x64] GuLiCommanderUIRevisionCommands.cpp
+[136/506] Compile [x64] GuLiConstructedUnitComponent.cpp
+[137/506] Compile [x64] GuLiConstructionShape.cpp
+[138/506] Compile [x64] GuLiConstructionPresentationComponent.cpp
+[139/506] Compile [x64] GuLiConstructionVehiclePawn.cpp
+[140/506] Compile [x64] GuLiConstructionWorkCheckpoint.cpp
+[141/506] Compile [x64] GuLiConstructionWorkComponent.cpp
+[142/506] Compile [x64] GuLiControlCohortBuilder.cpp
+[143/506] Compile [x64] GuLiControlCohortBuilderTests.cpp
+[144/506] Compile [x64] GuLiContinuousHotspot.cpp
+[145/506] Compile [x64] GuLiDynamicObstacleRegistry.cpp
+[146/506] Compile [x64] GuLiEconomyTypes.cpp
+[147/506] Compile [x64] GuLiEngineeringAIController.cpp
+[148/506] Compile [x64] GuLiEngineeringCommandTypes.cpp
+[149/506] Compile [x64] GuLiEngineeringGroundTravel.cpp
+[150/506] Compile [x64] GuLiEngineeringCheckpoint.cpp
+[151/506] Compile [x64] GuLiEngineeringPathSubsystem.cpp
+[152/506] Compile [x64] GuLiEngineeringMassTravel.cpp
+[153/506] Compile [x64] GuLiEngineeringPoseComponent.cpp
+[154/506] Compile [x64] GuLiEngineeringWorkRoute.cpp
+[155/506] Compile [x64] GuLiEngineeringTravelComponent.cpp
+[156/506] Compile [x64] GuLiExternalCharacterMovementComponent.cpp
+[157/506] Compile [x64] GuLiEosTransport.cpp
+[158/506] Compile [x64] GuLiExternalControlRegistry.cpp
+[159/506] Compile [x64] GuLiExternalUnitControlComponent.cpp
+[160/506] Compile [x64] GuLiFlightAcceptanceState.cpp
+[161/506] Compile [x64] GuLiFlightAcceptanceSubsystem.cpp
+[162/506] Compile [x64] GuLiFlightEvent.cpp
+[163/506] Compile [x64] GuLiFlightEventAdapters.cpp
+[164/506] Compile [x64] GuLiFlightReplication.cpp
+[165/506] Compile [x64] GuLiFlightVisualActor.cpp
+[166/506] Compile [x64] GuLiGMPanelTests.cpp
+[167/506] Compile [x64] GuLiGameText.cpp
+[168/506] Compile [x64] GuLiGMPanelModel.cpp
+[169/506] Compile [x64] GuLiGameplayComputePool.cpp
+[170/506] Compile [x64] GuLiGiftBuildingClearance.cpp
+[171/506] Compile [x64] GuLiGridBirths.cpp
+[172/506] Compile [x64] GuLiGridManifest.cpp
+[173/506] Compile [x64] GuLiGridLandingPlan.cpp
+[174/506] Compile [x64] GuLiGridNavigation.cpp
+[175/506] Compile [x64] GuLiGridMotion.cpp
+[176/506] Compile [x64] GuLiGridProduction.cpp
+[177/506] Compile [x64] GuLiGridNetwork.cpp
+[178/506] Compile [x64] GuLiGridSlots.cpp
+[179/506] Compile [x64] GuLiGridTraffic.cpp
+[180/506] Compile [x64] GuLiGroundAccessRampComponent.cpp
+[181/506] Compile [x64] GuLiGroundGridData.cpp
+[182/506] Compile [x64] GuLiGridQueries.cpp
+[183/506] Compile [x64] GuLiGroundMassCollisionTypes.cpp
+[184/506] Compile [x64] GuLiGroundGridSubsystem.cpp
+[185/506] Compile [x64] GuLiGroundMassContactSubsystem.cpp
+[186/506] Compile [x64] GuLiGroundMechAbilities.cpp
+[187/506] Compile [x64] GuLiGroundMechAnimInstance.cpp
+[188/506] Compile [x64] GuLiGroundMechConfiguration.cpp
+[189/506] Compile [x64] GuLiGroundMechCharacter.cpp
+[190/506] Compile [x64] GuLiGroundMechMassCollisionTests.cpp
+[191/506] Compile [x64] GuLiGroundMechFireTests.cpp
+[192/506] Compile [x64] GuLiGroundMechMovementComponent.cpp
+[193/506] Compile [x64] GuLiGroundMechWeaponAnimInstance.cpp
+[194/506] Compile [x64] GuLiGroundMechRocketComponent.cpp
+[195/506] Compile [x64] GuLiGroundWarningSubsystem.cpp
+[196/506] Compile [x64] GuLiGroundMechWeaponComponent.cpp
+[197/506] Compile [x64] GuLiHotspotCapture.cpp
+[198/506] Compile [x64] GuLiHotspotOptions.cpp
+[199/506] Compile [x64] GuLiHybridActorComponent.cpp
+[200/506] Compile [x64] GuLiHybridActorWorldSubsystem.cpp
+[201/506] Compile [x64] GuLiHybridAdapterRegistry.cpp
+[202/506] Compile [x64] GuLiHybridAdapterRegistryTests.cpp
+[203/506] Compile [x64] GuLiHybridAdvanceState.cpp
+[204/506] Compile [x64] GuLiHybridArmy.cpp
+[205/506] Compile [x64] GuLiHybridArmyManifest.cpp
+[206/506] Compile [x64] GuLiHybridBuildingArchetype.cpp
+[207/506] Compile [x64] GuLiHybridBuildingAdapter.cpp
+[208/506] Compile [x64] GuLiHybridBuildingPlacement.cpp
+[209/506] Compile [x64] GuLiHybridCommandRegistry.cpp
+[210/506] Compile [x64] GuLiHybridComponentBindingTests.cpp
+[211/506] Compile [x64] GuLiHybridComponentState.cpp
+[212/506] Compile [x64] GuLiHybridConstructedUnit.cpp
+[213/506] Compile [x64] GuLiHybridConstructionFacts.cpp
+[214/506] Compile [x64] GuLiHybridConstructionState.cpp
+[215/506] Compile [x64] GuLiHybridControlPoint.cpp
+[216/506] Compile [x64] GuLiHybridControlPointManifest.cpp
+[217/506] Compile [x64] GuLiHybridControlPointAdapter.cpp
+[218/506] Compile [x64] GuLiHybridEffectRuntime.cpp
+[219/506] Compile [x64] GuLiHybridEngineerAdapter.cpp
+[220/506] Compile [x64] GuLiHybridEntityState.cpp
+[221/506] Compile [x64] GuLiHybridExternalControlState.cpp
+[222/506] Compile [x64] GuLiHybridFlightManifest.cpp
+[223/506] Compile [x64] GuLiHybridFacilities.cpp
+[224/506] Compile [x64] GuLiHybridGlobalSkills.cpp
+[225/506] Compile [x64] GuLiHybridGroundUpgrade.cpp
+[226/506] Compile [x64] GuLiHybridGroundAdapter.cpp
+[227/506] Compile [x64] GuLiHybridLedgerBinding.cpp
+[228/506] Compile [x64] GuLiHybridManifest.cpp
+[229/506] Compile [x64] GuLiHybridManifestRegistry.cpp
+[230/506] Compile [x64] GuLiHybridMiningSlots.cpp
+[231/506] Compile [x64] GuLiHybridMinerAdapter.cpp
+[232/506] Compile [x64] GuLiHybridNetworkReviewActor.cpp
+[233/506] Compile [x64] GuLiHybridObjectStateEnvelopeTests.cpp
+[234/506] Compile [x64] GuLiHybridPlacementWork.cpp
+[235/506] Compile [x64] GuLiHybridPlayerManifest.cpp
+[236/506] Compile [x64] GuLiHybridProductionState.cpp
+[237/506] Compile [x64] GuLiHybridReflectedState.cpp
+[238/506] Compile [x64] GuLiHybridProjectilePool.cpp
+[239/506] Compile [x64] GuLiHybridReflectedStateTests.cpp
+[240/506] Compile [x64] GuLiHybridResourceFactoryAdapter.cpp
+[241/506] Compile [x64] GuLiHybridResourceMaintenance.cpp
+[242/506] Compile [x64] GuLiHybridResourceManifest.cpp
+[243/506] Compile [x64] GuLiHybridResourceOperations.cpp
+[244/506] Compile [x64] GuLiHybridResourceReview.cpp
+[245/506] Compile [x64] GuLiHybridReviewSubsystem.cpp
+[246/506] Compile [x64] GuLiHybridSessionSubsystem.cpp
+[247/506] Compile [x64] GuLiHybridSceneReview.cpp
+[248/506] Compile [x64] GuLiHybridShipAdapter.cpp
+[249/506] Compile [x64] GuLiHybridShipCombat.cpp
+[250/506] Compile [x64] GuLiHybridSummonManifest.cpp
+[251/506] Compile [x64] GuLiHybridTeleportGeometry.cpp
+[252/506] Compile [x64] GuLiHybridTaskState.cpp
+[253/506] Compile [x64] GuLiHybridTeleportManifest.cpp
+[254/506] Compile [x64] GuLiHybridTeleportRuntime.cpp
+[255/506] Compile [x64] GuLiHybridTransactionWork.cpp
+[256/506] Compile [x64] GuLiHybridUnitManifest.cpp
+[257/506] Compile [x64] GuLiHybridWingmanAdapter.cpp
+[258/506] Compile [x64] GuLiHybridUnitSkills.cpp
+[259/506] Compile [x64] GuLiHybridWingmanManifest.cpp
+[260/506] Compile [x64] GuLiHybridWingmanAttack.cpp
+[261/506] Compile [x64] GuLiHybridWingmanReview.cpp
+[262/506] Compile [x64] GuLiImpactBatchPresentation.cpp
+[263/506] Compile [x64] GuLiHybridWorldSubsystem.cpp
+[264/506] Compile [x64] GuLiIpConnection.cpp
+[265/506] Compile [x64] GuLiLocalFlowField.cpp
+[266/506] Compile [x64] GuLiLocalTeamColorSubsystem.cpp
+[267/506] Compile [x64] GuLiLandingGround.cpp
+[268/506] Compile [x64] GuLiLocalTeamColors.cpp
+[269/506] Compile [x64] GuLiLocalUdpTransport.cpp
+[270/506] Compile [x64] GuLiLogicalCooldownComponent.cpp
+[271/506] Compile [x64] GuLiLogicalMissileSubsystem.cpp
+[272/506] Compile [x64] GuLiMassMovementTuning.cpp
+[273/506] Compile [x64] GuLiMechanicalAnimation.cpp
+[274/506] Compile [x64] GuLiMechanicalAnimationTests.cpp
+[275/506] Compile [x64] GuLiMechanicalTurnPresentation.cpp
+[276/506] Compile [x64] GuLiMechanicalMuzzlePresentation.cpp
+[277/506] Compile [x64] GuLiMiningPresentationComponent.cpp
+[278/506] Compile [x64] GuLiMiningVehicleBehavior.cpp
+[279/506] Compile [x64] GuLiMiningSlots.cpp
+[280/506] Compile [x64] GuLiMiningVehicleManager.cpp
+[281/506] Compile [x64] GuLiMiningVehiclePawn.cpp
+[282/506] Compile [x64] GuLiMissileVisualSubsystem.cpp
+[283/506] Compile [x64] GuLiMissileClusterPresentation.cpp
+[284/506] Compile [x64] GuLiMissileVisualSubsystemTests.cpp
+[285/506] Compile [x64] GuLiModelPresentationComponent.cpp
+[286/506] Compile [x64] GuLiModelRegistrySubsystem.cpp
+[287/506] Compile [x64] GuLiMoveLatency.cpp
+[288/506] Compile [x64] GuLiMuzzleBatchPresentation.cpp
+[289/506] Compile [x64] GuLiNetworkOverlayStats.cpp
+[290/506] Compile [x64] GuLiModelAuthoringLibrary.cpp
+[291/506] Compile [x64] GuLiObjectScale.cpp
+[292/506] Compile [x64] GuLiNetworkSettings.cpp
+[293/506] Compile [x64] GuLiOreCollisionField.cpp
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(82,41): error C3535: 无法推导“auto *”的类型(依据“ElementType”)
+        with
+        [
+            ElementType=TObjectPtr<UInstancedStaticMeshComponent>
+        ]
+    for (auto* Component:CollisionMeshes) Component->ClearInstances();
+                                        ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(82,41): error C2440: “初始化”: 无法从“ElementType”转换为“<error type> *”
+        with
+        [
+            ElementType=TObjectPtr<UInstancedStaticMeshComponent>
+        ]
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(82,41): note: 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(119,24): error C3535: 无法推导“auto *”的类型(依据“TObjectPtr<UInstancedStaticMeshComponent>”)
+        auto* Component=CollisionMeshes[ComponentIndex];
+                       ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(119,24): error C2440: “初始化”: 无法从“TObjectPtr<UInstancedStaticMeshComponent>”转换为“<error type> *”
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(119,24): note: 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(122,26): error C2530: “Convex”: 必须初始化引用
+        for (const auto& Convex:Body->AggGeom.ConvexElems)
+                         ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(122,26): error C3531: “Convex”: 类型包含“auto”的符号必须具有初始值设定项
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(122,32): error C2143: 语法错误: 缺少“;”(在“:”的前面)
+        for (const auto& Convex:Body->AggGeom.ConvexElems)
+                               ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(122,58): error C2143: 语法错误: 缺少“;”(在“)”的前面)
+        for (const auto& Convex:Body->AggGeom.ConvexElems)
+                                                         ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(123,33): error C2530: “Vertex”: 必须初始化引用
+            for (const FVector& Vertex:Convex.VertexData)
+                                ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(123,39): error C2143: 语法错误: 缺少“;”(在“:”的前面)
+            for (const FVector& Vertex:Convex.VertexData)
+                                      ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(123,57): error C2143: 语法错误: 缺少“;”(在“)”的前面)
+            for (const FVector& Vertex:Convex.VertexData)
+                                                        ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(125,31): error C2737: “World”: 必须初始化 const 对象
+                const FVector World=Node.WorldTransform.TransformPosition(Convex.GetTransform().TransformPosition(Vertex));
+                              ^
+D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Resources\GuLiOreCollisionField.cpp(140,21): error C2737: “Instance”: 必须初始化 const 对象
+        const int32 Instance=Component->AddInstance(Node.WorldTransform,true);
+                    ^
+[294/506] Compile [x64] GuLiOreObstacleIndex.cpp
+[295/506] Compile [x64] GuLiOreNavigationReview.cpp
+[296/506] Compile [x64] GuLiOutpostPresentationComponent.cpp
+[297/506] Compile [x64] GuLiOreObstacleUpdates.cpp
+[298/506] Compile [x64] GuLiPerformanceNetworkCapture.cpp
+[299/506] Compile [x64] GuLiPerformanceReviewActor.cpp
+[300/506] Compile [x64] GuLiPerformanceSubsystem.cpp
+[301/506] Compile [x64] GuLiPlacedBuilding.cpp
+[302/506] Compile [x64] GuLiPlayerNetSyncComponent.cpp
+[303/506] Compile [x64] GuLiPresentationSlotPoolTests.cpp
+[304/506] Compile [x64] GuLiPointSkill.cpp
+[305/506] Compile [x64] GuLiProjectilePoolSubsystem.cpp
+[306/506] Compile [x64] GuLiResourceBuildingCompatibility.cpp
+[307/506] Compile [x64] GuLiResourceActors.cpp
+[308/506] Compile [x64] GuLiResourceFactoryActor.cpp
+[309/506] Compile [x64] GuLiResourceInventoryBinding.cpp
+[310/506] Compile [x64] GuLiResourceInventorySubsystem.cpp
+[311/506] Compile [x64] GuLiResourceInventoryComponent.cpp
+[312/506] Compile [x64] GuLiResourceMapDefinition.cpp
+[313/506] Compile [x64] GuLiResourceRequests.cpp
+[314/506] Compile [x64] GuLiResourceTests.cpp
+[315/506] Compile [x64] GuLiResourceTypes.cpp
+[316/506] Compile [x64] GuLiResourceStrongholds.cpp
+[317/506] Compile [x64] GuLiResourceWorldState.cpp
+[318/506] Compile [x64] GuLiRogueCardEffect.cpp
+[319/506] Compile [x64] GuLiResourceWorldSubsystem.cpp
+[320/506] Compile [x64] GuLiRogueCardSettings.cpp
+[321/506] Compile [x64] GuLiRogueCardPresentation.cpp
+[322/506] Compile [x64] GuLiRogueCardSubsystem.cpp
+[323/506] Compile [x64] GuLiRogueUpgradeTypes.cpp
+[324/506] Compile [x64] GuLiRuntimeTuningCommands.cpp
+[325/506] Compile [x64] GuLiRogueUpgradePresentation.cpp
+[326/506] Compile [x64] GuLiRuntimeTuningTests.cpp
+[327/506] Compile [x64] GuLiRuntimeTuningSubsystem.cpp
+[328/506] Compile [x64] GuLiRuntimeTuningTypes.cpp
+[329/506] Compile [x64] GuLiScale020FactoryDoorTests.cpp
+[330/506] Compile [x64] GuLiScale020InterpolationTests.cpp
+[331/506] Compile [x64] GuLiScale020Tests.cpp
+[332/506] Compile [x64] GuLiSceneUISourceRegistry.cpp
+[333/506] Compile [x64] GuLiSceneUISubsystem.cpp
+[334/506] Compile [x64] GuLiSelfSkill.cpp
+[335/506] Compile [x64] GuLiSharedMoveRoutes.cpp
+[336/506] Compile [x64] GuLiShipAbilityDefinitions.cpp
+[337/506] Compile [x64] GuLiShipAbilitySet.cpp
+[338/506] Compile [x64] GuLiShipAbilityTags.cpp
+[339/506] Compile [x64] GuLiSceneUIWidget.cpp
+[340/506] Compile [x64] GuLiShipAbilityTypes.cpp
+[341/506] Compile [x64] GuLiShipAbilityTests.cpp
+[342/506] Compile [x64] GuLiShipAimComponent.cpp
+[343/506] Compile [x64] GuLiShipAssemblyComponent.cpp
+[344/506] Compile [x64] GuLiShipAssemblyTransactions.cpp
+[345/506] Compile [x64] GuLiShipAssemblyRecovery.cpp
+[346/506] Compile [x64] GuLiShipBuildComponent.cpp
+[347/506] Compile [x64] GuLiShipBuildCatalog.cpp
+[348/506] Compile [x64] GuLiShipCameraCollision.cpp
+[349/506] Compile [x64] GuLiShipBuildRulesTests.cpp
+[350/506] Compile [x64] GuLiShipCapabilityComponent.cpp
+[351/506] Compile [x64] GuLiShipCanonicalMoveHistoryTests.cpp
+[352/506] Compile [x64] GuLiShipCapabilityRecoveryTests.cpp
+[353/506] Compile [x64] GuLiShipHangarCapabilityComponent.cpp
+[354/506] Compile [x64] GuLiShipHangarHybrid.cpp
+[355/506] Compile [x64] GuLiShipHangarRecovery.cpp
+[356/506] Compile [x64] GuLiShipMovementComponent.cpp
+[357/506] Compile [x64] GuLiShipPartVisualTests.cpp
+[358/506] Compile [x64] GuLiShipPawnIntegrationTests.cpp
+[359/506] Compile [x64] GuLiShipReticleTypes.cpp
+[360/506] Compile [x64] GuLiShipRespawnIntegrationTests.cpp
+[361/506] Compile [x64] GuLiShipTargetingRangeComponent.cpp
+[362/506] Compile [x64] GuLiShipTestGameMode.cpp
+[363/506] Compile [x64] GuLiShipWorldHUDTests.cpp
+[364/506] Compile [x64] GuLiShipWorldWidgets.cpp
+[365/506] Compile [x64] GuLiShipWorldHUDComponent.cpp
+[366/506] Compile [x64] GuLiSkillResolver.cpp
+[367/506] Compile [x64] GuLiSkillResolverTests.cpp
+[368/506] Compile [x64] GuLiSkillTags.cpp
+[369/506] Compile [x64] GuLiSkillTypes.cpp
+[370/506] Compile [x64] GuLiSkillTargeting.cpp
+[371/506] Compile [x64] GuLiSoldierCombat.cpp
+[372/506] Compile [x64] GuLiSoldierStateReplicator.cpp
+[373/506] Compile [x64] GuLiSoldierCombatTests.cpp
+[374/506] Compile [x64] GuLiSpellFieldDataSubsystem.cpp
+[375/506] Compile [x64] GuLiStrike.cpp
+[376/506] Compile [x64] GuLiStrikeAoEAttack.cpp
+[377/506] Compile [x64] GuLiStrikeAIController.cpp
+[378/506] Compile [x64] GuLiStrikeEnginePart.cpp
+[379/506] Compile [x64] GuLiStrikeCharacter.cpp
+[380/506] Compile [x64] GuLiStrikeGameMode.cpp
+[381/506] Compile [x64] GuLiStrikeNPC.cpp
+[382/506] Compile [x64] GuLiStrikeNPCDestruction.cpp
+[383/506] Compile [x64] GuLiStrikePickup.cpp
+[384/506] Compile [x64] GuLiStrikePlayerController.cpp
+[385/506] Compile [x64] GuLiStrikeShipAssembly.cpp
+[386/506] Compile [x64] GuLiStrikeShipPartComponent.cpp
+[387/506] Compile [x64] GuLiStrikeSpawner.cpp
+[388/506] Compile [x64] GuLiStrikeShip.cpp
+[389/506] Compile [x64] GuLiStrikeUI.cpp
+[390/506] Compile [x64] GuLiStrikeStateTreeUtility.cpp
+[391/506] Compile [x64] GuLiStrikeWeaponPart.cpp
+[392/506] Compile [x64] GuLiStrongholdCaptureComponent.cpp
+[393/506] Compile [x64] GuLiStrongholdFacilitiesComponent.cpp
+[394/506] Compile [x64] GuLiStrongholdDiagnostics.cpp
+[395/506] Compile [x64] GuLiStrongholdTopology.cpp
+[396/506] Compile [x64] GuLiStrongholdNetworkPresentationComponent.cpp
+[397/506] Compile [x64] GuLiStrongholdTransitTypes.cpp
+[398/506] Compile [x64] GuLiStrongholdTransportNetwork.cpp
+[399/506] Compile [x64] GuLiStrongholdTransitPresentationComponent.cpp
+[400/506] Compile [x64] GuLiTeamEconomySubsystem.cpp
+[401/506] Compile [x64] GuLiSummonSkill.cpp
+[402/506] Compile [x64] GuLiTeamOutlineCameraManager.cpp
+[403/506] Compile [x64] GuLiTeamOutlineComponent.cpp
+[404/506] Compile [x64] GuLiTeleportFieldPresentation.cpp
+[405/506] Compile [x64] GuLiTeleportFieldActor.cpp
+[406/506] Compile [x64] GuLiTeleportGMCommands.cpp
+[407/506] Compile [x64] GuLiTeleportInputComponent.cpp
+[408/506] Compile [x64] GuLiTeleportSkill.cpp
+[409/506] Compile [x64] GuLiTeleportQALibrary.cpp
+[410/506] Compile [x64] GuLiTeleportTypes.cpp
+[411/506] Compile [x64] GuLiUnitDataSubsystem.cpp
+[412/506] Compile [x64] GuLiTeleportTests.cpp
+[413/506] Compile [x64] GuLiUnitFeedbackComponent.cpp
+[414/506] Compile [x64] GuLiUnitRenderPolicy.cpp
+[415/506] Compile [x64] GuLiUnitSkillExecution.cpp
+[416/506] Compile [x64] GuLiUnitTaskOperations.cpp
+[417/506] Compile [x64] GuLiUnitFeedbackSubsystem.cpp
+[418/506] Compile [x64] GuLiUnitTaskSettings.cpp
+[419/506] Compile [x64] GuLiUnitTaskTests.cpp
+[420/506] Compile [x64] GuLiUnitTaskTypes.cpp
+[421/506] Compile [x64] GuLiUnitWreck.cpp
+[422/506] Compile [x64] GuLiVATAnimation.cpp
+[423/506] Compile [x64] GuLiUnitTaskSubsystem.cpp
+[424/506] Compile [x64] GuLiVfxBindingComponent.cpp
+[425/506] Compile [x64] GuLiVfxRegistrySubsystem.cpp
+[426/506] Compile [x64] GuLiVfxRegistryTests.cpp
+[427/506] Compile [x64] GuLiWarMachineHoverPreviewComponent.cpp
+[428/506] Compile [x64] GuLiWarMachineHoverComponent.cpp
+[429/506] Compile [x64] GuLiWarMachineMissileSkill.cpp
+[430/506] Compile [x64] GuLiWarMachineHoverQACommands.cpp
+[431/506] Compile [x64] GuLiWeaponChannelTypes.cpp
+[432/506] Compile [x64] GuLiWingmanAcceptanceCatalog.cpp
+[433/506] Compile [x64] GuLiWarMachinePlaceholderPawn.cpp
+[434/506] Compile [x64] GuLiWingmanAcceptanceCatalogTests.cpp
+[435/506] Compile [x64] GuLiWingmanAttackNavigation.cpp
+[436/506] Compile [x64] GuLiWingmanAttackProfile.cpp
+[437/506] Compile [x64] GuLiWingmanAttackRunTests.cpp
+[438/506] Compile [x64] GuLiWingmanAvoidanceRecoveryTests.cpp
+[439/506] Compile [x64] GuLiWingmanAttackSimulation.cpp
+[440/506] Compile [x64] GuLiWingmanFlightMovementComponent.cpp
+[441/506] Compile [x64] GuLiWingmanIndependentRecoveryTests.cpp
+[442/506] Compile [x64] GuLiWingmanIndependentRuntime.cpp
+[443/506] Compile [x64] GuLiWingmanInitialFormationNavigationTests.cpp
+[444/506] Compile [x64] GuLiWingmanMemberBehavior.cpp
+[445/506] Compile [x64] GuLiWingmanPawn.cpp
+[446/506] Compile [x64] GuLiWingmanPresentationActor.cpp
+[447/506] Compile [x64] GuLiWingmanPawnSimulationTests.cpp
+[448/506] Compile [x64] GuLiWingmanPresentationPolicy.cpp
+[449/506] Compile [x64] GuLiWingmanPresentationPolicyTests.cpp
+[450/506] Compile [x64] GuLiWingmanProtocolTests.cpp
+[451/506] Compile [x64] GuLiWingmanProtocolTypes.cpp
+[452/506] Compile [x64] GuLiWingmanProjectilePresentation.cpp
+[453/506] Compile [x64] GuLiWingmanQAEvidenceTests.cpp
+[454/506] Compile [x64] GuLiWingmanQAEvidence.cpp
+[455/506] Compile [x64] GuLiWingmanRelayTypes.cpp
+[456/506] Compile [x64] GuLiWingmanQAGameMode.cpp
+[457/506] Compile [x64] GuLiWingmanSimulationSubsystem.cpp
+[458/506] Compile [x64] GuLiWingmanStateTreeAssetCommands.cpp
+[459/506] Compile [x64] GuLiWingmanSwarmFlow.cpp
+[460/506] Compile [x64] GuLiWingmanSteering.cpp
+[461/506] Compile [x64] GuLiWingmanTargetAcquisition.cpp
+[462/506] Compile [x64] GuLiWingmanTargetAcquisitionTests.cpp
+[463/506] Compile [x64] GuLiWingmanTargetAssignment.cpp
+[464/506] Compile [x64] GuLiWingmanTargetAssignmentTests.cpp
+[465/506] Compile [x64] GuLiWingmanTargeting.cpp
+[466/506] Compile [x64] GuLiWingmanWeaponPolicy.cpp
+[467/506] Compile [x64] GuLiWorkPosition.cpp
+[468/506] Compile [x64] Module.GuLiStrike.gen.1.cpp
+[469/506] Compile [x64] Module.GuLiStrike.gen.10.cpp
+[470/506] Compile [x64] Module.GuLiStrike.gen.11.cpp
+[471/506] Compile [x64] Module.GuLiStrike.gen.13.cpp
+[472/506] Compile [x64] Module.GuLiStrike.gen.12.cpp
+[473/506] Compile [x64] Module.GuLiStrike.gen.15.cpp
+[474/506] Compile [x64] Module.GuLiStrike.gen.14.cpp
+[475/506] Compile [x64] Module.GuLiStrike.gen.17.cpp
+[476/506] Compile [x64] Module.GuLiStrike.gen.18.cpp
+[477/506] Compile [x64] Module.GuLiStrike.gen.16.cpp
+[478/506] Compile [x64] Module.GuLiStrike.gen.2.cpp
+[479/506] Compile [x64] Module.GuLiStrike.gen.19.cpp
+[480/506] Compile [x64] Module.GuLiStrike.gen.20.cpp
+[481/506] Compile [x64] Module.GuLiStrike.gen.21.cpp
+[482/506] Compile [x64] Module.GuLiStrike.gen.22.cpp
+[483/506] Compile [x64] Module.GuLiStrike.gen.3.cpp
+[484/506] Compile [x64] Module.GuLiStrike.gen.4.cpp
+[485/506] Compile [x64] Module.GuLiStrike.gen.5.cpp
+[486/506] Compile [x64] Module.GuLiStrike.gen.7.cpp
+[487/506] Compile [x64] Module.GuLiStrike.gen.6.cpp
+[488/506] Compile [x64] Module.GuLiStrike.gen.9.cpp
+[489/506] Compile [x64] PerModuleInline.gen.cpp
+[490/506] Compile [x64] Module.GuLiStrike.gen.8.cpp
+[491/506] Compile [x64] StrategyGameMode.cpp
+[492/506] Compile [x64] SGuLiGMPanel.cpp
+[493/506] Compile [x64] StrategyHUD.cpp
+[494/506] Compile [x64] StrategyPawn.cpp
+[495/506] Compile [x64] StrategyUI.cpp
+[496/506] Compile [x64] StrategyPlayerController.cpp
+[497/506] Compile [x64] StrategyUnit.cpp
+[498/506] Compile [x64] GuLiResourceAuthoringLibrary.cpp
+[499/506] Compile [x64] GuLiGridAuthoringLibrary.cpp
+[500/506] Compile [x64] Module.GuLiStrikeEditor.2.cpp
+[501/506] Compile [x64] Module.GuLiStrikeEditor.3.cpp
+[502/506] Link [x64] UnrealEditor-GuLiStrikeEditor.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.exp
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 166.3kb
+Total time in Unreal Build Accelerator local executor: 474.57 seconds
+
+Result: Failed (OtherCompilationError)
+Total execution time: 492.79 seconds

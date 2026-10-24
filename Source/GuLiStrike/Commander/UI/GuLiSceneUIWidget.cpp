@@ -16,6 +16,7 @@
 #include "Gameplay/Presentation/GuLiLocalTeamColors.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
+#include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
 #include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Pawn.h"
@@ -581,7 +582,11 @@ void UGuLiSceneUIWidget::NativeTick(const FGeometry& Geometry, float DeltaSecond
         auto Read=[&](FVector& Out)
         {
             if (const auto* Capsule=Actor->FindComponentByClass<UCapsuleComponent>())
-                Out=Capsule->GetComponentLocation()-FVector(0,0,Capsule->GetScaledCapsuleHalfHeight()-5);
+            {
+                const auto* Pose=Actor->FindComponentByClass<UGuLiEngineeringPoseComponent>();
+                Out=(Pose ? Pose->GetPresentedRoot().GetLocation() : Capsule->GetComponentLocation())
+                    -FVector(0,0,Capsule->GetScaledCapsuleHalfHeight()-5);
+            }
             else {FVector Center,Extent;Actor->GetActorBounds(false,Center,Extent);Out=FVector(Center.X,Center.Y,Center.Z-Extent.Z+5);}
             return true;
         };

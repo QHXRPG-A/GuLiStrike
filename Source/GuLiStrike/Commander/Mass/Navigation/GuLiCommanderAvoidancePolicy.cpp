@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h"
+#include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
+#include "Gameplay/Units/GuLiEngineeringCollision.h"
 
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "Commander/GuLiCommanderSimulationTiming.h"
@@ -211,7 +213,8 @@ namespace GuLiCommanderAvoidancePolicy
 		const float MaximumHeightDifference,
 		const float CellSize,
 		const float TimeHorizon,
-		FCandidateQueryScratch* Scratch)
+		FCandidateQueryScratch* Scratch,
+		const FGuLiOreObstacleIndex* Ore)
 	{
 		FCandidateQueryMetrics Metrics;
 		OutCandidates.Reset();
@@ -264,7 +267,8 @@ namespace GuLiCommanderAvoidancePolicy
 				if (Other.bEnvironment && !QueryScratch.VisitEnvironment(OtherIndex)) { ++Metrics.EnvironmentDuplicates; continue; }
 				++Metrics.UniqueVisits;
 				if (!Other.bParticipates || Other.StableKey == 0u
-					|| FMath::Abs(Agent.Location.Z - Other.Location.Z) > MaximumHeightDifference)
+					|| GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Other.bEngineering)
+					|| FMath::Abs(Agent.Location.Z - Other.Location.Z) > MaximumHeightDifference+Other.HalfHeight)
 				{
 					continue;
 				}
@@ -297,6 +301,36 @@ namespace GuLiCommanderAvoidancePolicy
 				{
 					if (List.Num() == Limit) List.Pop(EAllowShrinking::No);
 					List.Insert(Candidate, InsertIndex);
+				}
+			}
+		}
+		// Static ore shares the environment slots without entering the per-frame agent grid.
+		if (Ore)
+		{
+			Ore->Query(Agent.Location,DetectionDistance+Agent.Radius,QueryScratch.OreNodes);
+			for (uint32 Id:QueryScratch.OreNodes)
+			{
+				const auto* Node=Ore->Find(Id); if (!Node) continue;
+				const auto& O=Node->Obstacle; ++Metrics.BucketEntriesVisited; ++Metrics.UniqueVisits;
+				if (FMath::Abs(Agent.Location.Z-O.Location.Z)>MaximumHeightDifference+Node->HalfHeight) continue;
+				const double CenterSquared=FVector::DistSquared2D(Agent.Location,O.Location);
+				FNearestCandidate Candidate; Candidate.bStaticOre=true;
+				Candidate.DistanceSquared=FMath::Square(FMath::Max(0.,FMath::Sqrt(CenterSquared)-Agent.Radius-O.RadiusCentimeters));
+				if (Candidate.DistanceSquared>DistanceCutoffSquared) continue;
+				++Metrics.ExactCandidates;
+				Candidate.StableKey=(uint64(1)<<63)|O.Handle.Value;
+				Candidate.bOverlapping=CenterSquared<FMath::Square(double(Agent.Radius)+O.RadiusCentimeters);
+				auto& Collider=Candidate.StaticCollider; Collider.StableKey=Candidate.StableKey;
+				Collider.Location=O.Location; Collider.Radius=O.RadiusCentimeters; Collider.HalfHeight=Node->HalfHeight;
+				Collider.bParticipates=true; Collider.bEnvironment=true;
+				int32 Insert=0;
+				while (Insert<Environment.Num() && (Environment[Insert].DistanceSquared<Candidate.DistanceSquared
+					|| (Environment[Insert].DistanceSquared==Candidate.DistanceSquared && Environment[Insert].StableKey<Candidate.StableKey))) ++Insert;
+				const int32 Limit=FMath::Min(2,CandidateLimit);
+				if (Insert<Limit)
+				{
+					if (Environment.Num()==Limit) Environment.Pop(EAllowShrinking::No);
+					Environment.Insert(Candidate,Insert);
 				}
 			}
 		}
@@ -394,12 +428,13 @@ namespace GuLiCommanderAvoidancePolicy
 		for (int32 CandidateIndex = 0; CandidateIndex < ColliderCount; ++CandidateIndex)
 		{
 			const FNearestCandidate& Candidate = Candidates[CandidateIndex];
-			if (!Agents.IsValidIndex(Candidate.AgentIndex))
+			if (!Candidate.bStaticOre && !Agents.IsValidIndex(Candidate.AgentIndex))
 			{
 				continue;
 			}
-			const FAgentSnapshot& Collider = Agents[Candidate.AgentIndex];
+			const FAgentSnapshot& Collider = ResolveCandidate(Agents,Candidate);
 			if (!Collider.bParticipates || Collider.Radius <= 0.0f
+				|| GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Collider.bEngineering)
 				|| Collider.Location.ContainsNaN() || Collider.Velocity.ContainsNaN())
 			{
 				continue;

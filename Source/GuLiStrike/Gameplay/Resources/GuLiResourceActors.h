@@ -24,6 +24,8 @@ class UStaticMeshComponent;
 class UGuLiResourceEconomyConfig;
 class UGuLiResourceMapDefinition;
 class UGuLiResourceWorldSubsystem;
+class UGuLiOreNavigationComponent;
+struct FGuLiOreNodeObstacle;
 
 /** One renderer for all 6240 logical nodes. It owns exactly 24 HISM components. */
 UCLASS(NotPlaceable)
@@ -73,7 +75,7 @@ private:
 	void AddVisual(uint32 NodeId, uint8 RemainingAmount);
 };
 
-/** Server-side collision, Recast NavArea_Null and Mass avoidance proxy for one whole cluster. */
+/** Cluster management and a single exporter of individual live-node navigation areas. */
 UCLASS(NotPlaceable)
 class GULISTRIKE_API AGuLiOreClusterObstacleActor final : public AActor
 {
@@ -83,22 +85,24 @@ public:
 	AGuLiOreClusterObstacleActor();
 	void InitializeObstacle(uint16 InClusterId, float RadiusCentimeters);
 	void SetObstacleEnabled(bool bEnabled);
+	void InitializeNodes(uint16 InClusterId,TConstArrayView<FGuLiOreNodeObstacle> Nodes,TConstArrayView<uint8> Remaining);
+	void RemoveNodes(TConstArrayView<uint32> NodeIds);
 	UFUNCTION(BlueprintPure, Category = "Resources|Navigation")
 	int32 GetClusterId() const { return ClusterId; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Navigation")
 	float GetObstacleRadius() const;
 	UFUNCTION(BlueprintPure, Category = "Resources|Navigation")
-	bool IsObstacleEnabled() const { return bObstacleEnabled; }
+	bool IsObstacleEnabled() const;
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> CollisionSphere;
+	TObjectPtr<USceneComponent> SceneRoot;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UNavModifierComponent> NavModifier;
+	TObjectPtr<UGuLiOreNavigationComponent> NavModifier;
 
 	uint16 ClusterId = 0u;
-	bool bObstacleEnabled = true;
+	float ObstacleRadius = 0;
 };
 
 /** Replicated ownership and fixed ground anchor; cosmetics are delegated to presentation. */

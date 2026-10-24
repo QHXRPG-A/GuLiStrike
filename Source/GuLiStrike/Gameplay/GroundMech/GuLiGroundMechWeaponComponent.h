@@ -34,8 +34,9 @@ public:
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetFireRate() const { return ActiveUpgrade.FireRate; }
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetShotDamage() const { return ActiveUpgrade.Damage; }
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") bool IsWeaponReady() const { return bConfigured; }
+	bool GetActualShotRay(FVector& Origin,FVector& Direction) const;
 	/** Local presentation only; called from the unified accepted launch event. */
-	void PlayFlightShot(FGuid ShotId, float ShotTime);
+	void PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex = 0);
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") bool bWeaponEnabled = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UDataTable> UpgradeTable;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UDataTable> SkillTable;
@@ -69,6 +70,7 @@ private:
 	void AlignGun();
 	void TryFire();
 	USkeletalMeshComponent* Gun() const;
+	FName MuzzleSocket(uint8 Index) const;
 	UPROPERTY() FGuLiStrikeMechUpgradesRow ActiveUpgrade;
 	UPROPERTY() FGuLiStrikeMechSkillsRow ActiveSkill;
 	UPROPERTY() TObjectPtr<UNiagaraSystem> MuzzleSystem;

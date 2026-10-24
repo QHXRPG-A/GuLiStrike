@@ -5,6 +5,9 @@
 
 ## 快速入口
 
+- 近期优化（10月18–21日）：[需求](RequirementDocument/20261021-近期性能优化.md) · [开发](DevelopmentDocumentation/20261021-近期性能优化.md) · [归档](Archive/20261021-近期性能优化整合归档.md)。
+- 9月历史：[归档清单](Archive/9月归档清单.md) · [原文ZIP](Archive/202609-归档.zip)。
+- 8月历史：[归档清单](Archive/8月归档清单.md) · [原文ZIP](Archive/202608-归档.zip)。
 - [GuLiStrike 美术规范](RequirementDocument/GuLiStrike美术规范.md)：已审参考、默认线稿/三渲二、模型双审流程、灯光和爆炸风格；由美术制作技能共同读取。
 - [当前工作](_Index/Current.md)：草案、规划、实施、验收、完成五段工作流。
 - [待验收](_Index/Verification.md)：处于验收阶段或验证未完全通过的工作。
@@ -46,7 +49,7 @@ python .agents/skills/gulistrike-progress/scripts/progress_docs.py check
 
 ## 归档与勘误
 
-增量归档创建后原则上不可改写。勘误新增一篇归档并通过 `relations.supersedes` 保留历史链；只有文件完全重复且用户明确要求时才允许物理删除。
+增量归档创建后原则上不可改写。用户明确要求合并或压缩时，可在保存原文ZIP、校验SHA-256并迁移入链后转为压缩存储；合并不提升原有验收结论。勘误新增一篇归档并通过 `relations.supersedes` 保留历史链；只有文件完全重复且用户明确要求时才允许物理删除。
 
 2026-08-30 已清理历史测试日志、检查结果、性能采样、自动化报告和运行截图。旧归档中缺失的非 Markdown 附件仅作为历史提示，不是结构坏链；正式文档与 `TerrainGeneration/` 地形资料未删除。原清理记录文件已随历史整理移除，此处保留事实说明，不再建立失效链接。
 

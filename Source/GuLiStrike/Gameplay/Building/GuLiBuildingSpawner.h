@@ -10,7 +10,7 @@ namespace GuLiBuildings
 	/** Deterministic nearby candidates, ordered by distance from the original gift slot. */
 	GULISTRIKE_API TArray<FTransform> GetGiftPlacementCandidates(const FVector& OutpostGround, int32 SlotIndex);
 	GULISTRIKE_API bool ProjectPlacementCandidate(UWorld& World, const FTransform& Candidate, const AActor* IgnoredActor,
-		FTransform& OutGroundTransform, AActor*& OutSupportingActor);
+		FTransform& OutGroundTransform, AActor*& OutSupportingActor,int32 FootprintCells=1);
 	/** Terrain/presentation/clearance failure leaves the slot unclaimed and retains no incomplete actor. */
 	GULISTRIKE_API AActor* Spawn(UWorld& World, int32 DefinitionId, EGuLiTeam Team,
 		const FTransform& GroundTransform, const AActor& SupportingActor, int32 TerritoryIndex, EGuLiBuildingOrigin Origin,

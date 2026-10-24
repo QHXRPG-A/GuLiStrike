@@ -32,7 +32,7 @@ using Bytes = std::vector<std::uint8_t>;
 using Tick = std::uint64_t;
 using Revision = std::uint64_t;
 
-inline constexpr std::uint16_t ProtocolVersion = 32;
+inline constexpr std::uint16_t ProtocolVersion = 33;
 inline constexpr std::uint32_t HandoffVersion = 3;
 inline constexpr std::size_t MaxDatagramBytes = 1000;
 inline constexpr std::size_t MaxMessageBytes = 4 * 1024 * 1024;

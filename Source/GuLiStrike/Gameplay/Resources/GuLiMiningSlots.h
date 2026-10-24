@@ -38,6 +38,7 @@ struct FGuLiMiningClusterSlots
 	uint32 Generation = 1;
 	int32 NextSample = 0;
 	bool bPending = true;
+	bool bRefreshAfterRelease = false;
 };
 struct FGuLiMiningSlotProfile
 {

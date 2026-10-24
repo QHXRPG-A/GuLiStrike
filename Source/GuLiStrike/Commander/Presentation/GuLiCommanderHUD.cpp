@@ -1,5 +1,7 @@
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
 #include "Misc/ScopeExit.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
@@ -324,6 +326,40 @@ void AGuLiCommanderHUD::DrawHUD()
 	}
 
 	// 绘制回调只负责 Canvas；角色/UI 生命周期不能依赖 showhud 或视口是否渲染。
+	if (CommanderController && Cast<AGuLiGroundMechCharacter>(CommanderController->GetPawn())
+		&& CommanderController->CanUseGroundMechFireInput() && !CommanderController->bShowMouseCursor)
+	{
+		const float X=Canvas->ClipX*.5f, Y=Canvas->ClipY*.5f;
+		const FLinearColor ReticleColor=FLinearColor::FromSRGBColor(FColor::FromHex(TEXT("FEE4D9")));
+		DrawLine(X-9,Y,X-3,Y,ReticleColor,1.5f);
+		DrawLine(X+3,Y,X+9,Y,ReticleColor,1.5f);
+		DrawLine(X,Y-9,X,Y-3,ReticleColor,1.5f);
+		DrawLine(X,Y+3,X,Y+9,ReticleColor,1.5f);
+		const auto* Mech=CastChecked<AGuLiGroundMechCharacter>(CommanderController->GetPawn());
+		FVector Origin,Direction;
+		if (Mech->GetWeapon()->GetActualShotRay(Origin,Direction))
+		{
+			FHitResult Hit; FCollisionQueryParams Query(SCENE_QUERY_STAT(GroundActualFire),false,Mech);
+			const FVector End=Origin+Direction*600000.f;
+			const bool bHit=GetWorld()->LineTraceSingleByChannel(Hit,Origin,End,ECC_Visibility,Query);
+			FVector2D Point;
+			if (!CommanderController->ProjectWorldLocationToScreen(bHit?Hit.ImpactPoint:End,Point))
+			{
+				FVector CameraLocation; FRotator CameraRotation; CommanderController->GetPlayerViewPoint(CameraLocation,CameraRotation);
+				const FVector Local=CameraRotation.UnrotateVector(Direction);
+				FVector2D Edge(Local.Y,-Local.Z); if (!Edge.Normalize()) Edge=FVector2D(0,1);
+				Point=FVector2D(X,Y)+Edge*FMath::Max(Canvas->ClipX,Canvas->ClipY);
+			}
+			if (FVector2D::Distance(Point,FVector2D(X,Y))>12.f)
+			{
+				Point.X=FMath::Clamp(Point.X,12.f,Canvas->ClipX-12.f); Point.Y=FMath::Clamp(Point.Y,12.f,Canvas->ClipY-12.f);
+				DrawLine(Point.X-5,Point.Y,Point.X,Point.Y-5,ReticleColor,1.5f);
+				DrawLine(Point.X,Point.Y-5,Point.X+5,Point.Y,ReticleColor,1.5f);
+				DrawLine(Point.X+5,Point.Y,Point.X,Point.Y+5,ReticleColor,1.5f);
+				DrawLine(Point.X,Point.Y+5,Point.X-5,Point.Y,ReticleColor,1.5f);
+			}
+		}
+	}
 	if (CommanderController && CommanderController->IsCommanderViewActive())
 	{
 		if (CommanderController->GetCommanderToolMode() == EGuLiCommanderToolMode::Select)
@@ -401,6 +437,10 @@ void AGuLiCommanderHUD::DrawPerformanceStats()
 	TArray<const FString*, TInlineAllocator<10>> Lines;
 	Lines.Add(&PerformanceStatsText);
 	if (!CameraDistanceText.IsEmpty()) Lines.Add(&CameraDistanceText);
+	if (const auto* Commander = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+		Commander && Commander->IsCommanderViewActive())
+		if (const auto* Sync = Commander->GetCommanderNetSyncComponent(); Sync && !Sync->GetMoveResponseText().IsEmpty())
+			Lines.Add(&Sync->GetMoveResponseText());
 	for (const FString& Line : NetworkStats.GetLines()) Lines.Add(&Line);
 	float TextWidth = 0.0f, LineHeight = 0.0f;
 	for (const FString* Line : Lines)

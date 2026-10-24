@@ -14,6 +14,9 @@
 
 class AGuLiBattlePlayerState;
 class ANavigationData;
+class ACharacter;
+struct FGuLiHybridObjectState;
+struct FGuLiGridMotion;
 struct FGuLiBattleAuthorityState;
 struct FGuLiHybridObjectKey;
 class UGuLiCommanderSkillCatalog;
@@ -24,6 +27,7 @@ struct FGuLiSoldierDefinition;
 struct FGuLiSharedMoveIntent;
 struct FGuLiSoldierLocalPose;
 namespace GuLiCommanderAvoidancePolicy { struct FAgentSnapshot; struct FSharedAvoidanceGeometry; }
+namespace GuLiMoveLatency { struct FMovementSample; }
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRetiringSignature, const FGuLiSoldierStateItem&);
 
@@ -290,7 +294,7 @@ public:
 	bool BuildInitialArmySpawnLayout(const TArray<FGuLiSoldierDefinition>& Definitions,
 		const FVector& RedAssembly, const FVector& BlueAssembly,
 		TArray<FGuLiCommanderInitialSpawnSlot>& OutSlots, FString& OutError,
-		float InwardInsetCentimeters = 0.0f, int32 Population = GuLiCommanderInitialSpawn::Population) const;
+		float InwardInsetCentimeters = 0.0f, int32 Population = GuLiCommanderInitialSpawn::Population,UWorld* AuthoringWorld=nullptr) const;
 
 	/** 在 .cpp 中使用 = default，按默认规则构造父类和成员；世界相关初始化放在 Initialize。 */
 	UGuLiBattleAuthoritySubsystem();
@@ -399,7 +403,7 @@ public:
 		bool bPhased, bool bLocked, bool bRelocate);
 	bool IsSoldierPhased(FGuLiSoldierId Id) const;
 	bool IsSoldierExternallyLocked(FGuLiSoldierId Id) const;
-	bool ProjectExternalUnitLocation(FVector Desired, FVector& OutLocation) const;
+	bool ProjectExternalUnitLocation(FVector Desired, FVector& OutLocation,int32 FootprintCells=1) const;
 	/** Stable Damage Ledger identity for a Soldier in the current match. */
 	FGuLiTargetHandle MakeSoldierTargetHandle(FGuLiSoldierId SoldierId) const;
 
@@ -408,6 +412,16 @@ public:
 	bool TryGetSoldierWeaponDebug(FGuLiSoldierId SoldierId, FName SlotId, FGuLiSoldierCombatDebug& OutDebug) const;
 	/** Read-only server navigation diagnostics; terminal failure data remains available after ActiveOrderId clears. */
 	bool TryGetSoldierNavigationDebug(FGuLiSoldierId SoldierId, FGuLiSoldierNavigationDebug& OutDebug) const;
+    /** Engineering entities share the Mass executor; their existing Actor retains work/identity/presentation only. */
+    FGuLiSoldierId AttachEngineeringMass(ACharacter& Carrier,const FGuLiHybridObjectState& Record,uint16 UnitType);
+    void DetachEngineeringMass(FGuLiSoldierId Id);
+    void SyncEngineeringMass(FGuLiSoldierId Id);
+    bool MoveEngineeringMass(FGuLiSoldierId Id,const FVector& Target,float AcceptanceRadius,float BlockedSeconds=0);
+    /** Local diagnostics only; attach the commander command after the work adapter commits its move. */
+    void SetEngineeringMoveResponseCommand(FGuLiSoldierId Id, uint32 CommandId);
+    bool CaptureEngineeringMass(FGuLiSoldierId Id,FGuLiGridMotion& Motion) const;
+    void QueueEngineeringPosePublish(TFunction<void()>&& Publish);
+
 	/** Returns a fresh state census plus cumulative surface/path-query counters. */
 	FGuLiNavigationStats GetNavigationStats() const;
 	/** Extends the executor registry and the skill resolver together. Game-thread/server only. */
@@ -479,13 +493,14 @@ public:
 	 * 返回 true 仅表示找到记录，不能据此判断士兵仍存活或残骸仍可见。
 	 */
 	bool TryGetSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
+	bool TryGetMoveResponseSample(FGuLiSoldierId SoldierId, const FGuLiHybridObjectKey& Life,
+		GuLiMoveLatency::FMovementSample& Out) const;
 	/** Only an active local Hybrid simulation can provide this unbuffered, read-only pose. */
 	bool TryGetLocalSoldierPose(FGuLiSoldierId SoldierId, FGuLiSoldierLocalPose& OutPose) const;
 
 	/** Reuses the caller-owned array and captures finite locations of living authoritative Soldiers. */
 	void BuildLivingSoldierLocationSnapshot(TArray<FVector>& OutLocations) const;
 	/** Unquantized server poses for passive local-avoidance bodies; no movement or replication side effects. */
-	void BuildGroundAvoidanceSnapshot(TArray<struct FGuLiGroundAvoidanceBody>& OutBodies) const;
 	/** Full data-only cylinders used by player ground-mech side collision and virtual support. */
 	void BuildGroundCollisionSnapshot(TArray<struct FGuLiGroundMassBody>& OutBodies,
 		uint32& OutEpoch, uint32& OutSequence, double& OutSimulationSeconds) const;
@@ -508,6 +523,7 @@ public:
 	bool HasSpawnedAuthorityPopulation() const;
 
 private:
+    bool EnsureAuthorityArchetypes();
 	bool InstallGrantedSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId,
 		float InitialYaw = 0.0f, float InitialHealth = -1.0f);
 

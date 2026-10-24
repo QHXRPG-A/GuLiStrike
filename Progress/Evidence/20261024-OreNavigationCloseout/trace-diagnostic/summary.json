@@ -1,0 +1,380 @@
+[
+  {
+    "count": 0,
+    "capture_valid": true,
+    "diagnostic_trace": true,
+    "performance_eligible": false,
+    "total_removed": 0,
+    "background_removed": 0,
+    "foreground_frames": 1390,
+    "background_frames": 0,
+    "editor_states": {
+      "Capture.EditorRootVisibleFrames": 1390
+    },
+    "pre": {
+      "n": 268,
+      "mean_ms": 10.817989915498156,
+      "median_ms": 9.970799088478088,
+      "p95_ms": 16.252301633358,
+      "p99_ms": 18.37250217795372,
+      "max_ms": 21.779999136924744,
+      "fps": 92.43861454958207,
+      "over_16_67_pct": 4.104477611940299,
+      "over_33_33_pct": 0.0
+    },
+    "event_2s": {
+      "n": 182,
+      "mean_ms": 10.955637914466333,
+      "median_ms": 10.176200419664383,
+      "p95_ms": 16.85439795255661,
+      "p99_ms": 19.57160234451294,
+      "max_ms": 24.558600038290024,
+      "fps": 91.27720428580005,
+      "over_16_67_pct": 6.593406593406593,
+      "over_33_33_pct": 0.0
+    },
+    "post": {
+      "n": 556,
+      "mean_ms": 10.805325897531114,
+      "median_ms": 9.754501283168793,
+      "p95_ms": 16.323402523994446,
+      "p99_ms": 18.680699169635773,
+      "max_ms": 130.0194002687931,
+      "fps": 92.54695411162821,
+      "over_16_67_pct": 3.9568345323741005,
+      "over_33_33_pct": 0.17985611510791366
+    },
+    "whole": {
+      "n": 1385,
+      "mean_ms": 10.795004114454834,
+      "median_ms": 9.948499500751495,
+      "p95_ms": 16.45440235733986,
+      "p99_ms": 18.535200506448746,
+      "max_ms": 130.0194002687931,
+      "fps": 92.63544408111619,
+      "over_16_67_pct": 4.548736462093863,
+      "over_33_33_pct": 0.07220216606498195
+    },
+    "batch_ms": null,
+    "batches": [],
+    "dispatch_ms": 0.00010058283805847168,
+    "batch_wait_ms": [],
+    "nav_active_frames": 0,
+    "nav_peak": 0,
+    "nav_last_busy_ms": null,
+    "nav_frame_ms": null,
+    "resource_tick_ms": {
+      "n": 1391,
+      "mean_ms": 0.008463473906198223,
+      "median_ms": 0.007499009370803833,
+      "p95_ms": 0.009898096323013306,
+      "p99_ms": 0.04269927740097046,
+      "max_ms": 0.09720027446746826,
+      "fps": 118154.79212001235,
+      "over_16_67_pct": 0.0,
+      "over_33_33_pct": 0.0
+    },
+    "round": 1,
+    "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\OreNavigation20261024\\trace-diagnostic\\r1-n0",
+    "same_view": true,
+    "scene_ok": true
+  },
+  {
+    "count": 64,
+    "capture_valid": true,
+    "diagnostic_trace": true,
+    "performance_eligible": false,
+    "total_removed": 64,
+    "background_removed": 0,
+    "foreground_frames": 1411,
+    "background_frames": 0,
+    "editor_states": {
+      "Capture.EditorRootVisibleFrames": 1411
+    },
+    "pre": {
+      "n": 269,
+      "mean_ms": 10.777902605919147,
+      "median_ms": 9.956497699022293,
+      "p95_ms": 16.8210007250309,
+      "p99_ms": 18.702398985624313,
+      "max_ms": 20.51139995455742,
+      "fps": 92.78243054922459,
+      "over_16_67_pct": 5.5762081784386615,
+      "over_33_33_pct": 0.0
+    },
+    "event_2s": {
+      "n": 187,
+      "mean_ms": 10.707604275508361,
+      "median_ms": 9.736601263284683,
+      "p95_ms": 16.9668011367321,
+      "p99_ms": 22.046897560358047,
+      "max_ms": 26.75200253725052,
+      "fps": 93.39157240684666,
+      "over_16_67_pct": 5.882352941176471,
+      "over_33_33_pct": 0.0
+    },
+    "post": {
+      "n": 573,
+      "mean_ms": 10.465561257867082,
+      "median_ms": 9.72050055861473,
+      "p95_ms": 16.301199793815613,
+      "p99_ms": 18.83849874138832,
+      "max_ms": 21.34459838271141,
+      "fps": 95.55149268734046,
+      "over_16_67_pct": 3.6649214659685865,
+      "over_33_33_pct": 0.0
+    },
+    "whole": {
+      "n": 1406,
+      "mean_ms": 10.634446657060051,
+      "median_ms": 9.842600673437119,
+      "p95_ms": 16.58109948039055,
+      "p99_ms": 18.92619952559471,
+      "max_ms": 32.50090032815933,
+      "fps": 94.03404166178358,
+      "over_16_67_pct": 4.836415362731152,
+      "over_33_33_pct": 0.0
+    },
+    "batch_ms": {
+      "n": 1,
+      "mean_ms": 0.32120198011398315,
+      "median_ms": 0.32120198011398315,
+      "p95_ms": 0.32120198011398315,
+      "p99_ms": 0.32120198011398315,
+      "max_ms": 0.32120198011398315,
+      "fps": 3113.3058384171095,
+      "over_16_67_pct": 0.0,
+      "over_33_33_pct": 0.0
+    },
+    "batches": [
+      {
+        "nodes": 64,
+        "gt_ms": 0.32120198011398315,
+        "frame_ms": 14.381799846887589,
+        "after_trigger_ms": 203.9301
+      }
+    ],
+    "dispatch_ms": 0.12969970703125,
+    "batch_wait_ms": [
+      203.71609926223755
+    ],
+    "nav_active_frames": 4,
+    "nav_peak": 13,
+    "nav_last_busy_ms": 244.9261,
+    "nav_frame_ms": {
+      "n": 4,
+      "mean_ms": 14.61197528988123,
+      "median_ms": 9.544998407363892,
+      "p95_ms": 26.75200253725052,
+      "p99_ms": 26.75200253725052,
+      "max_ms": 26.75200253725052,
+      "fps": 68.43701690985601,
+      "over_16_67_pct": 25.0,
+      "over_33_33_pct": 0.0
+    },
+    "resource_tick_ms": {
+      "n": 1412,
+      "mean_ms": 0.008123837115913208,
+      "median_ms": 0.00729784369468689,
+      "p95_ms": 0.008899718523025513,
+      "p99_ms": 0.030700117349624634,
+      "max_ms": 0.33460184931755066,
+      "fps": 123094.54088403261,
+      "over_16_67_pct": 0.0,
+      "over_33_33_pct": 0.0
+    },
+    "round": 1,
+    "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\OreNavigation20261024\\trace-diagnostic\\r1-n64",
+    "same_view": true,
+    "scene_ok": true
+  },
+  {
+    "count": 64,
+    "capture_valid": true,
+    "diagnostic_trace": true,
+    "performance_eligible": false,
+    "total_removed": 64,
+    "background_removed": 0,
+    "foreground_frames": 1457,
+    "background_frames": 0,
+    "editor_states": {
+      "Capture.EditorRootVisibleFrames": 1457
+    },
+    "pre": {
+      "n": 270,
+      "mean_ms": 10.756103335707277,
+      "median_ms": 9.99470055103302,
+      "p95_ms": 16.72619953751564,
+      "p99_ms": 18.782302737236023,
+      "max_ms": 19.56319808959961,
+      "fps": 92.97047162798052,
+      "over_16_67_pct": 5.185185185185185,
+      "over_33_33_pct": 0.0
+    },
+    "event_2s": {
+      "n": 184,
+      "mean_ms": 10.855407069396714,
+      "median_ms": 10.046999901533127,
+      "p95_ms": 17.253097146749496,
+      "p99_ms": 22.63990044593811,
+      "max_ms": 31.492602080106735,
+      "fps": 92.11999085867305,
+      "over_16_67_pct": 6.521739130434782,
+      "over_33_33_pct": 0.0
+    },
+    "post": {
+      "n": 601,
+      "mean_ms": 9.976947918757425,
+      "median_ms": 9.39590111374855,
+      "p95_ms": 15.849601477384567,
+      "p99_ms": 17.289098352193832,
+      "max_ms": 19.91169899702072,
+      "fps": 100.23105343868976,
+      "over_16_67_pct": 2.8286189683860234,
+      "over_33_33_pct": 0.0
+    },
+    "whole": {
+      "n": 1452,
+      "mean_ms": 10.293742079934306,
+      "median_ms": 9.563300758600235,
+      "p95_ms": 16.12040027976036,
+      "p99_ms": 18.332097679376602,
+      "max_ms": 31.492602080106735,
+      "fps": 97.14640139947842,
+      "over_16_67_pct": 3.8567493112947657,
+      "over_33_33_pct": 0.0
+    },
+    "batch_ms": {
+      "n": 1,
+      "mean_ms": 0.31990185379981995,
+      "median_ms": 0.31990185379981995,
+      "p95_ms": 0.31990185379981995,
+      "p99_ms": 0.31990185379981995,
+      "max_ms": 0.31990185379981995,
+      "fps": 3125.958753042283,
+      "over_16_67_pct": 0.0,
+      "over_33_33_pct": 0.0
+    },
+    "batches": [
+      {
+        "nodes": 64,
+        "gt_ms": 0.31990185379981995,
+        "frame_ms": 17.183497548103333,
+        "after_trigger_ms": 213.9459
+      }
+    ],
+    "dispatch_ms": 0.12840330600738525,
+    "batch_wait_ms": [
+      213.7310989201069
+    ],
+    "nav_active_frames": 4,
+    "nav_peak": 13,
+    "nav_last_busy_ms": 259.4482,
+    "nav_frame_ms": {
+      "n": 4,
+      "mean_ms": 16.77032560110092,
+      "median_ms": 11.68610155582428,
+      "p95_ms": 31.492602080106735,
+      "p99_ms": 31.492602080106735,
+      "max_ms": 31.492602080106735,
+      "fps": 59.629134447714776,
+      "over_16_67_pct": 25.0,
+      "over_33_33_pct": 0.0
+    },
+    "resource_tick_ms": {
+      "n": 1458,
+      "mean_ms": 0.008211239906659016,
+      "median_ms": 0.00720098614692688,
+      "p95_ms": 0.00949949026107788,
+      "p99_ms": 0.03390014171600342,
+      "max_ms": 0.3241002559661865,
+      "fps": 121784.28731439651,
+      "over_16_67_pct": 0.0,
+      "over_33_33_pct": 0.0
+    },
+    "round": 2,
+    "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\OreNavigation20261024\\trace-diagnostic\\r2-n64",
+    "same_view": true,
+    "scene_ok": true
+  },
+  {
+    "count": 0,
+    "capture_valid": true,
+    "diagnostic_trace": true,
+    "performance_eligible": false,
+    "total_removed": 0,
+    "background_removed": 0,
+    "foreground_frames": 1471,
+    "background_frames": 0,
+    "editor_states": {
+      "Capture.EditorRootVisibleFrames": 1471
+    },
+    "pre": {
+      "n": 292,
+      "mean_ms": 9.953590058912969,
+      "median_ms": 9.365901350975037,
+      "p95_ms": 15.163399279117584,
+      "p99_ms": 17.774298787117004,
+      "max_ms": 18.27859878540039,
+      "fps": 100.46626333626703,
+      "over_16_67_pct": 1.7123287671232876,
+      "over_33_33_pct": 0.0
+    },
+    "event_2s": {
+      "n": 201,
+      "mean_ms": 9.941098998435102,
+      "median_ms": 9.363099932670593,
+      "p95_ms": 15.057802200317383,
+      "p99_ms": 16.809899359941483,
+      "max_ms": 18.59460026025772,
+      "fps": 100.59249989939916,
+      "over_16_67_pct": 1.492537313432836,
+      "over_33_33_pct": 0.0
+    },
+    "post": {
+      "n": 582,
+      "mean_ms": 10.310500860214233,
+      "median_ms": 9.664099663496017,
+      "p95_ms": 15.723999589681625,
+      "p99_ms": 17.67449826002121,
+      "max_ms": 20.70070058107376,
+      "fps": 96.9884987700997,
+      "over_16_67_pct": 2.577319587628866,
+      "over_33_33_pct": 0.0
+    },
+    "whole": {
+      "n": 1466,
+      "mean_ms": 10.191266029808888,
+      "median_ms": 9.526897221803665,
+      "p95_ms": 15.532199293375015,
+      "p99_ms": 17.592400312423706,
+      "max_ms": 20.70070058107376,
+      "fps": 98.1232358251718,
+      "over_16_67_pct": 2.1145975443383356,
+      "over_33_33_pct": 0.0
+    },
+    "batch_ms": null,
+    "batches": [],
+    "dispatch_ms": 9.685754776000977e-05,
+    "batch_wait_ms": [],
+    "nav_active_frames": 0,
+    "nav_peak": 0,
+    "nav_last_busy_ms": null,
+    "nav_frame_ms": null,
+    "resource_tick_ms": {
+      "n": 1472,
+      "mean_ms": 0.007867853602637415,
+      "median_ms": 0.00720098614692688,
+      "p95_ms": 0.009201467037200928,
+      "p99_ms": 0.02530217170715332,
+      "max_ms": 0.0979006290435791,
+      "fps": 127099.46708525257,
+      "over_16_67_pct": 0.0,
+      "over_33_33_pct": 0.0
+    },
+    "round": 2,
+    "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\OreNavigation20261024\\trace-diagnostic\\r2-n0",
+    "same_view": true,
+    "scene_ok": true
+  }
+]

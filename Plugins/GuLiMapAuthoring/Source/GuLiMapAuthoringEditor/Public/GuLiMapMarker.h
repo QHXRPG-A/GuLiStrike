@@ -22,6 +22,8 @@ class GULIMAPAUTHORINGEDITOR_API AGuLiMapMarker : public AActor
 public:
     AGuLiMapMarker();
     UPROPERTY(EditAnywhere, Category="Map Authoring", meta=(ShowOnlyInnerProperties)) FGuLiMapMarkerRecord Record;
+    /** Standalone editing preference, separate from the stable layout/parameter schema. */
+    UPROPERTY(EditAnywhere, Category="Map Authoring|Standalone") bool bStandaloneFollowTerrain = true;
     UPROPERTY(VisibleAnywhere, Category="Map Authoring") TObjectPtr<UGuLiMapVisualizationComponent> Visualization;
     virtual bool IsEditorOnly() const override { return true; }
     virtual bool IsEditorOnlyLoadedInPIE() const override { return false; }

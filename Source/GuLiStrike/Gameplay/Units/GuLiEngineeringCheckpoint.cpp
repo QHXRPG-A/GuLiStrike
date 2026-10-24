@@ -9,10 +9,12 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "NavFilters/NavigationQueryFilter.h"
 #include "Engine/World.h"
+#include "Gameplay/Navigation/Grid/GuLiGridMotionState.h"
+#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 
 namespace GuLiEngineeringCheckpoint
 {
-constexpr uint32 Version=1;
+constexpr uint32 Version=2;
 struct FLeg {int32 Source=INDEX_NONE,Target=INDEX_NONE; FVector Entry=FVector::ZeroVector;};
 struct FFailure {FVector Start=FVector::ZeroVector,Goal=FVector::ZeroVector; double RetryAt=0; uint32 Revision=0;};
 struct FState
@@ -28,6 +30,9 @@ struct FState
     double QueueAge=0,ReplacementAge=0;
     bool Work=false,Unreachable=false,Repath=false;
     uint32 Replacement=0;
+    FGuLiGridMotion GridMotion;
+    GuLiGrid::FTrafficPriority GridPriority;
+    bool GridQueued=false,GridWorkPaused=false;
 };
 void Serialize(FGuLiHybridStateArchive& A,FState& V)
 {
@@ -42,6 +47,9 @@ void Serialize(FGuLiHybridStateArchive& A,FState& V)
     A.Value(V.GroundGoal); A.Value(V.GroundRadius); A.Value(V.WorkGoal); A.Value(V.WorkRadius);
     A.Value(V.Work); A.Value(V.Unreachable); A.Value(V.Repath); A.Value(V.QueueAge);
     A.Value(V.Replacement); A.Value(V.ReplacementGoal); A.Value(V.ReplacementRadius); A.Value(V.ReplacementAge);
+    GuLiHybridState::GridMotion(A,V.GridMotion);A.Value(V.GridQueued);A.Value(V.GridWorkPaused);
+    A.Enum(V.GridPriority.Class,uint8(GuLiGrid::ETrafficClass::DirectPlayer));
+    A.Value(V.GridPriority.AcceptedSequence);A.Value(V.GridPriority.Command);
     if (V.ExitAccumulator<0 || V.ExitAccumulator>.101 || V.ExitCursor<0 || V.GroundRadius<0 || V.WorkRadius<0
         || V.ReplacementRadius<0 || V.QueueAge<0 || V.ReplacementAge<0 || (!V.Work && !V.Legs.IsEmpty())) A.Reject();
 }
@@ -55,12 +63,15 @@ bool UGuLiEngineeringTravelComponent::CaptureHybridTravel(TArray<uint8>& Bytes) 
     if (!UGuLiNetworkSettings::IsHybrid(GetWorld())) return false;
     FState V; V.Transit=State; V.Passed=PassedNodes; V.ExitAccumulator=ExitQueryAccumulator; V.ExitCursor=ExitCandidateCursor;
     V.Ground=GroundStatus; V.GroundGoal=GroundGoal; V.GroundRadius=GroundAcceptance;
-    V.Work=bWorkJourney; V.WorkGoal=WorkGoal; V.WorkRadius=WorkAcceptance; V.Unreachable=bPathUnreachable; V.Repath=bGroundRepath;
+    V.Work=bWorkJourney; V.WorkGoal=WorkGoal; V.WorkRadius=WorkAcceptance; V.Unreachable=bPathUnreachable;
     const double Now=FPlatformTime::Seconds(); V.QueueAge=QueuedAt>0?FMath::Max(0.,Now-QueuedAt):0;
     V.Replacement=ReplacementTaskId; V.ReplacementGoal=ReplacementGoal; V.ReplacementRadius=ReplacementRadius;
     V.ReplacementAge=ReplacementQueuedAt>0?FMath::Max(0.,Now-ReplacementQueuedAt):0;
+    V.GridMotion=GridMotion;
+    if (const auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
+        Authority->CaptureEngineeringMass(MassEntityId,V.GridMotion);
+    V.GridMotion.State.RetryAt=FMath::Max(0.,V.GridMotion.State.RetryAt-UGuLiHybridActorComponent::BattleSeconds(GetOwner()));
     for (const auto& L:WorkLegs) V.Legs.Add({L.Source,L.Target,L.Entry});
-    for (const auto& F:FailedPaths) V.Failures.Add({F.Start,F.Goal,F.RetryAt,F.Revision});
     FGuLiHybridStateArchive A; GuLiEngineeringCheckpoint::Serialize(A,V); return A.Finish(Bytes);
 }
 bool UGuLiEngineeringTravelComponent::ValidateHybridTravel(TConstArrayView<uint8> Bytes) const
@@ -83,20 +94,15 @@ bool UGuLiEngineeringTravelComponent::RestoreHybridTravel(TConstArrayView<uint8>
     auto* Service=GetWorld()->GetSubsystem<UGuLiEngineeringPathSubsystem>();
     if (bActivate) return ActivateRestoredTravel();
     if (Service) Service->Cancel(*this);
-    if (const auto* Pawn=Cast<APawn>(GetOwner())) if (auto* AI=Cast<AAIController>(Pawn->GetController()))
-    {AI->GetPathFollowingComponent()->OnRequestFinished.RemoveAll(this); AI->StopMovement();}
     State=MoveTemp(V.Transit); PassedNodes=MoveTemp(V.Passed); ExitQueryAccumulator=V.ExitAccumulator; ExitCandidateCursor=V.ExitCursor;
     GroundStatus=(V.Ground==EGuLiEngineeringMoveStatus::Moving)?EGuLiEngineeringMoveStatus::WaitingForPath:V.Ground;
-    GroundGoal=V.GroundGoal; GroundAcceptance=V.GroundRadius; ActiveGroundPath.Reset(); GroundRequestId=FAIRequestID();
-    bWorkJourney=V.Work; WorkGoal=V.WorkGoal; WorkAcceptance=V.WorkRadius; bPathUnreachable=V.Unreachable; bGroundRepath=V.Repath;
+    GroundGoal=V.GroundGoal; GroundAcceptance=V.GroundRadius;
+    // Keep the v2 wire layout; rebuild active ground work through the ordinary path queue.
+    GridMotion=V.GridMotion;GridMotion.State.bStepCommitted=false;
+    if (!GridMotion.State.bUserStopped && (V.GridQueued || V.GridWorkPaused)) GroundStatus=EGuLiEngineeringMoveStatus::WaitingForPath;
+    bWorkJourney=V.Work; WorkGoal=V.WorkGoal; WorkAcceptance=V.WorkRadius; bPathUnreachable=V.Unreachable;
     WorkLegs.Reset(); for (const auto& L:V.Legs) WorkLegs.Add({L.Source,L.Target,L.Entry});
     RouteCacheRevision=0; RouteCacheStart=FVector::ZeroVector; RouteCosts.Reset(); RouteParents.Reset(); RouteSources.Reset(); RouteCacheTeam=EGuLiTeam::Unassigned;
-    FailedPaths.Reset(); const auto* Obstacles=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
-    for (const auto& F:V.Failures) FailedPaths.Add({F.Start,F.Goal,F.RetryAt,Obstacles?Obstacles->GetStaticRevision():0});
-    const auto* Pawn=CastChecked<APawn>(GetOwner()); const auto* AI=Cast<AAIController>(Pawn->GetController());
-    if (!AI) return false;
-    FailureProfile=HashCombine(GetTypeHash(AI->GetDefaultNavigationFilterClass().Get()),
-        HashCombine(GetTypeHash(Pawn->GetNavAgentPropertiesRef().AgentRadius),GetTypeHash(Pawn->GetNavAgentPropertiesRef().AgentHeight)));
     const double Now=FPlatformTime::Seconds(); QueuedAt=Now-V.QueueAge;
     ReplacementTaskId=V.Replacement; ReplacementGoal=V.ReplacementGoal; ReplacementRadius=V.ReplacementRadius;
     ReplacementQueuedAt=Now-V.ReplacementAge; ReplacementStatus=EGuLiEngineeringPathPreparation::Pending; ReplacementPath={};

@@ -139,8 +139,8 @@ Map：`/Game/Maps/LVL_CommanderMassPrototype`。使用现有正常指挥官／B 
 
 - [已批准需求](../RequirementDocument/20260926-三棵指挥官StateTree分层重构.md)
 
-- [源码阶段归档](../Archive/20260926-指挥官StateTree分层重构源码阶段.md)
+- [源码阶段归档](../Archive/9月归档清单.md#arc-20260926-001)
 
-- [编译、资产迁移与审核交付归档](../Archive/20260926-指挥官StateTree分层资产与审核交付.md)
+- [编译、资产迁移与审核交付归档](../Archive/9月归档清单.md#arc-20260926-002)
 
-- [三树中文描述补全归档](../Archive/20260928-指挥官StateTree中文描述补全.md)
+- [三树中文描述补全归档](../Archive/9月归档清单.md#arc-20260928-002)

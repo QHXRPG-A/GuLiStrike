@@ -2,6 +2,25 @@
 
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Engine/World.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGridMotion.h"
+#include "NavigationSystem.h"
+
+namespace
+{
+FGuLiHybridObjectKey GridObstacleKey(uint32 Handle)
+{return {EGuLiHybridObjectKind::ResourceNode,FGuid(0x47524944,0x4F425354,0,Handle),1};}
+void PublishGridObstacle(UWorld* World,const FGuLiDynamicObstacle& O)
+{
+    if (auto* G=World?World->GetSubsystem<UGuLiGroundGridSubsystem>():nullptr;G && G->IsReady())
+    {
+        const auto Key=GridObstacleKey(O.Handle.Value);
+        if (O.Kind==EGuLiDynamicObstacleKind::StaticWorld)
+            G->SetStaticObstacle(Key,FGuLiGridMotion::Coverage(*G->Snapshot(),O.Location,GuLiGrid::FootprintFromDiameter(O.RadiusCentimeters*2.)));
+        else G->RemoveStaticObstacle(Key);
+    }
+}
+}
 
 FGuLiObstacleRegionStamp FGuLiDynamicObstacleSnapshot::CaptureRegion(
 	const FVector& From, const FVector& To, float Radius) const
@@ -49,11 +68,31 @@ void FGuLiDynamicObstacleSnapshot::Query(const FVector& P,float Radius,TArray<in
 	{
 		for (int32 I=0; I<Obstacles.Num(); ++I)
 			if (FVector::DistSquared2D(P,Obstacles[I].Location)<=FMath::Square(Radius+Obstacles[I].RadiusCentimeters)) Out.Add(I);
-		return;
 	}
-	for (int32 X=Min.X; X<=Max.X; ++X) for (int32 Y=Min.Y; Y<=Max.Y; ++Y)
+	else for (int32 X=Min.X; X<=Max.X; ++X) for (int32 Y=Min.Y; Y<=Max.Y; ++Y)
 		if (const auto* Bucket=Cells.Find({X,Y})) for (int32 I : *Bucket)
 			if (!Seen.Contains(I)) { Seen.Add(I); Out.Add(I); }
+	if (Ore)
+	{
+		TArray<uint32> Nodes; Ore->Query(P,Radius,Nodes);
+		for (uint32 Node:Nodes) Out.Add(-int32(Node));
+	}
+}
+const FGuLiDynamicObstacle& FGuLiDynamicObstacleSnapshot::GetObstacle(int32 QueryIndex) const
+{
+	if (QueryIndex>=0) return Obstacles[QueryIndex];
+	check(Ore && Ore->Find(uint32(-int64(QueryIndex))));
+	return Ore->Find(uint32(-int64(QueryIndex)))->Obstacle;
+}
+const FGuLiDynamicObstacle* FGuLiDynamicObstacleSnapshot::FindObstacle(uint32 Handle) const
+{
+	if (Handle&0x80000000u)
+	{
+		const auto* Node=Ore?Ore->Find(Handle&0x7fffffffu):nullptr;
+		return Node ? &Node->Obstacle : nullptr;
+	}
+	const auto* Index=ByHandle.Find(Handle);
+	return Index ? &Obstacles[*Index] : nullptr;
 }
 bool FGuLiDynamicObstacleSnapshot::IsSegmentClear(const FVector& From,const FVector& To,float Radius,bool bAllowEscape) const
 {
@@ -61,7 +100,7 @@ bool FGuLiDynamicObstacleSnapshot::IsSegmentClear(const FVector& From,const FVec
 	const FVector2D A(From), B(To), Segment=B-A;
 	for (int32 I : Nearby)
 	{
-		const auto& O=Obstacles[I]; if (FMath::Abs(To.Z-O.Location.Z)>300.f) continue;
+		const auto& O=GetObstacle(I); if (FMath::Abs(To.Z-O.Location.Z)>300.f+O.HalfHeight) continue;
 		const FVector2D Center(O.Location);
 		const double R=Radius+O.RadiusCentimeters;
 		const double StartDistance=FVector2D::DistSquared(A,Center), EndDistance=FVector2D::DistSquared(B,Center);
@@ -78,6 +117,7 @@ TSharedRef<const FGuLiDynamicObstacleSnapshot,ESPMode::ThreadSafe> UGuLiDynamicO
 	{
 		auto Next=MakeShared<FGuLiDynamicObstacleSnapshot,ESPMode::ThreadSafe>(); Next->Revision=Revision; Next->Obstacles=Obstacles;
 		Next->CellVersions = CellVersions;
+		Next->Ore = OreIndex;
 		for (int32 I=0; I<Next->Obstacles.Num(); ++I)
 		{
 			const auto& O=Next->Obstacles[I]; Next->ByHandle.Add(O.Handle.Value,I);
@@ -110,7 +150,11 @@ bool UGuLiDynamicObstacleRegistrySubsystem::ShouldCreateSubsystem(UObject* Outer
 
 void UGuLiDynamicObstacleRegistrySubsystem::Deinitialize()
 {
+	if (auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld()))
+		Nav->OnNavigationGenerationFinishedDelegate.RemoveDynamic(this,&ThisClass::HandleOreNavigationFinished);
+	PendingOreNavigationRegions.Reset();
 	Snapshot.Reset();
+	OreIndex.Reset(); OrePublications=0;
 	CellVersions.Reset(); NextCellVersion = 0;
 	ObstaclesChanged.Clear();
 	StaticRegionChanged.Clear(); RegionChanges.Reset();
@@ -119,6 +163,39 @@ void UGuLiDynamicObstacleRegistrySubsystem::Deinitialize()
 	NextHandle = 1u;
 	Revision = 0u;
 	Super::Deinitialize();
+}
+
+void UGuLiDynamicObstacleRegistrySubsystem::OnWorldBeginPlay(UWorld& InWorld)
+{
+	Super::OnWorldBeginPlay(InWorld);
+	if (auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(&InWorld))
+		Nav->OnNavigationGenerationFinishedDelegate.AddUniqueDynamic(this,&ThisClass::HandleOreNavigationFinished);
+}
+
+void UGuLiDynamicObstacleRegistrySubsystem::NotifyStaticGeometryOpened(const FBox& Bounds)
+{
+	const TGuardValue<bool> Opening(bOpeningStaticRegion,true);
+	NotifyStaticGeometryChanged(Bounds);
+}
+
+void UGuLiDynamicObstacleRegistrySubsystem::HandleOreNavigationFinished(ANavigationData* NavigationData)
+{
+	check(IsInGameThread());
+	if (NavigationData && !PendingOreNavigationRegions.IsEmpty()) bOreNavigationFinished=true;
+	FlushOreNavigationNotifications();
+}
+void UGuLiDynamicObstacleRegistrySubsystem::FlushOreNavigationNotifications()
+{
+	check(IsInGameThread());
+	auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	if (!bOreNavigationFinished || !Nav || PendingOreNavigationRegions.IsEmpty() || Nav->HasDirtyAreasQueued()
+		|| Nav->GetNumRemainingBuildTasks()>0 || Nav->GetNumRunningBuildTasks()>0) return;
+	// A failure observed against the old tiles must be reconsidered after the new tiles are installed.
+	// Notification only invalidates local caches; their existing query budgets still govern rebuilding.
+	const auto Finished=MoveTemp(PendingOreNavigationRegions);
+	PendingOreNavigationRegions.Reset();
+	bOreNavigationFinished=false;
+	for (const auto& Pair:Finished) NotifyStaticGeometryOpened(Pair.Value);
 }
 
 FGuLiDynamicObstacleHandle UGuLiDynamicObstacleRegistrySubsystem::RegisterObstacle(
@@ -145,6 +222,7 @@ FGuLiDynamicObstacleHandle UGuLiDynamicObstacleRegistrySubsystem::RegisterObstac
 	Stored.Handle = Handle;
 	const int32 Index = Obstacles.Add(MoveTemp(Stored));
 	IndexByHandle.Add(Handle.Value, Index);
+    PublishGridObstacle(GetWorld(),Obstacles[Index]);
 	DirtyObstacleCells(Obstacle);
 	PublishStaticRegion(Obstacle);
 	PublishChange();
@@ -166,6 +244,7 @@ EGuLiObstacleUpdateResult UGuLiDynamicObstacleRegistrySubsystem::UpdateObstacle(
 	FGuLiDynamicObstacle& Stored = Obstacles[*Index];
 	const bool bChanged = !Stored.Location.Equals(Obstacle.Location, 0.1f)
 		|| !FMath::IsNearlyEqual(Stored.RadiusCentimeters, Obstacle.RadiusCentimeters, 0.1f)
+		|| !FMath::IsNearlyEqual(Stored.HalfHeight, Obstacle.HalfHeight, 0.1f)
 		|| Stored.Kind != Obstacle.Kind
 		|| Stored.Team != Obstacle.Team;
 	if (!bChanged) return EGuLiObstacleUpdateResult::Unchanged;
@@ -175,6 +254,8 @@ EGuLiObstacleUpdateResult UGuLiDynamicObstacleRegistrySubsystem::UpdateObstacle(
 	Stored.RadiusCentimeters = Obstacle.RadiusCentimeters;
 	Stored.Kind = Obstacle.Kind;
 	Stored.Team = Obstacle.Team;
+	Stored.HalfHeight = Obstacle.HalfHeight;
+    PublishGridObstacle(GetWorld(),Stored);
 	DirtyObstacleCells(Stored);
 	PublishStaticRegion(Stored);
 	PublishChange();
@@ -186,6 +267,7 @@ void UGuLiDynamicObstacleRegistrySubsystem::UnregisterObstacle(
 {
 	check(Handle.IsValid());
 	const int32 RemovedIndex = IndexByHandle.FindAndRemoveChecked(Handle.Value);
+    if (auto* G=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady()) G->RemoveStaticObstacle(GridObstacleKey(Handle.Value));
 	DirtyObstacleCells(Obstacles[RemovedIndex]);
 	PublishStaticRegion(Obstacles[RemovedIndex]);
 	const int32 LastIndex = Obstacles.Num() - 1;

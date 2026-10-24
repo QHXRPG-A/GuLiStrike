@@ -12,6 +12,7 @@
 #include "Engine/LevelStreaming.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "GameFramework/WorldSettings.h"
 #include "FileHelpers.h"
 #include "GuLiFlightNavigationCookGate.h"
 #include "GuLiFlightNavigationCookSettings.h"

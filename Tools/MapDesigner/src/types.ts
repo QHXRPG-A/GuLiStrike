@@ -1,0 +1,28 @@
+export type Vec3 = [number, number, number];
+export type Transform = { position: Vec3; rotation_pitch_yaw_roll: Vec3; scale: Vec3 };
+export type Shape = 'Cylinder' | 'Sphere' | 'Box' | 'PolygonPrism';
+export type Geometry = { radius?: number; min_z?: number; max_z?: number; half_extents?: Vec3; vertices?: [number, number][] };
+export type Region = { region_id: string; region_key: string; display_name: string; enabled: boolean; shape_type: Shape; geometry: Geometry; relative_transform: Transform; world_transform?: Transform };
+export type FieldType = 'bool' | 'int32' | 'double' | 'name' | 'string' | 'enum' | 'vector' | 'soft_object' | 'soft_class';
+export type Field = { field_id: string; field_key: string; display_name?: string; field_type: FieldType; value_type_object?: string; default: unknown; required?: boolean; minimum?: number; maximum?: number; enum_values?: string[] };
+export type MapType = { type_id: string; asset_path: string; display_name: string; editor_icon: string; color_rgb: Vec3; color_alpha: number; allowed_shapes: Shape[]; fields: Field[]; default_regions: Region[] };
+export type Marker = { marker_id: string; marker_key: string; type_id: string; display_name: string; enabled: boolean; note: string; tags: string[]; parameters: Record<string, unknown>; regions: Region[]; world_transform: Transform };
+export type Layout = { schema_version: 1; map_package: string; length_unit: 'cm'; angle_unit: 'degree'; coordinate_system: string; types: MapType[]; markers: Marker[] };
+export type DensityCell = { cell_x: number; cell_y: number; density_u8: number };
+export type DensityLayer = { layer_id: string; layer_key: string; display_name: string; color_rgb: Vec3; color_alpha: number; cells: DensityCell[] };
+export type Density = { schema_version: 1; map_package: string; length_unit: 'cm'; coordinate_system: string; density_map_id: string; cell_size_cm: number; territory_type_id: string; territory_region_key: string; layers: DensityLayer[]; [key: string]: unknown };
+export type Terrain = { cells_x: number; cells_y: number; cell_size_cm: 300; origin_cm: [number, number]; heights_cm: number[] };
+export type Project = {
+  schema: 'guli-map-design/v1'; id: string; name: string; map_package: string;
+  terrain: Terrain; layout: Layout; density: Density | null;
+  editor: { ground_follow: Record<string, boolean>; field_layouts: Record<string, Field[]> };
+  source: Record<string, any>; baseline: Record<string, string>;
+};
+export type Issue = { severity: 'error' | 'warning'; message: string; marker_id?: string; region_id?: string; field?: string };
+export type Mode = 'raise' | 'lower' | 'flatten' | 'smooth' | 'ramp' | 'area' | 'select' | 'place' | 'polygon' | 'density' | 'erase';
+export type Brush = { size: number; step: number; target: number; strength: number; falloff: number; shape: 'square' | 'circle'; rampStart: number; rampEnd: number };
+export const clone = <T>(v: T): T => structuredClone(v);
+export const guid = (): string => crypto.randomUUID();
+export const identity = (): Transform => ({ position: [0, 0, 0], rotation_pitch_yaw_roll: [0, 0, 0], scale: [1, 1, 1] });
+export const coordSystem = 'Unreal left-handed Z-up; local polygon XY at z=0; implicit closure';
+export const fieldTypes: FieldType[] = ['bool','int32','double','name','string','enum','vector','soft_object','soft_class'];

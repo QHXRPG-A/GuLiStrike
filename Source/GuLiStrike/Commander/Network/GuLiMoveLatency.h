@@ -5,6 +5,14 @@
 /** Diagnostic-only correlation. No wire fields, RPCs, gameplay decisions, or cross-host subtraction. */
 namespace GuLiMoveLatency
 {
+	/** Cheap read-only movement facts; no navigation query or pose/roster copies. */
+	struct FMovementSample
+	{
+		FVector Location = FVector::ZeroVector;
+		uint32 Command = 0, Order = 0;
+		double AcceptedAt = 0, FirstMotionAt = 0;
+		bool bLocal = false, bAlive = false;
+	};
 	struct FContext
 	{
 		FGuid Player;

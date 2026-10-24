@@ -6,6 +6,7 @@
 #include "NavigationSystem.h"
 #include "Engine/World.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
+#include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 
 void UGuLiBuildingRegistrySubsystem::Register(UGuLiBuildingLifecycleComponent& Building)
 {
@@ -62,7 +63,20 @@ void UGuLiBuildingRegistrySubsystem::DirtyConstructionSlots(const FBox& Bounds)
 void UGuLiBuildingRegistrySubsystem::Tick(float)
 {
 	if (const auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>(); H && (H->IsBattlePaused() || !H->CanPublishFacts())) return;
-	if (GetWorld()->GetNetMode()==NM_Client || SlotQueue.IsEmpty() || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
+    if (GetWorld()->GetNetMode()==NM_Client || SlotQueue.IsEmpty()) return;
+    if (auto* G=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady())
+    {
+        auto& Work=G->FrameBudget();FGuLiNavigationWorkBudget::FScope Scope(Work);
+        TGuardValue<double> Slice(Work.LimitSeconds,FMath::Min(Work.LimitSeconds,Work.Elapsed()+.0002));
+        const int32 Count=FMath::Min(4,SlotQueue.Num());
+        for (int32 I=0;I<Count && Work.TakeProjection();++I)
+        {
+            auto Weak=SlotQueue[0];SlotQueue.RemoveAt(0,1,EAllowShrinking::No);
+            if (auto* Building=Weak.Get();Building && !Building->BuildNextConstructionSlot()) SlotQueue.AddUnique(Weak);
+        }
+        return;
+    }
+    if (UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return;
 	const double Start=FPlatformTime::Seconds(); const int32 Count=FMath::Min(4,SlotQueue.Num());
 	for (int32 I=0; I<Count && FPlatformTime::Seconds()-Start<.001; ++I)
 	{

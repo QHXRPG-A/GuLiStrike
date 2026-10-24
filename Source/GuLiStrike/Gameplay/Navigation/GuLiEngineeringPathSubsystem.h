@@ -15,13 +15,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual TStatId GetStatId() const override;
 	virtual void Deinitialize() override;
-	void Enqueue(UGuLiEngineeringTravelComponent& Travel);
+	bool Enqueue(UGuLiEngineeringTravelComponent& Travel);
 	void Cancel(UGuLiEngineeringTravelComponent& Travel);
 	void RecordPathQuery(EGuLiEngineeringPathOrigin Origin, double Milliseconds);
 	UFUNCTION(BlueprintPure, Category="Engineering|Navigation") FString GetBudgetDebug() const;
 	UFUNCTION(BlueprintPure, Category="Engineering|Navigation") TArray<double> GetRecentQueueWaitMilliseconds() const { return QueueWaitSamples; }
 private:
 	TArray<TWeakObjectPtr<UGuLiEngineeringTravelComponent>> Queue;
+    TMap<TWeakObjectPtr<UGuLiEngineeringTravelComponent>,int32> QueueIndex;
+    int32 WorkCursor=0;
 	uint64 QueryCount = 0;
 	uint64 ActualQueries[3] = {};
 	double ActualQueryMilliseconds[3] = {};

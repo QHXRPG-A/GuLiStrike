@@ -10,6 +10,7 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 
 bool GuLiBuildings::ValidateGroundPlacement(UWorld& World, const FGuLiBuildingDefinition& Definition,
 	const FTransform& GroundTransform, UClass* PresentationClass, const AActor* IgnoredActor, FString& OutReason)
@@ -23,6 +24,29 @@ bool GuLiBuildings::ValidateGroundPlacement(UWorld& World, const FGuLiBuildingDe
 	}
 	FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiBuildingGroundSupport), false, IgnoredActor);
 	const double BaseZ = GroundTransform.GetLocation().Z;
+    if (const auto S=GuLiGrid::AuthoredSnapshot(World))
+    {
+        const auto P=GroundTransform.GetLocation();const int32 N=Definition.FootprintCells;
+        const auto A=S->AnchorAt(P,N);
+        if (!S->Fits(A,N) || FVector::DistSquared2D(S->Center(A,N),P)>.01)
+        {OutReason=TEXT("Building does not fit its complete grid footprint.");return false;}
+        const double MaxGradient=FMath::Tan(FMath::DegreesToRadians(GuLiBuildingPlacementPolicy::MaximumSlopeDegrees));
+        const int32 Width=S->Cells.X+1;
+        for (int32 Y=A.Y;Y<A.Y+N;++Y) for (int32 X=A.X;X<A.X+N;++X)
+        {
+            const double H00=S->Heights[Y*Width+X],H10=S->Heights[Y*Width+X+1];
+            const double H01=S->Heights[(Y+1)*Width+X],H11=S->Heights[(Y+1)*Width+X+1];
+            const double DX=FMath::Max(FMath::Abs(H10-H00),FMath::Abs(H11-H01))/GuLiGrid::CellSize;
+            const double DY=FMath::Max(FMath::Abs(H01-H00),FMath::Abs(H11-H10))/GuLiGrid::CellSize;
+            if (DX*DX+DY*DY>MaxGradient*MaxGradient
+                || FMath::Max(FMath::Max(FMath::Abs(H00-BaseZ),FMath::Abs(H10-BaseZ)),
+                    FMath::Max(FMath::Abs(H01-BaseZ),FMath::Abs(H11-BaseZ)))>UGuLiGroundAccessRampComponent::MaximumGroundRise)
+            {OutReason=TEXT("Grid footprint exceeds building slope or height tolerance.");return false;}
+        }
+        FTransform Model=GroundTransform;
+        Model.SetScale3D(Definition.Category==EGuLiBuildingCategory::Factory?FVector(Definition.PresentationScale):Definition.MeshScale);
+        return !PresentationClass || UGuLiGroundAccessRampComponent::ValidatePresentationGround(World,PresentationClass,Model,Query,OutReason);
+    }
 	// Cover the interior as well as corners; large prefabs must not straddle a hole
 	// or hillside merely because their center trace succeeded. Work remains bounded.
 	const int32 StepsX = FMath::Clamp(FMath::CeilToInt(Extent.X * 2.0 / 200.0), 2, 16);
@@ -60,7 +84,7 @@ bool GuLiBuildings::ValidateGroundPlacement(UWorld& World, const FGuLiBuildingDe
 	}
 	FTransform ModelTransform = GroundTransform;
 	ModelTransform.SetScale3D(Definition.Category == EGuLiBuildingCategory::Factory
-		? FVector(GuLiBuildingVisuals::FactoryScale) : Definition.MeshScale);
+		? FVector(Definition.PresentationScale) : Definition.MeshScale);
 	return !PresentationClass || UGuLiGroundAccessRampComponent::ValidatePresentationGround(
 		World, PresentationClass, ModelTransform, Query, OutReason);
 }
@@ -96,12 +120,18 @@ TArray<FTransform> GuLiBuildings::GetGiftPlacementCandidates(const FVector& Outp
 }
 
 bool GuLiBuildings::ProjectPlacementCandidate(UWorld& World, const FTransform& Candidate, const AActor* IgnoredActor,
-	FTransform& OutGroundTransform, AActor*& OutSupportingActor)
+	FTransform& OutGroundTransform, AActor*& OutSupportingActor,int32 FootprintCells)
 {
 	OutSupportingActor = nullptr;
 	FHitResult Ground;
 	FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiGiftGround), false, IgnoredActor);
-	const FVector Position = Candidate.GetLocation();
+    FVector Position = Candidate.GetLocation();
+    if (const auto S=GuLiGrid::AuthoredSnapshot(World))
+    {
+        if (!S->Project(Position,FootprintCells,FVector(300,300,5000),Position)) return false;
+        if (auto* G=World.GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady()
+            && !GuLiGrid::Unoccupied(*G,Position,FootprintCells)) return false;
+    }
 	if (!World.LineTraceSingleByObjectType(Ground,
 		Position + FVector(0, 0, UGuLiGroundAccessRampComponent::GroundTraceDistance),
 		Position - FVector(0, 0, UGuLiGroundAccessRampComponent::GroundTraceDistance),

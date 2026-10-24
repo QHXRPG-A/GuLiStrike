@@ -17,7 +17,9 @@ bool GuLiWorkPosition::ProjectPose(const ACharacter& Vehicle, const FVector& Des
 	const double Radius=Vehicle.GetCapsuleComponent()->GetScaledCapsuleRadius();
 	const double HalfHeight=Vehicle.GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	const FBox Bounds=FBox::BuildAABB(FVector::ZeroVector,FVector(Radius,Radius,HalfHeight));
-	const auto* Data = Nav->GetNavDataForProps(Vehicle.GetNavAgentPropertiesRef(), Desired);
+	// Engineering Mass follows CommanderSoldier corridors. A grid-only placement
+	// or another agent's NavMesh is not evidence that this work point is reachable.
+	const auto* Data = Nav->GetNavDataForAgentName(TEXT("CommanderSoldier"));
 	FNavLocation Ground;
 	if (!Data || !Nav->ProjectPointToNavigation(Desired, Ground, FVector(80,80,5000), Data)) return false;
 	FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiWorkPosition), false, &Vehicle);

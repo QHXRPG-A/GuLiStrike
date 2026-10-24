@@ -4,6 +4,10 @@ UE 5.7 项目级编辑器插件。它生产地图布局数据，不是 GameMode�
 
 项目内维护 Skill：[guli-map-authoring](../../.agents/skills/guli-map-authoring/SKILL.md)。以后询问本插件的使用、导出、故障、源码维护或扩展时可直接调用 `$guli-map-authoring`；Skill 会按任务只加载操作、架构、数据合同或维护验证参考。
 
+编辑器外配套软件（2026-10-24）：[GuLi 独立地图设计器](../../Tools/MapDesigner/README.md) 统一编辑 3 米网格地形、标记、区域、类型和资源，UE 关闭时可保存、预览、导出。插件新增 `get_standalone_type_catalog()`、`preview_standalone_snapshot(directory)` 和 `apply_standalone_snapshot(directory)`，分别提供包含未使用类型的完整目录、只读预检查和按稳定 GUID 批量导入；批量导入自身不保存包。原有六/九文件和 layout schema v1 保持兼容，完整目录通过独立 `type_catalog.json` 传递。离地跟随设置保存在独立编辑元数据中。
+
+地形、设计边界、占地、资源烘焙和导航由项目 `GuLiStrikeEditor` 的 `GuLiMapDesignAuthoringLibrary` 衔接，插件不反向依赖玩法模块。日常流程仍为用户导出后由助手读取差异再应用 UE。源码版构建、正常/冲突预检查和完整当前图快照已核对；实际地图应用和用户视觉验收待设计完成，详见 [开发记录](../../Progress/DevelopmentDocumentation/20261024-GuLi独立地图设计器.md)。
+
 交付状态（0.2.0，2026-09-10）：地图标记能力保持兼容，并新增红蓝矿密度涂绘、Territory 汇总和三份扩展导出。源码版构建与 `GuLi.MapAuthoring` 10/10 自动化通过；资源热图、双层混色、笔刷手感和 8km 双层压力仍待重启源码 Editor 后人工验收，详见[本次开发记录](../../Progress/DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md)。正在运行的旧编辑器需要保存工作并重新启动，才能载入新原生插件；使用 `D:\UnrealEngine-5.7\Engine\Binaries\Win64\UnrealEditor.exe`，不要仅凭 `.uproject` 关联判断引擎版本。
 
 ## 开始使用

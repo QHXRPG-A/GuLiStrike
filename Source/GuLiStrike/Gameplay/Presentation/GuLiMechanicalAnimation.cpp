@@ -267,8 +267,11 @@ void GuLiMechanicalAnimation::StepLocomotion(const FGuLiMechanicalAnimationConfi
 			S.DiscTiltFrom = S.DiscTiltRadians; S.DiscTiltTarget = Target; S.DiscTiltElapsed = 0;
 		}
 		S.DiscTiltElapsed += Dt;
-		const float Alpha = FMath::Clamp(S.DiscTiltElapsed / C.DiscTiltTransitionSeconds, 0.0f, 1.0f);
-		S.DiscTiltRadians = FMath::Lerp(S.DiscTiltFrom, S.DiscTiltTarget, Alpha*Alpha*(3-2*Alpha));
+		// During a turn the direction changes every displayed frame. Restarting a
+		// smoothstep at zero for each change stalls the discs, then catches up abruptly.
+		// Follow the current direction continuously; reach 95% in the authored interval.
+		const float Alpha = 1.0f-FMath::Exp(-2.995732274f*Dt/C.DiscTiltTransitionSeconds);
+		S.DiscTiltRadians = FMath::Lerp(S.DiscTiltRadians, S.DiscTiltTarget, Alpha);
 	}
 }
 
