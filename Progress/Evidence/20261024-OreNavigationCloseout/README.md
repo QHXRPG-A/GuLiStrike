@@ -21,3 +21,11 @@
 `git push origin main`退出1，GitHub LFS返回：`This repository exceeded its LFS budget. The account responsible for the budget should increase it to restore access.` 上传显示0/100对象、0B，分支未更新。随后`git ls-remote origin refs/heads/main`确认远端仍为`6c339e942b78b05670f6372e819aebe317fb701c`。机器回执见`github-push.json`。
 
 需仓库所属账户提高或解除LFS预算限制后再推送。未跳过LFS检查，未强推、改写历史或用缺失资产的提交替代项目。文档完成与临时文件清理已完成，GitHub上传仍受该外部限制阻塞；本回执另作本地提交保存。
+
+## 按用户新指令仅上传代码
+
+随后用户明确要求“代码传github，资源不传”。基于远端`6c339e942b78b05670f6372e819aebe317fb701c`整理独立提交`83bcfe0eb88d3bd32e54e041e3204f52b8d2eeb0`，上传全部未同步源码、工具、配置及非LFS文本说明，共647个变更文件。其中Source目录193个变更全部包含，与本地完整快照`84bd55bd21cbc674cf38b5fe06dfb3c513b3263c`逐Git对象一致。
+
+`git push origin codex/code-only-20261024:main`退出0；`git ls-remote`确认远端main已指向该提交。[GitHub代码提交](https://github.com/QHXRPG-A/GuLiStrike/commit/83bcfe0eb88d3bd32e54e041e3204f52b8d2eeb0)。Content、ArtSource和data目录保持远端原版本，新增或修改LFS对象为0；本地已打包为LFS压缩包的旧Markdown归档不在远端删除。未关闭LFS钩子或强推，完整本地源码、资源及历史继续保留。上节的失败记录仅指包含资源的整项目推送，代码推送已按新范围成功。
+
+本次为代码备份，资源版本独立；GitHub上的资源仍是原版本，不宣称远端快照包含本地新增地图和美术资产。详细范围见`code-only-sync.json`。
