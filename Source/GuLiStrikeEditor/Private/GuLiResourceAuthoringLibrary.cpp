@@ -358,17 +358,20 @@ namespace GuLiResourceAuthoring
 
 	bool IsExplicitlyExcluded(UWorld& World, const FVector2D Location)
 	{
-		// Density cells may straddle a road; test the actual cluster center against
-		// authored corridors, whose width already includes the cluster footprint.
+		// Test the actual cluster center against optional authored clearance regions.
+		// Their extent is authored to include any required cluster footprint.
 		for (TActorIterator<AGuLiMapMarker> It(&World); It; ++It)
 		{
-			const FName TypeId = It->Record.Type.LoadSynchronous()->TypeId;
+			const UGuLiMapTypeDefinition* Type = It->Record.Type.LoadSynchronous();
+			if (!Type) continue;
+			const FName TypeId = Type->TypeId;
 			if (TypeId == TEXT("Outpost")
 				&& FVector2D::DistSquared(Location, FVector2D(It->GetActorLocation()))
 					< FMath::Square(OutpostExclusionRadius)) return true;
-			if (TypeId != TEXT("ResourceClearance")) continue;
+			if (TypeId != TEXT("ResourceClearance") || !It->Record.bEnabled) continue;
 			for (const FGuLiMapRegionRecord& Region : It->Record.Regions)
 			{
+				if (!Region.bEnabled) continue;
 				const FTransform Transform = Region.GetTransform() * It->GetActorTransform();
 				const FVector Local = Transform.InverseTransformPosition(FVector(Location, 0.0));
 				if (Region.Geometry.GetScriptStruct() == FGuLiMapBox::StaticStruct())
@@ -376,7 +379,7 @@ namespace GuLiResourceAuthoring
 					const FVector Half = Region.Geometry.Get<FGuLiMapBox>().HalfExtents;
 					if (FMath::Abs(Local.X) <= Half.X && FMath::Abs(Local.Y) <= Half.Y) return true;
 				}
-				else
+				else if (Region.Geometry.GetScriptStruct() == FGuLiMapCylinder::StaticStruct())
 				{
 					if (Local.SizeSquared2D() <= FMath::Square(Region.Geometry.Get<FGuLiMapCylinder>().Radius)) return true;
 				}
@@ -385,35 +388,30 @@ namespace GuLiResourceAuthoring
 		return false;
 	}
 
-	bool ValidateRoadClearance(const FGuLiMapSnapshot& Snapshot, FString& OutError)
+	bool ValidateOptionalResourceClearance(const FGuLiMapSnapshot& Snapshot, FString& OutError)
 	{
-		int32 Count = 0;
 		for (const FGuLiMapSnapshotEntry& Entry : Snapshot.Markers)
 		{
-			if (Entry.Record.Type.LoadSynchronous()->TypeId != TEXT("ResourceClearance")) continue;
-			++Count;
-			if (Entry.Record.MarkerKey != TEXT("CommanderIsland_Roads") || !Entry.Record.bEnabled
-				|| Entry.Record.Regions.IsEmpty())
-			{
-				OutError = TEXT("CommanderIsland_Roads requires an enabled ResourceClearance marker with authored corridors.");
-				return false;
-			}
+			const UGuLiMapTypeDefinition* Type = Entry.Record.Type.LoadSynchronous();
+			if (!Type || Type->TypeId != TEXT("ResourceClearance") || !Entry.Record.bEnabled) continue;
 			for (const FGuLiMapRegionRecord& Region : Entry.Record.Regions)
 			{
+				if (!Region.bEnabled) continue;
 				const UScriptStruct* Shape = Region.Geometry.GetScriptStruct();
-				if (!Region.bEnabled || !FMath::IsNearlyZero(Region.Rotation.Pitch)
-					|| !FMath::IsNearlyZero(Region.Rotation.Roll)
+				const FRotator Rotation = (Region.GetTransform() * Entry.WorldTransform).Rotator();
+				if (!FMath::IsNearlyZero(Rotation.Pitch) || !FMath::IsNearlyZero(Rotation.Roll)
 					|| (Shape != FGuLiMapBox::StaticStruct() && Shape != FGuLiMapCylinder::StaticStruct()))
 				{
-					OutError = TEXT("Road clearance regions require enabled horizontal Box or Cylinder geometry.");
+					OutError = TEXT("Active resource clearance regions require horizontal Box or Cylinder geometry.");
+					return false;
+				}
+				const TSharedPtr<IGuLiMapGeometryHandler> Geometry = GuLiMap::FindGeometry(Region.Geometry);
+				if (!Geometry || !Geometry->Validate(Region.Geometry, OutError))
+				{
+					if (!Geometry) OutError = TEXT("Resource clearance geometry handler is unavailable.");
 					return false;
 				}
 			}
-		}
-		if (Count != 1)
-		{
-			OutError = TEXT("Exactly one CommanderIsland_Roads ResourceClearance marker is required before baking.");
-			return false;
 		}
 		return true;
 	}
@@ -829,7 +827,7 @@ namespace GuLiResourceAuthoring
 			OutError = TEXT("A 2500 cm GuLiMap density map is required.");
 			return false;
 		}
-		if (!ValidateRoadClearance(Snapshot, OutError)) return false;
+		if (!ValidateOptionalResourceClearance(Snapshot, OutError)) return false;
 		// Unchanged authoring retains ALL world anchors and source-local layouts, even if
 		// navigation clearance has changed. Cluster array order is NOT symmetry-pair order.
 		// A partially written, failed bake must never enter this certified-layout fast path.

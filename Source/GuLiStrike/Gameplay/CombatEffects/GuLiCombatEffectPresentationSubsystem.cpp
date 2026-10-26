@@ -358,12 +358,13 @@ bool UGuLiCombatEffectPresentationSubsystem::IsVisibleSystemBounds(UNiagaraSyste
 }
 
 UNiagaraComponent* UGuLiCombatEffectPresentationSubsystem::SpawnPooled(
-	int32 VfxId, FVector Location, float DynamicScale, float Radius, FRotator Rotation, FName ScaleParameterName)
+	int32 VfxId, FVector Location, float DynamicScale, float Radius, FRotator Rotation, FName ScaleParameterName, bool bActivate)
 {
 	if (VfxId == 0 || CVarGuLiCombatEffectVisuals.GetValueOnGameThread() == 0) return nullptr;
 	UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, VfxId);
 	const FVector Scale = GuLiVfx::Scale(this, VfxId, FVector(DynamicScale));
 	if (!System || !UGuLiVfxRegistrySubsystem::IsValidScale(Scale)) return nullptr;
+	if (VfxId==GuLiVfxIds::GroundMechImpact && !IsVisibleSystemBounds(System,FTransform(Rotation,Location,Scale))) return nullptr;
 	if ((VfxId==GuLiVfxIds::GroundMachineGunMuzzle || (Catalog && VfxId==Catalog->MachineGunImpact.VfxId))
 		&& !IsVisibleSystemBounds(System,FTransform(Rotation,Location,Scale))) return nullptr;
 	if (GuLiClientPresentation::ThreeTierEffectsEnabled() && (VfxId==GuLiVfxIds::GroundMachineGunMuzzle || (Catalog && VfxId==Catalog->MachineGunImpact.VfxId)))
@@ -393,7 +394,12 @@ UNiagaraComponent* UGuLiCombatEffectPresentationSubsystem::SpawnPooled(
 		if (!ScaleParameterName.IsNone()) Component->SetVariableFloat(ScaleParameterName, Scale.X);
 		Component->SetVariableFloat(TEXT("User.Radius"), Radius);
 		Component->SetVariableLinearColor(TEXT("User.Tint"), Catalog ? Catalog->GunfireTint : FLinearColor::White);
-		Component->Activate(true);
+		if (VfxId==GuLiVfxIds::GroundMechImpact)
+		{
+			const FLinearColor Tint(FColor::FromHex(TEXT("EE9D58")));
+			Component->SetVariableVec4(TEXT("User.GroundImpactTintFade"),FVector4(Tint.R,Tint.G,Tint.B,1));
+		}
+		if (bActivate) Component->Activate(true);
 	}
 	return Component;
 }
@@ -421,6 +427,7 @@ void UGuLiCombatEffectPresentationSubsystem::RemoveVisual(const FGuid& Id, bool 
 	LaserVisualIds.Remove(Id);
 	ReleaseFlightActor(Visual.FlightActor);
 	ClientFlights.Release(Visual.FlightHandle);
+	for (const auto& Piece:Visual.GroundTrailSegments) Retire(Piece.Component,0);
 	float Tail = 0.5f;
 	if (UGuLiProjectileEffectDefinition* Definition = Visual.State.ProjectileDefinition.Get()) Tail = Definition->TrailFadeSeconds;
 	Retire(Visual.Flight, bImmediate ? 0 : Tail);
@@ -428,7 +435,7 @@ void UGuLiCombatEffectPresentationSubsystem::RemoveVisual(const FGuid& Id, bool 
 	Retire(Visual.ActiveLoop, bImmediate ? 0 : 0.5f);
 }
 
-void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectState& State, bool bFromSnapshot)
+void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectState& State, bool bFromSnapshot, bool bImpactHandled)
 {
 	if (!GetWorld() || !UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	++Counters.ReceivedStates;
@@ -455,11 +462,18 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 			WingmanFlights->Finish(State.EffectId, State.Location, State.EndReason == EGuLiCombatEffectEndReason::EpochEnded);
 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile && Existing)
 		{
-			Existing->State.Location = State.Location; Existing->State.Phase = State.Phase;
-			Existing->State.EndReason = State.EndReason; Existing->State.SampleTime = State.SampleTime;
-			Existing->State.Sequence = State.Sequence;
-			Existing->bActivationPlayed = bFromSnapshot;
-			Existing->LaserFadeUntil = GetWorld()->GetTimeSeconds() + 0.04f;
+			if (Existing->GroundTrailLength>0 && (State.EndReason == EGuLiCombatEffectEndReason::EpochEnded || State.EndReason == EGuLiCombatEffectEndReason::Cancelled))
+			{
+				RemoveVisual(State.EffectId,true);
+			}
+			else
+			{
+				Existing->State.Location = State.Location; Existing->State.Phase = State.Phase;
+				Existing->State.EndReason = State.EndReason; Existing->State.SampleTime = State.SampleTime;
+				Existing->State.Sequence = State.Sequence;
+				Existing->bActivationPlayed = bFromSnapshot;
+				Existing->LaserFadeUntil = GetWorld()->GetTimeSeconds() + 0.04f;
+			}
 		}
 		else RemoveVisual(State.EffectId, State.EndReason == EGuLiCombatEffectEndReason::EpochEnded);
 		Tombstones.Add(State.EffectId, State.Sequence); TombstoneOrder.Add(State.EffectId);
@@ -470,7 +484,7 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 		}
 		// Terminal wire records deliberately omit the source and launch payload. A fresh
 		// hit must work even if its flight was culled, expired locally, or never received.
-		if (!bFromSnapshot) PlayMachineGunImpact(State);
+		if (!bFromSnapshot && !bImpactHandled) PlayMachineGunImpact(State);
 		return;
 	}
 	// Never resurrect an expired projectile/burst or replay one after a long network stall.
@@ -491,6 +505,7 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 			if (WingmanFlights) WingmanFlights->Prepare(Visual.LoadedFlightProfile);
 		}
 		Visual.LoadedFlightSystem = GuLiVfx::Load<UNiagaraSystem>(this, Visual.LoadedDefinition ? Visual.LoadedDefinition->FlightVfxId : State.PlayerBulletVfxId);
+		ResolveGroundTrailConfiguration(Visual);
 		// Snapshot flights are already in progress; never pull them back toward a muzzle.
 		Visual.bLaunchVisualOffsetResolved = bFromSnapshot;
 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile)
@@ -581,7 +596,14 @@ void UGuLiCombatEffectPresentationSubsystem::PlayMachineGunImpact(const FGuLiCom
 		Perf->RecordSample(TEXT("Impact.AgeMs"),Age*1000.);
 		if (Age>0.5f) Perf->Record(TEXT("Impact.TooOld"),1);
 	}
-	if (Age>0.5f || !GetCatalog()) return;
+	if (Age>0.5f) return;
+	if (State.Source.Kind==EGuLiTargetKind::GroundActor)
+	{
+		if (auto* Burst=SpawnPooled(GuLiVfxIds::GroundMechImpact,State.Location,1.f,0))
+		{ Retire(Burst,.2f,false); ++Counters.MachineGunImpactsPlayed; }
+		return;
+	}
+	if (!GetCatalog()) return;
 	const FGuLiEffectVisualVariant& Impact = Catalog->MachineGunImpact;
 	if (Impact.VfxId > 0 && FMath::IsFinite(Impact.MaximumLifetime) && Impact.MaximumLifetime > 0.0f)
 	{
@@ -1010,6 +1032,11 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 			const auto& State = Visual.State;
 			if (State.Source.Kind == EGuLiTargetKind::GroundActor)
 			{
+				if (Visual.GroundTrailLength > 0)
+				{
+					if (UpdateGroundTrail(Visual,Now,bEnabled)) Expired.Add(Pair.Key);
+					continue;
+				}
 				const bool bFinished = State.Phase == EGuLiCombatEffectPhase::Finished;
 				const float Age = FMath::Clamp(Now - State.StartTime, 0.f, State.EndTime - State.StartTime);
 				if (bFinished) Visual.RenderLocation = State.Location;
@@ -1126,6 +1153,14 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	{
 		UNiagaraComponent* Component = Retiring[Index].Component;
 		auto& Item=Retiring[Index];
+		if (Item.VfxId==GuLiVfxIds::GroundMechImpact && IsValid(Component))
+		{
+			// Fade the preserved impact materials together; do not replace the
+			// emitter shapes, particle motion, textures or their authored curves.
+			const FLinearColor Tint(FColor::FromHex(TEXT("EE9D58")));
+			const float Fade=FMath::Clamp((Item.ReleaseTime-LocalNow)/.2f,0.f,1.f);
+			Component->SetVariableVec4(TEXT("User.GroundImpactTintFade"),FVector4(Tint.R,Tint.G,Tint.B,Fade));
+		}
 		bool OffscreenExpired=false;
 		if (GuLiClientPresentation::OffscreenLifecycleEnabled() && IsValid(Component) && Item.Bounds.IsValid
 			&& (Item.VfxId==GuLiVfxIds::GroundMachineGunMuzzle || (Catalog && Item.VfxId==Catalog->MachineGunImpact.VfxId)))
@@ -1235,7 +1270,11 @@ FGuLiCombatEffectVisualCounters UGuLiCombatEffectPresentationSubsystem::GetCount
 	for (const auto& Item : MechanicalMuzzles) Result.ComponentCount += IsValid(Item.Component) ? 1 : 0;
 	for (const auto& Block : LaserBlocks) Result.ComponentCount += IsValid(Block.Component) ? 1 : 0;
 	for (const auto& Block : UpgradeBlocks) Result.ComponentCount += IsValid(Block.Component) ? 1 : 0;
-	for (const auto& Pair : Visuals) Result.ComponentCount += (IsValid(Pair.Value.Flight) ? 1 : 0) + (IsValid(Pair.Value.Waiting) ? 1 : 0) + (IsValid(Pair.Value.ActiveLoop) ? 1 : 0);
+	for (const auto& Pair : Visuals)
+	{
+		Result.ComponentCount += (IsValid(Pair.Value.Flight) ? 1 : 0) + (IsValid(Pair.Value.Waiting) ? 1 : 0) + (IsValid(Pair.Value.ActiveLoop) ? 1 : 0);
+		for (const auto& Piece:Pair.Value.GroundTrailSegments) Result.ComponentCount+=IsValid(Piece.Component) ? 1 : 0;
+	}
 	for (const auto& Item : Retiring) Result.ComponentCount += IsValid(Item.Component) ? 1 : 0;
 	return Result;
 }

@@ -36,7 +36,9 @@ bool UGuLiVfxRegistrySubsystem::SameDefinition(const FGuLiStrikeVfxEffectsRow& A
 {
 	return A.ResourcePath.ToSoftObjectPath() == B.ResourcePath.ToSoftObjectPath() && A.Scale == B.Scale
 		&& A.ReducedResourcePath==B.ReducedResourcePath && A.MinimalResourcePath==B.MinimalResourcePath
-		&& A.BatchResourcePath==B.BatchResourcePath && A.ReducedBatchResourcePath==B.ReducedBatchResourcePath && A.MinimalBatchResourcePath==B.MinimalBatchResourcePath;
+		&& A.BatchResourcePath==B.BatchResourcePath && A.ReducedBatchResourcePath==B.ReducedBatchResourcePath && A.MinimalBatchResourcePath==B.MinimalBatchResourcePath
+		&& A.TrailLengthCm==B.TrailLengthCm && A.TrailHoldSeconds==B.TrailHoldSeconds
+		&& A.TrailFadeSeconds==B.TrailFadeSeconds && A.TrailBendCm==B.TrailBendCm;
 }
 
 bool UGuLiVfxRegistrySubsystem::ValidateDefinitions(const TArray<FGuLiStrikeVfxEffectsRow>& Rows, FString& Error)
@@ -56,6 +58,12 @@ bool UGuLiVfxRegistrySubsystem::ValidateDefinitions(const TArray<FGuLiStrikeVfxE
 			return false;
 		}
 		Ids.Add(Row.Id);
+		const bool bFiniteTrail = FMath::IsFinite(Row.TrailLengthCm) && FMath::IsFinite(Row.TrailHoldSeconds)
+			&& FMath::IsFinite(Row.TrailFadeSeconds) && FMath::IsFinite(Row.TrailBendCm);
+		const bool bNoTrail = Row.TrailLengthCm==0 && Row.TrailHoldSeconds==0 && Row.TrailFadeSeconds==0 && Row.TrailBendCm==0;
+		const bool bValidTrail = Row.TrailLengthCm>=100 && Row.TrailLengthCm<=20000 && Row.TrailHoldSeconds>=0 && Row.TrailHoldSeconds<=1
+			&& Row.TrailFadeSeconds>=.01f && Row.TrailFadeSeconds<=2 && Row.TrailBendCm>=0 && Row.TrailBendCm<=FMath::Min(500.f,Row.TrailLengthCm*.1f);
+		if (!bFiniteTrail || (!bNoTrail && !bValidTrail)) { Error=FString::Printf(TEXT("Invalid persistent trail configuration: %d"),Row.Id); return false; }
 	}
 	Error.Reset();
 	return true;

@@ -143,6 +143,11 @@ void AGuLiGroundMechCharacter::SetShoulderAimHeld(bool bHeld)
 {
 	bShoulderAimHeld=bHeld && IsShoulderLookActive();
 	HybridInput.bFaceAim=bShoulderAimHeld;
+	if (!bSemanticInput)
+	{
+		HybridInput.WeaponAimMode=bShoulderAimHeld?EGuLiGroundWeaponAimMode::Target:EGuLiGroundWeaponAimMode::Forward;
+		if (!bShoulderAimHeld) { HybridInput.bHasAim=false; HybridInput.Aim=FVector::ZeroVector; }
+	}
 }
 
 void AGuLiGroundMechCharacter::BeginPlay()
@@ -164,6 +169,8 @@ void AGuLiGroundMechCharacter::BeginPlay()
 	CameraBoom->AddWorldRotation(FRotator(0,GetActorRotation().Yaw,0));
 	DisplayAimYaw = GetActorRotation().Yaw;
 	GetMesh()->AddTickPrerequisiteActor(this);
+	CameraBoom->AddTickPrerequisiteActor(this);
+	ResetBlinkCamera();
 }
 
 void AGuLiGroundMechCharacter::PawnClientRestart()
@@ -180,15 +187,19 @@ void AGuLiGroundMechCharacter::PawnClientRestart()
 
 void AGuLiGroundMechCharacter::RemoveInputContext()
 {
+	ResetBlinkCamera();
 	Weapon->SetFireHeld(false);
 	RocketJump->Interrupt();
 	if (InputSubsystem.IsValid()) InputSubsystem->RemoveMappingContext(MappingContext);
 	InputSubsystem.Reset();
 	bSprintHeld = false;
+	HybridInput.BlinkRequest=SimulationInput.BlinkRequest; HybridInput.BlinkYaw=SimulationInput.BlinkYaw;
 	SetShoulderAimHeld(false); TurnState.Direction=0;
 	CameraMoveAxis = FVector2D::ZeroVector;
 	HybridInput.bFaceCamera=false; HybridInput.CameraYaw=0;
 	SimulationInput.bFaceCamera=false; SimulationInput.CameraYaw=0;
+	HybridInput.MoveSpace=SimulationInput.MoveSpace=EGuLiGroundMoveSpace::World;
+	WeaponAimState={};
 }
 
 void AGuLiGroundMechCharacter::NotifyControllerChanged()
@@ -235,7 +246,7 @@ void AGuLiGroundMechCharacter::SetupPlayerInputComponent(UInputComponent* Input)
 	Enhanced.BindAction(MoveAction,ETriggerEvent::Triggered,this,&ThisClass::Move);
 	Enhanced.BindAction(MoveAction,ETriggerEvent::Completed,this,&ThisClass::StopMove);
 	Enhanced.BindAction(MoveAction,ETriggerEvent::Canceled,this,&ThisClass::StopMove);
-	Enhanced.BindAction(SprintAction,ETriggerEvent::Triggered,this,&ThisClass::Sprint);
+	Enhanced.BindAction(SprintAction,ETriggerEvent::Started,this,&ThisClass::Sprint);
 	Enhanced.BindAction(SprintAction,ETriggerEvent::Completed,this,&ThisClass::StopSprint);
 	Enhanced.BindAction(SprintAction,ETriggerEvent::Canceled,this,&ThisClass::StopSprint);
 	Enhanced.BindAction(ZoomAction,ETriggerEvent::Triggered,this,&ThisClass::Zoom);
@@ -290,7 +301,7 @@ void AGuLiGroundMechCharacter::StopMove(const FInputActionValue&)
 	CameraMoveAxis=FVector2D::ZeroVector; HybridInput.Axis=FVector2D::ZeroVector;
 	HybridInput.bFaceCamera=false; HybridInput.CameraYaw=0;
 }
-void AGuLiGroundMechCharacter::Sprint(const FInputActionValue&) { bSprintHeld=CanUseControls(); HybridInput.bSprint=bSprintHeld; }
+void AGuLiGroundMechCharacter::Sprint(const FInputActionValue&) { RequestBlink(); }
 void AGuLiGroundMechCharacter::StopSprint(const FInputActionValue&) { bSprintHeld=false; HybridInput.bSprint=false; }
 
 void AGuLiGroundMechCharacter::Zoom(const FInputActionValue& Value)
@@ -303,6 +314,7 @@ void AGuLiGroundMechCharacter::Zoom(const FInputActionValue& Value)
 bool AGuLiGroundMechCharacter::GetCursorAimPoint(FVector& OutPoint) const
 {
 	if (bSemanticInput) { OutPoint=HybridInput.Aim; return HybridInput.bHasAim; }
+	if (!bShoulderAimHeld || !IsShoulderLookActive()) return false;
 	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return false;
 	const auto* PC = Cast<APlayerController>(GetController());
 	if (!PC || !IsLocallyControlled() || !GetMachinegun()) return false;
@@ -334,17 +346,19 @@ void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)
 		if (!bSemanticInput)
 		{
 			const bool bLookActive=IsShoulderLookActive();
-			if (!bLookActive) SetShoulderAimHeld(false);
+			if (!bLookActive) { SetShoulderAimHeld(false); CameraMoveAxis=FVector2D::ZeroVector; HybridInput.BlinkRequest=SimulationInput.BlinkRequest; HybridInput.BlinkYaw=SimulationInput.BlinkYaw; }
 			HybridInput.bFaceAim=bShoulderAimHeld;
 			HybridInput.bFaceCamera=bLookActive && CameraMoveAxis.Y>UE_KINDA_SMALL_NUMBER;
 			HybridInput.CameraYaw=HybridInput.bFaceCamera
 				? FRotator::CompressAxisToShort(CameraBoom->GetComponentRotation().Yaw) : 0;
-			// Ground's wire format remains world Y / world X; only physical input is camera relative.
-			const FRotationMatrix Basis(FRotator(0,CameraBoom->GetComponentRotation().Yaw,0));
-			const FVector WorldInput = Basis.GetUnitAxis(EAxis::X)*CameraMoveAxis.Y + Basis.GetUnitAxis(EAxis::Y)*CameraMoveAxis.X;
-			HybridInput.Axis = FVector2D(WorldInput.Y,WorldInput.X);
+			// Keyboard directions retain the same meaning across takeoff and landing.
+			// Semantic callers still explicitly submit world-space input.
+			HybridInput.MoveSpace=EGuLiGroundMoveSpace::Body;
+			HybridInput.Axis=CameraMoveAxis.GetClampedToMaxSize(1.);
+			HybridInput.WeaponAimMode=bShoulderAimHeld?EGuLiGroundWeaponAimMode::Target:EGuLiGroundWeaponAimMode::Forward;
 			FVector Point;
-			if (bLookActive && Weapon->ResolveLocalWeaponAim(Point)) { HybridInput.Aim=Point; HybridInput.bHasAim=true; }
+			HybridInput.bHasAim=bShoulderAimHeld && Weapon->ResolveLocalWeaponAim(Point);
+			HybridInput.Aim=HybridInput.bHasAim?Point:FVector::ZeroVector;
 			if (!bLookActive) { HybridInput.bFire=false; Weapon->SetFireHeld(false); }
 		}
 	}
@@ -352,6 +366,7 @@ void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)
 	{
 		CameraMoveAxis=FVector2D::ZeroVector; HybridInput.Axis=FVector2D::ZeroVector;
 		HybridInput.bFire=false; HybridInput.bRocket=false; HybridInput.bSprint=false;
+		HybridInput.BlinkRequest=SimulationInput.BlinkRequest; HybridInput.BlinkYaw=SimulationInput.BlinkYaw;
 		HybridInput.bFaceCamera=false; HybridInput.CameraYaw=0;
 		SetShoulderAimHeld(false);
 		Weapon->SetFireHeld(false);
@@ -360,22 +375,14 @@ void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)
 	if (UGuLiNetworkSettings::CanPresent(GetWorld()))
 	{
 		UpperBodyPivot->SetWorldRotation(FRotator(0,DisplayAimYaw-90.f,0));
-		if (MobilityConfiguration.bReady)
-		{
-			const auto& F=MobilityConfiguration.FreeCamera; const auto& A=MobilityConfiguration.AimCamera;
-			CameraModeAlpha=FMath::FInterpConstantTo(CameraModeAlpha,bShoulderAimHeld?1.f:0.f,DeltaSeconds,
-				1.f/(bShoulderAimHeld?A.TransitionSeconds:F.TransitionSeconds));
-			const float Blend=FMath::SmoothStep(0.f,1.f,CameraModeAlpha);
-			CameraBoom->TargetArmLength=FMath::Lerp(DesiredCameraDistance,A.ArmLength,Blend);
-			CameraBoom->SocketOffset=FMath::Lerp(F.SocketOffset,A.SocketOffset,Blend);
-			Camera->SetFieldOfView(FMath::Lerp(F.FieldOfView,A.FieldOfView,Blend));
-		}
 		// Query replicas are not simulation owners; their pose still needs a real presentation clock.
 		if (!UGuLiHybridActorComponent::HasSimulation(this) && !bCarrierDormant)
 		{
 			GetMesh()->TickAnimation(DeltaSeconds,false); GetMesh()->RefreshBoneTransforms();
 			if (!bIntegratedBodyMesh) { Machinegun->TickAnimation(DeltaSeconds,false); Machinegun->RefreshBoneTransforms(); }
 		}
+		PresentBlink();
+		UpdateMechCamera(DeltaSeconds);
 	}
 }
 
@@ -407,19 +414,53 @@ void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 	if (!UGuLiHybridActorComponent::HasSimulation(this)) return;
 	RocketJump->ApplyHybridInput(SimulationInput.bRocket);
 	auto* Movement=CastChecked<UGuLiGroundMechMovementComponent>(GetCharacterMovement());
-	Movement->AdvanceHybrid(DeltaSeconds,SimulationInput.Axis,SimulationInput.bSprint);
 	if (SimulationInput.bHasAim)
 	{
 		const auto Offset=SimulationInput.Aim-GetActorLocation();
 		if (Offset.SizeSquared2D()>1) AimYaw=FRotator::CompressAxisToShort(Offset.Rotation().Yaw);
 	}
 	DisplayAimYaw=FRotator::DecompressAxisFromShort(AimYaw);
-	AdvanceFacing(DeltaSeconds);
+	const float PreviousBodyYaw=GetActorRotation().Yaw;
+	AdvanceBlink(DeltaSeconds);
+	if (!BlinkState.Phase) AdvanceFacing(DeltaSeconds);
+	FVector2D WorldAxis=SimulationInput.Axis;
+	if (SimulationInput.MoveSpace==EGuLiGroundMoveSpace::Body)
+	{
+		const FRotationMatrix Basis(FRotator(0,GetActorRotation().Yaw,0));
+		const FVector WorldInput=Basis.GetUnitAxis(EAxis::X)*WorldAxis.Y+Basis.GetUnitAxis(EAxis::Y)*WorldAxis.X;
+		WorldAxis=FVector2D(WorldInput.Y,WorldInput.X);
+		if (Movement->IsGroundedForAnimation() && !RocketJump->IsThrusting() && HasMovementIntent())
+		{
+			// Transport the driven velocity in body space. Pending impulses, vertical
+			// motion, platform displacement and subsequent collision response stay in CMC.
+			const float DeltaYaw=FMath::FindDeltaAngleDegrees(PreviousBodyYaw,GetActorRotation().Yaw);
+			Movement->Velocity=FRotator(0,DeltaYaw,0).RotateVector(Movement->Velocity);
+		}
+	}
+	Movement->AdvanceHybrid(DeltaSeconds,BlinkState.Phase?FVector2D::ZeroVector:WorldAxis,SimulationInput.bSprint);
+	AdvanceWeaponAim(DeltaSeconds);
 	UpperBodyPivot->SetWorldRotation(FRotator(0,DisplayAimYaw-90.f,0));
 	// These skeletal poses contain gameplay mounting/muzzle sockets on logic-only endpoints too.
 	GetMesh()->TickAnimation(DeltaSeconds,false); GetMesh()->RefreshBoneTransforms();
 	if (!bIntegratedBodyMesh) { Machinegun->TickAnimation(DeltaSeconds,false); Machinegun->RefreshBoneTransforms(); }
-	Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire,SimulationInput.Aim,SimulationInput.bHasAim);
+	const bool bForward=SimulationInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
+	const FVector FirePoint=bForward?GetMesh()->GetSocketLocation(TEXT("Gun_R"))+GetActorForwardVector()
+		*(Weapon->ActiveSkill.ProjectileSpeed*Weapon->ActiveSkill.ProjectileLifetime):SimulationInput.Aim;
+	Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire && !BlinkState.Phase,FirePoint,bForward || SimulationInput.bHasAim);
+	PresentBlink();
+}
+
+void AGuLiGroundMechCharacter::AdvanceWeaponAim(float DeltaSeconds)
+{
+	const bool bForward=SimulationInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
+	if (bForward && !WeaponAimState.bForward)
+	{
+		WeaponAimState.RightStart=GetMesh()->GetSocketTransform(TEXT("GunArm_R"),RTS_Component).GetRotation();
+		WeaponAimState.LeftStart=GetMesh()->GetSocketTransform(TEXT("GunArm_L"),RTS_Component).GetRotation();
+		WeaponAimState.ReturnAlpha=0.f;
+	}
+	WeaponAimState.bForward=bForward;
+	WeaponAimState.ReturnAlpha=bForward?FMath::Min(1.f,WeaponAimState.ReturnAlpha+DeltaSeconds/MobilityConfiguration.Mobility.GunReturnSeconds):1.f;
 }
 
 void AGuLiGroundMechCharacter::AdvanceFacing(float DeltaSeconds)
@@ -430,7 +471,7 @@ void AGuLiGroundMechCharacter::AdvanceFacing(float DeltaSeconds)
 	if (FacingDisplacementRevision!=Move->GetDisplacementRevision())
 	{ FacingDisplacementRevision=Move->GetDisplacementRevision(); TurnState.Direction=0; ++TurnState.Serial; }
 	const bool bGrounded=Move->IsGroundedForAnimation() && !RocketJump->IsThrusting();
-	const bool bFollowCamera=SimulationInput.bFaceCamera && bGrounded;
+	const bool bFollowCamera=SimulationInput.bFaceCamera;
 	const bool bFollowAim=SimulationInput.bFaceAim && SimulationInput.bHasAim;
 	if (!bFollowCamera && !bFollowAim)
 	{ TurnState.Direction=0; TurnState.Progress=0; return; }

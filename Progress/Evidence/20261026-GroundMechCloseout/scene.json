@@ -1,0 +1,129 @@
+{
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "role": "Ground",
+  "pawn": "<Object '/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C' (0x000002067A3B3100) Class 'BlueprintGeneratedClass'>",
+  "entities": [
+    {
+      "label": "GroundMobility_Flat",
+      "class": "StaticMeshActor",
+      "location": [
+        -4000.0,
+        50000.0,
+        880.0
+      ],
+      "scale": [
+        30.0,
+        40.0,
+        0.5
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "class": "StaticMeshActor",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "scale": [
+        14.0,
+        10.0,
+        0.4
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "class": "StaticMeshActor",
+      "location": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ],
+      "scale": [
+        5.4,
+        10.0,
+        0.4
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "class": "StaticMeshActor",
+      "location": [
+        -4800.0,
+        50900.0,
+        915.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.2
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "class": "StaticMeshActor",
+      "location": [
+        -4400.0,
+        50900.0,
+        925.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.4
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "class": "StaticMeshActor",
+      "location": [
+        -4000.0,
+        50900.0,
+        935.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.6
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "class": "StaticMeshActor",
+      "location": [
+        -3600.0,
+        50900.0,
+        945.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.8
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "PIE_started": false,
+  "visual_review": "not run by assistant"
+}

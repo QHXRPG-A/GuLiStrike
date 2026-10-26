@@ -7,20 +7,39 @@ role: root
 title: 地面机甲 MechaDestroyer 替换与风格化 — 实施记录
 areas: [art, combat]
 categories: [art, gameplay]
-status: verification
+status: done
 verification: partial
 created: '2026-10-23'
-updated: '2026-10-24'
-summary: 修订先限角再生成瞄准姿态，开放浮空右键转向，W与右键共用转身曲线；源码构建、冷加载和地图回读完成。
-next_action: 用户在LVL_CommanderMassPrototype以Ground复验越界瞄准稳定、浮空右键及W与右键转速同步。
+updated: '2026-10-26'
+summary: 闪现改为按下Shift时锁定镜头水平朝向；0.1/0.8/0.2秒与镜头阻尼保持。源码编译、资产和场景数据核对完成，按用户指令收尾归档。
+next_action: 本会话已完成归档，后续调整按新反馈另立增量。
 relations:
   requirement: REQ-20261023-001
-status_note: 本轮代码静态检查通过，原测试地图已保存并完成实体数据核对，待玩家验证效果。已按授权编译重启并直接读取保存图；未启动PIE、未求值运行姿势、未读图测试。
+status_note: 用户明确要求本会话文档标记完成；此为交付完成登记，不补记未执行的玩家视觉或联机验收。新编辑器已加载，未启动PIE。
+delivery_status: complete
 ---
 
 # 地面机甲 MechaDestroyer 替换与风格化 — 实施记录
 
+## 本会话已完成（2026-10-26）
+
+闪现改为按下Shift时锁定镜头水平朝向；0.1/0.8/0.2秒与镜头阻尼保持。源码编译、资产和场景数据核对完成，按用户指令收尾归档。 用户明确要求本会话文档标记完成；此为交付完成登记，不补记未执行的玩家视觉或联机验收。新编辑器已加载，未启动PIE。
+
+Shift方向单独作为量化角`BlinkYaw`随请求同步，不受WASD、机体朝向或后续转镜影响。输入6、Ground状态11、共享控制6，移动快照6保持；两份清单重导出校验通过。清理121个会话临时文件，共216470942字节，保留制作输入与最终资源。[完成归档](../Archive/20261026-地面机甲镜头方向闪现与会话完成归档.md)、[核验与清理证据](../Evidence/20261026-GroundMechCloseout/README.md)。以下为各阶段历史记录。
+
 ## 已落地
+
+2026-10-26最新数值：用户指定Begin 0.1秒、Loop 0.8秒、End 0.2秒，总计1.1秒，覆盖此前1.5秒分配。Excel三项时长已更新并通过标准管线导入；仅数据变化无需编译，结束原PIE后保存原地图，双清单新指纹f1f4349e74ef3b47355d2f2ac71e0426通过校验。用户重新Play验收节奏。[增量记录](../Archive/20261026-地面机甲闪现时长调整为1点1秒.md)。
+
+2026-10-26最新：闪现分Begin0.4s、Loop0.5s、End0.6s，共1.5s。原ABP程序姿态连续过渡，Loop轻微摆动；在位移段按固定模拟步扫掠，沿经过路径逐次留下固定残影。镜头停留0.04s并以0.45s临界阻尼收敛时间追赶，SocketOffset保留从机体出发的避障。仅Mobility/Camera两表导入，未重建73节点动画图或重烘支撑曲线；Ground状态10、移动姿态6，输入与共享控制5保持。两份清单配置指纹a4575f32efcd0ecd6b9f1dcccdf42449一致，原8实体地图已保存。无PIE/截图/目检，待玩家视觉验收。[交付证据](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/DELIVERY.md)、[增量归档](../Archive/20261026-地面机甲闪现三阶段与镜头阻尼.md)。
+
+2026-10-26保存故障修复：用户反馈原地图反复保存仍未保存；定位为地图内`BiZhiMaoQA_Sample`审核Actor的Editor Tick每帧经ISM接口将预览数据标脏。已仅隔离自动预览写入，保留正常作者编辑的dirty；源码构建重开后预览仍运行，55秒读回地图保持clean，最终保存完成。[修复报告](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/REPORT.md)。本修复不代表闪现/命中视觉验收通过，不改玩法或美术形态。
+
+2026-10-26当前交付：Shift闪现、双臂后展和固定残影已接入。用户纠正命中不应重做后，撤下星形候选，保留原6发射器及原材质贴图，只改Scale2→4、橙黄和0.20秒整体淡出。用户“开不了PIE”定位为新增Ground状态版本9与旧清单8冲突，两份清单已重导出并校验通过。源码Editor新构建、73节点直接冷读取、原/派生命中数据比较、资源/导航前置检查及原地图8实体保存通过；助手未启动PIE，成品观感和操作由用户验收。[交付与证据](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/DELIVERY.md)、[增量归档](../Archive/20261026-地面机甲Shift闪现与原命中特效调整.md)。主记录超预算的拆分建议继续保留，本轮不改写历史。
+
+2026-10-26新增动作与命中审核：用户要求命中特效×2、橙黄色、0.2秒淡出，Shift改为双臂后展并带残影的闪现，且“先生图给我审核”。已用内置image_gen提交[两张A_v1参考](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/REVIEW.md)，保存原始输入、提示词、PNG和SHA256，审核pending。本轮无正式资源／数值／输入修改，未将静态图当作动画成品或技能参数批准。
+
+2026-10-26尾迹修订：用户明确“这个拖尾不应该有位移，不应该随着子弹被射出去”。A3短Sprite随子弹移动的实现已从Ground正式入口替换为A4固定世界曲线，每点保留0.12秒并用0.38秒淡出，最长12000cm覆盖当前弹速下完整消散窗口。固定段与曲线平面只在出生时确定；无位置积分、无随镜头旋转、无圆形弹头。正式表、五项User绑定、保存后重载和原地图8实体已核对。过程中的“还是跟着飞”反馈对应尚未切换的A3表值，之后A4已接通；本版效果待用户重新Play。[本轮交付](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/DELIVERY.md)。
 
 - [x] 原包解压至 `ArtSource/Characters/GroundMech_MechaDestroyer_20261023/OriginalPackage`，保留压缩包清单；原包57个 UE 资源保留 `/Game/MechaDestroyer` 路径，未合并其项目 Config。
 - [x] 项目候选 `MechaDestroyer_v1/Meshes/SK_MechaDestroyer` 复用原骨架，并增加 mesh-only `Muzzle`、`Muzzle_L`、`Jet_Outlet_L/R`，保留原 Gun 和 Rocket 插槽。
@@ -33,15 +52,43 @@ status_note: 本轮代码静态检查通过，原测试地图已保存并完成�
 - [x] 17 骨骼刚性绑定、四挂点、上身瞄准与左右后坐独立控制；原待机采用独立动作重定向，实际烘焙脚部目标误差小于 0.000001 m。
 - [x] 保存并打开成品 blend，导出真实模型整体、正侧背和单机预览，准备用户参考对照页。
 - [x] 正式 ModelId 4001 和玩家蓝图安装、编辑器运行入口配置核验；实际游玩待用户。
-- [ ] 用户核对 Hybrid 远端实际动画和开火；远端零时间推进的代码已修复，未进行联机运行验收。
-- [ ] 用户审核 B 的造型还原度与实际动作效果；技术适配已完成，不替代视觉验收。
+- 视觉/联机验证边界：远端零时间推进代码已修复，本轮未追加联机运行验收；按用户指令完成归档。
+- 视觉验证边界：B造型及动作技术适配已交付，本次完成登记不替代具体视觉验收。
 - [x] 用户明确授权当前版导入，接入正式风格化资源与阵营改色，并保存对应 Ground 验收地图。
 
 ## 证据与边界
 
 工作目录：[资产目录](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023)。当前入口：[UE交付与检查记录](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/UE_DELIVERY.md)、[Blender B_v2](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/REVIEW.md)。A_v4 已放行，B_v1 曾被用户反馈“不一致”。当前 B_v2 获得导入授权，外观终验仍由用户完成。
 
-### 最新：限位稳定、浮空右键与W同速（2026-10-24）
+### 最新：整臂制退与单曲线效果已接入（2026-10-25）
+
+用户明确“PIE已开，你可以直接用这个效果来做”，据此按A_v3单曲线直接实施。肩部18°制退独立于原枪管后坐，冲击/停留/恢复0.025/0.015/0.20秒；枪焰2倍、弹头宽24cm、尾长180cm，发射频率4/8/12发每秒，弹速24000cm/s。Excel七表导入、源码构建和保存资产冷读取通过；原动画68条连接保留，仅新增3条变量输入。原地图Ground入口及8个实体已保存核对，编辑器已重开，PIE留给用户启动验收。[交付与证据](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/DELIVERY.md)、[本次增量归档](../Archive/20261025-地面机甲整臂制退与单曲线弹道接入.md)。制作授权不代替成品视觉通过；此前记录的“资源未改”均为当时参考阶段事实。
+
+### 此前：单曲线尾迹 A_v3（2026-10-25）
+
+用户要求“太多线了，一条曲线就好了”，去除多股、分叉和碎线，保留一条渐细平滑曲线；整臂制退及既定翻倍数值保持。整页编辑被生图接口拒绝后，改交纯抽象单曲线特写，[A_v3及生成记录](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v3_20261025/REVIEW.md)待用户审核，未修改正式资源或运行PIE。
+
+### 此前：能量尾迹参考 A_v2（2026-10-25）
+
+用户要求A_v1调整并提供紫色分叉能量尾迹“类似这种”，确认发射频率和飞行速度都翻倍。新参考采用细长、不规则曲线、尖锋和少量分叉，保留整臂制退分镜；数值目标为4/8/12发每秒及24000cm/s，尚未写入正式表。[A_v2及完整提示词](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v2_20261025/REVIEW.md)待审核，未制作UE候选，未改正式资源或运行PIE。
+
+### 此前：开火反馈参考 A_v1（2026-10-25）
+
+用户要求明显整臂后坐制退、枪焰/弹头尺寸/拖尾长度各2倍及曲线拖尾，允许生图并自行审核。只读确认现有后坐仅枪骨沿轴5cm，整臂未参与；按当前模型参考生成整臂三阶段和火焰/尾迹特写分镜。发射频率与飞行速度含义已发起澄清，未擅改数值。具体[参考与提示词](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v1_20261025/REVIEW.md)待A审核，UE候选未制作，正式资源保持；本轮不编译、不PIE或读图测试。
+
+### 此前：后退步态与空中推进（2026-10-25）
+
+按用户批准方案，仅后退两动作水平轨迹改为1.00，制作期纳入现有机械腿约束，重烘支撑曲线和标定速度；稳态播放频率计算分别降低约20.0%/10.6%。空中改机体方向WASD，W与右键共用转向时钟；仅有效喷气前进采用SprintSpeed×2=864，普通前后横移324，Shift不加成，退出额外推进平滑制动。技能表加入新倍率并纳入五表导入、指纹和两份网络清单，序列化格式保持。源码构建、69节点直接冷读取、五表及原地图8实体保存核对通过；本轮不启动PIE或读图。详见[本轮交付](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/BACKWARD_AIR_DELIVERY.md)及[增量归档](../Archive/20261025-地面机甲后退步态与空中推进.md)。主记录已超30KB，建议后续按美术/机动边界拆分；本轮只追加入口，不自动拆历史。
+
+### 此前：脚部跳变与机械腿结构约束（2026-10-25）
+
+用户反馈转向反折和前进挑地，明确允许当前PIE调试。采样确认动画输入踝变化约6cm时，锁脚权重骤降使IK输出跳约86cm；转向膝内角曾接近179°且机械轴发生偏转。现改为连续退锁、平台相对朝向释放、同一支撑段防反复锁定；参考骨长不变，双腿共用受限机械弯曲面，并限制骨盆/额外修正速率。约束进入GroundIK表，最终前进/原地左转/右转最大踝单步位移约15/6/13cm。原图69节点冷加载、四表/网络指纹一致及原地图8实体保存通过；未做视觉测试。详细证据和复验入口见[结构稳定交付](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/STRUCTURE_STABILITY_DELIVERY.md)。主记录已超30KB，本轮只留入口，不自动拆历史。
+
+### 此前：固定方向、双枪回正与厚重步态（2026-10-24）
+
+按批准方案把地面物理输入改为机体方向，固定步先转身再转换输入并旋转主动速度；W逐步朝镜头转向，A/D保持横移。仅右键读取目标，松开0.25秒回正且仍可开火。六段移动动作采用水平0.80、抬脚0.65、骨盆0.55并重标定；新增无根运动的左右移动转弯加性层，完整原地蒙太奇排除移动意图。IK先处理接触与可达范围，分别求脚跟/前掌，最后锁定最终可达点。所有调节项进入Excel，输入/移动/共享控制版本4、Ground状态8。编译、69节点直接冷加载及原地图8个实体保存核对通过，PIE与视觉待用户验收。详见[本轮交付](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/HEAVY_GAIT_DELIVERY.md)。主记录已超30KB建议预算，本轮细节以该独立交付页承载，未自动拆分历史。
+
+### 此前：限位稳定、浮空右键与W同速（2026-10-24）
 
 按三项反馈改为先裁剪瞄准角再生成旋转；开放空中右键转向；W和右键共用转身曲线，移动/空中保留对应动画。源码编译通过，首次链接受旧编辑器退出占用影响，退出后重试成功；冷加载55节点和原地图实体回读通过。详见[本轮交付](../../ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/AIM_TURN_DELIVERY.md)。未启动PIE或读图，待用户验收。
 

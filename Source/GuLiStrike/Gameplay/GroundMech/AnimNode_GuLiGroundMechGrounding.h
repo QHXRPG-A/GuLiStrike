@@ -10,6 +10,10 @@ struct FGuLiMechFootGroundSample
     GENERATED_BODY()
     UPROPERTY() bool bHit=false;
     UPROPERTY() bool bCanLock=false;
+    UPROPERTY() bool bHeelHit=false;
+    UPROPERTY() bool bToeHit=false;
+    UPROPERTY() FVector HeelNormal=FVector::UpVector;
+    UPROPERTY() FVector ToeNormal=FVector::UpVector;
     UPROPERTY() FVector Heel=FVector::ZeroVector;
     UPROPERTY() FVector Toe=FVector::ZeroVector;
     UPROPERTY() FVector Normal=FVector::UpVector;
@@ -43,21 +47,50 @@ struct GULISTRIKE_API FAnimNode_GuLiGroundMechGrounding : public FAnimNode_Skele
     UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Ground",meta=(PinShownByDefault)) FGuLiMechGroundingSnapshot Ground;
     virtual void EvaluateSkeletalControl_AnyThread(FComponentSpacePoseContext& Output,TArray<FBoneTransform>& Out) override;
     virtual bool IsValidToEvaluate(const USkeleton*,const FBoneContainer& Bones) override;
+#if WITH_EDITOR
+    // Opt-in, single completed-pose snapshot. Read after joining mesh evaluation.
+    bool bCaptureStructure=false;
+    struct FStructureFrame
+    {
+        uint64 Serial=0;
+        FGuLiMechGroundingSnapshot Ground;
+        FTransform Input[2][4], Result[2][4];
+        FVector Targets[2];
+        float Plant[2]={}, Contact[2]={};
+        bool LockedBefore[2]={}, LockedAfter[2]={};
+        float Pelvis=0, DesiredPelvis=0, Low=0, High=0;
+    } StructureFrame;
+#endif
 private:
     virtual void InitializeBoneReferences(const FBoneContainer& Bones) override;
     UPROPERTY() FBoneReference Pelvis;
     UPROPERTY() TArray<FBoneReference> LegBones;
     FVector RestAnkle[2];
+    FVector RestAxis[2], RestPole[2];
+    FVector RestUpperDirection[2],RestLowerDirection[2],RestHingeNormal[2];
+    FQuat RestUpperRotation[2],RestLowerRotation[2];
+    float UpperLengths[2]={}, LowerLengths[2]={};
     FVector LocalUp[2];
+    FTransform RestToeLocal[2];
     struct FLock
     {
         bool bLocked=false;
+        bool bBlockedUntilSwing=false;
+        float Weight=0.f;
         uint64 SurfaceId=0;
         uint32 Revision=0;
-        FVector Position;
-        FQuat Rotation;
+        FVector Position=FVector::ZeroVector;
+        FQuat Rotation=FQuat::Identity;
+        FQuat ToeRotation=FQuat::Identity;
+        FTransform Surface=FTransform::Identity;
+        FVector BodyDirection=FVector::RightVector;
     };
     FLock Locks[2];
     int32 LastRevision=INDEX_NONE;
     float PelvisOffset=0.f;
+    float Contacts[2]={};
+    float PoleTwists[2]={};
+    FVector AppliedOffsets[2]={FVector::ZeroVector,FVector::ZeroVector};
+    FQuat PreviousFootWorld[2]={FQuat::Identity,FQuat::Identity};
+    bool bHasPreviousPose=false;
 };

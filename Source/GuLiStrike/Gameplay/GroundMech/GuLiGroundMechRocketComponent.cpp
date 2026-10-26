@@ -46,7 +46,8 @@ void UGuLiGroundMechRocketComponent::BeginPlay()
         || !FMath::IsFinite(Row->FuelRecoveryDelay) || Row->FuelRecoveryDelay < 0.f
         || !Positive(Row->ThrustAcceleration) || !Positive(Row->MaxRiseSpeed) || !Positive(Row->FuelBarFadeSeconds)
         || !Positive(Row->FuelBarHeight) || !Positive(Row->FuelBarRightOffset)
-        || !Positive(Row->AirSpeedMultiplier) || !Positive(Row->FallGravityMultiplier) || !FMath::IsFinite(Row->JetMaxTiltDegrees)
+        || !Positive(Row->AirSpeedMultiplier) || !Positive(Row->JetForwardSpeedMultiplier)
+        || !Positive(Row->FallGravityMultiplier) || !FMath::IsFinite(Row->JetMaxTiltDegrees)
         || Row->JetMaxTiltDegrees < 0.f || Row->JetMaxTiltDegrees > 15.f
         || !FMath::IsFinite(Row->JetPitchDegrees) || Row->JetSocketLeft.IsEmpty() || Row->JetSocketRight.IsEmpty())
     {
@@ -242,7 +243,7 @@ void UGuLiGroundMechRocketComponent::UpdatePresentation(float Delta)
     const bool bThrusting = IsThrusting();
     const auto* Mech = CastChecked<AGuLiGroundMechCharacter>(GetOwner());
     const FVector LateralVelocity = FVector(Mech->GetVelocity().X, Mech->GetVelocity().Y, 0.f);
-    const float AirSpeed = Mech->GetWalkSpeed() * Configuration.AirSpeedMultiplier;
+    const float AirSpeed = FMath::Max(1.f,Movement()->GetMaxSpeed());
     const float Tilt = Configuration.JetMaxTiltDegrees * FMath::Clamp(LateralVelocity.Size() / AirSpeed, 0.f, 1.f);
     const FVector ExhaustDirection = (FVector::DownVector - LateralVelocity.GetSafeNormal()
         * FMath::Tan(FMath::DegreesToRadians(Tilt))).GetSafeNormal();

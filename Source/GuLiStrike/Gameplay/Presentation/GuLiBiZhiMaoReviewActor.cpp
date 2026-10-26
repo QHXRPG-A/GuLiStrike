@@ -6,6 +6,7 @@
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
+#include "Misc/ScopeExit.h"
 
 AGuLiBiZhiMaoReviewActor::AGuLiBiZhiMaoReviewActor()
 {
@@ -49,6 +50,25 @@ void AGuLiBiZhiMaoReviewActor::Tick(float Dt)
 	Super::Tick(Dt);
 
 	if (!Animation || !Animation->IsValidDefinition() || !Mesh || Instances->GetInstanceCount()!=1) return;
+#if WITH_EDITOR
+	// ISM setters call Modify even for derived preview frames. Keep those writes
+	// out of map dirtiness/undo, without clearing authored changes on the package.
+	const bool bEditorPreview = GetWorld() && !GetWorld()->IsGameWorld();
+	const EObjectFlags SavedPreviewFlags = Instances->GetFlags() & (RF_Transient | RF_Transactional);
+	if (bEditorPreview)
+	{
+		Instances->ClearFlags(RF_Transactional);
+		Instances->SetFlags(RF_Transient);
+	}
+	ON_SCOPE_EXIT
+	{
+		if (bEditorPreview)
+		{
+			Instances->ClearFlags(RF_Transient | RF_Transactional);
+			Instances->SetFlags(SavedPreviewFlags);
+		}
+	};
+#endif
 	const float SafeDt=FMath::Clamp(Dt,0.f,.1f);
 	Offset+=LocalVelocity*SafeDt;
 	const FTransform LocalRoot(FQuat::Identity,Offset,FVector(ModelScale));

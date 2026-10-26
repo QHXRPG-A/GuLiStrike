@@ -1,0 +1,1143 @@
+{
+  "success": true,
+  "scope": "Read saved asset structure and configuration only; no graph rebuild, compile, pose tick, PIE or images",
+  "graph": {
+    "node_count": 73,
+    "node_types": {
+      "AnimGraphNode_Root": 1,
+      "AnimGraphNode_BlendSpacePlayer": 2,
+      "K2Node_VariableGet": 52,
+      "AnimGraphNode_BlendListByBool": 3,
+      "AnimGraphNode_Slot": 1,
+      "AnimGraphNode_SequencePlayer": 3,
+      "AnimGraphNode_ApplyAdditive": 2,
+      "AnimGraphNode_SequenceEvaluator": 3,
+      "AnimGraphNode_LayeredBoneBlend": 2,
+      "AnimGraphNode_LocalToComponentSpace": 1,
+      "AnimGraphNode_GuLiGroundMechGrounding": 1,
+      "AnimGraphNode_GuLiGroundMechAim": 1,
+      "AnimGraphNode_ComponentToLocalSpace": 1
+    },
+    "connections": [
+      {
+        "type": "AnimGraphNode_Root",
+        "pins": {
+          "Result": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_BlendSpacePlayer",
+        "pins": {
+          "X": true,
+          "Y": true,
+          "PlayRate": true,
+          "BlendSpace": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_BlendSpacePlayer",
+        "pins": {
+          "X": true,
+          "Y": true,
+          "PlayRate": true,
+          "BlendSpace": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_Slot",
+        "pins": {
+          "Source": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_SequencePlayer",
+        "pins": {
+          "Sequence": true,
+          "PlayRate": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_ApplyAdditive",
+        "pins": {
+          "Base": true,
+          "Additive": true,
+          "Alpha": true,
+          "AlphaCurveName": false,
+          "bAlphaBoolEnabled": false,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_SequencePlayer",
+        "pins": {
+          "Sequence": true,
+          "PlayRate": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_ApplyAdditive",
+        "pins": {
+          "Base": true,
+          "Additive": true,
+          "Alpha": true,
+          "AlphaCurveName": false,
+          "bAlphaBoolEnabled": false,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_SequenceEvaluator",
+        "pins": {
+          "Sequence": true,
+          "ExplicitTime": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_SequencePlayer",
+        "pins": {
+          "Sequence": true,
+          "PlayRate": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_SequenceEvaluator",
+        "pins": {
+          "Sequence": true,
+          "ExplicitTime": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_LayeredBoneBlend",
+        "pins": {
+          "BasePose": true,
+          "BlendPoses_0": true,
+          "BlendWeights_0": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_SequenceEvaluator",
+        "pins": {
+          "Sequence": true,
+          "ExplicitTime": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_LayeredBoneBlend",
+        "pins": {
+          "BasePose": true,
+          "BlendPoses_0": true,
+          "BlendWeights_0": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_LocalToComponentSpace",
+        "pins": {
+          "LocalPose": true,
+          "ComponentPose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_GuLiGroundMechGrounding",
+        "pins": {
+          "ComponentPose": true,
+          "bAlphaBoolEnabled": false,
+          "Alpha": false,
+          "AlphaCurveName": false,
+          "Ground": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_GuLiGroundMechAim",
+        "pins": {
+          "ComponentPose": true,
+          "bAlphaBoolEnabled": false,
+          "Alpha": false,
+          "AlphaCurveName": false,
+          "BlinkPose": true,
+          "AimPointComponent": true,
+          "bAimValid": true,
+          "bForwardAim": true,
+          "ReturnAlpha": true,
+          "RightReturnStart": true,
+          "LeftReturnStart": true,
+          "RightMuzzleLocal": true,
+          "LeftMuzzleLocal": true,
+          "RightRecoil": true,
+          "LeftRecoil": true,
+          "RecoilDistance": true,
+          "RightArmRecoil": true,
+          "LeftArmRecoil": true,
+          "ArmRecoilDegrees": true,
+          "GunYawLimit": true,
+          "GunPitchUpLimit": true,
+          "GunPitchDownLimit": true,
+          "Pose": true
+        }
+      },
+      {
+        "type": "AnimGraphNode_ComponentToLocalSpace",
+        "pins": {
+          "ComponentPose": true,
+          "Pose": true
+        }
+      }
+    ]
+  },
+  "assets": {
+    "configuration_fingerprint": "f1f4349e74ef3b47355d2f2ac71e0426",
+    "samples": [
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "Idle",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "StrafeLeft",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "StrafeRight",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "WalkForward",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Walk_FWD.Anim_Mecha_Walk_FWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "WalkBackward",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_WalK_BWD.Anim_Mecha_WalK_BWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "Idle",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "StrafeLeft",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "StrafeRight",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "RunForward",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Run_FWD.Anim_Run_FWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "RunBackward",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Run_BWD.Anim_Mecha_Run_BWD",
+        "matches": true
+      }
+    ],
+    "curves": [
+      {
+        "row": "Idle",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 150,
+        "GroundPlant_R": 150
+      },
+      {
+        "row": "WalkForward",
+        "reference_speed": 145.2691192626953,
+        "sync_markers": 2,
+        "GroundPlant_L": 78,
+        "GroundPlant_R": 78
+      },
+      {
+        "row": "WalkBackward",
+        "reference_speed": 106.74150085449219,
+        "sync_markers": 2,
+        "GroundPlant_L": 75,
+        "GroundPlant_R": 75
+      },
+      {
+        "row": "StrafeLeft",
+        "reference_speed": 147.21607971191406,
+        "sync_markers": 2,
+        "GroundPlant_L": 35,
+        "GroundPlant_R": 35
+      },
+      {
+        "row": "StrafeRight",
+        "reference_speed": 160.47988891601562,
+        "sync_markers": 2,
+        "GroundPlant_L": 35,
+        "GroundPlant_R": 35
+      },
+      {
+        "row": "RunForward",
+        "reference_speed": 505.8313903808594,
+        "sync_markers": 2,
+        "GroundPlant_L": 24,
+        "GroundPlant_R": 24
+      },
+      {
+        "row": "RunBackward",
+        "reference_speed": 518.2274169921875,
+        "sync_markers": 2,
+        "GroundPlant_L": 31,
+        "GroundPlant_R": 31
+      },
+      {
+        "row": "TurnLeft",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 63,
+        "GroundPlant_R": 63,
+        "turn_progress_end": 1
+      },
+      {
+        "row": "TurnRight",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 63,
+        "GroundPlant_R": 63,
+        "turn_progress_end": 1
+      }
+    ],
+    "walk_speed": 216,
+    "sprint_speed": 432,
+    "success": true,
+    "asset_mutations": false
+  },
+  "camera": {
+    "arm_cm": 362.9599914550781,
+    "socket_offset": [
+      0.0,
+      220.627273,
+      275.888687
+    ],
+    "boom_rotation_roll_pitch_yaw": [
+      -5.0409455246332925e-17,
+      -9.649999618530273,
+      -3.700000047683716
+    ],
+    "camera_location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera_rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fov": 90.0,
+    "collision_test": true
+  },
+  "sockets": {
+    "Muzzle": "Gun_R",
+    "Muzzle_L": "Gun_L",
+    "Jet_Outlet_R": "cockpit",
+    "Jet_Outlet_L": "cockpit"
+  },
+  "mesh_relative_transform": "<Struct 'Transform' (0x000002057D4DBC00) {rotation: {x: -0.000000, y: 0.000000, z: -0.707107, w: 0.707107}, translation: {x: 0.000000, y: 0.000000, z: -243.230504}, scale3d: {x: 0.996678, y: 0.996678, z: 0.996678}}>",
+  "capsule_half_height": 244.03683471679688,
+  "manifests": [
+    {
+      "population": 200,
+      "hash": "99522a9a3d33a66cbdc8dfadef99d8b061652958931382f2effc9c919069c807"
+    },
+    {
+      "population": 600,
+      "hash": "a6ef65e1c2695c80ef991b9d8c9c36332a4da7f684bd61baa9ee59395d72c3cd"
+    }
+  ],
+  "tables": {
+    "Skills": [
+      {
+        "Name": "BasicMachinegun",
+        "Id": 1,
+        "Note": "\u57fa\u7840\u673a\u67aa\uff1b\u8ddd\u79bbcm\u3001\u65f6\u95f4s\uff1b\u5c04\u901f/\u4f24\u5bb3\u53ea\u5728\u5347\u7ea7\u8868\u7ef4\u62a4\uff1b\u8f85\u52a9\u7784\u51c6\u4ec5\u4fee\u6b63\u67aa\u53e3\uff0c\u534a\u5f84\u6309\u76ee\u6807\u6df1\u5ea6\u6295\u5f71",
+        "ProjectileSpeed": 24000,
+        "ProjectileLifetime": 5,
+        "SweepRadius": 15,
+        "MuzzleSocket": "Muzzle",
+        "RecoilBone": "Barrel_big",
+        "RecoilTargetLocalZCentimeters": 152,
+        "RecoilDuration": 0.15,
+        "RecoilCurve": "/Game/GuLiStrike/GroundMech/Animations/CF_Machinegun_Recoil.CF_Machinegun_Recoil",
+        "WeaponAnimation": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun_C",
+        "BulletVfxId": 8,
+        "MuzzleVfxId": 9,
+        "ExecutionType": "Weapon",
+        "AbilityClass": "None",
+        "MaxFuel": 0,
+        "InitialFuel": 0,
+        "FuelDrainPerSecond": 0,
+        "FuelRecoveryPerSecond": 0,
+        "FuelRecoveryDelay": 0,
+        "ThrustAcceleration": 0,
+        "MaxRiseSpeed": 0,
+        "JetVfxId": 0,
+        "JetSocketLeft": "",
+        "JetSocketRight": "",
+        "JetPitchDegrees": 0,
+        "FuelBarVfxId": 0,
+        "FuelBarHeight": 0,
+        "FuelBarRightOffset": 0,
+        "FuelBarFadeSeconds": 0,
+        "AirSpeedMultiplier": 0,
+        "JetMaxTiltDegrees": 0,
+        "FallGravityMultiplier": 0,
+        "AimAssistEnabled": true,
+        "AimAssistRadiusCentimeters": 100,
+        "JetForwardSpeedMultiplier": 0
+      },
+      {
+        "Name": "RocketJump",
+        "Id": 2,
+        "Note": "\u706b\u7bad\u8df3\uff1bcm/s\uff1b\u666e\u901a\u7a7a\u4e2d\u901f\u5ea6=WalkSpeed\u00d7AirSpeedMultiplier\uff1b\u4ec5\u6709\u6548\u55b7\u6c14+\u524d\u8fdb\uff1a\u524d\u5411\u901f\u5ea6=SprintSpeed\u00d7JetForwardSpeedMultiplier\uff1b\u7a7a\u4e2d\u673a\u4f53\u65b9\u5411WASD\uff0cW\u6e10\u8f6c\u955c\u5934\uff1b\u4e0a\u5347/\u71c3\u6599\u72ec\u7acb\uff1b\u9000\u51fa\u63a8\u8fdb\u5e73\u6ed1\u5236\u52a8",
+        "ProjectileSpeed": 0,
+        "ProjectileLifetime": 0,
+        "SweepRadius": 0,
+        "MuzzleSocket": "",
+        "RecoilBone": "",
+        "RecoilTargetLocalZCentimeters": 0,
+        "RecoilDuration": 0,
+        "RecoilCurve": "None",
+        "WeaponAnimation": "None",
+        "BulletVfxId": 0,
+        "MuzzleVfxId": 0,
+        "ExecutionType": "GAS",
+        "AbilityClass": "/Script/GuLiStrike.GuLiGA_RocketJump",
+        "MaxFuel": 100,
+        "InitialFuel": 100,
+        "FuelDrainPerSecond": 20,
+        "FuelRecoveryPerSecond": 20,
+        "FuelRecoveryDelay": 1,
+        "ThrustAcceleration": 2180,
+        "MaxRiseSpeed": 1200,
+        "JetVfxId": 10,
+        "JetSocketLeft": "Jet_Outlet_L",
+        "JetSocketRight": "Jet_Outlet_R",
+        "JetPitchDegrees": -90,
+        "FuelBarVfxId": 11,
+        "FuelBarHeight": 400,
+        "FuelBarRightOffset": 450,
+        "FuelBarFadeSeconds": 1.5,
+        "AirSpeedMultiplier": 1.5,
+        "JetMaxTiltDegrees": 15,
+        "FallGravityMultiplier": 2,
+        "AimAssistEnabled": false,
+        "AimAssistRadiusCentimeters": 0,
+        "JetForwardSpeedMultiplier": 2
+      }
+    ],
+    "Mobility": [
+      {
+        "Name": "Default",
+        "Id": 1,
+        "Note": "cm / s / deg; Ground player only",
+        "WalkSpeed": 216,
+        "SprintSpeed": 432,
+        "Acceleration": 864,
+        "Braking": 864,
+        "MovingTurnRate": 1080,
+        "TurnStartDegrees": 15,
+        "TurnStopDegrees": 5,
+        "TurnMovementThreshold": 10,
+        "GunYawLimit": 75,
+        "GunPitchUpLimit": 80,
+        "GunPitchDownLimit": 65,
+        "GunReturnSeconds": 0.25,
+        "BlinkDistance": 1200,
+        "BlinkCooldownSeconds": 2,
+        "BlinkWindupSeconds": 0.1,
+        "BlinkRecoverySeconds": 0.2,
+        "BlinkArmBackDegrees": 120,
+        "BlinkBodyLeanDegrees": 18,
+        "BlinkAfterimageCount": 3,
+        "BlinkAfterimageSeconds": 0.38,
+        "BlinkAfterimageOpacity": 0.55,
+        "BlinkLoopSeconds": 0.8,
+        "BlinkLoopSwayDegrees": 3
+      }
+    ],
+    "Gait": [
+      {
+        "Name": "Idle",
+        "Id": 1,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "ReferenceSpeed": 1,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 1,
+        "PelvisMotionScale": 1,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "WalkForward",
+        "Id": 2,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Walk_FWD.Anim_Mecha_Walk_FWD",
+        "ReferenceSpeed": 145.269,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 0.8,
+        "SwingLiftScale": 0.65,
+        "PelvisMotionScale": 0.55,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "WalkBackward",
+        "Id": 3,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_WalK_BWD.Anim_Mecha_WalK_BWD",
+        "ReferenceSpeed": 106.742,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 0.65,
+        "PelvisMotionScale": 0.55,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "StrafeLeft",
+        "Id": 4,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "ReferenceSpeed": 147.216,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 0.8,
+        "SwingLiftScale": 0.65,
+        "PelvisMotionScale": 0.55,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "StrafeRight",
+        "Id": 5,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "ReferenceSpeed": 160.48,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 0.8,
+        "SwingLiftScale": 0.65,
+        "PelvisMotionScale": 0.55,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "RunForward",
+        "Id": 6,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Run_FWD.Anim_Run_FWD",
+        "ReferenceSpeed": 505.831,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 0.8,
+        "SwingLiftScale": 0.65,
+        "PelvisMotionScale": 0.55,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "RunBackward",
+        "Id": 7,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Run_BWD.Anim_Mecha_Run_BWD",
+        "ReferenceSpeed": 518.227,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 0.65,
+        "PelvisMotionScale": 0.55,
+        "SafeMaxStrideScale": 1.07512,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "TurnLeft",
+        "Id": 8,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Montage_Mecha_Turn_L_Montage.Montage_Mecha_Turn_L_Montage",
+        "ReferenceSpeed": 1,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 2,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": -53.0727,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 1,
+        "PelvisMotionScale": 1,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_MoveTurn_L.Anim_Mecha_MoveTurn_L",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "TurnRight",
+        "Id": 9,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Montage_Mecha_Turn_R_Montage.Montage_Mecha_Turn_R_Montage",
+        "ReferenceSpeed": 1,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 2,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 54.7677,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 1,
+        "PelvisMotionScale": 1,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_MoveTurn_R.Anim_Mecha_MoveTurn_R",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "JumpStart",
+        "Id": 10,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Jump_Start.Anim_Mecha_Jump_Start",
+        "ReferenceSpeed": 1,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 1,
+        "PelvisMotionScale": 1,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "JumpLoop",
+        "Id": 11,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Jump_Loop.Anim_Mecha_Jump_Loop",
+        "ReferenceSpeed": 1,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 1,
+        "PelvisMotionScale": 1,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "Shoot",
+        "Id": 12,
+        "Note": "\u6574\u81c2\u5236\u9000\uff1a\u80a9\u5173\u828218\u5ea6\uff1b0.025s\u51b2\u51fb/0.015s\u5236\u9000/0.20s\u590d\u4f4d\uff1b\u67aa\u7ba1\u539f\u72ec\u7acb\u540e\u5750\u548c\u65cb\u8f6c\u4fdd\u7559",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Shoot.Anim_Mecha_Shoot",
+        "ReferenceSpeed": 1,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 5,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 1,
+        "PelvisMotionScale": 1,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 18,
+        "ArmRecoilAttackSeconds": 0.025,
+        "ArmRecoilHoldSeconds": 0.015,
+        "ArmRecoilRecoverySeconds": 0.2
+      },
+      {
+        "Name": "WalkBlend",
+        "Id": 13,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "ReferenceSpeed": 1,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 1,
+        "PelvisMotionScale": 1,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      },
+      {
+        "Name": "RunBlend",
+        "Id": 14,
+        "Note": "ReferenceSpeed derived from planted sole displacement (cm/s)",
+        "Asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "ReferenceSpeed": 1,
+        "MinStrideScale": 0.75,
+        "MaxStrideScale": 1.35,
+        "MinPlayRate": 0.05,
+        "MaxPlayRate": 32,
+        "BasePlayRate": 1,
+        "TransitionSeconds": 0.18,
+        "SpeedSmoothingSeconds": 0.1,
+        "TurnDegrees": 0,
+        "RecoilCentimeters": 0,
+        "HorizontalMotionScale": 1,
+        "SwingLiftScale": 1,
+        "PelvisMotionScale": 1,
+        "SafeMaxStrideScale": 1.35,
+        "MovingTurnMaxWeight": 0.3,
+        "MovingTurnAsset": "None",
+        "ArmRecoilDegrees": 0,
+        "ArmRecoilAttackSeconds": 0,
+        "ArmRecoilHoldSeconds": 0,
+        "ArmRecoilRecoverySeconds": 0
+      }
+    ],
+    "GroundIK": [
+      {
+        "Name": "Default",
+        "Id": 1,
+        "Note": "Heel in Foot bone space; Toe in FootEnd space; cm/deg/s; no stretch",
+        "Enabled": true,
+        "TraceUp": 80,
+        "TraceDown": 100,
+        "MaxFootCorrection": 75,
+        "PelvisDown": 60,
+        "PelvisUp": 30,
+        "MaxTiltDegrees": 45,
+        "SoleOffset": 0,
+        "PlantThreshold": 0.65,
+        "ReleaseThreshold": 0.35,
+        "BlendInSeconds": 0.15,
+        "BlendOutSeconds": 0.08,
+        "InterpSpeed": 12,
+        "LockReleaseDistance": 90,
+        "ContactHeightTolerance": 5,
+        "ContactBlendHeight": 8,
+        "HeelLeft": "(X=11.137256,Y=-16.555111,Z=-64.078255)",
+        "ToeLeft": "(X=-26.317433,Y=-40.541990,Z=-17.721224)",
+        "HeelRight": "(X=-11.146201,Y=-16.274066,Z=-64.148573)",
+        "ToeRight": "(X=26.256569,Y=-40.576589,Z=-17.732500)",
+        "MinKneeAngle": 80,
+        "MaxKneeAngle": 155,
+        "MaxLegSwingDegrees": 45,
+        "MaxKneeTwistDegrees": 25,
+        "MinFootSeparation": 40,
+        "LockMaxYawDegrees": 25,
+        "LockReleaseSeconds": 0.18,
+        "MaxPelvisSpeed": 120,
+        "MaxCorrectionSpeed": 360,
+        "MaxFootAngularSpeed": 180
+      }
+    ],
+    "Camera": [
+      {
+        "Name": "Free",
+        "Id": 1,
+        "Note": "cm/deg/s; switch preserves current orbit; Camera local transform zero",
+        "ArmLength": 1084.42,
+        "SocketOffset": "(X=0.000000,Y=338.242352,Z=135.744713)",
+        "PitchDegrees": -14.85,
+        "YawDegrees": -3.9,
+        "FieldOfView": 90,
+        "TransitionSeconds": 0.2,
+        "Sensitivity": 0.15,
+        "MinPitchDegrees": -75,
+        "MaxPitchDegrees": 70,
+        "MinDistance": 704.875,
+        "MaxDistance": 2168.85,
+        "ZoomStep": 122.018,
+        "BlinkHoldSeconds": 0.04,
+        "BlinkCatchupSeconds": 0.45
+      },
+      {
+        "Name": "Aim",
+        "Id": 2,
+        "Note": "cm/deg/s; switch preserves current orbit; Camera local transform zero",
+        "ArmLength": 362.96,
+        "SocketOffset": "(X=0.000000,Y=220.627273,Z=275.888687)",
+        "PitchDegrees": -9.65,
+        "YawDegrees": -3.7,
+        "FieldOfView": 90,
+        "TransitionSeconds": 0.2,
+        "Sensitivity": 0.15,
+        "MinPitchDegrees": -75,
+        "MaxPitchDegrees": 70,
+        "MinDistance": 235.924,
+        "MaxDistance": 725.919,
+        "ZoomStep": 122.018,
+        "BlinkHoldSeconds": 0.04,
+        "BlinkCatchupSeconds": 0.45
+      }
+    ]
+  },
+  "heavy_gait": {
+    "signature": "8fff3b7537759844290fcbfd0c6550c9f2b777b5e0afdc152760c76c8933784d",
+    "clips": [
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Walk_FWD.Anim_Mecha_Walk_FWD",
+        "frames": 78,
+        "curves": {
+          "groundplant_l": {
+            "keys": 78,
+            "full_support_keys": 41,
+            "min": 0.0,
+            "max": 1.0
+          },
+          "groundplant_r": {
+            "keys": 78,
+            "full_support_keys": 51,
+            "min": 0.0,
+            "max": 1.0
+          }
+        },
+        "markers": [
+          {
+            "name": "GroundLeftPlant",
+            "time": 0.5666666030883789
+          },
+          {
+            "name": "GroundRightPlant",
+            "time": 1.6333332061767578
+          }
+        ],
+        "moving_turn_additive": false
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_WalK_BWD.Anim_Mecha_WalK_BWD",
+        "frames": 75,
+        "curves": {
+          "groundplant_l": {
+            "keys": 75,
+            "full_support_keys": 49,
+            "min": 0.0,
+            "max": 1.0
+          },
+          "groundplant_r": {
+            "keys": 75,
+            "full_support_keys": 43,
+            "min": 0.0,
+            "max": 1.0
+          }
+        },
+        "markers": [
+          {
+            "name": "GroundRightPlant",
+            "time": 0.36666667461395264
+          },
+          {
+            "name": "GroundLeftPlant",
+            "time": 1.7333334684371948
+          }
+        ],
+        "moving_turn_additive": false
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Run_FWD.Anim_Run_FWD",
+        "frames": 24,
+        "curves": {
+          "groundplant_l": {
+            "keys": 24,
+            "full_support_keys": 8,
+            "min": 0.0,
+            "max": 1.0
+          },
+          "groundplant_r": {
+            "keys": 24,
+            "full_support_keys": 9,
+            "min": 0.0,
+            "max": 1.0
+          }
+        },
+        "markers": [
+          {
+            "name": "GroundLeftPlant",
+            "time": 0.1666666567325592
+          },
+          {
+            "name": "GroundRightPlant",
+            "time": 0.5333333015441895
+          }
+        ],
+        "moving_turn_additive": false
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Run_BWD.Anim_Mecha_Run_BWD",
+        "frames": 31,
+        "curves": {
+          "groundplant_l": {
+            "keys": 31,
+            "full_support_keys": 13,
+            "min": 0.0,
+            "max": 1.0
+          },
+          "groundplant_r": {
+            "keys": 31,
+            "full_support_keys": 9,
+            "min": 0.0,
+            "max": 1.0
+          }
+        },
+        "markers": [
+          {
+            "name": "GroundLeftPlant",
+            "time": 0.3333333432674408
+          },
+          {
+            "name": "GroundRightPlant",
+            "time": 0.9000000357627869
+          }
+        ],
+        "moving_turn_additive": false
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "frames": 35,
+        "curves": {
+          "groundplant_l": {
+            "keys": 35,
+            "full_support_keys": 4,
+            "min": 0.0,
+            "max": 1.0
+          },
+          "groundplant_r": {
+            "keys": 35,
+            "full_support_keys": 19,
+            "min": 0.0,
+            "max": 1.0
+          }
+        },
+        "markers": [
+          {
+            "name": "GroundLeftPlant",
+            "time": 0.5999999642372131
+          },
+          {
+            "name": "GroundRightPlant",
+            "time": 1.066666603088379
+          }
+        ],
+        "moving_turn_additive": false
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "frames": 35,
+        "curves": {
+          "groundplant_l": {
+            "keys": 35,
+            "full_support_keys": 22,
+            "min": 0.0,
+            "max": 1.0
+          },
+          "groundplant_r": {
+            "keys": 35,
+            "full_support_keys": 18,
+            "min": 0.0,
+            "max": 1.0
+          }
+        },
+        "markers": [
+          {
+            "name": "GroundLeftPlant",
+            "time": 0.09999999403953552
+          },
+          {
+            "name": "GroundRightPlant",
+            "time": 0.5999999642372131
+          }
+        ],
+        "moving_turn_additive": false
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_MoveTurn_L.Anim_Mecha_MoveTurn_L",
+        "frames": 63,
+        "curves": {},
+        "markers": [
+          {
+            "name": "GroundLeftPlant",
+            "time": 0.9333332777023315
+          },
+          {
+            "name": "GroundRightPlant",
+            "time": 1.7999999523162842
+          }
+        ],
+        "moving_turn_additive": true
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_MoveTurn_R.Anim_Mecha_MoveTurn_R",
+        "frames": 63,
+        "curves": {},
+        "markers": [
+          {
+            "name": "GroundRightPlant",
+            "time": 0.7999999523162842
+          },
+          {
+            "name": "GroundLeftPlant",
+            "time": 1.7666665315628052
+          }
+        ],
+        "moving_turn_additive": true
+      }
+    ]
+  }
+}

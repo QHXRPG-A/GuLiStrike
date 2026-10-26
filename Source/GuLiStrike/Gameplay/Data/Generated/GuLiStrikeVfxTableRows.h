@@ -55,4 +55,20 @@ struct FGuLiStrikeVfxEffectsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	TSoftObjectPtr<UObject> MinimalBatchResourcePath;
 
+	/** TrailLengthCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	float TrailLengthCm = 0.0f;
+
+	/** TrailHoldSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	float TrailHoldSeconds = 0.0f;
+
+	/** TrailFadeSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	float TrailFadeSeconds = 0.0f;
+
+	/** TrailBendCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	float TrailBendCm = 0.0f;
+
 };

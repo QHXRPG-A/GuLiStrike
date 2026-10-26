@@ -2,6 +2,7 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Gameplay/CombatEffects/GuLiFlightEvent.h"
+#include "Gameplay/Data/Generated/GuLiVfxIds.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
 #include "Network/GuLiHybridSessionSubsystem.h"
 #include "Network/GuLiHybridManifest.h"
@@ -289,6 +290,9 @@ struct FGuLiHybridProjectileState
             return false;
         }
         FGuLiFlightEvent E; E.State=V.Geometry; E.bBootstrap=Bootstrap;
+        if (E.State.Phase==EGuLiCombatEffectPhase::Finished && E.State.Source.Kind==EGuLiTargetKind::GroundActor
+            && (E.State.EndReason==EGuLiCombatEffectEndReason::Impact || E.State.EndReason==EGuLiCombatEffectEndReason::Blocked))
+            E.ImpactVfxId=GuLiVfxIds::GroundMechImpact;
         if (!UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(Pool->GetWorld(),E)) return false;
         if (Bootstrap) return true;
         const float Sample=E.State.SampleTime;

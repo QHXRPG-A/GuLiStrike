@@ -14,6 +14,14 @@ class UGuLiImpactBatchPresentation;
 class UGuLiMuzzleBatchPresentation;
 
 USTRUCT()
+struct FGuLiGroundTraceSegment
+{
+	GENERATED_BODY()
+	UPROPERTY() TObjectPtr<UNiagaraComponent> Component;
+	int32 Index=INDEX_NONE;
+};
+
+USTRUCT()
 struct FGuLiLocalCombatEffect
 {
 	GENERATED_BODY()
@@ -39,6 +47,12 @@ struct FGuLiLocalCombatEffect
 	int32 LaserSlot = INDEX_NONE;
 	float LaserMuzzleUntil = 0;
 	float LaserFadeUntil = 0;
+	// Ground trace lives independently of the projectile's terminal state. No wire fields.
+	float GroundTrailLength = 0, GroundTrailHold = 0, GroundTrailFade = 0, GroundTrailBend = 0, GroundTrailWidth = 0;
+	float GroundTrailEndedAt = -1;
+	FVector GroundTrailEnd = FVector::ZeroVector;
+	FVector GroundTrailFacing = FVector::ZeroVector;
+	UPROPERTY() TArray<FGuLiGroundTraceSegment> GroundTrailSegments;
 	bool bActivationPlayed = false;
 	bool bSuppressOldBurst = false;
 	EGuLiCommanderLODLevel FlightDetailLevel=EGuLiCommanderLODLevel::Full;
@@ -205,7 +219,7 @@ public:
 	virtual TStatId GetStatId() const override;
 
 	void BeginEpoch(uint32 NewEpoch);
-	void ApplyState(const FGuLiCombatEffectState& State, bool bFromSnapshot = false);
+	void ApplyState(const FGuLiCombatEffectState& State, bool bFromSnapshot = false, bool bImpactHandled = false);
 	void ApplyFlightEvent(const FGuLiFlightEvent& Event);
 	void ApplyCorrection(const FGuLiCombatEffectCorrection& Correction);
 	void ApplyShots(const TArray<FGuLiCombatShotCue>& Cues);
@@ -266,6 +280,8 @@ private:
 	UPROPERTY(Transient) TObjectPtr<class UGuLiWingmanProjectilePresentation> WingmanFlights;
 	UPROPERTY(Transient) TMap<TObjectPtr<UGuLiProjectileEffectDefinition>,TObjectPtr<class UGuLiProjectileFlightPresentationProfile>> ReviewFlightProfiles;
 	void ResolveFlightConfiguration(FGuLiLocalCombatEffect& Visual);
+	void ResolveGroundTrailConfiguration(FGuLiLocalCombatEffect& Visual);
+	bool UpdateGroundTrail(FGuLiLocalCombatEffect& Visual, float Now, bool bEnabled);
 	friend class UGuLiRogueCardQALibrary;
 	struct FPoseProvider { TWeakObjectPtr<UObject> Owner; FPoseResolver Resolve; };
 	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; FShotObserver Observe; FLaunchOffsetResolver LaunchOffset; };
@@ -288,7 +304,7 @@ private:
 	float ServerTime() const;
 	UGuLiCombatEffectCatalog* GetCatalog();
 	UNiagaraComponent* SpawnPooled(int32 VfxId, FVector Location, float DynamicScale,
-		float Radius = 0, FRotator Rotation = FRotator::ZeroRotator, FName ScaleParameterName = NAME_None);
+		float Radius = 0, FRotator Rotation = FRotator::ZeroRotator, FName ScaleParameterName = NAME_None, bool bActivate = true);
 	void Retire(UNiagaraComponent* Component, float Seconds, bool bDeactivate = true);
 	void RemoveVisual(const FGuid& Id, bool bImmediate);
 	void QueueSustainedGunfire(float Now, bool bEnabled);

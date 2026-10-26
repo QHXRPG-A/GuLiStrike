@@ -60,7 +60,9 @@ void UGuLiGroundMechMovementComponent::AdvanceHybrid(float DeltaTime,FVector2D A
 	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !HasValidData()) return;
 	RefreshCollisionContext();
 	const auto* Mech=CastChecked<AGuLiGroundMechCharacter>(CharacterOwner);
-	const bool bAirSteering=IsFalling() && Rocket() && Rocket()->IsConfigured();
+	const auto* Ability=Rocket();
+	const bool bAirSteering=Ability && Ability->IsConfigured() && (IsFalling()
+		|| (Ability->IsInputHeld() && Ability->IsAbilityActive() && Ability->GetFuel()>UE_SMALL_NUMBER));
 	const float Magnitude=bAirSteering || bSprint?1.f:Mech->GetWalkSpeed()/MaxWalkSpeed;
 	const FVector Intent(Axis.Y,Axis.X,0.);
 	Acceleration=ScaleInputAcceleration(ConstrainInputAcceleration(Intent.GetClampedToMaxSize(1.)*Magnitude));
@@ -104,6 +106,22 @@ void UGuLiGroundMechMovementComponent::AdvanceDormantRecovery(float DeltaTime)
         }
     }
 }
+FVector UGuLiGroundMechMovementComponent::SweepBlink(const FVector& Delta)
+{
+	if (!HasValidData() || bMoveContextActive || !UGuLiHybridActorComponent::HasSimulation(GetOwner()))
+		return UpdatedComponent ? UpdatedComponent->GetComponentLocation() : FVector::ZeroVector;
+	RefreshCollisionContext(); BeginMoveContext(0.f);
+	ContactsThisStep=0; DepenetrationUsed=0;
+	FHitResult Hit; SafeMoveUpdatedComponent(Delta,UpdatedComponent->GetComponentQuat(),true,Hit);
+	EndMoveContext();
+	// Keep vertical momentum/jet state. Clear only stale floor/base/contact anchors.
+	ClearMassSupport(true); CharacterOwner->SetBase(nullptr); CurrentFloor.Clear();
+	bForceNextFloorCheck=true; bJustTeleported=true;
+	PreparedMove={}; LastMoveContext={}; bPreparedMove=false;
+	Velocity.X=Velocity.Y=0;
+	ObstacleUpdateAccumulator=ObstacleUpdateIntervalSeconds; UpdateGroundMechObstacle(0.f);
+	return UpdatedComponent->GetComponentLocation();
+}
 void UGuLiGroundMechMovementComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
 	UnregisterGroundMechObstacle();
@@ -140,8 +158,22 @@ float UGuLiGroundMechMovementComponent::GetMaxSpeed() const
 	const auto* Ability = Rocket();
 	const auto* Mech = Cast<AGuLiGroundMechCharacter>(CharacterOwner);
 	if (IsFalling() && Mech && Ability && Ability->IsConfigured())
-		return Mech->GetWalkSpeed() * Ability->GetConfiguration().AirSpeedMultiplier;
+		return FMath::Max(Mech->GetWalkSpeed()*Ability->GetConfiguration().AirSpeedMultiplier,
+			float(GetAirTargetVelocity(bRocketAllowedThisMove && RocketState.Fuel>UE_SMALL_NUMBER).Size()));
 	return IsMassSupportMode() ? MaxWalkSpeed : Super::GetMaxSpeed();
+}
+FVector UGuLiGroundMechMovementComponent::GetAirTargetVelocity(bool bThrust) const
+{
+	const auto* Ability=Rocket();
+	const auto* Mech=Cast<AGuLiGroundMechCharacter>(CharacterOwner);
+	if (!Mech || !Ability || !Ability->IsConfigured() || MaxAcceleration<=UE_SMALL_NUMBER) return FVector::ZeroVector;
+	const auto& Config=Ability->GetConfiguration();
+	const FRotator Facing(0,Mech->GetActorRotation().Yaw,0);
+	// Acceleration already holds the normalized world intent from the fixed input step.
+	const FVector Input=Facing.UnrotateVector(ProjectToGravityFloor(Acceleration)/MaxAcceleration).GetClampedToMaxSize(1.);
+	const float Base=Mech->GetWalkSpeed()*Config.AirSpeedMultiplier;
+	const float Forward=bThrust && Input.X>UE_KINDA_SMALL_NUMBER ? MaxWalkSpeed*Config.JetForwardSpeedMultiplier : Base;
+	return Facing.RotateVector(FVector(Input.X*Forward,Input.Y*Base,0));
 }
 float UGuLiGroundMechMovementComponent::GetMaxBrakingDeceleration() const
 {
@@ -427,11 +459,23 @@ void UGuLiGroundMechMovementComponent::PhysFalling(float DeltaTime, int32 Iterat
 		if (!HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity())
 		{
 			const bool bAirSteering = Ability && Ability->IsConfigured();
-			TGuardValue<FVector> RestoreAcceleration(Acceleration, ProjectToGravityFloor(
-				bAirSteering ? Acceleration : GetFallingLateralAcceleration(Step)));
 			Velocity = ProjectToGravityFloor(Velocity);
-			CalcVelocity(Step, FallingLateralFriction, false, GetMaxBrakingDeceleration());
-			if (bAirSteering) Velocity = Velocity.GetClampedToMaxSize(GetMaxSpeed());
+			if (bAirSteering)
+			{
+				const auto* Mech=CastChecked<AGuLiGroundMechCharacter>(CharacterOwner);
+				const float Base=Mech->GetWalkSpeed()*Ability->GetConfiguration().AirSpeedMultiplier;
+				// Preserve world inertia. Releasing thrust/W changes the target, never
+				// instantly clips the current velocity or rotates it with the body.
+				const FVector Target=Acceleration.IsNearlyZero() ? Velocity.GetClampedToMaxSize(Base) : GetAirTargetVelocity(bThrust);
+				const float Rate=Velocity.SizeSquared()>Target.SizeSquared()+UE_KINDA_SMALL_NUMBER
+					? Mech->GetMobilityConfiguration().Mobility.Braking : MaxAcceleration;
+				Velocity=FMath::VInterpConstantTo(Velocity,Target,Step,Rate);
+			}
+			else
+			{
+				TGuardValue<FVector> RestoreAcceleration(Acceleration,ProjectToGravityFloor(GetFallingLateralAcceleration(Step)));
+				CalcVelocity(Step,FallingLateralFriction,false,GetMaxBrakingDeceleration());
+			}
 			Velocity += GetGravitySpaceComponentZ(OldVelocity);
 		}
 		// Faster descent is independent of powered ascent and its existing tuning.

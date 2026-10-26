@@ -2,6 +2,7 @@
 #include "AnimGraphNode_GuLiGroundMechAim.h"
 #include "AnimGraphNode_GuLiGroundMechGrounding.h"
 #include "AnimGraphNode_Slot.h"
+#include "AnimGraphNode_ApplyAdditive.h"
 #include "AnimGraphNode_BlendSpacePlayer.h"
 #include "AnimGraphNode_SequencePlayer.h"
 #include "AnimGraphNode_SequenceEvaluator.h"
@@ -69,6 +70,54 @@ bool UGuLiGroundMechAnimationEditorLibrary::RebuildBlendSpace(UBlendSpace* Targe
 	for (const FName Name : {FName(TEXT("bInterpolateUsingGrid")),FName(TEXT("bAllowMarkerBasedSync")),FName(TEXT("bAllowMeshSpaceBlending"))})
 		if (FProperty* P=FindFProperty<FProperty>(UBlendSpace::StaticClass(),Name)) P->CopyCompleteValue_InContainer(Target,Source);
 	Target->ResampleData(); Target->PostEditChange(); Target->MarkPackageDirty(); return true;
+}
+FString UGuLiGroundMechAnimationEditorLibrary::ReadGroundStructure(USkeletalMeshComponent* Mesh,bool bCapture)
+{
+    auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
+    if (!Mesh || !Mesh->GetAnimInstance()) return Json(R);
+    Mesh->HandleExistingParallelEvaluationTask(true,true);
+    auto* Anim=Mesh->GetAnimInstance();
+    for (TFieldIterator<FStructProperty> It(Anim->GetClass());It;++It)
+    {
+        if (It->Struct!=FAnimNode_GuLiGroundMechGrounding::StaticStruct()) continue;
+        auto* Node=It->ContainerPtrToValuePtr<FAnimNode_GuLiGroundMechGrounding>(Anim);
+        Node->bCaptureStructure=bCapture;
+        const auto& F=Node->StructureFrame;
+        auto V=[](const FVector& X) { TArray<TSharedPtr<FJsonValue>> A; for(int I=0;I<3;++I) A.Add(MakeShared<FJsonValueNumber>(X[I])); return A; };
+        auto Pose=[&](const FTransform* P)
+        {
+            TArray<TSharedPtr<FJsonValue>> A;
+            for (int I=0;I<4;++I)
+            {
+                auto O=MakeShared<FJsonObject>(); O->SetArrayField(TEXT("position"),V(P[I].GetLocation()));
+                TArray<TSharedPtr<FJsonValue>> Q; const FQuat Rotation=P[I].GetRotation();
+                for (double X:{Rotation.X,Rotation.Y,Rotation.Z,Rotation.W}) Q.Add(MakeShared<FJsonValueNumber>(X));
+                O->SetArrayField(TEXT("rotation"),Q); A.Add(MakeShared<FJsonValueObject>(O));
+            }
+            return A;
+        };
+        R->SetNumberField(TEXT("serial"),F.Serial); R->SetNumberField(TEXT("dt"),F.Ground.DeltaSeconds);
+        R->SetNumberField(TEXT("alpha"),F.Ground.GroundAlpha); R->SetNumberField(TEXT("stride"),F.Ground.StrideScale);
+        R->SetNumberField(TEXT("pelvis"),F.Pelvis); R->SetNumberField(TEXT("pelvis_target"),F.DesiredPelvis);
+        R->SetNumberField(TEXT("pelvis_low"),F.Low); R->SetNumberField(TEXT("pelvis_high"),F.High);
+        R->SetNumberField(TEXT("floor"),F.Ground.FloorHeight);
+        R->SetArrayField(TEXT("world_position"),V(F.Ground.ComponentToWorld.GetLocation()));
+        R->SetNumberField(TEXT("world_yaw"),F.Ground.ComponentToWorld.Rotator().Yaw);
+        TArray<TSharedPtr<FJsonValue>> Sides;
+        for (int I=0;I<2;++I)
+        {
+            auto O=MakeShared<FJsonObject>(); const auto& S=I?F.Ground.Right:F.Ground.Left;
+            O->SetArrayField(TEXT("input"),Pose(F.Input[I])); O->SetArrayField(TEXT("output"),Pose(F.Result[I]));
+            O->SetArrayField(TEXT("target"),V(F.Targets[I])); O->SetNumberField(TEXT("plant"),F.Plant[I]);
+            O->SetNumberField(TEXT("contact"),F.Contact[I]); O->SetBoolField(TEXT("locked_before"),F.LockedBefore[I]);
+            O->SetBoolField(TEXT("locked_after"),F.LockedAfter[I]); O->SetBoolField(TEXT("can_lock"),S.bCanLock);
+            O->SetStringField(TEXT("surface"),LexToString(S.SurfaceId));
+            O->SetArrayField(TEXT("heel_plane"),V(S.Heel)); O->SetArrayField(TEXT("toe_plane"),V(S.Toe));
+            Sides.Add(MakeShared<FJsonValueObject>(O));
+        }
+        R->SetArrayField(TEXT("sides"),Sides); R->SetBoolField(TEXT("success"),true); break;
+    }
+    return Json(R);
 }
 FString UGuLiGroundMechAnimationEditorLibrary::ProbeBlendSpace(USkeletalMesh* Mesh,UBlendSpace* BlendSpace,FVector Input)
 {
@@ -166,7 +215,28 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 		P->GetUnderlyingProperty()->SetIntPropertyValue(P->ContainerPtrToValuePtr<void>(&Ground->Node),int64(EBlendListChildUpdateMode::AlwaysTickChildren));
 	auto* TurnSlot=Add<UAnimGraphNode_Slot>(Graph,520,0);
 	TurnSlot->Node.SlotName=TEXT("DefaultSlot"); TurnSlot->Node.bAlwaysUpdateSourcePose=true; TurnSlot->ReconstructNode();
-	OK &= Link(Ground,TEXT("Pose"),TurnSlot,TEXT("Source"));
+	UEdGraphNode* MovingPose=Ground;
+	for (int32 Side=0;Side<2;++Side)
+	{
+		auto* Clip=Add<UAnimGraphNode_SequencePlayer>(Graph,350+Side*300,-550);
+		auto* Sequence=LoadObject<UAnimSequence>(nullptr,*(Folder/(Side?TEXT("Anim_Mecha_MoveTurn_R"):TEXT("Anim_Mecha_MoveTurn_L"))));
+		OK &= Sequence!=nullptr;
+		Clip->Node.SetSequence(Sequence);
+		Clip->Node.SetLoopAnimation(true); Clip->Node.SetGroupName(TEXT("GroundGait"));
+		Clip->Node.SetGroupRole(EAnimGroupRole::AlwaysFollower); Clip->Node.SetGroupMethod(EAnimSyncMethod::SyncGroup);
+		for (auto& Pin:Clip->ShowPinForProperties) if (Pin.PropertyName==TEXT("Sequence") || Pin.PropertyName==TEXT("PlayRate")) Pin.bShowPin=true;
+		// Exposing Sequence moves its default onto the pin; the runtime value is
+		// supplied by the configuration binding below, not the node's literal.
+		Clip->ReconstructNode();
+		OK &= Bind(Graph,Clip,TEXT("Sequence"),Side?TEXT("MovingTurnRight"):TEXT("MovingTurnLeft"));
+		OK &= Bind(Graph,Clip,TEXT("PlayRate"),TEXT("MovingTurnPlayRate"));
+		auto* Apply=Add<UAnimGraphNode_ApplyAdditive>(Graph,450+Side*300,-250); Apply->ReconstructNode();
+		OK &= Link(MovingPose,TEXT("Pose"),Apply,TEXT("Base"));
+		OK &= Link(Clip,TEXT("Pose"),Apply,TEXT("Additive"));
+		OK &= Bind(Graph,Apply,TEXT("Alpha"),Side?TEXT("MovingTurnRightWeight"):TEXT("MovingTurnLeftWeight"));
+		MovingPose=Apply;
+	}
+	OK &= Link(MovingPose,TEXT("Pose"),TurnSlot,TEXT("Source"));
 	auto Eval=[&](const TCHAR* Name,const TCHAR* Time,int32 X,int32 Y)
 	{
 		auto* N=Add<UAnimGraphNode_SequenceEvaluator>(Graph,X,Y);
@@ -211,15 +281,51 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 	OK &= Link(ToLocal,TEXT("Pose"),Root,TEXT("Result"));
 	for (const auto& Pair:TArray<TPair<FName,FName>>{
 		{TEXT("AimPointComponent"),TEXT("IntegratedAimPointComponent")},{TEXT("bAimValid"),TEXT("bIntegratedAimValid")},
+		{TEXT("bForwardAim"),TEXT("bForwardAim")},{TEXT("ReturnAlpha"),TEXT("ReturnAlpha")},
+		{TEXT("RightReturnStart"),TEXT("RightReturnStart")},{TEXT("LeftReturnStart"),TEXT("LeftReturnStart")},
 		{TEXT("RightMuzzleLocal"),TEXT("RightMuzzleLocal")},{TEXT("LeftMuzzleLocal"),TEXT("LeftMuzzleLocal")},
 		{TEXT("RightRecoil"),TEXT("IntegratedFireBlend")},{TEXT("LeftRecoil"),TEXT("IntegratedFireBlendLeft")},
 		{TEXT("RecoilDistance"),TEXT("RecoilDistance")},{TEXT("GunYawLimit"),TEXT("GunYawLimit")},
+		{TEXT("RightArmRecoil"),TEXT("RightArmRecoil")},{TEXT("LeftArmRecoil"),TEXT("LeftArmRecoil")},
+		{TEXT("ArmRecoilDegrees"),TEXT("ArmRecoilDegrees")},
+		{TEXT("BlinkPose"),TEXT("BlinkPose")},
 		{TEXT("GunPitchUpLimit"),TEXT("GunPitchUpLimit")},{TEXT("GunPitchDownLimit"),TEXT("GunPitchDownLimit")}})
 		OK &= Bind(Graph,Aim,*Pair.Key.ToString(),*Pair.Value.ToString());
 	FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(BP);
 	FCompilerResultsLog Log; FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
 	R->SetBoolField(TEXT("connections_ok"),OK); R->SetNumberField(TEXT("compile_errors"),Log.NumErrors);
 	R->SetNumberField(TEXT("compile_warnings"),Log.NumWarnings); R->SetNumberField(TEXT("nodes"),Graph->Nodes.Num());
+	R->SetBoolField(TEXT("success"),OK && Log.NumErrors==0); return Json(R);
+}
+
+FString UGuLiGroundMechAnimationEditorLibrary::BindArmRecoil(UAnimBlueprint* BP)
+{
+	auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
+	if (!BP || !GEditor || GEditor->PlayWorld) return Json(R);
+	UEdGraph* Graph=nullptr; UAnimGraphNode_GuLiGroundMechAim* Aim=nullptr;
+	for (UEdGraph* G:BP->FunctionGraphs) if (G->GetFName()==TEXT("AnimGraph")) Graph=G;
+	if (!Graph) return Json(R);
+	for (UEdGraphNode* N:Graph->Nodes) if (auto* A=Cast<UAnimGraphNode_GuLiGroundMechAim>(N))
+	{ if (Aim) return Json(R); Aim=A; }
+	if (!Aim) return Json(R);
+	BP->Modify(); Graph->Modify(); Aim->Modify();
+	R->SetNumberField(TEXT("nodes_before"),Graph->Nodes.Num());
+	Aim->ReconstructNode(); bool OK=true;
+	for (const TCHAR* Name:{TEXT("RightArmRecoil"),TEXT("LeftArmRecoil"),TEXT("ArmRecoilDegrees"),TEXT("BlinkPose")})
+	{
+		auto* Pin=Aim->FindPin(Name,EGPD_Input);
+		if (!Pin) { OK=false; continue; }
+		if (Pin->LinkedTo.IsEmpty()) OK &= Bind(Graph,Aim,Name,Name);
+		else
+		{
+			const auto* Get=Cast<UK2Node_VariableGet>(Pin->LinkedTo[0]->GetOwningNode());
+			OK &= Pin->LinkedTo.Num()==1 && Get && Get->VariableReference.GetMemberName()==FName(Name);
+		}
+	}
+	FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(BP);
+	FCompilerResultsLog Log; FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
+	R->SetNumberField(TEXT("nodes_after"),Graph->Nodes.Num());
+	R->SetNumberField(TEXT("compile_errors"),Log.NumErrors); R->SetNumberField(TEXT("compile_warnings"),Log.NumWarnings);
 	R->SetBoolField(TEXT("success"),OK && Log.NumErrors==0); return Json(R);
 }
 
@@ -276,7 +382,7 @@ FString UGuLiGroundMechAnimationEditorLibrary::ConfigureMobilityAssets(bool bApp
 	R->SetBoolField(TEXT("success"),OK); R->SetBoolField(TEXT("asset_mutations"),bApply); return Json(R);
 }
 
-FString UGuLiGroundMechAnimationEditorLibrary::BakeGroundContacts(USkeletalMesh* Mesh,const FString& Folder,float Tolerance,float BlendHeight)
+FString UGuLiGroundMechAnimationEditorLibrary::BakeGroundContacts(USkeletalMesh* Mesh,const FString& Folder,float Tolerance,float BlendHeight,const FString& GaitFilter)
 {
 	auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
 	if (!Mesh || !GEditor || GEditor->PlayWorld || Tolerance<=0 || BlendHeight<=0 || !Mesh->GetImportedModel()
@@ -312,11 +418,15 @@ FString UGuLiGroundMechAnimationEditorLibrary::BakeGroundContacts(USkeletalMesh*
 		{TEXT("WalkBackward"),TEXT("Anim_Mecha_WalK_BWD")},{TEXT("RunForward"),TEXT("Anim_Run_FWD")},
 		{TEXT("RunBackward"),TEXT("Anim_Mecha_Run_BWD")},{TEXT("StrafeLeft"),TEXT("Anim_Mecha_Strafe_L")},
 		{TEXT("StrafeRight"),TEXT("Anim_Mecha_Strafe_R")},{TEXT("TurnLeft"),TEXT("Anim_Mecha_Turn_L")},
-		{TEXT("TurnRight"),TEXT("Anim_Mecha_Turn_R")}};
+		{TEXT("TurnRight"),TEXT("Anim_Mecha_Turn_R")},{TEXT("MovingTurnLeft"),TEXT("Anim_Mecha_MoveTurn_L")},
+		{TEXT("MovingTurnRight"),TEXT("Anim_Mecha_MoveTurn_R")}};
+	TArray<FString> SelectedGaits; GaitFilter.ParseIntoArray(SelectedGaits,TEXT(","),true);
 	for (const auto& Clip:Clips)
 	{
+		if (!SelectedGaits.IsEmpty() && !SelectedGaits.Contains(Clip.Key)) continue;
 		auto* Sequence=LoadObject<UAnimSequence>(nullptr,*(Folder/Clip.Value)); if (!Sequence) return Json(R);
-		const bool Turning=FString(Clip.Key).StartsWith(TEXT("Turn")), Idle=FString(Clip.Key)==TEXT("Idle");
+		const bool Turning=FString(Clip.Key).Contains(TEXT("Turn")), Idle=FString(Clip.Key)==TEXT("Idle");
+		const bool MovingTurn=FString(Clip.Key).StartsWith(TEXT("Moving"));
 		const int32 Frames=Sequence->GetNumberOfSampledKeys(); if (Frames<2) return Json(R);
 		const double Step=Sequence->GetPlayLength()/(Frames-1);
 		TArray<float> Heights[2]; TArray<FVector> Points[2]; TArray<float> Yaws;
@@ -335,7 +445,9 @@ FString UGuLiGroundMechAnimationEditorLibrary::BakeGroundContacts(USkeletalMesh*
 			{
 				const int32 FootIndex=Ref.FindBoneIndex(Side?TEXT("Foot_R"):TEXT("Foot_L"));
 				FTransform Foot=Pose[FootIndex];
-				const FTransform ToeLocal=Pose[Ref.FindBoneIndex(Side?TEXT("FootEnd_R"):TEXT("FootEnd_L"))].GetRelativeTransform(Foot);
+				// Support calibration and the runtime solver share a flat mechanical
+				// toe reference; vendor toe roll is retained only during swing.
+				const FTransform ToeLocal=Locals[Ref.FindBoneIndex(Side?TEXT("FootEnd_R"):TEXT("FootEnd_L"))];
 				// Contact calibration uses the same leveled sole as grounding, not the ankle or the raw foot-roll excursion.
 				const FVector Up=Foot.TransformVectorNoScale(Global[FootIndex].InverseTransformVectorNoScale(FVector::UpVector));
 				Foot.SetRotation((FQuat::FindBetweenNormals(Up.GetSafeNormal(),FVector::UpVector)*Foot.GetRotation()).GetNormalized());
@@ -353,7 +465,7 @@ FString UGuLiGroundMechAnimationEditorLibrary::BakeGroundContacts(USkeletalMesh*
 			TArray<FRichCurveKey> Keys;
 			for (int32 Frame=0;Frame<Frames;++Frame)
 			{
-				const float Plant=Idle?1.f:FMath::Clamp(1.f-(Heights[Side][Frame]-MinHeight[Side]-Tolerance)/BlendHeight,0.f,1.f);
+				const float Plant=Idle?1.f:1.f-FMath::SmoothStep(Tolerance,Tolerance+BlendHeight,Heights[Side][Frame]-MinHeight[Side]);
 				Keys.Emplace(Frame*Step,Plant); Keys.Last().InterpMode=RCIM_Linear;
 				if (!Idle && !Turning && Frame>0 && Plant>.8f && Keys[Frame-1].Value>.8f)
 				{
@@ -362,16 +474,28 @@ FString UGuLiGroundMechAnimationEditorLibrary::BakeGroundContacts(USkeletalMesh*
 				}
 			}
 			FAnimationCurveIdentifier ID(Side?FName(TEXT("GroundPlant_R")):FName(TEXT("GroundPlant_L")),ERawCurveTrackTypes::RCT_Float);
-			Controller.AddCurve(ID,0x00000004,false); Controller.SetCurveKeys(ID,Keys,false);
-			if (!Idle && !Turning) for (int32 Frame=0;Frame<Frames-1;++Frame)
+			if (MovingTurn) Controller.RemoveCurve(ID,false);
+			else { Controller.AddCurve(ID,0x00000004,false); Controller.SetCurveKeys(ID,Keys,false); }
+			if (!Idle && (!Turning || MovingTurn)) for (int32 Frame=0;Frame<Frames-1;++Frame)
 				if (Keys[Frame].Value>=.65f && Keys[Frame?Frame-1:Frames-2].Value<.65f)
 				{
 					auto& Marker=Sequence->AuthoredSyncMarkers.AddDefaulted_GetRef();
 					Marker.MarkerName=Side?TEXT("GroundRightPlant"):TEXT("GroundLeftPlant"); Marker.Time=Frame*Step; Marker.TrackIndex=0;
 				}
+			if (MovingTurn)
+			{
+				const FName MarkerName=Side?TEXT("GroundRightPlant"):TEXT("GroundLeftPlant");
+				if (!Sequence->AuthoredSyncMarkers.ContainsByPredicate([&](const FAnimSyncMarker& M){return M.MarkerName==MarkerName;}))
+				{
+					// A pivot foot may stay planted for the entire turn. Give that
+					// cycle its opposite support phase so the additive can follow gait.
+					auto& Marker=Sequence->AuthoredSyncMarkers.AddDefaulted_GetRef();
+					Marker.MarkerName=MarkerName; Marker.Time=Side?Sequence->GetPlayLength()*.5f:0.f; Marker.TrackIndex=0;
+				}
+			}
 		}
 		const float TurnDegrees=FMath::FindDeltaAngleDegrees(Yaws[0],Yaws.Last());
-		if (Turning && FMath::Abs(TurnDegrees)>1.f)
+		if (Turning && !MovingTurn && FMath::Abs(TurnDegrees)>1.f)
 		{
 			TArray<FRichCurveKey> Keys; float Previous=0;
 			for (int32 I=0;I<Frames;++I)
@@ -393,7 +517,8 @@ FString UGuLiGroundMechAnimationEditorLibrary::BakeGroundContacts(USkeletalMesh*
 		Report->SetNumberField(TEXT("right_min_sole_height"),MinHeight[1]); Report->SetNumberField(TEXT("turn_degrees"),TurnDegrees);
 		ClipReports.Add(MakeShared<FJsonValueObject>(Report));
 	}
-	R->SetObjectField(TEXT("gait"),Gaits); R->SetArrayField(TEXT("clips"),ClipReports); R->SetBoolField(TEXT("success"),true); return Json(R);
+	R->SetObjectField(TEXT("gait"),Gaits); R->SetArrayField(TEXT("clips"),ClipReports);
+	R->SetBoolField(TEXT("success"),SelectedGaits.IsEmpty() || ClipReports.Num()==SelectedGaits.Num()); return Json(R);
 }
 
 FString UGuLiGroundMechAnimationEditorLibrary::ProbeAnimationGraph(UClass* PawnClass,FVector Velocity,bool bJumpScenario,int32 ShotIndex,FVector AimPointComponent,UCurveFloat* RecoilCurve,bool bTakeoffThrust)

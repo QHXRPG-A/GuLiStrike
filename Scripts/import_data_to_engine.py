@@ -114,7 +114,7 @@ def preflight(manifest, selected):
         issues.extend(scope['report']['errors'])
     if issues:
         raise RuntimeError('Import preflight failed before any asset mutation:\n' + '\n'.join(issues[:30]))
-    mech_tables={'DT_GuLiStrikeMech_'+s for s in ('Mobility','Gait','GroundIK','Camera')}
+    mech_tables={'DT_GuLiStrikeMech_'+s for s in ('Upgrades','Skills','Mobility','Gait','GroundIK','Camera')}
     if mech_tables.intersection(selected) and not globals().get('GULI_SKIP_MECH_POST_IMPORT',False):
         world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
         if world.get_path_name().split('.')[0]!='/Game/Maps/LVL_CommanderMassPrototype':
@@ -544,11 +544,17 @@ try:
     report["part_ids"] = part_ids
     mark("part-ids-done")
 
-    if any('DT_GuLiStrikeMech_'+s in selected for s in ('Mobility','Gait','GroundIK','Camera')) and not globals().get('GULI_SKIP_MECH_POST_IMPORT',False):
+    if any('DT_GuLiStrikeMech_'+s in selected for s in ('Upgrades','Skills','Mobility','Gait','GroundIK','Camera')) and not globals().get('GULI_SKIP_MECH_POST_IMPORT',False):
         scope={'__name__':'ground_tuning_import'}
         with open(f'{PROJECT}/Scripts/GroundMech/MechaDestroyer/sync_mobility_assets.py',encoding='utf8') as source:
             exec(compile(source.read(),'sync_mobility_assets.py','exec'),scope)
         report['ground_mobility']=scope['sync_mobility_assets']()
+
+    if {'DT_GuLiStrikeVfx_Effects','DT_GuLiStrikeMech_Skills'}.intersection(selected):
+        scope={'__name__':'ground_fire_import'}
+        with open(f'{PROJECT}/Scripts/GroundMech/MechaDestroyer/sync_firing_feedback_assets.py',encoding='utf8') as source:
+            exec(compile(source.read(),'sync_firing_feedback_assets.py','exec'),scope)
+        report['ground_firing_feedback']=scope['sync_firing_feedback_assets']()
 
     # --- 孤儿资产警告：目录里不在 manifest 之列的 DataTable ---
     expected = set(manifest["tables"].keys())

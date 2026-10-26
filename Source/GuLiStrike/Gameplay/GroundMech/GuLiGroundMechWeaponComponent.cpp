@@ -359,8 +359,10 @@ void UGuLiGroundMechWeaponComponent::SetFireHeld(bool bHeld)
 	if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetOwner()))
 	{
 		FVector Point;
-		if (bHeld && ResolveLocalWeaponAim(Point)) { Mech->HybridInput.Aim=Point; Mech->HybridInput.bHasAim=true; }
-		Mech->HybridInput.bFire=bHeld && CanControl(true) && Mech->HybridInput.bHasAim;
+		const bool bForward=Mech->HybridInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
+		if (bHeld && !bForward && ResolveLocalWeaponAim(Point)) { Mech->HybridInput.Aim=Point; Mech->HybridInput.bHasAim=true; }
+		if (bForward) ResetAimAssistSources();
+		Mech->HybridInput.bFire=bHeld && CanControl(true) && (bForward || Mech->HybridInput.bHasAim);
 	}
 }
 
@@ -447,7 +449,11 @@ void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime
 	if (auto* Effect = UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleSystem, Gun(), Socket,
 		FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget, false, false, ENCPoolMethod::ManualRelease, false))
 	{
-		Effect->SetUsingAbsoluteScale(true); Effect->SetWorldScale3D(GuLiVfx::Scale(this, ActiveSkill.MuzzleVfxId));
+		Effect->SetUsingAbsoluteScale(true);
+		// This emitter's User.Size drives both beam length and width. Component
+		// scaling alone does not scale Niagara ribbon/sprite widths consistently.
+		Effect->SetWorldScale3D(FVector::OneVector);
+		Effect->SetVariableFloat(TEXT("User.Size"), GuLiVfx::Scale(this, ActiveSkill.MuzzleVfxId).X);
 		// The weapon mount mirrors X. Removing inherited scale also removes that
 		// reflection, so orient the unscaled effect along the actual socket axis.
 		Effect->SetUsingAbsoluteRotation(true);

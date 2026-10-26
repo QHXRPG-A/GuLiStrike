@@ -40,7 +40,7 @@ def main():
         ('FuelBarVfxId', 'int', vfx_id('RocketFuelBar')),
         ('FuelBarHeight', 'float', 400), ('FuelBarRightOffset', 'float', 450),
         ('FuelBarFadeSeconds', 'float', 1.5),
-        ('AirSpeedMultiplier', 'float', 1.5), ('JetMaxTiltDegrees', 'float', 15),
+        ('AirSpeedMultiplier', 'float', 1.5), ('JetForwardSpeedMultiplier', 'float', 2.0), ('JetMaxTiltDegrees', 'float', 15),
         ('FallGravityMultiplier', 'float', 2),
     ]
     cells = []

@@ -622,6 +622,14 @@ def validate_vfx_references(tables):
             raise SheetError(f'{label}: 特效行名必须是稳定的 C++ 标识符，以生成符号 ID')
         if set(scale) != {'X', 'Y', 'Z'} or not all(math.isfinite(v) and v > 0 for v in scale.values()):
             raise SheetError(f'{label}: 基础缩放必须为三个有限正数')
+        trail = [row.get(k, 0.) for k in ('TrailLengthCm', 'TrailHoldSeconds', 'TrailFadeSeconds', 'TrailBendCm')]
+        if not all(math.isfinite(v) and v >= 0 for v in trail):
+            raise SheetError(f'{label}: 尾迹长度、保留、消散、弯曲参数必须是有限非负数')
+        length, hold, fade, bend = trail
+        if length > 0 and not (100 <= length <= 20000 and hold <= 1 and .01 <= fade <= 2 and bend <= min(500, length*.1)):
+            raise SheetError(f'{label}: 尾迹长度/时间/弯曲超出支持范围')
+        if length == 0 and any(trail[1:]):
+            raise SheetError(f'{label}: 无尾迹长度时不能设置残留参数')
         key = (path.casefold(), *(scale[k] for k in 'XYZ'))
         if key in definitions:
             raise SheetError(f'{label}: 重复的资源路径与基础缩放组合')
@@ -773,10 +781,23 @@ def validate_mech_mobility(tables):
     require(set(c)=={'Free','Aim'},'Camera 必须有 Free/Aim 行')
     m=m['Default']; ik=ik['Default']
     require(0<m['WalkSpeed']<=m['SprintSpeed']<=10000,'移动速度单位 cm/s，范围 (0,10000]')
+    rocket=rows('Skills').get('RocketJump',{})
+    base_air=m['WalkSpeed']*rocket.get('AirSpeedMultiplier',0)
+    jet_forward=m['SprintSpeed']*rocket.get('JetForwardSpeedMultiplier',0)
+    require(math.isfinite(base_air) and math.isfinite(jet_forward) and 0<base_air<=jet_forward,
+            '普通空中速度=WalkSpeed×AirSpeedMultiplier；喷气前向速度=SprintSpeed×JetForwardSpeedMultiplier，且不低于普通空中速度')
     require(0<m['Acceleration']<=100000 and 0<m['Braking']<=100000,'加速/制动单位 cm/s²')
     require(0<m['MovingTurnRate']<=1440 and 0<=m['TurnMovementThreshold']<m['WalkSpeed'],'移动转向/原地速度阈值无效')
     require(0<m['TurnStopDegrees']<m['TurnStartDegrees']<180,'转身结束阈值必须小于开始阈值')
     require(0<m['GunYawLimit']<180 and 0<m['GunPitchUpLimit']<90 and 0<m['GunPitchDownLimit']<90,'枪臂角度范围无效')
+    require(0<m['GunReturnSeconds']<=2,'双枪回正时间单位秒，范围 (0,2]')
+    require(0<m['BlinkDistance']<=5000 and .2<=m['BlinkCooldownSeconds']<=60,'闪现距离 cm / 冷却秒范围无效')
+    require(all(0<m[k]<=1 for k in ('BlinkWindupSeconds','BlinkLoopSeconds','BlinkRecoverySeconds')),'闪现 Begin/Loop/End 每段须在 (0,1] 秒')
+    require(m['BlinkCooldownSeconds']>=sum(m[k] for k in ('BlinkWindupSeconds','BlinkLoopSeconds','BlinkRecoverySeconds')),'冷却不能短于闪现三段动作总时长')
+    require(0<=m['BlinkLoopSwayDegrees']<=5,'闪现 Loop 肩臂摆动幅度范围 [0,5] 度')
+    require(90<=m['BlinkArmBackDegrees']<=150 and 0<=m['BlinkBodyLeanDegrees']<=30,'闪现肩臂/躯干角度无效')
+    require(type(m['BlinkAfterimageCount']) is int and 1<=m['BlinkAfterimageCount']<=6,'闪现残影数量须为 1..6')
+    require(0<m['BlinkAfterimageSeconds']<=1 and 0<m['BlinkAfterimageOpacity']<=1,'闪现残影寿命/透明度无效')
     required={'Idle','WalkForward','WalkBackward','StrafeLeft','StrafeRight','RunForward','RunBackward','TurnLeft','TurnRight','JumpStart','JumpLoop','Shoot','WalkBlend','RunBlend'}
     require(set(g)==required,'Gait 缺少或多出配置行')
     for name,r in g.items():
@@ -784,17 +805,32 @@ def validate_mech_mobility(tables):
         require(0<r['ReferenceSpeed']<=10000 and 0<r['MinStrideScale']<=1<=r['MaxStrideScale']<=2,f'{name}: 标定速度或步幅上下限无效')
         require(0<r['MinPlayRate']<=r['BasePlayRate']<=r['MaxPlayRate']<=64,f'{name}: 播放倍率上下限无效')
         require(0<r['TransitionSeconds']<=2 and 0<r['SpeedSmoothingSeconds']<=2,f'{name}: 过渡单位秒，范围 (0,2]')
+        require(all(0<r[k]<=2 for k in ('HorizontalMotionScale','SwingLiftScale','PelvisMotionScale')),f'{name}: 重定向幅度范围 (0,2]')
+        require(r['MinStrideScale']<=r['SafeMaxStrideScale']<=r['MaxStrideScale'],f'{name}: 骨链可达步幅范围无效')
+        require(0<=r['MovingTurnMaxWeight']<=1,f'{name}: 移动转弯权重范围 [0,1]')
+        if name in ('TurnLeft','TurnRight'):
+            require(bool(re.fullmatch(r'/Game/[A-Za-z0-9_/]+\.[A-Za-z0-9_]+',r['MovingTurnAsset'])),f'{name}: 缺少移动转弯派生动画软引用')
         require(0<=r['RecoilCentimeters']<=50 and abs(r['TurnDegrees'])<=180,f'{name}: 后坐或转角无效')
+        if name == 'Shoot':
+            require(0<=r['ArmRecoilDegrees']<=30, '整臂后坐转角范围 [0,30] 度')
+            require(0<r['ArmRecoilAttackSeconds']<=.1 and 0<=r['ArmRecoilHoldSeconds']<=.1
+                    and r['ArmRecoilAttackSeconds']<r['ArmRecoilRecoverySeconds']<=1,
+                    '整臂后坐需要快速冲击、有限制退停顿及较慢复位，单位秒')
     require(0<ik['TraceUp']<=500 and 0<ik['TraceDown']<=500 and 0<ik['MaxFootCorrection']<=ik['TraceDown'],'IK 探测/高度修正单位 cm')
     require(0<=ik['PelvisDown']<=ik['MaxFootCorrection'] and 0<=ik['PelvisUp']<=ik['MaxFootCorrection'],'骨盆补偿超出脚部修正范围')
     require(0<=ik['MaxTiltDegrees']<=60 and 0<=ik['ReleaseThreshold']<ik['PlantThreshold']<=1,'IK 倾斜或支撑滞回范围无效')
     require(all(0<ik[k]<=1000 for k in ['BlendInSeconds','BlendOutSeconds','InterpSpeed','LockReleaseDistance','ContactHeightTolerance','ContactBlendHeight']),'IK 混合和锁定参数必须为正')
+    require(5<=ik['MinKneeAngle']<ik['MaxKneeAngle']<=170,'IK 膝关节内角范围必须远离反折/伸直奇点，单位度')
+    require(0<ik['MaxLegSwingDegrees']<=60 and 0<=ik['MaxKneeTwistDegrees']<=45,'IK 髋摆动/膝弯曲面角度无效')
+    require(0<ik['MinFootSeparation']<=100 and 0<ik['LockMaxYawDegrees']<=60,'IK 脚间距或锁脚转角无效')
+    require(0<ik['LockReleaseSeconds']<=1 and all(0<ik[k]<=2000 for k in ('MaxPelvisSpeed','MaxCorrectionSpeed','MaxFootAngularSpeed')),'IK 连续过渡时间或变化速率无效')
     for key in ['HeelLeft','ToeLeft','HeelRight','ToeRight']:
         require(all(math.isfinite(v) and abs(v)<1000 for v in ik[key].values()),key+': 骨骼局部坐标单位 cm')
     for name,r in c.items():
         require(0<r['MinDistance']<=r['ArmLength']<=r['MaxDistance']<=10000,f'{name}: 相机距离上下限无效')
         require(-89<=r['MinPitchDegrees']<=r['PitchDegrees']<=r['MaxPitchDegrees']<=89 and -180<=r['YawDegrees']<=180,f'{name}: 相机角度无效')
         require(10<=r['FieldOfView']<=120 and 0<r['TransitionSeconds']<=2 and 0<r['Sensitivity']<=10 and 0<r['ZoomStep']<=1000,f'{name}: FOV/秒/灵敏度/缩放单位或范围无效')
+        require(0<=r['BlinkHoldSeconds']<=.25 and .1<=r['BlinkCatchupSeconds']<=2,f'{name}: 闪现镜头停留 [0,0.25] 秒，95% 阻尼收敛 [0.1,2] 秒')
 
 
 def main():
@@ -911,7 +947,7 @@ def main():
                     if execution == 'GAS':
                         positive = ('MaxFuel', 'FuelDrainPerSecond', 'FuelRecoveryPerSecond',
                                     'ThrustAcceleration', 'MaxRiseSpeed',
-                                    'FuelBarHeight', 'FuelBarRightOffset', 'FuelBarFadeSeconds', 'AirSpeedMultiplier',
+                                    'FuelBarHeight', 'FuelBarRightOffset', 'FuelBarFadeSeconds', 'AirSpeedMultiplier', 'JetForwardSpeedMultiplier',
                                     'FallGravityMultiplier')
                         if not all(math.isfinite(row.get(key, 0)) and row.get(key, 0) > 0 for key in positive) \
                                 or not math.isfinite(row.get('InitialFuel', -1)) \

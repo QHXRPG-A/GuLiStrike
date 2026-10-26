@@ -191,6 +191,10 @@ struct FGuLiStrikeMechSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float AimAssistRadiusCentimeters = 0.0f;
 
+	/** JetForwardSpeedMultiplier (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float JetForwardSpeedMultiplier = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_Visuals 的行结构（源: GuLiStrikeMech.xlsx / Visuals）。 */
@@ -271,6 +275,54 @@ struct FGuLiStrikeMechMobilityRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
 	float GunPitchDownLimit = 0.0f;
 
+	/** GunReturnSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float GunReturnSeconds = 0.0f;
+
+	/** BlinkDistance (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkDistance = 0.0f;
+
+	/** BlinkCooldownSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkCooldownSeconds = 0.0f;
+
+	/** BlinkWindupSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkWindupSeconds = 0.0f;
+
+	/** BlinkRecoverySeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkRecoverySeconds = 0.0f;
+
+	/** BlinkArmBackDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkArmBackDegrees = 0.0f;
+
+	/** BlinkBodyLeanDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkBodyLeanDegrees = 0.0f;
+
+	/** BlinkAfterimageCount (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	int32 BlinkAfterimageCount = 0;
+
+	/** BlinkAfterimageSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkAfterimageSeconds = 0.0f;
+
+	/** BlinkAfterimageOpacity (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkAfterimageOpacity = 0.0f;
+
+	/** BlinkLoopSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkLoopSeconds = 0.0f;
+
+	/** BlinkLoopSwayDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float BlinkLoopSwayDegrees = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_Gait 的行结构（源: GuLiStrikeMech.xlsx / Gait）。 */
@@ -330,6 +382,46 @@ struct FGuLiStrikeMechGaitRow : public FTableRowBase
 	/** RecoilCentimeters (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
 	float RecoilCentimeters = 0.0f;
+
+	/** HorizontalMotionScale (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float HorizontalMotionScale = 0.0f;
+
+	/** SwingLiftScale (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float SwingLiftScale = 0.0f;
+
+	/** PelvisMotionScale (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float PelvisMotionScale = 0.0f;
+
+	/** SafeMaxStrideScale (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float SafeMaxStrideScale = 0.0f;
+
+	/** MovingTurnMaxWeight (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float MovingTurnMaxWeight = 0.0f;
+
+	/** MovingTurnAsset (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	TSoftObjectPtr<UObject> MovingTurnAsset;
+
+	/** ArmRecoilDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float ArmRecoilDegrees = 0.0f;
+
+	/** ArmRecoilAttackSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float ArmRecoilAttackSeconds = 0.0f;
+
+	/** ArmRecoilHoldSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float ArmRecoilHoldSeconds = 0.0f;
+
+	/** ArmRecoilRecoverySeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float ArmRecoilRecoverySeconds = 0.0f;
 
 };
 
@@ -427,6 +519,46 @@ struct FGuLiStrikeMechGroundIKRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
 	FVector ToeRight = FVector::ZeroVector;
 
+	/** MinKneeAngle (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MinKneeAngle = 0.0f;
+
+	/** MaxKneeAngle (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MaxKneeAngle = 0.0f;
+
+	/** MaxLegSwingDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MaxLegSwingDegrees = 0.0f;
+
+	/** MaxKneeTwistDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MaxKneeTwistDegrees = 0.0f;
+
+	/** MinFootSeparation (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MinFootSeparation = 0.0f;
+
+	/** LockMaxYawDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float LockMaxYawDegrees = 0.0f;
+
+	/** LockReleaseSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float LockReleaseSeconds = 0.0f;
+
+	/** MaxPelvisSpeed (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MaxPelvisSpeed = 0.0f;
+
+	/** MaxCorrectionSpeed (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MaxCorrectionSpeed = 0.0f;
+
+	/** MaxFootAngularSpeed (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundIK")
+	float MaxFootAngularSpeed = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_Camera 的行结构（源: GuLiStrikeMech.xlsx / Camera）。 */
@@ -490,5 +622,13 @@ struct FGuLiStrikeMechCameraRow : public FTableRowBase
 	/** ZoomStep (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
 	float ZoomStep = 0.0f;
+
+	/** BlinkHoldSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BlinkHoldSeconds = 0.0f;
+
+	/** BlinkCatchupSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BlinkCatchupSeconds = 0.0f;
 
 };

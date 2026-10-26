@@ -20,6 +20,8 @@ class UGuLiGroundMechAttributeSet;
 class UGuLiGroundMechRocketComponent;
 struct FInputActionValue;
 class FGuLiHybridGroundAdapter;
+enum class EGuLiGroundMoveSpace : uint8 { World, Body };
+enum class EGuLiGroundWeaponAimMode : uint8 { Target, Forward };
 struct FGuLiHybridGroundInput
 {
     FVector2D Axis=FVector2D::ZeroVector;
@@ -28,6 +30,11 @@ struct FGuLiHybridGroundInput
     // Forward movement can face the camera without entering right-button shoulder aim.
     bool bFaceCamera=false;
     uint16 CameraYaw=0;
+    EGuLiGroundMoveSpace MoveSpace=EGuLiGroundMoveSpace::World;
+    EGuLiGroundWeaponAimMode WeaponAimMode=EGuLiGroundWeaponAimMode::Target;
+    uint32 BlinkRequest=0;
+    // Captured with BlinkRequest; independent of the continuously updated W-facing yaw.
+    uint16 BlinkYaw=0;
     bool operator==(const FGuLiHybridGroundInput&) const = default;
 };
 
@@ -54,6 +61,11 @@ public:
 	bool IsShoulderAimHeld() const { return bShoulderAimHeld; }
 	const FGuLiGroundMechConfiguration& GetMobilityConfiguration() const { return MobilityConfiguration; }
 	const FGuLiGroundMechTurnState& GetTurnState() const { return TurnState; }
+	const FGuLiGroundMechWeaponAimState& GetWeaponAimState() const { return WeaponAimState; }
+	const FGuLiGroundMechBlinkState& GetBlinkState() const { return BlinkState; }
+	float GetBlinkPoseAlpha() const;
+	UFUNCTION(BlueprintCallable,Category="Mech|Blink") bool RequestBlink();
+	bool HasMovementIntent() const { return !SimulationInput.Axis.IsNearlyZero(); }
 	UGuLiGroundMechWeaponComponent* GetWeapon() const { return Weapon; }
     UFUNCTION(BlueprintPure,Category="Mech|Health") UGuLiCombatHealthComponent* GetCombatHealthComponent() const { return CombatHealth; }
     uint32 GetHybridRocketRestoreCount() const { return HybridRocketRestoreCount; }
@@ -114,7 +126,23 @@ protected:
 private:
 	UPROPERTY() FGuLiGroundMechConfiguration MobilityConfiguration;
 	UPROPERTY() FGuLiGroundMechTurnState TurnState;
+	UPROPERTY() FGuLiGroundMechWeaponAimState WeaponAimState;
+	UPROPERTY() FGuLiGroundMechBlinkState BlinkState;
+	void AdvanceBlink(float DeltaSeconds);
+	void PresentBlink();
+	int32 PresentedBlinkSerial=0;
+	int32 PresentedBlinkAfterimages=0;
+	FVector PresentedBlinkEnd=FVector::ZeroVector;
+	void UpdateMechCamera(float DeltaSeconds);
+	void AddBlinkCameraDisplacement(const FVector& Delta, bool bFirst);
+	void ResetBlinkCamera();
+	// Local presentation only. SocketOffset keeps the collision sweep rooted at the pawn.
+	FVector BlinkCameraOffset=FVector::ZeroVector, BlinkCameraVelocity=FVector::ZeroVector;
+	float BlinkCameraHoldRemaining=0.f, BlinkCameraSettleSeconds=.45f;
+	uint32 BlinkCameraDisplacementRevision=0;
+	uint32 BlinkSimulationDisplacementRevision=0;
 	void AdvanceFacing(float DeltaSeconds);
+	void AdvanceWeaponAim(float DeltaSeconds);
 	bool bShoulderAimHeld=false;
 	float CameraModeAlpha=0.f;
 	uint32 FacingDisplacementRevision=0;

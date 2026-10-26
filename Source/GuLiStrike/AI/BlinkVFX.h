@@ -27,7 +27,9 @@ public:
 		bool bShowAfterimage,
 		bool bShowHeatwave = true,
 		float InitialAfterimageOpacity = 0.55f,
-		float InLifetime = 0.38f);
+		float InLifetime = 0.38f,
+		UMaterialInterface* MaterialOverride = nullptr,
+		FLinearColor Tint = FLinearColor::White);
 
 	virtual void Tick(float DeltaTime) override;
 

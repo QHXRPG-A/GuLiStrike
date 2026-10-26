@@ -48,6 +48,7 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 							   FActorComponentTickFunction *ThisTickFunction) override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	void AdvanceHybrid(float DeltaTime,FVector2D Axis,bool bSprint);
+	FVector SweepBlink(const FVector& Delta);
     void AdvanceDormantRecovery(float DeltaTime);
 	virtual bool ShouldUsePackedMovementRPCs() const override { return false; }
 	virtual float GetMaxSpeed() const override;
@@ -108,6 +109,7 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 	void UnregisterGroundMechObstacle();
 	void MarkPresentationContacts();
 	UGuLiGroundMechRocketComponent* Rocket() const;
+	FVector GetAirTargetVelocity(bool bThrust) const;
 	FGuLiRocketMoveState RocketState;
 	bool bRocketHeld = false, bRocketRequested = false, bRocketThrusting = false;
 	bool bRocketAllowedThisMove = false;

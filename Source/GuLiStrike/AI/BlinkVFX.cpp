@@ -45,11 +45,13 @@ void ABlinkVFX::InitializeFromCharacter(
 	bool bShowAfterimage,
 	bool bShowHeatwave,
 	float InitialAfterimageOpacity,
-	float InLifetime)
+	float InLifetime,
+	UMaterialInterface* MaterialOverride,
+	FLinearColor Tint)
 {
 	if (GetNetMode() == NM_DedicatedServer) { SetActorHiddenInGame(true); return; }
 	HeatwaveMesh->SetStaticMesh(GuLiVfx::Load<UStaticMesh>(this, GuLiVfxIds::BlinkSphere));
-	AfterimageBaseMaterial = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::BlinkAfterimage);
+	AfterimageBaseMaterial = MaterialOverride ? MaterialOverride : GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::BlinkAfterimage);
 	HeatwaveBaseMaterial = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::BlinkHeatwave);
 	AfterimageOpacity = FMath::Clamp(InitialAfterimageOpacity, 0.0f, 1.0f);
 	Lifetime = FMath::Max(InLifetime, KINDA_SMALL_NUMBER);
@@ -69,7 +71,7 @@ void ABlinkVFX::InitializeFromCharacter(
 			{
 				if (UMaterialInstanceDynamic* Material = AfterimageMesh->CreateDynamicMaterialInstance(MaterialIndex, AfterimageBaseMaterial))
 				{
-					//Material->SetVectorParameterValue(TEXT("Tint"), FLinearColor(0.08f, 0.62f, 1.0f));
+					if (MaterialOverride) Material->SetVectorParameterValue(TEXT("Tint"),Tint);
 					Material->SetScalarParameterValue(TEXT("Opacity"), AfterimageOpacity);
 					AfterimageMaterials.Add(Material);
 				}

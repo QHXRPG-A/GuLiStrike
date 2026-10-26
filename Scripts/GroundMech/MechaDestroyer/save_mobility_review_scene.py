@@ -70,5 +70,5 @@ for population in (200,600):
     manifest=json.loads(path.read_text(encoding='utf-8-sig'))
     manifests.append({'population':population,'config_hash':manifest['config_hash'],'fingerprint':manifest['strings']['ground/mobility_configuration']})
 report={'success':True,'map':world.get_path_name(),'saved':True,'pie_started':False,'visual_review':'not_run; user acceptance','main_role':str(settings.get_editor_property('MainRole')),'default_ground_pawn':pawn,'entities':readback,'manifests':manifests,'entry':'Red Ground spawn approximately (-2175,58575,1148.8); review floor center (-4000,50000,905), south of spawn. Entry TargetPoint (-2800,50000,1149.04) is an editor locator only.'}
-(out/'ground_mobility_scene_delivery_20261024.json').write_text(json.dumps(report,indent=2),encoding='utf8')
+(out/globals().get('GULI_SCENE_REPORT','ground_mobility_scene_delivery_20261024.json')).write_text(json.dumps(report,indent=2),encoding='utf8')
 unreal.MCPythonHelper.submit_result(json.dumps(report))
