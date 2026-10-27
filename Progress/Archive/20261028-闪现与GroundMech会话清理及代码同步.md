@@ -8,14 +8,14 @@ title: 闪现与GroundMech会话清理及代码同步
 areas: [combat, network, input]
 categories: [gameplay]
 status: recorded
-verification: partial
+verification: passed
 created: '2026-10-28'
 updated: '2026-10-28'
-summary: 清理本会话73个临时文件约30.17 MiB，保留源码与正式资源，按仅代码方式准备GitHub同步。
-next_action: 推送本会话代码并核对远端提交号；玩家回归沿用此前验收入口。
+summary: 清理73个临时文件约30.17 MiB，本会话156项代码/脚本/文本变更已推送GitHub main并核对；正式资源及其他任务改动保留。
+next_action: 玩家回归沿用此前Ground验收入口；本轮清理和代码上传已完成。
 relations:
   work_items: [WORK-20261027-001, WORK-20261027-002]
-status_note: 清理已逐项核验；正式资源、源表及其他任务工作区改动保留，GitHub接收结果另行记录，不登记玩家验收通过。
+status_note: 清理与代码推送已验证，代码提交6c8bc66091740b3e088a77444195809c6763fd8c；本记录passed仅指清理/同步，不登记玩家验收通过。
 ---
 
 # 2026-10-28：闪现与GroundMech会话清理及代码同步
@@ -27,3 +27,7 @@ status_note: 清理已逐项核验；正式资源、源表及其他任务工作�
 GitHub按仅代码范围交付：以远端main为基线提交本会话源码、脚本、Blink导出校验与相关文档；共享文件剔除其他任务的修改。本地积压的资源提交、UE资产、Excel和数据文件不随此次上传。本地资源与未提交改动保持。
 
 先前原生构建及加载成功仍由[ARC-20261027-007](20261027-GroundMech功能目录与组件职责整理交付.md)记录；本轮不重新编译、不启动PIE或截图读图测试。清单、范围及远端结果见[清理交付](../../Artifacts/GroundMechSessionCloseout_20261028/DELIVERY.md)。
+
+## 同步结果
+
+GitHub main已接收[代码提交6c8bc660](https://github.com/QHXRPG-A/GuLiStrike/commit/6c8bc66091740b3e088a77444195809c6763fd8c)，156项文件变更，无新增二进制/LFS资源，git ls-remote核对一致。共享源文件只纳入本会话内容，低空单位过滤等已有修改仍在本地。远端文档基线已有重复ID/外部学习链接问题，本次导出未增加错误；当前完整本地文档检查为0错误。
