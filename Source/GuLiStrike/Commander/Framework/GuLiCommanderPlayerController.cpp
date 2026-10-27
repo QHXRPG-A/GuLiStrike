@@ -7,7 +7,7 @@
 #include "Commander/UI/GuLiSceneUISubsystem.h"
 #include "Gameplay/Cards/GuLiRogueCardPresentation.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
-#include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
 #include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
 

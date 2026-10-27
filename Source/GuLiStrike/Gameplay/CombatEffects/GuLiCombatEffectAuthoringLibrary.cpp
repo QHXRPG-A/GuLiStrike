@@ -276,7 +276,8 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/Mining/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WarMachineHover/"))
-			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/")))) return false;
+			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/"))
+            && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/")))) return false;
 	}
 	ForEachObjectWithOuter(System, [](UObject* Object)
 	{
@@ -294,7 +295,8 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 
 FString UGuLiCombatEffectAuthoringLibrary::GetConstructionCompileDiagnostics(UNiagaraSystem* System)
 {
-	if (!System || !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/")))
+    if (!System || (!System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/"))
+        && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/"))))
 		return TEXT("Expected a project construction system");
 	FString Result;
 	ForEachObjectWithOuter(System, [&Result](UObject* Object)
@@ -1610,5 +1612,53 @@ FString UGuLiCombatEffectAuthoringLibrary::GetImpactCompiledSource(UNiagaraSyste
 		Result->SetObjectField(Handle.GetName().ToString(),Entry);
 	}
 	FString Json; FJsonSerializer::Serialize(Result,TJsonWriterFactory<>::Create(&Json)); return Json;
+}
+
+bool UGuLiCombatEffectAuthoringLibrary::ConfigureGroundBlinkRibbons(UNiagaraSystem* System)
+{
+    if (!System || System->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink")) return false;
+    System->Modify(); int32 Count=0;
+    for (const auto& Handle:System->GetEmitterHandles())
+    {
+        auto* Data=Handle.GetEmitterData(); if (!Data) continue;
+        Data->bLocalSpace=false;
+        const auto Emitter=Handle.GetInstance();
+        for (auto* Renderer:Data->GetRenderers()) if (auto* Ribbon=Cast<UNiagaraRibbonRendererProperties>(Renderer))
+        {
+            Ribbon->Modify();
+            const FNiagaraVariable Identity(FNiagaraTypeDefinition::GetIntDef(),TEXT("Particles.BlinkRibbonId"));
+            Ribbon->RibbonIdBinding.Setup(Identity,Identity);
+            Ribbon->RibbonIdBinding.SetValue(Identity.GetName(),Emitter,ENiagaraRendererSourceDataMode::Particles);
+            Ribbon->RibbonLinkOrderBinding.SetValue(TEXT("Particles.RibbonLinkOrder"),Emitter,ENiagaraRendererSourceDataMode::Particles);
+            ++Count;
+        }
+    }
+    System->SetFixedBounds(FBox(FVector(-6800,-6800,-2400),FVector(6800,6800,2400)));
+    FinalizeScratchPins(System); System->MarkPackageDirty(); return Count==1;
+}
+
+FString UGuLiCombatEffectAuthoringLibrary::InspectGroundBlinkComponent(UNiagaraComponent* Component)
+{
+    if (!Component || !Component->GetAsset() || !Component->GetAsset()->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/"))) return TEXT("{}");
+    auto Controller=Component->GetSystemInstanceController(); if (!Controller.IsValid()) return TEXT("{}");
+    Controller->WaitForConcurrentTickAndFinalize();
+    const auto* Instance=Controller->GetSystemInstance_Unsafe(); if (!Instance) return TEXT("{}");
+    auto Result=MakeShared<FJsonObject>(); TArray<TSharedPtr<FJsonValue>> Emitters;
+    for (const auto& Emitter:Instance->GetEmitters())
+    {
+        if (!Emitter->GetEmitterHandle().GetIsEnabled()) continue;
+        const auto& Data=Emitter->GetParticleData(); const auto* Buffer=Data.GetCurrentData();
+        const int32 Count=Buffer?Buffer->GetNumInstances():0;
+        const auto Id=FNiagaraDataSetAccessor<int32>(Data,TEXT("BlinkRibbonId")).GetReader(Data);
+        const auto Position=FNiagaraDataSetAccessor<FNiagaraPosition>(Data,TEXT("Position")).GetReader(Data);
+        TSet<int32> Groups; FBox Bounds(ForceInit);
+        for (int32 I=0;I<Count;++I) { if (Id.IsValid()) Groups.Add(Id.Get(I)); if (Position.IsValid()) Bounds+=FVector(Position.Get(I)); }
+        auto Row=MakeShared<FJsonObject>(); Row->SetStringField(TEXT("emitter"),Emitter->GetEmitterHandle().GetName().ToString());
+        Row->SetNumberField(TEXT("particles"),Count); Row->SetNumberField(TEXT("independent_ribbon_ids"),Groups.Num());
+        if (Bounds.IsValid) Row->SetStringField(TEXT("simulation_bounds"),Bounds.ToString());
+        Emitters.Add(MakeShared<FJsonValueObject>(Row));
+    }
+    Result->SetArrayField(TEXT("emitters"),Emitters);
+    FString Json; FJsonSerializer::Serialize(Result,TJsonWriterFactory<>::Create(&Json)); return Json;
 }
 #endif

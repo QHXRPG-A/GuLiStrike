@@ -1,6 +1,6 @@
 #pragma once
 #include "AnimGraphNode_SkeletalControlBase.h"
-#include "Gameplay/GroundMech/AnimNode_GuLiGroundMechGrounding.h"
+#include "Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h"
 #include "AnimGraphNode_GuLiGroundMechGrounding.generated.h"
 UCLASS()
 class GULISTRIKEANIMGRAPH_API UAnimGraphNode_GuLiGroundMechGrounding : public UAnimGraphNode_SkeletalControlBase

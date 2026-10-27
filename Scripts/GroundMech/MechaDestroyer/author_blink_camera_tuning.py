@@ -18,6 +18,9 @@ def update(sheet, values):
 
 
 if __name__ == '__main__':
+    skills = json.loads(cli('read', BOOK, '--sheet', '技能表', '--format', 'json'))['rows']
+    if any(len(row)>1 and row[1]=='Blink' for row in skills[3:]):
+        raise SystemExit('Legacy blink camera seeding is retired after GAS migration; edit Skills/Blink and Camera directly.')
     update('Mobility', dict(BlinkWindupSeconds=.1, BlinkLoopSeconds=.8,
                            BlinkRecoverySeconds=.2, BlinkLoopSwayDegrees=3.))
     update('Camera', dict(BlinkHoldSeconds=.04, BlinkCatchupSeconds=.45))

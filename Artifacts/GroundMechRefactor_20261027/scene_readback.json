@@ -1,0 +1,126 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "label": "GroundMobility_Flat",
+      "location": [
+        -4000.0,
+        50000.0,
+        880.0
+      ],
+      "tags": [
+        "GroundMobilityReview"
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "tags": [
+        "GroundMobilityReview"
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "location": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ],
+      "tags": [
+        "GroundMobilityReview"
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "location": [
+        -4800.0,
+        50900.0,
+        915.0
+      ],
+      "tags": [
+        "GroundMobilityReview"
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "location": [
+        -4400.0,
+        50900.0,
+        925.0
+      ],
+      "tags": [
+        "GroundMobilityReview"
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "location": [
+        -4000.0,
+        50900.0,
+        935.0
+      ],
+      "tags": [
+        "GroundMobilityReview"
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "location": [
+        -3600.0,
+        50900.0,
+        945.0
+      ],
+      "tags": [
+        "GroundMobilityReview"
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "tags": [
+        "GuLi.Review.GroundBlinkGAS",
+        "GuLi.Review.GroundBlink3C",
+        "GuLi.Review.GroundBlinkTeleport"
+      ]
+    },
+    {
+      "label": "GroundBlink_TransitWall",
+      "location": [
+        -2840.81,
+        49401.39,
+        1252.9
+      ],
+      "tags": [
+        "GuLi.Review.GroundBlinkTeleport"
+      ],
+      "collision_profile": "BlockAll"
+    }
+  ],
+  "ground_class": "<Object '/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C' (0x000001FF8C253100) Class 'BlueprintGeneratedClass'>",
+  "new_components_loaded": true,
+  "dirty_maps": [],
+  "success": true,
+  "scene_changes": false,
+  "saved_scene_reused": true,
+  "PIE_started": false,
+  "new_code_runtime_validation": "not_run",
+  "visual_acceptance": "pending_player",
+  "restored_editor_map": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Maps/LVL_GroundMechRicochetReview.LVL_GroundMechRicochetReview",
+  "final_dirty_maps": [],
+  "final_dirty_content": []
+}

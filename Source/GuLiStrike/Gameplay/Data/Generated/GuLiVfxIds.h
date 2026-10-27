@@ -58,4 +58,6 @@ namespace GuLiVfxIds
 	inline constexpr int32 WingmanGroundFlightBatch = 53;
 	inline constexpr int32 GroundMechImpact = 54;
 	inline constexpr int32 GroundMechAfterimage = 55;
+	inline constexpr int32 GroundMechBlink = 56;
+	inline constexpr int32 GroundMechBlinkShape = 57;
 }

@@ -16,6 +16,12 @@ class GULISTRIKE_API UGuLiCombatEffectAuthoringLibrary : public UBlueprintFuncti
 	GENERATED_BODY()
 public:
 #if WITH_EDITOR
+    /** Owned Ground Blink only: bind integer strand IDs to its ribbon renderer. Does not save. */
+    UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+    static bool ConfigureGroundBlinkRibbons(UNiagaraSystem* System);
+    /** Read actual CPU particle groups of the Ground Blink burst. */
+    UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+    static FString InspectGroundBlinkComponent(UNiagaraComponent* Component);
 	/** Fresh, non-rendering container. Refuses to overwrite any existing mesh. Caller supplies geometry and saves. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static UStaticMesh* CreateMissileMeshContainer();

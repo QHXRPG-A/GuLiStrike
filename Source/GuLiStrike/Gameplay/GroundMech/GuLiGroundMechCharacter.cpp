@@ -1,13 +1,15 @@
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.h"
+#include "Gameplay/GroundMech/Camera/GuLiGroundMechCameraComponent.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Gameplay/Data/Generated/GuLiStrikeMechTableRows.h"
 #include "Engine/DataTable.h"
 #include "Engine/SkeletalMesh.h"
-#include "Gameplay/GroundMech/GuLiGroundMechMovementComponent.h"
-#include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h"
+#include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
-#include "Gameplay/GroundMech/GuLiGroundMechAbilities.h"
-#include "Gameplay/GroundMech/GuLiGroundMechRocketComponent.h"
+#include "Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAttributes.h"
+#include "Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -22,7 +24,7 @@
 #include "InputActionValue.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/GuLiHybridActorComponent.h"
-#include "Gameplay/GroundMech/Private/GuLiHybridGroundInput.h"
+#include "Gameplay/GroundMech/Network/Private/GuLiHybridGroundInput.h"
 #include "Gameplay/Navigation/Grid/GuLiGridTypes.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Engine/GameViewportClient.h"
@@ -42,6 +44,8 @@ AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Ini
 	AbilitySystem->SetIsReplicated(false);
 	FuelAttributes = CreateDefaultSubobject<UGuLiGroundMechAttributeSet>(TEXT("GroundMechFuelAttributes"));
 	RocketJump = CreateDefaultSubobject<UGuLiGroundMechRocketComponent>(TEXT("RocketJump"));
+    Blink = CreateDefaultSubobject<UGuLiGroundMechBlinkComponent>(TEXT("Blink"));
+    MechCameraController = CreateDefaultSubobject<UGuLiGroundMechCameraComponent>(TEXT("MechCameraController"));
 	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"))->bPlayerVehicle=true;
 	const float DimensionScale=GuLiGrid::FootprintFromDiameter(460.)*GuLiGrid::CellSize/460.f;
 	GetCapsuleComponent()->InitCapsuleSize(230.f*DimensionScale, 374.1898f*DimensionScale);
@@ -66,7 +70,7 @@ AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Ini
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->SetUsingAbsoluteRotation(true);
 	CameraBoom->SetRelativeRotation(FRotator(-14.85f,-3.90f,0));
-	CameraBoom->TargetArmLength = DesiredCameraDistance;
+	CameraBoom->TargetArmLength = 1084.4236f;
 	CameraBoom->SocketOffset = FVector(0,338.24235,135.74471);
 	CameraBoom->bDoCollisionTest = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -155,22 +159,12 @@ void AGuLiGroundMechCharacter::BeginPlay()
 	Super::BeginPlay();
     CombatHealth->OnDeath.AddUniqueDynamic(this,&ThisClass::HandleCommittedDeath);
 	RocketJump->RefreshActorInfo();
-	if (MobilityConfiguration.bReady)
-	{
-		const auto& C=MobilityConfiguration.FreeCamera;
-		DesiredCameraDistance=C.ArmLength; CameraBoom->SocketOffset=C.SocketOffset;
-		CameraBoom->SetWorldRotation(FRotator(C.PitchDegrees,C.YawDegrees,0));
-		Camera->SetFieldOfView(C.FieldOfView);
-		Camera->SetRelativeLocationAndRotation(FVector::ZeroVector,FRotator::ZeroRotator);
-		CameraBoom->bDoCollisionTest=true;
-	}
-	CameraBoom->TargetArmLength=DesiredCameraDistance;
-	if (bIntegratedBodyMesh) GetCharacterMovement()->bOrientRotationToMovement = false;
-	CameraBoom->AddWorldRotation(FRotator(0,GetActorRotation().Yaw,0));
+	Blink->Initialize();
+    if (bIntegratedBodyMesh) GetCharacterMovement()->bOrientRotationToMovement = false;
+    MechCameraController->Initialize(CameraBoom,Camera);
 	DisplayAimYaw = GetActorRotation().Yaw;
 	GetMesh()->AddTickPrerequisiteActor(this);
 	CameraBoom->AddTickPrerequisiteActor(this);
-	ResetBlinkCamera();
 }
 
 void AGuLiGroundMechCharacter::PawnClientRestart()
@@ -187,7 +181,7 @@ void AGuLiGroundMechCharacter::PawnClientRestart()
 
 void AGuLiGroundMechCharacter::RemoveInputContext()
 {
-	ResetBlinkCamera();
+	Blink->Interrupt();
 	Weapon->SetFireHeld(false);
 	RocketJump->Interrupt();
 	if (InputSubsystem.IsValid()) InputSubsystem->RemoveMappingContext(MappingContext);
@@ -231,6 +225,7 @@ void AGuLiGroundMechCharacter::EndPlay(EEndPlayReason::Type Reason)
 {
     CombatHealth->OnDeath.RemoveDynamic(this,&ThisClass::HandleCommittedDeath);
 	RemoveInputContext();
+    Blink->Shutdown();
 	Super::EndPlay(Reason);
 }
 void AGuLiGroundMechCharacter::HandleCommittedDeath()
@@ -286,14 +281,7 @@ void AGuLiGroundMechCharacter::Look(const FInputActionValue& Value)
 {
 	if (!IsShoulderLookActive()) return;
 	bSemanticInput = false;
-	if (!MobilityConfiguration.bReady) return;
-	const auto& C=bShoulderAimHeld?MobilityConfiguration.AimCamera:MobilityConfiguration.FreeCamera;
-	const FVector2D Delta = Value.Get<FVector2D>() * C.Sensitivity;
-	FRotator Rotation = CameraBoom->GetComponentRotation();
-	Rotation.Yaw = FRotator::NormalizeAxis(Rotation.Yaw + Delta.X);
-	Rotation.Pitch = FMath::Clamp(Rotation.Pitch + Delta.Y, C.MinPitchDegrees, C.MaxPitchDegrees);
-	Rotation.Roll = 0.f;
-	CameraBoom->SetWorldRotation(Rotation);
+    MechCameraController->AddLookInput(Value.Get<FVector2D>());
 }
 
 void AGuLiGroundMechCharacter::StopMove(const FInputActionValue&)
@@ -307,8 +295,7 @@ void AGuLiGroundMechCharacter::StopSprint(const FInputActionValue&) { bSprintHel
 void AGuLiGroundMechCharacter::Zoom(const FInputActionValue& Value)
 {
 	if (!CanUseControls() || !MobilityConfiguration.bReady || bShoulderAimHeld) return;
-	const auto& C=MobilityConfiguration.FreeCamera;
-	DesiredCameraDistance=FMath::Clamp(DesiredCameraDistance-Value.Get<float>()*C.ZoomStep,C.MinDistance,C.MaxDistance);
+    MechCameraController->AddZoomInput(Value.Get<float>());
 }
 
 bool AGuLiGroundMechCharacter::GetCursorAimPoint(FVector& OutPoint) const
@@ -381,8 +368,8 @@ void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)
 			GetMesh()->TickAnimation(DeltaSeconds,false); GetMesh()->RefreshBoneTransforms();
 			if (!bIntegratedBodyMesh) { Machinegun->TickAnimation(DeltaSeconds,false); Machinegun->RefreshBoneTransforms(); }
 		}
-		PresentBlink();
-		UpdateMechCamera(DeltaSeconds);
+		Blink->Present();
+		MechCameraController->Update(DeltaSeconds);
 	}
 }
 
@@ -421,8 +408,8 @@ void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 	}
 	DisplayAimYaw=FRotator::DecompressAxisFromShort(AimYaw);
 	const float PreviousBodyYaw=GetActorRotation().Yaw;
-	AdvanceBlink(DeltaSeconds);
-	if (!BlinkState.Phase) AdvanceFacing(DeltaSeconds);
+	Blink->AdvanceSimulation(DeltaSeconds);
+	if (!GetBlinkState().Phase) AdvanceFacing(DeltaSeconds);
 	FVector2D WorldAxis=SimulationInput.Axis;
 	if (SimulationInput.MoveSpace==EGuLiGroundMoveSpace::Body)
 	{
@@ -437,7 +424,7 @@ void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 			Movement->Velocity=FRotator(0,DeltaYaw,0).RotateVector(Movement->Velocity);
 		}
 	}
-	Movement->AdvanceHybrid(DeltaSeconds,BlinkState.Phase?FVector2D::ZeroVector:WorldAxis,SimulationInput.bSprint);
+	Movement->AdvanceHybrid(DeltaSeconds,GetBlinkState().Phase?FVector2D::ZeroVector:WorldAxis,SimulationInput.bSprint);
 	AdvanceWeaponAim(DeltaSeconds);
 	UpperBodyPivot->SetWorldRotation(FRotator(0,DisplayAimYaw-90.f,0));
 	// These skeletal poses contain gameplay mounting/muzzle sockets on logic-only endpoints too.
@@ -446,8 +433,8 @@ void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 	const bool bForward=SimulationInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
 	const FVector FirePoint=bForward?GetMesh()->GetSocketLocation(TEXT("Gun_R"))+GetActorForwardVector()
 		*(Weapon->ActiveSkill.ProjectileSpeed*Weapon->ActiveSkill.ProjectileLifetime):SimulationInput.Aim;
-	Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire && !BlinkState.Phase,FirePoint,bForward || SimulationInput.bHasAim);
-	PresentBlink();
+	Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire && !GetBlinkState().Phase,FirePoint,bForward || SimulationInput.bHasAim);
+	Blink->Present();
 }
 
 void AGuLiGroundMechCharacter::AdvanceWeaponAim(float DeltaSeconds)
@@ -521,4 +508,24 @@ void AGuLiGroundMechCharacter::AdvanceFacing(float DeltaSeconds)
 		}
 		else TurnState.Progress=0.f;
 	}
+}
+
+// Stable Character API used by Blueprints, animation and existing gameplay consumers.
+bool AGuLiGroundMechCharacter::RequestBlink()
+{
+    if (!CanUseControls() || !IsShoulderLookActive() || !MobilityConfiguration.bReady) return false;
+    bSprintHeld=false;
+    return Blink->QueueRequest(HybridInput,FRotator::CompressAxisToShort(MechCameraController->GetViewYaw()));
+}
+const FGuLiGroundMechBlinkState& AGuLiGroundMechCharacter::GetBlinkState() const { return Blink->GetState(); }
+uint8 AGuLiGroundMechCharacter::GetBlinkPhase() const { return Blink->GetState().Phase; }
+float AGuLiGroundMechCharacter::GetBlinkPoseAlpha() const { return Blink->GetPoseAlpha(); }
+bool AGuLiGroundMechCharacter::CanActivateBlink() const { return Blink->CanActivate(); }
+float AGuLiGroundMechCharacter::GetBlinkCooldownRemaining() const { return Blink->GetCooldownRemaining(); }
+float AGuLiGroundMechCharacter::GetBlinkCooldownDuration() const { return Blink->GetCooldownDuration(); }
+void AGuLiGroundMechCharacter::ResetFacingForBlink(float Yaw)
+{
+    TurnState.Direction=0; TurnState.Time=TurnState.Progress=0.f;
+    TurnState.StartYaw=Yaw; TurnState.TargetDegrees=0.f; ++TurnState.Serial;
+    auto* Movement=GetCharacterMovement(); Movement->Velocity.X=Movement->Velocity.Y=0.f;
 }

@@ -1,0 +1,66 @@
+{
+  "success": true,
+  "pid": 40496,
+  "editor_map": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Maps/LVL_GroundMechRicochetReview.LVL_GroundMechRicochetReview",
+  "PIE": false,
+  "native_classes": {
+    "GuLiGroundMechBlinkComponent": "/Script/GuLiStrike.GuLiGroundMechBlinkComponent",
+    "GuLiGroundMechCameraComponent": "/Script/GuLiStrike.GuLiGroundMechCameraComponent",
+    "GuLiGA_Blink": "/Script/GuLiStrike.GuLiGA_Blink",
+    "GuLiGE_BlinkCooldown": "/Script/GuLiStrike.GuLiGE_BlinkCooldown",
+    "GuLiGA_RocketJump": "/Script/GuLiStrike.GuLiGA_RocketJump",
+    "GuLiGroundMechAttributeSet": "/Script/GuLiStrike.GuLiGroundMechAttributeSet",
+    "GuLiGroundMechBlinkVfxDefinition": "/Script/GuLiStrike.GuLiGroundMechBlinkVfxDefinition",
+    "GuLiGroundMechAnimInstance": "/Script/GuLiStrike.GuLiGroundMechAnimInstance",
+    "AnimGraphNode_GuLiGroundMechAim": "/Script/GuLiStrikeAnimGraph.AnimGraphNode_GuLiGroundMechAim",
+    "AnimGraphNode_GuLiGroundMechGrounding": "/Script/GuLiStrikeAnimGraph.AnimGraphNode_GuLiGroundMechGrounding"
+  },
+  "production_class": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+  "components": [
+    {
+      "name": "Blink",
+      "class": "/Script/GuLiStrike.GuLiGroundMechBlinkComponent",
+      "tick_enabled": false,
+      "replicates": false
+    },
+    {
+      "name": "MechCameraController",
+      "class": "/Script/GuLiStrike.GuLiGroundMechCameraComponent",
+      "tick_enabled": false,
+      "replicates": false
+    }
+  ],
+  "existing_component_names": [
+    "CollisionCylinder",
+    "Arrow",
+    "CharMoveComp",
+    "CharacterMesh0",
+    "Weapon",
+    "CombatHealth",
+    "GroundMechAbilitySystem",
+    "RocketJump",
+    "Blink",
+    "MechCameraController",
+    "ExternalUnitControl",
+    "UpperBodyPivot",
+    "Armor",
+    "Shoulder",
+    "Machinegun",
+    "CameraBoom",
+    "Camera"
+  ],
+  "blueprint_apis": [
+    "request_blink",
+    "can_activate_blink",
+    "get_blink_phase",
+    "get_blink_cooldown_remaining",
+    "get_blink_cooldown_duration",
+    "on_blink_state_changed"
+  ],
+  "shape_definition": "/Script/GuLiStrike.GuLiGroundMechBlinkVfxDefinition",
+  "shape_material_count": 8,
+  "configuration_fingerprint": "32eba6f0a72452bd0dde37990c2226ea",
+  "asset_mutations": false,
+  "runtime_tests": "not_run",
+  "visual_acceptance": "pending_player"
+}

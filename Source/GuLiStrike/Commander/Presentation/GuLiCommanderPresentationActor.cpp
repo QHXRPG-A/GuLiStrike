@@ -9,7 +9,7 @@
 #include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
-#include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
+#include "Gameplay/GroundMech/Movement/Collision/GuLiGroundMassContactSubsystem.h"
 
 #include "GuLiStrike.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"

@@ -1,0 +1,32 @@
+{
+  "saved": [
+    "/Game/GuLiStrike/FX/GroundMech/Blink/M_GroundMech_BlinkStrand.M_GroundMech_BlinkStrand",
+    "/Game/GuLiStrike/FX/GroundMech/Blink/M_GroundMech_BlinkArmorFleck.M_GroundMech_BlinkArmorFleck",
+    "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink"
+  ],
+  "systems": [
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink",
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "emitters": [
+        "Strands",
+        "ArmorFlecks"
+      ]
+    }
+  ],
+  "model_material_overrides": false,
+  "materials": {
+    "/Game/GuLiStrike/FX/GroundMech/Blink/M_GroundMech_BlinkStrand": "<Struct 'MaterialDiagnostics' (0x0000024D834A41C0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 6, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+    "/Game/GuLiStrike/FX/GroundMech/Blink/M_GroundMech_BlinkArmorFleck": "<Struct 'MaterialDiagnostics' (0x0000024D2C82AA40) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 5, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>"
+  },
+  "ribbon_count": 96,
+  "points_per_ribbon": 24,
+  "total_ribbon_points": 2304,
+  "endpoint_clouds": 0,
+  "moving_mech_shape": true,
+  "visual_trail_cm": 3200.0,
+  "armor_flecks": 128,
+  "source_vendor_modified": false
+}

@@ -1,6 +1,6 @@
 #pragma once
 #include "AnimGraphNode_SkeletalControlBase.h"
-#include "Gameplay/GroundMech/AnimNode_GuLiGroundMechAim.h"
+#include "Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.h"
 #include "AnimGraphNode_GuLiGroundMechAim.generated.h"
 
 UCLASS()

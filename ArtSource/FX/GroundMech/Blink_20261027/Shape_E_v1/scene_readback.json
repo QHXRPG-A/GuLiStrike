@@ -1,0 +1,241 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "ground_class": "<Object '/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C' (0x000001D8A6664600) Class 'BlueprintGeneratedClass'>",
+  "entry_tags": [
+    "GuLi.Review.GroundBlinkGAS",
+    "GuLi.Review.GroundBlink3C",
+    "GuLi.Review.GroundBlinkTeleport"
+  ],
+  "entities": [
+    {
+      "label": "GroundBlink_TransitWall",
+      "location": [
+        -2840.81,
+        49401.39,
+        1252.9
+      ],
+      "scale": [
+        12.0,
+        0.8,
+        7.0
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "GroundMobility_Flat",
+      "location": [
+        -4000.0,
+        50000.0,
+        880.0
+      ],
+      "scale": [
+        30.0,
+        40.0,
+        0.5
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "scale": [
+        14.0,
+        10.0,
+        0.4
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "location": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ],
+      "scale": [
+        5.4,
+        10.0,
+        0.4
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "location": [
+        -4800.0,
+        50900.0,
+        915.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.2
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "location": [
+        -4400.0,
+        50900.0,
+        925.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.4
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "location": [
+        -4000.0,
+        50900.0,
+        935.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.6
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "location": [
+        -3600.0,
+        50900.0,
+        945.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.8
+      ],
+      "collision_profile": "BlockAll"
+    }
+  ],
+  "blink": {
+    "Name": "Blink",
+    "Id": 3,
+    "Note": "Endpoint teleport; one moving mech-shaped energy proxy; real model concealed; no Blink Loop animation; cm/s",
+    "ProjectileSpeed": 0,
+    "ProjectileLifetime": 0,
+    "SweepRadius": 0,
+    "MuzzleSocket": "",
+    "RecoilBone": "",
+    "RecoilTargetLocalZCentimeters": 0,
+    "RecoilDuration": 0,
+    "RecoilCurve": "None",
+    "WeaponAnimation": "None",
+    "BulletVfxId": 0,
+    "MuzzleVfxId": 0,
+    "ExecutionType": "GAS",
+    "AbilityClass": "/Script/GuLiStrike.GuLiGA_Blink",
+    "MaxFuel": 0,
+    "InitialFuel": 0,
+    "FuelDrainPerSecond": 0,
+    "FuelRecoveryPerSecond": 0,
+    "FuelRecoveryDelay": 0,
+    "ThrustAcceleration": 0,
+    "MaxRiseSpeed": 0,
+    "JetVfxId": 0,
+    "JetSocketLeft": "",
+    "JetSocketRight": "",
+    "JetPitchDegrees": 0,
+    "FuelBarVfxId": 0,
+    "FuelBarHeight": 0,
+    "FuelBarRightOffset": 0,
+    "FuelBarFadeSeconds": 0,
+    "AirSpeedMultiplier": 0,
+    "JetMaxTiltDegrees": 0,
+    "FallGravityMultiplier": 0,
+    "AimAssistEnabled": false,
+    "AimAssistRadiusCentimeters": 0,
+    "JetForwardSpeedMultiplier": 0,
+    "BlinkDistance": 3200,
+    "BlinkCooldownSeconds": 2,
+    "BlinkWindupSeconds": 0.02,
+    "BlinkRecoverySeconds": 0.3,
+    "BlinkArmBackDegrees": 145,
+    "BlinkBodyLeanDegrees": 30,
+    "BlinkVfxId": 56,
+    "BlinkCrouchDepthCm": 60,
+    "BlinkKneeAngleDegrees": 80,
+    "BlinkConcealSeconds": 0.22,
+    "BlinkRibbonCount": 96,
+    "BlinkRibbonPoints": 24,
+    "BlinkRibbonLifetimeSeconds": 0.65,
+    "BlinkEnergyEmission": 8,
+    "BlinkLandingSearchStepCm": 100,
+    "BlinkLandingProbeCm": 600,
+    "BlinkRibbonWidthCm": 6,
+    "BlinkShapeVfxId": 57,
+    "BlinkShapeFlickerHz": 18,
+    "BlinkShapeFragmentOffsetCm": 6,
+    "BlinkTrailLengthCm": 3200,
+    "BlinkShardCount": 128,
+    "BlinkShardDuration": 0.32,
+    "BlinkShardSpeed": 1000
+  },
+  "vfx": {
+    "Name": "GroundMechBlink",
+    "Id": 56,
+    "Note": "Ground blink: GreenCrystalTrail mech adaptation; world-space skeletal sampling; scale 1; original green",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink",
+    "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+    "ReducedResourcePath": "None",
+    "MinimalResourcePath": "None",
+    "BatchResourcePath": "None",
+    "ReducedBatchResourcePath": "None",
+    "MinimalBatchResourcePath": "None",
+    "TrailLengthCm": 0,
+    "TrailHoldSeconds": 0,
+    "TrailFadeSeconds": 0,
+    "TrailBendCm": 0
+  },
+  "shape_vfx": {
+    "Name": "GroundMechBlinkShape",
+    "Id": 57,
+    "Note": "Single moving mech-shaped energy proxy; original model materials stay unchanged",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Blink/DA_GroundMech_BlinkVfx.DA_GroundMech_BlinkVfx",
+    "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+    "ReducedResourcePath": "None",
+    "MinimalResourcePath": "None",
+    "BatchResourcePath": "None",
+    "ReducedBatchResourcePath": "None",
+    "MinimalBatchResourcePath": "None",
+    "TrailLengthCm": 0,
+    "TrailHoldSeconds": 0,
+    "TrailFadeSeconds": 0,
+    "TrailBendCm": 0
+  },
+  "ribbon_count": 96,
+  "emitters": [
+    "Strands",
+    "ArmorFlecks"
+  ],
+  "configuration_fingerprint": "32eba6f0a72452bd0dde37990c2226ea",
+  "PIE_started": false,
+  "visual_approval": "pending_player"
+}

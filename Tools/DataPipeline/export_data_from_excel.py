@@ -663,7 +663,11 @@ def validate_vfx_references(tables):
                     raise SheetError(f'{table}/{row["Name"]}.{field}: 悬空或非法特效 ID {value}')
             required = []
             if table == 'DT_GuLiStrikeMech_Skills':
-                required = ['JetVfxId', 'FuelBarVfxId'] if row.get('ExecutionType') == 'GAS' else ['BulletVfxId', 'MuzzleVfxId']
+                if row.get('ExecutionType') == 'GAS':
+                    required = {'RocketJump': ['JetVfxId', 'FuelBarVfxId'],
+                                'Blink': ['BlinkVfxId', 'BlinkShapeVfxId']}.get(row['Name'], [])
+                else:
+                    required = ['BulletVfxId', 'MuzzleVfxId']
             elif table == 'DT_GuLiStrikeSpellFields_Fields' and row.get('FieldType') == 'StrongholdTransit':
                 required = ['EnergyVfxId', 'TrailVfxId', 'FlashVfxId']
             for field in required:
@@ -803,13 +807,22 @@ def validate_mech_mobility(tables):
     require(0<m['TurnStopDegrees']<m['TurnStartDegrees']<180,'转身结束阈值必须小于开始阈值')
     require(0<m['GunYawLimit']<180 and 0<m['GunPitchUpLimit']<90 and 0<m['GunPitchDownLimit']<90,'枪臂角度范围无效')
     require(0<m['GunReturnSeconds']<=2,'双枪回正时间单位秒，范围 (0,2]')
-    require(0<m['BlinkDistance']<=5000 and .2<=m['BlinkCooldownSeconds']<=60,'闪现距离 cm / 冷却秒范围无效')
-    require(all(0<m[k]<=1 for k in ('BlinkWindupSeconds','BlinkLoopSeconds','BlinkRecoverySeconds')),'闪现 Begin/Loop/End 每段须在 (0,1] 秒')
-    require(m['BlinkCooldownSeconds']>=sum(m[k] for k in ('BlinkWindupSeconds','BlinkLoopSeconds','BlinkRecoverySeconds')),'冷却不能短于闪现三段动作总时长')
-    require(0<=m['BlinkLoopSwayDegrees']<=5,'闪现 Loop 肩臂摆动幅度范围 [0,5] 度')
-    require(90<=m['BlinkArmBackDegrees']<=150 and 0<=m['BlinkBodyLeanDegrees']<=30,'闪现肩臂/躯干角度无效')
-    require(type(m['BlinkAfterimageCount']) is int and 1<=m['BlinkAfterimageCount']<=6,'闪现残影数量须为 1..6')
-    require(0<m['BlinkAfterimageSeconds']<=1 and 0<m['BlinkAfterimageOpacity']<=1,'闪现残影寿命/透明度无效')
+    blink=rows('Skills').get('Blink',{})
+    require(blink.get('ExecutionType')=='GAS' and blink.get('AbilityClass')=='/Script/GuLiStrike.GuLiGA_Blink',
+            'Blink 必须绑定 Ground 闪现 GAS 类')
+    require(0<blink.get('BlinkDistance',0)<=5000 and .2<=blink.get('BlinkCooldownSeconds',0)<=60,'闪现距离 cm / 冷却秒范围无效')
+    require(all(0<blink.get(k,0)<=1 for k in ('BlinkWindupSeconds','BlinkConcealSeconds','BlinkRecoverySeconds')),'闪现起步/隐藏/恢复时间须在 (0,1] 秒')
+    require(blink['BlinkCooldownSeconds']>=sum(blink[k] for k in ('BlinkWindupSeconds','BlinkConcealSeconds','BlinkRecoverySeconds')),'冷却不能短于闪现表现总时长')
+    require(90<=blink.get('BlinkArmBackDegrees',0)<=150 and 0<=blink.get('BlinkBodyLeanDegrees',-1)<=30,'闪现肩臂/躯干角度无效')
+    require(0<blink.get('BlinkCrouchDepthCm',0)<=100 and 80<=blink.get('BlinkKneeAngleDegrees',0)<=155,'Blink crouch depth/knee angle invalid')
+    require(48<=blink.get('BlinkRibbonCount',0)<=192 and 8<=blink.get('BlinkRibbonPoints',0)<=48,'Blink independent ribbon count/points invalid')
+    require(1<=blink.get('BlinkRibbonWidthCm',0)<=12,'Blink strand width must remain readable at the gameplay distance')
+    require(500<=blink.get('BlinkTrailLengthCm',0)<=6000,'Blink visual trail length is independent of gameplay distance')
+    require(32<=blink.get('BlinkShardCount',0)<=256 and .05<=blink.get('BlinkShardDuration',0)<=1 and 100<=blink.get('BlinkShardSpeed',0)<=3000,'Blink armor fleck parameters invalid')
+    require(0<blink.get('BlinkRibbonLifetimeSeconds',0)<=2 and 0<blink.get('BlinkEnergyEmission',0)<=32,'Blink finite VFX lifetime/emission invalid')
+    require(1<=blink.get('BlinkShapeFlickerHz',0)<=60 and 0<=blink.get('BlinkShapeFragmentOffsetCm',-1)<=20,'Blink energy shape flicker/fragment parameters invalid')
+    require(10<=blink.get('BlinkLandingSearchStepCm',0)<=250 and 100<=blink.get('BlinkLandingProbeCm',0)<=2000,'Blink endpoint probe parameters invalid')
+    require(not any(key.startswith('Blink') for key in m),'闪现参数只允许在 Skills/Blink 维护')
     required={'Idle','WalkForward','WalkBackward','StrafeLeft','StrafeRight','RunForward','RunBackward','TurnLeft','TurnRight','JumpStart','JumpLoop','Shoot','WalkBlend','RunBlend'}
     require(set(g)==required,'Gait 缺少或多出配置行')
     for name,r in g.items():
@@ -843,6 +856,8 @@ def validate_mech_mobility(tables):
         require(-89<=r['MinPitchDegrees']<=r['PitchDegrees']<=r['MaxPitchDegrees']<=89 and -180<=r['YawDegrees']<=180,f'{name}: 相机角度无效')
         require(10<=r['FieldOfView']<=120 and 0<r['TransitionSeconds']<=2 and 0<r['Sensitivity']<=10 and 0<r['ZoomStep']<=1000,f'{name}: FOV/秒/灵敏度/缩放单位或范围无效')
         require(0<=r['BlinkHoldSeconds']<=.25 and .1<=r['BlinkCatchupSeconds']<=2,f'{name}: 闪现镜头停留 [0,0.25] 秒，95% 阻尼收敛 [0.1,2] 秒')
+        require(0<=r.get('BlinkFovBoostDegrees',-1)<=30 and r['FieldOfView']+r['BlinkFovBoostDegrees']<=150 and all(0<r.get(k,0)<=2 for k in ('BlinkFovRiseSeconds','BlinkFovReturnSeconds')),f'{name}: Blink FOV rise/return invalid')
+        require(250<=r.get('BlinkArmLength',0)<=1200 and 0<=r.get('BlinkSideOffsetCm',-1)<=350 and 0<=r.get('BlinkPitchOffsetDegrees',-1)<=20,f'{name}: Blink screen framing invalid')
 
 
 def main():
@@ -962,6 +977,14 @@ def main():
                 for row in tables['DT_GuLiStrikeMech_Skills']['rows']:
                     execution = row.get('ExecutionType', 'Weapon')
                     if execution == 'GAS':
+                        path = row.get('AbilityClass', '')
+                        if not path.startswith(('/Game/', '/Script/')) or '.' not in path.rsplit('/', 1)[-1]:
+                            raise SheetError(f"机甲GAS技能 {row['Name']}.AbilityClass 必须使用完整对象路径")
+                        if row['Name'] == 'Blink':
+                            # Its movement/pose contract was validated by validate_mech_mobility.
+                            continue
+                        if row['Name'] != 'RocketJump':
+                            raise SheetError(f"机甲GAS技能 {row['Name']} 尚无对应参数校验器")
                         positive = ('MaxFuel', 'FuelDrainPerSecond', 'FuelRecoveryPerSecond',
                                     'ThrustAcceleration', 'MaxRiseSpeed',
                                     'FuelBarHeight', 'FuelBarRightOffset', 'FuelBarFadeSeconds', 'AirSpeedMultiplier', 'JetForwardSpeedMultiplier',

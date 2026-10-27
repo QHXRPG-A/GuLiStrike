@@ -1,0 +1,43 @@
+{
+  "PIE_running": false,
+  "saved_resource": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink",
+  "active_components": [],
+  "renderers": [
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink:TrailsDense3_0.NiagaraRibbonRendererProperties_0",
+      "type": "NiagaraRibbonRendererProperties"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink:TrailsDense2_0.NiagaraRibbonRendererProperties_0",
+      "type": "NiagaraRibbonRendererProperties"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink:Trails_1.NiagaraRibbonRendererProperties_0",
+      "type": "NiagaraRibbonRendererProperties"
+    }
+  ],
+  "saved_streams": [
+    {
+      "name": "Trails",
+      "spawn_rate": [
+        670.0
+      ],
+      "renderer_count": 1
+    },
+    {
+      "name": "TrailsDense2",
+      "spawn_rate": [
+        670.0
+      ],
+      "renderer_count": 1
+    },
+    {
+      "name": "TrailsDense3",
+      "spawn_rate": [
+        670.0
+      ],
+      "renderer_count": 1
+    }
+  ],
+  "visual_measurement": "not_run"
+}

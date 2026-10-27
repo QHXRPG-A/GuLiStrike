@@ -8,6 +8,9 @@ from author_mobility_tables import ROOT, BOOK, CLI, cli, column, write
 BASE = '/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1'
 
 def apply():
+    skills = json.loads(cli('read', BOOK, '--sheet', '技能表', '--format', 'json'))['rows']
+    if any(len(row)>1 and row[1]=='Blink' for row in skills[3:]):
+        raise SystemExit('Legacy blink/impact seeding is retired after GAS migration; edit the skill/VFX Excel rows directly.')
     values = dict(BlinkDistance=1200., BlinkCooldownSeconds=2., BlinkWindupSeconds=.1,
                   BlinkLoopSeconds=.8, BlinkRecoverySeconds=.2, BlinkLoopSwayDegrees=3., BlinkArmBackDegrees=120., BlinkBodyLeanDegrees=18.,
                   BlinkAfterimageCount=3, BlinkAfterimageSeconds=.38, BlinkAfterimageOpacity=.55)

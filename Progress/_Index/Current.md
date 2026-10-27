@@ -25,6 +25,10 @@
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
 | [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | combat, commander, navigation, network, performance, presentation, tools, ui | 2/6 (33%) | 减少回执匹配、前置快照与起步提交成本；候选维持各自默认状态，全部成员响应稳定达标后再复核整帧性能，玩家效果独立验收。 | 2026-10-21 |
+| [UI CPU优化与四档LOD — 实施与验收](../DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md) | commander, performance, ui | 7/12 (58%) | 补齐文档清理与场景交付记录；视觉效果由用户自行核验，未完成的配对性能验收保持未验证，不自动恢复检查。 | 2026-10-20 |
+| [一键截帧与CPU分析插件 — 技术方案](../DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md) | performance, tools | 7/7 (100%) | 玩家确认快捷键焦点、文本框及弹窗行为；常驻 GPU 标记的默认策略单独处理。 | 2026-10-20 |
+| [Hybrid 世界更新 5 ms 优化实施](../DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md) | combat, commander, network, performance | 6/7 (86%) | 核对玩家响应反馈及窗口停顿触发条件；继续削减周期逻辑、StateTree和快照成本。长测及PIE故障矩阵按用户要求取消。 | 2026-10-20 |
+| [Slate 布局与绘制 2.5 ms 优化实施](../DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md) | performance, ui | 3/5 (60%) | 继续同镜头移动和交火复测，独立覆盖俯瞰批处理热点及动态UI正确性；保留历史失败，不据静止单对启用候选。 | 2026-10-19 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | assets, network, ship, ui | 25/26 (96%) | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-10-10 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | building, combat, network, vfx | 6/6 (100%) | 跟踪既有导弹夹具和挂点断言失配；地面弹丸、配色与5Hz专项留待后续安排。 | 2026-09-21 |
 | [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | combat, commander, network, ui | 5/6 (83%) | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |
@@ -38,8 +42,12 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [肉鸽卡牌美术资源数据管线 — 实施与交付](../DevelopmentDocumentation/20261027-肉鸽卡牌美术资源数据管线.md) | assets, ui | 9/9 (100%) | 用户在LVL_CardArtworkCatalogReview进入PIE浏览当前折射子弹，按ArtworkId切换其他牌面核验效果。 | 2026-10-27 |
+| [GroundMech功能目录与职责整理 — 实施记录](../DevelopmentDocumentation/20261027-GroundMech功能目录与职责整理.md) | combat, input, network | 7/8 (88%) | 在LVL_CommanderMassPrototype选择Ground，玩家回归移动/瞄准/开火/喷气/闪现和控制恢复；本轮未运行PIE或读图测试。 | 2026-10-27 |
+| [地面机甲闪现GAS与绿色能量拖尾 — 技术方案](../DevelopmentDocumentation/20261027-地面机甲闪现GAS与绿色能量拖尾.md) | combat, input, network, vfx | 13/15 (87%) | 在LVL_CommanderMassPrototype选择Ground按Shift，玩家核验左侧/下沿铺屏、机甲形体与镜头恢复；联机与中断全组合另行验收。 | 2026-10-27 |
 | [GuLi 独立地图设计器 — 技术方案与交付](../DevelopmentDocumentation/20261024-GuLi独立地图设计器.md) | map, map-authoring, navigation, resources | 9/10 (90%) | 用户通过 Tools/MapDesigner/start.cmd 验收交互和视觉，完成设计后将导出目录交给助手应用 UE。 | 2026-10-24 |
-| [地面机甲 MechaDestroyer 替换与风格化 — 实施记录](../DevelopmentDocumentation/20261023-地面机甲MechaDestroyer替换与风格化.md) | art, combat | 12/14 (86%) | 用户在LVL_CommanderMassPrototype以Ground复验越界瞄准稳定、浮空右键及W与右键转速同步。 | 2026-10-24 |
+| [扫荡者远端姿态与导航恢复修复](../DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md) | combat, navigation, network | 6/6 (100%) | 用户在原型图核验扫荡者受攻击和所选单位的移动效果。 | 2026-10-21 |
+| [保持玩法与表现的15ms帧时间优化 — 实施记录](../DevelopmentDocumentation/20261020-保持玩法与表现的15ms帧时间优化.md) | performance, tools | 8/9 (89%) | 在已保存的 /Game/Maps/LVL_CommanderMassPrototype 中由玩家复核操作与视觉一致性。 | 2026-10-20 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | commander, navigation, performance, presentation | 9/10 (90%) | 玩家通过原地图固定优化入口核对窄路、墙边、拥堵和重防号转向观感；网络协议整改另立任务。 | 2026-10-11 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | combat, performance, presentation, ui | 10/11 (91%) | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | commander, navigation, resources | 4/4 (100%) | 本轮容量调整已编译；重新开启独立服务端PIE，核对自动增援后的Crowd容量及工程车避让。 | 2026-10-11 |
@@ -76,9 +84,10 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [地面机甲 MechaDestroyer 替换与风格化 — 实施记录](../DevelopmentDocumentation/20261023-地面机甲MechaDestroyer替换与风格化.md) | art, combat | 12/12 (100%) | 本会话已完成归档，后续调整按新反馈另立增量。 | 2026-10-26 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-10-26 |
 | [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | commander, navigation, performance, resource | 9/9 (100%) | — | 2026-10-24 |
 | [3米整数格地面导航 — 实施记录](../DevelopmentDocumentation/20261022-3米整数格地面导航.md) | commander, navigation, network, performance | 15/15 (100%) | — | 2026-10-23 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-10-21 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, network | — | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-10-18 |
 | [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |

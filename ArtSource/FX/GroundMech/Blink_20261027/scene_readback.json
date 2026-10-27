@@ -1,0 +1,189 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "ground_class": "<Object '/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C' (0x000002B92B4D9300) Class 'BlueprintGeneratedClass'>",
+  "entry_tags": [
+    "GuLi.Review.GroundBlinkGAS"
+  ],
+  "entities": [
+    {
+      "label": "GroundMobility_Entry",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "GroundMobility_Flat",
+      "location": [
+        -4000.0,
+        50000.0,
+        880.0
+      ],
+      "scale": [
+        30.0,
+        40.0,
+        0.5
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "scale": [
+        14.0,
+        10.0,
+        0.4
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "location": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ],
+      "scale": [
+        5.4,
+        10.0,
+        0.4
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "location": [
+        -4800.0,
+        50900.0,
+        915.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.2
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "location": [
+        -4400.0,
+        50900.0,
+        925.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.4
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "location": [
+        -4000.0,
+        50900.0,
+        935.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.6
+      ],
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "location": [
+        -3600.0,
+        50900.0,
+        945.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.8
+      ],
+      "collision_profile": "BlockAll"
+    }
+  ],
+  "blink": {
+    "Name": "Blink",
+    "Id": 3,
+    "Note": "Ground 闪现；距离cm，时间s，角度deg；Hybrid时钟；无消耗/伤害/无敌",
+    "ProjectileSpeed": 0,
+    "ProjectileLifetime": 0,
+    "SweepRadius": 0,
+    "MuzzleSocket": "",
+    "RecoilBone": "",
+    "RecoilTargetLocalZCentimeters": 0,
+    "RecoilDuration": 0,
+    "RecoilCurve": "None",
+    "WeaponAnimation": "None",
+    "BulletVfxId": 0,
+    "MuzzleVfxId": 0,
+    "ExecutionType": "GAS",
+    "AbilityClass": "/Script/GuLiStrike.GuLiGA_Blink",
+    "MaxFuel": 0,
+    "InitialFuel": 0,
+    "FuelDrainPerSecond": 0,
+    "FuelRecoveryPerSecond": 0,
+    "FuelRecoveryDelay": 0,
+    "ThrustAcceleration": 0,
+    "MaxRiseSpeed": 0,
+    "JetVfxId": 0,
+    "JetSocketLeft": "",
+    "JetSocketRight": "",
+    "JetPitchDegrees": 0,
+    "FuelBarVfxId": 0,
+    "FuelBarHeight": 0,
+    "FuelBarRightOffset": 0,
+    "FuelBarFadeSeconds": 0,
+    "AirSpeedMultiplier": 0,
+    "JetMaxTiltDegrees": 0,
+    "FallGravityMultiplier": 0,
+    "AimAssistEnabled": false,
+    "AimAssistRadiusCentimeters": 0,
+    "JetForwardSpeedMultiplier": 0,
+    "BlinkDistance": 1200,
+    "BlinkCooldownSeconds": 2,
+    "BlinkWindupSeconds": 0.02,
+    "BlinkLoopSeconds": 0.8,
+    "BlinkRecoverySeconds": 0.2,
+    "BlinkArmBackDegrees": 120,
+    "BlinkBodyLeanDegrees": 18,
+    "BlinkLoopSwayDegrees": 3,
+    "BlinkVfxId": 56
+  },
+  "vfx": {
+    "Name": "GroundMechBlink",
+    "Id": 56,
+    "Note": "Ground blink: GreenCrystalTrail mech adaptation; world-space skeletal sampling; scale 1; original green",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink",
+    "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+    "ReducedResourcePath": "None",
+    "MinimalResourcePath": "None",
+    "BatchResourcePath": "None",
+    "ReducedBatchResourcePath": "None",
+    "MinimalBatchResourcePath": "None",
+    "TrailLengthCm": 0,
+    "TrailHoldSeconds": 0,
+    "TrailFadeSeconds": 0,
+    "TrailBendCm": 0
+  },
+  "configuration_fingerprint": "d37873d780eeb5d3c036c3561e731780",
+  "PIE_started": false,
+  "visual_approval": "pending_player"
+}

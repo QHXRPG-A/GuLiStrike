@@ -1,0 +1,97 @@
+{
+  "success": true,
+  "source_files": 47,
+  "character_header_lines": 164,
+  "problems": [],
+  "new_components_tick": false,
+  "new_components_replication": false,
+  "hybrid_state_version": 11,
+  "build": {
+    "pid": 40496,
+    "engine": "D:/UnrealEngine-5.7",
+    "target": "GuLiStrikeEditor Win64 Development",
+    "elapsed_seconds": 50.4,
+    "BuildId": "d4757e21-eaef-492e-b079-c8c0056c493d",
+    "build_exit_code": 0,
+    "map": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Maps/LVL_GroundMechRicochetReview"
+  },
+  "PIE": "not_run",
+  "reflected_types": {
+    "AGuLiGroundMechCharacter": [
+      "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+    ],
+    "FAnimNode_GuLiGroundMechAim": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.h"
+    ],
+    "FGuLiMechFootGroundSample": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h"
+    ],
+    "FGuLiMechGroundingSnapshot": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h"
+    ],
+    "FAnimNode_GuLiGroundMechGrounding": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h"
+    ],
+    "UGuLiGroundMechAnimInstance": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h"
+    ],
+    "FGuLiGroundMechConfiguration": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.h"
+    ],
+    "FGuLiGroundMechTurnState": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechTurnTypes.h"
+    ],
+    "FGuLiGroundMechWeaponAimState": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponAimTypes.h"
+    ],
+    "UGuLiGroundMechWeaponAnimInstance": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponAnimInstance.h"
+    ],
+    "UGuLiGroundMechWeaponComponent": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
+    ],
+    "UGuLiGA_Blink": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGA_Blink.h"
+    ],
+    "UGuLiGE_BlinkCooldown": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGE_BlinkCooldown.h"
+    ],
+    "FGuLiGroundMechBlinkState": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkTypes.h"
+    ],
+    "UGuLiGA_RocketJump": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/RocketJump/GuLiGA_RocketJump.h"
+    ],
+    "UGuLiGroundMechAttributeSet": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAttributes.h"
+    ],
+    "UGuLiGE_MechFuelInitialize": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAttributes.h"
+    ],
+    "UGuLiGE_MechFuelDelta": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAttributes.h"
+    ],
+    "AGuLiGCN_GroundMechBlink": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/Presentation/GuLiGroundMechBlinkCue.h"
+    ],
+    "FGuLiGroundMechBlinkMaterialVariant": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/Presentation/GuLiGroundMechBlinkVfxDefinition.h"
+    ],
+    "UGuLiGroundMechBlinkVfxDefinition": [
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/Presentation/GuLiGroundMechBlinkVfxDefinition.h"
+    ]
+  },
+  "include_errors": [],
+  "progress_errors": [],
+  "progress_warnings": 19,
+  "root_files": [
+    "GuLiGroundMechCharacter.cpp",
+    "GuLiGroundMechCharacter.h",
+    "README.md"
+  ],
+  "checks": "source/include/UHT-header layout/interface review only; no native build or game execution",
+  "native_loaded": true,
+  "scene_entities": 9,
+  "configuration_fingerprint": "32eba6f0a72452bd0dde37990c2226ea",
+  "visual_validation": "not_run; player acceptance pending"
+}

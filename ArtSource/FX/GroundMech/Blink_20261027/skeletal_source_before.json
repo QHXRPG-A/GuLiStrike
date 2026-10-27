@@ -1,0 +1,66 @@
+{
+  "data_interfaces": [
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink:Trails_1.SpawnScript.NiagaraDataInterfaceSkeletalMesh_0",
+      "SourceMode": "UNAVAILABLE: NiagaraDataInterface: Failed to convert property 'SourceMode' (EnumProperty) for attribute 'SourceMode' on 'NiagaraDataInterfaceSkeletalMesh'\n  TypeError: PythonizeProperty: Cannot pythonize 'SourceMode' (EnumProperty)\n    TypeError: PythonizeEnumEntry: Cannot pythonize '0' (int64) as 'EnumBase'",
+      "DefaultMesh": "None",
+      "PreviewMesh": "None",
+      "SoftSourceActor": "None",
+      "ComponentTags": "[]",
+      "MeshUserParameter": "<Struct 'NiagaraUserParameterBinding' (0x000002BA20C50D28) {}>",
+      "SamplingRegions": "[]",
+      "WholeMeshLOD": "-1",
+      "SkinningMode": "UNAVAILABLE: NiagaraDataInterface: Failed to convert property 'SkinningMode' (EnumProperty) for attribute 'SkinningMode' on 'NiagaraDataInterfaceSkeletalMesh'\n  TypeError: PythonizeProperty: Cannot pythonize 'SkinningMode' (EnumProperty)\n    TypeError: PythonizeEnumEntry: Cannot pythonize '1' (int64) as 'EnumBase'"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink:Trails_1.NiagaraScriptSource_0.NiagaraGraph_0.NiagaraNodeInput_0.Skeletal_Mesh",
+      "SourceMode": "UNAVAILABLE: NiagaraDataInterface: Failed to convert property 'SourceMode' (EnumProperty) for attribute 'SourceMode' on 'NiagaraDataInterfaceSkeletalMesh'\n  TypeError: PythonizeProperty: Cannot pythonize 'SourceMode' (EnumProperty)\n    TypeError: PythonizeEnumEntry: Cannot pythonize '0' (int64) as 'EnumBase'",
+      "DefaultMesh": "None",
+      "PreviewMesh": "None",
+      "SoftSourceActor": "None",
+      "ComponentTags": "[]",
+      "MeshUserParameter": "<Struct 'NiagaraUserParameterBinding' (0x000002BA20C54528) {}>",
+      "SamplingRegions": "[]",
+      "WholeMeshLOD": "-1",
+      "SkinningMode": "UNAVAILABLE: NiagaraDataInterface: Failed to convert property 'SkinningMode' (EnumProperty) for attribute 'SkinningMode' on 'NiagaraDataInterfaceSkeletalMesh'\n  TypeError: PythonizeProperty: Cannot pythonize 'SkinningMode' (EnumProperty)\n    TypeError: PythonizeEnumEntry: Cannot pythonize '1' (int64) as 'EnumBase'"
+    },
+    {
+      "path": "/Game/Assets/VFX/Movement/AdvancedDashVFX/NiagaraVFX/NS_GreenCrystalTrail.NS_GreenCrystalTrail:Trails_1.SpawnScript.NiagaraDataInterfaceSkeletalMesh_0",
+      "SourceMode": "UNAVAILABLE: NiagaraDataInterface: Failed to convert property 'SourceMode' (EnumProperty) for attribute 'SourceMode' on 'NiagaraDataInterfaceSkeletalMesh'\n  TypeError: PythonizeProperty: Cannot pythonize 'SourceMode' (EnumProperty)\n    TypeError: PythonizeEnumEntry: Cannot pythonize '0' (int64) as 'EnumBase'",
+      "DefaultMesh": "None",
+      "PreviewMesh": "None",
+      "SoftSourceActor": "None",
+      "ComponentTags": "[]",
+      "MeshUserParameter": "<Struct 'NiagaraUserParameterBinding' (0x000002B92BF16128) {}>",
+      "SamplingRegions": "[]",
+      "WholeMeshLOD": "-1",
+      "SkinningMode": "UNAVAILABLE: NiagaraDataInterface: Failed to convert property 'SkinningMode' (EnumProperty) for attribute 'SkinningMode' on 'NiagaraDataInterfaceSkeletalMesh'\n  TypeError: PythonizeProperty: Cannot pythonize 'SkinningMode' (EnumProperty)\n    TypeError: PythonizeEnumEntry: Cannot pythonize '1' (int64) as 'EnumBase'"
+    },
+    {
+      "path": "/Game/Assets/VFX/Movement/AdvancedDashVFX/NiagaraVFX/NS_GreenCrystalTrail.NS_GreenCrystalTrail:Trails_1.NiagaraScriptSource_0.NiagaraGraph_0.NiagaraNodeInput_0.Skeletal_Mesh",
+      "SourceMode": "UNAVAILABLE: NiagaraDataInterface: Failed to convert property 'SourceMode' (EnumProperty) for attribute 'SourceMode' on 'NiagaraDataInterfaceSkeletalMesh'\n  TypeError: PythonizeProperty: Cannot pythonize 'SourceMode' (EnumProperty)\n    TypeError: PythonizeEnumEntry: Cannot pythonize '0' (int64) as 'EnumBase'",
+      "DefaultMesh": "None",
+      "PreviewMesh": "None",
+      "SoftSourceActor": "None",
+      "ComponentTags": "[]",
+      "MeshUserParameter": "<Struct 'NiagaraUserParameterBinding' (0x000002B8703E3D28) {}>",
+      "SamplingRegions": "[]",
+      "WholeMeshLOD": "-1",
+      "SkinningMode": "UNAVAILABLE: NiagaraDataInterface: Failed to convert property 'SkinningMode' (EnumProperty) for attribute 'SkinningMode' on 'NiagaraDataInterfaceSkeletalMesh'\n  TypeError: PythonizeProperty: Cannot pythonize 'SkinningMode' (EnumProperty)\n    TypeError: PythonizeEnumEntry: Cannot pythonize '1' (int64) as 'EnumBase'"
+    }
+  ],
+  "module_inputs": {
+    "/Game/Assets/VFX/Movement/AdvancedDashVFX/NiagaraVFX/NS_GreenCrystalTrail": [
+      "(ModuleName=\"InitializeRibbon\",ModuleType=\"ParticleSpawn\",ScriptAssetPath=\"/Niagara/Modules/Spawn/Initialization/InitializeRibbon.InitializeRibbon\",ModuleIndex=5,bIsEnabled=True,Inputs=)",
+      "(ModuleName=\"SkeletalMeshLocation\",ModuleType=\"ParticleSpawn\",ScriptAssetPath=\"/Niagara/Modules/Spawn/Location/V2/SkeletalMeshLocation.SkeletalMeshLocation\",ModuleIndex=7,bIsEnabled=True,Inputs=)",
+      "(ModuleName=\"SpawnRate\",ModuleType=\"EmitterUpdate\",ScriptAssetPath=\"/Niagara/Modules/Emitter/SpawnRate.SpawnRate\",ModuleIndex=10,bIsEnabled=True,Inputs=)",
+      "(ModuleName=\"UniformRangedVector\",ModuleType=\"ParticleSpawn\",ScriptAssetPath=\"/Niagara/DynamicInputs/UniformRange/UniformRangedVector.UniformRangedVector\",ModuleIndex=14,bIsEnabled=True,Inputs=)"
+    ],
+    "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink": [
+      "(ModuleName=\"InitializeRibbon\",ModuleType=\"ParticleSpawn\",ScriptAssetPath=\"/Niagara/Modules/Spawn/Initialization/InitializeRibbon.InitializeRibbon\",ModuleIndex=5,bIsEnabled=True,Inputs=)",
+      "(ModuleName=\"SkeletalMeshLocation\",ModuleType=\"ParticleSpawn\",ScriptAssetPath=\"/Niagara/Modules/Spawn/Location/V2/SkeletalMeshLocation.SkeletalMeshLocation\",ModuleIndex=7,bIsEnabled=True,Inputs=)",
+      "(ModuleName=\"SpawnRate\",ModuleType=\"EmitterUpdate\",ScriptAssetPath=\"/Niagara/Modules/Emitter/SpawnRate.SpawnRate\",ModuleIndex=10,bIsEnabled=True,Inputs=)",
+      "(ModuleName=\"UniformRangedVector\",ModuleType=\"ParticleSpawn\",ScriptAssetPath=\"/Niagara/DynamicInputs/UniformRange/UniformRangedVector.UniformRangedVector\",ModuleIndex=14,bIsEnabled=True,Inputs=)"
+    ]
+  }
+}

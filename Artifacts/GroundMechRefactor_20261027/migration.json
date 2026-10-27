@@ -1,0 +1,222 @@
+{
+  "moves": [
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/AnimNode_GuLiGroundMechAim.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.cpp",
+      "sha256": "b3332ac118e69a905aad04959ba76fdd69fd657b7feb43f568a690055d6772ff"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/AnimNode_GuLiGroundMechAim.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.h",
+      "sha256": "1a98c3a322695b370f4973fa88493e87042c23fcc04ce5459b82729479f2b075"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/AnimNode_GuLiGroundMechGrounding.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.cpp",
+      "sha256": "8209e1f59b9fc8879ef28bc454be2317cee08d4cc5e7711dcd6abc417f5e8ff1"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/AnimNode_GuLiGroundMechGrounding.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h",
+      "sha256": "0bce2cf01577b775f7916cfe796899ee33e338f99e618394147384336e7ea122"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMassContactSubsystem.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Movement/Collision/GuLiGroundMassContactSubsystem.cpp",
+      "sha256": "8612af8f483f19bbeca71b6cb6e97b8cea7e94e7cd03a268d533b6f19adff283"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Movement/Collision/GuLiGroundMassContactSubsystem.h",
+      "sha256": "2d44bdd14e9b774fbfa127dfc1f88b86e1cb1ed73599e8d7d5af00c8b099f942"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechAbilities.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAttributes.cpp",
+      "sha256": "d8cdcbdd7fd4abdd320604781c382dee3257441c706b1560824ea32aeb005f33",
+      "stage1_destination": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAbilities.cpp",
+      "extracted": [
+        "Abilities/RocketJump/GuLiGA_RocketJump.cpp",
+        "Abilities/Blink/GuLiGA_Blink.cpp",
+        "Abilities/Blink/GuLiGE_BlinkCooldown.cpp"
+      ]
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechAbilities.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAttributes.h",
+      "sha256": "b1f3c106d5556350f86643af09f4c017dfa095c146e8faa00b813a5a0382c3ff",
+      "stage1_destination": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAbilities.h",
+      "extracted": [
+        "Abilities/RocketJump/GuLiGA_RocketJump.h",
+        "Abilities/Blink/GuLiGA_Blink.h",
+        "Abilities/Blink/GuLiGE_BlinkCooldown.h"
+      ]
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechAnimInstance.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp",
+      "sha256": "9910dad30b65e134c0536f5f52639eb324cff5ba047119a35ad527be7930e8b3"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechAnimInstance.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h",
+      "sha256": "29ccfcc6cf2cc210a53294bc45dc265d2279a4940ba65ac04bc4126f78e32262"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechBlink.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.cpp",
+      "sha256": "fc24981ec2df8c7fdecc2963547912b5964294c1d3af1b95ab38097c53980474",
+      "stage1_destination": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlink.cpp",
+      "extracted": [
+        "Abilities/Blink/GuLiGroundMechBlinkTags.cpp"
+      ]
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechBlinkCue.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/Presentation/GuLiGroundMechBlinkCue.cpp",
+      "sha256": "2205f52ead2cdbd7d0893de9afff607cc51dfbbc2224cf355630c0f885d0caa8"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechBlinkCue.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/Presentation/GuLiGroundMechBlinkCue.h",
+      "sha256": "89f1fb15aeeaf73b736fe498cc4a600402648dba1d0df623ca6561f8ce82ec13",
+      "extracted": [
+        "Abilities/Blink/Presentation/GuLiGroundMechBlinkVfxDefinition.h"
+      ]
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechBlinkTags.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkTags.h",
+      "sha256": "c3b8cced9d27bcbb9a80b98a7a3e9efd96ecffb2ad328fb37634d5b094a21e38"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCamera.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Camera/GuLiGroundMechCameraComponent.cpp",
+      "sha256": "ee94d6349d8eb328560d85889be77423112e457cf6f3b98ea8ecbc998b47c787",
+      "stage1_destination": "Source/GuLiStrike/Gameplay/GroundMech/Camera/GuLiGroundMechCamera.cpp"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechConfiguration.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.cpp",
+      "sha256": "7e53d066282d6b736e05376868888fc3724197eba1b223eb7bad0ad02fa8bb76"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechConfiguration.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.h",
+      "sha256": "3edcf6dc62a3d2f99062e03166b4c47448c37e3591dcdff5fcb2f566605bcdee",
+      "extracted": [
+        "Abilities/Blink/GuLiGroundMechBlinkTypes.h",
+        "Movement/GuLiGroundMechTurnTypes.h",
+        "Weapons/GuLiGroundMechWeaponAimTypes.h"
+      ]
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechFireTests.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Tests/GuLiGroundMechFireTests.cpp",
+      "sha256": "38429b0f6c1d760a03ca6ed1b8f7b35bbdede4fe5690871652f94b5087ab52b5"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechMassCollisionTests.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Tests/GuLiGroundMechMassCollisionTests.cpp",
+      "sha256": "c4973f87f8216b1a3fc15802557767c8615fa8db203359c0ddb100e9c6b3da6e"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechMovementComponent.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.cpp",
+      "sha256": "6ff1a524f1ea141736afe3b00703ae787621f7d07f077d08c6654882d2d46756"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechMovementComponent.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h",
+      "sha256": "6bd8c9f34dae28566aa75f1cf705398512c2c62e5ee5309a612a41c9849cdf47"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechRocketComponent.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.cpp",
+      "sha256": "4b038312d1b89162d2055a46ad2fe0c024ce802df05bf697297decedef49c857"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechRocketComponent.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.h",
+      "sha256": "54ea47eebf5ef8826f6ae4b2ee16c2f3d13857d3afee448494eb82834eda439c"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechWeaponAnimInstance.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponAnimInstance.cpp",
+      "sha256": "53a89182acf0dbd64adba318b1bcd4f206f298728099334b446a7e3e0c300b83"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechWeaponAnimInstance.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponAnimInstance.h",
+      "sha256": "faa8a63f14e459a6d04b02e4a35e5ca94a3e4f610293e1caa177450d26851358"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechWeaponComponent.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.cpp",
+      "sha256": "8d89a922389cc7bc0b7517dbc612b6978ea8bb1af16a731252314b9d55454739"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h",
+      "sha256": "2f886dbfd83428606bc291ca026a045db8d971baaa12ca48480e47a9f9d10443"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiHybridGroundAdapter.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp",
+      "sha256": "31bec7547b9eafd0a54e8ab15f95dbc457e571f2d04535422f3202c30b682eeb"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiHybridGroundUpgrade.cpp",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundUpgrade.cpp",
+      "sha256": "aca8b2e932e9700f14e56d25af8691115dbea9f5d1d69eb7852e273018e8e792"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/GuLiHybridGroundUpgrade.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundUpgrade.h",
+      "sha256": "7a153fde19cc9216dfff3f86d3f2be54efd09197ef03672c59fc286e42fd1d97"
+    },
+    {
+      "old": "Source/GuLiStrike/Gameplay/GroundMech/Private/GuLiHybridGroundInput.h",
+      "new": "Source/GuLiStrike/Gameplay/GroundMech/Network/Private/GuLiHybridGroundInput.h",
+      "sha256": "e4090b17d2b72153228bd8514f5c264922852081e53964a989afe504804e8109"
+    }
+  ],
+  "updated_includes": [
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.cpp",
+    "Source/GuLiStrikeAnimGraph/Public/AnimGraphNode_GuLiGroundMechAim.h",
+    "Source/GuLiStrikeAnimGraph/Public/AnimGraphNode_GuLiGroundMechGrounding.h",
+    "Source/GuLiStrike/Development/GuLiHybridReviewSubsystem.cpp",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiClientFlightPresentation.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.h",
+    "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringTravelComponent.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Camera/GuLiGroundMechCamera.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundUpgrade.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Tests/GuLiGroundMechFireTests.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Tests/GuLiGroundMechMassCollisionTests.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponAnimInstance.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Movement/Collision/GuLiGroundMassContactSubsystem.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlink.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Shared/GuLiGroundMechAbilities.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/Presentation/GuLiGroundMechBlinkCue.cpp",
+    "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderMechanicalPresentation.cpp",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp",
+    "Source/GuLiStrike/Battle/Framework/GuLiHybridPlayerManifest.cpp"
+  ],
+  "new_contracts": [
+    "Network/GuLiHybridGroundInputTypes.h",
+    "Abilities/Blink/GuLiGroundMechBlinkComponent.h",
+    "Camera/GuLiGroundMechCameraComponent.h"
+  ]
+}

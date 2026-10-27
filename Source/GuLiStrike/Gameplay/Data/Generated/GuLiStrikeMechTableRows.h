@@ -195,6 +195,102 @@ struct FGuLiStrikeMechSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float JetForwardSpeedMultiplier = 0.0f;
 
+	/** BlinkDistance (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkDistance = 0.0f;
+
+	/** BlinkCooldownSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkCooldownSeconds = 0.0f;
+
+	/** BlinkWindupSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkWindupSeconds = 0.0f;
+
+	/** BlinkRecoverySeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkRecoverySeconds = 0.0f;
+
+	/** BlinkArmBackDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkArmBackDegrees = 0.0f;
+
+	/** BlinkBodyLeanDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkBodyLeanDegrees = 0.0f;
+
+	/** BlinkVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 BlinkVfxId = 0;
+
+	/** BlinkCrouchDepthCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkCrouchDepthCm = 0.0f;
+
+	/** BlinkKneeAngleDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkKneeAngleDegrees = 0.0f;
+
+	/** BlinkConcealSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkConcealSeconds = 0.0f;
+
+	/** BlinkRibbonCount (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 BlinkRibbonCount = 0;
+
+	/** BlinkRibbonPoints (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 BlinkRibbonPoints = 0;
+
+	/** BlinkRibbonLifetimeSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkRibbonLifetimeSeconds = 0.0f;
+
+	/** BlinkEnergyEmission (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkEnergyEmission = 0.0f;
+
+	/** BlinkLandingSearchStepCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkLandingSearchStepCm = 0.0f;
+
+	/** BlinkLandingProbeCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkLandingProbeCm = 0.0f;
+
+	/** BlinkRibbonWidthCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkRibbonWidthCm = 0.0f;
+
+	/** BlinkShapeVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 BlinkShapeVfxId = 0;
+
+	/** BlinkShapeFlickerHz (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkShapeFlickerHz = 0.0f;
+
+	/** BlinkShapeFragmentOffsetCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkShapeFragmentOffsetCm = 0.0f;
+
+	/** BlinkTrailLengthCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkTrailLengthCm = 0.0f;
+
+	/** BlinkShardCount (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 BlinkShardCount = 0;
+
+	/** BlinkShardDuration (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkShardDuration = 0.0f;
+
+	/** BlinkShardSpeed (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float BlinkShardSpeed = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_Visuals 的行结构（源: GuLiStrikeMech.xlsx / Visuals）。 */
@@ -278,50 +374,6 @@ struct FGuLiStrikeMechMobilityRow : public FTableRowBase
 	/** GunReturnSeconds (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
 	float GunReturnSeconds = 0.0f;
-
-	/** BlinkDistance (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkDistance = 0.0f;
-
-	/** BlinkCooldownSeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkCooldownSeconds = 0.0f;
-
-	/** BlinkWindupSeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkWindupSeconds = 0.0f;
-
-	/** BlinkRecoverySeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkRecoverySeconds = 0.0f;
-
-	/** BlinkArmBackDegrees (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkArmBackDegrees = 0.0f;
-
-	/** BlinkBodyLeanDegrees (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkBodyLeanDegrees = 0.0f;
-
-	/** BlinkAfterimageCount (int, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	int32 BlinkAfterimageCount = 0;
-
-	/** BlinkAfterimageSeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkAfterimageSeconds = 0.0f;
-
-	/** BlinkAfterimageOpacity (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkAfterimageOpacity = 0.0f;
-
-	/** BlinkLoopSeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkLoopSeconds = 0.0f;
-
-	/** BlinkLoopSwayDegrees (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
-	float BlinkLoopSwayDegrees = 0.0f;
 
 };
 
@@ -630,5 +682,29 @@ struct FGuLiStrikeMechCameraRow : public FTableRowBase
 	/** BlinkCatchupSeconds (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
 	float BlinkCatchupSeconds = 0.0f;
+
+	/** BlinkFovBoostDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BlinkFovBoostDegrees = 0.0f;
+
+	/** BlinkFovReturnSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BlinkFovReturnSeconds = 0.0f;
+
+	/** BlinkFovRiseSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BlinkFovRiseSeconds = 0.0f;
+
+	/** BlinkArmLength (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BlinkArmLength = 0.0f;
+
+	/** BlinkPitchOffsetDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BlinkPitchOffsetDegrees = 0.0f;
+
+	/** BlinkSideOffsetCm (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float BlinkSideOffsetCm = 0.0f;
 
 };

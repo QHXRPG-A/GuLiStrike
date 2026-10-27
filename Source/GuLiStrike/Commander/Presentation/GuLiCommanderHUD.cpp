@@ -1,7 +1,7 @@
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
-#include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Misc/ScopeExit.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 

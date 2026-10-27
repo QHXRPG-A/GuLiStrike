@@ -11,7 +11,7 @@
 #include "Gameplay/Building/GuLiConstructedUnitComponent.h"
 #include "EngineUtils.h"
 #include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
-#include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
+#include "Gameplay/GroundMech/Movement/Collision/GuLiGroundMassContactSubsystem.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 
 const FGuLiCommanderPresentedSoldier* AGuLiCommanderPresentationActor::GetQuerySoldier(FGuLiSoldierId Id) const

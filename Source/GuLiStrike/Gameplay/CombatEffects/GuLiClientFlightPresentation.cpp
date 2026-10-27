@@ -1,7 +1,7 @@
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiFlightVisualActor.h"
-#include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Engine/World.h"
 #include "NiagaraSystem.h"
 #include "NiagaraComponent.h"

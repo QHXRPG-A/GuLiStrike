@@ -7,7 +7,7 @@
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
-#include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
+#include "Gameplay/GroundMech/Movement/Collision/GuLiGroundMassContactSubsystem.h"
 #include "AIController.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
