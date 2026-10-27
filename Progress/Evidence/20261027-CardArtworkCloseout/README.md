@@ -9,4 +9,4 @@
 
 GitHub仅同步本会话代码、必要Excel/JSON数据源及维护文档；UE二进制、图片和素材包继续保留本地。共享文件只提取本会话改动，全局Progress索引因包含其他任务状态不上传。本地完整资源历史与其他未提交任务保留。
 
-GitHub回执在同步完成后记录于同目录github-sync.json。
+GitHub `main` 已核对为 [92d13e8a](https://github.com/QHXRPG-A/GuLiStrike/commit/92d13e8aa9d9f0d13c6968bfff7ff46f1a9055c0)：60个文件、0个UE资源/图片变更、0个LFS上传对象；发布快照的16项既有回归检查通过。详细回执见 `github-sync.json`。本地完整资源历史保留，未提交的其他任务改动继续留在工作区。
