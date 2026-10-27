@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "ModelComicAtlasV9",
+    "Id": 1,
+    "Note": "保留现有着色器算法与固定合成规则；本表选择模板，不重写HLSL。",
+    "ParentMaterial": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardParallax_ModelComic_v9.M_CelCardParallax_ModelComic_v9",
+    "Layout": "Atlas3x2",
+    "CompositePreset": "ModelComicAtlasV9"
+  },
+  {
+    "Name": "RegisteredSix",
+    "Id": 2,
+    "Note": "保留现有着色器算法与固定合成规则；本表选择模板，不重写HLSL。",
+    "ParentMaterial": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_WM01RegisteredCardLayers_v1.M_WM01RegisteredCardLayers_v1",
+    "Layout": "Independent6",
+    "CompositePreset": "RegisteredSix"
+  },
+  {
+    "Name": "RegisteredSixForegroundMask",
+    "Id": 3,
+    "Note": "保留现有着色器算法与固定合成规则；本表选择模板，不重写HLSL。",
+    "ParentMaterial": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/M_Ricochet_RegisteredLayers_Builtin_v1.M_Ricochet_RegisteredLayers_Builtin_v1",
+    "Layout": "Independent6",
+    "CompositePreset": "RegisteredSixForegroundMask"
+  }
+]

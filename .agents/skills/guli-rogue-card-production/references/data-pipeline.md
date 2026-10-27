@@ -20,12 +20,14 @@
 | ExcludedCardIds | str[] | 任一互斥已获则不合格；单向填写按双向生效 |
 | MaxAcquisitions | int | 非负整数；0无限叠加，1每局每队一次 |
 | BonusCount | int | Optional；整数效果正整数，其他效果为0 |
-| FrontMaterial | softobject | 完整卡面材质路径，`/Game/.../Asset.Asset` |
+| ArtworkId | int | 引用GuLiStrikeCardArtwork.xlsx/Artworks.id；导出为既有FrontMaterial，不在玩法Excel重复维护材质路径 |
 | UpgradeVfx | softobject | 完整项目NiagaraSystem对象路径 |
 | UpgradeVfxScale | float | 有限正数，按单位实际尺寸适配；WM01当前6 |
 | UpgradeVfxColor | str | 线性HDR `(R=20,G=6.930114,B=0.933554,A=1)`；RGB非负有限，A在0–1 |
 
 Note、BonusPercent、BonusCount 为 Optional，后两项依效果类校验；依赖/互斥无配置填写 `[]`。Type枚举完整不代表所有类型已实现；`GuLiRogueCardSubsystem::LoadCatalog`目前拒绝非1类型，导出器的单位引用也按Soldiers检查。扩展Ship/机甲/建筑时先实现目标解析与结算，再填正式行。
+
+牌面资源、模板、六层与材质参数通过[卡牌美术目录与统一导入](artwork-data-pipeline.md)维护。玩法表只选ArtworkId，生成的JSON、原生行结构及运行时仍使用FrontMaterial；源表与运行时字段不能混写。只登记美术不要求新增玩法行。
 
 ### 当前五行
 
@@ -95,7 +97,7 @@ Note、BonusPercent、BonusCount 为 Optional，后两项依效果类校验；�
 ## 管线操作
 
 1. 用 `xlsx info/read` 确认表和元数据，再使用 `write --data-file` 批量原地编辑。不要重跑初始化脚本覆盖已有行。`Tools/DataPipeline/author_rogue_cards.py`仅初次建表；已存在时会拒绝。`extend_rogue_upgrade_fields.py`是已有字段迁移器，使用前检查其范围。
-2. 执行 `python Tools/DataPipeline/export_data_from_excel.py`。这是项目导出器，不臆造单表命令行开关；它校验跨表文本/单位引用、两项数组、效果数值契约、完整软引用和HDR格式。依赖校验包含未知ID、重复/自引用、依赖环、同时依赖与互斥、依赖闭包内的双向互斥冲突；错误应定位工作表、数据行及卡ID。迁移既有卡表使用幂等的 `author_wm01_missile_cards.py`，不以初始化脚本重建表。
+2. 执行 `python Tools/DataPipeline/export_data_from_excel.py`。这是项目导出器，不臆造单表命令行开关；它校验跨表文本/单位引用、两项数组、效果数值契约、完整软引用和HDR格式。依赖校验包含未知ID、重复/自引用、依赖环、同时依赖与互斥、依赖闭包内的双向互斥冲突；错误应定位工作表、数据行及卡ID。旧 `author_wm01_missile_cards.py` 已退役，当前通过ArtworkId关联美术目录，不再重跑一次性迁移器。
 3. 生成物为 `data/Json/DT_GuLiStrikeRogueCards_Cards.json`、文本JSON、manifest及 `Source/GuLiStrike/Gameplay/Data/Generated/*TableRows.h`。**不手改生成物**。查看导出报告；只加行通常不改变反射结构，结构变化则按本轮授权编译加载再导入。
 4. UE空闲、所需原生类已加载后，按改动范围选入口。仅文案/高亮走`Scripts/Cards/apply_single_line_card_text.py`，同步公共文本、StringTable和样式，保留已引用对象；该脚本核对已加载模块的构建依据，不能跳过校验或为改表自动编译。卡牌玩法字段另用审阅过的定向导入，不为文字改动整套重跑部署脚本。
 

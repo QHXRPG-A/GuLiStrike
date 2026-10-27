@@ -40,6 +40,7 @@ def save(path, digest, sheet, changes):
 
 
 def main():
+    raise RuntimeError('Retired one-time migration: edit current Cards.ArtworkId and GuLiStrikeCardArtwork.xlsx; use the normal exporter and unified artwork deployment.')
     path, digest, rows = read('GuLiStrikeRogueCards.xlsx', 'Cards')
     names = list(rows[0])
     changes = []

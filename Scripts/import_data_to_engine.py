@@ -29,6 +29,7 @@ import json
 import math
 import re
 import traceback
+import sys
 
 import unreal
 
@@ -478,14 +479,30 @@ try:
     selected = [n for n in manifest['tables'] if TABLE_FILTER is None or n in TABLE_FILTER]
     if TABLE_FILTER is not None and set(TABLE_FILTER) - set(manifest['tables']):
         raise RuntimeError('Unknown table filter: ' + str(set(TABLE_FILTER) - set(manifest['tables'])))
+    artwork_tables = {n for n in manifest['tables'] if n.startswith('DT_GuLiStrikeCardArtwork_')}
+    selected_artwork = artwork_tables.intersection(selected)
+    if selected_artwork and selected_artwork != artwork_tables:
+        raise RuntimeError('Import the four card artwork catalog tables together, or use card_artwork_pipeline.py deploy')
     report['preflight'] = preflight(manifest, selected)
+    if selected_artwork:
+        sys.path.insert(0, PROJECT + '/Scripts/Cards')
+        import card_artwork_pipeline
+        report['artwork_preflight'] = card_artwork_pipeline.preflight(
+            require_native=True, mutation=not globals().get('GULI_PREFLIGHT_ONLY', False))
     if globals().get('GULI_PREFLIGHT_ONLY', False):
         print(json.dumps({'preflight': report['preflight'], 'asset_mutations': False}))
         selected = []
     imported_dts = {}
+    artwork_entries = {}
+    if selected_artwork and selected:
+        report['artwork_application'] = card_artwork_pipeline.apply_artworks()
+        for result in card_artwork_pipeline.import_tables():
+            name = result['table'].rsplit('/', 1)[-1]
+            artwork_entries[name] = {'asset': name, 'imported': True, **result}
+        report['editor_catalogs'] = sorted(artwork_entries)
     for table_name in selected:
         table_cfg = manifest['tables'][table_name]
-        entry = import_table(table_name, table_cfg)
+        entry = artwork_entries[table_name] if table_name in artwork_entries else import_table(table_name, table_cfg)
         report["tables"].append(entry)
         if not entry.get('imported'):
             raise RuntimeError(f"{table_name}: {entry.get('err', 'import/readback failed')}")
@@ -493,6 +510,8 @@ try:
         if entry.get("imported") and prop:
             imported_dts[prop] = unreal.load_object(
                 None, f"{DEST_PATH}/{table_name}.{table_name}")
+        elif table_name in artwork_entries:
+            mark(f'note: {table_name} is consumed by the card artwork editor pipeline')
         elif entry.get("imported") and table_name in CONFIG_WIRED_TABLES:
             report["config_wired"].append(table_name)
             mark(f"note: {table_name} is wired through C++ config settings")
@@ -550,7 +569,7 @@ try:
             exec(compile(source.read(),'sync_mobility_assets.py','exec'),scope)
         report['ground_mobility']=scope['sync_mobility_assets']()
 
-    if {'DT_GuLiStrikeVfx_Effects','DT_GuLiStrikeMech_Skills'}.intersection(selected):
+    if {'DT_GuLiStrikeVfx_Effects','DT_GuLiStrikeMech_Skills'}.intersection(selected) and not globals().get('GULI_SKIP_GROUND_FIRE_POST_IMPORT',False):
         scope={'__name__':'ground_fire_import'}
         with open(f'{PROJECT}/Scripts/GroundMech/MechaDestroyer/sync_firing_feedback_assets.py',encoding='utf8') as source:
             exec(compile(source.read(),'sync_firing_feedback_assets.py','exec'),scope)

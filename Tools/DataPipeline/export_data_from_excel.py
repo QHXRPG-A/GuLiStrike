@@ -35,9 +35,11 @@ import colorsys
 import re
 import sys
 import tempfile
+import hashlib
 from pathlib import Path
 
 import openpyxl
+from card_artwork_catalog import CatalogError, resolve_artwork_references
 
 PROJECT = Path(__file__).resolve().parents[2]
 EXCEL_DIR = PROJECT / "Data/Excel"
@@ -192,10 +194,15 @@ def check_value(sheet, col, row_idx, raw):
     return str(raw).strip()
 
 
-def export_sheet(ws, allow_text_id=False):
+def export_sheet(ws, allow_text_id=False, resolve_card_artwork=False):
     """一个 sheet -> (json 行列表, 结构属性列表)。校验失败抛 SheetError。"""
     cols, vec_prefixes = load_schema(ws, allow_text_id)
     by_name = {c["name"]: c for c in cols}
+    if resolve_card_artwork:
+        if 'FrontMaterial' in by_name or 'ArtworkId' not in by_name:
+            raise SheetError('Cards牌面仅维护ArtworkId；FrontMaterial由美术目录解析生成')
+        if by_name['ArtworkId']['type'] != 'int' or not by_name['ArtworkId']['necessary']:
+            raise SheetError('Cards.ArtworkId必须为int / Necessary')
     vec_axis_cols = {f"{p}{a}": p for p in vec_prefixes for a in "XYZ"}
 
     rows, seen_names, seen_ids = [], set(), set()
@@ -241,6 +248,11 @@ def export_sheet(ws, allow_text_id=False):
         n = col["name"]
         if n == "name":
             continue  # 行名列，不生成属性
+        if resolve_card_artwork and n == 'ArtworkId':
+            # Preserve the existing native/serialized contract exactly.
+            props.append({'prop': 'FrontMaterial', 'cpp': 'TSoftObjectPtr<UObject>', 'default': None,
+                          'comment': 'FrontMaterial (softobject, Necessary)'})
+            continue
         if n == FIELD_REFERENCE_COLUMN:
             # Numeric authoring IDs resolve to the existing serialized row-name
             # property after every workbook has passed schema validation.
@@ -869,7 +881,8 @@ def main():
                 if is_mech and ws.title not in ("升级表", "技能表", "Visuals", "Mobility", "Gait", "GroundIK", "Camera"):
                     raise SheetError("机甲表仅接受升级表、技能表、Visuals、Mobility、Gait、GroundIK、Camera")
                 rows, props = export_game_texts(ws) if stem == "GuLiStrikeGameTexts" else \
-                    export_sheet(ws, allow_text_id=(is_mech and ws.title == "升级表") or stem == "GuLiStrikeRogueCards")
+                    export_sheet(ws, allow_text_id=(is_mech and ws.title == "升级表") or stem == "GuLiStrikeRogueCards",
+                                 resolve_card_artwork=stem == 'GuLiStrikeRogueCards' and ws.title == 'Cards')
                 if consolidated and stem != SECONDARY_WORKBOOK:
                     retired = {(s, t) for s, t in SECONDARY_TABLE_IDENTITIES.values()
                                if s != "GuLiStrikeSpellFields"}
@@ -923,6 +936,10 @@ def main():
             failed = True
     if not failed:
         try:
+            try:
+                resolve_artwork_references(tables)
+            except CatalogError as error:
+                raise SheetError(str(error)) from error
             validate_building_references(tables)
             validate_commander_state_trees(tables)
             validate_game_text_references(tables)
@@ -1007,6 +1024,10 @@ def main():
             "struct": f"/Script/{MODULE}.{entry['stem']}{entry['identity_sheet']}Row",
             "row_key_column": "name",
         }
+        if entry['stem'] == 'GuLiStrikeCardArtwork':
+            manifest['tables'][table]['source_sha256'] = hashlib.sha256(
+                (EXCEL_DIR / 'GuLiStrikeCardArtwork.xlsx').read_bytes()).hexdigest()
+            manifest['tables'][table]['data_sha256'] = hashlib.sha256(json_path.read_bytes()).hexdigest()
         headers.setdefault(entry["stem"], []).append(entry)
         print(f"OK: {json_path.relative_to(PROJECT)} ({len(rows)} 行)")
     for stem, entries in headers.items():

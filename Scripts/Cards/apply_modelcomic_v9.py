@@ -1,4 +1,7 @@
 """Replace only review artwork with versioned six-layer ModelComic assets."""
+
+# CARD_ARTWORK_ENTRY_RETIRED: retained as historical production source.
+raise RuntimeError("Retired artwork writer. Use python Scripts/Cards/card_artwork_pipeline.py deploy; edit GuLiStrikeCardArtwork.xlsx.")
 import unreal
 import json
 import sys

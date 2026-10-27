@@ -30,6 +30,8 @@ Artifacts/Diagnostics/CommanderIslandSession_20261002/**/*.patch -whitespace
 *.py text
 *.json text
 *.uplugin text
+# Artwork export manifests hash these generated JSON bytes across checkouts.
+data/Json/DT_GuLiStrikeCardArtwork_*.json -text
 
 # Preserve archived image-generation prompt bytes and their recorded SHA-256 values.
 ArtSource/UI/WarMachineTarotCards/**/Prompts/*.txt -text

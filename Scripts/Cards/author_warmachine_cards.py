@@ -2,6 +2,9 @@
 
 Marketplace materials are read/copy sources only. No map switching or PIE here.
 """
+
+# CARD_ARTWORK_ENTRY_RETIRED: retained as historical production source.
+raise RuntimeError("Retired artwork writer. Use python Scripts/Cards/card_artwork_pipeline.py deploy; edit GuLiStrikeCardArtwork.xlsx.")
 import json
 import traceback
 from pathlib import Path

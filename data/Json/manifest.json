@@ -323,6 +323,62 @@
       ],
       "struct": "/Script/GuLiStrike.GuLiStrikeVfxEffectsRow",
       "row_key_column": "name"
+    },
+    "DT_GuLiStrikeCardArtwork_Templates": {
+      "excel": "GuLiStrikeCardArtwork.xlsx",
+      "sheet": "Templates",
+      "sources": [
+        {
+          "excel": "GuLiStrikeCardArtwork.xlsx",
+          "sheet": "Templates"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkTemplatesRow",
+      "row_key_column": "name",
+      "source_sha256": "aa0f0c884eb2a6c362aabd99e70e238610082a018d5c9b25c370981b9235d3d7",
+      "data_sha256": "843df6310da7f7dcf20523e797ef78375ec06750b87851e4f8a2394f88147e04"
+    },
+    "DT_GuLiStrikeCardArtwork_Artworks": {
+      "excel": "GuLiStrikeCardArtwork.xlsx",
+      "sheet": "Artworks",
+      "sources": [
+        {
+          "excel": "GuLiStrikeCardArtwork.xlsx",
+          "sheet": "Artworks"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkArtworksRow",
+      "row_key_column": "name",
+      "source_sha256": "aa0f0c884eb2a6c362aabd99e70e238610082a018d5c9b25c370981b9235d3d7",
+      "data_sha256": "b16aeb1df0afe84f906b9124035f7f9b5098c7f4aada44e89f4899a17b057bd1"
+    },
+    "DT_GuLiStrikeCardArtwork_Layers": {
+      "excel": "GuLiStrikeCardArtwork.xlsx",
+      "sheet": "Layers",
+      "sources": [
+        {
+          "excel": "GuLiStrikeCardArtwork.xlsx",
+          "sheet": "Layers"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkLayersRow",
+      "row_key_column": "name",
+      "source_sha256": "aa0f0c884eb2a6c362aabd99e70e238610082a018d5c9b25c370981b9235d3d7",
+      "data_sha256": "02501c76ec147a211d161ca2bbe72155d13c77b0237eaab768d4e82b553d90fd"
+    },
+    "DT_GuLiStrikeCardArtwork_Parameters": {
+      "excel": "GuLiStrikeCardArtwork.xlsx",
+      "sheet": "Parameters",
+      "sources": [
+        {
+          "excel": "GuLiStrikeCardArtwork.xlsx",
+          "sheet": "Parameters"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkParametersRow",
+      "row_key_column": "name",
+      "source_sha256": "aa0f0c884eb2a6c362aabd99e70e238610082a018d5c9b25c370981b9235d3d7",
+      "data_sha256": "0a06782e4acdbfb31a90262ddb8bc9bffd03c8ec134ee3b73eb43e64dab77c10"
     }
   }
 }

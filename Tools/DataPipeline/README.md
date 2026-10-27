@@ -1,5 +1,22 @@
 # GuLiStrike Excel 数据维护
 
+## 肉鸽卡牌美术资源
+
+`data/Excel/GuLiStrikeCardArtwork.xlsx`集中管理牌面、三种材质模板、六层参数与贴图绑定。
+玩法表`GuLiStrikeRogueCards.xlsx / Cards`填写整数`ArtworkId`，导出器解析为原有`FrontMaterial`；原生卡表与运行时加载接口保持不变。折射子弹目前仅登记美术，不加入玩法卡池。
+
+```powershell
+python Tools/DataPipeline/export_data_from_excel.py --validate-only
+python Tools/DataPipeline/export_data_from_excel.py
+python Scripts/Cards/card_artwork_pipeline.py preflight
+python Scripts/Cards/card_artwork_pipeline.py deploy
+python Scripts/Cards/card_artwork_pipeline.py review --ids 6
+```
+
+新增结构先取得原生编译许可并加载；日常参数变化无需重编译。四张目录DataTable位于`/Game/GuLiStrike/Data`，是Excel生成物。目录导入原位更新对象，牌面按id应用并保存回读；已有纹理缺失历史源图时复用并报告，需要重导入时必须补齐源文件。忘记导出、活动PIE或目标资源有未保存内容时拒绝应用。
+
+完整字段、初始id、兼容入口及评审方法见[卡牌美术目录](../../.agents/skills/guli-rogue-card-production/references/artwork-data-pipeline.md)。旧单卡写入脚本已退役或委托统一入口，勿用一次性初始化器覆盖日常源表。
+
 次级单位（非玩家直接操控单位）的武器参数统一维护在
 [`Data/Excel/GuLiStrikeSecondaryWeapons.xlsx`](../../Data/Excel/GuLiStrikeSecondaryWeapons.xlsx)。
 

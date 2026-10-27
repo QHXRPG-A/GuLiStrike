@@ -116,6 +116,16 @@ ArtSource/**/SessionBefore*.blend
 !.env.template
 
 # Python/tool caches and temporary diagnostics
+# Card artwork authoring scratch; keep catalog sources and final evidence.
+Artifacts/CardArtworkPipeline/*-cells.json
+Artifacts/CardArtworkPipeline/editor-launch.json
+Artifacts/CardArtworkPipeline/skill-mirror-before.json
+Artifacts/CardArtworkPipeline/preflight-report.json
+Artifacts/CardArtworkPipeline/verify-report.json
+ArtSource/UI/GroundMechRogueCards/**/Layers_CompletedR3/
+ArtSource/UI/GroundMechRogueCards/**/ue-preflight.json
+ArtSource/UI/GroundMechRogueCards/**/ue-preview-apis.json
+ArtSource/UI/GroundMechRogueCards/**/ue-structure-comparison.json
 *.py[cod]
 *.err
 .pytest_cache/
