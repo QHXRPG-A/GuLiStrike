@@ -841,6 +841,12 @@ def validate_mech_mobility(tables):
             require(0<r['ArmRecoilAttackSeconds']<=.1 and 0<=r['ArmRecoilHoldSeconds']<=.1
                     and r['ArmRecoilAttackSeconds']<r['ArmRecoilRecoverySeconds']<=1,
                     '整臂后坐需要快速冲击、有限制退停顿及较慢复位，单位秒')
+            require(0<=r.get('UpperBodyRecoilScale',0)<=1 and 0<=r.get('UpperBodyRecoilMaxDegrees',0)<=30,
+                    '上身开枪摆动倍率范围 [0,1]，合成偏转上限范围 [0,30] 度')
+            for key in ('UpperBodyRecoilLeftAsset','UpperBodyRecoilRightAsset'):
+                reference=r.get(key,'')
+                require(not reference or bool(re.fullmatch(r'/Game/[A-Za-z0-9_/]+\.[A-Za-z0-9_]+',reference)),
+                        f'Shoot/{key}: 上身摆动参考须使用完整动画对象路径')
     require(0<ik['TraceUp']<=500 and 0<ik['TraceDown']<=500 and 0<ik['MaxFootCorrection']<=ik['TraceDown'],'IK 探测/高度修正单位 cm')
     require(0<=ik['PelvisDown']<=ik['MaxFootCorrection'] and 0<=ik['PelvisUp']<=ik['MaxFootCorrection'],'骨盆补偿超出脚部修正范围')
     require(0<=ik['MaxTiltDegrees']<=60 and 0<=ik['ReleaseThreshold']<ik['PlantThreshold']<=1,'IK 倾斜或支撑滞回范围无效')

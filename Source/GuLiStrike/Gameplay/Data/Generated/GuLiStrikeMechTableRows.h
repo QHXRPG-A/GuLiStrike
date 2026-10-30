@@ -475,6 +475,22 @@ struct FGuLiStrikeMechGaitRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
 	float ArmRecoilRecoverySeconds = 0.0f;
 
+	/** UpperBodyRecoilLeftAsset (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	TSoftObjectPtr<UObject> UpperBodyRecoilLeftAsset;
+
+	/** UpperBodyRecoilRightAsset (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	TSoftObjectPtr<UObject> UpperBodyRecoilRightAsset;
+
+	/** UpperBodyRecoilScale (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float UpperBodyRecoilScale = 0.0f;
+
+	/** UpperBodyRecoilMaxDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gait")
+	float UpperBodyRecoilMaxDegrees = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_GroundIK 的行结构（源: GuLiStrikeMech.xlsx / GroundIK）。 */

@@ -28,6 +28,9 @@ public:
 	/** Upgrade only the three recoil bindings; preserve all existing pose nodes and links. */
 	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
 	static FString BindArmRecoil(UAnimBlueprint* Blueprint);
+	/** Add only the upper-body recoil input, preserving the existing animation graph. */
+	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+	static FString BindUpperBodyRecoil(UAnimBlueprint* Blueprint);
 	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
 	static FString ProbeAnimationGraph(UClass* PawnClass,FVector Velocity,bool bJumpScenario,int32 ShotIndex,FVector AimPointComponent,UCurveFloat* RecoilCurve,bool bTakeoffThrust=true);
 };

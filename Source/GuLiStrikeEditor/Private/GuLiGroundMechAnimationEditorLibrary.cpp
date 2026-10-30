@@ -288,6 +288,7 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 		{TEXT("RecoilDistance"),TEXT("RecoilDistance")},{TEXT("GunYawLimit"),TEXT("GunYawLimit")},
 		{TEXT("RightArmRecoil"),TEXT("RightArmRecoil")},{TEXT("LeftArmRecoil"),TEXT("LeftArmRecoil")},
 		{TEXT("ArmRecoilDegrees"),TEXT("ArmRecoilDegrees")},
+		{TEXT("UpperBodyRecoilRotation"),TEXT("UpperBodyRecoilRotation")},
 		{TEXT("BlinkPose"),TEXT("BlinkPose")},
 		{TEXT("GunPitchUpLimit"),TEXT("GunPitchUpLimit")},{TEXT("GunPitchDownLimit"),TEXT("GunPitchDownLimit")}})
 		OK &= Bind(Graph,Aim,*Pair.Key.ToString(),*Pair.Value.ToString());
@@ -325,6 +326,49 @@ FString UGuLiGroundMechAnimationEditorLibrary::BindArmRecoil(UAnimBlueprint* BP)
 	FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(BP);
 	FCompilerResultsLog Log; FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
 	R->SetNumberField(TEXT("nodes_after"),Graph->Nodes.Num());
+	R->SetNumberField(TEXT("compile_errors"),Log.NumErrors); R->SetNumberField(TEXT("compile_warnings"),Log.NumWarnings);
+	R->SetBoolField(TEXT("success"),OK && Log.NumErrors==0); return Json(R);
+}
+
+FString UGuLiGroundMechAnimationEditorLibrary::BindUpperBodyRecoil(UAnimBlueprint* BP)
+{
+	auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
+	if (!BP || !GEditor || GEditor->PlayWorld) return Json(R);
+	UEdGraph* Graph=nullptr; UAnimGraphNode_GuLiGroundMechAim* Aim=nullptr;
+	for (UEdGraph* G:BP->FunctionGraphs) if (G->GetFName()==TEXT("AnimGraph")) Graph=G;
+	if (!Graph) return Json(R);
+	for (UEdGraphNode* N:Graph->Nodes) if (auto* A=Cast<UAnimGraphNode_GuLiGroundMechAim>(N))
+	{ if (Aim) return Json(R); Aim=A; }
+	if (!Aim || !FindFProperty<FStructProperty>(BP->ParentClass,TEXT("UpperBodyRecoilRotation"))) return Json(R);
+	auto Connections=[&]()
+	{
+		TSet<FString> Result;
+		for (const UEdGraphNode* Node:Graph->Nodes) for (const UEdGraphPin* P:Node->Pins)
+			for (const UEdGraphPin* Other:P->LinkedTo)
+				Result.Add(Node->NodeGuid.ToString()+TEXT("/")+P->PinName.ToString()+TEXT("->")
+					+Other->GetOwningNode()->NodeGuid.ToString()+TEXT("/")+Other->PinName.ToString());
+		return Result;
+	};
+	const TSet<FString> Before=Connections();
+	BP->Modify(); Graph->Modify(); Aim->Modify();
+	R->SetNumberField(TEXT("nodes_before"),Graph->Nodes.Num());
+	Aim->ReconstructNode();
+	const FName Name=TEXT("UpperBodyRecoilRotation"); auto* Pin=Aim->FindPin(Name,EGPD_Input);
+	bool OK=Pin!=nullptr;
+	if (Pin && Pin->LinkedTo.IsEmpty()) OK=Bind(Graph,Aim,TEXT("UpperBodyRecoilRotation"),TEXT("UpperBodyRecoilRotation"));
+	else if (Pin)
+	{
+		const auto* Get=Pin->LinkedTo.Num()==1?Cast<UK2Node_VariableGet>(Pin->LinkedTo[0]->GetOwningNode()):nullptr;
+		OK=Get && Get->VariableReference.GetMemberName()==Name;
+	}
+	const TSet<FString> After=Connections(); bool Preserved=true;
+	for (const FString& Connection:Before) Preserved &= After.Contains(Connection);
+	OK &= Preserved;
+	FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(BP);
+	FCompilerResultsLog Log; FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
+	R->SetNumberField(TEXT("nodes_after"),Graph->Nodes.Num());
+	R->SetBoolField(TEXT("existing_links_preserved"),Preserved);
+	R->SetNumberField(TEXT("links_before"),Before.Num()/2); R->SetNumberField(TEXT("links_after"),After.Num()/2);
 	R->SetNumberField(TEXT("compile_errors"),Log.NumErrors); R->SetNumberField(TEXT("compile_warnings"),Log.NumWarnings);
 	R->SetBoolField(TEXT("success"),OK && Log.NumErrors==0); return Json(R);
 }

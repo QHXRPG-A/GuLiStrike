@@ -23,6 +23,7 @@ struct GULISTRIKE_API FAnimNode_GuLiGroundMechAim : public FAnimNode_SkeletalCon
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Recoil", meta=(PinShownByDefault)) float RightArmRecoil = 0.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Recoil", meta=(PinShownByDefault)) float LeftArmRecoil = 0.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Recoil", meta=(PinShownByDefault)) float ArmRecoilDegrees = 0.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Recoil", meta=(PinShownByDefault)) FQuat UpperBodyRecoilRotation = FQuat::Identity;
 	/** One-sided horizontal arm limit from Mobility; 75 degrees gives a 150-degree total sweep. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Aim", meta=(PinShownByDefault)) float GunYawLimit=75.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Aim", meta=(PinShownByDefault)) float GunPitchUpLimit=80.f;
@@ -35,4 +36,5 @@ private:
 	UPROPERTY() FBoneReference LeftArm;
 	UPROPERTY() FBoneReference RightGun;
 	UPROPERTY() FBoneReference LeftGun;
+	UPROPERTY() FBoneReference Chest;
 };

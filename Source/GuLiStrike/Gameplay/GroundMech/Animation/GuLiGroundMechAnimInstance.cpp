@@ -9,12 +9,17 @@
 #include "Animation/AnimSequence.h"
 #include "Animation/AnimMontage.h"
 #include "Animation/BlendSpace.h"
+#include "Animation/Skeleton.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
+#include "Network/GuLiNetworkSettings.h"
 
 void UGuLiGroundMechAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
+	UpperBodyRecoilConfiguration.Reset(); UpperBodyRecoilSkeleton.Reset(); UpperBodyRecoilSources.Reset();
+	UpperBodyRecoilSamples[0].Reset(); UpperBodyRecoilSamples[1].Reset(); bUpperBodyRecoilReady=false;
+	ResetUpperBodyRecoil();
 	BlinkPose=BlinkEntryDirection=FVector::ZeroVector; PreviousBlinkSerial=0; PreviousBlinkPhase=BlinkPhase=0; BlinkPhaseProgress=0.f;
 	PreviousPawn.Reset();
 	PreviousController.Reset();
@@ -43,6 +48,7 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	const auto* Move = Pawn ? Cast<UGuLiGroundMechMovementComponent>(Pawn->GetCharacterMovement()) : nullptr;
 	if (!Pawn || !Move || !Pawn->GetMobilityConfiguration().bReady)
 	{
+		ResetUpperBodyRecoil();
 		BlinkPose=BlinkEntryDirection=FVector::ZeroVector; BlinkPhase=0; BlinkPhaseProgress=0.f;
 		Speed = TurnRate = 0.f;
 		HorizontalVelocity = LocalHorizontalVelocity = FVector::ZeroVector;
@@ -75,6 +81,7 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	// Phase 2 is a brief concealed teleport beat, with no Loop clip or sway cycle.
 	if (bReset)
 	{
+		ResetUpperBodyRecoil();
 		++AnimationStateRevision;
 		TurnRate = 0.f;
 		PreviousYaw = Yaw;
@@ -112,6 +119,7 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		JumpStartDuration=JumpStartSequence->GetPlayLength(); ShootDuration=ShootSequence->GetPlayLength();
 		RecoilDistance=Config.Gait(TEXT("Shoot")).RecoilCentimeters;
 		ArmRecoilDegrees=Config.Gait(TEXT("Shoot")).ArmRecoilDegrees;
+		PrepareUpperBodyRecoil(Config);
 		GunYawLimit=Config.Mobility.GunYawLimit; GunPitchUpLimit=Config.Mobility.GunPitchUpLimit; GunPitchDownLimit=Config.Mobility.GunPitchDownLimit;
 		GaitTransitionSeconds=Walk.TransitionSeconds;
 		bIntegratedRunning = Speed > Pawn->GetWalkSpeed()+UE_KINDA_SMALL_NUMBER;
@@ -207,7 +215,101 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			(Side == 0 ? RightShootWeight : LeftShootWeight) = ShootAge < ShootDuration
 				? FMath::Clamp((ShootDuration-ShootAge)/Config.Gait(TEXT("Shoot")).TransitionSeconds,0.f,1.f) : 0.f;
 		}
+		UpdateUpperBodyRecoil(Config.Gait(TEXT("Shoot")));
 	}
+	else ResetUpperBodyRecoil();
+}
+
+void UGuLiGroundMechAnimInstance::ResetUpperBodyRecoil()
+{
+	UpperBodyRecoilRotation=FQuat::Identity;
+	for (int32 Side=0;Side<2;++Side) UpperBodyRecoilStart[Side]=UpperBodyRecoilCurrent[Side]=FQuat::Identity;
+}
+
+void UGuLiGroundMechAnimInstance::PrepareUpperBodyRecoil(const FGuLiGroundMechConfiguration& Config)
+{
+	// Visual reference sequences are resolved once on the game thread, never by
+	// the worker-thread skeletal control or a dedicated-server presentation path.
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) { bUpperBodyRecoilReady=false; return; }
+	auto* Skeleton=ShootSequence?ShootSequence->GetSkeleton():nullptr;
+	if (UpperBodyRecoilConfiguration==Config.Fingerprint && UpperBodyRecoilSkeleton.Get()==Skeleton) return;
+	UpperBodyRecoilConfiguration=Config.Fingerprint; UpperBodyRecoilSkeleton=Skeleton;
+	UpperBodyRecoilSources.Reset(); UpperBodyRecoilSamples[0].Reset(); UpperBodyRecoilSamples[1].Reset();
+	bUpperBodyRecoilReady=false; ResetUpperBodyRecoil();
+	const auto& Shot=Config.Gait(TEXT("Shoot"));
+	if (Shot.UpperBodyRecoilScale==0.f || Shot.UpperBodyRecoilMaxDegrees==0.f) return;
+	if (!Skeleton || !FMath::IsFinite(Shot.UpperBodyRecoilScale) || Shot.UpperBodyRecoilScale<0.f || Shot.UpperBodyRecoilScale>1.f
+		|| !FMath::IsFinite(Shot.UpperBodyRecoilMaxDegrees) || Shot.UpperBodyRecoilMaxDegrees<0.f || Shot.UpperBodyRecoilMaxDegrees>30.f)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("Ground upper-body recoil disabled: invalid scale/angle or missing skeleton")); return;
+	}
+	const auto& Bones=Skeleton->GetReferenceSkeleton();
+	const int32 Joint=Bones.FindBoneIndex(TEXT("MiddleJoint"));
+	const int32 Chest=Bones.FindBoneIndex(TEXT("cockpit"));
+	if (Joint==INDEX_NONE || Chest==INDEX_NONE || Bones.GetParentIndex(Chest)!=Joint) return;
+	UAnimSequence* Sources[2]={Cast<UAnimSequence>(Shot.UpperBodyRecoilRightAsset.LoadSynchronous()),
+		Cast<UAnimSequence>(Shot.UpperBodyRecoilLeftAsset.LoadSynchronous())};
+	for (int32 Side=0;Side<2;++Side)
+	{
+		UAnimSequence* Sequence=Sources[Side];
+		if (!Sequence || Sequence->GetSkeleton()!=Skeleton || Sequence->IsValidAdditive()
+			|| Sequence->GetNumberOfSampledKeys()<2 || Sequence->GetPlayLength()<=0.f) break;
+		TArray<FQuat>& Samples=UpperBodyRecoilSamples[Side];
+		const int32 Count=Sequence->GetNumberOfSampledKeys(); Samples.Reserve(Count);
+		FQuat First=FQuat::Identity;
+		for (int32 Key=0;Key<Count;++Key)
+		{
+			const double Time=Sequence->GetPlayLength()*double(Key)/(Count-1);
+			FTransform Component=FTransform::Identity;
+			for (int32 Bone=Joint;Bone!=INDEX_NONE;Bone=Bones.GetParentIndex(Bone))
+			{
+				FTransform Local=Bones.GetRefBonePose()[Bone];
+				Sequence->GetBoneTransform(Local,FSkeletonPoseBoneIndex(Bone),FAnimExtractContext(Time),false);
+				Component=Component*Local;
+			}
+			if (Component.ContainsNaN() || !Component.GetRotation().IsNormalized()) break;
+			if (Key==0) First=Component.GetRotation();
+			FQuat Delta=(Component.GetRotation()*First.Inverse()).GetNormalized();
+			if (Delta.W<0.) Delta=FQuat(-Delta.X,-Delta.Y,-Delta.Z,-Delta.W);
+			Samples.Add(Delta);
+		}
+		if (Samples.Num()!=Count) break;
+		// The reference's tiny final compression residue must not leave a chest offset.
+		Samples[0]=Samples.Last()=FQuat::Identity;
+		UpperBodyRecoilSources.Add(Sequence);
+	}
+	bUpperBodyRecoilReady=UpperBodyRecoilSources.Num()==2;
+	if (!bUpperBodyRecoilReady)
+	{
+		UpperBodyRecoilSources.Reset(); UpperBodyRecoilSamples[0].Reset(); UpperBodyRecoilSamples[1].Reset();
+		UE_LOG(LogTemp,Warning,TEXT("Ground upper-body recoil disabled: both compatible reference sequences are required"));
+	}
+}
+
+void UGuLiGroundMechAnimInstance::UpdateUpperBodyRecoil(const FGuLiStrikeMechGaitRow& Shot)
+{
+	if (!bUpperBodyRecoilReady) { ResetUpperBodyRecoil(); return; }
+	const float Duration=Shot.ArmRecoilAttackSeconds+Shot.ArmRecoilHoldSeconds+Shot.ArmRecoilRecoverySeconds;
+	FVector Combined=FVector::ZeroVector;
+	for (int32 Side=0;Side<2;++Side)
+	{
+		const float Age=IntegratedRecoilAge[Side];
+		FQuat Rotation=FQuat::Identity;
+		if (Age<Duration)
+		{
+			const TArray<FQuat>& Samples=UpperBodyRecoilSamples[Side];
+			const float Position=FMath::Clamp(Age/Duration,0.f,1.f)*(Samples.Num()-1);
+			const int32 Index=FMath::FloorToInt(Position);
+			const FQuat Reference=FQuat::Slerp(Samples[Index],Samples[FMath::Min(Index+1,Samples.Num()-1)],Position-Index).GetNormalized();
+			const FQuat Target=FQuat::Slerp(FQuat::Identity,Reference,Shot.UpperBodyRecoilScale).GetNormalized();
+			Rotation=FQuat::Slerp(UpperBodyRecoilStart[Side],Target,
+				FMath::SmoothStep(0.f,Shot.ArmRecoilAttackSeconds,Age)).GetNormalized();
+		}
+		UpperBodyRecoilCurrent[Side]=Rotation;
+		Combined+=Rotation.ToRotationVector();
+	}
+	Combined=Combined.GetClampedToMaxSize(FMath::DegreesToRadians(Shot.UpperBodyRecoilMaxDegrees));
+	UpperBodyRecoilRotation=FQuat::MakeFromRotationVector(Combined*(1.f-FMath::Clamp(float(BlinkPose.X),0.f,1.f))).GetNormalized();
 }
 
 void UGuLiGroundMechAnimInstance::UpdateGrounding(AGuLiGroundMechCharacter& Pawn,float DeltaSeconds,bool bReset)
@@ -295,6 +397,7 @@ void UGuLiGroundMechAnimInstance::TriggerIntegratedRecoil(float AgeSeconds, uint
 		const float Age=FMath::Max(0.f,AgeSeconds);
 		if (Age <= IntegratedRecoilAge[MuzzleIndex])
 		{
+			UpperBodyRecoilStart[MuzzleIndex]=UpperBodyRecoilCurrent[MuzzleIndex];
 			ArmRecoilStart[MuzzleIndex]=MuzzleIndex==0?RightArmRecoil:LeftArmRecoil;
 			IntegratedRecoilAge[MuzzleIndex]=Age;
 		}

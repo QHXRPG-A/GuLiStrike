@@ -5,10 +5,12 @@ FAnimNode_GuLiGroundMechAim::FAnimNode_GuLiGroundMechAim()
 {
 	RightArm.BoneName=TEXT("GunArm_R"); LeftArm.BoneName=TEXT("GunArm_L");
 	RightGun.BoneName=TEXT("Gun_R"); LeftGun.BoneName=TEXT("Gun_L");
+	Chest.BoneName=TEXT("cockpit");
 }
 void FAnimNode_GuLiGroundMechAim::InitializeBoneReferences(const FBoneContainer& Bones)
 {
 	RightArm.Initialize(Bones); LeftArm.Initialize(Bones); RightGun.Initialize(Bones); LeftGun.Initialize(Bones);
+	Chest.Initialize(Bones);
 }
 bool FAnimNode_GuLiGroundMechAim::IsValidToEvaluate(const USkeleton*,const FBoneContainer& Bones)
 {
@@ -18,11 +20,30 @@ bool FAnimNode_GuLiGroundMechAim::IsValidToEvaluate(const USkeleton*,const FBone
 void FAnimNode_GuLiGroundMechAim::EvaluateSkeletalControl_AnyThread(FComponentSpacePoseContext& Output,TArray<FBoneTransform>& Out)
 {
 	const FBoneContainer& Bones=Output.Pose.GetPose().GetBoneContainer();
+	auto Descends=[&](FCompactPoseBoneIndex Child,FCompactPoseBoneIndex Parent)
+	{ for (;Child.IsValid();Child=Bones.GetParentBoneIndex(Child)) if (Child==Parent) return true; return false; };
+	const bool bSway=Chest.IsValidToEvaluate(Bones) && !UpperBodyRecoilRotation.ContainsNaN()
+		&& UpperBodyRecoilRotation.IsNormalized() && !UpperBodyRecoilRotation.Equals(FQuat::Identity);
+	const auto ChestIndex=bSway?Chest.GetCompactPoseIndex(Bones):FCompactPoseBoneIndex(INDEX_NONE);
+	const FVector ChestPivot=bSway?Output.Pose.GetComponentSpaceTransform(ChestIndex).GetLocation():FVector::ZeroVector;
+	auto CurrentPose=[&](FCompactPoseBoneIndex Index)
+	{
+		FTransform Transform=Output.Pose.GetComponentSpaceTransform(Index);
+		if (bSway && Descends(Index,ChestIndex))
+		{
+			Transform.SetLocation(ChestPivot+UpperBodyRecoilRotation.RotateVector(Transform.GetLocation()-ChestPivot));
+			Transform.SetRotation((UpperBodyRecoilRotation*Transform.GetRotation()).GetNormalized());
+		}
+		return Transform;
+	};
+	// MiddleJoint also owns the legs. Rotate only its chest branch before aiming
+	// so the shoulders move with the body and both bores are solved from that pose.
+	if (bSway) Out.Emplace(ChestIndex,CurrentPose(ChestIndex));
 	auto Solve=[&](const FBoneReference& ArmRef,const FBoneReference& GunRef,const FTransform& Socket,float Recoil,float ArmWeight,const FQuat& ReturnStart)
 	{
 		const auto ArmIndex=ArmRef.GetCompactPoseIndex(Bones), GunIndex=GunRef.GetCompactPoseIndex(Bones);
-		FTransform Arm=Output.Pose.GetComponentSpaceTransform(ArmIndex);
-		FTransform Gun=Output.Pose.GetComponentSpaceTransform(GunIndex);
+		FTransform Arm=CurrentPose(ArmIndex);
+		FTransform Gun=CurrentPose(GunIndex);
 		const FVector Bore=(Socket*Gun).GetUnitAxis(EAxis::X);
 		Gun.AddToTranslation(-Bore*FMath::Clamp(Recoil,0.f,1.f)*RecoilDistance);
 		const FTransform GunInArm=Gun.GetRelativeTransform(Arm);
@@ -147,8 +168,6 @@ void FAnimNode_GuLiGroundMechAim::EvaluateSkeletalControl_AnyThread(FComponentSp
 	{
 		// Find the upper-body branching joint rather than rotating the root/legs.
 		const auto R=RightArm.GetCompactPoseIndex(Bones), L=LeftArm.GetCompactPoseIndex(Bones);
-		auto Descends=[&](FCompactPoseBoneIndex Child,FCompactPoseBoneIndex Parent)
-		{ for (;Child.IsValid();Child=Bones.GetParentBoneIndex(Child)) if (Child==Parent) return true; return false; };
 		auto Torso=Bones.GetParentBoneIndex(R);
 		while (Torso.IsValid() && !Descends(L,Torso)) Torso=Bones.GetParentBoneIndex(Torso);
 		const FCompactPoseBoneIndex Hip=Bones.GetCompactPoseIndexFromSkeletonIndex(Bones.GetReferenceSkeleton().FindBoneIndex(TEXT("UpperLeg_R")));

@@ -1,0 +1,40 @@
+{
+  "local_base": "5ac144860de533ffd4e6155b96a7c0ec5ca892c2",
+  "remote_base": "19352c41a4ebd376be906e9027d2cd596d87feaa",
+  "owned_paths": [
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.cpp",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.h",
+    "Scripts/GroundMech/MechaDestroyer/author_upper_body_recoil_tuning.py",
+    "Scripts/GroundMech/MechaDestroyer/install_upper_body_recoil.py",
+    "Scripts/GroundMech/MechaDestroyer/prepare_upper_body_recoil_scene.py",
+    "Progress/RequirementDocument/20261028-地面机甲逐发上身摆动.md",
+    "Progress/DevelopmentDocumentation/20261028-地面机甲逐发上身摆动.md",
+    "Progress/Archive/20261028-地面机甲上身摆动源码与场景交付.md",
+    "Progress/Archive/20261028-地面机甲上身摆动编译与接入.md",
+    "Progress/Archive/20261030-地面机甲上身摆动完成清理与代码同步.md",
+    "Progress/Evidence/20261030-GroundUpperBodyRecoilCloseout/README.md",
+    "Progress/Evidence/20261030-GroundUpperBodyRecoilCloseout/cleanup_manifest.json",
+    "Progress/Evidence/20261030-GroundUpperBodyRecoilCloseout/retained_receipts.json"
+  ],
+  "shared_paths": [
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeMechTableRows.h",
+    "Tools/DataPipeline/export_data_from_excel.py",
+    "Progress/Gameplay/地面机甲.md"
+  ],
+  "publication": "code/scripts/docs and compact evidence only",
+  "excluded": "UE assets, Excel, runtime JSON/config, local resource history, other task changes, global Progress indexes",
+  "shared_worktree_sha256": {
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeMechTableRows.h": "9a5b0b046694c7bc2c964dfa04bff62aa6d616e6768acaa9ac0e901264c476bf",
+    "Tools/DataPipeline/export_data_from_excel.py": "937fe733add3a718db1ff1ae87799c7ad18bf106cdbb110be46b6ddb2dfd8a2c",
+    "Progress/Gameplay/地面机甲.md": "f8b908db21b3f9824ddf6d758e623142ae2449aebb95415ef2ba4a5146539917"
+  },
+  "scoped_sha256": {
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeMechTableRows.h": "f242c8641872bd3f093c4cc8c2e606fd37121f1c12e62c1ef90ff684c812f06e",
+    "Tools/DataPipeline/export_data_from_excel.py": "8caad7e247d3f9f2047554c0c150870a068fd8a8ecbaba8513906693e1ef9a52",
+    "Progress/Gameplay/地面机甲.md": "2a09e81dce39014312fb165b98247fb347a7830bc85a3c813fe66328c9739016"
+  }
+}

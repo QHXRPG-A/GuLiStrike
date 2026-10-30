@@ -6,6 +6,9 @@
 class UBlendSpace;
 class UCurveFloat;
 class UAnimSequence;
+class USkeleton;
+struct FGuLiGroundMechConfiguration;
+struct FGuLiStrikeMechGaitRow;
 
 /** Read-only movement snapshot. The editable Animation Blueprint owns all pose evaluation. */
 UCLASS(Transient, Blueprintable)
@@ -70,6 +73,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float RightArmRecoil = 0.f;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float LeftArmRecoil = 0.f;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float ArmRecoilDegrees = 0.f;
+	/** Component-space chest rotation; the aim node applies it before solving the barrels. */
+	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") FQuat UpperBodyRecoilRotation = FQuat::Identity;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float RightShootTime = 0.f;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float LeftShootTime = 0.f;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float RightShootWeight = 0.f;
@@ -82,6 +87,16 @@ public:
 	void TriggerIntegratedRecoil(float AgeSeconds, uint8 MuzzleIndex);
 private:
 	void UpdateGrounding(class AGuLiGroundMechCharacter& Pawn,float DeltaSeconds,bool bReset);
+	void PrepareUpperBodyRecoil(const FGuLiGroundMechConfiguration& Config);
+	void UpdateUpperBodyRecoil(const FGuLiStrikeMechGaitRow& Shot);
+	void ResetUpperBodyRecoil();
+	FString UpperBodyRecoilConfiguration;
+	TWeakObjectPtr<USkeleton> UpperBodyRecoilSkeleton;
+	UPROPERTY() TArray<TObjectPtr<UAnimSequence>> UpperBodyRecoilSources;
+	TArray<FQuat> UpperBodyRecoilSamples[2];
+	FQuat UpperBodyRecoilStart[2] = {FQuat::Identity,FQuat::Identity};
+	FQuat UpperBodyRecoilCurrent[2] = {FQuat::Identity,FQuat::Identity};
+	bool bUpperBodyRecoilReady = false;
 	float SmoothedSpeed=0.f;
 	float RunBlend=0.f;
 	int32 TurnSerial=INDEX_NONE;
