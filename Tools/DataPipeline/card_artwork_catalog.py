@@ -10,6 +10,7 @@ PRESETS = {
     "ModelComicAtlasV9": "Atlas3x2",
     "RegisteredSix": "Independent6",
     "RegisteredSixForegroundMask": "Independent6",
+    "RegisteredSixRigid": "Independent6",
 }
 COMMON_PARAMETER = re.compile(r"Layer [1-6] (?:Depth|Opacity|Scale|Offset)$")
 
@@ -120,6 +121,14 @@ def validate_catalog(tables):
         if set(by_layers[ident]) != set(range(1, 7)):
             _fail("Artworks", artwork, "exactly six logical layers are required, including disabled layers")
         params = by_parameters[ident]
+        for index,layer in by_layers[ident].items():
+            seen={index}
+            owner=layer.get('MotionOwnerLayer',0)
+            while owner:
+                if not isinstance(owner,int) or owner not in range(1,7) or owner in seen:
+                    _fail('Layers',layer,'MotionOwnerLayer requires 0=self or an acyclic layer reference within this artwork')
+                seen.add(owner)
+                owner=by_layers[ident][owner].get('MotionOwnerLayer',0)
         for key in ("Layers global depth", "Ability behind machinery", "Foreground behind machinery"):
             if key not in params or params[key]["Kind"] != "Scalar":
                 _fail("Artworks", artwork, f"missing scalar {key}")

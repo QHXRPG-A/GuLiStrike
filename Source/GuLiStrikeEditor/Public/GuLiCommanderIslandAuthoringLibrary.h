@@ -13,4 +13,7 @@ public:
 	/** Returns an empty string when required mesh/material and animation contracts pass. */
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Island")
 	static FString ValidateOutpostPresentationAssets();
+	/** Production geometry and motion parameters for editor-only scene references. */
+	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Island")
+	static FString GetOutpostPresentationLayoutJson();
 };

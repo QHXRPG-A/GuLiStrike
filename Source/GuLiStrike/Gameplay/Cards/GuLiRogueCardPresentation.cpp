@@ -166,7 +166,10 @@ UGuLiRogueCardPresentation::UGuLiRogueCardPresentation()
 void UGuLiRogueCardPresentation::Open()
 {
 	auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner());
-	if (bOpen || bCleaningUp || bTearingDown || !PC || !PC->IsLocalController() || !PC->CanIssueCommanderOrders()) return;
+	if (bOpen || bCleaningUp || bTearingDown || !PC || !PC->IsLocalController()) return;
+    const auto* Player=PC->GetPlayerState<AGuLiBattlePlayerState>();
+    if(!Player||!Player->IsBattleReady()||(!Player->IsCommander()&&Player->GetBattleRole()!=EGuLiCommanderRole::Ground)||(Player->IsCommander()&&!PC->CanIssueCommanderOrders()))return;
+    PresentationRole=uint8(Player->GetBattleRole());
 	bOpen=true; bClosing=false; bSubmitting=false; Fade=0; DisplayedPhase=INDEX_NONE; ErrorText=FText::GetEmpty();
 	bCommitted=false; bFinishedNormally=false;
 	bRerolling=false; RerollNotice=FText::GetEmpty();
@@ -250,7 +253,11 @@ bool UGuLiRogueCardPresentation::CreateStage(const TArray<FString>& Ids)
 		Frames.Add(Settings->FrameMaterial.LoadSynchronous());
 		if (!Fronts.Last() || !Frames.Last()) return false;
 	}
-	while (Fronts.Num()<3) { Fronts.Add(Fronts[0]); Frames.Add(Frames[0]); }
+	// Add cannot take a reference into the same TArray: growth can invalidate it.
+	// Ground may offer only one or two eligible cards, so copy padding first.
+	UObject* const PaddingFront=Fronts[0];
+	UObject* const PaddingFrame=Frames[0];
+	while (Fronts.Num()<3) { Fronts.Add(PaddingFront); Frames.Add(PaddingFrame); }
 	if (!SetArray(Director,TEXT("CardFrontMaterials"),Fronts) || !SetArray(Director,TEXT("CardTextMaterials"),Frames)) return false;
 	SetBool(Director,TEXT("SimpleCardFrame"),true); SetNumber(Director,TEXT("CardAreaMultiplier"),2);
 	SetNumber(Director,TEXT("CardThicknessMultiplier"),2); SetNumber(Director,TEXT("MaximumTilt"),16);
@@ -426,7 +433,7 @@ void UGuLiRogueCardPresentation::TickComponent(float Dt,ELevelTick Type,FActorCo
 	const auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner());
 	const auto* Player=PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
 	const auto* State=GetWorld()->GetGameState<AGuLiBattleGameState>();
-	if (!Player || !Player->IsCommander() || Player->GetPlayerGuid()!=PlayerGuid || static_cast<uint8>(Player->GetTeam())!=PresentationTeam)
+	if (!Player || uint8(Player->GetBattleRole())!=PresentationRole || Player->GetPlayerGuid()!=PlayerGuid || static_cast<uint8>(Player->GetTeam())!=PresentationTeam)
 	{ if (PC && !bSubmitting) PC->GetCommanderNetSyncComponent()->ServerCancelRogueCards(SessionId); Close(true); return; }
     // A retained selection keeps its session identity across a global restore.
     // Temporary lack of a battle permit is not a player cancellation.
@@ -466,7 +473,8 @@ void UGuLiRogueCardPresentationLibrary::SetLiveCardText(AActor* Card,const FStri
 	auto* Widget=CreateWidget<UUserWidget>(Controller,Class); Widget->TakeWidget();
 	auto* Catalog=Card->GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();
 	if (auto* Title=Cast<UTextBlock>(Widget->GetWidgetFromName(TEXT("CardTitle")))) Title->SetText(Catalog->GetCardText(CardId,0));
-	if (auto* Description=Cast<URichTextBlock>(Widget->GetWidgetFromName(TEXT("CardDescription")))) Description->SetText(Catalog->GetCardText(CardId,1));
+	if (auto* Description=Cast<URichTextBlock>(Widget->GetWidgetFromName(TEXT("CardDescription"))))
+    {const auto* PS=Controller->GetPlayerState<AGuLiBattlePlayerState>();Description->SetText(Catalog->GetCardText(CardId,1,PS?PS->GetPlayerGuid():FGuid{}));}
 	Component->SetWidget(Widget); Component->SetVisibility(true); Component->SetTickWhenOffscreen(true); Component->RequestRedraw();
 }
 

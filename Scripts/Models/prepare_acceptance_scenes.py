@@ -50,6 +50,7 @@ def preview(label,mid,location,scale=1,visual_class=None,team='Unassigned',fit=F
         unreal.SkeletalMeshActor if definition['ResourceType']=='SkeletalMesh' else unreal.StaticMeshActor)
     a=make('ModelRegistry_'+label,cls,location,mid,['ReviewActualTeam='+team,'FormalSourceOnly'])
     a.set_editor_property('is_editor_only_actor',True)
+    a.set_actor_hidden_in_game(True)
     if isinstance(a,unreal.Pawn):
         a.set_editor_property('auto_possess_player',unreal.AutoReceiveInput.DISABLED)
         a.set_editor_property('auto_possess_ai',unreal.AutoPossessAI.DISABLED)
@@ -85,7 +86,8 @@ def readback(map_path,expected):
     for a in current:
         entry={'label':a.get_actor_label(),'class':a.get_class().get_path_name(),'location_cm':list(a.get_actor_location().to_tuple()),
                'scale':list(a.get_actor_scale3d().to_tuple()),'tags':[str(t) for t in a.tags],
-               'editor_only':bool(a.get_editor_property('is_editor_only_actor'))}
+               'editor_only':bool(a.get_editor_property('is_editor_only_actor')),
+               'hidden_in_game':bool(a.get_editor_property('bHidden'))}
         if isinstance(a,unreal.GuLiCommanderDeploymentPoint):
             entry.update(team=str(a.team),unit_id=a.unit_type_id,count=a.rows*a.columns,automatic_fire=a.allow_automatic_fire,start_idle=a.start_idle)
             if a.unit_type_id!=4 or a.rows*a.columns!=1 or a.allow_automatic_fire or not a.start_idle:raise RuntimeError('Engineering deployment differs')
@@ -97,6 +99,7 @@ def readback(map_path,expected):
                 if mesh:entry['meshes'].append({'component':c.get_name(),'mesh':mesh.get_path_name(),'relative_transform':str(c.get_relative_transform()),
                     'socket':str(c.get_attach_socket_name()),'materials':[c.get_material(i).get_path_name() if c.get_material(i) else '' for i in range(c.get_num_materials())]})
             mid=next((int(t.split('=',1)[1]) for t in entry['tags'] if t.startswith('ModelId=')),0)
+            if mid and not entry['hidden_in_game']:raise RuntimeError('Model reference must be hidden in game: '+a.get_actor_label())
             if mid and model_catalog.definition(mid)['ResourceType']!='PresentationClass':
                 path=model_catalog.resource(mid)
                 if not any(m['mesh']==path for m in entry['meshes']):raise RuntimeError('Exact ModelId source differs: '+a.get_actor_label())

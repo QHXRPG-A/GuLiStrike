@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gameplay/Units/GuLiUnitMovementLayer.h"
 #include "Battle/Network/GuLiBattleTypes.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "GuLiDynamicObstacleRegistry.generated.h"
@@ -42,6 +43,7 @@ struct GULISTRIKE_API FGuLiDynamicObstacle
 	FVector Location = FVector::ZeroVector;
 	float RadiusCentimeters = 0.0f;
 	EGuLiDynamicObstacleKind Kind = EGuLiDynamicObstacleKind::StaticWorld;
+    bool IgnoresLayer(EGuLiUnitMovementLayer Layer) const {return Kind==EGuLiDynamicObstacleKind::GroundMech && Layer==EGuLiUnitMovementLayer::LowAir;}
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 	float HalfHeight = 0.0f;
 };
@@ -103,7 +105,7 @@ struct GULISTRIKE_API FGuLiDynamicObstacleSnapshot
 	bool IsRegionCurrent(const FGuLiObstacleRegionStamp& Stamp) const;
 	static FIntPoint Cell(const FVector& P) { return {FMath::FloorToInt32(P.X/CellSize),FMath::FloorToInt32(P.Y/CellSize)}; }
 	void Query(const FVector& Position,float Radius,TArray<int32>& Out) const;
-	bool IsSegmentClear(const FVector& From,const FVector& To,float Radius,bool bAllowEscape=false) const;
+	bool IsSegmentClear(const FVector& From,const FVector& To,float Radius,bool bAllowEscape=false,EGuLiUnitMovementLayer Layer=EGuLiUnitMovementLayer::Ground) const;
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiDynamicObstaclesChanged, uint32 /* Revision */);

@@ -33,9 +33,9 @@ FGuLiGridTrafficRecord* FGuLiGridTraffic::Authorized(const FGuLiHybridObjectKey&
     auto* R=Objects.Find(Key);return R && R->Owner==Owner && R->OwnerEpoch==Epoch?R:nullptr;
 }
 bool FGuLiGridTraffic::Admit(const FGuLiHybridObjectKey& Key,const FGuid& Owner,uint64 Epoch,uint8 Team,
-    const GuLiGrid::FRect& Occupied,const GuLiGrid::FTrafficPriority& Priority,int32 Footprint)
+    const GuLiGrid::FRect& Occupied,const GuLiGrid::FTrafficPriority& Priority,int32 Footprint,EGuLiUnitMovementLayer Layer)
 {
-    if (!Key.IsValid() || !Owner.IsValid() || !Epoch || !ValidRect(Occupied) || Footprint<1 || Footprint>64) return false;
+    if (!Key.IsValid() || !Owner.IsValid() || !Epoch || !ValidRect(Occupied) || Footprint<1 || Footprint>64 || uint8(Layer)>uint8(EGuLiUnitMovementLayer::LowAir)) return false;
     if (auto* Old=Objects.Find(Key))
     {
         if (Epoch<Old->OwnerEpoch || (Epoch==Old->OwnerEpoch && Old->Owner!=Owner)) return false;
@@ -43,10 +43,10 @@ bool FGuLiGridTraffic::Admit(const FGuLiHybridObjectKey& Key,const FGuid& Owner,
     }
     else if (Objects.Num()>=MaximumObjects) return false;
     auto& R=Objects.FindOrAdd(Key);R.Key=Key;R.Owner=Owner;R.OwnerEpoch=Epoch;R.Team=Team;
-    R.Footprint=Footprint;
+    R.Footprint=Footprint;R.MovementLayer=Layer;
     R.Occupied=Occupied;R.Priority=Priority;R.bReserved=false;Index(R,true);return true;
 }
-void FGuLiGridTraffic::Query(const GuLiGrid::FRect& Rect,const FGuLiHybridObjectKey& Ignore,TArray<FGuLiHybridObjectKey>& Out) const
+void FGuLiGridTraffic::Query(const GuLiGrid::FRect& Rect,const FGuLiHybridObjectKey& Ignore,TArray<FGuLiHybridObjectKey>& Out,TOptional<EGuLiUnitMovementLayer> Layer) const
 {
     Out.Reset();if (!ValidRect(Rect)) return;
     const uint64 Serial=++QuerySerial;
@@ -57,7 +57,7 @@ void FGuLiGridTraffic::Query(const GuLiGrid::FRect& Rect,const FGuLiHybridObject
         for (const auto& Key:*Entries)
         {
             if (Key==Ignore) continue;
-            const auto* R=Objects.Find(Key);if (!R || R->LastQuery==Serial) continue;
+            const auto* R=Objects.Find(Key);if (!R || R->LastQuery==Serial || (Layer.IsSet() && R->MovementLayer!=Layer.GetValue())) continue;
             R->LastQuery=Serial;
             if (R->Occupied.Overlaps(Rect) || (R->bReserved && R->Reserved.Overlaps(Rect))) Out.Add(Key);
         }

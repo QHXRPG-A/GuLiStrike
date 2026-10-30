@@ -40,7 +40,7 @@ bool SetInput(FVersionedNiagaraEmitterData& Data,const FString& Emitter,const TC
     }
     return false;
 }
-FString Json(const TSharedRef<FJsonObject>& R)
+FString GroundMechFireJson(const TSharedRef<FJsonObject>& R)
 { FString Text; FJsonSerializer::Serialize(R,TJsonWriterFactory<>::Create(&Text)); return Text; }
 }
 
@@ -49,7 +49,7 @@ FString UGuLiGroundMechFireEditorLibrary::ConfigureImpactVariant(UNiagaraSystem*
 {
     auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
     if (!System || !GEditor || GEditor->PlayWorld || OriginalMaterials.Num()!=VariantMaterials.Num()
-        || !System->GetPathName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/NS_GroundMech_Impact_Adjusted"))) return Json(R);
+        || !System->GetPathName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/NS_GroundMech_Impact_Adjusted"))) return GroundMechFireJson(R);
     // Preserve the original six emitters, spawn/motion/size curves and renderer
     // geometry. Only fork their material color/fade outputs and bind per-effect fade.
     if (bApply)
@@ -91,13 +91,13 @@ FString UGuLiGroundMechFireEditorLibrary::ConfigureImpactVariant(UNiagaraSystem*
     }
     if (bApply) {System->RequestCompile(false); System->WaitForCompilationComplete(); System->MarkPackageDirty();}
     R->SetArrayField(TEXT("renderers"),Values); R->SetNumberField(TEXT("emitter_count"),System->GetEmitterHandles().Num());
-    R->SetBoolField(TEXT("success"),OK && Renderers==5); return Json(R);
+    R->SetBoolField(TEXT("success"),OK && Renderers==5); return GroundMechFireJson(R);
 }
 
 FString UGuLiGroundMechFireEditorLibrary::ConfigureBullet(UNiagaraSystem* System,UMaterialInterface* Material,FVector Scale,float Lifetime,bool bApply)
 {
     auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
-    if (!IsCandidate(System) || !Material || Scale.ContainsNaN() || Scale.GetMin()<=0 || !FMath::IsFinite(Lifetime) || Lifetime<=0) return Json(R);
+    if (!IsCandidate(System) || !Material || Scale.ContainsNaN() || Scale.GetMin()<=0 || !FMath::IsFinite(Lifetime) || Lifetime<=0) return GroundMechFireJson(R);
     // Baseline authored projectile: 12 cm wide, 90 cm long. The material uses
     // three head-widths of canvas for the curve, while its head occupies 1/3.
     const float HeadWidth=12.f*Scale.Y, Length=90.f*Scale.X;
@@ -149,7 +149,7 @@ FString UGuLiGroundMechFireEditorLibrary::ConfigureBullet(UNiagaraSystem* System
     R->SetNumberField(TEXT("head_width_cm"),HeadWidth); R->SetNumberField(TEXT("length_cm"),Length);
     R->SetStringField(TEXT("canvas_cm"),Size.ToString()); R->SetNumberField(TEXT("renderers"),Renderers);
     R->SetArrayField(TEXT("inputs"),Inputs); R->SetBoolField(TEXT("success"),OK && Renderers==1);
-    return Json(R);
+    return GroundMechFireJson(R);
 }
 
 bool UGuLiGroundMechFireEditorLibrary::ConfigureMuzzle(UNiagaraSystem* System)
@@ -177,7 +177,7 @@ FString UGuLiGroundMechFireEditorLibrary::ConfigurePersistentTrail(UNiagaraSyste
         || !System->GetPathName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/"))
         || Dimensions.ContainsNaN() || Dimensions.X<=0 || Dimensions.Y<100 || Dimensions.Z<0
         || !FMath::IsFinite(HoldSeconds) || HoldSeconds<0 || !FMath::IsFinite(FadeSeconds) || FadeSeconds<=0
-        || !FMath::IsFinite(ProjectileLifetime) || ProjectileLifetime<=0) return Json(R);
+        || !FMath::IsFinite(ProjectileLifetime) || ProjectileLifetime<=0) return GroundMechFireJson(R);
     const float Canvas=2.f*(Dimensions.X+Dimensions.Z);
     bool OK=System->GetEmitterHandles().Num()==1; int32 Renderers=0;
     if (bApply)
@@ -237,5 +237,5 @@ FString UGuLiGroundMechFireEditorLibrary::ConfigurePersistentTrail(UNiagaraSyste
     R->SetNumberField(TEXT("max_length_cm"),Dimensions.Y); R->SetNumberField(TEXT("width_cm"),Dimensions.X);
     R->SetNumberField(TEXT("hold_seconds"),HoldSeconds); R->SetNumberField(TEXT("fade_seconds"),FadeSeconds);
     R->SetNumberField(TEXT("bend_cm"),Dimensions.Z); R->SetNumberField(TEXT("renderers"),Renderers);
-    R->SetBoolField(TEXT("success"),OK && Renderers==1); return Json(R);
+    R->SetBoolField(TEXT("success"),OK && Renderers==1); return GroundMechFireJson(R);
 }

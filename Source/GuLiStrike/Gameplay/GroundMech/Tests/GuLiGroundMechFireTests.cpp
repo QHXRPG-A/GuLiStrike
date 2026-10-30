@@ -60,10 +60,16 @@ bool FMechFireCurveTest::RunTest(const FString&)
 	TestEqual(TEXT("Exact peak"),Curve->GetFloatValue(.025),1.f);
 	for (int32 I=0; I<=1500; ++I) TestTrue(TEXT("No curve overshoot"),Curve->GetFloatValue(I*.0001f)>=0 && Curve->GetFloatValue(I*.0001f)<=1);
 	auto* Mesh=NewObject<USkeletalMeshComponent>();
-	Mesh->SetSkeletalMesh(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun")));
+	auto* FixtureMesh=LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2"));
+	if (!TestNotNull(TEXT("Current Ground model fixture"),FixtureMesh)) return false;
+	Mesh->SetSkeletalMesh(FixtureMesh);
+	const auto& Bones=FixtureMesh->GetRefSkeleton();
+	if (!TestTrue(TEXT("Current model has a root bone"),Bones.GetNum()>0)) return false;
+	const float RestZ=Bones.GetRefBonePose()[0].GetTranslation().Z;
+	const float TargetZ=RestZ-36.101471f;
 	auto* Anim=NewObject<UGuLiGroundMechWeaponAnimInstance>(Mesh);
-	Anim->Configure(Curve,TEXT("Barrel_big"),152,.15); Anim->TriggerRecoil(); Anim->NativeUpdateAnimation(.025);
-	TestTrue(TEXT("Barrel local Z reaches 152 cm"),FMath::IsNearlyEqual(188.101471f+Anim->RecoilOffset,152.f,.001f));
+	Anim->Configure(Curve,Bones.GetBoneName(0),TargetZ,.15); Anim->TriggerRecoil(); Anim->NativeUpdateAnimation(.025);
+	TestTrue(TEXT("Recoil reaches configured local target"),FMath::IsNearlyEqual(RestZ+Anim->RecoilOffset,TargetZ,.001f));
 	Anim->NativeUpdateAnimation(.06); const float Before=Anim->RecoilOffset;
 	Anim->TriggerRecoil(); Anim->NativeUpdateAnimation(0);
 	TestEqual(TEXT("Retrigger starts at current displacement"),Anim->RecoilOffset,Before);
@@ -83,7 +89,6 @@ bool FMechFireCadenceTest::RunTest(const FString&)
 	auto* PS=CastChecked<AGuLiBattlePlayerState>(PC->PlayerState);
 	PS->SetServerRoleAssignment(EGuLiTeam::Red,EGuLiCommanderRole::Ground,0); PS->SetServerBattleReady(true);
 	PC->SetPawn(Pawn); Pawn->PossessedBy(PC);
-	Pawn->GetMachinegun()->SetSkeletalMesh(LoadObject<USkeletalMesh>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun")));
 	auto* Weapon=Pawn->GetWeapon(); Weapon->bWeaponEnabled=true;
 	Weapon->UpgradeTable=LoadObject<UDataTable>(nullptr,TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Upgrades"));
 	Weapon->SkillTable=LoadObject<UDataTable>(nullptr,TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills"));

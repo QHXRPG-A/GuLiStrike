@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>灼烧卡牌 · 六层视差</title>
+  <meta name="color-scheme" content="dark">
+  <style>__STYLES__</style>
+</head>
+<body>
+  <header class="topbar"><div><span class="eyebrow">GULISTRIKE / CARD ART</span><h1>灼烧卡牌</h1></div><div class="version">六层交互预览 <span>04</span></div></header>
+  <main>
+    <nav class="card-tabs" aria-label="选择卡牌"><button data-card="Burst" aria-pressed="true">01 <span>灼烧爆裂子弹</span></button><button data-card="Bullet" aria-pressed="false">02 <span>灼烧子弹</span></button></nav>
+    <div class="workspace">
+      <section class="viewer" aria-label="牌面预览">
+        <div class="viewer-top"><div><span class="eyebrow" id="card-id">BURNING BURST</span><h2 id="card-title">灼烧爆裂子弹</h2></div><span class="mode-label" id="mode-label">原位叠合</span></div>
+        <div class="stage" id="stage">
+          <figure id="reference-pane" hidden><img id="compare-reference" alt="用户选定的固定原图"><figcaption>固定原图</figcaption></figure>
+          <div class="perspective"><div class="card" id="card"><div class="art" id="art"><canvas id="composite" role="img" aria-label="六层牌面叠合"></canvas><img id="master" alt="用户选定的固定原图" hidden><div class="loading" id="loading">正在读取图层…</div></div><div class="card-footer"><span id="footer-name">灼烧爆裂子弹</span><span>SIX LAYERS</span></div></div></div>
+        </div>
+        <div class="viewer-bottom"><span id="hint">切换到交互视差后，移动鼠标或拖动牌面</span><button class="text-button" id="center">回正</button></div>
+      </section>
+      <aside>
+        <section class="panel"><h3>查看方式</h3><div class="modes" aria-label="查看方式"><button data-mode="flat" aria-pressed="true">原位叠合</button><button data-mode="parallax" aria-pressed="false">交互视差</button><button data-mode="original" aria-pressed="false">原图</button><button data-mode="compare" aria-pressed="false">原图对照</button></div>
+          <label class="slider" for="strength"><span>层间视差</span><output id="strength-value">6 px</output><input id="strength" type="range" min="0" max="14" step="1" value="6"></label>
+          <label class="slider" for="tilt"><span>牌面倾斜</span><output id="tilt-value">10°</output><input id="tilt" type="range" min="0" max="16" step="1" value="10"></label>
+          <div class="row"><label class="switch"><input type="checkbox" id="auto">自动摆动</label><button class="text-button" id="reset">全部重置</button></div>
+        </section>
+        <section class="panel"><div class="section-heading"><h3>图层 <small>由外到内</small></h3><button class="text-button" id="show-all">全部显示</button></div><div id="layers"></div><p class="layer-note" id="layer-note"></p></section>
+        <section class="panel downloads"><h3>保存素材</h3><div class="download-grid"><button id="export">导出当前叠合 PNG</button><a id="download-master" download>固定原图</a><a href="BurningCards_Standalone.html" download id="download-html">离线 HTML</a><a href="BurningCards_Package.zip" download id="download-zip">完整素材包</a><a href="manifest.json" download id="download-manifest">来源与提示词清单</a></div><p id="status" role="status" aria-live="polite">准备中</p></section>
+      </aside>
+    </div>
+    <footer class="page-footer"><span>按用户指定的两组六层制作 · 燃烧弹体与附着火焰同层</span><span>画面、遮挡和视差观感待用户审核</span></footer>
+  </main>
+  <script>window.CARD_PREVIEW_DATA=__DATA__;</script>
+  <script>__SCRIPT__</script>
+</body></html>

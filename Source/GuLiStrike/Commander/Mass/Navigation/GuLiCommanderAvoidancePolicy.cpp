@@ -267,8 +267,10 @@ namespace GuLiCommanderAvoidancePolicy
 				if (Other.bEnvironment && !QueryScratch.VisitEnvironment(OtherIndex)) { ++Metrics.EnvironmentDuplicates; continue; }
 				++Metrics.UniqueVisits;
 				if (!Other.bParticipates || Other.StableKey == 0u
-					|| GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Other.bEngineering)
-					|| FMath::Abs(Agent.Location.Z - Other.Location.Z) > MaximumHeightDifference+Other.HalfHeight)
+					|| !SharesMovementLayer(Agent,Other)
+                    || GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Other.bEngineering)
+					|| (!(Agent.bLayerBound && Other.bLayerBound && Agent.MovementLayer==EGuLiUnitMovementLayer::LowAir)
+                        && FMath::Abs(Agent.Location.Z - Other.Location.Z) > MaximumHeightDifference+Other.HalfHeight))
 				{
 					continue;
 				}
@@ -321,7 +323,7 @@ namespace GuLiCommanderAvoidancePolicy
 				Candidate.StableKey=(uint64(1)<<63)|O.Handle.Value;
 				Candidate.bOverlapping=CenterSquared<FMath::Square(double(Agent.Radius)+O.RadiusCentimeters);
 				auto& Collider=Candidate.StaticCollider; Collider.StableKey=Candidate.StableKey;
-				Collider.Location=O.Location; Collider.Radius=O.RadiusCentimeters; Collider.HalfHeight=Node->HalfHeight;
+				Collider.bLayerBound=false;Collider.Location=O.Location; Collider.Radius=O.RadiusCentimeters; Collider.HalfHeight=Node->HalfHeight;
 				Collider.bParticipates=true; Collider.bEnvironment=true;
 				int32 Insert=0;
 				while (Insert<Environment.Num() && (Environment[Insert].DistanceSquared<Candidate.DistanceSquared
@@ -434,7 +436,8 @@ namespace GuLiCommanderAvoidancePolicy
 			}
 			const FAgentSnapshot& Collider = ResolveCandidate(Agents,Candidate);
 			if (!Collider.bParticipates || Collider.Radius <= 0.0f
-				|| GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Collider.bEngineering)
+				|| !SharesMovementLayer(Agent,Collider)
+                || GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Collider.bEngineering)
 				|| Collider.Location.ContainsNaN() || Collider.Velocity.ContainsNaN())
 			{
 				continue;

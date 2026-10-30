@@ -16,7 +16,7 @@ public:
     static const FName System;
     explicit FGuLiGridNetwork(UGuLiGroundGridSubsystem& Grid);
     UObject* LifetimeOwner() const override;
-    uint32 Version() const override { return 2; }
+    uint32 Version() const override { return 3; }
     bool UsesObject(const FGuLiHybridObjectKey& Key) const override { return Key==Anchor; }
     void Advance(uint64 Tick,double Delta) override;
     bool ReceiveEvent(const FGuid& Peer,const FGuid& Event,TConstArrayView<uint8> Bytes) override;
@@ -27,10 +27,10 @@ public:
     void PublishedPose(const FGuLiHybridObjectKey& Key,const FGuid& Owner,uint64 Epoch,const GuLiGrid::FRect& Actual);
     void Stop(const FGuLiHybridObjectKey& Key,const GuLiGrid::FRect& Actual);
     void Withdraw(const FGuLiHybridObjectKey& Key);
-    EGuLiGridPermit PermitPlacement(const FGuLiHybridObjectKey& Source,const FGuLiHybridObjectKey& Target,const GuLiGrid::FRect& Rect,int32 Size,uint8 Team);
+    EGuLiGridPermit PermitPlacement(const FGuLiHybridObjectKey& Source,const FGuLiHybridObjectKey& Target,const GuLiGrid::FRect& Rect,int32 Size,uint8 Team,EGuLiUnitMovementLayer Layer=EGuLiUnitMovementLayer::Ground);
     /** Only a restored, already submitted birth may carry a certified placement across owners. */
     void RecoverPlacement(const FGuLiHybridObjectState& Source,const FGuLiHybridObjectKey& Target,const GuLiGrid::FRect& Rect,int32 Size,
-        bool bAppliedDisplacement=false);
+        bool bAppliedDisplacement=false,EGuLiUnitMovementLayer Layer=EGuLiUnitMovementLayer::Ground);
     uint64 PlanningGeneration() const {return SyncGeneration;}
     bool HoldsBody(const FGuLiHybridObjectKey& Key) const {return DisplacementHolds.Contains(Key);}
     void ObjectChanged(const FGuLiHybridObjectKey& Key);
@@ -45,6 +45,7 @@ private:
         uint64 OwnerEpoch=0,Nonce=0,Sequence=0,ControlEpoch=0;
         int32 Size=1;
         uint8 Team=0;
+        EGuLiUnitMovementLayer MovementLayer=EGuLiUnitMovementLayer::Ground;
         GuLiGrid::FTrafficPriority Priority;
         GuLiGrid::FRect Actual,Scope,Passage;
         bool bGranted=false,bPlacement=false,bPhysicalBlocked=false;

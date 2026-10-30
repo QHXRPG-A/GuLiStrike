@@ -151,6 +151,7 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
         auto& Budget=G->FrameBudget();FGuLiNavigationWorkBudget::FScope Scope(Budget);
         const auto* Binding=UGuLiHybridActorComponent::Find(&Pawn);if (!Binding || !G->Network()) return false;
         const auto& O=Binding->GetState();const auto S=G->Snapshot();
+        const auto Layer=GuLiGrid::MovementLayerFor(*GetWorld(),O.Key);
         const int32 Size=GuLiGrid::FootprintFromDiameter(Pawn.GetCapsuleComponent()->GetScaledCapsuleRadius()*2.);
         static const FIntPoint Directions[]={{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1},{1,-1}};
         if (!bGridExitPending)
@@ -160,12 +161,12 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
                 const double Offset=(FMath::CeilToInt32(Config.ExitRadius/300.)+Size+I/8)*300.;
                 FVector P;
                 if (!S->Project(FVector(State.ExitCenter)+FVector(D.X*Offset,D.Y*Offset,0),Size,FVector(300,300,5000),P)
-                    || !GuLiGrid::Unoccupied(*G,P,Size,O.Key)) continue;
+                    || !GuLiGrid::Unoccupied(*G,P,Size,O.Key,Layer)) continue;
                 GridExitPoint=P;bGridExitPending=true;break;
             }
         if (!bGridExitPending) return false;
-        const auto Permit=G->Network()->PermitPlacement(O.Key,O.Key,GuLiGrid::FRect::At(S->AnchorAt(GridExitPoint,Size),Size),Size,uint8(O.Team));
-        if (Permit==EGuLiGridPermit::Blocked || !GuLiGrid::Unoccupied(*G,GridExitPoint,Size,O.Key))
+        const auto Permit=G->Network()->PermitPlacement(O.Key,O.Key,GuLiGrid::FRect::At(S->AnchorAt(GridExitPoint,Size),Size),Size,uint8(O.Team),Layer);
+        if (Permit==EGuLiGridPermit::Blocked || !GuLiGrid::Unoccupied(*G,GridExitPoint,Size,O.Key,Layer))
         {G->Network()->Withdraw(O.Key);bGridExitPending=false;return false;}
         if (Permit!=EGuLiGridPermit::Granted) return false;
         const auto Facing=(FVector(State.FinalGroundTarget)-GridExitPoint).Rotation();

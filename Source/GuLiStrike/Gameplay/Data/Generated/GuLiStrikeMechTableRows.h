@@ -291,6 +291,10 @@ struct FGuLiStrikeMechSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float BlinkShardSpeed = 0.0f;
 
+	/** ImpactVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 ImpactVfxId = 0;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_Visuals 的行结构（源: GuLiStrikeMech.xlsx / Visuals）。 */

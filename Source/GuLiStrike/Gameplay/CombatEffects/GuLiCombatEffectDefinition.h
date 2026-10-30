@@ -133,6 +133,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="0.01", ClampMax="0.15", Units="s")) float LaserMuzzleSeconds = 0.05f;
 	/** The registry's X/Y base scale controls particle length/width; colors remain source-specific. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Machine Gun") int32 GroundMachineGunVfxId = 0;
+	/** Independent GPU stroke width; does not change wingman lasers or collision sweeps. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Machine Gun", meta=(ClampMin="0.1", Units="cm")) float MassTrailWidth = 6.0f;
+	/** Shared render-client light pool. Zero preserves the old formal presentation until review promotion. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire|Lighting") int32 BulletLightVfxId = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Machine Gun") FLinearColor FriendlyGroundMachineGunTint = FLinearColor(1.0f, 1.0f, 0.0f);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Machine Gun") FLinearColor EnemyGroundMachineGunTint = FLinearColor(1.0f, 0.025f, 0.015f);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire", meta=(ClampMin="0.01", ClampMax="0.15")) float TracerLifetime = 0.075f;

@@ -44,12 +44,14 @@ namespace
 	}
 }
 
-bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Population)
+bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Population,
+	const TSet<const AGuLiCommanderDeploymentPoint*>* ExcludedDeployments)
 {
 	Slots.Reset(); Reservations.Reset(); OutError.Reset(); bUsesAuthoredDeployments = false;
 	TArray<AGuLiCommanderDeploymentPoint*> Deployments;
 	for (TActorIterator<AGuLiCommanderDeploymentPoint> It(&World); It; ++It)
 	{
+		if (ExcludedDeployments && ExcludedDeployments->Contains(*It)) continue;
 		Deployments.Add(*It);
 	}
 	Deployments.Sort([](const AGuLiCommanderDeploymentPoint& A, const AGuLiCommanderDeploymentPoint& B)
@@ -60,6 +62,7 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Po
 		OutError = TEXT("Initial army authoring requires the configured Soldiers DataTable."); return false;
 	}
 	TArray<FGuLiSoldierDefinition> Mass;
+	TMap<uint16,FGuLiSoldierDefinition> AuthoredMass;
 	TMap<uint16, float> ActorRadii;
 	TSet<uint16> Seen;
 	const auto Fallback = FGuLiCommanderSoldierResolver::MakeFallbackDefinition();
@@ -72,6 +75,9 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Po
 			OutError = FString::Printf(TEXT("Initial army: invalid/duplicate Soldiers row %s."), *Name.ToString()); return false;
 		}
 		Seen.Add(Definition.UnitTypeId);
+        MovementLayers.Add(Definition.UnitTypeId,Definition.MovementLayer);
+        Altitudes.Add(Definition.UnitTypeId,Definition.AltitudeCentimeters);
+		if(Definition.UsesMass())AuthoredMass.Add(Definition.UnitTypeId,Definition);
 		if (Definition.bSummonOnly || Definition.bConstructionOnly) continue;
 		if (Definition.UsesMass()) Mass.Add(Definition);
 		else
@@ -99,7 +105,11 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Po
 		for (int32 Formation = 0; Formation < Deployments.Num(); ++Formation)
 		{
 			const auto* Point = Deployments[Formation];
-			const auto* Definition = Mass.FindByPredicate([Point](const auto& D) { return D.UnitTypeId == Point->UnitTypeId; });
+			// Population overrides use the same explicit definition catalog during
+			// the resource/PIE audit as they do during manifest export.
+			const auto* Definition = Point->bUseInPopulationManifest
+				? AuthoredMass.Find(Point->UnitTypeId)
+				: Mass.FindByPredicate([Point](const auto& D) { return D.UnitTypeId == Point->UnitTypeId; });
 			const int64 Count = int64(Point->Rows) * Point->Columns;
 			if (!Definition || !GuLiCommanderProtocol::IsPlayableTeam(Point->Team) || Point->Rows < 1 || Point->Columns < 1
 				|| Count > 10000 || Slots.Num() + Count > 10000 || !FMath::IsFinite(Point->SpacingCentimeters)
@@ -122,6 +132,33 @@ bool FGuLiInitialArmyAuthoring::Build(UWorld& World, FString& OutError, int32 Po
 			}
 		}
 	}
+    if(Population>0)
+    {
+        TSet<int32> Replaced;int32 AuthoredFormation=100000;
+        for(const auto* Point:Deployments)if(Point->bUseInPopulationManifest)
+        {
+            const auto* Definition=AuthoredMass.Find(Point->UnitTypeId);
+            ++AuthoredFormation;
+            const int64 Count=int64(Point->Rows)*Point->Columns;
+            if(!Definition||!GuLiCommanderProtocol::IsPlayableTeam(Point->Team)||Point->Rows<1||Point->Columns<1||Count>10000
+                ||!FMath::IsFinite(Point->InitialMaxHealthOverride)||Point->InitialMaxHealthOverride<0
+                ||!FMath::IsFinite(Point->InitialShield)||Point->InitialShield<0
+                ||!FMath::IsFinite(Point->SpacingCentimeters)||Point->SpacingCentimeters<=0||Point->GetActorLocation().ContainsNaN())
+            {OutError=TEXT("Invalid authored population deployment: ")+Point->GetName();return false;}
+            for(int32 Member=0;Member<Count;++Member)
+            {
+                int32 Index=Slots.Num()-1;while(Index>=0&&(Slots[Index].Team!=Point->Team||Replaced.Contains(Index)))--Index;
+                if(Index<0){OutError=TEXT("Authored deployments exceed their team population budget");return false;}
+                Replaced.Add(Index);auto& Slot=Slots[Index];Slot.UnitTypeId=Definition->UnitTypeId;
+                Slot.FormationIndex=AuthoredFormation;Slot.SlotIndex=Member;
+                Slot.Location=Point->GetSlotLocation(Member);Slot.FacingYawDegrees=Point->GetActorRotation().Yaw;
+                Slot.RadiusCentimeters=Definition->GetMassAvoidanceRadius(150.f);
+                Slot.AuthoredId=TEXT("deployment/")+Point->GetActorGuid().ToString(EGuidFormats::Digits)+TEXT("/")+FString::FromInt(Member);
+                Slot.InitialMaxHealthOverride=Point->InitialMaxHealthOverride;Slot.InitialShield=Point->InitialShield;
+                Slot.bAllowAutomaticFire=Point->bAllowAutomaticFire;Slot.bStartIdle=Point->bStartIdle;
+            }
+        }
+    }
 	for (const auto& Slot : Slots)
 		Reservations.Add({ FVector2D(Slot.Location), Slot.RadiusCentimeters,
 			SlotName(Slot), false });
@@ -179,6 +216,9 @@ bool FGuLiInitialArmyAuthoring::IsOreClear(const FVector2D& Center) const
 
 bool FGuLiInitialArmyAuthoring::PlaceLoadOnNavigation(UWorld& World,const UGuLiResourceMapDefinition& Definition,FString& OutError)
 {
+	// Fixed authoring points reserve their cells before automatic formations search.
+	// Stable order preserves the existing layout when no explicit points are enabled.
+	Slots.StableSort([](const auto& A,const auto& B){return !A.AuthoredId.IsEmpty()&&B.AuthoredId.IsEmpty();});
 	const bool bGrid=GuLiGrid::AuthoredSnapshot(World).IsValid();
 	auto* Navigation=FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);
 	const auto* NavData=Navigation ? Navigation->GetNavDataForAgentName(TEXT("CommanderSoldier")) : nullptr;
@@ -200,6 +240,8 @@ bool FGuLiInitialArmyAuthoring::PlaceLoadOnNavigation(UWorld& World,const UGuLiR
 			if (!Separated(XY,FVector2D(Cluster.Center),Slot.RadiusCentimeters+Cluster.ObstacleRadiusCentimeters+Correction,bGrid)) return false;
 		for (const auto& Reserve : Reservations)
 			if (Reserve.bBlocksArmy && !Separated(XY,Reserve.Center,Slot.RadiusCentimeters+Reserve.Radius+Correction,bGrid)) return false;
+		// Preserve the authored initial formations' XY layout: player spawn anchors
+		// derive from their center. Runtime occupancy and move slots are layer-local.
 		auto Separate=[&](const auto& Other)
 		{ return Separated(XY,FVector2D(Other.Location),FMath::Max(
 			GuLiCommanderInitialSpawn::MinimumSeparation,Slot.RadiusCentimeters+Other.RadiusCentimeters),bGrid); };
@@ -220,7 +262,7 @@ bool FGuLiInitialArmyAuthoring::PlaceLoadOnNavigation(UWorld& World,const UGuLiR
 		while (End<Slots.Num() && Slots[End].Team==Slots[Begin].Team && Slots[End].FormationIndex==Slots[Begin].FormationIndex) ++End;
 		bool Accepted=false;
 		// A whole formation translates together; member/type/slot identities never change.
-		for (int32 Ring=0; Ring<=12 && !Accepted; ++Ring)
+		for (int32 Ring=0; Ring<=(Slots[Begin].AuthoredId.IsEmpty()?12:0) && !Accepted; ++Ring)
 		{
 			const int32 Candidates=Ring==0 ? 1 : Ring*8;
 			for (int32 C=0; C<Candidates && !Accepted; ++C)
@@ -267,7 +309,7 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 		const float Correction = GuLiCommanderInitialSpawn::MaximumProjectionCorrection;
 		if (!Ground(World, FVector2D(Slot.Location), OnGround, Slope) || Slope > 15.0f)
 			Failure = TEXT("ground missing or steeper than 15 degrees");
-		else if (!GuLiGrid::ProjectBody(World,Slot.Location,GuLiGrid::FootprintFromDiameter(Slot.RadiusCentimeters*2.),
+		else if (!GuLiGrid::ProjectBody(World,OnGround,GuLiGrid::FootprintFromDiameter(Slot.RadiusCentimeters*2.),
 			FVector(Correction, Correction, GuLiCommanderInitialSpawn::ProjectionVerticalExtent),Nav,NavData)
 			|| FVector::Dist2D(Slot.Location, Nav.Location) > Correction)
 			Failure = TEXT("CommanderSoldier projection exceeds 150 cm");
@@ -288,7 +330,7 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 					Failure = TEXT("overlaps ") + Reserve.Label; break;
 				}
 			for (int32 Index = 0; Index < Projected.Num(); ++Index)
-				if (!Separated(XY,FVector2D(Projected[Index]),FMath::Max(
+				if (MovementLayers.FindRef(Slot.UnitTypeId)==MovementLayers.FindRef(Slots[Index].UnitTypeId) && !Separated(XY,FVector2D(Projected[Index]),FMath::Max(
 					GuLiCommanderInitialSpawn::MinimumSeparation,Slot.RadiusCentimeters+Slots[Index].RadiusCentimeters),bGrid))
 				{
 					Failure = TEXT("insufficient separation from ") + SlotName(Slots[Index]); break;
@@ -317,7 +359,7 @@ bool FGuLiInitialArmyAuthoring::Validate(UWorld& World, const UGuLiResourceMapDe
 	return OutValidSlots == Slots.Num() && !Slots.IsEmpty();
 }
 
-FString FGuLiInitialArmyAuthoring::ToJson() const
+FString FGuLiInitialArmyAuthoring::ToJson(const bool bIncludeMovementLayer) const
 {
 	auto Root = MakeShared<FJsonObject>();
 	Root->SetBoolField(TEXT("authored_deployments"), bUsesAuthoredDeployments);
@@ -331,6 +373,11 @@ FString FGuLiInitialArmyAuthoring::ToJson() const
 		Row->SetNumberField(TEXT("slot"), Slot.SlotIndex);
 		Row->SetNumberField(TEXT("x"), Slot.Location.X); Row->SetNumberField(TEXT("y"), Slot.Location.Y); Row->SetNumberField(TEXT("z"), Slot.Location.Z);
 		Row->SetNumberField(TEXT("radius_cm"), Slot.RadiusCentimeters);
+        if (bIncludeMovementLayer)
+        {
+            Row->SetNumberField(TEXT("movement_layer"),uint8(MovementLayers.FindRef(Slot.UnitTypeId)));
+            Row->SetNumberField(TEXT("altitude_cm"),Altitudes.FindRef(Slot.UnitTypeId));
+        }
 		Row->SetNumberField(TEXT("yaw"), Slot.FacingYawDegrees);
 		Rows.Add(MakeShared<FJsonValueObject>(Row));
 	}

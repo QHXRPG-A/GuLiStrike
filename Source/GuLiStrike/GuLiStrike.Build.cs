@@ -30,13 +30,14 @@ public class GuLiStrike : ModuleRules
 			"Niagara",
 			"UMG",
 			"Slate",
-			"SlateCore"
+			"SlateCore",
+            "GuLiNetCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
 			"PhysicsCore", // Ore instances reuse and validate the models' simple collision.
 			"ApplicationCore", // Foreground-state evidence during explicitly requested performance captures.
-			"GuLiNetCore", "EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "WebSockets", "TraceLog",
+			"EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "WebSockets", "TraceLog",
 			"GuLiFlightNavigationRuntime", "RenderCore", "RHI",
 			// Commander 网络合同使用 FastArray 与自定义 NetSerialize。
 			"NetCore",

@@ -13,6 +13,7 @@
 #include "Components/SkinnedMeshComponent.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Gameplay/Models/GuLiLocalTeamColorSubsystem.h"
+#include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
 #include "Engine/World.h"
 #include "Engine/StaticMeshActor.h"
@@ -807,5 +808,32 @@ bool UGuLiModelAuthoringLibrary::CaptureRuntimeViewport(APlayerController* Contr
 	return FFileHelper::SaveArrayToFile(PNG,*Path);
 #else
 	return false;
+#endif
+}
+
+int32 UGuLiModelAuthoringLibrary::RemapBuildingVisualCache(UGuLiBuildingCatalog* Catalog,
+	UStaticMesh* PreviousMesh, UStaticMesh* ReplacementMesh)
+{
+#if WITH_EDITOR
+	if (!Catalog || !PreviousMesh || !ReplacementMesh || PreviousMesh == ReplacementMesh) return INDEX_NONE;
+	const auto OldBounds = PreviousMesh->GetBounds(), NewBounds = ReplacementMesh->GetBounds();
+	const FVector OldSize = OldBounds.BoxExtent * 2.0, NewSize = NewBounds.BoxExtent * 2.0;
+	if (OldSize.ContainsNaN() || NewSize.ContainsNaN() || OldSize.GetMin() <= UE_DOUBLE_SMALL_NUMBER
+		|| NewSize.GetMin() <= UE_DOUBLE_SMALL_NUMBER) return INDEX_NONE;
+	int32 Changed = 0;
+	for (auto& Definition : Catalog->Definitions)
+	{
+		if (Definition.Mesh != PreviousMesh) continue;
+		if (Changed == 0) Catalog->Modify();
+		const FVector Scale = Definition.MeshScale * OldSize / NewSize;
+		Definition.VisualOffset += Definition.MeshScale * OldBounds.Origin - Scale * NewBounds.Origin;
+		Definition.MeshScale = Scale;
+		Definition.Mesh = ReplacementMesh;
+		++Changed;
+	}
+	if (Changed > 0) Catalog->MarkPackageDirty();
+	return Changed;
+#else
+	return INDEX_NONE;
 #endif
 }

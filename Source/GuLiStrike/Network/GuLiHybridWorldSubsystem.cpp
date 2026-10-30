@@ -1700,15 +1700,16 @@ bool UGuLiHybridWorldSubsystem::FindCommandResult(FGuid Event,FGuLiHybridCommand
     for (const auto& M:Result->Members) Out.Members.Add({ToUE(M.Object),M.ControlEpoch,M.OwnerEpoch,M.Accepted});return true;
 }
 FGuid UGuLiHybridWorldSubsystem::SubmitCapability(const FGuLiHybridObjectKey& Source,FGuid Event,FName Rule,uint64 ExpectedRevision,
-    TConstArrayView<uint8> Payload,EGuLiTeam Faction)
+    TConstArrayView<uint8> Payload,EGuLiTeam Faction,TOptional<uint64> OriginalAt)
 {
     if (!State->Client || !Event.IsValid() || Rule.IsNone() || !CanPublishFacts() || (!HasSimulation(Source) && !HasControl(Source))
         || Payload.Num()>int32(MaximumCapabilityBytes) || Faction>EGuLiTeam::Blue) return {};
     TransactionRequest R;R.Header.Object=ToCore(Source);R.Header.Event=ToCore(Event);R.Header.At=GetObjectLogicalTick(Source);
+    if(OriginalAt.IsSet())R.Header.At=OriginalAt.GetValue();
     R.Target=R.Header.Object;R.RootEvent=R.Header.Event;R.StartedAt=R.Header.At;R.ExpectedRelationVersion=ExpectedRevision;
     R.Kind=TransactionKind::Capability;R.Faction=ToCore(Faction);R.RuleId=TCHAR_TO_UTF8(*Rule.ToString());
     if (!Payload.IsEmpty()) R.CapabilityPayload.assign(Payload.GetData(),Payload.GetData()+Payload.Num());
-    return ToUE(HasSimulation(Source)?State->Client->Submit(R,{}):State->Client->SubmitControlled(R,false));
+    return ToUE(HasSimulation(Source)?State->Client->Submit(R,{},OriginalAt.IsSet()):State->Client->SubmitControlled(R,false));
 }
 FGuid UGuLiHybridWorldSubsystem::SubmitUpgrade(const FGuLiHybridUpgradeRequest& Request)
 {return SubmitUpgradeNative(Request,{});}

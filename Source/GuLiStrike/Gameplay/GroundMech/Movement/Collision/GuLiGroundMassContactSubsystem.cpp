@@ -121,6 +121,7 @@ bool UGuLiGroundMassContactSubsystem::FillBody(const FGuLiSoldierStateItem &Stat
 	Body.SoldierId = State.SoldierId;
 	Body.Team = State.Team;
 	Body.UnitTypeId = State.UnitTypeId;
+    Body.MovementLayer=Definition?Definition->MovementLayer:EGuLiUnitMovementLayer::Ground;
 	Body.RadiusCentimeters = Definition ? Definition->GetMassAvoidanceRadius(150.0f) : 150.0f;
 	GuLiGroundMassCollision::ResolveBodyBounds(Definition ? Definition->GetModelBoundsCentimeters() : FBox(ForceInit),
 											   Body);
@@ -347,6 +348,7 @@ void UGuLiGroundMassContactSubsystem::QueryMassBodies(const FGuLiGroundMassMoveC
 	int32 Raw = 0;
 	if (Move.Snapshot)
 		Move.Snapshot->Query(Bounds, StartSeconds, Duration, Out, &Raw);
+    Out.RemoveAll([](const FGuLiGroundMassBody& B){return B.MovementLayer!=EGuLiUnitMovementLayer::Ground;});
 #if !UE_BUILD_SHIPPING
 	++Stats.Queries;
 	Stats.RawQueryCandidates += Raw;
@@ -363,7 +365,8 @@ void UGuLiGroundMassContactSubsystem::QueryMassBodies(const FBox2D &Bounds, floa
 bool UGuLiGroundMassContactSubsystem::FindMassBody(FGuLiSoldierId Id, FGuLiGroundMassBody &Out)
 {
 	const auto Move = CaptureMove(0.0f);
-	return Move.Snapshot && Move.Snapshot->Find(Id, Move.StartSimulationSeconds, Out);
+	return Move.Snapshot && Move.Snapshot->Find(Id, Move.StartSimulationSeconds, Out)
+        && Out.MovementLayer==EGuLiUnitMovementLayer::Ground;
 }
 
 void UGuLiGroundMassContactSubsystem::MarkLocalContact(const FGuLiGroundMassBody &Body)

@@ -20,7 +20,8 @@ uint32 TeamPrimitiveDataHash(const UMeshComponent* Component)
 {
 	const auto& Data=Component->GetCustomPrimitiveData().Data;
 	uint32 Hash=0;
-	for (int32 Index=8; Index<18; ++Index)
+	// CPD18 is the outpost's managed neutral/team core-light selector.
+	for (int32 Index=8; Index<19; ++Index)
 		Hash=HashCombine(Hash,GetTypeHash(Data.IsValidIndex(Index) ? Data[Index] : 0.f));
 	return Hash;
 }

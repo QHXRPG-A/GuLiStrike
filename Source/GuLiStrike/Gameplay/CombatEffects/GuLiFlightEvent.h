@@ -14,6 +14,9 @@ struct GULISTRIKE_API FGuLiFlightEvent
 	UPROPERTY() FGuLiCombatShotCue Muzzle;
 	UPROPERTY() bool bBootstrap = false;
 	UPROPERTY() bool bHasMuzzle = false;
+    UPROPERTY() bool bInstantGroundSegment=false;
+    UPROPERTY() bool bFrozenGroundImpact=false;
+    UPROPERTY() FVector_NetQuantize InstantEnd=FVector::ZeroVector;
 	UPROPERTY() int32 ImpactVfxId = 0;
 	UPROPERTY() bool bUseCatalogImpact = false;
 	UPROPERTY() FVector_NetQuantizeNormal ImpactNormal = FVector::UpVector;

@@ -345,13 +345,6 @@ def density_statistics(project):
             summaries.append({"assignment_kind":"territory" if key in lookup else key,"marker_id":target.get("marker_id",""),"marker_key":target.get("marker_key",""),"region_id":target.get("region_id",""),"layer_id":layer["layer_id"],"layer_key":layer["layer_key"],"cell_count":count,"density_weight_sum":total/255,"weighted_area_m2":total/255*cell*cell/10000})
         for kind,label in (("unassigned","未归属"),("overlap","严格重叠")):
             if totals[kind][0]:warnings.append({"severity":"warning","message":f"{layer['display_name']}有{totals[kind][0]}格{label}。"})
-        budget_key={"BlueOre":"blue_budgets","RedOre":"red_budgets"}.get(layer["layer_key"])
-        if budget_key and project["map_package"]==CANONICAL_MAP:
-            for territory in territories:
-                match=re.fullmatch(r"Outpost_R([1-7])C([1-7])",territory["marker_key"])
-                if not match:continue
-                budget=GAMEPLAY_PROFILE[budget_key][int(match[1])-1][int(match[2])-1]
-                if budget and not totals[territory["region_id"]][1]:warnings.append({"severity":"warning","marker_id":territory["marker_id"],"region_id":territory["region_id"],"message":f"{territory['marker_key']} 的{layer['display_name']}预算为{budget}簇，但辖区没有有效密度。"})
     d["layers"].sort(key=lambda l:(l["layer_key"],l["layer_id"]));d["map_package"]=project["map_package"];d["territory_summary"]=summaries;d["anomalies"]=anomalies
     return d,warnings
 

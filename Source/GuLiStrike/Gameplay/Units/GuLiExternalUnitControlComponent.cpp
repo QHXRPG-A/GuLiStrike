@@ -12,6 +12,7 @@
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Components/CapsuleComponent.h"
 #include "Materials/MaterialInterface.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 
 UGuLiExternalUnitControlComponent::UGuLiExternalUnitControlComponent()
 {
@@ -30,7 +31,19 @@ void UGuLiExternalUnitControlComponent::BeginPlay()
         Out.Transform=A->GetActorTransform();Out.Actor=A;Out.bGroundPivot=false;Out.bVehicle=C->bPlayerVehicle;Out.bAirborne=C->bAirborne;Out.bLocked=C->AreActionsLocked();
         if (const auto* Character=Cast<ACharacter>(A)) Character->GetCapsuleComponent()->GetScaledCapsuleSize(Out.Radius,Out.HalfHeight);
         FVector Ground;double Height=0;if (!GuLiSkillTargeting::ResolveGround(*A->GetWorld(),A->GetActorLocation(),Ground,&Height)) return false;
-        Out.Altitude=C->bAirborne?float(A->GetActorLocation().Z-Height):Out.HalfHeight+3;return true;
+        Out.Altitude=C->bAirborne?float(A->GetActorLocation().Z-Height):Out.HalfHeight+3;
+        if (const auto Layer=GuLiUnitMovement::LayerForActor(A);Layer.IsSet())
+        {
+            Out.bLayerBound=true;Out.MovementLayer=Layer.GetValue();
+            if (Out.MovementLayer==EGuLiUnitMovementLayer::LowAir)
+            {
+                const auto* Binding=UGuLiHybridActorComponent::Find(A);
+                const FString Name=Binding->GetState().Definition.ToString();
+                const auto* D=A->GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>()->FindDefinition(FCString::Atoi(*Name.Mid(5)));
+                if (!D) return false;Out.Altitude=Out.HalfHeight+3+D->AltitudeCentimeters;
+            }
+        }
+        return true;
     },[Self](const FGuLiExternalControl& In)
     {
         auto* C=Self.Get();if (!C || (C->State.bActionsLocked && C->State.OwnerToken!=In.Token)) return false;

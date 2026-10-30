@@ -40,6 +40,7 @@ from pathlib import Path
 
 import openpyxl
 from card_artwork_catalog import CatalogError, resolve_artwork_references
+from buff_catalog import validate as validate_buffs
 
 PROJECT = Path(__file__).resolve().parents[2]
 EXCEL_DIR = PROJECT / "Data/Excel"
@@ -380,6 +381,7 @@ def validate_rogue_cards(tables):
     entry = tables.get("DT_GuLiStrikeRogueCards_Cards")
     if entry is None:
         return
+    validate_buffs(tables,SheetError)
     texts = {r["TextId"] for r in tables["DT_GuLiStrikeGameTexts_Texts"]["rows"]}
     units = {r["Id"] for r in tables["DT_GuLiStrikeCommander_Soldiers"]["rows"]}
     cards = {row["Id"]: row for row in entry["rows"]}
@@ -391,7 +393,7 @@ def validate_rogue_cards(tables):
     for row in entry["rows"]:
         if not re.fullmatch(r"[0-9]{2}\.[0-9]{2}", row["Id"]) or row["Id"].endswith(".00"):
             raise SheetError(f"卡牌 {row['Name']} 的 id 必须为文本 卡族.两位等级，例如 01.01")
-        if row["Type"] not in range(1, 5) or row["UnitTypeId"] not in units:
+        if row["Type"] not in (1, 3) or (row["Type"] == 1 and row["UnitTypeId"] not in units) or (row["Type"] == 3 and row["UnitTypeId"] != 0):
             raise SheetError(f"卡牌 {row['Name']} 的类型或目标兵种无效")
         if len(row["TextIds"]) != 2 or any(t not in texts for t in row["TextIds"]):
             raise SheetError(f"卡牌 {row['Name']} 必须引用两项已存在的文本，顺序为标题、说明")
@@ -408,6 +410,9 @@ def validate_rogue_cards(tables):
         elif effect == "GuLiRogueCardMissilePodEffect":
             if percent != 0 or count != 0 or row["MaxAcquisitions"] != 1:
                 fail(row, "解锁效果要求两项增量均为0且MaxAcquisitions=1")
+        elif effect == "GuLiRogueCardGroundEffect":
+            if row["Type"] != 3 or percent != 0 or count != 0 or not row.get("EffectIds"):
+                fail(row,"Ground卡要求Type=3、两项增量为0及有效EffectIds")
         else:
             fail(row, f"效果类 {effect} 尚未登记数值契约")
         for key in ("RequiredCardIds", "ExcludedCardIds"):
@@ -419,6 +424,8 @@ def validate_rogue_cards(tables):
             missing = set(refs) - cards.keys()
             if missing:
                 fail(row, f"{key}引用未知卡: {sorted(missing)}")
+            if any(cards[ident]["Type"] != row["Type"] for ident in refs):
+                fail(row, f"{key}不允许跨卡池引用")
         for key in ("ImplementationClass", "FrontMaterial", "UpgradeVfx"):
             if not row[key].startswith(("/Script/", "/Game/")) or "." not in row[key].rsplit("/", 1)[-1]:
                 raise SheetError(f"卡牌 {row['Name']}.{key} 必须为完整对象路径")
@@ -605,6 +612,14 @@ def validate_building_references(tables):
             raise SheetError(f"Fields/{row['Name']}: invalid airborne transit configuration")
 
 
+def validate_unit_movement_layers(tables):
+    for row in tables.get('DT_GuLiStrikeCommander_Soldiers', {}).get('rows', []):
+        layer, altitude = row.get('MovementLayer', 0), row.get('AltitudeMeters', 0)
+        if layer not in (0, 1) or not math.isfinite(altitude) \
+                or (altitude != 0 if layer == 0 else not 30 <= altitude <= 99):
+            raise SheetError(f"Soldiers/{row['Name']}: MovementLayer=0 requires AltitudeMeters=0; layer 1 requires 30..99m")
+
+
 def validate_commander_state_trees(tables):
     entry = tables.get("DT_GuLiStrikeCommander_Soldiers")
     if entry is None:
@@ -727,7 +742,17 @@ def validate_model_references(tables):
     if ledger.exists():
         published = json.loads(ledger.read_text(encoding='utf-8'))
         current = {r['Name']: r['Id'] for r in catalog}
+        retired_path = PROJECT / 'Data/Models/retired-model-ids.json'
+        retired = json.loads(retired_path.read_text(encoding='utf-8')) if retired_path.exists() else {}
+        if not isinstance(retired, dict) or any(published.get(name) != identity for name, identity in retired.items()):
+            raise SheetError('Models: 退役记录必须引用已经发布的原始名称与ID')
+        active_ids = set(current.values())
+        for name, identity in retired.items():
+            if name in current or identity in active_ids:
+                raise SheetError(f'Models/{name}: 已退役 ID {identity} 不得重新启用或复用')
         for name, identity in published.items():
+            if name in retired:
+                continue
             if current.get(name) != identity:
                 raise SheetError(f'Models/{name}: 发布 ID {identity} 不得删除、重排或复用')
     for table, entry in tables.items():
@@ -764,6 +789,8 @@ def validate_model_references(tables):
         if row['Driver'] == 'CPD':
             reserved = {'TeamPrimary': (8, 'Vector'), 'TeamSecondary': (12, 'Vector'),
                         'TeamEnabled': (16, 'Scalar'), 'TeamLightStrength': (17, 'Scalar')}
+            if row['ModelId'] == 2003:
+                reserved['CoreUseTeamColor'] = (18, 'Scalar')
             if reserved.get(row['ParameterKey']) != (row['CustomDataIndex'], row['ParameterType']):
                 raise SheetError(f'MaterialParameters: CPD 索引冲突或类型错误 {key}')
     seen = set()
@@ -902,7 +929,7 @@ def main():
                 if is_mech and ws.title not in ("升级表", "技能表", "Visuals", "Mobility", "Gait", "GroundIK", "Camera"):
                     raise SheetError("机甲表仅接受升级表、技能表、Visuals、Mobility、Gait、GroundIK、Camera")
                 rows, props = export_game_texts(ws) if stem == "GuLiStrikeGameTexts" else \
-                    export_sheet(ws, allow_text_id=(is_mech and ws.title == "升级表") or stem == "GuLiStrikeRogueCards",
+                    export_sheet(ws, allow_text_id=(is_mech and ws.title == "升级表") or (stem == "GuLiStrikeRogueCards" and ws.title == "Cards"),
                                  resolve_card_artwork=stem == 'GuLiStrikeRogueCards' and ws.title == 'Cards')
                 if consolidated and stem != SECONDARY_WORKBOOK:
                     retired = {(s, t) for s, t in SECONDARY_TABLE_IDENTITIES.values()
@@ -963,6 +990,7 @@ def main():
                 raise SheetError(str(error)) from error
             validate_building_references(tables)
             validate_commander_state_trees(tables)
+            validate_unit_movement_layers(tables)
             validate_game_text_references(tables)
             validate_rogue_cards(tables)
             validate_missile_guidance_capacity(tables)
@@ -1081,7 +1109,9 @@ def main():
     # Appending a new ID during export publishes it; validate-only never changes the ledger.
     ledger_path=PROJECT/'Data/Models/published-model-ids.json'
     ledger_path.parent.mkdir(parents=True,exist_ok=True)
-    write_if_changed(ledger_path,json.dumps({r['Name']:r['Id'] for r in tables['DT_GuLiStrikeModels_Models']['rows']},ensure_ascii=False,indent=2))
+    published_ids=json.loads(ledger_path.read_text(encoding='utf-8')) if ledger_path.exists() else {}
+    published_ids.update({r['Name']:r['Id'] for r in tables['DT_GuLiStrikeModels_Models']['rows']})
+    write_if_changed(ledger_path,json.dumps(published_ids,ensure_ascii=False,indent=2))
     print(f"manifest: {JSON_DIR / 'manifest.json'}（{len(manifest['tables'])} 表）")
 
 

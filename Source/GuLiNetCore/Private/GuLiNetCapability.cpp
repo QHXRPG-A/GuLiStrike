@@ -155,6 +155,14 @@ bool ProjectCapabilityChanges(const std::map<ObjectKey,ObjectRecord>& Previous,s
     for (const auto& [Name,C]:Contracts().Values) if (C.ProjectChanges && !C.ProjectChanges(Previous,Changes)) return false;
     return true;
 }
+bool ProjectAcceptedDamage(const TransactionRequest& R,const CommitResult& Result,const std::map<ObjectKey,ObjectRecord>& Previous,std::map<ObjectKey,ObjectRecord>& Changes)
+{
+    if(R.Kind!=TransactionKind::Damage||Result.Status!=CommitStatus::Committed)return true;
+    const auto Source=Previous.find(R.Header.Object);if(Source==Previous.end())return false;
+    for(const auto& [Name,_]:Source->second.Capabilities)
+    {const auto* C=FindCapability(Name);if(!C||(C->AcceptedDamage&&!C->AcceptedDamage(R,Result,Previous,Changes)))return false;}
+    return true;
+}
 bool InitializeOwnedCapabilityState(std::map<ObjectKey,ObjectRecord>& Objects)
 {
     if (!Contracts().Valid) return false;
@@ -167,6 +175,17 @@ bool ResolveCapabilityRule(const ObjectRecord& O,const std::map<ObjectKey,Object
     for (const auto& [Name,_]:O.Capabilities)
     {
         const auto* C=FindCapability(Name);if (!C || (C->ResolveRule && !C->ResolveRule(O,Objects,Id,R))) return false;
+    }
+    return Kind==R.Kind && Source==R.SourceDefinition && Target==R.TargetDefinition && ValidRule(R);
+}
+bool ResolveCapabilityTransactionRule(const ObjectRecord& O,const std::map<ObjectKey,ObjectRecord>& Objects,const TransactionRequest& Request,Rule& R)
+{
+    if (!ResolveCapabilityRule(O,Objects,Request.RuleId,R)) return false;
+    const auto Kind=R.Kind;const auto Source=R.SourceDefinition;const auto Target=R.TargetDefinition;
+    for (const auto& [Name,_]:O.Capabilities)
+    {
+        const auto* C=FindCapability(Name);
+        if (!C || (C->ResolveTransactionRule && !C->ResolveTransactionRule(O,Objects,Request,R))) return false;
     }
     return Kind==R.Kind && Source==R.SourceDefinition && Target==R.TargetDefinition && ValidRule(R);
 }

@@ -45,16 +45,16 @@ bool FGuLiGridNetwork::IsLocal(const FGuid& Owner) const {const auto* S=Session(
 void FGuLiGridNetwork::SerializeRow(FGuLiHybridStateArchive& A,FRow& R)
 {
     A.Value(R.Key);A.Value(R.Other);A.Value(R.Owner);A.Value(R.Event);A.Value(R.OwnerEpoch);A.Value(R.Nonce);
-    A.Value(R.Sequence);A.Value(R.ControlEpoch);A.Value(R.Size);A.Value(R.Team);
+    A.Value(R.Sequence);A.Value(R.ControlEpoch);A.Value(R.Size);A.Value(R.Team);A.Enum(R.MovementLayer,uint8(EGuLiUnitMovementLayer::LowAir));
     A.Enum(R.Priority.Class,uint8(GuLiGrid::ETrafficClass::DirectPlayer));A.Value(R.Priority.AcceptedSequence);A.Value(R.Priority.Command);
     SerializeGridRect(A,R.Actual);SerializeGridRect(A,R.Scope);SerializeGridRect(A,R.Passage);A.Value(R.bGranted);A.Value(R.bPlacement);A.Value(R.bPhysicalBlocked);
     if (R.Size<1 || R.Size>64 || R.Team>2) A.Reject();
 }
 bool FGuLiGridNetwork::Decode(TConstArrayView<uint8> Bytes,FPacket& P)
 {
-    FGuLiHybridStateArchive A(Bytes,PacketLimit);uint32 Schema=2;A.Value(Schema);
+    FGuLiHybridStateArchive A(Bytes,PacketLimit);uint32 Schema=3;A.Value(Schema);
     A.Enum(P.Type,uint8(EPacket::Withdraw));A.Value(P.Epoch);A.Value(P.Roster);A.Array(P.Rows,RowsPerPacket,SerializeRow);
-    return Schema==2 && P.Epoch && A.Done();
+    return Schema==3 && P.Epoch && A.Done();
 }
 bool FGuLiGridNetwork::ReceiveEvent(const FGuid& Peer,const FGuid& Event,TConstArrayView<uint8> Bytes)
 {
@@ -151,15 +151,15 @@ bool FGuLiGridNetwork::CurrentBody(const FGuid& Peer,const FRow& R,FGuLiHybridOb
         FGuLiHybridObjectState Target;
         // A future birth or a phased landing cannot overwrite a living ground body.
         if (!H->GetObjectView(R.Key,Target) || Target.LifeState==0 && Target.Parent==R.Other) return true;
-        if (R.Key!=R.Other) return false;
+        if (R.Key!=R.Other || R.MovementLayer!=GuLiGrid::MovementLayerFor(*Grid->GetWorld(),R.Key)) return false;
         if (Target.bPhased) return true;
         return Displacement(*H,Target) && GuLiGrid::PendingDisplacementAt(Target,*Grid->Snapshot(),R.Scope,R.Size);
     }
-    if (R.Key.Kind==EGuLiHybridObjectKind::GroundPlayer) return R.Size==1;
+    if (R.Key.Kind==EGuLiHybridObjectKind::GroundPlayer) return R.Size==1 && R.MovementLayer==EGuLiUnitMovementLayer::Ground;
     const FString Definition=O.Definition.ToString();int32 Slash=INDEX_NONE;Definition.FindLastChar('/',Slash);
     const auto* Catalog=Grid->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
     const auto* D=Catalog && Slash>=0?Catalog->FindSoldierDefinition(FCString::Atoi(*Definition.Mid(Slash+1))):nullptr;
-    return D && R.Size==D->FootprintCells;
+    return D && R.Size==D->FootprintCells && R.MovementLayer==D->MovementLayer;
 }
 void FGuLiGridNetwork::PublishBody(const FRow& R)
 {
@@ -168,7 +168,7 @@ void FGuLiGridNetwork::PublishBody(const FRow& R)
     const int32 Index=Old?Old->StorageIndex:AuthorityKeys.Add(R.Key);
     if (Old && Old->bPlacement!=R.bPlacement) AuthorityIndex.Remove(R.Key,Old->Owner,Old->OwnerEpoch);
     auto& Stored=Bodies.Add(R.Key,R);Stored.StorageIndex=Index;Stored.SyncGeneration=SyncGeneration;
-    AuthorityIndex.Admit(R.Key,R.Owner,R.OwnerEpoch,R.Team,R.Actual,R.Priority,R.Size);
+    AuthorityIndex.Admit(R.Key,R.Owner,R.OwnerEpoch,R.Team,R.Actual,R.Priority,R.Size,R.MovementLayer);
     AuthorityIndex.SetAuthorityScope(R.Key,R.Owner,R.OwnerEpoch,R.Scope);
 }
 void FGuLiGridNetwork::Observe(const FGuLiGridTrafficRecord& R)
@@ -182,7 +182,7 @@ void FGuLiGridNetwork::Observe(const FGuLiGridTrafficRecord& R)
     if (L->Row.OwnerEpoch!=R.OwnerEpoch || L->Row.Owner!=R.Owner || L->Row.bPlacement)
     { const int32 Index=L->StorageIndex;const bool Queued=L->bQueued;*L=FLocal{};L->StorageIndex=Index;L->bQueued=Queued;
       L->Row.Key=R.Key;L->Row.Nonce=1;L->Row.Owner=R.Owner;L->Row.OwnerEpoch=R.OwnerEpoch;L->Desired=R.Occupied; }
-    L->Row.Actual=R.Occupied;L->Row.Size=R.Footprint;L->Row.Team=R.Team;L->Row.Priority=R.Priority;
+    L->Row.Actual=R.Occupied;L->Row.Size=R.Footprint;L->Row.MovementLayer=R.MovementLayer;L->Row.Team=R.Team;L->Row.Priority=R.Priority;
     // Ordinary bodies only report actual occupancy; placement is the sole exclusion protocol.
     L->Row.Scope=R.Occupied;L->bGrant=L->bPending=L->bDirty=false;
 }
@@ -197,7 +197,7 @@ void FGuLiGridNetwork::PublishedPose(const FGuLiHybridObjectKey& Key,const FGuid
     if (!B || !B->bPlacement && (B->Owner!=Owner || B->OwnerEpoch!=Epoch))
     {
         if (B && B->OwnerEpoch>Epoch) return;
-        FRow Row;Row.Key=Key;Row.Owner=Owner;Row.OwnerEpoch=Epoch;Row.Size=Body->Footprint;Row.Team=Body->Team;
+        FRow Row;Row.Key=Key;Row.Owner=Owner;Row.OwnerEpoch=Epoch;Row.Size=Body->Footprint;Row.MovementLayer=Body->MovementLayer;Row.Team=Body->Team;
         Row.Actual=Row.Scope=Actual;PublishBody(Row);return;
     }
     if (B->bPlacement || B->Owner!=Owner || B->OwnerEpoch!=Epoch) return;
@@ -205,7 +205,7 @@ void FGuLiGridNetwork::PublishedPose(const FGuLiHybridObjectKey& Key,const FGuid
     if (!Same(B->Actual,Actual) && AuthorityIndex.Commit(Key,Owner,Epoch,Actual)) B->Actual=B->Scope=Actual;
 }
 EGuLiGridPermit FGuLiGridNetwork::PermitPlacement(const FGuLiHybridObjectKey& Source,const FGuLiHybridObjectKey& Target,
-    const GuLiGrid::FRect& Rect,int32 Size,uint8 Team)
+    const GuLiGrid::FRect& Rect,int32 Size,uint8 Team,EGuLiUnitMovementLayer Layer)
 {
     FGuLiHybridObjectState O;auto* H=Hybrid();
     if (!H || !H->GetObjectView(Source,O) || !IsLocal(O.SimulationOwner) || !Target.IsValid() || !Grid.IsValid()) return EGuLiGridPermit::Pending;
@@ -220,9 +220,9 @@ EGuLiGridPermit FGuLiGridNetwork::PermitPlacement(const FGuLiHybridObjectKey& So
         if (Locals.Num()>=MaxBodies) return EGuLiGridPermit::Pending;
         L=&Locals.Add(Target);L->StorageIndex=LocalKeys.Add(Target);
         L->Row.Key=Target;L->Row.Other=Source;L->Row.Owner=O.SimulationOwner;L->Row.OwnerEpoch=O.OwnerEpoch;
-        L->Row.bPlacement=true;L->Row.Size=Size;L->Row.Team=Team;L->Row.Actual=L->Row.Scope=Rect;L->Desired=Rect;
+        L->Row.bPlacement=true;L->Row.Size=Size;L->Row.MovementLayer=Layer;L->Row.Team=Team;L->Row.Actual=L->Row.Scope=Rect;L->Desired=Rect;
     }
-    if (!L->Row.bPlacement || L->Row.Other!=Source || L->Row.OwnerEpoch!=O.OwnerEpoch || !Same(Rect,L->Row.Actual)) return EGuLiGridPermit::Blocked;
+    if (!L->Row.bPlacement || L->Row.Other!=Source || L->Row.OwnerEpoch!=O.OwnerEpoch || !Same(Rect,L->Row.Actual) || L->Row.MovementLayer!=Layer) return EGuLiGridPermit::Blocked;
     if (!RefreshAuthority() || !bReady) return EGuLiGridPermit::Pending;
     if (L->bGrant) return EGuLiGridPermit::Granted;
     if (!L->bPending && FPlatformTime::Seconds()>=L->RetryAt)
@@ -275,7 +275,7 @@ void FGuLiGridNetwork::ObjectChanged(const FGuLiHybridObjectKey& Key)
     }
 }
 void FGuLiGridNetwork::RecoverPlacement(const FGuLiHybridObjectState& Source,const FGuLiHybridObjectKey& Target,
-    const GuLiGrid::FRect& Rect,int32 Size,bool AppliedDisplacement)
+    const GuLiGrid::FRect& Rect,int32 Size,bool AppliedDisplacement,EGuLiUnitMovementLayer Layer)
 {
     if (!IsLocal(Source.SimulationOwner) || !Target.IsValid() || !Source.OwnerEpoch) return;
     FGuLiHybridObjectState Born;
@@ -287,7 +287,7 @@ void FGuLiGridNetwork::RecoverPlacement(const FGuLiHybridObjectState& Source,con
     if (L) RemoveLocal(Target);
     if (Locals.Num()>=MaxBodies) {Hybrid()->Suspend(TEXT("Grid placement recovery capacity exceeded"));return;}
     L=&Locals.Add(Target);L->StorageIndex=LocalKeys.Add(Target);L->Row.Key=Target;L->Row.Other=Source.Key;
-    L->Row.Owner=Source.SimulationOwner;L->Row.OwnerEpoch=Source.OwnerEpoch;L->Row.Size=Size;L->Row.Team=uint8(Source.Team);
+    L->Row.Owner=Source.SimulationOwner;L->Row.OwnerEpoch=Source.OwnerEpoch;L->Row.Size=Size;L->Row.MovementLayer=Layer;L->Row.Team=uint8(Source.Team);
     L->Row.bPlacement=true;L->Row.bGranted=true;L->Row.Actual=L->Row.Scope=L->Granted=L->Desired=Rect;
     L->bGrant=true;L->bDirty=false;L->Row.Nonce=1;
     // Submitted production work is restored before movement resumes. Its occupied exit is not a new grant.
@@ -366,7 +366,7 @@ void FGuLiGridNetwork::Handle(FPacket& P,FRow* R)
         {
             // A submitted birth/applied landing can be restored after the peer's initial sync.
             // Never silently lose its certified scope, or overwrite another owner's live corridor.
-            TArray<FGuLiHybridObjectKey> Hits;AuthorityIndex.Query(R->Scope,R->Key,Hits);
+            TArray<FGuLiHybridObjectKey> Hits;AuthorityIndex.Query(R->Scope,R->Key,Hits,R->MovementLayer);
             if (Existing || !Hits.IsEmpty() || !Same(R->Actual,R->Scope) || !Grid->Snapshot()->CoveredTerrainClear(R->Scope))
                 Hybrid()->Suspend(TEXT("Recovered grid placement conflicts with retained traffic state"));
             else PublishBody(*R);
@@ -385,7 +385,7 @@ void FGuLiGridNetwork::Handle(FPacket& P,FRow* R)
     {R->bGranted=false;R->bPhysicalBlocked=true;Queue(EPacket::Reply,P.Peer,R);return;}
     // Keep the previous scope until a grant is applied, or an explicit trim is received.
     if (Existing && Existing->OwnerEpoch==R->OwnerEpoch && !R->Scope.Contains(Existing->Scope)) return;
-    TArray<FGuLiHybridObjectKey> Hits;AuthorityIndex.Query(R->Scope,R->Key,Hits);R->bGranted=true;R->bPhysicalBlocked=false;
+    TArray<FGuLiHybridObjectKey> Hits;AuthorityIndex.Query(R->Scope,R->Key,Hits,R->MovementLayer);R->bGranted=true;R->bPhysicalBlocked=false;
     for (const auto& K:Hits)
     {
         const auto* B=Bodies.Find(K);if (!B) continue;
@@ -476,7 +476,7 @@ void FGuLiGridNetwork::Flush(FGuLiNavigationWorkBudget& Budget)
     int32 Sent=0;
     while (Sent<Outgoing.Num() && Budget.CanWork())
     {
-        auto& P=Outgoing[Sent];FGuLiHybridStateArchive A(PacketLimit);uint32 Schema=2;A.Value(Schema);
+        auto& P=Outgoing[Sent];FGuLiHybridStateArchive A(PacketLimit);uint32 Schema=3;A.Value(Schema);
         A.Enum(P.Type,uint8(EPacket::Withdraw));A.Value(P.Epoch);A.Value(P.Roster);A.Array(P.Rows,RowsPerPacket,SerializeRow);TArray<uint8> Bytes;
         if (!A.Finish(Bytes)) {Hybrid()->Suspend(TEXT("Invalid grid traffic batch"));return;}
         if (!Hybrid()->SendSharedStateEvent(System,P.Peer,P.Event,Bytes)) break;++Sent;
@@ -485,7 +485,7 @@ void FGuLiGridNetwork::Flush(FGuLiNavigationWorkBudget& Budget)
 }
 void FGuLiGridNetwork::SerializeSave(FGuLiHybridStateArchive& A,FSave& Save) const
 {
-    uint32 Schema=2;A.Value(Schema);if (Schema!=2) A.Reject();A.Value(Save.Counter);
+    uint32 Schema=3;A.Value(Schema);if (Schema!=3) A.Reject();A.Value(Save.Counter);
     A.Array(Save.Bodies,MaxBodies,SerializeRow);
     A.Array(Save.Admissions,MaxAdmissions,[](auto& B,auto& R){B.Value(R.Event);B.Value(R.Owner);B.Value(R.Sequence);});
 }
@@ -493,7 +493,7 @@ bool FGuLiGridNetwork::Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArra
 {
     if (Objects.Num()!=1 || Objects[0]!=Anchor) return false;
     // Stream the checkpoint once. No roster clone or O(N log N) sorting on the backup tick.
-    FGuLiHybridStateArchive A(CheckpointLimit);uint32 Schema=2;A.Value(Schema);auto SavedCounter=Counter;A.Value(SavedCounter);
+    FGuLiHybridStateArchive A(CheckpointLimit);uint32 Schema=3;A.Value(Schema);auto SavedCounter=Counter;A.Value(SavedCounter);
     uint32 Count=Bodies.Num();A.Value(Count);
     for (const auto& Pair:Bodies) {auto R=Pair.Value;SerializeRow(A,R);}
     Count=Admissions.Num();A.Value(Count);

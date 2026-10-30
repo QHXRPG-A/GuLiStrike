@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gameplay/Units/GuLiUnitMovementLayer.h"
 #include "Commander/GuLiCommanderSimulationTiming.h"
 #include "AI/Navigation/NavigationTypes.h"
 
@@ -90,6 +91,7 @@ namespace GuLiCommanderNavigationPolicy
 		/** Complete Mass identity, including generation; appended to preserve aggregate callers. */
 		uint64 StableEntityKey = 0u;
 		bool bEngineering = false;
+        EGuLiUnitMovementLayer MovementLayer=EGuLiUnitMovementLayer::Ground;
 	};
 
 	/** Work counters produced by one manual-separation refresh. */

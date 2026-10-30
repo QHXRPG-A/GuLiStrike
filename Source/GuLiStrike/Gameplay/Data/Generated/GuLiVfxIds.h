@@ -60,4 +60,8 @@ namespace GuLiVfxIds
 	inline constexpr int32 GroundMechAfterimage = 55;
 	inline constexpr int32 GroundMechBlink = 56;
 	inline constexpr int32 GroundMechBlinkShape = 57;
+	inline constexpr int32 BulletLightPool = 58;
+	inline constexpr int32 GroundBurningStatus = 59;
+	inline constexpr int32 GroundBurningBurst = 60;
+	inline constexpr int32 GroundBurningBullet = 61;
 }

@@ -157,7 +157,9 @@ def newest(project_id):
 
 def save(project, autosave=False, expected_revision=None):
     project_id=ident(project["id"]);previous=newest(project_id)
-    if expected_revision is not None and previous and digest(previous.read_bytes())!=expected_revision:
+    if previous and expected_revision is None:
+        raise FileExistsError("工程已存在，保存必须携带最新版本。请打开本地最新工程，避免旧页面或旧导入包覆盖修改。")
+    if previous and digest(previous.read_bytes())!=expected_revision:
         raise FileExistsError("另一个窗口已保存此工程。请重新打开最新工程，避免覆盖其修改。")
     data=bundle(project);path=paths(project_id)[1 if autosave else 0];atomic_bytes(path,data)
     return {"id":project_id,"path":str(path),"revision":digest(data),"autosave":autosave}

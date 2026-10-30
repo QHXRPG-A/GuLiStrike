@@ -60,7 +60,10 @@ def parameter_values(catalog, ident):
               for key, row in catalog["parameters"][ident].items()}
     for index, row in catalog["layers"][ident].items():
         prefix = f"Layer {index} "
-        values[prefix + "Depth"] = ("Scalar", row["Depth"])
+        motion=row
+        while motion.get('MotionOwnerLayer',0):
+            motion=catalog['layers'][ident][motion['MotionOwnerLayer']]
+        values[prefix + "Depth"] = ("Scalar", motion["Depth"])
         values[prefix + "Opacity"] = ("Scalar", row["Opacity"])
         values[prefix + "Scale"] = ("Vector", [row[k] for k in ("ScaleU", "ScaleV", "ScaleB", "ScaleA")])
         values[prefix + "Offset"] = ("Vector", [row[k] for k in ("OffsetU", "OffsetV", "OffsetB", "OffsetA")])
@@ -156,7 +159,7 @@ def preflight(ids=None, require_native=False, mutation=False, reimport=False):
         independent = all(f'Layer {index} Map' in names['Texture'] for index in range(1, 7))
         masked = 'Foreground Front Mask' in names['Texture']
         expected = {'ModelComicAtlasV9': (False, False), 'RegisteredSix': (True, False),
-                    'RegisteredSixForegroundMask': (True, True)}[template['CompositePreset']]
+                    'RegisteredSixForegroundMask': (True, True), 'RegisteredSixRigid': (True, True)}[template['CompositePreset']]
         assert (independent, masked) == expected, 'Parent material does not implement the selected composite template'
         for key, (kind, _) in parameter_values(catalog, ident).items():
             assert key in names[kind], f"Artwork {ident}: {key} is not a {kind} parameter of its template"

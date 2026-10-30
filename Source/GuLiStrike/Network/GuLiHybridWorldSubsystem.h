@@ -406,7 +406,7 @@ public:
     UFUNCTION(BlueprintCallable, Category="Hybrid|Transactions") FGuid SubmitObjectOperation(const FGuLiHybridObjectRequest& Request);
     FGuid SubmitObjectOperationNative(const FGuLiHybridObjectRequest& Request,TFunction<void(const FGuLiHybridTransactionResult&)> Callback);
     FGuid SubmitCapability(const FGuLiHybridObjectKey& Source,FGuid Event,FName Rule,uint64 ExpectedRevision,
-        TConstArrayView<uint8> Payload,EGuLiTeam Faction=EGuLiTeam::Unassigned);
+        TConstArrayView<uint8> Payload,EGuLiTeam Faction=EGuLiTeam::Unassigned,TOptional<uint64> OriginalAt={});
     UFUNCTION(BlueprintCallable,Category="Hybrid|Transactions") FGuid SubmitUpgrade(const FGuLiHybridUpgradeRequest& Request);
     FGuid SubmitUpgradeNative(const FGuLiHybridUpgradeRequest& Request,TFunction<void(const FGuLiHybridTransactionResult&)> Callback);
     UFUNCTION(BlueprintPure, Category="Hybrid|Transactions") FGuLiResourceAmounts GetTeamBalance(EGuLiTeam Team) const;

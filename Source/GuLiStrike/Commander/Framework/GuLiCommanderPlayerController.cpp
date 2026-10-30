@@ -168,6 +168,7 @@ void AGuLiCommanderPlayerController::SetRogueCardModal(bool bActive)
 	if (bRogueCardModal==bActive) return;
 	if (bActive)
 	{
+        if(auto* Ground=Cast<AGuLiGroundMechCharacter>(GetPawn())){Ground->SubmitGameplayInput(FVector2D::ZeroVector,FVector::ZeroVector,false,false,false,false);Ground->GetWeapon()->SetFireHeld(false);Ground->SetRocketJumpInput(false);Ground->SetShoulderAimHeld(false);}
 		CancelSelectionDrag(); ActivateSelectionTool();
 		if (TeleportInput && TeleportInput->IsAiming()) TeleportInput->CancelTeleport();
 		if (BuildingPlacementComponent) BuildingPlacementComponent->HandleCancelAction();
@@ -217,7 +218,9 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 	if (PlayerInput) PlayerInput->DebugExecBindings.RemoveAll([](const FKeyBind& Binding)
 	{ return Binding.Key == EKeys::F4 && Binding.Command.Contains(TEXT("viewmode lit_detaillighting")); });
 	auto& Enhanced=*CastChecked<UEnhancedInputComponent>(InputComponent);
-	BattleCommandMappings=LoadObject<UInputMappingContext>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/Input/IMC_BattleCommands"));
+    const auto* BattleTemplate=LoadObject<UInputMappingContext>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/Input/IMC_BattleCommands"));
+    BattleCommandMappings=BattleTemplate?DuplicateObject<UInputMappingContext>(BattleTemplate,this):NewObject<UInputMappingContext>(this);
+    BattleCommandMappings->SetFlags(RF_Transient);
 	CommanderCommandMappings = NewObject<UInputMappingContext>(this);
 	struct FBinding { const TCHAR* Name; void (ThisClass::*Handler)(); };
 	const FBinding Bindings[]={
@@ -270,7 +273,9 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 		CommanderActions.Add(Action); CommanderCommandMappings->MapKey(Action, Key); return Action;
 	};
 	Enhanced.BindAction(MakeAction(EKeys::M), ETriggerEvent::Started, this, &ThisClass::HandleArmMoveToolInput);
-	Enhanced.BindAction(MakeAction(EKeys::F4), ETriggerEvent::Started, this, &ThisClass::OpenRogueCards);
+    auto* RogueAction=MakeAction(EKeys::F4);
+    BattleCommandMappings->MapKey(RogueAction,EKeys::F4);
+	Enhanced.BindAction(RogueAction, ETriggerEvent::Started, this, &ThisClass::OpenRogueCards);
 	Enhanced.BindAction(MakeAction(EKeys::S), ETriggerEvent::Started, this, &ThisClass::StopSelectedUnits);
 	Enhanced.BindAction(MakeAction(EKeys::Tab), ETriggerEvent::Started, this, &ThisClass::HandleInspectionTab);
 	Enhanced.BindAction(MakeAction(EKeys::F10), ETriggerEvent::Started, this, &ThisClass::HandleLocalMenu);

@@ -54,6 +54,11 @@ struct CapabilityContract
     // Admission supplied by the spawned family itself, including families
     // whose producer does not carry that child's capability.
     std::function<bool(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,ObjectRecord&,bool&)> FreezeSpawn;
+    // A frozen hit plan may resolve a target-specific amount. Existing numeric resolvers run first.
+    std::function<bool(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,Rule&)> ResolveTransactionRule;
+    // Persist on-hit applications / pulse acknowledgments in the accepted damage's
+    // owner-work delta. No presentation callback can grant a gameplay effect.
+    std::function<bool(const TransactionRequest&,const CommitResult&,const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&)> AcceptedDamage;
 };
 GULINETCORE_API bool RegisterCapability(CapabilityContract Contract);
 GULINETCORE_API const CapabilityContract* FindCapability(const std::string& Name);
@@ -64,9 +69,11 @@ GULINETCORE_API bool ValidateCapabilityCommit(const CommitResult& Result,const s
     const std::map<std::string,std::set<ObjectKey>>* MutationMembers=nullptr);
 GULINETCORE_API Team ObjectAffiliation(const ObjectRecord& Object);
 GULINETCORE_API bool ResolveCapabilityRule(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const std::string&,Rule&);
+GULINETCORE_API bool ResolveCapabilityTransactionRule(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,Rule&);
 GULINETCORE_API bool DeriveSpawnCapabilities(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,ObjectRecord&);
 GULINETCORE_API bool ValidateCapabilityMutation(const std::map<ObjectKey,ObjectRecord>& Previous,std::span<const ObjectRecord> Changes,
     const std::map<std::string,std::set<ObjectKey>>* MutationMembers=nullptr);
 GULINETCORE_API bool ProjectCapabilityChanges(const std::map<ObjectKey,ObjectRecord>& Previous,std::map<ObjectKey,ObjectRecord>& Changes);
 GULINETCORE_API bool InitializeOwnedCapabilityState(std::map<ObjectKey,ObjectRecord>& Objects);
+GULINETCORE_API bool ProjectAcceptedDamage(const TransactionRequest&,const CommitResult&,const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&);
 }

@@ -24,9 +24,6 @@ namespace GuLiModelIds
 	inline constexpr int32 SSF_Reactor = 3005;
 	inline constexpr int32 SSF_StrategyCenter = 3006;
 	inline constexpr int32 GroundMech = 4001;
-	inline constexpr int32 GroundMech_Armor = 4002;
-	inline constexpr int32 GroundMech_Shoulder = 4003;
-	inline constexpr int32 GroundMech_Machinegun = 4004;
 	inline constexpr int32 ShipDefaultHull = 5001;
 	inline constexpr int32 ShipDreadnoughtHull = 5002;
 	inline constexpr int32 SC_Autocannon = 5101;

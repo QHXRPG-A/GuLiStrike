@@ -29,6 +29,8 @@ bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
         if (!Valid || !D.UnitTypeId || Types.Contains(D.UnitTypeId)) {Error=TEXT("Invalid or duplicate unit definition");return false;}Types.Add(D.UnitTypeId);
         const FString Definition=FString::Printf(TEXT("unit/%u"),D.UnitTypeId);
         M.Numbers.Add(TEXT("unit_definition/")+Definition+TEXT("/type_id"),D.UnitTypeId);
+        M.Numbers.Add(TEXT("unit_definition/")+Definition+TEXT("/movement_layer"),uint8(D.MovementLayer));
+        M.Numbers.Add(TEXT("unit_definition/")+Definition+TEXT("/altitude_cm"),D.AltitudeCentimeters);
         if (D.UsesMass() && !FGuLiHybridAdapterRegistry::BindDefinition(M,Definition,TEXT("Mass"),Error)) return false;
         if (D.UsesMass()) M.Numbers.Add(TEXT("relocation/target/")+Definition,0);
         if (!D.UsesMass() && D.ActorClass && !FGuLiHybridComponentState::BindDefinitionLayout(M,Definition,*D.ActorClass.Get(),Error)) return false;

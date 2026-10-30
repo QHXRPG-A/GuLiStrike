@@ -32,18 +32,23 @@ struct FGridLandingPlan::FImpl
 
     bool Blocked(UWorld& W,UGuLiGroundGridSubsystem& G,UGuLiExternalControlRegistry& E,const FEntry& U,const FTransform& Landing)
     {
+        auto Query=Collision;
+        if (U.Body.bLayerBound) GuLiUnitMovement::IgnoreOtherLayerBodies(W,Query,Landing.GetLocation()+FVector(0,0,U.Body.HalfHeight),
+            U.Body.Radius+U.Body.HalfHeight,U.Body.MovementLayer);
         const auto Position=Landing.GetLocation()+(U.Body.bGroundPivot?FVector(0,0,U.Body.HalfHeight+.6):FVector::ZeroVector);
         if (W.OverlapBlockingTestByChannel(Position,FQuat::Identity,ECC_Pawn,
-            FCollisionShape::MakeCapsule(U.Body.Radius,FMath::Max(U.Body.Radius,U.Body.HalfHeight)),Collision)) return true;
+            FCollisionShape::MakeCapsule(U.Body.Radius,FMath::Max(U.Body.Radius,U.Body.HalfHeight)),Query)) return true;
         const auto Overlap=[&](const FGuLiExternalBody& B,const FTransform& T)
         {
+            if (U.Body.bLayerBound && B.bLayerBound && U.Body.MovementLayer!=B.MovementLayer) return false;
             const auto Q=T.GetLocation()+(B.bGroundPivot?FVector(0,0,B.HalfHeight+.6):FVector::ZeroVector);
-            return FMath::Abs(Position.Z-Q.Z)<U.Body.HalfHeight+B.HalfHeight
+            return ((U.Body.bLayerBound && B.bLayerBound && U.Body.MovementLayer==EGuLiUnitMovementLayer::LowAir)
+                || FMath::Abs(Position.Z-Q.Z)<U.Body.HalfHeight+B.HalfHeight)
                 && FVector::DistSquared2D(Position,Q)<FMath::Square(U.Body.Radius+B.Radius+.4f);
         };
         TArray<FGuLiHybridObjectKey> Hits;
         const int32 Size=GuLiGrid::FootprintFromDiameter(U.Body.Radius*2.);
-        G.Traffic().Query(GuLiGrid::FRect::At(G.Snapshot()->AnchorAt(Landing.GetLocation(),Size),Size),U.Key,Hits);
+        G.Traffic().Query(GuLiGrid::FRect::At(G.Snapshot()->AnchorAt(Landing.GetLocation(),Size),Size),U.Key,Hits,U.Body.bLayerBound?TOptional<EGuLiUnitMovementLayer>(U.Body.MovementLayer):TOptional<EGuLiUnitMovementLayer>());
         for (const auto& K:Hits)
         {
             if (Indices.Contains(K)) continue;
@@ -92,7 +97,7 @@ ELandingPlan FGridLandingPlan::Advance(UWorld& W,const Net::State& S,Net::Comman
             if (Body.bFollowParent) I.Siblings.FindOrAdd(O.Parent).Add(K);
             else if (!Body.bAirborne)
             {
-                if (!I.Slots->Add(Index+1,GuLiGrid::FootprintFromDiameter(Body.Radius*2.))) I.Stage=FImpl::EStage::Failed;
+                if (!I.Slots->Add(Index+1,GuLiGrid::FootprintFromDiameter(Body.Radius*2.),Body.MovementLayer)) I.Stage=FImpl::EStage::Failed;
                 ++I.GroundCount;
             }
         }

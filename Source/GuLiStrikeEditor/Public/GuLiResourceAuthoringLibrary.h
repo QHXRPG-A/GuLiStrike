@@ -8,6 +8,7 @@
 
 class UGuLiResourceMapDefinition;
 class UWorld;
+class AGuLiCommanderDeploymentPoint;
 
 USTRUCT(BlueprintType)
 struct GULISTRIKEEDITOR_API FGuLiResourceBakeResult
@@ -64,6 +65,12 @@ public:
 	/** Strictly bakes the current, already-authored map. No fallback points are synthesized. */
 	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")
 	static FGuLiResourceBakeResult BakeCurrentMap(bool bSavePackages = true);
+
+	/** Proves the old source is unchanged after excluding the specified additions, then audits
+	 * the complete new army against the certified ore layout. Default is read-only. */
+	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")
+	static FGuLiResourceBakeResult RevalidateAddedDeployments(
+		const TArray<AGuLiCommanderDeploymentPoint*>& AddedDeployments, bool bApplyAndSave = false);
 
 	/** Compares current authoring source, baked source hash and baked layout validation. */
 	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")

@@ -4,6 +4,7 @@
 #include "Gameplay/Navigation/Grid/GuLiGroundGridData.h"
 #include "GuLiInitialArmyAuthoring.h"
 #include "GuLiCommanderIslandAuthoringLibrary.h"
+#include "Commander/Framework/GuLiCommanderDeploymentPoint.h"
 
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
@@ -114,7 +115,8 @@ namespace GuLiResourceAuthoring
 		return UWorld::RemovePIEPrefix(World.GetOutermost()->GetName());
 	}
 
-	bool HashAuthoringFiles(const TMap<FString, FString>& Files, FString& OutHash)
+	bool HashAuthoringFiles(const TMap<FString, FString>& Files, FString& OutHash,
+		const FGuLiInitialArmyAuthoring* ArmyOverride = nullptr)
 	{
 		if (Files.IsEmpty()) return false;
 		FSHA1 Hash;
@@ -139,8 +141,10 @@ namespace GuLiResourceAuthoring
 		FGuLiInitialArmyAuthoring InitialArmy;
 		FString Error;
 		UWorld* World = GetEditorWorld();
-		if (!World || !InitialArmy.Build(*World, Error)) return false;
-		const FString SpawnJson = InitialArmy.ToJson();
+		if (!World || (!ArmyOverride && !InitialArmy.Build(*World, Error))) return false;
+		// Ground/low-air share this ground footprint and resource exclusion. Preview
+		// metadata must not invalidate or regenerate an otherwise identical ore bake.
+		const FString SpawnJson = (ArmyOverride ? *ArmyOverride : InitialArmy).ToJson(false);
 		FTCHARToUTF8 SpawnUtf8(*SpawnJson);
 		Hash.Update(reinterpret_cast<const uint8*>(SpawnUtf8.Get()), SpawnUtf8.Length());
 		const FString& TerrainHash = World->GetOutermost()->GetMetaData().GetValue(
@@ -1400,6 +1404,82 @@ FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::BakeCurrentMap(const bool
 		Result.TerritoryCount, Result.ClusterCount, Result.NodeCount,
 		*Result.SourceHash, *Result.LayoutHash);
 	UE_LOG(LogGuLiResourceBake, Display, TEXT("%s"), *Result.Message);
+	return Result;
+}
+
+FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::RevalidateAddedDeployments(
+	const TArray<AGuLiCommanderDeploymentPoint*>& AddedDeployments, const bool bApplyAndSave)
+{
+	using namespace GuLiResourceAuthoring;
+	UWorld* World = GetEditorWorld();
+	if (!World || !IsCanonicalResourceMap(World))
+		return Fail(TEXT("Deployment revalidation requires the idle canonical resource map."));
+	if (bApplyAndSave && World->GetOutermost()->IsDirty())
+		return Fail(TEXT("Save the authored map before applying deployment revalidation."));
+	if (AddedDeployments.IsEmpty()) return Fail(TEXT("Specify the added deployment actors explicitly."));
+	TSet<const AGuLiCommanderDeploymentPoint*> Excluded;
+	for (const AGuLiCommanderDeploymentPoint* Point : AddedDeployments)
+	{
+		if (!IsValid(Point) || Point->GetWorld() != World || Point->GetLevel() != World->PersistentLevel
+			|| Excluded.Contains(Point))
+			return Fail(TEXT("Added deployments must be distinct actors in the current persistent level."));
+		Excluded.Add(Point);
+	}
+	auto* Definition = LoadObject<UGuLiResourceMapDefinition>(nullptr, MapDefinitionPath);
+	auto* Economy = LoadObject<UGuLiResourceEconomyConfig>(nullptr, EconomyPath);
+	if (!Definition || !Economy) return Fail(TEXT("Resource DataAssets are missing."));
+	FString Error = UGuLiCommanderIslandAuthoringLibrary::ValidateOutpostPresentationAssets();
+	if (!Error.IsEmpty()) return Fail(Error);
+	if (!Definition->ValidateDefinition(Error) || !Economy->ValidateConfig(Error)) return Fail(Error);
+	FGuLiResourceBakeResult Result;
+	FGuLiMapSnapshot Snapshot;
+	TMap<FString, FString> Files;
+	if (!BuildAuthoringFiles(Snapshot, Files, Result)) return Result;
+	FGuLiInitialArmyAuthoring BaselineArmy;
+	if (!BaselineArmy.Build(*World, Error, 0, &Excluded)) return Fail(Error);
+	FString BaselineHash;
+	if (!HashAuthoringFiles(Files, BaselineHash, &BaselineArmy))
+		return Fail(TEXT("Could not calculate the deployment baseline source hash."));
+	// This proof covers every authoring file, terrain signature, original slot and reservation.
+	// A marker, density, terrain, unit footprint or original deployment change must still rebake.
+	if (BaselineHash != Definition->SourceHash)
+		return Fail(TEXT("The source change is not limited to the specified added deployments; a full resource bake is required."));
+	FGuLiInitialArmyAuthoring CurrentArmy;
+	if (!CurrentArmy.Build(*World, Error)) return Fail(Error);
+	Result.InitialSoldierCount = CurrentArmy.Slots.Num();
+	if (!CurrentArmy.Validate(*World, *Definition, Result.ValidatedInitialSoldierCount, Error))
+	{
+		AddIssue(Result, TEXT("Initial army deployment rejected: ") + Error);
+		return Result;
+	}
+	if (!HashAuthoringFiles(Files, Result.SourceHash, &CurrentArmy))
+		return Fail(TEXT("Could not calculate the complete deployment source hash."));
+	if (bApplyAndSave)
+	{
+		const FString PreviousHash = Definition->SourceHash;
+		const FString PreviousLayoutHash = Definition->LayoutHash;
+		Definition->Modify();
+		Definition->SourceHash = Result.SourceHash;
+		// The layout digest also covers SourceHash; geometry itself is left byte-identical.
+		Definition->LayoutHash = Definition->CalculateLayoutHash();
+		Definition->MarkPackageDirty();
+		if (!SaveManagedAssets(*Definition, *Economy, Error))
+		{
+			Definition->SourceHash = PreviousHash;
+			Definition->LayoutHash = PreviousLayoutHash;
+			Definition->MarkPackageDirty();
+			AddIssue(Result, Error);
+			return Result;
+		}
+	}
+	Result.LayoutHash = Definition->LayoutHash;
+	Result.TerritoryCount = Definition->Territories.Num();
+	Result.ClusterCount = Definition->Clusters.Num();
+	Result.NodeCount = Definition->Nodes.Num();
+	Result.bSuccess = true;
+	Result.Message = bApplyAndSave
+		? TEXT("Saved revalidated added deployments; certified ore layout is unchanged.")
+		: TEXT("Added deployments passed revalidation; no packages changed.");
 	return Result;
 }
 

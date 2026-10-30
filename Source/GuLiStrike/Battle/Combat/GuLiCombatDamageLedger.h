@@ -233,6 +233,11 @@ struct GULISTRIKE_API FGuLiCombatTargetSnapshot
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
 	FVector Location = FVector::ZeroVector;
 
+	/** Body center for instantaneous hit routes; Location retains the existing movement/collision anchor. */
+	FVector HitCenter = FVector::ZeroVector;
+	bool bHasHitCenter = false;
+	FVector GetHitCenter() const { return bHasHitCenter ? HitCenter : Location; }
+
 	/** Optional logical pose orientation; Wingman fills this from the server-accepted sample. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
 	FRotator Rotation = FRotator::ZeroRotator;
@@ -242,6 +247,9 @@ struct GULISTRIKE_API FGuLiCombatTargetSnapshot
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
 	float Health = 0.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
+	float MaxHealth = 0.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
 	bool bAlive = false;

@@ -16,6 +16,12 @@ class GULISTRIKE_API UGuLiCombatEffectAuthoringLibrary : public UBlueprintFuncti
 	GENERATED_BODY()
 public:
 #if WITH_EDITOR
+	/** Scoped BulletTrails candidates only: GPU strokes or CPU lights, one emitter, bounded capacity. Never saves. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool ConfigureBulletTrailSystem(UNiagaraSystem* System, bool bLights, FString& Error);
+	/** Bind task-owned scratch slots to CPU->GPU arrays; no GPU readback or gameplay dependencies. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool WireBulletTrailReader(UNiagaraSystem* System, UNiagaraScript* Script, bool bLights, FString& Error);
     /** Owned Ground Blink only: bind integer strand IDs to its ribbon renderer. Does not save. */
     UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
     static bool ConfigureGroundBlinkRibbons(UNiagaraSystem* System);
@@ -78,6 +84,9 @@ public:
 	static bool WireRogueUpgradePoolReader(UNiagaraSystem* System, UNiagaraScript* ParticleUpdateScript, FString& Error);
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool ConfigureRogueUpgradeSystem(UNiagaraSystem* System, FString& Error);
+    /** Owned burning copy only: local body-space simulation and conservative bounds, no mesh-sampling dependency. */
+    UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+    static bool ConfigureBuffStatusSystem(UNiagaraSystem* System,FString& Error);
 	/** GPU emitters and fixed bounds for the task-owned WarMachine hover array pool only. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool ConfigureWarMachineHoverSystem(UNiagaraSystem* System, FString& Error);

@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "Gameplay/Units/GuLiUnitMovementLayer.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
 #include "GuLiExternalControlRegistry.generated.h"
@@ -8,6 +9,8 @@ struct FGuLiExternalBody
 {
     FTransform Transform;
     float Radius=20,HalfHeight=20,Altitude=0;
+    EGuLiUnitMovementLayer MovementLayer=EGuLiUnitMovementLayer::Ground;
+    bool bLayerBound=false;
     bool bGroundPivot=true,bAirborne=false,bFollowParent=false,bVehicle=false,bLocked=false;
     FGuLiHybridObjectKey Parent;
     TWeakObjectPtr<AActor> Actor;

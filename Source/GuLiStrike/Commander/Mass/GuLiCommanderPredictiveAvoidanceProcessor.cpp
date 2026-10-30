@@ -107,10 +107,12 @@ namespace GuLiCommanderPredictiveAvoidancePrivate
 		{
 			const auto& B = Agents[Index];
 			if (B.StableKey == A.StableKey || !B.bParticipates
-				|| GuLiEngineeringCollision::IgnoresPeer(A.bEngineering, B.bEngineering)) continue;
+				|| !SharesMovementLayer(A,B)
+                || GuLiEngineeringCollision::IgnoresPeer(A.bEngineering, B.bEngineering)) continue;
 			if (B.bEnvironment && !Scratch.VisitEnvironment(Index)) continue;
 			++Visits;
-			if (FMath::Abs(A.Location.Z - B.Location.Z) > MaximumHeightDifferenceCentimeters+B.HalfHeight) continue;
+			if (!(A.bLayerBound && B.bLayerBound && A.MovementLayer==EGuLiUnitMovementLayer::LowAir)
+                && FMath::Abs(A.Location.Z - B.Location.Z) > MaximumHeightDifferenceCentimeters+B.HalfHeight) continue;
 			const FVector P = (A.Location - B.Location) * FVector(1, 1, 0);
 			const double R = A.Radius + B.Radius + Padding;
 			if (P.SizeSquared2D() > FMath::Square(R + (A.MaximumSpeed + B.MaximumSpeed) * .1)) continue;
@@ -408,6 +410,11 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::ExecuteBackground(FMassEntityMa
 				Entry.Agent.bEngineering = !Identities.IsEmpty() && Identities[It].bEngineering;
 				Entry.Agent.StableKey = Entry.Entity.AsNumber();
 				Entry.Agent.Location = Transforms[It].GetTransform().GetLocation();
+                if (!Identities.IsEmpty())
+                {
+                    Entry.Agent.MovementLayer=Identities[It].MovementLayer;
+                    Entry.Agent.Location.Z-=Identities[It].AltitudeCentimeters;
+                }
 				Entry.Agent.Velocity = Velocities.IsEmpty()
 					? FVector::ZeroVector
 					: Velocities[It].Value;
@@ -432,6 +439,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::ExecuteBackground(FMassEntityMa
 				Entry.Agent.StableKey=(uint64(1)<<63)|Obstacle.Handle.Value;
 				Entry.Agent.Location=Obstacle.Location; Entry.Agent.Radius=Obstacle.RadiusCentimeters; Entry.Agent.HalfHeight=Obstacle.HalfHeight;
 				Entry.Agent.bParticipates=true; Entry.Agent.bEnvironment=true;
+                Entry.Agent.bLayerBound=Obstacle.Kind==EGuLiDynamicObstacleKind::GroundMech;
 			}
 		}
 
@@ -656,6 +664,11 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				Entry.Agent.bEngineering = !Identities.IsEmpty() && Identities[It].bEngineering;
 				Entry.Agent.StableKey = Entry.Entity.AsNumber();
 				Entry.Agent.Location = Transforms[It].GetTransform().GetLocation();
+                if (!Identities.IsEmpty())
+                {
+                    Entry.Agent.MovementLayer=Identities[It].MovementLayer;
+                    Entry.Agent.Location.Z-=Identities[It].AltitudeCentimeters;
+                }
 				Entry.Agent.Velocity = Velocities.IsEmpty()
 					? FVector::ZeroVector
 					: Velocities[It].Value;
@@ -680,6 +693,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				Entry.Agent.StableKey=(uint64(1)<<63)|Obstacle.Handle.Value;
 				Entry.Agent.Location=Obstacle.Location; Entry.Agent.Radius=Obstacle.RadiusCentimeters; Entry.Agent.HalfHeight=Obstacle.HalfHeight;
 				Entry.Agent.bParticipates=true; Entry.Agent.bEnvironment=true;
+                Entry.Agent.bLayerBound=Obstacle.Kind==EGuLiDynamicObstacleKind::GroundMech;
 			}
 		}
 

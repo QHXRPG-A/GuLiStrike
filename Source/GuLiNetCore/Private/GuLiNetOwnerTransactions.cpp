@@ -296,7 +296,7 @@ bool OwnerState::FreezeDamage(TransactionRequest& R) const
     const auto O=Directory.find(R.Header.Object);const auto V=Rules.find(R.RuleId);
     if (O==Directory.end() || V==Rules.end() || V->second.Kind!=TransactionKind::Damage || V->second.SourceDefinition!=O->second.Definition) return false;
     Rule RuleValue=V->second;
-    if (!RuleCapabilityAllowed(O->second,RuleValue) || !ResolveCapabilityRule(O->second,Directory,R.RuleId,RuleValue)
+    if (!RuleCapabilityAllowed(O->second,RuleValue) || !ResolveCapabilityTransactionRule(O->second,Directory,R,RuleValue)
         || !std::isfinite(RuleValue.Damage) || RuleValue.Damage<=0) return false;
     R.DamageAmount=RuleValue.Damage;return true;
 }
@@ -350,7 +350,7 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::
         for (const auto& O:Result.Objects) Changes.emplace(O.Grant.Object,O);
         if (Result.Kind==TransactionKind::Damage && Candidate.Directory.contains(Result.Target)) Changes[Result.Target]=Candidate.Directory.at(Result.Target);
         for (const auto& [K,H]:Result.Barriers) Changes[K]=Candidate.Directory.at(K);
-        if (!ProjectCapabilityChanges(Directory,Changes))
+        if (!ProjectAcceptedDamage(R,Result,Directory,Changes) || !ProjectCapabilityChanges(Directory,Changes))
         {
             Candidate=Stage(&R);Candidate.DecisionDomain=Domain;Result={};Result.Event=R.Header.Event;Result.Kind=R.Kind;
             Result.ResourceGroup=R.Header.ResourceGroup;Result.ResourceEpoch=R.Header.ResourceEpoch;
@@ -402,6 +402,7 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::
                             Next=std::max(Next,Known->second);
                         if (Next>=0xffffffu) return false;O.Ordinal=Prefix|++Next;
                     }
+                    if(std::none_of(Result.Births.begin(),Result.Births.end(),[&](const auto& Birth){return Birth.Grant.Object==K;}))Result.Births.push_back(O);
                 }
                 Candidate.Directory.insert_or_assign(K,O);
                 const auto I=std::find_if(Result.Objects.begin(),Result.Objects.end(),[&](const auto& V){return V.Grant.Object==K;});

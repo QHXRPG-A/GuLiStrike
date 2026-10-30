@@ -83,6 +83,14 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	int32 ModelId = 0;
 
+	/** MovementLayer (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	int32 MovementLayer = 0;
+
+	/** AltitudeMeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	float AltitudeMeters = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeCommander_Camera 的行结构（源: GuLiStrikeCommander.xlsx / Camera）。 */

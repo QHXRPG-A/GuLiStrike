@@ -116,7 +116,7 @@ public:
 
 	void InitializeOutpost(uint8 InTerritoryIndex, FName InTerritoryId, EGuLiTeam InOwner,int32 DefinitionId=7);
 	void SetTerritoryOwnerAuthority(EGuLiTeam InOwner);
-    void ApplyHybridOwner(EGuLiTeam InOwner,double LogicalSeconds);
+    void ApplyHybridOwner(EGuLiTeam InOwner);
 	uint8 GetTerritoryIndex() const { return TerritoryIndex; }
 	UFUNCTION(BlueprintPure) FName GetTerritoryId() const { return TerritoryId; }
 	EGuLiTeam GetTerritoryOwner() const { return OwnerState.Team; }

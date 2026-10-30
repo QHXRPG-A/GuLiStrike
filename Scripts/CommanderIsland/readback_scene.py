@@ -106,13 +106,12 @@ def main():
     assert mode.get_name()=='GuLiCommanderGameMode'
     controller=unreal.get_default_object(mode).get_editor_property('player_controller_class')
     assert controller.get_name()=='GuLiCommanderPlayerController'
-    settings=unreal.get_default_object(unreal.load_class(None,'/Script/GuLiStrike.GuLiOutpostPresentationSettings'))
-    config={n:settings.get_editor_property(n) for n in ('ModelId','BodyMaterial','HaloMaterial','ModelHeightCm','FloatAmplitudeCm','FloatPeriodSeconds','LandingSeconds')}
-    config['Mesh']=unreal.load_object(None,model_catalog.resource(config['ModelId']))
+    from CommanderIsland.outpost_presentation import load_layout, sample_float_height_cm
     presentation_error=unreal.GuLiCommanderIslandAuthoringLibrary.validate_outpost_presentation_assets()
     assert not presentation_error,presentation_error
-    mesh=config['Mesh'];b=mesh.get_bounds();scale=config['ModelHeightCm']/(2*b.box_extent.z)
-    curve=[{'seconds':s,'height_m':config['FloatAmplitudeCm']/100*(1-math.cos(2*math.pi*s/config['FloatPeriodSeconds']))} for s in (0,1.25,2.5,3.75,5)]
+    presentation=load_layout()
+    presentation['curve']=[{'seconds':s,'height_m':sample_float_height_cm(presentation,s)/100}
+        for s in (0,2,4,6,8)]
     army=json.loads(unreal.GuLiResourceAuthoringLibrary.get_initial_army_spawn_layout_json())
     assert len(army['slots'])==500
     notes=[{'label':a.get_actor_label(),'location_cm':point(a.get_actor_location()),'text':a.get_editor_property('text')} for a in actors if isinstance(a,unreal.Note)]
@@ -132,8 +131,7 @@ def main():
         'saved_navigation_entries':[{k:getattr(e,k) for k in ('object_path','kind','status','source_hash','message')} for e in nav.entries],
         'native_outpost':{'presenter_class':presenter.get_class().get_path_name(),
             'fixed_collider_extent_cm':point(collider.get_unscaled_box_extent()),'collision':str(collider.get_collision_enabled())},
-        'presentation':{'mesh':mesh.get_path_name(),'body':config['BodyMaterial'].get_path_name(),'halo':config['HaloMaterial'].get_path_name(),
-            'model_height_cm':config['ModelHeightCm'],'scale':scale,'curve':curve,'landing_seconds':config['LandingSeconds']},
+        'presentation':presentation,
         'notes':notes,'editor_pose_count':len(poses),'editor_poses_hidden_in_game':True,
         'dirty_maps':[p.get_path_name() for p in unreal.EditorLoadingAndSavingUtils.get_dirty_map_packages()],
         'dirty_content':[p.get_path_name() for p in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()],

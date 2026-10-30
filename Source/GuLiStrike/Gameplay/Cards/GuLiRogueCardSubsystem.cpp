@@ -18,9 +18,15 @@
 #include "Gameplay/Skills/GuLiHybridArmy.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/GuLiHybridManifest.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
 
 namespace
 {
+    FGuid RequestForPlayer(const AGuLiBattlePlayerState& PS,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session={},FString Choice={})
+    {
+        if(PS.GetBattleRole()==EGuLiCommanderRole::Ground)return GuLiGroundRogue::Request(PS,Op,Event,Session,MoveTemp(Choice));
+        return PS.IsCommander()?GuLiHybridArmy::Request(*PS.GetWorld(),PS.GetTeam(),Op,Event,Session,MoveTemp(Choice)):FGuid{};
+    }
 	bool ValidateCardRelations(const TMap<FString,FGuLiStrikeRogueCardsCardsRow>& Cards, FString& Error)
 	{
 		TMap<FString,TSet<FString>> Excluded, Closures;
@@ -36,6 +42,7 @@ namespace
 					if (Id==Pair.Key || !Cards.Contains(Id) || Seen.Contains(Id))
 					{ Error=TEXT("Self, unknown or duplicate card reference: ")+Pair.Key+TEXT(" -> ")+Id; return false; }
 					Seen.Add(Id);
+					if(Cards.FindChecked(Id).Type!=Card.Type){Error=TEXT("Card relation crosses owner domains: ")+Pair.Key;return false;}
 				}
 			}
 			for (const FString& Id : Card.ExcludedCardIds)
@@ -73,6 +80,7 @@ bool UGuLiRogueCardSubsystem::LoadCatalog(FString& Error)
 	if (!Catalog.IsEmpty()) return true;
 	const auto* Settings=GetDefault<UGuLiRogueCardSettings>();
 	Table=Settings->Cards.LoadSynchronous(); StringTable=Settings->Texts.LoadSynchronous();
+    GroundEffectTable=Settings->GroundRicochet.LoadSynchronous();
 	if (!Table || Table->GetRowStruct()!=FGuLiStrikeRogueCardsCardsRow::StaticStruct() || !StringTable)
 	{ Error=TEXT("Card table or StringTable is unavailable"); return false; }
 	TMap<FString,FGuLiStrikeRogueCardsCardsRow> Validated;
@@ -85,8 +93,8 @@ bool UGuLiRogueCardSubsystem::LoadCatalog(FString& Error)
 		// shared capability's bounded string contract for new content as well.
 		const FTCHARToUTF8 EncodedId(*R.Id);
 		const bool bIdValid=!R.Id.IsEmpty() && EncodedId.Length()<=192;
-		if (!bIdValid || Validated.Contains(R.Id) || R.Type!=1 || R.UnitTypeId<=0 || R.UnitTypeId>MAX_uint16
-			|| !Data || !Data->FindSoldierDefinition(static_cast<uint16>(R.UnitTypeId))
+		const bool TargetValid=R.Type==1?(R.UnitTypeId>0&&R.UnitTypeId<=MAX_uint16&&Data&&Data->FindSoldierDefinition(static_cast<uint16>(R.UnitTypeId))):(R.Type==3&&R.UnitTypeId==0);
+		if (!bIdValid || Validated.Contains(R.Id) || !TargetValid
 			|| R.TextIds.Num()!=2 || !Class || !Class->IsChildOf(UGuLiRogueCardEffect::StaticClass())
 			|| Class->HasAnyClassFlags(CLASS_Abstract)
 			|| !Cast<UMaterialInterface>(R.FrontMaterial.LoadSynchronous()))
@@ -108,14 +116,19 @@ FText UGuLiRogueCardSubsystem::GetText(const FString& Key)
 	if (!StringTable) StringTable=GetDefault<UGuLiRogueCardSettings>()->Texts.LoadSynchronous();
 	return StringTable ? FText::FromStringTable(StringTable->GetStringTableId(),Key) : FText::FromString(Key);
 }
-FText UGuLiRogueCardSubsystem::GetCardText(const FString& Id, int32 Index)
+int32 UGuLiRogueCardSubsystem::GetAcquisitionCount(FGuid Player,const FString& Id) const
+{const auto* Counts=GroundAcquisitions.Find(Player);return Counts?Counts->FindRef(Id):0;}
+FText UGuLiRogueCardSubsystem::GetCardText(const FString& Id, int32 Index,FGuid Player,bool bPreviewAcquisition)
 {
 	const auto* R=FindCard(Id); if (!R || !R->TextIds.IsValidIndex(Index)) return FText::GetEmpty();
 	FText Result=GetText(R->TextIds[Index]);
 	if (Index==1)
 		if (UClass* Class=R->ImplementationClass.LoadSynchronous())
 			if (const auto* Effect=Cast<UGuLiRogueCardEffect>(Class->GetDefaultObject()))
-				Result=Effect->FormatDescription(*R,Result);
+            {
+                if(!Player.IsValid())if(const auto* PC=GetWorld()->GetFirstPlayerController())if(const auto* PS=PC->GetPlayerState<AGuLiBattlePlayerState>())Player=PS->GetPlayerGuid();
+                Result=Effect->FormatForAcquisition(*R,Result,FMath::Max(1,GetAcquisitionCount(Player,Id)+(bPreviewAcquisition?1:0)));
+            }
 	return Result;
 }
 void UGuLiRogueCardSubsystem::RequestOffer(UGuLiCommanderNetSyncComponent& Channel, FGuid Request)
@@ -126,7 +139,7 @@ void UGuLiRogueCardSubsystem::RequestOffer(UGuLiCommanderNetSyncComponent& Chann
         if (Watch==EHybridWatch::Pending) return;
         if (Watch==EHybridWatch::Rejected)
         {Channel.ClientRogueCardOffer(Request,{},Epoch,{},TEXT("Army request queue is unavailable"));return;}
-        if (!PS || !GuLiHybridArmy::Request(*GetWorld(),PS->GetTeam(),EGuLiHybridArmyOperation::Offer,Request).IsValid())
+        if (!PS || !RequestForPlayer(*PS,EGuLiHybridArmyOperation::Offer,Request).IsValid())
         {
             HybridRequests.Remove(Request);
             Channel.ClientRogueCardOffer(Request,{},Epoch,{},TEXT("Army capability is not ready"));
@@ -142,7 +155,7 @@ void UGuLiRogueCardSubsystem::RerollOffer(UGuLiCommanderNetSyncComponent& Channe
         if (Watch==EHybridWatch::Pending) return;
         if (Watch==EHybridWatch::Rejected)
         {Channel.ClientRogueCardOffer(Request,Session,Epoch,{},TEXT("UI.RogueCards.RerollBusy"));return;}
-        if (!PS || !GuLiHybridArmy::Request(*GetWorld(),PS->GetTeam(),EGuLiHybridArmyOperation::Reroll,Request,Session).IsValid())
+        if (!PS || !RequestForPlayer(*PS,EGuLiHybridArmyOperation::Reroll,Request,Session).IsValid())
         {
             HybridRequests.Remove(Request);
             Channel.ClientRogueCardOffer(Request,Session,Epoch,{},TEXT("UI.RogueCards.RerollBusy"));
@@ -159,7 +172,7 @@ void UGuLiRogueCardSubsystem::Confirm(UGuLiCommanderNetSyncComponent& Channel, F
         if (Watch==EHybridWatch::Pending) return;
         if (Watch==EHybridWatch::Rejected)
         {Channel.ClientRogueCardResult(Session,false,TEXT("Army request queue is unavailable"));return;}
-        if (!PS || !GuLiHybridArmy::Request(*GetWorld(),PS->GetTeam(),EGuLiHybridArmyOperation::Choose,Event,Session,CardId).IsValid())
+        if (!PS || !RequestForPlayer(*PS,EGuLiHybridArmyOperation::Choose,Event,Session,CardId).IsValid())
         {
             HybridRequests.Remove(Event);
             Channel.ClientRogueCardResult(Session,false,TEXT("Army capability is not ready"));
@@ -216,7 +229,7 @@ void UGuLiRogueCardSubsystem::Deinitialize()
     if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
     {H->OnTransactionCompleted.RemoveAll(this);H->OnCommandCompleted.Remove(HybridCommandReceiptHandle);H->OnOwnershipStateApplied.RemoveAll(this);}
     HybridCommandReceiptHandle.Reset();
-    HybridRequests.Reset();HybridClosedSessions.Reset();Offers.Reset();Acquisitions.Reset();Super::Deinitialize();
+    HybridRequests.Reset();HybridClosedSessions.Reset();Offers.Reset();Acquisitions.Reset();GroundAcquisitions.Reset();GroundRevisions.Reset();Super::Deinitialize();
 }
 void UGuLiRogueCardSubsystem::Cancel(UGuLiCommanderNetSyncComponent& Channel, FGuid Session)
 {
@@ -229,7 +242,7 @@ void UGuLiRogueCardSubsystem::PresentationClosed(UGuLiCommanderNetSyncComponent&
 
         const auto* PC=Cast<APlayerController>(Channel.GetOwner());const auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
         const auto Event=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/ArmyRequests"),EGuLiHybridObjectKind::BusinessWork,Session.ToString()+TEXT("/closed")).StableId;
-        if (PS) GuLiHybridArmy::Request(*GetWorld(),PS->GetTeam(),EGuLiHybridArmyOperation::ClosePresentation,Event,Session);
+        if (PS) RequestForPlayer(*PS,EGuLiHybridArmyOperation::ClosePresentation,Event,Session);
         return;
 
 }

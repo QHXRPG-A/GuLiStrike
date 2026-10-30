@@ -91,8 +91,8 @@ class FBody final:public IGuLiHybridEntityCapability
         FGuLiExternalBody Body;if (!World->GetSubsystem<UGuLiExternalControlRegistry>()->Query(Record.Key,Body)) return;
         const int32 Size=GuLiGrid::FootprintFromDiameter(Body.Radius*2.);
         const auto R=GuLiGrid::FRect::At(G->Snapshot()->AnchorAt(Transform(B.Destination).GetLocation(),Size),Size);
-        G->Traffic().Admit(Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),R,{},Size);
-        G->Network()->RecoverPlacement(Record,Record.Key,R,Size,true);RecoveredLandingEpoch=Record.OwnerEpoch;
+        G->Traffic().Admit(Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),R,{},Size,Body.MovementLayer);
+        G->Network()->RecoverPlacement(Record,Record.Key,R,Size,true,Body.MovementLayer);RecoveredLandingEpoch=Record.OwnerEpoch;
     }
     bool Decode(TConstArrayView<uint8> B,FBodyPrivate& P) const
     {FGuLiHybridStateArchive A(B,1024);P.Archive(A);return A.Done()&&P.Key==Record.Key;}
@@ -135,8 +135,8 @@ class FBody final:public IGuLiHybridEntityCapability
                 if (!Work.TakeProjection()) return;
                 const int32 Size=GuLiGrid::FootprintFromDiameter(Q.Radius*2.);const auto Point=Transform(B.Destination).GetLocation();
                 const auto Rect=GuLiGrid::FRect::At(Grid->Snapshot()->AnchorAt(Point,Size),Size);
-                const auto Permit=GuLiGrid::Unoccupied(*Grid,Point,Size,Record.Key) && Grid->Network()
-                    ?Grid->Network()->PermitPlacement(Record.Key,Record.Key,Rect,Size,uint8(Record.Team)):EGuLiGridPermit::Blocked;
+                const auto Permit=GuLiGrid::Unoccupied(*Grid,Point,Size,Record.Key,Q.MovementLayer) && Grid->Network()
+                    ?Grid->Network()->PermitPlacement(Record.Key,Record.Key,Rect,Size,uint8(Record.Team),Q.MovementLayer):EGuLiGridPermit::Blocked;
                 if (Permit==EGuLiGridPermit::Pending) return;
                 if (Permit==EGuLiGridPermit::Blocked)
                 {
@@ -159,7 +159,7 @@ class FBody final:public IGuLiHybridEntityCapability
             {
                 const int32 Size=GuLiGrid::FootprintFromDiameter(Q.Radius*2.);
                 Grid->Traffic().Admit(Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),
-                    GuLiGrid::FRect::At(Grid->Snapshot()->AnchorAt(Control.Transform.GetLocation(),Size),Size),{},Size);
+                    GuLiGrid::FRect::At(Grid->Snapshot()->AnchorAt(Control.Transform.GetLocation(),Size),Size),{},Size,Q.MovementLayer);
             }
         }
         Private.Cast=Control.Token;Private.Step=B.Step;Private.Accepted=Accepted;Private.Submitted=false;Private.Request.Invalidate();

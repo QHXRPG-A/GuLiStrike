@@ -159,8 +159,9 @@ void GuLiMechanicalAnimation::EvaluateHover(const FGuLiMechanicalAnimationConfig
 	const double Phase = double(Seed) / 4294967296.0 * 2.0 * UE_DOUBLE_PI;
 	const float W = HoverWeight(C, S, Now);
 	S.HoverBobCentimeters = W * C.HoverBobAmplitude * FMath::Sin(Now * 2.0 * UE_DOUBLE_PI / C.HoverBobPeriod + Phase);
+	// Shared unit phase and a quarter-cycle roll offset rock the four corners in sequence.
 	S.HoverPitchRadians = W * FMath::DegreesToRadians(C.HoverPitchAmplitude) * FMath::Sin(Now * 2.0 * UE_DOUBLE_PI / C.HoverPitchPeriod + Phase + 1.3);
-	S.HoverRollRadians = W * FMath::DegreesToRadians(C.HoverRollAmplitude) * FMath::Sin(Now * 2.0 * UE_DOUBLE_PI / C.HoverRollPeriod + Phase * 1.73 + 2.1);
+	S.HoverRollRadians = W * FMath::DegreesToRadians(C.HoverRollAmplitude) * FMath::Sin(Now * 2.0 * UE_DOUBLE_PI / C.HoverRollPeriod + Phase + 1.3 + UE_DOUBLE_PI * .5);
 }
 
 FTransform GuLiMechanicalAnimation::HoverBodyTransform(const FGuLiMechanicalAnimationConfig& C, const FGuLiMechanicalAnimationState& S)

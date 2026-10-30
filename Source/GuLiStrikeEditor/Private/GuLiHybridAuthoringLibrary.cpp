@@ -278,10 +278,18 @@ FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifest(int32 Population,cons
         if (!bProjected)
             return Report(false,TEXT("Navigation changed during export"),File,Data.Objects.Num(),0,0);
         auto& O=Data.Objects.AddDefaulted_GetRef(); O.Ordinal=++Ordinal; O.Team=Slot.Team;
-        const FString AuthoredId=FString::Printf(TEXT("army/%u/%d/%d"),static_cast<uint8>(Slot.Team),Slot.FormationIndex,Slot.SlotIndex);
+        const FString AuthoredId=Slot.AuthoredId.IsEmpty()?FString::Printf(TEXT("army/%u/%d/%d"),static_cast<uint8>(Slot.Team),Slot.FormationIndex,Slot.SlotIndex):Slot.AuthoredId;
         O.Key=FGuLiHybridManifest::MakeStableKey(Data.MapPackage,EGuLiHybridObjectKind::Soldier,AuthoredId);
-        O.Definition=FString::Printf(TEXT("unit/%u"),Slot.UnitTypeId); O.Location=Projected.Location;
-        O.FacingYawDegrees=Slot.FacingYawDegrees; O.Health=Definitions.FindChecked(Slot.UnitTypeId).MaxHealth;
+        O.Definition=FString::Printf(TEXT("unit/%u"),Slot.UnitTypeId);
+        O.Location=GuLiUnitMovement::WorldPosition(Projected.Location,Definitions.FindChecked(Slot.UnitTypeId).AltitudeCentimeters);
+        O.FacingYawDegrees=Slot.FacingYawDegrees; O.Health=Slot.InitialMaxHealthOverride>0?Slot.InitialMaxHealthOverride:Definitions.FindChecked(Slot.UnitTypeId).MaxHealth;O.Shield=Slot.InitialShield;
+        if(!Slot.AuthoredId.IsEmpty())
+        {
+            const FString Prefix=TEXT("deployment/")+O.Key.StableId.ToString(EGuidFormats::Digits);
+            Data.Numbers.Add(Prefix+TEXT("/automatic_fire"),Slot.bAllowAutomaticFire?1:0);
+            Data.Numbers.Add(Prefix+TEXT("/start_idle"),Slot.bStartIdle?1:0);
+            Data.Strings.Add(Prefix+TEXT("/authored_id"),Slot.AuthoredId);
+        }
     }
     for (const auto Name : UnitSkills->GetRowNames())
     {

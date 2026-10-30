@@ -1,5 +1,6 @@
 #include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
 #include "Commander/UI/GuLiSceneUISourceRegistry.h"
+#include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Gameplay/Models/GuLiLocalTeamColorSubsystem.h"
 #include "Gameplay/Presentation/GuLiLocalTeamColors.h"
@@ -17,6 +18,7 @@ UGuLiOutpostPresentationSettings::UGuLiOutpostPresentationSettings()
 	ModelId = GuLiModelIds::ManualOutpost;
 	BodyMaterial = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(TEXT("/Game/GuLiStrike/FX/StrongholdOutpost/M_OutpostGlow.M_OutpostGlow")));
 	HaloMaterial = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(TEXT("/Game/GuLiStrike/FX/StrongholdOutpost/M_OutpostHalo.M_OutpostHalo")));
+	OutlineMaterial = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(TEXT("/Game/GuLiStrike/Buildings/OutpostSymmetric/Materials/M_OutpostSymmetric_Outline.M_OutpostSymmetric_Outline")));
 }
 
 UGuLiOutpostPresentationComponent::UGuLiOutpostPresentationComponent()
@@ -28,7 +30,72 @@ UGuLiOutpostPresentationComponent::UGuLiOutpostPresentationComponent()
 double UGuLiOutpostPresentationComponent::SampleFloatHeight(
 	const double Time, const double Epoch, const double Amplitude, const double Period)
 {
+	if (!FMath::IsFinite(Time) || !FMath::IsFinite(Epoch) || !FMath::IsFinite(Amplitude)
+		|| !FMath::IsFinite(Period) || Period <= UE_DOUBLE_SMALL_NUMBER || Amplitude < 0.0) return 0.0;
 	return Amplitude * (1.0 - FMath::Cos(UE_DOUBLE_TWO_PI * (Time - Epoch) / Period));
+}
+
+double UGuLiOutpostPresentationComponent::SamplePresentationHeight(const double Time,
+	const FGuLiOutpostOwnerState& OwnerState, const UGuLiOutpostPresentationSettings& Config)
+{
+	const double Elapsed = FMath::Max(0.0, Time - OwnerState.FloatEpochServerTime);
+	const double Center = FMath::Max(1.0, double(Config.HoverHeightCm));
+	const double Amplitude = FMath::Clamp(double(Config.FloatAmplitudeCm), 0.0, Center - 1.0);
+	// Always start above ground, including neutral ownership and the first presented frame.
+	return Center - Amplitude + SampleFloatHeight(Elapsed, 0.0, Amplitude, Config.FloatPeriodSeconds);
+}
+
+double UGuLiOutpostPresentationComponent::SamplePresentationYaw(const double Time,
+	const FGuLiOutpostOwnerState& OwnerState, const UGuLiOutpostPresentationSettings& Config)
+{
+	const double Period = Config.SelfRotationPeriodSeconds;
+	if (!FMath::IsFinite(Time) || !FMath::IsFinite(OwnerState.FloatEpochServerTime)
+		|| !FMath::IsFinite(Period) || Period <= UE_DOUBLE_SMALL_NUMBER) return 0.0;
+	const double Elapsed = FMath::Max(0.0, Time - OwnerState.FloatEpochServerTime);
+	return FMath::Fmod(Elapsed, Period) * 360.0 / Period;
+}
+
+bool UGuLiOutpostPresentationComponent::ResolveVisualLayout(UStaticMesh* Mesh,
+	FGuLiOutpostVisualLayout& Layout, FString& Warning)
+{
+	Layout = FGuLiOutpostVisualLayout();
+	Warning.Reset();
+	const auto IsPositiveSize = [](const FVector& Size)
+	{
+		return !Size.ContainsNaN() && Size.GetMin() > UE_DOUBLE_SMALL_NUMBER;
+	};
+	if (!Mesh || !IsPositiveSize(Mesh->GetBounds().BoxExtent * 2.0))
+	{
+		Warning = TEXT("Outpost mesh requires finite, positive bounds on all three axes.");
+		return false;
+	}
+	const auto& Config = *GetDefault<UGuLiOutpostPresentationSettings>();
+	const auto* Catalog = UGuLiBuildingCatalog::LoadDefaultCatalog();
+	const auto* Reference = Catalog ? Catalog->FindById(Config.ReferenceBuildingId) : nullptr;
+	if (Reference && Reference->Mesh && IsPositiveSize(Reference->MeshScale.GetAbs())
+		&& IsPositiveSize(Reference->Mesh->GetBounds().BoxExtent * 2.0)
+		&& FMath::IsFinite(Config.ReferenceSizeMultiplier) && Config.ReferenceSizeMultiplier > 0.0f)
+	{
+		Layout.ReferenceMesh = Reference->Mesh;
+		Layout.ReferenceMeshScale = Reference->MeshScale;
+		Layout.ReferenceGroundOffset = Reference->VisualOffset;
+		// MeshScale already contains the catalog's grid quantization. Apply it exactly once.
+		Layout.ReferenceSizeCm = Reference->Mesh->GetBounds().BoxExtent * 2.0 * Reference->MeshScale.GetAbs();
+		Layout.SizeCm = Layout.ReferenceSizeCm * Config.ReferenceSizeMultiplier;
+		Layout.MeshScale = Layout.SizeCm / (Mesh->GetBounds().BoxExtent * 2.0);
+		Layout.bUsesReferenceSize = true;
+	}
+	else
+	{
+		Warning = FString::Printf(TEXT("Outpost reference building %d or its size multiplier is unavailable; using legacy height %.1f cm."),
+			Config.ReferenceBuildingId, Config.ModelHeightCm);
+		if (!FMath::IsFinite(Config.ModelHeightCm) || Config.ModelHeightCm <= 0.0f) return false;
+		Layout.MeshScale = FVector(Config.ModelHeightCm / (Mesh->GetBounds().BoxExtent.Z * 2.0));
+		Layout.SizeCm = Mesh->GetBounds().BoxExtent * 2.0 * Layout.MeshScale;
+	}
+	const auto Bounds = Mesh->GetBounds();
+	Layout.GroundOffset = FVector(-Bounds.Origin.X, -Bounds.Origin.Y, Bounds.BoxExtent.Z - Bounds.Origin.Z) * Layout.MeshScale;
+	return true;
 }
 
 FLinearColor UGuLiOutpostPresentationComponent::OwnerColor(const EGuLiTeam Team)
@@ -48,7 +115,9 @@ double UGuLiOutpostPresentationComponent::ServerTime() const
 bool UGuLiOutpostPresentationComponent::GetSceneUIHalo(FVector& Center, EGuLiTeam& Team, FVector2D& RadiiCm) const
 {
 	if (!VisualMesh || !VisualMesh->IsVisible() || GetOwner()->IsHidden()) return false;
-	Center=VisualMesh->Bounds.Origin; Team=State.Team; RadiiCm=FVector2D(400,450);
+	const FVector Extent = VisualMesh->Bounds.BoxExtent;
+	Center=VisualMesh->Bounds.Origin; Team=State.Team;
+	RadiiCm=FVector2D(Extent.Size2D(), Extent.Size()) * 1.05;
 	return true;
 }
 
@@ -80,10 +149,13 @@ void UGuLiOutpostPresentationComponent::CreatePresentation()
 	const auto& Config = *GetDefault<UGuLiOutpostPresentationSettings>();
 	UStaticMesh* Mesh = GuLiModels::Load<UStaticMesh>(this,Config.ModelId);
 	if (!Mesh) return;
-	const FBoxSphereBounds Bounds = Mesh->GetBounds();
-	const double Scale = Config.ModelHeightCm / (2.0 * Bounds.BoxExtent.Z);
-	RestMeshLocation = FVector(-Bounds.Origin.X * Scale, -Bounds.Origin.Y * Scale,
-		-500.0 - (Bounds.Origin.Z - Bounds.BoxExtent.Z) * Scale);
+	FGuLiOutpostVisualLayout Layout;
+	FString Warning;
+	const bool bValidLayout = ResolveVisualLayout(Mesh, Layout, Warning);
+	if (!Warning.IsEmpty()) UE_LOG(LogTemp, Warning, TEXT("%s: %s"), *GetOwner()->GetName(), *Warning);
+	if (!bValidLayout) return;
+	ScaledMeshBoundsOrigin = Mesh->GetBounds().Origin * Layout.MeshScale;
+	RestMeshCenterLocation = Layout.GroundOffset + ScaledMeshBoundsOrigin + FVector(0, 0, -500.0);
 	BodyMaterial = UMaterialInstanceDynamic::Create(Config.BodyMaterial.LoadSynchronous(), this);
 	HaloMaterial = UMaterialInstanceDynamic::Create(Config.HaloMaterial.LoadSynchronous(), this);
 	if (!BodyMaterial || !HaloMaterial) return;
@@ -97,7 +169,8 @@ void UGuLiOutpostPresentationComponent::CreatePresentation()
 	VisualMesh->SetStaticMesh(Mesh);
 	// Legacy glow remains a compatibility effect. An approved region material owns its fixed paint.
 	if (VisualMesh->GetCustomPrimitiveDataIndexForVectorParameter(TEXT("GuLi_TeamPrimary"))!=8) VisualMesh->SetMaterial(0, BodyMaterial);
-	VisualMesh->SetRelativeScale3D(FVector(Scale));
+	VisualMesh->SetOverlayMaterial(Config.OutlineMaterial.LoadSynchronous());
+	VisualMesh->SetRelativeScale3D(Layout.MeshScale);
 	VisualMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	VisualMesh->SetCollisionObjectType(ECC_WorldDynamic);
 	VisualMesh->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -113,7 +186,7 @@ void UGuLiOutpostPresentationComponent::CreatePresentation()
 	Halo->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Halo->SetCanEverAffectNavigation(false);
 	Halo->SetCastShadow(false);
-	Halo->AddElement(HaloMaterial, nullptr, false, 800.0f, 900.0f, nullptr);
+	Halo->AddElement(HaloMaterial, nullptr, false, Layout.SizeCm.Size2D() * 1.05, Layout.SizeCm.Size() * 1.05, nullptr);
 	Halo->RegisterComponent();
 	UGuLiSceneUISourceRegistry::Notify(GetOwner(), EGuLiSceneUIChange::Membership);
 	Halo->SetVisibility(false); // Ownership halo is drawn by the post-scene Slate layer.
@@ -147,22 +220,12 @@ void UGuLiOutpostPresentationComponent::UpdatePose()
 	if (!VisualMesh || !Halo) return;
 	const auto& Config = *GetDefault<UGuLiOutpostPresentationSettings>();
 	const double Now = ServerTime();
-	double Height = 0.0;
-	bool bAnimate = State.Team != EGuLiTeam::Unassigned;
-	if (bAnimate)
-	{
-		Height = SampleFloatHeight(Now, State.FloatEpochServerTime, Config.FloatAmplitudeCm, Config.FloatPeriodSeconds);
-	}
-	else if (State.ChangedServerTime > State.FloatEpochServerTime)
-	{
-		const double LandingAlpha = FMath::Clamp((Now - State.ChangedServerTime) / Config.LandingSeconds, 0.0, 1.0);
-		const double SmoothAlpha = LandingAlpha * LandingAlpha * (3.0 - 2.0 * LandingAlpha);
-		Height = SampleFloatHeight(State.ChangedServerTime, State.FloatEpochServerTime,
-			Config.FloatAmplitudeCm, Config.FloatPeriodSeconds) * (1.0 - SmoothAlpha);
-		bAnimate = LandingAlpha < 1.0;
-	}
-	VisualMesh->SetRelativeLocation(RestMeshLocation + FVector(0, 0, Height));
-	Halo->SetRelativeLocation(FVector(0, 0, -500.0 + Config.ModelHeightCm * 0.5 + Height));
+	const double Height = SamplePresentationHeight(Now, State, Config);
+	const FRotator Rotation(0.0, SamplePresentationYaw(Now, State, Config), 0.0);
+	// Rotate around the centered landmark, including assets with an offset source pivot.
+	VisualMesh->SetRelativeLocationAndRotation(RestMeshCenterLocation + FVector(0, 0, Height)
+		- Rotation.RotateVector(ScaledMeshBoundsOrigin), Rotation);
+	Halo->SetWorldLocation(VisualMesh->Bounds.Origin);
 	SetComponentTickEnabled(true); // Also refreshes a late local identity/ownership display.
 }
 

@@ -10,6 +10,14 @@ bool FGuLiFlightEvent::Serialize(FArchive& Ar)
 	if (!Success) { Ar.SetError(); return false; }
 	Ar.SerializeBits(&bBootstrap, 1);
 	Ar.SerializeBits(&bHasMuzzle, 1);
+    Ar.SerializeBits(&bInstantGroundSegment,1);
+    Ar.SerializeBits(&bFrozenGroundImpact,1);
+    if(bInstantGroundSegment)
+    {
+        InstantEnd.NetSerialize(Ar,nullptr,Success);
+        uint32 Vfx=uint32(ImpactVfxId);Ar.SerializeIntPacked(Vfx);if(Ar.IsLoading())ImpactVfxId=int32(Vfx);
+        if(!Success||Vfx>MAX_int32||bHasMuzzle||State.Kind!=EGuLiCombatEffectKind::LinearProjectile||State.Phase!=EGuLiCombatEffectPhase::Active||State.Source.Kind!=EGuLiTargetKind::GroundActor||InstantEnd.ContainsNaN())Ar.SetError();
+    }
 	if (bHasMuzzle)
 	{
 		// Provenance, shot ID, launch point/direction and clock already exist in
@@ -18,6 +26,7 @@ bool FGuLiFlightEvent::Serialize(FArchive& Ar)
 		if (Basic) { if (Ar.IsLoading()) Muzzle.SlotId=TEXT("BasicAttack"); } else Ar << Muzzle.SlotId;
 		uint32 Type = Muzzle.UnitTypeId; Ar.SerializeIntPacked(Type);
 		Ar << Muzzle.MuzzleIndex << Muzzle.KeepAliveSeconds;
+        if(State.Source.Kind==EGuLiTargetKind::GroundActor){uint32 Id=uint32(Muzzle.FrozenMuzzleVfxId);Ar.SerializeIntPacked(Id);if(Id>MAX_int32)Ar.SetError();if(Ar.IsLoading())Muzzle.FrozenMuzzleVfxId=int32(Id);}
 		Ar.SerializeBits(&Muzzle.bMechanicalShot,1);
 		if (State.Kind!=EGuLiCombatEffectKind::LinearProjectile)
 		{

@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { Project, Marker, Vec3 } from './types';
 import { heightAt, outline, worldPoint } from './model';
+import { heightColor } from './height-colors';
 
 /** UE XY -> preview X,-Z, and UE Z -> preview Y. Source arrays stay in cm. */
 export class Preview {
@@ -25,8 +26,8 @@ export class Preview {
     const step=Math.max(1,Math.ceil(Math.max(nx,ny)/700)),xs:number[]=[],ys:number[]=[];
     for(let x=0;x<nx;x+=step)xs.push(x);xs.push(nx);for(let y=0;y<ny;y+=step)ys.push(y);ys.push(ny);
     const cx=t.origin_cm[0]+nx*150,cy=t.origin_cm[1]+ny*150,positions=new Float32Array(xs.length*ys.length*3),colors=new Float32Array(positions.length);
-    let minimum=Infinity,maximum=-Infinity;for(const h of t.heights_cm){minimum=Math.min(minimum,h);maximum=Math.max(maximum,h);}const color=new THREE.Color(),low=new THREE.Color('#274E61'),mid=new THREE.Color('#557B78'),high=new THREE.Color('#D5C09C');
-    let n=0;for(const y of ys)for(const x of xs){const z=t.heights_cm[y*(nx+1)+x],v=(z-minimum)/Math.max(1,maximum-minimum);positions[n]=(t.origin_cm[0]+x*300-cx)/100;positions[n+1]=z/100;positions[n+2]=-(t.origin_cm[1]+y*300-cy)/100;color.copy(v<.55?low:mid).lerp(v<.55?mid:high,v<.55?v/.55:(v-.55)/.45);colors[n++]=color.r;colors[n++]=color.g;colors[n++]=color.b;}
+    const color=new THREE.Color();
+    let n=0;for(const y of ys)for(const x of xs){const z=t.heights_cm[y*(nx+1)+x],rgb=heightColor(z);positions[n]=(t.origin_cm[0]+x*300-cx)/100;positions[n+1]=z/100;positions[n+2]=-(t.origin_cm[1]+y*300-cy)/100;color.setRGB(rgb[0]/255,rgb[1]/255,rgb[2]/255,THREE.SRGBColorSpace);colors[n++]=color.r;colors[n++]=color.g;colors[n++]=color.b;}
     const indices:number[]=[];for(let y=0;y<ys.length-1;y++)for(let x=0;x<xs.length-1;x++){const a=y*xs.length+x,b=a+1,c=a+xs.length,d=c+1;indices.push(a,b,d,a,d,c);}
     if(this.mesh)this.dispose(this.mesh);if(this.grid)this.dispose(this.grid);
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));geometry.setIndex(indices);geometry.computeVertexNormals();

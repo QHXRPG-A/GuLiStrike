@@ -109,6 +109,7 @@ struct GULISTRIKE_API FGuLiCombatEffectState
 	/** Frozen faction, allowing flying bolts to retain their color after the source is destroyed. */
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") EGuLiTeam SourceTeam = EGuLiTeam::Unassigned;
 	UPROPERTY() int32 PlayerBulletVfxId = 0;
+    UPROPERTY() int32 PlayerImpactVfxId=0;
 	/** Explicit acceptance cohort; ordinary weapon flights retain false. */
 	UPROPERTY() bool bAcceptanceAdditional = false;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuLiTargetHandle Target;
@@ -176,6 +177,7 @@ struct GULISTRIKE_API FGuLiCombatShotCue
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FName SlotId;
 	UPROPERTY() uint16 UnitTypeId = 0;
 	UPROPERTY() uint8 MuzzleIndex = 0;
+    UPROPERTY() int32 FrozenMuzzleVfxId=0;
 	/** Wingman uses logical +X attachment coordinates, independent of Commander unit mounts. */
 	UPROPERTY() FVector MuzzleOffset = FVector::ZeroVector;
 	UPROPERTY() float KeepAliveSeconds = 2.0f;

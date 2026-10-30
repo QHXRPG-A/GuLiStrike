@@ -91,6 +91,7 @@ private:
     FGuid LastCommittedSession;
 	uint32 MatchEpoch=0;
 	uint8 PresentationTeam=0;
+    uint8 PresentationRole=0;
 	bool bOpen=false, bClosing=false, bSubmitting=false, bTearingDown=false;
 	bool bRerolling=false;
 	bool bCommitted=false, bFinishedNormally=false, bCleaningUp=false;

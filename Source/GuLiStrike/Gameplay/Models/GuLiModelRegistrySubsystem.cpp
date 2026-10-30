@@ -31,7 +31,11 @@ bool Scope(const FString& Value, bool Candidate) { return Value == (Candidate ? 
 bool CanWrite(const FGuLiStrikeModelsMaterialParametersRow& B, bool Team)
 { return Team ? B.bTeamManaged : B.bRuntimeWritable && !B.bTeamManaged; }
 bool ValidCPD(const FGuLiStrikeModelsMaterialParametersRow& B, int32 Count)
-{ return B.CustomDataIndex >= 8 && B.CustomDataIndex + Count <= 18; }
+{
+	return (B.CustomDataIndex >= 8 && B.CustomDataIndex + Count <= 18)
+		|| (B.ModelId == GuLiModelIds::ManualOutpost && B.ParameterKey == TEXT("CoreUseTeamColor")
+			&& B.ParameterType == TEXT("Scalar") && B.CustomDataIndex == 18 && Count == 1);
+}
 bool HasCPDBinding(const UMeshComponent* Target, const FGuLiStrikeModelsMaterialParametersRow& B)
 {
 	if (!Target) return false;

@@ -14,6 +14,8 @@
 #include "Network/Private/GuLiHybridObjectConversions.h"
 #include "GuLiNetLinearFlightRecipe.h"
 #include "GuLiNetAsyncClient.h"
+#include "GuLiNetGroundRogue.h"
+#include "CollisionQueryParams.h"
 #include "Gameplay/Wingman/Private/GuLiHybridWingmanIdentity.h"
 #include "Gameplay/CombatEffects/GuLiLinearFlightContract.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
@@ -41,8 +43,16 @@ constexpr uint32 Version=GuLiLinearFlightContract::StateVersion;
 constexpr uint32 MaximumRecords=16384;
 constexpr uint32 MaximumBytes=16*1024*1024;
 constexpr uint32 EventTag=0x47554c46;
+constexpr uint32 RicochetTag=0x47555243;
 const FName System(TEXT("LinearFlights"));
 constexpr uint8 Alive=1,Destroyed=3;
+struct FHopStatus
+{
+    FGuLiHybridObjectKey Target;
+    FVector Position=FVector::ZeroVector;
+    FGuid Event;
+    bool Submitted=false,Resolved=false,Published=false,Notified=false;
+};
 struct FRecord
 {
     FGuLiHybridObjectKey Key,Source,Target,HitTarget;
@@ -56,6 +66,10 @@ struct FRecord
     bool bRecipe=false,bAdmitted=false,bFinished=false,bHit=false,bDamageSubmitted=false,bDamageResolved=false,bRetirementSubmitted=false;
     bool bLaunchPublished=false,bTerminalPublished=false;
     bool bRetirementPrepared=false;
+    FGuid PlanEvent;
+    TArray<uint8> Plan;
+    TArray<FHopStatus> Hops;
+    bool bPlanFrozen=false,bPlanSubmitted=false,bPlanResolved=false,bFirstDamageCommitted=false,bFirstHitNotified=false;
     // Local lookup address only; Record() deliberately excludes this cursor.
     GuLiNet::ObjectReadCursor LifecycleLookup;
 };
@@ -74,6 +88,12 @@ void Record(FGuLiHybridStateArchive& A,FRecord& V)
     A.Value(R.Position); A.Value(R.Direction); A.Value(R.MuzzleOffset); A.Value(R.Speed); A.Value(R.Lifetime);
     A.Value(R.MaximumDistance); A.Value(R.SweepRadius); A.Value(R.ServerTime); A.Value(R.PlayerBulletVfxId); A.Value(R.bAcceptanceAdditional);
     A.Value(R.ScheduledActivationSeconds);
+    auto& G=R.GroundAttack;A.Value(G.Player);A.Value(G.Revision);A.Value(G.Damage);A.Value(G.BulletVfxId);A.Value(G.ImpactVfxId);A.Value(G.MuzzleVfxId);
+    TArray<uint8> Effects;if(!A.IsReading()){const auto EffectBytes=GuLiNet::Effects::Encode(G.Effects);Effects.Append(EffectBytes.data(),int32(EffectBytes.size()));}
+    A.Bytes(Effects,GuLiNet::MaximumCapabilityBytes);if(A.IsReading()&&!GuLiNet::Effects::Decode({Effects.GetData(),SIZE_T(Effects.Num())},G.Effects))A.Reject();
+    A.Value(V.PlanEvent);A.Array(V.Plan,GuLiNet::MaximumCapabilityBytes,[](auto& A,uint8& B){A.Value(B);});
+    A.Array(V.Hops,GuLiNet::GroundRogue::MaximumHops,[](auto& A,FHopStatus& H){A.Value(H.Target);A.Value(H.Position);A.Value(H.Event);A.Value(H.Submitted);A.Value(H.Resolved);A.Value(H.Published);A.Value(H.Notified);});
+    A.Value(V.bPlanFrozen);A.Value(V.bPlanSubmitted);A.Value(V.bPlanResolved);A.Value(V.bFirstDamageCommitted);A.Value(V.bFirstHitNotified);
     FVector Position=V.Geometry.Location,Velocity=V.Geometry.Velocity,LastTarget=V.Geometry.LastTargetLocation;
     A.Value(Position); A.Value(Velocity); A.Value(V.Geometry.SampleTime); A.Value(V.Geometry.EndTime); A.Value(V.Geometry.Sequence);
     A.Enum(V.Geometry.Phase,3); A.Enum(V.Geometry.EndReason,6);
@@ -98,6 +118,12 @@ void Record(FGuLiHybridStateArchive& A,FRecord& V)
         || (V.bHit && (!V.bFinished || !V.HitTarget.IsValid())) || (V.bDamageResolved && !V.bDamageSubmitted)
         || (V.bRetirementPrepared && (!V.bFinished || (V.bHit && !V.bDamageResolved)))
         || (V.bRetirementSubmitted && !V.bRetirementPrepared)) A.Reject();
+    if(!V.Plan.IsEmpty())
+    {
+        GuLiNet::GroundRogue::Chain P;
+        if(!GuLiNet::GroundRogue::DecodeChain({V.Plan.GetData(),SIZE_T(V.Plan.Num())},P)||!V.bPlanFrozen||!V.PlanEvent.IsValid()||P.Hops.size()!=SIZE_T(V.Hops.Num())||P.Shot!=GuLiNetBridge::ToCore(V.Key.StableId))A.Reject();
+        else for(int32 I=0;I<V.Hops.Num();++I)if(GuLiNetBridge::ToCore(V.Hops[I].Target)!=P.Hops[I].Target||GuLiNetBridge::ToCore(V.Hops[I].Event)!=GuLiNet::GroundRogue::HopEvent(P.Shot,uint32(I+1),P.Hops[I].Target))A.Reject();
+    }
 }
 void Piece(FGuLiHybridStateArchive& A,FPiece& V)
 {
@@ -199,6 +225,117 @@ struct FGuLiHybridProjectileState
         // recipe even before the local pool has observed admission/activation.
         return !Hybrid->GetObject(V.Key,Flight);
     }
+    void FreezeRicochet(FRecord& V)
+    {
+        if(V.bPlanFrozen)return;V.bPlanFrozen=true;
+        if(V.SourceKind!=EGuLiTargetKind::GroundActor||!V.bHit)return;
+        FGuLiHybridObjectState Object;if(!Hybrid->GetObjectView(V.Key,Object))return;
+        const auto* Frozen=Object.Capabilities.Find(TEXT("ground_attack"));GuLiNet::GroundRogue::Attack Attack;
+        if(!Frozen||!GuLiNet::GroundRogue::DecodeAttack({Frozen->Data.GetData(),SIZE_T(Frozen->Data.Num())},Attack))return;
+        const auto Effect=GuLiNet::Effects::GetRicochet(Attack.Effects);if(!Effect.Maximum)return;
+        GuLiNet::GroundRogue::Chain Plan;Plan.Frozen=Attack;Plan.First=GuLiNetBridge::ToCore(V.HitTarget);Plan.Shot=GuLiNetBridge::ToCore(V.Key.StableId);Plan.At=V.DamageAt;
+        const FVector Origin=V.Geometry.Location;Plan.X=Origin.X;Plan.Y=Origin.Y;Plan.Z=Origin.Z;Plan.Budget=GuLiNet::GroundRogue::HopBudget(Plan.Shot,Effect);
+        FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiGroundRicochet),false);
+        for(const auto& Snapshot:Pool->Snapshots)if(Snapshot.CollisionActor.IsValid())Params.AddIgnoredActor(Snapshot.CollisionActor.Get());
+        for(const auto& Source:Pool->SourceOnly)if(Source.CollisionActor.IsValid())Params.AddIgnoredActor(Source.CollisionActor.Get());
+        FCollisionObjectQueryParams Objects;Objects.AddObjectTypesToQuery(ECC_WorldStatic);Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
+        TSet<FGuLiHybridObjectKey> Visited;Visited.Add(V.HitTarget);FVector Point=Origin;
+        const auto Cell=[](const FVector& P){const double Size=UGuLiProjectilePoolSubsystem::SpatialCellCentimeters;return FIntVector(FMath::FloorToInt(P.X/Size),FMath::FloorToInt(P.Y/Size),FMath::FloorToInt(P.Z/Size));};
+        for(uint32 Hop=0;Hop<Plan.Budget;++Hop)
+        {
+            struct FCandidate {FGuLiHybridObjectKey Key;FVector Point;double Distance;};TArray<FCandidate> Candidates;TSet<int32> Seen;
+            const auto Min=Cell(Point-FVector(Effect.Range)),Max=Cell(Point+FVector(Effect.Range));
+            for(int32 X=Min.X;X<=Max.X;++X)for(int32 Y=Min.Y;Y<=Max.Y;++Y)for(int32 Z=Min.Z;Z<=Max.Z;++Z)
+            if(const auto* Bucket=Pool->SpatialGrid.Find(FIntVector(X,Y,Z)))for(int32 Index:*Bucket)
+            {
+                if(Seen.Contains(Index))continue;Seen.Add(Index);const auto& S=Pool->Targets[Index].Snapshot;
+                if(!S.bAlive||S.Team==V.Team||S.Team==EGuLiTeam::Unassigned)continue;
+                const FVector Center=S.GetHitCenter();const double Distance=FVector::DistSquared(Point,Center);if(Distance>FMath::Square(double(Effect.Range)))continue;
+                FGuLiHybridObjectKey Key;if(!Hybrid->ResolveTarget(S.Handle,Key)||Visited.Contains(Key))continue;Candidates.Add({Key,Center,Distance});
+            }
+            Candidates.Sort([](const auto& A,const auto& B){return A.Distance!=B.Distance?A.Distance<B.Distance:GuLiNetBridge::ToCore(A.Key)<GuLiNetBridge::ToCore(B.Key);});
+            const auto* Next=Candidates.FindByPredicate([&](const auto& C){return !Pool->GetWorld()->LineTraceTestByObjectType(Point,C.Point,Objects,Params);});
+            if(!Next)break;GuLiNet::GroundRogue::Hop H{GuLiNetBridge::ToCore(Next->Key),Next->Point.X,Next->Point.Y,Next->Point.Z};Plan.Hops.push_back(H);
+            GuLiLinearState::FHopStatus Status;Status.Target=Next->Key;Status.Position=Next->Point;Status.Event=GuLiNetBridge::ToUE(GuLiNet::GroundRogue::HopEvent(Plan.Shot,Hop+1,H.Target));V.Hops.Add(Status);Visited.Add(Next->Key);Point=Next->Point;
+        }
+        const auto Bytes=GuLiNet::GroundRogue::EncodeChain(Plan);if(Bytes.empty()){V.Hops.Reset();return;}
+        V.Plan.Append(Bytes.data(),int32(Bytes.size()));V.PlanEvent=GuLiLinearState::Event(V.Key,TEXT("/ricochet-plan"));
+    }
+    void QueueGroundHit(FRecord& V,int32 Segment,const FGuLiTargetHandle& Target,FGuid Event,FVector Point,float Multiplier)
+    {
+        UGuLiProjectilePoolSubsystem::FAcceptedGroundHit Accepted;Accepted.Snapshot=V.Recipe.GroundAttack;
+        auto& H=Accepted.Hit;H.Shot=V.Key.StableId;H.Event=Event;H.Target=Target;H.Position=Point;H.Segment=Segment;H.DirectDamageMultiplier=Multiplier;H.bCanTriggerRicochet=Segment==0;
+        Pool->PendingGroundHits.Add(MoveTemp(Accepted));
+    }
+    bool PublishRicochet(FRecord& V)
+    {
+        TArray<FGuLiFlightEvent> Events;TArray<int32> Indices;FVector Start=V.Geometry.Location;
+        for(int32 I=0;I<V.Hops.Num();++I)
+        {
+            const auto& H=V.Hops[I];if(!H.Published)
+            {
+                FGuLiFlightEvent E;E.bInstantGroundSegment=true;E.InstantEnd=H.Position;E.ImpactVfxId=V.Recipe.GroundAttack.ImpactVfxId;E.State=V.Geometry;
+                auto& S=E.State;S.EffectId=H.Event;S.Sequence=1;S.Phase=EGuLiCombatEffectPhase::Active;S.EndReason=EGuLiCombatEffectEndReason::None;S.LaunchLocation=S.Location=Start;
+                S.LaunchDirection=(H.Position-Start).GetSafeNormal(UE_SMALL_NUMBER,FVector::ForwardVector);S.Motion.Speed=300000.f;S.Velocity=FVector(S.LaunchDirection)*S.Motion.Speed;
+                S.StartTime=S.SampleTime=S.ActivationTime=V.Geometry.SampleTime;S.EndTime=S.StartTime+.02f;Hybrid->ResolveObjectTarget(H.Target,S.Target);S.LastTargetLocation=H.Position;
+                Events.Add(E);Indices.Add(I);
+            }Start=H.Position;
+        }
+        int32 Cursor=0;
+        while(Cursor<Events.Num())
+        {
+            TArray<uint8> Batch;const int32 Count=GuLiFlightWire::EncodeBatch(MakeArrayView(Events).Slice(Cursor,Events.Num()-Cursor),Batch);if(!Count)return false;
+            const uint64 PublishedAt=Hybrid->GetObjectLogicalTick(V.Key);
+            for(int32 I=0;I<Count;++I)UGuLiCombatEffectReplicationComponent::RebasePublishedState(Pool->GetWorld(),PublishedAt,Events[Cursor+I].State);
+            if(GuLiFlightWire::EncodeBatch(MakeArrayView(Events).Slice(Cursor,Count),Batch)!=Count)return false;
+            GuLiNet::Writer W;W.U32(GuLiLinearState::RicochetTag);W.U32(GuLiLinearState::Version);W.Blob({Batch.GetData(),SIZE_T(Batch.Num())});const auto Bytes=W.Take();TArray<uint8> Body;Body.Append(Bytes.data(),int32(Bytes.size()));
+            if(!Hybrid->PublishEffect(V.Key,FGuid::NewGuid(),Body))return false;
+            for(int32 I=0;I<Count;++I)
+            {auto Local=Events[Cursor+I];UGuLiCombatEffectReplicationComponent::RebaseReceivedState(Pool->GetWorld(),PublishedAt,Local.State);UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(Pool->GetWorld(),Local);V.Hops[Indices[Cursor+I]].Published=true;}
+            Cursor+=Count;
+        }return true;
+    }
+    bool ServiceRicochet(FRecord& V,const FGuLiHybridObjectState& Object)
+    {
+        if(!V.bHit||V.SourceKind!=EGuLiTargetKind::GroundActor)return true;
+        if(!V.bFirstDamageCommitted)return true;
+        if(!V.bFirstHitNotified)
+        {FGuLiTargetHandle Target;if(Hybrid->ResolveObjectTarget(V.HitTarget,Target)){V.bFirstHitNotified=true;QueueGroundHit(V,0,Target,V.Damage,V.Geometry.Location,1);}}
+        if(V.Plan.IsEmpty())return true;
+        if(!V.bPlanResolved)
+        {
+            const auto* Existing=Object.Capabilities.Find(TEXT("ground_ricochet"));
+            if(Existing&&!Existing->Data.IsEmpty()){if(Existing->Data!=V.Plan){Hybrid->Suspend(TEXT("Frozen ricochet route changed"));return false;}V.bPlanResolved=true;}
+            else
+            {
+                FGuLiHybridTransactionResult Result;
+                if(Hybrid->FindTransactionResult(V.PlanEvent,Result))
+                {if(Result.Status==EGuLiHybridTransactionStatus::Paused||Result.Status==EGuLiHybridTransactionStatus::Deferred)return false;if(!Result.IsCommitted()){for(auto& H:V.Hops)H.Resolved=true;return true;}V.bPlanResolved=true;}
+                else if(!V.bPlanSubmitted&&!Hybrid->IsBattlePaused())V.bPlanSubmitted=Hybrid->SubmitCapability(V.Key,V.PlanEvent,FName(*(TEXT("plan/ricochet/")+Object.Definition.ToString())),Object.RelationRevision,V.Plan,V.Team).IsValid();
+            }
+            if(!V.bPlanResolved)return false;
+        }
+        if(Hybrid->IsBattlePaused())return false;PublishRicochet(V);bool All=true;
+        for(int32 I=0;I<V.Hops.Num();++I)
+        {
+            auto& H=V.Hops[I];if(!H.Published)All=false;if(H.Resolved)continue;
+            FGuLiDamageCommitResult Result;const float Scale=FMath::Pow(V.Recipe.GroundAttack.GetRicochet().Retention,float(I+1));
+            if(Hybrid->FindDamageResult(H.Event,Result))
+            {
+                H.Resolved=true;if(Result.Status==EGuLiDamageCommitStatus::Committed&&!H.Notified)
+                {FGuLiTargetHandle Target;if(Hybrid->ResolveObjectTarget(H.Target,Target)){H.Notified=true;QueueGroundHit(V,I+1,Target,H.Event,H.Position,Scale);}}
+            }
+            else if(!H.Submitted)
+            {
+                FGuLiDamageRequest R;R.MatchEpoch=CurrentEpoch();R.DamageEventId=R.RootEventId=H.Event;R.ShotId=V.Key.StableId;R.Source=V.Recipe.Context.Source;R.SkillId=V.Recipe.Context.SkillId;R.WeaponBinding=V.Recipe.Context.WeaponBinding;R.HitLocation=H.Position;R.Damage=V.Recipe.GroundAttack.Damage*Scale;
+                FGuLiCombatTargetSnapshot Snapshot;
+                if(!Hybrid->ResolveObjectTarget(H.Target,R.Target)||!Pool->Ledger->TryGetTargetSnapshot(R.Target,Snapshot)||!Snapshot.bAlive){H.Resolved=true;continue;}
+                if(R.Damage<=0){H.Resolved=true;H.Notified=true;QueueGroundHit(V,I+1,R.Target,H.Event,H.Position,Scale);continue;}
+                H.Submitted=Hybrid->SubmitDamage(R,Object.BornAt,{},&V.Key,V.DamageAt).IsValid();
+            }
+            if(!H.Resolved)All=false;
+        }return All;
+    }
     void Rebuild(FRecord& V)
     {
         auto& S=V.Geometry; const auto& R=V.Recipe;
@@ -206,6 +343,7 @@ struct FGuLiHybridProjectileState
         S.Source=V.Recipe.Context.Source; S.Target=V.Recipe.Context.Target; S.SourceTeam=V.Team;
         S.SlotId=V.Recipe.Context.WeaponBinding.SlotId;
         S.PlayerBulletVfxId=R.PlayerBulletVfxId; S.bAcceptanceAdditional=R.bAcceptanceAdditional;
+        S.PlayerImpactVfxId=R.GroundAttack.ImpactVfxId;
         S.Motion.Speed=R.Speed; S.Motion.SweepRadius=R.SweepRadius; S.Motion.MaximumLifetime=R.Lifetime;
         S.LaunchLocation=R.Position; S.LaunchDirection=R.Direction; S.MuzzleOffset=R.MuzzleOffset;
         S.StartTime=S.ActivationTime=R.ServerTime;
@@ -248,6 +386,12 @@ struct FGuLiHybridProjectileState
         TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_Activate);
         auto* P=Pool.Get(); if (!P || V.bFinished || !V.bRecipe || Object.SimulationOwner!=LocalPlayer() || Object.LifeState!=GuLiLinearState::Alive) return;
         if (!V.bAdmitted) Trace(TEXT("admission-observed"),V);
+        if(const auto* Frozen=Object.Capabilities.Find(TEXT("ground_attack")))
+        {
+            GuLiNet::GroundRogue::Attack A;if(!GuLiNet::GroundRogue::DecodeAttack({Frozen->Data.GetData(),SIZE_T(Frozen->Data.Num())},A)){Hybrid->Suspend(TEXT("Invalid admitted Ground attack"));return;}
+            auto& G=V.Recipe.GroundAttack;G.Player=GuLiNetBridge::ToUE(A.Player);G.Revision=A.RevisionValue;G.Damage=A.Damage;G.BulletVfxId=int32(A.BulletVfx);G.ImpactVfxId=int32(A.ImpactVfx);G.MuzzleVfxId=int32(A.MuzzleVfx);
+            G.Effects=A.Effects;V.Recipe.PlayerBulletVfxId=G.BulletVfxId;V.Recipe.Context.Damage=G.Damage;
+        }
         if (!V.bAdmitted && !bRestoring)
         {
             V.Recipe.ServerTime=FMath::Max(V.Recipe.ServerTime,static_cast<float>(Hybrid->GetLocalLogicalSeconds()));
@@ -292,7 +436,7 @@ struct FGuLiHybridProjectileState
         FGuLiFlightEvent E; E.State=V.Geometry; E.bBootstrap=Bootstrap;
         if (E.State.Phase==EGuLiCombatEffectPhase::Finished && E.State.Source.Kind==EGuLiTargetKind::GroundActor
             && (E.State.EndReason==EGuLiCombatEffectEndReason::Impact || E.State.EndReason==EGuLiCombatEffectEndReason::Blocked))
-            E.ImpactVfxId=GuLiVfxIds::GroundMechImpact;
+        {E.ImpactVfxId=V.Recipe.GroundAttack.ImpactVfxId;E.bFrozenGroundImpact=true;}
         if (!UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(Pool->GetWorld(),E)) return false;
         if (Bootstrap) return true;
         const float Sample=E.State.SampleTime;
@@ -403,7 +547,7 @@ struct FGuLiHybridProjectileState
                 TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_DamageResult);
                 FGuLiDamageCommitResult Result;
                 if (Hybrid->FindDamageResult(V->Damage,Result))
-                { V->bDamageResolved=true; if (Result.Status==EGuLiDamageCommitStatus::Committed) ++Pool->Stats.Hits; }
+                { V->bDamageResolved=true;V->bFirstDamageCommitted=Result.Status==EGuLiDamageCommitStatus::Committed||Result.Status==EGuLiDamageCommitStatus::Duplicate; if (Result.Status==EGuLiDamageCommitStatus::Committed) ++Pool->Stats.Hits; }
                 else if (!V->bDamageSubmitted && !Hybrid->IsBattlePaused())
                 {
                     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_SubmitDamage);
@@ -417,8 +561,10 @@ struct FGuLiHybridProjectileState
                 }
                 if (!V->bDamageResolved) continue;
             }
+            if(!ServiceRicochet(*V,O))continue;
             if (!V->bRetirementSubmitted && V->bTerminalPublished && !Hybrid->IsBattlePaused())
             {
+                if(!Hybrid->GetObjectView(Key,O))continue;
                 if (!V->bRetirementPrepared)
                 {
                     V->RetirementAt=Hybrid->GetObjectLogicalTick(Key);V->bRetirementPrepared=true;
@@ -451,7 +597,7 @@ struct FGuLiHybridProjectileState
             { FGuLiHybridTransactionResult Admission; if (Hybrid->FindTransactionResult(V.Admission,Admission) && !Admission.IsCommitted()
                 && Admission.Status!=EGuLiHybridTransactionStatus::Deferred && Admission.Status!=EGuLiHybridTransactionStatus::Paused) continue; }
             if (V.bHit && !V.bDamageResolved)
-            { FGuLiDamageCommitResult Damage; if (Hybrid->FindDamageResult(V.Damage,Damage)) Copy.bDamageResolved=true; }
+            { FGuLiDamageCommitResult Damage; if (Hybrid->FindDamageResult(V.Damage,Damage)){Copy.bDamageResolved=true;Copy.bFirstDamageCommitted=Damage.Status==EGuLiDamageCommitStatus::Committed||Damage.Status==EGuLiDamageCommitStatus::Duplicate;} }
             if (Pool->Matches(V.Handle)) { Copy.Geometry=Pool->Slots[V.Handle.Slot].State; Groups[Copy.SourceKind==EGuLiTargetKind::CommanderSoldier?1:0].Add(Copy.HistoryGroup); }
             FGuLiHybridStateArchive Check(65536); GuLiLinearState::Record(Check,Copy);
             if (!Check.Good())
@@ -548,6 +694,9 @@ struct FGuLiHybridProjectileState
                     const float Offset=float(Hybrid->GetLocalLogicalSeconds()-Data.At);
                     V.Recipe.ServerTime+=Offset;if (V.Recipe.ScheduledActivationSeconds>0) V.Recipe.ScheduledActivationSeconds+=Offset;
                     V.Geometry.StartTime+=Offset;V.Geometry.SampleTime+=Offset;V.Geometry.ActivationTime+=Offset;V.Geometry.EndTime+=Offset;
+                    if(!V.bDamageResolved)V.bDamageSubmitted=false;
+                    if(!V.bPlanResolved)V.bPlanSubmitted=false;
+                    for(auto& H:V.Hops)if(!H.Resolved)H.Submitted=false;
                     V.Handle={}; Records.Add(V.Key,V);
                     Trace(TEXT("restore-created"),V,&Objects);
                 }
@@ -612,6 +761,18 @@ public:
     {
         const auto S=State.Pin(); if (!S || Object.SimulationOwner==S->LocalPlayer()) return false;
         GuLiNet::Reader Prefix(std::span<const uint8>(Bytes.GetData(),Bytes.Num()));uint32 Tag;
+        if(Prefix.U32(Tag)&&Tag==GuLiLinearState::RicochetTag)
+        {
+            uint32 Version;GuLiNet::Bytes Visual;if(!Prefix.U32(Version)||Version!=GuLiLinearState::Version||!Prefix.Blob(Visual,GuLiFlightWire::MaximumBytes)||!Prefix.Done())return false;
+            TArray<uint8> Body;Body.Append(Visual.data(),int32(Visual.size()));TArray<FGuLiFlightEvent> Events;if(!GuLiFlightWire::DecodeBatch(Body,Events))return false;
+            for(auto& E:Events)
+            {
+                if(!E.bInstantGroundSegment||E.State.MatchEpoch!=S->CurrentEpoch())return false;
+                UGuLiCombatEffectReplicationComponent::RebaseReceivedState(S->Pool->GetWorld(),At,E.State);
+                if(!UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(S->Pool->GetWorld(),E))return false;
+            }return true;
+        }
+        Prefix=GuLiNet::Reader(std::span<const uint8>(Bytes.GetData(),Bytes.Num()));
         if (Prefix.U32(Tag) && Tag==GuLiLinearState::EventTag) return ApplyPrivateEvent(Bytes,At);
         TArray<uint8> Body; Body.Append(Bytes.GetData(),Bytes.Num()); TArray<FGuLiFlightEvent> Events;
         if (!GuLiFlightWire::DecodeBatch(Body,Events) || Events.Num()!=1) return false;
@@ -726,7 +887,7 @@ bool UGuLiProjectilePoolSubsystem::IsTickable() const { return !IsTemplate() && 
 TStatId UGuLiProjectilePoolSubsystem::GetStatId() const { RETURN_QUICK_DECLARE_CYCLE_STAT(GuLiProjectileTransactions,STATGROUP_Tickables); }
 void UGuLiProjectilePoolSubsystem::Tick(float)
 {
-    if (HybridState) { HybridState->Service(); return; }
+    if (HybridState) { HybridState->Service();auto Hits=MoveTemp(PendingGroundHits);PendingGroundHits.Reset();for(const auto& H:Hits)OnGroundWeaponHit.Broadcast(H.Hit,H.Snapshot);return; }
     if (!GetWorld() || !Ledger) return;
     BeginEpoch(Ledger->GetMatchEpoch()); TArray<FGuid> Keys; ScheduledLaunches.GetKeys(Keys);
     for (const auto& Key:Keys) if (const auto* Pending=ScheduledLaunches.Find(Key); Pending && Pending->Recipe.ServerTime<=GetWorld()->GetTimeSeconds()+.0001f)
@@ -807,6 +968,7 @@ void UGuLiProjectilePoolSubsystem::RetireHybrid(const FGuLiCombatEffectState& St
     V->bFinished=true; V->Handle={};
     if (Target)
     { if (!S->Hybrid->ResolveTarget(*Target,V->HitTarget)) { S->Hybrid->Suspend(TEXT("Flight hit lacks a stable target")); return; } V->bHit=true;V->DamageAt=S->Hybrid->GetObjectLogicalTick(Key); }
+    S->FreezeRicochet(*V);
     if (Reason==EGuLiCombatEffectEndReason::Blocked) ++Stats.Blocked;
     V->bTerminalPublished=S->Publish(*V,false); OnState.Broadcast(V->Geometry,true);
     // The shared logical step services every record before stepping the pool.

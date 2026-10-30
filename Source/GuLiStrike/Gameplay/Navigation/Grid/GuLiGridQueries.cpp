@@ -2,6 +2,7 @@
 #include "Gameplay/Navigation/Grid/GuLiGridMotion.h"
 #include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
 #include "GuLiNetRelocation.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 
 namespace
 {
@@ -25,6 +26,16 @@ bool GuLiGrid::PendingDisplacementAt(const FGuLiHybridObjectState& O,const FGuLi
     return Dest.Min==R.Min && Dest.Max==R.Max;
 }
 
+EGuLiUnitMovementLayer GuLiGrid::MovementLayerFor(UWorld& World,const FGuLiHybridObjectKey& Key)
+{
+    const auto* H=World.GetSubsystem<UGuLiHybridWorldSubsystem>();FGuLiHybridObjectState O;
+    if (!H || !H->GetObjectView(Key,O)) return EGuLiUnitMovementLayer::Ground;
+    const FString Name=O.Definition.ToString();
+    const auto* Catalog=World.GetSubsystem<UGuLiUnitDataSubsystem>();
+    const auto* D=Catalog && Name.StartsWith(TEXT("unit/")) ? Catalog->FindDefinition(FCString::Atoi(*Name.Mid(5))) : nullptr;
+    return D?D->MovementLayer:EGuLiUnitMovementLayer::Ground;
+}
+
 void GuLiGrid::ObserveRemoteBody(UWorld& World,const FGuLiHybridObjectState& O,const FVector& Position,int32 Size,bool bGround)
 {
     auto* G=World.GetSubsystem<UGuLiGroundGridSubsystem>();if (!G || !G->IsReady()) return;
@@ -36,7 +47,7 @@ void GuLiGrid::ObserveRemoteBody(UWorld& World,const FGuLiHybridObjectState& O,c
     {
         FTrafficPriority Priority;
         if (O.Key.Kind==EGuLiHybridObjectKind::GroundPlayer) Priority.Class=ETrafficClass::DirectPlayer;
-        G->Traffic().Admit(O.Key,O.SimulationOwner,O.OwnerEpoch,uint8(O.Team),Actual,Priority,Size);
+        G->Traffic().Admit(O.Key,O.SimulationOwner,O.OwnerEpoch,uint8(O.Team),Actual,Priority,Size,MovementLayerFor(World,O.Key));
     }
     else if (R->Occupied.Min!=Actual.Min || R->Occupied.Max!=Actual.Max) G->Traffic().Commit(O.Key,O.SimulationOwner,O.OwnerEpoch,Actual);
     if (auto N=G->Network()) N->PublishedPose(O.Key,O.SimulationOwner,O.OwnerEpoch,Actual);

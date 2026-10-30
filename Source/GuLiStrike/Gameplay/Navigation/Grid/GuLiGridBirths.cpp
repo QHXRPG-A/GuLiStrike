@@ -17,9 +17,9 @@ FGuLiHybridObjectKey GuLiGridBirths::Target(const FGuLiGridBirthBatch& B,int32 I
         GuLiNet::ObjectKind::Soldier,uint32(Index)));
 }
 EGuLiGridPermit GuLiGridBirths::Prepare(UGuLiGroundGridSubsystem& G,const FGuLiHybridObjectState& O,const FGuid& Request,
-    FVector Position,int32 CasterSize,int32 Size,int32 Count,double Clearance,int32 Rings,int32 Samples)
+    FVector Position,int32 CasterSize,int32 Size,int32 Count,double Clearance,int32 Rings,int32 Samples,EGuLiUnitMovementLayer Layer,float AltitudeCentimeters)
 {
-    if (!Request.IsValid() || Count<1 || Count>32 || Size<1 || Size>64 || CasterSize<1 || CasterSize>64
+    if (!GuLiUnitMovement::IsValid(Layer,AltitudeCentimeters) || !Request.IsValid() || Count<1 || Count>32 || Size<1 || Size>64 || CasterSize<1 || CasterSize>64
         || !FMath::IsFinite(Clearance) || Clearance<0 || Clearance>19200 || Rings<1 || Rings>3 || Samples<1 || Samples>36
         || !G.Network() || !G.Network()->IsLocal(O.SimulationOwner)) return EGuLiGridPermit::Blocked;
     auto* Batch=G.BirthPlans.Find(O.Key);
@@ -28,10 +28,11 @@ EGuLiGridPermit GuLiGridBirths::Prepare(UGuLiGroundGridSubsystem& G,const FGuLiH
         if (G.BirthPlans.Num()>=1024) return EGuLiGridPermit::Blocked;
         Batch=&G.BirthPlans.Add(O.Key);G.BirthKeys.Add(O.Key);
         Batch->Source=O.Key;Batch->Request=Request;Batch->Event=EventId(Request,O.Key);
+        Batch->MovementLayer=Layer;Batch->AltitudeCentimeters=AltitudeCentimeters;
         Batch->Size=Size;Batch->Count=Count;Batch->CasterSize=CasterSize;Batch->Gap=FMath::CeilToInt32(Clearance/300.);
         Batch->Origin=G.Snapshot()->AnchorAt(Position,CasterSize);Batch->Rings=Rings;Batch->Samples=Samples;
     }
-    auto& B=*Batch;if (B.Request!=Request || B.bSubmitted) return EGuLiGridPermit::Blocked;
+    auto& B=*Batch;if (B.Request!=Request || B.bSubmitted || B.MovementLayer!=Layer || B.AltitudeCentimeters!=AltitudeCentimeters) return EGuLiGridPermit::Blocked;
     auto& Work=G.FrameBudget();FGuLiNavigationWorkBudget::FScope Scope(Work);
     TGuardValue<double> Slice(Work.LimitSeconds,FMath::Min(Work.LimitSeconds,Work.Elapsed()+.0002));
     const auto S=G.Snapshot();const int32 Limit=Count+Rings*Samples;
@@ -44,9 +45,9 @@ EGuLiGridPermit GuLiGridBirths::Prepare(UGuLiGroundGridSubsystem& G,const FGuLiH
         const FIntPoint P=B.Origin+(Side==0?FIntPoint(Low+Offset,Low):Side==1?FIntPoint(High,Low+Offset):
             Side==2?FIntPoint(High-Offset,High):FIntPoint(Low,High-Offset));
         const FVector Center=S->Center(P,Size);
-        if (!GuLiGrid::Unoccupied(G,Center,Size)) continue;
+        if (!GuLiGrid::Unoccupied(G,Center,Size,{},B.MovementLayer)) continue;
         const auto Key=FGuLiGridNetwork::PlacementKey(Target(B,B.Positions.Num()));
-        if (G.Traffic().Admit(Key,O.SimulationOwner,O.OwnerEpoch,uint8(O.Team),GuLiGrid::FRect::At(P,Size),{},Size)) B.Positions.Add(Center);
+        if (G.Traffic().Admit(Key,O.SimulationOwner,O.OwnerEpoch,uint8(O.Team),GuLiGrid::FRect::At(P,Size),{},Size,B.MovementLayer)) B.Positions.Add(GuLiUnitMovement::WorldPosition(Center,B.AltitudeCentimeters));
     }
     if (B.Positions.Num()<Count)
     {
@@ -60,8 +61,8 @@ EGuLiGridPermit GuLiGridBirths::Prepare(UGuLiGroundGridSubsystem& G,const FGuLiH
         if (!Work.TakeProjection()) return EGuLiGridPermit::Pending;
         const int32 I=B.CheckCursor++;
         const auto Key=Target(B,I);const auto Place=FGuLiGridNetwork::PlacementKey(Key);
-        if (!GuLiGrid::Unoccupied(G,B.Positions[I],Size,Place)) {Cancel(G,O.Key,Request);return EGuLiGridPermit::Blocked;}
-        const auto Permit=G.Network()->PermitPlacement(O.Key,Key,GuLiGrid::FRect::At(S->AnchorAt(B.Positions[I],Size),Size),Size,uint8(O.Team));
+        if (!GuLiGrid::Unoccupied(G,B.Positions[I],Size,Place,B.MovementLayer)) {Cancel(G,O.Key,Request);return EGuLiGridPermit::Blocked;}
+        const auto Permit=G.Network()->PermitPlacement(O.Key,Key,GuLiGrid::FRect::At(S->AnchorAt(B.Positions[I],Size),Size),Size,uint8(O.Team),B.MovementLayer);
         if (Permit==EGuLiGridPermit::Blocked) {Cancel(G,O.Key,Request);return Permit;}
         B.bAwaitingGrant|=Permit==EGuLiGridPermit::Pending;
     }
@@ -92,8 +93,8 @@ void GuLiGridBirths::Recover(UGuLiGroundGridSubsystem& G,const FGuLiHybridObject
     {
         const auto Key=Target(*B,I);FGuLiHybridObjectState Born;if (H->GetObjectView(Key,Born) && Born.LifeState!=0) continue;
         const auto R=GuLiGrid::FRect::At(G.Snapshot()->AnchorAt(B->Positions[I],B->Size),B->Size);
-        G.Traffic().Admit(FGuLiGridNetwork::PlacementKey(Key),Source.SimulationOwner,Source.OwnerEpoch,uint8(Source.Team),R,{},B->Size);
-        G.Network()->RecoverPlacement(Source,Key,R,B->Size);
+        G.Traffic().Admit(FGuLiGridNetwork::PlacementKey(Key),Source.SimulationOwner,Source.OwnerEpoch,uint8(Source.Team),R,{},B->Size,B->MovementLayer);
+        G.Network()->RecoverPlacement(Source,Key,R,B->Size,false,B->MovementLayer);
     }
 }
 void GuLiGridBirths::Advance(UGuLiGroundGridSubsystem& G)
@@ -122,8 +123,9 @@ void GuLiGridBirths::Advance(UGuLiGroundGridSubsystem& G)
 }
 void GuLiGridBirths::Serialize(FGuLiHybridStateArchive& A,FGuLiGridBirthBatch& B)
 {
+    A.Enum(B.MovementLayer,uint8(EGuLiUnitMovementLayer::LowAir));A.Value(B.AltitudeCentimeters);
     A.Value(B.Request);A.Value(B.Event);A.Value(B.Source);A.Value(B.Size);A.Value(B.Count);A.Value(B.bSubmitted);
     A.Array(B.Positions,32,[](auto& Ar,auto& P){Ar.Value(P);});
-    if (!B.Source.IsValid() || !B.Request.IsValid() || B.Event!=EventId(B.Request,B.Source) || B.Size<1 || B.Size>64
+    if (!GuLiUnitMovement::IsValid(B.MovementLayer,B.AltitudeCentimeters) || !B.Source.IsValid() || !B.Request.IsValid() || B.Event!=EventId(B.Request,B.Source) || B.Size<1 || B.Size>64
         || B.Count<1 || B.Count>32 || !B.bSubmitted || B.Positions.Num()!=B.Count) A.Reject();
 }

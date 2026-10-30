@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
+#include "Gameplay/Units/GuLiUnitMovementLayer.h"
 #include "GuLiCommanderSoldierDefinition.generated.h"
 
 class UStaticMesh;
@@ -40,6 +41,12 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier", meta = (Units = "cm/s"))
 	float MovementSpeedCmPerSecond = 720.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Movement")
+	EGuLiUnitMovementLayer MovementLayer = EGuLiUnitMovementLayer::Ground;
+	/** Logical root height above the shared navigation surface; never presentation scale. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Movement", meta=(Units="cm"))
+	float AltitudeCentimeters = 0.f;
 
 	/** Model-width override; zero keeps the existing Mass default. No extra clearance. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier", meta = (Units = "cm"))

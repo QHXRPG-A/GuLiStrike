@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "MassEntityTypes.h"
+#include "Gameplay/Units/GuLiUnitMovementLayer.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "GuLiCommanderMassFragments.generated.h"
 
@@ -22,6 +23,8 @@ struct GULISTRIKE_API FGuLiMassIdentityFragment : public FMassFragment
 	/** Immutable movement category assigned by the shared engineering attachment path. */
 	UPROPERTY(Transient)
 	bool bEngineering = false;
+	UPROPERTY(Transient) EGuLiUnitMovementLayer MovementLayer = EGuLiUnitMovementLayer::Ground;
+	UPROPERTY(Transient) float AltitudeCentimeters = 0.f;
 };
 
 /** Server-authoritative health and the five-second destroyed presentation window. */

@@ -14,6 +14,9 @@ class GULISTRIKEEDITOR_API UGuLiLocalPIESettings final : public UDeveloperSettin
     GENERATED_BODY()
 public:
     UPROPERTY(Config, EditAnywhere, Category="Local PIE") bool bEnabled=true;
+    /** Interactive local play chooses a seat before any session process starts. */
+    UPROPERTY(Config, EditAnywhere, Category="Local PIE", meta=(DisplayName="开局选择席位"))
+    bool bPromptForRole=true;
     UPROPERTY(Config, EditAnywhere, Category="Local PIE", meta=(ValidEnumValues="Commander,Ground,Air"))
     EGuLiCommanderRole MainRole=EGuLiCommanderRole::Commander;
     UPROPERTY(Config, EditAnywhere, Category="Local PIE", meta=(ClampMin="1024",ClampMax="65535"))

@@ -94,13 +94,13 @@ const FGuLiDynamicObstacle* FGuLiDynamicObstacleSnapshot::FindObstacle(uint32 Ha
 	const auto* Index=ByHandle.Find(Handle);
 	return Index ? &Obstacles[*Index] : nullptr;
 }
-bool FGuLiDynamicObstacleSnapshot::IsSegmentClear(const FVector& From,const FVector& To,float Radius,bool bAllowEscape) const
+bool FGuLiDynamicObstacleSnapshot::IsSegmentClear(const FVector& From,const FVector& To,float Radius,bool bAllowEscape,EGuLiUnitMovementLayer Layer) const
 {
 	TArray<int32> Nearby; Query((From+To)*.5f,Radius+FVector::Dist2D(From,To)*.5f,Nearby);
 	const FVector2D A(From), B(To), Segment=B-A;
 	for (int32 I : Nearby)
 	{
-		const auto& O=GetObstacle(I); if (FMath::Abs(To.Z-O.Location.Z)>300.f+O.HalfHeight) continue;
+		const auto& O=GetObstacle(I); if (O.IgnoresLayer(Layer)) continue; if (FMath::Abs(To.Z-O.Location.Z)>300.f+O.HalfHeight) continue;
 		const FVector2D Center(O.Location);
 		const double R=Radius+O.RadiusCentimeters;
 		const double StartDistance=FVector2D::DistSquared(A,Center), EndDistance=FVector2D::DistSquared(B,Center);

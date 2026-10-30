@@ -9,6 +9,7 @@ class UGuLiCommanderNetSyncComponent;
 class AGuLiBattlePlayerState;
 class UDataTable;
 class UStringTable;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGuLiGroundRogueBuildChanged,FGuid,Player,int64,Revision);
 
 /** Local catalog and UI view of the team-owned army capability. */
 UCLASS()
@@ -19,7 +20,10 @@ public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	const FGuLiStrikeRogueCardsCardsRow* FindCard(const FString& Id);
 	FText GetText(const FString& Key);
-	FText GetCardText(const FString& Id, int32 Index);
+	FText GetCardText(const FString& Id, int32 Index,FGuid Player={},bool bPreviewAcquisition=true);
+    UFUNCTION(BlueprintPure,Category="Cards|Ground") int32 GetAcquisitionCount(FGuid Player,const FString& CardId) const;
+    UFUNCTION(BlueprintPure,Category="Cards|Ground") bool HasCard(FGuid Player,const FString& CardId) const {return GetAcquisitionCount(Player,CardId)>0;}
+    UPROPERTY(BlueprintAssignable,Category="Cards|Ground") FGuLiGroundRogueBuildChanged OnGroundBuildChanged;
 	void RequestOffer(UGuLiCommanderNetSyncComponent& Channel, FGuid Request);
 	void RerollOffer(UGuLiCommanderNetSyncComponent& Channel, FGuid Request, FGuid Session);
 	void Confirm(UGuLiCommanderNetSyncComponent& Channel, FGuid Session, const FString& CardId);
@@ -29,6 +33,10 @@ public:
     virtual void Deinitialize() override;
 private:
     friend class FGuLiHybridArmyBridge;
+    friend class FGuLiHybridGroundRogueBridge;
+    TMap<FGuid,TMap<FString,int32>> GroundAcquisitions;
+    TMap<FGuid,uint64> GroundRevisions;
+    uint32 GroundEpoch=0;
 	struct FOffer
 	{
 		FGuid Request, Session, RerolledFrom;
@@ -45,6 +53,7 @@ private:
 	bool LoadCatalog(FString& Error);
 
 	UPROPERTY(Transient) TObjectPtr<UDataTable> Table;
+    UPROPERTY(Transient) TObjectPtr<UDataTable> GroundEffectTable;
 	UPROPERTY(Transient) TObjectPtr<UStringTable> StringTable;
 	TMap<FString, FGuLiStrikeRogueCardsCardsRow> Catalog;
 	TMap<TWeakObjectPtr<UGuLiCommanderNetSyncComponent>, FOffer> Offers;

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gameplay/Units/GuLiUnitMovementLayer.h"
 
 struct FMassMovingAvoidanceParameters;
 struct FMassMovementParameters;
@@ -47,7 +48,12 @@ namespace GuLiCommanderAvoidancePolicy
 		float MaximumSpeed = 0.0f;
 		bool bEngineering = false;
 		float HalfHeight = 0;
+        EGuLiUnitMovementLayer MovementLayer=EGuLiUnitMovementLayer::Ground;
+        bool bLayerBound=true;
 	};
+
+    inline bool SharesMovementLayer(const FAgentSnapshot& A,const FAgentSnapshot& B)
+    { return !A.bLayerBound || !B.bLayerBound || A.MovementLayer==B.MovementLayer; }
 
 	/** One exact-range collider, selected by distance and stable identity before CPA. */
 	struct GULISTRIKE_API FNearestCandidate

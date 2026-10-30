@@ -18,7 +18,7 @@ static TAutoConsoleVariable<int32> CVarProjectileVisitStamps(TEXT("gs.Projectile
 
 namespace
 {
-	constexpr double ProjectileGridCellSize = 20000.0;
+	constexpr double ProjectileGridCellSize = UGuLiProjectilePoolSubsystem::SpatialCellCentimeters;
 	FIntVector ProjectileGridCell(const FVector& P)
 	{ return FIntVector(FMath::FloorToInt(P.X / ProjectileGridCellSize), FMath::FloorToInt(P.Y / ProjectileGridCellSize), FMath::FloorToInt(P.Z / ProjectileGridCellSize)); }
 	// Earliest contact of two swept spheres, expressed in relative coordinates.
@@ -77,6 +77,7 @@ void UGuLiProjectilePoolSubsystem::Clear()
 	OrderedCandidates.Reset(); CandidateVisits.Reset(); CandidateGeneration = 0;
 	NextGroundStepTime = 0; Stats = {}; Stats.Capacity = Slots.Num();
 	HybridHistories[0].Reset(); HybridHistories[1].Reset();
+    PendingGroundHits.Reset();
 }
 
 void UGuLiProjectilePoolSubsystem::BeginEpoch(const uint32 NewEpoch)
@@ -152,6 +153,7 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::ActivateLaunch(const FGu
 	// previous source and Commander bullets must retain their independent 5 Hz domain.
 	DomainSlots[State.Source.Kind == EGuLiTargetKind::CommanderSoldier ? 1 : 0].Add(Index);
 	State.PlayerBulletVfxId = R.PlayerBulletVfxId;
+    State.PlayerImpactVfxId=R.GroundAttack.ImpactVfxId;
 	State.bAcceptanceAdditional = R.bAcceptanceAdditional;
 	State.Target = R.Context.Target;
 	FGuLiCombatTargetSnapshot Target;
@@ -276,7 +278,8 @@ void UGuLiProjectilePoolSubsystem::BuildSpatialIndex(const float Now, const FSim
 		FTargetMotion& Target = Targets.AddDefaulted_GetRef(); Target.Snapshot = Snapshot;
 		const FVector* Previous = History.PreviousTargets.Find(Snapshot.Handle);
 		Target.Previous = Previous && Now > History.PreviousTime ? *Previous : Snapshot.Location;
-		const FBox Box = FBox(Target.Previous.ComponentMin(Snapshot.Location), Target.Previous.ComponentMax(Snapshot.Location)).ExpandBy(Snapshot.CollisionRadius);
+		FBox Box = FBox(Target.Previous.ComponentMin(Snapshot.Location), Target.Previous.ComponentMax(Snapshot.Location)).ExpandBy(Snapshot.CollisionRadius);
+		Box += Snapshot.GetHitCenter();
 		const FIntVector Min = ProjectileGridCell(Box.Min), Max = ProjectileGridCell(Box.Max);
 		for (int32 X = Min.X; X <= Max.X; ++X) for (int32 Y = Min.Y; Y <= Max.Y; ++Y) for (int32 Z = Min.Z; Z <= Max.Z; ++Z)
 			SpatialGrid.FindOrAdd(FIntVector(X, Y, Z)).Add(Targets.Num() - 1);

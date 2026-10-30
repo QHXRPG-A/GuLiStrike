@@ -1,5 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "Gameplay/Units/GuLiUnitMovementLayer.h"
+
 #include "Gameplay/Navigation/Grid/GuLiGridTypes.h"
 #include "Network/GuLiHybridObjectKey.h"
 
@@ -10,6 +12,7 @@ struct FGuLiGridTrafficRecord
     uint64 OwnerEpoch=0;
     uint8 Team=0;
     int32 Footprint=1;
+    EGuLiUnitMovementLayer MovementLayer=EGuLiUnitMovementLayer::Ground;
     GuLiGrid::FTrafficPriority Priority;
     GuLiGrid::FRect Occupied,Reserved;
     bool bReserved=false;
@@ -22,13 +25,13 @@ class FGuLiGridTraffic final
 public:
     static constexpr int32 MaximumObjects=32768;
     bool Admit(const FGuLiHybridObjectKey& Key,const FGuid& Owner,uint64 Epoch,uint8 Team,
-        const GuLiGrid::FRect& Occupied,const GuLiGrid::FTrafficPriority& Priority,int32 Footprint=1);
+        const GuLiGrid::FRect& Occupied,const GuLiGrid::FTrafficPriority& Priority,int32 Footprint=1,EGuLiUnitMovementLayer Layer=EGuLiUnitMovementLayer::Ground);
     bool Commit(const FGuLiHybridObjectKey& Key,const FGuid& Owner,uint64 Epoch,const GuLiGrid::FRect& Actual);
     bool Cancel(const FGuLiHybridObjectKey& Key,const FGuid& Owner,uint64 Epoch);
     /** Authority-only publication after its cross-owner conflict query. */
     bool SetAuthorityScope(const FGuLiHybridObjectKey& Key,const FGuid& Owner,uint64 Epoch,const GuLiGrid::FRect& Scope);
     bool Remove(const FGuLiHybridObjectKey& Key,const FGuid& Owner,uint64 Epoch);
-    void Query(const GuLiGrid::FRect& Rect,const FGuLiHybridObjectKey& Ignore,TArray<FGuLiHybridObjectKey>& Out) const;
+    void Query(const GuLiGrid::FRect& Rect,const FGuLiHybridObjectKey& Ignore,TArray<FGuLiHybridObjectKey>& Out,TOptional<EGuLiUnitMovementLayer> Layer={}) const;
     const FGuLiGridTrafficRecord* Find(const FGuLiHybridObjectKey& Key) const { return Objects.Find(Key); }
     FGuLiGridTrafficRecord* Find(const FGuLiHybridObjectKey& Key) { return Objects.Find(Key); }
     SIZE_T Bytes() const;

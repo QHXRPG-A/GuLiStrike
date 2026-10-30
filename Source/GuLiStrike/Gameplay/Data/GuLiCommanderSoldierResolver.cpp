@@ -161,6 +161,15 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 	FGuLiStrikeModelsModelsRow ModelDefinition;
 	if (!UGuLiModelRegistrySubsystem::Query(nullptr, Row->ModelId, ModelDefinition)) return Resolved;
 	Resolved.DisplayName = FText::FromString(Row->DisplayName);
+	if (Row->MovementLayer < 0 || Row->MovementLayer > 1
+		|| !GuLiUnitMovement::IsValid(static_cast<EGuLiUnitMovementLayer>(Row->MovementLayer), Row->AltitudeMeters * 100.f))
+	{
+		LogWarningOnce(FName(*FString::Printf(TEXT("InvalidMovementLayer_%d"), Row->Id)),
+			FString::Printf(TEXT("Soldiers id %d: Ground requires 0m; LowAir requires 30..99m."), Row->Id));
+		return Resolved;
+	}
+	Resolved.MovementLayer = static_cast<EGuLiUnitMovementLayer>(Row->MovementLayer);
+	Resolved.AltitudeCentimeters = Row->AltitudeMeters * 100.f;
 	Resolved.bConstructionOnly = Row->bConstructionOnly;
 	Resolved.FacingPolicy = Row->FacingPolicy == 1
 		? EGuLiSoldierFacingPolicy::FixedSpawnYaw : EGuLiSoldierFacingPolicy::FaceVelocity;

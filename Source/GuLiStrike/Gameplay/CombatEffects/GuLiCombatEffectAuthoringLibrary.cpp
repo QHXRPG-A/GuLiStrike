@@ -277,6 +277,7 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WarMachineHover/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/"))
+			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/BulletTrails/"))
             && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/")))) return false;
 	}
 	ForEachObjectWithOuter(System, [](UObject* Object)
@@ -461,6 +462,22 @@ bool UGuLiCombatEffectAuthoringLibrary::WireRogueUpgradePoolReader(UNiagaraSyste
 	return true;
 }
 
+bool UGuLiCombatEffectAuthoringLibrary::ConfigureBuffStatusSystem(UNiagaraSystem* System,FString& Error)
+{
+    if(!System||System->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus"))
+    {Error=TEXT("Unexpected Buff status asset");return false;}
+    System->Modify();
+    for(const auto& Handle:System->GetEmitterHandles())
+    {
+        auto* Data=Handle.GetEmitterData();auto* Emitter=Handle.GetInstance().Emitter.Get();
+        if(!Data||!Emitter){Error=TEXT("Missing Buff emitter");return false;}
+        Emitter->Modify();Data->bLocalSpace=true;Data->CalculateBoundsMode=ENiagaraEmitterCalculateBoundMode::Fixed;
+        Data->FixedBounds=FBox(FVector(-400),FVector(400));
+        FPropertyChangedEvent Changed(FindFProperty<FBoolProperty>(FVersionedNiagaraEmitterData::StaticStruct(),TEXT("bLocalSpace")));
+        Emitter->PostEditChangeVersionedProperty(Changed,Handle.GetInstance().Version);
+    }
+    System->MarkPackageDirty();return true;
+}
 bool UGuLiCombatEffectAuthoringLibrary::ConfigureRogueUpgradeSystem(UNiagaraSystem* System,FString& Error)
 {
 	if (!System || System->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite"))
@@ -546,7 +563,8 @@ FString UGuLiCombatEffectAuthoringLibrary::GetWarMachineHoverCompileDiagnostics(
 		&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/Mining/NS_MiningLaser_"))
 		&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_"))
 		&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGun"))
-		&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/CommanderWeapons/NS_WingmanGroundFlight_"))))
+		&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/CommanderWeapons/NS_WingmanGroundFlight_"))
+		&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/BulletTrails/"))))
 		return TEXT("Unexpected hover system");
 	FString Result = FString::Printf(TEXT("System valid=%d ready=%d gpu=%d\n"),
 		System->IsValid(), System->IsReadyToRun(), System->HasAnyGPUEmitters());

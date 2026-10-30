@@ -79,4 +79,76 @@ struct FGuLiStrikeRogueCardsCardsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
 	int32 BonusCount = 0;
 
+	/** EffectIds (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TArray<FString> EffectIds;
+
+};
+
+/** DataTable DT_GuLiStrikeRogueCards_GroundRicochet 的行结构（源: GuLiStrikeRogueCards.xlsx / GroundRicochet）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeRogueCardsGroundRicochetRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
+	FString Note;
+
+	/** MinimumHops (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
+	int32 MinimumHops = 0;
+
+	/** MaximumHops (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
+	int32 MaximumHops = 0;
+
+	/** HopsPerStack (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
+	int32 HopsPerStack = 0;
+
+	/** RangeCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
+	float RangeCentimeters = 0.0f;
+
+	/** DamageRetention (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
+	float DamageRetention = 0.0f;
+
+};
+
+/** DataTable DT_GuLiStrikeRogueCards_Effects 的行结构（源: GuLiStrikeRogueCards.xlsx / Effects）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeRogueCardsEffectsRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	FString Note;
+
+	/** Handler (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	FString Handler;
+
+	/** Version (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	int32 Version = 0;
+
+	/** ConfigId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	int32 ConfigId = 0;
+
+	/** BuffId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	int32 BuffId = 0;
+
 };

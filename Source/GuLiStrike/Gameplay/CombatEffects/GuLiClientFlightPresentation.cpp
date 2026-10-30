@@ -65,7 +65,7 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateGroundTrail(FGuLiLocalCombatE
 {
 	const auto& State = Visual.State;
 	const bool bTerminal = State.Phase == EGuLiCombatEffectPhase::Finished;
-	const float Speed = FMath::Max(1.f, float(FVector(State.Velocity).Size()));
+	const float Speed = Visual.bInstantGroundSegment?1000000000.f:FMath::Max(1.f, float(FVector(State.Velocity).Size()));
 	const FVector Direction = FVector(State.LaunchDirection).GetSafeNormal();
 	const FVector Origin = State.LaunchLocation;
 	if (Visual.GroundTrailEndedAt < 0 && (bTerminal || Now >= State.EndTime))
@@ -81,7 +81,7 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateGroundTrail(FGuLiLocalCombatE
 	else if (!Visual.bHasPrediction) Visual.RenderLocation = Origin + FVector(State.Velocity) * FMath::Max(0.f,Now-State.StartTime);
 	const float Distance = FMath::Max(0.f, float(FVector::DotProduct(Visual.RenderLocation-Origin,Direction)));
 	const float Canvas = 2.f*(Visual.GroundTrailBend+Visual.GroundTrailWidth);
-	const float ChunkLength=Visual.GroundTrailLength;
+    const float ChunkLength=Visual.bInstantGroundSegment?FMath::Max(Visual.GroundTrailLength,Distance):Visual.GroundTrailLength;
 	const int32 First=FMath::Max(0,FMath::FloorToInt((Distance-ChunkLength)/ChunkLength));
 	const int32 Last=FMath::FloorToInt(FMath::Max(0.f,Distance-.01f)/ChunkLength);
 	const FRotator Rotation=Direction.Rotation();
@@ -140,6 +140,17 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 	if (!State.IsWellFormed() || !GuLiFlightWire::IsFlight(State.Kind)) return;
 	if (State.MatchEpoch!=Epoch) BeginEpoch(State.MatchEpoch);
 	if (State.MatchEpoch!=Epoch || Tombstones.Contains(State.EffectId)) return;
+    if(Event.bInstantGroundSegment)
+    {
+        if(Event.bBootstrap||Visuals.Contains(State.EffectId)||ServerTime()-State.StartTime>.5f)return;
+        auto& V=Visuals.Add(State.EffectId);V.State=State;V.State.Phase=EGuLiCombatEffectPhase::Finished;V.State.SampleTime=State.StartTime;V.State.Location=Event.InstantEnd;V.RenderLocation=Event.InstantEnd;V.bInstantGroundSegment=true;
+        ResolveGroundTrailConfiguration(V);
+        V.GroundTrailLength=FMath::Max(1.f,V.GroundTrailLength);
+        if(Event.ImpactVfxId>0)if(auto* Burst=SpawnPooled(Event.ImpactVfxId,Event.InstantEnd,1.f,0)){Retire(Burst,.2f,false);++Counters.MachineGunImpactsPlayed;}
+        Tombstones.Add(State.EffectId,State.Sequence);TombstoneOrder.Add(State.EffectId);
+        if(TombstoneOrder.Num()>8192){for(int32 I=0;I<1024;++I)Tombstones.Remove(TombstoneOrder[I]);TombstoneOrder.RemoveAt(0,1024,EAllowShrinking::No);}
+        return;
+    }
 	const bool Finished = State.Phase==EGuLiCombatEffectPhase::Finished;
 	if (Finished && !Event.bBootstrap && ServerTime()-State.SampleTime<=.5f)
 	{
@@ -159,11 +170,11 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 		{
 			for (TActorIterator<APawn> It(GetWorld()); It; ++It)
 				if (auto* Weapon=It->FindComponentByClass<UGuLiGroundMechWeaponComponent>(); Weapon && Weapon->SourceHandle==State.Source)
-				{ Weapon->PlayFlightShot(State.EffectId,Event.Muzzle.ServerTime,Event.Muzzle.MuzzleIndex); break; }
+					{ Weapon->PlayFlightShot(State.EffectId,Event.Muzzle.ServerTime,Event.Muzzle.MuzzleIndex,Event.Muzzle.FrozenMuzzleVfxId); break; }
 		}
 		else ApplyShots({Event.Muzzle});
 	}
-	ApplyState(State,Event.bBootstrap,Finished && (Event.ImpactVfxId>0 || Event.bUseCatalogImpact));
+	ApplyState(State,Event.bBootstrap,Finished && (Event.ImpactVfxId>0 || Event.bUseCatalogImpact || Event.bFrozenGroundImpact));
 	if (auto* Visual = Visuals.Find(State.EffectId))
 	{
 		if (Finished)

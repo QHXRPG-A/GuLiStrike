@@ -12,6 +12,7 @@
 class UNiagaraComponent;
 class UGuLiImpactBatchPresentation;
 class UGuLiMuzzleBatchPresentation;
+struct FGuLiImpactEvent;
 
 USTRUCT()
 struct FGuLiGroundTraceSegment
@@ -50,6 +51,7 @@ struct FGuLiLocalCombatEffect
 	// Ground trace lives independently of the projectile's terminal state. No wire fields.
 	float GroundTrailLength = 0, GroundTrailHold = 0, GroundTrailFade = 0, GroundTrailBend = 0, GroundTrailWidth = 0;
 	float GroundTrailEndedAt = -1;
+    bool bInstantGroundSegment=false;
 	FVector GroundTrailEnd = FVector::ZeroVector;
 	FVector GroundTrailFacing = FVector::ZeroVector;
 	UPROPERTY() TArray<FGuLiGroundTraceSegment> GroundTrailSegments;
@@ -113,6 +115,9 @@ struct GULISTRIKE_API FGuLiCombatEffectVisualCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserVisible = 0;
 	/** Ground projectile light slots uploaded this frame, capped across all render blocks. */
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 GroundMachineGunLights = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 MassTrailActive = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 BulletTrailComponents = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 BulletTrailArrayUploads = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") double LastUpdateMilliseconds = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 ClientFlightActorCapacity = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 ClientFlightActorActive = 0;
@@ -171,15 +176,12 @@ struct FGuLiRogueUpgradeBlock
 
 struct FGuLiLaserUploadedRow
 {
-	FVector Position=FVector::ZeroVector, Direction=FVector::ForwardVector, MuzzlePosition=FVector::ZeroVector, LightPosition=FVector::ZeroVector;
+	FVector Position=FVector::ZeroVector, Direction=FVector::ForwardVector, MuzzlePosition=FVector::ZeroVector;
 	FVector2D Size=FVector2D::ZeroVector, MuzzleSize=FVector2D::ZeroVector;
-	FLinearColor Color=FLinearColor::Transparent, MuzzleColor=FLinearColor::Transparent, LightColor=FLinearColor::Transparent;
-	float LightRadius = 0;
-	bool bLight = false;
+	FLinearColor Color=FLinearColor::Transparent, MuzzleColor=FLinearColor::Transparent;
 	bool operator==(const FGuLiLaserUploadedRow& R) const
-	{ return Position==R.Position && Direction==R.Direction && MuzzlePosition==R.MuzzlePosition && LightPosition==R.LightPosition
-		&& Size==R.Size && MuzzleSize==R.MuzzleSize && Color==R.Color && MuzzleColor==R.MuzzleColor && LightColor==R.LightColor
-		&& LightRadius==R.LightRadius && bLight==R.bLight; }
+	{ return Position==R.Position && Direction==R.Direction && MuzzlePosition==R.MuzzlePosition
+		&& Size==R.Size && MuzzleSize==R.MuzzleSize && Color==R.Color && MuzzleColor==R.MuzzleColor; }
 };
 
 /** A fixed block of persistent particle slots. Empty rows have zero alpha. */
@@ -193,11 +195,6 @@ struct FGuLiLaserRenderBlock
 	TArray<FVector> Positions, Directions, MuzzlePositions;
 	TArray<FVector2D> Sizes, MuzzleSizes;
 	TArray<FLinearColor> Colors, MuzzleColors;
-	TArray<FVector> LightPositions;
-	TArray<FLinearColor> LightColors;
-	TArray<float> LightRadii;
-	TArray<bool> LightEnabled;
-	int32 LightCount = 0;
 	FBox Bounds = FBox(ForceInit);
 	bool bVisible = false;
 	TArray<int32> UsedSlots, PreviousUsedSlots;
@@ -220,6 +217,7 @@ public:
 
 	void BeginEpoch(uint32 NewEpoch);
 	void ApplyState(const FGuLiCombatEffectState& State, bool bFromSnapshot = false, bool bImpactHandled = false);
+    bool EnqueueImpact(const FGuLiImpactEvent& Event);
 	void ApplyFlightEvent(const FGuLiFlightEvent& Event);
 	void ApplyCorrection(const FGuLiCombatEffectCorrection& Correction);
 	void ApplyShots(const TArray<FGuLiCombatShotCue>& Cues);
@@ -271,6 +269,13 @@ public:
 	UFUNCTION(BlueprintPure, Category="Combat Effects") int32 GetActiveVisualCount() const { return Visuals.Num(); }
 
 private:
+	UPROPERTY(Transient) TObjectPtr<class UGuLiBulletTrailPresentation> BulletTrails;
+	EGuLiTeam BulletLocalTeam=EGuLiTeam::Unassigned;
+	TArray<FVector> BulletLocalViews;
+	void BeginBulletTrailsFrame(float Now,bool bEnabled);
+	FLinearColor GroundBulletTint(const FGuLiCombatEffectState& State) const;
+	bool UpdateMassBulletTrail(FGuLiLocalCombatEffect& Visual,float Now,bool bEnabled);
+	void SubmitBulletLight(const FGuLiLocalCombatEffect& Visual,float Now,bool bEnabled);
 	UPROPERTY(Transient) TObjectPtr<UGuLiImpactBatchPresentation> ImpactBatches;
 	UPROPERTY(Transient) TObjectPtr<UGuLiMuzzleBatchPresentation> MuzzleBatches;
 #if WITH_EDITOR

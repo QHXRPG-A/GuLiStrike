@@ -30,7 +30,15 @@ inline void MoveIntent(FGuLiHybridStateArchive& A,TSharedPtr<FGuLiSharedMoveInte
     A.Random(V.Random); A.Value(V.Pitch); A.Value(V.GeneratedRadius); A.Value(V.WantedPoints);
     A.Value(V.MetadataCursor); A.Value(V.Ring); A.Value(V.Step); A.Value(V.CoverageGeneration);
     A.Value(V.bMetadataReady); A.Value(V.bExhausted);
-    A.Value(V.AcceptedSequence);A.Value(V.CommandIdentity);
+    A.Value(V.AcceptedSequence);A.Value(V.CommandIdentity);A.Value(V.AirRing);A.Value(V.AirStep);
+    TArray<uint32> LayerMembers;if (!A.IsReading()) {V.MovementLayers.GenerateKeyArray(LayerMembers);LayerMembers.Sort();}
+    A.Array(LayerMembers,32768,[&](auto& Ar,uint32& K)
+    {
+        Ar.Value(K);auto Layer=Ar.IsReading()?EGuLiUnitMovementLayer::Ground:V.MovementLayers.FindChecked(K);
+        Ar.Enum(Layer,uint8(EGuLiUnitMovementLayer::LowAir));
+        if (!K || (Ar.IsReading() && V.MovementLayers.Contains(K))) Ar.Reject();
+        if (Ar.IsReading() && Ar.Good()) V.MovementLayers.Add(K,Layer);
+    });
     TArray<uint32> Sized;
     if (!A.IsReading()) { V.GridSizes.GenerateKeyArray(Sized);Sized.Sort(); }
     A.Array(Sized,32768,[&](auto& Ar,uint32& K)
@@ -40,6 +48,6 @@ inline void MoveIntent(FGuLiHybridStateArchive& A,TSharedPtr<FGuLiSharedMoveInte
         if (Ar.IsReading() && Ar.Good()) V.GridSizes.Add(K,Size);
     });
     if (V.Pitch<0 || V.GeneratedRadius<0 || V.WantedPoints<0 || V.WantedPoints>10000
-        || V.MetadataCursor<0 || V.Ring<0 || V.Step<0) A.Reject();
+        || V.MetadataCursor<0 || V.Ring<0 || V.Step<0 || V.AirRing<0 || V.AirStep<0) A.Reject();
 }
 }

@@ -13,6 +13,7 @@ class AGuLiSoldierStateReplicator;
 class AGuLiCommanderPresentationActor;
 class AGuLiWingmanPresentationActor;
 struct FGuLiHybridObjectState;
+struct FGuLiGroundAttackSnapshot;
 
 namespace GuLiMechFire
 {
@@ -35,8 +36,10 @@ public:
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetShotDamage() const { return ActiveUpgrade.Damage; }
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") bool IsWeaponReady() const { return bConfigured; }
 	bool GetActualShotRay(FVector& Origin,FVector& Direction) const;
+    /** Build the per-shot payload; admission independently freezes its authorized numeric capability. */
+    FGuLiGroundAttackSnapshot BuildAttackSnapshot() const;
 	/** Local presentation only; called from the unified accepted launch event. */
-	void PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex = 0);
+	void PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex = 0,int32 FrozenMuzzleVfxId=INDEX_NONE);
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") bool bWeaponEnabled = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UDataTable> UpgradeTable;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UDataTable> SkillTable;

@@ -4,6 +4,20 @@
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Engine/World.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
+#include "GuLiNetGroundRogue.h"
+
+bool UGuLiRogueCardGroundEffect::Validate(const FGuLiStrikeRogueCardsCardsRow& R,FString& Error) const
+{
+    if(R.Type!=3||R.UnitTypeId!=0||R.BonusCount!=0||R.BonusPercent!=0||R.EffectIds.IsEmpty()){Error=TEXT("Invalid Ground effect card");return false;}
+    for(const auto& Id:R.EffectIds){GuLiNet::Effects::Definition D;if(!GuLiGroundRogue::LoadEffect(FCString::Atoi(*Id),D,Error))return false;}return true;
+}
+FText UGuLiRogueCardGroundEffect::FormatDescription(const FGuLiStrikeRogueCardsCardsRow& R,const FText& Pattern) const
+{return FormatForAcquisition(R,Pattern,1);}
+FText UGuLiRogueCardGroundEffect::FormatForAcquisition(const FGuLiStrikeRogueCardsCardsRow& R,const FText& Pattern,int32 N) const
+{return GuLiGroundRogue::Preview(R,Pattern,N);}
+FText UGuLiRogueCardEffect::FormatForAcquisition(const FGuLiStrikeRogueCardsCardsRow& R,const FText& Pattern,int32) const
+{return FormatDescription(R,Pattern);}
 
 namespace
 {

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
+#include "Gameplay/GroundMech/Weapons/GuLiGroundAttackSnapshot.h"
 #include "GuLiProjectilePoolSubsystem.generated.h"
 
 /** A process-local slot identity. Never send this handle over the network. */
@@ -48,6 +49,7 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
 	FGuid SourceLease;
 	/** Frozen player presentation reference, also usable after the firing Pawn disappears. */
 	int32 PlayerBulletVfxId = 0;
+    FGuLiGroundAttackSnapshot GroundAttack;
 	bool bAcceptanceAdditional = false;
 	/** Explicit load replenishment may prepare a replacement within one second. */
 	float ScheduledActivationSeconds = 0;
@@ -81,6 +83,8 @@ public:
 	UFUNCTION(BlueprintPure, Category="Projectile Pool") FGuLiProjectilePoolStats GetStats() const { return Stats; }
 	UFUNCTION(BlueprintPure, Category="Projectile Pool") int32 GetActiveCount() const { return ActiveSlots.Num(); }
 	FGuLiPooledProjectileStateEvent OnState;
+    FGuLiGroundWeaponHitEvent OnGroundWeaponHit;
+    static constexpr double SpatialCellCentimeters=20000.;
 
 private:
 	friend struct FGuLiHybridProjectileState;
@@ -121,6 +125,8 @@ private:
 	bool Retire(FGuLiProjectilePoolHandle Handle, EGuLiCombatEffectEndReason Reason,
 		const FVector& Position, float Time, const FGuLiTargetHandle* HitTarget = nullptr);
 	UPROPERTY(Transient) TObjectPtr<UGuLiDamageLedgerSubsystem> Ledger;
+    struct FAcceptedGroundHit {FGuLiGroundWeaponHit Hit;FGuLiGroundAttackSnapshot Snapshot;};
+    TArray<FAcceptedGroundHit> PendingGroundHits;
 	/** Keep launch references mapped even after the firing Pawn leaves the world. */
 	TArray<FSlot> Slots;
 	TArray<int32> FreeSlots;

@@ -14,7 +14,7 @@ namespace GuLiHybridMass
 using namespace GuLiCommanderMassPrivate;
 TAutoConsoleVariable<int32> PublishAfterMovement(TEXT("gs.Commander.PublishPoseAfterMovement"),1,
     TEXT("Sample due synchronous Mass poses after the shared movement step. Keeps 10 Hz publication and the existing wire format. 0 selects the comparison ordering."));
-constexpr uint32 ObjectVersion=4,SystemVersion=4;
+constexpr uint32 ObjectVersion=5,SystemVersion=5;
 const FName SystemName(TEXT("CommanderMass"));
 struct FPrivate
 {
@@ -50,6 +50,8 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
     bool HasIntent=V.Intent.IsValid();A.Value(HasIntent);
     if (HasIntent) GuLiHybridState::MoveIntent(A,V.Intent);else if (A.IsReading()) V.Intent.Reset();
     A.Enum(S.Team,uint8(EGuLiTeam::Blue)); A.Value(S.UnitTypeId); A.Value(S.AvoidanceRadiusCentimeters);
+    A.Enum(S.MovementLayer,uint8(EGuLiUnitMovementLayer::LowAir));A.Value(S.AltitudeCentimeters);
+    if (!GuLiUnitMovement::IsValid(S.MovementLayer,S.AltitudeCentimeters)) A.Reject();
     A.Value(S.bMovementEvenArchetype); A.Value(S.Location); A.Value(S.Velocity); A.Value(S.LastMovementUpdateSimulationSeconds);
     A.Value(S.FacingYawDegrees); A.Value(S.FixedSpawnYawDegrees); A.Enum(S.FacingPolicy,uint8(EGuLiSoldierFacingPolicy::FixedSpawnYaw));
     auto& M=S.MechanicalPose; A.Value(M.UpperYawDegrees);
@@ -349,6 +351,14 @@ public:
         FGuLiSoldierId Id;
         if (!Self->InstallGrantedSoldier(R.Team,static_cast<uint16>(Type),R.Location,Id,R.FacingYawDegrees,FMath::Max(1.f,R.Health.Health))) return false;
         auto& S=Self->AuthorityState->Soldiers[Self->AuthorityState->SoldierIndexById.FindChecked(Id.Value)]; S.HybridKey=R.Key; S.bLocalSimulation=false;
+        S.Health=R.Health.Health;S.MaxHealth=R.Health.MaxHealth;
+        if(auto* Actors=Self->GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>())
+        {
+            const auto& Numbers=Actors->GetManifest().Numbers;const FString Prefix=TEXT("deployment/")+R.Key.StableId.ToString(EGuidFormats::Digits);
+            if(const auto* Fire=Numbers.Find(Prefix+TEXT("/automatic_fire")))S.bAllowAutomaticFire=*Fire!=0;
+            if(Numbers.FindRef(Prefix+TEXT("/start_idle"))!=0)
+                if(auto* Tasks=Self->GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())Tasks->RegisterSoldiers(R.Team,MakeArrayView(&Id,1),INDEX_NONE,true);
+        }
         Self->RegisterCombatLedgerTarget(Id);
         RegisteredTarget=Self->MakeSoldierTargetHandle(Id);
         auto* Hybrid=Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
@@ -358,7 +368,7 @@ public:
             {
                 const auto* V=Soldier();if (!V || !V->IsAlive()) return false;
                 Out.Transform=FTransform(FRotator(0,V->FacingYawDegrees,0),V->Location);Out.Radius=Out.HalfHeight=V->AvoidanceRadiusCentimeters;
-                Out.bGroundPivot=true;Out.bLocked=V->bExternalActionsLocked;return true;
+                Out.bGroundPivot=true;Out.Altitude=V->AltitudeCentimeters;Out.MovementLayer=V->MovementLayer;Out.bLayerBound=true;Out.bLocked=V->bExternalActionsLocked;return true;
             },[this](const FGuLiExternalControl& In)
             {
                 auto* V=Soldier();auto* A=Authority.Get();if (!V || !A) return false;
@@ -525,11 +535,16 @@ public:
     bool Validate(TConstArrayView<uint8> Bytes) const override
     {
         GuLiHybridMass::FPrivate V;
-        return GuLiHybridMass::Decode(Bytes,V) && V.Soldier.HybridKey==Record.Key && V.Soldier.SoldierId.Value==Record.Ordinal;
+        const auto* Self=Authority.Get();
+        if (!Self || !GuLiHybridMass::Decode(Bytes,V) || V.Soldier.HybridKey!=Record.Key || V.Soldier.SoldierId.Value!=Record.Ordinal) return false;
+        const auto* Data=Self->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+        const auto* Unit=Data?Data->FindSoldierDefinition(V.Soldier.UnitTypeId):nullptr;
+        return Unit && Record.Definition==FName(*FString::Printf(TEXT("unit/%u"),Unit->UnitTypeId))
+            && V.Soldier.MovementLayer==Unit->MovementLayer && V.Soldier.AltitudeCentimeters==Unit->AltitudeCentimeters;
     }
     bool Restore(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage) override
     {
-        auto* Self=Authority.Get(); if (!Self) return false; GuLiHybridMass::FPrivate V; if (!GuLiHybridMass::Decode(Bytes,V)) return false;
+        auto* Self=Authority.Get(); if (!Self || !Validate(Bytes)) return false; GuLiHybridMass::FPrivate V; if (!GuLiHybridMass::Decode(Bytes,V)) return false;
         if (Stage==EGuLiHybridRestoreStage::Detach) { Release(); return true; }
         if (Stage==EGuLiHybridRestoreStage::Create)
         {
@@ -559,7 +574,7 @@ public:
                     GuLiGridBirths::Recover(*Grid,Record);
                 }
                 if (!S->GridMotion.Bind(*Grid,Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),S->Location,
-                    GuLiGrid::FootprintFromDiameter(2.*S->AvoidanceRadiusCentimeters))) return false;
+                    GuLiGrid::FootprintFromDiameter(2.*S->AvoidanceRadiusCentimeters),S->MovementLayer)) return false;
                 // Serialized grid fields remain readable, but no move reservation survives recovery.
                 S->GridMotion.Stop(*Grid,S->Location,Self->AuthorityState->SimulationSeconds,EGuLiGridMoveEnd::Stopped);
                 S->GridOrderId=0;
@@ -567,9 +582,9 @@ public:
             auto* S=Soldier(); auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(Self->GetWorld());
             const auto* Data=Nav?GuLiCommanderMassPrivate::GetCommanderNavigationData(*Nav):nullptr; if (!S) return false;
             const bool NeedsRoute=!bRestoringQuery && (S->MoveIntent.IsValid() || S->bHasFinalDestination);
-            FNavLocation Ground(S->Location),Projected;
+            FNavLocation Ground(S->GroundLocation()),Projected;
             const bool HasGround=Nav && Data
-                && GuLiCommanderMassPrivate::ProjectPointToCommanderNavigation(*Nav,*Data,S->Location,FVector(150,150,5000),Projected)
+                && GuLiCommanderMassPrivate::ProjectPointToCommanderNavigation(*Nav,*Data,S->GroundLocation(),FVector(150,150,5000),Projected)
                 && FVector::DistSquared2D(S->Location,Projected.Location)<=FMath::Square(150.);
             // An idle newborn can legitimately occupy a retiring foundation's
             // nav cutout. Preserve its pose and invalid nav ref until ordinary

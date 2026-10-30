@@ -157,14 +157,15 @@ namespace GuLiCommanderNavigationPolicy
 						}
 						const FManualAvoidanceAgent& Neighbor = Agents[NeighborIndex];
 						if (!Neighbor.bParticipates || Neighbor.StableSoldierId == 0u
-							|| GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Neighbor.bEngineering)
+							|| Agent.MovementLayer!=Neighbor.MovementLayer
+                            || GuLiEngineeringCollision::IgnoresPeer(Agent.bEngineering, Neighbor.bEngineering)
 							|| (!Agent.bReceivesAvoidance && !Neighbor.bReceivesAvoidance))
 						{
 							continue;
 						}
 
 						++Metrics.CandidatePairs;
-						if (FMath::Abs(Agent.Location.Z - Neighbor.Location.Z)
+						if (Agent.MovementLayer!=EGuLiUnitMovementLayer::LowAir && FMath::Abs(Agent.Location.Z - Neighbor.Location.Z)
 							>= MaximumHeightDifferenceCentimeters)
 						{
 							continue;
@@ -283,9 +284,10 @@ namespace GuLiCommanderNavigationPolicy
 					++Metrics.BucketEntriesVisited;
 					const auto& B = Agents[J];
 					if (A.StableSoldierId == B.StableSoldierId
-						|| GuLiEngineeringCollision::IgnoresPeer(A.bEngineering, B.bEngineering)
+						|| A.MovementLayer!=B.MovementLayer
+                        || GuLiEngineeringCollision::IgnoresPeer(A.bEngineering, B.bEngineering)
 						|| (A.StableSoldierId > B.StableSoldierId && (!bOnlyActivePairs || IsActive(B)))
-						|| FMath::Abs(A.Location.Z - B.Location.Z) >= MaximumHeightDifferenceCentimeters) return;
+						|| (A.MovementLayer!=EGuLiUnitMovementLayer::LowAir && FMath::Abs(A.Location.Z - B.Location.Z) >= MaximumHeightDifferenceCentimeters)) return;
 					++Metrics.CandidatePairs;
 					// A stationary lower-ID neighbor is found from the active higher ID.
 					// Canonicalize before computing the normal, including coincident points,

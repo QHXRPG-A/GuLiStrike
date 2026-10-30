@@ -18,7 +18,7 @@ namespace GuLiBuildingAssetTests
 	const TCHAR* SentryPath = TEXT("/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a");
 	const TCHAR* SentryMaterialPath = TEXT("/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_mat.Stylized_Turrets_A_mat");
 	const TCHAR* SentryTexturePath = TEXT("/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A.Stylized_Turrets_A");
-	const TCHAR* OutpostPath = TEXT("/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder");
+	const TCHAR* OutpostPath = TEXT("/Game/GuLiStrike/Buildings/OutpostSymmetric/Meshes/SM_OutpostSymmetric.SM_OutpostSymmetric");
 
 	bool TestVectorNear(
 		FAutomationTestBase& Test,
@@ -121,7 +121,7 @@ bool FBuildingAssetTests::RunTest(const FString& Parameters)
 	TestVectorNear(*this, TEXT("Sentry turret final dimensions"),
 		Sentry->GetBounds().BoxExtent * 2.0, FVector(1935.79, 3866.78, 1675.19), 12.0);
 	TestVectorNear(*this, TEXT("Outpost final dimensions"),
-		Outpost->GetBounds().BoxExtent * 2.0, FVector(7103.086, 6619.805, 30000.0), 1.0);
+		Outpost->GetBounds().BoxExtent * 2.0, FVector(1787.765, 2023.338, 2929.927), 1.0);
 
 	TestTrue(TEXT("Missile turret has Nanite enabled"), Missile->GetNaniteSettings().bEnabled);
 	TestFalse(TEXT("Sentry turret keeps Nanite disabled"), Sentry->GetNaniteSettings().bEnabled);
@@ -144,10 +144,10 @@ bool FBuildingAssetTests::RunTest(const FString& Parameters)
 		SentryMaterial->GetTextureParameterValue(FHashedMaterialParameterInfo(TEXT("DiffuseColorMap")), EffectiveDiffuse));
 	TestTrue(TEXT("Sentry DiffuseColorMap explicitly uses the copied texture"), EffectiveDiffuse == SentryTexture);
 
-	TestNotNull(TEXT("Outpost has its gray placeholder material"), Outpost->GetMaterial(0));
+	TestNotNull(TEXT("Outpost has its approved toon material"), Outpost->GetMaterial(0));
 	TestTrue(TEXT("Outpost material lives in the managed gameplay directory"),
 		Outpost->GetMaterial(0)
-		&& Outpost->GetMaterial(0)->GetPathName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Materials/")));
+		&& Outpost->GetMaterial(0)->GetPathName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/OutpostSymmetric/Materials/")));
 
 	return true;
 }

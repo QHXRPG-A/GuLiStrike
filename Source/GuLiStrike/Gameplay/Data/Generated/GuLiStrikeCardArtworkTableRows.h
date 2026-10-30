@@ -155,6 +155,10 @@ struct FGuLiStrikeCardArtworkLayersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Layers")
 	float OffsetA = 0.0f;
 
+	/** MotionOwnerLayer (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Layers")
+	int32 MotionOwnerLayer = 0;
+
 };
 
 /** DataTable DT_GuLiStrikeCardArtwork_Parameters 的行结构（源: GuLiStrikeCardArtwork.xlsx / Parameters）。 */

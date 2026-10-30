@@ -1,5 +1,6 @@
 import { Brush, Marker, Mode, Project, Vec3 } from './types';
 import { heightAt, outline, polygonError, worldPoint } from './model';
+import { HEIGHT_COLOR_MIN_CM, HEIGHT_COLOR_MAX_CM, HEIGHT_COLOR_STOPS, heightColor } from './height-colors';
 
 export class MapCanvas {
   readonly canvas=document.createElement('canvas');readonly ctx:CanvasRenderingContext2D;
@@ -14,10 +15,9 @@ export class MapCanvas {
   fit(){if(!this.project)return;const t=this.project.terrain;this.zoom=Math.max(.00001,Math.min((this.w-100)/(t.cells_x*300),(this.h-100)/(t.cells_y*300)));this.panX=-(t.origin_cm[0]+t.cells_x*150)*this.zoom;this.panY=(t.origin_cm[1]+t.cells_y*150)*this.zoom;this.draw();}
   terrainChanged(){const p=this.project;if(!p)return;const t=p.terrain,w=t.cells_x,h=t.cells_y,scale=Math.max(1,Math.ceil(Math.max(w,h)/1600)),iw=Math.ceil(w/scale),ih=Math.ceil(h/scale);
     this.image=document.createElement('canvas');this.image.width=iw;this.image.height=ih;const c=this.image.getContext('2d')!,img=c.createImageData(iw,ih);this.min=Infinity;this.max=-Infinity;
-    for(const v of t.heights_cm){this.min=Math.min(this.min,v);this.max=Math.max(this.max,v);}const range=Math.max(100,this.max-this.min);
-    const low=[39,78,97],mid=[85,123,120],high=[213,192,156];
-    for(let y=0;y<ih;y++)for(let x=0;x<iw;x++){const xx=Math.min(w-1,x*scale),yy=Math.min(h-1,(ih-1-y)*scale),i=yy*(w+1)+xx,z=(t.heights_cm[i]+t.heights_cm[i+w+2])/2,v=(z-this.min)/range,f=v<.55?v/.55:(v-.55)/.45,a=v<.55?low:mid,b=v<.55?mid:high,k=(y*iw+x)*4;
-      for(let n=0;n<3;n++)img.data[k+n]=Math.round(a[n]+(b[n]-a[n])*f);img.data[k+3]=255;}
+    for(const v of t.heights_cm){this.min=Math.min(this.min,v);this.max=Math.max(this.max,v);}
+    for(let y=0;y<ih;y++)for(let x=0;x<iw;x++){const xx=Math.min(w-1,x*scale),yy=Math.min(h-1,(ih-1-y)*scale),i=yy*(w+1)+xx,z=(t.heights_cm[i]+t.heights_cm[i+w+2])/2,rgb=heightColor(z),k=(y*iw+x)*4;
+      for(let n=0;n<3;n++)img.data[k+n]=Math.round(rgb[n]);img.data[k+3]=255;}
     c.putImageData(img,0,0);this.draw();
   }
   private path(points:Vec3[]){const c=this.ctx;c.beginPath();points.forEach((v,i)=>{const s=this.toScreen(v[0],v[1]);i?c.lineTo(...s):c.moveTo(...s);});c.closePath();}
@@ -53,7 +53,11 @@ export class MapCanvas {
     }
     if(this.draft.length){this.path(this.draft);c.strokeStyle='#EE9D58';c.lineWidth=2;c.stroke();for(const v of this.draft){const [x,y]=this.toScreen(v[0],v[1]);c.fillStyle='#FEE4D9';c.fillRect(x-3,y-3,6,6);}}
     c.fillStyle='rgba(2,23,22,.85)';c.fillRect(18,this.h-40,180,24);c.fillStyle='#D5C09C';c.font='11px "Segoe UI",sans-serif';const meters=100/this.zoom/100;c.fillText(`比例尺 100px ≈ ${meters.toFixed(meters<10?1:0)}m`,28,this.h-24);
-    c.fillStyle='rgba(2,23,22,.85)';c.fillRect(this.w-135,15,118,46);c.fillStyle='#D5C09C';c.fillText(`高 ${(this.max/100).toFixed(2)}m`,this.w-124,33);c.fillText(`低 ${(this.min/100).toFixed(2)}m`,this.w-124,49);
+    const legendX=this.w-227,legendY=15,barX=legendX+12,barWidth=186;
+    c.fillStyle='rgba(2,23,22,.9)';c.fillRect(legendX,legendY,210,98);c.fillStyle='#D5C09C';c.fillText('地形高度 · 蓝低 → 红高',barX,legendY+16);
+    const gradient=c.createLinearGradient(barX,0,barX+barWidth,0);HEIGHT_COLOR_STOPS.forEach((color,i)=>gradient.addColorStop(i/(HEIGHT_COLOR_STOPS.length-1),color));c.fillStyle=gradient;c.fillRect(barX,legendY+24,barWidth,9);
+    c.strokeStyle='#FEE4D9';c.lineWidth=1;c.beginPath();c.moveTo(barX+barWidth/2,legendY+21);c.lineTo(barX+barWidth/2,legendY+36);c.stroke();
+    c.fillStyle='#D5C09C';c.fillText(`低 ${HEIGHT_COLOR_MIN_CM/100}m`,barX,legendY+47);c.textAlign='right';c.fillText(`高 ${HEIGHT_COLOR_MAX_CM/100}m`,barX+barWidth,legendY+47);c.textAlign='center';c.fillText('海平面 0.00m',barX+barWidth/2,legendY+65);c.textAlign='left';c.fillText(`当前 ${(this.min/100).toFixed(2)} ～ ${(this.max/100).toFixed(2)}m`,barX,legendY+84);
   }
   pickMarker(wx:number,wy:number):Marker|undefined {if(!this.project)return;return [...this.project.layout.markers].reverse().find(m=>Math.hypot(m.world_transform.position[0]-wx,m.world_transform.position[1]-wy)*this.zoom<12);}
   pickVertex(wx:number,wy:number):{marker:Marker;regionId:string;index:number}|null {const m=this.project?.layout.markers.find(m=>m.marker_id===this.selected);if(!m)return null;

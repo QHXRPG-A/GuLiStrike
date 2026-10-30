@@ -39,5 +39,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment")
 	bool bStartIdle = false;
 
+    /** Replace the same number of automatic slots of this team in population manifests. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment|Manifest")
+    bool bUseInPopulationManifest = false;
+    /** Zero uses the unit definition. Applies only to this authored initial deployment. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment|Manifest", meta=(ClampMin="0"))
+    float InitialMaxHealthOverride = 0;
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment|Manifest", meta=(ClampMin="0"))
+    float InitialShield = 0;
+
 	FVector GetSlotLocation(int32 SlotIndex) const;
 };

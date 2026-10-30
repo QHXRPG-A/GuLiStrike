@@ -65,13 +65,19 @@ void FGuLiSharedMoveIntent::Generate(const ANavigationData& NavData, uint32 Gene
 	{
 		// Negative results expire lazily; accepted points are hints, never reservations or proofs.
 		CoverageGeneration = Generation;
-		if (Points.IsEmpty() && bExhausted) { Ring = Step = 0; bExhausted = false; }
+		if (Points.IsEmpty() && bExhausted) { Ring = Step = AirRing = AirStep = 0; bExhausted = false; }
 	}
 	while (!bExhausted && !UnassignedMembers.IsEmpty() && Budget.TakeProjection())
 	{
+        int32 Pick=Random.RandRange(0,UnassignedMembers.Num()-1);
+        const auto CanGenerate=[&](uint32 Id){return (MovementLayers.FindRef(Id)==EGuLiUnitMovementLayer::LowAir?AirRing:Ring)<=25;};
+        if (!CanGenerate(UnassignedMembers[Pick])) Pick=UnassignedMembers.IndexOfByPredicate(CanGenerate);
+        if (Pick==INDEX_NONE) {bExhausted=true;break;}
+        const bool LowAir=MovementLayers.FindRef(UnassignedMembers[Pick])==EGuLiUnitMovementLayer::LowAir;
+        int32& LayerRing=LowAir?AirRing:Ring;int32& LayerStep=LowAir?AirStep:Step;
 		// 6, 12, 18... points. Radial gaps are exactly Pitch; adjacent chords are >= Pitch.
-		const double Angle = Ring ? UE_TWO_PI * Step / (6 * Ring) : 0.;
-		const FVector P = Click + FVector(FMath::Cos(Angle), FMath::Sin(Angle), 0) * (Ring * Pitch);
+		const double Angle = LayerRing ? UE_TWO_PI * LayerStep / (6 * LayerRing) : 0.;
+		const FVector P = Click + FVector(FMath::Cos(Angle), FMath::Sin(Angle), 0) * (LayerRing * Pitch);
 		FNavLocation Nav;
 		{
 			FGuLiNavigationWorkBudget::FQueryScope Query(Budget);
@@ -80,15 +86,14 @@ void FGuLiSharedMoveIntent::Generate(const ANavigationData& NavData, uint32 Gene
 				&& Nav.NodeRef && FVector::DistSquared2D(P,Nav.Location) <= .01)
 			{
 				Nav.Location.X=P.X; Nav.Location.Y=P.Y; Points.Add(Nav);
-				const int32 Pick=Random.RandRange(0,UnassignedMembers.Num()-1);
 				AssignedPoints.Add(UnassignedMembers[Pick],Nav);
 				UnassignedMembers.RemoveAtSwap(Pick,1,EAllowShrinking::No);
-				GeneratedRadius=FMath::Max(GeneratedRadius,Ring*Pitch);
+				GeneratedRadius=FMath::Max(GeneratedRadius,LayerRing*Pitch);
 			}
 		}
-		if (!Ring) Ring=1;
-		else if (++Step==6*Ring) { Step=0; ++Ring; }
-		bExhausted = Ring > 25; // 9000cm * Pitch / 360, retaining the scaled search radius.
+		if (!LayerRing) LayerRing=1;
+		else if (++LayerStep==6*LayerRing) { LayerStep=0; ++LayerRing; }
+		bExhausted = Ring > 25 && AirRing > 25; // 9000cm * Pitch / 360, retaining the scaled search radius.
 	}
 }
 
@@ -115,7 +120,7 @@ void FGuLiSharedMoveIntent::GenerateGrid(UGuLiGroundGridSubsystem& Grid,const AN
         const uint32 Id=UnassignedMembers[GridBuildCursor++];
         if (AssignedPoints.Contains(Id)) continue;
         const int32* Size=GridSizes.Find(Id);
-        if (!Size || !GridSlots->Add(Id,*Size)) { bExhausted=true;bGridSlotsReady=true;GridSlots.Reset();return; }
+        if (!Size || !GridSlots->Add(Id,*Size,MovementLayers.FindRef(Id))) { bExhausted=true;bGridSlotsReady=true;GridSlots.Reset();return; }
     }
     if (!bGridMetadataReady)
     {
@@ -126,7 +131,7 @@ void FGuLiSharedMoveIntent::GenerateGrid(UGuLiGroundGridSubsystem& Grid,const AN
     {
         const uint32 Id=GridRestoreMembers[GridRestoreCursor++];const int32* Size=GridSizes.Find(Id);
         if (!Size) { bExhausted=true;bGridSlotsReady=true;GridSlots.Reset();return; }
-        GridSlots->Occupy(Snapshot->AnchorAt(AssignedPoints.FindChecked(Id).Location,*Size),*Size);
+        GridSlots->Occupy(Snapshot->AnchorAt(AssignedPoints.FindChecked(Id).Location,*Size),*Size,MovementLayers.FindRef(Id));
     }
     if (GridRestoreCursor<GridRestoreMembers.Num()) return;
     uint32 Id;FIntPoint Anchor;int32 Size;FNavLocation Accepted;

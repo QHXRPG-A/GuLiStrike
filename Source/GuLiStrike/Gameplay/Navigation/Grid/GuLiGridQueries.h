@@ -6,6 +6,7 @@ struct FGuLiHybridObjectState;
 
 namespace GuLiGrid
 {
+GULISTRIKE_API EGuLiUnitMovementLayer MovementLayerFor(UWorld& World,const FGuLiHybridObjectKey& Key);
 GULISTRIKE_API TSharedPtr<const FGuLiGridSnapshot,ESPMode::ThreadSafe> AuthoredSnapshot(UWorld& World);
 GULISTRIKE_API void ObserveRemoteBody(UWorld& World,const FGuLiHybridObjectState& Object,const FVector& Position,int32 Size,bool bGround);
 GULISTRIKE_API void ObserveLocalBody(UWorld& World,const FGuLiHybridObjectKey& Key,const FVector& Position,int32 Size);
@@ -27,10 +28,10 @@ inline bool ProjectBody(UWorld& World,const FVector& Point,int32 Size,const FVec
     auto* N=FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);
     return N && N->ProjectPointToNavigation(Point,Out,Extent,Legacy);
 }
-inline bool Unoccupied(UGuLiGroundGridSubsystem& G,const FVector& Point,int32 Size,const FGuLiHybridObjectKey& Ignore={})
+inline bool Unoccupied(UGuLiGroundGridSubsystem& G,const FVector& Point,int32 Size,const FGuLiHybridObjectKey& Ignore={},TOptional<EGuLiUnitMovementLayer> Layer={})
 {
     const auto S=G.Snapshot();if (!S) return false;
     const auto A=S->AnchorAt(Point,Size);if (!S->Fits(A,Size)) return false;
-    TArray<FGuLiHybridObjectKey> Hits;G.Traffic().Query(FRect::At(A,Size),Ignore,Hits);return Hits.IsEmpty();
+    TArray<FGuLiHybridObjectKey> Hits;G.Traffic().Query(FRect::At(A,Size),Ignore,Hits,Layer);return Hits.IsEmpty();
 }
 }

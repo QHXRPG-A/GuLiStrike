@@ -1,6 +1,7 @@
 #include "Gameplay/Navigation/Grid/GuLiGridMotion.h"
 #include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 #include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
+#include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 
 GuLiGrid::FRect FGuLiGridMotion::Coverage(const FGuLiGridSnapshot& G,const FVector& P,int32 N)
 {
@@ -9,10 +10,10 @@ GuLiGrid::FRect FGuLiGridMotion::Coverage(const FGuLiGridSnapshot& G,const FVect
         {FMath::CeilToInt32(X+Half-1.e-7),FMath::CeilToInt32(Y+Half-1.e-7)}};
 }
 bool FGuLiGridMotion::Bind(UGuLiGroundGridSubsystem& G,const FGuLiHybridObjectKey& InKey,const FGuid& InOwner,uint64 InEpoch,
-    uint8 InTeam,const FVector& P,int32 Size)
+    uint8 InTeam,const FVector& P,int32 Size,TOptional<EGuLiUnitMovementLayer> Layer)
 {
     const auto S=G.Snapshot();if (!S || !InKey.IsValid() || P.ContainsNaN() || Size<1 || Size>64) return false;
-    if (!G.Traffic().Admit(InKey,InOwner,InEpoch,InTeam,Coverage(*S,P,Size),State.Priority,Size)) return false;
+    if (!G.Traffic().Admit(InKey,InOwner,InEpoch,InTeam,Coverage(*S,P,Size),State.Priority,Size,Layer.IsSet()?Layer.GetValue():GuLiGrid::MovementLayerFor(*G.GetWorld(),InKey))) return false;
     Key=InKey;Owner=InOwner;Epoch=InEpoch;Team=InTeam;State.Footprint=Size;
     State.Anchor=S->AnchorAt(P,Size);State.bStepCommitted=false;
     if (auto Net=G.Network()) Net->Observe(*G.Traffic().Find(Key));

@@ -6,6 +6,8 @@
 
 class AActor;
 class APlayerController;
+class UGuLiBuildingCatalog;
+class UStaticMesh;
 
 /** Editor-only paint encoding; restricted to independent Review assets. Never changes model topology or UVs. */
 UCLASS()
@@ -26,6 +28,9 @@ public:
 	/** Only existing ship/Ground CDO caches, populated from the model catalogue. */
 	UFUNCTION(BlueprintCallable, Category="Models|Authoring")
 	static FString SetCompatibilityModelId(UObject* TargetCDO, FName PropertyName, int32 ModelId);
+	/** Asset replacement only: preserve the displayed envelope/pivot in an existing derived cache. */
+	UFUNCTION(BlueprintCallable, Category="Models|Authoring")
+	static int32 RemapBuildingVisualCache(UGuLiBuildingCatalog* Catalog, UStaticMesh* PreviousMesh, UStaticMesh* ReplacementMesh);
 	/** All mesh-description attributes except color, plus the reference skeleton. */
 	UFUNCTION(BlueprintCallable, Category="Models|Authoring")
 	static FString GetMeshInvariantSnapshot(UObject* Mesh);

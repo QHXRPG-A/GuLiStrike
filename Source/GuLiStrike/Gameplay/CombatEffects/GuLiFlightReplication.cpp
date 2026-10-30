@@ -38,6 +38,8 @@ bool UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(UWorld* World,cons
 	if (!Channel || !UGuLiNetworkSettings::IsHybrid(World) || !GuLiFlightWire::IsFlight(Event.State.Kind)
 		|| !Channel->IsCurrentEpoch(Event.State.MatchEpoch) || !Event.State.IsWellFormed()) return false;
 	Channel->HandleEpoch(Event.State.MatchEpoch);
+    if(Event.bInstantGroundSegment)
+    {if(auto* Visuals=World->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())Visuals->ApplyFlightEvent(Event);return true;}
     if (Channel->bReviewReceipts && Event.State.bAcceptanceAdditional)
     {
         const auto Id=Event.State.EffectId;

@@ -348,7 +348,6 @@ void AGuLiTerritoryOutpostActor::InitializeOutpost(
 	TerritoryId = InTerritoryId;
 	OwnerState.Team = InOwner;
 	OwnerState.FloatEpochServerTime = UGuLiNetworkSettings::IsHybrid(GetWorld())?UGuLiHybridActorComponent::BattleSeconds(this):GetWorld()->GetTimeSeconds();
-	OwnerState.ChangedServerTime = OwnerState.FloatEpochServerTime;
 	Presentation->ApplyOwnerState(OwnerState);
 	FindComponentByClass<UGuLiBuildingLifecycleComponent>()->InitializeBuilding(DefinitionId, InTerritoryIndex, EGuLiBuildingOrigin::Map, true);
 	FindComponentByClass<UGuLiStrongholdCaptureComponent>()->InitializeCapture(InTerritoryIndex, InOwner);
@@ -365,11 +364,7 @@ void AGuLiTerritoryOutpostActor::SetTerritoryOwnerAuthority(const EGuLiTeam InOw
 {
 	if (HasAuthority() && OwnerState.Team != InOwner)
 	{
-		const double Now = GetWorld()->GetTimeSeconds();
-		if (OwnerState.Team == EGuLiTeam::Unassigned && InOwner != EGuLiTeam::Unassigned)
-			OwnerState.FloatEpochServerTime = Now;
 		OwnerState.Team = InOwner;
-		OwnerState.ChangedServerTime = Now;
 		Presentation->ApplyOwnerState(OwnerState);
 
 	}
@@ -379,9 +374,8 @@ void AGuLiTerritoryOutpostActor::OnRep_OwnerState()
 {
 	Presentation->ApplyOwnerState(OwnerState);
 }
-void AGuLiTerritoryOutpostActor::ApplyHybridOwner(EGuLiTeam InOwner,double LogicalSeconds)
+void AGuLiTerritoryOutpostActor::ApplyHybridOwner(EGuLiTeam InOwner)
 {
     if (OwnerState.Team==InOwner) return;
-    if (OwnerState.Team==EGuLiTeam::Unassigned) OwnerState.FloatEpochServerTime=LogicalSeconds;
-    OwnerState.Team=InOwner;OwnerState.ChangedServerTime=LogicalSeconds;Presentation->ApplyOwnerState(OwnerState);
+    OwnerState.Team=InOwner;Presentation->ApplyOwnerState(OwnerState);
 }

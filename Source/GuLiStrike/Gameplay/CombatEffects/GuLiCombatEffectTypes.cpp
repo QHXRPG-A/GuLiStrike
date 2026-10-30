@@ -156,6 +156,7 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 				Ar.SerializeIntPacked(Id);
 				if (Id > MAX_int32) Ar.SetError();
 				if (Ar.IsLoading()) PlayerBulletVfxId = static_cast<int32>(Id);
+                uint32 Impact=uint32(PlayerImpactVfxId);Ar.SerializeIntPacked(Impact);if(Impact>MAX_int32)Ar.SetError();if(Ar.IsLoading())PlayerImpactVfxId=int32(Impact);
 			}
 			LaunchLocation.NetSerialize(Ar, Map, bVector); LaunchDirection.NetSerialize(Ar, Map, bVector);
 			FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);

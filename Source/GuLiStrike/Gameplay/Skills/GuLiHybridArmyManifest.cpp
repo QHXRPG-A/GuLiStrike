@@ -58,6 +58,7 @@ bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
     for (const auto Name:Table->GetRowNames())
     {
         const auto* Row=Table->FindRow<FGuLiStrikeRogueCardsCardsRow>(Name,TEXT("Hybrid army export"));
+        if(Row&&Row->Type!=1)continue;
         UClass* Class=Row?Row->ImplementationClass.LoadSynchronous():nullptr;
         const auto* Effect=Class?Cast<UGuLiRogueCardEffect>(Class->GetDefaultObject()):nullptr;FGuLiRogueEffectDefinition Desc;
         if (!Row || !Effect || Row->UnitTypeId<=0 || Row->UnitTypeId>MAX_uint16 || Row->MaxAcquisitions<0 || !Effect->Describe(*Row,Desc,Error)) return false;

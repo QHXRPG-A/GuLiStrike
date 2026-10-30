@@ -1,4 +1,5 @@
 #include "GuLiLocalPIESubsystem.h"
+#include "GuLiLocalPIERolePicker.h"
 #include "Network/GuLiHybridManifest.h"
 #include "Network/GuLiHybridSessionSubsystem.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
@@ -20,6 +21,7 @@
 #include "HAL/PlatformMisc.h"
 #include "HAL/IConsoleManager.h"
 #include "Misc/CoreDelegates.h"
+#include "Misc/App.h"
 #include "Misc/Paths.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
@@ -87,6 +89,7 @@ struct UGuLiLocalPIESubsystem::FState
     bool CleanupComplete=false;
     double Started=0;
     bool Active=false,Began=false;
+    TOptional<EGuLiCommanderRole> LastSelectedRole;
 #if PLATFORM_WINDOWS
     HANDLE Job=nullptr,StopEvent=nullptr;
 #endif
@@ -167,6 +170,20 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     int32 Units=0;for (const auto& Object:Manifest.Objects) if (Object.Key.Kind==EGuLiHybridObjectKind::Soldier) ++Units;
     if (Units!=600 || Manifest.Numbers.FindRef(TEXT("acceptance/resource_supply"))!=0)
         return Fail(TEXT("Normal local PIE requires the production 600-unit manifest without acceptance supply."));
+    // Keep unattended callers on their explicit role; interactive PIE chooses
+    // before creating the room directory, stop event, Coordinator or logic peer.
+    if (Settings->bPromptForRole && !FApp::IsUnattended() && !IsRunningCommandlet())
+    {
+        const auto Selected = GuLiLocalPIERolePicker::Show(State->LastSelectedRole.Get(Settings->MainRole));
+        if (!Selected.IsSet())
+        {
+            Error=TEXT("已取消开局选择。");
+            State->CleanupComplete=true;
+            return false;
+        }
+        Config.Role=Selected.GetValue();
+        State->LastSelectedRole=Config.Role;
+    }
     State->Peer=FGuid::NewGuid();
     State->Directory=FPaths::Combine(FPlatformProcess::UserTempDir(),TEXT("GuLiStrikePIE"),Config.RoomId.ToString(EGuidFormats::Digits));
     if (!IFileManager::Get().MakeDirectory(*State->Directory,true)) return Fail(TEXT("Could not create the local session directory."));

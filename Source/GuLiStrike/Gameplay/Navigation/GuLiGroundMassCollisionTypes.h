@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gameplay/Units/GuLiUnitMovementLayer.h"
 #include "Battle/Network/GuLiBattleTypes.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 
@@ -10,6 +11,7 @@ struct GULISTRIKE_API FGuLiGroundMassBody
 	FGuLiSoldierId SoldierId;
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 	uint16 UnitTypeId = 0u;
+    EGuLiUnitMovementLayer MovementLayer=EGuLiUnitMovementLayer::Ground;
 	FVector Location = FVector::ZeroVector;
 	FVector Velocity = FVector::ZeroVector;
 	FQuat Rotation = FQuat::Identity;

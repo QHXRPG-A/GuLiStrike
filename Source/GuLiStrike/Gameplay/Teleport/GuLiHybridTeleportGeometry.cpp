@@ -52,11 +52,15 @@ bool Plan(UWorld& W,const Net::State& S,Net::Command& C,bool Returning)
     const auto Blocked=[&](const FEntry& U)
     {
         const auto Position=U.Landing.GetLocation()+(U.Body.bGroundPivot?FVector(0,0,U.Body.HalfHeight+.6):FVector::ZeroVector);
-        if (W.OverlapBlockingTestByChannel(Position,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(U.Body.Radius,FMath::Max(U.Body.HalfHeight,U.Body.Radius)),Params)) return true;
+        auto Query=Params;
+        if (U.Body.bLayerBound) GuLiUnitMovement::IgnoreOtherLayerBodies(W,Query,Position,U.Body.Radius+U.Body.HalfHeight,U.Body.MovementLayer);
+        if (W.OverlapBlockingTestByChannel(Position,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(U.Body.Radius,FMath::Max(U.Body.HalfHeight,U.Body.Radius)),Query)) return true;
         for (const auto& B:Reserved)
         {
+            if (U.Body.bLayerBound && B.bLayerBound && U.Body.MovementLayer!=B.MovementLayer) continue;
             const auto Q=B.Transform.GetLocation()+(B.bGroundPivot?FVector(0,0,B.HalfHeight+.6):FVector::ZeroVector);
-            if (FMath::Abs(Position.Z-Q.Z)<U.Body.HalfHeight+B.HalfHeight&&FVector::DistSquared2D(Position,Q)<FMath::Square(U.Body.Radius+B.Radius+.4f)) return true;
+            if (((U.Body.bLayerBound && B.bLayerBound && U.Body.MovementLayer==EGuLiUnitMovementLayer::LowAir)
+                || FMath::Abs(Position.Z-Q.Z)<U.Body.HalfHeight+B.HalfHeight)&&FVector::DistSquared2D(Position,Q)<FMath::Square(U.Body.Radius+B.Radius+.4f)) return true;
         }
         return false;
     };

@@ -22,6 +22,16 @@ public:
     virtual bool Describe(const FGuLiStrikeRogueCardsCardsRow&,FGuLiRogueEffectDefinition&,FString& Error) const;
 	virtual bool Validate(const FGuLiStrikeRogueCardsCardsRow& Card, FString& Error) const;
 	virtual FText FormatDescription(const FGuLiStrikeRogueCardsCardsRow& Card, const FText& Pattern) const;
+    virtual FText FormatForAcquisition(const FGuLiStrikeRogueCardsCardsRow& Card,const FText& Pattern,int32 Acquisitions) const;
+};
+UCLASS()
+class GULISTRIKE_API UGuLiRogueCardGroundEffect final : public UGuLiRogueCardEffect
+{
+    GENERATED_BODY()
+public:
+    virtual bool Validate(const FGuLiStrikeRogueCardsCardsRow&,FString&) const override;
+    virtual FText FormatDescription(const FGuLiStrikeRogueCardsCardsRow&,const FText&) const override;
+    virtual FText FormatForAcquisition(const FGuLiStrikeRogueCardsCardsRow&,const FText&,int32 Acquisitions) const override;
 };
 UCLASS()
 class GULISTRIKE_API UGuLiRogueCardFireRateEffect final : public UGuLiRogueCardEffect

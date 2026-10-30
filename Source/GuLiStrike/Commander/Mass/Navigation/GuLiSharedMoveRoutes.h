@@ -68,6 +68,8 @@ struct FGuLiSharedMoveIntent
     // Rebuilt lazily after recovery; already accepted square slots remain frozen.
     TSharedPtr<FGuLiGridSlots> GridSlots;
     TMap<uint32,int32> GridSizes;
+    TMap<uint32,EGuLiUnitMovementLayer> MovementLayers;
+    int32 AirRing=0,AirStep=0;
     uint64 AcceptedSequence=0;
     FGuid CommandIdentity;
     int32 GridRestoreCursor=0,GridBuildCursor=0;

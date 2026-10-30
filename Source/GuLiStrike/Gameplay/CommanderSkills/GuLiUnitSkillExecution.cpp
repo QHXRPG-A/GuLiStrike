@@ -17,7 +17,8 @@ FGuLiActiveSkillUnitResult GuLiUnitSkillExecution::Execute(const FGuLiActiveSkil
 			: Caster.ResolvedSourceRange * Definition->RangeMultiplier;
 		if (!FMath::IsFinite(Range) || Range <= 0)
 		{ Result.Code = EGuLiActiveSkillResultCode::ExecutionFailed; return Result; }
-		if (FVector::DistSquared(Caster.Context.SourceTransform.GetLocation(), Caster.Context.GroundPoint) > FMath::Square(Range))
+		// Ground-point unit skills use horizontal reach; retain Z for the projectile trajectory.
+		if (FVector::DistSquared2D(Caster.Context.SourceTransform.GetLocation(), Caster.Context.GroundPoint) > FMath::Square(Range))
 		{ Result.Code = EGuLiActiveSkillResultCode::OutOfRange; return Result; }
 	}
 	Result.Execution = ExecuteEffect(Caster.Context, Definition->Configuration);

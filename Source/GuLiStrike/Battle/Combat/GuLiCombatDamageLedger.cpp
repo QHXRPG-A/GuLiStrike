@@ -304,11 +304,19 @@ bool UGuLiDamageLedgerSubsystem::RegisterHealthComponent(UGuLiCombatHealthCompon
 		OutSnapshot.Team = Health->GetCombatTeam();
 		OutSnapshot.Location = Owner->GetActorLocation();
 		OutSnapshot.Health = Health->GetHealthState().Health;
+		OutSnapshot.MaxHealth = Health->GetHealthState().MaxHealth;
 		OutSnapshot.bAlive = Health->IsAlive();
 		OutSnapshot.CollisionActor = const_cast<AActor*>(Owner);
 		if (const UPrimitiveComponent* RootPrimitive = Cast<UPrimitiveComponent>(Owner->GetRootComponent()))
 		{
 			OutSnapshot.CollisionRadius = RootPrimitive->Bounds.SphereRadius;
+			OutSnapshot.HitCenter = RootPrimitive->Bounds.Origin;
+			OutSnapshot.bHasHitCenter = true;
+		}
+		else if (const FBox Bounds = Owner->GetComponentsBoundingBox(false); Bounds.IsValid)
+		{
+			OutSnapshot.HitCenter = Bounds.GetCenter();
+			OutSnapshot.bHasHitCenter = true;
 		}
 		return !OutSnapshot.Location.ContainsNaN();
 	};

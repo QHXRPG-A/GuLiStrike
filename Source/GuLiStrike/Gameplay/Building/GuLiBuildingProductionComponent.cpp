@@ -112,9 +112,10 @@ void UGuLiBuildingProductionComponent::AdvanceHybridProduction(float Dt)
 			if (!Nav->ProjectPointToNavigation(Life.GetGroundLocation()+GetOwner()->GetActorRotation().RotateVector(Local),
 				Projected,FVector(Radius,Radius,5000),NavData)) continue;
 			FCollisionQueryParams Query(SCENE_QUERY_STAT(HybridBarracksSpawn),false,GetOwner());
+			GuLiUnitMovement::IgnoreOtherLayerBodies(*GetWorld(),Query,Projected.Location+FVector(0,0,HalfHeight),Radius+HalfHeight,Soldier->MovementLayer);
 			if (GetWorld()->OverlapBlockingTestByChannel(Projected.Location+FVector(0,0,HalfHeight+1),FQuat::Identity,
 				ECC_Pawn,FCollisionShape::MakeCapsule(Radius,HalfHeight),Query)) continue;
-			auto& Job=HybridJobs.AddDefaulted_GetRef(); Job.Event=FGuid::NewGuid(); Job.Location=Projected.Location+FVector(0,0,Pawn?HalfHeight:0);
+			auto& Job=HybridJobs.AddDefaulted_GetRef(); Job.Event=FGuid::NewGuid(); Job.Location=Projected.Location+FVector(0,0,(Pawn?HalfHeight:0)+Soldier->AltitudeCentimeters);
 			Job.FacingYaw=GetOwner()->GetActorRotation().Yaw;
 			Job.Target=FGuLiHybridManifest::MakeStableKey(GetWorld()->GetOutermost()->GetName(),Family.Kind,
 				TEXT("production/")+Job.Event.ToString(EGuidFormats::Digits));

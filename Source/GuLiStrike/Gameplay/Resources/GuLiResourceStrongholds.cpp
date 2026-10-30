@@ -94,7 +94,7 @@ void UGuLiResourceWorldSubsystem::ApplyHybridControlPoint(const FGuLiHybridObjec
     const bool Changed=Previous!=C.Owner || IsTerritorySupplied(C.Index)!=State.bSupplied;
     if (!WorldState->ApplyHybridTerritory(C.Index,C.Owner,State.bSupplied)) return;
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();auto* P=Outposts[C.Index].Get();
-    P->ApplyHybridOwner(C.Owner,H?H->GetLogicalSeconds():0);
+    P->ApplyHybridOwner(C.Owner);
     auto* Capture=P->FindComponentByClass<UGuLiStrongholdCaptureComponent>();Capture->ApplyHybridCapture(C.Progress,int32(C.Red),int32(C.Blue));
     if (Changed) RefreshEncirclement();
     if (Effects && Previous!=C.Owner && H && H->HasSimulation(State.Key,true))

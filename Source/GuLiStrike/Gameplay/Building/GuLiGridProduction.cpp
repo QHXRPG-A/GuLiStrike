@@ -27,8 +27,8 @@ void UGuLiBuildingProductionComponent::RecoverGridBirths()
     {
         FGuLiHybridObjectState Born;if (H->GetObjectView(J.Target,Born) && Born.LifeState!=0) continue;
         const auto Rect=GuLiGrid::FRect::At(G->Snapshot()->AnchorAt(J.Location,Unit->FootprintCells),Unit->FootprintCells);
-        G->Traffic().Admit(FGuLiGridNetwork::PlacementKey(J.Target),Source.SimulationOwner,Source.OwnerEpoch,uint8(Source.Team),Rect,{},Unit->FootprintCells);
-        G->Network()->RecoverPlacement(Source,J.Target,Rect,Unit->FootprintCells);
+        G->Traffic().Admit(FGuLiGridNetwork::PlacementKey(J.Target),Source.SimulationOwner,Source.OwnerEpoch,uint8(Source.Team),Rect,{},Unit->FootprintCells,Unit->MovementLayer);
+        G->Network()->RecoverPlacement(Source,J.Target,Rect,Unit->FootprintCells,false,Unit->MovementLayer);
     }
 }
 
@@ -70,12 +70,12 @@ void UGuLiBuildingProductionComponent::AdvanceGridProduction(float Dt)
         const int32 Candidate=GridCandidate++;const auto Dir=Directions[Candidate%8];
         const double Offset=(D.FootprintCells+Unit->FootprintCells)*150.+(Candidate/8)*Unit->FootprintCells*300.;
         const FVector Desired=Life.GetGroundLocation()+FVector(Dir.X*Offset,Dir.Y*Offset,0);FVector P;
-        if (S->Project(Desired,Unit->FootprintCells,FVector(300,300,5000),P) && GuLiGrid::Unoccupied(G,P,Unit->FootprintCells))
+        if (S->Project(Desired,Unit->FootprintCells,FVector(300,300,5000),P) && GuLiGrid::Unoccupied(G,P,Unit->FootprintCells,{},Unit->MovementLayer))
         {
-            FHybridJob J;J.Event=FGuid::NewGuid();J.Location=P+FVector(0,0,HalfHeight);J.FacingYaw=GetOwner()->GetActorRotation().Yaw;
+            FHybridJob J;J.Event=FGuid::NewGuid();J.Location=P+FVector(0,0,HalfHeight+Unit->AltitudeCentimeters);J.FacingYaw=GetOwner()->GetActorRotation().Yaw;
             J.Target=FGuLiHybridManifest::MakeStableKey(GetWorld()->GetOutermost()->GetName(),Family.Kind,TEXT("production/")+J.Event.ToString(EGuidFormats::Digits));
             if (G.Traffic().Admit(FGuLiGridNetwork::PlacementKey(J.Target),Owner.SimulationOwner,Owner.OwnerEpoch,uint8(Owner.Team),
-                GuLiGrid::FRect::At(S->AnchorAt(P,Unit->FootprintCells),Unit->FootprintCells),{},Unit->FootprintCells))
+                GuLiGrid::FRect::At(S->AnchorAt(P,Unit->FootprintCells),Unit->FootprintCells),{},Unit->FootprintCells,Unit->MovementLayer))
             {HybridJobs.Add(J);--GridRemaining;}
         }
         if (GridCandidate>=128)
@@ -96,10 +96,10 @@ void UGuLiBuildingProductionComponent::AdvanceGridProduction(float Dt)
         const auto Actual=GuLiGrid::FRect::At(S->AnchorAt(J.Location,Unit->FootprintCells),Unit->FootprintCells);
         const auto Reservation=FGuLiGridNetwork::PlacementKey(J.Target);
         // Recover the local reservation from the saved production job after an ownership handoff.
-        if (!G.Traffic().Find(Reservation) && GuLiGrid::Unoccupied(G,J.Location,Unit->FootprintCells))
-            G.Traffic().Admit(Reservation,Owner.SimulationOwner,Owner.OwnerEpoch,uint8(Owner.Team),Actual,{},Unit->FootprintCells);
-        const bool Clear=GuLiGrid::Unoccupied(G,J.Location,Unit->FootprintCells,Reservation);
-        const auto Permit=Clear && G.Network()?G.Network()->PermitPlacement(Owner.Key,J.Target,Actual,Unit->FootprintCells,uint8(Owner.Team)):EGuLiGridPermit::Blocked;
+        if (!G.Traffic().Find(Reservation) && GuLiGrid::Unoccupied(G,J.Location,Unit->FootprintCells,{},Unit->MovementLayer))
+            G.Traffic().Admit(Reservation,Owner.SimulationOwner,Owner.OwnerEpoch,uint8(Owner.Team),Actual,{},Unit->FootprintCells,Unit->MovementLayer);
+        const bool Clear=GuLiGrid::Unoccupied(G,J.Location,Unit->FootprintCells,Reservation,Unit->MovementLayer);
+        const auto Permit=Clear && G.Network()?G.Network()->PermitPlacement(Owner.Key,J.Target,Actual,Unit->FootprintCells,uint8(Owner.Team),Unit->MovementLayer):EGuLiGridPermit::Blocked;
         if (Permit==EGuLiGridPermit::Blocked)
         {
             ReleaseGridBirth(J.Target);HybridJobs.RemoveAtSwap(GridJobCursor,1,EAllowShrinking::No);++GridRemaining;

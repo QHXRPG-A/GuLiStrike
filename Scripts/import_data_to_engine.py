@@ -61,6 +61,11 @@ CONFIG_WIRED_TABLES = {
     "DT_GuLiStrikeMech_GroundIK",
     "DT_GuLiStrikeMech_Camera",
     "DT_GuLiStrikeRogueCards_Cards",
+    "DT_GuLiStrikeRogueCards_Effects",
+    "DT_GuLiStrikeRogueCards_GroundRicochet",
+    "DT_GuLiStrikeBuffs_Buffs",
+    "DT_GuLiStrikeBuffs_Burning",
+    "DT_GuLiStrikeBuffs_BurningBurst",
     "DT_GuLiStrikeVfx_Effects",
     "DT_GuLiStrikeGameTexts_Texts",
     "DT_GuLiStrikeBuildings_Buildings",
@@ -109,10 +114,16 @@ def preflight(manifest, selected):
     model_users = {'DT_GuLiStrikeCommander_Soldiers', 'DT_GuLiStrikeBuildings_Buildings',
                    'DT_GuLiStrikeShip_Parts', 'DT_GuLiStrikeShip_Tuning', 'DT_GuLiStrikeMech_Visuals'}
     if not issues and (model_users.intersection(selected) or any(n.startswith('DT_GuLiStrikeModels_') for n in selected)):
-        scope = {'__name__': 'model_import_preflight'}
-        with open(f'{PROJECT}/Scripts/Models/validate_model_catalog_in_editor.py', encoding='utf-8') as source:
-            exec(compile(source.read(), 'validate_model_catalog_in_editor.py', 'exec'), scope)
-        issues.extend(scope['report']['errors'])
+        model_ids = globals().get('GULI_MODEL_VALIDATION_IDS')
+        if model_ids is not None:
+            from Models.validate_scoped_model_resources import validate
+            model_report = validate(PROJECT, model_ids)
+        else:
+            scope = {'__name__': 'model_import_preflight'}
+            with open(f'{PROJECT}/Scripts/Models/validate_model_catalog_in_editor.py', encoding='utf-8') as source:
+                exec(compile(source.read(), 'validate_model_catalog_in_editor.py', 'exec'), scope)
+            model_report = scope['report']
+        issues.extend(model_report['errors'])
     if issues:
         raise RuntimeError('Import preflight failed before any asset mutation:\n' + '\n'.join(issues[:30]))
     mech_tables={'DT_GuLiStrikeMech_'+s for s in ('Upgrades','Skills','Mobility','Gait','GroundIK','Camera')}

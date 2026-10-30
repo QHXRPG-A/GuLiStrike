@@ -10,7 +10,6 @@ BASE='/Game/GuLiStrike/FX/StrongholdOutpost'
 CANDIDATE=BASE+'/Candidate_v1'
 MAP='/Game/Maps/ArtReview/LVL_CommanderIslandOutpost_v1'
 SOURCE='/Game/GuLiStrike/Buildings/Materials/M_OutpostConcrete'
-MESH='/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder'
 LIB=unreal.EditorAssetLibrary
 EDIT=unreal.MaterialEditingLibrary
 TOOLS=unreal.AssetToolsHelpers.get_asset_tools()
@@ -88,38 +87,11 @@ def static_actor(label,mesh,material,location,scale,rotation=unreal.Rotator()):
     return a
 
 def preview():
-    assert not LEVELS.is_in_play_in_editor()
-    assert not unreal.EditorLoadingAndSavingUtils.get_dirty_map_packages()
-    previous=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world().get_path_name().split('.')[0]
-    assert not LIB.does_asset_exist(MAP)
-    assert LEVELS.new_level_from_template(MAP,'/Engine/Maps/Templates/Template_Default')
-    mesh=unreal.load_asset(MESH);bounds=mesh.get_bounds();scale=1000/(2*bounds.box_extent.z)
-    camera=unreal.Vector(0,-11000,6000);target=unreal.Vector(0,0,500)
-    rotation=unreal.MathLibrary.find_look_at_rotation(camera,target)
-    for a in ACTORS.get_all_level_actors():
-        if isinstance(a,unreal.StaticMeshActor) and a.get_actor_label()=='Floor':a.set_actor_scale3d(unreal.Vector(160,80,1))
-        if isinstance(a,unreal.DirectionalLight):a.get_editor_property('directional_light_component').set_editor_property('intensity',3.0)
-    data=[]
-    for i,team in enumerate(COLORS):
-        x=(i-1)*3000
-        base=(x-bounds.origin.x*scale,-bounds.origin.y*scale,-(bounds.origin.z-bounds.box_extent.z)*scale)
-        static_actor('OutpostReview_'+team,mesh,unreal.load_asset(CANDIDATE+'/MI_OutpostGlow_'+team),base,(scale,scale,scale))
-        center=unreal.Vector(x,0,500)
-        halo_rotation=unreal.MathLibrary.make_rot_from_z(camera-center)
-        static_actor('OutpostHalo_'+team,unreal.load_asset('/Engine/BasicShapes/Plane'),
-            unreal.load_asset(CANDIDATE+'/MI_OutpostHalo_'+team),(x,0,500),(16,18,1),halo_rotation)
-        data.append({'team':team,'ground_cm':[x,0,0],'height_cm':1000,'scale':scale})
-    cam=ACTORS.spawn_actor_from_class(unreal.CameraActor,camera,rotation);cam.set_actor_label('OutpostReviewCamera')
-    cam.get_component_by_class(unreal.CameraComponent).set_field_of_view(50)
-    unreal.EditorLevelLibrary.set_level_viewport_camera_info(camera,rotation)
-    unreal.ViewportService.set_view_mode('lit');unreal.ViewportService.set_game_view(True)
-    unreal.ViewportService.set_exposure(True,0);unreal.ViewportService.set_realtime(True)
-    ACTORS.set_selected_level_actors([])
-    assert LEVELS.save_current_level()
-    assert unreal.AutomationLibrary.take_high_res_screenshot(1920,1080,str(FILES/'candidate_team_glow.png'),cam,delay=1,force_game_view=True)
-    result={'success':True,'map':MAP,'previous_map':previous,'actors':data,'screenshot':str(FILES/'candidate_team_glow.png'),'runtime_animation':'Not run; these are editor static candidates.'}
-    (FILES/'candidate_preview.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
-    return result
+    # The old three-glow review has been replaced by the shared production pose.
+    import sys
+    sys.path.insert(0,str(ROOT/"Scripts"))
+    from CommanderIsland.outpost_presentation import prepare_scene
+    return prepare_scene()
 
 def publish():
     # Call only after the user has reviewed Candidate_v1 and approved it.

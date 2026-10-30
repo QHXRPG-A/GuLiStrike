@@ -1,4 +1,5 @@
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
@@ -387,6 +388,15 @@ void UGuLiGroundMechWeaponComponent::AlignGun()
 	}
 }
 
+FGuLiGroundAttackSnapshot UGuLiGroundMechWeaponComponent::BuildAttackSnapshot() const
+{
+    FGuLiGroundAttackSnapshot S;S.Damage=ActiveUpgrade.Damage;S.BulletVfxId=ActiveSkill.BulletVfxId;S.MuzzleVfxId=ActiveSkill.MuzzleVfxId;S.ImpactVfxId=ActiveSkill.ImpactVfxId;
+    if(const auto* Identity=UGuLiHybridActorComponent::Find(GetOwner()))
+    {S.Player=Identity->GetState().Controller;TMap<FString,int32> Counts;GuLiGroundRogue::ReadBuild(*GetWorld(),S.Player,Counts,S.Revision,&S.Effects);}
+    uint32 Bullet=uint32(S.BulletVfxId),Impact=uint32(S.ImpactVfxId),Muzzle=uint32(S.MuzzleVfxId);
+    GuLiNet::Effects::FreezePresentation(S.Effects,Bullet,Impact,Muzzle);S.BulletVfxId=int32(Bullet);S.ImpactVfxId=int32(Impact);S.MuzzleVfxId=int32(Muzzle);
+    return S;
+}
 void UGuLiGroundMechWeaponComponent::TryFire()
 {
 	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !bFireHeld || !bHasAim || !CanControl(false)) return;
@@ -417,6 +427,7 @@ void UGuLiGroundMechWeaponComponent::TryFire()
 	Launch.Speed = ActiveSkill.ProjectileSpeed; Launch.Lifetime = ActiveSkill.ProjectileLifetime;
 	Launch.MaximumDistance = Launch.Speed * Launch.Lifetime; Launch.SweepRadius = ActiveSkill.SweepRadius;
 	Launch.ServerTime = Now; Launch.PlayerBulletVfxId = ActiveSkill.BulletVfxId;
+    const auto& Snapshot=Launch.GroundAttack=BuildAttackSnapshot();
 	if (!Pool->Launch(Launch).IsValid()) return;
 	++ShotsFired;
 	const double Interval = 1. / ActiveUpgrade.FireRate;
@@ -426,12 +437,13 @@ void UGuLiGroundMechWeaponComponent::TryFire()
 	Cue.Start = Launch.Position; Cue.End = Launch.Position+Launch.Direction*FVector::Distance(Launch.Position,FVector(AimPoint)); Cue.ServerTime = Now;
 	Cue.MuzzleDirection = Launch.Direction; Cue.bMuzzleOnly = true;
 	Cue.MuzzleIndex = MuzzleIndex;
+    Cue.FrozenMuzzleVfxId=Snapshot.MuzzleVfxId;
 	Cue.SlotId = TEXT("BasicAttack");
 	UGuLiCombatEffectReplicationComponent::AttachFlightMuzzle(GetWorld(),Cue);
-	PlayFlightShot(Cue.ShotId,Cue.ServerTime,Cue.MuzzleIndex);
+	PlayFlightShot(Cue.ShotId,Cue.ServerTime,Cue.MuzzleIndex,Cue.FrozenMuzzleVfxId);
 }
 
-void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex)
+void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex,int32 FrozenMuzzleVfxId)
 {
 	if (!bConfigured || MuzzleIndex > 1 || SeenShots.Contains(ShotId)) return;
 	if (SeenShots.Num() >= 256) SeenShots.Reset();
@@ -446,14 +458,16 @@ void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime
 	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	++CosmeticShots;
 	const FName Socket = MuzzleSocket(MuzzleIndex);
-	if (auto* Effect = UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleSystem, Gun(), Socket,
+    const int32 Vfx=FrozenMuzzleVfxId==INDEX_NONE?ActiveSkill.MuzzleVfxId:FrozenMuzzleVfxId;
+    auto* System=Vfx==ActiveSkill.MuzzleVfxId?MuzzleSystem.Get():GuLiVfx::Load<UNiagaraSystem>(this,Vfx);
+	if (auto* Effect = UNiagaraFunctionLibrary::SpawnSystemAttached(System, Gun(), Socket,
 		FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget, false, false, ENCPoolMethod::ManualRelease, false))
 	{
 		Effect->SetUsingAbsoluteScale(true);
 		// This emitter's User.Size drives both beam length and width. Component
 		// scaling alone does not scale Niagara ribbon/sprite widths consistently.
 		Effect->SetWorldScale3D(FVector::OneVector);
-		Effect->SetVariableFloat(TEXT("User.Size"), GuLiVfx::Scale(this, ActiveSkill.MuzzleVfxId).X);
+		Effect->SetVariableFloat(TEXT("User.Size"), GuLiVfx::Scale(this, Vfx).X);
 		// The weapon mount mirrors X. Removing inherited scale also removes that
 		// reflection, so orient the unscaled effect along the actual socket axis.
 		Effect->SetUsingAbsoluteRotation(true);

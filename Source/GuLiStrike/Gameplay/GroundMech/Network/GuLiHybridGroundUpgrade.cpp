@@ -35,6 +35,9 @@ bool GuLiHybridGroundUpgrade::Append(const UGuLiGroundMechWeaponComponent& Weapo
         Rule.Damage=Row->Damage;Rule.CooldownTicks=FMath::Max<int64>(1,FMath::CeilToInt64(60./Row->FireRate));
         Rule.EffectTicks=FMath::Max<int64>(600,FMath::CeilToInt64(Skill->ProjectileLifetime*60.));Rule.MaximumTargets=1;
         Rule.RequiredCapabilityCatalog=Domain;Rule.RequiredCapabilityGroup=Row->Id.ToLower();Rule.RequiredCapability=TEXT("fire/")+Row->Id.ToLower();
+        Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/bullet"),Skill->BulletVfxId);
+        Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/impact"),Skill->ImpactVfxId);
+        Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/muzzle"),Skill->MuzzleVfxId);
         if (Row->Id==Weapon.CurrentUpgradeId)
         {
             FoundInitial=true;std::string Current=Id;

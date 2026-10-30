@@ -15,6 +15,9 @@ struct FGuLiCommanderInitialSpawnSlot
 	FVector Location = FVector::ZeroVector;
 	float FacingYawDegrees = 0.0f;
 	float RadiusCentimeters = 0.0f;
+    FString AuthoredId;
+    float InitialMaxHealthOverride=0,InitialShield=0;
+    bool bAllowAutomaticFire=true,bStartIdle=false;
 };
 
 namespace GuLiCommanderInitialSpawn
