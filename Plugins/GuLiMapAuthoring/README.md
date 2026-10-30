@@ -211,6 +211,8 @@ GuLiMap::UnregisterValidator("SupplyRules");
 
 ## 原型图的 PIE 前置检查
 
+2026-10-25 项目适配源码更新：`GuLiResourceAuthoringLibrary` 不再强制存在固定名称、唯一数量、非空且启用的 `CommanderIsland_Roads`；通用 `ResourceClearance` 改为可选，禁用标记/区域不参与避让，活动区域仍要求支持的水平 Box/Cylinder 和有效几何。地形、据点、实体障碍等约束继续保留。此项尚未编译加载；独立设计器中的旧道路与密度已清理，UE 源图和已有矿簇本轮未改。不对称涂绘可保存导出，生成器镜像采样、数量及矿石排列仍属原规则；不对称和 3 米资源格的生成适配留待后续。详见 [独立设计器说明](../../Tools/MapDesigner/README.md)。
+
 `/Game/Maps/LVL_CommanderMassPrototype`的PIE资源检查由项目`GuLiStrikeEditor`适配层执行。`Could not hash GuLiMapAuthoring output`也可能表示初始军队配置构建失败，不一定是导出文件损坏。可在停止的编辑器中调用`unreal.GuLiResourceAuthoringLibrary.get_initial_army_spawn_layout_json()`，具体失败原因会写入`LogGuLiResourceBake`；`validate_current_bake()`核对资源及出生位置，`GuLiNavigationBakeLibrary.validate_world_navigation(world)`核对导航。
 
 当前该图只接受默认双方各250名军队，任何`GuLiCommanderDeploymentPoint`覆盖都会被拒绝。场景障碍还必须避开实际初始军队、设施和矿体；移动障碍后须完成导航准备与保存。不要关闭校验或重烘焙矿体来掩盖部署配置错误。2026-09-23专项验证场景的此类阻塞已通过移除覆盖部署、移动验证墙体和重新准备导航修复，详见[场景修复记录](../../Progress/Archive/20260923-Mass验证场景PIE阻塞修复.md)。

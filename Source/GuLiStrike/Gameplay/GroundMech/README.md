@@ -10,6 +10,7 @@
 | Data/ | Excel/DataTable配置加载与指纹 |
 | Movement/ | CMC、空中移动、转向状态；Collision/为Mass接触服务 |
 | Weapons/ | 开火、升级、武器动画、瞄准状态类型 |
+| Rogue/ | Ground个人肉鸽构筑、卡池路由与Hybrid能力桥接；普攻不可变载荷在Weapons/GuLiGroundAttackSnapshot.h |
 | Animation/ | 身体动画实例、Aim/Grounding骨骼控制 |
 | Abilities/Shared/ | 共享属性集、燃料GE |
 | Abilities/RocketJump/ | 喷气组件和GA |

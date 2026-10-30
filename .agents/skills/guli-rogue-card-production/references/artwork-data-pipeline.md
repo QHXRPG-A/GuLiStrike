@@ -13,6 +13,8 @@
 
 层编号不是叠放顺序；组合算法、图集切格、透明处理与前景遮挡由模板实现，表中选择模板。普通图层参数只在Layers维护，禁止再放进Parameters形成第二来源。Layers.TextureParameter引用本牌Parameters中Kind=Texture的Key；图集六层共用BaseColor Map，独立六层使用Layer N Map。
 
+UE图层使用居中映射`p=(CardUV-0.5-Offset)/Scale+0.5`，不能直接照抄HTML的drawImage偏移或外扩画布偏移。接入时依据完整画布、原图窗口、实际卡框开口和CardFace网格宽高换算六层共同Scale/Offset；按物理宽高保持原图比例，并给当前刚性视差的最大位移留出原图安全范围。卡框开口合同见`Scripts/Cards/comic_card_edge_coverage.py`。外扩内容用于填满窗口和支撑运动，不能把原图左上角的扩边偏移再当成UE居中偏移。数值映射核对不代替用户画面验收。
+
 `GuLiStrikeRogueCards.xlsx / Cards` 以必填整数 `ArtworkId` 指定牌面，源表不再手填FrontMaterial。导出器只把此列解析为既有运行时FrontMaterial，不增加或改名原卡表字段，也不改写Layers/Parameters中的ArtworkId。不同玩法等级可引用同一ArtworkId。
 
 初始ArtworkId：1射速、2机动、3导弹伤害、4导弹仓、5雨点攻势、6折射子弹。6目前仅是美术目录项，不伪造Ground玩法行。地面玩家与WM01身份保持分离。

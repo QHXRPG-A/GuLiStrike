@@ -13,7 +13,7 @@ Before creating or changing project VFX, read [GuLiStrike 美术规范](../../..
 
 For new or explicitly recolored effects, select base and accent colors from the standard's project-wide palette (全项目统一色库). Check semantic-color and approved asset-specific exceptions; same-family shading and emission follow the standard. Keep the color table in that document rather than duplicating it here.
 
-For dedicated meshes, follow reference approval → Blender reconstruction approval → UE import. For Niagara/material animation, approve references/storyboards, then build a playable candidate in an isolated UE preview; obtain the required visual approval before replacing combat references. Existing explicit approvals and waivers remain valid; do not re-request them. When approval is missing, show the reviewable result and cite this skill and the standard explaining the pause. Record art revisions and review evidence through `gulistrike-progress`. Compilation, particle count and technical installation are separate from user visual approval.
+For dedicated meshes, follow reference approval → Blender reconstruction approval → UE import. Pure art-production tasks follow the applicable reference and visual-review workflow; existing explicit approvals and waivers remain valid. Development tasks follow [开发直接接入与旧实现替换](../gulistrike-progress/SKILL.md#开发直接接入与旧实现替换): apply the finished implementation to combat references and normal gameplay after the necessary technical checks, without an opt-in review switch. Remove the replaced implementation and switch-only code. Record user-directed application separately from actual visual acceptance; compilation and technical installation do not prove visual quality or performance.
 
 ## Choose The Effect Architecture
 

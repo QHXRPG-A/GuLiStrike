@@ -2,6 +2,8 @@
 
 Use this reference for every VFX asset mutation. Validation is evidence that the saved asset, runtime behavior, temporal shape, and expected workload agree with the request.
 
+For development, follow [开发直接接入与旧实现替换](../../gulistrike-progress/SKILL.md#开发直接接入与旧实现替换): technical installation goes directly to the formal flow; pending visual or performance acceptance does not require an opt-in implementation or retention of replaced code. Run PIE and measurements only within user authorization.
+
 ## Compile, Diagnose, Read Back, Save
 
 For each changed asset:
