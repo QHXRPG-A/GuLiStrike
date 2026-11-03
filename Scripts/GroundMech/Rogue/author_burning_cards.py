@@ -87,8 +87,8 @@ def main():
         [3,"GroundBurningBurst","为同次命中附加依附灼烧的爆裂","buff/on_hit",1,0,2]])
     buffs="GuLiStrikeBuffs.xlsx"
     table(buffs,"Buffs",fields(("DescriptionTextId","str"),("ImplementationClass","softclass"),("Version","int"),("ConfigId","int")),[
-        [1,"Burning","同目标单份；刷新不重置每秒跳伤","Buff.Burning.Description","/Script/GuLiStrike.GuLiBurningBuffHandler",1,1],
-        [2,"BurningBurst","依附灼烧；独立2秒周期","Buff.BurningBurst.Description","/Script/GuLiStrike.GuLiBurningBurstBuffHandler",1,1]])
+        [1,"Burning","同目标单份；刷新不重置每秒跳伤","Buff.Burning.Description","/Script/GuLiStrike.GuLiBurningBuffHandler",2,1],
+        [2,"BurningBurst","依附灼烧；独立2秒周期","Buff.BurningBurst.Description","/Script/GuLiStrike.GuLiBurningBurstBuffHandler",2,1]])
     # VFX IDs are allocated from the current source workbook, not a stale header.
     vbook="GuLiStrikeVfx.xlsx"
     info=json.loads(call("info",ROOT/"data/Excel"/vbook))
@@ -98,7 +98,7 @@ def main():
     existing={r[vh.index("name")]:int(r[0]) for r in vrows[3:] if r and r[0]}
     next_id=max(existing.values())+1
     paths={"GroundBurningStatus":"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus.NS_GroundBurningStatus",
-           "GroundBurningBurst":"/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Hit_15.NS_Hit_15",
+           "GroundBurningBurst":"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst",
            "GroundBurningBullet":"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet.NS_GroundBurningBullet"}
     # Preserve the table's existing row contract by cloning the Ground impact/tracer defaults.
     base={name:v for name,v in zip(vh,next(r for r in vrows[3:] if r[1]=="GroundMechImpact"))}
@@ -120,18 +120,18 @@ def main():
     upsert(vbook,vsheet,[{"id":existing["GroundMechImpact"],resource:"/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Hit_1.NS_Hit_1"}])
     table(buffs,"Burning",fields(("DurationSeconds","float"),("TickIntervalSeconds","float"),("MaxHealthDamageRatio","float"),("StatusVfxId","int"),("BulletVfxId","int")),[
         [1,"Burning","伤害不受折射直接伤害倍率影响",8.0,1.0,0.05,existing["GroundBurningStatus"],existing["GroundBurningBullet"]]])
-    table(buffs,"BurningBurst",fields(("ParentBuffId","int"),("IntervalSeconds","float"),("LostHealthDamageRatio","float"),("RadiusMultiplier","float"),("BurstVfxId","int")),[
-        [1,"BurningBurst","范围穿墙；先冻结伤害及目标；零伤害仍表现",1,2.0,0.03,1.5,existing["GroundBurningBurst"]]])
+    table(buffs,"BurningBurst",fields(("ParentBuffId","int"),("IntervalSeconds","float"),("LostHealthDamageRatio","float"),("RadiusCentimeters","float"),("BurstVfxId","int")),[
+        [1,"BurningBurst","固定5米球与碰撞体相交；穿墙；冻结共同伤害与目标；零伤害仍表现",1,2.0,0.03,500.0,existing["GroundBurningBurst"]]])
     texts="GuLiStrikeGameTexts.xlsx"
     tr=read(texts,"Texts")
     th=tr[0]
     entries={
         "Card.GroundMech.BurningBullet.Title":("灼烧子弹","卡牌标题"),
-        "Card.GroundMech.BurningBullet.Description":("<Unit>地面机甲</> 普攻附加<Gain>{0}秒灼烧</>","参数来自Buff持续时间"),
+        "Card.GroundMech.BurningBullet.Description":("<Unit>地面机甲</> 普攻附加<Gain>灼烧-{0}</>","参数为取得后的卡牌等级"),
         "Card.GroundMech.BurningBurst.Title":("灼烧爆裂子弹","卡牌标题"),
-        "Card.GroundMech.BurningBurst.Description":("<Unit>地面机甲</> 灼烧每<Gain>{0}秒爆裂</>","参数来自Buff独立爆裂周期"),
+        "Card.GroundMech.BurningBurst.Description":("<Unit>地面机甲</> 灼烧每隔一段时间发生<Gain>爆燃</>","爆燃规则由Buff配置维护"),
         "Buff.Burning.Description":("每秒受到最大生命值的{0}%伤害，持续{1}秒。重复命中刷新时间，不叠加。","Buff参数化说明"),
-        "Buff.BurningBurst.Description":("灼烧期间独立每{0}秒爆裂，造成宿主已损失生命值的{1}%范围伤害，半径为宿主的{2}倍。","Buff参数化说明")}
+        "Buff.BurningBurst.Description":("灼烧期间独立每{0}秒爆裂，造成宿主已损失生命值的{1}%范围伤害，半径{2}米，接触爆燃范围的敌人受到同等伤害。","Buff参数化说明")}
     changes=[]
     for key,(value,note) in entries.items():
         r=next((i+1 for i,row in enumerate(tr) if row and row[0]==key),None)

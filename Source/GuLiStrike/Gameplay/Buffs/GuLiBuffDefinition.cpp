@@ -33,5 +33,5 @@ bool UGuLiBurningBuffHandler::Build(const FGuLiStrikeBuffsBuffsRow& R,GuLiNet::B
 bool UGuLiBurningBurstBuffHandler::Build(const FGuLiStrikeBuffsBuffsRow& R,GuLiNet::Buffs::Definition& D,FString& Error) const
 {
     FGuLiStrikeBuffsBurningBurstRow V;if(!Row(GetDefault<UGuLiBuffSettings>()->BurningBurst,R.ConfigId,V)){Error=TEXT("Missing burning burst configuration");return false;}
-    D.Handler="burning_burst";D.Parent=uint32(V.ParentBuffId);D.Interval=Ticks(V.IntervalSeconds);D.Ratio=V.LostHealthDamageRatio;D.RadiusMultiplier=V.RadiusMultiplier;D.Vfx=uint32(V.BurstVfxId);return true;
+    D.Handler="burning_burst";D.Parent=uint32(V.ParentBuffId);D.Interval=Ticks(V.IntervalSeconds);D.Ratio=V.LostHealthDamageRatio;D.RadiusCentimeters=V.RadiusCentimeters;D.Vfx=uint32(V.BurstVfxId);return true;
 }

@@ -145,6 +145,7 @@ bool AGuLiGroundMechCharacter::IsShoulderLookActive() const
 
 void AGuLiGroundMechCharacter::SetShoulderAimHeld(bool bHeld)
 {
+	const bool WasHeld=bShoulderAimHeld;
 	bShoulderAimHeld=bHeld && IsShoulderLookActive();
 	HybridInput.bFaceAim=bShoulderAimHeld;
 	if (!bSemanticInput)
@@ -152,6 +153,13 @@ void AGuLiGroundMechCharacter::SetShoulderAimHeld(bool bHeld)
 		HybridInput.WeaponAimMode=bShoulderAimHeld?EGuLiGroundWeaponAimMode::Target:EGuLiGroundWeaponAimMode::Forward;
 		if (!bShoulderAimHeld) { HybridInput.bHasAim=false; HybridInput.Aim=FVector::ZeroVector; }
 	}
+    if(WasHeld!=bShoulderAimHeld)NotifyLocalPresentation({EGuLiGroundPresentationAction::Aim,
+        bShoulderAimHeld?EGuLiGroundPresentationPhase::Started:EGuLiGroundPresentationPhase::Ended});
+}
+
+void AGuLiGroundMechCharacter::NotifyLocalPresentation(const FGuLiGroundPresentationEvent& Event)
+{
+    if(IsLocallyControlled() && UGuLiNetworkSettings::CanPresent(GetWorld()))OnLocalPresentation.Broadcast(Event);
 }
 
 void AGuLiGroundMechCharacter::BeginPlay()

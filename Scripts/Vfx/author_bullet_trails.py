@@ -104,7 +104,8 @@ def materials():
     for key,value in [('blend_mode',unreal.BlendMode.BLEND_ADDITIVE),('shading_model',unreal.MaterialShadingModel.MSM_UNLIT),
                       ('two_sided',True),('disable_depth_test',False),('used_with_niagara_sprites',True)]: mat.set_editor_property(key,value)
     params={'UV':(EDIT.create_material_expression(mat,unreal.MaterialExpressionTextureCoordinate,-800,-200),'')}
-    params['Tint']=(EDIT.create_material_expression(mat,unreal.MaterialExpressionParticleColor,-800,0),'')
+    # MATERIAL_CODE reads Tint.a; the default ParticleColor output is RGB only.
+    params['Tint']=(EDIT.create_material_expression(mat,unreal.MaterialExpressionParticleColor,-800,0),'RGBA')
     core=EDIT.create_material_expression(mat,unreal.MaterialExpressionVectorParameter,-800,180)
     core.set_editor_property('parameter_name','CoreColor');core.set_editor_property('default_value',linear('FEE4D9'))
     params['CoreColor']=(core,'')

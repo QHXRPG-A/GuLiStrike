@@ -288,6 +288,7 @@ void UGuLiGroundMechBlinkComponent::ResetPresentation()
 {
     StopPresentation(true);
     bBlinkPresentationPrimed=false;
+    bPresentedCooling=bReadyPresentationArmed=false;
     PresentedBlinkSerial=BlinkState.Serial; PresentedBlinkPhase=BlinkState.Phase; PresentedBlinkEnd=BlinkState.End;
     Mech()->GetCameraController()->ResetBlink();
 }
@@ -298,6 +299,20 @@ void UGuLiGroundMechBlinkComponent::Present()
     const bool NewSerial=!bBlinkPresentationPrimed || PresentedBlinkSerial!=BlinkState.Serial;
     const bool bHistoricalActivation=!bBlinkPresentationPrimed;
     const bool bNewLocalActivation=bBlinkPresentationPrimed && Mech()->IsLocallyControlled() && PresentedBlinkSerial!=BlinkState.Serial;
+    const bool Cooling=BlinkState.Cooldown>0.f;
+    if(!bHistoricalActivation)
+    {
+        if(bNewLocalActivation)Mech()->NotifyLocalPresentation({EGuLiGroundPresentationAction::Blink});
+        if(PresentedBlinkPhase!=0 && BlinkState.Phase==0)
+            Mech()->NotifyLocalPresentation({EGuLiGroundPresentationAction::Blink,EGuLiGroundPresentationPhase::Ended});
+        if(Cooling && !bPresentedCooling)bReadyPresentationArmed=true;
+        if(!Cooling && bPresentedCooling && bReadyPresentationArmed)
+        {
+            bReadyPresentationArmed=false;
+            Mech()->NotifyLocalPresentation({EGuLiGroundPresentationAction::Blink,EGuLiGroundPresentationPhase::Ready});
+        }
+    }
+    bPresentedCooling=Cooling;
     if (NewSerial)
     {
         StopPresentation(true);

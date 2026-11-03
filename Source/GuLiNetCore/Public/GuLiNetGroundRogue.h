@@ -9,7 +9,8 @@ namespace GuLiNet::GroundRogue
 inline constexpr const char* Name="ground_rogue";
 inline constexpr const char* AttackName="ground_attack";
 inline constexpr const char* ChainName="ground_ricochet";
-inline constexpr std::uint32_t Version=2;
+// v3 freezes a first-impact-centered ricochet boundary; v2 used a moving hop radius.
+inline constexpr std::uint32_t Version=3;
 // Both the portable capability and the UE flight recovery record must fit 64 KiB.
 // Reserve the fixed recipe and budget the larger UE hop representation, not just its compact wire form.
 inline constexpr std::uint32_t MaximumHops=Effects::MaximumRicochetHops;

@@ -90,6 +90,11 @@ namespace GuLiHybridMass {struct FPosePipeline;}
 #include "MassEntitySubsystem.h"
 #include "MassMovementFragments.h"
 #include "MassNavigationFragments.h"
+#if WITH_EDITOR
+// Explicit PIE preparation only. Ground firing, damage and Buff logic still run normally.
+static TAutoConsoleVariable<int32> GGroundReviewIsolateCombat(TEXT("gs.Review.GroundIsolateCombat"),0,
+    TEXT("Editor review preparation: temporarily suppress unrelated automatic soldier fire."));
+#endif
 #include "NavigationData.h"
 #include "NavMesh/RecastNavMesh.h"
 #include "NavMesh/NavMeshPath.h"
@@ -6150,6 +6155,9 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_SoldierCombat);
 	if (!AuthorityState) return;
+#if WITH_EDITOR
+    if(GGroundReviewIsolateCombat.GetValueOnGameThread()!=0&&GetWorld()->GetMapName().Contains(TEXT("LVL_CommanderMassPrototype")))return;
+#endif
 #if !UE_BUILD_SHIPPING
 	const double CombatStartedAt = FPlatformTime::Seconds();
 #endif

@@ -106,9 +106,15 @@ def write_update_card_function():
     entry=g.ease(local/g.native('FMax',A=g.get('EntryDuration'),B=.01))
     leaving=g.math('Subtract',1,g.ease(t/g.native('FMax',A=g.get('ExitDuration'),B=.01),'EaseIn'))
     flight=g.select(entry,g.select(leaving,1,exiting),entering)
-    center=(index-(count-1)*.5)*.3+.5
-    x=(g.get('MouseU')-center)/(g.get('CardScale')*16.0875/g.get('ViewWidth'))
-    y=(g.get('MouseV')-.5)/(g.get('CardScale')*24.3085/g.get('ViewHeight'))
+    spacing=.3;half_width=16.0875
+    if B.variable_exists(DIRECTOR,'DirectSelection'):
+        ground_spacing=g.select(.29,g.get('GroundCardSpacing'),g.compare('Greater',g.get('ActiveCardCount'),2,'Int'))*g.get('GroundFitWidth')
+        spacing=g.select(ground_spacing,.3,g.get('DirectSelection'))
+        half_width=g.select(20.,16.0875,g.get('DirectSelection'))
+    center=(index-(count-1)*.5)*spacing+.5
+    vertical_offset=g.select(g.get('GroundFitHeight')*.035,0,g.get('DirectSelection')) if B.variable_exists(DIRECTOR,'DirectSelection') else 0
+    x=(g.get('MouseU')-center)/(g.get('CardScale')*half_width/g.get('ViewWidth'))
+    y=(g.get('MouseV')-g.math('Subtract',.5,vertical_offset))/(g.get('CardScale')*24.3085/g.get('ViewHeight'))
     permitted=g.either(g.compare('Equal',phase,1,'Int'),g.both(g.compare('Equal',phase,3,'Int'),selected))
     hit=g.both(active,permitted,g.get('MouseValid'),g.compare('LessEqual',g.native('Abs',A=x),1),g.compare('LessEqual',g.native('Abs',A=y),1))
     seq=Node(g,B.create_node_by_key(DIRECTOR,g.name,'NODE K2Node_ExecutionSequence',*g.pos()))
@@ -118,6 +124,8 @@ def write_update_card_function():
                   g.select(1,0,g.compare('GreaterEqual',phase,3,'Int')),g.compare('Equal',phase,2,'Int'))
     flash=g.select(g.clamp(t/g.native('FMax',A=g.get('FlashDuration'),B=.01)),0,
                    g.both(selected,g.compare('Equal',phase,4,'Int')))
+    if B.variable_exists(DIRECTOR,'DirectSelection'):
+        flip=g.select(0,flip,g.get('DirectSelection'))
     visible=g.both(active,g.compare('Less',phase,6,'Int'),g.either(g.native('Not_PreBool',A=entering),g.compare('GreaterEqual',local,0)))
     g.method(CARD,'ApplyFrame',g.arg('Card'),DisplayX=(center-.5)*g.get('ViewWidth'),
              DisplayScale=g.get('CardScale'),FlightAlpha=flight,FarDistance=g.get('FarDistance'),
@@ -125,6 +133,10 @@ def write_update_card_function():
              HoverY=g.select(g.clamp(y,-1,1),0,hit),MaxTilt=g.get('MaximumTilt'),
              HoverSpeed=g.get('HoverInterpSpeed'),DeltaSeconds=g.arg('DeltaSeconds'),
              FlashProgress=flash,FlashIntensity=g.get('FlashIntensity'),Visible=visible)
+    if B.variable_exists(DIRECTOR,'DirectSelection'):
+        # ApplyFrame writes the absolute relative transform each tick. This offset
+        # therefore never accumulates; the same offset above defines the hit area.
+        g.method('Actor','K2_AddActorWorldOffset',g.arg('Card'),DeltaLocation=g.vec(0,0,vertical_offset*g.get('ViewHeight')*flight),bSweep=False,bTeleport=True)
     g.layout()
 
 

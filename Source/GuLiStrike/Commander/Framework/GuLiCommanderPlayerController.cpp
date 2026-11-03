@@ -1,6 +1,7 @@
+#include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Commander/UI/GuLiSceneUIWidget.h"
@@ -147,7 +148,7 @@ void AGuLiCommanderPlayerController::BeginPlay()
 		SceneUIWidget = UGuLiSceneUISubsystem::ForController(this);
 		if (SceneUIWidget)
 		{
-			SceneUIWidget->SetModalHidden(bRogueCardModal);
+			SceneUIWidget->SetModalHidden(IsHUDModal());
 		}
 	}
 	if (NetSyncComponent)
@@ -165,21 +166,34 @@ void AGuLiCommanderPlayerController::OpenRogueCards()
 
 void AGuLiCommanderPlayerController::SetRogueCardModal(bool bActive)
 {
-	if (bRogueCardModal==bActive) return;
-	if (bActive)
-	{
-        if(auto* Ground=Cast<AGuLiGroundMechCharacter>(GetPawn())){Ground->SubmitGameplayInput(FVector2D::ZeroVector,FVector::ZeroVector,false,false,false,false);Ground->GetWeapon()->SetFireHeld(false);Ground->SetRocketJumpInput(false);Ground->SetShoulderAimHeld(false);}
-		CancelSelectionDrag(); ActivateSelectionTool();
-		if (TeleportInput && TeleportInput->IsAiming()) TeleportInput->CancelTeleport();
-		if (BuildingPlacementComponent) BuildingPlacementComponent->HandleCancelAction();
-		FlushPressedKeys(); RestoreCommanderCursor();
-	}
-	bRogueCardModal=bActive;
-	if (SceneUIWidget) SceneUIWidget->SetModalHidden(bActive);
-	if (auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD())) HUD->SetRogueCardHidden(bActive);
-	if (bActive) { bShowMouseCursor=true; DefaultMouseCursor=EMouseCursor::Default; }
-	else { bCommanderInputModeInitialized=false; UpdateCommanderInputMode(); UWidgetBlueprintLibrary::SetFocusToGameViewport(); }
+    if(bRogueCardModal==bActive)return;
+    if(bActive)if(auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD()))if(auto* Ground=HUD->GetGroundHUDWidget())Ground->CloseModal(true);
+    bRogueCardModal=bActive;ApplyHUDModalInput();
 }
+void AGuLiCommanderPlayerController::SetGroundHUDModal(bool bActive)
+{
+    if(bGroundHUDModal==bActive || (bActive&&bRogueCardModal))return;
+    bGroundHUDModal=bActive;ApplyHUDModalInput();
+}
+void AGuLiCommanderPlayerController::ApplyHUDModalInput()
+{
+    const bool Active=IsHUDModal();
+    if(Active)
+    {
+        if(auto* Ground=Cast<AGuLiGroundMechCharacter>(GetPawn()))
+        {Ground->SubmitGameplayInput(FVector2D::ZeroVector,FVector::ZeroVector,false,false,false,false);Ground->GetWeapon()->SetFireHeld(false);Ground->SetRocketJumpInput(false);Ground->SetShoulderAimHeld(false);}
+        CancelSelectionDrag();ActivateSelectionTool();
+        if(TeleportInput&&TeleportInput->IsAiming())TeleportInput->CancelTeleport();
+        if(BuildingPlacementComponent)BuildingPlacementComponent->HandleCancelAction();
+        FlushPressedKeys();RestoreCommanderCursor();
+    }
+    if(SceneUIWidget)SceneUIWidget->SetModalHidden(Active);
+    if(auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD()))HUD->SetRogueCardHidden(bRogueCardModal);
+    if(Active){bShowMouseCursor=true;DefaultMouseCursor=EMouseCursor::Default;}
+    else{bCommanderInputModeInitialized=false;UpdateCommanderInputMode();UWidgetBlueprintLibrary::SetFocusToGameViewport();}
+}
+void AGuLiCommanderPlayerController::OpenGroundMap()
+{if(IsHUDModal())return;if(auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD()))if(auto* Ground=HUD->GetGroundHUDWidget())Ground->ToggleMap();}
 
 void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
@@ -276,6 +290,8 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
     auto* RogueAction=MakeAction(EKeys::F4);
     BattleCommandMappings->MapKey(RogueAction,EKeys::F4);
 	Enhanced.BindAction(RogueAction, ETriggerEvent::Started, this, &ThisClass::OpenRogueCards);
+    auto GroundAction=[&](FKey Key){auto* Action=NewObject<UInputAction>(this);CommanderActions.Add(Action);BattleCommandMappings->MapKey(Action,Key);return Action;};
+    Enhanced.BindAction(GroundAction(EKeys::M),ETriggerEvent::Started,this,&ThisClass::OpenGroundMap);
 	Enhanced.BindAction(MakeAction(EKeys::S), ETriggerEvent::Started, this, &ThisClass::StopSelectedUnits);
 	Enhanced.BindAction(MakeAction(EKeys::Tab), ETriggerEvent::Started, this, &ThisClass::HandleInspectionTab);
 	Enhanced.BindAction(MakeAction(EKeys::F10), ETriggerEvent::Started, this, &ThisClass::HandleLocalMenu);
@@ -295,11 +311,11 @@ void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 	if (!SceneUIWidget && IsLocalController() && GetLocalPlayer())
 	{
 		SceneUIWidget=UGuLiSceneUISubsystem::ForController(this);
-		if (SceneUIWidget) SceneUIWidget->SetModalHidden(bRogueCardModal);
+		if (SceneUIWidget) SceneUIWidget->SetModalHidden(IsHUDModal());
 	}
 
 	UpdateCommanderInputMode();
-	if (bRogueCardModal) return;
+	if (IsHUDModal()) return;
 	if (BuildingPlacementComponent)
 	{
 		BuildingPlacementComponent->UpdatePlacementPreview(IsCursorOverCommanderUI());
@@ -487,7 +503,7 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 bool AGuLiCommanderPlayerController::CanUseGroundMechFireInput() const
 {
 	return IsLocalController() && !IsMoveInputIgnored() && !IsLookInputIgnored() && !IsCommanderMenuOpen()
-		&& !bRogueCardModal && (!bShowMouseCursor || !IsCursorOverCommanderUI())
+		&& !IsHUDModal() && (!bShowMouseCursor || !IsCursorOverCommanderUI())
 		&& (!TeleportInput || !TeleportInput->IsAiming())
 		&& (!BuildingPlacementComponent || !BuildingPlacementComponent->IsBuildModeActive());
 }
@@ -654,6 +670,7 @@ void AGuLiCommanderPlayerController::HandleSelectBuildingSixInput() { BuildingPl
 void AGuLiCommanderPlayerController::HandleCancelInput()
 {
 	if (bRogueCardModal) { RogueCardPresentation->Cancel(); return; }
+    if(bGroundHUDModal){if(auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD()))if(auto* Ground=HUD->GetGroundHUDWidget())Ground->CloseModal();return;}
 	if (auto* UIHUD = Cast<AGuLiCommanderHUD>(GetHUD()))
 		if (auto* UI = UIHUD->GetRuntimeHUDWidget(); UI && UI->DismissTopLayer()) return;
 	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); return; }
@@ -1266,7 +1283,7 @@ bool AGuLiCommanderPlayerController::IsCommanderViewActive() const
 
 void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 {
-	if (bRogueCardModal) return;
+	if (IsHUDModal()) return;
 	if (!IsLocalController())
 	{
 		return;

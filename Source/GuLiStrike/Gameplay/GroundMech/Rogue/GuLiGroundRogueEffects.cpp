@@ -15,9 +15,9 @@ bool Ricochet(const FGuLiStrikeRogueCardsEffectsRow& R,GuLiNet::Effects::Definit
 bool OnHit(const FGuLiStrikeRogueCardsEffectsRow& R,GuLiNet::Effects::Definition& D,FString& Error)
 {GuLiNet::Buffs::Definition B;if(!UGuLiBuffHandler::Load(R.BuffId,B,Error))return false;D.Parameters=GuLiNet::Buffs::EncodeDefinition(B);return !D.Parameters.empty();}
 bool RicochetPreview(const GuLiNet::Effects::Definition& D,uint32 N,FFormatOrderedArguments& Args,const FNumberFormattingOptions& Format)
-{GuLiNet::Effects::Set S;const auto* H=GuLiNet::Effects::Find(D.Handler);if(!H||!H->Accumulate(D,N,S))return false;const auto E=GuLiNet::Effects::GetRicochet(S);Args.Add(FText::AsNumber(E.Minimum,&Format));Args.Add(FText::AsNumber(E.Maximum,&Format));return true;}
-bool BuffPreview(const GuLiNet::Effects::Definition& D,uint32,FFormatOrderedArguments& Args,const FNumberFormattingOptions& Format)
-{GuLiNet::Buffs::Definition B;if(!GuLiNet::Buffs::DecodeDefinition(D.Parameters,B))return false;Args.Add(FText::AsNumber(double(B.Duration?B.Duration:B.Interval)/GuLiNet::TicksPerSecond,&Format));return true;}
+{GuLiNet::Effects::Set S;const auto* H=GuLiNet::Effects::Find(D.Handler);if(!H||!H->Accumulate(D,N,S))return false;Args.Add(FText::AsNumber(N,&Format));return true;}
+bool BuffPreview(const GuLiNet::Effects::Definition& D,uint32 N,FFormatOrderedArguments& Args,const FNumberFormattingOptions& Format)
+{GuLiNet::Buffs::Definition B;if(!GuLiNet::Buffs::DecodeDefinition(D.Parameters,B))return false;Args.Add(FText::AsNumber(N,&Format));return true;}
 struct FHandler
 {
     FBuild Build;

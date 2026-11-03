@@ -39,6 +39,7 @@ void UGuLiImpactBatchPresentation::Prepare(const UGuLiCombatEffectCatalog* Catal
 bool UGuLiImpactBatchPresentation::GetEnvelope(UNiagaraSystem* System, const FGuLiImpactEvent& Event, FBox& Bounds)
 {
 	if (!System) return false;
+    if(Event.bRadialPulse){Bounds=FBox::BuildAABB(Event.Position,FVector(Event.RadiusCentimeters+2));return true;}
 	const auto& Params=System->GetExposedParameters();
 	const FNiagaraVariable Var(FNiagaraTypeDefinition::GetVec3Def(),TEXT("User.GuLiPreSpawnBoundsExtent"));
 	if (Params.IndexOf(Var)==INDEX_NONE) return false;
@@ -54,6 +55,10 @@ bool UGuLiImpactBatchPresentation::Enqueue(const FGuLiImpactEvent& Event)
 	FGuLiPerformanceScope Timing(GetWorld(),TEXT("Impact.AcceptMs"));
 	if (!bEnabled || !GetWorld() || !Event.Identity.Effect.IsValid() || Event.Position.ContainsNaN() || !UGuLiVfxRegistrySubsystem::IsValidScale(Event.Scale)) return false;
 	WorldNow=GetWorld()->GetTimeSeconds();
+    if(Event.bRadialPulse&&(!FMath::IsFinite(Event.RadiusCentimeters)||Event.RadiusCentimeters<=0
+        ||!FMath::IsFinite(Event.StartRadiusCentimeters)||Event.StartRadiusCentimeters<0||Event.StartRadiusCentimeters>Event.RadiusCentimeters
+        ||!FMath::IsFinite(Event.OccurredWorldSeconds)||Event.OccurredWorldSeconds<0
+        ||!FMath::IsFinite(Event.Lifetime)||Event.Lifetime<=0||WorldNow-Event.OccurredWorldSeconds>=Event.Lifetime))return false;
 	if (Seen.Contains(Event.Identity)) { ++Duplicates; return false; }
 	Seen.Add(Event.Identity,WorldNow+4); SeenOrder.Emplace(Event.Identity,WorldNow+4);
 	auto* Registry=GetWorld()->GetSubsystem<UGuLiVfxRegistrySubsystem>(); if (!Registry) return false;
@@ -69,11 +74,17 @@ bool UGuLiImpactBatchPresentation::Enqueue(const FGuLiImpactEvent& Event)
 	else ++UnknownBounds;
 	if (!Decision.bVisible) { ++Culled; return false; }
 	UNiagaraSystem* Single=Registry->LoadNiagaraForLOD(Event.VfxId,Decision.TargetLevel,false,false);
-	if (!Single) return false;
+	if (!Single)
+    {
+        if(Event.bRadialPulse&&!MissingPulseResources.Contains(Event.VfxId))
+        {MissingPulseResources.Add(Event.VfxId);UE_LOG(LogTemp,Error,TEXT("Buff burst VfxId %d was not prepared; event skipped without hot-path loading."),Event.VfxId);}
+        return false;
+    }
+    MissingPulseResources.Remove(Event.VfxId);
 	const auto Handle=Pool.Acquire(); Slots.SetNum(Pool.Capacity());
 	auto& Slot=Slots[Handle.Index]; Slot={}; Slot.Handle=Handle; Slot.Event=Event;
 	Slot.Bounds=Bounds; Slot.bKnownBounds=bKnown; Slot.SingleSystem=Single; Slot.AcceptedFrame=GFrameCounter;
-	Slot.Mode=FMath::Clamp(GImpactBatchMode.GetValueOnGameThread(),0,2);
+	Slot.Mode=Event.bRadialPulse?1:FMath::Clamp(GImpactBatchMode.GetValueOnGameThread(),0,2);
 	if (Slot.Mode==2)
 	{
 		Slot.BatchSystem=Registry->LoadNiagaraForLOD(Event.VfxId,Decision.TargetLevel,true,false);
@@ -97,12 +108,21 @@ bool UGuLiImpactBatchPresentation::Enqueue(const FGuLiImpactEvent& Event)
 
 bool UGuLiImpactBatchPresentation::SpawnSingle(FGuLiImpactSlot& Slot)
 {
+    const double Age=Slot.Event.bRadialPulse?FMath::Max(0.,WorldNow-Slot.Event.OccurredWorldSeconds):0;
+    if(Slot.Event.bRadialPulse&&Age>=Slot.Event.Lifetime)return false;
 	Slot.SingleComponent=UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),Slot.SingleSystem,Slot.Event.Position,
 		Slot.Event.Rotation.Rotator(),Slot.Event.Scale,false,false,ENCPoolMethod::ManualRelease,false);
 	if (!Slot.SingleComponent) return false;
 	Slot.SingleComponent->SetCastShadow(false);
 	Slot.SingleComponent->SetVariableLinearColor(TEXT("User.Tint"),Slot.Event.Tint);
-	Slot.SingleComponent->SetVariableFloat(TEXT("User.Radius"),0);
+	Slot.SingleComponent->SetVariableFloat(TEXT("User.Radius"),Slot.Event.RadiusCentimeters);
+    if(Slot.Event.bRadialPulse)
+    {
+        Slot.SingleComponent->SetVariableFloat(TEXT("User.StartRadius"),Slot.Event.StartRadiusCentimeters);
+        Slot.SingleComponent->SetVariableFloat(TEXT("User.InitialAge"),float(Age));
+        Slot.SingleComponent->SetVariableFloat(TEXT("User.Lifetime"),Slot.Event.Lifetime);
+        Slot.SingleComponent->SetVariableInt(TEXT("User.Seed"),Slot.Event.Seed);
+    }
 	if (auto* Overview=GetWorld()->GetSubsystem<UGuLiCommanderOverviewSubsystem>()) Overview->RegisterVisual(Slot.SingleComponent);
 	Slot.SingleComponent->Activate(true); return true;
 }
@@ -132,7 +152,7 @@ void UGuLiImpactBatchPresentation::BeginFrame(uint64 FrameNumber, double LocalWo
 		auto& Slot=Slots[I];
 		if (Slot.PublishedFrame!=MAX_uint64 && Slot.BornAt<0 && FrameNumber>Slot.PublishedFrame)
 		{
-			Slot.BornAt=WorldNow; Slot.ExpiresAt=WorldNow+Slot.Event.Lifetime;
+			Slot.BornAt=WorldNow; Slot.ExpiresAt=(Slot.Event.bRadialPulse?Slot.Event.OccurredWorldSeconds:WorldNow)+Slot.Event.Lifetime;
 			Pool.MarkPayloadChanged();
 			if (Slot.Mode!=2 && !SpawnSingle(Slot)) { Expired.Add(I); continue; }
 		}
@@ -253,5 +273,5 @@ void UGuLiImpactBatchPresentation::Reset()
 {
 	for (const int32 I:Pool.ActiveIndices()) Release(Slots[I].SingleComponent);
 	for (const auto& Group:Groups) Release(Group.Component);
-	Pool.Reset(); Slots.Reset(); Groups.Reset(); Pending.Reset(); Expired.Reset(); Seen.Reset(); SeenOrder.Reset(); SeenHead=0;
+	Pool.Reset(); Slots.Reset(); Groups.Reset(); Pending.Reset(); Expired.Reset(); Seen.Reset(); SeenOrder.Reset(); SeenHead=0; MissingPulseResources.Reset();
 }

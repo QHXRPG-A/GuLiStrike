@@ -17,6 +17,9 @@
 #include "StaticMeshResources.h"
 #include "StaticMeshCompiler.h"
 #include "Materials/MaterialInterface.h"
+#include "MaterialShared.h"
+#include "Materials/MaterialRenderProxy.h"
+#include "RenderingThread.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "NiagaraScript.h"
 #include "NiagaraShared.h"
@@ -278,7 +281,8 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WarMachineHover/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/BulletTrails/"))
-            && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/")))) return false;
+            && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/"))
+            && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/")))) return false;
 	}
 	ForEachObjectWithOuter(System, [](UObject* Object)
 	{
@@ -477,6 +481,72 @@ bool UGuLiCombatEffectAuthoringLibrary::ConfigureBuffStatusSystem(UNiagaraSystem
         Emitter->PostEditChangeVersionedProperty(Changed,Handle.GetInstance().Version);
     }
     System->MarkPackageDirty();return true;
+}
+bool UGuLiCombatEffectAuthoringLibrary::ConfigureBuffBurstSystem(UNiagaraSystem* System,FString& Error)
+{
+    if(!System||System->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst"))
+    {Error=TEXT("Unexpected Buff burst asset");return false;}
+    System->Modify();
+    for(const auto& Handle:System->GetEmitterHandles())
+    {
+        auto* Data=Handle.GetEmitterData();auto* Emitter=Handle.GetInstance().Emitter.Get();
+        if(!Data||!Emitter){Error=TEXT("Missing Buff burst emitter");return false;}
+        Emitter->Modify();
+        // Embedded source emitters are private to the status system. Keep the
+        // copied graph/materials but detach inheritance before saving our copy.
+        Data->RemoveParent();
+        Data->bLocalSpace=true;Data->SimTarget=ENiagaraSimTarget::CPUSim;Data->bDeterminism=true;Data->RandomSeed=0;
+        Data->CalculateBoundsMode=ENiagaraEmitterCalculateBoundMode::Fixed;
+        Data->FixedBounds=FBox(FVector(-600),FVector(600));
+        FPropertyChangedEvent Changed(FindFProperty<FEnumProperty>(FVersionedNiagaraEmitterData::StaticStruct(),TEXT("SimTarget")));
+        Emitter->PostEditChangeVersionedProperty(Changed,Handle.GetInstance().Version);
+    }
+    System->SetFixedBounds(FBox(FVector(-600),FVector(600)));
+    System->PostEditChange();System->MarkPackageDirty();return true;
+}
+FString UGuLiCombatEffectAuthoringLibrary::GetBuffCompileDiagnostics(UNiagaraSystem* System)
+{
+    if(!System||!System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/")))return TEXT("Unexpected Buff system");
+    FString Result=FString::Printf(TEXT("System valid=%d ready=%d gpu=%d needs_compile=%d outstanding=%d\n"),
+        System->IsValid(),System->IsReadyToRun(),System->HasAnyGPUEmitters(),System->NeedsRequestCompile(),System->HasOutstandingCompilationRequests(true));
+    TArray<UNiagaraScript*> Scripts{System->GetSystemSpawnScript(),System->GetSystemUpdateScript()};
+    for(const auto& Handle:System->GetEmitterHandles())if(const auto* Data=Handle.GetEmitterData())Data->GetScripts(Scripts);
+    for(const auto& Handle:System->GetEmitterHandles())if(const auto* Data=Handle.GetEmitterData())
+        for(const auto* Renderer:Data->GetRenderers())
+        {
+            const UMaterialInterface* Material=nullptr;
+            if(const auto* Sprite=Cast<UNiagaraSpriteRendererProperties>(Renderer))Material=Sprite->Material.Get();
+            else if(const auto* Ribbon=Cast<UNiagaraRibbonRendererProperties>(Renderer))Material=Ribbon->Material.Get();
+            else continue;
+            const auto* Resource=Material?Material->GetMaterialResource(GMaxRHIShaderPlatform):nullptr;
+            Result+=FString::Printf(TEXT("%s material=%s platform=%d finished=%d complete=%d shader_map=%d\n"),*Renderer->GetClass()->GetName(),*GetPathNameSafe(Material),int32(GMaxRHIShaderPlatform),Resource&&Resource->IsCompilationFinished(),Resource&&Resource->IsGameThreadShaderMapComplete(),Resource&&Resource->GetGameThreadShaderMap()!=nullptr);
+            if(const auto* Proxy=Material?Material->GetRenderProxy():nullptr)
+            {
+                bool UsesFallback=true;
+                ENQUEUE_RENDER_COMMAND(GuLiBuffMaterialProbe)([Proxy,&UsesFallback](FRHICommandListImmediate&)
+                {
+                    // Match NiagaraRendererSprites: demanding every material permutation
+                    // would itself enqueue unrelated shader jobs and misreport on-demand maps.
+                    const FMaterial* Base=Proxy->GetMaterialNoFallback(GMaxRHIFeatureLevel);
+                    const FMaterial& Used=Proxy->GetIncompleteMaterialWithFallback(GMaxRHIFeatureLevel);
+                    UsesFallback=!Base||Base!=&Used;
+                });
+                FlushRenderingCommands(); // Explicit editor diagnostic only; never used by playback.
+                Result+=FString::Printf(TEXT("Niagara renderer proxy fallback=%d\n"),UsesFallback);
+            }
+            if(!Resource)Result+=TEXT("MATERIAL ERROR: missing resource\n");
+            else for(const auto& Message:Resource->GetCompileErrors())Result+=TEXT("MATERIAL ERROR: ")+Message+TEXT("\n");
+        }
+    for(const auto* Script:Scripts)if(Script)
+    {
+        const auto& VM=Script->GetVMExecutableData();
+        Result+=FString::Printf(TEXT("%s status=%s\n"),*Script->GetPathName(),*StaticEnum<ENiagaraScriptCompileStatus>()->GetNameStringByValue(int64(Script->GetLastCompileStatus())));
+        if(!VM.ErrorMsg.IsEmpty())Result+=TEXT("VM ERROR: ")+VM.ErrorMsg+TEXT("\n");
+        for(const auto& Event:VM.LastCompileEvents)Result+=FString::Printf(TEXT("EVENT [%d] %s\n"),int32(Event.Severity),*Event.Message);
+        if(Script->GetUsage()==ENiagaraScriptUsage::ParticleGPUComputeScript)
+            if(const auto* Shader=Script->GetRenderThreadScript())for(const auto& Message:Shader->GetCompileErrors())Result+=TEXT("GPU ERROR: ")+Message+TEXT("\n");
+    }
+    return Result;
 }
 bool UGuLiCombatEffectAuthoringLibrary::ConfigureRogueUpgradeSystem(UNiagaraSystem* System,FString& Error)
 {
@@ -1014,7 +1084,8 @@ bool UGuLiCombatEffectAuthoringLibrary::WireImpactLifecycle(UNiagaraSystem* Syst
 
 bool UGuLiCombatEffectAuthoringLibrary::MoveClientEffectModule(UNiagaraSystem* System,FName EmitterName,UNiagaraScript* Module,FString Usage,int32 Index,FString& Error)
 {
-	if (!InScope(System) || !Module || Module->GetOutermost()!=System->GetOutermost()) return false;
+	const bool bBurst=System&&System->GetOutermost()->GetName()==TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst");
+	if ((!InScope(System)&&!bBurst) || !Module || Module->GetOutermost()!=System->GetOutermost()) return false;
 	for (const auto& Handle:System->GetEmitterHandles()) if (Handle.GetName()==EmitterName)
 	{
 		auto* Data=Handle.GetEmitterData(); UNiagaraScript* Owning=nullptr;
@@ -1655,6 +1726,45 @@ bool UGuLiCombatEffectAuthoringLibrary::ConfigureGroundBlinkRibbons(UNiagaraSyst
     FinalizeScratchPins(System); System->MarkPackageDirty(); return Count==1;
 }
 
+FString UGuLiCombatEffectAuthoringLibrary::InspectBurningBurstComponent(UNiagaraComponent* Component)
+{
+    if(!Component||!Component->GetAsset()||Component->GetAsset()->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst"))return TEXT("{}");
+    auto Controller=Component->GetSystemInstanceController();if(!Controller.IsValid())return TEXT("{}");
+    Controller->WaitForConcurrentTickAndFinalize();const auto* Instance=Controller->GetSystemInstance_Unsafe();if(!Instance)return TEXT("{}");
+    auto Result=MakeShared<FJsonObject>();TArray<TSharedPtr<FJsonValue>> Emitters;
+    for(const auto& Emitter:Instance->GetEmitters())
+    {
+        const auto& Data=Emitter->GetParticleData();const auto* Buffer=Data.GetCurrentData();const int32 Count=Buffer?Buffer->GetNumInstances():0;
+        const auto Position=FNiagaraDataSetAccessor<FNiagaraPosition>(Data,TEXT("Position")).GetReader(Data);
+        const auto Size=FNiagaraDataSetAccessor<FVector2f>(Data,TEXT("SpriteSize")).GetReader(Data);
+        const auto Width=FNiagaraDataSetAccessor<float>(Data,TEXT("RibbonWidth")).GetReader(Data);
+        const bool IsRibbon=Emitter->GetEmitterHandle().GetName()==TEXT("Trails");
+        const auto Age=FNiagaraDataSetAccessor<float>(Data,TEXT("Age")).GetReader(Data);
+        const auto Life=FNiagaraDataSetAccessor<float>(Data,TEXT("Lifetime")).GetReader(Data);
+        const auto Tint=FNiagaraDataSetAccessor<FLinearColor>(Data,TEXT("Color")).GetReader(Data);
+        const auto Direction=FNiagaraDataSetAccessor<FVector3f>(Data,TEXT("GuLiBurstDirection")).GetReader(Data);
+        const auto Aspect=FNiagaraDataSetAccessor<FVector2f>(Data,TEXT("GuLiBurstAspect")).GetReader(Data);
+        float Radius=0,MinAge=FLT_MAX,MaxAge=0,MaxLife=0,MaxAlpha=0,CenterRadius=0,HalfDiagonal=0,DirectionLength=0,AspectLength=0;
+        for(int32 I=0;I<Count;++I)
+        {
+            const float HalfSize=IsRibbon&&Width.IsValid()?FMath::Abs(Width.Get(I))*.5f:Size.IsValid()?Size.Get(I).Length()*.5f:0;
+            if(Position.IsValid())Radius=FMath::Max(Radius,float(FVector(Position.Get(I)).Length())+HalfSize);
+            if(Position.IsValid())CenterRadius=FMath::Max(CenterRadius,float(FVector(Position.Get(I)).Length()));
+            HalfDiagonal=FMath::Max(HalfDiagonal,HalfSize);
+            if(Direction.IsValid())DirectionLength=FMath::Max(DirectionLength,Direction.Get(I).Length());
+            if(Aspect.IsValid())AspectLength=FMath::Max(AspectLength,Aspect.Get(I).Length());
+            if(Age.IsValid()){MinAge=FMath::Min(MinAge,Age.Get(I));MaxAge=FMath::Max(MaxAge,Age.Get(I));}
+            if(Life.IsValid())MaxLife=FMath::Max(MaxLife,Life.Get(I));if(Tint.IsValid())MaxAlpha=FMath::Max(MaxAlpha,Tint.Get(I).A);
+        }
+        auto Row=MakeShared<FJsonObject>();Row->SetStringField(TEXT("emitter"),Emitter->GetEmitterHandle().GetName().ToString());
+        Row->SetNumberField(TEXT("particles"),Count);Row->SetNumberField(TEXT("outer_radius"),Radius);Row->SetNumberField(TEXT("min_age"),Count?MinAge:0);
+        Row->SetNumberField(TEXT("max_age"),MaxAge);Row->SetNumberField(TEXT("lifetime"),MaxLife);Row->SetNumberField(TEXT("max_alpha"),MaxAlpha);
+        Row->SetNumberField(TEXT("center_radius"),CenterRadius);Row->SetNumberField(TEXT("half_diagonal"),HalfDiagonal);
+        Row->SetNumberField(TEXT("direction_length"),DirectionLength);Row->SetNumberField(TEXT("aspect_length"),AspectLength);Emitters.Add(MakeShared<FJsonValueObject>(Row));
+    }
+    Result->SetArrayField(TEXT("emitters"),Emitters);Result->SetBoolField(TEXT("complete"),Component->IsComplete());
+    FString Json;FJsonSerializer::Serialize(Result,TJsonWriterFactory<>::Create(&Json));return Json;
+}
 FString UGuLiCombatEffectAuthoringLibrary::InspectGroundBlinkComponent(UNiagaraComponent* Component)
 {
     if (!Component || !Component->GetAsset() || !Component->GetAsset()->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/"))) return TEXT("{}");

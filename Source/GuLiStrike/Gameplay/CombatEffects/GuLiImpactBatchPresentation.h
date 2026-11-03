@@ -29,6 +29,11 @@ struct FGuLiImpactEvent
 	FLinearColor Tint=FLinearColor::White;
 	int32 VfxId=0, Seed=0;
 	float Lifetime=3;
+    // Optional finite radial pulse. This local-only contract uses centimeters
+    // and World time; it is never packed into the machine-gun NDC rows.
+    bool bRadialPulse=false;
+    float RadiusCentimeters=0,StartRadiusCentimeters=0;
+    double OccurredWorldSeconds=-1;
 };
 
 USTRUCT()
@@ -87,6 +92,7 @@ private:
 	TMap<FGuLiImpactIdentity,double> Seen;
 	TArray<TPair<FGuLiImpactIdentity,double>> SeenOrder;
 	TArray<int32> Pending, Expired;
+    TSet<int32> MissingPulseResources;
 	int32 SeenHead=0;
 	double WorldNow=0;
 	bool bEnabled=true, bPrepared=false;

@@ -127,8 +127,8 @@ Bytes EncodeChain(const Chain& C)
 {
     auto A=EncodeAttack(C.Frozen);if(A.empty()||!C.First.Valid()||!C.Shot.Valid()||!std::isfinite(C.X)||!std::isfinite(C.Y)||!std::isfinite(C.Z)||C.Budget!=HopBudget(C.Shot,Effects::GetRicochet(C.Frozen.Effects))||C.Hops.size()>C.Budget)return {};
     Writer W(MaximumCapabilityBytes);W.U32(Version);W.Blob(A);W.Key(C.First);W.Identity(C.Shot);W.U64(C.At);W.F64(C.X);W.F64(C.Y);W.F64(C.Z);W.U32(C.Budget);W.U32(std::uint32_t(C.Hops.size()));
-    std::set<ObjectKey> Seen{C.First};double X=C.X,Y=C.Y,Z=C.Z;
-    for(const auto& H:C.Hops){const auto D=(H.X-X)*(H.X-X)+(H.Y-Y)*(H.Y-Y)+(H.Z-Z)*(H.Z-Z);if(!H.Target.Valid()||!Seen.insert(H.Target).second||!std::isfinite(D)||D>double(Effects::GetRicochet(C.Frozen.Effects).Range)*Effects::GetRicochet(C.Frozen.Effects).Range+.01)return {};W.Key(H.Target);W.F64(H.X);W.F64(H.Y);W.F64(H.Z);X=H.X;Y=H.Y;Z=H.Z;}return W.Take();
+    std::set<ObjectKey> Seen{C.First};const double Range=Effects::GetRicochet(C.Frozen.Effects).Range;
+    for(const auto& H:C.Hops){const auto D=(H.X-C.X)*(H.X-C.X)+(H.Y-C.Y)*(H.Y-C.Y)+(H.Z-C.Z)*(H.Z-C.Z);if(!H.Target.Valid()||!Seen.insert(H.Target).second||!std::isfinite(D)||D>Range*Range)return {};W.Key(H.Target);W.F64(H.X);W.F64(H.Y);W.F64(H.Z);}return W.Take();
 }
 bool DecodeChain(std::span<const std::uint8_t> Bytes,Chain& Out)
 {Reader R(Bytes);Chain C;GuLiNet::Bytes A;std::uint32_t V,N;if(!R.U32(V)||V!=Version||!R.Blob(A,MaximumCapabilityBytes)||!DecodeAttack(A,C.Frozen)||!R.Key(C.First)||!R.Identity(C.Shot)||!R.U64(C.At)||!R.F64(C.X)||!R.F64(C.Y)||!R.F64(C.Z)||!R.U32(C.Budget)||!Count(R,N,MaximumHops))return false;C.Hops.resize(N);for(auto& H:C.Hops)if(!R.Key(H.Target)||!R.F64(H.X)||!R.F64(H.Y)||!R.F64(H.Z))return false;if(!R.Done()||EncodeChain(C).empty())return false;Out=std::move(C);return true;}

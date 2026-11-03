@@ -83,6 +83,10 @@ struct FGuLiStrikeRogueCardsCardsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
 	TArray<FString> EffectIds;
 
+	/** IconId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	int32 IconId = 0;
+
 };
 
 /** DataTable DT_GuLiStrikeRogueCards_GroundRicochet 的行结构（源: GuLiStrikeRogueCards.xlsx / GroundRicochet）。 */

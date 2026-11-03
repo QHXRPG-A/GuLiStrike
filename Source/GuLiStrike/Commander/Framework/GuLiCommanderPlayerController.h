@@ -139,6 +139,9 @@ public:
 	bool IsCommanderMenuOpen() const;
 	bool IsRogueCardModal() const { return bRogueCardModal; }
 	void SetRogueCardModal(bool bActive);
+    bool IsHUDModal() const { return bRogueCardModal || bGroundHUDModal; }
+    void SetGroundHUDModal(bool bActive);
+    void OpenRogueCards();
 	GULISTRIKE_API void StopSelectedUnits();
 	FVector GetSelectedUnitCenter() const { return FindConfirmedSelectionCenter(); }
 	void ToggleSelectionShape();
@@ -176,7 +179,9 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiRogueCardPresentation> RogueCardPresentation;
 	bool bRogueCardModal=false;
-	void OpenRogueCards();
+    bool bGroundHUDModal=false;
+    void ApplyHUDModalInput();
+    void OpenGroundMap();
 	friend class UGuLiTeleportInputComponent;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiTeleportInputComponent> TeleportInput;
 	void HandlePrimaryActionAtCursor();

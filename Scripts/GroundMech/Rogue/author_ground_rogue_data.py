@@ -38,7 +38,7 @@ if "EffectConfigId" not in rows[0]:
     write(cards, "Cards", [cell(1, index, "EffectConfigId"), cell(2, index, "int"), cell(3, index, "Optional")])
 rows = read(cards, "Cards")
 if not any(row and row[0] == "06.01" for row in rows[3:]):
-    values = {"id": "06.01", "name": "GroundMech_Ricochet_Lv1", "Note": "个人本局普攻折射；每次获取随机区间整体+1；每跳30米、无遮挡、不重复；直接伤害逐跳乘0.8，附加效果不衰减。", "Type": 3,
+    values = {"id": "06.01", "name": "GroundMech_Ricochet_Lv1", "Note": "个人本局普攻折射；每次获取随机区间整体+1；首次命中点周围50米三维球内、每跳无遮挡、不重复；直接伤害逐跳乘0.8，附加效果不衰减。", "Type": 3,
               "TextIds": json.dumps(["Card.GroundMech.Ricochet.Title", "Card.GroundMech.Ricochet.Description"]),
               "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundRicochetEffect", "UnitTypeId": 0, "BonusPercent": 0,
               "ArtworkId": 6, "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite", "UpgradeVfxScale": 1,
@@ -50,13 +50,13 @@ if not any(sheet["name"] == "GroundRicochet" for sheet in info["sheets"]):
     fields = [("id", "int", "Necessary"), ("name", "str", "Necessary"), ("Note", "str", "Optional"),
               ("MinimumHops", "int", "Necessary"), ("MaximumHops", "int", "Necessary"), ("HopsPerStack", "int", "Necessary"),
               ("RangeCentimeters", "float", "Necessary"), ("DamageRetention", "float", "Necessary")]
-    data = [[v[i] for v in fields] for i in range(3)] + [[1, "GroundMech_Ricochet", "折射段不含首个目标；附加伤害不衰减。", 5, 8, 1, 3000.0, 0.8]]
+    data = [[v[i] for v in fields] for i in range(3)] + [[1, "GroundMech_Ricochet", "折射段不含首个目标；附加伤害不衰减。", 5, 8, 1, 5000.0, 0.8]]
     write(cards, "GroundRicochet", [cell(r + 1, c + 1, value) for r, row in enumerate(data) for c, value in enumerate(row)])
 
 texts = "GuLiStrikeGameTexts.xlsx"
 rows = read(texts, "Texts")
 entries = {"Card.GroundMech.Ricochet.Title": ("地面机甲肉鸽卡标题", "折射子弹"),
-           "Card.GroundMech.Ricochet.Description": ("{0}/{1}为本次获取后的折射随机区间", "<Unit>地面机甲</> <Gain>普攻折射{0}–{1}次</>"),
+           "Card.GroundMech.Ricochet.Description": ("{0}为本次获取后的卡牌等级", "<Unit>地面机甲</> <Gain>普攻折射-{0}</>"),
            "UI.RogueCards.Capacity": ("肉鸽技术容量提示", "当前构筑已达到系统容量，无法继续强化"),
            "UI.RogueCards.GroundUnavailable": ("地面肉鸽入口不可用", "地面机甲肉鸽能力尚未就绪")}
 cells = []

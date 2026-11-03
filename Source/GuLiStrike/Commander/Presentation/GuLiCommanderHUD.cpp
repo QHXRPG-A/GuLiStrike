@@ -1,4 +1,6 @@
 #include "Commander/Presentation/GuLiCommanderHUD.h"
+#include "Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
@@ -242,21 +244,44 @@ void AGuLiCommanderHUD::BeginPlay()
 {
 	Super::BeginPlay();
 	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) { SetActorTickEnabled(false); return; }
+	if (PlayerOwner)
+	{
+		PlayerOwner->OnPossessedPawnChanged.AddUniqueDynamic(this, &ThisClass::HandlePossessedPawnChanged);
+	}
 	BindBuildingFeedback();
 	RefreshCommanderRole();
 }
 
 void AGuLiCommanderHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	if (PlayerOwner)
+	{
+		PlayerOwner->OnPossessedPawnChanged.RemoveDynamic(this, &ThisClass::HandlePossessedPawnChanged);
+	}
 	UnbindBuildingFeedback();
+    if(GroundHUDWidget){GroundHUDWidget->RemoveFromParent();GroundHUDWidget=nullptr;}
 	DestroyRuntimeHUD();
 	Super::EndPlay(EndPlayReason);
+}
+
+void AGuLiCommanderHUD::HandlePossessedPawnChanged(APawn* OldPawn, APawn* NewPawn)
+{
+	if (OldPawn == NewPawn) return;
+	// Hybrid assigns the seat before its Ground adapter creates/possesses the Pawn.
+	// Input-mode state can remain unchanged, so possession must independently refresh HUD ownership.
+	RefreshCommanderRole();
+	if (GroundHUDWidget) GroundHUDWidget->RefreshPawnBinding();
 }
 
 void AGuLiCommanderHUD::RefreshCommanderRole()
 {
 	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
 	SceneUI = CommanderController ? CommanderController->GetSceneUIWidget() : nullptr;
+    const auto* GroundState=CommanderController?CommanderController->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+    const bool Ground=GroundState&&GroundState->GetBattleRole()==EGuLiCommanderRole::Ground&&CommanderController&&CommanderController->IsLocalController()&&Cast<AGuLiGroundMechCharacter>(CommanderController->GetPawn())&&UGuLiNetworkSettings::CanPresent(GetWorld());
+    if(Ground&&!GroundHUDWidget)
+    {GroundHUDWidget=CreateWidget<UGuLiGroundHUDWidget>(PlayerOwner,UGuLiGroundHUDWidget::StaticClass());if(GroundHUDWidget){GroundHUDWidget->AddToPlayerScreen(15);GroundHUDWidget->SetRogueHidden(bRogueCardHidden);}}
+    else if(!Ground&&GroundHUDWidget){auto* Old=GroundHUDWidget.Get();GroundHUDWidget=nullptr;Old->RemoveFromParent();}
 	if (CommanderController && CommanderController->IsCommanderViewActive())
 	{
 		CreateRuntimeHUD();
@@ -325,41 +350,6 @@ void AGuLiCommanderHUD::DrawHUD()
 		return;
 	}
 
-	// 绘制回调只负责 Canvas；角色/UI 生命周期不能依赖 showhud 或视口是否渲染。
-	if (CommanderController && Cast<AGuLiGroundMechCharacter>(CommanderController->GetPawn())
-		&& CommanderController->CanUseGroundMechFireInput() && !CommanderController->bShowMouseCursor)
-	{
-		const float X=Canvas->ClipX*.5f, Y=Canvas->ClipY*.5f;
-		const FLinearColor ReticleColor=FLinearColor::FromSRGBColor(FColor::FromHex(TEXT("FEE4D9")));
-		DrawLine(X-9,Y,X-3,Y,ReticleColor,1.5f);
-		DrawLine(X+3,Y,X+9,Y,ReticleColor,1.5f);
-		DrawLine(X,Y-9,X,Y-3,ReticleColor,1.5f);
-		DrawLine(X,Y+3,X,Y+9,ReticleColor,1.5f);
-		const auto* Mech=CastChecked<AGuLiGroundMechCharacter>(CommanderController->GetPawn());
-		FVector Origin,Direction;
-		if (Mech->GetWeapon()->GetActualShotRay(Origin,Direction))
-		{
-			FHitResult Hit; FCollisionQueryParams Query(SCENE_QUERY_STAT(GroundActualFire),false,Mech);
-			const FVector End=Origin+Direction*600000.f;
-			const bool bHit=GetWorld()->LineTraceSingleByChannel(Hit,Origin,End,ECC_Visibility,Query);
-			FVector2D Point;
-			if (!CommanderController->ProjectWorldLocationToScreen(bHit?Hit.ImpactPoint:End,Point))
-			{
-				FVector CameraLocation; FRotator CameraRotation; CommanderController->GetPlayerViewPoint(CameraLocation,CameraRotation);
-				const FVector Local=CameraRotation.UnrotateVector(Direction);
-				FVector2D Edge(Local.Y,-Local.Z); if (!Edge.Normalize()) Edge=FVector2D(0,1);
-				Point=FVector2D(X,Y)+Edge*FMath::Max(Canvas->ClipX,Canvas->ClipY);
-			}
-			if (FVector2D::Distance(Point,FVector2D(X,Y))>12.f)
-			{
-				Point.X=FMath::Clamp(Point.X,12.f,Canvas->ClipX-12.f); Point.Y=FMath::Clamp(Point.Y,12.f,Canvas->ClipY-12.f);
-				DrawLine(Point.X-5,Point.Y,Point.X,Point.Y-5,ReticleColor,1.5f);
-				DrawLine(Point.X,Point.Y-5,Point.X+5,Point.Y,ReticleColor,1.5f);
-				DrawLine(Point.X+5,Point.Y,Point.X,Point.Y+5,ReticleColor,1.5f);
-				DrawLine(Point.X,Point.Y+5,Point.X-5,Point.Y,ReticleColor,1.5f);
-			}
-		}
-	}
 	if (CommanderController && CommanderController->IsCommanderViewActive())
 	{
 		if (CommanderController->GetCommanderToolMode() == EGuLiCommanderToolMode::Select)
@@ -400,6 +390,7 @@ void AGuLiCommanderHUD::DrawHUD()
 void AGuLiCommanderHUD::SetRogueCardHidden(bool bShouldHide)
 {
 	bRogueCardHidden=bShouldHide;
+    if(GroundHUDWidget)GroundHUDWidget->SetRogueHidden(bShouldHide);
 	if (RuntimeHUDWidget) RuntimeHUDWidget->SetVisibility(bShouldHide?ESlateVisibility::Collapsed:ESlateVisibility::SelfHitTestInvisible);
 	if (HealthBarRenderer) HealthBarRenderer->SetActorHiddenInGame(bShouldHide);
 }

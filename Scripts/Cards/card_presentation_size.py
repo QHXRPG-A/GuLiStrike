@@ -17,6 +17,8 @@ def ensure_size_variables():
     for name in ['CardAreaMultiplier','CardThicknessMultiplier']:
         if not B.variable_exists(DIRECTOR,name):
             variable(DIRECTOR,name,'float',1.0,True,'Presentation Tuning')
+    for name,value in [('GroundFitWidth',1.),('GroundFitHeight',1.),('GroundCardHeight',.68),('GroundCardSpacing',.335)]:
+        if not B.variable_exists(DIRECTOR,name):variable(DIRECTOR,name,'float',value,True,'Ground Presentation')
 
 
 def write_pointer_function():
@@ -38,7 +40,17 @@ def write_pointer_function():
     g.set('ViewHeight',g.get('ViewWidth')*g.native('FMax',A=sy,B=1)/g.native('FMax',A=sx,B=1))
     base=g.native('FMin',A=g.get('ViewHeight')*(.5/48.617),B=g.get('ViewWidth')*(.24/32.175))
     width_scale=g.native('Sqrt',A=g.native('FMax',A=g.get('CardAreaMultiplier'),B=.01))
-    g.set('CardScale',base*width_scale)
+    scale=base*width_scale
+    if B.variable_exists(DIRECTOR,'DirectSelection'):
+        # Fit the same 1920x1080 canvas as the native chrome, while retaining full-viewport pointer coordinates.
+        aspect=g.native('FMax',A=sx,B=1)/g.native('FMax',A=sy,B=1)
+        g.set('GroundFitWidth',g.native('FMin',A=1,B=g.math('Divide',16/9,aspect)))
+        g.set('GroundFitHeight',g.native('FMin',A=1,B=aspect/(16/9)))
+        limit=g.select(.27,.315,g.compare('Greater',g.get('ActiveCardCount'),2,'Int'))
+        ground=g.native('FMin',A=g.get('ViewHeight')*g.get('GroundFitHeight')*g.get('GroundCardHeight')/48.617,
+                        B=g.get('ViewWidth')*g.get('GroundFitWidth')*limit/40.)
+        scale=g.select(ground,scale,g.get('DirectSelection'))
+    g.set('CardScale',scale)
     g.set('HoveredIndex',-1)
     g.layout()
 

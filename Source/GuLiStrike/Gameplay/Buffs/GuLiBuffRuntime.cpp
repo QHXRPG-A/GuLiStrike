@@ -21,9 +21,9 @@ void Archive(FGuLiHybridStateArchive& A,FPrivate& P)
 bool Decode(TConstArrayView<uint8> B,FPrivate& P){FGuLiHybridStateArchive A(B);Archive(A,P);return A.Done();}
 class FBuffAdapter final : public IGuLiHybridSimulationAdapter
 {
-    TWeakObjectPtr<UGuLiHybridActorWorldSubsystem> Owner;FGuLiHybridObjectState Record;GuLiNet::Buffs::State State;FPrivate Private;bool Local=false;
+    TWeakObjectPtr<UGuLiHybridActorWorldSubsystem> Owner;FGuLiHybridObjectState Record;GuLiNet::Buffs::State State;FPrivate Private;bool Local=false,bVisualPrimed=false;
     UWorld* World()const{return Owner.IsValid()?Owner->GetWorld():nullptr;}
-    void Visual(bool Bootstrap){if(World())if(auto* V=World()->GetSubsystem<UGuLiBuffPresentation>()){if(Record.LifeState>=2)V->Remove(Record.Key);else V->Apply(Record.Key,State,Bootstrap);}}
+    void Visual(bool Bootstrap,bool SyncEvents=true){if(World())if(auto* V=World()->GetSubsystem<UGuLiBuffPresentation>()){if(Record.LifeState>=2)V->Remove(Record.Key,true);else V->Apply(Record.Key,State,Bootstrap,SyncEvents);}}
     void Queue(const GuLiNet::Buffs::Command& C,UGuLiHybridWorldSubsystem& H)
     {
         const auto B=GuLiNet::Buffs::EncodeCommand(C);if(B.empty()){H.Suspend(TEXT("Buff pulse exceeds the persistent state encoding capacity"));return;}
@@ -35,7 +35,9 @@ public:
     explicit FBuffAdapter(UGuLiHybridActorWorldSubsystem& O):Owner(&O){}
     UObject* LifetimeOwner()const override{return Owner.Get();}uint32 Version()const override{return 1;}
     bool Prepare(const FGuLiHybridObjectState& O)override{Record=O;Private.Key=O.Key;return Read(O,State);}
-    void SetAuthority(const FGuLiHybridObjectState& O,bool Value)override{Local=Value;Record=O;Read(O,State);Visual(true);}
+    // SetAuthority precedes every ledger update, even without an ownership change.
+    // Only the first binding primes visuals; ApplyLedger owns subsequent event delivery.
+    void SetAuthority(const FGuLiHybridObjectState& O,bool Value)override{Local=Value;Record=O;Read(O,State);if(!bVisualPrimed){Visual(true);bVisualPrimed=true;}}
     bool Execute(const FGuLiHybridCommand&,const FGuLiHybridCommandMember&)override{return false;}
     void Advance(uint64,double)override
     {
@@ -69,21 +71,29 @@ public:
         const auto* Handler=GuLiNet::Buffs::Find(Due->Frozen.Handler);
         if(Handler&&Handler->Area)
         {
-            TArray<FGuLiCombatTargetSnapshot> Targets;D->GetTargetSnapshots(Targets);const double Radius=double(C.HostRadius)*Due->Frozen.RadiusMultiplier;
-            for(const auto& T:Targets)if(T.bAlive&&T.Team!=Record.Team&&T.Team!=EGuLiTeam::Unassigned&&FVector::DistSquared(Center,T.GetHitCenter())<=Radius*Radius)
-            {FGuLiHybridObjectKey K;if(H->ResolveTarget(T.Handle,K))C.Targets.push_back(GuLiNetBridge::ToCore(K));}
+            TArray<FGuLiCombatTargetSnapshot> Targets;D->GetTargetSnapshots(Targets);
+            const double Radius=Due->Frozen.RadiusCentimeters;
+            for(const auto& T:Targets)
+            {
+                if(!T.bAlive||T.GetHitCenter().ContainsNaN()||!FMath::IsFinite(T.CollisionRadius)||T.CollisionRadius<0
+                    ||FVector::DistSquared(Center,T.GetHitCenter())>FMath::Square(Radius+T.CollisionRadius))continue;
+                FGuLiHybridObjectKey K;FGuLiHybridObjectState Current;
+                if(H->ResolveTarget(T.Handle,K)&&H->GetObjectView(K,Current)&&Current.LifeState==1
+                    &&!Current.Health.bDead&&!Current.bPhased&&Current.Affiliation!=Record.Team
+                    &&Current.Affiliation!=EGuLiTeam::Unassigned)C.Targets.push_back(GuLiNetBridge::ToCore(K));
+            }
             if(Host.Affiliation!=Record.Team)C.Targets.push_back(State.Host);
             std::sort(C.Targets.begin(),C.Targets.end());C.Targets.erase(std::unique(C.Targets.begin(),C.Targets.end()),C.Targets.end());
         }
         Queue(C,*H);
     }
-    void ApplyLedger(const FGuLiHybridObjectState& O,uint64,bool)override{Record=O;if(!Read(O,State)){if(World())World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Invalid committed Buff state"));return;}Visual(false);}
+    void ApplyLedger(const FGuLiHybridObjectState& O,uint64,bool Effects)override{Record=O;if(!Read(O,State)){if(World())World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Invalid committed Buff state"));return;}Visual(false,Effects);}
     bool ApplyMotion(TConstArrayView<uint8>,uint64)override{return false;}
     bool Capture(TArray<uint8>& B)const override{auto P=Private;FGuLiHybridStateArchive A;Archive(A,P);return A.Finish(B);}
     bool Validate(TConstArrayView<uint8> B)const override{FPrivate P;return Decode(B,P)&&P.Key==Record.Key;}
     bool Restore(TConstArrayView<uint8> B,EGuLiHybridRestoreStage Stage)override{FPrivate P;if(!Decode(B,P)||P.Key!=Record.Key)return false;if(Stage==EGuLiHybridRestoreStage::Link){Private=MoveTemp(P);Private.Submitted=false;}if(Stage==EGuLiHybridRestoreStage::Activate)Visual(true);return true;}
     bool RestoreQuery(TConstArrayView<uint8> B,EGuLiHybridRestoreStage S)override{return Restore(B,S);}
-    void Release()override{if(World())if(auto* V=World()->GetSubsystem<UGuLiBuffPresentation>())V->Remove(Record.Key);}
+    void Release()override{if(World())if(auto* V=World()->GetSubsystem<UGuLiBuffPresentation>())V->Remove(Record.Key,true);}
 };
 const FGuLiHybridAdapterRegistration Family({TEXT("BuffStatus"),EGuLiHybridObjectKind::Field,1,[](UGuLiHybridActorWorldSubsystem& O,const FGuLiHybridObjectState&)->TSharedPtr<IGuLiHybridSimulationAdapter>{return MakeShared<FBuffAdapter>(O);},nullptr,nullptr,EGuLiHybridOwnershipPolicy::RetainedSource,3,false,{}});
 bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)

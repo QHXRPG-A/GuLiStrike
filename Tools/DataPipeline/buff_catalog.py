@@ -13,7 +13,7 @@ def validate(tables, error):
     def positive(value): return isinstance(value,(int,float)) and math.isfinite(value) and value>0
     for ident,b in buffs.items():
         kind=classes.get(b['ImplementationClass'])
-        if ident<=0 or b['Version']!=1 or b['DescriptionTextId'] not in texts or not kind:
+        if ident<=0 or b['Version']!=2 or b['DescriptionTextId'] not in texts or not kind:
             fail(f'Buff {ident}: ID、版本、公共描述或处理器类无效')
         c=configs[kind].get(b['ConfigId'])
         if not c: fail(f'Buff {ident}: 缺少 {kind} 配置 {b["ConfigId"]}')
@@ -25,7 +25,7 @@ def validate(tables, error):
             parent=buffs.get(c['ParentBuffId'])
             if not parent or parent['ImplementationClass']!='/Script/GuLiStrike.GuLiBurningBuffHandler' or c['ParentBuffId']==ident:
                 fail(f'Buff {ident}: 爆裂必须引用灼烧父Buff')
-            if not all(positive(c[k]) for k in ('IntervalSeconds','LostHealthDamageRatio','RadiusMultiplier')) or c['IntervalSeconds']>3600 or c['LostHealthDamageRatio']>1 or c['RadiusMultiplier']>100:
+            if not all(positive(c[k]) for k in ('IntervalSeconds','LostHealthDamageRatio','RadiusCentimeters')) or c['IntervalSeconds']>3600 or c['LostHealthDamageRatio']>1 or c['RadiusCentimeters']>100000:
                 fail(f'Buff {ident}: 爆裂周期、伤害比例或范围无效')
             if c['BurstVfxId'] not in vfx: fail(f'Buff {ident}: 未知爆裂VFX')
     ricochet={r['Id']:r for r in rows('DT_GuLiStrikeRogueCards_GroundRicochet')}

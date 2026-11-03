@@ -91,6 +91,13 @@ def configure_single_line_widget():
     require(unreal.DataTableFunctionLibrary.fill_data_table_from_json_string(
         table, json.dumps(rows), row_struct), 'Populate Default/Unit/Gain styles')
     require(unreal.EditorAssetLibrary.save_loaded_asset(table, False), 'Save shared card text styles')
+    # Ground uses the same Excel-owned words, sizes and functional colours with
+    # its own real Chinese font weights. Keep that derived table in sync here.
+    ground_font_path = '/Game/GuLiStrike/GroundMech/UI/Fonts/F_GroundHUD'
+    if unreal.EditorAssetLibrary.does_asset_exist(ground_font_path):
+        import runpy
+        ground = runpy.run_path(str(ROOT / 'Scripts/GroundMech/author_ground_hud_fonts.py'))
+        ground['derive_styles'](unreal.load_asset(ground_font_path))
     for key, value in {'Text': '', 'TextStyleSet': table.get_path_name(),
                        'bOverrideDefaultStyle': 'false', 'AutoWrapText': 'false', 'WrapTextAt': '0',
                        'Justification': 'Center', 'Visibility': 'HitTestInvisible', 'ToolTipText': ''}.items():

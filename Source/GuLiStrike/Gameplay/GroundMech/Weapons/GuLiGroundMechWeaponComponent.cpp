@@ -457,6 +457,8 @@ void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime
 	if (ConfiguredAnim.IsValid()) ConfiguredAnim->TriggerRecoil(Age);
 	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
 	++CosmeticShots;
+    // Only accepted, deduplicated, unexpired shots reach the local HUD.
+    CastChecked<AGuLiGroundMechCharacter>(GetOwner())->NotifyLocalPresentation({EGuLiGroundPresentationAction::Fire,EGuLiGroundPresentationPhase::Started,Age});
 	const FName Socket = MuzzleSocket(MuzzleIndex);
     const int32 Vfx=FrozenMuzzleVfxId==INDEX_NONE?ActiveSkill.MuzzleVfxId:FrozenMuzzleVfxId;
     auto* System=Vfx==ActiveSkill.MuzzleVfxId?MuzzleSystem.Get():GuLiVfx::Load<UNiagaraSystem>(this,Vfx);

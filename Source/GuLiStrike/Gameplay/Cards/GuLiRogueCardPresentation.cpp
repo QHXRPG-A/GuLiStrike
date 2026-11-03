@@ -12,6 +12,7 @@
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/BackgroundBlur.h"
+#include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/Overlay.h"
 #include "Components/OverlaySlot.h"
@@ -26,9 +27,20 @@
 #include "Engine/TextureRenderTarget2D.h"
 #include "Engine/World.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "MaterialShared.h"
+#include "Components/PrimitiveComponent.h"
 #include "UObject/StructOnScope.h"
 #include "UObject/UnrealType.h"
 #include "InputCoreTypes.h"
+#include "Engine/GameViewportClient.h"
+#include "UnrealClient.h"
+#include "Gameplay/Data/Generated/GuLiStrikeGroundHUDTableRows.h"
+#include "Gameplay/Data/GuLiGameText.h"
+#include "Gameplay/GroundMech/UI/GuLiGroundHUDVisuals.h"
+#include "Gameplay/GroundMech/UI/GuLiGroundCardFace.h"
+#include "Components/ScaleBox.h"
+#include "Components/SizeBox.h"
+#include "Styling/CoreStyle.h"
 
 namespace
 {
@@ -103,22 +115,69 @@ TSharedRef<SWidget> UGuLiRogueCardOverlay::RebuildWidget()
 	auto* Labels=WidgetTree->ConstructWidget<UCanvasPanel>(); Labels->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	for (UWidget* W : TArray<UWidget*>{Blur,Cards,Labels})
 	{ auto* OverlaySlot=Root->AddChildToOverlay(W); OverlaySlot->SetHorizontalAlignment(HAlign_Fill); OverlaySlot->SetVerticalAlignment(VAlign_Fill); }
+    const auto* Player=GetOwningPlayer()?GetOwningPlayer()->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+    const bool Ground=Player&&Player->GetBattleRole()==EGuLiCommanderRole::Ground;
+    auto* Theme=Ground?LoadObject<UDataTable>(nullptr,TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeGroundHUD_Elements")):nullptr;
+    bGroundTheme=Ground;
+    auto Color=[&](FName Name,FLinearColor Fallback)
+    {const auto* Row=Theme?Theme->FindRow<FGuLiStrikeGroundHUDElementsRow>(Name,TEXT("Card HUD theme"),false):nullptr;return Row&&!Row->ColorSRGB.IsEmpty()?FLinearColor::FromSRGBColor(FColor::FromHex(Row->ColorSRGB)):Fallback;};
+    if(Ground)
+    {
+        // Edge anchors share the combat HUD's adaptive design extent. Card capture
+        // stays centered at its existing uniform aspect and six-layer projection.
+        Labels->RemoveFromParent();auto* Fit=WidgetTree->ConstructWidget<UScaleBox>();Fit->SetStretch(EStretch::ScaleToFit);
+        GroundDesign=WidgetTree->ConstructWidget<USizeBox>();GroundDesign->SetWidthOverride(1920);GroundDesign->SetHeightOverride(1080);GroundDesign->SetContent(Labels);Fit->SetContent(GroundDesign);
+        auto* OverlaySlot=Root->AddChildToOverlay(Fit);OverlaySlot->SetHorizontalAlignment(HAlign_Fill);OverlaySlot->SetVerticalAlignment(VAlign_Fill);
+        auto* Scrim=WidgetTree->ConstructWidget<UBorder>();Scrim->SetBrushColor(Color(TEXT("Panel"),FLinearColor::Black).CopyWithNewOpacity(.6f));Scrim->SetVisibility(ESlateVisibility::HitTestInvisible);Blur->SetContent(Scrim);
+        auto Add=[&](UWidget* Widget,FVector2D P,FVector2D S,int32 Z=0){auto* Slot=Labels->AddChildToCanvas(Widget);Slot->SetPosition(P);Slot->SetSize(S);Slot->SetZOrder(Z);};
+        auto Label=[&](FName Key,FVector2D P,FVector2D S,int32 Size)
+        {
+            auto* T=WidgetTree->ConstructWidget<UTextBlock>();T->SetText(GuLiGameText::Get(*(TEXT("UI.GroundHUD.")+Key.ToString())));
+            T->SetFont(GuLiGroundUI::Font(Theme,Size,Size>=24));
+            T->SetColorAndOpacity(Color(TEXT("Text"),FLinearColor::White));T->SetJustification(ETextJustify::Center);T->SetVisibility(ESlateVisibility::HitTestInvisible);Add(T,P,S,2);return T;
+        };
+        auto* Chrome=WidgetTree->ConstructWidget<UGuLiGroundHUDChrome>();Chrome->SetTheme(Theme);Chrome->SetMode(3);Chrome->SetVisibility(ESlateVisibility::HitTestInvisible);Add(Chrome,{0,0},{1920,1080});
+        TitleLabel=Label(TEXT("SelectTitle"),{700,3},{520,39},26);
+        Label(TEXT("SelectOne"),{700,38},{520,28},16)->SetColorAndOpacity(GuLiGroundUI::Light(Color(TEXT("Line"),FLinearColor::White)));
+        Label(TEXT("GroundIdentity"),{1510,52},{340,27},16);
+        auto* Brand=Label(TEXT("Brand"),{166,55},{215,28},16);auto Font=Brand->GetFont();Font.LetterSpacing=360;Brand->SetFont(Font);
+        HintLabel=Label(TEXT("SelectDirect"),{375,908},{1170,35},20);HintLabel->SetAutoWrapText(true);
+        auto MakeButton=[&](FVector2D P,FVector2D S,bool Highlight,UTextBlock*& Text)
+        {
+            auto* Panel=WidgetTree->ConstructWidget<UGuLiGroundHUDPanel>();Panel->SetTheme(Theme,0,true);Panel->SetPadding(FMargin(8,3));Panel->SetHighlighted(Highlight);Add(Panel,P,S,3);
+            auto* Button=WidgetTree->ConstructWidget<UButton>();FButtonStyle Skin;Skin.Normal.DrawAs=Skin.Hovered.DrawAs=Skin.Pressed.DrawAs=ESlateBrushDrawType::NoDrawType;Button->SetStyle(Skin);Panel->SetContent(Button);
+            Text=WidgetTree->ConstructWidget<UTextBlock>();Text->SetFont(GuLiGroundUI::Font(Theme,27,true));Text->SetJustification(ETextJustify::Center);Text->SetColorAndOpacity(Color(TEXT("Text"),FLinearColor::White));Button->SetContent(Text);return Button;
+        };
+        UTextBlock* RerollText=nullptr;RerollButton=MakeButton({674,950},{282,76},true,RerollText);RerollLabel=RerollText;
+        RerollButton->SetIsEnabled(false);RerollButton->OnClicked.AddUniqueDynamic(this,&ThisClass::HandleRerollClicked);
+        UTextBlock* CloseText=nullptr;CloseButton=MakeButton({997,950},{260,76},false,CloseText);CloseText->SetText(GuLiGameText::Get(TEXT("UI.GroundHUD.Close")));CloseButton->OnClicked.AddUniqueDynamic(this,&ThisClass::HandleCloseClicked);
+        for(UWidget* Widget:Labels->GetAllChildren())
+        {
+            auto* FrameSlot=CastChecked<UCanvasPanelSlot>(Widget->Slot);
+            if(Widget==Chrome){FrameSlot->SetAnchors(FAnchors(0,0,1,1));FrameSlot->SetOffsets(FMargin());continue;}
+            const FVector2D P=FrameSlot->GetPosition();const FVector2D Anchor(P.Y>900?.5:P.X>1400?1.:P.X>600?.5:0.,P.Y>900?1.:0.);
+            FrameSlot->SetPosition(P-Anchor*FVector2D(1920,1080));FrameSlot->SetAnchors(FAnchors(Anchor.X,Anchor.Y));
+        }
+        if(auto* PC=GetOwningPlayer()){int32 W=0,H=0;PC->GetViewportSize(W,H);FitViewport(FVector2D(W,H));}
+        return Super::RebuildWidget();
+    }
 	TitleLabel=WidgetTree->ConstructWidget<UTextBlock>(); HintLabel=WidgetTree->ConstructWidget<UTextBlock>();
 	int32 I=0;
 	for (UTextBlock* Label : {TitleLabel.Get(),HintLabel.Get()})
 	{
 		Label->SetVisibility(ESlateVisibility::HitTestInvisible);
+        if(Ground)Label->SetColorAndOpacity(Color(TEXT("Text"),FLinearColor::White));
 		Label->SetAutoWrapText(I!=0);
 		Label->SetJustification(ETextJustify::Center); FSlateFontInfo Font=Label->GetFont(); Font.Size=I==0 ? 24 : 18; Label->SetFont(Font);
 		auto* CanvasSlot=Labels->AddChildToCanvas(Label); CanvasSlot->SetAnchors(FAnchors(.05f,I==0?.07f:.92f,I==0?.95f:.76f,I==0?.07f:.92f));
 		CanvasSlot->SetOffsets(FMargin(0,0,0,60)); CanvasSlot->SetAlignment(FVector2D(0,.5)); ++I;
 	}
 	RerollButton=WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(),TEXT("RerollButton"));
-	RerollButton->SetBackgroundColor(FLinearColor(.12f,.24f,.34f,1.f)); RerollButton->SetIsEnabled(false);
+	RerollButton->SetBackgroundColor(Ground?Color(TEXT("PanelRaised"),FLinearColor::Black):FLinearColor(.12f,.24f,.34f,1.f)); RerollButton->SetIsEnabled(false);
 	RerollButton->OnClicked.AddUniqueDynamic(this,&UGuLiRogueCardOverlay::HandleRerollClicked);
 	RerollLabel=WidgetTree->ConstructWidget<UTextBlock>(); RerollLabel->SetVisibility(ESlateVisibility::HitTestInvisible);
 	FSlateFontInfo ButtonFont=RerollLabel->GetFont(); ButtonFont.Size=18; RerollLabel->SetFont(ButtonFont);
-	RerollLabel->SetJustification(ETextJustify::Center); RerollLabel->SetColorAndOpacity(FSlateColor(FLinearColor(1.f,.93f,.8f,1.f)));
+	RerollLabel->SetJustification(ETextJustify::Center); RerollLabel->SetColorAndOpacity(FSlateColor(Ground?Color(TEXT("Accent"),FLinearColor::White):FLinearColor(1.f,.93f,.8f,1.f)));
 	RerollButton->AddChild(RerollLabel);
 	auto* ButtonSlot=Labels->AddChildToCanvas(RerollButton); ButtonSlot->SetAnchors(FAnchors(.94f,.92f));
 	ButtonSlot->SetAlignment(FVector2D(1.f,.5f)); ButtonSlot->SetOffsets(FMargin(0,0,176,44));
@@ -134,16 +193,18 @@ void UGuLiRogueCardOverlay::Setup(UGuLiRogueCardPresentation* Owner, UMaterialIn
 			RerollButton->SetToolTipText(Catalog->GetText(TEXT("UI.RogueCards.RerollHint")));
 		}
 }
-void UGuLiRogueCardOverlay::SetBackdrop(float Strength) { if (Blur) Blur->SetBlurStrength(Strength); }
+void UGuLiRogueCardOverlay::SetBackdrop(float Strength) { if (Blur && !FMath::IsNearlyEqual(Blur->GetBlurStrength(),Strength)) Blur->SetBlurStrength(Strength); }
+void UGuLiRogueCardOverlay::FitViewport(FVector2D ViewportSize){GuLiGroundUI::FitDesignToViewport(GroundDesign,ViewportSize);}
 void UGuLiRogueCardOverlay::ResetPresentation()
 {
 	Presentation.Reset(); SetBackdrop(0.f);
 	if (RerollButton) { RerollButton->OnClicked.RemoveAll(this); RerollButton->SetIsEnabled(false); }
+    if(CloseButton)CloseButton->OnClicked.RemoveAll(this);
 	if (Cards) Cards->SetBrush(FSlateBrush());
 	SetVisibility(ESlateVisibility::Collapsed); RemoveFromParent();
 }
 void UGuLiRogueCardOverlay::SetCopy(const FText& Title,const FText& Hint)
-{ TitleLabel->SetText(Title); HintLabel->SetText(Hint); }
+{ const auto Heading=bGroundTheme?GuLiGameText::Get(TEXT("UI.GroundHUD.SelectTitle")):Title;if(!TitleLabel->GetText().EqualTo(Heading))TitleLabel->SetText(Heading);if(!HintLabel->GetText().EqualTo(Hint))HintLabel->SetText(Hint); }
 void UGuLiRogueCardOverlay::SetRerollState(bool bEnabled,const FText& Label)
 {
 	if (RerollButton && RerollButton->GetIsEnabled()!=bEnabled) RerollButton->SetIsEnabled(bEnabled);
@@ -151,10 +212,12 @@ void UGuLiRogueCardOverlay::SetRerollState(bool bEnabled,const FText& Label)
 }
 void UGuLiRogueCardOverlay::HandleRerollClicked()
 { if (Presentation.IsValid()) Presentation->Reroll(); SetKeyboardFocus(); }
+void UGuLiRogueCardOverlay::HandleCloseClicked(){if(Presentation.IsValid())Presentation->Cancel();}
 FReply UGuLiRogueCardOverlay::NativeOnMouseButtonDown(const FGeometry&,const FPointerEvent& Event)
 {
 	// Disabled buttons must not let their click fall through to a card behind the footer.
 	if (RerollButton && RerollButton->GetCachedGeometry().IsUnderLocation(Event.GetScreenSpacePosition())) return FReply::Handled();
+    if(CloseButton&&CloseButton->GetCachedGeometry().IsUnderLocation(Event.GetScreenSpacePosition()))return FReply::Handled();
 	if (Presentation.IsValid() && Event.GetEffectingButton()==EKeys::LeftMouseButton) Presentation->Click();
 	return FReply::Handled();
 }
@@ -162,7 +225,7 @@ FReply UGuLiRogueCardOverlay::NativeOnKeyDown(const FGeometry&,const FKeyEvent& 
 { if (Presentation.IsValid() && Event.GetKey()==EKeys::Escape && !Event.IsRepeat()) Presentation->Cancel(); return FReply::Handled(); }
 
 UGuLiRogueCardPresentation::UGuLiRogueCardPresentation()
-{ PrimaryComponentTick.bCanEverTick=true; PrimaryComponentTick.bStartWithTickEnabled=false; }
+{ PrimaryComponentTick.bCanEverTick=true; PrimaryComponentTick.bStartWithTickEnabled=false;PrimaryComponentTick.TickGroup=TG_PostUpdateWork; }
 void UGuLiRogueCardPresentation::Open()
 {
 	auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner());
@@ -170,6 +233,7 @@ void UGuLiRogueCardPresentation::Open()
     const auto* Player=PC->GetPlayerState<AGuLiBattlePlayerState>();
     if(!Player||!Player->IsBattleReady()||(!Player->IsCommander()&&Player->GetBattleRole()!=EGuLiCommanderRole::Ground)||(Player->IsCommander()&&!PC->CanIssueCommanderOrders()))return;
     PresentationRole=uint8(Player->GetBattleRole());
+    bDirectSelection=Player->GetBattleRole()==EGuLiCommanderRole::Ground;DisplayedNotice=FText::GetEmpty();
 	bOpen=true; bClosing=false; bSubmitting=false; Fade=0; DisplayedPhase=INDEX_NONE; ErrorText=FText::GetEmpty();
 	bCommitted=false; bFinishedNormally=false;
 	bRerolling=false; RerollNotice=FText::GetEmpty();
@@ -237,6 +301,15 @@ bool UGuLiRogueCardPresentation::CreateStage(const TArray<FString>& Ids)
 	Director=GetWorld()->SpawnActor<AActor>(Class,FVector(0,0,-1000000),FRotator::ZeroRotator,Params);
 	if (!Director) return false;
 	Director->SetReplicates(false); Director->SetActorTickEnabled(false);
+    AddTickPrerequisiteActor(Director);
+    if(!SetBool(Director,TEXT("DirectSelection"),bDirectSelection))return false;
+    bTimeAnimatedCards=true;
+    if(bDirectSelection)
+        if(const auto* Table=LoadObject<UDataTable>(nullptr,TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeGroundHUD_Elements")))
+        {
+            if(const auto* Row=Table->FindRow<FGuLiStrikeGroundHUDElementsRow>(TEXT("CardTimeAnimation"),TEXT("Card capture"),false))bTimeAnimatedCards=Row->Value!=0;
+            if(!SetNumber(Director,TEXT("GroundCardHeight"),GuLiGroundUI::Number(Table,TEXT("CardHeight"),.68f))||!SetNumber(Director,TEXT("GroundCardSpacing"),GuLiGroundUI::Number(Table,TEXT("CardSpacing"),.335f)))return false;
+        }
 	TArray<FString> StageIds=Ids;
 	while (StageIds.Num()<3) StageIds.Add(Ids[0]); // Hidden placeholders preserve the three-actor Blueprint contract.
 	if (!Director->FindFunction(TEXT("CompleteConfirmation")) || !SetBool(Director,TEXT("ExternalConfirmation"),true)
@@ -276,7 +349,7 @@ bool UGuLiRogueCardPresentation::CreateStage(const TArray<FString>& Ids)
 	Capture->FOVAngle=Camera->FieldOfView; Capture->TextureTarget=Target;
 	Capture->CaptureSource=ESceneCaptureSource::SCS_SceneColorHDR; // RGB + inverse opacity, converted by the UI material.
 	Capture->PrimitiveRenderMode=ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
-	Capture->bCaptureEveryFrame=true; Capture->bCaptureOnMovement=false;
+    Capture->bCaptureEveryFrame=false; Capture->bCaptureOnMovement=false;Capture->bAlwaysPersistRenderingState=true;
 	// OnRegister restores ShowFlags from the archetype, then reapplies these
 	// settings. Direct ShowFlags edits made before registration are discarded.
 	TArray<FEngineShowFlagsSetting> CaptureShowFlags;
@@ -293,31 +366,108 @@ bool UGuLiRogueCardPresentation::CreateStage(const TArray<FString>& Ids)
 		auto* Card=Cast<AActor>(GetObject(Director,*FString::Printf(TEXT("Card%d"),I))); if (!Card) return false;
 		const auto* Text=Cast<UWidgetComponent>(GetObject(Card,TEXT("EditableText")));
 		if (!Text || !Text->GetUserWidgetObject()) return false;
+        if(bDirectSelection)GroundCardFrames.Add(Cast<UWidgetComponent>(GetObject(Card,TEXT("EditableText"))));
 		Capture->ShowOnlyActorComponents(Card);
 		TInlineComponentArray<UPrimitiveComponent*> Components(Card);
-		for (auto* Component : Components) Component->SetVisibleInSceneCaptureOnly(true);
+        for (auto* Component : Components) {Component->SetVisibleInSceneCaptureOnly(true);CaptureParts.Add(Component);CaptureTransforms.Add(FTransform::Identity);CaptureVisibility.Add(false);}
 	}
 	CaptureMID=UMaterialInstanceDynamic::Create(Material,this); CaptureMID->SetTextureParameterValue(TEXT("CardCapture"),Target);
-	Overlay->Setup(this,CaptureMID); Overlay->SetCopy(Catalog->GetText(TEXT("UI.RogueCards.Title")),Catalog->GetText(TEXT("UI.RogueCards.Entering")));
+    // Ground's manual widget redraw must not freeze a fallback shader into the
+    // first capture. Keep its intro stopped until the actual materials are ready.
+    bPreparingGroundCards=bDirectSelection;bGroundMaterialsReady=false;NextGroundMaterialCheck=0;GroundWarmupFrames=0;
+	Overlay->Setup(this,bPreparingGroundCards?nullptr:CaptureMID.Get()); Overlay->SetCopy(Catalog->GetText(TEXT("UI.RogueCards.Title")),Catalog->GetText(TEXT("UI.RogueCards.Entering")));
 	FInputModeUIOnly Mode; Mode.SetWidgetToFocus(Overlay->TakeWidget()); Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock); PC->SetInputMode(Mode);
-	Overlay->SetKeyboardFocus(); UpdateCaptureSize(); Director->SetActorTickEnabled(true); return true;
+    Overlay->SetKeyboardFocus(); UpdateCaptureSize(); Director->SetActorTickEnabled(!bPreparingGroundCards);WarmCaptureFrames=3;
+    ViewportHandle=FViewport::ViewportResizedEvent.AddUObject(this,&ThisClass::ViewportResized);return true;
 }
 void UGuLiRogueCardPresentation::UpdateCaptureSize()
 {
 	if (!Target) return;
 	int32 W=0,H=0; CastChecked<APlayerController>(GetOwner())->GetViewportSize(W,H); if (W<1 || H<1) return;
+    if(Overlay)Overlay->FitViewport(FVector2D(W,H));
 	const float Scale=FMath::Min(1.f,2048.f/FMath::Max(W,H));
 	W=FMath::Max(1,FMath::RoundToInt(W*Scale)); H=FMath::Max(1,FMath::RoundToInt(H*Scale));
-	if (Target->SizeX!=W || Target->SizeY!=H) Target->ResizeTarget(W,H);
+    if (Target->SizeX!=W || Target->SizeY!=H){Target->ResizeTarget(W,H);WarmCaptureFrames=3;}
+}
+void UGuLiRogueCardPresentation::ViewportResized(FViewport* V,uint32)
+{if(GetWorld()&&GetWorld()->GetGameViewport()&&GetWorld()->GetGameViewport()->Viewport==V)UpdateCaptureSize();}
+void UGuLiRogueCardPresentation::PrepareGroundCards()
+{
+    if(!bPreparingGroundCards||bClosing||!Capture||!Director||!Overlay)return;
+    if(!bGroundMaterialsReady)
+    {
+        const double Now=FPlatformTime::Seconds();if(Now<NextGroundMaterialCheck)return;NextGroundMaterialCheck=Now+.2;
+        TArray<UMaterialInterface*> Materials;
+        for(const auto& Part:CaptureParts)if(auto* Primitive=Cast<UPrimitiveComponent>(Part.Get()))
+        {TArray<UMaterialInterface*> Used;Primitive->GetUsedMaterials(Used);Materials.Append(Used);}
+        Materials.Add(CaptureMID);
+        TSet<const FMaterialResource*> Checked;bool Pending=false;const UMaterialInterface* Failed=nullptr;
+        for(auto* Material:Materials)
+        {
+            if(!Material)continue;
+            // Match the active renderer's platform and completeness contract.
+            // DDC/on-demand maps can be complete without the full-compilation
+            // finalized flag checked by HasValidGameThreadShaderMap().
+            auto* Resource=Material->GetMaterialResource(GMaxRHIShaderPlatform);
+            if(!Resource){Failed=Material;continue;}
+            if(Checked.Contains(Resource))continue;Checked.Add(Resource);
+#if WITH_EDITOR
+            if(!Resource->IsCompilationFinished()){Pending=true;continue;}
+            if(!Resource->IsGameThreadShaderMapComplete()&&Resource->GetCompileErrors().IsEmpty())
+            {Resource->SubmitCompileJobs_GameThread(EShaderCompileJobPriority::High);Pending=true;continue;}
+#endif
+            if(!Resource->IsGameThreadShaderMapComplete())Failed=Material;
+        }
+        if(Pending)return;
+        if(Failed)
+        {
+            UE_LOG(LogTemp,Error,TEXT("Ground card material has no usable shader map: %s"),*Failed->GetPathName());
+            auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner());
+            auto* Catalog=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();
+            if(auto* HUD=PC?Cast<AGuLiCommanderHUD>(PC->GetHUD()):nullptr)
+                HUD->ShowCommandFeedback(FText::Format(Catalog->GetText(TEXT("UI.RogueCards.OpenFailed")),Catalog->GetText(TEXT("UI.RogueCards.GroundUnavailable"))),false);
+            Cancel();return;
+        }
+        bGroundMaterialsReady=true;GroundWarmupFrames=3;
+    }
+    if(GroundWarmupFrames>0)
+    {
+        // Widget components redraw on their next tick. Let those renders and the
+        // deferred capture reach the target before exposing it to the overlay.
+        for(const auto& Frame:GroundCardFrames)if(auto* Component=Frame.Get())Component->RequestRedraw();
+        Capture->CaptureSceneDeferred();--GroundWarmupFrames;return;
+    }
+    bPreparingGroundCards=false;Overlay->Setup(this,CaptureMID);Director->SetActorTickEnabled(true);
+    WarmCaptureFrames=3;DisplayedPhase=INDEX_NONE;
+}
+void UGuLiRogueCardPresentation::RefreshCapture()
+{
+    if(!Capture||!Overlay||!Overlay->IsVisible()||bClosing||bPreparingGroundCards)return;
+    const int32 Phase=GetInteger(Director,TEXT("Phase"));
+    const int32 Highlight=bSubmitting||bCommitted?GetInteger(Director,TEXT("SelectedIndex")):GetInteger(Director,TEXT("HoveredIndex"));
+    if(bDirectSelection&&Highlight!=HighlightedGroundCard)
+    {
+        HighlightedGroundCard=Highlight;
+        for(int32 Index=0;Index<GroundCardFrames.Num();++Index)if(auto* C=GroundCardFrames[Index].Get())
+            if(auto* Face=Cast<UGuLiGroundCardFace>(C->GetUserWidgetObject());Face&&Face->SetHighlighted(Index==Highlight)){C->RequestRedraw();WarmCaptureFrames=3;}
+    }
+    bool Changed=bTimeAnimatedCards||WarmCaptureFrames>0||Phase==0||Phase==2||Phase==4||Phase==5;
+    if(WarmCaptureFrames>0)--WarmCaptureFrames;
+    for(int32 I=0;I<CaptureParts.Num();++I)if(const auto* C=CaptureParts[I].Get())
+    {
+        const auto T=C->GetComponentTransform();const bool Visible=C->IsVisible()&&!C->GetOwner()->IsHidden();
+        Changed|=!T.Equals(CaptureTransforms[I],.0001)||Visible!=CaptureVisibility[I];CaptureTransforms[I]=T;CaptureVisibility[I]=Visible;
+    }
+    if(Changed)Capture->CaptureSceneDeferred();
 }
 void UGuLiRogueCardPresentation::Click()
 {
-	if (bOpen && !bClosing && !bSubmitting && !bRerolling && ErrorText.IsEmpty())
+	if (bOpen && !bClosing && !bSubmitting && !bRerolling && !bPreparingGroundCards && ErrorText.IsEmpty())
 	{ RerollNotice=FText::GetEmpty(); DisplayedPhase=INDEX_NONE; Call(Director,TEXT("ProcessClick")); }
 }
 bool UGuLiRogueCardPresentation::CanReroll() const
 {
-	if (!bOpen || bClosing || bSubmitting || bRerolling || bCommitted || !SessionId.IsValid() || !ErrorText.IsEmpty()) return false;
+	if (!bOpen || bClosing || bSubmitting || bRerolling || bCommitted || bPreparingGroundCards || !SessionId.IsValid() || !ErrorText.IsEmpty()) return false;
     if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return !CandidateIds.IsEmpty();
     if (!Director) return false;
 	const int32 Phase=GetInteger(Director,TEXT("Phase"));
@@ -345,7 +495,7 @@ int32 UGuLiRogueCardPresentation::GetPresentationPhase() const
 { return GetInteger(Director,TEXT("Phase")); }
 bool UGuLiRogueCardPresentation::ActivateCandidate(int32 CandidateIndex)
 {
-    if (!bOpen || bClosing || bSubmitting || bRerolling || bCommitted || !CandidateIds.IsValidIndex(CandidateIndex)) return false;
+    if (!bOpen || bClosing || bSubmitting || bRerolling || bCommitted || bPreparingGroundCards || !CandidateIds.IsValidIndex(CandidateIndex)) return false;
     if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return ConfirmSelection(CandidateIndex);
     const int32 Phase=GetPresentationPhase();
     if (Phase!=1 && (Phase!=3 || GetInteger(Director,TEXT("SelectedIndex"))!=CandidateIndex)) return false;
@@ -354,11 +504,11 @@ bool UGuLiRogueCardPresentation::ActivateCandidate(int32 CandidateIndex)
     if (!Function || Function->NumParms!=1 || !Index) return false;
     FStructOnScope Params(Function);Index->SetPropertyValue_InContainer(Params.GetStructMemory(),CandidateIndex);
     Director->ProcessEvent(Function,Params.GetStructMemory());
-    return Phase==1 ? GetPresentationPhase()==2 && GetInteger(Director,TEXT("SelectedIndex"))==CandidateIndex : bSubmitting || bCommitted;
+    return bDirectSelection ? bSubmitting||bCommitted : Phase==1 ? GetPresentationPhase()==2 && GetInteger(Director,TEXT("SelectedIndex"))==CandidateIndex : bSubmitting || bCommitted;
 }
 bool UGuLiRogueCardPresentation::ConfirmSelection(int32 SelectedIndex)
 {
-	if (!bOpen || (UGuLiNetworkSettings::CanPresent(GetWorld()) && !Director) || bClosing || bSubmitting || bRerolling || bCommitted || !CandidateIds.IsValidIndex(SelectedIndex)) return false;
+	if (!bOpen || (UGuLiNetworkSettings::CanPresent(GetWorld()) && !Director) || bClosing || bSubmitting || bRerolling || bCommitted || bPreparingGroundCards || !CandidateIds.IsValidIndex(SelectedIndex)) return false;
 	bSubmitting=true; DisplayedPhase=INDEX_NONE;
 	CastChecked<AGuLiCommanderPlayerController>(GetOwner())->GetCommanderNetSyncComponent()->ServerConfirmRogueCard(SessionId,CandidateIds[SelectedIndex]);
     return true;
@@ -416,11 +566,14 @@ void UGuLiRogueCardPresentation::Cleanup()
 }
 void UGuLiRogueCardPresentation::DestroyStage()
 {
+    FViewport::ViewportResizedEvent.Remove(ViewportHandle);ViewportHandle.Reset();CaptureParts.Reset();CaptureTransforms.Reset();CaptureVisibility.Reset();WarmCaptureFrames=0;
+    GroundCardFrames.Reset();HighlightedGroundCard=INDEX_NONE;
+    bPreparingGroundCards=false;bGroundMaterialsReady=false;NextGroundMaterialCheck=0;GroundWarmupFrames=0;
 	// Reroll releases only the old stage; the same overlay, blur and modal input remain active.
 	if (Overlay) Overlay->Setup(this,nullptr);
 	if (Capture) { auto* Old=Capture.Get(); Capture=nullptr; Old->bCaptureEveryFrame=false;
 		Old->bCaptureOnMovement=false; Old->TextureTarget=nullptr; Old->Deactivate(); Old->DestroyComponent(); }
-	if (Director) { auto* Old=Director.Get(); Director=nullptr; Old->SetActorTickEnabled(false);
+    if (Director) { auto* Old=Director.Get();RemoveTickPrerequisiteActor(Old); Director=nullptr; Old->SetActorTickEnabled(false);
 		Call(Old,TEXT("CleanupCards")); Old->Destroy(); }
 	if (LegacyHUD) LegacyHUD->RemoveFromParent();
 	// Drop the RHI allocation now rather than accumulating full-resolution targets until the next GC.
@@ -444,6 +597,7 @@ void UGuLiRogueCardPresentation::TickComponent(float Dt,ELevelTick Type,FActorCo
         MatchEpoch=State->GetMatchEpoch();
     }
     if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return;
+	if(bPreparingGroundCards&&!bClosing){PrepareGroundCards();if(!bOpen)return;}
 	const auto* Settings=GetDefault<UGuLiRogueCardSettings>();
 	Fade=FMath::Clamp(Fade+(bClosing?-Dt:Dt)/FMath::Max(.01f,Settings->FadeSeconds),0.f,1.f);
 	if (Overlay)
@@ -453,15 +607,16 @@ void UGuLiRogueCardPresentation::TickComponent(float Dt,ELevelTick Type,FActorCo
 		auto* Catalog=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();
 		Overlay->SetRerollState(CanReroll(),Catalog->GetText(bRerolling?TEXT("UI.RogueCards.Rerolling"):TEXT("UI.RogueCards.Reroll")));
 		const FText& Notice=ErrorText.IsEmpty()?RerollNotice:ErrorText;
-		if (Phase!=DisplayedPhase || !Notice.IsEmpty())
+        if (Phase!=DisplayedPhase || !Notice.EqualTo(DisplayedNotice))
 		{
 			static const TCHAR* Keys[]={TEXT("Entering"),TEXT("Choose"),TEXT("Flip"),TEXT("Confirm"),TEXT("Success"),TEXT("Success"),TEXT("Done"),TEXT("Submitting"),TEXT("Rerolling")};
-			Overlay->SetCopy(Catalog->GetText(TEXT("UI.RogueCards.Title")),Notice.IsEmpty()?Catalog->GetText(FString(TEXT("UI.RogueCards."))+Keys[FMath::Clamp(Phase,0,8)]):Notice);
+            const FText Hint=bDirectSelection && Phase==1?GuLiGameText::Get(TEXT("UI.GroundHUD.SelectDirect")):Catalog->GetText(FString(TEXT("UI.RogueCards."))+Keys[FMath::Clamp(Phase,0,8)]);
+            Overlay->SetCopy(Catalog->GetText(TEXT("UI.RogueCards.Title")),Notice.IsEmpty()?Hint:Notice);DisplayedNotice=Notice;
 			DisplayedPhase=Phase;
 		}
 	}
 	if (bClosing && Fade<=0) { Cleanup(); return; }
-	UpdateCaptureSize();
+    RefreshCapture();
 }
 void UGuLiRogueCardPresentation::EndPlay(const EEndPlayReason::Type Reason)
 { bTearingDown=true; Close(true); Super::EndPlay(Reason); }
@@ -469,6 +624,24 @@ void UGuLiRogueCardPresentationLibrary::SetLiveCardText(AActor* Card,const FStri
 {
 	if (!Card || !Controller) return;
 	auto* Component=Cast<UWidgetComponent>(GetObject(Card,TEXT("EditableText"))); if (!Component) return;
+	const auto* Player=Controller->GetPlayerState<AGuLiBattlePlayerState>();
+    if(Player&&Player->GetBattleRole()==EGuLiCommanderRole::Ground)
+    {
+        auto* Widget=CreateWidget<UGuLiGroundCardFace>(Controller,UGuLiGroundCardFace::StaticClass());Widget->TakeWidget();
+        auto* Catalog=Card->GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();
+        Widget->SetCopy(Catalog->GetCardText(CardId,0),Catalog->GetCardText(CardId,1,Player->GetPlayerGuid()));
+        Component->SetDrawSize({1280,1556});Component->SetRelativeLocation(FVector(0,.8,0));Component->SetRelativeScale3D(FVector(48.617/1556));
+        Component->SetBlendMode(EWidgetBlendMode::Transparent);
+        Component->SetWidget(Widget);Component->SetVisibility(true);Component->SetTickWhenOffscreen(true);Component->SetManuallyRedraw(true);Component->RequestRedraw();
+        // Uniform cover inside the transparent frame aperture; the six-layer UVs
+        // and aspect remain intact while the frame masks portrait overscan.
+        if(auto* Face=Cast<USceneComponent>(GetObject(Card,TEXT("CardFace")))){Face->SetRelativeLocation(FVector(0,0,-5));Face->SetRelativeScale3D(FVector(1.35));}
+        if(auto* OldFrame=Cast<USceneComponent>(GetObject(Card,TEXT("CardText"))))OldFrame->SetVisibility(false);
+        // Keep the rectangular thickness mesh inside the frame's bevels so its
+        // square corners cannot protrude through the transparent hover outline.
+        if(auto* Edge=Cast<USceneComponent>(GetObject(Card,TEXT("CardSolidEdge")))){auto Scale=Edge->GetRelativeScale3D();Scale.X=37.4/100;Scale.Z=46./100;Edge->SetRelativeScale3D(Scale);}
+        return;
+    }
 	UClass* Class=LoadClass<UUserWidget>(nullptr,TEXT("/Game/GuLiStrike/CardSystem/WarMachineTarot/UI/WBP_CardText.WBP_CardText_C")); if (!Class) return;
 	auto* Widget=CreateWidget<UUserWidget>(Controller,Class); Widget->TakeWidget();
 	auto* Catalog=Card->GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();

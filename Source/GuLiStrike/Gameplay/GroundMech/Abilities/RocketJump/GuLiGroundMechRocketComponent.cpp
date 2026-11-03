@@ -5,13 +5,9 @@
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
-#include "Camera/PlayerCameraManager.h"
-#include "Components/StaticMeshComponent.h"
 #include "Components/MeshComponent.h"
-#include "Materials/MaterialInstanceDynamic.h"
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
-#include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "Network/GuLiHybridActorComponent.h"
@@ -45,8 +41,7 @@ void UGuLiGroundMechRocketComponent::BeginPlay()
         || !Positive(Row->MaxFuel) || !FMath::IsFinite(Row->InitialFuel) || Row->InitialFuel < 0.f || Row->InitialFuel > Row->MaxFuel
         || !Positive(Row->FuelDrainPerSecond) || !Positive(Row->FuelRecoveryPerSecond)
         || !FMath::IsFinite(Row->FuelRecoveryDelay) || Row->FuelRecoveryDelay < 0.f
-        || !Positive(Row->ThrustAcceleration) || !Positive(Row->MaxRiseSpeed) || !Positive(Row->FuelBarFadeSeconds)
-        || !Positive(Row->FuelBarHeight) || !Positive(Row->FuelBarRightOffset)
+        || !Positive(Row->ThrustAcceleration) || !Positive(Row->MaxRiseSpeed)
         || !Positive(Row->AirSpeedMultiplier) || !Positive(Row->JetForwardSpeedMultiplier)
         || !Positive(Row->FallGravityMultiplier) || !FMath::IsFinite(Row->JetMaxTiltDegrees)
         || Row->JetMaxTiltDegrees < 0.f || Row->JetMaxTiltDegrees > 15.f
@@ -69,8 +64,7 @@ void UGuLiGroundMechRocketComponent::BeginPlay()
     if (UGuLiNetworkSettings::CanPresent(GetWorld()))
     {
         JetSystem = GuLiVfx::Load<UNiagaraSystem>(this, Configuration.JetVfxId);
-        FuelMaterial = GuLiVfx::Load<UMaterialInterface>(this, Configuration.FuelBarVfxId);
-        if (!JetSystem || !FuelMaterial) UE_LOG(LogTemp, Error, TEXT("RocketJump: missing presentation asset; gameplay remains available."));
+        if (!JetSystem) UE_LOG(LogTemp, Error, TEXT("RocketJump: missing presentation asset; gameplay remains available."));
         CreatePresentation();
     }
 }
@@ -107,8 +101,7 @@ void UGuLiGroundMechRocketComponent::ApplyHybridInput(bool bHeld)
 void UGuLiGroundMechRocketComponent::SetAbilityActive(bool bActive)
 {
     bAbilityActive = bActive;
-    if (bActive) { bShown = true; FuelBarOpacity = 1.f; }
-    else bReplicatedThrusting = false;
+    if (!bActive) bReplicatedThrusting = false;
     RefreshJetState();
 }
 void UGuLiGroundMechRocketComponent::Interrupt()
@@ -214,31 +207,8 @@ void UGuLiGroundMechRocketComponent::CreatePresentation()
         LeftJet = CreateJet(TEXT("RocketJetLeft"), FName(Configuration.JetSocketLeft));
         RightJet = CreateJet(TEXT("RocketJetRight"), FName(Configuration.JetSocketRight));
     }
-    if (Mech->IsLocallyControlled() && !FuelBar && FuelMaterial)
-    {
-        FuelBar = NewObject<UStaticMeshComponent>(Mech, TEXT("RocketFuelBar"));
-        Mech->AddInstanceComponent(FuelBar);
-        FuelBar->SetupAttachment(Mech->GetRootComponent());
-        FuelBar->SetAbsolute(true, true, true);
-        FuelBar->SetStaticMesh(GuLiVfx::Load<UStaticMesh>(this, GuLiVfxIds::FuelBarPlane));
-        FuelBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        FuelBar->SetGenerateOverlapEvents(false);
-        FuelBar->SetCanEverAffectNavigation(false);
-        FuelBar->SetCastShadow(false);
-        FuelBar->SetReceivesDecals(false);
-        FuelBar->SetOnlyOwnerSee(true);
-        FuelBar->SetVisibility(false);
-        FuelBar->RegisterComponent();
-        FuelMID = UMaterialInstanceDynamic::Create(FuelMaterial, this);
-        FuelMID->SetScalarParameterValue(TEXT("Opacity"), 0.f);
-        FuelBar->SetMaterial(0, FuelMID);
-    }
-    if (!Mech->IsLocallyControlled() && FuelBar)
-    {
-        FuelBar->DestroyComponent(); FuelBar = nullptr; FuelMID = nullptr;
-        bShown = false; FuelBarOpacity = 0.f;
-    }
 }
+
 void UGuLiGroundMechRocketComponent::UpdatePresentation(float Delta)
 {
     const bool bThrusting = IsThrusting();
@@ -257,33 +227,15 @@ void UGuLiGroundMechRocketComponent::UpdatePresentation(float Delta)
         Jet->SetWorldRotation(Steering * BaseRotation);
     }
     RefreshJetState();
-    auto* Pawn = CastChecked<APawn>(GetOwner());
-    if (!Pawn->IsLocallyControlled() || !FuelBar) return;
-    const float Ratio = GetFuelRatio();
-    if (bThrusting || bAbilityActive) { bShown = true; FuelBarOpacity = 1.f; }
-    else if (Ratio < 1.f) { bShown = true; FuelBarOpacity = 1.f; }
-    else FuelBarOpacity = FMath::Max(0.f, FuelBarOpacity - Delta / Configuration.FuelBarFadeSeconds);
-    const auto* PC = Cast<APlayerController>(Pawn->GetController());
-    if (PC && PC->PlayerCameraManager)
+    if (!Mech->IsLocallyControlled()) return;
+    const float Ratio=GetFuelRatio();
+    if(Ratio!=LastRatio||bThrusting!=bLastThrusting)
     {
-        const FRotator CameraRotation = PC->PlayerCameraManager->GetCameraRotation();
-        const FRotationMatrix CameraAxes(CameraRotation);
-        FuelBar->SetWorldLocation(Pawn->GetActorLocation() + CameraAxes.GetUnitAxis(EAxis::Y) * Configuration.FuelBarRightOffset);
-        // Plane local X points screen-right, local Y screen-down, local Z toward camera.
-        FuelBar->SetWorldRotation(FRotationMatrix::MakeFromXY(CameraAxes.GetUnitAxis(EAxis::Y), -CameraAxes.GetUnitAxis(EAxis::Z)).Rotator());
-        FuelBar->SetWorldScale3D(GuLiVfx::Scale(this, GuLiVfxIds::FuelBarPlane, GuLiVfx::Scale(this, Configuration.FuelBarVfxId, FVector(Configuration.FuelBarHeight / 100.f))));
-    }
-    const FLinearColor Color = Ratio >= .5f ? FLinearColor(.18f, 1.f, .08f) : Ratio >= .2f ? FLinearColor(1.f,.7f,.03f) : FLinearColor(1.f,.035f,.015f);
-    FuelMID->SetScalarParameterValue(TEXT("FuelRatio"), Ratio);
-    FuelMID->SetScalarParameterValue(TEXT("Opacity"), FuelBarOpacity);
-    FuelMID->SetVectorParameterValue(TEXT("Color"), Color);
-    FuelBar->SetVisibility(bShown && FuelBarOpacity > 0.f);
-    if (Ratio != LastRatio || FuelBarOpacity != LastOpacity || bThrusting != bLastThrusting)
-    {
-        LastRatio = Ratio; LastOpacity = FuelBarOpacity; bLastThrusting = bThrusting;
-        OnPresentationChanged.Broadcast(Ratio, bThrusting, FuelBarOpacity);
+        LastRatio=Ratio;bLastThrusting=bThrusting;
+        OnPresentationChanged.Broadcast(Ratio,bThrusting);
     }
 }
+
 void UGuLiGroundMechRocketComponent::TickComponent(float Delta, ELevelTick Type, FActorComponentTickFunction* Function)
 {
     Super::TickComponent(Delta, Type, Function);
@@ -293,8 +245,6 @@ void UGuLiGroundMechRocketComponent::DestroyPresentation()
 {
     for (auto* Jet : {LeftJet.Get(), RightJet.Get()}) if (Jet) { Jet->DeactivateImmediate(); Jet->DestroyComponent(); }
     LeftJet = nullptr; RightJet = nullptr; bJetsCreated = false; bJetsActive = false;
-    if (FuelBar) FuelBar->DestroyComponent();
-    FuelBar = nullptr; FuelMID = nullptr;
 }
 void UGuLiGroundMechRocketComponent::EndPlay(EEndPlayReason::Type Reason)
 {

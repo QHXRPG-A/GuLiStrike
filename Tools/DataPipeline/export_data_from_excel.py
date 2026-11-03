@@ -41,6 +41,7 @@ from pathlib import Path
 import openpyxl
 from card_artwork_catalog import CatalogError, resolve_artwork_references
 from buff_catalog import validate as validate_buffs
+from icon_catalog import validate as validate_icons
 
 PROJECT = Path(__file__).resolve().parents[2]
 EXCEL_DIR = PROJECT / "Data/Excel"
@@ -996,6 +997,7 @@ def main():
             validate_missile_guidance_capacity(tables)
             validate_rogue_card_text_styles(tables)
             validate_vfx_references(tables)
+            validate_icons(tables, SheetError)
             validate_projectile_visual_profiles(tables)
             validate_model_references(tables)
             validate_mech_mobility(tables)

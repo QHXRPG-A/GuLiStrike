@@ -18,6 +18,9 @@
 #include "UObject/StructOnScope.h"
 #include "HAL/PlatformTime.h"
 #include "HAL/IConsoleManager.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "MaterialShared.h"
+#include "Components/PrimitiveComponent.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 
 namespace
@@ -81,6 +84,25 @@ FString UGuLiRogueCardQALibrary::Snapshot(APlayerController* Controller)
 			W->WriteValue(TEXT("blur"),P->Overlay && P->Overlay->Blur ? P->Overlay->Blur->GetBlurStrength() : 0.f);
 			W->WriteValue(TEXT("capture"),IsValid(P->Capture)); W->WriteValue(TEXT("director"),IsValid(P->Director));
 			W->WriteValue(TEXT("target"),IsValid(P->Target)); W->WriteValue(TEXT("ticking"),P->IsComponentTickEnabled());
+            W->WriteValue(TEXT("preparing_ground_cards"),P->bPreparingGroundCards);
+            W->WriteValue(TEXT("ground_materials_ready"),P->bGroundMaterialsReady);
+            W->WriteValue(TEXT("ground_warmup_frames"),P->GroundWarmupFrames);
+            if(P->bPreparingGroundCards)
+            {
+                TSet<UMaterialInterface*> Materials;Materials.Add(P->CaptureMID);
+                for(const auto& Part:P->CaptureParts)if(auto* Primitive=Cast<UPrimitiveComponent>(Part.Get()))
+                {TArray<UMaterialInterface*> Used;Primitive->GetUsedMaterials(Used);Materials.Append(Used);}
+                W->WriteArrayStart(TEXT("pending_materials"));
+                for(auto* Material:Materials)if(Material)
+                {
+                    const auto* R=Material->GetMaterialResource(GMaxRHIShaderPlatform);
+                    if(R&&R->IsCompilationFinished()&&R->IsGameThreadShaderMapComplete())continue;
+                    W->WriteObjectStart();W->WriteValue(TEXT("material"),Material->GetPathName());W->WriteValue(TEXT("resource"),R!=nullptr);
+                    W->WriteValue(TEXT("finished"),R&&R->IsCompilationFinished());W->WriteValue(TEXT("map"),R&&R->GetGameThreadShaderMap()!=nullptr);
+                    W->WriteValue(TEXT("errors"),R?FString::Join(R->GetCompileErrors(),TEXT(";")):TEXT("no resource"));W->WriteObjectEnd();
+                }
+                W->WriteArrayEnd();
+            }
 		}
 		if (const auto* V=Controller->GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
 		{ const auto C=V->GetCounters(); W->WriteValue(TEXT("upgrade_active"),C.UpgradeActive);

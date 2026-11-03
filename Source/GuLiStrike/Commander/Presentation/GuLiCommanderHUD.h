@@ -15,6 +15,7 @@ class AGuLiCommanderHealthBarRenderer;
 class AGuLiCommanderPresentationActor;
 class AGuLiSoldierStateReplicator;
 class UGuLiCommanderHUDWidget;
+class UGuLiGroundHUDWidget;
 class UGuLiBuildingPlacementComponent;
 class UGuLiSceneUIWidget;
 class UFont;
@@ -45,6 +46,7 @@ class GULISTRIKE_API AGuLiCommanderHUD : public AHUD
 public:
 	void SetRogueCardHidden(bool bShouldHide);
 	UGuLiCommanderHUDWidget* GetRuntimeHUDWidget() const { return RuntimeHUDWidget; }
+    UGuLiGroundHUDWidget* GetGroundHUDWidget() const { return GroundHUDWidget; }
 	void ShowCommandFeedback(const FText& Message, bool bAccepted);
 	AGuLiCommanderHUD();
 
@@ -53,7 +55,7 @@ public:
 	virtual void DrawHUD() override;
 	virtual void NotifyHitBoxClick(FName BoxName) override;
 
-	// 本地角色生命周期入口，由 PC 角色变化及 HUD BeginPlay 调用；不依赖 Canvas/bShowHUD。
+	// 本地角色生命周期入口，由席位变化、Pawn接管及HUD BeginPlay调用；不依赖Canvas。
 	void RefreshCommanderRole();
     void RefreshLocalBindings();
     uint64 GetLocalBindingGeneration() const { return LocalBindingGeneration; }
@@ -64,6 +66,8 @@ public:
 	bool PickOverviewIcon(const FVector2D& ScreenPosition, FGuLiCommanderOverviewMarker& Out, bool bInspect = false);
 
 private:
+    UFUNCTION()
+    void HandlePossessedPawnChanged(APawn* OldPawn, APawn* NewPawn);
     uint64 LocalBindingGeneration=0,BuildingFeedbackReceiptCount=0;
 	void SceneLine(float X1, float Y1, float X2, float Y2, FLinearColor Color, float Width=1);
 	void SceneRect(FLinearColor Color, float X, float Y, float W, float H);
@@ -128,6 +132,7 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UGuLiCommanderHUDWidget> RuntimeHUDWidget;
+    UPROPERTY(Transient) TObjectPtr<UGuLiGroundHUDWidget> GroundHUDWidget;
 
 	UPROPERTY(Transient)
 	TObjectPtr<AGuLiCommanderHealthBarRenderer> HealthBarRenderer;

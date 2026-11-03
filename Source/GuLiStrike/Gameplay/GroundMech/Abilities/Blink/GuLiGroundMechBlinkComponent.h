@@ -67,6 +67,7 @@ private:
     bool bBlinkQueryActiveTag=false;
     bool bBlinkAbilityRestorePending=false;
     bool bBlinkPresentationPrimed=false;
+    bool bPresentedCooling=false,bReadyPresentationArmed=false;
     bool bBlinkCueActive=false;
     bool bShuttingDown=false;
     uint8 PresentedBlinkPhase=0, NotifiedBlinkPhase=0;

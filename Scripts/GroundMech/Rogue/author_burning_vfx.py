@@ -1,6 +1,7 @@
 """Build scoped project copies; marketplace effects remain read-only."""
 import json
 import re
+import runpy
 import traceback
 from pathlib import Path
 import unreal
@@ -47,7 +48,7 @@ def main():
     require(unreal.NiagaraService.save_system(STATUS),'Save status')
     report['assets'].append({'path':STATUS,'compile':str(compiled),'emitters':[str(e) for e in emitters],'mesh_dependency_removed':True,
         'emitter_properties':[str(unreal.NiagaraEmitterService.get_emitter_properties(STATUS,str(e))) for e in emitters],
-        'diagnostics':unreal.GuLiCombatEffectAuthoringLibrary.get_war_machine_hover_compile_diagnostics(status)})
+        'diagnostics':unreal.GuLiCombatEffectAuthoringLibrary.get_buff_compile_diagnostics(status)})
     rows=json.loads((ROOT/'data/Json/DT_GuLiStrikeVfx_Effects.json').read_text(encoding='utf-8'))
     if isinstance(rows,dict):rows=rows['rows']
     player=next(r for r in rows if r['Name']=='PlayerBullet')
@@ -56,18 +57,9 @@ def main():
     source_material=source.rsplit('/',1)[0]+'/M_GroundBulletTrail_Orange'
     material=copy(source_material,MATERIAL)
     shader=next(n for n in unreal.ObjectIterator(unreal.MaterialExpressionCustom) if n.get_outer()==material and 'HeadDistance' in str(n.get_editor_property('code')) and 'ChunkOffset' in str(n.get_editor_property('code')))
-    code=str(shader.get_editor_property('code'))
-    if 'GULI_BURNING_BULLET_V1' not in code:
-        marker='''// GULI_BURNING_BULLET_V1: fire rides the same frozen world-space trail.
-float flameTime=max(HeadDistance,0.0)/max(Speed,1.0)+max(EndAge,0.0);
-float tongueWave=sin(along*0.027-flameTime*23.0)+0.6*sin(along*0.071+flameTime*17.0);
-'''
-        code=marker+code
-        code=re.sub(r'(float d\s*=.*?;)',r'\1\nd=max(0.0,d-abs(tongueWave)*max(Width*0.7,0.2));',code,count=1)
-        code=code.replace('float body =','float tongues=exp(-pow(d/max(Width*2.2,0.2),2.0))*saturate(tongueWave*0.5+0.5)*0.5;\nfloat body =',1)
-        require('float tongues=' in code,'Unknown Ground trail material contract')
-        code=code.replace('return float4(rgb,','rgb+=Emission*TailColor.rgb*tongues;\nreturn float4(rgb,',1).replace('saturate(body+glow)','saturate(body+glow+tongues)')
-        shader.set_editor_property('code',code)
+    migration=runpy.run_path(str(ROOT/'Scripts/GroundMech/Rogue/burning_bullet_shader.py'))
+    shader.set_editor_property('code',migration['migrate'](str(shader.get_editor_property('code'))))
+    migration['apply_palette'](unreal,material)
     unreal.MaterialEditingLibrary.recompile_material(material)
     diagnostic=unreal.MaterialNodeService.get_material_diagnostics(MATERIAL)
     require(diagnostic.success and diagnostic.is_compiled_ok,str(diagnostic))
@@ -80,6 +72,8 @@ float tongueWave=sin(along*0.027-flameTime*23.0)+0.6*sin(along*0.071+flameTime*1
     require(unreal.NiagaraService.save_system(BULLET),'Save burning bullet')
     report['assets'].append({'path':BULLET,'source':source,'material':MATERIAL,'material_diagnostics':str(diagnostic),'compile':str(compiled),
         'renderers':{str(e):[str(r) for r in unreal.NiagaraEmitterService.list_renderers(BULLET,str(e))] for e in unreal.NiagaraService.summarize(BULLET).get_editor_property('emitter_names')}})
+    burst=runpy.run_path(str(ROOT/'Scripts/GroundMech/Rogue/author_burning_burst.py'),run_name='ground_burst_authoring')['build']()
+    report['assets'].append({'path':burst['asset'],'source':burst['source'],'diagnostics':burst['diagnostics']})
     report['success']=True
     (OUT/'vfx_authoring.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({'success':True,'assets':[a['path'] for a in report['assets']],'report':str(OUT/'vfx_authoring.json')}))

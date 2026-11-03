@@ -295,6 +295,10 @@ struct FGuLiStrikeMechSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	int32 ImpactVfxId = 0;
 
+	/** IconId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 IconId = 0;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_Visuals 的行结构（源: GuLiStrikeMech.xlsx / Visuals）。 */

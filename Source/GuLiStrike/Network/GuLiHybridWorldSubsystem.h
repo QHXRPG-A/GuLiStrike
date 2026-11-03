@@ -19,6 +19,17 @@ struct FGuLiHybridOwnershipMetrics
     double LastMilliseconds=0;
 };
 
+/** Live local presentation receipt. Never serialized or used for gameplay admission. */
+struct FGuLiDamageFeedback
+{
+    uint32 Epoch=0;
+    FGuid Event,Player;
+    FGuLiTargetHandle Source,Target;
+    float Applied=0,Absorbed=0;
+    bool bKilled=false;
+};
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiDamageFeedbackEvent,const FGuLiDamageFeedback&);
+
 struct FGuLiHybridUpgradeSelection
 {
     uint64 CatalogRevision=0,Revision=0;
@@ -357,6 +368,7 @@ public:
     void EndHUDQueryScope();
     void GetCommanderDefinitions(TArray<FName>& Out) const;
     FGuLiHybridObjectChanged OnObjectChanged;
+    FGuLiDamageFeedbackEvent OnDamageFeedback;
     /** Current object or authenticated exact-life retired metadata; never grants an entity or simulation. */
     bool GetObjectMetadata(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
     uint32 GetLatestRetiredLife(const FGuLiHybridObjectKey& Stable) const;

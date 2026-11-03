@@ -40,6 +40,7 @@
 #include "Misc/Parse.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
+#include "Policies/CondensedJsonPrintPolicy.h"
 
 namespace
 {
@@ -1512,15 +1513,28 @@ FGuid UGuLiHybridWorldSubsystem::SubmitDamage(const FGuLiDamageRequest& R,uint64
         : FGuLiHybridManifest::MakeDamageRuleId(SourceState.Definition.ToString(),R.SkillId,R.WeaponBinding.SlotId)));
     V.TargetX=R.HitLocation.X; V.TargetY=R.HitLocation.Y;
     const TWeakObjectPtr<UGuLiHybridWorldSubsystem> Weak(this);
-    const auto Event=State->Client->Submit(V,[Weak,Callback=MoveTemp(Callback)](const CommitResult& Result)
+    FGuLiDamageFeedback Feedback;Feedback.Epoch=R.MatchEpoch;Feedback.Event=R.DamageEventId;
+    Feedback.Source=R.Source;Feedback.Target=R.Target;
+    FGuLiHybridObjectKey AttackerKey;FGuLiHybridObjectState AttackerState;
+    if(R.Source.Kind==EGuLiTargetKind::GroundActor && ResolveTarget(R.Source,AttackerKey) && GetObjectMetadata(AttackerKey,AttackerState))
+        Feedback.Player=AttackerState.Controller;
+    // Restored receipts are already authoritative state, not new presentation events.
+    FGuLiDamageCommitResult PreviousResult;const bool NewReceipt=!FindDamageResult(R.DamageEventId,PreviousResult);
+    const auto Event=State->Client->Submit(V,[Weak,Feedback,NewReceipt,Callback=MoveTemp(Callback)](const CommitResult& Result) mutable
     {
-        if (!Weak.IsValid() || !Callback) return;
+        if (!Weak.IsValid()) return;
         FGuLiDamageCommitResult Out;
         Out.Status=Result.Status==CommitStatus::Committed ? EGuLiDamageCommitStatus::Committed
             : Result.Status==CommitStatus::Duplicate ? EGuLiDamageCommitStatus::Duplicate : EGuLiDamageCommitStatus::RejectedByAdapter;
         Out.AppliedDamage=Result.Damage.Applied; Out.AbsorbedDamage=Result.Damage.Absorbed; Out.RemainingHealth=Result.Vitals.Value;
         Out.bKilled=Result.Damage.Killed; Out.DeathEventId=ToUE(Result.DeathEvent); Out.RewardEventId=ToUE(Result.RewardEvent);
-        Out.CommitOrdinal=Result.StateVersion; Callback(Out);
+        Out.CommitOrdinal=Result.StateVersion;
+        if(NewReceipt && Feedback.Player.IsValid() && Out.WasAccepted() && (Out.AppliedDamage>0 || Out.AbsorbedDamage>0))
+        {
+            Feedback.Applied=Out.AppliedDamage;Feedback.Absorbed=Out.AbsorbedDamage;Feedback.bKilled=Out.bKilled;
+            Weak->OnDamageFeedback.Broadcast(Feedback);
+        }
+        if(Callback) Callback(Out);
     },OriginalAt.IsSet());
     if (Event.Valid() && CapturesGameplayEvidence())
     {

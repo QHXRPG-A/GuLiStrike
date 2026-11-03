@@ -227,11 +227,15 @@ struct FGuLiHybridProjectileState
     }
     void FreezeRicochet(FRecord& V)
     {
-        if(V.bPlanFrozen)return;V.bPlanFrozen=true;
-        if(V.SourceKind!=EGuLiTargetKind::GroundActor||!V.bHit)return;
-        FGuLiHybridObjectState Object;if(!Hybrid->GetObjectView(V.Key,Object))return;
-        const auto* Frozen=Object.Capabilities.Find(TEXT("ground_attack"));GuLiNet::GroundRogue::Attack Attack;
-        if(!Frozen||!GuLiNet::GroundRogue::DecodeAttack({Frozen->Data.GetData(),SIZE_T(Frozen->Data.Num())},Attack))return;
+        if(V.bPlanFrozen)return;
+        if(V.SourceKind!=EGuLiTargetKind::GroundActor||!V.bHit){V.bPlanFrozen=true;return;}
+        FGuLiHybridCapabilityState Frozen;GuLiNet::GroundRogue::Attack Attack;
+        // The lifecycle/view fast path deliberately omits capabilities. Read only
+        // the immutable admitted attack, once at this hit's route boundary.
+        if(!Hybrid->GetObjectCapability(V.Key,TEXT("ground_attack"),Frozen))return;
+        if(!GuLiNet::GroundRogue::DecodeAttack({Frozen.Data.GetData(),SIZE_T(Frozen.Data.Num())},Attack))
+        {Hybrid->Suspend(TEXT("Invalid Ground attack while freezing ricochet"));return;}
+        V.bPlanFrozen=true;
         const auto Effect=GuLiNet::Effects::GetRicochet(Attack.Effects);if(!Effect.Maximum)return;
         GuLiNet::GroundRogue::Chain Plan;Plan.Frozen=Attack;Plan.First=GuLiNetBridge::ToCore(V.HitTarget);Plan.Shot=GuLiNetBridge::ToCore(V.Key.StableId);Plan.At=V.DamageAt;
         const FVector Origin=V.Geometry.Location;Plan.X=Origin.X;Plan.Y=Origin.Y;Plan.Z=Origin.Z;Plan.Budget=GuLiNet::GroundRogue::HopBudget(Plan.Shot,Effect);
@@ -241,24 +245,29 @@ struct FGuLiHybridProjectileState
         FCollisionObjectQueryParams Objects;Objects.AddObjectTypesToQuery(ECC_WorldStatic);Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
         TSet<FGuLiHybridObjectKey> Visited;Visited.Add(V.HitTarget);FVector Point=Origin;
         const auto Cell=[](const FVector& P){const double Size=UGuLiProjectilePoolSubsystem::SpatialCellCentimeters;return FIntVector(FMath::FloorToInt(P.X/Size),FMath::FloorToInt(P.Y/Size),FMath::FloorToInt(P.Z/Size));};
+        // The search volume belongs to the first impact, never follows the chain.
+        const auto Min=Cell(Origin-FVector(Effect.Range)),Max=Cell(Origin+FVector(Effect.Range));
+        struct FCandidate {FGuLiHybridObjectKey Key;FVector Point;double Distance;};TArray<FCandidate> Eligible;TSet<int32> Seen;
+        for(int32 X=Min.X;X<=Max.X;++X)for(int32 Y=Min.Y;Y<=Max.Y;++Y)for(int32 Z=Min.Z;Z<=Max.Z;++Z)
+        if(const auto* Bucket=Pool->SpatialGrid.Find(FIntVector(X,Y,Z)))for(int32 Index:*Bucket)
+        {
+            if(Seen.Contains(Index))continue;Seen.Add(Index);const auto& S=Pool->Targets[Index].Snapshot;
+            if(!S.bAlive||S.Team==V.Team||S.Team==EGuLiTeam::Unassigned)continue;
+            const FVector Center=S.GetHitCenter();if(Center.ContainsNaN()||FVector::DistSquared(Origin,Center)>FMath::Square(double(Effect.Range)))continue;
+            FGuLiHybridObjectKey Key;if(!Hybrid->ResolveTarget(S.Handle,Key)||Visited.Contains(Key))continue;Eligible.Add({Key,Center,0});
+        }
+        // One spatial query per frozen route; only order/visibility changes per hop.
         for(uint32 Hop=0;Hop<Plan.Budget;++Hop)
         {
-            struct FCandidate {FGuLiHybridObjectKey Key;FVector Point;double Distance;};TArray<FCandidate> Candidates;TSet<int32> Seen;
-            const auto Min=Cell(Point-FVector(Effect.Range)),Max=Cell(Point+FVector(Effect.Range));
-            for(int32 X=Min.X;X<=Max.X;++X)for(int32 Y=Min.Y;Y<=Max.Y;++Y)for(int32 Z=Min.Z;Z<=Max.Z;++Z)
-            if(const auto* Bucket=Pool->SpatialGrid.Find(FIntVector(X,Y,Z)))for(int32 Index:*Bucket)
-            {
-                if(Seen.Contains(Index))continue;Seen.Add(Index);const auto& S=Pool->Targets[Index].Snapshot;
-                if(!S.bAlive||S.Team==V.Team||S.Team==EGuLiTeam::Unassigned)continue;
-                const FVector Center=S.GetHitCenter();const double Distance=FVector::DistSquared(Point,Center);if(Distance>FMath::Square(double(Effect.Range)))continue;
-                FGuLiHybridObjectKey Key;if(!Hybrid->ResolveTarget(S.Handle,Key)||Visited.Contains(Key))continue;Candidates.Add({Key,Center,Distance});
-            }
+            TArray<FCandidate> Candidates;
+            for(const auto& C:Eligible)if(!Visited.Contains(C.Key))Candidates.Add({C.Key,C.Point,FVector::DistSquared(Point,C.Point)});
             Candidates.Sort([](const auto& A,const auto& B){return A.Distance!=B.Distance?A.Distance<B.Distance:GuLiNetBridge::ToCore(A.Key)<GuLiNetBridge::ToCore(B.Key);});
             const auto* Next=Candidates.FindByPredicate([&](const auto& C){return !Pool->GetWorld()->LineTraceTestByObjectType(Point,C.Point,Objects,Params);});
             if(!Next)break;GuLiNet::GroundRogue::Hop H{GuLiNetBridge::ToCore(Next->Key),Next->Point.X,Next->Point.Y,Next->Point.Z};Plan.Hops.push_back(H);
             GuLiLinearState::FHopStatus Status;Status.Target=Next->Key;Status.Position=Next->Point;Status.Event=GuLiNetBridge::ToUE(GuLiNet::GroundRogue::HopEvent(Plan.Shot,Hop+1,H.Target));V.Hops.Add(Status);Visited.Add(Next->Key);Point=Next->Point;
         }
-        const auto Bytes=GuLiNet::GroundRogue::EncodeChain(Plan);if(Bytes.empty()){V.Hops.Reset();return;}
+        const auto Bytes=GuLiNet::GroundRogue::EncodeChain(Plan);
+        if(Bytes.empty()){V.Hops.Reset();V.bPlanFrozen=false;Hybrid->Suspend(TEXT("Ground ricochet route could not be encoded"));return;}
         V.Plan.Append(Bytes.data(),int32(Bytes.size()));V.PlanEvent=GuLiLinearState::Event(V.Key,TEXT("/ricochet-plan"));
     }
     void QueueGroundHit(FRecord& V,int32 Segment,const FGuLiTargetHandle& Target,FGuid Event,FVector Point,float Multiplier)
@@ -299,13 +308,15 @@ struct FGuLiHybridProjectileState
     {
         if(!V.bHit||V.SourceKind!=EGuLiTargetKind::GroundActor)return true;
         if(!V.bFirstDamageCommitted)return true;
+        if(!V.bPlanFrozen){FreezeRicochet(V);if(!V.bPlanFrozen)return false;}
         if(!V.bFirstHitNotified)
         {FGuLiTargetHandle Target;if(Hybrid->ResolveObjectTarget(V.HitTarget,Target)){V.bFirstHitNotified=true;QueueGroundHit(V,0,Target,V.Damage,V.Geometry.Location,1);}}
         if(V.Plan.IsEmpty())return true;
         if(!V.bPlanResolved)
         {
-            const auto* Existing=Object.Capabilities.Find(TEXT("ground_ricochet"));
-            if(Existing&&!Existing->Data.IsEmpty()){if(Existing->Data!=V.Plan){Hybrid->Suspend(TEXT("Frozen ricochet route changed"));return false;}V.bPlanResolved=true;}
+            FGuLiHybridCapabilityState Existing;
+            if(Hybrid->GetObjectCapability(V.Key,TEXT("ground_ricochet"),Existing)&&!Existing.Data.IsEmpty())
+            {if(Existing.Data!=V.Plan){Hybrid->Suspend(TEXT("Frozen ricochet route changed"));return false;}V.bPlanResolved=true;}
             else
             {
                 FGuLiHybridTransactionResult Result;
@@ -386,9 +397,11 @@ struct FGuLiHybridProjectileState
         TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_Activate);
         auto* P=Pool.Get(); if (!P || V.bFinished || !V.bRecipe || Object.SimulationOwner!=LocalPlayer() || Object.LifeState!=GuLiLinearState::Alive) return;
         if (!V.bAdmitted) Trace(TEXT("admission-observed"),V);
-        if(const auto* Frozen=Object.Capabilities.Find(TEXT("ground_attack")))
+        if(!V.bAdmitted&&V.SourceKind==EGuLiTargetKind::GroundActor)
         {
-            GuLiNet::GroundRogue::Attack A;if(!GuLiNet::GroundRogue::DecodeAttack({Frozen->Data.GetData(),SIZE_T(Frozen->Data.Num())},A)){Hybrid->Suspend(TEXT("Invalid admitted Ground attack"));return;}
+            FGuLiHybridCapabilityState Frozen;
+            if(!Hybrid->GetObjectCapability(V.Key,TEXT("ground_attack"),Frozen))return;
+            GuLiNet::GroundRogue::Attack A;if(!GuLiNet::GroundRogue::DecodeAttack({Frozen.Data.GetData(),SIZE_T(Frozen.Data.Num())},A)){Hybrid->Suspend(TEXT("Invalid admitted Ground attack"));return;}
             auto& G=V.Recipe.GroundAttack;G.Player=GuLiNetBridge::ToUE(A.Player);G.Revision=A.RevisionValue;G.Damage=A.Damage;G.BulletVfxId=int32(A.BulletVfx);G.ImpactVfxId=int32(A.ImpactVfx);G.MuzzleVfxId=int32(A.MuzzleVfx);
             G.Effects=A.Effects;V.Recipe.PlayerBulletVfxId=G.BulletVfxId;V.Recipe.Context.Damage=G.Damage;
         }

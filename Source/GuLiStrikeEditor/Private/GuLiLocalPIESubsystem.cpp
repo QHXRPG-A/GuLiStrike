@@ -6,6 +6,7 @@
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingProductionComponent.h"
 #include "UObject/UObjectIterator.h"
@@ -223,13 +224,13 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     const FString Project=FPaths::GetProjectFilePath();
     const auto CVarValue=[](const TCHAR* Name)
     {const auto* V=IConsoleManager::Get().FindConsoleVariable(Name);return V?V->GetInt():1;};
-    const FString CpuOptions=FString::Printf(TEXT(" -GuLiYieldBetweenCaptureCuts=%d -GuLiFastPackCacheKey=%d -GuLiNativePeerReceive=%d -GuLiReusePayloadCompressor=%d -GuLiFastSmallPayloadCompression=%d -ExecCmds=\"gs.Hybrid.FlightServiceFastPath %d,gs.Hybrid.NativePeerSend %d,gs.Hybrid.EntityLayoutCache %d\""),
+    const FString CpuOptions=FString::Printf(TEXT(" -GuLiYieldBetweenCaptureCuts=%d -GuLiFastPackCacheKey=%d -GuLiNativePeerReceive=%d -GuLiReusePayloadCompressor=%d -GuLiFastSmallPayloadCompression=%d -ExecCmds=\"gs.Hybrid.FlightServiceFastPath %d,gs.Hybrid.NativePeerSend %d,gs.Hybrid.EntityLayoutCache %d,gs.Review.GroundIsolateCombat %d\""),
         CVarValue(TEXT("gs.Hybrid.YieldBetweenCaptureCuts")),CVarValue(TEXT("gs.Hybrid.FastPackCacheKey")),
         CVarValue(TEXT("gs.Hybrid.NativePeerReceive")),
         CVarValue(TEXT("gs.Hybrid.ReusePayloadCompressor")),
         CVarValue(TEXT("gs.Hybrid.FastSmallPayloadCompression")),
         CVarValue(TEXT("gs.Hybrid.FlightServiceFastPath")),CVarValue(TEXT("gs.Hybrid.NativePeerSend")),
-        CVarValue(TEXT("gs.Hybrid.EntityLayoutCache")));
+        CVarValue(TEXT("gs.Hybrid.EntityLayoutCache")),CVarValue(TEXT("gs.Review.GroundIsolateCombat")));
     FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=Blue -GuLiRole=Commander -GuLiClientRunMode=LogicOnly -GuLiHotspotMask=%u -GuLiGameplayWorkers=%u -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
         *Project,LocalMap,*Config.RoomId.ToString(EGuidFormats::Digits),*State->Peer.ToString(EGuidFormats::Digits),
         Config.HotspotMask,Config.GameplayWorkers,*Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")))+ClientStopArguments+CpuOptions;
@@ -373,6 +374,16 @@ FString UGuLiLocalPIESubsystem::GetSessionStatus() const
             const FVector2D Size=Widget?Widget->GetCachedGeometry().GetLocalSize():FVector2D::ZeroVector;
             J->SetNumberField(TEXT("commander_hud_width"),Size.X);
             J->SetNumberField(TEXT("commander_hud_height"),Size.Y);
+            // Read native geometry here: Python transport must not infer visibility
+            // from a UMG registry entry or a round-tripped FGeometry alone.
+            const auto* GroundWidget=HUD?HUD->GetGroundHUDWidget():nullptr;
+            J->SetStringField(TEXT("ground_hud_widget"),GroundWidget?GroundWidget->GetClass()->GetPathName():TEXT(""));
+            J->SetBoolField(TEXT("ground_hud_in_viewport"),GroundWidget && GroundWidget->IsInViewport());
+            J->SetBoolField(TEXT("ground_hud_visible"),GroundWidget && GroundWidget->IsVisible());
+            J->SetBoolField(TEXT("ground_hud_owner_matches"),GroundWidget && GroundWidget->GetOwningPlayer()==Commander);
+            const FVector2D GroundSize=GroundWidget?GroundWidget->GetCachedGeometry().GetLocalSize():FVector2D::ZeroVector;
+            J->SetNumberField(TEXT("ground_hud_width"),GroundSize.X);
+            J->SetNumberField(TEXT("ground_hud_height"),GroundSize.Y);
         }
         if (const auto* Resources=World->GetSubsystem<UGuLiResourceWorldSubsystem>())
         {

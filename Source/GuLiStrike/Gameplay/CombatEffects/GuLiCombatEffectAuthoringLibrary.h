@@ -28,6 +28,9 @@ public:
     /** Read actual CPU particle groups of the Ground Blink burst. */
     UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
     static FString InspectGroundBlinkComponent(UNiagaraComponent* Component);
+    /** Numeric CPU particle readback only; no render capture or gameplay mutation. */
+    UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+    static FString InspectBurningBurstComponent(UNiagaraComponent* Component);
 	/** Fresh, non-rendering container. Refuses to overwrite any existing mesh. Caller supplies geometry and saves. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static UStaticMesh* CreateMissileMeshContainer();
@@ -87,6 +90,11 @@ public:
     /** Owned burning copy only: local body-space simulation and conservative bounds, no mesh-sampling dependency. */
     UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
     static bool ConfigureBuffStatusSystem(UNiagaraSystem* System,FString& Error);
+    /** Finite project-owned burst: CPU particles, local centimetres and full 5 m bounds. */
+    UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+    static bool ConfigureBuffBurstSystem(UNiagaraSystem* System,FString& Error);
+    UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+    static FString GetBuffCompileDiagnostics(UNiagaraSystem* System);
 	/** GPU emitters and fixed bounds for the task-owned WarMachine hover array pool only. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool ConfigureWarMachineHoverSystem(UNiagaraSystem* System, FString& Error);

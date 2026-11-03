@@ -43,6 +43,10 @@ struct FGuLiStrikeBuffsBuffsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buffs")
 	int32 ConfigId = 0;
 
+	/** IconId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buffs")
+	int32 IconId = 0;
+
 };
 
 /** DataTable DT_GuLiStrikeBuffs_Burning 的行结构（源: GuLiStrikeBuffs.xlsx / Burning）。 */
@@ -107,9 +111,9 @@ struct FGuLiStrikeBuffsBurningBurstRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BurningBurst")
 	float LostHealthDamageRatio = 0.0f;
 
-	/** RadiusMultiplier (float, Necessary) */
+	/** RadiusCentimeters (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BurningBurst")
-	float RadiusMultiplier = 0.0f;
+	float RadiusCentimeters = 0.0f;
 
 	/** BurstVfxId (int, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BurningBurst")

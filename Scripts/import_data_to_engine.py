@@ -18,8 +18,10 @@ Note:    MCPython TCP 服务是排队异步执行——连接立刻关闭、脚�
   - 行数据：CSVImportFactory + AutomatedImportSettings(ImportRowStruct/ImportType)，
     经 AssetImportTask 导入 CSV 侧车（JSON 数据先在本脚本内转 CSV；向量列用
     "(X=..,Y=..,Z=..)" ImportText 格式）。
-  - 禁用：delete_asset（弹模态框卡死）、fill_data_table_from_csv_string /
-    fill_data_table_from_json_string（导入完成后收尾路径必挂，复现两次）。
+  - 不删除已加载的表。2026-11-02：公共文字/HUD表由活动UI强引用，CSVImportFactory
+    replace_existing会触发FUObjectArray断言。FillDataTableFromJSONString内部也调用工厂，
+    不能用于原地更新；这两张表由编辑器原生助手先校验临时表，再复制行，保留目标对象。
+    其他表保留既有CSV路线。
 
 Report:  Data/tmp_import_report.json
 """
@@ -51,6 +53,9 @@ WIRING = {
 
 # 由 C++ Config settings 通过软引用接线；成功导入后不应被误报为未接线。
 CONFIG_WIRED_TABLES = {
+    "DT_GuLiStrikeIcons_Icons",
+    "DT_GuLiStrikeGroundHUD_Elements",
+    "DT_GuLiStrikeMech_Skills",
     "DT_GuLiStrikeModels_Models",
     "DT_GuLiStrikeModels_Parts",
     "DT_GuLiStrikeModels_MaterialParameters",
@@ -234,27 +239,34 @@ def import_table(table_name, table_cfg):
                 raise RuntimeError("create_asset returned None")
         mark(f"dt-ready created={entry['created']}")
 
-        # CSVImportFactory + AutomatedImportSettings：官方自动导入通道
-        try:
-            import_type = unreal.CSVImportType.ECSV_DATA_TABLE
-        except AttributeError:
-            import_type = 0
-        settings = unreal.CSVImportSettings()
-        settings.set_editor_property("import_row_struct", row_struct)
-        settings.set_editor_property("import_type", import_type)
-        csv_factory = unreal.CSVImportFactory()
-        csv_factory.set_editor_property("automated_import_settings", settings)
-
-        task = unreal.AssetImportTask()
-        task.set_editor_property("factory", csv_factory)
-        task.set_editor_property("filename", csv_path)
-        task.set_editor_property("destination_path", DEST_PATH)
-        task.set_editor_property("destination_name", table_name)
-        task.set_editor_property("automated", True)
-        task.set_editor_property("replace_existing", True)
-        task.set_editor_property("save", False)
-        unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
-        mark("import-task-done")
+        if table_name in {'DT_GuLiStrikeGameTexts_Texts','DT_GuLiStrikeGroundHUD_Elements'}:
+            if dt.get_editor_property('row_struct') != row_struct:
+                raise RuntimeError('UI table native schema differs; reload the correct native module before import')
+            problems = unreal.GuLiDataTableImportLibrary.update_from_json(dt,json.dumps(src_rows,ensure_ascii=False))
+            if problems:
+                raise RuntimeError('In-place UI table import failed: ' + '; '.join(str(p) for p in problems))
+            entry['update_mode']='in_place';mark('in-place-ui-import-done')
+        else:
+            # Keep the established import route for other systems.
+            try:
+                import_type = unreal.CSVImportType.ECSV_DATA_TABLE
+            except AttributeError:
+                import_type = 0
+            settings = unreal.CSVImportSettings()
+            settings.set_editor_property("import_row_struct", row_struct)
+            settings.set_editor_property("import_type", import_type)
+            csv_factory = unreal.CSVImportFactory()
+            csv_factory.set_editor_property("automated_import_settings", settings)
+            task = unreal.AssetImportTask()
+            task.set_editor_property("factory", csv_factory)
+            task.set_editor_property("filename", csv_path)
+            task.set_editor_property("destination_path", DEST_PATH)
+            task.set_editor_property("destination_name", table_name)
+            task.set_editor_property("automated", True)
+            task.set_editor_property("replace_existing", True)
+            task.set_editor_property("save", False)
+            unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
+            mark("import-task-done")
 
         lib = unreal.DataTableFunctionLibrary
         row_names = [str(n) for n in lib.get_data_table_row_names(dt)]
@@ -308,7 +320,8 @@ def import_table(table_name, table_cfg):
         if not all(checks.values()):
             raise RuntimeError(f"row value mismatch: {checks}")
 
-        unreal.EditorAssetLibrary.save_loaded_asset(dt, False)
+        if not unreal.EditorAssetLibrary.save_loaded_asset(dt, False):
+            raise RuntimeError('DataTable save failed')
         entry["imported"] = True
         mark("saved")
     except Exception:  # noqa: BLE001

@@ -8,6 +8,7 @@ class UBackgroundBlur;
 class UButton;
 class UImage;
 class UTextBlock;
+class USizeBox;
 class USceneCaptureComponent2D;
 class UTextureRenderTarget2D;
 class UMaterialInstanceDynamic;
@@ -16,6 +17,9 @@ class UDataTable;
 class UGuLiRogueCardPresentation;
 class AActor;
 class APlayerController;
+class FViewport;
+class USceneComponent;
+class UWidgetComponent;
 
 /** UMG owns input/focus and backdrop; the scene capture owns only the 3D card pixels. */
 UCLASS()
@@ -29,18 +33,23 @@ public:
 	void SetCopy(const FText& Title, const FText& Hint);
 	void SetRerollState(bool bEnabled, const FText& Label);
 	void ResetPresentation();
+    void FitViewport(FVector2D ViewportSize);
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry&,const FPointerEvent&) override;
 	virtual FReply NativeOnKeyDown(const FGeometry&,const FKeyEvent&) override;
 private:
 	UFUNCTION() void HandleRerollClicked();
+    UFUNCTION() void HandleCloseClicked();
 	UPROPERTY(Transient) TObjectPtr<UBackgroundBlur> Blur;
 	UPROPERTY(Transient) TObjectPtr<UImage> Cards;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> TitleLabel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> HintLabel;
 	UPROPERTY(Transient) TObjectPtr<UButton> RerollButton;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> RerollLabel;
+    UPROPERTY(Transient) TObjectPtr<UButton> CloseButton;
+    UPROPERTY(Transient) TObjectPtr<USizeBox> GroundDesign;
+    bool bGroundTheme=false;
 	TWeakObjectPtr<UGuLiRogueCardPresentation> Presentation;
 };
 
@@ -80,6 +89,21 @@ private:
 	void Cleanup();
 	void DestroyStage();
 	void UpdateCaptureSize();
+    void ViewportResized(FViewport* Viewport,uint32 Unused);
+    void RefreshCapture();
+    void PrepareGroundCards();
+    bool bDirectSelection=false,bTimeAnimatedCards=true;
+    bool bPreparingGroundCards=false,bGroundMaterialsReady=false;
+    double NextGroundMaterialCheck=0;
+    int32 GroundWarmupFrames=0;
+    int32 WarmCaptureFrames=0;
+    FDelegateHandle ViewportHandle;
+    TArray<TWeakObjectPtr<USceneComponent>> CaptureParts;
+    TArray<FTransform> CaptureTransforms;
+    TArray<bool> CaptureVisibility;
+    TArray<TWeakObjectPtr<UWidgetComponent>> GroundCardFrames;
+    int32 HighlightedGroundCard=INDEX_NONE;
+    FText DisplayedNotice;
 	UPROPERTY(Transient) TObjectPtr<AActor> Director;
 	UPROPERTY(Transient) TObjectPtr<UUserWidget> LegacyHUD;
 	UPROPERTY(Transient) TObjectPtr<USceneCaptureComponent2D> Capture;

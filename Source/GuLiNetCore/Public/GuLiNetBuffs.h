@@ -6,13 +6,13 @@ namespace GuLiNet::Buffs
 inline constexpr const char* Name="buff_status";
 inline constexpr const char* HostName="buff_host";
 inline constexpr const char* DefinitionName="buff/status";
-inline constexpr std::uint32_t Version=1,MaximumTargets=2048;
+inline constexpr std::uint32_t Version=2,MaximumTargets=2048;
 struct Definition
 {
-    std::uint32_t Id=0,VersionValue=1,Parent=0;
+    std::uint32_t Id=0,VersionValue=Version,Parent=0;
     std::string Handler;
     Tick Duration=0,Interval=0;
-    float Ratio=0,RadiusMultiplier=0;
+    float Ratio=0,RadiusCentimeters=0;
     std::uint32_t Vfx=0,BulletVfx=0;
     friend bool operator==(const Definition&,const Definition&)=default;
 };
@@ -48,8 +48,9 @@ struct State
     Pulse Pending;
     // Last burst is presentation history only; bootstrapping clients never replay it.
     Id LastBurst;
+    Tick BurstAt=0;
     double BurstX=0,BurstY=0,BurstZ=0;
-    float BurstRadius=0;
+    float BurstRadius=0,BurstStartRadius=0;
     std::uint32_t BurstVfx=0;
 };
 struct Command

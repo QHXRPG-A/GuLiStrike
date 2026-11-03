@@ -10,11 +10,8 @@ class UAbilitySystemComponent;
 class UGuLiGroundMechMovementComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
-class UStaticMeshComponent;
-class UMaterialInstanceDynamic;
-class UMaterialInterface;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FGuLiRocketPresentationChanged, float, FuelRatio, bool, bThrusting, float, Opacity);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGuLiRocketPresentationChanged, float, FuelRatio, bool, bThrusting);
 
 /** GAS/configuration boundary and reconstructable cosmetics. Resource integration belongs to CMC. */
 UCLASS(ClassGroup=(GuLiStrike), meta=(BlueprintSpawnableComponent))
@@ -32,7 +29,6 @@ public:
     UFUNCTION(BlueprintPure, Category="Mech|Rocket Jump") float GetFuel() const;
     UFUNCTION(BlueprintPure, Category="Mech|Rocket Jump") bool IsThrusting() const;
     UFUNCTION(BlueprintPure, Category="Mech|Rocket Jump") bool IsJetActive() const;
-    UFUNCTION(BlueprintPure, Category="Mech|Rocket Jump") float GetFuelBarOpacity() const { return FuelBarOpacity; }
     UPROPERTY(BlueprintAssignable, Category="Mech|Rocket Jump") FGuLiRocketPresentationChanged OnPresentationChanged;
     bool IsConfigured() const { return bConfigured; }
     bool IsInputHeld() const { return bInputHeld; }
@@ -58,16 +54,13 @@ private:
     UPROPERTY(EditDefaultsOnly, Category="Mech|Rocket Jump") FName SkillRow = TEXT("RocketJump");
     UPROPERTY(Transient) FGuLiStrikeMechSkillsRow Configuration;
     UPROPERTY(Transient) TObjectPtr<UNiagaraSystem> JetSystem;
-    UPROPERTY(Transient) TObjectPtr<UMaterialInterface> FuelMaterial;
     UPROPERTY(Transient) TObjectPtr<UNiagaraComponent> LeftJet;
     UPROPERTY(Transient) TObjectPtr<UNiagaraComponent> RightJet;
-    UPROPERTY(Transient) TObjectPtr<UStaticMeshComponent> FuelBar;
-    UPROPERTY(Transient) TObjectPtr<UMaterialInstanceDynamic> FuelMID;
     UPROPERTY() bool bReplicatedThrusting = false;
     UPROPERTY() bool bReplicatedJetActive = false;
     FGameplayAbilitySpecHandle AbilityHandle;
     bool bConfigured = false, bInputHeld = false, bAbilityActive = false;
-    bool bShown = false, bJetsActive = false, bJetsCreated = false;
-    float FuelBarOpacity = 0.f, LastRatio = -1.f, LastOpacity = -1.f;
+    bool bJetsActive = false, bJetsCreated = false;
+    float LastRatio = -1.f;
     bool bLastThrusting = false;
 };

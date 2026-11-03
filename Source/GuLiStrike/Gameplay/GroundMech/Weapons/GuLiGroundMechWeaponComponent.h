@@ -34,6 +34,9 @@ public:
     bool ApplyHybridUpgrade(const FGuLiHybridObjectState& State);
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetFireRate() const { return ActiveUpgrade.FireRate; }
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetShotDamage() const { return ActiveUpgrade.Damage; }
+    int32 GetWeaponLevel() const { return ActiveUpgrade.Level; }
+    int32 GetSkillIconId() const { return ActiveSkill.IconId; }
+    bool CanUseLocalWeapon() const { return CanControl(true); }
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") bool IsWeaponReady() const { return bConfigured; }
 	bool GetActualShotRay(FVector& Origin,FVector& Direction) const;
     /** Build the per-shot payload; admission independently freezes its authorized numeric capability. */

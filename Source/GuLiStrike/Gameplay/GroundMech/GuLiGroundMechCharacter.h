@@ -8,6 +8,7 @@
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechTurnTypes.h"
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponAimTypes.h"
 #include "Gameplay/GroundMech/Network/GuLiHybridGroundInputTypes.h"
+#include "Gameplay/GroundMech/GuLiGroundPresentationEvent.h"
 #include "GuLiGroundMechCharacter.generated.h"
 
 class UCameraComponent;
@@ -47,6 +48,8 @@ public:
 	bool IsShoulderLookActive() const;
 	void SetShoulderAimHeld(bool bHeld);
 	bool IsShoulderAimHeld() const { return bShoulderAimHeld; }
+    FGuLiGroundPresentationChanged OnLocalPresentation;
+    void NotifyLocalPresentation(const FGuLiGroundPresentationEvent& Event);
 	const FGuLiGroundMechConfiguration& GetMobilityConfiguration() const { return MobilityConfiguration; }
 	const FGuLiGroundMechTurnState& GetTurnState() const { return TurnState; }
 	const FGuLiGroundMechWeaponAimState& GetWeaponAimState() const { return WeaponAimState; }
