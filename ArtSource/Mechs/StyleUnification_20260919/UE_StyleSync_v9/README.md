@@ -31,7 +31,7 @@ Spider 主体仍为 **839,778 三角面**，299 骨骼、原 10 个主体材质�
 ## 源文件与回退
 
 - 导出脚本：[export_mech_style_sync_v9.py](../../../../Scripts/Blender/export_mech_style_sync_v9.py)；[导出清单](export_report.json)。
-- 独立导入：[import_style_v9.py](../../../../Scripts/GroundMech/import_style_v9.py)；实时引用安装：[install_style_v9_live.py](../../../../Scripts/GroundMech/install_style_v9_live.py)。
+- 独立导入：[import_style_v9.py](https://github.com/QHXRPG-A/GuLiStrike/blob/c7974fb6a44b0dda05913318ff47f6506098dc55/Scripts/GroundMech/import_style_v9.py)；实时引用安装：[install_style_v9_live.py](https://github.com/QHXRPG-A/GuLiStrike/blob/c7974fb6a44b0dda05913318ff47f6506098dc55/Scripts/GroundMech/install_style_v9_live.py)。
 - [同步与验证清单](delivery_manifest.json)包含实际资源路径、源文件与 FBX 哈希。
 - 回退备份位于 `/Game/GuLiStrike/GroundMech/Style_v9/Rollback`：`BP_GroundMech_Light_BeforeStyle` 与 `ABP_GroundMech_BeforeStyleValidation`。旧网格在 `/Game/GuLiStrike/GroundMech/Meshes`，未覆盖或删除。
 

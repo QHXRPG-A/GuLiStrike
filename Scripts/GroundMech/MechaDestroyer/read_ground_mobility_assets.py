@@ -116,6 +116,7 @@ for name,data in authored['clips'].items():
  else: assert {n.lower() for n in curve_names}=={'groundplant_l','groundplant_r'}
  clips.append({'asset':sequence.get_path_name(),'frames':model.get_number_of_frames()+1,'curves':curves,'markers':markers,'moving_turn_additive':bool(data.get('additive'))})
 report={'success':True,'scope':'Read saved asset structure and configuration only; no graph rebuild, compile, pose tick, PIE or images','graph':{'node_count':len(nodes),'node_types':counts,'connections':connections},'assets':assets,'camera':camera_data,'sockets':{n:str(mesh.find_socket(n).bone_name) for n in ['Muzzle','Muzzle_L','Jet_Outlet_R','Jet_Outlet_L']},'mesh_relative_transform':str(component.get_relative_transform()),'capsule_half_height':pawn.get_editor_property('capsule_component').get_unscaled_capsule_half_height(),'manifests':manifests,'tables':tables,'heavy_gait':{'signature':authored['signature'],'clips':clips}}
-path=OUT/globals().get('GULI_MOBILITY_AUDIT_REPORT','ground_mobility_cold_load_20261024.json')
+path=OUT/GULI_MOBILITY_AUDIT_REPORT if 'GULI_MOBILITY_AUDIT_REPORT' in globals() else ROOT/'Artifacts/GroundMobility/asset-structure.json'
+path.parent.mkdir(parents=True,exist_ok=True)
 path.write_text(json.dumps(report,indent=2),encoding='utf8')
 unreal.MCPythonHelper.submit_result(json.dumps({'success':True,'nodes':len(nodes),'configuration_fingerprint':assets['configuration_fingerprint'],'camera':camera_data,'report':str(path)}))

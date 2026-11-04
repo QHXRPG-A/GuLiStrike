@@ -72,6 +72,6 @@
 
 - [导出脚本](../../../../Scripts/Blender/export_remaining_mech_assets_v10.py)、[FBX 回读脚本](../../../../Scripts/Blender/readback_remaining_mech_assets_v10.py)、[导出报告](export_report.json)。
 - [UE 导入脚本](../../../../Scripts/GroundMech/import_remaining_mech_assets_v10.py)，参数 `-MechAllAssetsImportWorker`；只写本批新建目录。
-- [展示与实际渲染](../../../../Scripts/GroundMech/showcase_all_mech_assets_v10.py)，参数 `-MechAllAssetsPreviewWorker`；[展示保存回读](../../../../Scripts/GroundMech/readback_mech_showcase_v10.py)。
+- [展示与实际渲染](https://github.com/QHXRPG-A/GuLiStrike/blob/c7974fb6a44b0dda05913318ff47f6506098dc55/Scripts/GroundMech/showcase_all_mech_assets_v10.py)，参数 `-MechAllAssetsPreviewWorker`；[展示保存回读](https://github.com/QHXRPG-A/GuLiStrike/blob/c7974fb6a44b0dda05913318ff47f6506098dc55/Scripts/GroundMech/readback_mech_showcase_v10.py)。
 - UE 执行环境：`D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.exe`；回读使用同目录源码 `UnrealEditor-Cmd.exe`。
 - [整批增量归档](../../../../Progress/Archive/20260919-机甲与武器整批同步UE及总结.md)。各次历史反馈、被替代版本和上一阶段回退资源继续保留。

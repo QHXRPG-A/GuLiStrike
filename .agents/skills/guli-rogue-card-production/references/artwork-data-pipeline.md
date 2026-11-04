@@ -47,8 +47,8 @@ python Scripts/Cards/card_artwork_pipeline.py review --ids 6
 ## 兼容与制作来源
 
 - 保留现有三种父材质和所有正式资源路径，初始数据从UE实际值捕获；不采用历史制作脚本默认值覆盖现状。新卡按类型/单位/效果归属Textures、Materials，公共系统继续集中共享。
-- `import_ground_ricochet_card_template.py`、包内ImportToUE.py和`import_wm01_registered_layers.py`仅为委托入口；折射评审入口也转到共享评审地图。
-- `apply_modelcomic_v9.py`、`author_warmachine_cards.py`已阻止作为旧写入入口运行，历史内容仅供追溯；旧一次性数据初始化/迁移器也不再作为日常入口。
+- 使用共享入口 `python Scripts/Cards/card_artwork_pipeline.py deploy --ids 6` 重导折射。重防号对应 ID 4、5。包内 ImportToUE.py 委托同一管线。
+- 历史卡面写入工具已退役，日常维护通过 Excel 美术目录和共享制作管线。
 - 首次捕获 `capture_card_artwork_baseline.py` 和 `author_card_artwork_catalog.py` 只用于建立目录，已存在时拒绝覆盖。历史baseline只作迁移证据，之后不能用于重置源表。
 - HTML继续使用用户确认的同一页面与六层产物。本目录登记其来源；不自动重新生图、重建旧图集或移动原图。
 

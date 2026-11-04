@@ -4,6 +4,7 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-11-04 | [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | project, data-pipeline, movement | passed | 从已发布的1124个Python文件中移除185个旧脚本，现有939个。合并游骑兵场景入口，迁移仍在使用的写表和闪现材质代码。 |
 | 2026-11-04 | [游骑兵3C结项与临时文件清理](../Archive/20261104-游骑兵3C结项与临时文件清理.md) | movement, input, presentation, camera, network | partial | 按用户指示完成游骑兵3C、指定视口相机与上下身独立转向工作项，清理27个临时文件及2个空目录。 |
 | 2026-11-04 | [游骑兵上下身独立转向编译接入与交付](../Archive/20261104-游骑兵上下身独立转向编译接入与交付.md) | movement, input, presentation, camera, network | partial | 用户许可后完成源码版Editor编译加载、Mobility单表导入、上身帧局部接线和200/600清单刷新；原机动区及正式引用已保存读回，待玩家验收。 |
 | 2026-11-04 | [游骑兵上下身独立转向源码与源表准备](../Archive/20261104-游骑兵上下身独立转向源码与源表准备.md) | movement, input, presentation, camera, network | partial | 独立炮台水平阻尼、胸舱稳定、上身坐标限位及同步恢复已写源码，Excel新增两字段并标准导出；静态核对和原场景保存完成，原生编译待确认。 |

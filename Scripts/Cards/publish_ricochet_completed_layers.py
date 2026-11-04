@@ -43,7 +43,15 @@ assert sha(OUT/'Master.png')==build['master_sha256']
 assert abs((1/6)*1.5-.25)<1e-12 and abs((2/3)*1.5-1)<1e-12
 shutil.copy2(ROOT/'Scripts/Cards/ground_ricochet_preview_template.html',OUT/'preview.html')
 shutil.copy2(ROOT/'Scripts/Cards/ricochet_foreground_renderer.js',OUT/'foreground-renderer.js')
-import_source=(ROOT/'Scripts/Cards/import_ground_ricochet_card_template.py').read_text(encoding='utf-8').replace('__PRODUCTION_DIR__',OUT.as_posix())
+import_source = """from pathlib import Path
+import importlib
+import sys
+import unreal
+root = Path(unreal.Paths.project_dir()).resolve()
+sys.path.insert(0, str(root / 'Scripts/Cards'))
+import card_artwork_pipeline
+importlib.reload(card_artwork_pipeline).execute('deploy', [6])
+"""
 ast.parse(import_source)
 (OUT/'ImportToUE.py').write_text(import_source,encoding='utf-8',newline='\n')
 for name in ['prepare_ricochet_layer_completion.py','build_ricochet_completed_layers.py','publish_ricochet_completed_layers.py']:

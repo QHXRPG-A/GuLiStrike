@@ -1,7 +1,52 @@
 """Current approved Blink: endpoint teleport, conceal cloud, finite ribbon burst."""
 import json
-from migrate_blink_source import MECH,VFX,read,write,cell,cli,column
-from configure_blink_3c_source import append_fields
+from pathlib import Path
+import subprocess
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[3]
+CLI = r'D:\UE5.7\excelize-cli\bin\xlsx.exe'
+MECH = ROOT / 'data/Excel/GuLiStrikeMech.xlsx'
+VFX = ROOT / 'data/Excel/GuLiStrikeVfx.xlsx'
+
+def cli(*args):
+    return subprocess.check_output([CLI, *map(str, args)], encoding='utf8')
+
+
+def read(book, sheet):
+    return json.loads(cli('read', book, '--sheet', sheet, '--format', 'json'))['rows']
+
+
+def column(index):
+    result = ''
+    while index:
+        index, rest = divmod(index - 1, 26)
+        result = chr(65 + rest) + result
+    return result
+
+
+def write(book, sheet, cells):
+    if not cells:
+        return
+    with tempfile.TemporaryDirectory(prefix='guli_blink_source_') as folder:
+        path = Path(folder) / 'cells.json'
+        path.write_text(json.dumps(cells, ensure_ascii=False), encoding='utf8')
+        cli('write', book, '--sheet', sheet, '--data-file', path)
+
+
+def cell(c, r, value, kind='string'):
+    return dict(cell=f'{column(c)}{r}', value=value, type=kind)
+
+
+def append_fields(book, sheet, values, required='Optional'):
+    rows = read(book, sheet)
+    headers = list(rows[0])
+    edits = []
+    for key, (kind, _) in values.items():
+        if key not in headers:
+            headers.append(key)
+            edits.extend(cell(len(headers), i, v) for i, v in enumerate((key, kind, required), 1))
+    return rows, headers, edits
 
 
 def main():

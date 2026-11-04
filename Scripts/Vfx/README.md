@@ -22,6 +22,6 @@
 
 `migration-manifest.json` 是迁移审计及使用位置的 ID 接线清单，不是第二份运行时目录。`create_registry_source.py`、`capture_*` 是一次性迁移工具。源资源路径仅在 Excel、生成数据、审计记录及资源制作脚本的输出/内部依赖定位中保留；玩法定义 DataAsset、普通模型、普通表面材质、动画和通用 UI 不属于本目录。
 
-历史 `Scale020/migrate_editor_properties.py` 和 `Scale020/run_fx_review.py` 固定于旧属性及三变体基线，检测到新目录时会在任何资产操作前拒绝执行。当前目录使用上面的定向导入及静态校验入口，不重新运行历史缩放迁移。
+旧 Scale020 特效迁移已完成。现行资源注册从 `Scripts/Vfx/import_vfx_tables.py` 导入，结构核对使用 `Scripts/Vfx/validate_vfx_static.py`。
 
 本任务未运行 PIE 或压力测试。自动化目录规则、现有数学/缩放规则及玩家子弹序列化检查在无渲染命令行 Editor 中执行。

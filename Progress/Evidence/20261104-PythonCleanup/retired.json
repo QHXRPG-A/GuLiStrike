@@ -1,0 +1,829 @@
+{
+  "baseline_git_commit": "c7974fb6a44b0dda05913318ff47f6506098dc55",
+  "verification": {
+    "published_python_before": 1124,
+    "retired": 185,
+    "remaining": 939,
+    "retained_python_ast_valid": 939,
+    "retained_direct_python_imports_and_literal_refs_to_retired_unique_names": 0,
+    "source_helpers_and_shader_constants_identical": true,
+    "map_geometry_matches_saved_entities": 10,
+    "recovery_checked_on_disposable_workbook": true,
+    "restore_idempotent": true,
+    "explicit_camera_selection_checked": true,
+    "native_build": "not needed; no native changes",
+    "gameplay_or_image_checks": "not run"
+  },
+  "retired_by_reason": {
+    "canonical-command-aliases": {
+      "reason": "Existing card, tree inspection, HUD or data exporter supplies the action directly.",
+      "files": [
+        {
+          "path": "Scripts/Cards/author_ground_ricochet_review.py",
+          "git_blob": "96fb748cd4f477aa92cc6d9a9c5d7ccf2d104b1c"
+        },
+        {
+          "path": "Scripts/Cards/import_ground_ricochet_card_template.py",
+          "git_blob": "752035b2ed3eb2cb634f63e537a98f8dd33eadb3"
+        },
+        {
+          "path": "Scripts/Cards/import_wm01_missile_card_art.py",
+          "git_blob": "ea595f4f170ceda631dda1812f191b9eb553a856"
+        },
+        {
+          "path": "Scripts/Cards/import_wm01_registered_layers.py",
+          "git_blob": "c5d313fa3d03b1bfe0299cf26ffd0eef1959a451"
+        },
+        {
+          "path": "Scripts/Engineering/author_engineering_state_trees.py",
+          "git_blob": "0b91fa95c535ce78bc1808065e4664f29bec640e"
+        },
+        {
+          "path": "Scripts/audit_ship_ability_assets.py",
+          "git_blob": "add956994df273ef739bbd9bb4830a79d0cdc2a7"
+        },
+        {
+          "path": "Scripts/author_commander_state_trees.py",
+          "git_blob": "0b91fa95c535ce78bc1808065e4664f29bec640e"
+        },
+        {
+          "path": "Scripts/build_commander_selection_ui.py",
+          "git_blob": "58dd550682fc9e6c69d435d4292f363089dc7c99"
+        },
+        {
+          "path": "Scripts/deploy_ship_ability_assets.py",
+          "git_blob": "20c10d76d98719c0bb9124e72b4ac95a4c62d3cf"
+        },
+        {
+          "path": "Scripts/rebuild_commander_bottom_hud.py",
+          "git_blob": "58dd550682fc9e6c69d435d4292f363089dc7c99"
+        },
+        {
+          "path": "Scripts/update_wingman_attack_source.py",
+          "git_blob": "1cd6080b1d920d5aa9f4ba2365287438162c5c73"
+        }
+      ]
+    },
+    "completed-asset-retirement": {
+      "reason": "Scoped destructive removal or source audit for an already delivered asset retirement.",
+      "files": [
+        {
+          "path": "Scripts/Models/retire_unused_replaced_paint.py",
+          "git_blob": "814eeb78bcc2d5974c9573196dc26ce19445924e"
+        },
+        {
+          "path": "Scripts/Network/audit_retired_cs_assets.py",
+          "git_blob": "9834561963f453e59ace46e795d56881b45bf83b"
+        },
+        {
+          "path": "Scripts/delete_explosions_for_reimport.py",
+          "git_blob": "dc83177c1ddd127e8409eb6f91fc52e8b1878b37"
+        }
+      ]
+    },
+    "completed-doc-edits": {
+      "reason": "One-time archival, approval or status recording for a specific previous delivery.",
+      "files": [
+        {
+          "path": "Progress/Evidence/20261021-DocumentConsolidation/consolidate.py",
+          "git_blob": "b79f0ade0c6a875163774691b9f08ef495418bad"
+        },
+        {
+          "path": "Progress/Evidence/20261022-AugustArchive/archive_august.py",
+          "git_blob": "b226832e2154fcfe248b0be256054a1d4857ffdd"
+        },
+        {
+          "path": "Scripts/Art/record_ship_component_formal_release.py",
+          "git_blob": "9d3cc3c447354104f6a7476929c67c492f3e82ae"
+        },
+        {
+          "path": "Scripts/CommanderLOD/audit_document_routes.py",
+          "git_blob": "e5539eaff3123c5add2f9873fcc15461263c5bba"
+        },
+        {
+          "path": "Scripts/CommanderLOD/clean_documents.py",
+          "git_blob": "e6066d8f20c3ab84ac91a4a057e08c10452b0d8b"
+        },
+        {
+          "path": "Scripts/CommanderLOD/finalize_documents.py",
+          "git_blob": "c13182eeeda22605baff3760f6d7174a68f61f07"
+        },
+        {
+          "path": "Scripts/CommanderLOD/finish_handoff.py",
+          "git_blob": "9cb17348cf249ef156ffd8049f36d4e34f701322"
+        },
+        {
+          "path": "Scripts/CommanderLOD/record_approval.py",
+          "git_blob": "3cfdaf6ea4ad87a5339b60a1c598a18fb75d4133"
+        },
+        {
+          "path": "Scripts/CommanderLOD/record_formal_documents.py",
+          "git_blob": "eef85abb67da75296a2910183631843eb33f5cc8"
+        },
+        {
+          "path": "Scripts/CommanderLOD/repair_document_erratum.py",
+          "git_blob": "e9e1d53dc2f476aa98d7b2676f90de80c9232742"
+        },
+        {
+          "path": "Scripts/Performance/record_client_three_delivery.py",
+          "git_blob": "4a1d9ed26e46dd2923d3bc84ebe1f920ca089fd6"
+        },
+        {
+          "path": "Scripts/Performance/record_client_three_manual_review.py",
+          "git_blob": "bfce111fb6ca2f57662062b5b9061092813127c4"
+        },
+        {
+          "path": "Scripts/Performance/record_client_three_partial_status.py",
+          "git_blob": "d8df3f8f9be41cd8f95fe168c2fc845f0a9c613a"
+        },
+        {
+          "path": "Scripts/Performance/update_client_three_progress.py",
+          "git_blob": "1902c43fe311eb41348d31dbf0577c573e7d4725"
+        },
+        {
+          "path": "Scripts/Performance/update_stress_frame_progress.py",
+          "git_blob": "190c3ee8fc93893d1872b7322db78279af413481"
+        }
+      ]
+    },
+    "completed-scale-source-migration": {
+      "reason": "Old source, units, fixtures or scene rewrite tied to a completed scale transition.",
+      "files": [
+        {
+          "path": "Scripts/Scale020/migrate_effect_constants.py",
+          "git_blob": "e413f21041401cf343db468653b277304fde1526"
+        },
+        {
+          "path": "Scripts/Scale020/migrate_effect_literals.py",
+          "git_blob": "41b63e95dc01cd14713b5043fdde0fbcaba64e69"
+        },
+        {
+          "path": "Scripts/Scale020/migrate_source_defaults.py",
+          "git_blob": "0369aad0c3d6aa9d9ec5d349178f6a4e00999228"
+        },
+        {
+          "path": "Scripts/Scale020/rename_pose_units.py",
+          "git_blob": "a44d8aa779e4fae050b5bf66b2aebec833980a83"
+        },
+        {
+          "path": "Scripts/Scale020/update_scale_tests.py",
+          "git_blob": "f7f7ef9fc165070b1a986a8574eba9211ebc259e"
+        },
+        {
+          "path": "Scripts/apply_ship_scene_size_normalization.py",
+          "git_blob": "3e64369546855cfb71a25f7eaadca2dc7060b2c3"
+        }
+      ]
+    },
+    "explicitly-retired-production-path": {
+      "reason": "Guarded or stopped legacy writer. Current code owns any helper still in use.",
+      "files": [
+        {
+          "path": "Scripts/Cards/apply_modelcomic_v9.py",
+          "git_blob": "1480472a2a3907c8bf1964385b404715c019029a"
+        },
+        {
+          "path": "Scripts/Cards/author_warmachine_cards.py",
+          "git_blob": "a8d7effa559280c70da5b5e216ec274729445176"
+        },
+        {
+          "path": "Scripts/Cards/finalize_ground_ricochet_layers.py",
+          "git_blob": "3535ecb3fd8466d76d2b08175f7af8b6659b6f8d"
+        },
+        {
+          "path": "Scripts/GroundMech/Blink/author_blink_assets.py",
+          "git_blob": "92ba1407d55f4096840a74fe8aefa3bfefda7b11"
+        },
+        {
+          "path": "Scripts/GroundMech/Blink/author_blink_body_material.py",
+          "git_blob": "17a98488b7381e24c2aae6598861c38f30f4e945"
+        },
+        {
+          "path": "Scripts/GroundMech/Blink/configure_blink_3c_source.py",
+          "git_blob": "ec2ae28380b814b158fdbfe63841ca72c62286a2"
+        },
+        {
+          "path": "Scripts/GroundMech/Blink/migrate_blink_source.py",
+          "git_blob": "0e0267bc7e687fc5526945055bf3a5de895a48df"
+        },
+        {
+          "path": "Scripts/Scale020/migrate_editor_properties.py",
+          "git_blob": "ab65aa57f1bd6906314382f9714cb3ee703f04bc"
+        },
+        {
+          "path": "Scripts/Scale020/run_fx_review.py",
+          "git_blob": "e94ae0450b21ee360f6eb730ae5667277d8ccba1"
+        },
+        {
+          "path": "Tools/DataPipeline/author_wm01_missile_cards.py",
+          "git_blob": "f2df8f29bc5d630d204616db5ef752c6d1f2239b"
+        }
+      ]
+    },
+    "frozen-review-handoffs": {
+      "reason": "A specific historical review package, receipt, captured CDO update or handoff.",
+      "files": [
+        {
+          "path": "Scripts/Art/package_ship_component_batch02_material_review.py",
+          "git_blob": "2aaf34a71d46b5988b7c074a3fdd642c9e9ee2ce"
+        },
+        {
+          "path": "Scripts/Art/package_ship_component_batch02_reference_review.py",
+          "git_blob": "206e12dea94437696dc88a20ae6b0039ea6d53ab"
+        },
+        {
+          "path": "Scripts/Art/package_ship_component_batch03_delivery.py",
+          "git_blob": "a4a99117d07a440fd3f538ccfaab17d6fe7aa0e1"
+        },
+        {
+          "path": "Scripts/Art/package_ship_component_batch03_material_review.py",
+          "git_blob": "42e6f9b0ddebff010366f461df3aaae0826b5fce"
+        },
+        {
+          "path": "Scripts/Art/package_ship_component_batch03_reference_review.py",
+          "git_blob": "899f25ed4002b3382a5376094b5f64b872565d59"
+        },
+        {
+          "path": "Scripts/Art/package_ship_component_batch04_reference_review.py",
+          "git_blob": "841f5bb5191eb37a8d191ff995cf711226de85ca"
+        },
+        {
+          "path": "Scripts/apply_commander_move_reuse_distance.py",
+          "git_blob": "3f4fe21594ad9b29f99fa8adbf95474adc43fac2"
+        },
+        {
+          "path": "Scripts/capture_commander_ui_final.py",
+          "git_blob": "e4398b38b4d58e0793f121e6d7a07848016e1e0c"
+        },
+        {
+          "path": "Scripts/dt_struct_check.py",
+          "git_blob": "a863bab04e26e86bc95ec8296c16c108457d078e"
+        },
+        {
+          "path": "Scripts/remove_commander_cloud_shadows.py",
+          "git_blob": "52b17d04b978834b2071933c14523d2e226c0ecd"
+        }
+      ]
+    },
+    "lod-reflection-discovery": {
+      "reason": "One-build/reflection or pre-switch probe for the completed Commander LOD delivery.",
+      "files": [
+        {
+          "path": "Scripts/CommanderLOD/inspect_api.py",
+          "git_blob": "a9cd1d99710be7de81b774f66544597f095f8501"
+        },
+        {
+          "path": "Scripts/CommanderLOD/inspect_capture.py",
+          "git_blob": "f1d5a37dd708f5cb3228e945bc6fad04a31de3ae"
+        },
+        {
+          "path": "Scripts/CommanderLOD/inspect_formal_readback_api.py",
+          "git_blob": "3e121c38e996ab7a0e09752c427c1c05f0618861"
+        },
+        {
+          "path": "Scripts/CommanderLOD/inspect_loaded_fields.py",
+          "git_blob": "4c22dcec0aea0b90293600cdf79d2141d3ac7981"
+        },
+        {
+          "path": "Scripts/CommanderLOD/inspect_open_map.py",
+          "git_blob": "32fdfc4e6f178f6d326124f7e3a9ae3c304f58f3"
+        },
+        {
+          "path": "Scripts/CommanderLOD/inspect_preview_state.py",
+          "git_blob": "a148b58c4a53ccdfa6becbab72b638716a594e6c"
+        },
+        {
+          "path": "Scripts/CommanderLOD/inspect_promoter_api.py",
+          "git_blob": "a21ff1f992fb53d2521021d2947bb97b3dd50512"
+        },
+        {
+          "path": "Scripts/CommanderLOD/inspect_section_api.py",
+          "git_blob": "70c47ab93606c8606885188ea9c36eda7277a9d5"
+        },
+        {
+          "path": "Scripts/CommanderLOD/inspect_texture_api.py",
+          "git_blob": "596dca532b22c269ff2c914aaada9a4cc8054482"
+        }
+      ]
+    },
+    "lod-retired-shims": {
+      "reason": "Previously retired three-tier compatibility adapters and their generator. Current LOD production entries remain.",
+      "files": [
+        {
+          "path": "Scripts/BiZhiMao/build_lod_review.py",
+          "git_blob": "74ef4bddc10983a74804b781087b972df445e417"
+        },
+        {
+          "path": "Scripts/BiZhiMao/build_review.py",
+          "git_blob": "74ef4bddc10983a74804b781087b972df445e417"
+        },
+        {
+          "path": "Scripts/BiZhiMao/capture_art_preview.py",
+          "git_blob": "bed1b0fe93d00c0bf92bc38cbbcbe5ad528c4fa7"
+        },
+        {
+          "path": "Scripts/BiZhiMao/check_lod_geometry.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/compress_lods.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/convert_native_captures.py",
+          "git_blob": "752e2cb23dd22343142855c6be5c9af45ef7b629"
+        },
+        {
+          "path": "Scripts/BiZhiMao/deploy_runtime_assets.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/export_static_meshes.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/import_art_assets.py",
+          "git_blob": "c0ee7cbd47d6216ef888766ae5e7e6feac95eb25"
+        },
+        {
+          "path": "Scripts/BiZhiMao/import_vertex_assets.py",
+          "git_blob": "c0ee7cbd47d6216ef888766ae5e7e6feac95eb25"
+        },
+        {
+          "path": "Scripts/BiZhiMao/inspect_lod_topology.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/prepare_acceptance_scene.py",
+          "git_blob": "4be7bd000661ccc1bd042c3087144b89517a231c"
+        },
+        {
+          "path": "Scripts/BiZhiMao/prepare_blender.py",
+          "git_blob": "3f4a9a989597d6a41f9920bd21c45647eb1c94f5"
+        },
+        {
+          "path": "Scripts/BiZhiMao/prepare_lod_blender_view.py",
+          "git_blob": "3f4a9a989597d6a41f9920bd21c45647eb1c94f5"
+        },
+        {
+          "path": "Scripts/BiZhiMao/probe_lod_reduction.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/probe_part_lods.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/probe_planar_lods.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/readback_art.py",
+          "git_blob": "503fd33944443024eca47be39c5eba8a216b9aba"
+        },
+        {
+          "path": "Scripts/BiZhiMao/readback_runtime_assets.py",
+          "git_blob": "503fd33944443024eca47be39c5eba8a216b9aba"
+        },
+        {
+          "path": "Scripts/BiZhiMao/readback_vertex_assets.py",
+          "git_blob": "503fd33944443024eca47be39c5eba8a216b9aba"
+        },
+        {
+          "path": "Scripts/BiZhiMao/refine_lod_candidate.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/render_lod_review.py",
+          "git_blob": "e0a129b3d2a8dec72a225e9b92125a892ddfde38"
+        },
+        {
+          "path": "Scripts/BiZhiMao/render_review.py",
+          "git_blob": "e0a129b3d2a8dec72a225e9b92125a892ddfde38"
+        },
+        {
+          "path": "Scripts/BiZhiMao/report_lod_blender_open.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/update_source_tables.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/BiZhiMao/verify_art_assets.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/Blender/export_mass_rigid_editable.py",
+          "git_blob": "5bc5bc32b0c8d17a49a7376b2ada86e19c82ce9a"
+        },
+        {
+          "path": "Scripts/CommanderLOD/fix_preview_visibility.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/CommanderLOD/legacy_entry.py",
+          "git_blob": "a3906c1b1be8784f8a69a7e823f4adaa81a4b614"
+        },
+        {
+          "path": "Scripts/CommanderLOD/migrate_bizhimao_helpers.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/CommanderLOD/retire_legacy_producers.py",
+          "git_blob": "0bc47344719bdbd001c78df8cca46d0be1e3094a"
+        },
+        {
+          "path": "Scripts/Pioneer/capture_art_preview.py",
+          "git_blob": "bed1b0fe93d00c0bf92bc38cbbcbe5ad528c4fa7"
+        },
+        {
+          "path": "Scripts/Pioneer/finalize_art_assets.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/Pioneer/import_art_assets.py",
+          "git_blob": "000b7661b968b5b37b9abc51e25e3090f8b2349d"
+        },
+        {
+          "path": "Scripts/finalize_cel_model_assets.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/import_mass_rigid_animation.py",
+          "git_blob": "12833989f1ce593c46125f10106e16b84662bf96"
+        },
+        {
+          "path": "Scripts/import_warmachine_production_v6.py",
+          "git_blob": "000b7661b968b5b37b9abc51e25e3090f8b2349d"
+        },
+        {
+          "path": "Scripts/verify_warmachine_production_v6.py",
+          "git_blob": "503fd33944443024eca47be39c5eba8a216b9aba"
+        }
+      ]
+    },
+    "old-geometry-probes": {
+      "reason": "Readback or visual probe for a retired design revision.",
+      "files": [
+        {
+          "path": "Scripts/Blender/diagnose_spider.py",
+          "git_blob": "c986a7188b6972ac3dd596ad315bd6d51b1704c1"
+        },
+        {
+          "path": "Scripts/Blender/inspect_spider_paint_parts.py",
+          "git_blob": "477554229a7438144a5b8f33ffc486da7b055924"
+        },
+        {
+          "path": "Scripts/Blender/preview_spider_flat_normals.py",
+          "git_blob": "27891a9da825abf7d05244f3c3cd40513cc3f7d4"
+        },
+        {
+          "path": "Scripts/Blender/probe_mech_source_views.py",
+          "git_blob": "07f98db59f337dba2cdfa3c876b4d66d9c6abdeb"
+        },
+        {
+          "path": "Scripts/Blender/render_light_mech_mount_detail_v9.py",
+          "git_blob": "2bc9c52ccff477a2b87d18049790df97758eaff8"
+        }
+      ]
+    },
+    "ranger-current-tools": {
+      "reason": "3C tuning, import and scene workflows consolidated into the maintained Ground mobility entries.",
+      "files": [
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/apply_3c_assets.py",
+          "git_blob": "0e5d42f046caf797280aed797b8b5dc5f137eb4a"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/apply_upper_aim_assets.py",
+          "git_blob": "da983f7ed07d442c172bba0fed4840f2bbab1622"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/author_3c_tuning.py",
+          "git_blob": "72ad824cfeb28d426841caf23ae10b0221b54f87"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/author_upper_aim_tuning.py",
+          "git_blob": "7db045f354a57a5cd4149f975b790cf8d74d05c8"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/prepare_3c_review_scene.py",
+          "git_blob": "9249aacd9db545b524c50af93a86acd91ab5b02b"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/prepare_upper_aim_scene.py",
+          "git_blob": "5ce13097cac82358f9e39b64cef2255bb076f2e7"
+        }
+      ]
+    },
+    "single-delivery-diagnostics": {
+      "reason": "Targeted inspection for a particular delivered repair, review session or capture.",
+      "files": [
+        {
+          "path": "Scripts/Cards/inspect_card_reveal_scene.py",
+          "git_blob": "9f803426317289c45c17b82c6fb3a6cf9858d945"
+        },
+        {
+          "path": "Scripts/Cards/inspect_card_reveal_settings.py",
+          "git_blob": "3f6b95126c68816cda5df019de2142991bce96a9"
+        },
+        {
+          "path": "Scripts/Cards/inspect_warmachine_tarot_source.py",
+          "git_blob": "c44a7bcd7c20be81e6285be3c04e31d0e9e8411c"
+        },
+        {
+          "path": "Scripts/CommanderLOD/prepare_permitted_build.py",
+          "git_blob": "c987f204bfdf7b31fba9ab5ce0718bdb95d39317"
+        },
+        {
+          "path": "Scripts/Models/check_final_selection.py",
+          "git_blob": "f443e09f8745e09f2856b388cd7b67ea973d72ab"
+        },
+        {
+          "path": "Scripts/Models/probe_aa_projection.py",
+          "git_blob": "88048fa73a63bab8a53b9c8da7d2e8600beccaa0"
+        },
+        {
+          "path": "Scripts/Models/recover_final_preview.py",
+          "git_blob": "6fe41b74dfeed2163a2e3cf7e8ff59c79f8f7985"
+        },
+        {
+          "path": "Scripts/Performance/save_mass_movement_entry_commandlet.py",
+          "git_blob": "c89d69760edc58d3bd74a7c4969d7e2fc5f14842"
+        },
+        {
+          "path": "Scripts/inspect_commander_pose_precision.py",
+          "git_blob": "3688f8661006391fe403b3f349fc29a77655b9f8"
+        },
+        {
+          "path": "Scripts/inspect_explosion_dependencies.py",
+          "git_blob": "1d037a8750f6f2716c0fbc2fa475820b22461d1a"
+        },
+        {
+          "path": "Scripts/inspect_explosion_sources.py",
+          "git_blob": "906128939e4e9687d4cf27e271bf57ef861eb68e"
+        },
+        {
+          "path": "Scripts/inspect_flowmap_material_references.py",
+          "git_blob": "e39835fe9f462e7b8cba233e1425f95a73ee3a81"
+        },
+        {
+          "path": "Scripts/inspect_hardsurface_import_context.py",
+          "git_blob": "ade1a2bf13530946ad5a57d30de741e6b8747bef"
+        },
+        {
+          "path": "Scripts/inspect_pine_style_workload.py",
+          "git_blob": "1040b2b8769e531c564d74a6e22565525154edc7"
+        },
+        {
+          "path": "Scripts/position_commander_unit_material_qa_camera.py",
+          "git_blob": "9fa8b9cb6c4c320a17b58467c2e454c3abcc7cdd"
+        },
+        {
+          "path": "Scripts/verify_commander_cloud_removed.py",
+          "git_blob": "ee1fbac8979ec7da2537e750e444fdc600b95c3b"
+        }
+      ]
+    },
+    "superseded-card-reviews": {
+      "reason": "Unselected or superseded card revisions/review scenes. The catalog pipeline is current.",
+      "files": [
+        {
+          "path": "Scripts/Cards/apply_warmachine_cleanup.py",
+          "git_blob": "f69766bc429f029f4f42866f4ab4420945358130"
+        },
+        {
+          "path": "Scripts/Cards/apply_warmachine_v5.py",
+          "git_blob": "54430e548b1e3de5e53cf895efe26109a7c7a7cd"
+        },
+        {
+          "path": "Scripts/Cards/apply_warmachine_v6.py",
+          "git_blob": "4e35ade7fd47ad480ff624a0a15843bbf434c6b6"
+        },
+        {
+          "path": "Scripts/Cards/capture_warmachine_layout.py",
+          "git_blob": "6312abee83c4736163506c2cad3038eab7cdbcba"
+        },
+        {
+          "path": "Scripts/Cards/finalize_warmachine_model_comic_v8.py",
+          "git_blob": "65fd94cae717fbf03570c5e1852a978c46aeed55"
+        },
+        {
+          "path": "Scripts/Cards/finalize_warmachine_v5.py",
+          "git_blob": "05a07b83030e11186906c67aa6ae930a61ba782c"
+        },
+        {
+          "path": "Scripts/Cards/finalize_warmachine_v6.py",
+          "git_blob": "c3a825b6eab08cbd0ccbfa037f1bf8a99beb1d99"
+        },
+        {
+          "path": "Scripts/Cards/inspect_modelcomic_card_replacement.py",
+          "git_blob": "bff3e89fcfe76e24fd68bb808f6736bdebbd8a2f"
+        },
+        {
+          "path": "Scripts/Cards/inspect_warmachine_v6.py",
+          "git_blob": "d08838cf030a22862b7cd9e2ec79ab89fed0bb05"
+        },
+        {
+          "path": "Scripts/Cards/prepare_card_reveal_editor.py",
+          "git_blob": "4e92038c99205613b11fcbbdbaf83acb928220f5"
+        },
+        {
+          "path": "Scripts/Cards/preview_modelcomic_v9_editor.py",
+          "git_blob": "83be59b47fcf3832a6517f39742c34a5f13ec35f"
+        },
+        {
+          "path": "Scripts/Cards/preview_warmachine_cards.py",
+          "git_blob": "bbc52bb1151f6608cbaa51a7b3c57e7c750d4146"
+        },
+        {
+          "path": "Scripts/Cards/preview_warmachine_cleanup.py",
+          "git_blob": "35c210e4ec46d1e8c5966a8fdda74f2b1d929667"
+        },
+        {
+          "path": "Scripts/Cards/preview_warmachine_v5.py",
+          "git_blob": "c10e8153c34e421294aceb94608f12ee45449f3b"
+        },
+        {
+          "path": "Scripts/Cards/preview_warmachine_v6.py",
+          "git_blob": "aa6e26e60da95046ba8a99b162598444060027d9"
+        },
+        {
+          "path": "Scripts/Cards/verify_warmachine_v5.py",
+          "git_blob": "031c119aa2b9c2d85f15e2242b7af7d00ddfb0d3"
+        }
+      ]
+    },
+    "superseded-ground-model-route": {
+      "reason": "Retired Ground model, tuning, installer or earlier visual path replaced by current production routes.",
+      "files": [
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/author_animation_adapter.py",
+          "git_blob": "a57590b285c68877b2188ebd98cf28f8c382ff4c"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/author_blink_camera_tuning.py",
+          "git_blob": "893649c87d4c27de7c44b1c81454854e14065801"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/author_blink_impact_assets.py",
+          "git_blob": "03fa58f3c9e37d64c026440da6c4fb20ec93e37e"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/author_blink_impact_tuning.py",
+          "git_blob": "0a6785734f3c81e36da95295cb2ef6ec780dfe22"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/export_legacy_lower_reference.py",
+          "git_blob": "93c527c85b05d90fbfdb3d3c8bb4b51a019f46aa"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/fix_b2_animation_camera.py",
+          "git_blob": "9b650e3d01321a36ced4372a494909bb569cf837"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/install_player_adapter.py",
+          "git_blob": "a5b06c31974c23ebfe08ea488913fc7fe82156f4"
+        },
+        {
+          "path": "Scripts/GroundMech/MechaDestroyer/render_legacy_lower_reference.py",
+          "git_blob": "7724c03935b53666f7e12b1bfeede3acbf49ddaf"
+        },
+        {
+          "path": "Scripts/GroundMech/readback_mech_showcase_v10.py",
+          "git_blob": "1147f662db32609cc3824a8a97ee4192db0d8b4c"
+        },
+        {
+          "path": "Scripts/GroundMech/readback_style_v9.py",
+          "git_blob": "0f7a59f813cef23e383ecd11e881daedad3d7868"
+        },
+        {
+          "path": "Scripts/GroundMech/retire_legacy_model_data.py",
+          "git_blob": "15ba6564d5bf37e207885c6852ed873bb08c8a00"
+        },
+        {
+          "path": "Scripts/GroundMech/retire_legacy_models.py",
+          "git_blob": "33204b8569957b39c519b683506dc5e7f8f4580a"
+        },
+        {
+          "path": "Scripts/GroundMech/showcase_all_mech_assets_v10.py",
+          "git_blob": "07cf8b55bf90ec6d1f692a8876c382bbb223c9d1"
+        },
+        {
+          "path": "Scripts/import_sweeper_no_ink_live.py",
+          "git_blob": "bf8427210bf0bebaed77797912e3e64a415d9514"
+        }
+      ]
+    },
+    "superseded-map-migrations": {
+      "reason": "Applied 3.2/4.2 km map migrations, with original source capture and current 2.3 km rebuild retained.",
+      "files": [
+        {
+          "path": "Scripts/Map3200/bake_ground_and_flight.py",
+          "git_blob": "e3df8d677aa04de6c8454c383e844417627082a6"
+        },
+        {
+          "path": "Scripts/Map3200/bake_resources.py",
+          "git_blob": "936995bcf8353b09b34431a6942d15fcad5ef328"
+        },
+        {
+          "path": "Scripts/Map3200/capture_baseline.py",
+          "git_blob": "f33174bd8c75e2e30df4f44b02c0654c13ce87a5"
+        },
+        {
+          "path": "Scripts/Map3200/compare_persisted_weights.py",
+          "git_blob": "8cf68b4e0e934b2e5c0efc0822a71ec06ab8ca2d"
+        },
+        {
+          "path": "Scripts/Map3200/export_persisted_weights.py",
+          "git_blob": "0d50f6575e32841c9c97f1ee3d0a1566ddf26341"
+        },
+        {
+          "path": "Scripts/Map3200/inspect_baked_routes.py",
+          "git_blob": "3b9f04aa592002185425a20f46c0c0de212679fc"
+        },
+        {
+          "path": "Scripts/Map3200/migrate_scene.py",
+          "git_blob": "9e66a8e6db6e2de8297389e5f5c9972927ad105b"
+        },
+        {
+          "path": "Scripts/Map3200/prepare_density.py",
+          "git_blob": "f8a9aa2e3d7c0f521c1a71ad443aaefa0024d3c9"
+        },
+        {
+          "path": "Scripts/Map3200/prepare_packed_weights.py",
+          "git_blob": "9cdc67710e801baa129c9d5fcba7fec38183f4d1"
+        },
+        {
+          "path": "Scripts/Map3200/prepare_terrain.py",
+          "git_blob": "b0540688d3802350d13f79b07d6687af5b1541d3"
+        },
+        {
+          "path": "Scripts/Map3200/readback_scene.py",
+          "git_blob": "27b0b205f3d7622a8546a056c1f7404a728c71c8"
+        },
+        {
+          "path": "Scripts/Map3200/reimport_prepared_height.py",
+          "git_blob": "2b6445dad20b7583c654251696f23602dbadb3f7"
+        },
+        {
+          "path": "Scripts/Map3200/replace_landscape.py",
+          "git_blob": "b1b20a84654964561720e107eb08bd921d0a683d"
+        },
+        {
+          "path": "Scripts/Map3200/restore_persistent_weights.py",
+          "git_blob": "87a1f2d31de3c8063f7a6472d2b98d9fc39e326f"
+        },
+        {
+          "path": "Scripts/Map3200/save_delivery.py",
+          "git_blob": "5ba4590513d8895744ff193a82fd9e178333176c"
+        },
+        {
+          "path": "Scripts/Map4200/bake_ground_and_flight.py",
+          "git_blob": "e2f849937fccc9ba4ccf8b3ea3db46b8d952822a"
+        },
+        {
+          "path": "Scripts/Map4200/bake_resources.py",
+          "git_blob": "3c442425026117235307550f26ca70406361f50f"
+        },
+        {
+          "path": "Scripts/Map4200/inspect_baked_routes.py",
+          "git_blob": "30fa25cce9e86e2b40581484f71e066e1ad6c679"
+        },
+        {
+          "path": "Scripts/Map4200/migrate_scene.py",
+          "git_blob": "e025a63607d48552f8fe7d8845a784e0d819c558"
+        },
+        {
+          "path": "Scripts/Map4200/prepare_density.py",
+          "git_blob": "251d0a79d1b9e0c4801c1a58c9a5161cca7c97be"
+        },
+        {
+          "path": "Scripts/Map4200/prepare_terrain.py",
+          "git_blob": "44fafc0177360716238682d0572084da44a9100a"
+        },
+        {
+          "path": "Scripts/Map4200/readback_scene.py",
+          "git_blob": "7ef5199cf2e96d481c1df1878f0ff99bab6bb44a"
+        },
+        {
+          "path": "Scripts/Map4200/refine_roads_and_notify_bounds.py",
+          "git_blob": "b1d3b50d0adcbad997d6da609c9909d0301f4713"
+        },
+        {
+          "path": "Scripts/Map4200/replace_landscape.py",
+          "git_blob": "39488942cf44a522f4ab1a9a335ff7bd8a6d367c"
+        },
+        {
+          "path": "Scripts/Map4200/save_delivery.py",
+          "git_blob": "7eed0a51527e8c7e539607c4369c6a71631c2a57"
+        },
+        {
+          "path": "Scripts/Map4200/tighten_flight_bounds.py",
+          "git_blob": "9d70c1ca17b1f5ae9382b468541d4f1422a2f488"
+        }
+      ]
+    }
+  }
+}

@@ -77,7 +77,7 @@ HTML模板与当前补绘脚本见[工作流实现](image-to-html-workflow.md#�
 - 用户接受当前扫描光浓度与加长尾焰，后续改动前先确认；本次仅授权补实验室/天空外沿。两份第2层保护哈希和决定保留于v4清单。
 - 专属父材质`M_WM01RegisteredCardLayers_v1`；各层共同Scale=(0.92,0.745)、Offset=(0,-0.0875)。原UV范围内保留原第6层，外沿用`(UV+0.25)/1.5`映射，表示每侧25%外沿。
 - 外沿请求1536×2304、实际1024×1536；记录真实尺寸。10处局部结构抽查中9处最佳平移量在0–1像素，工装台一处为(+4,-1)；这不是逐像素还原或用户终验。
-- 重导入口为`Scripts/Cards/import_wm01_registered_layers.py`，旧`import_wm01_missile_card_art.py`已转发；不要重新使用v3图集脚本。
+- 通过 `python Scripts/Cards/card_artwork_pipeline.py deploy --ids 4 5` 重导已登记的重防号卡牌。
 
 当前本批的内部`Layers global depth=4`，层深度`0.10 / 0.04 / 0 / -0.40 / -0.75 / -1.10`；整牌`MaximumTilt=16`表示每轴±16°。二者独立。`CardAreaMultiplier=2`表示宽高各乘√2，厚度倍率单独为2；新卡读实际参数再按画面适配，不把这组数值视为所有卡的默认保证。
 

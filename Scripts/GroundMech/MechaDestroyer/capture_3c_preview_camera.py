@@ -9,7 +9,8 @@ from pathlib import Path
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir()).resolve()
-OUT = ROOT / 'Artifacts/Ground3C_20261103/blueprint-preview-camera.json'
+stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+OUT = ROOT / globals().get('GULI_CAMERA_CAPTURE_PATH', f'Artifacts/GroundMobility/camera-{stamp}.json')
 BLUEPRINT = '/Game/GuLiStrike/GroundMech/BP_GroundMech_Light'
 assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
 assert not OUT.exists(), 'Preview view is already frozen; preserve this task reference'
@@ -20,5 +21,6 @@ assert report['success'], report
 report['captured_at'] = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat()
 report['scope'] = 'Blueprint preview matrices and actor transform only; no image or gameplay validation'
 OUT.parent.mkdir(parents=True, exist_ok=True)
-OUT.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf8')
+with OUT.open('x', encoding='utf8') as output:
+    json.dump(report, output, ensure_ascii=False, indent=2)
 unreal.MCPythonHelper.submit_result(json.dumps({'success': True, 'capture': str(OUT), 'camera': report['spring_arm']}))

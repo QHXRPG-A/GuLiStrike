@@ -50,7 +50,7 @@ python Scripts/Cards/card_artwork_pipeline.py review --ids 6
 
 1. 修改 Excel 后运行 `python Tools/DataPipeline/export_data_from_excel.py`；导出校验软引用格式，运行时再验证资产已编译、Schema 与兵种匹配。
 2. 增加反射类型或改变表结构时，按项目流程先取得编译许可，再构建 `GuLiStrikeEditor Win64 Development`。
-3. 新代码加载到空闲编辑器后，通过 `python Scripts/ue_exec.py Scripts/author_commander_state_trees.py` 创建三棵树、定向导入 Soldiers 并回读引用。脚本复用通用 CSV 导入管线，保留兼容树资产的已有编辑。
+3. 现有三棵树通过 `python Scripts/ue_exec.py Scripts/inspect_commander_state_trees.py` 读回。旧资产需要执行 V2 层级迁移时使用 `Scripts/migrate_commander_state_trees_v2.py`。
 4. 脚本最后检查旧任务 DataTable 的引用并删除；有残余引用时明确失败，不强制清空引用。记录位于 `Artifacts/CommanderStateTree/`。
 
 旧特殊任务源表、目录、执行器和专用导入脚本已退役。通用任务设置保留；命令中的 `Special`、`SpecialTaskId` 和 1／2／3 编号作为网络兼容字段保留。运行中不热换树。实施与交付边界见[StateTree 迁移记录](../../Progress/DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md)。
@@ -109,7 +109,7 @@ JSON、CSV、DataTable是生成物，不作为日常数值维护入口。
 美术资产继续提供表现。未提供武器引用的直接调用仍使用资产默认法术场。
 所有工作簿通过校验后才写生成物，校验失败不更新JSON、头文件或manifest。
 
-`Scripts/update_wingman_attack_source.py` 已改为普通导出兼容入口，不再覆写一套Python初始数值。
+僚机武器数值随正式 Excel 导出器更新。
 历史的 `migrate_unit_and_spell_field_tables.py` 在新工作簿存在时会退出，避免重新创建旧维护入口。
 历史的 `migrate_secondary_weapon_tables.py` 识别统一法术场版本后会退出，避免再次拆出 `WeaponFields`。
 本次归并脚本为 `Scripts/consolidate_spell_field_source.py`，完成后重复运行不覆写数值。

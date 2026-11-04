@@ -1,6 +1,6 @@
 # 指挥官选择 UI 原始素材
 
-2026-08-31 使用内置 imagegen 生成；五张均为1254×1254、RGBA、真实透明背景。这里保留可版本管理的PNG原稿；`outputs/commander-selection-20260831/assets` 为本地验收副本。导入脚本：`Scripts/build_commander_selection_ui.py`。
+2026-08-31 使用内置 imagegen 生成；五张均为1254×1254、RGBA、真实透明背景。这里保留可版本管理的PNG原稿；`outputs/commander-selection-20260831/assets` 为本地验收副本。导入脚本：`Scripts/build_commander_sc2_ui.py`。
 
 | PNG | UE贴图名 | 用途 |
 |---|---|---|

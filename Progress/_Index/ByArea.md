@@ -1417,6 +1417,7 @@
 | [地面机甲会话完成记录](../Evidence/20261026-GroundMechCloseout/README.md) | reference | reference | 2026-11-04 |
 | [2026-10-23 行进响应与导航收尾证据](../Evidence/20261023-MoveResponseCloseout/README.md) | reference | reference | 2026-11-04 |
 | [单颗矿石导航收尾证据](../Evidence/20261024-OreNavigationCloseout/README.md) | reference | reference | 2026-11-04 |
+| [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | archive | recorded | 2026-11-04 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
 | [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | done | 2026-09-21 |
@@ -1651,6 +1652,7 @@
 |---|---|---|---|
 | [游骑兵3C优化](../RequirementDocument/20261103-游骑兵3C优化.md) | requirement | approved | 2026-11-04 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | development | done | 2026-11-04 |
+| [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | archive | recorded | 2026-11-04 |
 | [游骑兵3C结项与临时文件清理](../Archive/20261104-游骑兵3C结项与临时文件清理.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向编译接入与交付](../Archive/20261104-游骑兵上下身独立转向编译接入与交付.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向源码与源表准备](../Archive/20261104-游骑兵上下身独立转向源码与源表准备.md) | archive | recorded | 2026-11-04 |
@@ -2431,6 +2433,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | archive | recorded | 2026-11-04 |
 | [8月归档清单](../Archive/8月归档清单.md) | archive | recorded | 2026-10-22 |
 | [9月归档清单](../Archive/9月归档清单.md) | archive | recorded | 2026-10-21 |
 | [进度面板分类筛选与文档分类元数据](../RequirementDocument/20260917-进度面板分类筛选与文档分类元数据.md) | requirement | approved | 2026-09-17 |

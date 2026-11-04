@@ -7,6 +7,7 @@ in GuLiStrikeMech.xlsx, then use the standard project exporter/importer.
 import argparse
 import hashlib
 import json
+import math
 import os
 import shutil
 import subprocess
@@ -28,17 +29,25 @@ def column(n):
     return out
 
 def write(sheet,cells):
+    write_sheets({sheet: cells})
+
+def write_sheets(updates, expected=None):
     # Windows may allow reading/renaming a mapped workbook while refusing an
     # in-place truncate. Author a sibling temporary workbook through excelize,
     # validate it, then replace only if the source has not changed meanwhile.
-    original=hashlib.sha256(BOOK.read_bytes()).digest()
+    if not any(updates.values()):
+        return
+    original=expected if expected is not None else hashlib.sha256(BOOK.read_bytes()).digest()
     with tempfile.TemporaryDirectory(prefix='guli_mech_cells_',dir=BOOK.parent) as temp:
         assert Path(temp).resolve().is_relative_to(BOOK.parent.resolve())
-        path=Path(temp)/'cells.json'; path.write_text(json.dumps(cells,ensure_ascii=False),encoding='utf8')
+        path=Path(temp)/'cells.json'
         staged=Path(temp)/BOOK.name
         shutil.copy2(BOOK,staged)
-        cli('write',staged,'--sheet',sheet,'--data-file',path)
-        json.loads(cli('read',staged,'--sheet',sheet,'--format','json','--raw'))
+        for name,cells in updates.items():
+            if cells:
+                path.write_text(json.dumps(cells,ensure_ascii=False),encoding='utf8')
+                cli('write',staged,'--sheet',name,'--data-file',path)
+                json.loads(cli('read',staged,'--sheet',name,'--format','json','--raw'))
         if hashlib.sha256(BOOK.read_bytes()).digest()!=original:
             raise RuntimeError('Workbook changed during authoring; refusing to overwrite concurrent edits')
         os.replace(staged,BOOK)
@@ -57,6 +66,74 @@ def sheet(name, fields, rows):
     cli('col-width',BOOK,'--sheet',name,'--col','A','--to',column(len(fields)),'--width','22')
 
 def asset(name): return ANIMS+name+'.'+name
+
+def numeric_changes(sheet_name, values, new_fields=()):
+    """Validate named rows and return only the Excel cells that must change."""
+    rows = json.loads(cli('read', BOOK, '--sheet', sheet_name, '--format', 'json', '--raw'))['rows']
+    headers = list(rows[0])
+    name_col = headers.index('name')
+    cells = []
+    for field in new_fields:
+        if field not in headers:
+            headers.append(field)
+            for line, heading in enumerate((field, 'float', 'Necessary'), 1):
+                cells.append(dict(cell=f'{column(len(headers))}{line}', value=heading, type='string'))
+    found = set()
+    for line, row in enumerate(rows[3:], 4):
+        if len(row) <= name_col or row[name_col] not in values:
+            continue
+        name = row[name_col]
+        if name in found:
+            raise ValueError(f'{sheet_name}: duplicate row {name}')
+        found.add(name)
+        for field, value in values[name].items():
+            if not math.isfinite(value):
+                raise ValueError(f'{sheet_name}/{name}/{field}: invalid number')
+            idx = headers.index(field)
+            if idx < len(row) and row[idx] != '' and math.isclose(float(row[idx]), value, rel_tol=1e-10, abs_tol=1e-10):
+                continue
+            cells.append(dict(cell=f'{column(idx+1)}{line}', value=value, type='float'))
+    if found != values.keys():
+        raise ValueError(f'{sheet_name}: missing rows {sorted(values.keys() - found)}')
+    return cells
+
+def restore_3c():
+    """Explicit recovery from the current published text tables, before a new Excel export."""
+    def source(name):
+        file = ROOT / 'data/Json' / f'DT_GuLiStrikeMech_{name}.json'
+        return {row['Name']: row for row in json.loads(file.read_text(encoding='utf-8-sig'))}
+
+    original = hashlib.sha256(BOOK.read_bytes()).digest()
+    mobility_fields = ('StrafeSpeedMultiplier', 'UpperBodyAimResponseSeconds', 'UpperBodyAimSnapToleranceDegrees')
+    values = source('Mobility')['Default']
+    mobility = {k: values[k] for k in (*mobility_fields, 'MovingTurnRate', 'TurnStartDegrees', 'TurnStopDegrees')}
+    gait_fields = ('HorizontalMotionScale', 'SwingLiftScale', 'PelvisMotionScale', 'SafeMaxStrideScale')
+    gait = {name: {k: row[k] for k in (*gait_fields, 'BasePlayRate', 'ReferenceSpeed')} for name, row in source('Gait').items()}
+    free = source('Camera')['Free']
+    camera = {k: free[k] for k in ('ArmLength', 'PitchDegrees', 'YawDegrees', 'FieldOfView', 'MinDistance', 'MaxDistance', 'MinPitchDegrees', 'MaxPitchDegrees')}
+    camera.update({f'SocketOffset{axis}': free['SocketOffset'][axis] for axis in 'XYZ'})
+    write_sheets({'Mobility': numeric_changes('Mobility', {'Default': mobility}, mobility_fields),
+                  'Gait': numeric_changes('Gait', gait, gait_fields),
+                  'Camera': numeric_changes('Camera', {'Free': camera})}, original)
+
+def apply_camera_capture(path):
+    capture = json.loads(Path(path).read_text(encoding='utf-8-sig'))
+    blueprint = '/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light'
+    if not capture['success'] or capture['blueprint'] != blueprint:
+        raise ValueError('Expected a successful BP_GroundMech_Light preview capture')
+    if not all(math.isclose(v, 1.) for v in capture['actor_transform']['scale']) or abs(capture['local_view']['roll']) >= .01:
+        raise ValueError('Camera.Free requires an unscaled actor and an unrolled view')
+    boom = capture['spring_arm']
+    arm, pitch, fov = boom['arm_length'], boom['pitch'], capture['horizontal_fov_degrees']
+    if not (0 < arm <= 5000 and -89 <= pitch <= 89 and 10 <= fov <= 120):
+        raise ValueError('Preview camera is outside the supported range')
+    x, y, z = boom['socket_offset']
+    original = hashlib.sha256(BOOK.read_bytes()).digest()
+    values = dict(
+        ArmLength=arm, SocketOffsetX=x, SocketOffsetY=y, SocketOffsetZ=z,
+        PitchDegrees=pitch, YawDegrees=boom['yaw'], FieldOfView=fov,
+        MinDistance=arm*.65, MaxDistance=arm*2, MinPitchDegrees=min(-75., pitch), MaxPitchDegrees=max(70., pitch))
+    write_sheets({'Camera': numeric_changes('Camera', {'Free': values})}, original)
 
 def seed():
     existing=json.loads(cli('sheets',BOOK,'--json'))['sheets']
@@ -117,7 +194,14 @@ def calibrate(path):
         if cells: write(name,cells)
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser(); parser.add_argument('--calibration'); args=parser.parse_args()
+    parser=argparse.ArgumentParser()
+    operation=parser.add_mutually_exclusive_group()
+    operation.add_argument('--calibration')
+    operation.add_argument('--restore-3c', action='store_true', help='Restore current 3C tuning from published JSON to Excel')
+    operation.add_argument('--camera-capture', type=Path, help='Apply a chosen preview capture to Camera.Free')
+    args=parser.parse_args()
     seed()
     if args.calibration: calibrate(args.calibration)
+    if args.restore_3c: restore_3c()
+    if args.camera_capture: apply_camera_capture(args.camera_capture)
     print(cli('info',BOOK))

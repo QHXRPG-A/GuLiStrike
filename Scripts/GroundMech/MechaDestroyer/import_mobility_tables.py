@@ -5,11 +5,12 @@ import unreal
 
 root=Path(unreal.Paths.project_dir()).resolve()
 out=root/'ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export'
-report_path=out/globals().get('GULI_MOBILITY_IMPORT_REPORT','ground_mobility_import.json')
+report_path=out/GULI_MOBILITY_IMPORT_REPORT if 'GULI_MOBILITY_IMPORT_REPORT' in globals() else root/'Artifacts/GroundMobility/asset-import.json'
+report_path.parent.mkdir(parents=True,exist_ok=True)
 scope={'__name__':'ground_mobility_import',
        'GULI_TABLE_FILTER':{'DT_GuLiStrikeMech_'+s for s in ('Skills','Mobility','Gait','GroundIK','Camera')},
        'GULI_IMPORT_REPORT':str(report_path),
-       'GULI_IMPORT_PROGRESS':str(out/'ground_mobility_import.log')}
+       'GULI_IMPORT_PROGRESS':str(report_path.with_suffix('.log'))}
 source=root/'Scripts/import_data_to_engine.py'
 exec(compile(source.read_text(encoding='utf8'),str(source),'exec'),scope)
 report=json.loads(report_path.read_text(encoding='utf8'))

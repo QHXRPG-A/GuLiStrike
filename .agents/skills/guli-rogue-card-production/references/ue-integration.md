@@ -123,7 +123,7 @@ AutoWrapText=false、WrapTextAt=0；沿用DescriptionFit的ScaleToFit/DownOnly�
 | `Scripts/Cards/finalize_rogue_upgrade_scene.py` | 历史固定三卡场景脚本，勿用于当前入口以免覆盖重选说明 |
 | `Scripts/Cards/prepare_rogue_card_reroll.py` | 定向导入卡/文本、重建StringTable，保存并回读指定F4入口；不启动PIE，运行前需已加载卡表反射类型 |
 | `Scripts/Cards/apply_single_line_card_text.py` | 匹配原生模块构建加载后接入单行黄色粗体；原地导入公共文本和Excel样式表，生成UMG样式并保存回读控件及F4入口，不启动PIE |
-| `Scripts/Cards/apply_modelcomic_v9.py`、`author_warmachine_cards.py` | 历史制作来源，含旧路径/旧版/固定图像尺寸；用于参考，不原样运行覆盖当前资产 |
+| [旧卡面制作记录](https://github.com/QHXRPG-A/GuLiStrike/blob/c7974fb6a44b0dda05913318ff47f6506098dc55/Scripts/Cards/apply_modelcomic_v9.py) | 当前按美术表的 ArtworkId 通过共享管线部署。 |
 | `Scripts/Cards/validate_*`、`run_*preview*`、`benchmark_*` | 部分启动PIE/创建夹具；只有当前任务相应授权时运行，不当作默认检查 |
 
 仅保存修改过的明确项目资产。编辑器/原生模块重启前核对当前任务授权和脏包，保留用户未保存工作。渲染目标编辑曾因超限警告在Slate回调中触发模态重入；预览时先验证支持尺寸、避免在tick回调里设置会弹窗的编辑器属性。

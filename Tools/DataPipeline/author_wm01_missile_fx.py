@@ -1,6 +1,37 @@
 """Author only WM01 flight curves and dedicated GPU pool registrations via excelize."""
-from author_wm01_missile_cards import read, save, column
+import hashlib
+import json
+import subprocess
+from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[2]
+CLI = Path('D:/UE5.7/excelize-cli/bin/xlsx.exe')
+OUT = ROOT / 'Artifacts/WM01MissileCards/DataSource'
+
+
+def read(book, sheet):
+    path = ROOT / 'data/Excel' / book
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    result = subprocess.run([str(CLI), 'read', str(path), '--sheet', sheet, '--format', 'json', '--raw'],
+                            check=True, capture_output=True, encoding='utf-8')
+    return path, digest, [r or [] for r in json.loads(result.stdout)['rows']]
+
+
+def column(index):
+    value = ''
+    while index:
+        index, remainder = divmod(index - 1, 26)
+        value = chr(65 + remainder) + value
+    return value
+
+
+def save(path, digest, sheet, changes):
+    if hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+        raise RuntimeError(f'Source changed during preparation: {path}')
+    OUT.mkdir(parents=True, exist_ok=True)
+    payload = OUT / (path.stem + '-' + sheet + '-cells.json')
+    payload.write_text(json.dumps(changes, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    subprocess.run([str(CLI), 'write', str(path), '--sheet', sheet, '--data-file', str(payload)], check=True)
 
 def main():
     path, digest, rows = read('GuLiStrikeSecondaryWeapons.xlsx', 'Projectiles')

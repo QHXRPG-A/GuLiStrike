@@ -1,8 +1,8 @@
-"""Import the scoped 20260917 cel model variants in an isolated editor worker."""
-import unreal,json,traceback,sys
+"""Owned-asset import helpers used when rebuilding the card model reference."""
+import unreal,sys
 from pathlib import Path
 
-ROOT=Path('D:/UE5.7/test1');OUT=ROOT/'ArtSource/StylePass_20260917';MODELS=OUT/'Models'
+ROOT=Path(unreal.Paths.project_dir()).resolve()
 sys.path.insert(0,str(ROOT/'Scripts'))
 import import_tactical_handbuilt_models as legacy
 LIB=unreal.EditorAssetLibrary;TOOLS=unreal.AssetToolsHelpers.get_asset_tools();EDIT=unreal.MaterialEditingLibrary
@@ -90,46 +90,3 @@ def mesh_settings(mesh,materials,skeletal=False,no_ink=False):
             if 'Contour' in name and i<mesh.get_num_sections(0):sub.enable_section_cast_shadow(mesh,False,0,i)
         bounds=mesh.get_bounds();info={'triangles':mesh.get_num_triangles(0),'uv_channels':sub.get_num_uv_channels(mesh,0),'slots':[str(s.material_slot_name) for s in mesh.static_materials]}
     save(mesh);REPORT['assets'].append({'path':mesh.get_path_name(),'dimensions_cm':list((bounds.box_extent*2).to_tuple()),**info})
-
-def run():
-    for unit in ('Sweeper','WarMachine'):
-        base='/Game/Commander/Units/Tactical/Cel/'+unit
-        atlas=imported(ROOT/'ArtSource/TacticalStyle_20260916/Production_Handbuilt'/('T_'+unit+'_BaseColor.png'),base+'/Textures/T_'+unit+'_BaseColor')
-        no_ink=unit=='Sweeper'
-        mask=None if no_ink else imported(MODELS/('T_'+unit+'_LineMask.png'),base+'/Textures/T_'+unit+'_LineMask')
-        atlas.set_editor_property('srgb',True);save(atlas)
-        if mask:
-            mask.set_editor_property('srgb',False);mask.set_editor_property('compression_settings',unreal.TextureCompressionSettings.TC_MASKS);save(mask)
-        body=material(base+'/Materials/M_'+unit+'_Cel',base=atlas,mask=mask)
-        contour=None if no_ink else material(base+'/Materials/M_'+unit+'_Contour',contour=True)
-        for skeletal in (False,True):
-            name=('SK_' if skeletal else 'SM_')+unit+'_Cel'
-            source=ROOT/'ArtSource/StyleAdjust_20260917/Models'/((('SK_' if skeletal else 'SM_')+'Sweeper_NoInk.fbx')) if no_ink else MODELS/(name+'.fbx')
-            mesh=imported(source,base+'/Meshes/'+name,skeletal)
-            mesh_settings(mesh,{'Body':body,'Contour':body if no_ink else contour},skeletal,no_ink=no_ink)
-    base='/Game/GuLiStrike/Ship/Stylized';source=ROOT/'ArtSource/Ships/ShipStylizedStudy_20260916/Production'
-    mask=imported(source.parent/'Textures/T_Ship_Internal_LineMask_4K.png',base+'/Textures/T_Ship_Internal_LineMask_4K')
-    mask.set_editor_property('srgb',False);mask.set_editor_property('compression_settings',unreal.TextureCompressionSettings.TC_MASKS);save(mask)
-    colors={'SS_Armor_Pearl':(.665387,.783538,.775822,1),'SS_Armor_Blue':(.033105,.212231,.323143,1),'SS_Structure_Slate':(.064803,.132868,.191202,1),'SS_Recess_Navy':(.011612,.033105,.064803,1),'SS_Safety_Amber':(.822786,.401978,.076185,1),'SS_Engine_Cyan':(.254152,.887923,.830770,1)}
-    mats={n:material(base+'/Materials/M_'+n,mask=mask if n!='SS_Engine_Cyan' else None,uvindex=3,solid=c,glow=n=='SS_Engine_Cyan') for n,c in colors.items()}
-    mats['Body']=mats['SS_Armor_Pearl'];mats['Contour']=material(base+'/Materials/M_Ship_Contour',contour=True)
-    mats['SS_Ink_Outer_Navy']=mats['Contour']
-    for name in ('SM_Ship_AnimeHull','SM_Ship_AnimeContour'):
-        mesh=imported(source/(name+'.fbx'),base+'/Meshes/'+name,False);mesh_settings(mesh,mats)
-    # Reimport must preserve the authored distance LODs and gameplay attachment aliases.
-    scope={'__name__':'cel_model_finalize'}
-    finalizer=ROOT/'Scripts/finalize_cel_model_assets.py'
-    exec(compile(finalizer.read_text(encoding='utf8'),str(finalizer),'exec'),scope)
-    REPORT['finalization']=scope['finish_models']()
-    REPORT['success']=True
-
-if __name__=='__main__':
-    if '-CelModelImportWorker' not in unreal.SystemLibrary.get_command_line():raise RuntimeError('Isolated worker only')
-    world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world();var='Interchange.FeatureFlags.Import.Enable';old=unreal.SystemLibrary.get_console_variable_int_value(var)
-    unreal.SystemLibrary.execute_console_command(world,var+' 0')
-    try:run()
-    except Exception:REPORT['error']=traceback.format_exc();unreal.log_error(REPORT['error'])
-    finally:
-        unreal.SystemLibrary.execute_console_command(world,var+' '+str(old))
-        (OUT/'model_import.json').write_text(json.dumps(REPORT,ensure_ascii=False,indent=2),encoding='utf8')
-        unreal.SystemLibrary.quit_editor()
