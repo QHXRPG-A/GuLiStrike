@@ -38,6 +38,8 @@ public:
 	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") float MovingTurnLeftWeight=0.f;
 	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") float MovingTurnRightWeight=0.f;
 	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") float MovingTurnPlayRate=1.f;
+	/** Actual single-step yaw relative to the authored turn; keeps small corrections subtle. */
+	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") float StationaryTurnWeight=0.f;
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Locomotion")
@@ -62,6 +64,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float IntegratedFireBlend = 0.f;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float IntegratedFireBlendLeft = 0.f;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") FVector IntegratedAimPointComponent = FVector::ZeroVector;
+	/** Reference mesh (+Y forward) to the stabilized turret frame, in component space. */
+	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") FQuat UpperBodyFrame = FQuat::Identity;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") bool bIntegratedAimValid = false;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") bool bForwardAim=false;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float ReturnAlpha=1.f;
@@ -85,7 +89,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float JumpStartTime = 0.f;
 	void ConfigureIntegratedRecoil(UCurveFloat* Curve, float Duration);
 	void TriggerIntegratedRecoil(float AgeSeconds, uint8 MuzzleIndex);
+	bool BeginUpperAimPresentation();
+	void EndUpperAimPresentation();
+	void SetUsePresentedUpperAim(bool bValue) { bUsePresentedUpperAim=bValue; }
 private:
+	void UpdateUpperAim(const class AGuLiGroundMechCharacter& Pawn);
+	bool bUsePresentedUpperAim=false, bUpperAimOnly=false, bHasLocomotionSnapshot=false;
 	void UpdateGrounding(class AGuLiGroundMechCharacter& Pawn,float DeltaSeconds,bool bReset);
 	void PrepareUpperBodyRecoil(const FGuLiGroundMechConfiguration& Config);
 	void UpdateUpperBodyRecoil(const FGuLiStrikeMechGaitRow& Shot);

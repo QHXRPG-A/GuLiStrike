@@ -5,7 +5,10 @@ only the derived sole coordinates/reference speeds. All runtime values originate
 in GuLiStrikeMech.xlsx, then use the standard project exporter/importer.
 """
 import argparse
+import hashlib
 import json
+import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -25,9 +28,20 @@ def column(n):
     return out
 
 def write(sheet,cells):
-    with tempfile.TemporaryDirectory(prefix='guli_mech_cells_') as temp:
+    # Windows may allow reading/renaming a mapped workbook while refusing an
+    # in-place truncate. Author a sibling temporary workbook through excelize,
+    # validate it, then replace only if the source has not changed meanwhile.
+    original=hashlib.sha256(BOOK.read_bytes()).digest()
+    with tempfile.TemporaryDirectory(prefix='guli_mech_cells_',dir=BOOK.parent) as temp:
+        assert Path(temp).resolve().is_relative_to(BOOK.parent.resolve())
         path=Path(temp)/'cells.json'; path.write_text(json.dumps(cells,ensure_ascii=False),encoding='utf8')
-        cli('write',BOOK,'--sheet',sheet,'--data-file',path)
+        staged=Path(temp)/BOOK.name
+        shutil.copy2(BOOK,staged)
+        cli('write',staged,'--sheet',sheet,'--data-file',path)
+        json.loads(cli('read',staged,'--sheet',sheet,'--format','json','--raw'))
+        if hashlib.sha256(BOOK.read_bytes()).digest()!=original:
+            raise RuntimeError('Workbook changed during authoring; refusing to overwrite concurrent edits')
+        os.replace(staged,BOOK)
 
 def sheet(name, fields, rows):
     fields=[('id','int'),('name','str'),('Note','str')]+fields
@@ -50,7 +64,8 @@ def seed():
     definitions={}
     mobility=dict(WalkSpeed=720.,SprintSpeed=1440.,Acceleration=2880.,Braking=2880.,
         MovingTurnRate=540.,TurnStartDegrees=15.,TurnStopDegrees=5.,TurnMovementThreshold=10.,
-        GunYawLimit=75.,GunPitchUpLimit=80.,GunPitchDownLimit=65.)
+        GunYawLimit=75.,GunPitchUpLimit=80.,GunPitchDownLimit=65.,
+        UpperBodyAimResponseSeconds=.10,UpperBodyAimSnapToleranceDegrees=.05)
     definitions['Mobility']=([(k,'float') for k in mobility],[dict(id=1,name='Default',Note='cm / s / deg; Ground player only',**mobility)])
     gait_fields=[('Asset','softobject'),('ReferenceSpeed','float'),('MinStrideScale','float'),('MaxStrideScale','float'),
         ('MinPlayRate','float'),('MaxPlayRate','float'),('BasePlayRate','float'),('TransitionSeconds','float'),
@@ -89,14 +104,17 @@ def calibrate(path):
     data=json.loads(Path(path).read_text(encoding='utf8'))
     assert data['success'], data
     for name in ['GroundIK','Gait']:
-        raw=json.loads(cli('read',BOOK,'--sheet',name,'--format','json'))['rows']
+        raw=json.loads(cli('read',BOOK,'--sheet',name,'--format','json','--raw'))['rows']
         headers=raw[0]; cells=[]
         for row_index,row in enumerate(raw[3:],4):
             key=row[headers.index('name')]
             values=data['sole'] if name=='GroundIK' else data['gait'].get(key,{})
             for field,value in values.items():
-                if field in headers: cells.append({'cell':f'{column(headers.index(field)+1)}{row_index}','value':value,'type':'float'})
-        write(name,cells)
+                if field not in headers: continue
+                col=headers.index(field)
+                if col<len(row) and row[col]!='' and float(row[col])==value: continue
+                cells.append({'cell':f'{column(col+1)}{row_index}','value':value,'type':'float'})
+        if cells: write(name,cells)
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(); parser.add_argument('--calibration'); args=parser.parse_args()

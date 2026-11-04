@@ -825,13 +825,16 @@ def validate_mech_mobility(tables):
     require(set(c)=={'Free','Aim'},'Camera 必须有 Free/Aim 行')
     m=m['Default']; ik=ik['Default']
     require(0<m['WalkSpeed']<=m['SprintSpeed']<=10000,'移动速度单位 cm/s，范围 (0,10000]')
+    require(0<m.get('StrafeSpeedMultiplier',0)<=1,'地面/普通空中横移倍率必须在 (0,1]')
+    require(0<m.get('UpperBodyAimResponseSeconds',0)<=1,'上身水平阻尼T90时间必须在 (0,1] 秒')
+    require(0<m.get('UpperBodyAimSnapToleranceDegrees',0)<=1,'上身水平收敛容差必须在 (0,1] 度')
     rocket=rows('Skills').get('RocketJump',{})
     base_air=m['WalkSpeed']*rocket.get('AirSpeedMultiplier',0)
     jet_forward=m['SprintSpeed']*rocket.get('JetForwardSpeedMultiplier',0)
     require(math.isfinite(base_air) and math.isfinite(jet_forward) and 0<base_air<=jet_forward,
             '普通空中速度=WalkSpeed×AirSpeedMultiplier；喷气前向速度=SprintSpeed×JetForwardSpeedMultiplier，且不低于普通空中速度')
     require(0<m['Acceleration']<=100000 and 0<m['Braking']<=100000,'加速/制动单位 cm/s²')
-    require(0<m['MovingTurnRate']<=1440 and 0<=m['TurnMovementThreshold']<m['WalkSpeed'],'移动转向/原地速度阈值无效')
+    require(0<m['MovingTurnRate']<=2160 and 0<=m['TurnMovementThreshold']<m['WalkSpeed'],'移动转向/原地速度阈值无效')
     require(0<m['TurnStopDegrees']<m['TurnStartDegrees']<180,'转身结束阈值必须小于开始阈值')
     require(0<m['GunYawLimit']<180 and 0<m['GunPitchUpLimit']<90 and 0<m['GunPitchDownLimit']<90,'枪臂角度范围无效')
     require(0<m['GunReturnSeconds']<=2,'双枪回正时间单位秒，范围 (0,2]')

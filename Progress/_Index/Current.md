@@ -84,6 +84,8 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | camera, input, movement, network, presentation | 12/12 (100%) | — | 2026-11-04 |
+| [地面机甲逐发上身摆动 — 技术方案与交付](../DevelopmentDocumentation/20261028-地面机甲逐发上身摆动.md) | animation, combat | 7/7 (100%) | — | 2026-10-30 |
 | [地面机甲 MechaDestroyer 替换与风格化 — 实施记录](../DevelopmentDocumentation/20261023-地面机甲MechaDestroyer替换与风格化.md) | art, combat | 12/12 (100%) | 本会话已完成归档，后续调整按新反馈另立增量。 | 2026-10-26 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-10-26 |
 | [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | commander, navigation, performance, resource | 9/9 (100%) | — | 2026-10-24 |

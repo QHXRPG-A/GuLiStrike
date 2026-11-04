@@ -383,6 +383,18 @@ struct FGuLiStrikeMechMobilityRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
 	float GunReturnSeconds = 0.0f;
 
+	/** StrafeSpeedMultiplier (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float StrafeSpeedMultiplier = 0.0f;
+
+	/** UpperBodyAimResponseSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float UpperBodyAimResponseSeconds = 0.0f;
+
+	/** UpperBodyAimSnapToleranceDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mobility")
+	float UpperBodyAimSnapToleranceDegrees = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_Gait 的行结构（源: GuLiStrikeMech.xlsx / Gait）。 */

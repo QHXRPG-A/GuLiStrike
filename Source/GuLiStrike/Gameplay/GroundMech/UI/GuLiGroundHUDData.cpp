@@ -209,7 +209,7 @@ const FGuLiGroundHUDSnapshot& UGuLiGroundHUDData::Read(EGuLiGroundHUDGroup Group
         View.SkillIconIds[0]=W->GetSkillIconId();View.SkillIconIds[2]=R->GetConfiguration().IconId;
         View.SkillIconIds[3]=P->GetMobilityConfiguration().Blink.IconId;
         View.Fuel=R->GetFuelRatio();View.bThrusting=R->IsThrusting();View.bJetReady=R->CanActivateRocket();
-        View.bAiming=P->IsShoulderAimHeld();
+        View.bAiming=P->IsShoulderZoomHeld();
         View.bAimReady=!P->GetCombatHealthComponent()->GetHealthState().bDead && P->GetBlinkPhase()==0 && !P->IsCarrierDormant();
         View.FireRate=W->GetFireRate();View.Damage=W->GetShotDamage();View.WeaponLevel=W->GetWeaponLevel();View.bWeaponReady=W->CanUseLocalWeapon()&&W->bWeaponEnabled;
         View.Speed=P->GetCharacterMovement()->GetMaxSpeed()/100.f;View.BlinkRemaining=P->GetBlinkCooldownRemaining();View.BlinkDuration=P->GetBlinkCooldownDuration();View.bBlinkReady=P->CanActivateBlink();

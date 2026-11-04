@@ -29,7 +29,7 @@ void UGuLiGroundMechCameraComponent::AddBlinkDisplacement(const FVector& Delta,b
     if (!Mech()->IsLocallyControlled() || !Configuration().bReady) return;
     if (bFirst)
     {
-        const auto& C=Mech()->IsShoulderAimHeld()?Configuration().AimCamera:Configuration().FreeCamera;
+        const auto& C=Mech()->IsShoulderZoomHeld()?Configuration().AimCamera:Configuration().FreeCamera;
         BlinkCameraHoldRemaining=C.BlinkHoldSeconds;
         BlinkCameraSettleSeconds=C.BlinkCatchupSeconds;
         BlinkCameraDisplacementRevision=CastChecked<UGuLiGroundMechMovementComponent>(Mech()->GetCharacterMovement())->GetDisplacementRevision();
@@ -51,7 +51,7 @@ void UGuLiGroundMechCameraComponent::Update(float DeltaSeconds)
         BlinkCameraFovWeight=0.f; bBlinkCameraWasActive=false;
         BlinkCameraFovReturnStart=BlinkCameraFovReturnAge=0.f;
     }
-    const auto& Pulse=Mech()->IsShoulderAimHeld()?Configuration().AimCamera:Configuration().FreeCamera;
+    const auto& Pulse=Mech()->IsShoulderZoomHeld()?Configuration().AimCamera:Configuration().FreeCamera;
     const bool bActive=Mech()->IsLocallyControlled() && (Mech()->GetBlinkState().Phase==1 || Mech()->GetBlinkState().Phase==2);
     float Dt=FMath::Max(0.f,DeltaSeconds);
     if (bActive)
@@ -90,8 +90,8 @@ void UGuLiGroundMechCameraComponent::Update(float DeltaSeconds)
             BlinkCameraOffset=BlinkCameraVelocity=FVector::ZeroVector;
     }
     const auto& F=Configuration().FreeCamera; const auto& A=Configuration().AimCamera;
-    CameraModeAlpha=FMath::FInterpConstantTo(CameraModeAlpha,Mech()->IsShoulderAimHeld()?1.f:0.f,DeltaSeconds,
-        1.f/(Mech()->IsShoulderAimHeld()?A.TransitionSeconds:F.TransitionSeconds));
+    CameraModeAlpha=FMath::FInterpConstantTo(CameraModeAlpha,Mech()->IsShoulderZoomHeld()?1.f:0.f,DeltaSeconds,
+        1.f/(Mech()->IsShoulderZoomHeld()?A.TransitionSeconds:F.TransitionSeconds));
     const float Blend=FMath::SmoothStep(0.f,1.f,CameraModeAlpha);
     const float Framing=FMath::SmoothStep(0.f,1.f,BlinkCameraFovWeight);
     const float BaseArm=FMath::Lerp(DesiredCameraDistance,A.ArmLength,Blend);
@@ -129,7 +129,7 @@ void UGuLiGroundMechCameraComponent::Initialize(USpringArmComponent* Boom,UCamer
 void UGuLiGroundMechCameraComponent::AddLookInput(FVector2D Axis)
 {
     if (!CameraBoom || !Configuration().bReady) return;
-    const auto& C=Mech()->IsShoulderAimHeld()?Configuration().AimCamera:Configuration().FreeCamera;
+    const auto& C=Mech()->IsShoulderZoomHeld()?Configuration().AimCamera:Configuration().FreeCamera;
     const FVector2D Delta=Axis*C.Sensitivity;
     FRotator Rotation=CameraBoom->GetComponentRotation();
     Rotation.Yaw=FRotator::NormalizeAxis(Rotation.Yaw+Delta.X);
@@ -138,7 +138,7 @@ void UGuLiGroundMechCameraComponent::AddLookInput(FVector2D Axis)
 }
 void UGuLiGroundMechCameraComponent::AddZoomInput(float Axis)
 {
-    if (!Configuration().bReady || Mech()->IsShoulderAimHeld()) return;
+    if (!Configuration().bReady || Mech()->IsShoulderZoomHeld()) return;
     const auto& C=Configuration().FreeCamera;
     DesiredCameraDistance=FMath::Clamp(DesiredCameraDistance-Axis*C.ZoomStep,C.MinDistance,C.MaxDistance);
 }

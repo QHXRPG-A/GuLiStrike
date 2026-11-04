@@ -1,0 +1,47 @@
+{
+  "exit_code": 0,
+  "target": "GuLiStrikeEditor Win64 Development",
+  "engine": "D:/UnrealEngine-5.7",
+  "permission": "现在编译并加载",
+  "success": true,
+  "command": "D:/UnrealEngine-5.7/Engine/Build/BatchFiles/Build.bat GuLiStrikeEditor Win64 Development -Project=D:/UE5.7/test1/GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE",
+  "build_ids": {
+    "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+    "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+    "D:/UE5.7/test1/Plugins/GuLiFlightNavigation/Binaries/Win64/UnrealEditor.modules": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+  },
+  "native_source_sha256": {
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechUpperAimTypes.h": "e0e558331af56c6458a8b91c6c3bb0188e039e537ab7e637d07611f3ad4a60d2",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechUpperAimTypes.cpp": "7af17667701e473af98536f9a875c48d93f9586a3e7ee709a9cf50fab56e8f6a",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.h": "022cd5e7ff1564392698812e4b1423295f2007e55d3a8a728d0bea2a56bdc2e6",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp": "2061ceeb5974f00815b546d06b95629a5021c81b4cc7faf68c4c1412d777e404",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h": "605f7763fb422f0d394c4d86d72ce524d278215a624ac95a6ebc30b648a4d35e",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp": "9f4b02760c21718d42da4aaed26329fa75959ee7790a755ef57714689d5b2a6b",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.h": "f661031f37df5b5eb08950f1acbdda98f1f54ffec31d00def6323db1d635c6f9",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.cpp": "d6142783cdcb01bfd27c9be1616c10c2355ac1387e93a63a81d1c2beb65c2e56",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h": "00aff5085f60f49d030b86f9a886c4077da6f1f27fb72935beddf69006b65108",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.cpp": "d83290b7a17c929586ca3c00abab46f78650dab560c3509558c769c2e7b39774",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp": "f6d736f8acbdf63c13799ea8c2decb0d2a88e3ae517a3d971b91ed1e410b77eb",
+    "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.cpp": "e853ed88527999f67903467e0c38d66aac807ac85277dbd024a98ec68e4d17f3",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.h": "2c0408d10048c6869799fcc09d5e326dd6d7ed4beccba6fa18b01bc3b386cd32",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.cpp": "a144cf27000aaff7ca47fb443a979438e56ae11650bba9552a2c5975eeb2b772",
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeMechTableRows.h": "9e18065c6c8bdf7aef1d9197f41fc7d5adac226355166b2a1a27339602de6130"
+  },
+  "log": "Artifacts/GroundUpperAim_20261104/editor-build-1.log",
+  "editor_loaded": true,
+  "pie": "not_run",
+  "automated_tests": "not_run",
+  "visual_acceptance": "pending user",
+  "editor_state": {
+    "success": true,
+    "engine_version": "5.7.4-0+UE5",
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "new_interface": true,
+    "pie": false,
+    "dirty_maps": [],
+    "dirty_content": []
+  },
+  "asset_import": "Artifacts/GroundUpperAim_20261104/asset-import.json",
+  "scene_delivery": "Artifacts/GroundUpperAim_20261104/scene-delivery.json",
+  "configuration_fingerprint": "ec0ebffa7270cba3fe28edd917834499"
+}

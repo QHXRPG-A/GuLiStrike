@@ -17,6 +17,7 @@
 void UGuLiGroundMechAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
+	bUsePresentedUpperAim=bUpperAimOnly=bHasLocomotionSnapshot=false; UpperBodyFrame=FQuat::Identity;
 	UpperBodyRecoilConfiguration.Reset(); UpperBodyRecoilSkeleton.Reset(); UpperBodyRecoilSources.Reset();
 	UpperBodyRecoilSamples[0].Reset(); UpperBodyRecoilSamples[1].Reset(); bUpperBodyRecoilReady=false;
 	ResetUpperBodyRecoil();
@@ -38,7 +39,7 @@ void UGuLiGroundMechAnimInstance::NativeInitializeAnimation()
 	}
 	++AnimationStateRevision;
 	SmoothedSpeed=0; RunBlend=0; Grounding={}; TurnSerial=INDEX_NONE; ActiveTurnMontage=nullptr;
-	MovingTurnLeftWeight=MovingTurnRightWeight=0.f;
+	MovingTurnLeftWeight=MovingTurnRightWeight=StationaryTurnWeight=0.f;
 }
 
 void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -48,6 +49,7 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	const auto* Move = Pawn ? Cast<UGuLiGroundMechMovementComponent>(Pawn->GetCharacterMovement()) : nullptr;
 	if (!Pawn || !Move || !Pawn->GetMobilityConfiguration().bReady)
 	{
+		bHasLocomotionSnapshot=false; UpperBodyFrame=FQuat::Identity;
 		ResetUpperBodyRecoil();
 		BlinkPose=BlinkEntryDirection=FVector::ZeroVector; BlinkPhase=0; BlinkPhaseProgress=0.f;
 		Speed = TurnRate = 0.f;
@@ -60,10 +62,17 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		IntegratedControlRotation = FRotator::ZeroRotator;
 		bIntegratedRunning = false;
 		bIntegratedAimValid = false;
-		bForwardAim=false; ReturnAlpha=1.f; MovingTurnLeftWeight=MovingTurnRightWeight=0.f;
+		bForwardAim=false; ReturnAlpha=1.f; MovingTurnLeftWeight=MovingTurnRightWeight=StationaryTurnWeight=0.f;
 		Grounding.GroundAlpha=0;
 		return;
 	}
+	if (bUpperAimOnly)
+	{
+		// All lower-body, recoil and montage state remains at the logical sample.
+		UpdateUpperAim(*Pawn); return;
+	}
+	Grounding.bPresentationOnly=false;
+	bHasLocomotionSnapshot=true;
 	const float Yaw = Pawn->GetActorRotation().Yaw;
 	const auto& Blink=Pawn->GetBlinkState();
 	if (Blink.Serial!=PreviousBlinkSerial && Blink.Phase==1)
@@ -181,16 +190,19 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 		if (ActiveTurnMontage)
 		{
-			const float Rate=Config.Gait(Turn.Direction<0?TEXT("TurnLeft"):TEXT("TurnRight")).BasePlayRate;
+			const auto& Gait=Config.Gait(Turn.Direction<0?TEXT("TurnLeft"):TEXT("TurnRight"));
+			const float Rate=Gait.BasePlayRate;
+			StationaryTurnWeight=FMath::Clamp(FMath::Abs(Turn.TargetDegrees/Gait.TurnDegrees),0.f,1.f);
+			if (auto* Instance=GetActiveInstanceForMontage(ActiveTurnMontage);
+				Instance && !FMath::IsNearlyEqual(Instance->GetDesiredWeight(),StationaryTurnWeight))
+				Instance->SetDesiredWeight(StationaryTurnWeight);
 			// Set the current phase without re-playing the montage each frame; replicas use the same turn snapshot.
 			Montage_SetPosition(ActiveTurnMontage,FMath::Min(Turn.Time*Rate,ActiveTurnMontage->GetPlayLength()));
 		}
+		else StationaryTurnWeight=0.f;
 		UpdateMontageEvaluationData();
 		UpdateGrounding(*Pawn,DeltaSeconds,bReset);
-		IntegratedControlRotation = Pawn->GetIntegratedAimRotation();
-		const FVector Aim = Pawn->GetIntegratedAimPoint();
-		bIntegratedAimValid = !Aim.ContainsNaN() && !Aim.IsNearlyZero();
-		IntegratedAimPointComponent = GetSkelMeshComponent()->GetComponentTransform().InverseTransformPosition(Aim);
+		UpdateUpperAim(*Pawn);
 		const auto& WeaponAim=Pawn->GetWeaponAimState();
 		bForwardAim=WeaponAim.bForward; ReturnAlpha=WeaponAim.ReturnAlpha;
 		RightReturnStart=WeaponAim.RightStart; LeftReturnStart=WeaponAim.LeftStart;
@@ -218,6 +230,29 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		UpdateUpperBodyRecoil(Config.Gait(TEXT("Shoot")));
 	}
 	else ResetUpperBodyRecoil();
+}
+
+bool UGuLiGroundMechAnimInstance::BeginUpperAimPresentation()
+{
+	if (!bHasLocomotionSnapshot) return false;
+	bUpperAimOnly=bUsePresentedUpperAim=true; Grounding.bPresentationOnly=true;
+	return true;
+}
+
+void UGuLiGroundMechAnimInstance::EndUpperAimPresentation()
+{
+	bUpperAimOnly=bUsePresentedUpperAim=false; Grounding.bPresentationOnly=false;
+}
+
+void UGuLiGroundMechAnimInstance::UpdateUpperAim(const AGuLiGroundMechCharacter& Pawn)
+{
+	const auto& Upper=Pawn.GetUpperAimState(bUsePresentedUpperAim);
+	const FTransform World=GetSkelMeshComponent()->GetComponentTransform();
+	const float Yaw=Upper.bInitialized?Upper.WorldYaw:Pawn.GetActorRotation().Yaw;
+	UpperBodyFrame=(World.GetRotation().Inverse()*FRotator(0,Yaw-90.f,0).Quaternion()).GetNormalized();
+	IntegratedControlRotation=UpperBodyFrame.Rotator();
+	bIntegratedAimValid=Upper.bInitialized && Upper.bHasAimPose;
+	IntegratedAimPointComponent=bIntegratedAimValid?World.InverseTransformPosition(Upper.GetDampedTarget(Pawn.GetActorLocation())):FVector::ZeroVector;
 }
 
 void UGuLiGroundMechAnimInstance::ResetUpperBodyRecoil()

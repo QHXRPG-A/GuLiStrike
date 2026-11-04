@@ -22,7 +22,7 @@ bool UGuLiGroundHUDAssetLibrary::MotionProbeAction(APlayerController* PC,FName A
 {
     auto* P=PC?Cast<AGuLiGroundMechCharacter>(PC->GetPawn()):nullptr;
     if(!P||!PC->IsLocalController()||!PC->GetWorld()->IsPlayInEditor())return false;
-    if(Action==TEXT("AimOn")||Action==TEXT("AimOff")){P->SetShoulderAimHeld(Action==TEXT("AimOn"));return true;}
+    if(Action==TEXT("AimOn")||Action==TEXT("AimOff")){P->SetShoulderZoomHeld(Action==TEXT("AimOn"));return true;}
     if(Action==TEXT("InterruptBlink")){P->GetBlinkComponent()->Interrupt();return true;}
     if(Action==TEXT("PrepareNearEmptyFuel")&&UGuLiHybridActorComponent::HasSimulation(P))
     {

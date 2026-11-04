@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "scope": "Camera source/table/CDO/manifest numeric readback; no PIE or visual evaluation",
+  "capture": "D:\\UE5.7\\test1\\Artifacts\\GroundCamera_20261104\\blueprint-preview-camera.json",
+  "camera": {
+    "arm_cm": 1347.4315185546875,
+    "initial_distance_cm": 1347.4315185546875,
+    "socket_offset": [
+      0.0,
+      298.402239,
+      443.557424
+    ],
+    "pitch": -8.850000381469723,
+    "yaw": 1.3000040054321285,
+    "roll": 3.772121514473667e-17,
+    "fov": 90.00000762939453,
+    "collision_test": true,
+    "absolute_rotation": true
+  },
+  "table_free": {
+    "ArmLength": 1347.431519,
+    "PitchDegrees": -8.85,
+    "YawDegrees": 1.300004,
+    "FieldOfView": 90.000008,
+    "MinDistance": 875.830444,
+    "MaxDistance": 2694.863037
+  },
+  "reconstructed_local_location": [
+    -1269.5940173561003,
+    269.66785771457234,
+    645.5765325889341
+  ],
+  "position_error_cm": 3.574104482639185e-05,
+  "angle_error_degrees": {
+    "pitch": 1.709588275389251e-07,
+    "yaw": 2.800396998736687e-07,
+    "roll": 6.666370211405592e-07
+  },
+  "configuration_fingerprint": "e7fa8a436fe176e3d590ffd0bb19e449",
+  "manifests": [
+    {
+      "population": 200,
+      "config_hash": "f2dbc423973ea1faafda769ee8686789bae7beed77ca346d9ddb6d7024233591"
+    },
+    {
+      "population": 600,
+      "config_hash": "bea7773a64ffc946bd5affb55475083cc8bda2ee48ded22c55aa98fee1cca602"
+    }
+  ]
+}

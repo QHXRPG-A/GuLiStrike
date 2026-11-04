@@ -1,4 +1,5 @@
 #include "Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h"
+#include "Misc/ScopeExit.h"
 
 FAnimNode_GuLiGroundMechGrounding::FAnimNode_GuLiGroundMechGrounding()
 {
@@ -8,6 +9,7 @@ FAnimNode_GuLiGroundMechGrounding::FAnimNode_GuLiGroundMechGrounding()
 }
 void FAnimNode_GuLiGroundMechGrounding::InitializeBoneReferences(const FBoneContainer& Bones)
 {
+	CachedGroundPose.Reset(); CachedGroundRevision=INDEX_NONE;
     Pelvis.Initialize(Bones); for (auto& B:LegBones) B.Initialize(Bones);
     if (!IsValidToEvaluate(nullptr,Bones)) return;
     auto Reference=[&](int32 Bone)
@@ -41,6 +43,26 @@ bool FAnimNode_GuLiGroundMechGrounding::IsValidToEvaluate(const USkeleton*,const
 void FAnimNode_GuLiGroundMechGrounding::EvaluateSkeletalControl_AnyThread(FComponentSpacePoseContext& Output,TArray<FBoneTransform>& Out)
 {
     const auto& S=Ground.Settings; const auto& Bones=Output.Pose.GetPose().GetBoneContainer();
+	if (Ground.bPresentationOnly)
+	{
+		if (CachedGroundRevision==Ground.Revision) Out=CachedGroundPose;
+		return;
+	}
+	// Cache the complete pre-turret component pose, including children moved by
+	// the pelvis override. Display-only evaluation does not touch solver history.
+	ON_SCOPE_EXIT
+	{
+		CachedGroundPose.SetNum(Bones.GetCompactPoseNumBones());
+		for (int32 I=0;I<CachedGroundPose.Num();++I)
+		{
+			const FCompactPoseBoneIndex Index(I); const auto Parent=Bones.GetParentBoneIndex(Index);
+			FTransform Value=Output.Pose.GetComponentSpaceTransform(Index);
+			if (const auto* Override=Out.FindByPredicate([&](const FBoneTransform& B){return B.BoneIndex==Index;})) Value=Override->Transform;
+			else if (Parent.IsValid()) Value=Value.GetRelativeTransform(Output.Pose.GetComponentSpaceTransform(Parent))*CachedGroundPose[Parent.GetInt()].Transform;
+			CachedGroundPose[I]=FBoneTransform(Index,Value);
+		}
+		CachedGroundRevision=Ground.Revision;
+	};
     if (Ground.Revision!=LastRevision)
     {
         Locks[0]=Locks[1]=FLock{}; PelvisOffset=0.f; LastRevision=Ground.Revision;

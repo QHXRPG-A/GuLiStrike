@@ -64,8 +64,17 @@ void UGuLiGroundMechMovementComponent::AdvanceHybrid(float DeltaTime,FVector2D A
 	const bool bAirSteering=Ability && Ability->IsConfigured() && (IsFalling()
 		|| (Ability->IsInputHeld() && Ability->IsAbilityActive() && Ability->GetFuel()>UE_SMALL_NUMBER));
 	const float Magnitude=bAirSteering || bSprint?1.f:Mech->GetWalkSpeed()/MaxWalkSpeed;
-	const FVector Intent(Axis.Y,Axis.X,0.);
-	Acceleration=ScaleInputAcceleration(ConstrainInputAcceleration(Intent.GetClampedToMaxSize(1.)*Magnitude));
+	FVector Intent=FVector(Axis.Y,Axis.X,0.).GetClampedToMaxSize(1.);
+	if (!bAirSteering)
+	{
+		// Normalize before applying the directional speed. Re-normalizing afterwards
+		// would erase the strafe limit or accelerate diagonal movement.
+		const FRotator Facing(0,Mech->GetActorRotation().Yaw,0);
+		FVector LocalIntent=Facing.UnrotateVector(Intent);
+		LocalIntent.Y*=Mech->GetMobilityConfiguration().Mobility.StrafeSpeedMultiplier;
+		Intent=Facing.RotateVector(LocalIntent);
+	}
+	Acceleration=ScaleInputAcceleration(ConstrainInputAcceleration(Intent*Magnitude));
 	AnalogInputModifier=ComputeAnalogInputModifier();
 	const bool bPreviousPhysicsWithoutController=bRunPhysicsWithNoController;
     bRunPhysicsWithNoController=true;
@@ -206,7 +215,8 @@ FVector UGuLiGroundMechMovementComponent::GetAirTargetVelocity(bool bThrust) con
 	const FVector Input=Facing.UnrotateVector(ProjectToGravityFloor(Acceleration)/MaxAcceleration).GetClampedToMaxSize(1.);
 	const float Base=Mech->GetWalkSpeed()*Config.AirSpeedMultiplier;
 	const float Forward=bThrust && Input.X>UE_KINDA_SMALL_NUMBER ? MaxWalkSpeed*Config.JetForwardSpeedMultiplier : Base;
-	return Facing.RotateVector(FVector(Input.X*Forward,Input.Y*Base,0));
+	const float Strafe=Base*Mech->GetMobilityConfiguration().Mobility.StrafeSpeedMultiplier;
+	return Facing.RotateVector(FVector(Input.X*Forward,Input.Y*Strafe,0));
 }
 float UGuLiGroundMechMovementComponent::GetMaxBrakingDeceleration() const
 {

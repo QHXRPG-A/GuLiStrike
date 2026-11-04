@@ -16,7 +16,9 @@ abp=unreal.load_asset(ANIMS+'/ABP_GroundMech_A4B2')
 mesh=unreal.load_asset(BASE+'/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2')
 nodes=unreal.BlueprintService.get_nodes_in_graph(abp.get_path_name(),'AnimGraph')
 counts=dict(Counter(n.node_type for n in nodes))
-assert len(nodes)==73,counts
+# Independent presentation changes may add variable getters. Validate the
+# required node types and their actual connections below, not a stale total.
+assert nodes,counts
 required={
  'AnimGraphNode_Root':['Result'],
  'AnimGraphNode_LocalToComponentSpace':['LocalPose','ComponentPose'],
@@ -30,6 +32,7 @@ required={
  'AnimGraphNode_Slot':['Source','Pose'],
  'AnimGraphNode_LayeredBoneBlend':['BasePose','BlendPoses_0','BlendWeights_0','Pose'],
 }
+required['AnimGraphNode_GuLiGroundMechAim'].append('UpperBodyFrame')
 connections=[]
 for n in nodes:
  if n.node_type not in required: continue
@@ -46,8 +49,24 @@ assert component.anim_class==abp.generated_class()
 assert unreal.get_default_object(abp.generated_class()).get_editor_property('root_motion_mode')==unreal.RootMotionMode.IGNORE_ROOT_MOTION
 boom=pawn.get_editor_property('camera_boom'); camera=pawn.get_editor_property('camera')
 camera_data={'arm_cm':boom.get_editor_property('target_arm_length'),'socket_offset':list(boom.get_editor_property('socket_offset').to_tuple()),'boom_rotation_roll_pitch_yaw':list(boom.get_relative_transform().rotation.rotator().to_tuple()),'camera_location':list(camera.get_relative_transform().translation.to_tuple()),'camera_rotation':list(camera.get_relative_transform().rotation.rotator().to_tuple()),'fov':camera.get_editor_property('field_of_view'),'collision_test':boom.get_editor_property('do_collision_test')}
-assert abs(camera_data['arm_cm']-362.95970144)<.01
-assert camera_data['fov']==90 and camera_data['collision_test']
+free_camera=next(row for row in json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(
+    unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Camera'))) if row['Name']=='Free')
+camera_table=unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Camera')
+free_index=list(map(str,unreal.DataTableFunctionLibrary.get_data_table_row_names(camera_table))).index('Free')
+for field in ('ArmLength','PitchDegrees','YawDegrees','FieldOfView'):
+ free_camera[field]=float(unreal.DataTableFunctionLibrary.get_data_table_column_as_string(camera_table,field)[free_index])
+assert abs(camera_data['arm_cm']-free_camera['ArmLength'])<.0001
+assert abs(pawn.get_editor_property('initial_camera_distance')-free_camera['ArmLength'])<.0001
+assert abs(camera_data['fov']-free_camera['FieldOfView'])<.001 and camera_data['collision_test']
+expected_offset=free_camera['SocketOffset']
+if isinstance(expected_offset,str): expected_offset={a:float(n) for a,n in re.findall(r'([XYZ])=([-+0-9.eE]+)',expected_offset)}
+assert all(abs(a-expected_offset[k])<.01 for a,k in zip(camera_data['socket_offset'],'XYZ'))
+boom_rotation=boom.get_relative_transform().rotation.rotator()
+for actual,expected in ((boom_rotation.pitch,free_camera['PitchDegrees']),(boom_rotation.yaw,free_camera['YawDegrees']),(boom_rotation.roll,0.)):
+ assert abs((actual-expected+180.)%360.-180.)<.001
+assert boom.get_editor_property('absolute_rotation')
+assert max(abs(v) for v in boom.get_relative_transform().translation.to_tuple())<.001
+assert max(abs(v) for v in boom.get_editor_property('target_offset').to_tuple())<.001
 assert max(abs(x) for x in camera_data['camera_location']+camera_data['camera_rotation'])<.001
 manifests=[]
 for population in (200,600):

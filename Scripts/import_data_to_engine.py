@@ -591,7 +591,8 @@ try:
         scope={'__name__':'ground_tuning_import'}
         with open(f'{PROJECT}/Scripts/GroundMech/MechaDestroyer/sync_mobility_assets.py',encoding='utf8') as source:
             exec(compile(source.read(),'sync_mobility_assets.py','exec'),scope)
-        report['ground_mobility']=scope['sync_mobility_assets']()
+        report['ground_mobility']=scope['sync_mobility_assets'](
+            sync_camera_defaults=globals().get('GULI_SYNC_MECH_CAMERA_DEFAULTS',True))
 
     if {'DT_GuLiStrikeVfx_Effects','DT_GuLiStrikeMech_Skills'}.intersection(selected) and not globals().get('GULI_SKIP_GROUND_FIRE_POST_IMPORT',False):
         scope={'__name__':'ground_fire_import'}

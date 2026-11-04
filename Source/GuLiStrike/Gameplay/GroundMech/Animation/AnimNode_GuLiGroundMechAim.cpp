@@ -11,39 +11,57 @@ void FAnimNode_GuLiGroundMechAim::InitializeBoneReferences(const FBoneContainer&
 {
 	RightArm.Initialize(Bones); LeftArm.Initialize(Bones); RightGun.Initialize(Bones); LeftGun.Initialize(Bones);
 	Chest.Initialize(Bones);
+	RestChestRotation=FQuat::Identity;
+	if (Chest.IsValidToEvaluate(Bones))
+	{
+		auto Index=Chest.GetCompactPoseIndex(Bones);
+		FTransform Reference=Bones.GetRefPoseTransform(Index);
+		while ((Index=Bones.GetParentBoneIndex(Index)).IsValid()) Reference=Reference*Bones.GetRefPoseTransform(Index);
+		RestChestRotation=Reference.GetRotation();
+	}
 }
 bool FAnimNode_GuLiGroundMechAim::IsValidToEvaluate(const USkeleton*,const FBoneContainer& Bones)
 {
 	return RightArm.IsValidToEvaluate(Bones) && LeftArm.IsValidToEvaluate(Bones)
-		&& RightGun.IsValidToEvaluate(Bones) && LeftGun.IsValidToEvaluate(Bones);
+		&& RightGun.IsValidToEvaluate(Bones) && LeftGun.IsValidToEvaluate(Bones) && Chest.IsValidToEvaluate(Bones);
 }
 void FAnimNode_GuLiGroundMechAim::EvaluateSkeletalControl_AnyThread(FComponentSpacePoseContext& Output,TArray<FBoneTransform>& Out)
 {
 	const FBoneContainer& Bones=Output.Pose.GetPose().GetBoneContainer();
+	if (UpperBodyFrame.ContainsNaN() || !UpperBodyFrame.IsNormalized()) return;
+	const FTransform TurretFrame(UpperBodyFrame);
+	const FVector TurretAimPoint=TurretFrame.InverseTransformPosition(AimPointComponent);
 	auto Descends=[&](FCompactPoseBoneIndex Child,FCompactPoseBoneIndex Parent)
 	{ for (;Child.IsValid();Child=Bones.GetParentBoneIndex(Child)) if (Child==Parent) return true; return false; };
 	const bool bSway=Chest.IsValidToEvaluate(Bones) && !UpperBodyRecoilRotation.ContainsNaN()
 		&& UpperBodyRecoilRotation.IsNormalized() && !UpperBodyRecoilRotation.Equals(FQuat::Identity);
-	const auto ChestIndex=bSway?Chest.GetCompactPoseIndex(Bones):FCompactPoseBoneIndex(INDEX_NONE);
-	const FVector ChestPivot=bSway?Output.Pose.GetComponentSpaceTransform(ChestIndex).GetLocation():FVector::ZeroVector;
+	const auto ChestIndex=Chest.GetCompactPoseIndex(Bones);
+	const FTransform OldChest=Output.Pose.GetComponentSpaceTransform(ChestIndex);
+	const FVector ChestPivot=OldChest.GetLocation();
+	// Keep the animated waist connection but replace inherited rotation. The
+	// recoil is authored in the neutral mesh frame and follows the turret frame.
+	const FQuat Sway=bSway?UpperBodyRecoilRotation:FQuat::Identity;
+	const FQuat ChestCorrection=(UpperBodyFrame*Sway*RestChestRotation*OldChest.GetRotation().Inverse()).GetNormalized();
 	auto CurrentPose=[&](FCompactPoseBoneIndex Index)
 	{
 		FTransform Transform=Output.Pose.GetComponentSpaceTransform(Index);
-		if (bSway && Descends(Index,ChestIndex))
+		if (Descends(Index,ChestIndex))
 		{
-			Transform.SetLocation(ChestPivot+UpperBodyRecoilRotation.RotateVector(Transform.GetLocation()-ChestPivot));
-			Transform.SetRotation((UpperBodyRecoilRotation*Transform.GetRotation()).GetNormalized());
+			Transform.SetLocation(ChestPivot+ChestCorrection.RotateVector(Transform.GetLocation()-ChestPivot));
+			Transform.SetRotation((ChestCorrection*Transform.GetRotation()).GetNormalized());
 		}
 		return Transform;
 	};
 	// MiddleJoint also owns the legs. Rotate only its chest branch before aiming
 	// so the shoulders move with the body and both bores are solved from that pose.
-	if (bSway) Out.Emplace(ChestIndex,CurrentPose(ChestIndex));
+	Out.Emplace(ChestIndex,CurrentPose(ChestIndex));
 	auto Solve=[&](const FBoneReference& ArmRef,const FBoneReference& GunRef,const FTransform& Socket,float Recoil,float ArmWeight,const FQuat& ReturnStart)
 	{
 		const auto ArmIndex=ArmRef.GetCompactPoseIndex(Bones), GunIndex=GunRef.GetCompactPoseIndex(Bones);
-		FTransform Arm=CurrentPose(ArmIndex);
-		FTransform Gun=CurrentPose(GunIndex);
+		// All motor constraints are evaluated relative to the turret, never the
+		// stepping chassis. Convert final bones back to mesh component space once.
+		FTransform Arm=CurrentPose(ArmIndex).GetRelativeTransform(TurretFrame);
+		FTransform Gun=CurrentPose(GunIndex).GetRelativeTransform(TurretFrame);
 		const FVector Bore=(Socket*Gun).GetUnitAxis(EAxis::X);
 		Gun.AddToTranslation(-Bore*FMath::Clamp(Recoil,0.f,1.f)*RecoilDistance);
 		const FTransform GunInArm=Gun.GetRelativeTransform(Arm);
@@ -53,18 +71,18 @@ void FAnimNode_GuLiGroundMechAim::EvaluateSkeletalControl_AnyThread(FComponentSp
 			// or camera ray participates while the player is freely looking around.
 			const FQuat AimFrame=FRotationMatrix::MakeFromXZ((Socket*Gun).GetUnitAxis(EAxis::X),FVector::UpVector).ToQuat();
 			const FQuat Neutral=(FRotator(0,90,0).Quaternion()*AimFrame.Inverse()*Arm.GetRotation()).GetNormalized();
-			Arm.SetRotation(FQuat::Slerp(ReturnStart,Neutral,FMath::SmoothStep(0.f,1.f,ReturnAlpha)).GetNormalized());
+			Arm.SetRotation(FQuat::Slerp(UpperBodyFrame.Inverse()*ReturnStart,Neutral,FMath::SmoothStep(0.f,1.f,ReturnAlpha)).GetNormalized());
 			Gun=GunInArm*Arm;
 		}
-		else if (bAimValid && !AimPointComponent.ContainsNaN()
-			&& (AimPointComponent-Arm.GetLocation()).SizeSquared()>UE_SMALL_NUMBER)
+		else if (bAimValid && !TurretAimPoint.ContainsNaN()
+			&& (TurretAimPoint-Arm.GetLocation()).SizeSquared()>UE_SMALL_NUMBER)
 		{
 			// Solve the two aim motors before constructing a rotation. An unrestricted
 			// look-at followed by yaw correction retains target-dependent roll at the
 			// stop, making the arm/barrel keep chasing an unreachable mouse position.
 			const FTransform Muzzle=Socket*Gun;
 			const FVector Offset=Muzzle.GetLocation()-Arm.GetLocation();
-			const FVector Target=AimPointComponent-Arm.GetLocation();
+			const FVector Target=TurretAimPoint-Arm.GetLocation();
 			const FVector Forward=Muzzle.GetUnitAxis(EAxis::X);
 			const FQuat AimFrame=FRotationMatrix::MakeFromXZ(Forward,FVector::UpVector).ToQuat();
 			const FQuat ArmInAim=AimFrame.Inverse()*Arm.GetRotation();
@@ -122,13 +140,13 @@ void FAnimNode_GuLiGroundMechAim::EvaluateSkeletalControl_AnyThread(FComponentSp
 			const FQuat Limit(FVector::UpVector,FMath::DegreesToRadians(FMath::Clamp(ArmYaw,-GunYawLimit,GunYawLimit)-ArmYaw));
 			Arm.SetRotation((Limit*Arm.GetRotation()).GetNormalized());
 			Gun.SetLocation(Arm.GetLocation()+Limit.RotateVector(Gun.GetLocation()-Arm.GetLocation()));
-			if (!bForwardAim && bAimValid && !AimPointComponent.ContainsNaN())
+			if (!bForwardAim && bAimValid && !TurretAimPoint.ContainsNaN())
 			{
 				// Solve again at the final recoiled gun pivot, including the socket
 				// offset. Clamp motors before constructing the rotation, as above.
 				const FTransform Muzzle=Socket*Gun;
 				const FVector Offset=Muzzle.GetLocation()-Gun.GetLocation();
-				const FVector Target=AimPointComponent-Gun.GetLocation();
+				const FVector Target=TurretAimPoint-Gun.GetLocation();
 				const FQuat Frame=FRotationMatrix::MakeFromXZ(Forward,FVector::UpVector).ToQuat();
 				const double Along=FVector::DotProduct(Offset,Forward);
 				const double Disc=Along*Along+Target.SizeSquared()-Offset.SizeSquared();
@@ -160,7 +178,7 @@ void FAnimNode_GuLiGroundMechAim::EvaluateSkeletalControl_AnyThread(FComponentSp
             const FQuat BackRotation=(FQuat::FindBetweenNormals((Socket*Gun).GetUnitAxis(EAxis::X),BackBore)*Gun.GetRotation()).GetNormalized();
             Gun.SetRotation(FQuat::Slerp(Gun.GetRotation(),BackRotation,FMath::Clamp(float(BlinkPose.X),0.f,1.f)).GetNormalized());
 		}
-		Out.Emplace(ArmIndex,Arm); Out.Emplace(GunIndex,Gun);
+		Out.Emplace(ArmIndex,Arm*TurretFrame); Out.Emplace(GunIndex,Gun*TurretFrame);
 	};
 	Solve(RightArm,RightGun,RightMuzzleLocal,RightRecoil,RightArmRecoil,RightReturnStart);
 	Solve(LeftArm,LeftGun,LeftMuzzleLocal,LeftRecoil,LeftArmRecoil,LeftReturnStart);
@@ -181,7 +199,7 @@ void FAnimNode_GuLiGroundMechAim::EvaluateSkeletalControl_AnyThread(FComponentSp
 				if (const auto* Override=Out.FindByPredicate([&](const FBoneTransform& B){return B.BoneIndex==Index;})) New[I]=Override->Transform;
 				else if (Parent.IsValid()) New[I]=Old[I].GetRelativeTransform(Old[Parent.GetInt()])*New[Parent.GetInt()];
 			}
-			const FQuat Lean(FVector::ForwardVector,-FMath::DegreesToRadians(float(BlinkPose.X*BlinkPose.Z)));
+			const FQuat Lean(UpperBodyFrame.RotateVector(FVector::ForwardVector),-FMath::DegreesToRadians(float(BlinkPose.X*BlinkPose.Z)));
 			const FVector Pivot=Old[Torso.GetInt()].GetLocation();
 			Out.Reset();
 			for (int32 I=0;I<Count;++I) if (Descends(FCompactPoseBoneIndex(I),Torso))

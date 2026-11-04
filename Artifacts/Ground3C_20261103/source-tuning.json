@@ -1,0 +1,64 @@
+{
+  "mobility": {
+    "StrafeSpeedMultiplier": 0.8,
+    "MovingTurnRate": 2160.0,
+    "TurnStartDegrees": 1.0,
+    "TurnStopDegrees": 0.5
+  },
+  "gait": {
+    "WalkForward": {
+      "HorizontalMotionScale": 1.0,
+      "SwingLiftScale": 0.8125,
+      "PelvisMotionScale": 0.6875
+    },
+    "WalkBackward": {
+      "HorizontalMotionScale": 1.25,
+      "SwingLiftScale": 0.8125,
+      "PelvisMotionScale": 0.6875
+    },
+    "StrafeLeft": {
+      "HorizontalMotionScale": 1.0,
+      "SwingLiftScale": 0.8125,
+      "PelvisMotionScale": 0.6875
+    },
+    "StrafeRight": {
+      "HorizontalMotionScale": 1.0,
+      "SwingLiftScale": 0.8125,
+      "PelvisMotionScale": 0.6875
+    },
+    "RunForward": {
+      "HorizontalMotionScale": 1.0,
+      "SwingLiftScale": 0.8125,
+      "PelvisMotionScale": 0.6875
+    },
+    "RunBackward": {
+      "HorizontalMotionScale": 1.08,
+      "SwingLiftScale": 0.702,
+      "PelvisMotionScale": 0.594
+    },
+    "TurnLeft": {
+      "BasePlayRate": 4.0
+    },
+    "TurnRight": {
+      "BasePlayRate": 4.0
+    }
+  },
+  "free_camera": {
+    "ArmLength": 1432.0546684567782,
+    "SocketOffsetX": 0,
+    "SocketOffsetY": 854.1755119775999,
+    "SocketOffsetZ": 430.3814365963375,
+    "PitchDegrees": -8.850000210510904,
+    "YawDegrees": -4.899995979446101,
+    "FieldOfView": 90.00000933466734,
+    "MinDistance": 930.8355344969059,
+    "MaxDistance": 2864.1093369135565,
+    "MinPitchDegrees": -75.0,
+    "MaxPitchDegrees": 70.0
+  },
+  "camera_capture": "D:\\UE5.7\\test1\\Artifacts\\Ground3C_20261103\\blueprint-preview-camera.json",
+  "camera_pending": false,
+  "ue_imported": true,
+  "motion_imported": true,
+  "configuration_fingerprint": "71bd91874648fd678f6c62493956240b"
+}

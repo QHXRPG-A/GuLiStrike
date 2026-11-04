@@ -24,6 +24,12 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMesh.h"
 #include "Editor.h"
+#include "BlueprintEditor.h"
+#include "EditorViewportClient.h"
+#include "SceneView.h"
+#include "Math/RotationMatrix.h"
+#include "Subsystems/AssetEditorSubsystem.h"
+#include "UnrealClient.h"
 #include "K2Node_VariableGet.h"
 #include "Kismet2/BlueprintEditorUtils.h"
 #include "Kismet2/KismetEditorUtilities.h"
@@ -61,6 +67,67 @@ bool Bind(UEdGraph* Graph,UEdGraphNode* Node,const TCHAR* Pin,const TCHAR* Varia
 	Get->VariableReference.SetSelfMember(Variable); Get->NodePosX=Node->NodePosX-220; Get->NodePosY=Node->NodePosY+160;
 	Creator.Finalize(); return Link(Get,Variable,Node,Pin);
 }
+}
+FString UGuLiGroundMechAnimationEditorLibrary::ReadBlueprintPreviewCamera(UBlueprint* Blueprint)
+{
+	auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
+	auto Fail=[&](const TCHAR* Error) { R->SetStringField(TEXT("error"),Error); return Json(R); };
+	if (!Blueprint || !GEditor || GEditor->PlayWorld) return Fail(TEXT("Requires an existing Blueprint preview outside PIE"));
+	auto* Editors=GEditor->GetEditorSubsystem<UAssetEditorSubsystem>();
+	auto* Editor=Editors?Editors->FindEditorForAsset(Blueprint,false):nullptr;
+	if (!Editor || Editor->GetEditorName()!=TEXT("BlueprintEditor")) return Fail(TEXT("Open the requested Blueprint preview before reading its camera"));
+	auto* Preview=static_cast<FBlueprintEditor*>(Editor)->GetPreviewActor();
+	if (!Preview || !Preview->GetWorld()) return Fail(TEXT("The Blueprint editor has no preview actor"));
+	FEditorViewportClient* Match=nullptr;
+	for (auto* Client:GEditor->GetAllViewportClients())
+	{
+		if (!Client || Client->GetWorld()!=Preview->GetWorld() || !Client->Viewport || !Client->IsPerspective()) continue;
+		if (Match) return Fail(TEXT("Multiple perspective viewports belong to this Blueprint preview"));
+		Match=Client;
+	}
+	if (!Match || Match->Viewport->GetSizeXY().GetMin()<=0) return Fail(TEXT("The Blueprint perspective viewport is unavailable"));
+	// CalcSceneView only builds view matrices. In orbit mode these are the real
+	// observation coordinates, unlike the editor's intermediate camera controls.
+	FSceneViewFamilyContext Family(FSceneViewFamily::ConstructionValues(Match->Viewport,Match->GetScene(),Match->EngineShowFlags));
+	const FSceneView* View=Match->CalcSceneView(&Family);
+	if (!View) return Fail(TEXT("Could not read the Blueprint preview projection"));
+	const FTransform ActorTransform=Preview->GetActorTransform();
+	const FVector Origin=View->ViewMatrices.GetViewOrigin();
+	// ViewRotation still contains the editor's orbit controls. Recover the
+	// camera basis from the actual matrix (view Z is forward, view Y is up).
+	const FRotator Rotation=FRotationMatrix::MakeFromXZ(View->GetViewDirection(),View->ViewMatrices.GetViewMatrix().GetColumn(1)).Rotator();
+	const double ProjectionX=View->ViewMatrices.GetProjectionMatrix().M[0][0];
+	if (!FMath::IsFinite(ProjectionX) || ProjectionX<=0) return Fail(TEXT("Invalid perspective projection"));
+	const double HorizontalFov=FMath::RadiansToDegrees(2.0*FMath::Atan(1.0/ProjectionX));
+	const FVector LocalLocation=ActorTransform.InverseTransformPosition(Origin);
+	const FRotator LocalRotation=(ActorTransform.GetRotation().Inverse()*Rotation.Quaternion()).Rotator();
+	auto Vector=[](const FVector& V)
+	{
+		TArray<TSharedPtr<FJsonValue>> Values;
+		for (int32 Axis=0;Axis<3;++Axis) Values.Add(MakeShared<FJsonValueNumber>(V[Axis]));
+		return Values;
+	};
+	auto Transform=[&](const FVector& Location,const FRotator& Rot,const FVector& Scale)
+	{
+		auto O=MakeShared<FJsonObject>(); O->SetArrayField(TEXT("location"),Vector(Location));
+		O->SetNumberField(TEXT("pitch"),Rot.Pitch); O->SetNumberField(TEXT("yaw"),Rot.Yaw); O->SetNumberField(TEXT("roll"),Rot.Roll);
+		O->SetArrayField(TEXT("scale"),Vector(Scale)); return O;
+	};
+	R->SetStringField(TEXT("blueprint"),Blueprint->GetPathName()); R->SetStringField(TEXT("preview_world"),Preview->GetWorld()->GetPathName());
+	R->SetStringField(TEXT("preview_actor"),Preview->GetPathName());
+	R->SetObjectField(TEXT("actor_transform"),Transform(ActorTransform.GetLocation(),ActorTransform.Rotator(),ActorTransform.GetScale3D()));
+	R->SetObjectField(TEXT("world_view"),Transform(Origin,Rotation,FVector::OneVector));
+	R->SetObjectField(TEXT("local_view"),Transform(LocalLocation,LocalRotation,FVector::OneVector));
+	const FVector ViewSpaceLocation=LocalRotation.UnrotateVector(LocalLocation);
+	const double ArmLength=FMath::Max(1.0,-ViewSpaceLocation.X);
+	auto Boom=MakeShared<FJsonObject>(); Boom->SetNumberField(TEXT("arm_length"),ArmLength);
+	Boom->SetArrayField(TEXT("socket_offset"),Vector(ViewSpaceLocation+FVector(ArmLength,0,0)));
+	Boom->SetNumberField(TEXT("pitch"),LocalRotation.Pitch); Boom->SetNumberField(TEXT("yaw"),LocalRotation.Yaw);
+	R->SetObjectField(TEXT("spring_arm"),Boom);
+	R->SetNumberField(TEXT("horizontal_fov_degrees"),HorizontalFov);
+	R->SetNumberField(TEXT("viewport_width"),Match->Viewport->GetSizeXY().X); R->SetNumberField(TEXT("viewport_height"),Match->Viewport->GetSizeXY().Y);
+	R->SetBoolField(TEXT("success"),!Origin.ContainsNaN() && !Rotation.ContainsNaN() && !LocalLocation.ContainsNaN() && !LocalRotation.ContainsNaN());
+	return Json(R);
 }
 bool UGuLiGroundMechAnimationEditorLibrary::RebuildBlendSpace(UBlendSpace* Target,UBlendSpace* Source)
 {
@@ -289,6 +356,7 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 		{TEXT("RightArmRecoil"),TEXT("RightArmRecoil")},{TEXT("LeftArmRecoil"),TEXT("LeftArmRecoil")},
 		{TEXT("ArmRecoilDegrees"),TEXT("ArmRecoilDegrees")},
 		{TEXT("UpperBodyRecoilRotation"),TEXT("UpperBodyRecoilRotation")},
+		{TEXT("UpperBodyFrame"),TEXT("UpperBodyFrame")},
 		{TEXT("BlinkPose"),TEXT("BlinkPose")},
 		{TEXT("GunPitchUpLimit"),TEXT("GunPitchUpLimit")},{TEXT("GunPitchDownLimit"),TEXT("GunPitchDownLimit")}})
 		OK &= Bind(Graph,Aim,*Pair.Key.ToString(),*Pair.Value.ToString());
@@ -330,7 +398,7 @@ FString UGuLiGroundMechAnimationEditorLibrary::BindArmRecoil(UAnimBlueprint* BP)
 	R->SetBoolField(TEXT("success"),OK && Log.NumErrors==0); return Json(R);
 }
 
-FString UGuLiGroundMechAnimationEditorLibrary::BindUpperBodyRecoil(UAnimBlueprint* BP)
+static FString BindUpperBodyField(UAnimBlueprint* BP,const FName Name)
 {
 	auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
 	if (!BP || !GEditor || GEditor->PlayWorld) return Json(R);
@@ -339,7 +407,16 @@ FString UGuLiGroundMechAnimationEditorLibrary::BindUpperBodyRecoil(UAnimBlueprin
 	if (!Graph) return Json(R);
 	for (UEdGraphNode* N:Graph->Nodes) if (auto* A=Cast<UAnimGraphNode_GuLiGroundMechAim>(N))
 	{ if (Aim) return Json(R); Aim=A; }
-	if (!Aim || !FindFProperty<FStructProperty>(BP->ParentClass,TEXT("UpperBodyRecoilRotation"))) return Json(R);
+	if (!Aim || !FindFProperty<FStructProperty>(BP->ParentClass,Name)) return Json(R);
+	if (auto* Existing=Aim->FindPin(Name,EGPD_Input); Existing && Existing->LinkedTo.Num()==1)
+	{
+		const auto* Get=Cast<UK2Node_VariableGet>(Existing->LinkedTo[0]->GetOwningNode());
+		if (Get && Get->VariableReference.GetMemberName()==Name)
+		{
+			R->SetBoolField(TEXT("success"),true); R->SetBoolField(TEXT("changed"),false);
+			R->SetBoolField(TEXT("existing_links_preserved"),true); return Json(R);
+		}
+	}
 	auto Connections=[&]()
 	{
 		TSet<FString> Result;
@@ -353,9 +430,9 @@ FString UGuLiGroundMechAnimationEditorLibrary::BindUpperBodyRecoil(UAnimBlueprin
 	BP->Modify(); Graph->Modify(); Aim->Modify();
 	R->SetNumberField(TEXT("nodes_before"),Graph->Nodes.Num());
 	Aim->ReconstructNode();
-	const FName Name=TEXT("UpperBodyRecoilRotation"); auto* Pin=Aim->FindPin(Name,EGPD_Input);
+	auto* Pin=Aim->FindPin(Name,EGPD_Input);
 	bool OK=Pin!=nullptr;
-	if (Pin && Pin->LinkedTo.IsEmpty()) OK=Bind(Graph,Aim,TEXT("UpperBodyRecoilRotation"),TEXT("UpperBodyRecoilRotation"));
+	if (Pin && Pin->LinkedTo.IsEmpty()) OK=Bind(Graph,Aim,*Name.ToString(),*Name.ToString());
 	else if (Pin)
 	{
 		const auto* Get=Pin->LinkedTo.Num()==1?Cast<UK2Node_VariableGet>(Pin->LinkedTo[0]->GetOwningNode()):nullptr;
@@ -368,10 +445,17 @@ FString UGuLiGroundMechAnimationEditorLibrary::BindUpperBodyRecoil(UAnimBlueprin
 	FCompilerResultsLog Log; FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
 	R->SetNumberField(TEXT("nodes_after"),Graph->Nodes.Num());
 	R->SetBoolField(TEXT("existing_links_preserved"),Preserved);
+	R->SetBoolField(TEXT("changed"),true);
 	R->SetNumberField(TEXT("links_before"),Before.Num()/2); R->SetNumberField(TEXT("links_after"),After.Num()/2);
 	R->SetNumberField(TEXT("compile_errors"),Log.NumErrors); R->SetNumberField(TEXT("compile_warnings"),Log.NumWarnings);
 	R->SetBoolField(TEXT("success"),OK && Log.NumErrors==0); return Json(R);
 }
+
+FString UGuLiGroundMechAnimationEditorLibrary::BindUpperBodyRecoil(UAnimBlueprint* BP)
+{ return BindUpperBodyField(BP,TEXT("UpperBodyRecoilRotation")); }
+
+FString UGuLiGroundMechAnimationEditorLibrary::BindUpperBodyAim(UAnimBlueprint* BP)
+{ return BindUpperBodyField(BP,TEXT("UpperBodyFrame")); }
 
 FString UGuLiGroundMechAnimationEditorLibrary::ConfigureMobilityAssets(bool bApply)
 {

@@ -4,6 +4,7 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | done | partial | — | 2026-11-04 |
 | [肉鸽卡牌美术资源数据管线 — 实施与交付](../DevelopmentDocumentation/20261027-肉鸽卡牌美术资源数据管线.md) | verification | partial | 用户在LVL_CardArtworkCatalogReview进入PIE浏览当前折射子弹，按ArtworkId切换其他牌面核验效果。 | 2026-10-27 |
 | [GroundMech功能目录与职责整理 — 实施记录](../DevelopmentDocumentation/20261027-GroundMech功能目录与职责整理.md) | verification | partial | 在LVL_CommanderMassPrototype选择Ground，玩家回归移动/瞄准/开火/喷气/闪现和控制恢复；本轮未运行PIE或读图测试。 | 2026-10-27 |
 | [地面机甲闪现GAS与绿色能量拖尾 — 技术方案](../DevelopmentDocumentation/20261027-地面机甲闪现GAS与绿色能量拖尾.md) | verification | partial | 在LVL_CommanderMassPrototype选择Ground按Shift，玩家核验左侧/下沿铺屏、机甲形体与镜头恢复；联机与中断全组合另行验收。 | 2026-10-27 |

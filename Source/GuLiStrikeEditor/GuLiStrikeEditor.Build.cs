@@ -24,6 +24,7 @@ public class GuLiStrikeEditor : ModuleRules
 			"GuLiFrameProfiler",
 			"AssetRegistry",
 			"BlueprintGraph",
+			"Kismet", // Read the already-open Blueprint preview camera without touching the viewport.
 			"AnimGraph", "AnimGraphRuntime",
 			"GuLiStrikeAnimGraph",
 			"GeometryCore", "GeometryAlgorithms", "MeshDescription", "StaticMeshDescription",

@@ -7,6 +7,7 @@
 #include "Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkTypes.h"
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechTurnTypes.h"
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponAimTypes.h"
+#include "Gameplay/GroundMech/Animation/GuLiGroundMechUpperAimTypes.h"
 #include "Gameplay/GroundMech/Network/GuLiHybridGroundInputTypes.h"
 #include "Gameplay/GroundMech/GuLiGroundPresentationEvent.h"
 #include "GuLiGroundMechCharacter.generated.h"
@@ -46,13 +47,18 @@ public:
 	FRotator GetIntegratedAimRotation() const;
 	FVector GetIntegratedAimPoint() const;
 	bool IsShoulderLookActive() const;
-	void SetShoulderAimHeld(bool bHeld);
-	bool IsShoulderAimHeld() const { return bShoulderAimHeld; }
+	/** Right button controls camera framing only; targeting is active without it. */
+	void SetShoulderZoomHeld(bool bHeld);
+	bool IsShoulderZoomHeld() const { return bShoulderZoomHeld; }
+	/** Release held controls without leaving normal mouse targeting in semantic-input mode. */
+	void ClearLocalControlInput();
     FGuLiGroundPresentationChanged OnLocalPresentation;
     void NotifyLocalPresentation(const FGuLiGroundPresentationEvent& Event);
 	const FGuLiGroundMechConfiguration& GetMobilityConfiguration() const { return MobilityConfiguration; }
 	const FGuLiGroundMechTurnState& GetTurnState() const { return TurnState; }
 	const FGuLiGroundMechWeaponAimState& GetWeaponAimState() const { return WeaponAimState; }
+	const FGuLiGroundMechUpperAimState& GetUpperAimState(bool bPresentation=false) const
+	{ return bPresentation ? UpperAimPresentation : UpperAimState; }
 	const FGuLiGroundMechBlinkState& GetBlinkState() const;
     UFUNCTION(BlueprintPure,Category="Mech|Blink") uint8 GetBlinkPhase() const;
 	float GetBlinkPoseAlpha() const;
@@ -130,9 +136,18 @@ private:
 	UPROPERTY() FGuLiGroundMechConfiguration MobilityConfiguration;
 	UPROPERTY() FGuLiGroundMechTurnState TurnState;
 	UPROPERTY() FGuLiGroundMechWeaponAimState WeaponAimState;
+	UPROPERTY() FGuLiGroundMechUpperAimState UpperAimState;
+	FGuLiGroundMechUpperAimState UpperAimPresentation;
+	double UpperAimSampleSeconds=0., UpperAimReceiptWorldSeconds=0., UpperAimReceiptAge=0.;
+	uint32 UpperAimDisplacementRevision=0;
+	void AdvanceUpperAim(float DeltaSeconds);
+	void UpdateUpperAimPresentation(float DeltaSeconds);
+	void RefreshUpperAimPresentationPose();
+	void ResetUpperAim(float Yaw);
+	void RestoreUpperAim(const FGuLiGroundMechUpperAimState& State,double SampleSeconds);
 	void AdvanceFacing(float DeltaSeconds);
 	void AdvanceWeaponAim(float DeltaSeconds);
-	bool bShoulderAimHeld=false;
+	bool bShoulderZoomHeld=false;
 	uint32 FacingDisplacementRevision=0;
     UPROPERTY() bool bCarrierDormant=false;
     void ApplyCarrierDormancy();

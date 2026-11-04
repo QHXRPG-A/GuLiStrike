@@ -3,7 +3,7 @@
 > 自动生成，请勿手改。运行 `progress_docs.py build` 刷新。
 
 - 错误：4
-- 提示：20
+- 提示：21
 
 ## 错误
 
@@ -32,6 +32,7 @@
 | Progress/DevelopmentDocumentation/20261023-地面机甲MechaDestroyer替换与风格化.md | oversize | 39.0KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/GuLiStrike美术规范.md | oversize | 72.2KB，建议阈值 30KB |
 | Progress/Gameplay/战斗.md | oversize | 35.5KB，建议阈值 30KB |
+| Progress/Gameplay/游骑兵.md | oversize | 32.2KB，建议阈值 30KB |
 | Progress/Gameplay/飞船.md | oversize | 60.7KB，建议阈值 30KB |
 | Progress/RequirementDocument/20260826-5v5大战场玩法草案.md | oversize | 36.1KB，建议阈值 20KB |
 | Progress/RequirementDocument/20260827-Mass双端同步架构草案.md | oversize | 24.7KB，建议阈值 20KB |

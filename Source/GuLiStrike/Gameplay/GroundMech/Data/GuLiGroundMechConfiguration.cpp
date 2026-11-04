@@ -104,13 +104,19 @@ bool FGuLiGroundMechConfiguration::Load(FString& Error)
         if (!Skeleton || CastChecked<UAnimationAsset>(Pair.Value)->GetSkeleton()!=Skeleton)
         { Error=TEXT("Ground gait assets must share the production skeleton: ")+Pair.Key.ToString(); return false; }
     const auto& Bones=Skeleton->GetReferenceSkeleton();
+    const int32 Chest=Bones.FindBoneIndex(TEXT("cockpit")), Pelvis=Bones.FindBoneIndex(TEXT("MiddleJoint"));
+    const int32 RightArm=Bones.FindBoneIndex(TEXT("GunArm_R")), LeftArm=Bones.FindBoneIndex(TEXT("GunArm_L"));
+    if (Chest<0 || Pelvis<0 || RightArm<0 || LeftArm<0 || Bones.GetParentIndex(Chest)!=Pelvis
+        || Bones.GetParentIndex(RightArm)!=Chest || Bones.GetParentIndex(LeftArm)!=Chest)
+    { Error=TEXT("Ground turret requires cockpit under MiddleJoint and both arms under cockpit"); return false; }
     for (const TCHAR* Suffix:{TEXT("L"),TEXT("R")})
     {
         const int32 Hip=Bones.FindBoneIndex(FName(FString(TEXT("UpperLeg_"))+Suffix));
         const int32 Knee=Bones.FindBoneIndex(FName(FString(TEXT("Leg_"))+Suffix));
         const int32 Foot=Bones.FindBoneIndex(FName(FString(TEXT("Foot_"))+Suffix));
         const int32 Toe=Bones.FindBoneIndex(FName(FString(TEXT("FootEnd_"))+Suffix));
-        if (Hip<0 || Knee<0 || Foot<0 || Toe<0 || Bones.GetParentIndex(Knee)!=Hip || Bones.GetParentIndex(Foot)!=Knee || Bones.GetParentIndex(Toe)!=Foot)
+        if (Hip<0 || Knee<0 || Foot<0 || Toe<0 || Bones.GetParentIndex(Hip)!=Pelvis
+            || Bones.GetParentIndex(Knee)!=Hip || Bones.GetParentIndex(Foot)!=Knee || Bones.GetParentIndex(Toe)!=Foot)
         { Error=TEXT("Ground IK requires UpperLeg > Leg > Foot > FootEnd on both sides"); return false; }
     }
     auto CameraOK=[](const FGuLiStrikeMechCameraRow& R)
@@ -122,7 +128,10 @@ bool FGuLiGroundMechConfiguration::Load(FString& Error)
         && R.BlinkArmLength>=250 && R.BlinkArmLength<=1200 && R.BlinkSideOffsetCm>=0 && R.BlinkSideOffsetCm<=350
         && R.BlinkPitchOffsetDegrees>=0 && R.BlinkPitchOffsetDegrees<=20; };
     if (!(Mobility.WalkSpeed>0 && Mobility.SprintSpeed>=Mobility.WalkSpeed && Mobility.Acceleration>0 && Mobility.Braking>0
+        && FMath::IsFinite(Mobility.StrafeSpeedMultiplier) && Mobility.StrafeSpeedMultiplier>0 && Mobility.StrafeSpeedMultiplier<=1
         && Mobility.TurnStartDegrees>Mobility.TurnStopDegrees && Mobility.TurnStopDegrees>0 && Mobility.MovingTurnRate>0
+        && FMath::IsFinite(Mobility.UpperBodyAimResponseSeconds) && Mobility.UpperBodyAimResponseSeconds>0 && Mobility.UpperBodyAimResponseSeconds<=1
+        && FMath::IsFinite(Mobility.UpperBodyAimSnapToleranceDegrees) && Mobility.UpperBodyAimSnapToleranceDegrees>0 && Mobility.UpperBodyAimSnapToleranceDegrees<=1
         && Mobility.GunReturnSeconds>0 && Mobility.GunYawLimit>0 && Mobility.GunYawLimit<180 && Mobility.GunPitchUpLimit>0 && Mobility.GunPitchUpLimit<90
         && Mobility.GunPitchDownLimit>0 && Mobility.GunPitchDownLimit<90 && CameraOK(FreeCamera) && CameraOK(AimCamera)
         && IK.TraceUp>0 && IK.TraceDown>0 && IK.MaxFootCorrection>0 && IK.PelvisDown>=0 && IK.PelvisUp>=0

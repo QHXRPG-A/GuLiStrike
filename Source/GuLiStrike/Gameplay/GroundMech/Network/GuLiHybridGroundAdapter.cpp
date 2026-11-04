@@ -24,7 +24,8 @@
 
 namespace GuLiHybridGround
 {
-constexpr uint32 StateVersion=11;
+constexpr uint32 StateVersion=13;
+constexpr uint32 MotionVersion=8;
 struct FPose
 {
     FVector Position=FVector::ZeroVector,Velocity=FVector::ZeroVector;
@@ -34,10 +35,10 @@ struct FPose
     float DisplayAimYaw=0,Fuel=0,MaxFuel=0;
     bool bThrusting=false,bJet=false;
     bool bFaceAim=false;
-    bool bFaceCamera=false;
-    uint16 CameraYaw=0;
     FGuLiGroundMechTurnState Turn;
     FGuLiGroundMechWeaponAimState WeaponAim;
+    FGuLiGroundMechUpperAimState UpperAim;
+    double UpperAimSeconds=0.;
     FGuLiGroundMechBlinkState Blink;
     FVector2D MoveAxis=FVector2D::ZeroVector;
 };
@@ -47,6 +48,7 @@ struct FPrivate
     FPose Pose;
     FGuLiHybridGroundInput Simulation,ControllerInput;
     bool bSemantic=false,bSprint=false,bAbility=false,bRocketHeld=false,bRocketRequested=false,bRocketThrusting=false,bRocketAllowed=false;
+    bool bShoulderZoom=false;
     float FuelRecoveryElapsed=0;
     FGuLiMassSupportState Support;
     FString Upgrade;
@@ -62,11 +64,18 @@ void Pose(FGuLiHybridStateArchive& A,FPose& V)
 {
     A.Value(V.Position); A.Value(V.Rotation); A.Value(V.Velocity); A.Value(V.Mode); A.Value(V.CustomMode);
     A.Value(V.AimYaw); A.Value(V.DisplayAimYaw); A.Value(V.Fuel); A.Value(V.MaxFuel); A.Value(V.bThrusting); A.Value(V.bJet);
-    A.Value(V.bFaceAim); A.Value(V.bFaceCamera); A.Value(V.CameraYaw); auto& T=V.Turn;
+    A.Value(V.bFaceAim); auto& T=V.Turn;
     A.Value(T.Serial); A.Value(T.Direction); A.Value(T.Time); A.Value(T.Duration);
     A.Value(T.StartYaw); A.Value(T.TargetDegrees); A.Value(T.Progress);
     A.Value(V.MoveAxis); A.Value(V.WeaponAim.bForward); A.Value(V.WeaponAim.ReturnAlpha);
     A.Value(V.WeaponAim.RightStart); A.Value(V.WeaponAim.LeftStart);
+    auto& U=V.UpperAim;
+    A.Value(U.WorldYaw); A.Value(U.TargetYaw); A.Value(U.TargetPoint);
+    A.Value(U.bInitialized); A.Value(U.bHasTarget); A.Value(U.bHasAimPose); A.Value(U.Revision); A.Value(V.UpperAimSeconds);
+    if (!FMath::IsFinite(U.WorldYaw) || !FMath::IsFinite(U.TargetYaw) || U.TargetPoint.ContainsNaN()
+        || FMath::Abs(U.WorldYaw)>180.f || FMath::Abs(U.TargetYaw)>180.f
+        || (U.bHasAimPose && !U.bInitialized) || (U.bHasTarget && !U.bHasAimPose)
+        || !FMath::IsFinite(V.UpperAimSeconds) || V.UpperAimSeconds<0.) A.Reject();
     auto& B=V.Blink;
     A.Value(B.Phase); A.Value(B.Serial); A.Value(B.LastRequest); A.Value(B.Elapsed); A.Value(B.Cooldown);
     A.Value(B.Start); A.Value(B.End); A.Value(B.Direction); A.Value(B.Yaw);
@@ -81,7 +90,7 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
 {
     uint32 Version=StateVersion; A.Value(Version); if (Version!=StateVersion) A.Reject();
     A.Value(V.Key); Pose(A,V.Pose); Input(A,V.Simulation); Input(A,V.ControllerInput);
-    A.Value(V.bSemantic); A.Value(V.bSprint); A.Value(V.bAbility); A.Value(V.bRocketHeld); A.Value(V.bRocketRequested);
+    A.Value(V.bSemantic); A.Value(V.bShoulderZoom); A.Value(V.bSprint); A.Value(V.bAbility); A.Value(V.bRocketHeld); A.Value(V.bRocketRequested);
     A.Value(V.bRocketThrusting); A.Value(V.bRocketAllowed); A.Value(V.FuelRecoveryElapsed);
     auto& S=V.Support; A.Value(S.SoldierId.Value); A.Value(S.Epoch); A.Value(S.DisplacementRevision);
     A.Value(S.BodyLocation); A.Value(S.RelativeLocation); A.Value(S.TopZ); A.Value(S.Radius); A.Value(S.SimulationSeconds);
@@ -159,7 +168,7 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
         V.Mode=M->MovementMode; V.CustomMode=M->CustomMovementMode; V.AimYaw=P->AimYaw; V.DisplayAimYaw=P->DisplayAimYaw;
         V.bFaceAim=P->SimulationInput.bFaceAim; V.Turn=P->TurnState;
         V.WeaponAim=P->WeaponAimState; V.MoveAxis=P->SimulationInput.Axis; V.Blink=P->GetBlinkComponent()->GetState();
-        V.bFaceCamera=P->SimulationInput.bFaceCamera; V.CameraYaw=P->SimulationInput.CameraYaw;
+        V.UpperAim=P->UpperAimState; V.UpperAimSeconds=P->UpperAimSampleSeconds;
         V.Fuel=P->AbilitySystem->GetNumericAttribute(UGuLiGroundMechAttributeSet::GetFuelAttribute());
         V.MaxFuel=P->AbilitySystem->GetNumericAttribute(UGuLiGroundMechAttributeSet::GetMaxFuelAttribute());
         V.bThrusting=P->RocketJump->bReplicatedThrusting; V.bJet=P->RocketJump->bReplicatedJetActive; return V;
@@ -172,16 +181,17 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
             M->StopMovementImmediately();M->SetMovementMode(MOVE_None);
             P->SimulationInput={};P->HybridInput={};P->bSprintHeld=false;
             P->WeaponAimState={}; P->GetBlinkComponent()->Interrupt();
+            P->UpperAimState.Stop(); P->UpperAimPresentation.Stop();
             P->RocketJump->bReplicatedThrusting=false;P->RocketJump->bReplicatedJetActive=false;
             P->RocketJump->ApplyJetPresentation();return;
         }
         P->SetActorLocationAndRotation(V.Position,V.Rotation,false,nullptr,ETeleportType::TeleportPhysics);
         M->Velocity=V.Velocity; M->SetMovementMode(EMovementMode(V.Mode),V.CustomMode);
         P->AimYaw=V.AimYaw; P->DisplayAimYaw=V.DisplayAimYaw;
+        P->RestoreUpperAim(V.UpperAim,V.UpperAimSeconds);
         P->SimulationInput.bFaceAim=V.bFaceAim; P->TurnState=V.Turn;
         P->WeaponAimState=V.WeaponAim; P->SimulationInput.Axis=V.MoveAxis; P->GetBlinkComponent()->ApplySnapshot(V.Blink);
         P->SimulationInput.WeaponAimMode=V.WeaponAim.bForward?EGuLiGroundWeaponAimMode::Forward:EGuLiGroundWeaponAimMode::Target;
-        P->SimulationInput.bFaceCamera=V.bFaceCamera; P->SimulationInput.CameraYaw=V.CameraYaw;
         P->UpperBodyPivot->SetWorldRotation(FRotator(0,V.DisplayAimYaw-90,0));
         P->AbilitySystem->SetNumericAttributeBase(UGuLiGroundMechAttributeSet::GetMaxFuelAttribute(),V.MaxFuel);
         P->AbilitySystem->SetNumericAttributeBase(UGuLiGroundMechAttributeSet::GetFuelAttribute(),V.Fuel);
@@ -206,10 +216,11 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
             P->GetBlinkComponent()->PrepareRestore();
             P->SimulationInput=V.Simulation; P->HybridInput=V.ControllerInput; P->bSemanticInput=V.bSemantic;
             P->bSprintHeld=V.bSprint; P->bHybridInputSent=false; P->LastHybridInputTick=0;
-            P->bShoulderAimHeld=V.ControllerInput.bFaceAim && !V.bSemantic;
+            P->bShoulderZoomHeld=V.bShoulderZoom && !V.bSemantic && P->IsLocallyControlled();
             M->SupportState=V.Support;
             if (M->SupportState.IsValid()) M->SupportState.Epoch=World()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch();
             M->MassSupportSoldierId=V.Support.SoldierId;
+            P->UpperAimDisplacementRevision=M->GetDisplacementRevision();
             M->RocketState={V.Pose.Fuel,V.FuelRecoveryElapsed};
             M->bRocketHeld=V.bRocketHeld; M->bRocketRequested=V.bRocketRequested;
             M->bRocketThrusting=V.bRocketThrusting; M->bRocketAllowedThisMove=V.bRocketAllowed;
@@ -248,8 +259,9 @@ public:
         P->SimulationInput={}; P->HybridInput={}; P->bSemanticInput=false; P->bSprintHeld=false;
         P->GetCameraController()->ResetBlink();
         P->CameraMoveAxis=FVector2D::ZeroVector;
-        P->bShoulderAimHeld=false; P->TurnState.Direction=0; P->TurnState.Progress=0; ++P->TurnState.Serial;
+        P->bShoulderZoomHeld=false; P->TurnState.Direction=0; P->TurnState.Progress=0; ++P->TurnState.Serial;
         P->WeaponAimState={};
+        P->UpperAimState.Stop(); P->UpperAimPresentation.Stop();
         P->bHybridInputSent=false; P->LastHybridInputTick=0; P->ConsumeMovementInputVector();
         P->RocketJump->Interrupt(); bRestoreAbility=false;
         M->Velocity=FVector::ZeroVector; M->Acceleration=FVector::ZeroVector;
@@ -275,8 +287,9 @@ public:
             ++P->HybridRocketRestoreCount;
         }
         P->AdvanceHybrid(Delta);
+        P->UpperAimSampleSeconds=double(At)/60.;
         if (At%2 || At==LastPublished) return;
-        LastPublished=At; FGuLiHybridStateArchive A(1024); uint32 Schema=6; A.Value(Schema); auto Pose=ReadPose(); GuLiHybridGround::Pose(A,Pose);
+        LastPublished=At; FGuLiHybridStateArchive A(1024); uint32 Schema=GuLiHybridGround::MotionVersion; A.Value(Schema); auto Pose=ReadPose(); GuLiHybridGround::Pose(A,Pose);
         auto Aim=FVector(P->Weapon->AimPoint); A.Value(Aim);
         TArray<uint8> Body; if (A.Finish(Body)) World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body);
     }
@@ -294,7 +307,7 @@ public:
         if (!Pawn.IsValid() || bLocal) return false; if (At<=LastApplied) return true;
         FGuLiHybridStateArchive A(Bytes,1024); uint32 Schema=0; A.Value(Schema);
         GuLiHybridGround::FPose V; GuLiHybridGround::Pose(A,V); FVector Aim; A.Value(Aim);
-        if (Schema!=6 || !A.Done()) return false;
+        if (Schema!=GuLiHybridGround::MotionVersion || !A.Done()) return false;
         ApplyPose(V);
         GuLiGrid::ObserveRemoteBody(*World(),Record,V.Position,1,V.Mode==MOVE_Walking || V.Mode==MOVE_NavWalking);
         Pawn->Weapon->AimPoint=Aim; Pawn->Weapon->AlignGun(); LastApplied=At; return true;
@@ -317,6 +330,7 @@ public:
         auto* P=Pawn.Get(); auto* M=Movement(); if (!P || !M || M->bMoveContextActive || M->bSweepStepActive) return false;
         GuLiHybridGround::FPrivate V; V.Key=Record.Key; V.Pose=ReadPose();
         V.Simulation=P->SimulationInput; V.ControllerInput=P->HybridInput; V.bSemantic=P->bSemanticInput; V.bSprint=P->bSprintHeld;
+        V.bShoulderZoom=P->bShoulderZoomHeld;
         V.bAbility=P->RocketJump->bAbilityActive; V.bRocketHeld=M->bRocketHeld; V.bRocketRequested=M->bRocketRequested;
         V.bRocketThrusting=M->bRocketThrusting; V.bRocketAllowed=M->bRocketAllowedThisMove;
         V.FuelRecoveryElapsed=M->RocketState.RecoveryElapsed; V.Support=M->SupportState;
@@ -342,15 +356,15 @@ public:
 class FGuLiHybridGroundControls final : public IGuLiHybridSharedStateAdapter
 {
     struct FInput
-    { FGuLiHybridObjectKey Key; FGuLiHybridGroundInput Value; bool bSemantic=false; };
+    { FGuLiHybridObjectKey Key; FGuLiHybridGroundInput Value; bool bSemantic=false,bShoulderZoom=false; };
     TWeakObjectPtr<UGuLiHybridActorWorldSubsystem> Owner;
     static void Serialize(FGuLiHybridStateArchive& A,FGuid& Player,TArray<FInput>& Inputs)
     {
-        uint32 Schema=6; A.Value(Schema); if (Schema!=6) A.Reject(); A.Value(Player); if (!Player.IsValid()) A.Reject();
+        uint32 Schema=7; A.Value(Schema); if (Schema!=7) A.Reject(); A.Value(Player); if (!Player.IsValid()) A.Reject();
         TSet<FGuLiHybridObjectKey> Seen;
         A.Array(Inputs,32,[&](auto& Ar,FInput& V)
         {
-            Ar.Value(V.Key); GuLiHybridGround::Input(Ar,V.Value); Ar.Value(V.bSemantic);
+            Ar.Value(V.Key); GuLiHybridGround::Input(Ar,V.Value); Ar.Value(V.bSemantic); Ar.Value(V.bShoulderZoom);
             if (!V.Key.IsValid() || V.Key.Kind!=EGuLiHybridObjectKind::GroundPlayer || Seen.Contains(V.Key)) Ar.Reject();
             Seen.Add(V.Key);
         });
@@ -358,7 +372,7 @@ class FGuLiHybridGroundControls final : public IGuLiHybridSharedStateAdapter
 public:
     explicit FGuLiHybridGroundControls(UGuLiHybridActorWorldSubsystem& InOwner):Owner(&InOwner) {}
     UObject* LifetimeOwner() const override { return Owner.Get(); }
-    uint32 Version() const override { return 6; }
+    uint32 Version() const override { return 7; }
     bool Capture(const TArray<FGuLiHybridObjectKey>& Objects,TArray<uint8>& Bytes) const override
     {
         if (!Owner.IsValid()) return false; auto* World=Owner->GetWorld();
@@ -367,7 +381,7 @@ public:
         auto Player=Session->GetLocalPlayerId(); TArray<FInput> Inputs;
         for (TActorIterator<AGuLiGroundMechCharacter> It(World); It; ++It)
             if (const auto* Binding=UGuLiHybridActorComponent::Find(*It); Binding && Objects.Contains(Binding->GetObjectKey()) && Hybrid->HasControl(Binding->GetObjectKey()))
-                Inputs.Add({Binding->GetObjectKey(),It->HybridInput,It->bSemanticInput});
+                Inputs.Add({Binding->GetObjectKey(),It->HybridInput,It->bSemanticInput,It->bShoulderZoomHeld});
         FGuLiHybridStateArchive A; Serialize(A,Player,Inputs); return A.Finish(Bytes);
     }
     bool Validate(const TArray<FGuLiHybridSharedStatePiece>& Pieces,const TArray<FGuLiHybridObjectKey>&) const override
@@ -394,7 +408,7 @@ public:
             for (const auto& V : Inputs) for (TActorIterator<AGuLiGroundMechCharacter> It(World); It; ++It)
                 if (const auto* Binding=UGuLiHybridActorComponent::Find(*It);
                     Binding && Binding->GetObjectKey()==V.Key && Hybrid->HasControl(V.Key))
-                { It->HybridInput=V.Value; It->bSemanticInput=V.bSemantic; It->bShoulderAimHeld=V.Value.bFaceAim && !V.bSemantic; It->bHybridInputSent=false; }
+                { It->HybridInput=V.Value; It->bSemanticInput=V.bSemantic; It->bShoulderZoomHeld=V.bShoulderZoom && !V.bSemantic; It->bHybridInputSent=false; }
         }
         return true;
     }

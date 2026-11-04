@@ -1,0 +1,53 @@
+[
+  {
+    "Name": "Default",
+    "Id": 1,
+    "Note": "Heel in Foot bone space; Toe in FootEnd space; cm/deg/s; no stretch",
+    "Enabled": true,
+    "TraceUp": 80.0,
+    "TraceDown": 100.0,
+    "MaxFootCorrection": 75.0,
+    "PelvisDown": 60.0,
+    "PelvisUp": 30.0,
+    "MaxTiltDegrees": 45.0,
+    "SoleOffset": 0.0,
+    "PlantThreshold": 0.65,
+    "ReleaseThreshold": 0.35,
+    "BlendInSeconds": 0.15,
+    "BlendOutSeconds": 0.08,
+    "InterpSpeed": 12.0,
+    "LockReleaseDistance": 90.0,
+    "ContactHeightTolerance": 5.0,
+    "ContactBlendHeight": 8.0,
+    "HeelLeft": {
+      "X": 11.137256071791999,
+      "Y": -16.555110844619133,
+      "Z": -64.07825468897654
+    },
+    "ToeLeft": {
+      "X": -26.317433176355966,
+      "Y": -40.541989863225,
+      "Z": -17.721223872188236
+    },
+    "HeelRight": {
+      "X": -11.14620067154957,
+      "Y": -16.27406601076058,
+      "Z": -64.14857250214561
+    },
+    "ToeRight": {
+      "X": 26.25656938901623,
+      "Y": -40.57658868528186,
+      "Z": -17.732499806680945
+    },
+    "MinKneeAngle": 80.0,
+    "MaxKneeAngle": 155.0,
+    "MaxLegSwingDegrees": 45.0,
+    "MaxKneeTwistDegrees": 25.0,
+    "MinFootSeparation": 40.0,
+    "LockMaxYawDegrees": 25.0,
+    "LockReleaseSeconds": 0.18,
+    "MaxPelvisSpeed": 120.0,
+    "MaxCorrectionSpeed": 360.0,
+    "MaxFootAngularSpeed": 180.0
+  }
+]

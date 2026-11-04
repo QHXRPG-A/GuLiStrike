@@ -35,6 +35,8 @@ struct FGuLiMechGroundingSnapshot
     UPROPERTY() float StrideScale=1.f;
     UPROPERTY() float GroundAlpha=0.f;
     UPROPERTY() float DeltaSeconds=0.f;
+	/** Re-evaluate the turret without advancing or re-solving the lower-body sample. */
+	UPROPERTY() bool bPresentationOnly=false;
     UPROPERTY() int32 Revision=0;
     UPROPERTY() float BlinkAlpha=0.f;
     UPROPERTY() float BlinkCrouchDepthCm=0.f;
@@ -97,4 +99,6 @@ private:
     FVector AppliedOffsets[2]={FVector::ZeroVector,FVector::ZeroVector};
     FQuat PreviousFootWorld[2]={FQuat::Identity,FQuat::Identity};
     bool bHasPreviousPose=false;
+	TArray<FBoneTransform> CachedGroundPose;
+	int32 CachedGroundRevision=INDEX_NONE;
 };

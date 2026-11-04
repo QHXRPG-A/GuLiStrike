@@ -33,9 +33,9 @@ def sync_heavy_gait_assets(root):
         try:
             ctl.set_frame_rate(unreal.FrameRate(30,1),False)
             ctl.set_number_of_frames(unreal.FrameNumber(len(d['frames'])-1),False)
-            existing=set(map(str,unreal.AnimationLibrary.get_animation_track_names(asset)))
+            existing={str(n).casefold() for n in unreal.AnimationLibrary.get_animation_track_names(asset)}
             for i,bone in enumerate(data['bones']):
-                if bone not in existing: ctl.add_bone_track(bone,False)
+                if bone.casefold() not in existing: ctl.add_bone_track(bone,False)
                 values=[f[i] for f in d['frames']]
                 assert ctl.set_bone_track_keys(bone,[unreal.Vector(*v['t']) for v in values],
                     [unreal.Quat(*v['q']) for v in values],[unreal.Vector(1,1,1)]*len(values),False),bone

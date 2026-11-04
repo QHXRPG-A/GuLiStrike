@@ -181,7 +181,7 @@ void AGuLiCommanderPlayerController::ApplyHUDModalInput()
     if(Active)
     {
         if(auto* Ground=Cast<AGuLiGroundMechCharacter>(GetPawn()))
-        {Ground->SubmitGameplayInput(FVector2D::ZeroVector,FVector::ZeroVector,false,false,false,false);Ground->GetWeapon()->SetFireHeld(false);Ground->SetRocketJumpInput(false);Ground->SetShoulderAimHeld(false);}
+            Ground->ClearLocalControlInput();
         CancelSelectionDrag();ActivateSelectionTool();
         if(TeleportInput&&TeleportInput->IsAiming())TeleportInput->CancelTeleport();
         if(BuildingPlacementComponent)BuildingPlacementComponent->HandleCancelAction();
@@ -584,7 +584,7 @@ void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 	if (!IsCommanderViewActive())
 	{
 		if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetPawn()); Mech && CanUseGroundMechFireInput())
-			Mech->SetShoulderAimHeld(true);
+			Mech->SetShoulderZoomHeld(true);
 		return;
 	}
 
@@ -600,7 +600,7 @@ void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 
 void AGuLiCommanderPlayerController::HandleSecondaryReleased()
 {
-	if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetPawn())) Mech->SetShoulderAimHeld(false);
+	if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetPawn())) Mech->SetShoulderZoomHeld(false);
 }
 
 // 只在本地指挥角色中解释这些快捷键；共享 helper 本身不绑定 World/PlayerState。

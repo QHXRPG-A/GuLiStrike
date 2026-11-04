@@ -7,10 +7,14 @@ import re
 from pathlib import Path
 import unreal
 
-def sync_mobility_assets(export_manifests=True):
+def sync_mobility_assets(export_manifests=True, sync_camera_defaults=True):
     root=Path(unreal.Paths.project_dir()).resolve()
     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
     lib=unreal.EditorAssetLibrary
+    abp=unreal.load_asset('/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2')
+    upper_aim=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.bind_upper_body_aim(abp))
+    if not upper_aim['success']: raise RuntimeError(upper_aim)
+    if upper_aim.get('changed'): assert lib.save_loaded_asset(abp,False)
     scope={'__name__':'heavy_gait_import'}
     heavy_source=root/'Scripts/GroundMech/MechaDestroyer/sync_heavy_gait_assets.py'
     exec(compile(heavy_source.read_text(encoding='utf8'),str(heavy_source),'exec'),scope)
@@ -25,9 +29,11 @@ def sync_mobility_assets(export_manifests=True):
         prior=json.loads(prior_contacts) if prior_contacts else {}
         same_contact_rules=prior.get('version')==3 and prior.get('tolerance')==ik['ContactHeightTolerance'] and prior.get('blend_height')==ik['ContactBlendHeight']
         selected=heavy['changed_gaits'] if same_contact_rules else []
-        contacts=({'success':True,'clips':[],'gait':{},'sole':{}} if same_contact_rules and not selected else
-            json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.bake_ground_contacts(mesh,
-                '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations',ik['ContactHeightTolerance'],ik['ContactBlendHeight'],','.join(selected))))
+        # A prior import may have saved the authored clips before calibration
+        # failed. An empty changed list does not prove their contact data is
+        # current; an empty selection deliberately rebakes all relevant clips.
+        contacts=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.bake_ground_contacts(mesh,
+            '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations',ik['ContactHeightTolerance'],ik['ContactBlendHeight'],','.join(selected)))
         if not contacts['success']: raise RuntimeError(contacts)
         for clip in contacts['clips']:
             assert lib.save_loaded_asset(unreal.load_asset(clip['asset']),False)
@@ -61,31 +67,44 @@ def sync_mobility_assets(export_manifests=True):
         contacts_rebaked=True
     result=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.configure_mobility_assets(True))
     if not result['success']: raise RuntimeError(result)
+    result['upper_aim_binding']=upper_aim
     result['contact_curves_rebaked']=contacts_rebaked
     result['heavy_gait']=heavy
     rows=json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Gait')))
     for row in rows:
         if row['Name'] in ('WalkBlend','RunBlend'):
             assert lib.save_loaded_asset(unreal.load_asset(row['Asset']),False)
-    cameras=json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Camera')))
+    camera_table=unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Camera')
+    cameras=json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(camera_table))
+    # DataTable JSON shortens float output to six significant digits. Column
+    # text retains the native float precision needed by the frozen camera.
+    camera_names=list(map(str,unreal.DataTableFunctionLibrary.get_data_table_row_names(camera_table)))
+    for field in ('ArmLength','PitchDegrees','YawDegrees','FieldOfView','MinDistance','MaxDistance'):
+        values=dict(zip(camera_names,unreal.DataTableFunctionLibrary.get_data_table_column_as_string(camera_table,field)))
+        for camera_row in cameras: camera_row[field]=float(values[camera_row['Name']])
+    free=next(row for row in cameras if row['Name']=='Free')
     aim=next(row for row in cameras if row['Name']=='Aim')
-    bp=unreal.load_asset('/Game/GuLiStrike/GroundMech/BP_GroundMech_Light'); bp.modify()
-    cdo=unreal.get_default_object(bp.generated_class()); cdo.modify()
-    boom=cdo.get_editor_property('camera_boom'); camera=cdo.get_editor_property('camera')
-    boom.modify(); camera.modify()
-    boom.set_editor_property('absolute_rotation',True)
-    boom.set_relative_location(unreal.Vector(0,0,0),False,False)
-    boom.set_relative_rotation(unreal.Rotator(pitch=aim['PitchDegrees'],yaw=aim['YawDegrees'],roll=0),False,False)
-    boom.set_editor_property('target_arm_length',aim['ArmLength'])
-    boom.set_editor_property('target_offset',unreal.Vector(0,0,0))
-    v=aim['SocketOffset']
-    if isinstance(v,str): v={a:float(n) for a,n in re.findall(r'([XYZ])=([-+0-9.eE]+)',v)}
-    boom.set_editor_property('socket_offset',unreal.Vector(v['X'],v['Y'],v['Z']))
-    boom.set_editor_property('do_collision_test',True)
-    camera.set_relative_location(unreal.Vector(0,0,0),False,False)
-    camera.set_relative_rotation(unreal.Rotator(0,0,0),False,False)
-    camera.set_editor_property('field_of_view',aim['FieldOfView'])
-    assert lib.save_loaded_asset(bp,False)
+    if sync_camera_defaults:
+        bp=unreal.load_asset('/Game/GuLiStrike/GroundMech/BP_GroundMech_Light'); bp.modify()
+        cdo=unreal.get_default_object(bp.generated_class()); cdo.modify()
+        boom=cdo.get_editor_property('camera_boom'); camera=cdo.get_editor_property('camera')
+        boom.modify(); camera.modify()
+        boom.set_editor_property('absolute_rotation',True)
+        boom.set_relative_location(unreal.Vector(0,0,0),False,False)
+        boom.set_relative_rotation(unreal.Rotator(pitch=free['PitchDegrees'],yaw=free['YawDegrees'],roll=0),False,False)
+        boom.set_editor_property('target_arm_length',free['ArmLength'])
+        boom.set_editor_property('target_offset',unreal.Vector(0,0,0))
+        v=free['SocketOffset']
+        if isinstance(v,str): v={a:float(n) for a,n in re.findall(r'([XYZ])=([-+0-9.eE]+)',v)}
+        boom.set_editor_property('socket_offset',unreal.Vector(v['X'],v['Y'],v['Z']))
+        boom.set_editor_property('do_collision_test',True)
+        camera.set_relative_location(unreal.Vector(0,0,0),False,False)
+        camera.set_relative_rotation(unreal.Rotator(0,0,0),False,False)
+        camera.set_editor_property('field_of_view',free['FieldOfView'])
+        cdo.set_editor_property('initial_camera_distance',free['ArmLength'])
+        assert lib.save_loaded_asset(bp,False)
+    result['camera_defaults_updated']=sync_camera_defaults
+    result['free_camera']=free
     result['aim_camera']=aim
     result['manifests']=[]
     if export_manifests:
