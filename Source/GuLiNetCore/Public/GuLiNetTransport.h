@@ -27,6 +27,7 @@ struct TransportMetrics
     std::uint64_t ReceivedBytes = 0;
     std::uint64_t RetransmitBytes = 0;
     std::uint64_t ReplacedStates = 0;
+    std::uint64_t MotionBatchPackets=0,MotionBatchMessages=0,MotionBatchSharedBytes=0,SentPacketHeaderBytes=0;
     std::uint64_t RejectedPackets = 0;
     std::uint64_t DuplicatePackets = 0, OutOfOrderMessages = 0;
     std::array<std::uint64_t,4> SentLaneBytes{}, ReceivedLaneBytes{};
@@ -36,9 +37,20 @@ struct TransportMetrics
     double OldestSeconds = 0;
     std::uint64_t DeliveryBackpressure = 0;
     std::size_t PendingDeliveryBytes = 0, PendingDeliveryMessages = 0;
-    struct MessageBytes {std::uint64_t Messages=0,Canonical=0,Encoded=0,Body=0;};
+    struct MessageBytes
+    {
+        std::uint64_t Messages=0,Canonical=0,Encoded=0,Body=0;
+        // Motion lane only. The two gauges describe the queue after its last pump.
+        std::uint64_t Enqueued=0,Replaced=0,Pending=0;
+        double OldestPayloadSeconds=0;
+    };
+    std::uint64_t StationaryUnitPosesSent=0,StationaryMassPosesSent=0;
+    std::array<std::uint64_t,static_cast<std::size_t>(MassPoseReason::Count)> StationaryMassReasons{};
+    struct VehicleBytes { std::uint64_t Poses=0,Body=0,Records=0,Receipts=0,ReceiptBytes=0; };
+    VehicleBytes Engineers,Miners;
     // First successful transmission, not queue admission. Both sizes refer to
-    // the identical logical message, excluding fragments, retries and ACKs.
+    // the identical logical message, excluding fragments, retries and packet ACKs.
+    // Batched Encoded bytes exclude MotionBatchSharedBytes (one per datagram).
     std::array<MessageBytes,static_cast<std::size_t>(MessageKind::Count)> Encodings{};
 };
 
@@ -47,10 +59,11 @@ GULINETCORE_API bool InspectDatagramLane(std::span<const std::uint8_t> Packet,La
 // Only complete one-fragment application messages; acknowledgments and partial
 // fragments cannot prove that an application header was actually transmitted.
 GULINETCORE_API bool InspectDatagramMessage(std::span<const std::uint8_t> Packet,Message& Out,PeerMessageContext Context={});
+GULINETCORE_API bool InspectDatagramMessages(std::span<const std::uint8_t> Packet,std::vector<Message>& Out,PeerMessageContext Context={});
 
 // Immutable authenticated roster binding for this connection key. Omitted
 // identities are reconstructed only after that exact key has been verified.
-struct PeerChannelBinding {Id Match,LocalPlayer,RemotePlayer;};
+struct PeerChannelBinding {Id Match,LocalPlayer,RemotePlayer;std::shared_ptr<const MotionObjectTable> Objects{};};
 
 // One authenticated directed connection. The adapter binds the peer before calling Receive.
 // Acks acknowledge complete reassembly, never a gameplay transaction.
@@ -63,6 +76,7 @@ public:
     // ACK means reassembled; ReceivedThrough advances only after application admission.
     using TryDeliver = std::function<bool(const Message&)>;
     explicit PeerChannel(Id ConnectionKey, QueueLimits Limits = {},PeerChannelBinding Binding={});
+    ~PeerChannel();
     bool Queue(const Message& Value, double NowSeconds);
     bool CanQueueHandoff() const;
     bool Receive(std::span<const std::uint8_t> Packet, double NowSeconds, const SendPacket& Ack, const Deliver& Apply);
@@ -79,6 +93,7 @@ public:
     bool HasTransmittedReliable(Lane Stream,std::uint64_t Sequence) const;
     std::uint64_t ReceivedThrough(Lane Stream) const { return ReliableThrough[static_cast<std::size_t>(Stream)]; }
 private:
+    void RecordFirstTransmission(const Message& Value,std::size_t EncodedBytes);
     using Key = std::pair<Lane, std::uint64_t>;
     struct Outbound
     {

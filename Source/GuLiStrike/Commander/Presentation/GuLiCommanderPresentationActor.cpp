@@ -1582,7 +1582,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 		bLatestClockRoundTripFromConnectionStats = false;
 	}
 
-	const double ServerTimeSeconds = Chunk.ServerTimeSeconds;
+	const double ServerTimeSeconds = Chunk.PresentationOwner ? Chunk.HybridSampleTime() : Chunk.ServerTimeSeconds;
 	// 同捕获帧的后续块不会反复更新时钟测量，避免发送分摊时间被当成样本时间推进。
 	const bool bAdvancesClockFrame = LatestClockFrameSequence == 0u
 		|| GuLiCommanderPresentation::IsNewerSerial(
@@ -1643,6 +1643,8 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 		Sample.ChunkIndex = Chunk.ChunkIndex;
 		Sample.SampleIndex = static_cast<uint8>(SampleIndex);
 		Sample.bTeleport = QuantizedPose.IsTeleport();
+		Sample.HybridOwner=Chunk.PresentationOwner; Sample.HybridLife=Chunk.PresentationLife;
+		Sample.bStationaryMass=Sample.HybridOwner && !Sample.bTeleport && Sample.Velocity.IsZero();
 		InsertPoseSample(QuantizedPose.SoldierId, Sample, LocalNowSeconds);
 	}
 }
@@ -1665,6 +1667,18 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 	}
 #endif
 	FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(SoldierId);
+	if (Sample.HybridOwner && !Soldier.Samples.IsEmpty())
+	{
+		const auto& Latest=Soldier.Samples.Last();
+		if (Sample.HybridLife<Latest.HybridLife || (Sample.HybridLife==Latest.HybridLife && Sample.HybridOwner<Latest.HybridOwner)) return;
+		if (Sample.HybridOwner!=Latest.HybridOwner || Sample.HybridLife!=Latest.HybridLife)
+		{
+			if (Sample.HybridLife!=Latest.HybridLife) Soldier.DisplacementFrameFloor=0;
+			Soldier.Samples.Reset(); Soldier.bRenderClockInitialized=false; Soldier.bResetPresentationOnNextPose=true;
+			Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds=0; Soldier.SmoothedPoseReceiptIntervalSeconds=0;
+			Soldier.SmoothedPoseReceiptJitterSeconds=0;
+		}
+	}
 	if (Soldier.DisplacementFrameFloor != 0 && int32(Sample.FrameSequence - Soldier.DisplacementFrameFloor) < 0) return;
 	++Soldier.PoseRevision;
 	const int32 ExistingBeforeCorrection = Soldier.Samples.IndexOfByPredicate(
@@ -1679,10 +1693,16 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 			Soldier.Samples.Last().FrameSequence);
 	if (bAdvancesLatest)
 	{
-		const double ReceiptIntervalSeconds = Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds > 0.0
+		double ReceiptIntervalSeconds = Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds > 0.0
 			? LocalNowSeconds - Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds
 			: 0.0;
-		// Movement state changes do not reset the connection's measured cadence.
+		// The sender deliberately omits idle samples. Keep actual delivery lateness
+		// in the jitter estimate, excluding the intentional part of the server gap.
+		if (bHasLatestSample && Soldier.Samples.Last().bStationaryMass && ReceiptIntervalSeconds>0)
+		{
+			const double ServerGap=Sample.ServerTimeSeconds-Soldier.Samples.Last().ServerTimeSeconds;
+			ReceiptIntervalSeconds=FMath::Max(0.0,ReceiptIntervalSeconds-FMath::Max(0.0,ServerGap-GuLiCommanderSimulationTiming::StepSeconds));
+		}
 		if (ReceiptIntervalSeconds > 0.0)
 		{
 			constexpr double ReceiptSmoothingAlpha = 0.2;
@@ -1894,7 +1914,11 @@ bool AGuLiCommanderPresentationActor::EvaluateAuthoritativeTransform(
 		}
 
 		const FGuLiCommanderBufferedSoldierPose& Previous = Soldier.Samples[Index - 1];
-		const double IntervalSeconds = Next.ServerTimeSeconds - Previous.ServerTimeSeconds;
+		// A sparse idle heartbeat can be several steps behind the first moving
+		// sample. The step that produced Next is the first possible displacement.
+		const double StartTime=Previous.bStationaryMass ? FMath::Max(Previous.ServerTimeSeconds,
+			Next.ServerTimeSeconds-double(GuLiCommanderSimulationTiming::StepSeconds)) : Previous.ServerTimeSeconds;
+		const double IntervalSeconds = Next.ServerTimeSeconds - StartTime;
 		if (IntervalSeconds <= UE_DOUBLE_SMALL_NUMBER || Next.bTeleport)
 		{
 			OutTransform = GuLiCommanderPresentation::MakePoseTransform(
@@ -1904,7 +1928,7 @@ bool AGuLiCommanderPresentationActor::EvaluateAuthoritativeTransform(
 		}
 
 		const float Alpha = static_cast<float>(FMath::Clamp(
-			(RenderServerTimeSeconds - Previous.ServerTimeSeconds) / IntervalSeconds,
+			(RenderServerTimeSeconds - StartTime) / IntervalSeconds,
 			0.0,
 			1.0));
 		// 以速度乘样本间隔作为切线做三次插值；结果异常时退回线性插值，朝向走最短角差。

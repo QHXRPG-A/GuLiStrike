@@ -1,6 +1,7 @@
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Commander/GuLiCommanderSimulationTiming.h"
 #include "Engine/World.h"
 #include "Commander/Mass/GuLiMassMovementTuning.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
@@ -124,9 +125,20 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 			const double Interval = B->ServerTimeSeconds - A->ServerTimeSeconds;
 			const float Alpha = B->bTeleport || Interval <= UE_DOUBLE_SMALL_NUMBER ? 1.0f
 				: float(FMath::Clamp((Soldier.RenderServerTimeSeconds - A->ServerTimeSeconds) / Interval, 0.0, 1.0));
-			VATVelocity = FMath::Lerp(A->Velocity, B->Velocity, Alpha);
-			Soldier.VATPlayback = Soldier.RenderServerTimeSeconds >= B->ServerTimeSeconds ? B->VATPlayback : A->VATPlayback;
-			if (A->VATPlayback.Clip == B->VATPlayback.Clip && D.Clips.IsValidIndex(A->VATPlayback.Clip))
+			const double Step=GuLiCommanderSimulationTiming::StepSeconds;
+			const float AimAlpha=A->bStationaryMass && !B->bTeleport && Interval>Step
+				? float(FMath::Clamp((Soldier.RenderServerTimeSeconds-B->ServerTimeSeconds+Step)/Step,0.0,1.0)) : Alpha;
+			VATVelocity = FMath::Lerp(A->Velocity, B->Velocity, AimAlpha);
+			const auto& Anchor=Soldier.RenderServerTimeSeconds>=B->ServerTimeSeconds ? *B : *A;
+			Soldier.VATPlayback=Anchor.VATPlayback;
+			const bool ContinueIdle=!Soldier.bUsingLocalPose && bAlive && Anchor.bStationaryMass
+				&& Anchor.State!=EGuLiSoldierPoseState::Destroyed && D.IsLoopingIdleClip(Anchor.VATPlayback.Clip);
+			if (ContinueIdle)
+			{
+				const double Age=FMath::Max(0.0,Soldier.RenderServerTimeSeconds-Anchor.ServerTimeSeconds);
+				Soldier.VATPlayback.Phase=float(FMath::Frac(double(Anchor.VATPlayback.Phase)+Age*Anchor.VATPlayback.Rate));
+			}
+			else if (A->VATPlayback.Clip == B->VATPlayback.Clip && D.Clips.IsValidIndex(A->VATPlayback.Clip))
 			{
 				float Span = B->VATPlayback.Phase - A->VATPlayback.Phase;
 				if (D.Clips[A->VATPlayback.Clip].bLoop)
@@ -139,14 +151,14 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 				Soldier.VATPlayback.Phase = D.Clips[A->VATPlayback.Clip].bLoop ? FMath::Frac(Phase) : FMath::Min(Phase,1.0f);
 			}
 			const float Ahead = float(FMath::Clamp(Soldier.RenderServerTimeSeconds - B->ServerTimeSeconds, 0.0, .2));
-			if (Ahead > 0 && D.Clips.IsValidIndex(Soldier.VATPlayback.Clip))
+			if (!ContinueIdle && Ahead > 0 && D.Clips.IsValidIndex(Soldier.VATPlayback.Clip))
 			{
 				Soldier.VATPlayback.Phase += Ahead * Soldier.VATPlayback.Rate;
 				Soldier.VATPlayback.Phase = D.Clips[Soldier.VATPlayback.Clip].bLoop
 					? FMath::Frac(Soldier.VATPlayback.Phase) : FMath::Min(Soldier.VATPlayback.Phase,1.0f);
 			}
-			Soldier.MechanicalPose.UpperYawDegrees = A->UpperYawDegrees + FMath::FindDeltaAngleDegrees(A->UpperYawDegrees,B->UpperYawDegrees)*Alpha;
-			for (int32 Side=0; Side<2; ++Side) Soldier.MechanicalPose.GunPitchDegrees[Side] = FMath::Lerp(A->GunPitchDegrees[Side],B->GunPitchDegrees[Side],Alpha);
+			Soldier.MechanicalPose.UpperYawDegrees = A->UpperYawDegrees + FMath::FindDeltaAngleDegrees(A->UpperYawDegrees,B->UpperYawDegrees)*AimAlpha;
+			for (int32 Side=0; Side<2; ++Side) Soldier.MechanicalPose.GunPitchDegrees[Side] = FMath::Lerp(A->GunPitchDegrees[Side],B->GunPitchDegrees[Side],AimAlpha);
 			Soldier.MechanicalPose.bInitialized = true;
 		}
 		else GuLiVATAnimation::Step(D, FVector::ZeroVector, Soldier.PresentedTransform.Rotator().Yaw, bAlive, Dt, Soldier.VATPlayback);

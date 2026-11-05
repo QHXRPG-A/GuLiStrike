@@ -1,0 +1,62 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "saved": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "entities": [
+      {
+        "label": "PerfPoseOreSelection_Entry",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_85",
+        "class": "Note",
+        "position_cm": [
+          9781.763325427999,
+          -52385.39119478699,
+          1101.7790833
+        ],
+        "rotation": "<Struct 'Rotator' (0x00000207DC5E7C60) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>"
+      },
+      {
+        "label": "HybridNetworkReview",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiHybridNetworkReviewActor_0",
+        "class": "GuLiHybridNetworkReviewActor",
+        "position_cm": [
+          0.0,
+          0.0,
+          200.0
+        ],
+        "rotation": "<Struct 'Rotator' (0x00000207DC5E7A80) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>"
+      },
+      {
+        "label": "PerfSnapshotNetwork_Stress_View",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_33",
+        "class": "CameraActor",
+        "position_cm": [
+          14175.0,
+          54810.0,
+          16000.0
+        ],
+        "rotation": "<Struct 'Rotator' (0x00000207DC5E7B20) {pitch: -56.555710, yaw: 90.000000, roll: 0.000001}>"
+      },
+      {
+        "label": "CommanderPlayerStart_Red",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.PlayerStart_0",
+        "class": "PlayerStart",
+        "position_cm": [
+          0.0,
+          65205.0,
+          10000.0
+        ],
+        "rotation": "<Struct 'Rotator' (0x00000207DC5E4CE0) {pitch: 0.000000, yaw: -90.000000, roll: 0.000000}>"
+      }
+    ],
+    "units": 600,
+    "additional_flights": 500,
+    "manifest": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+    "protocol": 35,
+    "entry_text": "姿态同步、矿石与选择卡顿复测（2026-11-05）\n在 /Game/Maps/LVL_CommanderMassPrototype 使用本地联机入口 HybridNetworkReview，双方使用协议 35 的清单。\n入口配置为 600 单位和 500 额外弹丸。玩家起点为 CommanderPlayerStart_Red，观察相机为 PerfSnapshotNetwork_Stress_View。\n1. 让编队静止，再移动、停止、改令和受击。在对端观察姿态、转向和动画是否及时更新。\n2. 对兵种、建筑和工程车进行单选、框选、同类选择和加减选，再下达移动与停止指令，核对成员及反馈。\n3. 在采矿期间占领或反占领据点，核对归属、供电和奖励。采空后只应移除对应矿石的阻挡。\n4. 保留一队静止士兵，用 Alt+/ 采集 5 秒。在报告的“姿态发送队列”查看三类记录各自的入队、发出、被替换、期末待发和最老待发时间，再看静止单位姿态发出总数、Mass 士兵小计和编码前跳过次数。\n开发记录在 Progress/DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md。",
+    "launch_arguments_validated": true,
+    "validation_scope": "Saved scene and launch configuration. Player behavior and performance require runtime verification."
+  }
+}

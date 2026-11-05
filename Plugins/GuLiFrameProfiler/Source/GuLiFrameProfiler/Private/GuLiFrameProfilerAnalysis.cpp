@@ -485,6 +485,9 @@ FAnalysisResult Analyze(const FString& TracePath,const FString& CaptureId,const 
     }
     if (PIE)
     {
+        const TSharedPtr<FJsonObject>* NativeProfile=nullptr;
+        if (Adapter && *Adapter) (*Adapter)->TryGetObjectField(TEXT("native_profile"),NativeProfile);
+        AppendMotionQueueReport(NativeProfile?NativeProfile->Get():nullptr,*Root,M);
         M+=TEXT("\n## 后台分项 CPU 工作量\n\n| 范围 | 平均 ms/帧 | P95 ms | 峰值 ms | 状态 |\n|---|---:|---:|---:|---|\n");
         for (const auto& G:Ranges) if (G.Flag&RuntimeFlags) M+=StatsLine(G.Label,Background->GetObjectField(G.Key));
         M+=TEXT("\n后台值为各工作线程区间的 CPU 工作量之和，不能当作主线程成本或帧关键路径。\n");

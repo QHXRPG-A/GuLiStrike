@@ -78,6 +78,11 @@ public:
 	UPROPERTY(EditAnywhere) int32 FramesPerSecond = 30;
 	UPROPERTY(EditAnywhere) TArray<FGuLiVATBone> Bones;
 	UPROPERTY(EditAnywhere) TArray<FGuLiVATClip> Clips;
+	bool IsLoopingIdleClip(uint8 Clip) const
+	{
+		static const FName Idle(TEXT("Idle"));
+		return Clips.IsValidIndex(Clip) && Clips[Clip].Name==Idle && Clips[Clip].bLoop && Clips[Clip].DurationSeconds>0;
+	}
 	/** Frame-major, bone-minor. Cooked CPU copy is used only for muzzle and pivot sampling. */
 	UPROPERTY(EditAnywhere) TArray<FTransform> BoneDeltas;
 	UPROPERTY(EditAnywhere) TArray<FGuLiVATMuzzle> Muzzles;

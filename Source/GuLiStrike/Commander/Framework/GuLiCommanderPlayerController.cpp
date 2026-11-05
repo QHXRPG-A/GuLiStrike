@@ -754,7 +754,7 @@ bool AGuLiCommanderPlayerController::BuildPointSelectionRequest(FGuLiSelectionRe
 	if (!State || !GetWorld()) return false;
     if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
     {
-        TArray<FGuLiHybridObjectState> Objects;H->GetObjects(Objects);double Best=TNumericLimits<double>::Max();
+        TArray<FGuLiHybridObjectState> Objects;H->GetBoundObjectViews(Objects);double Best=TNumericLimits<double>::Max();
         for (const auto& O:Objects)
         {
             const auto* Actor=H->FindBoundActor(O.Key);

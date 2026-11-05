@@ -2423,17 +2423,17 @@
   "manifests": {
     "200": {
       "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
-      "sha256": "3648e84401e00b8e0dcff6f367aac9f90763fedc371b9c47e6f961c462021af5",
-      "config_hash": "daca076766ac3c610d34fd41c693a23f289b1a5ed804415e469b6da2c5fbec65",
-      "map_hash": "e235310380fa7161ce580770d1a04c8cff1296696f9c4f306587826ce28d870f",
-      "objects": 290
+      "sha256": "0301400cc089cf382a050b415cfe8233b5497ea6a47bc598037ae7f1e450180d",
+      "config_hash": "491592f1ca50b460640bd33edd8501bae2c92eb6504068ca477f0a0cbb9d2b33",
+      "map_hash": "524f2cb67b7812c256ac09c2663784d194b00106567b5efda33cbf6efa41a38c",
+      "objects": 292
     },
     "600": {
       "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
-      "sha256": "775df1c0c02fb0468c5586e26586e75e2dcdabdb3a45916b85934dfa78d31ae3",
-      "config_hash": "1a22ed3b33fc8f0959d0c38e08b46f4bd10c258a4e9e4ec8e7d7d417f5188f92",
-      "map_hash": "f8cb30bf013a491064b66e15e039f2a2c8ff14f4dfc6c8b8fc56569c18956b2a",
-      "objects": 690
+      "sha256": "2d6de4e53cd7015a6449ea4461541cb7e65a6cb3b7f78b14cd5040c364be7be2",
+      "config_hash": "4800f45fe205e1f87f3efc3a5c82128c77dd5ebb62a731a0288c066b229f24c3",
+      "map_hash": "fc71ff33fa5cd32a9faae6d2dcb038c804bdd8f55c3e68e370834e63b62145cb",
+      "objects": 692
     }
   },
   "definitions": {
@@ -2445,6 +2445,6 @@
     "card": "QA.101",
     "presentation": 101001
   },
-  "scope": "Protocol 29 authoring readback; runtime acceptance pending",
+  "scope": "Editor export and coordinator validation of the 200- and 600-unit manifests listed in this profile. Motion-lane bandwidth acceptance is recorded separately.",
   "contract_work": "WORK-20261011-002/D29"
 }

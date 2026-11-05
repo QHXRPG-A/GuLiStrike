@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "main_role": "<GuLiCommanderRole.GROUND: 2>",
+    "prompt": true,
+    "pie": 0,
+    "active": false,
+    "logic": false,
+    "coordinator": false,
+    "shutdown": [
+      {
+        "role": "logic",
+        "pid": 36616,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      },
+      {
+        "role": "coordinator",
+        "pid": 6404,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      }
+    ],
+    "clean": true
+  }
+}

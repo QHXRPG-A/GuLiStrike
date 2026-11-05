@@ -30,6 +30,9 @@ Artifacts/Diagnostics/CommanderIslandSession_20261002/**/*.patch -whitespace
 *.py text
 *.json text
 *.uplugin text
+# The Editor and coordinator validate these exported files by their exact SHA-256.
+Config/Hybrid/AcceptanceManifest-[26]00.json -text whitespace=trailing-space,space-before-tab,cr-at-eol
+Config/Hybrid/RuntimeManifest-[26]00.json -text whitespace=trailing-space,space-before-tab,cr-at-eol
 # Artwork export manifests hash these generated JSON bytes across checkouts.
 data/Json/DT_GuLiStrikeCardArtwork_*.json -text
 

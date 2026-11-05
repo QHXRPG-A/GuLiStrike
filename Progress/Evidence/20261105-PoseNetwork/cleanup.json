@@ -1,0 +1,674 @@
+{
+  "schema": "guli-pose-session-cleanup/v1",
+  "date": "2026-11-05",
+  "plan_sha256": "a60ace5ea1ad776b985bc0395a87ac13a9f16b17bd7dac0d6b6584b35fdc1590",
+  "summary": {
+    "directories": 20,
+    "files": 104,
+    "bytes": 395548350.0,
+    "groups": [
+      {
+        "category": "build_or_intermediate_receipt",
+        "bytes": 13110785.0,
+        "count": 34
+      },
+      {
+        "category": "manifest_export_copy",
+        "bytes": 9834160.0,
+        "count": 8
+      },
+      {
+        "category": "python_bytecode",
+        "bytes": 114057.0,
+        "count": 5
+      },
+      {
+        "category": "session_git_scratch_index",
+        "bytes": 256775309.0,
+        "count": 17
+      },
+      {
+        "category": "supplementary_trace",
+        "bytes": 82329862.0,
+        "count": 3
+      },
+      {
+        "category": "trace_export",
+        "bytes": 33384177.0,
+        "count": 37
+      }
+    ]
+  },
+  "all_absent": true,
+  "retained": [
+    "four original user captures and three primary protocol-36 rooms, including CPU traces",
+    "reports and contexts for all diagnostic rooms",
+    "compiled editor/coordinator, four production/acceptance manifests and structured acceptance evidence"
+  ],
+  "files": [
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/engine-ticks.csv",
+      "bytes": 18297,
+      "sha256": "0dff341973aee65f064315aa7307eb2e6900b18ba2f2353d6ac71251088eaf46"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/gpu-events.csv",
+      "bytes": 71,
+      "sha256": "f18dfd41a25e7e1b03573a5f8704cd10d1409d48e1592a30f4a70022e91582f3"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/initial-commands.txt",
+      "bytes": 693,
+      "sha256": "1bdd0cec840b5df8b51cdb5b88d5d20a66ba0fc3ffce3a2fea95358e679b4dec"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/initial-export.log",
+      "bytes": 20324,
+      "sha256": "62a05edb874a824d7ec3c347b533056cb9828285a9576a0c0f3194118a5a3041"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/median-events.csv",
+      "bytes": 1529312,
+      "sha256": "b8e5672b2a03801fd88a25e196dbc7be5d1a7677397cbb546072cb19b715b382"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/p95-events.csv",
+      "bytes": 2140967,
+      "sha256": "382578fab4404e9f36764eff268139d672f913f0c75ac915129fb0c060dff98a"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/selected-frames-commands.txt",
+      "bytes": 2059,
+      "sha256": "581862f4dd735dc148dd60a8006f47096dadf1c78b0c631004ed6d830884316e"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/selected-frames-export.log",
+      "bytes": 24842,
+      "sha256": "0f8d6c0510e8e3ec5d3f30cfc859d0aca22837664244d8915692f2d5225d0acc"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/threads.csv",
+      "bytes": 3426,
+      "sha256": "4fdbb115beb50c06d50fc2f6b70c5e6a9b38ee4bab7785fff7167b32f375d19b"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/worst-1-events.csv",
+      "bytes": 3164400,
+      "sha256": "420d255790c491023ba65144921c7f10f404af875451d8be41b5d806b79de65a"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/worst-2-events.csv",
+      "bytes": 2351953,
+      "sha256": "cbda026892104644ba838e0ad390bb06cdb2ba043fe249493346651ae9f94082"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/worst-3-events.csv",
+      "bytes": 3414766,
+      "sha256": "1e40cd684a43d0757762ac6d22612c7894fff7a97acf1b4e6793e9addc0e1cb7"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/worst-4-events.csv",
+      "bytes": 2370724,
+      "sha256": "76a29c416bc51ba94ab71b33287332f1ffbedc1f310fb22d1cc1eeace2dc7bfc"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/worst-5-events.csv",
+      "bytes": 1733488,
+      "sha256": "6c55910747a95e6c8c388abfb3ede1e930946a8a0374a679d67108cd2e43f9c3"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-101855-DB6FBE62/analysis/worst-6-events.csv",
+      "bytes": 2177015,
+      "sha256": "ede12491cac46ccc3cff4aa64bb8f523be6847fbdf3e9b41213d13487199b1e6"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/comparison-detail-commands.txt",
+      "bytes": 1119,
+      "sha256": "3a02545e100eff7f7fd865a97acb2ba764b440db6fabfc514f371dda6a25e817"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/comparison-detail-export.log",
+      "bytes": 21877,
+      "sha256": "b40b7bc261c2013986c74dcabee792ccafd77d606b2326de288a66f44f510aaf"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/comparison-scopes-commands.txt",
+      "bytes": 609,
+      "sha256": "a4d523759c7139365e0bb9562afc8f16b44e26b6dc2fb11f2d38cd8b83eb320e"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/comparison-scopes-export.log",
+      "bytes": 19721,
+      "sha256": "be02e2a547d3b7d42aa3725b5930aba6fd8e4e8608b913d2c72402ebb6622a28"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/detail-frame-139.csv",
+      "bytes": 774078,
+      "sha256": "64f5013cbaa3e9024f6ed66686e978fd9066c904b88130932cc9d22e09c2342c"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/detail-frame-153.csv",
+      "bytes": 1881352,
+      "sha256": "4948b1e518aee1b3df0cf9bf71bc5ed2f16933aefd3d0733cdecebd77828debf"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/detail-frame-208.csv",
+      "bytes": 1964576,
+      "sha256": "2a555b5c3f9fc32f95e4a2048f83b5d61cf0eaa63886753064210c18b8fac535"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/detail-frame-39.csv",
+      "bytes": 1901955,
+      "sha256": "2e3a8322abe1ec44dbb2b9b2bde93a22e2245fac493dc9476999b5a44d556dfa"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-120030-83A4F2C9/analysis/targeted-gt.csv",
+      "bytes": 914846,
+      "sha256": "30a05246580d6d1ff9ae382eef651af7d0854fa4db05c463d47ea97fd7246ea0"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/frame-11.csv",
+      "bytes": 1889404,
+      "sha256": "7ee443235c1b0910908676707b599b851a668cd1f5a45cd4ac52e8ea05843035"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/frame-128.csv",
+      "bytes": 661358,
+      "sha256": "827e77a7df0695cc350b5fee62358b2152cb68e13fa3223275c26c79657daa75"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/frame-265.csv",
+      "bytes": 693069,
+      "sha256": "19bd57ee7679391338b6c0bf12e1fb9bee5249221946e6daf6e79edf7561f343"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/frame-38.csv",
+      "bytes": 946497,
+      "sha256": "d1b00ead3d9552f1314245970f176fabbbe4486fac5f412f9f349cf7451b4598"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/frame-detail-commands.txt",
+      "bytes": 1402,
+      "sha256": "7fff19042c1413a93f69066459b65a89cebd6d18ad61d21208fbf531b99d4205"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/frame-detail-export.log",
+      "bytes": 23376,
+      "sha256": "75b20bc8dfe2a9038b09ce6da1bf904d3683df35a59b55a7d4cca81da5751ed3"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/pose-codec-scopes.csv",
+      "bytes": 1426730,
+      "sha256": "00453048aedb06952483d004aabf671b4bb88d9c21b65c1fb4ad6b9efbd843a1"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/queue-and-frame-commands.txt",
+      "bytes": 652,
+      "sha256": "3ccca8efbb94e77de7469fea7ac128b9502cdebe2f19e57e12c53d37fbb99220"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/queue-and-frame-export.log",
+      "bytes": 20266,
+      "sha256": "2a90fe78d4426456283d0972e8b3ac4e19028e96813995eca07e1a24e7b5ac5e"
+    },
+    {
+      "category": "trace_export",
+      "name": "captures/20261105-172403-A2DEA62D/analysis/queue-and-frame-scopes.csv",
+      "bytes": 905408,
+      "sha256": "dd5f4fc42b438e6604f0269c1851e295847b4b989f3d14b0f157036f19a596ff"
+    },
+    {
+      "category": "supplementary_trace",
+      "name": "captures/20261105-224023-EF684B64/cpu.utrace",
+      "bytes": 28553609,
+      "sha256": "8c879a9596315a4a467b2d64f46c243f862f619583bb9e557a25613f732c291f"
+    },
+    {
+      "category": "supplementary_trace",
+      "name": "captures/20261105-224333-98048565/cpu.utrace",
+      "bytes": 28110507,
+      "sha256": "2d8b1807faa11b9aae87c66184306f4169acf4c0ab325c699dcda60038fa0a22"
+    },
+    {
+      "category": "supplementary_trace",
+      "name": "captures/20261105-224425-97A45007/cpu.utrace",
+      "bytes": 25665746,
+      "sha256": "da883d9fed7c24aeb858bf623d2188d2a58f54d3dc2fa91aa56887e7d2d4f6f9"
+    },
+    {
+      "category": "python_bytecode",
+      "name": "project/Scripts/__pycache__/export_commander_pose_traces.cpython-313.pyc",
+      "bytes": 9343,
+      "sha256": "882364d16508d3e0ac140fa83ebb9c05f50222fc152fad7c026a4034c93d76e6"
+    },
+    {
+      "category": "python_bytecode",
+      "name": "project/Scripts/Performance/__pycache__/analyze_hybrid_frames.cpython-313.pyc",
+      "bytes": 14614,
+      "sha256": "eaec0ab0ea8800711e1a33027947f30eb74451c99202a756d28f105060b6525e"
+    },
+    {
+      "category": "python_bytecode",
+      "name": "project/Scripts/Performance/__pycache__/analyze_stress_frames.cpython-313.pyc",
+      "bytes": 11709,
+      "sha256": "462dc1a51a9fdb9b25a29e1d9e934dd9d59439da3376d00beac65c5c3b374fb8"
+    },
+    {
+      "category": "python_bytecode",
+      "name": "project/Scripts/Performance/__pycache__/capture_live_pie.cpython-313.pyc",
+      "bytes": 68385,
+      "sha256": "7ebbc9728f1085abd817d051b16c6ce54cfe8451228470a3216b56ed15cc9b5a"
+    },
+    {
+      "category": "python_bytecode",
+      "name": "project/Scripts/Performance/__pycache__/capture_motion_budget.cpython-313.pyc",
+      "bytes": 10006,
+      "sha256": "c877e2c9cf4899c4da506a18fe663addc6add5301be06fa5d685212e28d02fd6"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/coordinator-223330.log",
+      "bytes": 14539,
+      "sha256": "bd5c8e09aa352f2b32263173ec40c840838950748955018dff155a1aeec257ab"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/editor-223330.json",
+      "bytes": 4087509,
+      "sha256": "6c2085526f051d3fe62eaec6160ed16a784315d9c0f1407a67def20eb2f18a09"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/editor-223330.log",
+      "bytes": 1189001,
+      "sha256": "f1a501cd0e14d0ad2cfe22b09e212e95fa45fc572949b6d89c384ddba78da24b"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/editor-223330.uba",
+      "bytes": 81510,
+      "sha256": "42831ea2fe2a5af98348dbe203ae9a037c5acf43df2197487e904e050f62f52f"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/prebuild.json",
+      "bytes": 274,
+      "sha256": "1f4bcdcb12bc71900399ff4b832fcda2b5822efdaf4f27aa1796cefb719270eb"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/reopen.json",
+      "bytes": 341,
+      "sha256": "2475a82e59455c5c8fad8eda5db361cde27ccf21f2ad214fd125d03d278e2bb8"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/room-01.json",
+      "bytes": 4511,
+      "sha256": "9b97a547d322f43a3bc1ebb0601035dbfa5ecb93c55a229c0bc245d07b843424"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/room-02.json",
+      "bytes": 4509,
+      "sha256": "e8624f77d2b3358bdd2561d0391bdbbc676213de3310527aaee281eea54f59b9"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/room-03.json",
+      "bytes": 4505,
+      "sha256": "7bb9d351538416e431fad96f8bf349bbe8d31435ec4c376a6632b48726450f93"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/room-04.json",
+      "bytes": 4859,
+      "sha256": "58fc1dd8aa6fcc6bc801f2cc37304b83452ab675027c0df255fbc204460cf0f5"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/room-05.json",
+      "bytes": 4863,
+      "sha256": "e04f303581bff517b50305eab97ad59150454585aaf4a7a8a00699915c7ce676"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/room-06.json",
+      "bytes": 4506,
+      "sha256": "92dd4ffc472ae3afefb1e0d196553c60eb4cf2932e039ab34cea9f3699ca7376"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-motion-100/scene-prebuild.json",
+      "bytes": 4289,
+      "sha256": "05c3ba95beed95d0af0fb159a04ac040517a9828943b545e475113e7614cd45c"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/coordinator-build-20261105-114609.log",
+      "bytes": 14539,
+      "sha256": "bd5c8e09aa352f2b32263173ec40c840838950748955018dff155a1aeec257ab"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/coordinator-build-result.json",
+      "bytes": 223,
+      "sha256": "6f60288fc4006e42b56c517f774f6af14233d9ef26acd5c54aaf55d0126a9b12"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/editor-before-build.json",
+      "bytes": 285,
+      "sha256": "7cbdd1786dc61da40208b6960ed9b4acd5ed8f4d8dc0ef8cdbdcbf69356737fd"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/editor-build-20261105-114321.log",
+      "bytes": 1178209,
+      "sha256": "8a0719fca92b1d489c5898eb6eeb69b18b2141852733936b54384728ab825d99"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/editor-build-id.json",
+      "bytes": 880,
+      "sha256": "0712ffec97b2165afb140d11eb6f9d3f5ca1b729b995d9071f9ee6e906cf4e28"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/editor-build-result.json",
+      "bytes": 208,
+      "sha256": "94eadcc5cb27dc60645e11fd21263e8648d5f84a56e9a276d981ac16aae689f7"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/editor-loaded-modules.json",
+      "bytes": 448,
+      "sha256": "c9694468d91f3fbbb1642f3ff8cf7a743703571f6394d8b90b35585bcc0abc8b"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/editor-loaded.json",
+      "bytes": 1141,
+      "sha256": "2e81d6545399673144133e4b6d23b5f5c30c5ed420ffa59cad99549938392111"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/editor-reopen.json",
+      "bytes": 174,
+      "sha256": "be8fc4761255b31e2d8a51bba5e2b6ba86604ffc2eceb92035ab7dcb5e71ad4a"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifest-stage-differences.json",
+      "bytes": 364,
+      "sha256": "ee6b543cae58ca90eb1296c58fe98997e84b82efba49eaca853a91bf1d702b06"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests-before-build.json",
+      "bytes": 1481,
+      "sha256": "a29e9022c47ef0f3f376e4b7083ea1e7d34843d4194e14c32f65d510f1614fd9"
+    },
+    {
+      "category": "manifest_export_copy",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests/AcceptanceManifest-200.json",
+      "bytes": 1194578,
+      "sha256": "8d6d62a8770ebef61c9cb566bb92131077a7902396a62f3e1db4648c8c19ee33"
+    },
+    {
+      "category": "manifest_export_copy",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests/AcceptanceManifest-600.json",
+      "bytes": 1348029,
+      "sha256": "dc50a0904c8554a180754c737c85d7c85b4564f825da383eb8137232a56fd21c"
+    },
+    {
+      "category": "manifest_export_copy",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests/RuntimeManifest-200.json",
+      "bytes": 1110507,
+      "sha256": "b963bd4653df3779cd0ffe987d8dbdfd2e3b8a7ea0d29e820489a4900e2f94b3"
+    },
+    {
+      "category": "manifest_export_copy",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests/RuntimeManifest-600.json",
+      "bytes": 1263966,
+      "sha256": "4baa90d794d87f1aa9d4b2cba50af6a6d38fd11e237b6169ca822c38d680a22d"
+    },
+    {
+      "category": "manifest_export_copy",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests/v36/AcceptanceManifest-200.json",
+      "bytes": 1194578,
+      "sha256": "0301400cc089cf382a050b415cfe8233b5497ea6a47bc598037ae7f1e450180d"
+    },
+    {
+      "category": "manifest_export_copy",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests/v36/AcceptanceManifest-600.json",
+      "bytes": 1348029,
+      "sha256": "2d6de4e53cd7015a6449ea4461541cb7e65a6cb3b7f78b14cd5040c364be7be2"
+    },
+    {
+      "category": "manifest_export_copy",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests/v36/RuntimeManifest-200.json",
+      "bytes": 1110507,
+      "sha256": "efb38beada646a1b86944832b6db1c995db778c051e841551f30f7c57ed4e564"
+    },
+    {
+      "category": "manifest_export_copy",
+      "name": "project/TestResults/Performance/20261105-network-stalls/manifests/v36/RuntimeManifest-600.json",
+      "bytes": 1263966,
+      "sha256": "bc5754d47cb4c099b6857b896afc73d570f38cdd1203f410836b976c8c0895ba"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/mass-idle-editor-20261105-180735.json",
+      "bytes": 4052823,
+      "sha256": "e6ca41fde6b7d8420b8acfa2810c62fab130c343502e1bd2a4687d2ebc98f5ae"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/mass-idle-editor-20261105-180735.log",
+      "bytes": 1181142,
+      "sha256": "14b32921181ce6d26167939acc66262c2e4c2f1b65d8af5f045b158075d38feb"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/mass-idle-editor-20261105-180735.uba",
+      "bytes": 104919,
+      "sha256": "4da4a9463fc5c67ff91e3f0428972a54db730f758ffaa827d661dfc873877733"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/mass-idle-editor-reopen.json",
+      "bytes": 344,
+      "sha256": "b75c6467ed7e40dc98fe7409cbbc063a890de76d371da35ea5887f5ba816c3d0"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/mass-idle-editor-scene-loaded.json",
+      "bytes": 675,
+      "sha256": "7827f8098c2c20808ededbbf63d0242fab04bb8404c6a66c62e1d30bf3f4d167"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/queue-instrumentation-before-build.json",
+      "bytes": 293,
+      "sha256": "358e5235e547910555ebfc4acbb1b5b6baff1dba01e99549ded04a35a45c2831"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/queue-instrumentation-editor-20261105-153217.log",
+      "bytes": 1165522,
+      "sha256": "502f887de0d7d804e32a4701475e52ba2998c06087b16c835f839f271924875d"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/queue-instrumentation-editor-build.json",
+      "bytes": 322,
+      "sha256": "dd5bb2df8c67a61251a1ad3b41d51d03d210b279c9b0cc3606d6cad15ee06058"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/queue-instrumentation-editor-loaded.json",
+      "bytes": 1403,
+      "sha256": "15de165c3a8fb73501c5e47aaf8c79d0991f33315062ea19e831dacc1717fe77"
+    },
+    {
+      "category": "build_or_intermediate_receipt",
+      "name": "project/TestResults/Performance/20261105-network-stalls/queue-instrumentation-reopen.json",
+      "bytes": 174,
+      "sha256": "df4147bc55f25b4119d69660f7d7d381dbbe743125acbe15aa1e783ad3367272"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-1798f93a-a4b9-420b-938e-dd23b75d991c/index",
+      "bytes": 19497996,
+      "sha256": "21dc1cd65edfa0bf4c089d90edc3b24f73fd33482adee5f6868d2aa60647d919"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-1ba5305c-b891-4a68-8cd6-984415f393c0/index",
+      "bytes": 826837,
+      "sha256": "847f439131c5936821584bf9b7b61ed68b2dbbed9f1e676e6cf89ad5c2fbc2e3"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-1c1ae302-fbd4-48d8-a094-4bc5be742082/index",
+      "bytes": 19496896,
+      "sha256": "d799f9362a41258d96612806adb7b628531fb125bb93332cbda9c99ed0555452"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-1fb508ae-0b91-407b-b898-c1b5e73971f4/index",
+      "bytes": 19497520,
+      "sha256": "89062fcec2371f9c115020c2b16cad4c95036ef848b9e8963664c132d73ecdfe"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-2d35744f-e17d-430f-ab5a-1ab67540eb72/index",
+      "bytes": 826601,
+      "sha256": "b13d2a92b077340c0b1a5688a85865834d9efe2b3ce69cd96a86d7579e601395"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-4b923662-bd83-4fc4-bb11-72cf535a0d85/index",
+      "bytes": 19497896,
+      "sha256": "d3d87983cf96ed06a9cdf98af9e6d31f316d338ebcf71f13aa13c8a548b55f6d"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-5cd1150f-5441-424a-8524-df62d1d60fe2/index",
+      "bytes": 826601,
+      "sha256": "b13d2a92b077340c0b1a5688a85865834d9efe2b3ce69cd96a86d7579e601395"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-6185696e-9941-4994-ae77-31e30c680562/index",
+      "bytes": 19496896,
+      "sha256": "d799f9362a41258d96612806adb7b628531fb125bb93332cbda9c99ed0555452"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-7bbcbb5f-c4b9-42b5-bf65-7b9525c63cc7/index",
+      "bytes": 19496896,
+      "sha256": "d799f9362a41258d96612806adb7b628531fb125bb93332cbda9c99ed0555452"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-85b61780-80fa-446c-8510-5f0ebcb8a9a9/index",
+      "bytes": 19497656,
+      "sha256": "5c0dc621e6cb9b06c9c7d8a2dff702aa3d9467b1732077451d506e94325d4fe0"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-a74e7e34-c546-474a-a644-4523265c4f16/index",
+      "bytes": 19497996,
+      "sha256": "21dc1cd65edfa0bf4c089d90edc3b24f73fd33482adee5f6868d2aa60647d919"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-a98640ad-fe3c-41fc-a494-421f43ecc769/index",
+      "bytes": 826621,
+      "sha256": "a32d781955fa24e55e9bd63810da69383f072ef98b122579cee29cbc6a50f642"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-b19fee2f-a82d-483e-a2ea-3fe2bd11a5cd/index",
+      "bytes": 19498453,
+      "sha256": "433caf3e00ea6649bc9d1b15ef5eb34c59e4aa0bd127210e559b47065ce117c2"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-cf068975-98a0-4c51-a49e-90e272282f59/index",
+      "bytes": 19496896,
+      "sha256": "d799f9362a41258d96612806adb7b628531fb125bb93332cbda9c99ed0555452"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-d2ba15b6-af51-4d73-a463-133ba50dd7ab/index",
+      "bytes": 19497996,
+      "sha256": "21dc1cd65edfa0bf4c089d90edc3b24f73fd33482adee5f6868d2aa60647d919"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-ee5edcd4-ac4e-4fda-a921-185f7133ea99/index",
+      "bytes": 19497896,
+      "sha256": "d3d87983cf96ed06a9cdf98af9e6d31f316d338ebcf71f13aa13c8a548b55f6d"
+    },
+    {
+      "category": "session_git_scratch_index",
+      "name": "temp/codex-index-fea93010-bd43-4035-b61c-4110e15fe4df/index",
+      "bytes": 19497656,
+      "sha256": "5c0dc621e6cb9b06c9c7d8a2dff702aa3d9467b1732077451d506e94325d4fe0"
+    },
+    {
+      "category": "trace_export",
+      "name": "temp/GuLiCapture-557D4994-1b62ba3d7f3d4567b0353d8ac486e8d1/commands.txt",
+      "bytes": 818,
+      "sha256": "95879d54b839235193a8565b6a4885beb6ac8bbfa4267292f9dbc2b59ffb6322"
+    },
+    {
+      "category": "trace_export",
+      "name": "temp/GuLiCapture-557D4994-1b62ba3d7f3d4567b0353d8ac486e8d1/export.log",
+      "bytes": 20156,
+      "sha256": "ce93c48056ed286ad686b5f08e6605ccee5b1b072c07c10946515f349ea52b77"
+    },
+    {
+      "category": "trace_export",
+      "name": "temp/GuLiCapture-557D4994-1b62ba3d7f3d4567b0353d8ac486e8d1/scopes.csv",
+      "bytes": 362571,
+      "sha256": "4bc421e9a270771bfcf43d3e3560638616427bc85583aea760bcc3ed21446874"
+    }
+  ]
+}

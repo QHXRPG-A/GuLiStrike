@@ -86,7 +86,7 @@ void UGuLiCommanderNetSyncComponent::ConsumePendingCommandAcks(
 	PendingCommandAcks.Reset();
 }
 
-void UGuLiCommanderNetSyncComponent::ApplyHybridPoseChunk(const FGuLiSoldierPoseChunk& Chunk)
+void UGuLiCommanderNetSyncComponent::ApplyHybridPoseChunk(const FGuLiSoldierPoseChunk& Chunk,uint32 Owner,uint32 Life)
 {
     if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiNetworkSettings::CanPresent(GetWorld())
         || Chunk.Samples.IsEmpty()) return;
@@ -97,10 +97,12 @@ void UGuLiCommanderNetSyncComponent::ApplyHybridPoseChunk(const FGuLiSoldierPose
 #endif
     for (auto& Pending : PendingPoseChunks)
         if (Pending.AuthorityEpoch==Chunk.AuthorityEpoch && Pending.FrameSequence==Chunk.FrameSequence
-            && Pending.ServerSimTick==Chunk.ServerSimTick)
+            && Pending.ServerSimTick==Chunk.ServerSimTick && Pending.PresentationOwner==Owner && Pending.PresentationLife==Life)
         { Pending.Samples.Append(Chunk.Samples); return; }
     if (PendingPoseChunks.Num()>=static_cast<int32>(GULI_MAX_POSE_CHUNKS_PER_FRAME)) PendingPoseChunks.RemoveAt(0,1,EAllowShrinking::No);
-    PendingPoseChunks.Add(Chunk); OnPoseChunkReceived.Broadcast(Chunk);
+    auto& Pending=PendingPoseChunks.Add_GetRef(Chunk);
+    Pending.PresentationOwner=Owner; Pending.PresentationLife=Life;
+    OnPoseChunkReceived.Broadcast(Chunk);
 }
 
 void UGuLiCommanderNetSyncComponent::InitializeAck(
@@ -135,7 +137,8 @@ void UGuLiCommanderNetSyncComponent::NotifySelectionChanged()
             if (const auto* Life=SelectionSoldierLives.Find(Id)) Selected.AddUnique(*Life);
         }
         for (auto It=SelectionSoldierLives.CreateIterator();It;++It) if (!Tracked.Contains(It.Key())) It.RemoveCurrent();
-        TArray<FGuLiHybridObjectState> Objects;H->GetObjects(Objects);
+        TArray<FGuLiHybridObjectState> Objects;
+        if (!SelectionState.ActorIds.IsEmpty()) H->GetBoundObjectViews(Objects);
         for (const auto& O:Objects) if (const auto* Vehicle=Cast<IGuLiEngineeringVehicle>(H->FindBoundActor(O.Key));
             Vehicle && SelectionState.ActorIds.Contains(Vehicle->GetStableActorId())) Selected.AddUnique(O.Key);
         H->SetCommanderSelection(Selected);

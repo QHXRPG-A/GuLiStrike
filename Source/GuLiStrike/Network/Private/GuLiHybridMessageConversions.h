@@ -8,6 +8,8 @@ namespace GuLiNetBridge
 inline GuLiNet::Message ToCore(const FGuLiHybridMessage& V)
 {
     GuLiNet::Message Out; auto& H = Out.Header;
+    Out.StationaryUnitPose=V.bStationaryUnitPose;
+    Out.PoseDelivery=V.PoseDelivery;
     H.Kind = static_cast<GuLiNet::MessageKind>(V.Kind); H.Match = ToCore(V.Match); H.Sender = ToCore(V.Sender);
     H.Event = ToCore(V.Event); H.Object = {static_cast<GuLiNet::ObjectKind>(V.ObjectKind), ToCore(V.ObjectId), V.LifeGeneration};
     H.Epoch = V.MatchEpoch; H.OwnerEpoch = V.OwnerEpoch; H.ControlEpoch = V.ControlEpoch;
@@ -18,7 +20,10 @@ inline GuLiNet::Message ToCore(const FGuLiHybridMessage& V)
 }
 inline FGuLiHybridMessage ToUE(const GuLiNet::Message& V)
 {
+    // The local classification follows copies through the cadence slot and transport queue.
     FGuLiHybridMessage Out; const auto& H = V.Header;
+    Out.bStationaryUnitPose=V.StationaryUnitPose;
+    Out.PoseDelivery=V.PoseDelivery;
     Out.Kind = static_cast<uint16>(H.Kind); Out.Match = ToUE(H.Match); Out.Sender = ToUE(H.Sender); Out.Event = ToUE(H.Event);
     Out.ObjectKind = static_cast<uint8>(H.Object.Kind); Out.ObjectId = ToUE(H.Object.StableId); Out.LifeGeneration = H.Object.Generation;
     Out.MatchEpoch = H.Epoch; Out.OwnerEpoch = H.OwnerEpoch; Out.ControlEpoch = H.ControlEpoch;

@@ -604,7 +604,7 @@ void UGuLiHybridWorldSubsystem::OnWorldBeginPlay(UWorld& World)
     Session->CanAdmitPeer.BindUObject(this,&ThisClass::CanAdmitPeer);
     Session->OnReviewReceiptReleased.AddUObject(this,&ThisClass::HandleReleasedCommit);
     Session->OnFailure.AddUObject(this,&ThisClass::HandleFailure);
-    FString Error; if (!Session->Start(State->Config,Error)) Suspend(Error);
+    FString Error; if (!Session->Start(State->Config,State->Manifest,Error)) Suspend(Error);
 }
 void UGuLiHybridWorldSubsystem::Deinitialize()
 {
@@ -620,7 +620,7 @@ void UGuLiHybridWorldSubsystem::Deinitialize()
     State->ResourceView={}; State->ResourceCatalog={};
     State->UpgradeRules.Reset();
     State->MiningView={}; State->MiningCatalog.clear(); OnMiningReservationsChanged.Clear();
-    State->ResourceLayoutHash.Reset(); OnResourceDirectoryChanged.Clear(); OnResourceNodeChanged.Clear();
+    State->ResourceLayoutHash.Reset(); OnResourceDirectoryChanged.Clear(); OnResourceOwnersChanged.Clear(); OnResourceNodeChanged.Clear();
     State->TransactionCallbacks.Reset();
     State->TransactionResults.Reset(); State->TransactionResultOrder.Reset();State->TransactionResultHead=0;
     State->HeldCommits.clear();State->BootstrapReadSource.reset();State->BootstrapPreparedParts.clear();State->BootstrapCaptureQueue.clear();
@@ -792,6 +792,21 @@ void UGuLiHybridWorldSubsystem::GetObjects(TArray<FGuLiHybridObjectState>& Out) 
     Out.Reset(); if (!State->Client) return;
     Out.Reserve(static_cast<int32>(State->Client->Objects().size()));
     for (const auto& [K,O] : State->Client->Objects()) { (void)K; Out.Add(ToUE(O)); }
+}
+void UGuLiHybridWorldSubsystem::GetBoundObjectViews(TArray<FGuLiHybridObjectState>& Out) const
+{
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_BoundObjectViews);
+    check(IsInGameThread());
+    Out.Reset(State->Actors.Num());
+    if (!State->Client) return;
+    for (const auto& Entry:State->Actors)
+    {
+        if (!FindBoundActor(Entry.Key)) continue;
+        const auto It=State->Client->Objects().find(ToCore(Entry.Key));
+        if (It!=State->Client->Objects().end()) Out.Add(ToUEView(It->second));
+    }
+    // Selection tie breaking and temporary type IDs retain the old directory order.
+    Out.Sort([](const auto& A,const auto& B){return ToCore(A.Key)<ToCore(B.Key);});
 }
 TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetSimulationCensus() const
 {
@@ -1416,7 +1431,7 @@ void UGuLiHybridWorldSubsystem::SynchronizeGameplayRoster()
             Suspend(TEXT("Hybrid Commander camera/input Pawn could not be created from the production role configuration"));
 }
 
-bool UGuLiHybridWorldSubsystem::PublishMotion(const FGuLiHybridObjectKey& Key,const TArray<uint8>& Body)
+bool UGuLiHybridWorldSubsystem::PublishMotion(const FGuLiHybridObjectKey& Key,const TArray<uint8>& Body,bool bStationaryUnitPose)
 {
     if (!State->Client || !State->Client->Objects().contains(ToCore(Key))) return false;
     auto& Stats=State->MotionPublished[ToCore(Key)]; ++Stats.Attempts; Stats.LastTick=GetLogicalTick();
@@ -1426,6 +1441,7 @@ bool UGuLiHybridWorldSubsystem::PublishMotion(const FGuLiHybridObjectKey& Key,co
     Message M; M.Header.Kind=MessageKind::Motion; M.Header.Object=A.Object; M.Header.OwnerEpoch=A.OwnerEpoch;
     M.Header.ControlEpoch=A.ControlEpoch; M.Header.At=GetObjectLogicalTick(Key);
     if (!State->Client->StampObjectPublication(M.Header)) {++Stats.ClockBlocked;return false;}
+    M.StationaryUnitPose=bStationaryUnitPose;
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
     const bool Queued=State->Session->BroadcastPeer(ToUE(M));
     if (Queued) ++Stats.Accepted; else ++Stats.QueueFailed;
@@ -1458,12 +1474,16 @@ void UGuLiHybridWorldSubsystem::PublishComponentMotionIfDue(const FGuLiHybridObj
     if (!State->Client->StampObjectPublication(M.Header)) return;
     if (State->Session->BroadcastPeer(ToUE(M))) State->PublicMotionPublished[K]={State->Client->Epoch(),O.Grant.OwnerEpoch,Now};
 }
-bool UGuLiHybridWorldSubsystem::PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body,uint64 CapturedTick)
+bool UGuLiHybridWorldSubsystem::PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body,uint64 CapturedTick,
+    const FGuid& Connection,const std::shared_ptr<GuLiNet::MotionDelivery>& Delivery,bool bStationary)
 {
     if (!State->Client || !State->Session.IsValid() || !HasSimulation(Key) || !State->Client->CanPublishFacts()) return false;
+    if (!Connection.IsValid() || State->Session->GetPeerConnection(Peer)!=Connection) return false;
     const auto& A=State->Client->Objects().at(ToCore(Key)).Grant;
     Message M; M.Header.Kind=MessageKind::Motion; M.Header.Object=A.Object; M.Header.OwnerEpoch=A.OwnerEpoch;
     M.Header.ControlEpoch=A.ControlEpoch; M.Header.At=CapturedTick==MAX_uint64?GetObjectLogicalTick(Key):CapturedTick;
+    M.PoseDelivery=Delivery;
+    M.StationaryUnitPose=bStationary;
     if (!State->Client->StampObjectPublication(M.Header)) return false;
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
     return State->Session->SendPeer(Peer,ToUE(M));
@@ -1476,13 +1496,15 @@ bool UGuLiHybridWorldSubsystem::PublishEffect(const FGuLiHybridObjectKey& Key,co
 }
 bool UGuLiHybridWorldSubsystem::PublishMotionAcknowledgment(const FGuLiHybridObjectKey& Key,const TArray<uint8>& Body)
 {
-    FGuLiHybridObjectState Object;
-    if (!State->Session.IsValid() || Body.Num()>256 || !GetObject(Key,Object) || HasSimulation(Key)) return false;
+    if (!State->Client || !State->Session.IsValid() || Body.Num()>256 || HasSimulation(Key)) return false;
+    const auto& Directory=State->Client->Objects(); const auto It=Directory.find(ToCore(Key));
+    if (It==Directory.end()) return false;
+    const auto& Grant=It->second.Grant;
     Message M; M.Header.Kind=MessageKind::MotionAcknowledgment; M.Header.Object=ToCore(Key);
-    M.Header.OwnerEpoch=Object.OwnerEpoch; M.Header.ControlEpoch=Object.ControlEpoch; M.Header.At=GetLogicalTick();
+    M.Header.OwnerEpoch=Grant.OwnerEpoch; M.Header.ControlEpoch=Grant.ControlEpoch; M.Header.At=GetLogicalTick();
     if (!State->Client || !State->Client->StampObjectPublication(M.Header)) return false;
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
-    return State->Session->SendPeer(Object.SimulationOwner,ToUE(M));
+    return State->Session->SendPeer(ToUE(Grant.SimOwner),ToUE(M));
 }
 bool UGuLiHybridWorldSubsystem::ResolveObjectTarget(const FGuLiHybridObjectKey& Key,FGuLiTargetHandle& Out) const
 {
@@ -1923,8 +1945,13 @@ void UGuLiHybridWorldSubsystem::ApplyQueryDelta(const ClientQueryDelta& Delta)
         for (const auto K:Delta.RemovedLeases) State->MiningView.Leases.erase(K);
     }
     // All related projections are visible before any dependent listener runs.
-    if (Delta.ResourceSeed||Delta.OwnersChanged) OnResourceDirectoryChanged.Broadcast();
-    else for (const auto& [K,V]:Delta.Remaining) OnResourceNodeChanged.Broadcast(K,V);
+    if (Delta.ResourceSeed) OnResourceDirectoryChanged.Broadcast();
+    else
+    {
+        if (Delta.OwnersChanged) OnResourceOwnersChanged.Broadcast();
+        // Ownership and mining can change in one delta; neither update suppresses the other.
+        for (const auto& [K,V]:Delta.Remaining) OnResourceNodeChanged.Broadcast(K,V);
+    }
     if (Delta.MiningChanged) OnMiningReservationsChanged.Broadcast();
 }
 TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetTransactionCaptureSnapshot() const

@@ -140,6 +140,7 @@ void UGuLiResourceWorldSubsystem::Initialize(FSubsystemCollectionBase& Collectio
 		if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
 		{
 			Hybrid->OnResourceDirectoryChanged.AddUObject(this,&ThisClass::HandleHybridResourceDirectory);
+            Hybrid->OnResourceOwnersChanged.AddUObject(this,&ThisClass::HandleHybridResourceOwners);
 			Hybrid->OnResourceNodeChanged.AddUObject(this,&ThisClass::HandleHybridResourceNode);
 		}
 	}
@@ -150,7 +151,7 @@ void UGuLiResourceWorldSubsystem::Deinitialize()
 	OnResourceSettlement.Clear();
 	if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
 	{
-		Hybrid->OnResourceDirectoryChanged.RemoveAll(this); Hybrid->OnResourceNodeChanged.RemoveAll(this);
+		Hybrid->OnResourceDirectoryChanged.RemoveAll(this); Hybrid->OnResourceOwnersChanged.RemoveAll(this); Hybrid->OnResourceNodeChanged.RemoveAll(this);
 	}
 	if (WorldState) { WorldState->OnStateChanged().RemoveAll(this); WorldState->OreNodeChanged.RemoveAll(this); }
 	ResetPendingOreRemovals();
@@ -208,6 +209,7 @@ void UGuLiResourceWorldSubsystem::Tick(const float DeltaTime)
     }
     if (bHybridQuerySceneReady)
     {
+        if (bHybridOwnersDirty) RefreshHybridTerritoryOwners();
         ProcessPendingOreRemovals();
         if (auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()) Registry->FlushOreNavigationNotifications();
     }
@@ -298,9 +300,13 @@ bool UGuLiResourceWorldSubsystem::RefreshHybridQueryScene()
 		else OreField->ApplyReplicatedState();
 	}
 	if (!InitializeNodeObstacles()) return false;
-	bHybridQuerySceneReady=true; bHybridDirectoryDirty=false; bReplicatedStateDirty=false;
-    TArray<FGuLiHybridObjectState> Objects;Hybrid->GetObjects(Objects);
-    for (const auto& O:Objects) if (GuLiHybridControlPoint::Read(O).Index!=INDEX_NONE) ApplyHybridControlPoint(O,false);
+	bHybridQuerySceneReady=true; bHybridDirectoryDirty=false; bHybridOwnersDirty=false; bReplicatedStateDirty=false;
+    TArray<FGuLiHybridObjectState> Objects;Hybrid->GetBoundObjectViews(Objects);
+    for (const auto& O:Objects) if (GuLiHybridControlPoint::Read(*Hybrid,O.Key).Index!=INDEX_NONE)
+    {
+        FGuLiHybridObjectState Full;
+        if (Hybrid->GetObject(O.Key,Full)) ApplyHybridControlPoint(Full,false);
+    }
 	// Formal miners, factories, territory lifecycle and supply have their own grants.
 	// An ore query projection alone must not open the full resource gameplay gate.
 	UE_LOG(LogGuLiResources,Display,TEXT("Hybrid ore query applied nodes=%d collision_clusters=%d visual_components=%d revision=%llu"),
@@ -311,6 +317,32 @@ void UGuLiResourceWorldSubsystem::HandleHybridResourceDirectory()
 {
 	check(IsInGameThread());
 	ResetPendingOreRemovals(); bHybridDirectoryDirty=true;
+}
+void UGuLiResourceWorldSubsystem::HandleHybridResourceOwners()
+{
+    check(IsInGameThread());
+    // An ownership notification must not cancel queued ore removals or rebuild collisions.
+    bHybridOwnersDirty=true;
+}
+void UGuLiResourceWorldSubsystem::RefreshHybridTerritoryOwners()
+{
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiResources_ApplyTerritoryOwners);
+    auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    if (!Hybrid || !WorldState || !MapDefinition) return;
+    bool Changed=false;
+    for (int32 I=0;I<MapDefinition->Territories.Num();++I)
+    {
+        // Bound outposts apply owner/supply/progress through ApplyHybridControlPoint.
+        // Its callback may still be queued after this numeric delta. Do not erase
+        // the previous owner before that callback emits the real capture reward.
+        if (Outposts.IsValidIndex(I) && IsValid(Outposts[I])) continue;
+        const auto Owner=Hybrid->GetResourceTerritoryOwner(I);
+        if (WorldState->GetTerritoryOwner(uint8(I))==Owner) continue;
+        if (!WorldState->ApplyHybridTerritory(I,Owner,IsTerritorySupplied(I))) return;
+        Changed=true;
+    }
+    bHybridOwnersDirty=false;
+    if (Changed) RefreshEncirclement();
 }
 bool UGuLiResourceWorldSubsystem::IsMiningRuntimeReady() const
 {

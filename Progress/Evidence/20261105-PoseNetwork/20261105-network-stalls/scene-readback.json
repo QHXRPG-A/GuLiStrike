@@ -1,0 +1,60 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "saved": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "entities": [
+      {
+        "label": "PerfPoseOreSelection_Entry",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_85",
+        "class": "Note",
+        "position_cm": [
+          9781.763325427999,
+          -52385.39119478699,
+          1101.7790833
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002927657B850) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>"
+      },
+      {
+        "label": "HybridNetworkReview",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiHybridNetworkReviewActor_0",
+        "class": "GuLiHybridNetworkReviewActor",
+        "position_cm": [
+          0.0,
+          0.0,
+          200.0
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002927657A950) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>"
+      },
+      {
+        "label": "PerfSnapshotNetwork_Stress_View",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_33",
+        "class": "CameraActor",
+        "position_cm": [
+          14175.0,
+          54810.0,
+          16000.0
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002927657AEF0) {pitch: -56.555710, yaw: 90.000000, roll: 0.000001}>"
+      },
+      {
+        "label": "CommanderPlayerStart_Red",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.PlayerStart_0",
+        "class": "PlayerStart",
+        "position_cm": [
+          0.0,
+          65205.0,
+          10000.0
+        ],
+        "rotation": "<Struct 'Rotator' (0x000002927657A9A0) {pitch: 0.000000, yaw: -90.000000, roll: 0.000000}>"
+      }
+    ],
+    "units": 600,
+    "additional_flights": 500,
+    "manifest": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+    "entry_text": "姿态同步、矿石与选择卡顿验证（2026-11-05）\n地图：/Game/Maps/LVL_CommanderMassPrototype。\n复用 HybridNetworkReview：600 单位、500 额外弹丸配置；观察相机 PerfSnapshotNetwork_Stress_View；玩家起点 CommanderPlayerStart_Red。\n本条目只保存说明与现有入口绑定，不启动游玩或自动测试。\n前置：Editor 与 GuLiCoordinator 均更新到协议 35；新编辑器加载后执行 Scripts/Network/refresh_transport_manifests.py，重新导出并校验四份清单。旧程序或旧清单不能验证本次代码。\n使用正常本地联机入口进入本图，双方运行同一构建与清单。\n1. 让编队静止，再移动、停止、改令、受击并观察对端：已确认且完整状态未变的静止姿态减少重复发送；变化立即进入原 10Hz 发送路径。位置、转向、炮管、悬浮与动画精度保持。\n2. 使用原性能采集工具：记录 motion_batch_packets、motion_batch_messages、motion_batch_shared_bytes、sent_packet_header_bytes、suppressed_component_states 与 lane_1_oldest_payload_ms。比较相同人数与操作条件下的采样，不将单轮帧率作为稳定收益。\n3. 占领或反占领据点，同时保持采矿：归属、供电、占领奖励继续按真实流程更新；归属变化不清空全图矿石碰撞。采空只移除对应矿石，并继续原有异步导航通知。\n4. 对兵种、建筑与工程车执行单选、框选、同类选择、加选/减选、移动/停止；选择成员、权限、目标与反馈应正确。选择输入不再出现 GuLiHybrid_FullObjectCopy。\n5. 丢包、乱序、权限交接、晚加入需在后续获准的运行检查中确认；本轮仅交付静态检查与地图实体配置，不声明运行通过。\n文档：Progress/DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md。\n用户自行核验表现，助手不截图或目检。",
+    "validation_scope": "Saved scene configuration only; native build and runtime verification pending"
+  }
+}

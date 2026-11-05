@@ -7,6 +7,7 @@
 #include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
 #include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
 #include "Gameplay/Building/GuLiConstructionWorkComponent.h"
+#include "Gameplay/Units/Private/GuLiVehiclePoseStream.h"
 #include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"
@@ -77,6 +78,7 @@ class FGuLiHybridEngineerAdapter final : public IGuLiHybridSimulationAdapter, pu
     FGuLiHybridObjectState Record;
     bool bLocal=false,bPoseQueued=false;
     uint64 LastApplied=0,LastPublished=0;
+    FGuLiVehiclePoseStream PoseStream;
     UWorld* World() const {return Owner.IsValid()?Owner->GetWorld():nullptr;}
     const FGuLiSoldierDefinition* Definition() const
     {const auto* Data=World()?World()->GetSubsystem<UGuLiUnitDataSubsystem>():nullptr; return Data?Data->FindDefinition(uint16(GuLiHybridEngineer::Type(Record.Definition))):nullptr;}
@@ -170,10 +172,12 @@ public:
     {
         auto* P=Pawn.Get();if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         if (At<LastPublished+6) return;
-        FGuLiHybridStateArchive A(65536); uint32 Version=GuLiHybridEngineer::Version; A.Value(Version);
-        auto Pose=ReadPose(); GuLiHybridEngineer::Pose(A,Pose); auto Transit=P->Travel->GetTransitState(); GuLiHybridEngineeringState::Transit(A,Transit);
-        auto Fact=P->Work->GetHybridWorkFact(At); GuLiHybridEngineer::Fact(A,Fact);
-        TArray<uint8> Body; if (A.Finish(Body) && World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body)) LastPublished=At;
+        auto Pose=ReadPose(); FGuLiVehiclePose Sample;
+        Sample.Position=Pose.Position; Sample.Rotation=Pose.Rotation; Sample.Velocity=Pose.Velocity;
+        FGuLiHybridStateArchive Work(128); Work.Value(Pose.Mode); Work.Value(Pose.CustomMode);
+        auto Fact=P->Work->GetHybridWorkFact(At); GuLiHybridEngineer::Fact(Work,Fact);
+        if (Work.Finish(Sample.Work) && Sample.SetTransit(P->Travel->GetTransitState())
+            && PoseStream.Publish(*World(),Record,At,Sample,Fact.bOccupy || Fact.bReady)) LastPublished=At;
     }
     bool Execute(const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M) override
     {
@@ -197,18 +201,21 @@ public:
     bool ApplyMotion(TConstArrayView<uint8> Bytes,uint64 At) override
     {
         auto* P=Pawn.Get(); if (!P || bLocal) return false; if (At<=LastApplied) return true;
-        FGuLiHybridStateArchive A(Bytes,65536); uint32 Version=0; GuLiHybridEngineer::FPose Pose;
-        FGuLiStrongholdTransitState Transit; FGuLiHybridConstructionFact Fact;
-        A.Value(Version); GuLiHybridEngineer::Pose(A,Pose); GuLiHybridEngineeringState::Transit(A,Transit);
-        GuLiHybridEngineer::Fact(A,Fact);
-        if (Version!=GuLiHybridEngineer::Version || !A.Done()) return false;
+        FGuLiVehiclePose Sample; const auto Result=PoseStream.Read(*World(),Record,At,Bytes,Sample);
+        if (Result!=FGuLiVehiclePoseStream::ERead::Ready) return Result==FGuLiVehiclePoseStream::ERead::MissingBaseline;
+        GuLiHybridEngineer::FPose Pose; Pose.Position=Sample.Position; Pose.Rotation=Sample.Rotation; Pose.Velocity=Sample.Velocity;
+        FGuLiStrongholdTransitState Transit; FGuLiHybridConstructionFact Fact; FGuLiHybridStateArchive Work(Sample.Work,128);
+        Work.Value(Pose.Mode); Work.Value(Pose.CustomMode); GuLiHybridEngineer::Fact(Work,Fact);
+        if (!Work.Done() || Pose.Mode>=MOVE_MAX || !Sample.GetTransit(Transit)) return false;
         ApplyPose(Pose); P->Travel->ApplyHybridTransitMotion(Transit);
         GuLiGrid::ObserveRemoteBody(*World(),Record,Pose.Position,Definition()->FootprintCells,Transit.Phase==EGuLiTransitPhase::Ground);
         // Stream order uses producer ticks; freshness is measured on this receiver's logical clock.
         Fact.At=World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->GetLocalLogicalTick();
         if (!P->Work->ApplyHybridWorkFact(Fact)) return false;
-        LastApplied=At; return true;
+        LastApplied=At; PoseStream.Applied(*World(),Record,At,MoveTemp(Sample)); return true;
     }
+    bool ApplyMotionFeedback(const FGuid& Peer,TConstArrayView<uint8> Bytes) override
+    {return bLocal && PoseStream.Feedback(*World(),Record,Peer,Bytes);}
     void ApplyLedger(const FGuLiHybridObjectState& V,uint64 Revision,bool Effects) override
     {
         Record=V; if (auto* P=Pawn.Get())

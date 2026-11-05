@@ -888,6 +888,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [姿态同步与交互卡顿优化](../RequirementDocument/20261105-姿态同步与交互卡顿优化.md) | requirement | approved | 2026-11-05 |
+| [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | development | done | 2026-11-05 |
+| [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | archive | recorded | 2026-11-05 |
+| [姿态通道 100 KB/s 目标验收](../Archive/20261105-姿态通道100KB每秒验收.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数编译与加载](../Archive/20261105-姿态队列分类计数编译与加载.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数静态交付](../Archive/20261105-姿态队列分类计数.md) | archive | recorded | 2026-11-05 |
+| [姿态优化双端编译与协议35清单](../Archive/20261105-姿态优化双端编译与协议35清单.md) | archive | recorded | 2026-11-05 |
+| [姿态同步与交互卡顿优化静态交付](../Archive/20261105-姿态同步与交互卡顿优化静态交付.md) | archive | recorded | 2026-11-05 |
 | [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-11-04 |
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-11-04 |
 | [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-11-04 |
@@ -1677,6 +1685,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [姿态同步与交互卡顿优化](../RequirementDocument/20261105-姿态同步与交互卡顿优化.md) | requirement | approved | 2026-11-05 |
+| [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | development | done | 2026-11-05 |
+| [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数编译与加载](../Archive/20261105-姿态队列分类计数编译与加载.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数静态交付](../Archive/20261105-姿态队列分类计数.md) | archive | recorded | 2026-11-05 |
+| [姿态优化双端编译与协议35清单](../Archive/20261105-姿态优化双端编译与协议35清单.md) | archive | recorded | 2026-11-05 |
+| [姿态同步与交互卡顿优化静态交付](../Archive/20261105-姿态同步与交互卡顿优化静态交付.md) | archive | recorded | 2026-11-05 |
 | [单颗矿石采空与异步导航恢复](../RequirementDocument/20261024-单颗矿石采空与异步导航恢复.md) | requirement | approved | 2026-10-24 |
 | [GuLi 独立地图设计器](../RequirementDocument/20261024-GuLi独立地图设计器.md) | requirement | approved | 2026-10-24 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-24 |
@@ -1793,6 +1808,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [姿态同步与交互卡顿优化](../RequirementDocument/20261105-姿态同步与交互卡顿优化.md) | requirement | approved | 2026-11-05 |
+| [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | development | done | 2026-11-05 |
+| [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | archive | recorded | 2026-11-05 |
+| [姿态通道 100 KB/s 目标验收](../Archive/20261105-姿态通道100KB每秒验收.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数编译与加载](../Archive/20261105-姿态队列分类计数编译与加载.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数静态交付](../Archive/20261105-姿态队列分类计数.md) | archive | recorded | 2026-11-05 |
+| [姿态优化双端编译与协议35清单](../Archive/20261105-姿态优化双端编译与协议35清单.md) | archive | recorded | 2026-11-05 |
+| [姿态同步与交互卡顿优化静态交付](../Archive/20261105-姿态同步与交互卡顿优化静态交付.md) | archive | recorded | 2026-11-05 |
 | [游骑兵3C优化](../RequirementDocument/20261103-游骑兵3C优化.md) | requirement | approved | 2026-11-04 |
 | [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-11-04 |
 | [肉鸽卡牌会话收尾](../Evidence/20261027-CardArtworkCloseout/README.md) | reference | reference | 2026-11-04 |
@@ -2134,6 +2157,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [姿态同步与交互卡顿优化](../RequirementDocument/20261105-姿态同步与交互卡顿优化.md) | requirement | approved | 2026-11-05 |
+| [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | development | done | 2026-11-05 |
+| [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | archive | recorded | 2026-11-05 |
+| [姿态通道 100 KB/s 目标验收](../Archive/20261105-姿态通道100KB每秒验收.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数编译与加载](../Archive/20261105-姿态队列分类计数编译与加载.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数静态交付](../Archive/20261105-姿态队列分类计数.md) | archive | recorded | 2026-11-05 |
+| [姿态优化双端编译与协议35清单](../Archive/20261105-姿态优化双端编译与协议35清单.md) | archive | recorded | 2026-11-05 |
+| [姿态同步与交互卡顿优化静态交付](../Archive/20261105-姿态同步与交互卡顿优化静态交付.md) | archive | recorded | 2026-11-05 |
 | [单颗矿石采空与异步导航恢复](../RequirementDocument/20261024-单颗矿石采空与异步导航恢复.md) | requirement | approved | 2026-10-24 |
 | [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-10-24 |
 | [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | development | done | 2026-10-24 |
@@ -2561,6 +2592,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [姿态同步与交互卡顿优化](../RequirementDocument/20261105-姿态同步与交互卡顿优化.md) | requirement | approved | 2026-11-05 |
+| [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | development | done | 2026-11-05 |
+| [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数编译与加载](../Archive/20261105-姿态队列分类计数编译与加载.md) | archive | recorded | 2026-11-05 |
+| [姿态队列分类计数静态交付](../Archive/20261105-姿态队列分类计数.md) | archive | recorded | 2026-11-05 |
+| [姿态优化双端编译与协议35清单](../Archive/20261105-姿态优化双端编译与协议35清单.md) | archive | recorded | 2026-11-05 |
+| [姿态同步与交互卡顿优化静态交付](../Archive/20261105-姿态同步与交互卡顿优化静态交付.md) | archive | recorded | 2026-11-05 |
 | [单颗矿石采空与异步导航恢复](../RequirementDocument/20261024-单颗矿石采空与异步导航恢复.md) | requirement | approved | 2026-10-24 |
 | [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | development | done | 2026-10-24 |
 | [单颗矿石导航完成与清理](../Archive/20261024-单颗矿石导航完成与清理.md) | archive | recorded | 2026-10-24 |

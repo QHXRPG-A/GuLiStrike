@@ -84,6 +84,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | commander, navigation, network, performance, resource | 9/9 (100%) | — | 2026-11-05 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | camera, input, movement, network, presentation | 12/12 (100%) | — | 2026-11-04 |
 | [地面机甲逐发上身摆动 — 技术方案与交付](../DevelopmentDocumentation/20261028-地面机甲逐发上身摆动.md) | animation, combat | 7/7 (100%) | — | 2026-10-30 |
 | [地面机甲 MechaDestroyer 替换与风格化 — 实施记录](../DevelopmentDocumentation/20261023-地面机甲MechaDestroyer替换与风格化.md) | art, combat | 12/12 (100%) | 本会话已完成归档，后续调整按新反馈另立增量。 | 2026-10-26 |

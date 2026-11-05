@@ -21,7 +21,7 @@ namespace
 bool SelectAuthoredObjects(UWorld& W,const FGuLiSelectionRequest& Input,FGuLiCommanderSelectionState& Selection)
 {
     auto* H=W.GetSubsystem<UGuLiHybridWorldSubsystem>();if (!H) return false;
-    TArray<FGuLiHybridObjectState> Records;H->GetObjects(Records);
+    TArray<FGuLiHybridObjectState> Records;H->GetBoundObjectViews(Records);
     TArray<GuLiCommanderSelectionQuery::FCandidate> Population;TArray<FGuLiHybridObjectKey> Keys;
     TMap<FName,uint16> Types;EGuLiTeam Team=EGuLiTeam::Unassigned;
     for (const auto& O:Records)

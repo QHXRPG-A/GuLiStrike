@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-05",
+  "scope": "Static syntax/type checks and source review only; no native build, automation, PIE or runtime performance test",
+  "checks": [
+    {
+      "name": "portable_protocol_transport_syntax",
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "59217c",
+        "wall_time_seconds": 1.1186973,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "authoring_and_manifest_python_syntax",
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "b9d076",
+        "wall_time_seconds": 0.3191077,
+        "exit_code": 0,
+        "original_token_count": 36,
+        "output": "Python syntax OK: Scripts/Network/refresh_transport_manifests.py\r\nPython syntax OK: Scripts/Performance/author_pose_ore_selection_review.py\r\n"
+      }
+    },
+    {
+      "name": "diff_whitespace",
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "850e82",
+        "wall_time_seconds": 0.3991648,
+        "exit_code": 0,
+        "original_token_count": 449,
+        "output": "warning: in the working copy of 'Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.cpp', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.h', LF will be replaced by CRLF the next time Git touches it\n68\t0\tSource/GuLiNetCore/Private/GuLiNetProtocol.cpp\n74\t8\tSource/GuLiNetCore/Private/GuLiNetTransport.cpp\n5\t0\tSource/GuLiNetCore/Public/GuLiNetProtocol.h\n4\t1\tSource/GuLiNetCore/Public/GuLiNetTransport.h\n1\t1\tSource/GuLiNetCore/Public/GuLiNetTypes.h\n2\t1\tSource/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp\n1\t1\tSource/GuLiStrike/Commander/Framework/GuLiCommanderOrderedCommands.cpp\n1\t1\tSource/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp\n9\t10\tSource/GuLiStrike/Commander/Mass/GuLiHybridMassAdapter.inl\n72\t1\tSource/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.cpp\n5\t0\tSource/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.h\n36\t4\tSource/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.cpp\n3\t0\tSource/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.h\n24\t6\tSource/GuLiStrike/Network/GuLiHybridSessionSubsystem.cpp\n23\t3\tSource/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp\n4\t0\tSource/GuLiStrike/Network/GuLiHybridWorldSubsystem.h\n"
+      }
+    }
+  ],
+  "sourceReview": [
+    "Motion batches retain complete object identity, epoch, sequence and per-message validation; entire datagram decodes before delivery",
+    "Ack codec preserves all 512 receipt bits; Senders.Confirm still validates history before promoting baselines",
+    "Unchanged pose suppression requires receipt of the last block, zero velocity and every existing pose field equal; 5 simulation steps maximum refresh gap",
+    "Unchanged component state suppression compares all authority fields and payload, with a 0.5-second repair heartbeat",
+    "Owner-only resource deltas do not clear collision/navigation or queued removals; existing control-point callbacks retain capture rewards",
+    "Selection uses live Actor bindings and lightweight records sorted in original ObjectKey order"
+  ],
+  "notExecuted": [
+    "GuLiStrikeEditor build and UE reflection validation",
+    "GuLiCoordinator build",
+    "Protocol 35 manifest export with new editor module",
+    "Automated or runtime tests",
+    "Player visual acceptance"
+  ]
+}

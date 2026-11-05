@@ -21,4 +21,5 @@ FAnalysisResult Analyze(const FString& TracePath, const FString& CaptureId,
 
 bool SaveJson(const FString& Path, const TSharedRef<FJsonObject>& Object);
 bool SaveText(const FString& Path, const FString& Text);
+void AppendMotionQueueReport(const FJsonObject* Profile,FJsonObject& Report,FString& Markdown);
 }

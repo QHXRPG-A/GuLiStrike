@@ -373,6 +373,8 @@ public:
     bool GetObjectMetadata(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
     uint32 GetLatestRetiredLife(const FGuLiHybridObjectKey& Stable) const;
     void GetObjects(TArray<FGuLiHybridObjectState>& Out) const;
+    /** Live Actor bindings only, with lightweight metadata and stable directory ordering. */
+    void GetBoundObjectViews(TArray<FGuLiHybridObjectState>& Out) const;
     /** Development readback: count authoritative live work without copying capability records. */
     TSharedRef<FJsonObject> GetSimulationCensus() const;
     bool HasSimulation(const FGuLiHybridObjectKey& Key, bool bRetainedSource = false) const;
@@ -384,13 +386,14 @@ public:
     FGuLiHybridOwnershipMetrics GetOwnershipMetrics() const;
     TSharedRef<FJsonObject> GetTransactionCaptureSnapshot() const;
     FGuLiHybridCommandCompleted OnCommandCompleted;
-    bool PublishMotion(const FGuLiHybridObjectKey& Key, const TArray<uint8>& Body);
+    bool PublishMotion(const FGuLiHybridObjectKey& Key, const TArray<uint8>& Body,bool bStationaryUnitPose=false);
     /** Shared 10 Hz public-capability pump, including families without movement. */
     void PublishComponentMotionIfDue(const FGuLiHybridObjectKey& Key,FGuLiHybridComponentBindingContext* Context=nullptr);
     /** Reliable simulator-owned event for any registered object family. The
      * family decodes its payload; the transport does not classify content. */
     bool PublishEffect(const FGuLiHybridObjectKey& Key,const FGuid& Event,const TArray<uint8>& Body);
-    bool PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body,uint64 CapturedTick=MAX_uint64);
+    bool PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body,uint64 CapturedTick,
+        const FGuid& Connection,const std::shared_ptr<GuLiNet::MotionDelivery>& Delivery,bool bStationary);
     bool PublishMotionAcknowledgment(const FGuLiHybridObjectKey& Key,const TArray<uint8>& Body);
     FGuid SubmitDamage(const FGuLiDamageRequest& Request, uint64 StartedAt,
         TFunction<void(const FGuLiDamageCommitResult&)> Callback = {},const FGuLiHybridObjectKey* EffectAuthority=nullptr,TOptional<uint64> OriginalAt={});
@@ -405,6 +408,8 @@ public:
     bool GetResourceQuerySummary(int32& Nodes,int64& Remaining,uint64& Revision) const;
     bool GetResourceDirectoryMetadata(FString& LayoutHash,int32& Nodes,uint64& Revision) const;
     FGuLiHybridResourceDirectoryChanged OnResourceDirectoryChanged;
+    /** Territory ownership changed without replacing the ore layout or remaining-node snapshot. */
+    FGuLiHybridResourceDirectoryChanged OnResourceOwnersChanged;
     FGuLiHybridResourceNodeChanged OnResourceNodeChanged;
     UFUNCTION(BlueprintCallable,Category="Hybrid|Transactions") FGuid SubmitMiningOperation(const FGuLiHybridMiningRequest& Request);
     FGuid SubmitMiningOperationNative(const FGuLiHybridMiningRequest& Request,TFunction<void(const FGuLiHybridTransactionResult&)> Callback);

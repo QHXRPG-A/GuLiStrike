@@ -61,6 +61,8 @@ struct FGuLiCommanderBufferedSoldierPose
 	uint16 ChunkIndex = 0u;
 	uint8 SampleIndex = 0u;
 	bool bTeleport = false;
+	bool bStationaryMass = false;
+	uint32 HybridOwner = 0, HybridLife = 0;
 };
 
 /** Client-only interpolation state. It intentionally contains no Mass movement fragments. */

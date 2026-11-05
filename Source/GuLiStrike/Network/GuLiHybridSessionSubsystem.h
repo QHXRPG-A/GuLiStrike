@@ -3,20 +3,22 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Containers/Ticker.h"
+#include <memory>
 #include "GuLiHybridSessionSubsystem.generated.h"
 
-namespace GuLiNet { struct Message; }
-
+namespace GuLiNet { struct Message; struct MotionDelivery; struct RuntimeManifest; }
 struct FGuLiHybridMessage
 {
     uint16 Kind = 0;
     FGuid Match, Sender, Event, ObjectId;
     uint8 ObjectKind = 0;
+    bool bStationaryUnitPose=false; // Local measurement, omitted from the wire.
     uint32 LifeGeneration = 0;
     uint64 MatchEpoch = 0, OwnerEpoch = 0, ControlEpoch = 0, Sequence = 0, LogicalTick = 0;
     FGuid ResourceGroup;
     uint64 ResourceEpoch = 0;
     TArray<uint8> Body;
+    std::shared_ptr<GuLiNet::MotionDelivery> PoseDelivery;
 };
 struct FGuLiHybridMember
 {
@@ -26,6 +28,7 @@ struct FGuLiHybridMember
     bool bOnline = false, bReady = false;
     uint64 SeatVersion = 1;
     uint32 OrdinalSlot = 0;
+    FGuid Connection;
 };
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiHybridControlReceived, const FGuLiHybridMessage&);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiHybridPeerReceived, const FGuid&, const FGuLiHybridMessage&);
@@ -44,11 +47,13 @@ public:
     virtual ~UGuLiHybridSessionSubsystem() override;
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
-    bool Start(const FGuLiNetworkLaunchConfig& Config, FString& Error);
+    bool Start(const FGuLiNetworkLaunchConfig& Config,const GuLiNet::RuntimeManifest& Manifest,FString& Error);
     UFUNCTION(BlueprintCallable,Category="GuLi|Network") bool RequestLeave();
     void Stop();
     bool SendControl(FGuLiHybridMessage Message);
     bool SendPeer(const FGuid& Peer, FGuLiHybridMessage Message);
+    void RecordSkippedStationaryMassPoses(uint64 Exact,uint64 NaturalPhase);
+    FGuid GetPeerConnection(const FGuid& Peer) const;
     bool SendPeerPrepared(const FGuid& Peer,FGuLiHybridMessage Message,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes=0);
     bool SendPeerPreparedNative(const FGuid& Peer,const GuLiNet::Message& Message,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes=0);
     bool CanQueueHandoff(const FGuid& Peer) const;

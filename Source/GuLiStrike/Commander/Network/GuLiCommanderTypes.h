@@ -617,5 +617,10 @@ struct GULISTRIKE_API FGuLiSoldierPoseChunk
 	uint16 ChunkIndex = 0u;
 	uint16 ChunkCount = 1u;
 
+	// Local presentation identity attached after decode, outside the pose wire format.
+	uint32 PresentationOwner = 0, PresentationLife = 0;
+	// Hybrid samples are taken on exact 10 Hz steps. Recover the timestamp
+	// from the frame on both peers to avoid float clock drift in long matches.
+	double HybridSampleTime() const { return double(FrameSequence)/GuLiCommanderSimulationTiming::RateHz; }
 	TArray<FGuLiQuantizedSoldierPose> Samples;
 };

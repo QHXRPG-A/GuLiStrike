@@ -514,7 +514,7 @@ struct AsyncClientWorld::State::ObjectProxy final : IObjectAdapter
         if (Kind==MessageKind::Motion && Info.Codec)
         {
             TraceScope Scope("GuLiHybrid_WorkerPoseDecode");bool Valid=false;
-            auto Decoded=Info.Codec->Decode(B,Record.Grant.OwnerEpoch,Host.MatchEpoch,Valid);const auto Owner=Record.Grant.OwnerEpoch;
+            auto Decoded=Info.Codec->Decode(B,Record.Grant.OwnerEpoch,Host.MatchEpoch,At,Valid);const auto Owner=Record.Grant.OwnerEpoch;
             Host.Publish();Host.Emit([H=&Host,K=Key,T=Info.Token,Decoded=std::move(Decoded),Valid,At,Kind,Owner]
             {
                 TraceScope Scope("GuLiHybrid_MainPoseApply");

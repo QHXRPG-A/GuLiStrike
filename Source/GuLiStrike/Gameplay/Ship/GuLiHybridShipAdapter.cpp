@@ -215,7 +215,7 @@ public:
         FGuLiHybridStateArchive A(700); uint32 Schema=1; A.Value(Schema); auto Pose=ReadPose(); GuLiHybridShip::Pose(A,Pose);
         TArray<uint8> Body;
         if (!A.Finish(Body)) { ++P->HybridMotionEncodingFailures; return; }
-        if (World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body)) LastPublished=Tick;
+        if (World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body,Pose.Velocity.IsZero())) LastPublished=Tick;
     }
     bool Execute(const FGuLiHybridCommand& Command,const FGuLiHybridCommandMember& Member) override
     {

@@ -45,7 +45,7 @@ public:
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     UFUNCTION(BlueprintPure, Category="Commander|Network") bool IsSoldierStreamReady() const;
-    void ApplyHybridPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
+    void ApplyHybridPoseChunk(const FGuLiSoldierPoseChunk& Chunk,uint32 Owner,uint32 Life);
     void ConsumePendingPoseChunks(TArray<FGuLiSoldierPoseChunk>& OutChunks);
     void ConsumePendingCommandAcks(TArray<FGuLiCommandAck>& OutAcks);
     void SubmitSelectionRequest(const FGuLiSelectionRequest& Request);

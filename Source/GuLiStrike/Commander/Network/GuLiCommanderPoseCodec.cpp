@@ -63,7 +63,7 @@ struct FReader
 {
 	FBitReader Bits;
 	bool bValid = true;
-	explicit FReader(const TArray<uint8>& Data) : Bits(Data.GetData(), Data.Num() * 8) {}
+	explicit FReader(TConstArrayView<uint8> Data) : Bits(Data.GetData(), Data.Num() * 8) {}
 	uint64 ReadBits(int32 Count)
 	{
 		uint64 Value = 0;
@@ -112,9 +112,9 @@ const FGuLiQuantizedSoldierPose* FindSample(const FHistoryBlock& Block, FGuLiSol
 }
 
 void WriteRecord(FBitWriter& Writer, const FGuLiQuantizedSoldierPose& Pose,
-	uint32 PreviousId, const FBaseline* Baseline, uint32 Sequence, uint32 SimTick)
+	uint32 PreviousId, const FBaseline* Baseline, uint32 Sequence, uint32 SimTick,bool SingleMass)
 {
-	WriteUnsigned(Writer, Pose.SoldierId.Value - PreviousId);
+	if (!SingleMass) WriteUnsigned(Writer, Pose.SoldierId.Value - PreviousId);
 	WriteUnsigned(Writer, Baseline ? Sequence - Baseline->Sequence : 0u);
 	int64 Predicted[6] = {};
 	if (Baseline) Predict(Baseline->Pose, SimTick - Baseline->SimTick, Predicted);
@@ -218,9 +218,138 @@ void FSender::Reset(uint32 Generation, uint32 Epoch)
 	check((Generation == 0) == (Epoch == 0));
 	SyncGeneration = Generation; MatchEpoch = Epoch; LastSequence = 0;
 	History.Reset(); Confirmed.Empty();
+	MassConnection.Invalidate(); MassControlEpoch=0; MassSessionFloor=MassStateFirstSequence=0;
+	MassDelivery.reset(); bMassStateConfirmed=bLastMassIdleLoop=false; LastMassSentAt=-1; LastMassSampleTime=0;
+}
+
+bool IsStationaryPose(const FGuLiQuantizedSoldierPose& Pose)
+{
+    return !Pose.IsTeleport() && !Pose.VelocityXUnits && !Pose.VelocityYUnits && !Pose.VelocityZUnits;
+}
+
+static bool SameMassFields(const FGuLiQuantizedSoldierPose& P,const FGuLiQuantizedSoldierPose& B)
+{
+	return P.SoldierId==B.SoldierId && P.WorldXUnits==B.WorldXUnits && P.WorldYUnits==B.WorldYUnits && P.WorldZUnits==B.WorldZUnits
+		&& P.VelocityXUnits==B.VelocityXUnits && P.VelocityYUnits==B.VelocityYUnits && P.VelocityZUnits==B.VelocityZUnits
+		&& P.FacingYaw==B.FacingYaw && P.ActiveOrderId==B.ActiveOrderId && P.State==B.State && P.Flags==B.Flags
+		&& P.UpperYaw==B.UpperYaw && P.LeftGunPitch==B.LeftGunPitch && P.RightGunPitch==B.RightGunPitch
+		&& P.HoverBlendStartMilliseconds==B.HoverBlendStartMilliseconds && P.HoverBlendFromWeight==B.HoverBlendFromWeight
+		&& P.bHoverIdleTarget==B.bHoverIdleTarget && P.VATClip==B.VATClip && P.VATRate==B.VATRate;
+}
+
+static bool NaturalIdlePhase(const FGuLiQuantizedSoldierPose& Pose,const FGuLiQuantizedSoldierPose& Anchor,double Seconds)
+{
+	if (Seconds<0) return false;
+	const double Expected=double(Anchor.VATPhase)/65535.0 + Seconds*Anchor.VATRate/256.0;
+	const double Error=double(Pose.VATPhase)/65535.0-Expected;
+	// Two rounded phase samples and half a step of rate quantization per second.
+	return FMath::Abs(Error-FMath::RoundToDouble(Error))<=1.0/65535.0+Seconds/512.0+1.e-6;
+}
+
+EMassPosePreparation FSender::PrepareMass(const FGuLiSoldierPoseChunk& Chunk,const FGuid& Connection,
+	uint64 ControlEpoch,bool bIdleLoop,double Now,FPreparedBlock& Out)
+{
+	using EReason=GuLiNet::MassPoseReason;
+	using FDelivery=GuLiNet::MotionDelivery;
+	if (Chunk.Samples.Num()!=1 || !Connection.IsValid() || Chunk.AuthorityEpoch!=MatchEpoch)
+		return EMassPosePreparation::Invalid;
+	if (Connection!=MassConnection || ControlEpoch!=MassControlEpoch)
+	{
+		// A surviving receiver may retain its sequence window across reconnect.
+		// Keep numbering monotonic, but bootstrap this channel from an absolute pose.
+		MassConnection=Connection; MassControlEpoch=ControlEpoch;
+		MassSessionFloor=LastSequence==MAX_uint32 ? 1u : LastSequence+1u;
+		Confirmed.Reset(); History.Reset(); MassDelivery.reset(); MassStateFirstSequence=0;
+		bMassStateConfirmed=false; LastMassSentAt=-1;
+	}
+	const auto& P=Chunk.Samples[0];
+	const auto* Last=History.Find(LastSequence);
+	const auto* B=Last ? FindSample(*Last,P.SoldierId) : nullptr;
+	const bool Stationary=IsStationaryPose(P);
+	const bool PredictPhase=Stationary && bIdleLoop && bLastMassIdleLoop;
+	const bool SameFields=B && SameMassFields(P,*B) && bIdleLoop==bLastMassIdleLoop;
+	const double SampleTime=Chunk.HybridSampleTime();
+	const bool SamePhase=SameFields && (PredictPhase ? NaturalIdlePhase(P,*B,SampleTime-LastMassSampleTime)
+		: P.VATPhase==B->VATPhase);
+	const bool NewState=!Stationary || !SamePhase || !MassDelivery;
+	EReason Reason=EReason::Fields;
+	if (!B) Reason=EReason::First;
+	else if (SameFields && PredictPhase && !SamePhase) Reason=EReason::Animation;
+	if (!NewState)
+	{
+		const double SentAt=MassDelivery->SentAt.load();
+		const bool Pending=SentAt==FDelivery::Pending;
+		const double Reference=SentAt>=0 ? SentAt : LastMassSentAt;
+		const bool Due=Reference<0 || Now-Reference >= (bMassStateConfirmed ? .5 : .2);
+		if (Pending || (!Due && (SentAt>=0 || bMassStateConfirmed)))
+			return P.VATPhase==B->VATPhase ? EMassPosePreparation::SkipExact : EMassPosePreparation::SkipNaturalPhase;
+		if (bMassStateConfirmed) Reason=EReason::Heartbeat;
+		else if (SentAt==FDelivery::Discarded) Reason=MassDelivery->Reason;
+		else Reason=EReason::Retry;
+	}
+	if (!PrepareBlock(Chunk,700,Out,true)) return EMassPosePreparation::Invalid;
+	Out.bNewMassState=NewState; Out.bMassIdleLoop=bIdleLoop; Out.MassSampleTime=SampleTime;
+	if (Stationary) Out.MassDelivery=std::make_shared<FDelivery>(Reason);
+	return EMassPosePreparation::Ready;
+}
+
+bool EncodeAcknowledgment(const FGuLiPoseAcknowledgment& Ack,TArray<uint8>& Out)
+{
+	Out.Reset();
+	if (Ack.ProtocolVersion!=GULI_COMMANDER_PROTOCOL_VERSION || !Ack.SyncGeneration || !Ack.MatchEpoch
+		|| !Ack.LatestSequence || !(Ack.ReceivedBits[0]&1u)) return false;
+	uint8 Bitmap[64]{};int32 ByteCount=64;
+	for (int32 I=0;I<64;++I) Bitmap[I]=uint8(Ack.ReceivedBits[I/8]>>((I%8)*8));
+	while (ByteCount>1 && !Bitmap[ByteCount-1]) --ByteCount;
+	FBitWriter Runs(512,true);bool Set=true;uint32 Start=0;
+	for (uint32 Bit=1;Bit<=AckBitCount;++Bit)
+	{
+		const bool Next=Bit<AckBitCount && (Ack.ReceivedBits[Bit/64]&(uint64(1)<<(Bit%64)))!=0;
+		if (Bit==AckBitCount || Next!=Set) {WriteUnsigned(Runs,Bit-Start);Start=Bit;Set=Next;}
+	}
+	FBitWriter Writer(1024,true);uint16 Version=Ack.ProtocolVersion;Writer.SerializeBits(&Version,16);
+	WriteUnsigned(Writer,Ack.SyncGeneration);WriteUnsigned(Writer,Ack.MatchEpoch);WriteUnsigned(Writer,Ack.LatestSequence);
+	uint8 Mode=Runs.GetNumBytes()<ByteCount+1?1:0;Writer.SerializeBits(&Mode,8);
+	if (Mode) Writer.SerializeBits(Runs.GetData(),Runs.GetNumBits());
+	else {WriteUnsigned(Writer,ByteCount);Writer.SerializeBits(Bitmap,ByteCount*8);}
+	Out.Append(Writer.GetData(),int32(Writer.GetNumBytes()));return true;
+}
+
+bool DecodeAcknowledgment(TConstArrayView<uint8> Bytes,FGuLiPoseAcknowledgment& Out)
+{
+	if (Bytes.IsEmpty() || Bytes.Num()>83) return false;
+	FReader R(Bytes);FGuLiPoseAcknowledgment Ack;
+	Ack.ProtocolVersion=uint16(R.ReadBits(16));Ack.SyncGeneration=R.ReadId();Ack.MatchEpoch=R.ReadId();Ack.LatestSequence=R.ReadId();
+	const auto Mode=R.ReadBits(8);
+	if (Mode==0)
+	{
+		const auto Count=R.ReadUnsigned(64);if (!Count) return false;
+		uint8 Last=0;
+		for (uint32 I=0;I<Count && R.bValid;++I) {Last=uint8(R.ReadBits(8));Ack.ReceivedBits[I/8]|=uint64(Last)<<((I%8)*8);}
+		if (!Last) return false;
+	}
+	else if (Mode==1)
+	{
+		uint32 Bit=0;bool Set=true;
+		while (Bit<AckBitCount && R.bValid)
+		{
+			const auto Count=R.ReadUnsigned(AckBitCount-Bit);if (!Count) return false;
+			for (uint32 End=Bit+uint32(Count);Bit<End;++Bit) if (Set) Ack.ReceivedBits[Bit/64]|=uint64(1)<<(Bit%64);
+			Set=!Set;
+		}
+	}
+	else return false;
+	if (!R.bValid || R.Bits.GetBitsLeft()!=0 || Ack.ProtocolVersion!=GULI_COMMANDER_PROTOCOL_VERSION
+		|| !Ack.SyncGeneration || !Ack.MatchEpoch || !Ack.LatestSequence || !(Ack.ReceivedBits[0]&1u)) return false;
+	Out=Ack;return true;
 }
 
 bool FSender::Prepare(const FGuLiSoldierPoseChunk& Chunk, int32 MaxBytes, FPreparedBlock& Out) const
+{
+	return PrepareBlock(Chunk,MaxBytes,Out,false);
+}
+
+bool FSender::PrepareBlock(const FGuLiSoldierPoseChunk& Chunk,int32 MaxBytes,FPreparedBlock& Out,bool SingleMass) const
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Encode);
 	Out = FPreparedBlock{};
@@ -236,17 +365,24 @@ bool FSender::Prepare(const FGuLiSoldierPoseChunk& Chunk, int32 MaxBytes, FPrepa
 	Out.Sequence = LastSequence == MAX_uint32 ? 1u : LastSequence + 1u;
 	Out.SimTick = Chunk.ServerSimTick;
 	FBitWriter Writer(DataBudget * 8, true);
-	uint16 Version = GULI_COMMANDER_PROTOCOL_VERSION;
-	Writer.SerializeBits(&Version, 16);
-	WriteUnsigned(Writer, SyncGeneration); WriteUnsigned(Writer, MatchEpoch);
-	WriteUnsigned(Writer, Out.Sequence); WriteUnsigned(Writer, Chunk.FrameSequence);
+	// The authenticated hybrid envelope already identifies the wire version,
+	// soldier lifetime, owner generation and capture tick.
+	if (!SingleMass)
+	{
+		uint16 Version=GULI_COMMANDER_PROTOCOL_VERSION;
+		Writer.SerializeBits(&Version,16); WriteUnsigned(Writer,SyncGeneration);
+	}
+	WriteUnsigned(Writer,MatchEpoch); WriteUnsigned(Writer,Out.Sequence);
+	if (!SingleMass) WriteUnsigned(Writer,Chunk.FrameSequence);
 	WriteUnsigned(Writer, Chunk.ServerSimTick);
-	float Time = Chunk.ServerTimeSeconds;
-	Writer.SerializeBits(&Time, 32);
-	WriteUnsigned(Writer, Chunk.ChunkIndex); WriteUnsigned(Writer, Chunk.ChunkCount);
-	const int32 CountBitOffset = int32(Writer.GetNumBits());
+	int32 CountBitOffset=0;
 	uint8 Count = 0;
-	Writer.SerializeBits(&Count, 6);
+	if (!SingleMass)
+	{
+		float Time=Chunk.ServerTimeSeconds; Writer.SerializeBits(&Time,32);
+		WriteUnsigned(Writer,Chunk.ChunkIndex); WriteUnsigned(Writer,Chunk.ChunkCount);
+		CountBitOffset=Writer.GetNumBits(); Writer.SerializeBits(&Count,6);
+	}
 	uint32 PreviousId = 0;
 	for (const auto& Pose : Sorted)
 	{
@@ -255,7 +391,7 @@ bool FSender::Prepare(const FGuLiSoldierPoseChunk& Chunk, int32 MaxBytes, FPrepa
 		if (Baseline && (Pose.IsTeleport() || Chunk.ServerSimTick - Baseline->SimTick > MaxBaselineSteps
 			|| Out.Sequence - Baseline->Sequence > MaxBaselineBlocks)) Baseline = nullptr;
 		FBitWriter Record(512, true);
-		WriteRecord(Record, Pose, PreviousId, Baseline, Out.Sequence, Chunk.ServerSimTick);
+		WriteRecord(Record, Pose, PreviousId, Baseline, Out.Sequence, Chunk.ServerSimTick,SingleMass);
 		if (Writer.GetNumBits() + Record.GetNumBits() > DataBudget * 8) break;
 		Writer.SerializeBits(Record.GetData(), Record.GetNumBits());
 		PreviousId = Pose.SoldierId.Value;
@@ -264,7 +400,7 @@ bool FSender::Prepare(const FGuLiSoldierPoseChunk& Chunk, int32 MaxBytes, FPrepa
 		++Count;
 	}
 	if (!Count) return false;
-	appBitsCpy(Writer.GetData(), CountBitOffset, &Count, 0, 6);
+	if (!SingleMass) appBitsCpy(Writer.GetData(), CountBitOffset, &Count, 0, 6);
 	Out.Block.Data.Append(Writer.GetData(), int32(Writer.GetNumBytes()));
 	return true;
 }
@@ -274,6 +410,15 @@ void FSender::Commit(const FPreparedBlock& Prepared)
 	check(Prepared.Sequence == (LastSequence == MAX_uint32 ? 1u : LastSequence + 1u) && !Prepared.Samples.IsEmpty());
 	LastSequence = Prepared.Sequence;
 	History.Store(LastSequence, Prepared.SimTick, Prepared.Samples);
+	if (Prepared.bNewMassState)
+	{
+		MassStateFirstSequence=LastSequence; bMassStateConfirmed=false; LastMassSentAt=-1;
+	}
+	else if (MassDelivery && MassDelivery->SentAt.load()>=0) LastMassSentAt=MassDelivery->SentAt.load();
+	MassDelivery=Prepared.MassDelivery; LastMassSampleTime=Prepared.MassSampleTime; bLastMassIdleLoop=Prepared.bMassIdleLoop;
+	// An ACK can arrive between worker preparation and the admission callback.
+	if (bMassStateConfirmed && MassDelivery && MassDelivery->Reason==GuLiNet::MassPoseReason::Retry)
+		MassDelivery->DiscardPending();
 	GuLiCommanderPoseMetrics::RecordEncoded(Prepared.AbsoluteCount, Prepared.Samples.Num() - Prepared.AbsoluteCount,
 		Prepared.Block.Data.Num() + 2);
 }
@@ -305,11 +450,13 @@ bool FSender::Confirm(const FGuLiPoseAcknowledgment& Ack)
 	{
 		if (!(Ack.ReceivedBits[Bit / 64] & (uint64(1) << (Bit % 64)))) continue;
 		const uint32 Sequence = Ack.LatestSequence - Bit;
+		if (MassSessionFloor && Newer(MassSessionFloor,Sequence)) continue;
 		if (LastSequence - Sequence < HistoryCapacity && !History.Find(Sequence)) return false;
 	}
 	for (uint32 Bit = 0; Bit < AckBitCount; ++Bit)
 	{
 		if (!(Ack.ReceivedBits[Bit / 64] & (uint64(1) << (Bit % 64)))) continue;
+		if (MassSessionFloor && Newer(MassSessionFloor,Ack.LatestSequence-Bit)) continue;
 		FHistoryBlock* Block = History.Find(Ack.LatestSequence - Bit);
 		if (!Block || Block->bAcknowledged) continue;
 		for (const auto& Pose : Block->Samples)
@@ -319,12 +466,22 @@ bool FSender::Confirm(const FGuLiPoseAcknowledgment& Ack)
 				Confirmed.Add(Pose.SoldierId, { Pose, Block->Sequence, Block->SimTick });
 		}
 		Block->bAcknowledged = true;
+		if (MassStateFirstSequence && !Newer(MassStateFirstSequence,Block->Sequence) && !Block->Samples.IsEmpty())
+		{
+			bMassStateConfirmed=true;
+			if (MassDelivery && MassDelivery->Reason==GuLiNet::MassPoseReason::Retry && Block->Sequence!=LastSequence)
+				MassDelivery->DiscardPending();
+		}
 	}
 	return true;
 }
 
 void FSender::Forget(TConstArrayView<FGuLiSoldierId> Removed)
 {
+	if (MassSessionFloor && !Removed.IsEmpty())
+	{
+		MassStateFirstSequence=0; bMassStateConfirmed=false; LastMassSentAt=-1; MassDelivery.reset();
+	}
 	for (FGuLiSoldierId Id : Removed) Confirmed.Remove(Id);
 	History.Forget(Removed);
 }
@@ -340,11 +497,23 @@ void FReceiver::Reset(uint32 Generation, uint32 Epoch)
 
 EDecodeResult FReceiver::Decode(const FGuLiEncodedPoseBlock& Block, FGuLiSoldierPoseChunk& OutChunk)
 {
+	return DecodeBlock(Block,OutChunk,FGuLiSoldierId{},0);
+}
+
+EDecodeResult FReceiver::DecodeMass(const FGuLiEncodedPoseBlock& Block,FGuLiSoldierPoseChunk& OutChunk,FGuLiSoldierId Id,uint64 At)
+{
+	if (!Id.IsValid() || !At || At%6 || At/6>MAX_uint32) return EDecodeResult::InvalidPayload;
+	return DecodeBlock(Block,OutChunk,Id,At);
+}
+
+EDecodeResult FReceiver::DecodeBlock(const FGuLiEncodedPoseBlock& Block,FGuLiSoldierPoseChunk& OutChunk,FGuLiSoldierId BoundId,uint64 At)
+{
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Decode);
 	if (Block.Data.IsEmpty() || Block.Data.Num() > MaxDataBytes) return EDecodeResult::InvalidPayload;
 	FReader Reader(Block.Data);
-	const uint16 Version = uint16(Reader.ReadBits(16));
-	const uint32 Generation = Reader.ReadId();
+	const bool SingleMass=BoundId.IsValid();
+	const uint16 Version = SingleMass ? GULI_COMMANDER_PROTOCOL_VERSION : uint16(Reader.ReadBits(16));
+	const uint32 Generation = SingleMass ? SyncGeneration : Reader.ReadId();
 	const uint32 Epoch = Reader.ReadId();
 	if (!Reader.bValid) return EDecodeResult::InvalidPayload;
 	if (SyncGeneration == 0 || Version != GULI_COMMANDER_PROTOCOL_VERSION || Generation != SyncGeneration || Epoch != MatchEpoch)
@@ -352,12 +521,15 @@ EDecodeResult FReceiver::Decode(const FGuLiEncodedPoseBlock& Block, FGuLiSoldier
 	const uint32 Sequence = Reader.ReadId();
 	FGuLiSoldierPoseChunk Chunk;
 	Chunk.AuthorityEpoch = Epoch;
-	Chunk.FrameSequence = Reader.ReadId();
+	Chunk.FrameSequence = SingleMass ? uint32(At/6) : Reader.ReadId();
 	Chunk.ServerSimTick = Reader.ReadId();
-	const uint32 TimeBits = uint32(Reader.ReadBits(32));
-	FMemory::Memcpy(&Chunk.ServerTimeSeconds, &TimeBits, sizeof(TimeBits));
-	const uint32 ChunkIndex = Reader.ReadId(), ChunkCount = Reader.ReadId();
-	const uint8 Count = uint8(Reader.ReadBits(6));
+	uint32 ChunkIndex=0,ChunkCount=1; uint8 Count=1;
+	if (SingleMass) Chunk.ServerTimeSeconds=float(Chunk.HybridSampleTime());
+	else
+	{
+		const uint32 TimeBits=uint32(Reader.ReadBits(32)); FMemory::Memcpy(&Chunk.ServerTimeSeconds,&TimeBits,sizeof(TimeBits));
+		ChunkIndex=Reader.ReadId(); ChunkCount=Reader.ReadId(); Count=uint8(Reader.ReadBits(6));
+	}
 	if (!Reader.bValid || Sequence == 0 || Chunk.FrameSequence == 0 || ChunkCount == 0
 		|| ChunkCount > GULI_MAX_POSE_CHUNKS_PER_FRAME || ChunkIndex >= ChunkCount
 		|| Count == 0 || Count > GULI_MAX_POSE_SAMPLES_PER_CHUNK
@@ -370,7 +542,7 @@ EDecodeResult FReceiver::Decode(const FGuLiEncodedPoseBlock& Block, FGuLiSoldier
 	uint32 PreviousId = 0;
 	for (uint8 Index = 0; Index < Count; ++Index)
 	{
-		const uint32 IdDelta = Reader.ReadId();
+		const uint32 IdDelta = SingleMass ? BoundId.Value : Reader.ReadId();
 		if (!Reader.bValid || IdDelta == 0 || uint64(PreviousId) + IdDelta > MAX_uint32) return EDecodeResult::InvalidPayload;
 		const FGuLiSoldierId Id(PreviousId + IdDelta);
 		PreviousId = Id.Value;

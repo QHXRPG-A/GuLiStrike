@@ -106,7 +106,7 @@ class GULINETCORE_API IObjectMotionCodec
 {
 public:
     virtual ~IObjectMotionCodec()=default;
-    virtual std::shared_ptr<IObjectMotionOutput> Decode(std::span<const std::uint8_t>,Revision Owner,Revision Match,bool& Valid)=0;
+    virtual std::shared_ptr<IObjectMotionOutput> Decode(std::span<const std::uint8_t>,Revision Owner,Revision Match,Tick At,bool& Valid)=0;
     virtual bool Feedback(Id,std::span<const std::uint8_t>)=0;
 };
 class GULINETCORE_API IObjectAdapter

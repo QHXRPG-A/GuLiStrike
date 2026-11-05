@@ -291,7 +291,7 @@ public:
         if (At%2 || At==LastPublished) return;
         LastPublished=At; FGuLiHybridStateArchive A(1024); uint32 Schema=GuLiHybridGround::MotionVersion; A.Value(Schema); auto Pose=ReadPose(); GuLiHybridGround::Pose(A,Pose);
         auto Aim=FVector(P->Weapon->AimPoint); A.Value(Aim);
-        TArray<uint8> Body; if (A.Finish(Body)) World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body);
+        TArray<uint8> Body; if (A.Finish(Body)) World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body,Pose.Velocity.IsZero());
     }
     bool Execute(const FGuLiHybridCommand& Command,const FGuLiHybridCommandMember& Member) override
     {

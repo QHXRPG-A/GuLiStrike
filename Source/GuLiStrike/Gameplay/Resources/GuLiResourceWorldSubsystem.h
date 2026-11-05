@@ -169,6 +169,7 @@ private:
 	bool bAuthorityActorsSpawned = false;
 	bool bHybridQuerySceneReady = false;
 	bool bHybridDirectoryDirty = true;
+    bool bHybridOwnersDirty = false;
 	double NavigationWaitStartSeconds = 0;
 	// Runtime world copies only; restore fully asynchronous gathering when the startup gate opens.
 	TArray<TWeakObjectPtr<ARecastNavMesh>> InitialSynchronousGatheringNavData;
@@ -199,6 +200,8 @@ private:
 
 	bool RefreshHybridQueryScene();
 	void HandleHybridResourceDirectory();
+    void HandleHybridResourceOwners();
+    void RefreshHybridTerritoryOwners();
 	void HandleHybridResourceNode(uint32 NodeId,uint8 Remaining);
 	bool InitializeNodeObstacles();
 	void ProcessPendingOreRemovals();

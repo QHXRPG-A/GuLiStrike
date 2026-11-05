@@ -2,6 +2,7 @@
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
+#include "Gameplay/Units/Private/GuLiVehiclePoseStream.h"
 #include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
@@ -82,6 +83,7 @@ class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter, publi
     FGuLiHybridObjectState Record;
     bool bLocal=false,bPoseQueued=false;
     uint64 LastApplied=0,LastPublished=0;
+    FGuLiVehiclePoseStream PoseStream;
     UWorld* World() const {return Owner.IsValid()?Owner->GetWorld():nullptr;}
     const FGuLiSoldierDefinition* Definition() const
     {const auto* Data=World()?World()->GetSubsystem<UGuLiUnitDataSubsystem>():nullptr; return Data?Data->FindDefinition(uint16(GuLiHybridMiner::Type(Record.Definition))):nullptr;}
@@ -235,13 +237,13 @@ public:
     {
         auto* P=Pawn.Get();if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         if (At<LastPublished+6) return;
-        FGuLiHybridStateArchive A(65536); uint32 Schema=Version(); A.Value(Schema);
-        auto Position=P->GetActorLocation(); auto Rotation=P->GetActorQuat(); auto Velocity=P->GetCharacterMovement()->Velocity;
-        A.Value(Position); A.Value(Rotation); A.Value(Velocity); auto Transit=P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->GetTransitState(); GuLiHybridEngineeringState::Transit(A,Transit);
-
+        FGuLiVehiclePose Sample; Sample.Position=P->GetActorLocation(); Sample.Rotation=P->GetActorQuat();
+        Sample.Velocity=P->GetCharacterMovement()->Velocity;
+        FGuLiHybridStateArchive Work(128);
         bool Mining=P->MiningVisual.bActive; uint32 Node=P->MiningVisual.NodeId; FVector Aim=P->MiningVisual.Target;
-        A.Value(Mining); A.Value(Node); A.Value(Aim); TArray<uint8> Body;
-        if (A.Finish(Body) && World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body)) LastPublished=At;
+        Work.Value(Mining); Work.Value(Node); Work.Value(Aim);
+        if (Work.Finish(Sample.Work) && Sample.SetTransit(P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->GetTransitState())
+            && PoseStream.Publish(*World(),Record,At,Sample,false)) LastPublished=At;
     }
     bool Execute(const FGuLiHybridCommand& C,const FGuLiHybridCommandMember& M) override
     {
@@ -262,15 +264,19 @@ public:
     bool ApplyMotion(TConstArrayView<uint8> Bytes,uint64 At) override
     {
         auto* P=Pawn.Get();if (!P || bLocal) return false;if (At<=LastApplied) return true;
-        FGuLiHybridStateArchive A(Bytes,65536);uint32 Schema=0;FVector Position,Velocity,Aim;FQuat Rotation;FGuLiStrongholdTransitState Transit;
-        bool Mining=false;uint32 Node=0;
-        A.Value(Schema);A.Value(Position);A.Value(Rotation);A.Value(Velocity);GuLiHybridEngineeringState::Transit(A,Transit);
-        A.Value(Mining);A.Value(Node);A.Value(Aim);if (Schema!=Version() || !A.Done()) return false;
-        P->SetActorLocationAndRotation(Position,Rotation,false,nullptr,ETeleportType::TeleportPhysics);P->GetCharacterMovement()->Velocity=Velocity;
+        FGuLiVehiclePose Sample; const auto Result=PoseStream.Read(*World(),Record,At,Bytes,Sample);
+        if (Result!=FGuLiVehiclePoseStream::ERead::Ready) return Result==FGuLiVehiclePoseStream::ERead::MissingBaseline;
+        FGuLiStrongholdTransitState Transit; FVector Aim; bool Mining=false;uint32 Node=0;
+        FGuLiHybridStateArchive Work(Sample.Work,128); Work.Value(Mining);Work.Value(Node);Work.Value(Aim);
+        if (!Work.Done() || !Sample.GetTransit(Transit)) return false;
+        P->SetActorLocationAndRotation(Sample.Position,Sample.Rotation,false,nullptr,ETeleportType::TeleportPhysics);P->GetCharacterMovement()->Velocity=Sample.Velocity;
         P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->ApplyHybridTransitMotion(Transit);
-        GuLiGrid::ObserveRemoteBody(*World(),Record,Position,Definition()->FootprintCells,Transit.Phase==EGuLiTransitPhase::Ground);
-        P->MiningVisual={};P->MiningVisual.bActive=Mining;P->MiningVisual.NodeId=Node;P->MiningVisual.Target=Aim;P->OnRep_MiningVisual();LastApplied=At;return true;
+        GuLiGrid::ObserveRemoteBody(*World(),Record,Sample.Position,Definition()->FootprintCells,Transit.Phase==EGuLiTransitPhase::Ground);
+        P->MiningVisual={};P->MiningVisual.bActive=Mining;P->MiningVisual.NodeId=Node;P->MiningVisual.Target=Aim;P->OnRep_MiningVisual();
+        LastApplied=At; PoseStream.Applied(*World(),Record,At,MoveTemp(Sample)); return true;
     }
+    bool ApplyMotionFeedback(const FGuid& Peer,TConstArrayView<uint8> Bytes) override
+    {return bLocal && PoseStream.Feedback(*World(),Record,Peer,Bytes);}
     void ApplyLedger(const FGuLiHybridObjectState& V,uint64 Revision,bool Effects) override
     {
         Record=V;if (auto* P=Pawn.Get())

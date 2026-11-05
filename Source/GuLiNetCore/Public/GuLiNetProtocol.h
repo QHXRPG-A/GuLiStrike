@@ -1,5 +1,7 @@
 #pragma once
 #include "GuLiNetRules.h"
+#include "GuLiNetMotionDelivery.h"
+#include <memory>
 #include <span>
 
 namespace GuLiNet
@@ -44,6 +46,9 @@ struct Message
     // Local measurement only: the same body's previous transport encoding size.
     // Not serialized, hashed, received or used for admission/queue budgets.
     std::size_t ReferenceBodyBytes=0;
+    // Sender-local diagnostic carried with this exact queued sample. Never serialized.
+    bool StationaryUnitPose=false;
+    std::shared_ptr<MotionDelivery> PoseDelivery{};
 };
 
 // Explicit little-endian, bounded wire values; never memcpy native structs or UE archives.
@@ -55,6 +60,7 @@ public:
     void U16(std::uint16_t Value);
     void U32(std::uint32_t Value);
     void U64(std::uint64_t Value);
+    void VarUnsigned(std::uint64_t Value);
     void F32(float Value);
     void F64(double Value);
     void Identity(const Id& Value);
@@ -78,6 +84,7 @@ public:
     bool U16(std::uint16_t& Out);
     bool U32(std::uint32_t& Out);
     bool U64(std::uint64_t& Out);
+    bool VarUnsigned(std::uint64_t& Out);
     bool F32(float& Out);
     bool F64(double& Out);
     bool Identity(Id& Out);
@@ -96,9 +103,17 @@ GULINETCORE_API bool EncodeMessage(const Message& Value, Bytes& Out);
 // Lossless peer transport envelope only. Canonical records, hashes and
 // coordinator messages continue to use EncodeMessage and their original bytes.
 inline constexpr std::size_t CanonicalMessageHeaderBytes=145;
-struct PeerMessageContext {Id Match,Sender;};
+// Sorted full object keys from the hash-checked starting manifest. Short IDs
+// are local to this match; dynamic objects and new lives retain their full key.
+using MotionObjectTable = std::vector<ObjectKey>;
+struct PeerMessageContext {Id Match,Sender;const MotionObjectTable* Objects=nullptr;};
 GULINETCORE_API bool EncodePeerMessage(const Message& Value,Bytes& Out,PeerMessageContext Context={});
 GULINETCORE_API bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out,PeerMessageContext Context={});
+// One datagram, one shared envelope. Encodes the oldest fitting prefix (at most
+// 64 records); record byte counts exclude the separately reported shared header.
+GULINETCORE_API std::size_t EncodeMotionBatch(std::span<const Message* const> Values,Bytes& Out,
+    std::vector<std::size_t>& RecordBytes,std::size_t MaxBytes,PeerMessageContext Context={});
+GULINETCORE_API bool DecodeMotionBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context={});
 GULINETCORE_API Lane MessageLane(MessageKind Kind);
 GULINETCORE_API bool ReliableMessage(MessageKind Kind);
 GULINETCORE_API void WriteHealth(Writer& Out, const Health& Value);

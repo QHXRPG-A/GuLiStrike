@@ -146,7 +146,7 @@ public:
         if (Tick%6 || Tick==LastPublished) return;
         FGuLiHybridStateArchive A(700);uint32 Schema=1;A.Value(Schema);auto Pose=P->GetActorTransform();auto Velocity=State.Dynamics.Velocity;
         A.Value(Pose);A.Value(Velocity);TArray<uint8> Bytes;
-        if (!A.Finish(Bytes) || !Hybrid()->PublishMotion(Record.Key,Bytes)) {Hybrid()->Suspend(TEXT("Wingman motion publication failed"));return;}
+        if (!A.Finish(Bytes) || !Hybrid()->PublishMotion(Record.Key,Bytes,Velocity.IsZero())) {Hybrid()->Suspend(TEXT("Wingman motion publication failed"));return;}
         LastPublished=Tick;
         P->ObserveHybridPublication(Tick);
     }

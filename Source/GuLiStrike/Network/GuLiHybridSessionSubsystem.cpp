@@ -2,7 +2,7 @@
 #include "Network/Private/GuLiHybridMessageConversions.h"
 #include "Network/Private/GuLiHybridTransport.h"
 #include "Network/Private/GuLiHybridPeerPayload.h"
-#include "Network/GuLiHybridManifest.h"
+#include "GuLiNetManifest.h"
 #include "GuLiNetGameplayTypes.h"
 #include "GuLiNetOwnerState.h"
 #include "GuLiNetHash.h"
@@ -60,7 +60,18 @@ struct UGuLiHybridSessionSubsystem::FState
     TSharedPtr<FMailbox, ESPMode::ThreadSafe> Mailbox;
     std::map<GuLiNet::Id, std::shared_ptr<GuLiNet::PeerChannel>> Channels;
     std::map<GuLiNet::Id, GuLiNet::Id> PairKeys;
-    struct FMotionSlot {GuLiNet::Message Latest;double NextSend=0;bool Pending=false;};
+    std::shared_ptr<const GuLiNet::MotionObjectTable> MotionObjects;
+    struct FMotionSlot
+    {
+        GuLiNet::Message Latest;
+        GuLiNet::Id Connection;
+        double NextSend=0,LastQueued=0,AdmittedAt=0;
+        bool Pending=false;
+        void DiscardPending() const
+        {
+            if (Pending && Latest.PoseDelivery) Latest.PoseDelivery->DiscardPending();
+        }
+    };
     std::map<std::tuple<GuLiNet::Id,GuLiNet::ObjectKey,GuLiNet::MessageKind>,FMotionSlot> MotionOutbox;
     struct FMetadataDelivery
     {
@@ -72,6 +83,8 @@ struct UGuLiHybridSessionSubsystem::FState
     struct FBirthSend {GuLiNet::Id Connection;uint64 Sequence=0;};
     std::map<GuLiNet::ObjectKey,std::map<GuLiNet::Id,FBirthSend>> BirthPublications;
     uint64 MotionOutboxBytes=0;
+    uint64 SuppressedComponentStates=0;
+    uint64 SkippedExactMassPoses=0,SkippedNaturalPhase=0,MotionCounterGeneration=0;
     uint64 SubmittedControlBytes=0;
     uint64 PackedMessages=0,PackedOriginalBytes=0,PackedWireBytes=0,PayloadDecodeFailures=0;
     bool bNativePeerReceive=false;
@@ -151,8 +164,9 @@ struct UGuLiHybridSessionSubsystem::FState
         auto Send=[&](std::span<const uint8> P)
         {
             if (!Transport->Send(Peer,MakeArrayView(P.data(),int32(P.size())))) return false;
-            GuLiNet::Message Actual;
-            if (Fault.IsStale() && GuLiNet::InspectDatagramMessage(P,Actual,{GuLiNetBridge::ToCore(Config.RoomId),GuLiNetBridge::ToCore(Identity.Player)}))
+            std::vector<GuLiNet::Message> ActualMessages;
+            if (Fault.IsStale() && GuLiNet::InspectDatagramMessages(P,ActualMessages,{GuLiNetBridge::ToCore(Config.RoomId),GuLiNetBridge::ToCore(Identity.Player),MotionObjects.get()}))
+                for (const auto& Actual:ActualMessages)
                 for (auto& Pending:Fault.Stale)
                 {
                     const auto& A=Actual.Header;const auto& B=Pending.Value.Header;
@@ -204,7 +218,7 @@ void UGuLiHybridSessionSubsystem::Deinitialize()
     OnControl.Clear(); OnPeer.Clear();AdmitPeer.Unbind();AdmitNativePeer.Unbind();CanAdmitPeer.Unbind(); OnFailure.Clear(); OnRosterChanged.Clear();OnReviewReceiptReleased.Clear();
     Super::Deinitialize();
 }
-bool UGuLiHybridSessionSubsystem::Start(const FGuLiNetworkLaunchConfig& Config, FString& Error)
+bool UGuLiHybridSessionSubsystem::Start(const FGuLiNetworkLaunchConfig& Config,const GuLiNet::RuntimeManifest& Manifest,FString& Error)
 {
     Stop(); State->Config = Config; State->Error.Reset(); State->ConfigHash.Reset(); State->MapHash.Reset();
     int32 ReceiveOption=NativePeerReceive.GetValueOnGameThread();
@@ -217,11 +231,17 @@ bool UGuLiHybridSessionSubsystem::Start(const FGuLiNetworkLaunchConfig& Config, 
         return Reject(TEXT("LocalUdp development authentication is restricted to loopback"));
     if (Config.Transport == EGuLiNetworkTransport::EOS && !Config.CoordinatorUrl.StartsWith(TEXT("wss://"))
         && !Config.CoordinatorUrl.StartsWith(TEXT("ws://127.0.0.1:"))) return Reject(TEXT("Public EOS coordinator connections require WSS"));
-    FString MapPackage, ManifestError;
-    if (!FGuLiHybridManifest::ValidateFile(Config.ManifestFile, State->ConfigHash, State->MapHash, MapPackage, ManifestError))
-        return Reject(*ManifestError);
+    // World initialization supplied the verified manifest. Build the aliases
+    // and authenticate the handshake from the same snapshot.
+    GuLiNet::ManifestHashes Hashes; std::string ManifestError;
+    if (!GuLiNet::HashManifest(Manifest,Hashes,ManifestError)) return Reject(UTF8_TO_TCHAR(ManifestError.c_str()));
+    const FString MapPackage=UTF8_TO_TCHAR(Manifest.MapPackage.c_str());
+    State->ConfigHash=UTF8_TO_TCHAR(Hashes.Configuration.c_str()); State->MapHash=UTF8_TO_TCHAR(Hashes.Map.c_str());
     if (!GetWorld() || UWorld::RemovePIEPrefix(GetWorld()->GetOutermost()->GetName()) != MapPackage)
         return Reject(TEXT("The local world does not match the exported Hybrid map package"));
+    auto Table=std::make_shared<GuLiNet::MotionObjectTable>(); Table->reserve(Manifest.Objects.size());
+    for (const auto& Entry:Manifest.Objects) Table->push_back(Entry.first);
+    State->MotionObjects=std::move(Table);
     State->Active = true; State->FailureNotified = false; State->Started = State->LastControl = FPlatformTime::Seconds();
     State->Mailbox = MakeShared<FMailbox, ESPMode::ThreadSafe>();
     State->Transport = Config.Transport == EGuLiNetworkTransport::EOS ? MakeGuLiEosTransport() : MakeGuLiLocalUdpTransport();
@@ -246,7 +266,12 @@ void UGuLiHybridSessionSubsystem::Stop()
     State->Reconnecting = false; State->NextRetry = 0; State->RetryDelay = 1;
     CloseCoordinator();
     if (State->Transport) { State->Transport->Stop(); State->Transport.Reset(); }
+    for (const auto& [Key,Slot]:State->MotionOutbox) Slot.DiscardPending();
     State->Channels.clear(); State->PairKeys.clear(); State->LastPeerSeen.clear();State->MotionOutbox.clear();
+    State->MotionObjects.reset();
+    ++State->MotionCounterGeneration;
+    State->SkippedExactMassPoses=State->SkippedNaturalPhase=0;
+    State->SuppressedComponentStates=0;
     State->MetadataOutbox.clear();State->BirthPublications.clear();State->MotionOutboxBytes=0;
     State->Members.Reset(); State->Mailbox.Reset(); State->Identity = {};
     State->SimulationCost = 0;State->SimulationFrames=0;State->ReviewLoadCost=-1; State->LastHeartbeat = 0;
@@ -383,6 +408,17 @@ bool UGuLiHybridSessionSubsystem::SendPeer(const FGuid& Peer, FGuLiHybridMessage
 {
     return SendPeerInternal(Peer,MoveTemp(Value),{},false,false);
 }
+void UGuLiHybridSessionSubsystem::RecordSkippedStationaryMassPoses(uint64 Exact,uint64 NaturalPhase)
+{
+    check(IsInGameThread());
+    State->SkippedExactMassPoses+=Exact;
+    State->SkippedNaturalPhase+=NaturalPhase;
+}
+FGuid UGuLiHybridSessionSubsystem::GetPeerConnection(const FGuid& Peer) const
+{
+    const auto It=State->PairKeys.find(GuLiNetBridge::ToCore(Peer));
+    return It==State->PairKeys.end() ? FGuid{} : GuLiNetBridge::ToUE(It->second);
+}
 bool UGuLiHybridSessionSubsystem::SendPeerPrepared(const FGuid& Peer,FGuLiHybridMessage Value,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes)
 {
     return SendPeerInternal(Peer,MoveTemp(Value),Packed,true,bPacked,ReferenceBytes);
@@ -401,6 +437,8 @@ bool UGuLiHybridSessionSubsystem::QueuePeerPayload(const FGuid& Peer,const GuLiN
     if (!State->Active || !State->Transport || !State->Epoch || (!State->Error.IsEmpty() && !State->Reconnecting)) return false;
     const auto Id=GuLiNetBridge::ToCore(Peer);const auto It=State->Channels.find(Id);
     if (It==State->Channels.end()) return false;
+    // Receipts join transport batches in the current pump without another
+    // 10 Hz hold; only pose/component publications use this cadence outbox.
     const bool Motion=Core.Header.Kind==GuLiNet::MessageKind::Motion || Core.Header.Kind==GuLiNet::MessageKind::ComponentState;
     bool Queued=false;
     if (Motion)
@@ -409,10 +447,24 @@ bool UGuLiHybridSessionSubsystem::QueuePeerPayload(const FGuid& Peer,const GuLiN
         const auto Key=std::tuple{Id,Core.Header.Object,Core.Header.Kind};
         if (State->MotionOutbox.size()>=100000 && !State->MotionOutbox.contains(Key)) return false;
         const auto Previous=State->MotionOutbox.find(Key);
+        if (Core.Header.Kind==GuLiNet::MessageKind::ComponentState && Previous!=State->MotionOutbox.end())
+        {
+            const auto& Slot=Previous->second;const auto& H=Slot.Latest.Header;const auto& N=Core.Header;
+            // A bounded heartbeat repairs lost datagrams. Epoch/identity changes
+            // bypass suppression; publication timestamps alone are not state.
+            if (!Slot.Pending && Slot.LastQueued>0 && FPlatformTime::Seconds()-Slot.LastQueued<.5
+                && H.Match==N.Match && H.Epoch==N.Epoch && H.Sender==N.Sender && H.Event==N.Event
+                && H.OwnerEpoch==N.OwnerEpoch && H.ControlEpoch==N.ControlEpoch
+                && H.ResourceGroup==N.ResourceGroup && H.ResourceEpoch==N.ResourceEpoch && Slot.Latest.Body==Core.Body)
+            {++State->SuppressedComponentStates;return true;}
+        }
         const uint64 OldBytes=Previous==State->MotionOutbox.end()?0:Previous->second.Latest.Body.size();
         if (State->MotionOutboxBytes-OldBytes+Core.Body.size()>16*1024*1024) return false;
         State->MotionOutboxBytes=State->MotionOutboxBytes-OldBytes+Core.Body.size();
-        auto& Slot=State->MotionOutbox[Key];Slot.Latest=Core;Slot.Pending=true;Queued=true;
+        auto& Slot=State->MotionOutbox[Key];
+        Slot.DiscardPending();
+        Slot.Latest=Core;Slot.Connection=State->PairKeys.at(Id);Slot.Pending=true;
+        Slot.AdmittedAt=FPlatformTime::Seconds();Queued=true;
     }
     else
     {
@@ -496,6 +548,8 @@ bool UGuLiHybridSessionSubsystem::SendPeerInternal(const FGuid& Peer,FGuLiHybrid
         && (Fault.Mode==TEXT("stale_owner") || Fault.Mode==TEXT("stale_life") || Fault.Mode==TEXT("stale_epoch")))
     {
         auto Stale=GuLiNetBridge::ToCore(Value);
+        // Fault replays are independent of the real pose's delivery and counters.
+        Stale.PoseDelivery.reset();Stale.StationaryUnitPose=false;
         if (Fault.Mode==TEXT("stale_owner")) Stale.Header.OwnerEpoch=Value.OwnerEpoch?Value.OwnerEpoch-1:0;
         if (Fault.Mode==TEXT("stale_life")) Stale.Header.Object.Generation=Value.LifeGeneration?Value.LifeGeneration-1:0;
         if (Fault.Mode==TEXT("stale_epoch"))
@@ -650,9 +704,42 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
     Root->SetNumberField(TEXT("control_received_application_bytes"),State->Mailbox ? double(State->Mailbox->ReceivedApplicationBytes.load()) : 0);
     Root->SetStringField(TEXT("control_byte_basis"),TEXT("WebSocket application bytes; submitted bytes are queued by UE, not proof of socket delivery"));
     TArray<TSharedPtr<FJsonValue>> Peers;
+    constexpr struct { GuLiNet::MessageKind Kind; const TCHAR* Key; } MotionKinds[] = {
+        {GuLiNet::MessageKind::Motion,TEXT("pose")},
+        {GuLiNet::MessageKind::MotionAcknowledgment,TEXT("ack")},
+        {GuLiNet::MessageKind::ComponentState,TEXT("component")}
+    };
+    GuLiNet::TransportMetrics::MessageBytes MotionTotals[UE_ARRAY_COUNT(MotionKinds)]{};
+    uint64 StationaryUnitSent=0,StationaryMassSent=0;
+    uint64 MotionWire=0;
+    GuLiNet::TransportMetrics::VehicleBytes Vehicles[2]{};
+    constexpr const TCHAR* ReasonKeys[]={TEXT("first_or_reset"),TEXT("fields_changed"),TEXT("animation_correction"),TEXT("unconfirmed_retry"),TEXT("heartbeat")};
+    static_assert(UE_ARRAY_COUNT(ReasonKeys)==static_cast<int32>(GuLiNet::MassPoseReason::Count));
+    uint64 ReasonTotals[UE_ARRAY_COUNT(ReasonKeys)]{};
     for (const auto& [Id,Channel] : State->Channels)
     {
         const auto& M=Channel->Metrics(); auto P=MakeShared<FJsonObject>();
+        StationaryUnitSent+=M.StationaryUnitPosesSent;
+        StationaryMassSent+=M.StationaryMassPosesSent;
+        MotionWire+=M.SentLaneBytes[static_cast<size_t>(GuLiNet::Lane::Motion)];
+        for (int32 I=0;I<2;++I)
+        {
+            const auto& V=I==0 ? M.Engineers : M.Miners;
+            Vehicles[I].Poses+=V.Poses; Vehicles[I].Body+=V.Body; Vehicles[I].Records+=V.Records;
+            Vehicles[I].Receipts+=V.Receipts; Vehicles[I].ReceiptBytes+=V.ReceiptBytes;
+        }
+        for (int32 I=0;I<UE_ARRAY_COUNT(ReasonKeys);++I) ReasonTotals[I]+=M.StationaryMassReasons[I];
+        for (int32 I=0;I<UE_ARRAY_COUNT(MotionKinds);++I)
+        {
+            const auto& Source=M.Encodings[static_cast<size_t>(MotionKinds[I].Kind)];
+            auto& Total=MotionTotals[I];
+            Total.Enqueued+=Source.Enqueued;
+            Total.Messages+=Source.Messages;
+            Total.Replaced+=Source.Replaced;
+            Total.Encoded+=Source.Encoded; Total.Body+=Source.Body;
+            Total.Pending+=Source.Pending;
+            Total.OldestPayloadSeconds=FMath::Max(Total.OldestPayloadSeconds,Source.OldestPayloadSeconds);
+        }
         P->SetStringField(TEXT("peer"),GuLiNetBridge::ToUE(Id).ToString(EGuidFormats::DigitsWithHyphens));
         P->SetStringField(TEXT("channel_failure"),UTF8_TO_TCHAR(Channel->Error().c_str()));
         P->SetNumberField(TEXT("queued_bytes"),double(M.QueuedBytes)); P->SetNumberField(TEXT("oldest_queue_ms"),M.OldestSeconds*1000.);
@@ -661,6 +748,10 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
         P->SetNumberField(TEXT("delivery_backpressure"),double(M.DeliveryBackpressure));
         P->SetNumberField(TEXT("pending_delivery_bytes"),double(M.PendingDeliveryBytes));
         P->SetNumberField(TEXT("pending_delivery_messages"),double(M.PendingDeliveryMessages));
+        P->SetNumberField(TEXT("motion_batch_packets"),double(M.MotionBatchPackets));
+        P->SetNumberField(TEXT("motion_batch_messages"),double(M.MotionBatchMessages));
+        P->SetNumberField(TEXT("motion_batch_shared_bytes"),double(M.MotionBatchSharedBytes));
+        P->SetNumberField(TEXT("sent_packet_header_bytes"),double(M.SentPacketHeaderBytes));
         TArray<TSharedPtr<FJsonValue>> Encodings;
         for (size_t Kind=1;Kind<M.Encodings.size();++Kind)
         {
@@ -670,7 +761,7 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
             J->SetNumberField(TEXT("body_bytes"),double(E.Body));Encodings.Add(MakeShared<FJsonValueObject>(J));
         }
         P->SetArrayField(TEXT("first_sent_encoding"),Encodings);
-        P->SetStringField(TEXT("encoding_byte_basis"),TEXT("Same first-transmitted messages: previous canonical header and >=512-byte compression versus compact header and >=128-byte compression with stateless identity dictionary; no ACK/retry/UDP/IP bytes"));
+        P->SetStringField(TEXT("encoding_byte_basis"),TEXT("First-transmitted logical records; encoded_bytes excludes motion_batch_shared_bytes and sent_packet_header_bytes; no retry or UDP/IP bytes. Canonical uses the same body or explicit reference body."));
         P->SetNumberField(TEXT("duplicate_packets"),double(M.DuplicatePackets));P->SetNumberField(TEXT("out_of_order_messages"),double(M.OutOfOrderMessages));
         P->SetNumberField(TEXT("sent_bytes"),double(M.SentBytes)); P->SetNumberField(TEXT("received_bytes"),double(M.ReceivedBytes));
         P->SetNumberField(TEXT("handoff_sent_bytes"),double(M.SentLaneBytes[static_cast<size_t>(GuLiNet::Lane::Handoff)]));
@@ -689,6 +780,41 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
         Peers.Add(MakeShared<FJsonValueObject>(P));
     }
     Root->SetArrayField(TEXT("peers"),Peers);
+    auto MotionCounters=MakeShared<FJsonObject>();
+    MotionCounters->SetNumberField(TEXT("generation"),double(State->MotionCounterGeneration));
+    MotionCounters->SetNumberField(TEXT("peer_count"),Peers.Num());
+    MotionCounters->SetNumberField(TEXT("wire_bytes"),double(MotionWire));
+    for (int32 I=0;I<2;++I)
+    {
+        const auto& V=Vehicles[I]; auto Row=MakeShared<FJsonObject>();
+        Row->SetNumberField(TEXT("pose_sent"),double(V.Poses)); Row->SetNumberField(TEXT("body_bytes"),double(V.Body));
+        Row->SetNumberField(TEXT("pose_record_bytes"),double(V.Records)); Row->SetNumberField(TEXT("ack_sent"),double(V.Receipts));
+        Row->SetNumberField(TEXT("ack_record_bytes"),double(V.ReceiptBytes));
+        MotionCounters->SetObjectField(I==0?TEXT("engineer"):TEXT("miner"),Row);
+    }
+    MotionCounters->SetNumberField(TEXT("stationary_unit_sent"),double(StationaryUnitSent));
+    MotionCounters->SetNumberField(TEXT("stationary_mass_sent"),double(StationaryMassSent));
+    MotionCounters->SetNumberField(TEXT("stationary_unit_skipped"),double(State->SkippedExactMassPoses+State->SkippedNaturalPhase));
+    MotionCounters->SetNumberField(TEXT("stationary_mass_skipped_exact"),double(State->SkippedExactMassPoses));
+    MotionCounters->SetNumberField(TEXT("stationary_mass_skipped_natural_phase"),double(State->SkippedNaturalPhase));
+    auto Reasons=MakeShared<FJsonObject>();
+    for (int32 I=0;I<UE_ARRAY_COUNT(ReasonKeys);++I) Reasons->SetNumberField(ReasonKeys[I],double(ReasonTotals[I]));
+    MotionCounters->SetObjectField(TEXT("stationary_mass_sent_reasons"),Reasons);
+    for (int32 I=0;I<UE_ARRAY_COUNT(MotionKinds);++I)
+    {
+        const auto& Total=MotionTotals[I];
+        auto Row=MakeShared<FJsonObject>();
+        Row->SetNumberField(TEXT("enqueued"),double(Total.Enqueued));
+        Row->SetNumberField(TEXT("sent"),double(Total.Messages));
+        Row->SetNumberField(TEXT("record_bytes"),double(Total.Encoded));
+        Row->SetNumberField(TEXT("body_bytes"),double(Total.Body));
+        Row->SetNumberField(TEXT("replaced"),double(Total.Replaced));
+        Row->SetNumberField(TEXT("pending"),double(Total.Pending));
+        Row->SetNumberField(TEXT("oldest_pending_ms"),Total.OldestPayloadSeconds*1000.);
+        MotionCounters->SetObjectField(MotionKinds[I].Key,Row);
+    }
+    Root->SetObjectField(TEXT("motion_queue_counters"),MotionCounters);
+    Root->SetNumberField(TEXT("suppressed_component_states"),double(State->SuppressedComponentStates));
     if (State->Fault.Operation.IsValid())
     {
         const auto& F=State->Fault;auto J=MakeShared<FJsonObject>();J->SetStringField(TEXT("operation"),F.Operation.ToString(EGuidFormats::Digits));
@@ -770,7 +896,7 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
                     && R.Text(Endpoint, 512) && R.Text(Puid, 128) && R.Identity(PairKey);
                 if (!Valid) break;
                 const FGuid PlayerId = GuLiNetBridge::ToUE(Player);
-                Members.Add({PlayerId, GuLiNetBridge::ToUE(static_cast<GuLiNet::Team>(Team)), FromRole(Role), Online != 0, Ready != 0,SeatVersion,OrdinalSlot});
+                Members.Add({PlayerId, GuLiNetBridge::ToUE(static_cast<GuLiNet::Team>(Team)), FromRole(Role), Online != 0, Ready != 0,SeatVersion,OrdinalSlot,GuLiNetBridge::ToUE(PairKey)});
                 if (PlayerId == State->Identity.Player || !Online) continue;
                 if (!PairKey.Valid()) { Valid = false; break; }
                 Live.insert(Player); Addresses.Add(PlayerId, UTF8_TO_TCHAR((Carrier ? Puid : Endpoint).c_str()));
@@ -781,13 +907,22 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
                     Limits.BytesPerSecond[1]=FMath::Max(1000,Settings->MotionBytesPerSecond);
                     Limits.BytesPerSecond[3]=FMath::Max(1000,Settings->HandoffBytesPerSecond);
                     State->Channels[Player] = std::make_shared<GuLiNet::PeerChannel>(PairKey,Limits,
-                        GuLiNet::PeerChannelBinding{GuLiNetBridge::ToCore(State->Config.RoomId),GuLiNetBridge::ToCore(State->Identity.Player),Player});
+                        GuLiNet::PeerChannelBinding{GuLiNetBridge::ToCore(State->Config.RoomId),GuLiNetBridge::ToCore(State->Identity.Player),Player,State->MotionObjects});
                     State->PairKeys[Player] = PairKey;
+                    ++State->MotionCounterGeneration;
                 }
             }
             if (!Valid || !R.Done()) { Fail(TEXT("Invalid coordinator roster")); continue; }
             for (auto It = State->Channels.begin(); It != State->Channels.end();)
-            { if (!Live.contains(It->first)) { State->PairKeys.erase(It->first); It = State->Channels.erase(It); } else ++It; }
+            {
+                if (!Live.contains(It->first))
+                {
+                    ++State->MotionCounterGeneration;
+                    State->PairKeys.erase(It->first);
+                    It=State->Channels.erase(It);
+                }
+                else ++It;
+            }
             State->Members = MoveTemp(Members); State->Transport->SetPeers(Addresses); OnRosterChanged.Broadcast();
             if (!State->Active || State->Generation != Generation) return true;
         }
@@ -877,14 +1012,21 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
         }
         for (auto It=State->MotionOutbox.begin();It!=State->MotionOutbox.end();)
         {
-            if (!State->Channels.contains(std::get<0>(It->first)) || (!It->second.Pending && Now>It->second.NextSend+1))
-            {State->MotionOutboxBytes-=It->second.Latest.Body.size();It=State->MotionOutbox.erase(It);}else ++It;
+            const auto& Slot=It->second;
+            const auto Pair=State->PairKeys.find(std::get<0>(It->first));
+            const bool Expired=Slot.Pending && Slot.Latest.PoseDelivery && (Now-Slot.AdmittedAt>.5
+                || Slot.Latest.PoseDelivery->SentAt.load()==GuLiNet::MotionDelivery::Discarded);
+            if (Pair==State->PairKeys.end() || Pair->second!=Slot.Connection || Expired || (!Slot.Pending && Now>Slot.NextSend+1))
+            {Slot.DiscardPending();State->MotionOutboxBytes-=Slot.Latest.Body.size();It=State->MotionOutbox.erase(It);}else ++It;
         }
         for (auto& [Key,Slot]:State->MotionOutbox) if (Slot.Pending && Now>=Slot.NextSend)
         {
             const auto Channel=State->Channels.find(std::get<0>(Key));
             if (Channel!=State->Channels.end() && Channel->second->Queue(Slot.Latest,Now))
-            {Slot.Pending=false;Slot.NextSend=Now+1.0/GuLiNet::StatePublicationHz;}
+            {
+                Slot.Pending=false;Slot.Latest.PoseDelivery.reset();
+                Slot.LastQueued=Now;Slot.NextSend=Now+1.0/GuLiNet::StatePublicationHz;
+            }
         }
         if (State->Fault.IsStale()) for (const auto& Pending:State->Fault.Stale) if (!Pending.Sent)
         {

@@ -1,0 +1,65 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "protocol": 35,
+    "scope": "Editor export, coordinator --validate-manifest and file readback",
+    "updated_acceptance_contracts": [
+      {
+        "file": "AcceptanceManifest-200.json",
+        "field": "adapter/family/GroundPlayer/state_version",
+        "previous": "11",
+        "current": "13"
+      },
+      {
+        "file": "AcceptanceManifest-200.json",
+        "field": "ground/mobility_configuration",
+        "previous": "86fdae12c2b21c458c80844f33a1ad9f",
+        "current": "134ea714382007bbee9e222dc8ef53f1"
+      },
+      {
+        "file": "AcceptanceManifest-600.json",
+        "field": "adapter/family/GroundPlayer/state_version",
+        "previous": "11",
+        "current": "13"
+      },
+      {
+        "file": "AcceptanceManifest-600.json",
+        "field": "ground/mobility_configuration",
+        "previous": "86fdae12c2b21c458c80844f33a1ad9f",
+        "current": "134ea714382007bbee9e222dc8ef53f1"
+      }
+    ],
+    "manifests": [
+      {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "sha256": "b963bd4653df3779cd0ffe987d8dbdfd2e3b8a7ea0d29e820489a4900e2f94b3",
+        "config_hash": "cfba273a88cc1a21b414aef95717c9c39c50382e0f07f98aa416acbbea39170d",
+        "map_hash": "b08dd9cfda39a90cf36701eaea5ae4325caec6d5ecf55d037c1a3bf068272d87",
+        "objects": 292
+      },
+      {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
+        "sha256": "8d6d62a8770ebef61c9cb566bb92131077a7902396a62f3e1db4648c8c19ee33",
+        "config_hash": "4bf2248d5f3cb8e21bd6a31cb13256bf70d0ccd5226b05e934c40d065cf8c297",
+        "map_hash": "524f2cb67b7812c256ac09c2663784d194b00106567b5efda33cbf6efa41a38c",
+        "objects": 292
+      },
+      {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "sha256": "4baa90d794d87f1aa9d4b2cba50af6a6d38fd11e237b6169ca822c38d680a22d",
+        "config_hash": "ca505c2d8178bac70b03d701a0df0cc028c87aa63f1e360b6958df048cef52d8",
+        "map_hash": "aec5dda90cb8b8263dd5fd691015af27488739a7573eee1c4bc50e8f76886ede",
+        "objects": 692
+      },
+      {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
+        "sha256": "dc50a0904c8554a180754c737c85d7c85b4564f825da383eb8137232a56fd21c",
+        "config_hash": "0bc046ef085eb87791abb6cd17e55c19b9a6b9d5ead25a10aa89be9d2ba397e5",
+        "map_hash": "fc71ff33fa5cd32a9faae6d2dcb038c804bdd8f55c3e68e370834e63b62145cb",
+        "objects": 692
+      }
+    ]
+  }
+}

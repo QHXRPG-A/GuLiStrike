@@ -4,6 +4,12 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-11-05 | [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | network, commander, resource, navigation, performance | partial | 按用户要求完成本工作项，保留双端复采证据，清理会话临时文件，并单独交付源码、协议清单和文档。 |
+| 2026-11-05 | [姿态通道 100 KB/s 目标验收](../Archive/20261105-姿态通道100KB每秒验收.md) | network, commander, performance | passed | 协议 36 在 600 单位早期战斗窗口将姿态通道从 160.43 降至加权平均 54.94 KB/s，三间独立房间均达标。 |
+| 2026-11-05 | [姿态队列分类计数编译与加载](../Archive/20261105-姿态队列分类计数编译与加载.md) | network, commander, resource, navigation, performance | partial | 带队列分类计数的 Editor 构建成功，原地图已打开，当前进程已加载新版性能插件及三个项目模块。 |
+| 2026-11-05 | [姿态队列分类计数静态交付](../Archive/20261105-姿态队列分类计数.md) | network, commander, resource, navigation, performance | partial | 性能工具新增三类传输队列的窗口计数，以及静止 Mass 士兵姿态首发与编码前跳过的计数。原地图采集说明已保存。 |
+| 2026-11-05 | [姿态优化双端编译与协议35清单](../Archive/20261105-姿态优化双端编译与协议35清单.md) | network, commander, resource, navigation, performance | partial | Editor 和协调器构建成功，四份正式清单通过协议35校验，原地图已恢复并完成600单位入口回读。 |
+| 2026-11-05 | [姿态同步与交互卡顿优化静态交付](../Archive/20261105-姿态同步与交互卡顿优化静态交付.md) | network, commander, resource, navigation, performance | partial | 姿态/回执批量传输、无变化状态抑制、矿石归属更新及选择轻量查询已接入；静态检查与原地图实体核对完成，未编译或运行复测。 |
 | 2026-11-04 | [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | project, data-pipeline, movement | passed | 从已发布的1124个Python文件中移除185个旧脚本，现有939个。合并游骑兵场景入口，迁移仍在使用的写表和闪现材质代码。 |
 | 2026-11-04 | [游骑兵3C结项与临时文件清理](../Archive/20261104-游骑兵3C结项与临时文件清理.md) | movement, input, presentation, camera, network | partial | 按用户指示完成游骑兵3C、指定视口相机与上下身独立转向工作项，清理27个临时文件及2个空目录。 |
 | 2026-11-04 | [游骑兵上下身独立转向编译接入与交付](../Archive/20261104-游骑兵上下身独立转向编译接入与交付.md) | movement, input, presentation, camera, network | partial | 用户许可后完成源码版Editor编译加载、Mobility单表导入、上身帧局部接线和200/600清单刷新；原机动区及正式引用已保存读回，待玩家验收。 |

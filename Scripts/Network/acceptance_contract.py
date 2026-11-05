@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 
 
@@ -130,11 +131,37 @@ def freeze_baseline(root: Path, manifest: Path) -> dict:
     return value
 
 
+def _native_manifest_versions() -> tuple[int, int, int]:
+    """Native Core owns versions; this offline preflight must not fork them.
+
+    This checks the source contract only. The loaded runtime and Coordinator
+    still independently parse and hash the manifest against their own build.
+    """
+    public = Path(__file__).resolve().parents[2] / "Source/GuLiNetCore/Public"
+    headers = {name: (public / name).read_text(encoding="utf-8-sig")
+               for name in ("GuLiNetTypes.h", "GuLiNetManifest.h")}
+    versions = []
+    for header, name in (("GuLiNetTypes.h", "ProtocolVersion"),
+                         ("GuLiNetManifest.h", "ManifestVersion"),
+                         ("GuLiNetTypes.h", "HandoffVersion")):
+        values = re.findall(
+            rf"^\s*inline\s+constexpr\s+std::uint(?:16|32)_t\s+{name}\s*=\s*(\d+)\s*;",
+            headers[header], re.MULTILINE)
+        if len(values) != 1:
+            raise RuntimeError(f"Cannot read the authoritative {name} from {public / header}")
+        versions.append(int(values[0]))
+    return tuple(versions)
+
+
 def validate_manifest_contract(manifest: dict, population: int) -> None:
     """Require registered mechanisms, not names invented for a coverage label."""
     strings, numbers = manifest.get("strings", {}), manifest.get("numbers", {})
-    if (manifest.get("protocol_version"), manifest.get("schema"), manifest.get("handoff_version")) != (32, 24, 3):
-        raise RuntimeError("The acceptance suite requires protocol 32 / manifest 24 / object handoff 3")
+    expected = _native_manifest_versions()
+    actual = (manifest.get("protocol_version"), manifest.get("schema"), manifest.get("handoff_version"))
+    if actual != expected:
+        raise RuntimeError(
+            f"Manifest versions {actual} do not match native Core: protocol {expected[0]} / "
+            f"manifest {expected[1]} / object handoff {expected[2]}; re-export with the matching build")
     if int(float(numbers.get("acceptance/population", -1))) != population:
         raise RuntimeError("Acceptance population differs from the exported manifest")
     definitions = {key.removeprefix("adapter/definition/"): value for key, value in strings.items()

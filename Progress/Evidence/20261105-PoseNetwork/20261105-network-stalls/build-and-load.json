@@ -1,0 +1,120 @@
+{
+  "user_authorized": "现在编译 Editor 和协调器",
+  "editor": {
+    "build": {
+      "target": "GuLiStrikeEditor Win64 Development",
+      "engine": "D:/UnrealEngine-5.7",
+      "exit_code": 0,
+      "log": "TestResults\\Performance\\20261105-network-stalls\\editor-build-20261105-114321.log"
+    },
+    "engine_manifest": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules",
+    "project_manifest": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules",
+    "engine_BuildId": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+    "project_BuildId": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+    "linked_modules": [
+      "GuLiNetCore",
+      "GuLiStrike",
+      "GuLiStrikeEditor"
+    ],
+    "project_modules": {
+      "GuLiNetCore": "UnrealEditor-GuLiNetCore.dll",
+      "GuLiStrike": "UnrealEditor-GuLiStrike.dll",
+      "GuLiStrikeEditor": "UnrealEditor-GuLiStrikeEditor.dll"
+    },
+    "linked_project_plugins": [],
+    "other_linked_modules": []
+  },
+  "loaded_editor_modules": [
+    {
+      "ModuleName": "UnrealEditor-GuLiNetCore.dll",
+      "FileName": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiNetCore.dll"
+    },
+    {
+      "ModuleName": "UnrealEditor-GuLiStrike.dll",
+      "FileName": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrike.dll"
+    },
+    {
+      "ModuleName": "UnrealEditor-GuLiStrikeEditor.dll",
+      "FileName": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrikeEditor.dll"
+    }
+  ],
+  "coordinator": {
+    "target": "GuLiCoordinator Win64 Release",
+    "cache": "Tools/GuLiCoordinator/build/windows",
+    "exit_code": 0,
+    "log": "TestResults\\Performance\\20261105-network-stalls\\coordinator-build-20261105-114609.log",
+    "executable": "D:\\UE5.7\\test1\\Tools\\GuLiCoordinator\\build\\windows\\Release\\GuLiCoordinator.exe",
+    "sha256": "b40b9e8f127d5cb26cf8f56efd62c002f386acde987998c357d2cba7ada9464b"
+  },
+  "protocol": 35,
+  "manifests": [
+    {
+      "file": "RuntimeManifest-200.json",
+      "protocol": 35,
+      "soldiers": 200,
+      "objects": 292,
+      "map_hash_matches_previous": true,
+      "same_as_validated_export": true
+    },
+    {
+      "file": "AcceptanceManifest-200.json",
+      "protocol": 35,
+      "soldiers": 200,
+      "objects": 292,
+      "map_hash_matches_previous": true,
+      "same_as_validated_export": true
+    },
+    {
+      "file": "RuntimeManifest-600.json",
+      "protocol": 35,
+      "soldiers": 600,
+      "objects": 692,
+      "map_hash_matches_previous": true,
+      "same_as_validated_export": true
+    },
+    {
+      "file": "AcceptanceManifest-600.json",
+      "protocol": 35,
+      "soldiers": 600,
+      "objects": 692,
+      "map_hash_matches_previous": true,
+      "same_as_validated_export": true
+    }
+  ],
+  "acceptance_contract_updates": [
+    {
+      "file": "AcceptanceManifest-200.json",
+      "field": "adapter/family/GroundPlayer/state_version",
+      "previous": "11",
+      "current": "13"
+    },
+    {
+      "file": "AcceptanceManifest-200.json",
+      "field": "ground/mobility_configuration",
+      "previous": "86fdae12c2b21c458c80844f33a1ad9f",
+      "current": "134ea714382007bbee9e222dc8ef53f1"
+    },
+    {
+      "file": "AcceptanceManifest-600.json",
+      "field": "adapter/family/GroundPlayer/state_version",
+      "previous": "11",
+      "current": "13"
+    },
+    {
+      "file": "AcceptanceManifest-600.json",
+      "field": "ground/mobility_configuration",
+      "previous": "86fdae12c2b21c458c80844f33a1ad9f",
+      "current": "134ea714382007bbee9e222dc8ef53f1"
+    }
+  ],
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "entry": "PerfPoseOreSelection_Entry",
+    "units": 600,
+    "additional_flights": 500,
+    "launch_arguments_validated": true
+  },
+  "runtime_performance_capture": "pending",
+  "player_acceptance": "pending",
+  "checked_utc": "2026-11-05T03:51:24.714397+00:00"
+}

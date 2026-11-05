@@ -1,4 +1,5 @@
 #include "GuLiNetProtocol.h"
+#include <algorithm>
 #include <bit>
 #include <cmath>
 #include <limits>
@@ -103,11 +104,24 @@ bool VarUInt(Reader& R,std::uint64_t& Out)
     }
     return false;
 }
+std::uint64_t ShortObjectIndex(const ObjectKey& Key,const MotionObjectTable* Table)
+{
+    if (!Table || !Key.Valid()) return 0;
+    const auto It=std::lower_bound(Table->begin(),Table->end(),Key);
+    return It!=Table->end() && *It==Key ? 1+static_cast<std::uint64_t>(It-Table->begin()) : 0;
+}
+bool ReadShortObject(Reader& R,const MotionObjectTable* Table,ObjectKey& Out)
+{
+    std::uint64_t Index=0;
+    if (!Table || !VarUInt(R,Index) || !Index || Index>Table->size()) return false;
+    Out=(*Table)[static_cast<std::size_t>(Index-1)];
+    return true;
+}
 bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
 {
     Message M;auto& H=M.Header;std::uint8_t Kind,Flags,ObjectKindValue=0;std::uint64_t Generation=0,Size=0;
     if (!R.U8(Kind)||Kind<unsigned(MessageKind::Hello)||Kind>=unsigned(MessageKind::Count)
-        ||!R.U8(Flags)||(Flags&~15u)) return false;
+        ||!R.U8(Flags)||(Flags&~31u)) return false;
     if (Flags&4) {if (!Context.Match.Valid()) return false;H.Match=Context.Match;}
     else if (!R.Identity(H.Match)) return false;
     if (!VarUInt(R,H.Epoch)) return false;
@@ -115,7 +129,11 @@ bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
     else if (!R.Identity(H.Sender)) return false;
     H.Kind=MessageKind(Kind);
     if ((Flags&1)&&!R.Identity(H.Event)) return false;
-    if (Flags&2)
+    if (Flags&16)
+    {
+        if (!(Flags&2) || MessageLane(H.Kind)!=Lane::Motion || !ReadShortObject(R,Context.Objects,H.Object)) return false;
+    }
+    else if (Flags&2)
     {
         if (!R.U8(ObjectKindValue)||ObjectKindValue>unsigned(ObjectKind::BusinessWork)
             ||!R.Identity(H.Object.StableId)||!VarUInt(R,Generation)||Generation>UINT32_MAX) return false;
@@ -127,18 +145,22 @@ bool DecodePeerMessage(Reader& R,Message& Out,PeerMessageContext Context)
     M.Body.assign(Body.begin(),Body.end());Out=std::move(M);return true;
 }
 }
+void Writer::VarUnsigned(std::uint64_t Value) { VarUInt(*this,Value); }
+bool Reader::VarUnsigned(std::uint64_t& Out) { return VarUInt(*this,Out); }
 bool EncodePeerMessage(const Message& M,Bytes& Out,PeerMessageContext Context)
 {
     const auto& H=M.Header;
     if (M.Body.size()>MaxMessageBytes-CanonicalMessageHeaderBytes || H.Kind<MessageKind::Hello || H.Kind>=MessageKind::Count
         || H.Object.Kind>ObjectKind::BusinessWork) return false;
     const bool Event=H.Event!=Id{},Object=H.Object!=ObjectKey{};
+    const auto Short=MessageLane(H.Kind)==Lane::Motion ? ShortObjectIndex(H.Object,Context.Objects) : 0;
     const bool Match=Context.Match.Valid()&&H.Match==Context.Match,Sender=Context.Sender.Valid()&&H.Sender==Context.Sender;
     Writer W;W.U32(CompactPeerMagic);W.U16(ProtocolVersion);W.U8(static_cast<std::uint8_t>(H.Kind));
-    W.U8((Event?1:0)|(Object?2:0)|(Match?4:0)|(Sender?8:0));
+    W.U8((Event?1:0)|(Object?2:0)|(Match?4:0)|(Sender?8:0)|(Short?16:0));
     if (!Match) W.Identity(H.Match);VarUInt(W,H.Epoch);if (!Sender) W.Identity(H.Sender);
     if (Event) W.Identity(H.Event);
-    if (Object) {W.U8(static_cast<std::uint8_t>(H.Object.Kind));W.Identity(H.Object.StableId);VarUInt(W,H.Object.Generation);}
+    if (Short) VarUInt(W,Short);
+    else if (Object) {W.U8(static_cast<std::uint8_t>(H.Object.Kind));W.Identity(H.Object.StableId);VarUInt(W,H.Object.Generation);}
     VarUInt(W,H.OwnerEpoch);VarUInt(W,H.ControlEpoch);VarUInt(W,H.Sequence);VarUInt(W,H.At);W.Identity(H.ResourceGroup);VarUInt(W,H.ResourceEpoch);VarUInt(W,M.Body.size());W.Raw(M.Body);
     Out=W.Take();
     // Extreme counters can be wider as varints; never inflate a wire message.
@@ -159,6 +181,77 @@ bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out,PeerMessage
         || !R.Key(H.Object) || !R.U64(H.OwnerEpoch) || !R.U64(H.ControlEpoch) || !R.U64(H.Sequence)
         || !R.U64(H.At) || !R.Identity(H.ResourceGroup) || !R.U64(H.ResourceEpoch) || !R.Blob(Result.Body) || !R.Done()) return false;
     Out = std::move(Result); return true;
+}
+std::size_t EncodeMotionBatch(std::span<const Message* const> Values,Bytes& Out,
+    std::vector<std::size_t>& RecordBytes,std::size_t MaxBytes,PeerMessageContext Context)
+{
+    Out.clear();RecordBytes.clear();
+    if (Values.empty() || !Values.front() || MaxBytes>MaxDatagramBytes) return 0;
+    Message Base;Base.Header=Values.front()->Header;
+    Base.Header.Kind=MessageKind::Motion;Base.Header.Object={};Base.Header.Sequence=0;Base.Header.Event={};
+    Bytes Shared;if (!EncodePeerMessage(Base,Shared,Context) || Shared.size()+3>MaxBytes) return 0;
+    Writer Records(MaxBytes);const auto& B=Base.Header;std::set<std::uint64_t> Sequences;
+    for (const auto* Value:Values)
+    {
+        if (RecordBytes.size()==64 || !Value) break;
+        const auto& H=Value->Header;
+        if (MessageLane(H.Kind)!=Lane::Motion || ReliableMessage(H.Kind) || !H.Sequence
+            || H.Object.Kind>ObjectKind::BusinessWork || !Sequences.insert(H.Sequence).second) break;
+        const auto Short=ShortObjectIndex(H.Object,Context.Objects);
+        const std::uint16_t Flags=(H.Event!=Id{}?1:0)|(Short?2:0)|(H.Object!=ObjectKey{} && !Short?1024:0)
+            |(H.Match!=B.Match?4:0)|(H.Sender!=B.Sender?8:0)|(H.Epoch!=B.Epoch?16:0)
+            |(H.OwnerEpoch!=B.OwnerEpoch?32:0)|(H.ControlEpoch!=B.ControlEpoch?64:0)
+            |(H.At!=B.At?128:0)|(H.ResourceGroup!=B.ResourceGroup?256:0)|(H.ResourceEpoch!=B.ResourceEpoch?512:0);
+        Writer R(MaxBytes);R.U8(static_cast<std::uint8_t>(H.Kind));VarUInt(R,Flags);
+        if (Flags&1) R.Identity(H.Event);
+        if (Short) VarUInt(R,Short);
+        else if (Flags&1024) {R.U8(static_cast<std::uint8_t>(H.Object.Kind));R.Identity(H.Object.StableId);VarUInt(R,H.Object.Generation);}
+        if (Flags&4) R.Identity(H.Match);if (Flags&8) R.Identity(H.Sender);
+        if (Flags&16) VarUInt(R,H.Epoch);if (Flags&32) VarUInt(R,H.OwnerEpoch);
+        if (Flags&64) VarUInt(R,H.ControlEpoch);if (Flags&128) VarUInt(R,H.At);
+        if (Flags&256) R.Identity(H.ResourceGroup);if (Flags&512) VarUInt(R,H.ResourceEpoch);
+        VarUInt(R,H.Sequence);VarUInt(R,Value->Body.size());R.Raw(Value->Body);
+        if (!R.Good() || 3+Shared.size()+Records.Data().size()+R.Data().size()>MaxBytes) break;
+        RecordBytes.push_back(R.Data().size());Records.Raw(R.Data());
+    }
+    if (RecordBytes.size()<2) {RecordBytes.clear();return 0;}
+    Writer W(MaxBytes);W.U8(static_cast<std::uint8_t>(RecordBytes.size()));W.U16(static_cast<std::uint16_t>(Shared.size()));
+    W.Raw(Shared);W.Raw(Records.Data());Out=W.Take();return RecordBytes.size();
+}
+bool DecodeMotionBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context)
+{
+    if (Value.size()>MaxDatagramBytes) return false;
+    Reader R(Value);std::uint8_t Count;std::uint16_t SharedSize;std::span<const std::uint8_t> Shared;
+    Message Base;
+    if (!R.U8(Count) || Count<2 || Count>64 || !R.U16(SharedSize) || !R.Raw(SharedSize,Shared)
+        || !DecodeMessage(Shared,Base,Context) || !Base.Body.empty() || Base.Header.Kind!=MessageKind::Motion
+        || Base.Header.Object!=ObjectKey{} || Base.Header.Sequence || Base.Header.Event!=Id{}) return false;
+    std::vector<Message> Result;Result.reserve(Count);std::set<std::uint64_t> Sequences;
+    for (std::uint8_t I=0;I<Count;++I)
+    {
+        Message M=Base;auto& H=M.Header;std::uint8_t Kind,ObjectKindValue;std::uint64_t Flags,Generation,Size;
+        if (!R.U8(Kind) || !VarUInt(R,Flags) || Flags>2047 || ((Flags&2) && (Flags&1024))) return false;
+        H.Kind=static_cast<MessageKind>(Kind);
+        if (MessageLane(H.Kind)!=Lane::Motion || ReliableMessage(H.Kind)) return false;
+        if ((Flags&1) && !R.Identity(H.Event)) return false;
+        if ((Flags&2) && !ReadShortObject(R,Context.Objects,H.Object)) return false;
+        if (Flags&1024)
+        {
+            if (!R.U8(ObjectKindValue) || ObjectKindValue>unsigned(ObjectKind::BusinessWork)
+                || !R.Identity(H.Object.StableId) || !VarUInt(R,Generation) || Generation>UINT32_MAX) return false;
+            H.Object.Kind=static_cast<ObjectKind>(ObjectKindValue);H.Object.Generation=static_cast<std::uint32_t>(Generation);
+        }
+        if (((Flags&4) && !R.Identity(H.Match)) || ((Flags&8) && !R.Identity(H.Sender))
+            || ((Flags&16) && !VarUInt(R,H.Epoch)) || ((Flags&32) && !VarUInt(R,H.OwnerEpoch))
+            || ((Flags&64) && !VarUInt(R,H.ControlEpoch)) || ((Flags&128) && !VarUInt(R,H.At))
+            || ((Flags&256) && !R.Identity(H.ResourceGroup)) || ((Flags&512) && !VarUInt(R,H.ResourceEpoch))
+            || !VarUInt(R,H.Sequence) || !H.Sequence || !Sequences.insert(H.Sequence).second
+            || !VarUInt(R,Size) || Size>R.Remaining()) return false;
+        std::span<const std::uint8_t> Body;if (!R.Raw(static_cast<std::size_t>(Size),Body)) return false;
+        M.Body.assign(Body.begin(),Body.end());Result.push_back(std::move(M));
+    }
+    if (!R.Done()) return false;
+    Out=std::move(Result);return true;
 }
 Lane MessageLane(MessageKind K)
 {

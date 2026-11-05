@@ -1,0 +1,1027 @@
+{
+  "objective_kB_s": 100,
+  "configured_motion_budget_B_s": 160000,
+  "basis": "successful outgoing peer motion-lane bytes / monotonic elapsed seconds / 1000; no UDP/IP headers",
+  "baseline": {
+    "capture": "20261105-183827-557D4994",
+    "report": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261105-183827-557D4994\\report.md",
+    "room": "6547C3AB41E85149250D5AA4A58BBC75",
+    "classification": "diagnostic (background viewport)",
+    "seconds": 5.041125800460577,
+    "samples": 6,
+    "world_seconds": [
+      9.473605006933212,
+      14.514400407671928
+    ],
+    "logical_ticks": [
+      211,
+      512
+    ],
+    "local_soldiers": [
+      300,
+      300,
+      300,
+      300,
+      300,
+      300
+    ],
+    "active_flights": [
+      693,
+      785,
+      844,
+      759,
+      735,
+      729
+    ],
+    "foreground_frames": 325,
+    "background_frames": 0,
+    "viewport_background_frames": 53,
+    "viewport": [
+      1290,
+      994
+    ],
+    "wire_bytes": 808766,
+    "wire_kB_s": 160.43360789094135,
+    "control_kB_s": 1948.6071938737407,
+    "udp_kB_s": 2128.385885355155,
+    "inter_sample_kB_s": [
+      161.0695327681507,
+      160.21843562277365,
+      158.36501297756033,
+      160.13995760709895,
+      162.42774249910713
+    ],
+    "errors": {
+      "datagram_send_failures": 0,
+      "datagram_rejected_packets": 0,
+      "receive_queue_overflows": 0,
+      "expired_receive_packets": 0,
+      "peer_payload_decode_failures": 0,
+      "rejected_delivery_epochs": 0,
+      "rejected_delivery_identity": 0,
+      "retransmit_bytes": 0,
+      "rejected_packets": 0,
+      "delivery_backpressure": 0
+    },
+    "motion": {
+      "pose": {
+        "records": 6810,
+        "record_kB_s": 117.91374060645177,
+        "body_kB_s": 84.31787200413946,
+        "replaced": 1306,
+        "pending_samples": [
+          77,
+          132,
+          143,
+          74,
+          15,
+          41
+        ],
+        "oldest_ms": [
+          24.422500282526016,
+          39.57829996943474,
+          109.25889760255814,
+          29.605500400066376,
+          59.83319878578186,
+          76.85690000653267
+        ]
+      },
+      "ack": {
+        "records": 2533,
+        "record_kB_s": 16.49036411517541,
+        "body_kB_s": 4.429764477998099,
+        "replaced": 0,
+        "pending_samples": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "oldest_ms": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "component": {
+        "records": 551,
+        "record_kB_s": 10.562124832341087,
+        "body_kB_s": 7.831980704864133,
+        "replaced": 28,
+        "pending_samples": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "oldest_ms": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "ticks": 299,
+    "gt_p95_ms": 23.981199999980163
+  },
+  "runs": [
+    {
+      "capture": "20261105-224023-EF684B64",
+      "report": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261105-224023-EF684B64\\report.md",
+      "room": "2CE67A654823157077915A8F994FE370",
+      "classification": "diagnostic (background viewport)",
+      "seconds": 5.026673801243305,
+      "samples": 6,
+      "world_seconds": [
+        14.96824050322175,
+        20.009313505142927
+      ],
+      "logical_ticks": [
+        218,
+        521
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        695,
+        749,
+        804,
+        762,
+        730,
+        727
+      ],
+      "foreground_frames": 0,
+      "background_frames": 319,
+      "viewport_background_frames": 320,
+      "viewport": [
+        1290,
+        997
+      ],
+      "wire_bytes": 280305,
+      "wire_kB_s": 55.76351501676296,
+      "control_kB_s": 1961.0086887997124,
+      "udp_kB_s": 2037.971709536071,
+      "inter_sample_kB_s": [
+        59.634435105224654,
+        55.060800199430034,
+        52.429156967042715,
+        54.187276882365666,
+        57.55716986940925
+      ],
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "expired_receive_packets": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0,
+        "retransmit_bytes": 0,
+        "rejected_packets": 0,
+        "delivery_backpressure": 0
+      },
+      "motion": {
+        "pose": {
+          "records": 7311,
+          "record_kB_s": 31.976413500363513,
+          "body_kB_s": 19.972849635710926,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "ack": {
+          "records": 2659,
+          "record_kB_s": 8.378701635579121,
+          "body_kB_s": 4.6680968226337125,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "component": {
+          "records": 577,
+          "record_kB_s": 9.76848746140137,
+          "body_kB_s": 8.407945625902034,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "ticks": 300,
+      "gt_p95_ms": 25.748900000024832,
+      "engineer": {
+        "records": 144,
+        "body_kB_s": 0.0572943483877481,
+        "record_kB_s": 0.6473465612976816,
+        "outgoing_ack_kB_s": 0.0
+      },
+      "miner": {
+        "records": 371,
+        "body_kB_s": 3.338191548425046,
+        "record_kB_s": 4.689582203279119,
+        "outgoing_ack_kB_s": 0.0
+      }
+    },
+    {
+      "capture": "20261105-224223-013F2826",
+      "report": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261105-224223-013F2826\\report.md",
+      "room": "C0AE92374B682CFCFD1328ABEC0651C0",
+      "classification": "primary (foreground, six samples)",
+      "seconds": 5.020498897880316,
+      "samples": 6,
+      "world_seconds": [
+        18.082234516739845,
+        23.107386115938425
+      ],
+      "logical_ticks": [
+        219,
+        520
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        679,
+        740,
+        786,
+        757,
+        728,
+        715
+      ],
+      "foreground_frames": 335,
+      "background_frames": 0,
+      "viewport_background_frames": 0,
+      "viewport": [
+        1290,
+        997
+      ],
+      "wire_bytes": 274643,
+      "wire_kB_s": 54.704324328396105,
+      "control_kB_s": 1953.4550648224836,
+      "udp_kB_s": 2029.02404864602,
+      "inter_sample_kB_s": [
+        58.826629086321745,
+        52.84691918131787,
+        55.182521299986504,
+        50.65406290598646,
+        56.04423631497487
+      ],
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "expired_receive_packets": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0,
+        "retransmit_bytes": 0,
+        "rejected_packets": 0,
+        "delivery_backpressure": 0
+      },
+      "motion": {
+        "pose": {
+          "records": 7165,
+          "record_kB_s": 31.870936186751543,
+          "body_kB_s": 19.902006161615926,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "ack": {
+          "records": 2555,
+          "record_kB_s": 8.078679196030548,
+          "body_kB_s": 4.508715261257612,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "component": {
+          "records": 530,
+          "record_kB_s": 9.234739603184602,
+          "body_kB_s": 7.816753035553708,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "ticks": 298,
+      "gt_p95_ms": 23.962200000028133,
+      "engineer": {
+        "records": 144,
+        "body_kB_s": 0.05736481689530801,
+        "record_kB_s": 0.7341899829031435,
+        "outgoing_ack_kB_s": 0.0
+      },
+      "miner": {
+        "records": 378,
+        "body_kB_s": 3.571358218516919,
+        "record_kB_s": 4.897322059044924,
+        "outgoing_ack_kB_s": 0.0
+      }
+    },
+    {
+      "capture": "20261105-224306-CAF66362",
+      "report": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261105-224306-CAF66362\\report.md",
+      "room": "FB0461CA40A78211FD6078B97F48C358",
+      "classification": "primary (foreground, six samples)",
+      "seconds": 5.024925399571657,
+      "samples": 6,
+      "world_seconds": [
+        13.095201797783375,
+        18.127735398709774
+      ],
+      "logical_ticks": [
+        219,
+        521
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        686,
+        722,
+        770,
+        743,
+        716,
+        721
+      ],
+      "foreground_frames": 330,
+      "background_frames": 0,
+      "viewport_background_frames": 0,
+      "viewport": [
+        1290,
+        997
+      ],
+      "wire_bytes": 282364,
+      "wire_kB_s": 56.19267502440329,
+      "control_kB_s": 1964.3686652226565,
+      "udp_kB_s": 2041.3371710701203,
+      "inter_sample_kB_s": [
+        60.63879631062086,
+        53.8631621555769,
+        53.588580450389635,
+        54.70534499404102,
+        58.18937560581615
+      ],
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "expired_receive_packets": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0,
+        "retransmit_bytes": 0,
+        "rejected_packets": 0,
+        "delivery_backpressure": 0
+      },
+      "motion": {
+        "pose": {
+          "records": 7169,
+          "record_kB_s": 32.14933300577376,
+          "body_kB_s": 20.1049750924883,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "ack": {
+          "records": 2665,
+          "record_kB_s": 8.400522722904165,
+          "body_kB_s": 4.6802684875689415,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "component": {
+          "records": 579,
+          "record_kB_s": 10.070597267834795,
+          "body_kB_s": 8.453458832169126,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "ticks": 300,
+      "gt_p95_ms": 24.54729999999472,
+      "engineer": {
+        "records": 128,
+        "body_kB_s": 0.05094602996928519,
+        "record_kB_s": 0.68697537286708,
+        "outgoing_ack_kB_s": 0.0
+      },
+      "miner": {
+        "records": 392,
+        "body_kB_s": 3.778762566628075,
+        "record_kB_s": 5.193907953782712,
+        "outgoing_ack_kB_s": 0.0
+      }
+    },
+    {
+      "capture": "20261105-224333-98048565",
+      "report": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261105-224333-98048565\\report.md",
+      "room": "CF30132F4B47F1CE611691A6385E1E6E",
+      "classification": "supplementary (foreground, extra end sample)",
+      "seconds": 5.040358401834965,
+      "samples": 7,
+      "world_seconds": [
+        13.577532608062029,
+        18.623208206146955
+      ],
+      "logical_ticks": [
+        216,
+        518
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        695,
+        745,
+        798,
+        771,
+        705,
+        706,
+        706
+      ],
+      "foreground_frames": 340,
+      "background_frames": 0,
+      "viewport_background_frames": 0,
+      "viewport": [
+        1290,
+        997
+      ],
+      "wire_bytes": 277858,
+      "wire_kB_s": 55.12663541918855,
+      "control_kB_s": 2007.7393695487742,
+      "udp_kB_s": 2083.590920077565,
+      "inter_sample_kB_s": [
+        54.580709330059385,
+        56.339265413203236,
+        54.35532402423831,
+        50.84623359264188,
+        56.96676786571946,
+        344.7351145990221
+      ],
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "expired_receive_packets": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0,
+        "retransmit_bytes": 0,
+        "rejected_packets": 0,
+        "delivery_backpressure": 0
+      },
+      "motion": {
+        "pose": {
+          "records": 7221,
+          "record_kB_s": 32.38718102676402,
+          "body_kB_s": 20.36561526311895,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "ack": {
+          "records": 2497,
+          "record_kB_s": 7.8720592538727105,
+          "body_kB_s": 4.39968713175768,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "component": {
+          "records": 528,
+          "record_kB_s": 9.142802222798935,
+          "body_kB_s": 7.759765651934811,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "ticks": 298,
+      "gt_p95_ms": 23.79039999999577,
+      "engineer": {
+        "records": 128,
+        "body_kB_s": 0.050790039039049696,
+        "record_kB_s": 0.631304313368188,
+        "outgoing_ack_kB_s": 0.0
+      },
+      "miner": {
+        "records": 411,
+        "body_kB_s": 3.9687653942857426,
+        "record_kB_s": 5.407353570348826,
+        "outgoing_ack_kB_s": 0.0
+      }
+    },
+    {
+      "capture": "20261105-224425-97A45007",
+      "report": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261105-224425-97A45007\\report.md",
+      "room": "FEC5810143D8A1899CA5189995EE04CF",
+      "classification": "supplementary (foreground, extra end sample)",
+      "seconds": 5.0419692024588585,
+      "samples": 7,
+      "world_seconds": [
+        13.091524310410023,
+        18.134286608546972
+      ],
+      "logical_ticks": [
+        221,
+        523
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        687,
+        744,
+        804,
+        759,
+        731,
+        732,
+        732
+      ],
+      "foreground_frames": 344,
+      "background_frames": 0,
+      "viewport_background_frames": 0,
+      "viewport": [
+        1290,
+        997
+      ],
+      "wire_bytes": 284877,
+      "wire_kB_s": 56.50113845619519,
+      "control_kB_s": 1969.03979404682,
+      "udp_kB_s": 2046.1836607349214,
+      "inter_sample_kB_s": [
+        60.71468745960192,
+        61.047721421600464,
+        48.736655829736556,
+        52.860312821391936,
+        59.11634639534772,
+        54.8677153334696
+      ],
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "expired_receive_packets": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0,
+        "retransmit_bytes": 0,
+        "rejected_packets": 0,
+        "delivery_backpressure": 0
+      },
+      "motion": {
+        "pose": {
+          "records": 7232,
+          "record_kB_s": 32.47084490721578,
+          "body_kB_s": 20.731582404157482,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "ack": {
+          "records": 2662,
+          "record_kB_s": 8.363002292722566,
+          "body_kB_s": 4.659290657416841,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "component": {
+          "records": 581,
+          "record_kB_s": 9.933420453178318,
+          "body_kB_s": 8.467326611035237,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "ticks": 300,
+      "gt_p95_ms": 23.290799999983847,
+      "engineer": {
+        "records": 128,
+        "body_kB_s": 0.050773812714911944,
+        "record_kB_s": 0.6096824229907785,
+        "outgoing_ack_kB_s": 0.0
+      },
+      "miner": {
+        "records": 422,
+        "body_kB_s": 4.33203756765276,
+        "record_kB_s": 5.695988778748266,
+        "outgoing_ack_kB_s": 0.0
+      }
+    },
+    {
+      "capture": "20261105-224553-DA511665",
+      "report": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261105-224553-DA511665\\report.md",
+      "room": "BC222A1643D1CA286FBDB9A280DF7B35",
+      "classification": "primary (foreground, six samples)",
+      "seconds": 5.031437397003174,
+      "samples": 6,
+      "world_seconds": [
+        13.579541899263859,
+        18.60677929967642
+      ],
+      "logical_ticks": [
+        211,
+        512
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        676,
+        775,
+        812,
+        751,
+        735,
+        707
+      ],
+      "foreground_frames": 317,
+      "background_frames": 0,
+      "viewport_background_frames": 0,
+      "viewport": [
+        1290,
+        997
+      ],
+      "wire_bytes": 271284,
+      "wire_kB_s": 53.91779298726488,
+      "control_kB_s": 1954.0253061393298,
+      "udp_kB_s": 2028.6276454675644,
+      "inter_sample_kB_s": [
+        57.46524377405788,
+        52.104140145842,
+        55.39971194777944,
+        51.0177835540726,
+        53.6384795871104
+      ],
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "expired_receive_packets": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0,
+        "retransmit_bytes": 0,
+        "rejected_packets": 0,
+        "delivery_backpressure": 0
+      },
+      "motion": {
+        "pose": {
+          "records": 7121,
+          "record_kB_s": 31.61680995867107,
+          "body_kB_s": 19.892526151595256,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "ack": {
+          "records": 2530,
+          "record_kB_s": 7.939878179502826,
+          "body_kB_s": 4.432928056162383,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "component": {
+          "records": 522,
+          "record_kB_s": 8.933828735854517,
+          "body_kB_s": 7.645926395290839,
+          "replaced": 0,
+          "pending_samples": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "oldest_ms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "ticks": 300,
+      "gt_p95_ms": 24.15629999995872,
+      "engineer": {
+        "records": 128,
+        "body_kB_s": 0.05088009246671315,
+        "record_kB_s": 0.6256661370516133,
+        "outgoing_ack_kB_s": 0.0
+      },
+      "miner": {
+        "records": 385,
+        "body_kB_s": 3.7146442507924564,
+        "record_kB_s": 5.1154367965166525,
+        "outgoing_ack_kB_s": 0.0
+      }
+    }
+  ],
+  "qualifying_rooms": 3,
+  "mean_wire_kB_s": 54.937892035225246,
+  "reduction_pct": 65.75661873005399,
+  "max_primary_interval_kB_s": 60.63879631062086,
+  "passed": true,
+  "scope": "Original map, local rendered commander + separate logic peer and coordinator, early fight, unchanged 600-unit manifest population and two gameplay workers. Weak-network recovery, visual acceptance and other maps not measured."
+}

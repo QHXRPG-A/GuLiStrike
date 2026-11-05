@@ -4,6 +4,7 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | done | partial | — | 2026-11-05 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | done | partial | — | 2026-11-04 |
 | [肉鸽卡牌美术资源数据管线 — 实施与交付](../DevelopmentDocumentation/20261027-肉鸽卡牌美术资源数据管线.md) | verification | partial | 用户在LVL_CardArtworkCatalogReview进入PIE浏览当前折射子弹，按ArtworkId切换其他牌面核验效果。 | 2026-10-27 |
 | [GroundMech功能目录与职责整理 — 实施记录](../DevelopmentDocumentation/20261027-GroundMech功能目录与职责整理.md) | verification | partial | 在LVL_CommanderMassPrototype选择Ground，玩家回归移动/瞄准/开火/喷气/闪现和控制恢复；本轮未运行PIE或读图测试。 | 2026-10-27 |

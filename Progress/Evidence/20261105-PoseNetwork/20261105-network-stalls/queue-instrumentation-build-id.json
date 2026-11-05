@@ -1,0 +1,39 @@
+{
+  "user_authorized": "现在编译并重新打开地图",
+  "editor": {
+    "target": "GuLiStrikeEditor Win64 Development",
+    "engine": "D:/UnrealEngine-5.7",
+    "started_utc": "2026-11-05T07:32:17.9907086Z",
+    "ended_utc": "2026-11-05T07:34:30.4464211Z",
+    "exit_code": 0,
+    "log": "TestResults\\Performance\\20261105-network-stalls\\queue-instrumentation-editor-20261105-153217.log"
+  },
+  "build_ids": {
+    "engine": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+    "project": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+    "profiler": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+  },
+  "linked": [
+    "GuLiFrameProfiler",
+    "GuLiNetCore",
+    "GuLiStrike",
+    "GuLiStrikeEditor"
+  ],
+  "files": {
+    "GuLiStrikeEditor": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrikeEditor.dll",
+    "GuLiNetCore": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiNetCore.dll",
+    "GuLiStrike": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrike.dll",
+    "GuLiFrameProfiler": "D:\\UE5.7\\test1\\Plugins\\GuLiFrameProfiler\\Binaries\\Win64\\UnrealEditor-GuLiFrameProfiler.dll"
+  },
+  "compiled_capture_fields": {
+    "GuLiStrike": {
+      "motion_queue_counters": true,
+      "stationary_unit_sent": true,
+      "stationary_unit_skipped": true
+    },
+    "GuLiFrameProfiler": {
+      "motion_queue_window": true,
+      "oldest_pending_ms_end": true
+    }
+  }
+}
