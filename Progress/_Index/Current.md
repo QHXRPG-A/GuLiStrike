@@ -84,6 +84,10 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游骑兵按键定向闪现与惯性拖拽动画 — 实施记录](../DevelopmentDocumentation/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | movement, presentation | 11/11 (100%) | — | 2026-11-08 |
+| [游骑兵跑步与闪现动画 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵跑步与闪现动画.md) | movement, presentation | — | — | 2026-11-08 |
+| [游骑兵全向提速与腿甲明暗 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵全向提速与腿甲明暗.md) | movement, presentation | — | — | 2026-11-08 |
+| [游骑兵转腿走位 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵转腿走位.md) | input, movement, network, presentation | — | — | 2026-11-08 |
 | [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | commander, navigation, network, performance, resource | 9/9 (100%) | — | 2026-11-05 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | camera, input, movement, network, presentation | 12/12 (100%) | — | 2026-11-04 |
 | [地面机甲逐发上身摆动 — 技术方案与交付](../DevelopmentDocumentation/20261028-地面机甲逐发上身摆动.md) | animation, combat | 7/7 (100%) | — | 2026-10-30 |

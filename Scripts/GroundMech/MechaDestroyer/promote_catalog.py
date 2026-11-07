@@ -14,7 +14,7 @@ digest=hashlib.sha256(BOOK.read_bytes()).hexdigest()
 updates = {
     'Models': {4001: {
         'ResourcePath': '/Game/GuLiStrike/GroundMech/MechaDestroyer_v1/Meshes/SK_MechaDestroyer.SK_MechaDestroyer',
-        'DisplayName': '玩家地面机甲 MechaDestroyer',
+        'DisplayName': '玩家游骑兵 MechaDestroyer',
         'Note': '2026-10-23 原模型先接通；三渲二与阵营色待设计和成品审核',
         'Description': 'Ground玩家整机骨骼，保留原控制/移动/建造/火箭跳/升级/网络玩法；左右枪交替，原总射速和伤害保持。',
     }},

@@ -1,6 +1,6 @@
 # 轻型装甲地面玩家
 
-当前制作、导表、相机采集与机动区维护见[游骑兵 3C 入口](MechaDestroyer/README.md)。
+当前动画集中在 `/Game/GuLiStrike/GroundMech/Animations`。手调源片段位于 `Source/A4B2`，角色运行资源位于 `A4B2`。制作、导表、相机采集与机动区维护见[游骑兵 3C 入口](MechaDestroyer/README.md)。
 
 ## 历史接入记录
 
@@ -75,9 +75,9 @@ Spider风格版入口为 `/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled
 
 ## 2026-09-21 动画蓝图、地空开火与下落调参
 
-当前腿部动画蓝图：`/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech`。打开AnimGraph的`GroundMechLocomotion`查看地面、起飞、空中循环、落地四状态；普通融合0.1秒，自然跌落跳过起飞，再次离地可中断落地。`UpdateFlightLean`管理15°和1秒进出；只旋转Hip_L/R，不影响上身挂点。速度10cm/s进入、5cm/s退出，方向取实际水平速度。
+当时的腿部动画蓝图（已退役）：`/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech`。打开AnimGraph的`GroundMechLocomotion`查看地面、起飞、空中循环、落地四状态；普通融合0.1秒，自然跌落跳过起飞，再次离地可中断落地。`UpdateFlightLean`管理15°和1秒进出；只旋转Hip_L/R，不影响上身挂点。速度10cm/s进入、5cm/s退出，方向取实际水平速度。
 
-商城22段动画复制在`Animations/Source/Legs`和`Animations/Source/Weapon`；项目`BS_GroundMech_Locomotion`的9个采样引用这些副本。`author_animation_assets.py`负责复制、图表制作及正式武器接线；默认保留已制作的蓝图图表，显式传入`REBUILD_ANIMATION_GRAPH=True`才重建。`import_assets.py`已沿用该入口。
+旧版曾将商城22段动画复制在`Animations/Source/Legs`和`Animations/Source/Weapon`；项目`BS_GroundMech_Locomotion`的9个采样引用这些副本。`author_animation_assets.py`负责复制、图表制作及正式武器接线；该旧制作入口与资源已一并退役。
 
 正式`BP_GroundMech_Light`绑定两张机甲表、默认升级1.1及机枪动画。射线未命中时使用远端目标；推进、滑行、下落和落地期间都允许持续射击，输入中断规则保持一致。
 

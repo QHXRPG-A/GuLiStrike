@@ -1,0 +1,298 @@
+{
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeMech_Gait",
+      "source_rows": [
+        "Idle",
+        "WalkForward",
+        "WalkBackward",
+        "StrafeLeft",
+        "StrafeRight",
+        "RunForward",
+        "RunBackward",
+        "TurnLeft",
+        "TurnRight",
+        "JumpStart",
+        "JumpLoop",
+        "Shoot",
+        "WalkBlend",
+        "RunBlend",
+        "BlinkForward",
+        "BlinkBackward",
+        "BlinkLeft",
+        "BlinkRight",
+        "BlinkBlend"
+      ],
+      "created": false,
+      "row_names": [
+        "Idle",
+        "WalkForward",
+        "WalkBackward",
+        "StrafeLeft",
+        "StrafeRight",
+        "RunForward",
+        "RunBackward",
+        "TurnLeft",
+        "TurnRight",
+        "JumpStart",
+        "JumpLoop",
+        "Shoot",
+        "WalkBlend",
+        "RunBlend",
+        "BlinkForward",
+        "BlinkBackward",
+        "BlinkLeft",
+        "BlinkRight",
+        "BlinkBlend"
+      ],
+      "row_checks": {
+        "Idle": true,
+        "WalkForward": true,
+        "WalkBackward": true,
+        "StrafeLeft": true,
+        "StrafeRight": true,
+        "RunForward": true,
+        "RunBackward": true,
+        "TurnLeft": true,
+        "TurnRight": true,
+        "JumpStart": true,
+        "JumpLoop": true,
+        "Shoot": true,
+        "WalkBlend": true,
+        "RunBlend": true,
+        "BlinkForward": true,
+        "BlinkBackward": true,
+        "BlinkLeft": true,
+        "BlinkRight": true,
+        "BlinkBlend": true
+      },
+      "imported": true
+    }
+  ],
+  "config_wired": [
+    "DT_GuLiStrikeMech_Gait"
+  ],
+  "unwired": [],
+  "errors": [],
+  "preflight": {
+    "tables": [
+      "DT_GuLiStrikeMech_Gait"
+    ],
+    "native_schema": "loaded fields verified",
+    "models": "validated when referenced"
+  },
+  "part_ids": {},
+  "ground_mobility": {
+    "configuration_fingerprint": "46b71c8394c796aff5d33c80a2545270",
+    "samples": [
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "Idle",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "StrafeLeft",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "StrafeRight",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "WalkForward",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Walk_FWD.Anim_Mecha_Walk_FWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "WalkBackward",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_WalK_BWD.Anim_Mecha_WalK_BWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "Idle",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "StrafeLeft",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "StrafeRight",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "RunForward",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Run_FWD.Anim_Run_FWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "RunBackward",
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Run_BWD.Anim_Mecha_Run_BWD",
+        "matches": true
+      }
+    ],
+    "curves": [
+      {
+        "row": "Idle",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 150,
+        "GroundPlant_R": 150
+      },
+      {
+        "row": "WalkForward",
+        "reference_speed": 182.62379455566406,
+        "sync_markers": 2,
+        "GroundPlant_L": 78,
+        "GroundPlant_R": 78
+      },
+      {
+        "row": "WalkBackward",
+        "reference_speed": 133.69619750976562,
+        "sync_markers": 2,
+        "GroundPlant_L": 75,
+        "GroundPlant_R": 75
+      },
+      {
+        "row": "StrafeLeft",
+        "reference_speed": 186.28964233398438,
+        "sync_markers": 2,
+        "GroundPlant_L": 35,
+        "GroundPlant_R": 35
+      },
+      {
+        "row": "StrafeRight",
+        "reference_speed": 202.7079620361328,
+        "sync_markers": 2,
+        "GroundPlant_L": 35,
+        "GroundPlant_R": 35
+      },
+      {
+        "row": "RunForward",
+        "reference_speed": 632.196533203125,
+        "sync_markers": 2,
+        "GroundPlant_L": 24,
+        "GroundPlant_R": 24
+      },
+      {
+        "row": "RunBackward",
+        "reference_speed": 559.7447509765625,
+        "sync_markers": 2,
+        "GroundPlant_L": 31,
+        "GroundPlant_R": 31
+      },
+      {
+        "row": "TurnLeft",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 63,
+        "GroundPlant_R": 63,
+        "turn_progress_end": 1
+      },
+      {
+        "row": "TurnRight",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 63,
+        "GroundPlant_R": 63,
+        "turn_progress_end": 1
+      }
+    ],
+    "walk_speed": 648,
+    "sprint_speed": 1296,
+    "success": true,
+    "asset_mutations": true,
+    "upper_aim_binding": {
+      "success": true,
+      "changed": false,
+      "existing_links_preserved": true
+    },
+    "contact_curves_rebaked": false,
+    "heavy_gait": {
+      "signature": "a34dbe3c93ef28a452ce3b39d4cb9931f1b330f065f6e1587469b959fbe31a29",
+      "previous_signature": "a34dbe3c93ef28a452ce3b39d4cb9931f1b330f065f6e1587469b959fbe31a29",
+      "changed": [],
+      "changed_gaits": [],
+      "authoring_report": "D:\\UE5.7\\test1\\ArtSource\\Characters\\GroundMech_MechaDestroyer_20261023\\Production_A4_B_v2\\UE_Export\\heavy_gait_authoring.json"
+    },
+    "camera_defaults_updated": false,
+    "free_camera": {
+      "Name": "Free",
+      "Id": 1,
+      "Note": "cm/deg/s; switch preserves current orbit; Camera local transform zero",
+      "ArmLength": 1347.431519,
+      "SocketOffset": "(X=0.000000,Y=298.402239,Z=443.557424)",
+      "PitchDegrees": -8.85,
+      "YawDegrees": 1.300004,
+      "FieldOfView": 90.000008,
+      "TransitionSeconds": 0.2,
+      "Sensitivity": 0.15,
+      "MinPitchDegrees": -75,
+      "MaxPitchDegrees": 70,
+      "MinDistance": 875.830444,
+      "MaxDistance": 2694.863037,
+      "ZoomStep": 122.018,
+      "BlinkHoldSeconds": 0,
+      "BlinkCatchupSeconds": 0.45,
+      "BlinkFovBoostDegrees": 15,
+      "BlinkFovReturnSeconds": 0.25,
+      "BlinkFovRiseSeconds": 0.08,
+      "BlinkArmLength": 500,
+      "BlinkPitchOffsetDegrees": 11,
+      "BlinkSideOffsetCm": 160
+    },
+    "aim_camera": {
+      "Name": "Aim",
+      "Id": 2,
+      "Note": "cm/deg/s; switch preserves current orbit; Camera local transform zero",
+      "ArmLength": 362.959686,
+      "SocketOffset": "(X=0.000000,Y=220.627273,Z=275.888687)",
+      "PitchDegrees": -9.65,
+      "YawDegrees": -3.7,
+      "FieldOfView": 90.0,
+      "TransitionSeconds": 0.2,
+      "Sensitivity": 0.15,
+      "MinPitchDegrees": -75,
+      "MaxPitchDegrees": 70,
+      "MinDistance": 235.923813,
+      "MaxDistance": 725.919373,
+      "ZoomStep": 122.018,
+      "BlinkHoldSeconds": 0,
+      "BlinkCatchupSeconds": 0.45,
+      "BlinkFovBoostDegrees": 15,
+      "BlinkFovReturnSeconds": 0.25,
+      "BlinkFovRiseSeconds": 0.08,
+      "BlinkArmLength": 350,
+      "BlinkPitchOffsetDegrees": 4,
+      "BlinkSideOffsetCm": 110
+    },
+    "manifests": [
+      {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "config_hash": "21663a019d713b10fee7c52fdd48b440b8b2c4c81f029d2f9dda979e6f806685",
+        "population": 200
+      },
+      {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "config_hash": "cb38881b89790c4f46371b485d1a099c9a134d0642b70c8b56d476191db59201",
+        "population": 600
+      }
+    ]
+  },
+  "orphan_tables": []
+}

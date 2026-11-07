@@ -38,27 +38,12 @@ def run():
         assert asset
         # Niagara refinement is performed by author_fire_niagara.py before review.
         save(asset)
-    unreal.SystemLibrary.execute_console_command(None, 'gs.MechFire.QA.AuthorCurve')
-    curve = unreal.load_asset(BASE + '/Animations/CF_Machinegun_Recoil')
+    curve = unreal.load_asset(BASE + '/Animations/A4B2/CF_Machinegun_Recoil')
     assert curve and abs(curve.get_float_value(.025)-1) < .00001
     REPORT['curve'] = [{'time': t, 'value': curve.get_float_value(t)} for t in [0,.025,.055,.1,.15]]
-    gun = unreal.load_asset(BASE + '/Style_v9/Meshes/SK_Machinegun')
-    sockets = unreal.SkeletonService.list_sockets(gun.get_path_name())
-    if not any(str(s.socket_name) == 'Muzzle' for s in sockets):
-        assert unreal.SkeletonService.add_socket(gun.get_path_name(), 'Muzzle', 'Barrel_end', unreal.Vector(), unreal.Rotator(pitch=90), unreal.Vector(1,1,1), False)
-    save(gun)
-    REPORT['socket'] = str(unreal.SkeletonService.get_socket_info(gun.get_path_name(), 'Muzzle'))
-    factory = unreal.AnimBlueprintFactory()
-    factory.set_editor_property('target_skeleton', gun.skeleton)
-    factory.set_editor_property('parent_class', unreal.GuLiGroundMechWeaponAnimInstance)
-    abp = create(BASE + '/Animations/ABP_GroundMech_Machinegun', unreal.AnimBlueprint, factory)
-    unreal.BlueprintEditorLibrary.compile_blueprint(abp)
-    defaults = unreal.get_default_object(abp.generated_class())
-    defaults.set_editor_property('recoil_curve', curve)
-    defaults.set_editor_property('recoil_bone', 'Barrel_big')
-    defaults.set_editor_property('recoil_target_z', 152.)
-    defaults.set_editor_property('recoil_duration', .15)
-    save(abp)
+    body = unreal.load_asset(BASE + '/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2')
+    assert body.find_socket('Muzzle') and body.find_socket('Muzzle_L')
+    REPORT['socket'] = str(body.find_socket('Muzzle'))
     namespace = {'__name__': 'mech_fire_import'}
     source = (ROOT / 'Scripts/import_data_to_engine.py').read_text(encoding='utf-8')
     exec(compile(source.split('report = {"tables": [], "config_wired": [], "unwired": [], "errors": []}',1)[0], 'import_data_to_engine.py', 'exec'), namespace)
@@ -85,7 +70,7 @@ def run():
     weapon.set_editor_property('weapon_enabled', True)
     weapon.set_editor_property('upgrade_table', unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Upgrades'))
     weapon.set_editor_property('skill_table', unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills'))
-    defaults.get_editor_property('machinegun').set_anim_instance_class(abp.generated_class())
+    defaults.get_editor_property('machinegun').set_editor_property('anim_class',unreal.GuLiGroundMechWeaponAnimInstance.static_class())
     save(bp)
     gm = duplicate(BASE + '/BP_GroundMech_DemoMode', BASE + '/Review/BP_GroundMech_FireReviewMode')
     unreal.BlueprintEditorLibrary.compile_blueprint(gm)

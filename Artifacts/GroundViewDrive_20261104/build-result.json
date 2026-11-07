@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "permission": "本次转腿走位：现在编译并加载",
+  "command": "D:/UnrealEngine-5.7/Engine/Build/BatchFiles/Build.bat GuLiStrikeEditor Win64 Development -Project=D:/UE5.7/test1/GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE",
+  "attempts": [
+    {
+      "exit_code": 6,
+      "log": "editor-build.log",
+      "diagnostic": "C4456: travel gait variable shadowed montage gait; renamed TravelGait."
+    },
+    {
+      "exit_code": 0,
+      "log": "editor-build-final.log"
+    }
+  ],
+  "exit_code": 0,
+  "build_ids": {
+    "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+    "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+    "D:/UE5.7/test1/Plugins/GuLiFlightNavigation/Binaries/Win64/UnrealEditor.modules": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+  },
+  "project_modules": {
+    "GuLiStrike": "UnrealEditor-GuLiStrike.dll",
+    "GuLiStrikeAnimGraph": "UnrealEditor-GuLiStrikeAnimGraph.dll",
+    "GuLiStrikeEditor": "UnrealEditor-GuLiStrikeEditor.dll"
+  },
+  "source_sha256": {
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.h": "7013fe14ef69973c3228fe10468b53f0cff87f65141e5bd1e1288866aa0727f2",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp": "31a4c13824fa45192722030156b392f91358159bef0a5febea09609f125b039a",
+    "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.cpp": "f48579c6faf0033ed60ecb06e9a0b73a01be0fef224819500d2a621016f33ebe",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp": "827938afd833445d1399e52c3a2c9f2935bd376ba58fdf93f4553b48a03b0f6e",
+    "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechDriveState.h": "39cdd8cb4cc58ef1f174b92130695f008e050633fb5d5d85b377a42eec6d04f2",
+    "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.cpp": "3153725779a689e414266fd36db467fa25dd0f2aeaa39758cf0c9ccc7ae0207f",
+    "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h": "3c02d9e4be61364bce0d6cbe90686e9940f85f86adf19368f4ea156d7dbbbc75",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp": "ae3fca901ffbc471c87f17ebeb3c6be7eef424ab98b71a72af0f34bbf45fb7ec",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundInputTypes.h": "381d2167073aa713fcf800c4f3432952cec3089375939107d820136e13b6db60",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/Private/GuLiHybridGroundInput.h": "97e33732ed11b47e8b44260f2f9941d9f7933fa64421e866189223fe828fff0e",
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeMechTableRows.h": "98a57a51f996818667966edcb1ae223cbd8ff69d1dcc429cc4d4d130a23e92f3"
+  }
+}

@@ -18,5 +18,6 @@ struct GULISTRIKE_API FGuLiGroundMechBlinkState
     UPROPERTY() FVector Start=FVector::ZeroVector;
     UPROPERTY() FVector End=FVector::ZeroVector;
     UPROPERTY() FVector Direction=FVector::ForwardVector;
-    UPROPERTY() float Yaw=0.f;
+    /** Body facing accepted by authority; Direction independently locks world displacement. */
+    UPROPERTY() float FacingYaw=0.f;
 };

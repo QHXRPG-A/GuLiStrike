@@ -9,7 +9,7 @@ import unreal
 ROOT=Path(unreal.Paths.project_dir()).resolve()
 OUT=ROOT/'ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export'
 BASE='/Game/GuLiStrike/GroundMech'
-ANIMS=BASE+'/MechaDestroyer_A4B2/Animations'
+ANIMS=BASE+'/Animations/A4B2'
 assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
 bp=unreal.load_asset(BASE+'/BP_GroundMech_Light')
 abp=unreal.load_asset(ANIMS+'/ABP_GroundMech_A4B2')
@@ -24,9 +24,11 @@ required={
  'AnimGraphNode_LocalToComponentSpace':['LocalPose','ComponentPose'],
  'AnimGraphNode_ComponentToLocalSpace':['ComponentPose','Pose'],
  'AnimGraphNode_GuLiGroundMechGrounding':['ComponentPose','Pose','Ground'],
- 'AnimGraphNode_GuLiGroundMechAim':['ComponentPose','Pose','AimPointComponent','bAimValid','bForwardAim','ReturnAlpha','RightReturnStart','LeftReturnStart','RightMuzzleLocal','LeftMuzzleLocal','RightRecoil','LeftRecoil','RecoilDistance','RightArmRecoil','LeftArmRecoil','ArmRecoilDegrees','BlinkPose','GunYawLimit','GunPitchUpLimit','GunPitchDownLimit'],
+ 'AnimGraphNode_GuLiGroundMechAim':['ComponentPose','Pose','AimPointComponent','bAimValid','bForwardAim','ReturnAlpha','RightReturnStart','LeftReturnStart','RightMuzzleLocal','LeftMuzzleLocal','RightRecoil','LeftRecoil','ArmRecoilDegrees','RecoilDistance','RightArmRecoil','LeftArmRecoil','GunYawLimit','GunPitchUpLimit','GunPitchDownLimit'],
+ 'AnimGraphNode_TwoWayBlend':['A','B','Alpha','Pose'],
  'AnimGraphNode_ApplyAdditive':['Base','Additive','Alpha','Pose'],
  'AnimGraphNode_BlendSpacePlayer':['X','Y','PlayRate','BlendSpace'],
+ 'AnimGraphNode_BlendSpaceEvaluator':['X','BlendSpace','NormalizedTime','Pose'],
  'AnimGraphNode_SequenceEvaluator':['Sequence','ExplicitTime'],
  'AnimGraphNode_SequencePlayer':['Sequence','PlayRate'],
  'AnimGraphNode_Slot':['Source','Pose'],
@@ -39,13 +41,40 @@ for n in nodes:
  pins={p.pin_name:p.is_connected for p in unreal.BlueprintService.get_node_pins(abp.get_path_name(),'AnimGraph',n.node_id)}
  assert all(pins.get(k,False) for k in required[n.node_type]),(n.node_type,pins)
  connections.append({'type':n.node_type,'pins':pins})
-for kind,count in {'AnimGraphNode_GuLiGroundMechGrounding':1,'AnimGraphNode_GuLiGroundMechAim':1,'AnimGraphNode_BlendSpacePlayer':2,'AnimGraphNode_SequenceEvaluator':3,'AnimGraphNode_SequencePlayer':3,'AnimGraphNode_ApplyAdditive':2,'AnimGraphNode_LayeredBoneBlend':2,'AnimGraphNode_Slot':1}.items():
+for kind,count in {'AnimGraphNode_GuLiGroundMechGrounding':1,'AnimGraphNode_GuLiGroundMechAim':1,'AnimGraphNode_BlendSpacePlayer':2,'AnimGraphNode_BlendSpaceEvaluator':1,'AnimGraphNode_SequenceEvaluator':3,'AnimGraphNode_TwoWayBlend':1,'AnimGraphNode_SequencePlayer':3,'AnimGraphNode_ApplyAdditive':2,'AnimGraphNode_LayeredBoneBlend':2,'AnimGraphNode_Slot':1}.items():
  assert counts.get(kind)==count,(kind,counts)
 assets=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.configure_mobility_assets(False))
 assert assets['success'],assets
 pawn=unreal.get_default_object(bp.generated_class())
 component=pawn.get_editor_property('mesh')
 assert component.anim_class==abp.generated_class()
+blink_blend=unreal.get_default_object(abp.generated_class()).get_editor_property('blink_blend')
+assert isinstance(blink_blend,unreal.BlendSpace1D)
+blink=unreal.load_asset(ANIMS+'/Anim_Mecha_Blink')
+assert blink==unreal.load_asset(ANIMS+'/Anim_Mecha_Blink') and blink.get_skeleton()==mesh.skeleton
+assert not blink.get_editor_property('enable_root_motion') and not blink.get_editor_property('loop')
+phase_markers={str(m.marker_name):m.time for m in unreal.AnimationLibrary.get_animation_sync_markers(blink)}
+assert 0<phase_markers['BlinkConceal']<phase_markers['BlinkRecovery']<blink.get_play_length()
+node_by_id={n.node_id:n for n in nodes}
+def upstream(node,pin):
+ detail=unreal.BlueprintService.get_node_details(abp.get_path_name(),'AnimGraph',node.node_id)
+ links=next(p.connections for p in detail.input_pins if p.pin_name==pin)
+ assert len(links)==1,(node.node_type,pin,links)
+ node_id,out_pin=links[0].split(':',1)
+ return node_by_id[node_id],out_pin
+root=next(n for n in nodes if n.node_type=='AnimGraphNode_Root')
+mix=upstream(root,'Result')[0]; seq=upstream(mix,'B')[0]
+assert mix.node_type=='AnimGraphNode_TwoWayBlend' and seq.node_type=='AnimGraphNode_BlendSpaceEvaluator'
+assert upstream(mix,'A')[0].node_type=='AnimGraphNode_ComponentToLocalSpace'
+assert [upstream(n,p)[1] for n,p in ((mix,'Alpha'),(seq,'BlendSpace'),(seq,'X'),(seq,'NormalizedTime'))]==['BlinkSequenceWeight','BlinkBlend','BlinkDirectionDegrees','BlinkNormalizedTime']
+run_switch=next(n for n in nodes if n.node_type=='AnimGraphNode_BlendListByBool' and upstream(n,'bActiveValue')[1]=='bIntegratedRunning')
+assert [upstream(upstream(run_switch,p)[0],'BlendSpace')[1] for p in ('BlendPose_0','BlendPose_1')]==['RunBlendSpace','WalkBlendSpace']
+run=unreal.load_asset(ANIMS+'/BlendSpace_Loco_Run')
+run_samples=[dict(x=s.get_editor_property('sample_value').x,y=s.get_editor_property('sample_value').y,
+                  asset=s.get_editor_property('animation').get_path_name()) for s in run.get_editor_property('sample_data')]
+blink_info=dict(asset=blink.get_path_name(),skeleton=mesh.skeleton.get_path_name(),duration=blink.get_play_length(),
+                markers=phase_markers,keys=blink.data_model_interface.get_number_of_keys(),
+                bone_tracks=list(map(str,blink.data_model_interface.get_bone_track_names())))
 assert unreal.get_default_object(abp.generated_class()).get_editor_property('root_motion_mode')==unreal.RootMotionMode.IGNORE_ROOT_MOTION
 boom=pawn.get_editor_property('camera_boom'); camera=pawn.get_editor_property('camera')
 camera_data={'arm_cm':boom.get_editor_property('target_arm_length'),'socket_offset':list(boom.get_editor_property('socket_offset').to_tuple()),'boom_rotation_roll_pitch_yaw':list(boom.get_relative_transform().rotation.rotator().to_tuple()),'camera_location':list(camera.get_relative_transform().translation.to_tuple()),'camera_rotation':list(camera.get_relative_transform().rotation.rotator().to_tuple()),'fov':camera.get_editor_property('field_of_view'),'collision_test':boom.get_editor_property('do_collision_test')}
@@ -117,6 +146,7 @@ for name,data in authored['clips'].items():
  clips.append({'asset':sequence.get_path_name(),'frames':model.get_number_of_frames()+1,'curves':curves,'markers':markers,'moving_turn_additive':bool(data.get('additive'))})
 report={'success':True,'scope':'Read saved asset structure and configuration only; no graph rebuild, compile, pose tick, PIE or images','graph':{'node_count':len(nodes),'node_types':counts,'connections':connections},'assets':assets,'camera':camera_data,'sockets':{n:str(mesh.find_socket(n).bone_name) for n in ['Muzzle','Muzzle_L','Jet_Outlet_R','Jet_Outlet_L']},'mesh_relative_transform':str(component.get_relative_transform()),'capsule_half_height':pawn.get_editor_property('capsule_component').get_unscaled_capsule_half_height(),'manifests':manifests,'tables':tables,'heavy_gait':{'signature':authored['signature'],'clips':clips}}
 path=OUT/GULI_MOBILITY_AUDIT_REPORT if 'GULI_MOBILITY_AUDIT_REPORT' in globals() else ROOT/'Artifacts/GroundMobility/asset-structure.json'
+report.update(blink=blink_info,run_blend_space=dict(asset=run.get_path_name(),samples=run_samples))
 path.parent.mkdir(parents=True,exist_ok=True)
 path.write_text(json.dumps(report,indent=2),encoding='utf8')
 unreal.MCPythonHelper.submit_result(json.dumps({'success':True,'nodes':len(nodes),'configuration_fingerprint':assets['configuration_fingerprint'],'camera':camera_data,'report':str(path)}))

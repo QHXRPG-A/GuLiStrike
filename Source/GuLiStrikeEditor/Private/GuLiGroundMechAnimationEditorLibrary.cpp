@@ -6,6 +6,8 @@
 #include "AnimGraphNode_BlendSpacePlayer.h"
 #include "AnimGraphNode_SequencePlayer.h"
 #include "AnimGraphNode_SequenceEvaluator.h"
+#include "AnimGraphNode_BlendSpaceEvaluator.h"
+#include "AnimGraphNode_TwoWayBlend.h"
 #include "AnimGraphNode_BlendListByBool.h"
 #include "AnimGraphNode_LayeredBoneBlend.h"
 #include "AnimGraphNode_LocalToComponentSpace.h"
@@ -20,6 +22,7 @@
 #include "Rendering/SkeletalMeshModel.h"
 #include "Rendering/SkeletalMeshLODModel.h"
 #include "Animation/BlendSpace.h"
+#include "Animation/BlendSpace1D.h"
 #include "Animation/AnimSingleNodeInstance.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMesh.h"
@@ -66,6 +69,38 @@ bool Bind(UEdGraph* Graph,UEdGraphNode* Node,const TCHAR* Pin,const TCHAR* Varia
 	FGraphNodeCreator<UK2Node_VariableGet> Creator(*Graph); auto* Get=Creator.CreateNode();
 	Get->VariableReference.SetSelfMember(Variable); Get->NodePosX=Node->NodePosX-220; Get->NodePosY=Node->NodePosY+160;
 	Creator.Finalize(); return Link(Get,Variable,Node,Pin);
+}
+UEdGraphNode* InputSource(UEdGraphNode* Node,const TCHAR* Name)
+{
+	const UEdGraphPin* Pin=Node?Node->FindPin(Name,EGPD_Input):nullptr;
+	return Pin && Pin->LinkedTo.Num()==1?Pin->LinkedTo[0]->GetOwningNode():nullptr;
+}
+UAnimGraphNode_BlendSpaceEvaluator* AddBlinkEvaluator(UEdGraph* Graph,int32 X,int32 Y,UBlendSpace* Blend)
+{
+	auto* Clip=Add<UAnimGraphNode_BlendSpaceEvaluator>(Graph,X,Y);
+	Clip->Node.SetBlendSpace(Blend); Clip->Node.SetLoop(false);
+	Clip->Node.bTeleportToNormalizedTime=true;
+	for (auto& Field:Clip->ShowPinForProperties)
+		if (Field.PropertyName==TEXT("BlendSpace") || Field.PropertyName==TEXT("X") || Field.PropertyName==TEXT("NormalizedTime")) Field.bShowPin=true;
+	Clip->ReconstructNode();
+	if (!Bind(Graph,Clip,TEXT("BlendSpace"),TEXT("BlinkBlend"))
+		|| !Bind(Graph,Clip,TEXT("X"),TEXT("BlinkDirectionDegrees"))
+		|| !Bind(Graph,Clip,TEXT("NormalizedTime"),TEXT("BlinkNormalizedTime"))) return nullptr;
+	return Clip;
+}
+bool AddBlinkLayer(UEdGraph* Graph,UEdGraphNode* Base,UAnimGraphNode_Root* Root,UBlendSpace* Blend)
+{
+	auto* Clip=AddBlinkEvaluator(Graph,Base->NodePosX,Base->NodePosY+340,Blend);
+	if (!Clip) return false;
+	auto* Mix=Add<UAnimGraphNode_TwoWayBlend>(Graph,Base->NodePosX+320,Base->NodePosY);
+	// The underlying gait and IK keep their phase even during the fully concealed pose.
+	FBoolProperty* AlwaysTick=FindFProperty<FBoolProperty>(FAnimNode_TwoWayBlend::StaticStruct(),TEXT("bAlwaysUpdateChildren"));
+	if (!AlwaysTick) return false;
+	AlwaysTick->SetPropertyValue_InContainer(&Mix->BlendNode,true);
+	Mix->ReconstructNode();
+	Root->NodePosX=Mix->NodePosX+340;
+	return Bind(Graph,Mix,TEXT("Alpha"),TEXT("BlinkSequenceWeight")) && Link(Base,TEXT("Pose"),Mix,TEXT("A"))
+		&& Link(Clip,TEXT("Pose"),Mix,TEXT("B")) && Link(Mix,TEXT("Pose"),Root,TEXT("Result"));
 }
 }
 FString UGuLiGroundMechAnimationEditorLibrary::ReadBlueprintPreviewCamera(UBlueprint* Blueprint)
@@ -233,6 +268,8 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 {
 	auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
 	if (!BP || !GEditor || GEditor->PlayWorld) return Json(R);
+	UBlendSpace* Blink=LoadObject<UBlendSpace>(nullptr,*(Folder/TEXT("BlendSpace_Mecha_Blink_Directional")));
+	if (!Blink || Blink->GetSkeleton()!=BP->TargetSkeleton) return Json(R);
 	UEdGraph* Graph=nullptr;
 	for (UEdGraph* G:BP->FunctionGraphs) if (G->GetFName()==TEXT("AnimGraph")) Graph=G;
 	if (!Graph) return Json(R);
@@ -345,7 +382,7 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 	OK &= Bind(Graph,IK,TEXT("Ground"),TEXT("Grounding"));
 	OK &= Link(IK,TEXT("Pose"),Aim,TEXT("ComponentPose"));
 	OK &= Link(Aim,TEXT("Pose"),ToLocal,TEXT("ComponentPose"));
-	OK &= Link(ToLocal,TEXT("Pose"),Root,TEXT("Result"));
+	OK &= AddBlinkLayer(Graph,ToLocal,Root,Blink);
 	for (const auto& Pair:TArray<TPair<FName,FName>>{
 		{TEXT("AimPointComponent"),TEXT("IntegratedAimPointComponent")},{TEXT("bAimValid"),TEXT("bIntegratedAimValid")},
 		{TEXT("bForwardAim"),TEXT("bForwardAim")},{TEXT("ReturnAlpha"),TEXT("ReturnAlpha")},
@@ -357,14 +394,96 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 		{TEXT("ArmRecoilDegrees"),TEXT("ArmRecoilDegrees")},
 		{TEXT("UpperBodyRecoilRotation"),TEXT("UpperBodyRecoilRotation")},
 		{TEXT("UpperBodyFrame"),TEXT("UpperBodyFrame")},
-		{TEXT("BlinkPose"),TEXT("BlinkPose")},
 		{TEXT("GunPitchUpLimit"),TEXT("GunPitchUpLimit")},{TEXT("GunPitchDownLimit"),TEXT("GunPitchDownLimit")}})
 		OK &= Bind(Graph,Aim,*Pair.Key.ToString(),*Pair.Value.ToString());
 	FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(BP);
 	FCompilerResultsLog Log; FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
+	if (OK && Log.NumErrors==0) BP->GeneratedClass->GetDefaultObject<UGuLiGroundMechAnimInstance>()->BlinkBlend=Blink;
 	R->SetBoolField(TEXT("connections_ok"),OK); R->SetNumberField(TEXT("compile_errors"),Log.NumErrors);
 	R->SetNumberField(TEXT("compile_warnings"),Log.NumWarnings); R->SetNumberField(TEXT("nodes"),Graph->Nodes.Num());
 	R->SetBoolField(TEXT("success"),OK && Log.NumErrors==0); return Json(R);
+}
+
+bool UGuLiGroundMechAnimationEditorLibrary::NotifyAnimationKeysPopulated(UAnimSequence* Sequence)
+{
+	if (!Sequence || !GEditor || GEditor->PlayWorld) return false;
+	Sequence->GetController().NotifyPopulated();
+	return Sequence->GetSamplingFrameRate()==Sequence->GetDataModelInterface()->GetFrameRate();
+}
+
+bool UGuLiGroundMechAnimationEditorLibrary::ConfigureBlinkBlend(UBlendSpace* Blend,UAnimSequence* Forward,UAnimSequence* Backward,UAnimSequence* Left,UAnimSequence* Right)
+{
+    if (!Cast<UBlendSpace1D>(Blend) || !GEditor || GEditor->PlayWorld) return false;
+    for (auto* Clip:{Forward,Backward,Left,Right})
+        if (!Clip || Clip->GetSkeleton()!=Blend->GetSkeleton()) return false;
+    auto* Property=FindFProperty<FStructProperty>(UBlendSpace::StaticClass(),TEXT("BlendParameters"));
+    if (!Property) return false;
+    Blend->Modify();
+    auto* Axis=Property->ContainerPtrToValuePtr<FBlendParameter>(Blend,0);
+    Axis->DisplayName=TEXT("Direction"); Axis->Min=-180.f; Axis->Max=180.f;
+    Axis->GridNum=8; Axis->bWrapInput=true; Axis->bSnapToGrid=false;
+    Blend->InterpolationParam[0].InterpolationTime=0.f;
+    Blend->TargetWeightInterpolationSpeedPerSec=0.f;
+    Blend->NotifyTriggerMode=ENotifyTriggerMode::None;
+    Blend->bLoop=false;
+    if (auto* P=FindFProperty<FBoolProperty>(UBlendSpace::StaticClass(),TEXT("bAllowMarkerBasedSync"))) P->SetPropertyValue_InContainer(Blend,false);
+    while (Blend->GetNumberOfBlendSamples()) Blend->DeleteSample(Blend->GetNumberOfBlendSamples()-1);
+    Blend->AddSample(Backward,FVector(-180,0,0)); Blend->AddSample(Left,FVector(-90,0,0));
+    Blend->AddSample(Forward,FVector::ZeroVector); Blend->AddSample(Right,FVector(90,0,0)); Blend->AddSample(Backward,FVector(180,0,0));
+    Blend->ResampleData(); Blend->PostEditChange(); Blend->MarkPackageDirty();
+    return Blend->GetNumberOfBlendSamples()==5;
+}
+
+FString UGuLiGroundMechAnimationEditorLibrary::BindBlinkAnimation(UAnimBlueprint* BP,UBlendSpace* Blend)
+{
+    auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
+    if (!BP || !Cast<UBlendSpace1D>(Blend) || Blend->GetSkeleton()!=BP->TargetSkeleton || !GEditor || GEditor->PlayWorld
+        || !BP->GeneratedClass || !BP->GeneratedClass->IsChildOf(UGuLiGroundMechAnimInstance::StaticClass())) return Json(R);
+    UEdGraph* Graph=nullptr;
+    for (UEdGraph* G:BP->FunctionGraphs) if (G->GetFName()==TEXT("AnimGraph")) Graph=G;
+    if (!Graph) return Json(R);
+    TArray<UAnimGraphNode_Root*> Roots; Graph->GetNodesOfClass(Roots);
+    if (Roots.Num()!=1) return Json(R);
+    auto* Root=Roots[0]; auto* Mix=Cast<UAnimGraphNode_TwoWayBlend>(InputSource(Root,TEXT("Result")));
+    if (!Mix || !Cast<UAnimGraphNode_ComponentToLocalSpace>(InputSource(Mix,TEXT("A")))) return Json(R);
+    auto Bound=[](UEdGraphNode* Node,const TCHAR* Pin,const TCHAR* Field)
+    {
+        const auto* Get=Cast<UK2Node_VariableGet>(InputSource(Node,Pin));
+        return Get && Get->VariableReference.GetMemberName()==FName(Field);
+    };
+    if (!Bound(Mix,TEXT("Alpha"),TEXT("BlinkSequenceWeight"))) return Json(R);
+    bool Changed=false;
+    auto* Clip=Cast<UAnimGraphNode_BlendSpaceEvaluator>(InputSource(Mix,TEXT("B")));
+    if (!Clip)
+    {
+        auto* Old=Cast<UAnimGraphNode_SequenceEvaluator>(InputSource(Mix,TEXT("B")));
+        if (!Old) return Json(R);
+        BP->Modify(); Graph->Modify(); Mix->Modify();
+        const auto Previous=Graph->Nodes;
+        Clip=AddBlinkEvaluator(Graph,Old->NodePosX,Old->NodePosY,Blend);
+        if (!Clip || !Link(Clip,TEXT("Pose"),Mix,TEXT("B")))
+        {
+            const auto Attempt=Graph->Nodes;
+            for (UEdGraphNode* Node:Attempt) if (!Previous.Contains(Node)) FBlueprintEditorUtils::RemoveNode(BP,Node,true);
+            Link(Old,TEXT("Pose"),Mix,TEXT("B")); return Json(R);
+        }
+        FBlueprintEditorUtils::RemoveNode(BP,Old,true);
+        for (UEdGraphNode* Node:Previous)
+            if (auto* Get=Cast<UK2Node_VariableGet>(Node); Get &&
+                (Get->VariableReference.GetMemberName()==TEXT("BlinkSequence") || Get->VariableReference.GetMemberName()==TEXT("BlinkSequenceTime")))
+                FBlueprintEditorUtils::RemoveNode(BP,Get,true);
+        FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(BP);
+        FCompilerResultsLog Log; FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
+        R->SetNumberField(TEXT("compile_errors"),Log.NumErrors); R->SetNumberField(TEXT("compile_warnings"),Log.NumWarnings);
+        if (Log.NumErrors>0) return Json(R);
+        Changed=true;
+    }
+    if (!Bound(Clip,TEXT("BlendSpace"),TEXT("BlinkBlend")) || !Bound(Clip,TEXT("X"),TEXT("BlinkDirectionDegrees"))
+        || !Bound(Clip,TEXT("NormalizedTime"),TEXT("BlinkNormalizedTime")) || !Clip->Node.bTeleportToNormalizedTime) return Json(R);
+    auto* Defaults=BP->GeneratedClass->GetDefaultObject<UGuLiGroundMechAnimInstance>();
+    if (Defaults->BlinkBlend!=Blend)
+    { Defaults->Modify(); Defaults->BlinkBlend=Blend; BP->MarkPackageDirty(); Changed=true; }
+    R->SetBoolField(TEXT("success"),true); R->SetBoolField(TEXT("changed"),Changed); return Json(R);
 }
 
 FString UGuLiGroundMechAnimationEditorLibrary::BindArmRecoil(UAnimBlueprint* BP)
@@ -380,7 +499,7 @@ FString UGuLiGroundMechAnimationEditorLibrary::BindArmRecoil(UAnimBlueprint* BP)
 	BP->Modify(); Graph->Modify(); Aim->Modify();
 	R->SetNumberField(TEXT("nodes_before"),Graph->Nodes.Num());
 	Aim->ReconstructNode(); bool OK=true;
-	for (const TCHAR* Name:{TEXT("RightArmRecoil"),TEXT("LeftArmRecoil"),TEXT("ArmRecoilDegrees"),TEXT("BlinkPose")})
+	for (const TCHAR* Name:{TEXT("RightArmRecoil"),TEXT("LeftArmRecoil"),TEXT("ArmRecoilDegrees")})
 	{
 		auto* Pin=Aim->FindPin(Name,EGPD_Input);
 		if (!Pin) { OK=false; continue; }
@@ -490,7 +609,10 @@ FString UGuLiGroundMechAnimationEditorLibrary::ConfigureMobilityAssets(bool bApp
 	{
 		auto* Seq=C.Asset<UAnimSequence>(Pair.Key);
 		if (auto* Montage=C.Asset<UAnimMontage>(Pair.Key)) Seq=Cast<UAnimSequence>(Montage->SlotAnimTracks[0].AnimTrack.AnimSegments[0].GetAnimReference());
-		if (!Seq || Pair.Key==TEXT("Shoot") || Pair.Key==TEXT("JumpStart") || Pair.Key==TEXT("JumpLoop")) continue;
+		// Blink is an airborne, phase-driven override. C.Load validates its phase
+		// markers; it must not require locomotion's ground-contact curves.
+		if (!Seq || Pair.Key==TEXT("Shoot") || Pair.Key==TEXT("JumpStart") || Pair.Key==TEXT("JumpLoop")
+			|| Pair.Key.ToString().StartsWith(TEXT("Blink"))) continue;
 		auto Item=MakeShared<FJsonObject>(); Item->SetStringField(TEXT("row"),Pair.Key.ToString());
 		Item->SetNumberField(TEXT("reference_speed"),Pair.Value.ReferenceSpeed); Item->SetNumberField(TEXT("sync_markers"),Seq->AuthoredSyncMarkers.Num());
 		for (const FName Name:{FName(TEXT("GroundPlant_L")),FName(TEXT("GroundPlant_R"))})

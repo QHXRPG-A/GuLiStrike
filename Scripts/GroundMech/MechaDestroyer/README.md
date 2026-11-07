@@ -2,6 +2,14 @@
 
 游骑兵使用 `BP_GroundMech_Light` 和 4001/A4B2。玩法参数在 `data/Excel/GuLiStrikeMech.xlsx` 维护。以下命令从项目根目录执行。编辑器步骤使用已加载项目原生模块的空闲编辑器。
 
+## 游骑兵动画目录
+
+在 UE 内容浏览器打开 `/Game/GuLiStrike/GroundMech/Animations`。在 `Source/A4B2` 手调 14 段项目自有源动画，在 `A4B2` 查看播放用动作、混合空间、转身蒙太奇、正式动画蓝图及机枪后坐曲线。A／D 对应 `Anim_Mecha_Strafe_L` 和 `Anim_Mecha_Strafe_R`。两个目录的同名片段使用不同骨架。商城包继续保留原资源。
+
+闪现直接编辑 `A4B2/Anim_Mecha_Blink`（前）及同名 `_back`、`_left`、`_right` 三份方向动画。在骨骼树选 `MiddleJoint`、`cockpit`、`GunArm_L/R` 或腿骨，通过 Additive 图层轨道编辑关键帧并保存；`Gun_L/R` 保持枪管装配关系。四份资源统一为 150 fps、82 采样点、0.54 秒，`BlinkConceal=0.02s`、`BlinkRecovery=0.24s`。技能表决定阶段时长，最终方向混合空间由权威时钟显式求值；日常导表不会重制这些手调曲线。当前操控和完成状态见[游骑兵闪现](../../../Progress/Gameplay/游骑兵闪现.md)。
+
+手调横移、前进或后退片段后，先用 `Scripts/ue_exec.py` 执行本目录的 `export_b2_source_animation_data.py`，将项目源动作重新采样，再执行下方步态导出、导入流程。正式产物由项目脚本写入 `Animations/A4B2`。机枪后坐使用该目录的 `CF_Machinegun_Recoil`，独立枪组件使用原生 `GuLiGroundMechWeaponAnimInstance`。
+
 | 需要做的事 | 当前入口 |
 |---|---|
 | 将修改过的 Excel 导出，再导入五张机动表、同步动画与清单 | 依次运行 `python Tools/DataPipeline/export_data_from_excel.py` 和 `python Scripts/ue_exec.py Scripts/GroundMech/MechaDestroyer/import_mobility_tables.py` |

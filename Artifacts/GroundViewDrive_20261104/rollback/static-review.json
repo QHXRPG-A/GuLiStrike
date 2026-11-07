@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "restored_mech_table_sha256": {
+    "data/Json/DT_GuLiStrikeMech_Camera.json": "30919229a3fdd1940180fa2713c14f6abff2a670473e7434860ea4fb82b875a1",
+    "data/Json/DT_GuLiStrikeMech_Gait.json": "5c5f1a54ef829af9908a992213b8d45411db598e63b88acceb4fdf9708407f41",
+    "data/Json/DT_GuLiStrikeMech_GroundIK.json": "38353c3f1e6f3b7fe822600de3ed6fe237718d0e1235128965594160471e1884",
+    "data/Json/DT_GuLiStrikeMech_Mobility.json": "87f4c67b7dbe60465aeb4b6378eb1e2c8a370667829723b8eb2aacbeae89fc9f",
+    "data/Json/DT_GuLiStrikeMech_Skills.json": "a9286d81d7a13ee4201527a4e7b298d185ecd82deb980e06a776903cb8fa63c3",
+    "data/Json/DT_GuLiStrikeMech_Upgrades.json": "88ae128c5125cf0f8b148418083130e9e5ec04d6b537d0f3e805922bad600747",
+    "data/Json/DT_GuLiStrikeMech_Visuals.json": "64d8f25745ecd2691ab1f47fe57df6b30c749722bb1999b85eb6cf124edba0b3"
+  },
+  "exported_table_count": 42,
+  "unchanged_relative_to_pre_feature_commit": [
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundInputTypes.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/Private/GuLiHybridGroundInput.h",
+    "Scripts/GroundMech/MechaDestroyer/author_backward_air_tuning.py",
+    "Scripts/GroundMech/MechaDestroyer/author_mobility_tables.py",
+    "Tools/DataPipeline/export_data_from_excel.py",
+    "Config/Hybrid/RuntimeManifest-200.json",
+    "Config/Hybrid/RuntimeManifest-600.json",
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeMechTableRows.h",
+    "data/Json/DT_GuLiStrikeMech_Skills.json",
+    "data/Json/DT_GuLiStrikeMech_Mobility.json"
+  ],
+  "upper_aim_and_legs_match_previous_build": {
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechUpperAimTypes.cpp": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.cpp": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.cpp": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp": true
+  },
+  "speeds_cm_s": {
+    "ground_forward": 216.0,
+    "ground_strafe": 172.8,
+    "air_forward": 324.0,
+    "air_strafe": 259.2,
+    "jet_forward": 864.0
+  },
+  "versions": {
+    "input": 7,
+    "state": 13,
+    "motion": 8,
+    "shared_controls": 7
+  },
+  "manifest_baseline": {
+    "200": {
+      "state": "13",
+      "mobility_fingerprint": "ec0ebffa7270cba3fe28edd917834499",
+      "config_hash": "bb89cb0ad7bd4f96db8a79fd43104a337bcd5881f261b57c75c705e719ef00ef"
+    },
+    "600": {
+      "state": "13",
+      "mobility_fingerprint": "ec0ebffa7270cba3fe28edd917834499",
+      "config_hash": "43a7f31b22f1fbc9b89fc0000a94151a22f469af119e1689df8dfbdda87c07a8"
+    }
+  },
+  "native_build": "passed (build-result.json)",
+  "ue_reimport": "Mobility and Skills saved; original five-table readback verified (restored-configuration.json)",
+  "player_acceptance": "not_run",
+  "scene_readback": "scene-delivery.json",
+  "editor_state": "editor-final-state.json"
+}

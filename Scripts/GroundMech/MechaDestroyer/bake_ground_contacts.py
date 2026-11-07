@@ -4,7 +4,7 @@ from pathlib import Path
 import unreal
 root=Path(unreal.Paths.project_dir()).resolve()
 out=root/'ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export'
-folder='/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations'
+folder='/Game/GuLiStrike/GroundMech/Animations/A4B2'
 mesh=unreal.load_asset('/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2')
 ik=json.loads((root/'Data/Json/DT_GuLiStrikeMech_GroundIK.json').read_text())[0]
 result=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.bake_ground_contacts(mesh,folder,ik['ContactHeightTolerance'],ik['ContactBlendHeight']))

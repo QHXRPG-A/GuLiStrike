@@ -25,7 +25,7 @@ struct FGuLiMechFireTestAccess
 
 namespace GuLiMechFireTests
 {
-	constexpr const TCHAR* CurvePath = TEXT("/Game/GuLiStrike/GroundMech/Animations/CF_Machinegun_Recoil");
+	constexpr const TCHAR* CurvePath = TEXT("/Game/GuLiStrike/GroundMech/Animations/A4B2/CF_Machinegun_Recoil");
 	void FillCurve(UCurveFloat& Curve)
 	{
 		Curve.FloatCurve.Reset();
@@ -124,6 +124,7 @@ bool FMechFireCadenceTest::RunTest(const FString&)
 #if WITH_EDITOR
 #include "HAL/IConsoleManager.h"
 #include "Misc/Paths.h"
+#include "Misc/PackageName.h"
 #include "Misc/FileHelper.h"
 #include "HAL/FileManager.h"
 #include "UObject/SavePackage.h"
@@ -240,7 +241,8 @@ namespace GuLiMechFireQA
 		if (!Curve) { Curve=NewObject<UCurveFloat>(Package,TEXT("CF_Machinegun_Recoil"),RF_Public|RF_Standalone); FAssetRegistryModule::AssetCreated(Curve); }
 		Curve->Modify(); FillCurve(*Curve); Curve->MarkPackageDirty();
 		FSavePackageArgs Args; Args.TopLevelFlags=RF_Public|RF_Standalone;
-		UPackage::SavePackage(Package,Curve,*(FPaths::ProjectContentDir()/TEXT("GuLiStrike/GroundMech/Animations/CF_Machinegun_Recoil.uasset")),Args);
+		const FString Filename=FPackageName::LongPackageNameToFilename(CurvePath,FPackageName::GetAssetPackageExtension());
+		UPackage::SavePackage(Package,Curve,*Filename,Args);
 	}));
 	FAutoConsoleCommand EmitterCommand(TEXT("gs.MechFire.QA.AuthorEmitterSpace"),TEXT("Set bounds/local space on project-owned candidate systems: bullet|muzzle."),FConsoleCommandWithArgsDelegate::CreateLambda([](const TArray<FString>& Args)
 	{

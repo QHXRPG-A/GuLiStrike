@@ -1,0 +1,172 @@
+{
+  "success": true,
+  "scope": "Source and exported-data inspection; digitized input matrix is an offline coordinate calculation, not a played match.",
+  "source_contracts": {
+    "input carries camera yaw and normalized axis": true,
+    "world command skips view transform": true,
+    "ground brake and align suppress translation": true,
+    "held sector carries signed speed around leg turn": true,
+    "grounded idle follows aim after stopping": true,
+    "turn curve synchronized and signed consistently at 180": true,
+    "walk animation uses signed gait and authored forward/backward references": true,
+    "air reads independent forward/right camera input": true,
+    "landing releases air acceleration": true,
+    "snapshot restores drive, input and gated versions": true,
+    "old input rejected": true
+  },
+  "versions": {
+    "State": 14,
+    "Motion": 9,
+    "Controls": 8,
+    "Input": 8
+  },
+  "input_matrix": [
+    {
+      "keys": "W",
+      "sector": "Forward",
+      "leg_degrees": 0,
+      "gait": "Forward",
+      "ground_cm_s": 216.0,
+      "air_cm_s": 324.0,
+      "powered_camera_forward_right_cm_s": [
+        864.0,
+        0.0
+      ]
+    },
+    {
+      "keys": "S",
+      "sector": "Back",
+      "leg_degrees": 0,
+      "gait": "Reverse",
+      "ground_cm_s": 216.0,
+      "air_cm_s": 324.0,
+      "powered_camera_forward_right_cm_s": [
+        -324.0,
+        0.0
+      ]
+    },
+    {
+      "keys": "A",
+      "sector": "Left",
+      "leg_degrees": 90,
+      "gait": "Reverse",
+      "ground_cm_s": 216.0,
+      "air_cm_s": 324.0,
+      "powered_camera_forward_right_cm_s": [
+        0.0,
+        -324.0
+      ]
+    },
+    {
+      "keys": "D",
+      "sector": "Right",
+      "leg_degrees": 90,
+      "gait": "Forward",
+      "ground_cm_s": 216.0,
+      "air_cm_s": 324.0,
+      "powered_camera_forward_right_cm_s": [
+        0.0,
+        324.0
+      ]
+    },
+    {
+      "keys": "W+A",
+      "sector": "ForwardLeft",
+      "leg_degrees": -45,
+      "gait": "Forward",
+      "ground_cm_s": 216.0,
+      "air_cm_s": 324.0,
+      "powered_camera_forward_right_cm_s": [
+        610.94,
+        -229.103
+      ]
+    },
+    {
+      "keys": "W+D",
+      "sector": "ForwardRight",
+      "leg_degrees": 45,
+      "gait": "Forward",
+      "ground_cm_s": 216.0,
+      "air_cm_s": 324.0,
+      "powered_camera_forward_right_cm_s": [
+        610.94,
+        229.103
+      ]
+    },
+    {
+      "keys": "S+A",
+      "sector": "BackLeft",
+      "leg_degrees": -135,
+      "gait": "Forward",
+      "ground_cm_s": 216.0,
+      "air_cm_s": 324.0,
+      "powered_camera_forward_right_cm_s": [
+        -229.103,
+        -229.103
+      ]
+    },
+    {
+      "keys": "S+D",
+      "sector": "BackRight",
+      "leg_degrees": 135,
+      "gait": "Forward",
+      "ground_cm_s": 216.0,
+      "air_cm_s": 324.0,
+      "powered_camera_forward_right_cm_s": [
+        -229.103,
+        229.103
+      ]
+    }
+  ],
+  "checked_camera_yaws": [
+    0,
+    33,
+    90,
+    179.99,
+    -179.99
+  ],
+  "checked_python_ast": [
+    "Scripts/GroundMech/MechaDestroyer/author_backward_air_tuning.py",
+    "Scripts/GroundMech/MechaDestroyer/author_mobility_tables.py",
+    "Scripts/GroundMech/MechaDestroyer/sync_mobility_assets.py",
+    "Scripts/GroundMech/MechaDestroyer/read_ground_mobility_assets.py",
+    "Scripts/GroundMech/MechaDestroyer/save_mobility_review_scene.py",
+    "Scripts/import_data_to_engine.py",
+    "Tools/DataPipeline/export_data_from_excel.py"
+  ],
+  "diff_check": 0,
+  "export_table_count": 42,
+  "changed_mech_json": [
+    "data/Json/DT_GuLiStrikeMech_Mobility.json",
+    "data/Json/DT_GuLiStrikeMech_Skills.json"
+  ],
+  "upper_and_grounding_implementation_matches_previous_build": {
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechUpperAimTypes.h": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechUpperAimTypes.cpp": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.h": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.cpp": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h": true,
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.cpp": true
+  },
+  "manifest_before_native_build": {
+    "200": {
+      "state": "13",
+      "mobility_fingerprint": "ec0ebffa7270cba3fe28edd917834499",
+      "config_hash": "bb89cb0ad7bd4f96db8a79fd43104a337bcd5881f261b57c75c705e719ef00ef"
+    },
+    "600": {
+      "state": "13",
+      "mobility_fingerprint": "ec0ebffa7270cba3fe28edd917834499",
+      "config_hash": "43a7f31b22f1fbc9b89fc0000a94151a22f469af119e1689df8dfbdda87c07a8"
+    }
+  },
+  "previous_saved_scene_evidence": "Artifacts/GroundUpperAim_20261104/scene-delivery.json",
+  "player_acceptance": "pending",
+  "pie": false,
+  "native_compile_at_static_review": "awaiting permission",
+  "scene_readback_at_static_review": "pending",
+  "native_compile": "passed (build-result.json)",
+  "new_scene_readback": "saved, ten entities (scene-delivery.json)",
+  "asset_readback": "asset-structure.json",
+  "editor_state": "editor-final-state.json"
+}

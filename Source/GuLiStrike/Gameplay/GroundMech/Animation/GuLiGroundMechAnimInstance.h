@@ -17,8 +17,11 @@ class GULISTRIKE_API UGuLiGroundMechAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") FGuLiMechGroundingSnapshot Grounding;
-	/** X=pose alpha, Y=rear arm angle, Z=upper-body lean. Evaluated after aim/IK. */
-	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") FVector BlinkPose=FVector::ZeroVector;
+	/** Full-body clip, sampled at the replicated ability phase rather than a second clock. */
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Blink") TObjectPtr<UBlendSpace> BlinkBlend;
+	UPROPERTY(BlueprintReadOnly,Category="Blink") float BlinkDirectionDegrees=0.f;
+	UPROPERTY(BlueprintReadOnly,Category="Blink") float BlinkNormalizedTime=0.f;
+	UPROPERTY(BlueprintReadOnly,Category="Blink") float BlinkSequenceWeight=0.f;
 	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") uint8 BlinkPhase=0;
 	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") float BlinkPhaseProgress=0.f;
 	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") float WalkPlayRate=1.f;

@@ -8,7 +8,6 @@ struct GULISTRIKE_API FAnimNode_GuLiGroundMechAim : public FAnimNode_SkeletalCon
 {
 	GENERATED_BODY()
 	FAnimNode_GuLiGroundMechAim();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Blink", meta=(PinShownByDefault)) FVector BlinkPose=FVector::ZeroVector;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Aim", meta=(PinShownByDefault)) FVector AimPointComponent = FVector::ZeroVector;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Aim", meta=(PinShownByDefault)) FQuat UpperBodyFrame = FQuat::Identity;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Aim", meta=(PinShownByDefault)) bool bAimValid = false;

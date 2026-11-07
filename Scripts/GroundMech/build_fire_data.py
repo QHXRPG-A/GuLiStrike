@@ -11,7 +11,7 @@ from vfx_registry import vfx_id
 CLI = r'D:\UE5.7\excelize-cli\bin\xlsx.exe'
 BOOK = ROOT / 'Data/Excel/GuLiStrikeMech.xlsx'
 FX = '/Game/GuLiStrike/FX/GroundMech'
-ANIM = '/Game/GuLiStrike/GroundMech/Animations'
+ANIM = '/Game/GuLiStrike/GroundMech/Animations/A4B2'
 
 
 def run(*args):
@@ -63,6 +63,6 @@ if __name__ == '__main__':
                 ('AimAssistEnabled','bool',False),('AimAssistRadiusCentimeters','float',False)],
                 [[1,'BasicMachinegun','基础机枪；距离cm、时间s；射速/伤害只在升级表维护',12000,5,15,
                   'Muzzle','Barrel_big',152,0.15,ANIM+'/CF_Machinegun_Recoil.CF_Machinegun_Recoil',
-                  ANIM+'/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun_C',
+                  '/Script/GuLiStrike.GuLiGroundMechWeaponAnimInstance',
                   vfx_id('PlayerBullet'),vfx_id('PlayerMuzzle'),True,100]])
     print(BOOK)

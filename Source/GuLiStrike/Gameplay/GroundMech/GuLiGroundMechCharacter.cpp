@@ -18,6 +18,7 @@
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
+#include "EnhancedPlayerInput.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PlayerController.h"
@@ -600,7 +601,15 @@ bool AGuLiGroundMechCharacter::RequestBlink()
 {
     if (!CanUseControls() || !IsShoulderLookActive() || !MobilityConfiguration.bReady) return false;
     bSprintHeld=false;
-    return Blink->QueueRequest(HybridInput,FRotator::CompressAxisToShort(MechCameraController->GetViewYaw()));
+    // Enhanced Input has evaluated every action before dispatching Started callbacks.
+    // Reading the action here avoids depending on the Move callback's order this frame.
+    FVector2D Axis=FVector2D::ZeroVector;
+    if (const auto* PC=Cast<APlayerController>(GetController()))
+        if (const auto* Input=Cast<UEnhancedPlayerInput>(PC->PlayerInput); Input && MoveAction)
+            Axis=Input->GetActionValue(MoveAction).Get<FVector2D>().GetClampedToMaxSize(1.f);
+    const float CameraYaw=MechCameraController->GetViewYaw();
+    const float DirectionYaw=Axis.IsNearlyZero()?CameraYaw:CameraYaw+FMath::RadiansToDegrees(FMath::Atan2(Axis.X,Axis.Y));
+    return Blink->QueueRequest(HybridInput,FRotator::CompressAxisToShort(DirectionYaw));
 }
 const FGuLiGroundMechBlinkState& AGuLiGroundMechCharacter::GetBlinkState() const { return Blink->GetState(); }
 uint8 AGuLiGroundMechCharacter::GetBlinkPhase() const { return Blink->GetState().Phase; }

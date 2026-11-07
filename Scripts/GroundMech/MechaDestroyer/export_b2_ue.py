@@ -44,6 +44,14 @@ bpy.ops.object.mode_set(mode='EDIT')
 for b in rig.data.edit_bones:b.head*=100;b.tail*=100
 bpy.ops.object.mode_set(mode='OBJECT')
 data=bpy.data.meshes.new('SK_GroundMech_A4B2');data.from_pydata(vertices,[],faces);data.update()
+leg_bones={f'{part}_{side}' for side in ('L','R') for part in ('UpperLeg','Leg','Foot','FootEnd')}
+assert leg_bones.issubset(weights)
+# White is the unmasked default. Only the rigid leg pieces opt into the softer toon thresholds.
+leg_colors=data.color_attributes.new(name='GuLi_LegBands',type='BYTE_COLOR',domain='CORNER')
+data.color_attributes.active_color=leg_colors
+for loop in data.loops:
+    alpha=0.0 if weights[loop.vertex_index] in leg_bones else 1.0
+    leg_colors.data[loop.index].color=(1.0,1.0,1.0,alpha)
 mesh=bpy.data.objects.new('SK_GroundMech_A4B2',data);scene.collection.objects.link(mesh)
 for role in mats:
     m=bpy.data.materials.new('M_'+role);data.materials.append(m)
@@ -57,5 +65,7 @@ bpy.context.view_layer.update()
 dest=OUT/'SK_GroundMech_A4B2.fbx'
 bpy.ops.export_scene.fbx(filepath=str(dest),use_selection=True,object_types={'MESH','ARMATURE'},global_scale=1,apply_unit_scale=True,apply_scale_options='FBX_SCALE_ALL',use_space_transform=True,bake_space_transform=False,axis_forward='-Y',axis_up='Z',use_mesh_modifiers=True,mesh_smooth_type='FACE',add_leaf_bones=False,use_armature_deform_only=False,bake_anim=False,path_mode='AUTO',use_custom_props=False)
 report={'success':True,'source':str(source_path),'source_sha256':hashlib.sha256(source_path.read_bytes()).hexdigest(),'fbx':str(dest),'fbx_sha256':hashlib.sha256(dest.read_bytes()).hexdigest(),'materials':mats,'parts':parts_report,'bones':[b.name for b in rig.data.bones],'vertices':len(vertices),'dimensions_cm':[max(v[i] for v in vertices)-min(v[i] for v in vertices) for i in range(3)],'min_cm':[min(v[i] for v in vertices) for i in range(3)],'max_cm':[max(v[i] for v in vertices) for i in range(3)]}
+report['leg_band_mask']={'attribute':leg_colors.name,'leg_alpha':0,'other_alpha':255,
+    'leg_vertices':sum(b in leg_bones for b in weights),'leg_bones':sorted(leg_bones)}
 (OUT/'export_report.json').write_text(json.dumps(report,indent=2),encoding='utf8')
 print(json.dumps({k:v for k,v in report.items() if k not in ['parts','bones']}))

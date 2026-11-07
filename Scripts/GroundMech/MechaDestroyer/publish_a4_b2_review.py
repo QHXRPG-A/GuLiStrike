@@ -98,7 +98,7 @@ if annotation:
 (OUT/'approval_A.json').write_text(json.dumps(approval,ensure_ascii=False,indent=2),encoding='utf8')
 g=json.loads((OUT/'geometry_report.json').read_text(encoding='utf8'))
 blend=OUT/'GroundMech_A4B2_Editable_B_v2.blend'
-readme=f'''# 地面机甲 A_v4 — Blender B_v2 修订中
+readme=f'''# 游骑兵 A_v4 — Blender B_v2 修订中
 
 A_v4 为基础，叠加用户本轮双枪加长50%等六处明确修订。B_v1 已被用户指出“不一致”，当前 B_v2 继续修订，**未通过 B 审核，未宣称三视图无差异**。
 
@@ -171,9 +171,9 @@ A_v4 为基础，叠加用户本轮双枪加长50%等六处明确修订。B_v1 �
 这些技术检查不等于外观通过。B_v2 的完整动画适配、正式 UE 资源提升和 Ground 全玩法运行仍未完成；原包动画和蓝图未被本次模型修订覆盖。B_v1 的待机预览不是 B_v2 全动作兼容证明。
 '''
 (OUT/'REVIEW.md').write_text(readme,encoding='utf8')
-html='''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>地面机甲 A_v4 / B_v2</title>
+html='''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>游骑兵 A_v4 / B_v2</title>
 <style>body{font:16px/1.6 system-ui;background:#f3f1ec;color:#25333d;margin:28px}h1{font-size:26px}.status{padding:14px;background:#fff3dc;border-left:4px solid #b07b36}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}figure{margin:14px 0;padding:14px;background:white;border-radius:12px}img{width:100%;display:block}figcaption{font-weight:600;margin-bottom:10px}a{color:#276c8b}@media(max-width:1100px){.grid{grid-template-columns:1fr}}</style>
-<h1>地面机甲 A_v4 / Blender B_v2</h1><p class="status">B_v2 修改中。A 已确认，B_v1 被指出不一致；B_v2 未通过美术审核，未宣称三视图无差异。</p>
+<h1>游骑兵 A_v4 / Blender B_v2</h1><p class="status">B_v2 修改中。A 已确认，B_v1 被指出不一致；B_v2 未通过美术审核，未宣称三视图无差异。</p>
 <p>最新枪体细化：八角前护圈、凸起顶盖、叠装侧甲、三段枪口与内凹枪膛、折角下托架；1.5倍总长、挂点、骨骼和非枪体几何保持。<a href="gun_detail_revision.json">枪体修改记录</a>。</p>
 <div class="grid"><figure><figcaption>已审参考：武器结构</figcaption><img src="References/Approved_UpperBody_Detail.png"></figure><figure><figcaption>本轮实际模型：枪体细节</figcaption><img src="Previews/07_WeaponAssembly.png"></figure></div>
 <p>最新六处标注：双枪加长50%并独立分件；矩形面板改为贴合切角形；后臂支架收拢；腿侧护甲与内膝件重做厚度和位置；脚部通过内收支承明确分层。<a href="annotation_revision.json">本轮修改记录</a>。枪口同步移动，骨骼和既有驱动器保持。</p>

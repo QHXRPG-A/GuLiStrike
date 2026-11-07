@@ -25,7 +25,7 @@ def cells(sheet,updates):
 def patch_row(sheet,identity,updates):
     grid=read(BOOK,sheet);idx=next(i for i,r in enumerate(grid[3:],4) if r[0]==str(identity))
     cells(sheet,[{'cell':letter(grid[0].index(k)+1)+str(idx),'value':v,'type':'bool' if isinstance(v,bool) else 'string'} for k,v in updates.items()])
-patch_row('Models',4001,{'ResourcePath':BASE+'/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2','DisplayName':'玩家地面机甲 A4 B2','bTeamColorEnabled':True,'Note':'用户授权导入当前 Blender 定稿；UE效果待用户验收','Description':'Ground玩家整机骨骼，三档明暗、阵营主辅色；左右枪交替，保留原移动、建造、火箭跳、升级和网络玩法。'})
+patch_row('Models',4001,{'ResourcePath':BASE+'/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2','DisplayName':'玩家游骑兵 A4 B2','bTeamColorEnabled':True,'Note':'用户授权导入当前 Blender 定稿；UE效果待用户验收','Description':'Ground玩家整机骨骼，三档明暗、阵营主辅色；左右枪交替，保留原移动、建造、火箭跳、升级和网络玩法。'})
 patch_row('Parts',4,{'PartKey':'Body','Note':'A4 B2整机含双枪和喷气口；旧分件模型ID4002-4004保留'})
 grid=read(BOOK,'Parts')
 for i,r in reversed(list(enumerate(grid[3:],4))):

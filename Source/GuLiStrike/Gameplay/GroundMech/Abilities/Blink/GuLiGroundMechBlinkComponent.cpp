@@ -124,14 +124,12 @@ void UGuLiGroundMechBlinkComponent::StartFromAbility()
 {
     auto& B=BlinkState;
     B.Direction=FRotator(0,FRotator::DecompressAxisFromShort(Mech()->GetHybridSimulationInput().BlinkYaw),0).Vector();
-    B.Start=Mech()->GetActorLocation(); B.End=PreparedBlinkDestination; B.Yaw=B.Direction.Rotation().Yaw;
-    // An accepted blink always becomes a forward dash. Its locked camera yaw
-    // is also the body's yaw before the windup pose and first swept movement.
-    Mech()->SetActorRotation(FRotator(0,B.Yaw,0));
+    B.Start=Mech()->GetActorLocation(); B.End=PreparedBlinkDestination;
+    B.FacingYaw=FRotator::NormalizeAxis(Mech()->GetActorRotation().Yaw);
     B.Phase=1; B.Elapsed=0.f; ++B.Serial;
     auto* Move=CastChecked<UGuLiGroundMechMovementComponent>(Mech()->GetCharacterMovement());
     BlinkSimulationDisplacementRevision=Move->GetDisplacementRevision();
-    Mech()->ResetFacingForBlink(B.Yaw);
+    Mech()->ResetFacingForBlink(B.FacingYaw);
     NotifyStateChanged();
     SendEvent();
 }

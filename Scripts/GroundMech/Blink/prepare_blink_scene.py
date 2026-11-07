@@ -77,4 +77,76 @@ def main():
         'ribbon_count':fx['ribbon_count'],'emitters':streams,'saved':True}))
 
 
-main()
+def prepare_directional_scene():
+    """Extend the existing mobility floor; save and read only related entities."""
+    import math
+    level=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
+    assert not level.is_in_play_in_editor()
+    world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+    assert world.get_path_name().split('.')[0]=='/Game/Maps/LVL_CommanderMassPrototype'
+    subsystem=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
+    actors={a.get_actor_label():a for a in subsystem.get_all_level_actors()}
+    entry=actors['GroundMobility_Entry']; flat=actors['GroundMobility_Flat']
+    position=entry.get_actor_location()
+    assert (position-unreal.Vector(-2800,50000,1149.04)).length()<.01
+    preserved={n:actors[n].get_actor_transform().export_text() for n in ('GroundMobility_Slope18','Ground3C_LookLeft','Ground3C_LookRight','GroundBlink_TransitWall')}
+    flat.modify(); flat.set_actor_location(unreal.Vector(position.x,position.y,880),False,False)
+    flat.set_actor_scale3d(unreal.Vector(80,80,.5))
+    assert str(flat.static_mesh_component.get_collision_profile_name())=='BlockAll'
+    cylinder=unreal.load_asset('/Engine/BasicShapes/Cylinder.Cylinder')
+    material=actors['Ground3C_LookLeft'].static_mesh_component.get_material(0)
+    assert cylinder and material
+    marker_names=[]
+    for degrees in range(0,360,45):
+        radians=math.radians(degrees)
+        point=unreal.Vector(position.x+3200*math.cos(radians),position.y+3200*math.sin(radians),907)
+        name=f'GroundBlink_Landing_{degrees:03d}'
+        marker=actors.get(name) or subsystem.spawn_actor_from_class(unreal.StaticMeshActor,point)
+        assert isinstance(marker,unreal.StaticMeshActor)
+        marker.modify(); marker.set_actor_label(name); marker.set_folder_path('Review/GroundMobility/BlinkDirections')
+        marker.set_actor_location(point,False,False); marker.set_actor_rotation(unreal.Rotator(),False)
+        marker.set_actor_scale3d(unreal.Vector(2.8,2.8,.02))
+        marker.static_mesh_component.set_static_mesh(cylinder); marker.static_mesh_component.set_material(0,material)
+        marker.static_mesh_component.set_collision_profile_name('NoCollision')
+        marker.static_mesh_component.set_editor_property('cast_shadow',False)
+        marker.set_editor_property('tags',['GuLi.Review.GroundBlinkDirectional','Distance3200'])
+        label_name=name+'_Label'; label=actors.get(label_name) or subsystem.spawn_actor_from_class(unreal.TextRenderActor,point+unreal.Vector(0,0,100))
+        label.modify(); label.set_actor_label(label_name); label.set_folder_path('Review/GroundMobility/BlinkDirections')
+        label.set_actor_location(point+unreal.Vector(0,0,100),False,False)
+        label.set_actor_rotation(unreal.Rotator(pitch=0,yaw=degrees+180,roll=0),False)
+        text=label.get_component_by_class(unreal.TextRenderComponent)
+        text.set_text(f'32 m / {degrees}°'); text.set_world_size(75)
+        marker_names.extend([name,label_name])
+    entry.modify(); tags=list(entry.get_editor_property('tags'))
+    if unreal.Name('GuLi.Review.GroundBlinkDirectional') not in tags: tags.append(unreal.Name('GuLi.Review.GroundBlinkDirectional'))
+    entry.set_editor_property('tags',tags)
+    assert level.save_current_level()
+    actors={a.get_actor_label():a for a in subsystem.get_all_level_actors()}
+    entities=[]
+    for name in ['GroundMobility_Entry','GroundMobility_Flat',*preserved,*marker_names]:
+        actor=actors[name]; center,extent=actor.get_actor_bounds(False)
+        row={'label':name,'class':actor.get_class().get_name(),'location':actor.get_actor_location().to_tuple(),
+             'scale':actor.get_actor_scale3d().to_tuple(),'bounds':[center.to_tuple(),extent.to_tuple()]}
+        if name in preserved: assert actor.get_actor_transform().export_text()==preserved[name]
+        if name.startswith('GroundBlink_Landing_') and not name.endswith('_Label'):
+            assert abs((actor.get_actor_location()-position).length2d()-3200)<.01
+            row['collision']=str(actor.static_mesh_component.get_collision_profile_name())
+            assert row['collision']=='NoCollision'
+        entities.append(row)
+    center,extent=flat.get_actor_bounds(False)
+    assert abs(center.x-position.x)<.01 and abs(center.y-position.y)<.01 and extent.x>=4000 and extent.y>=4000
+    gm=unreal.get_default_object(world.get_world_settings().get_editor_property('default_game_mode'))
+    pawn_class=gm.get_editor_property('default_ground_pawn_class')
+    mesh=unreal.get_default_object(pawn_class).get_editor_property('mesh')
+    assert 'BP_GroundMech_Light' in pawn_class.get_path_name()
+    assert mesh.get_editor_property('skeletal_mesh_asset').get_name()=='SK_GroundMech_A4B2'
+    assert 'ABP_GroundMech_A4B2' in mesh.get_editor_property('anim_class').get_path_name()
+    report={'success':True,'map':world.get_path_name(),'saved':True,'entities':entities,
+            'ground_class':pawn_class.get_path_name(),'mesh':mesh.get_editor_property('skeletal_mesh_asset').get_path_name(),
+            'anim_class':mesh.get_editor_property('anim_class').get_path_name(),'PIE_started':False,'visual_approval':'pending_player'}
+    path=Path(unreal.Paths.project_dir())/'Artifacts/GroundDirectionalBlink_20261107/scene-readback.json'
+    path.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
+    return report
+
+
+if __name__=='__main__': main()

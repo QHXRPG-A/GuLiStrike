@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 BOOK = ROOT / 'Data/Excel/GuLiStrikeMech.xlsx'
 CLI = r'D:\UE5.7\excelize-cli\bin\xlsx.exe'
-ANIMS = '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/'
+ANIMS = '/Game/GuLiStrike/GroundMech/Animations/A4B2/'
 
 def cli(*args):
     return subprocess.check_output([CLI, *map(str,args)], encoding='utf-8')
@@ -106,7 +106,8 @@ def restore_3c():
     original = hashlib.sha256(BOOK.read_bytes()).digest()
     mobility_fields = ('StrafeSpeedMultiplier', 'UpperBodyAimResponseSeconds', 'UpperBodyAimSnapToleranceDegrees')
     values = source('Mobility')['Default']
-    mobility = {k: values[k] for k in (*mobility_fields, 'MovingTurnRate', 'TurnStartDegrees', 'TurnStopDegrees')}
+    mobility = {k: values[k] for k in (*mobility_fields, 'WalkSpeed', 'SprintSpeed', 'Acceleration',
+                                        'Braking', 'MovingTurnRate', 'TurnStartDegrees', 'TurnStopDegrees')}
     gait_fields = ('HorizontalMotionScale', 'SwingLiftScale', 'PelvisMotionScale', 'SafeMaxStrideScale')
     gait = {name: {k: row[k] for k in (*gait_fields, 'BasePlayRate', 'ReferenceSpeed')} for name, row in source('Gait').items()}
     free = source('Camera')['Free']
@@ -139,7 +140,7 @@ def seed():
     existing=json.loads(cli('sheets',BOOK,'--json'))['sheets']
     # CLI returns a string array.
     definitions={}
-    mobility=dict(WalkSpeed=720.,SprintSpeed=1440.,Acceleration=2880.,Braking=2880.,
+    mobility=dict(WalkSpeed=648.,SprintSpeed=1296.,Acceleration=2592.,Braking=2592.,
         MovingTurnRate=540.,TurnStartDegrees=15.,TurnStopDegrees=5.,TurnMovementThreshold=10.,
         GunYawLimit=75.,GunPitchUpLimit=80.,GunPitchDownLimit=65.,
         UpperBodyAimResponseSeconds=.10,UpperBodyAimSnapToleranceDegrees=.05)
@@ -151,7 +152,9 @@ def seed():
         ('StrafeLeft','Anim_Mecha_Strafe_L'),('StrafeRight','Anim_Mecha_Strafe_R'),('RunForward','Anim_Run_FWD'),
         ('RunBackward','Anim_Mecha_Run_BWD'),('TurnLeft','Montage_Mecha_Turn_L_Montage'),('TurnRight','Montage_Mecha_Turn_R_Montage'),
         ('JumpStart','Anim_Mecha_Jump_Start'),('JumpLoop','Anim_Mecha_Jump_Loop'),('Shoot','Anim_Mecha_Shoot'),
-        ('WalkBlend','BlendSpace_Loco_Walk'),('RunBlend','BlendSpace_Loco_Run')]
+        ('WalkBlend','BlendSpace_Loco_Walk'),('RunBlend','BlendSpace_Loco_Run'),
+        ('BlinkForward','Anim_Mecha_Blink'),('BlinkBackward','Anim_Mecha_Blink_back'),
+        ('BlinkLeft','Anim_Mecha_Blink_left'),('BlinkRight','Anim_Mecha_Blink_right'),('BlinkBlend','BlendSpace_Mecha_Blink_Directional')]
     rows=[]
     for i,(name,clip) in enumerate(clips,1):
         rows.append(dict(id=i,name=name,Note='ReferenceSpeed derived from planted sole displacement (cm/s)',Asset=asset(clip),
@@ -193,6 +196,28 @@ def calibrate(path):
                 cells.append({'cell':f'{column(col+1)}{row_index}','value':value,'type':'float'})
         if cells: write(name,cells)
 
+def ensure_blink_references():
+    """Append official references once; preserve existing tuning and animation assets."""
+    raw=json.loads(cli('read',BOOK,'--sheet','Gait','--format','json','--raw'))['rows']
+    headers,types=raw[:2]
+    data=[dict(zip(headers,row)) for row in raw[3:]]
+    existing={r['name'] for r in data}
+    template=next(r for r in data if r['name']=='JumpStart')
+    next_id=max(int(r['id']) for r in data)+1
+    cells=[]; index=len(raw)+1
+    for key,clip in [('BlinkForward','Anim_Mecha_Blink'),('BlinkBackward','Anim_Mecha_Blink_back'),
+                     ('BlinkLeft','Anim_Mecha_Blink_left'),('BlinkRight','Anim_Mecha_Blink_right'),
+                     ('BlinkBlend','BlendSpace_Mecha_Blink_Directional')]:
+        if key in existing: continue
+        row=dict(template,id=next_id,name=key,Note='Directional blink; explicit phase time; preserve artist layers',Asset=asset(clip),ReferenceSpeed=1,BasePlayRate=1)
+        for col,(header,kind) in enumerate(zip(headers,types),1):
+            value=row.get(header,'')
+            if kind in ('int','float') and value!='': value=float(value) if kind=='float' else int(value)
+            cells.append({'cell':f'{column(col)}{index}','value':value,'type':'string' if kind in ('str','softobject') or value=='' else kind})
+        index+=1; next_id+=1
+    write('Gait',cells)
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
     operation=parser.add_mutually_exclusive_group()
@@ -201,6 +226,7 @@ if __name__=='__main__':
     operation.add_argument('--camera-capture', type=Path, help='Apply a chosen preview capture to Camera.Free')
     args=parser.parse_args()
     seed()
+    ensure_blink_references()
     if args.calibration: calibrate(args.calibration)
     if args.restore_3c: restore_3c()
     if args.camera_capture: apply_camera_capture(args.camera_capture)

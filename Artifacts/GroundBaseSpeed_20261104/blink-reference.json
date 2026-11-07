@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "abp": "/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2",
+  "skeleton_controls": {
+    "AnimGraphNode_GuLiGroundMechGrounding": {
+      "Ground": true
+    },
+    "AnimGraphNode_GuLiGroundMechAim": {
+      "BlinkPose": true
+    }
+  },
+  "excel_sheet": "技能表",
+  "excel_row": 6,
+  "key": "Blink",
+  "settings": {
+    "BlinkWindupSeconds": 0.02,
+    "BlinkConcealSeconds": 0.22,
+    "BlinkRecoverySeconds": 0.3,
+    "BlinkCrouchDepthCm": 60,
+    "BlinkKneeAngleDegrees": 80,
+    "BlinkArmBackDegrees": 145,
+    "BlinkBodyLeanDegrees": 30,
+    "BlinkDistance": 3200
+  },
+  "visual_effects": {
+    "56": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink",
+    "57": "/Game/GuLiStrike/FX/GroundMech/Blink/DA_GroundMech_BlinkVfx.DA_GroundMech_BlinkVfx"
+  }
+}

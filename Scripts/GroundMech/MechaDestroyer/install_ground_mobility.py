@@ -5,7 +5,7 @@ import unreal
 ROOT=Path(unreal.Paths.project_dir()).resolve()
 OUT=ROOT/'ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export'
 BASE='/Game/GuLiStrike/GroundMech'
-ANIMS=BASE+'/MechaDestroyer_A4B2/Animations'
+ANIMS=BASE+'/Animations/A4B2'
 assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
 abp=unreal.load_asset(ANIMS+'/ABP_GroundMech_A4B2')
 report=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.build_animation_graph(abp,ANIMS))

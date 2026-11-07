@@ -1,0 +1,592 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "entities": [
+    {
+      "label": "GroundMobility_Entry",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          -2800.0,
+          50000.0,
+          1149.04
+        ],
+        [
+          128.0,
+          128.0,
+          128.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundMobility_Flat",
+      "class": "StaticMeshActor",
+      "location": [
+        -2800.0,
+        50000.0,
+        880.0
+      ],
+      "scale": [
+        80.0,
+        80.0,
+        0.5
+      ],
+      "bounds": [
+        [
+          -2800.0,
+          50000.0,
+          880.0
+        ],
+        [
+          4000.0,
+          4000.0,
+          25.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "class": "StaticMeshActor",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "scale": [
+        14.0,
+        10.0,
+        0.4
+      ],
+      "bounds": [
+        [
+          -4250.0,
+          48900.0,
+          1102.2907657365602
+        ],
+        [
+          671.9199012941062,
+          500.0,
+          235.3330263883663
+        ]
+      ]
+    },
+    {
+      "label": "Ground3C_LookLeft",
+      "class": "StaticMeshActor",
+      "location": [
+        -5300.0,
+        49000.0,
+        1055.0
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        3.0
+      ],
+      "bounds": [
+        [
+          -5300.0,
+          49000.0,
+          1055.0
+        ],
+        [
+          75.0,
+          75.0,
+          150.0
+        ]
+      ]
+    },
+    {
+      "label": "Ground3C_LookRight",
+      "class": "StaticMeshActor",
+      "location": [
+        -5300.0,
+        51000.0,
+        1055.0
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        3.0
+      ],
+      "bounds": [
+        [
+          -5300.0,
+          51000.0,
+          1055.0
+        ],
+        [
+          75.0,
+          75.0,
+          150.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_TransitWall",
+      "class": "StaticMeshActor",
+      "location": [
+        -2840.81,
+        49401.39,
+        1252.9
+      ],
+      "scale": [
+        12.0,
+        0.8,
+        7.0
+      ],
+      "bounds": [
+        [
+          -2840.81,
+          49401.39,
+          1252.9
+        ],
+        [
+          622.4159195474917,
+          40.0,
+          389.9986729483601
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_Landing_000",
+      "class": "StaticMeshActor",
+      "location": [
+        400.0,
+        50000.0,
+        907.0
+      ],
+      "scale": [
+        2.8,
+        2.8,
+        0.02
+      ],
+      "bounds": [
+        [
+          400.0,
+          50000.0,
+          907.0
+        ],
+        [
+          140.0,
+          140.0,
+          1.0
+        ]
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "label": "GroundBlink_Landing_000_Label",
+      "class": "TextRenderActor",
+      "location": [
+        400.0,
+        50000.0,
+        1007.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          400.0,
+          50071.576919555664,
+          1007.0
+        ],
+        [
+          128.0,
+          199.57691955566406,
+          128.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_Landing_045",
+      "class": "StaticMeshActor",
+      "location": [
+        -537.2583002030478,
+        52262.741699796956,
+        907.0
+      ],
+      "scale": [
+        2.8,
+        2.8,
+        0.02
+      ],
+      "bounds": [
+        [
+          -537.2583002030478,
+          52262.741699796956,
+          907.0
+        ],
+        [
+          140.0,
+          140.0,
+          1.0
+        ]
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "label": "GroundBlink_Landing_045_Label",
+      "class": "TextRenderActor",
+      "location": [
+        -537.2583002030478,
+        52262.741699796956,
+        1007.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          -582.383922330082,
+          52307.867321923986,
+          1007.0
+        ],
+        [
+          173.12562212703415,
+          173.1256221270305,
+          128.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_Landing_090",
+      "class": "StaticMeshActor",
+      "location": [
+        -2800.0,
+        53200.0,
+        907.0
+      ],
+      "scale": [
+        2.8,
+        2.8,
+        0.02
+      ],
+      "bounds": [
+        [
+          -2800.0,
+          53200.0,
+          907.0
+        ],
+        [
+          140.0,
+          140.0,
+          1.0
+        ]
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "label": "GroundBlink_Landing_090_Label",
+      "class": "TextRenderActor",
+      "location": [
+        -2800.0,
+        53200.0,
+        1007.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          -2890.326934814453,
+          53200.0,
+          1007.0
+        ],
+        [
+          218.32693481445312,
+          128.0,
+          128.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_Landing_135",
+      "class": "StaticMeshActor",
+      "location": [
+        -5062.741699796952,
+        52262.741699796956,
+        907.0
+      ],
+      "scale": [
+        2.8,
+        2.8,
+        0.02
+      ],
+      "bounds": [
+        [
+          -5062.741699796952,
+          52262.741699796956,
+          907.0
+        ],
+        [
+          140.0,
+          140.0,
+          1.0
+        ]
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "label": "GroundBlink_Landing_135_Label",
+      "class": "TextRenderActor",
+      "location": [
+        -5062.741699796952,
+        52262.741699796956,
+        1007.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          -5121.125574071234,
+          52204.357825522675,
+          1007.0
+        ],
+        [
+          186.38387427428188,
+          186.38387427428097,
+          128.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_Landing_180",
+      "class": "StaticMeshActor",
+      "location": [
+        -6000.0,
+        50000.0,
+        907.0
+      ],
+      "scale": [
+        2.8,
+        2.8,
+        0.02
+      ],
+      "bounds": [
+        [
+          -6000.0,
+          50000.0,
+          907.0
+        ],
+        [
+          140.0,
+          140.0,
+          1.0
+        ]
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "label": "GroundBlink_Landing_180_Label",
+      "class": "TextRenderActor",
+      "location": [
+        -6000.0,
+        50000.0,
+        1007.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          -6000.0,
+          49890.92306518555,
+          1007.0
+        ],
+        [
+          128.0,
+          237.07693481445312,
+          128.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_Landing_225",
+      "class": "StaticMeshActor",
+      "location": [
+        -5062.741699796952,
+        47737.25830020305,
+        907.0
+      ],
+      "scale": [
+        2.8,
+        2.8,
+        0.02
+      ],
+      "bounds": [
+        [
+          -5062.741699796952,
+          47737.25830020305,
+          907.0
+        ],
+        [
+          140.0,
+          140.0,
+          1.0
+        ]
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "label": "GroundBlink_Landing_225_Label",
+      "class": "TextRenderActor",
+      "location": [
+        -5062.741699796952,
+        47737.25830020305,
+        1007.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          -5004.35782552267,
+          47678.87442592877,
+          1007.0
+        ],
+        [
+          186.38387427428188,
+          186.38387427428097,
+          128.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_Landing_270",
+      "class": "StaticMeshActor",
+      "location": [
+        -2800.0000000000005,
+        46800.0,
+        907.0
+      ],
+      "scale": [
+        2.8,
+        2.8,
+        0.02
+      ],
+      "bounds": [
+        [
+          -2800.0000000000005,
+          46800.0,
+          907.0
+        ],
+        [
+          140.0,
+          140.0,
+          1.0
+        ]
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "label": "GroundBlink_Landing_270_Label",
+      "class": "TextRenderActor",
+      "location": [
+        -2800.0000000000005,
+        46800.0,
+        1007.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          -2690.9230651855473,
+          46800.0,
+          1007.0
+        ],
+        [
+          237.07693481445312,
+          128.0,
+          128.0
+        ]
+      ]
+    },
+    {
+      "label": "GroundBlink_Landing_315",
+      "class": "StaticMeshActor",
+      "location": [
+        -537.2583002030483,
+        47737.258300203044,
+        907.0
+      ],
+      "scale": [
+        2.8,
+        2.8,
+        0.02
+      ],
+      "bounds": [
+        [
+          -537.2583002030483,
+          47737.258300203044,
+          907.0
+        ],
+        [
+          140.0,
+          140.0,
+          1.0
+        ]
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "label": "GroundBlink_Landing_315_Label",
+      "class": "TextRenderActor",
+      "location": [
+        -537.2583002030483,
+        47737.258300203044,
+        1007.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds": [
+        [
+          -478.8744259287664,
+          47795.642174477325,
+          1007.0
+        ],
+        [
+          186.38387427428188,
+          186.38387427428097,
+          128.0
+        ]
+      ]
+    }
+  ],
+  "ground_class": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+  "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+  "anim_class": "/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C",
+  "PIE_started": false,
+  "visual_approval": "pending_player"
+}

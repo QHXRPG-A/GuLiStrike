@@ -21,7 +21,8 @@ void UGuLiGroundMechAnimInstance::NativeInitializeAnimation()
 	UpperBodyRecoilConfiguration.Reset(); UpperBodyRecoilSkeleton.Reset(); UpperBodyRecoilSources.Reset();
 	UpperBodyRecoilSamples[0].Reset(); UpperBodyRecoilSamples[1].Reset(); bUpperBodyRecoilReady=false;
 	ResetUpperBodyRecoil();
-	BlinkPose=BlinkEntryDirection=FVector::ZeroVector; PreviousBlinkSerial=0; PreviousBlinkPhase=BlinkPhase=0; BlinkPhaseProgress=0.f;
+	BlinkEntryDirection=FVector::ZeroVector; PreviousBlinkSerial=0; PreviousBlinkPhase=BlinkPhase=0; BlinkPhaseProgress=0.f;
+	BlinkNormalizedTime=BlinkDirectionDegrees=BlinkSequenceWeight=0.f;
 	PreviousPawn.Reset();
 	PreviousController.Reset();
 	IntegratedRecoilAge[0] = IntegratedRecoilAge[1] = BIG_NUMBER;
@@ -51,7 +52,8 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		bHasLocomotionSnapshot=false; UpperBodyFrame=FQuat::Identity;
 		ResetUpperBodyRecoil();
-		BlinkPose=BlinkEntryDirection=FVector::ZeroVector; BlinkPhase=0; BlinkPhaseProgress=0.f;
+		BlinkEntryDirection=FVector::ZeroVector; BlinkPhase=0; BlinkPhaseProgress=0.f;
+		BlinkNormalizedTime=BlinkDirectionDegrees=BlinkSequenceWeight=0.f;
 		Speed = TurnRate = 0.f;
 		HorizontalVelocity = LocalHorizontalVelocity = FVector::ZeroVector;
 		bIsGrounded = true; bIsAirborne = bIsThrusting = false;
@@ -81,13 +83,35 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		|| PreviousDisplacementRevision != Move->GetDisplacementRevision()
 		|| (Blink.Phase==2 && PreviousBlinkPhase!=2);
 	PreviousBlinkSerial=Blink.Serial; PreviousBlinkPhase=Blink.Phase;
-	BlinkPose=FVector(Pawn->GetBlinkPoseAlpha(),Pawn->GetMobilityConfiguration().Blink.BlinkArmBackDegrees,
-		Pawn->GetMobilityConfiguration().Blink.BlinkBodyLeanDegrees);
 	BlinkPhase=Blink.Phase;
 	const auto& BlinkConfig=Pawn->GetMobilityConfiguration().Blink;
     const float PhaseDuration=Blink.Phase==1?BlinkConfig.BlinkWindupSeconds:Blink.Phase==2?BlinkConfig.BlinkConcealSeconds:BlinkConfig.BlinkRecoverySeconds;
 	BlinkPhaseProgress=Blink.Phase?FMath::Clamp(Blink.Elapsed/FMath::Max(.001f,PhaseDuration),0.f,1.f):0.f;
-	// Phase 2 is a brief concealed teleport beat, with no Loop clip or sway cycle.
+	BlinkBlend=Pawn->GetMobilityConfiguration().Asset<UBlendSpace>(TEXT("BlinkBlend"));
+	const auto* BlinkForward=Pawn->GetMobilityConfiguration().Asset<UAnimSequence>(TEXT("BlinkForward"));
+	BlinkSequenceWeight=BlinkNormalizedTime=0.f;
+	// Both inputs belong to the accepted request and survive snapshot restore unchanged.
+	BlinkDirectionDegrees=FMath::FindDeltaAngleDegrees(Blink.FacingYaw,Blink.Direction.Rotation().Yaw);
+	if (BlinkBlend && BlinkForward && BlinkPhase>=1 && BlinkPhase<=3)
+	{
+		const float Length=BlinkForward->GetPlayLength();
+		// Configuration validates matching phase markers on all four directional clips.
+		const float Total=BlinkConfig.BlinkWindupSeconds+BlinkConfig.BlinkConcealSeconds+BlinkConfig.BlinkRecoverySeconds;
+		float Conceal=Length*BlinkConfig.BlinkWindupSeconds/Total;
+		float Recovery=Length*(BlinkConfig.BlinkWindupSeconds+BlinkConfig.BlinkConcealSeconds)/Total;
+		static const FName ConcealMarker(TEXT("BlinkConceal")), RecoveryMarker(TEXT("BlinkRecovery"));
+		for (const FAnimSyncMarker& Marker:BlinkForward->AuthoredSyncMarkers)
+		{
+			if (Marker.MarkerName==ConcealMarker) Conceal=Marker.Time;
+			else if (Marker.MarkerName==RecoveryMarker) Recovery=Marker.Time;
+		}
+		Conceal=FMath::Clamp(Conceal,0.f,Length);
+		const float Boundaries[]={0.f,Conceal,FMath::Clamp(Recovery,Conceal,Length),Length};
+		BlinkNormalizedTime=FMath::Clamp(FMath::Lerp(Boundaries[BlinkPhase-1],Boundaries[BlinkPhase],BlinkPhaseProgress)/Length,0.f,1.f);
+		// Crossfade in/out of the current gait and turret orientation. Inside the action the clip owns the whole pose.
+		const float Edge=BlinkPhase==1?Blink.Elapsed:BlinkPhase==3?PhaseDuration-Blink.Elapsed:BlinkConfig.BlinkWindupSeconds;
+		BlinkSequenceWeight=FMath::SmoothStep(0.f,BlinkConfig.BlinkWindupSeconds,Edge);
+	}
 	if (bReset)
 	{
 		ResetUpperBodyRecoil();
@@ -131,11 +155,18 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		PrepareUpperBodyRecoil(Config);
 		GunYawLimit=Config.Mobility.GunYawLimit; GunPitchUpLimit=Config.Mobility.GunPitchUpLimit; GunPitchDownLimit=Config.Mobility.GunPitchDownLimit;
 		GaitTransitionSeconds=Walk.TransitionSeconds;
-		bIntegratedRunning = Speed > Pawn->GetWalkSpeed()+UE_KINDA_SMALL_NUMBER;
+		// Choose by the speeds represented by the clips. Normal movement caps at WalkSpeed
+		// even when that cap is several times the natural walking cadence.
+		const bool bBacking=LocalHorizontalVelocity.Y<0.f;
+		const auto& Walking=bBacking?Config.Gait(TEXT("WalkBackward")):Walk;
+		const auto& Running=bBacking?Config.Gait(TEXT("RunBackward")):Run;
+		const float EnterRun=(Walking.ReferenceSpeed+Running.ReferenceSpeed)*.5f;
+		const float ExitRun=(Walking.ReferenceSpeed+Running.ReferenceSpeed*FMath::Min(Running.MinStrideScale,1.f))*.5f;
+		bIntegratedRunning=bIsGrounded && Speed>=(bIntegratedRunning && !bReset?ExitRun:EnterRun);
 		if (bReset) { SmoothedSpeed=Speed; Grounding.StrideScale=1.f; RunBlend=bIntegratedRunning?1.f:0.f; }
 		SmoothedSpeed=FMath::FInterpTo(SmoothedSpeed,Speed,DeltaSeconds,1.f/Walk.SpeedSmoothingSeconds);
 		RunBlend=FMath::FInterpConstantTo(RunBlend,bIntegratedRunning?1.f:0.f,DeltaSeconds,1.f/GaitTransitionSeconds);
-		const FVector Direction=Blink.Phase==1?BlinkEntryDirection*(1.f-BlinkPose.X):
+		const FVector Direction=Blink.Phase==1?BlinkEntryDirection*(1.f-Pawn->GetBlinkPoseAlpha()):
 			Speed>Config.Mobility.TurnMovementThreshold?LocalHorizontalVelocity.GetSafeNormal():FVector::ZeroVector;
 		IntegratedForwardBlend=Direction.Y; IntegratedStrafeBlend=-Direction.X;
 		float SafeStrideMax=MAX_flt;
@@ -344,7 +375,7 @@ void UGuLiGroundMechAnimInstance::UpdateUpperBodyRecoil(const FGuLiStrikeMechGai
 		Combined+=Rotation.ToRotationVector();
 	}
 	Combined=Combined.GetClampedToMaxSize(FMath::DegreesToRadians(Shot.UpperBodyRecoilMaxDegrees));
-	UpperBodyRecoilRotation=FQuat::MakeFromRotationVector(Combined*(1.f-FMath::Clamp(float(BlinkPose.X),0.f,1.f))).GetNormalized();
+	UpperBodyRecoilRotation=FQuat::MakeFromRotationVector(Combined*(1.f-BlinkSequenceWeight)).GetNormalized();
 }
 
 void UGuLiGroundMechAnimInstance::UpdateGrounding(AGuLiGroundMechCharacter& Pawn,float DeltaSeconds,bool bReset)
@@ -353,9 +384,7 @@ void UGuLiGroundMechAnimInstance::UpdateGrounding(AGuLiGroundMechCharacter& Pawn
 	const auto* Move=CastChecked<UGuLiGroundMechMovementComponent>(Pawn.GetCharacterMovement());
 	Grounding.Settings=S; Grounding.ComponentToWorld=GetSkelMeshComponent()->GetComponentTransform();
 	Grounding.Revision=AnimationStateRevision; Grounding.DeltaSeconds=DeltaSeconds;
-    Grounding.BlinkAlpha=Pawn.GetBlinkPoseAlpha();
-    Grounding.BlinkCrouchDepthCm=Config.Blink.BlinkCrouchDepthCm;
-    Grounding.BlinkKneeAngleDegrees=Config.Blink.BlinkKneeAngleDegrees;
+	Grounding.RunWeight=RunBlend;
 	Grounding.MoveDirection=LocalHorizontalVelocity.GetSafeNormal();
 	Grounding.FloorHeight=Pawn.GetActorLocation().Z-Pawn.GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	if (Move->CurrentFloor.IsWalkableFloor()) Grounding.FloorHeight=Move->CurrentFloor.HitResult.ImpactPoint.Z;

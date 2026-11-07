@@ -2,6 +2,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GuLiGroundMechAnimationEditorLibrary.generated.h"
 class UAnimBlueprint;
+class UAnimSequence;
 class UBlendSpace;
 class USkeletalMesh;
 class UCurveFloat;
@@ -38,6 +39,15 @@ public:
 	/** Bind only the stabilized turret frame; preserve the production graph and existing links. */
 	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
 	static FString BindUpperBodyAim(UAnimBlueprint* Blueprint);
+	/** Attach the editable one-shot after aiming and IK, preserving the rest of the production graph. */
+	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+	static FString BindBlinkAnimation(UAnimBlueprint* Blueprint,UBlendSpace* Blend);
+	/** Author only directional samples/settings; never modify the source animation keys. */
+	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+	static bool ConfigureBlinkBlend(UBlendSpace* Blend,UAnimSequence* Forward,UAnimSequence* Backward,UAnimSequence* Left,UAnimSequence* Right);
+	/** Finish initial animation authoring inside the controller bracket, including platform compression sampling. */
+	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+	static bool NotifyAnimationKeysPopulated(UAnimSequence* Sequence);
 	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
 	static FString ProbeAnimationGraph(UClass* PawnClass,FVector Velocity,bool bJumpScenario,int32 ShotIndex,FVector AimPointComponent,UCurveFloat* RecoilCurve,bool bTakeoffThrust=true);
 };

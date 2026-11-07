@@ -37,7 +37,7 @@ def preflight():
     if not hasattr(unreal.GuLiGroundMechAnimationEditorLibrary, 'bind_upper_body_recoil'):
         raise RuntimeError('New native code is not loaded; compile/reload only with user authorization')
     expected = next(r for r in json.loads((ROOT / 'Data/Json/DT_GuLiStrikeMech_Gait.json').read_text(encoding='utf8')) if r['Name'] == 'Shoot')
-    bp = unreal.load_asset(BASE + '/Animations/ABP_GroundMech_A4B2')
+    bp = unreal.load_asset('/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2')
     if not bp or not hasattr(unreal.get_default_object(bp.generated_class()), 'upper_body_recoil_rotation'):
         raise RuntimeError('Animation Blueprint does not inherit the new native input')
     for field in FIELDS[:2]:

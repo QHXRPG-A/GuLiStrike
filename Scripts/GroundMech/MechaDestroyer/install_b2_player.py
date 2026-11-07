@@ -38,7 +38,7 @@ datareport={'success':all(e['imported'] for e in entries),'tables':entries,'erro
 (OUT/'datatable_import.json').write_text(json.dumps(datareport,ensure_ascii=False,indent=2),encoding='utf8')
 assert datareport['success'],datareport['errors']
 for sub in unreal.ObjectIterator(unreal.GuLiModelRegistrySubsystem):sub.reload_catalog()
-mesh=unreal.load_asset(NEW+'/Meshes/SK_GroundMech_A4B2');anim=unreal.load_asset(NEW+'/Animations/ABP_GroundMech_A4B2')
+mesh=unreal.load_asset(NEW+'/Meshes/SK_GroundMech_A4B2');anim=unreal.load_asset('/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2')
 bp.modify();cdo=unreal.get_default_object(bp.generated_class());cdo.modify();component=cdo.get_editor_property('mesh');component.modify()
 height=cdo.get_editor_property('standing_height');bounds=mesh.get_imported_bounds();scale=height/(bounds.box_extent.z*2)
 capsule=cdo.get_editor_property('capsule_component');half=capsule.get_unscaled_capsule_half_height()
@@ -51,7 +51,7 @@ for p in ['armor','shoulder']:
 gun=cdo.get_editor_property('machinegun');gun.modify();gun.set_skeletal_mesh_asset(None)
 assert unreal.BlueprintService.compile_blueprint(bp.get_path_name());assert LIB.save_loaded_asset(bp,False)
 compiled=[]
-for root in ['/Game/MechaDestroyer/Blueprints',NEW+'/Animations',BASE+'/Review']:
+for root in ['/Game/MechaDestroyer/Blueprints','/Game/GuLiStrike/GroundMech/Animations/A4B2',BASE+'/Review']:
     for a in unreal.AssetRegistryHelpers.get_asset_registry().get_assets_by_path(root,True):
         if str(a.asset_class_path.asset_name) not in ['Blueprint','AnimBlueprint']:continue
         p=str(a.package_name);ok=bool(unreal.BlueprintService.compile_blueprint(p));compiled.append({'path':p,'success':ok})

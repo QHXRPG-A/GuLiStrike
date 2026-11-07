@@ -1,0 +1,54 @@
+{
+  "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/BlendSpace_Mecha_Blink_Directional.BlendSpace_Mecha_Blink_Directional",
+  "axis": [
+    -180.0,
+    180.0
+  ],
+  "samples": [
+    {
+      "direction": -180.0,
+      "animation": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_back.Anim_Mecha_Blink_back"
+    },
+    {
+      "direction": -90.0,
+      "animation": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_left.Anim_Mecha_Blink_left"
+    },
+    {
+      "direction": 0.0,
+      "animation": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink.Anim_Mecha_Blink"
+    },
+    {
+      "direction": 90.0,
+      "animation": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_right.Anim_Mecha_Blink_right"
+    },
+    {
+      "direction": 180.0,
+      "animation": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_back.Anim_Mecha_Blink_back"
+    }
+  ],
+  "loop": false,
+  "marker_sync": false,
+  "notify_mode": "<NotifyTriggerMode.NONE: 2>",
+  "weight_smoothing": 0.0,
+  "curves": [
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_back.Anim_Mecha_Blink_back",
+      "cubic_keys": 10332,
+      "linear_keys": 0,
+      "sample_count": 82
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_left.Anim_Mecha_Blink_left",
+      "cubic_keys": 10332,
+      "linear_keys": 0,
+      "sample_count": 82
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_right.Anim_Mecha_Blink_right",
+      "cubic_keys": 10332,
+      "linear_keys": 0,
+      "sample_count": 82
+    }
+  ],
+  "dirty": []
+}

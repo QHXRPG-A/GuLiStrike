@@ -4,12 +4,25 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-11-08 | [游骑兵会话清理与代码交付](../Archive/20261108-游骑兵会话清理与代码交付.md) | movement, presentation | partial | 按用户要求清理游骑兵 3C 与动画会话的临时文件，将相关工作标记完成并发布源码与数据变更；资源留在本地。 |
+| 2026-11-07 | [游骑兵定向闪现编译与正式接入](../Archive/20261107-游骑兵定向闪现编译与正式接入.md) | movement, presentation | partial | 完成源码版编译加载、Gait 导入、四向闪现动画接线和清单刷新，保存扩展机动区及有效导航缓存。 |
+| 2026-11-07 | [游骑兵四向闪现动画与机动区阶段交付](../Archive/20261107-游骑兵四向闪现动画与机动区.md) | movement, presentation | partial | 保存三份惯性拖拽动画、方向混合空间和扩展机动区，保留前闪手调数据；新控制源码尚待获准编译加载。 |
+| 2026-11-07 | [游骑兵方向闪现重制准备](../Archive/20261107-游骑兵方向闪现重制准备.md) | presentation | partial | 按用户要求清除三份方向闪现的上肢基础轨道与两条腿部附加曲线，保留腿部基础动作和技能阶段标记。 |
+| 2026-11-07 | [游骑兵闪现枪口分离修复](../Archive/20261107-游骑兵闪现枪口分离修复.md) | presentation | partial | 修复闪现初稿把枪管自转骨骼当作独立俯仰关节的问题，保留玩家已手调的腿部曲线。 |
 | 2026-11-05 | [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | network, commander, resource, navigation, performance | partial | 按用户要求完成本工作项，保留双端复采证据，清理会话临时文件，并单独交付源码、协议清单和文档。 |
 | 2026-11-05 | [姿态通道 100 KB/s 目标验收](../Archive/20261105-姿态通道100KB每秒验收.md) | network, commander, performance | passed | 协议 36 在 600 单位早期战斗窗口将姿态通道从 160.43 降至加权平均 54.94 KB/s，三间独立房间均达标。 |
 | 2026-11-05 | [姿态队列分类计数编译与加载](../Archive/20261105-姿态队列分类计数编译与加载.md) | network, commander, resource, navigation, performance | partial | 带队列分类计数的 Editor 构建成功，原地图已打开，当前进程已加载新版性能插件及三个项目模块。 |
 | 2026-11-05 | [姿态队列分类计数静态交付](../Archive/20261105-姿态队列分类计数.md) | network, commander, resource, navigation, performance | partial | 性能工具新增三类传输队列的窗口计数，以及静止 Mass 士兵姿态首发与编码前跳过的计数。原地图采集说明已保存。 |
 | 2026-11-05 | [姿态优化双端编译与协议35清单](../Archive/20261105-姿态优化双端编译与协议35清单.md) | network, commander, resource, navigation, performance | partial | Editor 和协调器构建成功，四份正式清单通过协议35校验，原地图已恢复并完成600单位入口回读。 |
 | 2026-11-05 | [姿态同步与交互卡顿优化静态交付](../Archive/20261105-姿态同步与交互卡顿优化静态交付.md) | network, commander, resource, navigation, performance | partial | 姿态/回执批量传输、无变化状态抑制、矿石归属更新及选择轻量查询已接入；静态检查与原地图实体核对完成，未编译或运行复测。 |
+| 2026-11-04 | [游骑兵正式闪现动画与跑步切换](../Archive/20261104-游骑兵正式闪现动画与跑步切换.md) | movement, presentation | partial | 游骑兵地面达到标定走跑中点后进入正式跑步混合空间。新增可编辑闪现全身序列并接入正式角色。 |
+| 2026-11-04 | [游骑兵基础速度再次翻倍](../Archive/20261104-游骑兵基础速度再次翻倍.md) | movement, presentation | partial | 地面基础速度由 324 提至 648 cm/s，水平移动与加减速同步翻倍。已正式导表、刷新清单并定位闪现的程序姿势入口。 |
+| 2026-11-04 | [游骑兵水平提速与腿甲材质接入](../Archive/20261104-游骑兵水平提速与腿甲材质接入.md) | movement, presentation | partial | 4001/A4B2 的水平移速和加减速已提至 1.5 倍，腿部 Alpha 掩码及五个分档材质已导入、编译和回读。 |
+| 2026-11-04 | [游骑兵动画目录整合与旧资源退役](../Archive/20261104-游骑兵动画目录整合与旧资源退役.md) | movement, presentation, network | partial | 游骑兵手调源片段和正式动画统一迁入 GroundMech/Animations。旧目录资源及其引用已清理，源码版 Editor 构建加载及冷启动引用核对通过。 |
+| 2026-11-04 | [游骑兵原横移恢复版编译加载](../Archive/20261104-游骑兵原横移恢复版编译加载.md) | movement, input, presentation, network | partial | 原横移版本已编译加载，Mobility 和 Skills 已重新导入。正式表、原动画和相机、运行清单及机动区实体均已回读。 |
+| 2026-11-04 | [游骑兵撤回转腿走位并恢复横移](../Archive/20261104-游骑兵撤回转腿走位并恢复横移.md) | movement, input, presentation, network | partial | 按用户要求撤回转腿走位，恢复原横移输入、步态、速度与网络格式。Excel 正式导出及两份清单已逐一比对。 |
+| 2026-11-04 | [游骑兵转腿走位编译接入与机动区交付](../Archive/20261104-游骑兵转腿走位编译接入与机动区交付.md) | movement, input, presentation, network | partial | 源码版 Editor 构建加载成功，Mobility 和 Skills 完成 UE 导入，200／600 清单更新。原机动区已保存并核对 10 个实体和正式角色输入。 |
+| 2026-11-04 | [游骑兵转腿走位源码与数据导出](../Archive/20261104-游骑兵转腿走位源码与数据导出.md) | movement, input, presentation, network | partial | 按镜头八向转腿的地面、空中、步态与快照代码已接入，Excel 更新并完成正式导出。 |
 | 2026-11-04 | [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | project, data-pipeline, movement | passed | 从已发布的1124个Python文件中移除185个旧脚本，现有939个。合并游骑兵场景入口，迁移仍在使用的写表和闪现材质代码。 |
 | 2026-11-04 | [游骑兵3C结项与临时文件清理](../Archive/20261104-游骑兵3C结项与临时文件清理.md) | movement, input, presentation, camera, network | partial | 按用户指示完成游骑兵3C、指定视口相机与上下身独立转向工作项，清理27个临时文件及2个空目录。 |
 | 2026-11-04 | [游骑兵上下身独立转向编译接入与交付](../Archive/20261104-游骑兵上下身独立转向编译接入与交付.md) | movement, input, presentation, camera, network | partial | 用户许可后完成源码版Editor编译加载、Mobility单表导入、上身帧局部接线和200/600清单刷新；原机动区及正式引用已保存读回，待玩家验收。 |

@@ -160,54 +160,9 @@ void FAnimNode_GuLiGroundMechAim::EvaluateSkeletalControl_AnyThread(FComponentSp
 				Gun.SetRotation((FRotator(Pitch,90.f+Yaw,0.f).Quaternion()*Frame.Inverse()*Gun.GetRotation()).GetNormalized());
 			}
 		}
-		if (BlinkPose.X>UE_SMALL_NUMBER)
-		{
-			// Sweep the rigid upper arm back in its sagittal plane, preserving bone
-			// lengths and carrying the complete forearm/barrel assembly with it.
-			// The authored angle is measured from forward; Neutral is the hanging
-			// arm. Subtract that 90-degree offset instead of lifting it over the shoulder.
-			const FQuat Sweep(FVector::ForwardVector,-FMath::DegreesToRadians(FMath::Clamp(float(BlinkPose.Y),90.f,150.f)-90.f));
-			const FTransform RelativeGun=Gun.GetRelativeTransform(Arm);
-			const FQuat Frame=FRotationMatrix::MakeFromXZ((Socket*Gun).GetUnitAxis(EAxis::X),FVector::UpVector).ToQuat();
-			const FQuat Neutral=(FRotator(0,90,0).Quaternion()*Frame.Inverse()*Arm.GetRotation()).GetNormalized();
-			Arm.SetRotation(FQuat::Slerp(Arm.GetRotation(),Sweep*Neutral,FMath::Clamp(float(BlinkPose.X),0.f,1.f)).GetNormalized()); Gun=RelativeGun*Arm;
-            // The shoulder motor places the elbow behind the body; the forearm
-            // motor turns the barrel back independently instead of pointing it
-            // at the ground or swinging the elbow above the shoulder.
-            const FVector BackBore=FQuat(FVector::ForwardVector,-FMath::DegreesToRadians(float(BlinkPose.Y))).RotateVector(FVector::RightVector);
-            const FQuat BackRotation=(FQuat::FindBetweenNormals((Socket*Gun).GetUnitAxis(EAxis::X),BackBore)*Gun.GetRotation()).GetNormalized();
-            Gun.SetRotation(FQuat::Slerp(Gun.GetRotation(),BackRotation,FMath::Clamp(float(BlinkPose.X),0.f,1.f)).GetNormalized());
-		}
 		Out.Emplace(ArmIndex,Arm*TurretFrame); Out.Emplace(GunIndex,Gun*TurretFrame);
 	};
 	Solve(RightArm,RightGun,RightMuzzleLocal,RightRecoil,RightArmRecoil,RightReturnStart);
 	Solve(LeftArm,LeftGun,LeftMuzzleLocal,LeftRecoil,LeftArmRecoil,LeftReturnStart);
-	if (BlinkPose.X>UE_SMALL_NUMBER && BlinkPose.Z>0)
-	{
-		// Find the upper-body branching joint rather than rotating the root/legs.
-		const auto R=RightArm.GetCompactPoseIndex(Bones), L=LeftArm.GetCompactPoseIndex(Bones);
-		auto Torso=Bones.GetParentBoneIndex(R);
-		while (Torso.IsValid() && !Descends(L,Torso)) Torso=Bones.GetParentBoneIndex(Torso);
-		const FCompactPoseBoneIndex Hip=Bones.GetCompactPoseIndexFromSkeletonIndex(Bones.GetReferenceSkeleton().FindBoneIndex(TEXT("UpperLeg_R")));
-		if (Torso.IsValid() && (!Hip.IsValid() || !Descends(Hip,Torso)))
-		{
-			TArray<FTransform> Old,New; const int32 Count=Bones.GetCompactPoseNumBones(); Old.SetNum(Count); New.SetNum(Count);
-			for (int32 I=0;I<Count;++I) Old[I]=New[I]=Output.Pose.GetComponentSpaceTransform(FCompactPoseBoneIndex(I));
-			for (int32 I=0;I<Count;++I)
-			{
-				const FCompactPoseBoneIndex Index(I); const auto Parent=Bones.GetParentBoneIndex(Index);
-				if (const auto* Override=Out.FindByPredicate([&](const FBoneTransform& B){return B.BoneIndex==Index;})) New[I]=Override->Transform;
-				else if (Parent.IsValid()) New[I]=Old[I].GetRelativeTransform(Old[Parent.GetInt()])*New[Parent.GetInt()];
-			}
-			const FQuat Lean(UpperBodyFrame.RotateVector(FVector::ForwardVector),-FMath::DegreesToRadians(float(BlinkPose.X*BlinkPose.Z)));
-			const FVector Pivot=Old[Torso.GetInt()].GetLocation();
-			Out.Reset();
-			for (int32 I=0;I<Count;++I) if (Descends(FCompactPoseBoneIndex(I),Torso))
-			{
-				New[I].SetLocation(Pivot+Lean.RotateVector(New[I].GetLocation()-Pivot));
-				New[I].SetRotation((Lean*New[I].GetRotation()).GetNormalized()); Out.Emplace(FCompactPoseBoneIndex(I),New[I]);
-			}
-		}
-	}
 	Out.Sort(FCompareBoneTransformIndex());
 }

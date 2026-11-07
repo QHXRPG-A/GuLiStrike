@@ -16,7 +16,7 @@ def sync_heavy_gait_assets(root):
     out=root/'ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export'
     run_authoring(root,root/'Scripts/GroundMech/MechaDestroyer/bake_heavy_gait_data.py')
     data=json.loads((out/'heavy_gait_animation_data.json').read_text())
-    lib=unreal.EditorAssetLibrary; folder='/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations'
+    lib=unreal.EditorAssetLibrary; folder='/Game/GuLiStrike/GroundMech/Animations/A4B2'
     mesh=unreal.load_asset('/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2')
     idle=unreal.load_asset(folder+'/Anim_Mecha_Idle'); changed=[]
     for name,d in data['clips'].items():

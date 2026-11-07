@@ -11,7 +11,15 @@ def sync_mobility_assets(export_manifests=True, sync_camera_defaults=True):
     root=Path(unreal.Paths.project_dir()).resolve()
     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
     lib=unreal.EditorAssetLibrary
-    abp=unreal.load_asset('/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2')
+    abp=unreal.load_asset('/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2')
+    gait_rows=json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Gait')))
+    gait_assets={row['Name']:unreal.load_asset(row['Asset']) for row in gait_rows}
+    blink=gait_assets['BlinkBlend']
+    assert unreal.GuLiGroundMechAnimationEditorLibrary.configure_blink_blend(blink,*[gait_assets[k] for k in ('BlinkForward','BlinkBackward','BlinkLeft','BlinkRight')])
+    assert lib.save_loaded_asset(blink,False)
+    blink_graph=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.bind_blink_animation(abp,blink))
+    if not blink_graph['success']: raise RuntimeError(blink_graph)
+    if blink_graph['changed']: assert lib.save_loaded_asset(abp,False)
     upper_aim=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.bind_upper_body_aim(abp))
     if not upper_aim['success']: raise RuntimeError(upper_aim)
     if upper_aim.get('changed'): assert lib.save_loaded_asset(abp,False)
@@ -33,7 +41,7 @@ def sync_mobility_assets(export_manifests=True, sync_camera_defaults=True):
         # failed. An empty changed list does not prove their contact data is
         # current; an empty selection deliberately rebakes all relevant clips.
         contacts=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.bake_ground_contacts(mesh,
-            '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations',ik['ContactHeightTolerance'],ik['ContactBlendHeight'],','.join(selected)))
+            '/Game/GuLiStrike/GroundMech/Animations/A4B2',ik['ContactHeightTolerance'],ik['ContactBlendHeight'],','.join(selected)))
         if not contacts['success']: raise RuntimeError(contacts)
         for clip in contacts['clips']:
             assert lib.save_loaded_asset(unreal.load_asset(clip['asset']),False)
@@ -72,7 +80,7 @@ def sync_mobility_assets(export_manifests=True, sync_camera_defaults=True):
     result['heavy_gait']=heavy
     rows=json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Gait')))
     for row in rows:
-        if row['Name'] in ('WalkBlend','RunBlend'):
+        if row['Name'] in ('WalkBlend','RunBlend','BlinkBlend'):
             assert lib.save_loaded_asset(unreal.load_asset(row['Asset']),False)
     camera_table=unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Camera')
     cameras=json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(camera_table))

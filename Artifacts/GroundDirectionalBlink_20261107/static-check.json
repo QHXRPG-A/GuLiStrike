@@ -1,0 +1,36 @@
+{
+  "static_checks": "passed",
+  "python_syntax": "passed",
+  "diff_whitespace": "passed",
+  "native_compile": "passed",
+  "PIE": "not_run",
+  "visual": "pending_player",
+  "files": {
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp": "473edf07c006e12d060854fb8857e24b8387d4172967c7c53675875c3ef45a74",
+    "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkTypes.h": "db3baabf40014f8a98a2f240d365e2787610217d71ca8f1f74de6053b72de9d6",
+    "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.cpp": "5a02693d4a173a02db6922430ea90fef78b32d101be0e865e67f6dfb1a0faf3b",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp": "9f46995a78a37f150b7ffbd9329c86371417916265887106b167d869eaf51e8c",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h": "aaba93dede0501c97b1dc5b1dbf5eedd3edb8c996d2cf4c5562cd547bbaca0ce",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp": "b7bdd3901b969054c23cce9f105d49a20ec418b42ac2e6b1368f8b93f30de315",
+    "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.cpp": "2c93c5c56e2697114ee4387de13bfd0c5711566322aa4d062ab2f5a6afeccf3d",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.h": "0081b8b7516048b2a534fd2ca272fb4fdd863e5bfde32f89e84f2f289b060cdb",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.cpp": "714ca8bb33c8b81a96e006f28b8a0d998aa1974c9f0e23af5dd2183f305a55c1",
+    "Scripts/GroundMech/Blink/author_blink_animation.py": "22be2f674009d340ed2c6d9535ce2bcec6162be028314c50e5d0289a6ab24bcd",
+    "Scripts/GroundMech/Blink/prepare_blink_scene.py": "c348a9f9f32f768bd9016834785aca676e788b88f6f48052c4eb4d4be3410d64",
+    "Scripts/GroundMech/MechaDestroyer/author_mobility_tables.py": "ea5b40fefe20373de477f08c15a07e61a9a9ec6ba3aebf388eb87c26509d1ea0",
+    "Scripts/GroundMech/MechaDestroyer/sync_mobility_assets.py": "c650b85e6343dc4fd1cf0fda911887bdf0525a91684a90179f21d9193897c048",
+    "Scripts/GroundMech/MechaDestroyer/read_ground_mobility_assets.py": "fd78c60b10fbe46d0134fac0f4d1ff06c26ce8941947771d4c51ed4e6d16a419",
+    "Tools/DataPipeline/export_data_from_excel.py": "4cd7a6dfac20f3994fe88b2abb19679eeb5b4f73dd4262ced6fbfc8f8fbdc3a2"
+  },
+  "native_target": "GuLiStrikeEditor Win64 Development",
+  "engine": "D:/UnrealEngine-5.7",
+  "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+  "native_exit_codes": [
+    0,
+    0
+  ],
+  "followup_fix": "Blink phase clips excluded from ground locomotion contact-curve validation; phase validation remains in Configuration.Load",
+  "integration": "passed",
+  "asset_structure": "passed",
+  "scene_saved": "passed"
+}

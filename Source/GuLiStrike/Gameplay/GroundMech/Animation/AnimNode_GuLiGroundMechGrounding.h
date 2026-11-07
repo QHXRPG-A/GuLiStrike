@@ -38,9 +38,7 @@ struct FGuLiMechGroundingSnapshot
 	/** Re-evaluate the turret without advancing or re-solving the lower-body sample. */
 	UPROPERTY() bool bPresentationOnly=false;
     UPROPERTY() int32 Revision=0;
-    UPROPERTY() float BlinkAlpha=0.f;
-    UPROPERTY() float BlinkCrouchDepthCm=0.f;
-    UPROPERTY() float BlinkKneeAngleDegrees=110.f;
+    UPROPERTY() float RunWeight=0.f;
 };
 
 /** Stride warping + planted soles + analytic two-link legs, without changing any bone length. */
@@ -67,7 +65,6 @@ struct GULISTRIKE_API FAnimNode_GuLiGroundMechGrounding : public FAnimNode_Skele
     } StructureFrame;
 #endif
 private:
-    void EvaluateBlinkCrouch(FComponentSpacePoseContext& Output,TArray<FBoneTransform>& Out);
     virtual void InitializeBoneReferences(const FBoneContainer& Bones) override;
     UPROPERTY() FBoneReference Pelvis;
     UPROPERTY() TArray<FBoneReference> LegBones;

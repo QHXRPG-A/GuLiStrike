@@ -4,6 +4,10 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游骑兵按键定向闪现与惯性拖拽动画 — 实施记录](../DevelopmentDocumentation/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | done | partial | — | 2026-11-08 |
+| [游骑兵跑步与闪现动画 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵跑步与闪现动画.md) | done | partial | — | 2026-11-08 |
+| [游骑兵全向提速与腿甲明暗 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵全向提速与腿甲明暗.md) | done | partial | — | 2026-11-08 |
+| [游骑兵转腿走位 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵转腿走位.md) | done | partial | — | 2026-11-08 |
 | [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | done | partial | — | 2026-11-05 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | done | partial | — | 2026-11-04 |
 | [肉鸽卡牌美术资源数据管线 — 实施与交付](../DevelopmentDocumentation/20261027-肉鸽卡牌美术资源数据管线.md) | verification | partial | 用户在LVL_CardArtworkCatalogReview进入PIE浏览当前折射子弹，按ArtworkId切换其他牌面核验效果。 | 2026-10-27 |

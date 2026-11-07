@@ -564,13 +564,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-08 |
 | [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-11-04 |
 | [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-11-04 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-11-04 |
 | [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-11-04 |
 | [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-11-04 |
 | [星际争霸 II 局内 UI 参考审计](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI参考审计.md) | reference | reference | 2026-11-04 |
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-04 |
 | [地面机甲逐发上身摆动](../RequirementDocument/20261028-地面机甲逐发上身摆动.md) | requirement | approved | 2026-10-30 |
 | [地面机甲逐发上身摆动 — 技术方案与交付](../DevelopmentDocumentation/20261028-地面机甲逐发上身摆动.md) | development | done | 2026-10-30 |
 | [地面机甲上身摆动代码同步核对](../Archive/20261030-地面机甲上身摆动代码同步核对.md) | archive | recorded | 2026-10-30 |
@@ -1538,9 +1538,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵转腿走位](../RequirementDocument/20261104-游骑兵转腿走位.md) | requirement | cancelled | 2026-11-08 |
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-08 |
+| [游骑兵转腿走位 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵转腿走位.md) | development | abandoned | 2026-11-08 |
 | [游骑兵3C优化](../RequirementDocument/20261103-游骑兵3C优化.md) | requirement | approved | 2026-11-04 |
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-04 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | development | done | 2026-11-04 |
+| [游骑兵原横移恢复版编译加载](../Archive/20261104-游骑兵原横移恢复版编译加载.md) | archive | recorded | 2026-11-04 |
+| [游骑兵撤回转腿走位并恢复横移](../Archive/20261104-游骑兵撤回转腿走位并恢复横移.md) | archive | recorded | 2026-11-04 |
+| [游骑兵转腿走位编译接入与机动区交付](../Archive/20261104-游骑兵转腿走位编译接入与机动区交付.md) | archive | recorded | 2026-11-04 |
+| [游骑兵转腿走位源码与数据导出](../Archive/20261104-游骑兵转腿走位源码与数据导出.md) | archive | recorded | 2026-11-04 |
 | [游骑兵3C结项与临时文件清理](../Archive/20261104-游骑兵3C结项与临时文件清理.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向编译接入与交付](../Archive/20261104-游骑兵上下身独立转向编译接入与交付.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向源码与源表准备](../Archive/20261104-游骑兵上下身独立转向源码与源表准备.md) | archive | recorded | 2026-11-04 |
@@ -1658,8 +1664,28 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵按键定向闪现与惯性拖拽动画](../RequirementDocument/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | requirement | approved | 2026-11-08 |
+| [游骑兵跑步与闪现动画](../RequirementDocument/20261104-游骑兵跑步与闪现动画.md) | requirement | approved | 2026-11-08 |
+| [游骑兵全向提速与腿甲明暗](../RequirementDocument/20261104-游骑兵全向提速与腿甲明暗.md) | requirement | approved | 2026-11-08 |
+| [游骑兵转腿走位](../RequirementDocument/20261104-游骑兵转腿走位.md) | requirement | cancelled | 2026-11-08 |
+| [游骑兵闪现](../Gameplay/游骑兵闪现.md) | gameplay | current | 2026-11-08 |
+| [游骑兵按键定向闪现与惯性拖拽动画 — 实施记录](../DevelopmentDocumentation/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | development | done | 2026-11-08 |
+| [游骑兵跑步与闪现动画 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵跑步与闪现动画.md) | development | done | 2026-11-08 |
+| [游骑兵全向提速与腿甲明暗 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵全向提速与腿甲明暗.md) | development | done | 2026-11-08 |
+| [游骑兵转腿走位 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵转腿走位.md) | development | abandoned | 2026-11-08 |
+| [游骑兵会话清理与代码交付](../Archive/20261108-游骑兵会话清理与代码交付.md) | archive | recorded | 2026-11-08 |
+| [游骑兵定向闪现编译与正式接入](../Archive/20261107-游骑兵定向闪现编译与正式接入.md) | archive | recorded | 2026-11-07 |
+| [游骑兵四向闪现动画与机动区阶段交付](../Archive/20261107-游骑兵四向闪现动画与机动区.md) | archive | recorded | 2026-11-07 |
 | [游骑兵3C优化](../RequirementDocument/20261103-游骑兵3C优化.md) | requirement | approved | 2026-11-04 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | development | done | 2026-11-04 |
+| [游骑兵正式闪现动画与跑步切换](../Archive/20261104-游骑兵正式闪现动画与跑步切换.md) | archive | recorded | 2026-11-04 |
+| [游骑兵基础速度再次翻倍](../Archive/20261104-游骑兵基础速度再次翻倍.md) | archive | recorded | 2026-11-04 |
+| [游骑兵水平提速与腿甲材质接入](../Archive/20261104-游骑兵水平提速与腿甲材质接入.md) | archive | recorded | 2026-11-04 |
+| [游骑兵动画目录整合与旧资源退役](../Archive/20261104-游骑兵动画目录整合与旧资源退役.md) | archive | recorded | 2026-11-04 |
+| [游骑兵原横移恢复版编译加载](../Archive/20261104-游骑兵原横移恢复版编译加载.md) | archive | recorded | 2026-11-04 |
+| [游骑兵撤回转腿走位并恢复横移](../Archive/20261104-游骑兵撤回转腿走位并恢复横移.md) | archive | recorded | 2026-11-04 |
+| [游骑兵转腿走位编译接入与机动区交付](../Archive/20261104-游骑兵转腿走位编译接入与机动区交付.md) | archive | recorded | 2026-11-04 |
+| [游骑兵转腿走位源码与数据导出](../Archive/20261104-游骑兵转腿走位源码与数据导出.md) | archive | recorded | 2026-11-04 |
 | [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | archive | recorded | 2026-11-04 |
 | [游骑兵3C结项与临时文件清理](../Archive/20261104-游骑兵3C结项与临时文件清理.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向编译接入与交付](../Archive/20261104-游骑兵上下身独立转向编译接入与交付.md) | archive | recorded | 2026-11-04 |
@@ -1808,6 +1834,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵转腿走位](../RequirementDocument/20261104-游骑兵转腿走位.md) | requirement | cancelled | 2026-11-08 |
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-08 |
+| [游骑兵转腿走位 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵转腿走位.md) | development | abandoned | 2026-11-08 |
 | [姿态同步与交互卡顿优化](../RequirementDocument/20261105-姿态同步与交互卡顿优化.md) | requirement | approved | 2026-11-05 |
 | [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | development | done | 2026-11-05 |
 | [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | archive | recorded | 2026-11-05 |
@@ -1846,8 +1875,12 @@
 | [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-11-04 |
 | [单颗矿石导航收尾证据](../Evidence/20261024-OreNavigationCloseout/README.md) | reference | reference | 2026-11-04 |
 | [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-11-04 |
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-04 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | development | done | 2026-11-04 |
+| [游骑兵动画目录整合与旧资源退役](../Archive/20261104-游骑兵动画目录整合与旧资源退役.md) | archive | recorded | 2026-11-04 |
+| [游骑兵原横移恢复版编译加载](../Archive/20261104-游骑兵原横移恢复版编译加载.md) | archive | recorded | 2026-11-04 |
+| [游骑兵撤回转腿走位并恢复横移](../Archive/20261104-游骑兵撤回转腿走位并恢复横移.md) | archive | recorded | 2026-11-04 |
+| [游骑兵转腿走位编译接入与机动区交付](../Archive/20261104-游骑兵转腿走位编译接入与机动区交付.md) | archive | recorded | 2026-11-04 |
+| [游骑兵转腿走位源码与数据导出](../Archive/20261104-游骑兵转腿走位源码与数据导出.md) | archive | recorded | 2026-11-04 |
 | [游骑兵3C结项与临时文件清理](../Archive/20261104-游骑兵3C结项与临时文件清理.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向编译接入与交付](../Archive/20261104-游骑兵上下身独立转向编译接入与交付.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向源码与源表准备](../Archive/20261104-游骑兵上下身独立转向源码与源表准备.md) | archive | recorded | 2026-11-04 |
@@ -2386,8 +2419,30 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵按键定向闪现与惯性拖拽动画](../RequirementDocument/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | requirement | approved | 2026-11-08 |
+| [游骑兵跑步与闪现动画](../RequirementDocument/20261104-游骑兵跑步与闪现动画.md) | requirement | approved | 2026-11-08 |
+| [游骑兵全向提速与腿甲明暗](../RequirementDocument/20261104-游骑兵全向提速与腿甲明暗.md) | requirement | approved | 2026-11-08 |
+| [游骑兵转腿走位](../RequirementDocument/20261104-游骑兵转腿走位.md) | requirement | cancelled | 2026-11-08 |
+| [游骑兵闪现](../Gameplay/游骑兵闪现.md) | gameplay | current | 2026-11-08 |
+| [游骑兵按键定向闪现与惯性拖拽动画 — 实施记录](../DevelopmentDocumentation/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | development | done | 2026-11-08 |
+| [游骑兵跑步与闪现动画 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵跑步与闪现动画.md) | development | done | 2026-11-08 |
+| [游骑兵全向提速与腿甲明暗 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵全向提速与腿甲明暗.md) | development | done | 2026-11-08 |
+| [游骑兵转腿走位 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵转腿走位.md) | development | abandoned | 2026-11-08 |
+| [游骑兵会话清理与代码交付](../Archive/20261108-游骑兵会话清理与代码交付.md) | archive | recorded | 2026-11-08 |
+| [游骑兵定向闪现编译与正式接入](../Archive/20261107-游骑兵定向闪现编译与正式接入.md) | archive | recorded | 2026-11-07 |
+| [游骑兵四向闪现动画与机动区阶段交付](../Archive/20261107-游骑兵四向闪现动画与机动区.md) | archive | recorded | 2026-11-07 |
+| [游骑兵方向闪现重制准备](../Archive/20261107-游骑兵方向闪现重制准备.md) | archive | recorded | 2026-11-07 |
+| [游骑兵闪现枪口分离修复](../Archive/20261107-游骑兵闪现枪口分离修复.md) | archive | recorded | 2026-11-07 |
 | [游骑兵3C优化](../RequirementDocument/20261103-游骑兵3C优化.md) | requirement | approved | 2026-11-04 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | development | done | 2026-11-04 |
+| [游骑兵正式闪现动画与跑步切换](../Archive/20261104-游骑兵正式闪现动画与跑步切换.md) | archive | recorded | 2026-11-04 |
+| [游骑兵基础速度再次翻倍](../Archive/20261104-游骑兵基础速度再次翻倍.md) | archive | recorded | 2026-11-04 |
+| [游骑兵水平提速与腿甲材质接入](../Archive/20261104-游骑兵水平提速与腿甲材质接入.md) | archive | recorded | 2026-11-04 |
+| [游骑兵动画目录整合与旧资源退役](../Archive/20261104-游骑兵动画目录整合与旧资源退役.md) | archive | recorded | 2026-11-04 |
+| [游骑兵原横移恢复版编译加载](../Archive/20261104-游骑兵原横移恢复版编译加载.md) | archive | recorded | 2026-11-04 |
+| [游骑兵撤回转腿走位并恢复横移](../Archive/20261104-游骑兵撤回转腿走位并恢复横移.md) | archive | recorded | 2026-11-04 |
+| [游骑兵转腿走位编译接入与机动区交付](../Archive/20261104-游骑兵转腿走位编译接入与机动区交付.md) | archive | recorded | 2026-11-04 |
+| [游骑兵转腿走位源码与数据导出](../Archive/20261104-游骑兵转腿走位源码与数据导出.md) | archive | recorded | 2026-11-04 |
 | [游骑兵3C结项与临时文件清理](../Archive/20261104-游骑兵3C结项与临时文件清理.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向编译接入与交付](../Archive/20261104-游骑兵上下身独立转向编译接入与交付.md) | archive | recorded | 2026-11-04 |
 | [游骑兵上下身独立转向源码与源表准备](../Archive/20261104-游骑兵上下身独立转向源码与源表准备.md) | archive | recorded | 2026-11-04 |

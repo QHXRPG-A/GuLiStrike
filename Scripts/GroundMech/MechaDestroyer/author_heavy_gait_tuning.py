@@ -19,7 +19,7 @@ def append(sheet, fields):
 if __name__=='__main__':
     append('Mobility',[('GunReturnSeconds','float',.25)])
     locomotion={'WalkForward','WalkBackward','RunForward','RunBackward','StrafeLeft','StrafeRight'}
-    prefix='/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/'
+    prefix='/Game/GuLiStrike/GroundMech/Animations/A4B2/'
     def turn_asset(name):
         if name not in ('TurnLeft','TurnRight'): return ''
         asset='Anim_Mecha_MoveTurn_'+('L' if name=='TurnLeft' else 'R')

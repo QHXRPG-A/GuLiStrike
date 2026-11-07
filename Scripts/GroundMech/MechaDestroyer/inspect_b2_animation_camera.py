@@ -5,13 +5,13 @@ import unreal
 
 OUT=Path('D:/UE5.7/test1/ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export')
 BASE='/Game/GuLiStrike/GroundMech'
-ANIMS=BASE+'/MechaDestroyer_A4B2/Animations'
+ANIMS=BASE+'/Animations/A4B2'
 H=unreal.GuLiGroundMechAnimationEditorLibrary
 assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
 bp=unreal.load_asset(BASE+'/BP_GroundMech_Light')
 abp=unreal.load_asset(ANIMS+'/ABP_GroundMech_A4B2')
 mesh=unreal.load_asset(BASE+'/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2')
-curve=unreal.load_asset(BASE+'/Animations/CF_Machinegun_Recoil')
+curve=unreal.load_asset(ANIMS+'/CF_Machinegun_Recoil')
 report={'success':False,'scope':'Transient editor pose/asset data, no gameplay execution or images','blendspaces':[],'poses':{}}
 
 # Inspect before any pose sampling. Rebuilding here masked the cold-load missing-node fault.

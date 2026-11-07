@@ -22,10 +22,10 @@ production = dict(model_id=pawn.get_editor_property('model_id'),
                   anim_class=mesh.get_editor_property('anim_class').get_path_name())
 base = '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2'
 assert production == dict(model_id=4001, mesh=base+'/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2',
-                          anim_class=base+'/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C')
+                          anim_class='/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C')
 config = json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.configure_mobility_assets(False))
 assert config['success'], config
-abp = unreal.load_asset(base+'/Animations/ABP_GroundMech_A4B2').get_path_name()
+abp = unreal.load_asset('/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2').get_path_name()
 aim = [n for n in unreal.BlueprintService.get_nodes_in_graph(abp, 'AnimGraph')
        if n.node_type == 'AnimGraphNode_GuLiGroundMechAim']
 assert len(aim) == 1

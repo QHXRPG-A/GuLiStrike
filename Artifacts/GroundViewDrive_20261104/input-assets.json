@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "model_id": 4001,
+  "model_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models",
+  "catalog_mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+  "pawn_class": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+  "move_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_Move.IA_Ground_Move",
+  "mapping_context": "/Game/GuLiStrike/GroundMech/Input/IMC_GroundMech.IMC_GroundMech",
+  "axes": "AXIS2D",
+  "accumulation": "CUMULATIVE",
+  "wasd_modifiers": {
+    "W": [
+      "InputModifierSwizzleAxis"
+    ],
+    "S": [
+      "InputModifierNegate",
+      "InputModifierSwizzleAxis"
+    ],
+    "A": [
+      "InputModifierNegate"
+    ],
+    "D": []
+  }
+}

@@ -2,19 +2,18 @@ import unreal,json
 from pathlib import Path
 OUT=Path('D:/UE5.7/test1/ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export')
 BASE='/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2'
+ANIMS='/Game/GuLiStrike/GroundMech/Animations/A4B2'
+SOURCE='/Game/GuLiStrike/GroundMech/Animations/Source/A4B2'
 LIB=unreal.EditorAssetLibrary
 DATA=json.loads((OUT/'retargeted_animation_data.json').read_text())
 mesh=unreal.load_asset(BASE+'/Meshes/SK_GroundMech_A4B2');skel=mesh.skeleton
 def save(o):
-    assert o.get_path_name().startswith(BASE+'/')
+    assert o.get_path_name().startswith((BASE+'/',ANIMS+'/'))
     LIB.set_metadata_tag(o,'GuLi.ModelProduction.Owner','GuLi.GroundMech.ApprovedA4.B2')
     assert LIB.save_loaded_asset(o,False)
-def dup(p,name):
-    dest=BASE+'/Animations/'+name
-    return unreal.load_asset(dest) if LIB.does_asset_exist(dest) else LIB.duplicate_asset(p,dest)
 mapped={};report={'success':False,'clips':[],'blendspaces':[],'montages':[]}
 def create_animation(src,name,cls,factory_cls):
-    dest=BASE+'/Animations/'+name
+    dest=ANIMS+'/'+name
     old=unreal.load_asset(dest) if LIB.does_asset_exist(dest) else None
     if old and old.get_skeleton()!=skel:
         assert LIB.rename_asset(dest,BASE+'/Rollback/'+name+'_SourceSkeletonCopy')
@@ -27,14 +26,14 @@ def create_animation(src,name,cls,factory_cls):
     if cls==unreal.AnimSequence:factory.set_editor_property('preview_skeletal_mesh',mesh)
     if cls==unreal.AnimMontage:
         side='L' if '_L_' in name else 'R'
-        factory.set_editor_property('source_animation',mapped['/Game/MechaDestroyer/Animation/Anim_Mecha_Turn_'+side+'.Anim_Mecha_Turn_'+side])
-    o=unreal.AssetToolsHelpers.get_asset_tools().create_asset(name,BASE+'/Animations',cls,factory)
+        factory.set_editor_property('source_animation',mapped['Anim_Mecha_Turn_'+side])
+    o=unreal.AssetToolsHelpers.get_asset_tools().create_asset(name,ANIMS,cls,factory)
     assert o and o.get_skeleton()==skel
     return o
 for b in DATA['bones']:assert unreal.SkeletonService.set_bone_retargeting_mode(skel.get_path_name(),b,'Animation')
 save(skel)
 for name,d in DATA['clips'].items():
-    src=unreal.load_asset(d['source']);o=create_animation(src,name,unreal.AnimSequence,unreal.AnimSequenceFactory)
+    src=unreal.load_asset(SOURCE+'/'+name);o=create_animation(src,name,unreal.AnimSequence,unreal.AnimSequenceFactory)
     o.clear_retarget_source_asset()
     ctl=o.controller;ctl.open_bracket('Ground B2 proportion and gun-axis retarget',False)
     try:
@@ -53,7 +52,7 @@ for name,d in DATA['clips'].items():
         if not unreal.AnimationLibrary.does_curve_exist(o,curve,unreal.RawCurveTrackTypes.RCT_FLOAT):unreal.AnimationLibrary.add_curve(o,curve,unreal.RawCurveTrackTypes.RCT_FLOAT)
         times,values=unreal.AnimationLibrary.get_float_keys(src,curve)
         unreal.AnimationLibrary.add_float_curve_keys(o,curve,times,values)
-    save(o);mapped[src.get_path_name()]=o
+    save(o);mapped[name]=o
     errors=[];qerrors=[]
     for f in [0,len(d['frames'])//2,len(d['frames'])-1]:
         poses=unreal.AnimationLibrary.get_bone_poses_for_frame(o,DATA['bones'],f,False)
@@ -70,10 +69,10 @@ for name in ['BlendSpace_Loco_Walk','BlendSpace_Loco_Run']:
     for prop in ['blend_parameters','interpolation_param','target_weight_interpolation_speed_per_sec','axis_to_scale_animation']:
         o.set_editor_property(prop,src.get_editor_property(prop))
     samples=list(src.get_editor_property('sample_data'))
-    for s in samples:s.set_editor_property('animation',mapped[s.get_editor_property('animation').get_path_name()])
+    for s in samples:s.set_editor_property('animation',mapped[s.get_editor_property('animation').get_name()])
     o.set_editor_property('sample_data',samples)
     assert unreal.GuLiGroundMechAnimationEditorLibrary.rebuild_blend_space(o,src)
-    save(o);mapped[unreal.load_asset(p).get_path_name()]=o
+    save(o);mapped[name]=o
     report['blendspaces'].append({'name':name,'samples':len(samples),'target_skeleton':o.get_editor_property('skeleton')==skel})
 for name in ['Montage_Mecha_Turn_L_Montage','Montage_Mecha_Turn_R_Montage']:
     p='/Game/MechaDestroyer/Animation/'+name;src=unreal.load_asset(p);o=create_animation(src,name,unreal.AnimMontage,unreal.AnimMontageFactory)
@@ -81,9 +80,15 @@ for name in ['Montage_Mecha_Turn_L_Montage','Montage_Mecha_Turn_R_Montage']:
     assert str(src.get_section_name(0))==str(o.get_section_name(0))
     assert abs(o.sequence_length-src.sequence_length)<.001
     for prop in ['blend_in','blend_out','rate_scale','blend_out_trigger_time','enable_auto_blend_out']:o.set_editor_property(prop,src.get_editor_property(prop))
-    save(o);mapped[unreal.load_asset(p).get_path_name()]=o
+    save(o);mapped[name]=o
     report['montages'].append(name)
-bp=dup('/Game/GuLiStrike/GroundMech/MechaDestroyer_v1/Animations/ABP_GroundMech_MechaDestroyer','ABP_GroundMech_A4B2')
+if LIB.does_asset_exist(ANIMS+'/ABP_GroundMech_A4B2'):
+    bp=unreal.load_asset(ANIMS+'/ABP_GroundMech_A4B2')
+else:
+    factory=unreal.AnimBlueprintFactory()
+    factory.set_editor_property('parent_class',unreal.GuLiGroundMechAnimInstance)
+    factory.set_editor_property('target_skeleton',skel)
+    bp=unreal.AssetToolsHelpers.get_asset_tools().create_asset('ABP_GroundMech_A4B2',ANIMS,unreal.AnimBlueprint,factory)
 bp.set_editor_property('target_skeleton',skel)
 changes=[]
 for node in unreal.ObjectIterator(unreal.AnimGraphNode_Base):
@@ -92,11 +97,11 @@ for node in unreal.ObjectIterator(unreal.AnimGraphNode_Base):
     field='sequence' if cls=='AnimGraphNode_SequencePlayer' else 'blend_space' if cls=='AnimGraphNode_BlendSpacePlayer' else None
     if field:
         data=node.get_editor_property('node');old=data.get_editor_property(field)
-        if old:
-            assert old.get_path_name() in mapped,old.get_path_name()
-            data.set_editor_property(field,mapped[old.get_path_name()]);node.set_editor_property('node',data)
-            changes.append({'node':node.get_path_name(),'asset':mapped[old.get_path_name()].get_path_name()})
-graph_report=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.build_animation_graph(bp,BASE+'/Animations'))
+        if old and not old.get_path_name().startswith(ANIMS+'/'):
+            assert old.get_name() in mapped,old.get_path_name()
+            data.set_editor_property(field,mapped[old.get_name()]);node.set_editor_property('node',data)
+            changes.append({'node':node.get_path_name(),'asset':mapped[old.get_name()].get_path_name()})
+graph_report=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.build_animation_graph(bp,ANIMS))
 assert graph_report['success'],graph_report
 assert unreal.BlueprintService.compile_blueprint(bp.get_path_name())
 save(bp)

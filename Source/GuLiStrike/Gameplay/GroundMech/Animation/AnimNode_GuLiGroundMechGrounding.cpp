@@ -69,13 +69,6 @@ void FAnimNode_GuLiGroundMechGrounding::EvaluateSkeletalControl_AnyThread(FCompo
         Contacts[0]=Contacts[1]=PoleTwists[0]=PoleTwists[1]=0;
         AppliedOffsets[0]=AppliedOffsets[1]=FVector::ZeroVector; bHasPreviousPose=false;
     }
-    if (Ground.BlinkAlpha>UE_SMALL_NUMBER)
-    {
-        Locks[0]=Locks[1]=FLock{}; Contacts[0]=Contacts[1]=PoleTwists[0]=PoleTwists[1]=0;
-        PelvisOffset=0; bHasPreviousPose=false;
-        EvaluateBlinkCrouch(Output,Out);
-        return;
-    }
     if (Ground.GroundAlpha<=UE_SMALL_NUMBER)
     { Locks[0]=Locks[1]=FLock{}; Contacts[0]=Contacts[1]=PoleTwists[0]=PoleTwists[1]=0; PelvisOffset=0; bHasPreviousPose=false; return; }
     const auto PelvisIndex=Pelvis.GetCompactPoseIndex(Bones);
@@ -85,6 +78,7 @@ void FAnimNode_GuLiGroundMechGrounding::EvaluateSkeletalControl_AnyThread(FCompo
 #endif
     FVector Targets[2]; FQuat FootRotations[2]; float Corrections[2]={0,0}, ContactWeights[2]={0,0};
     FTransform Original[2][4], ToeLocals[2]; TArray<FCompactPoseBoneIndex,TInlineAllocator<4>> Indices[2];
+    bool CanPlant[2];
     auto PlaneDelta=[](const FVector& Point,const FVector& OnPlane,const FVector& Normal)
     { return FVector::DotProduct(OnPlane-Point,Normal)/FMath::Max(.1,Normal.Z); };
     auto ReachAtAngle=[&](int32 Side,float Angle)
@@ -106,11 +100,17 @@ void FAnimNode_GuLiGroundMechGrounding::EvaluateSkeletalControl_AnyThread(FCompo
         { Indices[Side].Add(LegBones[Side*4+B].GetCompactPoseIndex(Bones)); Original[Side][B]=Output.Pose.GetComponentSpaceTransform(Indices[Side][B]); }
         const auto& Sample=Side?Ground.Right:Ground.Left;
         const float Plant=FMath::Clamp(Output.Curve.Get(Side?FName(TEXT("GroundPlant_R")):FName(TEXT("GroundPlant_L"))),0.f,1.f);
+        CanPlant[Side]=Plant>=S.PlantThreshold;
         // Full mechanical sole contact begins at the planting threshold. Do not
         // freeze a partially rolled heel when the support latch first engages.
-        const float WantedContact=S.Enabled && Sample.bHit?FMath::SmoothStep(S.ReleaseThreshold,S.PlantThreshold,Plant)*Ground.GroundAlpha:0.f;
+        const float Support=FMath::SmoothStep(S.ReleaseThreshold,S.PlantThreshold,Plant);
+        // At running cadence the authored swing may be shorter than the normal lock release.
+        // Yield the foot to the clip as it lifts while retaining slope contact during stance.
+        const float Swing=Ground.RunWeight*(1.f-Support);
+        const float WantedContact=S.Enabled && Sample.bHit?Support*Ground.GroundAlpha:0.f;
         Contacts[Side]=FMath::FInterpConstantTo(Contacts[Side],WantedContact,Ground.DeltaSeconds,
             1.f/(WantedContact>Contacts[Side]?S.BlendInSeconds:S.BlendOutSeconds));
+        Contacts[Side]=FMath::Min(Contacts[Side],1.f-Swing);
         const float Contact=Contacts[Side];
 #if WITH_EDITOR
         if (bCaptureStructure)
@@ -164,6 +164,7 @@ void FAnimNode_GuLiGroundMechGrounding::EvaluateSkeletalControl_AnyThread(FCompo
             Lock.bBlockedUntilSwing=Plant>=S.ReleaseThreshold;
         }
         Lock.Weight=FMath::FInterpConstantTo(Lock.Weight,Lock.bLocked?1.f:0.f,Ground.DeltaSeconds,1.f/S.LockReleaseSeconds);
+        Lock.Weight=FMath::Min(Lock.Weight,1.f-Swing);
         if (Lock.Weight>UE_SMALL_NUMBER)
         {
             // Independent of the sampled contact curve: dropping from 1 to 0
@@ -173,13 +174,14 @@ void FAnimNode_GuLiGroundMechGrounding::EvaluateSkeletalControl_AnyThread(FCompo
         }
         FVector Offset=Target-Original[Side][2].GetLocation();
         AppliedOffsets[Side]=FMath::VInterpConstantTo(AppliedOffsets[Side],Offset,Ground.DeltaSeconds,S.MaxCorrectionSpeed);
+        AppliedOffsets[Side]=FMath::Lerp(AppliedOffsets[Side],Offset,Swing);
         Targets[Side]=Original[Side][2].GetLocation()+AppliedOffsets[Side];
         if (bHasPreviousPose)
         {
             const FQuat Previous=World.GetRotation().Inverse()*PreviousFootWorld[Side];
             const double Angle=Previous.AngularDistance(FootRotations[Side]);
             if (Angle>UE_SMALL_NUMBER) FootRotations[Side]=FQuat::Slerp(Previous,FootRotations[Side],
-                FMath::Min(1.,FMath::DegreesToRadians(S.MaxFootAngularSpeed)*Ground.DeltaSeconds/Angle)).GetNormalized();
+                FMath::Lerp(FMath::Min(1.,FMath::DegreesToRadians(S.MaxFootAngularSpeed)*Ground.DeltaSeconds/Angle),1.,double(Swing))).GetNormalized();
         }
     }
     // Intersect the planted legs' reachable pelvis-height intervals before IK.
@@ -258,7 +260,7 @@ void FAnimNode_GuLiGroundMechGrounding::EvaluateSkeletalControl_AnyThread(FCompo
         }
         if (Lock.Weight>0) Toe.SetRotation(FQuat::Slerp(Toe.GetRotation(),World.GetRotation().Inverse()*Lock.Surface.GetRotation()*Lock.ToeRotation,Lock.Weight).GetNormalized());
         // Commit an anchor only after the no-stretch solve and both sole contacts.
-        if (!Lock.bLocked && !Lock.bBlockedUntilSwing && Lock.Weight<=UE_SMALL_NUMBER && Sample.bCanLock
+        if (!Lock.bLocked && !Lock.bBlockedUntilSwing && Lock.Weight<=UE_SMALL_NUMBER && Sample.bCanLock && CanPlant[Side]
             && Contact>=Ground.GroundAlpha-UE_KINDA_SMALL_NUMBER && Contact>0 && bReachable)
         {
             const FVector Heel=World.TransformPosition(Foot.TransformPosition(Side?S.HeelRight:S.HeelLeft));
@@ -288,64 +290,5 @@ void FAnimNode_GuLiGroundMechGrounding::EvaluateSkeletalControl_AnyThread(FCompo
 #endif
     }
     bHasPreviousPose=true;
-    Out.Sort(FCompareBoneTransformIndex());
-}
-
-void FAnimNode_GuLiGroundMechGrounding::EvaluateBlinkCrouch(FComponentSpacePoseContext& Output,TArray<FBoneTransform>& Out)
-{
-    const auto& Bones=Output.Pose.GetPose().GetBoneContainer();
-    const auto PelvisIndex=Pelvis.GetCompactPoseIndex(Bones);
-    const int32 Count=Bones.GetCompactPoseNumBones();
-    TArray<FTransform> Old,New; Old.SetNum(Count); New.SetNum(Count);
-    for (int32 I=0;I<Count;++I) Old[I]=Output.Pose.GetComponentSpaceTransform(FCompactPoseBoneIndex(I));
-    auto Descends=[&](FCompactPoseBoneIndex Index)
-    { for (;Index.IsValid();Index=Bones.GetParentBoneIndex(Index)) if (Index==PelvisIndex) return true; return false; };
-    const float Angle=FMath::Clamp(Ground.BlinkKneeAngleDegrees,Ground.Settings.MinKneeAngle,Ground.Settings.MaxKneeAngle);
-    float Drop=Ground.BlinkCrouchDepthCm/FMath::Max(.001f,float(FMath::Abs(Ground.ComponentToWorld.GetScale3D().Z)));
-    // A common pelvis shift keeps both soles fixed. Limit it by each rigid chain's
-    // target knee angle instead of translating the feet or stretching the legs.
-    for (int32 Side=0;Side<2;++Side)
-    {
-        const FVector Delta=Old[LegBones[Side*4].GetCompactPoseIndex(Bones).GetInt()].GetLocation()
-            -Old[LegBones[Side*4+2].GetCompactPoseIndex(Bones).GetInt()].GetLocation();
-        const double ReachSquared=FMath::Square(UpperLengths[Side])+FMath::Square(LowerLengths[Side])
-            -2.*UpperLengths[Side]*LowerLengths[Side]*FMath::Cos(FMath::DegreesToRadians(Angle));
-        const double Height=FMath::Sqrt(FMath::Max(0.,ReachSquared-Delta.SizeSquared2D()));
-        Drop=FMath::Min(Drop,float(FMath::Max(0.,Delta.Z-Height)));
-    }
-    const FVector Shift(0,0,-Drop*FMath::Clamp(Ground.BlinkAlpha,0.f,1.f));
-    TArray<FBoneTransform,TInlineAllocator<9>> Overrides;
-    FTransform Body=Old[PelvisIndex.GetInt()]; Body.AddToTranslation(Shift); Overrides.Emplace(PelvisIndex,Body);
-    for (int32 Side=0;Side<2;++Side)
-    {
-        const auto U=LegBones[Side*4].GetCompactPoseIndex(Bones), L=LegBones[Side*4+1].GetCompactPoseIndex(Bones);
-        const auto F=LegBones[Side*4+2].GetCompactPoseIndex(Bones), T=LegBones[Side*4+3].GetCompactPoseIndex(Bones);
-        FTransform Upper=Old[U.GetInt()],Lower=Old[L.GetInt()];
-        const FVector Hip=Upper.GetLocation()+Shift,Ankle=Old[F.GetInt()].GetLocation();
-        const FVector Axis=(Ankle-Hip).GetSafeNormal();
-        const double Distance=FMath::Clamp(FVector::Distance(Hip,Ankle),
-            double(FMath::Abs(UpperLengths[Side]-LowerLengths[Side])+.001f),
-            double(UpperLengths[Side]+LowerLengths[Side]-.001f));
-        const double Along=(FMath::Square(UpperLengths[Side])-FMath::Square(LowerLengths[Side])+Distance*Distance)/(2.*Distance);
-        const double Height=FMath::Sqrt(FMath::Max(0.,FMath::Square(UpperLengths[Side])-Along*Along));
-        FVector Pole=FQuat::FindBetweenNormals(RestAxis[Side],Axis).RotateVector(RestPole[Side]);
-        Pole=(Pole-Axis*FVector::DotProduct(Pole,Axis)).GetSafeNormal();
-        const FVector Knee=Hip+Axis*Along+Pole*Height;
-        const FVector Hinge=FVector::CrossProduct(Knee-Hip,Ankle-Knee).GetSafeNormal();
-        const FQuat Align=FQuat::FindBetweenNormals(RestHingeNormal[Side],Hinge);
-        Upper.SetLocation(Hip); Upper.SetRotation((FQuat::FindBetweenVectors(Align.RotateVector(RestUpperDirection[Side]),Knee-Hip)
-            *Align*RestUpperRotation[Side]).GetNormalized());
-        Lower.SetLocation(Knee); Lower.SetRotation((FQuat::FindBetweenVectors(Align.RotateVector(RestLowerDirection[Side]),Ankle-Knee)
-            *Align*RestLowerRotation[Side]).GetNormalized());
-        Overrides.Emplace(U,Upper); Overrides.Emplace(L,Lower);
-        Overrides.Emplace(F,Old[F.GetInt()]); Overrides.Emplace(T,Old[T.GetInt()]);
-    }
-    for (int32 I=0;I<Count;++I)
-    {
-        const FCompactPoseBoneIndex Index(I); const auto Parent=Bones.GetParentBoneIndex(Index);
-        if (const auto* Override=Overrides.FindByPredicate([&](const FBoneTransform& B){return B.BoneIndex==Index;})) New[I]=Override->Transform;
-        else New[I]=Parent.IsValid()?Old[I].GetRelativeTransform(Old[Parent.GetInt()])*New[Parent.GetInt()]:Old[I];
-        if (Descends(Index)) Out.Emplace(Index,New[I]);
-    }
     Out.Sort(FCompareBoneTransformIndex());
 }

@@ -1,0 +1,136 @@
+{
+  "success": true,
+  "assets": [
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_back.Anim_Mecha_Blink_back",
+      "removed_additive_curves": [
+        "UpperLeg_R",
+        "UpperLeg_L"
+      ],
+      "already_clear": false,
+      "final": {
+        "bones": [
+          "root",
+          "middlejoint",
+          "upperleg_l",
+          "leg_l",
+          "foot_l",
+          "footend_l",
+          "upperleg_r",
+          "leg_r",
+          "foot_r",
+          "footend_r",
+          "ik_foot_l",
+          "ik_foot_r"
+        ],
+        "curves": [],
+        "float_curves": [],
+        "markers": {
+          "BlinkConceal": 0.019999999552965164,
+          "BlinkRecovery": 0.23999999463558197
+        },
+        "notify_tracks": [
+          "1",
+          "Blink phases"
+        ],
+        "keys": 82,
+        "duration": 0.5400000214576721,
+        "rate": [
+          150,
+          1
+        ],
+        "skeleton": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2_Skeleton.SK_GroundMech_A4B2_Skeleton"
+      }
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_left.Anim_Mecha_Blink_left",
+      "removed_additive_curves": [],
+      "already_clear": true,
+      "final": {
+        "bones": [
+          "root",
+          "middlejoint",
+          "upperleg_l",
+          "leg_l",
+          "foot_l",
+          "footend_l",
+          "upperleg_r",
+          "leg_r",
+          "foot_r",
+          "footend_r",
+          "ik_foot_l",
+          "ik_foot_r"
+        ],
+        "curves": [],
+        "float_curves": [],
+        "markers": {
+          "BlinkConceal": 0.019999999552965164,
+          "BlinkRecovery": 0.23999999463558197
+        },
+        "notify_tracks": [
+          "1",
+          "Blink phases"
+        ],
+        "keys": 82,
+        "duration": 0.5400000214576721,
+        "rate": [
+          150,
+          1
+        ],
+        "skeleton": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2_Skeleton.SK_GroundMech_A4B2_Skeleton"
+      }
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Blink_right.Anim_Mecha_Blink_right",
+      "removed_additive_curves": [
+        "UpperLeg_R",
+        "UpperLeg_L"
+      ],
+      "already_clear": false,
+      "final": {
+        "bones": [
+          "root",
+          "middlejoint",
+          "upperleg_l",
+          "leg_l",
+          "foot_l",
+          "footend_l",
+          "upperleg_r",
+          "leg_r",
+          "foot_r",
+          "footend_r",
+          "ik_foot_l",
+          "ik_foot_r"
+        ],
+        "curves": [],
+        "float_curves": [],
+        "markers": {
+          "BlinkConceal": 0.019999999552965164,
+          "BlinkRecovery": 0.23999999463558197
+        },
+        "notify_tracks": [
+          "1",
+          "Blink phases"
+        ],
+        "keys": 82,
+        "duration": 0.5400000214576721,
+        "rate": [
+          150,
+          1
+        ],
+        "skeleton": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2_Skeleton.SK_GroundMech_A4B2_Skeleton"
+      }
+    }
+  ],
+  "user_confirmed_channels": [
+    "UpperLeg_L",
+    "UpperLeg_R"
+  ],
+  "upper_body_tracks_already_removed": true,
+  "saved_and_clean": true,
+  "base_bone_tracks_preserved": true,
+  "runtime_blink_unchanged": true,
+  "PIE": "not_run",
+  "visual_review": "pending_user",
+  "dirty_after": []
+}

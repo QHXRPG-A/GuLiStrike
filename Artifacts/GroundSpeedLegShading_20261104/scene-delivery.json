@@ -1,0 +1,247 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "map_saved": true,
+  "entities": [
+    {
+      "label": "GroundMobility_Flat",
+      "type": "StaticMeshActor",
+      "location": [
+        -4000.0,
+        50000.0,
+        880.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        30.0,
+        40.0,
+        0.5
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "type": "StaticMeshActor",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "scale": [
+        14.0,
+        10.0,
+        0.4
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "type": "StaticMeshActor",
+      "location": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        5.4,
+        10.0,
+        0.4
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "type": "StaticMeshActor",
+      "location": [
+        -4800.0,
+        50900.0,
+        915.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.2
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "type": "StaticMeshActor",
+      "location": [
+        -4400.0,
+        50900.0,
+        925.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.4
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "type": "StaticMeshActor",
+      "location": [
+        -4000.0,
+        50900.0,
+        935.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.6
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "type": "StaticMeshActor",
+      "location": [
+        -3600.0,
+        50900.0,
+        945.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.8
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "type": "TargetPoint",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "Ground3C_LookLeft",
+      "type": "StaticMeshActor",
+      "location": [
+        -5300.0,
+        49000.0,
+        1055.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        3.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    },
+    {
+      "label": "Ground3C_LookRight",
+      "type": "StaticMeshActor",
+      "location": [
+        -5300.0,
+        51000.0,
+        1055.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        3.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision_profile": "BlockAll"
+    }
+  ],
+  "default_ground_pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+  "ground_pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+  "production_references": {
+    "model_id": 4001,
+    "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+    "anim_class": "/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C"
+  },
+  "manifests": [
+    {
+      "population": 200,
+      "config_hash": "33c75b0d282e4491ba29dfae90151232af7b97c34ddbfa7b4bf32df2ebc21ca8",
+      "fingerprint": "2f9002b8133283f71b3466b5386d8339",
+      "state_version": 13
+    },
+    {
+      "population": 600,
+      "config_hash": "e757891369c10f2953d2a01d164e01f2df49ef9eef64e357ebbc1ad8cba5c83c",
+      "fingerprint": "2f9002b8133283f71b3466b5386d8339",
+      "state_version": 13
+    }
+  ],
+  "navigation": [
+    {
+      "volume": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+      "asset": "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype.DA_FlightNav_LVL_CommanderMassPrototype",
+      "rebaked": false,
+      "bake_id": "2EB250BF44F97BB3E33B1EA350FB63D4",
+      "geometry_signature": 4283311421331020602
+    }
+  ],
+  "pie_started": false
+}

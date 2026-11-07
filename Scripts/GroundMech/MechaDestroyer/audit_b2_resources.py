@@ -6,8 +6,8 @@ assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_i
 mesh=unreal.load_asset(NEW+'/Meshes/SK_GroundMech_A4B2');skel=mesh.skeleton
 report={'success':False,'assets':[],'missing_hard_dependencies':[],'preserved_gameplay_defaults':[],'source_animations':[]}
 opts=unreal.AssetRegistryDependencyOptions(include_hard_package_references=True,include_soft_package_references=False,include_editor_only_package_references=True,include_game_package_references=True)
-for folder in ['Meshes','Animations','Materials']:
-    for data in AR.get_assets_by_path(NEW+'/'+folder,True):
+for folder in [NEW+'/Meshes','/Game/GuLiStrike/GroundMech/Animations/A4B2',NEW+'/Materials']:
+    for data in AR.get_assets_by_path(folder,True):
         asset=data.get_asset();assert asset,str(data.package_name)
         row={'path':asset.get_path_name(),'class':asset.get_class().get_name()}
         if isinstance(asset,unreal.AnimationAsset):
@@ -20,7 +20,7 @@ for folder in ['Meshes','Animations','Materials']:
         if isinstance(asset,unreal.BlendSpace):
             samples=asset.get_editor_property('sample_data')
             row['samples']=[s.get_editor_property('animation').get_path_name() for s in samples]
-            assert len(samples)==5 and all(p.startswith(NEW+'/Animations/') for p in row['samples'])
+            assert len(samples)==5 and all(p.startswith('/Game/GuLiStrike/GroundMech/Animations/A4B2/') for p in row['samples'])
         if isinstance(asset,unreal.AnimBlueprint):
             assert asset.get_editor_property('target_skeleton')==skel
             refs=[]
@@ -29,7 +29,7 @@ for folder in ['Meshes','Animations','Materials']:
                 cls=node.get_class().get_name();field='sequence' if cls=='AnimGraphNode_SequencePlayer' else 'blend_space' if cls=='AnimGraphNode_BlendSpacePlayer' else None
                 if field:
                     obj=node.get_editor_property('node').get_editor_property(field)
-                    assert obj and obj.get_path_name().startswith(NEW+'/Animations/')
+                    assert obj and obj.get_path_name().startswith('/Game/GuLiStrike/GroundMech/Animations/A4B2/')
                     refs.append(obj.get_path_name())
             assert refs;row['graph_animation_refs']=sorted(set(refs))
         for dep in AR.get_dependencies(data.package_name,opts):

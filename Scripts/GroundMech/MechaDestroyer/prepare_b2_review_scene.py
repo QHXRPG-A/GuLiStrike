@@ -40,7 +40,7 @@ for team,x in [('BLUE',8600),('RED',9400)]:
     comp.set_default_custom_primitive_data_float(16,1)
     pres=actor.get_component_by_class(unreal.GuLiModelPresentationComponent)
     assert pres and pres.model_id==4001
-    anim=comp.get_anim_instance();assert anim and anim.get_class()==unreal.load_asset(NEW+'/Animations/ABP_GroundMech_A4B2').generated_class()
+    anim=comp.get_anim_instance();assert anim and anim.get_class()==unreal.load_asset('/Game/GuLiStrike/GroundMech/Animations/A4B2/ABP_GroundMech_A4B2').generated_class()
     sockets={k:comp.does_socket_exist(k) for k in ['Muzzle','Muzzle_L','Jet_Outlet_R','Jet_Outlet_L']}
     assert all(sockets.values())
     records.append({'label':label,'actor':actor.get_path_name(),'location':pos.to_tuple(),'floor_z':floor,'editor_only':actor.get_editor_property('is_editor_only_actor'),'mesh':comp.get_skeletal_mesh_asset().get_path_name(),'animation_instance':anim.get_class().get_path_name(),'model_registration':pres.model_id,'sockets':sockets,'preview_team':team})

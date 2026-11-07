@@ -2,6 +2,7 @@
 #include "Animation/AnimSequence.h"
 #include "Animation/AnimMontage.h"
 #include "Animation/BlendSpace.h"
+#include "Animation/BlendSpace1D.h"
 #include "Animation/Skeleton.h"
 #include "Engine/DataTable.h"
 #include "Misc/SecureHash.h"
@@ -97,12 +98,32 @@ bool FGuLiGroundMechConfiguration::Load(FString& Error)
         }
     }
     for (const TCHAR* Name:{TEXT("Idle"),TEXT("WalkForward"),TEXT("WalkBackward"),TEXT("StrafeLeft"),TEXT("StrafeRight"),
-        TEXT("RunForward"),TEXT("RunBackward"),TEXT("TurnLeft"),TEXT("TurnRight"),TEXT("JumpStart"),TEXT("JumpLoop"),TEXT("Shoot"),TEXT("WalkBlend"),TEXT("RunBlend")})
+        TEXT("RunForward"),TEXT("RunBackward"),TEXT("TurnLeft"),TEXT("TurnRight"),TEXT("JumpStart"),TEXT("JumpLoop"),TEXT("Shoot"),TEXT("WalkBlend"),TEXT("RunBlend"),
+        TEXT("BlinkForward"),TEXT("BlinkBackward"),TEXT("BlinkLeft"),TEXT("BlinkRight"),TEXT("BlinkBlend")})
         if (!Gaits.Contains(Name)) { Error=TEXT("Missing Ground gait: ")+FString(Name); return false; }
     const auto* Skeleton=Asset<UBlendSpace>(TEXT("WalkBlend"))->GetSkeleton();
     for (const auto& Pair:Assets)
         if (!Skeleton || CastChecked<UAnimationAsset>(Pair.Value)->GetSkeleton()!=Skeleton)
         { Error=TEXT("Ground gait assets must share the production skeleton: ")+Pair.Key.ToString(); return false; }
+    const auto* BlinkBlend=Asset<UBlendSpace1D>(TEXT("BlinkBlend"));
+    if (!BlinkBlend || BlinkBlend->GetBlendSamples().Num()!=5
+        || !FMath::IsNearlyEqual(BlinkBlend->GetBlendParameter(0).Min,-180.f)
+        || !FMath::IsNearlyEqual(BlinkBlend->GetBlendParameter(0).Max,180.f))
+    { Error=TEXT("BlinkBlend requires five directional samples on a -180..180 degree 1D axis"); return false; }
+    const TPair<const TCHAR*,float> BlinkSamples[]={{TEXT("BlinkBackward"),-180.f},{TEXT("BlinkLeft"),-90.f},
+        {TEXT("BlinkForward"),0.f},{TEXT("BlinkRight"),90.f},{TEXT("BlinkBackward"),180.f}};
+    for (const auto& Expected:BlinkSamples)
+    {
+        const auto* Clip=Asset<UAnimSequence>(Expected.Key);
+        const auto* Sample=BlinkBlend->GetBlendSamples().FindByPredicate([&](const FBlendSample& S)
+            { return S.Animation==Clip && S.SampleValue.Equals(FVector(Expected.Value,0,0),.001); });
+        const auto* Conceal=Clip->AuthoredSyncMarkers.FindByPredicate([](const FAnimSyncMarker& M){ return M.MarkerName==TEXT("BlinkConceal"); });
+        const auto* Recovery=Clip->AuthoredSyncMarkers.FindByPredicate([](const FAnimSyncMarker& M){ return M.MarkerName==TEXT("BlinkRecovery"); });
+        if (!Sample || Clip->bEnableRootMotion || !FMath::IsNearlyEqual(Clip->GetPlayLength(),.54f,.0001f)
+            || Clip->GetSamplingFrameRate()!=FFrameRate(150,1) || !Conceal || !Recovery
+            || !FMath::IsNearlyEqual(Conceal->Time,.02f,.0001f) || !FMath::IsNearlyEqual(Recovery->Time,.24f,.0001f))
+        { Error=TEXT("Blink clip requires matching skeleton, 150 fps / .54 s and .02 / .24 s phase markers: ")+FString(Expected.Key); return false; }
+    }
     const auto& Bones=Skeleton->GetReferenceSkeleton();
     const int32 Chest=Bones.FindBoneIndex(TEXT("cockpit")), Pelvis=Bones.FindBoneIndex(TEXT("MiddleJoint"));
     const int32 RightArm=Bones.FindBoneIndex(TEXT("GunArm_R")), LeftArm=Bones.FindBoneIndex(TEXT("GunArm_L"));

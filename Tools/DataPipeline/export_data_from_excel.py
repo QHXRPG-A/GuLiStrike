@@ -854,7 +854,8 @@ def validate_mech_mobility(tables):
     require(1<=blink.get('BlinkShapeFlickerHz',0)<=60 and 0<=blink.get('BlinkShapeFragmentOffsetCm',-1)<=20,'Blink energy shape flicker/fragment parameters invalid')
     require(10<=blink.get('BlinkLandingSearchStepCm',0)<=250 and 100<=blink.get('BlinkLandingProbeCm',0)<=2000,'Blink endpoint probe parameters invalid')
     require(not any(key.startswith('Blink') for key in m),'闪现参数只允许在 Skills/Blink 维护')
-    required={'Idle','WalkForward','WalkBackward','StrafeLeft','StrafeRight','RunForward','RunBackward','TurnLeft','TurnRight','JumpStart','JumpLoop','Shoot','WalkBlend','RunBlend'}
+    required={'Idle','WalkForward','WalkBackward','StrafeLeft','StrafeRight','RunForward','RunBackward','TurnLeft','TurnRight','JumpStart','JumpLoop','Shoot','WalkBlend','RunBlend',
+              'BlinkForward','BlinkBackward','BlinkLeft','BlinkRight','BlinkBlend'}
     require(set(g)==required,'Gait 缺少或多出配置行')
     for name,r in g.items():
         require(bool(re.fullmatch(r'/Game/[A-Za-z0-9_/]+\.[A-Za-z0-9_]+',r['Asset'])),f'{name}: 动画完整软引用无效')

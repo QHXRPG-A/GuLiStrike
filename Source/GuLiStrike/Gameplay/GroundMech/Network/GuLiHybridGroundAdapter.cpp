@@ -24,8 +24,8 @@
 
 namespace GuLiHybridGround
 {
-constexpr uint32 StateVersion=13;
-constexpr uint32 MotionVersion=8;
+constexpr uint32 StateVersion=14;
+constexpr uint32 MotionVersion=9;
 struct FPose
 {
     FVector Position=FVector::ZeroVector,Velocity=FVector::ZeroVector;
@@ -78,8 +78,9 @@ void Pose(FGuLiHybridStateArchive& A,FPose& V)
         || !FMath::IsFinite(V.UpperAimSeconds) || V.UpperAimSeconds<0.) A.Reject();
     auto& B=V.Blink;
     A.Value(B.Phase); A.Value(B.Serial); A.Value(B.LastRequest); A.Value(B.Elapsed); A.Value(B.Cooldown);
-    A.Value(B.Start); A.Value(B.End); A.Value(B.Direction); A.Value(B.Yaw);
+    A.Value(B.Start); A.Value(B.End); A.Value(B.Direction); A.Value(B.FacingYaw);
     if (B.Phase>3 || B.Serial<0 || B.Elapsed<0 || B.Elapsed>1.1f || B.Cooldown<0 || B.Cooldown>60
+        || !FMath::IsFinite(B.FacingYaw) || FMath::Abs(B.FacingYaw)>180.f
         || !B.Direction.IsNormalized() || FMath::Abs(B.Direction.Z)>.001 || FVector::DistSquared(B.Start,B.End)>FMath::Square(5501.f)) A.Reject();
     if (V.MoveAxis.SizeSquared()>1.00001 || V.WeaponAim.ReturnAlpha<0 || V.WeaponAim.ReturnAlpha>1) A.Reject();
     if (T.Serial<0 || T.Direction< -1 || T.Direction>1 || T.Time<0 || T.Duration<0 || T.Time>T.Duration+.001f

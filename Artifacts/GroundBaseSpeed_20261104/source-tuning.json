@@ -1,0 +1,62 @@
+{
+  "success": true,
+  "source": "D:/UE5.7/test1/Data/Excel/GuLiStrikeMech.xlsx",
+  "source_sha256_before": "abeb99e2ed76b429c94675dfb50e985cbe5b2382b4a3f7dd146063af95630b38",
+  "source_sha256_after": "30521ec8103853bcd83fa77313206c18046105bee3657fe9fb2cf634ef55173a",
+  "old_values": {
+    "WalkSpeed": 324.0,
+    "SprintSpeed": 648.0,
+    "Acceleration": 1296.0,
+    "Braking": 1296.0
+  },
+  "new_values": {
+    "WalkSpeed": 648.0,
+    "SprintSpeed": 1296.0,
+    "Acceleration": 2592.0,
+    "Braking": 2592.0
+  },
+  "edits": [
+    {
+      "cell": "D4",
+      "value": 648.0,
+      "type": "float"
+    },
+    {
+      "cell": "E4",
+      "value": 1296.0,
+      "type": "float"
+    },
+    {
+      "cell": "F4",
+      "value": 2592.0,
+      "type": "float"
+    },
+    {
+      "cell": "G4",
+      "value": 2592.0,
+      "type": "float"
+    }
+  ],
+  "all_other_cells_on_seven_sheets_unchanged": true,
+  "previous_mech_exports": {
+    "DT_GuLiStrikeMech_Camera.json": "30919229a3fdd1940180fa2713c14f6abff2a670473e7434860ea4fb82b875a1",
+    "DT_GuLiStrikeMech_Gait.json": "a38d4b40014a3a81978f39fd98328df9a40380288069d56558f326ccaa1d6718",
+    "DT_GuLiStrikeMech_GroundIK.json": "38353c3f1e6f3b7fe822600de3ed6fe237718d0e1235128965594160471e1884",
+    "DT_GuLiStrikeMech_Mobility.json": "6031ac5c9a3c4481850dd169f8d5b2e4ac4a22e52089a90d45c57a5a7d97dfcc",
+    "DT_GuLiStrikeMech_Skills.json": "4e5ae9e929e2dec87f8e0b8c1b987b41104ce30386e5b152ff1db37bcd41808f",
+    "DT_GuLiStrikeMech_Upgrades.json": "88ae128c5125cf0f8b148418083130e9e5ec04d6b537d0f3e805922bad600747",
+    "DT_GuLiStrikeMech_Visuals.json": "64d8f25745ecd2691ab1f47fe57df6b30c749722bb1999b85eb6cf124edba0b3"
+  },
+  "original_manifests": {
+    "200": {
+      "config_hash": "33c75b0d282e4491ba29dfae90151232af7b97c34ddbfa7b4bf32df2ebc21ca8",
+      "mobility": "2f9002b8133283f71b3466b5386d8339",
+      "ground_state": "13"
+    },
+    "600": {
+      "config_hash": "e757891369c10f2953d2a01d164e01f2df49ef9eef64e357ebbc1ad8cba5c83c",
+      "mobility": "2f9002b8133283f71b3466b5386d8339",
+      "ground_state": "13"
+    }
+  }
+}
