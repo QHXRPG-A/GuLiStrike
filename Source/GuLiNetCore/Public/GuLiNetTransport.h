@@ -28,6 +28,8 @@ struct TransportMetrics
     std::uint64_t RetransmitBytes = 0;
     std::uint64_t ReplacedStates = 0;
     std::uint64_t MotionBatchPackets=0,MotionBatchMessages=0,MotionBatchSharedBytes=0,SentPacketHeaderBytes=0;
+    std::uint64_t AckBatchPackets=0,AckBatchMessages=0;
+    std::uint64_t ReliableBatchPackets=0,ReliableBatchMessages=0,ReliableBatchSharedBytes=0;
     std::uint64_t RejectedPackets = 0;
     std::uint64_t DuplicatePackets = 0, OutOfOrderMessages = 0;
     std::array<std::uint64_t,4> SentLaneBytes{}, ReceivedLaneBytes{};
@@ -50,7 +52,7 @@ struct TransportMetrics
     VehicleBytes Engineers,Miners;
     // First successful transmission, not queue admission. Both sizes refer to
     // the identical logical message, excluding fragments, retries and packet ACKs.
-    // Batched Encoded bytes exclude MotionBatchSharedBytes (one per datagram).
+    // Batched Encoded bytes exclude Motion/ReliableBatchSharedBytes (per datagram).
     std::array<MessageBytes,static_cast<std::size_t>(MessageKind::Count)> Encodings{};
 };
 
@@ -78,6 +80,12 @@ public:
     explicit PeerChannel(Id ConnectionKey, QueueLimits Limits = {},PeerChannelBinding Binding={});
     ~PeerChannel();
     bool Queue(const Message& Value, double NowSeconds);
+    // Reserve reliable message/byte capacity before a stateful encoder runs.
+    // Encoder is synchronous and must not re-enter this channel.
+    bool QueueEncoded(const Message& Value,double NowSeconds,std::size_t MaximumBodyBytes,
+        const std::function<bool(Bytes&)>& Encode);
+    // A socket poll may collect ACKs and send one bounded set per lane in Pump.
+    bool DeferAcknowledgment(std::span<const std::uint8_t> Packet);
     bool CanQueueHandoff() const;
     bool Receive(std::span<const std::uint8_t> Packet, double NowSeconds, const SendPacket& Ack, const Deliver& Apply);
     bool ReceiveWithAdmission(std::span<const std::uint8_t> Packet,double NowSeconds,const SendPacket& Ack,const TryDeliver& Apply);
@@ -94,6 +102,8 @@ public:
     std::uint64_t ReceivedThrough(Lane Stream) const { return ReliableThrough[static_cast<std::size_t>(Stream)]; }
 private:
     void RecordFirstTransmission(const Message& Value,std::size_t EncodedBytes);
+    void Acknowledge(Lane Stream,std::uint64_t Sequence,const SendPacket& Ack);
+    bool AdmitReliable(Message Value,std::size_t StorageBytes,const SendPacket& Ack,const TryDeliver& Apply);
     using Key = std::pair<Lane, std::uint64_t>;
     struct Outbound
     {
@@ -129,6 +139,7 @@ private:
     std::size_t OrderedBytes=0;
     std::array<std::uint64_t, 4> NextSequence{1, 1, 1, 1};
     std::array<SequenceWindow, 4> Completed;
+    std::array<std::set<std::uint64_t>,4> PendingAcknowledgments;
     std::array<std::uint64_t, 4> ReliableThrough{};
     std::array<std::set<std::uint64_t>, 4> ReliableBeyond;
     std::array<double, 4> Tokens{};

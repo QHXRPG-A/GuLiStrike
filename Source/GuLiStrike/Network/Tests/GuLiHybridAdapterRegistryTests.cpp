@@ -1,7 +1,8 @@
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Network/GuLiHybridActorWorldSubsystem.h"
 #include "Network/Private/GuLiHybridComponentState.h"
-#include "Network/Private/GuLiHybridPeerPayload.h"
+#include "Network/Private/GuLiHybridReliablePayload.h"
+#include "GuLiNetTransport.h"
 #include "Gameplay/Building/GuLiHybridBuildingAdapter.h"
 #include "Gameplay/Building/GuLiBuildingTypes.h"
 #include "Engine/StaticMesh.h"
@@ -163,6 +164,137 @@ bool FGuLiHybridSmallPeerPayloadTests::RunTest(const FString&)
         CheckReuse(M);
         for (size_t I=0;I<M.Body.size();++I) M.Body[I]=I%16<4?uint8((I/16)>>(8*(I%4))):uint8(I%7);
         CheckReuse(M);
+    }
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiHybridReliableHistoryTests,
+    "GuLiStrike.Network.ReliableHistory",EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiHybridReliableHistoryTests::RunTest(const FString&)
+{
+    using namespace GuLiNet;
+    using namespace GuLiHybridReliablePayload;
+    const auto IdFor=[](uint32 N) {return Id{{0x17214321,0x23543612,0x67890981,N}};};
+    std::vector<Message> Originals;uint32 Noise=43;Bytes Seed(4096);
+    for (auto& Byte:Seed) {Noise=1664525u*Noise+1013904223u;Byte=uint8(Noise>>24);}
+    for (uint32 N=0;N<5;++N)
+    {
+        Message M;M.Header.Kind=N%3==0?MessageKind::ObjectEvent:N%3==1?MessageKind::StateFragments:MessageKind::TransactionResult;
+        M.Header.Match=IdFor(100);M.Header.Sender=IdFor(1);M.Header.Event=IdFor(200+N);
+        M.Header.Object={ObjectKind::Flight,IdFor(300),1};M.Header.Epoch=1;M.Header.At=500+N;M.Body=Seed;
+        if (N==1) for (size_t I=0;I<32;++I) ++M.Body[I];
+        if (N==2) M.Body.assign(MaximumBodyBytes,42);
+        if (N==3) M.Body.assign(128,55);
+        Originals.push_back(std::move(M));
+    }
+    FPeerHistory Codec;Bytes FirstWire;
+    for (const auto& Original:Originals)
+    {
+        Bytes Wire;
+        if (!TestTrue(TEXT("Ordered stream chunk packs"),Pack(Original,Codec.Outgoing,Wire))) return false;
+        if (FirstWire.empty()) FirstWire=Wire;
+        auto Received=Original;Received.Body=Wire;uint64 Plain=0;bool Used=false;
+        TestTrue(TEXT("Stream admission size is exact and bounded"),PlainSize(Received,Plain)&&Plain==Original.Body.size());
+        auto Broken=Received;Broken.Body.pop_back();
+        TestFalse(TEXT("Truncation rejected before consuming stream"),Unpack(Broken,Codec.Incoming,Used));
+        Broken=Received;Broken.Body[9]^=1;
+        TestFalse(TEXT("Wrong stream sequence rejected before decode"),Unpack(Broken,Codec.Incoming,Used));
+        if (!TestTrue(TEXT("Exact application body recovered"),Unpack(Received,Codec.Incoming,Used)&&Used&&Received.Body==Original.Body)) return false;
+        auto Retry=Original;Retry.Body=Wire;
+        TestTrue(TEXT("Application backpressure reuses decoded chunk"),Unpack(Retry,Codec.Incoming,Used)&&Retry.Body==Original.Body);
+        Codec.Outgoing.Commit(Original.Body);Codec.Incoming.Commit(Received.Body);
+        TestEqual(TEXT("Admission keeps both sequences aligned"),Codec.Outgoing.Sequence,Codec.Incoming.Sequence);
+        Retry=Original;Retry.Body=Wire;
+        TestFalse(TEXT("Committed chunk cannot be reapplied"),Unpack(Retry,Codec.Incoming,Used));
+    }
+    FHistory Corrupt;auto Bad=Originals[0];Bad.Body=FirstWire;Bad.Body[17]^=1;bool Used=false;
+    TestFalse(TEXT("Per-record checksum catches corruption"),Unpack(Bad,Corrupt,Used));
+    TestTrue(TEXT("Corrupted streaming context cannot continue"),Corrupt.Failed);
+    FHistory Restarted;Bad=Originals[0];Bad.Body=FirstWire;
+    TestTrue(TEXT("Fresh connection decodes without old state"),Unpack(Bad,Restarted,Used)&&Bad.Body==Originals[0].Body);
+    auto Ineligible=Originals[0];Bytes Wire;Ineligible.Header.Kind=MessageKind::Motion;
+    TestFalse(TEXT("Unreliable motion cannot enter ordered stream"),Pack(Ineligible,Codec.Outgoing,Wire));
+    Ineligible=Originals[0];Ineligible.Body.resize(MaximumBodyBytes+1);
+    TestFalse(TEXT("Large checkpoints remain independently encoded"),Pack(Ineligible,Codec.Outgoing,Wire));
+    Message Escaped;Escaped.Header.Kind=MessageKind::Transaction;Writer Escape;
+    Escape.U32(Tag);Escaped.Body=Escape.Take();const auto EscapePlain=Escaped.Body;
+    TestTrue(TEXT("Literal stream tag is escaped by independent codec"),GuLiHybridPeerPayload::Pack(Escaped,Wire));
+    Escaped.Body=Wire;FHistory Literal;
+    TestTrue(TEXT("Escaped stream tag preserves original bytes"),Unpack(Escaped,Literal,Used)&&!Used&&Escaped.Body==EscapePlain);
+
+    QueueLimits Full;Full.MaxPendingMessages=0;PeerChannel Blocked(IdFor(901),Full);FHistory Reserved;
+    bool EncoderRan=false;
+    TestFalse(TEXT("Full transport rejects before changing compression state"),Blocked.QueueEncoded(Originals[0],0,Bound(Originals[0].Body.size()),
+        [&](Bytes& B){EncoderRan=true;return Pack(Originals[0],Reserved,B);}));
+    TestTrue(TEXT("Rejected reservation leaves stream untouched"),!EncoderRan&&Reserved.Sequence==0&&Reserved.Encoder==nullptr);
+
+    QueueLimits Limits;Limits.BytesPerSecond.fill(8*1024*1024);Limits.ResendSeconds=.01;
+    PeerChannel Sender(IdFor(900),Limits),Receiver(IdFor(900),Limits);FPeerHistory Transport;
+    for (const auto& Original:Originals)
+    {
+        if (!TestTrue(TEXT("Reserved reliable stream admission"),Sender.QueueEncoded(Original,0,Bound(Original.Body.size()),
+            [&](Bytes& B){return Pack(Original,Transport.Outgoing,B);}))) return false;
+        Transport.Outgoing.Commit(Original.Body);
+    }
+    std::vector<Bytes> Packets,Acks;Bytes FirstAck,FirstBatch;
+    size_t Delivered=0;bool Ready=false,Dropped=false,DroppedAck=false;
+    const auto Ack=[&](std::span<const uint8> B) {Receiver.DeferAcknowledgment(B);return false;};
+    const auto Apply=[&](const Message& M)
+    {
+        auto Decoded=M;bool Stream=false;
+        if (!TestTrue(TEXT("Ordered delivery preserves stream decode"),Unpack(Decoded,Transport.Incoming,Stream)&&Stream)) return false;
+        if (!Ready) return false;
+        if (!TestTrue(TEXT("No duplicate application delivery"),Delivered<Originals.size())) return false;
+        TestTrue(TEXT("Loss recovery preserves event and every application byte"),
+            Decoded.Header.Event==Originals[Delivered].Header.Event&&Decoded.Body==Originals[Delivered].Body);
+        Transport.Incoming.Commit(Decoded.Body);++Delivered;return true;
+    };
+    for (uint32 Round=0;Round<100;++Round)
+    {
+        const double At=(Round+1)*.02;
+        Sender.Pump(At,[&](std::span<const uint8> B)
+        {
+            if (FirstBatch.empty() && B.size()>42 && (B[7]&16)) FirstBatch.assign(B.begin(),B.end());
+            Packets.emplace_back(B.begin(),B.end());return true;
+        });
+        for (auto I=Packets.rbegin();I!=Packets.rend();++I)
+        {
+            if (!Dropped) {Dropped=true;continue;}
+            Receiver.ReceiveWithAdmission(*I,At,Ack,Apply);Receiver.ReceiveWithAdmission(*I,At,Ack,Apply);
+        }
+        Packets.clear();Ready=Round>=5;Receiver.DrainDeliveries(Apply);
+        Receiver.Pump(At,[&](std::span<const uint8> B){Acks.emplace_back(B.begin(),B.end());return true;});
+        for (const auto& B:Acks)
+        {
+            if (FirstAck.empty()) FirstAck=B;
+            if (!DroppedAck) {DroppedAck=true;continue;}
+            Sender.Receive(B,At,[](auto){return true;},[](auto){});
+        }
+        Acks.clear();
+        if (Delivered==Originals.size()&&Sender.Unacknowledged().empty()) break;
+    }
+    TestEqual(TEXT("Every stream record delivered once after recovery"),Delivered,Originals.size());
+    TestTrue(TEXT("Fixture exercised data and ACK loss"),Dropped&&DroppedAck&&Sender.Metrics().RetransmitBytes>0);
+    TestTrue(TEXT("Fixture exercised duplicates, admission retry and ACK coalescing"),Receiver.Metrics().DuplicatePackets>0
+        &&Receiver.Metrics().DeliveryBackpressure>0&&Receiver.Metrics().AckBatchMessages>=Originals.size());
+    TestTrue(TEXT("Reliable storage drains without channel failure"),Sender.Unacknowledged().empty()
+        &&Receiver.Metrics().PendingDeliveryMessages==0&&!Sender.HasFailed()&&!Receiver.HasFailed());
+    TestEqual(TEXT("Stream sequences agree after recovery"),Transport.Incoming.Sequence,Transport.Outgoing.Sequence);
+    TestTrue(TEXT("Reliable records shared a datagram and retained individual ACKs"),Sender.Metrics().ReliableBatchMessages>=2);
+    if (!FirstBatch.empty())
+    {
+        PeerChannel Victim(IdFor(900),Limits);size_t Applied=0,Acknowledged=0;
+        ++FirstBatch[42]; // Declare one extra tail record without changing the valid packet envelope.
+        TestFalse(TEXT("Malformed reliable batch tail is rejected atomically"),Victim.Receive(FirstBatch,.1,
+            [&](auto){++Acknowledged;return true;},[&](auto){++Applied;}));
+        TestTrue(TEXT("Invalid batch neither acknowledges nor applies a prefix"),Applied==0&&Acknowledged==0
+            &&Victim.Metrics().PendingDeliveryMessages==0&&Victim.ReceivedThrough(Lane::Control)==0);
+    }
+    if (!FirstAck.empty())
+    {
+        PeerChannel Victim(IdFor(900),Limits);for (const auto& M:Originals) Victim.Queue(M,0);
+        FirstAck.back()=0;const auto Before=Victim.Unacknowledged().size();
+        TestFalse(TEXT("Malformed ACK set is rejected atomically"),Victim.Receive(FirstAck,.1,[](auto){return true;},[](auto){}));
+        TestEqual(TEXT("Malformed ACK tail releases no reliable messages"),Victim.Unacknowledged().size(),Before);
     }
     return true;
 }

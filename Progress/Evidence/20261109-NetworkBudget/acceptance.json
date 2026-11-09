@@ -1,0 +1,904 @@
+{
+  "objective_total_kB_s": 1000,
+  "protocol": 44,
+  "passed": true,
+  "basis": "Rendering client P2P UDP payload send+receive bytes / monotonic wall seconds / 1000. Includes transport/application headers, ACKs, fragments and retries. Excludes OS UDP/IP/link headers and coordinator WebSocket traffic, matching HUD P2P counters.",
+  "scenario": "Original LVL_CommanderMassPrototype LocalPIE: 600 configured soldiers, 300 locally simulated, independent headless peer; original firing/damage/retirement/territory cadence; logical tick about 211 through 515.",
+  "baseline": {
+    "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261109-120315-4136AD17",
+    "valid": true,
+    "at_or_below_100": true,
+    "wire_kB_s": 69.43699057187402,
+    "control_kB_s": 2364.844970412589,
+    "process_send_kB_s": 2455.0823851588852,
+    "process_receive_kB_s": 342.5438741081967,
+    "process_total_kB_s": 2797.626259267082,
+    "total_inter_sample_kB_s": [
+      3266.4648946323114,
+      3213.6934400380724,
+      2468.297074191654,
+      2505.087526567507,
+      2529.649984846408
+    ],
+    "peak_total_interval_kB_s": 3266.4648946323114,
+    "business_progress": {
+      "observed": 1868,
+      "finished": 1825,
+      "spawn_requests": 1864,
+      "retire_requests": 1720,
+      "damage_requests": 930,
+      "territory_requests": 980,
+      "committed_damage_receipts": 783
+    },
+    "business_intervals": [
+      {
+        "seconds": 1.0092654004693031,
+        "observed": 388,
+        "finished": 343,
+        "spawn_requests": 384,
+        "retire_requests": 337,
+        "damage_requests": 200,
+        "territory_requests": 196,
+        "committed_damage_receipts": 193
+      },
+      {
+        "seconds": 1.0114741995930672,
+        "observed": 372,
+        "finished": 318,
+        "spawn_requests": 372,
+        "retire_requests": 321,
+        "damage_requests": 151,
+        "territory_requests": 196,
+        "committed_damage_receipts": 152
+      },
+      {
+        "seconds": 1.0069415979087353,
+        "observed": 372,
+        "finished": 409,
+        "spawn_requests": 372,
+        "retire_requests": 371,
+        "damage_requests": 200,
+        "territory_requests": 196,
+        "committed_damage_receipts": 143
+      },
+      {
+        "seconds": 1.0109523013234138,
+        "observed": 372,
+        "finished": 366,
+        "spawn_requests": 372,
+        "retire_requests": 351,
+        "damage_requests": 191,
+        "territory_requests": 196,
+        "committed_damage_receipts": 158
+      },
+      {
+        "seconds": 0.9951100014150143,
+        "observed": 364,
+        "finished": 389,
+        "spawn_requests": 364,
+        "retire_requests": 340,
+        "damage_requests": 188,
+        "territory_requests": 196,
+        "committed_damage_receipts": 137
+      }
+    ],
+    "business_progress_valid": true,
+    "transport_queue": {
+      "queued_bytes": [
+        43127,
+        150957,
+        104140,
+        850659,
+        1468801,
+        1987860
+      ],
+      "oldest_queue_ms": [
+        7.694598287343979,
+        7.543303072452545,
+        22.017497569322586,
+        295.7914024591446,
+        469.35709938406944,
+        670.0209975242615
+      ],
+      "pending_delivery_bytes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pending_delivery_messages": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "queued_byte_change": 1944733,
+      "longest_growth_intervals": 3,
+      "sustained_growth": true,
+      "growth_basis": "Queued bytes and oldest age both increase for three consecutive full intervals"
+    },
+    "seconds": 5.033743500709534,
+    "errors": {
+      "datagram_send_failures": 0,
+      "datagram_rejected_packets": 0,
+      "receive_queue_overflows": 0,
+      "peer_payload_decode_failures": 0,
+      "rejected_packets": 0,
+      "retransmit_bytes": 0,
+      "delivery_backpressure": 0
+    },
+    "world_seconds": [
+      17.331521097570658,
+      22.374006796628237
+    ],
+    "logical_ticks": [
+      216,
+      518
+    ],
+    "local_soldiers": [
+      300,
+      300,
+      300,
+      300,
+      300,
+      300
+    ],
+    "active_flights": [
+      744,
+      789,
+      843,
+      806,
+      812,
+      787
+    ],
+    "background_frames": 0,
+    "peak_gt_ms": 29.91719999954512,
+    "p95_gt_ms": 21.824499999638647
+  },
+  "rounds": [
+    {
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261109-151326-6BAA901B",
+      "valid": true,
+      "at_or_below_100": true,
+      "wire_kB_s": 68.22847223191707,
+      "control_kB_s": 651.939356244819,
+      "process_send_kB_s": 740.1245012189818,
+      "process_receive_kB_s": 129.31675320030985,
+      "process_total_kB_s": 869.4412544192917,
+      "total_inter_sample_kB_s": [
+        822.7471160557208,
+        905.6823302889261,
+        902.5883368060433,
+        857.7153086362662,
+        865.2220330159984
+      ],
+      "peak_total_interval_kB_s": 905.6823302889261,
+      "business_progress": {
+        "observed": 1852,
+        "finished": 1805,
+        "spawn_requests": 1852,
+        "retire_requests": 1808,
+        "damage_requests": 895,
+        "territory_requests": 980,
+        "committed_damage_receipts": 863
+      },
+      "business_intervals": [
+        {
+          "seconds": 1.0087169967591763,
+          "observed": 384,
+          "finished": 342,
+          "spawn_requests": 384,
+          "retire_requests": 340,
+          "damage_requests": 198,
+          "territory_requests": 196,
+          "committed_damage_receipts": 189
+        },
+        {
+          "seconds": 1.0047916024923325,
+          "observed": 372,
+          "finished": 325,
+          "spawn_requests": 372,
+          "retire_requests": 330,
+          "damage_requests": 148,
+          "territory_requests": 196,
+          "committed_damage_receipts": 140
+        },
+        {
+          "seconds": 1.0002755001187325,
+          "observed": 372,
+          "finished": 410,
+          "spawn_requests": 372,
+          "retire_requests": 410,
+          "damage_requests": 205,
+          "territory_requests": 196,
+          "committed_damage_receipts": 192
+        },
+        {
+          "seconds": 1.0071476995944977,
+          "observed": 364,
+          "finished": 366,
+          "spawn_requests": 364,
+          "retire_requests": 366,
+          "damage_requests": 174,
+          "territory_requests": 196,
+          "committed_damage_receipts": 174
+        },
+        {
+          "seconds": 1.0062237977981567,
+          "observed": 360,
+          "finished": 362,
+          "spawn_requests": 360,
+          "retire_requests": 362,
+          "damage_requests": 170,
+          "territory_requests": 196,
+          "committed_damage_receipts": 168
+        }
+      ],
+      "business_progress_valid": true,
+      "transport_queue": {
+        "queued_bytes": [
+          15842,
+          0,
+          2150,
+          0,
+          4248,
+          553,
+          553
+        ],
+        "oldest_queue_ms": [
+          8.425697684288025,
+          0,
+          7.197301834821701,
+          0,
+          7.480598986148834,
+          0,
+          9.403500705957413
+        ],
+        "pending_delivery_bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pending_delivery_messages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "queued_byte_change": -15289,
+        "longest_growth_intervals": 1,
+        "sustained_growth": false,
+        "growth_basis": "Queued bytes and oldest age both increase for three consecutive full intervals"
+      },
+      "seconds": 5.035859499126673,
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_packets": 0,
+        "retransmit_bytes": 0,
+        "delivery_backpressure": 0
+      },
+      "world_seconds": [
+        10.6491809040308,
+        15.69009330123663
+      ],
+      "logical_ticks": [
+        217,
+        520
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        745,
+        787,
+        834,
+        796,
+        794,
+        792,
+        792
+      ],
+      "background_frames": 0,
+      "peak_gt_ms": 27.582300000005944,
+      "p95_gt_ms": 19.549499999996556,
+      "target_total_kB_s": 1000.0,
+      "total_budget_passed": true,
+      "raw_byte_delta": {
+        "datagram_sent_bytes": 3727163,
+        "datagram_received_bytes": 651221,
+        "datagram_sent_packets": 4496,
+        "datagram_received_packets": 1247
+      },
+      "room_peer": "864FB205-4EEA-262C-E768-A28E53B3A302",
+      "channel_failures": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "additional_error_delta": {
+        "control_interruptions": 0,
+        "control_reconnects": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0
+      },
+      "compression_scope": {
+        "name": "GuLiHybrid_ReliableHistoryPack",
+        "self_ms": 138.77449999993985,
+        "inclusive_ms": 138.77449999993985,
+        "self_ms_per_frame": 0.373049731182634,
+        "inclusive_ms_per_frame": 0.373049731182634,
+        "calls": 14818,
+        "self_percent_of_thread_scopes": 2.7781875089424344
+      },
+      "game_thread_mean_ms": 13.427809677419573,
+      "batch_rate_per_second": {
+        "sent_packet_header_bytes": 37497.47188791657,
+        "reliable_batch_packets": 752.403835066704,
+        "reliable_batch_messages": 3120.4206556448107,
+        "reliable_batch_shared_bytes": 26333.538499832608,
+        "ack_batch_packets": 15.48891505283793,
+        "ack_batch_messages": 367.16671708586324
+      },
+      "payload_rate_per_second": {
+        "reliable_history_messages": 2944.283890877282,
+        "reliable_history_plain_bytes": 9393709.85393929,
+        "reliable_history_wire_bytes": 452854.37379567284
+      }
+    },
+    {
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261109-151432-6014D3A1",
+      "valid": true,
+      "at_or_below_100": true,
+      "wire_kB_s": 71.49712267879367,
+      "control_kB_s": 660.6338984885066,
+      "process_send_kB_s": 753.045694401545,
+      "process_receive_kB_s": 128.91797108797275,
+      "process_total_kB_s": 881.9636654895178,
+      "total_inter_sample_kB_s": [
+        858.5250144929979,
+        903.1058274168879,
+        906.9730910333727,
+        869.3568821267208,
+        871.9273485087142
+      ],
+      "peak_total_interval_kB_s": 906.9730910333727,
+      "business_progress": {
+        "observed": 1852,
+        "finished": 1783,
+        "spawn_requests": 1852,
+        "retire_requests": 1828,
+        "damage_requests": 884,
+        "territory_requests": 980,
+        "committed_damage_receipts": 854
+      },
+      "business_intervals": [
+        {
+          "seconds": 1.0125796981155872,
+          "observed": 384,
+          "finished": 346,
+          "spawn_requests": 384,
+          "retire_requests": 374,
+          "damage_requests": 197,
+          "territory_requests": 196,
+          "committed_damage_receipts": 191
+        },
+        {
+          "seconds": 1.0037682987749577,
+          "observed": 372,
+          "finished": 306,
+          "spawn_requests": 372,
+          "retire_requests": 311,
+          "damage_requests": 140,
+          "territory_requests": 196,
+          "committed_damage_receipts": 127
+        },
+        {
+          "seconds": 1.0087146013975143,
+          "observed": 372,
+          "finished": 413,
+          "spawn_requests": 372,
+          "retire_requests": 414,
+          "damage_requests": 202,
+          "territory_requests": 196,
+          "committed_damage_receipts": 193
+        },
+        {
+          "seconds": 1.0027699992060661,
+          "observed": 364,
+          "finished": 366,
+          "spawn_requests": 364,
+          "retire_requests": 371,
+          "damage_requests": 172,
+          "territory_requests": 196,
+          "committed_damage_receipts": 172
+        },
+        {
+          "seconds": 1.0037545002996922,
+          "observed": 360,
+          "finished": 352,
+          "spawn_requests": 360,
+          "retire_requests": 358,
+          "damage_requests": 173,
+          "territory_requests": 196,
+          "committed_damage_receipts": 171
+        }
+      ],
+      "business_progress_valid": true,
+      "transport_queue": {
+        "queued_bytes": [
+          7773,
+          13901,
+          14449,
+          14203,
+          11766,
+          15116
+        ],
+        "oldest_queue_ms": [
+          8.503399789333344,
+          8.14330205321312,
+          8.80659744143486,
+          8.43530148267746,
+          8.126497268676758,
+          9.017299860715866
+        ],
+        "pending_delivery_bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pending_delivery_messages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "queued_byte_change": 7343,
+        "longest_growth_intervals": 1,
+        "sustained_growth": false,
+        "growth_basis": "Queued bytes and oldest age both increase for three consecutive full intervals"
+      },
+      "seconds": 5.0315870977938175,
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_packets": 0,
+        "retransmit_bytes": 0,
+        "delivery_backpressure": 0
+      },
+      "world_seconds": [
+        13.301104806363583,
+        18.337056204676628
+      ],
+      "logical_ticks": [
+        215,
+        517
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        740,
+        778,
+        844,
+        803,
+        801,
+        809
+      ],
+      "background_frames": 0,
+      "peak_gt_ms": 26.117499999998017,
+      "p95_gt_ms": 20.818899999994755,
+      "target_total_kB_s": 1000.0,
+      "total_budget_passed": true,
+      "raw_byte_delta": {
+        "datagram_sent_bytes": 3789015,
+        "datagram_received_bytes": 648662,
+        "datagram_sent_packets": 4600,
+        "datagram_received_packets": 1286
+      },
+      "room_peer": "4E3B28E8-40A1-2D7E-7649-D5917436A337",
+      "channel_failures": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "additional_error_delta": {
+        "control_interruptions": 0,
+        "control_reconnects": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0
+      },
+      "compression_scope": {
+        "name": "GuLiHybrid_ReliableHistoryPack",
+        "self_ms": 139.10890000062182,
+        "inclusive_ms": 139.10890000062182,
+        "self_ms_per_frame": 0.4008902017308986,
+        "inclusive_ms_per_frame": 0.4008902017308986,
+        "calls": 14852,
+        "self_percent_of_thread_scopes": 2.7903321877646303
+      },
+      "game_thread_mean_ms": 14.367113832853587,
+      "batch_rate_per_second": {
+        "sent_packet_header_bytes": 38397.42734150657,
+        "reliable_batch_packets": 762.1849578399466,
+        "reliable_batch_messages": 3143.342188577991,
+        "reliable_batch_shared_bytes": 26675.87729105432,
+        "ack_batch_packets": 15.502066939117558,
+        "ack_batch_messages": 365.491039756887
+      },
+      "payload_rate_per_second": {
+        "reliable_history_messages": 2975.9993634146963,
+        "reliable_history_plain_bytes": 9503912.00044363,
+        "reliable_history_wire_bytes": 459317.1011614481
+      }
+    },
+    {
+      "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261109-151558-648626F5",
+      "valid": true,
+      "at_or_below_100": true,
+      "wire_kB_s": 70.24778175794201,
+      "control_kB_s": 671.0842010441406,
+      "process_send_kB_s": 762.058182258748,
+      "process_receive_kB_s": 132.2485633232645,
+      "process_total_kB_s": 894.3067455820126,
+      "total_inter_sample_kB_s": [
+        897.9520624358936,
+        921.3613914861816,
+        918.8015870065408,
+        876.5432509808128,
+        856.3140702014803
+      ],
+      "peak_total_interval_kB_s": 921.3613914861816,
+      "business_progress": {
+        "observed": 1872,
+        "finished": 1801,
+        "spawn_requests": 1848,
+        "retire_requests": 1815,
+        "damage_requests": 896,
+        "territory_requests": 980,
+        "committed_damage_receipts": 881
+      },
+      "business_intervals": [
+        {
+          "seconds": 1.0051394030451775,
+          "observed": 404,
+          "finished": 356,
+          "spawn_requests": 384,
+          "retire_requests": 362,
+          "damage_requests": 201,
+          "territory_requests": 196,
+          "committed_damage_receipts": 205
+        },
+        {
+          "seconds": 1.0064953975379467,
+          "observed": 376,
+          "finished": 311,
+          "spawn_requests": 372,
+          "retire_requests": 318,
+          "damage_requests": 150,
+          "territory_requests": 196,
+          "committed_damage_receipts": 139
+        },
+        {
+          "seconds": 1.012465599924326,
+          "observed": 372,
+          "finished": 396,
+          "spawn_requests": 372,
+          "retire_requests": 400,
+          "damage_requests": 196,
+          "territory_requests": 196,
+          "committed_damage_receipts": 196
+        },
+        {
+          "seconds": 1.0097026005387306,
+          "observed": 360,
+          "finished": 378,
+          "spawn_requests": 360,
+          "retire_requests": 376,
+          "damage_requests": 179,
+          "territory_requests": 196,
+          "committed_damage_receipts": 176
+        },
+        {
+          "seconds": 0.9938432984054089,
+          "observed": 360,
+          "finished": 360,
+          "spawn_requests": 360,
+          "retire_requests": 359,
+          "damage_requests": 170,
+          "territory_requests": 196,
+          "committed_damage_receipts": 165
+        }
+      ],
+      "business_progress_valid": true,
+      "transport_queue": {
+        "queued_bytes": [
+          21414,
+          72847,
+          94637,
+          51931,
+          47459,
+          32333
+        ],
+        "oldest_queue_ms": [
+          8.116297423839569,
+          9.55510139465332,
+          10.365299880504608,
+          8.659102022647858,
+          8.26219841837883,
+          9.097099304199219
+        ],
+        "pending_delivery_bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pending_delivery_messages": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "queued_byte_change": 10919,
+        "longest_growth_intervals": 2,
+        "sustained_growth": false,
+        "growth_basis": "Queued bytes and oldest age both increase for three consecutive full intervals"
+      },
+      "seconds": 5.02764629945159,
+      "errors": {
+        "datagram_send_failures": 0,
+        "datagram_rejected_packets": 0,
+        "receive_queue_overflows": 0,
+        "peer_payload_decode_failures": 0,
+        "rejected_packets": 0,
+        "retransmit_bytes": 0,
+        "delivery_backpressure": 0
+      },
+      "world_seconds": [
+        12.71474001929164,
+        17.748061820864677
+      ],
+      "logical_ticks": [
+        212,
+        514
+      ],
+      "local_soldiers": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ],
+      "active_flights": [
+        724,
+        772,
+        837,
+        813,
+        795,
+        795
+      ],
+      "background_frames": 0,
+      "peak_gt_ms": 24.1726000000142,
+      "p95_gt_ms": 20.557900000000018,
+      "target_total_kB_s": 1000.0,
+      "total_budget_passed": true,
+      "raw_byte_delta": {
+        "datagram_sent_bytes": 3831359,
+        "datagram_received_bytes": 664899,
+        "datagram_sent_packets": 4645,
+        "datagram_received_packets": 1299
+      },
+      "room_peer": "107A1648-4479-04FB-17DA-8B854A89B648",
+      "channel_failures": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "additional_error_delta": {
+        "control_interruptions": 0,
+        "control_reconnects": 0,
+        "rejected_delivery_epochs": 0,
+        "rejected_delivery_identity": 0
+      },
+      "compression_scope": {
+        "name": "GuLiHybrid_ReliableHistoryPack",
+        "self_ms": 137.38420000007068,
+        "inclusive_ms": 137.38420000007068,
+        "self_ms_per_frame": 0.3805656509697249,
+        "inclusive_ms_per_frame": 0.3805656509697249,
+        "calls": 14806,
+        "self_percent_of_thread_scopes": 2.755495333281899
+      },
+      "game_thread_mean_ms": 13.811152077563364,
+      "batch_rate_per_second": {
+        "sent_packet_header_bytes": 38803.44566428235,
+        "reliable_batch_packets": 775.1141921867257,
+        "reliable_batch_messages": 3181.4091619262713,
+        "reliable_batch_shared_bytes": 27128.201125619635,
+        "ack_batch_packets": 16.309818773238778,
+        "ack_batch_messages": 373.7335301818983
+      },
+      "payload_rate_per_second": {
+        "reliable_history_messages": 3002.2000556495864,
+        "reliable_history_plain_bytes": 9574665.983414713,
+        "reliable_history_wire_bytes": 465888.779856192
+      }
+    }
+  ],
+  "weighted_total_kB_s": 881.897123216741,
+  "reduction_percent": 68.47695004665209,
+  "maximum_full_interval_kB_s": 921.3613914861816,
+  "validation": {
+    "targeted_tests": {
+      "protocol": 44,
+      "expected": [
+        "GuLiStrike.Network.SmallPeerPayload",
+        "GuLiStrike.Network.ReliableHistory",
+        "GuLiStrike.Network.PeerPayload"
+      ],
+      "completed": [
+        "[2026.11.09-07.12.45:816][228]LogAutomationController: Display: Test Completed. Result={成功} Name={PeerPayload} Path={GuLiStrike.Network.PeerPayload}",
+        "[2026.11.09-07.12.45:836][230]LogAutomationController: Display: Test Completed. Result={成功} Name={ReliableHistory} Path={GuLiStrike.Network.ReliableHistory}",
+        "[2026.11.09-07.12.45:905][232]LogAutomationController: Display: Test Completed. Result={成功} Name={SmallPeerPayload} Path={GuLiStrike.Network.SmallPeerPayload}"
+      ],
+      "passed": true
+    },
+    "editor_build": {
+      "protocol": 44,
+      "engine": "D:/UnrealEngine-5.7",
+      "exit_code": 0,
+      "target": "GuLiStrikeEditor Win64 Development"
+    },
+    "coordinator_build": {
+      "protocol": 44,
+      "exit_code": 0,
+      "target": "GuLiCoordinator Release"
+    },
+    "build_ids": [
+      {
+        "path": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+      },
+      {
+        "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+      },
+      {
+        "path": "D:/UE5.7/test1/Plugins/GuLiFrameProfiler/Binaries/Win64/UnrealEditor.modules",
+        "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+      }
+    ],
+    "runtime_manifests": {
+      "success": true,
+      "message": "Python command executed successfully.",
+      "result": {
+        "success": true,
+        "protocol": 44,
+        "scope": "Production runtime manifests retain identical gameplay data to protocol 41 baseline; editor and coordinator validated",
+        "manifests": [
+          {
+            "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+            "population": 200,
+            "protocol": 44,
+            "objects": 292,
+            "gameplay_data_unchanged": true,
+            "sha256": "e9468a1fc454286152ac607812fc18bc12879a48cf42f27d1d35bcc313206081"
+          },
+          {
+            "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+            "population": 600,
+            "protocol": 44,
+            "objects": 692,
+            "gameplay_data_unchanged": true,
+            "sha256": "efd2960f229b6e2e2126af8ab2b2301cab61bed25701bffcb084fe824f8099dd"
+          }
+        ]
+      }
+    },
+    "scene_saved": true,
+    "cleanup": {
+      "active": false,
+      "error": "",
+      "room": "1CB840BA461E2829D41F5DB6FD591C75",
+      "role": "Commander",
+      "editor_pid": 46232,
+      "logic_pid": 34404,
+      "coordinator_pid": 2744,
+      "logic_running": false,
+      "coordinator_running": false,
+      "session_directory": "",
+      "shutdown": [
+        {
+          "role": "logic",
+          "pid": 34404,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        },
+        {
+          "role": "coordinator",
+          "pid": 2744,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        }
+      ],
+      "cleanup_complete": true
+    },
+    "restored_settings": {
+      "success": true,
+      "role": "GROUND",
+      "prompt": true,
+      "dirty_maps": [],
+      "dirty_content": []
+    }
+  },
+  "source_sha256": {
+    "Source/GuLiNetCore/Public/GuLiNetTypes.h": "16268ea32d95c4489f62679bde995f6832f8f93b653e4f5d9183b11f6cd49596",
+    "Source/GuLiNetCore/Public/GuLiNetTransport.h": "3eacc573cc13c84acfc61caf162a18efff7ce443791c8a240e32452bffe5f2b4",
+    "Source/GuLiNetCore/Public/GuLiNetProtocol.h": "e92d91ea5c75c331724e8c50645a005c43a3a85dbe8a533c9594ccf259a0587e",
+    "Source/GuLiNetCore/Private/GuLiNetTransport.cpp": "a7e9dd573b078379e0736718c4d8cbf6a014d2fc8c90aa8994fa7ecddbcb3406",
+    "Source/GuLiNetCore/Private/GuLiNetProtocol.cpp": "80894e8c112798a69ed3efa334ec847fd0458d09b8b80bdaae1f69421115ce51",
+    "Source/GuLiStrike/GuLiStrike.Build.cs": "dc15967a7663661599f2c6d71d1c4c7d4247acf79a5efde498fc515afed40102",
+    "Source/GuLiStrike/Network/Private/GuLiHybridReliablePayload.h": "d2a2a935977b84948c1a44e411f531fe45b41d77bbd4fc3aff565f064fa5dec6",
+    "Source/GuLiStrike/Network/Private/GuLiHybridPeerPayload.h": "54a2f068f71ad68be7b604aabad4be3773e86e9c5bf10ac910151f28d9536d6c",
+    "Source/GuLiStrike/Network/GuLiHybridSessionSubsystem.cpp": "3bcfe884e3a98e3cef4cff9d4676b40dc655bffc0be5ec4327878a135fe9e637",
+    "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp": "26a80a65cf5decf50097489ca780d249a6f77819a28cc2826217d7d251550379",
+    "Source/GuLiStrike/Network/Tests/GuLiHybridAdapterRegistryTests.cpp": "bbad7495e7b8fa1be843f51a278d407391534f495f1599c932b94ce8377eba26",
+    "Scripts/Performance/capture_motion_budget.py": "f249e3aa907df44ea8186af2c6a79fb9903cd6291b2dd5c5f845ba3d0b6b91c5",
+    "Config/Hybrid/RuntimeManifest-200.json": "e9468a1fc454286152ac607812fc18bc12879a48cf42f27d1d35bcc313206081",
+    "Config/Hybrid/RuntimeManifest-600.json": "efd2960f229b6e2e2126af8ab2b2301cab61bed25701bffcb084fe824f8099dd"
+  },
+  "limits": [
+    "Three foreground five-second opening-battle windows; not a claim for every map, player count or later battle stage.",
+    "Loss/reorder/duplicate/ACK-loss/application-backpressure recovery used deterministic packet-level automation, not a real WAN trial.",
+    "Player visual/gameplay-feel acceptance remains pending.",
+    "Preexisting AcceptanceManifest protocol 36/schema 24 retained; current production RuntimeManifest 200/600 refreshed to protocol 44."
+  ]
+}

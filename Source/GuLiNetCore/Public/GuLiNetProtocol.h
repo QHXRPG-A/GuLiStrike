@@ -129,6 +129,11 @@ GULINETCORE_API bool DecodeMessage(std::span<const std::uint8_t> Value, Message&
 GULINETCORE_API std::size_t EncodeMotionBatch(std::span<const Message* const> Values,Bytes& Out,
     std::vector<std::size_t>& RecordBytes,std::size_t MaxBytes,PeerMessageContext Context={});
 GULINETCORE_API bool DecodeMotionBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context={});
+// Control records keep their individual reliable sequence and ACK. Batching
+// shares only wire headers; it never changes application ordering or lifetime.
+GULINETCORE_API std::size_t EncodeReliableBatch(std::span<const Message* const> Values,Bytes& Out,
+    std::vector<std::size_t>& RecordBytes,std::size_t MaxBytes,PeerMessageContext Context={});
+GULINETCORE_API bool DecodeReliableBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context={});
 GULINETCORE_API Lane MessageLane(MessageKind Kind);
 GULINETCORE_API bool ReliableMessage(MessageKind Kind);
 GULINETCORE_API void WriteHealth(Writer& Out, const Health& Value);

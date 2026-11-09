@@ -1,0 +1,308 @@
+{
+  "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261109-120315-4136AD17",
+  "valid": true,
+  "at_or_below_100": true,
+  "wire_kB_s": 69.43699057187402,
+  "control_kB_s": 2364.844970412589,
+  "process_send_kB_s": 2455.0823851588852,
+  "process_receive_kB_s": 342.5438741081967,
+  "process_total_kB_s": 2797.626259267082,
+  "total_inter_sample_kB_s": [
+    3266.4648946323114,
+    3213.6934400380724,
+    2468.297074191654,
+    2505.087526567507,
+    2529.649984846408
+  ],
+  "peak_total_interval_kB_s": 3266.4648946323114,
+  "business_progress": {
+    "observed": 1868,
+    "finished": 1825,
+    "spawn_requests": 1864,
+    "retire_requests": 1720,
+    "damage_requests": 930,
+    "territory_requests": 980,
+    "committed_damage_receipts": 783
+  },
+  "business_intervals": [
+    {
+      "seconds": 1.0092654004693031,
+      "observed": 388,
+      "finished": 343,
+      "spawn_requests": 384,
+      "retire_requests": 337,
+      "damage_requests": 200,
+      "territory_requests": 196,
+      "committed_damage_receipts": 193
+    },
+    {
+      "seconds": 1.0114741995930672,
+      "observed": 372,
+      "finished": 318,
+      "spawn_requests": 372,
+      "retire_requests": 321,
+      "damage_requests": 151,
+      "territory_requests": 196,
+      "committed_damage_receipts": 152
+    },
+    {
+      "seconds": 1.0069415979087353,
+      "observed": 372,
+      "finished": 409,
+      "spawn_requests": 372,
+      "retire_requests": 371,
+      "damage_requests": 200,
+      "territory_requests": 196,
+      "committed_damage_receipts": 143
+    },
+    {
+      "seconds": 1.0109523013234138,
+      "observed": 372,
+      "finished": 366,
+      "spawn_requests": 372,
+      "retire_requests": 351,
+      "damage_requests": 191,
+      "territory_requests": 196,
+      "committed_damage_receipts": 158
+    },
+    {
+      "seconds": 0.9951100014150143,
+      "observed": 364,
+      "finished": 389,
+      "spawn_requests": 364,
+      "retire_requests": 340,
+      "damage_requests": 188,
+      "territory_requests": 196,
+      "committed_damage_receipts": 137
+    }
+  ],
+  "business_progress_valid": true,
+  "transport_queue": {
+    "queued_bytes": [
+      43127,
+      150957,
+      104140,
+      850659,
+      1468801,
+      1987860
+    ],
+    "oldest_queue_ms": [
+      7.694598287343979,
+      7.543303072452545,
+      22.017497569322586,
+      295.7914024591446,
+      469.35709938406944,
+      670.0209975242615
+    ],
+    "pending_delivery_bytes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "pending_delivery_messages": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "queued_byte_change": 1944733,
+    "longest_growth_intervals": 3,
+    "sustained_growth": true,
+    "growth_basis": "Queued bytes and oldest age both increase for three consecutive full intervals"
+  },
+  "seconds": 5.033743500709534,
+  "errors": {
+    "datagram_send_failures": 0,
+    "datagram_rejected_packets": 0,
+    "receive_queue_overflows": 0,
+    "peer_payload_decode_failures": 0,
+    "rejected_packets": 0,
+    "retransmit_bytes": 0,
+    "delivery_backpressure": 0
+  },
+  "world_seconds": [
+    17.331521097570658,
+    22.374006796628237
+  ],
+  "logical_ticks": [
+    216,
+    518
+  ],
+  "local_soldiers": [
+    300,
+    300,
+    300,
+    300,
+    300,
+    300
+  ],
+  "active_flights": [
+    744,
+    789,
+    843,
+    806,
+    812,
+    787
+  ],
+  "background_frames": 0,
+  "peak_gt_ms": 29.91719999954512,
+  "p95_gt_ms": 21.824499999638647,
+  "queue": {
+    "available": true,
+    "seconds": 5.033743500709534,
+    "peer_count": 1,
+    "pose": {
+      "enqueued": 9693,
+      "sent": 9693,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 221177,
+      "body_bytes": 138932
+    },
+    "ack": {
+      "enqueued": 2482,
+      "sent": 2482,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 40076,
+      "body_bytes": 22040
+    },
+    "component": {
+      "enqueued": 585,
+      "sent": 585,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 52092,
+      "body_bytes": 43079
+    },
+    "wire_bytes": 349528,
+    "wire_decimal_kB_s": 69.43699057187402,
+    "engineer": {
+      "pose_sent": 144,
+      "body_bytes": 288,
+      "pose_record_bytes": 3412,
+      "ack_record_bytes": 0
+    },
+    "miner": {
+      "pose_sent": 410,
+      "body_bytes": 20852,
+      "pose_record_bytes": 30100,
+      "ack_record_bytes": 0
+    },
+    "stationary_unit_sent": 9213,
+    "stationary_mass_sent": 8955,
+    "stationary_unit_skipped": 5610,
+    "stationary_mass_sent_reasons": {
+      "first_or_reset": 0,
+      "fields_changed": 7939,
+      "animation_correction": 0,
+      "unconfirmed_retry": 0,
+      "heartbeat": 1016
+    },
+    "stationary_mass_skipped_exact": 1149,
+    "stationary_mass_skipped_natural_phase": 4461,
+    "queue_samples": [
+      {
+        "seconds": 0,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 1.0092654004693031,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 2.0207396000623703,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 3.0276811979711056,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 4.038633499294519,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 5.033743500709534,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261109-120315-4136AD17",
+  "valid": true,
+  "at_or_below_100": true,
+  "wire_kB_s": 69.43699057187402,
+  "control_kB_s": 2364.844970412589,
+  "process_send_kB_s": 2455.0823851588852,
+  "seconds": 5.033743500709534,
+  "errors": {
+    "datagram_send_failures": 0,
+    "datagram_rejected_packets": 0,
+    "receive_queue_overflows": 0,
+    "peer_payload_decode_failures": 0,
+    "rejected_packets": 0,
+    "retransmit_bytes": 0,
+    "delivery_backpressure": 0
+  },
+  "world_seconds": [
+    17.331521097570658,
+    22.374006796628237
+  ],
+  "logical_ticks": [
+    216,
+    518
+  ],
+  "local_soldiers": [
+    300,
+    300,
+    300,
+    300,
+    300,
+    300
+  ],
+  "active_flights": [
+    744,
+    789,
+    843,
+    806,
+    812,
+    787
+  ],
+  "background_frames": 0,
+  "peak_gt_ms": 29.91719999954512,
+  "p95_gt_ms": 21.824499999638647,
+  "queue": {
+    "available": true,
+    "seconds": 5.033743500709534,
+    "peer_count": 1,
+    "pose": {
+      "enqueued": 9693,
+      "sent": 9693,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 221177,
+      "body_bytes": 138932
+    },
+    "ack": {
+      "enqueued": 2482,
+      "sent": 2482,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 40076,
+      "body_bytes": 22040
+    },
+    "component": {
+      "enqueued": 585,
+      "sent": 585,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 52092,
+      "body_bytes": 43079
+    },
+    "wire_bytes": 349528,
+    "wire_decimal_kB_s": 69.43699057187402,
+    "engineer": {
+      "pose_sent": 144,
+      "body_bytes": 288,
+      "pose_record_bytes": 3412,
+      "ack_record_bytes": 0
+    },
+    "miner": {
+      "pose_sent": 410,
+      "body_bytes": 20852,
+      "pose_record_bytes": 30100,
+      "ack_record_bytes": 0
+    },
+    "stationary_unit_sent": 9213,
+    "stationary_mass_sent": 8955,
+    "stationary_unit_skipped": 5610,
+    "stationary_mass_sent_reasons": {
+      "first_or_reset": 0,
+      "fields_changed": 7939,
+      "animation_correction": 0,
+      "unconfirmed_retry": 0,
+      "heartbeat": 1016
+    },
+    "stationary_mass_skipped_exact": 1149,
+    "stationary_mass_skipped_natural_phase": 4461,
+    "queue_samples": [
+      {
+        "seconds": 0,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 1.0092654004693031,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 2.0207396000623703,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 3.0276811979711056,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 4.038633499294519,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 5.033743500709534,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      }
+    ]
+  }
+}

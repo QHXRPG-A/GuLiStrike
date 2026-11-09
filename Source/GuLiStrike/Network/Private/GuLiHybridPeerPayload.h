@@ -93,7 +93,7 @@ inline bool Pack(const GuLiNet::Message& Message,GuLiNet::Bytes& Out,size_t* Ref
     const auto& Body=Message.Body;
     const auto Limit=PlainLimit(Message.Header.Kind);
     if (!GuLiNet::ReliableMessage(Message.Header.Kind) || Body.size()>Limit) return false;
-    GuLiNet::Reader Prefix(Body);uint32 First=0;const bool Escape=Prefix.U32(First) && First==Tag;
+    GuLiNet::Reader Prefix(Body);uint32 First=0;const bool Escape=Prefix.U32(First) && (First==Tag || First==0x47555253);
     if (ReferenceBytes) *ReferenceBytes=Body.size()+(Escape?17:0);
     GuLiNet::Bytes Encoded;uint8 Codec=0;
     if (Body.size()>=128)

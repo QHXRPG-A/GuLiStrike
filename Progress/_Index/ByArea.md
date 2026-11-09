@@ -1072,6 +1072,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [开局网络优化会话结项证据](../Evidence/20261109-NetworkBudgetCloseout/README.md) | reference | reference | 2026-11-09 |
 | [游骑兵战斗会话结项证据](../Evidence/20261109-RangerCombatCloseout/README.md) | reference | reference | 2026-11-09 |
 | [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | archive | recorded | 2026-11-04 |
 | [游骑兵逐发上身摆动完成与收尾](../Evidence/20261030-GroundUpperBodyRecoilCloseout/README.md) | reference | reference | 2026-11-03 |
@@ -1395,12 +1396,17 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [开局交火网络同步量优化](../RequirementDocument/20261109-开局交火网络同步量优化.md) | requirement | approved | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹](../RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md) | requirement | approved | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡](../RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md) | requirement | approved | 2026-11-09 |
+| [开局网络优化会话结项证据](../Evidence/20261109-NetworkBudgetCloseout/README.md) | reference | reference | 2026-11-09 |
 | [游骑兵战斗会话结项证据](../Evidence/20261109-RangerCombatCloseout/README.md) | reference | reference | 2026-11-09 |
 | [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-09 |
+| [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | development | done | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹 — 实施与交付](../DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md) | development | done | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡 — 实施与交付](../DevelopmentDocumentation/20261108-游骑兵初始弹与三张肉鸽卡.md) | development | done | 2026-11-09 |
+| [开局网络优化会话完成清理与项目同步](../Archive/20261109-开局网络优化会话完成清理与项目同步.md) | archive | recorded | 2026-11-09 |
+| [开局交火网络 1 MB/s 目标验收](../Archive/20261109-开局交火网络1MB每秒验收.md) | archive | recorded | 2026-11-09 |
 | [游骑兵战斗会话完成清理与项目同步](../Archive/20261109-游骑兵战斗会话完成清理与项目同步.md) | archive | recorded | 2026-11-09 |
 | [爆炸范围266cm与强化爆炸弹三级接入](../Archive/20261109-爆炸范围对齐与强化爆炸弹交付.md) | archive | recorded | 2026-11-09 |
 | [游骑兵左右Loop与公共战斗链路交付](../Archive/20261109-游骑兵左右Loop与公共战斗链路交付.md) | archive | recorded | 2026-11-09 |
@@ -1678,6 +1684,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [开局交火网络同步量优化](../RequirementDocument/20261109-开局交火网络同步量优化.md) | requirement | approved | 2026-11-09 |
+| [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | development | done | 2026-11-09 |
+| [开局网络优化会话完成清理与项目同步](../Archive/20261109-开局网络优化会话完成清理与项目同步.md) | archive | recorded | 2026-11-09 |
+| [开局交火网络 1 MB/s 目标验收](../Archive/20261109-开局交火网络1MB每秒验收.md) | archive | recorded | 2026-11-09 |
 | [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-06 |
 | [游骑兵主线程整帧平均降低30%](../RequirementDocument/20261106-游骑兵主线程整帧降低30.md) | requirement | approved | 2026-11-06 |
 | [游骑兵交战长帧治理](../RequirementDocument/20261106-游骑兵交战长帧治理.md) | requirement | approved | 2026-11-06 |

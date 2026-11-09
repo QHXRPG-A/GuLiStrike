@@ -1,7 +1,7 @@
 #include "Network/GuLiHybridSessionSubsystem.h"
 #include "Network/Private/GuLiHybridMessageConversions.h"
 #include "Network/Private/GuLiHybridTransport.h"
-#include "Network/Private/GuLiHybridPeerPayload.h"
+#include "Network/Private/GuLiHybridReliablePayload.h"
 #include "GuLiNetManifest.h"
 #include "GuLiNetGameplayTypes.h"
 #include "GuLiNetOwnerState.h"
@@ -59,6 +59,7 @@ struct UGuLiHybridSessionSubsystem::FState
     TSharedPtr<IWebSocket> Socket;
     TSharedPtr<FMailbox, ESPMode::ThreadSafe> Mailbox;
     std::map<GuLiNet::Id, std::shared_ptr<GuLiNet::PeerChannel>> Channels;
+    std::map<GuLiNet::Id, std::shared_ptr<GuLiHybridReliablePayload::FPeerHistory>> PayloadHistories;
     std::map<GuLiNet::Id, GuLiNet::Id> PairKeys;
     std::shared_ptr<const GuLiNet::MotionObjectTable> MotionObjects;
     struct FMotionSlot
@@ -87,6 +88,7 @@ struct UGuLiHybridSessionSubsystem::FState
     uint64 SkippedExactMassPoses=0,SkippedNaturalPhase=0,MotionCounterGeneration=0;
     uint64 SubmittedControlBytes=0;
     uint64 PackedMessages=0,PackedOriginalBytes=0,PackedWireBytes=0,PayloadDecodeFailures=0;
+    uint64 HistoryMessages=0,HistoryPlainBytes=0,HistoryStatelessBytes=0,HistoryWireBytes=0,HistoryReceivedMessages=0;
     bool bNativePeerReceive=false;
     uint64 NativePeerAdmissions=0,CopiedPeerAdmissions=0;
     std::map<GuLiNet::Id,double> LastPeerSeen;
@@ -267,7 +269,7 @@ void UGuLiHybridSessionSubsystem::Stop()
     CloseCoordinator();
     if (State->Transport) { State->Transport->Stop(); State->Transport.Reset(); }
     for (const auto& [Key,Slot]:State->MotionOutbox) Slot.DiscardPending();
-    State->Channels.clear(); State->PairKeys.clear(); State->LastPeerSeen.clear();State->MotionOutbox.clear();
+    State->Channels.clear(); State->PayloadHistories.clear(); State->PairKeys.clear(); State->LastPeerSeen.clear();State->MotionOutbox.clear();
     State->MotionObjects.reset();
     ++State->MotionCounterGeneration;
     State->SkippedExactMassPoses=State->SkippedNaturalPhase=0;
@@ -277,6 +279,7 @@ void UGuLiHybridSessionSubsystem::Stop()
     State->SimulationCost = 0;State->SimulationFrames=0;State->ReviewLoadCost=-1; State->LastHeartbeat = 0;
     State->SubmittedControlBytes=0;
     State->PackedMessages=State->PackedOriginalBytes=State->PackedWireBytes=State->PayloadDecodeFailures=0;
+    State->HistoryMessages=State->HistoryPlainBytes=State->HistoryStatelessBytes=State->HistoryWireBytes=State->HistoryReceivedMessages=0;
     State->NativePeerAdmissions=State->CopiedPeerAdmissions=0;
     State->Epoch = 0; State->NextControlSequence = 1;
     State->ControlInterruptions=State->ControlReconnects=0;State->LastInterruption.Reset();
@@ -475,21 +478,41 @@ bool UGuLiHybridSessionSubsystem::QueuePeerPayload(const FGuid& Peer,const GuLiN
     }
     else
     {
-        GuLiNet::Bytes Packed;
-        const bool PackedBody=bPrepared?bPacked:GuLiHybridPeerPayload::Pack(Core,Packed,&ReferenceBytes);
-        if (bPrepared && bPacked) Packed.assign(Prepared.GetData(),Prepared.GetData()+Prepared.Num());
-        if (PackedBody)
+        const auto History=State->PayloadHistories.at(Id);
+        const bool Stream=GuLiHybridReliablePayload::Eligible(Core)
+            && Core.Header.Match==GuLiNetBridge::ToCore(State->Config.RoomId)
+            && Core.Header.Sender==GuLiNetBridge::ToCore(State->Identity.Player) && Core.Header.Epoch==State->Epoch;
+        if (Stream)
         {
-            const auto WireBytes=Packed.size();
-            if (!ReferenceBytes)
+            size_t WireBytes=0;
+            Queued=It->second->QueueEncoded(Core,FPlatformTime::Seconds(),GuLiHybridReliablePayload::Bound(Core.Body.size()),
+                [&](GuLiNet::Bytes& Packed)
+                {
+                    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_ReliableHistoryPack);
+                    const bool Good=GuLiHybridReliablePayload::Pack(Core,History->Outgoing,Packed);
+                    WireBytes=Packed.size();return Good;
+                });
+            if (Queued)
             {
-                // Legacy callers/fault replay do not carry measurement metadata.
-                GuLiNet::Bytes Ignored;GuLiHybridPeerPayload::Pack(Core,Ignored,&ReferenceBytes);
+                History->Outgoing.Commit(Core.Body);
+                ++State->PackedMessages;State->PackedOriginalBytes+=Core.Body.size();State->PackedWireBytes+=WireBytes;
+                ++State->HistoryMessages;State->HistoryPlainBytes+=Core.Body.size();
+                State->HistoryStatelessBytes+=Core.Body.size();State->HistoryWireBytes+=WireBytes;
             }
-            Queued=It->second->Queue({Core.Header,std::move(Packed),ReferenceBytes},FPlatformTime::Seconds());
-            if (Queued) {++State->PackedMessages;State->PackedOriginalBytes+=Core.Body.size();State->PackedWireBytes+=WireBytes;}
         }
-        else Queued=It->second->Queue(Core,FPlatformTime::Seconds());
+        else
+        {
+            GuLiNet::Bytes Packed;
+            const bool PackedBody=bPrepared?bPacked:GuLiHybridPeerPayload::Pack(Core,Packed,&ReferenceBytes);
+            if (bPrepared && bPacked) Packed.assign(Prepared.GetData(),Prepared.GetData()+Prepared.Num());
+            if (PackedBody)
+            {
+                const auto WireBytes=Packed.size();
+                Queued=It->second->Queue({Core.Header,std::move(Packed),ReferenceBytes},FPlatformTime::Seconds());
+                if (Queued) {++State->PackedMessages;State->PackedOriginalBytes+=Core.Body.size();State->PackedWireBytes+=WireBytes;}
+            }
+            else Queued=It->second->Queue(Core,FPlatformTime::Seconds());
+        }
         if (Queued && Core.Header.Kind==GuLiNet::MessageKind::StateFragments)
         {
             GuLiNet::Reader R(Core.Body);uint32 Count=0;std::vector<GuLiNet::ObjectKey> Births;
@@ -717,6 +740,12 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
     Root->SetNumberField(TEXT("peer_payload_original_bytes"),double(State->PackedOriginalBytes));
     Root->SetNumberField(TEXT("peer_payload_encoded_bytes"),double(State->PackedWireBytes));
     Root->SetNumberField(TEXT("peer_payload_decode_failures"),double(State->PayloadDecodeFailures));
+    Root->SetNumberField(TEXT("reliable_history_messages"),double(State->HistoryMessages));
+    Root->SetNumberField(TEXT("reliable_history_plain_bytes"),double(State->HistoryPlainBytes));
+    Root->SetNumberField(TEXT("reliable_history_reference_bytes"),double(State->HistoryStatelessBytes));
+    Root->SetNumberField(TEXT("reliable_history_wire_bytes"),double(State->HistoryWireBytes));
+    Root->SetNumberField(TEXT("reliable_history_received_messages"),double(State->HistoryReceivedMessages));
+    Root->SetStringField(TEXT("reliable_history_byte_basis"),TEXT("Successfully queued reliable bodies; reference is the identical canonical body before compression; excludes message and datagram headers"));
     Root->SetBoolField(TEXT("native_peer_receive_enabled"),State->bNativePeerReceive);
     Root->SetNumberField(TEXT("native_peer_admissions"),double(State->NativePeerAdmissions));
     Root->SetNumberField(TEXT("copied_peer_admissions"),double(State->CopiedPeerAdmissions));
@@ -771,6 +800,11 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
         P->SetNumberField(TEXT("motion_batch_messages"),double(M.MotionBatchMessages));
         P->SetNumberField(TEXT("motion_batch_shared_bytes"),double(M.MotionBatchSharedBytes));
         P->SetNumberField(TEXT("sent_packet_header_bytes"),double(M.SentPacketHeaderBytes));
+        P->SetNumberField(TEXT("ack_batch_packets"),double(M.AckBatchPackets));
+        P->SetNumberField(TEXT("ack_batch_messages"),double(M.AckBatchMessages));
+        P->SetNumberField(TEXT("reliable_batch_packets"),double(M.ReliableBatchPackets));
+        P->SetNumberField(TEXT("reliable_batch_messages"),double(M.ReliableBatchMessages));
+        P->SetNumberField(TEXT("reliable_batch_shared_bytes"),double(M.ReliableBatchSharedBytes));
         TArray<TSharedPtr<FJsonValue>> Encodings;
         for (size_t Kind=1;Kind<M.Encodings.size();++Kind)
         {
@@ -780,7 +814,7 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
             J->SetNumberField(TEXT("body_bytes"),double(E.Body));Encodings.Add(MakeShared<FJsonValueObject>(J));
         }
         P->SetArrayField(TEXT("first_sent_encoding"),Encodings);
-        P->SetStringField(TEXT("encoding_byte_basis"),TEXT("First-transmitted logical records; encoded_bytes excludes motion_batch_shared_bytes and sent_packet_header_bytes; no retry or UDP/IP bytes. Canonical uses the same body or explicit reference body."));
+        P->SetStringField(TEXT("encoding_byte_basis"),TEXT("First-transmitted logical records; encoded_bytes excludes motion_batch_shared_bytes, reliable_batch_shared_bytes and sent_packet_header_bytes; no retry or UDP/IP bytes. Canonical uses the same body or explicit reference body."));
         P->SetNumberField(TEXT("duplicate_packets"),double(M.DuplicatePackets));P->SetNumberField(TEXT("out_of_order_messages"),double(M.OutOfOrderMessages));
         P->SetNumberField(TEXT("sent_bytes"),double(M.SentBytes)); P->SetNumberField(TEXT("received_bytes"),double(M.ReceivedBytes));
         P->SetNumberField(TEXT("handoff_sent_bytes"),double(M.SentLaneBytes[static_cast<size_t>(GuLiNet::Lane::Handoff)]));
@@ -927,6 +961,7 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
                     Limits.BytesPerSecond[3]=FMath::Max(1000,Settings->HandoffBytesPerSecond);
                     State->Channels[Player] = std::make_shared<GuLiNet::PeerChannel>(PairKey,Limits,
                         GuLiNet::PeerChannelBinding{GuLiNetBridge::ToCore(State->Config.RoomId),GuLiNetBridge::ToCore(State->Identity.Player),Player,State->MotionObjects});
+                    State->PayloadHistories[Player]=std::make_shared<GuLiHybridReliablePayload::FPeerHistory>();
                     State->PairKeys[Player] = PairKey;
                     ++State->MotionCounterGeneration;
                 }
@@ -938,6 +973,7 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
                 {
                     ++State->MotionCounterGeneration;
                     State->PairKeys.erase(It->first);
+                    State->PayloadHistories.erase(It->first);
                     It=State->Channels.erase(It);
                 }
                 else ++It;
@@ -968,30 +1004,45 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
     const auto Admit=[this,Now,&Received](const FGuid& Sender,const GuLiNet::Message& Packed)
     {
         const auto Id=GuLiNetBridge::ToCore(Sender);
-        if (Packed.Header.Sender!=Id || Packed.Header.Match!=GuLiNetBridge::ToCore(State->Config.RoomId) || Packed.Header.Epoch!=State->Epoch)
+        const bool CurrentHeader=Packed.Header.Sender==Id
+            && Packed.Header.Match==GuLiNetBridge::ToCore(State->Config.RoomId) && Packed.Header.Epoch==State->Epoch;
+        if (!CurrentHeader)
         {
             if (Packed.Header.Epoch!=State->Epoch) ++State->ReviewEpochRejected;else ++State->ReviewIdentityRejected;
             if (State->ReviewHeaderRejections.Num()>=64) State->ReviewHeaderRejections.RemoveAt(0,1,EAllowShrinking::No);
-            State->ReviewHeaderRejections.Add(MakeShared<FJsonValueObject>(FState::FReviewFault::Header(Packed)));return true;
+            State->ReviewHeaderRejections.Add(MakeShared<FJsonValueObject>(FState::FReviewFault::Header(Packed)));
         }
-        State->LastPeerSeen[Id]=Now;
+        if (CurrentHeader) State->LastPeerSeen[Id]=Now;
         if (Packed.Header.Kind==GuLiNet::MessageKind::Heartbeat) return true;
         TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_AdmitPeerPayload);
         uint64 PlainBytes=0;
-        if (!GuLiHybridPeerPayload::PlainSize(Packed,PlainBytes))
+        if (!GuLiHybridReliablePayload::PlainSize(Packed,PlainBytes))
         {++State->PayloadDecodeFailures;State->Error=TEXT("Invalid bounded peer payload envelope");return true;}
         const bool bNative=State->bNativePeerReceive && AdmitNativePeer.IsBound();
-        if ((!bNative && !AdmitPeer.IsBound()) || !CanAdmitPeer.IsBound()
-            || !CanAdmitPeer.Execute(uint16(Packed.Header.Kind),PlainBytes)) return false;
+        if (CurrentHeader && ((!bNative && !AdmitPeer.IsBound()) || !CanAdmitPeer.IsBound()
+            || !CanAdmitPeer.Execute(uint16(Packed.Header.Kind),PlainBytes))) return false;
+        const auto History=State->PayloadHistories.at(Id);
         auto V=Packed;
-        if (!GuLiHybridPeerPayload::Unpack(V))
+        bool UsedHistory=false;
+        if (!GuLiHybridReliablePayload::Unpack(V,History->Incoming,UsedHistory))
         {++State->PayloadDecodeFailures;State->Error=TEXT("Invalid bounded peer payload envelope");return true;}
+        const auto CommitHistory=[&]
+        {
+            if (UsedHistory)
+            {
+                History->Incoming.Commit(V.Body);
+                ++State->HistoryReceivedMessages;
+            }
+        };
+        // Epoch rejection still consumes this ordered transport record. Its
+        // decoded bytes must enter the dictionary used by the following record.
+        if (!CurrentHeader) {CommitHistory();return true;}
         auto& Fault=State->Fault;
         if (V.Header.Kind==GuLiNet::MessageKind::TransactionResult && Fault.Mode==TEXT("receipt_hold")
             && Fault.Accepts(uint16(V.Header.Kind)) && Fault.MatchesBusiness(V) && Fault.Bytes+V.Body.size()<=16*1024*1024)
         {
             auto Value=GuLiNetBridge::ToUE(V);Fault.Bytes+=Value.Body.Num();Fault.Receipts.Emplace(Sender,MoveTemp(Value));
-            --Fault.Remaining;++Fault.Intercepted;Fault.Record(V);return true;
+            --Fault.Remaining;++Fault.Intercepted;Fault.Record(V);CommitHistory();return true;
         }
         if (bNative)
         {
@@ -1006,6 +1057,7 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
             ++State->CopiedPeerAdmissions;
             if (OnPeer.IsBound()) Received.Emplace(Sender,MoveTemp(Value));
         }
+        CommitHistory();
         return true;
     };
     if (State->Transport)
@@ -1015,7 +1067,7 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
             const auto Id = GuLiNetBridge::ToCore(Sender); const auto It = State->Channels.find(Id); if (It == State->Channels.end()) return;
             const auto Channel=It->second;
             const bool Valid=Channel->ReceiveWithAdmission(std::span<const uint8>(Bytes.GetData(), Bytes.Num()), Now,
-                [this, Sender](std::span<const uint8> Packet) { return State->SendDatagram(Sender,Packet); },
+                [Channel](std::span<const uint8> Packet) { Channel->DeferAcknowledgment(Packet);return false; },
                 [&](const GuLiNet::Message& V){return Admit(Sender,V);});
             if (Valid) State->LastPeerSeen[Id]=Now;
         });

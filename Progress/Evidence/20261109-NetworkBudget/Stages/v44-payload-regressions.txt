@@ -1,0 +1,43 @@
+[2026.11.09-07.12.35:655][583]Cmd: Automation RunTests GuLiStrike.Network.SmallPeerPayload+GuLiStrike.Network.ReliableHistory+GuLiStrike.Network.PeerPayload
+[2026.11.09-07.12.35:655][583]Automation: RunTests='GuLiStrike.Network.SmallPeerPayload+GuLiStrike.Network.ReliableHistory+GuLiStrike.Network.PeerPayload' Queued.
+[2026.11.09-07.12.35:670][583]LogEngineAutomationLatentCommand: FWaitForInteractiveFrameRate: Starting wait for framerate of >= 10 FPS
+[2026.11.09-07.12.40:701][905]LogEngineAutomationLatentCommand: FWaitForInteractiveFrameRate: Hit 32.40 FPS for 5 seconds after 5 seconds of waiting
+[2026.11.09-07.12.40:701][906]LogAutomationCommandLine: Display: Ready to start automation
+[2026.11.09-07.12.45:726][225]LogAutomationWorker: Received FindWorkersMessage from F45CEFCE40F0814566822F844B292997
+[2026.11.09-07.12.45:726][225]LogAutomationController: Received FindWorkersResponseMessage from 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:726][225]LogAutomationController: Requesting test list from 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:739][226]LogAutomationWorker: Received RequestTestsMessage from F45CEFCE40F0814566822F844B292997
+[2026.11.09-07.12.45:770][226]LogAutomationWorker: Set 5157 tests to F45CEFCE40F0814566822F844B292997
+[2026.11.09-07.12.45:770][226]LogAutomationController: Received RequestTestsReplyCompleteMessage from 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:771][226]LogAutomationController: 5157 tests available on 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:792][226]LogAutomationCommandLine: Display: Found 3 automation tests based on 'GuLiStrike.Network.SmallPeerPayload+GuLiStrike.Network.ReliableHistory+GuLiStrike.Network.PeerPayload'
+[2026.11.09-07.12.45:792][226]LogAutomationCommandLine: Display: 	GuLiStrike.Network.PeerPayload
+[2026.11.09-07.12.45:792][226]LogAutomationCommandLine: Display: 	GuLiStrike.Network.ReliableHistory
+[2026.11.09-07.12.45:792][226]LogAutomationCommandLine: Display: 	GuLiStrike.Network.SmallPeerPayload
+[2026.11.09-07.12.45:792][226]LogAutomationController: Sending StopTests to 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:794][226]LogAutomationController: Sending StartTestSession to 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:794][226]LogAutomationController: Display: Clearing ../../../../UE5.7/test1/Saved/Automation/Logs/ and ../../../../UE5.7/test1/Saved/Automation/Tmp/
+[2026.11.09-07.12.45:794][226]AutomationTestingLog: -----Test Run 3----
+[2026.11.09-07.12.45:795][226]LogAutomationController: Sending RunTest PeerPayload to 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:795][227]LogAutomationController: Display: Test Started. Name={PeerPayload} Path={GuLiStrike.Network.PeerPayload}
+[2026.11.09-07.12.45:801][227]LogAutomationWorker: Received StopTests from F45CEFCE40F0814566822F844B292997
+[2026.11.09-07.12.45:801][227]LogAutomationWorker: Received StartTestSession from F45CEFCE40F0814566822F844B292997
+[2026.11.09-07.12.45:801][227]LogAutomationWorker: Received RunTests PeerPayload from F45CEFCE40F0814566822F844B292997
+[2026.11.09-07.12.45:816][228]LogAutomationController: Display: Test Completed. Result={成功} Name={PeerPayload} Path={GuLiStrike.Network.PeerPayload}
+[2026.11.09-07.12.45:816][228]LogAutomationController: BeginEvents: GuLiStrike.Network.PeerPayload
+[2026.11.09-07.12.45:816][228]LogAutomationController: EndEvents: GuLiStrike.Network.PeerPayload
+[2026.11.09-07.12.45:818][228]LogAutomationController: Sending RunTest ReliableHistory to 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:818][229]LogAutomationController: Display: Test Started. Name={ReliableHistory} Path={GuLiStrike.Network.ReliableHistory}
+[2026.11.09-07.12.45:825][229]LogAutomationWorker: Received RunTests ReliableHistory from F45CEFCE40F0814566822F844B292997
+[2026.11.09-07.12.45:836][230]LogAutomationController: Display: Test Completed. Result={成功} Name={ReliableHistory} Path={GuLiStrike.Network.ReliableHistory}
+[2026.11.09-07.12.45:836][230]LogAutomationController: BeginEvents: GuLiStrike.Network.ReliableHistory
+[2026.11.09-07.12.45:836][230]LogAutomationController: EndEvents: GuLiStrike.Network.ReliableHistory
+[2026.11.09-07.12.45:843][230]LogAutomationController: Sending RunTest SmallPeerPayload to 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:843][231]LogAutomationController: Display: Test Started. Name={SmallPeerPayload} Path={GuLiStrike.Network.SmallPeerPayload}
+[2026.11.09-07.12.45:850][231]LogAutomationWorker: Received RunTests SmallPeerPayload from F45CEFCE40F0814566822F844B292997
+[2026.11.09-07.12.45:905][232]LogAutomationController: Display: Test Completed. Result={成功} Name={SmallPeerPayload} Path={GuLiStrike.Network.SmallPeerPayload}
+[2026.11.09-07.12.45:905][232]LogAutomationController: BeginEvents: GuLiStrike.Network.SmallPeerPayload
+[2026.11.09-07.12.45:905][232]LogAutomationController: EndEvents: GuLiStrike.Network.SmallPeerPayload
+[2026.11.09-07.12.45:906][232]LogAutomationController: Sending StopTestSession to 43A03D6B4FB006244EBA889C7797976A
+[2026.11.09-07.12.45:906][233]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 3 tests performed.
+[2026.11.09-07.12.45:913][233]LogAutomationWorker: Re

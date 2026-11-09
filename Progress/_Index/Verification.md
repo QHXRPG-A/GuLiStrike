@@ -4,6 +4,7 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | done | partial | — | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹 — 实施与交付](../DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md) | done | partial | — | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡 — 实施与交付](../DevelopmentDocumentation/20261108-游骑兵初始弹与三张肉鸽卡.md) | done | partial | — | 2026-11-09 |
 | [游骑兵按键定向闪现与惯性拖拽动画 — 实施记录](../DevelopmentDocumentation/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | done | partial | — | 2026-11-08 |

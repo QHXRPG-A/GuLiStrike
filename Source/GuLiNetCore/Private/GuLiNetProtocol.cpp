@@ -245,20 +245,24 @@ bool DecodeMessage(std::span<const std::uint8_t> Value, Message& Out,PeerMessage
         || !R.U64(H.At) || !R.Identity(H.ResourceGroup) || !R.U64(H.ResourceEpoch) || !R.Blob(Result.Body) || !R.Done()) return false;
     Out = std::move(Result); return true;
 }
-std::size_t EncodeMotionBatch(std::span<const Message* const> Values,Bytes& Out,
-    std::vector<std::size_t>& RecordBytes,std::size_t MaxBytes,PeerMessageContext Context)
+namespace
+{
+std::size_t EncodeBatch(std::span<const Message* const> Values,Bytes& Out,
+    std::vector<std::size_t>& RecordBytes,std::size_t MaxBytes,PeerMessageContext Context,bool Reliable)
 {
     Out.clear();RecordBytes.clear();
     if (Values.empty() || !Values.front() || MaxBytes>MaxDatagramBytes) return 0;
     Message Base;Base.Header=Values.front()->Header;
-    Base.Header.Kind=MessageKind::Motion;Base.Header.Object={};Base.Header.Sequence=0;Base.Header.Event={};
+    Base.Header.Kind=Reliable?MessageKind::Heartbeat:MessageKind::Motion;
+    Base.Header.Object={};Base.Header.Sequence=0;Base.Header.Event={};
     Bytes Shared;if (!EncodePeerMessage(Base,Shared,Context) || Shared.size()+3>MaxBytes) return 0;
     Writer Records(MaxBytes);const auto& B=Base.Header;std::set<std::uint64_t> Sequences;
     for (const auto* Value:Values)
     {
         if (RecordBytes.size()==64 || !Value) break;
         const auto& H=Value->Header;
-        if (MessageLane(H.Kind)!=Lane::Motion || ReliableMessage(H.Kind) || !H.Sequence
+        if (H.Kind<MessageKind::Hello || H.Kind>=MessageKind::Count
+            || MessageLane(H.Kind)!=(Reliable?Lane::Control:Lane::Motion) || ReliableMessage(H.Kind)!=Reliable || !H.Sequence
             || H.Object.Kind>ObjectKind::BusinessWork || !Sequences.insert(H.Sequence).second) break;
         const auto Short=ShortObjectIndex(H.Object,Context.Objects);
         const std::uint16_t Flags=(H.Event!=Id{}?1:0)|(Short?2:0)|(H.Object!=ObjectKey{} && !Short?1024:0)
@@ -281,13 +285,14 @@ std::size_t EncodeMotionBatch(std::span<const Message* const> Values,Bytes& Out,
     Writer W(MaxBytes);W.U8(static_cast<std::uint8_t>(RecordBytes.size()));W.U16(static_cast<std::uint16_t>(Shared.size()));
     W.Raw(Shared);W.Raw(Records.View());Out=W.Take();return RecordBytes.size();
 }
-bool DecodeMotionBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context)
+bool DecodeBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context,bool Reliable)
 {
     if (Value.size()>MaxDatagramBytes) return false;
     Reader R(Value);std::uint8_t Count;std::uint16_t SharedSize;std::span<const std::uint8_t> Shared;
     Message Base;
     if (!R.U8(Count) || Count<2 || Count>64 || !R.U16(SharedSize) || !R.Raw(SharedSize,Shared)
-        || !DecodeMessage(Shared,Base,Context) || !Base.Body.empty() || Base.Header.Kind!=MessageKind::Motion
+        || !DecodeMessage(Shared,Base,Context) || !Base.Body.empty()
+        || Base.Header.Kind!=(Reliable?MessageKind::Heartbeat:MessageKind::Motion)
         || Base.Header.Object!=ObjectKey{} || Base.Header.Sequence || Base.Header.Event!=Id{}) return false;
     std::vector<Message> Result;Result.reserve(Count);std::set<std::uint64_t> Sequences;
     for (std::uint8_t I=0;I<Count;++I)
@@ -295,7 +300,8 @@ bool DecodeMotionBatch(std::span<const std::uint8_t> Value,std::vector<Message>&
         Message M=Base;auto& H=M.Header;std::uint8_t Kind,ObjectKindValue;std::uint64_t Flags,Generation,Size;
         if (!R.U8(Kind) || !VarUInt(R,Flags) || Flags>2047 || ((Flags&2) && (Flags&1024))) return false;
         H.Kind=static_cast<MessageKind>(Kind);
-        if (MessageLane(H.Kind)!=Lane::Motion || ReliableMessage(H.Kind)) return false;
+        if (H.Kind<MessageKind::Hello || H.Kind>=MessageKind::Count
+            || MessageLane(H.Kind)!=(Reliable?Lane::Control:Lane::Motion) || ReliableMessage(H.Kind)!=Reliable) return false;
         if ((Flags&1) && !R.Identity(H.Event)) return false;
         if ((Flags&2) && !ReadShortObject(R,Context.Objects,H.Object)) return false;
         if (Flags&1024)
@@ -316,6 +322,17 @@ bool DecodeMotionBatch(std::span<const std::uint8_t> Value,std::vector<Message>&
     if (!R.Done()) return false;
     Out=std::move(Result);return true;
 }
+}
+std::size_t EncodeMotionBatch(std::span<const Message* const> Values,Bytes& Out,
+    std::vector<std::size_t>& RecordBytes,std::size_t MaxBytes,PeerMessageContext Context)
+{return EncodeBatch(Values,Out,RecordBytes,MaxBytes,Context,false);}
+bool DecodeMotionBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context)
+{return DecodeBatch(Value,Out,Context,false);}
+std::size_t EncodeReliableBatch(std::span<const Message* const> Values,Bytes& Out,
+    std::vector<std::size_t>& RecordBytes,std::size_t MaxBytes,PeerMessageContext Context)
+{return EncodeBatch(Values,Out,RecordBytes,MaxBytes,Context,true);}
+bool DecodeReliableBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context)
+{return DecodeBatch(Value,Out,Context,true);}
 Lane MessageLane(MessageKind K)
 {
     if (K == MessageKind::Motion || K == MessageKind::MotionAcknowledgment || K == MessageKind::ComponentState) return Lane::Motion;

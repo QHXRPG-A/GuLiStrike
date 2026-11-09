@@ -1,0 +1,2753 @@
+{
+  "remote": "https://github.com/QHXRPG-A/GuLiStrike.git",
+  "branch": "main",
+  "local_head": "af106bbe96089f35a6fa61c6a176d0ed70b65313",
+  "remote_parent": "c989097b21c5de13390b65cb57b41d2a98ed7848",
+  "files": [
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "status": " M",
+      "bytes": 1118688,
+      "sha256": "e9468a1fc454286152ac607812fc18bc12879a48cf42f27d1d35bcc313206081"
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-600.json",
+      "status": " M",
+      "bytes": 1271994,
+      "sha256": "efd2960f229b6e2e2126af8ab2b2301cab61bed25701bffcb084fe824f8099dd"
+    },
+    {
+      "path": "Progress/_Index/Archive.md",
+      "status": " M",
+      "bytes": 89021,
+      "sha256": "ed40f27f1c5ed5d631c457b3688bac9bc708eb91f21a053bc8a2c745a269b978"
+    },
+    {
+      "path": "Progress/_Index/ByArea.md",
+      "status": " M",
+      "bytes": 390862,
+      "sha256": "3f61b1f8c5a94b56a5eaf86d3bea93f18fe28ac7bc4091b8cc5ddddcd62a38c9"
+    },
+    {
+      "path": "Progress/_Index/Current.md",
+      "status": " M",
+      "bytes": 53492,
+      "sha256": "50daeb5199b9143e6a2b9cda4cb3d52c2072d0c0319ec6605d0addf5a7ac5945"
+    },
+    {
+      "path": "Progress/_Index/Verification.md",
+      "status": " M",
+      "bytes": 36025,
+      "sha256": "1a851f215fbff5fc45196ccf8190dde7c1187de26f5307bc3eaaa7d05973e40f"
+    },
+    {
+      "path": "Progress/_Index/catalog.jsonl",
+      "status": " M",
+      "bytes": 772741,
+      "sha256": "a8d8d661267c7278f0636e895fc86ffca36b8a688fcaa6baec489e893ef18da3"
+    },
+    {
+      "path": "Scripts/Performance/capture_motion_budget.py",
+      "status": " M",
+      "bytes": 14018,
+      "sha256": "f249e3aa907df44ea8186af2c6a79fb9903cd6291b2dd5c5f845ba3d0b6b91c5"
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetProtocol.cpp",
+      "status": " M",
+      "bytes": 22738,
+      "sha256": "80894e8c112798a69ed3efa334ec847fd0458d09b8b80bdaae1f69421115ce51"
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetTransport.cpp",
+      "status": " M",
+      "bytes": 34141,
+      "sha256": "a7e9dd573b078379e0736718c4d8cbf6a014d2fc8c90aa8994fa7ecddbcb3406"
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetProtocol.h",
+      "status": " M",
+      "bytes": 7398,
+      "sha256": "e92d91ea5c75c331724e8c50645a005c43a3a85dbe8a533c9594ccf259a0587e"
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetTransport.h",
+      "status": " M",
+      "bytes": 7754,
+      "sha256": "3eacc573cc13c84acfc61caf162a18efff7ce443791c8a240e32452bffe5f2b4"
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetTypes.h",
+      "status": " M",
+      "bytes": 6608,
+      "sha256": "16268ea32d95c4489f62679bde995f6832f8f93b653e4f5d9183b11f6cd49596"
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrike.Build.cs",
+      "status": " M",
+      "bytes": 3226,
+      "sha256": "dc15967a7663661599f2c6d71d1c4c7d4247acf79a5efde498fc515afed40102"
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridSessionSubsystem.cpp",
+      "status": " M",
+      "bytes": 75093,
+      "sha256": "3bcfe884e3a98e3cef4cff9d4676b40dc655bffc0be5ec4327878a135fe9e637"
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp",
+      "status": " M",
+      "bytes": 186327,
+      "sha256": "26a80a65cf5decf50097489ca780d249a6f77819a28cc2826217d7d251550379"
+    },
+    {
+      "path": "Source/GuLiStrike/Network/Private/GuLiHybridPeerPayload.h",
+      "status": " M",
+      "bytes": 7900,
+      "sha256": "54a2f068f71ad68be7b604aabad4be3773e86e9c5bf10ac910151f28d9536d6c"
+    },
+    {
+      "path": "Source/GuLiStrike/Network/Tests/GuLiHybridAdapterRegistryTests.cpp",
+      "status": " M",
+      "bytes": 21019,
+      "sha256": "bbad7495e7b8fa1be843f51a278d407391534f495f1599c932b94ce8377eba26"
+    },
+    {
+      "path": "Progress/Archive/20261109-开局交火网络1MB每秒验收.md",
+      "status": "??",
+      "bytes": 7016,
+      "sha256": "7d33ffd91dbd041a0bd16a8ae10d901f288006d3bc7bd8486becc07ce25ec3fa"
+    },
+    {
+      "path": "Progress/Archive/20261109-开局网络优化会话完成清理与项目同步.md",
+      "status": "??",
+      "bytes": 2723,
+      "sha256": "585e6d3ab6ea28030137612c67280ad75a36c369801e12581687d25a9004b1ea"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261109-开局交火网络同步量优化.md",
+      "status": "??",
+      "bytes": 9832,
+      "sha256": "86759b6408e50efb2e55feaa002840722d6f8943de2ee272f9a73bbdaf10f104"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/after-01.json",
+      "status": "??",
+      "bytes": 7640,
+      "sha256": "ebec043d02a07b021d4866d09177381adfc17532dde76a42238b52fc1f5e334d"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/baseline-business-review.json",
+      "status": "??",
+      "bytes": 7197,
+      "sha256": "97ca3d404f910e89dacf3aaf4631834429747d599bd41c57a05fc56d160b9823"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/baseline.json",
+      "status": "??",
+      "bytes": 4508,
+      "sha256": "ef1c5067f23bd1b3bb20c171c4b7b416a97092b7204b163e6a5a47b584eec893"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/build-ids.json",
+      "status": "??",
+      "bytes": 165,
+      "sha256": "34b9734700e199419612388e2b8ff60d22c3d97c45b4e17aec44358035c29834"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/coordinator-build.json",
+      "status": "??",
+      "bytes": 128,
+      "sha256": "a6e13fd65fd7f036c81d2bf55b8535565d8e21ede9b0191fa9e438e8ee8c6a7d"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/editor-build.json",
+      "status": "??",
+      "bytes": 184,
+      "sha256": "8dcc7949f4c39dc7afbe3c02599bcb78a297e156f641ea33f52fc28f45c1151c"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/keyed-payload-audit-window.json",
+      "status": "??",
+      "bytes": 7332,
+      "sha256": "136cc63ba9158d490ff78f24626240ae5064d50dee0ccd0ffaac8b356597bff9"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/loaded-v42.json",
+      "status": "??",
+      "bytes": 855,
+      "sha256": "75ba716c61a2f96abcc4634fe097830be8e0edc09d900fc8bb6b8ad33f94f7e3"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/loaded-v43.json",
+      "status": "??",
+      "bytes": 855,
+      "sha256": "041a596797f8a3936b69cc6ad08785bff660bbabba8a51dca42aa37a470f2c11"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/manifests.json",
+      "status": "??",
+      "bytes": 501,
+      "sha256": "1077a89a245a144b27456d3d149f3578d6d16f35453342c4d35e83634be5b742"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/payload-audit-window.json",
+      "status": "??",
+      "bytes": 7635,
+      "sha256": "10a6609b0bcc26fea163eee9b86931161c628375001aae980ed59f7b3bba360d"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/payload-compression-bench-extra.json",
+      "status": "??",
+      "bytes": 3096,
+      "sha256": "4db480b5ff9e15a9bf35ad5f40ce6b8730b257c3ef7365d40607d440f7c4c134"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/payload-compression-bench.json",
+      "status": "??",
+      "bytes": 7402,
+      "sha256": "a66d2c78a3de1b23e9ec50964708b5afeda34f6cc0f2748dd1176490e4d306b0"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/payload-delta-bench.json",
+      "status": "??",
+      "bytes": 2713,
+      "sha256": "8ca417cdff1d13aaca778f122d294633870aae270ec30e941e4b33d788360fe3"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/payload-keyed-bench.json",
+      "status": "??",
+      "bytes": 3909,
+      "sha256": "c30b2d839aa8b529292e065689203e5fa53bc939225578fa4107b9e9b8281d1d"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/payload-regressions.json",
+      "status": "??",
+      "bytes": 722,
+      "sha256": "8eda6f6bc44f3e3ac1e6a6d5519210ae27880060dfe40962ff778cc72ba6b3dd"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/result-reference-analysis.json",
+      "status": "??",
+      "bytes": 129,
+      "sha256": "9a0b775d8940f902e3d14359c18e99c33eb2e5ec2cd23636dce10c97d47958f2"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/runtime-manifests-v43.json",
+      "status": "??",
+      "bytes": 911,
+      "sha256": "17493d836c3b27137041d065806ccde3347565f945b6ee8be853a2d12905b894"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/runtime-manifests.json",
+      "status": "??",
+      "bytes": 911,
+      "sha256": "404e9dc0c0446d5e5473aaf8462ec2eaecc43dc3f73eb52c67a33c19ba4818bb"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/scene-readback.json",
+      "status": "??",
+      "bytes": 1896,
+      "sha256": "c3125a2fbfe2f45c618aa1c94791eea9f82bcfc5fb85c08d1b7ea7de4ce2f65a"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/session-syntax.txt",
+      "status": "??",
+      "bytes": 32,
+      "sha256": "e78c441182e11ec8bcf2c0258e8864cd8bc55cd129d5dc1127cc8bc93487f7ee"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v43-after-01.json",
+      "status": "??",
+      "bytes": 7250,
+      "sha256": "a0eef518bbf4cb9f439002514ebb3f776d3453b265e31b483f2e23564d9cdde7"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v43-build-ids.json",
+      "status": "??",
+      "bytes": 445,
+      "sha256": "a29a23db449037563b12b4b21b13d6097a420d9294328a000db9c4e4af80b272"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v43-coordinator-build-retry.json",
+      "status": "??",
+      "bytes": 83,
+      "sha256": "df1e0f58d64611b18d9c6497005f4ee131db08b84ae30f22b12592e3729d142f"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v43-coordinator-build.json",
+      "status": "??",
+      "bytes": 83,
+      "sha256": "80dd461a7d23c079b1134ac5a779ef4d5d08a4c4cfc1357e79c7d031823d08b1"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v43-editor-build-retry.json",
+      "status": "??",
+      "bytes": 203,
+      "sha256": "374a1ccba8887c6b18801099537b6557d0900d98348d0dcbc1d27f4486dda5ca"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v43-editor-build.json",
+      "status": "??",
+      "bytes": 232,
+      "sha256": "1c0a8a21ce47e47ff8f4c1e14220173f3e9d670be1753d842e219723e7e3fcc5"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v43-payload-regressions.json",
+      "status": "??",
+      "bytes": 713,
+      "sha256": "ab54d7c3c80e42a6d680c15ad0b49ce9b4bf7161370277c020957f79be26ed61"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v44-after-01.json",
+      "status": "??",
+      "bytes": 7594,
+      "sha256": "152494b46a80fb6e173daf69f7e6fc6e854bcf098065e1f6bd06715ab4b8c67c"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v44-after-02.json",
+      "status": "??",
+      "bytes": 7245,
+      "sha256": "c90e4183c8e42ce9f45b15a8d0b998cb84b876b6296367314a3ada944963bb69"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v44-after-03.json",
+      "status": "??",
+      "bytes": 7236,
+      "sha256": "f4360f3a07d4008eb298a6d5e0d93362a887ca22cb8982a3b1d85a59436fe867"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/Stages/v44-payload-regressions.txt",
+      "status": "??",
+      "bytes": 5320,
+      "sha256": "974d7b729e620b26809674a1ea621a732d718041f78f6070242ecd448fc61b55"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/acceptance.json",
+      "status": "??",
+      "bytes": 28254,
+      "sha256": "6da185abf60c0c7c17090e0bfa8c162bcc336dccb982621cc4ea1e51c3cc8b4f"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/loaded-v44.json",
+      "status": "??",
+      "bytes": 855,
+      "sha256": "2adec706f1c14596c9457940be1de80838d3aa49a61d0410a58f3a4cbee142d5"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/postflight-v44.json",
+      "status": "??",
+      "bytes": 3193,
+      "sha256": "7e59e34a2e6a33d987449e2e8892bb8e3c7c46c2d128c006f54dba39a842a88b"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/runtime-manifests-v44.json",
+      "status": "??",
+      "bytes": 911,
+      "sha256": "79632387b4042161754421dba48bda1ae58fc87a01a85252efd94aa123df0429"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/scene-readback-v44.json",
+      "status": "??",
+      "bytes": 2254,
+      "sha256": "4e39ab7134e6d60d9f833b52f13ded4ef9b96dbbac4b49fc493c6935d7d7dfd3"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/v44-build-ids.json",
+      "status": "??",
+      "bytes": 445,
+      "sha256": "a29a23db449037563b12b4b21b13d6097a420d9294328a000db9c4e4af80b272"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/v44-coordinator-build.json",
+      "status": "??",
+      "bytes": 83,
+      "sha256": "eaf98c885f99c3d21125208f849023b09f2281ab013177e259f2bc8fdec03909"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/v44-editor-build.json",
+      "status": "??",
+      "bytes": 130,
+      "sha256": "4d1b0d461b8915e16ed849d759bcce2cf8b46ff80aae0594fac24ea2b9e99093"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudget/v44-payload-regressions.json",
+      "status": "??",
+      "bytes": 713,
+      "sha256": "2739ad8e09f01e63f587d9d11adc1fe5af60a941888aba94364a940311d09ea3"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudgetCloseout/README.md",
+      "status": "??",
+      "bytes": 2227,
+      "sha256": "0cbbf97f41ab51129c90a764363ee956933d8d6ede5d72fa107448eb5487ee9e"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudgetCloseout/cleanup-plan.json",
+      "status": "??",
+      "bytes": 46086,
+      "sha256": "036404ba48fb01bf7f7cfb227eaf1134488197e766ca7ac17d4001c10e22e2e0"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudgetCloseout/cleanup-result.json",
+      "status": "??",
+      "bytes": 622,
+      "sha256": "709c26e8c9d4bfe7dc153ac0884fa328542dd9c9749b43a14303cb84f1185156"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudgetCloseout/document-check-after-cleanup.json",
+      "status": "??",
+      "bytes": 5147,
+      "sha256": "27391eed4d194cd1508959ff550fe8df05bcdad5a2ce8da224ebf62109ca49a1"
+    },
+    {
+      "path": "Progress/Evidence/20261109-NetworkBudgetCloseout/document-check-before-cleanup.json",
+      "status": "??",
+      "bytes": 5147,
+      "sha256": "27391eed4d194cd1508959ff550fe8df05bcdad5a2ce8da224ebf62109ca49a1"
+    },
+    {
+      "path": "Progress/RequirementDocument/20261109-开局交火网络同步量优化.md",
+      "status": "??",
+      "bytes": 3201,
+      "sha256": "39ee3ebeb22b90dac00ebf30e736e66a32c24185d90143159fd6f6d410fae077"
+    },
+    {
+      "path": "Source/GuLiStrike/Network/Private/GuLiHybridReliablePayload.h",
+      "status": "??",
+      "bytes": 5724,
+      "sha256": "d2a2a935977b84948c1a44e411f531fe45b41d77bbd4fc3aff565f064fa5dec6"
+    },
+    {
+      "path": ".gitattributes",
+      "status": " M",
+      "bytes": 6505,
+      "sha256": "a9e465a7e9d83e8ac01c76da5c39a362a8016f7d98f7e56ba14f288bf3da54f1"
+    }
+  ],
+  "file_count_before_this_receipt": 70,
+  "included_bytes": 4345238,
+  "excluded_by_root": {
+    "ArtSource": 222,
+    "Content": 163,
+    "Artifacts": 185,
+    "data": 2
+  },
+  "excluded_status": [
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/REPORT.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v1_20261025/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v2_20261025/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v3_20261025/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v1/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/AIM_TURN_DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/ARM_YAW_DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/BACKWARD_AIR_DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/GROUND_MOBILITY_DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/HEAVY_GAIT_DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/SK_GroundMech_A4B2.fbx"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/STRUCTURE_STABILITY_DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/UE_DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/W_FOLLOW_DELIVERY.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/catalog_json_before.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/catalog_promotion.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/export_report.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/ground_mobility_graph_install.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/ground_mobility_import.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/ground_mobility_scene_delivery_20261024.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/retargeted_animation_data.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/source_animation_data.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/review.html"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v4/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v4/review_manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/ue_contracts.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/3C_Review_A_v1/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/LocalTeamColorReview_20261008/REVIEW.md"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9.previous/changes.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9.previous/manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/changes.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/clearance.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/density_cells.csv"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/density_layers.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/density_territories.csv"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/editor.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/height.png"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/height.r16"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/heights_cm.f32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/heights_cm.f64"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_10_neighbours.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_10_offsets.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_10_regions.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_1_neighbours.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_1_offsets.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_1_regions.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_2_neighbours.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_2_offsets.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_2_regions.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_4_neighbours.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_4_offsets.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/hierarchy_4_regions.i32"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/layout.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/markers.csv"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/properties.csv"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/regions.csv"
+    },
+    {
+      "status": " D",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/ue-preview-result.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/vertices.csv"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9/walkable.u8"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Projects/a4151898-a3b9-403c-8e4b-6094e28b9db9.autosave.gmap"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/MapDesigner/Projects/a4151898-a3b9-403c-8e4b-6094e28b9db9.gmap"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/Navigation/Grid300/Baseline/source.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_BulletRefraction_v1/Prompts/Positive.txt"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_BulletRefraction_v1/manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_BulletRefraction_v2/Prompts/Positive.txt"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_BulletRefraction_v2/manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v3/Prompts/Negative.txt"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v3/Prompts/Positive.txt"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v3/history.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v3/manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v3/使用说明.txt"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v4/Prompts/Positive.txt"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v4/manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v5/Prompts/Positive.txt"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v5/manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/20261015_ChainRicochet_v5/使用说明.txt"
+    },
+    {
+      "status": " D",
+      "path": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/ILXL-地面机甲-弹射卡图.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/Prompts/Positive.txt"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/manifest.json"
+    },
+    {
+      "status": " M",
+      "path": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/使用说明.txt"
+    },
+    {
+      "status": " M",
+      "path": "Content/Development/HybridAcceptance/DA_AcceptanceBuildingCatalog.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/Development/HybridAcceptance/DT_AcceptanceBuildings.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/Development/HybridAcceptance/DT_AcceptanceModels.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Buildings/Construction/Shapes/DA_ConstructionShape_3.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Buildings/Construction/Shapes/SM_ConstructionShape_3_Base.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Buildings/Construction/Shapes/SM_ConstructionShape_3_Wall.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Buildings/DA_GuLiBuildingCatalog.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/Buildings/Legacy/SM_OutpostCube20m_PreMonument.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/Buildings/Meshes/Source/SM_OutpostMonument_v01.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_ModelComic_v9.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_ModelComic_v9.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Cards/Commander/WM01/MissilePod/Materials/MI_MissilePod_ModelComic_v1.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_ModelComic_v9.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Cards/Commander/WM01/RainSalvo/Materials/MI_RainSalvo_ModelComic_v1.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeGameTexts_Texts.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeMech_Camera.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeMech_Gait.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeMech_GroundIK.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeMech_Mobility.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeMech_Skills.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeMech_Upgrades.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeModels_ColorRegions.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeModels_MaterialParameters.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeModels_Models.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeModels_Parts.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeShip_Camera.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeShip_Tuning.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeVfx_Effects.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/Resources/DA_CommanderResourceMap.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Data/ST_GuLiStrikeGameTexts.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/FX/CommanderWeapons/DA_CommanderCombatEffects.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/ABP_GroundMech.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/ABP_GroundMech_Machinegun.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/BS_GroundMech_Locomotion.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/CF_Machinegun_Recoil.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Death_1.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Death_2.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Idle.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Idle_Simple.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Jump_Jetpack_Idle.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Jump_Jetpack_Land.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Jump_Jetpack_Start.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Jump_Simple.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Run.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Run_Faster.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Run_Turn_L.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Run_Turn_R.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Turn_30_L.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Turn_30_R.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Turn_45_L.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Turn_45_R.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Walk.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Walk_Turn_45_L.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Walk_Turn_45_R.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Walk_Turn_70_L.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Walk_Turn_70_R.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/Weapon/Weapons_Machinegun_Recoil.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/BP_GroundMech_Light.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Jump_Loop.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Jump_Start.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Rocket_L.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Rocket_R.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Run_BWD.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Shoot.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_L.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_R.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_WalK_BWD.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Walk_FWD.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Run_FWD.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Montage_Mecha_Turn_L_Montage.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Montage_Mecha_Turn_R_Montage.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Cream.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Mechanism.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Sand.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_TeamPrimary.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_TeamSecondary.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2_Skeleton.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/AnimationCamera_20261024_031332/ABP_GroundMech_A4B2.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/AnimationCamera_20261024_031332/BP_GroundMech_Light.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/AnimationCamera_20261024_031332/BlendSpace_Loco_Run.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/AnimationCamera_20261024_031332/BlendSpace_Loco_Walk.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_FireReview_BeforeA4B2.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_GroundMech_BeforeA4B2.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_v1/Animations/ABP_GroundMech_MechaDestroyer.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/MechaDestroyer_v1/Meshes/SK_MechaDestroyer.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Meshes/SK_Legs.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Meshes/SK_Machinegun.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Meshes/SM_Armor.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Meshes/SM_Shoulder.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Materials/M_Armor_InkCel.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Materials/M_Ink_Backfaces.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Materials/M_Legs_InkCel.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Materials/M_Machinegun_InkCel.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Materials/M_Shoulder_InkCel.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Rollback/ABP_GroundMech_BeforeStyleValidation.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Rollback/BP_GroundMech_Light_BeforeStyle.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_BaseColor.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_Emissive.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_LineMask.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_BaseColor.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_Emissive.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_LineMask.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_BaseColor.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_Emissive.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_LineMask.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_BaseColor.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_Emissive.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_LineMask.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Mechs/StyleShowcase/LVL_MechAsset_Showcase.umap"
+    },
+    {
+      "status": " M",
+      "path": "Content/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype.uasset"
+    },
+    {
+      "status": " D",
+      "path": "Content/GuLiStrike/Review/ModelInterface/ManualOutpost/Meshes/SM_OutpostPlaceholder.uasset"
+    },
+    {
+      "status": " M",
+      "path": "Content/Maps/ArtReview/LVL_CommanderIslandOutpost_v1.umap"
+    },
+    {
+      "status": " M",
+      "path": "Content/Maps/LVL_CommanderMassPrototype.umap"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Buildings/OutpostSymmetry_20261029/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/Timing_1p1/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/analytical_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/asset_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/build.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/build_final.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/build_ids.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/cold_anim_graph.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/docs_check.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/editor_final.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/final_editor_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/import.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkCamera_20261026/scene_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/GroundMech_Blink_A_v1.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/GroundMech_Impact_A_v1.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/Reference_BlinkPose_User.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/Reference_Mech_A4.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/manifest.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/prompt_blink.txt"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_A_v1_20261026/prompt_impact.txt"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/M_GroundMech_Afterimage_B1.graph.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/M_GroundMech_Afterimage_B1.hlsl"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/M_GroundMech_Impact_B1.graph.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/M_GroundMech_Impact_B1.hlsl"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/build.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/delayed_dirty.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/final_save_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/final_save_start.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/fixed_preview_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/fixed_start.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/pause_and_save.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/MapSave_20261026/paused_delayed_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/asset_diagnostics.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/author_assets.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/author_result.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/build.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/final_asset_bridge.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/final_asset_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/final_network_validation.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/ground_cold_read.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/import.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/import_result.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/manifest.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/original_M_CircleRainbow11a.graph.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/original_impact_materials.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/pie_asset_preflight.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/pie_contract_fix.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/preserved_impact_authoring.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/preserved_impact_import.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/preserved_impact_result.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/save_scene_result.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/BlinkImpact_B1_20261026/scene.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v1_20261025/GroundMech_FiringFeedback_A_v1.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v1_20261025/manifest.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v1_20261025/prompt.txt"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v2_20261025/GroundMech_FiringFeedback_A_v2.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v2_20261025/User_EnergyTrail_Reference.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v2_20261025/manifest.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v2_20261025/prompt.txt"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v3_20261025/GroundMech_SingleCurve_A_v3.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v3_20261025/manifest.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v3_20261025/prompt.txt"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_A_v3_20261025/prompt_curve_only.txt"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/animation_patch.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/asset_authoring.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/build_ids.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/cold_firing_assets.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/scene_delivery.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/single_curve.hlsl"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/source_data_check.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/FiringFeedback_UE_20261025/table_import.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/asset_authoring.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/build.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/persistent_curve.hlsl"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/preimport_live_state.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/saved_resource_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/source_data_check.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/table_import.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/PersistentTrail_20261025/table_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/backward_air_build_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/backward_air_cold_read_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/backward_air_frequency_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/backward_air_import_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/backward_air_import_repeat_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/backward_air_numeric_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/backward_air_scene_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/firing_feedback_cold_read_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/heavy_gait_animation_data.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/heavy_gait_authoring.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/heavy_gait_build_ids_20261024.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/heavy_gait_cold_load_20261024.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/heavy_gait_contacts.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/heavy_gait_excel_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/heavy_gait_scene_cold_read.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/heavy_graph_pins.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/structure_build_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/structure_cold_read_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/structure_comparison.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/structure_import_result.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/structure_scene_delivery_20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/ExternalAssets/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/BulletTrails_20261028/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/3C_Review_A_v1/GroundMech_Blink_Material_A_v1.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/3C_Review_A_v1/GroundMech_Blink_Pose_A_v1.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/3C_Review_A_v1/Reference_GreenTrail_User.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/Reference_GreenCrystalTrail_Demo.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/Reference_User.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/Shape_D_v1/Reference_MechEnergy.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/Shape_D_v1/Rejected_TwoClouds.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/Shape_E_v1/Reference_EnergyMech.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/Shape_E_v1/Reference_LongTrail.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/FX/GroundMech/Blink_20261027/Shape_E_v1/Reference_ScreenCoverage.png"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/MapDesigner/Backups/a4151898-a3b9-403c-8e4b-6094e28b9db9-89a2cc8dbee045e4923c5c7980383995/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/MapDesigner/Backups/road-reset-20261025-093846/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/MapDesigner/Exports/a4151898-a3b9-403c-8e4b-6094e28b9db9.previous/ue-preview-result.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/MapDesigner/Verification/asymmetric-paint-20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/MapDesigner/Verification/road-reset-20261025.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/ModelInterface_B_20261008/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/Cards/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMech/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/BurningBurst_Deflagration_20261029_v2/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/BurningBurst_MidbodyShockwave_20261029_v4/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/BurningBurst_OutwardShockwave_20261029_v6/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/BurningBurst_Shockwave_20261029_v3/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/BurningBurst_WideShockwave_20261029_v5/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_History/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/CardProduction_20261026_v1/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/CurrentGroundMech_A4B2_20261026/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/ILXL-游骑兵-弹射卡图.json"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/RearFix_20261029_v1/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/Review_BurningCards_20261028_v1/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/Review_BurningCards_20261028_v2/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/GroundMechRogueCards/Review_BurningCards_20261028_v3/"
+    },
+    {
+      "status": "??",
+      "path": "ArtSource/UI/HUDuiPRO/"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/BurningRoguePIEFix_20261030/"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/BurningRogue_20261029/coordinator_manifest_validation.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/BurningRogue_20261029/native_reload.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/BurningRogue_20261029/python_syntax.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/BurningRogue_20261029/rigid_material_authoring.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/BurningRogue_20261029/table_import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/cleanup.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/deploy_report.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/export_check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/generated_before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/materials_after.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/parameter_changes.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/source_before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/write_result.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CommanderTracerFix_20261030/final_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CommanderTracerFix_20261030/final_runtime_index_fix.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/CommanderTracerFix_20261030/light_slot_runtime.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/asset-import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/asset-structure.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/editable-sources.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/gun-bindings.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/runtime-move.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/source-track-links.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundBaseSpeed_20261104/final.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundBaseSpeed_20261104/mobility-import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundBlinkRun_20261104/sequence.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundDirectionalBlink_20261107/asset-cold-readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDLoopFix_20261103/"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/burst_authoring.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/data_import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/final_build_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/final_normal_pie.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/geometry_probe.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/hud_asset_import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/icon_validation.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/input_mappings.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/layout_validation.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/map_input.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/runtime_ambient_final.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/runtime_burst.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/runtime_hud.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/runtime_hud_same_frame_input_failure.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/scene_final.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/skills_runtime.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDRevision_20261103/world_cleanup.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/deferred_cleanup.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/deferred_cleanup_result.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/progress_check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/startup_failure_excerpt.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/RuntimeManifest-200.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/RuntimeManifest-600.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/build-exit.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/build-pie-fix-exit.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/editor-final.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/editor-pid.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/flight-export-delta.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/pie-fix-editor-pid.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/pie-start-fix-readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundLowAir20261026/wm01-current-size.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/Retired_GroundModels_SourceRestoreOnly.zip"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/deletion_plan.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/preflight.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/progress_check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/reference_preflight.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechSessionCloseout_20261028/export_plan.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechSessionCloseout_20261028/exported_progress_check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechSessionCloseout_20261028/final_receipt.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechSessionCloseout_20261028/git_scratch_cleanup.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechSessionCloseout_20261028/local_join_receipt.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundMechSessionCloseout_20261028/local_progress_check_final.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/asset_and_boundary_checks.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/burst_authoring.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/final_build_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/geometry_probe.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/handoff_material_checks_after_jobs.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/player_handoff_state.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/runtime_burst.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/runtime_burst_refresh.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/runtime_red_palette.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/runtime_ricochet.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/runtime_ui_checks.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/scene_final.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/table_install.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/validation_summary.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRevision_20261103/vfx_install.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogueFix_20261102/build_result.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogueFix_20261102/burst_authoring.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogueFix_20261102/cold_disk_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogueFix_20261102/implementation_manifest.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogueFix_20261102/scene_install_final.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogueFix_20261102/source_niagara_contract.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogueFix_20261102/table_install.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogueSessionCloseout_20261030/project_status_before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogue_20261028/build_authorization.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundRogue_20261028/progress_check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSessionCloseout_20261108/document-check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSessionCloseout_20261108/github-delivery.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSessionCloseout_20261108/publication-document-check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSessionCloseout_20261108/publication-review.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSpeedLegShading_20261104/formal-mesh.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSpeedLegShading_20261104/mask-formal.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSpeedLegShading_20261104/material-install.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSpeedLegShading_20261104/mobility-import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundSpeedLegShading_20261104/static-review.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/SeatFix/static_checks.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/asset_import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/asset_import_initial.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/build-verification.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/data_import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/data_preparation.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/scene_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/source_baseline.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundToonIcons_20261103/static_checks.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/asset-structure.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/source-tuning.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/GroundViewDrive_20261104/source-tuning.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/LocalPIERolePicker20261026/build-exit.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/LocalPIERolePicker20261026/editor-pid.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/assets_before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/final_readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/log_window.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/material_after.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/material_before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/material_fix.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/runtime_after.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/runtime_attempt1.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/runtime_summary.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/shader_failure_before.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/shader_log_after.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/shader_verification.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/MassBulletColorFix_20261102/static_check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostFloat20261029/PlayerScreenshots/"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGlowSpin20261029/"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/Outpost_R1C3_Clearance.png"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/Outpost_R1C3_before.png"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/Outpost_R4C4_NormalCommander.png"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/all-footprint-clearances-before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/all-outpost-clearances-before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/geometry-bounds.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/legacy-outpost-preview.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/legacy-preview-before.png"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/legacy-preview-close-before.png"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/normal-camera-capture.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/outpost-material-graph.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/render-path-diagnostic.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/sightline-diagnostic.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostGroundFix20261029/terrain-material-graph.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostScale20261028/static-review.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostSymmetric20261029/"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/OutpostWhiteBeltx2_20261029/"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RangerNameMigration20261103/GuLiStrikeVfx-checkpoint.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RangerNameMigration20261103/progress-final-check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RangerNameMigration20261103/skill-mirror-check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RangerNameMigration20261103/static-check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RangerNameMigration20261103/summary.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RangerNameMigration20261103/table-import.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RangerNameMigration20261103/ue-table-preflight.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RicochetParallaxFix_20261030/cleanup.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RicochetParallaxFix_20261030/generated_before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RicochetParallaxFix_20261030/materials_after.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RicochetParallaxFix_20261030/materials_before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/RicochetParallaxFix_20261030/source_before.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/WM01HorizontalRange20261028/progress-check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/WarMachineIdle20261026/Tuning_0p8m_5s_3p2deg/build-exit.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/WarMachineIdle20261026/Tuning_0p8m_5s_3p2deg/editor-pid.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/WarMachineIdle20261026/build-exit.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/WarMachineIdle20261026/editor-after-scene.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/WarMachineIdle20261026/editor-pid.txt"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/WarMachineIdle20261026/pre-build-editor.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/WarMachineIdle20261026/preflight.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/archive-create-plan.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/archive-finalization.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/authorized-build-document-update.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/excel-baseline.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/excel-final-check.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/final-editor-readback.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/followup-text-migration.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-diagnosis.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-document-update.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-editor-candidates.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-editor-export.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/planned-text-changes.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/progress-index-migration.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/summary.json"
+    },
+    {
+      "status": "??",
+      "path": "Artifacts/XunTianNameMigration20261103/table-preflight.json"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Buildings/OutpostSymmetric/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview.umap"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredRigid_v1.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Cards/GroundMech/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Cards/Shared/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeBuffs_Buffs.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeBuffs_Burning.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeBuffs_BurningBurst.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Artworks.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Layers.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Parameters.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Templates.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeGroundHUD_Elements.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeIcons_Icons.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Effects.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeRogueCards_GroundRicochet.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/Data/DT_GuLiStrikeRogueCards_GroundWeaponEffects.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/FX/BulletTrails/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/FX/GroundMech/Blink/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/FX/GroundMech/BlinkImpact_B1/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/FX/GroundMech/Burning/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/FX/GroundMech/ExplosivePackage/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/FX/GroundMech/FiringFeedback_A3/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/FX/GroundMech/FiringFeedback_A4/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/GroundMech/Animations/A4B2/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/GroundMech/Animations/Source/A4B2/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/GroundMech/UI/DT_GroundCardTextStyles.uasset"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/GroundMech/UI/Fonts/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/GroundMech/UI/Icons/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/GroundMech/UI/Motion/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/GroundMech/UI/Textures/"
+    },
+    {
+      "status": "??",
+      "path": "Content/GuLiStrike/UI/SceneOverlay/GroundFeedback/"
+    },
+    {
+      "status": "??",
+      "path": "Content/Movies/"
+    },
+    {
+      "status": "??",
+      "path": "data/ExternalAssets/migrations/20261026/compatibility-originals/"
+    },
+    {
+      "status": "??",
+      "path": "data/ExternalAssets/migrations/20261026/unregistered-originals/"
+    }
+  ],
+  "credential_pattern_scan": "passed",
+  "lfs_files_in_selection": 0,
+  "publication_parent_policy": "origin/main, never local resource ancestry",
+  "root_paths": [
+    "Source",
+    "Config",
+    "Scripts",
+    "Plugins",
+    "Progress",
+    ".agents",
+    ".github",
+    "Tools",
+    "data",
+    "AGENTS.md",
+    "GuLiStrike.uproject",
+    ".gitignore",
+    ".gitattributes",
+    ":!data/ExternalAssets",
+    ":!**/Intermediate/**",
+    ":!**/Saved/**",
+    ":!**/Binaries/**",
+    ":!**/DerivedDataCache/**",
+    ":!**/Downloads/**",
+    ":!**/Content/**",
+    ":!**/Resources/**"
+  ],
+  "archived_log_handling": "Preserve byte-exact captured log text using a scoped gitattributes rule."
+}

@@ -1,0 +1,310 @@
+{
+  "directory": "D:\\UE5.7\\PerformanceCaptures\\GuLiStrike\\20261109-151432-6014D3A1",
+  "valid": true,
+  "at_or_below_100": true,
+  "wire_kB_s": 71.49712267879367,
+  "control_kB_s": 660.6338984885066,
+  "process_send_kB_s": 753.045694401545,
+  "process_receive_kB_s": 128.91797108797275,
+  "process_total_kB_s": 881.9636654895178,
+  "total_inter_sample_kB_s": [
+    858.5250144929979,
+    903.1058274168879,
+    906.9730910333727,
+    869.3568821267208,
+    871.9273485087142
+  ],
+  "peak_total_interval_kB_s": 906.9730910333727,
+  "business_progress": {
+    "observed": 1852,
+    "finished": 1783,
+    "spawn_requests": 1852,
+    "retire_requests": 1828,
+    "damage_requests": 884,
+    "territory_requests": 980,
+    "committed_damage_receipts": 854
+  },
+  "business_intervals": [
+    {
+      "seconds": 1.0125796981155872,
+      "observed": 384,
+      "finished": 346,
+      "spawn_requests": 384,
+      "retire_requests": 374,
+      "damage_requests": 197,
+      "territory_requests": 196,
+      "committed_damage_receipts": 191
+    },
+    {
+      "seconds": 1.0037682987749577,
+      "observed": 372,
+      "finished": 306,
+      "spawn_requests": 372,
+      "retire_requests": 311,
+      "damage_requests": 140,
+      "territory_requests": 196,
+      "committed_damage_receipts": 127
+    },
+    {
+      "seconds": 1.0087146013975143,
+      "observed": 372,
+      "finished": 413,
+      "spawn_requests": 372,
+      "retire_requests": 414,
+      "damage_requests": 202,
+      "territory_requests": 196,
+      "committed_damage_receipts": 193
+    },
+    {
+      "seconds": 1.0027699992060661,
+      "observed": 364,
+      "finished": 366,
+      "spawn_requests": 364,
+      "retire_requests": 371,
+      "damage_requests": 172,
+      "territory_requests": 196,
+      "committed_damage_receipts": 172
+    },
+    {
+      "seconds": 1.0037545002996922,
+      "observed": 360,
+      "finished": 352,
+      "spawn_requests": 360,
+      "retire_requests": 358,
+      "damage_requests": 173,
+      "territory_requests": 196,
+      "committed_damage_receipts": 171
+    }
+  ],
+  "business_progress_valid": true,
+  "transport_queue": {
+    "queued_bytes": [
+      7773,
+      13901,
+      14449,
+      14203,
+      11766,
+      15116
+    ],
+    "oldest_queue_ms": [
+      8.503399789333344,
+      8.14330205321312,
+      8.80659744143486,
+      8.43530148267746,
+      8.126497268676758,
+      9.017299860715866
+    ],
+    "pending_delivery_bytes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "pending_delivery_messages": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "queued_byte_change": 7343,
+    "longest_growth_intervals": 1,
+    "sustained_growth": false,
+    "growth_basis": "Queued bytes and oldest age both increase for three consecutive full intervals"
+  },
+  "seconds": 5.0315870977938175,
+  "errors": {
+    "datagram_send_failures": 0,
+    "datagram_rejected_packets": 0,
+    "receive_queue_overflows": 0,
+    "peer_payload_decode_failures": 0,
+    "rejected_packets": 0,
+    "retransmit_bytes": 0,
+    "delivery_backpressure": 0
+  },
+  "world_seconds": [
+    13.301104806363583,
+    18.337056204676628
+  ],
+  "logical_ticks": [
+    215,
+    517
+  ],
+  "local_soldiers": [
+    300,
+    300,
+    300,
+    300,
+    300,
+    300
+  ],
+  "active_flights": [
+    740,
+    778,
+    844,
+    803,
+    801,
+    809
+  ],
+  "background_frames": 0,
+  "peak_gt_ms": 26.117499999998017,
+  "p95_gt_ms": 20.818899999994755,
+  "queue": {
+    "available": true,
+    "seconds": 5.0315870977938175,
+    "peer_count": 1,
+    "pose": {
+      "enqueued": 9972,
+      "sent": 9972,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 229786,
+      "body_bytes": 144030
+    },
+    "ack": {
+      "enqueued": 2478,
+      "sent": 2478,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 40036,
+      "body_bytes": 22004
+    },
+    "component": {
+      "enqueued": 588,
+      "sent": 588,
+      "replaced": 0,
+      "pending_start": 0,
+      "pending_end": 0,
+      "oldest_pending_ms_end": 0,
+      "record_bytes": 52451,
+      "body_bytes": 43359
+    },
+    "wire_bytes": 359744,
+    "wire_decimal_kB_s": 71.49712267879367,
+    "engineer": {
+      "pose_sent": 144,
+      "body_bytes": 288,
+      "pose_record_bytes": 3448,
+      "ack_record_bytes": 0
+    },
+    "miner": {
+      "pose_sent": 457,
+      "body_bytes": 23024,
+      "pose_record_bytes": 33013,
+      "ack_record_bytes": 0
+    },
+    "stationary_unit_sent": 9429,
+    "stationary_mass_sent": 9181,
+    "stationary_unit_skipped": 5720,
+    "stationary_mass_sent_reasons": {
+      "first_or_reset": 0,
+      "fields_changed": 8153,
+      "animation_correction": 0,
+      "unconfirmed_retry": 0,
+      "heartbeat": 1028
+    },
+    "stationary_mass_skipped_exact": 1180,
+    "stationary_mass_skipped_natural_phase": 4540,
+    "queue_samples": [
+      {
+        "seconds": 0,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 1.0125796981155872,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 2.016347996890545,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 3.0250625982880592,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 4.027832597494125,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      },
+      {
+        "seconds": 5.0315870977938175,
+        "pose": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "ack": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        },
+        "component": {
+          "pending": 0,
+          "oldest_pending_ms": 0
+        }
+      }
+    ]
+  },
+  "target_total_kB_s": 1000.0,
+  "total_budget_passed": true
+}

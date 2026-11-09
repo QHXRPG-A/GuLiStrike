@@ -1,0 +1,259 @@
+{
+  "records": 5000,
+  "raw_bytes": 15771043,
+  "results": [
+    {
+      "name": "zlib-1-dict32k-separateFalse",
+      "bytes": 1792468,
+      "bytes_per_record": 358.4936,
+      "round_trip_seconds": 0.36436130000220146,
+      "per_kind_bytes_per_record": {
+        "18": 565.4890419536631,
+        "17": 233.41884150222788,
+        "14": 285.30622270742356
+      }
+    },
+    {
+      "name": "zlib-1-dict32k-separateTrue",
+      "bytes": 1990959,
+      "bytes_per_record": 398.1918,
+      "round_trip_seconds": 0.39589499999419786,
+      "per_kind_bytes_per_record": {
+        "18": 561.5591734502192,
+        "17": 375.20305537873963,
+        "14": 275.49399563318775
+      }
+    },
+    {
+      "name": "zlib-3-dict32k-separateFalse",
+      "bytes": 1622471,
+      "bytes_per_record": 324.4942,
+      "round_trip_seconds": 0.3573529999994207,
+      "per_kind_bytes_per_record": {
+        "18": 497.4520976831559,
+        "17": 212.12794398472312,
+        "14": 270.0802401746725
+      }
+    },
+    {
+      "name": "zlib-3-dict32k-separateTrue",
+      "bytes": 1813030,
+      "bytes_per_record": 362.606,
+      "round_trip_seconds": 0.3763646000006702,
+      "per_kind_bytes_per_record": {
+        "18": 489.8428303068253,
+        "17": 351.7447485677912,
+        "14": 261.0043668122271
+      }
+    },
+    {
+      "name": "zlib-6-dict32k-separateFalse",
+      "bytes": 1525114,
+      "bytes_per_record": 305.0228,
+      "round_trip_seconds": 0.4066763000009814,
+      "per_kind_bytes_per_record": {
+        "18": 455.7307451471509,
+        "17": 199.3405474220242,
+        "14": 264.27292576419217
+      }
+    },
+    {
+      "name": "zlib-6-dict32k-separateTrue",
+      "bytes": 1706732,
+      "bytes_per_record": 341.3464,
+      "round_trip_seconds": 0.4213709000032395,
+      "per_kind_bytes_per_record": {
+        "18": 448.07764558547274,
+        "17": 332.95416931890514,
+        "14": 255.50272925764193
+      }
+    },
+    {
+      "name": "zstd-1-stream-w15",
+      "bytes": 1484601,
+      "bytes_per_record": 296.9202,
+      "round_trip_seconds": 0.03349770000204444,
+      "per_kind_bytes_per_record": {
+        "18": 458.50469630557296,
+        "17": 187.70337364735838,
+        "14": 249.71997816593887
+      }
+    },
+    {
+      "name": "zstd-1-stream-w18",
+      "bytes": 1231639,
+      "bytes_per_record": 246.3278,
+      "round_trip_seconds": 0.030562299987650476,
+      "per_kind_bytes_per_record": {
+        "18": 386.3231058234189,
+        "17": 153.32908975175047,
+        "14": 204.03984716157206
+      }
+    },
+    {
+      "name": "zstd-1-stream-w20",
+      "bytes": 992995,
+      "bytes_per_record": 198.599,
+      "round_trip_seconds": 0.02687250000599306,
+      "per_kind_bytes_per_record": {
+        "18": 369.73387601753285,
+        "17": 65.68300445576067,
+        "14": 163.39628820960698
+      }
+    },
+    {
+      "name": "zstd-3-stream-w15",
+      "bytes": 1470634,
+      "bytes_per_record": 294.1268,
+      "round_trip_seconds": 0.03462530000251718,
+      "per_kind_bytes_per_record": {
+        "18": 452.2429555416406,
+        "17": 186.52259707192871,
+        "14": 248.56713973799125
+      }
+    },
+    {
+      "name": "zstd-3-stream-w18",
+      "bytes": 1212927,
+      "bytes_per_record": 242.5854,
+      "round_trip_seconds": 0.031311500002630055,
+      "per_kind_bytes_per_record": {
+        "18": 375.832811521603,
+        "17": 150.4194780394653,
+        "14": 205.46561135371178
+      }
+    },
+    {
+      "name": "zstd-3-stream-w20",
+      "bytes": 945819,
+      "bytes_per_record": 189.1638,
+      "round_trip_seconds": 0.028468999997130595,
+      "per_kind_bytes_per_record": {
+        "18": 357.8259236067627,
+        "17": 49.10630171865054,
+        "14": 162.24072052401746
+      }
+    },
+    {
+      "name": "zstd-6-stream-w15",
+      "bytes": 1315868,
+      "bytes_per_record": 263.1736,
+      "round_trip_seconds": 0.06692800000018906,
+      "per_kind_bytes_per_record": {
+        "18": 384.81089542892926,
+        "17": 160.85741565881605,
+        "14": 244.8788209606987
+      }
+    },
+    {
+      "name": "zstd-6-stream-w18",
+      "bytes": 1078451,
+      "bytes_per_record": 215.6902,
+      "round_trip_seconds": 0.056697399995755404,
+      "per_kind_bytes_per_record": {
+        "18": 320.1001878522229,
+        "17": 128.81985996180777,
+        "14": 199.167576419214
+      }
+    },
+    {
+      "name": "zstd-6-stream-w20",
+      "bytes": 831617,
+      "bytes_per_record": 166.3234,
+      "round_trip_seconds": 0.04725940000207629,
+      "per_kind_bytes_per_record": {
+        "18": 305.7232310582342,
+        "17": 36.97135582431572,
+        "14": 155.72871179039302
+      }
+    },
+    {
+      "name": "zstd-1-frozen65536-refresh16",
+      "bytes": 1804155,
+      "bytes_per_record": 360.831,
+      "round_trip_seconds": 0.08222109999042004,
+      "per_kind_bytes_per_record": {
+        "18": 455.8259236067627,
+        "17": 313.21133036282623,
+        "14": 318.8569868995633
+      }
+    },
+    {
+      "name": "zstd-1-frozen262144-refresh16",
+      "bytes": 1713509,
+      "bytes_per_record": 342.7018,
+      "round_trip_seconds": 0.139063000009628,
+      "per_kind_bytes_per_record": {
+        "18": 436.40200375704444,
+        "17": 298.50541056651815,
+        "14": 298.9208515283843
+      }
+    },
+    {
+      "name": "zstd-1-frozen262144-refresh64",
+      "bytes": 1804033,
+      "bytes_per_record": 360.8066,
+      "round_trip_seconds": 0.169206699996721,
+      "per_kind_bytes_per_record": {
+        "18": 470.5084533500313,
+        "17": 312.7765754296626,
+        "14": 306.36408296943233
+      }
+    },
+    {
+      "name": "zstd-1-frozen1048576-refresh64",
+      "bytes": 1804033,
+      "bytes_per_record": 360.8066,
+      "round_trip_seconds": 3.0825417000014568,
+      "per_kind_bytes_per_record": {
+        "18": 470.5084533500313,
+        "17": 312.7765754296626,
+        "14": 306.36408296943233
+      }
+    },
+    {
+      "name": "zstd-3-frozen65536-refresh16",
+      "bytes": 1782926,
+      "bytes_per_record": 356.5852,
+      "round_trip_seconds": 0.1159719999996014,
+      "per_kind_bytes_per_record": {
+        "18": 444.1202254226675,
+        "17": 312.9191597708466,
+        "14": 317.7237991266376
+      }
+    },
+    {
+      "name": "zstd-3-frozen262144-refresh16",
+      "bytes": 1543841,
+      "bytes_per_record": 308.7682,
+      "round_trip_seconds": 0.35877749999053776,
+      "per_kind_bytes_per_record": {
+        "18": 406.86412022542265,
+        "17": 257.54360280076384,
+        "14": 267.18231441048033
+      }
+    },
+    {
+      "name": "zstd-3-frozen262144-refresh64",
+      "bytes": 1638423,
+      "bytes_per_record": 327.6846,
+      "round_trip_seconds": 0.1980537000054028,
+      "per_kind_bytes_per_record": {
+        "18": 442.67000626174075,
+        "17": 266.9350732017823,
+        "14": 279.54366812227073
+      }
+    },
+    {
+      "name": "zstd-3-frozen1048576-refresh64",
+      "bytes": 1395704,
+      "bytes_per_record": 279.1408,
+      "round_trip_seconds": 3.201342600004864,
+      "per_kind_bytes_per_record": {
+        "18": 410.72698810269253,
+        "17": 195.81349458943347,
+        "14": 235.88973799126637
+      }
+    }
+  ]
+}

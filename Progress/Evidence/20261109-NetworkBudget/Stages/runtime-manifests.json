@@ -1,0 +1,27 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "protocol": 42,
+    "scope": "Production runtime manifests retain identical gameplay data to protocol 41 baseline; editor and coordinator validated",
+    "manifests": [
+      {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "population": 200,
+        "protocol": 42,
+        "objects": 292,
+        "gameplay_data_unchanged": true,
+        "sha256": "7fe5ba4f6c8e2c16f43dbc625ccd7c5505c4d98bd078680b278c2774f342f12f"
+      },
+      {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "population": 600,
+        "protocol": 42,
+        "objects": 692,
+        "gameplay_data_unchanged": true,
+        "sha256": "ba48ec9b5fa92cb337d8b99a19258484246da8444d800584a0aa01c07e14bc3f"
+      }
+    ]
+  }
+}

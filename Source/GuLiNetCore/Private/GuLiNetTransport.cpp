@@ -13,6 +13,8 @@ constexpr std::size_t FragmentBytes = MaxDatagramBytes - HeaderBytes;
 constexpr std::uint8_t ReliableFlag = 1;
 constexpr std::uint8_t AckFlag = 2;
 constexpr std::uint8_t MotionBatchFlag = 4;
+constexpr std::uint8_t AckBatchFlag = 8;
+constexpr std::uint8_t ReliableBatchFlag = 16;
 struct PacketHeader
 {
     Lane Stream = Lane::Control;
@@ -35,11 +37,18 @@ bool ReadPacket(std::span<const std::uint8_t> Wire, PacketHeader& H, std::span<c
     if (Wire.size() < HeaderBytes || Wire.size() > MaxDatagramBytes) return false;
     Reader R(Wire); std::uint32_t Magic; std::uint16_t Version, Size; std::uint8_t LaneValue;
     if (!R.U32(Magic) || Magic != 0x474c504b || !R.U16(Version) || Version != ProtocolVersion
-        || !R.U8(LaneValue) || LaneValue > 3 || !R.U8(H.Flags) || (H.Flags & ~7u)
+        || !R.U8(LaneValue) || LaneValue > 3 || !R.U8(H.Flags) || (H.Flags & ~31u)
         || !R.Identity(H.Connection) || !R.U64(H.Sequence) || !H.Sequence || !R.U16(H.Index)
         || !R.U16(H.Count) || !R.U32(H.Total) || !R.U16(Size) || !R.Raw(Size, Body) || !R.Done()) return false;
     H.Stream = static_cast<Lane>(LaneValue);
-    if (H.Flags & AckFlag) return H.Flags == AckFlag && H.Index == 0 && H.Count == 0 && H.Total == 0 && Size == 0;
+    if (H.Flags & AckFlag)
+    {
+        if (H.Flags==(AckFlag|AckBatchFlag)) return H.Stream!=Lane::Motion&&H.Index==0&&H.Count==0&&H.Total==0&&Size>=3;
+        return H.Flags==AckFlag&&H.Index==0&&H.Count==0&&H.Total==0&&Size==0;
+    }
+    if (H.Flags&AckBatchFlag) return false;
+    if ((H.Flags&ReliableBatchFlag) && (H.Flags!=(ReliableFlag|ReliableBatchFlag)
+        || H.Stream!=Lane::Control || H.Count!=1 || H.Index!=0)) return false;
     if ((H.Flags&MotionBatchFlag) && (H.Flags!=MotionBatchFlag || H.Stream!=Lane::Motion || H.Count!=1 || H.Index!=0)) return false;
     if (!H.Total || H.Total > MaxMessageBytes || !H.Count || H.Index >= H.Count
         || H.Count != (H.Total + FragmentBytes - 1) / FragmentBytes) return false;
@@ -66,7 +75,7 @@ bool InspectDatagramLane(std::span<const std::uint8_t> Packet,Lane& Out)
 bool InspectDatagramMessage(std::span<const std::uint8_t> Packet,Message& Out,PeerMessageContext Context)
 {
     PacketHeader H;std::span<const std::uint8_t> Body;
-    return ReadPacket(Packet,H,Body) && !(H.Flags&(AckFlag|MotionBatchFlag)) && H.Count==1 && H.Index==0
+    return ReadPacket(Packet,H,Body) && !(H.Flags&(AckFlag|MotionBatchFlag|ReliableBatchFlag)) && H.Count==1 && H.Index==0
         && H.Total==Body.size() && DecodeMessage(Body,Out,Context);
 }
 bool InspectDatagramMessages(std::span<const std::uint8_t> Packet,std::vector<Message>& Out,PeerMessageContext Context)
@@ -74,6 +83,7 @@ bool InspectDatagramMessages(std::span<const std::uint8_t> Packet,std::vector<Me
     PacketHeader H;std::span<const std::uint8_t> Body;
     if (!ReadPacket(Packet,H,Body) || (H.Flags&AckFlag) || H.Count!=1 || H.Index || H.Total!=Body.size()) return false;
     if (H.Flags&MotionBatchFlag) return DecodeMotionBatch(Body,Out,Context);
+    if (H.Flags&ReliableBatchFlag) return DecodeReliableBatch(Body,Out,Context);
     Message M;if (!DecodeMessage(Body,M,Context)) return false;Out.clear();Out.push_back(std::move(M));return true;
 }
 PeerChannel::~PeerChannel()
@@ -124,6 +134,34 @@ bool PeerChannel::Queue(const Message& Value, double Now)
     if (!Reliable) WaitingStates.insert_or_assign(StateKey,Queued);
     return true;
 }
+bool PeerChannel::QueueEncoded(const Message& Value,double Now,std::size_t MaximumBodyBytes,const std::function<bool(Bytes&)>& Encode)
+{
+    if (HasFailed() || !std::isfinite(Now) || !ReliableMessage(Value.Header.Kind) || MaximumBodyBytes>MaxMessageBytes
+        || Value.Header.Kind<MessageKind::Hello || Value.Header.Kind>=MessageKind::Count) return false;
+    const auto Stream=MessageLane(Value.Header.Kind);
+    if (Stream==Lane::Handoff&&!CanQueueHandoff()) return false;
+    const auto Sequence=NextSequence[static_cast<std::size_t>(Stream)];
+    if (Sequence==UINT64_MAX) {Failure="Peer stream sequence exhausted";return false;}
+    Message Probe;Probe.Header=Value.Header;Probe.Header.Sequence=Sequence;
+    Bytes Header;
+    if (!(Budget.CompactPeerEnvelope?EncodePeerMessage(Probe,Header,{Binding.Match,Binding.LocalPlayer,Binding.Objects.get()}):EncodeMessage(Probe,Header))) return false;
+    const auto Reserved=Header.size()+MaximumBodyBytes+16;
+    if (Reserved>MaxMessageBytes || Pending.size()>=Budget.MaxPendingMessages
+        || Reserved>Budget.MaxQueuedBytes-std::min(Budget.MaxQueuedBytes,Counters.QueuedBytes)) return false;
+    Message Encoded;Encoded.Header=Value.Header;Encoded.ReferenceBodyBytes=Value.Body.size();
+    if (!Encode(Encoded.Body)||Encoded.Body.size()>MaximumBodyBytes)
+    {Failure="Reserved reliable body encoding failed";return false;}
+    if (!Queue(Encoded,Now)) {Failure="Reserved reliable admission changed during encoding";return false;}
+    return true;
+}
+bool PeerChannel::DeferAcknowledgment(std::span<const std::uint8_t> Packet)
+{
+    PacketHeader H;std::span<const std::uint8_t> Body;
+    if (!ReadPacket(Packet,H,Body)||H.Flags!=AckFlag||H.Connection!=Connection||H.Stream==Lane::Motion) return false;
+    auto& Acknowledgments=PendingAcknowledgments[static_cast<std::size_t>(H.Stream)];
+    if (Acknowledgments.size()>=4096&&!Acknowledgments.contains(H.Sequence)) return false;
+    Acknowledgments.insert(H.Sequence);return true;
+}
 bool PeerChannel::CanQueueHandoff() const
 {
     // Admission precedes the object's freeze. Keep at most a quarter-second
@@ -142,6 +180,27 @@ bool PeerChannel::CanQueueHandoff() const
 bool PeerChannel::Receive(std::span<const std::uint8_t> Wire, double Now, const SendPacket& Ack, const Deliver& Apply)
 {
     return ReceiveWithAdmission(Wire,Now,Ack,[&](const Message& M){Apply(M);return true;});
+}
+void PeerChannel::Acknowledge(Lane Stream,std::uint64_t Sequence,const SendPacket& Ack)
+{
+    const auto Packet=MakePacket({Stream,AckFlag,Connection,Sequence,0,0,0},{});
+    if (Ack(Packet))
+    {Counters.SentBytes+=Packet.size();Counters.SentPacketHeaderBytes+=HeaderBytes;Counters.SentLaneBytes[static_cast<std::size_t>(Stream)]+=Packet.size();}
+}
+bool PeerChannel::AdmitReliable(Message Value,std::size_t StorageBytes,const SendPacket& Ack,const TryDeliver& Apply)
+{
+    const auto Stream=MessageLane(Value.Header.Kind);const auto Sequence=Value.Header.Sequence;
+    const auto LaneIndex=static_cast<std::size_t>(Stream);const auto Through=ReliableThrough[LaneIndex];
+    auto& Beyond=ReliableBeyond[LaneIndex];
+    if (Sequence<=Through || Beyond.contains(Sequence))
+    {++Counters.DuplicatePackets;Acknowledge(Stream,Sequence,Ack);return true;}
+    if (Sequence-Through>4096 || StorageBytes>Budget.MaxReassemblyBytes-std::min(Budget.MaxReassemblyBytes,OrderedBytes))
+    {++Counters.RejectedPackets;return false;}
+    if (Sequence>Through+1) ++Counters.OutOfOrderMessages;
+    OrderedBytes+=StorageBytes;Ordered.emplace(Key{Stream,Sequence},std::pair{std::move(Value),StorageBytes});Beyond.insert(Sequence);
+    Acknowledge(Stream,Sequence,Ack);
+    Counters.PendingDeliveryBytes=OrderedBytes;Counters.PendingDeliveryMessages=Ordered.size();
+    DrainDeliveries(Apply);return true;
 }
 bool PeerChannel::ReceiveWithAdmission(std::span<const std::uint8_t> Wire,double Now,const SendPacket& Ack,const TryDeliver& Apply)
 {
@@ -163,9 +222,43 @@ bool PeerChannel::ReceiveWithAdmission(std::span<const std::uint8_t> Wire,double
         if (!Fresh) ++Counters.DuplicatePackets;
         return true;
     }
+    if (H.Flags&ReliableBatchFlag)
+    {
+        std::vector<Message> Values;
+        if (!DecodeReliableBatch(Body,Values,{Binding.Match,Binding.RemotePlayer,Binding.Objects.get()}))
+        {++Counters.RejectedPackets;return false;}
+        std::uint64_t Maximum=0;for (const auto& V:Values) Maximum=std::max(Maximum,V.Header.Sequence);
+        if (Maximum!=H.Sequence) {++Counters.RejectedPackets;return false;}
+        // Decode the entire datagram before admitting any member. Each record
+        // retains its own reliable hole, ACK and bounded application inbox.
+        bool Accepted=true;
+        for (auto& V:Values)
+        {
+            const auto StorageBytes=CanonicalMessageHeaderBytes+V.Body.size();
+            if (!AdmitReliable(std::move(V),StorageBytes,Ack,Apply)) Accepted=false;
+        }
+        return Accepted;
+    }
     const Key K{H.Stream, H.Sequence};
     if (H.Flags & AckFlag)
     {
+        if (H.Flags&AckBatchFlag)
+        {
+            Reader R(Body);std::uint16_t Count;std::uint64_t Sequence=0;
+            if (!R.U16(Count)||!Count||Count>64) {++Counters.RejectedPackets;return false;}
+            std::array<std::uint64_t,64> Values{};
+            for (std::uint16_t N=0;N<Count;++N)
+            {
+                std::uint64_t Delta;
+                if (!R.VarUnsigned(Delta)||!Delta||Delta>UINT64_MAX-Sequence) {++Counters.RejectedPackets;return false;}
+                Values[N]=Sequence+=Delta;
+            }
+            if (!R.Done()||Sequence!=H.Sequence) {++Counters.RejectedPackets;return false;}
+            for (std::uint16_t N=0;N<Count;++N)
+                if (auto It=Pending.find({H.Stream,Values[N]});It!=Pending.end()&&ReliableMessage(It->second.Value.Header.Kind))
+                {Counters.QueuedBytes-=It->second.Wire.size();Pending.erase(It);}
+            return true;
+        }
         if (auto It = Pending.find(K); It != Pending.end() && ReliableMessage(It->second.Value.Header.Kind))
         { Counters.QueuedBytes -= It->second.Wire.size(); Pending.erase(It); }
         return true;
@@ -173,9 +266,7 @@ bool PeerChannel::ReceiveWithAdmission(std::span<const std::uint8_t> Wire,double
     auto SendAck = [&]()
     {
         if (!(H.Flags & ReliableFlag)) return;
-        const auto BytesToSend = MakePacket({H.Stream, AckFlag, Connection, H.Sequence, 0, 0, 0}, {});
-        if (Ack(BytesToSend))
-        { Counters.SentBytes+=BytesToSend.size();Counters.SentPacketHeaderBytes+=HeaderBytes; Counters.SentLaneBytes[static_cast<std::size_t>(H.Stream)]+=BytesToSend.size(); }
+        Acknowledge(H.Stream,H.Sequence,Ack);
     };
     const auto LaneIndex = static_cast<std::size_t>(H.Stream);
     const bool IsReliable = (H.Flags & ReliableFlag) != 0;
@@ -215,15 +306,7 @@ bool PeerChannel::ReceiveWithAdmission(std::span<const std::uint8_t> Wire,double
     if (!Decoded) { ++Counters.RejectedPackets; return false; }
     if (IsReliable)
     {
-        if (Complete.size()>Budget.MaxReassemblyBytes-std::min(Budget.MaxReassemblyBytes,OrderedBytes))
-        {++Counters.RejectedPackets;return false;}
-        if (H.Sequence>Through+1) ++Counters.OutOfOrderMessages;
-        OrderedBytes+=Complete.size();Ordered.emplace(K,std::pair{std::move(Value),Complete.size()});
-        Beyond.insert(H.Sequence);
-        SendAck();
-        Counters.PendingDeliveryBytes=OrderedBytes;Counters.PendingDeliveryMessages=Ordered.size();
-        DrainDeliveries(Apply);
-        return true;
+        return AdmitReliable(std::move(Value),Complete.size(),Ack,Apply);
     }
     else Window.Observe(H.Sequence);
     SendAck(); Apply(Value); return true;
@@ -275,6 +358,22 @@ void PeerChannel::Pump(double Now, const SendPacket& Send)
 {
     TraceScope Scope("GuLiHybrid_PumpPeerPackets");
     if (HasFailed() || !std::isfinite(Now)) return;
+    for (std::size_t LaneIndex=0;LaneIndex<PendingAcknowledgments.size();++LaneIndex)
+    {
+        auto& Acks=PendingAcknowledgments[LaneIndex];
+        while (!Acks.empty())
+        {
+            const auto Count=std::min<std::size_t>(64,Acks.size());
+            Writer W(MaxDatagramBytes-HeaderBytes);W.U16(static_cast<std::uint16_t>(Count));
+            std::uint64_t Previous=0;auto End=Acks.begin();
+            for (std::size_t I=0;I<Count;++I,++End) {W.VarUnsigned(*End-Previous);Previous=*End;}
+            const auto Packet=MakePacket({static_cast<Lane>(LaneIndex),AckFlag|AckBatchFlag,Connection,Previous,0,0,0},W.Data());
+            if (!Send(Packet)) break;
+            Counters.SentBytes+=Packet.size();Counters.SentLaneBytes[LaneIndex]+=Packet.size();
+            Counters.SentPacketHeaderBytes+=HeaderBytes;++Counters.AckBatchPackets;Counters.AckBatchMessages+=Count;
+            Acks.erase(Acks.begin(),End);
+        }
+    }
     const double Delta = LastPump < 0 ? 0 : std::clamp(Now - LastPump, 0.0, 1.0);
     LastPump = Now; Counters.OldestSeconds = 0;
     Counters.QueuedLaneBytes={};Counters.QueuedLaneMessages={};Counters.OldestLaneSeconds={};Counters.OldestPayloadSeconds={};
@@ -331,6 +430,41 @@ void PeerChannel::Pump(double Now, const SendPacket& Send)
         if (Reliable && K.second-FirstUnacknowledged[LaneIndex]>=std::clamp<std::uint64_t>(Budget.ReliableSendWindow,1,4096)) continue;
         if (Now < Value.NextAttempt || LaneBlocked[LaneIndex]) continue;
         auto& Available = Tokens[static_cast<std::size_t>(It->first.first)];
+        if (K.first==Lane::Control && Reliable && !Value.NextFragment && Value.Wire.size()<=FragmentBytes && Available>HeaderBytes)
+        {
+            std::vector<const Message*> Candidates;std::vector<Key> Keys;
+            for (auto J=ServiceIndex;J<Order.size() && Candidates.size()<64;++J)
+            {
+                const auto& CandidateKey=Order[J].Identity;if (CandidateKey.first!=Lane::Control) break;
+                const auto Candidate=Pending.find(CandidateKey);if (Candidate==Pending.end()) continue;
+                const auto& V=Candidate->second;
+                if (!ReliableMessage(V.Value.Header.Kind) || V.NextFragment || Now<V.NextAttempt || V.Wire.size()>FragmentBytes
+                    || bool(V.Attempts)!=bool(Value.Attempts)
+                    || CandidateKey.second-FirstUnacknowledged[LaneIndex]>=std::clamp<std::uint64_t>(Budget.ReliableSendWindow,1,4096)) break;
+                Candidates.push_back(&V.Value);Keys.push_back(CandidateKey);
+            }
+            Bytes Batch;std::vector<std::size_t> Sizes;
+            const auto Count=EncodeReliableBatch(Candidates,Batch,Sizes,
+                static_cast<std::size_t>(std::min<double>(FragmentBytes,Available-HeaderBytes)),{Binding.Match,Binding.LocalPlayer,Binding.Objects.get()});
+            if (Count>=2)
+            {
+                std::uint64_t Sequence=0;for (std::size_t I=0;I<Count;++I) Sequence=std::max(Sequence,Keys[I].second);
+                const auto Packet=MakePacket({Lane::Control,ReliableFlag|ReliableBatchFlag,Connection,Sequence,0,1,static_cast<std::uint32_t>(Batch.size())},Batch);
+                if (!Send(Packet)) {LaneBlocked[LaneIndex]=true;continue;}
+                const bool Retry=Value.Attempts>0;std::size_t Shared=Batch.size();
+                for (std::size_t I=0;I<Count;++I)
+                {
+                    auto& V=Pending.at(Keys[I]);
+                    if (!V.Attempts) RecordFirstTransmission(V.Value,Sizes[I]);
+                    Shared-=Sizes[I];++V.Attempts;
+                    V.NextAttempt=Now+Budget.ResendSeconds*double(std::uint32_t{1}<<std::min<std::uint32_t>(V.Attempts-1,3));
+                }
+                Available-=Packet.size();Counters.SentBytes+=Packet.size();Counters.SentLaneBytes[LaneIndex]+=Packet.size();
+                if (Retry) Counters.RetransmitBytes+=Packet.size();
+                ++Counters.ReliableBatchPackets;Counters.ReliableBatchMessages+=Count;Counters.ReliableBatchSharedBytes+=Shared;
+                Counters.SentPacketHeaderBytes+=HeaderBytes;continue;
+            }
+        }
         if (K.first==Lane::Motion && !Value.NextFragment && Available>HeaderBytes)
         {
             std::vector<const Message*> Candidates;std::vector<Key> Keys;

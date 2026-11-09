@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "label": "PerfNetworkBudget_Entry",
+      "name": "Note_99",
+      "class": "Note",
+      "position_cm": [
+        9981.763325427999,
+        -52385.39119478699,
+        1101.7790833
+      ]
+    },
+    {
+      "label": "HybridNetworkReview",
+      "name": "GuLiHybridNetworkReviewActor_0",
+      "class": "GuLiHybridNetworkReviewActor",
+      "position_cm": [
+        0.0,
+        0.0,
+        200.0
+      ]
+    },
+    {
+      "label": "PerfSnapshotNetwork_Stress_View",
+      "name": "CameraActor_33",
+      "class": "CameraActor",
+      "position_cm": [
+        14175.0,
+        54810.0,
+        16000.0
+      ]
+    },
+    {
+      "label": "CommanderPlayerStart_Red",
+      "name": "PlayerStart_0",
+      "class": "PlayerStart",
+      "position_cm": [
+        0.0,
+        65205.0,
+        10000.0
+      ]
+    }
+  ],
+  "units": 600,
+  "additional_flights": 500,
+  "manifest": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+  "note": "开局交火网络同步量复测（2026-11-09）\n使用本地图 HybridNetworkReview 正式本地联机入口，600 单位与既有弹丸配置。\n双方加载协议 42 配套模块及清单后，以指挥官席位观察原开局交火。\n本机模拟 300 名士兵，逻辑步约 211 开始采集五秒。\n目标为 HUD 本机 P2P 收发合计不超过 1,000 KB/s，检查五秒平均及完整约一秒区间。\n复用 Scripts/Performance/capture_motion_budget.py --max-total-kb 1000 --output <新的证据路径> 进行同负载采集。\n核对可靠消息解码、队列、伤害与退役继续推进。用户观察弹丸、动作及据点表现。\n需求与开发记录为 Progress 中的 20261109-开局交火网络同步量优化.md。"
+}

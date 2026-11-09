@@ -7,7 +7,7 @@
 #include "Network/Private/GuLiHybridObjectConversions.h"
 #include "Network/Private/GuLiHybridComponentState.h"
 #include "Network/Private/GuLiHybridObjectStateEnvelope.h"
-#include "Network/Private/GuLiHybridPeerPayload.h"
+#include "Network/Private/GuLiHybridReliablePayload.h"
 #include "GuLiNetHash.h"
 #include "GuLiNetAsyncClient.h"
 #include "Commander/Network/GuLiMoveLatency.h"
@@ -2099,6 +2099,8 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
                 return Accepted;
             },[Compressor,FastCompressor,FastCompression](Message& M,Bytes& Packed)
             {
+                // Reliable ordered records are compressed once, after transport capacity is reserved.
+                if (GuLiHybridReliablePayload::Eligible(M)) {M.ReferenceBodyBytes=M.Body.size();return false;}
                 // Keep large private-cut packing and all admission limits intact.
                 if (FastCompression && M.Body.size()<=65536)
                 {

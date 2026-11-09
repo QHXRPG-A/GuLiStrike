@@ -1,0 +1,94 @@
+{
+  "local_pie": {
+    "active": false,
+    "error": "",
+    "room": "1CB840BA461E2829D41F5DB6FD591C75",
+    "role": "Commander",
+    "editor_pid": 46232,
+    "logic_pid": 34404,
+    "coordinator_pid": 2744,
+    "logic_running": false,
+    "coordinator_running": false,
+    "session_directory": "",
+    "shutdown": [
+      {
+        "role": "logic",
+        "pid": 34404,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      },
+      {
+        "role": "coordinator",
+        "pid": 2744,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      }
+    ],
+    "cleanup_complete": true
+  },
+  "settings": {
+    "success": true,
+    "role": "GROUND",
+    "prompt": true,
+    "dirty_maps": [],
+    "dirty_content": []
+  },
+  "scene": {
+    "success": true,
+    "saved": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "protocol": 44,
+    "entities": [
+      {
+        "label": "PerfNetworkBudget_Entry",
+        "name": "Note_99",
+        "class": "Note",
+        "position_cm": [
+          9981.763325427999,
+          -52385.39119478699,
+          1101.7790833
+        ],
+        "folder": "Performance/NetworkBudget20261109"
+      },
+      {
+        "label": "HybridNetworkReview",
+        "name": "GuLiHybridNetworkReviewActor_0",
+        "class": "GuLiHybridNetworkReviewActor",
+        "position_cm": [
+          0.0,
+          0.0,
+          200.0
+        ],
+        "folder": "Review/HybridNetwork"
+      },
+      {
+        "label": "PerfSnapshotNetwork_Stress_View",
+        "name": "CameraActor_33",
+        "class": "CameraActor",
+        "position_cm": [
+          14175.0,
+          54810.0,
+          16000.0
+        ],
+        "folder": "Performance/SnapshotNetwork20261010"
+      },
+      {
+        "label": "CommanderPlayerStart_Red",
+        "name": "PlayerStart_0",
+        "class": "PlayerStart",
+        "position_cm": [
+          0.0,
+          65205.0,
+          10000.0
+        ],
+        "folder": "None"
+      }
+    ],
+    "units": 600,
+    "additional_flights": 500,
+    "manifest": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+    "note": "开局交火网络同步量复测（2026-11-09，协议 44）\n使用本地图 HybridNetworkReview 正式本地联机入口，600 单位与既有弹丸配置。\n双方均已加载协议 44 模块与 RuntimeManifest，使用指挥官席位观察原开局交火。\n本机模拟 300 名士兵，逻辑步约 211 开始采集五秒。\n按 HUD 本机 P2P 收发合计口径，三间房平均 869.44 / 881.96 / 894.31 KB/s；完整约一秒区间最高 921.36 KB/s。\n复用 Scripts/Performance/capture_motion_budget.py --max-total-kb 1000 --output <新的证据路径>。\n手动验证：Play 后选择指挥官，观察原开局发射、命中伤害、弹丸退役与据点占领是否正常；报告异常对象与发生时刻。\n性能与恢复测试通过；动作、弹丸和据点的玩家表现验收尚未进行。\n需求与开发记录：Progress 中的 20261109-开局交火网络同步量优化.md。"
+  }
+}

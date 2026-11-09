@@ -10,7 +10,7 @@ public class GuLiStrike : ModuleRules
 		// State adapters keep translation-unit-local archive types and helpers.
 		bUseUnity = false;
 		CppStandard = CppStandardVersion.Cpp20;
-		AddEngineThirdPartyPrivateStaticDependencies(Target, "zlib");
+		AddEngineThirdPartyPrivateStaticDependencies(Target, "zlib", "zstd");
 
 		PublicDependencyModuleNames.AddRange(new string[] {
 			"Core",
