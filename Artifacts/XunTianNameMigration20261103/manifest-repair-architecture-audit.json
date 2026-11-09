@@ -1,0 +1,119 @@
+{
+  "status": "passed_static_scope",
+  "scope": "巡天/游骑兵 naming boundaries and this acceptance manifest repair; not a review of unrelated pre-existing worktree changes",
+  "native_versions": [
+    34,
+    24,
+    3
+  ],
+  "checks": [
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-200.json",
+      "sha256": "c9644812bd004b5bbdd9e70d728079d5a2db3728bfc6374e23dd45fbfafd3ba2",
+      "python_contract": "passed",
+      "coordinator": {
+        "exit_code": 0,
+        "stdout": "Manifest validated"
+      },
+      "objects": 292,
+      "rules": 253,
+      "acceptance_supply_rules": 22,
+      "role_ownership_and_player_identities_preserved": true
+    },
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-600.json",
+      "sha256": "396dd7fb327d90ac97489ba21bcdbadbfcf0a587bb43303f57415b87ca2c2c30",
+      "python_contract": "passed",
+      "coordinator": {
+        "exit_code": 0,
+        "stdout": "Manifest validated"
+      },
+      "objects": 692,
+      "rules": 253,
+      "acceptance_supply_rules": 22,
+      "role_ownership_and_player_identities_preserved": true
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "sha256": "31f341e8ded8e21fe9051fe57cc286b21e34a9cbcdf0058ae39268b6381df048",
+      "python_contract": "passed",
+      "coordinator": {
+        "exit_code": 0,
+        "stdout": "Manifest validated"
+      },
+      "objects": 292,
+      "rules": 169,
+      "acceptance_supply_rules": 0,
+      "role_ownership_and_player_identities_preserved": true
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-600.json",
+      "sha256": "e1167456390a12c68990f1a568f57f779d02c179276689f8ccdcad27947717ce",
+      "python_contract": "passed",
+      "coordinator": {
+        "exit_code": 0,
+        "stdout": "Manifest validated"
+      },
+      "objects": 692,
+      "rules": 169,
+      "acceptance_supply_rules": 0,
+      "role_ownership_and_player_identities_preserved": true
+    }
+  ],
+  "naming_cpp_display_literals_only": true,
+  "naming_localization_keys_and_role_enums_preserved": true,
+  "naming_table_non_text_comparison_reused": "ue-table-migration.json",
+  "profile_override_assets_and_source_contracts_unchanged": true,
+  "runtime_manifests_byte_identical": true,
+  "protected_native_code_and_normal_config_unchanged": true,
+  "editor_defaults_restored": true,
+  "production_export_before_after_byte_identical": true,
+  "review_entity_unchanged": true,
+  "conclusions": [
+    {
+      "requirement": "Coordinator只管理房间、目录和交接控制；玩法由对象模拟负责人计算",
+      "finding": "此次仅修改Editor显示文字、验收导出快照及离线预检；未向Coordinator增加玩法或兵种分支",
+      "evidence": [
+        "Source/GuLiStrikeEditor/Private/GuLiLocalPIERolePicker.cpp",
+        "Source/GuLiStrikeEditor/Private/GuLiHybridAuthoringLibrary.cpp",
+        "Tools/GuLiCoordinator/src/Coordinator.cpp"
+      ]
+    },
+    {
+      "requirement": "Ground/Air由对应操控者模拟；Air僚机跟随Ship操控者",
+      "finding": "GroundPlayer席位1、ShipPlayer/WingmanMember席位2，三者ControllerPinned归属策略及空席策略与修复前一致；玩家对象ID/生命代次/阵营/生命和护盾保持",
+      "evidence": [
+        "Source/GuLiStrike/Battle/Framework/GuLiHybridPlayerManifest.cpp",
+        "Source/GuLiNetCore/Public/GuLiNetTypes.h"
+      ]
+    },
+    {
+      "requirement": "严格版本与内容哈希握手，保留幂等/交接/收包不回发合同",
+      "finding": "使用原生导出重新计算哈希；UE与Coordinator独立解析通过；旧版本拒绝，未改动网络运行实现",
+      "evidence": [
+        "Source/GuLiNetCore/Private/GuLiNetManifest.cpp",
+        "Source/GuLiStrike/Network/GuLiHybridManifest.cpp",
+        "Scripts/Network/acceptance_contract.py"
+      ]
+    },
+    {
+      "requirement": "普通试玩与专用验收配置隔离",
+      "finding": "Runtime清单无供给规则且逐字节未改；Acceptance各含22条显式供给规则；临时设置全部恢复；原地图入口仍用Runtime600",
+      "evidence": [
+        "Config/Custom/HybridAcceptance/DefaultGame.ini",
+        "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp",
+        "manifest-repair-editor-verified.json"
+      ]
+    }
+  ],
+  "not_executed": [
+    "PIE",
+    "multiplayer G/F acceptance",
+    "visual verification",
+    "native rebuild (no native source changed in repair)"
+  ],
+  "unchanged_limitations": [
+    "7 historical assets unreadable in naming audit; not repaired or newly passed",
+    "Player-facing display and multiplayer runtime behavior not validated by static checks"
+  ]
+}

@@ -156,3 +156,59 @@ struct FGuLiStrikeRogueCardsEffectsRow : public FTableRowBase
 	int32 BuffId = 0;
 
 };
+
+/** DataTable DT_GuLiStrikeRogueCards_GroundWeaponEffects 的行结构（源: GuLiStrikeRogueCards.xlsx / GroundWeaponEffects）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeRogueCardsGroundWeaponEffectsRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	FString Note;
+
+	/** FireRateBonusPercent (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	float FireRateBonusPercent = 0.0f;
+
+	/** ExplosiveIntervals (str[], Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> ExplosiveIntervals;
+
+	/** ExplosiveDamageMultiplier (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	float ExplosiveDamageMultiplier = 0.0f;
+
+	/** ExplosiveRadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	float ExplosiveRadiusCentimeters = 0.0f;
+
+	/** ExplosiveBulletVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	int32 ExplosiveBulletVfxId = 0;
+
+	/** ExplosiveImpactVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	int32 ExplosiveImpactVfxId = 0;
+
+	/** ExplosiveSpeedMultiplier (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	float ExplosiveSpeedMultiplier = 0.0f;
+
+	/** ExplosiveOutwardOffsetCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	float ExplosiveOutwardOffsetCentimeters = 0.0f;
+
+	/** ExplosiveRadiusBonuses (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> ExplosiveRadiusBonuses;
+
+	/** ExplosiveDamageBonuses (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> ExplosiveDamageBonuses;
+
+};

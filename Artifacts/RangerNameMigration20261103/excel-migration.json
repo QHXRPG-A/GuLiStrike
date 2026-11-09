@@ -1,0 +1,149 @@
+{
+  "canonical_name": "游骑兵",
+  "books_scanned": 17,
+  "sheets_scanned": 45,
+  "changed_cells": 17,
+  "changed_books": [
+    {
+      "book": "data/Excel/GuLiStrikeGameTexts.xlsx",
+      "sha256_after": "90d8c61754466b0acda377d174eaffc9218188a429bdc878f71bae84f1714885",
+      "sheets": [
+        {
+          "sheet": "Texts",
+          "cells": [
+            {
+              "cell": "B244",
+              "value": "游骑兵肉鸽卡标题"
+            },
+            {
+              "cell": "C245",
+              "value": "<Unit>游骑兵</> <Gain>普攻折射-{0}</>"
+            },
+            {
+              "cell": "C247",
+              "value": "游骑兵肉鸽能力尚未就绪"
+            },
+            {
+              "cell": "C249",
+              "value": "<Unit>游骑兵</> 普攻附加<Gain>灼烧-{0}</>"
+            },
+            {
+              "cell": "C251",
+              "value": "<Unit>游骑兵</> 灼烧每隔一段时间发生<Gain>爆燃</>"
+            },
+            {
+              "cell": "C254",
+              "value": "游骑兵"
+            },
+            {
+              "cell": "C281",
+              "value": "游骑兵"
+            }
+          ]
+        }
+      ],
+      "sha256_before": null,
+      "before_hash_note": "首轮内存中核验过迁移前哈希及全部工作表；随后另一工作簿瞬时文件锁导致进程退出，首轮迁移前哈希未持久化。",
+      "all_worksheet_cells_preserved_except_target_name": true
+    },
+    {
+      "book": "data/Excel/GuLiStrikeLOD.xlsx",
+      "sha256_after": "d5be2c0bf8207bbf07e5656c1f3ef4954363e6ccedf911846401dd9f48badc22",
+      "sheets": [
+        {
+          "sheet": "LOD",
+          "cells": [
+            {
+              "cell": "C10",
+              "value": "游骑兵"
+            },
+            {
+              "cell": "C11",
+              "value": "游骑兵"
+            },
+            {
+              "cell": "C12",
+              "value": "游骑兵"
+            }
+          ]
+        }
+      ],
+      "sha256_before": null,
+      "before_hash_note": "首轮内存中核验过迁移前哈希及全部工作表；随后另一工作簿瞬时文件锁导致进程退出，首轮迁移前哈希未持久化。",
+      "all_worksheet_cells_preserved_except_target_name": true
+    },
+    {
+      "book": "data/Excel/GuLiStrikeModels.xlsx",
+      "sha256_after": "eefe6bbef52a71f5ac3c83396b48bb15e79c1895aa0f356913ad9f19792bf153",
+      "sheets": [
+        {
+          "sheet": "Models",
+          "cells": [
+            {
+              "cell": "D24",
+              "value": "玩家游骑兵 A4 B2"
+            }
+          ]
+        },
+        {
+          "sheet": "_Guide",
+          "cells": [
+            {
+              "cell": "B4",
+              "value": "Parts 绑定已有组件名及 ChildModelId；游骑兵和矿厂按现有装配解析，不改变变换 / 骨骼 / 动画"
+            },
+            {
+              "cell": "B11",
+              "value": "兵种、八类建筑、六座 SSF、两工程车、游骑兵、飞船舰体 / 部件、僚机、矿石玩法模型"
+            }
+          ]
+        }
+      ],
+      "sha256_before": null,
+      "before_hash_note": "首轮内存中核验过迁移前哈希及全部工作表；随后另一工作簿瞬时文件锁导致进程退出，首轮迁移前哈希未持久化。",
+      "all_worksheet_cells_preserved_except_target_name": true
+    },
+    {
+      "book": "data/Excel/GuLiStrikeRogueCards.xlsx",
+      "sha256_after": "cfe31ad11d789c356147ebb1ac44290f09b3e830f917f6adaffce4aee6b3ce37",
+      "sheets": [
+        {
+          "sheet": "_说明",
+          "cells": [
+            {
+              "cell": "B5",
+              "value": "1=指挥官部队；2=Ship；3=游骑兵；4=建筑。本批仅实现1。"
+            }
+          ]
+        }
+      ],
+      "sha256_before": "95158cd9c37641bd10f92547d54e562367e5a4e68017f0d82d2773ad23714656",
+      "write_scope": "single cell B5; transient file mapping lock resolved on retry"
+    },
+    {
+      "book": "data/Excel/GuLiStrikeVfx.xlsx",
+      "sha256_after": "e7fe8875fe6c9cd0fec8c29f00993a03f16f456253943cfe210fe9a287813609",
+      "sheets": [
+        {
+          "sheet": "Effects",
+          "cells": [
+            {
+              "cell": "C8",
+              "value": "指挥官、僚机、玩家游骑兵机枪命中单位或地形"
+            },
+            {
+              "cell": "C13",
+              "value": "玩家游骑兵火箭跳双侧持续喷气"
+            },
+            {
+              "cell": "C14",
+              "value": "玩家游骑兵火箭跳燃料弧形条材质"
+            }
+          ]
+        }
+      ],
+      "sha256_before": "cd84b515795dd5629e3b21a5293b8381eff04067e65c2ddff626014c8ed74f4e",
+      "all_worksheet_cells_preserved_except_target_name": true
+    }
+  ]
+}

@@ -2,6 +2,9 @@
 import re
 
 def validate(tables, error_type):
+    templates={r['Id']:r for r in tables.get('DT_GuLiStrikeCardArtwork_Templates',{}).get('rows',[])}
+    blank_materials={r['Material'] for r in tables.get('DT_GuLiStrikeCardArtwork_Artworks',{}).get('rows',[])
+                     if templates.get(r['TemplateId'],{}).get('CompositePreset')=='BlankPlaceholder'}
     entry=tables.get('DT_GuLiStrikeIcons_Icons')
     if not entry:raise error_type('缺少统一图标表 GuLiStrikeIcons.xlsx / Icons')
     ids=set()
@@ -21,4 +24,5 @@ def validate(tables, error_type):
                 required=(name=='DT_GuLiStrikeMech_Skills' or name=='DT_GuLiStrikeBuffs_Buffs'
                     or name=='DT_GuLiStrikeRogueCards_Cards' and row['Name'].startswith('GroundMech_')
                     or name=='DT_GuLiStrikeGroundHUD_Elements' and row['Name'] in ('IconAim','IconJetCapacity'))
+                if name=='DT_GuLiStrikeRogueCards_Cards' and row.get('FrontMaterial') in blank_materials:required=False
                 if required and not value:raise error_type(f'{name}/{row["Name"]}: 必须配置 IconId')

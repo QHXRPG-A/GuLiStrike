@@ -1,0 +1,28 @@
+{
+  "build": "passed",
+  "source_hashes_match_build": true,
+  "auto_hud_creation": "passed",
+  "map_modal_readback": "passed",
+  "card_direct_mode_and_frame": "passed",
+  "cancel_cleanup": "passed",
+  "table_save_and_readback": "passed",
+  "scene_saved_and_gate_passed": true,
+  "layout_geometry_cases": 9,
+  "ordinary_refresh_seconds": 0.2,
+  "event_coalescing_preserved": true,
+  "performance": "not_run",
+  "actual_mouse_selection": "not_run",
+  "visual_fidelity": "awaiting_user",
+  "handoff_pie_open": true,
+  "unrelated_log_findings": [
+    {
+      "asset": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail",
+      "issue": "existing shader Tint.a swizzle compilation error; default material used",
+      "action": "recorded; unrelated VFX source/asset unchanged"
+    },
+    {
+      "issue": "two generic LogAutomationTest Condition failed messages during engine initialization",
+      "action": "not treated as HUD validation; no HUD assertion or native failure observed"
+    }
+  ]
+}

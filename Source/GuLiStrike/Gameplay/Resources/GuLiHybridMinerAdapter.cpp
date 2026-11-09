@@ -22,6 +22,7 @@
 #include "Battle/Combat/GuLiActorDamageReceiverComponent.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Engine/World.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 namespace GuLiHybridMiner
 {
@@ -219,11 +220,12 @@ public:
     void Advance(uint64 At,double Delta) override
     {
         auto* P=Pawn.Get(); if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
-        if (!P->PrepareHybridMiningStep()) return;
+        { TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_Prepare); if (!P->PrepareHybridMiningStep()) return; }
         const float Dt=static_cast<float>(Delta);
-        P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->AdvanceHybrid(Dt); P->AdvanceHybridMining(Dt);
-        GuLiGrid::ObserveRemoteBody(*World(),Record,P->GetActorLocation(),Definition()->FootprintCells,
-            P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->GetTransitState().Phase==EGuLiTransitPhase::Ground);
+        { TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_Travel); P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->AdvanceHybrid(Dt); }
+        { TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_Mining); P->AdvanceHybridMining(Dt); }
+        { TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_Traffic); GuLiGrid::ObserveRemoteBody(*World(),Record,P->GetActorLocation(),Definition()->FootprintCells,
+            P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->GetTransitState().Phase==EGuLiTransitPhase::Ground); }
         if (At<LastPublished+6 || bPoseQueued) return;
         bPoseQueued=true;const uint64 Epoch=Record.OwnerEpoch;
         TWeakPtr<FGuLiHybridMinerAdapter> Weak=StaticCastSharedRef<FGuLiHybridMinerAdapter>(AsShared());

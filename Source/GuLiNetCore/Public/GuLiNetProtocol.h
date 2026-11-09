@@ -1,6 +1,7 @@
 #pragma once
 #include "GuLiNetRules.h"
 #include "GuLiNetMotionDelivery.h"
+#include <array>
 #include <memory>
 #include <span>
 
@@ -69,10 +70,22 @@ public:
     void Blob(std::span<const std::uint8_t> Value);
     void Raw(std::span<const std::uint8_t> Value);
     bool Good() const { return Valid; }
-    const Bytes& Data() const { return Buffer; }
+    const Bytes& Data() const;
+    // Borrow until the next mutation/destruction. Small encodings need no vector allocation.
+    std::span<const std::uint8_t> View() const;
+    // Consume encoded bytes while retaining the writer's existing failure state.
+    void Clear();
     Bytes Take();
 private:
-    Bytes Buffer;
+    void AppendUnchecked(std::span<const std::uint8_t> Value);
+    void AppendFixed(std::span<const std::uint8_t> Value);
+    std::size_t Size() const { return Heap ? Buffer.size() : InlineSize; }
+    // Data() materializes the legacy vector reference once; subsequent writes
+    // keep using that same vector, including after Take().
+    mutable Bytes Buffer;
+    std::array<std::uint8_t,256> Inline{};
+    std::size_t InlineSize=0;
+    mutable bool Heap=false;
     std::size_t Maximum;
     bool Valid = true;
 };
@@ -91,6 +104,8 @@ public:
     bool Key(ObjectKey& Out);
     bool Text(std::string& Out, std::size_t Limit = 4096);
     bool Blob(Bytes& Out, std::size_t Limit = MaxMessageBytes);
+    // Borrowed from the reader's source buffer; the length and bounds checks match Blob.
+    bool BlobView(std::span<const std::uint8_t>& Out, std::size_t Limit = MaxMessageBytes);
     bool Raw(std::size_t Count, std::span<const std::uint8_t>& Out);
     bool Done() const { return Valid && Position == Buffer.size(); }
     std::size_t Remaining() const { return Buffer.size() - Position; }

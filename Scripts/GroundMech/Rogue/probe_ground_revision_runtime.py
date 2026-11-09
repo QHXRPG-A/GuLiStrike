@@ -81,7 +81,7 @@ def tick(delta):
             ids=[str(x) for x in d.get_editor_property('LiveCardIds')]
             wanted='07.01' if STATE['phase']=='pick_burn' else '08.01'
             assert wanted in ids,(wanted,ids)
-            texts=[str(t.get_text()) for t in unreal.ObjectIterator(unreal.RichTextBlock) if '地面机甲' in str(t.get_text())]
+            texts=[str(t.get_text()) for t in unreal.ObjectIterator(unreal.RichTextBlock) if '游骑兵' in str(t.get_text())]
             REPORT['cards'].append({'wanted':wanted,'candidates':ids,'descriptions':texts,'session':qa['session']})
             assert unreal.GuLiRogueCardQALibrary.action(PC,'Hit',ids.index(wanted))
             # Real duplicate user action must be locked, rather than predicting a second acquisition.

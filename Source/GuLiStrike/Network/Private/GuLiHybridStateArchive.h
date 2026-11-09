@@ -6,6 +6,7 @@
 #include "Network/Private/GuLiHybridObjectConversions.h"
 #include "UObject/UnrealType.h"
 #include <bit>
+#include <array>
 
 /** Bounded private-state encoding. No UObject, entity, navigation or process-local name indices. */
 class FGuLiHybridStateArchive
@@ -25,8 +26,14 @@ public:
     bool Finish(TArray<uint8>& Out)
     {
         if (bReading || !Good()) return false;
-        const auto Bytes=Writer.Take(); if (Bytes.empty()) return false;
-        Out.Reset(); Out.Append(Bytes.data(),static_cast<int32>(Bytes.size())); return true;
+        const auto Bytes=Writer.View(); if (Bytes.empty()) return false;
+        Out.Reset(); Out.Append(Bytes.data(),static_cast<int32>(Bytes.size())); Writer.Clear(); return true;
+    }
+    // Append the original encoding of a field without an extra length prefix.
+    void WriteEncodedField(TConstArrayView<uint8> Encoded)
+    {
+        if (bReading || Encoded.IsEmpty()) { Reject(); return; }
+        Writer.Raw(std::span<const uint8>(Encoded.GetData(), Encoded.Num()));
     }
     void Value(uint8& V) { if (bReading) bValid=Reader.U8(V)&&bValid; else Writer.U8(V); }
     void Value(uint16& V) { if (bReading) bValid=Reader.U16(V)&&bValid; else Writer.U16(V); }
@@ -64,7 +71,25 @@ public:
         if (bReading) { std::string S; bValid=Reader.Text(S,Limit)&&bValid; V=UTF8_TO_TCHAR(S.c_str()); }
         else { const std::string S=TCHAR_TO_UTF8(*V); if (S.size()>Limit) Reject(); else Writer.Text(S); }
     }
-    void Value(FName& V) { FString S=V.ToString(); String(S,256); if (bReading && Good()) V=FName(*S); }
+    void Value(FName& V)
+    {
+        if (bReading)
+        {
+            FString S;String(S,256);if (Good()) V=FName(*S);return;
+        }
+        // A name's display entry and number are immutable. Include the display
+        // entry (not just case-insensitive FName equality) so wire spelling is
+        // identical. Bounded thread-local storage needs no cross-thread lock.
+        struct FEncodedName {FName Name;std::string Utf8;bool Valid=false;};
+        static thread_local std::array<FEncodedName,256> Names;
+        const uint32 Display=V.GetDisplayIndex().ToUnstableInt();
+        auto& Entry=Names[(Display*16777619u^uint32(V.GetNumber()))&(Names.size()-1)];
+        if (!Entry.Valid || Entry.Name.GetDisplayIndex()!=V.GetDisplayIndex() || Entry.Name.GetNumber()!=V.GetNumber())
+        {
+            Entry.Name=V;Entry.Utf8=TCHAR_TO_UTF8(*V.ToString());Entry.Valid=true;
+        }
+        if (Entry.Utf8.size()>256) Reject();else Writer.Text(Entry.Utf8);
+    }
     template<class E> void Enum(E& V,uint8 Last)
     { uint8 N=static_cast<uint8>(V); Value(N); if (N>Last) Reject(); if (bReading && Good()) V=static_cast<E>(N); }
     template<class T,class F> void Array(TArray<T>& Values,uint32 Maximum,F Serialize)
@@ -78,8 +103,17 @@ public:
     {
         if (bReading)
         {
-            GuLiNet::Bytes Data; bValid=Reader.Blob(Data,Maximum)&&bValid;
-            if (Good()) { V.Reset(); V.Append(Data.data(),static_cast<int32>(Data.size())); }
+            std::span<const uint8> Data; bValid=Reader.BlobView(Data,Maximum)&&bValid;
+            if (Good())
+            {
+                const UPTRINT Source=reinterpret_cast<UPTRINT>(Data.data()),Destination=reinterpret_cast<UPTRINT>(V.GetData());
+                if (!Data.empty() && !V.IsEmpty() && Source<Destination+V.Num() && Destination<Source+Data.size())
+                {
+                    // Preserve the old copy-before-write behavior for an aliased destination.
+                    GuLiNet::Bytes Copy(Data.begin(),Data.end());V.Reset();V.Append(Copy.data(),static_cast<int32>(Copy.size()));
+                }
+                else {V.Reset();V.Append(Data.data(),static_cast<int32>(Data.size()));}
+            }
         }
         else if (V.Num()>static_cast<int32>(Maximum)) Reject();
         else Writer.Blob(std::span<const uint8>(V.GetData(),V.Num()));

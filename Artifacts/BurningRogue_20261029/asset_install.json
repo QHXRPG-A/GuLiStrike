@@ -1,0 +1,2992 @@
+{
+  "applied": true,
+  "tables": [
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards",
+      "rows": [
+        {
+          "Name": "WM01_FireRate_Lv1",
+          "Id": "01.01",
+          "Note": "己方本局所有现有及后续重防号：增加射速；独立来源逐次乘算。",
+          "Type": 1,
+          "TextIds": [
+            "Card.WM01.FireRate.Title",
+            "Card.WM01.FireRate.Description"
+          ],
+          "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardFireRateEffect",
+          "UnitTypeId": 2,
+          "BonusPercent": 0.2,
+          "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/FireRate/Materials/MI_FireRate_ModelComic_v9.MI_FireRate_ModelComic_v9",
+          "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+          "UpgradeVfxScale": 6,
+          "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+          "RequiredCardIds": [],
+          "ExcludedCardIds": [],
+          "MaxAcquisitions": 0,
+          "BonusCount": 0,
+          "EffectIds": []
+        },
+        {
+          "Name": "WM01_MoveSpeed_Lv1",
+          "Id": "02.01",
+          "Note": "己方本局所有现有及后续重防号：极速机动；独立来源逐次乘算。",
+          "Type": 1,
+          "TextIds": [
+            "Card.WM01.HighSpeed.Title",
+            "Card.WM01.HighSpeed.Description"
+          ],
+          "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardMoveSpeedEffect",
+          "UnitTypeId": 2,
+          "BonusPercent": 0.5,
+          "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/MoveSpeed/Materials/MI_HighSpeed_ModelComic_v9.MI_HighSpeed_ModelComic_v9",
+          "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+          "UpgradeVfxScale": 6,
+          "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+          "RequiredCardIds": [],
+          "ExcludedCardIds": [],
+          "MaxAcquisitions": 0,
+          "BonusCount": 0,
+          "EffectIds": []
+        },
+        {
+          "Name": "WM01_MissileDamage_Lv1",
+          "Id": "03.01",
+          "Note": "己方本局所有现有及后续重防号：增加导弹伤害；独立来源逐次乘算。",
+          "Type": 1,
+          "TextIds": [
+            "Card.WM01.MissileDamage.Title",
+            "Card.WM01.MissileDamage.Description"
+          ],
+          "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardMissileDamageEffect",
+          "UnitTypeId": 2,
+          "BonusPercent": 0.2,
+          "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/MissileDamage/Materials/MI_MissileDamage_ModelComic_v9.MI_MissileDamage_ModelComic_v9",
+          "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+          "UpgradeVfxScale": 6,
+          "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+          "RequiredCardIds": [
+            "04.01"
+          ],
+          "ExcludedCardIds": [],
+          "MaxAcquisitions": 0,
+          "BonusCount": 0,
+          "EffectIds": []
+        },
+        {
+          "Name": "WM01_MissilePod_Lv1",
+          "Id": "04.01",
+          "Note": "己方本局当前及后续重防号：重防导弹仓。解锁导弹技能与导弹仓，每队一次。",
+          "Type": 1,
+          "TextIds": [
+            "Card.WM01.MissilePod.Title",
+            "Card.WM01.MissilePod.Description"
+          ],
+          "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardMissilePodEffect",
+          "UnitTypeId": 2,
+          "BonusPercent": 0,
+          "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/MissilePod/Materials/MI_MissilePod_ModelComic_v1.MI_MissilePod_ModelComic_v1",
+          "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+          "UpgradeVfxScale": 6,
+          "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+          "RequiredCardIds": [],
+          "ExcludedCardIds": [],
+          "MaxAcquisitions": 1,
+          "BonusCount": 0,
+          "EffectIds": []
+        },
+        {
+          "Name": "WM01_RainSalvo_Lv1",
+          "Id": "05.01",
+          "Note": "己方本局当前及后续重防号：雨点攻势。完整齐射数量每次加1，基础1发，每队本局最多59次，单台上限60发。",
+          "Type": 1,
+          "TextIds": [
+            "Card.WM01.RainSalvo.Title",
+            "Card.WM01.RainSalvo.Description"
+          ],
+          "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardMissileCountEffect",
+          "UnitTypeId": 2,
+          "BonusPercent": 0,
+          "FrontMaterial": "/Game/GuLiStrike/Cards/Commander/WM01/RainSalvo/Materials/MI_RainSalvo_ModelComic_v1.MI_RainSalvo_ModelComic_v1",
+          "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+          "UpgradeVfxScale": 6,
+          "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+          "RequiredCardIds": [
+            "04.01"
+          ],
+          "ExcludedCardIds": [],
+          "MaxAcquisitions": 59,
+          "BonusCount": 1,
+          "EffectIds": []
+        },
+        {
+          "Name": "GroundMech_Ricochet_Lv1",
+          "Id": "06.01",
+          "Note": "个人本局普攻折射；每次获取随机区间整体+1；每跳30米、无遮挡、不重复；直接伤害逐跳乘0.8，附加效果不衰减。",
+          "Type": 3,
+          "TextIds": [
+            "Card.GroundMech.Ricochet.Title",
+            "Card.GroundMech.Ricochet.Description"
+          ],
+          "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+          "UnitTypeId": 0,
+          "BonusPercent": 0,
+          "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1",
+          "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+          "UpgradeVfxScale": 1,
+          "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+          "RequiredCardIds": [],
+          "ExcludedCardIds": [],
+          "MaxAcquisitions": 0,
+          "BonusCount": 0,
+          "EffectIds": [
+            "1"
+          ]
+        },
+        {
+          "Name": "GroundMech_BurningBullet_Lv1",
+          "Id": "07.01",
+          "Note": "有效普攻和折射命中施加单份灼烧；刷新8秒，不重置周期。",
+          "Type": 3,
+          "TextIds": [
+            "Card.GroundMech.BurningBullet.Title",
+            "Card.GroundMech.BurningBullet.Description"
+          ],
+          "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+          "UnitTypeId": 0,
+          "BonusPercent": 0,
+          "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Materials/MI_GroundMech_BurningBullet_Artwork.MI_GroundMech_BurningBullet_Artwork",
+          "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+          "UpgradeVfxScale": 1,
+          "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+          "RequiredCardIds": [],
+          "ExcludedCardIds": [],
+          "MaxAcquisitions": 1,
+          "BonusCount": 0,
+          "EffectIds": [
+            "2"
+          ]
+        },
+        {
+          "Name": "GroundMech_BurningBurst_Lv1",
+          "Id": "08.01",
+          "Note": "爆裂独立2秒计时；刷新不重置；一次爆裂冻结统一伤害及目标。",
+          "Type": 3,
+          "TextIds": [
+            "Card.GroundMech.BurningBurst.Title",
+            "Card.GroundMech.BurningBurst.Description"
+          ],
+          "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+          "UnitTypeId": 0,
+          "BonusPercent": 0,
+          "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Materials/MI_GroundMech_BurningBurst_Artwork.MI_GroundMech_BurningBurst_Artwork",
+          "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+          "UpgradeVfxScale": 1,
+          "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+          "RequiredCardIds": [
+            "07.01"
+          ],
+          "ExcludedCardIds": [],
+          "MaxAcquisitions": 1,
+          "BonusCount": 0,
+          "EffectIds": [
+            "3"
+          ]
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Effects.DT_GuLiStrikeRogueCards_Effects",
+      "rows": [
+        {
+          "Name": "GroundRicochet",
+          "Id": 1,
+          "Note": "重复获取整体增加折射段区间",
+          "Handler": "ricochet",
+          "Version": 1,
+          "ConfigId": 1,
+          "BuffId": 0
+        },
+        {
+          "Name": "GroundBurningOnHit",
+          "Id": 2,
+          "Note": "由账本接受的命中施加Buff",
+          "Handler": "buff/on_hit",
+          "Version": 1,
+          "ConfigId": 0,
+          "BuffId": 1
+        },
+        {
+          "Name": "GroundBurningBurst",
+          "Id": 3,
+          "Note": "为同次命中附加依附灼烧的爆裂",
+          "Handler": "buff/on_hit",
+          "Version": 1,
+          "ConfigId": 0,
+          "BuffId": 2
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_GroundRicochet.DT_GuLiStrikeRogueCards_GroundRicochet",
+      "rows": [
+        {
+          "Name": "GroundMech_Ricochet",
+          "Id": 1,
+          "Note": "折射段不含首个目标；附加伤害不衰减。",
+          "MinimumHops": 5,
+          "MaximumHops": 8,
+          "HopsPerStack": 1,
+          "RangeCentimeters": 3000,
+          "DamageRetention": 0.8
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeBuffs_Buffs.DT_GuLiStrikeBuffs_Buffs",
+      "rows": [
+        {
+          "Name": "Burning",
+          "Id": 1,
+          "Note": "同目标单份；刷新不重置每秒跳伤",
+          "DescriptionTextId": "Buff.Burning.Description",
+          "ImplementationClass": "/Script/GuLiStrike.GuLiBurningBuffHandler",
+          "Version": 1,
+          "ConfigId": 1
+        },
+        {
+          "Name": "BurningBurst",
+          "Id": 2,
+          "Note": "依附灼烧；独立2秒周期",
+          "DescriptionTextId": "Buff.BurningBurst.Description",
+          "ImplementationClass": "/Script/GuLiStrike.GuLiBurningBurstBuffHandler",
+          "Version": 1,
+          "ConfigId": 1
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeBuffs_Burning.DT_GuLiStrikeBuffs_Burning",
+      "rows": [
+        {
+          "Name": "Burning",
+          "Id": 1,
+          "Note": "伤害不受折射直接伤害倍率影响",
+          "DurationSeconds": 8,
+          "TickIntervalSeconds": 1,
+          "MaxHealthDamageRatio": 0.05,
+          "StatusVfxId": 59,
+          "BulletVfxId": 61
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeBuffs_BurningBurst.DT_GuLiStrikeBuffs_BurningBurst",
+      "rows": [
+        {
+          "Name": "BurningBurst",
+          "Id": 1,
+          "Note": "范围穿墙；先冻结伤害及目标；零伤害仍表现",
+          "ParentBuffId": 1,
+          "IntervalSeconds": 2,
+          "LostHealthDamageRatio": 0.03,
+          "RadiusMultiplier": 1.5,
+          "BurstVfxId": 60
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeVfx_Effects.DT_GuLiStrikeVfx_Effects",
+      "rows": [
+        {
+          "Name": "GroundWarning",
+          "Id": 1,
+          "Note": "导弹和法术场落点预警圆环材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/GroundWarning/M_GroundWarning_Circle.M_GroundWarning_Circle",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "MissileFlight",
+          "Id": 2,
+          "Note": "指挥官与僚机导弹飞行",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight.NS_WM01_MissileFlight",
+          "Scale": "(X=0.400000,Y=0.400000,Z=0.400000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "CommanderGunfire",
+          "Id": 3,
+          "Note": "指挥官批量机枪枪口火焰与示踪表现",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_CommanderGunfireBatch.NS_CommanderGunfireBatch",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "MachineGunTracer",
+          "Id": 4,
+          "Note": "僚机机枪弹道与枪口闪光",
+          "ResourcePath": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool_SmallBatches.NS_WingmanLaserPool_SmallBatches",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "MachineGunImpact",
+          "Id": 5,
+          "Note": "指挥官、僚机、玩家游骑兵机枪命中单位或地形",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations",
+          "Scale": "(X=2.000000,Y=2.000000,Z=2.000000)",
+          "ReducedResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations_Reduced.NS_MachineGunImpact_AllOptimizations_Reduced",
+          "MinimalResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations_Minimal.NS_MachineGunImpact_AllOptimizations_Minimal",
+          "BatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch.NS_MachineGunImpact_Batch",
+          "ReducedBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Reduced.NS_MachineGunImpact_Batch_Reduced",
+          "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Minimal.NS_MachineGunImpact_Batch_Minimal",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "CommanderMissileExplosion",
+          "Id": 6,
+          "Note": "指挥官导弹命中爆炸",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_2A.NS_WM01_Explosion_2A",
+          "Scale": "(X=6.400000,Y=6.400000,Z=6.400000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "WingmanBombardment",
+          "Id": 7,
+          "Note": "僚机对地轰炸法术场爆炸",
+          "ResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01.NS_WingmanBombardment_01",
+          "Scale": "(X=5.000000,Y=5.000000,Z=5.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "PlayerBullet",
+          "Id": 8,
+          "Note": "Ground固定橙黄曲线；保留24cm线宽和0.12s停留/0.38s淡出；独立限额照明",
+          "ResourcePath": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_GroundBulletTrail_Orange.NS_GroundBulletTrail_Orange",
+          "Scale": "(X=2.000000,Y=2.000000,Z=2.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 12000,
+          "TrailHoldSeconds": 0.12,
+          "TrailFadeSeconds": 0.38,
+          "TrailBendCm": 45
+        },
+        {
+          "Name": "PlayerMuzzle",
+          "Id": 9,
+          "Note": "玩家Ground枪焰；统一线性尺寸倍率由User.Size接收，组件保持单位缩放",
+          "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A3/NS_GroundMech_Muzzle_A3.NS_GroundMech_Muzzle_A3",
+          "Scale": "(X=2.000000,Y=2.000000,Z=2.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "RocketJet",
+          "Id": 10,
+          "Note": "玩家游骑兵火箭跳双侧持续喷气",
+          "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet.NS_GroundMech_RocketJet",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "RocketFuelBar",
+          "Id": 11,
+          "Note": "玩家游骑兵火箭跳燃料弧形条材质",
+          "ResourcePath": "/Game/GuLiStrike/GroundMech/UI/M_RocketFuelArc.M_RocketFuelArc",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TransitEnergy",
+          "Id": 12,
+          "Note": "据点运输能量球、网络节点及连线材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/StrongholdTransit/M_TransitEnergy.M_TransitEnergy",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TransitTrail",
+          "Id": 13,
+          "Note": "据点运输飞行能量球尾迹",
+          "ResourcePath": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TransitFlash",
+          "Id": 14,
+          "Note": "据点运输出发与到达闪光",
+          "ResourcePath": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TeamOutline",
+          "Id": 15,
+          "Note": "友敌阵营屏幕描边后处理材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline.M_TeamOutline",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "WingmanFlightTrail",
+          "Id": 16,
+          "Note": "僚机飞行尾迹",
+          "ResourcePath": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "UnitWreck",
+          "Id": 17,
+          "Note": "单位销毁残骸锈蚀材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust.M_UnitWreckRust",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "UnitHit",
+          "Id": 18,
+          "Note": "单位受击闪白覆盖材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite.M_UnitHitWhite",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "UnitHitInstanced",
+          "Id": 19,
+          "Note": "指挥官实例化单位受击闪白材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced.M_UnitHitWhite_Instanced",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundDestruction",
+          "Id": 20,
+          "Note": "地面单位销毁爆炸，另乘单位体型系数",
+          "ResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03.NS_GroundDestruction_03",
+          "Scale": "(X=7.552620,Y=7.552620,Z=7.552620)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "WingmanDestruction",
+          "Id": 21,
+          "Note": "僚机销毁爆炸，另乘单位体型系数",
+          "ResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05.NS_WingmanDestruction_05",
+          "Scale": "(X=7.552620,Y=7.552620,Z=7.552620)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "UnitHitHealthBar",
+          "Id": 22,
+          "Note": "受击世界血条",
+          "ResourcePath": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitHealthBarWorld.M_UnitHitHealthBarWorld",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BlinkAfterimage",
+          "Id": 23,
+          "Note": "闪现残影材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/M_BlinkAfterimage.M_BlinkAfterimage",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BlinkHeatwave",
+          "Id": 24,
+          "Note": "闪现热波材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/M_BlinkHeatwave.M_BlinkHeatwave",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BlinkSphere",
+          "Id": 25,
+          "Note": "闪现热波网格，时间曲线保留为动态系数",
+          "ResourcePath": "/Engine/BasicShapes/Sphere.Sphere",
+          "Scale": "(X=0.480000,Y=0.480000,Z=0.480000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TeleportCylinder",
+          "Id": 26,
+          "Note": "传送光柱网格",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderTeleport/SM_TeleportCylinder.SM_TeleportCylinder",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TeleportGround",
+          "Id": 27,
+          "Note": "传送范围与进度",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportGround.M_TeleportGround",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TeleportBeam",
+          "Id": 28,
+          "Note": "传送光柱材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBeam.M_TeleportBeam",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TeleportBody",
+          "Id": 29,
+          "Note": "传送单位相位覆盖材质",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "UnitRingMesh",
+          "Id": 30,
+          "Note": "指挥官单位选择圈",
+          "ResourcePath": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+          "Scale": "(X=2.400000,Y=2.400000,Z=0.004000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "UnitRingMaterial",
+          "Id": 31,
+          "Note": "单位选择圈材质",
+          "ResourcePath": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TransitOrb",
+          "Id": 32,
+          "Note": "运输能量球",
+          "ResourcePath": "/Engine/BasicShapes/Sphere.Sphere",
+          "Scale": "(X=10.000000,Y=10.000000,Z=10.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TransitNode",
+          "Id": 33,
+          "Note": "运输网络节点",
+          "ResourcePath": "/Engine/BasicShapes/Sphere.Sphere",
+          "Scale": "(X=1.200000,Y=1.200000,Z=1.200000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "TransitEdge",
+          "Id": 34,
+          "Note": "运输网络连线，长度动态计算",
+          "ResourcePath": "/Engine/BasicShapes/Cylinder.Cylinder",
+          "Scale": "(X=0.160000,Y=0.160000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "FuelBarPlane",
+          "Id": 35,
+          "Note": "火箭燃料条与受击世界血条共用承载网格",
+          "ResourcePath": "/Engine/BasicShapes/Plane.Plane",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "MiningLaser",
+          "Id": 36,
+          "Note": "采矿激光；建造使用独立 ID 45",
+          "ResourcePath": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU_All_ThreeTier.NS_MiningLaser_Optimized_GPU_All_ThreeTier",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "NpcDestruction",
+          "Id": 37,
+          "Note": "早期 NPC 销毁蓝图；内部碎裂、网格和材质仍由蓝图持有",
+          "ResourcePath": "/Game/GuLiStrike/Blueprints/AI/BP_GuLiStrikeNPCDestruction.BP_TwinStickNPCDestruction_C",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundMachineGunTracer",
+          "Id": 38,
+          "Note": "Mass GPU固定细曲线；线宽6cm；按点残留；独立共享照明",
+          "ResourcePath": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_MassBulletTrail_GPU.NS_MassBulletTrail_GPU",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 1200,
+          "TrailHoldSeconds": 0.06,
+          "TrailFadeSeconds": 0.18,
+          "TrailBendCm": 12
+        },
+        {
+          "Name": "BuildingPlacement",
+          "Id": 39,
+          "Note": "建筑放置全息预览材质；保留原建筑模型及有效/无效颜色",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Materials/M_BuildingPlacementPreview.M_BuildingPlacementPreview",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BuildingConstructionHologram",
+          "Id": 40,
+          "Note": "未完工建筑蓝色透明虚影",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/M_ConstructionHologram.M_ConstructionHologram",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BuildingConstructionFinish",
+          "Id": 41,
+          "Note": "建筑完工蓝白色边缘发光",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/M_ConstructionFinishGlow.M_ConstructionFinishGlow",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BuildingPlacementGrid",
+          "Id": 42,
+          "Note": "建筑占地区域世界坐标一米网格",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/M_BuildingPlacementGrid.M_BuildingPlacementGrid",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BuildingConstructionComplete",
+          "Id": 43,
+          "Note": "矿厂完工底部UpgradeGlow一次性完整闪光",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionComplete.NS_ConstructionComplete",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BuildingConstructionTopLoop",
+          "Id": 44,
+          "Note": "矿厂屋檐淡青绿呼吸光柱、漂浮粒子与独立电火花",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionTopLoop.NS_ConstructionTopLoop",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BuildingConstructionLaser",
+          "Id": 45,
+          "Note": "建造车左右紫色激光、蓝白落点火花",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionLaser_Optimized_GPU_All_ThreeTier.NS_ConstructionLaser_Optimized_GPU_All_ThreeTier",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BuildingConstructionColumnTail",
+          "Id": 46,
+          "Note": "施工弱光柱材质，提取UpgradeGlow残尾",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/M_ConstructionColumnTail.M_ConstructionColumnTail",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BuildingConstructionMote",
+          "Id": 47,
+          "Note": "施工向上漂浮三角粒子材质",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/Construction/M_ConstructionMote.M_ConstructionMote",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "WarMachineHover",
+          "Id": 48,
+          "Note": "重防号盘底喷焰与5–15米渐长拖尾；1024喷口每批；指挥官前两档显示，第三档总览隐藏",
+          "ResourcePath": "/Game/GuLiStrike/FX/WarMachineHover/NS_WarMachineHoverPool.NS_WarMachineHoverPool",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "WM01MissileClusterFull",
+          "Id": 49,
+          "Note": "重防号GPU候选v2；每批按实际占用分配且最多64枚；24段2.4秒浓黑烟迹；弹体/尾焰/烟宽为v1的1.5倍",
+          "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Full.NS_WM01MissileCluster_Full",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "WM01MissileClusterLite",
+          "Id": 50,
+          "Note": "重防号GPU候选v2；每批最多64枚；8段2.4秒浓黑烟迹；0.15秒平滑交接；旧烟迹自然消散",
+          "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Lite.NS_WM01MissileCluster_Lite",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "WM01MissileClusterMinimal",
+          "Id": 51,
+          "Note": "重防号GPU候选v2；每批最多64枚；仅1.5倍弹体与短尾焰；尾焰峰值3倍；保留旧档烟迹自然消散",
+          "ResourcePath": "/Game/GuLiStrike/FX/WM01Missiles/NS_WM01MissileCluster_Minimal.NS_WM01MissileCluster_Minimal",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundMachineGunMuzzle",
+          "Id": 52,
+          "Note": "指挥官机械机枪枪口；保持基础尺寸，重防号在调用处乘2",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations.NS_MachineGunMuzzle_AllOptimizations",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations_Reduced.NS_MachineGunMuzzle_AllOptimizations_Reduced",
+          "MinimalResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations_Minimal.NS_MachineGunMuzzle_AllOptimizations_Minimal",
+          "BatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch.NS_MachineGunMuzzle_Batch",
+          "ReducedBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Reduced.NS_MachineGunMuzzle_Batch_Reduced",
+          "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Minimal.NS_MachineGunMuzzle_Batch_Minimal",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "WingmanGroundFlightBatch",
+          "Id": 53,
+          "Note": "僚机对地导弹独立不透明脉冲光点与实体尾迹；Profile专属，Scale=1",
+          "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WingmanGroundFlight_SphereTrail.NS_WingmanGroundFlight_SphereTrail",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundMechImpact",
+          "Id": 54,
+          "Note": "Ground 命中：保留原命中形态/贴图/运动；线性尺寸 x2；子弹橙黄；0.20秒淡出",
+          "ResourcePath": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Hit_1.NS_Hit_1",
+          "Scale": "(X=4.000000,Y=4.000000,Z=4.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundMechAfterimage",
+          "Id": 55,
+          "Note": "Ground 闪现：冻结双臂后展姿势；阵营色；世界位置固定；材质淡出",
+          "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundMech_Afterimage_B1.M_GroundMech_Afterimage_B1",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundMechBlink",
+          "Id": 56,
+          "Note": "Ground blink: GreenCrystalTrail mech adaptation; world-space skeletal sampling; scale 1; original green",
+          "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundMechBlinkShape",
+          "Id": 57,
+          "Note": "Single moving mech-shaped energy proxy; original model materials stay unchanged",
+          "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Blink/DA_GroundMech_BlinkVfx.DA_GroundMech_BlinkVfx",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "BulletLightPool",
+          "Id": 58,
+          "Note": "客户端共享6槽CPU粒子灯；无阴影、不影响透明或体积雾",
+          "ResourcePath": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_BulletLights_CPU.NS_BulletLights_CPU",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundBurningStatus",
+          "Id": 59,
+          "Note": "灼烧卡牌正式表现；来源与适配见任务归档",
+          "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus.NS_GroundBurningStatus",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundBurningBurst",
+          "Id": 60,
+          "Note": "灼烧卡牌正式表现；来源与适配见任务归档",
+          "ResourcePath": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Hit_15.NS_Hit_15",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 0,
+          "TrailHoldSeconds": 0,
+          "TrailFadeSeconds": 0,
+          "TrailBendCm": 0
+        },
+        {
+          "Name": "GroundBurningBullet",
+          "Id": 61,
+          "Note": "灼烧卡牌正式表现；来源与适配见任务归档",
+          "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet.NS_GroundBurningBullet",
+          "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+          "ReducedResourcePath": "None",
+          "MinimalResourcePath": "None",
+          "BatchResourcePath": "None",
+          "ReducedBatchResourcePath": "None",
+          "MinimalBatchResourcePath": "None",
+          "TrailLengthCm": 12000,
+          "TrailHoldSeconds": 0.12,
+          "TrailFadeSeconds": 0.38,
+          "TrailBendCm": 45
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeGameTexts_Texts.DT_GuLiStrikeGameTexts_Texts",
+      "rows": [
+        {
+          "Name": "UI.ConsoleLayout.001",
+          "TextId": "UI.ConsoleLayout.001",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "左键定位   右键移动   Shift追加"
+        },
+        {
+          "Name": "UI.ConsoleLayout.002",
+          "TextId": "UI.ConsoleLayout.002",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "单击召回 · 双击定位\nCtrl覆盖 · Shift加入\nAlt覆盖并移出其他编队 · Shift+Alt追加并移出"
+        },
+        {
+          "Name": "UI.ConsoleLayout.003",
+          "TextId": "UI.ConsoleLayout.003",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "点选或框选部队"
+        },
+        {
+          "Name": "UI.ConsoleLayout.004",
+          "TextId": "UI.ConsoleLayout.004",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "指挥官"
+        },
+        {
+          "Name": "UI.ConsoleLayout.005",
+          "TextId": "UI.ConsoleLayout.005",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "生命\n当前生命 / 生命上限；查看多个单位时显示合计。"
+        },
+        {
+          "Name": "UI.ConsoleLayout.006",
+          "TextId": "UI.ConsoleLayout.006",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "护盾\n当前护盾 / 护盾上限；查看多个单位时显示合计。"
+        },
+        {
+          "Name": "UI.ConsoleLayout.007",
+          "TextId": "UI.ConsoleLayout.007",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "移动速度\n兵种的基础移动速度，单位：米/秒。"
+        },
+        {
+          "Name": "UI.ConsoleLayout.008",
+          "TextId": "UI.ConsoleLayout.008",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "防御\n当前查看兵种的基础防御值。"
+        },
+        {
+          "Name": "UI.ConsoleLayout.009",
+          "TextId": "UI.ConsoleLayout.009",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "蓝矿载货\n这辆矿车当前携带的蓝矿数量。"
+        },
+        {
+          "Name": "UI.ConsoleLayout.010",
+          "TextId": "UI.ConsoleLayout.010",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "红矿载货\n这辆矿车当前携带的红矿数量。"
+        },
+        {
+          "Name": "UI.ConsoleLayout.011",
+          "TextId": "UI.ConsoleLayout.011",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "部队指令 · 全部选择"
+        },
+        {
+          "Name": "UI.ConsoleLayout.012",
+          "TextId": "UI.ConsoleLayout.012",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "移动 M"
+        },
+        {
+          "Name": "UI.ConsoleLayout.013",
+          "TextId": "UI.ConsoleLayout.013",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "停止 S"
+        },
+        {
+          "Name": "UI.ConsoleLayout.014",
+          "TextId": "UI.ConsoleLayout.014",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "技能 Q"
+        },
+        {
+          "Name": "UI.ConsoleLayout.015",
+          "TextId": "UI.ConsoleLayout.015",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "定位"
+        },
+        {
+          "Name": "UI.ConsoleLayout.016",
+          "TextId": "UI.ConsoleLayout.016",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "任务"
+        },
+        {
+          "Name": "UI.ConsoleLayout.017",
+          "TextId": "UI.ConsoleLayout.017",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "采矿"
+        },
+        {
+          "Name": "UI.ConsoleLayout.018",
+          "TextId": "UI.ConsoleLayout.018",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "返厂"
+        },
+        {
+          "Name": "UI.ConsoleLayout.019",
+          "TextId": "UI.ConsoleLayout.019",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "施工"
+        },
+        {
+          "Name": "UI.ConsoleLayout.020",
+          "TextId": "UI.ConsoleLayout.020",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "据点运输"
+        },
+        {
+          "Name": "UI.ConsoleLayout.021",
+          "TextId": "UI.ConsoleLayout.021",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "建造 B"
+        },
+        {
+          "Name": "UI.ConsoleLayout.022",
+          "TextId": "UI.ConsoleLayout.022",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "战术 T"
+        },
+        {
+          "Name": "UI.ConsoleLayout.023",
+          "TextId": "UI.ConsoleLayout.023",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "帮助\n查看选兵、编队和任务操作说明。"
+        },
+        {
+          "Name": "UI.ConsoleLayout.024",
+          "TextId": "UI.ConsoleLayout.024",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "菜单 [F10]\n继续对局、查看说明或退出游戏。"
+        },
+        {
+          "Name": "UI.ConsoleLayout.025",
+          "TextId": "UI.ConsoleLayout.025",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "任务状态 · 未选择单位"
+        },
+        {
+          "Name": "UI.ConsoleLayout.026",
+          "TextId": "UI.ConsoleLayout.026",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "指挥官 · 同步中"
+        },
+        {
+          "Name": "UI.ConsoleLayout.027",
+          "TextId": "UI.ConsoleLayout.027",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "蓝矿 —   红矿 —"
+        },
+        {
+          "Name": "UI.ConsoleLayout.028",
+          "TextId": "UI.ConsoleLayout.028",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "任务队列 · 点击目标可定位 · 关闭"
+        },
+        {
+          "Name": "UI.ConsoleLayout.029",
+          "TextId": "UI.ConsoleLayout.029",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "局内菜单"
+        },
+        {
+          "Name": "UI.ConsoleLayout.030",
+          "TextId": "UI.ConsoleLayout.030",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "继续对局"
+        },
+        {
+          "Name": "UI.ConsoleLayout.031",
+          "TextId": "UI.ConsoleLayout.031",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "操作说明"
+        },
+        {
+          "Name": "UI.ConsoleLayout.032",
+          "TextId": "UI.ConsoleLayout.032",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案",
+          "Content": "退出游戏…"
+        },
+        {
+          "Name": "UI.ConsoleView.033",
+          "TextId": "UI.ConsoleView.033",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0} 由运行数据提供",
+          "Content": "兵种 {0}"
+        },
+        {
+          "Name": "UI.ConsoleView.034",
+          "TextId": "UI.ConsoleView.034",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2}, {3}, {4} 由运行数据提供",
+          "Content": "{0} · {1}\n生命 {2} / {3}\n单击单选 · Shift移除\nCtrl保留当前选择内同类 · Ctrl+Shift移除同类{4}"
+        },
+        {
+          "Name": "UI.ConsoleView.035",
+          "TextId": "UI.ConsoleView.035",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供",
+          "Content": "选中 {0}   查看 {1}   ·   Tab切详情   ·   Q始终作用于全部选择"
+        },
+        {
+          "Name": "UI.ConsoleView.036",
+          "TextId": "UI.ConsoleView.036",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供",
+          "Content": "\n具有技能 {0} · 冷却结束 {1}"
+        },
+        {
+          "Name": "UI.ConsoleView.037",
+          "TextId": "UI.ConsoleView.037",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0} 由运行数据提供",
+          "Content": "\n最近冷却 {0} 秒"
+        },
+        {
+          "Name": "UI.ConsoleView.038",
+          "TextId": "UI.ConsoleView.038",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供",
+          "Content": "\n全部选择 {0} · 当前适用 {1}"
+        },
+        {
+          "Name": "UI.ConsoleView.039",
+          "TextId": "UI.ConsoleView.039",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2}, {3} 由运行数据提供",
+          "Content": "{0}\n{3}\n蓝矿 {1} · 红矿 {2}"
+        },
+        {
+          "Name": "UI.ConsoleView.040",
+          "TextId": "UI.ConsoleView.040",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2} 由运行数据提供",
+          "Content": "选中 {0} · 共同前缀 {1} · 差异 {2} 组"
+        },
+        {
+          "Name": "UI.ConsoleView.041",
+          "TextId": "UI.ConsoleView.041",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0} 由运行数据提供",
+          "Content": " · 持续停止 {0}"
+        },
+        {
+          "Name": "UI.ConsoleView.042",
+          "TextId": "UI.ConsoleView.042",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0} 由运行数据提供",
+          "Content": " · 等待安全退出 {0}"
+        },
+        {
+          "Name": "UI.ConsoleView.043",
+          "TextId": "UI.ConsoleView.043",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2}, {3} 由运行数据提供",
+          "Content": "技能：成功 {0} / {1} {2}{3}"
+        },
+        {
+          "Name": "UI.ConsoleView.044",
+          "TextId": "UI.ConsoleView.044",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2}, {3} 由运行数据提供",
+          "Content": "{0} 个单位 · 手动 {1}/32{2}{3}\n"
+        },
+        {
+          "Name": "UI.ConsoleView.045",
+          "TextId": "UI.ConsoleView.045",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "全部"
+        },
+        {
+          "Name": "UI.ConsoleView.046",
+          "TextId": "UI.ConsoleView.046",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "仅切换查看类型 [Tab]\n不修改选择；Q作用于全部选中单位"
+        },
+        {
+          "Name": "UI.ConsoleView.047",
+          "TextId": "UI.ConsoleView.047",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "\n运输中，成员资格保留"
+        },
+        {
+          "Name": "UI.ConsoleView.048",
+          "TextId": "UI.ConsoleView.048",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "正在同步选中单位…"
+        },
+        {
+          "Name": "UI.ConsoleView.049",
+          "TextId": "UI.ConsoleView.049",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "未选择部队"
+        },
+        {
+          "Name": "UI.ConsoleView.050",
+          "TextId": "UI.ConsoleView.050",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "混合部队"
+        },
+        {
+          "Name": "UI.ConsoleView.051",
+          "TextId": "UI.ConsoleView.051",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "移动 [M]\n选择目的地。按住 Shift 可追加到队列。"
+        },
+        {
+          "Name": "UI.ConsoleView.052",
+          "TextId": "UI.ConsoleView.052",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "停止 [S]\n停止移动和工作，清空队列。运输或厂内单位先安全退出。"
+        },
+        {
+          "Name": "UI.ConsoleView.053",
+          "TextId": "UI.ConsoleView.053",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "单位技能 [Q]\n对全部选中单位施放。点击图标后选择目标，Tab 只切换查看类型。"
+        },
+        {
+          "Name": "UI.ConsoleView.054",
+          "TextId": "UI.ConsoleView.054",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "定位部队\n将镜头移到当前选中部队的中心。"
+        },
+        {
+          "Name": "UI.ConsoleView.055",
+          "TextId": "UI.ConsoleView.055",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "任务队列\n查看当前工作、后续任务与可恢复的自动任务。"
+        },
+        {
+          "Name": "UI.ConsoleView.056",
+          "TextId": "UI.ConsoleView.056",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "采矿\n选择矿点。矿车采集后自动返厂；Shift 可追加。"
+        },
+        {
+          "Name": "UI.ConsoleView.057",
+          "TextId": "UI.ConsoleView.057",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "返厂\n选择我方矿厂。卸货并出厂后完成。"
+        },
+        {
+          "Name": "UI.ConsoleView.058",
+          "TextId": "UI.ConsoleView.058",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "施工\n选择我方未完工建筑，派遣建造车继续施工。"
+        },
+        {
+          "Name": "UI.ConsoleView.059",
+          "TextId": "UI.ConsoleView.059",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "据点运输\n选择目标据点，通过既有路线运输部队。"
+        },
+        {
+          "Name": "UI.ConsoleView.060",
+          "TextId": "UI.ConsoleView.060",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "\n当前无法下令。"
+        },
+        {
+          "Name": "UI.ConsoleView.061",
+          "TextId": "UI.ConsoleView.061",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "\n暂无可执行单位。"
+        },
+        {
+          "Name": "UI.ConsoleView.062",
+          "TextId": "UI.ConsoleView.062",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "建造目录 [B]\n"
+        },
+        {
+          "Name": "UI.ConsoleView.063",
+          "TextId": "UI.ConsoleView.063",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "战术运输 [T]\n"
+        },
+        {
+          "Name": "UI.ConsoleView.064",
+          "TextId": "UI.ConsoleView.064",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "战术运输 [T]\n选择起点与落点，运输范围内的我方单位。\n"
+        },
+        {
+          "Name": "UI.ConsoleView.065",
+          "TextId": "UI.ConsoleView.065",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "建造 [B]\n选择建筑图标，再选择建造位置。\n"
+        },
+        {
+          "Name": "UI.ConsoleView.066",
+          "TextId": "UI.ConsoleView.066",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "等待"
+        },
+        {
+          "Name": "UI.ConsoleView.067",
+          "TextId": "UI.ConsoleView.067",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "执行中"
+        },
+        {
+          "Name": "UI.ConsoleView.068",
+          "TextId": "UI.ConsoleView.068",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "等待安全退出"
+        },
+        {
+          "Name": "UI.ConsoleView.069",
+          "TextId": "UI.ConsoleView.069",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "失败"
+        },
+        {
+          "Name": "UI.ConsoleView.070",
+          "TextId": "UI.ConsoleView.070",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "完成"
+        },
+        {
+          "Name": "UI.ConsoleView.071",
+          "TextId": "UI.ConsoleView.071",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "阶段完成"
+        },
+        {
+          "Name": "UI.ConsoleView.072",
+          "TextId": "UI.ConsoleView.072",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "停止"
+        },
+        {
+          "Name": "UI.ConsoleView.073",
+          "TextId": "UI.ConsoleView.073",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": " · 部分单位暂无任务摘要"
+        },
+        {
+          "Name": "UI.ConsoleView.074",
+          "TextId": "UI.ConsoleView.074",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "自动"
+        },
+        {
+          "Name": "UI.ConsoleView.075",
+          "TextId": "UI.ConsoleView.075",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "手动"
+        },
+        {
+          "Name": "UI.ConsoleView.076",
+          "TextId": "UI.ConsoleView.076",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "冷却中"
+        },
+        {
+          "Name": "UI.ConsoleView.077",
+          "TextId": "UI.ConsoleView.077",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "超出射程"
+        },
+        {
+          "Name": "UI.ConsoleView.078",
+          "TextId": "UI.ConsoleView.078",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "无效地面点"
+        },
+        {
+          "Name": "UI.ConsoleView.079",
+          "TextId": "UI.ConsoleView.079",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "无技能"
+        },
+        {
+          "Name": "UI.ConsoleView.080",
+          "TextId": "UI.ConsoleView.080",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "单位当前不可施法"
+        },
+        {
+          "Name": "UI.ConsoleView.081",
+          "TextId": "UI.ConsoleView.081",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "执行失败"
+        },
+        {
+          "Name": "UI.ConsoleView.082",
+          "TextId": "UI.ConsoleView.082",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "技能目标：左键选择地面 · Esc取消"
+        },
+        {
+          "Name": "UI.ConsoleView.083",
+          "TextId": "UI.ConsoleView.083",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "目标模式：左键提交 · Shift追加 · Esc取消"
+        },
+        {
+          "Name": "UI.ConsoleView.084",
+          "TextId": "UI.ConsoleView.084",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": " · 持续停止"
+        },
+        {
+          "Name": "UI.ConsoleView.085",
+          "TextId": "UI.ConsoleView.085",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": " · 等待安全停止"
+        },
+        {
+          "Name": "UI.ConsoleView.086",
+          "TextId": "UI.ConsoleView.086",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "保留资格："
+        },
+        {
+          "Name": "UI.ConsoleView.087",
+          "TextId": "UI.ConsoleView.087",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "等待合法自动目标\n"
+        },
+        {
+          "Name": "UI.ConsoleView.088",
+          "TextId": "UI.ConsoleView.088",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "等待有效目标"
+        },
+        {
+          "Name": "UI.ConsoleView.089",
+          "TextId": "UI.ConsoleView.089",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "操作说明\n\n左键点选 / 框选 · Shift追加或减选\n头像 Ctrl保留同类，Ctrl+Shift移除同类\nTab切详情，Q仍作用于全部选择\nCtrl+数字覆盖编队 · Shift+数字加入\nAlt组合移出其他编队 · 双按定位\nM移动 · S持续停止 · Shift追加任务\nB建造 · T战术运输\nCtrl+F5–F8存镜头，F5–F8召回\n小地图左键定位 / 右键移动\nEsc关闭界面或取消未提交目标"
+        },
+        {
+          "Name": "UI.ConsoleView.090",
+          "TextId": "UI.ConsoleView.090",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "退出游戏？\n再次点击“退出游戏”确认。\n当前多人对局不会暂停。\nEsc返回菜单，继续对局关闭菜单。"
+        },
+        {
+          "Name": "UI.ConsoleView.091",
+          "TextId": "UI.ConsoleView.091",
+          "Introduction": "Commander/UI/GuLiCommanderConsoleView.cpp；界面文案",
+          "Content": "局内菜单\n对局继续运行"
+        },
+        {
+          "Name": "UI.HUDWidget.092",
+          "TextId": "UI.HUDWidget.092",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供",
+          "Content": "蓝矿 {0}   红矿 {1}"
+        },
+        {
+          "Name": "UI.HUDWidget.093",
+          "TextId": "UI.HUDWidget.093",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案",
+          "Content": "蓝方"
+        },
+        {
+          "Name": "UI.HUDWidget.094",
+          "TextId": "UI.HUDWidget.094",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案",
+          "Content": "红方"
+        },
+        {
+          "Name": "UI.HUDWidget.095",
+          "TextId": "UI.HUDWidget.095",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案",
+          "Content": "未分配"
+        },
+        {
+          "Name": "UI.HUDWidget.096",
+          "TextId": "UI.HUDWidget.096",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案",
+          "Content": "地面"
+        },
+        {
+          "Name": "UI.HUDWidget.097",
+          "TextId": "UI.HUDWidget.097",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案",
+          "Content": "空中"
+        },
+        {
+          "Name": "UI.HUDWidget.098",
+          "TextId": "UI.HUDWidget.098",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案",
+          "Content": "观察"
+        },
+        {
+          "Name": "UI.HUDWidget.099",
+          "TextId": "UI.HUDWidget.099",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案",
+          "Content": "在线"
+        },
+        {
+          "Name": "UI.HUDWidget.100",
+          "TextId": "UI.HUDWidget.100",
+          "Introduction": "Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案",
+          "Content": "同步中"
+        },
+        {
+          "Name": "UI.OrderedCommands.101",
+          "TextId": "UI.OrderedCommands.101",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供",
+          "Content": "已接收 {0}，拒绝 {1}"
+        },
+        {
+          "Name": "UI.OrderedCommands.102",
+          "TextId": "UI.OrderedCommands.102",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案",
+          "Content": "头像操作暂未提交：等待选择或连接确认"
+        },
+        {
+          "Name": "UI.OrderedCommands.103",
+          "TextId": "UI.OrderedCommands.103",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案",
+          "Content": "头像操作未接受：连接或顺序已失效"
+        },
+        {
+          "Name": "UI.OrderedCommands.104",
+          "TextId": "UI.OrderedCommands.104",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案",
+          "Content": "头像操作未接受：选择已变化，请重新操作"
+        },
+        {
+          "Name": "UI.OrderedCommands.105",
+          "TextId": "UI.OrderedCommands.105",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案",
+          "Content": "头像操作未接受：成员已失效或不在当前选择中"
+        },
+        {
+          "Name": "UI.OrderedCommands.106",
+          "TextId": "UI.OrderedCommands.106",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案",
+          "Content": "选择未接受：目标或容量无效"
+        },
+        {
+          "Name": "UI.OrderedCommands.107",
+          "TextId": "UI.OrderedCommands.107",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案",
+          "Content": "命令未接受：连接、顺序或选择无效"
+        },
+        {
+          "Name": "UI.OrderedCommands.108",
+          "TextId": "UI.OrderedCommands.108",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案",
+          "Content": "目标不适用于当前命令，原任务保持执行"
+        },
+        {
+          "Name": "UI.OrderedCommands.109",
+          "TextId": "UI.OrderedCommands.109",
+          "Introduction": "Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案",
+          "Content": "编队超过选择容量"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.110",
+          "TextId": "UI.UnitTaskSubsystem.110",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "移动"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.111",
+          "TextId": "UI.UnitTaskSubsystem.111",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "特殊任务"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.112",
+          "TextId": "UI.UnitTaskSubsystem.112",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "该兵种不支持此特殊任务"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.113",
+          "TextId": "UI.UnitTaskSubsystem.113",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "该单位的一次性任务资格已消耗"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.114",
+          "TextId": "UI.UnitTaskSubsystem.114",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "返厂卸货仅适用于矿车"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.115",
+          "TextId": "UI.UnitTaskSubsystem.115",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "该单位不支持据点运输"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.116",
+          "TextId": "UI.UnitTaskSubsystem.116",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "据点运输目标无效"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.117",
+          "TextId": "UI.UnitTaskSubsystem.117",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "据点运输目标或路线无效"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.118",
+          "TextId": "UI.UnitTaskSubsystem.118",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "移动目标超出地图边界"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.119",
+          "TextId": "UI.UnitTaskSubsystem.119",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "命令或选择版本无效"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.120",
+          "TextId": "UI.UnitTaskSubsystem.120",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "单位或命令不适用"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.121",
+          "TextId": "UI.UnitTaskSubsystem.121",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "单位手动队列已满（32项）"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.122",
+          "TextId": "UI.UnitTaskSubsystem.122",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "未选择可控制单位"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.123",
+          "TextId": "UI.UnitTaskSubsystem.123",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "运输路线已失效"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.124",
+          "TextId": "UI.UnitTaskSubsystem.124",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "安全落地后无法到达目标位置"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.125",
+          "TextId": "UI.UnitTaskSubsystem.125",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "任务执行失败，已跳过"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.126",
+          "TextId": "UI.UnitTaskSubsystem.126",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "移动路径规划失败"
+        },
+        {
+          "Name": "UI.UnitTaskSubsystem.127",
+          "TextId": "UI.UnitTaskSubsystem.127",
+          "Introduction": "Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案",
+          "Content": "移动规划已失效"
+        },
+        {
+          "Name": "UI.SpecialTaskExecutor.128",
+          "TextId": "UI.SpecialTaskExecutor.128",
+          "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
+          "Content": "无可采集的目标矿区"
+        },
+        {
+          "Name": "UI.SpecialTaskExecutor.129",
+          "TextId": "UI.SpecialTaskExecutor.129",
+          "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
+          "Content": "采矿或返厂路径失效"
+        },
+        {
+          "Name": "UI.SpecialTaskExecutor.130",
+          "TextId": "UI.SpecialTaskExecutor.130",
+          "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
+          "Content": "工地无效或无可达施工位置"
+        },
+        {
+          "Name": "UI.SpecialTaskExecutor.131",
+          "TextId": "UI.SpecialTaskExecutor.131",
+          "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
+          "Content": "工地已失效"
+        },
+        {
+          "Name": "UI.SpecialTaskExecutor.132",
+          "TextId": "UI.SpecialTaskExecutor.132",
+          "Introduction": "Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案",
+          "Content": "施工已中断"
+        },
+        {
+          "Name": "UI.BuildingPlacementComponent.133",
+          "TextId": "UI.BuildingPlacementComponent.133",
+          "Introduction": "Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案",
+          "Content": "已退出建造模式"
+        },
+        {
+          "Name": "UI.BuildingPlacementComponent.134",
+          "TextId": "UI.BuildingPlacementComponent.134",
+          "Introduction": "Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案",
+          "Content": "无法建造：鼠标位于界面上"
+        },
+        {
+          "Name": "UI.BuildingPlacementComponent.135",
+          "TextId": "UI.BuildingPlacementComponent.135",
+          "Introduction": "Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案；占位符 {0} 由运行数据提供",
+          "Content": "已建造：{0}"
+        },
+        {
+          "Name": "UI.BuildingPlacementComponent.136",
+          "TextId": "UI.BuildingPlacementComponent.136",
+          "Introduction": "Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案；占位符 {0} 由运行数据提供",
+          "Content": "建造：{0}"
+        },
+        {
+          "Name": "UI.BuildingPlacementComponent.137",
+          "TextId": "UI.BuildingPlacementComponent.137",
+          "Introduction": "Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案；占位符 {0} 由运行数据提供",
+          "Content": "无法建造：{0}"
+        },
+        {
+          "Name": "UI.BuildingPlacementComponent.138",
+          "TextId": "UI.BuildingPlacementComponent.138",
+          "Introduction": "Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案",
+          "Content": "左键放置 · Esc 取消 · 数字键用于编队"
+        },
+        {
+          "Name": "UI.BuildingTypes.139",
+          "TextId": "UI.BuildingTypes.139",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "工地已放置，右键派建造车施工"
+        },
+        {
+          "Name": "UI.BuildingTypes.140",
+          "TextId": "UI.BuildingTypes.140",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "战局或连接尚未就绪"
+        },
+        {
+          "Name": "UI.BuildingTypes.141",
+          "TextId": "UI.BuildingTypes.141",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "当前角色无法建造"
+        },
+        {
+          "Name": "UI.BuildingTypes.142",
+          "TextId": "UI.BuildingTypes.142",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "建造资源不可用"
+        },
+        {
+          "Name": "UI.BuildingTypes.143",
+          "TextId": "UI.BuildingTypes.143",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "建造请求无效"
+        },
+        {
+          "Name": "UI.BuildingTypes.144",
+          "TextId": "UI.BuildingTypes.144",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "未找到合法地面"
+        },
+        {
+          "Name": "UI.BuildingTypes.145",
+          "TextId": "UI.BuildingTypes.145",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "超出 100 米建造距离"
+        },
+        {
+          "Name": "UI.BuildingTypes.146",
+          "TextId": "UI.BuildingTypes.146",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "目标被遮挡"
+        },
+        {
+          "Name": "UI.BuildingTypes.147",
+          "TextId": "UI.BuildingTypes.147",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "地面坡度超过 15 度"
+        },
+        {
+          "Name": "UI.BuildingTypes.148",
+          "TextId": "UI.BuildingTypes.148",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "建造区域被占用"
+        },
+        {
+          "Name": "UI.BuildingTypes.149",
+          "TextId": "UI.BuildingTypes.149",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "个人建筑已达 6 个"
+        },
+        {
+          "Name": "UI.BuildingTypes.150",
+          "TextId": "UI.BuildingTypes.150",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "本局建筑已达 24 个"
+        },
+        {
+          "Name": "UI.BuildingTypes.151",
+          "TextId": "UI.BuildingTypes.151",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "建造请求过快"
+        },
+        {
+          "Name": "UI.BuildingTypes.152",
+          "TextId": "UI.BuildingTypes.152",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "建造请求已过期"
+        },
+        {
+          "Name": "UI.BuildingTypes.153",
+          "TextId": "UI.BuildingTypes.153",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "团队蓝矿或红矿不足"
+        },
+        {
+          "Name": "UI.BuildingTypes.154",
+          "TextId": "UI.BuildingTypes.154",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "建筑生成失败"
+        },
+        {
+          "Name": "UI.BuildingTypes.155",
+          "TextId": "UI.BuildingTypes.155",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "未知建造错误"
+        },
+        {
+          "Name": "UI.BuildingTypes.156",
+          "TextId": "UI.BuildingTypes.156",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "防空炮"
+        },
+        {
+          "Name": "UI.BuildingTypes.157",
+          "TextId": "UI.BuildingTypes.157",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "哨戒炮"
+        },
+        {
+          "Name": "UI.BuildingTypes.158",
+          "TextId": "UI.BuildingTypes.158",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "据点"
+        },
+        {
+          "Name": "UI.BuildingTypes.159",
+          "TextId": "UI.BuildingTypes.159",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "基础兵营"
+        },
+        {
+          "Name": "UI.BuildingTypes.160",
+          "TextId": "UI.BuildingTypes.160",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "护盾发生器"
+        },
+        {
+          "Name": "UI.BuildingTypes.161",
+          "TextId": "UI.BuildingTypes.161",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "矿厂"
+        },
+        {
+          "Name": "UI.BuildingTypes.162",
+          "TextId": "UI.BuildingTypes.162",
+          "Introduction": "Gameplay/Building/GuLiBuildingTypes.cpp；界面文案",
+          "Content": "未知建筑"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.163",
+          "TextId": "UI.TeleportInputComponent.163",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0} 由运行数据提供",
+          "Content": "传送  [T]   Lv.{0}"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.164",
+          "TextId": "UI.TeleportInputComponent.164",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0} 由运行数据提供",
+          "Content": "源点充能  {0} 秒 · 右键取消"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.165",
+          "TextId": "UI.TeleportInputComponent.165",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0}, {1}, {2} 由运行数据提供",
+          "Content": "选择落点 {0} 秒 · {1} 个单位{2}"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.166",
+          "TextId": "UI.TeleportInputComponent.166",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0} 由运行数据提供",
+          "Content": "{0} 米 · 可传 WM / Ship 及僚机"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.167",
+          "TextId": "UI.TeleportInputComponent.167",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0} 由运行数据提供",
+          "Content": "{0} 米 · 己方普通部队"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.168",
+          "TextId": "UI.TeleportInputComponent.168",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；界面文案",
+          "Content": "请点击合法地面"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.169",
+          "TextId": "UI.TeleportInputComponent.169",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；界面文案",
+          "Content": "已落地，正在恢复行动"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.170",
+          "TextId": "UI.TeleportInputComponent.170",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；界面文案",
+          "Content": "正在送回源点附近"
+        },
+        {
+          "Name": "UI.TeleportInputComponent.171",
+          "TextId": "UI.TeleportInputComponent.171",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportInputComponent.cpp；界面文案",
+          "Content": "点击源点 · 右键 / Esc 取消"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.172",
+          "TextId": "UI.TeleportFieldActor.172",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "当前不能使用指挥官传送"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.173",
+          "TextId": "UI.TeleportFieldActor.173",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "传送配置未就绪"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.174",
+          "TextId": "UI.TeleportFieldActor.174",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "已有传送正在进行"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.175",
+          "TextId": "UI.TeleportFieldActor.175",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "请点击地图内可站立地面"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.176",
+          "TextId": "UI.TeleportFieldActor.176",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "创建法术场失败"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.177",
+          "TextId": "UI.TeleportFieldActor.177",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "圈内没有可传送的己方单位"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.178",
+          "TextId": "UI.TeleportFieldActor.178",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "单位状态已变化，取消传送"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.179",
+          "TextId": "UI.TeleportFieldActor.179",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "已安全返回源点附近"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.180",
+          "TextId": "UI.TeleportFieldActor.180",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "传送成功"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.181",
+          "TextId": "UI.TeleportFieldActor.181",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "当前不在选择落点阶段"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.182",
+          "TextId": "UI.TeleportFieldActor.182",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "落点选择超时"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.183",
+          "TextId": "UI.TeleportFieldActor.183",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "此处无法容纳整批部队，请选择其他落点"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.184",
+          "TextId": "UI.TeleportFieldActor.184",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "已取消传送"
+        },
+        {
+          "Name": "UI.TeleportFieldActor.185",
+          "TextId": "UI.TeleportFieldActor.185",
+          "Introduction": "Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案",
+          "Content": "施法者已离开或失去指挥官资格"
+        },
+        {
+          "Name": "UI.BuildingPlacementComponent.RotateHint",
+          "TextId": "UI.BuildingPlacementComponent.RotateHint",
+          "Introduction": "建筑放置操作提示",
+          "Content": "R：旋转90°"
+        },
+        {
+          "Name": "UI.Performance.FPSPending",
+          "TextId": "UI.Performance.FPSPending",
+          "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+          "Content": "FPS --"
+        },
+        {
+          "Name": "UI.Performance.FPS",
+          "TextId": "UI.Performance.FPS",
+          "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+          "Content": "FPS {0}"
+        },
+        {
+          "Name": "UI.Performance.LatencyPending",
+          "TextId": "UI.Performance.LatencyPending",
+          "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+          "Content": "延迟 --"
+        },
+        {
+          "Name": "UI.Performance.LatencyLocal",
+          "TextId": "UI.Performance.LatencyLocal",
+          "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+          "Content": "延迟 本地"
+        },
+        {
+          "Name": "UI.Performance.LatencyRTT",
+          "TextId": "UI.Performance.LatencyRTT",
+          "Introduction": "Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标",
+          "Content": "延迟 {0} ms (RTT)"
+        },
+        {
+          "Name": "Card.WM01.FireRate.Title",
+          "TextId": "Card.WM01.FireRate.Title",
+          "Introduction": "重防号肉鸽卡标题",
+          "Content": "增加射速"
+        },
+        {
+          "Name": "Card.WM01.FireRate.Description",
+          "TextId": "Card.WM01.FireRate.Description",
+          "Introduction": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+          "Content": "<Unit>重防号</> <Gain>普攻射速+{0}%</>"
+        },
+        {
+          "Name": "Card.WM01.HighSpeed.Title",
+          "TextId": "Card.WM01.HighSpeed.Title",
+          "Introduction": "重防号肉鸽卡标题",
+          "Content": "极速机动"
+        },
+        {
+          "Name": "Card.WM01.HighSpeed.Description",
+          "TextId": "Card.WM01.HighSpeed.Description",
+          "Introduction": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+          "Content": "<Unit>重防号</> <Gain>移动速度+{0}%</>"
+        },
+        {
+          "Name": "Card.WM01.MissileDamage.Title",
+          "TextId": "Card.WM01.MissileDamage.Title",
+          "Introduction": "重防号肉鸽卡标题",
+          "Content": "增加导弹伤害"
+        },
+        {
+          "Name": "Card.WM01.MissileDamage.Description",
+          "TextId": "Card.WM01.MissileDamage.Description",
+          "Introduction": "重防号肉鸽卡说明；{0}来自BonusPercent×100",
+          "Content": "<Unit>重防号</> <Gain>导弹伤害+{0}%</>"
+        },
+        {
+          "Name": "UI.RogueCards.Title",
+          "TextId": "UI.RogueCards.Title",
+          "Introduction": "实战选牌界面",
+          "Content": "命运之选"
+        },
+        {
+          "Name": "UI.RogueCards.Entering",
+          "TextId": "UI.RogueCards.Entering",
+          "Introduction": "实战选牌界面",
+          "Content": "卡牌入场中…"
+        },
+        {
+          "Name": "UI.RogueCards.Choose",
+          "TextId": "UI.RogueCards.Choose",
+          "Introduction": "实战选牌界面",
+          "Content": "移动鼠标轻压牌面 · 单击选择 · Esc 取消"
+        },
+        {
+          "Name": "UI.RogueCards.Flip",
+          "TextId": "UI.RogueCards.Flip",
+          "Introduction": "实战选牌界面",
+          "Content": "翻牌中…"
+        },
+        {
+          "Name": "UI.RogueCards.Confirm",
+          "TextId": "UI.RogueCards.Confirm",
+          "Introduction": "实战选牌界面",
+          "Content": "再次点击所选卡牌确认 · Esc 取消"
+        },
+        {
+          "Name": "UI.RogueCards.Submitting",
+          "TextId": "UI.RogueCards.Submitting",
+          "Introduction": "实战选牌界面",
+          "Content": "正在确认加成…"
+        },
+        {
+          "Name": "UI.RogueCards.Success",
+          "TextId": "UI.RogueCards.Success",
+          "Introduction": "实战选牌界面",
+          "Content": "加成已生效"
+        },
+        {
+          "Name": "UI.RogueCards.Failed",
+          "TextId": "UI.RogueCards.Failed",
+          "Introduction": "实战选牌界面",
+          "Content": "选牌失败：{0} · Esc 返回战场"
+        },
+        {
+          "Name": "UI.RogueCards.OpenFailed",
+          "TextId": "UI.RogueCards.OpenFailed",
+          "Introduction": "实战选牌界面",
+          "Content": "无法打开选牌：{0}"
+        },
+        {
+          "Name": "UI.RogueCards.Replay",
+          "TextId": "UI.RogueCards.Replay",
+          "Introduction": "实战选牌界面",
+          "Content": "重新播放"
+        },
+        {
+          "Name": "UI.RogueCards.Done",
+          "TextId": "UI.RogueCards.Done",
+          "Introduction": "实战选牌界面",
+          "Content": "选择完成"
+        },
+        {
+          "Name": "UI.Camera.GroundDistances",
+          "TextId": "UI.Camera.GroundDistances",
+          "Introduction": "指挥官只读距离采样；参数为垂直离地高度及画面中心地面距离",
+          "Content": "离地高度 {0}  |  中心地面距离 {1}"
+        },
+        {
+          "Name": "UI.Camera.Meters",
+          "TextId": "UI.Camera.Meters",
+          "Introduction": "指挥官距离数值；米，保留一位小数",
+          "Content": "{0} 米"
+        },
+        {
+          "Name": "UI.Camera.NoGround",
+          "TextId": "UI.Camera.NoGround",
+          "Introduction": "摄像机正下方无地形或中心射线未命中地形",
+          "Content": "无地形"
+        },
+        {
+          "Name": "Card.WM01.MissilePod.Title",
+          "TextId": "Card.WM01.MissilePod.Title",
+          "Introduction": "重防号肉鸽卡标题",
+          "Content": "重防导弹仓"
+        },
+        {
+          "Name": "Card.WM01.MissilePod.Description",
+          "TextId": "Card.WM01.MissilePod.Description",
+          "Introduction": "重防号导弹槽解锁；无数值占位符",
+          "Content": "<Unit>重防号</> 解锁<Gain>导弹技能</>"
+        },
+        {
+          "Name": "Card.WM01.RainSalvo.Title",
+          "TextId": "Card.WM01.RainSalvo.Title",
+          "Introduction": "重防号肉鸽卡标题",
+          "Content": "雨点攻势"
+        },
+        {
+          "Name": "Card.WM01.RainSalvo.Description",
+          "TextId": "Card.WM01.RainSalvo.Description",
+          "Introduction": "重防号肉鸽卡说明；{0}来自BonusCount",
+          "Content": "<Unit>重防号</> <Gain>导弹齐射数量+{0}</>"
+        },
+        {
+          "Name": "UI.RogueCards.Empty",
+          "TextId": "UI.RogueCards.Empty",
+          "Introduction": "无合格候选卡时显示",
+          "Content": "暂无可选牌"
+        },
+        {
+          "Name": "UI.RogueCards.AcquisitionLimit",
+          "TextId": "UI.RogueCards.AcquisitionLimit",
+          "Introduction": "结算复核：达到获取次数",
+          "Content": "该卡已达到本局获取上限"
+        },
+        {
+          "Name": "UI.RogueCards.RequirementNotMet",
+          "TextId": "UI.RogueCards.RequirementNotMet",
+          "Introduction": "结算复核：缺少依赖",
+          "Content": "尚未获得该卡要求的前置卡牌"
+        },
+        {
+          "Name": "UI.RogueCards.Excluded",
+          "TextId": "UI.RogueCards.Excluded",
+          "Introduction": "结算复核：双向互斥",
+          "Content": "该卡与本队已获得的卡牌互斥"
+        },
+        {
+          "Name": "UI.RogueCards.Reroll",
+          "TextId": "UI.RogueCards.Reroll",
+          "Introduction": "F4选牌重选按钮",
+          "Content": "重选"
+        },
+        {
+          "Name": "UI.RogueCards.Rerolling",
+          "TextId": "UI.RogueCards.Rerolling",
+          "Introduction": "F4选牌等待重选结果",
+          "Content": "正在重选…"
+        },
+        {
+          "Name": "UI.RogueCards.RerollHint",
+          "TextId": "UI.RogueCards.RerollHint",
+          "Introduction": "F4重选按钮说明",
+          "Content": "免费重新随机可选卡牌，优先换成当前未显示的牌。"
+        },
+        {
+          "Name": "UI.RogueCards.NoAlternatives",
+          "TextId": "UI.RogueCards.NoAlternatives",
+          "Introduction": "没有其他合格卡时保留当前选择",
+          "Content": "暂无其他可选卡牌"
+        },
+        {
+          "Name": "UI.RogueCards.RerollUnavailable",
+          "TextId": "UI.RogueCards.RerollUnavailable",
+          "Introduction": "重选会话过期或已提交",
+          "Content": "当前无法重选，请重新打开选牌界面"
+        },
+        {
+          "Name": "UI.RogueCards.RerollBusy",
+          "TextId": "UI.RogueCards.RerollBusy",
+          "Introduction": "重选触发服务器请求限流",
+          "Content": "操作过快，请稍后重选"
+        },
+        {
+          "Name": "UI.CommanderSkills.GuidanceBatch",
+          "TextId": "UI.CommanderSkills.GuidanceBatch",
+          "Introduction": "重防号Q本批导弹及下一Q就绪单位反馈",
+          "Content": " · 本次发射{0}发导弹，{1}台留待下次Q"
+        },
+        {
+          "Name": "UI.CommanderSkills.PioneerSummon",
+          "TextId": "UI.CommanderSkills.PioneerSummon",
+          "Introduction": "先驱号Q召唤提示",
+          "Content": "\n先驱号：按Q立即在周围召唤5个扫荡者，每台独立冷却30秒，无资源消耗。召唤兵永久可控、可累积、不占生产人口；空间或容量不足时整批失败，冷却保持不变。"
+        },
+        {
+          "Name": "UI.BuildingTypes.PopulationLimit",
+          "TextId": "UI.BuildingTypes.PopulationLimit",
+          "Introduction": "彼之矛首轮建造",
+          "Content": "军队人口已满，无法预留彼之矛人口"
+        },
+        {
+          "Name": "UI.BuildingTypes.BiZhiMao",
+          "TextId": "UI.BuildingTypes.BiZhiMao",
+          "Introduction": "彼之矛首轮建造",
+          "Content": "彼之矛"
+        },
+        {
+          "Name": "UI.Performance.NetThroughput",
+          "TextId": "UI.Performance.NetThroughput",
+          "Introduction": "当前客户端连接实际累计字节差/真实秒；收+发合计；1KB=1000B，不是配置上限",
+          "Content": "网络 收 {0} KB/s | 发 {1} KB/s | 合计 {2} KB/s"
+        },
+        {
+          "Name": "UI.Performance.NetPackets",
+          "TextId": "UI.Performance.NetPackets",
+          "Introduction": "当前连接包速率；丢包为UE计数差/秒，并非丢包百分比",
+          "Content": "包 收 {0}/s 发 {1}/s | 丢包 收 {2}/s 发 {3}/s"
+        },
+        {
+          "Name": "UI.Performance.NetTransport",
+          "TextId": "UI.Performance.NetTransport",
+          "Introduction": "本端发送额度、所有通道可靠bunch待ACK数；欠账=max(QueuedBits,0)/8，非应用队列大小",
+          "Content": "本端额度 {0} KB/s | 可靠待确认 {1} 块 | 欠账 {2} KB"
+        },
+        {
+          "Name": "UI.Performance.NetFlightReceive",
+          "TextId": "UI.Performance.NetFlightReceive",
+          "Introduction": "解码飞行事件速率及应用载荷；不等于画面播放量；年龄用估计服务器时间，排除bootstrap，可能含时钟误差",
+          "Content": "飞行事件 收 {0}/s | 载荷 {1} KB/s | 平均估龄 {2} ms"
+        },
+        {
+          "Name": "UI.Performance.NetPIETransport",
+          "TextId": "UI.Performance.NetPIETransport",
+          "Introduction": "同进程PIE匹配此客户端的服务器连接：下行发送额度、可靠待ACK块数和发送欠账",
+          "Content": "PIE下行额度 {0} KB/s | 可靠待确认 {1} 块 | 欠账 {2} KB"
+        },
+        {
+          "Name": "UI.Performance.NetPIEFlightQueue",
+          "TextId": "UI.Performance.NetPIEFlightQueue",
+          "Introduction": "同进程PIE中此客户端的飞行应用队列；队首样本时间至服务器当前时间，不等于纯排队时间",
+          "Content": "PIE本连接 飞行待发 {0} 条 | 队首事件年龄 {1} ms"
+        },
+        {
+          "Name": "UI.Performance.NetPending",
+          "TextId": "UI.Performance.NetPending",
+          "Introduction": "新建或重连后先等待完整采样区间；未知值不能显示成零",
+          "Content": "网络 收 -- KB/s | 发 -- KB/s | 合计 -- KB/s"
+        },
+        {
+          "Name": "UI.Performance.NetLocal",
+          "TextId": "UI.Performance.NetLocal",
+          "Introduction": "本面板按客户端ServerConnection统计，本地/服务端视口不显示其他客户端汇总",
+          "Content": "网络：本地视口（无客户端到服务器连接）"
+        },
+        {
+          "Name": "UI.Performance.NetFlightPending",
+          "TextId": "UI.Performance.NetFlightPending",
+          "Introduction": "未得到连续两次飞行计数采样",
+          "Content": "飞行事件 收 --/s | 载荷 -- KB/s | 平均估龄 -- ms"
+        },
+        {
+          "Name": "UI.Performance.NetPIEQueuePending",
+          "TextId": "UI.Performance.NetPIEQueuePending",
+          "Introduction": "尚未建立此客户端的服务端飞行事件通道",
+          "Content": "PIE本连接 飞行待发 --（等待通道）"
+        },
+        {
+          "Name": "UI.Performance.NetPIEUnavailable",
+          "TextId": "UI.Performance.NetPIEUnavailable",
+          "Introduction": "跨进程PIE或身份尚未匹配时，不产生额外RPC取得服务端信息",
+          "Content": "PIE服务端队列 --（需同进程服务端）"
+        },
+        {
+          "Name": "Card.GroundMech.Ricochet.Title",
+          "TextId": "Card.GroundMech.Ricochet.Title",
+          "Introduction": "游骑兵肉鸽卡标题",
+          "Content": "折射子弹"
+        },
+        {
+          "Name": "Card.GroundMech.Ricochet.Description",
+          "TextId": "Card.GroundMech.Ricochet.Description",
+          "Introduction": "{0}/{1}为本次获取后的折射随机区间",
+          "Content": "<Unit>游骑兵</> <Gain>普攻折射{0}–{1}次</>"
+        },
+        {
+          "Name": "UI.RogueCards.Capacity",
+          "TextId": "UI.RogueCards.Capacity",
+          "Introduction": "肉鸽技术容量提示",
+          "Content": "当前构筑已达到系统容量，无法继续强化"
+        },
+        {
+          "Name": "UI.RogueCards.GroundUnavailable",
+          "TextId": "UI.RogueCards.GroundUnavailable",
+          "Introduction": "地面肉鸽入口不可用",
+          "Content": "游骑兵肉鸽能力尚未就绪"
+        },
+        {
+          "Name": "Card.GroundMech.BurningBullet.Title",
+          "TextId": "Card.GroundMech.BurningBullet.Title",
+          "Introduction": "卡牌标题",
+          "Content": "灼烧子弹"
+        },
+        {
+          "Name": "Card.GroundMech.BurningBullet.Description",
+          "TextId": "Card.GroundMech.BurningBullet.Description",
+          "Introduction": "参数来自Buff持续时间",
+          "Content": "<Unit>游骑兵</> 普攻附加<Gain>{0}秒灼烧</>"
+        },
+        {
+          "Name": "Card.GroundMech.BurningBurst.Title",
+          "TextId": "Card.GroundMech.BurningBurst.Title",
+          "Introduction": "卡牌标题",
+          "Content": "灼烧爆裂子弹"
+        },
+        {
+          "Name": "Card.GroundMech.BurningBurst.Description",
+          "TextId": "Card.GroundMech.BurningBurst.Description",
+          "Introduction": "参数来自Buff独立爆裂周期",
+          "Content": "<Unit>游骑兵</> 灼烧每<Gain>{0}秒爆裂</>"
+        },
+        {
+          "Name": "Buff.Burning.Description",
+          "TextId": "Buff.Burning.Description",
+          "Introduction": "Buff参数化说明",
+          "Content": "每秒受到最大生命值的{0}%伤害，持续{1}秒。重复命中刷新时间，不叠加。"
+        },
+        {
+          "Name": "Buff.BurningBurst.Description",
+          "TextId": "Buff.BurningBurst.Description",
+          "Introduction": "Buff参数化说明",
+          "Content": "灼烧期间独立每{0}秒爆裂，造成宿主已损失生命值的{1}%范围伤害，半径为宿主的{2}倍。"
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills.DT_GuLiStrikeMech_Skills",
+      "rows": [
+        {
+          "Name": "BasicMachinegun",
+          "Id": 1,
+          "Note": "基础机枪；距离cm、时间s；射速/伤害只在升级表维护；辅助瞄准仅修正枪口，半径按目标深度投影",
+          "ProjectileSpeed": 24000,
+          "ProjectileLifetime": 5,
+          "SweepRadius": 15,
+          "MuzzleSocket": "Muzzle",
+          "RecoilBone": "Barrel_big",
+          "RecoilTargetLocalZCentimeters": 152,
+          "RecoilDuration": 0.15,
+          "RecoilCurve": "/Game/GuLiStrike/GroundMech/Animations/CF_Machinegun_Recoil.CF_Machinegun_Recoil",
+          "WeaponAnimation": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun_C",
+          "BulletVfxId": 8,
+          "MuzzleVfxId": 9,
+          "ExecutionType": "Weapon",
+          "AbilityClass": "None",
+          "MaxFuel": 0,
+          "InitialFuel": 0,
+          "FuelDrainPerSecond": 0,
+          "FuelRecoveryPerSecond": 0,
+          "FuelRecoveryDelay": 0,
+          "ThrustAcceleration": 0,
+          "MaxRiseSpeed": 0,
+          "JetVfxId": 0,
+          "JetSocketLeft": "",
+          "JetSocketRight": "",
+          "JetPitchDegrees": 0,
+          "FuelBarVfxId": 0,
+          "FuelBarHeight": 0,
+          "FuelBarRightOffset": 0,
+          "FuelBarFadeSeconds": 0,
+          "AirSpeedMultiplier": 0,
+          "JetMaxTiltDegrees": 0,
+          "FallGravityMultiplier": 0,
+          "AimAssistEnabled": true,
+          "AimAssistRadiusCentimeters": 100,
+          "JetForwardSpeedMultiplier": 0,
+          "BlinkDistance": 0,
+          "BlinkCooldownSeconds": 0,
+          "BlinkWindupSeconds": 0,
+          "BlinkRecoverySeconds": 0,
+          "BlinkArmBackDegrees": 0,
+          "BlinkBodyLeanDegrees": 0,
+          "BlinkVfxId": 0,
+          "BlinkCrouchDepthCm": 0,
+          "BlinkKneeAngleDegrees": 0,
+          "BlinkConcealSeconds": 0,
+          "BlinkRibbonCount": 0,
+          "BlinkRibbonPoints": 0,
+          "BlinkRibbonLifetimeSeconds": 0,
+          "BlinkEnergyEmission": 0,
+          "BlinkLandingSearchStepCm": 0,
+          "BlinkLandingProbeCm": 0,
+          "BlinkRibbonWidthCm": 0,
+          "BlinkShapeVfxId": 0,
+          "BlinkShapeFlickerHz": 0,
+          "BlinkShapeFragmentOffsetCm": 0,
+          "BlinkTrailLengthCm": 0,
+          "BlinkShardCount": 0,
+          "BlinkShardDuration": 0,
+          "BlinkShardSpeed": 0,
+          "ImpactVfxId": 54
+        },
+        {
+          "Name": "RocketJump",
+          "Id": 2,
+          "Note": "火箭跳；cm/s；普通空中速度=WalkSpeed×AirSpeedMultiplier；仅有效喷气+前进：前向速度=SprintSpeed×JetForwardSpeedMultiplier；空中机体方向WASD，W渐转镜头；上升/燃料独立；退出推进平滑制动",
+          "ProjectileSpeed": 0,
+          "ProjectileLifetime": 0,
+          "SweepRadius": 0,
+          "MuzzleSocket": "",
+          "RecoilBone": "",
+          "RecoilTargetLocalZCentimeters": 0,
+          "RecoilDuration": 0,
+          "RecoilCurve": "None",
+          "WeaponAnimation": "None",
+          "BulletVfxId": 0,
+          "MuzzleVfxId": 0,
+          "ExecutionType": "GAS",
+          "AbilityClass": "/Script/GuLiStrike.GuLiGA_RocketJump",
+          "MaxFuel": 100,
+          "InitialFuel": 100,
+          "FuelDrainPerSecond": 20,
+          "FuelRecoveryPerSecond": 20,
+          "FuelRecoveryDelay": 1,
+          "ThrustAcceleration": 2180,
+          "MaxRiseSpeed": 1200,
+          "JetVfxId": 10,
+          "JetSocketLeft": "Jet_Outlet_L",
+          "JetSocketRight": "Jet_Outlet_R",
+          "JetPitchDegrees": -90,
+          "FuelBarVfxId": 11,
+          "FuelBarHeight": 400,
+          "FuelBarRightOffset": 450,
+          "FuelBarFadeSeconds": 1.5,
+          "AirSpeedMultiplier": 1.5,
+          "JetMaxTiltDegrees": 15,
+          "FallGravityMultiplier": 2,
+          "AimAssistEnabled": false,
+          "AimAssistRadiusCentimeters": 0,
+          "JetForwardSpeedMultiplier": 2,
+          "BlinkDistance": 0,
+          "BlinkCooldownSeconds": 0,
+          "BlinkWindupSeconds": 0,
+          "BlinkRecoverySeconds": 0,
+          "BlinkArmBackDegrees": 0,
+          "BlinkBodyLeanDegrees": 0,
+          "BlinkVfxId": 0,
+          "BlinkCrouchDepthCm": 0,
+          "BlinkKneeAngleDegrees": 0,
+          "BlinkConcealSeconds": 0,
+          "BlinkRibbonCount": 0,
+          "BlinkRibbonPoints": 0,
+          "BlinkRibbonLifetimeSeconds": 0,
+          "BlinkEnergyEmission": 0,
+          "BlinkLandingSearchStepCm": 0,
+          "BlinkLandingProbeCm": 0,
+          "BlinkRibbonWidthCm": 0,
+          "BlinkShapeVfxId": 0,
+          "BlinkShapeFlickerHz": 0,
+          "BlinkShapeFragmentOffsetCm": 0,
+          "BlinkTrailLengthCm": 0,
+          "BlinkShardCount": 0,
+          "BlinkShardDuration": 0,
+          "BlinkShardSpeed": 0,
+          "ImpactVfxId": 0
+        },
+        {
+          "Name": "Blink",
+          "Id": 3,
+          "Note": "Endpoint teleport; one moving mech-shaped energy proxy; real model concealed; no Blink Loop animation; cm/s",
+          "ProjectileSpeed": 0,
+          "ProjectileLifetime": 0,
+          "SweepRadius": 0,
+          "MuzzleSocket": "",
+          "RecoilBone": "",
+          "RecoilTargetLocalZCentimeters": 0,
+          "RecoilDuration": 0,
+          "RecoilCurve": "None",
+          "WeaponAnimation": "None",
+          "BulletVfxId": 0,
+          "MuzzleVfxId": 0,
+          "ExecutionType": "GAS",
+          "AbilityClass": "/Script/GuLiStrike.GuLiGA_Blink",
+          "MaxFuel": 0,
+          "InitialFuel": 0,
+          "FuelDrainPerSecond": 0,
+          "FuelRecoveryPerSecond": 0,
+          "FuelRecoveryDelay": 0,
+          "ThrustAcceleration": 0,
+          "MaxRiseSpeed": 0,
+          "JetVfxId": 0,
+          "JetSocketLeft": "",
+          "JetSocketRight": "",
+          "JetPitchDegrees": 0,
+          "FuelBarVfxId": 0,
+          "FuelBarHeight": 0,
+          "FuelBarRightOffset": 0,
+          "FuelBarFadeSeconds": 0,
+          "AirSpeedMultiplier": 0,
+          "JetMaxTiltDegrees": 0,
+          "FallGravityMultiplier": 0,
+          "AimAssistEnabled": false,
+          "AimAssistRadiusCentimeters": 0,
+          "JetForwardSpeedMultiplier": 0,
+          "BlinkDistance": 3200,
+          "BlinkCooldownSeconds": 2,
+          "BlinkWindupSeconds": 0.02,
+          "BlinkRecoverySeconds": 0.3,
+          "BlinkArmBackDegrees": 145,
+          "BlinkBodyLeanDegrees": 30,
+          "BlinkVfxId": 56,
+          "BlinkCrouchDepthCm": 60,
+          "BlinkKneeAngleDegrees": 80,
+          "BlinkConcealSeconds": 0.22,
+          "BlinkRibbonCount": 96,
+          "BlinkRibbonPoints": 24,
+          "BlinkRibbonLifetimeSeconds": 0.65,
+          "BlinkEnergyEmission": 8,
+          "BlinkLandingSearchStepCm": 100,
+          "BlinkLandingProbeCm": 600,
+          "BlinkRibbonWidthCm": 6,
+          "BlinkShapeVfxId": 57,
+          "BlinkShapeFlickerHz": 18,
+          "BlinkShapeFragmentOffsetCm": 6,
+          "BlinkTrailLengthCm": 3200,
+          "BlinkShardCount": 128,
+          "BlinkShardDuration": 0.32,
+          "BlinkShardSpeed": 1000,
+          "ImpactVfxId": 0
+        }
+      ]
+    }
+  ],
+  "texts": {
+    "Card.GroundMech.BurningBullet.Title": "灼烧子弹",
+    "Card.GroundMech.BurningBullet.Description": "<Unit>游骑兵</> 普攻附加<Gain>{0}秒灼烧</>",
+    "Card.GroundMech.BurningBurst.Title": "灼烧爆裂子弹",
+    "Card.GroundMech.BurningBurst.Description": "<Unit>游骑兵</> 灼烧每<Gain>{0}秒爆裂</>",
+    "Buff.Burning.Description": "每秒受到最大生命值的{0}%伤害，持续{1}秒。重复命中刷新时间，不叠加。",
+    "Buff.BurningBurst.Description": "灼烧期间独立每{0}秒爆裂，造成宿主已损失生命值的{1}%范围伤害，半径为宿主的{2}倍。"
+  },
+  "PIE": false,
+  "assistant_visual_test": false,
+  "visual_acceptance": "pending_user"
+}

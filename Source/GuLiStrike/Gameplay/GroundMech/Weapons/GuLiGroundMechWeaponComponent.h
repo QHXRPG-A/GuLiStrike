@@ -3,6 +3,7 @@
 #include "Components/ActorComponent.h"
 #include "Gameplay/Data/Generated/GuLiStrikeMechTableRows.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "GuLiGroundAttackSnapshot.h"
 #include "GuLiGroundMechWeaponComponent.generated.h"
 
 class UNiagaraSystem;
@@ -32,8 +33,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category="Mech|Weapon") bool ApplyUpgradeById(const FString& Id);
     UFUNCTION(BlueprintCallable, Category="Mech|Weapon") FGuid RequestUpgradeById(const FString& Id);
     bool ApplyHybridUpgrade(const FGuLiHybridObjectState& State);
-	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetFireRate() const { return ActiveUpgrade.FireRate; }
-	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetShotDamage() const { return ActiveUpgrade.Damage; }
+	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetFireRate() const { return EffectiveFireRate; }
+	UFUNCTION(BlueprintPure, Category="Mech|Weapon") float GetShotDamage() const { return CachedAttack.Damage; }
     int32 GetWeaponLevel() const { return ActiveUpgrade.Level; }
     int32 GetSkillIconId() const { return ActiveSkill.IconId; }
     bool CanUseLocalWeapon() const { return CanControl(true); }
@@ -42,7 +43,9 @@ public:
     /** Build the per-shot payload; admission independently freezes its authorized numeric capability. */
     FGuLiGroundAttackSnapshot BuildAttackSnapshot() const;
 	/** Local presentation only; called from the unified accepted launch event. */
-	void PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex = 0,int32 FrozenMuzzleVfxId=INDEX_NONE);
+	void PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex = 0,int32 FrozenMuzzleVfxId=INDEX_NONE,float FrozenFireRate=0);
+	/** Called only by the real animation notify; never submits gameplay during pose evaluation. */
+	void QueueFireAnimationNotify(uint8 Side);
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") bool bWeaponEnabled = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UDataTable> UpgradeTable;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UDataTable> SkillTable;
@@ -57,6 +60,7 @@ protected:
 	virtual void EndPlay(EEndPlayReason::Type Reason) override;
 private:
 	friend class FGuLiHybridGroundAdapter;
+	friend class UGuLiGroundRogueDebugLibrary;
 	friend class AGuLiGroundMechCharacter;
 	void AdvanceHybrid(float DeltaSeconds,bool bFire,const FVector& Aim,bool bHasAim);
 #if WITH_DEV_AUTOMATION_TESTS
@@ -75,6 +79,11 @@ private:
 	void RegisterSource();
 	void AlignGun();
 	void TryFire();
+	void FireFromAnimation(uint8 Side,uint64 Serial,double FireTime);
+    UFUNCTION() void OnRogueBuildChanged(FGuid Player,int64 Revision);
+    void RefreshRogueBuild(FGuid Player=FGuid(),int64 Revision=0);
+    FGuLiGroundAttackSnapshot CachedAttack;
+    float EffectiveFireRate=0;
 	USkeletalMeshComponent* Gun() const;
 	FName MuzzleSocket(uint8 Index) const;
 	UPROPERTY() FGuLiStrikeMechUpgradesRow ActiveUpgrade;
@@ -93,6 +102,13 @@ private:
 	bool bConfigured = false;
 	bool bHasAim = false;
 	double NextShotTime = 0;
+	uint64 FireSerial=0;
+	uint8 NextFireSide=0;
+	float SavedFirePhase=0;
+	bool bAcceptingFireNotifies=false,bRestoreFirePhase=false;
+	struct FFireNotification {uint8 Side;uint64 Serial;double Time;};
+	TArray<FFireNotification,TInlineAllocator<2>> PendingFireNotifications;
+	void PresentAnimationFire(FGuid Shot,float Time,uint8 Side,int32 MuzzleVfx);
 	uint32 SourceEpoch = 0;
 	TSet<FGuid> SeenShots;
 };

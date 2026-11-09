@@ -99,6 +99,7 @@ public:
     const CommitResult* FindResult(Id Event) const {const auto I=Results.find(Event);return I==Results.end()?nullptr:&I->second;}
     Revision Version(const StateKey& Key) const;
     const std::map<ObjectKey,ObjectRecord>& Objects() const {return Directory;}
+    std::size_t LiveObjectCount() const {return IndexedSource().LivingObjects.size();}
     const Economy& TeamEconomy() const {return EconomyLedger;}
     const ResourceLedger& WorldResources() const {return ResourceLedgerValue;}
     const MiningReservations& MiningPositions() const {return MiningReservationsValue;}
@@ -156,6 +157,8 @@ private:
     // Retired records remain available to in-flight work and deduplication;
     // frequent simulation queries must not traverse that historical directory.
     std::set<ObjectKey> LivingObjects,ShieldObjects;
+    std::map<std::pair<ObjectKind,Team>,std::uint32_t> LivingFactionKindCounts;
+    std::map<ObjectKey,Team> IndexedLivingFactions;
     std::map<ObjectKey,std::set<ObjectKey>> LiveChildren;
     std::map<ObjectKey,ObjectKey> IndexedParents;
     std::map<std::string,std::set<ObjectKey>> MutationMembers;

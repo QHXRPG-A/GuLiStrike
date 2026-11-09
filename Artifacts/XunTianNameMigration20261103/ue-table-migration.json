@@ -1,0 +1,167 @@
+{
+  "status": "passed",
+  "tables": [
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models",
+      "rows": 81,
+      "sha256_before_ue_export": "e2c003025f0974f570015852eeb07da6c0f8a0a3db5607d7dadd79bca46e1808",
+      "allowed_text_fields": {
+        "ShipDreadnoughtHull": [
+          "DisplayName",
+          "Description"
+        ]
+      },
+      "status": "saved_and_read_back",
+      "sha256_after_ue_export": "8830a271ac7782ea5ec30a14a716fc153655f6b6654b78d2f4bff7a8d40cb0f0",
+      "non_text_fields_unchanged": true,
+      "source_matches": true,
+      "current_rows": [
+        {
+          "Name": "ShipDreadnoughtHull",
+          "Id": 5002,
+          "Note": "本轮保留现有配色",
+          "DisplayName": "巡天",
+          "ResourceType": "StaticMesh",
+          "ResourcePath": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
+          "VATDefinition": "None",
+          "bTeamColorEnabled": false,
+          "BluePrimaryHex": "#6AA4BE",
+          "BlueSecondaryHex": "#274E61",
+          "EnemyPrimaryHex": "#A34053",
+          "EnemySecondaryHex": "#662249",
+          "CandidateResourcePath": "None",
+          "CandidateVATDefinition": "None",
+          "Description": "巡天是玩家亲自操控的第一代飞船（HullModelId=5002，Dreadnought 预设）；用于舰体显示和部件挂载，保留原几何与 socket。"
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Tuning",
+      "rows": 2,
+      "sha256_before_ue_export": "4225dac2b5bb8048972257831d6c648367bd1b0aca8c1ce77b37f700c24b697e",
+      "allowed_text_fields": {
+        "Dreadnought": [
+          "Note"
+        ]
+      },
+      "status": "saved_and_read_back",
+      "sha256_after_ue_export": "bf8ef8fd3161e967f4bc79d76a849fd3ba8f8818c23acab280ef515505271d72",
+      "non_text_fields_unchanged": true,
+      "source_matches": true,
+      "current_rows": [
+        {
+          "Name": "Dreadnought",
+          "Id": 2,
+          "Note": "巡天 CombatAvatarFly-01 裸舰体；HullMeshOffset 为居中补偿(艏向+X)",
+          "HullMass": 100,
+          "BaseMaxSpeed": 3240,
+          "BaseAcceleration": 480,
+          "NominalThrustRatio": 6,
+          "SpeedMultiplierMin": 0.5,
+          "SpeedMultiplierMax": 2,
+          "BoostThrustMultiplier": 2,
+          "MousePitchScale": 1,
+          "MouseYawScale": 1,
+          "YawRate": 13.3333,
+          "YawResponseSpeed": 3,
+          "YawStopDamping": 1,
+          "MaxBankAngle": 5,
+          "BankInterpSpeed": 4,
+          "OrientTurnSpeed": 2.5,
+          "OrientToMovement": false,
+          "OrientMinForwardDot": 0.3,
+          "HullMeshOffset": "(X=-7081.000000,Y=0.000000,Z=-464.500000)",
+          "HullModelId": 5002
+        }
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Camera",
+      "rows": 2,
+      "sha256_before_ue_export": "2c28b774a95c93bcbfb099ac89694a2ef699462a706743f699f978e2a7a1a6cd",
+      "allowed_text_fields": {
+        "Dreadnought": [
+          "Note"
+        ]
+      },
+      "status": "saved_and_read_back",
+      "sha256_after_ue_export": "10cc66a29290e3147d5dc6fe3ab050674dde8c3986d2949a1ce47d2806465d18",
+      "non_text_fields_unchanged": true,
+      "source_matches": true,
+      "current_rows": [
+        {
+          "Name": "Dreadnought",
+          "Id": 2,
+          "Note": "巡天 CombatAvatarFly-01；Scale020后使用最终厘米值，臂长5000、探测半径666.6666；角度不变",
+          "CameraDefaultArmLength": 5000,
+          "CameraZoomStep": 1333.33,
+          "CameraZoomMin": 2666.67,
+          "CameraZoomMax": 16666.7,
+          "CameraCollisionProbeRadius": 666.667,
+          "CameraCollisionMinArm": 166.667,
+          "CameraPitchMin": -80,
+          "CameraPitchMax": 80
+        }
+      ]
+    },
+    {
+      "asset": "/Game/Development/HybridAcceptance/DT_AcceptanceModels",
+      "rows": 82,
+      "sha256_before_ue_export": "c4db134b7ec98aa637ad20b2433c27c684c1a4db341ecce3605b84994bf5981f",
+      "allowed_text_fields": {
+        "ShipDreadnoughtHull": [
+          "DisplayName",
+          "Description"
+        ]
+      },
+      "status": "saved_and_read_back",
+      "sha256_after_ue_export": "1f675cd92ba1244ff87ad490ae19dabf010f87766b3f624133b7c7c659c9f3bc",
+      "non_text_fields_unchanged": true,
+      "source_matches": true,
+      "current_rows": [
+        {
+          "Name": "ShipDreadnoughtHull",
+          "Id": 5002,
+          "Note": "本轮保留现有配色",
+          "DisplayName": "巡天",
+          "ResourceType": "StaticMesh",
+          "ResourcePath": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
+          "VATDefinition": "None",
+          "bTeamColorEnabled": false,
+          "BluePrimaryHex": "#6AA4BE",
+          "BlueSecondaryHex": "#274E61",
+          "EnemyPrimaryHex": "#A34053",
+          "EnemySecondaryHex": "#662249",
+          "CandidateResourcePath": "None",
+          "CandidateVATDefinition": "None",
+          "Description": "巡天是玩家亲自操控的第一代飞船（HullModelId=5002，Dreadnought 预设）；用于舰体显示和部件挂载，保留原几何与 socket。"
+        }
+      ]
+    }
+  ],
+  "mode": "existing pipeline native in-place DataTable importer; no object replacement or blueprint rewiring",
+  "blueprints_before": {
+    "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01": {
+      "tuning_preset": "Dreadnought",
+      "tuning_data_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Tuning.DT_GuLiStrikeShip_Tuning",
+      "camera_data_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Camera.DT_GuLiStrikeShip_Camera",
+      "part_data_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Parts.DT_GuLiStrikeShip_Parts"
+    },
+    "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip": {
+      "tuning_preset": "Default",
+      "tuning_data_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Tuning.DT_GuLiStrikeShip_Tuning",
+      "camera_data_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Camera.DT_GuLiStrikeShip_Camera",
+      "part_data_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Parts.DT_GuLiStrikeShip_Parts"
+    }
+  },
+  "native_build": "not_run",
+  "PIE": "not_run",
+  "visual": "not_run",
+  "blueprint_identity_unchanged": true,
+  "public_texts": {
+    "rows": 315,
+    "source_and_string_table_match": true,
+    "changed": false,
+    "reason": "No current-craft proper name in public text rows; UI role label comes from native LOCTEXT."
+  }
+}

@@ -28,7 +28,7 @@ for actor in unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_le
                                  'components': [describe_component(c) for c in actor.get_components_by_class(unreal.StaticMeshComponent)]})
 
 hulls = [c for bp in report['blueprints'] for c in bp['components'] if c['mesh'] and 'Dreadnought' in c['mesh']]
-assert hulls, 'The inspected Ship Blueprints do not reference a Dreadnought hull.'
+assert hulls, 'The inspected Ship Blueprints do not reference the 巡天 hull.'
 mesh_path = hulls[-1]['mesh']
 mesh = unreal.load_asset(mesh_path)
 report['source_mesh'] = mesh_path

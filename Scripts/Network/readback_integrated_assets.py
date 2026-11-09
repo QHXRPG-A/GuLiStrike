@@ -15,13 +15,24 @@ for path,record in profile['assets'].items():
     if value!=record['sha256']: raise RuntimeError('Saved profile table differs from its export: '+path)
     tables[path]=value
 migration=json.loads((root/'Config/Hybrid/ProductionBlueprintMigration.json').read_text(encoding='utf-8'))
-review=json.loads((root/migration['semantic_review']).read_text(encoding='utf-8'))
-blueprints=json.loads(unreal.GuLiHybridAuthoringLibrary.inspect_production_blueprints([v['asset'] for v in review['assets']]))
+path=root/'Config/Hybrid/AcceptanceAssetReadback.json'
+review_file=root/migration['semantic_review']
+if review_file.is_file():
+    reviewed=json.loads(review_file.read_text(encoding='utf-8'))['assets']
+else:
+    reviewed=json.loads(path.read_text(encoding='utf-8'))['blueprints']['assets']
+# Use the current player mesh's animation Blueprint even when the historical
+# migration review lists the retired legs and separate-weapon graphs.
+ground='/Game/GuLiStrike/GroundMech'
+pawn=unreal.get_default_object(unreal.EditorAssetLibrary.load_blueprint_class(ground+'/BP_GroundMech_Light'))
+anim=pawn.get_editor_property('mesh').get_editor_property('anim_class')
+paths=[v['asset'] for v in reviewed if not v['asset'].startswith(ground+'/Animations/')]
+paths.append(anim.get_path_name().removesuffix('_C'))
+blueprints=json.loads(unreal.GuLiHybridAuthoringLibrary.inspect_production_blueprints(sorted(set(paths))))
 # Readback must not save unrelated packages that merely loaded with the editor.
 # The authoring step saves its own map and reviewed assets before this inspection.
 entry=json.loads(unreal.GuLiHybridAuthoringLibrary.read_hybrid_review_entry())
 result={'schema':'guli-integrated-assets/v1','tables':tables,'blueprints':blueprints,'map_entry':entry,
         'success':bool(blueprints.get('success') and entry.get('success')),'gameplay_executed':False}
-path=root/'Config/Hybrid/AcceptanceAssetReadback.json'
 path.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
 unreal.MCPythonHelper.submit_result(json.dumps({'success':result['success'],'report':str(path),'tables':len(tables)}))

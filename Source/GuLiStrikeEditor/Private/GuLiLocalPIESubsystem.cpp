@@ -49,7 +49,7 @@ namespace
 {
 const TCHAR* LocalMap=TEXT("/Game/Maps/LVL_CommanderMassPrototype");
 TAutoConsoleVariable<int32> LogicDiagnostics(TEXT("gs.LocalPIE.LogicDiagnostics"),0,
-    TEXT("Opt-in correctness snapshots from the owned logic client on the next PIE launch; never use for performance sampling."));
+    TEXT("Next PIE launch: 0 normal, 1 correctness snapshots, 2 existing network fault review. Never use diagnostics for performance sampling."));
 UWorld* EditorWorld()
 {
     if (GEditor) for (const auto& Context:GEditor->GetWorldContexts())
@@ -89,7 +89,7 @@ struct UGuLiLocalPIESubsystem::FState
     TArray<TSharedPtr<FJsonValue>> Shutdown;
     bool CleanupComplete=false;
     double Started=0;
-    bool Active=false,Began=false;
+    bool Active=false,Began=false,ReachedReady=false;
     TOptional<EGuLiCommanderRole> LastSelectedRole;
 #if PLATFORM_WINDOWS
     HANDLE Job=nullptr,StopEvent=nullptr;
@@ -142,7 +142,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     const auto* Settings=GetDefault<UGuLiLocalPIESettings>();
     if (!GEditor || !IsLocalMap(EditorWorld()) || !Settings->bEnabled) return true;
     if (State->Active) return true;
-    State->Error.Reset();State->Began=false;State->Shutdown.Reset();State->CleanupComplete=false;
+    State->Error.Reset();State->Began=false;State->ReachedReady=false;State->Shutdown.Reset();State->CleanupComplete=false;
     auto Fail=[&](const FString& Why)
     { State->Error=Why;Error=Why;StopChildren();UE_LOG(LogTemp,Error,TEXT("[GuLiLocalPIE] %s"),*Why);return false; };
     if (Settings->MainRole!=EGuLiCommanderRole::Commander && Settings->MainRole!=EGuLiCommanderRole::Ground
@@ -235,8 +235,9 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
         *Project,LocalMap,*Config.RoomId.ToString(EGuidFormats::Digits),*State->Peer.ToString(EGuidFormats::Digits),
         Config.HotspotMask,Config.GameplayWorkers,*Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")))+ClientStopArguments+CpuOptions;
     if (LogicDiagnostics.GetValueOnGameThread()!=0)
-        Args+=FString::Printf(TEXT(" -GuLiAcceptanceRun=%s -GuLiAcceptanceCase=combat-diagnostics -GuLiAcceptanceDirectory=\"%s\""),
+        Args+=FString::Printf(TEXT(" -GuLiAcceptanceRun=%s -GuLiAcceptanceCase=%s -GuLiAcceptanceDirectory=\"%s\""),
             *Config.RoomId.ToString(EGuidFormats::Digits),
+            LogicDiagnostics.GetValueOnGameThread()==2?TEXT("fault_ground_fire"):TEXT("combat-diagnostics"),
             *FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()/TEXT("TestResults/LocalPIE")/Config.RoomId.ToString(EGuidFormats::Digits)/TEXT("Logic")));
     if (!Launch(Client,Args,State->Logic,State->LogicPid)) return Fail(TEXT("Could not start the owned logic client."));
     UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] room=%s editor=%u logic=%u coordinator=%u role=%s"),
@@ -307,9 +308,12 @@ bool UGuLiLocalPIESubsystem::Tick(float)
         && State->Logic.IsValid() && FPlatformProcess::IsProcRunning(State->Logic);
     UWorld* World=GEditor->PlayWorld.Get();
     auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
-    if (!Children || (State->Began && FPlatformTime::Seconds()-State->Started>120 && (!Hybrid || !Hybrid->IsWorldReady())))
+    if(Hybrid && Hybrid->IsWorldReady())State->ReachedReady=true;
+    const bool StartupTimedOut=!State->ReachedReady && State->Began && FPlatformTime::Seconds()-State->Started>120;
+    const FString Failure=Hybrid?Hybrid->GetFailure():FString();
+    if(!Children || StartupTimedOut || !Failure.IsEmpty())
     {
-        State->Error=Children?TEXT("Local PIE startup did not settle within 120 seconds."):TEXT("An owned local PIE child exited.");
+        State->Error=!Failure.IsEmpty()?Failure:!Children?TEXT("An owned local PIE child exited."):TEXT("Local PIE startup did not settle within 120 seconds.");
         UE_LOG(LogTemp,Error,TEXT("[GuLiLocalPIE] %s"),*State->Error);
         GEditor->RequestEndPlayMap();StopChildren();
     }

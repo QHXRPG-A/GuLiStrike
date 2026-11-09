@@ -233,18 +233,44 @@ namespace GuLiCommanderNavigationPolicy
 				&& !A.DesiredVelocity.ContainsNaN() && FMath::IsFinite(A.RadiusCentimeters)
 				&& A.RadiusCentimeters > 0.0f && FMath::IsFinite(A.MaximumSpeed) && A.MaximumSpeed >= 0.0f;
 		};
-		float MaximumRadius = 0.0f, MaximumSpeed = 0.0f;
-		for (const auto& A : Agents) if (IsValid(A))
+		struct FPair {int32 A,B;FVector Normal;float Penetration;};
+		struct FScratch
 		{
+			TArray<uint8> Valid;
+			TMap<uint64,int32> ManualIndexByIdentity;
+			TArray<int32> SharedToManual;
+			TArray<FPair> Pairs;
+		};
+		// This solver invokes no callbacks and never recurses. Only owned primitive
+		// arrays survive the call; every index and validity byte is rebuilt below.
+		static thread_local FScratch Scratch;
+		auto& Valid=Scratch.Valid;Valid.SetNumUninitialized(Agents.Num(),EAllowShrinking::No);
+		auto& ManualIndexByIdentity=Scratch.ManualIndexByIdentity;ManualIndexByIdentity.Reset();
+		auto& SharedToManual=Scratch.SharedToManual;SharedToManual.Reset();
+		auto& Pairs=Scratch.Pairs;Pairs.Reset();
+		const bool bUniqueShared=SharedGeometry && SharedGeometry->IndexByIdentity.Num()==SharedGeometry->Agents.Num();
+		float MaximumRadius = 0.0f, MaximumSpeed = 0.0f;
+		for (int32 I=0;I<Agents.Num();++I)
+		{
+			const auto& A=Agents[I];Valid[I]=IsValid(A);if (!Valid[I]) continue;
 			MaximumRadius = FMath::Max(MaximumRadius, A.RadiusCentimeters);
 			MaximumSpeed = FMath::Max(MaximumSpeed, A.MaximumSpeed);
 		}
 		const float CellSize = SharedGeometry ? SharedGeometry->CellSize : FMath::Max(300.0f, MaximumRadius * 2.0f);
-		TMap<uint64, int32> ManualIndexByIdentity;
-		for (int32 I = 0; I < Agents.Num(); ++I) if (IsValid(Agents[I]))
+		if (SharedGeometry) SharedToManual.Init(INDEX_NONE,SharedGeometry->Agents.Num());
+		for (int32 I = 0; I < Agents.Num(); ++I) if (Valid[I])
 		{
 			const auto& A = Agents[I];
-			if (SharedGeometry) ManualIndexByIdentity.Add(A.StableEntityKey, I);
+			if (bUniqueShared)
+			{
+				// Reuse the geometry's full-generation index. The same-position hint
+				// is accepted only after exact identity validation; duplicate manual
+				// identities still resolve to the last valid entry, as in TMap::Add.
+				const int32* Found=SharedGeometry->Agents.IsValidIndex(I) && SharedGeometry->Agents[I].StableKey==A.StableEntityKey
+					? &I : SharedGeometry->IndexByIdentity.Find(A.StableEntityKey);
+				if (Found && !SharedGeometry->Agents[*Found].bEnvironment) SharedToManual[*Found]=I;
+			}
+			else if (SharedGeometry) ManualIndexByIdentity.Add(A.StableEntityKey, I);
 			else
 			{
 				auto& Bucket = InOutSpatialGrid.FindOrAdd(MakeAvoidanceSpatialCell(A.Location, CellSize));
@@ -254,16 +280,12 @@ namespace GuLiCommanderNavigationPolicy
 			if (A.bReceivesAvoidance) OutVelocities[I] = A.DesiredVelocity.GetClampedToMaxSize(A.MaximumSpeed);
 		}
 		if (SharedGeometry) Metrics.MaximumBucketOccupancy = SharedGeometry->MaximumBucketOccupancy;
-		TArray<int32> SharedToManual;
-		if (SharedGeometry)
+		if (SharedGeometry && !bUniqueShared)
 		{
-			SharedToManual.Init(INDEX_NONE, SharedGeometry->Agents.Num());
 			for (int32 I=0; I<SharedGeometry->Agents.Num(); ++I)
 				if (!SharedGeometry->Agents[I].bEnvironment)
 					if (const int32* J=ManualIndexByIdentity.Find(SharedGeometry->Agents[I].StableKey)) SharedToManual[I]=*J;
 		}
-		struct FPair { int32 A, B; FVector Normal; float Penetration; };
-		TArray<FPair> Pairs;
 		TArray<const GuLiCommanderAvoidancePolicy::FAvoidanceBucket*, TInlineAllocator<64>> SharedBuckets;
 		// An agent that neither receives avoidance nor yields starts and remains at
 		// zero velocity. Two such agents cannot affect any solve iteration. Keep
@@ -273,7 +295,7 @@ namespace GuLiCommanderNavigationPolicy
 			return A.bReceivesAvoidance || A.bCanBePushed;
 		};
 		for (int32 I = 0; I < Agents.Num(); ++I)
-			if (IsValid(Agents[I]) && (!bOnlyActivePairs || IsActive(Agents[I])))
+			if (Valid[I] && (!bOnlyActivePairs || IsActive(Agents[I])))
 		{
 			const auto& A = Agents[I];
 			const auto Cell = MakeAvoidanceSpatialCell(A.Location, CellSize);
@@ -376,7 +398,7 @@ namespace GuLiCommanderNavigationPolicy
 		for (int32 I = 0; I < Agents.Num(); ++I)
 		{
 			const auto& A = Agents[I];
-			if (IsValid(A) && !A.bReceivesAvoidance && A.bCanBePushed
+			if (Valid[I] && !A.bReceivesAvoidance && A.bCanBePushed
 				&& !OutVelocities[I].IsNearlyZero(1.0f))
 			{
 				OutVelocities[I] = OutVelocities[I].GetSafeNormal2D() * A.MaximumSpeed;

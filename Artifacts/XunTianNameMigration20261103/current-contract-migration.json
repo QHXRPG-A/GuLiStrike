@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "files": [
+    {
+      "path": "Config\\Hybrid\\AcceptanceProfile.json",
+      "sha256_before": "2d0feb3f6a3dbd0e46db085b5780defb50bff95d131dc04e1781cf5c74f3b7de",
+      "status": "saved",
+      "previous_asset_sha256": "d5366a9ebb20dc0c4c84ef360340a41fa6fbe2f3939af95930d0cd09e2485a3d",
+      "current_asset_sha256": "1f675cd92ba1244ff87ad490ae19dabf010f87766b3f624133b7c7c659c9f3bc",
+      "previous_source_sha256": "4fec87870b44d933dfbbb4587eba96d0d399aa3a2ae14d492d2b48573659acc6",
+      "current_source_sha256": "8830a271ac7782ea5ec30a14a716fc153655f6b6654b78d2f4bff7a8d40cb0f0",
+      "sha256_after": "c80ac6d1d02b22917a1bd36d034f7694dcc1d411f351b8ba6cf418ad83f438df"
+    },
+    {
+      "path": "Config\\Hybrid\\AcceptanceAssetReadback.json",
+      "sha256_before": "3bb52ecdd3425c0b5a55de8c9a04e2641996984a757e771b04219805877da199",
+      "status": "saved",
+      "sha256_after": "9921b7e61fc3cc3a972da82d6696b826e66a3f5961b9df03dad01d3c56ddf56d"
+    }
+  ],
+  "current_table_contracts_updated": true,
+  "runtime_manifest_files_changed": false,
+  "additional_native_manifest_check": {
+    "status": "not_passed",
+    "path": "Config/Hybrid/AcceptanceManifest-200.json",
+    "sha256": "8c8ce83702e942e5700f1273ca3e1b5864d2d3ee5ff39e8900e72d66954531fc",
+    "error": "Missing, oversized or malformed Hybrid runtime manifest",
+    "scope_note": "现有网络清单未被本次任务修改；已加载原生模块未能解析。保留为额外静态检查缺口，不扩展协议修复、不重新导出或编译。"
+  }
+}

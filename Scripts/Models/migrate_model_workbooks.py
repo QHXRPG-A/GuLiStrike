@@ -127,15 +127,15 @@ def main():
     ssf = [m for m in art['models'] if m['name'].startswith('SSF_')]
     for i, m in enumerate(ssf, 3001): add(m['name'], m.get('display_name', m['name']), m['mesh'], i, True)
     ground = {x['component']: x for x in baseline['ground']}
-    add('GroundMech', '玩家地面机甲', ground['CharacterMesh0']['mesh']['path'], 4001)
+    add('GroundMech', '玩家游骑兵', ground['CharacterMesh0']['mesh']['path'], 4001)
     for i, key in enumerate(['Armor', 'Shoulder', 'Machinegun'], 4002):
-        child = add('GroundMech_' + key, '地面机甲 ' + key, ground[key]['mesh']['path'], i)
+        child = add('GroundMech_' + key, '游骑兵 ' + key, ground[key]['mesh']['path'], i)
         parts.append(dict(ModelId=4001, PartKey=key, ComponentPath=key, ChildModelId=child))
     parts.append(dict(ModelId=4001, PartKey='Legs', ComponentPath='CharacterMesh0', ChildModelId=0))
     hull_refs = {}
     for i, ship in enumerate(baseline['ships'], 5001):
         name = 'ShipDefaultHull' if i == 5001 else 'ShipDreadnoughtHull'
-        hull_refs['Default' if i == 5001 else 'Dreadnought'] = add(name, name, ship['hull']['mesh']['path'], i)
+        hull_refs['Default' if i == 5001 else 'Dreadnought'] = add(name, name if i == 5001 else '巡天', ship['hull']['mesh']['path'], i)
     for i, p in enumerate(baseline['ships'][0]['parts'], 5101):
         # Two Thor part classes deliberately share one mesh identity; their gameplay IDs remain distinct.
         model_id = by_path.get(p['mesh']['path']) or add(p['part_id'], p['part_id'], p['mesh']['path'], i)

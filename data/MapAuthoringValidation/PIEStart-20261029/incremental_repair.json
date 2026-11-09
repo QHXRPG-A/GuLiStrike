@@ -1,0 +1,104 @@
+{
+  "success": true,
+  "date": "2026-10-29",
+  "scope": "Added deployment revalidation and production manifests only",
+  "PIE_started": false,
+  "native_build": false,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "before": {
+    "success": true,
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territory_count": 49,
+    "cluster_count": 240,
+    "node_count": 6240,
+    "initial_soldier_count": 23,
+    "validated_initial_soldier_count": 23,
+    "issues": []
+  },
+  "resource_before": {
+    "asset": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territories": 49,
+    "clusters": 240,
+    "nodes": 6240
+  },
+  "geometry_before": "07e42b96227b53cadd7b11fb9142588aec6ee32be85079c3bd32bf053d5d72a3",
+  "source_actor_count": 51,
+  "manifests_before": {
+    "200": "209a705efab59de552dfd1785b7b92f511d73b775a5d1080fcf5a694722b7b2b",
+    "600": "a7ed051506ca7cf7b2cc8551773c32b050420cdeccbfb5e856e546726c37602b"
+  },
+  "after": {
+    "success": true,
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territory_count": 49,
+    "cluster_count": 240,
+    "node_count": 6240,
+    "initial_soldier_count": 23,
+    "validated_initial_soldier_count": 23,
+    "issues": []
+  },
+  "resource_after": {
+    "asset": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territories": 49,
+    "clusters": 240,
+    "nodes": 6240
+  },
+  "geometry_after": "07e42b96227b53cadd7b11fb9142588aec6ee32be85079c3bd32bf053d5d72a3",
+  "source_actors_unchanged": true,
+  "manifests_after": [
+    {
+      "population": 200,
+      "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 167,
+        "tables": 5
+      },
+      "validation": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 167,
+        "tables": 0
+      },
+      "config_hash": "44ba3f6a0d2dd19dd0c09e4300d28d6e4f86829bb0cea6160cf0ae9f2f47ba8e",
+      "map_hash": "29d7e3429453c317cd22f65681ba9a1eb4116461d3b6457bf727c854ea2e0145",
+      "sha256": "5fe26ee0ef191a6583566e852f26488b53e176ba4ba4a221f8fd978a0161f955"
+    },
+    {
+      "population": 600,
+      "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 167,
+        "tables": 5
+      },
+      "validation": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 167,
+        "tables": 0
+      },
+      "config_hash": "b61e646a41e6a86ba09b077d4845167c6c2346101175945af963d42150235194",
+      "map_hash": "b7bd8c27b4dfc22cf684e5ed1ac79aa7f8c924c34b285ef912ce93cb41b85da0",
+      "sha256": "3ae4d28528cd56ecd1894817dea97f95ea82d247f1c7b66646f5c9c71c1fc7d0"
+    }
+  ]
+}

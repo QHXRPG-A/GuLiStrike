@@ -20,6 +20,9 @@ struct GULISTRIKE_API FGuLiFlightEvent
 	UPROPERTY() int32 ImpactVfxId = 0;
 	UPROPERTY() bool bUseCatalogImpact = false;
 	UPROPERTY() FVector_NetQuantizeNormal ImpactNormal = FVector::UpVector;
+	UPROPERTY() int32 FrozenUnitTypeId = 0;
+	UPROPERTY() bool bExplosiveFlight = false;
+	UPROPERTY() float ExplosiveRadius = 0;
 	bool Serialize(FArchive& Ar);
 };
 

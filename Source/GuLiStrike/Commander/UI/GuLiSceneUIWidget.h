@@ -17,6 +17,7 @@ class UTexture2D;
 class UTexture;
 class UGuLiCommanderRouteLineComponent;
 class UGuLiOutpostPresentationComponent;
+class UGuLiGroundSceneUIState;
 struct FGuLiSceneUIWidgetData;
 enum class EGuLiSceneUIPaintPart : uint8 { Combined, Background, World, HUD, Panels };
 
@@ -72,6 +73,7 @@ private:
 	TWeakObjectPtr<APlayerController> LocalController;
 	TWeakObjectPtr<AGuLiCommanderPresentationActor> Presentation;
 	TWeakObjectPtr<AGuLiCommanderHealthBarRenderer> HealthBars;
+	UPROPERTY(Transient) TObjectPtr<UGuLiGroundSceneUIState> GroundState;
 	TWeakObjectPtr<AGuLiBattlePlayerState> BoundIdentity;
 	TArray<TWeakObjectPtr<AActor>> ActorRingSources;
 	TArray<TWeakObjectPtr<UGuLiOutpostPresentationComponent>> OutpostHaloSources;

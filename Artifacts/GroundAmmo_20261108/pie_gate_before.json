@@ -1,0 +1,48 @@
+{
+  "pid": 22216,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "added": [
+    "GroundAmmo_PrimaryDamage",
+    "GroundAmmo_BlastCenter",
+    "GroundAmmo_Inside12m",
+    "GroundAmmo_Boundary15m",
+    "GroundAmmo_Outside24m",
+    "GroundAmmo_Friendly",
+    "GroundAmmo_Shield",
+    "GroundAmmo_BehindWall",
+    "GroundAmmo_Pioneer",
+    "GroundAmmo_HeavyDefense",
+    "GroundAmmo_Sweeper"
+  ],
+  "resource_revalidation": {
+    "success": true,
+    "message": "Added deployments passed revalidation; no packages changed.",
+    "issues": [],
+    "initial_soldiers": 47,
+    "validated_soldiers": 47
+  },
+  "navigation": {
+    "success": false,
+    "message": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier: Source geometry/settings changed, or no versioned bake record exists.",
+    "entries": [
+      {
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+        "kind": "Ground",
+        "status": "Stale",
+        "message": "Source geometry/settings changed, or no versioned bake record exists."
+      },
+      {
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+        "kind": "Ground",
+        "status": "Stale",
+        "message": "Source geometry/settings changed, or no versioned bake record exists."
+      },
+      {
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+        "kind": "Flight",
+        "status": "Stale",
+        "message": "Stale flight-navigation bake: static blocking geometry changed."
+      }
+    ]
+  }
+}

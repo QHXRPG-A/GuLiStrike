@@ -1,0 +1,132 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "session": {
+      "active": true,
+      "error": "",
+      "room": "99D88C0045D473BC2AF7B6B6430ED07F",
+      "role": "Ground",
+      "editor_pid": 3276,
+      "logic_pid": 20836,
+      "coordinator_pid": 34196,
+      "logic_running": true,
+      "coordinator_running": true,
+      "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/99D88C0045D473BC2AF7B6B6430ED07F",
+      "shutdown": [],
+      "cleanup_complete": false,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+      "standalone": true,
+      "can_present": true,
+      "world_ready": true,
+      "network_error": "",
+      "members": [
+        {
+          "player": "5934962F4026668ED5ECF79BDF86BA9A",
+          "online": true,
+          "ready": true,
+          "team": "Blue",
+          "role": "Commander"
+        },
+        {
+          "player": "9454477245C7060305BC26B19FD5A1D6",
+          "online": true,
+          "ready": true,
+          "team": "Red",
+          "role": "Ground"
+        }
+      ],
+      "units": 617,
+      "peer_owned_objects": 1405,
+      "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+      "pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+      "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+      "commander_view_active": false,
+      "can_issue_orders": false,
+      "mouse_cursor_visible": false,
+      "commander_hud_widget": "",
+      "commander_hud_in_viewport": false,
+      "commander_hud_visible": false,
+      "commander_hud_owner_matches": false,
+      "commander_hud_width": 0,
+      "commander_hud_height": 0,
+      "ground_hud_widget": "/Script/GuLiStrike.GuLiGroundHUDWidget",
+      "ground_hud_in_viewport": true,
+      "ground_hud_visible": true,
+      "ground_hud_owner_matches": true,
+      "ground_hud_width": 1914.681396484375,
+      "ground_hud_height": 1080,
+      "resource_query_ready": true,
+      "legacy_resource_runtime_ready": false
+    },
+    "separate_attributes_panel": false,
+    "health_texts": [
+      {
+        "text": "[I] 详情",
+        "font_size": 20.0,
+        "name": "TextBlock_11"
+      },
+      {
+        "text": "4.3",
+        "font_size": 18.0,
+        "name": "TextBlock_10"
+      },
+      {
+        "text": "移速",
+        "font_size": 16.0,
+        "name": "TextBlock_9"
+      },
+      {
+        "text": "4.0",
+        "font_size": 18.0,
+        "name": "TextBlock_8"
+      },
+      {
+        "text": "射速",
+        "font_size": 16.0,
+        "name": "TextBlock_7"
+      },
+      {
+        "text": "01",
+        "font_size": 18.0,
+        "name": "TextBlock_6"
+      },
+      {
+        "text": "武器等级",
+        "font_size": 16.0,
+        "name": "TextBlock_5"
+      },
+      {
+        "text": "",
+        "font_size": 15.0,
+        "name": "TextBlock_4"
+      },
+      {
+        "text": "A4B2",
+        "font_size": 15.0,
+        "name": "TextBlock_3"
+      },
+      {
+        "text": "/ 1000",
+        "font_size": 22.0,
+        "name": "TextBlock_2"
+      },
+      {
+        "text": "1000",
+        "font_size": 46.0,
+        "name": "TextBlock_1"
+      },
+      {
+        "text": "生命值",
+        "font_size": 22.0,
+        "name": "TextBlock_0"
+      }
+    ],
+    "health_slot": {
+      "position": "<Struct 'Vector2D' (0x00000299BF3552A0) {x: 18.000000, y: -270.000000}>",
+      "size": "<Struct 'Vector2D' (0x00000299BF3552A0) {x: 486.000000, y: 224.000000}>"
+    },
+    "dirty_maps": [],
+    "dirty_content": []
+  }
+}

@@ -32,13 +32,16 @@ using Bytes = std::vector<std::uint8_t>;
 using Tick = std::uint64_t;
 using Revision = std::uint64_t;
 
-inline constexpr std::uint16_t ProtocolVersion = 36;
+inline constexpr std::uint16_t ProtocolVersion = 41;
 inline constexpr std::uint32_t HandoffVersion = 3;
 inline constexpr std::size_t MaxDatagramBytes = 1000;
 inline constexpr std::size_t MaxMessageBytes = 4 * 1024 * 1024;
 // A private cut retains its full decision history. The native lossless
 // transport envelope must still fit MaxMessageBytes before it can be queued.
 inline constexpr std::size_t MaxPrivateStateBytes = 16 * 1024 * 1024;
+// Concurrent objects are bounded; retained decisions/tombstones are match
+// history and must not consume the next projectile's admission capacity.
+inline constexpr std::size_t MaxLiveObjects = 100000;
 inline constexpr Tick TicksPerSecond = 60;
 inline constexpr std::uint32_t MassSimulationHz = 10;
 inline constexpr std::uint32_t WingmanSimulationHz = 30;

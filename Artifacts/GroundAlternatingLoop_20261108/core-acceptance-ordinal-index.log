@@ -1,0 +1,20 @@
+Fixture resource validation snapshot reuse=0
+Resource snapshot full/delta/integrity/retention contracts passed
+Resource interruption and complete-install activation contracts passed
+Resource interruption cutpoint passed phase=0 snapshot_health=100
+Resource interruption cutpoint passed phase=1 snapshot_health=100
+Resource interruption cutpoint passed phase=2 snapshot_health=75
+Resource interruption cutpoint passed phase=3 snapshot_health=75
+Resource disconnected backup bounds passed captured=514 transmitted=2
+Abrupt rollback and consecutive resource recovery contracts passed lethal=0
+Abrupt rollback and consecutive resource recovery contracts passed lethal=1
+Resource history scaling: current_bytes=1046 -> 1046 history_bytes=1888 -> 160864 completed_requests=256
+Current mining lease restore, exclusivity, continuation and release contracts passed
+Compact envelope fixture: 10422 -> 7992 bytes (fixture only, live traffic measured separately)
+Async mining restore version=3 -> 3 node=1 query=2 -> 3 callbacks=2
+Async current mining snapshot readback and callback order contracts passed
+Batched ACK capacity delivered=6000/6000 peak_queue_bytes=103575
+Async snapshot capture clock retention and orphan release contracts passed
+Async capture chain clock progress passed yield=0 first=0 last=0 total=24
+Async capture chain clock progress passed yield=1 first=0 last=21 total=24
+Client ownership contracts passed; protocol=40 manifest=26 handoff=3

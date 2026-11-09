@@ -2,15 +2,22 @@
 #if WITH_EDITOR
 #include "Gameplay/Buffs/GuLiBuffPresentation.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
+#include "Network/GuLiHybridSessionSubsystem.h"
+#include "Network/GuLiHybridManifest.h"
+#include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Network/Private/GuLiHybridObjectConversions.h"
 #include "GuLiNetGroundRogue.h"
 #include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h"
+#include "Gameplay/Cards/GuLiRogueCardPresentation.h"
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
+#include "Engine/GameInstance.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
 
@@ -38,8 +45,35 @@ FString UGuLiGroundRogueDebugLibrary::ReadState(UObject* WorldContextObject,FVec
     Root->SetNumberField(TEXT("rogue_version"),GuLiNet::GroundRogue::Version);
     Root->SetBoolField(TEXT("ready"),H->IsWorldReady());Root->SetNumberField(TEXT("tick"),double(H->GetLocalLogicalTick()));
     Root->SetStringField(TEXT("world"),World->GetPathName());
+    Root->SetObjectField(TEXT("transactions"),H->GetTransactionCaptureSnapshot());
+    if (const auto* Game=World->GetGameInstance())
+        if (const auto* Session=Game->GetSubsystem<UGuLiHybridSessionSubsystem>())
+            Root->SetObjectField(TEXT("network"),Session->GetNetworkCaptureSnapshot());
+    if(auto* PC=World->GetFirstPlayerController())
+    {
+        if(const auto* Cards=PC->FindComponentByClass<UGuLiRogueCardPresentation>())
+        {
+            auto J=MakeShared<FJsonObject>();TArray<TSharedPtr<FJsonValue>> Candidates;
+            for(const auto& Id:Cards->GetCandidateIds())Candidates.Add(MakeShared<FJsonValueString>(Id));
+            J->SetArrayField(TEXT("candidates"),Candidates);J->SetStringField(TEXT("session"),Cards->GetSessionId().ToString());
+            J->SetBoolField(TEXT("open"),Cards->IsOpen());J->SetNumberField(TEXT("phase"),Cards->GetPresentationPhase());
+            Root->SetObjectField(TEXT("offer"),J);
+        }
+        if(const auto* Pawn=Cast<AGuLiGroundMechCharacter>(PC->GetPawn()))
+        if(const auto* Weapon=Pawn->FindComponentByClass<UGuLiGroundMechWeaponComponent>())
+        {
+            auto J=MakeShared<FJsonObject>();J->SetNumberField(TEXT("fire_serial"),double(Weapon->FireSerial));
+            J->SetNumberField(TEXT("next_side"),Weapon->NextFireSide);J->SetNumberField(TEXT("next_shot_time"),Weapon->NextShotTime);
+            J->SetNumberField(TEXT("fire_rate"),Weapon->GetFireRate());J->SetNumberField(TEXT("damage"),Weapon->GetShotDamage());
+            J->SetNumberField(TEXT("shots_fired"),Weapon->ShotsFired);J->SetBoolField(TEXT("held"),Weapon->bFireHeld);
+            J->SetStringField(TEXT("upgrade"),Weapon->CurrentUpgradeId);Position(J,Pawn->GetActorLocation());
+            if(const auto* Anim=Cast<UGuLiGroundMechAnimInstance>(Pawn->GetMesh()->GetAnimInstance()))
+            {J->SetNumberField(TEXT("phase"),Anim->GetFireLoopPhase());J->SetBoolField(TEXT("playing"),Anim->IsFireLoopPlaying());}
+            Root->SetObjectField(TEXT("weapon"),J);
+        }
+    }
     TArray<FGuLiCombatTargetSnapshot> Targets;D->GetTargetSnapshots(Targets);
-    TArray<TSharedPtr<FJsonValue>> TargetRows,BuffRows,ShotRows;TSet<FGuLiHybridObjectKey> Nearby;
+    TArray<TSharedPtr<FJsonValue>> TargetRows,BuffRows,ShotRows,BuildRows,AttackRows,BlastRows;TSet<FGuLiHybridObjectKey> Nearby;
     for(const auto& T:Targets)
     {
         if(FVector::DistSquared(Center,T.GetHitCenter())>FMath::Square(double(RadiusCentimeters)))continue;
@@ -53,6 +87,46 @@ FString UGuLiGroundRogueDebugLibrary::ReadState(UObject* WorldContextObject,FVec
     TArray<FGuLiHybridObjectState> Objects;H->GetObjects(Objects);Objects.Sort([](const auto& A,const auto& B){return A.BornAt>B.BornAt;});
     for(const auto& O:Objects)
     {
+        if(const auto* C=O.Capabilities.Find(TEXT("ground_rogue")))
+        {
+            GuLiNet::GroundRogue::State S;
+            if(GuLiNet::GroundRogue::DecodeState({C->Data.GetData(),SIZE_T(C->Data.Num())},S))for(const auto& [Player,B]:S.Players)
+            {
+                GuLiNet::Effects::Set E;if(!GuLiNet::GroundRogue::Resolve(S.Definitions,B,E))continue;
+                auto J=MakeShared<FJsonObject>();J->SetStringField(TEXT("player"),UTF8_TO_TCHAR(Player.ToString().c_str()));
+                uint32 Progress=0;
+                for(const auto& Carrier:Objects)if(Carrier.Key.Kind==EGuLiHybridObjectKind::GroundPlayer)
+                    if(const auto* Counts=Carrier.Capabilities.Find(TEXT("ground_shots")))
+                    {GuLiNet::GroundRogue::ShotCounters CounterState;if(GuLiNet::GroundRogue::DecodeCounters({Counts->Data.GetData(),SIZE_T(Counts->Data.Num())},CounterState)&&CounterState.Players.contains(Player))Progress=GuLiNet::GroundRogue::ReadProgress(CounterState,Player,E);}
+                J->SetNumberField(TEXT("revision"),double(B.RevisionValue));J->SetNumberField(TEXT("shot_progress"),Progress);
+                J->SetNumberField(TEXT("fire_rate_multiplier"),GuLiNet::Effects::FireRateMultiplier(E));
+                J->SetBoolField(TEXT("enhanced"),GuLiNet::Effects::HasEnhancedBullet(E));J->SetNumberField(TEXT("explosive_interval"),GuLiNet::Effects::GetExplosive(E).Interval());
+                BuildRows.Add(MakeShared<FJsonValueObject>(J));
+            }
+        }
+        if(AttackRows.Num()<64)if(const auto* C=O.Capabilities.Find(TEXT("ground_attack")))
+        {
+            GuLiNet::GroundRogue::Attack A;if(GuLiNet::GroundRogue::DecodeAttack({C->Data.GetData(),SIZE_T(C->Data.Num())},A))
+            {
+                auto J=MakeShared<FJsonObject>();J->SetStringField(TEXT("shot"),O.Key.StableId.ToString(EGuidFormats::Digits));
+                J->SetNumberField(TEXT("revision"),double(A.RevisionValue));J->SetNumberField(TEXT("damage"),A.Damage);
+                J->SetNumberField(TEXT("fire_rate"),A.FireRate);
+                const FGuid Primary=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/EffectEvents"),EGuLiHybridObjectKind::Flight,O.Key.StableId.ToString(EGuidFormats::Digits)+TEXT("/damage")).StableId;
+                J->SetObjectField(TEXT("primary_receipt"),Receipt(*H,Primary));
+                J->SetNumberField(TEXT("bullet_vfx"),A.BulletVfx);J->SetNumberField(TEXT("explosive_damage"),A.ExplosiveDamage);J->SetNumberField(TEXT("explosive_radius"),A.ExplosiveRadius);
+                if(A.ExplosiveDamage>0)J->SetStringField(TEXT("companion"),UTF8_TO_TCHAR(GuLiNet::GroundRogue::BlastEvent(GuLiNetBridge::ToCore(O.Key.StableId)).ToString().c_str()));
+                AttackRows.Add(MakeShared<FJsonValueObject>(J));
+            }
+        }
+        if(BlastRows.Num()<64)if(const auto* C=O.Capabilities.Find(TEXT("ground_explosion")))
+        {
+            GuLiNet::GroundRogue::Blast B;if(GuLiNet::GroundRogue::DecodeBlast({C->Data.GetData(),SIZE_T(C->Data.Num())},B))
+            {
+                auto J=MakeShared<FJsonObject>();J->SetStringField(TEXT("shot"),O.Key.StableId.ToString(EGuidFormats::Digits));Position(J,FVector(B.X,B.Y,B.Z));
+                TArray<TSharedPtr<FJsonValue>> Hits;for(const auto& K:B.Targets){auto Hit=Receipt(*H,GuLiNetBridge::ToUE(GuLiNet::GroundRogue::BlastHitEvent(B.Shot,K)));Hit->SetStringField(TEXT("target"),CoreKeyText(K));Hits.Add(MakeShared<FJsonValueObject>(Hit));}
+                J->SetArrayField(TEXT("hits"),Hits);BlastRows.Add(MakeShared<FJsonValueObject>(J));
+            }
+        }
         if(const auto* C=O.Capabilities.Find(TEXT("buff_status")))
         {
             GuLiNet::Buffs::State S;if(!GuLiNet::Buffs::Decode({C->Data.GetData(),SIZE_T(C->Data.Num())},S))continue;
@@ -82,6 +156,9 @@ FString UGuLiGroundRogueDebugLibrary::ReadState(UObject* WorldContextObject,FVec
     }
     if(const auto* P=World->GetSubsystem<UGuLiBuffPresentation>()){TSharedPtr<FJsonObject> J;auto Reader=TJsonReaderFactory<>::Create(P->GetDiagnostics());if(FJsonSerializer::Deserialize(Reader,J)&&J)Root->SetObjectField(TEXT("presentation"),J);}
     Root->SetArrayField(TEXT("targets"),TargetRows);Root->SetArrayField(TEXT("buffs"),BuffRows);Root->SetArrayField(TEXT("ricochets"),ShotRows);
+    Root->SetArrayField(TEXT("builds"),BuildRows);Root->SetArrayField(TEXT("attacks"),AttackRows);Root->SetArrayField(TEXT("explosions"),BlastRows);
+    if (const auto* Pool=World->GetSubsystem<UGuLiProjectilePoolSubsystem>())
+    {TSharedPtr<FJsonObject> J;auto Reader=TJsonReaderFactory<>::Create(Pool->GroundShotDiagnostics());if(FJsonSerializer::Deserialize(Reader,J)&&J)Root->SetObjectField(TEXT("flight_settlement"),J);}
     FString Json;FJsonSerializer::Serialize(Root,TJsonWriterFactory<>::Create(&Json));return Json;
 }
 bool UGuLiGroundRogueDebugLibrary::PrepareShooter(APlayerController* PC,FVector Location,FVector Aim)
@@ -102,7 +179,7 @@ FString UGuLiGroundRogueDebugLibrary::CheckRouteBoundaries()
     GuLiNet::GroundRogue::Chain C;C.First={GuLiNet::ObjectKind::Soldier,Id(1),1};C.Shot=Id(2);
     C.Frozen.Source={GuLiNet::ObjectKind::GroundPlayer,Id(3),1};C.Frozen.Root={GuLiNet::ObjectKind::BusinessWork,Id(4),1};
     C.Frozen.Player=Id(5);C.Frozen.RevisionValue=1;C.Frozen.Damage=100;
-    GuLiNet::GroundRogue::Build B;B.Acquired["06.01"]=1;
+    GuLiNet::GroundRogue::Build B;B.Acquired["10.01"]=1;B.Acquired["06.01"]=1;
     if(!GuLiNet::GroundRogue::Resolve(Catalog,B,C.Frozen.Effects))return TEXT("{}");
     C.Budget=GuLiNet::GroundRogue::HopBudget(C.Shot,GuLiNet::Effects::GetRicochet(C.Frozen.Effects));
     auto Root=MakeShared<FJsonObject>();Root->SetNumberField(TEXT("version"),GuLiNet::GroundRogue::Version);

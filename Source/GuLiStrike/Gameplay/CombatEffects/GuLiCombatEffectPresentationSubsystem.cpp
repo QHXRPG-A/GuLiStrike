@@ -62,6 +62,8 @@ void UGuLiCombatEffectPresentationSubsystem::Initialize(FSubsystemCollectionBase
 	WingmanFlights = NewObject<UGuLiWingmanProjectilePresentation>(this);
 	BulletTrails = NewObject<UGuLiBulletTrailPresentation>(this);
 	BulletTrails->Prepare(GetCatalog());
+	BasicBulletTrails=NewObject<UGuLiBulletTrailPresentation>(this);
+	BasicBulletTrails->Prepare(GetCatalog(),true);
 	if (CVarGuLiPreloadImpacts.GetValueOnGameThread()!=0) ImpactBatches->Prepare(GetCatalog());
 	if (UGuLiNetworkSettings::CanPresent(GetWorld()))
 	{
@@ -99,6 +101,7 @@ void UGuLiCombatEffectPresentationSubsystem::ResetVisuals()
 #endif
 	if (WingmanFlights) WingmanFlights->Reset();
 	if (BulletTrails) BulletTrails->Reset();
+	if (BasicBulletTrails) BasicBulletTrails->Reset();
 	if (Gunfire) { Gunfire->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Gunfire); Gunfire->ReleaseToPool(); Gunfire = nullptr; }
 	for (const auto& Item : Retiring) if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); UGuLiCommanderOverviewSubsystem::ForgetVisual(Item.Component); Item.Component->ReleaseToPool(); }
 	Retiring.Reset(); SpawnedEffectIds.Reset(); PendingShots.Reset(); ActiveMuzzles.Reset(); SeenShots.Reset(); ShotOrder.Reset(); Tombstones.Reset(); TombstoneOrder.Reset();
@@ -424,6 +427,7 @@ void UGuLiCombatEffectPresentationSubsystem::RemoveVisual(const FGuid& Id, bool 
 	FGuLiLocalCombatEffect Visual;
 	if (!Visuals.RemoveAndCopyValue(Id, Visual)) return;
 	if (BulletTrails) BulletTrails->Remove(Id);
+	if (BasicBulletTrails) BasicBulletTrails->Remove(Id);
 	RemoveGuidanceMember(Visual.State);
 	if (MissileClusters) MissileClusters->Finish(Id, Visual.RenderLocation, bImmediate);
 	if (WingmanFlights) WingmanFlights->Finish(Id, Visual.RenderLocation, bImmediate);
@@ -1006,18 +1010,27 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 			}
             FVector TargetLocation = Visual.State.LastTargetLocation;
             FTransform TargetPose; int32 TargetType = 0;
-            const bool HasTarget = !Visual.State.bFixedPoint && ResolvePose(Visual.State.Target,TargetPose,TargetType);
+            // A straight flight never consumes a target pose in Advance. Avoid
+            // resolving distant units (including demand animation) for that path.
+            const bool Linear = Visual.FlightRecipe.State.Kind==EGuLiCombatEffectKind::LinearProjectile;
+            const bool HasTarget = !Linear && !Visual.State.bFixedPoint && ResolvePose(Visual.State.Target,TargetPose,TargetType);
             if (HasTarget) TargetLocation = TargetPose.GetLocation();
             if (ClientFlights.Find(Visual.FlightHandle))
             {
                 ClientFlights.Advance(Visual.FlightHandle, Visual.FlightRecipe, Now, HasTarget ? &TargetLocation : nullptr);
                 const auto* Slot = ClientFlights.Find(Visual.FlightHandle);
-                Visual.Prediction = Slot->Prediction; Visual.RenderLocation = Slot->DisplayLocation;
+                if (Linear)
+                { Visual.Prediction.Location=Slot->Prediction.Location; Visual.Prediction.SampleTime=Slot->Prediction.SampleTime; }
+                else Visual.Prediction = Slot->Prediction;
+                Visual.RenderLocation = Slot->DisplayLocation;
             }
             else if (Visual.FlightActor)
             {
                 Visual.FlightActor->AdvanceFlight(Now, HasTarget ? &TargetLocation : nullptr);
-                Visual.Prediction = Visual.FlightActor->GetPrediction();
+                const auto& Prediction=Visual.FlightActor->GetPrediction();
+                if (Linear)
+                { Visual.Prediction.Location=Prediction.Location; Visual.Prediction.SampleTime=Prediction.SampleTime; }
+                else Visual.Prediction = Prediction;
                 Visual.RenderLocation = Visual.FlightActor->GetDisplayLocation(Now);
             }
             Visual.bHasPrediction = true;
@@ -1040,7 +1053,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 			}
 			if (State.Source.Kind == EGuLiTargetKind::GroundActor)
 			{
-				if (UpdateGroundTrail(Visual,Now,bEnabled)) Expired.Add(Pair.Key);
+				if (Visual.FlightRecipe.bExplosiveFlight ? UpdateExplosiveFlight(Visual,Now,bEnabled) : UpdateGroundTrail(Visual,Now,bEnabled)) Expired.Add(Pair.Key);
 				SubmitBulletLight(Visual,Now,bEnabled);
 				continue;
 			}
@@ -1115,6 +1128,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	if (BulletTrails)
 	{
 		BulletTrails->EndFrame();
+		if(BasicBulletTrails)BasicBulletTrails->EndFrame();
 		if (BulletTrails->HasLightSystem()) Counters.GroundMachineGunLights=BulletTrails->GetLightCount();
 	}
 	UpdateRogueUpgradePool(Now, bEnabled);
@@ -1236,6 +1250,7 @@ FGuLiCombatEffectVisualCounters UGuLiCombatEffectPresentationSubsystem::GetCount
 	{
 		Result.MassTrailActive=BulletTrails->GetActiveCount(); Result.BulletTrailComponents=BulletTrails->GetComponentCount();
 		Result.BulletTrailArrayUploads=BulletTrails->GetArrayUploads(); Result.ComponentCount+=Result.BulletTrailComponents;
+		if(BasicBulletTrails){Result.MassTrailActive+=BasicBulletTrails->GetActiveCount();Result.BulletTrailComponents+=BasicBulletTrails->GetComponentCount();Result.ComponentCount+=BasicBulletTrails->GetComponentCount();Result.BulletTrailArrayUploads+=BasicBulletTrails->GetArrayUploads();}
 	}
 	Result.ClientFlightActorCapacity = FlightActors.Num();
 	Result.ClientFlightActorActive = FlightActors.Num()-FreeFlightActors.Num();

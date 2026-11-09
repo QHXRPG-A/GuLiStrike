@@ -123,7 +123,7 @@ namespace GuLiCommanderMassPrivate
 	TAutoConsoleVariable<int32> ImmediateMovement(TEXT("gs.Commander.ImmediateMovement"), 1,
 		TEXT("Advance local manual Hybrid movement on each 60 Hz logical step. Combat and network pose publication remain at 10 Hz."));
 	TAutoConsoleVariable<int32> ActiveSoftPairs(TEXT("gs.Commander.ActiveSoftPairs"), 1,
-		TEXT("Local manual movement soft avoidance: 0 all pairs, 1 active endpoints only, 2 compare both outputs (diagnostic overhead)."));
+		TEXT("Soft avoidance: 0 all pairs, 1 active endpoints only, 2 compare both outputs (diagnostic overhead)."));
 #if !UE_BUILD_SHIPPING
 	TAutoConsoleVariable<int32> MovementClockSoldier(TEXT("gs.Commander.MovementClockSoldier"), 0,
 		TEXT("With move latency diagnostics, log one SoldierId's logical movement clock for 250 ms after admission. 0 disables."));
@@ -2286,13 +2286,16 @@ UGuLiBattleAuthoritySubsystem::AcquireAvoidanceGeometry(
 	if (Perf) Perf->Record(TEXT("Avoidance.SharedIndexAccesses"), 1);
 	const auto& Previous = AuthorityState->AvoidanceGeometry;
 	bool bSame = Previous && Previous->Agents.Num() == Agents.Num();
+	const bool bUniqueIdentity=Previous && Previous->IndexByIdentity.Num()==Previous->Agents.Num();
 	const TCHAR* ChangeReason = Previous ? TEXT("Avoidance.GeometryMembershipChanges") : TEXT("Avoidance.GeometryFirstBuilds");
 	// Full identity includes entity generation. Exact comparison covers teleports,
 	// radius/health/membership and dynamic obstacles without missing a write path.
-	for (const auto& A : Agents)
+	for (int32 InputIndex=0;InputIndex<Agents.Num();++InputIndex)
 	{
 		if (!bSame) break;
-		const int32* Index = Previous->IndexByIdentity.Find(A.StableKey);
+		const auto& A=Agents[InputIndex];
+		const int32* Index = bUniqueIdentity && Previous->Agents[InputIndex].StableKey==A.StableKey
+			? &InputIndex : Previous->IndexByIdentity.Find(A.StableKey);
 		if (!Index) { bSame = false; break; }
 		const auto& B = Previous->Agents[*Index];
 		if (A.Radius != B.Radius) ChangeReason = TEXT("Avoidance.GeometryRadiusChanges");
@@ -2797,7 +2800,7 @@ void UGuLiBattleAuthoritySubsystem::PrepareNextMoveBatch(const uint64 PlanId)
 void UGuLiBattleAuthoritySubsystem::TickMovePlanning(int32& RemainingProjectionBudget,int32& RemainingPathBudget,bool bManualFirst)
 {
 	using namespace GuLiCommanderMassPrivate;
-	if (!AuthorityState) return;
+	if (!AuthorityState || AuthorityState->MovePlanningJobs.IsEmpty()) return;
 	FGuLiNavigationWorkBudget::FScope Scope(AuthorityState->PlanningBudget);
 	AuthorityState->MovePlanningJobs.RemoveAll([](const auto& J)
 	{ return !J || (!J->bAutomatic && !J->PlayerState.IsValid()) || (J->bAutomatic && J->Stage==EMovePlanningStage::Completed && FPlatformTime::Seconds()-J->PlanningStartedAt>35.); });
@@ -2818,7 +2821,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(int32& RemainingProjectionB
 void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 {
 	using namespace GuLiCommanderMassPrivate;
-	if (!AuthorityState || !AuthorityState->MassEntitySubsystem.IsValid()) return;
+	if (!AuthorityState || AuthorityState->MovePlanningJobs.IsEmpty() || !AuthorityState->MassEntitySubsystem.IsValid()) return;
 	UWorld* World=GetWorld(); auto& A=*AuthorityState;
 	auto& Manager=A.MassEntitySubsystem->GetMutableEntityManager();
 	FGuLiNavigationWorkBudget::FScope Scope(A.CommitBudget);
@@ -2909,6 +2912,11 @@ void UGuLiBattleAuthoritySubsystem::TickSharedNavigation(int32 Category, TConstA
 	using namespace GuLiCommanderMassPrivate;
 	if (!AuthorityState) return;
 	auto& A=*AuthorityState; auto& Budget=A.PlanningBudget;
+	// Discovery is still performed once per world frame, and new priority
+	// admissions still enter immediately. Repeated empty slices have no route
+	// work, navigation queries, or bookkeeping that can affect a future request.
+	if (Category<2 && PriorityIds.IsEmpty() && A.SharedRoutes.Routes.IsEmpty()
+		&& A.SharedDiscoveryFrame[Category]==GFrameCounter && A.SharedDiscoveryRemaining[Category]==0) return;
 	FGuLiNavigationWorkBudget::FScope Scope(Budget);
 	auto* System=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	auto* Data=System ? GetCommanderNavigationData(*System) : nullptr;
@@ -4242,7 +4250,10 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds,
 				}
 			Geometry = AcquireAvoidanceGeometry(Scratch);
 		}
-		const int32 PairMode = bImmediateCommands ? ActiveSoftPairs.GetValueOnGameThread() : 0;
+		// Nonreceiving, nonpushable endpoints remain exactly zero throughout all
+		// solve iterations. Their mutual pairs cannot change any velocity in a
+		// fixed combat step either; retain them as obstacles for active endpoints.
+		const int32 PairMode = ActiveSoftPairs.GetValueOnGameThread();
 		const auto Metrics = GuLiCommanderNavigationPolicy::SolveSoftAvoidanceVelocities(
 			AuthorityState->ManualAvoidanceAgents, AvoidanceAgentHeightCentimeters,
 			AuthorityState->ManualAvoidanceSpatialGrid, AuthorityState->CachedManualAvoidanceVelocities,
@@ -5522,6 +5533,17 @@ bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, 
 	return true;
 }
 
+uint32 UGuLiBattleAuthoritySubsystem::GetSoldierTaskGeneration(FGuLiSoldierId Id) const
+{
+    if (const auto* Index=AuthorityState?AuthorityState->SoldierIndexById.Find(Id.Value):nullptr)
+    {
+        const auto& Soldier=AuthorityState->Soldiers[*Index];
+        if (!Soldier.bEngineering && Soldier.HybridKey.IsValid()) return Soldier.HybridKey.LifeGeneration;
+    }
+    // Keep the existing defaults for missing records/non-Hybrid worlds, and
+    // the carrier's health identity for engineering entities.
+    return MakeSoldierTargetHandle(Id).Generation;
+}
 FGuLiTargetHandle UGuLiBattleAuthoritySubsystem::MakeSoldierTargetHandle(
 	const FGuLiSoldierId SoldierId) const
 {
@@ -6193,6 +6215,7 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 	// Do not hold Mass fragment references here: death may change an entity's archetype.
 	// Mechanical aim belongs to a shared data-only animation model, never a skeletal component.
 	const auto* AnimationData = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	static const FName BasicAttackSlot(TEXT("BasicAttack"));
 	// Evaluate every source/target at the same simulation time before calculating aim.
 	for (auto& Soldier : AuthorityState->Soldiers)
 	{
@@ -6206,6 +6229,12 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 				Soldier.Velocity.Size2D(), GuLiCommanderSimulationTiming::StepSeconds,
 				AuthorityState->SimulationSeconds, Soldier.MechanicalPose);
 	}
+	// Movement and hover evaluation have finished. During this synchronous aim
+	// loop only a target's facing can change an aim point; upper/gun aim does not
+	// enter HoverBodyTransform. Keep the cache local to this one simulation step.
+	struct FCombatAimPoint {bool bResolved=false;float FacingYaw=0;FVector Position;};
+	TArray<FCombatAimPoint, TInlineAllocator<64>> AimPoints;
+	AimPoints.SetNum(AuthorityState->Soldiers.Num());
 	for (auto& Soldier : AuthorityState->Soldiers)
 	{
 		const auto* Definition = AnimationData ? AnimationData->FindSoldierDefinition(Soldier.UnitTypeId) : nullptr;
@@ -6213,17 +6242,23 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 		const auto& Config = Definition->MechanicalAnimation;
 		FVector TargetPosition;
 		const FVector* AimTarget = nullptr;
-		const auto* Weapon = Soldier.Weapons.FindByPredicate([](const auto& W) { return W.SlotId == TEXT("BasicAttack"); });
+		const auto* Weapon = Soldier.Weapons.FindByPredicate([](const auto& W) { return W.SlotId == BasicAttackSlot; });
 		const int32* TargetIndex = Weapon ? AuthorityState->SoldierIndexById.Find(Weapon->Attack.TargetId.Value) : nullptr;
 		if (TargetIndex && AuthorityState->Soldiers[*TargetIndex].IsPresent())
 		{
 			const auto& Target = AuthorityState->Soldiers[*TargetIndex];
-			const FVector* Offset = AnimationData->FindAimOffset(Target.UnitTypeId);
-			const auto* TargetDefinition = AnimationData->FindSoldierDefinition(Target.UnitTypeId);
-			const FVector LocalAim = TargetDefinition ? GuLiMechanicalAnimation::HoverBodyTransform(
-				TargetDefinition->MechanicalAnimation, Target.MechanicalPose).TransformPosition(Offset ? *Offset : FVector::ZeroVector)
-				: (Offset ? *Offset : FVector::ZeroVector);
-			TargetPosition = Target.Location + FRotator(0, Target.FacingYawDegrees, 0).RotateVector(LocalAim);
+			auto& Point = AimPoints[*TargetIndex];
+			if (!Point.bResolved || Point.FacingYaw != Target.FacingYawDegrees)
+			{
+				const FVector* Offset = AnimationData->FindAimOffset(Target.UnitTypeId);
+				const auto* TargetDefinition = AnimationData->FindSoldierDefinition(Target.UnitTypeId);
+				const FVector LocalAim = TargetDefinition ? GuLiMechanicalAnimation::HoverBodyTransform(
+					TargetDefinition->MechanicalAnimation, Target.MechanicalPose).TransformPosition(Offset ? *Offset : FVector::ZeroVector)
+					: (Offset ? *Offset : FVector::ZeroVector);
+				Point.Position = Target.Location + FRotator(0, Target.FacingYawDegrees, 0).RotateVector(LocalAim);
+				Point.FacingYaw = Target.FacingYawDegrees;Point.bResolved = true;
+			}
+			TargetPosition = Point.Position;
 			AimTarget = &TargetPosition;
 		}
 		const float Dt = GuLiCommanderSimulationTiming::StepSeconds;
@@ -6272,7 +6307,7 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 			Request.SourceTransform = FTransform(FRotator(0, Source.FacingYawDegrees, 0), Source.Location);
 			Request.TargetLocation = Target.Location; Request.ShotOrdinal = Event.ShotOrdinal;
 			if (const auto* Definition = AnimationData ? AnimationData->FindSoldierDefinition(Source.UnitTypeId) : nullptr;
-				Definition && (Definition->VATDefinition || Definition->MechanicalAnimation.IsEnabled()) && Event.SourceSlotId == TEXT("BasicAttack"))
+				Definition && (Definition->VATDefinition || Definition->MechanicalAnimation.IsEnabled()) && Event.SourceSlotId == BasicAttackSlot)
 			{
 				Request.MechanicalPose = Source.MechanicalPose;
 				Request.bHasMechanicalPose = true;
@@ -6353,6 +6388,16 @@ bool UGuLiBattleAuthoritySubsystem::TryGetSoldierWeaponDebug(const FGuLiSoldierI
 	return true;
 }
 
+bool UGuLiBattleAuthoritySubsystem::TryGetSoldierNavigation(FGuLiSoldierId Id,FGuLiSoldierNavigationView& Out) const
+{
+    Out={};
+    const auto* Index=AuthorityState?AuthorityState->SoldierIndexById.Find(Id.Value):nullptr;
+    if (!Index || !AuthorityState->Soldiers.IsValidIndex(*Index)) return false;
+    const auto& Soldier=AuthorityState->Soldiers[*Index];
+    Out.State=Soldier.NavigationState;Out.ActiveOrderId=Soldier.ActiveOrderId;
+    Out.Location=Soldier.Location;Out.bExternallyLocked=Soldier.bExternalActionsLocked;
+    return true;
+}
 bool UGuLiBattleAuthoritySubsystem::TryGetSoldierNavigationDebug(
 	const FGuLiSoldierId SoldierId,
 	FGuLiSoldierNavigationDebug& OutDebug) const
@@ -7294,7 +7339,7 @@ void UGuLiBattleAuthoritySubsystem::SyncEngineeringMass(FGuLiSoldierId Id)
         if (S.bLocalSimulation || !S.bPhased) {S.bLocalSimulation=false;S.bPhased=true;++S.StateRevision;}
         return;
     }
-    const auto& Record=Binding->GetState();const bool Local=UGuLiHybridActorComponent::HasSimulation(Carrier);
+    const auto& Record=Binding->GetState();const bool Local=Binding->CanSimulate();
     const bool Phase=Control->IsPhased(),Locked=Control->AreActionsLocked();
     const float Health=Record.LifeState==1?Record.Health.Health:0;
     if (S.bLocalSimulation!=Local || S.bPhased!=Phase || S.bExternalActionsLocked!=Locked || S.Health!=Health)

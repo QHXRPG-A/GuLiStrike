@@ -178,6 +178,7 @@ struct GULISTRIKE_API FGuLiCombatShotCue
 	UPROPERTY() uint16 UnitTypeId = 0;
 	UPROPERTY() uint8 MuzzleIndex = 0;
     UPROPERTY() int32 FrozenMuzzleVfxId=0;
+    UPROPERTY() float FrozenFireRate=0;
 	/** Wingman uses logical +X attachment coordinates, independent of Commander unit mounts. */
 	UPROPERTY() FVector MuzzleOffset = FVector::ZeroVector;
 	UPROPERTY() float KeepAliveSeconds = 2.0f;

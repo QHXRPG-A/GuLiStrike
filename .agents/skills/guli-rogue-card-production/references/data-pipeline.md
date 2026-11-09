@@ -11,7 +11,7 @@
 | id | str | 两位卡族.两位等级，正则 `[0-9]{2}\.[0-9]{2}`；等级不能00；唯一，不能按小数计算 |
 | name | str | 唯一稳定UE行名，例如WM01_FireRate_Lv1，与显示标题无关 |
 | Note | str | 策划说明，Optional，不直接显示 |
-| Type | int | 1指挥官部队、2Ship、3地面机甲、4建筑；当前运行时只支持1 |
+| Type | int | 1指挥官部队、2Ship、3游骑兵、4建筑；当前运行时只支持1 |
 | TextIds | str[] | JSON字符串数组，**恰好两项**：标题文本id、说明文本id |
 | ImplementationClass | softclass | 具体非抽象GuLiRogueCardEffect子类，完整软类路径 |
 | UnitTypeId | int | 当前引用GuLiStrikeCommander.xlsx/Soldiers.id；WM01=2 |

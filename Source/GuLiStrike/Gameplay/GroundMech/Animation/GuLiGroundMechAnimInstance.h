@@ -82,20 +82,27 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float ArmRecoilDegrees = 0.f;
 	/** Component-space chest rotation; the aim node applies it before solving the barrels. */
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") FQuat UpperBodyRecoilRotation = FQuat::Identity;
-	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float RightShootTime = 0.f;
-	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float LeftShootTime = 0.f;
-	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float RightShootWeight = 0.f;
-	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float LeftShootWeight = 0.f;
-	UPROPERTY(EditDefaultsOnly, Category="Integrated Mech") float ShootDuration = .9666667f;
 	UPROPERTY(EditDefaultsOnly, Category="Integrated Mech") float JumpStartDuration = .3333333f;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") bool bJumpStarting = false;
 	UPROPERTY(BlueprintReadOnly, Category="Integrated Mech") float JumpStartTime = 0.f;
 	void ConfigureIntegratedRecoil(UCurveFloat* Curve, float Duration);
 	void TriggerIntegratedRecoil(float AgeSeconds, uint8 MuzzleIndex);
+	UPROPERTY(EditDefaultsOnly,Category="Fire Animation") TObjectPtr<UAnimMontage> FireLoopMontage;
+	bool StartFireLoop(float Phase,float Rate,bool bGameplay);
+	void StopFireLoop();
+	bool IsFireLoopPlaying() const;
+	float GetFireLoopPhase() const;
+	void PresentFireLoop(uint8 Side,float Rate,float Age);
+	void OnFireAnimationNotify(int32 MontageInstanceId,uint8 Side);
+	void SetFireAnimationRate(float Rate);
 	bool BeginUpperAimPresentation();
 	void EndUpperAimPresentation();
 	void SetUsePresentedUpperAim(bool bValue) { bUsePresentedUpperAim=bValue; }
 private:
+	int32 FireLoopInstance=INDEX_NONE;
+	bool bGameplayFireLoop=false,bReportedFireAsset=false;
+	double RemoteFireUntil=0;
+	float FireRecoveryScale[2]={1.f,1.f};
 	void UpdateUpperAim(const class AGuLiGroundMechCharacter& Pawn);
 	bool bUsePresentedUpperAim=false, bUpperAimOnly=false, bHasLocomotionSnapshot=false;
 	void UpdateGrounding(class AGuLiGroundMechCharacter& Pawn,float DeltaSeconds,bool bReset);

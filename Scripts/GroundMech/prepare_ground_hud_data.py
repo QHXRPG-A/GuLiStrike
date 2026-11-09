@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[2]
 XLSX = r'D:/UE5.7/excelize-cli/bin/xlsx.exe'
 PREFIX = 'UI.GroundHUD.'
 TEXTS = {
-    'Title':'地面机甲', 'Health':'生命值', 'Jet':'喷气容量',
+    'Title':'游骑兵', 'Health':'生命值', 'Jet':'喷气容量',
     'Fire':'射击', 'Aim':'瞄准', 'Jump':'喷气跳跃', 'Blink':'闪现',
     'Ready':'就绪', 'Empty':'燃料不足', 'Active':'使用中', 'Disabled':'不可用',
     'Stats':'武器等级 {0}   射速 {1}\n移速 {2}',
@@ -17,7 +17,7 @@ TEXTS = {
     'MapTitle':'战术地图', 'MapHelp':'滚轮缩放 · 左键拖动 / 选择标记 · Space 定位自身 · M / Esc 关闭',
     'MapUnavailable':'地形数据暂不可用', 'MapLegend':'▲ 自身   ▪ 友方   ◆ 敌方   □ 据点',
     'MapLocation':'坐标 {0}, {1} m', 'MapSelected':'{0}\n坐标 {1}, {2} m',
-    'Friendly':'友方单位', 'Enemy':'敌方单位', 'Territory':'据点', 'Self':'地面机甲',
+    'Friendly':'友方单位', 'Enemy':'敌方单位', 'Territory':'据点', 'Self':'游骑兵',
     'Close':'[Esc] 关闭', 'SelectDirect':'单击卡牌，直接获得强化', 'Burning':'灼烧',
     'Buffs':'当前状态', 'BurningBurst':'灼烧爆裂', 'BuffOther':'状态 {0}', 'BuffMore':'+{0}',
     'Shield':'护盾 {0} / {1}', 'Dead':'机体失能', 'Damage':'单发伤害 {0}',

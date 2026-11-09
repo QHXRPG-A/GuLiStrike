@@ -64,4 +64,8 @@ namespace GuLiVfxIds
 	inline constexpr int32 GroundBurningStatus = 59;
 	inline constexpr int32 GroundBurningBurst = 60;
 	inline constexpr int32 GroundBurningBullet = 61;
+	inline constexpr int32 GroundInitialBullet = 62;
+	inline constexpr int32 GroundExplosiveFlight = 63;
+	inline constexpr int32 GroundExplosiveImpact = 64;
+	inline constexpr int32 GroundExplosiveTrail = 65;
 }

@@ -1,0 +1,739 @@
+{
+  "protocol": 40,
+  "manifest": 26,
+  "ground_contract": 6,
+  "ground_private": 15,
+  "linear_private": 10,
+  "assistant_visual_validation": false,
+  "new_automated_tests": false,
+  "runs": {
+    "run12": {
+      "room": "327B6C514260AF6861C9118CCA50AD8F",
+      "last_tick": 19217,
+      "logical_seconds": 320.28333333333336,
+      "fire_serial": 2986,
+      "normal_exit": true,
+      "exit_evidence": "run12_exit.json",
+      "protocol": 39
+    },
+    "run13": {
+      "room": "C3055AA248B35D38B8D26F843615E88D",
+      "last_tick": 21955,
+      "logical_seconds": 365.9166666666667,
+      "fire_serial": 270,
+      "normal_exit": true,
+      "exit_evidence": "run13_exit.json",
+      "protocol": 39
+    },
+    "run14": {
+      "room": "890D84134EF38775FEA757B6F028B157",
+      "last_tick": 22497,
+      "logical_seconds": 374.95,
+      "fire_serial": 1765,
+      "normal_exit": true,
+      "exit_evidence": "run14_exit.json",
+      "protocol": 39
+    },
+    "run18": {
+      "protocol": 40,
+      "room": "A8CD85EE48818C6ACB842A949B8A1F36",
+      "last_tick": 56561,
+      "logical_seconds": 942.6833333333333,
+      "fire_serial": 8470,
+      "normal_exit": true,
+      "exit_evidence": "run18_exit.json",
+      "control_interruptions": 0,
+      "pending_metadata": 783,
+      "birth_wait": 0,
+      "numeric_objects": 227128,
+      "live_objects": 1612
+    },
+    "run19": {
+      "protocol": 40,
+      "room": "FCA97FC14197E3E14BE5A59FC9FF9FCD",
+      "last_tick": 24599,
+      "logical_seconds": 409.98333333333335,
+      "fire_serial": 303,
+      "normal_exit": true,
+      "exit_evidence": "run19_exit.json"
+    },
+    "run20": {
+      "protocol": 40,
+      "room": "D6884C444E472033EC9533AF73FD2360",
+      "last_tick": 7832,
+      "logical_seconds": 130.53333333333333,
+      "fire_serial": 71,
+      "normal_exit": true,
+      "exit_evidence": "run20_exit.json",
+      "control_interruptions": 0,
+      "pending_metadata": 0
+    }
+  },
+  "damage": [
+    {
+      "damage": 6,
+      "evidence": "run12_basic6_after.json",
+      "count": 32,
+      "matching_receipts": true,
+      "sample": {
+        "shot": "06764F967773282F4B27BE5CAB27A905",
+        "fire_ordinal": 32,
+        "muzzle": 1,
+        "damage_event": "296F17FECD70B62E70E3706BCE45200F",
+        "frozen_damage": 6,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99808,
+        "target_health_now": 99808
+      }
+    },
+    {
+      "damage": 9,
+      "evidence": "run13_basic9_after.json",
+      "count": 122,
+      "matching_receipts": true,
+      "sample": {
+        "shot": "56F408ACF64E5836D28EAB2CA6F40DDC",
+        "fire_ordinal": 122,
+        "muzzle": 1,
+        "damage_event": "2AA74DE445CDD533767C001AAEC62768",
+        "frozen_damage": 9,
+        "applied": 9,
+        "absorbed": 0,
+        "remaining_health": 98902,
+        "target_health_now": 98902
+      }
+    },
+    {
+      "damage": 12,
+      "evidence": "run14_basic12_after.json",
+      "count": 135,
+      "matching_receipts": true,
+      "sample": {
+        "shot": "6ED0BCD35A33F0BA0BF9BFD76AE9A8BB",
+        "fire_ordinal": 135,
+        "muzzle": 0,
+        "damage_event": "ABAFE1735025AAA9BBEF97FADDECDE63",
+        "frozen_damage": 12,
+        "applied": 12,
+        "absorbed": 0,
+        "remaining_health": 98117.5,
+        "target_health_now": 97975
+      }
+    },
+    {
+      "damage": 10,
+      "evidence": "run12_cap_after.json",
+      "count": 512,
+      "matching_receipts": true,
+      "sample": {
+        "shot": "6BA257C2E79519E32FA08BC36D420A2E",
+        "fire_ordinal": 2985,
+        "muzzle": 0,
+        "damage_event": "66DDC02A39E6E07F646897B0ECC3019A",
+        "frozen_damage": 10,
+        "applied": 10,
+        "absorbed": 0,
+        "remaining_health": 58636,
+        "target_health_now": 58626
+      }
+    },
+    {
+      "damage": 15,
+      "evidence": "run13_enhanced15_after.json",
+      "count": 26,
+      "matching_receipts": true,
+      "sample": {
+        "shot": "96BD5D10137EAB09520CAEC59533E6B0",
+        "fire_ordinal": 270,
+        "muzzle": 1,
+        "damage_event": "D028B18FF84D71C165DC3C7D3F95D2C7",
+        "frozen_damage": 15,
+        "applied": 15,
+        "absorbed": 0,
+        "remaining_health": 98152,
+        "target_health_now": 98122
+      }
+    },
+    {
+      "damage": 20,
+      "evidence": "run14_long_after.json",
+      "count": 512,
+      "matching_receipts": true,
+      "sample": {
+        "shot": "821185D546F2F57021BD89110A0EC811",
+        "fire_ordinal": 1371,
+        "muzzle": 0,
+        "damage_event": "669D6D60CC4C60F4C7F5D492718C1FD5",
+        "frozen_damage": 20,
+        "applied": 20,
+        "absorbed": 0,
+        "remaining_health": 69887.5,
+        "target_health_now": 69585
+      }
+    }
+  ],
+  "cap_long_fire": {
+    "capture_boundary_note": "Initial retained record 512 precedes capture coverage; 513 expired before first sample. Analyze the uninterrupted captured segment 514 onward.",
+    "count": 2473,
+    "ordinals": [
+      514,
+      2986
+    ],
+    "window_seconds": 83.54999999999998,
+    "complete": true,
+    "all_admitted": true,
+    "alternation_errors": 0,
+    "max_interval_error": 0.016199594063510785,
+    "duration_drift_seconds": -0.00460347502946945,
+    "blast_errors": [],
+    "max_activation_delay": 0.10001424153648486,
+    "median_activation_delay": 0.016660563151049246
+  },
+  "normal600_long_fire": {
+    "ordinals": [
+      136,
+      1373
+    ],
+    "count": 1238,
+    "complete": true,
+    "all_admitted": true,
+    "all_damage20_receipts": true,
+    "alternation_errors": 0,
+    "window_seconds": 103.06666666666666,
+    "max_interval_error": 0.01666666666667045,
+    "drift_seconds": -0.01666666666666572,
+    "max_activation_delay": 0.4666707356770985,
+    "median_activation_delay": 0.01667378743491099
+  },
+  "blast_levels": {
+    "blast1": {
+      "start": 122,
+      "end": 148,
+      "shots": 26,
+      "admitted": 26,
+      "alternation_errors": 0,
+      "blast_ordinals": [
+        127,
+        132,
+        137,
+        142,
+        147
+      ],
+      "counter_errors": []
+    },
+    "blast2": {
+      "start": 174,
+      "end": 200,
+      "shots": 26,
+      "admitted": 26,
+      "alternation_errors": 0,
+      "blast_ordinals": [
+        178,
+        182,
+        186,
+        190,
+        194,
+        198
+      ],
+      "counter_errors": []
+    },
+    "blast3": {
+      "start": 200,
+      "end": 226,
+      "shots": 26,
+      "admitted": 26,
+      "alternation_errors": 0,
+      "blast_ordinals": [
+        202,
+        204,
+        206,
+        208,
+        210,
+        212,
+        214,
+        216,
+        218,
+        220,
+        222,
+        224,
+        226
+      ],
+      "counter_errors": []
+    }
+  },
+  "range": {
+    "center": {
+      "key": "1/ABC71F5A7205C931B2852AE921930D76/1",
+      "health_before": 100000,
+      "health_after": 98578,
+      "shield_before": 0,
+      "shield_after": 0
+    },
+    "inside": {
+      "key": "1/242C8DE569B931EBDD137285A861FA77/1",
+      "health_before": 100000,
+      "health_after": 99280,
+      "shield_before": 0,
+      "shield_after": 0
+    },
+    "boundary": {
+      "key": "1/E6BCEF16E246BBC257C0E63D6A40A7B6/1",
+      "health_before": 100000,
+      "health_after": 99280,
+      "shield_before": 0,
+      "shield_after": 0
+    },
+    "outside": {
+      "key": "1/ABD0C36DBEF823B642A46B761B00D68B/1",
+      "health_before": 100000,
+      "health_after": 100000,
+      "shield_before": 0,
+      "shield_after": 0
+    },
+    "friendly": {
+      "key": "1/66425DB3F050E70D0D2A54A7F76EDF4D/1",
+      "health_before": 100000,
+      "health_after": 100000,
+      "shield_before": 0,
+      "shield_after": 0
+    },
+    "shield": {
+      "key": "1/B45C03904C01B12248030AFDECBC83B9/1",
+      "health_before": 100000,
+      "health_after": 100000,
+      "shield_before": 1000,
+      "shield_after": 280
+    },
+    "behind_wall": {
+      "key": "1/5A3D51A0C91E8B11516BA3A7D1B39536/1",
+      "health_before": 100000,
+      "health_after": 99280,
+      "shield_before": 0,
+      "shield_after": 0
+    }
+  },
+  "duplicates": {
+    "injected": 32,
+    "observed_duplicates": 32,
+    "original_fire_count": 122,
+    "health_delta": 1098,
+    "evidence": [
+      "run13_main_duplicate_after.json",
+      "run13_peer_duplicate_used.json",
+      "run13_basic9_after.json"
+    ]
+  },
+  "inflight_upgrade": {
+    "build": {
+      "player": "bf8dc62b46ce87e61ebaa6953e3b5990",
+      "revision": 3,
+      "shot_progress": 0,
+      "fire_rate_multiplier": 1,
+      "enhanced": false,
+      "explosive_interval": 4
+    },
+    "old_flying_companions": [
+      {
+        "shot": "3B8FB871B151C2E3C74D128727017E09",
+        "fire_ordinal": 152,
+        "build_revision": 2,
+        "explosive_finished": false
+      },
+      {
+        "shot": "8374C95EF9FC96EDC56B2F2591CF8ECC",
+        "fire_ordinal": 157,
+        "build_revision": 2,
+        "explosive_finished": false
+      },
+      {
+        "shot": "62B119CD1E6C999FFCB0A29F07005C45",
+        "fire_ordinal": 162,
+        "build_revision": 2,
+        "explosive_finished": false
+      },
+      {
+        "shot": "A2185741A1B301896A74803FFB54B9F3",
+        "fire_ordinal": 167,
+        "build_revision": 2,
+        "explosive_finished": false
+      },
+      {
+        "shot": "51E11FD1499B3D5E1E9C7CFE27A7587F",
+        "fire_ordinal": 172,
+        "build_revision": 2,
+        "explosive_finished": false
+      }
+    ]
+  },
+  "independent_flight": {
+    "sample_count": 24,
+    "muzzle_offset_cm_min": 50.00000016,
+    "muzzle_offset_cm_max": 50.000412088301836,
+    "direction_matches": true,
+    "speeds": [
+      16800
+    ],
+    "all_companions_outlive_primary": true
+  },
+  "limits": [
+    "Player visual and feel acceptance pending; no assistant image inspection.",
+    "Actual death/respawn, seat switch and same-session restore not executed: the current formal character has no public respawn/seat-switch entry. Serialized fields and existing core recovery acceptance do not prove this end-to-end matrix.",
+    "Full-directory diagnostic reads stall the game thread. Activation-delay samples include these reads and are not an input-latency or frame-time benchmark.",
+    "Retained match history consumes memory and SQLite storage; constant memory and multi-hour sessions were not measured."
+  ],
+  "run15_failure": {
+    "coordinator_directory": {
+      "protocol": 39,
+      "phase": 1,
+      "failure": "",
+      "members": 2,
+      "directory_records": 94796,
+      "stored_metadata_bytes": 20847020,
+      "source": "read-only SQLite room_metadata_v28 current session"
+    },
+    "pending": 16382,
+    "evidence": [
+      "run15_main_backlog.json",
+      "run15_main_stop.json",
+      "run15_sample_9.json",
+      "run15_directory_capacity.json"
+    ]
+  },
+  "run16_failure": {
+    "room": "DCBE3BE04387C7C2627141B592FC0888",
+    "numeric_objects": 100000,
+    "spawn_head_reason": "evaluation_status/13",
+    "evidence": "run16_capacity_boundary.json",
+    "normal_exit_evidence": "run16_exit.json",
+    "outcome": "failed_before_capacity_fix"
+  },
+  "capacity_fix": {
+    "live_limit": 100000,
+    "history_retained": true,
+    "lifetime_event_limit_removed": true,
+    "incremental_directory_hash": true,
+    "local_metadata_limit": "actual SQLite record byte limit",
+    "network_limits_unchanged": true,
+    "final_runtime": "passed run18; default 600, >15 minutes, no control interruption, normal exit"
+  },
+  "builds": {
+    "editor": "editor-build-ordinal-index.log",
+    "coordinator": "coordinator-build-ordinal-index.log",
+    "existing_core_acceptance": "core-acceptance-ordinal-index.log",
+    "exit_codes": [
+      0,
+      0,
+      0
+    ]
+  },
+  "asset_readback": "final_animation_readback.json",
+  "scene_readback": "scene_delivery.json",
+  "run17_continuous": {
+    "protocol": 40,
+    "ordinals": [
+      1,
+      8189
+    ],
+    "count": 8189,
+    "complete": true,
+    "alternation_errors": 0,
+    "duration_seconds": 682.3166666666667,
+    "max_interval_error": 0.01666666666667045,
+    "drift": -0.01666666666665151,
+    "pending_at_capture": 2,
+    "max_activation_delay": 0.8666809082031364,
+    "median_activation_delay": 0.03333740234376137,
+    "numeric_objects": 177622,
+    "live_objects": 1660
+  },
+  "run17_failure": {
+    "outcome": "failed",
+    "error": "Empty team timeout",
+    "exit": "run17_exit_failure.json",
+    "failure_log": "run17_failure.log",
+    "metadata_pending_at_disconnect": 100000,
+    "numeric_boundary_fixed": true,
+    "continuous_fire_evidence": "run17_long_analysis.json",
+    "root_cause": "Coordinator duplicate ordinal check scanned all retained records for each birth; metadata registration throughput regressed with session duration; changed to derived ordinal index, verified in run18 beyond 15 minutes and 227128 numeric records."
+  },
+  "run18_continuous": {
+    "protocol": 40,
+    "ordinals": [
+      1116,
+      7314
+    ],
+    "count": 6199,
+    "complete": true,
+    "alternation_errors": 0,
+    "duration_seconds": 516.4833333333333,
+    "max_interval_error": 0.01666666666667045,
+    "drift": -0.01666666666665151,
+    "pending_at_capture": 0,
+    "max_activation_delay": 0.9333292643228788,
+    "median_activation_delay": 0.01668294270837123,
+    "activation_measurement_note": "Includes full-directory diagnostic readback stalls; not a frame-time or input-latency benchmark. Largest spikes align with readback samples.",
+    "metadata_pending": 635,
+    "control_interruptions": 0
+  },
+  "metadata_large_record": {
+    "protocol": 40,
+    "metadata_bytes": 44528927,
+    "directory_count": 202194,
+    "phase": 1,
+    "failure": ""
+  },
+  "run19_damage": {
+    "enhanced10": {
+      "shots": 91,
+      "receipts": 90,
+      "total_applied": 900,
+      "HP_delta": 900,
+      "alternation_errors": 0,
+      "duplicates": 32
+    },
+    "enhanced15": {
+      "first": 92,
+      "last": 303,
+      "shots": 212,
+      "receipts": 212,
+      "frozen_damage": [
+        15
+      ],
+      "applied_sum": 3180,
+      "health_delta": 3180,
+      "alternation_errors": 0,
+      "max_interval_error": 0.008333333333382598
+    }
+  },
+  "run18_resumed": {
+    "first": 7315,
+    "last": 8470,
+    "count": 1156,
+    "complete": true,
+    "alternation_errors": 0,
+    "duration_seconds": 96.23333333333335,
+    "receipts": 1154,
+    "all_applied20": true,
+    "control_interruptions": 0
+  },
+  "latest_build_three_normal_runs": [
+    "run18",
+    "run19",
+    "run20"
+  ],
+  "latest_build_all_three_normal_exit": true,
+  "run18_damage": [
+    {
+      "damage": 6,
+      "shots": 127,
+      "receipts": 126,
+      "matching_receipts": true,
+      "health_transitions_matching": 84,
+      "sample": {
+        "shot": "C49B883080016485C5471D9CFDD73D36",
+        "fire_ordinal": 111,
+        "muzzle": 0,
+        "damage_event": "01AF9855DEFA035BF8BB8E9C22121DBD",
+        "frozen_damage": 6,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 98980,
+        "target_health_now": 92198.5
+      },
+      "sample_file": "run18_sample_2.json"
+    },
+    {
+      "damage": 9,
+      "shots": 988,
+      "receipts": 988,
+      "matching_receipts": true,
+      "health_transitions_matching": 643,
+      "sample": {
+        "shot": "4E8227C77254430D6865E0ABA180D369",
+        "fire_ordinal": 364,
+        "muzzle": 1,
+        "damage_event": "BC8CC769BA66BE22E9D4E7663ECDA524",
+        "frozen_damage": 9,
+        "applied": 9,
+        "absorbed": 0,
+        "remaining_health": 95320,
+        "target_health_now": 89188
+      },
+      "sample_file": "run18_sample_3.json"
+    },
+    {
+      "damage": 12,
+      "shots": 6199,
+      "receipts": 422,
+      "matching_receipts": true,
+      "health_transitions_matching": 225,
+      "sample": {
+        "shot": "1E4FB2CB061283270D412B899A72BC63",
+        "fire_ordinal": 1538,
+        "muzzle": 1,
+        "damage_event": "240D53A4AECB6585D7F3D2217097C169",
+        "frozen_damage": 12,
+        "applied": 12,
+        "absorbed": 0,
+        "remaining_health": 74773,
+        "target_health_now": 74353
+      },
+      "sample_file": "run18_sample_8.json"
+    },
+    {
+      "damage": 20,
+      "shots": 1156,
+      "receipts": 1154,
+      "matching_receipts": true,
+      "health_transitions_matching": 600,
+      "sample": {
+        "shot": "2BE675CC77FF2FC6D42E2D3B50B975ED",
+        "fire_ordinal": 7863,
+        "muzzle": 0,
+        "damage_event": "CCAA40226BE505D991DD57D67D06C27A",
+        "frozen_damage": 20,
+        "applied": 20,
+        "absorbed": 0,
+        "remaining_health": 43765.5,
+        "target_health_now": 32680.5
+      },
+      "sample_file": "run18_sample_28.json"
+    }
+  ],
+  "near_wall_offset": {
+    "primary_shots": 61,
+    "alternation_errors": 0,
+    "blast_ordinals": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "right_offset_block_count": 6,
+    "right_at_wall_surface_y": [
+      54705.0
+    ],
+    "right_terminal_at_birth": true,
+    "right_primary_continues": true,
+    "left_outward_clear_count": 6,
+    "left_flights_continue": true,
+    "desired_offset_cm": [
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0,
+      50.0
+    ],
+    "evidence": "run20_near_wall_after.json"
+  },
+  "run20_taps": {
+    "presses": 12,
+    "shots": 10,
+    "ordinals": [
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71
+    ],
+    "sides": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "first_resumed_side": 1,
+    "prior_side": 0,
+    "minimum_interval": 0.25,
+    "all_admitted": true,
+    "serial_after_stop": 71,
+    "movement": true,
+    "evidence": "run20_taps_after.json"
+  },
+  "latest_mass_regression": {
+    "samples": 16,
+    "damage": [
+      10
+    ],
+    "all_receipts": true,
+    "receipt_sample": [
+      {
+        "source_kind": 2,
+        "shot": "4449021D486481E8F231F8B3E4107A06",
+        "target": "B45C03904C01B12248030AFDECBC83B9",
+        "admitted": true,
+        "fire_notify": false,
+        "fire_ordinal": 0,
+        "admission_event": "E5F7F5CB1F9BA70E8D566F27CC254788",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": false,
+        "fire_time": 0,
+        "activation_time": 941.0999755859375,
+        "muzzle": 0,
+        "frozen_damage": 10,
+        "muzzle_position": "X=1540.473 Y=57309.241 Z=1145.498",
+        "direction": "X=-0.986 Y=-0.165 Z=0.004",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-1716.674 Y=56764.957 Z=1157.678",
+        "primary_terminal_sample_time": 941.7879638671875,
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "5D4FB8BA42866B3EEF077AD8B57E9C03",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 10,
+        "absorbed": 0,
+        "remaining_health": 17207.5,
+        "target_health_now": 17037.5,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_launch_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_launch_direction": "X=1.000 Y=0.000 Z=0.000",
+        "explosive_start_time": 0,
+        "explosive_terminal_sample_time": 0,
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      }
+    ],
+    "evidence": "run18_final.json"
+  },
+  "final_asset_readbacks": [
+    "final_animation_readback.json",
+    "final_missile_readback.json",
+    "asset_install_tables.json"
+  ],
+  "final_scene": "scene_delivery.json"
+}

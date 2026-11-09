@@ -6,9 +6,11 @@
 #include "Network/GuLiHybridActorComponent.h"
 #include "GameFramework/Character.h"
 #include "Engine/World.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 bool UGuLiEngineeringTravelComponent::EnsureMassEntity()
 {
+    if (MassEntityId.IsValid()) return true;
     auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
     auto* Carrier=Cast<ACharacter>(GetOwner());const auto* Binding=UGuLiHybridActorComponent::Find(Carrier);
     if (!Authority || !Carrier || !Binding) return false;
@@ -17,6 +19,7 @@ bool UGuLiEngineeringTravelComponent::EnsureMassEntity()
 }
 void UGuLiEngineeringTravelComponent::RefreshMassAuthority()
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiEngineering_MassRefresh);
     if (EnsureMassEntity()) GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->SyncEngineeringMass(MassEntityId);
 }
 bool UGuLiEngineeringTravelComponent::ProcessQueuedPath()

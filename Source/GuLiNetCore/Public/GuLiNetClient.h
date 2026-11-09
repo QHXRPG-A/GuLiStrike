@@ -236,9 +236,10 @@ public:
     bool ApplyCommit(const CommitResult& Result);
     // Only initial readiness and membership join/leave use this world pause.
     void SetMembershipPaused(bool Value);
-    // Zero preserves an unbounded retry pass. A positive caller-local limit
-    // resumes each retry phase fairly without discarding or aging unvisited work.
-    void PollNetwork(double MonotonicSeconds,std::size_t RetryBatchLimit=0);
+    // Caller-local cooperative limits. Each phase makes at least one attempt;
+    // unvisited identities retain their deadlines and resume without sleeping.
+    // Synchronous hosts may drain a phase with zero limits.
+    void PollNetwork(double MonotonicSeconds,std::size_t RetryBatchLimit=0,double RetryPhaseSeconds=0);
     bool HasPendingNetworkRetryBatch() const {return RetryBatchPending;}
     void SetPeerTransactionDeferral(bool Enabled) {DeferPeerTransactions=Enabled;}
     void SetResourceValidationSnapshotReuse(bool Enabled) {Numbers.SetResourceValidationSnapshotReuse(Enabled);}
@@ -351,6 +352,7 @@ private:
     void CompleteCommandReceipt(const CommandReceipt& Receipt);
     void QueueHandoffCommand(ObjectKey Object,Message Value);
     bool StartWork(Id Sender,const TransactionRequest& Request,bool Defer=false);
+    void FinishSpawnWork(const TransactionRequest& Request);
     void AdvanceWork(Id Event);
     bool ReceiveWork(Id Sender,const Message& Value);
     bool SendMessage(Id Peer,MessageKind Kind,Id Event,ObjectKey Object,Bytes Body);
@@ -383,6 +385,9 @@ private:
     void RecordReceiveRejection(const Message& Value);
     std::map<Id,Member> Members;
     std::map<ObjectKey,ObjectRecord> Directory;
+    // Resource backup membership must not scan the append-only projectile history.
+    // Resolve parent groups at query time so ownership changes remain authoritative.
+    std::set<ObjectKey> ResourceObjectCandidates;
     std::map<ObjectKey,std::set<ObjectKey>> LiveParentWork;
     std::map<std::pair<Team,std::string>,std::set<ObjectKey>> CapabilityObjects;
     std::map<std::string,std::size_t> CommanderDefinitionCounts;
@@ -465,7 +470,10 @@ private:
     double NextStateRepair=0;
     std::string LastStateImportFailure;
     std::map<Id,std::pair<Id,TransactionRequest>> RetryWork;
-    Id PendingRetryCursor,IntentRetryCursor;
+    // Shared spawn admission order, independent of event GUID ordering and
+    // network receipt timing. The next birth wakes when its predecessor ends.
+    std::map<ObjectKey,std::set<std::pair<Tick,Id>>> SpawnWorkOrder;
+    std::deque<Id> PendingRetryRound,IntentRetryRound,WorkFlowRetryRound,WaitingResultRound;
     std::deque<Id> WorkRetryRound;
     bool RetryBatchPending=false;
     bool DeferPeerTransactions=false;

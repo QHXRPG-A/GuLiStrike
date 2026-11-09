@@ -64,10 +64,10 @@ def ground_context(path):
         ('/Progress/' in p and any(part.startswith(('202608', '20260901-', '20260902-', '20260903-', '20260905-')) for part in path.parts)))
 
 def normalize(text, path):
-    text = text.replace('地面' + OLD, '地面机甲').replace('Ground ' + OLD, 'Ground 地面机甲').replace('Ground' + OLD, 'Ground地面机甲')
+    text = text.replace('地面' + OLD, '游骑兵').replace('Ground ' + OLD, 'Ground 游骑兵').replace('Ground' + OLD, 'Ground游骑兵')
     if path.name == '战斗.md':
-        return ''.join(line.replace(OLD, NEW if '300.5' in line else '地面机甲') for line in text.splitlines(keepends=True))
-    return text.replace(OLD, '地面机甲' if ground_context(path) else NEW)
+        return ''.join(line.replace(OLD, NEW if '300.5' in line else '游骑兵') for line in text.splitlines(keepends=True))
+    return text.replace(OLD, '游骑兵' if ground_context(path) else NEW)
 
 def migrate_prompt_records(original, normalized):
     """Preserve original hashes while labeling normalized prompts as revised text."""

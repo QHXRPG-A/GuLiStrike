@@ -1,0 +1,50 @@
+{
+  "success": false,
+  "date": "2026-10-29",
+  "scope": "Resource bake and production manifest repair only",
+  "PIE_started": false,
+  "native_build": false,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "before": {
+    "success": false,
+    "message": "GuLiMapAuthoring source changed after the last resource bake; rebake before PIE.",
+    "source_hash": "",
+    "layout_hash": "",
+    "territory_count": 0,
+    "cluster_count": 0,
+    "node_count": 0,
+    "initial_soldier_count": 0,
+    "validated_initial_soldier_count": 0,
+    "issues": [
+      "GuLiMapAuthoring source changed after the last resource bake; rebake before PIE."
+    ]
+  },
+  "resource_before": {
+    "asset": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap",
+    "source_hash": "e1fee1d2461dec9ab29c2f578db5af93f2280608",
+    "layout_hash": "1449dc14a87d5825ab96ee22ce244eb51985d062",
+    "territories": 49,
+    "clusters": 240,
+    "nodes": 6240
+  },
+  "source_actor_count": 51,
+  "manifests_before": {
+    "200": "209a705efab59de552dfd1785b7b92f511d73b775a5d1080fcf5a694722b7b2b",
+    "600": "a7ed051506ca7cf7b2cc8551773c32b050420cdeccbfb5e856e546726c37602b"
+  },
+  "bake": {
+    "success": false,
+    "message": "Bake rejected R2C1: no packing for 2 blue/0 red symmetric pairs; clear candidates=11/0, search=21 (limit 100000).",
+    "source_hash": "32be4415ee5fc4ba0b6a0f2c463c7145acf73b6b",
+    "layout_hash": "",
+    "territory_count": 0,
+    "cluster_count": 0,
+    "node_count": 0,
+    "initial_soldier_count": 0,
+    "validated_initial_soldier_count": 0,
+    "issues": [
+      "Bake rejected R2C1: no packing for 2 blue/0 red symmetric pairs; clear candidates=11/0, search=21 (limit 100000)."
+    ]
+  },
+  "error": "Traceback (most recent call last):\n  File \"<string>\", line 57, in repair\nAssertionError: {'success': False, 'message': 'Bake rejected R2C1: no packing for 2 blue/0 red symmetric pairs; clear candidates=11/0, search=21 (limit 100000).', 'source_hash': '32be4415ee5fc4ba0b6a0f2c463c7145acf73b6b', 'layout_hash': '', 'territory_count': 0, 'cluster_count': 0, 'node_count': 0, 'initial_soldier_count': 0, 'validated_initial_soldier_count': 0, 'issues': ['Bake rejected R2C1: no packing for 2 blue/0 red symmetric pairs; clear candidates=11/0, search=21 (limit 100000).']}\n"
+}

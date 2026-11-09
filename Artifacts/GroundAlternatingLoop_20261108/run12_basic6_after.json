@@ -1,0 +1,5006 @@
+{
+  "buff_version": 2,
+  "rogue_version": 6,
+  "ready": true,
+  "tick": 2860,
+  "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "transactions": {
+    "input_bytes": 0,
+    "output_admitted_bytes": 18983,
+    "result_reserved_bytes": 0,
+    "input_peak": 16777216,
+    "output_peak": 5752264,
+    "input_rejected": 0,
+    "result_backpressure": 0,
+    "queue_wait_ms": 9.13849999778904,
+    "queue_wait_peak_ms": 548.5408999957144,
+    "worker_ms": 3188.312900000075,
+    "main_apply_ms": 1213.5017999999927,
+    "control_bytes": 0,
+    "control_peak": 1031608,
+    "full_object_copies": 8,
+    "hud_full_object_copies": 0,
+    "inputs": 127103,
+    "applications": 153094,
+    "logical_steps": 2860,
+    "simulation_ms": 3070.212900000005,
+    "capture_yield_enabled": true,
+    "fast_pack_cache_key_enabled": true,
+    "command_wake_requests": 0,
+    "command_wake_pumps": 0,
+    "native_peer_send_enabled": true,
+    "native_peer_receive_enabled": true,
+    "reuse_payload_compressor_enabled": true,
+    "fast_small_payload_compression_enabled": true,
+    "entity_layout_cache_enabled": true,
+    "entity_layout_definitions": 51,
+    "entity_layout_build_ms": 6.64830000459915,
+    "capture_yield_advances": 0,
+    "input_byte_basis": "Admission budget estimate, including retained gameplay snapshots; not socket bytes or measured heap allocation",
+    "queued_input_bytes": 0,
+    "gameplay_admitted_bytes": 0,
+    "oldest_input_ms": 0,
+    "oldest_control_ms": 0,
+    "input_kinds": {
+      "general": {
+        "accepted": 304,
+        "processed": 304,
+        "rejected": 0,
+        "accepted_bytes": 17192451,
+        "processed_bytes": 17192451,
+        "queued_bytes": 0,
+        "queued_count": 0,
+        "work_ms": 18.507200000000083,
+        "wait_ms": 1.8838000105461106,
+        "max_wait_ms": 0.10779999865917489
+      },
+      "control": {
+        "accepted": 41736,
+        "processed": 41736,
+        "rejected": 0,
+        "accepted_bytes": 7352784,
+        "processed_bytes": 7352784,
+        "queued_bytes": 0,
+        "queued_count": 0,
+        "work_ms": 106.70399999998753,
+        "wait_ms": 54269.20599956793,
+        "max_wait_ms": 26.04330000031041
+      },
+      "peer_motion": {
+        "accepted": 60494,
+        "processed": 60494,
+        "rejected": 0,
+        "accepted_bytes": 16453101,
+        "processed_bytes": 16453101,
+        "queued_bytes": 0,
+        "queued_count": 0,
+        "work_ms": 147.33359999997953,
+        "wait_ms": 23580.860900852713,
+        "max_wait_ms": 22.877700001117773
+      },
+      "peer_business": {
+        "accepted": 18949,
+        "processed": 18949,
+        "rejected": 0,
+        "accepted_bytes": 37878172,
+        "processed_bytes": 37878172,
+        "queued_bytes": 0,
+        "queued_count": 0,
+        "work_ms": 657.2796999999924,
+        "wait_ms": 11388.341100086109,
+        "max_wait_ms": 22.142000001622364
+      },
+      "local_request": {
+        "accepted": 192,
+        "processed": 192,
+        "rejected": 0,
+        "accepted_bytes": 258976,
+        "processed_bytes": 258976,
+        "queued_bytes": 0,
+        "queued_count": 0,
+        "work_ms": 2.2594000000000007,
+        "wait_ms": 28.813199984142557,
+        "max_wait_ms": 7.72809999762103
+      },
+      "local_event": {
+        "accepted": 96,
+        "processed": 96,
+        "rejected": 0,
+        "accepted_bytes": 152768,
+        "processed_bytes": 152768,
+        "queued_bytes": 0,
+        "queued_count": 0,
+        "work_ms": 9.957599999999994,
+        "wait_ms": 10.758300020825118,
+        "max_wait_ms": 0.814799997897353
+      },
+      "peer_send": {
+        "accepted": 6,
+        "processed": 6,
+        "rejected": 0,
+        "accepted_bytes": 58400,
+        "processed_bytes": 58400,
+        "queued_bytes": 0,
+        "queued_count": 0,
+        "work_ms": 1.0659999999999998,
+        "wait_ms": 0.3214999960619025,
+        "max_wait_ms": 0.23659999715164304
+      },
+      "simulation": {
+        "accepted": 5326,
+        "processed": 5326,
+        "rejected": 0,
+        "accepted_bytes": 681728,
+        "processed_bytes": 681728,
+        "queued_bytes": 0,
+        "queued_count": 0,
+        "work_ms": 1742.785199999995,
+        "wait_ms": 143.75020030274754,
+        "max_wait_ms": 9.147600001597311
+      }
+    },
+    "request_kind_rule": {
+      "0/settle/effect/linear/damage/13:player/ground/3:1.1/11:BasicAttack": 32,
+      "5/admit/linear/damage/13:player/ground/3:1.1/11:BasicAttack": 32,
+      "7/retire/effect/linear/damage/13:player/ground/3:1.1/11:BasicAttack": 32
+    },
+    "receipt_kind_status": {
+      "0/0": 32,
+      "5/0": 60,
+      "5/11": 96,
+      "7/0": 32,
+      "17/0": 9312,
+      "17/3": 1
+    },
+    "core_active": 0,
+    "core_command_outbox": 0,
+    "core_controlled_intents": 0,
+    "core_deferred_state": 0,
+    "core_freeze_requested": 0,
+    "core_incoming_commands": 0,
+    "core_pending": 0,
+    "core_publication_bytes": 0,
+    "core_publication_messages": 0,
+    "core_retained": 0,
+    "core_retry": 0,
+    "core_waiting_result": 0,
+    "core_waiting_result_authority": 0,
+    "core_waiting_result_authority_bytes": 0
+  },
+  "offer": {
+    "candidates": [],
+    "session": "00000000000000000000000000000000",
+    "open": false,
+    "phase": -1
+  },
+  "weapon": {
+    "fire_serial": 32,
+    "next_side": 0,
+    "next_shot_time": 29.416666666666668,
+    "fire_rate": 4,
+    "damage": 6,
+    "shots_fired": 32,
+    "held": false,
+    "upgrade": "1.1",
+    "center": [
+      -1950,
+      52050,
+      1151.3380942344666
+    ],
+    "phase": 0,
+    "playing": false
+  },
+  "presentation": {
+    "epoch": 0,
+    "prepared_vfx": 3,
+    "active_status": 0,
+    "tails": 0,
+    "burst_receipts": 0,
+    "burst_accepted": 0,
+    "burst_suppressed": 0,
+    "burst_rejected": 0
+  },
+  "targets": [
+    {
+      "key": "1/8E249F74A0493F90780963CE1E1AB114/1",
+      "local_id": 3,
+      "center": [
+        -12126.22294242599,
+        51750,
+        1130.4716703293334
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100000,
+      "max_health": 100000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/66425DB3F050E70D0D2A54A7F76EDF4D/1",
+      "local_id": 4,
+      "center": [
+        473.7770575740101,
+        55950,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100000,
+      "max_health": 100000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/FD6B6E3A101127F4C83FC9365514E221/1",
+      "local_id": 7,
+      "center": [
+        -4073.77705757401,
+        53250.000000578635,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/5A3D51A0C91E8B11516BA3A7D1B39536/1",
+      "local_id": 8,
+      "center": [
+        -736.2229424259899,
+        55960,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100000,
+      "max_health": 100000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/B45C03904C01B12248030AFDECBC83B9/1",
+      "local_id": 9,
+      "center": [
+        -1936.22294242599,
+        56560,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100000,
+      "max_health": 100000,
+      "shield": 1000,
+      "dead": false
+    },
+    {
+      "key": "1/ABD0C36DBEF823B642A46B761B00D68B/1",
+      "local_id": 10,
+      "center": [
+        1683.77705757401,
+        56560,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100000,
+      "max_health": 100000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E6BCEF16E246BBC257C0E63D6A40A7B6/1",
+      "local_id": 11,
+      "center": [
+        783.7770575740101,
+        56560,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100000,
+      "max_health": 100000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/242C8DE569B931EBDD137285A861FA77/1",
+      "local_id": 12,
+      "center": [
+        -736.2229424259899,
+        55360,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100000,
+      "max_health": 100000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/ABC71F5A7205C931B2852AE921930D76/1",
+      "local_id": 13,
+      "center": [
+        -736.2229424259899,
+        56560,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100000,
+      "max_health": 100000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1",
+      "local_id": 14,
+      "center": [
+        183.7770575740101,
+        52060,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 99808,
+      "max_health": 100000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/C287DA48EB0331F902D98A6202D4B941/1",
+      "local_id": 20,
+      "center": [
+        -6136.2229424259895,
+        52960,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 20,
+      "max_health": 20,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/FAF9EE1FE287F3DF347922A6F88B82DB/1",
+      "local_id": 21,
+      "center": [
+        -4936.2229424259895,
+        52960,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 400,
+      "max_health": 400,
+      "shield": 500,
+      "dead": false
+    },
+    {
+      "key": "1/62E9241F58BE4BA55E0B1622A81FFF0E/1",
+      "local_id": 24,
+      "center": [
+        -7036.2229424259895,
+        51760,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 250,
+      "dead": false
+    },
+    {
+      "key": "1/2F79D7D69477FC0A66E25A1EEF88E000/1",
+      "local_id": 25,
+      "center": [
+        -5236.2229424259895,
+        51760,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 750,
+      "max_health": 750,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/D6BB95374344EDF326F3576721B16495/1",
+      "local_id": 27,
+      "center": [
+        -4383.77705757401,
+        56260.000000578635,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E2CA9C9479427B70AC76B5EF62A09DC1/1",
+      "local_id": 28,
+      "center": [
+        -10983.77705757401,
+        54760.000000578635,
+        1237.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/5DD28E4C9AAE5E804ABDF093E4C579B4/1",
+      "local_id": 29,
+      "center": [
+        -10683.77705757401,
+        54160.000000578635,
+        1187.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/97BEC07880DB8BB12912ED1E35F80B2F/1",
+      "local_id": 30,
+      "center": [
+        -9783.77705757401,
+        53560.000000578635,
+        1127.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/2DC0B2E93829F8E52596B8A58EAD900B/1",
+      "local_id": 31,
+      "center": [
+        -8883.77705757401,
+        54760.000000578635,
+        1123.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A322B3F10669DA878B265BFCAA103DC8/1",
+      "local_id": 32,
+      "center": [
+        -7383.77705757401,
+        53560.000000578635,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/04B6F3F6C8CAD5A1AD38410152B98946/1",
+      "local_id": 33,
+      "center": [
+        -7083.77705757401,
+        54160.000000578635,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/608E9E6CD82C64623F7D6A04426A2EA9/1",
+      "local_id": 34,
+      "center": [
+        -6183.77705757401,
+        53560.000000578635,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/7D3D84AE8F7E8DCBC3A877D2D5B35439/1",
+      "local_id": 35,
+      "center": [
+        -5283.77705757401,
+        54160.000000578635,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/AC33DE3366F9D8619D8EF96CE44F859C/1",
+      "local_id": 36,
+      "center": [
+        -4383.77705757401,
+        54160.000000578635,
+        1117.6769925949584
+      ],
+      "radius": 300,
+      "team": 2,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/BE73B30C3BC3DE3895CFD254AF79AAC9/1",
+      "local_id": 62,
+      "center": [
+        -11251.906936806332,
+        58377.49826354756,
+        4531.536508193344
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/1257209AEF7B75F1682BA34249160A5F/1",
+      "local_id": 63,
+      "center": [
+        -10051.906936806332,
+        58377.49826354756,
+        4531.536508193344
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A7ADFEA47FCAC0EA7434BA42999AA88A/1",
+      "local_id": 64,
+      "center": [
+        -8851.906936806332,
+        58377.49826354756,
+        4510.601205458969
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A03C9175793A1C56797A4F2A07F1E42F/1",
+      "local_id": 65,
+      "center": [
+        -7651.906936806331,
+        58377.49826354756,
+        4446.086007705063
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/3BE3E103E481534785AF9FD95EA90C75/1",
+      "local_id": 66,
+      "center": [
+        -6451.906936806331,
+        58377.49826354756,
+        4384.988900771469
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F1196A8982BDDE70E1728F5460DADEBC/1",
+      "local_id": 67,
+      "center": [
+        -11251.906936806332,
+        59577.49826354756,
+        4531.536508193344
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/1693249B148F127DD40334387C1E17E2/1",
+      "local_id": 68,
+      "center": [
+        -10051.906936806332,
+        59577.49826354756,
+        4531.536508193344
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/52E68665EDB519762F4A8690C3CD40DB/1",
+      "local_id": 69,
+      "center": [
+        -8851.906936806332,
+        59577.49826354756,
+        4531.109262099594
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A956512B5869C82856E5C4F8DE14833A/1",
+      "local_id": 70,
+      "center": [
+        -7651.906936806331,
+        59577.49826354756,
+        4496.501840224594
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A0401FB8B621566B7D9D0CD9C398B662/1",
+      "local_id": 71,
+      "center": [
+        -6451.906936806331,
+        59577.49826354756,
+        4418.955453505844
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/5EECF440613346FF159A85D4724B4ED0/1",
+      "local_id": 73,
+      "center": [
+        -10051.906936806332,
+        60777.49826354756,
+        4531.536508193344
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/563A701CB5D7A47657700DCA3B616AC2/1",
+      "local_id": 74,
+      "center": [
+        -8851.906936806332,
+        60777.49826354756,
+        4531.536508193344
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E47547AD1855F78A88A3D8C659929495/1",
+      "local_id": 75,
+      "center": [
+        -7651.906936806331,
+        60777.49826354756,
+        4521.709725966782
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E398E6CF93A92DDEB3564369921D34E8/1",
+      "local_id": 76,
+      "center": [
+        -6451.906936806331,
+        60777.49826354756,
+        4457.408212294907
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/FA06D11C9E7039AE866694A6B95EB0A1/1",
+      "local_id": 79,
+      "center": [
+        -8851.906936806332,
+        61977.49826354756,
+        4531.536508193344
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E166FEA2967D6AE96E87EB6F28E6C9F4/1",
+      "local_id": 80,
+      "center": [
+        -7651.906936806331,
+        61977.49826354756,
+        4528.759408583969
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/7D905A08EEE42ADF99C5893007EE3C93/1",
+      "local_id": 81,
+      "center": [
+        -6451.906936806331,
+        61977.49826354756,
+        4482.402474990219
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/316FF16767FF22D38FDCF20B36B35BA6/1",
+      "local_id": 84,
+      "center": [
+        -8851.906936806332,
+        63177.49826354756,
+        4531.536508193344
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/CA3B45D9CACE5BD2E0D2C989A6728C63/1",
+      "local_id": 85,
+      "center": [
+        -7651.906936806331,
+        63177.49826354756,
+        4530.682016005844
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/11104D0508148902B6D0DB28CF2DA88A/1",
+      "local_id": 86,
+      "center": [
+        -6451.906936806331,
+        63177.49826354756,
+        4493.297372451157
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/7E0D69AB0AC9818D1031D7A1DE4E549E/1",
+      "local_id": 87,
+      "center": [
+        150.0000002893184,
+        57126.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/41BC516A8ECA879F4956C14E492B5032/1",
+      "local_id": 88,
+      "center": [
+        750.0000002893183,
+        57126.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/5DA66953D44787F9B7572E6EF8B8E3CC/1",
+      "local_id": 89,
+      "center": [
+        1350.0000002893185,
+        57126.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/4CC65D038A099AE8D0D3E04102E16E8A/1",
+      "local_id": 90,
+      "center": [
+        1950.0000002893185,
+        57126.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E3E1195F7D53C7BAB573AFBB96B21409/1",
+      "local_id": 91,
+      "center": [
+        2550.0000002893185,
+        57126.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/87DD9B83E80AC865A64AB49521B6DD85/1",
+      "local_id": 92,
+      "center": [
+        150.0000002893184,
+        57726.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E798433E7634D2AF1357409EBB2F6353/1",
+      "local_id": 93,
+      "center": [
+        750.0000002893183,
+        57726.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/FB08058758DD1437583F52E4800B2310/1",
+      "local_id": 94,
+      "center": [
+        1350.0000002893185,
+        57726.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E565A3C13267691624DC0FA5B5E3EC40/1",
+      "local_id": 95,
+      "center": [
+        1950.0000002893185,
+        57726.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/0E1532337255A8EBB0B1F81A987229C2/1",
+      "local_id": 96,
+      "center": [
+        2550.0000002893185,
+        57726.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/C662BA237C999DDDB9B61FA09AC4A46A/1",
+      "local_id": 97,
+      "center": [
+        150.0000002893184,
+        58326.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/64550ADE51628810EF761A21A641D4CD/1",
+      "local_id": 98,
+      "center": [
+        750.0000002893183,
+        58326.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/8F0B1B9CA8DB4A8BFF1C6186E999960F/1",
+      "local_id": 99,
+      "center": [
+        1350.0000002893185,
+        58326.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/82F54667D294202427CCFC6ED6FF4FA4/1",
+      "local_id": 100,
+      "center": [
+        1950.0000002893185,
+        58326.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/BE8E43722C5220EF0BDECBAF98F65312/1",
+      "local_id": 101,
+      "center": [
+        2550.0000002893185,
+        58326.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/3A867470797CBC4AD48AFB8FDC879A9B/1",
+      "local_id": 102,
+      "center": [
+        150.0000002893184,
+        58926.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F51CB54B8AD71A51129C8E74109493A1/1",
+      "local_id": 103,
+      "center": [
+        750.0000002893183,
+        58926.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/85D82685E3A4A49BE947144AF51497AE/1",
+      "local_id": 104,
+      "center": [
+        1350.0000002893185,
+        58926.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F602AF98FA97D81ADFEFE292EBFAA00B/1",
+      "local_id": 105,
+      "center": [
+        1950.0000002893185,
+        58926.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/563B07921BEE4C7407FB2E29EA6DE21D/1",
+      "local_id": 106,
+      "center": [
+        2550.0000002893185,
+        58926.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/36CE26AFFE62E573EA2F2E03583D93AB/1",
+      "local_id": 107,
+      "center": [
+        150.0000002893184,
+        59526.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/BB614E6F5122B0FD47383DEB2C9FB128/1",
+      "local_id": 108,
+      "center": [
+        750.0000002893183,
+        59526.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/046DDECAE42C704A39DA756F4C2DD1B9/1",
+      "local_id": 109,
+      "center": [
+        1350.0000002893185,
+        59526.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A2A41A69F924A841E0ECF49EC8B15E03/1",
+      "local_id": 110,
+      "center": [
+        1950.0000002893185,
+        59526.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/5FAAABDAFE7B69B576B722550A8C2819/1",
+      "local_id": 111,
+      "center": [
+        2550.0000002893185,
+        59526.22294242599,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/7864202DFEBBEDF74AE4BC8CE37748EF/1",
+      "local_id": 112,
+      "center": [
+        7051.906982899825,
+        57177.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/482A76022569AD91A6C9737DC425259C/1",
+      "local_id": 113,
+      "center": [
+        8251.906982899825,
+        57177.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/D54DD72B0933197FD528ABC050D9CD34/1",
+      "local_id": 114,
+      "center": [
+        9451.906982899825,
+        57177.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/230D53EA5DE881A0307C72A553F1E51F/1",
+      "local_id": 115,
+      "center": [
+        10651.906982899825,
+        57177.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/7B7B9E8160BF1A75363BA57E5BE5EE72/1",
+      "local_id": 116,
+      "center": [
+        11851.906982899825,
+        57177.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/112B2A5E92AC4ECEE2DDFC08ADB2D3A2/1",
+      "local_id": 117,
+      "center": [
+        7051.906982899825,
+        58377.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/553E622534C9AFDEBE2545C607923E65/1",
+      "local_id": 118,
+      "center": [
+        8251.906982899825,
+        58377.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/4A8ABE2C6BA275ABDE752355A4EFFA67/1",
+      "local_id": 119,
+      "center": [
+        9451.906982899825,
+        58377.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/32AEAB1C92ABE529675DDCBFEFB90E0B/1",
+      "local_id": 120,
+      "center": [
+        10651.906982899825,
+        58377.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/53069DAE8DBFA3075658D4EF45DE9001/1",
+      "local_id": 121,
+      "center": [
+        11851.906982899825,
+        58377.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/75DF3007870BADD6D674B0AE003EE2B6/1",
+      "local_id": 122,
+      "center": [
+        7051.906982899825,
+        59577.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E1F1C3E268025DA7BB6FC25C427B50D3/1",
+      "local_id": 123,
+      "center": [
+        8251.906982899825,
+        59577.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/CFCE9CB70AE0D1839D2463B9CA182372/1",
+      "local_id": 124,
+      "center": [
+        9451.906982899825,
+        59577.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/C14E38E21584B1BDC335FF3707F4A995/1",
+      "local_id": 125,
+      "center": [
+        10651.906982899825,
+        59577.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/2981A649466662DC901E1C507C0DA6C0/1",
+      "local_id": 127,
+      "center": [
+        7051.906982899825,
+        60777.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/64A20F13096A3CB1C2211DFB2B8DEC81/1",
+      "local_id": 128,
+      "center": [
+        8251.906982899825,
+        60777.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/727C50762DF867D5AAA8AA76A9E2C162/1",
+      "local_id": 129,
+      "center": [
+        9451.906982899825,
+        60777.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/110A865BD2314251088079E78A5D71FA/1",
+      "local_id": 130,
+      "center": [
+        10651.906982899825,
+        60777.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/CDB66B9F7CEE91CFD97EEF6429855C70/1",
+      "local_id": 132,
+      "center": [
+        7051.906982899825,
+        61977.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F36D7EF12CA57D107DFF1BD3218D3588/1",
+      "local_id": 133,
+      "center": [
+        8251.906982899825,
+        61977.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/3BB2AAD2956685D8EB0EC89B1E7DC9C2/1",
+      "local_id": 134,
+      "center": [
+        9451.906982899825,
+        61977.49826035106,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/B6AC4C7F3020A6B3C7601F97678052F3/1",
+      "local_id": 187,
+      "center": [
+        -10048.233128146438,
+        48726.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A97CAE28C14EF7F0A926598F6CA89F86/1",
+      "local_id": 188,
+      "center": [
+        -9448.233128146438,
+        48726.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/8C7FE56FE157BE36E374791ED2D07585/1",
+      "local_id": 189,
+      "center": [
+        -8848.233128146438,
+        48726.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F2EA10A0C782793B7076FDD34224AE2C/1",
+      "local_id": 190,
+      "center": [
+        -8248.233128146438,
+        48726.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/2AEA52C9E7D9E041D8FBFC6E7BA13E0F/1",
+      "local_id": 191,
+      "center": [
+        -7648.233128146437,
+        48726.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/DB5D075CE8A6E780ECBD6E4573F43671/1",
+      "local_id": 192,
+      "center": [
+        -10048.233128146438,
+        49326.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/D13EFD74C3D2CF4BDA048260815E781A/1",
+      "local_id": 193,
+      "center": [
+        -9448.233128146438,
+        49326.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/D8C421C1AC7CB3CFB2E9B1C4F2674EE8/1",
+      "local_id": 194,
+      "center": [
+        -8848.233128146438,
+        49326.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/32460D923BC5AD711B65A5E3C7621EB1/1",
+      "local_id": 195,
+      "center": [
+        -8248.233128146438,
+        49326.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A35C6FFF6452017C26534FCB933534DF/1",
+      "local_id": 196,
+      "center": [
+        -7648.233128146437,
+        49326.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F92FE62DF862B8F9185E829E053C00AF/1",
+      "local_id": 197,
+      "center": [
+        -10048.233128146438,
+        49926.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/8D119D8BFF005B17E121A87FB7DD05D5/1",
+      "local_id": 198,
+      "center": [
+        -9448.233128146438,
+        49926.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/03BEFEE5E16948C2FBDE00EAA78712BA/1",
+      "local_id": 199,
+      "center": [
+        -8848.233128146438,
+        49926.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/2CBF4CBEC86CC7DA1245268B8337F045/1",
+      "local_id": 200,
+      "center": [
+        -8248.233128146438,
+        49926.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/39D698AC687C4935E4B17437AC57DAE7/1",
+      "local_id": 201,
+      "center": [
+        -7648.233128146437,
+        49926.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/AD3F958416F76A6FE0D31ECC832CA71C/1",
+      "local_id": 202,
+      "center": [
+        -10048.233128146438,
+        50526.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E9B58F5430499855ACC6964AE970599E/1",
+      "local_id": 203,
+      "center": [
+        -9448.233128146438,
+        50526.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/08F28BD0C7D20B0A074154E8155C87B8/1",
+      "local_id": 204,
+      "center": [
+        -8848.233128146438,
+        50526.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/0BE9F3FD0C207CAE78D65B1F152E50AE/1",
+      "local_id": 205,
+      "center": [
+        -8248.233128146438,
+        50526.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/873917FAAD4B0D2065FB31A5895C0A8F/1",
+      "local_id": 206,
+      "center": [
+        -7648.233128146437,
+        50526.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/31F733B70876BF3F57DAA6E0E09E3144/1",
+      "local_id": 207,
+      "center": [
+        -10048.233128146438,
+        51126.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/72A689227C7B4EF6CCD3D5E6148DB6E4/1",
+      "local_id": 208,
+      "center": [
+        -9448.233128146438,
+        51126.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/73762EE3DFB06BDF87D5A2B3DA7BAFB4/1",
+      "local_id": 209,
+      "center": [
+        -8848.233128146438,
+        51126.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/14B2F7E5A62F620B4EC36767FF3622AB/1",
+      "local_id": 210,
+      "center": [
+        -8248.233128146438,
+        51126.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/80A216F9DBDBB13302C33CA3DA911BDF/1",
+      "local_id": 211,
+      "center": [
+        -7648.233128146437,
+        51126.28868137933,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/685CCE792B202AA9A0ECBC777452E8D4/1",
+      "local_id": 212,
+      "center": [
+        1650.0000231020988,
+        48777.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/45299A60B51E52718214D0C6A1380D04/1",
+      "local_id": 213,
+      "center": [
+        2850.0000231020986,
+        48777.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/454114F8BB04A2EBDE8ECD074EA12216/1",
+      "local_id": 214,
+      "center": [
+        4050.0000231020986,
+        48777.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/BA6DF912FBC6909D9444ACAFE0E68F90/1",
+      "local_id": 215,
+      "center": [
+        5250.000023102099,
+        48777.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/B918BD118695E7EB0F0A6EF110C061B7/1",
+      "local_id": 216,
+      "center": [
+        6450.000023102099,
+        48777.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F78BB3CE3CDA8C0BBFF37D92B6C5B900/1",
+      "local_id": 217,
+      "center": [
+        1650.0000231020988,
+        49977.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/9895EE2563B009F4BB5247229FDAFDF4/1",
+      "local_id": 218,
+      "center": [
+        2850.0000231020986,
+        49977.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E880C777089789B17FF3A5EA42B969AB/1",
+      "local_id": 219,
+      "center": [
+        4050.0000231020986,
+        49977.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A9947D8853C609B031D05308DCE95D8A/1",
+      "local_id": 220,
+      "center": [
+        5250.000023102099,
+        49977.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/76BA44B214D5841F0119A461A2901596/1",
+      "local_id": 221,
+      "center": [
+        6450.000023102099,
+        49977.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/3B72003EFBCAB3C5FFB6A76EA11F14EA/1",
+      "local_id": 222,
+      "center": [
+        1650.0000231020988,
+        51177.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/8F32D8189C500E3FFB92476B2BCED7E4/1",
+      "local_id": 223,
+      "center": [
+        2850.0000231020986,
+        51177.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/879F933E61E79506531DC604F9291772/1",
+      "local_id": 224,
+      "center": [
+        4050.0000231020986,
+        51177.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F99055446F6D294787AD580CDA6F5A52/1",
+      "local_id": 225,
+      "center": [
+        5250.000023102099,
+        51177.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/6C64634CFD3C9972F5AA71E6B148A1F3/1",
+      "local_id": 226,
+      "center": [
+        6450.000023102099,
+        51177.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/FCC2D6C3B2D54F4A393C967F0009F369/1",
+      "local_id": 227,
+      "center": [
+        1650.0000231020988,
+        52377.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/6F47AC472F6706F231F7DAC2761507BA/1",
+      "local_id": 228,
+      "center": [
+        2850.0000231020986,
+        52377.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/5534AF8DD9EDB03EE4D339B926AF047A/1",
+      "local_id": 229,
+      "center": [
+        4050.0000231020986,
+        52377.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/FE9E27E098AD70CDACC0A0BF559E9ACC/1",
+      "local_id": 230,
+      "center": [
+        5250.000023102099,
+        52377.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/1E3383D93D75565A98CD8942AEB2C594/1",
+      "local_id": 231,
+      "center": [
+        6450.000023102099,
+        52377.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/CA4368C1F0C212314869D0D1C7A6C6F8/1",
+      "local_id": 232,
+      "center": [
+        1650.0000231020988,
+        53577.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/1156535355AFDCFEC5A22D632C497293/1",
+      "local_id": 233,
+      "center": [
+        2850.0000231020986,
+        53577.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/1F06A15F7C1448805CFA9349C4BB9DE7/1",
+      "local_id": 234,
+      "center": [
+        4050.0000231020986,
+        53577.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/98C0A6FE69AC0EF6C36E7A96F39A7B9D/1",
+      "local_id": 235,
+      "center": [
+        5250.000023102099,
+        53577.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/4F56A65E414185F66CF318D5E4A666EA/1",
+      "local_id": 236,
+      "center": [
+        6450.000023102099,
+        53577.5643049271,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/CD825EC906B3DFDECC98DCB6E691BCB4/1",
+      "local_id": 237,
+      "center": [
+        8548.233128723474,
+        48726.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/1D3EC46338DFFE866DCF909828BA8B9C/1",
+      "local_id": 238,
+      "center": [
+        9148.233128723474,
+        48726.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F2C128B84740C09A0337F706A2067D5B/1",
+      "local_id": 239,
+      "center": [
+        9748.233128723474,
+        48726.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/B7ED10E9E30718E401FA740C49E778F2/1",
+      "local_id": 240,
+      "center": [
+        10348.233128723474,
+        48726.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/53517DEA1FF6AA72CDACE2911DBAD633/1",
+      "local_id": 241,
+      "center": [
+        10948.233128723474,
+        48726.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/CE2738AF2393474EBD43106696685221/1",
+      "local_id": 242,
+      "center": [
+        8548.233128723474,
+        49326.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/88FA5016BC3416A01373DF34122650AD/1",
+      "local_id": 243,
+      "center": [
+        9148.233128723474,
+        49326.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/4DDFAD13C2EDD4692F967017F779A6BA/1",
+      "local_id": 244,
+      "center": [
+        9748.233128723474,
+        49326.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/BC5E440A7C3CDD62D55D1B9E64F4CB56/1",
+      "local_id": 245,
+      "center": [
+        10348.233128723474,
+        49326.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/775D42CB94A1F17D568ACB88A018612F/1",
+      "local_id": 246,
+      "center": [
+        10948.233128723474,
+        49326.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/6E2A5E8AD20D9E6B3A3F7E1918C07B29/1",
+      "local_id": 247,
+      "center": [
+        8548.233128723474,
+        49926.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/108B6AFEF563E4D71987DE4847ED44CE/1",
+      "local_id": 248,
+      "center": [
+        9148.233128723474,
+        49926.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/8BF8064692E175091B1FF77622FCAB0E/1",
+      "local_id": 249,
+      "center": [
+        9748.233128723474,
+        49926.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/3AC1ED503C5010C809459AE25985B10B/1",
+      "local_id": 250,
+      "center": [
+        10348.233128723474,
+        49926.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/785EE86CCD9389A1E97E2F214FDEAA5A/1",
+      "local_id": 251,
+      "center": [
+        10948.233128723474,
+        49926.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/8393CF1F407098EC9F6B243AC2E87C82/1",
+      "local_id": 252,
+      "center": [
+        8548.233128723474,
+        50526.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/93676ECDE551FEDE4CB63A1BFEC45D13/1",
+      "local_id": 253,
+      "center": [
+        9148.233128723474,
+        50526.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A49462D906B8DBF3CB833399834FFB11/1",
+      "local_id": 254,
+      "center": [
+        9748.233128723474,
+        50526.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/7106FFE953A4AB04674100B0FD7D9FF2/1",
+      "local_id": 255,
+      "center": [
+        10348.233128723474,
+        50526.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/E66ECD4D1B0EB6A12C05A71C5DD1A1A3/1",
+      "local_id": 256,
+      "center": [
+        10948.233128723474,
+        50526.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/6A7D371E26364ECC16D46EF4F58EC2DF/1",
+      "local_id": 257,
+      "center": [
+        8548.233128723474,
+        51126.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/8012E43B63D429F258C7B185C59E47F0/1",
+      "local_id": 258,
+      "center": [
+        9148.233128723474,
+        51126.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/5E2869D0728BDB5212763DD35BDF8B35/1",
+      "local_id": 259,
+      "center": [
+        9748.233128723474,
+        51126.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/F3FBB3254398DCB1CCC293313E9654DC/1",
+      "local_id": 260,
+      "center": [
+        10348.233128723474,
+        51126.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/3FE7B4BB7F4FAF8509073884A612ED10/1",
+      "local_id": 261,
+      "center": [
+        10948.233128723474,
+        51126.28868133633,
+        1117.6541044113646
+      ],
+      "radius": 300,
+      "team": 1,
+      "health": 100,
+      "max_health": 100,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/C4745AF7644790A3ADCAA43C87106236/1",
+      "local_id": 315,
+      "center": [
+        -4952.2121733585855,
+        43377.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/10F06DA53C443A665FE76970441B7566/1",
+      "local_id": 316,
+      "center": [
+        -3752.212173358585,
+        43377.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/2AFD617448B86B0E8EB55508ECA8F795/1",
+      "local_id": 318,
+      "center": [
+        -7352.2121733585855,
+        44577.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/DE10D85851F628B0B4D9E977EE2B56B7/1",
+      "local_id": 319,
+      "center": [
+        -6152.2121733585855,
+        44577.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/A8BAAEC7FACF6A0851F3395B9DEF7084/1",
+      "local_id": 320,
+      "center": [
+        -4952.2121733585855,
+        44577.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/1E9B7D15E5AF5C2643D7C8CF90C0D11D/1",
+      "local_id": 321,
+      "center": [
+        -3752.212173358585,
+        44577.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/B9F8230543E9B0C2DE5D687A417776FA/1",
+      "local_id": 322,
+      "center": [
+        -8552.212173358585,
+        45777.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/533B283ABF792A0ACE5FEC9DB0672F98/1",
+      "local_id": 323,
+      "center": [
+        -7352.2121733585855,
+        45777.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/38BB697EAE1DD3DBFDBCFFFCB7149AE5/1",
+      "local_id": 324,
+      "center": [
+        -6152.2121733585855,
+        45777.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/BA492E2B5FEBD92274D988A10EC5436D/1",
+      "local_id": 325,
+      "center": [
+        -4952.2121733585855,
+        45777.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/43541EC0A9A045C20B701EC843D08788/1",
+      "local_id": 326,
+      "center": [
+        -3752.212173358585,
+        45777.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/1217FFF76F3E439B44DF10B383CAF329/1",
+      "local_id": 327,
+      "center": [
+        -8552.212173358585,
+        46977.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/0A6003A4652154458F25AA1675AB9442/1",
+      "local_id": 328,
+      "center": [
+        -7352.2121733585855,
+        46977.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "1/DE634B2885B47CA2F5B90A93C2AD1454/1",
+      "local_id": 329,
+      "center": [
+        -6152.2121733585855,
+        46977.47539253853,
+        4358.071969619125
+      ],
+      "radius": 682.2735595703125,
+      "team": 1,
+      "health": 300.5,
+      "max_health": 300.5,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "6/0820523B45A3F3E48113B9F0B186C89E/1",
+      "local_id": 18,
+      "center": [
+        -1200,
+        65100,
+        1052.3714045895167
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "5/0F29C32C78EF8789C40445AA448F8872/1",
+      "local_id": 3,
+      "center": [
+        3600,
+        65100,
+        1052.1268372535706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "5/10E84048E891CCE2A0F362F510ABBD59/1",
+      "local_id": 8,
+      "center": [
+        4800,
+        66300,
+        1052.1170716285706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "6/22229E8818DE6D992178856DF3745EA1/1",
+      "local_id": 23,
+      "center": [
+        -2400,
+        66300,
+        1052.1171515375672
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "5/58F355CDAC00D56EC2F51F10606426F7/1",
+      "local_id": 4,
+      "center": [
+        4800,
+        65100,
+        1052.1268372535706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "6/7997F110D4728D7FDBDAB792686C1ABA/1",
+      "local_id": 21,
+      "center": [
+        0,
+        66300,
+        1052.1170716285706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "6/81D84A6B722877A3CEAD183DEAD80FAD/1",
+      "local_id": 17,
+      "center": [
+        0,
+        65100,
+        1052.1268372535706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "5/83ED20C1D1BE480956E9631B8650872E/1",
+      "local_id": 6,
+      "center": [
+        2400,
+        66300,
+        1052.1170716285706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "6/84922389F9F1AEDBBC89A90132885A45/1",
+      "local_id": 22,
+      "center": [
+        -1200,
+        66300,
+        1052.279001136139
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "6/8871D6DC3F19F99A9AE9AD30A33A39CC/1",
+      "local_id": 19,
+      "center": [
+        -2400,
+        65100,
+        1052.1269549210024
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "6/901BB40417D5E8CE40990AC220BF131B/1",
+      "local_id": 24,
+      "center": [
+        -3600,
+        66300,
+        1052.1170710464437
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "5/A10F74D8F8FE62641B5E11B8A2D627DC/1",
+      "local_id": 7,
+      "center": [
+        3600,
+        66300,
+        1052.1170716285706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "5/B5F3CBF9B584DD004D8C129CEBEF1324/1",
+      "local_id": 1,
+      "center": [
+        1200,
+        65100,
+        1052.1268372535706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "5/BFB8AE5DB9C378F63F52E6939E48297E/1",
+      "local_id": 2,
+      "center": [
+        2400,
+        65100,
+        1052.1268372535706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "6/D59C17698C198E669599BE2B1FA5DFC3/1",
+      "local_id": 20,
+      "center": [
+        -3600,
+        65100,
+        1052.127036883958
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "5/D69F390C85D12C60C2028742F0D7174C/1",
+      "local_id": 5,
+      "center": [
+        1200,
+        66300,
+        1052.1170716285706
+      ],
+      "radius": 150,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    },
+    {
+      "key": "4/F1E7F5F6A83FE5F661CC871BBA77CB67/1",
+      "local_id": 1,
+      "center": [
+        -1950,
+        52050,
+        1151.3380942344666
+      ],
+      "radius": 244.03683471679688,
+      "team": 1,
+      "health": 1000,
+      "max_health": 1000,
+      "shield": 0,
+      "dead": false
+    }
+  ],
+  "buffs": [],
+  "ricochets": [],
+  "builds": [],
+  "attacks": [
+    {
+      "shot": "06764F967773282F4B27BE5CAB27A905",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "296F17FECD70B62E70E3706BCE45200F",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99808,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "C320F18F6DD9E250D02DB86D4AA57B72",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "3877C8038DBA4025666E7EB3A5A2B2E9",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99814,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "487B1DE58E09E147BD68A24DB1B4D392",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "26E593646DE173E0676771AE1D438F7F",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99820,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "B12EE9FA7B52E09D1BAEDAADA1531BDE",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "10E24DEE9D2B742EC407B0D1E9458A98",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99826,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "005F65B3A37F93D02920B8C1C25B9414",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "9377895DFFF0B90C40D58F5A7A8DF2DA",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99832,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "1042CD5B9708FB12FDD5B531C9363B0E",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "AF90BE3049A92B7AF08B06C1182430E6",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99838,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "ED01539FF6FD005E7A45E5E84815B8C4",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "B2B7FF4B58448221DF5190B9CC58B5E3",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99844,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "E742123DDC88EE6B8E65E0D7D35628E9",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "EB2D7401A05804846B5D7F9853BFAFB6",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99850,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "D2F132222EA8900875D73D8C8BDA3C17",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "CD35292FDFDA3008427C2C55A4C33406",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99856,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "B042D64230318A47CABFCB232196FE35",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "EA732B25CD2DF3A78225198C79E726A8",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99862,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "0BC0AF4AECC44BE924A4F7E23ED14BAE",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "A96667A23A4D12F443E237A2855BB1FB",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99868,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "18048C5E016FB7A4124CCD03EDC07190",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "52A8F57002B0681BC2265B693CC37EB0",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99874,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "A27AEFCA0268AE657AC9D0D7B2760525",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "35EDAB4CAA2D7C90CE719A2E63E6DC07",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99880,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "C317CEA81D192CC8698014B387F3BE41",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "DDD534C76F87CF33066D31EE4DF921C2",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99886,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "CD786B1878217336B8C367DE4F7CF229",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "8EFDCD99BB8F87A355801BFDD5BB3344",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99892,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "0BAD35FF2AE03A87633A496CCE7FD124",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "B25C1F2EF9310D3CF6E24A480C934A10",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99898,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "68AD3C45B530267F9F48089238AF205B",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "4FF0B3566E7438D58FAC9FADD138AA11",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99904,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "2D864D00CD96D49173CA85E803E15F0A",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "94DAF6A532CE20502847D9696A8B4F51",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99910,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "258AB311DC4D163B61A0F1B5CCB43B0E",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "5C32BE9528C89CF471FB7F08D42B0AE4",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99916,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "8A52A907F38BE2E330E29168C2A68B8D",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "646125B1392D403A476CDBDD47AB0BE4",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99922,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "C4BFD6FBDF19D8C489DDDCC5C62E2CC0",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "469F9EB652D758A8EEE4750FE9DEDE0A",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99928,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "5C36E943768CC4B19BA03CC4BD55A384",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "5353F3123EAC7E4B337EB5C3F5188EE2",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99934,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "672A1A54B1C3BC12DCB9E3DBBB540D35",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "C90C889DD47C546B8233A4E1B61D8ECC",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99940,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "C32217BEFCDCC858D2E4E925E706E48D",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "C8CE06669F6F9CBC2D6B69F396FBE53D",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99946,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "36DFE3B12F2021AB365262A18FCE4A6C",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "B5E500818FC05D1DE54229E79F87D502",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99952,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "F7DC12C235603FBAA6820DFAF417F53C",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "945997B758ADC54DDA2A1DE23B086BD7",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99958,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "695C38FA558554D7C27043AFB03628FE",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "D90D4B496840B876EAEFF5842DA64525",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99964,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "88A064AA7BD80D6B7BE35D666C3AA145",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "0F41C33F92DC215A191B9E48324567BC",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99970,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "3E4BB99E3E599DC5AF04D6DA4327723D",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "67B62E5E0368B2A8994791E453861AFE",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99976,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "06E85A7CCB0BFEA93B69F052BF25AD06",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "76B894FF2A37BF1EE4167727E7D040D9",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99982,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "5CE45DBD73845F176558A3D155C8CBBD",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "2CC6D67EDD7A0B3DDC5C3975A5262A00",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99988,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    },
+    {
+      "shot": "3C85D6021DDEA08E56E608EF6704A26E",
+      "revision": 1,
+      "damage": 6,
+      "fire_rate": 4,
+      "primary_receipt": {
+        "event": "E3E419F4628857453D9AEC7A49B90B91",
+        "found": true,
+        "status": 0,
+        "damage": 6,
+        "absorbed": 0,
+        "remaining": 99994,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 0,
+      "explosive_radius": 0
+    }
+  ],
+  "explosions": [],
+  "flight_settlement": {
+    "shots": [
+      {
+        "source_kind": 4,
+        "shot": "06764F967773282F4B27BE5CAB27A905",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 32,
+        "admission_event": "38208A53D30BB9BC4F0A739CDBB335EF",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 29.166666666666668,
+        "activation_time": 29.16666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.656 Y=51933.026 Z=1206.791",
+        "direction": "X=0.997 Y=0.067 Z=-0.048",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.185 Y=52038.821 Z=1131.977",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "296F17FECD70B62E70E3706BCE45200F",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99808,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "C320F18F6DD9E250D02DB86D4AA57B72",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 31,
+        "admission_event": "D9CA09421EB00EDD00AB85B2D954DBED",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 28.916666666666668,
+        "activation_time": 28.933332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.632 Y=52163.474 Z=1203.932",
+        "direction": "X=0.997 Y=-0.055 Z=-0.046",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.439 Y=52077.338 Z=1131.566",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "3877C8038DBA4025666E7EB3A5A2B2E9",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99814,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "487B1DE58E09E147BD68A24DB1B4D392",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 30,
+        "admission_event": "2C895B83EFB21946634FE4C80C893FF1",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 28.666666666666668,
+        "activation_time": 28.66666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.388 Y=51929.767 Z=1204.795",
+        "direction": "X=0.997 Y=0.069 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.162 Y=52038.276 Z=1131.645",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "26E593646DE173E0676771AE1D438F7F",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99820,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "B12EE9FA7B52E09D1BAEDAADA1531BDE",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 29,
+        "admission_event": "AF553ACD98A213BE3F6914EB6B242FA6",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 28.416666666666668,
+        "activation_time": 28.41666603088379,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.672 Y=52163.840 Z=1205.583",
+        "direction": "X=0.997 Y=-0.055 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.423 Y=52077.398 Z=1131.842",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "10E24DEE9D2B742EC407B0D1E9458A98",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99826,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "005F65B3A37F93D02920B8C1C25B9414",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 28,
+        "admission_event": "FC48EB5EF1CA7B846CD1DFF849D13C6F",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 28.166666666666668,
+        "activation_time": 28.16666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.396 Y=51928.154 Z=1208.181",
+        "direction": "X=0.996 Y=0.070 Z=-0.048",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.118 Y=52038.010 Z=1132.208",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "9377895DFFF0B90C40D58F5A7A8DF2DA",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99832,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "1042CD5B9708FB12FDD5B531C9363B0E",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 27,
+        "admission_event": "298EC2E99A6D8F491D70475E2E80F3C0",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 27.916666666666668,
+        "activation_time": 27.933332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.582 Y=52168.098 Z=1208.184",
+        "direction": "X=0.997 Y=-0.058 Z=-0.049",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.363 Y=52078.109 Z=1132.275",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "AF90BE3049A92B7AF08B06C1182430E6",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99838,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "ED01539FF6FD005E7A45E5E84815B8C4",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 26,
+        "admission_event": "BB3A02F37F7295287A635B9FE04F7388",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 27.666666666666668,
+        "activation_time": 27.66666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.453 Y=51928.148 Z=1209.893",
+        "direction": "X=0.996 Y=0.070 Z=-0.049",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.105 Y=52038.011 Z=1132.492",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "B2B7FF4B58448221DF5190B9CC58B5E3",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99844,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "E742123DDC88EE6B8E65E0D7D35628E9",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 25,
+        "admission_event": "617EE3E7C6BE2DAC7EADE9FE5ACCDA36",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 27.416666666666668,
+        "activation_time": 27.433332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.433 Y=52170.749 Z=1207.455",
+        "direction": "X=0.997 Y=-0.059 Z=-0.048",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.343 Y=52078.553 Z=1132.153",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "EB2D7401A05804846B5D7F9853BFAFB6",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99850,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "D2F132222EA8900875D73D8C8BDA3C17",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 24,
+        "admission_event": "AA7208E83D868F0114E4B66B09C6F4A5",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 27.166666666666668,
+        "activation_time": 27.16666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.642 Y=51931.856 Z=1208.486",
+        "direction": "X=0.997 Y=0.068 Z=-0.049",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.159 Y=52038.628 Z=1132.258",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "CD35292FDFDA3008427C2C55A4C33406",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99856,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "B042D64230318A47CABFCB232196FE35",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 23,
+        "admission_event": "BB9E62E4DD464AE409F415E53FC128BA",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 26.916666666666668,
+        "activation_time": 26.91666603088379,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.137 Y=52174.667 Z=1204.777",
+        "direction": "X=0.997 Y=-0.061 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.323 Y=52079.211 Z=1131.706",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "EA732B25CD2DF3A78225198C79E726A8",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99862,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "0BC0AF4AECC44BE924A4F7E23ED14BAE",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 22,
+        "admission_event": "AD4D9C93878C69DAA169070833D0B2F0",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 26.666666666666668,
+        "activation_time": 26.66666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.702 Y=51934.148 Z=1206.242",
+        "direction": "X=0.997 Y=0.067 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.201 Y=52039.008 Z=1131.886",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "A96667A23A4D12F443E237A2855BB1FB",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99868,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "18048C5E016FB7A4124CCD03EDC07190",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 21,
+        "admission_event": "9AF366FEE149FC11D9388CC8BD9F3997",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 26.416666666666668,
+        "activation_time": 26.41666603088379,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.132 Y=52173.490 Z=1202.679",
+        "direction": "X=0.997 Y=-0.061 Z=-0.046",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.351 Y=52079.016 Z=1131.356",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "52A8F57002B0681BC2265B693CC37EB0",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99874,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "A27AEFCA0268AE657AC9D0D7B2760525",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 20,
+        "admission_event": "523442C0BABC0F09E325550D73249D9C",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 26.166666666666668,
+        "activation_time": 26.16666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.656 Y=51934.152 Z=1204.846",
+        "direction": "X=0.997 Y=0.067 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.212 Y=52039.007 Z=1131.654",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "35EDAB4CAA2D7C90CE719A2E63E6DC07",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99880,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "C317CEA81D192CC8698014B387F3BE41",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 19,
+        "admission_event": "D90476B947C753060FEEF9C8C4683E5B",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 25.916666666666668,
+        "activation_time": 25.933332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.243 Y=52171.560 Z=1202.979",
+        "direction": "X=0.997 Y=-0.059 Z=-0.046",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.368 Y=52078.692 Z=1131.406",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "DDD534C76F87CF33066D31EE4DF921C2",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99886,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "CD786B1878217336B8C367DE4F7CF229",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 18,
+        "admission_event": "345B621286EEACBB47EA52B682088AF6",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 25.666666666666668,
+        "activation_time": 25.683332443237305,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.556 Y=51931.380 Z=1206.778",
+        "direction": "X=0.997 Y=0.068 Z=-0.048",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.166 Y=52038.547 Z=1131.974",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "8EFDCD99BB8F87A355801BFDD5BB3344",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99892,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "0BAD35FF2AE03A87633A496CCE7FD124",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 17,
+        "admission_event": "05E31594DA6AEF3B3B0CF8B9871D140D",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 25.416666666666668,
+        "activation_time": 25.433332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.285 Y=52173.100 Z=1206.639",
+        "direction": "X=0.997 Y=-0.060 Z=-0.048",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.325 Y=52078.947 Z=1132.017",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "B25C1F2EF9310D3CF6E24A480C934A10",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99898,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "68AD3C45B530267F9F48089238AF205B",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 16,
+        "admission_event": "578E5A220847D9644725BE68B1DF13C1",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 25.166666666666668,
+        "activation_time": 25.16666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.693 Y=51931.367 Z=1210.894",
+        "direction": "X=0.996 Y=0.068 Z=-0.050",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.134 Y=52038.548 Z=1132.658",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "4FF0B3566E7438D58FAC9FADD138AA11",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99904,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "2D864D00CD96D49173CA85E803E15F0A",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 15,
+        "admission_event": "35B91362C498547BCC86255B2AB9CAD4",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 24.916666666666668,
+        "activation_time": 24.933332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.295 Y=52174.777 Z=1209.635",
+        "direction": "X=0.997 Y=-0.061 Z=-0.049",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.285 Y=52079.226 Z=1132.517",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "94DAF6A532CE20502847D9696A8B4F51",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99910,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "258AB311DC4D163B61A0F1B5CCB43B0E",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 14,
+        "admission_event": "A2DFF8D6A41D29073A25770DB3DB48A1",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 24.666666666666668,
+        "activation_time": 24.66666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.728 Y=51931.571 Z=1211.557",
+        "direction": "X=0.996 Y=0.068 Z=-0.050",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.131 Y=52038.583 Z=1132.768",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "5C32BE9528C89CF471FB7F08D42B0AE4",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99916,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "8A52A907F38BE2E330E29168C2A68B8D",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 13,
+        "admission_event": "32843B9A49A6A1AD6B5C45D57E8330A5",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 24.416666666666668,
+        "activation_time": 24.433332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.405 Y=52171.035 Z=1207.048",
+        "direction": "X=0.997 Y=-0.059 Z=-0.048",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.343 Y=52078.601 Z=1132.085",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "646125B1392D403A476CDBDD47AB0BE4",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99922,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "C4BFD6FBDF19D8C489DDDCC5C62E2CC0",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 12,
+        "admission_event": "86F03D6ED4295B431B49E6FB9AAD2FA4",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 24.166666666666668,
+        "activation_time": 24.16666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.649 Y=51933.097 Z=1206.450",
+        "direction": "X=0.997 Y=0.067 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.188 Y=52038.833 Z=1131.920",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "469F9EB652D758A8EEE4750FE9DEDE0A",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99928,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "5C36E943768CC4B19BA03CC4BD55A384",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 11,
+        "admission_event": "97982A5AB026E55C1C787D71A41ED790",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 23.916666666666668,
+        "activation_time": 23.933332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.650 Y=52163.018 Z=1203.937",
+        "direction": "X=0.997 Y=-0.055 Z=-0.046",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.443 Y=52077.261 Z=1131.567",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "5353F3123EAC7E4B337EB5C3F5188EE2",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99934,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "672A1A54B1C3BC12DCB9E3DBBB540D35",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 10,
+        "admission_event": "8A327846DF7917A4738FC320A29AD746",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 23.666666666666668,
+        "activation_time": 23.66666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.393 Y=51929.766 Z=1204.942",
+        "direction": "X=0.997 Y=0.069 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.161 Y=52038.276 Z=1131.669",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "C90C889DD47C546B8233A4E1B61D8ECC",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99940,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "C32217BEFCDCC858D2E4E925E706E48D",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 9,
+        "admission_event": "437C0079ADF3C8C21C07EF50C3FCC17C",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 23.416666666666668,
+        "activation_time": 23.433332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.681 Y=52163.841 Z=1205.838",
+        "direction": "X=0.997 Y=-0.055 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.421 Y=52077.398 Z=1131.884",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "C8CE06669F6F9CBC2D6B69F396FBE53D",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99946,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "36DFE3B12F2021AB365262A18FCE4A6C",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 8,
+        "admission_event": "A8EF2A61A45928CAB512632B1A4613D2",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 23.166666666666668,
+        "activation_time": 23.16666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.404 Y=51928.153 Z=1208.422",
+        "direction": "X=0.996 Y=0.070 Z=-0.049",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.116 Y=52038.010 Z=1132.247",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "B5E500818FC05D1DE54229E79F87D502",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99952,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "F7DC12C235603FBAA6820DFAF417F53C",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 7,
+        "admission_event": "CC29B26573670E69F2759AD387BBEA79",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 22.916666666666668,
+        "activation_time": 22.933332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.577 Y=52168.280 Z=1208.272",
+        "direction": "X=0.997 Y=-0.058 Z=-0.049",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.361 Y=52078.139 Z=1132.290",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "945997B758ADC54DDA2A1DE23B086BD7",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99958,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "695C38FA558554D7C27043AFB03628FE",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 6,
+        "admission_event": "EFA61EE00C8E7739E05550E0DFA35DBA",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 22.666666666666668,
+        "activation_time": 22.66666603088379,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.452 Y=51928.148 Z=1209.850",
+        "direction": "X=0.996 Y=0.070 Z=-0.049",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.105 Y=52038.011 Z=1132.485",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "D90D4B496840B876EAEFF5842DA64525",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99964,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "88A064AA7BD80D6B7BE35D666C3AA145",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 5,
+        "admission_event": "6FC270B5357A094EE2AECAB5EE3623FF",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 22.416666666666668,
+        "activation_time": 22.41666603088379,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.401 Y=52171.271 Z=1207.274",
+        "direction": "X=0.997 Y=-0.059 Z=-0.048",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.339 Y=52078.641 Z=1132.123",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "0F41C33F92DC215A191B9E48324567BC",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99970,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "3E4BB99E3E599DC5AF04D6DA4327723D",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 4,
+        "admission_event": "7667DA5DB0ECD1619BB27B9B92EE9F5A",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 22.166666666666668,
+        "activation_time": 22.183332443237305,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.660 Y=51932.217 Z=1208.356",
+        "direction": "X=0.997 Y=0.068 Z=-0.048",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.164 Y=52038.688 Z=1132.237",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "67B62E5E0368B2A8994791E453861AFE",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99976,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "06E85A7CCB0BFEA93B69F052BF25AD06",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 3,
+        "admission_event": "FCF703C7435A406C4B66B2B08A46A278",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 21.916666666666668,
+        "activation_time": 21.933332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.131 Y=52174.666 Z=1204.603",
+        "direction": "X=0.997 Y=-0.061 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.325 Y=52079.211 Z=1131.677",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "76B894FF2A37BF1EE4167727E7D040D9",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99982,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "5CE45DBD73845F176558A3D155C8CBBD",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 2,
+        "admission_event": "38B3B332B8757E3DB67D599612E12A92",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 21.666666666666668,
+        "activation_time": 21.700000762939453,
+        "muzzle": 1,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1694.697 Y=51934.149 Z=1206.090",
+        "direction": "X=0.997 Y=0.067 Z=-0.047",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.202 Y=52039.008 Z=1131.860",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "2CC6D67EDD7A0B3DDC5C3975A5262A00",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99988,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      },
+      {
+        "source_kind": 4,
+        "shot": "3C85D6021DDEA08E56E608EF6704A26E",
+        "target": "524CDFC6DA23DE668109B6D67CA4D6D7",
+        "admitted": true,
+        "fire_notify": true,
+        "fire_ordinal": 1,
+        "admission_event": "2568A306364CA0CB382C7F6D053DF8D0",
+        "admission_receipt_found": true,
+        "admission_status": 0,
+        "attack_frozen": true,
+        "fire_time": 21.416666666666668,
+        "activation_time": 21.433332443237305,
+        "muzzle": 0,
+        "frozen_damage": 6,
+        "muzzle_position": "X=-1687.140 Y=52173.290 Z=1202.601",
+        "direction": "X=0.997 Y=-0.060 Z=-0.046",
+        "build_revision": 1,
+        "collision_hit": true,
+        "end_reason": 1,
+        "hit_position": "X=-130.353 Y=52078.982 Z=1131.343",
+        "damage_submitted": true,
+        "damage_resolved": true,
+        "damage_event": "E3E419F4628857453D9AEC7A49B90B91",
+        "receipt_found": true,
+        "status": 0,
+        "applied": 6,
+        "absorbed": 0,
+        "remaining_health": 99994,
+        "target_health_now": 99808,
+        "target_shield_now": 0,
+        "explosive_finished": false,
+        "explosive_damage": 0,
+        "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+        "explosive_end_time": 0,
+        "explosive_speed": 1200,
+        "explosive_end_reason": 0
+      }
+    ],
+    "mass_shots": []
+  },
+  "wall_time": 1794149951.6988754,
+  "session": {
+    "active": true,
+    "error": "",
+    "room": "327B6C514260AF6861C9118CCA50AD8F",
+    "role": "Ground",
+    "editor_pid": 35136,
+    "logic_pid": 38648,
+    "coordinator_pid": 13588,
+    "logic_running": true,
+    "coordinator_running": true,
+    "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/327B6C514260AF6861C9118CCA50AD8F",
+    "shutdown": [],
+    "cleanup_complete": false,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+    "standalone": true,
+    "can_present": true,
+    "world_ready": true,
+    "network_error": "",
+    "members": [
+      {
+        "player": "89AC19F141387329F011C98D34410F3F",
+        "online": true,
+        "ready": true,
+        "team": "Blue",
+        "role": "Commander"
+      },
+      {
+        "player": "BEDD91334C12689B27A88DA111D108CE",
+        "online": true,
+        "ready": true,
+        "team": "Red",
+        "role": "Ground"
+      }
+    ],
+    "units": 601,
+    "peer_owned_objects": 706,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "commander_view_active": false,
+    "can_issue_orders": false,
+    "mouse_cursor_visible": false,
+    "commander_hud_widget": "",
+    "commander_hud_in_viewport": false,
+    "commander_hud_visible": false,
+    "commander_hud_owner_matches": false,
+    "commander_hud_width": 0,
+    "commander_hud_height": 0,
+    "ground_hud_widget": "/Script/GuLiStrike.GuLiGroundHUDWidget",
+    "ground_hud_in_viewport": true,
+    "ground_hud_visible": true,
+    "ground_hud_owner_matches": true,
+    "ground_hud_width": 1425.240234375,
+    "ground_hud_height": 1079.86669921875,
+    "resource_query_ready": true,
+    "legacy_resource_runtime_ready": false
+  }
+}

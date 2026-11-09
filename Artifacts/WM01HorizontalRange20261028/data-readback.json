@@ -1,0 +1,58 @@
+{
+  "q_workbook": "data/Excel/GuLiStrikeSecondaryUnitSkills.xlsx",
+  "q_sheet": "Skills",
+  "q_headers": [
+    "id",
+    "name",
+    "Note",
+    "TargetMode",
+    "CooldownSeconds",
+    "RangeCentimeters",
+    "RangeSourceSlot",
+    "RangeMultiplier",
+    "MaximumLevel",
+    "ExecutorClass"
+  ],
+  "q_row4": [
+    "1",
+    "WM01_HomingMissile",
+    "重防号Q；每圈最多60发，整台齐射不拆分，未分配单位留待下一Q；成功单位独立6秒冷却；共享引导圈半径8米，保留单弹3米预警；射程取最终普攻x2，基础240米（2026-10-01由96米x2.5），落点在直径16米内随机。",
+    "GroundPoint",
+    "6",
+    "24000",
+    "BasicAttack",
+    "2",
+    "1",
+    "/Script/GuLiStrike.GuLiWarMachineMissileSkillExecutor"
+  ],
+  "weapon_workbook": "data/Excel/GuLiStrikeSecondaryWeapons.xlsx",
+  "weapon_sheet": "UnitSkills",
+  "weapon_headers": [
+    "id",
+    "name",
+    "Note",
+    "UnitTypeId",
+    "SlotId",
+    "SkillId",
+    "bDefault",
+    "Damage",
+    "AttackRatePerSecond",
+    "RangeCentimeters",
+    "TriggerMode",
+    "ProjectileSpeedCentimetersPerSecond"
+  ],
+  "weapon_row5": [
+    "2",
+    "WM01_Strafe",
+    "WM01 默认普攻",
+    "2",
+    "BasicAttack",
+    "Strafe",
+    "TRUE",
+    "7.5",
+    "2",
+    "12000",
+    "Automatic",
+    "4800"
+  ]
+}

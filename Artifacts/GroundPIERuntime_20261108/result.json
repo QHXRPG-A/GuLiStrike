@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "scope": "Normal local PIE startup, Ground seat, real authoritative Fire-notify shooting and ordinary bullet damage",
+  "user_authorization": "PIE开不了，你完全搞好后再总结，至少能进游戏然后开火",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "root_cause_current_startup": "Two editor processes held the same map; second instance SavePackage failed with Windows error 32 and navigation preparation blocked PIE",
+  "remediation": "Saved current map after closing stale clean editor; restarted one visible editor; normal role picker restored after runtime verification",
+  "session": "0FAC8B2641BB8084809B1B998C5C012A",
+  "editor_pid": 38424,
+  "world_ready": true,
+  "ground_hud_visible": true,
+  "units": 600,
+  "original_shots": 8,
+  "unique_shots": 8,
+  "fire_notify_events": 8,
+  "cosmetic_shots": 8,
+  "muzzle_counts": {
+    "1": 4,
+    "0": 4
+  },
+  "damage_receipts": 8,
+  "damage_each": 6,
+  "total_applied": 48,
+  "held_after": false,
+  "session_errors": [
+    "",
+    ""
+  ],
+  "children_exit_codes": [
+    0,
+    0
+  ],
+  "forced_children": false,
+  "pie_stopped_cleanly": true,
+  "dirty_packages": [],
+  "role_prompt_restored": true,
+  "new_native_changes": false,
+  "new_automated_tests": false,
+  "visual_effect_qa": "not performed; UI console operation only",
+  "not_covered": [
+    "other weapon tiers and cards",
+    "explosive package runtime matrix",
+    "death/restore/receipt replay",
+    "exact cadence and visual effect acceptance"
+  ]
+}

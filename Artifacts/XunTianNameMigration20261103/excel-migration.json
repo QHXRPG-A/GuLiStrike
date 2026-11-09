@@ -1,0 +1,68 @@
+{
+  "workbooks": [
+    {
+      "path": "data/Excel/GuLiStrikeModels.xlsx",
+      "sha256_before": "eefe6bbef52a71f5ac3c83396b48bb15e79c1895aa0f356913ad9f19792bf153",
+      "changes": [
+        {
+          "sheet": "Models",
+          "cell": "D26",
+          "value": "巡天"
+        },
+        {
+          "sheet": "Models",
+          "cell": "O26",
+          "value": "巡天是玩家亲自操控的第一代飞船（HullModelId=5002，Dreadnought 预设）；用于舰体显示和部件挂载，保留原几何与 socket。"
+        }
+      ],
+      "steps": [
+        {
+          "sheet": "Models",
+          "sha256_before": "eefe6bbef52a71f5ac3c83396b48bb15e79c1895aa0f356913ad9f19792bf153",
+          "status": "saved",
+          "sha256_after": "be00c383d56d56ff74da519a270f351cd3a39c33bfad0aa2f4f0c9d545b336d3"
+        }
+      ],
+      "sha256_after": "be00c383d56d56ff74da519a270f351cd3a39c33bfad0aa2f4f0c9d545b336d3",
+      "all_sheets_compared": true,
+      "non_target_cells_unchanged": true
+    },
+    {
+      "path": "data/Excel/GuLiStrikeShip.xlsx",
+      "sha256_before": "a4b995a462825e4cd598b7757cbcd5883dcd9ed21804e9ea74ac82eb5cb15a15",
+      "changes": [
+        {
+          "sheet": "Tuning",
+          "cell": "C5",
+          "value": "巡天 CombatAvatarFly-01 裸舰体；HullMeshOffset 为居中补偿(艏向+X)"
+        },
+        {
+          "sheet": "Camera",
+          "cell": "C5",
+          "value": "巡天 CombatAvatarFly-01；Scale020后使用最终厘米值，臂长5000、探测半径666.6666；角度不变"
+        }
+      ],
+      "steps": [
+        {
+          "sheet": "Tuning",
+          "sha256_before": "a4b995a462825e4cd598b7757cbcd5883dcd9ed21804e9ea74ac82eb5cb15a15",
+          "status": "saved",
+          "sha256_after": "ce35922bafd47be883702ab5688591c0e3eccbfbfcd96e0b78d8f8abc68dfbe0"
+        },
+        {
+          "sheet": "Camera",
+          "sha256_before": "ce35922bafd47be883702ab5688591c0e3eccbfbfcd96e0b78d8f8abc68dfbe0",
+          "status": "saved",
+          "sha256_after": "7c78d3bb73f11e6f10071307e8f4ca35a07b1763679e5c4b64d5ef67811b7eca"
+        }
+      ],
+      "sha256_after": "7c78d3bb73f11e6f10071307e8f4ca35a07b1763679e5c4b64d5ef67811b7eca",
+      "all_sheets_compared": true,
+      "non_target_cells_unchanged": true
+    }
+  ],
+  "status": "passed",
+  "changed_workbooks": 2,
+  "changed_cells": 4,
+  "non_target_cells_unchanged": true
+}

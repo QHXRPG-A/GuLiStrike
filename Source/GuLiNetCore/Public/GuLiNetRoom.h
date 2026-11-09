@@ -40,6 +40,11 @@ public:
     const std::string& Failure() const {return FailureReason;}
     const std::map<Id,Member>& Members() const {return Players;}
     const std::map<ObjectKey,ObjectRegistration>& Objects() const {return Directory;}
+    const ObjectRegistration* FindOrdinal(ObjectKind Kind,std::uint32_t Ordinal) const
+    {
+        const auto I=ObjectOrdinals.find({OrdinalScope(Kind),Ordinal});
+        return I==ObjectOrdinals.end()?nullptr:&Directory.at(I->second);
+    }
     const std::set<ObjectKey>& PendingDirectoryUpdates() const {return DirectoryUpdates;}
     void AcknowledgeDirectoryUpdates() {DirectoryUpdates.clear();}
     const std::map<ObjectKey,Assignment>& Offers() const {return PendingAssignments;}
@@ -88,10 +93,17 @@ private:
     }
     void MarkDirectoryChanged(const ObjectKey& K)
     {
+        const auto& O=Directory.at(K);
+        if (O.Ordinal) ObjectOrdinals.try_emplace(std::pair{OrdinalScope(K.Kind),O.Ordinal},K);
+        if (O.Grant.State<Life::Dead) LivingDirectory.insert(K);else LivingDirectory.erase(K);
         DirectoryUpdates.insert(K);DirtyMetadataBuckets.insert(MetadataBucket(K));
     }
     // Cache and publication bookkeeping only; neither is persisted or grants authority.
     std::set<ObjectKey> DirectoryUpdates;
+    std::set<ObjectKey> LivingDirectory;
+    // Ordinals are immutable and remain reserved after retirement. Derived on
+    // every directory insertion/import; admission never scans match history.
+    std::map<std::pair<ObjectKind,std::uint32_t>,ObjectKey> ObjectOrdinals;
     mutable std::set<std::uint16_t> DirtyMetadataBuckets;
     mutable std::map<std::uint16_t,Bytes> MetadataBuckets;
     std::map<ObjectKey,Assignment> PendingAssignments;

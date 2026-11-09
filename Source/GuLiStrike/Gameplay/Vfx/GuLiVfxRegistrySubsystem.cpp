@@ -38,7 +38,8 @@ bool UGuLiVfxRegistrySubsystem::SameDefinition(const FGuLiStrikeVfxEffectsRow& A
 		&& A.ReducedResourcePath==B.ReducedResourcePath && A.MinimalResourcePath==B.MinimalResourcePath
 		&& A.BatchResourcePath==B.BatchResourcePath && A.ReducedBatchResourcePath==B.ReducedBatchResourcePath && A.MinimalBatchResourcePath==B.MinimalBatchResourcePath
 		&& A.TrailLengthCm==B.TrailLengthCm && A.TrailHoldSeconds==B.TrailHoldSeconds
-		&& A.TrailFadeSeconds==B.TrailFadeSeconds && A.TrailBendCm==B.TrailBendCm;
+		&& A.TrailFadeSeconds==B.TrailFadeSeconds && A.TrailBendCm==B.TrailBendCm
+        && A.RadiusAtUnitScaleCm==B.RadiusAtUnitScaleCm;
 }
 
 bool UGuLiVfxRegistrySubsystem::ValidateDefinitions(const TArray<FGuLiStrikeVfxEffectsRow>& Rows, FString& Error)
@@ -47,7 +48,8 @@ bool UGuLiVfxRegistrySubsystem::ValidateDefinitions(const TArray<FGuLiStrikeVfxE
 	for (int32 Index = 0; Index < Rows.Num(); ++Index)
 	{
 		const auto& Row = Rows[Index];
-		if (Row.Id <= 0 || Ids.Contains(Row.Id) || Row.ResourcePath.IsNull() || !IsValidScale(Row.Scale))
+		if (Row.Id <= 0 || Ids.Contains(Row.Id) || Row.ResourcePath.IsNull() || !IsValidScale(Row.Scale)
+            || !FMath::IsFinite(Row.RadiusAtUnitScaleCm) || Row.RadiusAtUnitScaleCm<0)
 		{
 			Error = FString::Printf(TEXT("Invalid/duplicate VFX ID, path or scale: %d"), Row.Id);
 			return false;

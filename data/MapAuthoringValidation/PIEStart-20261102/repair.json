@@ -1,0 +1,216 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "stage": "scene",
+    "result": {
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "entities": [
+        {
+          "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_83",
+          "label": "GroundHUD_v1_PlayerEntry",
+          "class": "Note",
+          "position": [
+            -2800.0,
+            54000.0,
+            1229.04
+          ]
+        },
+        {
+          "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_28",
+          "label": "GroundHUD_ShieldTarget",
+          "class": "GuLiCommanderDeploymentPoint",
+          "position": [
+            -5000.0,
+            53000.0,
+            905.0
+          ],
+          "team": "<GuLiTeam.BLUE: 2>",
+          "unit_type_id": "1",
+          "rows": "1",
+          "columns": "1",
+          "allow_automatic_fire": "False",
+          "start_idle": "True",
+          "use_in_population_manifest": "True",
+          "initial_max_health_override": "400.0",
+          "initial_shield": "500.0"
+        },
+        {
+          "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_29",
+          "label": "GroundHUD_KillTarget",
+          "class": "GuLiCommanderDeploymentPoint",
+          "position": [
+            -6200.0,
+            53000.0,
+            905.0
+          ],
+          "team": "<GuLiTeam.BLUE: 2>",
+          "unit_type_id": "1",
+          "rows": "1",
+          "columns": "1",
+          "allow_automatic_fire": "False",
+          "start_idle": "True",
+          "use_in_population_manifest": "True",
+          "initial_max_health_override": "20.0",
+          "initial_shield": "0.0"
+        },
+        {
+          "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_88",
+          "label": "GroundRogue_Entry",
+          "class": "TargetPoint",
+          "position": [
+            -2800.0,
+            54000.0,
+            1149.04
+          ]
+        },
+        {
+          "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_55",
+          "label": "GroundMobility_Entry",
+          "class": "TargetPoint",
+          "position": [
+            -2800.0,
+            50000.0,
+            1149.04
+          ]
+        },
+        {
+          "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_185",
+          "label": "GroundRogue_Wall",
+          "class": "StaticMeshActor",
+          "position": [
+            -4300.0,
+            55100.0,
+            1505.0
+          ]
+        },
+        {
+          "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_22",
+          "label": "GroundRogue_Friendly",
+          "class": "GuLiCommanderDeploymentPoint",
+          "position": [
+            -4050.0,
+            53250.0,
+            905.0
+          ],
+          "team": "<GuLiTeam.RED: 1>",
+          "unit_type_id": "1",
+          "rows": "1",
+          "columns": "1",
+          "allow_automatic_fire": "False",
+          "start_idle": "True",
+          "use_in_population_manifest": "True",
+          "initial_max_health_override": "0.0",
+          "initial_shield": "0.0"
+        }
+      ],
+      "note": "Ground HUD v1：选择红队 Ground，使用 GroundRogue_Entry(-2800,54000,1149) 或相邻 GroundMobility_Entry。左键射击、右键瞄准、Space喷气、Shift闪现；M地图、I详情、F4正面单击选牌、Esc关闭。GroundHUD_ShieldTarget有500护盾/400生命，GroundHUD_KillTarget有20生命；均为静止靶。数据5Hz，事件同步。新原生HUD及配置表已加载；运行、性能、视觉待玩家验收。",
+      "ground_blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+      "model_id": 4001,
+      "saved": true,
+      "native_hud_loaded": true,
+      "certification": {
+        "before": {
+          "success": false,
+          "message": "GuLiMapAuthoring source changed after the last resource bake; rebake before PIE.",
+          "source_hash": "",
+          "layout_hash": "",
+          "territory_count": 0,
+          "cluster_count": 0,
+          "node_count": 0,
+          "initial_soldier_count": 0,
+          "validated_initial_soldier_count": 0,
+          "issues": [
+            "GuLiMapAuthoring source changed after the last resource bake; rebake before PIE."
+          ]
+        },
+        "geometry_before": "875586b8a02878aa2eba3352a3031b735d7ebddc3007557d6548d73385648aff",
+        "dry_run": {
+          "success": true,
+          "message": "Added deployments passed revalidation; no packages changed.",
+          "source_hash": "1ed81b28e923ac09e59ff36163586b0c740e5645",
+          "layout_hash": "f7122648ddb12ce40bbbe5c4ae37481c0f93f8aa",
+          "territory_count": 49,
+          "cluster_count": 240,
+          "node_count": 6240,
+          "initial_soldier_count": 30,
+          "validated_initial_soldier_count": 30,
+          "issues": []
+        },
+        "applied": {
+          "success": true,
+          "message": "Saved revalidated added deployments; certified ore layout is unchanged.",
+          "source_hash": "1ed81b28e923ac09e59ff36163586b0c740e5645",
+          "layout_hash": "e0cd9c9a8108320e5d2cac48921e1d7c795489f6",
+          "territory_count": 49,
+          "cluster_count": 240,
+          "node_count": 6240,
+          "initial_soldier_count": 30,
+          "validated_initial_soldier_count": 30,
+          "issues": []
+        },
+        "after": {
+          "success": true,
+          "message": "Resource authoring source and baked runtime definition are current.",
+          "source_hash": "1ed81b28e923ac09e59ff36163586b0c740e5645",
+          "layout_hash": "e0cd9c9a8108320e5d2cac48921e1d7c795489f6",
+          "territory_count": 49,
+          "cluster_count": 240,
+          "node_count": 6240,
+          "initial_soldier_count": 30,
+          "validated_initial_soldier_count": 30,
+          "issues": []
+        },
+        "geometry_after": "875586b8a02878aa2eba3352a3031b735d7ebddc3007557d6548d73385648aff",
+        "manifests": [
+          {
+            "population": 200,
+            "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+            "export": {
+              "success": true,
+              "error": "",
+              "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+              "objects": 292,
+              "rules": 169,
+              "tables": 5
+            },
+            "validation": {
+              "success": true,
+              "error": "",
+              "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+              "objects": 292,
+              "rules": 169,
+              "tables": 0
+            },
+            "sha256": "3d7009b475f269cb959e2d744811e9b199a37f697bce2dcf1917be4768666d4f"
+          },
+          {
+            "population": 600,
+            "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+            "export": {
+              "success": true,
+              "error": "",
+              "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+              "objects": 692,
+              "rules": 169,
+              "tables": 5
+            },
+            "validation": {
+              "success": true,
+              "error": "",
+              "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+              "objects": 692,
+              "rules": 169,
+              "tables": 0
+            },
+            "sha256": "072baba24e46052c79ba642dd2e3a8c0e3496a72e9e2a672550127c73f37655b"
+          }
+        ],
+        "navigation": {
+          "success": true,
+          "message": ""
+        }
+      }
+    }
+  }
+}

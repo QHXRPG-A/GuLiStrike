@@ -1,0 +1,75 @@
+{
+  "success": true,
+  "kind": "static_source_and_analytic_asset_bounds_review",
+  "parameters": {
+    "HoverHeight": 120.0,
+    "HoverBobAmplitude": 100.0,
+    "HoverPitchAmplitude": 1.2,
+    "HoverRollAmplitude": 1.2,
+    "HoverBobPeriod": 3.0,
+    "HoverPitchPeriod": 3.0,
+    "HoverRollPeriod": 3.0,
+    "HoverBlendSeconds": 0.35,
+    "HoverIdleEnterSpeed": 5.0,
+    "HoverIdleExitSpeed": 15.0,
+    "HoverIdleHoldSeconds": 0.2
+  },
+  "defaults_match": true,
+  "phase_offset_degrees": 90,
+  "unit_phase": "unchanged stable-ID integer hash",
+  "loop_seconds": 3,
+  "bounds": [
+    {
+      "label": "production",
+      "scale": 0.192,
+      "max_rigid_sway_displacement_cm": 37.40090344596741,
+      "positive_margin_cm": [
+        144.9990965540326,
+        77.79909655403259,
+        107.39909655403261
+      ],
+      "negative_margin_cm": [
+        144.9990965540326,
+        77.79909655403259,
+        232.1990965540326
+      ],
+      "contains_idle_envelope": true
+    },
+    {
+      "label": "existing_preview",
+      "scale": 0.2,
+      "max_rigid_sway_displacement_cm": 38.959274422882714,
+      "positive_margin_cm": [
+        151.04072557711729,
+        81.04072557711729,
+        121.04072557711731
+      ],
+      "negative_margin_cm": [
+        151.04072557711729,
+        81.04072557711729,
+        241.04072557711729
+      ],
+      "contains_idle_envelope": true
+    }
+  ],
+  "bounds_limit": "Conservative whole-body idle envelope of the authored geometry; not a runtime visual or combined articulated-pose test.",
+  "scale_contract": "CPU centimeters; BuildFrame divides by ModelScale, then shader LocalToWorld applies instance scale once.",
+  "transition": "Unchanged speed hysteresis 5/15 cm/s, hold 0.2 s, blend 0.35 s.",
+  "attachments": "HoverBodyTransform shared by CPU body, visual muzzle and nozzle; same roll-then-pitch order in GuLiRigidMechanical.hlsl.",
+  "scope": "WM01 mechanical animation; no network, navigation, logical altitude, ship, wingman or player Ground implementation edits.",
+  "runtime_validation": "not_run",
+  "visual_validation": "player_pending",
+  "compile_status": "succeeded",
+  "source_sha256": {
+    "Config/DefaultGame.ini": "72e1691e1f6f187d6b8351e72c3d9dc68743ffead34d4e75f2d6c825e24825f6",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.h": "a4e3f9078ae4c39c2d450f83b627eac11df216baa1ab53cf42059b935a60ed54",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.cpp": "4ec5254bcad0bb72137ed95bf08c7abac4ee083772b72f6fc5817e5007600d8b"
+  },
+  "scene_script_syntax": "passed",
+  "progress_docs": {
+    "errors": 0,
+    "warnings": 19,
+    "warning_scope": "existing document size/task-count advisories"
+  },
+  "editor_reload_status": "loaded_pid_19608"
+}

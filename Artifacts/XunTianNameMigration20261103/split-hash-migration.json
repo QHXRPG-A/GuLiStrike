@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "files": [
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属/01-结论边界与实现基线.md",
+      "sha256_before": "896ff01396c75e9566ea1e107ed107c145a6119de6afb96984a45494bffb2d52",
+      "sha256_after": "cf78e23d118d631d34ee3092bd13df3c2b9b1a1904ea2cd9f56bc201a971147e",
+      "contract_sha256_before": "7beb46a5dc3126462282817c22846f2347ce6e028deb9bd71eaf8474d2546c8f",
+      "contract_sha256_after": "6776e1475599e89969cbb85a35ce598fc070f7387d13e3df9d2efcfbb16f8628",
+      "reason": "巡天名称规范化；保存迁移前拆分片段摘要",
+      "status": "saved"
+    },
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md",
+      "sha256_before": "dbef558449b3f55b4d3a3c7b9ce54c371ed8437450ee182f4ac823b5e964f4ae",
+      "sha256_after": "1d85b79d18446caee42fca77162400e4422638bbf9276cb12d1a4b0d41aeb378",
+      "contract_sha256_before": "e44302910a4b151b78f1d3ebbbfda8a613884703096359c65b196e4f3b9c0d6e",
+      "contract_sha256_after": "77fc82ccd39fb9b425012c7a174499ef9bb6be706664e216bb88f48fb814983d",
+      "reason": "巡天名称规范化；保存迁移前重组正文摘要",
+      "status": "saved"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md",
+      "children": 6,
+      "expected_sha256": "bedb74ac2932fabfb90f53da6b21a0ba03d264fe7095a692c0910f7da938bd63",
+      "reconstructed_sha256": "bedb74ac2932fabfb90f53da6b21a0ba03d264fe7095a692c0910f7da938bd63",
+      "errors": []
+    },
+    {
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md",
+      "children": 5,
+      "expected_sha256": "77fc82ccd39fb9b425012c7a174499ef9bb6be706664e216bb88f48fb814983d",
+      "reconstructed_sha256": "77fc82ccd39fb9b425012c7a174499ef9bb6be706664e216bb88f48fb814983d",
+      "errors": []
+    },
+    {
+      "path": "Progress/Gameplay/指挥官.md",
+      "children": 5,
+      "expected_sha256": "f88b37f4331c66761a1de8c89afb3ed501cf0f84e624d01a28c51be3b9b545fc",
+      "reconstructed_sha256": "f88b37f4331c66761a1de8c89afb3ed501cf0f84e624d01a28c51be3b9b545fc",
+      "errors": []
+    }
+  ]
+}

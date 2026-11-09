@@ -423,6 +423,13 @@ bool UGuLiHybridSessionSubsystem::SendPeerPrepared(const FGuid& Peer,FGuLiHybrid
 {
     return SendPeerInternal(Peer,MoveTemp(Value),Packed,true,bPacked,ReferenceBytes);
 }
+bool UGuLiHybridSessionSubsystem::SendPeerNative(const FGuid& Peer,GuLiNet::Message Value)
+{
+    if (!State->Fault.Mode.IsNone()) return SendPeer(Peer,GuLiNetBridge::ToUE(Value));
+    Value.Header.Match=GuLiNetBridge::ToCore(State->Config.RoomId);
+    Value.Header.Sender=GuLiNetBridge::ToCore(State->Identity.Player);Value.Header.Epoch=State->Epoch;
+    return QueuePeerPayload(Peer,Value,{},false,false,0);
+}
 bool UGuLiHybridSessionSubsystem::SendPeerPreparedNative(const FGuid& Peer,const GuLiNet::Message& Core,TConstArrayView<uint8> Prepared,bool bPacked,SIZE_T ReferenceBytes)
 {
     // Bind noncanonical callers and preserve all explicit fault fixtures through
@@ -537,7 +544,8 @@ bool UGuLiHybridSessionSubsystem::SendPeerInternal(const FGuid& Peer,FGuLiHybrid
         }
     }
     const bool Queued=QueuePeerPayload(Peer,Core,Prepared,bPrepared,bPacked,ReferenceBytes);
-    if (Queued && Transaction && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core) && Fault.Mode==TEXT("business_duplicate"))
+    if (Queued && (Transaction || Core.Header.Kind==GuLiNet::MessageKind::TransactionResult)
+        && Fault.Accepts(Value.Kind) && Fault.MatchesBusiness(Core) && Fault.Mode==TEXT("business_duplicate"))
     {
         auto Duplicate=Core;if (bPrepared&&bPacked) Duplicate.Body.assign(Prepared.GetData(),Prepared.GetData()+Prepared.Num());
         if (It->second->Queue(Duplicate,FPlatformTime::Seconds())) {--Fault.Remaining;++Fault.Intercepted;++Fault.Sent;Fault.Record(Core);}
@@ -574,6 +582,17 @@ bool UGuLiHybridSessionSubsystem::BroadcastPeer(const FGuLiHybridMessage& Value)
     bool Success = true;
     for (const auto& M : State->Members)
         if (M.bOnline && M.bReady && M.Player != State->Identity.Player) Success = SendPeer(M.Player, Value) && Success;
+    return Success;
+}
+bool UGuLiHybridSessionSubsystem::BroadcastPeerNative(GuLiNet::Message Value)
+{
+    Value.Header.Match=GuLiNetBridge::ToCore(State->Config.RoomId);
+    Value.Header.Sender=GuLiNetBridge::ToCore(State->Identity.Player);Value.Header.Epoch=State->Epoch;
+    bool Success=true;
+    for (const auto& M:State->Members)
+        if (M.bOnline && M.bReady && M.Player!=State->Identity.Player)
+            Success=(State->Fault.Mode.IsNone()?QueuePeerPayload(M.Player,Value,{},false,false,0)
+                :SendPeer(M.Player,GuLiNetBridge::ToUE(Value))) && Success;
     return Success;
 }
 TArray<FGuLiHybridMessage> UGuLiHybridSessionSubsystem::GetUnacknowledged(const FGuid& Peer) const

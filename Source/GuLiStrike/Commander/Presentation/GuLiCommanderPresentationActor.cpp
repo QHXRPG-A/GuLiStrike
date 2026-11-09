@@ -848,6 +848,20 @@ float AGuLiCommanderPresentationActor::GetSoldierHitStartTime(const FGuLiSoldier
 	return Soldier ? Soldier->HitFlashStartTime : -1000.0f;
 }
 
+bool AGuLiCommanderPresentationActor::GetSceneUIInstance(FGuLiSoldierId Id,UInstancedStaticMeshComponent*& Component,int32& Index,FBox& Bounds) const
+{
+	Component=nullptr;Index=INDEX_NONE;Bounds=FBox(ForceInit);
+	if(bNetworkPresentationHidden)return false;
+	const auto* Handle=SoldierInstanceHandles.Find(Id);
+	if(!Handle)return false;
+	Component=FindUnitInstancesByBatch(MakeUnitBatchKey(Handle->BatchUnitTypeId,Handle->BatchTeam));
+	Index=Handle->UnitInstanceIndex;FTransform Transform;
+	if(!Component||!Component->IsRegistered()||!Component->IsVisible()||!Component->GetStaticMesh()
+		||!Component->GetInstanceTransform(Index,Transform,true)||Transform.GetScale3D().IsNearlyZero())return false;
+	Bounds=Component->GetStaticMesh()->GetBounds().GetBox().TransformBy(Transform);
+	return Bounds.IsValid!=0;
+}
+
 FBox AGuLiCommanderPresentationActor::GetUnitModelBoundsCentimeters(const uint16 UnitTypeId) const
 {
 	if (const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr)
@@ -1827,6 +1841,9 @@ bool AGuLiCommanderPresentationActor::ReadLocalAuthorityPose(const FGuLiSoldierI
 		&& Soldier.LocalDisplacementRevision != Pose.DisplacementRevision;
 	const bool bReset = !Soldier.bUsingLocalPose || !Soldier.bHasPresentedTransform
 		|| Soldier.bResetPresentationOnNextPose || bDisplaced;
+	// Use the exact last sample as the cache key. The movement blend target has
+	// its own tolerance and can deliberately retain an earlier tiny rotation.
+	const bool bFacingChanged=bReset || !Pose.Transform.GetRotation().Equals(Soldier.LocalPoseRotation,0.f);
 	if (bDisplaced) Soldier.bResetPresentationOnNextPose = true;
 	if (bReset || !Pose.Transform.Equals(Soldier.LocalBlendTarget, 0.01f))
 	{
@@ -1867,7 +1884,11 @@ bool AGuLiCommanderPresentationActor::ReadLocalAuthorityPose(const FGuLiSoldierI
 	if (bReset || Pose.ServerTimeSeconds - Pose.AnimationAheadSeconds > Local.ServerTimeSeconds)
 		Soldier.PreviousLocalPose = Local;
 	Local.Location = Pose.Transform.GetLocation();
-	Local.FacingYawDegrees = Pose.Transform.Rotator().Yaw;
+	if (bFacingChanged)
+	{
+		Soldier.LocalPoseRotation=Pose.Transform.GetRotation();
+		Local.FacingYawDegrees = Pose.Transform.Rotator().Yaw;
+	}
 	Local.Velocity = Pose.Velocity;
 	Local.ServerTimeSeconds = Pose.ServerTimeSeconds - Pose.AnimationAheadSeconds;
 	Local.UpperYawDegrees = Pose.Mechanical.bInitialized ? Pose.Mechanical.UpperYawDegrees : Local.FacingYawDegrees;
@@ -2695,6 +2716,15 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	if (const auto* PC = FindLocalController()) PC->GetPlayerViewPoint(HoverCamera, HoverView);
 	if (HoverEffects) HoverEffects->BeginFrame(LocalNowSeconds, HoverCamera);
 	RefreshPredictionCrowding(*Replicator, DeltaSeconds);
+	struct FFrameUnitDefinition
+	{
+		FBox Bounds;
+		float Scale = .2f, MoveSpeed = 0;
+		const FGuLiSoldierDefinition* Definition = nullptr;
+	};
+	TMap<uint64,FFrameUnitDefinition,TInlineSetAllocator<32>> FrameDefinitions;
+	const auto* FrameUnitData = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	const bool OffscreenUnitsEnabled = GuLiClientPresentation::OffscreenUnitsEnabled();
 
 	{
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_Interpolation);
@@ -2713,6 +2743,17 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		}
 
 		FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(ReliableState.SoldierId);
+		const uint64 DefinitionKey=uint64(MakeUnitBatchKey(InstanceHandle->BatchUnitTypeId,ReliableState.Team)) | (uint64(ReliableState.UnitTypeId)<<32);
+		auto* FrameDefinition=FrameDefinitions.Find(DefinitionKey);
+		if (!FrameDefinition)
+		{
+			FrameDefinition=&FrameDefinitions.Add(DefinitionKey);
+			FrameDefinition->Definition=FrameUnitData?FrameUnitData->FindSoldierDefinition(InstanceHandle->BatchUnitTypeId):nullptr;
+			FrameDefinition->Bounds=GetUnitModelBoundsCentimeters(InstanceHandle->BatchUnitTypeId);
+			FrameDefinition->Scale=FrameDefinition->Definition?FrameDefinition->Definition->PresentationScale:.2f;
+			FrameDefinition->MoveSpeed=MovementGameState
+				?MovementGameState->GetEffectiveUnitMoveSpeedCmPerSecond(ReliableState.Team,ReliableState.UnitTypeId):StandardMoveSpeed;
+		}
 		const bool bAlive = ReliableState.IsAlive();
 		const FTransform PreviousMechanicalRoot = Soldier.PresentedTransform;
 		bool bResetMechanical = !Soldier.bHasPresentedTransform || Soldier.bResetPresentationOnNextPose;
@@ -2737,28 +2778,40 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		const double RenderServerTimeSeconds = Soldier.RenderServerTimeSeconds;
 		Soldier.LastRenderClockLocalTime = LocalNowSeconds;
 		FVector BoundsPosition = Soldier.PresentedTransform.GetLocation();
-		float BoundsYaw = Soldier.PresentedTransform.Rotator().Yaw;
+		FQuat BoundsRotation;
 		if (bLocalPose)
 		{
 			BoundsPosition = AuthoritativeTransform.GetLocation();
-			BoundsYaw = AuthoritativeTransform.Rotator().Yaw;
+			BoundsRotation = AuthoritativeTransform.GetRotation();
 		}
 		else if (!Soldier.Samples.IsEmpty())
 		{
 			const auto& Latest = Soldier.Samples.Last();
 			BoundsPosition = Latest.Location + Latest.Velocity * FMath::Clamp(RenderServerTimeSeconds - Latest.ServerTimeSeconds, 0.0, double(MaximumExtrapolationSeconds));
-			BoundsYaw = Latest.FacingYawDegrees;
+			BoundsRotation = FRotator(0,Latest.FacingYawDegrees,0).Quaternion();
 		}
+		else BoundsRotation=FRotator(0,Soldier.PresentedTransform.Rotator().Yaw,0).Quaternion();
 		FGuLiCommanderLODQuery VisibilityQuery;
-		VisibilityQuery.Bounds = GetUnitModelBoundsCentimeters(InstanceHandle->BatchUnitTypeId)
-			.TransformBy(FTransform(FRotator(0, BoundsYaw, 0), BoundsPosition))
+		VisibilityQuery.Bounds = FrameDefinition->Bounds
+			.TransformBy(FTransform(BoundsRotation, BoundsPosition))
 			.ExpandBy(float(StandardMoveSpeed * GuLiClientPresentation::OffscreenUnitInterval) + 150.f);
-		const bool bVisible = !LOD || LOD->Evaluate(VisibilityQuery).bVisible;
+		const bool bVisible = !LOD || LOD->IsBoundsVisible(VisibilityQuery.Bounds);
 		const bool bReentered = bVisible && !Soldier.bMainViewVisible;
 		Soldier.bMainViewVisible = bVisible;
 		VisibleUnits += bVisible;
-		const bool bUpdatePresentation = bVisible || !GuLiClientPresentation::OffscreenUnitsEnabled()
+		const bool bUpdatePresentation = bVisible || !OffscreenUnitsEnabled
 			|| bResetMechanical || Soldier.bPresentationStateDirty || LocalNowSeconds >= Soldier.NextPresentationLocalTime;
+		if (!bUpdatePresentation && bAlive && !ReliableState.bPhased
+			&& Soldier.bHasPresentedTransform && InstanceHandle->BatchTeam==ReliableState.Team
+			&& !PendingDestructionIds.Contains(ReliableState.SoldierId)
+			&& (!UnitFeedback || LocalNowSeconds-Soldier.HitFlashStartTime>=UGuLiUnitFeedbackSubsystem::HitDuration))
+		{
+			// Clocks and newest authoritative samples above remain current. A held,
+			// offscreen normal unit has no overlay to rebuild and its cached root/ring
+			// cannot change until the existing cadence or an urgent state wakes it.
+			++SkippedUnits;
+			continue;
+		}
 		const float PresentationDt = Soldier.LastPresentationLocalTime < 0 ? DeltaSeconds
 			: float(FMath::Max(0.0, LocalNowSeconds - Soldier.LastPresentationLocalTime));
 		if (bUpdatePresentation && (bLocalPose || bServerClockInitialized)
@@ -2788,9 +2841,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 				const FVector DisplayedDelta = PresentedTransform.GetLocation() - PreviousLocation;
 				// A movement upgrade changes the legal unit speed, not just its server
 				// simulation. A base-speed cap makes a fast model fall behind its shots.
-				const float UnitMoveSpeed = MovementGameState
-					? MovementGameState->GetEffectiveUnitMoveSpeedCmPerSecond(ReliableState.Team, ReliableState.UnitTypeId)
-					: StandardMoveSpeed;
+				const float UnitMoveSpeed = FrameDefinition->MoveSpeed;
 				const double MaximumDisplayedStep = static_cast<double>(UnitMoveSpeed) * CorrectionMultiplier * PresentationDt;
 				PresentedTransform.SetLocation(PreviousLocation
 					+ DisplayedDelta.GetClampedToMaxSize(MaximumDisplayedStep));
@@ -2810,7 +2861,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			continue;
 		}
-		const float ModelScale = GetUnitPresentationScale(InstanceHandle->BatchUnitTypeId);
+		const float ModelScale = FrameDefinition->Scale;
 		if (bUpdatePresentation)
 		{
 			++UpdatedUnits;
@@ -2825,8 +2876,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		else ++SkippedUnits;
 		if (HoverEffects && bVisible && bAlive && !ReliableState.bPhased)
 		{
-			const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
-			const auto* Def = Data ? Data->FindSoldierDefinition(InstanceHandle->BatchUnitTypeId) : nullptr;
+			const auto* Def = FrameDefinition->Definition;
 			if (Def && Def->MechanicalAnimation.bHasHoverNozzles)
 				for (int32 Disc = 0; Disc < 4; ++Disc)
 				{
@@ -2857,6 +2907,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		FTransform UnitTransform = Soldier.PresentedTransform;
 		UnitTransform.SetScale3D(FVector::ZeroVector);
 		FTransform RingTransform = BuildRingTransform(Soldier.PresentedTransform, GetUnitAvoidanceRadius(ReliableState.UnitTypeId));
+		const FVector VisibleRingScale=RingTransform.GetScale3D();
 		RingTransform.SetScale3D(FVector::ZeroVector);
 		// A failed team-batch allocation must not leave an enemy stencil on a newly friendly unit.
 		if (bAlive && InstanceHandle->BatchTeam == ReliableState.Team)
@@ -2871,7 +2922,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			else
 			{
 				UnitTransform = Visible;
-				RingTransform = BuildRingTransform(Soldier.PresentedTransform, GetUnitAvoidanceRadius(ReliableState.UnitTypeId));
+				RingTransform.SetScale3D(VisibleRingScale);
 				if (UnitFeedback && LocalNowSeconds - Soldier.HitFlashStartTime < UGuLiUnitFeedbackSubsystem::HitDuration
 					&& UnitFeedback->IsWithinCullDistance(Visible.GetLocation()))
 				{
@@ -2889,7 +2940,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 				DesiredWreckTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Wreck);
 				WreckMechanicalIds.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(ReliableState.SoldierId);
 			}
-			RingTransform = BuildRingTransform(Soldier.PresentedTransform, GetUnitAvoidanceRadius(ReliableState.UnitTypeId));
+			RingTransform.SetScale3D(VisibleRingScale);
 		}
 		auto& CachedUnit = (*DesiredUnitTransforms)[InstanceHandle->UnitInstanceIndex];
 		// Quaternion tolerance 0.01 can suppress over a degree of the damping tail.
@@ -2975,7 +3026,10 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		};
 		for (auto& Pair : UnitInstanceBatchStates)
 			SubmitSlots(FindUnitInstancesByBatch(Pair.Key), Pair.Value.CachedTransforms, Pair.Value.DirtyTransformSlots);
-		SubmitSlots(RingInstances, CachedRingTransforms, DirtyRingTransformSlots);
+		// RingInstances is permanently HiddenInGame; the scene UI reads the CPU
+		// anchors above. Keep slot identities and pose revisions, but do not upload
+		// another instance transform stream for that hidden compatibility component.
+		DirtyRingTransformSlots.Reset();
 		for (const auto Id : DirtyRingColorIds)
 		{
 			const auto* Handle = SoldierInstanceHandles.Find(Id);

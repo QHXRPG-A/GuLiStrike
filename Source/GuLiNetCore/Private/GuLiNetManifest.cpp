@@ -339,7 +339,7 @@ bool HashManifest(const RuntimeManifest& V, ManifestHashes& Out, std::string& Er
     for (const auto& [K, S] : V.Strings) { Config.Text(K); Config.Text(S); }
     Map.U32(V.Version); Map.Text(V.MapPackage); Map.U32(static_cast<std::uint32_t>(V.Objects.size()));
     for (const auto& [K, O] : V.Objects) { (void)K; WriteObject(Map, O); }
-    const auto ConfigSize = Config.Data().size(), MapSize = Map.Data().size();
+    const auto ConfigSize = Config.View().size(), MapSize = Map.View().size();
     const auto ConfigBytes = Config.Take(), MapBytes = Map.Take();
     if (ConfigBytes.empty() || MapBytes.empty())
     {

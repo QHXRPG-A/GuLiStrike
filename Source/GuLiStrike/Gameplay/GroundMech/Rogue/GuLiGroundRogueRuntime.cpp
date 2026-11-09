@@ -116,7 +116,11 @@ bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
     if(!FGuLiHybridAdapterRegistry::BindDefinition(M,TEXT("team/ground_rogue"),TEXT("GroundRogue"),Error))return false;
     for(auto Team:{EGuLiTeam::Red,EGuLiTeam::Blue}){auto& O=M.Objects.AddDefaulted_GetRef();O.Definition=TEXT("team/ground_rogue");O.Team=Team;O.EstimatedCost=.01;O.Key=FGuLiHybridManifest::MakeStableKey(M.MapPackage,EGuLiHybridObjectKind::BusinessWork,FString::Printf(TEXT("ground_rogue/%u"),uint8(Team)));}
     auto& R=M.Rules.AddDefaulted_GetRef();R.Id=TEXT("capability/ground_rogue/mutate");R.SourceDefinition=TEXT("team/ground_rogue");R.Kind=EGuLiHybridRuleKind::Capability;R.Capability=TEXT("ground_rogue");R.CapabilityVersion=GuLiNet::GroundRogue::Version;R.CapabilityOperation=TEXT("mutate");R.EffectTicks=3600;
-    const auto Rules=M.Rules;for(const auto& Damage:Rules)if(Damage.Kind==EGuLiHybridRuleKind::Damage&&Damage.SourceDefinition==TEXT("player/ground")){auto& Plan=M.Rules.AddDefaulted_GetRef();Plan.Id=TEXT("plan/ricochet/effect/linear/")+Damage.Id;Plan.SourceDefinition=TEXT("effect/linear/")+Damage.Id;Plan.Kind=EGuLiHybridRuleKind::Capability;Plan.Capability=TEXT("ground_ricochet");Plan.CapabilityVersion=GuLiNet::GroundRogue::Version;Plan.CapabilityOperation=TEXT("plan");Plan.EffectTicks=Damage.EffectTicks;}
+    const auto Rules=M.Rules;for(const auto& Damage:Rules)if(Damage.Kind==EGuLiHybridRuleKind::Damage&&Damage.SourceDefinition==TEXT("player/ground"))
+    {
+        for(const auto* Kind:{TEXT("ricochet"),TEXT("explosion")})
+        {auto& Plan=M.Rules.AddDefaulted_GetRef();Plan.Id=FString(TEXT("plan/"))+Kind+TEXT("/effect/linear/")+Damage.Id;Plan.SourceDefinition=TEXT("effect/linear/")+Damage.Id;Plan.Kind=EGuLiHybridRuleKind::Capability;Plan.Capability=FString(TEXT("ground_"))+Kind;Plan.CapabilityVersion=GuLiNet::GroundRogue::Version;Plan.CapabilityOperation=TEXT("plan");Plan.EffectTicks=Damage.EffectTicks;}
+    }
     return true;
 }
 const FGuLiHybridManifestRegistration Provider({TEXT("GroundRogue"),EGuLiHybridManifestPhase::Derived,{TEXT("Flights")},Append});

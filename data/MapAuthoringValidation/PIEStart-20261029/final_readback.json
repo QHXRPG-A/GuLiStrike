@@ -1,0 +1,169 @@
+{
+  "PIE_started": false,
+  "automated_tests": false,
+  "visual_checks": false,
+  "pid": 39984,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "native_api_loaded": true,
+  "resource": {
+    "asset": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territories": 49,
+    "clusters": 240,
+    "nodes": 6240
+  },
+  "geometry_digest": "07e42b96227b53cadd7b11fb9142588aec6ee32be85079c3bd32bf053d5d72a3",
+  "navigation": {
+    "success": true,
+    "message": "",
+    "entries": [
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "source_hash": "f71f5a6c0ae58f66"
+      },
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "source_hash": "6e07478dbf7fdb5f"
+      },
+      {
+        "kind": "Flight",
+        "status": "Hit",
+        "source_hash": "1ba2ce50386d360a"
+      }
+    ]
+  },
+  "dirty_maps": [],
+  "dirty_content": [],
+  "bullet_review": {
+    "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiBulletTrailReviewActor_0",
+    "enable_on_begin_play": false
+  },
+  "review_deployments": [
+    {
+      "label": "GroundRogue_BehindWall",
+      "location": [
+        -4300.0,
+        56200.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_01",
+      "location": [
+        -4300.0,
+        54000.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_02",
+      "location": [
+        -5200.0,
+        54000.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_03",
+      "location": [
+        -6100.0,
+        53400.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_04",
+      "location": [
+        -7000.0,
+        54000.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_05",
+      "location": [
+        -7300.0,
+        53400.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_06",
+      "location": [
+        -8800.0,
+        54600.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_07",
+      "location": [
+        -9700.0,
+        53400.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_08",
+      "location": [
+        -10600.0,
+        54000.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Enemy_09",
+      "location": [
+        -11100.0,
+        54800.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Friendly",
+      "location": [
+        -4000.0,
+        53200.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_OutOfRange",
+      "location": [
+        -15500.0,
+        54000.0,
+        905.0
+      ]
+    }
+  ],
+  "resource_gate": {
+    "success": true,
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territory_count": 49,
+    "cluster_count": 240,
+    "node_count": 6240,
+    "initial_soldier_count": 23,
+    "validated_initial_soldier_count": 23,
+    "issues": []
+  },
+  "manifests": [
+    {
+      "population": 200,
+      "success": true,
+      "config_hash": "44ba3f6a0d2dd19dd0c09e4300d28d6e4f86829bb0cea6160cf0ae9f2f47ba8e",
+      "map_hash": "29d7e3429453c317cd22f65681ba9a1eb4116461d3b6457bf727c854ea2e0145"
+    },
+    {
+      "population": 600,
+      "success": true,
+      "config_hash": "b61e646a41e6a86ba09b077d4845167c6c2346101175945af963d42150235194",
+      "map_hash": "b7bd8c27b4dfc22cf684e5ed1ac79aa7f8c924c34b285ef912ce93cb41b85da0"
+    }
+  ],
+  "success": true
+}

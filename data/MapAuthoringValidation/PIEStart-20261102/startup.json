@@ -1,0 +1,57 @@
+{
+  "pie": true,
+  "session": {
+    "active": true,
+    "error": "",
+    "room": "6B3179F34428F879652313918A6D6AB9",
+    "role": "Ground",
+    "editor_pid": 34800,
+    "logic_pid": 34544,
+    "coordinator_pid": 6264,
+    "logic_running": true,
+    "coordinator_running": true,
+    "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/6B3179F34428F879652313918A6D6AB9",
+    "shutdown": [],
+    "cleanup_complete": false,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+    "standalone": true,
+    "can_present": true,
+    "world_ready": true,
+    "network_error": "",
+    "members": [
+      {
+        "player": "592F439044EACAF3348900B43AADFB74",
+        "online": true,
+        "ready": true,
+        "team": "Blue",
+        "role": "Commander"
+      },
+      {
+        "player": "6FAE351740E32479C92B1796DDD12F5E",
+        "online": true,
+        "ready": true,
+        "team": "Red",
+        "role": "Ground"
+      }
+    ],
+    "units": 600,
+    "peer_owned_objects": 685,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "commander_view_active": false,
+    "can_issue_orders": false,
+    "mouse_cursor_visible": false,
+    "commander_hud_widget": "",
+    "commander_hud_in_viewport": false,
+    "commander_hud_visible": false,
+    "commander_hud_owner_matches": false,
+    "commander_hud_width": 0,
+    "commander_hud_height": 0,
+    "resource_query_ready": true,
+    "legacy_resource_runtime_ready": false
+  },
+  "settings_restored": true,
+  "hud_query_error": "Traceback (most recent call last):\n  File \"<string>\", line 9, in <module>\nException: GuLiCommanderHUD: Property 'GroundHUDWidget' for attribute 'GroundHUDWidget' on 'GuLiCommanderHUD' is protected and cannot be read\n",
+  "stop_requested": true
+}

@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "stage": "loaded",
+    "result": {
+      "native_classes": {
+        "GuLiGroundHUDData": "/Script/GuLiStrike.GuLiGroundHUDData",
+        "GuLiGroundHUDWidget": "/Script/GuLiStrike.GuLiGroundHUDWidget",
+        "GuLiGroundMapWidget": "/Script/GuLiStrike.GuLiGroundMapWidget",
+        "GuLiStrikeGroundHUDElementsRow": "/Script/GuLiStrike.GuLiStrikeGroundHUDElementsRow"
+      },
+      "blueprint_compiles": {
+        "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light": "{'success': True, 'errors': [], 'warnings': []}",
+        "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector": "{'success': True, 'errors': [], 'warnings': []}"
+      },
+      "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+      "hud_class": "/Script/GuLiStrike.GuLiCommanderHUD",
+      "controller_class": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+      "ground_blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+      "model_id": 4001,
+      "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+      "grid": {
+        "cells": [
+          567,
+          567
+        ],
+        "height_samples": 322624,
+        "source_hash": "9f62eb191203cba0a4178a9621d8af1a652c834abf6d38fb31e56942e2f91640"
+      },
+      "hud_rows": 34,
+      "refresh_seconds": 0.2,
+      "direct_selection_default": false,
+      "pie": false,
+      "dirty_maps": [],
+      "dirty_content": []
+    }
+  }
+}

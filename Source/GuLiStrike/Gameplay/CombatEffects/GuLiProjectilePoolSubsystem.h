@@ -50,6 +50,11 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
 	/** Frozen player presentation reference, also usable after the firing Pawn disappears. */
 	int32 PlayerBulletVfxId = 0;
     FGuLiGroundAttackSnapshot GroundAttack;
+	uint64 FireOrdinal=0;
+	double FireNotifyTime=0;
+	uint8 GroundMuzzleIndex=0;
+	FVector GroundOutward=FVector::RightVector;
+	FVector GroundOutwardLocal=FVector::RightVector;
 	bool bAcceptanceAdditional = false;
 	/** Explicit load replenishment may prepare a replacement within one second. */
 	float ScheduledActivationSeconds = 0;
@@ -63,6 +68,8 @@ class GULISTRIKE_API UGuLiProjectilePoolSubsystem : public UTickableWorldSubsyst
 {
 	GENERATED_BODY()
 public:
+	/** Bounded, read-only evidence for the existing Ground review tool. */
+	FString GroundShotDiagnostics() const;
 	TSharedPtr<class IGuLiHybridSimulationAdapter> CreateHybridAdapter(const struct FGuLiHybridObjectState& Object);
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -88,6 +95,7 @@ public:
 
 private:
 	friend struct FGuLiHybridProjectileState;
+	friend class UGuLiGroundMechWeaponComponent;
 	TSharedPtr<struct FGuLiHybridProjectileState> HybridState;
 	void InitializeHybrid(FSubsystemCollectionBase& Collection);
 	void ResetHybrid();

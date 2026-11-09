@@ -1,0 +1,69 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "note": "Ground HUD 参考复刻版 2026-11-02：选择红队 Ground（4001/A4B2）。已接入三张参考图对应的驾驶舱框、生命/喷气/技能槽、真实高度场等高线、平面地图和立体选牌。左键射击、右键瞄准、Space喷气、Shift闪现；M地图、I详情、F4正面单击选牌、Esc关闭。普通数据5Hz、关键事件同步。HUDuiPRO静态素材，不播放整套媒体动画。护盾靶400生命/500护盾；击杀靶20生命。构建及结构化检查完成，视觉、完整操作和性能由玩家验收。",
+  "source_hash": "1ed81b28e923ac09e59ff36163586b0c740e5645",
+  "resource_gate": true,
+  "entities": [
+    {
+      "label": "GroundHUD_v1_PlayerEntry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_83",
+      "class": "Note",
+      "position": "<Struct 'Vector' (0x0000023E48ED1460) {x: -2800.000000, y: 54000.000000, z: 1229.040000}>"
+    },
+    {
+      "label": "GroundHUD_ShieldTarget",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_28",
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": "<Struct 'Vector' (0x0000023E48ED1550) {x: -5000.000000, y: 53000.000000, z: 905.000000}>",
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "initial_max_health_override": "400.0",
+      "initial_shield": "500.0",
+      "start_idle": "True",
+      "allow_automatic_fire": "False"
+    },
+    {
+      "label": "GroundHUD_KillTarget",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_29",
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": "<Struct 'Vector' (0x0000023E48F286F0) {x: -6200.000000, y: 53000.000000, z: 905.000000}>",
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "initial_max_health_override": "20.0",
+      "initial_shield": "0.0",
+      "start_idle": "True",
+      "allow_automatic_fire": "False"
+    },
+    {
+      "label": "GroundRogue_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_88",
+      "class": "TargetPoint",
+      "position": "<Struct 'Vector' (0x0000023E48F28650) {x: -2800.000000, y: 54000.000000, z: 1149.040000}>"
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_55",
+      "class": "TargetPoint",
+      "position": "<Struct 'Vector' (0x0000023E48F28650) {x: -2800.000000, y: 50000.000000, z: 1149.040000}>"
+    },
+    {
+      "label": "GroundRogue_Wall",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_185",
+      "class": "StaticMeshActor",
+      "position": "<Struct 'Vector' (0x0000023E48F28650) {x: -4300.000000, y: 55100.000000, z: 1505.000000}>"
+    },
+    {
+      "label": "GroundRogue_Friendly",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_22",
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": "<Struct 'Vector' (0x0000023E48F285B0) {x: -4050.000000, y: 53250.000000, z: 905.000000}>",
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.RED: 1>",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0",
+      "start_idle": "True",
+      "allow_automatic_fire": "False"
+    }
+  ]
+}

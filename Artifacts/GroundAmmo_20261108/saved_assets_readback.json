@@ -1,0 +1,133 @@
+{
+  "success": true,
+  "packages_reloaded": 13,
+  "tables": [
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards",
+      "rows": 11,
+      "equal_after_reload": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Effects",
+      "rows": 6,
+      "equal_after_reload": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_GroundWeaponEffects",
+      "rows": 3,
+      "equal_after_reload": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Templates",
+      "rows": 5,
+      "equal_after_reload": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Artworks",
+      "rows": 9,
+      "equal_after_reload": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeVfx_Effects",
+      "rows": 64,
+      "equal_after_reload": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills",
+      "rows": 3,
+      "equal_after_reload": true
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeGameTexts_Texts",
+      "rows": 321,
+      "equal_after_reload": true
+    }
+  ],
+  "systems": [
+    {
+      "asset": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000002649C8E98D0) {success: True, system_path: \"/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.631856}>",
+      "emitters": [
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8E6090) {emitter_name: \"NE_spread_spark\", unique_emitter_name: \"NE_spread_spark\", source_asset_path: \"\", is_enabled: True, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8EA9B0) {emitter_name: \"NE_FlipBookPointLocation002\", unique_emitter_name: \"NE_FlipBookPointLocation002\", source_asset_path: \"\", is_enabled: True, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8EFA00) {emitter_name: \"NE_FlipBookPointLocation\", unique_emitter_name: \"NE_FlipBookPointLocation\", source_asset_path: \"\", is_enabled: False, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8E5320) {emitter_name: \"NE_FlipBookPointLocation001\", unique_emitter_name: \"NE_FlipBookPointLocation001\", source_asset_path: \"\", is_enabled: False, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8E6770) {emitter_name: \"NE_PointLocatio\", unique_emitter_name: \"NE_PointLocatio\", source_asset_path: \"\", is_enabled: False, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8EE880) {emitter_name: \"NE_flash_point_light\", unique_emitter_name: \"NE_flash_point_light\", source_asset_path: \"\", is_enabled: False, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8EF8C0) {emitter_name: \"NE_omni_brust_simple001\", unique_emitter_name: \"NE_omni_brust_simple001\", source_asset_path: \"\", is_enabled: False, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8E2F80) {emitter_name: \"NE_FlipBookPointLocation003\", unique_emitter_name: \"NE_FlipBookPointLocation003\", source_asset_path: \"\", is_enabled: False, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8E69F0) {emitter_name: \"NE_omni_burst_subUV\", unique_emitter_name: \"NE_omni_burst_subUV\", source_asset_path: \"\", is_enabled: False, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8EF640) {emitter_name: \"NE_FlipBooks001\", unique_emitter_name: \"NE_FlipBooks001\", source_asset_path: \"\", is_enabled: False, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8ED3E0) {emitter_name: \"NE_FlipBookPointLocation004\", unique_emitter_name: \"NE_FlipBookPointLocation004\", source_asset_path: \"\", is_enabled: True, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8EBEF0) {emitter_name: \"RIbbonTrailFollower_14\", unique_emitter_name: \"RIbbonTrailFollower_14\", source_asset_path: \"\", is_enabled: True, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>"
+      ],
+      "head_modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E9EC0) {module_name: \"SpawnRate\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnRate.SpawnRate\", module_index: 0, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E1F40) {module_name: \"SphereLocation\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Location/SphereLocation.SphereLocation\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E7CB0) {module_name: \"UpdateAge\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8EDDE0) {module_name: \"GravityForce\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Forces/GravityForce.GravityForce\", module_index: 3, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8ECA80) {module_name: \"InitializeParticle\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle\", module_index: 4, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8EB8B0) {module_name: \"NormalizedAngleToDegrees001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees\", module_index: 5, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E1310) {module_name: \"UniformRangedFloat005\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 6, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8EF7D0) {module_name: \"ParticleOwnerPosition\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition\", module_index: 7, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8EC8A0) {module_name: \"Drag\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Forces/Drag.Drag\", module_index: 8, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8EBCC0) {module_name: \"ScaleColor\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Color/ScaleColor.ScaleColor\", module_index: 9, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E8F70) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 10, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E07D0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 11, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8EFAA0) {module_name: \"SpriteSizeScaleBySpeed\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Size/ScaleSpriteSizeBySpeed.ScaleSpriteSizeBySpeed\", module_index: 12, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E91F0) {module_name: \"SetVariables_EDE54CB143E3D1C65A5FA28F3194EDE1\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight.NS_GroundExplosiveFlight:NE_spread_spark.NiagaraScriptSource_1.NiagaraGraph_0.NiagaraNodeAssignment_0.SetVariables_EDE54CB143E3D1C65A5FA28F3194EDE1\", module_index: 13, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E2A30) {module_name: \"MultiplyLinearColor\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/LinearColor/MultiplyLinearColor.MultiplyLinearColor\", module_index: 14, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8E8660) {module_name: \"MakeVector4_FromLinearColor\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/LinearColor/MakeVector4_FromLinearColor.MakeVector4_FromLinearColor\", module_index: 15, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8EFBE0) {module_name: \"MultiplyLinearColor001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/LinearColor/MultiplyLinearColor.MultiplyLinearColor\", module_index: 16, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8EA960) {module_name: \"MakeVector4_FromFloat\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/MakeVector4_FromFloat.MakeVector4_FromFloat\", module_index: 17, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000002649C8ED520) {module_name: \"GuLiCompanionSpawn_2\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight.NS_GroundExplosiveFlight:NE_spread_spark.NiagaraScratchPadContainer_1.GuLiCompanionSpawn_2\", module_index: 18, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F84BC0) {module_name: \"UniformRangedFloat004\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 19, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F85FA0) {module_name: \"Vector2DFromFloat\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 20, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F86F60) {module_name: \"UniformRangedFloat001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 21, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F8D0E0) {module_name: \"Collision\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Collision/Collision.Collision\", module_index: 22, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F8AC80) {module_name: \"CurlNoiseForce\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Forces/V2/CurlNoiseForce.CurlNoiseForce\", module_index: 23, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F832A0) {module_name: \"SetVariables_E214F90F4BF9D5E0DFDD65881F136DC0\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight.NS_GroundExplosiveFlight:NE_spread_spark.NiagaraScriptSource_1.NiagaraGraph_0.NiagaraNodeAssignment_1.SetVariables_E214F90F4BF9D5E0DFDD65881F136DC0\", module_index: 24, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F84560) {module_name: \"Add_Vector\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/Add/Add_Vector.Add_Vector\", module_index: 25, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F8DC20) {module_name: \"Multiply_Vector\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/Multiply/Multiply_Vector.Multiply_Vector\", module_index: 26, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F8C1E0) {module_name: \"VectorFromFloat001\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/VectorFromFloat.VectorFromFloat\", module_index: 27, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F87A40) {module_name: \"GenerateDeathEvent\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Events/GenerateDeathEvent.GenerateDeathEvent\", module_index: 28, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F860C0) {module_name: \"GenerateCollisionEvent\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Events/GenerateCollisionEvent.GenerateCollisionEvent\", module_index: 29, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F84980) {module_name: \"SetVariables_D650392A41A8231E9DB39B9F1A1FFFE6\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight.NS_GroundExplosiveFlight:NE_spread_spark.NiagaraScriptSource_1.NiagaraGraph_0.NiagaraNodeAssignment_2.SetVariables_D650392A41A8231E9DB39B9F1A1FFFE6\", module_index: 30, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F80F60) {module_name: \"PlayAudio\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Audio/PlayAudio.PlayAudio\", module_index: 31, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F850A0) {module_name: \"ScaleSpriteSize\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Size/ScaleSpriteSize.ScaleSpriteSize\", module_index: 32, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F88580) {module_name: \"Vector2DFromFloat001\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 33, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F82AC0) {module_name: \"Multiply_Float001\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/Multiply/Multiply_Float.Multiply_Float\", module_index: 34, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F8AF20) {module_name: \"ScaleMeshSize\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Size/ScaleMeshSize.ScaleMeshSize\", module_index: 35, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F854C0) {module_name: \"VectorFromFloat002\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/VectorFromFloat.VectorFromFloat\", module_index: 36, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F82E80) {module_name: \"Multiply_Float002\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/Multiply/Multiply_Float.Multiply_Float\", module_index: 37, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F82B80) {module_name: \"GuLiCompanionStraight_1\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight.NS_GroundExplosiveFlight:NE_spread_spark.NiagaraScratchPadContainer_1.GuLiCompanionStraight_1\", module_index: 38, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F8BAC0) {module_name: \"GenerateLocationEvent\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Events/GenerateLocationEvent.GenerateLocationEvent\", module_index: 39, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F8B520) {module_name: \"UniformRangedVector\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedVector.UniformRangedVector\", module_index: 40, is_enabled: False, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F86060) {module_name: \"FloatFromCurve\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve\", module_index: 41, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000264A3F84620) {module_name: \"VectorFromFloat\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/VectorFromFloat.VectorFromFloat\", module_index: 42, is_enabled: True, inputs: }>"
+      ]
+    },
+    {
+      "asset": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000002649C8E63B0) {success: True, system_path: \"/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.002797}>",
+      "emitters": [
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8E2710) {emitter_name: \"NE_Main_Explosion\", unique_emitter_name: \"NE_Main_Explosion\", source_asset_path: \"\", is_enabled: True, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8E1A90) {emitter_name: \"NE_Main_Explosion001\", unique_emitter_name: \"NE_Main_Explosion001\", source_asset_path: \"\", is_enabled: True, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>",
+        "<Struct 'NiagaraEmitterInfo_Custom' (0x000002649C8EBC70) {emitter_name: \"NE_Impact\", unique_emitter_name: \"NE_Impact\", source_asset_path: \"\", is_enabled: True, is_isolated: False, sim_target: \"CPUSim\", parameter_count: 0}>"
+      ]
+    }
+  ],
+  "PIE": false,
+  "assistant_visual_test": false,
+  "texts": {
+    "Card.GroundMech.FireRate.Title": "增加攻速",
+    "Card.GroundMech.FireRate.Description": "<Unit>游骑兵</> <Gain>普攻攻速+{1}% · {0}级</>",
+    "Card.GroundMech.EnhancedBullet.Title": "强化子弹",
+    "Card.GroundMech.EnhancedBullet.Description": "<Unit>游骑兵</> <Gain>普攻升级为强化子弹</>",
+    "Card.GroundMech.ExplosivePackage.Title": "爆破套餐",
+    "Card.GroundMech.ExplosivePackage.Description": "<Unit>游骑兵</> <Gain>{0}级 · 每{1}发附爆炸弹 · {2}倍伤害/{3}米</>"
+  },
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "dirty_task_assets": [],
+  "dirty_maps": []
+}

@@ -1,0 +1,1363 @@
+{
+  "rows": [
+    {
+      "label": "baseline",
+      "seconds": 0.2649999999994179,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 147,
+        "motion_frames": 20,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 100.0,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "aim_on",
+      "seconds": 0.5469999999986612,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 148,
+        "motion_frames": 28,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": true,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 1
+          },
+          {
+            "slot": 2,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 100.0,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "aim_off",
+      "seconds": 0.8119999999980791,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 149,
+        "motion_frames": 37,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 100.0,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "fuel_empty",
+      "seconds": 0.8590000000003783,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 149,
+        "motion_frames": 38,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": true,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0.12581497430801392
+          },
+          {
+            "slot": 3,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 0.0,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "fuel_recovered",
+      "seconds": 2.2179999999971187,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 156,
+        "motion_frames": 66,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 5.666656494140625,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "blink_before_interrupt",
+      "seconds": 2.25,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 156,
+        "motion_frames": 68,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 6.333322525024414,
+      "phase": 1,
+      "cooldown": 2.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "blink_interrupted_then_ready",
+      "seconds": 4.764999999999418,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 169,
+        "motion_frames": 211,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": 0.9999994039535522,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 56.333160400390625,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "hidden_begin",
+      "seconds": 6.296999999998661,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 169,
+        "motion_frames": 211,
+        "generation": 1,
+        "modal": 0,
+        "hidden": true,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 86.99996948242188,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": true,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "69482383416989C5C36987DC9006B4C1",
+        "fade": 1,
+        "phase": 0,
+        "selected": -1,
+        "overlay": true,
+        "blur": 8,
+        "capture": true,
+        "director": true,
+        "target": true,
+        "ticking": true,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": true,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "hidden_end",
+      "seconds": 7.109000000000378,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 169,
+        "motion_frames": 211,
+        "generation": 1,
+        "modal": 0,
+        "hidden": true,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 100.0,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": true,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "69482383416989C5C36987DC9006B4C1",
+        "fade": 1,
+        "phase": 1,
+        "selected": -1,
+        "overlay": true,
+        "blur": 8,
+        "capture": true,
+        "director": true,
+        "target": true,
+        "ticking": true,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": true,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "shown",
+      "seconds": 7.811999999998079,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 171,
+        "motion_frames": 211,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 100.0,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "reopened",
+      "seconds": 8.625,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 171,
+        "motion_frames": 211,
+        "generation": 1,
+        "modal": 0,
+        "hidden": true,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 100.0,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": true,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "69482383416989C5C36987DC9006B4C1",
+        "fade": 1,
+        "phase": 0,
+        "selected": -1,
+        "overlay": true,
+        "blur": 8,
+        "capture": true,
+        "director": true,
+        "target": true,
+        "ticking": true,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": true,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    },
+    {
+      "label": "final",
+      "seconds": 9.234000000000378,
+      "motion": {
+        "entry_plays": 1,
+        "shots": 0,
+        "hit_plays": 0,
+        "kill_plays": 0,
+        "ordinary_refreshes": 173,
+        "motion_frames": 211,
+        "generation": 1,
+        "modal": 0,
+        "hidden": false,
+        "closing": false,
+        "modal_alpha": 0,
+        "shot_expansion": 0,
+        "cooldown_progress": -1,
+        "cooling": false,
+        "aiming": false,
+        "thrusting": false,
+        "skills": [
+          {
+            "slot": 0,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 1,
+            "casts": 0,
+            "ready": 0,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 2,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          },
+          {
+            "slot": 3,
+            "casts": 1,
+            "ready": 1,
+            "cast_material": true,
+            "ready_material": true,
+            "held_alpha": 0
+          }
+        ],
+        "textures": [
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+            "resident_bytes": 4587520
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+            "resident_bytes": 5636096
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+            "resident_bytes": 327680
+          },
+          {
+            "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+            "resident_bytes": 48431104
+          }
+        ],
+        "resident_mib": 56.25
+      },
+      "fuel": 100.0,
+      "phase": 0,
+      "cooldown": 0.0,
+      "cards": {
+        "controller": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+        "local": true,
+        "ready": false,
+        "team": 1,
+        "commander": false,
+        "viewmode": 3,
+        "materials": 1,
+        "detail_lighting": 0,
+        "f4_debug_count": 0,
+        "open": false,
+        "closing": false,
+        "committed": false,
+        "submitting": false,
+        "session": "00000000000000000000000000000000",
+        "fade": 0,
+        "phase": -1,
+        "selected": -1,
+        "overlay": false,
+        "blur": 0,
+        "capture": false,
+        "director": false,
+        "target": false,
+        "ticking": false,
+        "preparing_ground_cards": false,
+        "ground_materials_ready": false,
+        "ground_warmup_frames": 0,
+        "upgrade_active": 0,
+        "upgrade_visible": 0,
+        "upgrade_components": 0,
+        "upgrade_particles": 0,
+        "upgrade_ms": 0
+      }
+    }
+  ],
+  "actions": [
+    {
+      "AimOn": true
+    },
+    {
+      "AimOff": true
+    },
+    {
+      "PrepareNearEmptyFuel": true
+    },
+    {
+      "blink": true
+    },
+    {
+      "InterruptBlink": true
+    },
+    {
+      "open": true
+    },
+    {
+      "cancel": true
+    },
+    {
+      "reopen": true
+    }
+  ],
+  "error": ""
+}

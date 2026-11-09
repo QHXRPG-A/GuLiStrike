@@ -1,0 +1,47 @@
+{
+  "python": [
+    {
+      "file": "Scripts/GroundMech/Rogue/install_fire_notify_ammo.py",
+      "ast": "passed"
+    },
+    {
+      "file": "Scripts/GroundMech/Rogue/save_fire_notify_review.py",
+      "ast": "passed"
+    },
+    {
+      "file": "Scripts/GroundMech/Rogue/enter_ammo_review.py",
+      "ast": "passed",
+      "purpose": "preparation only"
+    }
+  ],
+  "git_diff_check_exit": 0,
+  "scope": [
+    "Source/GuLiNetCore",
+    "Source/GuLiStrike/Gameplay/CombatEffects",
+    "Source/GuLiStrike/Gameplay/GroundMech",
+    "Source/GuLiStrike/Network",
+    "Source/GuLiStrikeEditor",
+    "Scripts/GroundMech/Rogue",
+    "Config/Hybrid",
+    "Tools/GuLiCoordinator/src"
+  ],
+  "new_automated_tests": false,
+  "protocol": 40,
+  "manifest": 26,
+  "capacity_scope": "live objects only",
+  "incremental_hash_existing_acceptance": "passed",
+  "native_compile": {
+    "editor": "editor-build-ordinal-index.log",
+    "coordinator": "coordinator-build-ordinal-index.log",
+    "core_acceptance": "core-acceptance-ordinal-index.log",
+    "exit_codes": [
+      0,
+      0,
+      0
+    ]
+  },
+  "checked_after_ordinal_index": true,
+  "progress_baseline_errors": 6,
+  "progress_new_errors": 0,
+  "final_scene_saved": true
+}

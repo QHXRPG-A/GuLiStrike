@@ -1,0 +1,82 @@
+{
+  "success": true,
+  "active_map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "role_picker_entry": {
+    "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_80",
+    "label": "LocalPIERolePicker_Instructions",
+    "location": [
+      -18900.0,
+      70440.0,
+      1473.779083
+    ],
+    "text": "开局席位选择：打开本图，点击播放。\n前置：加载含开局UI的新编译；GuLi Local PIE启用，开局选择席位开启。\n选择指挥官、游骑兵或巡天，再点进入战场；应分别进入已有的对应操控方式。\n游骑兵是玩家亲自操控的第一代机甲（ModelId=4001），通过Ground席位进入；后续机甲使用各自名称。Ground使用独立的玩家角色与网络路径，不沿用重防号WM01的身份。\n取消、Esc或关闭窗口应返回编辑器，且不启动对局后台进程。\n结束对局后再次播放，应重新显示选择界面；本编辑器会话记住上次确认的选项。\nTab可切换焦点，Enter/空格操作已聚焦按钮；缩小窗口时选项可滚动。\n本入口仅用于原型图的交互式本地PIE，不改地图出生点、飞船或僚机的移动行为。\n助手不运行PIE、不读取截图；玩家确认三个席位、取消/重开及实际布局。"
+  },
+  "public_texts": {
+    "UI.GroundHUD.Title": "游骑兵",
+    "UI.GroundHUD.Self": "游骑兵",
+    "Card.GroundMech.Ricochet.Description": "<Unit>游骑兵</> <Gain>普攻折射-{0}</>",
+    "Card.GroundMech.BurningBullet.Description": "<Unit>游骑兵</> 普攻附加<Gain>灼烧-{0}</>",
+    "Card.GroundMech.BurningBurst.Description": "<Unit>游骑兵</> 灼烧每隔一段时间发生<Gain>爆燃</>"
+  },
+  "unreadable_assets": [
+    {
+      "path": "/Game/GuLiStrike/Blueprints/BP_GuLiStrikePickup",
+      "error": "load_asset returned None",
+      "registered_class": "<Struct 'TopLevelAssetPath' (0x00000284C8FEAA3C) {package_name: \"/Script/Engine\", asset_name: \"Blueprint\"}>",
+      "ParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikePickup'",
+      "NativeParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikePickup'"
+    },
+    {
+      "path": "/Game/GuLiStrike/Blueprints/BP_GuLiStrikeGameMode",
+      "error": "load_asset returned None",
+      "registered_class": "<Struct 'TopLevelAssetPath' (0x00000284C8FEAFDC) {package_name: \"/Script/Engine\", asset_name: \"Blueprint\"}>",
+      "ParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeGameMode'",
+      "NativeParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeGameMode'"
+    },
+    {
+      "path": "/Game/GuLiStrike/Blueprints/AI/ST_GuLiStrikeNPC",
+      "error": "load_asset returned None",
+      "registered_class": "<Struct 'TopLevelAssetPath' (0x00000284C8FE7DDC) {package_name: \"/Script/StateTreeModule\", asset_name: \"StateTree\"}>",
+      "ParentClass": "None",
+      "NativeParentClass": "None"
+    },
+    {
+      "path": "/Game/GuLiStrike/Blueprints/AI/BP_GuLiStrikeSpawner",
+      "error": "load_asset returned None",
+      "registered_class": "<Struct 'TopLevelAssetPath' (0x00000284C8FE779C) {package_name: \"/Script/Engine\", asset_name: \"Blueprint\"}>",
+      "ParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeSpawner'",
+      "NativeParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeSpawner'"
+    },
+    {
+      "path": "/Game/GuLiStrike/Blueprints/AI/BP_GuLiStrikeNPCDestruction",
+      "error": "load_asset returned None",
+      "registered_class": "<Struct 'TopLevelAssetPath' (0x00000284C8FE8AFC) {package_name: \"/Script/Engine\", asset_name: \"Blueprint\"}>",
+      "ParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeNPCDestruction'",
+      "NativeParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeNPCDestruction'"
+    },
+    {
+      "path": "/Game/GuLiStrike/Blueprints/AI/BP_GuLiStrikeNPC",
+      "error": "load_asset returned None",
+      "registered_class": "<Struct 'TopLevelAssetPath' (0x00000284C8FE977C) {package_name: \"/Script/Engine\", asset_name: \"Blueprint\"}>",
+      "ParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeNPC'",
+      "NativeParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeNPC'"
+    },
+    {
+      "path": "/Game/GuLiStrike/Blueprints/AI/BP_GuLiStrikeAIController",
+      "error": "load_asset returned None",
+      "registered_class": "<Struct 'TopLevelAssetPath' (0x00000284C8FE6D9C) {package_name: \"/Script/Engine\", asset_name: \"Blueprint\"}>",
+      "ParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeAIController'",
+      "NativeParentClass": "/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiStrikeAIController'"
+    }
+  ],
+  "dirty_maps": [],
+  "dirty_assets": [],
+  "native_build": "not_run",
+  "runtime_verification": "not_run",
+  "visual_verification": "not_run",
+  "xuntian_name_normalization": {
+    "date": "2026-11-03",
+    "file_sha256_before": "f2b38406fd1602fdf8d31e28a875ba5a38b37ba9976e76929395a34e651f46d3",
+    "policy": "仅名称规范化；保留历史结论与原始证据哈希含义。当前文本不是当时的原始导出；原文件可由迁移前哈希及版本历史追溯。"
+  }
+}

@@ -158,7 +158,7 @@ def preflight(ids=None, require_native=False, mutation=False, reimport=False):
                   ("Texture", edit.get_texture_parameter_names))}
         independent = all(f'Layer {index} Map' in names['Texture'] for index in range(1, 7))
         masked = 'Foreground Front Mask' in names['Texture']
-        expected = {'ModelComicAtlasV9': (False, False), 'RegisteredSix': (True, False),
+        expected = {'BlankPlaceholder': (False, False), 'ModelComicAtlasV9': (False, False), 'RegisteredSix': (True, False),
                     'RegisteredSixForegroundMask': (True, True), 'RegisteredSixRigid': (True, True)}[template['CompositePreset']]
         assert (independent, masked) == expected, 'Parent material does not implement the selected composite template'
         for key, (kind, _) in parameter_values(catalog, ident).items():

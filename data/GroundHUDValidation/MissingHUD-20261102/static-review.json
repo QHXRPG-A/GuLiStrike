@@ -1,0 +1,21 @@
+{
+  "scope": "Ground HUD creation lifecycle and read-only native PIE diagnostics",
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.h": "6fec7f11deaa28513eb8222f13e72ab8cf94cea3aaa62737c3945456129680ad",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp": "91bf255ed2d611775fbb83f8df2961b39a0353ef1d05c2c3dfed1ff71a38e9aa",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h": "c4ec248eec9891fd5983f80d2b0c7c8753d5083d8691b2ea83d665f5acf90ed0",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp": "0bc4d617dcd033a9cf40966758f9acdd09d76e7d5338c4f8e7a99842d48e2e8b",
+    "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp": "e18a7ca8f08ea6a54d0f3b29535b2b5022e18cc6a76729b85be5e756d162926d"
+  },
+  "static_checks": [
+    "Pawn change delegate matches AController signature and is unbound in HUD EndPlay",
+    "HUD readiness evaluated independently after possession; no per-frame scan added",
+    "Widget rebind clears old Pawn state and delegates, including hidden state",
+    "Ordinary HUD timer remains at least 0.2 seconds",
+    "git diff --check passed",
+    "Native Ground diagnostics only evaluate on explicit GetSessionStatus reads"
+  ],
+  "native_build": "Succeeded; lifecycle and diagnostic builds both exit 0",
+  "runtime": "Fresh Ground PIE creates exactly one HUD after possession, without manual HUD recreation; native layout positive",
+  "visual_inspection": false
+}

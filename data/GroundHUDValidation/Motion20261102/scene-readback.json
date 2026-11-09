@@ -1,0 +1,80 @@
+{
+  "saved": true,
+  "entities": [
+    {
+      "label": "GroundHUD_v1_PlayerEntry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_83",
+      "class": "Note",
+      "location": [
+        -2800.0,
+        54000.0,
+        1229.04
+      ]
+    },
+    {
+      "label": "GroundHUD_ShieldTarget",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_28",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -5000.0,
+        53000.0,
+        905.0
+      ],
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "initial_max_health_override": "400.0",
+      "initial_shield": "500.0",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True"
+    },
+    {
+      "label": "GroundHUD_KillTarget",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_29",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -6200.0,
+        53000.0,
+        905.0
+      ],
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "initial_max_health_override": "20.0",
+      "initial_shield": "0.0",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True"
+    },
+    {
+      "label": "GroundRogue_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_88",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        54000.0,
+        1149.04
+      ]
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_55",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ]
+    }
+  ],
+  "note": "Ground HUD 动画：选择 Ground。LMB 有效射击亮边/准星回弹，RMB 瞄准渐变，Space 喷气亮边与耗尽落地恢复就绪，Shift 闪现亮边/CD圆环/就绪。M 地图、I 详情：开0.18秒/关0.12秒；F4 正面直选/取消重开。首次入场与重生0.45秒，返回战斗不重播。护盾靶400生命/500护盾，击杀靶20生命；仅有效伤害/吸收/击杀触发X，死亡靶请重开本局。普通刷新5Hz，事件帧末同步。代码已加载；助手不读图，观感与完整战斗/跨局由玩家验收。资源/证据：ArtSource/UI/GroundMech/HUD_Motion_20261102。",
+  "model": 4001,
+  "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+  "motion_rows": 36,
+  "table_rows": 71,
+  "resource_gate": "Resource authoring source and baked runtime definition are current.",
+  "dirty": [],
+  "pie": false,
+  "visual_review": "not_performed"
+}

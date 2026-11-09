@@ -127,9 +127,9 @@ def main():
     th=tr[0]
     entries={
         "Card.GroundMech.BurningBullet.Title":("灼烧子弹","卡牌标题"),
-        "Card.GroundMech.BurningBullet.Description":("<Unit>地面机甲</> 普攻附加<Gain>灼烧-{0}</>","参数为取得后的卡牌等级"),
+        "Card.GroundMech.BurningBullet.Description":("<Unit>游骑兵</> 普攻附加<Gain>灼烧-{0}</>","参数为取得后的卡牌等级"),
         "Card.GroundMech.BurningBurst.Title":("灼烧爆裂子弹","卡牌标题"),
-        "Card.GroundMech.BurningBurst.Description":("<Unit>地面机甲</> 灼烧每隔一段时间发生<Gain>爆燃</>","爆燃规则由Buff配置维护"),
+        "Card.GroundMech.BurningBurst.Description":("<Unit>游骑兵</> 灼烧每隔一段时间发生<Gain>爆燃</>","爆燃规则由Buff配置维护"),
         "Buff.Burning.Description":("每秒受到最大生命值的{0}%伤害，持续{1}秒。重复命中刷新时间，不叠加。","Buff参数化说明"),
         "Buff.BurningBurst.Description":("灼烧期间独立每{0}秒爆裂，造成宿主已损失生命值的{1}%范围伤害，半径{2}米，接触爆燃范围的敌人受到同等伤害。","Buff参数化说明")}
     changes=[]

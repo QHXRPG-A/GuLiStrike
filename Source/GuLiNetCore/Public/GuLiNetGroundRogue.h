@@ -9,8 +9,10 @@ namespace GuLiNet::GroundRogue
 inline constexpr const char* Name="ground_rogue";
 inline constexpr const char* AttackName="ground_attack";
 inline constexpr const char* ChainName="ground_ricochet";
-// v3 freezes a first-impact-centered ricochet boundary; v2 used a moving hop radius.
-inline constexpr std::uint32_t Version=3;
+inline constexpr const char* BlastName="ground_explosion";
+inline constexpr const char* CounterName="ground_shots";
+// v7 adds the per-level explosive radius/damage modifier to the shared catalogue.
+inline constexpr std::uint32_t Version=7;
 // Both the portable capability and the UE flight recovery record must fit 64 KiB.
 // Reserve the fixed recipe and budget the larger UE hop representation, not just its compact wire form.
 inline constexpr std::uint32_t MaximumHops=Effects::MaximumRicochetHops;
@@ -40,6 +42,11 @@ struct Build
 };
 // The state carrier follows the Ground seat; builds inside it always belong to the player ID.
 struct State {Catalog Definitions;std::map<Id,Build> Players;};
+struct ShotProgress {std::uint32_t ExplosiveLevel=0,Count=0;};
+struct ShotCounters {std::map<Id,ShotProgress> Players;};
+GULINETCORE_API Bytes EncodeCounters(const ShotCounters&);
+GULINETCORE_API bool DecodeCounters(std::span<const std::uint8_t>,ShotCounters&);
+GULINETCORE_API std::uint32_t ReadProgress(const ShotCounters&,const Id&,const Effects::Set&);
 struct Attack
 {
     ObjectKey Source,Root;
@@ -47,13 +54,25 @@ struct Attack
     Revision RevisionValue=0;
     Effects::Set Effects;
     float Damage=0;
+    float FireRate=0;
     std::uint32_t BulletVfx=0,ImpactVfx=0,MuzzleVfx=0;
+    float ExplosiveDamage=0,ExplosiveRadius=0;
+    std::uint32_t ExplosiveBulletVfx=0,ExplosiveImpactVfx=0;
 };
+// Fit the frozen area target keys beside the full ricochet route in the shared
+// 64 KiB capability envelope. UE's private receipt payload has a separate limit.
+inline constexpr std::uint32_t MaximumBlastTargets=2048;
+static_assert(8192+MaximumBlastTargets*21+MaximumHops*45<=MaximumCapabilityBytes);
+struct Blast {Id Shot;Tick At=0;double X=0,Y=0,Z=0;std::vector<ObjectKey> Targets;};
+GULINETCORE_API Bytes EncodeBlast(const Blast&);
+GULINETCORE_API bool DecodeBlast(std::span<const std::uint8_t>,Blast&);
+GULINETCORE_API Id BlastEvent(const Id& Shot);
+GULINETCORE_API Id BlastHitEvent(const Id& Shot,const ObjectKey& Target);
 struct Hop {ObjectKey Target;double X=0,Y=0,Z=0;};
 struct Chain {Attack Frozen;ObjectKey First;Id Shot;Tick At=0;double X=0,Y=0,Z=0;std::uint32_t Budget=0;std::vector<Hop> Hops;};
 GULINETCORE_API bool Compile(const Catalog&,CompiledUpgradeCatalog&,std::string&);
 GULINETCORE_API bool Resolve(const Catalog&,const Build&,Effects::Set&);
-GULINETCORE_API bool Eligible(const Catalog&,const Build&,const std::string&);
+GULINETCORE_API bool Eligible(const Catalog&,const Build&,const std::string&,float BaseFireRate=0);
 GULINETCORE_API Bytes EncodeCatalog(const Catalog&);
 GULINETCORE_API bool DecodeCatalog(std::span<const std::uint8_t>,Catalog&);
 GULINETCORE_API Bytes EncodeState(const State&);

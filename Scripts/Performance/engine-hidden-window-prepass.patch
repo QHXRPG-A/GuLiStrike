@@ -1,0 +1,13 @@
+--- a/Engine/Source/Runtime/Slate/Private/Framework/Application/SlateApplication.cpp
++++ b/Engine/Source/Runtime/Slate/Private/Framework/Application/SlateApplication.cpp
+@@ -1331,6 +1331,10 @@
+ 		TGuardValue TmpContext(CurrentContext, TWeakPtr<SWidget>(WindowToPrepass));
+ 		FScopedSwitchWorldHack SwitchWorld(WindowToPrepass);
+ 		
++		// Native child windows have independent Slate layout roots. A visible
++		// detached PIE/tool window must not prepass its hidden/minimized parent
++		// widget tree. Recurse below so the visible children still receive layout.
++		if (bIsWindowVisible)
+ 		{
+ 			WindowToPrepass->ProcessWindowInvalidation();
+ 			WindowToPrepass->SlatePrepass(FSlateApplication::Get().GetApplicationScale() * WindowToPrepass->GetNativeWindow()->GetDPIScaleFactor());

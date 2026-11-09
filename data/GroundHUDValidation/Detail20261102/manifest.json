@@ -1,0 +1,355 @@
+{
+  "scope": "Fourth screenshot refinement: instrument shells, reticles, symbols, building bounds and compact unit-free attributes inside health",
+  "user_authorization": [
+    "你来进行截图校验",
+    "Same-task compile/restart approval",
+    "属性不显示单位，否则像一款工业软件",
+    "属性跟左下角的血条板块合并，字号小一点"
+  ],
+  "builds": [
+    {
+      "log": "build-health-merge.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "12.64"
+      ]
+    },
+    {
+      "log": "build-housing.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "18.81"
+      ]
+    },
+    {
+      "log": "build-reticle-map.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "21.43"
+      ]
+    },
+    {
+      "log": "build-stat-values.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "9.48"
+      ]
+    }
+  ],
+  "final_editor_pid": 3276,
+  "source_and_data": [
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.h",
+      "bytes": 3635,
+      "sha256": "c9354b78cbd4093fc56afcd388dbab28d83557a7fb54770f9a658829e3dbb272"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.cpp",
+      "bytes": 12660,
+      "sha256": "97c8ad48e393812a72efc222b3379e011ed655e9997146e7122d5677bb329d60"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp",
+      "bytes": 25602,
+      "sha256": "7d8c182ccbdf579834b0fd627961d1f2e68e3c0cec2369d468f40d21d65f8104"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDLayout.cpp",
+      "bytes": 18490,
+      "sha256": "5236ca26604040765409553df0e67d06c097f837ffc599b7006ba086c6306279"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDVisuals.h",
+      "bytes": 2980,
+      "sha256": "6b5dc369446af660d09ebf78ee2b06ea42b2d135cb642925b5d5113bda3b293f"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDVisuals.cpp",
+      "bytes": 30036,
+      "sha256": "53998afedc5c30bda98d02a3dab654c260fdde84796c769be3b1f3cec4fea786"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.cpp",
+      "bytes": 23601,
+      "sha256": "f1b26e9fd64b7260003b4a4d4e4f16759b1f91b195fcffb7d3e1ead1a772d921"
+    },
+    {
+      "path": "Scripts/GroundMech/prepare_ground_hud_data.py",
+      "bytes": 6379,
+      "sha256": "bab237f689899adec924449086ec0551032a96b8d77e28abb3c19c8797cbbc4b"
+    },
+    {
+      "path": "data/Excel/GuLiStrikeGameTexts.xlsx",
+      "bytes": 20670,
+      "sha256": "75200f2df582d8d9164fc1f8fe6f701f99a2900f023055c143f64adfa0ed8d0e"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeGameTexts_Texts.json",
+      "bytes": 66445,
+      "sha256": "02792b62882ef5f1dc29a62512e2a90334dcc09b0761166667f6b681bf33532d"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeGroundHUD_Elements.json",
+      "bytes": 7381,
+      "sha256": "692fefec40df7366653b20283b7ff0b84b8f8e77c0f6acec57a344ed490cd7e8"
+    }
+  ],
+  "python_ast_passed": [
+    "Scripts/GroundMech/prepare_ground_hud_data.py",
+    "data/GroundHUDValidation/Detail20261102/import_text.py",
+    "data/GroundHUDValidation/Detail20261102/make_manifest.py",
+    "data/GroundHUDValidation/Detail20261102/read_merged.py"
+  ],
+  "screenshots": [
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/01-combat-before.jpg",
+      "bytes": 173839,
+      "sha256": "314ac0a095f20b0a29f89f3f64ddfe14b1063590ea1f9f1ddc061cbb73e58a09",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/02-map-before.jpg",
+      "bytes": 171468,
+      "sha256": "da9121ac71534e9c3a9815916e53f80c324a2d84a27211d4979fadd50397c2ec",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/03-invalid-capture.jpg",
+      "bytes": 105338,
+      "sha256": "557567c1a28a0aeec767f0837fa3af03a367769661a2dbb7750ff4c641d24369",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": false,
+      "reason": "Returned image showed the wrong window; discarded from HUD validation."
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/04-combat-after.jpg",
+      "bytes": 171761,
+      "sha256": "1dd1f793020aa0c1dc4286aa23bc6a747956771a4aa821f4c68dc748b5a91700",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/05-physical-m.jpg",
+      "bytes": 171154,
+      "sha256": "0abff4cbdd0c597acc9ca8a8a0ae1ec0f88f1f921d38bcd9a4d70d85411ce787",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/06-map-after.jpg",
+      "bytes": 171894,
+      "sha256": "36485a9695571b80ecf4807f55b0221a0f05cd8ec951050c7a46b88ad267747c",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/07-map-zoom.jpg",
+      "bytes": 159375,
+      "sha256": "dbba0f7866a9cb137e871386717c203f16e915d838d60545d7a811594f9d8500",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/08-building-selected.jpg",
+      "bytes": 157830,
+      "sha256": "f49a395ef1117af1775cb050b54a849dd02b9bc782772974b00365332191987a",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/09-cards-opening.jpg",
+      "bytes": 70669,
+      "sha256": "4b95394aba412bbb97659ee5cef1875f99409015753e1783ecaff2c60e526026",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/10-cards-ready.jpg",
+      "bytes": 209603,
+      "sha256": "6fa9cd34648a4f0bfe3cd9c3b6a954d255af726ea088c27d5a10343f3193d52c",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/11-ricochet-submit.jpg",
+      "bytes": 205688,
+      "sha256": "f4a6d51f67eb395bf164148b9126458024938f762e3fca91aa61ffefd0231c35",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/12-ricochet-owned.jpg",
+      "bytes": 172628,
+      "sha256": "63b9cf205f0e94b20281dbbe22c1094d1c09d190daca65facfaca1084c165962",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/13-combat-16x10-final.jpg",
+      "bytes": 183311,
+      "sha256": "91d2ed4cdab8e777e522d3a77f3bb40081eb5d9ab55965433d1fedf359fc573b",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/14-details-no-units.jpg",
+      "bytes": 77048,
+      "sha256": "972d885e1e22fbd99836afe202f1287213ecde064e922e8389c3d0f0017f8171",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/15-map-16x10-final.jpg",
+      "bytes": 76961,
+      "sha256": "d1f1e14483a72400c6411210ec299aa03c8d65de4b15a7681c7924d5c131a8b4",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/16-map-uppercase-m.jpg",
+      "bytes": 183702,
+      "sha256": "021acfc903938a352df7487ef6acbba728421d3a4bc0182521f41f4ead744dbd",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/17-map-16x10-final.jpg",
+      "bytes": 184737,
+      "sha256": "50941851751db7919add2b7ce836c515b0655df620bc678bfb6af17339b52ece",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/18-cards-16x10-final.jpg",
+      "bytes": 209950,
+      "sha256": "31d06a5c3e8b0fa5c7c1a3e56d1818c2fbe1a14904cc94a43167028c906b1d12",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/19-combat-21x9-final.jpg",
+      "bytes": 197931,
+      "sha256": "ccbb992080439579dee6e79729fc3c3ebc6dad2a2e0a51245ce1097ef22cc451",
+      "format": "JPEG",
+      "width": 1686,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/20-map-21x9-final.jpg",
+      "bytes": 193240,
+      "sha256": "541b0fd4a5d57d4b551bc7300fd30e927bc06c33d92a99a45f57fae6cb149960",
+      "format": "JPEG",
+      "width": 1686,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/21-cards-21x9-final.jpg",
+      "bytes": 204229,
+      "sha256": "27d78b50268923b50f69f5925809dfd8f65d823182483d20878cd7dbe10c748d",
+      "format": "JPEG",
+      "width": 1686,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/22-combat-merged-16x10.jpg",
+      "bytes": 177288,
+      "sha256": "d5c81a2141ebe80f8047cc541727261ecc9e1827d8fa4e09c1c04a54984d0de9",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/23-combat-merged-21x9.jpg",
+      "bytes": 192492,
+      "sha256": "22e5a169f3583f4570bdb9b429c39e994a38cd447189db2b1c2159a989c6299f",
+      "format": "JPEG",
+      "width": 1686,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/24-combat-merged-handoff.jpg",
+      "bytes": 164923,
+      "sha256": "7c9b3476f2b3e446be80e7ab9af1694bb915cf38250f155c8cbd66ea9871c155",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    },
+    {
+      "path": "data/GroundHUDValidation/Detail20261102/25-details-entry-check.jpg",
+      "bytes": 164470,
+      "sha256": "e930cab7e3ee0a9899bf0ae7331af8ec0956b561002afbfe922981a5be02412f",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760,
+      "valid_hud_evidence": true
+    }
+  ],
+  "actual_ricochet_click": "owned-ricochet-final.json; before final housing/unit-label build",
+  "stats_import": "import-text-final.json; all 315 text rows compared by row key and saved",
+  "final_state": {
+    "path": "data/GroundHUDValidation/Detail20261102/handoff-state.json",
+    "bytes": 6903,
+    "sha256": "dcecbf26aa94d82a70d7d650ae22ad04d1f9d3162ee0dcc9d642f415a3fe6e4e"
+  },
+  "ordinary_refresh": "0.2-second timer and event coalescing retained; timing not measured",
+  "remaining": [
+    "one-to-one material/terrain fidelity",
+    "battle shortcut behavior",
+    "first editor card shader warmup",
+    "real hit/kill screenshot and full combat/performance acceptance"
+  ],
+  "reference_acceptance": "not_passed",
+  "report": "ArtSource/UI/GroundMech/HUD_Reference_20261102/VisualDetails_20261102.md"
+}

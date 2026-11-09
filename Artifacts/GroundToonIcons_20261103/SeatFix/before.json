@@ -1,0 +1,37 @@
+{
+  "pie": false,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "status": {
+    "active": false,
+    "error": "Local PIE startup did not settle within 120 seconds.",
+    "room": "5B56CA8A4DBE8FB66158FBA09039371B",
+    "role": "Ground",
+    "editor_pid": 35360,
+    "logic_pid": 37852,
+    "coordinator_pid": 45844,
+    "logic_running": false,
+    "coordinator_running": false,
+    "session_directory": "",
+    "shutdown": [
+      {
+        "role": "logic",
+        "pid": 37852,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      },
+      {
+        "role": "coordinator",
+        "pid": 45844,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      }
+    ],
+    "cleanup_complete": true
+  },
+  "prompt": true,
+  "role": "<GuLiCommanderRole.GROUND: 2>",
+  "dirty_maps": [],
+  "dirty_content": []
+}

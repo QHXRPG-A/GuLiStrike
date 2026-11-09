@@ -1,0 +1,331 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "label": "GroundRogue_Floor",
+      "class": "StaticMeshActor",
+      "location": [
+        -8500.0,
+        54000.0,
+        880.0
+      ],
+      "scale": [
+        150.0,
+        40.0,
+        0.5
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundRogue_Wall",
+      "class": "StaticMeshActor",
+      "location": [
+        -4300.0,
+        55100.0,
+        1505.0
+      ],
+      "scale": [
+        30.0,
+        0.8,
+        12.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundRogue_Entry",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        54000.0,
+        1149.04
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype"
+    },
+    {
+      "label": "GroundRogue_Enemy_01",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -4300.0,
+        54000.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Enemy_02",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -5200.0,
+        54000.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Enemy_03",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -6100.0,
+        53400.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Enemy_04",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -7000.0,
+        54000.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Enemy_05",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -7900.0,
+        53400.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Enemy_06",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -8800.0,
+        54000.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Enemy_07",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -9700.0,
+        53400.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Enemy_08",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -10600.0,
+        54000.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Enemy_09",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -11100.0,
+        54800.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_BehindWall",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -4300.0,
+        56200.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_OutOfRange",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -15500.0,
+        54000.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    },
+    {
+      "label": "GroundRogue_Friendly",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -3700.0,
+        53500.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit": 1,
+      "rows": 1,
+      "columns": 1,
+      "automatic_fire": false,
+      "idle": true
+    }
+  ],
+  "preserved_deployments": [
+    "PioneerQA_Single",
+    "PioneerQA_Multi_A",
+    "PioneerQA_Multi_B",
+    "PioneerQA_SizeReference_WM01",
+    "PioneerQA_Blocked",
+    "PioneerQA_Target_InRange",
+    "PioneerQA_Target_OutOfRange",
+    "SceneUI_Blue_Pioneer",
+    "SceneUI_Blue_WM01",
+    "SceneUI_Red_Pioneer",
+    "SceneUI_Red_WM01"
+  ],
+  "runtime_ready": true,
+  "ready_for_player": true,
+  "runtime_verified": false,
+  "reason": "ready_for_player_verification",
+  "play_started": false,
+  "assistant_visual_test": false,
+  "visual_acceptance": "pending_user",
+  "entry": "Select Red Ground; move to GroundRogue_Entry (-2800,54000,1149.04). F4 selects the sole eligible card; aim at Enemy_01 west of the entry. Reopen F4 for the next 6–9 segment upgrade."
+}

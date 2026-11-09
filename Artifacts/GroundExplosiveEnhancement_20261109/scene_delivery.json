@@ -1,0 +1,207 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "radii_cm": [
+    266,
+    271.32,
+    276.7464,
+    287.816256
+  ],
+  "entities": [
+    {
+      "label": "GroundAmmo_EnhancementInside",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        150.0,
+        52650.0,
+        905.0
+      ],
+      "shield": 0.0
+    },
+    {
+      "label": "GroundAmmo_EnhancementEdge",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        150.0,
+        51450.0,
+        905.0
+      ],
+      "shield": 0.0
+    },
+    {
+      "label": "GroundAmmo_EnhancementOutside",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -1350.0,
+        52950.0,
+        905.0
+      ],
+      "shield": 0.0
+    },
+    {
+      "label": "GroundAmmo_EnhancementShield",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        750.0,
+        52050.0,
+        905.0
+      ],
+      "shield": 10000.0
+    },
+    {
+      "label": "GroundAmmo_EnhancementFriendly",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -450.0,
+        52050.0,
+        905.0
+      ],
+      "shield": 0.0
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadiusOrigin",
+      "class": "/Script/Engine.TargetPoint",
+      "position": [
+        -127.0,
+        52060.0,
+        1117.677
+      ]
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadius0",
+      "class": "/Script/Engine.TargetPoint",
+      "position": [
+        -127.0,
+        52326.0,
+        1117.677
+      ]
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadiusNote0",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2600.0,
+        52400.0,
+        1200.0
+      ],
+      "text": "强化爆炸弹0级：半径266.000000cm；倍率1。Radius0相对RadiusOrigin标定；实际命中中心按每发爆炸记录，边界为与目标受击球相交。"
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadius1",
+      "class": "/Script/Engine.TargetPoint",
+      "position": [
+        -127.0,
+        52331.32,
+        1117.677
+      ]
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadiusNote1",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2400.0,
+        52400.0,
+        1200.0
+      ],
+      "text": "强化爆炸弹1级：半径271.320000cm；倍率1.02。Radius1相对RadiusOrigin标定；实际命中中心按每发爆炸记录，边界为与目标受击球相交。"
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadius2",
+      "class": "/Script/Engine.TargetPoint",
+      "position": [
+        -127.0,
+        52336.7464,
+        1117.677
+      ]
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadiusNote2",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2200.0,
+        52400.0,
+        1200.0
+      ],
+      "text": "强化爆炸弹2级：半径276.746400cm；倍率1.0404。Radius2相对RadiusOrigin标定；实际命中中心按每发爆炸记录，边界为与目标受击球相交。"
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadius3",
+      "class": "/Script/Engine.TargetPoint",
+      "position": [
+        -127.0,
+        52347.816256,
+        1117.677
+      ]
+    },
+    {
+      "label": "GroundAmmo_EnhancementRadiusNote3",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2000.0,
+        52400.0,
+        1200.0
+      ],
+      "text": "强化爆炸弹3级：半径287.816256cm；倍率1.082016。Radius3相对RadiusOrigin标定；实际命中中心按每发爆炸记录，边界为与目标受击球相交。"
+    },
+    {
+      "label": "GroundAmmo_EnhancementInstructions",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2800.0,
+        52300.0,
+        1200.0
+      ],
+      "text": "新局进入Ground，南侧PrimaryDamage靶开火。基础爆炸半径266cm，保留原爆炸大小；11.01只决定5/4/2发阈值。无11.01不提供12.01；任意爆破后解锁，三级依次半径/伤害乘1.02、1.02、1.04，满级退出候选。未取10.01也可取得。升级12.01保留计数，旧弹保留旧伤害/半径/构筑版本。F4显示取得后等级及本次2/2/4%；HUD空图标槽保留等级。Inside/Edge/Outside/Shield/Friendly为真实Mass靶；沿用公共范围规则：爆炸点到逻辑Target.Location的距离不大于爆炸半径+CollisionRadius，勿用直接碰撞的GetHitCenter代替。原12m/15m/24m靶现在全部为远距离负对照。视觉贴合由玩家验收。"
+    }
+  ],
+  "manifests": [
+    {
+      "population": 200,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 172,
+        "tables": 5
+      },
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 172,
+        "tables": 0
+      }
+    },
+    {
+      "population": 600,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 172,
+        "tables": 5
+      },
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 172,
+        "tables": 0
+      }
+    }
+  ],
+  "dependencies": {
+    "resource": "Resource authoring source and baked runtime definition are current.",
+    "ground_rebuilds": 0,
+    "flight_rebuilds": 0,
+    "saved_assets_reloaded": true
+  },
+  "resource": "Resource authoring source and baked runtime definition are current.",
+  "navigation": "",
+  "preserved_existing_transforms": 729,
+  "visual_acceptance": "pending_user"
+}

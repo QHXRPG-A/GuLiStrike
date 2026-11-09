@@ -1,0 +1,59 @@
+{
+  "PIE_started": false,
+  "automated_tests": false,
+  "prepare": {
+    "success": true,
+    "message": "All source navigation is ready.",
+    "ground_rebuilds": 2,
+    "flight_rebuilds": 1,
+    "total_seconds": 13.121290098875761,
+    "entries": [
+      {
+        "kind": "Ground",
+        "status": "Rebuilt",
+        "source_hash": "f71f5a6c0ae58f66",
+        "message": "Source geometry/settings changed, or no versioned bake record exists."
+      },
+      {
+        "kind": "Ground",
+        "status": "Rebuilt",
+        "source_hash": "6e07478dbf7fdb5f",
+        "message": "Source geometry/settings changed, or no versioned bake record exists."
+      },
+      {
+        "kind": "Flight",
+        "status": "Rebuilt",
+        "source_hash": "1ba2ce50386d360a",
+        "message": "Stale flight-navigation bake: static blocking geometry changed."
+      }
+    ]
+  },
+  "readback": {
+    "success": true,
+    "message": "",
+    "ground_rebuilds": 0,
+    "flight_rebuilds": 0,
+    "total_seconds": 0.02602130000013858,
+    "entries": [
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "source_hash": "f71f5a6c0ae58f66",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "source_hash": "6e07478dbf7fdb5f",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "kind": "Flight",
+        "status": "Hit",
+        "source_hash": "1ba2ce50386d360a",
+        "message": "Validated saved flight graph."
+      }
+    ]
+  },
+  "success": true
+}

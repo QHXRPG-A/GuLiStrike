@@ -15,6 +15,11 @@ void UGuLiVfxBindingComponent::BeginPlay()
 		if (!Found) { UE_LOG(LogTemp, Error, TEXT("VFX binding component %s not found on %s"), *Binding.ComponentName.ToString(), *GetOwner()->GetName()); continue; }
 		auto* Component = *Found;
 		Component->SetAsset(GuLiVfx::Load<UNiagaraSystem>(this, Binding.VfxId));
+#if WITH_EDITORONLY_DATA
+		// Deferred editor compilation belongs to resource preparation, before the
+		// preserved Blueprint first activates a mining/construction beam in combat.
+		if (auto* System=Component->GetAsset()) System->PollForCompilationComplete();
+#endif
 		Component->SetRelativeScale3D(GuLiVfx::Scale(this, Binding.VfxId, Component->GetRelativeScale3D()));
 	}
 }

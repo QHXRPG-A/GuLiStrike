@@ -72,6 +72,13 @@ public:
 	static FGuLiResourceBakeResult RevalidateAddedDeployments(
 		const TArray<AGuLiCommanderDeploymentPoint*>& AddedDeployments, bool bApplyAndSave = false);
 
+    /** Proves the certified source using the supplied previous positions, then validates
+     * the moved deployments against the unchanged ore layout. Never rebuilds ore. */
+    UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")
+    static FGuLiResourceBakeResult RevalidateMovedDeployments(
+        const TArray<AGuLiCommanderDeploymentPoint*>& Deployments,
+        const TArray<FVector>& PreviousLocations, bool bApplyAndSave = false);
+
 	/** Compares current authoring source, baked source hash and baked layout validation. */
 	UFUNCTION(BlueprintCallable, Category = "GuLiStrike|Editor|Resources")
 	static FGuLiResourceBakeResult ValidateCurrentBake();

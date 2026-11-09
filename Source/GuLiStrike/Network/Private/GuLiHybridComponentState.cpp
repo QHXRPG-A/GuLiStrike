@@ -92,10 +92,16 @@ struct FBindings
 }
 struct FGuLiHybridComponentBindingContext::FData
 {
-    struct FIdentity {TWeakObjectPtr<UActorComponent> Component;TWeakObjectPtr<UClass> Class;FName Name;};
+    // Raw identities are compared, never dereferenced. The current owned set
+    // supplies live objects. Bound entries additionally retain weak serials and
+    // names; an unrelated component's name cannot affect the binding layout.
+    struct FIdentity {const UActorComponent* Component=nullptr;const UClass* Class=nullptr;};
     TWeakObjectPtr<const AActor> Actor;
+    TWeakObjectPtr<UWorld> World;
+    TWeakObjectPtr<UGuLiHotspotOptions> Options;
     uint64 Registration=0;
     TArray<FIdentity> Identities;
+    TArray<FName> BoundNames;
     TSharedPtr<const TArray<FBinding>> Bound, Public, Logical;
 };
 FGuLiHybridComponentBindingContext::FGuLiHybridComponentBindingContext()=default;
@@ -128,17 +134,34 @@ FString LayoutEntry(const FGuLiHybridComponentCapability& C,FName Instance,const
 bool Bindings(const AActor& Actor,FBindings& Out,FGuLiHybridComponentBindingContext* Context=nullptr,bool Public=false,bool Logical=false)
 {
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSim_ComponentBindings);
-    auto* Metrics=Actor.GetWorld()?Actor.GetWorld()->GetSubsystem<UGuLiHotspotOptions>():nullptr;
+    auto* World=Actor.GetWorld();
+    auto* Existing=Context?Context->Data.Get():nullptr;
+    // Options are latched per World. Reuse only the live subsystem belonging to
+    // this same actor/world and registration generation; reinstance or teardown
+    // falls back to the ordinary subsystem lookup.
+    auto* Metrics=Existing && Existing->Actor==&Actor && Existing->World==World
+        && Existing->Registration==RegistrationRevision()?Existing->Options.Get():nullptr;
+    if (!Metrics && World) Metrics=World->GetSubsystem<UGuLiHotspotOptions>();
     const bool Cached=Context && Metrics && Metrics->Has(EGuLiHotspot::ComponentCache);
     auto* Data=Cached?Context->Data.Get():nullptr;
     const auto& Components=Actor.GetComponents();
     bool Current=Data && Data->Actor==&Actor && Data->Registration==RegistrationRevision() && Data->Identities.Num()==Components.Num();
-    if (Current) for (const auto& Identity:Data->Identities)
+    int32 IdentityIndex=0;
+    if (Current) for (const auto* C:Components)
     {
-        const auto* C=Identity.Component.Get();
-        // Count alone misses replacement with a new component in the same slot.
-        if (!C || !Components.Contains(C) || C->GetClass()!=Identity.Class.Get() || C->GetFName()!=Identity.Name)
+        const auto& Identity=Data->Identities[IdentityIndex++];
+        // Preserve the complete membership/type comparison. Address reuse with
+        // a different type must rebuild even if the old component was unbound.
+        if (!C || C!=Identity.Component || C->GetClass()!=Identity.Class)
         {Current=false;break;}
+    }
+    if (Current) for (int32 I=0;I<Data->Bound->Num();++I)
+    {
+        const auto* C=(*Data->Bound)[I].Component.Get();
+        // All matching capabilities, including non-public/non-logical ones,
+        // participate. Removal, weak-serial replacement, pending kill and
+        // renaming of any bound component still invalidate the whole lease.
+        if (!C || C->GetFName()!=Data->BoundNames[I]) {Current=false;break;}
     }
     if (Current)
     {
@@ -174,22 +197,27 @@ bool Bindings(const AActor& Actor,FBindings& Out,FGuLiHybridComponentBindingCont
     if (Cached)
     {
         auto Next=MakeUnique<FGuLiHybridComponentBindingContext::FData>();
-        Next->Actor=&Actor;Next->Registration=RegistrationRevision();Next->Bound=Shared;Next->Public=PublicBindings;Next->Logical=LogicalBindings;
-        for (auto* C:Components) if (C) Next->Identities.Add({C,C->GetClass(),C->GetFName()});
+        Next->Actor=&Actor;Next->World=World;Next->Options=Metrics;
+        Next->Registration=RegistrationRevision();Next->Bound=Shared;Next->Public=PublicBindings;Next->Logical=LogicalBindings;
+        // Do not cache a set containing invalid components: an invalid but
+        // compatible unbound component may later be replaced at the same address.
+        for (auto* C:Components) if (IsValid(C)) Next->Identities.Add({C,C->GetClass()});
+        for (const auto& B:*Shared) Next->BoundNames.Add(B.Component->GetFName());
         Context->Data=MoveTemp(Next);
     }
     // Each operation holds its own immutable lease; callbacks may rebuild the context.
     return true;
 }
 struct FFragment {FName Capability,Component;uint32 Version=0;TArray<uint8> State;};
+void SerializeFragment(FGuLiHybridStateArchive& A,FFragment& F)
+{
+    A.Value(F.Capability);A.Value(F.Component);A.Value(F.Version);A.Bytes(F.State,MaximumBytes);
+    if (F.Capability.IsNone() || F.Component.IsNone() || !F.Version || F.State.IsEmpty()) A.Reject();
+}
 void Serialize(FGuLiHybridStateArchive& A,TArray<FFragment>& Fragments)
 {
     uint32 Version=Schema;A.Value(Version);if (Version!=Schema) A.Reject();
-    A.Array(Fragments,MaximumFragments,[](auto& Ar,auto& F)
-    {
-        Ar.Value(F.Capability);Ar.Value(F.Component);Ar.Value(F.Version);Ar.Bytes(F.State,MaximumBytes);
-        if (F.Capability.IsNone() || F.Component.IsNone() || !F.Version || F.State.IsEmpty()) Ar.Reject();
-    });
+    A.Array(Fragments,MaximumFragments,SerializeFragment);
 }
 bool Decode(const AActor& Actor,TConstArrayView<uint8> Bytes,FBindings& Bound,TArray<FFragment>& Fragments,bool Public=false,FGuLiHybridComponentBindingContext* Context=nullptr)
 {
@@ -316,15 +344,17 @@ EGuLiHybridPublicCapture FGuLiHybridComponentState::TryCapturePublic(const AActo
     auto* Metrics=Actor.GetWorld()?Actor.GetWorld()->GetSubsystem<UGuLiHotspotOptions>():nullptr;
     if (!Bound.Num()) {if (Metrics) ++Metrics->PublicAbsent;return EGuLiHybridPublicCapture::Absent;}
     if (Metrics) ++Metrics->PublicCaptures;
-    TArray<FFragment> Fragments;
+    FGuLiHybridStateArchive A(MaximumBytes);uint32 Version=Schema,Count=Bound.Num();
+    A.Value(Version);A.Value(Count);if (Count>MaximumFragments) A.Reject();
     for (const auto& B:Bound)
     {
         if (!B.Component.IsValid()) return EGuLiHybridPublicCapture::Invalid;
         FFragment F;F.Capability=B.Capability.Name;F.Component=B.Component->GetFName();F.Version=B.Capability.Version;
         if (!B.Capability.CapturePublic(*B.Component,F.State) || !B.Capability.ValidatePublic(*B.Component,F.State)) return EGuLiHybridPublicCapture::Invalid;
-        Fragments.Add(MoveTemp(F));
+        // Keep every capture/validation callback in its original order, even if
+        // an earlier fragment could not be encoded. Only the temporary list goes away.
+        if (A.Good()) SerializeFragment(A,F);
     }
-    FGuLiHybridStateArchive A(MaximumBytes);Serialize(A,Fragments);
     return A.Finish(Out)?EGuLiHybridPublicCapture::Captured:EGuLiHybridPublicCapture::Invalid;
 }
 bool FGuLiHybridComponentState::CapturePublic(const AActor& Actor,TArray<uint8>& Out,FGuLiHybridComponentBindingContext* Context)

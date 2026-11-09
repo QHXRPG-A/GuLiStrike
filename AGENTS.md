@@ -29,8 +29,12 @@
 
 - **重防号**是指挥官兵种 `WM01`，`UnitTypeId=2`。肉鸽卡、导弹仓、Q 导弹、悬浮盘与该兵种模型任务沿此标识定位。
 - 现有 `WarMachine` 类名、资源路径和历史源目录是稳定实现标识，保留引用；人类可读描述统一使用“重防号”。
-- **地面机甲**是玩家 `Ground` 席位，使用独立的玩家角色与网络路径。`GuLiWarMachinePlaceholderPawn` 是该席位的早期占位类，不代表 WM01 兵种；不可将两个系统混路由。
+- **游骑兵**是玩家亲自操控的第一代机甲，当前 `ModelId=4001`，通过玩家 `Ground` 席位进入，使用独立的玩家角色与网络路径。`Ground` 是共用席位标识，后续机甲使用各自名称，不统称游骑兵。`GuLiWarMachinePlaceholderPawn` 是该席位的早期占位类，不代表 WM01 兵种；不可将两个系统混路由。
+- 游骑兵名称在游戏文案、源表、脚本、文档及技能中保持一致；退役名称仅在[游骑兵命名统一归档](Progress/Archive/20261103-游骑兵命名统一.md)正文保留，禁止由历史模板重新写回。
 - Ground 当前唯一模型入口是 `ModelId=4001`，正式资源为 `/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2`，角色入口为 `/Game/GuLiStrike/GroundMech/BP_GroundMech_Light`。`Style_v9`、旧 `GroundMech/Meshes` 和 `MechaDestroyer_v1` 已退役，4002–4004不再作为可用模型ID。制作或取参考前先读当前模型表并回读正式角色引用；旧卡图、历史截图及冻结参考不能作为当前运行模型的依据。
+
+- **巡天**是玩家亲自操控的第一代飞船，对应 `BP_CombatAvatarFly01`、`Dreadnought` 预设与 `HullModelId=5002`。`Air` 是共用玩家席位，“飞船”保留为通用类别，后续机型使用各自名称；5001早期原型不称巡天。
+- 巡天名称在游戏文案、源表、脚本、文档及技能中保持一致；退役专名仅在[巡天命名统一归档](Progress/Archive/20261103-巡天命名统一.md)正文保留。`Air`、`Ship`、`Dreadnought`、模型ID和资源路径为稳定技术标识。
 
 ## 全项目美术配色
 

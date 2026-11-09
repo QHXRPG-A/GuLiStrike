@@ -59,7 +59,7 @@ bool UGuLiResourceInventoryComponent::ConfigureFromManifest()
 FGuid UGuLiResourceInventoryComponent::RequestExtraction(int32 Node,FGuid Token)
 {
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();const auto Key=GetInventoryKey();FGuLiHybridObjectState Object;
-    if (!bCargo || !H || !H->HasSimulation(Key) || !H->GetObject(Key,Object) || !H->CanPublishFacts() || PendingCargo.IsValid() || PendingEvent.IsValid()
+    if (!bCargo || !H || !H->HasSimulation(Key) || !H->GetObjectView(Key,Object) || !H->CanPublishFacts() || PendingCargo.IsValid() || PendingEvent.IsValid()
         || Node<=0 || !Token.IsValid() || int64(Cargo.Blue)+Cargo.Red>=CargoCapacity) return {};
     FGuLiHybridResourceRequest R;R.Source=Key;R.Event=FGuid::NewGuid();R.NodeId=Node;R.MiningToken=Token;
     R.Rule=FName(*(TEXT("resource/extract/")+Object.Definition.ToString()));R.Operation=EGuLiHybridResourceOperation::Extract;
@@ -73,7 +73,7 @@ FGuid UGuLiResourceInventoryComponent::RequestDeliveryKey(const FGuLiHybridObjec
 {
     auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();const auto Key=GetInventoryKey();FGuLiHybridObjectState Source,Target;
     const auto* A=GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>();
-    if (!bCargo || !H || !A || !H->HasSimulation(Key) || !H->CanPublishFacts() || !H->GetObject(Key,Source) || !H->GetObject(Destination,Target)
+    if (!bCargo || !H || !A || !H->HasSimulation(Key) || !H->CanPublishFacts() || !H->GetObjectView(Key,Source) || !H->GetObjectView(Destination,Target)
         || PendingCargo.IsValid() || PendingEvent.IsValid() || int64(Cargo.Blue)+Cargo.Red<=0
         || !A->GetManifest().Numbers.Contains(TEXT("resource/profile/")+Target.Definition.ToString()+TEXT("/processor/capacity"))) return {};
     // Geometry/docking belongs to the caller's gameplay ability. Admission and

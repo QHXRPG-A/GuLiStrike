@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-29",
+  "native_compile": "pending_user_approval",
+  "new_api_loaded": false,
+  "PIE_started": false,
+  "automated_tests": false,
+  "review": [
+    "Default Build/HashAuthoringFiles callers retain existing behavior.",
+    "Explicit added actor set must be unique and belong to current persistent level.",
+    "Baseline rehash excludes only those actors and must equal the existing certified SourceHash.",
+    "All current slots pass original ground/navigation, ore/scene collision and separation validation before save.",
+    "Only SourceHash and derived LayoutHash change; arrays and anchors are untouched.",
+    "API defaults to read-only, save rejects dirty map, and failed save restores both hashes in memory."
+  ],
+  "syntax": "PASS",
+  "git_diff_check": "PASS",
+  "files_sha256": {
+    "Source/GuLiStrikeEditor/Private/GuLiInitialArmyAuthoring.h": "1758f69dbe918b0a136c9116c843a42897b1d832c04efc847fa6ffe2f895093e",
+    "Source/GuLiStrikeEditor/Private/GuLiInitialArmyAuthoring.cpp": "bc5869026e06cf515adc78e7856bd0ff0d3137415c475c4919669ef76ad3424d",
+    "Source/GuLiStrikeEditor/Public/GuLiResourceAuthoringLibrary.h": "92f6344074275225526a60f2c55a563c4768179a686aa58084b485c1447d24db",
+    "Source/GuLiStrikeEditor/Private/GuLiResourceAuthoringLibrary.cpp": "f73d74e3915d89ba717d0432f715a9dddf635d0412e0adeceb5e11116777ec32",
+    "Scripts/Network/repair_local_pie_resource_bake.py": "39ef7773fa0a25792844b054a3aaccc30d489e8b42ba162c7814faa9e271531c"
+  }
+}

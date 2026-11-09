@@ -1,0 +1,230 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "scope": "Canonical editor export and structured readback only; no gameplay",
+    "before": {
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "pie": false,
+      "dirty_maps": [],
+      "dirty_assets": []
+    },
+    "defaults_before": {
+      "/Script/GuLiStrike.GuLiUnitDataSettings:SoldierDataTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers.DT_GuLiStrikeCommander_Soldiers' (0x0000017818FE7E00) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiCommanderDataSettings:SkillDataTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Skills.DT_GuLiStrikeCommander_Skills' (0x0000017818FE7500) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiCommanderDataSettings:UnitSkillDataTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_UnitSkills.DT_GuLiStrikeCommander_UnitSkills' (0x00000178F3785D00) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiCommanderDataSettings:WeaponMountDataTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_WeaponMounts.DT_GuLiStrikeCommander_WeaponMounts' (0x00000178F3783D80) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiModelRegistrySettings:ModelsTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models' (0x000001777A32C600) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiRogueCardSettings:Cards": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards' (0x000001781C447980) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiBuildingDataSettings:BuildingsTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings' (0x000001777A32CA80) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiBuildingDataSettings:Catalog": "<Object '/Game/GuLiStrike/Buildings/DA_GuLiBuildingCatalog.DA_GuLiBuildingCatalog' (0x00000178F30ED2A0) Class 'GuLiBuildingCatalog'>",
+      "/Script/GuLiStrike.GuLiResourceInventorySettings:Entities": "[]"
+    },
+    "review_before": {
+      "schema": "guli-hybrid-review-entity/v2",
+      "success": true,
+      "gameplay_executed": false,
+      "readback_source": "loaded_editor_entity",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "identity_count": 1,
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiHybridNetworkReviewActor_0",
+      "class": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor",
+      "label": "HybridNetworkReview",
+      "folder": "Review/HybridNetwork",
+      "tag_present": true,
+      "mode": "Hybrid",
+      "transport": "LocalUdp",
+      "team": "Red",
+      "seat": "Commander",
+      "run_mode": "Rendered",
+      "room": "A854BC49E1FC4F5D8C81052D7A00C326",
+      "identity": "864CF3CD75894597BD5E957E17CB748A",
+      "manifest": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+      "coordinator": "ws://127.0.0.1:8787/v1/match",
+      "udp_port": 0,
+      "units": 600,
+      "additional_flights": 500,
+      "transform": "0.000000,0.000000,200.000000|0.000000,0.000000,-0.000000|1.000000,1.000000,1.000000",
+      "launch_arguments": "/Game/Maps/LVL_CommanderMassPrototype -game -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=A854BC49E1FC4F5D8C81052D7A00C326 -GuLiDevPlayerId=864CF3CD75894597BD5E957E17CB748A -GuLiTeam=Red -GuLiRole=Commander -GuLiClientRunMode=Rendered -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"ws://127.0.0.1:8787/v1/match\" -GuLiManifest=\"D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json\" -GuLiAcceptanceRun=review-A854BC49E1FC4F5D8C81052D7A00C326 -GuLiAcceptancePopulation=600 -GuLiAcceptanceExtraFlights=500 -GuLiAcceptanceSeed=20261011",
+      "preparation_error": "",
+      "arguments_match_current_configuration": true,
+      "configuration_error": "",
+      "bindings": [
+        {
+          "name": "PrepareLaunchArguments",
+          "target": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor:PrepareLaunchArguments",
+          "native_callable": true
+        },
+        {
+          "name": "SelectObjects",
+          "target": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor:SelectObjects",
+          "native_callable": true
+        },
+        {
+          "name": "GetOwnershipStatus",
+          "target": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor:GetOwnershipStatus",
+          "native_callable": true
+        },
+        {
+          "name": "LeaveRoom",
+          "target": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor:LeaveRoom",
+          "native_callable": true
+        }
+      ],
+      "bindings_present": true,
+      "package_dirty": false,
+      "map_file": "../../../../UE5.7/test1/Content/Maps/LVL_CommanderMassPrototype.umap",
+      "map_file_exists": true,
+      "map_timestamp_utc": "2026-11-03T09:38:23.000Z",
+      "error": ""
+    },
+    "exports": [
+      {
+        "population": 200,
+        "candidate": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\AcceptanceManifest-200-candidate.json",
+        "export": {
+          "success": true,
+          "error": "",
+          "file": "C:/Users/a/AppData/Local/Temp/guli-xuntian-name-20261103/manifest-repair/AcceptanceManifest-200-candidate.json",
+          "objects": 292,
+          "rules": 253,
+          "tables": 5
+        },
+        "validation": {
+          "success": true,
+          "error": "",
+          "file": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\AcceptanceManifest-200-candidate.json",
+          "objects": 292,
+          "rules": 253,
+          "tables": 0
+        }
+      },
+      {
+        "population": 600,
+        "candidate": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\AcceptanceManifest-600-candidate.json",
+        "export": {
+          "success": true,
+          "error": "",
+          "file": "C:/Users/a/AppData/Local/Temp/guli-xuntian-name-20261103/manifest-repair/AcceptanceManifest-600-candidate.json",
+          "objects": 692,
+          "rules": 253,
+          "tables": 5
+        },
+        "validation": {
+          "success": true,
+          "error": "",
+          "file": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\AcceptanceManifest-600-candidate.json",
+          "objects": 692,
+          "rules": 253,
+          "tables": 0
+        }
+      }
+    ],
+    "production_before": {
+      "path": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\RuntimeManifest-200-before.json",
+      "sha256": "31f341e8ded8e21fe9051fe57cc286b21e34a9cbcdf0058ae39268b6381df048",
+      "config_hash": "f2506aabc0bd1b22b2a60534743aee830a70cd2077c16dc254e07b833afe0c9e",
+      "map_hash": "b08dd9cfda39a90cf36701eaea5ae4325caec6d5ecf55d037c1a3bf068272d87",
+      "supply_rules": 0,
+      "validation": {
+        "success": true,
+        "error": "",
+        "file": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\RuntimeManifest-200-before.json",
+        "objects": 292,
+        "rules": 169,
+        "tables": 0
+      }
+    },
+    "production_after": {
+      "path": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\RuntimeManifest-200-after.json",
+      "sha256": "31f341e8ded8e21fe9051fe57cc286b21e34a9cbcdf0058ae39268b6381df048",
+      "config_hash": "f2506aabc0bd1b22b2a60534743aee830a70cd2077c16dc254e07b833afe0c9e",
+      "map_hash": "b08dd9cfda39a90cf36701eaea5ae4325caec6d5ecf55d037c1a3bf068272d87",
+      "supply_rules": 0,
+      "validation": {
+        "success": true,
+        "error": "",
+        "file": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\RuntimeManifest-200-after.json",
+        "objects": 292,
+        "rules": 169,
+        "tables": 0
+      }
+    },
+    "after": {
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "pie": false,
+      "dirty_maps": [],
+      "dirty_assets": []
+    },
+    "defaults_after": {
+      "/Script/GuLiStrike.GuLiUnitDataSettings:SoldierDataTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers.DT_GuLiStrikeCommander_Soldiers' (0x0000017818FE7E00) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiCommanderDataSettings:SkillDataTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Skills.DT_GuLiStrikeCommander_Skills' (0x0000017818FE7500) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiCommanderDataSettings:UnitSkillDataTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_UnitSkills.DT_GuLiStrikeCommander_UnitSkills' (0x00000178F3785D00) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiCommanderDataSettings:WeaponMountDataTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_WeaponMounts.DT_GuLiStrikeCommander_WeaponMounts' (0x00000178F3783D80) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiModelRegistrySettings:ModelsTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models' (0x000001777A32C600) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiRogueCardSettings:Cards": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards' (0x000001781C447980) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiBuildingDataSettings:BuildingsTable": "<Object '/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings' (0x000001777A32CA80) Class 'DataTable'>",
+      "/Script/GuLiStrike.GuLiBuildingDataSettings:Catalog": "<Object '/Game/GuLiStrike/Buildings/DA_GuLiBuildingCatalog.DA_GuLiBuildingCatalog' (0x00000178F30ED2A0) Class 'GuLiBuildingCatalog'>",
+      "/Script/GuLiStrike.GuLiResourceInventorySettings:Entities": "[]"
+    },
+    "review_after": {
+      "schema": "guli-hybrid-review-entity/v2",
+      "success": true,
+      "gameplay_executed": false,
+      "readback_source": "loaded_editor_entity",
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "identity_count": 1,
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiHybridNetworkReviewActor_0",
+      "class": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor",
+      "label": "HybridNetworkReview",
+      "folder": "Review/HybridNetwork",
+      "tag_present": true,
+      "mode": "Hybrid",
+      "transport": "LocalUdp",
+      "team": "Red",
+      "seat": "Commander",
+      "run_mode": "Rendered",
+      "room": "A854BC49E1FC4F5D8C81052D7A00C326",
+      "identity": "864CF3CD75894597BD5E957E17CB748A",
+      "manifest": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+      "coordinator": "ws://127.0.0.1:8787/v1/match",
+      "udp_port": 0,
+      "units": 600,
+      "additional_flights": 500,
+      "transform": "0.000000,0.000000,200.000000|0.000000,0.000000,-0.000000|1.000000,1.000000,1.000000",
+      "launch_arguments": "/Game/Maps/LVL_CommanderMassPrototype -game -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=A854BC49E1FC4F5D8C81052D7A00C326 -GuLiDevPlayerId=864CF3CD75894597BD5E957E17CB748A -GuLiTeam=Red -GuLiRole=Commander -GuLiClientRunMode=Rendered -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"ws://127.0.0.1:8787/v1/match\" -GuLiManifest=\"D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json\" -GuLiAcceptanceRun=review-A854BC49E1FC4F5D8C81052D7A00C326 -GuLiAcceptancePopulation=600 -GuLiAcceptanceExtraFlights=500 -GuLiAcceptanceSeed=20261011",
+      "preparation_error": "",
+      "arguments_match_current_configuration": true,
+      "configuration_error": "",
+      "bindings": [
+        {
+          "name": "PrepareLaunchArguments",
+          "target": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor:PrepareLaunchArguments",
+          "native_callable": true
+        },
+        {
+          "name": "SelectObjects",
+          "target": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor:SelectObjects",
+          "native_callable": true
+        },
+        {
+          "name": "GetOwnershipStatus",
+          "target": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor:GetOwnershipStatus",
+          "native_callable": true
+        },
+        {
+          "name": "LeaveRoom",
+          "target": "/Script/GuLiStrike.GuLiHybridNetworkReviewActor:LeaveRoom",
+          "native_callable": true
+        }
+      ],
+      "bindings_present": true,
+      "package_dirty": false,
+      "map_file": "../../../../UE5.7/test1/Content/Maps/LVL_CommanderMassPrototype.umap",
+      "map_file_exists": true,
+      "map_timestamp_utc": "2026-11-03T09:38:23.000Z",
+      "error": ""
+    }
+  }
+}

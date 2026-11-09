@@ -1,0 +1,119 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entry": [
+    -2800.0,
+    54000.0,
+    1149.04
+  ],
+  "scene_saved": true,
+  "entities": [
+    {
+      "label": "GroundAmmo_Instructions_Entry",
+      "text": "新局进入红队Ground游骑兵。初始普攻6/9/12，强化10/15/20；初始弹长度3000cm、宽度不变、直线；先驱者/扫荡者当前长度再减半，重防号与强化弹不变。对准PrimaryDamage靶受击中心，使用ReadState读取flight_settlement.shots的ShotId、collision_hit、frozen_damage、damage_submitted、receipt_found、applied/absorbed/remaining_health，不能只看血条。",
+      "position": [
+        -2800.0,
+        54000.0,
+        1200.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Instructions_FireNotify",
+      "text": "Fire是开火动画第0帧的真实Anim Notify；接纳后启动对应枪动画，Notify触发子弹、火光和后坐。左右独立Montage槽，同侧周期2/R、总体1/R。4/8/12档及09.01一、二级持续射击，再换档/升攻速；动作、子弹、火光应一致。失败接纳无反馈，延迟接纳一起顺延；离屏、低帧率、重复回执不重复发射。无计时器补发。",
+      "position": [
+        -2650.0,
+        54200.0,
+        1200.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Instructions_AttackRate",
+      "text": "09.01一级、二级实际攻速R*1.08和R*1.08^2。R=4/8/12时最大等级26/17/11；下一等级不入候选且确认再次校验，超30组合换档拒绝。升级保留剩余冷却比例，动画与后坐恢复随实际攻速同步。",
+      "position": [
+        -2650.0,
+        54000.0,
+        1200.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Instructions_Explosion",
+      "text": "11.01等级1/2/3每5/4/2发附爆炸弹；打空计数。左右当前枪口分别向上身外侧偏移50cm，方向平行普攻，不能随枪管旋转。弹速16800cm/s（普攻70%），射程120000cm、寿命约7.14s、半径15cm。主弹先命中后，附弹继续独立飞行；近墙外移路径受阻时立即在首阻点爆炸，不穿墙出生。弹体和拖尾尺寸2倍，命中爆炸大小不变。",
+      "position": [
+        -2350.0,
+        54000.0,
+        1200.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Instructions_TrailAndDamage",
+      "text": "爆炸弹世界空间尾迹停留0.12s、淡出0.38s；停火后旧尾迹继续消散。未强化也造成20/30/40、半径1500cm、无衰减，仅一次范围伤害。分别观察Inside12m、Boundary15m、Outside24m、Friendly、Shield、BehindWall靶；沿用受击体/护盾/屏障规则，墙挡弹但现有范围规则不增加墙后射线过滤。超时/射程结束不爆炸，不触发折射、灼烧或递归。",
+      "position": [
+        -2200.0,
+        54200.0,
+        1200.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Instructions_Recovery",
+      "text": "飞行中取得强化或升级爆破，旧弹保留旧快照；同一原始ShotId派生独立附弹ID。主弹、附弹、所有回执完成后才退休。打空积累后停火、死亡复活、换席和同局恢复保留进度；首次/升级11.01归零，新局清空。重复接纳/命中回执不再出弹或扣血。ReadState的attacks.primary_receipt和flight_settlement提供独立数值证据。新版协议37/Ground5/Linear9须开始新局。",
+      "position": [
+        -2200.0,
+        54000.0,
+        1200.0
+      ]
+    }
+  ],
+  "existing_transforms_preserved": 729,
+  "manifests": [
+    {
+      "population": 200,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 172,
+        "tables": 5
+      },
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 172,
+        "tables": 0
+      }
+    },
+    {
+      "population": 600,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 172,
+        "tables": 5
+      },
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 172,
+        "tables": 0
+      }
+    }
+  ],
+  "dependencies": {
+    "resource": "Resource authoring source and baked runtime definition are current.",
+    "ground_rebuilds": 0,
+    "flight_rebuilds": 0,
+    "saved_assets_reloaded": true,
+    "resource_readback": "Resource authoring source and baked runtime definition are current.",
+    "navigation_readback": ""
+  },
+  "PIE": false,
+  "assistant_visual_test": false,
+  "player_acceptance": "pending",
+  "runtime_damage_verified": false
+}

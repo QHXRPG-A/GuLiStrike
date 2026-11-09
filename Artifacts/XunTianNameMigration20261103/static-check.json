@@ -1,0 +1,34 @@
+{
+  "python_syntax_checked": [
+    "Scripts/adjust_ship_player_start.py",
+    "Scripts/Blender/export_ship_style_source.py",
+    "Scripts/Models/migrate_model_workbooks.py",
+    "Scripts/prepare_local_pie_role_picker_scene.py",
+    "Scripts/Scale020/migrate_workbooks.py"
+  ],
+  "cpp_name_and_description_only": true,
+  "cpp_localization_keys_unchanged": true,
+  "native_build": "not_run",
+  "PIE": "not_run",
+  "visual": "not_run",
+  "generated_headers_unchanged": true,
+  "data_tables": [
+    {
+      "table": "DT_GuLiStrikeModels_Models",
+      "rows": 81,
+      "only_allowed_text_changed": true
+    },
+    {
+      "table": "DT_GuLiStrikeShip_Tuning",
+      "rows": 2,
+      "only_allowed_text_changed": true
+    },
+    {
+      "table": "DT_GuLiStrikeShip_Camera",
+      "rows": 2,
+      "only_allowed_text_changed": true
+    }
+  ],
+  "historical_ids_and_status_preserved": true,
+  "skill_mirror_exact_match": true
+}

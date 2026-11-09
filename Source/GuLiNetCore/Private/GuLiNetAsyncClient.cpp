@@ -127,10 +127,27 @@ struct AsyncClientWorld::State
         std::optional<std::map<EconomyKey,Reservation>> Reservations;
         Revision ResourceQuery=0,MiningQuery=0;
         std::map<std::pair<ObjectKind,Id>,std::uint32_t> Retired;
-        std::set<ObjectKey> Busy,Frozen;
+        struct KeyChanges {std::vector<ObjectKey> Added,Removed;};
+        KeyChanges Busy,Frozen;
         Tick Clock=0;bool Paused=true,Deferred=true,OwnershipApplying=false;std::size_t Preparing=0;
         std::string Failure;
     };
+    // Worker-owned metadata of the last enqueued replica. A wake/network poll
+    // often changes nothing; do not enqueue another allocation-heavy no-op.
+    // Payload changes below are checked independently and always stay ordered.
+    struct ReadStatus
+    {
+        GuLiNet::Resources Processed,Red,Blue;
+        Revision ResourcesVersion=0,ResourceQuery=0,MiningQuery=0;
+        std::shared_ptr<const MiningReservationDirectory> Mining;
+        std::set<ObjectKey> Busy,Frozen;
+        Tick Clock=0;
+        std::size_t Preparing=0;
+        bool Configured=false,Paused=true,Deferred=true,OwnershipApplying=false;
+        std::string Failure;
+        friend bool operator==(const ReadStatus&,const ReadStatus&)=default;
+    };
+    std::optional<ReadStatus> LastReadStatus;
 
     // Main-thread registry and published replica. No worker dereferences its adapters or callbacks.
     const std::thread::id MainThread=std::this_thread::get_id();
@@ -143,6 +160,8 @@ struct AsyncClientWorld::State
     // Non-owning, caller-thread index. The ordered registry remains authoritative;
     // a new adapter lifetime receives a new token and release removes the lease.
     std::unordered_map<std::uint64_t,MainObject*> MainObjectTokens;
+    struct MainObjectLease {std::uint64_t Token=0;MainObject* Object=nullptr;};
+    std::array<MainObjectLease,4096> MainObjectCache{};
     std::map<std::string,std::unique_ptr<ISharedStateAdapter>> MainSystems;
     std::map<std::uint64_t,TransactionCallback> Callbacks;
     struct GameplayApplication {std::string Group;std::function<void()> Apply;};
@@ -193,6 +212,22 @@ struct AsyncClientWorld::State
             &&(!G->second.Recovery||R.Status==CommitStatus::Interrupted);
     }
     std::map<ObjectKey,ObjectRecord> Directory;
+    // Directory assignments preserve addresses, and retirement retains a tombstone.
+    // This bounded, caller-thread cache never caches a miss or an authority decision.
+    mutable std::array<const ObjectRecord*,4096> ReadCache{};
+    const ObjectRecord* FindRecord(ObjectKey K) const
+    {
+        std::uint32_t CacheHash=K.Generation^std::uint32_t(K.Kind);
+        for (const auto Word:K.StableId.Words) CacheHash=(CacheHash^Word)*16777619u;
+        CacheHash^=CacheHash>>16;
+        auto& Cached=ReadCache[CacheHash&(ReadCache.size()-1)];
+        if (Cached && Cached->Grant.Object==K) return Cached;
+        const auto I=Directory.find(K);
+        if (I==Directory.end()) return nullptr;
+        return Cached=&I->second;
+    }
+    ObjectRecord* FindRecord(ObjectKey K)
+    {return const_cast<ObjectRecord*>(std::as_const(*this).FindRecord(K));}
     std::map<std::pair<Team,std::string>,std::set<ObjectKey>> CapabilityIndex;
     std::map<std::string,std::size_t> Definitions;
     ClientNumericView Numeric;
@@ -235,7 +270,9 @@ struct AsyncClientWorld::State
     std::mutex Mutex;
     std::condition_variable Wake;
     std::deque<Input> Inputs,Controls;
-    std::deque<Application> Applications;
+    // Two reusable contiguous batches. Pump owns its detached batch so a callback
+    // may stop the world without invalidating the jobs being dispatched.
+    std::vector<Application> Applications,SpareApplications;
     std::atomic<bool> Stopping=false;
     std::thread Worker;
     std::uint64_t OutputSequence=0,AppliedSequence=0;
@@ -298,8 +335,9 @@ struct AsyncClientWorld::State
         std::string Definition;
     };
     std::map<ObjectKey,IndexMetadata> PublishedIndexes;
-    struct SimulationEntry {ObjectKey Key;std::uint64_t Token=0;std::string System;Tick At=0;double Delta=0;};
+    struct SimulationEntry {ObjectKey Key;std::uint64_t Token=0;std::uint32_t System=0;Tick At=0;double Delta=0;};
     std::vector<SimulationEntry> SimulationBatch;
+    std::vector<std::string> SimulationSystemNames;
     using PackedKey=std::tuple<MessageKind,Id,Id,Id,ObjectKey,std::string>;
     struct PackedValue {Bytes Plain,Packed;bool Encoded=false;std::list<PackedKey>::iterator Position;std::size_t ReferenceBytes=0;};
     std::map<PackedKey,PackedValue> PackedCache;
@@ -393,13 +431,17 @@ struct AsyncClientWorld::State
         CheckMain();auto I=MainObjects.find(R.Grant.Object);
         if (I==MainObjects.end())
         {
+            TraceScope CreateScope("GuLiHybrid_MainCreateAdapter");
             auto A=Create(R);if (!A || !A->Version()) return {};
             ObjectInfo Info;Info.Token=Token?Token:++NextToken;Info.Version=A->Version();Info.Systems=A->RequiredSystems();
             I=MainObjects.emplace(R.Grant.Object,MainObject{std::move(Info),std::move(A),R.Grant.Object}).first;
             MainObjectTokens.emplace(I->second.Info.Token,&I->second);
         }
         auto Info=I->second.Info;
-        Info.Prepared=Private?I->second.Adapter->PrepareRestore(R,*Private):I->second.Adapter->Prepare(R);
+        {
+            TraceScope PrepareScope("GuLiHybrid_MainPrepareAdapter");
+            Info.Prepared=Private?I->second.Adapter->PrepareRestore(R,*Private):I->second.Adapter->Prepare(R);
+        }
         Info.Period=I->second.Adapter->AdvancePeriod();
         if (Options.GameplayWorker&&!Info.Codec) Info.Codec=I->second.Adapter->CreateMotionCodec();
         I->second.Info=Info;return Info;
@@ -407,8 +449,11 @@ struct AsyncClientWorld::State
     MainObject* MainObjectFor(ObjectKey K,std::uint64_t Token)
     {
         CheckMain();
+        auto& Cached=MainObjectCache[Token&(MainObjectCache.size()-1)];
+        if (Cached.Token==Token && Cached.Object && Cached.Object->Key==K) return Cached.Object;
         const auto I=MainObjectTokens.find(Token);
-        return I!=MainObjectTokens.end()&&I->second->Key==K?I->second:nullptr;
+        if (I==MainObjectTokens.end() || I->second->Key!=K) return nullptr;
+        Cached={Token,I->second};return Cached.Object;
     }
     IObjectAdapter* Object(ObjectKey K,std::uint64_t Token)
     {const auto* O=MainObjectFor(K,Token);return O?O->Adapter.get():nullptr;}
@@ -559,8 +604,8 @@ struct AsyncClientWorld::State::ObjectProxy final : IObjectAdapter
         LastLedger=std::pair{V,R};
         Record=R;Host.Publish();Host.Emit([H=&Host,K=Key,T=Info.Token,R,V,Effects]
         {
-            TraceScope Scope("GuLiHybrid_MainApplyLedger");const auto O=H->Directory.find(K);
-            if (O!=H->Directory.end() && O->second.Grant.OwnerEpoch==R.Grant.OwnerEpoch && O->second.Grant.ControlEpoch==R.Grant.ControlEpoch)
+            TraceScope Scope("GuLiHybrid_MainApplyLedger");const auto* O=H->FindRecord(K);
+            if (O && O->Grant.OwnerEpoch==R.Grant.OwnerEpoch && O->Grant.ControlEpoch==R.Grant.ControlEpoch)
                 if (auto* A=H->Object(K,T)) A->ApplyLedger(R,V,Effects);
         },Cost(R)+256);
     }
@@ -586,7 +631,8 @@ struct AsyncClientWorld::State::ObjectProxy final : IObjectAdapter
         const auto I=Host.Proxies.find(Key);if (I!=Host.Proxies.end()&&I->second==this) Host.Proxies.erase(I);
         Host.Publish();Host.Emit([H=&Host,K=Key,T=Info.Token]
         {TraceScope Scope("GuLiHybrid_MainReleaseObject");const auto O=H->MainObjects.find(K);if (O!=H->MainObjects.end()&&O->second.Info.Token==T)
-            {O->second.Adapter->Release();H->MainObjectTokens.erase(T);H->MainObjects.erase(O);}},128);
+            {O->second.Adapter->Release();auto& Cached=H->MainObjectCache[T&(H->MainObjectCache.size()-1)];
+                if (Cached.Token==T) Cached={};H->MainObjectTokens.erase(T);H->MainObjects.erase(O);}},128);
     }
     void ResetControlInput() override
     {
@@ -605,7 +651,8 @@ struct AsyncClientWorld::State::SystemProxy final : ISharedStateAdapter
     {const auto I=Host.Captured.Systems.find(Name);return I!=Host.Captured.Systems.end()&&I->second.Uses.contains(K);}
     void Advance(Tick At,double Delta) override
     {
-        Host.Publish();Host.SimulationBatch.push_back({{},0,Name,At,Delta});
+        Host.Publish();Host.SimulationSystemNames.push_back(Name);
+        Host.SimulationBatch.push_back({{},0,static_cast<std::uint32_t>(Host.SimulationSystemNames.size()),At,Delta});
         if (Host.SimulationBatch.size()>=4096) Host.FlushSimulation();
     }
     bool Capture(const std::vector<ObjectKey>& Keys,Bytes& B) const override
@@ -639,20 +686,22 @@ void AsyncClientWorld::State::FlushSimulation()
 {
     if (SimulationBatch.empty()) return;
     auto Batch=std::exchange(SimulationBatch,{});
+    auto Systems=std::exchange(SimulationSystemNames,{});
     std::size_t Size=256+Batch.size()*sizeof(SimulationEntry);
-    for (const auto& E:Batch) Size+=E.System.size();
-    Emit([this,Batch=std::move(Batch)]
+    for (const auto& Name:Systems) Size+=sizeof(std::string)+Name.size();
+    // System names are owned by this batch. Clock-only object entries carry no
+    // string object, while the one ordered entry sequence still governs every callback.
+    Emit([this,Batch=std::move(Batch),Systems=std::move(Systems)]
     {
         const auto Started=Steady::now();TraceScope Scope("GuLiHybrid_MainLogicalBatch");
         const auto Previous=AppliedContext;const auto PreviousTick=AppliedContextTick;
         for (const auto& E:Batch)
         {
-            if (!E.System.empty())
+            if (E.System)
             {
-                AdvanceShared(E.System,E.At,E.Delta);
+                AdvanceShared(Systems[E.System-1],E.At,E.Delta);
                 continue;
             }
-            AppliedContext=E.Key;AppliedContextTick=E.At;
             auto* ObjectEntry=MainObjectFor(E.Key,E.Token);
             ObjectRecord* Record=ObjectEntry?ObjectEntry->Record:nullptr;
             if (!Record)
@@ -664,9 +713,12 @@ void AsyncClientWorld::State::FlushSimulation()
             }
             if (Record) Record->LogicalAge=E.At;
             const auto Period=ObjectEntry?ObjectEntry->Info.Period:0;
-            if (auto* A=ObjectEntry?ObjectEntry->Adapter.get():nullptr;A && Period && E.At%Period==0 && A->NeedsAdvanceOnMain(E.At))
-            {TraceScope T("GuLiHybrid_MainSimulation");A->Advance(E.At,E.Delta);}
-            AppliedContext=Previous;AppliedContextTick=PreviousTick;
+            if (auto* A=ObjectEntry?ObjectEntry->Adapter.get():nullptr;A && Period && E.At%Period==0)
+            {
+                AppliedContext=E.Key;AppliedContextTick=E.At;
+                if (A->NeedsAdvanceOnMain(E.At)) {TraceScope T("GuLiHybrid_MainSimulation");A->Advance(E.At,E.Delta);}
+                AppliedContext=Previous;AppliedContextTick=PreviousTick;
+            }
         }
         std::lock_guard Lock(Mutex);Stats.SimulationMilliseconds+=Milliseconds(Started);
     },Size);
@@ -684,6 +736,7 @@ void AsyncClientWorld::State::AdvanceShared(const std::string& Name,Tick At,doub
 void AsyncClientWorld::State::ApplyDelta(ReadDelta D)
 {
     CheckMain();TraceScope Scope("GuLiHybrid_MainReadDelta");
+    {TraceScope IndexScope("GuLiHybrid_ReadIndexes");
     for (const auto& [K,C]:D.IndexChanges)
     {
         for (const auto& Index:C.Removed)
@@ -694,12 +747,17 @@ void AsyncClientWorld::State::ApplyDelta(ReadDelta D)
             if (auto I=Definitions.find(C.RemovedDefinition);I!=Definitions.end()&&!--I->second) Definitions.erase(I);
         if (!C.AddedDefinition.empty()) ++Definitions[C.AddedDefinition];
     }
+    }
+    {TraceScope RecordScope("GuLiHybrid_ReadRecords");
     for (auto& [K,R]:D.Records)
     {
-        const auto Previous=Directory.find(K);
-        if (Previous==Directory.end() || Previous->second.Grant!=R.Grant) HashDirty=true;
-        Directory.insert_or_assign(K,std::move(R));
+        auto* Previous=FindRecord(K);
+        if (!Previous || Previous->Grant!=R.Grant) HashDirty=true;
+        if (Previous) *Previous=std::move(R);
+        else Directory.emplace(K,std::move(R));
     }
+    }
+    {TraceScope NumericScope("GuLiHybrid_ReadNumeric");
     auto& R=*ResourceReplica;auto& Change=D.Resources;
     if (Change.Seed) {R={};R.Nodes=std::move(Change.Nodes);}
     R.Configured=Change.Configured;R.Version=Change.Version;R.Processed=Change.Processed;
@@ -717,11 +775,19 @@ void AsyncClientWorld::State::ApplyDelta(ReadDelta D)
     // Replacing the whole history on every readback grows delivery cost with
     // every projectile ever fired, even when no new lifetime has retired.
     for (const auto& [K,V]:D.Retired) Numeric.Retired[K]=V;
-    Numeric.BusyObjects=std::move(D.Busy);
-    PublishedClock=D.Clock;Paused=D.Paused;Deferred=D.Deferred;OwnershipApplying=D.OwnershipApplying;Preparing=D.Preparing;Frozen=std::move(D.Frozen);
+    const auto ApplyKeys=[](std::set<ObjectKey>& Values,const ReadDelta::KeyChanges& Changes)
+    {
+        for (const auto& K:Changes.Removed) Values.erase(K);
+        for (const auto& K:Changes.Added) Values.insert(K);
+    };
+    ApplyKeys(Numeric.BusyObjects,D.Busy);ApplyKeys(Frozen,D.Frozen);
+    PublishedClock=D.Clock;Paused=D.Paused;Deferred=D.Deferred;OwnershipApplying=D.OwnershipApplying;Preparing=D.Preparing;
     if (!D.Failure.empty()) Failure=std::move(D.Failure);
+    }
+    {TraceScope ObserverScope("GuLiHybrid_ReadObservers");
     if (QueryObserver) QueryObserver(D.Query);
-    for (const auto& [K,Record]:D.Records) if (RecordObserver) RecordObserver(Directory.at(K));
+    for (const auto& [K,Record]:D.Records) if (RecordObserver) RecordObserver(*FindRecord(K));
+    }
     std::lock_guard Lock(Mutex);++Stats.ReadDeltas;
 }
 void AsyncClientWorld::State::Publish()
@@ -783,12 +849,35 @@ void AsyncClientWorld::State::Publish()
     const std::array<Revision,2> AccountVersions{N.Version({TeamAccountObject(Team::Red),"account"}),N.Version({TeamAccountObject(Team::Blue),"account"})};
     if (AccountVersions!=PublishedAccountVersions) {D.Reservations=N.TeamEconomy().Snapshot().Pending;PublishedAccountVersions=AccountVersions;}
     D.Retired=Core->ConsumeRetiredLifeChanges();
-    for (const auto& [K,E]:N.LockView()) D.Busy.insert(K.Object);
-    D.Frozen=Core->FrozenObjects();for (const auto& [K,T]:Core->PendingApplications()) D.Frozen.insert(K);
+    ReadStatus Status;
+    for (const auto& [K,E]:N.LockView()) Status.Busy.insert(K.Object);
+    Status.Frozen=Core->FrozenObjects();for (const auto& [K,T]:Core->PendingApplications()) Status.Frozen.insert(K);
     D.Clock=Core->Now();D.Paused=Core->IsPaused();D.Preparing=Core->PendingApplications().size();D.Deferred=Core->IsBootstrapMaterializationDeferred()||D.Preparing;
     D.OwnershipApplying=Core->IsApplyingOwnershipGroup();
     D.Failure=Core->Error();
-    std::size_t Bytes=512+D.Retired.size()*64+D.Busy.size()*64+D.Frozen.size()*64;
+    Status.Processed=Change.Processed;Status.Red=D.Red;Status.Blue=D.Blue;
+    Status.ResourcesVersion=Change.Version;Status.ResourceQuery=D.ResourceQuery;Status.MiningQuery=D.MiningQuery;Status.Mining=D.Mining;
+    Status.Clock=D.Clock;Status.Preparing=D.Preparing;
+    Status.Configured=Change.Configured;Status.Paused=D.Paused;Status.Deferred=D.Deferred;Status.OwnershipApplying=D.OwnershipApplying;Status.Failure=D.Failure;
+    const bool EmptyPayload=D.Records.empty() && D.IndexChanges.empty() && D.Versions.empty() && D.Retired.empty() && !D.Reservations
+        && !Change.Seed && Change.Nodes.empty() && Change.Remaining.empty() && !Change.OwnersChanged
+        && Change.Miners.empty() && Change.Factories.empty() && Change.RemovedMiners.empty() && Change.RemovedFactories.empty()
+        && !D.Query.ResourceSeed && !D.Query.OwnersChanged && !D.Query.MiningChanged
+        && D.Query.Remaining.empty() && D.Query.Leases.empty() && D.Query.RemovedLeases.empty();
+    if (EmptyPayload && LastReadStatus && *LastReadStatus==Status) {MetaDirty=false;return;}
+    // Every queued readback still exposes the exact lock/freeze snapshot at
+    // this point. Transmit only set membership changes; rebuilding identical
+    // tree nodes on the game thread for each projectile receipt adds no state.
+    const auto DeltaKeys=[](const std::set<ObjectKey>* Previous,const std::set<ObjectKey>& Current,ReadDelta::KeyChanges& Out)
+    {
+        if (!Previous) {Out.Added.assign(Current.begin(),Current.end());return;}
+        std::set_difference(Current.begin(),Current.end(),Previous->begin(),Previous->end(),std::back_inserter(Out.Added));
+        std::set_difference(Previous->begin(),Previous->end(),Current.begin(),Current.end(),std::back_inserter(Out.Removed));
+    };
+    DeltaKeys(LastReadStatus?&LastReadStatus->Busy:nullptr,Status.Busy,D.Busy);
+    DeltaKeys(LastReadStatus?&LastReadStatus->Frozen:nullptr,Status.Frozen,D.Frozen);
+    LastReadStatus=std::move(Status);
+    std::size_t Bytes=512+D.Retired.size()*64+(D.Busy.Added.size()+D.Busy.Removed.size()+D.Frozen.Added.size()+D.Frozen.Removed.size())*sizeof(ObjectKey);
     if (D.Reservations) Bytes+=D.Reservations->size()*128;
     for (const auto& [K,O]:D.Records) Bytes+=Cost(O);
     for (const auto& [K,C]:D.IndexChanges)
@@ -982,7 +1071,9 @@ void AsyncClientWorld::State::Run()
     if (InitializeWorker) InitializeWorker();
     Core=std::make_unique<ClientWorld>(Match,Player,MatchEpoch,[this](const ObjectRecord& R){return MakeProxy(R);},[this](Id Peer,Message M)
     {return TransmitWorker(Peer,std::move(M));});
-    Core->SetPeerTransactionDeferral(Options.DeferPeerTransactions);
+    // Receive callbacks retain facts; planning gets its own cooperative slice.
+    // A packet burst must not bypass the input loop's two-ms quantum.
+    Core->SetPeerTransactionDeferral(true);
     Core->SetResourceValidationSnapshotReuse(Options.ReuseResourceValidationSnapshot);
     Core->SetRecordObserver([this](const ObjectRecord& R){ChangedRecords[R.Grant.Object]=R;ResourceKeys.insert({R.Grant.Object,"object"});++ObjectRevisions[R.Grant.Object];});
     Core->SetFragmentObserver([this](std::span<const StateFragment> Fs)
@@ -1170,7 +1261,14 @@ void AsyncClientWorld::State::Run()
                     if (Ready||!Core->LastApplicationPending()) I=PendingRebuilds.erase(I);else ++I;
                 }
                 DispatchComputes();CompleteComputes();
-                {TraceScope Poll("GuLiHybrid_WorkerNetworkMaintenance");Core->PollNetwork(Seconds()+TimeOffset,Options.NetworkRetryBatchLimit);}
+                {
+                    TraceScope Poll("GuLiHybrid_WorkerNetworkMaintenance");
+                    // Bound every transaction phase by both attempts and time.
+                    // Core retains unfinished identities and prevents the next
+                    // owner turn from sleeping, so throughput is not frame-capped.
+                    // Logical time and caller-thread FIFO delivery are unchanged.
+                    Core->PollNetwork(Seconds()+TimeOffset,4,.001);
+                }
                 AdvanceCaptures();AdvanceAfterCaptureBarrier(true);
             }
             MetaDirty=true;Publish();PublishDiagnostics();
@@ -1235,7 +1333,7 @@ void AsyncClientWorld::State::Pump()
     CheckMain();
     if (Pumping) {CommandWakeDeferred=true;return;}
     Pumping=true;
-    const auto Started=Steady::now();const auto PreviousSimulation=Stats.SimulationMilliseconds;std::deque<Application> Ready;
+    const auto Started=Steady::now();const auto PreviousSimulation=Stats.SimulationMilliseconds;std::vector<Application> Ready;
     std::size_t ReleasedBytes=0,AppliedCount=0;double MaximumDelay=0;
     const auto ReleaseBatch=[&]
     {
@@ -1247,7 +1345,7 @@ void AsyncClientWorld::State::Pump()
         ReleasedBytes=AppliedCount=0;MaximumDelay=0;Wake.notify_all();
     };
     {
-        std::lock_guard Lock(Mutex);Ready.swap(Applications);Stats.LastQueueMilliseconds=0;
+        std::lock_guard Lock(Mutex);Ready.swap(Applications);Applications.swap(SpareApplications);Stats.LastQueueMilliseconds=0;
         if (!QueueFailure.empty()&&Failure.empty()) Failure=QueueFailure;
     }
     {TraceScope Scope("GuLiHybrid_MainApplyBatch");for (auto& Job:Ready)
@@ -1284,9 +1382,13 @@ void AsyncClientWorld::State::Pump()
         const auto Copy=Admission;
         if (Post([this,Admission=std::move(Admission)](ClientWorld&) mutable {SendAdmission=std::move(Admission);},256,true)) LastSendAdmission=Copy;
     }
+    // Destroy payloads on the caller thread and return only empty storage. The
+    // worker never sees the detached jobs and retains the same sequence/credit.
+    Ready.clear();
     bool Notify=false;
     {
         std::lock_guard Lock(Mutex);Stats.MainApplyMilliseconds+=std::max(0.,Milliseconds(Started)-(Stats.SimulationMilliseconds-PreviousSimulation));
+        if (!Stopping) SpareApplications.swap(Ready);
         if (CommandWakeDeferred && CommandWakeSequence>AppliedSequence && !CommandWakeQueued && !Stopping
             && Options.CommandApplicationReady)
         {CommandWakeQueued=true;Notify=true;++Stats.CommandWakeRequests;}
@@ -1317,12 +1419,12 @@ void AsyncClientWorld::State::Shutdown()
     // work; their completion posting sees Stopping and cannot revive this world.
     {std::unique_lock Lock(Mutex);Wake.wait(Lock,[&]{return ActiveCalculations==0;});}
     WaitingComputes.clear();ComputeOrder.clear();
-    Applications.clear();Inputs.clear();Controls.clear();Outbound.clear();Callbacks.clear();
+    Applications.clear();SpareApplications.clear();Inputs.clear();Controls.clear();Outbound.clear();Callbacks.clear();
     PendingGameplay.clear();ResultReservations.clear();
     InputBytes=OutputBytes=ControlBytes=GameplayInputBytes=ResultReservedBytes=OutboundBytes=0;
     Stats.InputBytes=Stats.OutputBytes=Stats.ControlBytes=Stats.ResultReservedBytes=Stats.QueuedInputBytes=0;
     for (auto& Kind:Stats.InputKinds) Kind.QueuedBytes=Kind.QueuedCount=0;
-    for (auto& [K,A]:MainObjects) A.Adapter->Release();MainObjectTokens.clear();MainObjects.clear();MainSystems.clear();
+    for (auto& [K,A]:MainObjects) A.Adapter->Release();MainObjectCache={};MainObjectTokens.clear();MainObjects.clear();MainSystems.clear();
 }
 ClientWorld::ApplicationStatus AsyncClientWorld::State::PrepareBatch(std::span<const PrivateObjectState> Values,std::span<const PrivateSystemState> Shared)
 {
@@ -1700,12 +1802,17 @@ void AsyncClientWorld::SetResourceGroups(std::map<Id,ResourceGroupState> G)
 const std::map<Id,ResourceGroupState>& AsyncClientWorld::ResourceGroups() const {return S->MainResourceGroups;}
 bool AsyncClientWorld::StampObjectPublication(Envelope& H) const
 {
-    S->CheckMain();ObjectKey K=H.Object;std::set<ObjectKey> Seen;Id Group;
-    while (K.Valid()&&Seen.size()<64&&Seen.insert(K).second)
+    S->CheckMain();ObjectKey K=H.Object;Id Group;
+    // Directory nodes retain their addresses through this synchronous walk.
+    // Full-key lookup still precedes every visit; pointer identity only replaces
+    // the temporary cycle-detection tree, never an authority/epoch lookup.
+    std::array<const ObjectRecord*,64> Seen;std::size_t Count=0;
+    while (K.Valid()&&Count<Seen.size())
     {
-        const auto O=S->Directory.find(K);if (O==S->Directory.end()) break;
-        if (O->second.Grant.OwnershipGroup.Valid()) {Group=O->second.Grant.OwnershipGroup;break;}
-        if (O->second.Grant.Policy!=OwnershipPolicy::ParentWork) break;K=O->second.Parent;
+        const auto* O=S->FindRecord(K);if (!O || std::find(Seen.begin(),Seen.begin()+Count,O)!=Seen.begin()+Count) break;
+        Seen[Count++]=O;
+        if (O->Grant.OwnershipGroup.Valid()) {Group=O->Grant.OwnershipGroup;break;}
+        if (O->Grant.Policy!=OwnershipPolicy::ParentWork) break;K=O->Parent;
     }
     const auto G=S->MainResourceGroups.find(Group);
     if (G==S->MainResourceGroups.end()) return !H.ResourceGroup.Valid()&&!H.ResourceEpoch;
@@ -1721,9 +1828,13 @@ bool AsyncClientWorld::State::StampRequest(TransactionRequest& R) const
     Id Key;
     for (auto K:{Numeric.ExecutionDomain(R),R.Header.Object,R.Target,R.Related})
     {
-        std::set<ObjectKey> Seen;
-        while (K.Valid()&&Seen.size()<64&&Seen.insert(K).second)
-        {const auto O=Directory.find(K);if (O==Directory.end()) break;if (O->second.Grant.OwnershipGroup.Valid()) {Key=O->second.Grant.OwnershipGroup;break;}K=O->second.Parent;}
+        std::array<const ObjectRecord*,64> Seen;std::size_t Count=0;
+        while (K.Valid()&&Count<Seen.size())
+        {
+            const auto* O=FindRecord(K);if (!O || std::find(Seen.begin(),Seen.begin()+Count,O)!=Seen.begin()+Count) break;
+            Seen[Count++]=O;
+            if (O->Grant.OwnershipGroup.Valid()) {Key=O->Grant.OwnershipGroup;break;}K=O->Parent;
+        }
         if (Key.Valid()) break;
     }
     if (!Key.Valid() && (R.Kind==TransactionKind::Credit||R.Kind==TransactionKind::Reserve||R.Kind==TransactionKind::Commit||R.Kind==TransactionKind::Refund
@@ -1962,17 +2073,18 @@ bool AsyncClientWorld::Inspect(const std::string& Name,std::function<std::string
 
 bool AsyncClientWorld::HasSimulation(ObjectKey K,bool Dead) const
 {
-    const auto I=S->Directory.find(K);if (!S->Failure.empty()||S->OwnershipApplying||S->Frozen.contains(K)||I==S->Directory.end()) return false;const auto& A=I->second.Grant;
+    if (!S->Failure.empty()||S->OwnershipApplying||S->Frozen.contains(K)) return false;
+    const auto* Record=S->FindRecord(K);if (!Record) return false;const auto& A=Record->Grant;
     return !A.Dormant&&A.SimOwner==S->Player&&A.OwnerEpoch&&(A.Policy!=OwnershipPolicy::ControllerPinned||A.Controller==S->Player)
         &&(A.State==Life::Alive||(Dead&&A.State==Life::Dead));
 }
 bool AsyncClientWorld::HasControl(ObjectKey K) const
-{const auto I=S->Directory.find(K);return I!=S->Directory.end()&&I->second.Grant.Controller==S->Player&&I->second.Grant.ControlEpoch&&I->second.Grant.State==Life::Alive&&!I->second.Grant.Dormant;}
+{const auto* R=S->FindRecord(K);return R&&R->Grant.Controller==S->Player&&R->Grant.ControlEpoch&&R->Grant.State==Life::Alive&&!R->Grant.Dormant;}
 bool AsyncClientWorld::IsPaused() const {return S->Paused;}
 bool AsyncClientWorld::CanPublishFacts() const {return S->Failure.empty()&&!S->Paused;}
 bool AsyncClientWorld::IsBootstrapMaterializationDeferred() const {return S->Deferred;}
 Tick AsyncClientWorld::Now() const {return S->SharedContextTick.value_or(std::max(S->PublishedClock,S->AppliedWorldTick));}
-Tick AsyncClientWorld::ObjectNow(ObjectKey K) const {if (S->AppliedContext==K) return S->AppliedContextTick;const auto I=S->Directory.find(K);return I==S->Directory.end()?0:I->second.LogicalAge;}
+Tick AsyncClientWorld::ObjectNow(ObjectKey K) const {if (S->AppliedContext==K) return S->AppliedContextTick;const auto* R=S->FindRecord(K);return R?R->LogicalAge:0;}
 Tick AsyncClientWorld::ContextNow() const {return S->AppliedContext.Valid()?S->AppliedContextTick:Now();}
 Revision AsyncClientWorld::Epoch() const {return S->MatchEpoch;}
 const std::string& AsyncClientWorld::Error() const {return S->Failure;}
@@ -1984,20 +2096,20 @@ const std::string& AsyncClientWorld::DirectoryHash() const
         // This digest is an explicit review query, not a gameplay dependency.
         // Hash the exact applied directory only when requested. Eagerly hashing
         // every birth/retirement readback makes combat cost grow with history.
-        TraceScope Scope("GuLiHybrid_ReviewDirectoryHash");Writer W(MaxPrivateStateBytes);
-        for (const auto& [K,O]:S->Directory) WriteAuthority(W,O.Grant);
-        S->Hash=W.Good()?Sha256(W.Take()):std::string{};S->HashDirty=false;
+        TraceScope Scope("GuLiHybrid_ReviewDirectoryHash");Sha256Stream Hash;Writer W;
+        for (const auto& [K,O]:S->Directory) {W.Clear();WriteAuthority(W,O.Grant);Hash.Append(W.View());}
+        S->Hash=W.Good()?Hash.Finish():std::string{};S->HashDirty=false;
     }
     return S->Hash;
 }
 const std::map<ObjectKey,ObjectRecord>& AsyncClientWorld::Objects() const {return S->Directory;}
+const ObjectRecord* AsyncClientWorld::FindObject(ObjectKey K) const {S->CheckMain();return S->FindRecord(K);}
 const ObjectRecord* AsyncClientWorld::FindObject(ObjectKey K,ObjectReadCursor& Cursor) const
 {
     S->CheckMain();
     if (Cursor.Generation==S->Generation && Cursor.Key==K && Cursor.Record) return Cursor.Record;
     Cursor.Generation=S->Generation;Cursor.Key=K;
-    const auto I=S->Directory.find(K);
-    Cursor.Record=I==S->Directory.end()?nullptr:&I->second;
+    Cursor.Record=S->FindRecord(K);
     // ApplyDelta assigns records in place; retirement retains a tombstone.
     // A different client generation invalidates the address before dereference.
     return Cursor.Record;

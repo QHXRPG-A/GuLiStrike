@@ -1,0 +1,559 @@
+{
+  "scope": "Second screenshot refinement; screenshots and selected interactions, not full visual/performance acceptance",
+  "user_authorization": "你来进行截图校验; same-task compile/restart authorization retained",
+  "final_editor_pid": 18976,
+  "builds": [
+    {
+      "log": "build-clip-final.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "13.89"
+      ]
+    },
+    {
+      "log": "build-copy-legibility.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "9.96"
+      ]
+    },
+    {
+      "log": "build-corrected.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "8.66"
+      ]
+    },
+    {
+      "log": "build-glyph-fixed.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "7.41"
+      ]
+    },
+    {
+      "log": "build-owned-summary.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "22.63"
+      ]
+    },
+    {
+      "log": "build-responsive-final.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "10.89"
+      ]
+    },
+    {
+      "log": "build-responsive.log",
+      "result": [
+        "Failed (OtherCompilationError)"
+      ],
+      "seconds": [
+        "29.88"
+      ]
+    },
+    {
+      "log": "build-spacing.log",
+      "result": [
+        "Succeeded"
+      ],
+      "seconds": [
+        "9.74"
+      ]
+    },
+    {
+      "log": "build.log",
+      "result": [
+        "Failed (OtherCompilationError)"
+      ],
+      "seconds": [
+        "27.49"
+      ]
+    }
+  ],
+  "python_ast_passed": [
+    "Scripts/Cards/card_artwork_config.py",
+    "Scripts/GroundMech/prepare_ground_hud_data.py",
+    "Scripts/import_data_to_engine.py",
+    "data/GroundHUDValidation/Refinement20261102/author_card_alignment.py",
+    "data/GroundHUDValidation/Refinement20261102/import_theme.py",
+    "data/GroundHUDValidation/Refinement20261102/make_manifest.py",
+    "data/GroundHUDValidation/Refinement20261102/readback.py",
+    "data/GroundHUDValidation/Refinement20261102/read_owned.py",
+    "data/GroundHUDValidation/Refinement20261102/restore_and_readback.py",
+    "data/GroundHUDValidation/Refinement20261102/start_ratio.py"
+  ],
+  "owned_summary_and_cleanup": "passed for actual Ricochet and Burning single clicks",
+  "normal_refresh_performance": "not_measured; source 0.2 second timer retained",
+  "one_to_one_reference_acceptance": "not_passed",
+  "screenshots": [
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/01-combat.jpg",
+      "bytes": 171818,
+      "sha256": "cf0885d0bfd2f189d710e37f5c649e2697340dc6f1f130e035dd2328299f896a",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/02-map.jpg",
+      "bytes": 170915,
+      "sha256": "37b05d3192f740eddd6aff9af915773bc6cd9c3e6f48946aacb236988135e223",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/03-cards.jpg",
+      "bytes": 213958,
+      "sha256": "428f01fa638a63698fd89068565a1931dce68e160fff21a2971b6758c821898f",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/04-card-hover.jpg",
+      "bytes": 213723,
+      "sha256": "fc777a2c4872f19da10c89d9fc56dfaf016c9ac8a4c2f8d130e5e60cdc6b74af",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/05-combat-final-16x9.jpg",
+      "bytes": 178030,
+      "sha256": "6b454cf05e35dc5e3a2da2065e6ec4190ff7982022f27fbd55c208ebf66d5477",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/06-map-selected-final-16x9.jpg",
+      "bytes": 168645,
+      "sha256": "6d2e3b09aeb639145c328b38b07c08d7abb00bdc3c7ac1b8dd5ba0de2afadbcc",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/07-cards-final-16x9.jpg",
+      "bytes": 213599,
+      "sha256": "6127d92879a43de9b5ef90d8b223550f028c9979bf7f06c402d70680aa9cf7d5",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/08-combat-16x10.jpg",
+      "bytes": 190174,
+      "sha256": "8e5cb5f89d3e42603d1d693aab40d5055cff06d3f60910c6e79467b5af0c666f",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/09-map-16x10.jpg",
+      "bytes": 179972,
+      "sha256": "be876dc7de137a47cfa9f8ad40e8e2845ea4a78b75eef22cbf017a26a7e95df7",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/10-cards-16x10.jpg",
+      "bytes": 218762,
+      "sha256": "ab60aa6fd52a01026da05ebd844cc9b30576a0b2864b01f3382c21077373216c",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/11-combat-21x9.jpg",
+      "bytes": 195482,
+      "sha256": "ae7dcec1a0ebb5e67a5e6b791123831823aaca3e5b306ab68a6b10489a688daf",
+      "format": "JPEG",
+      "width": 1686,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/12-combat-responsive-21x9.jpg",
+      "bytes": 205822,
+      "sha256": "633fe75d0108928f517734acd256ba54c3c9ce3132659527b85891b494330e8f",
+      "format": "JPEG",
+      "width": 1686,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/13-map-responsive-21x9.jpg",
+      "bytes": 194482,
+      "sha256": "c95e34190b36348ecc613636eccc0a0bc42d3a444a6f4fa99446799d1fc0731f",
+      "format": "JPEG",
+      "width": 1686,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/14-cards-responsive-21x9.jpg",
+      "bytes": 205660,
+      "sha256": "51449a695b1e41a5ddef6f03825816e1488be646192a3ab63a22d0d82450c020",
+      "format": "JPEG",
+      "width": 1686,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/15-combat-responsive-16x10.jpg",
+      "bytes": 184780,
+      "sha256": "c8750526b6de9483d9253a4c4448bc61d0fd56fc2e2dc9977949fc29c69172c6",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/16-map-responsive-16x10.jpg",
+      "bytes": 184380,
+      "sha256": "0fd9ac110ca7f98f1654b706a4dcb72c927d4c3862a18794e111e629f6a5201c",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/17-cards-responsive-16x10.jpg",
+      "bytes": 214411,
+      "sha256": "b1ca916e5694e1e789b9330972e1e75a42bc4ee1be9596aafa3c172ece10193d",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 840
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/18-combat-responsive-16x9.jpg",
+      "bytes": 171856,
+      "sha256": "a2c09b193e44cb01f96729161d1b26c01afe4903366a890600d8286e1139d41b",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/19-combat-M-input.jpg",
+      "bytes": 172082,
+      "sha256": "0c35d9c26aee39234caa2b68e4825e0859e3a7e986f177323ad90ae6844d236b",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/20-map-responsive-16x9.jpg",
+      "bytes": 172123,
+      "sha256": "274f3cf0f8596115f25eb97b01f3fe445dfe02810a97de793758dceb81a60471",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/21-map-wheel-zoom.jpg",
+      "bytes": 163490,
+      "sha256": "0d71ffc5184d3ec324d60a090fc72d49f6c014d102e6481e27be518da9aafbc7",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/22-map-clip-live-proof.jpg",
+      "bytes": 166249,
+      "sha256": "a440fa84899287fde073c807cf9fcea8b2c9f1a114781a8ff45918c11397ad44",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/23-map-drag.jpg",
+      "bytes": 166002,
+      "sha256": "5df88bfbb3f4971dfc12946e3f816269413e868536e015d2541afc88d4f579e4",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/24-map-center-self.jpg",
+      "bytes": 157946,
+      "sha256": "ea56b8fa59da057c59719f08baa1cb874c11f03304f5c5acf48499c542462053",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/25-combat-release-16x9.jpg",
+      "bytes": 171138,
+      "sha256": "218804586ddc483d7496662a49bf70ee2a81d7d3d5271f7d7672b119f194cfda",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/26-map-release-zoom.jpg",
+      "bytes": 166021,
+      "sha256": "d20533f24b9986ba637eb709352c1f44cee31b4badfbd11364cb84b6de74ab3e",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/27-map-release-selected.jpg",
+      "bytes": 162724,
+      "sha256": "c20f982c7d6024fad399a36ad15f5b35285d49163af24f98a51e2a687495d634",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/28-cards-release-16x9.jpg",
+      "bytes": 212428,
+      "sha256": "6406883280bb31eaf48431a37afa2953d36f46daa3aba54401ca302241e5d2b1",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/29-card-single-click.jpg",
+      "bytes": 210221,
+      "sha256": "e0d8032597b75e1cd2c928bdfc47cea12d21be1c526e6da1b52000786299c345",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/30-combat-after-choice.jpg",
+      "bytes": 172326,
+      "sha256": "1d9fe7a9e027ebfb0c4582803bea5a8826d84e0cd997a3085470dc7228df7d33",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/31-details-before-glyph-fix.jpg",
+      "bytes": 80975,
+      "sha256": "6703ab8e91c8f9af17a9e28c66d718d901f2faa371a812fc942adbb9a9de3851",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/32-combat-copy-final.jpg",
+      "bytes": 178016,
+      "sha256": "89ce1507ec4d4e64dc2358f5b0ec018b64e36f175802928e9a55165a520af6dd",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/33-cards-owned-proof.jpg",
+      "bytes": 211026,
+      "sha256": "7ada4f975154da2e73f7f893f0e1ad545db6c035de5ed75a47d812eacdcac39d",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/34-ricochet-single-click.jpg",
+      "bytes": 196225,
+      "sha256": "7051932b975eeb0c4ce99d95f81584ae982f1389b8b2e2550f24207fdea6f715",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/35-ricochet-summary-correct.jpg",
+      "bytes": 171647,
+      "sha256": "985d5a992d9f7b5683c04cf625aa720d9ad55b085d16320dffcdf8e6337bdb71",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/36-burning-single-click.jpg",
+      "bytes": 203270,
+      "sha256": "6ac49b94125709684ef2ea3138211483a2fba7edd92fe3a20fa089ebd593483c",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/37-combat-two-owned-final.jpg",
+      "bytes": 173028,
+      "sha256": "cb630eda4fc97b4d8231db8ecf8719a8e6250b22e1be53ac24680825fb600db9",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/38-map-copy-final.jpg",
+      "bytes": 170696,
+      "sha256": "74ad1b550b25e78a6d3c95a0da202cef490a9af8e04123c197f7dba79a94136d",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/39-map-zoom-final.jpg",
+      "bytes": 165629,
+      "sha256": "fa18d6991f9028360ebc116f9bc9e0defb8fb7b2aa0e0555462c46cbbd604c50",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/40-map-drag-final.jpg",
+      "bytes": 161134,
+      "sha256": "00c822049c7a5cde8729eab39bd478f7003bef7861792d9cea1644d4a6f47163",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/41-map-locate-final.jpg",
+      "bytes": 157017,
+      "sha256": "aa772ce2ddbe3b0241ac589815e6e7559623eff355d6861f89f2755277786ca1",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    },
+    {
+      "path": "data/GroundHUDValidation/Refinement20261102/42-map-selection-final.jpg",
+      "bytes": 153829,
+      "sha256": "c784fb562b5eccbcd33305cae3f649f7d85a8a0b17371c6d8bc851402b260f44",
+      "format": "JPEG",
+      "width": 1286,
+      "height": 760
+    }
+  ],
+  "source_and_data": [
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h",
+      "bytes": 4898,
+      "sha256": "1d94633364c4c273dcc32e9580f155bff4b48f5164f6dc819b69fe5d0b4a098b"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp",
+      "bytes": 25183,
+      "sha256": "f113706a4c55ee2a270c6ce93bfa3d3509fce90db4e827ce734e3620324d4d16"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDLayout.cpp",
+      "bytes": 17757,
+      "sha256": "6cf0a2b3187b80796d2c92bcc7c105fcbdb799dfdb93a8aac4d00f1c4b984332"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDVisuals.h",
+      "bytes": 2600,
+      "sha256": "e35709e2bfcdab4155a86a5f326e753ac2f378f59f4c71b80591935a1920e240"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDVisuals.cpp",
+      "bytes": 24336,
+      "sha256": "c85d229044cc3c6c6671708a730002f582b6fa302d21db26df5107bbe125c200"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.h",
+      "bytes": 3413,
+      "sha256": "7fa0b8cb30cd385894f4bd166dc2f75785af6a5f98ca4605ee5df7d2ee585a64"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.cpp",
+      "bytes": 11871,
+      "sha256": "927a354aab23465f8207178197b344f74662a05ed656e2c93eb7164b3bd4e380"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.h",
+      "bytes": 2338,
+      "sha256": "6f48dde0e70fc7525b89c32d6db4eee5a9df6b7c751d2860e8d6aecb7eb75cc5"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.cpp",
+      "bytes": 21026,
+      "sha256": "96dd0b0f599206ec7656d7d24030e62c5cf386c7eadc6a3349f8aadd2c13eeb2"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundCardFace.h",
+      "bytes": 846,
+      "sha256": "85fb6f2226a866ac28e1c428c5b679daefe715296a83f395d4f68b328bfdc0f6"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundCardFace.cpp",
+      "bytes": 3609,
+      "sha256": "b1f6965764ef34fda22e7f37e29158709ea0deb0b0051c0bbee7fbfed61ea98b"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.h",
+      "bytes": 5409,
+      "sha256": "d2e55f2110cd09f4d3569eebdaf72a5577b9343508da0f3ee45d5ee170e52b7c"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.cpp",
+      "bytes": 41900,
+      "sha256": "8b5f875f063b0fe488f76022331626edea08dfe4ff6de79b6ce06ece6a4d43b4"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiDataTableImportLibrary.h",
+      "bytes": 567,
+      "sha256": "d35bb9c17dc76ef97d83f2935fd5469ac31b8200c7046abc08ec31499a98f45f"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiDataTableImportLibrary.cpp",
+      "bytes": 1178,
+      "sha256": "f53953efae7a0ba733b54b459db7c55cd195f29965427479a4f4fa671e292dcc"
+    },
+    {
+      "path": "Scripts/Cards/card_artwork_config.py",
+      "bytes": 10230,
+      "sha256": "058cfce99d6929da572b0f7b786d65a94a389d8b7f4a86ed295dc47efc7522d1"
+    },
+    {
+      "path": "Scripts/GroundMech/prepare_ground_hud_data.py",
+      "bytes": 6221,
+      "sha256": "e663b3e4dd37387f10d2ad95bae36f311fffdc6cd647f170a3372dc59d45f9f0"
+    },
+    {
+      "path": "Scripts/import_data_to_engine.py",
+      "bytes": 34583,
+      "sha256": "eff270ead2e9167895defb49f23626c48527895b620ff9a1a516be669bbd1ddb"
+    },
+    {
+      "path": "data/Excel/GuLiStrikeGroundHUD.xlsx",
+      "bytes": 8222,
+      "sha256": "74f20841e3dcf7840eaa2ac4ce7733f7e93cc49bd92a71fdca08f83d1ea1aa8a"
+    },
+    {
+      "path": "data/Excel/GuLiStrikeGameTexts.xlsx",
+      "bytes": 20656,
+      "sha256": "8bfc5c5470aaa3530583f555b5ffe51d8ce301bf3e543a01a9894493cebfd52e"
+    },
+    {
+      "path": "Data/Json/DT_GuLiStrikeGroundHUD_Elements.json",
+      "bytes": 7122,
+      "sha256": "3c7fc220b4488a258ba303c9d52a83991d4cbd3fb82cc81e7d5c518a08c44017"
+    },
+    {
+      "path": "Data/Json/DT_GuLiStrikeGameTexts_Texts.json",
+      "bytes": 66450,
+      "sha256": "e5fbc7c151030c566390a51be5905e88ed4bcfcc23db297a142e50bda6f402a3"
+    }
+  ],
+  "final_state": {
+    "path": "data/GroundHUDValidation/Refinement20261102/handoff-state.json",
+    "bytes": 6903,
+    "sha256": "b0c2b41046487719e85fb59c8e655c8c3d42cec2b7ee40953c781295337db188"
+  },
+  "report": "ArtSource/UI/GroundMech/HUD_Reference_20261102/VisualRefinement_20261102.md"
+}

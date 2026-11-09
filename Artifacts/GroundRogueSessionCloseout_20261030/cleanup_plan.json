@@ -1,0 +1,778 @@
+{
+  "root": "D:\\UE5.7\\test1",
+  "thread": "01a18150-677b-76e3-b70a-94874fa7ed67",
+  "title": "Develop Ground mech rogue abilities",
+  "records": [
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/DA_CommanderResourceMap_before.uasset",
+      "bytes": 3037817,
+      "mtime_ns": 1793233906863527700,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/editor_build.log",
+      "bytes": 4984,
+      "mtime_ns": 1793319821935632700,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/editor_build_f4.log",
+      "bytes": 4949,
+      "mtime_ns": 1793320440414276100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/f4_after.json",
+      "bytes": 1041,
+      "mtime_ns": 1793320586084667000,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/f4_before.json",
+      "bytes": 829,
+      "mtime_ns": 1793320338824475400,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/local_pie_settings_before.json",
+      "bytes": 57,
+      "mtime_ns": 1793320288958388900,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/progress_build.log",
+      "bytes": 168,
+      "mtime_ns": 1793320708850994200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/progress_check.log",
+      "bytes": 2243,
+      "mtime_ns": 1793320710145853100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/resource_geometry_after.json",
+      "bytes": 1255138,
+      "mtime_ns": 1793319942526847400,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRoguePIEFix_20261030/resource_geometry_before.json",
+      "bytes": 1255138,
+      "mtime_ns": 1793319941385324100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeBuffs.xlsx.Buffs.cells.json",
+      "bytes": 2006,
+      "mtime_ns": 1793289754614042900,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeBuffs.xlsx.Burning.cells.json",
+      "bytes": 1731,
+      "mtime_ns": 1793289755339494500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeBuffs.xlsx.BurningBurst.cells.json",
+      "bytes": 1751,
+      "mtime_ns": 1793289755507872500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeCardArtwork.xlsx.Artworks.cells.json",
+      "bytes": 184,
+      "mtime_ns": 1793286308475217000,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeCardArtwork.xlsx.Layers.cells.json",
+      "bytes": 5582,
+      "mtime_ns": 1793286308054197200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeCardArtwork.xlsx.Parameters.cells.json",
+      "bytes": 314,
+      "mtime_ns": 1793287983930587500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeCardArtwork.xlsx.Templates.cells.json",
+      "bytes": 521,
+      "mtime_ns": 1793286307123882700,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeGameTexts.xlsx.Texts.cells.json",
+      "bytes": 1558,
+      "mtime_ns": 1793289755762945200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeRogueCards.xlsx.Cards.cells.json",
+      "bytes": 2517,
+      "mtime_ns": 1793289754299565100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeRogueCards.xlsx.Effects.cells.json",
+      "bytes": 2242,
+      "mtime_ns": 1793289754468686500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/GuLiStrikeVfx.xlsx.Effects.cells.json",
+      "bytes": 158,
+      "mtime_ns": 1793289755170266100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/coordinator_build.log",
+      "bytes": 19297,
+      "mtime_ns": 1793290183314093200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/coordinator_protocol34.sqlite",
+      "bytes": 12288,
+      "mtime_ns": 1793294714806817700,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/coordinator_reload.err.log",
+      "bytes": 0,
+      "mtime_ns": 1793294708993106800,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/coordinator_reload.out.log",
+      "bytes": 71,
+      "mtime_ns": 1793294714810607200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/coordinator_reload_attempt1.json",
+      "bytes": 258,
+      "mtime_ns": 1793294674469110500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/core_syntax.log",
+      "bytes": 115,
+      "mtime_ns": 1793289768733722000,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/data_export.log",
+      "bytes": 3844,
+      "mtime_ns": 1793289757714284300,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_build.log",
+      "bytes": 1229,
+      "mtime_ns": 1793290086998083200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_build_authored_targets.log",
+      "bytes": 4982,
+      "mtime_ns": 1793293916319043500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_build_final.log",
+      "bytes": 4982,
+      "mtime_ns": 1793292446439950900,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_build_fixed_layout.log",
+      "bytes": 4982,
+      "mtime_ns": 1793294325221911900,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_build_retry1.log",
+      "bytes": 10375,
+      "mtime_ns": 1793290338864228200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_build_retry2.log",
+      "bytes": 27823,
+      "mtime_ns": 1793290872283411700,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_build_scoped.log",
+      "bytes": 1221574,
+      "mtime_ns": 1793291359139753300,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_build_scoped_retry1.log",
+      "bytes": 39684,
+      "mtime_ns": 1793292318445652900,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/editor_input_inventory.json",
+      "bytes": 10065,
+      "mtime_ns": 1793286338727413400,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/manifest_preview200.json",
+      "bytes": 1104788,
+      "mtime_ns": 1793293351971697800,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/progress_build.log",
+      "bytes": 208,
+      "mtime_ns": 1793292207241966500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/progress_build_final.log",
+      "bytes": 134,
+      "mtime_ns": 1793295419376934600,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/progress_check.log",
+      "bytes": 1981,
+      "mtime_ns": 1793292208355705500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/progress_check_final.log",
+      "bytes": 2243,
+      "mtime_ns": 1793295420302013000,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/table_import.log",
+      "bytes": 18934,
+      "mtime_ns": 1793293090595739100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/vfx_authoring_error.json",
+      "bytes": 579,
+      "mtime_ns": 1793292644858331600,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/vfx_edit_contract.json",
+      "bytes": 7577,
+      "mtime_ns": 1793287828929732200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/vfx_full_settings.json",
+      "bytes": 56978,
+      "mtime_ns": 1793288509628983500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/BurningRogue_20261029/vfx_module_inventory.json",
+      "bytes": 18752,
+      "mtime_ns": 1793287693586102600,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/after_loop_runtime.json",
+      "bytes": 1735,
+      "mtime_ns": 1793327594429785200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/after_reactivation.json",
+      "bytes": 469,
+      "mtime_ns": 1793322357866724500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/asset_loop_fix.json",
+      "bytes": 2889,
+      "mtime_ns": 1793326768802834800,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/authoring_settings.json",
+      "bytes": 9650,
+      "mtime_ns": 1793333270275477600,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/controlled_runtime.json",
+      "bytes": 45418,
+      "mtime_ns": 1793329625281371700,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/final_runtime.json",
+      "bytes": 18751,
+      "mtime_ns": 1793333742780398000,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/initial_runtime.json",
+      "bytes": 2103,
+      "mtime_ns": 1793322121181538500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/module_inputs.json",
+      "bytes": 1889,
+      "mtime_ns": 1793333196847979100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/numeric_fixture.json",
+      "bytes": 689,
+      "mtime_ns": 1793332800501282100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/numeric_fixture_attributes.json",
+      "bytes": 4791,
+      "mtime_ns": 1793332833257858100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/particle_runtime.json",
+      "bytes": 2844,
+      "mtime_ns": 1793329774180353100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/reactivation_probe.json",
+      "bytes": 218,
+      "mtime_ns": 1793322334297703300,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/CommanderTracerFix_20261030/settings_before.json",
+      "bytes": 57,
+      "mtime_ns": 1793322078689451700,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/data_export-initial.log",
+      "bytes": 130,
+      "mtime_ns": 1793198805441818900,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/data_export.log",
+      "bytes": 3663,
+      "mtime_ns": 1793199010071594400,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/data_validate.log",
+      "bytes": 170,
+      "mtime_ns": 1793199234665777700,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/parts_notes.json",
+      "bytes": 132,
+      "mtime_ns": 1793198795027080800,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogueSessionCloseout_20261030/session_ops.json",
+      "bytes": 1393033,
+      "mtime_ns": 1793348072793886400,
+      "reason": "Temporary closeout inspection extract; source chat is preserved by the app"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/GuLiStrikeGameTexts.xlsx.Texts.cells.json",
+      "bytes": 988,
+      "mtime_ns": 1793175919078594900,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/GuLiStrikeMech.xlsx.技能表.cells.json",
+      "bytes": 299,
+      "mtime_ns": 1793175919251076000,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/GuLiStrikeRogueCards.xlsx.Cards.cells.json",
+      "bytes": 1184,
+      "mtime_ns": 1793175918724154600,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/GuLiStrikeRogueCards.xlsx.GroundRicochet.cells.json",
+      "bytes": 1738,
+      "mtime_ns": 1793175918926878600,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/coordinator-build.log",
+      "bytes": 5545,
+      "mtime_ns": 1793179023681986400,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/editor-build-hit-center.log",
+      "bytes": 21276,
+      "mtime_ns": 1793180399246464500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/editor-build-input-fix.log",
+      "bytes": 4765,
+      "mtime_ns": 1793179477723962600,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/editor-build-retry1.log",
+      "bytes": 4866,
+      "mtime_ns": 1793179099331074500,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/editor-build.log",
+      "bytes": 338949,
+      "mtime_ns": 1793179021568381100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/editor-reloaded-pid.txt",
+      "bytes": 7,
+      "mtime_ns": 1793180425058307400,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogue_20261028/syntax_core.cmd",
+      "bytes": 433,
+      "mtime_ns": 1793176819634471100,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/build_burning_card_rigid_layers.cpython-313.pyc",
+      "bytes": 11559,
+      "mtime_ns": 1793277428660986700,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/card_artwork_pipeline.cpython-311.pyc",
+      "bytes": 49187,
+      "mtime_ns": 1793292841803739500,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/complete_burning_card_layers.cpython-313.pyc",
+      "bytes": 20443,
+      "mtime_ns": 1793277428341745700,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "Scripts/Cards/__pycache__/prepare_burning_card_layers.cpython-313.pyc",
+      "bytes": 32463,
+      "mtime_ns": 1793262607107632600,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "Scripts/GroundMech/Rogue/__pycache__/author_burning_cards.cpython-313.pyc",
+      "bytes": 14774,
+      "mtime_ns": 1793287983727673100,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "Tools/DataPipeline/__pycache__/buff_catalog.cpython-313.pyc",
+      "bytes": 6912,
+      "mtime_ns": 1793286421536286700,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "Tools/DataPipeline/__pycache__/card_artwork_catalog.cpython-311.pyc",
+      "bytes": 15000,
+      "mtime_ns": 1793292750998491200,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "Tools/DataPipeline/__pycache__/card_artwork_catalog.cpython-313.pyc",
+      "bytes": 12735,
+      "mtime_ns": 1793286421534288500,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "Tools/DataPipeline/__pycache__/export_data_from_excel.cpython-313.pyc",
+      "bytes": 105885,
+      "mtime_ns": 1793281096685301100,
+      "reason": "Regenerable Python cache in session-used tool directories"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeBuffs_Buffs.csv",
+      "bytes": 323,
+      "mtime_ns": 1793293089953691700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeBuffs_Burning.csv",
+      "bytes": 162,
+      "mtime_ns": 1793293090045608900,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeBuffs_BurningBurst.csv",
+      "bytes": 184,
+      "mtime_ns": 1793293090135827300,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeBuildings_Buildings.csv",
+      "bytes": 2319,
+      "mtime_ns": 1793286468286416700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Artworks.csv",
+      "bytes": 2857,
+      "mtime_ns": 1793286468325295700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Layers.csv",
+      "bytes": 7580,
+      "mtime_ns": 1793286468349307900,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Parameters.csv",
+      "bytes": 42449,
+      "mtime_ns": 1793289757458506700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Templates.csv",
+      "bytes": 1092,
+      "mtime_ns": 1793286468298928500,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCommander_Camera.csv",
+      "bytes": 970,
+      "mtime_ns": 1791446625608609100,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCommander_Skills.csv",
+      "bytes": 563,
+      "mtime_ns": 1791446625724162800,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCommander_Soldiers.csv",
+      "bytes": 1802,
+      "mtime_ns": 1793062393237299100,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCommander_UnitSkills.csv",
+      "bytes": 1112,
+      "mtime_ns": 1792742497936233600,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCommander_WeaponMounts.csv",
+      "bytes": 1722,
+      "mtime_ns": 1791446625733194900,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeGameTexts_Texts.csv",
+      "bytes": 35180,
+      "mtime_ns": 1793293090230084500,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeLOD_LOD.csv",
+      "bytes": 2091,
+      "mtime_ns": 1791446625613119100,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Camera.csv",
+      "bytes": 809,
+      "mtime_ns": 1793113961720790700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Gait.csv",
+      "bytes": 4858,
+      "mtime_ns": 1793175939459126600,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_GroundIK.csv",
+      "bytes": 929,
+      "mtime_ns": 1792940624152418700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Mobility.csv",
+      "bytes": 297,
+      "mtime_ns": 1793113961719279900,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Skills.csv",
+      "bytes": 2270,
+      "mtime_ns": 1793293090312289300,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Upgrades.csv",
+      "bytes": 323,
+      "mtime_ns": 1792940624133047300,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Visuals.csv",
+      "bytes": 95,
+      "mtime_ns": 1791459633392153800,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeModels_ColorRegions.csv",
+      "bytes": 1666109,
+      "mtime_ns": 1793277759702834900,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeModels_MaterialParameters.csv",
+      "bytes": 523738,
+      "mtime_ns": 1793286468546734700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeModels_Models.csv",
+      "bytes": 29539,
+      "mtime_ns": 1793277759076333700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeModels_Parts.csv",
+      "bytes": 3438,
+      "mtime_ns": 1793199009711231700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeRogueCardUI_TextStyles.csv",
+      "bytes": 457,
+      "mtime_ns": 1791446625712042000,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeRogueCards_Cards.csv",
+      "bytes": 4298,
+      "mtime_ns": 1793293090314940600,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeRogueCards_Effects.csv",
+      "bytes": 273,
+      "mtime_ns": 1793293090491509300,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeRogueCards_GroundRicochet.csv",
+      "bytes": 175,
+      "mtime_ns": 1793293090407334500,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeSecondaryUnitSkills_Skills.csv",
+      "bytes": 1347,
+      "mtime_ns": 1791446625718122700,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeSecondaryUnitSkills_UnitSkills.csv",
+      "bytes": 354,
+      "mtime_ns": 1791029972110865400,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeSecondaryWeapons_Projectiles.csv",
+      "bytes": 731,
+      "mtime_ns": 1791446625738704500,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeShip_Camera.csv",
+      "bytes": 414,
+      "mtime_ns": 1791446625741860400,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeShip_Parts.csv",
+      "bytes": 2632,
+      "mtime_ns": 1791646851160503300,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeShip_Tuning.csv",
+      "bytes": 640,
+      "mtime_ns": 1791465835218696800,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeShip_WingmanTargeting.csv",
+      "bytes": 209,
+      "mtime_ns": 1791446625735198300,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeShip_WingmanWeapons.csv",
+      "bytes": 1983,
+      "mtime_ns": 1791446625734198400,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeSpellFields_Fields.csv",
+      "bytes": 1828,
+      "mtime_ns": 1791530585472186000,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeVfx_Effects.csv",
+      "bytes": 13659,
+      "mtime_ns": 1793293090590429100,
+      "reason": "Ignored Excel-to-UE intermediate; authored xlsx and exported JSON retained"
+    },
+    {
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/Build/editor-build.log",
+      "bytes": 7816,
+      "mtime_ns": 1793233780888826200,
+      "reason": "Session build/import scratch or superseded diagnostic; final reports retained"
+    },
+    {
+      "path": "Artifacts/GroundRogueSessionCloseout_20261030/session_file_evidence.json",
+      "bytes": 66960,
+      "mtime_ns": 0,
+      "reason": "Temporary closeout inspection extract; source chat remains in the app"
+    }
+  ],
+  "total_files": 127,
+  "total_bytes": 12728897.0,
+  "preserved": [
+    "Formal Source/Scripts/Tools/Config/data/Excel/data/Json",
+    "UE assets and maps",
+    "ArtSource originals, supplements, prompts, manifests, history packages and HTML deliverables",
+    "Progress archives and final structured technical evidence",
+    "Codex chats and user attachment originals"
+  ]
+}

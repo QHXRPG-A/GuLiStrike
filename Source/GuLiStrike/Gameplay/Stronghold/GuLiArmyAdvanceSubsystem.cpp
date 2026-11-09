@@ -114,13 +114,13 @@ void UGuLiArmyAdvanceSubsystem::ObserveGroup(FAdvanceGroup& Group)
     bool bAtTarget = false, bFailed = false;
     for (auto Id : Group.Soldiers)
     {
-        FGuLiSoldierNavigationDebug Nav;
-        Authority.TryGetSoldierNavigationDebug(Id, Nav);
+        FGuLiSoldierNavigationView Nav;
+        Authority.TryGetSoldierNavigation(Id, Nav);
         Group.Center += Nav.Location;
         bAtTarget |= Group.Target != INDEX_NONE && Resources.FindTerritoryIndex(Nav.Location) == Group.Target;
         Group.bMoving |= Nav.ActiveOrderId != 0;
         bFailed |= Nav.State == EGuLiSoldierNavigationState::Blocked;
-        Group.bLocked |= Authority.IsSoldierExternallyLocked(Id);
+        Group.bLocked |= Nav.bExternallyLocked;
     }
     Group.Center /= FMath::Max(1, Group.Soldiers.Num());
     using Phase = EGuLiCommanderWorkPhase;

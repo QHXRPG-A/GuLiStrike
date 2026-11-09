@@ -1,0 +1,128 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "health_texts": [
+      {
+        "text": "生命值",
+        "font": 22.0
+      },
+      {
+        "text": "1000",
+        "font": 46.0
+      },
+      {
+        "text": "/ 1000",
+        "font": 22.0
+      },
+      {
+        "text": "A4B2",
+        "font": 15.0
+      },
+      {
+        "text": "",
+        "font": 15.0
+      },
+      {
+        "text": "武器等级",
+        "font": 16.0
+      },
+      {
+        "text": "01",
+        "font": 18.0
+      },
+      {
+        "text": "射速",
+        "font": 16.0
+      },
+      {
+        "text": "4.0",
+        "font": 18.0
+      },
+      {
+        "text": "移速",
+        "font": 16.0
+      },
+      {
+        "text": "4.3",
+        "font": 18.0
+      },
+      {
+        "text": "[I] 详情",
+        "font": 20.0
+      }
+    ],
+    "separate_attributes": false,
+    "motion": {
+      "entry_plays": 1,
+      "shots": 0,
+      "hit_plays": 0,
+      "kill_plays": 0,
+      "ordinary_refreshes": 835,
+      "motion_frames": 211,
+      "generation": 1,
+      "modal": 0,
+      "hidden": false,
+      "closing": false,
+      "modal_alpha": 0,
+      "shot_expansion": 0,
+      "cooldown_progress": -1,
+      "cooling": false,
+      "aiming": false,
+      "thrusting": false,
+      "skills": [
+        {
+          "slot": 0,
+          "casts": 0,
+          "ready": 0,
+          "cast_material": true,
+          "ready_material": true,
+          "held_alpha": 0
+        },
+        {
+          "slot": 1,
+          "casts": 0,
+          "ready": 0,
+          "cast_material": true,
+          "ready_material": true,
+          "held_alpha": 0
+        },
+        {
+          "slot": 2,
+          "casts": 1,
+          "ready": 1,
+          "cast_material": true,
+          "ready_material": true,
+          "held_alpha": 0
+        },
+        {
+          "slot": 3,
+          "casts": 1,
+          "ready": 1,
+          "cast_material": true,
+          "ready_material": true,
+          "held_alpha": 0
+        }
+      ],
+      "textures": [
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+          "resident_bytes": 4587520
+        },
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+          "resident_bytes": 5636096
+        },
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+          "resident_bytes": 327680
+        },
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+          "resident_bytes": 48431104
+        }
+      ],
+      "resident_mib": 56.25
+    }
+  }
+}

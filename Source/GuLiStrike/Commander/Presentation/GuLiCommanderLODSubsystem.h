@@ -38,6 +38,8 @@ public:
 	bool ShouldShowModelOutlines() const { return !bMeshPolicyEnabled || AppliedMeshTier == EGuLiPresentationTier::Full; }
 
 	FGuLiCommanderLODDecision Evaluate(const FGuLiCommanderLODQuery& Query);
+	/** Visibility-only consumers do not need distance, screen size or tier classification. */
+	bool IsBoundsVisible(const FBox& Bounds);
 	FGuLiCommanderLODDecision EvaluateWorldEffectBounds(const FGuLiCommanderLODQuery& Query, double NonCommanderMaximumDistance);
 	/** World-effect admission: commander LOD0/1/2 allow, LOD3 suppresses. Other views use the
 	 * caller's distance limit (<= 0 means unlimited). Any eligible local view wins;
@@ -86,6 +88,10 @@ private:
 		bool bOriginalOverride = false, bNanite = false, bApplied = false;
 		TMap<int32, FOutlineSlot> OutlineOverrides;
 		int32 OriginalOverrideCount = 0;
+		TOptional<EGuLiCommanderLODLevel> DistanceLevel;
+		double LastDistanceChangeSeconds = -1;
+		bool bReduced = false;
+		TOptional<float> OutlineOverlayDistance;
 	};
 	void ApplyMeshEntry(FMeshEntry& Entry, bool bReduce);
 	void RestoreMeshEntry(FMeshEntry& Entry);

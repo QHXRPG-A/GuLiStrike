@@ -49,9 +49,11 @@ struct FGuLiLocalCombatEffect
 	float LaserMuzzleUntil = 0;
 	float LaserFadeUntil = 0;
 	// Ground trace lives independently of the projectile's terminal state. No wire fields.
+	int32 GroundTrailVfxId=0;
 	float GroundTrailLength = 0, GroundTrailHold = 0, GroundTrailFade = 0, GroundTrailBend = 0, GroundTrailWidth = 0;
 	float GroundTrailEndedAt = -1;
     bool bInstantGroundSegment=false;
+	int32 FrozenUnitTypeId=0;
 	FVector GroundTrailEnd = FVector::ZeroVector;
 	FVector GroundTrailFacing = FVector::ZeroVector;
 	UPROPERTY() TArray<FGuLiGroundTraceSegment> GroundTrailSegments;
@@ -270,6 +272,7 @@ public:
 
 private:
 	UPROPERTY(Transient) TObjectPtr<class UGuLiBulletTrailPresentation> BulletTrails;
+	UPROPERTY(Transient) TObjectPtr<class UGuLiBulletTrailPresentation> BasicBulletTrails;
 	EGuLiTeam BulletLocalTeam=EGuLiTeam::Unassigned;
 	TArray<FVector> BulletLocalViews;
 	void BeginBulletTrailsFrame(float Now,bool bEnabled);
@@ -287,6 +290,7 @@ private:
 	void ResolveFlightConfiguration(FGuLiLocalCombatEffect& Visual);
 	void ResolveGroundTrailConfiguration(FGuLiLocalCombatEffect& Visual);
 	bool UpdateGroundTrail(FGuLiLocalCombatEffect& Visual, float Now, bool bEnabled);
+	bool UpdateExplosiveFlight(FGuLiLocalCombatEffect& Visual, float Now, bool bEnabled);
 	friend class UGuLiRogueCardQALibrary;
 	struct FPoseProvider { TWeakObjectPtr<UObject> Owner; FPoseResolver Resolve; };
 	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; FShotObserver Observe; FLaunchOffsetResolver LaunchOffset; };

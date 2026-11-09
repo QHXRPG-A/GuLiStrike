@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "kind": "static_source_and_analytic_asset_bounds_review",
+  "parameters": {
+    "HoverHeight": 120.0,
+    "HoverBobAmplitude": 80.0,
+    "HoverPitchAmplitude": 3.2,
+    "HoverRollAmplitude": 3.2,
+    "HoverBobPeriod": 5.0,
+    "HoverPitchPeriod": 5.0,
+    "HoverRollPeriod": 5.0,
+    "HoverBlendSeconds": 0.35,
+    "HoverIdleEnterSpeed": 5.0,
+    "HoverIdleExitSpeed": 15.0,
+    "HoverIdleHoldSeconds": 0.2
+  },
+  "defaults_match": true,
+  "phase_offset_degrees": 90,
+  "unit_phase": "unchanged stable-ID integer hash",
+  "loop_seconds": 5,
+  "bounds": [
+    {
+      "label": "production",
+      "scale": 0.192,
+      "max_rigid_sway_displacement_cm": 99.69118803300623,
+      "positive_margin_cm": [
+        82.70881196699378,
+        15.508811966993775,
+        65.10881196699376
+      ],
+      "negative_margin_cm": [
+        82.70881196699378,
+        15.508811966993775,
+        189.90881196699377
+      ],
+      "contains_idle_envelope": true
+    },
+    {
+      "label": "existing_preview",
+      "scale": 0.2,
+      "max_rigid_sway_displacement_cm": 103.84498753438149,
+      "positive_margin_cm": [
+        86.15501246561851,
+        16.155012465618512,
+        76.15501246561848
+      ],
+      "negative_margin_cm": [
+        86.15501246561851,
+        16.155012465618512,
+        196.1550124656185
+      ],
+      "contains_idle_envelope": true
+    }
+  ],
+  "geometry_source": "../preflight.json",
+  "bounds_limit": "Conservative whole-body idle envelope, not a runtime articulated-pose or visual test.",
+  "scope": "WM01 parameters only; 90-degree phase and existing transition remain unchanged.",
+  "runtime_validation": "not_run",
+  "visual_validation": "player_pending",
+  "compile_status": "succeeded",
+  "scene_script_syntax": "passed",
+  "source_sha256": {
+    "Config/DefaultGame.ini": "1145264378eb5261560c9c184982df42b4442b69a93217630888407876d08fc9",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.h": "7b05008d20956a12229f3a29b2b84a8fd8689a87299f92aceb9ca2646c74c37f",
+    "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.cpp": "4ec5254bcad0bb72137ed95bf08c7abac4ee083772b72f6fc5817e5007600d8b"
+  },
+  "editor_reload_status": "loaded_pid_61004",
+  "geometry_rechecked_after_reload": true
+}

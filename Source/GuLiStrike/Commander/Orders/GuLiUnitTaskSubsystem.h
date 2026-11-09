@@ -40,12 +40,12 @@ public:
 	bool SubmitActorCommand(APawn& Pawn, const FGuLiUnitTaskCommand& Command);
 	bool BuildContextCommand(const FGuLiCommanderSelectionState& Selection, FGuLiUnitTaskCommand& Command) const;
 	void BuildSummary(const FGuLiCommanderSelectionState& Selection, TArray<FGuLiUnitTaskSummary>& Out) const;
-	bool HasState(FGuLiTaskUnitId Unit) const { return States.Contains(Unit); }
+	bool HasState(FGuLiTaskUnitId Unit) const { return FindTaskState(Unit)!=nullptr; }
 	bool MayAdvance(FGuLiSoldierId Unit) const;
 	bool WantsAdvanceYield(FGuLiSoldierId Unit) const;
 	void NotifyAdvanceStage(FGuLiSoldierId Unit);
 	void UpdateAdvanceTarget(FGuLiSoldierId Unit, int32 Territory, const FVector& Target);
-	const FGuLiUnitTaskState* FindState(FGuLiTaskUnitId Unit) const { return States.Find(Unit); }
+	const FGuLiUnitTaskState* FindState(FGuLiTaskUnitId Unit) const { return FindTaskState(Unit); }
 	/** Already-validated policy boundary, exercised by production admission and automation. */
 	static bool Admit(FGuLiUnitTaskState& State, const FGuLiUnitTaskCommand& Command, int32 Capacity);
 	/** Pure admission policy; callers refresh an active move's terminal status first. */
@@ -76,6 +76,12 @@ private:
     double GetTaskSeconds() const;
     uint64 LastHybridTick=0;
 	TMap<FGuLiTaskUnitId, FGuLiUnitTaskState> States;
+	// A StateTree reads the same unit repeatedly. Keep an index hint rather than
+	// a pointer: growth, removal, restore, and slot reuse are checked on every use.
+	mutable FSetElementId LastStateIndex;
+	const FGuLiUnitTaskState* FindTaskState(FGuLiTaskUnitId Unit) const;
+	FGuLiUnitTaskState* FindTaskState(FGuLiTaskUnitId Unit)
+	{return const_cast<FGuLiUnitTaskState*>(static_cast<const UGuLiUnitTaskSubsystem*>(this)->FindTaskState(Unit));}
 	// Stable IDs are never reused within this World. Keep a tombstone after death/unregistration.
 	TSet<FGuLiTaskUnitId> InitializedUnits;
 	UPROPERTY(Transient) TObjectPtr<UGuLiCommanderMassStateTreeProcessor> MassTreeProcessor;

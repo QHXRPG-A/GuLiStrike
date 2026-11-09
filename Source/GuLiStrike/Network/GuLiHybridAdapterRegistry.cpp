@@ -7,6 +7,7 @@
 namespace
 {
 constexpr const TCHAR* DefinitionPrefix=TEXT("adapter/definition/");
+uint64& RegistryRevision() {static uint64 Value=1;return Value;}
 TArray<const FGuLiHybridAdapterRegistration*>& Registrations()
 {
     // Registrations may be destroyed in another translation unit during module unload.
@@ -45,8 +46,10 @@ bool Check(const FGuLiHybridManifestData& Manifest,const FString& Definition,
 }
 }
 FGuLiHybridAdapterRegistration::FGuLiHybridAdapterRegistration(FGuLiHybridAdapterFamily InFamily):Family(MoveTemp(InFamily))
-{Registrations().Add(this);}
-FGuLiHybridAdapterRegistration::~FGuLiHybridAdapterRegistration() {Registrations().Remove(this);}
+{Registrations().Add(this);++RegistryRevision();}
+FGuLiHybridAdapterRegistration::~FGuLiHybridAdapterRegistration() {Registrations().Remove(this);++RegistryRevision();}
+
+uint64 FGuLiHybridAdapterRegistry::GetRevision() {return RegistryRevision();}
 
 bool FGuLiHybridAdapterRegistry::GetFamilies(TArray<FGuLiHybridAdapterFamily>& Out,FString& Error)
 {

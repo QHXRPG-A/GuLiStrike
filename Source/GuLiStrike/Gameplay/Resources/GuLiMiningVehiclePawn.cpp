@@ -16,6 +16,7 @@
 #include "Components/ChildActorComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/MeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameStateBase.h"
 #include "Navigation/PathFollowingComponent.h"
@@ -28,6 +29,14 @@
 #include "Network/GuLiHybridActorComponent.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
+
+struct AGuLiMiningVehiclePawn::FMiningVisibilityCache
+{
+    TSharedPtr<const FCollisionQueryParams> Base;
+    TArray<TWeakObjectPtr<const AActor>> Actors;
+    FCollisionQueryParams Params;
+};
 
 AGuLiMiningVehiclePawn::AGuLiMiningVehiclePawn(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -45,6 +54,8 @@ AGuLiMiningVehiclePawn::AGuLiMiningVehiclePawn(const FObjectInitializer& ObjectI
 
 	// ACharacter requires HalfHeight >= Radius. Keep a real Actor collision envelope
 	// while selecting the deliberately conservative CommanderSoldier nav agent.
+	// Geometry and animation belong to the presentation child, not this empty Character mesh.
+	GetMesh()->PrimaryComponentTick.bCanEverTick = false;
 	GetCapsuleComponent()->InitCapsuleSize(130.0f, 130.0f);
     GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Block);
     GetCapsuleComponent()->SetCanEverAffectNavigation(false);
@@ -257,17 +268,36 @@ bool AGuLiMiningVehiclePawn::IsAtReservedMiningSlot() const
 
 bool AGuLiMiningVehiclePawn::CanMineTargetFrom(const FVector& Target, const FTransform& Pose) const
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_Visibility);
     if (Target.ContainsNaN() || !Pose.IsValid()) return false;
     FVector Left, Right;
     if (!MiningPresentation->CalculateMuzzles(Target, Pose, Left, Right)) return false;
-    FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiMiningLineOfSight), true, this);
-    Params.AddIgnoredActor(VehiclePresentation->GetChildActor());
-    GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->IgnoreVehicles(Params);
-    GetResourceSubsystem()->IgnoreMiningNavigationProxies(Params);
+    const auto Base=GetResourceSubsystem()->GetMiningVisibilityParams();
+    TSharedPtr<const FMiningVisibilityCache> Query;
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_VisibilityParams);
+        TArray<const AActor*,TInlineAllocator<64>> Actors;Actors.Add(this);
+        if (const auto* Child=VehiclePresentation->GetChildActor()) Actors.Add(Child);
+        GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->AppendVisibilityIgnoredActors(Actors);
+        Query=MiningVisibilityCache;
+        bool Current=Query && Query->Base.Get()==&Base.Get() && Query->Actors.Num()==Actors.Num();
+        if (Current) for (int32 I=0;I<Actors.Num();++I)
+            if (Query->Actors[I].Get()!=Actors[I]) {Current=false;break;}
+        if (!Current)
+        {
+            auto Next=MakeShared<FMiningVisibilityCache>();Next->Base=Base;Next->Params=Base.Get();
+            for (const auto* Actor:Actors) {Next->Actors.Add(Actor);Next->Params.AddIgnoredActor(Actor);}
+            MiningVisibilityCache=Next;Query=MoveTemp(Next);
+        }
+        // The immutable lease keeps the exact filter alive through both traces.
+        // Proxy replacement, registration/order changes and child replacement
+        // are observed above on every query, including weak serial validation.
+    }
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_VisibilityQueries);
     for (const FVector& Muzzle : {Left, Right})
     {
         // Distance does not limit extraction. The reserved slot gates work; beams reach the target.
-        if (GetWorld()->LineTraceTestByChannel(Muzzle, Target, ECC_Visibility, Params)) return false;
+        if (GetWorld()->LineTraceTestByChannel(Muzzle, Target, ECC_Visibility, Query->Params)) return false;
     }
     return true;
 }
@@ -551,6 +581,7 @@ void AGuLiMiningVehiclePawn::OnRep_MiningVisual()
 
 void AGuLiMiningVehiclePawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+    MiningVisibilityCache.Reset();
     if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) {H->UnsubscribeObjectReceipt(this);H->OnTransactionCompleted.RemoveDynamic(this,&ThisClass::ApplyHybridResourceResult);}
     GetResourceSubsystem()->OnResourceSettlement.RemoveAll(this);
     if (UGuLiHybridActorComponent::HasSimulation(this))

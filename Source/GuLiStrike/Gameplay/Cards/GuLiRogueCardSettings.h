@@ -16,6 +16,7 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category="Data") TSoftObjectPtr<UDataTable> Cards;
 	UPROPERTY(Config, EditAnywhere, Category="Data") TSoftObjectPtr<UDataTable> GroundRicochet;
     UPROPERTY(Config, EditAnywhere, Category="Data") TSoftObjectPtr<UDataTable> Effects;
+    UPROPERTY(Config, EditAnywhere, Category="Data") TSoftObjectPtr<UDataTable> GroundWeaponEffects;
 	UPROPERTY(Config, EditAnywhere, Category="Data") TSoftObjectPtr<UStringTable> Texts;
 	UPROPERTY(Config, EditAnywhere, Category="Presentation") TSoftClassPtr<AActor> DirectorClass;
 	UPROPERTY(Config, EditAnywhere, Category="Presentation") TSoftObjectPtr<UMaterialInterface> CaptureMaterial;

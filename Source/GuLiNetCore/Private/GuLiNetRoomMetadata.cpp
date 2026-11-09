@@ -5,7 +5,10 @@ namespace GuLiNet
 {
 Bytes Room::ExportMetadata() const
 {
-    Writer W(32*1024*1024);W.U32(ProtocolVersion);W.Identity(Match);W.Text(ConfigurationHash);W.Text(LevelHash);
+    // This is a local database record, not a network packet/private cut. Keep
+    // the complete authority history; the store enforces its actual byte limit.
+    if (Directory.size()>UINT32_MAX) return {};
+    Writer W(UINT32_MAX);W.U32(ProtocolVersion);W.Identity(Match);W.Text(ConfigurationHash);W.Text(LevelHash);
     W.U8(static_cast<std::uint8_t>(CurrentPhase));W.Text(FailureReason);W.U64(NextMembership);W.U64(Scheduler.NextTransferId());
     W.U8(InitialRosterReady?1:0);W.U32(static_cast<std::uint32_t>(Players.size()));
     for (const auto& [P,M]:Players)
@@ -20,7 +23,7 @@ Bytes Room::ExportMetadata() const
     {
         ObjectKey First;First.Kind=static_cast<ObjectKind>(Bucket>>8);
         First.StableId.Words[0]=static_cast<std::uint32_t>(Bucket&255)<<24;
-        Writer Part(32*1024*1024);
+        Writer Part(UINT32_MAX);
         for (auto I=Directory.lower_bound(First);I!=Directory.end() && MetadataBucket(I->first)==Bucket;++I)
         {
             const auto& O=I->second;WriteAuthority(Part,O.Grant);Part.Text(O.Definition);Part.U32(O.Ordinal);Part.Key(O.Parent);
@@ -64,7 +67,7 @@ bool Room::ImportMetadata(std::span<const std::uint8_t> Data,double Now)
         M.Faction=static_cast<Team>(F);M.Seat=static_cast<Role>(S);M.Carrier=static_cast<Transport>(C);
         M.Online=Online!=0;M.Ready=Ready!=0;M.LastSeen=Now;if (!Trial.ImportMember(M)) return false;
     }
-    if (!R.U32(Count) || Count>100000) return false;
+    if (!R.U32(Count) || Count>Data.size()/sizeof(Id)) return false;
     for (std::uint32_t I=0;I<Count;++I)
     {
         ObjectRegistration O;
@@ -73,6 +76,7 @@ bool Room::ImportMetadata(std::span<const std::uint8_t> Data,double Now)
             || !Trial.Scheduler.SetObject({O.Grant,O.Grant.Policy,O.Parent},Now)) return false;
         Trial.MarkDirectoryChanged(O.Grant.Object);
     }
+    if (Trial.LivingDirectory.size()>MaxLiveObjects) return false;
     if (!R.U32(Count) || Count>4096) return false;
     for (std::uint32_t I=0;I<Count;++I)
     {

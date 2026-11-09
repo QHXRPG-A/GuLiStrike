@@ -12,6 +12,7 @@
 #include "Battle/Combat/GuLiActorDamageReceiverComponent.h"
 #include "Components/ChildActorComponent.h"
 #include "Components/MeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -24,6 +25,8 @@ AGuLiConstructionVehiclePawn::AGuLiConstructionVehiclePawn(const FObjectInitiali
 	: Super(Initializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	bReplicates = false; bAlwaysRelevant = true; SetReplicateMovement(false);
+	// Geometry and animation belong to the presentation child, not this empty Character mesh.
+	GetMesh()->PrimaryComponentTick.bCanEverTick = false;
 	GetCapsuleComponent()->InitCapsuleSize(130,130);
 	GetCapsuleComponent()->SetCanEverAffectNavigation(false);
 	GetCharacterMovement()->SetUpdateNavAgentWithOwnersCollisions(false);

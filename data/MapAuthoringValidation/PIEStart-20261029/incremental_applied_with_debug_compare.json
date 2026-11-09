@@ -1,0 +1,145 @@
+{
+  "success": false,
+  "date": "2026-10-29",
+  "scope": "Added deployment revalidation and production manifests only",
+  "PIE_started": false,
+  "native_build": false,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "before": {
+    "success": false,
+    "message": "GuLiMapAuthoring source changed after the last resource bake; rebake before PIE.",
+    "source_hash": "",
+    "layout_hash": "",
+    "territory_count": 0,
+    "cluster_count": 0,
+    "node_count": 0,
+    "initial_soldier_count": 0,
+    "validated_initial_soldier_count": 0,
+    "issues": [
+      "GuLiMapAuthoring source changed after the last resource bake; rebake before PIE."
+    ]
+  },
+  "resource_before": {
+    "asset": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap",
+    "source_hash": "e1fee1d2461dec9ab29c2f578db5af93f2280608",
+    "layout_hash": "1449dc14a87d5825ab96ee22ce244eb51985d062",
+    "territories": 49,
+    "clusters": 240,
+    "nodes": 6240
+  },
+  "geometry_before": "07e42b96227b53cadd7b11fb9142588aec6ee32be85079c3bd32bf053d5d72a3",
+  "source_actor_count": 51,
+  "manifests_before": {
+    "200": "209a705efab59de552dfd1785b7b92f511d73b775a5d1080fcf5a694722b7b2b",
+    "600": "a7ed051506ca7cf7b2cc8551773c32b050420cdeccbfb5e856e546726c37602b"
+  },
+  "added_deployments": [
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_20",
+      "label": "GroundRogue_BehindWall",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -4300.000000, y: 56200.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_11",
+      "label": "GroundRogue_Enemy_01",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -4300.000000, y: 54000.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_12",
+      "label": "GroundRogue_Enemy_02",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -5200.000000, y: 54000.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_13",
+      "label": "GroundRogue_Enemy_03",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -6100.000000, y: 53400.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_14",
+      "label": "GroundRogue_Enemy_04",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -7000.000000, y: 54000.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_15",
+      "label": "GroundRogue_Enemy_05",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -7300.000000, y: 53400.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_16",
+      "label": "GroundRogue_Enemy_06",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -8800.000000, y: 54600.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_17",
+      "label": "GroundRogue_Enemy_07",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -9700.000000, y: 53400.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_18",
+      "label": "GroundRogue_Enemy_08",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -10600.000000, y: 54000.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_19",
+      "label": "GroundRogue_Enemy_09",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -11100.000000, y: 54800.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_22",
+      "label": "GroundRogue_Friendly",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -4000.000000, y: 53200.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    },
+    {
+      "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_21",
+      "label": "GroundRogue_OutOfRange",
+      "transform": "<Struct 'Transform' (0x000001BE6AA88C30) {rotation: {x: -0.000000, y: -1.000000, z: 0.000000, w: 0.000000}, translation: {x: -15500.000000, y: 54000.000000, z: 905.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+    }
+  ],
+  "dry_run": {
+    "success": true,
+    "message": "Added deployments passed revalidation; no packages changed.",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1449dc14a87d5825ab96ee22ce244eb51985d062",
+    "territory_count": 49,
+    "cluster_count": 240,
+    "node_count": 6240,
+    "initial_soldier_count": 23,
+    "validated_initial_soldier_count": 23,
+    "issues": []
+  },
+  "revalidation": {
+    "success": true,
+    "message": "Saved revalidated added deployments; certified ore layout is unchanged.",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territory_count": 49,
+    "cluster_count": 240,
+    "node_count": 6240,
+    "initial_soldier_count": 23,
+    "validated_initial_soldier_count": 23,
+    "issues": []
+  },
+  "after": {
+    "success": true,
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territory_count": 49,
+    "cluster_count": 240,
+    "node_count": 6240,
+    "initial_soldier_count": 23,
+    "validated_initial_soldier_count": 23,
+    "issues": []
+  },
+  "resource_after": {
+    "asset": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap",
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45",
+    "layout_hash": "1823631d44a28aae742e5d2e9f8061dab389e7f5",
+    "territories": 49,
+    "clusters": 240,
+    "nodes": 6240
+  },
+  "geometry_after": "07e42b96227b53cadd7b11fb9142588aec6ee32be85079c3bd32bf053d5d72a3",
+  "source_actors_unchanged": false,
+  "error": "Traceback (most recent call last):\n  File \"<string>\", line 99, in repair\nAssertionError: Source authoring actors changed during bake\n"
+}

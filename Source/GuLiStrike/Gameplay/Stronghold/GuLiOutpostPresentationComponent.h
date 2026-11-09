@@ -5,7 +5,6 @@
 #include "Components/ActorComponent.h"
 #include "GuLiOutpostPresentationComponent.generated.h"
 
-class UMaterialBillboardComponent;
 class UMaterialInstanceDynamic;
 class UMaterialInterface;
 class UStaticMesh;
@@ -90,8 +89,6 @@ private:
 	FVector RestMeshCenterLocation = FVector::ZeroVector;
 	FVector ScaledMeshBoundsOrigin = FVector::ZeroVector;
 	UPROPERTY(Transient) TObjectPtr<UStaticMeshComponent> VisualMesh;
-	UPROPERTY(Transient) TObjectPtr<UMaterialBillboardComponent> Halo;
 	UPROPERTY(Transient) TObjectPtr<UMaterialInstanceDynamic> BodyMaterial;
-	UPROPERTY(Transient) TObjectPtr<UMaterialInstanceDynamic> HaloMaterial;
 	FLinearColor LastGlowColor = FLinearColor::Transparent;
 };

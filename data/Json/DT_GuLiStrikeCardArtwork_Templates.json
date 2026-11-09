@@ -22,5 +22,21 @@
     "ParentMaterial": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/M_Ricochet_RegisteredLayers_Builtin_v1.M_Ricochet_RegisteredLayers_Builtin_v1",
     "Layout": "Independent6",
     "CompositePreset": "RegisteredSixForegroundMask"
+  },
+  {
+    "Name": "RegisteredSixRigid",
+    "Id": 4,
+    "Note": "完整物件刚性平移；运动归属绑定；完整冲击环局部遮挡合成",
+    "ParentMaterial": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredRigid_v1.M_CardArtwork_RegisteredRigid_v1",
+    "Layout": "Independent6",
+    "CompositePreset": "RegisteredSixRigid"
+  },
+  {
+    "Name": "BlankPlaceholder",
+    "Id": 5,
+    "Note": "纯空白占位，无图片和逻辑图层",
+    "ParentMaterial": "/Game/GuLiStrike/Cards/Shared/Placeholder/M_CardBlank.M_CardBlank",
+    "Layout": "None",
+    "CompositePreset": "BlankPlaceholder"
   }
 ]

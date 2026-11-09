@@ -13,7 +13,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "MissileFlight",
@@ -29,7 +36,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "CommanderGunfire",
@@ -45,7 +59,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "MachineGunTracer",
@@ -61,12 +82,19 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "MachineGunImpact",
     "Id": 5,
-    "Note": "指挥官、僚机、玩家地面机甲机枪命中单位或地形",
+    "Note": "指挥官、僚机、玩家游骑兵机枪命中单位或地形",
     "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations",
     "Scale": {
       "X": 2.0,
@@ -77,7 +105,14 @@
     "MinimalResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations_Minimal.NS_MachineGunImpact_AllOptimizations_Minimal",
     "BatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch.NS_MachineGunImpact_Batch",
     "ReducedBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Reduced.NS_MachineGunImpact_Batch_Reduced",
-    "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Minimal.NS_MachineGunImpact_Batch_Minimal"
+    "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Minimal.NS_MachineGunImpact_Batch_Minimal",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "CommanderMissileExplosion",
@@ -93,7 +128,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "WingmanBombardment",
@@ -109,44 +151,65 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "PlayerBullet",
     "Id": 8,
-    "Note": "玩家地面机甲机枪飞行子弹",
-    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet.NS_GroundMech_Bullet",
+    "Note": "Ground固定橙黄曲线；保留24cm线宽和0.12s停留/0.38s淡出；独立限额照明",
+    "ResourcePath": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_GroundBulletTrail_Orange.NS_GroundBulletTrail_Orange",
     "Scale": {
-      "X": 1.0,
-      "Y": 1.0,
-      "Z": 1.0
+      "X": 2.0,
+      "Y": 2.0,
+      "Z": 2.0
     },
     "ReducedResourcePath": "",
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 12000.0,
+    "TrailHoldSeconds": 0.12,
+    "TrailFadeSeconds": 0.38,
+    "TrailBendCm": 45.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "PlayerMuzzle",
     "Id": 9,
-    "Note": "玩家地面机甲机枪枪口闪光",
-    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle.NS_GroundMech_Muzzle",
+    "Note": "玩家Ground枪焰；统一线性尺寸倍率由User.Size接收，组件保持单位缩放",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A3/NS_GroundMech_Muzzle_A3.NS_GroundMech_Muzzle_A3",
     "Scale": {
-      "X": 1.0,
-      "Y": 1.0,
-      "Z": 1.0
+      "X": 2.0,
+      "Y": 2.0,
+      "Z": 2.0
     },
     "ReducedResourcePath": "",
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "RocketJet",
     "Id": 10,
-    "Note": "玩家地面机甲火箭跳双侧持续喷气",
+    "Note": "玩家游骑兵火箭跳双侧持续喷气",
     "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet.NS_GroundMech_RocketJet",
     "Scale": {
       "X": 1.0,
@@ -157,12 +220,19 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "RocketFuelBar",
     "Id": 11,
-    "Note": "玩家地面机甲火箭跳燃料弧形条材质",
+    "Note": "玩家游骑兵火箭跳燃料弧形条材质",
     "ResourcePath": "/Game/GuLiStrike/GroundMech/UI/M_RocketFuelArc.M_RocketFuelArc",
     "Scale": {
       "X": 1.0,
@@ -173,7 +243,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TransitEnergy",
@@ -189,7 +266,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TransitTrail",
@@ -205,7 +289,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TransitFlash",
@@ -221,7 +312,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TeamOutline",
@@ -237,7 +335,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "WingmanFlightTrail",
@@ -253,7 +358,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "UnitWreck",
@@ -269,7 +381,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "UnitHit",
@@ -285,7 +404,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "UnitHitInstanced",
@@ -301,7 +427,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "GroundDestruction",
@@ -317,7 +450,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "WingmanDestruction",
@@ -333,7 +473,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "UnitHitHealthBar",
@@ -349,7 +496,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BlinkAfterimage",
@@ -365,7 +519,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BlinkHeatwave",
@@ -381,7 +542,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BlinkSphere",
@@ -397,7 +565,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TeleportCylinder",
@@ -413,7 +588,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TeleportGround",
@@ -429,7 +611,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TeleportBeam",
@@ -445,7 +634,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TeleportBody",
@@ -461,7 +657,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "UnitRingMesh",
@@ -477,7 +680,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "UnitRingMaterial",
@@ -493,7 +703,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TransitOrb",
@@ -509,7 +726,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TransitNode",
@@ -525,7 +749,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "TransitEdge",
@@ -541,7 +772,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "FuelBarPlane",
@@ -557,7 +795,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "MiningLaser",
@@ -573,7 +818,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "NpcDestruction",
@@ -589,15 +841,22 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "GroundMachineGunTracer",
     "Id": 38,
-    "Note": "指挥官地面机枪弹道；X 为长度基础系数，Y 为宽度基础系数",
-    "ResourcePath": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool_SmallBatches.NS_WingmanLaserPool_SmallBatches",
+    "Note": "Mass GPU固定细曲线；线宽6cm；按点残留；独立共享照明",
+    "ResourcePath": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_MassBulletTrail_GPU.NS_MassBulletTrail_GPU",
     "Scale": {
-      "X": 0.3,
+      "X": 1.0,
       "Y": 1.0,
       "Z": 1.0
     },
@@ -605,7 +864,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 1200.0,
+    "TrailHoldSeconds": 0.06,
+    "TrailFadeSeconds": 0.18,
+    "TrailBendCm": 12.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 0.25,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingPlacement",
@@ -621,7 +887,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingConstructionHologram",
@@ -637,7 +910,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingConstructionFinish",
@@ -653,7 +933,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingPlacementGrid",
@@ -669,7 +956,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingConstructionComplete",
@@ -685,7 +979,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingConstructionTopLoop",
@@ -701,7 +1002,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingConstructionLaser",
@@ -717,7 +1025,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingConstructionColumnTail",
@@ -733,7 +1048,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "BuildingConstructionMote",
@@ -749,7 +1071,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "WarMachineHover",
@@ -765,7 +1094,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "WM01MissileClusterFull",
@@ -781,7 +1117,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "WM01MissileClusterLite",
@@ -797,7 +1140,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "WM01MissileClusterMinimal",
@@ -813,7 +1163,14 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "GroundMachineGunMuzzle",
@@ -829,7 +1186,14 @@
     "MinimalResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations_Minimal.NS_MachineGunMuzzle_AllOptimizations_Minimal",
     "BatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch.NS_MachineGunMuzzle_Batch",
     "ReducedBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Reduced.NS_MachineGunMuzzle_Batch_Reduced",
-    "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Minimal.NS_MachineGunMuzzle_Batch_Minimal"
+    "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_Batch_Minimal.NS_MachineGunMuzzle_Batch_Minimal",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   },
   {
     "Name": "WingmanGroundFlightBatch",
@@ -845,6 +1209,289 @@
     "MinimalResourcePath": "",
     "BatchResourcePath": "",
     "ReducedBatchResourcePath": "",
-    "MinimalBatchResourcePath": ""
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundMechImpact",
+    "Id": 54,
+    "Note": "Ground 命中：保留原命中形态/贴图/运动；线性尺寸 x2；子弹橙黄；0.20秒淡出",
+    "ResourcePath": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Hit_1.NS_Hit_1",
+    "Scale": {
+      "X": 4.0,
+      "Y": 4.0,
+      "Z": 4.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundMechAfterimage",
+    "Id": 55,
+    "Note": "Ground 闪现：冻结双臂后展姿势；阵营色；世界位置固定；材质淡出",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundMech_Afterimage_B1.M_GroundMech_Afterimage_B1",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundMechBlink",
+    "Id": 56,
+    "Note": "Ground blink: GreenCrystalTrail mech adaptation; world-space skeletal sampling; scale 1; original green",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink.NS_GroundMech_Blink",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundMechBlinkShape",
+    "Id": 57,
+    "Note": "Single moving mech-shaped energy proxy; original model materials stay unchanged",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Blink/DA_GroundMech_BlinkVfx.DA_GroundMech_BlinkVfx",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "BulletLightPool",
+    "Id": 58,
+    "Note": "客户端共享6槽CPU粒子灯；无阴影、不影响透明或体积雾",
+    "ResourcePath": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_BulletLights_CPU.NS_BulletLights_CPU",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundBurningStatus",
+    "Id": 59,
+    "Note": "灼烧卡牌正式表现；来源与适配见任务归档",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus.NS_GroundBurningStatus",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundBurningBurst",
+    "Id": 60,
+    "Note": "独立火焰脉冲；0.5秒扩张至5米外缘、0.5秒保持范围淡出；总长1秒，准备阶段缓存参数",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundBurningBullet",
+    "Id": 61,
+    "Note": "灼烧卡牌正式表现；来源与适配见任务归档",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet.NS_GroundBurningBullet",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 12000.0,
+    "TrailHoldSeconds": 0.12,
+    "TrailFadeSeconds": 0.38,
+    "TrailBendCm": 45.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundInitialBullet",
+    "Id": 62,
+    "Note": "游骑兵初始弹：12cm宽、30m最大长度、零弯曲",
+    "ResourcePath": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_GroundBulletTrail_Orange.NS_GroundBulletTrail_Orange",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 3000.0,
+    "TrailHoldSeconds": 0.12,
+    "TrailFadeSeconds": 0.38,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundExplosiveFlight",
+    "Id": 63,
+    "Note": "爆破套餐指定资源的项目副本",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight.NS_GroundExplosiveFlight",
+    "Scale": {
+      "X": 2.0,
+      "Y": 2.0,
+      "Z": 2.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 12000.0,
+    "TrailHoldSeconds": 0.12,
+    "TrailFadeSeconds": 0.38,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
+  },
+  {
+    "Name": "GroundExplosiveImpact",
+    "Id": 64,
+    "Note": "爆破套餐指定资源的项目副本",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact.NS_GroundExplosiveImpact",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 0.0,
+    "TrailHoldSeconds": 0.0,
+    "TrailFadeSeconds": 0.0,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 266.0
+  },
+  {
+    "Name": "GroundExplosiveTrail",
+    "Id": 65,
+    "Note": "爆炸弹独立世界空间尾迹；24cm宽，停留0.12秒/淡出0.38秒",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail.NS_GroundExplosiveTrail",
+    "Scale": {
+      "X": 2.0,
+      "Y": 2.0,
+      "Z": 2.0
+    },
+    "ReducedResourcePath": "",
+    "MinimalResourcePath": "",
+    "BatchResourcePath": "",
+    "ReducedBatchResourcePath": "",
+    "MinimalBatchResourcePath": "",
+    "TrailLengthCm": 12000.0,
+    "TrailHoldSeconds": 0.12,
+    "TrailFadeSeconds": 0.38,
+    "TrailBendCm": 0.0,
+    "PersistentTrailVfxId": 0,
+    "InitialStyleLengthMultiplier": 1.0,
+    "RadiusAtUnitScaleCm": 0.0
   }
 ]

@@ -1,0 +1,36 @@
+{
+  "before": {
+    "label": "ModelRegistry_Mass_ManualOutpost",
+    "hidden_in_game": false
+  },
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "after": {
+    "label": "ModelRegistry_Mass_ManualOutpost",
+    "hidden_in_game": true,
+    "editor_only": true,
+    "location_cm": [
+      -21724.99305908203,
+      55988.8062890625,
+      1075.441672388809
+    ],
+    "scale": [
+      0.945,
+      0.945,
+      1.0
+    ],
+    "mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+    "tags": [
+      "GuLi.ModelRegistry.Review.20261008",
+      "ModelId=2003",
+      "ReviewActualTeam=Unassigned",
+      "FormalSourceOnly"
+    ]
+  },
+  "formal_editor_previews": {
+    "count": 49,
+    "all_editor_only": true,
+    "all_hidden_in_game": true
+  },
+  "diagnostic_limit": "Legacy preview was not visible in before captures; no claim that its hidden flag caused the reported burial. Formal R1C3 capture visibly clears ground."
+}

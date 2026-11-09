@@ -50,6 +50,9 @@ void ClientWorld::StoreRecord(const ObjectRecord& O)
         {const auto I=CommanderDefinitionCounts.find(Previous.Definition);if (I!=CommanderDefinitionCounts.end() && !--I->second) CommanderDefinitionCounts.erase(I);}
     }
     Directory[K]=O;
+    if (O.Grant.State!=Life::Destroyed && (O.Grant.OwnershipGroup.Valid() || O.Grant.Policy==OwnershipPolicy::ParentWork))
+        ResourceObjectCandidates.insert(K);
+    else ResourceObjectCandidates.erase(K);
     if (O.Parent.Valid() && O.Grant.Policy==OwnershipPolicy::ParentWork && O.Grant.State<Life::Dead) LiveParentWork[O.Parent].insert(K);
     if (O.Grant.State!=Life::Destroyed) for (const auto& [Name,Value]:O.Capabilities) CapabilityObjects[{O.Grant.Faction,Name}].insert(K);
     if (O.Grant.Policy==OwnershipPolicy::CommanderActivity) ++CommanderDefinitionCounts[O.Definition];
@@ -66,12 +69,9 @@ const std::string& ClientWorld::DirectoryHash() const
 {
     if (DirectoryHashDirty)
     {
-        // This local digest includes the complete retained directory, not a
-        // wire message. 100000 fixed-size authorities fit the existing 16 MiB
-        // bound. Never turn a Writer overflow into a valid empty-input hash.
-        Writer W(MaxPrivateStateBytes);
-        for (const auto& [K,O]:Directory) WriteAuthority(W,O.Grant);
-        CachedDirectoryHash=W.Good()?Sha256(W.Take()):std::string{};
+        Sha256Stream Hash;Writer W;
+        for (const auto& [K,O]:Directory) {W.Clear();WriteAuthority(W,O.Grant);Hash.Append(W.View());}
+        CachedDirectoryHash=W.Good()?Hash.Finish():std::string{};
         DirectoryHashDirty=false;
     }
     return CachedDirectoryHash;

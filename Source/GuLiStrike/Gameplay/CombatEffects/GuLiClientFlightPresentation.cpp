@@ -56,7 +56,9 @@ void UGuLiCombatEffectPresentationSubsystem::ResolveGroundTrailConfiguration(FGu
 	if (Visual.State.Kind != EGuLiCombatEffectKind::LinearProjectile || Visual.State.Source.Kind != EGuLiTargetKind::GroundActor) return;
 	FGuLiStrikeVfxEffectsRow Row;
 	if (!UGuLiVfxRegistrySubsystem::Query(this, Visual.State.PlayerBulletVfxId, Row)) return;
-	Visual.GroundTrailLength = Row.TrailLengthCm;
+	Visual.GroundTrailVfxId=Row.PersistentTrailVfxId>0?Row.PersistentTrailVfxId:Visual.State.PlayerBulletVfxId;
+    if(Row.PersistentTrailVfxId>0 && !UGuLiVfxRegistrySubsystem::Query(this,Row.PersistentTrailVfxId,Row))return;
+    Visual.GroundTrailLength = Row.TrailLengthCm;
 	Visual.GroundTrailHold = Row.TrailHoldSeconds; Visual.GroundTrailFade = Row.TrailFadeSeconds;
 	Visual.GroundTrailBend = Row.TrailBendCm; Visual.GroundTrailWidth = 12.f * Row.Scale.Y;
 }
@@ -118,7 +120,7 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateGroundTrail(FGuLiLocalCombatE
 		const bool bNew=Found==INDEX_NONE;
 		if (bNew)
 		{
-			UNiagaraComponent* Component=SpawnPooled(State.PlayerBulletVfxId,Anchor,1.f,0,Rotation,NAME_None,false);
+			UNiagaraComponent* Component=SpawnPooled(Visual.GroundTrailVfxId,Anchor,1.f,0,Rotation,NAME_None,false);
 			if (!Component) continue;
 			Found=Visual.GroundTrailSegments.AddDefaulted();
 			auto& Piece=Visual.GroundTrailSegments[Found];Piece.Index=Index;Piece.Component=Component;
@@ -132,6 +134,46 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateGroundTrail(FGuLiLocalCombatE
 		if (bNew) Visual.GroundTrailSegments[Found].Component->Activate(true);
 	}
 	return bExpired;
+}
+
+bool UGuLiCombatEffectPresentationSubsystem::UpdateExplosiveFlight(FGuLiLocalCombatEffect& Visual,float Now,bool bEnabled)
+{
+    const auto& State=Visual.State;const float Tail=Visual.GroundTrailHold+Visual.GroundTrailFade;
+    const bool Ended=State.Phase==EGuLiCombatEffectPhase::Finished || Now>=State.EndTime;
+    if(Ended)
+    {
+        if(Visual.GroundTrailEndedAt<0)
+        {
+            Visual.GroundTrailEndedAt=State.Phase==EGuLiCombatEffectPhase::Finished?State.SampleTime:State.EndTime;
+            if(Visual.Flight)
+            {
+                Visual.Flight->SetWorldLocation(State.Phase==EGuLiCombatEffectPhase::Finished?FVector(State.Location):FVector(State.LaunchLocation)+FVector(State.Velocity)*(State.EndTime-State.StartTime));
+                Visual.Flight->SetVariableFloat(TEXT("User.FlightActive"),0.f);
+                // The head stops emitting; existing world-space smoke/ribbon
+                // particles keep their own age and finish before pool reuse.
+                Retire(Visual.Flight,Tail,false);Visual.Flight=nullptr;
+            }
+        }
+        return Now>=Visual.GroundTrailEndedAt+Tail;
+    }
+    FBox Bounds(ForceInit);Bounds+=Visual.RenderLocation;Bounds+=Visual.RenderLocation-FVector(State.Velocity)*Tail;Bounds=Bounds.ExpandBy(300.f);
+    if(!bEnabled || !IsVisibleBounds(Bounds))
+    {if(Visual.Flight){Retire(Visual.Flight,0);Visual.Flight=nullptr;}return false;}
+    const bool New=!Visual.Flight;
+    if(New)Visual.Flight=SpawnPooled(State.PlayerBulletVfxId,Visual.RenderLocation,1.f,0,FVector(State.LaunchDirection).Rotation(),NAME_None,false);
+    if(Visual.Flight)
+    {
+        Visual.Flight->SetWorldLocationAndRotation(Visual.RenderLocation,FVector(State.LaunchDirection).Rotation());
+        Visual.Flight->SetVariableVec3(TEXT("User.FlightVelocity"),FVector(State.Velocity));
+        Visual.Flight->SetVariableFloat(TEXT("User.FlightLifetime"),State.EndTime-State.StartTime);
+        Visual.Flight->SetVariableFloat(TEXT("User.FlightScale"),GuLiVfx::Scale(this,State.PlayerBulletVfxId).X);
+        Visual.Flight->SetVariableFloat(TEXT("User.FlightActive"),1.f);
+        Visual.Flight->SetVariableFloat(TEXT("User.TrailHold"),Visual.GroundTrailHold);
+        Visual.Flight->SetVariableFloat(TEXT("User.TrailFade"),Visual.GroundTrailFade);
+        Visual.Flight->SetWorldScale3D(FVector::OneVector);
+        if(New)Visual.Flight->Activate(true);
+    }
+    return false;
 }
 
 void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightEvent& Event)
@@ -154,9 +196,15 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 	const bool Finished = State.Phase==EGuLiCombatEffectPhase::Finished;
 	if (Finished && !Event.bBootstrap && ServerTime()-State.SampleTime<=.5f)
 	{
-		if (Event.ImpactVfxId>0)
-			if (auto* Burst=SpawnPooled(Event.ImpactVfxId,State.Location,1.f,0,FVector(Event.ImpactNormal).Rotation()))
-			{ Retire(Burst,Event.ImpactVfxId==GuLiVfxIds::GroundMechImpact?.2f:3.f,false); ++Counters.MachineGunImpactsPlayed; }
+		FGuLiStrikeVfxEffectsRow ImpactDefinition;
+        const bool bValidImpactScale=!Event.bExplosiveFlight ||
+            (UGuLiVfxRegistrySubsystem::Query(this,Event.ImpactVfxId,ImpactDefinition) && ImpactDefinition.RadiusAtUnitScaleCm>0);
+		if (Event.ImpactVfxId>0 && bValidImpactScale)
+            if (auto* Burst=SpawnPooled(Event.ImpactVfxId,State.Location,1.f,0,Event.bExplosiveFlight?FRotator::ZeroRotator:FVector(Event.ImpactNormal).Rotation(),NAME_None,false))
+            {
+                if(Event.bExplosiveFlight)Burst->SetVariableFloat(TEXT("User.Area_Scale"),Event.ExplosiveRadius/ImpactDefinition.RadiusAtUnitScaleCm);
+                Burst->Activate(true);Retire(Burst,Event.ImpactVfxId==GuLiVfxIds::GroundMechImpact?.2f:3.f,false);++Counters.MachineGunImpactsPlayed;
+            }
 		// The terminal recipe identifies logical missiles explicitly, including when
 		// their local flight has already expired. Authored impact fields stay distinct.
 		if (Event.bUseCatalogImpact)
@@ -170,13 +218,15 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 		{
 			for (TActorIterator<APawn> It(GetWorld()); It; ++It)
 				if (auto* Weapon=It->FindComponentByClass<UGuLiGroundMechWeaponComponent>(); Weapon && Weapon->SourceHandle==State.Source)
-					{ Weapon->PlayFlightShot(State.EffectId,Event.Muzzle.ServerTime,Event.Muzzle.MuzzleIndex,Event.Muzzle.FrozenMuzzleVfxId); break; }
+					{ Weapon->PlayFlightShot(State.EffectId,Event.Muzzle.ServerTime,Event.Muzzle.MuzzleIndex,Event.Muzzle.FrozenMuzzleVfxId,Event.Muzzle.FrozenFireRate); break; }
 		}
 		else ApplyShots({Event.Muzzle});
 	}
 	ApplyState(State,Event.bBootstrap,Finished && (Event.ImpactVfxId>0 || Event.bUseCatalogImpact || Event.bFrozenGroundImpact));
 	if (auto* Visual = Visuals.Find(State.EffectId))
 	{
+		if(Event.FrozenUnitTypeId>0)Visual->FrozenUnitTypeId=Event.FrozenUnitTypeId;
+		else if(!Visual->FrozenUnitTypeId&&Event.bHasMuzzle)Visual->FrozenUnitTypeId=Event.Muzzle.UnitTypeId;
 		if (Finished)
 		{
 			if (Visual->FlightActor) Visual->FlightActor->ResetForPool();
@@ -184,6 +234,9 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 		else if (!Visual->FlightRecipe.State.EffectId.IsValid())
 		{
 			Visual->FlightRecipe = Event;
+			// Linear advance changes only location/sample time. Seed its immutable
+			// fields once, rather than copying the complete effect recipe every frame.
+			Visual->Prediction = Event.State;
 			ResolveFlightConfiguration(*Visual);
 			const bool bDataPool = CVarGuLiClientFlightDataPool.GetValueOnGameThread() != 0;
 			if (bDataPool)

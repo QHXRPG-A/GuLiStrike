@@ -17,6 +17,18 @@ bool UGuLiHybridActorWorldSubsystem::IsEntityLayoutCacheEnabled() const
 const TArray<FName>* UGuLiHybridActorWorldSubsystem::FindEntityCapabilityNames(FName Definition) const
 {return IsEntityLayoutCacheEnabled()?EntityCapabilityNames.Find(Definition):nullptr;}
 
+bool UGuLiHybridActorWorldSubsystem::ResolveAdapter(const FGuLiHybridObjectState& State,FGuLiHybridAdapterFamily& Out,FString& Error) const
+{
+    const uint64 Revision=FGuLiHybridAdapterRegistry::GetRevision();
+    if (AdapterRegistryRevision!=Revision) {AdapterDefinitions.Reset();AdapterRegistryRevision=Revision;}
+    if (const auto* Cached=AdapterDefinitions.Find(State.Definition);Cached && Cached->Kind==State.Key.Kind)
+    {Out=*Cached;Error.Reset();return true;}
+    // The manifest belongs to this World and is immutable. Validate each exact
+    // definition once per native registry revision, including its declared kind.
+    if (!FGuLiHybridAdapterRegistry::Resolve(Manifest,State,Out,Error)) return false;
+    AdapterDefinitions.Add(State.Definition,Out);return true;
+}
+
 bool UGuLiHybridActorWorldSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
     const auto* World=Cast<UWorld>(Outer);
@@ -51,7 +63,7 @@ void UGuLiHybridActorWorldSubsystem::Initialize(FSubsystemCollectionBase& Collec
             {
                 if (!Weak.IsValid()) return {};
                 FGuLiHybridAdapterFamily Family;FString Why;
-                if (!FGuLiHybridAdapterRegistry::Resolve(Weak->GetManifest(),State,Family,Why))
+                if (!Weak->ResolveAdapter(State,Family,Why))
                 {Weak->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(Why);return {};}
                 auto Adapter=Family.Create(*Weak,State);
                 if (!Adapter || Adapter->Version()!=Family.StateVersion)
@@ -64,5 +76,6 @@ void UGuLiHybridActorWorldSubsystem::Initialize(FSubsystemCollectionBase& Collec
 void UGuLiHybridActorWorldSubsystem::Deinitialize()
 {
     if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) Hybrid->UnregisterFactories(*this);
+    AdapterDefinitions.Reset();AdapterRegistryRevision=0;
     EntityCapabilityNames.Reset();EntityCapabilityIndexBuildMilliseconds=0;Manifest={}; Super::Deinitialize();
 }

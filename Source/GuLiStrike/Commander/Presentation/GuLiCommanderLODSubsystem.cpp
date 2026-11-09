@@ -145,6 +145,16 @@ void UGuLiCommanderLODSubsystem::EnsureViews()
 	ViewUpdateMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.;
 }
 
+bool UGuLiCommanderLODSubsystem::IsBoundsVisible(const FBox& Bounds)
+{
+	EnsureViews(); ++QueryCount;
+	if (!Bounds.IsValid || Bounds.Min.ContainsNaN() || Bounds.Max.ContainsNaN()
+		|| Bounds.Min.X>Bounds.Max.X || Bounds.Min.Y>Bounds.Max.Y || Bounds.Min.Z>Bounds.Max.Z) return false;
+	const FVector Center=Bounds.GetCenter(), Extent=Bounds.GetExtent();
+	for (const auto& View : Views) if (View.Frustum.IntersectBox(Center,Extent)) return true;
+	return false;
+}
+
 FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::Evaluate(const FGuLiCommanderLODQuery& Query)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderLODEvaluate);
@@ -212,8 +222,24 @@ bool UGuLiCommanderLODSubsystem::ShouldRenderWorldEffect(const FVector& Location
 bool UGuLiCommanderLODSubsystem::ShouldRenderWorldEffectBounds(const FBox& Bounds,
 	const double NonCommanderMaximumDistance)
 {
-	FGuLiCommanderLODQuery Query; Query.Bounds=Bounds;
-	return EvaluateWorldEffectBounds(Query,NonCommanderMaximumDistance).bVisible;
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderLODWorldEffects);
+	EnsureViews(); ++QueryCount;
+	if (!CVarWorldEffectBounds.GetValueOnGameThread()) return true;
+	if (!Bounds.IsValid || Bounds.Min.ContainsNaN() || Bounds.Max.ContainsNaN()
+		|| Bounds.Min.X>Bounds.Max.X || Bounds.Min.Y>Bounds.Max.Y || Bounds.Min.Z>Bounds.Max.Z
+		|| !FMath::IsFinite(NonCommanderMaximumDistance)) return false;
+	const FVector Center=Bounds.GetCenter(), Extent=Bounds.GetExtent();
+	for (const auto& View : Views)
+	{
+		if (View.CameraLevel.IsSet() && View.CameraLevel.GetValue()==EGuLiCommanderLODLevel::Minimal) continue;
+		if (!View.Frustum.IntersectBox(Center,Extent)) continue;
+		const double DistanceSquared=Bounds.ComputeSquaredDistanceToPoint(View.Position);
+		if (!FMath::IsFinite(DistanceSquared)) continue;
+		if (!View.CameraLevel.IsSet() && NonCommanderMaximumDistance>0
+			&& DistanceSquared>FMath::Square(NonCommanderMaximumDistance)) continue;
+		return true;
+	}
+	return false;
 }
 
 FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::EvaluateWorldEffectBounds(

@@ -204,7 +204,19 @@ void OwnerState::IndexRecord(const ObjectRecord& O)
     }
     for (const auto& [Name,Value]:O.Capabilities) if (const auto* C=FindCapability(Name);C && C->ValidateMutation)
     {MutationMembers[Name].insert(K);IndexedMutationCapabilities[K].insert(Name);}
-    if (O.Grant.State<Life::Dead) LivingObjects.insert(K);else LivingObjects.erase(K);
+    if (const auto Old=IndexedLivingFactions.find(K);Old!=IndexedLivingFactions.end()
+        && (O.Grant.State>=Life::Dead || Old->second!=O.Grant.Faction))
+    {
+        const auto Count=LivingFactionKindCounts.find({K.Kind,Old->second});
+        if (Count!=LivingFactionKindCounts.end() && !--Count->second) LivingFactionKindCounts.erase(Count);
+        IndexedLivingFactions.erase(Old);
+    }
+    if (O.Grant.State<Life::Dead)
+    {
+        LivingObjects.insert(K);
+        if (IndexedLivingFactions.emplace(K,O.Grant.Faction).second) ++LivingFactionKindCounts[{K.Kind,O.Grant.Faction}];
+    }
+    else LivingObjects.erase(K);
     if (O.Grant.State==Life::Alive && O.Supplied && O.ShieldRadius>0) ShieldObjects.insert(K);else ShieldObjects.erase(K);
     auto& Maximum=MaximumOrdinals[OrdinalScope(K.Kind)];Maximum=std::max(Maximum,O.Ordinal);
 }

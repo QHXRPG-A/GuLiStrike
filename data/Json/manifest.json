@@ -1,5 +1,41 @@
 {
   "tables": {
+    "DT_GuLiStrikeBuffs_Buffs": {
+      "excel": "GuLiStrikeBuffs.xlsx",
+      "sheet": "Buffs",
+      "sources": [
+        {
+          "excel": "GuLiStrikeBuffs.xlsx",
+          "sheet": "Buffs"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeBuffsBuffsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeBuffs_Burning": {
+      "excel": "GuLiStrikeBuffs.xlsx",
+      "sheet": "Burning",
+      "sources": [
+        {
+          "excel": "GuLiStrikeBuffs.xlsx",
+          "sheet": "Burning"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeBuffsBurningRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeBuffs_BurningBurst": {
+      "excel": "GuLiStrikeBuffs.xlsx",
+      "sheet": "BurningBurst",
+      "sources": [
+        {
+          "excel": "GuLiStrikeBuffs.xlsx",
+          "sheet": "BurningBurst"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeBuffsBurningBurstRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeBuildings_Buildings": {
       "excel": "GuLiStrikeBuildings.xlsx",
       "sheet": "Buildings",
@@ -12,6 +48,20 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeBuildingsBuildingsRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeCardArtwork_Templates": {
+      "excel": "GuLiStrikeCardArtwork.xlsx",
+      "sheet": "Templates",
+      "sources": [
+        {
+          "excel": "GuLiStrikeCardArtwork.xlsx",
+          "sheet": "Templates"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkTemplatesRow",
+      "row_key_column": "name",
+      "source_sha256": "720456982ca8624557618baca1dba0a0bd61447544c99a6997ccd7541bb72efc",
+      "data_sha256": "1fc88192a4e6d5b6f5f566cb031b62005cdb1bf9cac61628f0dca795533dc75f"
+    },
     "DT_GuLiStrikeCardArtwork_Artworks": {
       "excel": "GuLiStrikeCardArtwork.xlsx",
       "sheet": "Artworks",
@@ -23,8 +73,8 @@
       ],
       "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkArtworksRow",
       "row_key_column": "name",
-      "source_sha256": "aa0f0c884eb2a6c362aabd99e70e238610082a018d5c9b25c370981b9235d3d7",
-      "data_sha256": "b16aeb1df0afe84f906b9124035f7f9b5098c7f4aada44e89f4899a17b057bd1"
+      "source_sha256": "720456982ca8624557618baca1dba0a0bd61447544c99a6997ccd7541bb72efc",
+      "data_sha256": "c7b78a475f01f5433140fb35d20d0a4c11be8b62fd4af0fd28573519d805f54b"
     },
     "DT_GuLiStrikeCardArtwork_Layers": {
       "excel": "GuLiStrikeCardArtwork.xlsx",
@@ -37,8 +87,8 @@
       ],
       "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkLayersRow",
       "row_key_column": "name",
-      "source_sha256": "aa0f0c884eb2a6c362aabd99e70e238610082a018d5c9b25c370981b9235d3d7",
-      "data_sha256": "02501c76ec147a211d161ca2bbe72155d13c77b0237eaab768d4e82b553d90fd"
+      "source_sha256": "720456982ca8624557618baca1dba0a0bd61447544c99a6997ccd7541bb72efc",
+      "data_sha256": "932cae594b6572ac9595861fa8b2405e4247a4571c0935a89cf63e3f055b21d0"
     },
     "DT_GuLiStrikeCardArtwork_Parameters": {
       "excel": "GuLiStrikeCardArtwork.xlsx",
@@ -51,46 +101,8 @@
       ],
       "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkParametersRow",
       "row_key_column": "name",
-      "source_sha256": "aa0f0c884eb2a6c362aabd99e70e238610082a018d5c9b25c370981b9235d3d7",
-      "data_sha256": "0a06782e4acdbfb31a90262ddb8bc9bffd03c8ec134ee3b73eb43e64dab77c10"
-    },
-    "DT_GuLiStrikeCardArtwork_Templates": {
-      "excel": "GuLiStrikeCardArtwork.xlsx",
-      "sheet": "Templates",
-      "sources": [
-        {
-          "excel": "GuLiStrikeCardArtwork.xlsx",
-          "sheet": "Templates"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeCardArtworkTemplatesRow",
-      "row_key_column": "name",
-      "source_sha256": "aa0f0c884eb2a6c362aabd99e70e238610082a018d5c9b25c370981b9235d3d7",
-      "data_sha256": "843df6310da7f7dcf20523e797ef78375ec06750b87851e4f8a2394f88147e04"
-    },
-    "DT_GuLiStrikeCommander_Camera": {
-      "excel": "GuLiStrikeCommander.xlsx",
-      "sheet": "Camera",
-      "sources": [
-        {
-          "excel": "GuLiStrikeCommander.xlsx",
-          "sheet": "Camera"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderCameraRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeCommander_Skills": {
-      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-      "sheet": "Skills",
-      "sources": [
-        {
-          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-          "sheet": "Skills"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSkillsRow",
-      "row_key_column": "name"
+      "source_sha256": "720456982ca8624557618baca1dba0a0bd61447544c99a6997ccd7541bb72efc",
+      "data_sha256": "6646fbf72bc12748dac3b2b49eb99dd97a0eabd171a6d97050fe6356d17baa64"
     },
     "DT_GuLiStrikeCommander_Soldiers": {
       "excel": "GuLiStrikeCommander.xlsx",
@@ -104,28 +116,16 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSoldiersRow",
       "row_key_column": "name"
     },
-    "DT_GuLiStrikeCommander_UnitSkills": {
-      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-      "sheet": "UnitSkills",
+    "DT_GuLiStrikeCommander_Camera": {
+      "excel": "GuLiStrikeCommander.xlsx",
+      "sheet": "Camera",
       "sources": [
         {
-          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-          "sheet": "UnitSkills"
+          "excel": "GuLiStrikeCommander.xlsx",
+          "sheet": "Camera"
         }
       ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderUnitSkillsRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeCommander_WeaponMounts": {
-      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-      "sheet": "WeaponMounts",
-      "sources": [
-        {
-          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-          "sheet": "WeaponMounts"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderWeaponMountsRow",
+      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderCameraRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeGameTexts_Texts": {
@@ -140,6 +140,30 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeGameTextsTextsRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeGroundHUD_Elements": {
+      "excel": "GuLiStrikeGroundHUD.xlsx",
+      "sheet": "Elements",
+      "sources": [
+        {
+          "excel": "GuLiStrikeGroundHUD.xlsx",
+          "sheet": "Elements"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeGroundHUDElementsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeIcons_Icons": {
+      "excel": "GuLiStrikeIcons.xlsx",
+      "sheet": "Icons",
+      "sources": [
+        {
+          "excel": "GuLiStrikeIcons.xlsx",
+          "sheet": "Icons"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeIconsIconsRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeLOD_LOD": {
       "excel": "GuLiStrikeLOD.xlsx",
       "sheet": "LOD",
@@ -152,16 +176,52 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeLODLODRow",
       "row_key_column": "name"
     },
-    "DT_GuLiStrikeMech_Camera": {
+    "DT_GuLiStrikeMech_Upgrades": {
       "excel": "GuLiStrikeMech.xlsx",
-      "sheet": "Camera",
+      "sheet": "升级表",
       "sources": [
         {
           "excel": "GuLiStrikeMech.xlsx",
-          "sheet": "Camera"
+          "sheet": "升级表"
         }
       ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeMechCameraRow",
+      "struct": "/Script/GuLiStrike.GuLiStrikeMechUpgradesRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeMech_Skills": {
+      "excel": "GuLiStrikeMech.xlsx",
+      "sheet": "技能表",
+      "sources": [
+        {
+          "excel": "GuLiStrikeMech.xlsx",
+          "sheet": "技能表"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeMechSkillsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeMech_Visuals": {
+      "excel": "GuLiStrikeMech.xlsx",
+      "sheet": "Visuals",
+      "sources": [
+        {
+          "excel": "GuLiStrikeMech.xlsx",
+          "sheet": "Visuals"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeMechVisualsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeMech_Mobility": {
+      "excel": "GuLiStrikeMech.xlsx",
+      "sheet": "Mobility",
+      "sources": [
+        {
+          "excel": "GuLiStrikeMech.xlsx",
+          "sheet": "Mobility"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeMechMobilityRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeMech_Gait": {
@@ -188,76 +248,16 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeMechGroundIKRow",
       "row_key_column": "name"
     },
-    "DT_GuLiStrikeMech_Mobility": {
+    "DT_GuLiStrikeMech_Camera": {
       "excel": "GuLiStrikeMech.xlsx",
-      "sheet": "Mobility",
+      "sheet": "Camera",
       "sources": [
         {
           "excel": "GuLiStrikeMech.xlsx",
-          "sheet": "Mobility"
+          "sheet": "Camera"
         }
       ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeMechMobilityRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeMech_Skills": {
-      "excel": "GuLiStrikeMech.xlsx",
-      "sheet": "技能表",
-      "sources": [
-        {
-          "excel": "GuLiStrikeMech.xlsx",
-          "sheet": "技能表"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeMechSkillsRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeMech_Upgrades": {
-      "excel": "GuLiStrikeMech.xlsx",
-      "sheet": "升级表",
-      "sources": [
-        {
-          "excel": "GuLiStrikeMech.xlsx",
-          "sheet": "升级表"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeMechUpgradesRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeMech_Visuals": {
-      "excel": "GuLiStrikeMech.xlsx",
-      "sheet": "Visuals",
-      "sources": [
-        {
-          "excel": "GuLiStrikeMech.xlsx",
-          "sheet": "Visuals"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeMechVisualsRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeModels_ColorRegions": {
-      "excel": "GuLiStrikeModels.xlsx",
-      "sheet": "ColorRegions",
-      "sources": [
-        {
-          "excel": "GuLiStrikeModels.xlsx",
-          "sheet": "ColorRegions"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeModelsColorRegionsRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeModels_MaterialParameters": {
-      "excel": "GuLiStrikeModels.xlsx",
-      "sheet": "MaterialParameters",
-      "sources": [
-        {
-          "excel": "GuLiStrikeModels.xlsx",
-          "sheet": "MaterialParameters"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeModelsMaterialParametersRow",
+      "struct": "/Script/GuLiStrike.GuLiStrikeMechCameraRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeModels_Models": {
@@ -284,16 +284,28 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeModelsPartsRow",
       "row_key_column": "name"
     },
-    "DT_GuLiStrikeRogueCardUI_TextStyles": {
-      "excel": "GuLiStrikeRogueCardUI.xlsx",
-      "sheet": "TextStyles",
+    "DT_GuLiStrikeModels_MaterialParameters": {
+      "excel": "GuLiStrikeModels.xlsx",
+      "sheet": "MaterialParameters",
       "sources": [
         {
-          "excel": "GuLiStrikeRogueCardUI.xlsx",
-          "sheet": "TextStyles"
+          "excel": "GuLiStrikeModels.xlsx",
+          "sheet": "MaterialParameters"
         }
       ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeRogueCardUITextStylesRow",
+      "struct": "/Script/GuLiStrike.GuLiStrikeModelsMaterialParametersRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeModels_ColorRegions": {
+      "excel": "GuLiStrikeModels.xlsx",
+      "sheet": "ColorRegions",
+      "sources": [
+        {
+          "excel": "GuLiStrikeModels.xlsx",
+          "sheet": "ColorRegions"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeModelsColorRegionsRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeRogueCards_Cards": {
@@ -306,6 +318,54 @@
         }
       ],
       "struct": "/Script/GuLiStrike.GuLiStrikeRogueCardsCardsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeRogueCards_GroundRicochet": {
+      "excel": "GuLiStrikeRogueCards.xlsx",
+      "sheet": "GroundRicochet",
+      "sources": [
+        {
+          "excel": "GuLiStrikeRogueCards.xlsx",
+          "sheet": "GroundRicochet"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeRogueCardsGroundRicochetRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeRogueCards_Effects": {
+      "excel": "GuLiStrikeRogueCards.xlsx",
+      "sheet": "Effects",
+      "sources": [
+        {
+          "excel": "GuLiStrikeRogueCards.xlsx",
+          "sheet": "Effects"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeRogueCardsEffectsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeRogueCards_GroundWeaponEffects": {
+      "excel": "GuLiStrikeRogueCards.xlsx",
+      "sheet": "GroundWeaponEffects",
+      "sources": [
+        {
+          "excel": "GuLiStrikeRogueCards.xlsx",
+          "sheet": "GroundWeaponEffects"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeRogueCardsGroundWeaponEffectsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeRogueCardUI_TextStyles": {
+      "excel": "GuLiStrikeRogueCardUI.xlsx",
+      "sheet": "TextStyles",
+      "sources": [
+        {
+          "excel": "GuLiStrikeRogueCardUI.xlsx",
+          "sheet": "TextStyles"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeRogueCardUITextStylesRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeSecondaryUnitSkills_Skills": {
@@ -332,6 +392,66 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeSecondaryUnitSkillsUnitSkillsRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeCommander_Skills": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "Skills",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "Skills"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSkillsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeCommander_UnitSkills": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "UnitSkills",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "UnitSkills"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderUnitSkillsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeCommander_WeaponMounts": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "WeaponMounts",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "WeaponMounts"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderWeaponMountsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeShip_WingmanWeapons": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "WingmanWeapons",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "WingmanWeapons"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanWeaponsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeShip_WingmanTargeting": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "WingmanTargeting",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "WingmanTargeting"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanTargetingRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeSecondaryWeapons_Projectiles": {
       "excel": "GuLiStrikeSecondaryWeapons.xlsx",
       "sheet": "Projectiles",
@@ -342,18 +462,6 @@
         }
       ],
       "struct": "/Script/GuLiStrike.GuLiStrikeSecondaryWeaponsProjectilesRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeShip_Camera": {
-      "excel": "GuLiStrikeShip.xlsx",
-      "sheet": "Camera",
-      "sources": [
-        {
-          "excel": "GuLiStrikeShip.xlsx",
-          "sheet": "Camera"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeShipCameraRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeShip_Parts": {
@@ -380,28 +488,16 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeShipTuningRow",
       "row_key_column": "name"
     },
-    "DT_GuLiStrikeShip_WingmanTargeting": {
-      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-      "sheet": "WingmanTargeting",
+    "DT_GuLiStrikeShip_Camera": {
+      "excel": "GuLiStrikeShip.xlsx",
+      "sheet": "Camera",
       "sources": [
         {
-          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-          "sheet": "WingmanTargeting"
+          "excel": "GuLiStrikeShip.xlsx",
+          "sheet": "Camera"
         }
       ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanTargetingRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeShip_WingmanWeapons": {
-      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-      "sheet": "WingmanWeapons",
-      "sources": [
-        {
-          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
-          "sheet": "WingmanWeapons"
-        }
-      ],
-      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanWeaponsRow",
+      "struct": "/Script/GuLiStrike.GuLiStrikeShipCameraRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeSpellFields_Fields": {

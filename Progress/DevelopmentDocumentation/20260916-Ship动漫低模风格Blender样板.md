@@ -16,7 +16,7 @@ status: done
 verification: passed
 created: '2026-09-16'
 updated: '2026-09-16'
-summary: 从当前Dreadnought舰体制作独立Blender样板，完成六色材质和三档明暗；内部线条改为4K遮罩，保留外轮廓壳，总计16,402三角面。
+summary: 从当前巡天舰体制作独立Blender样板，完成六色材质和三档明暗；内部线条改为4K遮罩，保留外轮廓壳，总计16,402三角面。
 next_action: 等待用户美术评审；后续UE材质适配与模型替换另按确认范围实施。
 relations:
   requirement: REQ-20260916-004

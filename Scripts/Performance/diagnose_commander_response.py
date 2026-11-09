@@ -59,11 +59,8 @@ def main():
     parser.add_argument("--late-presentation", type=int, choices=(0, 1), default=0)
     parser.add_argument("--movement-clock-soldier", type=int, default=0,
                         help="Diagnostic log for one SoldierId; 0 disables")
-    parser.add_argument("--network-retry-batch", type=int, choices=range(0, 65), default=0)
-    parser.add_argument("--defer-peer-transactions", type=int, choices=(0, 1), default=0)
     parser.add_argument("--batch-move-admissions", type=int, choices=(0, 1), default=0)
     parser.add_argument("--reuse-resource-validation-snapshot", type=int, choices=(0, 1), default=0)
-    parser.add_argument("--direct-capture-membership", type=int, choices=(0, 1, 2), default=0)
     parser.add_argument("--foreground-timeout", type=float, default=45,
                         help="Preparation timeout only; timed warmup and capture are unchanged")
     parser.add_argument("--selection-lookup", type=int, choices=(0, 1, 2), default=1,
@@ -81,11 +78,8 @@ def main():
               "gs.Hybrid.CommandApplicationWake": args.command_wake,
               "gs.Commander.PresentationAfterCommands": args.late_presentation,
               "gs.Commander.MovementClockSoldier": args.movement_clock_soldier,
-              "gs.Hybrid.NetworkRetryBatchLimit": args.network_retry_batch,
-              "gs.Hybrid.DeferPeerTransactions": args.defer_peer_transactions,
               "gs.Commander.BatchMoveAdmissions": args.batch_move_admissions,
               "gs.Hybrid.ReuseResourceValidationSnapshot": args.reuse_resource_validation_snapshot,
-              "gs.Hybrid.DirectCaptureMembership": args.direct_capture_membership,
               "guli.Commander.MoveLatencyDiagnostics": 0,
               "t.IdleWhenNotForeground": 0, "Slate.bAllowThrottling": 0}
     previous = editor("r={k:unreal.SystemLibrary.get_console_variable_float_value(k) for k in "
@@ -218,7 +212,6 @@ def main():
                    "defer_peer_transactions": args.defer_peer_transactions,
                    "batch_move_admissions": args.batch_move_admissions,
                    "reuse_resource_validation_snapshot": args.reuse_resource_validation_snapshot,
-                   "direct_capture_membership": args.direct_capture_membership,
                    "movement_clock_soldier": args.movement_clock_soldier,
                    "input_phase": "TimerManager callback before Tickable subsystems; not OS/player-input polling",
                    "expected_soldiers": expected,

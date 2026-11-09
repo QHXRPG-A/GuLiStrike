@@ -650,6 +650,9 @@ def validate_vfx_references(tables):
             raise SheetError(f'{label}: 特效行名必须是稳定的 C++ 标识符，以生成符号 ID')
         if set(scale) != {'X', 'Y', 'Z'} or not all(math.isfinite(v) and v > 0 for v in scale.values()):
             raise SheetError(f'{label}: 基础缩放必须为三个有限正数')
+        radius = row.get('RadiusAtUnitScaleCm', 0.)
+        if not math.isfinite(radius) or radius < 0:
+            raise SheetError(f'{label}: 单位缩放标定半径必须为有限非负数')
         trail = [row.get(k, 0.) for k in ('TrailLengthCm', 'TrailHoldSeconds', 'TrailFadeSeconds', 'TrailBendCm')]
         if not all(math.isfinite(v) and v >= 0 for v in trail):
             raise SheetError(f'{label}: 尾迹长度、保留、消散、弯曲参数必须是有限非负数')
@@ -658,11 +661,20 @@ def validate_vfx_references(tables):
             raise SheetError(f'{label}: 尾迹长度/时间/弯曲超出支持范围')
         if length == 0 and any(trail[1:]):
             raise SheetError(f'{label}: 无尾迹长度时不能设置残留参数')
+        multiplier = row.get('InitialStyleLengthMultiplier', 1.)
+        if not math.isfinite(multiplier) or not 0 < multiplier <= 1:
+            raise SheetError(f'{label}: 初始弹长度倍率必须在 (0,1]')
         key = (path.casefold(), *(scale[k] for k in 'XYZ'))
         if key in definitions:
             raise SheetError(f'{label}: 重复的资源路径与基础缩放组合')
         ids.add(id)
         definitions.add(key)
+    by_id = {r['Id']: r for r in effects['rows']}
+    for row in effects['rows']:
+        linked = row.get('PersistentTrailVfxId', 0)
+        if linked and (linked not in by_id or linked == row['Id'] or
+                       by_id[linked].get('PersistentTrailVfxId', 0) or by_id[linked].get('TrailLengthCm', 0) <= 0):
+            raise SheetError(f'{row["Name"]}: 独立尾迹引用必须指向有效且不再转接的尾迹')
     for line in (PROJECT/'Config/DefaultGame.ini').read_text(encoding='utf-8-sig').splitlines():
         field, _, value = line.partition('=')
         if field.lstrip('+').endswith(('VfxId', 'VfxIds')):

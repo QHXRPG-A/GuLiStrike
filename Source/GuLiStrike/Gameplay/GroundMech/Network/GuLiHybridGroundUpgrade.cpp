@@ -38,6 +38,11 @@ bool GuLiHybridGroundUpgrade::Append(const UGuLiGroundMechWeaponComponent& Weapo
         Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/bullet"),Skill->BulletVfxId);
         Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/impact"),Skill->ImpactVfxId);
         Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/muzzle"),Skill->MuzzleVfxId);
+        if(Skill->InitialBulletVfxId<=0||!FMath::IsFinite(Skill->InitialBulletDamageRatio)||Skill->InitialBulletDamageRatio<=0||Skill->InitialBulletDamageRatio>1)
+        {Error=TEXT("Invalid initial Ground ammunition: ")+Row->Id;return false;}
+        Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/initial_bullet"),Skill->InitialBulletVfxId);
+        Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/initial_ratio"),Skill->InitialBulletDamageRatio);
+        Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/base_rate"),Row->FireRate);
         if (Row->Id==Weapon.CurrentUpgradeId)
         {
             FoundInitial=true;std::string Current=Id;
@@ -66,10 +71,9 @@ bool UGuLiGroundMechWeaponComponent::ApplyHybridUpgrade(const FGuLiHybridObjectS
 {
     const auto* Selection=State.Upgrades.Find(GuLiHybridGroundUpgrade::Domain);
     if (!Selection || Selection->Chosen.IsEmpty()) return false;
-    const FString Id=Selection->Chosen.Last().ToString();if (CurrentUpgradeId.Equals(Id,ESearchCase::IgnoreCase) && bConfigured) return true;
-    const float Before=ActiveUpgrade.FireRate;
+    const FString Id=Selection->Chosen.Last().ToString();if (CurrentUpgradeId.Equals(Id,ESearchCase::IgnoreCase) && bConfigured)
+    {if(State.Controller!=CachedAttack.Player)RefreshRogueBuild();return true;}
     if (!LoadConfiguration(Id)) return false;
-    NextShotTime=GuLiMechFire::RescaleCooldown(UGuLiHybridActorComponent::BattleSeconds(GetOwner()),NextShotTime,Before,ActiveUpgrade.FireRate);
     CurrentUpgradeId=Id;return true;
 }
 namespace

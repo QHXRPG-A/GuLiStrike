@@ -101,7 +101,7 @@ plans = [
 | 地面/机械枪口ID52 | `/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunMuzzle_AllOptimizations` | 原基础Scale1；重防号动态×2保持只应用一次 |
 | 飞行激光池ID4/38 | `/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool_SmallBatches` | 运行每批256；ID4 Scale1，ID38 Scale(0.3,1,1)保持 |
 
-采矿与建造分别处理，建造不共用ID36。沿用绿色/紫色与功能色，未重新配色。重防号是WM01/UnitTypeId2，地面机甲是独立Ground席位。原商城资源、上一交付副本保持供对照和局部回退。
+采矿与建造分别处理，建造不共用ID36。沿用绿色/紫色与功能色，未重新配色。重防号是WM01/UnitTypeId2，游骑兵是独立Ground席位。原商城资源、上一交付副本保持供对照和局部回退。
 
 主体为Opaque+Unlit，颜色接Emissive、深度遮挡和Ribbon结构保持；Alpha转换为 `max(0, RibbonWidth * saturate(Color.a))`宽度收束。制作写最终绝对1.5W，不叠乘；历史采矿25cm冲突已统一为真实基准5cm。蓝图使用ID36/45、空直接Asset、相对Scale1，正式数据比例不重复放大。
 
@@ -200,7 +200,7 @@ Capture名单、捕获内容和Slate几何分离：名单只随成员/阵营/Mes
 
 ## 阶段A/B/C与追加项全部应用
 
-保持单一GuLiStrike运行模块，预测器/池句柄仅内部使用；原效果ID、可靠创建/结束、每批16条/1000字节、Generation/Epoch墓碑及权威命中不变，不添加周期位置同步。地面机甲Ground与重防号WM01兵种分路由。
+保持单一GuLiStrike运行模块，预测器/池句柄仅内部使用；原效果ID、可靠创建/结束、每批16条/1000字节、Generation/Epoch墓碑及权威命中不变，不添加周期位置同步。游骑兵Ground与重防号WM01兵种分路由。
 
 | 项目 | 当前实现与合同 |
 |---|---|

@@ -13,7 +13,6 @@ assert report['success'],report
 anim=unreal.get_default_object(abp.generated_class())
 anim.set_editor_property('root_motion_mode',unreal.RootMotionMode.IGNORE_ROOT_MOTION)
 anim.set_editor_property('jump_start_duration',unreal.load_asset(ANIMS+'/Anim_Mecha_Jump_Start').sequence_length)
-anim.set_editor_property('shoot_duration',unreal.load_asset(ANIMS+'/Anim_Mecha_Shoot').sequence_length)
 assert unreal.EditorAssetLibrary.save_loaded_asset(abp,False)
 bp=unreal.load_asset(BASE+'/BP_GroundMech_Light'); bp.modify()
 cdo=unreal.get_default_object(bp.generated_class())

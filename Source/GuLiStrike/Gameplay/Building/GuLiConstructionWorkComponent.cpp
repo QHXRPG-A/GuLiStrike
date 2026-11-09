@@ -315,7 +315,7 @@ bool UGuLiConstructionWorkComponent::ApplyHybridWorkFact(const FGuLiHybridConstr
     {
         auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>(); FGuLiHybridObjectState O;
         const auto* Source=UGuLiHybridActorComponent::Find(GetOwner());
-        if (!H || !Source || F.Target.Kind!=EGuLiHybridObjectKind::Building || !H->GetObject(F.Target,O)
+        if (!H || !Source || F.Target.Kind!=EGuLiHybridObjectKind::Building || !H->GetObjectView(F.Target,O)
             || (F.Intent.Building && O.Ordinal!=F.Intent.Building) || O.Team!=Source->GetState().Team || !F.Task) return false;
     }
     else if (F.bOccupy || F.bReady) return false;

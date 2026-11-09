@@ -282,6 +282,7 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/BulletTrails/"))
             && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/"))
+            && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/"))
             && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/")))) return false;
 	}
 	ForEachObjectWithOuter(System, [](UObject* Object)
@@ -810,6 +811,7 @@ FString UGuLiCombatEffectAuthoringLibrary::GetMissilePodMeshDiagnostics(UStaticM
 FString UGuLiCombatEffectAuthoringLibrary::GetMachineGunBoundsInputs(UNiagaraSystem* System)
 {
 	if (!System || !(System->GetOutermost()->GetName() == TEXT("/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1")
+		|| System->GetOutermost()->GetName() == TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact")
 		|| System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGun"))))
 		return TEXT("{\"error\":\"Unexpected bounds audit asset\"}");
 	auto Report = MakeShared<FJsonObject>();
@@ -1085,7 +1087,10 @@ bool UGuLiCombatEffectAuthoringLibrary::WireImpactLifecycle(UNiagaraSystem* Syst
 bool UGuLiCombatEffectAuthoringLibrary::MoveClientEffectModule(UNiagaraSystem* System,FName EmitterName,UNiagaraScript* Module,FString Usage,int32 Index,FString& Error)
 {
 	const bool bBurst=System&&System->GetOutermost()->GetName()==TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst");
-	if ((!InScope(System)&&!bBurst) || !Module || Module->GetOutermost()!=System->GetOutermost()) return false;
+	const bool bCompanion=System&&System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/"));
+	// Moving a call edits this system's graph, never the external module asset.
+	// Companion location events use the engine's GenerateLocationEvent script.
+	if ((!InScope(System)&&!bBurst&&!bCompanion) || !Module || (!bCompanion&&Module->GetOutermost()!=System->GetOutermost())) return false;
 	for (const auto& Handle:System->GetEmitterHandles()) if (Handle.GetName()==EmitterName)
 	{
 		auto* Data=Handle.GetEmitterData(); UNiagaraScript* Owning=nullptr;

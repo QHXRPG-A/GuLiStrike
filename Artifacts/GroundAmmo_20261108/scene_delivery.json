@@ -1,0 +1,448 @@
+{
+  "success": true,
+  "scene_saved": true,
+  "entities": [
+    {
+      "label": "GroundAmmo_PrimaryDamage",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        150.0,
+        52050.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_BlastCenter",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -750.0,
+        56550.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_Inside12m",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -750.0,
+        55350.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_Boundary15m",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        750.0,
+        56550.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_Outside24m",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        1650.0,
+        56550.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_Friendly",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        450.0,
+        55950.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.RED: 1>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_Shield",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -1950.0,
+        56550.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "1000.0"
+    },
+    {
+      "label": "GroundAmmo_BehindWall",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -750.0,
+        55950.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_Pioneer",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -12150.0,
+        51750.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "1",
+      "team": "<GuLiTeam.RED: 1>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_HeavyDefense",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -16350.0,
+        55350.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "2",
+      "team": "<GuLiTeam.RED: 1>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_Sweeper",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "position": [
+        -16200.0,
+        51600.0,
+        905.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit_type_id": "5",
+      "team": "<GuLiTeam.RED: 1>",
+      "rows": "1",
+      "columns": "1",
+      "start_idle": "True",
+      "allow_automatic_fire": "False",
+      "use_in_population_manifest": "True",
+      "initial_max_health_override": "100000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundAmmo_BlockingWall",
+      "class": "/Script/Engine.StaticMeshActor",
+      "position": [
+        -750.0,
+        54750.0,
+        1505.0
+      ],
+      "scale": [
+        8.0,
+        0.6,
+        12.0
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "GroundAmmo_Instructions_Entry",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2800.0,
+        54000.0,
+        1200.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "从 GroundRogue_Entry 进入红队游骑兵。初始普攻伤害6/9/12；10.01强化后10/15/20。南侧100000生命靶读单发差值；先驱者/扫荡者半宽半长直线，重防号原样。三台红方对照单位默认待机，在Commander席手动命令开火。"
+    },
+    {
+      "label": "GroundAmmo_Instructions_AttackRate",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2650.0,
+        54000.0,
+        1200.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "F4取09.01一级、二级，HUD攻速为R*1.08和R*1.08^2。R=4/8/12时最多26/17/11级。再升一级不出候选；超过30的武器换档被拒绝。保留开火冷却剩余比例。"
+    },
+    {
+      "label": "GroundAmmo_Instructions_Prerequisites",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2500.0,
+        54000.0,
+        1200.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "新局Ground候选可有09.01/10.01/11.01，不含06.01/07.01/08.01。先取10.01再观察06.01/07.01；07.01后才有08.01。三张新牌空白但保留卡框、文字、HUD空槽及等级。"
+    },
+    {
+      "label": "GroundAmmo_Instructions_Explosion",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2350.0,
+        54000.0,
+        1200.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "11.01三级分别每5/4/2发普攻附一枚。先打空n-1发，下一发命中BlastCenter。普攻与20/30/40范围伤害分别结算，未强化也为2D。附近12米、15米边界、24米外、友军、护盾和墙后靶；边界使用实际受击体，不只按演员中心。超时消失不爆炸；爆炸不产生灼烧或折射。"
+    },
+    {
+      "label": "GroundAmmo_Instructions_Recovery",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2200.0,
+        54000.0,
+        1200.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "先打空积累进度，停火、死亡复活、换席再回来，下一阈值保持；首次取得/升级11.01归零。发射后马上升级10.01或11.01，旧弹保持旧快照。用现有Hybrid恢复入口恢复同局；ReadState的builds.shot_progress、attacks.revision/companion、explosions.hits事件ID与伤害应保持，重复回执不得新增扣血。新局清空。"
+    },
+    {
+      "label": "GroundAmmo_ObserveExplosion",
+      "class": "/Script/Engine.TargetPoint",
+      "position": [
+        -2850.0,
+        54150.0,
+        1149.04
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_ObserveDamage",
+      "class": "/Script/Engine.TargetPoint",
+      "position": [
+        -1950.0,
+        52050.0,
+        1149.04
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "GroundBuff_Instructions",
+      "class": "/Script/Engine.Note",
+      "position": [
+        -2800.0,
+        54000.0,
+        1200.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "text": "当前前置：先取得强化子弹10.01，再取折射06.01/灼烧07.01；灼烧爆裂08.01仍依赖07.01。\nRed Ground：F4正面单击获取灼烧，再获取爆燃；折射可重复取得。灼烧弹道为火红色，已修复SM6材质。折射以首次命中点为固定50米三维球，各跳就近、无遮挡、不重复；原Enemy_07至09和远靶用于检查不会逐跳扩散出圈。"
+    }
+  ],
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "native_data_ready": true,
+  "manifests": [
+    {
+      "population": 200,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 172,
+        "tables": 5
+      },
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 172,
+        "tables": 0
+      }
+    },
+    {
+      "population": 600,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 172,
+        "tables": 5
+      },
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 172,
+        "tables": 0
+      }
+    }
+  ],
+  "dependencies": {
+    "resource": "Saved revalidated added deployments; certified ore layout is unchanged.",
+    "ground_rebuilds": 2,
+    "flight_rebuilds": 1,
+    "saved_assets_reloaded": true,
+    "resource_readback": "Resource authoring source and baked runtime definition are current.",
+    "navigation_readback": "",
+    "resource_ready": true,
+    "navigation_ready": true
+  },
+  "play_ready": true,
+  "PIE": false,
+  "assistant_visual_test": false,
+  "player_acceptance": "pending"
+}

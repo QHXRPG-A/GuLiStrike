@@ -192,7 +192,7 @@ void GuLiVATAnimation::WriteInstance(UInstancedStaticMeshComponent& C, int32 Ind
 	const FGuLiMechanicalAnimationState& Aim, float BodyYaw, bool bReset, const FVector& Velocity)
 {
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiVAT_WriteCustomData);
-	if (C.NumCustomDataFloats < CustomDataFloatCount || Index < 0) return;
+	if (C.NumCustomDataFloats < CustomDataFloatCount || !C.PerInstanceSMData.IsValidIndex(Index)) return;
 	float Frame = D.TextureFrame(P.Clip, P.Phase), OtherFrame = Frame, Blend = 0;
 	if (D.bDirectionalBlend && D.Clips.IsValidIndex(P.Clip) && D.Clips[P.Clip].StrideCentimeters > 0)
 	{
@@ -212,20 +212,22 @@ void GuLiVATAnimation::WriteInstance(UInstancedStaticMeshComponent& C, int32 Ind
 	const float Extra[2] = {OtherFrame, Blend};
 	{
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiVAT_ScalarInstanceData);
+	// Preserve the entire prefix, including data owned by other presentation
+	// systems, and notify the instance manager once for this exact row update.
+	// The scalar API also calls UObject::Modify once per value, even in PIE.
+	float Row[CustomDataFloatCount];
+	FMemory::Memcpy(Row,C.PerInstanceSMCustomData.GetData()+Index*C.NumCustomDataFloats,sizeof(Row));
 	for (int32 Field = 0; Field < 4; ++Field)
 	{
-		const float Previous = bReset ? Values[Field] : C.PerInstanceSMCustomData.IsValidIndex(Index * C.NumCustomDataFloats + FirstCustomData + Field)
-			? C.PerInstanceSMCustomData[Index * C.NumCustomDataFloats + FirstCustomData + Field] : Values[Field];
-		C.SetCustomDataValue(Index, FirstCustomData + 4 + Field, Previous, false);
-		C.SetCustomDataValue(Index, FirstCustomData + Field, Values[Field], false);
+		Row[FirstCustomData+4+Field]=bReset?Values[Field]:Row[FirstCustomData+Field];
+		Row[FirstCustomData+Field]=Values[Field];
 	}
 	for (int32 Field = 0; Field < 2; ++Field)
 	{
 		const int32 Slot = 59+Field;
-		const float Previous = bReset ? Extra[Field] : C.PerInstanceSMCustomData.IsValidIndex(Index*C.NumCustomDataFloats+Slot)
-			? C.PerInstanceSMCustomData[Index*C.NumCustomDataFloats+Slot] : Extra[Field];
-		C.SetCustomDataValue(Index,61+Field,Previous,false);
-		C.SetCustomDataValue(Index,Slot,Extra[Field],false);
+		Row[61+Field]=bReset?Extra[Field]:Row[Slot];
+		Row[Slot]=Extra[Field];
 	}
+	C.SetCustomData(Index,MakeArrayView(Row),false);
 	}
 }

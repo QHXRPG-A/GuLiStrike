@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+#include "Commander/UI/GuLiGroundSceneUIState.h"
 #include "Gameplay/Performance/GuLiHotspotOptions.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
@@ -135,6 +136,7 @@ void AGuLiCommanderHealthBarRenderer::Tick(const float DeltaSeconds)
 
 AGuLiCommanderHealthBarRenderer* AGuLiCommanderHealthBarRenderer::FindOrSpawn(UWorld* World, APlayerController* Controller)
 {
+	if(GuLiGroundSceneUI::IsView(Controller))return nullptr;
 	if (!World || !UGuLiNetworkSettings::CanPresent(World) || !Controller || !Controller->IsLocalController()) return nullptr;
 	for (TActorIterator<AGuLiCommanderHealthBarRenderer> It(World); It; ++It)
 		if (IsValid(*It) && It->LocalController == Controller) return *It;
@@ -178,6 +180,7 @@ void AGuLiCommanderHealthBarRenderer::GatherSceneUIBars(TArray<FGuLiSceneUIHealt
 		Bar.Key={this,uint64(Slot)+1,SlotGenerations[Slot]};
         Bar.Center = CachedTransforms[Slot].GetLocation();
 		Bar.Fraction = FMath::Clamp(CachedHealthFractions[Slot], 0.f, 1.f);
+		Bar.Opacity = FMath::Clamp(CachedVisibleValues[Slot],0.f,1.f);
 		Bar.bSelected = CachedSelectedValues[Slot] > 0;
 	}
 }
@@ -466,7 +469,7 @@ void AGuLiCommanderHealthBarRenderer::HandleVisualStatesChanged(const TArray<FGu
 
 void AGuLiCommanderHealthBarRenderer::UpdateTickActivity()
 {
-	const bool bActive = !SoldierInstanceIndices.IsEmpty() || !ActorInstanceIndices.IsEmpty();
+	const bool bActive = !GuLiGroundSceneUI::IsView(LocalController.Get()) && (!SoldierInstanceIndices.IsEmpty() || !ActorInstanceIndices.IsEmpty());
 	SetActorTickEnabled(bActive);
 	if (!bActive) { VisibleInstanceCount = 0; LastUpdateMilliseconds = 0.0; }
 }
@@ -474,6 +477,7 @@ void AGuLiCommanderHealthBarRenderer::UpdateTickActivity()
 void AGuLiCommanderHealthBarRenderer::MaintainActivity()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderHealthBars_MaintainActivity);
+	if(GuLiGroundSceneUI::IsView(LocalController.Get())){HideAllInstances();SetActorTickEnabled(false);return;}
 	ResolveRuntimeDependencies();
 	if (!BoundFeedback.IsValid())
 		if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())

@@ -125,6 +125,8 @@ public:
 
 private:
 	friend class FGuLiHybridMinerAdapter;
+	struct FMiningVisibilityCache;
+	mutable TSharedPtr<const FMiningVisibilityCache> MiningVisibilityCache;
 	/** Restore creates the pawn before the Link stage binds its saved factory. */
 	void InitializeVehicleState(EGuLiTeam InTeam,FGuLiControllableActorId InStableActorId,
 		const FGuLiSoldierDefinition& Unit,const UGuLiResourceEconomyConfig& Config,AGuLiResourceFactoryActor* InFactory);

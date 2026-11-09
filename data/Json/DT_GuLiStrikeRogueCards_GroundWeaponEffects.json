@@ -1,0 +1,74 @@
+[
+  {
+    "Name": "GroundFireRate",
+    "Id": 1,
+    "Note": "2026-11-08正式武器卡配置",
+    "FireRateBonusPercent": 0.08,
+    "ExplosiveIntervals": [],
+    "ExplosiveDamageMultiplier": 0.0,
+    "ExplosiveRadiusCentimeters": 0.0,
+    "ExplosiveBulletVfxId": 0,
+    "ExplosiveImpactVfxId": 0,
+    "ExplosiveSpeedMultiplier": 0.0,
+    "ExplosiveOutwardOffsetCentimeters": 0.0,
+    "ExplosiveRadiusBonuses": [],
+    "ExplosiveDamageBonuses": []
+  },
+  {
+    "Name": "GroundEnhancedBullet",
+    "Id": 2,
+    "Note": "2026-11-08正式武器卡配置",
+    "FireRateBonusPercent": 0.0,
+    "ExplosiveIntervals": [],
+    "ExplosiveDamageMultiplier": 0.0,
+    "ExplosiveRadiusCentimeters": 0.0,
+    "ExplosiveBulletVfxId": 0,
+    "ExplosiveImpactVfxId": 0,
+    "ExplosiveSpeedMultiplier": 0.0,
+    "ExplosiveOutwardOffsetCentimeters": 0.0,
+    "ExplosiveRadiusBonuses": [],
+    "ExplosiveDamageBonuses": []
+  },
+  {
+    "Name": "GroundExplosivePackage",
+    "Id": 3,
+    "Note": "2026-11-08正式武器卡配置",
+    "FireRateBonusPercent": 0.0,
+    "ExplosiveIntervals": [
+      "5",
+      "4",
+      "2"
+    ],
+    "ExplosiveDamageMultiplier": 2.0,
+    "ExplosiveRadiusCentimeters": 266.0,
+    "ExplosiveBulletVfxId": 63,
+    "ExplosiveImpactVfxId": 64,
+    "ExplosiveSpeedMultiplier": 0.7,
+    "ExplosiveOutwardOffsetCentimeters": 50.0,
+    "ExplosiveRadiusBonuses": [],
+    "ExplosiveDamageBonuses": []
+  },
+  {
+    "Name": "GroundExplosiveEnhancement",
+    "Id": 4,
+    "Note": "三级各乘1.02/1.02/1.04；不修改爆破进度",
+    "FireRateBonusPercent": 0.0,
+    "ExplosiveIntervals": [],
+    "ExplosiveDamageMultiplier": 0.0,
+    "ExplosiveRadiusCentimeters": 0.0,
+    "ExplosiveBulletVfxId": 0,
+    "ExplosiveImpactVfxId": 0,
+    "ExplosiveSpeedMultiplier": 0.0,
+    "ExplosiveOutwardOffsetCentimeters": 0.0,
+    "ExplosiveRadiusBonuses": [
+      "0.02",
+      "0.02",
+      "0.04"
+    ],
+    "ExplosiveDamageBonuses": [
+      "0.02",
+      "0.02",
+      "0.04"
+    ]
+  }
+]

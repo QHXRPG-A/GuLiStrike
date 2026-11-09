@@ -3,6 +3,7 @@
 #include "GuLiGroundMechFireEditorLibrary.generated.h"
 
 class UNiagaraSystem;
+class UNiagaraComponent;
 class UMaterialInterface;
 
 /** Editor-only authoring of the Ground player's approved, project-owned fire assets. */
@@ -11,6 +12,11 @@ class UGuLiGroundMechFireEditorLibrary : public UBlueprintFunctionLibrary
 {
     GENERATED_BODY()
 public:
+    /** Numeric particle and renderer geometry for the approved explosion; never changes assets. */
+    UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+    static FString ReadExplosiveImpactParticles(UNiagaraComponent* Component);
+    UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+    static FString ConfigureExplosiveHead(UNiagaraSystem* System,bool bApply);
     UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
     static FString ConfigureImpactVariant(UNiagaraSystem* System,const TArray<UMaterialInterface*>& OriginalMaterials,
         const TArray<UMaterialInterface*>& VariantMaterials,bool bApply);

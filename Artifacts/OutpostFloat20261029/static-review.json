@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-29",
+  "scope": "Static review; no gameplay, visual inspection, or automated tests",
+  "python_syntax": "passed",
+  "hover_center_cm": 500.0,
+  "float_amplitude_cm": 50.0,
+  "float_period_seconds": 8.0,
+  "ownership_affects_height": false,
+  "removed": [
+    "ownership landing branch",
+    "takeoff ramp from ground",
+    "LandingSeconds setting",
+    "ChangedServerTime used only for landing",
+    "ownership changes resetting the float epoch",
+    "editor pending-native staging mode"
+  ],
+  "source_sha256": {
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiOutpostPresentationComponent.h": "b773ae8f9503a8d0df2a3a6f53746cc50c7b817e6efd9bc0260f3fbeb2230cac",
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiOutpostPresentationComponent.cpp": "7ba71b4706716eac1274dfd590cdaafb3af1a015069e58ce7cd1d0b5e7e1cbf6",
+    "Source/GuLiStrike/Gameplay/Resources/GuLiResourceActors.h": "f82f603e343c161933a879f508d17426acc8ec952bb94a119acbef17fda85425",
+    "Source/GuLiStrike/Gameplay/Resources/GuLiResourceActors.cpp": "7ebc26134263ca5739dba2f88e182c77f84396ba216d51032e185513361e0748",
+    "Source/GuLiStrike/Gameplay/Resources/GuLiResourceStrongholds.cpp": "5701d9af88f907119b45c68ef9f43cf1f875b6fd52c6e9fa0024071cb90768c2",
+    "Source/GuLiStrikeEditor/Private/GuLiCommanderIslandAuthoringLibrary.cpp": "cb1993b2c000408b68e808ca42eb308e85d4f4f3f1e127e6e78ba872920a3259",
+    "Scripts/CommanderIsland/outpost_presentation.py": "ec3fe18adc5ce459beff52cfc213f86c8924f663af1ccebc2e0121afa9bbf886",
+    "Scripts/CommanderIsland/readback_scene.py": "8c33afe039478055a52af6b47bbf2d73d31a027bd3d7e6510147c607ac2ae349",
+    "Scripts/CommanderIsland/write_delivery_notes.py": "bfeefe3ae07a8934ffd39679839999bb0caf2ba9aa6285436f4ab807308c1260",
+    "Config/DefaultGame.ini": "4d533df167f9504d4b53f26a688f06377bded0b07a49983cc72dec63b22c182a"
+  }
+}

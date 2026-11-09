@@ -55,10 +55,10 @@ if not any(sheet["name"] == "GroundRicochet" for sheet in info["sheets"]):
 
 texts = "GuLiStrikeGameTexts.xlsx"
 rows = read(texts, "Texts")
-entries = {"Card.GroundMech.Ricochet.Title": ("地面机甲肉鸽卡标题", "折射子弹"),
-           "Card.GroundMech.Ricochet.Description": ("{0}为本次获取后的卡牌等级", "<Unit>地面机甲</> <Gain>普攻折射-{0}</>"),
+entries = {"Card.GroundMech.Ricochet.Title": ("游骑兵肉鸽卡标题", "折射子弹"),
+           "Card.GroundMech.Ricochet.Description": ("{0}为本次获取后的卡牌等级", "<Unit>游骑兵</> <Gain>普攻折射-{0}</>"),
            "UI.RogueCards.Capacity": ("肉鸽技术容量提示", "当前构筑已达到系统容量，无法继续强化"),
-           "UI.RogueCards.GroundUnavailable": ("地面肉鸽入口不可用", "地面机甲肉鸽能力尚未就绪")}
+           "UI.RogueCards.GroundUnavailable": ("地面肉鸽入口不可用", "游骑兵肉鸽能力尚未就绪")}
 cells = []
 for key, (note, text) in entries.items():
     if any(row and row[0] == key for row in rows):

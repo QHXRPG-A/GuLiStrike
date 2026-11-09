@@ -11,7 +11,7 @@
 
 UWorld* UGuLiBulletTrailPresentation::GetWorld() const { return GetOuter() ? GetOuter()->GetWorld() : nullptr; }
 
-void UGuLiBulletTrailPresentation::Prepare(UGuLiCombatEffectCatalog* Catalog)
+void UGuLiBulletTrailPresentation::Prepare(UGuLiCombatEffectCatalog* Catalog,bool bInitialStyle)
 {
 	Reset(); MassSystem=nullptr; LightSystem=nullptr;
 	if (!Catalog || !UGuLiNetworkSettings::CanPresent(GetWorld())) return;
@@ -23,6 +23,7 @@ void UGuLiBulletTrailPresentation::Prepare(UGuLiCombatEffectCatalog* Catalog)
 	FGuLiStrikeVfxEffectsRow Row;
 	if (UGuLiVfxRegistrySubsystem::Query(this,Catalog->GroundMachineGunVfxId,Row) && Row.TrailLengthCm>0)
 	{ MaximumLength=Row.TrailLengthCm; Style.Y=Row.TrailBendCm; Style.Z=Row.TrailHoldSeconds; Style.W=Row.TrailFadeSeconds; }
+	if(bInitialStyle){Style.X*=.5f;Style.Y=0;MaximumLength*=Row.InitialStyleLengthMultiplier;LightSystem=nullptr;}
 	Emission=FMath::Max(0.f,Catalog->LaserIntensity);
 	Radius=FMath::Max(0.f,Catalog->TracerLightRadius); Brightness=FMath::Max(0.f,Catalog->TracerLightBrightness);
 	LightBudget=FMath::Clamp(Catalog->MaximumTracerLightsPerFrame,0,MaximumLights);
@@ -76,6 +77,18 @@ bool UGuLiBulletTrailPresentation::SubmitMass(const FGuLiCombatEffectState& Stat
 	const float End=Terminal ? FMath::Clamp(State.SampleTime,State.StartTime,State.EndTime) : State.EndTime;
 	if (Now>=End+Style.Z+Style.W) return true;
 	auto* Entry=Entries.Find(State.EffectId);
+	if (!bEnabled || !Visible)
+	{
+		// The analytic lifetime above still expires offscreen trails on time.
+		// Allocate/upload only when visible; returning uses the original launch
+		// and terminal timestamps, so it never restarts an old flight.
+		if (Entry && Slots.IsLive(Entry->Handle))
+		{
+			auto& Block=Blocks[Entry->Handle.Index/BlockSize];const int32 I=Entry->Handle.Index%BlockSize;
+			if (Block.Generations[I]) {Block.Generations[I]=0;Block.Colors[I].A=0;Block.bColorDirty=true;}
+		}
+		return false;
+	}
 	if (!Entry)
 	{
 		FEntry New; New.Handle=Slots.Acquire(); New.Origin=Origin;

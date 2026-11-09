@@ -9,7 +9,7 @@
 FGuLiCommanderOperationToken UGuLiUnitTaskSubsystem::BeginBehaviorOperation(FGuLiTaskUnitId Unit, EGuLiCommanderControlState Control)
 {
 	check(IsInGameThread());
-	auto* State = States.Find(Unit);
+	auto* State = FindTaskState(Unit);
 	if (!State) return {};
 	State->ActiveOperation = {State->Version, State->Active.IsSet() ? State->Active->ExecutionId : 0, ++State->NextOperationSerial};
 	State->OperationReceipt = {State->ActiveOperation, EGuLiCommanderOperationResult::None};
@@ -22,26 +22,26 @@ FGuLiCommanderOperationToken UGuLiUnitTaskSubsystem::BeginBehaviorOperation(FGuL
 void UGuLiUnitTaskSubsystem::EndBehaviorOperation(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token)
 {
 	check(IsInGameThread());
-	if (auto* State = States.Find(Unit); State && State->ActiveOperation == Token) State->ActiveOperation = {};
+	if (auto* State = FindTaskState(Unit); State && State->ActiveOperation == Token) State->ActiveOperation = {};
 }
 
 bool UGuLiUnitTaskSubsystem::IsBehaviorOperationCurrent(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token) const
 {
-	const auto* State = States.Find(Unit);
+	const auto* State = FindTaskState(Unit);
 	return State && Token.IsValid() && State->ActiveOperation == Token && State->Version == Token.Version
 		&& (State->Active.IsSet() ? State->Active->ExecutionId : 0) == Token.ExecutionId;
 }
 
 EGuLiCommanderOperationResult UGuLiUnitTaskSubsystem::GetBehaviorOperationReceipt(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token) const
 {
-	const auto* State = States.Find(Unit);
+	const auto* State = FindTaskState(Unit);
 	return State && State->OperationReceipt.Token == Token ? State->OperationReceipt.Result : EGuLiCommanderOperationResult::Stale;
 }
 
 void UGuLiUnitTaskSubsystem::RequestBehaviorOperation(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token, EGuLiCommanderBehaviorStep Step)
 {
 	check(IsInGameThread());
-	auto* State = States.Find(Unit);
+	auto* State = FindTaskState(Unit);
 	if (!State || !IsBehaviorOperationCurrent(Unit, Token) || State->LastOperationRequestRound == BehaviorRound) return;
 	State->LastOperationRequestRound = BehaviorRound;
 	State->OperationReceipt = {Token, EGuLiCommanderOperationResult::Queued};
@@ -51,7 +51,7 @@ void UGuLiUnitTaskSubsystem::RequestBehaviorOperation(FGuLiTaskUnitId Unit, cons
 
 void UGuLiUnitTaskSubsystem::WaitBehaviorRound(FGuLiTaskUnitId Unit, const FGuLiCommanderOperationToken& Token)
 {
-	if (auto* State = States.Find(Unit); State && State->ActiveOperation == Token) State->bBehaviorStepDone = true;
+	if (auto* State = FindTaskState(Unit); State && State->ActiveOperation == Token) State->bBehaviorStepDone = true;
 }
 
 EGuLiCommanderOperationResult UGuLiUnitTaskSubsystem::CommitBehaviorOperation(FGuLiUnitTaskState& State, EGuLiCommanderBehaviorStep Step, double Now)

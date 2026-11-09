@@ -3,6 +3,7 @@
 #include "GuLiGroundMechAnimationEditorLibrary.generated.h"
 class UAnimBlueprint;
 class UAnimSequence;
+class UAnimMontage;
 class UBlendSpace;
 class USkeletalMesh;
 class UCurveFloat;
@@ -30,6 +31,11 @@ public:
 	static FString ProbeBlendSpace(USkeletalMesh* Mesh,UBlendSpace* BlendSpace,FVector Input);
 	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
 	static FString BuildAnimationGraph(UAnimBlueprint* Blueprint,const FString& AnimationFolder);
+	/** Bake one phase-offset dual-barrel loop and wire its single montage slot. */
+	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+	static FString ConfigureFireAnimation(UAnimBlueprint* Blueprint,UAnimSequence* Source,UAnimSequence* Loop,UAnimMontage* Montage);
+	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+	static FString ReadFireAnimation(UAnimBlueprint* Blueprint);
 	/** Upgrade only the three recoil bindings; preserve all existing pose nodes and links. */
 	UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
 	static FString BindArmRecoil(UAnimBlueprint* Blueprint);

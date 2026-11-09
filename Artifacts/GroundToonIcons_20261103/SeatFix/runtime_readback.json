@@ -1,0 +1,154 @@
+{
+  "success": true,
+  "visual_review": "not_performed",
+  "performance_measurement": "not_performed",
+  "pie": true,
+  "status": {
+    "active": true,
+    "error": "",
+    "room": "3BEB9C784F52B0B626564096B950F167",
+    "role": "Ground",
+    "editor_pid": 35360,
+    "logic_pid": 31432,
+    "coordinator_pid": 36640,
+    "logic_running": true,
+    "coordinator_running": true,
+    "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/3BEB9C784F52B0B626564096B950F167",
+    "shutdown": [],
+    "cleanup_complete": false,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+    "standalone": true,
+    "can_present": true,
+    "world_ready": true,
+    "network_error": "",
+    "members": [
+      {
+        "player": "CBDB6B0D4078878948EF4AADA6937F13",
+        "online": true,
+        "ready": true,
+        "team": "Red",
+        "role": "Ground"
+      },
+      {
+        "player": "DC7690C8437DE9BB374A9282C5B9E392",
+        "online": true,
+        "ready": true,
+        "team": "Blue",
+        "role": "Commander"
+      }
+    ],
+    "units": 622,
+    "peer_owned_objects": 1729,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "commander_view_active": false,
+    "can_issue_orders": false,
+    "mouse_cursor_visible": false,
+    "commander_hud_widget": "",
+    "commander_hud_in_viewport": false,
+    "commander_hud_visible": false,
+    "commander_hud_owner_matches": false,
+    "commander_hud_width": 0,
+    "commander_hud_height": 0,
+    "ground_hud_widget": "/Script/GuLiStrike.GuLiGroundHUDWidget",
+    "ground_hud_in_viewport": true,
+    "ground_hud_visible": true,
+    "ground_hud_owner_matches": true,
+    "ground_hud_width": 0,
+    "ground_hud_height": 0,
+    "resource_query_ready": true,
+    "legacy_resource_runtime_ready": false
+  },
+  "elapsed_seconds": 195.93488836288452,
+  "hud_motion": {
+    "entry_plays": 1,
+    "shots": 0,
+    "hit_plays": 0,
+    "kill_plays": 0,
+    "ordinary_refreshes": 536,
+    "motion_frames": 0,
+    "generation": 1,
+    "modal": 0,
+    "hidden": false,
+    "closing": false,
+    "modal_alpha": 0,
+    "shot_expansion": 0,
+    "cooldown_progress": -1,
+    "cooling": false,
+    "aiming": false,
+    "thrusting": false,
+    "ambient_running": false,
+    "ambient_transitions": 0,
+    "ambient_paused_phase": 0,
+    "ambient_started": 0,
+    "ambient_clock": "SlateAppTime",
+    "ambient_sample_phase": 0,
+    "loaded_icons": 7,
+    "skills": [
+      {
+        "slot": 0,
+        "casts": 0,
+        "ready": 0,
+        "cast_material": true,
+        "ready_material": true,
+        "held_alpha": 0,
+        "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Fire.T_GroundIcon_Fire"
+      },
+      {
+        "slot": 1,
+        "casts": 0,
+        "ready": 0,
+        "cast_material": true,
+        "ready_material": true,
+        "held_alpha": 0,
+        "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Aim.T_GroundIcon_Aim"
+      },
+      {
+        "slot": 2,
+        "casts": 0,
+        "ready": 0,
+        "cast_material": true,
+        "ready_material": true,
+        "held_alpha": 0,
+        "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_JetCapacity.T_GroundIcon_JetCapacity"
+      },
+      {
+        "slot": 3,
+        "casts": 0,
+        "ready": 0,
+        "cast_material": true,
+        "ready_material": true,
+        "held_alpha": 0,
+        "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Blink.T_GroundIcon_Blink"
+      }
+    ],
+    "textures": [
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_AmbientHealth.T_GroundHUD_AmbientHealth",
+        "resident_bytes": 1966080
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+        "resident_bytes": 4587520
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+        "resident_bytes": 5636096
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+        "resident_bytes": 327680
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_AmbientMap.T_GroundHUD_AmbientMap",
+        "resident_bytes": 1966080
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+        "resident_bytes": 48431104
+      }
+    ],
+    "resident_mib": 60
+  }
+}

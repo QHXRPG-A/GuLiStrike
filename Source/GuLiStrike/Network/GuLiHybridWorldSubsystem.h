@@ -11,7 +11,7 @@
 
 struct FGuLiHybridComponentBindingContext;
 class FJsonObject;
-namespace GuLiNet {struct PreparedCommit;struct ClientQueryDelta;class IGameplayCalculation;class IObjectMotionCodec;struct IObjectMotionOutput;class ObjectReadCursor;}
+namespace GuLiNet {struct PreparedCommit;struct ClientQueryDelta;class IGameplayCalculation;class IObjectMotionCodec;struct IObjectMotionOutput;class ObjectReadCursor;class Writer;}
 
 struct FGuLiHybridOwnershipMetrics
 {
@@ -358,6 +358,8 @@ public:
     bool GetObject(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
     /** Lightweight applied facts; excludes capability, upgrade and private-work payloads. */
     bool GetObjectView(const FGuLiHybridObjectKey& Key,FGuLiHybridObjectState& Out) const;
+    /** Current phase only, without projecting unused ledger fields or capabilities. */
+    bool GetObjectPhase(const FGuLiHybridObjectKey& Key,bool& Phased) const;
     /** Copies only the requested capability, never the object's upgrade/work collections. */
     bool GetObjectCapability(const FGuLiHybridObjectKey& Key,FName Name,FGuLiHybridCapabilityState& Out) const;
     /** Exact applied lifetime and owner, without materializing reflected object fields. */
@@ -392,6 +394,9 @@ public:
     /** Reliable simulator-owned event for any registered object family. The
      * family decodes its payload; the transport does not classify content. */
     bool PublishEffect(const FGuLiHybridObjectKey& Key,const FGuid& Event,const TArray<uint8>& Body);
+    /** Encode a new reliable event on the game thread only while the simulator can publish.
+     * WriteBody is synchronous and must only serialize the payload. False leaves the event pending. */
+    bool PublishNewEffect(const FGuLiHybridObjectKey& Key,TFunctionRef<bool(GuLiNet::Writer&)> WriteBody);
     bool PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body,uint64 CapturedTick,
         const FGuid& Connection,const std::shared_ptr<GuLiNet::MotionDelivery>& Delivery,bool bStationary);
     bool PublishMotionAcknowledgment(const FGuLiHybridObjectKey& Key,const TArray<uint8>& Body);
@@ -460,6 +465,7 @@ private:
     struct FState;
     struct FStateDeleter { void operator()(FState* Value) const; };
     TUniquePtr<FState,FStateDeleter> State;
+    bool CanPublishEffect(const FGuLiHybridObjectKey& Key) const;
     void HandleControl(const FGuLiHybridMessage& Message);
     bool HandlePeer(const FGuid& Sender, const FGuLiHybridMessage& Message);
     bool HandleNativePeer(const FGuid& Sender,const GuLiNet::Message& Message);

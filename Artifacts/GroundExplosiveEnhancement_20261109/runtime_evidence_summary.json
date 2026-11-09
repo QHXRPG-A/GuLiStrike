@@ -1,0 +1,1324 @@
+{
+  "schema": 1,
+  "task": "爆炸范围对齐与强化爆炸弹",
+  "radius_cm": 266,
+  "versions": {
+    "protocol": 41,
+    "manifest": 27,
+    "ground_rogue": 7
+  },
+  "design_values": [
+    {
+      "level": 0,
+      "multiplier": 1,
+      "radius_cm": 266,
+      "damage_by_weapon_tier": [
+        20,
+        30,
+        40
+      ]
+    },
+    {
+      "level": 1,
+      "multiplier": 1.02,
+      "radius_cm": 271.32,
+      "damage_by_weapon_tier": [
+        20.4,
+        30.6,
+        40.8
+      ]
+    },
+    {
+      "level": 2,
+      "multiplier": 1.0404,
+      "radius_cm": 276.7464,
+      "damage_by_weapon_tier": [
+        20.808,
+        31.212,
+        41.616
+      ]
+    },
+    {
+      "level": 3,
+      "multiplier": 1.082016,
+      "radius_cm": 287.816256,
+      "damage_by_weapon_tier": [
+        21.640320000000003,
+        32.460480000000004,
+        43.280640000000005
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "capture_file": "enhancement_run1_capture.json",
+      "duration_seconds": 739.1736891269684,
+      "notifications": 3369,
+      "admitted": 3368,
+      "notification_alternation_errors": 0,
+      "notification_ordinal_gaps": 0,
+      "admitted_sequence_same_side_pairs": 1,
+      "nonadmitted": [
+        {
+          "source_kind": 4,
+          "shot": "B0B7CC5F7A6F449DFD1A3780211788B5",
+          "target": "00000000000000000000000000000000",
+          "admitted": false,
+          "fire_notify": true,
+          "fire_ordinal": 184,
+          "admission_event": "7373C6595B92D05B9FBC61CA59A9C38F",
+          "admission_receipt_found": true,
+          "admission_status": 5,
+          "attack_frozen": false,
+          "fire_time": 53.56666666666666,
+          "activation_time": 53.54999923706055,
+          "muzzle": 1,
+          "frozen_damage": 9,
+          "muzzle_position": "X=-1694.733 Y=51930.746 Z=1205.198",
+          "direction": "X=0.997 Y=0.069 Z=-0.047",
+          "build_revision": 2,
+          "collision_hit": false,
+          "end_reason": 0,
+          "hit_position": "X=-1694.733 Y=51930.746 Z=1205.198",
+          "primary_terminal_sample_time": 0,
+          "damage_submitted": false,
+          "damage_resolved": false,
+          "damage_event": "5DB4469A3B6329E67AB8B5CE90072679",
+          "receipt_found": false,
+          "explosive_finished": false,
+          "explosive_damage": 0,
+          "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+          "explosive_launch_position": "X=0.000 Y=0.000 Z=0.000",
+          "explosive_launch_direction": "X=1.000 Y=0.000 Z=0.000",
+          "explosive_start_time": 0,
+          "explosive_terminal_sample_time": 0,
+          "explosive_end_time": 0,
+          "explosive_speed": 1200,
+          "explosive_end_reason": 0,
+          "first_seen": 1794190992.7514098,
+          "first_stage": "base_tier3"
+        }
+      ],
+      "exit": {
+        "active": false,
+        "error": "",
+        "room": "9F9DA6BA4E93A424AADB2295AA723BAA",
+        "role": "Ground",
+        "editor_pid": 35608,
+        "logic_pid": 5012,
+        "coordinator_pid": 38168,
+        "logic_running": false,
+        "coordinator_running": false,
+        "session_directory": "",
+        "shutdown": [
+          {
+            "role": "logic",
+            "pid": 5012,
+            "forced": false,
+            "has_exit_code": true,
+            "exit_code": 0
+          },
+          {
+            "role": "coordinator",
+            "pid": 38168,
+            "forced": false,
+            "has_exit_code": true,
+            "exit_code": 0
+          }
+        ],
+        "cleanup_complete": true
+      },
+      "explosive_counter": {
+        "mismatch_shots": [],
+        "computed_final": 0,
+        "observed_final": 0
+      },
+      "longest_continuous_notification_segment": {
+        "seconds": 71.16666666666663,
+        "first_ordinal": 2105,
+        "last_ordinal": 2959
+      },
+      "health_balances": [
+        {
+          "target": "1/43C47E2B3BFE0E0DFB351FF7943363F1/1",
+          "team": 1,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/8E249F74A0493F90780963CE1E1AB114/1",
+          "team": 1,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/66425DB3F050E70D0D2A54A7F76EDF4D/1",
+          "team": 1,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/777FFE03975D9E7B19705F9E62C0555E/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 176,
+          "blast_events": 88,
+          "initial_shield": 10000,
+          "final_shield": 4079.3056640625,
+          "unique_receipt_absorbed": 5920.6962890625
+        },
+        {
+          "target": "1/B3AAAF22737894F6F6BB8C3F6716BFE5/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/6C32E3E370D683E721A933725D4AAC78/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 99956.71875,
+          "observed_health_loss": 43.28125,
+          "unique_receipt_damage": 43.28125,
+          "difference": 0.0,
+          "direct_events": 0,
+          "blast_events": 1,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/EC74784C023D40DC19CAE64804947B75/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 95628.59375,
+          "observed_health_loss": 4371.40625,
+          "unique_receipt_damage": 4371.40625,
+          "difference": 0.0,
+          "direct_events": 0,
+          "blast_events": 101,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/5A3D51A0C91E8B11516BA3A7D1B39536/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/B45C03904C01B12248030AFDECBC83B9/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 1000,
+          "final_shield": 1000,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/ABD0C36DBEF823B642A46B761B00D68B/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/E6BCEF16E246BBC257C0E63D6A40A7B6/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/242C8DE569B931EBDD137285A861FA77/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/ABC71F5A7205C931B2852AE921930D76/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 31637.7265625,
+          "observed_health_loss": 68362.2734375,
+          "unique_receipt_damage": 68362.2734375,
+          "difference": 0.0,
+          "direct_events": 3185,
+          "blast_events": 750,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        }
+      ],
+      "damage_groups": [
+        {
+          "frozen_damage": 20,
+          "frozen_radius_cm": 266,
+          "authorized_explosives": 19,
+          "actual_hits": 19,
+          "example": {
+            "shot": "88A064AA7BD80D6B7BE35D666C3AA145",
+            "build_revision": 2,
+            "receipt": {
+              "event": "FCE27563AA0A20ED952A323B71343678",
+              "found": true,
+              "status": 0,
+              "damage": 20,
+              "absorbed": 0,
+              "remaining": 99956,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 30,
+          "frozen_radius_cm": 266,
+          "authorized_explosives": 17,
+          "actual_hits": 17,
+          "example": {
+            "shot": "C8BB1E4AA8E6EE462A26EFD5483EC958",
+            "build_revision": 2,
+            "receipt": {
+              "event": "837ECE80F86D5C00781AE7294C82B822",
+              "found": true,
+              "status": 0,
+              "damage": 30,
+              "absorbed": 0,
+              "remaining": 98984,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 40,
+          "frozen_radius_cm": 266,
+          "authorized_explosives": 151,
+          "actual_hits": 151,
+          "example": {
+            "shot": "62DD9C3B9F2431F1A1922529107B9DE2",
+            "build_revision": 2,
+            "receipt": {
+              "event": "A3C291711752BD10F6B1A7A4AEC21B0D",
+              "found": true,
+              "status": 0,
+              "damage": 40,
+              "absorbed": 0,
+              "remaining": 97693,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 40.79999923706055,
+          "frozen_radius_cm": 271.32000732421875,
+          "authorized_explosives": 107,
+          "actual_hits": 107,
+          "example": {
+            "shot": "BCAA95A7991C7EC70F39485F3D2DD9C2",
+            "build_revision": 3,
+            "receipt": {
+              "event": "A7378FA60C638F4787B47D5B844EBEE2",
+              "found": true,
+              "status": 0,
+              "damage": 40.796875,
+              "absorbed": 0,
+              "remaining": 82604.203125,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 41.61600112915039,
+          "frozen_radius_cm": 276.74639892578125,
+          "authorized_explosives": 35,
+          "actual_hits": 35,
+          "example": {
+            "shot": "8C51CDE425CCB01361247FB99DA7AE0D",
+            "build_revision": 4,
+            "receipt": {
+              "event": "9CE245A8CB0CB12E12BE76933AF2663E",
+              "found": true,
+              "status": 0,
+              "damage": 41.6171875,
+              "absorbed": 0,
+              "remaining": 71842.1171875,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 43.2806396484375,
+          "frozen_radius_cm": 287.8162536621094,
+          "authorized_explosives": 509,
+          "actual_hits": 611,
+          "example": {
+            "shot": "C1A99AE178243C86136FEEC0C2A86E50",
+            "build_revision": 5,
+            "receipt": {
+              "event": "927A83AFAADDF8D583B160F26465BB13",
+              "found": true,
+              "status": 0,
+              "damage": 43.28125,
+              "absorbed": 0,
+              "remaining": 68295.8515625,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        }
+      ],
+      "build_transitions": [
+        {
+          "old_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 1,
+            "shot_progress": 0,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 0
+          },
+          "new_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 2,
+            "shot_progress": 0,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "serial_before": 0,
+          "serial_after": 0,
+          "previous_offer": {
+            "candidates": [
+              "10.01",
+              "11.01",
+              "09.01"
+            ],
+            "session": "43B2131A905F28E336A578D0B7EAB433",
+            "open": true,
+            "phase": 1
+          }
+        },
+        {
+          "old_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 2,
+            "shot_progress": 1,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "new_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 3,
+            "shot_progress": 1,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "serial_before": 937,
+          "serial_after": 937,
+          "previous_offer": {
+            "candidates": [
+              "12.01",
+              "11.01",
+              "09.01"
+            ],
+            "session": "FB64C947D0A80991BC3A51DF4EC6F7A3",
+            "open": true,
+            "phase": 0
+          }
+        },
+        {
+          "old_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 3,
+            "shot_progress": 3,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "new_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 4,
+            "shot_progress": 2,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "serial_before": 1470,
+          "serial_after": 1473,
+          "previous_offer": {
+            "candidates": [],
+            "session": "00000000000000000000000000000000",
+            "open": false,
+            "phase": -1
+          }
+        },
+        {
+          "old_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 4,
+            "shot_progress": 2,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "new_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 5,
+            "shot_progress": 2,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "serial_before": 1648,
+          "serial_after": 1648,
+          "previous_offer": {
+            "candidates": [
+              "10.01",
+              "12.01",
+              "11.01"
+            ],
+            "session": "3ECC5AB4F27984BF8947F368F65E9150",
+            "open": true,
+            "phase": 0
+          }
+        },
+        {
+          "old_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 5,
+            "shot_progress": 3,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "new_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 6,
+            "shot_progress": 0,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 4
+          },
+          "serial_before": 2104,
+          "serial_after": 2104,
+          "previous_offer": {
+            "candidates": [
+              "10.01",
+              "09.01",
+              "11.01"
+            ],
+            "session": "1A4F2BD8057DE915C04F93D4A7ACCAD9",
+            "open": true,
+            "phase": 1
+          }
+        },
+        {
+          "old_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 6,
+            "shot_progress": 3,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 4
+          },
+          "new_build": {
+            "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+            "revision": 7,
+            "shot_progress": 0,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 2
+          },
+          "serial_before": 2959,
+          "serial_after": 2959,
+          "previous_offer": {
+            "candidates": [
+              "09.01",
+              "10.01",
+              "11.01"
+            ],
+            "session": "890E72C1AB2F74EE6B0176122CB7B4CB",
+            "open": true,
+            "phase": 0
+          }
+        }
+      ]
+    },
+    {
+      "capture_file": "enhancement_run2_capture.json",
+      "duration_seconds": 520.1655485630035,
+      "notifications": 520,
+      "admitted": 519,
+      "notification_alternation_errors": 0,
+      "notification_ordinal_gaps": 0,
+      "admitted_sequence_same_side_pairs": 1,
+      "nonadmitted": [
+        {
+          "source_kind": 4,
+          "shot": "BDAB318A3855339EBC0F42F27731762B",
+          "target": "00000000000000000000000000000000",
+          "admitted": false,
+          "fire_notify": true,
+          "fire_ordinal": 119,
+          "admission_event": "DFDAB0D04C114630E66CA8818417719D",
+          "admission_receipt_found": false,
+          "admission_status": 3,
+          "attack_frozen": false,
+          "fire_time": 118.64999999999999,
+          "activation_time": 118.66666412353516,
+          "muzzle": 0,
+          "frozen_damage": 6,
+          "muzzle_position": "X=-1692.556 Y=52165.246 Z=1210.251",
+          "direction": "X=0.997 Y=-0.056 Z=-0.050",
+          "build_revision": 3,
+          "collision_hit": false,
+          "end_reason": 0,
+          "hit_position": "X=-1692.556 Y=52165.246 Z=1210.251",
+          "primary_terminal_sample_time": 0,
+          "damage_submitted": false,
+          "damage_resolved": false,
+          "damage_event": "D45542C87F1934882C6F7A575F9E1C3F",
+          "receipt_found": false,
+          "explosive_finished": false,
+          "explosive_damage": 0,
+          "explosive_position": "X=0.000 Y=0.000 Z=0.000",
+          "explosive_launch_position": "X=0.000 Y=0.000 Z=0.000",
+          "explosive_launch_direction": "X=1.000 Y=0.000 Z=0.000",
+          "explosive_start_time": 0,
+          "explosive_terminal_sample_time": 0,
+          "explosive_end_time": 0,
+          "explosive_speed": 1200,
+          "explosive_end_reason": 0,
+          "first_seen": 1794191833.6238115,
+          "first_stage": "enhancement1_tier2"
+        }
+      ],
+      "exit": {
+        "active": false,
+        "error": "",
+        "room": "369B2C4A408D3A33D98106A7F20CD17E",
+        "role": "Ground",
+        "editor_pid": 35608,
+        "logic_pid": 41884,
+        "coordinator_pid": 18936,
+        "logic_running": false,
+        "coordinator_running": false,
+        "session_directory": "",
+        "shutdown": [
+          {
+            "role": "logic",
+            "pid": 41884,
+            "forced": false,
+            "has_exit_code": true,
+            "exit_code": 0
+          },
+          {
+            "role": "coordinator",
+            "pid": 18936,
+            "forced": false,
+            "has_exit_code": true,
+            "exit_code": 0
+          }
+        ],
+        "cleanup_complete": true
+      },
+      "explosive_counter": {
+        "mismatch_shots": [],
+        "computed_final": 4,
+        "observed_final": 4
+      },
+      "longest_continuous_notification_segment": {
+        "seconds": 24.11666666666666,
+        "first_ordinal": 120,
+        "last_ordinal": 313
+      },
+      "health_balances": [
+        {
+          "target": "1/43C47E2B3BFE0E0DFB351FF7943363F1/1",
+          "team": 1,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/8E249F74A0493F90780963CE1E1AB114/1",
+          "team": 1,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/66425DB3F050E70D0D2A54A7F76EDF4D/1",
+          "team": 1,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/777FFE03975D9E7B19705F9E62C0555E/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 10000,
+          "final_shield": 10000,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/B3AAAF22737894F6F6BB8C3F6716BFE5/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/6C32E3E370D683E721A933725D4AAC78/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/EC74784C023D40DC19CAE64804947B75/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/5A3D51A0C91E8B11516BA3A7D1B39536/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/B45C03904C01B12248030AFDECBC83B9/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 1000,
+          "final_shield": 1000,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/ABD0C36DBEF823B642A46B761B00D68B/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/E6BCEF16E246BBC257C0E63D6A40A7B6/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/242C8DE569B931EBDD137285A861FA77/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/ABC71F5A7205C931B2852AE921930D76/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 100000,
+          "observed_health_loss": 0,
+          "unique_receipt_damage": 0,
+          "difference": 0,
+          "direct_events": 0,
+          "blast_events": 0,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        },
+        {
+          "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1",
+          "team": 2,
+          "initial_health": 100000,
+          "final_health": 92754.203125,
+          "observed_health_loss": 7245.796875,
+          "unique_receipt_damage": 7245.796875,
+          "difference": 0.0,
+          "direct_events": 515,
+          "blast_events": 103,
+          "initial_shield": 0,
+          "final_shield": 0,
+          "unique_receipt_absorbed": 0
+        }
+      ],
+      "damage_groups": [
+        {
+          "frozen_damage": 20,
+          "frozen_radius_cm": 266,
+          "authorized_explosives": 15,
+          "actual_hits": 15,
+          "example": {
+            "shot": "88A064AA7BD80D6B7BE35D666C3AA145",
+            "build_revision": 2,
+            "receipt": {
+              "event": "FCE27563AA0A20ED952A323B71343678",
+              "found": true,
+              "status": 0,
+              "damage": 20,
+              "absorbed": 0,
+              "remaining": 99956,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 20.399999618530273,
+          "frozen_radius_cm": 271.32000732421875,
+          "authorized_explosives": 8,
+          "actual_hits": 8,
+          "example": {
+            "shot": "809CEB3D812CF7B673AD73E7331D82F6",
+            "build_revision": 3,
+            "receipt": {
+              "event": "443EE466B3AC1D958AE265FAB3270861",
+              "found": true,
+              "status": 0,
+              "damage": 20.3984375,
+              "absorbed": 0,
+              "remaining": 99211.6015625,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 30.599998474121094,
+          "frozen_radius_cm": 271.32000732421875,
+          "authorized_explosives": 39,
+          "actual_hits": 39,
+          "example": {
+            "shot": "BF7F668F9D7385E419AE069655A02DCF",
+            "build_revision": 3,
+            "receipt": {
+              "event": "A332BC963D49FC0B58DA921EFD6DEAB4",
+              "found": true,
+              "status": 0,
+              "damage": 30.6015625,
+              "absorbed": 0,
+              "remaining": 98792.2109375,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 31.21200180053711,
+          "frozen_radius_cm": 276.74639892578125,
+          "authorized_explosives": 23,
+          "actual_hits": 23,
+          "example": {
+            "shot": "ABD53196BF885F8B8E7D8D8DA93851B9",
+            "build_revision": 4,
+            "receipt": {
+              "event": "06241890391B9AC4E279F600F0991176",
+              "found": true,
+              "status": 0,
+              "damage": 31.2109375,
+              "absorbed": 0,
+              "remaining": 95852.140625,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        },
+        {
+          "frozen_damage": 32.460479736328125,
+          "frozen_radius_cm": 287.8162536621094,
+          "authorized_explosives": 18,
+          "actual_hits": 18,
+          "example": {
+            "shot": "AF144668132D7E4D25E249ACAB0D453E",
+            "build_revision": 5,
+            "receipt": {
+              "event": "0C745667FB7F81BCA68717F60EDD86F6",
+              "found": true,
+              "status": 0,
+              "damage": 32.4609375,
+              "absorbed": 0,
+              "remaining": 94107.0390625,
+              "killed": false,
+              "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+            }
+          }
+        }
+      ],
+      "build_transitions": [
+        {
+          "old_build": {
+            "player": "434a0a6b4d406f6c493b5283b78fbec7",
+            "revision": 1,
+            "shot_progress": 0,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 0
+          },
+          "new_build": {
+            "player": "434a0a6b4d406f6c493b5283b78fbec7",
+            "revision": 2,
+            "shot_progress": 0,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "serial_before": 0,
+          "serial_after": 0,
+          "previous_offer": {
+            "candidates": [
+              "10.01",
+              "11.01",
+              "09.01"
+            ],
+            "session": "73C8056B0A75B8B960B8BA30EA8F8F85",
+            "open": true,
+            "phase": 0
+          }
+        },
+        {
+          "old_build": {
+            "player": "434a0a6b4d406f6c493b5283b78fbec7",
+            "revision": 2,
+            "shot_progress": 1,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "new_build": {
+            "player": "434a0a6b4d406f6c493b5283b78fbec7",
+            "revision": 3,
+            "shot_progress": 1,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "serial_before": 76,
+          "serial_after": 76,
+          "previous_offer": {
+            "candidates": [
+              "12.01",
+              "11.01",
+              "09.01"
+            ],
+            "session": "35701870559FFDCD4397A282CD7430F6",
+            "open": true,
+            "phase": 1
+          }
+        },
+        {
+          "old_build": {
+            "player": "434a0a6b4d406f6c493b5283b78fbec7",
+            "revision": 3,
+            "shot_progress": 2,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "new_build": {
+            "player": "434a0a6b4d406f6c493b5283b78fbec7",
+            "revision": 4,
+            "shot_progress": 2,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "serial_before": 313,
+          "serial_after": 313,
+          "previous_offer": {
+            "candidates": [
+              "09.01",
+              "10.01",
+              "12.01"
+            ],
+            "session": "176325D975924CF324CF470DD959441B",
+            "open": true,
+            "phase": 0
+          }
+        },
+        {
+          "old_build": {
+            "player": "434a0a6b4d406f6c493b5283b78fbec7",
+            "revision": 4,
+            "shot_progress": 1,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "new_build": {
+            "player": "434a0a6b4d406f6c493b5283b78fbec7",
+            "revision": 5,
+            "shot_progress": 1,
+            "fire_rate_multiplier": 1,
+            "enhanced": false,
+            "explosive_interval": 5
+          },
+          "serial_before": 427,
+          "serial_after": 427,
+          "previous_offer": {
+            "candidates": [
+              "10.01",
+              "12.01",
+              "11.01"
+            ],
+            "session": "380CFD37E779FEE3B70223C145E9FD29",
+            "open": true,
+            "phase": 1
+          }
+        }
+      ]
+    }
+  ],
+  "candidate_and_confirm": {
+    "run1_no_package_offer": {
+      "builds": [
+        {
+          "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+          "revision": 1,
+          "shot_progress": 0,
+          "fire_rate_multiplier": 1,
+          "enhanced": false,
+          "explosive_interval": 0
+        }
+      ],
+      "offer": {
+        "candidates": [
+          "10.01",
+          "11.01",
+          "09.01"
+        ],
+        "session": "43B2131A905F28E336A578D0B7EAB433",
+        "open": true,
+        "phase": 1
+      }
+    },
+    "run1_max_level_offer": {
+      "builds": [
+        {
+          "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+          "revision": 5,
+          "shot_progress": 3,
+          "fire_rate_multiplier": 1,
+          "enhanced": false,
+          "explosive_interval": 5
+        }
+      ],
+      "offer": {
+        "candidates": [
+          "10.01",
+          "09.01",
+          "11.01"
+        ],
+        "session": "1A4F2BD8057DE915C04F93D4A7ACCAD9",
+        "open": true,
+        "phase": 1
+      }
+    },
+    "run1_duplicate_card_confirm_after": {
+      "builds": [
+        {
+          "player": "9b4f7ba545f5ce1f68d8558a83c333f9",
+          "revision": 5,
+          "shot_progress": 3,
+          "fire_rate_multiplier": 1,
+          "enhanced": false,
+          "explosive_interval": 5
+        }
+      ],
+      "offer": {
+        "candidates": [
+          "10.01",
+          "09.01",
+          "11.01"
+        ],
+        "session": "1A4F2BD8057DE915C04F93D4A7ACCAD9",
+        "open": true,
+        "phase": 1
+      }
+    },
+    "run2_prerequisite_rejected": {
+      "builds": [
+        {
+          "player": "434a0a6b4d406f6c493b5283b78fbec7",
+          "revision": 1,
+          "shot_progress": 0,
+          "fire_rate_multiplier": 1,
+          "enhanced": false,
+          "explosive_interval": 0
+        }
+      ],
+      "offer": {
+        "candidates": [
+          "10.01",
+          "11.01",
+          "09.01"
+        ],
+        "session": "73C8056B0A75B8B960B8BA30EA8F8F85",
+        "open": true,
+        "phase": 1
+      }
+    }
+  },
+  "damage_receipt_duplicates": {
+    "main_duplicate_results": 8,
+    "fault_configuration": "duplicate_damage_control.json",
+    "sender_state": "run1_after_duplicates_peer.json",
+    "health_balance": "Unique event sums equal observed target health loss for each run."
+  },
+  "inflight_upgrade": {
+    "old_shot": "27C2F0195EED16DBF40DB4B2CE02A75E",
+    "old_snapshot": {
+      "shot": "27C2F0195EED16DBF40DB4B2CE02A75E",
+      "revision": 3,
+      "damage": 12,
+      "fire_rate": 12,
+      "primary_receipt": {
+        "event": "EB9FADB33113B7D94E307C76973AFCC7",
+        "found": true,
+        "status": 0,
+        "damage": 12,
+        "absorbed": 0,
+        "remaining": 71972.53125,
+        "killed": false
+      },
+      "bullet_vfx": 62,
+      "explosive_damage": 40.79999923706055,
+      "explosive_radius": 271.32000732421875,
+      "companion": "7a6d25895fe432ed1267ccca5f74b110",
+      "first_seen": 1794191280.935254,
+      "first_stage": "level1_flying_during_level2_upgrade"
+    },
+    "settled": {
+      "shot": "27C2F0195EED16DBF40DB4B2CE02A75E",
+      "center": [
+        -114.5574560249016,
+        52161.046800024036,
+        1121.0029812604212
+      ],
+      "hits": [
+        {
+          "event": "52A82F0B8F4CBAAA75C4F8EC85F6BA32",
+          "found": true,
+          "status": 0,
+          "damage": 40.796875,
+          "absorbed": 0,
+          "remaining": 71919.734375,
+          "killed": false,
+          "target": "1/524CDFC6DA23DE668109B6D67CA4D6D7/1"
+        }
+      ],
+      "first_seen": 1794191281.9410975,
+      "first_stage": "level1_flying_during_level2_upgrade"
+    },
+    "new_revision": 4,
+    "files": [
+      "flight_upgrade_request.json",
+      "run1_flying_before_upgrade.json",
+      "run1_flying_after_upgrade.json",
+      "run1_old_shot_settled.json"
+    ]
+  },
+  "range_boundary": {
+    "basis": "Existing IntersectsSphere uses Target.Location plus CollisionRadius; stationary real target locations read from the formal Manifest, not GetHitCenter used by direct projectiles.",
+    "counts": {
+      "pairs": 11732,
+      "friendly_inside_excluded": 750,
+      "expected_hits": 940
+    },
+    "mismatches": 0,
+    "near_boundary_count": 162
+  },
+  "scene": {
+    "success": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "entities": 15,
+    "report": "scene_delivery.json"
+  },
+  "limitations": [
+    "No assistant image inspection; main-fireball visual alignment remains pending player acceptance.",
+    "Two weapon-upgrade overlap notifications, one per run, were not admitted. All notifications alternate; accepted-shot order has one same-side pair per run because the old-tier request was dropped. No extra explosive count or damage. Existing firing timing was outside this change.",
+    "The run-2 rejected request receipt was later evicted from the cache; its final cache-miss status is not the rejection reason.",
+    "High-HP float storage quantizes actual health deltas at 0.0078125 HP; damage snapshots retain float precision.",
+    "Runtime coverage contains base damage at all three weapon tiers, enhancement level 1 at all three tiers, levels 2 and 3 at weapon tiers 2 and 3. No claim of all 12 combinations being played."
+  ]
+}

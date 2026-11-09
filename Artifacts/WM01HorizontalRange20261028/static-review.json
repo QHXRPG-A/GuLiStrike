@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "kind": "static_review_only",
+  "source": "Source\\GuLiStrike\\Gameplay\\CommanderSkills\\GuLiUnitSkillExecution.cpp",
+  "source_change": "GroundPoint unit skill admission uses XY distance squared; exact radius accepted",
+  "point_unit_skills": [
+    "WM01_HomingMissile"
+  ],
+  "range": "Final BasicAttack range * 2 = base 12000 * 2 = 24000 cm",
+  "checks": [
+    "Production caller is ExecuteHybridUnitSkill; logical Soldier.Location supplied unchanged",
+    "Range validation still precedes effect execution and successful cooldown update",
+    "Z retained in source/target transforms for trajectory and scatter",
+    "Global skills retain their separate distance path",
+    "No BasicAttack, Ship, Wingman, Ground player, data schema, ownership, network fields, or Tick changes",
+    "Authoring script parses; existing map entities only; no gameplay launched"
+  ],
+  "compilation": "not_run",
+  "runtime": "not_run",
+  "visual": "player_pending"
+}

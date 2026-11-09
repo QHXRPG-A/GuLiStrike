@@ -39,6 +39,21 @@ private:
     TSharedPtr<const FGuLiGridSnapshot,ESPMode::ThreadSafe> Terrain;
     const FGuLiGroundHUDSnapshot* Data=nullptr;
     TArray<FVector> Vertices;TArray<SlateIndex> Indices;
+	// Slate copies submitted data; retain CPU scratch capacity for the next paint.
+	mutable TArray<FSlateVertex> PaintVertices;
+	mutable TArray<SlateIndex> PaintIndices;
+	struct FTerrainPaintBatch
+	{
+		TArray<FSlateVertex> Vertices;
+		TArray<FVector2f> Positions;
+		TArray<SlateIndex> Indices;
+		int32 FixedVertices=0;
+	};
+	mutable TArray<FTerrainPaintBatch> TerrainPaintBatches;
+	mutable FVector TerrainPaintCenter=FVector::ZeroVector;
+	mutable FVector2D TerrainPaintSize=FVector2D::ZeroVector;
+	mutable FSlateRenderTransform TerrainPaintTransform;
+	mutable float TerrainPaintHeading=0;
     TArray<FColor> TerrainColors;
     TArray<FVector> TerrainPerimeter;
     TArray<TArray<SlateIndex>> HeadingIndices;

@@ -174,7 +174,7 @@
         "work_id": "",
         "kind": "archive",
         "role": "root",
-        "title": "2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，无畏舰/重巡分驻 01/02 文件夹",
+        "title": "2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，巡天/重巡分驻 01/02 文件夹",
         "areas": [
           "commander",
           "ship",
@@ -189,7 +189,7 @@
         "verification": "not_run",
         "created": "2026-08-24",
         "updated": "2026-09-05",
-        "summary": "2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，无畏舰/重巡分驻 01/02 文件夹",
+        "summary": "2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，巡天/重巡分驻 01/02 文件夹",
         "next_action": "",
         "relations": {
           "work_items": [
@@ -224,7 +224,7 @@
         "verification": "partial",
         "created": "2026-08-24",
         "updated": "2026-08-24",
-        "summary": "A 阵营无畏舰（Dreadnought Vengeance）：SMDreadnoughtHull（舰体 16,312 三角形）+ 6 武器件——SMSCTwinBarrelTurret ×1,240 / BottomTwin ×1,240 / SingleBarrel ×1,130 / CIWS ×654 / ShieldGenerator ×312 / MissileBay ×368",
+        "summary": "A 阵营重型舰（Dreadnought Vengeance）：SMDreadnoughtHull（舰体 16,312 三角形）+ 6 武器件——SMSCTwinBarrelTurret ×1,240 / BottomTwin ×1,240 / SingleBarrel ×1,130 / CIWS ×654 / ShieldGenerator ×312 / MissileBay ×368",
         "next_action": "",
         "relations": {
           "work_items": []
@@ -463,7 +463,7 @@
         "verification": "not_run",
         "created": "2026-08-27",
         "updated": "2026-08-27",
-        "summary": "场景中三组已人工标定的实例缩放已烘焙到模型资源，关卡 Actor Scale 全部归一为 1；当前玩家飞船仅在子蓝图取消根组件 0.3 倍缩放，父蓝图保持不变。运行时飞船使用缩小为原资源 0.5 的 Dreadnought 舰体，因此最终尺寸为改动前的 5/3，并同步更新舰体偏移、相机参数和出生高度",
+        "summary": "场景中三组已人工标定的实例缩放已烘焙到模型资源，关卡 Actor Scale 全部归一为 1；当前玩家飞船仅在子蓝图取消根组件 0.3 倍缩放，父蓝图保持不变。运行时飞船使用缩小为原资源 0.5 的巡天舰体，因此最终尺寸为改动前的 5/3，并同步更新舰体偏移、相机参数和出生高度",
         "next_action": "",
         "relations": {
           "work_items": [
@@ -819,5 +819,10 @@
       "path": "Progress/Archive/20261021-近期优化原文.zip",
       "sha256": "9a5ac98a2c7e3b4da4375f0b5edc4653142ea47dd0cfdd0c2b1bc12e1e18f74d"
     }
-  ]
+  ],
+  "xuntian_name_normalization": {
+    "date": "2026-11-03",
+    "file_sha256_before": "d26ef3605e41d26d9cc158932b7c65721ba93b772dca374ea7a7a596c674f4e4",
+    "policy": "仅名称规范化；保留历史结论与原始证据哈希含义。当前文本不是当时的原始导出；原文件可由迁移前哈希及版本历史追溯。"
+  }
 }

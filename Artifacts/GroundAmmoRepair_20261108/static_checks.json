@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "python_ast": [
+    "Scripts/GroundMech/Rogue/update_fire_notify_ammo.py",
+    "Scripts/GroundMech/Rogue/install_fire_notify_ammo.py",
+    "Scripts/GroundMech/Rogue/save_fire_notify_review.py",
+    "Scripts/GroundMech/MechaDestroyer/install_ground_mobility.py",
+    "Tools/DataPipeline/export_data_from_excel.py",
+    "Tools/DataPipeline/buff_catalog.py"
+  ],
+  "data_validation": "43-table export passed after updated effect/version/trail-reference checks",
+  "initial_trail_cm": 3000,
+  "mass_type_1_5_length_cm": 300.0,
+  "mass_type_1_5_width_multiplier": 0.5,
+  "enhanced_unchanged": true,
+  "impact_visual_unchanged": true,
+  "explosive_speed_cm_s": 16800.0,
+  "explosive_lifetime_seconds": 7.142857142857143,
+  "range_cm": 120000,
+  "outward_cm": 50,
+  "fire_rate_level_limits": {
+    "4": 26,
+    "8": 17,
+    "12": 11
+  },
+  "protocol": 37,
+  "ground_capability": 5,
+  "linear_recovery": 9,
+  "explosive_handler": 2,
+  "diff_check_exit": 0,
+  "PIE": false,
+  "automated_tests": false,
+  "runtime_damage_verified": false,
+  "assistant_visual_test": false
+}

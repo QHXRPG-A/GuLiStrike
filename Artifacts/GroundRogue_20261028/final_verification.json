@@ -1,0 +1,80 @@
+{
+  "native_effect_class_loaded": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "saved_scene_entities": 15,
+  "preserved_deployments": 11,
+  "manifests": [
+    {
+      "population": 200,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 167,
+        "tables": 5
+      },
+      "validation": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 167,
+        "tables": 0
+      },
+      "schema": 24,
+      "protocol": 33,
+      "ground_carriers": 2
+    },
+    {
+      "population": 600,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 167,
+        "tables": 5
+      },
+      "validation": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 167,
+        "tables": 0
+      },
+      "schema": 24,
+      "protocol": 33,
+      "ground_carriers": 2
+    }
+  ],
+  "navigation": [
+    {
+      "label": "NavMeshBounds_CommanderPlayableLandscape",
+      "center": [
+        0.0,
+        0.0,
+        6590.564727783203
+      ],
+      "extent": [
+        85050.0,
+        85050.0,
+        9642.78564453125
+      ]
+    },
+    {
+      "label": "RecastNavMesh-Default",
+      "runtime_generation": "<RuntimeGenerationType.DYNAMIC: 2>"
+    },
+    {
+      "label": "RecastNavMesh-CommanderSoldier",
+      "runtime_generation": "<RuntimeGenerationType.DYNAMIC: 2>"
+    }
+  ],
+  "dirty_maps": 0,
+  "dirty_content": 0,
+  "pie_started": false,
+  "runtime_verified": false,
+  "visual_acceptance": "pending_user"
+}

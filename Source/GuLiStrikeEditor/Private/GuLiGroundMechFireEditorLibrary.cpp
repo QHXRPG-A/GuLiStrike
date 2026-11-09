@@ -4,6 +4,8 @@
 #include "NiagaraEmitter.h"
 #include "NiagaraScriptSource.h"
 #include "NiagaraSpriteRendererProperties.h"
+#include "NiagaraMeshRendererProperties.h"
+#include "NiagaraLightRendererProperties.h"
 #include "NiagaraRibbonRendererProperties.h"
 #include "NiagaraGraph.h"
 #include "NiagaraNodeFunctionCall.h"
@@ -12,6 +14,99 @@
 #include "ViewModels/Stack/NiagaraStackGraphUtilities.h"
 #include "ViewModels/Stack/NiagaraParameterHandle.h"
 #include "Serialization/JsonSerializer.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystemInstanceController.h"
+#include "NiagaraSystemInstance.h"
+#include "NiagaraDataSetAccessor.h"
+#include "Engine/StaticMesh.h"
+
+FString UGuLiGroundMechFireEditorLibrary::ReadExplosiveImpactParticles(UNiagaraComponent* Component)
+{
+    if(!Component || !Component->GetAsset() || Component->GetAsset()->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact"))return TEXT("{}");
+    auto Controller=Component->GetSystemInstanceController();if(!Controller.IsValid())return TEXT("{}");
+    Controller->WaitForConcurrentTickAndFinalize();const auto* Instance=Controller->GetSystemInstance_Unsafe();if(!Instance)return TEXT("{}");
+    auto Root=MakeShared<FJsonObject>();TArray<TSharedPtr<FJsonValue>> Emitters;
+    for(const auto& E:Instance->GetEmitters())
+    {
+        if(!E->GetEmitterHandle().GetIsEnabled())continue;
+        const auto& Data=E->GetParticleData();const auto* Buffer=Data.GetCurrentData();const int32 Count=Buffer?Buffer->GetNumInstances():0;
+        const auto Position=FNiagaraDataSetAccessor<FNiagaraPosition>(Data,TEXT("Position")).GetReader(Data);
+        const auto Scale=FNiagaraDataSetAccessor<FVector3f>(Data,TEXT("Scale")).GetReader(Data);
+        const auto Age=FNiagaraDataSetAccessor<float>(Data,TEXT("Age")).GetReader(Data);
+        const auto Life=FNiagaraDataSetAccessor<float>(Data,TEXT("Lifetime")).GetReader(Data);
+        const auto Color=FNiagaraDataSetAccessor<FLinearColor>(Data,TEXT("Color")).GetReader(Data);
+        const auto Orientation=FNiagaraDataSetAccessor<FQuat4f>(Data,TEXT("MeshOrientation")).GetReader(Data);
+        auto Row=MakeShared<FJsonObject>();Row->SetStringField(TEXT("emitter"),E->GetEmitterHandle().GetName().ToString());
+        Row->SetNumberField(TEXT("count"),Count);TArray<TSharedPtr<FJsonValue>> Particles,Meshes;
+        for(int32 I=0;I<Count;++I)
+        {
+            auto P=MakeShared<FJsonObject>();P->SetNumberField(TEXT("index"),I);
+            if(Position.IsValid())P->SetStringField(TEXT("position"),FVector(Position.Get(I)).ToString());
+            if(Scale.IsValid())P->SetStringField(TEXT("scale"),FVector(Scale.Get(I)).ToString());
+            if(Age.IsValid())P->SetNumberField(TEXT("age"),Age.Get(I));if(Life.IsValid())P->SetNumberField(TEXT("lifetime"),Life.Get(I));
+            if(Color.IsValid())P->SetStringField(TEXT("color"),Color.Get(I).ToString());
+            if(Orientation.IsValid())P->SetStringField(TEXT("orientation"),FQuat(Orientation.Get(I)).ToString());
+            for(const TCHAR* Name:{TEXT("Color_2"),TEXT("Color002")})
+            {
+                const auto Values=FNiagaraDataSetAccessor<FLinearColor>(Data,Name).GetReader(Data);
+                if(Values.IsValid())P->SetStringField(Name,Values.Get(I).ToString());
+            }
+            for(const TCHAR* Name:{TEXT("Dyn_2"),TEXT("Dyn002")})
+            {
+                const auto Values=FNiagaraDataSetAccessor<FVector4f>(Data,Name).GetReader(Data);
+                if(Values.IsValid())P->SetStringField(Name,FVector4(Values.Get(I)).ToString());
+            }
+            for(int32 N=0;N<4;++N)
+            {
+                const FString Name=N?FString::Printf(TEXT("DynamicMaterialParameter%d"),N):TEXT("DynamicMaterialParameter");
+                const auto Values=FNiagaraDataSetAccessor<FVector4f>(Data,FName(*Name)).GetReader(Data);
+                if(Values.IsValid())P->SetStringField(Name,FVector4(Values.Get(I)).ToString());
+            }
+            Particles.Add(MakeShared<FJsonValueObject>(P));
+        }
+        if(const auto* ED=E->GetEmitterHandle().GetEmitterData())for(const auto* Renderer:ED->GetRenderers())
+            if(const auto* Mesh=Cast<UNiagaraMeshRendererProperties>(Renderer))for(const auto& Item:Mesh->Meshes)if(Item.Mesh)
+            {
+                auto M=MakeShared<FJsonObject>();M->SetStringField(TEXT("mesh"),Item.Mesh->GetPathName());
+                M->SetStringField(TEXT("mesh_scale"),Item.Scale.ToString());M->SetNumberField(TEXT("sphere_radius"),Item.Mesh->GetBounds().SphereRadius);
+                M->SetStringField(TEXT("box_extent"),Item.Mesh->GetBounds().BoxExtent.ToString());M->SetStringField(TEXT("scale_binding"),Mesh->ScaleBinding.GetName().ToString());
+                Meshes.Add(MakeShared<FJsonValueObject>(M));
+            }
+        Row->SetArrayField(TEXT("particles"),Particles);Row->SetArrayField(TEXT("meshes"),Meshes);Emitters.Add(MakeShared<FJsonValueObject>(Row));
+    }
+    Root->SetArrayField(TEXT("emitters"),Emitters);Root->SetBoolField(TEXT("complete"),Component->IsComplete());
+    FString Result;FJsonSerializer::Serialize(Root,TJsonWriterFactory<>::Create(&Result));return Result;
+}
+
+FString UGuLiGroundMechFireEditorLibrary::ConfigureExplosiveHead(UNiagaraSystem* System,bool bApply)
+{
+    if (!System || !GEditor || GEditor->PlayWorld || System->GetPathName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight.NS_GroundExplosiveFlight")) return TEXT("{\"success\":false}");
+    int32 Count=0;bool OK=true;FGuid Carrier;
+    for(const auto& Handle:System->GetEmitterHandles())if(Handle.GetName()==TEXT("GuLiMissileBody"))Carrier=Handle.GetId();
+    if(!Carrier.IsValid())return TEXT("{\"success\":false}");
+    for(auto& Handle:System->GetEmitterHandles())
+    {
+        if(!Handle.GetIsEnabled())continue;
+        auto* Data=Handle.GetInstance().GetEmitterData();if(!Data)return TEXT("{\"success\":false}");
+        if(bApply)Data->bLocalSpace=false;
+        // Missile_Cluster's carrier owns the location stream; VFX_Missile's
+        // smoke/fire/ribbon followers consume it in world space.
+        for(auto& Event:Data->EventHandlerScriptProps)
+        {if(bApply)Event.SourceEmitterID=Carrier;OK &= Event.SourceEmitterID==Carrier;}
+        const FVersionedNiagaraEmitterBase Emitter(Handle.GetInstance().Emitter,Handle.GetInstance().Version);
+        for(auto* Renderer:Data->GetRenderers())
+        {
+            if(auto* Light=Cast<UNiagaraLightRendererProperties>(Renderer)){if(bApply)Light->SetIsEnabled(false);continue;}
+            FNiagaraVariableAttributeBinding* Size=nullptr;FName Name;
+            if(auto* Sprite=Cast<UNiagaraSpriteRendererProperties>(Renderer)){Size=&Sprite->SpriteSizeBinding;Name=TEXT("Particles.GuLiScaledSpriteSize");}
+            if(auto* Mesh=Cast<UNiagaraMeshRendererProperties>(Renderer)){Size=&Mesh->ScaleBinding;Name=TEXT("Particles.GuLiScaledMeshScale");}
+            if(auto* Ribbon=Cast<UNiagaraRibbonRendererProperties>(Renderer)){Size=&Ribbon->RibbonWidthBinding;Name=TEXT("Particles.GuLiScaledRibbonWidth");}
+            if(Size){if(bApply){Renderer->Modify();Size->SetValue(Name,Emitter,Renderer->GetCurrentSourceMode());}OK &= Size->GetName()==Name;++Count;}
+        }
+    }
+    if (bApply) {System->RequestCompile(false);System->WaitForCompilationComplete();System->MarkPackageDirty();}
+    return FString::Printf(TEXT("{\"success\":%s,\"sprite_renderers\":%d}"),OK && Count>0?TEXT("true"):TEXT("false"),Count);
+}
 
 namespace
 {
@@ -174,7 +269,8 @@ FString UGuLiGroundMechFireEditorLibrary::ConfigurePersistentTrail(UNiagaraSyste
 {
     auto R=MakeShared<FJsonObject>(); R->SetBoolField(TEXT("success"),false);
     if (!System || !Material || !GEditor || GEditor->PlayWorld
-        || !System->GetPathName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/"))
+        || (!System->GetPathName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/"))
+            && System->GetPathName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail.NS_GroundExplosiveTrail"))
         || Dimensions.ContainsNaN() || Dimensions.X<=0 || Dimensions.Y<100 || Dimensions.Z<0
         || !FMath::IsFinite(HoldSeconds) || HoldSeconds<0 || !FMath::IsFinite(FadeSeconds) || FadeSeconds<=0
         || !FMath::IsFinite(ProjectileLifetime) || ProjectileLifetime<=0) return GroundMechFireJson(R);

@@ -1,0 +1,114 @@
+{
+  "status": "saved_and_verified",
+  "checks": [
+    {
+      "population": 200,
+      "versions": {
+        "protocol": 34,
+        "manifest": 24,
+        "handoff": 3
+      },
+      "objects": 292,
+      "rules": 253,
+      "supply_rules": 22,
+      "obsolete_manifest_rejected": "Manifest versions (33, 24, 3) do not match native Core: protocol 34 / manifest 24 / object handoff 3; re-export with the matching build"
+    },
+    {
+      "population": 600,
+      "versions": {
+        "protocol": 34,
+        "manifest": 24,
+        "handoff": 3
+      },
+      "objects": 692,
+      "rules": 253,
+      "supply_rules": 22,
+      "obsolete_manifest_rejected": "Manifest versions (33, 24, 3) do not match native Core: protocol 34 / manifest 24 / object handoff 3; re-export with the matching build"
+    }
+  ],
+  "versions_source": "Source/GuLiNetCore/Public/GuLiNetTypes.h; Source/GuLiNetCore/Public/GuLiNetManifest.h",
+  "changes": [
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-200.json",
+      "sha256_before": "8c8ce83702e942e5700f1273ca3e1b5864d2d3ee5ff39e8900e72d66954531fc",
+      "sha256_after": "c9644812bd004b5bbdd9e70d728079d5a2db3728bfc6374e23dd45fbfafd3ba2"
+    },
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-600.json",
+      "sha256_before": "3332f4c8af259312ee2d2af39053e327b8333e9777198d4790204554f16d9529",
+      "sha256_after": "396dd7fb327d90ac97489ba21bcdbadbfcf0a587bb43303f57415b87ca2c2c30"
+    },
+    {
+      "path": "Config/Hybrid/AcceptanceProfile.json",
+      "sha256_before": "c80ac6d1d02b22917a1bd36d034f7694dcc1d411f351b8ba6cf418ad83f438df",
+      "sha256_after": "2a75053951324605924655dce4a90e6216a5c79388a2852f25f391cf02f1e811"
+    },
+    {
+      "path": "Scripts/Network/acceptance_contract.py",
+      "sha256_before": "eadc0b7bf9471be2b123fce849b32ca0ba45e37b2a6bc12eff4a7721e3a04b04",
+      "sha256_after": "78fa67e18ab4a99d78ad880e96f4a91ed07bb90bb82792e29c7f2b3fe9a53d13"
+    }
+  ],
+  "normal_runtime_exactly_unchanged": true,
+  "native_code_changed": false,
+  "assets_changed": false,
+  "PIE": "not_run",
+  "multiplayer_acceptance": "not_run",
+  "architecture": "passed_static_scope",
+  "final_checks": [
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-200.json",
+      "sha256": "c9644812bd004b5bbdd9e70d728079d5a2db3728bfc6374e23dd45fbfafd3ba2",
+      "python_contract": "passed",
+      "coordinator": {
+        "exit_code": 0,
+        "stdout": "Manifest validated"
+      },
+      "objects": 292,
+      "rules": 253,
+      "acceptance_supply_rules": 22,
+      "role_ownership_and_player_identities_preserved": true
+    },
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-600.json",
+      "sha256": "396dd7fb327d90ac97489ba21bcdbadbfcf0a587bb43303f57415b87ca2c2c30",
+      "python_contract": "passed",
+      "coordinator": {
+        "exit_code": 0,
+        "stdout": "Manifest validated"
+      },
+      "objects": 692,
+      "rules": 253,
+      "acceptance_supply_rules": 22,
+      "role_ownership_and_player_identities_preserved": true
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "sha256": "31f341e8ded8e21fe9051fe57cc286b21e34a9cbcdf0058ae39268b6381df048",
+      "python_contract": "passed",
+      "coordinator": {
+        "exit_code": 0,
+        "stdout": "Manifest validated"
+      },
+      "objects": 292,
+      "rules": 169,
+      "acceptance_supply_rules": 0,
+      "role_ownership_and_player_identities_preserved": true
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-600.json",
+      "sha256": "e1167456390a12c68990f1a568f57f779d02c179276689f8ccdcad27947717ce",
+      "python_contract": "passed",
+      "coordinator": {
+        "exit_code": 0,
+        "stdout": "Manifest validated"
+      },
+      "objects": 692,
+      "rules": 169,
+      "acceptance_supply_rules": 0,
+      "role_ownership_and_player_identities_preserved": true
+    }
+  ],
+  "native_readback": "manifest-repair-native-readback.json",
+  "architecture_evidence": "manifest-repair-architecture-audit.json"
+}

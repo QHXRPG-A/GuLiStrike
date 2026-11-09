@@ -52,7 +52,7 @@ def main():
     assert unreal.GuLiRogueCardPresentationLibrary.rebuild_game_text_string_table(strings, texts)
     assert unreal.EditorAssetLibrary.save_loaded_asset(strings, False)
     text = unreal.TextLibrary.text_from_string_table(unreal.Name(strings.get_path_name()), 'Card.GroundMech.BurningBurst.Description')
-    assert str(text) == '<Unit>地面机甲</> 灼烧每隔一段时间发生<Gain>爆燃</>', 'Single-line burst wording'
+    assert str(text) == '<Unit>游骑兵</> 灼烧每隔一段时间发生<Gain>爆燃</>', 'Single-line burst wording'
     return {'success': True, 'tables': result, 'description': str(text), 'buff_version': 2, 'radius_cm': 500}
 
 

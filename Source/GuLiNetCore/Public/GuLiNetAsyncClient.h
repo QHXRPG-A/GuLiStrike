@@ -79,9 +79,6 @@ struct AsyncExecutionOptions
     // PumpCommandApplications on the caller thread; never touch scene state
     // or wait for it in this callback.
     std::function<void(std::uint64_t)> CommandApplicationReady;
-    // Local cooperative scheduling only; no protocol or gameplay value changes.
-    std::size_t NetworkRetryBatchLimit=0;
-    bool DeferPeerTransactions=false;
     bool ReuseResourceValidationSnapshot=false;
 };
 
@@ -207,6 +204,9 @@ public:
     const std::string& Error() const;
     const std::string& DirectoryHash() const;
     const std::map<ObjectKey,ObjectRecord>& Objects() const;
+    /** Immediate caller-thread lookup. The cache stores addresses, never authority
+     * decisions; every read observes the current applied record and exact life. */
+    const ObjectRecord* FindObject(ObjectKey) const;
     /** Current applied record, including tombstones. Missing objects are retried.
      * The returned pointer is for immediate caller-thread reads, not ownership.
      */

@@ -168,6 +168,32 @@ struct FWorkerPoseCodec final:GuLiNet::IObjectMotionCodec
     }
 };
 struct FPosePeer {FGuid Player,Connection;};
+// Synchronous single-unit publication consumes the chunk before returning.
+// Keep one allocation per nesting depth, so callbacks can publish reentrantly
+// without overwriting the outer sample. No World or UObject is retained here.
+struct FSinglePoseStorage
+{
+    TArray<TUniquePtr<FGuLiSoldierPoseChunk>> Chunks;
+    int32 Depth=0;
+};
+FSinglePoseStorage& SinglePoseStorage()
+{static thread_local FSinglePoseStorage Storage;return Storage;}
+struct FScopedSinglePose
+{
+    FSinglePoseStorage& Storage=SinglePoseStorage();
+    int32 Index=Storage.Depth++;
+    FScopedSinglePose()
+    {
+        if (Storage.Chunks.Num()<=Index) Storage.Chunks.Add(MakeUnique<FGuLiSoldierPoseChunk>());
+        auto& Chunk=*Storage.Chunks[Index];
+        FGuLiSoldierPoseChunk Empty;Swap(Empty.Samples,Chunk.Samples);
+        Chunk=MoveTemp(Empty);Chunk.Samples.Reset();
+    }
+    ~FScopedSinglePose() {--Storage.Depth;}
+    FScopedSinglePose(const FScopedSinglePose&)=delete;
+    FScopedSinglePose& operator=(const FScopedSinglePose&)=delete;
+    FGuLiSoldierPoseChunk& Get() {return *Storage.Chunks[Index];}
+};
 struct FPoseInput
 {
     FGuLiHybridObjectKey Key;uint64 At=0,Owner=0,Control=0;
@@ -291,6 +317,7 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter, public
     void Publish(uint64 At)
     {
         auto* S=Soldier(); auto* Self=Authority.Get(); if (!S || !Self || At%6 || !EnsurePoseSession() || At==LastPublished) return;
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_PublishMassPose);
         LastPublished=At; auto* World=Self->GetWorld(); auto* Hybrid=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
         auto* Session=World->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>();
         if (!Hybrid || !Session || Hybrid->GetLogicalTick()/6>MAX_uint32) return;
@@ -314,7 +341,8 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter, public
             for (const auto& M:Session->GetMembers()) if (M.bOnline&&M.bReady&&M.Player!=Session->GetLocalPlayerId()) V.Peers.Add({M.Player,M.Connection});
             if (!Pipeline->Queue(std::move(V))) LastPublished=0;ReadModel();return;
         }
-        FGuLiSoldierPoseChunk Chunk; Chunk.AuthorityEpoch=World->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch();
+        GuLiHybridMass::FScopedSinglePose Scratch;auto& Chunk=Scratch.Get();
+        Chunk.AuthorityEpoch=World->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch();
         Chunk.FrameSequence=static_cast<uint32>(At/6); Chunk.ServerSimTick=Self->AuthorityState->ServerSimTick;
         Chunk.ServerTimeSeconds=static_cast<float>(double(At)/60.);
         auto& P=Chunk.Samples.AddDefaulted_GetRef(); P.SoldierId=S->SoldierId;

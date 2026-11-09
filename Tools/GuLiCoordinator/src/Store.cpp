@@ -27,9 +27,9 @@ bool Store::Fail() {LastError=Database?sqlite3_errmsg(Database):"Database unavai
 bool Store::Save(GuLiNet::Id Match,const StoredRoom& V)
 {
     if (!Good() || !Match.Valid() || V.Metadata.empty() || V.PairKeys.size()>2016) return false;
-    GuLiNet::Writer W(40*1024*1024);W.U32(GuLiNet::ProtocolVersion);W.Blob(V.Metadata);W.U32(static_cast<std::uint32_t>(V.PairKeys.size()));
+    GuLiNet::Writer W(sqlite3_limit(Database,SQLITE_LIMIT_LENGTH,-1));W.U32(GuLiNet::ProtocolVersion);W.Blob(V.Metadata);W.U32(static_cast<std::uint32_t>(V.PairKeys.size()));
     for (const auto& [Pair,Key]:V.PairKeys) {W.Identity(Pair.first);W.Identity(Pair.second);W.Identity(Key);}
-    const auto Bytes=W.Take();if (Bytes.empty()) return false;
+    const auto Bytes=W.Take();if (Bytes.empty()) {LastError="Room metadata exceeds SQLite record byte limit";return false;}
     Statement S(Database,"INSERT INTO room_metadata_v28(match,metadata) VALUES(?,?) ON CONFLICT(match) DO UPDATE SET metadata=excluded.metadata");
     if (!S.Value) return Fail();const auto Id=Match.ToString();
     sqlite3_bind_text(S.Value,1,Id.c_str(),static_cast<int>(Id.size()),SQLITE_TRANSIENT);
@@ -43,9 +43,9 @@ bool Store::Load(GuLiNet::Id Match,StoredRoom& Out,bool& Found)
     const auto Id=Match.ToString();sqlite3_bind_text(S.Value,1,Id.c_str(),static_cast<int>(Id.size()),SQLITE_TRANSIENT);
     const auto Result=sqlite3_step(S.Value);if (Result==SQLITE_DONE) return true;if (Result!=SQLITE_ROW) return Fail();
     const auto* Data=static_cast<const std::uint8_t*>(sqlite3_column_blob(S.Value,0));const int Size=sqlite3_column_bytes(S.Value,0);
-    if (!Data || Size<=0 || Size>40*1024*1024) {LastError="Invalid room metadata";return false;}
+    if (!Data || Size<=0) {LastError="Invalid room metadata";return false;}
     GuLiNet::Reader R({Data,static_cast<std::size_t>(Size)});StoredRoom V;std::uint32_t Version,Count;
-    if (!R.U32(Version) || Version!=GuLiNet::ProtocolVersion || !R.Blob(V.Metadata,32*1024*1024) || !R.U32(Count) || Count>2016)
+    if (!R.U32(Version) || Version!=GuLiNet::ProtocolVersion || !R.Blob(V.Metadata,static_cast<std::size_t>(Size)) || !R.U32(Count) || Count>2016)
     {LastError="Incompatible room metadata";return false;}
     for (std::uint32_t I=0;I<Count;++I)
     {

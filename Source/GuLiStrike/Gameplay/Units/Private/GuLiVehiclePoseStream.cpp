@@ -38,12 +38,12 @@ bool Encode(const FGuLiVehiclePose& P,const FGuLiVehiclePose& Base,uint64 Distan
     if (Mask&TransitField) WriteSection(W,P.Transit);
     if (Mask&WorkField) WriteSection(W,P.Work);
     if (!W.Good()) return false;
-    Out.Reset(); Out.Append(W.Data().data(),static_cast<int32>(W.Data().size())); return true;
+    Out.Reset(); Out.Append(W.View().data(),static_cast<int32>(W.View().size())); return true;
 }
 void Reply(UWorld& World,const FGuLiHybridObjectState& Object,uint64 At)
 {
     GuLiNet::Writer W(10); W.VarUnsigned(At);
-    TArray<uint8> Bytes; Bytes.Append(W.Data().data(),static_cast<int32>(W.Data().size()));
+    TArray<uint8> Bytes; Bytes.Append(W.View().data(),static_cast<int32>(W.View().size()));
     World.GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotionAcknowledgment(Object.Key,Bytes);
 }
 }

@@ -1,0 +1,61 @@
+{
+  "success": true,
+  "rings": [
+    {
+      "label": "GroundLowAir_Ring_C",
+      "before": {
+        "profile": "NoCollision",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+      },
+      "after": {
+        "profile": "NoCollision",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+      }
+    },
+    {
+      "label": "GroundLowAir_Ring_W",
+      "before": {
+        "profile": "Custom",
+        "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+      },
+      "after": {
+        "profile": "NoCollision",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+      }
+    },
+    {
+      "label": "GroundLowAir_Ring_E",
+      "before": {
+        "profile": "Custom",
+        "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+      },
+      "after": {
+        "profile": "NoCollision",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+      }
+    },
+    {
+      "label": "GroundLowAir_Ring_N",
+      "before": {
+        "profile": "Custom",
+        "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+      },
+      "after": {
+        "profile": "NoCollision",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+      }
+    },
+    {
+      "label": "GroundLowAir_Ring_S",
+      "before": {
+        "profile": "Custom",
+        "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+      },
+      "after": {
+        "profile": "NoCollision",
+        "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+      }
+    }
+  ],
+  "saved": true
+}

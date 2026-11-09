@@ -30,7 +30,7 @@ class GULISTRIKE_API UGuLiBulletTrailPresentation final : public UObject
 	GENERATED_BODY()
 public:
 	virtual UWorld* GetWorld() const override;
-	void Prepare(UGuLiCombatEffectCatalog* Catalog);
+	void Prepare(UGuLiCombatEffectCatalog* Catalog, bool bInitialStyle=false);
 	bool HasLightSystem() const { return LightSystem!=nullptr; }
 	float GetMaximumLength() const { return MaximumLength; }
 	float GetStrokeEnvelope() const { return 2.f*float(Style.X+Style.Y); }

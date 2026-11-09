@@ -45,6 +45,7 @@ private:
 class GULISTRIKE_API FGuLiHybridAdapterRegistry final
 {
 public:
+    static uint64 GetRevision();
     static bool GetFamilies(TArray<FGuLiHybridAdapterFamily>& Out,FString& Error);
     static bool BindDefinition(FGuLiHybridManifestData& Manifest,const FString& Definition,FName Family,FString& Error);
     static bool Validate(const FGuLiHybridManifestData& Manifest,FString& Error);

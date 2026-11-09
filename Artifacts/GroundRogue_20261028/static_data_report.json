@@ -1,0 +1,76 @@
+{
+  "python_ast": {
+    "passed": true,
+    "files": [
+      "Tools\\DataPipeline\\export_data_from_excel.py",
+      "Scripts\\GroundMech\\Rogue\\author_ground_rogue_data.py",
+      "Scripts\\GroundMech\\Rogue\\install_ground_rogue.py",
+      "Scripts\\GroundMech\\Rogue\\prepare_ground_rogue_scene.py"
+    ]
+  },
+  "card": {
+    "Name": "GroundMech_Ricochet_Lv1",
+    "Id": "06.01",
+    "Note": "个人本局普攻折射；每次获取随机区间整体+1；每跳30米、无遮挡、不重复；直接伤害逐跳乘0.8，附加效果不衰减。",
+    "Type": 3,
+    "TextIds": [
+      "Card.GroundMech.Ricochet.Title",
+      "Card.GroundMech.Ricochet.Description"
+    ],
+    "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundRicochetEffect",
+    "UnitTypeId": 0,
+    "BonusPercent": 0.0,
+    "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1",
+    "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+    "UpgradeVfxScale": 1.0,
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 0,
+    "BonusCount": 0,
+    "EffectConfigId": 1
+  },
+  "effect": {
+    "Name": "GroundMech_Ricochet",
+    "Id": 1,
+    "Note": "折射段不含首个目标；附加伤害不衰减。",
+    "MinimumHops": 5,
+    "MaximumHops": 8,
+    "HopsPerStack": 1,
+    "RangeCentimeters": 3000.0,
+    "DamageRetention": 0.8
+  },
+  "texts": [
+    {
+      "Name": "Card.GroundMech.Ricochet.Title",
+      "TextId": "Card.GroundMech.Ricochet.Title",
+      "Introduction": "游骑兵肉鸽卡标题",
+      "Content": "折射子弹"
+    },
+    {
+      "Name": "Card.GroundMech.Ricochet.Description",
+      "TextId": "Card.GroundMech.Ricochet.Description",
+      "Introduction": "{0}/{1}为本次获取后的折射随机区间",
+      "Content": "<Unit>游骑兵</> <Gain>普攻折射{0}–{1}次</>"
+    }
+  ],
+  "native_build": "completed; see build_report.json",
+  "pie": "not_run",
+  "assistant_visual_test": false,
+  "core_syntax": {
+    "exit_code": 0,
+    "mode": "MSVC /Zs /std:c++20, no object code",
+    "translation_units": [
+      "Source/GuLiNetCore/Private/Capabilities/GuLiNetGroundRogue.cpp",
+      "Source/GuLiNetCore/Private/GuLiNetCapability.cpp",
+      "Source/GuLiNetCore/Private/GuLiNetOwnerTransactions.cpp"
+    ]
+  },
+  "source_sha256": {
+    "Source/GuLiNetCore/Private/Capabilities/GuLiNetGroundRogue.cpp": "56b19e9228b84f6241df82d230d02b9a65341df1b777418f7a5d252f085e8e52",
+    "Source/GuLiNetCore/Private/GuLiNetCapability.cpp": "97e286455a04c1421a1140c454b14da83ebb73c6e475728954a1cc60ff485562",
+    "Source/GuLiNetCore/Private/GuLiNetOwnerTransactions.cpp": "efdf69331bc6668f0c343d39bdf2c1b7b0f59fb17585fc466f0970ce9076d95d"
+  },
+  "ue_module_compile": "not_run",
+  "phase": "static source checks; see build_report.json for subsequent authorized native builds"
+}

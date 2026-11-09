@@ -1,0 +1,2469 @@
+{
+  "id": "mech-constructor-spiders-tanks",
+  "source_root": "/Game/Mech_Constructor_Spiders",
+  "target_root": "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders",
+  "target": {
+    "asset_count": 319,
+    "package_count": 319,
+    "classes": {
+      "AnimBlueprint": 3,
+      "AnimSequence": 91,
+      "Blueprint": 17,
+      "MapBuildDataRegistry": 1,
+      "Material": 6,
+      "PhysicsAsset": 31,
+      "SkeletalMesh": 34,
+      "Skeleton": 21,
+      "StaticMesh": 73,
+      "Texture2D": 40,
+      "TireConfig": 1,
+      "World": 1
+    },
+    "packages": [
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Fold",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Fold_Halfway",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Unfold",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Unfold_Halfway",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/HalfShoulder_Extender_Pack",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/HalfShoulder_Extender_Unpack",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Strafe_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Strafe_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_20_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_20_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_45_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_45_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Back",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Transform_to_Roller",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Transform_to_Spider",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Deactivate_Faint",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Strafe_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Strafe_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_20_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_20_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_45_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_45_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Walk",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Transform_to_Roller",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Transform_to_Spider",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Strafe_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Strafe_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_20_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_20_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_45_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_45_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Back",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Transform_to_Roller",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Transform_to_Spider",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Double_Gun_Recoil_Round",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Double_Gun_Recoil_Single",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Pack",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Recoil",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Unpack",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Sniper_Recoil",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Buggy_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Heaviest",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Lightest",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Light",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Tank_Carrier_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Tank_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl0",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/BP_Pawn_Buggy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Buggy_Pawn_ProjectSettings",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/GameMode_Buggy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_FL",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_FR",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Rear",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Tire",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene_BuiltData",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_FX_Laser",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Floor",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks_PBR",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Long",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_Heaviest",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_HvyMed",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Frame_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Hussar_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Hussar_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Motor_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Safari_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Safari_Med_Buggy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Cockpit_Side_Shield",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Rear_Wheel_Fender",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl1_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl1_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl2_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl2_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl1_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl1_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl2_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl2_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Tracks_Front",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Tracks_Rear",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Flybot",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Flyer",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_2x",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_Flat",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunbot",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunner",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Moto",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Riser",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/FX_Laser_Ray",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Bot",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Cobra",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Tank",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl0_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl0_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl1_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl1_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl2_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl2_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl3_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl3_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Bullet",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Bot",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Cobra",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Tank",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Mount_2x",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Platform",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl4",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl5",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl4",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl5",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_AnimBlueprint",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_AnimBlueprint",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_AnimBlueprint",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Black",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Desert",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Gray",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Jungle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Teal",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_Tank_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_Tank_Tracks_Blue",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_black",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_blue",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_green",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_green_clean",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_rusty_dead",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_white",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_yellow",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Laser_diffuse",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Laser_opacity",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Black",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Blue",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Yellow",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Black",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Black_Red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Desert",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Grey",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Jungle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Teal",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Camo_PBR_Roughness",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Metalness",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Normal",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Self_Illumination",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Albedo",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Metalness",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Roughness",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Normal_Clean",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Tank_Tracks_Normal_Clean"
+    ],
+    "non_redirectors": [
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Fold",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Fold_Halfway",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Unfold",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Unfold_Halfway",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/HalfShoulder_Extender_Pack",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/HalfShoulder_Extender_Unpack",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Strafe_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Strafe_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_20_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_20_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_45_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_45_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Back",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Transform_to_Roller",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Transform_to_Spider",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Deactivate_Faint",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Strafe_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Strafe_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_20_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_20_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_45_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_45_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Walk",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Transform_to_Roller",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Transform_to_Spider",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Strafe_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Strafe_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_20_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_20_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_45_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_45_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Back",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Activate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Deactivate",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll_Turn_L",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll_Turn_R",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Transform_to_Roller",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Transform_to_Spider",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Death",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Idle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Roll",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Double_Gun_Recoil_Round",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Double_Gun_Recoil_Single",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Pack",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Recoil",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Unpack",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Sniper_Recoil",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Buggy_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Heaviest",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Lightest",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Light",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Tank_Carrier_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Tank_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl0",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/BP_Pawn_Buggy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Buggy_Pawn_ProjectSettings",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/GameMode_Buggy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_FL",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_FR",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Rear",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Tire",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene_BuiltData",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_FX_Laser",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Floor",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks_PBR",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Long",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_Heaviest",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_HvyMed",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Frame_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Hussar_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Hussar_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Motor_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Safari_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Safari_Med_Buggy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Cockpit_Side_Shield",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Rear_Wheel_Fender",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl1_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl1_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl2_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl2_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl1_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl1_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl2_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl2_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Tracks_Front",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Tracks_Rear",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Flybot",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Flyer",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_2x",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_Flat",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunbot",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunner",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Moto",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Riser",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/FX_Laser_Ray",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Bot",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Cobra",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Tank",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl0_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl0_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl1_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl1_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl2_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl2_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl3_Body",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl3_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Bullet",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Bot",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Cobra",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Tank",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Mount_2x",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Platform",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl4",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl5",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl4",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl5",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_AnimBlueprint",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_AnimBlueprint",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_AnimBlueprint",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5_PhysicsAsset",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Black",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Desert",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Gray",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Jungle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Teal",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_Tank_Tracks",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_Tank_Tracks_Blue",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_black",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_blue",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_green",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_green_clean",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_rusty_dead",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_white",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_yellow",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Laser_diffuse",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Laser_opacity",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Black",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Blue",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Yellow",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Black",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Black_Red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Desert",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Grey",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Jungle",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Red",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Teal",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Camo_PBR_Roughness",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Metalness",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Normal",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Self_Illumination",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Albedo",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Metalness",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Roughness",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Normal_Clean",
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Tank_Tracks_Normal_Clean"
+    ],
+    "redirectors": [],
+    "maps": [
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene"
+    ]
+  },
+  "source_after": {
+    "asset_count": 0,
+    "package_count": 0,
+    "classes": {},
+    "packages": [],
+    "non_redirectors": [],
+    "redirectors": [],
+    "maps": []
+  },
+  "expected_packages_match": true,
+  "dependencies": {
+    "old_path_dependencies": {},
+    "missing_game_dependencies": {},
+    "external_dependencies": [
+      "/ACLPlugin/ACLAnimBoneCompressionSettings",
+      "/ACLPlugin/ACLAnimCurveCompressionSettings",
+      "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+      "/Engine/EditorResources/LightIcons/S_LightError",
+      "/Engine/EngineMaterials/WorldGridMaterial",
+      "/Engine/EngineSky/BP_Sky_Sphere",
+      "/Engine/EngineSky/M_Sky_Panning_Clouds2",
+      "/Engine/MapTemplates/SM_Template_Map_Floor",
+      "/Script/AnimGraph",
+      "/Script/AnimationData",
+      "/Script/ClothingSystemRuntimeNv",
+      "/Script/ControlRig",
+      "/Script/Foliage",
+      "/Script/MovieScene",
+      "/Script/NavigationSystem",
+      "/Script/PhysXVehicles"
+    ],
+    "native_modules": [
+      "/Script/AnimGraph",
+      "/Script/AnimationData",
+      "/Script/ClothingSystemRuntimeNv",
+      "/Script/ControlRig",
+      "/Script/Foliage",
+      "/Script/MovieScene",
+      "/Script/NavigationSystem",
+      "/Script/PhysXVehicles"
+    ],
+    "plugin_mounts": [
+      "ACLPlugin"
+    ],
+    "by_package": {
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Fold": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Fold_Halfway": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Unfold": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Backpack_Gun_Mount_Unfold_Halfway": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/HalfShoulder_Extender_Pack": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/HalfShoulder_Extender_Unpack": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Activate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Deactivate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Strafe_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Strafe_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_20_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_20_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_45_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_45_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Back": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Turn_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Walk_Turn_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Activate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Deactivate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll_Turn_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Roll_Turn_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Transform_to_Roller": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Transform_to_Spider": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Activate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Deactivate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Deactivate_Faint": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Strafe_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Strafe_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_20_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_20_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_45_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Turn_45_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Spider_Lt_Walk": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Activate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Deactivate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll_Turn_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Roll_Turn_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Transform_to_Roller": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Transform_to_Spider": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Activate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Deactivate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Strafe_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Strafe_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_20_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_20_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_45_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Turn_45_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Back": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Turn_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk_Turn_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Activate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Deactivate": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll_Turn_L": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Roll_Turn_R": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Transform_to_Roller": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Transform_to_Spider": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl0_Roll": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl1_Roll": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl2_Roll": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Death": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Idle": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Tracks/Legs_Tracks_Lvl3_Roll": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Double_Gun_Recoil_Round": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Double_Gun_Recoil_Single": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Pack": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Recoil": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Unpack": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_Sniper_Recoil": [
+        "/ACLPlugin/ACLAnimBoneCompressionSettings",
+        "/ACLPlugin/ACLAnimCurveCompressionSettings",
+        "/Engine/Animation/DefaultVariableFrameStrippingSettings",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton",
+        "/Script/AnimationData",
+        "/Script/ControlRig",
+        "/Script/MovieScene"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Buggy_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Motor_Lt",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Cockpit_Side_Shield",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl3",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Flyer",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Heaviest": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Hvy",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunbot",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/FX_Laser_Ray",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Tank",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Hvy",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Lightest": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_2x",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/FX_Laser_Ray",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Bot",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Platform",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl2",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Lt",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Hussar_Med",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_2x",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Cobra",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl4",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl5",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Hvy": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_HvyMed",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Moto",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Cobra",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Light": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/HalfShoulder_Extender_Pack",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Lt",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_2x",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/FX_Laser_Ray",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Bot",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl4",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Safari_Med",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_Flat",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Bot",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl2",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Tank_Carrier_Lt": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunner",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Mount_2x",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Tank_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_Hvy",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Tank",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl0": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Mount_2x",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl3",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Flybot",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/FX_Laser_Ray",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Bot",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl4",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Weapon_GLauncher_Pack",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks_PBR",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_HvyMed",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunner",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Riser",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5",
+        "/Script/ClothingSystemRuntimeNv"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/BP_Pawn_Buggy": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Buggy_Pawn_ProjectSettings": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/GameMode_Buggy": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_FL": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_FR": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Rear": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Tire": [
+        "/Script/PhysXVehicles"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene": [
+        "/Engine/EditorResources/LightIcons/S_LightError",
+        "/Engine/EngineMaterials/WorldGridMaterial",
+        "/Engine/EngineSky/BP_Sky_Sphere",
+        "/Engine/EngineSky/M_Sky_Panning_Clouds2",
+        "/Engine/MapTemplates/SM_Template_Map_Floor",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Spider_Hvy_Turn_45_L",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Hvy/Legs_Transformer_Hvy_Roller_Idle",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Lt/Legs_Transformer_Lt_Roller_Idle",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Spider_Med_Walk",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Animations/Legs_Spider_Med/Legs_Transformer_Med_Roller_Idle",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Buggy_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Heaviest",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Lightest",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Med",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Hvy",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Light",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Spider_Transformer_Med",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Tank_Carrier_Lt",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_Tank_Med",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl0",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/BP_TrackBot_Lvl3",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/GameMode_Buggy",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene_BuiltData",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Floor",
+        "/Script/Foliage",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene_BuiltData": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_FX_Laser": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Laser_diffuse",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Laser_opacity"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Floor": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_white",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Normal_Clean"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main_PBR": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Teal",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Camo_PBR_Roughness",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Metalness",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Normal",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Self_Illumination"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_Tank_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Tank_Tracks_Normal_Clean"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks_PBR": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Albedo",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Metalness",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Roughness",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Tank_Tracks_Normal_Clean"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Long": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Antenna_Short": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_Heaviest": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_Hvy": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Buggy_HvyMed": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Frame_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Hussar_Lt": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Hussar_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Motor_Lt": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Safari_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Safari_Med_Buggy": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Hvy": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Lt": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Backpack_Tank_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Cockpit_Side_Shield": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Rear_Wheel_Fender": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Buggy_Spoiler_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl1_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl1_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl2_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Carrier_Lvl2_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl1_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl1_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl2_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl2_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Tracks_Front": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Chassis_Tanks/Chassis_Tank_Lvl3_Tracks_Rear": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Flybot": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Flyer": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_2x": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gun_Flat": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunbot": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Gunner": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Moto": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Cockpit_Riser": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/FX_Laser_Ray": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_FX_Laser",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Bot": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Cobra": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/HalfShoulder_Tank": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl0_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl0_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl1_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl1_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl2_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl2_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl3_Body": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Legs_Tracks/Legs_Tracks_Lvl3_Tracks": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Bullet": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Bot": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Cobra": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Shoulders_Med_Tank": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Side_Shield_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Mount_2x": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Top_Weapon_Platform": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl4": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shock_Rifle_Lvl5": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl4": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Weapon_Shocker_Lvl5": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Script/NavigationSystem"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_AnimBlueprint": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_Skeleton",
+        "/Script/AnimGraph"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_AnimBlueprint": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_Skeleton",
+        "/Script/AnimGraph"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_AnimBlueprint": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_Skeleton",
+        "/Script/AnimGraph"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Hvy": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Lt": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Med"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Tracks",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4_PhysicsAsset"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3_Skeleton",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5_PhysicsAsset"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2_PhysicsAsset"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1_Skeleton",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3_PhysicsAsset"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_PhysicsAsset",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2_PhysicsAsset"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3_PhysicsAsset"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4_PhysicsAsset"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Materials/M_Spiders_Main",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1_Skeleton",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5_PhysicsAsset"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5_PhysicsAsset": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5"
+      ],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Black": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Desert": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Gray": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Jungle": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Red": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Teal": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_Camo/Spiders_Camo_Diffuse_Tracks": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_Tank_Tracks": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_Tank_Tracks_Blue": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_black": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_blue": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_green": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_green_clean": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_red": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_rusty_dead": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_white": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Diffuse_HandPainted/Spiders_diffuse_yellow": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Laser_diffuse": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Laser_opacity": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Black": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Blue": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Red": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Mech_Spider_Albedo_Yellow": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Black": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Black_Red": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Desert": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Grey": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Jungle": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Red": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Base_Color/Spiders_Camo_PBR_Albedo_Teal": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Camo_PBR_Roughness": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Metalness": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Normal": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Body/Spiders_Self_Illumination": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Albedo": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Metalness": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/PBR/Tracks/Spiders_Camo_PBR_Tracks_Roughness": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Normal_Clean": [],
+      "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Textures/Spiders_Tank_Tracks_Normal_Clean": []
+    }
+  },
+  "load_failures": [
+    "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Tire"
+  ],
+  "editor_world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "dirty_after": {
+    "content": [
+      "/Game/AdvancedDashVFX/DemoContent/Mannequin/Character/Mesh/SK_Mannequin",
+      "/Game/DroneBotContent/DroneBot/Meshes/SK_DroneBot",
+      "/Game/DroneBotContent/Rob_Podium/Meshes/SK_Podium",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Backpack_Gun_Mount",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl0",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl1",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl2",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Buggies/Chassis_Buggy_Lvl3",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl1",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Carrier_Lvl2",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Chassis_Tanks/Chassis_Tank_Lvl3",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/HalfShoulder_Extender",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Spider_Med",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Hvy",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Spiders/Legs_Transformer_Lt",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl0",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl1",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl2",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Legs_Tracks/Legs_Tracks_Lvl3",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl1",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl2",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl3",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl4",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Double_Gun_Lvl5",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl1",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl2",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_GLauncher_Lvl3",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl1",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl2",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl3",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl4",
+      "/Game/Mech_Constructor_Spiders/Meshes_Skeletal/Weapons/Weapon_Sniper_Lvl5",
+      "/Game/muzzles/demoroom/characters/HeroTPP/HeroTPP",
+      "/Game/muzzles/demoroom/characters/HeroTPP/HeroTPP_Physics"
+    ],
+    "maps": []
+  },
+  "visual_verification": "not_run_user_review",
+  "runtime_verification": "not_run",
+  "unregistered_originals": [
+    "/Game/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/MyCarGame",
+    "/Game/Mech_Constructor_Spiders/Maps/Demo_Scene",
+    "/Game/Mech_Constructor_Spiders/MyCarGame"
+  ],
+  "dependency_integrity_passed": false,
+  "expected_source_load_failures": [
+    "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Tire"
+  ],
+  "unexpected_load_failures": [],
+  "passed": true
+}

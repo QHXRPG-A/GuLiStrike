@@ -1,0 +1,201 @@
+{
+  "success": true,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "dirty_maps": [],
+  "dirty_content": [],
+  "entities": [
+    {
+      "label": "WM01Missile_FixtureCenter",
+      "type": "TargetPoint",
+      "location": [
+        -7560.0,
+        68040.0,
+        -1300.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929",
+        "WM01MissileFixtureCenter",
+        "WM01GuidanceReview20260930",
+        "WM01GuidanceFixtureCenter"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Missile_CandidateInstructions",
+      "type": "Note",
+      "location": [
+        -7560.0,
+        69457.5,
+        -1200.0
+      ],
+      "tags": [
+        "WM01MissileReview20260929"
+      ],
+      "text": "重防号 WM01 / UnitTypeId=2 导弹 v3；已按用户授权接入原生默认表现。\nv3：弹体195cm；烟宽63→99cm、尾焰42×108cm，颜色/亮度沿用v2；烟迹2.4秒、消散槽2.45秒。速度2400cm/s；Q随最终普攻射程×2（基础240m），爆炸/预警半径3m；冷却6秒、伤害、齐射及16m落点散布直径保持。\n玩法验收：新局就绪指挥官，选择重防号，初始无 Q 且无背部导弹仓；F4 获 04.01 后现有及后续本队重防号解锁，另一队保持原状；05.01 每次齐射 +1。换任保留，新局重置。\n原生代码按WM01/MissileLauncher表记录默认使用v3；无需候选或资产开关，所有游戏地图生效，重开仍生效。旧表现对照：gs.MissileCluster.Enabled 0；恢复v3：gs.MissileCluster.Enabled 1。\n新增验收：240m内外点击圆心检查施放，射程升级后Q继续按最终普攻×2；检查3m预警边缘与伤害一致。远景8段高速烟迹连续，尾焰与烟衔接，边缘裁剪不切尾，命中后2.4秒自然消散。\n冷启动验收：候选资源准备完成后应自动切到放大弹体、短亮尾焰与2.4秒黑烟，不能持续回退为旧白色尾焰；本轮已修正延迟编译请求未被触发的问题，游戏内结果待玩家复查。\n性能场景：每次新开 PIE 并就绪，执行一组 Build，再执行 gs.MissileFixture.Fire；每次施放遵守真实冷却。Build 仅为性能准备解锁和弹量，不替代 F4 功能验收，不移除其他地图单位。\n镜头：Build 自动固定总览；gs.MissileFixture.Camera near 查看近景；overview 恢复对照镜头。\n指标：gs.MissileFixture.Metrics。新旧必须同机、分辨率、画质、总览镜头；分别记录发射/飞行/命中后 CPU 表现、Niagara GPU、半透明和帧时间。当前未运行或测量。\n[指挥官统一 LOD 20260929]\n公共三级 LOD 和 lod0/lod1/lod2 观察镜头见 CommanderLOD_Instructions。当前编辑器已加载公共LOD原生类；运行范围与结果以开发记录为准。\n夹具间距与驻留修正源码尚未编译加载。旧版Build 100实际仅生成36/37台且会自动前进；不能当作完整人数验收。\n[WM01 v3 原生正式接入 20260930]\n代码按Projectiles表UnitTypeId=2和MissileLauncher选择v3，已移除候选命令、原型地图限制及资产勾选开关；资源未就绪时保留可见回退。功能及性能仍按既有验收记录。"
+    },
+    {
+      "label": "WM01Range_Source",
+      "type": "TargetPoint",
+      "location": [
+        -7560.0,
+        68040.0,
+        -1757.2943527427205
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_Label_Source",
+      "type": "TextRenderActor",
+      "location": [
+        -7560.0,
+        68040.0,
+        -1722.2943527427205
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_GunInside110m",
+      "type": "TargetPoint",
+      "location": [
+        2835.0,
+        68040.0,
+        -1757.2955596891227
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_Label_GunInside110m",
+      "type": "TextRenderActor",
+      "location": [
+        2835.0,
+        68040.0,
+        -1722.2955596891227
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_GunOutside130m",
+      "type": "TargetPoint",
+      "location": [
+        4725.0,
+        68040.0,
+        -1757.7513850290154
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_Label_GunOutside130m",
+      "type": "TextRenderActor",
+      "location": [
+        4725.0,
+        68040.0,
+        -1722.7513850290154
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_QInside230m",
+      "type": "TargetPoint",
+      "location": [
+        14175.0,
+        68040.0,
+        -1757.7825347065595
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_Label_QInside230m",
+      "type": "TextRenderActor",
+      "location": [
+        14175.0,
+        68040.0,
+        -1722.7825347065595
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_QOutside250m",
+      "type": "TargetPoint",
+      "location": [
+        16065.0,
+        68040.0,
+        -1757.2943707389393
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_Label_QOutside250m",
+      "type": "TextRenderActor",
+      "location": [
+        16065.0,
+        68040.0,
+        -1722.2943707389393
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": null
+    },
+    {
+      "label": "WM01Range_PlayerInstructions",
+      "type": "Note",
+      "location": [
+        -7560.0,
+        69174.0,
+        -1357.2943527427205
+      ],
+      "tags": [
+        "WM01RangeReview20261001"
+      ],
+      "text": "重防号 WM01 / UnitTypeId=2 射程验收：机枪30→120米，Q导弹96→240米。\n新开本图单机PIE，就绪红队指挥官；每个距离场景使用新局，保持测试单位原地。\n源点生成：gs.GM.Skill.Spawn Red 2 -8000.00 72000.00 -1757.29\n机枪界内：gs.GM.Skill.Spawn Blue 2 3000.00 72000.00 -1757.30\n机枪界外：gs.GM.Skill.Spawn Blue 2 5000.00 72000.00 -1757.75\n分别观察该重防号：110米自动开火，130米不以该目标开火；不要把其他单位攻击计入。控制台Spawn输出ID，gs.GM.Skill.Soldier <ID>可查看该兵的目标与射击次数。\nQ：F4获得04.01重防导弹仓，选中源点单台，按Q点击QInside230m地面标记；应发射并飞抵落点。等待其6秒冷却，再按Q点击QOutside250m；应拒绝且不扣冷却。\nQ圆心范围为最终BasicAttack×2；基础随机落点半径8米，最多248米。导弹速度24米/秒，最长飞行20秒；远距允许超过旧8秒继续飞行。\n静态数据及实体已核对；游戏效果待玩家验证，助手未启动PIE。"
+    },
+    {
+      "label": "GroundLowAir_Low30m",
+      "type": "TargetPoint",
+      "location": [
+        -18900.0,
+        68040.0,
+        4073.779083251953
+      ],
+      "tags": [
+        "GroundLowAirReview20261026"
+      ],
+      "text": null
+    }
+  ],
+  "runtime_catalog": {
+    "skill_id": "WM01_HomingMissile",
+    "range_centimeters": 24000.0,
+    "range_source_slot": "BasicAttack",
+    "range_multiplier": 2.0,
+    "target_mode": "<GuLiActiveSkillTargetMode.GROUND_POINT: 1>"
+  }
+}

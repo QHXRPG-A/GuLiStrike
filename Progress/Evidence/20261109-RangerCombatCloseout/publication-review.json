@@ -1,0 +1,5131 @@
+{
+  "remote_parent": "7fa399ecc8b7aa21635a1e88cb3cbd76c8427714",
+  "checked_tree": "2cec92a74d6135866480d01b7cbf4840db804a70",
+  "files_changed": 1276,
+  "roots": {
+    ".agents": 3,
+    ".gitattributes": 1,
+    "AGENTS.md": 1,
+    "Artifacts": 261,
+    "Config": 5,
+    "Plugins": 1,
+    "Progress": 676,
+    "Scripts": 52,
+    "Source": 136,
+    "Tools": 7,
+    "data": 133
+  },
+  "resource_changes": 0,
+  "diff_check_exit": 0,
+  "document_check": {
+    "preexisting_errors": 6,
+    "warnings": 21
+  },
+  "document_archives_checked": "Six Progress zip archives contain Markdown, scripts or text evidence only; no game assets.",
+  "files": [
+    {
+      "status": "M",
+      "path": ".agents/skills/guli-rogue-card-production/SKILL.md"
+    },
+    {
+      "status": "M",
+      "path": ".agents/skills/guli-rogue-card-production/references/data-pipeline.md"
+    },
+    {
+      "status": "M",
+      "path": ".agents/skills/guli-rogue-card-production/references/image-to-html-workflow.md"
+    },
+    {
+      "status": "M",
+      "path": ".gitattributes"
+    },
+    {
+      "status": "M",
+      "path": "AGENTS.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/BurningRogue_20261029/asset_install.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/BurningRogue_20261029/build_ids.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/BurningRogue_20261029/coordinator_reload.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/BurningRogue_20261029/formal_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/BurningRogue_20261029/scene_delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/BurningRogue_20261029/vfx_authoring.json"
+    },
+    {
+      "status": "M",
+      "path": "Artifacts/CardArtworkPipeline/deploy-report.json"
+    },
+    {
+      "status": "M",
+      "path": "Artifacts/CardArtworkPipeline/review-report.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/audit_before.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/final_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/live_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/mapping_calculation.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/CardArtworkWindowAudit_20261030/source_changes.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/CommanderTracerFix_20261030/README.md"
+    },
+    {
+      "status": "D",
+      "path": "Artifacts/Ground3C_20261103/data-export.log"
+    },
+    {
+      "status": "D",
+      "path": "Artifacts/Ground3C_20261103/editor-build.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/asset_install_tables.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/coordinator-build-ordinal-index.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/core-acceptance-ordinal-index.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/editor-build-ordinal-index.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/final_animation_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/final_build_ids.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/final_editor_handoff.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/final_missile_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/final_scope_diff_check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/final_static_checks.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run12_basic6_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run12_cap_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run12_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run13_basic9_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run13_enhanced15_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run13_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run13_main_duplicate_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run13_peer_duplicate_used.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run14_basic12_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run14_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run14_long_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run15_directory_capacity.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run15_main_backlog.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run15_main_stop.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run15_sample_9.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run16_capacity_boundary.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run16_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run17_exit_failure.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run17_failure.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run17_long_analysis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_damage_analysis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_final.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_long_analysis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_registration_samples.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_resumed_analysis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_sample_2.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_sample_28.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_sample_3.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run18_sample_8.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run19_enhanced10_analysis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run19_enhanced15_analysis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run19_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run20_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run20_near_wall_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run20_near_wall_analysis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run20_tap_inputs.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/run20_taps_after.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/runtime_evidence_summary.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAlternatingLoop_20261108/scene_delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmoRepair_20261108/asset_install.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmoRepair_20261108/build_ids.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmoRepair_20261108/final_animation_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmoRepair_20261108/final_scene_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmoRepair_20261108/native_build.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmoRepair_20261108/saved_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmoRepair_20261108/scene_delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmoRepair_20261108/static_checks.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/asset_authoring.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/blank_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/build_ids.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/native_build.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/pie_gate_after_restart.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/pie_gate_before.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/pie_gate_saved.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/resource_inputs.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/resource_interfaces.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/saved_assets_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/scene_delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/scene_delivery_before_pie_repair.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/source_resources.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/static_data.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundAmmo_20261108/table_import.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundDirectionalBlink_20261107/native-build.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/boundary_geometry_analysis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/build-id.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/certified-deployment-positions.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/coordinator-build.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/duplicate_damage_control.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/editor-authoring-build-retry.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/editor-build.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/explosion_graph_inputs.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/explosion_material_graph.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/explosion_material_instance.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/explosion_particle_samples.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/final_editor_state.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/final_static_checks.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/flight_upgrade_request.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/hud_current_level_text.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/progress-comparison.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/radius-calibration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/renderer-bindings.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/renderer-details.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/resource-geometry-before.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/resource-geometry-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run1_after_duplicates_peer.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run1_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run1_flying_after_upgrade.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run1_flying_before_upgrade.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run1_old_shot_settled.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run2_exit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run2_level1_f4_text.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run2_level2_f4_text.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/run2_level3_f4_text.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/runtime_evidence_summary.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/scene_delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundExplosiveEnhancement_20261109/table_import.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundFirePIEFix_20261108/failure_excerpt.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundFirePIEFix_20261108/native_build.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundFirePIEFix_20261108/saved_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundFirePIEFix_20261108/static_checks.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundHUDRevision_20261103/DELIVERY.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/README.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/cleanup_plan.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/cleanup_result.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/closeout_scratch_cleanup.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/code_export_plan.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/document_closeout.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundHUDSessionCloseout_20261103/git_delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundLowAir20261026/build-pie-fix-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundLowAir20261026/build-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundLowAir20261026/pie-start-after-reload.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundLowAir20261026/pie-start-diagnosis.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundLowAir20261026/pie-start-failure.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundLowAir20261026/ring-collision-repair.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundLowAir20261026/scene-delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/README.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/cleanup_result.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/excel_retirement.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundMechLegacyCleanup_20261028/final_readback.json"
+    },
+    {
+      "status": "M",
+      "path": "Artifacts/GroundMechRefactor_20261027/progress_check_final.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundPIERuntime_20261108/cleanup.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundPIERuntime_20261108/fire_summary.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundPIERuntime_20261108/result.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundPIERuntime_20261108/settled_fire.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundPIERuntime_20261108/startup_status.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundPIERuntime_20261108/user_pie_file_lock.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundPIERuntime_20261108/verified_session.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRevision_20261103/DELIVERY.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogueFix_20261102/static_data_check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogueSessionCloseout_20261030/README.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogueSessionCloseout_20261030/cleanup_plan.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogueSessionCloseout_20261030/cleanup_result.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogueSessionCloseout_20261030/code_export_plan.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogueSessionCloseout_20261030/git_delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogue_20261028/DELIVERY.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogue_20261028/asset_install.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogue_20261028/build_report.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogue_20261028/final_verification.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogue_20261028/scene_delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundRogue_20261028/static_data_report.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundToonIcons_20261103/DELIVERY.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundToonIcons_20261103/SeatFix/before.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundToonIcons_20261103/SeatFix/data_import.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundToonIcons_20261103/SeatFix/runtime_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/GroundToonIcons_20261103/SeatFix/sync_readback.json"
+    },
+    {
+      "status": "D",
+      "path": "Artifacts/GroundUpperAim_20261104/baseline.json"
+    },
+    {
+      "status": "D",
+      "path": "Artifacts/GroundUpperAim_20261104/data-export.log"
+    },
+    {
+      "status": "D",
+      "path": "Artifacts/GroundUpperAim_20261104/editor-build-1.log"
+    },
+    {
+      "status": "D",
+      "path": "Artifacts/GroundUpperAim_20261104/scene-before-build.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/LocalPIERolePicker20261026/build-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/LocalPIERolePicker20261026/build.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/LocalPIERolePicker20261026/editor-loaded.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/LocalPIERolePicker20261026/pre-build-editor.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/LocalPIERolePicker20261026/scene-delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/LocalPIERolePicker20261026/static-review.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/MassBulletColorFix_20261102/README.md"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostFloat20261029/Build/build-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostFloat20261029/Build/editor-loaded.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostFloat20261029/Build/loaded-modules.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostFloat20261029/scene-delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostFloat20261029/static-review.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostGroundFix20261029/R1C3-clearance-capture.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostGroundFix20261029/flat-bottom-source-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostGroundFix20261029/scene-visibility-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostScale20261028/Build/authorization.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostScale20261028/Build/build-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostScale20261028/Build/build.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostScale20261028/Build/editor-loaded.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostScale20261028/Build/loaded-modules.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostScale20261028/scene-before-build.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/OutpostScale20261028/scene-delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/acceptance-table-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/excel-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/external-actor-text-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/final-ue-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/map-text-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/name-residual-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/prompt-provenance-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/split-hash-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/text-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/ue-asset-audit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RangerNameMigration20261103/ue-table-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RicochetParallaxFix_20261030/deploy_report.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RicochetParallaxFix_20261030/export_check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RicochetParallaxFix_20261030/final_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/RicochetParallaxFix_20261030/source_change.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WM01HorizontalRange20261028/Build/build-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WM01HorizontalRange20261028/Build/editor-loaded.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WM01HorizontalRange20261028/Build/loaded-modules.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WM01HorizontalRange20261028/Build/scene-after-load.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WM01HorizontalRange20261028/data-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WM01HorizontalRange20261028/preflight.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WM01HorizontalRange20261028/scene-delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WM01HorizontalRange20261028/static-review.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/Tuning_0p8m_5s_3p2deg/build-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/Tuning_0p8m_5s_3p2deg/config-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/Tuning_0p8m_5s_3p2deg/editor-loaded.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/Tuning_0p8m_5s_3p2deg/loaded-modules.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/Tuning_0p8m_5s_3p2deg/scene-delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/Tuning_0p8m_5s_3p2deg/static-review.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/build-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/config-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/editor-loaded.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/loaded-modules.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/scene-delivery.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/WarMachineIdle20261026/static-review.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/authorized-build-manifest-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/authorized-build-progress-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/authorized-build.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/authorized-build.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/current-contract-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/embedded-text-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/excel-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/external-object-audit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/final-file-manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-architecture-audit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-candidate-review.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-editor-verified.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-native-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-plan.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-progress-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/manifest-repair-result.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/map-text-audit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/map-text-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/name-residual-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/pipeline-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/pipeline-validation.log"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/progress-final-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/split-hash-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/static-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/text-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/ue-asset-audit.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/ue-table-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "Artifacts/XunTianNameMigration20261103/workspace-baseline.json"
+    },
+    {
+      "status": "M",
+      "path": "Config/DefaultGame.ini"
+    },
+    {
+      "status": "M",
+      "path": "Config/Hybrid/AcceptanceAssetReadback.json"
+    },
+    {
+      "status": "M",
+      "path": "Config/Hybrid/AcceptanceProfile.json"
+    },
+    {
+      "status": "M",
+      "path": "Config/Hybrid/RuntimeManifest-200.json"
+    },
+    {
+      "status": "M",
+      "path": "Config/Hybrid/RuntimeManifest-600.json"
+    },
+    {
+      "status": "M",
+      "path": "Plugins/GuLiFrameProfiler/README.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/202608-归档.zip"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260816-资产整合-Marketplace资产包统一归档至Assets.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260821-DIY飞船开发总归档-0820至0821.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260822-修复LVL_Main按Play无飞船可控制.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260822-数据管线v2-Excel元数据驱动自动生成行结构.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260822-数据管线开发总归档-0821至0822.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260824-CombatAvatarFly归位勘误-重巡舰体入库与两舰归位.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260824-第一批飞船组件拆分入库-总归档.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260824-第二轮资产整合-总归档.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260825-相机避障函数化-Tick去散落逻辑.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260825-飞船3C与相机避障总归档-0824至0825.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260827-爆炸特效统一归拢至AssetsVFXExplosions.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260827-飞船与场景模型尺寸归一.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260828-Commander指令术语统一.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260828-指挥官3C与运行时GM调参.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260829-指挥官UI与HUD逻辑接入总归档.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260829-指挥官小兵表现层两阶段性能优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260830-战斗权威子系统中文注释与导读.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260831-UE网络中文注释与项目教材.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260831-公共战局框架与三类角色接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260831-基地建造玩法探索草案落档.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260831-网络教材与Mass精读笔记同步修订.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260831-网络教材理论篇改编.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/202609-归档.zip"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260903-ShipUIv1-Figma玩家实机稿.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260903-指挥官与地面机甲最小建造系统.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260904-ShipUIv1-NEONCTRL静态UI.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260904-僚机世界空间近距编队与租约恢复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260904-指挥官大规模移动导航与避让降载.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260904-指挥官相机稳定巡航.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260904-飞船世界空间环绕HUD与技能准星.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260905-僚机FlightNav弧线验证与局部恢复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260905-据点巨构替换占位资源.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260905-据点混凝土巨构模型首版.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260906-双机甲可调Socket创建.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260906-双机甲尺度修复与ControlRig草稿.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260906-双机甲骨骼副本与绑定问题核查.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260906-指挥官武器特效与独立法术场.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260907-Ship僚机三维往返缠斗与随机转向.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260907-Ship僚机俯冲轰炸与对空机枪落地.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260907-Ship僚机源码版构建门禁勘误.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260907-WM01骨架同步与物理包围盒修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260907-地图标注插件维护Skill.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260907-地图标注插件首版实现与验证.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260907-地图标记删除崩溃空指针修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260908-Ship僚机FlightNav边界停滞恢复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260908-Ship空中部队原型关卡与三倍航速.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260909-Ship僚机俯冲轰炸门槛简化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260909-Ship僚机全员参战与索敌范围显示.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260909-资源加工厂Blender模型与门动画阶段交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260909-资源加工厂UE正式资源接入与验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260910-Ship僚机取消固定6秒轰炸进场.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260910-Ship僚机战斗表现HUD与相机调整.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260910-僚机飞行双尾焰与拖尾接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260910-双矿单位矿模型UE导入交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260910-双矿单位矿模型与Blender审核交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260910-地图资源密度涂绘与确定性导出.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260910-游戏内GM分页浮层面板.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260911-指挥官传送配置归并与范围扩展.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260911-指挥官双点传送技能验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260911-红蓝矿棋盘与自动采矿闭环.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260911-资源经济障碍与Commander适配层解耦.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260911-飞船骨骼部件接入与Socket保留.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260912-ShipComponent部件蓝图与占位清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260912-僚机视觉插值与远端稳定显示.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260912-矿车Dock私有代理与500人姿态流修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260912-空战测试关卡远端地面单位.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260913-僚机Big17爆炸范围缩放修正.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260913-僚机对地轰炸Big17爆炸特效.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260913-僚机空爆随机二选一与销毁特效五倍.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260913-单位受击白光与摧毁爆炸.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260913-激光采矿与矿车进出厂及受击接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260914-僚机直线激光炮弹池与最终数值.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260914-冲击波外径上限与重复缩放修正.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260914-单位铁锈残骸与僚机物理坠落.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260914-次级单位武器独立Excel重构.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260914-法术场统一入口与武器ID引用.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260914-空中通道联机与特效增量验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260914-飞船组件文档资源引用与覆盖盘点.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-Ship组件能力与指挥官技能去GAS重构.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-客户端CPU-GPU剖析与压测相机勘误.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-导航预烘焙与PIE启动优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-工程车动态避让与建筑矿体导航修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-指挥官10Hz循环与移动容量实测.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-指挥官姿态协议9压缩与六轮对比.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-指挥官姿态压测移动人数口径勘误.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-指挥官旧姿态协议残留清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-指挥官移动下行数据占比实测.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-空战原型关卡开局安装僚机仓.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260915-阵营独立通道与点击据点即时运输修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-GPU渲染降耗实施与三组对照.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-Ship内部线稿烘焙遮罩.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-Ship动漫低模风格Blender样板交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-Ship风格样板追加线稿.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-僚机动漫爆炸样板制作与接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-客户端CPU修复后六轮复测验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-客户端CPU增量维护与10Hz刷新实施.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-扫荡者UE导入与重防号参考重建.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship三组件原型冻结与参考审核A材料.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship三组件原网格材质与连接分色修正.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship三组件材质审核B通过与FBX交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship全组件表面交付与UE正式替换.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship剩余四组件原型与火焰标识参考A.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship干扰与护盾参考配色区分.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship干扰装置深蓝白黄参考修订.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship玩家蓝图补保存与独立读回.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship第三批支援组件原型与参考审核A.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship第三批支援组件原模型材质成品审核B.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship第三批材质B通过与静态FBX交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship第二批原型冻结与参考审核A候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship第二批原模型材质制作与成品审核B.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-Ship组件制作临时资源回收清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-地面玩法定稿与弹速基线核查.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-松树林与三单位独立试摆.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-美术规范建立与制作技能接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-自然资源包参考与植被贴片工艺.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-进度面板分类筛选与文档分类元数据.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260917-重防号Q导弹通用预警与切图断言修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-建筑World测试数据与环境更新复跑.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-指挥官体型净距源表与接入分析完成.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-本会话临时文件清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-松树林v1审核通过与原图原位重构授权.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-松树林原Demo地图全资源适配交付候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-松树林风格适配v1候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260918-玩法光照对齐与重防号拥挤诊断.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-Mass体型净距运行时接入与验证记录.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-SpiderMech恢复原网格并整理色块.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-两组机甲风格参考与低模方向.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-撤回严格净距并适配重防号模型大小.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-机甲与武器参考降低红蓝饱和度.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-机甲与武器整批同步UE及总结.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-机甲整件分色与黑蓝配色修订.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-机甲线稿三渲二与对称配色修订.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-源模型机甲制作与SpiderMech减面.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-轻型机甲与Spider同步UE.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-轻型机甲弧面头甲与散热结构细化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-轻型机甲排气口浮空修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-轻型装甲地面玩家接入与根位移修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-重防号导弹范围与特效调整.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260919-重防号爆炸追加四倍缩放.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260920-指挥官任务与远端碰撞改动集成复验.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260920-指挥官头像分组与导航重定位勘误.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260920-指挥官部队操作与特殊任务系统.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260920-星际指挥官界面与游戏文本表.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260920-机甲Mass碰撞复审修复与验证.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260920-玩家机枪开火与Excel升级候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-FireReview双阵营靶场静态交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-FireReview导航阻塞与资产校验修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-地面机甲动画与空中战斗阶段实现.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-地面机甲动画空战与下落调参验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-地面机甲辅助瞄准编译与配置落地.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-外部特效与蓝图资源包迁移.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-指挥官MassStateTree类型登记修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-指挥官StateTree条件属性分类修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-指挥官StateTree迁移与场景交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-机枪统一受击实现与验证边界.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-机枪统一受击补全实机验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260921-统一特效目录与ID迁移静态验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260922-4.2km地图与7x7据点重布局交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260922-FlightNav边界复核与收紧.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260922-三张视差3D卡牌演示场景交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260922-三维动态卡牌与视差卡牌资产迁移.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260922-卡牌窗口焦点原生接口补齐.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260922-工程车四点返厂简化与32辆专项验证.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-1.8km战场与建造车自主接单.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-3.2km地形与9x9据点及Mass出生修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass分帧寻路与基础避障源码交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass分帧寻路与基础避障编译交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass协议19运行监控与残余阻塞.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass复制流量与同帧突发定位.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass姿态RPC发送预算饱和诊断.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass姿态缺帧与三倍追赶现场诊断.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass按连接预算分批同步源码实现.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass按连接预算分批同步编译交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass首条绿线延迟现场诊断.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-Mass验证场景PIE阻塞修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-客户端Mass硬校正修复编译交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-客户端Mass硬校正最小修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-客户端Mass行走顿挫分析.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-客户端连续纠偏与性能HUD交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-电源模式与Mass残余跳步诊断.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-红方移动修复源码Editor构建.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260923-红方移动超时诊断与导航引用修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260924-Mass三阶段耗时与百人响应实测.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260924-Mass即时移动与随机站位交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260924-Mass同址卡死复现与R2修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260924-Mass导航失效10Hz恢复修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260924-Mass导航恢复编译与加载.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260924-Mass随机站位玩家验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260924-尼亚加拉辉光与HUDuiPRO资源迁入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260924-工程车传送地面校验与建筑屋顶禁行.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260926-指挥官StateTree分层资产与审核交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260926-指挥官StateTree分层重构源码阶段.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260926-重防号分层卡牌与可编辑文案交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260927-重防号卡牌干净视觉图三张重绘预览.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-升级光粒独立随机散布.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-升级细线改为短发光粒子.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-坡面卡住与子弹超前显示现场诊断及源码修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-指挥官StateTree中文描述补全.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-肉鸽卡牌Excel与F4实战接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-选牌白模修复与批量升级特效.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号前支架等长与前盘抬高审核候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号前方方块水平修订候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号前端连接下倾与四盘同高候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号升级特效尺寸适配.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号射速补腿与机动速度光线.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号干净牌面接入与双倍尺寸.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号支架外下倾30度审核候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号新版模型参考射速与机动重绘.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号新版美漫三牌UE替换.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号机动卡视差边缘覆盖修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号盘心承接与叉耳销轴审核候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号真实模型参考经典美漫三图重绘.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-重防号美漫卡牌接入与四倍视差.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260928-高速单位显示限速修复与原生PIE复验.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-F4重选按钮与场景准备.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-F4重选按钮原生编译.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-Mass静态WPO与相机距离读数编译.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-Mass静态WPO与相机距离采样交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-指挥官统一三级LOD源码与场景交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-肉鸽单行文案源码与编译.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-肉鸽单行高亮Excel管线与接入修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-重防号GPU悬浮喷流构建与视觉修订.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-重防号v6正式模型替换.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-重防号导弹v2放大与浓黑长烟迹候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-重防号导弹仓与GPU烟迹候选接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-重防号导弹候选冷加载修复与回读勘误.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-重防号导弹卡牌原生编译.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260929-重防号导弹集群原生构建与容量绑定.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-Mass选择圈与软避障玩家验收通过.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-Mass选择圈与软避障编译加载.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-Mass选择圈与软避障静态及场景交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官Camera表编译导入交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官LOD会话临时文件清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官切档即时触发与总览摆正.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官前两档视觉距离裁剪统一修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官总览最小角度回正.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官爆炸旧距离裁剪修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官统一LOD有限PIE与夹具修正.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官视觉距离裁剪修复编译加载.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-指挥官边缘平移提前受限修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-本会话卡牌临时文件清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-机枪10度散布编译与场景交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-机枪效果源码与对照场景准备.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-机枪效果编译与资产应用.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号5至15米渐长尾焰正式应用.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号Q每圈60发审核通过.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号Q每圈60发构建与场景交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号导弹v3原生正式接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号导弹v3表驱动尺寸与数值候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号导弹会话临时文件清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号盘底喷焰渐长尾迹与导弹仓隐藏修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号航母式转向原生编译与加载.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号航母式转向玩家验收通过.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号航母式转向静态与场景交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20260930-重防号转向倾斜幅度减半.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261001-地面机甲地表材质迁移至指挥官关卡.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261001-指挥官关卡环境对齐地面机甲演示关卡.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261001-指挥官关卡环境对齐游骑兵演示关卡.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261001-游骑兵地表材质迁移至指挥官关卡.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Archive/20261008-十四模型配色参考A_v3交付.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Archive/20261016-CS-P2P整合归档.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261020-Hybrid交火CPU优化阶段记录.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261020-Hybrid原生消息接收优化记录.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261020-Hybrid唯一同步路径与Mass时钟卡顿修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261020-Hybrid对象准备索引与前台复测.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261020-会话临时文件隔离与源码交付范围.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261020-诊断工具开销优化与15ms复测.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261020-资源备用快照调整为5秒.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-Hybrid压缩复用与指令反馈记录.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-Mass本机移动与直接呈现.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-Mass爆炸缩放与响应等待对照.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-Slate空操作优化与响应测量.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-VAT提交对照与纯兵种输入优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-事务分批与本机响应阶段记录.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-交火优化正式版与清理交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-同步姿态发布顺序修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-导航优先队列与软避让工作量修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-弹丸生命周期查询复用.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-弹丸网络服务与选区读取优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-扫荡者姿态与斜坡导航恢复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-指令名单复制修复与清理.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-指令就绪通知与呈现调序阶段记录.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-接纳合批与资源验证副本阶段记录.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-本机命令调度诊断与路线索引对照.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-正式代码推送main与LFS资源分离.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261021-编辑器窗口开销与交火基准校正.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261021-近期优化原文.zip"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261023-地面机甲A_v4定稿与Blender成品候选.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261023-地面机甲B2正式UE导入与资源核对.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261023-地面机甲原包接入准备与折腿参考A_v4.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Archive/20261023-工程车同类互通源码版编译.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Archive/20261023-工程车同类取消让路避障与碰撞.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261023-游骑兵A_v4定稿与Blender成品候选.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261023-游骑兵B2正式UE导入与资源核对.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261023-游骑兵原包接入准备与折腿参考A_v4.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Archive/20261024-单颗矿石导航完成与清理.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-地图设计器固定千米高程色阶.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-地图设计器蓝红高程色阶.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261024-地面机甲PIE观察者与试玩入口更正.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261024-地面机甲W跟随镜头与移动降速.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261024-地面机甲动画修复与越肩视角.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261024-地面机甲动画冷加载丢节点修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261024-地面机甲双枪臂150度限位.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261024-地面机甲固定方向与厚重步态.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261024-地面机甲数据驱动机动IK与右键控制.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261024-地面机甲限位稳定与转向同步.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-游骑兵PIE观察者与试玩入口更正.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-游骑兵W跟随镜头与移动降速.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-游骑兵动画修复与越肩视角.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-游骑兵动画冷加载丢节点修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-游骑兵双枪臂150度限位.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-游骑兵固定方向与厚重步态.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-游骑兵数据驱动机动IK与右键控制.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261024-游骑兵限位稳定与转向同步.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261025-地图设计器清理道路避让与资源重置.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261025-地面机甲单曲线尾迹参考A_v3.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261025-地面机甲后退步态与空中推进.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261025-地面机甲开火反馈参考A_v1.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261025-地面机甲整臂制退与单曲线弹道接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261025-地面机甲能量尾迹参考A_v2.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261025-地面机甲脚部跳变与机械腿约束.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261025-游骑兵单曲线尾迹参考A_v3.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261025-游骑兵后退步态与空中推进.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261025-游骑兵开火反馈参考A_v1.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261025-游骑兵整臂制退与单曲线弹道接入.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261025-游骑兵能量尾迹参考A_v2.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261025-游骑兵脚部跳变与机械腿约束.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-地面与低空移动层实施交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-地面低空分层PIE启动拦截修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261026-地面机甲Shift闪现与原命中特效调整.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261026-地面机甲固定世界曲线残留弹道.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261026-地面机甲镜头方向闪现与会话完成归档.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261026-地面机甲闪现三阶段与镜头阻尼.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261026-地面机甲闪现与命中特效参考A_v1.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261026-地面机甲闪现时长调整为1点1秒.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-开局席位选择UI源码交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-开局席位选择UI编译加载.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-游骑兵Shift闪现与原命中特效调整.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-游骑兵固定世界曲线残留弹道.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-游骑兵镜头方向闪现与会话完成归档.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-游骑兵闪现三阶段与镜头阻尼.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-游骑兵闪现与命中特效参考A_v1.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-游骑兵闪现时长调整为1点1秒.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-重防号待机悬浮源码与场景交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-重防号待机悬浮编译加载.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261026-重防号待机调整为0点8米与5秒循环.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261027-四批外部资源分类迁移与清单维护.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261027-地面机甲单体能量替身瞬移与铺屏镜头交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261027-地面机甲闪现3C与连续恢复交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261027-地面机甲闪现3C参考A_v1.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261027-地面机甲闪现GAS与绿色能量拖尾交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261027-地面机甲闪现拖尾适配与前摇缩短.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261027-游骑兵单体能量替身瞬移与铺屏镜头交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261027-游骑兵闪现3C与连续恢复交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261027-游骑兵闪现3C参考A_v1.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261027-游骑兵闪现GAS与绿色能量拖尾交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261027-游骑兵闪现拖尾适配与前摇缩短.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261028-地面机甲上身摆动源码与场景交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261028-地面机甲上身摆动编译与接入.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-据点尺寸与浮动源码及场景交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-据点尺寸与浮动编译及加载.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-旧游骑兵清理与灼烧参考透视修订.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-游骑兵上身摆动源码与场景交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-游骑兵上身摆动编译与接入.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-游骑兵与Mass弹道照明候选交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-游骑兵肉鸽与折射子弹源码及场景交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-游骑兵肉鸽与折射子弹编译与接入.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-灼烧卡牌与折射正背面修正版参考初稿.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-灼烧子弹按用户绿线基准修订v3.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-重防号Q水平射程源码与场景交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261028-重防号Q水平射程编译与加载.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-PIE增量修复编译与烘焙校验交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-PIE烘焙拦截定位与场景修正.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-上下对称科幻据点参考A_v1.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-两卡冲击圈连续与单物件刚性视差.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-六层卡牌可见内容保留与元素完整验收口径.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-对称据点正式实装与旧网格退役.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-弹道照明正式应用与直接接入规则.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-据点B_v1腰环比例精修与最终核对.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-据点Blender还原与光柱切色B_v1.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-据点HDR发光与60秒自转交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-据点保留外形简化参考A_v2.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-据点光柱自发光再次翻倍.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-据点全状态持续悬浮修正.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-据点局内净空与平底模型核对.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-据点白色腰带与双倍发光交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-灼烧两卡完整补绘与硬分割装配修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-灼烧两卡用户参考与六层HTML交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-灼烧爆裂子弹爆燃参考v2.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-爆燃冲击波上移至躯干中部参考v4.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-爆燃冲击波向外扩散参考v6.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-爆燃冲击波放大出画框参考v5.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261029-爆燃卡牌追加冲击波参考v3.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-HUDuiPRO-AE资源导入UE.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-HUDuiPRO独立组件动画入库与AE源清理.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-PIE部署校验与F4选牌崩溃修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-全卡牌窗口审计与灼烧两卡映射修正.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261030-地面机甲上身摆动代码同步核对.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/Archive/20261030-地面机甲上身摆动完成清理与代码同步.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-折射子弹卡牌视差强度对齐.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-指挥官兵种弹道槽位与生命周期修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-游骑兵上身摆动代码同步核对.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-游骑兵上身摆动完成清理与代码同步.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-灼烧卡牌正式接入与Buff数据层.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261030-肉鸽会话临时文件清理与全项目代码同步.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-GroundHUD中文字体与仪表细化截图修正.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-GroundHUD原包短动画接入.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-GroundHUD多宽高比与强化摘要截图修正.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-GroundHUD属性合并与仪表轮廓截图修正.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-GroundHUD截图核验与可读性修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-GroundHUD缺失定位与本局恢复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-GroundHUD自动创建修复加载与开局检查.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-HUD验证靶导致PIE启动拦截修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-Mass弹丸与弹道黑色材质回退修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-游骑兵HUD参考布局接入与导表修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-游骑兵HUD正式接入.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261102-游骑兵HUD编译加载与导表.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261103-GroundHUD会话完成清理与代码上传.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261103-Ground三渲二图标数据管线实装.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261103-Ground图标导入遗漏网络清单修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261103-Ground完整爆燃图标管线与HUD循环.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261103-Ground弹道爆燃折射边界与HUD修订.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261103-巡天命名统一.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261103-游骑兵命名统一.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261106-Hybrid状态应用性能优化.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261106-游骑兵世界UI分档与敌方变化提示交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261106-游骑兵交战长帧治理.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261106-直线弹丸三轮交火性能复测.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261106-直线弹丸发布与碰撞池热路径优化.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261108-游骑兵PIE动画待发时序修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261108-游骑兵PIE进入与开火实测.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261108-游骑兵初始弹与肉鸽卡技术交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261108-游骑兵动画触发与独立爆炸弹修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261108-游骑兵验证场景PIE启动修复.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261109-游骑兵左右Loop与公共战斗链路交付.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261109-游骑兵战斗会话完成清理与项目同步.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Archive/20261109-爆炸范围对齐与强化爆炸弹交付.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Archive/9月归档清单.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Backlog/2026-09.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260831-公共战局框架与三类角色接入.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/01-架构与配置.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20260903-指挥官与地面机甲最小建造系统.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20260903-指挥官与游骑兵最小建造系统.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260905-指挥官兵种技能与Roguelike升级归属.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20260917-游骑兵弹幕肉鸽与塔防建造.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20260920-地面机甲火箭跳.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260920-机枪子弹统一受击特效.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20260920-游骑兵火箭跳.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20260920-玩家游骑兵与Mass单位立体碰撞.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20260920-玩家游骑兵开火与升级配置.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20260921-游骑兵动画蓝图与空中战斗.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20260921-游骑兵辅助瞄准.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260930-Mass选择圈同步与软避障修正.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20260930-机枪10度随机弹道.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20261001-重防号战斗射程优化.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261018-Hybrid世界更新5ms.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261018-Slate布局绘制2.5ms.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261019-Hybrid世界更新5ms验证.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261019-Hybrid同步正式替换验收.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261019-资源模拟端快照接管.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261020-Hybrid交火CPU与追帧优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261020-UI CPU优化与四档LOD.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261020-一键截帧与CPU分析插件.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261020-保持玩法与表现的15ms帧时间优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-Hybrid压缩复用与指令响应.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-Mass本机移动与直接呈现.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-VAT实例提交CPU优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-事务分批与本机响应.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-交火优化正式版本交付.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-弹丸生命周期服务与交火CPU.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-扫荡者远端姿态与导航恢复修复.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-本机指令交付与规划调度.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261021-编辑器窗口开销与交火基准.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20261022-3米整数格地面导航.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261023-地面机甲MechaDestroyer替换与风格化.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261023-游骑兵MechaDestroyer替换与风格化.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/20261024-GuLi独立地图设计器.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261026-地面与低空移动层隔离.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261026-开局席位选择UI.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261026-重防号待机悬浮调整.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261027-地面机甲闪现GAS与绿色能量拖尾.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261027-游骑兵闪现GAS与绿色能量拖尾.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/DevelopmentDocumentation/20261028-地面机甲逐发上身摆动.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261028-据点巨物尺寸与轻微浮动.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261028-旧游骑兵模型退役与路由清理.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261028-游骑兵与Mass子弹弹道照明优化.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261028-游骑兵肉鸽与折射子弹.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261028-游骑兵逐发上身摆动.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261028-灼烧卡牌与能力系统解耦.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261028-重防号Q水平射程.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261102-游骑兵HUD正式接入.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261106-Hybrid状态应用耗时优化.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261106-游骑兵主线程整帧降低30.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261106-游骑兵交战长帧治理.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261108-游骑兵初始弹与三张肉鸽卡.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/build-verification.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/cleanup-manifest.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/cleanup-result.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/compression-cpu-diagnostic.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/compression-regression.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/defaults-readback.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/evidence-origins.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/github-main-code-delivery.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/logic-launch-readback.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/map-entry.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/production-paired-summary.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/production-workload-check.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/profile-equivalence.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/progress-check.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/response-diagnostic.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/selection-pair-61-network.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/selection-pair-61.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/source-manifest.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-CommanderPerformance/static-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261021-DocumentConsolidation/link-migration-before.zip"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-DocumentConsolidation/plan.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-DocumentConsolidation/relocated-filenames.txt"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-DocumentConsolidation/result.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261021-DocumentConsolidation/source-manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261022-AugustArchive/link-migration-before.zip"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261022-AugustArchive/source-manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261023-MoveResponseCloseout/build.log"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261023-MoveResponseCloseout/history-evidence.zip"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261024-OreNavigationCloseout/README.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261024-OreNavigationCloseout/code-only-sync.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261026-GroundMechCloseout/README.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261026-GroundMechCloseout/code-sync-scope.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261026-GroundMechCloseout/docs-check.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261030-GroundUpperBodyRecoilCloseout/README.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Evidence/20261030-GroundUpperBodyRecoilCloseout/code_scope.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261030-OutpostSessionCloseout/final-verification.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261030-OutpostSessionCloseout/publication-final.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/README.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/cleanup-plan.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/cleanup-result.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/document-check.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/empty-directory-cleanup.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/explosive-run1-unique-events.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/explosive-run2-unique-events.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/loop-run18-unique-shots.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/owned-pie-temporary-dirs.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/pie-cleanup-files.json"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Evidence/20261109-RangerCombatCloseout/publication-scope.json"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/Mass移动与避障.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/战斗.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/指挥官.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/指挥官/03-数据技能与武器表现.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/Gameplay/本地试玩.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/次级单位技能与地面预警.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/游骑兵.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/资源经济.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/飞船.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/Gameplay/飞行物网络与客户端表现.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260826-5v5大战场玩法草案.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260827-飞船与场景模型尺寸归一.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260831-公共战局框架与三类角色接入.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260831-基地建造玩法探索.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260901-小兵扫射与指挥官GAS桥接.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20260903-指挥官与地面机甲最小建造系统.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20260903-指挥官与游骑兵最小建造系统.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属/01-结论边界与实现基线.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260905-据点巨构导入与占位替换.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260905-据点混凝土巨构模型.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260908-Ship空中部队原型关卡与三倍航速.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260916-Ship动漫低模风格Blender样板.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20260917-游骑兵弹幕肉鸽与塔防建造.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20260920-地面机甲火箭跳.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260920-机枪子弹统一受击特效.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20260920-游骑兵火箭跳.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20260920-玩家地面机甲与Mass单位立体碰撞.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20260920-玩家地面机甲开火与升级配置.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20260920-玩家游骑兵与Mass单位立体碰撞.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20260920-玩家游骑兵开火与升级配置.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260921-FireReview双阵营靶场与敌方描边.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20260921-地面机甲动画蓝图与空中战斗.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20260921-地面机甲辅助瞄准.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20260921-游骑兵动画蓝图与空中战斗.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20260921-游骑兵辅助瞄准.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260929-重防号导弹解锁与肉鸽卡牌.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260929-重防号悬浮与GPU引擎喷流.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260930-机枪10度随机弹道.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20260930-机枪枪口命中与弹道照明.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261018-Hybrid世界更新5ms.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261018-Slate布局绘制2.5ms.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261020-Hybrid交火CPU与追帧优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261020-UI CPU优化与四档LOD.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261020-一键截帧与CPU分析插件.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261020-保持玩法与表现的15ms帧时间优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261021-扫荡者远端姿态与导航恢复修复.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20261021-近期性能优化.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261023-地面机甲MechaDestroyer替换与风格化.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261023-游骑兵MechaDestroyer替换与风格化.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20261024-GuLi独立地图设计器.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261026-地面与低空移动层隔离.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261026-开局席位选择UI.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261026-重防号待机悬浮调整.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261027-地面机甲闪现GAS与绿色能量拖尾.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261027-游骑兵闪现GAS与绿色能量拖尾.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/20261027-肉鸽卡牌美术资源数据管线.md"
+    },
+    {
+      "status": "D",
+      "path": "Progress/RequirementDocument/20261028-地面机甲逐发上身摆动.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261028-据点巨物尺寸与轻微浮动.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261028-旧游骑兵模型退役与路由清理.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261028-游骑兵与Mass子弹弹道照明优化.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261028-游骑兵肉鸽与折射子弹.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261028-游骑兵逐发上身摆动.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261028-灼烧卡牌与能力系统解耦.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261028-重防号Q水平射程.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261102-游骑兵HUD正式接入.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261106-Hybrid状态应用耗时优化.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261106-游骑兵主线程整帧降低30.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261106-游骑兵交战长帧治理.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md"
+    },
+    {
+      "status": "A",
+      "path": "Progress/RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/GuLiStrike美术规范.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/RequirementDocument/肉鸽卡牌数据表与实战选牌.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/_Index/Archive.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/_Index/ByArea.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/_Index/Current.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/_Index/Quality.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/_Index/Verification.md"
+    },
+    {
+      "status": "M",
+      "path": "Progress/_Index/catalog.jsonl"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Blender/export_ship_style_source.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Cards/card_artwork_pipeline.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Cards/prepare_ground_ricochet_layers.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/CommanderCamera/author_distance_cull_scene.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Grid300/author_review.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/MechaDestroyer/install_ground_mobility.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/README.md"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/Rogue/author_burning_cards.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/Rogue/author_ground_rogue_data.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/author_initial_bullet_assets.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/calibrate_explosive_radius.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/enter_ammo_review.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/install_explosive_enhancement.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/install_fire_notify_ammo.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/Rogue/install_ground_rogue_fix.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/install_initial_bullet_cards.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/measure_explosive_peak.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/prepare_initial_bullet_scene.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/Rogue/probe_ground_revision_runtime.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/read_initial_bullet_resources.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/save_explosive_enhancement_review.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/save_fire_notify_review.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/update_explosive_enhancement.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/update_fire_notify_ammo.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/Rogue/update_ground_revision_data.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/Rogue/update_ground_rogue_fix_data.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/GroundMech/Rogue/update_initial_bullet_cards.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/GroundMech/prepare_ground_hud_data.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Models/migrate_model_workbooks.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Network/readback_integrated_assets.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/Performance/author_ground_combat_review_entry.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Performance/author_hybrid_cpu_review_entry.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Performance/diagnose_commander_response.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/Performance/engine-ground-buffer-tracing.patch"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/Performance/engine-hidden-window-prepass.patch"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/Performance/engine-state-tree-single-context-validation.patch"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Performance/update_all_optimization_progress.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Scale020/migrate_workbooks.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/SceneUI/author_ground_feedback_materials.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/SceneUI/author_ground_feedback_review_entry.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/SceneUI/build_review_gallery.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/SceneUI/prepare_ground_feedback_review.py"
+    },
+    {
+      "status": "A",
+      "path": "Scripts/SceneUI/read_ground_feedback_assets.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Vfx/create_registry_source.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/Vfx/migration-manifest.json"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/adjust_ship_player_start.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/author_machine_gun_spread_scene.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/author_mass_navigation_scene.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/author_mass_response_scene.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/migrate_wm01_display_name.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/prepare_local_pie_role_picker_scene.py"
+    },
+    {
+      "status": "M",
+      "path": "Scripts/prepare_warmachine_idle_scene.py"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/Capabilities/GuLiNetEffects.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/Capabilities/GuLiNetGroundRogue.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetAsyncClient.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetClient.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetHash.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetManifest.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetOwnerState.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetOwnerTransactions.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetPeerWork.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetProtocol.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetResourceRecovery.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetRoom.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetRoomMetadata.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Private/GuLiNetWork.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetAsyncClient.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetClient.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetEffects.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetGroundRogue.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetHash.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetManifest.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetOwnerState.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetProtocol.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetRoom.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiNetCore/Public/GuLiNetTypes.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiCombatDamageLedger.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Behavior/GuLiCommanderMassStateTreeProcessor.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Behavior/GuLiCommanderStateTreeNodes.cpp"
+    },
+    {
+      "status": "A",
+      "path": "Source/GuLiStrike/Commander/Behavior/Private/GuLiCommanderBehaviorExecution.cpp"
+    },
+    {
+      "status": "A",
+      "path": "Source/GuLiStrike/Commander/Behavior/Private/GuLiCommanderBehaviorExecution.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiHybridMassAdapter.inl"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskOperations.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskSubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Orders/GuLiUnitTaskTypes.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLODSubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderMeshLOD.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.cpp"
+    },
+    {
+      "status": "A",
+      "path": "Source/GuLiStrike/Commander/UI/GuLiGroundOutlinePool.cpp"
+    },
+    {
+      "status": "A",
+      "path": "Source/GuLiStrike/Commander/UI/GuLiGroundOutlinePool.h"
+    },
+    {
+      "status": "A",
+      "path": "Source/GuLiStrike/Commander/UI/GuLiGroundSceneUIState.cpp"
+    },
+    {
+      "status": "A",
+      "path": "Source/GuLiStrike/Commander/UI/GuLiGroundSceneUIState.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/UI/GuLiSceneUITypes.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/UI/GuLiSceneUIWidget.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Commander/UI/GuLiSceneUIWidget.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiConstructionVehiclePawn.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiConstructionWorkComponent.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiGridProduction.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardSettings.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardSettings.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiBulletTrailIntegration.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiBulletTrailPresentation.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiBulletTrailPresentation.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiClientFlightPresentation.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightEvent.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiFlightEvent.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiHybridEffectRuntime.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiHybridProjectilePool.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiLinearFlightContract.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeMechTableRows.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeRogueCardsTableRows.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeVfxTableRows.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiVfxIds.h"
+    },
+    {
+      "status": "A",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNotify_GuLiGroundFire.cpp"
+    },
+    {
+      "status": "A",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNotify_GuLiGroundFire.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundUpgrade.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Rogue/GuLiGroundRogueDebugLibrary.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Rogue/GuLiGroundRogueEffects.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundAttackSnapshot.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Navigation/Grid/GuLiGridNetwork.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Presentation/GuLiMechanicalAnimation.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Presentation/GuLiVATAnimation.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiHybridMinerAdapter.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiHybridMiningSlots.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehicleManager.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehicleManager.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehiclePawn.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehiclePawn.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiOreObstacleUpdates.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceInventoryBinding.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceStrongholds.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiOutpostPresentationComponent.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringGroundTravel.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringMassTravel.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringTravelComponent.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Units/Private/GuLiVehiclePoseStream.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Vfx/GuLiVfxBindingComponent.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/Vfx/GuLiVfxRegistrySubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Gameplay/WarMachine/GuLiWarMachinePlaceholderPawn.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridActorWorldSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridActorWorldSubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridAdapterRegistry.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridAdapterRegistry.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridLedgerBinding.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridSessionSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridSessionSubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/Private/GuLiHybridComponentState.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/Private/GuLiHybridObjectConversions.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrike/Network/Private/GuLiHybridStateArchive.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrikeEditor/Private/GuLiGroundMechFireEditorLibrary.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrikeEditor/Private/GuLiGroundMechFireEditorLibrary.h"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrikeEditor/Private/GuLiLocalPIERolePicker.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrikeEditor/Private/GuLiResourceAuthoringLibrary.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Source/GuLiStrikeEditor/Public/GuLiResourceAuthoringLibrary.h"
+    },
+    {
+      "status": "M",
+      "path": "Tools/DataPipeline/author_rogue_cards.py"
+    },
+    {
+      "status": "M",
+      "path": "Tools/DataPipeline/buff_catalog.py"
+    },
+    {
+      "status": "M",
+      "path": "Tools/DataPipeline/card_artwork_catalog.py"
+    },
+    {
+      "status": "M",
+      "path": "Tools/DataPipeline/export_data_from_excel.py"
+    },
+    {
+      "status": "M",
+      "path": "Tools/DataPipeline/icon_catalog.py"
+    },
+    {
+      "status": "M",
+      "path": "Tools/GuLiCoordinator/src/Coordinator.cpp"
+    },
+    {
+      "status": "M",
+      "path": "Tools/GuLiCoordinator/src/Store.cpp"
+    },
+    {
+      "status": "A",
+      "path": "data/Excel/GuLiStrikeBuffs.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeBuildings.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeCardArtwork.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeCommander.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeGameTexts.xlsx"
+    },
+    {
+      "status": "A",
+      "path": "data/Excel/GuLiStrikeGroundHUD.xlsx"
+    },
+    {
+      "status": "A",
+      "path": "data/Excel/GuLiStrikeIcons.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeLOD.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeMech.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeModels.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeRogueCards.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeShip.xlsx"
+    },
+    {
+      "status": "M",
+      "path": "data/Excel/GuLiStrikeVfx.xlsx"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/catalog.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/advanced-dash-vfx_move.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/advanced-dash-vfx_validation.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/compatibility_originals.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/drone-bot_move.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/drone-bot_validation.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/editor_preflight.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/extraction_report.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/final_files_and_editor_state.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/maintenance_checks.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/mech-constructor-spiders-tanks_move.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/mech-constructor-spiders-tanks_validation.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/muzzle-flashes_move.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/muzzle-flashes_validation.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/old_source_package_state.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/preflight.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/source_memory_cleanup.json"
+    },
+    {
+      "status": "A",
+      "path": "data/ExternalAssets/migrations/20261026/staging_file_cleanup.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/build-baseline-final.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/build-baseline-merged.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/build-baseline.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/handoff-state.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/owned-ricochet-final.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/readback-merged-16x10.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/readback-merged-16x9.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/readback-merged-21x9.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Detail20261102/static-check.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Fidelity20261102/build-baseline-final.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Fidelity20261102/build-final.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Fidelity20261102/build-ids.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Fidelity20261102/handoff-state.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Fidelity20261102/manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Fidelity20261102/owned-ricochet-final.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Fidelity20261102/static-check.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Fidelity20261102/tables-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/MissingHUD-20261102/automatic-geometry-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/MissingHUD-20261102/build-result.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/MissingHUD-20261102/final-startup-native.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/MissingHUD-20261102/static-review.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/MissingHUD-20261102/verification-result.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Motion20261102/aspects-summary.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Motion20261102/atlas-validation.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Motion20261102/delivery-summary.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Motion20261102/final-hud-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Motion20261102/runtime-final-summary.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Motion20261102/runtime-final.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Motion20261102/scene-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Motion20261102/scene-result.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Reference20261102/build-result.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Reference20261102/formal-route.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Reference20261102/scene.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Reference20261102/static-review.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Reference20261102/verification-result.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Refinement20261102/acquired-authoritative.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Refinement20261102/build-ids-final.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Refinement20261102/handoff-state.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Refinement20261102/manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Refinement20261102/tables-readback.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Terrain20261102/build-baseline.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Terrain20261102/combat-state.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Terrain20261102/stopped-by-user.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Visual20261102/build-ids.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Visual20261102/handoff-state.json"
+    },
+    {
+      "status": "A",
+      "path": "data/GroundHUDValidation/Visual20261102/manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Json/DT_GuLiStrikeBuffs_Buffs.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Json/DT_GuLiStrikeBuffs_Burning.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Json/DT_GuLiStrikeBuffs_BurningBurst.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeBuildings_Buildings.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Artworks.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Layers.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Parameters.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Templates.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeCommander_Soldiers.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeGameTexts_Texts.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Json/DT_GuLiStrikeGroundHUD_Elements.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Json/DT_GuLiStrikeIcons_Icons.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeLOD_LOD.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeMech_Gait.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeMech_Skills.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeMech_Upgrades.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeModels_ColorRegions.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeModels_MaterialParameters.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeModels_Models.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeModels_Parts.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeRogueCards_Cards.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Json/DT_GuLiStrikeRogueCards_Effects.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Json/DT_GuLiStrikeRogueCards_GroundRicochet.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Json/DT_GuLiStrikeRogueCards_GroundWeaponEffects.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeShip_Camera.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeShip_Tuning.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/DT_GuLiStrikeVfx_Effects.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Json/manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/before.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/current_army.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/current_density.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/current_snapshot.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/deployment_ore_conflicts.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/final_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/fixture_repair.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/incremental_applied_with_debug_compare.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/incremental_before.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/incremental_repair.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/navigation_before.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/navigation_repair.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/pending_compile_readback.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/repair.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/static_review.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261029/static_review_final.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261102/after-stop.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261102/before.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261102/failure-log.txt"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261102/play-settings-before.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261102/progress-check.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261102/repair.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261102/startup.json"
+    },
+    {
+      "status": "A",
+      "path": "data/MapAuthoringValidation/PIEStart-20261102/static-review.json"
+    },
+    {
+      "status": "M",
+      "path": "data/Models/active-reference-migration.json"
+    },
+    {
+      "status": "A",
+      "path": "data/Models/retired-model-ids.json"
+    },
+    {
+      "status": "M",
+      "path": "data/dreadnought_turret_positions.json"
+    }
+  ]
+}

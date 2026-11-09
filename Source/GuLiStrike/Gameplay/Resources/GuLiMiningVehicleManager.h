@@ -39,7 +39,7 @@ public:
 	void UnregisterVehicle(AGuLiMiningVehiclePawn& Vehicle);
 
 	bool OwnsNode(const AGuLiMiningVehiclePawn& Vehicle, uint32 NodeId) const;
-	void IgnoreVehicles(FCollisionQueryParams& Params) const;
+	void AppendVisibilityIgnoredActors(TArray<const AActor*,TInlineAllocator<64>>& Out) const;
 	UFUNCTION(BlueprintPure, Category="Resources|Mining")
 	int32 GetAssignedNode(const AGuLiMiningVehiclePawn* Vehicle) const;
 	const TArray<TObjectPtr<AGuLiMiningVehiclePawn>>& GetVehicles() const { return Vehicles; }

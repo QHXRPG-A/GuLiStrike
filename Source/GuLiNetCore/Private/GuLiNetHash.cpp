@@ -38,22 +38,34 @@ constexpr void Compress(std::array<std::uint32_t, 8>& S, std::span<const std::ui
     S[0]+=A; S[1]+=B; S[2]+=C; S[3]+=D; S[4]+=E; S[5]+=F; S[6]+=G; S[7]+=H;
 }
 }
-std::string Sha256(std::span<const std::uint8_t> Data)
+void Sha256Stream::Append(std::span<const std::uint8_t> Data)
 {
-    std::array<std::uint32_t, 8> State{0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19};
-    std::size_t Offset = 0;
-    while (Data.size() - Offset >= 64) { Compress(State, std::span<const std::uint8_t,64>(Data.data()+Offset,64)); Offset += 64; }
+    Length+=Data.size();
+    if (PendingSize)
+    {
+        const auto N=std::min(Data.size(),Pending.size()-PendingSize);
+        std::copy_n(Data.begin(),N,Pending.begin()+PendingSize);PendingSize+=N;Data=Data.subspan(N);
+        if (PendingSize==Pending.size()) {Compress(State,Pending);PendingSize=0;}
+    }
+    while (Data.size()>=64) {Compress(State,std::span<const std::uint8_t,64>(Data.data(),64));Data=Data.subspan(64);}
+    if (!Data.empty()) {std::copy(Data.begin(),Data.end(),Pending.begin());PendingSize=Data.size();}
+}
+std::string Sha256Stream::Finish() const
+{
+    auto FinalState=State;
     std::array<std::uint8_t, 128> Tail{};
-    std::copy(Data.begin()+Offset, Data.end(), Tail.begin()); Tail[Data.size()-Offset] = 0x80;
-    const std::size_t Size = Data.size()-Offset < 56 ? 64 : 128;
-    const auto Bits = static_cast<std::uint64_t>(Data.size()) * 8;
+    std::copy_n(Pending.begin(),PendingSize,Tail.begin());Tail[PendingSize]=0x80;
+    const std::size_t Size=PendingSize<56?64:128;
+    const auto Bits=Length*8;
     for (std::size_t I=0; I<8; ++I) Tail[Size-1-I] = static_cast<std::uint8_t>(Bits >> (I*8));
-    Compress(State, std::span<const std::uint8_t,64>(Tail.data(),64));
-    if (Size == 128) Compress(State, std::span<const std::uint8_t,64>(Tail.data()+64,64));
+    Compress(FinalState, std::span<const std::uint8_t,64>(Tail.data(),64));
+    if (Size == 128) Compress(FinalState, std::span<const std::uint8_t,64>(Tail.data()+64,64));
     constexpr char Hex[]="0123456789abcdef"; std::string Out; Out.reserve(64);
-    for (auto V : State) for (int Shift=28; Shift>=0; Shift-=4) Out.push_back(Hex[(V >> Shift)&15]);
+    for (auto V : FinalState) for (int Shift=28; Shift>=0; Shift-=4) Out.push_back(Hex[(V >> Shift)&15]);
     return Out;
 }
+std::string Sha256(std::span<const std::uint8_t> Data)
+{Sha256Stream Hash;Hash.Append(Data);return Hash.Finish();}
 bool IsSha256(std::string_view Text)
 { return Text.size() == 64 && std::all_of(Text.begin(), Text.end(), [](char C) { return (C>='0' && C<='9') || (C>='a' && C<='f'); }); }
 Id StableId(std::string_view Namespace, std::string_view Name)

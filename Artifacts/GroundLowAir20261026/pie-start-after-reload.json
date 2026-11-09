@@ -1,0 +1,207 @@
+{
+  "success": true,
+  "pid": 70140,
+  "map_reloaded": true,
+  "runtime_validation": "not_run",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "resource_bake": {
+    "success": true,
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "e1fee1d2461dec9ab29c2f578db5af93f2280608",
+    "layout_hash": "1449dc14a87d5825ab96ee22ce244eb51985d062",
+    "initial_soldiers": 11,
+    "validated_initial_soldiers": 11
+  },
+  "navigation": {
+    "success": true,
+    "message": "",
+    "ground_rebuilds": 0,
+    "flight_rebuilds": 0,
+    "entries": [
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "source_hash": "08411f105f7819e4",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "source_hash": "1d1bac7c95d5e471",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "kind": "Flight",
+        "status": "Hit",
+        "source_hash": "959c16c2f2d76e23",
+        "message": "Validated saved flight graph."
+      }
+    ]
+  },
+  "resource_layout_unchanged": true,
+  "entities": [
+    {
+      "label": "GroundLowAir_Ground",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        68040.0,
+        1073.7790832519531
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_Low30m",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        68040.0,
+        4073.779083251953
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_Low99m",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        68040.0,
+        10973.779083251953
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_W",
+      "cls": "TargetPoint",
+      "location": [
+        -22680.0,
+        68040.0,
+        1073.7790832519531
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_E",
+      "cls": "TargetPoint",
+      "location": [
+        -15120.0,
+        68040.0,
+        1073.7790832519531
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_N",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        71820.0,
+        1073.7790832519531
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_S",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        64260.0,
+        1073.7790832519531
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_PlayerInstructions",
+      "cls": "Note",
+      "location": [
+        -18900.0,
+        69240.0,
+        1473.7790832519531
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_ReviewCamera",
+      "cls": "CameraActor",
+      "location": [
+        -4900.0,
+        54040.0,
+        11073.779083251953
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "GroundLowAir_Ring_C",
+      "cls": "StaticMeshActor",
+      "location": [
+        -18900.0,
+        68040.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "profile": "NoCollision",
+      "nav": false
+    },
+    {
+      "label": "GroundLowAir_Ring_W",
+      "cls": "StaticMeshActor",
+      "location": [
+        -22680.0,
+        68040.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "profile": "NoCollision",
+      "nav": false
+    },
+    {
+      "label": "GroundLowAir_Ring_E",
+      "cls": "StaticMeshActor",
+      "location": [
+        -15120.0,
+        68040.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "profile": "NoCollision",
+      "nav": false
+    },
+    {
+      "label": "GroundLowAir_Ring_N",
+      "cls": "StaticMeshActor",
+      "location": [
+        -18900.0,
+        71820.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "profile": "NoCollision",
+      "nav": false
+    },
+    {
+      "label": "GroundLowAir_Ring_S",
+      "cls": "StaticMeshActor",
+      "location": [
+        -18900.0,
+        64260.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "profile": "NoCollision",
+      "nav": false
+    }
+  ],
+  "manifest_sha256": {
+    "200": "9562be860674fa9045bdda7b5db67e799ab6133a189ccecbedc3c5c7d70502f3",
+    "600": "7749351667f4e1488d55e52385f2154c20d40282c6f293f8508e41ab245f81e3"
+  },
+  "manifests_unchanged": true,
+  "dirty_maps": [],
+  "dirty_content": []
+}

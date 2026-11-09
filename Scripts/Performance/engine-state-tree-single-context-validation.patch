@@ -1,0 +1,71 @@
+diff --git a/Engine/Plugins/Runtime/StateTree/Source/StateTreeModule/Private/StateTreeExecutionContext.cpp b/Engine/Plugins/Runtime/StateTree/Source/StateTreeModule/Private/StateTreeExecutionContext.cpp
+index 4aee1eb3a..3cc638384 100644
+--- a/Engine/Plugins/Runtime/StateTree/Source/StateTreeModule/Private/StateTreeExecutionContext.cpp
++++ b/Engine/Plugins/Runtime/StateTree/Source/StateTreeModule/Private/StateTreeExecutionContext.cpp
+@@ -350,13 +350,19 @@ FStateTreeReadOnlyExecutionContext::FStateTreeReadOnlyExecutionContext(TNotNull<
+ }
+ 
+ FStateTreeReadOnlyExecutionContext::FStateTreeReadOnlyExecutionContext(TNotNull<UObject*> InOwner, TNotNull<const UStateTree*> InStateTree, FStateTreeInstanceStorage& InStorage)
++	: FStateTreeReadOnlyExecutionContext(InOwner, InStateTree, InStorage, EContextValidation::Immediate)
++{
++}
++
++FStateTreeReadOnlyExecutionContext::FStateTreeReadOnlyExecutionContext(TNotNull<UObject*> InOwner, TNotNull<const UStateTree*> InStateTree,
++	FStateTreeInstanceStorage& InStorage, EContextValidation Validation)
+ 	: Owner(*InOwner)
+ 	, RootStateTree(*InStateTree)
+ 	, Storage(InStorage)
+ {
+ 	Storage.AcquireReadAccess();
+ 
+-	if (IsValid())
++	if (Validation == EContextValidation::Immediate && IsValid())
+ 	{
+ 		constexpr bool bWriteAccessAcquired = false;
+ 		Storage.GetRuntimeValidation().SetContext(&Owner, &RootStateTree, bWriteAccessAcquired);
+@@ -817,7 +823,7 @@ FStateTreeMinimalExecutionContext::FStateTreeMinimalExecutionContext(TNotNull<UO
+ }
+ 
+ FStateTreeMinimalExecutionContext::FStateTreeMinimalExecutionContext(TNotNull<UObject*> InOwner, TNotNull<const UStateTree*> InStateTree, FStateTreeInstanceStorage& InStorage)
+-	: FStateTreeReadOnlyExecutionContext(InOwner, InStateTree, InStorage)
++	: FStateTreeReadOnlyExecutionContext(InOwner, InStateTree, InStorage, EContextValidation::DeferredUntilWriteAccess)
+ {
+ 	Storage.AcquireWriteAccess();
+ 
+diff --git a/Engine/Plugins/Runtime/StateTree/Source/StateTreeModule/Public/StateTreeExecutionContext.h b/Engine/Plugins/Runtime/StateTree/Source/StateTreeModule/Public/StateTreeExecutionContext.h
+index 9bbaf96eb..f2f6d68f9 100644
+--- a/Engine/Plugins/Runtime/StateTree/Source/StateTreeModule/Public/StateTreeExecutionContext.h
++++ b/Engine/Plugins/Runtime/StateTree/Source/StateTreeModule/Public/StateTreeExecutionContext.h
+@@ -194,6 +194,12 @@ public:
+ #endif // WITH_STATETREE_TRACE
+ 
+ protected:
++	// A writable context validates once after acquiring both original access
++	// guards. Standalone read-only contexts keep their immediate validation.
++	enum class EContextValidation : uint8 { Immediate, DeferredUntilWriteAccess };
++	UE_API FStateTreeReadOnlyExecutionContext(TNotNull<UObject*> Owner, TNotNull<const UStateTree*> StateTree,
++		FStateTreeInstanceStorage& Storage, EContextValidation Validation);
++
+ 	/** @return Description used as prefix by STATETREE_LOG and STATETREE_CLOG, Owner name by default. */
+ 	UE_API FString GetInstanceDescriptionInternal() const;
+ 
+@@ -1501,7 +1507,9 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
+ 	FStateTreeReferenceOverrides LinkedAssetStateTreeOverrides;
+ 	
+ 	/** Data view of the context data. */
+-	TArray<FStateTreeDataView> ContextAndExternalDataViews;
++	// Most contexts have only a handful of views. Keep their transient storage
++	// local while retaining ordinary heap growth for larger and linked trees.
++	TArray<FStateTreeDataView, TInlineAllocator<8>> ContextAndExternalDataViews;
+ 
+ 	FOnCollectStateTreeExternalData CollectExternalDataDelegate;
+ 
+@@ -1510,7 +1518,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
+ 		const UStateTree* StateTree = nullptr;
+ 		FStateTreeIndex16 BaseIndex;
+ 	};
+-	TArray<FCollectedExternalDataCache> CollectedExternalCache;
++	TArray<FCollectedExternalDataCache, TInlineAllocator<2>> CollectedExternalCache;
+ 	bool bActiveExternalDataCollected = false;
+ 
+ 	/** Holds the container. Multiple instances with the same state tree can occur in a recursive call. */

@@ -1483,6 +1483,50 @@ FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::RevalidateAddedDeployment
 	return Result;
 }
 
+FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::RevalidateMovedDeployments(
+    const TArray<AGuLiCommanderDeploymentPoint*>& Deployments,const TArray<FVector>& PreviousLocations,const bool bApplyAndSave)
+{
+    using namespace GuLiResourceAuthoring;
+    UWorld* World=GetEditorWorld();
+    if(!World || !IsCanonicalResourceMap(World) || (bApplyAndSave && World->GetOutermost()->IsDirty()))
+        return Fail(TEXT("Moved-deployment revalidation requires the saved idle canonical map."));
+    if(Deployments.IsEmpty() || Deployments.Num()!=PreviousLocations.Num())return Fail(TEXT("Specify each moved deployment and its certified previous location."));
+    TSet<const AGuLiCommanderDeploymentPoint*> Seen;TArray<FVector> Current;
+    for(int32 I=0;I<Deployments.Num();++I)
+    {
+        auto* P=Deployments[I];
+        if(!IsValid(P)||P->GetWorld()!=World||P->GetLevel()!=World->PersistentLevel||Seen.Contains(P)||PreviousLocations[I].ContainsNaN())
+            return Fail(TEXT("Invalid moved deployment or previous location."));
+        Seen.Add(P);Current.Add(P->GetActorLocation());
+    }
+    auto* Definition=LoadObject<UGuLiResourceMapDefinition>(nullptr,MapDefinitionPath);
+    auto* Economy=LoadObject<UGuLiResourceEconomyConfig>(nullptr,EconomyPath);
+    if(!Definition||!Economy)return Fail(TEXT("Resource DataAssets are missing."));
+    FString Error=UGuLiCommanderIslandAuthoringLibrary::ValidateOutpostPresentationAssets();
+    if(!Error.IsEmpty()||!Definition->ValidateDefinition(Error)||!Economy->ValidateConfig(Error))return Fail(Error);
+    // Restore immediately after the proof, including when source hashing fails.
+    for(int32 I=0;I<Deployments.Num();++I)Deployments[I]->SetActorLocation(PreviousLocations[I],false,nullptr,ETeleportType::TeleportPhysics);
+    FString BaselineHash;TArray<FString> Issues;
+    const bool bBaseline=CalculateCurrentSourceHash(BaselineHash,Issues);
+    for(int32 I=0;I<Deployments.Num();++I)Deployments[I]->SetActorLocation(Current[I],false,nullptr,ETeleportType::TeleportPhysics);
+    if(!bBaseline || BaselineHash!=Definition->SourceHash)
+        return Fail(TEXT("The certified source differs beyond the specified deployment positions."));
+    FGuLiResourceBakeResult Result;FGuLiInitialArmyAuthoring Army;
+    if(!Army.Build(*World,Error)||!Army.Validate(*World,*Definition,Result.ValidatedInitialSoldierCount,Error))return Fail(Error);
+    if(!CalculateCurrentSourceHash(Result.SourceHash,Issues))return Fail(TEXT("Could not hash moved deployment source."));
+    if(bApplyAndSave)
+    {
+        const FString OldSource=Definition->SourceHash,OldLayout=Definition->LayoutHash;
+        Definition->Modify();Definition->SourceHash=Result.SourceHash;Definition->LayoutHash=Definition->CalculateLayoutHash();Definition->MarkPackageDirty();
+        if(!SaveManagedAssets(*Definition,*Economy,Error))
+        {Definition->SourceHash=OldSource;Definition->LayoutHash=OldLayout;Definition->MarkPackageDirty();return Fail(Error);}
+    }
+    Result.LayoutHash=Definition->LayoutHash;Result.InitialSoldierCount=Army.Slots.Num();
+    Result.TerritoryCount=Definition->Territories.Num();Result.ClusterCount=Definition->Clusters.Num();Result.NodeCount=Definition->Nodes.Num();
+    Result.bSuccess=true;Result.Message=bApplyAndSave?TEXT("Saved revalidated deployment positions; certified ore geometry is unchanged."):TEXT("Moved deployment positions passed; no packages changed.");
+    return Result;
+}
+
 FGuLiResourceBakeResult UGuLiResourceAuthoringLibrary::ValidateCurrentBake()
 {
 	using namespace GuLiResourceAuthoring;

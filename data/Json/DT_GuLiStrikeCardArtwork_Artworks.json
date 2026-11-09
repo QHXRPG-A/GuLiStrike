@@ -62,7 +62,7 @@
   {
     "Name": "GroundMech_Ricochet",
     "Id": 6,
-    "Note": "仅美术资源；尚未加入玩法卡表。",
+    "Note": "Ground折射正式卡06.01；本任务修正机甲正背与相关遮挡，保留正式MI入口",
     "Title": "折射子弹",
     "TemplateId": 3,
     "Material": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1",
@@ -70,5 +70,41 @@
     "SourceRoot": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/CardProduction_20261026_v1",
     "ReferenceFile": "ArtSource/UI/GroundMechRogueCards/GroundMech_ChainRicochet/CardProduction_20261026_v1/Master.png",
     "PreviewUrl": "http://127.0.0.1:8191/preview.html"
+  },
+  {
+    "Name": "GroundMech_BurningBullet",
+    "Id": 7,
+    "Note": "用户2026-10-29授权正式接入；刚性分层04；视觉验收单独记录",
+    "Title": "灼烧子弹",
+    "TemplateId": 4,
+    "Material": "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Materials/MI_GroundMech_BurningBullet_Artwork.MI_GroundMech_BurningBullet_Artwork",
+    "AssetRoot": "/Game/GuLiStrike/Cards/GroundMech/BurningBullet",
+    "SourceRoot": "ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1",
+    "ReferenceFile": "ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png",
+    "PreviewUrl": "http://127.0.0.1:8192/"
+  },
+  {
+    "Name": "GroundMech_BurningBurst",
+    "Id": 8,
+    "Note": "用户2026-10-29授权正式接入；刚性分层04；视觉验收单独记录",
+    "Title": "灼烧爆裂子弹",
+    "TemplateId": 4,
+    "Material": "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Materials/MI_GroundMech_BurningBurst_Artwork.MI_GroundMech_BurningBurst_Artwork",
+    "AssetRoot": "/Game/GuLiStrike/Cards/GroundMech/BurningBurst",
+    "SourceRoot": "ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1",
+    "ReferenceFile": "ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png",
+    "PreviewUrl": "http://127.0.0.1:8192/"
+  },
+  {
+    "Name": "GroundWeaponPlaceholder",
+    "Id": 9,
+    "Note": "三张新武器卡共用空白牌面",
+    "Title": "空白占位",
+    "TemplateId": 5,
+    "Material": "/Game/GuLiStrike/Cards/Shared/Placeholder/MI_CardBlank.MI_CardBlank",
+    "AssetRoot": "/Game/GuLiStrike/Cards/Shared/Placeholder",
+    "SourceRoot": "",
+    "ReferenceFile": "",
+    "PreviewUrl": ""
   }
 ]

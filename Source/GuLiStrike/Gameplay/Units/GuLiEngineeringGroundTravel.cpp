@@ -106,11 +106,12 @@ void UGuLiEngineeringTravelComponent::CancelReplacementMove()
 }
 void UGuLiEngineeringTravelComponent::TickGroundMove()
 {
-    RefreshMassAuthority();if (!MassEntityId.IsValid() || Control->AreActionsLocked()) return;
+    // AdvanceHybrid synchronizes authority before entering this private step.
+    if (!MassEntityId.IsValid() || Control->AreActionsLocked()) return;
     if (GroundStatus==EGuLiEngineeringMoveStatus::Moving)
     {
-        FGuLiSoldierNavigationDebug Debug;
-        if (GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->TryGetSoldierNavigationDebug(MassEntityId,Debug))
+        FGuLiSoldierNavigationView Debug;
+        if (GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->TryGetSoldierNavigation(MassEntityId,Debug))
         {
             if (Debug.State==EGuLiSoldierNavigationState::Arrived) GroundStatus=EGuLiEngineeringMoveStatus::Arrived;
             else if (Debug.State==EGuLiSoldierNavigationState::Blocked || !Debug.ActiveOrderId)

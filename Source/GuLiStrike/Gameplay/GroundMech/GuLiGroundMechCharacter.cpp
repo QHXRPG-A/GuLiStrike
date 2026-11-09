@@ -444,13 +444,15 @@ void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 	AdvanceUpperAim(DeltaSeconds);
 	AdvanceWeaponAim(DeltaSeconds);
 	UpperBodyPivot->SetWorldRotation(FRotator(0,DisplayAimYaw-90.f,0));
-	// These skeletal poses contain gameplay mounting/muzzle sockets on logic-only endpoints too.
-	GetMesh()->TickAnimation(DeltaSeconds,false); GetMesh()->RefreshBoneTransforms();
-	if (!bIntegratedBodyMesh) { Machinegun->TickAnimation(DeltaSeconds,false); Machinegun->RefreshBoneTransforms(); }
-	const bool bForward=SimulationInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
-	const FVector FirePoint=bForward?GetMesh()->GetSocketLocation(TEXT("Gun_R"))+GetActorForwardVector()
-		*(Weapon->ActiveSkill.ProjectileSpeed*Weapon->ActiveSkill.ProjectileLifetime):SimulationInput.Aim;
-	Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire && !GetBlinkState().Phase,FirePoint,bForward || SimulationInput.bHasAim);
+    const bool bForward=SimulationInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
+    const FVector FirePoint=bForward?GetMesh()->GetSocketLocation(TEXT("Gun_R"))+GetActorForwardVector()
+        *(Weapon->ActiveSkill.ProjectileSpeed*Weapon->ActiveSkill.ProjectileLifetime):SimulationInput.Aim;
+    Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire && !GetBlinkState().Phase,FirePoint,bForward || SimulationInput.bHasAim);
+    // Input precedes animation; only real Fire notifications enqueue shots. Read
+    // the updated sockets after the pose, outside the montage's callback stack.
+    GetMesh()->TickAnimation(DeltaSeconds,false); GetMesh()->RefreshBoneTransforms();
+    if (!bIntegratedBodyMesh) { Machinegun->TickAnimation(DeltaSeconds,false); Machinegun->RefreshBoneTransforms(); }
+    Weapon->TryFire();
 	Blink->Present();
 	// A logical step can run after the display tick. Restore only the display
 	// overlay after firing; the next logical step always evaluates authority first.

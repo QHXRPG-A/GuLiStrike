@@ -1,0 +1,343 @@
+{
+  "schema": "gulistrike/external-assets/v1",
+  "scope": "已登记的外部资源；当前覆盖用户本次指定的四包，不代表全项目历史商城资产普查。",
+  "root": "/Game/Assets",
+  "packs": [
+    {
+      "id": "mech-constructor-spiders-tanks",
+      "name": "Mech Constructor Spiders and Tanks",
+      "category": "Models/Mechs",
+      "source_archive": "D:\\BaiduNetdiskDownload\\Mech Constructor Spiders and Tanks.zip",
+      "source_sha256": "027da9c89cabafcca18fc5c83be9f3b48d38cbcf448ed87013e9b588394183cf",
+      "source_archive_prefix": "Mech Constructor Spiders and Tanks/Content/Mech_Constructor_Spiders/",
+      "source_root": "/Game/Mech_Constructor_Spiders",
+      "target_root": "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders",
+      "version_note": "完整保留Animations、Blueprints、网格、材质与演示内容；未提供uproject。",
+      "description": "模块化蜘蛛机甲、履带/坦克/越野底盘、武器、静态/骨骼网格、91段动画、骨架/物理资产和组合蓝图。",
+      "source_file_count": 322,
+      "registered_package_count": 319,
+      "currently_loadable_package_count": 318,
+      "classes": {
+        "AnimBlueprint": 3,
+        "AnimSequence": 91,
+        "Blueprint": 17,
+        "MapBuildDataRegistry": 1,
+        "Material": 6,
+        "PhysicsAsset": 31,
+        "SkeletalMesh": 34,
+        "Skeleton": 21,
+        "StaticMesh": 73,
+        "Texture2D": 40,
+        "TireConfig": 1,
+        "World": 1
+      },
+      "maps": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/MC_Spiders_Demo_Scene"
+      ],
+      "folder_file_counts": {
+        ".": 1,
+        "Animations": 12,
+        "Animations/Legs_Spider_Hvy": 23,
+        "Animations/Legs_Spider_Lt": 21,
+        "Animations/Legs_Spider_Med": 23,
+        "Animations/Legs_Tracks": 12,
+        "Blueprints": 12,
+        "Blueprints/Pawn_Buggy_Chassis": 8,
+        "Maps": 3,
+        "Materials": 6,
+        "Meshes": 54,
+        "Meshes/Chassis_Tanks": 11,
+        "Meshes/Legs_Tracks": 8,
+        "Meshes_Skeletal": 6,
+        "Meshes_Skeletal/Chassis_Buggies": 15,
+        "Meshes_Skeletal/Chassis_Tanks": 15,
+        "Meshes_Skeletal/Legs_Spiders": 12,
+        "Meshes_Skeletal/Legs_Tracks": 12,
+        "Meshes_Skeletal/Weapons": 29,
+        "Textures": 4,
+        "Textures/Diffuse_Camo": 7,
+        "Textures/Diffuse_HandPainted": 10,
+        "Textures/PBR/Body": 4,
+        "Textures/PBR/Body/Base_Color": 11,
+        "Textures/PBR/Tracks": 3
+      },
+      "unregistered_preserved_packages": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/MyCarGame",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Maps/Demo_Scene",
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/MyCarGame"
+      ],
+      "preserved_unloadable_packages": [
+        "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Blueprints/Pawn_Buggy_Chassis/Wheel_Buggy_Tire"
+      ],
+      "external_actor_object_files": [],
+      "omitted_archive_entries": [],
+      "normalized_object_names": [
+        {
+          "source_object": "/Game/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_3.Projectile_Grenade_1",
+          "target_object": "/Game/Assets/Models/Mechs/Mech_Constructor_Spiders/Meshes/Projectile_Grenade_3.Projectile_Grenade_3"
+        }
+      ],
+      "limitations": [
+        "Wheel_Buggy_Tire依赖当前引擎缺失的/Script/PhysXVehicles.TireConfig，保持原文件并登记为不可加载的旧配置。",
+        "车辆蓝图/动画蓝图涉及PhysXVehicles/PhysXVehiclesEditor；迁移时车辆类及示例车Actor出现加载警告，不能把模型入库理解为车辆玩法兼容UE5.7。相关原始包已另存，可在后续Chaos适配时恢复。",
+        "MyCarGame.uasset（两处）及Maps/Demo_Scene.umap三个小型源包在UE5.7未注册资产，原样保留；实际已注册示例地图为Maps/MC_Spiders_Demo_Scene。",
+        "Projectile_Grenade_3文件中的原对象名为Projectile_Grenade_1；通过UE批量重命名统一为Projectile_Grenade_3，并由编辑器更新引用。"
+      ],
+      "validation": {
+        "migration_saved_and_inventory_matched": true,
+        "old_path_dependency_count": 0,
+        "missing_game_dependencies": {},
+        "unexpected_load_failures": [],
+        "source_compatibility_limits_retained": true,
+        "visual": "not_run_user_review",
+        "runtime": "not_run",
+        "independent_cold_reload": "not_run"
+      },
+      "reports": "data/ExternalAssets/migrations/20261026/mech-constructor-spiders-tanks_validation.json",
+      "migrated_on": "2026-10-27",
+      "migration_batch": "20261026"
+    },
+    {
+      "id": "drone-bot",
+      "name": "Drone Bot",
+      "category": "Models/Robots",
+      "source_archive": "D:\\BaiduNetdiskDownload\\Drone Bot\\Drone Bot 5.3\\DroneBotContent.zip",
+      "source_sha256": "b2baa83422743d3945071fbf2fd91e89f205bc45546696c6e8ad78911c760cf3",
+      "source_archive_prefix": "DroneBotContent/",
+      "source_root": "/Game/DroneBotContent",
+      "target_root": "/Game/Assets/Models/Robots/DroneBotContent",
+      "version_note": "采用所提供的最高版本目录5.3；4.27、5.03、5.1、5.2不重复迁入。",
+      "description": "机械无人机、14段动画、骨架/物理资产、材质贴图、动画蓝图、展示台与Overview示例。",
+      "source_file_count": 58,
+      "registered_package_count": 58,
+      "currently_loadable_package_count": 58,
+      "classes": {
+        "AnimBlueprint": 1,
+        "AnimSequence": 14,
+        "Blueprint": 3,
+        "MapBuildDataRegistry": 1,
+        "Material": 9,
+        "PhysicsAsset": 2,
+        "SkeletalMesh": 2,
+        "Skeleton": 2,
+        "Texture2D": 21,
+        "TextureCube": 1,
+        "WidgetBlueprint": 1,
+        "World": 1
+      },
+      "maps": [
+        "/Game/Assets/Models/Robots/DroneBotContent/Maps/Overview"
+      ],
+      "folder_file_counts": {
+        "Blueprints": 3,
+        "DroneBot/Animations": 14,
+        "DroneBot/Blueprints": 2,
+        "DroneBot/Materials": 6,
+        "DroneBot/Meshes": 3,
+        "DroneBot/Textures": 18,
+        "Maps": 2,
+        "Rob_Podium/Materials": 3,
+        "Rob_Podium/Meshes": 3,
+        "Rob_Podium/Textures": 4
+      },
+      "unregistered_preserved_packages": [],
+      "preserved_unloadable_packages": [],
+      "external_actor_object_files": [],
+      "omitted_archive_entries": [],
+      "normalized_object_names": [],
+      "limitations": [
+        "源Overview引用HDRIBackdrop插件；本次编辑器未挂载该插件，迁移时背景相关对象无法完整加载。原始Overview包已另存，需启用插件并从原始包恢复后再验收演示背景。",
+        "预检曾发现骨架对/Game/DroneBot/Meshes/DroneBot的外部引用；迁移保存后的Registry未再报告该引用。",
+        "加载源动画蓝图时出现GetAllWidgetsOfClass结果为空却访问索引0的运行警告；未改写演示逻辑。"
+      ],
+      "validation": {
+        "migration_saved_and_inventory_matched": true,
+        "old_path_dependency_count": 0,
+        "missing_game_dependencies": {},
+        "unexpected_load_failures": [],
+        "source_compatibility_limits_retained": true,
+        "visual": "not_run_user_review",
+        "runtime": "not_run",
+        "independent_cold_reload": "not_run"
+      },
+      "reports": "data/ExternalAssets/migrations/20261026/drone-bot_validation.json",
+      "migrated_on": "2026-10-27",
+      "migration_batch": "20261026"
+    },
+    {
+      "id": "advanced-dash-vfx",
+      "name": "Advanced Dash VFX Pack",
+      "category": "VFX/Movement",
+      "source_archive": "D:\\BaiduNetdiskDownload\\UE5虚幻4 Advanced Dash VFX Pack 高级冲刺闪现视觉特效合集\\【5.0-5.3】Advanced Dash VFX Pack.zip",
+      "source_sha256": "7281d99466c4d0a65e4f35dda51c77deba09fd7fdfccdf4bc7a6b48e9d9a0263",
+      "source_archive_prefix": "AdvancedDashVFX/",
+      "source_root": "/Game/AdvancedDashVFX",
+      "target_root": "/Game/Assets/VFX/Movement/AdvancedDashVFX",
+      "version_note": "原包标注5.0–5.3；同名(1)副本核对SHA256后去重。",
+      "description": "冲刺/闪现/运动拖尾；18个Niagara系统，材质/函数/贴图、示例蓝图、人体模型和DemoRoom。",
+      "source_file_count": 186,
+      "registered_package_count": 186,
+      "currently_loadable_package_count": 186,
+      "classes": {
+        "AnimBlueprint": 1,
+        "AnimSequence": 7,
+        "BlendSpace1D": 1,
+        "Blueprint": 9,
+        "MapBuildDataRegistry": 1,
+        "Material": 35,
+        "MaterialFunction": 6,
+        "MaterialInstanceConstant": 24,
+        "NiagaraSystem": 18,
+        "PhysicsAsset": 1,
+        "SkeletalMesh": 1,
+        "Skeleton": 1,
+        "StaticMesh": 28,
+        "Texture2D": 50,
+        "UserDefinedEnum": 2,
+        "World": 1
+      },
+      "maps": [
+        "/Game/Assets/VFX/Movement/AdvancedDashVFX/Map/DemoLevel"
+      ],
+      "folder_file_counts": {
+        "Blueprints": 1,
+        "DemoContent/DemoRoom/BluePrints": 9,
+        "DemoContent/DemoRoom/Materials": 24,
+        "DemoContent/DemoRoom/Meshes": 24,
+        "DemoContent/DemoRoom/Textures": 5,
+        "DemoContent/DemoRoom/VFXBPs": 1,
+        "DemoContent/Mannequin/Animations": 9,
+        "DemoContent/Mannequin/Character/Materials": 2,
+        "DemoContent/Mannequin/Character/Materials/MaterialLayers": 8,
+        "DemoContent/Mannequin/Character/Mesh": 3,
+        "DemoContent/Mannequin/Character/Textures": 4,
+        "Map": 2,
+        "Materials": 26,
+        "Materials/MaterialFunctions": 2,
+        "Materials/MaterialInstances": 7,
+        "Meshes": 4,
+        "NiagaraVFX": 18,
+        "Textures": 37
+      },
+      "unregistered_preserved_packages": [],
+      "preserved_unloadable_packages": [],
+      "external_actor_object_files": [],
+      "omitted_archive_entries": [
+        "资源安装教程.txt"
+      ],
+      "normalized_object_names": [],
+      "limitations": [
+        "MI_TrailBeam仍引用原包未提供的/Game/CharacterVFXPack/Textures/T_Wave；补原贴图或在项目副本中适配后再验收对应效果。",
+        "预检MF_Hilight引用缺失的/Game/AdvancedNiagaraVFX/Textures/Mask/T_Mask12；迁移保存后未再出现在Registry依赖中，原始材质函数包已保留。",
+        "需要Niagara；18个系统的运行表现与独立编译诊断未执行。"
+      ],
+      "validation": {
+        "migration_saved_and_inventory_matched": true,
+        "old_path_dependency_count": 0,
+        "missing_game_dependencies": {
+          "/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_TrailBeam": [
+            "/Game/CharacterVFXPack/Textures/T_Wave"
+          ]
+        },
+        "unexpected_load_failures": [],
+        "source_compatibility_limits_retained": true,
+        "visual": "not_run_user_review",
+        "runtime": "not_run",
+        "independent_cold_reload": "not_run"
+      },
+      "reports": "data/ExternalAssets/migrations/20261026/advanced-dash-vfx_validation.json",
+      "migrated_on": "2026-10-27",
+      "migration_batch": "20261026",
+      "deduplicated_source": "D:\\BaiduNetdiskDownload\\UE5虚幻4 Advanced Dash VFX Pack 高级冲刺闪现视觉特效合集\\【5.0-5.3】Advanced Dash VFX Pack(1).zip",
+      "duplicate_sha256": "7281d99466c4d0a65e4f35dda51c77deba09fd7fdfccdf4bc7a6b48e9d9a0263"
+    },
+    {
+      "id": "muzzle-flashes",
+      "name": "Muzzle Flashes",
+      "category": "VFX/Weapons",
+      "source_archive": "D:\\BaiduNetdiskDownload\\a510_枪火特效\\Muzzle Flashes.zip",
+      "source_sha256": "f3f784da253909255d9c9ef31abaff715312fc61d71097fcc650d738f751dd6e",
+      "source_archive_prefix": "Muzzle Flashes/muzzles/",
+      "source_root": "/Game/muzzles",
+      "target_root": "/Game/Assets/VFX/Weapons/MuzzleFlashes",
+      "version_note": "归档未提供uproject或版本配置；类型与引用由UE5.7编辑器核对。",
+      "description": "枪口火焰/闪光；101个传统Cascade ParticleSystem，材质贴图、物理材质、展示武器/人物与演示房间。",
+      "source_file_count": 241,
+      "registered_package_count": 241,
+      "currently_loadable_package_count": 241,
+      "classes": {
+        "AnimSequence": 1,
+        "Blueprint": 5,
+        "Material": 28,
+        "MaterialFunction": 12,
+        "MaterialInstanceConstant": 17,
+        "ParticleSystem": 101,
+        "PhysicalMaterial": 4,
+        "PhysicsAsset": 1,
+        "SkeletalMesh": 2,
+        "Skeleton": 2,
+        "StaticMesh": 22,
+        "Texture2D": 43,
+        "UserDefinedEnum": 2,
+        "World": 1
+      },
+      "maps": [
+        "/Game/Assets/VFX/Weapons/MuzzleFlashes/Maps/MuzzleFlashes"
+      ],
+      "folder_file_counts": {
+        "Maps": 1,
+        "Materials": 18,
+        "Meshes": 1,
+        "Particles": 101,
+        "PhysicalMaterials": 4,
+        "Textures": 14,
+        "demoroom/Animations/TTP_Animations": 1,
+        "demoroom/BluePrint": 4,
+        "demoroom/Blueprints": 3,
+        "demoroom/Materials": 20,
+        "demoroom/Meshes": 21,
+        "demoroom/Textures": 5,
+        "demoroom/Weapons": 2,
+        "demoroom/Weapons/MaterialLayers": 10,
+        "demoroom/Weapons/Materials": 6,
+        "demoroom/Weapons/Textures": 10,
+        "demoroom/characters/HeroTPP": 3,
+        "demoroom/characters/Materials": 8,
+        "demoroom/characters/Textures": 8,
+        "demoroom/characters/Textures/Tiles": 1
+      },
+      "unregistered_preserved_packages": [],
+      "preserved_unloadable_packages": [],
+      "external_actor_object_files": [],
+      "omitted_archive_entries": [
+        "Muzzle Flashes/░╫╕δ╦╪▓─╞╠ ╩█║≤╦╡├≈/├Γ╖╤3D╦╪▓─═°.url",
+        "Muzzle Flashes/░╫╕δ╦╪▓─╞╠ ╩█║≤╦╡├≈/╩█║≤╦╡├≈ ├Γ╘≡╔∙├≈.txt",
+        "Muzzle Flashes/░╫╕δ╦╪▓─╞╠ ╩█║≤╦╡├≈/╠╘▒ª├Γ╖╤3D╦╪▓─.url"
+      ],
+      "normalized_object_names": [],
+      "limitations": [
+        "101个特效为Cascade ParticleSystem，未转换为Niagara；运行及视觉效果由用户验收。"
+      ],
+      "validation": {
+        "migration_saved_and_inventory_matched": true,
+        "old_path_dependency_count": 0,
+        "missing_game_dependencies": {},
+        "unexpected_load_failures": [],
+        "source_compatibility_limits_retained": true,
+        "visual": "not_run_user_review",
+        "runtime": "not_run",
+        "independent_cold_reload": "not_run"
+      },
+      "reports": "data/ExternalAssets/migrations/20261026/muzzle-flashes_validation.json",
+      "migrated_on": "2026-10-27",
+      "migration_batch": "20261026"
+    }
+  ],
+  "updated": "2026-10-27",
+  "totals": {
+    "packs": 4,
+    "source_files": 807,
+    "registered_packages": 804,
+    "currently_loadable_packages": 803
+  }
+}

@@ -159,6 +159,7 @@ void UGuLiResourceWorldSubsystem::Deinitialize()
 	Factories.Reset();
 	Outposts.Reset();
 	ClusterObstacles.Reset();
+	MiningVisibilityParams.Reset();
 	OreField = nullptr;
 	OreCollisionField = nullptr;
 	WorldState = nullptr;
@@ -444,10 +445,16 @@ uint32 UGuLiResourceWorldSubsystem::FindNearestMiningNode(const uint16 ClusterId
     return Best;
 }
 
-void UGuLiResourceWorldSubsystem::IgnoreMiningNavigationProxies(FCollisionQueryParams& Params) const
+TSharedRef<const FCollisionQueryParams> UGuLiResourceWorldSubsystem::GetMiningVisibilityParams() const
 {
-    for (const AGuLiOreClusterObstacleActor* Proxy : ClusterObstacles) Params.AddIgnoredActor(Proxy);
-    if (OreCollisionField) Params.AddIgnoredActor(OreCollisionField);
+    if (!MiningVisibilityParams)
+    {
+        auto Params=MakeShared<FCollisionQueryParams>(SCENE_QUERY_STAT(GuLiMiningLineOfSight),true);
+        for (const AGuLiOreClusterObstacleActor* Proxy:ClusterObstacles) Params->AddIgnoredActor(Proxy);
+        if (OreCollisionField) Params->AddIgnoredActor(OreCollisionField);
+        MiningVisibilityParams=Params;
+    }
+    return MiningVisibilityParams.ToSharedRef();
 }
 
 bool UGuLiResourceWorldSubsystem::IsClusterEmpty(const int32 ClusterId) const

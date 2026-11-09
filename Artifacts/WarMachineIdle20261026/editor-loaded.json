@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "pid": 19608,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "dirty_maps": [],
+  "dirty_content": [],
+  "preview": {
+    "label": "WarMachineHover_PlayablePreview",
+    "location_cm": [
+      7560.0,
+      -15120.0,
+      0.0
+    ],
+    "instances": 13,
+    "custom_floats": 51,
+    "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+  },
+  "note": {
+    "label": "WarMachineHover_PreviewInstructions",
+    "editor_only": true,
+    "text": "重防号转向预览：原点(8000,-16000,0)，3列共13例，保留前7项，新增左90/右90/180与跨角度边界/连续反向/移动弯道/转向稳定炮管与显隐导弹仓。2026-09-30本次源码已编译加载，请自行进入PIE观察；运行观感尚待玩家验收。示意不触发伤害；实战选原部队WM01，移动/停下攻击，并在解锁导弹仓后按Q，观察出膛与0.12s轨迹衔接。网络、死亡和传送应另走真实玩法验证。gs.Commander.HoverPreview 0关闭全部预览。\n\n[WM01 Idle 20261026]\n重防号待机：上下各1米，总行程2米；浮动、俯仰和侧倾均3秒循环。\n俯仰/侧倾各1.2度、相差90度，整机四角依次起伏；不同单位起始相位不同。\n前置：编译并加载本次机械动画C++及DefaultGame.ini后，在本图选择指挥官席位进入。\n复用预览Actor WarMachineHover_PlayablePreview，当前位置厘米 [7560.0, -15120.0, 0.0]，观察相机 WarMachineTurn_ReviewCamera。\n现有13例保留：第1例Idle连续观察至少7秒；第6例启停观察0.35秒平滑过渡。\n预览通过现有StepHover/BuildVisualFrame/ResolveVisualNozzle驱动，缩放0.2；正式部队当前缩放0.192，浮动均为世界厘米。\n实战选本方重防号WM01（不是玩家游骑兵），停止、移动再停止，离屏再返回；检查喷口和枪口跟随。\n保持30米低空逻辑高度、现有120厘米表现基准、模型尺寸和寻路碰撞规则。\ngs.Commander.HoverPreview 0关闭现有预览，1恢复；不使用仅适用于500兵旧场景的HoverQA.Hold。\n助手仅核对实体和源码，不启动PIE、不读图；循环观感及实战跟随由玩家确认。"
+  },
+  "local_pie": {
+    "enabled": true,
+    "prompt_for_role": true
+  },
+  "runtime_validation": "not_run",
+  "visual_validation": "player_pending"
+}

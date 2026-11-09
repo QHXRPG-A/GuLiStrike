@@ -41,8 +41,8 @@ FText RoleName(EGuLiCommanderRole Role)
 {
     switch (Role)
     {
-    case EGuLiCommanderRole::Ground: return LOCTEXT("Ground", "地面机甲");
-    case EGuLiCommanderRole::Air: return LOCTEXT("Air", "飞船");
+    case EGuLiCommanderRole::Ground: return LOCTEXT("Ground", "游骑兵");
+    case EGuLiCommanderRole::Air: return LOCTEXT("Air", "巡天");
     default: return LOCTEXT("Commander", "指挥官");
     }
 }
@@ -80,9 +80,9 @@ public:
                     + SScrollBox::Slot().Padding(0, 0, 0, 8)
                     [RoleButton(EGuLiCommanderRole::Commander, LOCTEXT("CommanderDescription", "指挥部队，管理建设与战场。"))]
                     + SScrollBox::Slot().Padding(0, 0, 0, 8)
-                    [RoleButton(EGuLiCommanderRole::Ground, LOCTEXT("GroundDescription", "驾驶地面机甲，参与地面作战。"))]
+                    [RoleButton(EGuLiCommanderRole::Ground, LOCTEXT("GroundDescription", "驾驶游骑兵，参与地面作战。"))]
                     + SScrollBox::Slot()
-                    [RoleButton(EGuLiCommanderRole::Air, LOCTEXT("AirDescription", "驾驶飞船，参与空中作战。"))]
+                    [RoleButton(EGuLiCommanderRole::Air, LOCTEXT("AirDescription", "驾驶巡天，参与空中作战。"))]
                 ]
                 + SVerticalBox::Slot().AutoHeight().Padding(0, 16, 0, 12)
                 [

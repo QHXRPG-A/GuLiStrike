@@ -1,0 +1,215 @@
+{
+  "schema": "guli-manifest-repair/v1",
+  "recorded_at": "2026-11-03T20:23:01.774678+08:00",
+  "scope": "Repair existing acceptance manifests and offline version contract; static architecture audit only",
+  "planned_mutations": [
+    "Config/Hybrid/AcceptanceManifest-200.json",
+    "Config/Hybrid/AcceptanceManifest-600.json",
+    "Config/Hybrid/AcceptanceProfile.json",
+    "Scripts/Network/acceptance_contract.py"
+  ],
+  "files": [
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-200.json",
+      "sha256_before": "8c8ce83702e942e5700f1273ca3e1b5864d2d3ee5ff39e8900e72d66954531fc",
+      "bytes_before": 1186039,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-0.bin"
+    },
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-600.json",
+      "sha256_before": "3332f4c8af259312ee2d2af39053e327b8333e9777198d4790204554f16d9529",
+      "bytes_before": 1339323,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-1.bin"
+    },
+    {
+      "path": "Config/Hybrid/AcceptanceProfile.json",
+      "sha256_before": "c80ac6d1d02b22917a1bd36d034f7694dcc1d411f351b8ba6cf418ad83f438df",
+      "bytes_before": 110665,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-2.bin"
+    },
+    {
+      "path": "Scripts/Network/acceptance_contract.py",
+      "sha256_before": "eadc0b7bf9471be2b123fce849b32ca0ba45e37b2a6bc12eff4a7721e3a04b04",
+      "bytes_before": 11177,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-3.bin"
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "sha256_before": "31f341e8ded8e21fe9051fe57cc286b21e34a9cbcdf0058ae39268b6381df048",
+      "bytes_before": 1110507,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-4.bin"
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-600.json",
+      "sha256_before": "e1167456390a12c68990f1a568f57f779d02c179276689f8ccdcad27947717ce",
+      "bytes_before": 1263966,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-5.bin"
+    },
+    {
+      "path": "Config/Custom/HybridAcceptance/DefaultGame.ini",
+      "sha256_before": "33939ecd1140e1063a4b2bbddfb511d9f43ab0b440eaff1429c884950ea6d310",
+      "bytes_before": 1531,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-6.bin"
+    },
+    {
+      "path": "Config/DefaultGame.ini",
+      "sha256_before": "519c5b11363aa20ba8319d19e222093f51288da1c70814ab18cdf67e4c6b0f20",
+      "bytes_before": 21937,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-7.bin"
+    },
+    {
+      "path": "Config/DefaultEngine.ini",
+      "sha256_before": "93fdbe90e94fc1b638bf8b71178acd21ecb03873a118b9db84dc2fd9c006e819",
+      "bytes_before": 7214,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-8.bin"
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetTypes.h",
+      "sha256_before": "0c192c3bc4d5fc7d807442bc3ffdb6d0adc5384df06a8b8f0a8462611b942048",
+      "bytes_before": 6402,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-9.bin"
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetManifest.h",
+      "sha256_before": "611a8d637a1f8fc085e0d43f09e85a87e7535c7c4eefed852eda815b011a1583",
+      "bytes_before": 2316,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-10.bin"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiHybridAuthoringLibrary.cpp",
+      "sha256_before": "8c4a551235edee15a89d60c444d276bc22c20d3c3dafa26ac7acedd6592add5f",
+      "bytes_before": 21914,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-11.bin"
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridManifest.cpp",
+      "sha256_before": "35acc053de11db1880614ffe778133ad8a49c509b9c902163126cdb83739dcf7",
+      "bytes_before": 23986,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-12.bin"
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetManifest.cpp",
+      "sha256_before": "33c048914606848893b8bf70e2728bab8eee64b37170c33979ab84c7e3ec9eb2",
+      "bytes_before": 24878,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-13.bin"
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Coordinator.cpp",
+      "sha256_before": "843ac53cdc98d7341536d37d54e9ba01bccee62600e88807965bb4f6e50f412b",
+      "bytes_before": 54628,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-14.bin"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp",
+      "sha256_before": "2728a70bbc5fd518d2e24ea52e9baea2dc512c2ad691ab251070db81cf5f97da",
+      "bytes_before": 25156,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-15.bin"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiLocalPIERolePicker.cpp",
+      "sha256_before": "85b16c86645b79bba75bb7d945a67c767ffdedf629d5eaeeed6165f4e76f0052",
+      "bytes_before": 8544,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-16.bin"
+    },
+    {
+      "path": "Progress/Archive/20261103-巡天命名统一.md",
+      "sha256_before": "81136cc2caa3f7dc2573cc1618b7fbdcb6e2e9ea06bafe72a91457b86b6f630a",
+      "bytes_before": 11288,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-17.bin"
+    },
+    {
+      "path": "Artifacts/XunTianNameMigration20261103/summary.json",
+      "sha256_before": "98e0842d1886194e7a0305edf920a340739487e2aa7e275289c8cc1831f4ccda",
+      "bytes_before": 1085,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-18.bin"
+    },
+    {
+      "path": "Artifacts/XunTianNameMigration20261103/final-file-manifest.json",
+      "sha256_before": "b355294c98e98d2c42402712dfe0ca76d387e1ffc500321e30afb6929aafe65f",
+      "bytes_before": 23644,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-19.bin"
+    },
+    {
+      "path": "Progress/_Index/Archive.md",
+      "sha256_before": "ce9fa107dc5e654feb48e2c1b3f547102e87ae8b8e439e5dc8f36586c72dd2c6",
+      "bytes_before": 75607,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-20.bin"
+    },
+    {
+      "path": "Progress/_Index/ByArea.md",
+      "sha256_before": "bda040c2010dea33c1fd713736188b56d154e9ac6414057f011a9e96b16e2700",
+      "bytes_before": 355967,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-21.bin"
+    },
+    {
+      "path": "Progress/_Index/catalog.jsonl",
+      "sha256_before": "78a72d2d8e27b24860cf1b8e8b98a062622c04c252300c7492f8af22bb86e4aa",
+      "bytes_before": 711965,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-22.bin"
+    },
+    {
+      "path": "Progress/_Index/Current.md",
+      "sha256_before": "f1c4e409a2b908affcfd5df937eef2a441cc77e9c0a0bb6ab9bbc373ec8d3e26",
+      "bytes_before": 50409,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-23.bin"
+    },
+    {
+      "path": "Progress/_Index/Quality.md",
+      "sha256_before": "c06e2a100e229e535b544e0167ae4b6786e4894a1bd5bf9993eb0a8fd5550e79",
+      "bytes_before": 2574,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-24.bin"
+    },
+    {
+      "path": "Progress/_Index/Verification.md",
+      "sha256_before": "95dd91908f9347e136b396ba71eca68253149cc50ac194641116ff01e0ab9f69",
+      "bytes_before": 33248,
+      "backup": "C:\\Users\\a\\AppData\\Local\\Temp\\guli-xuntian-name-20261103\\manifest-repair\\before-25.bin"
+    }
+  ],
+  "profile_metadata_before": {
+    "schema": "guli-acceptance-profile/v1",
+    "custom_config": "HybridAcceptance",
+    "work": "WORK-20261011-002/D27",
+    "config": "D:\\UE5.7\\test1\\Config\\Custom\\HybridAcceptance\\DefaultGame.ini",
+    "manifests": {
+      "200": {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
+        "sha256": "8c8ce83702e942e5700f1273ca3e1b5864d2d3ee5ff39e8900e72d66954531fc",
+        "config_hash": "5af18d40e4e507a2a034a2250d9f88cb66d7bd5673a362792a051fafc83d4406",
+        "map_hash": "87972a9b344eb94bc715d15e3823b8902a941a7be6ab28f8115e41a63b5feae0",
+        "objects": 292
+      },
+      "600": {
+        "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
+        "sha256": "3332f4c8af259312ee2d2af39053e327b8333e9777198d4790204554f16d9529",
+        "config_hash": "c60a8ea9efc69d5bc77975e39f8a354c25bd5dded2d023e421aab5611fdc81ca",
+        "map_hash": "b2034b3568ed027ab2ef5bc40b9e6e2e16a6ba267d3859f636ce4852cdc53f2e",
+        "objects": 692
+      }
+    },
+    "scope": "Protocol 29 authoring readback; runtime acceptance pending",
+    "contract_work": "WORK-20261011-002/D29",
+    "xuntian_name_normalization": {
+      "date": "2026-11-03",
+      "file_sha256_before": "9dd26ed8d9d7eefe8e162e08b7ec9fe183b60f5972d3c1a1ff833803c9ae700a",
+      "policy": "仅名称规范化；保留历史结论与原始证据哈希含义。当前文本不是当时的原始导出；原文件可由迁移前哈希及版本历史追溯。",
+      "source_table_sha256_before": {
+        "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models": "4fec87870b44d933dfbbb4587eba96d0d399aa3a2ae14d492d2b48573659acc6"
+      }
+    }
+  },
+  "coordinator_before": [
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "exit_code": 0,
+      "stdout": "Manifest validated\n",
+      "stderr": ""
+    },
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-200.json",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Manifest: Manifest schema/hash fields are invalid\n"
+    }
+  ]
+}

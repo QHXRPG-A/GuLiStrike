@@ -58,6 +58,10 @@ void UGuLiBuildingProductionComponent::AdvanceGridProduction(float Dt)
         if (CycleSeconds<D.ProductionSeconds) return;
         GridRemaining=D.ProductionCount;GridCandidate=0;CycleSeconds=0;
     }
+    // No pending birth needs reconciliation and the existing retry deadline
+    // forbids new projections. Preserve the timer/budget scope above, but avoid
+    // rebuilding immutable spawn metadata for a step that cannot use it.
+    if (HybridJobs.IsEmpty() && (!GridRemaining || Now<GridRetryAt)) return;
     const auto* Pawn=Unit->ActorClass?Cast<APawn>(Unit->ActorClass->GetDefaultObject()):nullptr;
     const auto* Capsule=Pawn?Pawn->FindComponentByClass<UCapsuleComponent>():nullptr;
     const double HalfHeight=Capsule?Capsule->GetUnscaledCapsuleHalfHeight()*Unit->GridDimensionScale:0.;

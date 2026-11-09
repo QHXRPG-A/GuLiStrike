@@ -242,8 +242,15 @@ void UGuLiEngineeringTravelComponent::ExitTransit(const FTransform& Transform, d
 void UGuLiEngineeringTravelComponent::AdvanceHybrid(float Dt)
 {
     RefreshMassAuthority();
+	const bool bMayRestoreTravel=bRestoredTravelPending;
 	if (UGuLiNetworkSettings::IsHybrid(GetWorld()) && UGuLiHybridActorComponent::HasSimulation(GetOwner())
-		&& ActivateRestoredTravel()) AdvanceTravel(Dt);
+		&& ActivateRestoredTravel())
+	{
+		// Restore can change the carrier/lock state. Ordinary ground steps have
+		// already synchronized it above, with no intervening gameplay callback.
+		if (bMayRestoreTravel && State.Phase==EGuLiTransitPhase::Ground) RefreshMassAuthority();
+		AdvanceTravel(Dt);
+	}
 }
 void UGuLiEngineeringTravelComponent::ApplyHybridTransitMotion(const FGuLiStrongholdTransitState& Transit)
 {

@@ -1,0 +1,392 @@
+{
+  "success": true,
+  "pid": 56276,
+  "data_applied": true,
+  "manifests_applied": true,
+  "scene_saved": true,
+  "runtime_validation": "not_run",
+  "table": {
+    "asset": "DT_GuLiStrikeCommander_Soldiers",
+    "source_rows": [
+      "DefaultSoldier",
+      "WM01",
+      "ElectromagneticMiner",
+      "ConstructionVehicle",
+      "SweeperSummon",
+      "BiZhiMao"
+    ],
+    "created": false,
+    "row_names": [
+      "DefaultSoldier",
+      "WM01",
+      "ElectromagneticMiner",
+      "ConstructionVehicle",
+      "SweeperSummon",
+      "BiZhiMao"
+    ],
+    "row_checks": {
+      "DefaultSoldier": true,
+      "WM01": true,
+      "ElectromagneticMiner": true,
+      "ConstructionVehicle": true,
+      "SweeperSummon": true,
+      "BiZhiMao": true
+    },
+    "imported": true
+  },
+  "unit_layers": [
+    {
+      "name": "DefaultSoldier",
+      "unit_type_id": 1,
+      "movement_layer": 0,
+      "altitude_meters": 0
+    },
+    {
+      "name": "WM01",
+      "unit_type_id": 2,
+      "movement_layer": 1,
+      "altitude_meters": 30
+    },
+    {
+      "name": "ElectromagneticMiner",
+      "unit_type_id": 3,
+      "movement_layer": 0,
+      "altitude_meters": 0
+    },
+    {
+      "name": "ConstructionVehicle",
+      "unit_type_id": 4,
+      "movement_layer": 0,
+      "altitude_meters": 0
+    },
+    {
+      "name": "SweeperSummon",
+      "unit_type_id": 5,
+      "movement_layer": 0,
+      "altitude_meters": 0
+    },
+    {
+      "name": "BiZhiMao",
+      "unit_type_id": 6,
+      "movement_layer": 0,
+      "altitude_meters": 0
+    }
+  ],
+  "manifests": [
+    {
+      "population": 200,
+      "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+      "objects": 290,
+      "config_hash": "0391b36171289f65769ac63bd1e21de0545907f6342feeeb907ca3f9d9288360",
+      "map_hash": "291405ef1af084a8e4c683ac9861c4b0f0dc3339ac4153a1262631da076fa538",
+      "sha256": "9562be860674fa9045bdda7b5db67e799ab6133a189ccecbedc3c5c7d70502f3",
+      "flight_data_unchanged": true,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Artifacts/GroundLowAir20261026/RuntimeManifest-200.json",
+        "objects": 290,
+        "rules": 163,
+        "tables": 5
+      },
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Artifacts\\GroundLowAir20261026\\RuntimeManifest-200.json",
+        "objects": 290,
+        "rules": 163,
+        "tables": 0
+      },
+      "heights_cm": {
+        "unit/1": {
+          "count": 100,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "unit/2": {
+          "count": 100,
+          "minimum": 3000.0,
+          "maximum": 3000.0
+        }
+      }
+    },
+    {
+      "population": 600,
+      "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+      "objects": 690,
+      "config_hash": "d011ea7cf940d62a384fc974fd83873174e04df504c7965f89242c39beeaeb5e",
+      "map_hash": "94abeeda6bfd8cb99260a13c73efc5351f09cfc3916f88859d1aa10535db82d3",
+      "sha256": "7749351667f4e1488d55e52385f2154c20d40282c6f293f8508e41ab245f81e3",
+      "flight_data_unchanged": true,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Artifacts/GroundLowAir20261026/RuntimeManifest-600.json",
+        "objects": 690,
+        "rules": 163,
+        "tables": 5
+      },
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Artifacts\\GroundLowAir20261026\\RuntimeManifest-600.json",
+        "objects": 690,
+        "rules": 163,
+        "tables": 0
+      },
+      "heights_cm": {
+        "unit/1": {
+          "count": 300,
+          "minimum": 0.0,
+          "maximum": 0.0
+        },
+        "unit/2": {
+          "count": 300,
+          "minimum": 3000.0,
+          "maximum": 3000.0
+        }
+      }
+    }
+  ],
+  "entities": [
+    {
+      "label": "GroundLowAir_E",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_85",
+      "cls": "TargetPoint",
+      "location": [
+        -15120.0,
+        68040.0,
+        1073.7790832519531
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ]
+    },
+    {
+      "label": "GroundLowAir_Ground",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_81",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        68040.0,
+        1073.7790832519531
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ]
+    },
+    {
+      "label": "GroundLowAir_Low30m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_82",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        68040.0,
+        4073.779083251953
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ]
+    },
+    {
+      "label": "GroundLowAir_Low99m",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_83",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        68040.0,
+        10973.779083251953
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ]
+    },
+    {
+      "label": "GroundLowAir_N",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_86",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        71820.0,
+        1073.7790832519531
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ]
+    },
+    {
+      "label": "GroundLowAir_PlayerInstructions",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_79",
+      "cls": "Note",
+      "location": [
+        -18900.0,
+        69240.0,
+        1473.7790832519531
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ],
+      "text": "地面 / 低空移动层核验，重防号 WM01（UnitTypeId=2）=低空、离当地地面30米。\n入口：本图现有默认600兵Hybrid对局；重新开始一局以读取已更新的出生清单。\n场地为GroundLowAir_Ring_C/W/E/N/S五个地面圆环，复用MassSoft原圆环资产；地面中心和30米、99米高度参考点同XY。\n1. 观察初始重防号在地面上方30米，原有悬浮盘动画继续在该根位置上播放。\n2. 分别选地面兵与重防号，从西/东圆环相向穿过中心：跨层不让路、不推挤；再让两组重防号相向移动，确认同层仍遵守原避障与让路。\n3. 混选地面兵与重防号移动到中心：两层独立分配站位，允许同XY；相同层的占地仍独立排开，工程车同类互通的原规则继续生效。\n4. 向已有坡地、建筑边界及矿体移动，再停止、改令：重防号仍沿地面导航，根位置保持当地地面+30米，不因恢复或转移重复叠加高度。\n填表：GuLiStrikeCommander.xlsx / Soldiers：MovementLayer 0=地面、1=低空；AltitudeMeters 地面填0，低空填30–99。改变表值后需要按原数据管线重新导入和导出清单。\n本轮已完成编译、数据和实体回读；助手未启动游戏、未读图核验，实际运动和视觉待玩家确认。"
+    },
+    {
+      "label": "GroundLowAir_ReviewCamera",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_38",
+      "cls": "CameraActor",
+      "location": [
+        -4900.0,
+        54040.0,
+        11073.779083251953
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ],
+      "rotation": [
+        3.261934580223169e-07,
+        -18.174985885620117,
+        135.0
+      ]
+    },
+    {
+      "label": "GroundLowAir_Ring_C",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_176",
+      "cls": "StaticMeshActor",
+      "location": [
+        -18900.0,
+        68040.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ],
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "affects_navigation": false
+    },
+    {
+      "label": "GroundLowAir_Ring_E",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_178",
+      "cls": "StaticMeshActor",
+      "location": [
+        -15120.0,
+        68040.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ],
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "affects_navigation": false
+    },
+    {
+      "label": "GroundLowAir_Ring_N",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_179",
+      "cls": "StaticMeshActor",
+      "location": [
+        -18900.0,
+        71820.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ],
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "affects_navigation": false
+    },
+    {
+      "label": "GroundLowAir_Ring_S",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_180",
+      "cls": "StaticMeshActor",
+      "location": [
+        -18900.0,
+        64260.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ],
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "affects_navigation": false
+    },
+    {
+      "label": "GroundLowAir_Ring_W",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_177",
+      "cls": "StaticMeshActor",
+      "location": [
+        -22680.0,
+        68040.0,
+        1081.7790832519531
+      ],
+      "editor_only": false,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ],
+      "mesh": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+      "materials": [
+        "/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"
+      ],
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+      "affects_navigation": false
+    },
+    {
+      "label": "GroundLowAir_S",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_87",
+      "cls": "TargetPoint",
+      "location": [
+        -18900.0,
+        64260.0,
+        1073.7790832519531
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ]
+    },
+    {
+      "label": "GroundLowAir_W",
+      "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_84",
+      "cls": "TargetPoint",
+      "location": [
+        -22680.0,
+        68040.0,
+        1073.7790832519531
+      ],
+      "editor_only": true,
+      "tags": [
+        "GroundLowAirReview20261026"
+      ]
+    }
+  ],
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "center": [
+    -18900.0,
+    68040.0,
+    1073.7790832519531
+  ],
+  "visual_validation": "player_pending"
+}

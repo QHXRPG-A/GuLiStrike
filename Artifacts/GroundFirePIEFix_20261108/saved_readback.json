@@ -1,0 +1,97 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "scene_saved_reloaded": true,
+  "entry": [
+    -2800.0,
+    54000.0,
+    1149.04
+  ],
+  "note": {
+    "label": "GroundAmmo_Instructions_FireNotify",
+    "text": "Fire是开火动画第0帧的真实Anim Notify；接纳后启动对应枪动画并保持待发，正常动画更新跨过Fire才触发子弹、火光和后坐，不要求启动调用内同步出弹。暂停/恢复等待源和弹丸权威就绪；待发ShotId不重复启动。左右独立Montage槽，同侧周期2/R、总体1/R。先默认档左右点射，再测4/8/12档、09.01一二级与上限。延迟接纳一起顺延，离屏/低帧率/重复回执不补发；异常查看日志[GroundFire]的阶段和ShotId。"
+  },
+  "related_entities_preserved": 22,
+  "animation": {
+    "success": true,
+    "montages": [
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/AM_GroundFire_Right.AM_GroundFire_Right",
+        "length": 0.9666666388511658,
+        "fire_time": 0,
+        "trigger_offset": 9.999999747378752e-05,
+        "fire_count": 1,
+        "cached_fire_marker": true,
+        "cached_trigger_time": 9.999999747378752e-05,
+        "slot": "GroundFireRight",
+        "group": "GroundFireRightGroup",
+        "sequence": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Shoot.Anim_Mecha_Shoot"
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/AM_GroundFire_Left.AM_GroundFire_Left",
+        "length": 0.9666666388511658,
+        "fire_time": 0,
+        "trigger_offset": 9.999999747378752e-05,
+        "fire_count": 1,
+        "cached_fire_marker": true,
+        "cached_trigger_time": 9.999999747378752e-05,
+        "slot": "GroundFireLeft",
+        "group": "GroundFireLeftGroup",
+        "sequence": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Shoot.Anim_Mecha_Shoot"
+      }
+    ],
+    "slots": 2,
+    "retired_inputs": 0,
+    "cached_fire_layers": 2
+  },
+  "resource": "Resource authoring source and baked runtime definition are current.",
+  "navigation": {
+    "success": true,
+    "message": "",
+    "entries": [
+      {
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+        "status": "Hit",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+        "status": "Hit",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+        "status": "Hit",
+        "message": "Validated saved flight graph."
+      }
+    ]
+  },
+  "manifests": [
+    {
+      "population": 200,
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 172,
+        "tables": 0
+      }
+    },
+    {
+      "population": 600,
+      "readback": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 172,
+        "tables": 0
+      }
+    }
+  ],
+  "dirty": [],
+  "PIE": false,
+  "runtime_fire_verified": false,
+  "player_acceptance": "pending"
+}

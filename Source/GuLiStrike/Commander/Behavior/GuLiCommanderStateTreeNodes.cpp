@@ -1,4 +1,5 @@
 #include "Commander/Behavior/GuLiCommanderStateTreeNodes.h"
+#include "Commander/Behavior/Private/GuLiCommanderBehaviorExecution.h"
 #include "Commander/Behavior/GuLiCommanderStateTreeComponent.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
@@ -20,6 +21,8 @@ namespace
 	}
 	FGuLiTaskUnitId MassUnit(FStateTreeExecutionContext& Context)
 	{
+		FGuLiTaskUnitId Unit;
+		if (FGuLiCommanderBehaviorExecution::Resolve(Context,Unit)) return Unit;
 		const auto& Mass = static_cast<FMassStateTreeExecutionContext&>(Context);
 		return FGuLiTaskUnitId::Soldier(Mass.GetEntityManager().GetFragmentDataChecked<FGuLiMassIdentityFragment>(Mass.GetEntity()).SoldierId,Context.GetWorld());
 	}

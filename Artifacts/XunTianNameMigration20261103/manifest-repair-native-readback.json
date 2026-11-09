@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "checks": [
+      {
+        "kind": "Runtime",
+        "population": 200,
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 169,
+        "tables": 0
+      },
+      {
+        "kind": "Runtime",
+        "population": 600,
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 169,
+        "tables": 0
+      },
+      {
+        "kind": "Acceptance",
+        "population": 200,
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
+        "objects": 292,
+        "rules": 253,
+        "tables": 0
+      },
+      {
+        "kind": "Acceptance",
+        "population": 600,
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
+        "objects": 692,
+        "rules": 253,
+        "tables": 0
+      }
+    ],
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pie": false,
+    "dirty_maps": [],
+    "dirty_assets": [],
+    "review_manifest": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+    "review_entity": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiHybridNetworkReviewActor_0",
+    "review_arguments_match": true,
+    "gameplay_executed": false
+  }
+}

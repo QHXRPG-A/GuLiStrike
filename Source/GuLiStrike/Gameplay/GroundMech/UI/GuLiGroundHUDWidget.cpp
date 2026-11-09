@@ -333,17 +333,26 @@ void UGuLiGroundHUDWidget::Hit(bool Kill)
 }
 void UGuLiGroundHUDWidget::NativeTick(const FGeometry& G,float D)
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_Tick);
     Super::NativeTick(G,D);if(bRogueHidden)return;
-    GuLiGroundUI::FitDesignToViewport(DesignSize,G.GetLocalSize());
+    {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_ViewportLayout);GuLiGroundUI::FitDesignToViewport(DesignSize,G.GetLocalSize());}
     TickMotion(FPlatformTime::Seconds(),D);
-    UpdateAmbient();
+    {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_Ambient);UpdateAmbient();}
     if(!ModalMode)
     {
         // Presentation interpolation never advances a gameplay timer or samples gameplay data.
-        const float HP=HealthBar->GetPercent();if(!FMath::IsNearlyEqual(HP,TargetHealth,.0001f))HealthBar->SetPercent(FMath::FInterpTo(HP,TargetHealth,D,18.f));
-        for(int32 I=0;I<SkillMasks.Num();++I)
-        {const float Current=SkillMasks[I]->GetRenderTransform().Scale.Y;if(!FMath::IsNearlyEqual(Current,TargetMasks[I],.0001f))SkillMasks[I]->SetRenderScale(FVector2D(1,FMath::FInterpTo(Current,TargetMasks[I],D,18.f)));}
-        UpdateReticle();if(auto* PC=Controller();PC&&PC->PlayerCameraManager){const float Yaw=PC->PlayerCameraManager->GetCameraRotation().Yaw;MiniMap->Present(D,Yaw);Chrome->SetHeading(Yaw);}
+        {
+            TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_Interpolate);
+            const float HP=HealthBar->GetPercent();if(!FMath::IsNearlyEqual(HP,TargetHealth,.0001f))HealthBar->SetPercent(FMath::FInterpTo(HP,TargetHealth,D,18.f));
+            for(int32 I=0;I<SkillMasks.Num();++I)
+            {const float Current=SkillMasks[I]->GetRenderTransform().Scale.Y;if(!FMath::IsNearlyEqual(Current,TargetMasks[I],.0001f))SkillMasks[I]->SetRenderScale(FVector2D(1,FMath::FInterpTo(Current,TargetMasks[I],D,18.f)));}
+        }
+        UpdateReticle();
+        if(auto* PC=Controller();PC&&PC->PlayerCameraManager)
+        {
+            TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_MapAndHeading);
+            const float Yaw=PC->PlayerCameraManager->GetCameraRotation().Yaw;MiniMap->Present(D,Yaw);Chrome->SetHeading(Yaw);
+        }
     }
     const double Now=FPlatformTime::Seconds();
     const bool ReticleMoving=HitUntil>Now||(ShotStarted>=0&&Now-ShotStarted<MotionStyle.Shot);
@@ -353,6 +362,7 @@ void UGuLiGroundHUDWidget::NativeTick(const FGeometry& G,float D)
 }
 void UGuLiGroundHUDWidget::UpdateReticle()
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_Reticle);
     const auto* PC=Controller();const auto* P=PC?Cast<AGuLiGroundMechCharacter>(PC->GetPawn()):nullptr;
     const bool Visible=P&&PC->CanUseGroundMechFireInput()&&!PC->bShowMouseCursor;
     if(Visible!=bReticleVisible){bReticleVisible=Visible;if(Reticle)Reticle->Invalidate(EInvalidateWidgetReason::Paint);}
@@ -361,7 +371,8 @@ void UGuLiGroundHUDWidget::UpdateReticle()
     if(P->GetWeapon()->GetActualShotRay(Origin,Direction))
     {
         FHitResult H;FCollisionQueryParams Q(SCENE_QUERY_STAT(GroundHUDActualRay),false,P);const FVector End=Origin+Direction*600000;
-        const bool Hit=GetWorld()->LineTraceSingleByChannel(H,Origin,End,ECC_Visibility,Q);
+        bool Hit;
+        {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_ReticleTrace);Hit=GetWorld()->LineTraceSingleByChannel(H,Origin,End,ECC_Visibility,Q);}
         Valid=PC->ProjectWorldLocationToScreen(Hit?H.ImpactPoint:End,Point,true);
         Point/=FMath::Max(.01f,UWidgetLayoutLibrary::GetViewportScale(this));
         if(!Valid){const auto Local=PC->PlayerCameraManager->GetCameraRotation().UnrotateVector(Direction);auto Edge=FVector2D(Local.Y,-Local.Z).GetSafeNormal();if(Edge.IsNearlyZero())Edge=FVector2D(0,1);Point=Size*.5+Edge*FMath::Max(Size.X,Size.Y);Valid=true;}

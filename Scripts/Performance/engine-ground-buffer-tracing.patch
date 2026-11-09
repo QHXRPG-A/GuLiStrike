@@ -1,0 +1,34 @@
+--- a/Engine/Source/Runtime/D3D12RHI/Private/D3D12Buffer.cpp
++++ b/Engine/Source/Runtime/D3D12RHI/Private/D3D12Buffer.cpp
+@@ -246,6 +246,11 @@
+ 	ID3D12ResourceAllocator* ResourceAllocator)
+ {
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(D3D12RHI::CreateRHIBuffer);
++	// Preserve the descriptor identity in CPU-only captures. Allocation stalls
++	// otherwise stop at this generic scope, hiding which dynamic buffer requested
++	// the upload memory. Pass the existing names without formatting new strings.
++	TRACE_CPUPROFILER_EVENT_SCOPE_TEXT_CONDITIONAL(CreateDesc.DebugName, CreateDesc.DebugName && *CreateDesc.DebugName);
++	TRACE_CPUPROFILER_EVENT_SCOPE_TEXT_CONDITIONAL(CreateDesc.OwnerName, !CreateDesc.OwnerName.IsNone());
+ 	SCOPE_CYCLE_COUNTER(STAT_D3D12CreateBufferTime);
+ 
+ 	LLM_SCOPE_DYNAMIC_STAT_OBJECTPATH_FNAME(CreateDesc.OwnerName, ELLMTagSet::Assets);
+--- a/Engine/Plugins/FX/Niagara/Source/Niagara/Private/NiagaraRendererRibbons.cpp
++++ b/Engine/Plugins/FX/Niagara/Source/Niagara/Private/NiagaraRendererRibbons.cpp
+@@ -864,6 +864,9 @@
+ 
+ void FNiagaraRendererRibbons::GetDynamicMeshElements(const TArray<const FSceneView*>& Views, const FSceneViewFamily& ViewFamily, uint32 VisibilityMap, FMeshElementCollector& Collector, const FNiagaraSceneProxy *SceneProxy) const
+ {
++	// Keep the actual system identity around per-frame ribbon buffer requests,
++	// including Development builds where the proxy's named scopes are disabled.
++	TRACE_CPUPROFILER_EVENT_SCOPE_TEXT(SceneProxy->GetResourceName());
+ 	SCOPE_CYCLE_COUNTER(STAT_NiagaraRenderRibbons);
+ 	PARTICLE_PERF_STAT_CYCLES_RT(SceneProxy->GetProxyDynamicData().PerfStatsContext, GetDynamicMeshElements);
+ 
+@@ -1124,6 +1127,7 @@
+ #if RHI_RAYTRACING
+ void FNiagaraRendererRibbons::GetDynamicRayTracingInstances(FRayTracingInstanceCollector& Collector, const FNiagaraSceneProxy* SceneProxy)
+ {
++	TRACE_CPUPROFILER_EVENT_SCOPE_TEXT(SceneProxy->GetResourceName());
+ 	if (!CVarRayTracingNiagaraRibbons.GetValueOnRenderThread())
+ 	{
+ 		return;

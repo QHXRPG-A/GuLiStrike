@@ -152,7 +152,7 @@ void UGuLiGroundHUDData::ObjectChanged(const FGuLiHybridObjectKey& K)
         if(Hybrid->GetObjectView(K,O) && (O.Health.Health!=View.Health.Health||O.Health.MaxHealth!=View.Health.MaxHealth
             ||O.Health.Shield!=View.Health.Shield||O.Health.MaxShield!=View.Health.MaxShield||O.Health.bDead!=View.Health.bDead))
             Invalidate(EGuLiGroundHUDGroup::Vitals|EGuLiGroundHUDGroup::Skills,true);
-        if(const auto* P=Pawn.Get();P && (P->GetWeapon()->GetWeaponLevel()!=View.WeaponLevel||P->GetWeapon()->GetFireRate()!=View.FireRate))
+        if(const auto* P=Pawn.Get();P && (P->GetWeapon()->GetWeaponLevel()!=View.WeaponLevel||P->GetWeapon()->GetFireRate()!=View.FireRate||P->GetWeapon()->GetShotDamage()!=View.Damage))
             Invalidate(EGuLiGroundHUDGroup::Skills,true);
     }
     if(IsMapKind(K.Kind)||K.Kind==EGuLiHybridObjectKind::Field)ReadObject(K);

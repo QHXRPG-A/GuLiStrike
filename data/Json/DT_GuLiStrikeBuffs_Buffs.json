@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Burning",
+    "Id": 1,
+    "Note": "同目标单份；刷新不重置每秒跳伤",
+    "DescriptionTextId": "Buff.Burning.Description",
+    "ImplementationClass": "/Script/GuLiStrike.GuLiBurningBuffHandler",
+    "Version": 2,
+    "ConfigId": 1,
+    "IconId": 3
+  },
+  {
+    "Name": "BurningBurst",
+    "Id": 2,
+    "Note": "依附灼烧；独立2秒周期",
+    "DescriptionTextId": "Buff.BurningBurst.Description",
+    "ImplementationClass": "/Script/GuLiStrike.GuLiBurningBurstBuffHandler",
+    "Version": 2,
+    "ConfigId": 1,
+    "IconId": 4
+  }
+]

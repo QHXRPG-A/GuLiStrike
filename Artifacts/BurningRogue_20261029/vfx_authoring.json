@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "source_status": "/Game/Assets/VFX/Movement/AdvancedDashVFX/NiagaraVFX/NS_Dash_06",
+  "assets": [
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001DD2FF29650) {success: True, system_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.001649}>",
+      "emitters": [
+        "Dots",
+        "Smoke001",
+        "Trails"
+      ],
+      "mesh_dependency_removed": true,
+      "emitter_properties": [
+        "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD301D47E0) {emitter_name: \"Dots\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD301D50A0) {emitter_name: \"Smoke001\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD301D5000) {emitter_name: \"Trails\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>"
+      ],
+      "diagnostics": "Unexpected hover system"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet",
+      "source": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_GroundBulletTrail_Orange",
+      "material": "/Game/GuLiStrike/FX/GroundMech/Burning/M_GroundBurningBullet",
+      "material_diagnostics": "<Struct 'MaterialDiagnostics' (0x000001DC7C472A00) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 15, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 1, vector_parameter_count: 5}>",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001DB3E488610) {success: True, system_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.001954}>",
+      "renderers": {
+        "NE_forward_simple_bullet": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DCD4913030) {renderer_name: \"NiagaraSpriteRendererProperties_2\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      }
+    }
+  ],
+  "assistant_visual_test": false,
+  "PIE": false
+}

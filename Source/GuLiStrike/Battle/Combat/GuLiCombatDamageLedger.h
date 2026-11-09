@@ -233,7 +233,7 @@ struct GULISTRIKE_API FGuLiCombatTargetSnapshot
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
 	FVector Location = FVector::ZeroVector;
 
-	/** Body center for instantaneous hit routes; Location retains the existing movement/collision anchor. */
+	/** Body center for hit queries; Location retains the movement anchor. */
 	FVector HitCenter = FVector::ZeroVector;
 	bool bHasHitCenter = false;
 	FVector GetHitCenter() const { return bHasHitCenter ? HitCenter : Location; }

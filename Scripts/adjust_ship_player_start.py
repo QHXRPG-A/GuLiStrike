@@ -1,4 +1,4 @@
-"""Raise LVL_Main's PlayerStart so the normalized Dreadnought clears terrain."""
+"""Raise LVL_Main's PlayerStart so the normalized 巡天 hull clears terrain."""
 
 import json
 import traceback

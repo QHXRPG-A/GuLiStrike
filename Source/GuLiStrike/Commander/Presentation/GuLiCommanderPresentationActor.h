@@ -78,6 +78,7 @@ struct FGuLiCommanderPresentedSoldier
 	TArray<FGuLiCommanderBufferedSoldierPose> Samples;
 	FGuLiCommanderBufferedSoldierPose LocalPose;
 	FGuLiCommanderBufferedSoldierPose PreviousLocalPose;
+	FQuat LocalPoseRotation = FQuat::Identity;
 	FTransform LocalBlendFrom = FTransform::Identity;
 	FTransform LocalBlendTarget = FTransform::Identity;
 	double LocalMovementTime = -1.0;
@@ -269,6 +270,8 @@ public:
 	UInstancedStaticMeshComponent* GetRingInstances() const { return RingInstances; }
 	/** Existing ring anchors/radii, without transferring ownership of simulation or selection. */
 	void GatherSceneUIRings(TArray<FGuLiSceneUIRing>& Out, const APlayerController* Viewer) const;
+	/** Read the submitted instance for a capture-only proxy; no simulation or pose advancement. */
+	bool GetSceneUIInstance(FGuLiSoldierId Id,UInstancedStaticMeshComponent*& Component,int32& Index,FBox& Bounds) const;
 
 	/** Returns the current interpolated/predicted visual transform without exposing authority writes. */
 	// 本地只读查询；有效时写 OutTransform 并返回 true，供 HUD/诊断使用，不开放权威写入。

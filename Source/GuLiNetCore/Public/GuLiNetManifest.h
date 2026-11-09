@@ -6,7 +6,7 @@
 
 namespace GuLiNet
 {
-inline constexpr std::uint32_t ManifestVersion = 24;
+inline constexpr std::uint32_t ManifestVersion = 27;
 struct RuntimeManifest
 {
     std::uint32_t Version = ManifestVersion;

@@ -1,0 +1,33 @@
+{
+  "authorization": "授权两项构建、重启加载并完成接入",
+  "engine": "D:/UnrealEngine-5.7",
+  "editor_target": "GuLiStrikeEditor Win64 Development",
+  "coordinator_target": "GuLiCoordinator Release",
+  "coordinator_exit_code": 0,
+  "editor_attempts": [
+    {
+      "log": "editor-build.log",
+      "exit_code": 6,
+      "reason": "missing GuLiLinearState namespace qualification on FHopStatus"
+    },
+    {
+      "log": "editor-build-retry1.log",
+      "exit_code": 0
+    },
+    {
+      "log": "editor-build-input-fix.log",
+      "exit_code": 0,
+      "reason": "Ground F4 runtime mapping added to a per-controller copy of the battle input context"
+    },
+    {
+      "log": "editor-build-hit-center.log",
+      "exit_code": 0,
+      "reason": "Independent target hit centers keep immediate routes above grounded unit anchors"
+    }
+  ],
+  "engine_build_id": "d4757e21-eaef-492e-b079-c8c0056c493d",
+  "project_build_id": "d4757e21-eaef-492e-b079-c8c0056c493d",
+  "build_ids_match": true,
+  "editor_pid": 28556,
+  "pie_started": false
+}

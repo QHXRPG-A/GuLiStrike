@@ -283,7 +283,7 @@ bool Room::Register(ObjectRegistration O,double Now,Id Creator)
 {
     const auto D=Definitions.find(O.Definition);auto& A=O.Grant;
     if (D==Definitions.end() || !A.Object.Valid() || !std::isfinite(A.EstimatedCost) || A.EstimatedCost<0
-        || Directory.size()>=100000 || Directory.contains(A.Object) || (Creator.Valid() && !Live(Creator))) return false;
+        || LivingDirectory.size()>=MaxLiveObjects || Directory.contains(A.Object) || (Creator.Valid() && !Live(Creator))) return false;
     const auto Original=A;
     const bool Recovery=Creator.Valid() && A.SimOwner.Valid() && A.SimOwner!=Creator;
     if (Recovery && !CanRecoverBirth(O,Creator)) return false;

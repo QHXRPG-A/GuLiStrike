@@ -84,6 +84,13 @@ TestResults/AssetMigration20261002/*.log -whitespace
 
 # Unified patch context intentionally contains a leading space before source tabs.
 Scripts/Performance/engine-slate-empty-operations.patch -whitespace
+Scripts/Performance/engine-ground-buffer-tracing.patch -whitespace
+Scripts/Performance/engine-hidden-window-prepass.patch -whitespace
+Scripts/Performance/engine-state-tree-single-context-validation.patch -whitespace
+# Retain the exact compiler output and editor material-graph readback bytes.
+Artifacts/GroundAlternatingLoop_20261108/*.log -text -whitespace
+Artifacts/GroundExplosiveEnhancement_20261109/*.log -text -whitespace
+Artifacts/GroundExplosiveEnhancement_20261109/explosion_material_graph.json -text -whitespace
 # Preserve the exact compact evidence bytes recorded in the delivery manifest.
 Progress/Evidence/20261021-CommanderPerformance/** -text -whitespace
 

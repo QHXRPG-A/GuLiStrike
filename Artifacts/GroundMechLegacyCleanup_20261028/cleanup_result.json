@@ -1,0 +1,101 @@
+{
+  "backup": "D:\\UE5.7\\test1\\Artifacts\\GroundMechLegacyCleanup_20261028\\Retired_GroundModels_SourceRestoreOnly.zip",
+  "before": [
+    {
+      "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+      "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+      "anim": "<Object '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C' (0x00000165C1D82A00) Class 'AnimBlueprintGeneratedClass'>"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview",
+      "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+      "anim": "<Object '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C' (0x00000165C1D82A00) Class 'AnimBlueprintGeneratedClass'>"
+    }
+  ],
+  "candidates": [
+    "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_FireReview_BeforeA4B2",
+    "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_GroundMech_BeforeA4B2",
+    "/Game/GuLiStrike/GroundMech/MechaDestroyer_v1/Animations/ABP_GroundMech_MechaDestroyer",
+    "/Game/GuLiStrike/GroundMech/MechaDestroyer_v1/Meshes/SK_MechaDestroyer",
+    "/Game/GuLiStrike/GroundMech/Meshes/SK_Legs",
+    "/Game/GuLiStrike/GroundMech/Meshes/SK_Machinegun",
+    "/Game/GuLiStrike/GroundMech/Meshes/SM_Armor",
+    "/Game/GuLiStrike/GroundMech/Meshes/SM_Shoulder",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Armor_InkCel",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Ink_Backfaces",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Legs_InkCel",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Machinegun_InkCel",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Shoulder_InkCel",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/ABP_GroundMech_BeforeStyleValidation",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/BP_GroundMech_Light_BeforeStyle",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_BaseColor",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_Emissive",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_LineMask",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_BaseColor",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_Emissive",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_LineMask",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_BaseColor",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_Emissive",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_LineMask",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_BaseColor",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_Emissive",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_LineMask"
+  ],
+  "tables": [
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models",
+      "rows": 81
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Parts.DT_GuLiStrikeModels_Parts",
+      "rows": 97
+    },
+    {
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_MaterialParameters.DT_GuLiStrikeModels_MaterialParameters",
+      "rows": 2826
+    }
+  ],
+  "removed_showcase_actors": [
+    "MSS_Machinegun_lvl1"
+  ],
+  "deleted": 31,
+  "remaining": [],
+  "after": [
+    {
+      "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+      "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+      "anim": "<Object '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C' (0x00000165C1D82A00) Class 'AnimBlueprintGeneratedClass'>"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview",
+      "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+      "anim": "<Object '/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C' (0x00000165C1D82A00) Class 'AnimBlueprintGeneratedClass'>"
+    }
+  ],
+  "pie_started": false,
+  "runtime_test": false,
+  "manifests": [
+    {
+      "success": true,
+      "error": "",
+      "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+      "objects": 292,
+      "rules": 167,
+      "tables": 5
+    },
+    {
+      "success": true,
+      "error": "",
+      "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+      "objects": 692,
+      "rules": 167,
+      "tables": 5
+    }
+  ],
+  "dirty_maps": 0,
+  "dirty_content": 0
+}

@@ -1,0 +1,29 @@
+{
+  "active": false,
+  "error": "",
+  "room": "DCBE3BE04387C7C2627141B592FC0888",
+  "role": "Ground",
+  "editor_pid": 42452,
+  "logic_pid": 24924,
+  "coordinator_pid": 10016,
+  "logic_running": false,
+  "coordinator_running": false,
+  "session_directory": "",
+  "shutdown": [
+    {
+      "role": "logic",
+      "pid": 24924,
+      "forced": false,
+      "has_exit_code": true,
+      "exit_code": 0
+    },
+    {
+      "role": "coordinator",
+      "pid": 10016,
+      "forced": false,
+      "has_exit_code": true,
+      "exit_code": 0
+    }
+  ],
+  "cleanup_complete": true
+}

@@ -1,0 +1,94 @@
+{
+  "success": true,
+  "animation": {
+    "success": true,
+    "montages": [
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/AM_GroundFire_Right.AM_GroundFire_Right",
+        "length": 0.9666666388511658,
+        "fire_time": 0,
+        "trigger_offset": 9.999999747378752e-05,
+        "fire_count": 1,
+        "slot": "GroundFireRight",
+        "group": "GroundFireRightGroup",
+        "sequence": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Shoot.Anim_Mecha_Shoot"
+      },
+      {
+        "asset": "/Game/GuLiStrike/GroundMech/Animations/A4B2/AM_GroundFire_Left.AM_GroundFire_Left",
+        "length": 0.9666666388511658,
+        "fire_time": 0,
+        "trigger_offset": 9.999999747378752e-05,
+        "fire_count": 1,
+        "slot": "GroundFireLeft",
+        "group": "GroundFireLeftGroup",
+        "sequence": "/Game/GuLiStrike/GroundMech/Animations/A4B2/Anim_Mecha_Shoot.Anim_Mecha_Shoot"
+      }
+    ],
+    "slots": 2,
+    "retired_inputs": 0,
+    "cached_fire_layers": 2,
+    "saved_reloaded": true,
+    "configure": {
+      "success": true,
+      "slots": 2,
+      "compile_errors": 0,
+      "fire_time": 0
+    }
+  },
+  "head_binding": {
+    "success": true,
+    "sprite_renderers": 1
+  },
+  "trail": {
+    "success": true,
+    "bindings": [
+      {
+        "name": "User.TrailSize",
+        "host_binding": true
+      },
+      {
+        "name": "User.TrailData",
+        "host_binding": true
+      },
+      {
+        "name": "User.TrailStyle",
+        "host_binding": true
+      },
+      {
+        "name": "User.TrailShape",
+        "host_binding": true
+      },
+      {
+        "name": "User.TrailFacing",
+        "host_binding": true
+      }
+    ],
+    "max_length_cm": 12000,
+    "width_cm": 24,
+    "hold_seconds": 0.11999999731779099,
+    "fade_seconds": 0.3799999952316284,
+    "bend_cm": 0,
+    "renderers": 1
+  },
+  "tables": [
+    {
+      "table": "DT_GuLiStrikeRogueCards_Effects",
+      "rows": 6,
+      "saved_readback": true
+    },
+    {
+      "table": "DT_GuLiStrikeRogueCards_GroundWeaponEffects",
+      "rows": 3,
+      "saved_readback": true
+    },
+    {
+      "table": "DT_GuLiStrikeVfx_Effects",
+      "rows": 65,
+      "saved_readback": true
+    }
+  ],
+  "PIE": false,
+  "assistant_visual_test": false,
+  "runtime_damage_verified": false,
+  "animation_readback_note": "Final check includes cached pose base links and retired inputs, superseding the incomplete initial slot-only check."
+}

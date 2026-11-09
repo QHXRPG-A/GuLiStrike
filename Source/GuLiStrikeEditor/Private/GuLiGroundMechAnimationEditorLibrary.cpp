@@ -1,7 +1,10 @@
 #include "GuLiGroundMechAnimationEditorLibrary.h"
+#include "Gameplay/GroundMech/Animation/AnimNotify_GuLiGroundFire.h"
 #include "AnimGraphNode_GuLiGroundMechAim.h"
 #include "AnimGraphNode_GuLiGroundMechGrounding.h"
 #include "AnimGraphNode_Slot.h"
+#include "AnimGraphNode_SaveCachedPose.h"
+#include "AnimGraphNode_UseCachedPose.h"
 #include "AnimGraphNode_ApplyAdditive.h"
 #include "AnimGraphNode_BlendSpacePlayer.h"
 #include "AnimGraphNode_SequencePlayer.h"
@@ -74,6 +77,36 @@ UEdGraphNode* InputSource(UEdGraphNode* Node,const TCHAR* Name)
 {
 	const UEdGraphPin* Pin=Node?Node->FindPin(Name,EGPD_Input):nullptr;
 	return Pin && Pin->LinkedTo.Num()==1?Pin->LinkedTo[0]->GetOwningNode():nullptr;
+}
+bool WireFireLayer(UEdGraph* Graph,UAnimGraphNode_LayeredBoneBlend* Layer,UAnimGraphNode_Slot* Slot,const FString& CacheName)
+{
+    auto* Base=Layer->FindPin(TEXT("BasePose"),EGPD_Input);
+    auto* Source=Slot->FindPin(TEXT("Source"),EGPD_Input);
+    auto* Blend=Layer->FindPin(TEXT("BlendPoses_0"),EGPD_Input);
+    if(!Base || !Source || !Blend)return false;
+    UAnimGraphNode_SaveCachedPose* Cache=nullptr;
+    for(UEdGraphNode* Node:Graph->Nodes)if(auto* C=Cast<UAnimGraphNode_SaveCachedPose>(Node);C && C->CacheName==CacheName)Cache=C;
+    if(!Cache)
+    {
+        // AnimGraph pose outputs have a single consumer. A real cached pose is
+        // required to feed the layer base and the slot without disconnecting gait.
+        UEdGraphPin* Upstream=Base->LinkedTo.Num()==1?Base->LinkedTo[0]:Source->LinkedTo.Num()==1?Source->LinkedTo[0]:nullptr;
+        if(!Upstream)return false;
+        Cache=Add<UAnimGraphNode_SaveCachedPose>(Graph,Layer->NodePosX-460,Layer->NodePosY-250);
+        Cache->CacheName=CacheName;Cache->ReconstructNode();
+        Base->BreakAllPinLinks();Source->BreakAllPinLinks();
+        if(!Graph->GetSchema()->TryCreateConnection(Upstream,Cache->FindPin(TEXT("Pose"),EGPD_Input)))return false;
+    }
+    if(!Cache->FindPin(TEXT("Pose"),EGPD_Input) || Cache->FindPin(TEXT("Pose"),EGPD_Input)->LinkedTo.Num()!=1)return false;
+    for(auto* Pin:{Base,Source})
+    {
+        auto* Use=Pin->LinkedTo.Num()==1?Cast<UAnimGraphNode_UseCachedPose>(Pin->LinkedTo[0]->GetOwningNode()):nullptr;
+        if(!Use || Use->SaveCachedPoseNode.Get()!=Cache)
+        {Use=Add<UAnimGraphNode_UseCachedPose>(Graph,Layer->NodePosX-220,Pin==Base?Layer->NodePosY:Slot->NodePosY);Use->SaveCachedPoseNode=Cache;Use->ReconstructNode();}
+        Pin->BreakAllPinLinks();
+        if(!Graph->GetSchema()->TryCreateConnection(Use->FindPin(TEXT("Pose"),EGPD_Output),Pin))return false;
+    }
+    Blend->BreakAllPinLinks();return Link(Slot,TEXT("Pose"),Layer,TEXT("BlendPoses_0"));
 }
 UAnimGraphNode_BlendSpaceEvaluator* AddBlinkEvaluator(UEdGraph* Graph,int32 X,int32 Y,UBlendSpace* Blend)
 {
@@ -363,15 +396,15 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 	UEdGraphNode* Pose=Bool(Air,TurnSlot,TEXT("bIsAirborne"),650,0);
 	for (int32 Side=0;Side<2;++Side)
 	{
-		auto* Shoot=Eval(TEXT("Anim_Mecha_Shoot"),Side?TEXT("LeftShootTime"):TEXT("RightShootTime"),650+Side*350,650);
+		auto* Shoot=Add<UAnimGraphNode_Slot>(Graph,650+Side*350,650);
+		Shoot->Node.SlotName=Side?TEXT("GroundFireLeft"):TEXT("GroundFireRight"); Shoot->Node.bAlwaysUpdateSourcePose=true; Shoot->ReconstructNode();
 		auto* Layer=Add<UAnimGraphNode_LayeredBoneBlend>(Graph,1000+Side*350,0);
-		Layer->Node.BlendPoses.SetNum(1); Layer->Node.BlendWeights={0.f}; Layer->Node.LayerSetup.SetNum(1);
+		Layer->Node.BlendPoses.SetNum(1); Layer->Node.BlendWeights={1.f}; Layer->Node.LayerSetup.SetNum(1);
 		FBranchFilter Filter; Filter.BoneName=Side?TEXT("Gun_L"):TEXT("Gun_R"); Filter.BlendDepth=1;
 		Layer->Node.LayerSetup[0].BranchFilters={Filter}; Layer->Node.bMeshSpaceRotationBlend=false; Layer->ReconstructNode();
 		Layer->Node.CurveBlendOption=ECurveBlendOption::UseBasePose;
 		OK &= Link(Pose,TEXT("Pose"),Layer,TEXT("BasePose"));
-		OK &= Link(Shoot,TEXT("Pose"),Layer,TEXT("BlendPoses_0"));
-		OK &= Bind(Graph,Layer,TEXT("BlendWeights_0"),Side?TEXT("LeftShootWeight"):TEXT("RightShootWeight")); Pose=Layer;
+		OK &= WireFireLayer(Graph,Layer,Shoot,Side?TEXT("GroundFireBaseLeft"):TEXT("GroundFireBaseRight")); Pose=Layer;
 	}
 	auto* ToCS=Add<UAnimGraphNode_LocalToComponentSpace>(Graph,1650,0);
 	auto* IK=Add<UAnimGraphNode_GuLiGroundMechGrounding>(Graph,1750,0);
@@ -801,7 +834,8 @@ FString UGuLiGroundMechAnimationEditorLibrary::ProbeAnimationGraph(UClass* PawnC
 		F->SetBoolField(TEXT("airborne"),Anim->bIsAirborne); F->SetBoolField(TEXT("jump_start"),Anim->bJumpStarting);
 		F->SetNumberField(TEXT("jump_time"),Anim->JumpStartTime);
 		F->SetNumberField(TEXT("forward"),Anim->IntegratedForwardBlend); F->SetNumberField(TEXT("strafe"),Anim->IntegratedStrafeBlend);
-		F->SetNumberField(TEXT("right_time"),Anim->RightShootTime); F->SetNumberField(TEXT("left_time"),Anim->LeftShootTime);
+		F->SetNumberField(TEXT("right_time"),Anim->GetFireLoopPhase());
+		F->SetNumberField(TEXT("left_time"),FMath::Fmod(Anim->GetFireLoopPhase()+.5f,1.f));
 		F->SetNumberField(TEXT("right_recoil"),Anim->IntegratedFireBlend); F->SetNumberField(TEXT("left_recoil"),Anim->IntegratedFireBlendLeft);
 		const auto Local=Mesh->GetBoneSpaceTransforms();
 		for (const FName Bone:{FName(TEXT("Foot_R")),FName(TEXT("Foot_L")),FName(TEXT("Gun_R")),FName(TEXT("Gun_L"))})
@@ -820,4 +854,115 @@ FString UGuLiGroundMechAnimationEditorLibrary::ProbeAnimationGraph(UClass* PawnC
 	}
 	World->DestroyActor(Pawn);
 	R->SetArrayField(TEXT("frames"),Frames); R->SetBoolField(TEXT("success"),true); return Json(R);
+}
+
+
+FString UGuLiGroundMechAnimationEditorLibrary::ConfigureFireAnimation(UAnimBlueprint* BP,UAnimSequence* Source,UAnimSequence* Loop,UAnimMontage* Montage)
+{
+    auto R=MakeShared<FJsonObject>();R->SetBoolField(TEXT("success"),false);
+    if(!BP || !Source || !Loop || Loop==Source || !Montage || !GEditor || GEditor->PlayWorld)return Json(R);
+    auto* Skeleton=Source->GetSkeleton();if(!Skeleton || BP->TargetSkeleton!=Skeleton || Loop->GetSkeleton()!=Skeleton)return Json(R);
+    UEdGraph* Graph=nullptr;for(UEdGraph* G:BP->FunctionGraphs)if(G->GetFName()==TEXT("AnimGraph"))Graph=G;
+    if(!Graph)return Json(R);
+    // Resample the approved source; only the left barrel is phase-shifted.
+    const auto Model=Source->GetDataModelInterface();TArray<FName> Tracks;Model->GetBoneTrackNames(Tracks);
+    auto& Controller=Loop->GetController();Loop->Modify();
+    Controller.OpenBracket(FText::FromString(TEXT("Author alternating fire loop")),false);
+    Controller.RemoveAllBoneTracks(false);Controller.SetFrameRate(FFrameRate(60,1),false);Controller.SetNumberOfFrames(FFrameNumber(60),false);
+    bool OK=true;
+    for(FName Bone:Tracks)
+    {
+        TArray<FTransform> SourceKeys;Model->GetBoneTrackTransforms(Bone,SourceKeys);if(SourceKeys.IsEmpty()){OK=false;continue;}
+        TArray<FVector3f> P,S;TArray<FQuat4f> Q;
+        for(int32 Frame=0;Frame<=60;++Frame)
+        {
+            const double Phase=FMath::Fmod(double(Frame)/60.+(Bone==TEXT("Gun_L")?.5:0.),1.);
+            const double Sample=Phase*(SourceKeys.Num()-1);const int32 Index=FMath::FloorToInt(Sample);
+            FTransform T;T.Blend(SourceKeys[Index],SourceKeys[FMath::Min(Index+1,SourceKeys.Num()-1)],Sample-Index);
+            P.Add(FVector3f(T.GetTranslation()));Q.Add(FQuat4f(T.GetRotation()));S.Add(FVector3f(T.GetScale3D()));
+        }
+        OK &= Controller.AddBoneCurve(Bone,false) && Controller.SetBoneTrackKeys(Bone,P,Q,S,false);
+    }
+    // The montage owns the two gameplay markers. No duplicate sequence notifies.
+    Loop->Notifies.Reset();Controller.NotifyPopulated();Controller.CloseBracket(false);Loop->RefreshCacheData();Loop->MarkPackageDirty();
+    Skeleton->Modify();Skeleton->SetSlotGroupName(TEXT("GroundFire"),TEXT("GroundFireGroup"));
+    Montage->Modify();Montage->SetSkeleton(Skeleton);Montage->SlotAnimTracks.SetNum(1);
+    auto& Track=Montage->SlotAnimTracks[0];Track.SlotName=TEXT("GroundFire");Track.AnimTrack.AnimSegments.Reset();
+    FAnimSegment Segment;Segment.SetAnimReference(Loop,true);Segment.LoopingCount=1;Track.AnimTrack.AnimSegments.Add(Segment);
+    Montage->SetCompositeLength(1.f);Montage->CompositeSections.Reset();
+    auto& Section=Montage->CompositeSections.AddDefaulted_GetRef();Section.SectionName=TEXT("Loop");Section.Link(Montage,0.f);Section.NextSectionName=TEXT("Loop");
+    Montage->BlendIn.SetBlendTime(0.f);Montage->BlendOut.SetBlendTime(.04f);Montage->BlendOutTriggerTime=-1.f;
+    Montage->Notifies.Reset();
+    for(uint8 Side=0;Side<2;++Side)
+    {
+        auto& N=Montage->Notifies.AddDefaulted_GetRef();auto* Notify=NewObject<UAnimNotify_GuLiGroundFire>(Montage);Notify->MuzzleIndex=Side;
+        N.Notify=Notify;N.NotifyName=Side?TEXT("Fire_Left"):TEXT("Fire_Right");N.Link(Montage,Side*.5f);N.TriggerTimeOffset=.0001f;
+        N.MontageTickType=EMontageNotifyTickType::BranchingPoint;N.TriggerWeightThreshold=0.f;N.bTriggerOnDedicatedServer=true;
+    }
+    Montage->RefreshCacheData();Montage->MarkPackageDirty();BP->Modify();
+    UAnimGraphNode_LayeredBoneBlend* Right=nullptr;UAnimGraphNode_LayeredBoneBlend* Left=nullptr;
+    for(UEdGraphNode* Node:Graph->Nodes)if(auto* Layer=Cast<UAnimGraphNode_LayeredBoneBlend>(Node))
+        for(const auto& Setup:Layer->Node.LayerSetup)for(const auto& Filter:Setup.BranchFilters)
+        {if(Filter.BoneName==TEXT("Gun_R"))Right=Layer;else if(Filter.BoneName==TEXT("Gun_L"))Left=Layer;}
+    if(!Right)return Json(R);
+    if(Left && Left!=Right)
+    {
+        auto* Base=Left->FindPin(TEXT("BasePose"),EGPD_Input);auto* Output=Left->FindPin(TEXT("Pose"),EGPD_Output);
+        auto* Slot=InputSource(Left,TEXT("BlendPoses_0"));auto* SlotSource=InputSource(Slot,TEXT("Source"));
+        if(!Base || Base->LinkedTo.Num()!=1 || !Output)return Json(R);
+        auto* Upstream=Base->LinkedTo[0];const auto Destinations=Output->LinkedTo;
+        Left->BreakAllNodeLinks();for(auto* Dest:Destinations)OK &= Graph->GetSchema()->TryCreateConnection(Upstream,Dest);
+        FBlueprintEditorUtils::RemoveNode(BP,Left,true);
+        if(Slot){Slot->BreakAllNodeLinks();FBlueprintEditorUtils::RemoveNode(BP,Slot,true);}
+        if(SlotSource && SlotSource!=Upstream->GetOwningNode()){SlotSource->BreakAllNodeLinks();FBlueprintEditorUtils::RemoveNode(BP,SlotSource,true);}
+    }
+    auto* Slot=Cast<UAnimGraphNode_Slot>(InputSource(Right,TEXT("BlendPoses_0")));if(!Slot)return Json(R);
+    Slot->Node.SlotName=TEXT("GroundFire");Slot->Node.bAlwaysUpdateSourcePose=true;Slot->ReconstructNode();
+    Right->Node.LayerSetup.SetNum(1);Right->Node.LayerSetup[0].BranchFilters.Reset();
+    for(FName Bone:{FName(TEXT("Gun_R")),FName(TEXT("Gun_L"))}){FBranchFilter F;F.BoneName=Bone;F.BlendDepth=1;Right->Node.LayerSetup[0].BranchFilters.Add(F);}
+    OK &= WireFireLayer(Graph,Right,Slot,TEXT("GroundFireBaseRight"));
+    FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(BP);FCompilerResultsLog Log;
+    FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
+    if(Log.NumErrors==0)
+    {
+        auto* Defaults=Cast<UGuLiGroundMechAnimInstance>(BP->GeneratedClass->GetDefaultObject());
+        Defaults->Modify();Defaults->FireLoopMontage=Montage;
+        // Rebuild the optimized property-copy list used when new anim instances are created.
+        FBlueprintEditorUtils::MarkBlueprintAsModified(BP);
+        FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
+    }
+    R->SetBoolField(TEXT("success"),OK && Log.NumErrors==0);R->SetNumberField(TEXT("compile_errors"),Log.NumErrors);return Json(R);
+}
+
+FString UGuLiGroundMechAnimationEditorLibrary::ReadFireAnimation(UAnimBlueprint* BP)
+{
+    auto R=MakeShared<FJsonObject>();R->SetBoolField(TEXT("success"),false);
+    if(!BP || !BP->GeneratedClass)return Json(R);
+    const auto* Defaults=Cast<UGuLiGroundMechAnimInstance>(BP->GeneratedClass->GetDefaultObject());
+    auto* Montage=Defaults?Defaults->FireLoopMontage.Get():nullptr;if(!Montage)return Json(R);
+    bool OK=FMath::IsNearlyEqual(Montage->GetPlayLength(),1.f) && Montage->SlotAnimTracks.Num()==1;
+    R->SetStringField(TEXT("montage"),Montage->GetPathName());R->SetNumberField(TEXT("length"),Montage->GetPlayLength());
+    TArray<TSharedPtr<FJsonValue>> Markers;
+    for(const auto& N:Montage->Notifies)if(const auto* Fire=Cast<UAnimNotify_GuLiGroundFire>(N.Notify))
+    {
+        auto J=MakeShared<FJsonObject>();J->SetNumberField(TEXT("side"),Fire->MuzzleIndex);J->SetNumberField(TEXT("time"),N.GetTime());
+        Markers.Add(MakeShared<FJsonValueObject>(J));OK &= Fire->MuzzleIndex<=1 && FMath::IsNearlyEqual(N.GetTime(),Fire->MuzzleIndex*.5f)
+            && N.MontageTickType==EMontageNotifyTickType::BranchingPoint && N.TriggerTimeOffset>0 && N.bTriggerOnDedicatedServer;
+    }
+    const bool Loops=Montage->CompositeSections.Num()==1 && Montage->CompositeSections[0].NextSectionName==Montage->CompositeSections[0].SectionName;
+    R->SetBoolField(TEXT("loops"),Loops);R->SetArrayField(TEXT("markers"),Markers);OK &= Loops && Markers.Num()==2;
+    int32 Slots=0;for(UEdGraph* G:BP->FunctionGraphs)if(G->GetFName()==TEXT("AnimGraph"))for(UEdGraphNode* Node:G->Nodes)
+        if(auto* Slot=Cast<UAnimGraphNode_Slot>(Node);Slot && Slot->Node.SlotName==TEXT("GroundFire"))++Slots;
+    R->SetNumberField(TEXT("slots"),Slots);
+    if(Montage->SlotAnimTracks.Num()==1 && Montage->SlotAnimTracks[0].AnimTrack.AnimSegments.Num()==1)
+    {
+        auto* Sequence=Cast<UAnimSequence>(Montage->SlotAnimTracks[0].AnimTrack.AnimSegments[0].GetAnimReference());
+        if(Sequence)
+        {
+            R->SetStringField(TEXT("sequence"),Sequence->GetPathName());const auto Model=Sequence->GetDataModelInterface();
+            for(FName Bone:{FName(TEXT("Gun_R")),FName(TEXT("Gun_L"))})
+            {const auto A=Model->GetBoneTrackTransform(Bone,FFrameNumber(0));const auto B=Model->GetBoneTrackTransform(Bone,FFrameNumber(Model->GetNumberOfFrames()));OK &= A.Equals(B,.0001);}
+        }else OK=false;
+    }else OK=false;
+    R->SetBoolField(TEXT("success"),OK && Slots==1);return Json(R);
 }

@@ -1,0 +1,108 @@
+{
+  "success": true,
+  "action": "deploy",
+  "run_id": "52672a867ef54750802f27c884004253",
+  "assistant_visual_test": false,
+  "gameplay_modified": false,
+  "application": {
+    "artwork_ids": [
+      6
+    ],
+    "native_schema_ready": true,
+    "native_schema_issues": [],
+    "missing_sources": [
+      {
+        "artwork_id": 6,
+        "parameter": "Detail Pattern (A mask)",
+        "texture": "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03",
+        "source": "D:\\Unreal Projects\\ParallaxCardMaterial_art\\Textures\\T_Card_Demo_Pattern_03.png"
+      },
+      {
+        "artwork_id": 6,
+        "parameter": "Detail Pattern (B mask)",
+        "texture": "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_03.T_Card_Demo_Pattern_03",
+        "source": "D:\\Unreal Projects\\ParallaxCardMaterial_art\\Textures\\T_Card_Demo_Pattern_03.png"
+      },
+      {
+        "artwork_id": 6,
+        "parameter": "Detail Pattern (G mask)",
+        "texture": "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_02.T_Card_Demo_Pattern_02",
+        "source": "D:\\Unreal Projects\\ParallaxCardMaterial_art\\Textures\\T_Card_Demo_Pattern_02.png"
+      },
+      {
+        "artwork_id": 6,
+        "parameter": "Detail Pattern (R mask)",
+        "texture": "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_Pattern_01.T_Card_Demo_Pattern_01",
+        "source": "D:\\Unreal Projects\\ParallaxCardMaterial_art\\Textures\\T_Card_Demo_Pattern_01.png"
+      },
+      {
+        "artwork_id": 6,
+        "parameter": "Detail RGB Masks",
+        "texture": "/Game/Assets/card/ParallaxCardMaterial/Textures/T_Card_Demo_M.T_Card_Demo_M",
+        "source": "D:\\Unreal Projects\\ParallaxCardMaterial_art\\Textures\\T_Card_Demo_M.png"
+      }
+    ],
+    "adoptions": [],
+    "source_hashes": {
+      "6": {
+        "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Textures/T_Ricochet_Layer6_Builtin_v1.T_Ricochet_Layer6_Builtin_v1": "440a8bc3e568d57918bd8e3901707b5d5786a3af79f5a8f0b1f1c3b81859109a",
+        "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Textures/T_Ricochet_ForegroundFrontMask_v1.T_Ricochet_ForegroundFrontMask_v1": "4ed41c9a59d5cf9a8c2266c07aa7f794bc6b9999df1aa910c3bb5fa780df9fc0",
+        "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Textures/T_Ricochet_Layer1_Builtin_v1.T_Ricochet_Layer1_Builtin_v1": "a53f205849ebb09efde4677a4f8f37a68f7dc62f68e04fb9ef57527c4f7039fc",
+        "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Textures/T_Ricochet_Layer2_Builtin_v1.T_Ricochet_Layer2_Builtin_v1": "124bc1ed5fc44aacc1174f204c8a19680427cf74c0e3a74bfffdc1bed133e47a",
+        "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Textures/T_Ricochet_Layer3_Builtin_v1.T_Ricochet_Layer3_Builtin_v1": "f9a9d43cc2b9e38125bdaab5f96171d4b3f900cd279cb2b0619700e46b54cf6c",
+        "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Textures/T_Ricochet_Layer4_Builtin_v1.T_Ricochet_Layer4_Builtin_v1": "2e614966807d00441b48d71399b6945d7819e6fecf4eba2c726078f3646dce44",
+        "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Textures/T_Ricochet_Layer5_Builtin_v1.T_Ricochet_Layer5_Builtin_v1": "62f07dcb2479eabe36aabe56c466e8a4d9460f4ca5167c0b1cd7e5445786de68"
+      }
+    },
+    "changed_materials": [
+      "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1"
+    ],
+    "imported_textures": [],
+    "readback": [
+      {
+        "artwork_id": 6,
+        "material": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1",
+        "parent": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/M_Ricochet_RegisteredLayers_Builtin_v1.M_Ricochet_RegisteredLayers_Builtin_v1",
+        "parameters_checked": 70
+      }
+    ]
+  },
+  "tables": [
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Templates",
+      "rows": 4,
+      "changed": false,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Artworks",
+      "rows": 8,
+      "changed": false,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Layers",
+      "rows": 48,
+      "changed": false,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Parameters",
+      "rows": 274,
+      "changed": true,
+      "saved_readback": true
+    }
+  ],
+  "completed_changes": [
+    {
+      "kind": "material",
+      "asset": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1",
+      "saved": true
+    },
+    {
+      "kind": "table",
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Parameters",
+      "saved": true
+    }
+  ]
+}

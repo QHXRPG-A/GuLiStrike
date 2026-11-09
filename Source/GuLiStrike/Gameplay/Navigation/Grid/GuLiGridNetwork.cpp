@@ -231,10 +231,16 @@ EGuLiGridPermit FGuLiGridNetwork::PermitPlacement(const FGuLiHybridObjectKey& So
 }
 void FGuLiGridNetwork::ObjectChanged(const FGuLiHybridObjectKey& Key)
 {
-    FGuLiHybridObjectState O;auto* H=Hybrid();if (!H) return;
-    const bool Exists=H->GetObjectView(Key,O);
+    auto* H=Hybrid();if (!H) return;
     const bool Ground=Key.Kind==EGuLiHybridObjectKind::Soldier || Key.Kind==EGuLiHybridObjectKind::Miner
         || Key.Kind==EGuLiHybridObjectKind::Engineer || Key.Kind==EGuLiHybridObjectKind::GroundPlayer;
+    // Flights and other unbound objects normally have no grid responsibilities.
+    // Check the actual current registrations rather than excluding any kind:
+    // generic placements, displacement cleanup, and bound production still run.
+    if (!Ground && !Locals.Contains(Key) && !Bodies.Contains(Key)
+        && !DisplacementHolds.Contains(Key) && !DisplacementRevisions.Contains(Key)
+        && (!Grid.IsValid() || !Grid->Traffic().Find(PlacementKey(Key))) && !H->FindBoundActor(Key)) return;
+    FGuLiHybridObjectState O;const bool Exists=H->GetObjectView(Key,O);
     if (!Exists || O.LifeState>=2) {DisplacementHolds.Remove(Key);DisplacementRevisions.Remove(Key);}
     else if (Ground)
     {

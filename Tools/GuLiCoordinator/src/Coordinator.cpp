@@ -437,7 +437,7 @@ void Coordinator::State::Directory(HostedRoom& R,const std::shared_ptr<Session>&
         for (const auto& [Player,Weak]:R.Connections) if (auto Connection=Weak.lock()) Directory(R,Connection);
         return;
     }
-    // Snapshot keys only (bounded by the existing 100000-record room limit).
+    // Snapshot keys only; completed history does not consume live admission capacity.
     // Queue a bounded slice of unchanged registrations as writes drain. A
     // late directory must not synchronously overflow the 16MiB socket queue.
     // Read current grants at enqueue time so interleaved deltas cannot be
@@ -624,8 +624,8 @@ void Coordinator::State::Handle(const std::shared_ptr<Session>& C,const Message&
             const auto Slot=O.Ordinal>>24;
             if (std::none_of(Core.Members().begin(),Core.Members().end(),[&](const auto& M){return M.second.OrdinalSlot==Slot;}))
             {RejectRegistration("ordinal-namespace");return;}
-            for (const auto& [K,V]:Core.Objects()) if (OrdinalScope(K.Kind)==OrdinalScope(O.Grant.Object.Kind) && V.Ordinal==O.Ordinal)
-            {RejectRegistration("ordinal-duplicate/"+K.StableId.ToString()+"/"+V.Definition);return;}
+            if (const auto* V=Core.FindOrdinal(O.Grant.Object.Kind,O.Ordinal))
+            {RejectRegistration("ordinal-duplicate/"+V->Grant.Object.StableId.ToString()+"/"+V->Definition);return;}
         }
         if (!Core.Register(std::move(O),Time,C->Player)) {RejectRegistration("room-registration");return;}
         break;

@@ -1,0 +1,40 @@
+{
+  "source_files": {
+    "Source/GuLiStrikeEditor/Private/GuLiLocalPIERolePicker.h": {
+      "sha256": "f7e958291c2686e2094204ef11f5a978d873815aba1eea32ce6ea5c653f675c3",
+      "lines": 10
+    },
+    "Source/GuLiStrikeEditor/Private/GuLiLocalPIERolePicker.cpp": {
+      "sha256": "19305c7236e84fe70ce6ba853fae23689aef4bddffc4a509226cd1d2404593cf",
+      "lines": 200
+    },
+    "Source/GuLiStrikeEditor/Public/GuLiLocalPIESubsystem.h": {
+      "sha256": "ff881c8b25a5fa082a5ec336212e711e9b4e3dc86a3030edf16611fa8f86593b",
+      "lines": 56
+    },
+    "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp": {
+      "sha256": "803c517ac5855e29dc6ab7b14da6a6023345daf54a99697bc2e08f3959769dcf",
+      "lines": 384
+    },
+    "Config/DefaultEditor.ini": {
+      "sha256": "b35aafe61bbcfa69c9bd4abbe7535a222793018512ee770a61073bcccf2f815e",
+      "lines": 17
+    },
+    "Scripts/prepare_local_pie_role_picker_scene.py": {
+      "sha256": "8a1b8c44d40c01fd9102161a2b849399277826b89c8eca1e3d51be123f549c85",
+      "lines": 72
+    }
+  },
+  "runtime_validation": "not_run",
+  "compile_status": "succeeded",
+  "review": [
+    "Editor-only module; no runtime movement edits",
+    "UI returns existing Commander/Ground/Air enum",
+    "Cancel returns before session directory and child launch",
+    "Modal input, initial role focus and focus restoration",
+    "No persistent UI bindings or timers",
+    "Existing Slate dependencies and engine API declarations inspected"
+  ],
+  "build_evidence": "Artifacts/LocalPIERolePicker20261026/build-readback.json",
+  "loaded_evidence": "Artifacts/LocalPIERolePicker20261026/editor-loaded.json"
+}

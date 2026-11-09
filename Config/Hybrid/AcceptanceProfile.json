@@ -60,9 +60,9 @@
     "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Skills.DT_GuLiStrikeCommander_Skills": "8e35a6d3e12ff9bd84cf1c63062947d98dd315111cc6b0f4c8ea40a1405cb200",
     "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_UnitSkills.DT_GuLiStrikeCommander_UnitSkills": "9dcff75aae6aa38da5a4e790c5db385df46fb59fe9ba66e993e38fa39ad0f993",
     "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_WeaponMounts.DT_GuLiStrikeCommander_WeaponMounts": "ade1b1837be6b199bbfb16654253eecebd5dd26d9ba46fb63fab08f82630a6ff",
-    "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models": "199f4520f9685167b36310574fc64c039409a11f93b1ff077b01daebb4e2455d",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models": "8830a271ac7782ea5ec30a14a716fc153655f6b6654b78d2f4bff7a8d40cb0f0",
     "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards": "910396bc7cc3eb2b0fd92d9393befe6e342431d0049e2f6704cf19a4a5779f47",
-    "/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings": "88c6c4ce77feda53e2db07674a9c477c5fa1c6fb2b97641b772db361812d09e7"
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings": "73d9c2f674f208e48f8e73c6d4ea31d86213ca2916351a124cc8bc3f090dd1b0"
   },
   "assets": {
     "/Game/Development/HybridAcceptance/DT_AcceptanceUnits.DT_AcceptanceUnits": {
@@ -560,7 +560,7 @@
       ]
     },
     "/Game/Development/HybridAcceptance/DT_AcceptanceModels.DT_AcceptanceModels": {
-      "sha256": "3ccdcfe780656772c6262ea1e5a07e81e94734ca2221699061fcd9b151f96e88",
+      "sha256": "1f675cd92ba1244ff87ad490ae19dabf010f87766b3f624133b7c7c659c9f3bc",
       "rows": [
         {
           "Name": "DefaultSoldier",
@@ -701,10 +701,10 @@
         {
           "Name": "ManualOutpost",
           "Id": 2003,
-          "Note": "B_v1 已按用户指令导入正式资源；只改配色，固定区和队色区分开；旧网格引用已替换",
+          "Note": "2026-10-29 用户放行 B_v1 正式导入并删除旧据点模型；4824三角面；CPD18控制中央光柱白/阵营色。",
           "DisplayName": "前哨建筑",
           "ResourceType": "StaticMesh",
-          "ResourcePath": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+          "ResourcePath": "/Game/GuLiStrike/Buildings/OutpostSymmetric/Meshes/SM_OutpostSymmetric.SM_OutpostSymmetric",
           "VATDefinition": "None",
           "bTeamColorEnabled": true,
           "BluePrimaryHex": "#6AA4BE",
@@ -713,7 +713,7 @@
           "EnemySecondaryHex": "#662249",
           "CandidateResourcePath": "None",
           "CandidateVATDefinition": "None",
-          "Description": "前哨建筑的显示网格；由中部矩形组件与外部半圆环组成，用于前哨玩法表现。"
+          "Description": "上下镜像的科幻悬浮据点；固定外壳色，中央光柱中立白/己方蓝/敌方红；地图据点三轴为护盾发生器3倍。"
         },
         {
           "Name": "BasicBarracks",
@@ -905,10 +905,10 @@
         {
           "Name": "GroundMech",
           "Id": 4001,
-          "Note": "本轮保留现有配色",
-          "DisplayName": "玩家地面机甲",
+          "Note": "Ground current runtime model; legacy split models retired",
+          "DisplayName": "玩家游骑兵",
           "ResourceType": "SkeletalMesh",
-          "ResourcePath": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.SK_Legs",
+          "ResourcePath": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
           "VATDefinition": "None",
           "bTeamColorEnabled": false,
           "BluePrimaryHex": "#6AA4BE",
@@ -917,58 +917,7 @@
           "EnemySecondaryHex": "#662249",
           "CandidateResourcePath": "None",
           "CandidateVATDefinition": "None",
-          "Description": "玩家 Ground 地面机甲的腿部骨骼网格兼组合入口；通过 Parts 装配装甲、肩部和机枪，保留原动画与挂点。"
-        },
-        {
-          "Name": "GroundMech_Armor",
-          "Id": 4002,
-          "Note": "本轮保留现有配色",
-          "DisplayName": "地面机甲 Armor",
-          "ResourceType": "StaticMesh",
-          "ResourcePath": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.SM_Armor",
-          "VATDefinition": "None",
-          "bTeamColorEnabled": false,
-          "BluePrimaryHex": "#6AA4BE",
-          "BlueSecondaryHex": "#274E61",
-          "EnemyPrimaryHex": "#A34053",
-          "EnemySecondaryHex": "#662249",
-          "CandidateResourcePath": "None",
-          "CandidateVATDefinition": "None",
-          "Description": "玩家 Ground 地面机甲的装甲子模型；挂载到原装甲组件，不属于 WM01 兵种。"
-        },
-        {
-          "Name": "GroundMech_Shoulder",
-          "Id": 4003,
-          "Note": "本轮保留现有配色",
-          "DisplayName": "地面机甲 Shoulder",
-          "ResourceType": "StaticMesh",
-          "ResourcePath": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.SM_Shoulder",
-          "VATDefinition": "None",
-          "bTeamColorEnabled": false,
-          "BluePrimaryHex": "#6AA4BE",
-          "BlueSecondaryHex": "#274E61",
-          "EnemyPrimaryHex": "#A34053",
-          "EnemySecondaryHex": "#662249",
-          "CandidateResourcePath": "None",
-          "CandidateVATDefinition": "None",
-          "Description": "玩家 Ground 地面机甲的肩部子模型；保留原装配位置与活动关系。"
-        },
-        {
-          "Name": "GroundMech_Machinegun",
-          "Id": 4004,
-          "Note": "本轮保留现有配色",
-          "DisplayName": "地面机甲 Machinegun",
-          "ResourceType": "SkeletalMesh",
-          "ResourcePath": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun",
-          "VATDefinition": "None",
-          "bTeamColorEnabled": false,
-          "BluePrimaryHex": "#6AA4BE",
-          "BlueSecondaryHex": "#274E61",
-          "EnemyPrimaryHex": "#A34053",
-          "EnemySecondaryHex": "#662249",
-          "CandidateResourcePath": "None",
-          "CandidateVATDefinition": "None",
-          "Description": "玩家 Ground 地面机甲的机枪子模型；保留原武器挂点和骨骼姿态。"
+          "Description": "玩家 Ground 游骑兵的腿部骨骼网格兼组合入口；通过 Parts 装配装甲、肩部和机枪，保留原动画与挂点。"
         },
         {
           "Name": "ShipDefaultHull",
@@ -991,7 +940,7 @@
           "Name": "ShipDreadnoughtHull",
           "Id": 5002,
           "Note": "本轮保留现有配色",
-          "DisplayName": "ShipDreadnoughtHull",
+          "DisplayName": "巡天",
           "ResourceType": "StaticMesh",
           "ResourcePath": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
           "VATDefinition": "None",
@@ -1002,7 +951,7 @@
           "EnemySecondaryHex": "#662249",
           "CandidateResourcePath": "None",
           "CandidateVATDefinition": "None",
-          "Description": "DIY 飞船 Dreadnought 预设的舰体静态模型；用于舰体显示和部件挂载，保留原几何与 socket。"
+          "Description": "巡天是玩家亲自操控的第一代飞船（HullModelId=5002，Dreadnought 预设）；用于舰体显示和部件挂载，保留原几何与 socket。"
         },
         {
           "Name": "SC_Autocannon",
@@ -2007,7 +1956,8 @@
           "CandidateVATDefinition": "None",
           "Description": "先驱号指挥官兵种的显示网格；使用原 VAT 播放行走与战斗动作。"
         }
-      ]
+      ],
+      "sha256_before_xuntian_normalization": "d5366a9ebb20dc0c4c84ef360340a41fa6fbe2f3939af95930d0cd09e2485a3d"
     },
     "/Game/Development/HybridAcceptance/DT_AcceptanceCards.DT_AcceptanceCards": {
       "sha256": "e82ba62a7809fac7851411912fa0483f5906dcb62c7bab9e89b1c68fe4652e68",
@@ -2145,7 +2095,7 @@
       ]
     },
     "/Game/Development/HybridAcceptance/DT_AcceptanceBuildings.DT_AcceptanceBuildings": {
-      "sha256": "6d7fc951905eabe1f50d7bf440d8ae6fc259edbb274af0cccf4fb1a64b562946",
+      "sha256": "e8ff9cce8bc5f1d3b839ad05257bd94df090753387ec6ecaf745cb116b2a0c28",
       "rows": [
         {
           "Name": "MissileTurret",
@@ -2210,8 +2160,8 @@
           "DisplayName": "前哨建筑",
           "Description": "前哨建筑功能建筑",
           "CollisionExtent": "(X=710.308643,Y=661.980518,Z=3000.000000)",
-          "VisualOffset": "(X=2.117871,Y=-50.517188,Z=0.000000)",
-          "MeshScale": "(X=0.200000,Y=0.200000,Z=0.200000)",
+          "VisualOffset": "(X=-0.000000,Y=-0.000000,Z=3000.000000)",
+          "MeshScale": "(X=0.794633,Y=0.654345,Z=2.047833)",
           "MaxHealth": 5000,
           "MaxShield": 0,
           "BuildLevel": 1,
@@ -2446,5 +2396,20 @@
     "presentation": 101001
   },
   "scope": "Editor export and coordinator validation of the 200- and 600-unit manifests listed in this profile. Motion-lane bandwidth acceptance is recorded separately.",
-  "contract_work": "WORK-20261011-002/D29"
+  "contract_work": "WORK-20261011-002/D29",
+  "xuntian_name_normalization": {
+    "date": "2026-11-03",
+    "file_sha256_before": "9dd26ed8d9d7eefe8e162e08b7ec9fe183b60f5972d3c1a1ff833803c9ae700a",
+    "policy": "仅名称规范化；保留历史结论与原始证据哈希含义。当前文本不是当时的原始导出；原文件可由迁移前哈希及版本历史追溯。",
+    "source_table_sha256_before": {
+      "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models": "4fec87870b44d933dfbbb4587eba96d0d399aa3a2ae14d492d2b48573659acc6"
+    }
+  },
+  "manifest_refresh": {
+    "date": "2026-11-03",
+    "reason": "Synchronize stale acceptance snapshots with the existing native Core contract and current authored data",
+    "evidence": "Artifacts/XunTianNameMigration20261103/manifest-repair-result.json",
+    "previous_state": "Artifacts/XunTianNameMigration20261103/manifest-repair-plan.json",
+    "gameplay_executed": false
+  }
 }

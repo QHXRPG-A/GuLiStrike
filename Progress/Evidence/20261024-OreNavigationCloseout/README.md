@@ -16,7 +16,7 @@
 
 ## GitHub 推送回执
 
-当前项目变更已提交到本地`main`：`d8ecb28495edf762522b566f2be1c88dadd6eb6d`，共1369个文件，包含矿石导航、已有地面机甲/地图工具/资产与文档归档修改。暂存核对确认339个LFS路径均为指针、未夹带构建缓存；地图工具的原始二进制缓冲补齐LFS规则，证据文件保持原始字节。
+当前项目变更已提交到本地`main`：`d8ecb28495edf762522b566f2be1c88dadd6eb6d`，共1369个文件，包含矿石导航、已有游骑兵/地图工具/资产与文档归档修改。暂存核对确认339个LFS路径均为指针、未夹带构建缓存；地图工具的原始二进制缓冲补齐LFS规则，证据文件保持原始字节。
 
 `git push origin main`退出1，GitHub LFS返回：`This repository exceeded its LFS budget. The account responsible for the budget should increase it to restore access.` 上传显示0/100对象、0B，分支未更新。随后`git ls-remote origin refs/heads/main`确认远端仍为`6c339e942b78b05670f6372e819aebe317fb701c`。机器回执见`github-push.json`。
 

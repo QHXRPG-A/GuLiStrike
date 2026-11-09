@@ -73,6 +73,15 @@ enum class EGuLiSoldierNavigationFailure : uint8
 	FinalSlotInvalidated
 };
 
+/** Gameplay reads only the current order, pose and lock. Navmesh validation belongs to diagnostics. */
+struct FGuLiSoldierNavigationView
+{
+    EGuLiSoldierNavigationState State=EGuLiSoldierNavigationState::Idle;
+    uint32 ActiveOrderId=0;
+    FVector Location=FVector::ZeroVector;
+    bool bExternallyLocked=false;
+};
+
 /** Read-only authoritative state for one Soldier; never enters the v5 snapshot wire format. */
 struct FGuLiSoldierNavigationDebug
 {
@@ -406,12 +415,14 @@ public:
 	bool ProjectExternalUnitLocation(FVector Desired, FVector& OutLocation,int32 FootprintCells=1) const;
 	/** Stable Damage Ledger identity for a Soldier in the current match. */
 	FGuLiTargetHandle MakeSoldierTargetHandle(FGuLiSoldierId SoldierId) const;
+    uint32 GetSoldierTaskGeneration(FGuLiSoldierId SoldierId) const;
 
 	/** Read-only server diagnostics; a valid ID can describe a dead Soldier. */
 	bool TryGetSoldierCombatDebug(FGuLiSoldierId SoldierId, FGuLiSoldierCombatDebug& OutDebug) const;
 	bool TryGetSoldierWeaponDebug(FGuLiSoldierId SoldierId, FName SlotId, FGuLiSoldierCombatDebug& OutDebug) const;
 	/** Read-only server navigation diagnostics; terminal failure data remains available after ActiveOrderId clears. */
 	bool TryGetSoldierNavigationDebug(FGuLiSoldierId SoldierId, FGuLiSoldierNavigationDebug& OutDebug) const;
+    bool TryGetSoldierNavigation(FGuLiSoldierId SoldierId,FGuLiSoldierNavigationView& Out) const;
     /** Engineering entities share the Mass executor; their existing Actor retains work/identity/presentation only. */
     FGuLiSoldierId AttachEngineeringMass(ACharacter& Carrier,const FGuLiHybridObjectState& Record,uint16 UnitType);
     void DetachEngineeringMass(FGuLiSoldierId Id);

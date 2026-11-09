@@ -1,4 +1,6 @@
 #include "Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h"
+#include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/GroundMech/Animation/AnimNotify_GuLiGroundFire.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h"
 #include "Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.h"
@@ -13,10 +15,12 @@
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 void UGuLiGroundMechAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
+	FireLoopInstance=INDEX_NONE;bGameplayFireLoop=false;RemoteFireUntil=0;FireRecoveryScale[0]=FireRecoveryScale[1]=1.f;
 	bUsePresentedUpperAim=bUpperAimOnly=bHasLocomotionSnapshot=false; UpperBodyFrame=FQuat::Identity;
 	UpperBodyRecoilConfiguration.Reset(); UpperBodyRecoilSkeleton.Reset(); UpperBodyRecoilSources.Reset();
 	UpperBodyRecoilSamples[0].Reset(); UpperBodyRecoilSamples[1].Reset(); bUpperBodyRecoilReady=false;
@@ -32,7 +36,6 @@ void UGuLiGroundMechAnimInstance::NativeInitializeAnimation()
 	IntegratedControlRotation = FRotator::ZeroRotator;
 	bIntegratedRunning = false;
 	bJumpStarting = false; JumpStartTime = 0.f;
-	RightShootWeight = LeftShootWeight = RightShootTime = LeftShootTime = 0.f;
 	if (const auto* Mesh = GetSkelMeshComponent())
 	{
 		if (const auto* Socket=Mesh->GetSocketByName(TEXT("Muzzle"))) RightMuzzleLocal=Socket->GetSocketLocalTransform();
@@ -73,6 +76,7 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		// All lower-body, recoil and montage state remains at the logical sample.
 		UpdateUpperAim(*Pawn); return;
 	}
+	if (!bGameplayFireLoop && IsFireLoopPlaying() && UGuLiHybridActorComponent::BattleSeconds(Pawn)>RemoteFireUntil) StopFireLoop();
 	Grounding.bPresentationOnly=false;
 	bHasLocomotionSnapshot=true;
 	const float Yaw = Pawn->GetActorRotation().Yaw;
@@ -149,7 +153,7 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		MovingTurnLeft=Config.Asset<UAnimSequence>(TEXT("MovingTurnLeft"));
 		MovingTurnRight=Config.Asset<UAnimSequence>(TEXT("MovingTurnRight"));
 		JumpLoopPlayRate=Config.Gait(TEXT("JumpLoop")).BasePlayRate;
-		JumpStartDuration=JumpStartSequence->GetPlayLength(); ShootDuration=ShootSequence->GetPlayLength();
+		JumpStartDuration=JumpStartSequence->GetPlayLength();
 		RecoilDistance=Config.Gait(TEXT("Shoot")).RecoilCentimeters;
 		ArmRecoilDegrees=Config.Gait(TEXT("Shoot")).ArmRecoilDegrees;
 		PrepareUpperBodyRecoil(Config);
@@ -217,7 +221,7 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		{
 			const FName Name=Turn.Direction<0?TEXT("TurnLeft"):TEXT("TurnRight");
 			ActiveTurnMontage=Config.Asset<UAnimMontage>(Name); TurnSerial=Turn.Serial;
-			Montage_Play(ActiveTurnMontage,Config.Gait(Name).BasePlayRate,EMontagePlayReturnType::MontageLength,Turn.Time*Config.Gait(Name).BasePlayRate,true);
+			Montage_Play(ActiveTurnMontage,Config.Gait(Name).BasePlayRate,EMontagePlayReturnType::MontageLength,Turn.Time*Config.Gait(Name).BasePlayRate,false);
 		}
 		if (ActiveTurnMontage)
 		{
@@ -240,7 +244,7 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		for (int32 Side=0; Side<2; ++Side)
 		{
 			if (bReset) { IntegratedRecoilAge[Side]=BIG_NUMBER; ArmRecoilStart[Side]=0.f; }
-			IntegratedRecoilAge[Side] += FMath::Max(0.f,DeltaSeconds);
+			IntegratedRecoilAge[Side] += FMath::Max(0.f,DeltaSeconds)*FireRecoveryScale[Side];
 			const float Weight = IntegratedRecoilCurve && IntegratedRecoilAge[Side] < IntegratedRecoilDuration
 				? FMath::Clamp(IntegratedRecoilCurve->GetFloatValue(IntegratedRecoilAge[Side]),0.f,1.f) : 0.f;
 			(Side == 0 ? IntegratedFireBlend : IntegratedFireBlendLeft) = Weight;
@@ -253,10 +257,6 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 				? FMath::Lerp(ArmRecoilStart[Side],1.f,FMath::SmoothStep(0.f,Shot.ArmRecoilAttackSeconds,Age))
 				: 1.f-FMath::SmoothStep(Release,Release+Shot.ArmRecoilRecoverySeconds,Age);
 			(Side==0?RightArmRecoil:LeftArmRecoil)=FMath::Clamp(ArmWeight,0.f,1.f);
-			const float ShootAge=IntegratedRecoilAge[Side]*Config.Gait(TEXT("Shoot")).BasePlayRate;
-			(Side == 0 ? RightShootTime : LeftShootTime) = FMath::Min(ShootAge,ShootDuration);
-			(Side == 0 ? RightShootWeight : LeftShootWeight) = ShootAge < ShootDuration
-				? FMath::Clamp((ShootDuration-ShootAge)/Config.Gait(TEXT("Shoot")).TransitionSeconds,0.f,1.f) : 0.f;
 		}
 		UpdateUpperBodyRecoil(Config.Gait(TEXT("Shoot")));
 	}
@@ -458,7 +458,7 @@ void UGuLiGroundMechAnimInstance::TriggerIntegratedRecoil(float AgeSeconds, uint
 	if (MuzzleIndex < 2 && FMath::IsFinite(AgeSeconds))
 	{
 		// A delayed cue must not rewind/cancel a more recent shot on the same barrel.
-		const float Age=FMath::Max(0.f,AgeSeconds);
+		const float Age=FMath::Max(0.f,AgeSeconds)*FireRecoveryScale[MuzzleIndex];
 		if (Age <= IntegratedRecoilAge[MuzzleIndex])
 		{
 			UpperBodyRecoilStart[MuzzleIndex]=UpperBodyRecoilCurrent[MuzzleIndex];
@@ -466,4 +466,51 @@ void UGuLiGroundMechAnimInstance::TriggerIntegratedRecoil(float AgeSeconds, uint
 			IntegratedRecoilAge[MuzzleIndex]=Age;
 		}
 	}
+}
+
+
+bool UGuLiGroundMechAnimInstance::StartFireLoop(float Phase,float Rate,bool bGameplay)
+{
+    if (!FireLoopMontage || Rate<=0 || Rate>30.f)
+    {
+        if(!bReportedFireAsset) UE_LOG(LogTemp,Error,TEXT("[GroundFire] alternating loop unavailable: %s"),*GetPathName());
+        bReportedFireAsset=true;return false;
+    }
+    const float Position=FMath::Fmod(FMath::Max(0.f,Phase),1.f)*FireLoopMontage->GetPlayLength();
+    if(Montage_Play(FireLoopMontage,Rate*.5f,EMontagePlayReturnType::MontageLength,Position,false)<=0) return false;
+    auto* Instance=GetActiveInstanceForMontage(FireLoopMontage);if(!Instance)return false;
+    FireLoopInstance=Instance->GetInstanceID();bGameplayFireLoop=bGameplay;
+    SetFireAnimationRate(Rate);return true;
+}
+
+void UGuLiGroundMechAnimInstance::StopFireLoop()
+{
+    bGameplayFireLoop=false;FireLoopInstance=INDEX_NONE;
+    if(FireLoopMontage)Montage_Stop(.04f,FireLoopMontage);
+}
+bool UGuLiGroundMechAnimInstance::IsFireLoopPlaying() const
+{ return FireLoopMontage && Montage_IsPlaying(FireLoopMontage); }
+float UGuLiGroundMechAnimInstance::GetFireLoopPhase() const
+{ return FireLoopMontage?Montage_GetPosition(FireLoopMontage)/FMath::Max(.001f,FireLoopMontage->GetPlayLength()):0.f; }
+void UGuLiGroundMechAnimInstance::PresentFireLoop(uint8 Side,float Rate,float Age)
+{
+    if(Rate<=0 || Side>1)return;
+    if(!IsFireLoopPlaying())StartFireLoop(FMath::Fmod(Side*.5f+Age*Rate*.5f,1.f),Rate,false);
+    else SetFireAnimationRate(Rate);
+    RemoteFireUntil=UGuLiHybridActorComponent::BattleSeconds(TryGetPawnOwner())+1.5/Rate;
+}
+void UGuLiGroundMechAnimInstance::OnFireAnimationNotify(int32 Instance,uint8 Side)
+{
+    if(!bGameplayFireLoop || bUpperAimOnly || Instance!=FireLoopInstance)return;
+    if(auto* Pawn=TryGetPawnOwner())
+        if(auto* Weapon=Pawn->FindComponentByClass<UGuLiGroundMechWeaponComponent>())Weapon->QueueFireAnimationNotify(Side);
+}
+void UGuLiGroundMechAnimInstance::SetFireAnimationRate(float Rate)
+{
+    const auto* Pawn=Cast<AGuLiGroundMechCharacter>(TryGetPawnOwner());
+    if (!Pawn || Rate<=0 || Rate>30.f) return;
+    const auto& Shot=Pawn->GetMobilityConfiguration().Gait(TEXT("Shoot"));
+    const float Recovery=Shot.ArmRecoilAttackSeconds+Shot.ArmRecoilHoldSeconds+Shot.ArmRecoilRecoverySeconds;
+    FireRecoveryScale[0]=FireRecoveryScale[1]=FMath::Max(.001f,Recovery*Rate*.5f);
+    if(FireLoopMontage)Montage_SetPlayRate(FireLoopMontage,Rate*.5f);
 }

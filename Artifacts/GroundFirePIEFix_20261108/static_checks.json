@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "diff_check": "passed",
+  "python_ast_files": 2,
+  "changed_files": [
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h",
+    "Source/GuLiStrike/Gameplay/CombatEffects/GuLiHybridProjectilePool.cpp",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.cpp",
+    "Scripts/GroundMech/Rogue/save_fire_notify_review.py"
+  ],
+  "review": [
+    "No forced montage Advance remains in PlayFireAnimation",
+    "Playback start returns started and keeps the admitted shot waiting",
+    "Only Fire notify calls ReleaseGroundFromAnimation",
+    "Pending montage is checked by ShotId; unfinished Fire prevents another shot from starting",
+    "Paused, unready source or unready flight defers animation start",
+    "Ending without Fire still reports a fault with ShotId and stage"
+  ],
+  "protocol": 37,
+  "ground_contract": 5,
+  "linear_restore": 9,
+  "coordinator_core_changed": false,
+  "automated_tests_added": false,
+  "automated_tests_run": false,
+  "assistant_started_PIE": false,
+  "runtime_first_failure_branch": "not distinguishable from original generic message; needs player rerun",
+  "runtime_fire_verified": false
+}

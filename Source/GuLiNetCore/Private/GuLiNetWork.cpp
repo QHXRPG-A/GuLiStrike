@@ -91,7 +91,7 @@ CommitResult OwnerState::AdmitWork(Id Sender,const TransactionRequest& R)
         || Original.Faction!=R.Faction || R.Header.Event!=StableId("GuLiTransactionAdmission/v1",M.Header.Event.ToString())
         || R.Target.Kind!=ObjectKind::BusinessWork || R.Target.Generation!=1
         || R.Target.StableId!=StableId("GuLiTransactionWork/v1",M.Header.Event.ToString())
-        || Previous.contains(R.Target) || ActiveWorks.contains(R.Header.Object) || Previous.size()>=100000
+        || Previous.contains(R.Target) || ActiveWorks.contains(R.Header.Object) || IndexedSource().LivingObjects.size()>=MaxLiveObjects
         || R.ReservationToken.Valid() || R.ReservationKey.Account.Valid() || R.ReservationKey.Request
         || R.Related.Valid() || R.ExpectedRelationVersion || R.ResourceNode || R.MiningCluster || R.MiningTask || R.MiningSample
         || R.MiningToken.Valid() || R.TargetX!=0 || R.TargetY!=0 || R.TargetZ!=0 || R.FacingYaw!=0

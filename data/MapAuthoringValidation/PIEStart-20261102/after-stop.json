@@ -1,0 +1,40 @@
+{
+  "pie": false,
+  "session": {
+    "active": false,
+    "error": "",
+    "room": "6B3179F34428F879652313918A6D6AB9",
+    "role": "Ground",
+    "editor_pid": 34800,
+    "logic_pid": 34544,
+    "coordinator_pid": 6264,
+    "logic_running": false,
+    "coordinator_running": false,
+    "session_directory": "",
+    "shutdown": [
+      {
+        "role": "logic",
+        "pid": 34544,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      },
+      {
+        "role": "coordinator",
+        "pid": 6264,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      }
+    ],
+    "cleanup_complete": true
+  },
+  "prompt_for_role": true,
+  "main_role": "<GuLiCommanderRole.GROUND: 2>",
+  "resource_gate": {
+    "success": true,
+    "message": "Resource authoring source and baked runtime definition are current."
+  },
+  "dirty_maps": [],
+  "dirty_content": []
+}

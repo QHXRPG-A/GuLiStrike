@@ -182,10 +182,9 @@ FIntPoint UGuLiResourceWorldSubsystem::GetHybridCaptureCounts(uint64 Tick,int32 
                 const auto* Control=A->FindComponentByClass<UGuLiExternalUnitControlComponent>();if (Control && Control->IsPhased()) continue;
             }
             const int32 Index=FindTerritoryIndex(Target.Location);if (!HybridCaptureCounts.IsValidIndex(Index)) continue;
-            FGuLiHybridObjectKey Key;FGuLiHybridObjectState State;
+            FGuLiHybridObjectKey Key;bool Phased=false;
             if (!H || !H->ResolveTarget(Target.Handle,Key)) continue;
-            const bool Read=H->GetObjectView(Key,State);
-            if (!Read || State.bPhased) continue;
+            if (!H->GetObjectPhase(Key,Phased) || Phased) continue;
             if (Target.Team==EGuLiTeam::Red) ++HybridCaptureCounts[Index].X;else if (Target.Team==EGuLiTeam::Blue) ++HybridCaptureCounts[Index].Y;
         }
     }

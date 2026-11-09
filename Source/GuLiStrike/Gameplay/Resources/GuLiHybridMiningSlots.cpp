@@ -131,9 +131,9 @@ void UGuLiMiningVehicleManager::PollHybridOperations()
     HybridState->Operations.RemoveAll([](const FOperation& V){return V.bCancelled && !V.bSubmitted;});
     for (auto& V:HybridState->Operations)
     {
-        FGuLiHybridObjectState Source;
-        if (!H->GetObject(V.Request.Source,Source)) continue;
-        if (Source.LifeState>=2) {V.bCancelled=true; V.bFinished=true; continue;}
+        FGuid Owner;uint8 LifeState=0;
+        if (!H->GetObjectLifecycle(V.Request.Source,Owner,LifeState)) continue;
+        if (LifeState>=2) {V.bCancelled=true; V.bFinished=true; continue;}
         if (!V.bSubmitted && H->CanPublishFacts() && H->HasSimulation(V.Request.Source))
             V.bSubmitted=H->SubmitMiningOperation(V.Request)==V.Request.Event;
         FGuLiHybridTransactionResult Result;
@@ -143,7 +143,8 @@ void UGuLiMiningVehicleManager::PollHybridOperations()
     {
         if (!V.bFinished) return false;
         if (V.Request.Operation==EGuLiHybridMiningOperation::Release) return true;
-        FGuLiHybridObjectState Source; return H->GetObject(V.Request.Source,Source) && Source.LifeState>=2;
+        FGuid Owner;uint8 LifeState=0;
+        return H->GetObjectLifecycle(V.Request.Source,Owner,LifeState) && LifeState>=2;
     });
     // A cancelled prepare may have committed after local cancellation. Release
     // exactly that token; a newer task's token is never used for the cleanup.

@@ -163,7 +163,6 @@ bool OwnerState::BeginEconomy(Resources Red, Resources Blue)
 { return EconomyLedger.Begin(Red, Blue) && EconomyLedger.Open(); }
 bool OwnerState::Remember(const TransactionRequest& Request, const CommitResult& Result)
 {
-    if ((StageSource?StageSource->Results.size():Results.size()) >= 1000000) { FailureReason = "Owner event capacity exhausted"; return false; }
     Results.emplace(Request.Header.Event, Result); RequestBodies.emplace(Request.Header.Event, RequestFingerprint(Request));
     IndexResultDomain(Request.Header.Event,DecisionDomain);return true;
 }
@@ -211,7 +210,6 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
         if (RequestBodies.at(R.Header.Event) != RequestFingerprint(R)) return Reject(CommitStatus::BadRequest);
         Out = Old->second; if (Out.Status == CommitStatus::Committed) Out.Status = CommitStatus::Duplicate; return Out;
     }
-    if ((StageSource?StageSource->Results.size():Results.size())>=1000000) return Reject(CommitStatus::Deferred);
     FinalDecision=true;
     if (R.Kind==TransactionKind::AdmitWork) return AdmitWork(Sender,R);
     if (!R.Admission.empty()) return Reject(CommitStatus::BadRequest);
@@ -281,7 +279,11 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
     if (AttackIt == Attacks.end() && R.Kind!=TransactionKind::Damage)
     {
         const auto Last = LastAttack.find({R.Header.Object, R.RuleId});
-        if (Last != LastAttack.end() && (R.StartedAt < Last->second || R.StartedAt - Last->second < RuleValue.Cooldown))
+        // A zero-cooldown rule admits independent, frozen facts. Asynchronous
+        // planning may commit a later fact first; that does not invalidate an
+        // earlier launch. Event identity and lifetime checks still apply.
+        if (RuleValue.Cooldown && Last != LastAttack.end()
+            && (R.StartedAt < Last->second || R.StartedAt - Last->second < RuleValue.Cooldown))
             return Reject(CommitStatus::InvalidRule);
     }
     const auto& AttackValue = AttackIt==Attacks.end() ? NewAttack : AttackIt->second;
@@ -319,7 +321,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
             if (!O.Grant.Controller.Valid() && Definition->second.Policy==OwnershipPolicy::ControllerPinned)
                 return Reject(CommitStatus::InvalidRule);
         }
-        if (Previous.size()+NewCount>100000) return Reject(CommitStatus::InvalidRule);
+        if (IndexedSource().LivingObjects.size()+NewCount>MaxLiveObjects) return Reject(CommitStatus::InvalidRule);
         if (!ValidateCapabilityCommit(PreparedResult,Previous,StageSource?&IndexedSource().MutationMembers:nullptr)) return Reject(CommitStatus::InvalidRule);
         // Ordinary spawn, batch spawn and affiliation changes use exactly the
         // same declared inventory profiles. Prepare before publishing ANY part
@@ -507,7 +509,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
         {
             if (!S.Completed || !R.Target.Valid() || R.Target.Kind!=RuleValue.SpawnKind || Previous.contains(R.Target)
                 || (R.Related.Valid() && R.Related!=R.Header.Object)) return Reject(CommitStatus::InvalidRule);
-            if (Previous.size()>=100000) { Abort("Object directory capacity exhausted"); return Reject(CommitStatus::Paused); }
+            if (IndexedSource().LivingObjects.size()>=MaxLiveObjects) return Reject(CommitStatus::InvalidRule);
             std::uint32_t LastGeneration=LastRetiredLife(R.Target.Kind,R.Target.StableId), MaximumOrdinal=0, Children=0, FactionCount=0;
             const auto& Index=IndexedSource();
             if (const auto I=Index.MaximumOrdinals.find(OrdinalScope(R.Target.Kind));I!=Index.MaximumOrdinals.end()) MaximumOrdinal=I->second;
@@ -518,14 +520,20 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
                 if (I->second.Grant.State<Life::Dead) return Reject(CommitStatus::InvalidRule);
                 LastGeneration=std::max(LastGeneration,I->first.Generation);
             }
-            if (RuleValue.MaximumLiveChildren || RuleValue.MaximumFactionObjects) for (const auto& K:Index.LivingObjects)
+            if (RuleValue.MaximumFactionObjects)
+                if (const auto Count=Index.LivingFactionKindCounts.find({R.Target.Kind,Faction});Count!=Index.LivingFactionKindCounts.end()) FactionCount=Count->second;
+            if (RuleValue.MaximumLiveChildren && S.Grant.Object.Kind!=ObjectKind::BusinessWork)
+            {
+                if (const auto Group=Index.LiveChildren.find(R.Header.Object);Group!=Index.LiveChildren.end())
+                    for (const auto K:Group->second) if (Previous.at(K).Definition==RuleValue.TargetDefinition) ++Children;
+            }
+            else if (RuleValue.MaximumLiveChildren) for (const auto& K:Index.LivingObjects)
             {
                 const auto& O=Previous.at(K);
                 const auto Parent=S.Grant.Object.Kind==ObjectKind::BusinessWork && S.Parent.Valid()?Previous.find(O.Parent):Previous.end();
                 const bool SameWorkSource=S.Grant.Object.Kind==ObjectKind::BusinessWork && S.Parent.Valid()
                     && Parent!=Previous.end() && Parent->first.Kind==ObjectKind::BusinessWork && Parent->second.Parent==S.Parent;
                 if ((O.Parent==R.Header.Object || SameWorkSource) && O.Definition==RuleValue.TargetDefinition && O.Grant.State<Life::Dead) ++Children;
-                if (K.Kind==R.Target.Kind && O.Grant.Faction==Faction && O.Grant.State<Life::Dead) ++FactionCount;
             }
             if (LastGeneration==UINT32_MAX || R.Target.Generation!=LastGeneration+1
                 || (RuleValue.MaximumLiveChildren && Children>=RuleValue.MaximumLiveChildren)
@@ -694,7 +702,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
     {
         NewAttack.Targets.insert(R.Target);IndexAttackDomain(AttackId,NewAttack.Source);Attacks.emplace(AttackId,std::move(NewAttack));
         if (R.Kind!=TransactionKind::Damage)
-        {LastAttack[{R.Header.Object,R.RuleId}]=R.StartedAt;HistoryFragments[R.Header.Object].insert("cooldown/"+R.RuleId);}
+        {auto& Last=LastAttack[{R.Header.Object,R.RuleId}];Last=std::max(Last,R.StartedAt);HistoryFragments[R.Header.Object].insert("cooldown/"+R.RuleId);}
     }
     else AttackIt->second.Targets.insert(R.Target);
     // Every committed transaction carries an authoritative balance at its ledger

@@ -9,6 +9,9 @@ struct FGuLiGroundAttackSnapshot
     FGuid Player;
     uint64 Revision=1;
     float Damage=0;
+    float FireRate=0;
+    float ExplosiveDamage=0,ExplosiveRadius=0;
+    int32 ExplosiveBulletVfxId=0,ExplosiveImpactVfxId=0;
     int32 BulletVfxId=0,ImpactVfxId=0,MuzzleVfxId=0;
     GuLiNet::Effects::Set Effects;
     GuLiNet::Effects::Ricochet GetRicochet() const { return GuLiNet::Effects::GetRicochet(Effects); }

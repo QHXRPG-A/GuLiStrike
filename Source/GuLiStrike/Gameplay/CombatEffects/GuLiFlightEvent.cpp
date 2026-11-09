@@ -26,7 +26,7 @@ bool FGuLiFlightEvent::Serialize(FArchive& Ar)
 		if (Basic) { if (Ar.IsLoading()) Muzzle.SlotId=TEXT("BasicAttack"); } else Ar << Muzzle.SlotId;
 		uint32 Type = Muzzle.UnitTypeId; Ar.SerializeIntPacked(Type);
 		Ar << Muzzle.MuzzleIndex << Muzzle.KeepAliveSeconds;
-        if(State.Source.Kind==EGuLiTargetKind::GroundActor){uint32 Id=uint32(Muzzle.FrozenMuzzleVfxId);Ar.SerializeIntPacked(Id);if(Id>MAX_int32)Ar.SetError();if(Ar.IsLoading())Muzzle.FrozenMuzzleVfxId=int32(Id);}
+        if(State.Source.Kind==EGuLiTargetKind::GroundActor){uint32 Id=uint32(Muzzle.FrozenMuzzleVfxId);Ar.SerializeIntPacked(Id);Ar<<Muzzle.FrozenFireRate;if(Id>MAX_int32||!FMath::IsFinite(Muzzle.FrozenFireRate)||Muzzle.FrozenFireRate<=0||Muzzle.FrozenFireRate>30.f)Ar.SetError();if(Ar.IsLoading())Muzzle.FrozenMuzzleVfxId=int32(Id);}
 		Ar.SerializeBits(&Muzzle.bMechanicalShot,1);
 		if (State.Kind!=EGuLiCombatEffectKind::LinearProjectile)
 		{
@@ -60,10 +60,18 @@ bool FGuLiFlightEvent::Serialize(FArchive& Ar)
 		if (Ar.IsLoading()) ImpactVfxId = static_cast<int32>(Vfx);
 		if (Vfx>MAX_int32 || !Success) Ar.SetError();
 	}
-	// Preserve the record layout for current logical flight producers.
-	bool Reserved = false;
-	Ar.SerializeBits(&Reserved, 1);
-	if (Reserved) Ar.SetError();
+	// The former reserved bit is a versioned optional linear-flight extension.
+	// Old readers reject it rather than silently misreading companion recipes.
+	bool Extended = FrozenUnitTypeId>0 || bExplosiveFlight;
+    Ar.SerializeBits(&Extended,1);
+    if(Extended)
+    {
+        uint32 Type=uint32(FrozenUnitTypeId);Ar.SerializeIntPacked(Type);Ar.SerializeBits(&bExplosiveFlight,1);
+        if(bExplosiveFlight)Ar<<ExplosiveRadius;
+        if(Ar.IsLoading())FrozenUnitTypeId=int32(Type);
+        if(Type>MAX_uint16 || State.Kind!=EGuLiCombatEffectKind::LinearProjectile || bInstantGroundSegment
+            || (bExplosiveFlight && (bHasMuzzle || State.Source.Kind!=EGuLiTargetKind::GroundActor || !FMath::IsFinite(ExplosiveRadius) || ExplosiveRadius<=0)))Ar.SetError();
+    }
 	return !Ar.IsError();
 }
 

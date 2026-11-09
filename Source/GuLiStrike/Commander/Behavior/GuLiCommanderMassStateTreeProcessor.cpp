@@ -1,4 +1,5 @@
 #include "Commander/Behavior/GuLiCommanderMassStateTreeProcessor.h"
+#include "Commander/Behavior/Private/GuLiCommanderBehaviorExecution.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.h"
@@ -10,6 +11,7 @@
 #include "MassSubsystemBase.h"
 #include "StateTree.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 namespace
 {
@@ -78,9 +80,14 @@ void UGuLiCommanderMassStateTreeProcessor::Execute(FMassEntityManager&, FMassExe
 		{
 			const int32 Index = EntityIt;
 			auto& Fragment = Trees[Index];
-			const auto Unit = FGuLiTaskUnitId::Soldier(Identities[Index].SoldierId,Chunk.GetWorld());
-			if (!Tasks.HasState(Unit)) { ReleaseInstance(Chunk, Storage, Index, Fragment); continue; }
-			if (!Tasks.NeedsBehaviorStep(Unit)) continue;
+			FGuLiTaskUnitId Unit;bool bHasState,bNeedsStep;
+			{
+				TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_StateTreeEligibility);
+				Unit=FGuLiTaskUnitId::Soldier(Identities[Index].SoldierId,Chunk.GetWorld());
+				bHasState=Tasks.HasState(Unit);bNeedsStep=bHasState && Tasks.NeedsBehaviorStep(Unit);
+			}
+			if (!bHasState) { ReleaseInstance(Chunk, Storage, Index, Fragment); continue; }
+			if (!bNeedsStep) continue;
 			if (!Fragment.Tree || !Fragment.Tree->IsReadyToRun())
 			{ Tasks.ReportBehaviorError(Unit, TEXT("Mass StateTree asset is missing or uncompiled.")); continue; }
 			const bool bStarting = !Fragment.bStartAttempted;
@@ -91,8 +98,14 @@ void UGuLiCommanderMassStateTreeProcessor::Execute(FMassEntityManager&, FMassExe
 			}
 			auto* Data = Storage.GetInstanceData(Fragment.Instance);
 			if (!Data) { Tasks.ReportBehaviorError(Unit, TEXT("Mass StateTree instance is unavailable.")); continue; }
-			FMassStateTreeExecutionContext TreeContext(Storage, *Fragment.Tree, *Data, Chunk);
+			FMassStateTreeExecutionContext TreeContext = [&]()
+			{
+				TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_StateTreeContext);
+				return FMassStateTreeExecutionContext(Storage, *Fragment.Tree, *Data, Chunk);
+			}();
 			TreeContext.SetEntity(Chunk.GetEntity(Index));
+			FGuLiCommanderBehaviorExecution Identity(TreeContext,Unit);
+			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_StateTreeRun);
 			const auto Status = bStarting ? TreeContext.Start() : TreeContext.Tick(Chunk.GetDeltaTimeSeconds());
 			if (Status != EStateTreeRunStatus::Running)
 				Tasks.ReportBehaviorError(Unit, TEXT("Mass StateTree stopped unexpectedly."));

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Battle/Network/GuLiBattleTypes.h"
+#include "Network/GuLiHybridObjectKey.h"
 
 class UTextureRenderTarget2D;
 
@@ -54,10 +55,16 @@ struct FGuLiSceneUIRing
 struct FGuLiSceneUIHealthBar
 {
     FGuLiSceneUIElementKey Key;
+	FGuLiHybridObjectKey Target;
+	EGuLiTeam Team=EGuLiTeam::Unassigned;
 	FVector Center = FVector::ZeroVector;
 	float Fraction = 0;
+	float ShieldFraction=0,Opacity=1;
+	bool bHasShield=false,bEventOverride=false;
 	bool bSelected = false;
-	bool operator==(const FGuLiSceneUIHealthBar& R) const { return Key==R.Key && Center==R.Center && Fraction==R.Fraction && bSelected==R.bSelected; }
+	bool operator==(const FGuLiSceneUIHealthBar& R) const { return Key==R.Key && Target==R.Target && Team==R.Team
+		&& Center==R.Center && Fraction==R.Fraction && ShieldFraction==R.ShieldFraction && Opacity==R.Opacity
+		&& bHasShield==R.bHasShield && bEventOverride==R.bEventOverride && bSelected==R.bSelected; }
 };
 
 struct FGuLiSceneUILine

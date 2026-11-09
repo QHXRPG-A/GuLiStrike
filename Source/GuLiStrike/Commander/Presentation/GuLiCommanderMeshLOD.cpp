@@ -135,7 +135,7 @@ void UGuLiCommanderLODSubsystem::RegisterMesh(UMeshComponent* Component)
 	{
 		if (Existing->Resource.Get() == Resource && Existing->bNanite == Nanite)
 		{
-			ApplyModelOutline(*Existing, !ShouldShowModelOutlines());
+			ApplyModelOutline(*Existing, Existing->bReduced);
 			return;
 		}
 		RestoreMeshEntry(*Existing);
@@ -169,6 +169,7 @@ void UGuLiCommanderLODSubsystem::RegisterMesh(UMeshComponent* Component)
 
 void UGuLiCommanderLODSubsystem::RestoreMeshEntry(FMeshEntry& Entry)
 {
+	Entry.bReduced = false;
 	ApplyModelOutline(Entry, false);
 	if (!Entry.bApplied) return;
 	if (auto* Static = Cast<UStaticMeshComponent>(Entry.Component.Get()))
@@ -191,6 +192,7 @@ void UGuLiCommanderLODSubsystem::RestoreMeshEntry(FMeshEntry& Entry)
 void UGuLiCommanderLODSubsystem::ApplyMeshEntry(FMeshEntry& Entry, const bool bReduce)
 {
 	if (!bReduce) { RestoreMeshEntry(Entry); return; }
+	Entry.bReduced = true;
 	// Missing MeshLOD1 or Nanite only affects geometry selection. The runtime tier's
 	// outline rule still applies to these models and their assembled components.
 	ApplyModelOutline(Entry, true);
@@ -217,6 +219,29 @@ void UGuLiCommanderLODSubsystem::ApplyModelOutline(FMeshEntry& Entry, const bool
 {
 	auto* Component = Entry.Component.Get();
 	if (!Component) { Entry.OutlineOverrides.Reset(); return; }
+	// Overlay outlines are a separate mesh pass, outside the material slots.
+	// Use its native distance admission so reduced detail does not submit that
+	// pass. Keep the original material and restore its authored limit verbatim.
+	constexpr float SuppressedOverlayDistance=1.f;
+	const FString OverlayName=GetPathNameSafe(Component->GetOverlayMaterial());
+	const bool OutlineOverlay=OverlayName.Contains(TEXT("Outline")) || OverlayName.Contains(TEXT("Contour"))
+		|| OverlayName.Contains(TEXT("InvertedHull")) || OverlayName.Contains(TEXT("Ink_Backfaces"));
+	if (!bHide || !OutlineOverlay)
+	{
+		if (Entry.OutlineOverlayDistance.IsSet())
+		{
+			if (Component->GetOverlayMaterialMaxDrawDistance()==SuppressedOverlayDistance)
+				Component->SetOverlayMaterialMaxDrawDistance(Entry.OutlineOverlayDistance.GetValue());
+			Entry.OutlineOverlayDistance.Reset();
+			++MeshStateChanges;
+		}
+	}
+	else if (!Entry.OutlineOverlayDistance.IsSet())
+	{
+		Entry.OutlineOverlayDistance=Component->GetOverlayMaterialMaxDrawDistance();
+		Component->SetOverlayMaterialMaxDrawDistance(SuppressedOverlayDistance);
+		++MeshStateChanges;
+	}
 	if (!bHide)
 	{
 		for (const auto& Pair : Entry.OutlineOverrides)
@@ -314,6 +339,46 @@ void UGuLiCommanderLODSubsystem::Tick(float)
 		PendingMeshActors.Reset();
 		for (const auto& Actor : Pending) RegisterActorMeshes(Actor.Get());
 	}
+	if (Enabled && !bAllCommander && !Views.IsEmpty())
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderMeshLOD_Distance);
+		for (auto It = MeshEntries.CreateIterator(); It; ++It)
+		{
+			auto& Entry = It.Value();
+			const auto* Component = Entry.Component.Get();
+			if (!Component) { It.RemoveCurrent(); continue; }
+			const FBox Bounds = Component->Bounds.GetBox();
+			if (!Bounds.IsValid || Bounds.Min.ContainsNaN() || Bounds.Max.ContainsNaN()) continue;
+			// Shared geometry retains the highest detail requested by any local view.
+			// Frustum rejection does not reduce a nearby shadow-casting mesh. Large
+			// ISM batches remain conservative; their normal per-instance LOD still runs.
+			bool Reduce = true;
+			for (const auto& View : Views)
+			{
+				if (View.PresentationTier.IsSet())
+					Reduce &= GuLiPresentationLOD::ReduceMesh(View.PresentationTier.GetValue());
+				else
+				{
+					const double Distance = FMath::Sqrt(Bounds.ComputeSquaredDistanceToPoint(View.Position));
+					const float Screen = float(Bounds.GetExtent().Size()/FMath::Max(1.,Distance))*View.ProjectionScale;
+					Reduce &= EffectiveSettings.Classify(Distance,Screen,Entry.DistanceLevel)!=EGuLiCommanderLODLevel::Full;
+				}
+				if (!Reduce) break;
+			}
+			// Returning to detail is immediate. Hysteresis/residence only delay a
+			// reduction, so a camera jump cannot leave a nearby unit with stale LOD.
+			if (!Reduce || !Entry.DistanceLevel.IsSet() || Now<Entry.LastDistanceChangeSeconds
+				|| Now-Entry.LastDistanceChangeSeconds>=EffectiveSettings.MinimumResidenceSeconds)
+			{
+				if (!Entry.DistanceLevel.IsSet() || Entry.bReduced!=Reduce)
+				{
+					ApplyMeshEntry(Entry,Reduce);
+					Entry.DistanceLevel=Reduce?EGuLiCommanderLODLevel::Reduced:EGuLiCommanderLODLevel::Full;
+					Entry.LastDistanceChangeSeconds=Now;
+				}
+			}
+		}
+	}
 }
 
 FString UGuLiCommanderLODSubsystem::GetMeshLODStatsJson() const
@@ -336,8 +401,10 @@ FString UGuLiCommanderLODSubsystem::GetMeshLODStatsJson() const
 		auto Row = MakeShared<FJsonObject>();
 		Row->SetStringField(TEXT("component"), Component->GetPathName());
 		Row->SetStringField(TEXT("resource"), GetPathNameSafe(Entry.Resource.Get()));
+		Row->SetBoolField(TEXT("suppressed_outline_overlay"),Entry.OutlineOverlayDistance.IsSet());
 		Row->SetNumberField(TEXT("resource_lods"), Entry.LODCount);
 		Row->SetBoolField(TEXT("mesh_cap_applied"), Entry.bApplied);
+		Row->SetBoolField(TEXT("distance_reduced"), Entry.DistanceLevel.IsSet() && Entry.bReduced);
 		Row->SetNumberField(TEXT("suppressed_outline_slots"), Entry.OutlineOverrides.Num());
 		Row->SetStringField(TEXT("fallback"), Entry.bNanite ? TEXT("nanite") : Entry.LODCount < 2 ? TEXT("no_mesh_lod1") : TEXT(""));
 		Row->SetNumberField(TEXT("original_min_lod"), Entry.OriginalMinLOD);

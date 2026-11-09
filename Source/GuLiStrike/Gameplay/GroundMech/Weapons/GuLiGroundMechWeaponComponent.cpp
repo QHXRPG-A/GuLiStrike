@@ -1,5 +1,6 @@
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
+#include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
@@ -59,6 +60,7 @@ FName UGuLiGroundMechWeaponComponent::MuzzleSocket(uint8 Index) const
 void UGuLiGroundMechWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
+    if(auto* Cards=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>())Cards->OnGroundBuildChanged.AddDynamic(this,&UGuLiGroundMechWeaponComponent::OnRogueBuildChanged);
 	AddTickPrerequisiteActor(GetOwner());
 	if (auto* Mech = Cast<AGuLiGroundMechCharacter>(GetOwner()))
 	{
@@ -89,6 +91,10 @@ bool UGuLiGroundMechWeaponComponent::LoadConfiguration(const FString& Id)
 	}
 	if (!Upgrade || !FMath::IsFinite(Upgrade->FireRate) || Upgrade->FireRate <= 0 || Upgrade->FireRate > 30
 		|| !FMath::IsFinite(Upgrade->Damage) || Upgrade->Damage <= 0 || !Gun()) return false;
+    GuLiNet::Effects::Set Effects;
+    if(const auto* Identity=UGuLiHybridActorComponent::Find(GetOwner()))
+    {TMap<FString,int32> Counts;uint64 Revision;if(!GuLiGroundRogue::ReadBuild(*GetWorld(),Identity->GetState().Controller,Counts,Revision,&Effects))return false;}
+    if(double(Upgrade->FireRate)*GuLiNet::Effects::FireRateMultiplier(Effects)>GuLiNet::Effects::MaximumGroundFireRate)return false;
 	const FGuLiStrikeMechSkillsRow* Skill = nullptr;
 	if (SkillTable->GetRowStruct() != FGuLiStrikeMechSkillsRow::StaticStruct()) return false;
 	for (const auto& Pair : SkillTable->GetRowMap())
@@ -97,6 +103,7 @@ bool UGuLiGroundMechWeaponComponent::LoadConfiguration(const FString& Id)
 		if (Row->Id == Upgrade->SkillId) { Skill = Row; break; }
 	}
 	if (!Skill || !FMath::IsFinite(Skill->ProjectileSpeed) || Skill->ProjectileSpeed <= 0
+		|| Skill->InitialBulletVfxId<=0 || !FMath::IsFinite(Skill->InitialBulletDamageRatio) || Skill->InitialBulletDamageRatio<=0 || Skill->InitialBulletDamageRatio>1
 		|| !FMath::IsFinite(Skill->ProjectileLifetime) || Skill->ProjectileLifetime <= 0
 		|| !FMath::IsFinite(Skill->SweepRadius) || Skill->SweepRadius <= 0
 		|| !FMath::IsFinite(Skill->AimAssistRadiusCentimeters) || Skill->AimAssistRadiusCentimeters < 0
@@ -108,6 +115,15 @@ bool UGuLiGroundMechWeaponComponent::LoadConfiguration(const FString& Id)
 	auto* Animation = Skill->WeaponAnimation.LoadSynchronous();
 
 	auto* Muzzle = UGuLiNetworkSettings::CanPresent(GetWorld()) ? GuLiVfx::Load<UNiagaraSystem>(this, Skill->MuzzleVfxId) : nullptr;
+	if (UGuLiNetworkSettings::CanPresent(GetWorld()))
+	{
+		// Retain the configured shot resources in the world's VFX registry before
+		// the weapon becomes usable. A first impact must not synchronously load
+		// its Niagara package inside the authoritative projectile step.
+		GuLiVfx::Load<UNiagaraSystem>(this, Skill->BulletVfxId);
+        GuLiVfx::Load<UNiagaraSystem>(this, Skill->InitialBulletVfxId);
+		GuLiVfx::Load<UNiagaraSystem>(this, Skill->ImpactVfxId);
+	}
 	if (!Curve) return false;
 	if (Integrated)
 	{
@@ -116,6 +132,7 @@ bool UGuLiGroundMechWeaponComponent::LoadConfiguration(const FString& Id)
 		BodyAnim->ConfigureIntegratedRecoil(Curve,Skill->RecoilDuration);
 		ActiveSkill = *Skill; ActiveUpgrade = *Upgrade; MuzzleSystem = Muzzle;
 		ConfiguredAnim.Reset(); bConfigured = true;
+        RefreshRogueBuild();
 		return true;
 	}
 	if (!Animation || !Animation->IsChildOf(UGuLiGroundMechWeaponAnimInstance::StaticClass())) return false;
@@ -125,6 +142,7 @@ bool UGuLiGroundMechWeaponComponent::LoadConfiguration(const FString& Id)
 	if (!Anim) return false;
 	Anim->Configure(Curve, FName(Skill->RecoilBone), Skill->RecoilTargetLocalZCentimeters, Skill->RecoilDuration);
 	ConfiguredAnim = Anim; bConfigured = true;
+    RefreshRogueBuild();
 	return true;
 }
 
@@ -270,7 +288,7 @@ bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 	const FVector CameraRight = FVector(ViewToWorld.TransformVector(FVector::ForwardVector)).GetSafeNormal();
 	const FVector CameraForward = FVector(ViewToWorld.TransformVector(FVector::UpVector)).GetSafeNormal();
 	const FVector CameraOrigin = Projection.ViewOrigin;
-	const FVector Muzzle = Gun()->GetSocketLocation(MuzzleSocket(ShotsFired & 1));
+	const FVector Muzzle = Gun()->GetSocketLocation(MuzzleSocket(NextFireSide));
 	const double Range = FMath::Min(static_cast<double>(ActiveSkill.ProjectileSpeed) * ActiveSkill.ProjectileLifetime, 599999.0);
 	const EGuLiTeam OwnTeam = Mech->GetPlayerState<AGuLiBattlePlayerState>()->GetTeam();
 	TSet<FGuLiTargetHandle> SeenTargets;
@@ -370,7 +388,7 @@ void UGuLiGroundMechWeaponComponent::SetFireHeld(bool bHeld)
 bool UGuLiGroundMechWeaponComponent::GetActualShotRay(FVector& Origin,FVector& Direction) const
 {
 	if (!bConfigured || !Gun()) return false;
-	const FTransform Socket=Gun()->GetSocketTransform(MuzzleSocket(ShotsFired&1));
+	const FTransform Socket=Gun()->GetSocketTransform(MuzzleSocket(NextFireSide));
 	Origin=Socket.GetLocation(); Direction=Socket.GetUnitAxis(EAxis::X); return true;
 }
 
@@ -390,60 +408,74 @@ void UGuLiGroundMechWeaponComponent::AlignGun()
 
 FGuLiGroundAttackSnapshot UGuLiGroundMechWeaponComponent::BuildAttackSnapshot() const
 {
-    FGuLiGroundAttackSnapshot S;S.Damage=ActiveUpgrade.Damage;S.BulletVfxId=ActiveSkill.BulletVfxId;S.MuzzleVfxId=ActiveSkill.MuzzleVfxId;S.ImpactVfxId=ActiveSkill.ImpactVfxId;
+    return CachedAttack;
+}
+void UGuLiGroundMechWeaponComponent::OnRogueBuildChanged(FGuid Player,int64 Revision){RefreshRogueBuild(Player,Revision);}
+void UGuLiGroundMechWeaponComponent::RefreshRogueBuild(FGuid Player,int64)
+{
+    if(!bConfigured)return;
+    FGuLiGroundAttackSnapshot S;
     if(const auto* Identity=UGuLiHybridActorComponent::Find(GetOwner()))
-    {S.Player=Identity->GetState().Controller;TMap<FString,int32> Counts;GuLiGroundRogue::ReadBuild(*GetWorld(),S.Player,Counts,S.Revision,&S.Effects);}
+    {S.Player=Identity->GetState().Controller;if(Player.IsValid()&&Player!=S.Player)return;TMap<FString,int32> Counts;if(!GuLiGroundRogue::ReadBuild(*GetWorld(),S.Player,Counts,S.Revision,&S.Effects))return;}
+    const float Rate=ActiveUpgrade.FireRate*GuLiNet::Effects::FireRateMultiplier(S.Effects);
+    if(!FMath::IsFinite(Rate)||Rate<=0||Rate>GuLiNet::Effects::MaximumGroundFireRate)return;
+    const bool Enhanced=GuLiNet::Effects::HasEnhancedBullet(S.Effects);
+    S.Damage=ActiveUpgrade.Damage*(Enhanced?1.f:ActiveSkill.InitialBulletDamageRatio);
+    S.BulletVfxId=Enhanced?ActiveSkill.BulletVfxId:ActiveSkill.InitialBulletVfxId;S.MuzzleVfxId=ActiveSkill.MuzzleVfxId;S.ImpactVfxId=ActiveSkill.ImpactVfxId;
     uint32 Bullet=uint32(S.BulletVfxId),Impact=uint32(S.ImpactVfxId),Muzzle=uint32(S.MuzzleVfxId);
     GuLiNet::Effects::FreezePresentation(S.Effects,Bullet,Impact,Muzzle);S.BulletVfxId=int32(Bullet);S.ImpactVfxId=int32(Impact);S.MuzzleVfxId=int32(Muzzle);
-    return S;
+    if(EffectiveFireRate>0&&EffectiveFireRate!=Rate)NextShotTime=GuLiMechFire::RescaleCooldown(UGuLiHybridActorComponent::BattleSeconds(GetOwner()),NextShotTime,EffectiveFireRate,Rate);
+    S.FireRate=Rate;EffectiveFireRate=Rate;CachedAttack=MoveTemp(S);
+    if(auto* Anim=Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance()))Anim->SetFireAnimationRate(Rate);
+    if(UGuLiNetworkSettings::CanPresent(GetWorld()))
+    {const auto Extra=GuLiNet::Effects::GetExplosive(CachedAttack.Effects);if(Extra.Interval()){GuLiVfx::Load<UNiagaraSystem>(this,int32(Extra.BulletVfx));GuLiVfx::Load<UNiagaraSystem>(this,int32(Extra.ImpactVfx));}}
+}
+void UGuLiGroundMechWeaponComponent::QueueFireAnimationNotify(uint8 Side)
+{
+    // Only an authoritative, positive-delta animation step may enqueue a shot.
+    if(!bAcceptingFireNotifies || !bFireHeld || Side!=NextFireSide)return;
+    const double Now=UGuLiHybridActorComponent::BattleSeconds(GetOwner());
+    PendingFireNotifications.Add({Side,++FireSerial,Now});NextFireSide^=1;
+    NextShotTime=Now+1./EffectiveFireRate;
 }
 void UGuLiGroundMechWeaponComponent::TryFire()
 {
-	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !bFireHeld || !bHasAim || !CanControl(false)) return;
-	const double Now = UGuLiHybridActorComponent::BattleSeconds(GetOwner());
-	if (Now + 1.e-6 < NextShotTime) return;
-	auto* Pool = GetWorld()->GetSubsystem<UGuLiProjectilePoolSubsystem>();
-	if (!Pool) return;
-	FGuLiPooledProjectileLaunch Launch;
-	Launch.Context.MatchEpoch = SourceEpoch; Launch.Context.Source = SourceHandle;
-	Launch.Context.ShotId = FGuid::NewGuid(); Launch.Context.RootEventId = Launch.Context.ShotId;
-	if (const auto* Identity=UGuLiHybridActorComponent::Find(GetOwner()))
-	{
-		const FString StableShot=Identity->GetObjectKey().StableId.ToString(EGuidFormats::Digits)
-			+FString::Printf(TEXT("/life/%u/shot/%d"),Identity->GetObjectKey().LifeGeneration,ShotsFired+1);
-		Launch.Context.ShotId=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/GroundMech"),EGuLiHybridObjectKind::Flight,StableShot).StableId;
-		Launch.Context.RootEventId=Launch.Context.ShotId;
-	}
-	Launch.Context.Damage = ActiveUpgrade.Damage;
-	Launch.Context.SkillId = FName(*CurrentUpgradeId);
-	Launch.Context.WeaponBinding.SlotId=TEXT("BasicAttack");
-	const uint8 MuzzleIndex = CastChecked<AGuLiGroundMechCharacter>(GetOwner())->UsesIntegratedBodyMesh() ? (ShotsFired & 1) : 0;
-	Launch.Position = Gun()->GetSocketLocation(MuzzleSocket(MuzzleIndex));
-	const auto* Mech=Cast<AGuLiGroundMechCharacter>(GetOwner());
-	Launch.Direction = Mech && Mech->UsesIntegratedBodyMesh()
-		? Gun()->GetSocketTransform(MuzzleSocket(MuzzleIndex)).GetUnitAxis(EAxis::X)
-		: (FVector(AimPoint) - Launch.Position).GetSafeNormal();
-	Launch.MuzzleOffset = GetOwner()->GetActorTransform().InverseTransformPosition(Launch.Position);
-	Launch.Speed = ActiveSkill.ProjectileSpeed; Launch.Lifetime = ActiveSkill.ProjectileLifetime;
-	Launch.MaximumDistance = Launch.Speed * Launch.Lifetime; Launch.SweepRadius = ActiveSkill.SweepRadius;
-	Launch.ServerTime = Now; Launch.PlayerBulletVfxId = ActiveSkill.BulletVfxId;
-    const auto& Snapshot=Launch.GroundAttack=BuildAttackSnapshot();
-	if (!Pool->Launch(Launch).IsValid()) return;
-	++ShotsFired;
-	const double Interval = 1. / ActiveUpgrade.FireRate;
-	NextShotTime = NextShotTime > 0 && Now - NextShotTime <= 1./30. + 1.e-6 ? NextShotTime + Interval : Now + Interval;
-	FGuLiCombatShotCue Cue;
-	Cue.MatchEpoch = SourceEpoch; Cue.ShotId = Launch.Context.ShotId; Cue.Source = SourceHandle;
-	Cue.Start = Launch.Position; Cue.End = Launch.Position+Launch.Direction*FVector::Distance(Launch.Position,FVector(AimPoint)); Cue.ServerTime = Now;
-	Cue.MuzzleDirection = Launch.Direction; Cue.bMuzzleOnly = true;
-	Cue.MuzzleIndex = MuzzleIndex;
-    Cue.FrozenMuzzleVfxId=Snapshot.MuzzleVfxId;
-	Cue.SlotId = TEXT("BasicAttack");
-	UGuLiCombatEffectReplicationComponent::AttachFlightMuzzle(GetWorld(),Cue);
-	PlayFlightShot(Cue.ShotId,Cue.ServerTime,Cue.MuzzleIndex,Cue.FrozenMuzzleVfxId);
+    bAcceptingFireNotifies=false;
+    if(auto* Anim=Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance()))SavedFirePhase=Anim->GetFireLoopPhase();
+    auto Pending=MoveTemp(PendingFireNotifications);PendingFireNotifications.Reset();
+    for(const auto& Event:Pending)FireFromAnimation(Event.Side,Event.Serial,Event.Time);
+}
+void UGuLiGroundMechWeaponComponent::FireFromAnimation(uint8 MuzzleIndex,uint64 Serial,double FireTime)
+{
+    if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !bFireHeld || !bHasAim || !CanControl(false)) return;
+    auto* Pool=GetWorld()->GetSubsystem<UGuLiProjectilePoolSubsystem>();if(!Pool)return;
+    const auto* Identity=UGuLiHybridActorComponent::Find(GetOwner());if(!Identity)return;
+    FGuLiPooledProjectileLaunch Launch;
+    Launch.Context.MatchEpoch=SourceEpoch;Launch.Context.Source=SourceHandle;
+    const FString StableShot=Identity->GetObjectKey().StableId.ToString(EGuidFormats::Digits)
+        +FString::Printf(TEXT("/life/%u/shot/%llu"),Identity->GetObjectKey().LifeGeneration,Serial);
+    Launch.Context.ShotId=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/GroundMech"),EGuLiHybridObjectKind::Flight,StableShot).StableId;
+    Launch.Context.RootEventId=Launch.Context.ShotId;Launch.Context.Damage=GetShotDamage();
+    Launch.Context.SkillId=FName(*CurrentUpgradeId);Launch.Context.WeaponBinding.SlotId=TEXT("BasicAttack");
+    Launch.Position=Gun()->GetSocketLocation(MuzzleSocket(MuzzleIndex));
+    Launch.Direction=Gun()->GetSocketTransform(MuzzleSocket(MuzzleIndex)).GetUnitAxis(EAxis::X);
+    const auto* Mech=CastChecked<AGuLiGroundMechCharacter>(GetOwner());
+    const auto Transform=GetOwner()->GetActorTransform();
+    Launch.MuzzleOffset=Transform.InverseTransformPosition(Launch.Position);
+    Launch.GroundOutward=FRotationMatrix(FRotator(0,Mech->GetUpperAimState(false).WorldYaw,0)).GetUnitAxis(EAxis::Y)*(MuzzleIndex==0?1.:-1.);
+    Launch.GroundOutwardLocal=Transform.InverseTransformVectorNoScale(Launch.GroundOutward);
+    Launch.Speed=ActiveSkill.ProjectileSpeed;Launch.Lifetime=ActiveSkill.ProjectileLifetime;
+    Launch.MaximumDistance=Launch.Speed*Launch.Lifetime;Launch.SweepRadius=ActiveSkill.SweepRadius;
+    Launch.ServerTime=FireTime;Launch.FireNotifyTime=FireTime;Launch.FireOrdinal=Serial;Launch.GroundMuzzleIndex=MuzzleIndex;
+    Launch.PlayerBulletVfxId=CachedAttack.BulletVfxId;Launch.GroundAttack=BuildAttackSnapshot();
+    // Exactly the Mass launch contract: local acceptance produces feedback now;
+    // registration, collision and settlement remain in the common projectile pool.
+    if(!Pool->Launch(Launch).IsValid())
+    {UE_LOG(LogTemp,Warning,TEXT("[GroundFire] launch-rejected shot=%s side=%u serial=%llu"),*Launch.Context.ShotId.ToString(EGuidFormats::Digits),uint32(MuzzleIndex),Serial);return;}
+    ++ShotsFired;PresentAnimationFire(Launch.Context.ShotId,float(FireTime),MuzzleIndex,Launch.GroundAttack.MuzzleVfxId);
 }
 
-void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId, float ShotTime, uint8 MuzzleIndex,int32 FrozenMuzzleVfxId)
+void UGuLiGroundMechWeaponComponent::PresentAnimationFire(FGuid ShotId,float ShotTime,uint8 MuzzleIndex,int32 FrozenMuzzleVfxId)
 {
 	if (!bConfigured || MuzzleIndex > 1 || SeenShots.Contains(ShotId)) return;
 	if (SeenShots.Num() >= 256) SeenShots.Reset();
@@ -495,15 +527,37 @@ void UGuLiGroundMechWeaponComponent::AdvanceHybrid(float DeltaSeconds,bool bFire
 {
 	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !bConfigured) return;
 	RegisterSource(); bHasAim=bAim && AcceptAim(Aim); bFireHeld=bFire && bHasAim && CanControl(false);
-	AlignGun(); TryFire();
+    AlignGun();
+    auto* Anim=Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance());if(!Anim)return;
+    bAcceptingFireNotifies=bFireHeld && EffectiveFireRate>0 && CachedAttack.Damage>0;
+    if(!bAcceptingFireNotifies){if(Anim->IsFireLoopPlaying())Anim->StopFireLoop();return;}
+    if(!Anim->IsFireLoopPlaying())
+    {
+        const double Remaining=FMath::Max(0.,NextShotTime-UGuLiHybridActorComponent::BattleSeconds(GetOwner()));
+        const float Phase=bRestoreFirePhase?SavedFirePhase:float(FMath::Fmod(NextFireSide*.5-Remaining*EffectiveFireRate*.5+1.,1.));
+        bRestoreFirePhase=false;Anim->StartFireLoop(Phase,EffectiveFireRate,true);
+    }
 }
 
 void UGuLiGroundMechWeaponComponent::EndPlay(EEndPlayReason::Type Reason)
 {
+    if(auto* Cards=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>())Cards->OnGroundBuildChanged.RemoveDynamic(this,&UGuLiGroundMechWeaponComponent::OnRogueBuildChanged);
 	bFireHeld = false;
 	ResetAimAssistSources();
 	if (auto* Ledger = GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()) Ledger->UnregisterSource(SourceHandle, this);
 	for (UNiagaraComponent* Effect : MuzzleEffects) if (IsValid(Effect)) { Effect->DeactivateImmediate(); Effect->ReleaseToPool(); }
 	MuzzleEffects.Reset();
 	Super::EndPlay(Reason);
+}
+
+
+void UGuLiGroundMechWeaponComponent::PlayFlightShot(FGuid ShotId,float ShotTime,uint8 MuzzleIndex,int32 FrozenMuzzleVfxId,float FrozenFireRate)
+{
+    if (!bConfigured || SeenShots.Contains(ShotId) || UGuLiHybridActorComponent::HasSimulation(GetOwner())) return;
+    const float Rate=FrozenFireRate>0?FrozenFireRate:EffectiveFireRate;
+    const float Age=FMath::Max(0.f,float(UGuLiHybridActorComponent::BattleSeconds(GetOwner())-ShotTime));
+    if (Rate<=0 || Age>=2.f/Rate) return;
+    if (auto* Anim=Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance()))
+        Anim->PresentFireLoop(MuzzleIndex,Rate,Age);
+    PresentAnimationFire(ShotId,ShotTime,MuzzleIndex,FrozenMuzzleVfxId);
 }

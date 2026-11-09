@@ -107,7 +107,7 @@ public:
 	bool CanTeamMineAt(EGuLiTeam Team, int32 ClusterId) const;
 	bool GetNodeMiningTarget(uint32 NodeId, FVector& Target) const;
 	uint32 FindNearestMiningNode(uint16 ClusterId, const FVector& Position) const;
-	void IgnoreMiningNavigationProxies(FCollisionQueryParams& Params) const;
+	TSharedRef<const FCollisionQueryParams> GetMiningVisibilityParams() const;
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
 	bool IsClusterEmpty(int32 ClusterId) const;
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
@@ -151,6 +151,8 @@ private:
 
 	TArray<uint8> NodeRemaining;
 	TArray<int32> ClusterRemaining;
+	// Navigation proxy identities change only during scene creation/teardown.
+	mutable TSharedPtr<const FCollisionQueryParams> MiningVisibilityParams;
 	struct FPendingOreRemoval { uint32 NodeId; uint64 Generation; double QueuedAt; };
 	TArray<FPendingOreRemoval> PendingOreRemovals;
 	TSet<uint32> QueuedOreNodes;

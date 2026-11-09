@@ -24,7 +24,7 @@
 
 namespace GuLiHybridGround
 {
-constexpr uint32 StateVersion=14;
+constexpr uint32 StateVersion=15;
 constexpr uint32 MotionVersion=9;
 struct FPose
 {
@@ -54,6 +54,7 @@ struct FPrivate
     FString Upgrade;
     double NextShot=0;
     int32 Shots=0;
+    uint64 FireSerial=0;uint8 NextFireSide=0;float FirePhase=0;
     FVector WeaponAim=FVector::ZeroVector;
     bool bFire=false,bHasAim=false;
     float RecoilAge=100,RecoilStart=0,RecoilRest=0,RecoilAlpha=0,RecoilOffset=0;
@@ -96,13 +97,13 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
     auto& S=V.Support; A.Value(S.SoldierId.Value); A.Value(S.Epoch); A.Value(S.DisplacementRevision);
     A.Value(S.BodyLocation); A.Value(S.RelativeLocation); A.Value(S.TopZ); A.Value(S.Radius); A.Value(S.SimulationSeconds);
     A.Value(S.SourceLocation); A.Value(S.SourceTopZ); A.Value(S.bHasSourceReference);
-    A.String(V.Upgrade,128); A.Value(V.NextShot); A.Value(V.Shots); A.Value(V.WeaponAim); A.Value(V.bFire); A.Value(V.bHasAim);
+    A.String(V.Upgrade,128); A.Value(V.NextShot); A.Value(V.Shots);A.Value(V.FireSerial);A.Value(V.NextFireSide);A.Value(V.FirePhase); A.Value(V.WeaponAim); A.Value(V.bFire); A.Value(V.bHasAim);
     A.Value(V.RecoilAge); A.Value(V.RecoilStart); A.Value(V.RecoilRest); A.Value(V.RecoilAlpha); A.Value(V.RecoilOffset);
     A.Array(V.SeenShots,8192,[](auto& Ar,auto& ID){ Ar.Value(ID); if (!ID.IsValid()) Ar.Reject(); });
     A.Bytes(V.Placement,65536);
     if (!V.Key.IsValid() || V.Key.Kind!=EGuLiHybridObjectKind::GroundPlayer || V.FuelRecoveryElapsed<0
         || S.Radius<0 || S.SimulationSeconds<0
-        || (V.bAbility && !V.Simulation.bRocket) || V.Upgrade.IsEmpty() || V.NextShot<0 || V.Shots<0 || V.RecoilAge<0
+        || (V.bAbility && !V.Simulation.bRocket) || V.Upgrade.IsEmpty() || V.NextShot<0 || V.Shots<0 || V.NextFireSide>1 || !FMath::IsFinite(V.FirePhase) || V.FirePhase<0 || V.FirePhase>1 || V.RecoilAge<0
         || V.RecoilStart<0 || V.RecoilStart>1 || V.RecoilAlpha<0 || V.RecoilAlpha>1) A.Reject();
 }
 bool Decode(TConstArrayView<uint8> Bytes,FPrivate& V)
@@ -232,6 +233,8 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
             // Activation runs after the new authority/permit is installed, without charging fuel at restore time.
             bRestoreAbility=V.bAbility;
             Weapon->CurrentUpgradeId=V.Upgrade; Weapon->NextShotTime=V.NextShot; Weapon->ShotsFired=V.Shots;
+            Weapon->FireSerial=V.FireSerial;Weapon->NextFireSide=V.NextFireSide;Weapon->SavedFirePhase=V.FirePhase;
+            Weapon->bRestoreFirePhase=V.bFire;Weapon->PendingFireNotifications.Reset();Weapon->bAcceptingFireNotifies=false;
             Weapon->AimPoint=V.WeaponAim; Weapon->bHasAim=V.bHasAim; Weapon->bFireHeld=V.bFire;
             Weapon->SeenShots.Reset(); for (const auto& ID : V.SeenShots) Weapon->SeenShots.Add(ID);
             Weapon->RegisterSource(); Weapon->AlignGun();
@@ -336,6 +339,7 @@ public:
         V.bRocketThrusting=M->bRocketThrusting; V.bRocketAllowed=M->bRocketAllowedThisMove;
         V.FuelRecoveryElapsed=M->RocketState.RecoveryElapsed; V.Support=M->SupportState;
         const auto* Weapon=P->Weapon.Get(); V.Upgrade=Weapon->CurrentUpgradeId; V.NextShot=Weapon->NextShotTime; V.Shots=Weapon->ShotsFired;
+        V.FireSerial=Weapon->FireSerial;V.NextFireSide=Weapon->NextFireSide;V.FirePhase=Weapon->SavedFirePhase;
         V.WeaponAim=Weapon->AimPoint; V.bFire=Weapon->bFireHeld; V.bHasAim=Weapon->bHasAim; V.SeenShots=Weapon->SeenShots.Array();
         if (const auto* Anim=Weapon->ConfiguredAnim.Get())
         { V.RecoilAge=Anim->Age; V.RecoilStart=Anim->StartAlpha; V.RecoilRest=Anim->RestZ; V.RecoilAlpha=Anim->RecoilAlpha; V.RecoilOffset=Anim->RecoilOffset; }

@@ -71,4 +71,16 @@ struct FGuLiStrikeVfxEffectsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	float TrailBendCm = 0.0f;
 
+	/** PersistentTrailVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	int32 PersistentTrailVfxId = 0;
+
+	/** InitialStyleLengthMultiplier (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	float InitialStyleLengthMultiplier = 0.0f;
+
+	/** RadiusAtUnitScaleCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	float RadiusAtUnitScaleCm = 0.0f;
+
 };

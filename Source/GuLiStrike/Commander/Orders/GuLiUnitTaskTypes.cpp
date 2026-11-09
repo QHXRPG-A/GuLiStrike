@@ -10,7 +10,7 @@ FGuLiTaskUnitId FGuLiTaskUnitId::Soldier(FGuLiSoldierId Id,const UWorld* World)
     if (World && UGuLiNetworkSettings::IsHybrid(World))
     {
         const auto* Authority=World->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
-        V.Generation=Authority?Authority->MakeSoldierTargetHandle(Id).Generation:0;
+        V.Generation=Authority?Authority->GetSoldierTaskGeneration(Id):0;
     }
     return V;
 }

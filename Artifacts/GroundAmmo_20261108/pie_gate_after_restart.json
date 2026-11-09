@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "pid": 37272,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "resource": {
+    "success": true,
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "e5e7908192d15eda5181bc03ff3137a34f3c45e6",
+    "layout_hash": "dcbb475b9dc2fca97b437ff547b0565109f04c46",
+    "initial_soldiers": 47,
+    "validated_soldiers": 47
+  },
+  "navigation": {
+    "success": true,
+    "message": "",
+    "entries": [
+      {
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+        "kind": "Ground",
+        "status": "Hit",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+        "kind": "Ground",
+        "status": "Hit",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "object": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+        "kind": "Flight",
+        "status": "Hit",
+        "message": "Validated saved flight graph."
+      }
+    ]
+  },
+  "manifest": {
+    "success": true,
+    "error": "",
+    "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+    "objects": 692,
+    "rules": 172,
+    "tables": 0
+  },
+  "ground_ammo_entities": [
+    "GroundAmmo_PrimaryDamage",
+    "GroundAmmo_BlastCenter",
+    "GroundAmmo_Inside12m",
+    "GroundAmmo_Boundary15m",
+    "GroundAmmo_Outside24m",
+    "GroundAmmo_Friendly",
+    "GroundAmmo_Shield",
+    "GroundAmmo_BehindWall",
+    "GroundAmmo_Pioneer",
+    "GroundAmmo_HeavyDefense",
+    "GroundAmmo_Sweeper",
+    "GroundAmmo_BlockingWall",
+    "GroundAmmo_Instructions_Entry",
+    "GroundAmmo_Instructions_AttackRate",
+    "GroundAmmo_Instructions_Prerequisites",
+    "GroundAmmo_Instructions_Explosion",
+    "GroundAmmo_Instructions_Recovery",
+    "GroundAmmo_ObserveExplosion",
+    "GroundAmmo_ObserveDamage"
+  ],
+  "dirty_content": [],
+  "dirty_maps": [],
+  "PIE": false
+}

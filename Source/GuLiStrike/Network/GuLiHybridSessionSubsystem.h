@@ -52,12 +52,15 @@ public:
     void Stop();
     bool SendControl(FGuLiHybridMessage Message);
     bool SendPeer(const FGuid& Peer, FGuLiHybridMessage Message);
+    // Takes the native body directly; session identity and fault policy are unchanged.
+    bool SendPeerNative(const FGuid& Peer,GuLiNet::Message Message);
     void RecordSkippedStationaryMassPoses(uint64 Exact,uint64 NaturalPhase);
     FGuid GetPeerConnection(const FGuid& Peer) const;
     bool SendPeerPrepared(const FGuid& Peer,FGuLiHybridMessage Message,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes=0);
     bool SendPeerPreparedNative(const FGuid& Peer,const GuLiNet::Message& Message,TConstArrayView<uint8> Packed,bool bPacked,SIZE_T ReferenceBytes=0);
     bool CanQueueHandoff(const FGuid& Peer) const;
     bool BroadcastPeer(const FGuLiHybridMessage& Message);
+    bool BroadcastPeerNative(GuLiNet::Message Message);
     bool IsConnected() const;
     bool IsReconnecting() const;
     bool IsNativePeerReceiveEnabled() const;

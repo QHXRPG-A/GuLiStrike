@@ -59,11 +59,11 @@ Spider风格版入口为 `/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled
 
 授权专项验证入口为 `verify_fire.py`（隔离双端 PIE）和 `GuLiStrike.GroundMech.Fire`（原生自动化）。验证脚本会注入输入、切级、解除占有并恢复，勿在用户游玩中运行。结果在 [Fire 证据目录](../../TestResults/GroundMech/Fire)；VibeUE 布尔读写补丁的可重放入口为 `Scripts/PluginPatches/fix_vibeue_niagara_bool.py`，插件本体被项目 Git 忽略，更新插件后须重新应用并构建。
 
-2026-09-20的候选技术结果与审核状态记录在[开火开发文档](../../Progress/DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md)。2026-09-21按用户确认的空中战斗方案，正式 `BP_GroundMech_Light` 已绑定两张表、机枪动画并启用武器；本次视觉验收仍单独记录。
+2026-09-20的候选技术结果与审核状态记录在[开火开发文档](../../Progress/DevelopmentDocumentation/20260920-玩家游骑兵开火与升级配置.md)。2026-09-21按用户确认的空中战斗方案，正式 `BP_GroundMech_Light` 已绑定两张表、机枪动画并启用武器；本次视觉验收仍单独记录。
 
 ## 2026-09-21 火箭跳
 
-火箭跳接入正式Ground机甲与FireReview候选。构建、导入和实机验收的当前状态见[开发记录](../../Progress/DevelopmentDocumentation/20260920-地面机甲火箭跳.md)。
+火箭跳接入正式Ground机甲与FireReview候选。构建、导入和实机验收的当前状态见[开发记录](../../Progress/DevelopmentDocumentation/20260920-游骑兵火箭跳.md)。
 
 空格持续推进，容量100，每秒消耗20；落地并松开空格1秒后每秒恢复20。空中有余量可以再次推进；耗尽后需松键、落地恢复，不会持续按住自动起飞。最高上升1200cm/s，普通地面与有效Mass顶部均可起飞。
 
@@ -81,7 +81,7 @@ Spider风格版入口为 `/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled
 
 正式`BP_GroundMech_Light`绑定两张机甲表、默认升级1.1及机枪动画。射线未命中时使用远端目标；推进、滑行、下落和落地期间都允许持续射击，输入中断规则保持一致。
 
-推力明确保持2180cm/s²、上升上限1200cm/s。根据下落慢的反馈，Excel新增`FallGravityMultiplier=2`，仅对无有效推进且已经下降的阶段生效；重新推进恢复原重力。构建与实机状态见[本次开发记录](../../Progress/DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md)。
+推力明确保持2180cm/s²、上升上限1200cm/s。根据下落慢的反馈，Excel新增`FallGravityMultiplier=2`，仅对无有效推进且已经下降的阶段生效；重新推进恢复原重力。构建与实机状态见[本次开发记录](../../Progress/DevelopmentDocumentation/20260921-游骑兵动画蓝图与空中战斗.md)。
 
 2026-09-21本轮收尾：2倍下落已实测约1960cm/s²；上升参数保持。Mass顶面向上离开时不再误判侧碰，已实际验证从同一单位顶部起落并恢复容量。用户已确认空处射击与当前双喷、腿部倾斜和新版下落；容量条独立视觉终验及未覆盖专项见开发记录。最终源码构建、13项既有回归、联机采样及恢复记录位于`TestResults/GroundMech/Animation`。
 

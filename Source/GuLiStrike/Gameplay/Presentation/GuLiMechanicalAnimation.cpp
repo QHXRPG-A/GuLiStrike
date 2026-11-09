@@ -353,8 +353,10 @@ bool GuLiMechanicalAnimation::WriteInstance(UInstancedStaticMeshComponent& Compo
 	if (Component.NumCustomDataFloats < FGuLiMechanicalAnimationFrame::CustomDataFloats || !Component.IsValidInstance(Index)) return false;
 	bool bChanged = false;
 	const int32 Start = Index * Component.NumCustomDataFloats;
-	TArray<float, TInlineAllocator<59>> Data;
-	Data.Append(Component.PerInstanceSMCustomData.GetData() + Start, Component.NumCustomDataFloats);
+	// These are the only slots owned by mechanical animation. The scalar tail
+	// belongs to VAT/other consumers; SetCustomData preserves that untouched tail.
+	float Data[FGuLiMechanicalAnimationFrame::CustomDataFloats];
+	FMemory::Memcpy(Data, Component.PerInstanceSMCustomData.GetData() + Start, sizeof(Data));
 	Data[0] = HitTime;
 	Data[29] = Current.MissilePodVisible;
 	Data[30] = Previous.MissilePodVisible;
@@ -363,12 +365,13 @@ bool GuLiMechanicalAnimation::WriteInstance(UInstancedStaticMeshComponent& Compo
 		Data[FGuLiMechanicalAnimationFrame::PoseIndex(I, false)] = Current.Values[I];
 		Data[FGuLiMechanicalAnimationFrame::PoseIndex(I, true)] = Previous.Values[I];
 	}
-	for (int32 Slot = 0; Slot < Component.NumCustomDataFloats; ++Slot)
+	for (int32 Slot = 0; Slot < FGuLiMechanicalAnimationFrame::CustomDataFloats; ++Slot)
 	{
 		const float Value = Data[Slot];
 		if (!FMath::IsNearlyEqual(Component.PerInstanceSMCustomData[Start+Slot], Value, 0.00001f))
 		{
 			bChanged = true;
+			break;
 		}
 	}
 	// UE's instance data manager uploads dirty instance ranges without recreating the scene proxy.

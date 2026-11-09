@@ -1,0 +1,238 @@
+{
+  "recorded_utc": "2026-11-02T08:53:09.318728+00:00",
+  "scope": "Ground HUD animation increment only; previous shared edits preserved",
+  "build": {
+    "target": "GuLiStrikeEditor Win64 Development",
+    "engine": "D:/UnrealEngine-5.7",
+    "log": "build-delivery.log",
+    "result": "Succeeded",
+    "actions": 4,
+    "seconds": 6.04,
+    "build_id": {
+      "BuildId": "ec746d14-0746-471d-9ee9-2dfd468f881d",
+      "Match": true
+    },
+    "reloaded": true
+  },
+  "resources": {
+    "import_evidence": "asset-import.json",
+    "atlas_evidence": "atlas-validation.json",
+    "texture_count": 4,
+    "material_count": 2,
+    "table_rows": 71,
+    "new_motion_rows": 36,
+    "rgba_mib": 55.03082275390625,
+    "resident_mib": 56.25,
+    "budget_mib": 64
+  },
+  "runtime": {
+    "first_checks": {
+      "no_script_error": true,
+      "first_entry_once": true,
+      "single_shot": true,
+      "continuous_shot_matches_receipts": true,
+      "invalid_input_no_animation": true,
+      "blink_cast_once": true,
+      "blink_ready_once": true,
+      "kick_cap": true,
+      "cooldown_range": true,
+      "no_catchup_loops": true,
+      "ordinary_refresh_rate": 4.998529844162825
+    },
+    "final_checks": {
+      "no_script_error": true,
+      "aim_fades": true,
+      "jet_cast_once": true,
+      "jet_ready_once": true,
+      "interrupted_blink_cast_once": true,
+      "interrupted_blink_ready_once": true,
+      "card_material_gate_ready": true,
+      "cards_selectable_phase": true,
+      "hidden_refresh_stopped": true,
+      "hidden_motion_stopped": true,
+      "card_reopen": true,
+      "resume_no_entry_replay": true,
+      "resume_no_ready_replay": true
+    },
+    "final_evidence": "runtime-final.json",
+    "ordinary_refresh_hz": 4.998529844162825,
+    "native_events": true,
+    "no_new_network_requests": true
+  },
+  "layout": {
+    "checks": [
+      {
+        "requested": [
+          1920,
+          1080
+        ],
+        "hud_size": [
+          1920.0,
+          1083.0
+        ],
+        "design_extent": [
+          1920.0,
+          1083.0
+        ],
+        "relative_aspect_error": 0.0027700831024930483,
+        "matches_requested_within_one_percent": true,
+        "actual_panel_bounds_inside": true
+      },
+      {
+        "requested": [
+          1920,
+          1200
+        ],
+        "hud_size": [
+          1727.9998779296875,
+          974.699951171875
+        ],
+        "design_extent": [
+          1920.0,
+          1083.0
+        ],
+        "relative_aspect_error": 0.10803321823046996,
+        "matches_requested_within_one_percent": false,
+        "actual_panel_bounds_inside": true
+      },
+      {
+        "requested": [
+          2520,
+          1080
+        ],
+        "hud_size": [
+          1920.0,
+          1083.0
+        ],
+        "design_extent": [
+          1920.0,
+          1083.0
+        ],
+        "relative_aspect_error": 0.24020577760189954,
+        "matches_requested_within_one_percent": false,
+        "actual_panel_bounds_inside": true
+      }
+    ],
+    "all_requested_aspects_verified": false,
+    "limitation": "The fixed render viewport request did not change live HUD geometry to 16:10 or 21:9. Actual near-16:9 panel bounds only; no text readability or visual claim.",
+    "visual_review": "not_performed"
+  },
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "readback": "scene-readback.json",
+    "saved": true,
+    "entity_count": 5,
+    "model": 4001,
+    "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+    "resource_gate": "Resource authoring source and baked runtime definition are current.",
+    "dirty": [],
+    "pie": false
+  },
+  "pending": [
+    "Real damage/shield absorption/kill X and duplicate damage receipts in combat",
+    "Death/respawn, same-world restore, seat/epoch transitions",
+    "Actual 16:10 and 21:9 HUD geometry and key/text readability",
+    "Full CPU/GPU performance measurement",
+    "Player visual acceptance"
+  ],
+  "visual_review": "not_performed",
+  "source_hashes": [
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundPresentationEvent.h",
+      "sha256": "c15b7c3092e2e4ea02e2c99049ed257a56a2e54fd2af876d510a871bab41369d"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.h",
+      "sha256": "9963a42c3af771801f433480cccda70223d2653c7bfb624349b9147043db9645"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp",
+      "sha256": "ceff9c93db035bad5c323ac476e1d10eeacbaa90b05b8aed30f3068ef32c3261"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.cpp",
+      "sha256": "d5176a03bfd713b41dd59eafccb9c345fa4afdf19587efeea921d59f81121084"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.h",
+      "sha256": "59c2011f29131304f88730a3e4dab44c53227a47d5fbe92fb18b1987df728480"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.cpp",
+      "sha256": "a7c668df8c9516f7ede534a2f10d96910b8d27cd781a772050c79238c021e511"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp",
+      "sha256": "cded075c2dcc37dbdbd4378d1adf6c7fa1cd2b544d1bcf8ddaa039ee48f0f7d8"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.h",
+      "sha256": "9b2d237ae05b9269a2d1f1323dd3e84a655a887f29ac991b5ce0440d5fe00158"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.cpp",
+      "sha256": "b02aadbfa478af0533e7f66eab48b64cd10a61f9055fa1e6a037ddc7094cb914"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h",
+      "sha256": "8c6b2b950f91ece1d472d05c0527031fa9d8a87352464a1fac245b3d2ef52d2f"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp",
+      "sha256": "eaeb42444601a559c8928ec637d9f5f4f8c5ad30fe3566c5c70f3e2c9a116b08"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDLayout.cpp",
+      "sha256": "a6a136cd1aa627bf7f248a36e24ed4cc5cff849547a65062498d73f6b17dbd72"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDMotion.cpp",
+      "sha256": "352624fcbbf644ebeaaa2b5426720a979a5c15c46a80338ded2e258d21a0fe8f"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp",
+      "sha256": "e55da853c902b970db328239e8326de64e92d92b0d3b06a9a62391c9841314b3"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.cpp",
+      "sha256": "b52f6606a747ac002bdd747180feb25ad5b500eac9ad024d50773286c1ed8738"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiGroundHUDAssetLibrary.h",
+      "sha256": "de166526d226617bf584339c67ef255c16da307b5c074a192a973bcdcebc101c"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiGroundHUDAssetLibrary.cpp",
+      "sha256": "62b9aaed57d7bba682524d421f15fae0b7ae4454ee969c5e14634f6a8da1c6f3"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiRogueCardQALibrary.cpp",
+      "sha256": "17acf39c083cecb2ef1ea5c78e9e842e6e322ae84f46da064d998e9d74cd4c64"
+    },
+    {
+      "path": "Scripts/GroundMech/prepare_ground_hud_motion.py",
+      "sha256": "980700fdbd1a60b52c5000429814fb0cf7009584790a656e639a3cd1156c2b04"
+    },
+    {
+      "path": "Scripts/GroundMech/author_ground_hud_motion.py",
+      "sha256": "e47f932ed7a0d46fb5619853f55498d5dbd37109b88e23d76c73e7d8c88e97be"
+    },
+    {
+      "path": "Scripts/GroundMech/save_ground_hud_motion_scene.py",
+      "sha256": "d9868295321c506ceee8dc25928178819787e0689985d58f9fb68d785df24e9d"
+    },
+    {
+      "path": "data/Excel/GuLiStrikeGroundHUD.xlsx",
+      "sha256": "f7216a36f21fae6c5d90a37d8e658ccc5c0b6ef12ae495ac643edf7feb6b1b78"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeGroundHUD_Elements.json",
+      "sha256": "8270d015e970b4acf5798767852ac3a7cfea98b3f2c586b617a40fd33de5a462"
+    }
+  ],
+  "documentation_validation": {
+    "errors": 0,
+    "warnings": 20,
+    "warnings_preexisting": true
+  }
+}

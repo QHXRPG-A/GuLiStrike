@@ -110,7 +110,7 @@ public:
 	/** Only frozen tool-laser GPU review copies. Never saves or alters production emitters. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool ConfigureToolLaserGPUCandidate(UNiagaraSystem* System, FString& Error);
-	/** Read-only graph overrides and curve data for the machine-gun source/review copies.
+	/** Read-only graph overrides and curve data for machine-gun copies and the owned Ground explosion.
 	 * This complements the service's module-default pins when auditing complete pre-spawn bounds. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static FString GetMachineGunBoundsInputs(UNiagaraSystem* System);

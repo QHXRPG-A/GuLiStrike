@@ -7,6 +7,7 @@ STEM = "GuLiStrikeCardArtwork"
 SHEETS = ("Templates", "Artworks", "Layers", "Parameters")
 TABLES = tuple("DT_" + STEM + "_" + sheet for sheet in SHEETS)
 PRESETS = {
+    "BlankPlaceholder": "None",
     "ModelComicAtlasV9": "Atlas3x2",
     "RegisteredSix": "Independent6",
     "RegisteredSixForegroundMask": "Independent6",
@@ -118,6 +119,10 @@ def validate_catalog(tables):
             _fail("Layers", row, f"template requires TextureParameter={expected}")
         by_layers[ident][index] = row
     for ident, artwork in artworks.items():
+        if templates[artwork['TemplateId']]['CompositePreset'] == 'BlankPlaceholder':
+            if by_layers[ident] or by_parameters[ident]:
+                _fail('Artworks', artwork, 'blank placeholders cannot contain layers or artwork parameters')
+            continue
         if set(by_layers[ident]) != set(range(1, 7)):
             _fail("Artworks", artwork, "exactly six logical layers are required, including disabled layers")
         params = by_parameters[ident]

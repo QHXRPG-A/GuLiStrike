@@ -19,7 +19,7 @@ before = {a.get_path_name(): (list(a.get_actor_location().to_tuple()),list(a.get
 messages = {
  'MassNav_Entry': 'Mass首批响应：保留原图红蓝各250名，自动据点推进保持。选25人或当前可选规模，向25米外下令。首批算好复核后立即提交绿线，位移仍10Hz。连续改令、S停止、减选、双指挥官同时下令均需检查。2000/10000单方部署入口仍待办。',
  'MassNav_CapacityObserve': '封闭区中心(16500,67000)：检查路径拆分与部分失败。已经完成的合法子批可先提交；其余成员保留旧指令和预约。失败、停止和旧命令不得覆盖新绿线。',
- 'MassNav_OreMechObserve': '矿体和地面机甲：比较远处建造/拆除与沿途导航变化，远处变化不应重置无关规划。原地或移动机甲仍受局部障碍校验。重连后重新选择，检查配对终点及旧线不复活。诊断开关 guli.Commander.MoveLatencyDiagnostics 1；采样后恢复0。',
+ 'MassNav_OreMechObserve': '矿体和游骑兵：比较远处建造/拆除与沿途导航变化，远处变化不应重置无关规划。原地或移动机甲仍受局部障碍校验。重连后重新选择，检查配对终点及旧线不复活。诊断开关 guli.Commander.MoveLatencyDiagnostics 1；采样后恢复0。',
 }
 with unreal.ScopedEditorTransaction('Update Mass immediate response review instructions'):
  for label,text in messages.items():

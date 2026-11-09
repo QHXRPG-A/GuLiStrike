@@ -1,0 +1,181 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "targets": [
+    {
+      "label": "GroundAmmo_PrimaryDamage",
+      "unit": 1,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        150.0,
+        52050.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_BlastCenter",
+      "unit": 1,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        -750.0,
+        56550.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Inside12m",
+      "unit": 1,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        -750.0,
+        55350.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Boundary15m",
+      "unit": 1,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        750.0,
+        56550.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Outside24m",
+      "unit": 1,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        1650.0,
+        56550.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Friendly",
+      "unit": 1,
+      "team": "<GuLiTeam.RED: 1>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        450.0,
+        55950.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Shield",
+      "unit": 1,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "health": 100000.0,
+      "shield": 1000.0,
+      "automatic_fire": false,
+      "position": [
+        -1950.0,
+        56550.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_BehindWall",
+      "unit": 1,
+      "team": "<GuLiTeam.BLUE: 2>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        -750.0,
+        55950.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Pioneer",
+      "unit": 1,
+      "team": "<GuLiTeam.RED: 1>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        -12150.0,
+        51750.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_HeavyDefense",
+      "unit": 2,
+      "team": "<GuLiTeam.RED: 1>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        -16350.0,
+        55350.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundAmmo_Sweeper",
+      "unit": 5,
+      "team": "<GuLiTeam.RED: 1>",
+      "health": 100000.0,
+      "shield": 0.0,
+      "automatic_fire": false,
+      "position": [
+        -16200.0,
+        51600.0,
+        905.0
+      ]
+    }
+  ],
+  "notes": [
+    "GroundAmmo_Instructions_Entry",
+    "GroundAmmo_Instructions_AttackRate",
+    "GroundAmmo_Instructions_Prerequisites",
+    "GroundAmmo_Instructions_Explosion",
+    "GroundAmmo_Instructions_Recovery",
+    "GroundAmmo_Instructions_FireNotify",
+    "GroundAmmo_Instructions_TrailAndDamage"
+  ],
+  "navigation": [
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+      "status": "Hit",
+      "message": "Validated saved ground tiles."
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+      "status": "Hit",
+      "message": "Validated saved ground tiles."
+    },
+    {
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+      "status": "Hit",
+      "message": "Validated saved flight graph."
+    }
+  ],
+  "resource": "Resource authoring source and baked runtime definition are current.",
+  "dirty_content": [],
+  "dirty_maps": [],
+  "PIE": false,
+  "assistant_visual_test": false,
+  "runtime_damage_verified": false
+}

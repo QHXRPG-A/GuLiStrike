@@ -1,4 +1,5 @@
 #include "Commander/UI/GuLiSceneUIWidget.h"
+#include "Commander/UI/GuLiGroundSceneUIState.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Commander/UI/GuLiSceneUISourceRegistry.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
@@ -75,6 +76,7 @@ struct FGuLiSceneUIWidgetData
 		FIntRect CachedRect, CachedViewRect;
 		FVector2D CachedSize = FVector2D::ZeroVector;
 		FSlateRenderTransform CachedTransform;
+		FVector4f CachedUIRange = FVector4f(0,0,0,0);
 		bool bCachedIndexed = false;
 		uint64 Builds = 0, Hits = 0, Submissions = 0;
 		TArray<TSharedPtr<FBatch>> Batches;
@@ -95,14 +97,18 @@ struct FGuLiSceneUIWidgetData
     TOptional<bool> LastPlacementTint;
 	TArray<FGuLiSceneUIRing> ActorRings;
     FGuLiSceneUIPositionCache RingPositions;
+	FGuLiSceneUIPositionCache UnitRingPositions;
     double LastRingSample=-1;
 	TArray<FHalo> Halos;
 	uint64 HUDFrame = MAX_uint64;
 	TArray<FGuLiSceneUIRing> Rings;
 	TArray<FGuLiSceneUIHealthBar> Bars;
+	TArray<FGuLiSceneUIHealthBar> GroundBars;
 	TArray<FGuLiSceneUILine> Routes;
 	TArray<FGuLiSceneUIWorldWidget> WorldWidgets;
 	TSharedPtr<FSlateMaterialBrush> OutlineBrush;
+	uint32 WorldUIDetailed = 0, WorldUICulled = 0;
+	float OutlineMaximumDistance = 0;
 	TSharedPtr<FSlateMaterialBrush> PlacementBrush;
 	TMap<TWeakObjectPtr<UTexture>, TSharedPtr<FSlateMaterialBrush>> SurfaceBrushes;
 };
@@ -165,13 +171,17 @@ struct FViewBatch
 	FConvexVolume Frustum;
 	FVector2D Scale, Inset;
 	FIntRect Rect;
+	FVector4f UIRange = FVector4f(0,0,0,0);
+	float DetailOpacity = 1;
+	uint32 WorldUIDetailed = 0, WorldUICulled = 0;
 	int32 BatchIndex = 0, Layer;
 	bool bBuild = true, bFullyContained = false, bIndexed = false, bOptimizedPaint = false;
 	FSlateResourceHandle White;
 
 	FViewBatch(const FGeometry& InGeometry, FSlateWindowElementList& InElements,
-		FGuLiSceneUIWidgetData::FGeometryCache& InData, uint64 Revision, const FSceneViewProjectionData& InProjection, int32 InLayer)
-		: Geometry(InGeometry), Elements(InElements), Data(InData), Projection(InProjection), Layer(InLayer)
+		FGuLiSceneUIWidgetData::FGeometryCache& InData, uint64 Revision, const FSceneViewProjectionData& InProjection, int32 InLayer,
+		const FVector4f& InUIRange = FVector4f(0,0,0,0))
+		: Geometry(InGeometry), Elements(InElements), Data(InData), Projection(InProjection), UIRange(InUIRange), Layer(InLayer)
 	{
 		Matrix = Projection.ComputeViewProjectionMatrix();
 		GetViewFrustumBounds(Frustum, Matrix, true);
@@ -184,7 +194,8 @@ struct FViewBatch
 		bOptimizedPaint = CVarSceneUIOptimizedPaint.GetValueOnGameThread() != 0;
 		bBuild = !CVarSceneUIProjectionCache.GetValueOnGameThread() || Data.CachedRevision != Revision || !Data.CachedMatrix.Equals(Matrix, 0)
 			|| Data.CachedRect != Rect || Data.CachedViewRect != ViewRect || Data.CachedSize != Geometry.GetLocalSize()
-			|| !(Data.CachedTransform == Geometry.GetAccumulatedRenderTransform()) || Data.bCachedIndexed != bIndexed;
+			|| !(Data.CachedTransform == Geometry.GetAccumulatedRenderTransform()) || Data.bCachedIndexed != bIndexed
+			|| Data.CachedUIRange != UIRange;
 		if (bBuild)
 		{
 			++Data.Builds;
@@ -193,8 +204,33 @@ struct FViewBatch
 			Data.CachedRect = Rect; Data.CachedViewRect = ViewRect; Data.CachedSize = Geometry.GetLocalSize();
 			Data.CachedTransform = Geometry.GetAccumulatedRenderTransform();
 			Data.bCachedIndexed = bIndexed;
+			Data.CachedUIRange = UIRange;
 		}
 		else ++Data.Hits;
+	}
+	float WorldUIOpacity(const FVector& Center,float Radius,bool bImportant=false)
+	{
+		float Opacity=1;
+		if (UIRange.Y>UIRange.X && !bImportant && !Center.ContainsNaN() && FMath::IsFinite(Radius) && Radius>=0)
+		{
+			// The ordinary near-detail band is shared with the world LOD policy.
+			// Fade across its existing hold range, rather than popping at one distance.
+			const double Distance=FMath::Max(0.,FVector::Distance(Center,Projection.ViewOrigin)-Radius);
+			Opacity=float(FMath::Clamp((UIRange.Y-Distance)/(UIRange.Y-UIRange.X),0.,1.));
+			if (Radius>0 && UIRange.Z>UIRange.W)
+			{
+				const double Screen=Radius/FMath::Max(1.,Distance)*FMath::Max(Projection.ProjectionMatrix.M[0][0],Projection.ProjectionMatrix.M[1][1]);
+				Opacity=FMath::Min(Opacity,float(FMath::Clamp((Screen-UIRange.W)/(UIRange.Z-UIRange.W),0.,1.)));
+			}
+		}
+		if (Opacity>0) ++WorldUIDetailed;else ++WorldUICulled;
+		return Opacity;
+	}
+	FColor GeometryTint(const FLinearColor& Color) const
+	{
+		// Ordinary SceneUI remains opaque. Only the explicit distance LOD fades
+		// its world-detail band; HUD, selected feedback and other primitives keep it.
+		auto Tint=Opaque(Color);Tint.A=DetailOpacity;return Tint.ToFColorSRGB();
 	}
 
 	FVector2D ToPixels(const FVector4& P) const
@@ -221,7 +257,7 @@ struct FViewBatch
 		if (!bBuild || Color.A <= 0) return;
 		auto& Batch = WritableBatch(3);
 		const int32 First = Batch.Vertices.Num();
-		const FColor Tint = Opaque(Color).ToFColorSRGB();
+		const FColor Tint = GeometryTint(Color);
 		for (const auto& P : {A, B, C})
 			Batch.Vertices.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(
 				Geometry.GetAccumulatedRenderTransform(), FVector2f(P * Scale), FVector2f::ZeroVector, Tint));
@@ -233,7 +269,7 @@ struct FViewBatch
 		if (!bBuild || Color.A <= 0) return;
 		auto& Batch = WritableBatch(4);
 		const int32 First = Batch.Vertices.Num();
-		const FColor Tint = Opaque(Color).ToFColorSRGB();
+		const FColor Tint = GeometryTint(Color);
 		for (const auto& P : {A,B,C,D})
 			Batch.Vertices.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(
 				Geometry.GetAccumulatedRenderTransform(), FVector2f(P * Scale), FVector2f::ZeroVector, Tint));
@@ -319,7 +355,7 @@ struct FViewBatch
 			{
 				auto& Batch = WritableBatch(2*Directions.Num());
 				const int32 First = Batch.Vertices.Num();
-				const FColor Tint = Opaque(Color).ToFColorSRGB();
+				const FColor Tint = GeometryTint(Color);
 				for (int32 I=0; I<Directions.Num(); ++I)
 					for (const auto& P : {InnerPoints[I],OuterPoints[I]})
 						Batch.Vertices.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(
@@ -469,8 +505,14 @@ void UGuLiSceneUIWidget::SetModalHidden(bool bHidden)
 
 void UGuLiSceneUIWidget::HandleIdentityChanged()
 {
+    // Identity notifications also run while a modal hides the widget and its Tick.
+    if(GroundState)
+    {
+        if(GuLiGroundSceneUI::IsView(LocalController.Get()))GroundState->Bind(LocalController.Get());
+        else {GroundState->Unbind();GroundState=nullptr;Data->GroundBars.Reset();Data->Bars.Reset();DestroyOutlineCapture();}
+    }
 	OutlineMembershipRevision = 0; RingContentRevision = 0; Data->HasTickView=false;
-	Data->HUDShapes.Reset(); Data->PendingHUDShapes.Reset(); Data->RingPositions.Reset(); ++Data->ContentRevision;
+	Data->HUDShapes.Reset(); Data->PendingHUDShapes.Reset(); Data->RingPositions.Reset(); Data->UnitRingPositions.Reset(); ++Data->ContentRevision;
 	++Data->HUDRevision; ++Data->WorldRevision; ++Data->SurfaceRevision; ++Data->BackgroundRevision;
 	for (auto Part : {EGuLiSceneUIPaintPart::Background,EGuLiSceneUIPaintPart::World,EGuLiSceneUIPaintPart::HUD,EGuLiSceneUIPaintPart::Panels}) InvalidatePaintPart(Part);
 }
@@ -505,6 +547,17 @@ void UGuLiSceneUIWidget::RefreshSources()
 		LocalController->AddInstanceComponent(RouteData); RouteData->RegisterComponent();
 	}
 	if (!HealthBars.IsValid()) HealthBars = AGuLiCommanderHealthBarRenderer::FindOrSpawn(GetWorld(), LocalController.Get());
+	const bool Ground=GuLiGroundSceneUI::IsView(LocalController.Get());
+	if(Ground)
+	{
+		if(!GroundState){DestroyOutlineCapture();GroundState=NewObject<UGuLiGroundSceneUIState>(this);}
+		GroundState->Bind(LocalController.Get());
+	}
+	else if(GroundState)
+	{
+		GroundState->Unbind();GroundState=nullptr;Data->GroundBars.Reset();DestroyOutlineCapture();
+		RingContentRevision=0;RingMembershipRevision=0;
+	}
 	auto* Identity = LocalController->GetPlayerState<AGuLiBattlePlayerState>();
 	if (BoundIdentity.Get() != Identity)
 	{
@@ -546,27 +599,29 @@ void UGuLiSceneUIWidget::NativeTick(const FGeometry& Geometry, float DeltaSecond
     const bool Due=PositionTime-Data->LastRingSample>=.1;
     const bool Gather=ContentChanged || (PoseChanged && (!LimitPositions || Due || Selected));
     Data->RingPositions.Begin();
-    if (Registry && Gather)
+	if (GroundState && !Data->Rings.IsEmpty())
+	{Data->Rings.Reset();Data->UnitRingPositions.Reset();++Data->ContentRevision;WorldChanged=true;}
+	if (!GroundState && Registry && Gather)
 	{
+        Data->UnitRingPositions.Begin();
         TArray<FGuLiSceneUIRing> Rings;
         if (Presentation.IsValid()) Presentation->GatherSceneUIRings(Rings, LocalController.Get());
         if (LimitPositions) for (auto& Ring:Rings)
         {
             const FVector Latest=Ring.Center;
-            Data->RingPositions.Resolve(Ring.Key,Ring.UrgentRevision,Ring.bSelected,PositionTime,
+            Data->UnitRingPositions.Resolve(Ring.Key,Ring.UrgentRevision,Ring.bSelected,PositionTime,
                 [&](FVector& Out){Out=Latest;return true;},Ring.Center);
         }
+        Data->UnitRingPositions.End();
         if (!bCachePaint || Rings!=Data->Rings)
         {Data->Rings=MoveTemp(Rings);++Data->ContentRevision;WorldChanged=true;}
         RingContentRevision=PresentationContent;RingPoseRevision=PresentationPose;RingMembershipRevision=SourceMembershipRevision;
         if (Due) Data->LastRingSample=PositionTime;
 	}
-    else if (LimitPositions) for (const auto& Ring:Data->Rings)
-        if (auto* Sample=Data->RingPositions.Samples.Find(Ring.Key)) Sample->Seen=Data->RingPositions.Frame;
 	RefreshOutline(DeltaSeconds); RefreshPlacement(); RefreshWorldWidgets();
 	auto* PC = LocalController.Get();
 	TArray<FGuLiSceneUIRing> ActorRings;
-	for (const auto& Source : ActorRingSources) if (const auto* Actor = Source.Get())
+	if(!GroundState) for (const auto& Source : ActorRingSources) if (const auto* Actor = Source.Get())
 	{
 		const auto* Pawn = Cast<APawn>(Actor);
 		if (!Actor->FindComponentByClass<UGuLiEngineeringTravelComponent>() && (!Pawn || !Pawn->GetPlayerState<AGuLiBattlePlayerState>())) continue;
@@ -602,7 +657,9 @@ void UGuLiSceneUIWidget::NativeTick(const FGeometry& Geometry, float DeltaSecond
 	for (const auto& Source : OutpostHaloSources) if (const auto* Halo=Source.Get())
 	{ FGuLiSceneUIWidgetData::FHalo H; if (Halo->GetSceneUIHalo(H.Center,H.Team,H.Radii)) Halos.Add(H); }
 	if (Halos != Data->Halos) { Data->Halos=MoveTemp(Halos); ++Data->ContentRevision; WorldChanged=true; }
-	TArray<FGuLiSceneUIHealthBar> Bars; if (HealthBars.IsValid()) HealthBars->GatherSceneUIBars(Bars);
+	TArray<FGuLiSceneUIHealthBar> Bars;
+	if(GroundState)Bars=MoveTemp(Data->GroundBars);
+	else if (HealthBars.IsValid()) HealthBars->GatherSceneUIBars(Bars);
 	if (Bars != Data->Bars) { Data->Bars=MoveTemp(Bars); ++Data->ContentRevision; WorldChanged=true; }
 	TArray<FGuLiSceneUILine> Routes; if (RouteData) RouteData->GatherSceneUILines(Routes);
 	if (Routes != Data->Routes) { Data->Routes=MoveTemp(Routes); ++Data->ContentRevision; WorldChanged=true; }
@@ -668,10 +725,12 @@ void UGuLiSceneUIWidget::DestroyOutlineCapture()
 	Data->OutlineBrush.Reset();
 	OutlineMaterialInstance = nullptr;
 	OutlineTarget = nullptr;
+	Data->OutlineMaximumDistance=0;
 }
 
 void UGuLiSceneUIWidget::NativeDestruct()
 {
+	if(GroundState)GroundState->Unbind();GroundState=nullptr;Data->GroundBars.Reset();
 	if (BoundIdentity.IsValid()) BoundIdentity->OnCommanderPlayerStateChanged.RemoveDynamic(this, &ThisClass::HandleIdentityChanged);
 	BoundIdentity.Reset();
 	DestroyOutlineCapture();
@@ -712,7 +771,8 @@ void UGuLiSceneUIWidget::RefreshOutline(float DeltaSeconds)
 	if (Rect.Width() <= 0 || Rect.Height() <= 0) return;
 	if (!OutlineCapture)
 	{
-		auto* Material = EnemyOutlineMaterial.LoadSynchronous();
+		auto* Material = GroundState ? GetDefault<UGuLiGroundSceneUISettings>()->OutlineMaterial.LoadSynchronous()
+			: EnemyOutlineMaterial.LoadSynchronous();
 		if (!Material) return;
 		OutlineTarget = NewObject<UTextureRenderTarget2D>(this);
 		OutlineTarget->ClearColor = FLinearColor(0, 0, 0, 1); // SceneColor HDR stores inverse opacity in alpha.
@@ -732,7 +792,7 @@ void UGuLiSceneUIWidget::RefreshOutline(float DeltaSeconds)
 	auto* Capture = OutlineCapture->GetCaptureComponent2D();
 	const auto* SourceRegistry = GetWorld()->GetSubsystem<UGuLiSceneUISourceRegistry>();
 	const uint64 Membership = SourceRegistry ? SourceRegistry->GetMembershipRevision() : 0;
-	if (OutlineMembershipRevision != Membership || OutlineMembershipRevision == 0)
+	if (!GroundState && (OutlineMembershipRevision != Membership || OutlineMembershipRevision == 0))
 	{
 		FGuLiPerformanceScope ListTiming(GetWorld(), TEXT("SceneUI.OutlineListMs"), PC->GetLocalPlayer());
 		Capture->ClearShowOnlyComponents();
@@ -755,6 +815,33 @@ void UGuLiSceneUIWidget::RefreshOutline(float DeltaSeconds)
 	OutlineCapture->SetActorLocationAndRotation(POV.Location, POV.Rotation);
 	Capture->FOVAngle = POV.FOV; Capture->ProjectionType = POV.ProjectionMode; Capture->OrthoWidth = POV.OrthoWidth;
 	Capture->bUseCustomProjectionMatrix=true; Capture->CustomProjectionMatrix=Projection.ProjectionMatrix;
+	if(GroundState)
+	{
+		// The pool admits individual objects; a far event never expands the whole
+		// source ISM capture range. The camera projection keeps its ordinary far plane.
+		Data->OutlineMaximumDistance=GetDefault<UGuLiGroundSceneUISettings>()->FadeEndCm;
+		Capture->MaxViewDistanceOverride=-1;
+		GroundState->Update(Projection,Presentation.Get(),*Capture,Data->GroundBars);
+		Capture->CaptureScene();return;
+	}
+	// A Ground/Air view has no commander height tier. Its outline pass must
+	// still obey near-detail distance, including individual instances in one ISM.
+	// The finite projection clips geometry as well as culling primitive bounds.
+	Data->OutlineMaximumDistance=0;
+	if (!Camera && POV.ProjectionMode==ECameraProjectionMode::Perspective)
+		if (const auto* Policy=GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
+		{
+			auto& Matrix=Capture->CustomProjectionMatrix;
+			const double Near=Matrix.M[3][2]/(1.-Matrix.M[2][2]);
+			const double Far=Policy->GetSettings().NearHoldDistance;
+			if (Near>0 && Far>Near && Matrix.M[2][3]==1 && Matrix.M[3][3]==0)
+			{
+				Matrix.M[2][2]=Near/(Near-Far);
+				Matrix.M[3][2]=-Far*Near/(Near-Far);
+				Data->OutlineMaximumDistance=float(Far);
+			}
+		}
+	Capture->MaxViewDistanceOverride=Data->OutlineMaximumDistance>0 ? Data->OutlineMaximumDistance : -1.f;
 	Capture->CaptureScene();
 }
 
@@ -930,9 +1017,20 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 	const bool HUD = Combined || Part == EGuLiSceneUIPaintPart::HUD;
 	const bool Panels = Combined || Part == EGuLiSceneUIPaintPart::Panels;
 	const uint64 Revision = Combined ? Data->ContentRevision : HUD ? Data->HUDRevision : Panels ? Data->SurfaceRevision : Background ? Data->BackgroundRevision : Data->WorldRevision;
-	FViewBatch View(Geometry, Elements, Data->GeometryCaches[uint8(Part)], Revision, Projection, Layer+1);
-	const bool PrepareGeometry = View.bBuild || !View.bOptimizedPaint;
 	const auto* Camera=Cast<AGuLiCommanderCameraPawn>(PC->GetViewTarget());
+	FVector4f UIRange(0,0,0,0);
+	if(GroundState)
+	{
+		const auto* Settings=GetDefault<UGuLiGroundSceneUISettings>();
+		UIRange=FVector4f(Settings->FadeStartCm,Settings->FadeEndCm,0,0);
+	}
+	else if (!Camera) if (const auto* Policy=GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())
+	{
+		const auto& Settings=Policy->GetSettings();
+		UIRange=FVector4f(Settings.NearEnterDistance,Settings.NearHoldDistance,Settings.NearEnterScreen,Settings.NearHoldScreen);
+	}
+	FViewBatch View(Geometry, Elements, Data->GeometryCaches[uint8(Part)], Revision, Projection, Layer+1,UIRange);
+	const bool PrepareGeometry = View.bBuild || !View.bOptimizedPaint;
 	const bool bOverview=Camera && Camera->IsOverviewPresentation();
 	Elements.PushClip(FSlateClippingZone(Geometry));
 	if (Background && Data->OutlineBrush && !bOverview && GuLiLocalTeamColors::IsAssigned(GuLiLocalTeamColors::GetViewTeam(PC)))
@@ -952,7 +1050,12 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 
 		const EGuLiTeam Team=GuLiLocalTeamColors::GetViewTeam(PC);
 		for (bool SelectedPass : {false, true}) for (const auto& Ring : Data->Rings)
-			if (Ring.bSelected==SelectedPass) View.Ring(Ring, GuLiLocalTeamColors::GetUI(Ring.Team, Team));
+			if (Ring.bSelected==SelectedPass)
+			{
+				const float Opacity=View.WorldUIOpacity(Ring.Center,Ring.OuterRadiusCm,Ring.bSelected);
+				TGuardValue<float> Detail(View.DetailOpacity,Opacity);
+				if (Opacity>0) View.Ring(Ring,GuLiLocalTeamColors::GetUI(Ring.Team,Team).CopyWithNewOpacity(Opacity));
+			}
 		if (const auto* Commander=Cast<AGuLiCommanderPlayerController>(PC); Commander && Commander->IsCommanderViewActive()) if (const auto* Routes=RouteData.Get())
 		{
 
@@ -966,23 +1069,39 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 		static const TArray<FVector2D> HaloDirections=[] { TArray<FVector2D> R; for (int32 I=0; I<48; ++I) { const double A=I*2.0*PI/48; R.Add({FMath::Cos(A),FMath::Sin(A)}); } return R; }();
 		for (const auto& Halo : Data->Halos)
 		{
-			const FLinearColor Color=GuLiLocalTeamColors::GetUI(Halo.Team,ViewTeam);
+			const float Opacity=View.WorldUIOpacity(Halo.Center,float(Halo.Radii.GetMax()));
+			if (Opacity<=0) continue;
+			TGuardValue<float> Detail(View.DetailOpacity,Opacity);
+			const FLinearColor Color=GuLiLocalTeamColors::GetUI(Halo.Team,ViewTeam).CopyWithNewOpacity(Opacity);
 			const FVector Right=CameraAxes.GetScaledAxis(EAxis::Y)*Halo.Radii.X, Up=CameraAxes.GetScaledAxis(EAxis::Z)*Halo.Radii.Y;
 			for (int32 I=0; I<48; ++I)
 			{ const auto A=HaloDirections[I], B=HaloDirections[(I+1)%48]; View.WorldLine(Halo.Center+Right*A.X+Up*A.Y,Halo.Center+Right*B.X+Up*B.Y,2.f,Color); }
 		}
-		for (const auto& Ring : Data->ActorRings) View.Ring(Ring,GuLiLocalTeamColors::GetUI(Ring.Team,ViewTeam));
+		for (const auto& Ring : Data->ActorRings)
+		{
+			const float Opacity=View.WorldUIOpacity(Ring.Center,Ring.OuterRadiusCm,Ring.bSelected);
+			TGuardValue<float> Detail(View.DetailOpacity,Opacity);
+			if (Opacity>0) View.Ring(Ring,GuLiLocalTeamColors::GetUI(Ring.Team,ViewTeam).CopyWithNewOpacity(Opacity));
+		}
 	}
 	if (World && PrepareGeometry && !bOverview && HealthBars.IsValid())
 	{
 
 		for (const auto& Bar : Data->Bars)
 		{
+			const float Opacity=Bar.Opacity*(Bar.bEventOverride?1.f:View.WorldUIOpacity(Bar.Center,0,Bar.bSelected));
+			if (Opacity<=0) continue;
+			TGuardValue<float> Detail(View.DetailOpacity,Opacity);
 			FVector2D P; if (!View.Project(Bar.Center, P)) continue;
 			P-=FVector2D(42,6);
-			View.Box(P-FVector2D(1), FVector2D(86,14), Bar.bSelected ? FLinearColor::White : FLinearColor::Black);
-			View.Box(P,FVector2D(84,12),FLinearColor(.025f,.03f,.035f));
-			View.Box(P,FVector2D(84*Bar.Fraction,12),FLinearColor(.15f,.9f,.35f));
+			View.Box(P-FVector2D(1), FVector2D(86,14), (Bar.bSelected ? FLinearColor::White : FLinearColor::Black).CopyWithNewOpacity(Opacity));
+			View.Box(P,FVector2D(84,12),FLinearColor(.025f,.03f,.035f,Opacity));
+			View.Box(P,FVector2D(84*Bar.Fraction,12),FLinearColor(.15f,.9f,.35f,Opacity));
+			if(Bar.bHasShield)
+			{
+				View.Box(P+FVector2D(0,14),FVector2D(84,3),FLinearColor(.025f,.03f,.035f,Opacity));
+				View.Box(P+FVector2D(0,14),FVector2D(84*Bar.ShieldFraction,3),FLinearColor(FColor::FromHex(TEXT("6AA4BE"))).CopyWithNewOpacity(Opacity));
+			}
 		}
 	}
 	if (World && View.bBuild) for (const auto& Line : Data->PlacementLocalLines)
@@ -1013,6 +1132,7 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 				S.Text,FCoreStyle::GetDefaultFontStyle("Regular",10),ESlateDrawEffect::None,S.Color); break;
 		}
 	}
+	if (World && PrepareGeometry) {Data->WorldUIDetailed=View.WorldUIDetailed;Data->WorldUICulled=View.WorldUICulled;}
 	if (World || HUD) View.Submit();
 	if (const auto* Commander=Cast<AGuLiCommanderPlayerController>(PC); World && Commander && Commander->IsCommanderViewActive())
 		if (!Data->Routes.IsEmpty() && RouteData && !bOverview && GuLiMoveLatency::IsEnabled())
@@ -1045,14 +1165,18 @@ FString UGuLiSceneUIWidget::GetFrameStatsJson() const
      { Vertices+=B->Vertices.Num(); Indices+=B->Indices.Num(); Batches+=!B->Indices.IsEmpty();
        CapacityBytes+=B->Vertices.GetAllocatedSize()+B->Indices.GetAllocatedSize(); }
  }
- return FString::Printf(TEXT("{\"hud_shapes\":%d,\"hud_expired\":%s,\"rings\":%d,\"health_bars\":%d,\"route_lines\":%d,\"world_panels\":%d,\"content_revision\":%llu,\"cached_vertices\":%d,\"surface_resources\":%d,\"background_revision\":%llu,\"world_revision\":%llu,\"hud_revision\":%llu,\"panel_revision\":%llu,\"ring_samples\":%llu,\"ring_immediate_samples\":%llu,\"ring_cache_hits\":%llu,\"paint_calls\":[%llu,%llu,%llu,%llu,%llu],\"invalidations\":[%llu,%llu,%llu,%llu,%llu],\"cached_indices\":%d,\"cached_batches\":%d,\"geometry_builds\":%llu,\"geometry_cache_hits\":%llu,\"geometry_submissions\":%llu,\"geometry_capacity_bytes\":%llu,\"indexed_geometry\":%s,\"optimized_paint\":%s}"),
+ FString Result=FString::Printf(TEXT("{\"hud_shapes\":%d,\"hud_expired\":%s,\"rings\":%d,\"health_bars\":%d,\"route_lines\":%d,\"world_panels\":%d,\"content_revision\":%llu,\"cached_vertices\":%d,\"surface_resources\":%d,\"background_revision\":%llu,\"world_revision\":%llu,\"hud_revision\":%llu,\"panel_revision\":%llu,\"ring_samples\":%llu,\"ring_immediate_samples\":%llu,\"ring_cache_hits\":%llu,\"paint_calls\":[%llu,%llu,%llu,%llu,%llu],\"invalidations\":[%llu,%llu,%llu,%llu,%llu],\"cached_indices\":%d,\"cached_batches\":%d,\"geometry_builds\":%llu,\"geometry_cache_hits\":%llu,\"geometry_submissions\":%llu,\"geometry_capacity_bytes\":%llu,\"indexed_geometry\":%s,\"optimized_paint\":%s}"),
  Data->HUDShapes.Num(), Data->HUDFrame==MAX_uint64 ? TEXT("true"):TEXT("false"), Data->Rings.Num()+Data->ActorRings.Num(),Data->Bars.Num(),Data->Routes.Num(),Data->WorldWidgets.Num(),Data->ContentRevision,Vertices,SurfaceInstances.Num(),Data->BackgroundRevision,Data->WorldRevision,Data->HUDRevision,Data->SurfaceRevision,
- Data->RingPositions.OrdinarySamples,Data->RingPositions.ImmediateSamples,Data->RingPositions.Hits,
+ Data->RingPositions.OrdinarySamples+Data->UnitRingPositions.OrdinarySamples,Data->RingPositions.ImmediateSamples+Data->UnitRingPositions.ImmediateSamples,Data->RingPositions.Hits+Data->UnitRingPositions.Hits,
  Data->PaintCalls[0],Data->PaintCalls[1],Data->PaintCalls[2],Data->PaintCalls[3],Data->PaintCalls[4],
  Data->InvalidationCalls[0],Data->InvalidationCalls[1],Data->InvalidationCalls[2],Data->InvalidationCalls[3],Data->InvalidationCalls[4],
  Indices,Batches,Builds,Hits,Submissions,uint64(CapacityBytes),
  CVarSceneUIIndexedGeometry.GetValueOnGameThread() ? TEXT("true"):TEXT("false"),
  CVarSceneUIOptimizedPaint.GetValueOnGameThread() ? TEXT("true"):TEXT("false"));
+ Result.LeftChopInline(1);
+ Result+=FString::Printf(TEXT(",\"world_ui_detailed\":%u,\"world_ui_culled\":%u,\"outline_max_distance_cm\":%.1f}"),Data->WorldUIDetailed,Data->WorldUICulled,Data->OutlineMaximumDistance);
+ if(GroundState){Result.LeftChopInline(1);Result+=TEXT(",\"ground_feedback\":")+GroundState->GetStatsJson()+TEXT("}");}
+ return Result;
 }
 
 void UGuLiSceneUIWidget::BackgroundChanged()

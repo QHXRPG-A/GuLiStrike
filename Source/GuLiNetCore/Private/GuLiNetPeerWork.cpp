@@ -1,6 +1,7 @@
 #include "GuLiNetClient.h"
 #include "GuLiNetTrace.h"
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <utility>
 
@@ -13,7 +14,8 @@ std::map<std::string,std::size_t> ClientWorld::WorkCounts() const
         {"waiting_result_authority",DeferredPeerReceipts.size()},{"waiting_result_authority_bytes",DeferredPeerReceiptBytes},
         {"publication_messages",PublicationIdentities.size()},{"publication_bytes",PublicationBytes},
         {"command_outbox",CommandOutbox.size()},{"incoming_commands",IncomingCommands.size()},
-        {"freeze_requested",FreezeRequested.size()}};
+        {"freeze_requested",FreezeRequested.size()},{"numeric_objects",Numbers.Objects().size()},{"live_objects",Numbers.LiveObjectCount()},
+        {"spawn_sources",SpawnWorkOrder.size()}};
 }
 std::vector<WorkDiagnostic> ClientWorld::WorkDiagnostics() const
 {
@@ -34,6 +36,16 @@ std::vector<WorkDiagnostic> ClientWorld::WorkDiagnostics() const
     for (const auto& [E,P]:PlayerIntents) {if (N++==8) break;Add(E,"controlled_intent",P.Request);}
     N=0;
     for (const auto& [E,P]:Pending) {if (N++==8) break;Add(E,"request",P.Request);}
+    // Surface the first blocked birth per source, rather than only arbitrary
+    // event IDs behind it. This is a read-only diagnostic of the existing queue.
+    N=0;for (const auto& [Source,Order]:SpawnWorkOrder)
+    {
+        if (Order.empty()) continue;
+        const auto E=Order.begin()->second;const auto R=RetryWork.find(E);
+        if (R==RetryWork.end()) continue;
+        if (N++==8) break;auto& D=Add(E,"spawn_head",R->second.second);
+        if (const auto Reason=PlanWaitReasons.find(E);Reason!=PlanWaitReasons.end()) D.WaitReason=Reason->second;
+    }
     N=0;for (const auto& [E,R]:RetryWork)
     {
         if (N++==8) break;auto& D=Add(E,"plan_retry",R.second);
@@ -80,12 +92,32 @@ bool ReadAcknowledgment(std::span<const std::uint8_t> Data,Id& Event,Id& Proposa
     if (!Parts.Done()) return false;Accepted=Status!=0;return true;
 }
 }
+void ClientWorld::FinishSpawnWork(const TransactionRequest& R)
+{
+    NextWorkRetry=NetworkTime;
+    if (R.Kind!=TransactionKind::Spawn) return;
+    const auto I=SpawnWorkOrder.find(R.Header.Object);if (I==SpawnWorkOrder.end()) return;
+    I->second.erase({R.StartedAt,R.Header.Event});
+    if (I->second.empty()) {SpawnWorkOrder.erase(I);return;}
+    const auto Next=I->second.begin()->second;
+    if (RetryWork.contains(Next) && ReadyPeerWorkIdentities.insert(Next).second)
+    {ReadyPeerWork.push_back(Next);RetryBatchPending=true;}
+}
 bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R,bool Defer)
 {
     TraceScope Scope("GuLiHybrid_CoreStartWork");
     if (!Numbers.CurrentResourceRequest(R)||!ResourceMessageCurrent(R.Header)) return false;
     if (Numbers.Owner(Numbers.ExecutionDomain(R))!=Player) return false;
     if (WorkFlows.contains(R.Header.Event)) return true;
+    if (R.Kind==TransactionKind::Spawn)
+    {
+        auto& Order=SpawnWorkOrder[R.Header.Object];Order.insert({R.StartedAt,R.Header.Event});
+        if (Order.begin()->second!=R.Header.Event)
+        {
+            PlanWaitReasons[R.Header.Event]="earlier_source_spawn";
+            RetryWork[R.Header.Event]={Sender,R};return true;
+        }
+    }
     if (Defer)
     {
         // Retain the validated request in the existing recoverable retry set.
@@ -116,6 +148,7 @@ bool ClientWorld::StartWork(Id Sender,const TransactionRequest& R,bool Defer)
         if (W.Result.Status==CommitStatus::Deferred || W.Result.Status==CommitStatus::Paused) {RetryWork[R.Header.Event]={Sender,R};return true;}
         if (Sender==Player) ApplyCommit(W.Result);
         else SendMessage(Sender,MessageKind::TransactionResult,W.Event,W.Result.StateDomain,EncodeCommit(W.Result));
+        FinishSpawnWork(R);
         return true;
     }
     if (ReserveApplicationResult && !ReserveApplicationResult(W))
@@ -175,9 +208,11 @@ void ClientWorld::AdvanceWork(Id Event)
     if (F.Decision && F.Committed==F.Participants)
     {
         if (AwaitingApplications(F.Work.Result)) {F.RetryAt=NetworkTime+.01;return;}
-        const auto Result=F.Work.Result;WorkFlows.erase(I);RetryWork.erase(Event);KnownWork.erase(Event);
+        const auto Result=F.Work.Result;const auto Request=F.Work.Request;
+        WorkFlows.erase(I);RetryWork.erase(Event);KnownWork.erase(Event);
         ApplyCommit(Result);Broadcast(MessageKind::TransactionResult,Event,Result.StateDomain,EncodeCommit(Result));
         if (ReleaseApplicationResult) ReleaseApplicationResult(Event);
+        FinishSpawnWork(Request);
     }
 }
 bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
@@ -272,7 +307,7 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
                 WorkFlows.erase(I);
                 if (ReleaseApplicationResult) ReleaseApplicationResult(Event);
                 if (!Values.empty() && Numbers.Import(Sender,Values)) RefreshRecords(Values);
-                RetryWork[Event]={Requester,W.Request};return true;
+                RetryWork[Event]={Requester,W.Request};NextWorkRetry=NetworkTime;return true;
             }
             I->second.Prepared.insert(Sender);
         }
@@ -299,22 +334,37 @@ bool ClientWorld::ReceiveWork(Id Sender,const Message& V)
 }
 namespace
 {
-template<class F>
-bool VisitRetryBatch(const std::vector<Id>& Events,Id& Cursor,std::size_t Limit,F&& Visit)
+class RetrySlice
 {
-    if (Events.empty()) return false;
-    const auto Start=Limit?std::size_t(std::upper_bound(Events.begin(),Events.end(),Cursor)-Events.begin()):0;
-    const auto Count=Limit?std::min(Limit,Events.size()):Events.size();
-    for (std::size_t N=0;N<Count;++N)
+public:
+    explicit RetrySlice(double Seconds):Budget(Seconds),Started(std::chrono::steady_clock::now()) {}
+    bool CanVisit(std::size_t Visited) const
     {
-        const auto Event=Events[(Start+N)%Events.size()];
-        if (Limit) Cursor=Event;
-        Visit(Event);
+        return !Visited || !(Budget>0) || std::chrono::duration<double>(std::chrono::steady_clock::now()-Started).count()<Budget;
     }
-    return Count<Events.size();
+private:
+    double Budget;
+    std::chrono::steady_clock::time_point Started;
+};
+template<class B,class F>
+bool VisitRetryBatch(std::deque<Id>& Events,std::size_t Limit,double Seconds,B&& BuildRound,F&& Visit)
+{
+    // Keep one frozen round across owner turns. Rebuilding and checking the
+    // entire pending map before each four-item slice made backlog maintenance
+    // quadratic and starved the ordered UE application acknowledgments.
+    bool Refilled=false;
+    const auto Refill=[&]{if (Events.empty() && !Refilled) {BuildRound();Refilled=true;}};
+    Refill();const auto Count=Limit?Limit:Events.size();
+    RetrySlice Slice(Seconds);
+    for (std::size_t N=0;N<Count && Slice.CanVisit(N);++N)
+    {
+        Refill();if (Events.empty()) break;
+        const auto Event=Events.front();Events.pop_front();Visit(Event);
+    }
+    return !Events.empty();
 }
 }
-void ClientWorld::PollNetwork(double Now,std::size_t RetryBatchLimit)
+void ClientWorld::PollNetwork(double Now,std::size_t RetryBatchLimit,double RetryPhaseSeconds)
 {
     RetryBatchPending=false;
     if (!std::isfinite(Now) || Now<NetworkTime || !Failure.empty()) return;NetworkTime=Now;
@@ -325,11 +375,12 @@ void ClientWorld::PollNetwork(double Now,std::size_t RetryBatchLimit)
     RetryPeerStates();
     RetryPeerReceipts();
     FlushCommandOutbox();
-    std::vector<Id> IntentEvents;
-    for (const auto& [E,I]:PlayerIntents) if (I.RetryAt<=Now && HasControl(I.Request.Header.Object)) IntentEvents.push_back(E);
-    RetryBatchPending|=VisitRetryBatch(IntentEvents,IntentRetryCursor,RetryBatchLimit,[&](Id E)
+    RetryBatchPending|=VisitRetryBatch(IntentRetryRound,RetryBatchLimit,RetryPhaseSeconds,
+        [&]{for (const auto& [E,I]:PlayerIntents) if (I.RetryAt<=Now) IntentRetryRound.push_back(E);},[&](Id E)
     {
+        TraceScope Phase("GuLiHybrid_MaintenanceIntent");
         const auto Found=PlayerIntents.find(E);if (Found==PlayerIntents.end()) return;auto& I=Found->second;
+        if (I.RetryAt>Now || !HasControl(I.Request.Header.Object)) return;
         I.RetryAt=Now+.5;const auto K=I.Request.Header.Object;
         if (HasSimulation(K)) {if (I.Admit) SubmitAdmitted(I.Request);else Submit(I.Request,{});}
         else
@@ -360,11 +411,13 @@ void ClientWorld::PollNetwork(double Now,std::size_t RetryBatchLimit)
     // They do not depend on any simulator's logical age.
     // Both the exporting and importing side retain pending work while frozen.
     // Neither may send it past the captured boundary before ownership commits.
-    std::vector<Id> Events;for (const auto& [E,P]:Pending)
-        if (P.RetryAt<=Now && !Frozen.contains(P.Request.Header.Object)) Events.push_back(E);
-    RetryBatchPending|=VisitRetryBatch(Events,PendingRetryCursor,RetryBatchLimit,[&](Id E)
+    RetryBatchPending|=VisitRetryBatch(PendingRetryRound,RetryBatchLimit,RetryPhaseSeconds,
+        [&]{for (const auto& [E,P]:Pending) if (P.RetryAt<=Now) PendingRetryRound.push_back(E);},[&](Id E)
     {
-        const auto I=Pending.find(E);if (I==Pending.end()) return;auto& P=I->second;P.RetryAt=Now+.5;
+        TraceScope Phase("GuLiHybrid_MaintenancePending");
+        const auto I=Pending.find(E);if (I==Pending.end()) return;auto& P=I->second;
+        if (P.RetryAt>Now || Frozen.contains(P.Request.Header.Object)) return;
+        P.RetryAt=Now+.5;
         const auto Domain=Numbers.ExecutionDomain(P.Request);const auto Peer=Numbers.Owner(Domain);
         if (!Peer.Valid()) return;
         if (Peer==Player) StartWork(Player,P.Request);
@@ -375,20 +428,16 @@ void ClientWorld::PollNetwork(double Now,std::size_t RetryBatchLimit)
         TraceScope Scope("GuLiHybrid_CoreRetryWork");
         const bool NewRound=WorkRetryRound.empty();
         if (NewRound) NextWorkRetry=Now+.1;
-        if (!RetryBatchLimit && !DeferPeerTransactions)
-        {
-            WorkRetryRound.clear();
-            auto Retry=std::exchange(RetryWork,{});
-            for (const auto& [E,R]:Retry) if (!WorkFlows.contains(E)) StartWork(R.first,R.second);
-        }
-        else
         {
             // Freeze identities once per retry round. Failed starts can requeue
             // themselves, but cannot monopolize later slices of this round.
             if (NewRound) for (const auto& [E,R]:RetryWork)
                 if (!ReadyPeerWorkIdentities.contains(E)) WorkRetryRound.push_back(E);
+            if (NewRound) std::stable_sort(WorkRetryRound.begin(),WorkRetryRound.end(),[&](Id A,Id B)
+                {return RetryWork.at(A).second.StartedAt<RetryWork.at(B).second.StartedAt;});
             const auto Count=RetryBatchLimit?RetryBatchLimit:WorkRetryRound.size();
-            for (std::size_t N=0;N<Count && !WorkRetryRound.empty();++N)
+            RetrySlice Slice(RetryPhaseSeconds);
+            for (std::size_t N=0;N<Count && !WorkRetryRound.empty() && Slice.CanVisit(N);++N)
             {
                 const auto E=WorkRetryRound.front();WorkRetryRound.pop_front();
                 const auto I=RetryWork.find(E);if (I==RetryWork.end()) continue;
@@ -415,32 +464,37 @@ void ClientWorld::PollNetwork(double Now,std::size_t RetryBatchLimit)
     // retry delay. Their FIFO and the frozen retry round are independent, so
     // continuous arrivals cannot starve previously blocked transactions.
     const auto PeerCount=RetryBatchLimit?RetryBatchLimit:ReadyPeerWork.size();
-    for (std::size_t N=0;N<PeerCount && !ReadyPeerWork.empty();++N)
+    RetrySlice PeerSlice(RetryPhaseSeconds);
+    for (std::size_t N=0;N<PeerCount && !ReadyPeerWork.empty() && PeerSlice.CanVisit(N);++N)
     {
+        TraceScope Phase("GuLiHybrid_MaintenancePeer");
         const auto E=ReadyPeerWork.front();ReadyPeerWork.pop_front();ReadyPeerWorkIdentities.erase(E);
         const auto I=RetryWork.find(E);if (I==RetryWork.end()) continue;
         auto Request=std::move(I->second);RetryWork.erase(I);
         if (!WorkFlows.contains(E)) StartWork(Request.first,Request.second);
     }
     RetryBatchPending|=!ReadyPeerWork.empty();
-    Events.clear();for (const auto& [E,F]:WorkFlows) if (F.RetryAt<=Now) Events.push_back(E);
-    for (const auto E:Events)
+    RetryBatchPending|=VisitRetryBatch(WorkFlowRetryRound,RetryBatchLimit,RetryPhaseSeconds,
+        [&]{for (const auto& [E,F]:WorkFlows) if (F.RetryAt<=Now) WorkFlowRetryRound.push_back(E);},[&](Id E)
     {
-        auto I=WorkFlows.find(E);if (I==WorkFlows.end()) continue;auto& F=I->second;F.RetryAt=Now+.5;
+        TraceScope Phase("GuLiHybrid_MaintenanceWorkFlow");
+        auto I=WorkFlows.find(E);if (I==WorkFlows.end()) return;auto& F=I->second;
+        if (F.RetryAt>Now) return;
+        F.RetryAt=Now+.5;
         std::set<Id> CurrentOwners;bool OwnersReady=true;
         for (const auto& M:F.Work.Changes)
         {const Id Owner=Numbers.MutationOwner(F.Work,M);OwnersReady&=Owner.Valid() && Members.contains(Owner) && Members.at(Owner).Online;CurrentOwners.insert(Owner);}
-        if (!OwnersReady) continue;
+        if (!OwnersReady) return;
         if (CurrentOwners!=F.Participants)
         {
             const auto Old=F.Work;
             for (const auto P:F.Participants)
             {if (P==Player) Numbers.Cancel(Player,E,Old.Proposal);else SendMessage(P,MessageKind::WorkCancel,E,Old.Source,ProposalIdentity(Old.Proposal));}
             if (!F.Decision)
-            {const auto Requester=F.Requester;WorkFlows.erase(I);if (ReleaseApplicationResult) ReleaseApplicationResult(E);RetryWork[E]={Requester,Old.Request};continue;}
-            if (!Numbers.Resume(F.Work)) continue;
+            {const auto Requester=F.Requester;WorkFlows.erase(I);if (ReleaseApplicationResult) ReleaseApplicationResult(E);RetryWork[E]={Requester,Old.Request};return;}
+            if (!Numbers.Resume(F.Work)) return;
             F.Encoding.clear();
-            if (ReserveApplicationResult && !ReserveApplicationResult(F.Work)) continue;
+            if (ReserveApplicationResult && !ReserveApplicationResult(F.Work)) return;
             F.Participants=std::move(CurrentOwners);F.Prepared.clear();F.Committed.clear();F.Decision=false;KnownWork[E]={F.Work,true};
         }
         if (F.Encoding.empty()) F.Encoding=EncodeOwnerWork(F.Work);
@@ -457,21 +511,21 @@ void ClientWorld::PollNetwork(double Now,std::size_t RetryBatchLimit)
             else if (F.Decision && !F.Committed.contains(Peer)) SendMessage(Peer,MessageKind::WorkCommit,E,F.Work.Source,Body);
         }
         AdvanceWork(E);
-    }
+    });
     for (auto I=PlanWaitReasons.begin();I!=PlanWaitReasons.end();)
         if (!RetryWork.contains(I->first)) I=PlanWaitReasons.erase(I);else ++I;
     // Keep blocked results in place. Rebuilding this entire map on every poll
     // repeatedly copies birth records and capability payloads during combat.
-    // Freeze the ready identities before callbacks; newly queued work keeps the
-    // original next-poll boundary and final completion still goes through ApplyCommit.
-    std::vector<Id> ReadyResults;
-    for (const auto& [E,R]:WaitingResults)
-        if (CommitDependenciesReady(R)) ReadyResults.push_back(E);
-    for (const auto E:ReadyResults)
+    // Freeze identities once per round; dependency checks belong inside the
+    // bounded slice, and final completion still goes through ApplyCommit.
+    RetryBatchPending|=VisitRetryBatch(WaitingResultRound,RetryBatchLimit,RetryPhaseSeconds,
+        [&]{for (const auto& [E,R]:WaitingResults) WaitingResultRound.push_back(E);},[&](Id E)
     {
-        const auto I=WaitingResults.find(E);if (I==WaitingResults.end()) continue;
+        TraceScope Phase("GuLiHybrid_MaintenanceReadyResult");
+        const auto I=WaitingResults.find(E);if (I==WaitingResults.end()) return;
+        if (!CommitDependenciesReady(I->second)) return;
         auto Result=std::move(I->second);WaitingResults.erase(I);ApplyCommit(Result);
-    }
+    });
     if (Now>=NextStateRepair)
     {
         TraceScope Scope("GuLiHybrid_CoreStateRepair");

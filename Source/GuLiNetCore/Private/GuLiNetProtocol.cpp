@@ -1,5 +1,6 @@
 #include "GuLiNetProtocol.h"
 #include <algorithm>
+#include <array>
 #include <bit>
 #include <cmath>
 #include <limits>
@@ -7,18 +8,62 @@
 
 namespace GuLiNet
 {
+namespace
+{
+template<class T> void EncodeLittleEndian(T Value,std::uint8_t* Out)
+{
+    for (unsigned I=0;I<sizeof(T);++I) Out[I]=static_cast<std::uint8_t>(Value>>(I*8));
+}
+}
+void Writer::AppendUnchecked(std::span<const std::uint8_t> Value)
+{
+    if (!Heap && Value.size()<=Inline.size()-InlineSize)
+    {
+        std::copy(Value.begin(),Value.end(),Inline.begin()+InlineSize);
+        InlineSize+=Value.size();return;
+    }
+    if (!Heap)
+    {
+        Buffer.reserve(std::min(Maximum,std::max(InlineSize+Value.size(),Inline.size()*2)));
+        Buffer.insert(Buffer.end(),Inline.begin(),Inline.begin()+InlineSize);Heap=true;
+    }
+    Buffer.insert(Buffer.end(),Value.begin(),Value.end());
+}
+void Writer::AppendFixed(std::span<const std::uint8_t> Value)
+{
+    if (!Valid) return;
+    // U8 used to retain the fitting prefix before the first overflowing byte.
+    // Preserve Data(), Good(), and Take() behavior even on that failure path.
+    const auto Count=std::min(Value.size(),Maximum-Size());
+    if (Count) AppendUnchecked(Value.first(Count));
+    if (Count!=Value.size()) Valid=false;
+}
 void Writer::U8(std::uint8_t Value)
 {
-    if (!Valid || Buffer.size() >= Maximum) { Valid = false; return; }
-    Buffer.push_back(Value);
+    if (!Valid || Size() >= Maximum) { Valid = false; return; }
+    if (Heap) Buffer.push_back(Value);else if (InlineSize<Inline.size()) Inline[InlineSize++]=Value;
+    else AppendUnchecked(std::span<const std::uint8_t>(&Value,1));
 }
-void Writer::U16(std::uint16_t V) { for (unsigned I = 0; I < 2; ++I) U8(static_cast<std::uint8_t>(V >> (I * 8))); }
-void Writer::U32(std::uint32_t V) { for (unsigned I = 0; I < 4; ++I) U8(static_cast<std::uint8_t>(V >> (I * 8))); }
-void Writer::U64(std::uint64_t V) { for (unsigned I = 0; I < 8; ++I) U8(static_cast<std::uint8_t>(V >> (I * 8))); }
+void Writer::U16(std::uint16_t V)
+{std::array<std::uint8_t,2> B;EncodeLittleEndian(V,B.data());AppendFixed(B);}
+void Writer::U32(std::uint32_t V)
+{std::array<std::uint8_t,4> B;EncodeLittleEndian(V,B.data());AppendFixed(B);}
+void Writer::U64(std::uint64_t V)
+{std::array<std::uint8_t,8> B;EncodeLittleEndian(V,B.data());AppendFixed(B);}
 void Writer::F32(float V) { if (!std::isfinite(V)) Valid = false; U32(std::bit_cast<std::uint32_t>(V)); }
 void Writer::F64(double V) { if (!std::isfinite(V)) Valid = false; U64(std::bit_cast<std::uint64_t>(V)); }
-void Writer::Identity(const Id& V) { for (auto W : V.Words) U32(W); }
-void Writer::Key(const ObjectKey& V) { U8(static_cast<std::uint8_t>(V.Kind)); Identity(V.StableId); U32(V.Generation); }
+void Writer::Identity(const Id& V)
+{
+    std::array<std::uint8_t,16> B;
+    for (unsigned I=0;I<4;++I) EncodeLittleEndian(V.Words[I],B.data()+I*4);
+    AppendFixed(B);
+}
+void Writer::Key(const ObjectKey& V)
+{
+    std::array<std::uint8_t,21> B;B[0]=static_cast<std::uint8_t>(V.Kind);
+    for (unsigned I=0;I<4;++I) EncodeLittleEndian(V.StableId.Words[I],B.data()+1+I*4);
+    EncodeLittleEndian(V.Generation,B.data()+17);AppendFixed(B);
+}
 void Writer::Text(const std::string& V)
 { Blob(std::span<const std::uint8_t>(reinterpret_cast<const std::uint8_t*>(V.data()), V.size())); }
 void Writer::Blob(std::span<const std::uint8_t> V)
@@ -28,10 +73,23 @@ void Writer::Blob(std::span<const std::uint8_t> V)
 }
 void Writer::Raw(std::span<const std::uint8_t> V)
 {
-    if (!Valid || V.size() > Maximum - Buffer.size()) { Valid = false; return; }
-    Buffer.insert(Buffer.end(), V.begin(), V.end());
+    if (!Valid || V.size() > Maximum - Size()) { Valid = false; return; }
+    AppendUnchecked(V);
 }
-Bytes Writer::Take() { return Valid ? std::move(Buffer) : Bytes{}; }
+std::span<const std::uint8_t> Writer::View() const
+{return Heap?std::span<const std::uint8_t>(Buffer):std::span<const std::uint8_t>(Inline.data(),InlineSize);}
+const Bytes& Writer::Data() const
+{
+    if (!Heap) {Buffer.assign(Inline.begin(),Inline.begin()+InlineSize);Heap=true;}
+    return Buffer;
+}
+void Writer::Clear() {if (Heap) Buffer.clear();else InlineSize=0;}
+Bytes Writer::Take()
+{
+    if (!Valid) return {};
+    if (Heap) return std::move(Buffer);
+    Bytes Result(Inline.begin(),Inline.begin()+InlineSize);InlineSize=0;return Result;
+}
 bool Reader::Raw(std::size_t Count, std::span<const std::uint8_t>& Out)
 {
     if (!Valid || Count > Remaining()) { Valid = false; return false; }
@@ -73,9 +131,14 @@ bool Reader::Text(std::string& Out, std::size_t Limit)
 }
 bool Reader::Blob(Bytes& Out, std::size_t Limit)
 {
-    std::uint32_t Count; std::span<const std::uint8_t> View;
-    if (!U32(Count) || Count > Limit || !Raw(Count, View)) { Valid = false; return false; }
+    std::span<const std::uint8_t> View;if (!BlobView(View,Limit)) return false;
     Out.assign(View.begin(), View.end()); return true;
+}
+bool Reader::BlobView(std::span<const std::uint8_t>& Out,std::size_t Limit)
+{
+    std::uint32_t Count;
+    if (!U32(Count) || Count>Limit || !Raw(Count,Out)) {Valid=false;return false;}
+    return true;
 }
 bool EncodeMessage(const Message& Value, Bytes& Out)
 {
@@ -211,12 +274,12 @@ std::size_t EncodeMotionBatch(std::span<const Message* const> Values,Bytes& Out,
         if (Flags&64) VarUInt(R,H.ControlEpoch);if (Flags&128) VarUInt(R,H.At);
         if (Flags&256) R.Identity(H.ResourceGroup);if (Flags&512) VarUInt(R,H.ResourceEpoch);
         VarUInt(R,H.Sequence);VarUInt(R,Value->Body.size());R.Raw(Value->Body);
-        if (!R.Good() || 3+Shared.size()+Records.Data().size()+R.Data().size()>MaxBytes) break;
-        RecordBytes.push_back(R.Data().size());Records.Raw(R.Data());
+        if (!R.Good() || 3+Shared.size()+Records.View().size()+R.View().size()>MaxBytes) break;
+        RecordBytes.push_back(R.View().size());Records.Raw(R.View());
     }
     if (RecordBytes.size()<2) {RecordBytes.clear();return 0;}
     Writer W(MaxBytes);W.U8(static_cast<std::uint8_t>(RecordBytes.size()));W.U16(static_cast<std::uint16_t>(Shared.size()));
-    W.Raw(Shared);W.Raw(Records.Data());Out=W.Take();return RecordBytes.size();
+    W.Raw(Shared);W.Raw(Records.View());Out=W.Take();return RecordBytes.size();
 }
 bool DecodeMotionBatch(std::span<const std::uint8_t> Value,std::vector<Message>& Out,PeerMessageContext Context)
 {

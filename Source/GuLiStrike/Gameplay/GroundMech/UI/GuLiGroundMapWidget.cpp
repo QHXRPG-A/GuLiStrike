@@ -11,6 +11,7 @@
 #include "Rendering/SlateRenderer.h"
 #include "Styling/CoreStyle.h"
 #include "InputCoreTypes.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 class SGuLiGroundMap final:public SLeafWidget
 {
@@ -42,19 +43,21 @@ public:
 private:TWeakObjectPtr<UGuLiGroundMapWidget> Owner;FVector2D Start,Last;bool Dragged=false;
 };
 TSharedRef<SWidget> UGuLiGroundMapWidget::RebuildWidget(){Surface=SNew(SGuLiGroundMap,this);return Surface.ToSharedRef();}
-void UGuLiGroundMapWidget::ReleaseSlateResources(bool Release){Super::ReleaseSlateResources(Release);Surface.Reset();ReleasePlanarTerrain();Terrain.Reset();Data=nullptr;Vertices.Reset();Contours.Reset();Indices.Reset();TerrainColors.Reset();TerrainPerimeter.Reset();HeadingIndices.Reset();MarkerGroups.Reset();}
+void UGuLiGroundMapWidget::ReleaseSlateResources(bool Release){Super::ReleaseSlateResources(Release);Surface.Reset();ReleasePlanarTerrain();Terrain.Reset();Data=nullptr;Vertices.Reset();Contours.Reset();Indices.Reset();TerrainColors.Reset();TerrainPerimeter.Reset();HeadingIndices.Reset();MarkerGroups.Reset();TerrainPaintBatches.Reset();}
 bool UGuLiGroundMapWidget::HasTerrain() const{return Terrain && !Terrain->Heights.IsEmpty() && (bFull?PlanarTerrainTexture!=nullptr:!Vertices.IsEmpty());}
 void UGuLiGroundMapWidget::SetColors(FLinearColor Panel,FLinearColor Raised,FLinearColor Line,FLinearColor Secondary,FLinearColor Accent)
-{PanelColor=Panel;RaisedColor=Raised;LineColor=Line;SecondaryColor=Secondary;AccentColor=Accent;CachedCenter=FVector(UE_BIG_NUMBER);ReleasePlanarTerrain();}
+{PanelColor=Panel;RaisedColor=Raised;LineColor=Line;SecondaryColor=Secondary;AccentColor=Accent;CachedCenter=FVector(UE_BIG_NUMBER);ReleasePlanarTerrain();TerrainPaintBatches.Reset();}
 void UGuLiGroundMapWidget::Configure(bool Full,double InRange,double Step,double Scale)
 {
     bFull=Full;Range=InRange;ContourStep=FMath::Max(100.,Step);HeightScale=Scale;
+    TerrainPaintBatches.Reset();
     // UWidget::SynchronizeProperties copies this value onto the Slate surface.
     // Setting only the Slate constructor was overwritten by UMG's Inherit default.
     SetClipping(EWidgetClipping::ClipToBoundsAlways);
 }
 void UGuLiGroundMapWidget::SetSnapshot(const FGuLiGroundHUDSnapshot* In)
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_Snapshot);
     Data=In;if(!bCentered&&Data){Center=Data->Position;bCentered=true;}
     const auto* Grid=GetWorld()?GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>():nullptr;
     const auto Next=Grid?Grid->Snapshot():nullptr;
@@ -69,6 +72,7 @@ void UGuLiGroundMapWidget::SetPreviewLocation(FVector Location)
 {if(!Center.Equals(Location,1.)){Center=Location;bCentered=true;CacheTerrain();if(Surface)Surface->Invalidate(EInvalidateWidgetReason::Paint);}}
 void UGuLiGroundMapWidget::Present(float Delta,float Yaw)
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_Present);
     if(bFull||!Data)return;
     const FVector Next=FMath::VInterpTo(Center,Data->Position,Delta,16.f);
     if(!Next.Equals(Center,.1)||!FMath::IsNearlyEqual(Yaw,Heading,.02f))
@@ -80,51 +84,63 @@ void UGuLiGroundMapWidget::CacheTerrain()
     if(bFull){if(!PlanarTerrainTexture)CachePlanarTerrain();return;}
     const FVector Anchor(FMath::GridSnap(Center.X,3000.),FMath::GridSnap(Center.Y,3000.),0);
     if(!Vertices.IsEmpty()&&Anchor==CachedCenter)return;CachedCenter=Anchor;
+    TerrainPaintBatches.Reset();
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_RebuildTerrain);
     const int32 N=64;const double Span=Range*.88;
     const FVector2D Origin=FVector2D(Anchor)-FVector2D(Span*.5);
     Vertices.SetNum((N+1)*(N+1));Indices.Reset(N*N*6);Contours.Reset();TerrainColors.SetNum(Vertices.Num());TerrainPerimeter.Reset();HeadingIndices.Reset();
     PatchOrigin=Origin;PatchSpan=Span;MinimumHeight=DBL_MAX;MaximumHeight=-DBL_MAX;
     const FVector2D Maximum=Terrain->Origin+FVector2D(Terrain->Cells)*GuLiGrid::CellSize;
-    for(int32 Y=0;Y<=N;++Y)for(int32 X=0;X<=N;++X)
     {
-        const auto XY=Origin+FVector2D(X,Y)*(Span/N);
-        Vertices[Y*(N+1)+X]=FVector(XY.X,XY.Y,Terrain->HeightAt(XY.X,XY.Y));
-        MinimumHeight=FMath::Min(MinimumHeight,Vertices[Y*(N+1)+X].Z);MaximumHeight=FMath::Max(MaximumHeight,Vertices[Y*(N+1)+X].Z);
-    }
-    const FVector Light=FVector(-.55,-.65,.7).GetSafeNormal();
-    for(int32 I=0;I<Vertices.Num();++I)
-    {
-        const auto& P=Vertices[I];const double Step=Span/N;
-        const double DX=(Terrain->HeightAt(P.X+Step,P.Y)-Terrain->HeightAt(P.X-Step,P.Y))/(2*Step);
-        const double DY=(Terrain->HeightAt(P.X,P.Y+Step)-Terrain->HeightAt(P.X,P.Y-Step))/(2*Step);
-        const double Relief=FMath::Max(2.,HeightScale);
-        const double Lit=FMath::Clamp(FVector::DotProduct(FVector(-DX*Relief,-DY*Relief,1).GetSafeNormal(),Light),0.,1.);
-        const double Elevation=(P.Z-MinimumHeight)/FMath::Max(1.,MaximumHeight-MinimumHeight);
-        const double Neighbours=(Terrain->HeightAt(P.X+Step*3,P.Y)+Terrain->HeightAt(P.X-Step*3,P.Y)+Terrain->HeightAt(P.X,P.Y+Step*3)+Terrain->HeightAt(P.X,P.Y-Step*3))*.25;
-        const double Valley=FMath::Clamp((Neighbours-P.Z)/FMath::Max(100.,Step),0.,.45);
-        const double Band=FMath::FloorToDouble((P.Z-MinimumHeight)/ContourStep)*ContourStep/FMath::Max(ContourStep,MaximumHeight-MinimumHeight);
-        // Directional hill shading, elevation bands and local valley shading are
-        // derived once from the real height field when this terrain patch changes.
-        const double Facet=Lit<.28?.06:Lit<.65?.24:.48;
-        auto Tint=FMath::Lerp(PanelColor*.45f,SecondaryColor,float(FMath::Clamp(Facet+Elevation*.07+Band*.04-Valley*.35,.025,.62)));Tint.A=1;
-        TerrainColors[I]=Tint.ToFColor(true);
-    }
-    for(int32 Y=0;Y<N;++Y)for(int32 X=0;X<N;++X)
-    {
-        const int32 A=Y*(N+1)+X,B=A+1,C=A+N+2,D=A+N+1;
-        if(Vertices[A].X<Terrain->Origin.X||Vertices[A].Y<Terrain->Origin.Y||Vertices[C].X>Maximum.X||Vertices[C].Y>Maximum.Y)continue;
-        for(int32 I:{A,B,C,A,C,D})Indices.Add(SlateIndex(I));
-        const FVector P[4]={Vertices[A],Vertices[B],Vertices[C],Vertices[D]};
-        const double Low=FMath::Min(FMath::Min(P[0].Z,P[1].Z),FMath::Min(P[2].Z,P[3].Z));
-        const double High=FMath::Max(FMath::Max(P[0].Z,P[1].Z),FMath::Max(P[2].Z,P[3].Z));
-        for(double H=FMath::CeilToDouble(Low/ContourStep)*ContourStep;H<High;H+=ContourStep)
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_Heights);
+        for(int32 Y=0;Y<=N;++Y)for(int32 X=0;X<=N;++X)
         {
-            TArray<FVector,TInlineAllocator<4>> Crossings;
-            for(int32 E=0;E<4;++E){const auto& P0=P[E];const auto& P1=P[(E+1)%4];if((P0.Z<=H&&P1.Z>H)||(P1.Z<=H&&P0.Z>H))Crossings.Add(FMath::Lerp(P0,P1,(H-P0.Z)/(P1.Z-P0.Z)));}
-            for(int32 I=1;I<Crossings.Num();I+=2)Contours.Emplace(Crossings[I-1],Crossings[I]);
+            const auto XY=Origin+FVector2D(X,Y)*(Span/N);
+            Vertices[Y*(N+1)+X]=FVector(XY.X,XY.Y,Terrain->HeightAt(XY.X,XY.Y));
+            MinimumHeight=FMath::Min(MinimumHeight,Vertices[Y*(N+1)+X].Z);MaximumHeight=FMath::Max(MaximumHeight,Vertices[Y*(N+1)+X].Z);
         }
     }
     {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_Shading);
+        const FVector Light=FVector(-.55,-.65,.7).GetSafeNormal();
+        for(int32 I=0;I<Vertices.Num();++I)
+        {
+            const auto& P=Vertices[I];const double Step=Span/N;
+            const double DX=(Terrain->HeightAt(P.X+Step,P.Y)-Terrain->HeightAt(P.X-Step,P.Y))/(2*Step);
+            const double DY=(Terrain->HeightAt(P.X,P.Y+Step)-Terrain->HeightAt(P.X,P.Y-Step))/(2*Step);
+            const double Relief=FMath::Max(2.,HeightScale);
+            const double Lit=FMath::Clamp(FVector::DotProduct(FVector(-DX*Relief,-DY*Relief,1).GetSafeNormal(),Light),0.,1.);
+            const double Elevation=(P.Z-MinimumHeight)/FMath::Max(1.,MaximumHeight-MinimumHeight);
+            const double Neighbours=(Terrain->HeightAt(P.X+Step*3,P.Y)+Terrain->HeightAt(P.X-Step*3,P.Y)+Terrain->HeightAt(P.X,P.Y+Step*3)+Terrain->HeightAt(P.X,P.Y-Step*3))*.25;
+            const double Valley=FMath::Clamp((Neighbours-P.Z)/FMath::Max(100.,Step),0.,.45);
+            const double Band=FMath::FloorToDouble((P.Z-MinimumHeight)/ContourStep)*ContourStep/FMath::Max(ContourStep,MaximumHeight-MinimumHeight);
+            // Directional hill shading, elevation bands and local valley shading are
+            // derived once from the real height field when this terrain patch changes.
+            const double Facet=Lit<.28?.06:Lit<.65?.24:.48;
+            auto Tint=FMath::Lerp(PanelColor*.45f,SecondaryColor,float(FMath::Clamp(Facet+Elevation*.07+Band*.04-Valley*.35,.025,.62)));Tint.A=1;
+            TerrainColors[I]=Tint.ToFColor(true);
+        }
+    }
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_Contours);
+        for(int32 Y=0;Y<N;++Y)for(int32 X=0;X<N;++X)
+        {
+            const int32 A=Y*(N+1)+X,B=A+1,C=A+N+2,D=A+N+1;
+            if(Vertices[A].X<Terrain->Origin.X||Vertices[A].Y<Terrain->Origin.Y||Vertices[C].X>Maximum.X||Vertices[C].Y>Maximum.Y)continue;
+            for(int32 I:{A,B,C,A,C,D})Indices.Add(SlateIndex(I));
+            const FVector P[4]={Vertices[A],Vertices[B],Vertices[C],Vertices[D]};
+            const double Low=FMath::Min(FMath::Min(P[0].Z,P[1].Z),FMath::Min(P[2].Z,P[3].Z));
+            const double High=FMath::Max(FMath::Max(P[0].Z,P[1].Z),FMath::Max(P[2].Z,P[3].Z));
+            for(double H=FMath::CeilToDouble(Low/ContourStep)*ContourStep;H<High;H+=ContourStep)
+            {
+                TArray<FVector,TInlineAllocator<4>> Crossings;
+                for(int32 E=0;E<4;++E){const auto& P0=P[E];const auto& P1=P[(E+1)%4];if((P0.Z<=H&&P1.Z>H)||(P1.Z<=H&&P0.Z>H))Crossings.Add(FMath::Lerp(P0,P1,(H-P0.Z)/(P1.Z-P0.Z)));}
+                for(int32 I=1;I<Crossings.Num();I+=2)Contours.Emplace(Crossings[I-1],Crossings[I]);
+            }
+        }
+    }
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_PainterOrders);
         // Cache the real border profile once. Its vertical cutaway supplies depth
         // without adding any scene capture or per-frame height queries.
         for(int32 X=0;X<N;++X)TerrainPerimeter.Add(Vertices[X]);
@@ -132,17 +148,45 @@ void UGuLiGroundMapWidget::CacheTerrain()
         for(int32 X=N;X>0;--X)TerrainPerimeter.Add(Vertices[N*(N+1)+X]);
         for(int32 Y=N;Y>0;--Y)TerrainPerimeter.Add(Vertices[Y*(N+1)]);
         // Eight cached painter orders avoid sorting terrain triangles during rotating-map paints.
-        HeadingIndices.SetNum(8);TArray<int32> Triangles;for(int32 I=0;I<Indices.Num();I+=3)Triangles.Add(I);
+        HeadingIndices.SetNum(8);TArray<int32> Triangles;
+        TArray<FVector> TriangleCenters;TArray<double> Depths;
+        Triangles.Reserve(Indices.Num()/3);TriangleCenters.Reserve(Indices.Num()/3);Depths.SetNumUninitialized(Indices.Num()/3);
+        for(int32 I=0;I<Indices.Num();I+=3)
+        {
+            Triangles.Add(I);
+            // Retain the exact sum and comparison used by the painter sort.
+            // Neither normalize nor subtract the anchor: rounding changes ties.
+            TriangleCenters.Add(Vertices[Indices[I]]+Vertices[Indices[I+1]]+Vertices[Indices[I+2]]);
+        }
         for(int32 Direction=0;Direction<8;++Direction)
         {
             const double Angle=Direction*UE_PI/4;const FVector View(FMath::Cos(Angle),FMath::Sin(Angle),0);
-            Triangles.Sort([&](int32 A,int32 B){return FVector::DotProduct(Vertices[Indices[A]]+Vertices[Indices[A+1]]+Vertices[Indices[A+2]],View)>FVector::DotProduct(Vertices[Indices[B]]+Vertices[Indices[B+1]]+Vertices[Indices[B+2]],View);});
-            auto& Order=HeadingIndices[Direction];Order.Reserve(Indices.Num());for(int32 I:Triangles)for(int32 J=0;J<3;++J)Order.Add(Indices[I+J]);
+            double* const DepthData=Depths.GetData();
+            {
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_DepthKeys);
+                const FVector* const Centers=TriangleCenters.GetData();
+                for(int32 I=0;I<TriangleCenters.Num();++I)DepthData[I]=FVector::DotProduct(Centers[I],View);
+            }
+            // Preserve the prior direction's input permutation, the comparator,
+            // and the same sort, including all equal-depth triangle ordering.
+            // These offsets were generated above and the arrays cannot resize
+            // during sorting; avoid two TArray range checks per comparison.
+            {
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_SortOrder);
+                Triangles.Sort([DepthData](int32 A,int32 B){return DepthData[A/3]>DepthData[B/3];});
+            }
+            {
+                TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_WriteOrder);
+                auto& Order=HeadingIndices[Direction];Order.SetNumUninitialized(Indices.Num());
+                SlateIndex* Target=Order.GetData();const SlateIndex* const Source=Indices.GetData();
+                for(int32 I:Triangles){*Target++=Source[I];*Target++=Source[I+1];*Target++=Source[I+2];}
+            }
         }
     }
 }
 void UGuLiGroundMapWidget::CacheMarkers()
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_Markers);
     MarkerGroups.Reset();if(!Data)return;
     // Spatial aggregation is performed on snapshot submission (5 Hz), never on
     // each rotating-map paint. It operates only on already-visible cached facts.
@@ -171,35 +215,98 @@ FVector2D UGuLiGroundMapWidget::Project(const FVector& P,FVector2D Size) const
 }
 int32 UGuLiGroundMapWidget::Paint(const FGeometry& G,FSlateWindowElementList& Out,int32 L) const
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_Paint);
     const FVector2D Size=G.GetLocalSize();const auto Transform=G.GetAccumulatedRenderTransform();
     const auto* White=FCoreStyle::Get().GetBrush("WhiteBrush");
     FSlateDrawElement::MakeBox(Out,L,G.ToPaintGeometry(),White,ESlateDrawEffect::None,PanelColor);
     if(!HasTerrain()||!Data)return L;
-    const auto Resource=FSlateApplication::Get().GetRenderer()->GetResourceHandle(*White);
-    TArray<FSlateVertex> V;TArray<SlateIndex> I;
-    V.Reserve(FMath::Max(Vertices.Num(),4096));
-    auto Flush=[&](){if(!I.IsEmpty())FSlateDrawElement::MakeCustomVerts(Out,++L,Resource,V,I,nullptr,0,0);V.Reset();I.Reset();};
-    auto Line=[&](FVector2D A,FVector2D B,FLinearColor Color,float Width=1.f)
+    // Every point in this paint shares the same view. Keep the original
+    // operation order while computing scale and trigonometry only once.
+    const double ProjectionSpan=bFull?FMath::Max(Terrain->Cells.X,Terrain->Cells.Y)*GuLiGrid::CellSize/ZoomFactor:Range;
+    const double ProjectionScale=FMath::Min(Size.X,Size.Y)/FMath::Max(1.,ProjectionSpan);
+    const FVector ProjectionCenter=bFull?FVector(MapPan,0):Center;
+    const double ProjectionAngle=bFull?0:FMath::DegreesToRadians(double(Heading));
+    const double ProjectionCos=FMath::Cos(ProjectionAngle),ProjectionSin=FMath::Sin(ProjectionAngle);
+    auto Project=[&](const FVector& P,FVector2D)
     {
-        const FVector2D D=(B-A).GetSafeNormal();const FVector2D UnitNormal(-D.Y,D.X),N=UnitNormal*(Width*.5),Outer=UnitNormal*(Width*.5+.7);
+        const FVector D=P-ProjectionCenter;
+        return Size*FVector2D(.5,bFull?.5:.61)+FVector2D(-ProjectionSin*D.X+ProjectionCos*D.Y,
+            (-ProjectionCos*D.X-ProjectionSin*D.Y)*(bFull?1.:.62)-(bFull?0:D.Z*HeightScale))*ProjectionScale;
+    };
+    const auto Resource=FSlateApplication::Get().GetRenderer()->GetResourceHandle(*White);
+    auto& V=PaintVertices;auto& I=PaintIndices;V.Reset();I.Reset();
+    V.Reserve(FMath::Max(Vertices.Num(),4096));
+    bool CacheTerrainPaint=false;int32 FixedTerrainVertices=0;
+    auto Flush=[&]()
+    {
+        if(!I.IsEmpty())
+        {
+            if(CacheTerrainPaint)
+            {auto& Batch=TerrainPaintBatches.AddDefaulted_GetRef();Batch.Vertices=V;Batch.Indices=I;Batch.FixedVertices=FixedTerrainVertices;FixedTerrainVertices=0;}
+            FSlateDrawElement::MakeCustomVerts(Out,++L,Resource,V,I,nullptr,0,0);
+        }
+        V.Reset();I.Reset();
+    };
+    auto Stroke=[&](FVector2D A,FVector2D B,FVector2D UnitNormal,FColor Solid,FColor Transparent,float Width)
+    {
+        const FVector2D N=UnitNormal*(Width*.5),Outer=UnitNormal*(Width*.5+.7);
         if(V.Num()+8>MAX_uint16)Flush();
         const SlateIndex Base=SlateIndex(V.Num());
         int32 K=0;for(const auto P:{A+Outer,B+Outer,B+N,A+N,A-N,B-N,B-Outer,A-Outer})
-        {const auto C=K==0||K==1||K==6||K==7?Color.CopyWithNewOpacity(0):Color;++K;V.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(Transform,FVector2f(P),FVector2f::ZeroVector,C.ToFColor(true)));}
+        {const auto C=K==0||K==1||K==6||K==7?Transparent:Solid;++K;V.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(Transform,FVector2f(P),FVector2f::ZeroVector,C));}
         for(int32 J:{0,1,2,0,2,3,3,2,5,3,5,4,4,5,6,4,6,7})I.Add(Base+J);
     };
-    auto Polygon=[&](const TArray<FVector2D>& Points,FLinearColor Tint)
+    auto Line=[&](FVector2D A,FVector2D B,FLinearColor Color,float Width=1.f)
+    {
+        const FVector2D D=(B-A).GetSafeNormal();
+        Stroke(A,B,FVector2D(-D.Y,D.X),Color.ToFColor(true),Color.CopyWithNewOpacity(0).ToFColor(true),Width);
+    };
+    auto Polygon=[&](TConstArrayView<FVector2D> Points,FLinearColor Tint)
     {
         if(Points.Num()<3)return;if(V.Num()+Points.Num()>MAX_uint16)Flush();const int32 Base=V.Num();
-        for(const auto& P:Points)V.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(Transform,FVector2f(P),FVector2f::ZeroVector,Tint.ToFColor(true)));
+        const FColor Color=Tint.ToFColor(true);
+        for(const auto& P:Points)V.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(Transform,FVector2f(P),FVector2f::ZeroVector,Color));
         for(int32 J=1;J+1<Points.Num();++J){I.Add(SlateIndex(Base));I.Add(SlateIndex(Base+J));I.Add(SlateIndex(Base+J+1));}
     };
+    static const TArray<FVector2D> CirclePoints=[]
+    {TArray<FVector2D> Points;for(int32 J=0;J<=20;++J){const double A=J*UE_PI/10;Points.Add({FMath::Cos(A),FMath::Sin(A)});}return Points;}();
+    static const TArray<FVector2D> CircleNormals=[]
+    {TArray<FVector2D> Normals;for(int32 J=0;J<20;++J){const auto D=(CirclePoints[J+1]-CirclePoints[J]).GetSafeNormal();Normals.Add({-D.Y,D.X});}return Normals;}();
     auto Circle=[&](FVector2D P,float Radius,FLinearColor Tint,float Width)
-    {for(int32 J=0;J<20;++J){const double A=J*UE_PI/10,B=(J+1)*UE_PI/10;Line(P+FVector2D(FMath::Cos(A),FMath::Sin(A))*Radius,P+FVector2D(FMath::Cos(B),FMath::Sin(B))*Radius,Tint,Width);}};
+    {
+        const FColor Solid=Tint.ToFColor(true),Transparent=Tint.CopyWithNewOpacity(0).ToFColor(true);
+        for(int32 J=0;J<20;++J)Stroke(P+CirclePoints[J]*Radius,P+CirclePoints[J+1]*Radius,CircleNormals[J],Solid,Transparent,Width);
+    };
     const auto Edge=GuLiGroundUI::Light(LineColor);
+    const bool ReuseTerrain=!bFull && !TerrainPaintBatches.IsEmpty() && TerrainPaintHeading==Heading
+        && TerrainPaintSize==Size && TerrainPaintTransform==Transform;
+    if(ReuseTerrain)
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMap_TranslateTerrain);
+        // With the same patch, heading, scale and widget transform, movement
+        // changes every terrain point by one translation. Do not retessellate
+        // contours, antialias fringes or the cutaway on a position-only update.
+        const FVector2f Shift=TransformVector(Transform,FVector2f(Project(TerrainPaintCenter,Size)-Project(ProjectionCenter,Size)));
+        for(auto& Batch:TerrainPaintBatches)
+        {
+            // Keep immutable base positions: no cumulative float drift and no
+            // full vertex/color/UV copy before Slate takes its own frame copy.
+            FSlateVertex* Target=Batch.Vertices.GetData();
+            const FVector2f* Base=Batch.Positions.GetData();
+            for(int32 Index=Batch.FixedVertices;Index<Batch.Vertices.Num();++Index)
+            {Target[Index].Position.X=Base[Index].X+Shift.X;Target[Index].Position.Y=Base[Index].Y+Shift.Y;}
+            FSlateDrawElement::MakeCustomVerts(Out,++L,Resource,Batch.Vertices,Batch.Indices,nullptr,0,0);
+        }
+        V.Reset();
+    }
+    else
+    {
+    CacheTerrainPaint=!bFull;TerrainPaintBatches.Reset();
+    TerrainPaintCenter=ProjectionCenter;TerrainPaintHeading=Heading;TerrainPaintSize=Size;TerrainPaintTransform=Transform;
     const float GridSize=bFull?64.f:28.f;
     for(float X=0;X<Size.X;X+=GridSize)Line({X,0},{X,Size.Y},LineColor.CopyWithNewOpacity(.13f));
     for(float Y=0;Y<Size.Y;Y+=GridSize)Line({0,Y},{Size.X,Y},LineColor.CopyWithNewOpacity(.13f));
+    FixedTerrainVertices=V.Num();
     if(!bFull)
     {
         // Actual terrain perimeter connects to a flat cutaway base, rather than
@@ -235,7 +342,11 @@ int32 UGuLiGroundMapWidget::Paint(const FGeometry& G,FSlateWindowElementList& Ou
             V.Add(FSlateVertex::Make<ESlateVertexRounding::Disabled>(Transform,FVector2f(Project(Vertices[Index],Size)),FVector2f::ZeroVector,TerrainColors[Index]));
         const int32 Order=FMath::RoundToInt(FMath::UnwindDegrees(Heading)/45.f+8.f)%8;
         const auto& DrawIndices=HeadingIndices.IsValidIndex(Order)?HeadingIndices[Order]:Indices;
-        if(!DrawIndices.IsEmpty())FSlateDrawElement::MakeCustomVerts(Out,++L,Resource,V,DrawIndices,nullptr,0,0);
+        if(!DrawIndices.IsEmpty())
+        {
+            if(CacheTerrainPaint){auto& Batch=TerrainPaintBatches.AddDefaulted_GetRef();Batch.Vertices=V;Batch.Indices=DrawIndices;}
+            FSlateDrawElement::MakeCustomVerts(Out,++L,Resource,V,DrawIndices,nullptr,0,0);
+        }
     }
     V.Reset();
     for(const auto& C:Contours)
@@ -244,6 +355,10 @@ int32 UGuLiGroundMapWidget::Paint(const FGeometry& G,FSlateWindowElementList& Ou
         Line(Project(C.Key,Size),Project(C.Value,Size),Edge.CopyWithNewOpacity(Major?.8f:.48f),Major?1.9f:1.4f);
     }
     Flush();
+    CacheTerrainPaint=false;
+    for(auto& Batch:TerrainPaintBatches)
+    {Batch.Positions.Reserve(Batch.Vertices.Num());for(const auto& Vertex:Batch.Vertices)Batch.Positions.Add(Vertex.Position);}
+    }
     // Gameplay building bounds form a separate, subdued structure layer. Only
     // authoritative visible membership is used; no Actor or mesh scan is needed.
     for(const auto& Group:MarkerGroups)
@@ -274,7 +389,7 @@ int32 UGuLiGroundMapWidget::Paint(const FGeometry& G,FSlateWindowElementList& Ou
         if(Point){const TArray<FVector2D> Q{P+FVector2D(0,-R),P+FVector2D(R,0),P+FVector2D(0,R),P+FVector2D(-R,0)};Polygon(Q,PanelColor.CopyWithNewOpacity(.9f));for(int32 J=0;J<4;++J){Line(Q[J],Q[(J+1)%4],Tint.CopyWithNewOpacity(.18f),5);Line(Q[J],Q[(J+1)%4],GuLiGroundUI::Light(Tint,1.3f),2);}}
         else if(M.Team==Data->Team)
         {
-            TArray<FVector2D> Disc;Disc.Reserve(20);for(int32 J=0;J<20;++J){const double A=J*UE_PI/10;Disc.Add(P+FVector2D(FMath::Cos(A),FMath::Sin(A))*R);}
+            TArray<FVector2D,TInlineAllocator<20>> Disc;for(int32 J=0;J<20;++J)Disc.Add(P+CirclePoints[J]*R);
             Circle(P,R,Tint.CopyWithNewOpacity(.15f),5);Polygon(Disc,Tint);Circle(P,R,GuLiGroundUI::Light(SecondaryColor),1.2f);
         }
         else {Polygon({P+FVector2D(0,-R-2),P+FVector2D(R+2,R*.75+1),P+FVector2D(-R-2,R*.75+1)},PanelColor);Polygon({P+FVector2D(0,-R),P+FVector2D(R,R*.75),P+FVector2D(-R,R*.75)},Tint);}

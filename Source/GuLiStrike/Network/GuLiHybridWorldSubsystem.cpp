@@ -64,14 +64,8 @@ TAutoConsoleVariable<int32> FastSmallPayloadCompression(TEXT("gs.Hybrid.FastSmal
     TEXT("Use zlib best-speed for reliable bodies up to 64 KiB. Lossless wire codecs and larger private cuts are unchanged. Latched at client creation; 0 is the comparison path."));
 TAutoConsoleVariable<int32> CommandApplicationWake(TEXT("gs.Hybrid.CommandApplicationWake"),0,
     TEXT("Schedule the caller-thread FIFO when a command and its following logical batch become ready. Latched at client creation; no waiting or extra simulation steps."));
-TAutoConsoleVariable<int32> NetworkRetryBatchLimit(TEXT("gs.Hybrid.NetworkRetryBatchLimit"),0,
-    TEXT("Maximum transaction retry starts per maintenance phase. 0 keeps a full pass. Latched at client creation; deferred identities remain queued."));
-TAutoConsoleVariable<int32> DeferPeerTransactions(TEXT("gs.Hybrid.DeferPeerTransactions"),0,
-    TEXT("Retain received transaction facts for bounded maintenance instead of computing them inside the input queue. Latched at client creation; combine with NetworkRetryBatchLimit."));
 TAutoConsoleVariable<int32> ReuseResourceValidationSnapshot(TEXT("gs.Hybrid.ReuseResourceValidationSnapshot"),0,
     TEXT("Reuse one isolated resource snapshot within each transaction validation, retaining every intermediate check and fragment order. Latched at client creation."));
-TAutoConsoleVariable<int32> DirectCaptureMembership(TEXT("gs.Hybrid.DirectCaptureMembership"),0,
-    TEXT("Query flight/effect capture membership without per-record single-key arrays. 0 comparison, 1 direct identity lookup, 2 compare both and retain comparison results."));
 bool ResolveFastSmallPayloadCompression()
 {
     int32 Value=FastSmallPayloadCompression.GetValueOnGameThread();
@@ -108,7 +102,7 @@ bool ResolveRecordTarget(UWorld& World,const FGuLiHybridObjectState& Object,FGuL
 {
     const auto* Actors=World.GetSubsystem<UGuLiHybridActorWorldSubsystem>();if (!Actors) return false;
     FGuLiHybridAdapterFamily Family;FString Error;
-    if (!FGuLiHybridAdapterRegistry::Resolve(Actors->GetManifest(),Object,Family,Error) || !Family.ResolveTarget) return false;
+    if (!Actors->ResolveAdapter(Object,Family,Error) || !Family.ResolveTarget) return false;
     const auto* Battle=World.GetGameState<AGuLiBattleGameState>();
     return Family.ResolveTarget(Actors->GetManifest(),Object,Battle?Battle->GetMatchEpoch():0,Out);
 }
@@ -171,6 +165,7 @@ class FObjectBridge final : public IObjectAdapter
 {
     TSharedPtr<IGuLiHybridSimulationAdapter> Adapter;
     TWeakObjectPtr<UObject> Owner;
+    TWeakObjectPtr<UGuLiHybridWorldSubsystem> HybridWorld;
     FGuLiHybridObjectState State;
     FName SimulationTraceName;
     FName CaptureTraceName;
@@ -188,7 +183,7 @@ class FObjectBridge final : public IObjectAdapter
     }
     AActor* BoundActor() const
     {
-        auto* W=Owner.IsValid()?Owner->GetWorld():nullptr;auto* H=W?W->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
+        auto* H=Owner.IsValid()?HybridWorld.Get():nullptr;
         if (!H) return nullptr;
         const uint64 Revision=H->GetActorBindingRevision();
         if (ActorBindingRevision!=Revision)
@@ -198,6 +193,8 @@ class FObjectBridge final : public IObjectAdapter
     }
     bool PrepareObject(const ObjectRecord& R,std::span<const uint8> Private={})
     {
+        auto* World=Owner.IsValid()?Owner->GetWorld():nullptr;
+        HybridWorld=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
         State=ToUE(R);
         ActorBindingRevision=MAX_uint64;ActorBinding.Reset();
         // Cache one small timer name per definition, never per object or frame.
@@ -291,7 +288,7 @@ public:
     {
         TRACE_CPUPROFILER_EVENT_SCOPE_TEXT(SimulationTraceName);
         if (!Owner.IsValid()) return;
-        auto* W=Owner->GetWorld();auto* H=W?W->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
+        auto* H=HybridWorld.Get();
         auto* Actor=BoundActor();
         const uint32 Period=Adapter->AdvancePeriod();
         const bool FamilyDue=Period && At%Period==0;
@@ -366,7 +363,8 @@ public:
     { return Owner.IsValid() && Adapter->ApplyMotionFeedback(ToUE(Peer),View(B)); }
     void ApplyLedger(const ObjectRecord& R,Revision Rev,bool Effects) override
     {
-        State=ToUE(R);if (!Owner.IsValid()) return;Adapter->ApplyLedger(State,Rev,Effects);Entities.ApplyLedger(State);
+        {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_ProjectLedger);ToUE(R,State);}
+        if (!Owner.IsValid()) return;Adapter->ApplyLedger(State,Rev,Effects);Entities.ApplyLedger(State);
         if (auto* Actor=BoundActor();Actor && !FGuLiHybridComponentState::ApplyLedger(*Actor,State,Rev,Effects,&ComponentBindings))
             Actor->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Object capability rejected committed ledger state"));
         if (!FGuLiHybridLedgerBindingRegistration::Apply(*Owner->GetWorld(),State,AppliedCapabilities,Effects))
@@ -728,8 +726,8 @@ uint32 UGuLiHybridWorldSubsystem::GetLatestRetiredLife(const FGuLiHybridObjectKe
 bool UGuLiHybridWorldSubsystem::GetObject(const FGuLiHybridObjectKey& Key,FGuLiHybridObjectState& Out) const
 {
     if (!State->Client) return false;
-    const auto It=State->Client->Objects().find(ToCore(Key)); if (It==State->Client->Objects().end()) return false;
-    Out=ToUE(It->second); return true;
+    const auto* Record=State->Client->FindObject(ToCore(Key));if (!Record) return false;
+    Out=ToUE(*Record);return true;
 }
 bool UGuLiHybridWorldSubsystem::GetTeamCapabilityObject(EGuLiTeam Team,FName Capability,FGuLiHybridObjectState& Out) const
 {
@@ -740,29 +738,31 @@ bool UGuLiHybridWorldSubsystem::GetTeamCapabilityObject(EGuLiTeam Team,FName Cap
 bool UGuLiHybridWorldSubsystem::GetObjectView(const FGuLiHybridObjectKey& Key,FGuLiHybridObjectState& Out) const
 {
     if (!State->Client) return false;
-    const auto I=State->Client->Objects().find(ToCore(Key));if (I==State->Client->Objects().end()) return false;
-    Out=ToUEView(I->second);return true;
+    const auto* Record=State->Client->FindObject(ToCore(Key));if (!Record) return false;
+    Out=ToUEView(*Record);return true;
 }
 bool UGuLiHybridWorldSubsystem::GetObjectLifecycle(const FGuLiHybridObjectKey& Key,FGuid& SimulationOwner,uint8& LifeState,GuLiNet::ObjectReadCursor* Lookup) const
 {
     if (!State->Client) return false;
     const ObjectRecord* Record=nullptr;
     if (Lookup) Record=State->Client->FindObject(ToCore(Key),*Lookup);
-    else
-    {
-        const auto I=State->Client->Objects().find(ToCore(Key));
-        if (I!=State->Client->Objects().end()) Record=&I->second;
-    }
+    else Record=State->Client->FindObject(ToCore(Key));
     if (!Record) return false;
     SimulationOwner=ToUE(Record->Grant.SimOwner);
     LifeState=static_cast<uint8>(Record->Grant.State);
     return true;
 }
+bool UGuLiHybridWorldSubsystem::GetObjectPhase(const FGuLiHybridObjectKey& Key,bool& Phased) const
+{
+    if (!State->Client) return false;
+    const auto* Record=State->Client->FindObject(ToCore(Key));if (!Record) return false;
+    Phased=Record->Phased;return true;
+}
 bool UGuLiHybridWorldSubsystem::GetObjectCapability(const FGuLiHybridObjectKey& Key,FName Name,FGuLiHybridCapabilityState& Out) const
 {
     if (!State->Client) return false;
-    const auto O=State->Client->Objects().find(ToCore(Key));if (O==State->Client->Objects().end()) return false;
-    const auto C=O->second.Capabilities.find(TCHAR_TO_UTF8(*Name.ToString()));if (C==O->second.Capabilities.end()) return false;
+    const auto* Record=State->Client->FindObject(ToCore(Key));if (!Record) return false;
+    const auto C=Record->Capabilities.find(TCHAR_TO_UTF8(*Name.ToString()));if (C==Record->Capabilities.end()) return false;
     Out.Version=C->second.Version;Out.Data.Reset();Out.Data.Append(C->second.Data.data(),int32(C->second.Data.size()));return true;
 }
 FGuLiHybridObjectKey UGuLiHybridWorldSubsystem::GetTeamCapabilityKey(EGuLiTeam Team,FName Capability) const
@@ -1443,14 +1443,14 @@ bool UGuLiHybridWorldSubsystem::PublishMotion(const FGuLiHybridObjectKey& Key,co
     if (!State->Client->StampObjectPublication(M.Header)) {++Stats.ClockBlocked;return false;}
     M.StationaryUnitPose=bStationaryUnitPose;
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
-    const bool Queued=State->Session->BroadcastPeer(ToUE(M));
+    const bool Queued=State->Session->BroadcastPeerNative(std::move(M));
     if (Queued) ++Stats.Accepted; else ++Stats.QueueFailed;
     return Queued;
 }
 void UGuLiHybridWorldSubsystem::PublishComponentMotionIfDue(const FGuLiHybridObjectKey& Key,FGuLiHybridComponentBindingContext* Context)
 {
     if (!State->Client || !State->Session.IsValid() || !CanPublishFacts() || !HasSimulation(Key)) return;
-    const auto K=ToCore(Key);const auto& O=State->Client->Objects().at(K);
+    const auto K=ToCore(Key);const auto& O=*State->Client->FindObject(K);
     const auto I=State->PublicMotionPublished.find(K);const auto Now=GetObjectLogicalTick(Key);
     if (I!=State->PublicMotionPublished.end() && std::get<0>(I->second)==State->Client->Epoch()
         && std::get<1>(I->second)==O.Grant.OwnerEpoch && Now>=std::get<2>(I->second)
@@ -1472,7 +1472,7 @@ void UGuLiHybridWorldSubsystem::PublishComponentMotionIfDue(const FGuLiHybridObj
     Message M;M.Header.Kind=MessageKind::ComponentState;M.Header.Object=K;M.Header.OwnerEpoch=O.Grant.OwnerEpoch;
     M.Header.ControlEpoch=O.Grant.ControlEpoch;M.Header.At=Now;M.Body.assign(Public.GetData(),Public.GetData()+Public.Num());
     if (!State->Client->StampObjectPublication(M.Header)) return;
-    if (State->Session->BroadcastPeer(ToUE(M))) State->PublicMotionPublished[K]={State->Client->Epoch(),O.Grant.OwnerEpoch,Now};
+    if (State->Session->BroadcastPeerNative(std::move(M))) State->PublicMotionPublished[K]={State->Client->Epoch(),O.Grant.OwnerEpoch,Now};
 }
 bool UGuLiHybridWorldSubsystem::PublishMotionTo(const FGuLiHybridObjectKey& Key,const FGuid& Peer,const TArray<uint8>& Body,uint64 CapturedTick,
     const FGuid& Connection,const std::shared_ptr<GuLiNet::MotionDelivery>& Delivery,bool bStationary)
@@ -1486,13 +1486,36 @@ bool UGuLiHybridWorldSubsystem::PublishMotionTo(const FGuLiHybridObjectKey& Key,
     M.StationaryUnitPose=bStationary;
     if (!State->Client->StampObjectPublication(M.Header)) return false;
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
-    return State->Session->SendPeer(Peer,ToUE(M));
+    return State->Session->SendPeerNative(Peer,std::move(M));
+}
+bool UGuLiHybridWorldSubsystem::CanPublishEffect(const FGuLiHybridObjectKey& Key) const
+{
+    return State->Session.IsValid() && CanPublishFacts() && HasSimulation(Key);
 }
 bool UGuLiHybridWorldSubsystem::PublishEffect(const FGuLiHybridObjectKey& Key,const FGuid& Event,const TArray<uint8>& Body)
 {
-    if (!State->Client || !State->Session.IsValid() || !HasSimulation(Key) || !State->Client->CanPublishFacts() || !Event.IsValid()
-        || Body.IsEmpty()) return false;
+    if (!Event.IsValid() || Body.IsEmpty() || !CanPublishEffect(Key)) return false;
     return State->Client->PublishObjectEvent(ToCore(Key),ToCore(Event),Bytes(Body.GetData(),Body.GetData()+Body.Num()));
+}
+bool UGuLiHybridWorldSubsystem::PublishNewEffect(const FGuLiHybridObjectKey& Key,TFunctionRef<bool(GuLiNet::Writer&)> WriteBody)
+{
+    if (!CanPublishEffect(Key))
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_EffectPublishNotReady);
+        return false;
+    }
+    GuLiNet::Writer Wire;
+    if (!WriteBody(Wire) || !Wire.Good() || Wire.View().empty())
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_EffectEncodeRejected);
+        return false;
+    }
+    if (!State->Client->PublishObjectEvent(ToCore(Key),ToCore(FGuid::NewGuid()),Wire.Take()))
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_EffectEnqueueRejected);
+        return false;
+    }
+    return true;
 }
 bool UGuLiHybridWorldSubsystem::PublishMotionAcknowledgment(const FGuLiHybridObjectKey& Key,const TArray<uint8>& Body)
 {
@@ -1504,7 +1527,7 @@ bool UGuLiHybridWorldSubsystem::PublishMotionAcknowledgment(const FGuLiHybridObj
     M.Header.OwnerEpoch=Grant.OwnerEpoch; M.Header.ControlEpoch=Grant.ControlEpoch; M.Header.At=GetLogicalTick();
     if (!State->Client || !State->Client->StampObjectPublication(M.Header)) return false;
     if (!Body.IsEmpty()) M.Body.assign(Body.GetData(),Body.GetData()+Body.Num());
-    return State->Session->SendPeer(ToUE(Grant.SimOwner),ToUE(M));
+    return State->Session->SendPeerNative(ToUE(Grant.SimOwner),std::move(M));
 }
 bool UGuLiHybridWorldSubsystem::ResolveObjectTarget(const FGuLiHybridObjectKey& Key,FGuLiTargetHandle& Out) const
 {
@@ -1773,13 +1796,13 @@ FGuLiResourceAmounts UGuLiHybridWorldSubsystem::GetTeamBalance(EGuLiTeam Team) c
 uint64 UGuLiHybridWorldSubsystem::GetResourceRequestEpoch(const FGuLiHybridObjectKey& Source) const
 {
     if (!State->Client) return 0;
-    auto K=ToCore(Source);std::set<ObjectKey> Seen;
-    const auto& Objects=State->Client->Objects();const auto& Groups=State->Client->ResourceGroups();
-    while (K.Valid() && Seen.size()<64 && Seen.insert(K).second)
+    auto K=ToCore(Source);TArray<ObjectKey,TInlineAllocator<8>> Seen;
+    const auto& Groups=State->Client->ResourceGroups();
+    while (K.Valid() && Seen.Num()<64 && !Seen.Contains(K))
     {
-        const auto O=Objects.find(K);if (O==Objects.end()) break;
-        if (const auto G=Groups.find(O->second.Grant.OwnershipGroup);G!=Groups.end()) return G->second.RequestEpoch;
-        K=O->second.Parent;
+        Seen.Add(K);const auto* O=State->Client->FindObject(K);if (!O) break;
+        if (const auto G=Groups.find(O->Grant.OwnershipGroup);G!=Groups.end()) return G->second.RequestEpoch;
+        K=O->Parent;
     }
     return 0;
 }
@@ -1898,14 +1921,17 @@ void UGuLiHybridWorldSubsystem::ApplyPreparedCommit(const PreparedCommit& Prepar
             if (auto* Found=State->TransactionCallbacks.Find(Out.Event)) { Callback=MoveTemp(*Found); State->TransactionCallbacks.Remove(Out.Event); }
             if (Callback) Callback(Out);
             {
-                std::set<ObjectKey> Keys{Result.StateDomain,Result.Target,Result.Resource.Source,Result.Mining.Source};
-                for (const auto& O:Result.Objects) {Keys.insert(O.Grant.Object);Keys.insert(O.Parent);}
-                for (const auto& O:Result.Births) {Keys.insert(O.Grant.Object);Keys.insert(O.Parent);}
-                if (Result.FinalizedWork) {Keys.insert(Result.FinalizedWork->Grant.Object);Keys.insert(Result.FinalizedWork->Parent);}
+                TArray<ObjectKey,TInlineAllocator<16>> Keys{Result.StateDomain,Result.Target,Result.Resource.Source,Result.Mining.Source};
+                for (const auto& O:Result.Objects) {Keys.Add(O.Grant.Object);Keys.Add(O.Parent);}
+                for (const auto& O:Result.Births) {Keys.Add(O.Grant.Object);Keys.Add(O.Parent);}
+                if (Result.FinalizedWork) {Keys.Add(Result.FinalizedWork->Grant.Object);Keys.Add(Result.FinalizedWork->Parent);}
+                Keys.Sort([](const ObjectKey& A,const ObjectKey& B){return A<B;});
                 // A listener can unregister or replace itself during delivery.
-                TArray<TSharedPtr<FState::FReceiptListener>> Listeners;
-                for (const auto K:Keys) if (const auto I=State->ObjectReceiptListeners.find(K);I!=State->ObjectReceiptListeners.end()) Listeners.Append(I->second);
-                TSet<UObject*> Delivered;
+                TArray<TSharedPtr<FState::FReceiptListener>,TInlineAllocator<8>> Listeners;
+                for (int32 N=0;N<Keys.Num();++N)
+                    if (N==0 || Keys[N]!=Keys[N-1])
+                        if (const auto I=State->ObjectReceiptListeners.find(Keys[N]);I!=State->ObjectReceiptListeners.end()) Listeners.Append(I->second);
+                TArray<UObject*,TInlineAllocator<8>> Delivered;
                 for (const auto& L:Listeners) if (L->Active && L->Owner.IsValid() && !Delivered.Contains(L->Owner.Get()))
                 {Delivered.Add(L->Owner.Get());L->Callback(Out);}
             }
@@ -2092,8 +2118,7 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
                         UE_LOG(LogGuLiStrike,Display,TEXT("HybridCommandTiming stage=%s clock=%.6f thread=%u event=%s value=%llu"),
                             UTF8_TO_TCHAR(Stage),FPlatformTime::Seconds(),FPlatformTLS::GetCurrentThreadId(),
                             *ToUE(Event).ToString(EGuidFormats::Digits),static_cast<uint64>(Value));
-                },std::move(CommandWake),static_cast<std::size_t>(FMath::Clamp(NetworkRetryBatchLimit.GetValueOnGameThread(),0,64)),
-                DeferPeerTransactions.GetValueOnGameThread()!=0,ReuseResourceValidationSnapshot.GetValueOnGameThread()!=0});
+                },std::move(CommandWake),ReuseResourceValidationSnapshot.GetValueOnGameThread()!=0});
         State->Client->SetHandoffAdmission([Weak](Id Target)
         {const auto* Self=Weak.Get();const auto* S=Self?Self->State->Session.Get():nullptr;return S && S->CanQueueHandoff(ToUE(Target));});
         State->Client->SetTimingObserver([Weak](const char* Name,double Value)

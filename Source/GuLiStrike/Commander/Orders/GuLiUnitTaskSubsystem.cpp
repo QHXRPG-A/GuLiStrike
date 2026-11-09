@@ -36,6 +36,7 @@
 #include "Network/GuLiHybridWorldSubsystem.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "HAL/IConsoleManager.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 void RegisterGuLiHybridTaskState(UGuLiUnitTaskSubsystem& Tasks);
 
@@ -139,7 +140,7 @@ void UGuLiUnitTaskSubsystem::RegisterSoldiers(EGuLiTeam Team, TConstArrayView<FG
 	for (auto Soldier : Soldiers)
 	{
 		const auto Id = FGuLiTaskUnitId::Soldier(Soldier,GetWorld());
-		if (auto* Existing = States.Find(Id)) { if (Existing->Context.SourceTerritory == INDEX_NONE) Existing->Context.SourceTerritory = SourceTerritory; continue; }
+		if (auto* Existing = FindTaskState(Id)) { if (Existing->Context.SourceTerritory == INDEX_NONE) Existing->Context.SourceTerritory = SourceTerritory; continue; }
 		FGuLiUnitTaskState State; State.Context.Unit = Id; State.Context.SourceTerritory = SourceTerritory;
 		if (!Authority->GetTaskSoldierInfo(Soldier, State.Context.Team, State.Context.UnitTypeId, State.Context.Location) || State.Context.Team != Team) continue;
 		InitializeBehavior(State);
@@ -150,7 +151,7 @@ void UGuLiUnitTaskSubsystem::RegisterSoldiers(EGuLiTeam Team, TConstArrayView<FG
 void UGuLiUnitTaskSubsystem::UnregisterActor(FGuLiControllableActorId Id)
 {
 	const auto Unit = FGuLiTaskUnitId::Actor(Id,GetWorld());
-	if (auto* State = States.Find(Unit))
+	if (auto* State = FindTaskState(Unit))
 	{
 		DiscardPendingMove(*State); ++State->Version; State->Queue.Reset(); State->ConsumeInitialBehaviors();
 		State->bStopped = State->bUnregisterPending = true;
@@ -169,6 +170,16 @@ bool UGuLiUnitTaskSubsystem::HasTaskSimulation(const FGuLiUnitTaskState& State) 
 	const auto Target=Authority->MakeSoldierTargetHandle(FGuLiSoldierId(State.Context.Unit.Id));
 	return Hybrid && !Hybrid->IsBattlePaused() && Target.Generation==State.Context.Unit.Generation
 		&& Hybrid->ResolveTarget(Target,Key) && Hybrid->HasSimulation(Key);
+}
+const FGuLiUnitTaskState* UGuLiUnitTaskSubsystem::FindTaskState(FGuLiTaskUnitId Unit) const
+{
+    if (States.IsValidId(LastStateIndex))
+    {
+        const auto& Entry=States.Get(LastStateIndex);
+        if (Entry.Key==Unit) return &Entry.Value;
+    }
+    LastStateIndex=States.FindId(Unit);
+    return LastStateIndex.IsValidId()?&States.Get(LastStateIndex).Value:nullptr;
 }
 bool UGuLiUnitTaskSubsystem::RefreshContext(FGuLiUnitTaskState& State) const
 {
@@ -237,7 +248,7 @@ void UGuLiUnitTaskSubsystem::DiscardPendingMove(FGuLiUnitTaskState& State)
 }
 void UGuLiUnitTaskSubsystem::CancelPendingMove(FGuLiTaskUnitId Unit)
 {
-	if (auto* State = States.Find(Unit)) DiscardPendingMove(*State);
+	if (auto* State = FindTaskState(Unit)) DiscardPendingMove(*State);
 }
 bool UGuLiUnitTaskSubsystem::Validate(const FGuLiUnitTaskState& State, const FGuLiUnitTaskCommand& Command, FString& Error) const
 {
@@ -336,7 +347,7 @@ bool UGuLiUnitTaskSubsystem::SubmitActorCommand(APawn& Pawn, const FGuLiUnitTask
 	if (!Pawn.HasAuthority() || !Command.IsWellFormed()) return false;
 	const auto* Vehicle = Cast<IGuLiEngineeringVehicle>(&Pawn);
 	if (!Vehicle) return false;
-	auto* State = States.Find(FGuLiTaskUnitId::Actor(Vehicle->GetStableActorId(),GetWorld()));
+	auto* State = FindTaskState(FGuLiTaskUnitId::Actor(Vehicle->GetStableActorId(),GetWorld()));
 	if (!State || State->Context.Pawn != &Pawn || !RefreshContext(*State)) return false;
 	FString Error;
 	return AdmitCommand(*State, Command, Error);
@@ -377,7 +388,7 @@ bool UGuLiUnitTaskSubsystem::Submit(AGuLiBattlePlayerState& Owner, const FGuLiCo
 	for (auto Unit : Members(Selection,GetWorld()))
 	{
 		if (!States.Contains(Unit) && !Unit.bActor) { const FGuLiSoldierId Id(Unit.Id); RegisterSoldiers(Owner.GetTeam(), MakeArrayView(&Id, 1)); }
-		auto* State = States.Find(Unit); FString Error;
+		auto* State = FindTaskState(Unit); FString Error;
 		if (!State || !RefreshContext(*State) || State->Context.Team != Owner.GetTeam())
 		{
 			++Rejected;
@@ -499,14 +510,14 @@ EGuLiTaskStatus UGuLiUnitTaskSubsystem::Poll(FGuLiUnitTaskState& State)
 		return Travel->GetMoveStatus() == EGuLiEngineeringMoveStatus::Arrived ? EGuLiTaskStatus::Completed : EGuLiTaskStatus::Failed;
 	}
 	if (Task.bPlanning) return EGuLiTaskStatus::Running;
-	FGuLiSoldierNavigationDebug Nav;
-	if (!GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->TryGetSoldierNavigationDebug(FGuLiSoldierId(State.Context.Unit.Id), Nav)) return EGuLiTaskStatus::Failed;
+	FGuLiSoldierNavigationView Nav;
+	if (!GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->TryGetSoldierNavigation(FGuLiSoldierId(State.Context.Unit.Id), Nav)) return EGuLiTaskStatus::Failed;
 	if (Nav.ActiveOrderId) return EGuLiTaskStatus::Running;
 	return Nav.State == EGuLiSoldierNavigationState::Arrived ? EGuLiTaskStatus::Completed : EGuLiTaskStatus::Failed;
 }
 EGuLiCommanderWorkPhase UGuLiUnitTaskSubsystem::GetWorkPhase(FGuLiTaskUnitId Unit) const
 {
-	const auto* State = States.Find(Unit); if (!State) return EGuLiCommanderWorkPhase::Any;
+	const auto* State = FindTaskState(Unit); if (!State) return EGuLiCommanderWorkPhase::Any;
 	if (!Unit.bActor) return GetWorld()->GetSubsystem<UGuLiArmyAdvanceSubsystem>()->GetBehaviorPhase(FGuLiSoldierId(Unit.Id));
 	const auto* Pawn = State->Context.Pawn.Get();
 	if (const auto* Miner = Cast<AGuLiMiningVehiclePawn>(Pawn)) return Miner->GetBehaviorPhase();
@@ -516,7 +527,7 @@ EGuLiCommanderWorkPhase UGuLiUnitTaskSubsystem::GetWorkPhase(FGuLiTaskUnitId Uni
 
 EGuLiCommanderWorkResult UGuLiUnitTaskSubsystem::GetWorkResult(FGuLiTaskUnitId Unit) const
 {
-	const auto* State = States.Find(Unit); if (!State) return EGuLiCommanderWorkResult::None;
+	const auto* State = FindTaskState(Unit); if (!State) return EGuLiCommanderWorkResult::None;
 	if (!Unit.bActor) return GetWorld()->GetSubsystem<UGuLiArmyAdvanceSubsystem>()->GetBehaviorResult(FGuLiSoldierId(Unit.Id));
 	const auto* Pawn = State->Context.Pawn.Get();
 	if (const auto* Miner = Cast<AGuLiMiningVehiclePawn>(Pawn)) return Miner->GetBehaviorResult();
@@ -527,7 +538,7 @@ EGuLiCommanderWorkResult UGuLiUnitTaskSubsystem::GetWorkResult(FGuLiTaskUnitId U
 uint32 UGuLiUnitTaskSubsystem::GetBehaviorFacts(FGuLiTaskUnitId Unit,uint32 Mask) const
 {
 	using namespace GuLiCommanderBehaviorFacts;
-	const auto* State = States.Find(Unit); if (!State) return 0;
+	const auto* State = FindTaskState(Unit); if (!State) return 0;
 	uint32 Facts = 0;
 	if (State->bCancelPending) Facts |= CancelPending;
 	if (State->bStopped) Facts |= Stopped;
@@ -579,12 +590,12 @@ uint32 UGuLiUnitTaskSubsystem::GetBehaviorFacts(FGuLiTaskUnitId Unit,uint32 Mask
 }
 
 bool UGuLiUnitTaskSubsystem::NeedsBehaviorStep(FGuLiTaskUnitId Unit) const
-{ const auto* State = States.Find(Unit); return State && HasTaskSimulation(*State) && !State->bBehaviorStepDone; }
+{ const auto* State = FindTaskState(Unit); return State && !State->bBehaviorStepDone && HasTaskSimulation(*State); }
 
 void UGuLiUnitTaskSubsystem::RequestBehaviorStep(FGuLiTaskUnitId Unit, EGuLiCommanderBehaviorStep Step)
 {
 	check(IsInGameThread());
-	auto* State = States.Find(Unit);
+	auto* State = FindTaskState(Unit);
 	if (!State || State->bBehaviorStepDone || State->LastBehaviorRequestRound == BehaviorRound) return;
 	State->LastBehaviorRequestRound = BehaviorRound;
 	BehaviorRequests.Add({Unit, Step, State->Version});
@@ -592,7 +603,7 @@ void UGuLiUnitTaskSubsystem::RequestBehaviorStep(FGuLiTaskUnitId Unit, EGuLiComm
 
 void UGuLiUnitTaskSubsystem::ReportBehaviorError(FGuLiTaskUnitId Unit, const FString& Error)
 {
-	if (auto* State = States.Find(Unit))
+	if (auto* State = FindTaskState(Unit))
 	{
 		State->bBehaviorStepDone = true;
 		if (State->Error != Error) UE_LOG(LogGuLiMoveOrders, Error, TEXT("StateTree unit=%u: %s"), Unit.Id, *Error);
@@ -757,6 +768,7 @@ bool UGuLiUnitTaskSubsystem::RunWorkAction(FGuLiUnitTaskState& State, EGuLiComma
 
 void UGuLiUnitTaskSubsystem::CommitBehaviorRequests()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_CommitBehaviorRequests);
 	FGuLiPerformanceScope Timing(GetWorld(), TEXT("StateTree.CommitMs"));
 	check(IsInGameThread());
 	const double Now = GetTaskSeconds();
@@ -764,7 +776,7 @@ void UGuLiUnitTaskSubsystem::CommitBehaviorRequests()
 	BehaviorRequests.Reset();
 	for (const auto& Request : Requests)
 	{
-		auto* State = States.Find(Request.Unit);
+		auto* State = FindTaskState(Request.Unit);
 		// A handoff freezes this object's work, not just its movement. Keep queued
 		// operations until ownership resumes; the detach contract removes old owners.
 		if (State && !HasTaskSimulation(*State)) { BehaviorRequests.Add(Request); continue; }
@@ -821,7 +833,9 @@ void UGuLiUnitTaskSubsystem::AdvanceTasks(float DeltaTime)
 	Accumulator += DeltaTime; if (Accumulator < .1) return;
 	FGuLiPerformanceScope Timing(GetWorld(), TEXT("StateTree.ScheduleMs"));
 	const float BehaviorDelta = float(Accumulator); Accumulator = 0;
-	TickMoveBatches();
+	{TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_TaskMoveBatches);TickMoveBatches();}
+	{
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_TaskRefreshContexts);
 	for (auto It = States.CreateIterator(); It; ++It)
 	{
 		if (!RefreshContext(It.Value()))
@@ -831,6 +845,7 @@ void UGuLiUnitTaskSubsystem::AdvanceTasks(float DeltaTime)
 			It.RemoveCurrent(); continue;
 		}
 		It.Value().bBehaviorStepDone = !HasTaskSimulation(It.Value());
+	}
 	}
 	// Drain immediate transitions in the same 10 Hz step: cancel -> select, or finish -> select.
 	// The next task still starts on the next step, as before. These zero-time rounds are not extra simulation ticks.
@@ -890,7 +905,7 @@ void UGuLiUnitTaskSubsystem::AdvanceTasks(float DeltaTime)
 }
 void UGuLiUnitTaskSubsystem::QueueMoveAdmission(FGuLiTaskUnitId Unit)
 {
-	const auto* State=States.Find(Unit);
+	const auto* State=FindTaskState(Unit);
 	if (!Unit.bActor && State && State->Owner.IsValid() && !AdmissionQueued.Contains(Unit))
 	{
 		AdmissionQueued.Add(Unit);
@@ -902,6 +917,9 @@ void UGuLiUnitTaskSubsystem::QueueMoveAdmission(FGuLiTaskUnitId Unit)
 void UGuLiUnitTaskSubsystem::PumpMoveAdmissions(FGuLiNavigationWorkBudget& Budget)
 {
 	if (AdmissionFrame != GFrameCounter) { AdmissionFrame = GFrameCounter; AdmissionRemaining = 128; }
+	// Empty slices cannot wake a tree or start a batch. Keep the per-frame
+	// admission allowance current, then leave all work to the next nonempty slice.
+	if (AdmissionQueued.IsEmpty() && ReadyAdmissions.IsEmpty()) return;
 	FGuLiNavigationWorkBudget::FScope Scope(Budget);
 	auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	auto* Mass = GetWorld()->GetSubsystem<UMassEntitySubsystem>();
@@ -913,7 +931,7 @@ void UGuLiUnitTaskSubsystem::PumpMoveAdmissions(FGuLiNavigationWorkBudget& Budge
 	{
 		if (ClockId <= 0) return;
 		const auto ClockUnit = FGuLiTaskUnitId::Soldier(FGuLiSoldierId(ClockId), GetWorld());
-		const auto* S = States.Find(ClockUnit);
+		const auto* S = FindTaskState(ClockUnit);
 		if (!S) return;
 		const auto* Task = S->PendingMove.IsSet() ? &*S->PendingMove : S->Active.IsSet() ? &*S->Active : nullptr;
 		if (S->Queue.IsEmpty() && (!Task || Task->bStarted)) return;
@@ -942,7 +960,7 @@ void UGuLiUnitTaskSubsystem::PumpMoveAdmissions(FGuLiNavigationWorkBudget& Budge
 		if (Queue.Cursor==Queue.Units.Num()) { AdmissionQueues.Remove(Owner); AdmissionOwners.RemoveAt(AdmissionOwnerCursor); }
 		else ++AdmissionOwnerCursor;
 		if (!AdmissionQueued.Remove(Unit)) continue;
-		auto* State = States.Find(Unit);
+		auto* State = FindTaskState(Unit);
 		FMassEntityHandle Entity;
 		if (!State || !RefreshContext(*State) || !Authority->FindSoldierEntity(FGuLiSoldierId(Unit.Id),Entity)) continue;
 		if (!HasTaskSimulation(*State)) { QueueMoveAdmission(Unit); continue; }
@@ -962,10 +980,10 @@ void UGuLiUnitTaskSubsystem::PumpMoveAdmissions(FGuLiNavigationWorkBudget& Budge
 		UE::Mass::Executor::RunProcessorsView(MakeArrayView(&Processor,1),Context,Collections);
 		CommitBehaviorRequests();
 		bool Pending = false;
-		for (auto Id : Woken) if (auto* State = States.Find(Id)) Pending |= !State->bBehaviorStepDone;
+		for (auto Id : Woken) if (auto* State = FindTaskState(Id)) Pending |= !State->bBehaviorStepDone;
 		if (!Pending) break;
 	}
-	for (auto Id : Woken) if (auto* State = States.Find(Id))
+	for (auto Id : Woken) if (auto* State = FindTaskState(Id))
 	{
 		const auto* Task = MoveToPlan(*State);
 		if (!State->bCancelPending && Task && Task->Command.Kind == EGuLiUnitTaskKind::Move && !Task->bStarted)
@@ -993,7 +1011,7 @@ void UGuLiUnitTaskSubsystem::StartMoveBatches(FGuLiNavigationWorkBudget& Budget)
 	while (!ReadyAdmissions.IsEmpty() && Budget.CanWork())
 	{
 		const auto First = ReadyAdmissions[0];
-		auto* State = States.Find(First);
+		auto* State = FindTaskState(First);
 		if (State && !HasTaskSimulation(*State)) { Deferred.Add(First); ReadyAdmissions.RemoveAt(0); continue; }
 		auto* Task = State ? MoveToPlan(*State) : nullptr;
 		if (!Task || Task->Command.Kind!=EGuLiUnitTaskKind::Move || Task->bStarted || !State->Owner.IsValid() || State->bStopped || State->bCancelPending)
@@ -1005,7 +1023,7 @@ void UGuLiUnitTaskSubsystem::StartMoveBatches(FGuLiNavigationWorkBudget& Budget)
 		TArray<FGuLiSoldierId> Units;
 		for (int32 N = 0; N < ReadyAdmissions.Num() && Units.Num() < 25; )
 		{
-			auto* Other = States.Find(ReadyAdmissions[N]);
+			auto* Other = FindTaskState(ReadyAdmissions[N]);
 			if (Other && !HasTaskSimulation(*Other)) { ++N; continue; }
 			auto* Next = Other ? MoveToPlan(*Other) : nullptr;
 			if (!Next || Next->bStarted || Other->bStopped || Other->bCancelPending)
@@ -1037,7 +1055,7 @@ void UGuLiUnitTaskSubsystem::StartMoveBatches(FGuLiNavigationWorkBudget& Budget)
 		FGuLiCommandAck Ack;
 		if (!Authority->BeginMovePlanning(*Batch.Owner,Request,Frozen,Ack,Task->Command.SharedMoveIntent))
 		{
-			for (const auto& UnitVersion : Batch.Versions) if (auto* Failed = States.Find(UnitVersion.Key))
+			for (const auto& UnitVersion : Batch.Versions) if (auto* Failed = FindTaskState(UnitVersion.Key))
 			{
 				if (Ack.Result == EGuLiCommandAckResult::RateLimited) { QueueMoveAdmission(UnitVersion.Key); continue; }
 				auto& Execution = Batch.Replacements.Contains(UnitVersion.Key) ? Failed->PendingMove : Failed->Active;
@@ -1064,7 +1082,7 @@ void UGuLiUnitTaskSubsystem::TickMoveBatches()
 		auto& Batch = Planning[I]; FGuLiCommandAck Ack; FGuLiCommanderSelectionState Updated; bool Changed = false;
 		bool bFrozenMember=false;
 		for (const auto& Member:Batch.Versions)
-			if (const auto* State=States.Find(Member.Key); State && !HasTaskSimulation(*State)) { bFrozenMember=true; break; }
+			if (const auto* State=FindTaskState(Member.Key); State && !HasTaskSimulation(*State)) { bFrozenMember=true; break; }
 		if (bFrozenMember) continue; // Do not consume a planner receipt while a captured member is frozen.
 		FGuLiMovePlanProgress Progress;
 		if (Batch.Owner.IsValid() && Authority->ConsumeMovePlanProgress(Authority->FindMovePlan(*Batch.Owner, Batch.Id), Progress))
@@ -1073,7 +1091,7 @@ void UGuLiUnitTaskSubsystem::TickMoveBatches()
 			{
 				const auto Key = FGuLiTaskUnitId::Soldier(Id,GetWorld());
 				const auto* Version = Batch.Versions.Find(Key);
-				auto* State = States.Find(Key);
+				auto* State = FindTaskState(Key);
 				if (Version && State && !State->bCancelPending)
 				{
 					const bool bReplacement = Batch.Replacements.Contains(Key);
@@ -1100,7 +1118,7 @@ void UGuLiUnitTaskSubsystem::TickMoveBatches()
 						if (Receipt->AcceptedMemberMask & (1u << M)) Accepted.Add(FGuLiTaskUnitId::Soldier(Cohort.MemberIds[M],GetWorld()));
 		for (const auto& Member : Batch.Versions)
 		{
-			auto* State = States.Find(Member.Key);
+			auto* State = FindTaskState(Member.Key);
 			if (!State || State->bCancelPending) continue;
 			const bool bReplacement = Batch.Replacements.Contains(Member.Key);
 			auto& Execution = bReplacement ? State->PendingMove : State->Active;
@@ -1121,18 +1139,18 @@ void UGuLiUnitTaskSubsystem::TickMoveBatches()
 }
 bool UGuLiUnitTaskSubsystem::MayAdvance(FGuLiSoldierId Unit) const
 {
-	const auto* State = States.Find(FGuLiTaskUnitId::Soldier(Unit,GetWorld()));
+	const auto* State = FindTaskState(FGuLiTaskUnitId::Soldier(Unit,GetWorld()));
 	if (!State || State->bStopped || State->bCancelPending || !State->Active.IsSet() || !State->Active->bAutomatic || State->Active->WorkSerial) return false;
 	const auto* Definition = GuLiCommanderBehavior::FindPolicy(*GetWorld(), State->Context.UnitTypeId);
 	return Definition && Definition->Behavior == EGuLiCommanderBehavior::StrongholdAdvance;
 }
 bool UGuLiUnitTaskSubsystem::WantsAdvanceYield(FGuLiSoldierId Unit) const
-{ const auto* State = States.Find(FGuLiTaskUnitId::Soldier(Unit,GetWorld())); return State && !State->Queue.IsEmpty(); }
+{ const auto* State = FindTaskState(FGuLiTaskUnitId::Soldier(Unit,GetWorld())); return State && !State->Queue.IsEmpty(); }
 void UGuLiUnitTaskSubsystem::NotifyAdvanceStage(FGuLiSoldierId Unit)
-{ if (auto* State = States.Find(FGuLiTaskUnitId::Soldier(Unit,GetWorld())); State && MayAdvance(Unit) && WantsAdvanceYield(Unit)) ++State->Active->WorkSerial; }
+{ if (auto* State = FindTaskState(FGuLiTaskUnitId::Soldier(Unit,GetWorld())); State && MayAdvance(Unit) && WantsAdvanceYield(Unit)) ++State->Active->WorkSerial; }
 void UGuLiUnitTaskSubsystem::UpdateAdvanceTarget(FGuLiSoldierId Unit, int32 Territory, const FVector& Target)
 {
-	if (auto* State = States.Find(FGuLiTaskUnitId::Soldier(Unit,GetWorld())); State && MayAdvance(Unit))
+	if (auto* State = FindTaskState(FGuLiTaskUnitId::Soldier(Unit,GetWorld())); State && MayAdvance(Unit))
 	{
 		State->Active->CurrentObjective = Territory; State->Active->Command.Target = Target;
 		State->Active->bWaitingForTarget = Territory == INDEX_NONE;
@@ -1144,7 +1162,7 @@ bool UGuLiUnitTaskSubsystem::BuildContextCommand(const FGuLiCommanderSelectionSt
 	if (Command.Kind != EGuLiUnitTaskKind::Move || Command.bGroundMoveOnly || !GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>()->IsCatalogValid()) return false;
 	const auto Construction = EGuLiCommanderBehavior::Construction;
 	bool bHasBuilder = false;
-	for (auto Id : Members(Selection,GetWorld())) if (const auto* State = States.Find(Id))
+	for (auto Id : Members(Selection,GetWorld())) if (const auto* State = FindTaskState(Id))
 		if (const auto* Policy = GuLiCommanderBehavior::FindPolicy(*GetWorld(), State->Context.UnitTypeId); Policy && Policy->Behavior == Construction) { bHasBuilder = true; break; }
 	if (!bHasBuilder) return false;
 	TArray<UGuLiBuildingLifecycleComponent*> Buildings; GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Query(Buildings);
@@ -1152,7 +1170,7 @@ bool UGuLiUnitTaskSubsystem::BuildContextCommand(const FGuLiCommanderSelectionSt
 		if (Building->GetState().Phase == EGuLiBuildingPhase::UnderConstruction
 			&& FVector::DistSquared2D(Building->GetGroundLocation(), Command.Target) <= FMath::Square(Building->GetDefinition().CollisionExtent.Size2D()))
 		{
-			for (auto Id : Members(Selection,GetWorld())) if (const auto* State = States.Find(Id))
+			for (auto Id : Members(Selection,GetWorld())) if (const auto* State = FindTaskState(Id))
 				if (const auto* Definition = GuLiCommanderBehavior::FindPolicy(*GetWorld(), State->Context.UnitTypeId); Definition && Definition->Behavior == Construction)
 				{ Command.Kind = EGuLiUnitTaskKind::Special; Command.SpecialTaskId = Definition->GetWireId(); Command.BuildingId = Building->GetState().InstanceId; return true; }
 		}
@@ -1163,7 +1181,7 @@ void UGuLiUnitTaskSubsystem::BuildSummary(const FGuLiCommanderSelectionState& Se
 	Out.Reset(); TMap<FString,int32> Groups;
 	for (auto Id : Members(Selection,GetWorld()))
 	{
-		const auto* State = States.Find(Id); if (!State) continue;
+		const auto* State = FindTaskState(Id); if (!State) continue;
 		FGuLiUnitTaskSummary Summary; Summary.UnitCount = 1; Summary.bStopped = State->bStopped;
 		Summary.ManualTaskCount = State->ManualTaskCount();
 		Summary.bWaitingSafeExit = State->bCancelPending; Summary.Error = State->Error;

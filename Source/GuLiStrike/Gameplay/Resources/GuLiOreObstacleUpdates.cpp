@@ -29,6 +29,7 @@ bool UGuLiResourceWorldSubsystem::InitializeNodeObstacles()
         FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
         OreCollisionField=GetWorld()->SpawnActor<AGuLiOreCollisionFieldActor>(
             AGuLiOreCollisionFieldActor::StaticClass(),FTransform::Identity,Params);
+        MiningVisibilityParams.Reset();
     }
     if (!OreCollisionField) { InitializationError=TEXT("Could not create ore collision field"); return false; }
     TArray<FGuLiOreNodeObstacle> Shapes;
@@ -36,6 +37,7 @@ bool UGuLiResourceWorldSubsystem::InitializeNodeObstacles()
     TArray<TArray<FGuLiOreNodeObstacle>> ByCluster; ByCluster.SetNum(MapDefinition->Clusters.Num());
     for (const auto& Shape:Shapes) ByCluster[Shape.ClusterId-1].Add(Shape);
     ClusterObstacles.SetNum(MapDefinition->Clusters.Num());
+    MiningVisibilityParams.Reset();
     for (int32 I=0;I<MapDefinition->Clusters.Num();++I)
     {
         const auto& Cluster=MapDefinition->Clusters[I];
@@ -47,6 +49,7 @@ bool UGuLiResourceWorldSubsystem::InitializeNodeObstacles()
             if (!Proxy) { InitializationError=TEXT("Could not create ore navigation exporter"); return false; }
             Proxy->InitializeNodes(Cluster.ClusterId,ByCluster[I],NodeRemaining);
             Proxy->FinishSpawning(Transform); ClusterObstacles[I]=Proxy;
+            MiningVisibilityParams.Reset();
         }
         else ClusterObstacles[I]->InitializeNodes(Cluster.ClusterId,ByCluster[I],NodeRemaining);
     }

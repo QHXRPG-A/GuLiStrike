@@ -44,13 +44,13 @@ void UGuLiMiningVehicleManager::UnregisterVehicle(AGuLiMiningVehiclePawn& Vehicl
 	for (AGuLiMiningVehiclePawn* Other : Vehicles) Other->GetCapsuleComponent()->IgnoreActorWhenMoving(&Vehicle, false);
 }
 
-void UGuLiMiningVehicleManager::IgnoreVehicles(FCollisionQueryParams& Params) const
+void UGuLiMiningVehicleManager::AppendVisibilityIgnoredActors(TArray<const AActor*,TInlineAllocator<64>>& Out) const
 {
 	for (const AGuLiMiningVehiclePawn* Vehicle : Vehicles)
 	{
-		Params.AddIgnoredActor(Vehicle);
+		Out.Add(Vehicle);
 		if (const auto* Presentation = Vehicle->FindComponentByClass<UChildActorComponent>())
-			Params.AddIgnoredActor(Presentation->GetChildActor());
+			if (const auto* Child=Presentation->GetChildActor()) Out.Add(Child);
 	}
 }
 

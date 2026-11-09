@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "requested": [
+        1920,
+        1080
+      ],
+      "hud_size": [
+        1920.0,
+        1083.0
+      ],
+      "design_extent": [
+        1920.0,
+        1083.0
+      ],
+      "relative_aspect_error": 0.0027700831024930483,
+      "matches_requested_within_one_percent": true,
+      "actual_panel_bounds_inside": true
+    },
+    {
+      "requested": [
+        1920,
+        1200
+      ],
+      "hud_size": [
+        1727.9998779296875,
+        974.699951171875
+      ],
+      "design_extent": [
+        1920.0,
+        1083.0
+      ],
+      "relative_aspect_error": 0.10803321823046996,
+      "matches_requested_within_one_percent": false,
+      "actual_panel_bounds_inside": true
+    },
+    {
+      "requested": [
+        2520,
+        1080
+      ],
+      "hud_size": [
+        1920.0,
+        1083.0
+      ],
+      "design_extent": [
+        1920.0,
+        1083.0
+      ],
+      "relative_aspect_error": 0.24020577760189954,
+      "matches_requested_within_one_percent": false,
+      "actual_panel_bounds_inside": true
+    }
+  ],
+  "all_requested_aspects_verified": false,
+  "limitation": "The fixed render viewport request did not change live HUD geometry to 16:10 or 21:9. Actual near-16:9 panel bounds only; no text readability or visual claim.",
+  "visual_review": "not_performed"
+}

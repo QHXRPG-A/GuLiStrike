@@ -56,9 +56,11 @@ bool PrivateSnapshot(const ResourceSnapshot& V,Id Target,Revision Recovery,Revis
 }
 Id ClientWorld::ObjectResourceGroup(ObjectKey K) const
 {
-    std::set<ObjectKey> Seen;
-    while (K.Valid()&&Seen.size()<64&&Seen.insert(K).second)
+    std::array<ObjectKey,64> Seen;std::size_t Count=0;
+    while (K.Valid() && Count<Seen.size())
     {
+        if (std::find(Seen.begin(),Seen.begin()+Count,K)!=Seen.begin()+Count) break;
+        Seen[Count++]=K;
         const auto O=Directory.find(K);if (O==Directory.end()) break;
         if (O->second.Grant.OwnershipGroup.Valid()) return O->second.Grant.OwnershipGroup;
         if (O->second.Grant.Policy!=OwnershipPolicy::ParentWork) break;K=O->second.Parent;
@@ -67,8 +69,13 @@ Id ClientWorld::ObjectResourceGroup(ObjectKey K) const
 }
 std::vector<ObjectKey> ClientWorld::ResourceObjects(Id G,Id Owner) const
 {
+    TraceScope Scope("GuLiHybrid_ResourceBackupMembership");
     std::vector<ObjectKey> Keys;
-    for (const auto& [K,O]:Directory) if (ObjectResourceGroup(K)==G&&HasPrivateCustody(O.Grant,Owner)) Keys.push_back(K);
+    for (const auto K:ResourceObjectCandidates)
+    {
+        const auto& O=Directory.at(K);
+        if (HasPrivateCustody(O.Grant,Owner) && ObjectResourceGroup(K)==G) Keys.push_back(K);
+    }
     return Keys;
 }
 bool ClientWorld::HasResourceRecovery() const
@@ -148,6 +155,12 @@ void ClientWorld::InterruptResourceRequests(Id Group,Revision Epoch)
     {if (ReleaseApplicationResult) ReleaseApplicationResult(I->first);I=WorkFlows.erase(I);}else ++I;
     std::erase_if(KnownWork,[&](const auto& P){return Affected(P.second.Work.Request);});
     std::erase_if(RetryWork,[&](const auto& P){return Affected(P.second.second);});
+    for (auto I=SpawnWorkOrder.begin();I!=SpawnWorkOrder.end();)
+    {
+        std::erase_if(I->second,[&](const auto& P){return !RetryWork.contains(P.second)&&!WorkFlows.contains(P.second);});
+        if (I->second.empty()) I=SpawnWorkOrder.erase(I);else ++I;
+    }
+    NextWorkRetry=NetworkTime;
     std::erase_if(WorkRetryRound,[&](Id E){return !RetryWork.contains(E);});
     std::erase_if(ReadyPeerWork,[&](Id E){return !RetryWork.contains(E);});
     std::erase_if(ReadyPeerWorkIdentities,[&](Id E){return !RetryWork.contains(E);});

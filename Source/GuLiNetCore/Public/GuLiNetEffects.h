@@ -26,6 +26,29 @@ struct Ricochet
     std::uint32_t Minimum=0,Maximum=0,PerStack=0;
     float Range=0,Retention=0;
 };
+struct ExplosivePackage
+{
+    std::vector<std::uint32_t> Intervals;
+    std::uint32_t Level=0,BulletVfx=0,ImpactVfx=0;
+    float DamageMultiplier=0,Radius=0;
+    float SpeedMultiplier=0,OutwardOffset=0;
+    std::uint32_t Interval() const {return Level && Level<=Intervals.size()?Intervals[Level-1]:0;}
+};
+struct ExplosiveEnhancement
+{
+    std::vector<float> RadiusBonuses,DamageBonuses;
+    std::uint32_t Level=0;
+};
+GULINETCORE_API Bytes EncodeExplosiveEnhancement(const ExplosiveEnhancement&);
+GULINETCORE_API bool DecodeExplosiveEnhancement(std::span<const std::uint8_t>,ExplosiveEnhancement&);
+inline constexpr float MaximumGroundFireRate=30.f;
+GULINETCORE_API Bytes EncodeFireRate(float Multiplier);
+GULINETCORE_API bool DecodeFireRate(std::span<const std::uint8_t>,float&);
+GULINETCORE_API float FireRateMultiplier(const Set&);
+GULINETCORE_API bool HasEnhancedBullet(const Set&);
+GULINETCORE_API Bytes EncodeExplosive(const ExplosivePackage&);
+GULINETCORE_API bool DecodeExplosive(std::span<const std::uint8_t>,ExplosivePackage&);
+GULINETCORE_API ExplosivePackage GetExplosive(const Set&);
 inline constexpr std::uint32_t MaximumRicochetHops=(MaximumCapabilityBytes-8192)/192;
 GULINETCORE_API bool Register(Handler);
 GULINETCORE_API const Handler* Find(const std::string&);

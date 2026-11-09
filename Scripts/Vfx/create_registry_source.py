@@ -37,7 +37,7 @@ names={'M_GroundWarning_Circle':'GroundWarning','NS_WM01_MissileFlight':'Missile
        'NS_CommanderGunfireBatch':'CommanderGunfire','NS_WingmanLaserPool':'MachineGunTracer',
        'NS_Flash_1':'MachineGunImpact','NS_WM01_Explosion_2A':'CommanderMissileExplosion',
        'NS_WingmanBombardment_01':'WingmanBombardment'}
-notes={'MachineGunImpact':'指挥官、僚机、玩家地面机甲机枪命中单位或地形',
+notes={'MachineGunImpact':'指挥官、僚机、玩家游骑兵机枪命中单位或地形',
        'MissileFlight':'指挥官与僚机导弹飞行', 'MachineGunTracer':'指挥官、僚机机枪弹道和僚机枪口'}
 baseline=json.loads((OUT/'asset-baseline.json').read_text(encoding='utf-8'))
 for entry in baseline['entries']:

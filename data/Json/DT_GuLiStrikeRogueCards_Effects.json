@@ -1,0 +1,65 @@
+[
+  {
+    "Name": "GroundRicochet",
+    "Id": 1,
+    "Note": "重复获取整体增加折射段区间",
+    "Handler": "ricochet",
+    "Version": 1,
+    "ConfigId": 1,
+    "BuffId": 0
+  },
+  {
+    "Name": "GroundBurningOnHit",
+    "Id": 2,
+    "Note": "由账本接受的命中施加Buff",
+    "Handler": "buff/on_hit",
+    "Version": 1,
+    "ConfigId": 0,
+    "BuffId": 1
+  },
+  {
+    "Name": "GroundBurningBurst",
+    "Id": 3,
+    "Note": "为同次命中附加依附灼烧的爆裂",
+    "Handler": "buff/on_hit",
+    "Version": 1,
+    "ConfigId": 0,
+    "BuffId": 2
+  },
+  {
+    "Name": "GroundFireRate",
+    "Id": 4,
+    "Note": "个人本局武器效果",
+    "Handler": "ground/fire_rate",
+    "Version": 1,
+    "ConfigId": 1,
+    "BuffId": 0
+  },
+  {
+    "Name": "GroundEnhancedBullet",
+    "Id": 5,
+    "Note": "个人本局武器效果",
+    "Handler": "ground/enhanced_bullet",
+    "Version": 1,
+    "ConfigId": 2,
+    "BuffId": 0
+  },
+  {
+    "Name": "GroundExplosivePackage",
+    "Id": 6,
+    "Note": "个人本局武器效果",
+    "Handler": "ground/explosive_package",
+    "Version": 2,
+    "ConfigId": 3,
+    "BuffId": 0
+  },
+  {
+    "Name": "GroundExplosiveEnhancement",
+    "Id": 7,
+    "Note": "爆炸半径和伤害逐级乘算",
+    "Handler": "ground/explosive_enhancement",
+    "Version": 1,
+    "ConfigId": 4,
+    "BuffId": 0
+  }
+]

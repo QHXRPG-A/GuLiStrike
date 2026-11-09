@@ -1438,5 +1438,503 @@
     "TextId": "UI.Performance.NetPIEUnavailable",
     "Introduction": "跨进程PIE或身份尚未匹配时，不产生额外RPC取得服务端信息",
     "Content": "PIE服务端队列 --（需同进程服务端）"
+  },
+  {
+    "Name": "Card.GroundMech.Ricochet.Title",
+    "TextId": "Card.GroundMech.Ricochet.Title",
+    "Introduction": "游骑兵肉鸽卡标题",
+    "Content": "折射子弹"
+  },
+  {
+    "Name": "Card.GroundMech.Ricochet.Description",
+    "TextId": "Card.GroundMech.Ricochet.Description",
+    "Introduction": "{0}为取得后的卡牌等级",
+    "Content": "<Unit>游骑兵</> <Gain>普攻折射-{0}</>"
+  },
+  {
+    "Name": "UI.RogueCards.Capacity",
+    "TextId": "UI.RogueCards.Capacity",
+    "Introduction": "肉鸽技术容量提示",
+    "Content": "当前构筑已达到系统容量，无法继续强化"
+  },
+  {
+    "Name": "UI.RogueCards.GroundUnavailable",
+    "TextId": "UI.RogueCards.GroundUnavailable",
+    "Introduction": "地面肉鸽入口不可用",
+    "Content": "游骑兵肉鸽能力尚未就绪"
+  },
+  {
+    "Name": "Card.GroundMech.BurningBullet.Title",
+    "TextId": "Card.GroundMech.BurningBullet.Title",
+    "Introduction": "卡牌标题",
+    "Content": "灼烧子弹"
+  },
+  {
+    "Name": "Card.GroundMech.BurningBullet.Description",
+    "TextId": "Card.GroundMech.BurningBullet.Description",
+    "Introduction": "{0}为取得后的卡牌等级，当前限取一次",
+    "Content": "<Unit>游骑兵</> 普攻附加<Gain>灼烧-{0}</>"
+  },
+  {
+    "Name": "Card.GroundMech.BurningBurst.Title",
+    "TextId": "Card.GroundMech.BurningBurst.Title",
+    "Introduction": "卡牌标题",
+    "Content": "灼烧爆裂子弹"
+  },
+  {
+    "Name": "Card.GroundMech.BurningBurst.Description",
+    "TextId": "Card.GroundMech.BurningBurst.Description",
+    "Introduction": "单行效果；数值规则仍由Buff配置维护",
+    "Content": "<Unit>游骑兵</> 灼烧每隔一段时间发生<Gain>爆燃</>"
+  },
+  {
+    "Name": "Buff.Burning.Description",
+    "TextId": "Buff.Burning.Description",
+    "Introduction": "Buff参数化说明",
+    "Content": "每秒受到最大生命值的{0}%伤害，持续{1}秒。重复命中刷新时间，不叠加。"
+  },
+  {
+    "Name": "Buff.BurningBurst.Description",
+    "TextId": "Buff.BurningBurst.Description",
+    "Introduction": "Buff参数化说明",
+    "Content": "灼烧期间独立每{0}秒爆燃，造成宿主已损失生命值的{1}%范围伤害，半径{2}米，接触范围的敌人受到同等伤害。"
+  },
+  {
+    "Name": "UI.GroundHUD.Title",
+    "TextId": "UI.GroundHUD.Title",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "游骑兵"
+  },
+  {
+    "Name": "UI.GroundHUD.Health",
+    "TextId": "UI.GroundHUD.Health",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "生命值"
+  },
+  {
+    "Name": "UI.GroundHUD.Jet",
+    "TextId": "UI.GroundHUD.Jet",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "喷气容量"
+  },
+  {
+    "Name": "UI.GroundHUD.Fire",
+    "TextId": "UI.GroundHUD.Fire",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "射击"
+  },
+  {
+    "Name": "UI.GroundHUD.Aim",
+    "TextId": "UI.GroundHUD.Aim",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "瞄准"
+  },
+  {
+    "Name": "UI.GroundHUD.Jump",
+    "TextId": "UI.GroundHUD.Jump",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "喷气跳跃"
+  },
+  {
+    "Name": "UI.GroundHUD.Blink",
+    "TextId": "UI.GroundHUD.Blink",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "闪现"
+  },
+  {
+    "Name": "UI.GroundHUD.Ready",
+    "TextId": "UI.GroundHUD.Ready",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "就绪"
+  },
+  {
+    "Name": "UI.GroundHUD.Empty",
+    "TextId": "UI.GroundHUD.Empty",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "燃料不足"
+  },
+  {
+    "Name": "UI.GroundHUD.Active",
+    "TextId": "UI.GroundHUD.Active",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "使用中"
+  },
+  {
+    "Name": "UI.GroundHUD.Disabled",
+    "TextId": "UI.GroundHUD.Disabled",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "不可用"
+  },
+  {
+    "Name": "UI.GroundHUD.Stats",
+    "TextId": "UI.GroundHUD.Stats",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "武器等级 {0}   射速 {1}\n移速 {2}"
+  },
+  {
+    "Name": "UI.GroundHUD.Details",
+    "TextId": "UI.GroundHUD.Details",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "属性与强化"
+  },
+  {
+    "Name": "UI.GroundHUD.DetailsHint",
+    "TextId": "UI.GroundHUD.DetailsHint",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "[I] 详情"
+  },
+  {
+    "Name": "UI.GroundHUD.RogueHint",
+    "TextId": "UI.GroundHUD.RogueHint",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "[F4] 选牌"
+  },
+  {
+    "Name": "UI.GroundHUD.Owned",
+    "TextId": "UI.GroundHUD.Owned",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "已获强化"
+  },
+  {
+    "Name": "UI.GroundHUD.NoOwned",
+    "TextId": "UI.GroundHUD.NoOwned",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "尚未获得强化"
+  },
+  {
+    "Name": "UI.GroundHUD.MapHint",
+    "TextId": "UI.GroundHUD.MapHint",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "M  战术地图"
+  },
+  {
+    "Name": "UI.GroundHUD.MapTitle",
+    "TextId": "UI.GroundHUD.MapTitle",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "战术地图"
+  },
+  {
+    "Name": "UI.GroundHUD.MapHelp",
+    "TextId": "UI.GroundHUD.MapHelp",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "滚轮缩放 · 左键拖动 / 选择标记 · Space 定位自身 · M / Esc 关闭"
+  },
+  {
+    "Name": "UI.GroundHUD.MapUnavailable",
+    "TextId": "UI.GroundHUD.MapUnavailable",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "地形数据暂不可用"
+  },
+  {
+    "Name": "UI.GroundHUD.MapLegend",
+    "TextId": "UI.GroundHUD.MapLegend",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "▲ 自身   ▪ 友方   ◆ 敌方   □ 据点"
+  },
+  {
+    "Name": "UI.GroundHUD.MapLocation",
+    "TextId": "UI.GroundHUD.MapLocation",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "坐标 {0}, {1} m"
+  },
+  {
+    "Name": "UI.GroundHUD.MapSelected",
+    "TextId": "UI.GroundHUD.MapSelected",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "{0}\n坐标 {1}, {2} m"
+  },
+  {
+    "Name": "UI.GroundHUD.Friendly",
+    "TextId": "UI.GroundHUD.Friendly",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "友方单位"
+  },
+  {
+    "Name": "UI.GroundHUD.Enemy",
+    "TextId": "UI.GroundHUD.Enemy",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "敌方单位"
+  },
+  {
+    "Name": "UI.GroundHUD.Territory",
+    "TextId": "UI.GroundHUD.Territory",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "据点"
+  },
+  {
+    "Name": "UI.GroundHUD.Self",
+    "TextId": "UI.GroundHUD.Self",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "游骑兵"
+  },
+  {
+    "Name": "UI.GroundHUD.Close",
+    "TextId": "UI.GroundHUD.Close",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "[Esc] 关闭"
+  },
+  {
+    "Name": "UI.GroundHUD.SelectDirect",
+    "TextId": "UI.GroundHUD.SelectDirect",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "单击卡牌，直接获得强化"
+  },
+  {
+    "Name": "UI.GroundHUD.Burning",
+    "TextId": "UI.GroundHUD.Burning",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "灼烧"
+  },
+  {
+    "Name": "UI.GroundHUD.BurningBurst",
+    "TextId": "UI.GroundHUD.BurningBurst",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "灼烧爆裂"
+  },
+  {
+    "Name": "UI.GroundHUD.BuffOther",
+    "TextId": "UI.GroundHUD.BuffOther",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "状态 {0}"
+  },
+  {
+    "Name": "UI.GroundHUD.BuffMore",
+    "TextId": "UI.GroundHUD.BuffMore",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "+{0}"
+  },
+  {
+    "Name": "UI.GroundHUD.Shield",
+    "TextId": "UI.GroundHUD.Shield",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "护盾 {0} / {1}"
+  },
+  {
+    "Name": "UI.GroundHUD.Dead",
+    "TextId": "UI.GroundHUD.Dead",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "机体失能"
+  },
+  {
+    "Name": "UI.GroundHUD.Damage",
+    "TextId": "UI.GroundHUD.Damage",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "单发伤害 {0}"
+  },
+  {
+    "Name": "UI.GroundHUD.Buffs",
+    "TextId": "UI.GroundHUD.Buffs",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "当前状态"
+  },
+  {
+    "Name": "UI.GroundHUD.ModelShort",
+    "TextId": "UI.GroundHUD.ModelShort",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "A4B2"
+  },
+  {
+    "Name": "UI.GroundHUD.RogueAvailable",
+    "TextId": "UI.GroundHUD.RogueAvailable",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "强化选择"
+  },
+  {
+    "Name": "UI.GroundHUD.RicochetShort",
+    "TextId": "UI.GroundHUD.RicochetShort",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "折射"
+  },
+  {
+    "Name": "UI.GroundHUD.BurstShort",
+    "TextId": "UI.GroundHUD.BurstShort",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "爆裂"
+  },
+  {
+    "Name": "UI.GroundHUD.LocalTerrain",
+    "TextId": "UI.GroundHUD.LocalTerrain",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "局部地形"
+  },
+  {
+    "Name": "UI.GroundHUD.MapHintShort",
+    "TextId": "UI.GroundHUD.MapHintShort",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "[M] 地图"
+  },
+  {
+    "Name": "UI.GroundHUD.Attributes",
+    "TextId": "UI.GroundHUD.Attributes",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "机体属性"
+  },
+  {
+    "Name": "UI.GroundHUD.WeaponLevel",
+    "TextId": "UI.GroundHUD.WeaponLevel",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "武器等级"
+  },
+  {
+    "Name": "UI.GroundHUD.FireRate",
+    "TextId": "UI.GroundHUD.FireRate",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "射速"
+  },
+  {
+    "Name": "UI.GroundHUD.MoveSpeed",
+    "TextId": "UI.GroundHUD.MoveSpeed",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "移速"
+  },
+  {
+    "Name": "UI.GroundHUD.LocationInfo",
+    "TextId": "UI.GroundHUD.LocationInfo",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "地点信息"
+  },
+  {
+    "Name": "UI.GroundHUD.MapPickLocation",
+    "TextId": "UI.GroundHUD.MapPickLocation",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "选择地图标记"
+  },
+  {
+    "Name": "UI.GroundHUD.Distance",
+    "TextId": "UI.GroundHUD.Distance",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "距离"
+  },
+  {
+    "Name": "UI.GroundHUD.Coordinates",
+    "TextId": "UI.GroundHUD.Coordinates",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "坐标"
+  },
+  {
+    "Name": "UI.GroundHUD.Affiliation",
+    "TextId": "UI.GroundHUD.Affiliation",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "状态"
+  },
+  {
+    "Name": "UI.GroundHUD.NoSelection",
+    "TextId": "UI.GroundHUD.NoSelection",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "—"
+  },
+  {
+    "Name": "UI.GroundHUD.LegendTitle",
+    "TextId": "UI.GroundHUD.LegendTitle",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "图例"
+  },
+  {
+    "Name": "UI.GroundHUD.SelfLegend",
+    "TextId": "UI.GroundHUD.SelfLegend",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "自身"
+  },
+  {
+    "Name": "UI.GroundHUD.FriendlyLegend",
+    "TextId": "UI.GroundHUD.FriendlyLegend",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "友方"
+  },
+  {
+    "Name": "UI.GroundHUD.EnemyLegend",
+    "TextId": "UI.GroundHUD.EnemyLegend",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "敌方"
+  },
+  {
+    "Name": "UI.GroundHUD.MapWheelHint",
+    "TextId": "UI.GroundHUD.MapWheelHint",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "滚轮  缩放"
+  },
+  {
+    "Name": "UI.GroundHUD.LocateSelf",
+    "TextId": "UI.GroundHUD.LocateSelf",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "Space  定位自身"
+  },
+  {
+    "Name": "UI.GroundHUD.GroundIdentity",
+    "TextId": "UI.GroundHUD.GroundIdentity",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "GROUND / 4001"
+  },
+  {
+    "Name": "UI.GroundHUD.Brand",
+    "TextId": "UI.GroundHUD.Brand",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "GULISTRIKE"
+  },
+  {
+    "Name": "UI.GroundHUD.SystemIdentity",
+    "TextId": "UI.GroundHUD.SystemIdentity",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "GROUND SYSTEM"
+  },
+  {
+    "Name": "UI.GroundHUD.SelectTitle",
+    "TextId": "UI.GroundHUD.SelectTitle",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "选择强化"
+  },
+  {
+    "Name": "UI.GroundHUD.SelectOne",
+    "TextId": "UI.GroundHUD.SelectOne",
+    "Introduction": "Ground HUD 正式界面文案",
+    "Content": "选择 1 项强化"
+  },
+  {
+    "Name": "Card.GroundMech.FireRate.Title",
+    "TextId": "Card.GroundMech.FireRate.Title",
+    "Introduction": "游骑兵武器肉鸽；参数来自效果配置",
+    "Content": "增加攻速"
+  },
+  {
+    "Name": "Card.GroundMech.FireRate.Description",
+    "TextId": "Card.GroundMech.FireRate.Description",
+    "Introduction": "游骑兵武器肉鸽；参数来自效果配置",
+    "Content": "<Unit>游骑兵</> <Gain>普攻攻速+{1}% · {0}级</>"
+  },
+  {
+    "Name": "Card.GroundMech.EnhancedBullet.Title",
+    "TextId": "Card.GroundMech.EnhancedBullet.Title",
+    "Introduction": "游骑兵武器肉鸽；参数来自效果配置",
+    "Content": "强化子弹"
+  },
+  {
+    "Name": "Card.GroundMech.EnhancedBullet.Description",
+    "TextId": "Card.GroundMech.EnhancedBullet.Description",
+    "Introduction": "游骑兵武器肉鸽；参数来自效果配置",
+    "Content": "<Unit>游骑兵</> <Gain>普攻升级为强化子弹</>"
+  },
+  {
+    "Name": "Card.GroundMech.ExplosivePackage.Title",
+    "TextId": "Card.GroundMech.ExplosivePackage.Title",
+    "Introduction": "游骑兵武器肉鸽；参数来自效果配置",
+    "Content": "爆破套餐"
+  },
+  {
+    "Name": "Card.GroundMech.ExplosivePackage.Description",
+    "TextId": "Card.GroundMech.ExplosivePackage.Description",
+    "Introduction": "游骑兵武器肉鸽；参数来自效果配置",
+    "Content": "<Unit>游骑兵</> <Gain>{0}级 · 每{1}发附爆炸弹 · {2}倍伤害/{3}米</>"
+  },
+  {
+    "Name": "Card.GroundMech.ExplosiveEnhancement.Title",
+    "TextId": "Card.GroundMech.ExplosiveEnhancement.Title",
+    "Introduction": "游骑兵爆炸强化卡标题",
+    "Content": "强化爆炸弹"
+  },
+  {
+    "Name": "Card.GroundMech.ExplosiveEnhancement.Description",
+    "TextId": "Card.GroundMech.ExplosiveEnhancement.Description",
+    "Introduction": "参数为取得后等级、本次半径%、本次伤害%",
+    "Content": "<Unit>游骑兵</> <Gain>{0}级 · 爆炸半径+{1}%、伤害+{2}%</>"
   }
 ]

@@ -1,0 +1,69 @@
+{
+  "authorization": "User approved stopping current PIE, rebuilding/restarting and checking automatic HUD creation",
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "exit_code": 0,
+  "result": "Succeeded",
+  "actions": 21,
+  "elapsed_seconds": 47.76,
+  "build_id_match": true,
+  "modules": {
+    "engine": {
+      "path": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    },
+    "project": {
+      "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    },
+    "GuLiFlightNavigation": {
+      "path": "D:/UE5.7/test1/Plugins/GuLiFlightNavigation/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    },
+    "GuLiFrameProfiler": {
+      "path": "D:/UE5.7/test1/Plugins/GuLiFrameProfiler/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    },
+    "GuLiMapAuthoring": {
+      "path": "D:/UE5.7/test1/Plugins/GuLiMapAuthoring/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    },
+    "UnrealMCP": {
+      "path": "D:/UE5.7/test1/Plugins/UnrealMCP/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    },
+    "UnrealMCPython": {
+      "path": "D:/UE5.7/test1/Plugins/UnrealMCPython/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    },
+    "VibeUE": {
+      "path": "D:/UE5.7/test1/Plugins/VibeUE/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    },
+    "Tripo3DUEBridge-UE5.7-Win64": {
+      "path": "D:/UE5.7/test1/Plugins/Tripo3DUEBridge-UE5.7-Win64/Binaries/Win64/UnrealEditor.modules",
+      "build_id": "ec746d14-0746-471d-9ee9-2dfd468f881d"
+    }
+  },
+  "source_matches_review": true,
+  "log": "build-editor.log",
+  "runtime_check": "automatic_creation_and_native_layout_passed",
+  "diagnostic_build": {
+    "target": "GuLiStrikeEditor Win64 Development",
+    "exit_code": 0,
+    "result": "Succeeded",
+    "actions": 6,
+    "elapsed_seconds": 29.85,
+    "log": "build-diagnostics.log"
+  },
+  "source_sha256": {
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.h": "6fec7f11deaa28513eb8222f13e72ab8cf94cea3aaa62737c3945456129680ad",
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp": "91bf255ed2d611775fbb83f8df2961b39a0353ef1d05c2c3dfed1ff71a38e9aa",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h": "c4ec248eec9891fd5983f80d2b0c7c8753d5083d8691b2ea83d665f5acf90ed0",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp": "0bc4d617dcd033a9cf40966758f9acdd09d76e7d5338c4f8e7a99842d48e2e8b",
+    "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp": "e18a7ca8f08ea6a54d0f3b29535b2b5022e18cc6a76729b85be5e756d162926d"
+  },
+  "runtime_evidence": "final-startup-native.json",
+  "native_fix_loaded": true,
+  "editor_pid": 6440
+}
