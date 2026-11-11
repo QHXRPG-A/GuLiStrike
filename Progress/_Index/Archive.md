@@ -4,7 +4,7 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
-| 2026-11-11 | [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | commander, navigation, performance | partial | 按用户指令结项，删除旧避障残留及1683个会话临时文件约2.60GiB，构建重载通过，准备仅代码与数据文档的GitHub提交。 |
+| 2026-11-11 | [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | commander, navigation, performance | partial | 已按用户指令结项，清除旧避障残留和1683个临时文件约2.60GiB，构建重载通过，232个非资源文件已推送GitHub main并核对。 |
 | 2026-11-11 | [受阻让路传递实装与性能对比](../Archive/20261111-受阻让路传递实装与性能对比.md) | commander, navigation, performance | partial | Demo受阻让路和邻居传递实装为0.5秒，两版48窗口完成；对穿成本少9.3%、到达42→48，挡路17→20，仍有往返。 |
 | 2026-11-11 | [Demo受阻让路与邻居传递](../Archive/20261111-Demo受阻让路与邻居传递.md) | commander, navigation, performance | partial | Web受阻侧绕即可请求让路，让路者向直接阻挡者逐步传递相同方向，默认4大100小供玩家体验。 |
 | 2026-11-11 | [Demo大小群体数量设置](../Archive/20261111-Demo大小群体数量设置.md) | commander, navigation, performance | partial | Web默认展示4个大单位穿过32个小单位，数量可分别设置，保留既有侧绕和让路规则。 |
