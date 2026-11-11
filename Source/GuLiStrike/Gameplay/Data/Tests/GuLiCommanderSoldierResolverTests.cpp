@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Data/GuLiCommanderSoldierResolver.h"
+#include "Gameplay/Data/GuLiAvoidanceCatalog.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -67,7 +68,6 @@ bool FGuLiCommanderSoldierValidRowTest::RunTest(const FString& Parameters)
 
 	FGuLiStrikeCommanderSoldiersRow Row;
 	Row.ModelWidthMeters = 3.1f;
-	Row.MinAvoidanceDistanceMeters = 0.5f;
 	Row.PresentationScale = 1.0f;
 	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;
@@ -103,7 +103,6 @@ bool FGuLiCommanderSoldierInvalidValuesFallbackTest::RunTest(const FString& Para
 
 	FGuLiStrikeCommanderSoldiersRow Row;
 	Row.ModelWidthMeters = 3.1f;
-	Row.MinAvoidanceDistanceMeters = 0.5f;
 	Row.PresentationScale = 1.0f;
 	Row.MovementSpeedCmPerSecond = -1.0f;
 	Row.MaxHealth = std::numeric_limits<float>::quiet_NaN();
@@ -258,7 +257,6 @@ bool FGuLiCommanderSoldierHealthBoundaryTest::RunTest(const FString& Parameters)
 	const FGuLiSoldierDefinition Fallback = GuLiCommanderSoldierResolverTests::MakeTestFallback(Model.Get());
 	FGuLiStrikeCommanderSoldiersRow Row;
 	Row.ModelWidthMeters = 3.1f;
-	Row.MinAvoidanceDistanceMeters = 0.5f;
 	Row.PresentationScale = 1.0f;
 	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;
@@ -283,6 +281,29 @@ bool FGuLiCommanderSoldierHealthBoundaryTest::RunTest(const FString& Parameters)
 		TestEqual(TEXT("A valid second unit id survives health fallback"), Result.UnitTypeId, static_cast<uint16>(2u));
 	}
 	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiAvoidanceRadiusIndependentScale,
+    "GuLiStrike.Commander.Data.SoldierResolver.IndependentCircleRadius",
+    EAutomationTestFlags::EditorContext|EAutomationTestFlags::EngineFilter)
+bool FGuLiAvoidanceRadiusIndependentScale::RunTest(const FString&)
+{
+    TStrongObjectPtr<UStaticMesh> Model(NewObject<UStaticMesh>());
+    GuLiCommanderSoldierResolverTests::FScopedModelCatalog Models(Model.Get());
+    auto Fallback=GuLiCommanderSoldierResolverTests::MakeTestFallback(Model.Get());
+    FGuLiStrikeCommanderSoldiersRow Row;Row.Id=2;Row.ModelId=42;Row.PresentationScale=1;
+    Row.ModelWidthMeters=12.5f;Row.MovementSpeedCmPerSecond=720;Row.MaxHealth=100;
+    FGuLiUnitAvoidanceProfile Profile;Profile.GridReferenceDiameterCm=1250;Profile.Solver.Radius=317;
+    bool Valid=false;
+    const auto A=FGuLiCommanderSoldierResolver::ResolveRow(&Row,Fallback,Valid,&Profile);
+    TestTrue(TEXT("First profile resolves"),Valid);Profile.Solver.Radius=123;
+    const auto B=FGuLiCommanderSoldierResolver::ResolveRow(&Row,Fallback,Valid,&Profile);
+    TestTrue(TEXT("Second profile resolves"),Valid);
+    TestEqual(TEXT("Authored radius is not quantized"),A.MassAvoidanceRadiusCm,317.f);
+    TestEqual(TEXT("Independent second radius"),B.MassAvoidanceRadiusCm,123.f);
+    TestEqual(TEXT("Radius edits preserve presentation scale"),A.PresentationScale,B.PresentationScale);
+    TestEqual(TEXT("Radius edits preserve grid reference footprint"),A.FootprintCells,B.FootprintCells);
+    return true;
 }
 
 #endif // WITH_DEV_AUTOMATION_TESTS

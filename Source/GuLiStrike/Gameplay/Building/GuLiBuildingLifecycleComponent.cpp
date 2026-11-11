@@ -2,6 +2,8 @@
 #include "Gameplay/Building/GuLiBuildingRegistrySubsystem.h"
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Building/GuLiBuildingConstructionVisualComponent.h"
+#include "Gameplay/Navigation/GuLiBuildingCircleBoundaryComponent.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "Network/GuLiNetworkSettings.h"
@@ -79,6 +81,9 @@ void UGuLiBuildingLifecycleComponent::RegisterInstance()
 {
 	if (State.Phase == EGuLiBuildingPhase::Destroyed || State.Phase == EGuLiBuildingPhase::ConvertedToUnit) return;
 	GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Register(*this);
+    const auto* Units=GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>();
+    check(Units && Units->IsCatalogValid());
+    ensure(UGuLiBuildingCircleBoundaryComponent::Install(*this,Units->GetAvoidanceCatalog()));
 }
 float UGuLiBuildingLifecycleComponent::GetConstructionProgress() const
 {

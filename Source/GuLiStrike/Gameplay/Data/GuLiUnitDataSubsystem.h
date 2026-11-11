@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
+#include "Gameplay/Data/GuLiAvoidanceCatalog.h"
 #include "GuLiUnitDataSubsystem.generated.h"
 
 class UDataTable;
@@ -26,7 +27,8 @@ public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	/** Same validated definitions used by the cache and editor manifest providers. */
-	static bool ResolveAuthoredDefinitions(TArray<FGuLiSoldierDefinition>& Out,FString& Error);
+	static bool ResolveAuthoredDefinitions(TArray<FGuLiSoldierDefinition>& Out,FString& Error,FGuLiAvoidanceCatalog* Avoidance=nullptr);
+    const FGuLiAvoidanceCatalog& GetAvoidanceCatalog() const { return Avoidance; }
 	const FGuLiSoldierDefinition* FindDefinition(uint16 UnitTypeId) const;
 	const TArray<FGuLiSoldierDefinition>& GetDefinitions() const { return Definitions; }
 	const TArray<FGuLiSoldierDefinition>& GetMassDefinitions() const { return MassDefinitions; }
@@ -42,4 +44,5 @@ private:
 	UPROPERTY(Transient) FGuLiSoldierDefinition DefaultDefinition;
 	bool bDefaultFromTable = false;
 	FString CatalogError;
+    FGuLiAvoidanceCatalog Avoidance;
 };

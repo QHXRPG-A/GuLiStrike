@@ -131,6 +131,7 @@ void UGuLiPerformanceSubsystem::Tick(float DeltaTime)
     if (ObservationDeadline>0 && FPlatformTime::Seconds()-LastObservationSample>=1.0) CaptureNetworkSample(true);
     TickHotspot(DeltaTime);
     TickContinuousHotspot();
+    TickMovementCapture();
 }
 TStatId UGuLiPerformanceSubsystem::GetStatId() const
 { RETURN_QUICK_DECLARE_CYCLE_STAT(GuLiPerformanceCapture, STATGROUP_Tickables); }
@@ -230,6 +231,12 @@ FString UGuLiPerformanceSubsystem::GetCaptureJson() const
         if (C.Values.IsEmpty()) continue;auto Ordered=C.Values;Ordered.Sort();auto J=MakeShared<FJsonObject>();
         J->SetNumberField(TEXT("samples"),Ordered.Num());J->SetNumberField(TEXT("mean"),C.Total/Ordered.Num());
         J->SetNumberField(TEXT("p95"),Ordered[FMath::Clamp(FMath::CeilToInt(Ordered.Num()*.95)-1,0,Ordered.Num()-1)]);
+        J->SetNumberField(TEXT("p50"),Ordered[FMath::Clamp(FMath::CeilToInt(Ordered.Num()*.5)-1,0,Ordered.Num()-1)]);
+        J->SetNumberField(TEXT("p99"),Ordered[FMath::Clamp(FMath::CeilToInt(Ordered.Num()*.99)-1,0,Ordered.Num()-1)]);
+        TArray<TSharedPtr<FJsonValue>> Raw;
+        Raw.Reserve(C.Values.Num());
+        for (const double Value:C.Values) Raw.Add(MakeShared<FJsonValueNumber>(Value));
+        J->SetArrayField(TEXT("values"),Raw);
         J->SetNumberField(TEXT("peak"),Ordered.Last());Individual->SetObjectField(Name.ToString(),J);
     }
     Root->SetObjectField(TEXT("sample_metrics"),Individual);Root->SetNumberField(TEXT("individual_samples_dropped"),double(DroppedIndividualSamples));

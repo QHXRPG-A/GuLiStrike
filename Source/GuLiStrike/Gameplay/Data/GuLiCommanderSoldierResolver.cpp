@@ -2,7 +2,8 @@
 
 #include "Gameplay/Data/GuLiCommanderSoldierResolver.h"
 #include "Gameplay/Navigation/Grid/GuLiGridTypes.h"
-#include "Components/CapsuleComponent.h"
+#include "Gameplay/Data/GuLiAvoidanceCatalog.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "StateTree.h"
 
 #include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
@@ -89,7 +90,7 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::Resolve(
 	const UDataTable* DataTable,
 	const FName RowName,
 	const FGuLiSoldierDefinition& Fallback,
-	bool& bOutEntireDefinitionFromDataTable)
+	bool& bOutEntireDefinitionFromDataTable, const FGuLiUnitAvoidanceProfile* Avoidance)
 {
 	using namespace GuLiCommanderSoldierResolverPrivate;
 	bOutEntireDefinitionFromDataTable = false;
@@ -124,7 +125,7 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::Resolve(
 		return Fallback;
 	}
 
-	return ResolveRow(Row, Fallback, bOutEntireDefinitionFromDataTable);
+	return ResolveRow(Row, Fallback, bOutEntireDefinitionFromDataTable, Avoidance);
 }
 
 FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::Resolve(
@@ -145,7 +146,7 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 	const FGuLiStrikeCommanderSoldiersRow* Row,
 	const FGuLiSoldierDefinition& Fallback,
-	bool& bOutEntireDefinitionFromDataTable)
+	bool& bOutEntireDefinitionFromDataTable, const FGuLiUnitAvoidanceProfile* Avoidance)
 {
 	using namespace GuLiCommanderSoldierResolverPrivate;
 	bOutEntireDefinitionFromDataTable = false;
@@ -193,26 +194,25 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		TEXT("MovementSpeedCmPerSecond"),
 		bOutEntireDefinitionFromDataTable);
 
-	// Pioneer and War Machine widths are already final world meters.
-	Resolved.MassAvoidanceRadiusCm = 0.0f;
-	if (FMath::IsFinite(Row->MassAvoidanceRadiusMeters) && Row->MassAvoidanceRadiusMeters > 0)
-		Resolved.MassAvoidanceRadiusCm = Row->MassAvoidanceRadiusMeters * 100.0f;
-	else if (Resolved.UnitTypeId == 1u || Resolved.UnitTypeId == 2u)
-	{
-		const float Radius = Row->ModelWidthMeters * 50.0f;
-		if (FMath::IsFinite(Radius) && Radius > 0.0f)
-		{
-			Resolved.MassAvoidanceRadiusCm = Radius;
-		}
-		else
-		{
-			Resolved.MassAvoidanceRadiusCm = Resolved.UnitTypeId == 1u ? 312.5f : 625.0f;
-			bOutEntireDefinitionFromDataTable = false;
-			LogWarningOnce(FName(*FString::Printf(TEXT("InvalidModelWidth_%d"), Row->Id)), FString::Printf(
-				TEXT("Soldier Id %d has invalid ModelWidthMeters %.9g; using radius %.9gcm."),
-				Row->Id, Row->ModelWidthMeters, Resolved.MassAvoidanceRadiusCm));
-		}
-	}
+
+    // Runtime callers pass the match cache. Standalone editor/manifest callers
+    // resolve authored input here; no tick path calls this row resolver.
+    FGuLiAvoidanceCatalog Authored;
+    if (!Avoidance)
+    {
+        const auto* Soldiers=GetDefault<UGuLiUnitDataSettings>()->SoldierDataTable.LoadSynchronous();
+        TArray<uint16> Types;FString Error;
+        if (Soldiers && Soldiers->GetRowStruct()==FGuLiStrikeCommanderSoldiersRow::StaticStruct())
+            for (const auto Name:Soldiers->GetRowNames())
+                if (const auto* Unit=Soldiers->FindRow<FGuLiStrikeCommanderSoldiersRow>(Name,TEXT("AvoidanceInput")))
+                    Types.Add(uint16(Unit->Id));
+        if (!FGuLiAvoidanceCatalog::Load(Types,Authored,Error))
+        {bOutEntireDefinitionFromDataTable=false;LogWarningOnce(TEXT("InvalidAvoidanceInput"),Error);return Resolved;}
+        Avoidance=Authored.Units.Find(Resolved.UnitTypeId);
+    }
+    if (!Avoidance) {bOutEntireDefinitionFromDataTable=false;return Resolved;}
+    Resolved.MassAvoidanceRadiusCm=Avoidance->Solver.Radius;
+    Resolved.GridReferenceDiameterCm=Avoidance->GridReferenceDiameterCm;
 
 	if (FMath::IsFinite(Row->MaxHealth) && Row->MaxHealth > 0.0f
 		&& Row->MaxHealth <= MaximumSupportedHealth)
@@ -249,16 +249,8 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		return Resolved;
 	}
 	Resolved.PresentationScale = Row->PresentationScale;
-	// Always derive from authored data/CDO, never an already scaled live instance.
-	Resolved.SourceCollisionDiameterCm = 2.f * Resolved.GetMassAvoidanceRadius(150.f);
-	if (Resolved.ActorClass)
-	{
-		if (const auto* Body=Resolved.ActorClass->GetDefaultObject<AActor>()->FindComponentByClass<UCapsuleComponent>())
-			Resolved.SourceCollisionDiameterCm=2.f*Body->GetScaledCapsuleRadius();
-	}
-	Resolved.FootprintCells=GuLiGrid::FootprintFromDiameter(Resolved.SourceCollisionDiameterCm);
-	Resolved.GridDimensionScale=float(GuLiGrid::ScaleFromDiameter(Resolved.SourceCollisionDiameterCm));
-	Resolved.MassAvoidanceRadiusCm=Resolved.FootprintCells*150.f;
+	Resolved.FootprintCells=GuLiGrid::FootprintFromDiameter(Resolved.GridReferenceDiameterCm);
+	Resolved.GridDimensionScale=float(GuLiGrid::ScaleFromDiameter(Resolved.GridReferenceDiameterCm));
 	Resolved.PresentationScale*=Resolved.GridDimensionScale;
 	Resolved.bSummonOnly = Row->bSummonOnly;
 	Resolved.VATDefinition = Cast<UGuLiVATDefinition>(ModelDefinition.VATDefinition.LoadSynchronous());

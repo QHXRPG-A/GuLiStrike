@@ -1,4 +1,5 @@
 #include "Gameplay/Building/GuLiBuildingProductionComponent.h"
+#include "Gameplay/Performance/GuLiMovementCapture.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -59,6 +60,7 @@ bool UGuLiBuildingProductionComponent::PrepareDevelopmentProductionCycle()
 #endif
 void UGuLiBuildingProductionComponent::AdvanceHybridProduction(float Dt)
 {
+    if (GuLiMovementCapture::HoldAutomaticWork(GetWorld())) return;
 	if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !UGuLiHybridActorComponent::HasSimulation(GetOwner())
 		|| !FMath::IsFinite(Dt) || Dt<=0) return;
 	const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());

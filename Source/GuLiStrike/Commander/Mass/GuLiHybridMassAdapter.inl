@@ -14,8 +14,22 @@ namespace GuLiHybridMass
 using namespace GuLiCommanderMassPrivate;
 TAutoConsoleVariable<int32> PublishAfterMovement(TEXT("gs.Commander.PublishPoseAfterMovement"),1,
     TEXT("Sample due synchronous Mass poses after the shared movement step. Keeps 10 Hz publication and the existing wire format. 0 selects the comparison ordering."));
-constexpr uint32 ObjectVersion=5,SystemVersion=5;
+constexpr uint32 ObjectVersion=8,SystemVersion=5;
 const FName SystemName(TEXT("CommanderMass"));
+struct FYieldRequest
+{
+    uint32 Mover=0,Blocker=0;
+    FGuLiHybridObjectKey MoverKey,BlockerKey;
+    uint64 OwnerEpoch=0,BlockerEpoch=0;
+    FGuid Command;
+    FVector Direction=FVector::ZeroVector;
+};
+void YieldRequest(FGuLiHybridStateArchive& A,FYieldRequest& V)
+{
+    uint8 Version=1;A.Value(Version);if (Version!=1) A.Reject();
+    A.Value(V.Mover);A.Value(V.Blocker);A.Value(V.MoverKey);A.Value(V.BlockerKey);
+    A.Value(V.OwnerEpoch);A.Value(V.BlockerEpoch);A.Value(V.Command);A.Value(V.Direction);
+}
 struct FPrivate
 {
     FSoldierRuntime Soldier;
@@ -83,9 +97,13 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
     A.Array(S.PersonalPathPoints,4096,[](auto& Ar,auto& P){ Ar.Value(P); });
     A.Value(S.PersonalPathPointIndex); A.Value(S.PersonalPathRetries); A.Value(S.NextPersonalPathQuerySeconds);
     A.Value(S.bHasFinalDestination); A.Value(S.bForceMovementUpdate); A.Value(S.DeathSimulationSeconds); A.Value(S.bWreckExpired);
-    A.Value(S.ExternalControlToken); A.Value(S.bPhased); A.Value(S.bExternalActionsLocked); A.Value(S.ContactObstacle);
-    A.Value(S.BypassSide); A.Value(S.ContactClearSeconds); A.Value(S.FormationCorrectionAlpha); A.Value(S.EnvironmentSpeedScale);
-    A.Value(S.bGroundMechYielding); A.Value(S.GroundMechYieldAnchor); A.Value(S.GroundMechYieldTarget); A.Value(S.GroundMechLastPressureSimulationSeconds);
+    A.Value(S.ExternalControlToken); A.Value(S.bPhased); A.Value(S.bExternalActionsLocked);
+    uint8 CircleSide=uint8(S.CircleState.Side+1);A.Value(CircleSide);
+    if (CircleSide>2) A.Reject();S.CircleState.Side=int8(CircleSide)-1;
+    A.Value(S.MovementCommandIdentity);A.Value(S.YieldDirection);A.Value(S.YieldRemainingSeconds);
+    if (S.YieldRemainingSeconds<0 || (S.YieldRemainingSeconds>0 && !S.YieldDirection.IsNormalized())) A.Reject();
+    A.Value(S.GridReferenceFootprint);
+    if (S.GridReferenceFootprint<1) A.Reject();
     A.Value(S.DisplacementFrameFloor); A.Value(S.DisplacementLocation); A.Value(S.DisplacementSimulationTime); A.Value(S.ExternalLockSimulationTime);
     GuLiHybridState::GridMotion(A,S.GridMotion);A.Value(S.GridOrderId);
     A.Value(V.HasBirth);if (V.HasBirth)
@@ -335,7 +353,7 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter, public
             V.Pitch[0]=S->MechanicalPose.GunPitchDegrees[0];V.Pitch[1]=S->MechanicalPose.GunPitchDegrees[1];V.VATPhase=S->VATPlayback.Phase;V.VATRate=S->VATPlayback.Rate;
             auto& P=V.Value;P.SoldierId=S->SoldierId;P.ActiveOrderId=S->ActiveOrderId;P.HoverBlendStartMilliseconds=S->MechanicalPose.HoverBlendStartMilliseconds;
             P.HoverBlendFromWeight=S->MechanicalPose.HoverBlendFromWeight;P.bHoverIdleTarget=S->MechanicalPose.bHoverIdleTarget;P.VATClip=S->VATPlayback.Clip;
-            P.State=S->IsAlive()?(S->ActiveOrderId?EGuLiSoldierPoseState::Moving:EGuLiSoldierPoseState::Idle):EGuLiSoldierPoseState::Destroyed;
+            P.State=S->IsAlive()?(S->ActiveOrderId || !S->Velocity.IsNearlyZero(1.f)?EGuLiSoldierPoseState::Moving:EGuLiSoldierPoseState::Idle):EGuLiSoldierPoseState::Destroyed;
             P.Flags=S->DisplacementFrameFloor&&int32(uint32(At/6)-S->DisplacementFrameFloor)<3?GULI_SOLDIER_POSE_FLAG_TELEPORT:0;
             V.bIdleLoop=IdleLoop;
             for (const auto& M:Session->GetMembers()) if (M.bOnline&&M.bReady&&M.Player!=Session->GetLocalPlayerId()) V.Peers.Add({M.Player,M.Connection});
@@ -351,7 +369,7 @@ class FGuLiHybridMassAdapter final : public IGuLiHybridSimulationAdapter, public
         P.LeftGunPitch=int16(FMath::RoundToInt(S->MechanicalPose.GunPitchDegrees[0]*100)); P.RightGunPitch=int16(FMath::RoundToInt(S->MechanicalPose.GunPitchDegrees[1]*100));
         P.HoverBlendStartMilliseconds=S->MechanicalPose.HoverBlendStartMilliseconds; P.HoverBlendFromWeight=S->MechanicalPose.HoverBlendFromWeight; P.bHoverIdleTarget=S->MechanicalPose.bHoverIdleTarget;
         P.VATClip=S->VATPlayback.Clip; P.VATPhase=uint16(FMath::RoundToInt(FMath::Clamp(S->VATPlayback.Phase,0.f,1.f)*65535)); P.VATRate=uint16(FMath::RoundToInt(FMath::Clamp(S->VATPlayback.Rate,0.f,255.f)*256));
-        P.State=S->IsAlive()?(S->ActiveOrderId?EGuLiSoldierPoseState::Moving:EGuLiSoldierPoseState::Idle):EGuLiSoldierPoseState::Destroyed;
+        P.State=S->IsAlive()?(S->ActiveOrderId || !S->Velocity.IsNearlyZero(1.f)?EGuLiSoldierPoseState::Moving:EGuLiSoldierPoseState::Idle):EGuLiSoldierPoseState::Destroyed;
         P.Flags=S->DisplacementFrameFloor && int32(Chunk.FrameSequence-S->DisplacementFrameFloor)<3?GULI_SOLDIER_POSE_FLAG_TELEPORT:0;
         uint32 ExactSkips=0,PhaseSkips=0;
         const double Now=FPlatformTime::Seconds();
@@ -442,9 +460,9 @@ public:
         {
             S->bLocalSimulation=Local;
             if (Changed) S->GridMotion.Owner.Invalidate();
-            if (!Local) Self->AuthorityState->ImmediateMoveIds.Remove(S->SoldierId.Value);
+            if (!Local) Self->AuthorityState->PriorityMoveIds.Remove(S->SoldierId.Value);
             else if (Changed && S->ActiveOrderId && S->MoveIntent && !S->bAutomaticAdvance)
-                Self->AuthorityState->ImmediateMoveIds.Add(S->SoldierId.Value);
+                Self->AuthorityState->PriorityMoveIds.Add(S->SoldierId.Value);
         }
         // Newborns are prepared with their final owner already installed. Their
         // first remote SetAuthority need not change Record or bLocal, but still
@@ -502,11 +520,11 @@ public:
         auto Intent=Self->CreateSharedMoveIntent(Command.Target,GetTypeHash(C.Event));
         Intent->AssignedPoints.Add(Record.Ordinal,FNavLocation(M.Destination)); Intent->bMetadataReady=true; Intent->bExhausted=true; Intent->WantedPoints=1;
         Intent->Pitch=Pitch; Intent->GeneratedRadius=Radius;
-        Intent->GridSizes.Add(Record.Ordinal,GuLiGrid::FootprintFromDiameter(2.*S->AvoidanceRadiusCentimeters));
+        Intent->GridSizes.Add(Record.Ordinal,S->GridReferenceFootprint);
         Intent->CommandIdentity=C.Event;Intent->AcceptedSequence=C.AcceptedSequence;
         FGuLiCommanderSelectionState Selection; Selection.SelectionRevision=1;
         auto& Cohort=Selection.Cohorts.AddDefaulted_GetRef(); Cohort.CohortId=FGuLiControlCohortId(Record.Ordinal); Cohort.MemberIds.Add(FGuLiSoldierId(Record.Ordinal)); Cohort.AliveCount=1;
-        Command.SelectionRevision=Selection.SelectionRevision; Command.SharedMoveIntent=Intent;
+        Command.SelectionRevision=Selection.SelectionRevision; Command.SharedMoveIntent=Intent;Command.MovementCommandIdentity=C.Event;
         FString Message; int32 Accepted=0,Rejected=0;EGuLiCommandAckResult Reason;
         const bool Submitted=Tasks->Submit(*Owner,Selection,Command,Message,Accepted,Rejected,Reason) && Accepted==1;
         if (!Submitted) UE_LOG(LogGuLiCommanderMass,Log,TEXT("Hybrid Mass command=%u object=%u reason=%u target=%s message=%s"),
@@ -604,7 +622,7 @@ public:
             S->NextPersonalPathQuerySeconds+=Offset;S->FailureSimulationSeconds+=Offset;
             S->GridMotion.State.RetryAt=FMath::Max(0.,S->GridMotion.State.RetryAt+Offset);
             if (S->Health<=0) S->DeathSimulationSeconds+=Offset;
-            S->GroundMechLastPressureSimulationSeconds+=Offset;S->DisplacementSimulationTime+=Offset;S->ExternalLockSimulationTime+=Offset;
+            S->DisplacementSimulationTime+=Offset;S->ExternalLockSimulationTime+=Offset;
             return true;
         }
         if (Stage==EGuLiHybridRestoreStage::Link)
@@ -619,7 +637,7 @@ public:
                     GuLiGridBirths::Recover(*Grid,Record);
                 }
                 if (!S->GridMotion.Bind(*Grid,Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),S->Location,
-                    GuLiGrid::FootprintFromDiameter(2.*S->AvoidanceRadiusCentimeters),S->MovementLayer)) return false;
+                    S->GridReferenceFootprint,S->MovementLayer)) return false;
                 // Serialized grid fields remain readable, but no move reservation survives recovery.
                 S->GridMotion.Stop(*Grid,S->Location,Self->AuthorityState->SimulationSeconds,EGuLiGridMoveEnd::Stopped);
                 S->GridOrderId=0;
@@ -658,7 +676,7 @@ public:
             EnsurePoseSession();
             if (const auto* S=Soldier(); bLocal && !bRestoringQuery && S && S->ActiveOrderId
                 && S->MoveIntent && !S->bAutomaticAdvance)
-                Self->AuthorityState->ImmediateMoveIds.Add(S->SoldierId.Value);
+                Self->AuthorityState->PriorityMoveIds.Add(S->SoldierId.Value);
             ReadModel();
         }
         return true;
@@ -681,7 +699,7 @@ public:
         if (Manager.IsEntityValid(Entity)) Manager.DestroyEntity(Entity);
         const int32 Index=State.SoldierIndexById.FindChecked(Id.Value); State.Soldiers.RemoveAtSwap(Index,1,EAllowShrinking::No); State.SoldierIndexById.Remove(Id.Value);
         if (State.Soldiers.IsValidIndex(Index)) State.SoldierIndexById.FindChecked(State.Soldiers[Index].SoldierId.Value)=Index;
-        State.MoveReservations.Remove(Id.Value); State.ImmediateMoveIds.Remove(Id.Value); Senders.Reset();
+        State.MoveReservations.Remove(Id.Value); State.PriorityMoveIds.Remove(Id.Value); Senders.Reset();
     }
 };
 
@@ -705,6 +723,23 @@ public:
     explicit FGuLiHybridMassState(UGuLiBattleAuthoritySubsystem& V):Authority(&V) {}
     UObject* LifetimeOwner() const override {return Authority.Get();}
     uint32 Version() const override {return GuLiHybridMass::SystemVersion;}
+    bool ReceiveEvent(const FGuid& Peer,const FGuid&,TConstArrayView<uint8> Bytes) override
+    {
+        auto* Self=Authority.Get();if (!Self || !Self->AuthorityState) return true;
+        GuLiHybridMass::FYieldRequest V;FGuLiHybridStateArchive A(Bytes,256);
+        GuLiHybridMass::YieldRequest(A,V);if (!A.Done()) return true;
+        auto* Hybrid=Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        FGuLiHybridObjectState Mover,Blocker;
+        const auto* MI=Self->AuthorityState->SoldierIndexById.Find(V.Mover);
+        const auto* BI=Self->AuthorityState->SoldierIndexById.Find(V.Blocker);
+        if (!MI || !BI || Self->AuthorityState->Soldiers[*MI].HybridKey!=V.MoverKey
+            || Self->AuthorityState->Soldiers[*BI].HybridKey!=V.BlockerKey
+            || !Hybrid->GetObjectView(V.MoverKey,Mover) || Mover.SimulationOwner!=Peer || Mover.OwnerEpoch!=V.OwnerEpoch
+            || !Hybrid->GetObjectView(V.BlockerKey,Blocker) || Blocker.OwnerEpoch!=V.BlockerEpoch
+            || !Hybrid->HasSimulation(V.BlockerKey)) return true;
+        Self->StartCircleYield(FGuLiSoldierId(V.Mover),FGuLiSoldierId(V.Blocker),V.Command,V.Direction);
+        return true;
+    }
     void Advance(uint64,double Delta) override
     {
         if (auto* Self=Authority.Get())

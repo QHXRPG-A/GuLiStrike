@@ -413,12 +413,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹](../RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md) | requirement | approved | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡](../RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md) | requirement | approved | 2026-11-09 |
 | [游骑兵战斗会话结项证据](../Evidence/20261109-RangerCombatCloseout/README.md) | reference | reference | 2026-11-09 |
 | [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-09 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | verification | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹 — 实施与交付](../DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md) | development | done | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡 — 实施与交付](../DevelopmentDocumentation/20261108-游骑兵初始弹与三张肉鸽卡.md) | development | done | 2026-11-09 |
+| [肉鸽牌关系图工具交付](../Archive/20261109-肉鸽牌关系图工具交付.md) | archive | recorded | 2026-11-09 |
 | [游骑兵战斗会话完成清理与项目同步](../Archive/20261109-游骑兵战斗会话完成清理与项目同步.md) | archive | recorded | 2026-11-09 |
 | [爆炸范围266cm与强化爆炸弹三级接入](../Archive/20261109-爆炸范围对齐与强化爆炸弹交付.md) | archive | recorded | 2026-11-09 |
 | [游骑兵左右Loop与公共战斗链路交付](../Archive/20261109-游骑兵左右Loop与公共战斗链路交付.md) | archive | recorded | 2026-11-09 |
@@ -692,6 +695,21 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-11 |
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-11 |
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-11 |
+| [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | archive | recorded | 2026-11-11 |
+| [受阻让路传递实装与性能对比](../Archive/20261111-受阻让路传递实装与性能对比.md) | archive | recorded | 2026-11-11 |
+| [Demo受阻让路与邻居传递](../Archive/20261111-Demo受阻让路与邻居传递.md) | archive | recorded | 2026-11-11 |
+| [Demo大小群体数量设置](../Archive/20261111-Demo大小群体数量设置.md) | archive | recorded | 2026-11-11 |
+| [Demo大小让路对照展示](../Archive/20261111-Demo大小让路对照展示.md) | archive | recorded | 2026-11-11 |
+| [简易让路编译加载交付](../Archive/20261111-简易让路编译加载交付.md) | archive | recorded | 2026-11-11 |
+| [简易让路源码与场景接入](../Archive/20261111-简易让路源码与场景接入.md) | archive | recorded | 2026-11-11 |
+| [Demo同命令取消互让](../Archive/20261111-Demo同命令取消互让.md) | archive | recorded | 2026-11-11 |
+| [原主动绕侧性能对比与让路Demo](../Archive/20261111-原主动绕侧性能对比与让路Demo.md) | archive | recorded | 2026-11-11 |
+| [原主动绕侧移植与计算优化](../Archive/20261111-原主动绕侧移植与计算优化.md) | archive | recorded | 2026-11-11 |
+| [指挥官落点参数编号修复](../Archive/20261111-指挥官落点参数编号修复.md) | archive | recorded | 2026-11-11 |
+| [圆形避障精简与玩家入口交付](../Archive/20261111-圆形避障精简与玩家入口交付.md) | archive | recorded | 2026-11-11 |
 | [姿态同步与交互卡顿优化](../RequirementDocument/20261105-姿态同步与交互卡顿优化.md) | requirement | approved | 2026-11-05 |
 | [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | development | done | 2026-11-05 |
 | [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | archive | recorded | 2026-11-05 |
@@ -726,7 +744,6 @@
 | [重防号待机悬浮调整](../RequirementDocument/20261026-重防号待机悬浮调整.md) | requirement | approved | 2026-10-26 |
 | [地面与低空移动层隔离](../RequirementDocument/20261026-地面与低空移动层隔离.md) | requirement | approved | 2026-10-26 |
 | [重防号悬浮与GPU引擎喷流](../RequirementDocument/20260929-重防号悬浮与GPU引擎喷流.md) | requirement | approved | 2026-10-26 |
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-10-26 |
 | [重防号待机悬浮调整 — 实施与交付](../DevelopmentDocumentation/20261026-重防号待机悬浮调整.md) | development | verification | 2026-10-26 |
 | [地面与低空移动层隔离 — 实施与交付](../DevelopmentDocumentation/20261026-地面与低空移动层隔离.md) | development | verification | 2026-10-26 |
 | [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | development | done | 2026-10-26 |
@@ -1302,6 +1319,20 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-11 |
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-11 |
+| [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | archive | recorded | 2026-11-11 |
+| [受阻让路传递实装与性能对比](../Archive/20261111-受阻让路传递实装与性能对比.md) | archive | recorded | 2026-11-11 |
+| [Demo受阻让路与邻居传递](../Archive/20261111-Demo受阻让路与邻居传递.md) | archive | recorded | 2026-11-11 |
+| [Demo大小群体数量设置](../Archive/20261111-Demo大小群体数量设置.md) | archive | recorded | 2026-11-11 |
+| [Demo大小让路对照展示](../Archive/20261111-Demo大小让路对照展示.md) | archive | recorded | 2026-11-11 |
+| [简易让路编译加载交付](../Archive/20261111-简易让路编译加载交付.md) | archive | recorded | 2026-11-11 |
+| [简易让路源码与场景接入](../Archive/20261111-简易让路源码与场景接入.md) | archive | recorded | 2026-11-11 |
+| [Demo同命令取消互让](../Archive/20261111-Demo同命令取消互让.md) | archive | recorded | 2026-11-11 |
+| [原主动绕侧性能对比与让路Demo](../Archive/20261111-原主动绕侧性能对比与让路Demo.md) | archive | recorded | 2026-11-11 |
+| [原主动绕侧移植与计算优化](../Archive/20261111-原主动绕侧移植与计算优化.md) | archive | recorded | 2026-11-11 |
+| [指挥官落点参数编号修复](../Archive/20261111-指挥官落点参数编号修复.md) | archive | recorded | 2026-11-11 |
+| [圆形避障精简与玩家入口交付](../Archive/20261111-圆形避障精简与玩家入口交付.md) | archive | recorded | 2026-11-11 |
 | [姿态同步与交互卡顿优化](../RequirementDocument/20261105-姿态同步与交互卡顿优化.md) | requirement | approved | 2026-11-05 |
 | [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | development | done | 2026-11-05 |
 | [姿态同步与交互卡顿优化会话收尾](../Archive/20261105-姿态同步优化会话收尾.md) | archive | recorded | 2026-11-05 |
@@ -1396,6 +1427,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-11 |
 | [开局交火网络同步量优化](../RequirementDocument/20261109-开局交火网络同步量优化.md) | requirement | approved | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹](../RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md) | requirement | approved | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡](../RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md) | requirement | approved | 2026-11-09 |
@@ -1484,7 +1516,6 @@
 | [游骑兵闪现GAS与绿色能量拖尾交付](../Archive/20261027-游骑兵闪现GAS与绿色能量拖尾交付.md) | archive | recorded | 2026-10-27 |
 | [开局席位选择UI](../RequirementDocument/20261026-开局席位选择UI.md) | requirement | approved | 2026-10-26 |
 | [地面与低空移动层隔离](../RequirementDocument/20261026-地面与低空移动层隔离.md) | requirement | approved | 2026-10-26 |
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-10-26 |
 | [开局席位选择UI — 实施与交付](../DevelopmentDocumentation/20261026-开局席位选择UI.md) | development | verification | 2026-10-26 |
 | [地面与低空移动层隔离 — 实施与交付](../DevelopmentDocumentation/20261026-地面与低空移动层隔离.md) | development | verification | 2026-10-26 |
 | [开局席位选择UI编译加载](../Archive/20261026-开局席位选择UI编译加载.md) | archive | recorded | 2026-10-26 |
@@ -1684,6 +1715,20 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-11 |
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-11 |
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-11 |
+| [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | archive | recorded | 2026-11-11 |
+| [受阻让路传递实装与性能对比](../Archive/20261111-受阻让路传递实装与性能对比.md) | archive | recorded | 2026-11-11 |
+| [Demo受阻让路与邻居传递](../Archive/20261111-Demo受阻让路与邻居传递.md) | archive | recorded | 2026-11-11 |
+| [Demo大小群体数量设置](../Archive/20261111-Demo大小群体数量设置.md) | archive | recorded | 2026-11-11 |
+| [Demo大小让路对照展示](../Archive/20261111-Demo大小让路对照展示.md) | archive | recorded | 2026-11-11 |
+| [简易让路编译加载交付](../Archive/20261111-简易让路编译加载交付.md) | archive | recorded | 2026-11-11 |
+| [简易让路源码与场景接入](../Archive/20261111-简易让路源码与场景接入.md) | archive | recorded | 2026-11-11 |
+| [Demo同命令取消互让](../Archive/20261111-Demo同命令取消互让.md) | archive | recorded | 2026-11-11 |
+| [原主动绕侧性能对比与让路Demo](../Archive/20261111-原主动绕侧性能对比与让路Demo.md) | archive | recorded | 2026-11-11 |
+| [原主动绕侧移植与计算优化](../Archive/20261111-原主动绕侧移植与计算优化.md) | archive | recorded | 2026-11-11 |
+| [圆形避障精简与玩家入口交付](../Archive/20261111-圆形避障精简与玩家入口交付.md) | archive | recorded | 2026-11-11 |
 | [开局交火网络同步量优化](../RequirementDocument/20261109-开局交火网络同步量优化.md) | requirement | approved | 2026-11-09 |
 | [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | development | done | 2026-11-09 |
 | [开局网络优化会话完成清理与项目同步](../Archive/20261109-开局网络优化会话完成清理与项目同步.md) | archive | recorded | 2026-11-09 |
@@ -1738,7 +1783,6 @@
 | [PIE烘焙拦截定位与场景修正](../Archive/20261029-PIE烘焙拦截定位与场景修正.md) | archive | recorded | 2026-10-29 |
 | [游骑兵与Mass弹道照明候选交付](../Archive/20261028-游骑兵与Mass弹道照明候选交付.md) | archive | recorded | 2026-10-28 |
 | [重防号悬浮与GPU引擎喷流](../RequirementDocument/20260929-重防号悬浮与GPU引擎喷流.md) | requirement | approved | 2026-10-26 |
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-10-26 |
 | [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | development | done | 2026-10-26 |
 | [单颗矿石采空与异步导航恢复](../RequirementDocument/20261024-单颗矿石采空与异步导航恢复.md) | requirement | approved | 2026-10-24 |
 | [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | development | done | 2026-10-24 |
@@ -2231,10 +2275,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹](../RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md) | requirement | approved | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡](../RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md) | requirement | approved | 2026-11-09 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | verification | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹 — 实施与交付](../DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md) | development | done | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡 — 实施与交付](../DevelopmentDocumentation/20261108-游骑兵初始弹与三张肉鸽卡.md) | development | done | 2026-11-09 |
+| [肉鸽牌关系图工具交付](../Archive/20261109-肉鸽牌关系图工具交付.md) | archive | recorded | 2026-11-09 |
 | [游骑兵战斗会话完成清理与项目同步](../Archive/20261109-游骑兵战斗会话完成清理与项目同步.md) | archive | recorded | 2026-11-09 |
 | [爆炸范围266cm与强化爆炸弹三级接入](../Archive/20261109-爆炸范围对齐与强化爆炸弹交付.md) | archive | recorded | 2026-11-09 |
 | [游骑兵左右Loop与公共战斗链路交付](../Archive/20261109-游骑兵左右Loop与公共战斗链路交付.md) | archive | recorded | 2026-11-09 |

@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "session": {
+      "active": false,
+      "error": "",
+      "room": "409EA8FE4AF59882CA51FE83D11B0E3D",
+      "role": "Commander",
+      "editor_pid": 30232,
+      "logic_pid": 42328,
+      "coordinator_pid": 39888,
+      "logic_running": false,
+      "coordinator_running": false,
+      "session_directory": "",
+      "shutdown": [
+        {
+          "role": "logic",
+          "pid": 42328,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        },
+        {
+          "role": "coordinator",
+          "pid": 39888,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        }
+      ],
+      "cleanup_complete": true
+    },
+    "settings": {
+      "prompt": true,
+      "role": 2
+    },
+    "cvars": {
+      "gs.Review.GroundIsolateCombat": 0,
+      "gs.Perf.MovementFixtureHold": 0,
+      "t.IdleWhenNotForeground": 0,
+      "Slate.bAllowThrottling": 1
+    },
+    "dirty_maps": [],
+    "dirty_content": []
+  }
+}

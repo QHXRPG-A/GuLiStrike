@@ -1,11 +1,11 @@
 ---
 name: gulistrike-progress
-description: 'GuLiStrike (UE5.7, D:\UE5.7\test1) development documentation, validation handoff, and archiving system. Use for requirements, ideas, technical plans, task lists, code/feature development handoffs (代码静态检查/对应 Map 测试场景交付), archives, gameplay records, and project art-standard changes or visual-approval records (需求/技术方案/归档/玩法/美术规范/美术审核); also for any file operation under D:\UE5.7\test1\Progress.'
+description: 'GuLiStrike (UE5.7, D:\UE5.7\test1) development documentation, validation handoff, and archiving system. Use for requirements, ideas, technical plans, task lists, code/feature development handoffs (代码静态检查/对应 Map 测试场景交付), archives, gameplay records, and project art-standard changes or visual-approval records (需求/技术方案/归档/玩法/美术规范/美术审核). Also use for any file operation under D:\UE5.7\test1\Progress and for locating or maintaining 肉鸽牌关系图、独立地图设计器、项目进度面板 and their shared local keepalive.'
 ---
 
 # GuLiStrike Progress
 
-维护 `D:\UE5.7\test1\Progress\` 的 Markdown 唯一事实源，覆盖“点子 → 需求 → 开发 → 实施 → 验收 → 归档/玩法沉淀”。自动索引和本地网页都只读取这些文档。
+维护 `D:\UE5.7\test1\Progress\` 的 Markdown 唯一事实源，覆盖“点子 → 需求 → 开发 → 实施 → 验收 → 归档/玩法沉淀”。进度索引和进度面板以这些文档为准。
 
 ## 按需读取
 
@@ -65,7 +65,19 @@ description: 'GuLiStrike (UE5.7, D:\UE5.7\test1) development documentation, vali
 - `snapshot --json`：生成网页与 AI 使用的只读快照。
 - `split --dry-run/--apply/--check`：维护当前三篇已拆分长文档的内容哈希合同。
 
-本地界面在 `Tools/ProgressDashboard/start.ps1`。除一处例外均为只读：总览「当前推进队列」支持右键条目直接设置开发状态（规划/实施/验收/完成/废弃），以及「记录阻塞点」弹窗——阻塞说明写入 `status_note` 且状态置为 `blocked`（阻塞为独立阶段，`blocked` 要求 `status_note` 非空）。服务端仅改写根开发文档的 `status`/`updated`/`status_note` front matter（活跃状态要求已有 `next_action`）并自动重建 `_Index`；新增、修改正文、删除仍不被授权。
+## 本地网页工具与保活
+
+日常从 [GuLiStrike 工具主页](http://127.0.0.1:4317/tools/) 进入。主页将以下三个工具分别打开在新标签页。
+
+| 工具 | 本机入口 | 用途与操作说明 |
+| --- | --- | --- |
+| 肉鸽牌关系图 | [4322](http://127.0.0.1:4322/) | 编辑三个席位的卡牌、前置与互斥，保存 `data/Design/RogueCardGraph.json` 草稿。[操作说明](../../../Tools/RogueCardGraph/README.md) |
+| 独立地图设计器 | [4321](http://127.0.0.1:4321/) | 在 UE 外编辑地形、据点、区域和资源，保存并导出地图工程。[操作说明](../../../Tools/MapDesigner/README.md) |
+| 项目进度面板 | [4317](http://127.0.0.1:4317/) | 查看 `Progress/` 的需求、开发与归档，维护当前推进队列。[操作说明](../../../Tools/ProgressDashboard/README.md) |
+
+工具主页与进度面板共用服务和就绪检查。Windows 登录任务 `GuLiStrike ProgressDashboard` 在当前用户登录时无窗口启动，维护主页及三个工具，并独立恢复故障进程。首次安装或更新保活代码后，在项目根目录执行 `.\Tools\ProgressDashboard\install_startup_task.ps1 -Start`。运行状态看 `Tools/ProgressDashboard/keepalive.log`，各工具的服务输出在对应目录的 `keepalive-worker.log`。首次准备前端、手动启动和取消保活见各工具说明。
+
+项目进度面板默认只读。总览「当前推进队列」可右键设置开发状态（规划/实施/验收/完成/废弃），也可用「记录阻塞点」写入非空 `status_note` 并将状态置为 `blocked`。服务端写入范围限根开发文档的 `status`、`updated`、`status_note`，活跃状态要求已有 `next_action`，写入后自动重建 `_Index`。
 
 ## 开发验证与场景交付
 

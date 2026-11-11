@@ -15,7 +15,7 @@
 
 namespace GuLiHybridTasks
 {
-constexpr uint32 Version=4, MaximumBytes=16*1024*1024;
+constexpr uint32 Version=5, MaximumBytes=16*1024*1024;
 const FName SystemName(TEXT("CommanderTasks"));
 struct FUnit
 {
@@ -60,7 +60,7 @@ void Command(FGuLiHybridStateArchive& A,FGuLiUnitTaskCommand& V,FSnapshot& Snaps
     A.Value(Index);
     if (Index>uint32(Snapshot.Intents.Num())) { A.Reject(); return; }
     if (A.IsReading()) V.SharedMoveIntent=Index?Snapshot.Intents[Index-1]:nullptr;
-    A.Value(V.CommandId); A.Value(V.SelectionRevision);
+    A.Value(V.CommandId); A.Value(V.SelectionRevision); A.Value(V.MovementCommandIdentity);
     A.Enum(V.Disposition,uint8(EGuLiTaskDisposition::Stop)); A.Enum(V.Kind,uint8(EGuLiUnitTaskKind::Transit));
     A.Value(V.SpecialTaskId); FVector Target=V.Target; A.Value(Target); if (A.IsReading()) V.Target=Target;
     A.Value(V.BuildingId); A.Value(V.ClusterId); A.Value(V.TerritoryId); A.Value(V.bGroundMoveOnly); A.Value(V.TargetIntent);
@@ -98,6 +98,7 @@ void Snapshot(FGuLiHybridStateArchive& A,FSnapshot& V)
         Ar.Enum(S.OperationControl,uint8(EGuLiCommanderControlState::ReplacementMove));
         Ar.Array(S.Queue,256,[&](auto& B,auto& C){ Command(B,C,V); });
         Execution(Ar,S.Active,V); Execution(Ar,S.PendingMove,V);
+        Ar.Value(S.LastMovementCommandIdentity);
         Ar.Value(S.Version); Ar.Value(S.bStopped); Ar.Value(S.bCancelPending); Ar.Value(S.NextAutomaticTime); Ar.String(S.Error);
     });
     A.Array(V.Requests,65536,[](auto& Ar,FRequest& R)

@@ -1,5 +1,41 @@
 {
   "tables": {
+    "DT_GuLiStrikeAvoidance_Units": {
+      "excel": "GuLiStrikeAvoidance.xlsx",
+      "sheet": "Units",
+      "sources": [
+        {
+          "excel": "GuLiStrikeAvoidance.xlsx",
+          "sheet": "Units"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeAvoidanceUnitsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeAvoidance_BuildingCircles": {
+      "excel": "GuLiStrikeAvoidance.xlsx",
+      "sheet": "BuildingCircles",
+      "sources": [
+        {
+          "excel": "GuLiStrikeAvoidance.xlsx",
+          "sheet": "BuildingCircles"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeAvoidanceBuildingCirclesRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeAvoidance_OreClustering": {
+      "excel": "GuLiStrikeAvoidance.xlsx",
+      "sheet": "OreClustering",
+      "sources": [
+        {
+          "excel": "GuLiStrikeAvoidance.xlsx",
+          "sheet": "OreClustering"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeAvoidanceOreClusteringRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeBuffs_Buffs": {
       "excel": "GuLiStrikeBuffs.xlsx",
       "sheet": "Buffs",

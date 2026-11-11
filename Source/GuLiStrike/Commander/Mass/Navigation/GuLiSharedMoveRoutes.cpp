@@ -4,6 +4,55 @@
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "HAL/IConsoleManager.h"
 #include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
+#include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
+#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+
+const GuLiCircleAvoidance::FConfig* FGuLiSharedMoveIntent::CircleProfile(const ANavigationData& Data,uint32 Id)
+{
+    if (const auto* P=CircleProfiles.Find(Id)) return P;
+    auto* World=Data.GetWorld();
+    auto* Army=World?World->GetSubsystem<UGuLiBattleAuthoritySubsystem>():nullptr;
+    const auto* Units=World?World->GetSubsystem<UGuLiUnitDataSubsystem>():nullptr;
+    EGuLiTeam Team;uint16 Type=0;FVector Position;
+    if (!Army || !Units || !Army->GetTaskSoldierInfo(FGuLiSoldierId(Id),Team,Type,Position)) return nullptr;
+    const auto* P=Units->GetAvoidanceCatalog().Units.Find(Type);
+    return P?&CircleProfiles.Add(Id,P->Solver):nullptr;
+}
+
+void FGuLiSharedMoveIntent::RememberCircleSlot(const ANavigationData& Data,uint32 Id,const FVector& Point)
+{
+    const auto* P=CircleProfile(Data,Id);if (!P) return;
+    GuLiCircleAvoidance::FCircle C;C.Id=Id;C.Center=Point;C.Radius=P->Radius;
+    C.Clearance=P->Clearance;C.ContactMargin=P->ContactMargin;
+    C.LayerMask=uint8(1u<<uint8(MovementLayers.FindRef(Id)));AcceptedCircles.Upsert(C);
+}
+
+bool FGuLiSharedMoveIntent::RestoreCircleSlots(const ANavigationData& Data,FGuLiNavigationWorkBudget& Budget)
+{
+    if (AcceptedCircles.Num()==AssignedPoints.Num()) return true;
+    if (GridRestoreMembers.IsEmpty()) {AssignedPoints.GenerateKeyArray(GridRestoreMembers);GridRestoreCursor=0;}
+    while (GridRestoreCursor<GridRestoreMembers.Num() && Budget.CanWork())
+    {
+        const uint32 Id=GridRestoreMembers[GridRestoreCursor++];
+        RememberCircleSlot(Data,Id,AssignedPoints.FindChecked(Id).Location);
+    }
+    return GridRestoreCursor==GridRestoreMembers.Num();
+}
+
+bool FGuLiSharedMoveIntent::CircleSlotClear(const ANavigationData& Data,uint32 Id,const FVector& Point)
+{
+    using namespace GuLiCircleAvoidance;
+    const auto* P=CircleProfile(Data,Id);if (!P) return false;
+    auto* Registry=Data.GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+    const auto Layer=MovementLayers.FindRef(Id);
+    if (!Registry || !Registry->GetSnapshot()->IsSegmentClear(Point,Point,P->Radius,false,Layer,
+        P->Clearance,P->ContactMargin,0,false)) return false;
+    FRequest Q;Q.SelfId=Id;Q.Position=Point;Q.Clearance=P->Clearance;Q.ContactMargin=P->ContactMargin;
+    Q.LayerMask=uint8(1u<<uint8(Layer));Q.AllowInitialEscape=false;
+    FQueryScratch Scratch;FCounters Counters;const FIndex Empty;
+    return !Sweep(Empty,AcceptedCircles,Q,FVector::ZeroVector,P->Radius+P->Clearance+P->ContactMargin,false,Scratch,Counters).Blocked;
+}
 
 namespace
 {
@@ -41,12 +90,19 @@ bool FGuLiSharedMoveRoute::Sample(const FNavLocation& Position, float Tolerance,
 	if (State != EState::Ready || !Navigation.Path.IsValid() || !Navigation.Path->IsUpToDate()) return false;
 	const int32* Index = PolygonIndex.Find(Position.NodeRef);
 	if (!Index) return false;
-	// Navigation's current polygon is authoritative. A look-ahead cursor must never skip a wall.
-	Cursor = *Index;
-	if (!Portals.IsValidIndex(Cursor)) { Out = End; return FVector::DistSquared2D(Position.Location, End) > FMath::Square(Tolerance); }
-	Out = Portals[Cursor];
-	if (FVector::DistSquared2D(Position.Location, Out) <= FMath::Square(Tolerance))
-		Out = Portals.IsValidIndex(Cursor + 1) ? Portals[Cursor + 1] : End;
+	// Follow the native path corners monotonically. Steering across a polygon
+	// edge must not flip the target between two neighboring portal midpoints.
+	const auto& Points=Navigation.Path->GetPathPoints();
+	if (Points.IsEmpty()) return false;
+	Cursor=FMath::Clamp(Cursor,Points.Num()>1?1:0,Points.Num()-1);
+	while (Cursor<Points.Num()-1)
+	{
+		const int32* CornerPolygon=PolygonIndex.Find(Points[Cursor].NodeRef);
+		if (FVector::DistSquared2D(Position.Location,Points[Cursor].Location)>FMath::Square(Tolerance)
+			&& (!CornerPolygon || *Index<=*CornerPolygon)) break;
+		++Cursor;
+	}
+	Out=Points[Cursor].Location;
 	return true;
 }
 
@@ -61,6 +117,7 @@ void FGuLiSharedMoveIntent::Generate(const ANavigationData& NavData, uint32 Gene
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_HexCoverage);
 	if (!bMetadataReady || Pitch <= 0.f) return;
+	if (!RestoreCircleSlots(NavData,Budget)) return;
 	if (CoverageGeneration != Generation)
 	{
 		// Negative results expire lazily; accepted points are hints, never reservations or proofs.
@@ -83,10 +140,12 @@ void FGuLiSharedMoveIntent::Generate(const ANavigationData& NavData, uint32 Gene
 			FGuLiNavigationWorkBudget::FQueryScope Query(Budget);
 			// Coverage only: never move a hex point horizontally to find a legal destination.
 			if (NavData.ProjectPoint(P, Nav, FVector(.1,.1,5000), NavData.GetDefaultQueryFilter(), nullptr)
-				&& Nav.NodeRef && FVector::DistSquared2D(P,Nav.Location) <= .01)
+				&& Nav.NodeRef && FVector::DistSquared2D(P,Nav.Location) <= .01
+                && CircleSlotClear(NavData,UnassignedMembers[Pick],Nav.Location))
 			{
 				Nav.Location.X=P.X; Nav.Location.Y=P.Y; Points.Add(Nav);
 				AssignedPoints.Add(UnassignedMembers[Pick],Nav);
+				RememberCircleSlot(NavData,UnassignedMembers[Pick],Nav.Location);
 				UnassignedMembers.RemoveAtSwap(Pick,1,EAllowShrinking::No);
 				GeneratedRadius=FMath::Max(GeneratedRadius,LayerRing*Pitch);
 			}
@@ -132,10 +191,11 @@ void FGuLiSharedMoveIntent::GenerateGrid(UGuLiGroundGridSubsystem& Grid,const AN
         const uint32 Id=GridRestoreMembers[GridRestoreCursor++];const int32* Size=GridSizes.Find(Id);
         if (!Size) { bExhausted=true;bGridSlotsReady=true;GridSlots.Reset();return; }
         GridSlots->Occupy(Snapshot->AnchorAt(AssignedPoints.FindChecked(Id).Location,*Size),*Size,MovementLayers.FindRef(Id));
+        RememberCircleSlot(NavData,Id,AssignedPoints.FindChecked(Id).Location);
     }
     if (GridRestoreCursor<GridRestoreMembers.Num()) return;
     uint32 Id;FIntPoint Anchor;int32 Size;FNavLocation Accepted;
-    const auto Navigable=[&](uint32,FIntPoint Cell,int32 Footprint)
+    const auto Navigable=[&](uint32 Member,FIntPoint Cell,int32 Footprint)
     {
         // Next charges one candidate projection. Keep exact formation XY and obtain a real polygon reference.
         FGuLiNavigationWorkBudget::FQueryScope Query(Budget);
@@ -143,11 +203,13 @@ void FGuLiSharedMoveIntent::GenerateGrid(UGuLiGroundGridSubsystem& Grid,const AN
         if (!NavData.ProjectPoint(Point,Accepted,FVector(.1,.1,5000),NavData.GetDefaultQueryFilter(),nullptr)
             || !Accepted.NodeRef || !NavData.IsNodeRefValid(Accepted.NodeRef)
             || FVector::DistSquared2D(Point,Accepted.Location)>.01) return false;
-        Accepted.Location.X=Point.X;Accepted.Location.Y=Point.Y;return true;
+        Accepted.Location.X=Point.X;Accepted.Location.Y=Point.Y;
+        return CircleSlotClear(NavData,Member,Accepted.Location);
     };
     while (GridSlots->Next(*Snapshot,Budget,Id,Anchor,Size,Navigable))
     {
         AssignedPoints.Add(Id,Accepted);
+        RememberCircleSlot(NavData,Id,Accepted.Location);
         GeneratedRadius=FMath::Max(GeneratedRadius,float(FVector::Dist2D(Accepted.Location,Click)));
     }
     if (GridSlots->IsFinished())
@@ -214,20 +276,18 @@ void FGuLiSharedMoveRoutePool::Tick(bool bAutomatic, UNavigationSystemV1& System
 				Result=System.FindPathSync(Query);
 			}
 			QueryCpuSeconds+=FPlatformTime::Seconds()-QueryStarted;
-			++Queries; R.AttemptGeneration=Generation; R.Navigation={}; R.PolygonIndex.Reset(); R.Portals.Reset(); R.IndexCursor=0;
+			++Queries; R.AttemptGeneration=Generation; R.Navigation={}; R.PolygonIndex.Reset(); R.IndexCursor=0;
 			if (Result.IsSuccessful() && Result.Path.IsValid() && !Result.Path->GetPathPoints().IsEmpty())
 			{
 				R.Navigation.Capture(NavData,Generation,Result.Path);
 				R.End=Result.Path->GetPathPoints().Last().Location; R.bPartial=Result.Path->IsPartial();
-				if (const auto* Mesh=Result.Path->CastPath<FNavMeshPath>())
-				{ FGuLiNavigationWorkBudget::FQueryScope PortalTimer(Budget); Mesh->GetPathCorridorEdges(); }
 				R.State=R.Navigation.Nodes.IsEmpty()?FGuLiSharedMoveRoute::EState::Unavailable:FGuLiSharedMoveRoute::EState::Indexing;
 			}
 			else { ++FailedQueries; R.State=FGuLiSharedMoveRoute::EState::Unavailable; }
 			CachedBytes=CachedBytes-Before+R.Bytes();
 			if (CachedBytes>MaximumBytes)
 			{
-				CachedBytes-=R.Bytes(); R.Navigation={}; R.PolygonIndex.Empty(); R.Portals.Empty();
+				CachedBytes-=R.Bytes(); R.Navigation={}; R.PolygonIndex.Empty();
 				R.State=FGuLiSharedMoveRoute::EState::Unavailable; CachedBytes+=R.Bytes();
 			}
 			bQueried=true;
@@ -240,11 +300,6 @@ void FGuLiSharedMoveRoutePool::Tick(bool bAutomatic, UNavigationSystemV1& System
 			{
 				const int32 I=R.IndexCursor++; const NavNodeRef Ref=R.Navigation.Nodes[I];
 				R.PolygonIndex.Add(Ref,I); R.Goal->Covered.Add(Ref,Routes[(Cursor-1)%Routes.Num()]);
-				if (const auto* Mesh=R.Navigation.Path->CastPath<FNavMeshPath>())
-				{
-					const auto& Edges=Mesh->GetPathCorridorEdges();
-					if (Edges.IsValidIndex(I)) R.Portals.Add((Edges[I].Left+Edges[I].Right)*.5);
-				}
 			}
 			if (R.IndexCursor==R.Navigation.Nodes.Num()) { R.State=FGuLiSharedMoveRoute::EState::Ready; R.ReadyAt=FPlatformTime::Seconds(); }
 			CachedBytes=CachedBytes-Before+R.Bytes();

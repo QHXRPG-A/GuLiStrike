@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
-#include "Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -924,103 +923,7 @@ namespace GuLiCommanderNavigationPolicyTests
 		return true;
 	}
 
-	IMPLEMENT_SIMPLE_AUTOMATION_TEST(
-		FCommanderManualAvoidanceGridTest,
-		"GuLiStrike.Commander.Mass.Navigation.ManualAvoidanceGrid",
-		EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
-	bool FCommanderManualAvoidanceGridTest::RunTest(const FString& Parameters)
-	{
-		(void)Parameters;
-		constexpr float CellSizeCentimeters = 1500.0f;
-		TArray<FManualAvoidanceAgent> Agents;
-		Agents.SetNum(3);
-		Agents[0] = {1u, FVector(1499.0, 10.0, 0.0), true, true};
-		Agents[1] = {2u, FVector(1501.0, 10.0, 0.0), true, true};
-		Agents[2] = {3u, FVector(4500.0, 10.0, 0.0), true, true};
-		FManualAvoidanceSpatialGrid SpatialGrid;
-		TArray<FVector> AvoidanceVelocities;
-		const FManualAvoidanceMetrics BoundaryMetrics = BuildManualAvoidanceVelocities(
-			Agents,
-			CellSizeCentimeters,
-			CellSizeCentimeters,
-			144.0f,
-			3600.0f,
-			0.25f,
-			SpatialGrid,
-			AvoidanceVelocities);
-		TestEqual(TEXT("The cross-boundary pair is visited exactly once"),
-			BoundaryMetrics.CandidatePairs, 1ull);
-		TestEqual(TEXT("The cross-boundary pair overlaps"),
-			BoundaryMetrics.OverlapPairs, 1ull);
-		TestEqual(TEXT("Each synthetic cell contains one Soldier"),
-			BoundaryMetrics.MaximumBucketOccupancy, 1);
-		TestTrue(TEXT("The lower-id Soldier separates toward negative X"),
-			AvoidanceVelocities[0].X < 0.0f);
-		TestTrue(TEXT("The other Soldier receives the opposite force"),
-			AvoidanceVelocities[1].X > 0.0f);
-		TestTrue(TEXT("Pair forces remain symmetric"),
-			(AvoidanceVelocities[0] + AvoidanceVelocities[1]).IsNearlyZero());
-		TestTrue(TEXT("A distant Soldier receives no separation"),
-			AvoidanceVelocities[2].IsNearlyZero());
-
-		TArray<FManualAvoidanceAgent> FormationAgents;
-		FormationAgents.Reserve(500);
-		for (int32 Row = 0; Row < 20; ++Row)
-		{
-			for (int32 Column = 0; Column < 25; ++Column)
-			{
-				FManualAvoidanceAgent& Agent = FormationAgents.AddDefaulted_GetRef();
-				Agent.StableSoldierId = static_cast<uint32>(FormationAgents.Num());
-				Agent.Location = FVector(Column * 1800.0, Row * 1800.0, 0.0);
-				Agent.bParticipates = true;
-				Agent.bReceivesAvoidance = true;
-			}
-		}
-		const FManualAvoidanceMetrics FormationMetrics = BuildManualAvoidanceVelocities(
-			FormationAgents,
-			CellSizeCentimeters,
-			CellSizeCentimeters,
-			144.0f,
-			3600.0f,
-			0.25f,
-			SpatialGrid,
-			AvoidanceVelocities);
-		TestEqual(TEXT("A standard 1800 cm formation has no manual overlap"),
-			FormationMetrics.OverlapPairs, 0ull);
-		TestEqual(TEXT("The 1500 cm grid keeps standard formation buckets sparse"),
-			FormationMetrics.MaximumBucketOccupancy, 1);
-		TestTrue(
-			TEXT("The 500-Soldier formation checks local candidates instead of all 124750 pairs"),
-			FormationMetrics.CandidatePairs < 4000u);
-		// Compare the unchanged three-round soft solve through a shared index whose
-		// array order and identities deliberately differ from the manual input.
-		TArray<FManualAvoidanceAgent> Soft;
-		for (int32 I=0; I<24; ++I)
-		{
-			auto& A=Soft.AddDefaulted_GetRef(); A.StableSoldierId=I+1;
-			A.StableEntityKey=(uint64(I+17)<<32)|uint64(99-I);
-			A.Location=FVector((I%6)*240-720,(I/6)*240-480, I==23 ? 500 : 0);
-			A.RadiusCentimeters=150; A.MaximumSpeed=720; A.bParticipates=I!=22;
-			A.bReceivesAvoidance=I%3!=0; A.bCanBePushed=true; A.Team=I<12 ? 1 : 2;
-			A.DesiredVelocity=A.bReceivesAvoidance ? FVector(I<12 ? 720 : -720,0,0) : FVector::ZeroVector;
-		}
-		GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry Shared;
-		Shared.CellSize=300;
-		for (int32 I=Soft.Num()-1; I>=0; --I)
-		{
-			auto& G=Shared.Agents.AddDefaulted_GetRef(); const auto& A=Soft[I];
-			G.StableKey=A.StableEntityKey; G.Location=A.Location; G.Radius=A.RadiusCentimeters; G.bParticipates=A.bParticipates;
-		}
-		Shared.MaximumBucketOccupancy=GuLiCommanderAvoidancePolicy::BuildSpatialGrid(Shared.Agents,Shared.Grid,Shared.CellSize);
-		TArray<FVector> Original, Reused;
-		const auto Old=SolveSoftAvoidanceVelocities(Soft,300,SpatialGrid,Original);
-		const auto New=SolveSoftAvoidanceVelocities(Soft,300,SpatialGrid,Reused,&Shared);
-		TestEqual(TEXT("Shared index preserves all soft candidate pairs"),New.CandidatePairs,Old.CandidatePairs);
-		TestEqual(TEXT("Shared index preserves all overlapping contact pairs"),New.OverlapPairs,Old.OverlapPairs);
-		for (int32 I=0; I<Soft.Num(); ++I) TestTrue(TEXT("Identity mapping preserves the three-round result"),Original[I].Equals(Reused[I],1.e-6));
-		return true;
-	}
 }
 
 #endif // WITH_DEV_AUTOMATION_TESTS

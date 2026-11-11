@@ -350,7 +350,9 @@ bool UGuLiUnitTaskSubsystem::SubmitActorCommand(APawn& Pawn, const FGuLiUnitTask
 	auto* State = FindTaskState(FGuLiTaskUnitId::Actor(Vehicle->GetStableActorId(),GetWorld()));
 	if (!State || State->Context.Pawn != &Pawn || !RefreshContext(*State)) return false;
 	FString Error;
-	return AdmitCommand(*State, Command, Error);
+	auto Accepted=Command;
+	if (!Accepted.MovementCommandIdentity.IsValid()) Accepted.MovementCommandIdentity=FGuid::NewGuid();
+	return AdmitCommand(*State, Accepted, Error);
 }
 
 bool UGuLiUnitTaskSubsystem::Submit(AGuLiBattlePlayerState& Owner, const FGuLiCommanderSelectionState& Selection,
@@ -382,9 +384,11 @@ bool UGuLiUnitTaskSubsystem::Submit(AGuLiBattlePlayerState& Owner, const FGuLiCo
 	// Adopt a plan that committed since the last 10 Hz task tick before superseding it.
 	TickMoveBatches();
 	FGuLiUnitTaskCommand AuthorityCommand=Command;
+	if (!AuthorityCommand.MovementCommandIdentity.IsValid()) AuthorityCommand.MovementCommandIdentity=FGuid::NewGuid();
 	AuthorityCommand.SharedMoveIntent=Command.SharedMoveIntent && UGuLiNetworkSettings::IsHybrid(GetWorld()) ? Command.SharedMoveIntent : Command.Kind==EGuLiUnitTaskKind::Move
 		? GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->CreateSharedMoveIntent(Command.Target,Command.CommandId)
 		: TSharedPtr<FGuLiSharedMoveIntent>();
+	if (AuthorityCommand.SharedMoveIntent) AuthorityCommand.SharedMoveIntent->CommandIdentity=AuthorityCommand.MovementCommandIdentity;
 	for (auto Unit : Members(Selection,GetWorld()))
 	{
 		if (!States.Contains(Unit) && !Unit.bActor) { const FGuLiSoldierId Id(Unit.Id); RegisterSoldiers(Owner.GetTeam(), MakeArrayView(&Id, 1)); }
@@ -438,7 +442,7 @@ bool UGuLiUnitTaskSubsystem::StartVehicleMove(FGuLiUnitTaskState& State, FGuLiTa
 	}
 	if (Started)
 		GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->SetEngineeringMoveResponseCommand(
-			FGuLiSoldierId(uint32(Travel->GetMassEntityId())),Task.Command.CommandId);
+			FGuLiSoldierId(uint32(Travel->GetMassEntityId())),Task.Command.CommandId,Task.Command.MovementCommandIdentity);
 	return Started;
 }
 bool UGuLiUnitTaskSubsystem::Cancel(FGuLiUnitTaskState& State)
@@ -680,6 +684,7 @@ bool UGuLiUnitTaskSubsystem::FinishActiveTask(FGuLiUnitTaskState& State, double 
         Task.Status = EGuLiTaskStatus::WaitingSafeExit;
         return false;
     }
+    State.LastMovementCommandIdentity=Task.Command.MovementCommandIdentity;
     State.Active.Reset();
 	State.NextAutomaticTime = Now + (State.Context.Unit.bActor ? .2f : GetDefault<UGuLiUnitTaskSettings>()->AutomaticRetrySeconds);
 	return true;
@@ -707,6 +712,7 @@ void UGuLiUnitTaskSubsystem::TakeAutomaticTask(FGuLiUnitTaskState& State, double
 		Task.Command.SpecialTaskId = Policy->GetWireId(); Task.Command.SelectionRevision = 1;
 		if (!GuLiCommanderAbilities::BuildAutomatic(Policy->Behavior, *GetWorld(), State.Context, Task.Command)) continue;
 		Task.ExecutionId = AllocateExecutionId(); Task.Command.CommandId = Task.ExecutionId; Task.Version = ++State.Version;
+		Task.Command.MovementCommandIdentity=FGuid::NewGuid();
 		State.Active.Emplace(MoveTemp(Task)); break;
 	}
 }

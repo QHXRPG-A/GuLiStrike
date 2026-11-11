@@ -57,21 +57,17 @@ python Scripts/Cards/card_artwork_pipeline.py review --ids 6
 
 前三行是列名、类型、必要性元数据，第4行开始填数值。`id` 是稳定数字ID，`name` 是稳定UE行名，两者不要因显示文本变化而改写。
 距离默认使用厘米，弹速用厘米/秒，`AttackRatePerSecond` 是每秒发数，`CooldownSeconds` 是秒/发。
-`Soldiers` 新增的 `ModelWidthMeters`（模型宽度）和 `MinAvoidanceDistanceMeters`（最小避障距离）明确使用米；单元格保存数字，`m` 仅为显示格式。
+### 单位圆形避障与尺寸
 
-### 指挥官单位体型与净距
+`GuLiStrikeAvoidance.xlsx` 是避障参数唯一源表，沿用三行元数据。`Units` 覆盖 6 个兵种，`BuildingCircles` 维护建筑的圆及施工阶段，`OreClustering` 维护矿簇合并限制；`_说明` 为中文说明，不导出。
 
-两列均为 `float / Necessary`，模型宽度表示最终游戏尺度，不修改模型比例。
+`RadiusMeters` 控制实际碰撞圆，净距默认 0，接触余量 2 厘米；半径不再量化为 3 米格。`GridReferenceDiameterMeters` 独立维持原模型大小与占格尺寸，改半径不会缩放模型。旧 `Soldiers` 的 `MassAvoidanceRadiusMeters`、`MinAvoidanceDistanceMeters` 已删除，`ModelWidthMeters` 不再作为避障半径来源。
 
-2026-09-19按用户要求撤回严格净距算法。当前只有重防号（WM01 / Id 2）读取宽度12.5米，初始化时按宽度×50转换为625厘米Mass避障半径，不再乘 `PresentationScale`。其他兵种保持原有半径。
+修改后运行 `python Tools/DataPipeline/export_data_from_excel.py`。停止PIE、打开 `/Game/Maps/LVL_CommanderMassPrototype`，再用 `python Scripts/commander_editor_python.py --file Scripts/import_avoidance_data.py --timeout 90` 导入 Soldiers 与三张圆形表，并自动重导、校验正式200/600兵Hybrid清单。新增或改变反射字段时，先编译并重启源码版编辑器；单纯数值修改不需编译。参数在新对局加载并加入 Hybrid 配置校验，运行中的单位不逐帧查表。专用网络验收变体需更新时，另执行 `Scripts/Network/migrate_avoidance_acceptance.py`，不将测试变体写入正式Excel。
 
-最小避障距离列及原始数值保留（扫荡者0.5米、重防号2.5米、工程车1米），当前不参与运行时计算，不承诺硬净距。模型宽度无效时报告兵种ID和字段，使用625厘米重防号回退半径；其他字段沿用既有目录校验。
+默认每秒 10 个移动步，使用 Demo 原主动绕侧：受阻时左右分别按 `TurnAngle1Degrees` 至 `TurnAngle7Degrees`（20/37/55/73/91/111/134度）找到第一个可行方向，再比较两侧。代价为转角弧度减去可走距离/半径乘 `ClearancePreference`（0.0425），沿用记忆侧再减 `SidePreferenceRadians`（0.38）。接触后保留一次切线滑动。旧初始外偏、换边增角、最大额外角和重试字段已删除。
 
-正常修改数值后运行导出器，再通过
-`python Scripts/ue_exec.py Scripts/import_commander_unit_footprints.py` 定向导入Soldiers。新增反射字段须先关闭编辑器、正常编译并重启。
-导入会把四行回读结果写入 `TestResults/UnitSpacing/soldiers-import.json`；正在运行的实体使用创建时缓存的体型，重新开始游戏后使用新值。
-当前实施与验收记录见[重防号模型大小适配](../../Progress/DevelopmentDocumentation/20260919-重防号模型大小适配.md)，前期取舍见
-[代码接入与成本分析](../../Progress/DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md)。
+角度正余弦在单位目录加载时缓存；每次扫圆只查沿途空间格，移动复用选中方向的前探命中。单位移动后立即更新圆位置，覆盖格没变时不重建桶成员。畅通时1次、最坏16次扫圆，最多14次为侧向采样。选择与滑动合成的位移经一次NavMesh表面约束后应用。普通集结在目标区域内短暂无进展后就地落位，工程工作点保持精确。实际地形导航失败继续使用原导航恢复。
 
 ### 武器表导入
 

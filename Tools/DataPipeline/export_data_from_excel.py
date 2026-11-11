@@ -42,6 +42,8 @@ import openpyxl
 from card_artwork_catalog import CatalogError, resolve_artwork_references
 from buff_catalog import validate as validate_buffs
 from icon_catalog import validate as validate_icons
+from rogue_card_relationships import validate as validate_card_relationships
+from avoidance_catalog import validate as validate_avoidance
 
 PROJECT = Path(__file__).resolve().parents[2]
 EXCEL_DIR = PROJECT / "Data/Excel"
@@ -416,17 +418,6 @@ def validate_rogue_cards(tables):
                 fail(row,"Ground卡要求Type=3、两项增量为0及有效EffectIds")
         else:
             fail(row, f"效果类 {effect} 尚未登记数值契约")
-        for key in ("RequiredCardIds", "ExcludedCardIds"):
-            refs = row[key]
-            if len(set(refs)) != len(refs):
-                fail(row, f"{key}含重复引用")
-            if row["Id"] in refs:
-                fail(row, f"{key}不能引用自身")
-            missing = set(refs) - cards.keys()
-            if missing:
-                fail(row, f"{key}引用未知卡: {sorted(missing)}")
-            if any(cards[ident]["Type"] != row["Type"] for ident in refs):
-                fail(row, f"{key}不允许跨卡池引用")
         for key in ("ImplementationClass", "FrontMaterial", "UpgradeVfx"):
             if not row[key].startswith(("/Script/", "/Game/")) or "." not in row[key].rsplit("/", 1)[-1]:
                 raise SheetError(f"卡牌 {row['Name']}.{key} 必须为完整对象路径")
@@ -441,32 +432,7 @@ def validate_rogue_cards(tables):
         if not values or not all(math.isfinite(v) for v in values) or not 0 <= values[3] <= 1:
             raise SheetError(f"卡牌 {row['Name']} 的升级特效颜色须为线性HDR (R=...,G=...,B=...,A=...)，alpha在0~1")
 
-    # An exclusion authored on either endpoint applies symmetrically. Every
-    # prerequisite closure, including its owner, must be simultaneously obtainable.
-    excluded = {ident: set(row["ExcludedCardIds"]) for ident, row in cards.items()}
-    for ident, row in cards.items():
-        for other in row["ExcludedCardIds"]:
-            excluded[other].add(ident)
-    closures = {}
-    visiting = []
-    def closure(ident):
-        if ident in visiting:
-            fail(cards[ident], "依赖环: " + " -> ".join(visiting[visiting.index(ident):] + [ident]))
-        if ident in closures:
-            return closures[ident]
-        visiting.append(ident)
-        result = {ident}
-        for required in cards[ident]["RequiredCardIds"]:
-            result.update(closure(required))
-        visiting.pop()
-        for member in sorted(result):
-            conflict = result & excluded[member]
-            if conflict:
-                fail(cards[ident], f"依赖链内部互斥（含卡牌自身）: {member} 与 {sorted(conflict)}")
-        closures[ident] = result
-        return result
-    for ident in cards:
-        closure(ident)
+    validate_card_relationships(cards, fail)
 
 
 def gen_header_text(stem, sheets_props):
@@ -1008,6 +974,7 @@ def main():
             validate_building_references(tables)
             validate_commander_state_trees(tables)
             validate_unit_movement_layers(tables)
+            validate_avoidance(tables, SheetError)
             validate_game_text_references(tables)
             validate_rogue_cards(tables)
             validate_missile_guidance_capacity(tables)

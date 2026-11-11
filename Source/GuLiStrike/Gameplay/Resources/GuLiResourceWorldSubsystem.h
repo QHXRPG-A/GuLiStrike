@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gameplay/Navigation/GuLiCircularBoundaries.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "Gameplay/Stronghold/GuLiStrongholdTopology.h"
@@ -150,6 +151,9 @@ private:
 	TArray<TObjectPtr<AGuLiResourceFactoryActor>> Factories;
 
 	TArray<uint8> NodeRemaining;
+    GuLiCircleAvoidance::FOreShapeCache OreShapes;
+    uint64 OreCircleVersion=0;
+    bool RefreshOreClusterCircles(int32 ClusterIndex);
 	TArray<int32> ClusterRemaining;
 	// Navigation proxy identities change only during scene creation/teardown.
 	mutable TSharedPtr<const FCollisionQueryParams> MiningVisibilityParams;

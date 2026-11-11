@@ -17,8 +17,7 @@ bool AGuLiMiningVehiclePawn::ReplanGridWork()
         if (!IsValid(Factory) || Factory->GetTeam()!=Team) {BeginGrace(false);Travel->StopAtSafePoint();return false;}
         const auto Points=Factory->GetUnloadPoints();int32 Best=INDEX_NONE;
         for (int32 I=0;I<Points.Num();++I)
-            if (GuLiGrid::Unoccupied(*Grid,Points[I],1,UGuLiHybridActorComponent::Find(this)->GetObjectKey())
-                && (Best==INDEX_NONE || FVector::DistSquared2D(GetActorLocation(),Points[I])<FVector::DistSquared2D(GetActorLocation(),Points[Best]))) Best=I;
+            if (Best==INDEX_NONE || FVector::DistSquared2D(GetActorLocation(),Points[I])<FVector::DistSquared2D(GetActorLocation(),Points[Best])) Best=I;
         if (Best==INDEX_NONE) return false;
         TaskState=EGuLiMiningTaskState::ReturningToFactory;BehaviorResult=EGuLiCommanderWorkResult::Running;
         return Travel->BeginWorkMove(Points[Best],50);
@@ -140,9 +139,9 @@ void AGuLiMiningVehiclePawn::ExecuteBehaviorAction(EGuLiMiningBehaviorAction Act
 		TaskState = EGuLiMiningTaskState::ReturningToFactory;
 		if (!IsValid(Factory) || Factory->GetTeam() != Team) { BehaviorResult = Result::FactoryLost; break; }
 		const auto Points = Factory->GetUnloadPoints();
-		if (UnloadPointAttempts >= Points.Num()) { BehaviorResult = Result::FactoryUnreachable; break; }
-		// Distribute first choices without reserving a point; overlap is explicitly allowed.
-		const FVector Target = Points[(StableActorId.Value + UnloadPointAttempts++) % Points.Num()];
+		if (Points.IsEmpty() || UnloadPointAttempts >= Points.Num()) { BehaviorResult = Result::FactoryUnreachable; break; }
+        const FVector Target=Points[UnloadPointAttempts];
+        ++UnloadPointAttempts;
 		BehaviorResult = FindComponentByClass<UGuLiEngineeringTravelComponent>()->BeginWorkMove(Target, 50)
 			? Result::Running : Result::Failed;
 		 break;

@@ -9,7 +9,6 @@
 
 class ANavigationData;
 class UNavigationSystemV1;
-namespace GuLiCommanderAvoidancePolicy { struct FSharedAvoidanceGeometry; }
 
 /**
  * Testable navigation decisions shared by the Commander authority runtime.
@@ -75,37 +74,6 @@ namespace GuLiCommanderNavigationPolicy
 		double LastRearrangementTimeSeconds = -1.0;
 	};
 
-	/** Immutable input for one deterministic manual-separation solve. */
-	struct GULISTRIKE_API FManualAvoidanceAgent
-	{
-		uint32 StableSoldierId = 0u;
-		FVector Location = FVector::ZeroVector;
-		bool bParticipates = false;
-		bool bReceivesAvoidance = false;
-		/** Zero keeps the legacy global minimum; static proxies use their actual footprint radius. */
-		float RadiusCentimeters = 0.0f;
-		FVector DesiredVelocity = FVector::ZeroVector;
-		float MaximumSpeed = 0.0f;
-		uint8 Team = 0u;
-		bool bCanBePushed = false;
-		/** Complete Mass identity, including generation; appended to preserve aggregate callers. */
-		uint64 StableEntityKey = 0u;
-		bool bEngineering = false;
-        EGuLiUnitMovementLayer MovementLayer=EGuLiUnitMovementLayer::Ground;
-	};
-
-	/** Work counters produced by one manual-separation refresh. */
-	struct GULISTRIKE_API FManualAvoidanceMetrics
-	{
-		uint64 CandidatePairs = 0u;
-		uint64 OverlapPairs = 0u;
-		uint64 BucketEntriesVisited = 0u;
-		int32 MaximumBucketOccupancy = 0;
-	};
-
-	using FManualAvoidanceBucket = TArray<int32, TInlineAllocator<4>>;
-	using FManualAvoidanceSpatialGrid = TMap<FIntPoint, FManualAvoidanceBucket>;
-
 	/** The only SupportedAgent name legal for Commander movement. */
 	GULISTRIKE_API FName GetRequiredAgentName();
 
@@ -132,36 +100,6 @@ namespace GuLiCommanderNavigationPolicy
 	GULISTRIKE_API float ResolveUnconsumedMovementDeltaSeconds(
 		double CurrentSimulationSeconds, double LastMovementUpdateSimulationSeconds,
 		float MaximumDeltaSeconds = MaximumMovementUpdateDeltaSeconds);
-
-	/** Cell coordinate for the dedicated short-range manual-avoidance grid. */
-	GULISTRIKE_API FIntPoint MakeAvoidanceSpatialCell(
-		const FVector& Location,
-		float CellSizeCentimeters);
-
-	/**
-	 * Rebuilds the caller-owned grid and evaluates every local unordered pair once.
-	 * CellSize must be at least MinimumDistance so the fixed 3x3 search cannot miss a pair.
-	 */
-	GULISTRIKE_API FManualAvoidanceMetrics BuildManualAvoidanceVelocities(
-		TConstArrayView<FManualAvoidanceAgent> Agents,
-		float CellSizeCentimeters,
-		float MinimumDistanceCentimeters,
-		float MaximumHeightDifferenceCentimeters,
-		float MovementSpeedCentimetersPerSecond,
-		float AvoidanceStrength,
-		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
-		TArray<FVector>& OutAvoidanceVelocities);
-
-	/** Simultaneous, bounded velocity corrections; stopped units yield only to friendly pressure.
-	 * Active-pair mode excludes pairs whose two velocities are invariantly zero.
-	 * All valid agents stay in the neighbor index, including stationary obstacles. */
-	GULISTRIKE_API FManualAvoidanceMetrics SolveSoftAvoidanceVelocities(
-		TConstArrayView<FManualAvoidanceAgent> Agents,
-		float MaximumHeightDifferenceCentimeters,
-		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
-		TArray<FVector>& OutVelocities,
-		const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry* SharedGeometry = nullptr,
-		bool bOnlyActivePairs = false);
 
 	/**
 	 * Finds the exact Commander SupportedAgent config. A Default-only list returns

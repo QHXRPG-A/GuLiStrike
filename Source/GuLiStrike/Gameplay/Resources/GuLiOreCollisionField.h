@@ -10,25 +10,6 @@ class UInstancedStaticMeshComponent;
 class UGuLiResourceMapDefinition;
 class UGuLiResourceEconomyConfig;
 
-/** One navigation exporter per cluster; the cluster bounds never become a solid modifier. */
-UCLASS()
-class GULISTRIKE_API UGuLiOreNavigationComponent final : public UNavRelevantComponent
-{
-    GENERATED_BODY()
-public:
-    UGuLiOreNavigationComponent();
-    void InitializeNodes(TConstArrayView<FGuLiOreNodeObstacle> InNodes,TConstArrayView<uint8> Remaining);
-    void RemoveNodes(TConstArrayView<uint32> NodeIds);
-    void SetNodesEnabled(bool bEnabled);
-    int32 GetAliveCount() const;
-    virtual void GetNavigationData(FNavigationRelevantData& Data) const override;
-    virtual void CalcAndCacheBounds() const override;
-private:
-    TArray<FGuLiOreNodeObstacle> Nodes;
-    uint32 AliveMask=0;
-    void Publish();
-};
-
 /** Hidden simple collision, grouped by initial ModelId. No per-node actors or navigation export. */
 UCLASS(NotPlaceable)
 class GULISTRIKE_API AGuLiOreCollisionFieldActor final : public AActor
@@ -37,8 +18,9 @@ class GULISTRIKE_API AGuLiOreCollisionFieldActor final : public AActor
 public:
     AGuLiOreCollisionFieldActor();
     bool InitializeNodes(const UGuLiResourceMapDefinition& Definition,const UGuLiResourceEconomyConfig& Config,
-        TConstArrayView<uint8> Remaining,TArray<FGuLiOreNodeObstacle>& OutShapes,FString& OutError);
+        TConstArrayView<uint8> Remaining,FString& OutError);
     bool RemoveNodes(TConstArrayView<uint32> NodeIds);
+    bool RestoreNodes(TConstArrayView<uint32> NodeIds,const UGuLiResourceMapDefinition& Definition);
     int32 GetAliveCount() const { return AliveCount; }
     bool ValidateInstanceIndexMap() const;
 private:
@@ -47,6 +29,7 @@ private:
     UPROPERTY() TArray<TObjectPtr<UInstancedStaticMeshComponent>> CollisionMeshes;
     TMap<int32,int32> ComponentByModel;
     TArray<FInstanceRef> NodeRefs;
+    TArray<int32> InitialComponentByNode;
     TArray<TArray<uint32>> NodeIdsByInstance;
     int32 AliveCount=0;
 };

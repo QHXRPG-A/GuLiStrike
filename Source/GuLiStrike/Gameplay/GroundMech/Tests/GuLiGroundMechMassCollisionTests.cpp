@@ -218,66 +218,6 @@ bool FGuLiGroundMassLandingAndSupportTest::RunTest(const FString &Parameters)
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiGroundMassFriendlyYieldTest, "GuLiStrike.GroundMech.MassCollision.FriendlyYield",
-								 GuLiGroundMechMassCollisionTests::Flags)
-
-bool FGuLiGroundMassFriendlyYieldTest::RunTest(const FString &Parameters)
-{
-	(void)Parameters;
-	TArray<FGuLiGroundMassYieldCandidate> Candidates;
-	for (uint32 Id = 1u; Id <= 20u; ++Id)
-	{
-		FGuLiGroundMassYieldCandidate &Candidate = Candidates.AddDefaulted_GetRef();
-		Candidate.StableSoldierId = Id;
-		Candidate.Team = EGuLiTeam::Red;
-		Candidate.Location = FVector(static_cast<float>(Id * 10u), 0.0f, 0.0f);
-		Candidate.RadiusCentimeters = 50.0f;
-		Candidate.bCanYield = true;
-	}
-	FGuLiGroundMassYieldCandidate &Enemy = Candidates.AddDefaulted_GetRef();
-	Enemy.StableSoldierId = 21u;
-	Enemy.Team = EGuLiTeam::Blue;
-	Enemy.Location = FVector(1.0f, 0.0f, 0.0f);
-	Enemy.RadiusCentimeters = 50.0f;
-	Enemy.bCanYield = true;
-	FGuLiGroundMassYieldCandidate &HighFriendly = Candidates.AddDefaulted_GetRef();
-	HighFriendly.StableSoldierId = 22u;
-	HighFriendly.Team = EGuLiTeam::Red;
-	HighFriendly.Location = FVector(1.0f, 0.0f, 200.0f);
-	HighFriendly.RadiusCentimeters = 50.0f;
-	HighFriendly.bCanYield = true;
-
-	TArray<int32> Selected;
-	GuLiGroundMassCollision::SelectFriendlyYieldCandidates(Candidates, EGuLiTeam::Red, FVector::ZeroVector, 230.0f,
-														   100.0f, 100.0f, 16, Selected);
-	TestEqual(TEXT("One mech influences at most sixteen idle friendlies"), Selected.Num(), 16);
-	for (int32 Rank = 0; Rank < Selected.Num(); ++Rank)
-	{
-		TestEqual(TEXT("Friendly yield candidates are nearest-first with stable ordering"),
-				  Candidates[Selected[Rank]].StableSoldierId, static_cast<uint32>(Rank + 1));
-		TestEqual(TEXT("Enemy soldiers never enter friendly yield"), Candidates[Selected[Rank]].Team, EGuLiTeam::Red);
-	}
-
-	const FVector Target = GuLiGroundMassCollision::ComputeYieldTarget(FVector::ZeroVector, FVector(10.0f, 0.0f, 0.0f),
-																	   FVector::ZeroVector, 11u, 1u, 400.0f, 1250.0f);
-	TestTrue(TEXT("Yield target clears the mech at the requested center distance"),
-			 FMath::IsNearlyEqual(Target.Size2D(), 400.0f, 0.1f));
-	const FVector ClampedTarget = GuLiGroundMassCollision::ComputeYieldTarget(
-		FVector::ZeroVector, FVector(100.0f, 0.0f, 0.0f), FVector(-2000.0f, 0.0f, 0.0f), 11u, 1u, 5000.0f, 1250.0f);
-	TestTrue(TEXT("Yield never exceeds 1250 cm from the captured anchor"),
-			 ClampedTarget.Size2D() <= 1250.0f + UE_KINDA_SMALL_NUMBER);
-	bool bReturning = false;
-	const FVector HeldTarget = GuLiGroundMassCollision::ResolveYieldTargetWithoutPressure(FVector::ZeroVector, Target,
-																						  10.49, 10.0, 0.5, bReturning);
-	TestFalse(TEXT("Yield holds its clearance target before the return delay"), bReturning);
-	TestTrue(TEXT("The held target remains unchanged before 0.5 seconds"), HeldTarget.Equals(Target));
-	const FVector ReturnTarget = GuLiGroundMassCollision::ResolveYieldTargetWithoutPressure(
-		FVector::ZeroVector, Target, 10.5, 10.0, 0.5, bReturning);
-	TestTrue(TEXT("Yield starts returning when pressure has been absent for 0.5 seconds"), bReturning);
-	TestTrue(TEXT("The delayed return target is the captured anchor"), ReturnTarget.IsNearlyZero());
-	return true;
-}
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiGroundMassObstacleRegistryTest,
 								 "GuLiStrike.GroundMech.MassCollision.DynamicObstacleRegistry",
 								 GuLiGroundMechMassCollisionTests::Flags)

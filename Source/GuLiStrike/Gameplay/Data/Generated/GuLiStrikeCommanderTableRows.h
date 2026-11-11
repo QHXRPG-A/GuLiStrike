@@ -55,10 +55,6 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float ModelWidthMeters = 0.0f;
 
-	/** MinAvoidanceDistanceMeters (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
-	float MinAvoidanceDistanceMeters = 0.0f;
-
 	/** StateTreeAsset (softobject, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	TSoftObjectPtr<UObject> StateTreeAsset;
@@ -74,10 +70,6 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	/** FacingPolicy (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	int32 FacingPolicy = 0;
-
-	/** MassAvoidanceRadiusMeters (float, Optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
-	float MassAvoidanceRadiusMeters = 0.0f;
 
 	/** ModelId (int, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")

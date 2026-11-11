@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "editor_pid": 43936,
+    "session": {
+      "active": false,
+      "error": "",
+      "room": "FCFCD9534FE752165F2C0481C371B14E",
+      "role": "Commander",
+      "editor_pid": 43936,
+      "logic_pid": 48008,
+      "coordinator_pid": 2520,
+      "logic_running": false,
+      "coordinator_running": false,
+      "session_directory": "",
+      "shutdown": [
+        {
+          "role": "logic",
+          "pid": 48008,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        },
+        {
+          "role": "coordinator",
+          "pid": 2520,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        }
+      ],
+      "cleanup_complete": true
+    },
+    "settings": {
+      "prompt": true,
+      "role": 2,
+      "idle": 0,
+      "slate": 1,
+      "isolate_combat": 0,
+      "fixture_hold": 0
+    },
+    "settings_restored": true,
+    "compiled_sources_match": true,
+    "file_sha256": {
+      "Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.h": "f7cebff81a575d8d1b8f43084335e755174d2258f251a06733d76fd6f1c24cfa",
+      "Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.cpp": "bd8b09a785970950abd2a3bde8ff9135abd09c405cceedf83474a526a8f94cc4",
+      "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp": "61283282a71d3b3c21c74e7a4813c6702b9baa5c9f0164953066f9138b8a30b5",
+      "Source/GuLiStrike/Gameplay/Data/GuLiHybridUnitManifest.cpp": "107511be5b578aeb62e51cd283b75a1877780bcb5e5cb102f17c160ef28f2d65",
+      "data/Excel/GuLiStrikeAvoidance.xlsx": "c8763d97c08bcb7a05b0e186e53bd14ee39ce6debcc40b900376232f344b58ac",
+      "data/Json/DT_GuLiStrikeAvoidance_Units.json": "430be3dc38118740f5c31c7db6752a0c67781ec4a541f60e8d773d1223e30d33"
+    }
+  }
+}

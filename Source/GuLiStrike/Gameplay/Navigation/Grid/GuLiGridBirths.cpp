@@ -17,7 +17,7 @@ FGuLiHybridObjectKey GuLiGridBirths::Target(const FGuLiGridBirthBatch& B,int32 I
         GuLiNet::ObjectKind::Soldier,uint32(Index)));
 }
 EGuLiGridPermit GuLiGridBirths::Prepare(UGuLiGroundGridSubsystem& G,const FGuLiHybridObjectState& O,const FGuid& Request,
-    FVector Position,int32 CasterSize,int32 Size,int32 Count,double Clearance,int32 Rings,int32 Samples,EGuLiUnitMovementLayer Layer,float AltitudeCentimeters)
+    FVector Position,int32 CasterSize,int32 Size,int32 Count,double Clearance,int32 Rings,int32 Samples,EGuLiUnitMovementLayer Layer,float AltitudeCentimeters,uint16 UnitType)
 {
     if (!GuLiUnitMovement::IsValid(Layer,AltitudeCentimeters) || !Request.IsValid() || Count<1 || Count>32 || Size<1 || Size>64 || CasterSize<1 || CasterSize>64
         || !FMath::IsFinite(Clearance) || Clearance<0 || Clearance>19200 || Rings<1 || Rings>3 || Samples<1 || Samples>36
@@ -45,7 +45,7 @@ EGuLiGridPermit GuLiGridBirths::Prepare(UGuLiGroundGridSubsystem& G,const FGuLiH
         const FIntPoint P=B.Origin+(Side==0?FIntPoint(Low+Offset,Low):Side==1?FIntPoint(High,Low+Offset):
             Side==2?FIntPoint(High-Offset,High):FIntPoint(Low,High-Offset));
         const FVector Center=S->Center(P,Size);
-        if (!GuLiGrid::Unoccupied(G,Center,Size,{},B.MovementLayer)) continue;
+        if (!GuLiGrid::Unoccupied(G,Center,Size,{},B.MovementLayer,UnitType)) continue;
         const auto Key=FGuLiGridNetwork::PlacementKey(Target(B,B.Positions.Num()));
         if (G.Traffic().Admit(Key,O.SimulationOwner,O.OwnerEpoch,uint8(O.Team),GuLiGrid::FRect::At(P,Size),{},Size,B.MovementLayer)) B.Positions.Add(GuLiUnitMovement::WorldPosition(Center,B.AltitudeCentimeters));
     }
@@ -61,7 +61,7 @@ EGuLiGridPermit GuLiGridBirths::Prepare(UGuLiGroundGridSubsystem& G,const FGuLiH
         if (!Work.TakeProjection()) return EGuLiGridPermit::Pending;
         const int32 I=B.CheckCursor++;
         const auto Key=Target(B,I);const auto Place=FGuLiGridNetwork::PlacementKey(Key);
-        if (!GuLiGrid::Unoccupied(G,B.Positions[I],Size,Place,B.MovementLayer)) {Cancel(G,O.Key,Request);return EGuLiGridPermit::Blocked;}
+        if (!GuLiGrid::Unoccupied(G,B.Positions[I],Size,Place,B.MovementLayer,UnitType)) {Cancel(G,O.Key,Request);return EGuLiGridPermit::Blocked;}
         const auto Permit=G.Network()->PermitPlacement(O.Key,Key,GuLiGrid::FRect::At(S->AnchorAt(B.Positions[I],Size),Size),Size,uint8(O.Team),B.MovementLayer);
         if (Permit==EGuLiGridPermit::Blocked) {Cancel(G,O.Key,Request);return Permit;}
         B.bAwaitingGrant|=Permit==EGuLiGridPermit::Pending;

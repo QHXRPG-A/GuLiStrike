@@ -13,7 +13,7 @@ class UChildActorComponent;
 class USceneComponent;
 class UGuLiResourceEconomyConfig;
 
-/** Authority factory: raw cargo is processed FIFO; its four unloading destinations are unrestricted. */
+/** Authority factory: raw cargo is processed FIFO; unloading uses a circle-checked floor position. */
 UCLASS(NotPlaceable)
 class GULISTRIKE_API AGuLiResourceFactoryActor final : public AActor, public IGuLiBuildingOwner
 {
@@ -49,7 +49,7 @@ public:
 	void RegisterMiningVehicle(AActor& Vehicle);
 	void UnregisterMiningVehicle(AActor& Vehicle);
 
-	/** Four shared navigation destinations on the factory floor. No occupancy or reservation state. */
+	/** The usable interior floor is one unloading place for the current vehicle radius. */
 	UFUNCTION(BlueprintPure, Category = "Resources|Factory")
 	TArray<FVector> GetUnloadPoints() const;
 	UFUNCTION(BlueprintPure, Category = "Resources|Factory")

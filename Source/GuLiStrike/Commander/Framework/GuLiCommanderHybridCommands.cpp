@@ -4,6 +4,7 @@
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Commander/Behavior/GuLiCommanderBehaviorSchema.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Network/GuLiHybridManifest.h"
@@ -169,6 +170,7 @@ bool UGuLiCommanderNetSyncComponent::SubmitHybridTask(FGuLiUnitTaskCommand Comma
     Input.Intent=Authority?Authority->CreateSharedMoveIntent(Command.Target,Command.CommandId):nullptr;
     if (!Input.Intent) return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Movement planner is unavailable"));
     const auto* Data=World->GetSubsystem<UGuLiCommanderDataSubsystem>();
+    const auto* Units=World->GetSubsystem<UGuLiUnitDataSubsystem>();
     for (const auto& O : Objects)
     {
         if (!Hybrid->HasControl(O.Key) || O.Team!=Player->GetTeam()) return Reject(EGuLiCommandAckResult::Unauthorized,TEXT("Selected object is not controlled by this player"));
@@ -181,6 +183,12 @@ bool UGuLiCommanderNetSyncComponent::SubmitHybridTask(FGuLiUnitTaskCommand Comma
         const auto* Unit=Data?Data->FindSoldierDefinition(static_cast<uint16>(Type)):nullptr;
         const auto* Actor=Hybrid->FindBoundActor(O.Key);
         if (!Unit && !Actor) return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Selected object has no command footprint"));
+        const auto* Circle=Units?Units->GetAvoidanceCatalog().Units.Find(static_cast<uint16>(Type)):nullptr;
+        if (!Circle) return Reject(EGuLiCommandAckResult::InvalidRequest,TEXT("Selected unit has no circle movement configuration"));
+        // These keys are command-local slot IDs, not SoldierIds. Freeze the
+        // selected unit's parameters before either planner visits this intent.
+        Input.Intent->CircleProfiles.Add(M.Slot+1,Circle->Solver);
+        Input.Intent->MovementLayers.Add(M.Slot+1,Unit?Unit->MovementLayer:EGuLiUnitMovementLayer::Ground);
         Input.Intent->GridSizes.Add(M.Slot+1,Unit?Unit->FootprintCells:
             GuLiGrid::FootprintFromDiameter(2.*Actor->GetSimpleCollisionRadius()));
         const auto Bounds=Unit?Unit->GetModelBoundsCentimeters():Actor->GetComponentsBoundingBox(true);

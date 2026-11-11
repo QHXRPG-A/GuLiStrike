@@ -26,7 +26,6 @@ struct FGuLiCommanderInitialSpawnSlot;
 struct FGuLiSoldierDefinition;
 struct FGuLiSharedMoveIntent;
 struct FGuLiSoldierLocalPose;
-namespace GuLiCommanderAvoidancePolicy { struct FAgentSnapshot; struct FSharedAvoidanceGeometry; }
 namespace GuLiMoveLatency { struct FMovementSample; }
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRetiringSignature, const FGuLiSoldierStateItem&);
@@ -126,17 +125,7 @@ struct FGuLiNavigationStats
 	uint64 SurfaceMoveFailures = 0u;
 	uint64 MovementUpdateCalls = 0u;
 	uint64 ForcedMovementUpdateCalls = 0u;
-	uint64 ManualAvoidanceRefreshes = 0u;
-	uint64 ManualAvoidanceCandidatePairs = 0u;
-	uint64 ManualAvoidanceOverlapPairs = 0u;
-	int32 MaximumManualAvoidanceBucketOccupancy = 0;
-	uint64 GroundMechYieldSteps = 0u;
-	int32 GroundMechYieldingSoldiers = 0;
-	uint64 PredictiveAvoidanceSolves = 0u;
-	uint64 ForcedPredictiveAvoidanceSolves = 0u;
-	uint64 PredictiveAvoidanceCandidates = 0u;
-	uint64 PredictiveAvoidanceColliderEvaluations = 0u;
-	int32 MaximumPredictiveAvoidanceBucketOccupancy = 0;
+    uint64 CircleBucketVisits=0, CircleChecks=0, CircleSideProbes=0;
 	uint64 PathQueries = 0u;
 	uint64 PersonalPathQueries = 0u;
 	double LastDestinationPlanningMilliseconds = 0.0;
@@ -277,9 +266,6 @@ class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final : public UTickableWorld
 	GENERATED_BODY()
 
 public:
-	/** Game-thread publication: exact geometry changes create a fresh immutable version. */
-	TSharedPtr<const GuLiCommanderAvoidancePolicy::FSharedAvoidanceGeometry> AcquireAvoidanceGeometry(
-		TConstArrayView<GuLiCommanderAvoidancePolicy::FAgentSnapshot> Agents);
 	/** Called only inside the authority fixed step; validates before changing existing entities. */
 
     FGuLiActiveSkillUnitResult ExecuteHybridUnitSkill(const FGuLiHybridObjectKey& Key,FGuid Request,
@@ -339,6 +325,8 @@ public:
 	/** On-demand observation only; never advances or repairs simulation. */
 	UFUNCTION(BlueprintCallable, Category="Commander|Diagnostics", meta=(DevelopmentOnly))
 	FString GetMoveResponseDiagnostics() const;
+    /** Explicit disposable performance-fixture preparation; does not change production defaults. */
+    bool SetReviewAutomaticFire(TConstArrayView<FGuLiSoldierId> Soldiers,bool bEnabled);
 	bool FindSoldierEntity(FGuLiSoldierId Id, struct FMassEntityHandle& OutEntity) const;
 	void SetMovePlanOrigin(const AGuLiBattlePlayerState& Owner, uint32 ExecutionId, uint32 CommandId);
 	TSharedPtr<FGuLiSharedMoveIntent> CreateSharedMoveIntent(const FVector& Target, uint32 RandomSeed);
@@ -428,8 +416,8 @@ public:
     void DetachEngineeringMass(FGuLiSoldierId Id);
     void SyncEngineeringMass(FGuLiSoldierId Id);
     bool MoveEngineeringMass(FGuLiSoldierId Id,const FVector& Target,float AcceptanceRadius,float BlockedSeconds=0);
-    /** Local diagnostics only; attach the commander command after the work adapter commits its move. */
-    void SetEngineeringMoveResponseCommand(FGuLiSoldierId Id, uint32 CommandId);
+    /** Preserve command identity across engineering movement legs and completion. */
+    void SetEngineeringMoveResponseCommand(FGuLiSoldierId Id, uint32 CommandId, const FGuid& Identity);
     bool CaptureEngineeringMass(FGuLiSoldierId Id,FGuLiGridMotion& Motion) const;
     void QueueEngineeringPosePublish(TFunction<void()>&& Publish);
 
@@ -555,7 +543,9 @@ private:
 	void DestroyAuthorityPopulation();
 
 	/** 常规步推进战斗；即时步只推进已提交指令的未消费移动时间。 */
-	void TickAuthority(float FixedDeltaSeconds, bool bImmediateCommands = false);
+	void TickAuthority(float FixedDeltaSeconds);
+    bool StartCircleYield(FGuLiSoldierId Mover,FGuLiSoldierId Blocker,const FGuid& Command,const FVector& Direction);
+    void RequestCircleYield(FGuLiSoldierId Mover,FGuLiSoldierId Blocker,const FVector& Direction);
 	void PrepareNextMoveBatch(uint64 PlanId);
 	void RefreshSoldierNavigationState(FGuLiSoldierId SoldierId);
 	void PublishMoveEndpointChanges();
@@ -597,8 +587,6 @@ private:
 	/** 专用 CommanderSoldier 导航重建的委托回调：重建路径、更新版本并使旧流场失效。 */
 	UFUNCTION()
 	void HandleNavigationGenerationFinished(ANavigationData* NavigationData);
-	/** Generic obstacle registry notification; invalidates only the manual-avoidance cache. */
-	void HandleDynamicObstaclesChanged(uint32 ObstacleRevision);
 
 	// 配置声明中的初始值可被 Game 配置覆盖；移动速度还会在 Initialize 中读取运行时调参值。
 	/** 红方出生布局中心，使用世界坐标（cm）；实际士兵出生位置还需投影到专用 NavMesh。 */

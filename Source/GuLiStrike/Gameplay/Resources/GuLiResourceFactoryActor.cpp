@@ -5,6 +5,8 @@
 #include "Gameplay/Building/GuLiBuildingVisuals.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
+#include "Gameplay/Navigation/GuLiBuildingCircleBoundaryComponent.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
@@ -91,7 +93,7 @@ void AGuLiResourceFactoryActor::RefreshConstructionCollision()
 			CollisionBox->BodyInstance.SetCollisionEnabled(Collision);
 		}
 	}
-	if (CollisionBox->CanEverAffectNavigation() != bBlockFootprint) CollisionBox->SetCanEverAffectNavigation(bBlockFootprint);
+    CollisionBox->SetCanEverAffectNavigation(false);
 	if (bChanged && HasAuthority())
 		if (auto* Obstacles = GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
 			Obstacles->NotifyStaticGeometryChanged(GetComponentsBoundingBox(true, true).ExpandBy(1000));
@@ -178,6 +180,7 @@ void AGuLiResourceFactoryActor::OnRep_PresentationClass()
 	for (UTimelineComponent* Timeline : Timelines) Timeline->Stop();
 	ApplyDoorPose();
 	FindComponentByClass<UGuLiBuildingConstructionVisualComponent>()->RefreshVisualSources();
+    if (auto* Boundary=FindComponentByClass<UGuLiBuildingCircleBoundaryComponent>()) Boundary->RefreshCollisionSources();
 }
 
 float AGuLiResourceFactoryActor::GetDoorAlpha() const
@@ -228,10 +231,9 @@ void AGuLiResourceFactoryActor::UnregisterMiningVehicle(AActor& Vehicle)
 
 TArray<FVector> AGuLiResourceFactoryActor::GetUnloadPoints() const
 {
-	TArray<FVector> Points;
-	Points.Reserve(UnloadPoints.Num());
-	for (const auto& Point : UnloadPoints) Points.Add(Point->GetComponentLocation());
-	return Points;
+    TArray<FVector> Points;Points.Reserve(UnloadPoints.Num());
+    for (const auto& Point:UnloadPoints) Points.Add(Point->GetComponentLocation());
+    return Points;
 }
 
 void AGuLiResourceFactoryActor::ConfigureDoorPresentation()

@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "pid": 43936,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pie": 0,
+    "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeAvoidance_Units.DT_GuLiStrikeAvoidance_Units",
+    "yield_seconds": {
+      "1": 0.5,
+      "2": 0.5,
+      "3": 0.5,
+      "4": 0.5,
+      "5": 0.5,
+      "6": 0.5
+    },
+    "manifests": [
+      {
+        "file": "..\\..\\..\\..\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "algorithm": "demo-active-steering-yield-relay-v5",
+        "config_hash": "53a2721617e0cddfc2779faaabe0cf70dca6e3120bd6b36d966fe6e2eec6adbb"
+      },
+      {
+        "file": "..\\..\\..\\..\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "algorithm": "demo-active-steering-yield-relay-v5",
+        "config_hash": "6f5f6cc2c956dd96fa3570fdb2f61ec50e5944d30e6a5fe9d8edd693fda3a28a"
+      },
+      {
+        "file": "..\\..\\..\\..\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
+        "algorithm": "demo-active-steering-yield-relay-v5",
+        "config_hash": "964c7681e0b3e826397576406cd1213ed4d65094060bbaa421f41764f545d3da"
+      },
+      {
+        "file": "..\\..\\..\\..\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
+        "algorithm": "demo-active-steering-yield-relay-v5",
+        "config_hash": "1cefc4e4666fe8e0b57be17e11ea9619e12aedb6d481996da4cb2713c5598227"
+      }
+    ],
+    "review_actors": [
+      {
+        "label": "CircleAvoidanceReview_Entry",
+        "class": "Note",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_100"
+      },
+      {
+        "label": "CircleAvoidanceReview_View",
+        "class": "CameraActor",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_39"
+      }
+    ],
+    "dirty_maps": [],
+    "dirty_content": []
+  }
+}

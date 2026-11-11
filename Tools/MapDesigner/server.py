@@ -21,9 +21,9 @@ MAX_BODY=256*1024*1024
 class Handler(BaseHTTPRequestHandler):
     server_version="GuLiMapDesigner/1.0"
 
-    def log_message(self,fmt,*args):
-        if args and str(args[0]).startswith("/api/health"):return
-        super().log_message(fmt,*args)
+    def log_request(self, code="-", size="-"):
+        if self.path != "/api/health" or code != 200:
+            super().log_request(code, size)
 
     def send(self,status,value,content_type="application/json; charset=utf-8",headers=None):
         data=json.dumps(value,ensure_ascii=False,allow_nan=False,separators=(",",":")).encode("utf-8") if not isinstance(value,bytes) else value

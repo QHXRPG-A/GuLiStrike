@@ -7,6 +7,7 @@ class FJsonValue;
 class FJsonObject;
 struct FGuLiHotspotCapture;
 struct FGuLiContinuousHotspot;
+struct FGuLiMovementCapture;
 
 /** Opt-in counters are owned by a World; view counters include the LocalPlayer identity. */
 UCLASS()
@@ -17,7 +18,7 @@ public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Deinitialize() override;
 	virtual void Tick(float DeltaTime) override;
-	virtual bool IsTickable() const override { return (bCapturing || bHotspotPending || bContinuousHotspot || ObservationDeadline>0) && Super::IsTickable(); }
+	virtual bool IsTickable() const override { return (bCapturing || bMovementCapturePending || bHotspotPending || bContinuousHotspot || ObservationDeadline>0) && Super::IsTickable(); }
 	virtual TStatId GetStatId() const override;
 	UFUNCTION(BlueprintCallable, Category="Performance") void BeginCapture();
     /** Native stop boundary for sparse long-run samples; no bridge call inside the window. */
@@ -38,12 +39,26 @@ public:
     /** Transient fixture positions only; ordinary capture, gifts and production do the work. */
     UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareHotspotTerritories(int32 NeutralTerritories);
     UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) bool StartHotspotWindow();
+    /** Frozen spatial preparation and native 30-second command schedule, only in disposable PIE. */
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareMovementCapture(const FString& RecipeJson);
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) bool StartMovementCapture();
+    UFUNCTION(BlueprintPure, Category="Performance", meta=(DevelopmentOnly)) FString GetMovementCaptureJson() const;
+    UFUNCTION(BlueprintPure, Category="Performance", meta=(DevelopmentOnly)) FString GetMovementSceneJson() const;
+    /** Normal placement admission, outside capture; the resulting building is observed before replay. */
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareMovementBuilding(int32 DefinitionId,FVector Preferred);
+    bool IsObservingMovement() const { return bMovementCapturePending && bCapturing; }
+    /** Called after every applied movement batch, including immediate movement. Observation is excluded from application timing. */
+    void ObserveMovementApplication(bool Immediate, double ApplicationMilliseconds);
 	void Record(FName Name, double Value, const UObject* LocalPlayer = nullptr);
     void RecordSample(FName Name,double Value);
 	bool IsCapturing() const { return bCapturing; }
     bool IsPerformanceCaptureBusy() const { return bCapturing || bHotspotPending || bContinuousHotspot || ObservationDeadline > 0; }
     bool IsCaptureValid() const { return DroppedFrameSamples==0 && DroppedNetworkSamples==0 && DroppedIndividualSamples==0; }
 private:
+    TSharedPtr<FGuLiMovementCapture> MovementCapture;
+    bool bMovementCapturePending=false;
+    void TickMovementCapture();
+    void ObserveMovementStep();
     TSharedPtr<FGuLiContinuousHotspot> ContinuousHotspot;
     bool bContinuousHotspot=false;
     void TickContinuousHotspot();

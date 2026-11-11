@@ -224,13 +224,13 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     const FString Project=FPaths::GetProjectFilePath();
     const auto CVarValue=[](const TCHAR* Name)
     {const auto* V=IConsoleManager::Get().FindConsoleVariable(Name);return V?V->GetInt():1;};
-    const FString CpuOptions=FString::Printf(TEXT(" -GuLiYieldBetweenCaptureCuts=%d -GuLiFastPackCacheKey=%d -GuLiNativePeerReceive=%d -GuLiReusePayloadCompressor=%d -GuLiFastSmallPayloadCompression=%d -ExecCmds=\"gs.Hybrid.FlightServiceFastPath %d,gs.Hybrid.NativePeerSend %d,gs.Hybrid.EntityLayoutCache %d,gs.Review.GroundIsolateCombat %d\""),
+    const FString CpuOptions=FString::Printf(TEXT(" -GuLiYieldBetweenCaptureCuts=%d -GuLiFastPackCacheKey=%d -GuLiNativePeerReceive=%d -GuLiReusePayloadCompressor=%d -GuLiFastSmallPayloadCompression=%d -ExecCmds=\"gs.Hybrid.FlightServiceFastPath %d,gs.Hybrid.NativePeerSend %d,gs.Hybrid.EntityLayoutCache %d,gs.Review.GroundIsolateCombat %d,gs.Perf.MovementFixtureHold %d\""),
         CVarValue(TEXT("gs.Hybrid.YieldBetweenCaptureCuts")),CVarValue(TEXT("gs.Hybrid.FastPackCacheKey")),
         CVarValue(TEXT("gs.Hybrid.NativePeerReceive")),
         CVarValue(TEXT("gs.Hybrid.ReusePayloadCompressor")),
         CVarValue(TEXT("gs.Hybrid.FastSmallPayloadCompression")),
         CVarValue(TEXT("gs.Hybrid.FlightServiceFastPath")),CVarValue(TEXT("gs.Hybrid.NativePeerSend")),
-        CVarValue(TEXT("gs.Hybrid.EntityLayoutCache")),CVarValue(TEXT("gs.Review.GroundIsolateCombat")));
+        CVarValue(TEXT("gs.Hybrid.EntityLayoutCache")),CVarValue(TEXT("gs.Review.GroundIsolateCombat")),CVarValue(TEXT("gs.Perf.MovementFixtureHold")));
     FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=Blue -GuLiRole=Commander -GuLiClientRunMode=LogicOnly -GuLiHotspotMask=%u -GuLiGameplayWorkers=%u -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
         *Project,LocalMap,*Config.RoomId.ToString(EGuidFormats::Digits),*State->Peer.ToString(EGuidFormats::Digits),
         Config.HotspotMask,Config.GameplayWorkers,*Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")))+ClientStopArguments+CpuOptions;

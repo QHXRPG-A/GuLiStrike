@@ -1,0 +1,133 @@
+--- before/Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.h
++++ after/Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.h
+@@ -26,7 +26,7 @@
+     FTurn Turns[7] = {FTurn(20),FTurn(37),FTurn(55),FTurn(73),FTurn(91),FTurn(111),FTurn(134)};
+     float ClearancePreference = .0425f; // Demo .005 per pixel, normalized by its 8.5px radius.
+     float SidePreferenceRadians = .38f;
+-    float YieldSeconds = .3f;
++    float YieldSeconds = .5f;
+ };
+ 
+ struct FCircle
+@@ -113,7 +113,7 @@
+     float Clearance = 0;
+     float ContactMargin = 0;
+     bool AllowInitialEscape = true;
+-    bool AllowSteering = true; // A yielding unit only moves and slides; it cannot start a chain.
++    bool AllowSteering = true; // A yielding unit keeps its direction and only moves/slides.
+ };
+ 
+ struct FResult
+--- before/Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.cpp
++++ after/Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.cpp
+@@ -194,8 +194,14 @@
+     Result.FullLookAheadClear=Clear+Epsilon>=Reach;
+     FVector Direction=Forward;
+     FHit Contact=Direct;
+-    if (!R.AllowSteering || Clear+Epsilon>=ForwardRequired)
+-    { if (R.AllowSteering && Result.FullLookAheadClear) State.Side=0; }
++    if (!R.AllowSteering)
++    {
++        // Relay the existing movement sweep's first blocker, without another query.
++        Result.BlockingCircleId=Direct.Circle.Id;
++        Result.YieldDirection=Forward;
++    }
++    else if (Clear+Epsilon>=ForwardRequired)
++    { if (Result.FullLookAheadClear) State.Side=0; }
+     else
+     {
+         struct FChoice
+@@ -229,9 +235,11 @@
+         if (Selected.Side)
+         {
+             Direction=Selected.Direction;Contact=Selected.Hit;State.Side=Selected.Side;
+-            Result.BlockingCircleId=Direct.Circle.Id;
+-            Result.YieldDirection=FVector(Forward.Y*Selected.Side,-Forward.X*Selected.Side,0);
+-        }
++        }
++        // Like the Demo, a failed side search can still ask the blocker to yield.
++        const int8 YieldSide=Selected.Side?Selected.Side:Preferred;
++        Result.BlockingCircleId=Direct.Circle.Id;
++        Result.YieldDirection=FVector(Forward.Y*YieldSide,-Forward.X*YieldSide,0);
+     }
+ 
+     // Reach covers this entire step, and no other unit moves during Solve:
+--- before/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
++++ after/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -3386,6 +3386,7 @@
+     auto& DynamicCircles=AuthorityState->CircleIndex;
+     auto& QueryScratch=AuthorityState->CircleScratch;
+     GuLiCircleAvoidance::FCounters CircleCounters;
++    uint32 YieldRelayAttempts=0;
+     {
+         FGuLiPerformanceScope Timing(World,TEXT("Movement.GT.CircleIndexMs"));
+         auto& Bodies=AuthorityState->CircleBodies;Bodies.Reset();
+@@ -3468,10 +3469,19 @@
+                 Proposal=GuLiCircleAvoidance::Solve(StaticCircles,DynamicCircles,Config,Request,
+                     Soldier.CircleState,QueryScratch,CircleCounters);
+             }
++            // bYieldsThisStep was frozen before movement, so each request starts next step.
++            // A newly requested yielder does not originate a second, unrelated request.
++            if (Proposal.BlockingCircleId && Proposal.BlockingCircleId<=MAX_uint32
++                && (bYieldsThisStep[SoldierIndex] || Soldier.YieldRemainingSeconds<=0))
++            {
++                if (bYieldsThisStep[SoldierIndex]) ++YieldRelayAttempts;
++                RequestCircleYield(Soldier.SoldierId,FGuLiSoldierId(uint32(Proposal.BlockingCircleId)),Proposal.YieldDirection);
++            }
+             Soldier.Velocity=Proposal.Delta/MovementDeltaSeconds;
+             if (bYieldsThisStep[SoldierIndex])
+             {
+-                Soldier.YieldRemainingSeconds=FMath::Max(0.f,Soldier.YieldRemainingSeconds-MovementDeltaSeconds);
++                Soldier.YieldRemainingSeconds-=MovementDeltaSeconds;
++                if (Soldier.YieldRemainingSeconds<1.e-6f) Soldier.YieldRemainingSeconds=0;
+                 if (auto* Perf=World->GetSubsystem<UGuLiPerformanceSubsystem>()) Perf->Record(TEXT("Movement.YieldSteps"),1);
+             }
+ 
+@@ -3506,9 +3516,6 @@
+ 					Soldier.Location = Soldier.WorldFromGround(SurfaceLocation.Location);
+ 					Soldier.LastValidNavLocation = SurfaceLocation;
+                     DynamicCircles.MoveCircle(Soldier.SoldierId.Value,SurfaceLocation.Location);
+-                    if (Proposal.BlockingCircleId && Proposal.BlockingCircleId<=MAX_uint32
+-                        && Soldier.Velocity.Size2D()*MovementDeltaSeconds>.025/8.5*Config.Radius)
+-                        RequestCircleYield(Soldier.SoldierId,FGuLiSoldierId(uint32(Proposal.BlockingCircleId)),Proposal.YieldDirection);
+ 					Soldier.ConsecutiveSurfaceFailures = 0;
+ 					Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None;
+ 					if (!Soldier.Velocity.IsNearlyZero(1.0f) && Soldier.FacingPolicy != EGuLiSoldierFacingPolicy::FixedSpawnYaw)
+@@ -3634,6 +3641,7 @@
+         Perf->Record(TEXT("Movement.CircleChecks"),double(CircleCounters.CircleChecks));
+         Perf->Record(TEXT("Movement.DirectionProbes"),CircleCounters.DirectionProbes);
+         Perf->Record(TEXT("Movement.SideProbes"),CircleCounters.SideProbes);
++        if (YieldRelayAttempts) Perf->Record(TEXT("Movement.YieldRelayAttempts"),YieldRelayAttempts);
+     }
+ #if !UE_BUILD_SHIPPING
+     const double StepMilliseconds=(FPlatformTime::Seconds()-StepStartedAt)*1000.;
+@@ -6085,7 +6093,7 @@
+     const FVector Lateral=Direction.GetSafeNormal2D();if (Lateral.IsNearlyZero()) return false;
+     const auto& Mover=AuthorityState->Soldiers[*MI];auto& Blocker=AuthorityState->Soldiers[*BI];
+     if (!Mover.IsPresent() || !Blocker.IsPresent() || !Blocker.CanSimulate()
+-        || Mover.MovementLayer!=Blocker.MovementLayer || (Mover.bLocalSimulation && Mover.YieldRemainingSeconds>0) || Blocker.YieldRemainingSeconds>0
++        || Mover.MovementLayer!=Blocker.MovementLayer || Blocker.YieldRemainingSeconds>0
+         || (Command.IsValid() && Command==Blocker.MovementCommandIdentity)) return false;
+     const auto& Profiles=GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>()->GetAvoidanceCatalog().Units;
+     if (Profiles.FindChecked(Blocker.UnitTypeId).Solver.Radius>Profiles.FindChecked(Mover.UnitTypeId).Solver.Radius) return false;
+@@ -6101,8 +6109,7 @@
+     const auto* BI=AuthorityState->SoldierIndexById.Find(BlockerId.Value);
+     if (!MI || !BI) return;
+     const auto& Mover=AuthorityState->Soldiers[*MI];const auto& Blocker=AuthorityState->Soldiers[*BI];
+-    if (Mover.YieldRemainingSeconds>0 || !Blocker.IsPresent()
+-        || Blocker.AvoidanceRadiusCentimeters>Mover.AvoidanceRadiusCentimeters) return;
++    if (!Blocker.IsPresent() || Blocker.AvoidanceRadiusCentimeters>Mover.AvoidanceRadiusCentimeters) return;
+     if (!Blocker.HybridKey.IsValid() || Blocker.bLocalSimulation)
+     {
+         StartCircleYield(MoverId,BlockerId,Mover.MovementCommandIdentity,Direction);return;
+--- before/Source/GuLiStrike/Gameplay/Data/GuLiHybridUnitManifest.cpp
++++ after/Source/GuLiStrike/Gameplay/Data/GuLiHybridUnitManifest.cpp
+@@ -20,7 +20,7 @@
+     TArray<FGuLiSoldierDefinition> Units;FGuLiAvoidanceCatalog Avoidance;
+     if (!UGuLiUnitDataSubsystem::ResolveAuthoredDefinitions(Units,Error,&Avoidance)) return false;
+     M.Strings.Add(TEXT("movement/circles/configuration"),Avoidance.Fingerprint);
+-    M.Strings.Add(TEXT("movement/circles/algorithm"),TEXT("demo-active-steering-yield-v4"));
++    M.Strings.Add(TEXT("movement/circles/algorithm"),TEXT("demo-active-steering-yield-relay-v5"));
+     const auto* PopulationLimit=IConsoleManager::Get().FindConsoleVariable(TEXT("guli.stronghold.TeamUnitCap"));
+     if (!PopulationLimit || PopulationLimit->GetInt()<1 || PopulationLimit->GetInt()>100000) {Error=TEXT("Invalid authored population limit");return false;}
+     M.Numbers.Add(TEXT("population/group/army/limit"),PopulationLimit->GetInt());

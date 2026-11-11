@@ -6,6 +6,7 @@
 
 class UDataTable;
 struct FGuLiStrikeCommanderSoldiersRow;
+struct FGuLiUnitAvoidanceProfile;
 
 /** Converts generated table rows into the validated runtime Soldier contract. */
 struct GULISTRIKE_API FGuLiCommanderSoldierResolver final
@@ -25,7 +26,8 @@ struct GULISTRIKE_API FGuLiCommanderSoldierResolver final
 		const UDataTable* DataTable,
 		FName RowName,
 		const FGuLiSoldierDefinition& Fallback,
-		bool& bOutEntireDefinitionFromDataTable);
+		bool& bOutEntireDefinitionFromDataTable,
+        const FGuLiUnitAvoidanceProfile* Avoidance=nullptr);
 
 	/** Convenience overload using MakeFallbackDefinition(). */
 	static FGuLiSoldierDefinition Resolve(const UDataTable* DataTable, FName RowName);
@@ -37,5 +39,6 @@ struct GULISTRIKE_API FGuLiCommanderSoldierResolver final
 	static FGuLiSoldierDefinition ResolveRow(
 		const FGuLiStrikeCommanderSoldiersRow* Row,
 		const FGuLiSoldierDefinition& Fallback,
-		bool& bOutEntireDefinitionFromDataTable);
+		bool& bOutEntireDefinitionFromDataTable,
+        const FGuLiUnitAvoidanceProfile* Avoidance=nullptr);
 };

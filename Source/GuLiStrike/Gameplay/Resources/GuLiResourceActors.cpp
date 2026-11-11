@@ -1,7 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Resources/GuLiResourceActors.h"
-#include "Gameplay/Resources/GuLiOreCollisionField.h"
+#include "Gameplay/Navigation/GuLiCircularNavigationComponent.h"
+#include "Gameplay/Navigation/GuLiCircularBoundaries.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Engine/StaticMesh.h"
 #include "Gameplay/Stronghold/GuLiStrongholdCaptureComponent.h"
@@ -281,42 +282,27 @@ AGuLiOreClusterObstacleActor::AGuLiOreClusterObstacleActor()
 	bReplicates = false;
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	RootComponent = SceneRoot;
-	NavModifier = CreateDefaultSubobject<UGuLiOreNavigationComponent>(TEXT("OreNodeNavAreas"));
+	NavModifier = CreateDefaultSubobject<UGuLiCircularNavigationComponent>(TEXT("OreNodeNavAreas"));
 }
 
-void AGuLiOreClusterObstacleActor::InitializeObstacle(
-	const uint16 InClusterId,
-	const float RadiusCentimeters)
+void AGuLiOreClusterObstacleActor::InitializeObstacle(uint16 InClusterId,float RadiusCentimeters)
 {
-	// Compatibility for synthetic single-obstacle callers. Resource startup uses InitializeNodes.
-	FGuLiOreNodeObstacle Node; Node.NodeId=1; Node.ClusterId=InClusterId;
-	Node.Obstacle.Location=GetActorLocation(); Node.Obstacle.RadiusCentimeters=FMath::Max(1.f,RadiusCentimeters);
-	Node.HalfHeight=Node.Obstacle.RadiusCentimeters;
-	const uint8 Remaining=1;
-	InitializeNodes(InClusterId,MakeArrayView(&Node,1),MakeArrayView(&Remaining,1));
+    GuLiCircleAvoidance::FCircle C;C.Id=GuLiCircleAvoidance::OreNamespace|InClusterId;
+    C.Center=GetActorLocation();C.Radius=FMath::Max(1.f,RadiusCentimeters);
+    C.MinimumZ=C.Center.Z-C.Radius;C.MaximumZ=C.Center.Z+C.Radius;C.LayerMask=3;
+    SetCircles(InClusterId,MakeArrayView(&C,1));
 }
-
-void AGuLiOreClusterObstacleActor::SetObstacleEnabled(const bool bEnabled)
+void AGuLiOreClusterObstacleActor::SetObstacleEnabled(bool bEnabled)
+{bCirclesEnabled=bEnabled;NavModifier->SetCircles(bEnabled?MakeArrayView(CurrentCircles):TArrayView<GuLiCircleAvoidance::FCircle>{});}
+float AGuLiOreClusterObstacleActor::GetObstacleRadius() const {return ObstacleRadius;}
+bool AGuLiOreClusterObstacleActor::IsObstacleEnabled() const {return bCirclesEnabled && !CurrentCircles.IsEmpty();}
+void AGuLiOreClusterObstacleActor::SetCircles(uint16 InClusterId,TConstArrayView<GuLiCircleAvoidance::FCircle> Circles)
 {
-	NavModifier->SetNodesEnabled(bEnabled);
+    ClusterId=InClusterId;ObstacleRadius=0;CurrentCircles.Reset(Circles.Num());
+    for (const auto& C:Circles)
+    {CurrentCircles.Add(C);ObstacleRadius=FMath::Max(ObstacleRadius,float(FVector::Dist2D(GetActorLocation(),C.Center))+C.Radius);}
+    SetObstacleEnabled(true);
 }
-
-float AGuLiOreClusterObstacleActor::GetObstacleRadius() const
-{
-	return ObstacleRadius;
-}
-
-bool AGuLiOreClusterObstacleActor::IsObstacleEnabled() const { return NavModifier->GetAliveCount()>0; }
-void AGuLiOreClusterObstacleActor::InitializeNodes(uint16 InClusterId,
-	TConstArrayView<FGuLiOreNodeObstacle> Nodes,TConstArrayView<uint8> Remaining)
-{
-	ClusterId=InClusterId; ObstacleRadius=0;
-	for (const auto& Node:Nodes)
-		ObstacleRadius=FMath::Max(ObstacleRadius,float(FVector::Dist2D(GetActorLocation(),Node.Obstacle.Location))+Node.Obstacle.RadiusCentimeters);
-	NavModifier->InitializeNodes(Nodes,Remaining);
-}
-void AGuLiOreClusterObstacleActor::RemoveNodes(TConstArrayView<uint32> NodeIds) { NavModifier->RemoveNodes(NodeIds); }
-
 
 AGuLiTerritoryOutpostActor::AGuLiTerritoryOutpostActor()
 {

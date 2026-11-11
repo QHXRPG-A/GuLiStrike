@@ -8,6 +8,9 @@
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "NavigationSystem.h"
+#include "Gameplay/Navigation/GuLiOreClusterGeometry.h"
+#include "Gameplay/Resources/GuLiMiningVehicleManager.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 
 bool UGuLiResourceWorldSubsystem::RequestOreObstacleResync()
 {
@@ -32,28 +35,50 @@ bool UGuLiResourceWorldSubsystem::InitializeNodeObstacles()
         MiningVisibilityParams.Reset();
     }
     if (!OreCollisionField) { InitializationError=TEXT("Could not create ore collision field"); return false; }
-    TArray<FGuLiOreNodeObstacle> Shapes;
-    if (!OreCollisionField->InitializeNodes(*MapDefinition,*EconomyConfig,NodeRemaining,Shapes,InitializationError)) return false;
-    TArray<TArray<FGuLiOreNodeObstacle>> ByCluster; ByCluster.SetNum(MapDefinition->Clusters.Num());
-    for (const auto& Shape:Shapes) ByCluster[Shape.ClusterId-1].Add(Shape);
+    if (!OreCollisionField->InitializeNodes(*MapDefinition,*EconomyConfig,NodeRemaining,InitializationError)
+        || !OreShapes.Initialize(*EconomyConfig,InitializationError)) return false;
     ClusterObstacles.SetNum(MapDefinition->Clusters.Num());
-    MiningVisibilityParams.Reset();
     for (int32 I=0;I<MapDefinition->Clusters.Num();++I)
     {
-        const auto& Cluster=MapDefinition->Clusters[I];
-        const FTransform Transform(FRotator::ZeroRotator,Cluster.Center);
         if (!ClusterObstacles[I])
         {
-            auto* Proxy=GetWorld()->SpawnActorDeferred<AGuLiOreClusterObstacleActor>(
-                AGuLiOreClusterObstacleActor::StaticClass(),Transform,nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-            if (!Proxy) { InitializationError=TEXT("Could not create ore navigation exporter"); return false; }
-            Proxy->InitializeNodes(Cluster.ClusterId,ByCluster[I],NodeRemaining);
-            Proxy->FinishSpawning(Transform); ClusterObstacles[I]=Proxy;
-            MiningVisibilityParams.Reset();
+            FActorSpawnParameters Params;Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+            ClusterObstacles[I]=GetWorld()->SpawnActor<AGuLiOreClusterObstacleActor>(AGuLiOreClusterObstacleActor::StaticClass(),
+                FTransform(MapDefinition->Clusters[I].Center),Params);
+            if (!ClusterObstacles[I]) {InitializationError=TEXT("Could not create ore circle exporter");return false;}
         }
-        else ClusterObstacles[I]->InitializeNodes(Cluster.ClusterId,ByCluster[I],NodeRemaining);
+        if (!RefreshOreClusterCircles(I)) return false;
     }
-    Registry->InitializeOreObstacles(Shapes,NodeRemaining);
+    return true;
+}
+
+bool UGuLiResourceWorldSubsystem::RefreshOreClusterCircles(int32 ClusterIndex)
+{
+    FGuLiPerformanceScope Timing(GetWorld(),TEXT("Movement.GT.OreClusterMs"));
+    using namespace GuLiCircleAvoidance;
+    const auto* Units=GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>();
+    auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+    if (!Units || !Registry || !MapDefinition->Clusters.IsValidIndex(ClusterIndex)) return false;
+    const auto& Catalog=Units->GetAvoidanceCatalog();const auto& Cluster=MapDefinition->Clusters[ClusterIndex];
+    float MinimumRadius=FLT_MAX;TArray<FProtectedPassage> Entrances;
+    auto* Mining=GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>();
+    for (const auto& Unit:Catalog.Units)
+    {
+        const float Radius=Unit.Value.Solver.Radius+Unit.Value.Solver.Clearance+Unit.Value.Solver.ContactMargin;
+        MinimumRadius=FMath::Min(MinimumRadius,Radius);
+        // Only already-cached entrances belonging to this changed cluster.
+        if (Mining) for (const auto& Pose:Mining->GetClusterSlotPoses(Cluster.ClusterId,Unit.Key))
+        {auto& P=Entrances.AddDefaulted_GetRef();P.From=P.To=Pose.GetLocation();P.Radius=Radius;P.MinimumZ=P.From.Z;P.MaximumZ=P.From.Z+300;}
+    }
+    TArray<FCircle> Circles;FClusteringCounters Counts;
+    if (!BuildCurrentOreCluster(OreShapes,*MapDefinition,Cluster,NodeRemaining,++OreCircleVersion,
+        Catalog.OreMaximumRadiusRatio,Catalog.OreMaximumAreaRatio,MinimumRadius,Entrances,Circles,Counts))
+    {InitializationError=TEXT("Could not derive current ore circles");return false;}
+    if (!Registry->ReplaceCircleGroup(OreNamespace|Cluster.ClusterId,Circles,true)) return false;
+    ClusterObstacles[ClusterIndex]->SetCircles(Cluster.ClusterId,Circles);
+    if (auto* Capture=GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>();Capture && Capture->IsCapturing())
+    {Capture->Record(TEXT("Ore.ClusterUpdates"),1);Capture->Record(TEXT("Ore.MemberPairChecks"),Counts.MemberPairChecks);
+     Capture->Record(TEXT("Ore.Merges"),Counts.Merges);Capture->Record(TEXT("Ore.PassageRejections"),Counts.PassageRejections);}
     return true;
 }
 
@@ -87,36 +112,33 @@ void UGuLiResourceWorldSubsystem::ProcessPendingOreRemovals()
     if (!Registry) return;
     const int32 Limit=FMath::Clamp(OreBatchMaxNodesPerFrame,1,64);
     const double Budget=FMath::Max(0.f,OreBatchSoftBudgetMilliseconds)*0.001;
-    TArray<uint32> Removed; Removed.Reserve(Limit);
-    TMap<int32,TArray<uint32>> ByCluster;
+    TArray<uint32> Updated;Updated.Reserve(Limit);
+    TSet<int32> PublishedClusters;
     const double OldestWait=(Started-PendingOreRemovals[OreRemovalHead].QueuedAt)*1000.;
     do
     {
-        // Small FIFO slices bound physical work before checking the soft budget. Each ISM gets a batch call.
-        TArray<uint32> Slice; Slice.Reserve(8);
-        while (OreRemovalHead<PendingOreRemovals.Num() && Slice.Num()<FMath::Min(8,Limit-Removed.Num()))
+        TArray<uint32> Removed,Restored;TSet<int32> ChangedClusters;
+        int32 Slice=0;
+        while (OreRemovalHead<PendingOreRemovals.Num() && Slice<FMath::Min(8,Limit-Updated.Num()))
         {
-            const auto Entry=PendingOreRemovals[OreRemovalHead++]; QueuedOreNodes.Remove(Entry.NodeId);
-            if (Entry.Generation==OreWorldGeneration && NodeRemaining.IsValidIndex(Entry.NodeId-1)
-                && NodeRemaining[Entry.NodeId-1]==0) Slice.Add(Entry.NodeId);
+            const auto Entry=PendingOreRemovals[OreRemovalHead++];QueuedOreNodes.Remove(Entry.NodeId);++Slice;
+            if (Entry.Generation!=OreWorldGeneration || !NodeRemaining.IsValidIndex(Entry.NodeId-1)) continue;
+            (NodeRemaining[Entry.NodeId-1]?Restored:Removed).Add(Entry.NodeId);
+            ChangedClusters.Add(MapDefinition->Nodes[Entry.NodeId-1].ClusterId-1);Updated.Add(Entry.NodeId);
         }
-        if (!OreCollisionField->RemoveNodes(Slice))
+        bool Valid=OreCollisionField->RemoveNodes(Removed) && OreCollisionField->RestoreNodes(Restored,*MapDefinition);
+        for (int32 Cluster:ChangedClusters) if (!PublishedClusters.Contains(Cluster))
+        {PublishedClusters.Add(Cluster);Valid=RefreshOreClusterCircles(Cluster) && Valid;}
+        if (!Valid)
         {
-            bFatalInitializationError=true; InitializationError=TEXT("Ore collision instance removal failed; query scene suspended");
+            bFatalInitializationError=true;InitializationError=TEXT("Ore circle/collision publication failed; query scene suspended");
             if (auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()) Hybrid->Suspend(InitializationError);
-            UE_LOG(LogTemp,Error,TEXT("%s"),*InitializationError);
-            return;
+            UE_LOG(LogTemp,Error,TEXT("%s"),*InitializationError);return;
         }
-        for (uint32 Id:Slice) ByCluster.FindOrAdd(MapDefinition->Nodes[Id-1].ClusterId-1).Add(Id);
-        Removed.Append(Slice);
     }
-    while (OreRemovalHead<PendingOreRemovals.Num() && Removed.Num()<Limit && FPlatformTime::Seconds()-Started<Budget);
+    while (OreRemovalHead<PendingOreRemovals.Num() && Updated.Num()<Limit && FPlatformTime::Seconds()-Started<Budget);
 
-    // Commit every selected node consistently, even if this final atomic publication exceeds the soft budget.
-    Registry->RemoveOreObstacles(Removed);
-    for (const auto& Pair:ByCluster)
-        if (ClusterObstacles.IsValidIndex(Pair.Key) && ClusterObstacles[Pair.Key]) ClusterObstacles[Pair.Key]->RemoveNodes(Pair.Value);
-    LastOreBatchNodes=Removed.Num(); LastOreBatchMilliseconds=(FPlatformTime::Seconds()-Started)*1000.;
+    LastOreBatchNodes=Updated.Num(); LastOreBatchMilliseconds=(FPlatformTime::Seconds()-Started)*1000.;
     if (Capture && Capture->IsCapturing())
     {
         Capture->Record(TEXT("Ore.BatchMainThreadMs"),LastOreBatchMilliseconds);
@@ -141,7 +163,8 @@ FGuLiOreObstacleStats UGuLiResourceWorldSubsystem::GetOreObstacleStats() const
     Result.AliveCollisionNodes=OreCollisionField?OreCollisionField->GetAliveCount():0;
     if (const auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>())
     {
-        Result.AliveAvoidanceNodes=Registry->GetAliveOreCount(); Result.IndexPublications=Registry->GetOrePublicationCount();
+        for (uint8 Amount:NodeRemaining) Result.AliveAvoidanceNodes+=Amount>0;
+        Result.IndexPublications=Registry->GetOrePublicationCount();
     }
     return Result;
 }

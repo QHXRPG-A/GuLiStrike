@@ -41,6 +41,8 @@ struct FGuLiUnitTaskCommand
 	GENERATED_BODY()
 	/** Authority-only context; intentionally absent from reflection and network serialization. */
 	TSharedPtr<FGuLiSharedMoveIntent> SharedMoveIntent;
+	// Accepted Hybrid event (or one local submission), shared by every member.
+	FGuid MovementCommandIdentity;
 	UPROPERTY() uint32 CommandId = 0;
 	UPROPERTY() uint32 SelectionRevision = 0;
 	UPROPERTY() EGuLiTaskDisposition Disposition = EGuLiTaskDisposition::Replace;
@@ -149,6 +151,7 @@ struct FGuLiUnitTaskState
 	TOptional<FGuLiTaskExecution> Active;
 	/** New move being prepared while Active continues along its committed route. Server only. */
 	TOptional<FGuLiTaskExecution> PendingMove;
+	FGuid LastMovementCommandIdentity; // Keep the completed command's membership while parked.
 	uint64 Version = 0;
 	bool bStopped = false;
 	bool bCancelPending = false;

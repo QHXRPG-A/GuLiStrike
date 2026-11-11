@@ -9,6 +9,7 @@
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Engine/World.h"
+#include "Gameplay/Performance/GuLiMovementCapture.h"
 
 namespace GuLiHybridControlPoint
 {
@@ -66,6 +67,7 @@ public:
     {Record=State;Point=GuLiHybridControlPoint::Read(State);Local=IsLocal;if (Actor.IsValid()) Actor->FindComponentByClass<UGuLiHybridActorComponent>()->Install(State,Local);}
     void Advance(uint64 Tick,double) override
     {
+        if (GuLiMovementCapture::HoldTerritoryChanges(World())) return;
         auto* H=World()->GetSubsystem<UGuLiHybridWorldSubsystem>();if (!Local || !Actor.IsValid() || H->IsBattlePaused()) return;
         if (Private.Pending.IsValid())
         {

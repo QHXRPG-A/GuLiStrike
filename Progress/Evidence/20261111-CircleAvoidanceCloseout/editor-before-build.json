@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "pid": 31676,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "session": {
+      "active": false,
+      "error": "",
+      "room": "BB8A7B9143825BC55F479780473B6FB5",
+      "role": "Commander",
+      "editor_pid": 31676,
+      "logic_pid": 22284,
+      "coordinator_pid": 39984,
+      "logic_running": false,
+      "coordinator_running": false,
+      "session_directory": "",
+      "shutdown": [
+        {
+          "role": "logic",
+          "pid": 22284,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        },
+        {
+          "role": "coordinator",
+          "pid": 39984,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        }
+      ],
+      "cleanup_complete": true
+    },
+    "dirty_maps": [],
+    "dirty_content": []
+  }
+}

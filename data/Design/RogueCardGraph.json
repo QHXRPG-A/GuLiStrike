@@ -1,0 +1,484 @@
+{
+  "schema": 1,
+  "savedAt": "2026-11-09T12:32:14.629900+00:00",
+  "base": {
+    "fingerprint": "756cf8e9c4e0160fdc22a4f8d83cbf1faed78f279743446327ebe5413ee92c3f",
+    "sources": {
+      "cards": "data/Json/DT_GuLiStrikeRogueCards_Cards.json",
+      "texts": "data/Json/DT_GuLiStrikeGameTexts_Texts.json",
+      "effects": "data/Json/DT_GuLiStrikeRogueCards_Effects.json",
+      "weapons": "data/Json/DT_GuLiStrikeRogueCards_GroundWeaponEffects.json"
+    },
+    "cards": [
+      {
+        "id": "01.01",
+        "seat": "Commander",
+        "title": "增加射速",
+        "description": "重防号 普攻射速+{0}%"
+      },
+      {
+        "id": "02.01",
+        "seat": "Commander",
+        "title": "极速机动",
+        "description": "重防号 移动速度+{0}%"
+      },
+      {
+        "id": "03.01",
+        "seat": "Commander",
+        "title": "增加导弹伤害",
+        "description": "重防号 导弹伤害+{0}%"
+      },
+      {
+        "id": "04.01",
+        "seat": "Commander",
+        "title": "重防导弹仓",
+        "description": "重防号 解锁导弹技能"
+      },
+      {
+        "id": "05.01",
+        "seat": "Commander",
+        "title": "雨点攻势",
+        "description": "重防号 导弹齐射数量+{0}"
+      },
+      {
+        "id": "06.01",
+        "seat": "Ground",
+        "title": "折射子弹",
+        "description": "游骑兵 普攻折射-{0}"
+      },
+      {
+        "id": "07.01",
+        "seat": "Ground",
+        "title": "灼烧子弹",
+        "description": "游骑兵 普攻附加灼烧-{0}"
+      },
+      {
+        "id": "08.01",
+        "seat": "Ground",
+        "title": "灼烧爆裂子弹",
+        "description": "游骑兵 灼烧每隔一段时间发生爆燃"
+      },
+      {
+        "id": "09.01",
+        "seat": "Ground",
+        "title": "增加攻速",
+        "description": "游骑兵 普攻攻速+{1}% · {0}级"
+      },
+      {
+        "id": "10.01",
+        "seat": "Ground",
+        "title": "强化子弹",
+        "description": "游骑兵 普攻升级为强化子弹"
+      },
+      {
+        "id": "11.01",
+        "seat": "Ground",
+        "title": "爆破套餐",
+        "description": "游骑兵 {0}级 · 每{1}发附爆炸弹 · {2}倍伤害/{3}米"
+      },
+      {
+        "id": "12.01",
+        "seat": "Ground",
+        "title": "强化爆炸弹",
+        "description": "游骑兵 {0}级 · 爆炸半径+{1}%、伤害+{2}%"
+      }
+    ],
+    "links": [
+      {
+        "kind": "requires",
+        "source": "04.01",
+        "target": "03.01"
+      },
+      {
+        "kind": "requires",
+        "source": "04.01",
+        "target": "05.01"
+      },
+      {
+        "kind": "requires",
+        "source": "10.01",
+        "target": "06.01"
+      },
+      {
+        "kind": "requires",
+        "source": "10.01",
+        "target": "07.01"
+      },
+      {
+        "kind": "requires",
+        "source": "07.01",
+        "target": "08.01"
+      },
+      {
+        "kind": "requires",
+        "source": "11.01",
+        "target": "12.01"
+      }
+    ],
+    "details": {
+      "01.01": {
+        "rowName": "WM01_FireRate_Lv1",
+        "textIds": [
+          "Card.WM01.FireRate.Title",
+          "Card.WM01.FireRate.Description"
+        ],
+        "descriptionTemplate": "<Unit>重防号</> <Gain>普攻射速+{0}%</>",
+        "note": "己方本局所有现有及后续重防号：增加射速；独立来源逐次乘算。",
+        "maxAcquisitions": 0,
+        "previews": [
+          "重防号 普攻射速+20%"
+        ],
+        "handlers": []
+      },
+      "02.01": {
+        "rowName": "WM01_MoveSpeed_Lv1",
+        "textIds": [
+          "Card.WM01.HighSpeed.Title",
+          "Card.WM01.HighSpeed.Description"
+        ],
+        "descriptionTemplate": "<Unit>重防号</> <Gain>移动速度+{0}%</>",
+        "note": "己方本局所有现有及后续重防号：极速机动；独立来源逐次乘算。",
+        "maxAcquisitions": 0,
+        "previews": [
+          "重防号 移动速度+50%"
+        ],
+        "handlers": []
+      },
+      "03.01": {
+        "rowName": "WM01_MissileDamage_Lv1",
+        "textIds": [
+          "Card.WM01.MissileDamage.Title",
+          "Card.WM01.MissileDamage.Description"
+        ],
+        "descriptionTemplate": "<Unit>重防号</> <Gain>导弹伤害+{0}%</>",
+        "note": "己方本局所有现有及后续重防号：增加导弹伤害；独立来源逐次乘算。",
+        "maxAcquisitions": 0,
+        "previews": [
+          "重防号 导弹伤害+20%"
+        ],
+        "handlers": []
+      },
+      "04.01": {
+        "rowName": "WM01_MissilePod_Lv1",
+        "textIds": [
+          "Card.WM01.MissilePod.Title",
+          "Card.WM01.MissilePod.Description"
+        ],
+        "descriptionTemplate": "<Unit>重防号</> 解锁<Gain>导弹技能</>",
+        "note": "己方本局当前及后续重防号：重防导弹仓。解锁导弹技能与导弹仓，每队一次。",
+        "maxAcquisitions": 1,
+        "previews": [
+          "重防号 解锁导弹技能"
+        ],
+        "handlers": []
+      },
+      "05.01": {
+        "rowName": "WM01_RainSalvo_Lv1",
+        "textIds": [
+          "Card.WM01.RainSalvo.Title",
+          "Card.WM01.RainSalvo.Description"
+        ],
+        "descriptionTemplate": "<Unit>重防号</> <Gain>导弹齐射数量+{0}</>",
+        "note": "己方本局当前及后续重防号：雨点攻势。完整齐射数量每次加1，基础1发，每队本局最多59次，单台上限60发。",
+        "maxAcquisitions": 59,
+        "previews": [
+          "重防号 导弹齐射数量+1"
+        ],
+        "handlers": []
+      },
+      "06.01": {
+        "rowName": "GroundMech_Ricochet_Lv1",
+        "textIds": [
+          "Card.GroundMech.Ricochet.Title",
+          "Card.GroundMech.Ricochet.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> <Gain>普攻折射-{0}</>",
+        "note": "个人本局普攻折射；每次获取随机区间整体+1；首次命中点周围50米三维球；牌面显示取得后等级。",
+        "maxAcquisitions": 0,
+        "previews": [
+          "游骑兵 普攻折射-1"
+        ],
+        "handlers": [
+          "ricochet"
+        ]
+      },
+      "07.01": {
+        "rowName": "GroundMech_BurningBullet_Lv1",
+        "textIds": [
+          "Card.GroundMech.BurningBullet.Title",
+          "Card.GroundMech.BurningBullet.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> 普攻附加<Gain>灼烧-{0}</>",
+        "note": "有效普攻和折射命中施加单份灼烧；刷新8秒，不重置周期。",
+        "maxAcquisitions": 1,
+        "previews": [
+          "游骑兵 普攻附加灼烧-1"
+        ],
+        "handlers": [
+          "buff/on_hit"
+        ]
+      },
+      "08.01": {
+        "rowName": "GroundMech_BurningBurst_Lv1",
+        "textIds": [
+          "Card.GroundMech.BurningBurst.Title",
+          "Card.GroundMech.BurningBurst.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> 灼烧每隔一段时间发生<Gain>爆燃</>",
+        "note": "爆裂独立2秒计时；刷新不重置；一次爆裂冻结统一伤害及目标。",
+        "maxAcquisitions": 1,
+        "previews": [
+          "游骑兵 灼烧每隔一段时间发生爆燃"
+        ],
+        "handlers": [
+          "buff/on_hit"
+        ]
+      },
+      "09.01": {
+        "rowName": "GroundMech_FireRate_Lv1",
+        "textIds": [
+          "Card.GroundMech.FireRate.Title",
+          "Card.GroundMech.FireRate.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> <Gain>普攻攻速+{1}% · {0}级</>",
+        "note": "游骑兵个人本局：增加攻速；候选显示取得后等级。",
+        "maxAcquisitions": 0,
+        "previews": [
+          "游骑兵 普攻攻速+8% · 1级"
+        ],
+        "handlers": [
+          "ground/fire_rate"
+        ]
+      },
+      "10.01": {
+        "rowName": "GroundMech_EnhancedBullet_Lv1",
+        "textIds": [
+          "Card.GroundMech.EnhancedBullet.Title",
+          "Card.GroundMech.EnhancedBullet.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> <Gain>普攻升级为强化子弹</>",
+        "note": "游骑兵个人本局：强化子弹；候选显示取得后等级。",
+        "maxAcquisitions": 1,
+        "previews": [
+          "游骑兵 普攻升级为强化子弹"
+        ],
+        "handlers": [
+          "ground/enhanced_bullet"
+        ]
+      },
+      "11.01": {
+        "rowName": "GroundMech_ExplosivePackage_Lv1",
+        "textIds": [
+          "Card.GroundMech.ExplosivePackage.Title",
+          "Card.GroundMech.ExplosivePackage.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> <Gain>{0}级 · 每{1}发附爆炸弹 · {2}倍伤害/{3}米</>",
+        "note": "游骑兵个人本局：爆破套餐；候选显示取得后等级。",
+        "maxAcquisitions": 3,
+        "previews": [
+          "游骑兵 1级 · 每5发附爆炸弹 · 2倍伤害/2.66米",
+          "游骑兵 2级 · 每4发附爆炸弹 · 2倍伤害/2.66米",
+          "游骑兵 3级 · 每2发附爆炸弹 · 2倍伤害/2.66米"
+        ],
+        "handlers": [
+          "ground/explosive_package"
+        ]
+      },
+      "12.01": {
+        "rowName": "GroundMech_ExplosiveEnhancement_Lv1",
+        "textIds": [
+          "Card.GroundMech.ExplosiveEnhancement.Title",
+          "Card.GroundMech.ExplosiveEnhancement.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> <Gain>{0}级 · 爆炸半径+{1}%、伤害+{2}%</>",
+        "note": "游骑兵个人本局；前置任意爆破套餐；三级；不重置发射进度",
+        "maxAcquisitions": 3,
+        "previews": [
+          "游骑兵 1级 · 爆炸半径+2%、伤害+2%",
+          "游骑兵 2级 · 爆炸半径+2%、伤害+2%",
+          "游骑兵 3级 · 爆炸半径+4%、伤害+4%"
+        ],
+        "handlers": [
+          "ground/explosive_enhancement"
+        ]
+      }
+    }
+  },
+  "graph": {
+    "cards": [
+      {
+        "id": "01.01",
+        "seat": "Commander",
+        "title": "增加射速",
+        "description": "重防号 普攻射速+{0}%",
+        "x": 36,
+        "y": 36
+      },
+      {
+        "id": "02.01",
+        "seat": "Commander",
+        "title": "极速机动",
+        "description": "重防号 移动速度+{0}%",
+        "x": 36,
+        "y": 146
+      },
+      {
+        "id": "04.01",
+        "seat": "Commander",
+        "title": "重防导弹仓",
+        "description": "重防号 解锁导弹技能",
+        "x": 36,
+        "y": 256
+      },
+      {
+        "id": "03.01",
+        "seat": "Commander",
+        "title": "增加导弹伤害",
+        "description": "重防号 导弹伤害+{0}%",
+        "x": 302,
+        "y": 91
+      },
+      {
+        "id": "05.01",
+        "seat": "Commander",
+        "title": "雨点攻势",
+        "description": "重防号 导弹齐射数量+{0}",
+        "x": 302,
+        "y": 201
+      },
+      {
+        "id": "09.01",
+        "seat": "Ground",
+        "title": "增加攻速",
+        "description": "游骑兵 普攻攻速+{1}% · {0}级",
+        "x": 36,
+        "y": 36
+      },
+      {
+        "id": "10.01",
+        "seat": "Ground",
+        "title": "强化子弹",
+        "description": "游骑兵 普攻升级为强化子弹",
+        "x": 36,
+        "y": 146
+      },
+      {
+        "id": "11.01",
+        "seat": "Ground",
+        "title": "爆破套餐",
+        "description": "游骑兵 {0}级 · 每{1}发附爆炸弹 · {2}倍伤害/{3}米",
+        "x": 36,
+        "y": 256
+      },
+      {
+        "id": "06.01",
+        "seat": "Ground",
+        "title": "折射子弹",
+        "description": "游骑兵 普攻折射-{0}",
+        "x": 302,
+        "y": 36
+      },
+      {
+        "id": "07.01",
+        "seat": "Ground",
+        "title": "灼烧子弹",
+        "description": "游骑兵 普攻附加灼烧-{0}",
+        "x": 305,
+        "y": 146
+      },
+      {
+        "id": "12.01",
+        "seat": "Ground",
+        "title": "强化爆炸弹",
+        "description": "游骑兵 {0}级 · 爆炸半径+{1}%、伤害+{2}%",
+        "x": 302,
+        "y": 256
+      },
+      {
+        "id": "08.01",
+        "seat": "Ground",
+        "title": "灼烧爆裂子弹",
+        "description": "游骑兵 灼烧每隔一段时间发生爆燃",
+        "x": 568,
+        "y": 146
+      }
+    ],
+    "links": [
+      {
+        "kind": "requires",
+        "source": "04.01",
+        "target": "03.01"
+      },
+      {
+        "kind": "requires",
+        "source": "04.01",
+        "target": "05.01"
+      },
+      {
+        "kind": "requires",
+        "source": "10.01",
+        "target": "06.01"
+      },
+      {
+        "kind": "requires",
+        "source": "10.01",
+        "target": "07.01"
+      },
+      {
+        "kind": "requires",
+        "source": "07.01",
+        "target": "08.01"
+      },
+      {
+        "kind": "requires",
+        "source": "11.01",
+        "target": "12.01"
+      },
+      {
+        "kind": "excludes",
+        "source": "10.01",
+        "target": "11.01"
+      }
+    ]
+  },
+  "changes": {
+    "added": [],
+    "removed": [],
+    "updated": [
+      {
+        "id": "10.01",
+        "seat": "Ground",
+        "title": "强化子弹",
+        "textIds": [
+          "Card.GroundMech.EnhancedBullet.Title",
+          "Card.GroundMech.EnhancedBullet.Description"
+        ],
+        "fields": {
+          "ExcludedCardIds": {
+            "before": [],
+            "after": [
+              "11.01"
+            ]
+          }
+        }
+      },
+      {
+        "id": "11.01",
+        "seat": "Ground",
+        "title": "爆破套餐",
+        "textIds": [
+          "Card.GroundMech.ExplosivePackage.Title",
+          "Card.GroundMech.ExplosivePackage.Description"
+        ],
+        "fields": {
+          "ExcludedCardIds": {
+            "before": [],
+            "after": [
+              "10.01"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

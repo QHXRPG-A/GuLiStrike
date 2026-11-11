@@ -155,7 +155,8 @@ void UGuLiResourceWorldSubsystem::Deinitialize()
 	}
 	if (WorldState) { WorldState->OnStateChanged().RemoveAll(this); WorldState->OreNodeChanged.RemoveAll(this); }
 	ResetPendingOreRemovals();
-	if (auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>()) Registry->ClearOreObstacles();
+	if (auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();Registry && MapDefinition)
+        for (const auto& Cluster:MapDefinition->Clusters) Registry->RemoveCircleGroup(GuLiCircleAvoidance::OreNamespace|Cluster.ClusterId);
 	Factories.Reset();
 	Outposts.Reset();
 	ClusterObstacles.Reset();
@@ -493,12 +494,11 @@ void UGuLiResourceWorldSubsystem::HandleOreNodeChanged(uint32 NodeId,uint8 Remai
         NodeRemaining[NodeId-1]=Remaining;
     }
     if (OreField) OreField->ApplyNodeAmount(NodeId,Remaining);
-    if (Previous>0 && Remaining==0 && !QueuedOreNodes.Contains(NodeId))
+    if (Previous!=Remaining && !QueuedOreNodes.Contains(NodeId))
     {
         const double Now=FPlatformTime::Seconds();
         if (QueuedOreNodes.IsEmpty()) OreBatchDueAt=Now+FMath::Max(0.f,OreBatchWindowSeconds);
         QueuedOreNodes.Add(NodeId);
         PendingOreRemovals.Add({NodeId,OreWorldGeneration,Now});
     }
-    else if (Previous==0 && Remaining>0) HandleHybridResourceDirectory();
 }

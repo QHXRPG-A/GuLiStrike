@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "pid": 38764,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "session": {
+      "active": false,
+      "error": "",
+      "room": "00000000000000000000000000000000",
+      "role": "Commander",
+      "editor_pid": 38764,
+      "logic_pid": 0,
+      "coordinator_pid": 0,
+      "logic_running": false,
+      "coordinator_running": false,
+      "session_directory": "",
+      "shutdown": [],
+      "cleanup_complete": false
+    },
+    "yield_seconds": {
+      "1": 0.5,
+      "2": 0.5,
+      "3": 0.5,
+      "4": 0.5,
+      "5": 0.5,
+      "6": 0.5
+    },
+    "review_actors": [
+      {
+        "label": "CircleAvoidanceReview_Entry",
+        "class": "Note"
+      },
+      {
+        "label": "CircleAvoidanceReview_View",
+        "class": "CameraActor"
+      }
+    ],
+    "dirty_maps": [],
+    "dirty_content": []
+  }
+}

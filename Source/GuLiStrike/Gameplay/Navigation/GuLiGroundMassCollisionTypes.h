@@ -65,16 +65,6 @@ struct GULISTRIKE_API FGuLiGroundMassContact
 	bool IsValid() const { return Kind != EGuLiGroundMassContactKind::None; }
 };
 
-/** Minimal input for the deterministic friendly-yield selector. */
-struct GULISTRIKE_API FGuLiGroundMassYieldCandidate
-{
-	uint32 StableSoldierId = 0u;
-	EGuLiTeam Team = EGuLiTeam::Unassigned;
-	FVector Location = FVector::ZeroVector;
-	float RadiusCentimeters = 0.0f;
-	bool bCanYield = false;
-};
-
 /** Shared 10 Hz spatial index. Each body lives in one cell; queries expand by the largest body motion. */
 class GULISTRIKE_API FGuLiGroundMassSpatialIndex
 {
@@ -147,22 +137,4 @@ GULISTRIKE_API FGuLiGroundMassLandingResult FindLandingSupport(const FVector &St
 															   float CapsuleHalfHeight, float DeltaSeconds,
 															   TConstArrayView<FGuLiGroundMassBody> Candidates);
 
-/** Returns at most MaximumCount same-team idle candidates ordered by distance, then stable ID. */
-GULISTRIKE_API void SelectFriendlyYieldCandidates(TConstArrayView<FGuLiGroundMassYieldCandidate> Candidates,
-												  EGuLiTeam MechTeam, const FVector &MechLocation,
-												  float MechRadiusCentimeters, float ActivationPaddingCentimeters,
-												  float MaximumHeightDifferenceCentimeters, int32 MaximumCount,
-												  TArray<int32> &OutCandidateIndices);
-
-/** Computes a clearance target and clamps it to the soldier's captured anchor. */
-GULISTRIKE_API FVector ComputeYieldTarget(const FVector &Anchor, const FVector &CurrentLocation,
-										  const FVector &MechLocation, uint32 MechStableId, uint32 SoldierStableId,
-										  float RequiredCenterDistanceCentimeters,
-										  float MaximumAnchorOffsetCentimeters);
-
-/** Holds the existing target until pressure has been absent long enough, then returns the anchor. */
-GULISTRIKE_API FVector ResolveYieldTargetWithoutPressure(const FVector &Anchor, const FVector &CurrentTarget,
-														 double CurrentSimulationSeconds,
-														 double LastPressureSimulationSeconds,
-														 double ReturnDelaySeconds, bool &bOutReturning);
 } // namespace GuLiGroundMassCollision

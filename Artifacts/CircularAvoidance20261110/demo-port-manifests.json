@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "variants": [
+      "/Game/Development/HybridAcceptance/DT_AcceptanceUnits.DT_AcceptanceUnits",
+      "/Game/Development/HybridAcceptance/DT_AcceptanceAvoidance.DT_AcceptanceAvoidance",
+      "/Game/Development/HybridAcceptance/DT_AcceptanceBuildingCircles.DT_AcceptanceBuildingCircles"
+    ],
+    "manifests": {
+      "passed": true,
+      "scope": "Manifest export/readback only; no gameplay pass",
+      "loads": [
+        {
+          "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
+          "sha256": "93803b8ef0fdf1b93b8ba5a6e58da3e5f738b610061d4135c8bd94201a25a429",
+          "config_hash": "61fda6589b785605695b96668e8ff2dbe15d383dda68748912cee7e864ae268d",
+          "map_hash": "b6eef6ce258dbaa5849d354bb892b5b1b1a34142c5c9966faa84cde54ae13e1f",
+          "objects": 292,
+          "population": 200,
+          "acceptance": true,
+          "supply_rules": 22
+        },
+        {
+          "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+          "sha256": "a6559bb4a6ab55a9e531fd75831be1cbf7b27155a95351d801f557e78e0242b6",
+          "config_hash": "9aa241554621876cda00e57dfbc79f84496063159cb6f0425c6648a654fa71d1",
+          "map_hash": "a0f3eaa22d300cf349279305296af87c8147e209b31a916252345f21b2b72edc",
+          "objects": 292,
+          "population": 200,
+          "acceptance": false,
+          "supply_rules": 0
+        },
+        {
+          "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
+          "sha256": "507ae18289b7a74999634eaa44654ab9a28eef153e1e197978e63a7432b4d301",
+          "config_hash": "36765133fc7692225e48eccbc0db896a581ba7a40f3ddec92011b980b97dcc47",
+          "map_hash": "bda2a64cad8bd549fd4ca4ce458900a8c01f73c9ac6415b0ee13dea6bc467b6c",
+          "objects": 692,
+          "population": 600,
+          "acceptance": true,
+          "supply_rules": 22
+        },
+        {
+          "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+          "sha256": "8f800a805983585247d90515f6a77cb60a16a138835b3041393469fbc06ddb3f",
+          "config_hash": "96e39987cc1043f89eda5050ad2f1d30e690c029a70f569a79bfb028c37028f1",
+          "map_hash": "44e7819a79356ecdfa78f2e1f23a46b4fb2e4154e90457111c5304a7c0625040",
+          "objects": 692,
+          "population": 600,
+          "acceptance": false,
+          "supply_rules": 0
+        }
+      ]
+    }
+  }
+}

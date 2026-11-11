@@ -30,7 +30,7 @@ FGuid EventId(const FGuid& Request,const FGuLiHybridObjectKey& Source);
 FGuLiHybridObjectKey Target(const FGuLiGridBirthBatch& Batch,int32 Index);
 EGuLiGridPermit Prepare(UGuLiGroundGridSubsystem& Grid,const FGuLiHybridObjectState& Source,const FGuid& Request,
     FVector Position,int32 CasterSize,int32 Size,int32 Count,double Clearance,int32 Rings,int32 Samples,
-    EGuLiUnitMovementLayer Layer=EGuLiUnitMovementLayer::Ground,float AltitudeCentimeters=0.f);
+    EGuLiUnitMovementLayer Layer=EGuLiUnitMovementLayer::Ground,float AltitudeCentimeters=0.f,uint16 UnitType=0);
 void Cancel(UGuLiGroundGridSubsystem& Grid,const FGuLiHybridObjectKey& Source,const FGuid& Request,bool bDetach=false);
 void Recover(UGuLiGroundGridSubsystem& Grid,const FGuLiHybridObjectState& Source);
 void Advance(UGuLiGroundGridSubsystem& Grid);

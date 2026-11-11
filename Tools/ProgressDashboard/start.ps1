@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [ValidateRange(1024, 65535)]
     [int]$Port = 4317
@@ -6,9 +6,22 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $DashboardRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ProjectRoot = (Resolve-Path -LiteralPath (Join-Path $DashboardRoot '..\..')).Path
 $FrontendEntry = Join-Path $DashboardRoot 'dist\client\index.html'
 $ServerScript = Join-Path $DashboardRoot 'server.py'
 $Url = "http://127.0.0.1:$Port"
+
+$Ready = $null
+try {
+    $Ready = Invoke-RestMethod -Uri "$Url/api/ready" -TimeoutSec 2
+} catch { }
+if ($Ready) {
+    if ($Ready.app -ne 'guli-progress-dashboard' -or $Ready.project -ne $ProjectRoot) {
+        throw "端口 $Port 上运行的是其他服务，请选择空闲端口。"
+    }
+    Start-Process $Url
+    return
+}
 
 Push-Location $DashboardRoot
 try {
@@ -31,11 +44,11 @@ try {
     }
 
     $BrowserJob = Start-Job -ScriptBlock {
-        param($TargetUrl)
+        param($TargetUrl, $ExpectedProject)
         for ($Attempt = 0; $Attempt -lt 50; $Attempt++) {
             try {
-                $Response = Invoke-WebRequest -UseBasicParsing -Uri "$TargetUrl/api/health" -TimeoutSec 1
-                if ($Response.StatusCode -eq 200) {
+                $Ready = Invoke-RestMethod -Uri "$TargetUrl/api/ready" -TimeoutSec 1
+                if ($Ready.app -eq 'guli-progress-dashboard' -and $Ready.project -eq $ExpectedProject) {
                     Start-Process $TargetUrl
                     return
                 }
@@ -43,7 +56,7 @@ try {
                 Start-Sleep -Milliseconds 200
             }
         }
-    } -ArgumentList $Url
+    } -ArgumentList $Url,$ProjectRoot
 
     try {
         & python $ServerScript --port $Port

@@ -1,4 +1,7 @@
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h"
+#include "Gameplay/Navigation/GuLiCircleCollisionFiltering.h"
+#include "Gameplay/Navigation/GuLiCircleAvoidance.h"
+#include "Misc/ScopeExit.h"
 
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
@@ -343,9 +346,40 @@ bool UGuLiGroundMechMovementComponent::SafeMoveUpdatedComponent(const FVector &D
 																bool bSweep, FHitResult &OutHit, ETeleportType Teleport)
 {
 	PendingMassContact = {};
+    // Only horizontal movement ignores the former shell/hull queries. Vertical
+    // floor and landing queries retain the factory deck, ramp and terrain.
+    auto MoveWorld=[this](const FVector& D,const FQuat& Q,bool Sweep,FHitResult& Hit,ETeleportType T)
+    {
+        auto* Registry=GetWorld()?GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>():nullptr;
+        auto* Body=CharacterOwner?CharacterOwner->GetCapsuleComponent():nullptr;
+        if (!Sweep || T!=ETeleportType::None || !Body || !Registry || !UpdatedComponent || !HasValidData()
+            || CharacterOwner->GetLocalRole()==ROLE_SimulatedProxy || D.SizeSquared2D()<UE_SMALL_NUMBER)
+            return Super::SafeMoveUpdatedComponent(D,Q,Sweep,Hit,T);
+        const FVector Start=UpdatedComponent->GetComponentLocation();const float Half=Body->GetScaledCapsuleHalfHeight();
+        GuLiCircleAvoidance::FRequest R;R.Position=Start-FVector(0,0,Half);
+        R.MinimumZ=FMath::Min(R.Position.Z,R.Position.Z+D.Z);R.MaximumZ=FMath::Max(R.Position.Z,R.Position.Z+D.Z)+2*Half;
+        R.ContactMargin=2;GuLiCircleAvoidance::FQueryScratch Scratch;GuLiCircleAvoidance::FCounters Counts;
+        static const GuLiCircleAvoidance::FIndex Empty;
+        const auto C=GuLiCircleAvoidance::Sweep(Registry->GetCircleIndex(),Empty,R,D,Body->GetScaledCapsuleRadius()+2,false,Scratch,Counts);
+        const double Fraction=C.Blocked?FMath::Max(0.,C.Fraction-.00001):1.;
+        const auto PreviousMask=Body->GetMoveIgnoreMask();
+        Body->SetMoveIgnoreMask(PreviousMask|GuLiCircleCollisionFiltering::CircularBoundaryMask);
+        ON_SCOPE_EXIT {Body->SetMoveIgnoreMask(PreviousMask);};
+        bool Moved=Super::SafeMoveUpdatedComponent(D*Fraction,Q,true,Hit,T);
+        if (Hit.bBlockingHit) Hit.Time*=Fraction;
+        else if (C.Blocked)
+        {
+            Hit=FHitResult(Fraction);Hit.bBlockingHit=true;Hit.TraceStart=Start;Hit.TraceEnd=Start+D;
+            Hit.Location=UpdatedComponent->GetComponentLocation();
+            Hit.Normal=(Hit.Location-C.Circle.Center).GetSafeNormal2D();
+            if (Hit.Normal.IsNearlyZero()) Hit.Normal=-D.GetSafeNormal2D();
+            Hit.ImpactNormal=Hit.Normal;Hit.ImpactPoint=Hit.Location-Hit.Normal*Body->GetScaledCapsuleRadius();
+        }
+        return Moved;
+    };
 	if (!bSweep || Teleport != ETeleportType::None || !HasValidData() ||
 		CharacterOwner->GetLocalRole() == ROLE_SimulatedProxy || !bMoveContextActive || !ActiveMove.Snapshot)
-		return Super::SafeMoveUpdatedComponent(Delta, Rotation, bSweep, OutHit, Teleport);
+		return MoveWorld(Delta, Rotation, bSweep, OutHit, Teleport);
 	const auto *Capsule = CharacterOwner->GetCapsuleComponent();
 	const float Radius = Capsule->GetScaledCapsuleRadius(), HalfHeight = Capsule->GetScaledCapsuleHalfHeight();
 	const float Duration = bSweepStepActive ? SweepRemainingSeconds : 0.0f;
@@ -370,7 +404,7 @@ bool UGuLiGroundMechMovementComponent::SafeMoveUpdatedComponent(const FVector &D
 		return false;
 	}
 	const float Fraction = Contact.IsValid() ? Contact.Time : 1.0f;
-	bool bMoved = Super::SafeMoveUpdatedComponent(Delta * Fraction, Rotation, true, OutHit, Teleport);
+	bool bMoved = MoveWorld(Delta * Fraction, Rotation, true, OutHit, Teleport);
 	if (OutHit.bBlockingHit)
 	{
 		OutHit.Time *= Fraction;
@@ -391,7 +425,7 @@ bool UGuLiGroundMechMovementComponent::SafeMoveUpdatedComponent(const FVector &D
 			{
 				FHitResult PushHit;
 				const FVector Before = UpdatedComponent->GetComponentLocation();
-				Super::SafeMoveUpdatedComponent(Contact.Normal * Correction, Rotation, true, PushHit);
+				MoveWorld(Contact.Normal * Correction, Rotation, true, PushHit, ETeleportType::None);
 				DepenetrationUsed += FVector::Dist(Before, UpdatedComponent->GetComponentLocation());
 			}
 			// A vertical entry may already be deep inside the expanded XY circle. If a
@@ -813,6 +847,7 @@ void UGuLiGroundMechMovementComponent::UpdateGroundMechObstacle(const float Delt
 	FGuLiDynamicObstacle Obstacle;
 	Obstacle.Location = CharacterOwner->GetActorLocation() - FVector(0.0f, 0.0f, HalfHeight);
 	Obstacle.RadiusCentimeters = Radius;
+	Obstacle.HalfHeight = HalfHeight;
 	Obstacle.Kind = EGuLiDynamicObstacleKind::GroundMech;
 	Obstacle.Team = Team;
 	if (!GroundMechObstacleHandle.IsValid())

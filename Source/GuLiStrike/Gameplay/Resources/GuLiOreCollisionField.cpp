@@ -1,4 +1,5 @@
 #include "Gameplay/Resources/GuLiOreCollisionField.h"
+#include "Gameplay/Navigation/GuLiCircleCollisionFiltering.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -8,62 +9,6 @@
 #include "AI/NavigationModifier.h"
 #include "AI/Navigation/NavigationRelevantData.h"
 #include "NavAreas/NavArea_Null.h"
-
-UGuLiOreNavigationComponent::UGuLiOreNavigationComponent()
-{
-    bAttachToOwnersRoot=false;
-    bNavigationRelevant=false;
-}
-void UGuLiOreNavigationComponent::InitializeNodes(TConstArrayView<FGuLiOreNodeObstacle> InNodes,TConstArrayView<uint8> Remaining)
-{
-    check(IsInGameThread()); check(InNodes.Num()<=32);
-    Nodes.Reset(InNodes.Num()); Nodes.Append(InNodes.GetData(),InNodes.Num()); AliveMask=0;
-    for (int32 I=0;I<Nodes.Num();++I)
-        if (Remaining.IsValidIndex(Nodes[I].NodeId-1) && Remaining[Nodes[I].NodeId-1]>0) AliveMask|=1u<<I;
-    Publish();
-}
-void UGuLiOreNavigationComponent::RemoveNodes(TConstArrayView<uint32> NodeIds)
-{
-    check(IsInGameThread());
-    const uint32 Previous=AliveMask;
-    for (int32 I=0;I<Nodes.Num();++I) if (NodeIds.Contains(Nodes[I].NodeId)) AliveMask&=~(1u<<I);
-    if (Previous!=AliveMask) Publish();
-}
-void UGuLiOreNavigationComponent::SetNodesEnabled(bool bEnabled)
-{
-    check(IsInGameThread());
-    AliveMask=bEnabled ? uint32((uint64(1)<<Nodes.Num())-1) : 0;
-    Publish();
-}
-int32 UGuLiOreNavigationComponent::GetAliveCount() const
-{
-    return FPlatformMath::CountBits(AliveMask);
-}
-void UGuLiOreNavigationComponent::Publish()
-{
-    // Single octree update per changed cluster. Recast owns subsequent asynchronous tile generation.
-    bNavigationRelevant=AliveMask!=0;
-    UpdateNavigationBounds();
-    RefreshNavigationModifiers();
-}
-void UGuLiOreNavigationComponent::CalcAndCacheBounds() const
-{
-    Bounds=FBox(ForceInit);
-    for (const auto& Node:Nodes)
-        Bounds+=FBox::BuildAABB(Node.Obstacle.Location,FVector(Node.Obstacle.RadiusCentimeters,
-            Node.Obstacle.RadiusCentimeters,Node.HalfHeight));
-}
-void UGuLiOreNavigationComponent::GetNavigationData(FNavigationRelevantData& Data) const
-{
-    for (int32 I=0;I<Nodes.Num();++I) if (AliveMask&(1u<<I))
-    {
-        const auto& Node=Nodes[I];
-        FAreaNavModifier Area(Node.Obstacle.RadiusCentimeters,Node.HalfHeight*2.f,
-            FTransform(Node.Obstacle.Location),UNavArea_Null::StaticClass());
-        Area.SetIncludeAgentHeight(true);
-        Data.Modifiers.Add(Area);
-    }
-}
 
 AGuLiOreCollisionFieldActor::AGuLiOreCollisionFieldActor()
 {
@@ -76,13 +21,13 @@ AGuLiOreCollisionFieldActor::AGuLiOreCollisionFieldActor()
 
 bool AGuLiOreCollisionFieldActor::InitializeNodes(const UGuLiResourceMapDefinition& Definition,
     const UGuLiResourceEconomyConfig& Config,TConstArrayView<uint8> Remaining,
-    TArray<FGuLiOreNodeObstacle>& OutShapes,FString& OutError)
+    FString& OutError)
 {
     check(IsInGameThread());
     for (const auto& Component:CollisionMeshes) Component->ClearInstances();
     for (auto& Ids:NodeIdsByInstance) Ids.Reset();
     NodeRefs.Init(FInstanceRef{},Definition.Nodes.Num()); AliveCount=0;
-    OutShapes.Reset(Definition.Nodes.Num());
+    InitialComponentByNode.Init(INDEX_NONE,Definition.Nodes.Num());
     for (const auto& Node:Definition.Nodes)
     {
         const auto* Visual=Config.FindOreVisual(Node.ResourceType,Node.FamilyIndex,
@@ -106,6 +51,7 @@ bool AGuLiOreCollisionFieldActor::InitializeNodes(const UGuLiResourceMapDefiniti
             Component->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
             Component->SetCollisionObjectType(ECC_WorldStatic);
             Component->SetCollisionResponseToAllChannels(ECR_Block);
+            Component->SetMaskFilterOnBodyInstance(GuLiCircleCollisionFiltering::CircularBoundaryMask);
             Component->SetGenerateOverlapEvents(false);
             Component->SetVisibility(false);
             Component->SetHiddenInGame(true);
@@ -117,25 +63,7 @@ bool AGuLiOreCollisionFieldActor::InitializeNodes(const UGuLiResourceMapDefiniti
             NodeIdsByInstance.AddDefaulted();
         }
         auto* Component=CollisionMeshes[ComponentIndex].Get();
-        const auto* Body=Component->GetStaticMesh()->GetBodySetup();
-        TArray<FVector> Vertices; FBox Bounds(ForceInit);
-        for (const auto& Convex:Body->AggGeom.ConvexElems)
-            for (const FVector& Vertex:Convex.VertexData)
-            {
-                const FVector World=Node.WorldTransform.TransformPosition(Convex.GetTransform().TransformPosition(Vertex));
-                Vertices.Add(World); Bounds+=World;
-            }
-        if (!Bounds.IsValid || Vertices.IsEmpty())
-        { OutError=FString::Printf(TEXT("Ore ModelId %d has no usable convex vertices"),Visual->ModelId); return false; }
-        FGuLiOreNodeObstacle Shape; Shape.NodeId=Node.NodeId; Shape.ClusterId=Node.ClusterId;
-        Shape.Obstacle.Handle.Value=0x80000000u|Node.NodeId;
-        Shape.Obstacle.Location=Bounds.GetCenter();
-        double RadiusSquared=0;
-        for (const FVector& Vertex:Vertices)
-            RadiusSquared=FMath::Max(RadiusSquared,FVector::DistSquared2D(Vertex,Shape.Obstacle.Location));
-        Shape.Obstacle.RadiusCentimeters=FMath::Max(1.f,float(FMath::Sqrt(RadiusSquared)));
-        Shape.HalfHeight=FMath::Max(1.f,float(Bounds.GetExtent().Z)); Shape.Obstacle.HalfHeight=Shape.HalfHeight;
-        OutShapes.Add(Shape);
+        InitialComponentByNode[Node.NodeId-1]=ComponentIndex;
         if (Remaining[Node.NodeId-1]==0) continue;
         const int32 Instance=Component->AddInstance(Node.WorldTransform,true);
         if (Instance==INDEX_NONE) { OutError=TEXT("Could not create an ore collision instance"); return false; }
@@ -185,4 +113,19 @@ bool AGuLiOreCollisionFieldActor::ValidateInstanceIndexMap() const
         }
     }
     return Count==AliveCount;
+}
+
+bool AGuLiOreCollisionFieldActor::RestoreNodes(TConstArrayView<uint32> NodeIds,const UGuLiResourceMapDefinition& Definition)
+{
+    check(IsInGameThread());
+    for (uint32 Id:NodeIds)
+    {
+        if (!Id || !NodeRefs.IsValidIndex(Id-1) || !Definition.Nodes.IsValidIndex(Id-1)) return false;
+        if (NodeRefs[Id-1].Component!=INDEX_NONE) continue;
+        const int32 C=InitialComponentByNode[Id-1];if (!CollisionMeshes.IsValidIndex(C)) return false;
+        const int32 I=CollisionMeshes[C]->AddInstance(Definition.Nodes[Id-1].WorldTransform,true);
+        if (I!=NodeIdsByInstance[C].Num()) return false;
+        NodeIdsByInstance[C].Add(Id);NodeRefs[Id-1]={C,I};++AliveCount;
+    }
+    return true;
 }

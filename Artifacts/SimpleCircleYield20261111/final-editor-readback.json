@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "pid": 47876,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pie": 0,
+    "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeAvoidance_Units.DT_GuLiStrikeAvoidance_Units",
+    "yield_seconds": {
+      "1": 0.3,
+      "2": 0.3,
+      "3": 0.3,
+      "4": 0.3,
+      "5": 0.3,
+      "6": 0.3
+    },
+    "manifests": [
+      {
+        "file": "..\\..\\..\\..\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "algorithm": "demo-active-steering-yield-v4",
+        "config_hash": "a1910d7fc481635b258af6aac27349f5a7dc19fbf6c66127f804fbcb36f62c14"
+      },
+      {
+        "file": "..\\..\\..\\..\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "algorithm": "demo-active-steering-yield-v4",
+        "config_hash": "33ad98a8995d7d8c5cf57ae64f693d6206b1f971ff5b1b8136ec9a88f82ee0ae"
+      },
+      {
+        "file": "..\\..\\..\\..\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
+        "algorithm": "demo-active-steering-yield-v4",
+        "config_hash": "dfe885b23073f1fd41b81d5e61a7643e9cd82a2f268d5d98e81748fa20b1a017"
+      },
+      {
+        "file": "..\\..\\..\\..\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
+        "algorithm": "demo-active-steering-yield-v4",
+        "config_hash": "247c42ec0bbe676306d35e9ecd054f644d2796abf97e2638468307931c8e6e12"
+      }
+    ],
+    "review_actors": [
+      {
+        "label": "CircleAvoidanceReview_Entry",
+        "class": "Note",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_100"
+      },
+      {
+        "label": "CircleAvoidanceReview_View",
+        "class": "CameraActor",
+        "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_39"
+      }
+    ],
+    "dirty_maps": [],
+    "dirty_content": []
+  }
+}

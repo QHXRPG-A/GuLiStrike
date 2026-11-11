@@ -7,6 +7,7 @@
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 
 TArray<FTransform> UGuLiBuildingLifecycleComponent::GetConstructionSlotPoses() const
 {
@@ -50,9 +51,13 @@ bool UGuLiBuildingLifecycleComponent::BuildNextConstructionSlot()
 	auto* Prototype=ConstructionPrototype.Get();
 	if (!Prototype || !CastChecked<IGuLiEngineeringVehicle>(Prototype)->GetEngineeringTravelBounds().IsValid) return false;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiConstruction_BuildSlot);
-	const FVector Extent(GetDefinition().FootprintCells*150.);
-	const double Clearance=FMath::Max(Prototype->GetCapsuleComponent()->GetScaledCapsuleRadius(),
-		Prototype->GetNavAgentPropertiesRef().AgentRadius)+80;
+	const auto& Catalog=GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>()->GetAvoidanceCatalog();
+	const auto& Unit=Catalog.Units.FindChecked(uint16(CastChecked<IGuLiEngineeringVehicle>(Prototype)->GetUnitTypeId())).Solver;
+	double Boundary=0;
+	if (const auto* Circles=Catalog.Buildings.Find(State.DefinitionId))
+		for (const auto& C:*Circles) if (C.PhaseMask&1) Boundary=FMath::Max(Boundary,C.LocalCenter.Size2D()+C.Radius);
+	const FVector Extent(Boundary);
+	const double Clearance=Unit.Radius+Unit.Clearance+Unit.ContactMargin+80;
 	const FVector Local[] = {FVector(Extent.X+Clearance,0,0),FVector(0,Extent.Y+Clearance,0),
 		FVector(-Extent.X-Clearance,0,0),FVector(0,-Extent.Y-Clearance,0)};
 	const FVector Ground=GetGroundLocation();

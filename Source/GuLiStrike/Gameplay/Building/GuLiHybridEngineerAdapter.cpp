@@ -1,4 +1,5 @@
 #include "Battle/Combat/GuLiHybridTargetBinding.h"
+#include "Gameplay/Performance/GuLiMovementCapture.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Network/GuLiHybridManifestRegistry.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
@@ -153,6 +154,7 @@ public:
     }
     void Advance(uint64 At,double Delta) override
     {
+        if (GuLiMovementCapture::HoldAutomaticWork(World(),Pawn.Get())) return;
         auto* P=Pawn.Get(); if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         const float Dt=static_cast<float>(Delta);
         P->Travel->AdvanceHybrid(Dt); P->Work->AdvanceHybrid(Dt);
@@ -187,6 +189,7 @@ public:
         else if (C.Operation==TEXT("Move")) {Command.CommandId=GetTypeHash(C.Event)|1; Command.Kind=EGuLiUnitTaskKind::Move; Command.Target=M.Destination;}
         else return false;
         // Frozen formation slots are supplied by the controlling endpoint.
+        Command.MovementCommandIdentity=C.Event;
         if (Command.Kind==EGuLiUnitTaskKind::Move) Command.Target=M.Destination;
         AGuLiBattlePlayerState* Player=nullptr;
         for (APlayerState* Entry:World()->GetGameState<AGuLiBattleGameState>()->PlayerArray)

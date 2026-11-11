@@ -48,13 +48,13 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Movement", meta=(Units="cm"))
 	float AltitudeCentimeters = 0.f;
 
-	/** Model-width override; zero keeps the existing Mass default. No extra clearance. */
+	/** Resolved from the match avoidance table; independent of model and grid size. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier", meta = (Units = "cm"))
 	float MassAvoidanceRadiusCm = 0.0f;
 
-	/** Frozen from authored collision once; all consumers use this resolved footprint. */
+	/** Authored grid/model reference diameter. Avoidance radius changes never rescale the model. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Grid") int32 FootprintCells = 1;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Grid") float SourceCollisionDiameterCm = 300.f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Grid") float GridReferenceDiameterCm = 300.f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Units|Grid") float GridDimensionScale = 1.f;
 
 	float GetMassAvoidanceRadius(const float DefaultRadius) const

@@ -1,0 +1,74 @@
+{
+  "path": "C:\\Users\\a\\.codex\\visualizations\\2026\\11\\10\\01a1c3bf-6d0c-7182-8498-b7627f8f2dd0\\round-movement-demo\\dist\\index.html",
+  "sha256": "a2d6ab7024d1c825499ac61bde8887e6ee4bf5bfaad46eb14b541ede18cda32d",
+  "url": "http://127.0.0.1:61229/?v=yield-5",
+  "simulation_hz": 10,
+  "default_mode": "steer",
+  "yield_duration_seconds": 0.3,
+  "size_rule": "blocker.radius <= mover.radius",
+  "direction": "opposite transverse side relative to mover original direction",
+  "execution": "next logic step, normal speed, resume original order; stationary units remain displaced",
+  "checks": "script syntax, DOM element presence, startup bindings; local HTTP serves current file",
+  "visual_tested": false,
+  "player_approved": false,
+  "integrated_into_ue": true,
+  "included_in_ue_measurements": true,
+  "previous_versions": [
+    {
+      "url": "http://127.0.0.1:61229/?v=yield-1",
+      "sha256": "0f05204ccf08b555d73dbf9467434fb0332c0d3afa49f68c9edcf19b775a5c55"
+    },
+    {
+      "url": "http://127.0.0.1:61229/?v=yield-2",
+      "sha256": "0d9083b119a1c7a49b98b3a90dbb3323a1b4f25079cac601bef7034db955abc2"
+    },
+    {
+      "url": "http://127.0.0.1:61229/?v=yield-3",
+      "sha256": "9ff62fdf61775c6ef0ebf3b4a4ffcc1feb0f317a9fb82850f5b98805aafe6757"
+    },
+    {
+      "url": "http://127.0.0.1:61229/?v=yield-4",
+      "sha256": "ce0ebfa490bbf4281f0043c3776f21c651b0ddf0d850fa02755f218ad61bdd87"
+    }
+  ],
+  "same_command_rule": "Equal non-null commandId suppresses yield; completed members retain commandId; separate orders and idle blockers remain eligible.",
+  "latest_checks": "Two inline scripts compile; DOM and all nine counter bindings exist; local HTTP bytes match. Runtime and visual outcome reserved for player.",
+  "default_scenario": "crowd",
+  "size_comparison": {
+    "units": 4,
+    "large_small_radius_ratio": 1.8,
+    "top": "large mover, small idle blocker",
+    "bottom": "small mover, large idle blocker",
+    "per_blocker_yield_count": true
+  },
+  "ue_algorithm": "demo-active-steering-yield-relay-v5",
+  "ue_evidence": "../YieldRelay20261111/implementation-status.json",
+  "crowd_counts": {
+    "large_default": 4,
+    "small_default": 100,
+    "large_range": [
+      1,
+      24
+    ],
+    "small_range": [
+      0,
+      200
+    ],
+    "large_order": "shared move command",
+    "small_order": "idle"
+  },
+  "yield_trigger": "Blocked steering intent, regardless of accepted movement; failed side probes retain preferred side.",
+  "propagation": {
+    "target": "first blocker from existing yield movement sweep",
+    "direction": "unchanged",
+    "timing": "next logic step",
+    "maximum_receivers_per_yielder_per_step": 1,
+    "filters": "each hop respects smaller/equal radius and excludes the same non-null commandId",
+    "additional_queries": 0,
+    "counter": "yieldRelays"
+  },
+  "ue_integration_note": "Blocked steering intent and next-step neighbor relay are loaded in the game; all six game unit profiles use 0.5 seconds.",
+  "ue_yield_duration_seconds": 0.5,
+  "ue_measurement_status": "completed",
+  "ue_performance_report": "../YieldRelay20261111/性能对比.md"
+}

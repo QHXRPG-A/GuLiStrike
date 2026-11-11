@@ -1,4 +1,5 @@
 #include "Battle/Combat/GuLiHybridTargetBinding.h"
+#include "Gameplay/Performance/GuLiMovementCapture.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
@@ -219,6 +220,7 @@ public:
     }
     void Advance(uint64 At,double Delta) override
     {
+        if (GuLiMovementCapture::HoldAutomaticWork(World(),Pawn.Get())) return;
         auto* P=Pawn.Get(); if (!P || !bLocal || Record.LifeState!=1 || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         { TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_Prepare); if (!P->PrepareHybridMiningStep()) return; }
         const float Dt=static_cast<float>(Delta);
@@ -254,6 +256,7 @@ public:
         if (C.Operation==TEXT("UnitTask")) {if (!GuLiHybridState::DecodeTaskCommand(C.Arguments,Command,Pitch,Radius)) return false;}
         else if (C.Operation==TEXT("Move")) {Command.CommandId=GetTypeHash(C.Event)|1;Command.Kind=EGuLiUnitTaskKind::Move;Command.Target=M.Destination;}
         else return false;
+        Command.MovementCommandIdentity=C.Event;
         if (Command.Kind==EGuLiUnitTaskKind::Move) Command.Target=M.Destination;
         AGuLiBattlePlayerState* Player=nullptr;
         for (APlayerState* Entry:World()->GetGameState<AGuLiBattleGameState>()->PlayerArray)

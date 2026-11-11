@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>肉鸽牌关系图 · GuLiStrike</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/app.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <svg viewBox="0 0 30 30" aria-hidden="true">
+                <path d="M9 15H15L21 8M15 15L21 22" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <rect x="3" y="11" width="7" height="8" rx="2" fill="currentColor"/>
+                <rect x="20" y="4" width="7" height="8" rx="2" fill="currentColor"/>
+                <rect x="20" y="18" width="7" height="8" rx="2" fill="currentColor"/>
+            </svg>
+            <div><span>GuLiStrike</span><h1>肉鸽牌关系图</h1></div>
+        </div>
+        <nav class="seats" aria-label="席位" role="tablist">
+            <button type="button" id="tab-Commander" data-seat="Commander" role="tab" aria-controls="workspace" aria-selected="true">指挥官 <span></span></button>
+            <button type="button" id="tab-Ground" data-seat="Ground" role="tab" aria-controls="workspace" aria-selected="false">地面 <span></span></button>
+            <button type="button" id="tab-Air" data-seat="Air" role="tab" aria-controls="workspace" aria-selected="false">空中 <span></span></button>
+        </nav>
+        <div class="actions">
+            <button type="button" id="undo" class="quiet" title="撤销（Ctrl+Z）" disabled>撤销</button>
+            <button type="button" id="add" disabled><span class="plus" aria-hidden="true">+</span> 新增卡牌</button>
+            <button type="button" id="save" class="primary" title="保存草稿（Ctrl+S）" disabled>保存草稿</button>
+        </div>
+    </header>
+
+    <main class="editor">
+        <section id="workspace" class="workspace" role="tabpanel" aria-labelledby="tab-Commander">
+            <div class="canvas-toolbar">
+                <div class="modes" role="group" aria-label="连线类型">
+                    <button type="button" data-mode="requires" aria-pressed="true">
+                        <svg viewBox="0 0 23 12" aria-hidden="true"><path d="M1 6H21M16 2L21 6L16 10"/></svg>
+                        前置
+                    </button>
+                    <button type="button" data-mode="excludes" aria-pressed="false">
+                        <svg viewBox="0 0 23 12" aria-hidden="true"><path d="M1 6H22"/></svg>
+                        互斥
+                    </button>
+                </div>
+                <p id="guide">从前置卡右侧的圆点拖到需要它的卡。</p>
+                <button type="button" class="quiet fit" id="fit" title="将当前页所有节点放入视野">适应画布</button>
+            </div>
+            <div id="source-notice" class="source-notice" hidden>正式卡表已有更新。接入游戏前请核对这份草稿的基线。</div>
+            <div id="canvas" class="canvas" role="region" aria-label="卡牌节点图">
+                <div id="world" class="world">
+                    <svg class="edge-canvas" width="1" height="1" aria-label="卡牌连线">
+                        <defs>
+                            <marker id="require-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+                                <path d="M1 1L9 5L1 9" fill="none" stroke="var(--dependency)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </marker>
+                        </defs>
+                        <g id="edges"></g>
+                        <path id="link-preview" class="edge-stroke" visibility="hidden"/>
+                    </svg>
+                    <div id="nodes"></div>
+                </div>
+                <div id="empty" class="empty">
+                    <div>
+                        <p id="empty-title">正在读取卡表</p>
+                        <p id="empty-text"></p>
+                        <button id="empty-add" type="button" hidden>新增卡牌</button>
+                    </div>
+                </div>
+                <div class="zoom" aria-label="缩放">
+                    <button type="button" id="zoom-out" title="缩小" aria-label="缩小">−</button>
+                    <span id="zoom-level">100%</span>
+                    <button type="button" id="zoom-in" title="放大" aria-label="放大">+</button>
+                </div>
+            </div>
+            <footer class="canvas-footer">
+                <span id="counts"></span>
+                <span>滚轮缩放 · 拖动空白处平移</span>
+            </footer>
+        </section>
+        <aside id="inspector" class="inspector" aria-label="卡牌与连线详情">
+            <p class="muted">选择卡牌查看说明，选择连线查看关系。</p>
+        </aside>
+    </main>
+
+    <footer class="statusbar">
+        <span id="save-state">正在读取</span>
+        <span id="message" role="status" aria-live="polite"></span>
+    </footer>
+
+    <dialog id="card-dialog" aria-labelledby="dialog-title">
+        <form id="card-form">
+            <h2 id="dialog-title">新增卡牌</h2>
+            <label for="card-title">卡名</label>
+            <input id="card-title" name="title" maxlength="80" required autocomplete="off">
+            <label for="card-description">描述</label>
+            <textarea id="card-description" name="description" rows="5" maxlength="2000"></textarea>
+            <div class="dialog-actions">
+                <button id="cancel-card" type="button" class="quiet">取消</button>
+                <button type="submit" class="primary">确定</button>
+            </div>
+        </form>
+    </dialog>
+    <noscript>请启用浏览器 JavaScript 以编辑卡牌关系。</noscript>
+</body>
+</html>

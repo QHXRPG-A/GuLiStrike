@@ -41,7 +41,7 @@ EGuLiHybridCommandPreparation Prepare(UWorld& W,const FGuLiHybridObjectState& O,
     const auto* Caster=Data?Data->FindSoldierDefinition(Type):nullptr;
     if (!Unit || !Unit->UsesMass() || !Unit->bSummonOnly || !Caster) return EGuLiHybridCommandPreparation::Rejected;
     const auto R=GuLiGridBirths::Prepare(*G,O,C.Event,Position,Caster->FootprintCells,Unit->FootprintCells,Config->Count,
-        Config->ClearanceCentimeters,Config->OuterRings,Config->CandidatesPerRing,Unit->MovementLayer,Unit->AltitudeCentimeters);
+        Config->ClearanceCentimeters,Config->OuterRings,Config->CandidatesPerRing,Unit->MovementLayer,Unit->AltitudeCentimeters,Unit->UnitTypeId);
     return R==EGuLiGridPermit::Granted?EGuLiHybridCommandPreparation::Ready:
         R==EGuLiGridPermit::Pending?EGuLiHybridCommandPreparation::Pending:EGuLiHybridCommandPreparation::Rejected;
 }

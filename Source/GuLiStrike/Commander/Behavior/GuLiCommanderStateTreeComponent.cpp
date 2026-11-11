@@ -3,6 +3,7 @@
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Engine/World.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
+#include "Gameplay/Performance/GuLiMovementCapture.h"
 
 UGuLiCommanderStateTreeComponent::UGuLiCommanderStateTreeComponent()
 {
@@ -28,6 +29,7 @@ void UGuLiCommanderStateTreeComponent::Configure(FGuLiTaskUnitId InUnit, UStateT
 void UGuLiCommanderStateTreeComponent::AdvanceBehavior(float DeltaSeconds)
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority()) return;
+    if (GuLiMovementCapture::HoldAutomaticWork(GetWorld(),GetOwner())) return;
 	FGuLiPerformanceScope Timing(GetWorld(), TEXT("StateTree.ActorMs"));
 	if (!bStartAttempted)
 	{

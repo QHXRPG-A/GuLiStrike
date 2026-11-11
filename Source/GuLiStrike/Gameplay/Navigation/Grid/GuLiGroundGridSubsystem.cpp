@@ -58,8 +58,9 @@ void UGuLiGroundGridSubsystem::OnHybridObject(const FGuLiHybridObjectKey& Key)
     const int32 Id=Slash>=0?FCString::Atoi(*Definition.Mid(Slash+1)):0;
     if (Building)
     {
-        if (const auto* Catalog=UGuLiBuildingCatalog::LoadDefaultCatalog())
-            if (const auto* D=Catalog->FindById(Id)) SetStaticObstacle(Key,FGuLiGridMotion::Coverage(*Current,O.Location,D->FootprintCells));
+        // The lifecycle publishes its real circle group. A filled grid rectangle
+        // would close factory interiors and disagree with movement/landing checks.
+        RemoveStaticObstacle(Key);
         return;
     }
     auto* R=TrafficLedger.Find(Key);

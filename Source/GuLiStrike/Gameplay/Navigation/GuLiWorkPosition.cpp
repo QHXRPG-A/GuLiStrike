@@ -1,4 +1,7 @@
 #include "Gameplay/Navigation/GuLiWorkPosition.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
+#include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
+#include "Gameplay/Navigation/GuLiCircleCollisionFiltering.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -14,7 +17,10 @@ bool GuLiWorkPosition::ProjectPose(const ACharacter& Vehicle, const FVector& Des
 	if (!Nav || !Model) return false;
 	// The character capsule is the physical/nav body. The mining arm may overhang
 	// ore without colliding; using its visual bounds would make inner ore unreachable.
-	const double Radius=Vehicle.GetCapsuleComponent()->GetScaledCapsuleRadius();
+    const auto* Units=Vehicle.GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>();
+    const auto* Profile=Units?Units->GetAvoidanceCatalog().Units.Find(uint16(Model->GetUnitTypeId())):nullptr;
+    if (!Profile) return false;
+	const double Radius=Profile->Solver.Radius;
 	const double HalfHeight=Vehicle.GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	const FBox Bounds=FBox::BuildAABB(FVector::ZeroVector,FVector(Radius,Radius,HalfHeight));
 	// Engineering Mass follows CommanderSoldier corridors. A grid-only placement
@@ -22,6 +28,9 @@ bool GuLiWorkPosition::ProjectPose(const ACharacter& Vehicle, const FVector& Des
 	const auto* Data = Nav->GetNavDataForAgentName(TEXT("CommanderSoldier"));
 	FNavLocation Ground;
 	if (!Data || !Nav->ProjectPointToNavigation(Desired, Ground, FVector(80,80,5000), Data)) return false;
+    auto* Registry=Vehicle.GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+    if (!Registry || !Registry->GetSnapshot()->IsSegmentClear(Ground.Location,Ground.Location,Radius,false,
+        EGuLiUnitMovementLayer::Ground,Profile->Solver.Clearance,Profile->Solver.ContactMargin,0,false)) return false;
 	FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiWorkPosition), false, &Vehicle);
 	TInlineComponentArray<UChildActorComponent*> Children(&Vehicle);
 	for (const auto* Child : Children) Query.AddIgnoredActor(Child->GetChildActor());
@@ -41,6 +50,7 @@ bool GuLiWorkPosition::ProjectPose(const ACharacter& Vehicle, const FVector& Des
 	if (MaxZ-MinZ > Vehicle.GetCharacterMovement()->MaxStepHeight) return false;
 	Out = FTransform(Rotation, FVector(Ground.Location.X,Ground.Location.Y,
 		MaxZ+FMath::Max(double(Vehicle.GetCapsuleComponent()->GetScaledCapsuleHalfHeight()),-Bounds.Min.Z)+1));
+    Query.IgnoreMask|=GuLiCircleCollisionFiltering::CircularBoundaryMask;
 	return !Vehicle.GetWorld()->OverlapAnyTestByObjectType(Out.TransformPosition(Bounds.GetCenter()), Out.GetRotation(),
 		StaticObjects, FCollisionShape::MakeCapsule(Radius,HalfHeight*.99), Query);
 }

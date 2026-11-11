@@ -4,18 +4,22 @@
 
 ## 启动
 
-### 常驻服务（推荐）
+### 三个本地工具的保活
 
-注册为 Windows 计划任务：当前用户登录时自动启动，无窗口常驻，异常退出后每分钟自动重试；重复启动会自动幂等退出，不会产生多实例。
+日常从工具主页进入，点击任一工具会在新标签页打开。主页与进度面板共用 `4317`，修改 `tools.html` 后刷新即可。 [GuLiStrike 工具主页](http://127.0.0.1:4317/tools/) · [主页源文件](tools.html)
+
+Windows 计划任务 `GuLiStrike ProgressDashboard` 在当前用户登录时无窗口启动。它维护主页及项目进度面板 `4317`、独立地图设计器 `4321` 和肉鸽牌关系图 `4322`。三个服务都绑定 `127.0.0.1`。工具进程退出或连续三次未通过探测时，保活会恢复对应进程。保活任务自身异常退出时由计划任务重试。
 
 ```powershell
-.\Tools\ProgressDashboard\install_startup_task.ps1 -Start   # 注册并立即启动
-.\Tools\ProgressDashboard\install_startup_task.ps1 -Remove  # 取消开机自启
+.\Tools\ProgressDashboard\install_startup_task.ps1 -Start   # 注册并启动或重启保活
+.\Tools\ProgressDashboard\install_startup_task.ps1 -Remove  # 停止保活并取消登录自启
 ```
 
-日志写入 `Tools\ProgressDashboard\service.log`（超过 2MB 自动轮转为 `service.log.old`）。手动重启：任务计划程序中结束任务后重新运行，或直接杀掉 `pythonw.exe` 进程，任务会在一分钟内自动拉起。
+保活只运行已有的前端产物和 Python 服务。新工作区先按各工具的手动启动说明准备前端与依赖。计划任务已启动时，手动入口会复用同一端口上已就绪的工具。端口被其他服务占用时，保活记录情况并等待释放。
 
-### 前台运行
+保活日志位于 `Tools/ProgressDashboard/keepalive.log`，各工具的服务输出位于对应目录的 `keepalive-worker.log`。修改工具的 Python 服务后，可以用 `-Start` 重新加载保活和它启动的服务。
+
+### 手动打开或前台运行
 
 在 PowerShell 中运行：
 
@@ -23,12 +27,13 @@
 .\Tools\ProgressDashboard\start.ps1
 ```
 
-首次缺少构建产物时，脚本会安装依赖并执行生产构建；之后直接启动前台 Python 服务并打开 <http://127.0.0.1:4317>。按 `Ctrl+C` 停止。
+如果页面已就绪，脚本直接打开 <http://127.0.0.1:4317>。首次缺少构建产物时，脚本会安装依赖并执行生产构建，再启动前台 Python 服务。按 `Ctrl+C` 停止前台实例。
 
 ## 接口
 
 ### 只读
 
+- `GET /api/ready` 检查工具主页和进度面板前端是否就绪，返回服务身份和主页路径，供保活探测。
 - `GET /api/health`
 - `GET /api/snapshot`
 - `GET /api/search?q=关键词`

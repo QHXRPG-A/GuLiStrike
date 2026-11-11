@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gameplay/Navigation/GuLiCircleAvoidance.h"
 #include "GameFramework/Actor.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "GameFramework/Character.h"
@@ -24,8 +25,8 @@ class UStaticMeshComponent;
 class UGuLiResourceEconomyConfig;
 class UGuLiResourceMapDefinition;
 class UGuLiResourceWorldSubsystem;
-class UGuLiOreNavigationComponent;
-struct FGuLiOreNodeObstacle;
+class UGuLiCircularNavigationComponent;
+namespace GuLiCircleAvoidance {struct FCircle;}
 
 /** One renderer for all 6240 logical nodes. It owns exactly 24 HISM components. */
 UCLASS(NotPlaceable)
@@ -85,8 +86,7 @@ public:
 	AGuLiOreClusterObstacleActor();
 	void InitializeObstacle(uint16 InClusterId, float RadiusCentimeters);
 	void SetObstacleEnabled(bool bEnabled);
-	void InitializeNodes(uint16 InClusterId,TConstArrayView<FGuLiOreNodeObstacle> Nodes,TConstArrayView<uint8> Remaining);
-	void RemoveNodes(TConstArrayView<uint32> NodeIds);
+	void SetCircles(uint16 InClusterId,TConstArrayView<GuLiCircleAvoidance::FCircle> Circles);
 	UFUNCTION(BlueprintPure, Category = "Resources|Navigation")
 	int32 GetClusterId() const { return ClusterId; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Navigation")
@@ -99,7 +99,9 @@ private:
 	TObjectPtr<USceneComponent> SceneRoot;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UGuLiOreNavigationComponent> NavModifier;
+	TObjectPtr<UGuLiCircularNavigationComponent> NavModifier;
+    TArray<GuLiCircleAvoidance::FCircle> CurrentCircles;
+    bool bCirclesEnabled=true;
 
 	uint16 ClusterId = 0u;
 	float ObstacleRadius = 0;

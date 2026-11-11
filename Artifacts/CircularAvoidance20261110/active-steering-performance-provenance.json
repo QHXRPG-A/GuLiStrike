@@ -1,0 +1,44 @@
+{
+  "algorithm": "demo-active-steering-v3",
+  "authorized": "User: 可以做性能比对测试了",
+  "started_at": "2026-11-11T03:41:12.209453+08:00",
+  "build": {
+    "engine": "D:/UnrealEngine-5.7",
+    "target": "GuLiStrikeEditor Win64 Development",
+    "exit_code": 0,
+    "engine_build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+    "project_build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+    "algorithm": "demo-active-steering-v3"
+  },
+  "old_suite": "old-suite.json",
+  "new_suite": "active-steering-suite.json",
+  "scope": "8 scenarios x 3 repeats x 30 seconds, original frozen 632-unit recipes",
+  "file_sha256": {
+    "Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.cpp": "ff6bf0dd04ef77e9bba30423289a62046c496fe55954e0e09a6d8392821f8611",
+    "Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.h": "e8685100dde3a0f8a0e552f9205a9abaca382e574ce52575208baaeda95dfd3e",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp": "dddfcf051615de6a7a8343306f95378eec8a715216d0d034e9727857fc1fafd1",
+    "Source/GuLiStrike/Gameplay/Data/GuLiAvoidanceCatalog.cpp": "de970f1de2d38ddd2688ceddbb8a011fd7b6791cab1a4134000833f5f0dabd3a",
+    "Data/Json/DT_GuLiStrikeAvoidance_Units.json": "4399874bbb730f1c50afcfaa0303cd10fbd07173c9a519ea677c995b4e7920c3",
+    "Config/Hybrid/RuntimeManifest-600.json": "17dd925b0de19cdb365db69f9822e96ac14f5279a3cbeefcf8394dc691d6aa3f",
+    "Scripts/Performance/capture_circular_avoidance.py": "d4a01128bcd907cfa394f9c7c94c4b2a379a05d9efaadf6f6eab232a66fdbae8",
+    "Scripts/Performance/replay_circular_avoidance_suite.py": "a08a58b27ca94914d769e1e24099322a5b85c4b957d3e95d09a65b739cf70b77",
+    "Scripts/Performance/report_circular_avoidance.py": "f4ef38120195d89786c2e7ef59041e67f662d56d343c1d4cf6575f2544c788b3"
+  },
+  "map_package_metadata": "Informational only; compare frozen semantic layout, entities, camera, quality and full population",
+  "penetration": "Informational, not acceptance gate",
+  "collection_and_gameplay_files_unchanged": true,
+  "analysis_scripts_updated_during_collection": [
+    "Scripts/Performance/report_circular_avoidance.py"
+  ],
+  "analysis_sha256": {
+    "Scripts\\Performance\\report_circular_avoidance.py": "5fa6673bc346579ca85a4ba9b3d48c2b210417a9c368f91963b298d4b5991faa",
+    "Scripts\\Performance\\write_circle_avoidance_report.py": "d7b4b0ccaa4903bd72d254f58e1b4e186382575f005c8f3747708dcdab731cba"
+  },
+  "completed_at": "2026-11-11T04:10:43.445966+08:00",
+  "valid_windows": 24,
+  "comparison": "active-steering-comparison.json",
+  "report": "原主动绕侧性能对比.md",
+  "phase_csv": "原主动绕侧分项统计.csv",
+  "finish_state": "active-steering-performance-finish.json",
+  "demo_yield_included": false
+}

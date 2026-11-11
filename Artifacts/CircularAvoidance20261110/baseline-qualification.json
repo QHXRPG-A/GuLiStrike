@@ -1,0 +1,88 @@
+{
+  "baseline_gate_passed": false,
+  "replacement_performed": false,
+  "controlled_crossing_windows": [
+    {
+      "directory": "old-crossing-05",
+      "seconds": 30.007217898964882,
+      "logical_steps": 300,
+      "commanded_units": 50,
+      "arrived": 16,
+      "failed_order_observed": 0,
+      "fixed_step_ms": {
+        "mean": 0.9401251251498858,
+        "p95": 1.3560019433498383,
+        "p99": 1.5043988823890686
+      },
+      "immediate_updates": 1769,
+      "immediate_ms_total": 761.8972361087799,
+      "fixed_plus_immediate_ms_per_logical_step": 3.479782578845819,
+      "maximum_stall_seconds": 15.800404500216246,
+      "maximum_observed_overlap_pairs": 69,
+      "maximum_observed_swept_overlap_pairs": 70,
+      "physical_memory_delta_bytes": -68968448,
+      "capture_valid": true,
+      "movement_worker_enabled": false,
+      "census_before": 600,
+      "census_after": 600
+    },
+    {
+      "directory": "old-crossing-06",
+      "seconds": 30.004439998418093,
+      "logical_steps": 300,
+      "commanded_units": 50,
+      "arrived": 31,
+      "failed_order_observed": 0,
+      "fixed_step_ms": {
+        "mean": 0.9018971646825472,
+        "p95": 1.323699951171875,
+        "p99": 1.406598836183548
+      },
+      "immediate_updates": 1769,
+      "immediate_ms_total": 739.9324104189873,
+      "fixed_plus_immediate_ms_per_logical_step": 3.368338532745838,
+      "maximum_stall_seconds": 12.897260498255491,
+      "maximum_observed_overlap_pairs": 68,
+      "maximum_observed_swept_overlap_pairs": 68,
+      "physical_memory_delta_bytes": -1904640,
+      "capture_valid": true,
+      "movement_worker_enabled": false,
+      "census_before": 600,
+      "census_after": 600
+    },
+    {
+      "directory": "old-crossing-07",
+      "seconds": 30.00312040001154,
+      "logical_steps": 300,
+      "commanded_units": 50,
+      "arrived": 25,
+      "failed_order_observed": 0,
+      "fixed_step_ms": {
+        "mean": 0.927444597085317,
+        "p95": 1.3375021517276764,
+        "p99": 1.4136023819446564
+      },
+      "immediate_updates": 1769,
+      "immediate_ms_total": 754.0600337088108,
+      "fixed_plus_immediate_ms_per_logical_step": 3.440978042781353,
+      "maximum_stall_seconds": 13.598250702023506,
+      "maximum_observed_overlap_pairs": 68,
+      "maximum_observed_swept_overlap_pairs": 69,
+      "physical_memory_delta_bytes": -24748032,
+      "capture_valid": true,
+      "movement_worker_enabled": false,
+      "census_before": 600,
+      "census_after": 600
+    }
+  ],
+  "snapshot_unit_count": 632,
+  "fixed_snapshot_replay_verified": true,
+  "measured_map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "limitations": [
+    "Only crossing has three complete controlled 30-second windows. Hold, mixed gathering, surround attack, buildings/ore stage changes and engineering work are not qualified.",
+    "The observer samples 10 Hz logical steps; frame-interleaved immediate movement was found. Swept overlap observations do not cover every intermediate displacement, and static-obstacle penetration is not recorded.",
+    "Index/solver/commit/NavMesh/repath/ore-update per-step attribution and per-active-unit cost are incomplete. Fixed-step cost must not be presented as total movement cost.",
+    "Full map/ore/camera/quality frozen-snapshot verification is incomplete; 632 unit identities, positions, ownership and health plus population counts were verified."
+  ],
+  "next_action": "Complete baseline event coverage and workload/scenario replay before changing movement shapes, data tables or avoidance algorithms."
+}

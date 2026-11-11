@@ -28,10 +28,6 @@ inline bool ProjectBody(UWorld& World,const FVector& Point,int32 Size,const FVec
     auto* N=FNavigationSystem::GetCurrent<UNavigationSystemV1>(&World);
     return N && N->ProjectPointToNavigation(Point,Out,Extent,Legacy);
 }
-inline bool Unoccupied(UGuLiGroundGridSubsystem& G,const FVector& Point,int32 Size,const FGuLiHybridObjectKey& Ignore={},TOptional<EGuLiUnitMovementLayer> Layer={})
-{
-    const auto S=G.Snapshot();if (!S) return false;
-    const auto A=S->AnchorAt(Point,Size);if (!S->Fits(A,Size)) return false;
-    TArray<FGuLiHybridObjectKey> Hits;G.Traffic().Query(FRect::At(A,Size),Ignore,Hits,Layer);return Hits.IsEmpty();
-}
+GULISTRIKE_API bool Unoccupied(UGuLiGroundGridSubsystem& G,const FVector& Point,int32 Size,
+    const FGuLiHybridObjectKey& Ignore={},TOptional<EGuLiUnitMovementLayer> Layer={},uint16 UnitType=0);
 }

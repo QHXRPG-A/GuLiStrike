@@ -350,6 +350,7 @@ void AGuLiMiningVehiclePawn::TickReturningToFactory()
 	if (!IsValid(Factory) || Factory->GetTeam() != Team
 		|| !Factory->FindComponentByClass<UGuLiBuildingLifecycleComponent>()->IsCompleted())
 	{ BehaviorResult = EGuLiCommanderWorkResult::FactoryLost; return; }
+
 	const auto Status = FindComponentByClass<UGuLiEngineeringTravelComponent>()->GetMoveStatus();
 	if (Status == EGuLiEngineeringMoveStatus::Arrived) BehaviorResult = EGuLiCommanderWorkResult::AtFactory;
 	else if (Status == EGuLiEngineeringMoveStatus::Failed) BehaviorResult = EGuLiCommanderWorkResult::Failed;

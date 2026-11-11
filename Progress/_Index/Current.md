@@ -39,6 +39,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | 用户通过本地关系图完成实际设计并保存草稿。 | 2026-11-09 |
 | [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | combat, performance, ui | — | 用户在LVL_CommanderMassPrototype进入Ground席位，按GroundSceneUIFeedback_Entry检查边界、敌方变化和实例隔离。 | 2026-11-06 |
 | [游骑兵交战长帧治理](../DevelopmentDocumentation/20261106-游骑兵交战长帧治理.md) | network, performance, rendering, ui | 8/9 (89%) | 用户在LVL_CommanderMassPrototype的PerfGroundCombatHitches_Entry核验游骑兵操作、HUD和首次命中特效；原始渲染尖峰再次发生时用新增资源名称计时追踪。 | 2026-11-06 |
 | [Hybrid状态应用耗时优化 — 技术方案](../DevelopmentDocumentation/20261106-Hybrid状态应用耗时优化.md) | network, performance | 7/7 (100%) | 用户在LVL_CommanderMassPrototype蓝方前沿交战区核验弹道、瞄准、命中、伤害、采矿和生产表现；入口PerfHybridCPU_Entry。 | 2026-11-06 |
@@ -88,6 +89,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | commander, navigation, performance | 9/9 (100%) | — | 2026-11-11 |
 | [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | network, performance | 7/7 (100%) | — | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹 — 实施与交付](../DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md) | combat, network, ui, vfx | 4/5 (80%) | — | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡 — 实施与交付](../DevelopmentDocumentation/20261108-游骑兵初始弹与三张肉鸽卡.md) | combat, network, ui, vfx | — | — | 2026-11-09 |

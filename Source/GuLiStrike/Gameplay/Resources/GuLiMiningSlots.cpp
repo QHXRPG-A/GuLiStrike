@@ -1,5 +1,6 @@
 #include "Gameplay/Resources/GuLiMiningSlots.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
@@ -127,11 +128,11 @@ void UGuLiMiningVehicleManager::Tick(float)
 			if (Resources->IsClusterEmpty(Cluster.ClusterId)) { Slots.bPending=false; continue; }
 			if (!Budget.TakeProjection()) break;
 			const int32 Sample=Slots.NextSample++; ++Samples;
-			const double Radius=Cluster.ObstacleRadiusCentimeters+Vehicle->GetNavAgentPropertiesRef().AgentRadius+30;
+			const auto& Circle=GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>()->GetAvoidanceCatalog().Units.FindChecked(Pair.Key).Solver;
+			const double Radius=Cluster.ObstacleRadiusCentimeters+Circle.Radius+Circle.Clearance+Circle.ContactMargin+30;
 			FVector Direction=FVector::ForwardVector.RotateAngleAxis(Sample*45.f,FVector::UpVector);
 			FVector Desired=Cluster.Center+Direction*Radius;
-			// Work poses retain clearance around the quantized collision bodies;
-			// snapping the approach against the ore boundary removed that clearance.
+			// Candidate generation is coarse; ProjectPose validates the current local circle group.
 			FTransform Pose;
 			if (GuLiWorkPosition::ProjectPose(*Vehicle,Desired,(-Direction).Rotation(),Pose))
 			{

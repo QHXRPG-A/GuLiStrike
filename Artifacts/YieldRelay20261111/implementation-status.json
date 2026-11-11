@@ -1,0 +1,91 @@
+{
+  "algorithm": "demo-active-steering-yield-relay-v5",
+  "source_ready": true,
+  "build": "succeeded",
+  "import": "succeeded",
+  "yield_seconds": 0.5,
+  "baseline": "../CircularAvoidance20261110/yield-v4-suite.json",
+  "candidate": "../CircularAvoidance20261110/yield-v5-suite.json",
+  "validation": "targeted source diff; data exporter; generated header unchanged",
+  "visual_validation": "reserved_for_player",
+  "public_api_changes": false,
+  "snapshot_or_wire_format_changes": false,
+  "runtime_strategy": "reuse existing sweep blocker, next-step yield snapshot, indexed unit lookup, existing owner event; no new direction samples, scans, fallback or state machine",
+  "file_sha256": {
+    "Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.h": "f7cebff81a575d8d1b8f43084335e755174d2258f251a06733d76fd6f1c24cfa",
+    "Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.cpp": "bd8b09a785970950abd2a3bde8ff9135abd09c405cceedf83474a526a8f94cc4",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp": "61283282a71d3b3c21c74e7a4813c6702b9baa5c9f0164953066f9138b8a30b5",
+    "Source/GuLiStrike/Gameplay/Data/GuLiHybridUnitManifest.cpp": "107511be5b578aeb62e51cd283b75a1877780bcb5e5cb102f17c160ef28f2d65",
+    "data/Excel/GuLiStrikeAvoidance.xlsx": "c8763d97c08bcb7a05b0e186e53bd14ee39ce6debcc40b900376232f344b58ac",
+    "data/Json/DT_GuLiStrikeAvoidance_Units.json": "430be3dc38118740f5c31c7db6752a0c67781ec4a541f60e8d773d1223e30d33"
+  },
+  "build_authorization": "Continuing the previously approved source UE5.7 Editor build/reload for this movement implementation; user also requested this same-scene performance comparison.",
+  "yield_completion": "Use the Demo 1e-6-second completion threshold, avoiding a floating-point residual movement step.",
+  "baseline_windows": 24,
+  "baseline_valid": true,
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "build_started_at": "2026-11-11T11:38:02.524382+08:00",
+  "build_attempts": [
+    {
+      "log": "build.log",
+      "exit_code": 0,
+      "actions": 111,
+      "seconds": 57.77
+    },
+    {
+      "log": "build-final.log",
+      "exit_code": 0,
+      "actions": 4,
+      "seconds": 16.33
+    }
+  ],
+  "build_log": "build-final.log",
+  "build_exit_code": 0,
+  "build_ids": {
+    "engine": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+    "project": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+  },
+  "build_actions": 4,
+  "build_seconds": 16.33,
+  "compiled_sources_match": true,
+  "import_status": "succeeded",
+  "runtime_loaded": true,
+  "editor_pid": 43936,
+  "runtime_tests": "completed",
+  "map_entry": "player-entry.json",
+  "loaded_readback": "final-editor-readback.json",
+  "candidate_windows": 24,
+  "candidate_valid": true,
+  "total_windows": 48,
+  "suite_exit_code": 0,
+  "report": "性能对比.md",
+  "comparison": "comparison.json",
+  "phase_csv": "分项统计.csv",
+  "final_readback": "final-editor-readback.json",
+  "performance_finish": "performance-finish.json",
+  "settings_restored": true,
+  "pie_active": false,
+  "player_approved": false,
+  "completed_at": "2026-11-11T12:14:51.531974+08:00",
+  "performance_summary": {
+    "improved_scenarios": [
+      "crossing"
+    ],
+    "all_scenarios_improved": false,
+    "interpretation": "Crossing cost fell beyond the observed repeat range with higher arrivals; other cost differences stayed within that range. Reversal runs increased in crossing and hold; this is not a claim of universally smoother movement."
+  },
+  "documentation_check": {
+    "report": "../../Progress/Evidence/20261111-CircleAvoidanceCloseout/progress-check.json",
+    "preexisting_unrelated_errors": 6,
+    "preexisting_unrelated_warnings": 21,
+    "related_errors": 0
+  },
+  "handoff": "操作说明.md",
+  "archive": "../../Progress/Archive/20261111-受阻让路传递实装与性能对比.md",
+  "completion": "done",
+  "cleanup_record": "../../Progress/Evidence/20261111-CircleAvoidanceCloseout/cleanup-manifest.json",
+  "current_build_record": "../../Progress/Evidence/20261111-CircleAvoidanceCloseout/build-result.json",
+  "current_loaded_readback": "../../Progress/Evidence/20261111-CircleAvoidanceCloseout/editor-readback.json",
+  "historical_hash_note": "file_sha256 identifies the measured v5 implementation before cleanup. Current source hashes and build/readback are in the closeout evidence; no gameplay behavior changed."
+}

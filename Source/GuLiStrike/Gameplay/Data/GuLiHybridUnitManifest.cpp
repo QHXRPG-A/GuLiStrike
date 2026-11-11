@@ -17,16 +17,15 @@ namespace
 {
 bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
 {
-    const auto* Table=GetDefault<UGuLiUnitDataSettings>()->SoldierDataTable.LoadSynchronous();
-    if (!Table) {Error=TEXT("Missing unit definitions");return false;}
-    TSet<uint16> Types;
+    TArray<FGuLiSoldierDefinition> Units;FGuLiAvoidanceCatalog Avoidance;
+    if (!UGuLiUnitDataSubsystem::ResolveAuthoredDefinitions(Units,Error,&Avoidance)) return false;
+    M.Strings.Add(TEXT("movement/circles/configuration"),Avoidance.Fingerprint);
+    M.Strings.Add(TEXT("movement/circles/algorithm"),TEXT("demo-active-steering-yield-relay-v5"));
     const auto* PopulationLimit=IConsoleManager::Get().FindConsoleVariable(TEXT("guli.stronghold.TeamUnitCap"));
     if (!PopulationLimit || PopulationLimit->GetInt()<1 || PopulationLimit->GetInt()>100000) {Error=TEXT("Invalid authored population limit");return false;}
     M.Numbers.Add(TEXT("population/group/army/limit"),PopulationLimit->GetInt());
-    for (auto Row:Table->GetRowNames())
+    for (const auto& D:Units)
     {
-        bool Valid=false;const auto D=FGuLiCommanderSoldierResolver::Resolve(Table,Row,FGuLiCommanderSoldierResolver::MakeFallbackDefinition(),Valid);
-        if (!Valid || !D.UnitTypeId || Types.Contains(D.UnitTypeId)) {Error=TEXT("Invalid or duplicate unit definition");return false;}Types.Add(D.UnitTypeId);
         const FString Definition=FString::Printf(TEXT("unit/%u"),D.UnitTypeId);
         M.Numbers.Add(TEXT("unit_definition/")+Definition+TEXT("/type_id"),D.UnitTypeId);
         M.Numbers.Add(TEXT("unit_definition/")+Definition+TEXT("/movement_layer"),uint8(D.MovementLayer));

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GuLiStrike 工具主页</title>
+  <style>
+    :root {
+      /* GuLiStrike 美术规范 v1.9 */
+      --background: #021716;
+      --surface: #032E30;
+      --border: #274E61;
+      --text: #FEE4D9;
+      --secondary: #D5C09C;
+      --accent: #EE9D58;
+      color-scheme: dark;
+      font-family: 'Segoe UI', 'Microsoft YaHei UI', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    body {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    main {
+      max-width: 64rem;
+      margin-inline: auto;
+      padding: clamp(2rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0.75rem 0 0;
+      color: var(--secondary);
+    }
+
+    nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .tool {
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      color: inherit;
+      background: var(--surface);
+      text-decoration: none;
+    }
+
+    .tool:hover {
+      border-color: var(--accent);
+    }
+
+    .tool:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .tool h2 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .tool p {
+      flex: 1;
+    }
+
+    .tool span {
+      margin-top: 1.25rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>GuLiStrike 工具主页</h1>
+    <p>选择工具，在新标签页打开。</p>
+
+    <nav aria-label="项目工具">
+      <a class="tool" href="http://127.0.0.1:4322/" target="_blank" rel="noopener">
+        <h2>肉鸽牌关系图</h2>
+        <p>编辑指挥官、地面和空中席位的卡牌，以及前置与互斥关系。</p>
+        <span aria-hidden="true">打开 ↗</span>
+      </a>
+      <a class="tool" href="http://127.0.0.1:4321/" target="_blank" rel="noopener">
+        <h2>独立地图设计器</h2>
+        <p>编辑地形、据点、区域和资源，保存并导出地图工程。</p>
+        <span aria-hidden="true">打开 ↗</span>
+      </a>
+      <a class="tool" href="/" target="_blank" rel="noopener">
+        <h2>项目进度面板</h2>
+        <p>查看需求、开发记录和归档，维护当前推进队列。</p>
+        <span aria-hidden="true">打开 ↗</span>
+      </a>
+    </nav>
+  </main>
+</body>
+</html>

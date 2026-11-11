@@ -169,6 +169,11 @@ Artifacts/**/*.jsonl
 Artifacts/**/*.nprof
 Artifacts/**/insights/events.csv
 # Raw per-run performance captures stay local; publish paired summaries and final reports.
+# Circle avoidance: valid raw windows are retained locally; failed/superseded session scratch was deleted.
+Artifacts/CircularAvoidance20261110/old-*/
+Artifacts/CircularAvoidance20261110/new-*/
+Artifacts/CircularAvoidancePreview/
+Progress/Evidence/20261111-CircleAvoidanceCloseout/build.log
 Artifacts/PerformanceOptimization20261010/Paired/
 Artifacts/PerformanceOptimization20261010/Diagnosis/Paired/
 Artifacts/PerformanceOptimization20261010/Rollback/Paired/

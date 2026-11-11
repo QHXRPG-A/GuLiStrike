@@ -49,8 +49,9 @@ def duplicate(source, name):
 
 def save_table(cls, prop, source, rows, name):
     result = duplicate(source, name)
-    if not unreal.DataTableFunctionLibrary.fill_data_table_from_json_string(result, json.dumps(rows, ensure_ascii=False)):
-        raise RuntimeError("Data row import failed: " + name)
+    problems = unreal.GuLiDataTableImportLibrary.update_from_json(result, json.dumps(rows, ensure_ascii=False))
+    if problems:
+        raise RuntimeError("Data row import failed: " + name + ': ' + str(problems))
     if not unreal.EditorAssetLibrary.save_loaded_asset(result, False):
         raise RuntimeError("Data table save failed: " + name)
     raw = unreal.DataTableFunctionLibrary.export_data_table_to_json_string(result)
@@ -77,6 +78,19 @@ def main():
     clone(rows, "DefaultSoldier", Name="AcceptanceCombinedMass", Id=101, ModelId=101001)
     clone(rows, "ElectromagneticMiner", Name="AcceptanceCombinedActor", Id=102)
     save_table("GuLiUnitDataSettings", "SoldierDataTable", source, rows, "DT_AcceptanceUnits")
+
+    source, rows = table("GuLiAvoidanceDataSettings", "UnitsTable")
+    clone(rows, "Unit_1", Name="AcceptanceCircle101", Id=101, UnitTypeId=101)
+    clone(rows, "Unit_3", Name="AcceptanceCircle102", Id=102, UnitTypeId=102)
+    save_table("GuLiAvoidanceDataSettings", "UnitsTable", source, rows, "DT_AcceptanceAvoidance")
+
+    source, rows = table("GuLiAvoidanceDataSettings", "BuildingCirclesTable")
+    for original in list(rows):
+        target = {4: 101, 6: 102}.get(original['BuildingDefinitionId'])
+        if target:
+            clone(rows, original['Name'], Name='Acceptance_'+original['Name'],
+                  Id=max(r['Id'] for r in rows)+1, BuildingDefinitionId=target)
+    save_table("GuLiAvoidanceDataSettings", "BuildingCirclesTable", source, rows, "DT_AcceptanceBuildingCircles")
 
     source, rows = table("GuLiCommanderDataSettings", "SkillDataTable")
     clone(rows, "Strafe", Name="AcceptanceStrafe", Id=max(r["Id"] for r in rows)+1, SkillId="Acceptance_Strafe")
@@ -155,8 +169,9 @@ def main():
     return {"success":True,"profile":str(path),"loads":exports}
 
 
-try:
-    response = main()
-except Exception as error:
-    response = {"success":False,"error":str(error)}
-unreal.MCPythonHelper.submit_result(json.dumps(response,ensure_ascii=False))
+if __name__ == '__main__':
+    try:
+        response = main()
+    except Exception as error:
+        response = {"success":False,"error":str(error)}
+    unreal.MCPythonHelper.submit_result(json.dumps(response,ensure_ascii=False))

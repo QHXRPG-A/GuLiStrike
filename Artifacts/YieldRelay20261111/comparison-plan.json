@@ -1,0 +1,21 @@
+{
+  "baseline_algorithm": "demo-active-steering-yield-v4",
+  "baseline_yield_seconds": 0.3,
+  "candidate_algorithm": "demo-active-steering-yield-relay-v5",
+  "candidate_yield_seconds": 0.5,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "repetitions": 3,
+  "window_seconds": 30,
+  "baseline_suite": "../CircularAvoidance20261110/yield-v4-suite.json",
+  "candidate_suite": "../CircularAvoidance20261110/yield-v5-suite.json",
+  "before_hashes": {
+    "Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.h": "06b0d85ff40f1b5ee2508cab8578f86bc2b05824cca058266a8ede3ff5d3861a",
+    "Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.cpp": "3066baf1e84c4424199bf82289006078036a22bbcb4966808e7c69dc04936076",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h": "121fb7fa8ad025b6e73e3e603d82f27e2f0909c2686878231b7ca4901d919813",
+    "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp": "7c58a3fa06af635c0844fde8b5c50414771efb6bb8924da31c8088b8a50de29c",
+    "Source/GuLiStrike/Commander/Mass/GuLiHybridMassAdapter.inl": "55b6227ef4a2a3467aaa0dc82be5813f69c75513fb043f41c2152f216f4433e7",
+    "Source/GuLiStrike/Gameplay/Data/GuLiHybridUnitManifest.cpp": "e1885407ccd37ef6b76d41c77826af4f72a0c51403eafbb785c6c68a01314d99",
+    "data/Excel/GuLiStrikeAvoidance.xlsx": "1ad528285050ee0b16bc4700c346c93336730c949f264a2760c26cac1a80cbea",
+    "data/Json/DT_GuLiStrikeAvoidance_Units.json": "362118b58137c90e3ff5ce596af572aeedd7fd185ea2dd2699522dd358b3c2a7"
+  }
+}

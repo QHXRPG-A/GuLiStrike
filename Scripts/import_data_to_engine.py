@@ -53,6 +53,9 @@ WIRING = {
 
 # 由 C++ Config settings 通过软引用接线；成功导入后不应被误报为未接线。
 CONFIG_WIRED_TABLES = {
+    "DT_GuLiStrikeAvoidance_Units",
+    "DT_GuLiStrikeAvoidance_BuildingCircles",
+    "DT_GuLiStrikeAvoidance_OreClustering",
     "DT_GuLiStrikeIcons_Icons",
     "DT_GuLiStrikeGroundHUD_Elements",
     "DT_GuLiStrikeMech_Skills",

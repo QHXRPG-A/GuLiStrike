@@ -74,7 +74,7 @@ void UGuLiBuildingProductionComponent::AdvanceGridProduction(float Dt)
         const int32 Candidate=GridCandidate++;const auto Dir=Directions[Candidate%8];
         const double Offset=(D.FootprintCells+Unit->FootprintCells)*150.+(Candidate/8)*Unit->FootprintCells*300.;
         const FVector Desired=Life.GetGroundLocation()+FVector(Dir.X*Offset,Dir.Y*Offset,0);FVector P;
-        if (S->Project(Desired,Unit->FootprintCells,FVector(300,300,5000),P) && GuLiGrid::Unoccupied(G,P,Unit->FootprintCells,{},Unit->MovementLayer))
+        if (S->Project(Desired,Unit->FootprintCells,FVector(300,300,5000),P) && GuLiGrid::Unoccupied(G,P,Unit->FootprintCells,{},Unit->MovementLayer,Unit->UnitTypeId))
         {
             FHybridJob J;J.Event=FGuid::NewGuid();J.Location=P+FVector(0,0,HalfHeight+Unit->AltitudeCentimeters);J.FacingYaw=GetOwner()->GetActorRotation().Yaw;
             J.Target=FGuLiHybridManifest::MakeStableKey(GetWorld()->GetOutermost()->GetName(),Family.Kind,TEXT("production/")+J.Event.ToString(EGuidFormats::Digits));
@@ -100,9 +100,9 @@ void UGuLiBuildingProductionComponent::AdvanceGridProduction(float Dt)
         const auto Actual=GuLiGrid::FRect::At(S->AnchorAt(J.Location,Unit->FootprintCells),Unit->FootprintCells);
         const auto Reservation=FGuLiGridNetwork::PlacementKey(J.Target);
         // Recover the local reservation from the saved production job after an ownership handoff.
-        if (!G.Traffic().Find(Reservation) && GuLiGrid::Unoccupied(G,J.Location,Unit->FootprintCells,{},Unit->MovementLayer))
+        if (!G.Traffic().Find(Reservation) && GuLiGrid::Unoccupied(G,J.Location,Unit->FootprintCells,{},Unit->MovementLayer,Unit->UnitTypeId))
             G.Traffic().Admit(Reservation,Owner.SimulationOwner,Owner.OwnerEpoch,uint8(Owner.Team),Actual,{},Unit->FootprintCells,Unit->MovementLayer);
-        const bool Clear=GuLiGrid::Unoccupied(G,J.Location,Unit->FootprintCells,Reservation,Unit->MovementLayer);
+        const bool Clear=GuLiGrid::Unoccupied(G,J.Location,Unit->FootprintCells,Reservation,Unit->MovementLayer,Unit->UnitTypeId);
         const auto Permit=Clear && G.Network()?G.Network()->PermitPlacement(Owner.Key,J.Target,Actual,Unit->FootprintCells,uint8(Owner.Team),Unit->MovementLayer):EGuLiGridPermit::Blocked;
         if (Permit==EGuLiGridPermit::Blocked)
         {

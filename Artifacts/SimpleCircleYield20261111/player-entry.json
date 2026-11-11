@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "label": "CircleAvoidanceReview_Entry",
+      "class": "Note",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_100",
+      "location": [
+        -35000.0,
+        62000.0,
+        1200.0
+      ]
+    },
+    {
+      "label": "CircleAvoidanceReview_View",
+      "class": "CameraActor",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_39",
+      "location": [
+        -54485.1674985583,
+        62000.0,
+        14413.904208077727
+      ]
+    }
+  ],
+  "instructions": "原主动绕侧 + 简易让路（10Hz）\n正常Play选择指挥官，框选后右键下令。无需开启额外模式。\n1. 一次框选多单位集结：同一条命令的成员不互相让路，已落位成员也保留命令归属；原侧绕和圆形碰撞仍工作。\n2. 另选一组向停驻队伍后方移动：侧绕真正产生位移后，只请求首个挡路单位向侧绕反侧横移。小单位向大单位让路，同尺寸可让，大单位不向小单位让。\n3. 默认正常速度横移0.3秒，下一10Hz步开始；结束后继续原任务，原本停驻的单位留在让开处。让路不连锁、不另算路径。\n4. 重防号为低空层，只与同层单位交互；地面与低空不互相让路。玩家操控机甲仍只作为障碍，不被自动横移。\n5. 矿车、工程车使用相同规则；原采矿、施工和回厂任务继续由原系统执行。\n参数唯一源表：data/Excel/GuLiStrikeAvoidance.xlsx，Units.YieldSeconds为让路者横移时长。\n预置对穿/挡路/集结入口：Scripts/Performance/Open-CircleAvoidanceReview.ps1，-Scenario crossing / hold / gather / mixed；仅由玩家需要时运行。\n手感由玩家核验。旧版原主动绕侧性能报告不包含本次简易让路，不能代替本版性能结果。",
+  "visual_inspection": false
+}

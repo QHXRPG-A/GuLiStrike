@@ -1,0 +1,76 @@
+{
+  "current_algorithm": "demo-active-steering-v3",
+  "current_runtime_measured": true,
+  "current_build": "build-active-steering.log",
+  "current_map_entry": "active-steering-player-entry.json",
+  "old_valid_windows": 24,
+  "rejected_guarded_valid_windows": 22,
+  "missing_rejected_windows": [
+    "new-hold-v8-02",
+    "new-hold-v8-03"
+  ],
+  "rejected_recipe_matches_old": {
+    "new-crossing-v8-01": true,
+    "new-crossing-v8-02": true,
+    "new-crossing-v8-03": true,
+    "new-hold-v8-01": true,
+    "new-gather-v8-01": true,
+    "new-gather-v8-02": true,
+    "new-gather-v8-03": true,
+    "new-mixed-v8-01": true,
+    "new-mixed-v8-02": true,
+    "new-mixed-v8-03": true,
+    "new-attack-v8-01": true,
+    "new-attack-v8-02": true,
+    "new-attack-v8-03": true,
+    "new-buildings-v8-01": true,
+    "new-buildings-v8-02": true,
+    "new-buildings-v8-03": true,
+    "new-ore-v8-01": true,
+    "new-ore-v8-02": true,
+    "new-ore-v8-03": true,
+    "new-work-v8-01": true,
+    "new-work-v8-02": true,
+    "new-work-v8-03": true
+  },
+  "performance_improvement_for_current": false,
+  "sampling_stopped": "Authorized active-v3 batch completed: 24 valid windows; editor settings restored; test children exited normally.",
+  "penetration_acceptance": "Informational only; user accepts penetration.",
+  "legacy_new_suite": "new-suite.json is the uncompleted plan for the rejected guarded variant, not the current implementation.",
+  "behavior_preserving_optimizations": [
+    "precomputed angle trigonometry",
+    "local spatial corridor queries",
+    "reuse selected lookahead contact for movement",
+    "update circle geometry without bucket reinsertion when cell coverage is unchanged"
+  ],
+  "sweeps_per_active_step_from_source": {
+    "unblocked": 1,
+    "maximum": 16,
+    "maximum_side_probes": 14,
+    "measured": false,
+    "note": "Analytical source bound, not maximum derived from measured counters; runtime timing and query counters are in current report."
+  },
+  "current_valid_windows": 24,
+  "current_suite": "active-steering-suite.json",
+  "current_report": "原主动绕侧性能对比.md",
+  "current_comparison": "active-steering-comparison.json",
+  "current_improved_moving_scenarios": [
+    "crossing",
+    "hold",
+    "gather",
+    "mixed",
+    "buildings",
+    "ore"
+  ],
+  "current_limits": [
+    "work: arrival records decreased 4 to 3 per run, while mining, docking and construction were observed in all runs",
+    "attack: both versions stationary in weapon range, no moving encirclement coverage",
+    "crossing: 3 unfinished movement orders per run and up to 206 consecutive reversal steps",
+    "cost includes removing extra old-version movement applications; arrivals also include settling policy changes"
+  ],
+  "demo_yield": {
+    "evidence": "simple-yield-demo.json",
+    "ue_integrated": false,
+    "included_in_measurements": false
+  }
+}

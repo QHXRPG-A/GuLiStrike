@@ -4,6 +4,7 @@
 #include "NavigationData.h"
 #include "Commander/Mass/Navigation/GuLiNavigationDependency.h"
 #include "Gameplay/Navigation/Grid/GuLiGridSlots.h"
+#include "Gameplay/Navigation/GuLiCircleAvoidance.h"
 
 class UNavigationSystemV1;
 class UGuLiGroundGridSubsystem;
@@ -32,7 +33,6 @@ struct FGuLiSharedMoveRoute
 	FNavLocation Start;
 	FGuLiNavigationDependency Navigation;
 	TMap<NavNodeRef, int32> PolygonIndex;
-	TArray<FVector> Portals;
 	EState State = EState::Queued;
 	int32 IndexCursor = 0, RetireCursor = 0;
 	uint32 AttemptGeneration = 0;
@@ -75,6 +75,14 @@ struct FGuLiSharedMoveIntent
     int32 GridRestoreCursor=0,GridBuildCursor=0;
     TArray<uint32> GridRestoreMembers;
     bool bGridMetadataReady=false,bGridSlotsReady=false;
+	// Derived match-local cache; restored lazily from the frozen assignments, never serialized.
+	// Keys match UnassignedMembers: authority SoldierIds or input-local slot IDs.
+	TMap<uint32,GuLiCircleAvoidance::FConfig> CircleProfiles;
+	GuLiCircleAvoidance::FIndex AcceptedCircles;
+	bool RestoreCircleSlots(const ANavigationData& Data,FGuLiNavigationWorkBudget& Budget);
+	bool CircleSlotClear(const ANavigationData& Data,uint32 Id,const FVector& Point);
+	void RememberCircleSlot(const ANavigationData& Data,uint32 Id,const FVector& Point);
+	const GuLiCircleAvoidance::FConfig* CircleProfile(const ANavigationData& Data,uint32 Id);
 	void Generate(const ANavigationData& Data, uint32 Generation, FGuLiNavigationWorkBudget& Budget);
     void GenerateGrid(UGuLiGroundGridSubsystem& Grid,const ANavigationData& NavData,FGuLiNavigationWorkBudget& Budget);
 	bool InDockingArea(const FVector& Position) const;

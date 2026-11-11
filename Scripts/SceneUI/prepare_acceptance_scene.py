@@ -75,14 +75,14 @@ try:
             for field,value in dict(team=team,unit_type_id=unit,rows=1,columns=1,spacing_centimeters=2400,
                                     allow_automatic_fire=False,start_idle=True).items():actor.set_editor_property(field,value)
     soldiers=json.loads((ROOT/'Data/Json/DT_GuLiStrikeCommander_Soldiers.json').read_text(encoding='utf-8-sig'))
+    circles=json.loads((ROOT/'Data/Json/DT_GuLiStrikeAvoidance_Units.json').read_text(encoding='utf-8-sig'))
     ring_mesh=unreal.load_asset('/Game/Commander/Units/SM_CommanderUnitRing')
     ring_material=unreal.load_asset('/Game/Commander/UI/M_CommanderUnitRing')
     assert ring_mesh and ring_material and edit.get_num_material_expressions(ring_material)==12
     radius_specs=[]
     for i,unit in enumerate((1,2,5,6)):
         row=next(r for r in soldiers if r['Id']==unit)
-        radius=float(row.get('MassAvoidanceRadiusMeters',0))*100
-        if radius<=0:radius=float(row['ModelWidthMeters'])*50
+        radius=float(next(r for r in circles if r['UnitTypeId']==unit)['RadiusMeters'])*100
         actor=make('SceneUI_Radius_'+row['Name'],unreal.StaticMeshActor,ground(-28000+i*4500,67500)+unreal.Vector(0,0,7))
         actor.set_editor_property('is_editor_only_actor',True)
         actor.set_actor_scale3d(unreal.Vector(radius/48,radius/48,.004))

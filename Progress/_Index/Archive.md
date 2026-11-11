@@ -4,6 +4,19 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-11-11 | [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | commander, navigation, performance | partial | 按用户指令结项，删除旧避障残留及1683个会话临时文件约2.60GiB，构建重载通过，准备仅代码与数据文档的GitHub提交。 |
+| 2026-11-11 | [受阻让路传递实装与性能对比](../Archive/20261111-受阻让路传递实装与性能对比.md) | commander, navigation, performance | partial | Demo受阻让路和邻居传递实装为0.5秒，两版48窗口完成；对穿成本少9.3%、到达42→48，挡路17→20，仍有往返。 |
+| 2026-11-11 | [Demo受阻让路与邻居传递](../Archive/20261111-Demo受阻让路与邻居传递.md) | commander, navigation, performance | partial | Web受阻侧绕即可请求让路，让路者向直接阻挡者逐步传递相同方向，默认4大100小供玩家体验。 |
+| 2026-11-11 | [Demo大小群体数量设置](../Archive/20261111-Demo大小群体数量设置.md) | commander, navigation, performance | partial | Web默认展示4个大单位穿过32个小单位，数量可分别设置，保留既有侧绕和让路规则。 |
+| 2026-11-11 | [Demo大小让路对照展示](../Archive/20261111-Demo大小让路对照展示.md) | commander, navigation, performance | partial | Web增加默认四单位上下排大小对照，独立命令组与让路次数显示，供用户直接体验大小规则。 |
+| 2026-11-11 | [简易让路编译加载交付](../Archive/20261111-简易让路编译加载交付.md) | commander, navigation, performance | partial | 用户批准后完成简易让路源码版Editor构建、重载和参数导入，四份清单回读通过，原型图可供玩家体验。 |
+| 2026-11-11 | [简易让路源码与场景接入](../Archive/20261111-简易让路源码与场景接入.md) | commander, navigation, performance | partial | 将Web简易让路和同命令排除接入UE正式源码与Excel管线，原型图入口已保存；本次编译重载待用户确认。 |
+| 2026-11-11 | [Demo同命令取消互让](../Archive/20261111-Demo同命令取消互让.md) | commander, navigation, performance | partial | Web让路按命令ID排除同一批下令成员，原侧绕与碰撞保持。 |
+| 2026-11-11 | [原主动绕侧性能对比与让路Demo](../Archive/20261111-原主动绕侧性能对比与让路Demo.md) | commander, navigation, performance | partial | 当前原主动绕侧完成24个同输入性能窗口，6个移动场景成本与到达改善；工作到达下降及往返保留，另交付仅Web的简易让路。 |
+| 2026-11-11 | [原主动绕侧移植与计算优化](../Archive/20261111-原主动绕侧移植与计算优化.md) | commander, navigation, performance | partial | 按用户指令用Demo原主动绕侧替换限次分支，保留左右多角度比较与滑动；计算复用、Excel迁移和源码构建接入完成。 |
+| 2026-11-11 | [指挥官落点参数编号修复](../Archive/20261111-指挥官落点参数编号修复.md) | commander, navigation | partial | 修复命令局部落点编号被当作真实单位ID查询圆形参数、导致普通移动被拒绝；同步补齐移动层，源码编译重载完成。 |
+| 2026-11-11 | [圆形避障精简与玩家入口交付](../Archive/20261111-圆形避障精简与玩家入口交付.md) | commander, navigation, performance | partial | 圆形数据与正式移动入口完成；用户否定防御性试版后按Demo限次分支精简，编译并保存玩家入口，历史性能分版本保留。 |
+| 2026-11-09 | [肉鸽牌关系图工具交付](../Archive/20261109-肉鸽牌关系图工具交付.md) | combat, ui | partial | 三个席位的肉鸽卡牌可在本地画布编辑并落盘，技术交付覆盖真实浏览器操作和草稿恢复。 |
 | 2026-11-09 | [开局网络优化会话完成清理与项目同步](../Archive/20261109-开局网络优化会话完成清理与项目同步.md) | network, performance | partial | 按用户指令结项开局网络优化，清理104个临时文件约292MB，保留带宽验收证据并同步项目非资源变更。 |
 | 2026-11-09 | [开局交火网络 1 MB/s 目标验收](../Archive/20261109-开局交火网络1MB每秒验收.md) | network, performance | passed | 协议 44 在原 600 单位场景三间独立房间达到收发合计 869.44–894.31 KB/s，加权下降 68.48%，最高完整约一秒区间 921.36 KB/s。 |
 | 2026-11-09 | [游骑兵战斗会话完成清理与项目同步](../Archive/20261109-游骑兵战斗会话完成清理与项目同步.md) | combat, network, ui, vfx | partial | 按用户要求将初始弹/左右Loop与爆炸强化两项开发结项，清理671个临时文件，保留逐发证据并同步项目非资源变更。 |

@@ -64,6 +64,7 @@ public:
 	bool BeginWorkMove(const FVector& Target, float AcceptanceRadius);
 	double EstimateWorkDistance(const FVector& Target) const;
 	EGuLiEngineeringMoveStatus GetMoveStatus() const { return GroundStatus; }
+    const FVector& GetGroundMoveGoal() const {return GroundGoal;}
 	bool IsWaitingForPath() const { return GroundStatus == EGuLiEngineeringMoveStatus::WaitingForPath; }
 	bool HasQueuedPath() const;
 	EGuLiEngineeringPathPreparation PrepareReplacementMove(uint32 TaskId, const FVector& Target, float Radius, FGuLiPreparedGroundMove& Out);

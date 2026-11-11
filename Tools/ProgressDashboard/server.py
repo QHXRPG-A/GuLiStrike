@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local-only HTTP server for the GuLiStrike progress dashboard.
+"""Local-only HTTP server for the GuLiStrike tool homepage and progress dashboard.
 
 Read-only by default, with one narrowly scoped write endpoint:
 POST /api/work-items/status rewrites the ``status``/``updated`` front matter
@@ -26,6 +26,8 @@ from urllib.parse import parse_qs, unquote, urlsplit
 DASHBOARD_ROOT = Path(__file__).resolve().parent
 PROJECT_ROOT = DASHBOARD_ROOT.parents[1]
 STATIC_ROOT = DASHBOARD_ROOT / "dist" / "client"
+TOOLS_HOME = DASHBOARD_ROOT / "tools.html"
+TOOLS_HOME_URL = "/tools/"
 PROGRESS_TOOL = PROJECT_ROOT / ".agents" / "skills" / "gulistrike-progress" / "scripts" / "progress_docs.py"
 DOCUMENT_ID = re.compile(r"^[A-Za-z0-9-]+$")
 
@@ -425,6 +427,24 @@ class DashboardHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlsplit(self.path)
         try:
+            if parsed.path == "/api/ready":
+                ready = TOOLS_HOME.is_file() and (STATIC_ROOT / "index.html").is_file()
+                status = HTTPStatus.OK if ready else HTTPStatus.SERVICE_UNAVAILABLE
+                self._json({
+                    "app": "guli-progress-dashboard",
+                    "project": str(PROJECT_ROOT),
+                    "tools_home": TOOLS_HOME_URL,
+                }, status)
+                return
+            if parsed.path in (TOOLS_HOME_URL.rstrip("/"), TOOLS_HOME_URL):
+                try:
+                    payload = TOOLS_HOME.read_bytes()
+                except FileNotFoundError:
+                    self._json({"error": "tools_home_unavailable"}, HTTPStatus.SERVICE_UNAVAILABLE)
+                    return
+                self._headers(HTTPStatus.OK, "text/html; charset=utf-8", len(payload))
+                self.wfile.write(payload)
+                return
             if parsed.path == "/api/health":
                 snapshot = CACHE.snapshot()
                 self._json({
@@ -541,6 +561,10 @@ class DashboardHandler(BaseHTTPRequestHandler):
             mime_type += "; charset=utf-8"
         self._headers(HTTPStatus.OK, mime_type, len(payload))
         self.wfile.write(payload)
+
+    def log_request(self, code="-", size="-") -> None:
+        if self.path != "/api/ready" or code != HTTPStatus.OK:
+            super().log_request(code, size)
 
     def log_message(self, format_string: str, *args: Any) -> None:
         print(f"[{self.log_date_time_string()}] {format_string % args}")

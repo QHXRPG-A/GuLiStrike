@@ -271,7 +271,7 @@ int32 UGuLiGridAuthoringLibrary::ReadMigrationState(FString& OutJson,FString& Ou
         return MakeShared<FJsonValueObject>(V);
     };
     TArray<TSharedPtr<FJsonValue>> U,B;
-    for (const auto& D:Units) U.Add(Dimension(D.UnitTypeId,D.FootprintCells,D.SourceCollisionDiameterCm,D.GridDimensionScale));
+    for (const auto& D:Units) U.Add(Dimension(D.UnitTypeId,D.FootprintCells,D.GridReferenceDiameterCm,D.GridDimensionScale));
     for (const auto& D:Catalog->Definitions) B.Add(Dimension(D.DefinitionId,D.FootprintCells,D.SourceCollisionDiameterCm,D.GridDimensionScale));
     J->SetArrayField(TEXT("units"),U);J->SetArrayField(TEXT("buildings"),B);
     J->SetNumberField(TEXT("player_capsule_diameter_cm"),GetDefault<AGuLiGroundMechCharacter>()->GetCapsuleComponent()->GetScaledCapsuleRadius()*2.);
