@@ -9,7 +9,7 @@
 #include "GameFramework/Character.h"
 #include "AIController.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiShieldGeneratorActor.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
 #include "Gameplay/Stronghold/GuLiOutpostPresentationComponent.h"
 #include "GuLiResourceActors.generated.h"

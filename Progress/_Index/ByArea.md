@@ -158,6 +158,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-11-12 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-11-12 |
 | [游骑兵战斗会话结项证据](../Evidence/20261109-RangerCombatCloseout/README.md) | reference | reference | 2026-11-09 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-06 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-06 |
@@ -201,7 +203,6 @@
 | [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2](../RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md) | requirement | superseded | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [十四模型仅配色 Blender 成品 B_v1 — 实际成品审核](../DevelopmentDocumentation/20261008-十四模型仅配色Blender成品B_v1.md) | development | verification | 2026-10-09 |
 | [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | development | done | 2026-10-09 |
@@ -271,7 +272,6 @@
 | [指挥官关卡环境对齐游骑兵演示关卡](../Archive/20261001-指挥官关卡环境对齐游骑兵演示关卡.md) | archive | recorded | 2026-10-01 |
 | [游骑兵地表材质迁移至指挥官关卡](../Archive/20261001-游骑兵地表材质迁移至指挥官关卡.md) | archive | recorded | 2026-10-01 |
 | [重防号能力卡 — 局部特写、可编辑文案与美漫风试绘](../RequirementDocument/20260926-重防号塔罗风视差卡牌复刻验证.md) | requirement | approved | 2026-09-29 |
-| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-29 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | done | 2026-09-21 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | done | 2026-09-21 |
 | [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | development | done | 2026-09-21 |
@@ -328,6 +328,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [护盾交矿与先驱号兵营](../RequirementDocument/20261112-护盾交矿与先驱号兵营.md) | requirement | approved | 2026-11-12 |
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-11-12 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-11-12 |
+| [护盾交矿与先驱号兵营 — 实施记录](../DevelopmentDocumentation/20261112-护盾交矿与先驱号兵营.md) | development | done | 2026-11-12 |
+| [Mass移动与建筑交矿会话结项](../Archive/20261112-Mass移动与建筑交矿会话结项.md) | archive | recorded | 2026-11-12 |
+| [护盾外围交矿与先驱号兵营交付](../Archive/20261112-护盾交矿与先驱号兵营.md) | archive | recorded | 2026-11-12 |
 | [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-11-03 |
 | [据点会话临时文件清理与代码同步](../Archive/20261030-据点会话临时文件清理与代码同步.md) | archive | recorded | 2026-10-30 |
 | [据点巨物尺寸与轻微浮动](../RequirementDocument/20261028-据点巨物尺寸与轻微浮动.md) | requirement | approved | 2026-10-29 |
@@ -346,7 +352,6 @@
 | [据点尺寸与浮动源码及场景交付](../Archive/20261028-据点尺寸与浮动源码及场景交付.md) | archive | recorded | 2026-10-28 |
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-10-21 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
 | [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | development | verification | 2026-10-09 |
 | [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色 — 源码与模型对照交付](../DevelopmentDocumentation/20261008-场景UI环境隔离与本地阵营配色.md) | development | verification | 2026-10-09 |
@@ -360,7 +365,6 @@
 | [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | development | done | 2026-10-05 |
 | [指挥官三档LOD审核放行与正式资源切换](../Archive/20261005-指挥官三档LOD审核放行与正式资源切换.md) | archive | recorded | 2026-10-05 |
 | [彼之矛顶点动画制作与首轮源码交付](../Archive/20261005-彼之矛顶点动画制作与首轮源码交付.md) | archive | recorded | 2026-10-05 |
-| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-29 |
 | [三棵指挥官StateTree分层重构](../RequirementDocument/20260926-三棵指挥官StateTree分层重构.md) | requirement | approved | 2026-09-28 |
 | [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | development | verification | 2026-09-28 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-24 |
@@ -381,8 +385,8 @@
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | requirement | draft | 2026-09-17 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
 | [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | requirement | approved | 2026-09-16 |
-| [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
-| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | development | done | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复](../RequirementDocument/20260916-据点交矿点落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点交矿点落点与大规模避让修复.md) | development | done | 2026-09-16 |
 | [资源加工厂正式模型与门动画](../RequirementDocument/20260909-资源加工厂正式模型与门动画.md) | requirement | approved | 2026-09-09 |
 | [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
 | [资源加工厂正式模型与门动画 — 实施记录](../DevelopmentDocumentation/20260909-资源加工厂正式模型与门动画.md) | development | done | 2026-09-09 |
@@ -413,6 +417,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-11-12 |
 | [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹](../RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md) | requirement | approved | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡](../RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md) | requirement | approved | 2026-11-09 |
@@ -560,7 +565,6 @@
 | [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
 | [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
 | [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
 | [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
 | [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
 | [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
@@ -695,9 +699,28 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-11 |
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-11 |
-| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-11 |
+| [统一体型让路与接触传递](../RequirementDocument/20261111-统一体型让路与接触传递.md) | requirement | approved | 2026-11-12 |
+| [人墙让路来源修复](../RequirementDocument/20261111-人墙让路来源修复.md) | requirement | approved | 2026-11-12 |
+| [矿簇旁两点往返修复](../RequirementDocument/20261111-矿簇旁两点往返修复.md) | requirement | approved | 2026-11-12 |
+| [Mass权威数据迁移与千单位对比](../RequirementDocument/20261111-Mass权威数据迁移与千单位对比.md) | requirement | approved | 2026-11-12 |
+| [Mass移动数据去重与批量读写](../RequirementDocument/20261111-Mass移动数据去重与批量读写.md) | requirement | approved | 2026-11-12 |
+| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-12 |
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-11-12 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-11-12 |
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-12 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-11-12 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-11-12 |
+| [统一体型让路与接触传递](../DevelopmentDocumentation/20261111-统一体型让路与接触传递.md) | development | done | 2026-11-12 |
+| [人墙让路来源修复](../DevelopmentDocumentation/20261111-人墙让路来源修复.md) | development | done | 2026-11-12 |
+| [矿簇旁两点往返修复](../DevelopmentDocumentation/20261111-矿簇旁两点往返修复.md) | development | done | 2026-11-12 |
+| [Mass权威数据迁移与千单位对比](../DevelopmentDocumentation/20261111-Mass权威数据迁移与千单位对比.md) | development | done | 2026-11-12 |
+| [Mass移动数据去重与批量读写 — 技术方案](../DevelopmentDocumentation/20261111-Mass移动数据去重与批量读写.md) | development | done | 2026-11-12 |
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-12 |
+| [统一体型让路与接触传递](../Archive/20261111-统一体型让路与接触传递.md) | archive | recorded | 2026-11-12 |
+| [人墙让路来源修复](../Archive/20261111-人墙让路来源修复.md) | archive | recorded | 2026-11-12 |
+| [矿簇旁两点往返修复交付](../Archive/20261111-矿簇旁两点往返修复.md) | archive | recorded | 2026-11-12 |
+| [Mass权威数据迁移与千单位对比](../Archive/20261111-Mass权威数据迁移与千单位对比.md) | archive | recorded | 2026-11-12 |
+| [Mass移动数据去重与批量发布](../Archive/20261111-Mass移动数据去重与批量发布.md) | archive | recorded | 2026-11-12 |
 | [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | archive | recorded | 2026-11-11 |
 | [受阻让路传递实装与性能对比](../Archive/20261111-受阻让路传递实装与性能对比.md) | archive | recorded | 2026-11-11 |
 | [Demo受阻让路与邻居传递](../Archive/20261111-Demo受阻让路与邻居传递.md) | archive | recorded | 2026-11-11 |
@@ -722,7 +745,6 @@
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
 | [据点会话临时文件清理与代码同步](../Archive/20261030-据点会话临时文件清理与代码同步.md) | archive | recorded | 2026-10-30 |
 | [据点巨物尺寸与轻微浮动](../RequirementDocument/20261028-据点巨物尺寸与轻微浮动.md) | requirement | approved | 2026-10-29 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-29 |
 | [据点巨物尺寸与轻微浮动 — 技术方案与交付](../DevelopmentDocumentation/20261028-据点巨物尺寸与轻微浮动.md) | development | verification | 2026-10-29 |
 | [据点光柱自发光再次翻倍](../Archive/20261029-据点光柱自发光再次翻倍.md) | archive | recorded | 2026-10-29 |
 | [据点白色腰带与双倍发光交付](../Archive/20261029-据点白色腰带与双倍发光交付.md) | archive | recorded | 2026-10-29 |
@@ -819,8 +841,6 @@
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
 | [Mass单位脚环统一20cm](../RequirementDocument/20261007-Mass单位脚环统一20cm.md) | requirement | approved | 2026-10-09 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
 | [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
 | [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | development | verification | 2026-10-09 |
 | [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
@@ -924,7 +944,6 @@
 | [肉鸽卡牌单行文案与高亮](../RequirementDocument/20260929-肉鸽卡牌单行文案与高亮.md) | requirement | approved | 2026-09-29 |
 | [F4肉鸽卡牌重选](../RequirementDocument/20260929-F4肉鸽卡牌重选.md) | requirement | approved | 2026-09-29 |
 | [Mass无骨骼动画与远距离持续显示](../RequirementDocument/20260929-Mass无骨骼动画与远距离持续显示.md) | requirement | approved | 2026-09-29 |
-| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-29 |
 | [Ship导入与扫荡者重防号风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者重防号风格重制.md) | development | done | 2026-09-29 |
 | [肉鸽卡牌数据表与实战选牌](../RequirementDocument/肉鸽卡牌数据表与实战选牌.md) | requirement | approved | 2026-09-28 |
 | [三棵指挥官StateTree分层重构](../RequirementDocument/20260926-三棵指挥官StateTree分层重构.md) | requirement | approved | 2026-09-28 |
@@ -974,10 +993,10 @@
 | [重防号Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-重防号Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
 | [GPU渲染降耗](../RequirementDocument/20260916-GPU渲染降耗.md) | requirement | approved | 2026-09-16 |
 | [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | requirement | approved | 2026-09-16 |
-| [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复](../RequirementDocument/20260916-据点交矿点落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
 | [客户端性能优化与压测问题记录](../RequirementDocument/20260915-客户端性能优化与压测问题记录.md) | requirement | approved | 2026-09-16 |
 | [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | development | done | 2026-09-16 |
-| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | development | done | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点交矿点落点与大规模避让修复.md) | development | done | 2026-09-16 |
 | [客户端 CPU 增量维护与 10Hz 刷新](../DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md) | development | done | 2026-09-16 |
 | [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
 | [工程车地面动态避障](../RequirementDocument/20260915-工程车地面动态避障.md) | requirement | approved | 2026-09-15 |
@@ -1135,7 +1154,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-29 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-11-12 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-24 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-24 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-23 |
@@ -1248,7 +1267,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-29 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-11-12 |
 | [GuLi 独立地图设计器](../RequirementDocument/20261024-GuLi独立地图设计器.md) | requirement | approved | 2026-10-25 |
 | [GuLi 独立地图设计器 — 技术方案与交付](../DevelopmentDocumentation/20261024-GuLi独立地图设计器.md) | development | verification | 2026-10-25 |
 | [地图设计器清理道路避让与资源重置](../Archive/20261025-地图设计器清理道路避让与资源重置.md) | archive | recorded | 2026-10-25 |
@@ -1319,8 +1338,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-11 |
-| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-11 |
+| [护盾交矿与先驱号兵营](../RequirementDocument/20261112-护盾交矿与先驱号兵营.md) | requirement | approved | 2026-11-12 |
+| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-12 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-11-12 |
+| [护盾交矿与先驱号兵营 — 实施记录](../DevelopmentDocumentation/20261112-护盾交矿与先驱号兵营.md) | development | done | 2026-11-12 |
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-12 |
+| [Mass移动与建筑交矿会话结项](../Archive/20261112-Mass移动与建筑交矿会话结项.md) | archive | recorded | 2026-11-12 |
+| [护盾外围交矿与先驱号兵营交付](../Archive/20261112-护盾交矿与先驱号兵营.md) | archive | recorded | 2026-11-12 |
 | [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | archive | recorded | 2026-11-11 |
 | [受阻让路传递实装与性能对比](../Archive/20261111-受阻让路传递实装与性能对比.md) | archive | recorded | 2026-11-11 |
 | [Demo受阻让路与邻居传递](../Archive/20261111-Demo受阻让路与邻居传递.md) | archive | recorded | 2026-11-11 |
@@ -1340,7 +1364,6 @@
 | [姿态队列分类计数静态交付](../Archive/20261105-姿态队列分类计数.md) | archive | recorded | 2026-11-05 |
 | [姿态优化双端编译与协议35清单](../Archive/20261105-姿态优化双端编译与协议35清单.md) | archive | recorded | 2026-11-05 |
 | [姿态同步与交互卡顿优化静态交付](../Archive/20261105-姿态同步与交互卡顿优化静态交付.md) | archive | recorded | 2026-11-05 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-29 |
 | [GuLi 独立地图设计器](../RequirementDocument/20261024-GuLi独立地图设计器.md) | requirement | approved | 2026-10-25 |
 | [GuLi 独立地图设计器 — 技术方案与交付](../DevelopmentDocumentation/20261024-GuLi独立地图设计器.md) | development | verification | 2026-10-25 |
 | [地图设计器清理道路避让与资源重置](../Archive/20261025-地图设计器清理道路避让与资源重置.md) | archive | recorded | 2026-10-25 |
@@ -1413,8 +1436,8 @@
 | [指挥官单位体型与避障距离配置及接入分析](../RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md) | requirement | approved | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
-| [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
-| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | development | done | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复](../RequirementDocument/20260916-据点交矿点落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点交矿点落点与大规模避让修复.md) | development | done | 2026-09-16 |
 | [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
 | [工程车地面动态避障](../RequirementDocument/20260915-工程车地面动态避障.md) | requirement | approved | 2026-09-15 |
 | [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | development | done | 2026-09-15 |
@@ -1427,7 +1450,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-11 |
+| [人墙让路来源修复](../RequirementDocument/20261111-人墙让路来源修复.md) | requirement | approved | 2026-11-12 |
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-11-12 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-11-12 |
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-12 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-11-12 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-11-12 |
+| [人墙让路来源修复](../DevelopmentDocumentation/20261111-人墙让路来源修复.md) | development | done | 2026-11-12 |
+| [人墙让路来源修复](../Archive/20261111-人墙让路来源修复.md) | archive | recorded | 2026-11-12 |
 | [开局交火网络同步量优化](../RequirementDocument/20261109-开局交火网络同步量优化.md) | requirement | approved | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹](../RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md) | requirement | approved | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡](../RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md) | requirement | approved | 2026-11-09 |
@@ -1493,7 +1523,6 @@
 | [肉鸽会话临时文件清理与全项目代码同步](../Archive/20261030-肉鸽会话临时文件清理与全项目代码同步.md) | archive | recorded | 2026-10-30 |
 | [PIE部署校验与F4小卡池数组崩溃修复](../Archive/20261030-PIE部署校验与F4选牌崩溃修复.md) | archive | recorded | 2026-10-30 |
 | [灼烧卡牌正式接入、Buff数据层与能力解耦](../Archive/20261030-灼烧卡牌正式接入与Buff数据层.md) | archive | recorded | 2026-10-30 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-10-29 |
 | [PIE增量修复编译与烘焙校验交付](../Archive/20261029-PIE增量修复编译与烘焙校验交付.md) | archive | recorded | 2026-10-29 |
 | [PIE烘焙拦截定位与场景修正](../Archive/20261029-PIE烘焙拦截定位与场景修正.md) | archive | recorded | 2026-10-29 |
 | [旧游骑兵模型退役与路由清理](../RequirementDocument/20261028-旧游骑兵模型退役与路由清理.md) | requirement | approved | 2026-10-28 |
@@ -1569,8 +1598,6 @@
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
 | [遗留发射路径清理与地图保存阻塞恢复](../Archive/20261010-遗留发射路径清理与地图保存阻塞恢复.md) | archive | recorded | 2026-10-10 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
 | [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
 | [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |
 | [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
@@ -1591,7 +1618,6 @@
 | [连通认证暂关与R2C2落地区修复](../Archive/20261002-连通认证暂关与R2C2落地区修复.md) | archive | recorded | 2026-10-02 |
 | [不可达移动拒绝编译加载与PIE门禁记录](../Archive/20261002-不可达移动拒绝编译加载与PIE门禁记录.md) | archive | recorded | 2026-10-02 |
 | [不可达新移动指令拒绝源码与场景交付](../Archive/20261002-不可达新移动指令拒绝源码与场景交付.md) | archive | recorded | 2026-10-02 |
-| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-29 |
 | [Mass分帧寻路与避障稳定性](../RequirementDocument/20260923-Mass分帧寻路与避障稳定性.md) | requirement | approved | 2026-09-24 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-24 |
@@ -1715,9 +1741,22 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-11 |
-| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-11 |
-| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-11 |
+| [统一体型让路与接触传递](../RequirementDocument/20261111-统一体型让路与接触传递.md) | requirement | approved | 2026-11-12 |
+| [矿簇旁两点往返修复](../RequirementDocument/20261111-矿簇旁两点往返修复.md) | requirement | approved | 2026-11-12 |
+| [Mass权威数据迁移与千单位对比](../RequirementDocument/20261111-Mass权威数据迁移与千单位对比.md) | requirement | approved | 2026-11-12 |
+| [Mass移动数据去重与批量读写](../RequirementDocument/20261111-Mass移动数据去重与批量读写.md) | requirement | approved | 2026-11-12 |
+| [圆形障碍与限次侧绕](../RequirementDocument/20261110-圆形障碍与限次侧绕.md) | requirement | approved | 2026-11-12 |
+| [Mass移动与避障](../Gameplay/Mass移动与避障.md) | gameplay | current | 2026-11-12 |
+| [统一体型让路与接触传递](../DevelopmentDocumentation/20261111-统一体型让路与接触传递.md) | development | done | 2026-11-12 |
+| [矿簇旁两点往返修复](../DevelopmentDocumentation/20261111-矿簇旁两点往返修复.md) | development | done | 2026-11-12 |
+| [Mass权威数据迁移与千单位对比](../DevelopmentDocumentation/20261111-Mass权威数据迁移与千单位对比.md) | development | done | 2026-11-12 |
+| [Mass移动数据去重与批量读写 — 技术方案](../DevelopmentDocumentation/20261111-Mass移动数据去重与批量读写.md) | development | done | 2026-11-12 |
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | development | done | 2026-11-12 |
+| [Mass移动与建筑交矿会话结项](../Archive/20261112-Mass移动与建筑交矿会话结项.md) | archive | recorded | 2026-11-12 |
+| [统一体型让路与接触传递](../Archive/20261111-统一体型让路与接触传递.md) | archive | recorded | 2026-11-12 |
+| [矿簇旁两点往返修复交付](../Archive/20261111-矿簇旁两点往返修复.md) | archive | recorded | 2026-11-12 |
+| [Mass权威数据迁移与千单位对比](../Archive/20261111-Mass权威数据迁移与千单位对比.md) | archive | recorded | 2026-11-12 |
+| [Mass移动数据去重与批量发布](../Archive/20261111-Mass移动数据去重与批量发布.md) | archive | recorded | 2026-11-12 |
 | [圆形避障结项清理与代码同步](../Archive/20261111-圆形避障结项清理与代码同步.md) | archive | recorded | 2026-11-11 |
 | [受阻让路传递实装与性能对比](../Archive/20261111-受阻让路传递实装与性能对比.md) | archive | recorded | 2026-11-11 |
 | [Demo受阻让路与邻居传递](../Archive/20261111-Demo受阻让路与邻居传递.md) | archive | recorded | 2026-11-11 |
@@ -1878,10 +1917,10 @@
 | [重防号模型大小适配](../DevelopmentDocumentation/20260919-重防号模型大小适配.md) | development | done | 2026-09-19 |
 | [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | development | abandoned | 2026-09-19 |
 | [GPU渲染降耗](../RequirementDocument/20260916-GPU渲染降耗.md) | requirement | approved | 2026-09-16 |
-| [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复](../RequirementDocument/20260916-据点交矿点落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
 | [客户端性能优化与压测问题记录](../RequirementDocument/20260915-客户端性能优化与压测问题记录.md) | requirement | approved | 2026-09-16 |
 | [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | development | done | 2026-09-16 |
-| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | development | done | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点交矿点落点与大规模避让修复.md) | development | done | 2026-09-16 |
 | [客户端 CPU 增量维护与 10Hz 刷新](../DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md) | development | done | 2026-09-16 |
 | [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
 | [指挥官姿态预测差分压缩与性能对比](../RequirementDocument/20260915-指挥官姿态预测差分压缩与性能对比.md) | requirement | approved | 2026-09-15 |
@@ -2114,6 +2153,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [护盾交矿与先驱号兵营](../RequirementDocument/20261112-护盾交矿与先驱号兵营.md) | requirement | approved | 2026-11-12 |
+| [护盾交矿与先驱号兵营 — 实施记录](../DevelopmentDocumentation/20261112-护盾交矿与先驱号兵营.md) | development | done | 2026-11-12 |
+| [Mass移动与建筑交矿会话结项](../Archive/20261112-Mass移动与建筑交矿会话结项.md) | archive | recorded | 2026-11-12 |
+| [护盾外围交矿与先驱号兵营交付](../Archive/20261112-护盾交矿与先驱号兵营.md) | archive | recorded | 2026-11-12 |
 | [GuLi 独立地图设计器](../RequirementDocument/20261024-GuLi独立地图设计器.md) | requirement | approved | 2026-10-25 |
 | [GuLi 独立地图设计器 — 技术方案与交付](../DevelopmentDocumentation/20261024-GuLi独立地图设计器.md) | development | verification | 2026-10-25 |
 | [地图设计器清理道路避让与资源重置](../Archive/20261025-地图设计器清理道路避让与资源重置.md) | archive | recorded | 2026-10-25 |
@@ -2275,6 +2318,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-11-12 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-11-12 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-11-12 |
 | [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹](../RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md) | requirement | approved | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡](../RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md) | requirement | approved | 2026-11-09 |
@@ -2382,8 +2428,6 @@
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [场景UI环境隔离与本地阵营配色](../RequirementDocument/20261008-场景UI环境隔离与本地阵营配色.md) | requirement | approved | 2026-10-09 |
 | [Mass单位脚环统一20cm](../RequirementDocument/20261007-Mass单位脚环统一20cm.md) | requirement | approved | 2026-10-09 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-10-09 |
 | [PIE游戏线程耗时与避障候选查询优化 — 技术方案](../DevelopmentDocumentation/20261009-PIE游戏线程耗时与避障候选查询优化.md) | development | verification | 2026-10-09 |
 | [场景UI来源注册与绘制缓存优化 — 技术方案](../DevelopmentDocumentation/20261009-场景UI来源注册与绘制缓存优化.md) | development | verification | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
@@ -2423,7 +2467,6 @@
 | [F4肉鸽卡牌重选](../RequirementDocument/20260929-F4肉鸽卡牌重选.md) | requirement | approved | 2026-09-29 |
 | [Mass无骨骼动画与远距离持续显示](../RequirementDocument/20260929-Mass无骨骼动画与远距离持续显示.md) | requirement | approved | 2026-09-29 |
 | [重防号能力卡 — 局部特写、可编辑文案与美漫风试绘](../RequirementDocument/20260926-重防号塔罗风视差卡牌复刻验证.md) | requirement | approved | 2026-09-29 |
-| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-29 |
 | [肉鸽卡牌数据表与实战选牌](../RequirementDocument/肉鸽卡牌数据表与实战选牌.md) | requirement | approved | 2026-09-28 |
 | [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | development | verification | 2026-09-28 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-24 |
@@ -2486,6 +2529,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-11-12 |
 | [爆炸范围对齐与强化爆炸弹](../RequirementDocument/20261109-爆炸范围对齐与强化爆炸弹.md) | requirement | approved | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡](../RequirementDocument/20261108-游骑兵初始弹与三张肉鸽卡.md) | requirement | approved | 2026-11-09 |
 | [游骑兵战斗会话结项证据](../Evidence/20261109-RangerCombatCloseout/README.md) | reference | reference | 2026-11-09 |
@@ -2556,7 +2600,6 @@
 | [Client1实战PIE截帧与游戏线程瓶颈分析](../Archive/20261010-Client1实战PIE截帧与游戏线程瓶颈分析.md) | archive | recorded | 2026-10-10 |
 | [三项客户端优化正式接入与PIE验收交付](../Archive/20261010-三项客户端优化正式接入与PIE验收交付.md) | archive | recorded | 2026-10-10 |
 | [三项客户端优化手动PIE审核入口交付](../Archive/20261010-三项客户端优化手动PIE审核入口交付.md) | archive | recorded | 2026-10-10 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-10-09 |
 | [采矿激光与机枪闪光性能优化 — 技术方案](../DevelopmentDocumentation/20261009-采矿激光与机枪闪光性能优化.md) | development | verification | 2026-10-09 |
 | [600移动单位500弹丸PIE截帧耗时分析](../Archive/20261009-600移动单位500弹丸PIE截帧耗时分析.md) | archive | recorded | 2026-10-09 |
 | [四项PIE全部优化应用与整版对照](../Archive/20261009-四项PIE全部优化应用与整版对照.md) | archive | recorded | 2026-10-09 |

@@ -29,5 +29,5 @@ inline bool ProjectBody(UWorld& World,const FVector& Point,int32 Size,const FVec
     return N && N->ProjectPointToNavigation(Point,Out,Extent,Legacy);
 }
 GULISTRIKE_API bool Unoccupied(UGuLiGroundGridSubsystem& G,const FVector& Point,int32 Size,
-    const FGuLiHybridObjectKey& Ignore={},TOptional<EGuLiUnitMovementLayer> Layer={},uint16 UnitType=0);
+    const FGuLiHybridObjectKey& Ignore={},TOptional<EGuLiUnitMovementLayer> Layer={},uint16 UnitType=0,uint64 IgnoredCircleSource=0);
 }

@@ -44,7 +44,6 @@ class GULISTRIKE_API UGuLiBuildingLifecycleComponent : public UActorComponent
 {
 	GENERATED_BODY()
     friend class FGuLiHybridBuildingAdapter;
-    friend class FGuLiHybridResourceFactoryAdapter;
 public:
 	UGuLiBuildingLifecycleComponent();
 	virtual void BeginPlay() override;

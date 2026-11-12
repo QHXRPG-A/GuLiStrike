@@ -279,6 +279,8 @@ public:
 	FGuLiAuthorityMoveDeltaSignature OnAuthorityMoveDelta;
 #if !UE_BUILD_SHIPPING
 	FGuLiAuthorityPositionApplied OnPositionApplied;
+	/** Disposable movement load, installed outside capture through the normal entity initializer. */
+	bool SpawnMovementReviewUnits(TConstArrayView<FVector> Positions, TArray<FGuLiSoldierId>& OutIds);
 #endif
 	const FGuLiMoveEndpointSnapshot* FindActiveMoveEndpoint(FGuLiSoldierId SoldierId) const;
 	FGuLiMovePlanHandle FindMovePlan(const AGuLiBattlePlayerState& Owner, uint32 ClientCommandId) const;
@@ -545,7 +547,7 @@ private:
 	/** 常规步推进战斗；即时步只推进已提交指令的未消费移动时间。 */
 	void TickAuthority(float FixedDeltaSeconds);
     bool StartCircleYield(FGuLiSoldierId Mover,FGuLiSoldierId Blocker,const FGuid& Command,const FVector& Direction);
-    void RequestCircleYield(FGuLiSoldierId Mover,FGuLiSoldierId Blocker,const FVector& Direction);
+    bool RequestCircleYield(FGuLiSoldierId Mover,FGuLiSoldierId Blocker,const FVector& Direction);
 	void PrepareNextMoveBatch(uint64 PlanId);
 	void RefreshSoldierNavigationState(FGuLiSoldierId SoldierId);
 	void PublishMoveEndpointChanges();

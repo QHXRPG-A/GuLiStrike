@@ -64,7 +64,8 @@ def summarize(path):
     assert not p['frame_samples_dropped'] and not p['individual_samples_dropped'], f'{path}: samples lost'
     assert all(key in recipe for key in ('_units','_population','_scene')), f'{path}: incomplete frozen state'
     assert recipe['_scene']['source_map_stat'], f'{path}: map metadata absent'
-    assert len(recipe['_units']) == 632 and m['census_before']['live_soldiers'] == 600, f'{path}: reduced workload'
+    runtime_units = 632 + (len(recipe['members']) if recipe.get('authority_fixture') else 0)
+    assert len(recipe['_units']) == runtime_units and m['census_before']['live_soldiers'] == 600, f'{path}: reduced workload'
     fixed = [a for a in m['applications'] if not a['immediate']]
     assert len(fixed) == m['observed_logical_steps'], f'{path}: fixed observation mismatch'
     keys = sorted({k for a in fixed for k in a.get('step_counters', {})})
@@ -107,6 +108,9 @@ def summarize(path):
             'movement_ms_per_logic_step': movement_ms/len(fixed),
             'movement_ms_per_active_unit_step': movement_ms/active_steps if active_steps else None,
             'active_unit_steps': active_steps, 'commanded': len(members), 'arrived': len(arrived),
+            'runtime_unit_count':runtime_units,
+            'active_units':distribution([a['active_units'] for a in fixed]),
+            'peak_active_units':max((a['active_units'] for a in fixed),default=0),
             'live_soldiers_before': m['census_before']['live_soldiers'],
             'live_soldiers_after': m['census_after']['live_soldiers'],
             'arrival_rate': len(arrived)/len(members) if members else None,

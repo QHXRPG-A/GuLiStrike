@@ -5,7 +5,7 @@
 #include "GuLiScaleMigrationLibrary.generated.h"
 
 class AGuLiMiningVehiclePawn;
-class AGuLiResourceFactoryActor;
+class AGuLiShieldGeneratorActor;
 
 /** Narrow editor-only support for the reviewed 0.2 migration; never modifies vendor systems. */
 UCLASS()
@@ -15,7 +15,7 @@ class GULISTRIKEEDITOR_API UGuLiScaleMigrationLibrary final : public UBlueprintF
 public:
 	/** Resolve the existing authoritative assignment for a PIE probe; no reassignment. */
 	UFUNCTION(BlueprintCallable, Category="GuLi|Migration")
-	static AGuLiResourceFactoryActor* ReadMiningFactory(AGuLiMiningVehiclePawn* Miner);
+	static AGuLiShieldGeneratorActor* ReadMiningDropoff(AGuLiMiningVehiclePawn* Miner);
 	/** Read-only static switches on the production mining system's size modules. */
 	UFUNCTION(BlueprintCallable, Category="GuLi|Migration")
 	static TMap<FString, FString> ReadMiningSizeSwitches();

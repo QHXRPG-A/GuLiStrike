@@ -1,0 +1,70 @@
+{
+  "algorithm": "demo-active-steering-yield-relay-v9",
+  "recipe_matches_v8": true,
+  "elapsed_seconds": 30.00287890061736,
+  "logical_steps": 300,
+  "commands_acknowledged": 2,
+  "error": "",
+  "arrived": 26,
+  "commanded": 26,
+  "v8_pioneer_245": {
+    "id": 245,
+    "commanded": true,
+    "arrival_seconds": -1,
+    "maximum_stall_seconds": 27.704285997897387,
+    "blocked": false,
+    "radius_cm": 300,
+    "final_position": [
+      11099.31946898084,
+      45857.464630449766,
+      901.7790832519531
+    ]
+  },
+  "v9_cases": [
+    {
+      "id": 245,
+      "commanded": true,
+      "arrival_seconds": 8.33016050234437,
+      "maximum_stall_seconds": 1.222631998360157,
+      "blocked": false,
+      "radius_cm": 300,
+      "final_position": [
+        10358.25987257379,
+        43750.614246964775,
+        902.5490477010427
+      ],
+      "after_command_seconds": 7.83016050234437,
+      "net_xy_displacement_cm": 2255.0117340752086
+    },
+    {
+      "id": 2,
+      "commanded": true,
+      "arrival_seconds": 6.0254698023200035,
+      "maximum_stall_seconds": 0.19629229977726936,
+      "blocked": false,
+      "radius_cm": 150,
+      "final_position": [
+        -31499.999998337873,
+        62100.00000034476,
+        1073.7790832519531
+      ],
+      "after_command_seconds": 5.0254698023200035,
+      "net_xy_displacement_cm": 3501.4282816736145
+    },
+    {
+      "id": 315,
+      "commanded": false,
+      "arrival_seconds": -1,
+      "maximum_stall_seconds": 0,
+      "blocked": false,
+      "radius_cm": 300,
+      "final_position": [
+        -34300,
+        61279.999989271164,
+        1073.7790832519531
+      ],
+      "after_command_seconds": null,
+      "net_xy_displacement_cm": 720.0000107288361
+    }
+  ]
+}

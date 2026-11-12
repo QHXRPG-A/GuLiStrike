@@ -63,6 +63,7 @@ class FIndex
 {
 public:
     explicit FIndex(float InCellSize = 600.f) : CellSize(FMath::Max(1.f, InCellSize)) {}
+    void Reset(int32 ExpectedCircles = 0);
     void Rebuild(TConstArrayView<FCircle> Input);
     void Upsert(const FCircle& Circle);
     void Remove(uint64 Id);
@@ -122,6 +123,7 @@ struct FResult
     bool Blocked = false;
     bool FullLookAheadClear = false;
     uint64 BlockingCircleId = 0;
+    uint64 SlideBlockingCircleId = 0; // Existing slide contact, for a yield relay's second candidate.
     FVector YieldDirection = FVector::ZeroVector;
 };
 
@@ -129,8 +131,8 @@ FHit Sweep(const FIndex& Static, const FIndex& Dynamic, const FRequest& Request,
     const FVector& Delta, float Radius, bool RelativeMotion,
     FQueryScratch& Scratch, FCounters& Counters);
 
-// Original Demo: compare both sides' first viable angle, remember the chosen
-// side, then move and slide. Publish the NavMesh-constrained position before
+// Compare both sides on entry, then keep the chosen side while it is passable.
+// Move and slide, publishing the NavMesh-constrained position before
 // the next unit. The chosen lookahead hit also supplies the movement contact.
 FResult Solve(const FIndex& Static, const FIndex& Dynamic, const FConfig& Config,
     const FRequest& Request, FState& State, FQueryScratch& Scratch, FCounters& Counters);

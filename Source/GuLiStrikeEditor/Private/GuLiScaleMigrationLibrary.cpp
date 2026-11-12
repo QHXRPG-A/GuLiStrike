@@ -9,14 +9,14 @@
 #include "NiagaraScriptSource.h"
 #include "NiagaraSystem.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiShieldGeneratorActor.h"
 #include "UObject/UnrealType.h"
 
-AGuLiResourceFactoryActor* UGuLiScaleMigrationLibrary::ReadMiningFactory(AGuLiMiningVehiclePawn* Miner)
+AGuLiShieldGeneratorActor* UGuLiScaleMigrationLibrary::ReadMiningDropoff(AGuLiMiningVehiclePawn* Miner)
 {
 	if (!IsValid(Miner)) return nullptr;
 	const FObjectPropertyBase* Property = FindFProperty<FObjectPropertyBase>(Miner->GetClass(), TEXT("Factory"));
-	return Property ? Cast<AGuLiResourceFactoryActor>(Property->GetObjectPropertyValue_InContainer(Miner)) : nullptr;
+	return Property ? Cast<AGuLiShieldGeneratorActor>(Property->GetObjectPropertyValue_InContainer(Miner)) : nullptr;
 }
 
 

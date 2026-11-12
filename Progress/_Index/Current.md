@@ -75,7 +75,7 @@
 | [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | combat, commander, performance, ui, vfx | 10/11 (91%) | 玩家在 LVL_CommanderMassPrototype 按 F4 选牌，核验光粒随机散布、错时上升和密度。 | 2026-09-28 |
 | [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | building, commander, resources | 10/11 (91%) | 在 /Game/Maps/LVL_CommanderMassPrototype 按审核步骤确认三棵树的持续阶段、局部恢复和公共打断效果。 | 2026-09-28 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | commander, network, performance | 9/11 (82%) | 玩家在LVL_CommanderMassPrototype的MassNavRepair_GiftEdge确认R2效果。 | 2026-09-24 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与矿厂正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 17/18 (94%) | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与交矿点正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | combat, commander, network, ship, ui, vfx, wingman | 8/8 (100%) | 在已加载新代码的 /Game/Maps/LVL_CommanderMassPrototype 的 TeleportGround 观察点验收落位与回源。 | 2026-09-24 |
 | [玩家游骑兵开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家游骑兵开火与升级配置.md) | combat, input, network, vfx | 8/9 (89%) | 用户审核FireReview的枪口、弹道及缓冲后坐；批准后将已验证配置接到正式BP_GroundMech_Light。 | 2026-09-20 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | combat, commander, data, wingman | 8/8 (100%) | 本次归并已交付；前次4项现有回归适配仍等待用户范围确认。 | 2026-09-14 |
@@ -89,7 +89,13 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | commander, navigation, performance | 9/9 (100%) | — | 2026-11-11 |
+| [护盾交矿与先驱号兵营 — 实施记录](../DevelopmentDocumentation/20261112-护盾交矿与先驱号兵营.md) | building, navigation, resources | 6/6 (100%) | — | 2026-11-12 |
+| [统一体型让路与接触传递](../DevelopmentDocumentation/20261111-统一体型让路与接触传递.md) | commander, performance | 7/7 (100%) | — | 2026-11-12 |
+| [人墙让路来源修复](../DevelopmentDocumentation/20261111-人墙让路来源修复.md) | commander, network | 7/7 (100%) | — | 2026-11-12 |
+| [矿簇旁两点往返修复](../DevelopmentDocumentation/20261111-矿簇旁两点往返修复.md) | commander, performance | 6/6 (100%) | — | 2026-11-12 |
+| [Mass权威数据迁移与千单位对比](../DevelopmentDocumentation/20261111-Mass权威数据迁移与千单位对比.md) | commander, performance | 5/5 (100%) | — | 2026-11-12 |
+| [Mass移动数据去重与批量读写 — 技术方案](../DevelopmentDocumentation/20261111-Mass移动数据去重与批量读写.md) | commander, performance | 5/5 (100%) | — | 2026-11-12 |
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | commander, navigation, performance | 9/9 (100%) | — | 2026-11-12 |
 | [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | network, performance | 7/7 (100%) | — | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹 — 实施与交付](../DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md) | combat, network, ui, vfx | 4/5 (80%) | — | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡 — 实施与交付](../DevelopmentDocumentation/20261108-游骑兵初始弹与三张肉鸽卡.md) | combat, network, ui, vfx | — | — | 2026-11-09 |
@@ -108,7 +114,7 @@
 | [游骑兵 MechaDestroyer 替换与风格化 — 实施记录](../DevelopmentDocumentation/20261023-游骑兵MechaDestroyer替换与风格化.md) | art, combat | 12/12 (100%) | 本会话已完成归档，后续调整按新反馈另立增量。 | 2026-10-26 |
 | [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | commander, performance, presentation | — | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-10-26 |
 | [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | commander, navigation, performance, resource | 9/9 (100%) | — | 2026-10-24 |
-| [3米整数格地面导航 — 实施记录](../DevelopmentDocumentation/20261022-3米整数格地面导航.md) | commander, navigation, network, performance | 15/15 (100%) | — | 2026-10-23 |
+| [3米整数格地面导航 — 实施记录](../DevelopmentDocumentation/20261022-3米整数格地面导航.md) | commander, navigation, network, performance | 14/14 (100%) | — | 2026-10-23 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, network | — | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-10-18 |
 | [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
@@ -182,7 +188,7 @@
 | [进度面板分类筛选与文档分类元数据 — 技术方案](../DevelopmentDocumentation/20260917-进度面板分类筛选与文档分类元数据.md) | project | 8/8 (100%) | — | 2026-09-17 |
 | [Ship动漫低模风格Blender样板 — 制作与交付](../DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md) | art, assets, ship | 4/4 (100%) | 等待用户美术评审；后续UE材质适配与模型替换另按确认范围实施。 | 2026-09-16 |
 | [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | commander, performance, wingman | 9/9 (100%) | 继续归因未下降的ShadowDepths；后续实机游玩关注FXAA远距闪烁和快速转镜头下的Lumen收敛。 | 2026-09-16 |
-| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | building, commander, navigation, performance | 7/7 (100%) | — | 2026-09-16 |
+| [据点交矿点落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点交矿点落点与大规模避让修复.md) | building, commander, navigation, performance | 7/7 (100%) | — | 2026-09-16 |
 | [客户端 CPU 增量维护与 10Hz 刷新](../DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md) | commander, network, performance, ui | 12/12 (100%) | — | 2026-09-16 |
 | [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | commander, navigation, performance, resources | 11/11 (100%) | — | 2026-09-15 |
 | [指挥官姿态预测差分压缩与性能对比 — 技术方案](../DevelopmentDocumentation/20260915-指挥官姿态预测差分压缩与性能对比.md) | commander, network, performance | 9/9 (100%) | — | 2026-09-15 |
@@ -191,7 +197,7 @@
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | combat, vfx, wingman | 7/7 (100%) | 后续另行处理既有失败断言；独立GPU计时与强制扩容未纳入本次实测。 | 2026-09-14 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | combat, commander, resources, ship, vfx, wingman | 10/10 (100%) | — | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | combat, commander, data, resources, ship | 7/7 (100%) | 单独维护旧网络包预算和Ship快照测试夹具；跟踪场外绕矿簇减速及已有距离场ensure。 | 2026-09-13 |
-| [激光采矿与矿车进出厂](../DevelopmentDocumentation/20260913-激光采矿与矿车进出厂.md) | resources | 7/7 (100%) | 等待矿车受击专项测试范围确认；保留距离场渲染警告供后续定位。 | 2026-09-13 |
+| [激光采矿与矿车进出厂](../DevelopmentDocumentation/20260913-激光采矿与矿车进出厂.md) | resources | 6/6 (100%) | 等待矿车受击专项测试范围确认；保留距离场渲染警告供后续定位。 | 2026-09-13 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | commander, network, ship, ui, wingman | 12/12 (100%) | — | 2026-09-13 |
 | [ShipComponent正式部件蓝图 — 制作与迁移](../DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md) | assets, ship | 6/6 (100%) | — | 2026-09-12 |
 | [空战测试关卡远端地面单位 — 实施](../DevelopmentDocumentation/20260912-空战测试关卡远端地面单位.md) | commander, level, ship | 4/4 (100%) | 在原地图直接PIE体验；可在GroundUnits文件夹调整小队位置、数量和间距。 | 2026-09-12 |

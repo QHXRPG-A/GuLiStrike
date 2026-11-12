@@ -120,6 +120,7 @@ def main() -> None:
     parser.add_argument("--scenario", choices=["crossing", "hold", "gather", "mixed", "attack", "buildings", "ore", "work"], required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--recipe", type=Path)
+    parser.add_argument('--moving-units', type=int, choices=[500,1000], help='Additional locally simulated movement fixture; existing 632-unit opening is retained')
     parser.add_argument('--preview', action='store_true', help='After replay, keep this PIE open for player control until the player stops it')
     args = parser.parse_args()
     output = args.output.resolve()
@@ -215,7 +216,18 @@ def main() -> None:
         # Full-population evidence stays in the driver. Sending it through the
         # editor console envelope exceeds the bridge's bounded request size.
         native_recipe = {key: value for key, value in recipe.items() if not key.startswith("_")}
-        prepared = game(f"r=json.loads(p.prepare_movement_capture({json.dumps(native_recipe)!r}))")
+        if args.moving_units:
+            prepared = game(f"r=json.loads(p.prepare_movement_scale_capture({args.moving_units},{args.scenario == 'hold'!r}))")
+            save('preparation.json',prepared)
+            if prepared.get('error'):
+                raise RuntimeError(prepared['error'])
+            if args.recipe:
+                verify_scene(recipe['commands'],prepared['recipe']['commands'],'commands')
+                verify_scene(recipe['members'],prepared['recipe']['members'],'members')
+            else:
+                recipe = prepared['recipe']
+        else:
+            prepared = game(f"r=json.loads(p.prepare_movement_capture({json.dumps(native_recipe)!r}))")
         save("preparation.json", prepared)
         if prepared.get("error") or not prepared.get("prepared"):
             raise RuntimeError(prepared.get("error", "Preparation did not complete"))
@@ -269,9 +281,13 @@ def main() -> None:
             raise RuntimeError(started["state"].get("error", "Capture did not start"))
         print(json.dumps({"phase": "measuring", "seconds": 30, "scenario": args.scenario}), flush=True)
         time.sleep(32)
-        captured = game("r={'movement':json.loads(p.get_movement_capture_json()),'performance':json.loads(p.get_capture_json()),"
-                        "'diagnostics':json.loads(a.get_move_response_diagnostics())}")
-        save("capture.json", captured)
+        capture_code = "r={'movement':json.loads(p.get_movement_capture_json()),'performance':json.loads(p.get_capture_json()),'diagnostics':json.loads(a.get_move_response_diagnostics())}"
+        if args.moving_units:
+            game(capture_code + f"\nwith open({str(output / 'capture.json')!r},'w',encoding='utf-8') as out: json.dump(r,out,ensure_ascii=False)\nr={{'saved':True}}")
+            captured = json.loads((output / 'capture.json').read_text(encoding='utf-8'))
+        else:
+            captured = game(capture_code)
+            save("capture.json", captured)
         save('scene-after.json',game("r=json.loads(p.get_movement_scene_json())"))
         if args.scenario == 'work':
             save('work-after.json',game("r={'builders':[{'debug':b.get_component_by_class(unreal.GuLiConstructionWorkComponent).get_construction_debug(),'actor':b.get_name()} for b in unreal.GameplayStatics.get_all_actors_of_class(w,unreal.GuLiConstructionVehiclePawn)],"

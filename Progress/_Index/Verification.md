@@ -4,7 +4,13 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | done | partial | — | 2026-11-11 |
+| [护盾交矿与先驱号兵营 — 实施记录](../DevelopmentDocumentation/20261112-护盾交矿与先驱号兵营.md) | done | partial | — | 2026-11-12 |
+| [统一体型让路与接触传递](../DevelopmentDocumentation/20261111-统一体型让路与接触传递.md) | done | partial | — | 2026-11-12 |
+| [人墙让路来源修复](../DevelopmentDocumentation/20261111-人墙让路来源修复.md) | done | partial | — | 2026-11-12 |
+| [矿簇旁两点往返修复](../DevelopmentDocumentation/20261111-矿簇旁两点往返修复.md) | done | partial | — | 2026-11-12 |
+| [Mass权威数据迁移与千单位对比](../DevelopmentDocumentation/20261111-Mass权威数据迁移与千单位对比.md) | done | partial | — | 2026-11-12 |
+| [Mass移动数据去重与批量读写 — 技术方案](../DevelopmentDocumentation/20261111-Mass移动数据去重与批量读写.md) | done | partial | — | 2026-11-12 |
+| [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | done | partial | — | 2026-11-12 |
 | [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | verification | partial | 用户通过本地关系图完成实际设计并保存草稿。 | 2026-11-09 |
 | [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | done | partial | — | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹 — 实施与交付](../DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md) | done | partial | — | 2026-11-09 |
@@ -79,7 +85,7 @@
 | [肉鸽卡牌数据表与实战选牌 — 技术方案](../DevelopmentDocumentation/肉鸽卡牌数据表与实战选牌.md) | verification | partial | 玩家在 LVL_CommanderMassPrototype 按 F4 选牌，核验光粒随机散布、错时上升和密度。 | 2026-09-28 |
 | [三棵指挥官StateTree分层重构 — 技术方案与交付](../DevelopmentDocumentation/20260926-三棵指挥官StateTree分层重构.md) | verification | partial | 在 /Game/Maps/LVL_CommanderMassPrototype 按审核步骤确认三棵树的持续阶段、局部恢复和公共打断效果。 | 2026-09-28 |
 | [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | verification | partial | 玩家在LVL_CommanderMassPrototype的MassNavRepair_GiftEdge确认R2效果。 | 2026-09-24 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | verification | partial | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与矿厂正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | verification | partial | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与交矿点正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | verification | partial | 在已加载新代码的 /Game/Maps/LVL_CommanderMassPrototype 的 TeleportGround 观察点验收落位与回源。 | 2026-09-24 |
 | [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | done | partial | 玩家在/Game/Maps/LVL_GroundMech_FireReview确认两队待命、敌方红色描边及受击销毁效果。 | 2026-09-21 |
 | [游骑兵动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-游骑兵动画蓝图与空中战斗.md) | done | partial | 按后续实际使用反馈调整；未覆盖专项和容量条视觉终验见本文边界。 | 2026-09-21 |

@@ -20,14 +20,14 @@ enum class EGuLiBuildingType : uint8
 	Outpost = 3,
 	Barracks = 4,
 	ShieldGenerator = 5,
-	Factory = 6,
+	PioneerBarracks = 6,
 	BiZhiMaoConstruction = 7
 };
 
 UENUM(BlueprintType)
 enum class EGuLiBuildingCategory : uint8
 {
-	General, Tower, Barracks, ShieldGenerator, Factory, Stronghold, ConstructedUnit
+	General, Tower, Barracks, ShieldGenerator, PioneerBarracks, Stronghold, ConstructedUnit
 };
 
 /** One authoritative reason for a placement result. None means the server accepted the request. */

@@ -120,7 +120,8 @@ def main():
     # The isolated ordinary producer exercises the new Mass definition; the
     # production table outside this opt-in profile remains unchanged.
     next(row for row in rows if row["Name"]=="BasicBarracks")["ProductionUnitId"] = 101
-    clone(rows, "ResourceFactory", Name="AcceptanceCombinedBuilding", Id=102)
+    clone(rows, "ResourceFactory", Name="AcceptanceCombinedBuilding", Id=102,
+          ProductionUnitId=0, ProductionSeconds=0, ProductionCount=0)
     save_table("GuLiBuildingDataSettings", "BuildingsTable", source, rows, "DT_AcceptanceBuildings")
     original = settings("GuLiBuildingDataSettings").get_editor_property("Catalog")
     catalog = duplicate(original, "DA_AcceptanceBuildingCatalog")

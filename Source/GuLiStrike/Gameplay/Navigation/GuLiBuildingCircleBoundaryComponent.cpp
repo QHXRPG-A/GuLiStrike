@@ -2,7 +2,6 @@
 #include "Gameplay/Navigation/GuLiCircularNavigationComponent.h"
 #include "Gameplay/Navigation/GuLiCircularBoundaries.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
-#include "Gameplay/Navigation/GuLiFactoryFloorNavigationComponent.h"
 #include "Gameplay/Navigation/GuLiCircleCollisionFiltering.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Building/GuLiGroundAccessRampComponent.h"
@@ -56,21 +55,13 @@ void UGuLiBuildingCircleBoundaryComponent::RefreshBoundary()
 void UGuLiBuildingCircleBoundaryComponent::RefreshCollisionSources()
 {
     if (!Lifecycle) return;
-    const bool Completed=Lifecycle->GetState().Phase==EGuLiBuildingPhase::Completed;
-    if (Lifecycle->GetDefinition().Category==EGuLiBuildingCategory::Factory && Completed && !FactoryFloor)
-    {
-        auto* Floor=NewObject<UGuLiFactoryFloorNavigationComponent>(GetOwner(),NAME_None,RF_Transient);
-        if (Floor->InitializeFromFactory(*GetOwner()))
-        {FactoryFloor=Floor;GetOwner()->AddInstanceComponent(Floor);Floor->RegisterComponent();}
-    }
-    if (FactoryFloor) FactoryFloor->SetCanEverAffectNavigation(Completed);
     TArray<AActor*> Parts;GetOwner()->GetAllChildActors(Parts,true);Parts.Add(GetOwner());
     for (auto* Part:Parts)
     {
         TInlineComponentArray<UPrimitiveComponent*> Primitives(Part);
         for (auto* Primitive:Primitives)
         {
-            if (Primitive==FactoryFloor || Primitive->IsA<UGuLiGroundAccessRampComponent>()) continue;
+            if (Primitive->IsA<UGuLiGroundAccessRampComponent>()) continue;
             Primitive->SetCanEverAffectNavigation(false);
             Primitive->SetMaskFilterOnBodyInstance(Primitive->BodyInstance.GetMaskFilter()|GuLiCircleCollisionFiltering::CircularBoundaryMask);
         }

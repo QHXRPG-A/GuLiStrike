@@ -1,0 +1,101 @@
+{
+  "parts": [
+    {
+      "actor": "GuLiPioneerBarracksActor_0",
+      "component": "BuildingCollision",
+      "class": "BoxComponent",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+    },
+    {
+      "actor": "GuLiPioneerBarracksActor_0",
+      "component": "BuildingVisual",
+      "class": "StaticMeshComponent",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+    },
+    {
+      "actor": "BP_ResourceProcessingFactory_C_1",
+      "component": "Body",
+      "class": "StaticMeshComponent",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+    },
+    {
+      "actor": "BP_ResourceProcessingFactory_C_1",
+      "component": "Door",
+      "class": "SkeletalMeshComponent",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+    },
+    {
+      "actor": "BP_ResourceProcessingFactory_C_1",
+      "component": "AccessRamp",
+      "class": "GuLiGroundAccessRampComponent",
+      "collision": "<CollisionEnabled.NO_COLLISION: 0>"
+    }
+  ],
+  "points": [
+    [
+      577.3172607421875,
+      70202.99951171875,
+      901.7790832519531
+    ],
+    [
+      -488.02886962890625,
+      69467.64395141602,
+      901.7790832519531
+    ],
+    [
+      78.58973693847656,
+      70547.24615478516,
+      901.7790832519531
+    ],
+    [
+      370.378173828125,
+      70436.58544921875,
+      901.7790832519531
+    ],
+    [
+      -633.053955078125,
+      69743.96591186523,
+      901.7790832519531
+    ],
+    [
+      -488.029052734375,
+      70332.35586547852,
+      901.7790832519531
+    ],
+    [
+      -231.202392578125,
+      70509.63055419922,
+      901.7790832519531
+    ],
+    [
+      -231.20208740234375,
+      69290.36932373047,
+      901.7790832519531
+    ],
+    [
+      652.0,
+      69900.0,
+      901.7790832519531
+    ],
+    [
+      78.59036254882812,
+      69252.75384521484,
+      901.7790832519531
+    ],
+    [
+      577.3175048828125,
+      69597.00076293945,
+      901.7790832519531
+    ],
+    [
+      -633.0541381835938,
+      70056.03366088867,
+      901.7790832519531
+    ],
+    [
+      370.3786926269531,
+      69363.41479492188,
+      901.7790832519531
+    ]
+  ]
+}

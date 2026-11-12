@@ -1004,7 +1004,7 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 				Request.MiningOrderType = EGuLiMiningOrderType::MineCluster;
 				Request.TargetClusterId = ClusterId; Request.Target = ClusterCenter;
 			}
-			else if (BattlePlayer && ResourceAdapter.IsFactoryAlongRay(BattlePlayer->GetTeam(),RayOrigin,RayDirection))
+			else if (BattlePlayer && ResourceAdapter.IsDropoffAlongRay(BattlePlayer->GetTeam(),RayOrigin,RayDirection))
 			{
 				if (NetSyncComponent->GetSelectionState().ActorIds.IsEmpty() && !NetSyncComponent->HasUnresolvedSelectionIntent()) return false;
 				Request.MiningOrderType = EGuLiMiningOrderType::ReturnToFactory;

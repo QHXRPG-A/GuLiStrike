@@ -17,8 +17,8 @@ bool FGuLiHybridAdapterRegistryTests::RunTest(const FString&)
 {
     FGuLiHybridManifestData Data;FString Error;
     const FString Definition=TEXT("building/106");
-    TestTrue(TEXT("A new definition reuses the existing factory capability"),
-        FGuLiHybridAdapterRegistry::BindDefinition(Data,Definition,TEXT("ResourceFactory"),Error));
+    TestTrue(TEXT("A new definition reuses the existing building capability"),
+        FGuLiHybridAdapterRegistry::BindDefinition(Data,Definition,TEXT("PlacedBuilding"),Error));
     FGuLiHybridStartupEntry Object;Object.Key.Kind=EGuLiHybridObjectKind::Building;Object.Definition=Definition;
     Data.Objects.Add(Object);
     auto& Spawn=Data.Rules.AddDefaulted_GetRef();Spawn.Kind=EGuLiHybridRuleKind::Spawn;
@@ -27,14 +27,14 @@ bool FGuLiHybridAdapterRegistryTests::RunTest(const FString&)
     FGuLiHybridObjectState State;State.Key.Kind=EGuLiHybridObjectKind::Building;State.Definition=FName(*Definition);
     FGuLiHybridAdapterFamily Family;
     TestTrue(TEXT("A definition outside the old 1-6 range resolves"),FGuLiHybridAdapterRegistry::Resolve(Data,State,Family,Error));
-    TestEqual(TEXT("Definition selects the declared family"),Family.Name,FName(TEXT("ResourceFactory")));
+    TestEqual(TEXT("Definition selects the declared family"),Family.Name,FName(TEXT("PlacedBuilding")));
     TestFalse(TEXT("Conflicting family assignment is rejected"),
-        FGuLiHybridAdapterRegistry::BindDefinition(Data,Definition,TEXT("PlacedBuilding"),Error));
+        FGuLiHybridAdapterRegistry::BindDefinition(Data,Definition,TEXT("Miner"),Error));
     State.Key.Kind=EGuLiHybridObjectKind::Miner;
     TestFalse(TEXT("An object cannot borrow another kind's family"),FGuLiHybridAdapterRegistry::Resolve(Data,State,Family,Error));
-    Data.Numbers.Add(TEXT("adapter/family/ResourceFactory/state_version"),999);
+    Data.Numbers.Add(TEXT("adapter/family/PlacedBuilding/state_version"),999);
     TestFalse(TEXT("Incompatible recovery schema fails before gameplay"),FGuLiHybridAdapterRegistry::Validate(Data,Error));
-    Data.Numbers.Add(TEXT("adapter/family/ResourceFactory/state_version"),Family.StateVersion);
+    Data.Numbers.Add(TEXT("adapter/family/PlacedBuilding/state_version"),Family.StateVersion);
     const auto GoodData=Data;
     Data.Strings.Remove(TEXT("adapter/actor_components"));
     TestFalse(TEXT("Family-only snapshots cannot start the common component bridge"),FGuLiHybridAdapterRegistry::Validate(Data,Error));
@@ -54,8 +54,8 @@ bool FGuLiHybridAdapterRegistryTests::RunTest(const FString&)
     TestFalse(TEXT("Dynamic definitions also require a declared contract"),FGuLiHybridAdapterRegistry::Validate(Data,Error));
     FGuLiBuildingDefinition Building;Building.DefinitionId=106;Building.Mesh=NewObject<UStaticMesh>();
     Building.DisplayName=FText::FromString(TEXT("Authored capability variant"));
-    Building.Category=EGuLiBuildingCategory::Factory;
-    TestEqual(TEXT("Factory capability does not depend on numeric building ID"),GetGuLiHybridBuildingFamily(Building),FName(TEXT("ResourceFactory")));
+    Building.Category=EGuLiBuildingCategory::PioneerBarracks;
+    TestEqual(TEXT("Barracks capability does not depend on numeric building ID"),GetGuLiHybridBuildingFamily(Building),FName(TEXT("PlacedBuilding")));
     Building.Category=EGuLiBuildingCategory::Tower;
     TestEqual(TEXT("A new ordinary building uses the shared family"),GetGuLiHybridBuildingFamily(Building),FName(TEXT("PlacedBuilding")));
     Building.Category=EGuLiBuildingCategory::Stronghold;

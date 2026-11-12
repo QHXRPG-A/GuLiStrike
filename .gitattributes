@@ -21,6 +21,14 @@ Artifacts/Diagnostics/ClientPerformance20261010/**/*.gif filter=lfs diff=lfs mer
 # Archived diffs preserve their original context indentation.
 Artifacts/Diagnostics/CommanderIslandSession_20261002/**/*.patch -whitespace
 Artifacts/YieldRelay20261111/source-change.diff -whitespace
+Artifacts/MassMovementData20261111/*.diff -whitespace
+Artifacts/MassAuthority20261111/*.diff -whitespace
+Artifacts/PendulumFix20261111/*.diff -whitespace
+Artifacts/CrowdTrap20261111/*.diff -whitespace
+Artifacts/CrowdTrapFollowup20261111/*.diff -whitespace
+# Keep the original UE diagnostic JSON bytes, including exporter line endings.
+Artifacts/CrowdTrap20261111/*.json -text -whitespace
+Artifacts/CrowdTrapFollowup20261111/*.json -text -whitespace
 
 # Normalize text line endings
 # Retain exact bytes of archived network compiler/test output and its SHA-256.

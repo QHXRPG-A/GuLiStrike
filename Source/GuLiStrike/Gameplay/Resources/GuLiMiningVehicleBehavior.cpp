@@ -1,11 +1,18 @@
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiShieldGeneratorActor.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Engine/World.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
+
+TArray<FVector> AGuLiMiningVehiclePawn::GetDeliveryPoints() const
+{
+    const auto& Config=GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>()->GetAvoidanceCatalog().Units.FindChecked(UnitTypeId).Solver;
+    return Factory->GetUnloadPoints(GetActorLocation(),Config.Radius,Config.ContactMargin);
+}
 
 bool AGuLiMiningVehiclePawn::ReplanGridWork()
 {
@@ -15,7 +22,7 @@ bool AGuLiMiningVehiclePawn::ReplanGridWork()
     if (TaskState==EGuLiMiningTaskState::ReturningToFactory || TaskState==EGuLiMiningTaskState::Docking)
     {
         if (!IsValid(Factory) || Factory->GetTeam()!=Team) {BeginGrace(false);Travel->StopAtSafePoint();return false;}
-        const auto Points=Factory->GetUnloadPoints();int32 Best=INDEX_NONE;
+        const auto Points=GetDeliveryPoints();int32 Best=INDEX_NONE;
         for (int32 I=0;I<Points.Num();++I)
             if (Best==INDEX_NONE || FVector::DistSquared2D(GetActorLocation(),Points[I])<FVector::DistSquared2D(GetActorLocation(),Points[Best])) Best=I;
         if (Best==INDEX_NONE) return false;
@@ -109,26 +116,21 @@ void AGuLiMiningVehiclePawn::ExecuteBehaviorAction(EGuLiMiningBehaviorAction Act
 		FinishCurrentTarget();
 		if (BehaviorResult != Result::FactoryUnreachable && BehaviorResult != Result::FactoryLost)
 		{
-			ReturnFactories.Reset(); NextReturnFactory = 0;
-			TArray<AGuLiResourceFactoryActor*> Candidates;
-			Resources->QueryFriendlyFactories(Team, GetActorLocation(), Candidates);
-			for (auto* Candidate : Candidates) ReturnFactories.Add(Candidate);
+			ReturnDropoffs.Reset(); NextReturnDropoff = 0;
+			TArray<AGuLiShieldGeneratorActor*> Candidates;
+			Resources->QueryFriendlyDropoffs(Team, GetActorLocation(), Candidates);
+			for (auto* Candidate : Candidates) ReturnDropoffs.Add(Candidate);
 		}
-		AGuLiResourceFactoryActor* Destination = nullptr;
-		while (NextReturnFactory < ReturnFactories.Num())
+		AGuLiShieldGeneratorActor* Destination = nullptr;
+		while (NextReturnDropoff < ReturnDropoffs.Num())
 		{
-			auto* Candidate = ReturnFactories[NextReturnFactory++].Get();
+			auto* Candidate = ReturnDropoffs[NextReturnDropoff++].Get();
 			if (Candidate && !Candidate->IsActorBeingDestroyed() && Candidate->GetTeam() == Team
 				&& Candidate->FindComponentByClass<UGuLiBuildingLifecycleComponent>()->IsCompleted())
 			{ Destination = Candidate; break; }
 		}
 		UnloadPointAttempts = 0;
-		if (Destination != Factory)
-		{
-			if (IsValid(Factory)) Factory->UnregisterMiningVehicle(*this);
-			Factory = Destination;
-			if (Factory) Factory->RegisterMiningVehicle(*this);
-		}
+		Factory = Destination;
 		bManualReturnOrder |= ControlMode == EGuLiMiningControlMode::PlayerOrder;
 		TaskState = EGuLiMiningTaskState::Idle;
 		BehaviorResult = IsValid(Factory) ? Result::FactoryReady : Result::NoTarget;
@@ -138,7 +140,7 @@ void AGuLiMiningVehiclePawn::ExecuteBehaviorAction(EGuLiMiningBehaviorAction Act
 	{
 		TaskState = EGuLiMiningTaskState::ReturningToFactory;
 		if (!IsValid(Factory) || Factory->GetTeam() != Team) { BehaviorResult = Result::FactoryLost; break; }
-		const auto Points = Factory->GetUnloadPoints();
+		const auto Points = GetDeliveryPoints();
 		if (Points.IsEmpty() || UnloadPointAttempts >= Points.Num()) { BehaviorResult = Result::FactoryUnreachable; break; }
         const FVector Target=Points[UnloadPointAttempts];
         ++UnloadPointAttempts;

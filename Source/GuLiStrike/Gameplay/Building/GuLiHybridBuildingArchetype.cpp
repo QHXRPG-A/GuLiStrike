@@ -7,10 +7,9 @@ auto& Archetypes() {static auto* V=new TArray<const FGuLiHybridBuildingArchetype
 const FGuLiHybridBuildingArchetype* Resolve(const FGuLiBuildingDefinition& D)
 {
     if (!D.IsUsable()) return nullptr;const FGuLiHybridBuildingArchetype* Result=nullptr;bool Ambiguous=false;
-    TSet<FName> Names;
     for (const auto* V:Archetypes())
     {
-        if (V->Family.IsNone() || !V->Supports || !V->ActorClass || Names.Contains(V->Family)) return nullptr;Names.Add(V->Family);
+        if (V->Family.IsNone() || !V->Supports || !V->ActorClass) return nullptr;
         if (!V->Supports(D)) continue;
         if (!Result || V->Priority>Result->Priority) {Result=V;Ambiguous=false;}
         else if (V->Priority==Result->Priority) Ambiguous=true;

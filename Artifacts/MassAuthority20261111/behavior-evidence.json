@@ -1,0 +1,173 @@
+{
+  "matched_trajectories": [
+    {
+      "case": "crossing-500",
+      "baseline": "baseline-crossing-500-01",
+      "mass": "mass-crossing-500-01",
+      "steps": 300,
+      "position_precision_cm": 1e-05,
+      "mean_ms_before": 4.460777333309427,
+      "mean_ms_after": 4.3137066667259205,
+      "work_distributions_equal": {
+        "Movement.CircleChecks": true,
+        "Movement.CircleBucketVisits": true,
+        "Movement.DirectionProbes": true,
+        "Movement.SideProbes": true,
+        "Movement.YieldRequests": true
+      }
+    },
+    {
+      "case": "crossing-500",
+      "baseline": "baseline-crossing-500-01",
+      "mass": "mass-crossing-500-02",
+      "steps": 300,
+      "position_precision_cm": 1e-05,
+      "mean_ms_before": 4.460777333309427,
+      "mean_ms_after": 4.165233333502935,
+      "work_distributions_equal": {
+        "Movement.CircleChecks": true,
+        "Movement.CircleBucketVisits": true,
+        "Movement.DirectionProbes": true,
+        "Movement.SideProbes": true,
+        "Movement.YieldRequests": true
+      }
+    }
+  ],
+  "command_phase_examples": [
+    {
+      "run": "baseline-crossing-500-01",
+      "steps": [
+        {
+          "step": 1,
+          "seconds": 0.0424593985080719,
+          "active_orders": 0
+        },
+        {
+          "step": 2,
+          "seconds": 0.1416275016963482,
+          "active_orders": 0
+        },
+        {
+          "step": 3,
+          "seconds": 0.24295470118522644,
+          "active_orders": 0
+        },
+        {
+          "step": 4,
+          "seconds": 0.34338660165667534,
+          "active_orders": 0
+        },
+        {
+          "step": 5,
+          "seconds": 0.4431944005191326,
+          "active_orders": 0
+        },
+        {
+          "step": 6,
+          "seconds": 0.5422861017286777,
+          "active_orders": 300
+        },
+        {
+          "step": 7,
+          "seconds": 0.6447940990328789,
+          "active_orders": 500
+        },
+        {
+          "step": 8,
+          "seconds": 0.7470258995890617,
+          "active_orders": 500
+        }
+      ]
+    },
+    {
+      "run": "baseline-crossing-500-02",
+      "steps": [
+        {
+          "step": 1,
+          "seconds": 0.02175699919462204,
+          "active_orders": 0
+        },
+        {
+          "step": 2,
+          "seconds": 0.10103409737348557,
+          "active_orders": 0
+        },
+        {
+          "step": 3,
+          "seconds": 0.20371779799461365,
+          "active_orders": 0
+        },
+        {
+          "step": 4,
+          "seconds": 0.3006652966141701,
+          "active_orders": 0
+        },
+        {
+          "step": 5,
+          "seconds": 0.40619199723005295,
+          "active_orders": 0
+        },
+        {
+          "step": 6,
+          "seconds": 0.500808198004961,
+          "active_orders": 0
+        },
+        {
+          "step": 7,
+          "seconds": 0.6085946001112461,
+          "active_orders": 500
+        },
+        {
+          "step": 8,
+          "seconds": 0.7094139978289604,
+          "active_orders": 500
+        }
+      ]
+    },
+    {
+      "run": "mass-crossing-500-03",
+      "steps": [
+        {
+          "step": 1,
+          "seconds": 0.0809272974729538,
+          "active_orders": 0
+        },
+        {
+          "step": 2,
+          "seconds": 0.18723789975047112,
+          "active_orders": 0
+        },
+        {
+          "step": 3,
+          "seconds": 0.285904198884964,
+          "active_orders": 0
+        },
+        {
+          "step": 4,
+          "seconds": 0.3843670003116131,
+          "active_orders": 0
+        },
+        {
+          "step": 5,
+          "seconds": 0.4817730002105236,
+          "active_orders": 0
+        },
+        {
+          "step": 6,
+          "seconds": 0.5830831974744797,
+          "active_orders": 500
+        },
+        {
+          "step": 7,
+          "seconds": 0.6863615997135639,
+          "active_orders": 500
+        },
+        {
+          "step": 8,
+          "seconds": 0.7915470972657204,
+          "active_orders": 500
+        }
+      ]
+    }
+  ]
+}

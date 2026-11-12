@@ -22,7 +22,7 @@ class AGuLiConstructionVehiclePawn;
 class AGuLiOreClusterObstacleActor;
 class AGuLiOreFieldActor;
 class AGuLiOreCollisionFieldActor;
-class AGuLiResourceFactoryActor;
+class AGuLiShieldGeneratorActor;
 class AGuLiResourceWorldState;
 class AGuLiTerritoryOutpostActor;
 class ARecastNavMesh;
@@ -91,9 +91,10 @@ public:
 	FVector GetInitialBaseExit(EGuLiTeam Team) const;
 	FGuLiTerritoryOwnershipChanged OnTerritoryOwnershipChanged;
 	FGuLiControllableActorId AllocateControllableActorId() { return FGuLiControllableActorId(NextControllableActorId++); }
-	AGuLiResourceFactoryActor* FindNearestFriendlyFactory(EGuLiTeam Team, const FVector& Location) const;
-	void QueryFriendlyFactories(EGuLiTeam Team, const FVector& Location, TArray<AGuLiResourceFactoryActor*>& Out) const;
-	void RegisterFactory(AGuLiResourceFactoryActor& Factory);
+	AGuLiShieldGeneratorActor* FindNearestFriendlyDropoff(EGuLiTeam Team, const FVector& Location) const;
+	void QueryFriendlyDropoffs(EGuLiTeam Team, const FVector& Location, TArray<AGuLiShieldGeneratorActor*>& Out) const;
+	void RegisterDropoff(AGuLiShieldGeneratorActor& Factory);
+	void UnregisterDropoff(AGuLiShieldGeneratorActor& Factory);
     bool RegisterHybridOutpost(AGuLiTerritoryOutpostActor& Outpost,int32 Index);
     void UnregisterHybridOutpost(AGuLiTerritoryOutpostActor& Outpost,int32 Index);
     void ApplyHybridControlPoint(const FGuLiHybridObjectState& State,bool Effects);
@@ -148,7 +149,7 @@ private:
 	TArray<TObjectPtr<AGuLiTerritoryOutpostActor>> Outposts;
 
 	UPROPERTY(Transient)
-	TArray<TObjectPtr<AGuLiResourceFactoryActor>> Factories;
+	TArray<TObjectPtr<AGuLiShieldGeneratorActor>> Dropoffs;
 
 	TArray<uint8> NodeRemaining;
     GuLiCircleAvoidance::FOreShapeCache OreShapes;

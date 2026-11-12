@@ -1,7 +1,5 @@
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Navigation/Grid/GuLiGridTypes.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
-#include "Components/BoxComponent.h"
 #include "Gameplay/Data/Generated/GuLiStrikeBuildingsTableRows.h"
 #include "Engine/DataTable.h"
 #include "Engine/StaticMesh.h"
@@ -42,9 +40,6 @@ bool UGuLiBuildingCatalog::ResolveTable(bool bForceRefresh)
 		D.PresentationClass = GuLiModels::LoadClass<AActor>(this, R.ModelId);
 		if (const auto* GameplayClass=GameplayClasses.Find(R.Id)) D.GameplayClass=*GameplayClass;
 		D.CollisionExtent = R.CollisionExtent; D.VisualOffset = R.VisualOffset; D.MeshScale = R.MeshScale;
-		// The processing factory's actual shell envelope differs from its legacy preview row.
-		if (D.Category==EGuLiBuildingCategory::Factory)
-			D.CollisionExtent=GetDefault<AGuLiResourceFactoryActor>()->FindComponentByClass<UBoxComponent>()->GetUnscaledBoxExtent();
 		D.SourceCollisionDiameterCm=2.f*D.CollisionExtent.Size2D();
 		D.FootprintCells=GuLiGrid::FootprintFromDiameter(D.SourceCollisionDiameterCm);
 		D.GridDimensionScale=float(GuLiGrid::ScaleFromDiameter(D.SourceCollisionDiameterCm));

@@ -1,0 +1,64 @@
+{
+  "algorithm": "demo-active-steering-yield-relay-v7",
+  "scope": "Same captured crowd positions and command-group relationships; fresh session/routes, not a full-session snapshot or CPU comparison.",
+  "seconds": 30.00642530247569,
+  "logical_steps": 300,
+  "commands_sent": 2,
+  "commands_acknowledged": 2,
+  "error": "",
+  "movers": [
+    {
+      "id": 108,
+      "commanded": true,
+      "arrival_seconds": 14.225519601255655,
+      "maximum_stall_seconds": 1.7939397022128105,
+      "blocked": false,
+      "radius_cm": 300,
+      "final_position": [
+        -9144.0855117835,
+        71143.56701503499,
+        1071.2371231685127
+      ],
+      "after_command_seconds": 13.725519601255655,
+      "net_displacement_cm": 2919.5439532520336
+    },
+    {
+      "id": 195,
+      "commanded": true,
+      "arrival_seconds": 13.225257601588964,
+      "maximum_stall_seconds": 2.0037585012614727,
+      "blocked": false,
+      "radius_cm": 300,
+      "final_position": [
+        -7875.901035783698,
+        71697.13993163033,
+        979.3756701441772
+      ],
+      "after_command_seconds": 12.425257601588964,
+      "net_displacement_cm": 4689.9893109593895
+    }
+  ],
+  "relay_neighbors": [
+    {
+      "original_id": 16777323,
+      "replay_id": 16777300,
+      "net_displacement_cm": 815.554715325249
+    },
+    {
+      "original_id": 16777256,
+      "replay_id": 16777233,
+      "net_displacement_cm": 967.9033210563714
+    },
+    {
+      "original_id": 16777257,
+      "replay_id": 16777234,
+      "net_displacement_cm": 724.8495241183797
+    },
+    {
+      "original_id": 16777294,
+      "replay_id": 16777271,
+      "net_displacement_cm": 895.8421503798166
+    }
+  ],
+  "all_commanded_completed": true
+}

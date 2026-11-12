@@ -58,7 +58,7 @@ bool GuLiBuildingPlacementPolicy::IsKnownBuildingType(const EGuLiBuildingType Ty
 		|| Type == EGuLiBuildingType::Outpost
 		|| Type == EGuLiBuildingType::Barracks
 		|| Type == EGuLiBuildingType::ShieldGenerator
-		|| Type == EGuLiBuildingType::Factory
+		|| Type == EGuLiBuildingType::PioneerBarracks
 		|| Type == EGuLiBuildingType::BiZhiMaoConstruction;
 }
 
@@ -203,7 +203,7 @@ FText GetGuLiBuildingFallbackDisplayName(const EGuLiBuildingType Type)
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.159"));
 	case EGuLiBuildingType::ShieldGenerator:
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.160"));
-	case EGuLiBuildingType::Factory:
+	case EGuLiBuildingType::PioneerBarracks:
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.161"));
 	case EGuLiBuildingType::BiZhiMaoConstruction:
 		return GuLiGameText::Get(TEXT("UI.BuildingTypes.BiZhiMao"));

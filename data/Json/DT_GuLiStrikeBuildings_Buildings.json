@@ -158,11 +158,11 @@
   {
     "Name": "ShieldGenerator",
     "Id": 5,
-    "Note": "首版白模，可调原型值",
+    "Note": "护盾供给、外围交矿与FIFO加工",
     "Category": 3,
     "PlacementType": 5,
     "DisplayName": "护盾发生器",
-    "Description": "护盾发生器功能建筑",
+    "Description": "提供护盾；矿车在外围交矿，按每秒2单位加工。",
     "CollisionExtent": {
       "X": 305.087006,
       "Y": 345.28804,
@@ -197,15 +197,15 @@
   {
     "Name": "ResourceFactory",
     "Id": 6,
-    "Note": "首版白模，可调原型值",
+    "Note": "先驱号兵营；内部出生后出营；模型部件不阻挡出兵",
     "Category": 4,
     "PlacementType": 6,
-    "DisplayName": "矿厂",
-    "Description": "矿厂功能建筑",
+    "DisplayName": "先驱号兵营",
+    "Description": "生产先驱号，从建筑内部出兵。",
     "CollisionExtent": {
-      "X": 600.0,
-      "Y": 650.0,
-      "Z": 400.0
+      "X": 500.0,
+      "Y": 500.0,
+      "Z": 360.0
     },
     "VisualOffset": {
       "X": 0.0,
@@ -223,9 +223,9 @@
     "BlueCost": 40,
     "RedCost": 10,
     "ConstructionWork": 10.0,
-    "ProductionUnitId": 0,
-    "ProductionSeconds": 0.0,
-    "ProductionCount": 0,
+    "ProductionUnitId": 1,
+    "ProductionSeconds": 10.0,
+    "ProductionCount": 24,
     "FirstCaptureGiftIds": "",
     "TransitFieldId": 0,
     "ShieldRadius": 0.0,

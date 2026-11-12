@@ -10,7 +10,6 @@
 #include "Gameplay/Building/GuLiBuildingRegistrySubsystem.h"
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderSoldierResolver.h"
@@ -67,7 +66,7 @@ class FGuLiHybridBuildingAdapter final : public IGuLiHybridSimulationAdapter
         auto* W=World(); auto* Catalog=UGuLiBuildingCatalog::LoadDefaultCatalog();
         const auto* D=Catalog?Catalog->FindById(GuLiHybridBuilding::Definition(Record.Definition)):nullptr;
         if (!W || !D || !GuLiHybridBuilding::Supported(*D) || Record.Key.Kind!=EGuLiHybridObjectKind::Building
-            || !Record.Ordinal || (Record.Parent.Kind!=EGuLiHybridObjectKind::Territory && !RestoredBuilder.IsValid() && !Record.Controller.IsValid())) return false;
+            || !Record.Ordinal) return false;
         const auto* HashHealth=Owner->GetManifest().Numbers.Find(FString::Printf(TEXT("building_adapter/%d/health"),D->DefinitionId));
         if (!HashHealth || *HashHealth!=D->MaxHealth || Record.Health.MaxHealth!=D->MaxHealth) return false;
         const FTransform Transform(FRotator(0,Record.FacingYawDegrees,0),Record.Location+FVector(0,0,D->CollisionExtent.Z));
@@ -95,7 +94,7 @@ class FGuLiHybridBuildingAdapter final : public IGuLiHybridSimulationAdapter
         const auto* Resources=W->GetSubsystem<UGuLiResourceWorldSubsystem>();
         if (!P->InitializeFromDefinition(D->DefinitionId,Record.Team,Builder,
             Resources?Resources->FindTerritoryIndex(Record.Location):INDEX_NONE,
-            Record.Parent.Kind==EGuLiHybridObjectKind::Territory?EGuLiBuildingOrigin::Gift:EGuLiBuildingOrigin::Manual,Record.bCompleted))
+            Record.Parent.Kind==EGuLiHybridObjectKind::Territory?EGuLiBuildingOrigin::Gift:Record.Parent.Kind==EGuLiHybridObjectKind::BusinessWork?EGuLiBuildingOrigin::Manual:EGuLiBuildingOrigin::Map,Record.bCompleted))
         { Release(); return false; }
         P->FinishSpawning(Transform); P->SetReplicates(false); P->SetActorTickEnabled(false);
         ApplyLedger(Record,0,false); return true;

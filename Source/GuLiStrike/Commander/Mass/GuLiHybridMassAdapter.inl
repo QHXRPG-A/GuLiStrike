@@ -8,13 +8,14 @@
 #include "Gameplay/Units/GuLiExternalControlRegistry.h"
 #include "Network/Private/GuLiHybridMessageConversions.h"
 #include <deque>
+#include "Gameplay/Building/GuLiPioneerBarracksActor.h"
 
 namespace GuLiHybridMass
 {
 using namespace GuLiCommanderMassPrivate;
 TAutoConsoleVariable<int32> PublishAfterMovement(TEXT("gs.Commander.PublishPoseAfterMovement"),1,
     TEXT("Sample due synchronous Mass poses after the shared movement step. Keeps 10 Hz publication and the existing wire format. 0 selects the comparison ordering."));
-constexpr uint32 ObjectVersion=8,SystemVersion=5;
+constexpr uint32 ObjectVersion=10,SystemVersion=5;
 const FName SystemName(TEXT("CommanderMass"));
 struct FYieldRequest
 {
@@ -100,8 +101,9 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
     A.Value(S.ExternalControlToken); A.Value(S.bPhased); A.Value(S.bExternalActionsLocked);
     uint8 CircleSide=uint8(S.CircleState.Side+1);A.Value(CircleSide);
     if (CircleSide>2) A.Reject();S.CircleState.Side=int8(CircleSide)-1;
-    A.Value(S.MovementCommandIdentity);A.Value(S.YieldDirection);A.Value(S.YieldRemainingSeconds);
+    A.Value(S.MovementCommandIdentity);A.Value(S.YieldCommandIdentity);A.Value(S.YieldDirection);A.Value(S.YieldRemainingSeconds);
     if (S.YieldRemainingSeconds<0 || (S.YieldRemainingSeconds>0 && !S.YieldDirection.IsNormalized())) A.Reject();
+    A.Value(S.BirthBuildingSource);A.Value(S.BirthExit);
     A.Value(S.GridReferenceFootprint);
     if (S.GridReferenceFootprint<1) A.Reject();
     A.Value(S.DisplacementFrameFloor); A.Value(S.DisplacementLocation); A.Value(S.DisplacementSimulationTime); A.Value(S.ExternalLockSimulationTime);
@@ -416,6 +418,12 @@ public:
         if (!Self->InstallGrantedSoldier(R.Team,static_cast<uint16>(Type),R.Location,Id,R.FacingYawDegrees,FMath::Max(1.f,R.Health.Health))) return false;
         auto& S=Self->AuthorityState->Soldiers[Self->AuthorityState->SoldierIndexById.FindChecked(Id.Value)]; S.HybridKey=R.Key; S.bLocalSimulation=false;
         S.Health=R.Health.Health;S.MaxHealth=R.Health.MaxHealth;
+        if (auto* H=Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
+            if (const auto* Barracks=Cast<AGuLiPioneerBarracksActor>(H->FindBoundActor(R.Parent)))
+            {
+                S.BirthBuildingSource=GuLiCircleAvoidance::BuildingNamespace|Barracks->FindComponentByClass<UGuLiBuildingLifecycleComponent>()->GetState().InstanceId;
+                S.BirthExit=Barracks->GetExitLocation(S.AvoidanceRadiusCentimeters);
+            }
         if(auto* Actors=Self->GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>())
         {
             const auto& Numbers=Actors->GetManifest().Numbers;const FString Prefix=TEXT("deployment/")+R.Key.StableId.ToString(EGuidFormats::Digits);
@@ -556,9 +564,6 @@ public:
         S->MechanicalPose.HoverBlendStartMilliseconds=P.HoverBlendStartMilliseconds; S->MechanicalPose.HoverBlendFromWeight=P.HoverBlendFromWeight;
         S->MechanicalPose.bHoverIdleTarget=P.bHoverIdleTarget; S->MechanicalPose.bInitialized=true;
         S->VATPlayback.Clip=P.VATClip; S->VATPlayback.Phase=P.VATPhase/65535.f; S->VATPlayback.Rate=P.VATRate/256.f; S->VATPlayback.bInitialized=true;
-        auto& Manager=Self->AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
-        if (Manager.IsEntityValid(S->Entity))
-        { Manager.GetFragmentDataChecked<FTransformFragment>(S->Entity).SetTransform(FTransform(FRotator(0,S->FacingYawDegrees,0),S->Location)); Manager.GetFragmentDataChecked<FMassVelocityFragment>(S->Entity).Value=S->Velocity; }
         if (!Decoded.Acknowledgment.IsEmpty()) Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotionAcknowledgment(Record.Key,Decoded.Acknowledgment);
         GuLiHybridMass::Present(*Self->GetWorld(),Chunk,uint32(Record.OwnerEpoch),Record.Key.LifeGeneration); ReadModel(); return true;
     }
@@ -574,8 +579,6 @@ public:
         if (R.Health.Health<S->Health)
         { TGuardValue<bool> Apply(Self->bApplyingHybridLedger,true); Self->ApplyDamage(S->SoldierId,S->Health-R.Health.Health); }
         S->Health=R.Health.Health; S->MaxHealth=R.Health.MaxHealth;
-        auto& Manager=Self->AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
-        if (Manager.IsEntityValid(S->Entity)) { auto& Health=Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(S->Entity); Health.Health=S->Health; Health.bDead=S->Health<=0; }
         ReadModel();
     }
     bool Capture(TArray<uint8>& Bytes) const override
@@ -613,8 +616,8 @@ public:
         {
             auto Create=Record; Create.Location=V.Soldier.Location; Create.FacingYawDegrees=V.Soldier.FacingYawDegrees; Create.Health.Health=FMath::Max(1.f,V.Soldier.Health);
             if (!Prepare(Create)) return false; Record.Location=V.Soldier.Location;
-            auto* S=Soldier(); const auto Entity=S->Entity; const auto Profiles=S->WeaponProfiles;
-            *S=MoveTemp(V.Soldier); S->Entity=Entity; S->WeaponProfiles=Profiles; S->bLocalSimulation=bLocal;
+            auto* S=Soldier(); const auto Entity=S->Entity; const auto Profiles=S->WeaponProfiles; const int32 DirectoryIndex=S->DirectoryIndex;
+            *S=MoveTemp(V.Soldier); S->DirectoryIndex=DirectoryIndex; S->Entity=Entity; S->WeaponProfiles=Profiles; S->bLocalSimulation=bLocal;
             S->MoveIntent=bRestoringQuery?nullptr:V.Intent;S->RouteGoal=S->MoveIntent?S->MoveIntent->Goal:nullptr;
             const double Offset=Self->AuthorityState->SimulationSeconds-V.CapturedSeconds;
             for (auto& Weapon:S->Weapons) Weapon.Attack.NextFireSeconds+=Offset;
@@ -644,7 +647,7 @@ public:
             }
             auto* S=Soldier(); auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(Self->GetWorld());
             const auto* Data=Nav?GuLiCommanderMassPrivate::GetCommanderNavigationData(*Nav):nullptr; if (!S) return false;
-            const bool NeedsRoute=!bRestoringQuery && (S->MoveIntent.IsValid() || S->bHasFinalDestination);
+            const bool NeedsRoute=!bRestoringQuery && !S->BirthBuildingSource && (S->MoveIntent.IsValid() || S->bHasFinalDestination);
             FNavLocation Ground(S->GroundLocation()),Projected;
             const bool HasGround=Nav && Data
                 && GuLiCommanderMassPrivate::ProjectPointToCommanderNavigation(*Nav,*Data,S->GroundLocation(),FVector(150,150,5000),Projected)

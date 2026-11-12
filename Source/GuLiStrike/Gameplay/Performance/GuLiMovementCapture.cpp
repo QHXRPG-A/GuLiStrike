@@ -1,7 +1,10 @@
 #include "Gameplay/Performance/GuLiMovementCapture.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
+#include "NavigationSystem.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
@@ -22,7 +25,7 @@
 #include "EngineUtils.h"
 #include "PhysicsEngine/BodySetup.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiShieldGeneratorActor.h"
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
 #include "Gameplay/Building/GuLiConstructionWorkComponent.h"
@@ -161,6 +164,67 @@ FString UGuLiPerformanceSubsystem::PrepareMovementBuilding(int32 DefinitionId,FV
 #endif
 }
 
+FString UGuLiPerformanceSubsystem::PrepareMovementScaleCapture(int32 MovingUnits,bool StationaryWall)
+{
+#if !UE_BUILD_SHIPPING
+    auto* Army=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+    auto* Navigation=FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+    auto* NavData=GuLiCommanderNavigationPolicy::ResolveRequiredNavigationData(*Navigation);
+    auto Project=[&](const FVector& Point,FVector& Surface)
+    {
+        FNavLocation Nav;
+        if (!Army->ProjectExternalUnitLocation(Point,Surface,2)
+            || !Navigation->ProjectPointToNavigation(Surface,Nav,FVector(20,20,300),NavData)) return false;
+        Surface=Nav.Location;return true;
+    };
+    TArray<FVector> Positions;
+    for (const int32 Side:{-1,1})
+    {
+        int32 Added=0;
+        for (int32 I=0;I<5000 && Added<MovingUnits/2;++I)
+        {
+            FVector Surface;
+            if (Project(FVector(-35000+Side*(4500+(I/25)*900),62000+(I%25-12)*900,900),Surface))
+            {Positions.Add(Surface);++Added;}
+        }
+    }
+    if (Positions.Num()!=MovingUnits) return TEXT("{\"error\":\"Insufficient walkable fixture positions\"}");
+    if (StationaryWall) for (int32 I=0;I<200;++I)
+    {
+        FVector Surface;
+        if (Project(FVector(-35000+(I/25-4)*900,62000+(I%25-12)*900,900),Surface)) Positions.Add(Surface);
+    }
+    TArray<FGuLiSoldierId> Ids;
+    if (!Army->SpawnMovementReviewUnits(Positions,Ids)) return TEXT("{\"error\":\"Movement population preparation failed\"}");
+    auto Recipe=MakeShared<FJsonObject>();Recipe->SetStringField(TEXT("schema"),TEXT("guli-movement-capture/v1"));
+    Recipe->SetStringField(TEXT("scenario"),StationaryWall?TEXT("hold"):TEXT("crossing"));
+    Recipe->SetStringField(TEXT("map"),TEXT("/Game/Maps/LVL_CommanderMassPrototype"));
+    Recipe->SetBoolField(TEXT("authority_fixture"),true);Recipe->SetBoolField(TEXT("automatic_fire"),false);
+    Recipe->SetNumberField(TEXT("moving_units"),MovingUnits);
+    TArray<TSharedPtr<FJsonValue>> Members,Commands;
+    for (int32 I=0;I<Ids.Num();++I)
+    {
+        auto M=MakeShared<FJsonObject>();M->SetNumberField(TEXT("id"),Ids[I].Value);
+        M->SetNumberField(TEXT("unit_type"),1);M->SetArrayField(TEXT("position"),Point(Positions[I]));
+        Members.Add(MakeShared<FJsonValueObject>(M));
+    }
+    for (int32 I=0;I<MovingUnits;I+=25)
+    {
+        const int32 Side=I<MovingUnits/2?-1:1;
+        auto Command=MakeShared<FJsonObject>();Command->SetNumberField(TEXT("at"),.5);
+        Command->SetStringField(TEXT("kind"),TEXT("authority_move"));
+        Command->SetArrayField(TEXT("target"),Point(FVector(-35000-Side*12000,62000,900)));
+        TArray<TSharedPtr<FJsonValue>> Group;for (int32 J=I;J<I+25;++J) Group.Add(MakeShared<FJsonValueNumber>(Ids[J].Value));
+        Command->SetArrayField(TEXT("members"),Group);Commands.Add(MakeShared<FJsonValueObject>(Command));
+    }
+    Recipe->SetArrayField(TEXT("members"),Members);Recipe->SetArrayField(TEXT("commands"),Commands);
+    FString Json;FJsonSerializer::Serialize(Recipe,TJsonWriterFactory<>::Create(&Json));
+    return PrepareMovementCapture(Json);
+#else
+    return TEXT("{\"error\":\"development only\"}");
+#endif
+}
+
 FString UGuLiPerformanceSubsystem::PrepareMovementCapture(const FString& RecipeJson)
 {
 #if !UE_BUILD_SHIPPING
@@ -177,9 +241,9 @@ FString UGuLiPerformanceSubsystem::PrepareMovementCapture(const FString& RecipeJ
     if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(RecipeJson),C.Recipe)||!C.Recipe)
         return Fail(TEXT("Invalid recipe JSON"));
     const TArray<TSharedPtr<FJsonValue>>* Members=nullptr;const TArray<TSharedPtr<FJsonValue>>* Commands=nullptr;
-    if (!C.Recipe->TryGetArrayField(TEXT("members"),Members)||Members->IsEmpty()||Members->Num()>600
-        ||!C.Recipe->TryGetArrayField(TEXT("commands"),Commands)||Commands->IsEmpty()||Commands->Num()>32)
-        return Fail(TEXT("Recipe needs 1..600 members and 1..32 commands"));
+    if (!C.Recipe->TryGetArrayField(TEXT("members"),Members)||Members->IsEmpty()||Members->Num()>2000
+        ||!C.Recipe->TryGetArrayField(TEXT("commands"),Commands)||Commands->IsEmpty()||Commands->Num()>128)
+        return Fail(TEXT("Recipe needs 1..2000 members and 1..128 commands"));
     TSet<uint32> Seen;TArray<FGuLiMassExternalUnit> Placements;TArray<FGuLiSoldierId> Ids;
     for (const auto& Value:*Members)
     {
@@ -194,11 +258,13 @@ FString UGuLiPerformanceSubsystem::PrepareMovementCapture(const FString& RecipeJ
         const auto* Binding=M.Worker.IsValid()?UGuLiHybridActorComponent::Find(M.Worker.Get()):nullptr;
         if (Binding) Key=Binding->GetObjectKey();
         else H->ResolveTarget(C.Army->MakeSoldierTargetHandle(M.Id),Key);
-        if (!Key.IsValid()||!H->HasSimulation(Key))
+        if (!C.Recipe->HasField(TEXT("authority_fixture")) && (!Key.IsValid()||!H->HasSimulation(Key)))
             return Fail(TEXT("A fixture member is not locally simulated"));
         const auto* Definition=Catalog->FindDefinition(M.Type);FVector Surface;
         const FVector RequestedGround=Desired-FVector(0,0,C.Recipe->HasField(TEXT("prepared")) && Definition?Definition->AltitudeCentimeters:0.f);
-        if (!Definition||!C.Army->ProjectExternalUnitLocation(RequestedGround,Surface,Definition->FootprintCells))
+        const bool AuthorityFixture=C.Recipe->HasField(TEXT("authority_fixture"));
+        if (AuthorityFixture) Surface=RequestedGround;
+        if (!Definition||(!AuthorityFixture && !C.Army->ProjectExternalUnitLocation(RequestedGround,Surface,Definition->FootprintCells)))
             return Fail(TEXT("Fixture member has no valid navigation surface"));
         M.Start=Surface+FVector(0,0,Definition->AltitudeCentimeters);M.Last=M.Start;
         M.Radius=Definition->MassAvoidanceRadiusCm;M.Layer=Definition->MovementLayer;
@@ -219,7 +285,7 @@ FString UGuLiPerformanceSubsystem::PrepareMovementCapture(const FString& RecipeJ
             return Fail(TEXT("Invalid bounded command timeline"));
         TSet<uint32> CommandSeen;
         Row->TryGetStringField(TEXT("kind"),Command.Kind);
-        if (Command.Kind!=TEXT("move") && Command.Kind!=TEXT("attack_move") && Command.Kind!=TEXT("mine")
+        if (Command.Kind!=TEXT("move") && Command.Kind!=TEXT("authority_move") && Command.Kind!=TEXT("attack_move") && Command.Kind!=TEXT("mine")
             && Command.Kind!=TEXT("return") && Command.Kind!=TEXT("construct") && Command.Kind!=TEXT("worker_move"))
             return Fail(TEXT("Unknown movement fixture command kind"));
         if (Command.Kind==TEXT("mine"))
@@ -245,7 +311,7 @@ FString UGuLiPerformanceSubsystem::PrepareMovementCapture(const FString& RecipeJ
                 return Fail(TEXT("Command refers to a missing or duplicate member"));
             Command.Members.Add(Id);CommandSeen.Add(Id.Value);
             const auto* Member=C.Members.FindByPredicate([&](const auto& M){return M.Id==Id;});
-            const bool NeedsWorker=Command.Kind!=TEXT("move") && Command.Kind!=TEXT("attack_move");
+            const bool NeedsWorker=Command.Kind!=TEXT("move") && Command.Kind!=TEXT("authority_move") && Command.Kind!=TEXT("attack_move");
             if (!Member || Member->Worker.IsValid()!=NeedsWorker) return Fail(TEXT("Command/member kind mismatch"));
         }
         PreviousAt=Command.At;Command.Id=950001+I;C.Commands.Add(MoveTemp(Command));
@@ -521,8 +587,9 @@ void UGuLiPerformanceSubsystem::ObserveMovementStep()
             P->SetNumberField(TEXT("native_no_progress_seconds"),N.NoProgressSeconds);
             P->SetArrayField(TEXT("position"),Point(N.Location));Positions.Add(MakeShared<FJsonValueObject>(P));
         }
-        // Observation cost is separately reported and never assigned to the solver.
-        for (int32 I=0;I<C.Members.Num();++I) for (int32 J=I+1;J<C.Members.Num();++J)
+        // Large CPU fixtures retain swept-query observations but skip the quadratic pair audit.
+        const bool AuditPairs=!C.Recipe->HasField(TEXT("authority_fixture"));
+        if (AuditPairs) for (int32 I=0;I<C.Members.Num();++I) for (int32 J=I+1;J<C.Members.Num();++J)
         {
             const auto& A=C.Members[I];const auto& B=C.Members[J];
             if (A.Layer!=B.Layer) continue;
@@ -534,8 +601,8 @@ void UGuLiPerformanceSubsystem::ObserveMovementStep()
                 ?FMath::Clamp(-FVector::DotProduct(RelativeStart,RelativeDelta)/RelativeDelta.SizeSquared(),0.,1.):0.;
             if ((RelativeStart+RelativeDelta*T).SizeSquared()<RadiusSquared) ++SweptOverlaps;
         }
-        Sample->SetArrayField(TEXT("members"),Positions);Sample->SetNumberField(TEXT("overlap_pairs"),Overlaps);
-        Sample->SetNumberField(TEXT("swept_overlap_pairs"),SweptOverlaps);
+        Sample->SetArrayField(TEXT("members"),Positions);Sample->SetNumberField(TEXT("overlap_pairs"),AuditPairs?Overlaps:-1);
+        Sample->SetNumberField(TEXT("swept_overlap_pairs"),AuditPairs?SweptOverlaps:-1);
         TArray<TSharedPtr<FJsonValue>> Work;
         for (const auto& M:C.Members) if (const auto* Worker=M.Worker.Get())
         {
@@ -581,7 +648,16 @@ void UGuLiPerformanceSubsystem::TickMovementCapture()
         }
         else
         {
-            if (Command.Kind==TEXT("attack_move"))
+            if (Command.Kind==TEXT("authority_move"))
+            {
+                const auto* Owner=GetWorld()->GetFirstPlayerController()->GetPlayerState<AGuLiBattlePlayerState>();
+                FGuLiCommanderSelectionState Selection;FGuLiCommandAck Ack;
+                Accepted=C.Army->ResolveReviewSoldierSelection(*Owner,Command.Members,Command.Id,Selection);
+                FGuLiMoveRequest Request;Request.ClientCommandId=Command.Id;
+                Request.SelectionRevision=Selection.SelectionRevision;Request.Target=Command.Target;
+                Accepted=Accepted && C.Army->BeginMovePlanning(*Owner,Request,Selection,Ack);
+            }
+            else if (Command.Kind==TEXT("attack_move"))
             {
                 EGuLiTeam Team;uint16 Type;FVector Position;
                 Accepted=C.Army->GetTaskSoldierInfo(Command.Members[0],Team,Type,Position)

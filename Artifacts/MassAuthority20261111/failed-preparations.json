@@ -1,0 +1,32 @@
+[
+  {
+    "directory": "preparation-failure-nav-drift",
+    "facts": {
+      "failure.json": {
+        "error": "A prepared member drifted before the timing window",
+        "baseline_gate_passed": false
+      }
+    },
+    "scope": "Excluded from qualified baseline and candidate suites"
+  },
+  {
+    "directory": "preparation-failure-projection",
+    "facts": {
+      "failure.json": {
+        "error": "'recipe'",
+        "baseline_gate_passed": false
+      }
+    },
+    "scope": "Excluded from qualified baseline and candidate suites"
+  },
+  {
+    "directory": "preparation-failure-wide-layout",
+    "facts": {
+      "failure.json": {
+        "error": "Fixture member has no valid navigation surface",
+        "baseline_gate_passed": false
+      }
+    },
+    "scope": "Excluded from qualified baseline and candidate suites"
+  }
+]

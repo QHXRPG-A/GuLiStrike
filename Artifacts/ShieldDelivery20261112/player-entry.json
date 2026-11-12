@@ -1,0 +1,43 @@
+{
+  "success": true,
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "label": "ShieldDelivery_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_104",
+      "class": "Note",
+      "position": [
+        -300.0,
+        -70200.0,
+        1200.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "PioneerBarracks_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_105",
+      "class": "Note",
+      "position": [
+        -7950.0,
+        -69750.0,
+        1200.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "ShieldDelivery_View",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_40",
+      "class": "CameraActor",
+      "position": [
+        -17200.0,
+        -69750.0,
+        10000.0
+      ],
+      "editor_only": true
+    }
+  ],
+  "runtime_entry": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiHybridNetworkReviewActor_0",
+  "instructions": "护盾外围交矿与先驱号兵营\nPlay选择指挥官。双方开局都有护盾发生器和矿车；占领据点后按正式配置提供护盾发生器与先驱号兵营。\n蓝方开局护盾在(-300,-70200)，据点兵营约在(-7950,-69750)。坐标单位厘米。\n框选有货矿车，点击交矿或右键己方护盾，检查矿车在护盾外围停靠、卸货，随后原矿按FIFO每秒2单位加工入队伍资源。\n选择先驱号兵营，检查生产的先驱号在内部出生并走出建筑。门、天花板和坡道不提供模型碰撞。其他单位向兵营另一侧移动时仍按建筑圆形边界寻路和侧绕。\n只对自产先驱号的出营阶段忽略出生兵营边界，出营后恢复正常避障，其他建筑和单位仍参与避障。\n正式源表：GuLiStrikeBuildings.xlsx（定义5护盾、6兵营），GuLiStrikeAvoidance.xlsx（BuildingCircles），GuLiStrikeModels.xlsx（模型2006）。\n使用正式对局、生产和资源账本，不需要启用临时玩法开关。出生受现有生产周期、人口和资源条件约束。\n手感与视觉效果由玩家检查。",
+  "visual_verification": "reserved for player"
+}

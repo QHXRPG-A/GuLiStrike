@@ -62,7 +62,7 @@ FString Signature(const TArray<FSource>& Sources)
 
 void DefinitionSources(const FGuLiBuildingDefinition& D, TArray<FSource>& Out)
 {
-	if (D.Category != EGuLiBuildingCategory::Factory)
+	if (D.Category != EGuLiBuildingCategory::PioneerBarracks)
 	{
 		if (D.Mesh) Out.Add({D.Mesh, FTransform(FQuat::Identity, D.VisualOffset, D.MeshScale)});
 		return;

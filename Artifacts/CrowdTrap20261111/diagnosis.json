@@ -1,0 +1,41 @@
+{
+  "algorithm_before": "demo-active-steering-yield-relay-v6",
+  "frames": 46,
+  "observed_seconds": 4.800000071525574,
+  "movers": [
+    {
+      "id": 108,
+      "command": 54,
+      "position": [
+        -12059.182295334076,
+        70982.51601097894,
+        1074.43268198304
+      ],
+      "no_progress_before_s": 67.09954833984375,
+      "max_distance_from_first_cm": 0.0,
+      "direct_blocker": 16777323,
+      "direct_blocker_command": 49,
+      "relay_blocker": 16777256,
+      "relay_blocker_command": 49,
+      "direct_yield_max_s": 0.5,
+      "relay_yield_max_s": 0
+    },
+    {
+      "id": 195,
+      "command": 55,
+      "position": [
+        -12265.842419369452,
+        70049.26512302695,
+        1073.8373066159256
+      ],
+      "no_progress_before_s": 132.99891662597656,
+      "max_distance_from_first_cm": 0.0,
+      "direct_blocker": 16777257,
+      "direct_blocker_command": 49,
+      "relay_blocker": 16777294,
+      "relay_blocker_command": 49,
+      "direct_yield_max_s": 0.5,
+      "relay_yield_max_s": 0
+    }
+  ]
+}

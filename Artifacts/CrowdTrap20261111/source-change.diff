@@ -1,0 +1,72 @@
+--- before/Source/GuLiStrike/Commander/Mass/GuLiCommanderMassRuntime.h
++++ after/Source/GuLiStrike/Commander/Mass/GuLiCommanderMassRuntime.h
+@@ -114,6 +114,7 @@
+ 	bool bExternalActionsLocked = false;
+ 	GuLiCircleAvoidance::FState CircleState;
+         FGuid MovementCommandIdentity; // Retained on arrival; not a destination or active-order number.
++        FGuid YieldCommandIdentity; // Original request's command, unchanged through neighbor relays.
+         FVector YieldDirection=FVector::ZeroVector;
+         float YieldRemainingSeconds=0;
+         int32 GridReferenceFootprint=1;
+--- before/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
++++ after/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -5924,6 +5924,7 @@
+     const auto& Profiles=GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>()->GetAvoidanceCatalog().Units;
+     if (Profiles.FindChecked(Blocker.UnitTypeId).Solver.Radius>Profiles.FindChecked(Mover.UnitTypeId).Solver.Radius) return false;
+     Blocker.YieldDirection=Lateral;
++    Blocker.YieldCommandIdentity=Command;
+     Blocker.YieldRemainingSeconds=Profiles.FindChecked(Blocker.UnitTypeId).Solver.YieldSeconds;
+     if (auto* Perf=GetWorld()->GetSubsystem<UGuLiPerformanceSubsystem>()) Perf->Record(TEXT("Movement.YieldRequests"),1);
+     return true;
+@@ -5936,16 +5937,18 @@
+     if (!MI || !BI) return;
+     const auto& Mover=AuthorityState->Soldiers[*MI];const auto& Blocker=AuthorityState->Soldiers[*BI];
+     if (!Blocker.IsPresent() || Blocker.AvoidanceRadiusCentimeters>Mover.AvoidanceRadiusCentimeters) return;
++    // A relay belongs to the original mover, not the stationary group it is passing through.
++    const FGuid& Command=Mover.YieldRemainingSeconds>0?Mover.YieldCommandIdentity:Mover.MovementCommandIdentity;
+     if (!Blocker.HybridKey.IsValid() || Blocker.bLocalSimulation)
+     {
+-        StartCircleYield(MoverId,BlockerId,Mover.MovementCommandIdentity,Direction);return;
++        StartCircleYield(MoverId,BlockerId,Command,Direction);return;
+     }
+     auto* Hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+     FGuLiHybridObjectState MoverView,BlockerView;
+     if (!Hybrid || !Hybrid->GetObjectView(Mover.HybridKey,MoverView) || !Hybrid->GetObjectView(Blocker.HybridKey,BlockerView)) return;
+     GuLiHybridMass::FYieldRequest V;V.Mover=MoverId.Value;V.Blocker=BlockerId.Value;
+     V.MoverKey=Mover.HybridKey;V.BlockerKey=Blocker.HybridKey;V.OwnerEpoch=MoverView.OwnerEpoch;V.BlockerEpoch=BlockerView.OwnerEpoch;
+-    V.Command=Mover.MovementCommandIdentity;V.Direction=Direction;
++    V.Command=Command;V.Direction=Direction;
+     FGuLiHybridStateArchive A(256);GuLiHybridMass::YieldRequest(A,V);TArray<uint8> Bytes;
+     if (A.Finish(Bytes)) Hybrid->SendSharedStateEvent(GuLiHybridMass::SystemName,BlockerView.SimulationOwner,FGuid::NewGuid(),Bytes);
+ }
+--- before/Source/GuLiStrike/Commander/Mass/GuLiHybridMassAdapter.inl
++++ after/Source/GuLiStrike/Commander/Mass/GuLiHybridMassAdapter.inl
+@@ -14,7 +14,7 @@
+ using namespace GuLiCommanderMassPrivate;
+ TAutoConsoleVariable<int32> PublishAfterMovement(TEXT("gs.Commander.PublishPoseAfterMovement"),1,
+     TEXT("Sample due synchronous Mass poses after the shared movement step. Keeps 10 Hz publication and the existing wire format. 0 selects the comparison ordering."));
+-constexpr uint32 ObjectVersion=8,SystemVersion=5;
++constexpr uint32 ObjectVersion=9,SystemVersion=5;
+ const FName SystemName(TEXT("CommanderMass"));
+ struct FYieldRequest
+ {
+@@ -100,7 +100,7 @@
+     A.Value(S.ExternalControlToken); A.Value(S.bPhased); A.Value(S.bExternalActionsLocked);
+     uint8 CircleSide=uint8(S.CircleState.Side+1);A.Value(CircleSide);
+     if (CircleSide>2) A.Reject();S.CircleState.Side=int8(CircleSide)-1;
+-    A.Value(S.MovementCommandIdentity);A.Value(S.YieldDirection);A.Value(S.YieldRemainingSeconds);
++    A.Value(S.MovementCommandIdentity);A.Value(S.YieldCommandIdentity);A.Value(S.YieldDirection);A.Value(S.YieldRemainingSeconds);
+     if (S.YieldRemainingSeconds<0 || (S.YieldRemainingSeconds>0 && !S.YieldDirection.IsNormalized())) A.Reject();
+     A.Value(S.GridReferenceFootprint);
+     if (S.GridReferenceFootprint<1) A.Reject();
+--- before/Source/GuLiStrike/Gameplay/Data/GuLiHybridUnitManifest.cpp
++++ after/Source/GuLiStrike/Gameplay/Data/GuLiHybridUnitManifest.cpp
+@@ -20,7 +20,7 @@
+     TArray<FGuLiSoldierDefinition> Units;FGuLiAvoidanceCatalog Avoidance;
+     if (!UGuLiUnitDataSubsystem::ResolveAuthoredDefinitions(Units,Error,&Avoidance)) return false;
+     M.Strings.Add(TEXT("movement/circles/configuration"),Avoidance.Fingerprint);
+-    M.Strings.Add(TEXT("movement/circles/algorithm"),TEXT("demo-active-steering-yield-relay-v6"));
++    M.Strings.Add(TEXT("movement/circles/algorithm"),TEXT("demo-active-steering-yield-relay-v7"));
+     const auto* PopulationLimit=IConsoleManager::Get().FindConsoleVariable(TEXT("guli.stronghold.TeamUnitCap"));
+     if (!PopulationLimit || PopulationLimit->GetInt()<1 || PopulationLimit->GetInt()>100000) {Error=TEXT("Invalid authored population limit");return false;}
+     M.Numbers.Add(TEXT("population/group/army/limit"),PopulationLimit->GetInt());

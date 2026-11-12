@@ -333,16 +333,16 @@ bool UGuLiCommanderResourceAdapter::FindClusterAlongRay(
 	return OutClusterId != 0u;
 }
 
-bool UGuLiCommanderResourceAdapter::IsFactoryAlongRay(
+bool UGuLiCommanderResourceAdapter::IsDropoffAlongRay(
 	const EGuLiTeam Team,
 	const FVector& RayOrigin,
 	const FVector& RayDirection) const
 {
-	for (TActorIterator<AGuLiResourceFactoryActor> It(GetWorld()); It; ++It)
+	for (TActorIterator<AGuLiShieldGeneratorActor> It(GetWorld()); It; ++It)
 	{
 		if (It->GetTeam() != Team) continue;
 		double Along = 0.0;
-		return RayPassesSphere(RayOrigin, RayDirection, It->GetActorLocation(), 1000.0f, Along);
+		if (RayPassesSphere(RayOrigin, RayDirection, It->GetActorLocation(), 1000.0f, Along)) return true;
 	}
 	return false;
 }
@@ -391,7 +391,7 @@ void UGuLiCommanderResourceAdapter::SynchronizeTeamPrivateState() const
 	FGuLiTeamResourcePrivateState BlueState;
 	RedState.Inventory = Economy->GetTeamBalance(EGuLiTeam::Red);
 	BlueState.Inventory = Economy->GetTeamBalance(EGuLiTeam::Blue);
-	for (TActorIterator<AGuLiResourceFactoryActor> It(GetWorld()); It; ++It)
+	for (TActorIterator<AGuLiShieldGeneratorActor> It(GetWorld()); It; ++It)
 	{
 		// A neutralized outpost retains its facilities, but no team owns their private status.
 		if (It->GetTeam() == EGuLiTeam::Unassigned) continue;

@@ -1,6 +1,6 @@
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiShieldGeneratorActor.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"

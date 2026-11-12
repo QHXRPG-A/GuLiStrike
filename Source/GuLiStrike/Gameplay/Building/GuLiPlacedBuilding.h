@@ -33,7 +33,7 @@ public:
 	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;
     void ApplyHybridTeam(EGuLiTeam NewTeam) {Team=NewTeam;}
 	virtual FVector GetBuildingGroundLocation() const override;
-	bool InitializeFromDefinition(int32 DefinitionId, EGuLiTeam InTeam, const FGuid& BuilderGuid,
+	virtual bool InitializeFromDefinition(int32 DefinitionId, EGuLiTeam InTeam, const FGuid& BuilderGuid,
 		int32 TerritoryIndex, EGuLiBuildingOrigin Origin, bool bCompleted);
 	const FGuid& GetBuilderPlayerGuid() const { return BuilderPlayerGuid; }
 	UBoxComponent* GetBuildingCollision() const { return CollisionRoot; }

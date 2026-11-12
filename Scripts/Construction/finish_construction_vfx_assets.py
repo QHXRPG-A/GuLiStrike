@@ -42,7 +42,7 @@ def run():
     note = next(a for a in api.get_all_level_actors() if a.get_actor_label() == 'ConstructionReview_Progress')
     note.modify()
     note.set_editor_property('text',
-        '矿厂特效样板：B选择矿厂放置，蓝色虚影等待施工；真实建造车到位后开始升起。\n'
+        '先驱号兵营特效样板：B选择先驱号兵营放置，蓝色虚影等待施工；真实建造车到位后开始升起。\n'
         '屋檐蓝白电火花；淡青绿色光柱与三角粒子每1秒呼吸。每辆车左右两束紫色激光沿近侧基底轮廓2秒往返。\n'
         '单车、四车分别观察；选中一车按S，其他车保持施工；全部S时火花与激光停止，光柱保留。\n'
         '重新下达施工后恢复；完工底部UpgradeGlow只播放一次，并叠加0.65秒蓝白边缘发光。\n'

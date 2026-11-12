@@ -46,7 +46,6 @@
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Commander/Behavior/GuLiCommanderBehaviorSchema.h"
 #include "NavigationSystem.h"

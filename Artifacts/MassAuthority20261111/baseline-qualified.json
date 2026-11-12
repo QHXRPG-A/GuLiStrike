@@ -1,0 +1,3373 @@
+{
+  "complete": true,
+  "cases": {
+    "crossing-1000": [
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-crossing-1000-01",
+        "scenario": "crossing",
+        "seconds": 30.00377820059657,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 95401.7,
+            "p95": 108990,
+            "p99": 111984
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 53270.76,
+            "p95": 68329,
+            "p99": 71643
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 4520.05,
+            "p95": 5162,
+            "p99": 5290
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 7.652757000165972,
+            "p95": 9.317799998825649,
+            "p99": 12.542700002086349
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.28882766763369244,
+            "p95": 0.4106983542442322,
+            "p99": 0.5930997431278229
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 5.431003210445245,
+            "p95": 6.648194044828415,
+            "p99": 9.073693305253983
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 6.979823696116607,
+            "p95": 8.42130184173584,
+            "p99": 11.658899486064911
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.2455150211850802,
+            "p95": 0.3306977450847626,
+            "p99": 0.42447447776794434
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 3007.5433333333335,
+            "p95": 3495,
+            "p99": 3590
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 421.07,
+            "p95": 556,
+            "p99": 567
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 109.17,
+            "p95": 138,
+            "p99": 146
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 539.48,
+            "p95": 651,
+            "p99": 657
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.003209176162878672,
+            "p95": 0.003907829523086548,
+            "p99": 0.004295259714126587
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.07898443688948949,
+            "p95": 0.10279566049575806,
+            "p99": 0.13150647282600403
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 28.59,
+            "p95": 30,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.00899588588230547,
+            "p95": 0.011735264482148173,
+            "p99": 0.01609974747730626
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.00034936124412037254,
+            "p95": 0.0004808619905301156,
+            "p99": 0.0007367698672395316
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.006363701327745173,
+            "p95": 0.008448287005418532,
+            "p99": 0.011423455359944205
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.008183651095844789,
+            "p95": 0.010653663866268181,
+            "p99": 0.014501118763762326
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.00028507769517807814,
+            "p95": 0.0003574425896639546,
+            "p99": 0.0005022039392379799
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 3.897890206795716e-06,
+            "p95": 4.729168016182813e-06,
+            "p99": 5.627566195548849e-06
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 9.645385498379011e-05,
+            "p95": 0.00012196276498877484,
+            "p99": 0.00018819679166669044
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 7.652757000165972,
+          "p95": 9.317799998825649,
+          "p99": 12.542700002086349
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 7.652757000165972,
+          "p95": 9.317799998825649,
+          "p99": 12.542700002086349
+        },
+        "movement_ms_per_logic_step": 7.652757000165972,
+        "movement_ms_per_active_unit_step": 0.008858724726230095,
+        "active_unit_steps": 259160,
+        "commanded": 1000,
+        "arrived": 0,
+        "runtime_unit_count": 1632,
+        "active_units": {
+          "count": 300,
+          "mean": 863.8666666666667,
+          "p95": 998,
+          "p99": 1003
+        },
+        "peak_active_units": 1007,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.0,
+        "arrival_seconds": {
+          "count": 0,
+          "mean": null,
+          "p95": null,
+          "p99": null
+        },
+        "maximum_stall_seconds": 29.425019700080156,
+        "blocked": 0,
+        "dynamic_sweep_hits": 4350,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 1080602624,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 15874,
+          "maximum_consecutive_reversals": 281,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 1000
+        }
+      },
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-crossing-1000-02",
+        "scenario": "crossing",
+        "seconds": 30.005488000810146,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 97781.08,
+            "p95": 115908,
+            "p99": 121248
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 56806.90666666667,
+            "p95": 78938,
+            "p99": 81609
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 4636.31,
+            "p95": 5519,
+            "p99": 5743
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 7.874842666678887,
+            "p95": 10.005799998907605,
+            "p99": 12.430399998265784
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.2955116455753644,
+            "p95": 0.44560059905052185,
+            "p99": 0.5550980567932129
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 5.631986657778422,
+            "p95": 7.514450699090958,
+            "p99": 8.956439793109894
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 7.17614222317934,
+            "p95": 9.169802069664001,
+            "p99": 11.498499661684036
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.2470346043507258,
+            "p95": 0.3193393349647522,
+            "p99": 0.4372335970401764
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 3098.2433333333333,
+            "p95": 3773,
+            "p99": 3973
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 429.29333333333335,
+            "p95": 574,
+            "p99": 588
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 108.62,
+            "p95": 140,
+            "p99": 146
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 536.5933333333334,
+            "p95": 651,
+            "p99": 661
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.003567275901635488,
+            "p95": 0.004302710294723511,
+            "p99": 0.004693865776062012
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.07836978882551193,
+            "p95": 0.10729953646659851,
+            "p99": 0.15350431203842163
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 28.21,
+            "p95": 30,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.009826225984938616,
+            "p95": 0.014766517860412673,
+            "p99": 0.016223149606499704
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.0003621101579377657,
+            "p95": 0.0005972682471443986,
+            "p99": 0.000882665494454103
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.00707379723176352,
+            "p95": 0.011156776719114452,
+            "p99": 0.011861162341159323
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.008968996281796688,
+            "p95": 0.013507821637651195,
+            "p99": 0.014692280940183504
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.00030108719460974765,
+            "p95": 0.00038585026881524494,
+            "p99": 0.0005146282999453148
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 4.357657063133734e-06,
+            "p95": 6.068443906479987e-06,
+            "p99": 7.484041288227378e-06
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 9.563047778859644e-05,
+            "p95": 0.00012944812423612442,
+            "p99": 0.00020496888098373912
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 7.874842666678887,
+          "p95": 10.005799998907605,
+          "p99": 12.430399998265784
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 7.874842666678887,
+          "p95": 10.005799998907605,
+          "p99": 12.430399998265784
+        },
+        "movement_ms_per_logic_step": 7.874842666678887,
+        "movement_ms_per_active_unit_step": 0.00954098485125324,
+        "active_unit_steps": 247611,
+        "commanded": 1000,
+        "arrived": 1,
+        "runtime_unit_count": 1632,
+        "active_units": {
+          "count": 300,
+          "mean": 825.37,
+          "p95": 993,
+          "p99": 1001
+        },
+        "peak_active_units": 1004,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.001,
+        "arrival_seconds": {
+          "count": 1,
+          "mean": 27.773058399558067,
+          "p95": 27.773058399558067,
+          "p99": 27.773058399558067
+        },
+        "maximum_stall_seconds": 29.477619901299477,
+        "blocked": 0,
+        "dynamic_sweep_hits": 4154,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 382205952,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 14847,
+          "maximum_consecutive_reversals": 282,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 999
+        }
+      },
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-crossing-1000-03",
+        "scenario": "crossing",
+        "seconds": 30.003145400434732,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 97581.96,
+            "p95": 111474,
+            "p99": 114804
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 54484.253333333334,
+            "p95": 69072,
+            "p99": 70852
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 4628.176666666666,
+            "p95": 5299,
+            "p99": 5459
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 7.768406999966828,
+            "p95": 9.304999999585561,
+            "p99": 9.848400000919355
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.2903985107938449,
+            "p95": 0.42329728603363037,
+            "p99": 0.5501024425029755
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 5.519651522239049,
+            "p95": 6.6375695168972015,
+            "p99": 7.062029093503952
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 7.073015434046586,
+            "p95": 8.396599441766739,
+            "p99": 8.954700082540512
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.2521144226193428,
+            "p95": 0.31634047627449036,
+            "p99": 0.4039257764816284
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 3105.86,
+            "p95": 3637,
+            "p99": 3781
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 421.85333333333335,
+            "p95": 545,
+            "p99": 563
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 108.73,
+            "p95": 136,
+            "p99": 145
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 537.2533333333333,
+            "p95": 644,
+            "p99": 658
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.0037125746409098306,
+            "p95": 0.004410743713378906,
+            "p99": 0.0047050416469573975
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.07662702351808548,
+            "p95": 0.1062937080860138,
+            "p99": 0.12300163507461548
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 28.21,
+            "p95": 30,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.009172335573109423,
+            "p95": 0.011184816132886513,
+            "p99": 0.012669520100881255
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.00033829550469284986,
+            "p95": 0.0005245780371255465,
+            "p99": 0.000690368056555331
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.0065381802019518825,
+            "p95": 0.008232552896846424,
+            "p99": 0.00904189478436434
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.008360183679249397,
+            "p95": 0.010263022819631979,
+            "p99": 0.011436443113940544
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.00029545523593112774,
+            "p95": 0.0003770660736254725,
+            "p99": 0.00041944835476294726
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 4.337170733602319e-06,
+            "p95": 5.436128663214798e-06,
+            "p99": 5.888054742837501e-06
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 8.916931491162939e-05,
+            "p95": 0.00012912858893152396,
+            "p99": 0.0001765916198331304
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 7.768406999966828,
+          "p95": 9.304999999585561,
+          "p99": 9.848400000919355
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 7.768406999966828,
+          "p95": 9.304999999585561,
+          "p99": 9.848400000919355
+        },
+        "movement_ms_per_logic_step": 7.768406999966828,
+        "movement_ms_per_active_unit_step": 0.009079024749370059,
+        "active_unit_steps": 256693,
+        "commanded": 1000,
+        "arrived": 0,
+        "runtime_unit_count": 1632,
+        "active_units": {
+          "count": 300,
+          "mean": 855.6433333333333,
+          "p95": 995,
+          "p99": 1004
+        },
+        "peak_active_units": 1007,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.0,
+        "arrival_seconds": {
+          "count": 0,
+          "mean": null,
+          "p95": null,
+          "p99": null
+        },
+        "maximum_stall_seconds": 29.46080730110407,
+        "blocked": 0,
+        "dynamic_sweep_hits": 4748,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 294285312,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 15886,
+          "maximum_consecutive_reversals": 282,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 1000
+        }
+      }
+    ],
+    "hold-1000": [
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-hold-1000-01",
+        "scenario": "hold",
+        "seconds": 30.003366600722075,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 104297.78,
+            "p95": 118536,
+            "p99": 120876
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 59298.706666666665,
+            "p95": 75531,
+            "p99": 77946
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 4962.096666666666,
+            "p95": 5650,
+            "p99": 5754
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 8.584090666687795,
+            "p95": 10.201699999015545,
+            "p99": 11.380399999325164
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.3244670977195104,
+            "p95": 0.507500022649765,
+            "p99": 0.5920007824897766
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 6.0739195595184965,
+            "p95": 7.366150617599487,
+            "p99": 8.411698043346405
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 7.8214386602242785,
+            "p95": 9.177297353744507,
+            "p99": 10.574698448181152
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.2807707463701566,
+            "p95": 0.3584176301956177,
+            "p99": 0.41927024722099304
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 3187.0233333333335,
+            "p95": 3673,
+            "p99": 3791
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 558.7533333333333,
+            "p95": 711,
+            "p99": 725
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 137.35333333333332,
+            "p95": 169,
+            "p99": 178
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 678.73,
+            "p95": 797,
+            "p99": 812
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.0032740583022435508,
+            "p95": 0.0040121376514434814,
+            "p99": 0.004388391971588135
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.07300913333892822,
+            "p95": 0.09650364518165588,
+            "p99": 0.1201927661895752
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 27.17,
+            "p95": 30,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.009184801713648598,
+            "p95": 0.011476948773690638,
+            "p99": 0.01386163215508546
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.00034265160780382037,
+            "p95": 0.0005447198135919305,
+            "p99": 0.000684487880492697
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.006515481459467971,
+            "p95": 0.00851328942069826,
+            "p99": 0.01042026767777177
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.008376521725224313,
+            "p95": 0.01058442236835693,
+            "p99": 0.01288026607573831
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.0002987725135038869,
+            "p95": 0.00037097266617704106,
+            "p99": 0.000498110885585184
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 3.4448506739515483e-06,
+            "p95": 4.340355792704455e-06,
+            "p99": 5.345179015332686e-06
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 7.70187073142316e-05,
+            "p95": 0.00010094523554566516,
+            "p99": 0.00016824421236070537
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 8.584090666687795,
+          "p95": 10.201699999015545,
+          "p99": 11.380399999325164
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 8.584090666687795,
+          "p95": 10.201699999015545,
+          "p99": 11.380399999325164
+        },
+        "movement_ms_per_logic_step": 8.584090666687795,
+        "movement_ms_per_active_unit_step": 0.009114977329622792,
+        "active_unit_steps": 282527,
+        "commanded": 1000,
+        "arrived": 0,
+        "runtime_unit_count": 1830,
+        "active_units": {
+          "count": 300,
+          "mean": 941.7566666666667,
+          "p95": 1047,
+          "p99": 1060
+        },
+        "peak_active_units": 1078,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.0,
+        "arrival_seconds": {
+          "count": 0,
+          "mean": null,
+          "p95": null,
+          "p99": null
+        },
+        "maximum_stall_seconds": 29.485071700066328,
+        "blocked": 0,
+        "dynamic_sweep_hits": 6254,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 739667968,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 16850,
+          "maximum_consecutive_reversals": 122,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 1000
+        }
+      },
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-hold-1000-02",
+        "scenario": "hold",
+        "seconds": 30.007006999105215,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 101475.94,
+            "p95": 111810,
+            "p99": 115560
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 54805.04,
+            "p95": 68082,
+            "p99": 70636
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 4824.093333333333,
+            "p95": 5316,
+            "p99": 5493
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 8.251257333358808,
+            "p95": 9.58379999792669,
+            "p99": 10.202000001299893
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.3286781410376231,
+            "p95": 0.4914999008178711,
+            "p99": 0.650499016046524
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 5.754035500188668,
+            "p95": 6.602469831705093,
+            "p99": 7.186144590377808
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 7.478100744386514,
+            "p95": 8.45159962773323,
+            "p99": 9.172998368740082
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.28210046390692395,
+            "p95": 0.3681853413581848,
+            "p99": 0.4482083022594452
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 3095.8533333333335,
+            "p95": 3550,
+            "p99": 3640
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 532.1566666666666,
+            "p95": 665,
+            "p99": 679
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 135.43333333333334,
+            "p95": 163,
+            "p99": 173
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 669.4333333333333,
+            "p95": 778,
+            "p99": 788
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.004020556807518005,
+            "p95": 0.004597008228302002,
+            "p99": 0.005405396223068237
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.07479492574930191,
+            "p95": 0.10361149907112122,
+            "p99": 0.1521967351436615
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 28.06,
+            "p95": 30,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.00864696518270177,
+            "p95": 0.01047526011724601,
+            "p99": 0.011535593218025785
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.00036852955926938014,
+            "p95": 0.0005458645960863898,
+            "p99": 0.0007222454971682257
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.005959294901231809,
+            "p95": 0.007639285199460995,
+            "p99": 0.008146601387687455
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.007772830459003039,
+            "p95": 0.009574566358401452,
+            "p99": 0.010235352355977813
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.00029125444589424434,
+            "p95": 0.0003650784492492676,
+            "p99": 0.0004428890047495026
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 4.358276195450751e-06,
+            "p95": 4.9840853993137575e-06,
+            "p99": 3.09187218182652e-05
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 8.248243621267404e-05,
+            "p95": 0.00010845799218205844,
+            "p99": 0.00015879680386364346
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 8.251257333358808,
+          "p95": 9.58379999792669,
+          "p99": 10.202000001299893
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 8.251257333358808,
+          "p95": 9.58379999792669,
+          "p99": 10.202000001299893
+        },
+        "movement_ms_per_logic_step": 8.251257333358808,
+        "movement_ms_per_active_unit_step": 0.008516401293633945,
+        "active_unit_steps": 290660,
+        "commanded": 1000,
+        "arrived": 0,
+        "runtime_unit_count": 1830,
+        "active_units": {
+          "count": 300,
+          "mean": 968.8666666666667,
+          "p95": 1063,
+          "p99": 1072
+        },
+        "peak_active_units": 1075,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.0,
+        "arrival_seconds": {
+          "count": 0,
+          "mean": null,
+          "p95": null,
+          "p99": null
+        },
+        "maximum_stall_seconds": 29.422846499830484,
+        "blocked": 0,
+        "dynamic_sweep_hits": 6496,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 284213248,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 17838,
+          "maximum_consecutive_reversals": 281,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 1000
+        }
+      },
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-hold-1000-03",
+        "scenario": "hold",
+        "seconds": 30.002512399107218,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 103593.12,
+            "p95": 118122,
+            "p99": 120972
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 59154.01,
+            "p95": 76382,
+            "p99": 77874
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 4928.913333333333,
+            "p95": 5632,
+            "p99": 5737
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 8.583214666687127,
+            "p95": 10.715299998992123,
+            "p99": 12.73860000219429
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.3201952949166298,
+            "p95": 0.4484988749027252,
+            "p99": 0.5699992179870605
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 6.0476794466376305,
+            "p95": 7.517341524362564,
+            "p99": 9.273428469896317
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 7.82443559418122,
+            "p95": 9.695202112197876,
+            "p99": 11.753801256418228
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.2849128469824791,
+            "p95": 0.3536008298397064,
+            "p99": 0.44196099042892456
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 3156.7,
+            "p95": 3663,
+            "p99": 3749
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 556.9233333333333,
+            "p95": 702,
+            "p99": 723
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 137.24666666666667,
+            "p95": 169,
+            "p99": 177
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 678.6466666666666,
+            "p95": 791,
+            "p99": 802
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.0038581465681393943,
+            "p95": 0.004801899194717407,
+            "p99": 0.005207955837249756
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.07518775761127472,
+            "p95": 0.0921003520488739,
+            "p99": 0.12329593300819397
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 27.62,
+            "p95": 30,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.009342565057101003,
+            "p95": 0.012492989419365707,
+            "p99": 0.015219354841331289
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.00034545550557686785,
+            "p95": 0.0005021970478447217,
+            "p99": 0.0006729624769622911
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.006596682884760059,
+            "p95": 0.009133999368974141,
+            "p99": 0.011079364958060115
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.008520886232408152,
+            "p95": 0.011550120654560271,
+            "p99": 0.014042773305159174
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.00030734441557798124,
+            "p95": 0.0003837267371442645,
+            "p99": 0.0005766713945250449
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 4.1767036694184925e-06,
+            "p95": 5.544005137569499e-06,
+            "p99": 7.285902292212848e-06
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 8.117119941695448e-05,
+            "p95": 0.00010795080133022801,
+            "p99": 0.0001809720637235182
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 8.583214666687127,
+          "p95": 10.715299998992123,
+          "p99": 12.73860000219429
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 8.583214666687127,
+          "p95": 10.715299998992123,
+          "p99": 12.73860000219429
+        },
+        "movement_ms_per_logic_step": 8.583214666687127,
+        "movement_ms_per_active_unit_step": 0.009208535625924935,
+        "active_unit_steps": 279628,
+        "commanded": 1000,
+        "arrived": 0,
+        "runtime_unit_count": 1830,
+        "active_units": {
+          "count": 300,
+          "mean": 932.0933333333334,
+          "p95": 1059,
+          "p99": 1070
+        },
+        "peak_active_units": 1087,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.0,
+        "arrival_seconds": {
+          "count": 0,
+          "mean": null,
+          "p95": null,
+          "p99": null
+        },
+        "maximum_stall_seconds": 29.46338689699769,
+        "blocked": 0,
+        "dynamic_sweep_hits": 6031,
+        "static_sweep_hits": 1,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 593350656,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 16609,
+          "maximum_consecutive_reversals": 282,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 1000
+        }
+      }
+    ],
+    "crossing-500": [
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-crossing-500-01",
+        "scenario": "crossing",
+        "seconds": 30.00605170056224,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 51300.74,
+            "p95": 60318,
+            "p99": 62970
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 30817.693333333333,
+            "p95": 39222,
+            "p99": 41554
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 2426.27,
+            "p95": 2846,
+            "p99": 2970
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 4.460777333309427,
+            "p95": 5.757499999162974,
+            "p99": 6.7583000018203165
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.23422847191492716,
+            "p95": 0.35979971289634705,
+            "p99": 0.5016028881072998
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 3.0561875303586326,
+            "p95": 4.057589918375015,
+            "p99": 4.707511514425278
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 3.9383179073532424,
+            "p95": 5.17670065164566,
+            "p99": 6.1176009476184845
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.12632127851247787,
+            "p95": 0.20049884915351868,
+            "p99": 0.24174153804779053
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 1647.59,
+            "p95": 1993,
+            "p99": 2123
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 219.16333333333333,
+            "p95": 280,
+            "p99": 284
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 53.42666666666667,
+            "p95": 72,
+            "p99": 75
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 264.06666666666666,
+            "p95": 323,
+            "p99": 328
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.003874426086743673,
+            "p95": 0.004712492227554321,
+            "p99": 0.0058002769947052
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.08677370846271515,
+            "p95": 0.1221001148223877,
+            "p99": 0.1659989356994629
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 30.48,
+            "p95": 33,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.011449870517294122,
+            "p95": 0.01612739361781736,
+            "p99": 0.018747515529658074
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.0005895597263375669,
+            "p95": 0.001018207806807298,
+            "p99": 0.0013273827095127584
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.007904452644278925,
+            "p95": 0.011035961852896781,
+            "p99": 0.013593832016600978
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.010136368323841386,
+            "p95": 0.01382127285320708,
+            "p99": 0.017233539997420697
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.0003186177327248776,
+            "p95": 0.0004820775560862863,
+            "p99": 0.0006195436665081085
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 9.704101730303943e-06,
+            "p95": 1.2892918445350668e-05,
+            "p99": 2.5375800974228804e-05
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 0.00021880347501814266,
+            "p95": 0.00032675178611979764,
+            "p99": 0.0004954950025912082
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 4.460777333309427,
+          "p95": 5.757499999162974,
+          "p99": 6.7583000018203165
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 4.460777333309427,
+          "p95": 5.757499999162974,
+          "p99": 6.7583000018203165
+        },
+        "movement_ms_per_logic_step": 4.460777333309427,
+        "movement_ms_per_active_unit_step": 0.011167950729318926,
+        "active_unit_steps": 119828,
+        "commanded": 500,
+        "arrived": 16,
+        "runtime_unit_count": 1132,
+        "active_units": {
+          "count": 300,
+          "mean": 399.4266666666667,
+          "p95": 500,
+          "p99": 500
+        },
+        "peak_active_units": 500,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.032,
+        "arrival_seconds": {
+          "count": 16,
+          "mean": 25.99486129358411,
+          "p95": 29.84941789880395,
+          "p99": 29.84941789880395
+        },
+        "maximum_stall_seconds": 29.4469601996243,
+        "blocked": 0,
+        "dynamic_sweep_hits": 1794,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": -63774720,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 7172,
+          "maximum_consecutive_reversals": 247,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 484
+        }
+      },
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-crossing-500-02",
+        "scenario": "crossing",
+        "seconds": 30.01603939756751,
+        "logical_steps": 301,
+        "applications": 301,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 301,
+            "mean": 52215.52823920266,
+            "p95": 62676,
+            "p99": 64230
+          },
+          "Movement.CircleChecks": {
+            "count": 301,
+            "mean": 31526.179401993355,
+            "p95": 41082,
+            "p99": 42612
+          },
+          "Movement.DirectionProbes": {
+            "count": 301,
+            "mean": 2467.136212624585,
+            "p95": 2963,
+            "p99": 3025
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 301,
+            "mean": 4.309698006743875,
+            "p95": 5.694999999832362,
+            "p99": 6.004999999277061
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 301,
+            "mean": 0.22952492500460425,
+            "p95": 0.39199739694595337,
+            "p99": 0.47770142555236816
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 301,
+            "mean": 2.9967826268205613,
+            "p95": 4.009805619716644,
+            "p99": 4.480302333831787
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 301,
+            "mean": 3.8129824810843926,
+            "p95": 5.048498511314392,
+            "p99": 5.541499704122543
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 301,
+            "mean": 0.11634504874283293,
+            "p95": 0.14337897300720215,
+            "p99": 0.20463764667510986
+          },
+          "Movement.SideProbes": {
+            "count": 301,
+            "mean": 1680.1362126245847,
+            "p95": 2090,
+            "p99": 2158
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 301,
+            "mean": 227.5581395348837,
+            "p95": 290,
+            "p99": 299
+          },
+          "Movement.YieldRequests": {
+            "count": 301,
+            "mean": 54.3687707641196,
+            "p95": 74,
+            "p99": 81
+          },
+          "Movement.YieldSteps": {
+            "count": 301,
+            "mean": 268.7076411960133,
+            "p95": 327,
+            "p99": 331
+          },
+          "Navigation.RepairMs": {
+            "count": 301,
+            "mean": 0.005129749493741514,
+            "p95": 0.004895031452178955,
+            "p99": 0.03890693187713623
+          },
+          "Ore.NavDirty": {
+            "count": 301,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 301,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 301,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 301,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 301,
+            "mean": 0.08105984161858543,
+            "p95": 0.10870397090911865,
+            "p99": 0.15080347657203674
+          },
+          "Ore.WorldGeneration": {
+            "count": 301,
+            "mean": 31.714285714285715,
+            "p95": 33,
+            "p99": 36
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.01117638334471423,
+            "p95": 0.015476804121848094,
+            "p99": 0.01719317507824048
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.0005801824715633361,
+            "p95": 0.0010599488446820004,
+            "p99": 0.0012985898950005656
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.007839300563665995,
+            "p95": 0.011220185653023098,
+            "p99": 0.012524053454399109
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.009918954790987785,
+            "p95": 0.013943189296169558,
+            "p99": 0.015264054810678636
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.0002954598529871213,
+            "p95": 0.0003948700359300509,
+            "p99": 0.0005481449457315298
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 1.3453619074990667e-05,
+            "p95": 1.3916922563856298e-05,
+            "p99": 0.0001211747801376998
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 0.0002045601905416894,
+            "p95": 0.0002983422404494733,
+            "p99": 0.00040979205590227377
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 301,
+          "mean": 4.309698006743875,
+          "p95": 5.694999999832362,
+          "p99": 6.004999999277061
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 301,
+          "mean": 4.309698006743875,
+          "p95": 5.694999999832362,
+          "p99": 6.004999999277061
+        },
+        "movement_ms_per_logic_step": 4.309698006743875,
+        "movement_ms_per_active_unit_step": 0.01084658561694613,
+        "active_unit_steps": 119597,
+        "commanded": 500,
+        "arrived": 15,
+        "runtime_unit_count": 1132,
+        "active_units": {
+          "count": 301,
+          "mean": 397.33222591362124,
+          "p95": 500,
+          "p99": 500
+        },
+        "peak_active_units": 500,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.03,
+        "arrival_seconds": {
+          "count": 15,
+          "mean": 24.055880558490752,
+          "p95": 29.50715809687972,
+          "p99": 29.50715809687972
+        },
+        "maximum_stall_seconds": 29.508522402495146,
+        "blocked": 0,
+        "dynamic_sweep_hits": 1689,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 21880832,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 7579,
+          "maximum_consecutive_reversals": 234,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 485
+        }
+      },
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-crossing-500-03",
+        "scenario": "crossing",
+        "seconds": 30.006341099739075,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 54787.52,
+            "p95": 65112,
+            "p99": 66366
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 34285.943333333336,
+            "p95": 43608,
+            "p99": 44152
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 2591.9566666666665,
+            "p95": 3068,
+            "p99": 3135
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 4.677895999872514,
+            "p95": 6.075599998439429,
+            "p99": 7.685299999138806
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.23346848785877228,
+            "p95": 0.35709887742996216,
+            "p99": 0.5593001842498779
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 3.284857285519441,
+            "p95": 4.4509246945381165,
+            "p99": 5.004599690437317
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 4.152916235228379,
+            "p95": 5.51920011639595,
+            "p99": 6.643999367952347
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.12043817589680354,
+            "p95": 0.1860596239566803,
+            "p99": 0.21787360310554504
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 1794.8366666666666,
+            "p95": 2208,
+            "p99": 2263
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 224.89333333333335,
+            "p95": 286,
+            "p99": 294
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 53.04,
+            "p95": 71,
+            "p99": 76
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 262.11333333333334,
+            "p95": 320,
+            "p99": 325
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.0032579650481541953,
+            "p95": 0.004000961780548096,
+            "p99": 0.0043138861656188965
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.08179973810911179,
+            "p95": 0.1150965690612793,
+            "p99": 0.16920268535614014
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 30.42,
+            "p95": 33,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.012949590119627815,
+            "p95": 0.017896874999223655,
+            "p99": 0.02238387096867162
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.0006258762742367861,
+            "p95": 0.0010465896392921846,
+            "p99": 0.0014455824496060015
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.009188722279311534,
+            "p95": 0.013042706996202469,
+            "p99": 0.016659804103661142
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.011537282430157838,
+            "p95": 0.016119349841496454,
+            "p99": 0.020584752482752645
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.00032367564336090887,
+            "p95": 0.00043708309682339246,
+            "p99": 0.0005641803992065517
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 8.789274936450012e-06,
+            "p95": 1.1750761373543445e-05,
+            "p99": 1.2714577757793924e-05
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 0.00022022396049023107,
+            "p95": 0.0003224290977014559,
+            "p99": 0.0004838049797980883
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 4.677895999872514,
+          "p95": 6.075599998439429,
+          "p99": 7.685299999138806
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 4.677895999872514,
+          "p95": 6.075599998439429,
+          "p99": 7.685299999138806
+        },
+        "movement_ms_per_logic_step": 4.677895999872514,
+        "movement_ms_per_active_unit_step": 0.012492489562314768,
+        "active_unit_steps": 112337,
+        "commanded": 500,
+        "arrived": 9,
+        "runtime_unit_count": 1132,
+        "active_units": {
+          "count": 300,
+          "mean": 374.45666666666665,
+          "p95": 500,
+          "p99": 500
+        },
+        "peak_active_units": 500,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.018,
+        "arrival_seconds": {
+          "count": 9,
+          "mean": 26.603438509835136,
+          "p95": 29.15497399866581,
+          "p99": 29.15497399866581
+        },
+        "maximum_stall_seconds": 28.901437498629093,
+        "blocked": 0,
+        "dynamic_sweep_hits": 1559,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 3923968,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 7031,
+          "maximum_consecutive_reversals": 154,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 491
+        }
+      }
+    ],
+    "hold-500": [
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-hold-500-01",
+        "scenario": "hold",
+        "seconds": 30.02015059813857,
+        "logical_steps": 301,
+        "applications": 301,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 301,
+            "mean": 56456.45182724253,
+            "p95": 64974,
+            "p99": 65934
+          },
+          "Movement.CircleChecks": {
+            "count": 301,
+            "mean": 32965.83056478405,
+            "p95": 43039,
+            "p99": 44200
+          },
+          "Movement.DirectionProbes": {
+            "count": 301,
+            "mean": 2695.3621262458473,
+            "p95": 3100,
+            "p99": 3153
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 301,
+            "mean": 5.015743521641262,
+            "p95": 6.277199998294236,
+            "p99": 6.796400000894209
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 301,
+            "mean": 0.26500691656654457,
+            "p95": 0.4069991409778595,
+            "p99": 0.5201995372772217
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 301,
+            "mean": 3.3784121695745033,
+            "p95": 4.262853413820267,
+            "p99": 4.652436822652817
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 301,
+            "mean": 4.434897505563755,
+            "p95": 5.575902760028839,
+            "p99": 6.01549819111824
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 301,
+            "mean": 0.15481249537578848,
+            "p95": 0.20432844758033752,
+            "p99": 0.26262179017066956
+          },
+          "Movement.SideProbes": {
+            "count": 301,
+            "mean": 1686.0564784053156,
+            "p95": 1984,
+            "p99": 2042
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 301,
+            "mean": 344.4385382059801,
+            "p95": 427,
+            "p99": 436
+          },
+          "Movement.YieldRequests": {
+            "count": 301,
+            "mean": 81.89368770764119,
+            "p95": 102,
+            "p99": 106
+          },
+          "Movement.YieldSteps": {
+            "count": 301,
+            "mean": 405.1461794019934,
+            "p95": 471,
+            "p99": 477
+          },
+          "Navigation.RepairMs": {
+            "count": 301,
+            "mean": 0.004257437497674429,
+            "p95": 0.005010515451431274,
+            "p99": 0.005599111318588257
+          },
+          "Ore.NavDirty": {
+            "count": 301,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 301,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 301,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 301,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 301,
+            "mean": 0.084597827786227,
+            "p95": 0.11850148439407349,
+            "p99": 0.13609975576400757
+          },
+          "Ore.WorldGeneration": {
+            "count": 301,
+            "mean": 29.760797342192692,
+            "p95": 33,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.010294501711940723,
+            "p95": 0.0137433155012886,
+            "p99": 0.016994687496207916
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.0005325624326679445,
+            "p95": 0.0008442319738559234,
+            "p99": 0.001155624665121847
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.006975871707069061,
+            "p95": 0.01001826183681182,
+            "p99": 0.011966242972347472
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.00912426680130416,
+            "p95": 0.01245105882626119,
+            "p99": 0.01498000282380316
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.0003145873444584105,
+            "p95": 0.0004127826423524046,
+            "p99": 0.0005498302705360181
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 8.578018155199664e-06,
+            "p95": 1.0821081343151274e-05,
+            "p99": 3.7303834687918425e-05
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 0.00017051854943553134,
+            "p95": 0.00025266574488745793,
+            "p99": 0.0002837747844875368
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 301,
+          "mean": 5.015743521641262,
+          "p95": 6.277199998294236,
+          "p99": 6.796400000894209
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 301,
+          "mean": 5.015743521641262,
+          "p95": 6.277199998294236,
+          "p99": 6.796400000894209
+        },
+        "movement_ms_per_logic_step": 5.015743521641262,
+        "movement_ms_per_active_unit_step": 0.010142208965745782,
+        "active_unit_steps": 148857,
+        "commanded": 500,
+        "arrived": 0,
+        "runtime_unit_count": 1330,
+        "active_units": {
+          "count": 301,
+          "mean": 494.54152823920265,
+          "p95": 578,
+          "p99": 592
+        },
+        "peak_active_units": 598,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.0,
+        "arrival_seconds": {
+          "count": 0,
+          "mean": null,
+          "p95": null,
+          "p99": null
+        },
+        "maximum_stall_seconds": 29.510192796587944,
+        "blocked": 0,
+        "dynamic_sweep_hits": 3462,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 96231424,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 8900,
+          "maximum_consecutive_reversals": 234,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 500
+        }
+      },
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-hold-500-02",
+        "scenario": "hold",
+        "seconds": 30.00674270093441,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 57036.2,
+            "p95": 65184,
+            "p99": 66804
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 33409.573333333334,
+            "p95": 42059,
+            "p99": 43767
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 2713.5233333333335,
+            "p95": 3102,
+            "p99": 3188
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 4.940484999873054,
+            "p95": 6.109400001150789,
+            "p99": 6.613599998672726
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.26172449191411334,
+            "p95": 0.39999932050704956,
+            "p99": 0.4913993179798126
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 3.344246273239454,
+            "p95": 4.105508327484131,
+            "p99": 4.493828862905502
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 4.366627087195714,
+            "p95": 5.367603152990341,
+            "p99": 5.909498780965805
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.14962375164031982,
+            "p95": 0.19591301679611206,
+            "p99": 0.27814507484436035
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 1711.1633333333334,
+            "p95": 2000,
+            "p99": 2070
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 337.0733333333333,
+            "p95": 416,
+            "p99": 429
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 80.44333333333333,
+            "p95": 101,
+            "p99": 106
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 397.49,
+            "p95": 459,
+            "p99": 469
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.003624881307284037,
+            "p95": 0.004507601261138916,
+            "p99": 0.004898756742477417
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.08294782290856044,
+            "p95": 0.11220201849937439,
+            "p99": 0.16769766807556152
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 30.26,
+            "p95": 33,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.01008567705651725,
+            "p95": 0.012719424456671747,
+            "p99": 0.014020907295662525
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.0005253175604866536,
+            "p95": 0.0007900577890233065,
+            "p99": 0.0009665281073121
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.0068566972565588,
+            "p95": 0.008979374499914284,
+            "p99": 0.009690727814134345
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.008930664818876641,
+            "p95": 0.011161064153992086,
+            "p99": 0.012581214534026242
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.0003032316246912292,
+            "p95": 0.00040477896032254556,
+            "p99": 0.0005494619497415817
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 7.3092184692199594e-06,
+            "p95": 9.643221934010663e-06,
+            "p99": 1.0573722679039528e-05
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 0.00016669541436450084,
+            "p95": 0.0002207758935909827,
+            "p99": 0.0003467282552397653
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 4.940484999873054,
+          "p95": 6.109400001150789,
+          "p99": 6.613599998672726
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 4.940484999873054,
+          "p95": 6.109400001150789,
+          "p99": 6.613599998672726
+        },
+        "movement_ms_per_logic_step": 4.940484999873054,
+        "movement_ms_per_active_unit_step": 0.009998215743025994,
+        "active_unit_steps": 148241,
+        "commanded": 500,
+        "arrived": 0,
+        "runtime_unit_count": 1330,
+        "active_units": {
+          "count": 300,
+          "mean": 494.13666666666666,
+          "p95": 569,
+          "p99": 581
+        },
+        "peak_active_units": 585,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.0,
+        "arrival_seconds": {
+          "count": 0,
+          "mean": null,
+          "p95": null,
+          "p99": null
+        },
+        "maximum_stall_seconds": 28.512001499533653,
+        "blocked": 0,
+        "dynamic_sweep_hits": 3234,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 35700736,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 8787,
+          "maximum_consecutive_reversals": 247,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 500
+        }
+      },
+      {
+        "directory": "Artifacts\\MassAuthority20261111\\baseline-hold-500-03",
+        "scenario": "hold",
+        "seconds": 30.00061869993806,
+        "logical_steps": 300,
+        "applications": 300,
+        "metrics_per_step": {
+          "Movement.CircleBucketVisits": {
+            "count": 300,
+            "mean": 56957.82,
+            "p95": 63282,
+            "p99": 64920
+          },
+          "Movement.CircleChecks": {
+            "count": 300,
+            "mean": 32318.106666666667,
+            "p95": 39767,
+            "p99": 40753
+          },
+          "Movement.DirectionProbes": {
+            "count": 300,
+            "mean": 2713.733333333333,
+            "p95": 3014,
+            "p99": 3088
+          },
+          "Movement.FixedApplicationMs": {
+            "count": 300,
+            "mean": 5.024973333444602,
+            "p95": 6.452400000853231,
+            "p99": 7.300499997654697
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 300,
+            "mean": 0.26177406311035156,
+            "p95": 0.37449970841407776,
+            "p99": 0.5028024315834045
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 300,
+            "mean": 3.3821162581443787,
+            "p95": 4.44064661860466,
+            "p99": 5.061924457550049
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 300,
+            "mean": 4.4414085149765015,
+            "p95": 5.722198635339737,
+            "p99": 6.64680078625679
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 300,
+            "mean": 0.15719816088676453,
+            "p95": 0.22171437740325928,
+            "p99": 0.27887895703315735
+          },
+          "Movement.SideProbes": {
+            "count": 300,
+            "mean": 1725.82,
+            "p95": 1979,
+            "p99": 2040
+          },
+          "Movement.YieldRelayAttempts": {
+            "count": 300,
+            "mean": 326.9766666666667,
+            "p95": 405,
+            "p99": 420
+          },
+          "Movement.YieldRequests": {
+            "count": 300,
+            "mean": 79.18,
+            "p95": 99,
+            "p99": 105
+          },
+          "Movement.YieldSteps": {
+            "count": 300,
+            "mean": 391.23333333333335,
+            "p95": 454,
+            "p99": 461
+          },
+          "Navigation.RepairMs": {
+            "count": 300,
+            "mean": 0.003559278945128123,
+            "p95": 0.004403293132781982,
+            "p99": 0.004895031452178955
+          },
+          "Ore.NavDirty": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRemainingTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.NavRunningTasks": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.PendingNodes": {
+            "count": 300,
+            "mean": 0.0,
+            "p95": 0,
+            "p99": 0
+          },
+          "Ore.ResourceTickMs": {
+            "count": 300,
+            "mean": 0.08336459596951802,
+            "p95": 0.11350587010383606,
+            "p99": 0.15150755643844604
+          },
+          "Ore.WorldGeneration": {
+            "count": 300,
+            "mean": 30.01,
+            "p95": 33,
+            "p99": 33
+          }
+        },
+        "metrics_per_active_unit_step": {
+          "Movement.FixedApplicationMs": {
+            "count": 295,
+            "mean": 0.010169689756358647,
+            "p95": 0.014085144131661738,
+            "p99": 0.01682111801425097
+          },
+          "Movement.GT.CircleIndexMs": {
+            "count": 295,
+            "mean": 0.0005325735313935133,
+            "p95": 0.0007507099647714634,
+            "p99": 0.0010943850097448928
+          },
+          "Movement.GT.CircleSolveMs": {
+            "count": 295,
+            "mean": 0.006836960140205392,
+            "p95": 0.0096057006653319,
+            "p99": 0.010469246928284808
+          },
+          "Movement.GT.CommitInclusiveMs": {
+            "count": 295,
+            "mean": 0.008981470160029873,
+            "p95": 0.012447673439186588,
+            "p99": 0.013566894890510873
+          },
+          "Movement.GT.NavMeshMoveMs": {
+            "count": 295,
+            "mean": 0.0003164662845569086,
+            "p95": 0.00045559682898758524,
+            "p99": 0.0005596738118530446
+          },
+          "Navigation.RepairMs": {
+            "count": 295,
+            "mean": 7.214294991553512e-06,
+            "p95": 9.061110140097262e-06,
+            "p99": 1.0336610092513863e-05
+          },
+          "Ore.ResourceTickMs": {
+            "count": 295,
+            "mean": 0.00016995744628758535,
+            "p95": 0.00023444222187952483,
+            "p99": 0.00030371009890532106
+          }
+        },
+        "movement_total_per_step_ms": {
+          "count": 300,
+          "mean": 5.024973333444602,
+          "p95": 6.452400000853231,
+          "p99": 7.300499997654697
+        },
+        "movement_worker_ms_per_step": 0,
+        "movement_thread_basis": "Frozen hotspot mask 31: movement/avoidance execute on the game thread; Hybrid network workers are separate",
+        "fixed_application_ms": {
+          "count": 300,
+          "mean": 5.024973333444602,
+          "p95": 6.452400000853231,
+          "p99": 7.300499997654697
+        },
+        "movement_ms_per_logic_step": 5.024973333444602,
+        "movement_ms_per_active_unit_step": 0.010095511073534421,
+        "active_unit_steps": 149323,
+        "commanded": 500,
+        "arrived": 0,
+        "runtime_unit_count": 1330,
+        "active_units": {
+          "count": 300,
+          "mean": 497.74333333333334,
+          "p95": 558,
+          "p99": 568
+        },
+        "peak_active_units": 573,
+        "live_soldiers_before": 600,
+        "live_soldiers_after": 600,
+        "arrival_rate": 0.0,
+        "arrival_seconds": {
+          "count": 0,
+          "mean": null,
+          "p95": null,
+          "p99": null
+        },
+        "maximum_stall_seconds": 29.10606650263071,
+        "blocked": 0,
+        "dynamic_sweep_hits": 3277,
+        "static_sweep_hits": 0,
+        "static_initial_overlap_escapes": 0,
+        "memory_delta_bytes": 21168128,
+        "hotspot_mask": 31,
+        "coverage": {
+          "ore_events": 0,
+          "mining_seen": false,
+          "docking_seen": false,
+          "maximum_cargo": 0,
+          "maximum_construction_work": 0,
+          "construction_completed": false,
+          "command_kinds": [
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move",
+            "authority_move"
+          ]
+        },
+        "identity": {
+          "implementation": "hybrid-sync-unique-v2",
+          "reduced_work": true,
+          "incremental_delivery": true,
+          "hotspot_mask": 31,
+          "modules": {
+            "GuLiStrike": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiStrike.dll",
+              "file_timestamp": "2026-11-11T10:58:04.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            },
+            "GuLiNetCore": {
+              "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor-GuLiNetCore.dll",
+              "file_timestamp": "2026-11-10T13:55:43.000Z",
+              "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+            }
+          }
+        },
+        "movement_behavior": {
+          "fixed_step_reversals": 8992,
+          "maximum_consecutive_reversals": 233,
+          "first_failed_order_seconds": {
+            "count": 0,
+            "mean": null,
+            "p95": null,
+            "p99": null
+          },
+          "latest_first_failed_order_seconds": null,
+          "orders_still_active_at_end": 500
+        }
+      }
+    ]
+  }
+}

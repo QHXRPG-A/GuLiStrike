@@ -56,7 +56,7 @@ public:
 		const FVector& RayDirection,
 		uint16& OutClusterId,
 		FVector& OutClusterCenter) const;
-	bool IsFactoryAlongRay(
+	bool IsDropoffAlongRay(
 		EGuLiTeam Team,
 		const FVector& RayOrigin,
 		const FVector& RayDirection) const;

@@ -190,7 +190,7 @@
     "Name": "ResourceFactory",
     "Id": 2006,
     "Note": "B_v1 已按用户指令导入正式资源；只改配色，固定区和队色区分开；旧网格引用已替换",
-    "DisplayName": "矿厂",
+    "DisplayName": "先驱号兵营",
     "ResourceType": "PresentationClass",
     "ResourcePath": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
     "VATDefinition": "",
@@ -201,7 +201,7 @@
     "EnemySecondaryHex": "#662249",
     "CandidateResourcePath": "",
     "CandidateVATDefinition": "",
-    "Description": "矿厂的实际组合展示蓝图；装配主体、活动门和入口坡道，服务矿石处理与交付。"
+    "Description": "先驱号兵营组合展示蓝图；主体、门与坡道仅用于表现，先驱号从内部出兵。"
   },
   {
     "Name": "TerritoryStronghold",
@@ -1221,7 +1221,7 @@
     "EnemySecondaryHex": "#662249",
     "CandidateResourcePath": "",
     "CandidateVATDefinition": "",
-    "Description": "矿厂 Door 活动门骨骼子模型；保留原开关门动画、骨骼和组件装配。"
+    "Description": "先驱号兵营活动门骨骼子模型；不参与移动碰撞。"
   },
   {
     "Name": "SM_RPF_Body",
@@ -1238,7 +1238,7 @@
     "EnemySecondaryHex": "#662249",
     "CandidateResourcePath": "",
     "CandidateVATDefinition": "",
-    "Description": "矿厂 Body 主体子模型；用于厂房外壳，门和坡道通过各自部件装配。"
+    "Description": "先驱号兵营主体子模型；不参与移动碰撞。"
   },
   {
     "Name": "ConstructionVehicle_SM_TeslaCollector_Styled",
@@ -1346,7 +1346,7 @@
     "Name": "ResourceFactory_AccessRamp",
     "Id": 8015,
     "Note": "B_v1 已按用户指令导入正式资源；只改配色，固定区和队色区分开；旧网格引用已替换",
-    "DisplayName": "矿厂坡道",
+    "DisplayName": "先驱号兵营坡道",
     "ResourceType": "StaticMesh",
     "ResourcePath": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Meshes/SM_RPF_AccessRamp.SM_RPF_AccessRamp",
     "VATDefinition": "",
@@ -1357,7 +1357,7 @@
     "EnemySecondaryHex": "#662249",
     "CandidateResourcePath": "",
     "CandidateVATDefinition": "",
-    "Description": "矿厂入口 AccessRamp 坡道子模型；保留原 Cube 几何、装配尺寸和位置，整件属于固定米砂区域。"
+    "Description": "先驱号兵营入口坡道子模型；不参与移动碰撞。"
   },
   {
     "Name": "GroundSeatPlaceholder",

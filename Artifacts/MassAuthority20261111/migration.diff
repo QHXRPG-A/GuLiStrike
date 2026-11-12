@@ -1,0 +1,884 @@
+--- baseline-GuLiBattleAuthoritySubsystem.cpp
++++ Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -37,6 +37,7 @@
+ #include "Commander/Framework/GuLiCommanderGameState.h"
+ #include "Commander/Framework/GuLiCommanderResourceAdapter.h"
+ #include "Commander/Mass/GuLiCommanderMassFragments.h"
++#include "Commander/Mass/GuLiCommanderMassRuntime.h"
+ #include "Commander/Mass/GuLiCommanderSelectionQuery.h"
+ #include "Commander/Mass/GuLiControlCohortBuilder.h"
+ #include "Commander/Mass/Navigation/GuLiCommanderDestinationPlanner.h"
+@@ -85,13 +86,11 @@
+ #include "HAL/PlatformTime.h"
+ #include "ProfilingDebugging/CsvProfiler.h"
+ #include "HAL/IConsoleManager.h"
+-#include "MassCommonFragments.h"
+ #include "MassEntityManager.h"
+ #include "MassEntityQuery.h"
+ #include "MassExecutionContext.h"
+ #include "MassEntitySubsystem.h"
+ #include "MassMovementFragments.h"
+-#include "MassNavigationFragments.h"
+ #if WITH_EDITOR
+ // Explicit PIE preparation only. Ground firing, damage and Buff logic still run normally.
+ static TAutoConsoleVariable<int32> GGroundReviewIsolateCombat(TEXT("gs.Review.GroundIsolateCombat"),0,
+@@ -178,116 +177,72 @@
+ 	static_assert(GuLiCommanderNavigationPolicy::MovementUpdateIntervalTicks == 1u);
+ 	static_assert(GuLiCommanderSimulationTiming::RateHz == 10u, "Navigation repair detection runs once per 10 Hz authority step.");
+ 
+-	struct FSoldierWeaponRuntime
+-	{
+-		FName SlotId;
+-		int32 ProfileIndex = INDEX_NONE;
+-		FGuLiSoldierAttackState Attack;
+-	};
+-
+-	// 每名士兵的权威运行时记录。位置/速度在本类推进，再同步到 Mass Fragment 供处理器读取。
+-	struct FSoldierRuntime
+-	{
+-		// Entity 是当前 EntityManager 的访问键；SoldierId 不随选择组、移动编队或 Archetype 改变。
+-		FMassEntityHandle Entity;
+-		FGuLiSoldierId SoldierId;
+-        FGuLiHybridObjectKey HybridKey;
+-        bool bLocalSimulation=true;
+-		EGuLiTeam Team = EGuLiTeam::Unassigned;
+-		uint16 UnitTypeId = GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID;
+-		float AvoidanceRadiusCentimeters = 150.0f;
+-		bool bMovementEvenArchetype = true;
+-		FVector Location = FVector::ZeroVector;
+-		EGuLiUnitMovementLayer MovementLayer = EGuLiUnitMovementLayer::Ground;
+-		float AltitudeCentimeters = 0.f;
+-		FVector GroundLocation() const { return GuLiUnitMovement::GroundPosition(Location, AltitudeCentimeters); }
+-		FVector WorldFromGround(const FVector& P) const { return GuLiUnitMovement::WorldPosition(P, AltitudeCentimeters); }
+-		FVector Velocity = FVector::ZeroVector;
+-		double LastMovementUpdateSimulationSeconds = 0.0;
+-		float FacingYawDegrees = 0.0f;
+-		float FixedSpawnYawDegrees = 0.0f;
+-		EGuLiSoldierFacingPolicy FacingPolicy = EGuLiSoldierFacingPolicy::FaceVelocity;
+-		FGuLiMechanicalAnimationState MechanicalPose;
+-		FGuLiVATPlayback VATPlayback;
+-		uint8 NextMechanicalMuzzle = 0;
+-		float Health = 100.0f;
+-		float MaxHealth = 100.0f;
+-		float Defense = 0.0f;
+-		TSharedPtr<const TArray<FGuLiResolvedSkillProfile>> WeaponProfiles;
+-		TArray<FSoldierWeaponRuntime> Weapons;
+-		bool bAllowAutomaticFire = true;
+-		// Unique active skill is independent of automatic weapon slots and advances on SimulationSeconds.
+-		FGuLiActiveSkillRuntime ActiveSkill;
+-		// StateRevision 标识离散状态变化；ActiveOrderId 指向当前批次，0 表示无活动指令。
+-		uint32 StateRevision = 1u;
+-		uint32 ActiveOrderId = 0u;
+-		uint64 TaskGeneration = 0;
+-		TSharedPtr<FGuLiSharedMoveIntent> MoveIntent;
+-        FGuLiGridMotion GridMotion;
+-        uint32 GridOrderId=0;
+-        TWeakObjectPtr<ACharacter> EngineeringCarrier;
+-        bool bEngineering=false;
+-        uint32 EngineeringDisplacementRevision=0;
+-        float ArrivalAcceptance=20.f;
+-		TSharedPtr<FGuLiSharedRouteGoal> RouteGoal;
+-		TSharedPtr<FGuLiSharedMoveRoute> SharedRoute;
+-		FGuLiDirectMoveCheck DirectDock;
+-		int32 RouteCursor = 0;
+-		bool bHasDockTarget = false;
+-		GuLiMoveLatency::FContext MoveTrace;
+-		double CommandAcceptedAt = 0, DirectionAppliedAt = 0, FirstDisplacementAt = 0;
+-		bool bAutomaticAdvance = false;
+-		bool bAttackMoveHolding = false;
+-		FNavLocation LastValidNavLocation;
+-		FNavLocation FinalDestination;
+-		FVector CommandStartLocation = FVector::ZeroVector;
+-		FVector CurrentNavigationWaypoint = FVector::ZeroVector;
+-		EGuLiSoldierNavigationState NavigationState = EGuLiSoldierNavigationState::Idle;
+-		EGuLiSoldierNavigationFailure NavigationFailure = EGuLiSoldierNavigationFailure::None;
+-		uint32 LastCompletedOrderId = 0u;
+-		uint32 LastFailedOrderId = 0u;
+-		uint32 FinalDestinationNavigationGeneration = 0u;
+-		TSharedPtr<FGuLiNavigationDependency> ActiveNavigation;
+-		bool bNavigationBudgetPending = false;
+-		float NoProgressSeconds = 0.0f;
+-		double FailureSimulationSeconds = 0.0;
+-		float BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+-		int32 LastProgressPathPointIndex = INDEX_NONE;
+-		int32 ConsecutiveSurfaceFailures = 0;
+-		int32 TotalSurfaceFailures = 0;
+-		TArray<FVector> PersonalPathPoints;
+-		int32 PersonalPathPointIndex = 0;
+-		int32 PersonalPathRetries = 0;
+-		double NextPersonalPathQuerySeconds = 0;
+-		bool bHasFinalDestination = false;
+-		bool bForceMovementUpdate = false;
+-		FVector LastCapturedPoseLocation = FVector::ZeroVector;
+-		uint32 LastCapturedPoseFrameSequence = 0u;
+-		double LastCapturedPoseSimulationSeconds = 0.0;
+-		float LastCapturedMovementSpeed = 0.0f;
+-		// The wreck window retains the identity; expiration retires both entity and replicated record.
+-		double DeathSimulationSeconds = -1.0;
+-		bool bWreckExpired = false;
+-		FGuid ExternalControlToken;
+-		bool bPhased = false;
+-		bool bExternalActionsLocked = false;
+-		GuLiCircleAvoidance::FState CircleState;
+-        FGuid MovementCommandIdentity; // Retained on arrival; not a destination or active-order number.
+-        FVector YieldDirection=FVector::ZeroVector;
+-        float YieldRemainingSeconds=0;
+-        int32 GridReferenceFootprint=1;
+-		uint32 DisplacementFrameFloor = 0;
+-		FVector DisplacementLocation = FVector::ZeroVector;
+-		double DisplacementSimulationTime = 0;
+-		double ExternalLockSimulationTime = 0;
+-		bool CanAct() const { return IsAlive() && !bExternalActionsLocked; }
+-        bool CanSimulate() const { return CanAct() && (!HybridKey.IsValid() || bLocalSimulation); }
+-		bool IsPresent() const { return IsAlive() && !bPhased; }
+-
+-		bool IsAlive() const
+-		{
+-			return FMath::IsFinite(Health) && Health > 0.0f;
+-		}
++	using FSoldierWeaponRuntime = FGuLiSoldierWeaponRuntime;
++	using FSoldierRuntime = FGuLiMassSoldierRuntimeFragment;
++
++	// Directory order is independent of Mass chunk order. Entries own no gameplay data.
++	class FSoldierDirectory
++	{
++		struct FEntry { FMassEntityHandle Entity; FSoldierRuntime* Data; };
++		mutable TArray<FEntry> Entries;
++		int32 BatchDepth = 0;
++		FMassEntityManager* Manager = nullptr;
++		TUniquePtr<FMassEntityQuery> Query;
++		template<typename T> struct TIterator
++		{
++			const FEntry* Entry;
++			T& operator*() const { return *Entry->Data; }
++			TIterator& operator++() { ++Entry; return *this; }
++			bool operator!=(const TIterator& Other) const { return Entry != Other.Entry; }
++		};
++	public:
++		struct FBatchAccess
++		{
++			FSoldierDirectory& Directory;
++			explicit FBatchAccess(FSoldierDirectory& In) : Directory(In)
++			{ if (Directory.BatchDepth++ == 0) Directory.Rebind(); }
++			~FBatchAccess() { --Directory.BatchDepth; }
++		};
++		void Initialize(FMassEntityManager& InManager)
++		{
++			Manager = &InManager;
++			Query = MakeUnique<FMassEntityQuery>(Manager->AsShared());
++			Query->AddRequirement<FSoldierRuntime>(EMassFragmentAccess::ReadWrite);
++		}
++		FSoldierRuntime& Add(FMassEntityHandle Entity)
++		{
++			auto& Data = Manager->GetFragmentDataChecked<FSoldierRuntime>(Entity);
++			Data.DirectoryIndex = Entries.Add({Entity, &Data});
++			return Data;
++		}
++		// Structural changes can move fragments; refresh addresses once in chunks.
++		void Rebind() const
++		{
++			FMassExecutionContext Context(*Manager, 0.f, false);
++			Query->ForEachEntityChunk(Context, [this](FMassExecutionContext& Chunk)
++			{
++				for (auto& Data : Chunk.GetMutableFragmentView<FSoldierRuntime>())
++					Entries[Data.DirectoryIndex].Data = &Data;
++			});
++		}
++		void RemoveAtSwap(int32 Index, int32 Count, EAllowShrinking Shrink)
++		{
++			Entries.RemoveAtSwap(Index, Count, Shrink);
++			if (Entries.IsValidIndex(Index))
++				Manager->GetFragmentDataChecked<FSoldierRuntime>(Entries[Index].Entity).DirectoryIndex = Index;
++			Rebind();
++		}
++		void Reset() { Entries.Reset(); }
++		int32 Num() const { return Entries.Num(); }
++		bool IsEmpty() const { return Entries.IsEmpty(); }
++		bool IsValidIndex(int32 Index) const { return Entries.IsValidIndex(Index); }
++		FMassEntityHandle EntityAt(int32 Index) const { return Entries[Index].Entity; }
++		FSoldierRuntime& operator[](int32 Index) { return BatchDepth ? *Entries[Index].Data : Manager->GetFragmentDataChecked<FSoldierRuntime>(Entries[Index].Entity); }
++		const FSoldierRuntime& operator[](int32 Index) const { return BatchDepth ? *Entries[Index].Data : Manager->GetFragmentDataChecked<FSoldierRuntime>(Entries[Index].Entity); }
++		TIterator<FSoldierRuntime> begin() { if (!Entries.IsEmpty() && !BatchDepth) Rebind(); return {Entries.GetData()}; }
++		TIterator<FSoldierRuntime> end() { return {Entries.GetData()+Entries.Num()}; }
++		TIterator<const FSoldierRuntime> begin() const { if (!Entries.IsEmpty() && !BatchDepth) Rebind(); return {Entries.GetData()}; }
++		TIterator<const FSoldierRuntime> end() const { return {Entries.GetData()+Entries.Num()}; }
+ 	};
+ 
+ 	void BeginPersonalPathRecovery(FSoldierRuntime& Soldier)
+@@ -1010,7 +965,7 @@
+ 
+ 	bool ValidatePreparedMove(FMovePlanningJob& Job,const ANavigationData& Data,uint32 Generation,
+ 		FGuLiNavigationWorkBudget& Budget,const FGuLiDynamicObstacleSnapshot& Obstacles,
+-		const TArray<FSoldierRuntime>& Soldiers,const TMap<uint32,int32>& Indices)
++		const FSoldierDirectory& Soldiers,const TMap<uint32,int32>& Indices)
+ 	{
+ 		using Check=FGuLiNavigationDependency::ECheck;
+ 		while (Job.DependencyCursor<Job.Members.Num() && Budget.CanWork())
+@@ -1233,7 +1188,7 @@
+ 	}
+ 
+ 	// 同速士兵共享只读移动/避让参数，避免每个实体存一份。
+-	// 位移由项目圆形求解器推进；Mass保留共用速度配置与结果数据。
++	// 位移由项目圆形求解器直接推进 Mass 权威记录；速度配置仍共享。
+ 	FMassArchetypeSharedFragmentValues MakeAuthoritySharedFragmentValues(
+ 		FMassEntityManager& EntityManager,
+ 		const float MovementSpeedCentimetersPerSecond,
+@@ -1354,7 +1309,7 @@
+ 	// 只平均存活且仍服从指定指令的成员；RequiredOrderId 为 0 时不限制指令归属。
+ 	FVector ComputeCentroid(
+ 		TConstArrayView<FGuLiSoldierId> MemberIds,
+-		const TArray<FSoldierRuntime>& Soldiers,
++		const FSoldierDirectory& Soldiers,
+ 		const TMap<uint32, int32>& SoldierIndexById,
+ 		const uint32 RequiredOrderId = 0u)
+ 	{
+@@ -1476,7 +1431,7 @@
+ 	// 先取靠近中心的 N 个槽位，再以 XY 距离平方为代价匹配，减少成员互相穿越。
+ 	void AssignFormationSlots(
+ 		FOrderFormationRuntime& Formation,
+-		const TArray<FSoldierRuntime>& Soldiers,
++		const FSoldierDirectory& Soldiers,
+ 		const TMap<uint32, int32>& SoldierIndexById,
+ 		float SlotSpacing,
+ 		const uint32 RequiredOrderId,
+@@ -1712,7 +1667,7 @@
+ 	FMassArchetypeHandle AuthorityArchetype;
+ 	FMassArchetypeHandle RuntimeTuningEvenBaseArchetype;
+ 	FMassArchetypeHandle RuntimeTuningOddBaseArchetype;
+-	TArray<GuLiCommanderMassPrivate::FSoldierRuntime> Soldiers;
++	GuLiCommanderMassPrivate::FSoldierDirectory Soldiers;
+ 	TMap<uint32, int32> SoldierIndexById;
+ 	TArray<GuLiCommanderMassPrivate::FOrderFormationRuntime> OrderFormations;
+ 	TArray<TUniquePtr<GuLiCommanderMassPrivate::FMovePlanningJob>> MovePlanningJobs;
+@@ -1763,10 +1718,9 @@
+     uint64 CircleBucketVisits=0, CircleChecks=0, CircleSideProbes=0;
+     GuLiCircleAvoidance::FQueryScratch CircleScratch;
+     TArray<int32> CircleOrder;
+-    TUniquePtr<FMassEntityQuery> MovementPublishQuery;
+     TArray<FVector> DesiredVelocities;
+     TArray<float> MovementUpdateDeltaSeconds;
+-    TBitArray<> RunsMovementUpdate, YieldsThisStep, ForcedMovementUpdate, SuppressMovementForStep, PublishMovement;
++    TBitArray<> RunsMovementUpdate, YieldsThisStep, ForcedMovementUpdate, SuppressMovementForStep;
+ 	FGuLiCombatExecutorRegistry CombatExecutors;
+ 	TArray<FGuLiCombatSample> CombatSamples;
+ 	TArray<FGuLiCombatSample> CombatChannels;
+@@ -2320,8 +2274,6 @@
+ 				}
+ 				S.CurrentNavigationWaypoint=Intent->Click; S.CommandAcceptedAt=FPlatformTime::Seconds();
+ 				S.DirectionAppliedAt=S.FirstDisplacementAt=0; S.MoveTrace=Trace; ++S.StateRevision;
+-				auto& Order=Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(S.Entity);
+-				Order.ActiveOrderId=S.ActiveOrderId; Order.OrderRevision=S.StateRevision; Order.FormationTarget=Intent->Click; Order.bHasMoveTarget=true;
+ 
+ 				RefreshSoldierNavigationState(S.SoldierId); Job.Progress.Committed.Add(S.SoldierId); Job.FinishedIds.Add(S.SoldierId.Value);
+ 				Receipt.AcceptedMemberMask|=1u<<M.CohortMemberIndex; Updated.MemberIds.Add(S.SoldierId); ++Accepted;
+@@ -3060,11 +3012,7 @@
+ 			Soldier.DisplacementSimulationTime = A.SimulationSeconds;
+ 		}
+ 		++Soldier.StateRevision;
+-		Manager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity).SetTransform(
+-			FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
+-		Manager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+-
+-		Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity).OrderRevision = Soldier.StateRevision;
++
+ 		// The intent, fixed dock, automatic/manual mode, command start and task version all survive.
+ 		RefreshSoldierNavigationState(Soldier.SoldierId);
+ 
+@@ -3081,18 +3029,9 @@
+         auto& State=*AuthorityState; if (State.RuntimeTuningEvenBaseArchetype.IsValid()) return true;
+         auto* Mass=State.MassEntitySubsystem.Get(); if (!Mass) return false;
+         auto& Manager=Mass->GetMutableEntityManager();
+-        State.MovementPublishQuery=MakeUnique<FMassEntityQuery>(Manager.AsShared());
+-        auto& Publish=*State.MovementPublishQuery;
+-        Publish.AddTagRequirement<FGuLiServerAuthorityMassTag>(EMassFragmentPresence::All);
+-        Publish.AddRequirement<FGuLiMassIdentityFragment>(EMassFragmentAccess::ReadOnly);
+-        Publish.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
+-        Publish.AddRequirement<FMassVelocityFragment>(EMassFragmentAccess::ReadWrite);
+-        Publish.AddRequirement<FGuLiMassOrderFragment>(EMassFragmentAccess::ReadWrite);
+-        TArray<const UScriptStruct*> Types={FTransformFragment::StaticStruct(),FAgentRadiusFragment::StaticStruct(),FMassVelocityFragment::StaticStruct(),
+-            FMassNavigationObstacleGridCellLocationFragment::StaticStruct(),
+-            FGuLiMassIdentityFragment::StaticStruct(),FGuLiCommanderStateTreeFragment::StaticStruct(),FGuLiMassHealthFragment::StaticStruct(),
+-            FGuLiMassSoldierStatsFragment::StaticStruct(),FGuLiMassOrderFragment::StaticStruct(),
+-
++        State.Soldiers.Initialize(Manager);
++        TArray<const UScriptStruct*> Types={FSoldierRuntime::StaticStruct(),
++            FGuLiMassIdentityFragment::StaticStruct(),FGuLiCommanderStateTreeFragment::StaticStruct(),
+             FGuLiServerAuthorityMassTag::StaticStruct(),FGuLiMassRuntimeTuningEvenTag::StaticStruct()};
+         FMassArchetypeCreationParams Params; Params.DebugName=TEXT("GuLiHybridGrantedSoldiers");
+         State.RuntimeTuningEvenBaseArchetype=Manager.CreateArchetype(Types,Params);
+@@ -3120,6 +3059,7 @@
+ 		return;
+ 	}
+ 
++	FSoldierDirectory::FBatchAccess MovementAccess(AuthorityState->Soldiers);
+     for (const auto& S:AuthorityState->Soldiers) if (S.bEngineering) SyncEngineeringMass(S.SoldierId);
+ 
+ 	{
+@@ -3127,7 +3067,6 @@
+ 		ApplyPendingMovementSpeed();
+ 		CommitCombatProfiles();
+ 	}
+-	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+ 	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+ 	ANavigationData* CommanderNavigationData = NavigationSystem
+ 		? GetCommanderNavigationData(*NavigationSystem)
+@@ -3144,7 +3083,7 @@
+ 	}
+ 	const double MovementSimulationSeconds = AuthorityState->SimulationSeconds;
+ 
+-	auto SetTerminalNavigationState = [this, &EntityManager, MovementSimulationSeconds](
++	auto SetTerminalNavigationState = [this, MovementSimulationSeconds](
+ 		FSoldierRuntime& Soldier,
+ 		const EGuLiSoldierNavigationState TerminalState,
+ 		const EGuLiSoldierNavigationFailure Failure)
+@@ -3173,16 +3112,6 @@
+ 		Soldier.CurrentNavigationWaypoint = Soldier.GroundLocation();
+ 		++Soldier.StateRevision;
+ 
+-		if (!EntityManager.IsEntityValid(Soldier.Entity))
+-		{
+-			return;
+-		}
+-		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+-		FGuLiMassOrderFragment& Order = EntityManager
+-			.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+-		Order.ActiveOrderId = 0u;
+-		Order.OrderRevision = Soldier.StateRevision;
+-		Order.bHasMoveTarget = false;
+ 	};
+ 
+ 	auto EnterCenterlineRecovery = [](FSoldierRuntime& Soldier)
+@@ -3209,8 +3138,6 @@
+ 	MovementUpdateDeltaSeconds.Init(0.0f, AuthorityState->Soldiers.Num());
+ 	auto& bSuppressMovementForStep=AuthorityState->SuppressMovementForStep;
+ 	bSuppressMovementForStep.Init(false, AuthorityState->Soldiers.Num());
+-    auto& PublishMovement=AuthorityState->PublishMovement;
+-    PublishMovement.Init(false,AuthorityState->Soldiers.Num());
+ 
+ 	const UGuLiDynamicObstacleRegistrySubsystem* GroundObstacleRegistry =
+ 		World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+@@ -3369,7 +3296,7 @@
+     {
+         FGuLiPerformanceScope Timing(World,TEXT("Movement.GT.CircleIndexMs"));
+         DynamicCircles.Reset(AuthorityState->Soldiers.Num());
+-        for (const auto& S:AuthorityState->Soldiers) if (S.IsPresent() && EntityManager.IsEntityValid(S.Entity))
++        for (const auto& S:AuthorityState->Soldiers) if (S.IsPresent())
+         {
+             const auto* Profile=UnitCatalog->GetAvoidanceCatalog().Units.Find(S.UnitTypeId);check(Profile);
+             GuLiCircleAvoidance::FCircle C;C.Id=S.SoldierId.Value;C.Version=S.StateRevision;
+@@ -3395,30 +3322,18 @@
+     for (int32 SoldierIndex:Ordered)
+     {
+         FSoldierRuntime& Soldier=AuthorityState->Soldiers[SoldierIndex];
+-		if (!EntityManager.IsEntityValid(Soldier.Entity))
+-		{
+-			continue;
+-		}
+ 
+ 		if (Soldier.bExternalActionsLocked && Soldier.IsAlive()) { RefreshSoldierNavigationState(Soldier.SoldierId); continue; }
+         if (Soldier.HybridKey.IsValid() && !Soldier.bLocalSimulation) continue;
+ 		if (!Soldier.IsAlive())
+ 		{
+-			auto& Health=EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
+ 			RefreshSoldierNavigationState(Soldier.SoldierId);
+-			Health.WreckSecondsRemaining = FMath::Max(
++			const float WreckSecondsRemaining = FMath::Max(
+ 				0.0f,
+ 				static_cast<float>(Soldier.DeathSimulationSeconds + WreckLifetimeSeconds
+ 					- AuthorityState->SimulationSeconds));
+-			if (!Soldier.bWreckExpired && Health.WreckSecondsRemaining <= 0.0f)
+-			{
+-				FTransformFragment& Transform = EntityManager
+-					.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
+-				FTransform HiddenTransform = Transform.GetTransform();
+-				HiddenTransform.SetScale3D(FVector::ZeroVector);
+-				Transform.SetTransform(HiddenTransform);
++			if (!Soldier.bWreckExpired && WreckSecondsRemaining <= 0.0f)
+ 				Soldier.bWreckExpired = true;
+-			}
+ 			continue;
+ 		}
+ 
+@@ -3553,34 +3468,12 @@
+ 		RefreshSoldierNavigationState(Soldier.SoldierId);
+ 		if (Soldier.FacingPolicy == EGuLiSoldierFacingPolicy::FixedSpawnYaw)
+ 			Soldier.FacingYawDegrees = Soldier.FixedSpawnYawDegrees;
+-        PublishMovement[SoldierIndex]=true;
+ #if !UE_BUILD_SHIPPING
+         if (OnPositionApplied.IsBound() && Soldier.FirstDisplacementAt > 0)
+             OnPositionApplied.Broadcast(Soldier.SoldierId,Soldier.MoveTrace.Command,Soldier.Location,FPlatformTime::Seconds());
+ #endif
+ 	}
+ 
+-    // Solver/Hybrid state and circle positions were published in SoldierId order.
+-    // Publish the Mass result columns in chunks without repeating entity lookups.
+-    FMassExecutionContext PublishContext(EntityManager,FixedDeltaSeconds,false);
+-    AuthorityState->MovementPublishQuery->ForEachEntityChunk(PublishContext,[&](FMassExecutionContext& Chunk)
+-    {
+-        const auto Identities=Chunk.GetFragmentView<FGuLiMassIdentityFragment>();
+-        auto Transforms=Chunk.GetMutableFragmentView<FTransformFragment>();
+-        auto Velocities=Chunk.GetMutableFragmentView<FMassVelocityFragment>();
+-        auto Orders=Chunk.GetMutableFragmentView<FGuLiMassOrderFragment>();
+-        for (int32 I=0;I<Chunk.GetNumEntities();++I)
+-        {
+-            const int32 Index=AuthorityState->SoldierIndexById.FindChecked(Identities[I].SoldierId.Value);
+-            if (!PublishMovement[Index]) continue;
+-            const auto& S=AuthorityState->Soldiers[Index];
+-            Transforms[I].SetTransform(FTransform(FRotator(0,S.FacingYawDegrees,0),S.Location));
+-            Velocities[I].Value=S.Velocity;
+-            Orders[I].ActiveOrderId=S.ActiveOrderId;
+-            Orders[I].OrderRevision=S.StateRevision;
+-            Orders[I].bHasMoveTarget=S.ActiveOrderId!=0;
+-        }
+-    });
+ 
+     }
+     if (!AuthorityState->EngineeringPosePublishes.IsEmpty())
+@@ -4127,18 +4020,10 @@
+ 		Soldier.Defense = Values.bOverrideDefense ? Values.Defense
+ 			: (Definition ? Definition->Defense : BaselineRuntimeTuning.Defense);
+ 
+-		FGuLiMassSoldierStatsFragment& Stats = EntityManager
+-			.GetFragmentDataChecked<FGuLiMassSoldierStatsFragment>(Soldier.Entity);
+-		Stats.MaxHealth = Soldier.MaxHealth;
+-		Stats.Defense = Soldier.Defense;
+ 
+ 		if (Soldier.Health != PreviousHealth || bMaximumHealthChanged)
+ 		{
+ 			++Soldier.StateRevision;
+-			FGuLiMassHealthFragment& Health = EntityManager
+-				.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
+-			Health.Health = Soldier.Health;
+-			Health.bDead = Soldier.Health <= 0.0f;
+ 		}
+ 	}
+ 	return AuthorityState->Soldiers.Num();
+@@ -4187,13 +4072,14 @@
+ 	}
+ 	for (const auto& Change : Changes)
+ 	{
+-		auto& S=AuthorityState->Soldiers[Change.Index];
+-		Manager.MoveEntityToAnotherArchetype(S.Entity,Change.Archetype,&Change.Shared);
++		const auto Entity=AuthorityState->Soldiers.EntityAt(Change.Index);
++		Manager.MoveEntityToAnotherArchetype(Entity,Change.Archetype,&Change.Shared);
++		auto& S=Manager.GetFragmentDataChecked<FSoldierRuntime>(Entity);
+ 		S.bMovementEvenArchetype=!S.bMovementEvenArchetype;
+ 		S.Velocity=S.Velocity.GetClampedToMaxSize(Change.Speed);
+-		Manager.GetFragmentDataChecked<FMassVelocityFragment>(S.Entity).Value=S.Velocity;
+ 		S.bForceMovementUpdate=true;
+ 	}
++	AuthorityState->Soldiers.Rebind();
+ 	 return true;
+ }
+ 
+@@ -4343,10 +4229,6 @@
+ 	GuLiNet::ApplyDamage(Numerical, Amount, NumericalDelta);
+ 	Soldier.Health = Numerical.Value;
+ 	++Soldier.StateRevision;
+-	FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(
+-		Soldier.Entity);
+-	Health.Health = Soldier.Health;
+-	Health.bDead = Soldier.Health <= 0.0f;
+ 	if (Soldier.Health <= 0.0f)
+ 	{
+ 		for (auto& Weapon : Soldier.Weapons)
+@@ -4363,16 +4245,6 @@
+ 		Soldier.bForceMovementUpdate = false;
+ 
+ 		Soldier.DeathSimulationSeconds = AuthorityState->SimulationSeconds;
+-		Health.WreckSecondsRemaining = WreckLifetimeSeconds;
+-		FGuLiMassOrderFragment& Order = EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(
+-			Soldier.Entity);
+-		Order.ActiveOrderId = 0u;
+-		Order.OrderRevision = Soldier.StateRevision;
+-		Order.bHasMoveTarget = false;
+-		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+-		EntityManager.RemoveFragmentFromEntity(
+-			Soldier.Entity,
+-			FMassNavigationObstacleGridCellLocationFragment::StaticStruct());
+ 		InvalidateTaskSoldierPlans(MakeArrayView(&Soldier.SoldierId,1));
+ 		RefreshSoldierNavigationState(Soldier.SoldierId);
+ 	}
+@@ -4555,7 +4427,6 @@
+ 	if (!IsAuthorityWorld() || !AuthorityState || !CastId.IsValid()) return false;
+ 	auto* Mass = AuthorityState->MassEntitySubsystem.Get();
+ 	if (!Mass) return false;
+-	auto& Manager = Mass->GetMutableEntityManager();
+ 	// Validate the complete batch before modifying any surviving member.
+ 	if (!CanApplyExternalUnitState(Participants,CastId)) return false;
+ 	if (bRelocate || bLocked)
+@@ -4614,16 +4485,7 @@
+ 		RefreshSoldierNavigationState(Soldier.SoldierId);
+ 		Soldier.CurrentNavigationWaypoint = Soldier.GroundLocation();
+ 		Soldier.LastMovementUpdateSimulationSeconds = AuthorityState->SimulationSeconds;
+-		Manager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity).SetTransform(
+-			FTransform(FRotator(0,Soldier.FacingYawDegrees,0), Soldier.Location, FVector::OneVector));
+-		Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity).bPhased = bPhased;
+-		auto& Order = Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+-		Order.ActiveOrderId = 0; Order.bHasMoveTarget = false; Order.OrderRevision = Soldier.StateRevision;
+-		Manager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+-		if (bPhased && Manager.GetFragmentDataPtr<FMassNavigationObstacleGridCellLocationFragment>(Soldier.Entity))
+-			Manager.RemoveFragmentFromEntity(Soldier.Entity, FMassNavigationObstacleGridCellLocationFragment::StaticStruct());
+-		else if (!bPhased && !Manager.GetFragmentDataPtr<FMassNavigationObstacleGridCellLocationFragment>(Soldier.Entity))
+-			Manager.AddFragmentToEntity(Soldier.Entity, FMassNavigationObstacleGridCellLocationFragment::StaticStruct());
++
+ 	}
+ 
+ 	return true;
+@@ -5108,10 +4970,6 @@
+ 		{
+ 			Soldier.FacingYawDegrees = FMath::FixedTurn(Soldier.FacingYawDegrees,
+ 				(*AimTarget - Soldier.Location).Rotation().Yaw, Config.LowerTurnRate * GuLiMassMovementTuning::GetTurnRateScale() * Dt);
+-			if (auto* Mass = AuthorityState->MassEntitySubsystem.Get())
+-				if (Mass->GetEntityManager().IsEntityValid(Soldier.Entity))
+-					Mass->GetMutableEntityManager().GetFragmentDataChecked<FTransformFragment>(Soldier.Entity)
+-						.SetTransform(FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
+ 		}
+ 		if (Definition->VATDefinition)
+ 			GuLiVATAnimation::StepAim(*Definition->VATDefinition, Soldier.VATPlayback,
+@@ -5466,7 +5324,7 @@
+ 		if (!Handles.IsEmpty()) EntityManager.BatchDestroyEntities(Handles);
+ 		return false;
+ 	}
+-	FSoldierRuntime& Soldier = AuthorityState->Soldiers.AddDefaulted_GetRef();
++	FSoldierRuntime& Soldier = AuthorityState->Soldiers.Add(Handles[0]);
+ 	Soldier.Entity = Handles[0];
+     Soldier.SoldierId=FGuLiSoldierId(InstallingHybridOrdinal?InstallingHybridOrdinal:AllocateNonZero(AuthorityState->NextSoldierId));
+ 	Soldier.Team = Team;
+@@ -5480,19 +5338,10 @@
+ 	EntityManager.GetFragmentDataChecked<FGuLiCommanderStateTreeFragment>(Soldier.Entity).Tree = Definition->StateTreeAsset;
+ 	Soldier.AvoidanceRadiusCentimeters = SpawnRadius;
+ 	AuthorityState->SoldierIndexById.Add(Soldier.SoldierId.Value, AuthorityState->Soldiers.Num() - 1);
+-	EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity).SetTransform(
+-		FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
+-	EntityManager.GetFragmentDataChecked<FAgentRadiusFragment>(Soldier.Entity).Radius = Soldier.AvoidanceRadiusCentimeters;
+ 	FGuLiMassIdentityFragment& Identity = EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Soldier.Entity);
+ 	Identity.SoldierId = Soldier.SoldierId;
+ 	Identity.Team = Team;
+     Identity.MovementLayer=Soldier.MovementLayer;Identity.AltitudeCentimeters=Soldier.AltitudeCentimeters;
+-	FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
+-	Health.Health = Soldier.Health;
+-	Health.bDead = false;
+-	FGuLiMassSoldierStatsFragment& Stats = EntityManager.GetFragmentDataChecked<FGuLiMassSoldierStatsFragment>(Soldier.Entity);
+-	Stats.MaxHealth = Soldier.MaxHealth;
+-	Stats.Defense = Soldier.Defense;
+ 	OutId = Soldier.SoldierId;
+ 	RegisterCombatLedgerTarget(OutId);
+ 	return true;
+@@ -5546,7 +5395,7 @@
+ 	const auto* CasterDefinition = Data ? Data->FindSoldierDefinition(AuthorityState->Soldiers[*CasterIndex].UnitTypeId) : nullptr;
+ 	if (!Unit || !Unit->UsesMass() || !Unit->bSummonOnly || Unit->bConstructionOnly || !CasterDefinition)
+ 	{ Error = TEXT("Summon-only Mass definition is required."); return false; }
+-	// Everything needed from the caster is copied before any Soldiers.Add may reallocate it.
++	// Freeze caster inputs before admitting the summon batch.
+ 	const auto CasterLocation = AuthorityState->Soldiers[*CasterIndex].GroundLocation();
+ 	const float CasterYaw = AuthorityState->Soldiers[*CasterIndex].FacingYawDegrees;
+ 	const FTransform CasterTransform(FRotator(0, CasterYaw, 0), CasterLocation);
+@@ -5759,7 +5608,6 @@
+ 	using namespace GuLiCommanderMassPrivate;
+ 	if (!IsAuthorityWorld() || !AuthorityState || !AuthorityState->MassEntitySubsystem.IsValid()) return;
+ 	InvalidateTaskSoldierPlans(Soldiers);
+-	auto& Manager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+ 	for (auto Id : Soldiers)
+ 	{
+ 		const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value);
+@@ -5774,9 +5622,6 @@
+ 		Soldier.PersonalPathPointIndex = 0; Soldier.Velocity = FVector::ZeroVector; Soldier.bForceMovementUpdate = true;
+ 		++Soldier.StateRevision;
+ 		RefreshSoldierNavigationState(Id);
+-		if (!Manager.IsEntityValid(Soldier.Entity)) continue;
+-		auto& Order = Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+-		Order.ActiveOrderId = 0; Order.bHasMoveTarget = false; Order.OrderRevision = Soldier.StateRevision;
+ 	}
+ 
+ }
+@@ -5810,7 +5655,6 @@
+ {
+ 	check(IsAuthorityWorld());
+ 	InvalidateTaskSoldierPlans(Soldiers);
+-	auto& Manager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+ 	for (auto Id : Soldiers)
+ 	{
+ 		if (!IsAutomaticallyAdvancing(Id)) continue;
+@@ -5819,8 +5663,6 @@
+ 		Soldier.NavigationState = EGuLiSoldierNavigationState::Idle;
+ 		Soldier.Velocity = FVector::ZeroVector; ++Soldier.StateRevision;
+ 		RefreshSoldierNavigationState(Id);
+-		auto& Order = Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+-		Order.ActiveOrderId = 0; Order.bHasMoveTarget = false; Order.OrderRevision = Soldier.StateRevision;
+ 	}
+ }
+ FGuLiMovePlanHandle UGuLiBattleAuthoritySubsystem::BeginAutomaticMovePlanning(EGuLiTeam Team,
+@@ -6124,7 +5966,7 @@
+     TArray<FMassEntityHandle> Handles;
+     const auto Creation=Manager.BatchCreateEntities(Archetype,Shared,1,Handles);
+     if (Handles.Num()!=1) return {};
+-    auto& S=AuthorityState->Soldiers.AddDefaulted_GetRef();
++    auto& S=AuthorityState->Soldiers.Add(Handles[0]);
+     S.Entity=Handles[0];S.SoldierId=Id;S.HybridKey=Record.Key;S.Team=Record.Team;S.UnitTypeId=UnitType;
+     S.bEngineering=true;S.EngineeringCarrier=&Carrier;S.bLocalSimulation=UGuLiHybridActorComponent::HasSimulation(&Carrier);
+     S.Location=Carrier.GetNavAgentLocation();S.FacingYawDegrees=Carrier.GetActorRotation().Yaw;
+@@ -6139,12 +5981,8 @@
+             S.GridReferenceFootprint,S.MovementLayer);
+     }
+     AuthorityState->SoldierIndexById.Add(Id.Value,AuthorityState->Soldiers.Num()-1);
+-    Manager.GetFragmentDataChecked<FTransformFragment>(S.Entity).SetTransform(FTransform(FRotator(0,S.FacingYawDegrees,0),S.Location));
+-    Manager.GetFragmentDataChecked<FAgentRadiusFragment>(S.Entity).Radius=Radius;
+     auto& Identity=Manager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(S.Entity);Identity.SoldierId=Id;Identity.Team=Record.Team;
+     Identity.bEngineering=S.bEngineering;Identity.MovementLayer=S.MovementLayer;Identity.AltitudeCentimeters=S.AltitudeCentimeters;
+-    auto& Health=Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(S.Entity);Health.Health=S.Health;Health.bDead=S.Health<=0;
+-    auto& Stats=Manager.GetFragmentDataChecked<FGuLiMassSoldierStatsFragment>(S.Entity);Stats.MaxHealth=S.MaxHealth;Stats.Defense=0;
+ 
+     return Id;
+ }
+@@ -6192,8 +6030,6 @@
+     S.NavigationState=EGuLiSoldierNavigationState::Normal;S.NavigationFailure=EGuLiSoldierNavigationFailure::None;
+     S.NoProgressSeconds=FMath::Max(0.f,BlockedSeconds);S.ConsecutiveSurfaceFailures=S.TotalSurfaceFailures=0;
+     S.FailureSimulationSeconds=0;S.bForceMovementUpdate=true;++S.StateRevision;
+-    auto& Manager=AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+-    auto& Order=Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(S.Entity);Order.ActiveOrderId=S.ActiveOrderId;Order.OrderRevision=S.StateRevision;Order.bHasMoveTarget=true;Order.FormationTarget=Target;
+ 
+     return true;
+ }
+@@ -6259,13 +6095,5 @@
+                 S.GridReferenceFootprint,S.MovementLayer);
+         S.GridOrderId=0;++S.StateRevision;
+     }
+-    if (auto* Mass=AuthorityState->MassEntitySubsystem.Get())
+-    {
+-        auto& Manager=Mass->GetMutableEntityManager();
+-        if (Manager.IsEntityValid(S.Entity))
+-        {
+-            Manager.GetFragmentDataChecked<FTransformFragment>(S.Entity).SetTransform(FTransform(FRotator(0,S.FacingYawDegrees,0),S.Location));
+-            auto& H=Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(S.Entity);H.Health=S.Health;H.bDead=S.Health<=0;H.bPhased=S.bPhased;
+-        }
+-    }
+-}
++
++}
+--- baseline-GuLiHybridMassAdapter.inl
++++ Source/GuLiStrike/Commander/Mass/GuLiHybridMassAdapter.inl
+@@ -556,9 +556,6 @@
+         S->MechanicalPose.HoverBlendStartMilliseconds=P.HoverBlendStartMilliseconds; S->MechanicalPose.HoverBlendFromWeight=P.HoverBlendFromWeight;
+         S->MechanicalPose.bHoverIdleTarget=P.bHoverIdleTarget; S->MechanicalPose.bInitialized=true;
+         S->VATPlayback.Clip=P.VATClip; S->VATPlayback.Phase=P.VATPhase/65535.f; S->VATPlayback.Rate=P.VATRate/256.f; S->VATPlayback.bInitialized=true;
+-        auto& Manager=Self->AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+-        if (Manager.IsEntityValid(S->Entity))
+-        { Manager.GetFragmentDataChecked<FTransformFragment>(S->Entity).SetTransform(FTransform(FRotator(0,S->FacingYawDegrees,0),S->Location)); Manager.GetFragmentDataChecked<FMassVelocityFragment>(S->Entity).Value=S->Velocity; }
+         if (!Decoded.Acknowledgment.IsEmpty()) Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotionAcknowledgment(Record.Key,Decoded.Acknowledgment);
+         GuLiHybridMass::Present(*Self->GetWorld(),Chunk,uint32(Record.OwnerEpoch),Record.Key.LifeGeneration); ReadModel(); return true;
+     }
+@@ -574,8 +571,6 @@
+         if (R.Health.Health<S->Health)
+         { TGuardValue<bool> Apply(Self->bApplyingHybridLedger,true); Self->ApplyDamage(S->SoldierId,S->Health-R.Health.Health); }
+         S->Health=R.Health.Health; S->MaxHealth=R.Health.MaxHealth;
+-        auto& Manager=Self->AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+-        if (Manager.IsEntityValid(S->Entity)) { auto& Health=Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(S->Entity); Health.Health=S->Health; Health.bDead=S->Health<=0; }
+         ReadModel();
+     }
+     bool Capture(TArray<uint8>& Bytes) const override
+@@ -613,8 +608,8 @@
+         {
+             auto Create=Record; Create.Location=V.Soldier.Location; Create.FacingYawDegrees=V.Soldier.FacingYawDegrees; Create.Health.Health=FMath::Max(1.f,V.Soldier.Health);
+             if (!Prepare(Create)) return false; Record.Location=V.Soldier.Location;
+-            auto* S=Soldier(); const auto Entity=S->Entity; const auto Profiles=S->WeaponProfiles;
+-            *S=MoveTemp(V.Soldier); S->Entity=Entity; S->WeaponProfiles=Profiles; S->bLocalSimulation=bLocal;
++            auto* S=Soldier(); const auto Entity=S->Entity; const auto Profiles=S->WeaponProfiles; const int32 DirectoryIndex=S->DirectoryIndex;
++            *S=MoveTemp(V.Soldier); S->DirectoryIndex=DirectoryIndex; S->Entity=Entity; S->WeaponProfiles=Profiles; S->bLocalSimulation=bLocal;
+             S->MoveIntent=bRestoringQuery?nullptr:V.Intent;S->RouteGoal=S->MoveIntent?S->MoveIntent->Goal:nullptr;
+             const double Offset=Self->AuthorityState->SimulationSeconds-V.CapturedSeconds;
+             for (auto& Weapon:S->Weapons) Weapon.Attack.NextFireSeconds+=Offset;
+--- before-GuLiCommanderMassFragments.h
++++ Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h
+@@ -46,39 +46,6 @@
+ 	bool IsAlive() const;
+ };
+ 
+-/** Authoritative base stats. Resolved skill profiles own damage, range and attack rate. */
+-USTRUCT()
+-struct GULISTRIKE_API FGuLiMassSoldierStatsFragment : public FMassFragment
+-{
+-	GENERATED_BODY()
+-
+-	UPROPERTY(Transient)
+-	float MaxHealth = 100.0f;
+-
+-	UPROPERTY(Transient)
+-	float Defense = 0.0f;
+-
+-};
+-
+-/** The latest accepted server order for one Soldier. */
+-USTRUCT()
+-struct GULISTRIKE_API FGuLiMassOrderFragment : public FMassFragment
+-{
+-	GENERATED_BODY()
+-
+-	UPROPERTY(Transient)
+-	uint32 ActiveOrderId = 0u;
+-
+-	UPROPERTY(Transient)
+-	uint32 OrderRevision = 0u;
+-
+-	UPROPERTY(Transient)
+-	FVector FormationTarget = FVector::ZeroVector;
+-
+-	UPROPERTY(Transient)
+-	bool bHasMoveTarget = false;
+-};
+-
+ /** Snapshot-driven client mirror. It intentionally carries no movement or avoidance tag. */
+ USTRUCT()
+ struct GULISTRIKE_API FGuLiClientSnapshotMirrorMassTag : public FMassTag
+@@ -86,7 +53,7 @@
+ 	GENERATED_BODY()
+ };
+ 
+-/** Marks the exact 500-member server archetype. Client mirrors must never carry this tag. */
++/** Marks the authoritative unit archetype. Client mirrors must never carry this tag. */
+ USTRUCT()
+ struct GULISTRIKE_API FGuLiServerAuthorityMassTag : public FMassTag
+ {
+--- /dev/null
++++ Source/GuLiStrike/Commander/Mass/GuLiCommanderMassRuntime.h
+@@ -0,0 +1,140 @@
++#pragma once
++
++#include "CoreMinimal.h"
++#include "MassEntityTypes.h"
++#include "MassEntityHandle.h"
++#include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
++#include "Commander/Mass/Navigation/GuLiSharedMoveRoutes.h"
++#include "Commander/Mass/Navigation/GuLiNavigationDependency.h"
++#include "Commander/Network/GuLiMoveLatency.h"
++#include "Gameplay/Navigation/GuLiCircleAvoidance.h"
++#include "Gameplay/Navigation/Grid/GuLiGridMotion.h"
++#include "Gameplay/CommanderSkills/GuLiCommanderSkillTypes.h"
++#include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
++#include "Gameplay/Presentation/GuLiVATAnimation.h"
++#include "Gameplay/Skills/GuLiSkillTypes.h"
++#include "GuLiCommanderMassRuntime.generated.h"
++
++struct FGuLiSoldierWeaponRuntime
++{
++	FName SlotId;
++	int32 ProfileIndex = INDEX_NONE;
++	FGuLiSoldierAttackState Attack;
++};
++
++/** Sole authoritative unit state. Navigation and steering update this Mass-owned record directly. */
++USTRUCT()
++struct GULISTRIKE_API FGuLiMassSoldierRuntimeFragment : public FMassFragment
++{
++	GENERATED_BODY()
++	// Local directory slot; rebound after archetype compaction, never serialized.
++	int32 DirectoryIndex = INDEX_NONE;
++	// Entity 是当前 EntityManager 的访问键；SoldierId 不随选择组、移动编队或 Archetype 改变。
++	FMassEntityHandle Entity;
++	FGuLiSoldierId SoldierId;
++        FGuLiHybridObjectKey HybridKey;
++        bool bLocalSimulation=true;
++	EGuLiTeam Team = EGuLiTeam::Unassigned;
++	uint16 UnitTypeId = GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID;
++	float AvoidanceRadiusCentimeters = 150.0f;
++	bool bMovementEvenArchetype = true;
++	FVector Location = FVector::ZeroVector;
++	EGuLiUnitMovementLayer MovementLayer = EGuLiUnitMovementLayer::Ground;
++	float AltitudeCentimeters = 0.f;
++	FVector GroundLocation() const { return GuLiUnitMovement::GroundPosition(Location, AltitudeCentimeters); }
++	FVector WorldFromGround(const FVector& P) const { return GuLiUnitMovement::WorldPosition(P, AltitudeCentimeters); }
++	FVector Velocity = FVector::ZeroVector;
++	double LastMovementUpdateSimulationSeconds = 0.0;
++	float FacingYawDegrees = 0.0f;
++	float FixedSpawnYawDegrees = 0.0f;
++	EGuLiSoldierFacingPolicy FacingPolicy = EGuLiSoldierFacingPolicy::FaceVelocity;
++	FGuLiMechanicalAnimationState MechanicalPose;
++	FGuLiVATPlayback VATPlayback;
++	uint8 NextMechanicalMuzzle = 0;
++	float Health = 100.0f;
++	float MaxHealth = 100.0f;
++	float Defense = 0.0f;
++	TSharedPtr<const TArray<FGuLiResolvedSkillProfile>> WeaponProfiles;
++	TArray<FGuLiSoldierWeaponRuntime> Weapons;
++	bool bAllowAutomaticFire = true;
++	// Unique active skill is independent of automatic weapon slots and advances on SimulationSeconds.
++	FGuLiActiveSkillRuntime ActiveSkill;
++	// StateRevision 标识离散状态变化；ActiveOrderId 指向当前批次，0 表示无活动指令。
++	uint32 StateRevision = 1u;
++	uint32 ActiveOrderId = 0u;
++	uint64 TaskGeneration = 0;
++	TSharedPtr<FGuLiSharedMoveIntent> MoveIntent;
++        FGuLiGridMotion GridMotion;
++        uint32 GridOrderId=0;
++        TWeakObjectPtr<ACharacter> EngineeringCarrier;
++        bool bEngineering=false;
++        uint32 EngineeringDisplacementRevision=0;
++        float ArrivalAcceptance=20.f;
++	TSharedPtr<FGuLiSharedRouteGoal> RouteGoal;
++	TSharedPtr<FGuLiSharedMoveRoute> SharedRoute;
++	FGuLiDirectMoveCheck DirectDock;
++	int32 RouteCursor = 0;
++	bool bHasDockTarget = false;
++	GuLiMoveLatency::FContext MoveTrace;
++	double CommandAcceptedAt = 0, DirectionAppliedAt = 0, FirstDisplacementAt = 0;
++	bool bAutomaticAdvance = false;
++	bool bAttackMoveHolding = false;
++	FNavLocation LastValidNavLocation;
++	FNavLocation FinalDestination;
++	FVector CommandStartLocation = FVector::ZeroVector;
++	FVector CurrentNavigationWaypoint = FVector::ZeroVector;
++	EGuLiSoldierNavigationState NavigationState = EGuLiSoldierNavigationState::Idle;
++	EGuLiSoldierNavigationFailure NavigationFailure = EGuLiSoldierNavigationFailure::None;
++	uint32 LastCompletedOrderId = 0u;
++	uint32 LastFailedOrderId = 0u;
++	uint32 FinalDestinationNavigationGeneration = 0u;
++	TSharedPtr<FGuLiNavigationDependency> ActiveNavigation;
++	bool bNavigationBudgetPending = false;
++	float NoProgressSeconds = 0.0f;
++	double FailureSimulationSeconds = 0.0;
++	float BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
++	int32 LastProgressPathPointIndex = INDEX_NONE;
++	int32 ConsecutiveSurfaceFailures = 0;
++	int32 TotalSurfaceFailures = 0;
++	TArray<FVector> PersonalPathPoints;
++	int32 PersonalPathPointIndex = 0;
++	int32 PersonalPathRetries = 0;
++	double NextPersonalPathQuerySeconds = 0;
++	bool bHasFinalDestination = false;
++	bool bForceMovementUpdate = false;
++	FVector LastCapturedPoseLocation = FVector::ZeroVector;
++	uint32 LastCapturedPoseFrameSequence = 0u;
++	double LastCapturedPoseSimulationSeconds = 0.0;
++	float LastCapturedMovementSpeed = 0.0f;
++	// The wreck window retains the identity; expiration retires both entity and replicated record.
++	double DeathSimulationSeconds = -1.0;
++	bool bWreckExpired = false;
++	FGuid ExternalControlToken;
++	bool bPhased = false;
++	bool bExternalActionsLocked = false;
++	GuLiCircleAvoidance::FState CircleState;
++        FGuid MovementCommandIdentity; // Retained on arrival; not a destination or active-order number.
++        FVector YieldDirection=FVector::ZeroVector;
++        float YieldRemainingSeconds=0;
++        int32 GridReferenceFootprint=1;
++	uint32 DisplacementFrameFloor = 0;
++	FVector DisplacementLocation = FVector::ZeroVector;
++	double DisplacementSimulationTime = 0;
++	double ExternalLockSimulationTime = 0;
++	bool CanAct() const { return IsAlive() && !bExternalActionsLocked; }
++        bool CanSimulate() const { return CanAct() && (!HybridKey.IsValid() || bLocalSimulation); }
++	bool IsPresent() const { return IsAlive() && !bPhased; }
++
++	bool IsAlive() const
++	{
++		return FMath::IsFinite(Health) && Health > 0.0f;
++	}
++};
++
++// Mass relocates fragments without destroying the source, as the former TArray did.
++// Keep the existing owning arrays and shared route references in this record.
++template<>
++struct TMassFragmentTraits<FGuLiMassSoldierRuntimeFragment>
++{
++	enum { AuthorAcceptsItsNotTriviallyCopyable = true };
++};

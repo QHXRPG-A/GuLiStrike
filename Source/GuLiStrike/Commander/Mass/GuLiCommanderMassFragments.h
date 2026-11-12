@@ -46,52 +46,6 @@ struct GULISTRIKE_API FGuLiMassHealthFragment : public FMassFragment
 	bool IsAlive() const;
 };
 
-/** Authoritative base stats. Resolved skill profiles own damage, range and attack rate. */
-USTRUCT()
-struct GULISTRIKE_API FGuLiMassSoldierStatsFragment : public FMassFragment
-{
-	GENERATED_BODY()
-
-	UPROPERTY(Transient)
-	float MaxHealth = 100.0f;
-
-	UPROPERTY(Transient)
-	float Defense = 0.0f;
-
-};
-
-/** The latest accepted server order for one Soldier. */
-USTRUCT()
-struct GULISTRIKE_API FGuLiMassOrderFragment : public FMassFragment
-{
-	GENERATED_BODY()
-
-	UPROPERTY(Transient)
-	uint32 ActiveOrderId = 0u;
-
-	UPROPERTY(Transient)
-	uint32 OrderRevision = 0u;
-
-	UPROPERTY(Transient)
-	FVector FormationTarget = FVector::ZeroVector;
-
-	UPROPERTY(Transient)
-	bool bHasMoveTarget = false;
-};
-
-/** Elastic formation slot and its current server-computed world target. */
-USTRUCT()
-struct GULISTRIKE_API FGuLiMassSlotTargetFragment : public FMassFragment
-{
-	GENERATED_BODY()
-
-	UPROPERTY(Transient)
-	FVector LocalOffset = FVector::ZeroVector;
-
-	UPROPERTY(Transient)
-	FVector WorldTarget = FVector::ZeroVector;
-};
-
 /** Snapshot-driven client mirror. It intentionally carries no movement or avoidance tag. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiClientSnapshotMirrorMassTag : public FMassTag
@@ -99,7 +53,7 @@ struct GULISTRIKE_API FGuLiClientSnapshotMirrorMassTag : public FMassTag
 	GENERATED_BODY()
 };
 
-/** Marks the exact 500-member server archetype. Client mirrors must never carry this tag. */
+/** Marks the authoritative unit archetype. Client mirrors must never carry this tag. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiServerAuthorityMassTag : public FMassTag
 {

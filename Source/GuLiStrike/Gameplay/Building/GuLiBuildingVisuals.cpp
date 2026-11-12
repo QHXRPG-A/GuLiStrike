@@ -65,7 +65,7 @@ bool GuLiBuildingVisuals::CreatePreviewMeshes(AActor& Owner, USceneComponent& Pa
 	const FGuLiBuildingDefinition& Definition, UMaterialInterface* Material,
 	TArray<TObjectPtr<UMeshComponent>>& OutMeshes)
 {
-	if (Definition.Category != EGuLiBuildingCategory::Factory)
+	if (Definition.Category != EGuLiBuildingCategory::PioneerBarracks)
 	{
 		auto* Template = NewObject<UStaticMeshComponent>(&Owner, NAME_None, RF_Transient);
 		Template->SetStaticMesh(Definition.Mesh);

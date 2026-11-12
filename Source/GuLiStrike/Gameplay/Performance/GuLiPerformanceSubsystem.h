@@ -41,6 +41,7 @@ public:
     UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) bool StartHotspotWindow();
     /** Frozen spatial preparation and native 30-second command schedule, only in disposable PIE. */
     UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareMovementCapture(const FString& RecipeJson);
+    UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) FString PrepareMovementScaleCapture(int32 MovingUnits, bool StationaryWall);
     UFUNCTION(BlueprintCallable, Category="Performance", meta=(DevelopmentOnly)) bool StartMovementCapture();
     UFUNCTION(BlueprintPure, Category="Performance", meta=(DevelopmentOnly)) FString GetMovementCaptureJson() const;
     UFUNCTION(BlueprintPure, Category="Performance", meta=(DevelopmentOnly)) FString GetMovementSceneJson() const;

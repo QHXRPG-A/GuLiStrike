@@ -13,7 +13,7 @@
 class UChildActorComponent;
 class UGuLiResourceEconomyConfig;
 class UGuLiResourceWorldSubsystem;
-class AGuLiResourceFactoryActor;
+class AGuLiShieldGeneratorActor;
 class UGuLiMiningPresentationComponent;
 class UGuLiEngineeringPoseComponent;
 struct FGuLiSoldierDefinition;
@@ -49,7 +49,7 @@ public:
 		FGuLiControllableActorId InStableActorId,
 		const FGuLiSoldierDefinition& Unit,
 		const UGuLiResourceEconomyConfig& Config,
-		AGuLiResourceFactoryActor& InFactory);
+		AGuLiShieldGeneratorActor& InFactory);
 	bool FindReachableMiningApproach(uint32 NodeId, FVector& OutApproach, float& OutPathLength) const;
     /** Read the current validated reservation, without issuing or changing a lease. */
     bool GetReservedMiningPose(FTransform& OutPose) const;
@@ -129,7 +129,7 @@ private:
 	mutable TSharedPtr<const FMiningVisibilityCache> MiningVisibilityCache;
 	/** Restore creates the pawn before the Link stage binds its saved factory. */
 	void InitializeVehicleState(EGuLiTeam InTeam,FGuLiControllableActorId InStableActorId,
-		const FGuLiSoldierDefinition& Unit,const UGuLiResourceEconomyConfig& Config,AGuLiResourceFactoryActor* InFactory);
+		const FGuLiSoldierDefinition& Unit,const UGuLiResourceEconomyConfig& Config,AGuLiShieldGeneratorActor* InFactory);
 	bool PrepareHybridMiningStep();
 	void AdvanceHybridMining(float DeltaSeconds);
 	UFUNCTION() void ApplyHybridResourceResult(const FGuLiHybridTransactionResult& Result);
@@ -180,7 +180,7 @@ private:
 	uint32 ActivePlayerRequestId = 0u;
 
 	UPROPERTY()
-	TObjectPtr<AGuLiResourceFactoryActor> Factory;
+	TObjectPtr<AGuLiShieldGeneratorActor> Factory;
 
 	float SpeedCentimetersPerSecond = 900.0f;
 	float MiningRatePerSecond = 1.0f;
@@ -194,10 +194,11 @@ private:
 	FVector PlayerMoveTarget = FVector::ZeroVector;
 	bool bManualReturnOrder = false;
 	FVector MiningTarget = FVector::ZeroVector;
-	// Task-local route candidates only; factories and unload points have no occupancy state.
-	TArray<TWeakObjectPtr<AGuLiResourceFactoryActor>> ReturnFactories;
-	int32 NextReturnFactory = 0;
+	// Task-local shield destinations; perimeter delivery has no occupancy state.
+	TArray<TWeakObjectPtr<AGuLiShieldGeneratorActor>> ReturnDropoffs;
+	int32 NextReturnDropoff = 0;
 	int32 UnloadPointAttempts = 0;
+	TArray<FVector> GetDeliveryPoints() const;
 	FBox TravelBounds = FBox(ForceInit);
 	uint32 TargetNodeId = 0;
 	uint32 LastCompatibilityRequestId = 0;

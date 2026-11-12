@@ -6,7 +6,7 @@
 #include "Gameplay/Units/Private/GuLiVehiclePoseStream.h"
 #include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiShieldGeneratorActor.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"
@@ -27,7 +27,7 @@
 
 namespace GuLiHybridMiner
 {
-constexpr uint32 Version=5;
+constexpr uint32 Version=6;
 struct FPrivate
 {
     FGuLiHybridObjectKey Key,Factory;
@@ -67,7 +67,7 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
     if (!V.Key.IsValid() || V.Key.Kind!=EGuLiHybridObjectKind::Miner || V.Type<=0 || V.Mode>=MOVE_MAX
         || (V.Factory.IsValid() && V.Factory.Kind!=EGuLiHybridObjectKind::Building)
         || V.MiningAccumulator<0 || V.DockingAccumulator<0 || !V.TaskVersion || V.NextFactory<0 || V.NextFactory>V.Returns.Num()
-        || V.UnloadAttempts<0 || V.UnloadAttempts>4 || V.Travel.IsEmpty()
+        || V.UnloadAttempts<0 || V.Travel.IsEmpty()
         || (V.Slot.Token.IsValid() && (!V.Slot.Cluster || !V.Slot.Task || V.Slot.Sample>=8 || V.Slot.Profile!=V.Type))
         || (V.PendingEvent.IsValid() ? V.PendingOperation<1 || V.PendingOperation>2 : V.PendingOperation!=0)) A.Reject();
 }
@@ -104,13 +104,13 @@ class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter, publi
         // Snapshot restoration materializes every object before linking saved
         // references. A miner may have no factory, or its factory's lifecycle
         // may not yet be restored; never choose a substitute during this stage.
-        auto* Factory=bRestoring?nullptr:Resources->FindNearestFriendlyFactory(Record.Team,Record.Location);
+        auto* Factory=bRestoring?nullptr:Resources->FindNearestFriendlyDropoff(Record.Team,Record.Location);
         if (!bRestoring && !Factory)
         {
             auto* H=W->GetSubsystem<UGuLiHybridWorldSubsystem>();
             for (const auto& O:Owner->GetManifest().Objects) if (O.Team==Record.Team
-                && Owner->GetManifest().Strings.FindRef(TEXT("adapter/definition/")+O.Definition)==TEXT("ResourceFactory"))
-                if (auto* Candidate=Cast<AGuLiResourceFactoryActor>(H->FindBoundActor(O.Key))) {Factory=Candidate; break;}
+                && Owner->GetManifest().Strings.FindRef(TEXT("adapter/definition/")+O.Definition)==TEXT("PlacedBuilding"))
+                if (auto* Candidate=Cast<AGuLiShieldGeneratorActor>(H->FindBoundActor(O.Key))) {Factory=Candidate; break;}
         }
         if (!bRestoring && !Factory) return Failed(TEXT("factory dependency")); // The directory is retried after factory preparation.
         const auto* Health=Owner->GetManifest().Numbers.Find(FString::Printf(TEXT("miner_adapter/%u/health"),D->UnitTypeId));
@@ -142,10 +142,8 @@ class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter, publi
             P->SetActorLocationAndRotation(V.Position,V.Rotation,false,nullptr,ETeleportType::TeleportPhysics);
             P->GetCharacterMovement()->SetMovementMode(EMovementMode(V.Mode),V.Custom); P->GetCharacterMovement()->Velocity=V.Velocity;
             auto* H=World()->GetSubsystem<UGuLiHybridWorldSubsystem>();
-            if (IsValid(P->Factory)) P->Factory->UnregisterMiningVehicle(*P);
-            P->Factory=V.Factory.IsValid()?Cast<AGuLiResourceFactoryActor>(H->FindBoundActor(V.Factory)):nullptr;
+            P->Factory=V.Factory.IsValid()?Cast<AGuLiShieldGeneratorActor>(H->FindBoundActor(V.Factory)):nullptr;
             if (V.Factory.IsValid() && !P->Factory) return false;
-            if (P->Factory) P->Factory->RegisterMiningVehicle(*P);
             P->ControlMode=V.Control; P->TaskState=V.Task; P->BehaviorResult=V.Result;
             P->LastTransitResult=V.TransitResult; P->TargetClusterId=V.Cluster; P->GraceEndServerTime=V.GraceAt;
             P->MiningAccumulator=V.MiningAccumulator; P->DockingAccumulator=V.DockingAccumulator; P->NextAutoRetryServerTime=V.RetryAt;
@@ -153,12 +151,12 @@ class FGuLiHybridMinerAdapter final : public IGuLiHybridSimulationAdapter, publi
             P->bManualReturnOrder=V.bManualReturn; P->bTaskManaged=V.bManaged; P->bManagedTaskComplete=V.bComplete; P->bManagedTaskFailed=V.bFailed;
             P->bWaitingForMiningSlot=V.bWaiting; P->PlayerMoveTarget=V.Move; P->MiningTarget=V.Aim; P->BehaviorApproach=V.Approach;
             P->MiningSlot=V.Slot; P->MiningSlot.Slot=INDEX_NONE;
-            P->ReturnFactories.Reset(); for (const auto& K:V.Returns)
+            P->ReturnDropoffs.Reset(); for (const auto& K:V.Returns)
             {
-                auto* F=K.IsValid()?Cast<AGuLiResourceFactoryActor>(H->FindBoundActor(K)):nullptr;
-                if (K.IsValid() && !F) return false; P->ReturnFactories.Add(F);
+                auto* F=K.IsValid()?Cast<AGuLiShieldGeneratorActor>(H->FindBoundActor(K)):nullptr;
+                if (K.IsValid() && !F) return false; P->ReturnDropoffs.Add(F);
             }
-            P->NextReturnFactory=V.NextFactory; P->UnloadPointAttempts=V.UnloadAttempts;
+            P->NextReturnDropoff=V.NextFactory; P->UnloadPointAttempts=V.UnloadAttempts;
             P->PendingResourceEvent=V.PendingEvent; P->PendingResourceOperation=V.PendingOperation; P->PendingResourceAt=V.PendingAt;
             P->NextExtractionTick=V.NextExtraction; P->LastResourceLedger=V.ResourceLedger;
             if (!P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->RestoreHybridTravel(V.Travel,false)) return false;
@@ -306,7 +304,7 @@ public:
         V.ActiveRequest=P->ActivePlayerRequestId;V.CompatibilityRequest=P->LastCompatibilityRequestId;V.Node=P->TargetNodeId;V.TaskVersion=P->MiningTaskVersion;
         V.bManualReturn=P->bManualReturnOrder;V.bManaged=P->bTaskManaged;V.bComplete=P->bManagedTaskComplete;V.bFailed=P->bManagedTaskFailed;V.bWaiting=P->bWaitingForMiningSlot;
         V.Move=P->PlayerMoveTarget;V.Aim=P->MiningTarget;V.Approach=P->BehaviorApproach;V.Slot=P->MiningSlot;
-        for (const auto& F:P->ReturnFactories) V.Returns.Add(Key(F.Get()));V.NextFactory=P->NextReturnFactory;V.UnloadAttempts=P->UnloadPointAttempts;
+        for (const auto& F:P->ReturnDropoffs) V.Returns.Add(Key(F.Get()));V.NextFactory=P->NextReturnDropoff;V.UnloadAttempts=P->UnloadPointAttempts;
         V.PendingEvent=P->PendingResourceEvent;V.PendingOperation=P->PendingResourceOperation;V.PendingAt=P->PendingResourceAt;V.NextExtraction=P->NextExtractionTick;V.ResourceLedger=P->LastResourceLedger;
         if (!P->FindComponentByClass<UGuLiEngineeringTravelComponent>()->CaptureHybridTravel(V.Travel)) return false;
         FGuLiHybridStateArchive A;GuLiHybridMiner::Private(A,V);return A.Finish(Bytes);
@@ -321,7 +319,7 @@ public:
         {
             FGuLiHybridObjectState O;
             return !K.IsValid() || (H->GetObject(K,O) && O.Team==Record.Team && O.Key.Kind==EGuLiHybridObjectKind::Building
-                && Owner->GetManifest().Strings.FindRef(TEXT("adapter/definition/")+O.Definition.ToString())==TEXT("ResourceFactory"));
+                && Cast<AGuLiShieldGeneratorActor>(H->FindBoundActor(K)));
         };
         if (!Reference(V.Factory)) return false;for (const auto& K:V.Returns) if (!Reference(K)) return false;return true;
     }

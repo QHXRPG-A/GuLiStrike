@@ -1,7 +1,7 @@
 #include "Development/GuLiHybridReviewSubsystem.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiShieldGeneratorActor.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
@@ -56,7 +56,7 @@ void UGuLiHybridReviewSubsystem::AppendResourceEvidence(const TSharedRef<FJsonOb
         V->SetNumberField(TEXT("task_version"),State?double(State->Version):0);V->SetStringField(TEXT("task_error"),State?State->Error:TEXT(""));
         Miners.Add(MakeShared<FJsonValueObject>(V));
     }
-    for (TActorIterator<AGuLiResourceFactoryActor> It(GetWorld());It;++It)
+    for (TActorIterator<AGuLiShieldGeneratorActor> It(GetWorld());It;++It)
     {
         auto V=MakeShared<FJsonObject>();const auto* B=UGuLiHybridActorComponent::Find(*It);
         const auto Key=Resources->GetSettlementKey(*It);

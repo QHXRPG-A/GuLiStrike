@@ -4,7 +4,7 @@
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
 #include "Gameplay/Building/GuLiGroundAccessRampComponent.h"
 #include "Gameplay/Building/GuLiGiftBuildingClearance.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiHybridBuildingAdapter.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Engine/World.h"
@@ -44,7 +44,7 @@ bool GuLiBuildings::ValidateGroundPlacement(UWorld& World, const FGuLiBuildingDe
             {OutReason=TEXT("Grid footprint exceeds building slope or height tolerance.");return false;}
         }
         FTransform Model=GroundTransform;
-        Model.SetScale3D(Definition.Category==EGuLiBuildingCategory::Factory?FVector(Definition.PresentationScale):Definition.MeshScale);
+        Model.SetScale3D(Definition.Category==EGuLiBuildingCategory::PioneerBarracks?FVector(Definition.PresentationScale):Definition.MeshScale);
         return !PresentationClass || UGuLiGroundAccessRampComponent::ValidatePresentationGround(World,PresentationClass,Model,Query,OutReason);
     }
 	// Cover the interior as well as corners; large prefabs must not straddle a hole
@@ -83,7 +83,7 @@ bool GuLiBuildings::ValidateGroundPlacement(UWorld& World, const FGuLiBuildingDe
 		}
 	}
 	FTransform ModelTransform = GroundTransform;
-	ModelTransform.SetScale3D(Definition.Category == EGuLiBuildingCategory::Factory
+	ModelTransform.SetScale3D(Definition.Category == EGuLiBuildingCategory::PioneerBarracks
 		? FVector(Definition.PresentationScale) : Definition.MeshScale);
 	return !PresentationClass || UGuLiGroundAccessRampComponent::ValidatePresentationGround(
 		World, PresentationClass, ModelTransform, Query, OutReason);
@@ -160,7 +160,7 @@ AActor* GuLiBuildings::Spawn(UWorld& World, int32 DefinitionId, EGuLiTeam Team,
 	const auto* Resources = World.GetSubsystem<UGuLiResourceWorldSubsystem>();
 	const auto* Config = Resources ? Resources->GetEconomyConfig() : nullptr;
 	UClass* PresentationClass = nullptr;
-	if (Definition.Category == EGuLiBuildingCategory::Factory)
+	if (Definition.Category == EGuLiBuildingCategory::PioneerBarracks)
 	{
 		PresentationClass = Definition.PresentationClass.Get();
 		if (!PresentationClass)
@@ -189,23 +189,10 @@ AActor* GuLiBuildings::Spawn(UWorld& World, int32 DefinitionId, EGuLiTeam Team,
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	TUniquePtr<FGuLiGiftBuildingClearance> GiftClearance;
 	if (Origin == EGuLiBuildingOrigin::Gift) GiftClearance = MakeUnique<FGuLiGiftBuildingClearance>(World);
-	if (Definition.Category == EGuLiBuildingCategory::Factory)
-	{
-		auto* Factory = World.SpawnActor<AGuLiResourceFactoryActor>(AGuLiResourceFactoryActor::StaticClass(), GroundTransform, Params);
-		if (!Factory) return nullptr;
-		Factory->InitializeFactory(Team, *Config, GroundTransform.TransformPosition(FVector(Config->FactoryDockOffsetCentimeters,0,0)),
-			World.GetSubsystem<UGuLiResourceWorldSubsystem>()->AllocateControllableActorId(), TerritoryIndex, Origin, bCompleted, Builder, DefinitionId);
-		if (GiftClearance && !GiftClearance->Commit(*Factory, SupportingActor, GroundFailure))
-		{
-			if (OutFailure) *OutFailure = MoveTemp(GroundFailure);
-			return nullptr;
-		}
-		return Factory;
-	}
 	FTransform Transform = GroundTransform;
 	Params.bDeferConstruction = true;
 	Transform.AddToTranslation(FVector(0,0,Definition.CollisionExtent.Z));
-	auto* Building = World.SpawnActor<AGuLiPlacedBuilding>(AGuLiPlacedBuilding::StaticClass(), Transform, Params);
+	auto* Building = World.SpawnActor<AGuLiPlacedBuilding>(GetGuLiHybridBuildingClass(Definition), Transform, Params);
 	if (!Building) return nullptr;
 	Building->InitializeFromDefinition(DefinitionId, Team, Builder, TerritoryIndex, Origin, bCompleted);
 	Building->FinishSpawning(Transform);

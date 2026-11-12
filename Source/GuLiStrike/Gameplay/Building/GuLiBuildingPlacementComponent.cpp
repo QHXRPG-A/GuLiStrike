@@ -757,9 +757,9 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateSpat
 	{
 		return EGuLiBuildingPlacementRejectReason::Blocked;
 	}
-	UClass* Presentation = Definition.Category == EGuLiBuildingCategory::Factory
+	UClass* Presentation = Definition.Category == EGuLiBuildingCategory::PioneerBarracks
 		? GuLiBuildingVisuals::ResolveFactoryPresentation(this) : nullptr;
-	if (Definition.Category == EGuLiBuildingCategory::Factory && !Presentation)
+	if (Definition.Category == EGuLiBuildingCategory::PioneerBarracks && !Presentation)
 		return EGuLiBuildingPlacementRejectReason::AssetUnavailable;
 	FString GroundReason;
 	if (!GuLiBuildings::ValidateGroundPlacement(*GetWorld(), Definition,
@@ -799,8 +799,8 @@ bool UGuLiBuildingPlacementComponent::ValidateAdmittedPlacement(UWorld& World,co
     {++WorldCount;if (Building->GetState().BuilderGuid==OriginalBuilder) ++BuilderCount;}
     if (GuLiBuildingPlacementPolicy::ValidateCapacity(BuilderCount,WorldCount)!=EGuLiBuildingPlacementRejectReason::None)
         return Reject(FString::Printf(TEXT("capacity builder=%d world=%d"),BuilderCount,WorldCount));
-    auto* Presentation=Definition.Category==EGuLiBuildingCategory::Factory?GuLiBuildingVisuals::ResolveFactoryPresentation(&World):nullptr;
-    if (Definition.Category==EGuLiBuildingCategory::Factory && !Presentation) return Reject(TEXT("presentation-unavailable"));
+    auto* Presentation=Definition.Category==EGuLiBuildingCategory::PioneerBarracks?GuLiBuildingVisuals::ResolveFactoryPresentation(&World):nullptr;
+    if (Definition.Category==EGuLiBuildingCategory::PioneerBarracks && !Presentation) return Reject(TEXT("presentation-unavailable"));
     FString Reason;
     // Range and line of sight were frozen and checked by the accepted input.
     // Recheck the world site without depending on that carrier still existing.

@@ -88,21 +88,25 @@ int32 UGuLiResourceWorldSubsystem::FindTerritoryIndex(const FVector& Location) c
 	}
 	return INDEX_NONE;
 }
-void UGuLiResourceWorldSubsystem::RegisterFactory(AGuLiResourceFactoryActor& Factory)
+void UGuLiResourceWorldSubsystem::RegisterDropoff(AGuLiShieldGeneratorActor& Factory)
 {
-	Factories.AddUnique(&Factory);
+	Dropoffs.AddUnique(&Factory);
 }
-AGuLiResourceFactoryActor* UGuLiResourceWorldSubsystem::FindNearestFriendlyFactory(EGuLiTeam Team, const FVector& Location) const
+void UGuLiResourceWorldSubsystem::UnregisterDropoff(AGuLiShieldGeneratorActor& Factory)
 {
-	TArray<AGuLiResourceFactoryActor*> Candidates;
-	QueryFriendlyFactories(Team, Location, Candidates);
+	Dropoffs.RemoveSwap(&Factory);
+}
+AGuLiShieldGeneratorActor* UGuLiResourceWorldSubsystem::FindNearestFriendlyDropoff(EGuLiTeam Team, const FVector& Location) const
+{
+	TArray<AGuLiShieldGeneratorActor*> Candidates;
+	QueryFriendlyDropoffs(Team, Location, Candidates);
 	return Candidates.IsEmpty() ? nullptr : Candidates[0];
 }
-void UGuLiResourceWorldSubsystem::QueryFriendlyFactories(EGuLiTeam Team, const FVector& Location,
-	TArray<AGuLiResourceFactoryActor*>& Out) const
+void UGuLiResourceWorldSubsystem::QueryFriendlyDropoffs(EGuLiTeam Team, const FVector& Location,
+	TArray<AGuLiShieldGeneratorActor*>& Out) const
 {
 	Out.Reset();
-	for (const auto& Factory : Factories)
+	for (const auto& Factory : Dropoffs)
 		if (IsValid(Factory) && !Factory->IsActorBeingDestroyed() && Factory->GetTeam() == Team
 			&& Factory->FindComponentByClass<UGuLiBuildingLifecycleComponent>()->IsCompleted())
 			Out.Add(Factory);
@@ -157,7 +161,7 @@ void UGuLiResourceWorldSubsystem::Deinitialize()
 	ResetPendingOreRemovals();
 	if (auto* Registry=GetWorld()->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();Registry && MapDefinition)
         for (const auto& Cluster:MapDefinition->Clusters) Registry->RemoveCircleGroup(GuLiCircleAvoidance::OreNamespace|Cluster.ClusterId);
-	Factories.Reset();
+	Dropoffs.Reset();
 	Outposts.Reset();
 	ClusterObstacles.Reset();
 	MiningVisibilityParams.Reset();

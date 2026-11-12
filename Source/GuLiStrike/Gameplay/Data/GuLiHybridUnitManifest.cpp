@@ -20,7 +20,7 @@ bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
     TArray<FGuLiSoldierDefinition> Units;FGuLiAvoidanceCatalog Avoidance;
     if (!UGuLiUnitDataSubsystem::ResolveAuthoredDefinitions(Units,Error,&Avoidance)) return false;
     M.Strings.Add(TEXT("movement/circles/configuration"),Avoidance.Fingerprint);
-    M.Strings.Add(TEXT("movement/circles/algorithm"),TEXT("demo-active-steering-yield-relay-v5"));
+    M.Strings.Add(TEXT("movement/circles/algorithm"),TEXT("demo-active-steering-yield-relay-v9"));
     const auto* PopulationLimit=IConsoleManager::Get().FindConsoleVariable(TEXT("guli.stronghold.TeamUnitCap"));
     if (!PopulationLimit || PopulationLimit->GetInt()<1 || PopulationLimit->GetInt()>100000) {Error=TEXT("Invalid authored population limit");return false;}
     M.Numbers.Add(TEXT("population/group/army/limit"),PopulationLimit->GetInt());

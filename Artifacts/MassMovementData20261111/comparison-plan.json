@@ -1,0 +1,13 @@
+{
+  "baseline_manifest": "Artifacts/CircularAvoidance20261110/mass-data-before-suite.json",
+  "candidate_manifest": "Artifacts/CircularAvoidance20261110/mass-data-after-suite.json",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "repeats": 3,
+  "seconds_per_window": 30,
+  "runtime_load": "632-unit complete opening; same existing eight recipes",
+  "scope": "data storage and access only; solver and yield function bodies unchanged",
+  "preserve_order": "ascending SoldierId, immediate authoritative and circle position updates; Mass mirrors published after serial loop",
+  "baseline_loading": "Editor PID 38764 remains on the pre-change DLL throughout all baseline windows; source edits are not compiled or loaded until capture completes",
+  "build_target": "GuLiStrikeEditor Win64 Development",
+  "engine": "D:/UnrealEngine-5.7"
+}

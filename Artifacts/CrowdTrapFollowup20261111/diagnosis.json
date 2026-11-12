@@ -1,0 +1,48 @@
+{
+  "algorithm_before": "demo-active-steering-yield-relay-v7",
+  "frames": 58,
+  "observed_seconds": 6.000000089406967,
+  "units": [
+    {
+      "id": 245,
+      "unit_type": 1,
+      "command": 3,
+      "no_progress_before": 134.2989959716797,
+      "max_displacement_cm": 0.0,
+      "yield_max_seconds": 0
+    },
+    {
+      "id": 16777231,
+      "unit_type": 5,
+      "command": 0,
+      "no_progress_before": 0,
+      "max_displacement_cm": 0.0,
+      "yield_max_seconds": 0.5
+    },
+    {
+      "id": 16777240,
+      "unit_type": 5,
+      "command": 0,
+      "no_progress_before": 0,
+      "max_displacement_cm": 0.0,
+      "yield_max_seconds": 0
+    }
+  ],
+  "reconstructed_contacts": {
+    "source": "Native ray/circle and slide formula evaluated on captured XY, speed and radius; no new runtime queries.",
+    "mover": 245,
+    "direct_blocker": 16777231,
+    "original_forward": [
+      -0.7731471134410159,
+      -0.6342267267924184
+    ],
+    "yield_direction": [
+      0.6342267267924184,
+      -0.7731471134410159
+    ],
+    "yield_direct_contact": 245,
+    "yield_direct_fraction": 0.006951196870408725,
+    "yield_slide_contact": 16777240,
+    "yield_slide_fraction": 0.008236652884138404
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "scope": "Manifest export/readback only; no gameplay pass",
+  "loads": [
+    {
+      "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
+      "sha256": "e8ee82df02d9e6c6b32b17a2ee8f3e318481bc243af7a42f8d5316bc0140884b",
+      "config_hash": "c81d0303266e1b07a828030b413742c884617ed8678274fc0086be2eaec0b8a9",
+      "map_hash": "b6eef6ce258dbaa5849d354bb892b5b1b1a34142c5c9966faa84cde54ae13e1f",
+      "objects": 292,
+      "population": 200,
+      "acceptance": true,
+      "supply_rules": 22
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+      "sha256": "26dfb8b2584251ca710888509454366814e516634d018b9d7401ea530fc181b2",
+      "config_hash": "d6113018114d3b3d1e7cdb122c5fe94d6f2aac82befd474a97c2500d1a65fda4",
+      "map_hash": "a0f3eaa22d300cf349279305296af87c8147e209b31a916252345f21b2b72edc",
+      "objects": 292,
+      "population": 200,
+      "acceptance": false,
+      "supply_rules": 0
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
+      "sha256": "364250b06d2219728e1c865c5d203617bba26ec8eb1d0e0253bc5fe76c9c0908",
+      "config_hash": "a461d96365cf3ed10af39017858f8061cdf65cff4a9439f314cbca689766d4c8",
+      "map_hash": "bda2a64cad8bd549fd4ca4ce458900a8c01f73c9ac6415b0ee13dea6bc467b6c",
+      "objects": 692,
+      "population": 600,
+      "acceptance": true,
+      "supply_rules": 22
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+      "sha256": "ee121b993232c2b00f677ddfbf051db0924beafa50bce48c5de893372a193d92",
+      "config_hash": "7f2f0a24c114fda32b813b29cd5bd4d534741c10cef1bd1c894daef223ef17f9",
+      "map_hash": "44e7819a79356ecdfa78f2e1f23a46b4fb2e4154e90457111c5304a7c0625040",
+      "objects": 692,
+      "population": 600,
+      "acceptance": false,
+      "supply_rules": 0
+    }
+  ]
+}

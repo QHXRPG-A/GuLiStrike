@@ -28,7 +28,6 @@ status_note: 2026-09-22经用户明确授权完成源码Editor构建并加载，
 
 继续在现有StateTree机制上拆分选择目标、等位、预占、等待路径、移动、作业及失败恢复；矿位归资源系统、建造位归建筑系统，路径服务只提供计算结果。矿车/建造车共用预算查询和工作路线，保留任务版本与序列化枚举编号，不新增平行业务状态机。
 
-本次返厂简化取消入口距离门槛、厂内进出路线和停靠预约；矿车直接走向厂内四个无占用卸货点，失败换点、再换厂，上传后完成一轮。工程车相互忽略物理碰撞及Crowd避让，完工厂代理碰撞正确关闭，包括赠品清场恢复场景。具体实现与构建证据见[本次归档](../Archive/9月归档清单.md#arc-20260922-004)，当前行为与参数见[资源经济](../Gameplay/资源经济.md)。
 
 源码版`D:/UnrealEngine-5.7`的`GuLiStrikeEditor Win64 Development`最终构建退出0，引擎与项目BuildId一致，新启动编辑器已加载项目模块。三棵原资产编译保存后分别为Mass18/Miner57/Builder18个状态，Soldiers 1/2/3/4引用保持；不再生成EnterFactory/ExitFactory，保留运输安全退出分支。树结果（历史附件已清理；原路径：`../../outputs/engineering-navigation/factory-unloading-20260922/archive-tree-assets.json`）。
 
@@ -83,7 +82,6 @@ Map：`/Game/Maps/LVL_CommanderMassPrototype`，已保存并读取相关实体�
 - Actor组件禁用自动Tick，由原10Hz任务入口手动驱动。Mass使用独立fragment和原生实例存储，死亡/移除释放句柄，调速迁移复制共同fragment；有安全退出要求的Actor注销先完成退出再释放树。
 - 树观察业务阶段与结果，输出带任务版本的请求；查询结束后统一提交，重复进入同轮节点不会重复下令。旧Advance循环、矿车TickAutomatic、Pawn待执行命令分支已删除。
 - 旧Actor命令入口继续做权限、序号和回执处理，动作改为进入统一任务队列。矿车兼容请求序号与树内部执行编号分开保存，避免内部推进消耗外部序号。
-- 采矿Manager的节点分配、采集累计与资源结算、厂内MoveFactoryStep、建造PrepareBuilding与AddConstructionWork、Mass移动/避让/寻路实现保留。推进分组上限25、路径请求上限每世界帧4次、组观察间隔0.5秒保留。
 - 网络合同和NetSync主文件逐字比对未变，任务状态/命令枚举及SpecialTaskId继续兼容；10Hz任务、5Hz摘要、重试与同步参数未改。没有树内部状态复制。
 - [构建前静态数据核对](../../Artifacts/CommanderStateTree/20260921/static-review.json)与本轮原生构建均通过；运行时行为待玩家验证。
 

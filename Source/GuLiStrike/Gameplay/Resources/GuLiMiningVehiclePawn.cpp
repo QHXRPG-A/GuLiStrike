@@ -3,7 +3,7 @@
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
-#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Building/GuLiShieldGeneratorActor.h"
 #include "Gameplay/Resources/GuLiResourceInventoryComponent.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
@@ -99,13 +99,13 @@ void AGuLiMiningVehiclePawn::InitializeVehicle(
 	const FGuLiControllableActorId InStableActorId,
 	const FGuLiSoldierDefinition& Unit,
 	const UGuLiResourceEconomyConfig& Config,
-	AGuLiResourceFactoryActor& InFactory)
+	AGuLiShieldGeneratorActor& InFactory)
 {
     InitializeVehicleState(InTeam,InStableActorId,Unit,Config,&InFactory);
 }
 
 void AGuLiMiningVehiclePawn::InitializeVehicleState(EGuLiTeam InTeam,FGuLiControllableActorId InStableActorId,
-    const FGuLiSoldierDefinition& Unit,const UGuLiResourceEconomyConfig& Config,AGuLiResourceFactoryActor* InFactory)
+    const FGuLiSoldierDefinition& Unit,const UGuLiResourceEconomyConfig& Config,AGuLiShieldGeneratorActor* InFactory)
 {
 	Team = InTeam;
 	StableActorId = InStableActorId;
@@ -126,7 +126,6 @@ void AGuLiMiningVehiclePawn::InitializeVehicleState(EGuLiTeam InTeam,FGuLiContro
     PresentationDefinition.ActorClass = Unit.PresentationClass;
     PresentationDefinition.Scale = Unit.PresentationScale;
     OnRep_Presentation();
-    if (InFactory) InFactory->RegisterMiningVehicle(*this);
 	if (HasAuthority() && !GetController()) SpawnDefaultController();
 	if (UGuLiHybridActorComponent::HasSimulation(this))
 	{
@@ -461,7 +460,7 @@ void AGuLiMiningVehiclePawn::CancelTaskForExternalDisplacement()
 void AGuLiMiningVehiclePawn::BeginGrace(bool bSuccess)
 {
 	FinishCurrentTarget();
-	ReturnFactories.Reset(); NextReturnFactory = 0; UnloadPointAttempts = 0;
+	ReturnDropoffs.Reset(); NextReturnDropoff = 0; UnloadPointAttempts = 0;
 	if (AAIController* AIController = Cast<AAIController>(GetController())) AIController->StopMovement();
 	ControlMode = bTaskManaged ? EGuLiMiningControlMode::PlayerOrder : EGuLiMiningControlMode::Grace;
 	TaskState = EGuLiMiningTaskState::Idle;
@@ -589,7 +588,6 @@ void AGuLiMiningVehiclePawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
     {
         FinishCurrentTarget();
     }
-    if (IsValid(Factory)) Factory->UnregisterMiningVehicle(*this);
     GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->UnregisterVehicle(*this);
     Super::EndPlay(EndPlayReason);
 }

@@ -1,0 +1,61 @@
+--- GuLiCircleAvoidance.before.cpp
++++ Source/GuLiStrike/Gameplay/Navigation/GuLiCircleAvoidance.cpp
+@@ -235,8 +235,14 @@
+             }
+             return Choice;
+         };
+-        const FChoice Left=TestSide(-1),Right=TestSide(1);
+-        const FChoice& Selected=Left.Side && (!Right.Side || Left.Cost<=Right.Cost)?Left:Right;
++        // Continue around the chosen side while it is passable. Re-scoring both
++        // sides every step can choose the exact reverse of the previous move.
++        FChoice Selected=TestSide(Preferred);
++        if (!State.Side || !Selected.Side)
++        {
++            const FChoice Other=TestSide(-Preferred);
++            if (!Selected.Side || (Other.Side && Other.Cost<Selected.Cost)) Selected=Other;
++        }
+         if (Selected.Side)
+         {
+             Direction=Selected.Direction;Contact=Selected.Hit;State.Side=Selected.Side;
+--- GuLiBattleAuthoritySubsystem.before.cpp
++++ Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -3200,6 +3200,9 @@
+ 		{ SetTerminalNavigationState(S,EGuLiSoldierNavigationState::Arrived,EGuLiSoldierNavigationFailure::None); continue; }
+ 		FVector Waypoint=S.GroundLocation();
+ 		bool bHasWaypoint=false;
++		// The shared NavMesh is built for the smallest body. Larger circles pass
++		// around its corners instead of trying to put their center on the corner.
++		const float CornerAcceptance=FMath::Max(50.f,S.AvoidanceRadiusCentimeters);
+ 		const bool bPersonal=S.NavigationState==EGuLiSoldierNavigationState::PersonalPathRecovery;
+ 		const bool bDirectDock=!bPersonal && S.NavigationState==EGuLiSoldierNavigationState::Normal
+ 			&& S.bHasDockTarget && CommanderNavigationData
+@@ -3208,9 +3211,9 @@
+ 		if (bPersonal && S.ActiveNavigation && S.ActiveNavigation->Data.Get()==CommanderNavigationData
+ 			&& S.ActiveNavigation->Path->IsUpToDate() && !S.PersonalPathPoints.IsEmpty())
+ 		{
+-			// Capture each corner before turning; a movement step must not overshoot and cut a cliff.
++			// Only intermediate corners use body-sized acceptance; the final work point stays exact.
+ 			while (S.PersonalPathPointIndex<S.PersonalPathPoints.Num()-1
+-				&& FVector::DistSquared2D(S.Location,S.PersonalPathPoints[S.PersonalPathPointIndex])<=FMath::Square(10.f)
++				&& FVector::DistSquared2D(S.Location,S.PersonalPathPoints[S.PersonalPathPointIndex])<=FMath::Square(CornerAcceptance)
+ 				&& FMath::Abs(S.GroundLocation().Z-S.PersonalPathPoints[S.PersonalPathPointIndex].Z)<=MaximumSurfaceStepZCentimeters)
+ 				++S.PersonalPathPointIndex;
+ 			Waypoint=S.PersonalPathPoints[S.PersonalPathPointIndex]; bHasWaypoint=true;
+@@ -3218,7 +3221,7 @@
+ 		else if (bDirectDock) { Waypoint=S.FinalDestination.Location; bHasWaypoint=true; }
+ 		else if (!bPersonal && S.SharedRoute && S.SharedRoute->Goal==S.RouteGoal
+ 			&& S.SharedRoute->Navigation.Data.Get()==CommanderNavigationData)
+-			bHasWaypoint=S.SharedRoute->Sample(S.LastValidNavLocation,50.f,S.RouteCursor,Waypoint);
++			bHasWaypoint=S.SharedRoute->Sample(S.LastValidNavLocation,CornerAcceptance,S.RouteCursor,Waypoint);
+ 		if (!bHasWaypoint)
+ 		{
+ 			// Pending route work is not permission to walk straight through an unverified slope.
+@@ -5856,6 +5859,8 @@
+ 		S->SetNumberField(TEXT("task_version"),double(Unit.TaskGeneration)); S->SetBoolField(TEXT("automatic"),Unit.bAutomaticAdvance);
+ 		S->SetNumberField(TEXT("nav_state"),uint8(Unit.NavigationState)); S->SetBoolField(TEXT("budget_pending"),Unit.bNavigationBudgetPending);
+ 		S->SetNumberField(TEXT("no_progress"),Unit.NoProgressSeconds); S->SetNumberField(TEXT("radius"),Unit.AvoidanceRadiusCentimeters);
++		S->SetNumberField(TEXT("avoidance_side"),Unit.CircleState.Side);
++		S->SetNumberField(TEXT("yield_remaining"),Unit.YieldRemainingSeconds);
+ 		S->SetBoolField(TEXT("nav_repair_pending"),A.RecoveryWork.Contains(Unit.SoldierId.Value));
+ 		S->SetArrayField(TEXT("position"),Point(Unit.Location)); S->SetArrayField(TEXT("velocity"),Point(Unit.Velocity));
+ 		S->SetArrayField(TEXT("legal_position"),Point(Unit.LastValidNavLocation.Location));

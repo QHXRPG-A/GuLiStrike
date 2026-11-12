@@ -6,7 +6,7 @@
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 
 bool GuLiGrid::Unoccupied(UGuLiGroundGridSubsystem& G,const FVector& Point,int32 Size,
-    const FGuLiHybridObjectKey& Ignore,TOptional<EGuLiUnitMovementLayer> Layer,uint16 UnitType)
+    const FGuLiHybridObjectKey& Ignore,TOptional<EGuLiUnitMovementLayer> Layer,uint16 UnitType,uint64 IgnoredCircleSource)
 {
     const auto S=G.Snapshot();if (!S) return false;
     const auto A=S->AnchorAt(Point,Size);if (!S->Fits(A,Size)) return false;
@@ -23,7 +23,7 @@ bool GuLiGrid::Unoccupied(UGuLiGroundGridSubsystem& G,const FVector& Point,int32
         const auto* P=Units?Units->GetAvoidanceCatalog().Units.Find(UnitType):nullptr;
         auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
         if (!P || !Registry || !Registry->GetSnapshot()->IsSegmentClear(Point,Point,P->Solver.Radius,false,
-            Layer.Get(EGuLiUnitMovementLayer::Ground),P->Solver.Clearance,P->Solver.ContactMargin,0,false)) return false;
+            Layer.Get(EGuLiUnitMovementLayer::Ground),P->Solver.Clearance,P->Solver.ContactMargin,IgnoredCircleSource,false)) return false;
     }
     // The transaction ledger still owns births/teleports; it does not steer or push moving units.
     TArray<FGuLiHybridObjectKey> Hits;G.Traffic().Query(FRect::At(A,Size),Ignore,Hits,Layer);return Hits.IsEmpty();

@@ -1,0 +1,32 @@
+{
+  "schema": "guli-movement-capture/v1",
+  "scenario": "ore",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "authority_fixture": true,
+  "automatic_fire": false,
+  "members": [
+    {
+      "id": 193,
+      "unit_type": 1,
+      "position": [
+        -7794.008121321771,
+        53387.203523138254,
+        905.7790832519531
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "at": 0.5,
+      "members": [
+        193
+      ],
+      "target": [
+        -7350,
+        58050,
+        962.8617935822602
+      ],
+      "kind": "move"
+    }
+  ]
+}

@@ -22,8 +22,8 @@ def main():
     last = len(rows)
     edits, ids = [], {}
     for name, asset, note in [
-        ('BuildingConstructionComplete', 'NS_ConstructionComplete', '矿厂完工底部UpgradeGlow一次性完整闪光'),
-        ('BuildingConstructionTopLoop', 'NS_ConstructionTopLoop', '矿厂屋檐淡青绿呼吸光柱、漂浮粒子与独立电火花'),
+        ('BuildingConstructionComplete', 'NS_ConstructionComplete', '先驱号兵营完工底部UpgradeGlow一次性完整闪光'),
+        ('BuildingConstructionTopLoop', 'NS_ConstructionTopLoop', '先驱号兵营屋檐淡青绿呼吸光柱、漂浮粒子与独立电火花'),
         ('BuildingConstructionLaser', 'NS_ConstructionLaser_Purple', '建造车左右紫色激光、蓝白落点火花'),
         ('BuildingConstructionColumnTail', 'M_ConstructionColumnTail', '施工弱光柱材质，提取UpgradeGlow残尾'),
         ('BuildingConstructionMote', 'M_ConstructionMote', '施工向上漂浮三角粒子材质'),

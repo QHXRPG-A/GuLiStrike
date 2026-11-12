@@ -376,7 +376,7 @@ B与预算例外待审核，正式UE导入、导出回读、引用/物理资产/
 
 ## 2026-10-08：v1.5 十三模型配色参考 A_v2
 
-用户要求十模型重出参考图＋三视图，随后附四张色卡限定选配，再追加防空炮、哨戒炮、矿厂；据此新增资产专属参考方向并维护规范 v1.4→v1.5。选取奶油白主装甲、深灰机构、蓝灰／莓红连续队色区，整理碎线与小色块，原造型和活动关系保持。本次不扩大为其他资产的统一配色，不改 UI 功能色或旧审核事实。
+用户要求十模型重出参考图＋三视图，随后附四张色卡限定选配，再追加防空炮、哨戒炮、先驱号兵营；据此新增资产专属参考方向并维护规范 v1.4→v1.5。选取奶油白主装甲、深灰机构、蓝灰／莓红连续队色区，整理碎线与小色块，原造型和活动关系保持。本次不扩大为其他资产的统一配色，不改 UI 功能色或旧审核事实。
 
 [A_v2 参考交付](../../ArtSource/LocalTeamColorReference_A_v2_20261008/REVIEW.md)覆盖十三模型、二十六独立 1536×1024 图板；[分区及来源清单](../../ArtSource/LocalTeamColorReference_A_v2_20261008/review-manifest.json)记录固定／队色／功能区、实际源图和哈希。四张色卡原样归档，二十二张新增原生模型视图捕获未保存正式资源，蓝红配对由内置图像生成工具制作，助手逐模型读图后保留八张首稿修订历史。
 
@@ -400,9 +400,9 @@ B与预算例外待审核，正式UE导入、导出回读、引用/物理资产/
 
 规范继续沿 v1.6 四卡固定／队色方向。用户明确开始 Blender 实际制作，限制只改配色，并追加全模型三渲二、三档明暗和适量线稿、完成后自行对照参考与三视图的要求；已据新授权推进 B，不把旧 A_v3 pending 改为逐板通过。资产执行细则补入规范9.2，旧参考与增量归档原样保留。
 
-[十四模型蓝红实际成品](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/PaletteOnly_14Models_BlueRed_B_v1.blend)含29场景、28候选及实例总览；[实际原生四视图与 A/B 对照](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/reference-comparison.html)共112张。助手实际逐模型读图并修正护盾顶部三点队色灯、上部护盖、空军基地顶甲、先驱号主壳、彼之矛踝甲、矿厂柜门深色范围、SSF机构和固定护甲分区。护盾150面顶灯两队分别使用 #6AA4BE／#A34053，红方不留蓝／青点；前哨保持按整件分区。
+[十四模型蓝红实际成品](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/PaletteOnly_14Models_BlueRed_B_v1.blend)含29场景、28候选及实例总览；[实际原生四视图与 A/B 对照](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/reference-comparison.html)共112张。助手实际逐模型读图并修正护盾顶部三点队色灯、上部护盖、空军基地顶甲、先驱号主壳、彼之矛踝甲、先驱号兵营柜门深色范围、SSF机构和固定护甲分区。护盾150面顶灯两队分别使用 #6AA4BE／#A34053，红方不留蓝／青点；前哨保持按整件分区。
 
-[单模型回读](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/Reports/native-save-readback.json)与[总文件回读](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/Reports/combined-save-readback.json)保留原网格、UV、法线、权重、变换、骨架、动画曲线和 LOD 数据；原 SSF B_v1 与当前入库 B_v2 的三十网格签名一致。只读导出原两炮塔与矿厂原坡道，不保存正式 UE。来源哈希及完整修订／剩余参考几何偏差见[逐模型记录](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/visual_qa.json)。
+[单模型回读](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/Reports/native-save-readback.json)与[总文件回读](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/Reports/combined-save-readback.json)保留原网格、UV、法线、权重、变换、骨架、动画曲线和 LOD 数据；原 SSF B_v1 与当前入库 B_v2 的三十网格签名一致。只读导出原两炮塔与先驱号兵营原坡道，不保存正式 UE。来源哈希及完整修订／剩余参考几何偏差见[逐模型记录](../../ArtSource/LocalTeamColorProduction_B_v1_20261008/visual_qa.json)。
 
 全体 B 待用户审核。统一三档材质0.40／0.72／1.00，保留既有线稿；新增 Freestyle 基于原网格，只在 F12／原生交付图显示，材质预览不显示此补线，未新增可导出描边壳。没有 UE 替换、编译、游戏运行或自动化测试，动画播放与实战效果未验证。本地 HTML 静态核对成功不代替受限制的浏览器交互或用户美术决定。
 
@@ -421,7 +421,7 @@ B与预算例外待审核，正式UE导入、导出回读、引用/物理资产/
 
 用户明确要求“编译，然后模型表需要加个‘描述’字段…导入新DataTable并验证运行效果”，随后指令“记得将刚刚开发的美术资源导入至UE的正式资源中，并将旧资源删除”。[本次存储授权](../../ArtSource/ModelInterface_B_20261008/formal-import-authorization.json)固定当前十四模型B_v1源SHA256 `c28e175b95f6393a51256392097dd8244e17fc8dee82b85ef78d2c03aa1067e0`，包含共用彼之矛施工体。该授权接续上方待审/未编译历史，不改写旧归档或把存储放行自动登记为最终美术通过。
 
-原生构建退出0，84模型Description、四张Models及五张依赖DataTable已导入；[正式迁移](../../ArtSource/ModelInterface_B_20261008/formal-promotion.json)覆盖17网格和实际矿厂蓝图，70材质/函数移动到正式共享库。删除旧SSF重复红方资源18项及另外20项零引用旧涂装，继续保护被引用的描边、功能、动画和骨架依赖。14模型/34网格源几何、RGB、UV、法线、权重和原变换沿既有回读保留，UE只将颜色区编码至Alpha；原生显示包围盒修正不改变CPU/GPU几何或防空炮12倍导入设置。
+原生构建退出0，84模型Description、四张Models及五张依赖DataTable已导入；[正式迁移](../../ArtSource/ModelInterface_B_20261008/formal-promotion.json)覆盖17网格和实际先驱号兵营蓝图，70材质/函数移动到正式共享库。删除旧SSF重复红方资源18项及另外20项零引用旧涂装，继续保护被引用的描边、功能、动画和骨架依赖。14模型/34网格源几何、RGB、UV、法线、权重和原变换沿既有回读保留，UE只将颜色区编码至Alpha；原生显示包围盒修正不改变CPU/GPU几何或防空炮12倍导入设置。
 
 用户最新“这些黑块太深了，再浅一些”引入v1.8本批暗部修订：22模型主体母材质保留固定色卡、三档与轮廓，降低过黑阴影和内部描线。运行残留黑簇通过只隐藏OreHISM确认是矿石，分别隐藏地面破坏/悬浮Niagara不消除它；此前仅凭截图将其当粒子的推测已纠正，未修改Niagara。矿石四个正式材质保留原顶点底色、原发光和亮面，岩壳使用#2C3735、晶体暗面使用#274E61/#662249补光；[实际前后图](../../Artifacts/ModelRegistryRuntime20261008/ore-rock-comparison.json)与[保存读回](../../Artifacts/ModelRegistryRuntime20261008/ore-rock-lighter-revision.json)留档。
 

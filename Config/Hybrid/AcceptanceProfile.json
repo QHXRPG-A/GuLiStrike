@@ -20,19 +20,9 @@
       "value": "/Game/Development/HybridAcceptance/DT_AcceptanceMounts.DT_AcceptanceMounts"
     },
     {
-      "class": "/Script/GuLiStrike.GuLiModelRegistrySettings",
-      "property": "ModelsTable",
-      "value": "/Game/Development/HybridAcceptance/DT_AcceptanceModels.DT_AcceptanceModels"
-    },
-    {
       "class": "/Script/GuLiStrike.GuLiRogueCardSettings",
       "property": "Cards",
       "value": "/Game/Development/HybridAcceptance/DT_AcceptanceCards.DT_AcceptanceCards"
-    },
-    {
-      "class": "/Script/GuLiStrike.GuLiBuildingDataSettings",
-      "property": "BuildingsTable",
-      "value": "/Game/Development/HybridAcceptance/DT_AcceptanceBuildings.DT_AcceptanceBuildings"
     },
     {
       "class": "/Script/GuLiStrike.GuLiBuildingDataSettings",
@@ -55,6 +45,16 @@
       "value": "/Game/Development/HybridAcceptance/DT_AcceptanceAvoidance.DT_AcceptanceAvoidance"
     },
     {
+      "class": "/Script/GuLiStrike.GuLiModelRegistrySettings",
+      "property": "ModelsTable",
+      "value": "/Game/Development/HybridAcceptance/DT_AcceptanceModels.DT_AcceptanceModels"
+    },
+    {
+      "class": "/Script/GuLiStrike.GuLiBuildingDataSettings",
+      "property": "BuildingsTable",
+      "value": "/Game/Development/HybridAcceptance/DT_AcceptanceBuildings.DT_AcceptanceBuildings"
+    },
+    {
       "class": "/Script/GuLiStrike.GuLiAvoidanceDataSettings",
       "property": "BuildingCirclesTable",
       "value": "/Game/Development/HybridAcceptance/DT_AcceptanceBuildingCircles.DT_AcceptanceBuildingCircles"
@@ -70,11 +70,11 @@
     "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Skills.DT_GuLiStrikeCommander_Skills": "8e35a6d3e12ff9bd84cf1c63062947d98dd315111cc6b0f4c8ea40a1405cb200",
     "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_UnitSkills.DT_GuLiStrikeCommander_UnitSkills": "9dcff75aae6aa38da5a4e790c5db385df46fb59fe9ba66e993e38fa39ad0f993",
     "/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_WeaponMounts.DT_GuLiStrikeCommander_WeaponMounts": "ade1b1837be6b199bbfb16654253eecebd5dd26d9ba46fb63fab08f82630a6ff",
-    "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models": "8830a271ac7782ea5ec30a14a716fc153655f6b6654b78d2f4bff7a8d40cb0f0",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models.DT_GuLiStrikeModels_Models": "ab4bf4645ec53e706c27cfc541cb2df5ef9025cad51d848b8435be586d05ceba",
     "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards": "910396bc7cc3eb2b0fd92d9393befe6e342431d0049e2f6704cf19a4a5779f47",
-    "/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings": "73d9c2f674f208e48f8e73c6d4ea31d86213ca2916351a124cc8bc3f090dd1b0",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings": "668e0e08df997eaeebbafae457b082fda57fd20f344e1568c46dbc049f579dbe",
     "/Game/GuLiStrike/Data/DT_GuLiStrikeAvoidance_Units.DT_GuLiStrikeAvoidance_Units": "d534b68779a0add2a1cc9a98c28f7a7483144c1aac2147185c423ce5287a4a35",
-    "/Game/GuLiStrike/Data/DT_GuLiStrikeAvoidance_BuildingCircles.DT_GuLiStrikeAvoidance_BuildingCircles": "628ccc7b55d033e7d3bcb619c7b64ea046aa098809e63c2e2bc7253db48ac3a7"
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeAvoidance_BuildingCircles.DT_GuLiStrikeAvoidance_BuildingCircles": "0d16b887405e682dfcb5adac8a8bfc6b35c5be65aefa50c232c718c5966e44d2"
   },
   "assets": {
     "/Game/Development/HybridAcceptance/DT_AcceptanceUnits.DT_AcceptanceUnits": {
@@ -572,7 +572,7 @@
       ]
     },
     "/Game/Development/HybridAcceptance/DT_AcceptanceModels.DT_AcceptanceModels": {
-      "sha256": "1f675cd92ba1244ff87ad490ae19dabf010f87766b3f624133b7c7c659c9f3bc",
+      "sha256": "2ba4e8f9651b1841e049a937a9fb092b2a025aa3cfedb5dcf7b5fa9acdba4a76",
       "rows": [
         {
           "Name": "DefaultSoldier",
@@ -765,7 +765,7 @@
           "Name": "ResourceFactory",
           "Id": 2006,
           "Note": "B_v1 已按用户指令导入正式资源；只改配色，固定区和队色区分开；旧网格引用已替换",
-          "DisplayName": "矿厂",
+          "DisplayName": "先驱号兵营",
           "ResourceType": "PresentationClass",
           "ResourcePath": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/Blueprints/BP_ResourceProcessingFactory.BP_ResourceProcessingFactory_C",
           "VATDefinition": "None",
@@ -776,7 +776,7 @@
           "EnemySecondaryHex": "#662249",
           "CandidateResourcePath": "None",
           "CandidateVATDefinition": "None",
-          "Description": "矿厂的实际组合展示蓝图；装配主体、活动门和入口坡道，服务矿石处理与交付。"
+          "Description": "先驱号兵营组合展示蓝图；主体、门与坡道仅用于表现，先驱号从内部出兵。"
         },
         {
           "Name": "TerritoryStronghold",
@@ -1796,7 +1796,7 @@
           "EnemySecondaryHex": "#662249",
           "CandidateResourcePath": "None",
           "CandidateVATDefinition": "None",
-          "Description": "矿厂 Door 活动门骨骼子模型；保留原开关门动画、骨骼和组件装配。"
+          "Description": "先驱号兵营活动门骨骼子模型；不参与移动碰撞。"
         },
         {
           "Name": "SM_RPF_Body",
@@ -1813,7 +1813,7 @@
           "EnemySecondaryHex": "#662249",
           "CandidateResourcePath": "None",
           "CandidateVATDefinition": "None",
-          "Description": "矿厂 Body 主体子模型；用于厂房外壳，门和坡道通过各自部件装配。"
+          "Description": "先驱号兵营主体子模型；不参与移动碰撞。"
         },
         {
           "Name": "ConstructionVehicle_SM_TeslaCollector_Styled",
@@ -1921,7 +1921,7 @@
           "Name": "ResourceFactory_AccessRamp",
           "Id": 8015,
           "Note": "B_v1 已按用户指令导入正式资源；只改配色，固定区和队色区分开；旧网格引用已替换",
-          "DisplayName": "矿厂坡道",
+          "DisplayName": "先驱号兵营坡道",
           "ResourceType": "StaticMesh",
           "ResourcePath": "/Game/GuLiStrike/Models/TeamColor_v1/ResourceFactory/AccessRamp/Meshes/SM_RPF_AccessRamp.SM_RPF_AccessRamp",
           "VATDefinition": "None",
@@ -1932,7 +1932,7 @@
           "EnemySecondaryHex": "#662249",
           "CandidateResourcePath": "None",
           "CandidateVATDefinition": "None",
-          "Description": "矿厂入口 AccessRamp 坡道子模型；保留原 Cube 几何、装配尺寸和位置，整件属于固定米砂区域。"
+          "Description": "先驱号兵营入口坡道子模型；不参与移动碰撞。"
         },
         {
           "Name": "GroundSeatPlaceholder",
@@ -1968,8 +1968,7 @@
           "CandidateVATDefinition": "None",
           "Description": "先驱号指挥官兵种的显示网格；使用原 VAT 播放行走与战斗动作。"
         }
-      ],
-      "sha256_before_xuntian_normalization": "d5366a9ebb20dc0c4c84ef360340a41fa6fbe2f3939af95930d0cd09e2485a3d"
+      ]
     },
     "/Game/Development/HybridAcceptance/DT_AcceptanceCards.DT_AcceptanceCards": {
       "sha256": "e82ba62a7809fac7851411912fa0483f5906dcb62c7bab9e89b1c68fe4652e68",
@@ -2107,7 +2106,7 @@
       ]
     },
     "/Game/Development/HybridAcceptance/DT_AcceptanceBuildings.DT_AcceptanceBuildings": {
-      "sha256": "e8ff9cce8bc5f1d3b839ad05257bd94df090753387ec6ecaf745cb116b2a0c28",
+      "sha256": "8fcd1bcc04d68ba8eae17f0b8fbf893f42522e9df8dd74bc8c7ce73af8882be0",
       "rows": [
         {
           "Name": "MissileTurret",
@@ -2220,11 +2219,11 @@
         {
           "Name": "ShieldGenerator",
           "Id": 5,
-          "Note": "首版白模，可调原型值",
+          "Note": "护盾供给、外围交矿与FIFO加工",
           "Category": 3,
           "PlacementType": 5,
           "DisplayName": "护盾发生器",
-          "Description": "护盾发生器功能建筑",
+          "Description": "提供护盾；矿车在外围交矿，按每秒2单位加工。",
           "CollisionExtent": "(X=305.087006,Y=345.288040,Z=500.000000)",
           "VisualOffset": "(X=46.912994,Y=0.000000,Z=0.000000)",
           "MeshScale": "(X=2.000000,Y=2.000000,Z=2.000000)",
@@ -2247,12 +2246,12 @@
         {
           "Name": "ResourceFactory",
           "Id": 6,
-          "Note": "首版白模，可调原型值",
+          "Note": "先驱号兵营；内部出生后出营；模型部件不阻挡出兵",
           "Category": 4,
           "PlacementType": 6,
-          "DisplayName": "矿厂",
-          "Description": "矿厂功能建筑",
-          "CollisionExtent": "(X=600.000000,Y=650.000000,Z=400.000000)",
+          "DisplayName": "先驱号兵营",
+          "Description": "生产先驱号，从建筑内部出兵。",
+          "CollisionExtent": "(X=500.000000,Y=500.000000,Z=360.000000)",
           "VisualOffset": "(X=0.000000,Y=0.000000,Z=400.000000)",
           "MeshScale": "(X=12.000000,Y=13.000000,Z=8.000000)",
           "MaxHealth": 3000,
@@ -2261,9 +2260,9 @@
           "BlueCost": 40,
           "RedCost": 10,
           "ConstructionWork": 10,
-          "ProductionUnitId": 0,
-          "ProductionSeconds": 0,
-          "ProductionCount": 0,
+          "ProductionUnitId": 1,
+          "ProductionSeconds": 10,
+          "ProductionCount": 24,
           "FirstCaptureGiftIds": "",
           "TransitFieldId": 0,
           "ShieldRadius": 0,
@@ -2355,12 +2354,12 @@
         {
           "Name": "AcceptanceCombinedBuilding",
           "Id": 102,
-          "Note": "首版白模，可调原型值",
+          "Note": "先驱号兵营；内部出生后出营；模型部件不阻挡出兵",
           "Category": 4,
           "PlacementType": 6,
-          "DisplayName": "矿厂",
-          "Description": "矿厂功能建筑",
-          "CollisionExtent": "(X=600.000000,Y=650.000000,Z=400.000000)",
+          "DisplayName": "先驱号兵营",
+          "Description": "生产先驱号，从建筑内部出兵。",
+          "CollisionExtent": "(X=500.000000,Y=500.000000,Z=360.000000)",
           "VisualOffset": "(X=0.000000,Y=0.000000,Z=400.000000)",
           "MeshScale": "(X=12.000000,Y=13.000000,Z=8.000000)",
           "MaxHealth": 3000,
@@ -2555,7 +2554,7 @@
       ]
     },
     "/Game/Development/HybridAcceptance/DT_AcceptanceBuildingCircles.DT_AcceptanceBuildingCircles": {
-      "sha256": "d010cf1a1df6f0ff6d1feafc2a19063fc02071ef87a4315674b8a33684d6afda",
+      "sha256": "bb9f8384cfbec0a137a990e81f9664a544da9f4f49080b16b314cc7b88251a84",
       "rows": [
         {
           "Name": "Building_1_0",
@@ -2620,14 +2619,14 @@
         {
           "Name": "Building_6_0",
           "Id": 6000,
-          "Note": "包围迁移前实际根碰撞盒；不影响模型缩放",
+          "Note": "先驱号兵营整体通行边界；出营单位暂时忽略自身兵营",
           "BuildingDefinitionId": 6,
           "CircleIndex": 0,
           "LocalCenterMeters": "(X=0.000000,Y=0.000000,Z=0.000000)",
           "RadiusMeters": 6,
           "HeightMinimumMeters": -3.0547,
           "HeightMaximumMeters": 3.0547,
-          "PhaseMask": 1
+          "PhaseMask": 3
         },
         {
           "Name": "Building_7_0",
@@ -2654,402 +2653,6 @@
           "PhaseMask": 1
         },
         {
-          "Name": "FactoryWall_2_0",
-          "Id": 6001,
-          "Note": "完工矿厂实际墙体UCX2第1/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 1,
-          "LocalCenterMeters": "(X=-3.585031,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_2_1",
-          "Id": 6002,
-          "Note": "完工矿厂实际墙体UCX2第2/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 2,
-          "LocalCenterMeters": "(X=-2.609223,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_2_2",
-          "Id": 6003,
-          "Note": "完工矿厂实际墙体UCX2第3/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 3,
-          "LocalCenterMeters": "(X=-1.633416,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_2_3",
-          "Id": 6004,
-          "Note": "完工矿厂实际墙体UCX2第4/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 4,
-          "LocalCenterMeters": "(X=-0.657609,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_2_4",
-          "Id": 6005,
-          "Note": "完工矿厂实际墙体UCX2第5/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 5,
-          "LocalCenterMeters": "(X=0.318198,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_2_5",
-          "Id": 6006,
-          "Note": "完工矿厂实际墙体UCX2第6/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 6,
-          "LocalCenterMeters": "(X=1.294006,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_2_6",
-          "Id": 6007,
-          "Note": "完工矿厂实际墙体UCX2第7/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 7,
-          "LocalCenterMeters": "(X=2.269813,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_2_7",
-          "Id": 6008,
-          "Note": "完工矿厂实际墙体UCX2第8/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 8,
-          "LocalCenterMeters": "(X=3.245620,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_3_0",
-          "Id": 6009,
-          "Note": "完工矿厂实际墙体UCX3第1/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 9,
-          "LocalCenterMeters": "(X=-3.585032,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_3_1",
-          "Id": 6010,
-          "Note": "完工矿厂实际墙体UCX3第2/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 10,
-          "LocalCenterMeters": "(X=-2.609224,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_3_2",
-          "Id": 6011,
-          "Note": "完工矿厂实际墙体UCX3第3/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 11,
-          "LocalCenterMeters": "(X=-1.633417,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_3_3",
-          "Id": 6012,
-          "Note": "完工矿厂实际墙体UCX3第4/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 12,
-          "LocalCenterMeters": "(X=-0.657610,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_3_4",
-          "Id": 6013,
-          "Note": "完工矿厂实际墙体UCX3第5/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 13,
-          "LocalCenterMeters": "(X=0.318198,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_3_5",
-          "Id": 6014,
-          "Note": "完工矿厂实际墙体UCX3第6/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 14,
-          "LocalCenterMeters": "(X=1.294005,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_3_6",
-          "Id": 6015,
-          "Note": "完工矿厂实际墙体UCX3第7/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 15,
-          "LocalCenterMeters": "(X=2.269812,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_3_7",
-          "Id": 6016,
-          "Note": "完工矿厂实际墙体UCX3第8/8段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 16,
-          "LocalCenterMeters": "(X=3.245619,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_4_0",
-          "Id": 6017,
-          "Note": "完工矿厂实际墙体UCX4第1/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 17,
-          "LocalCenterMeters": "(X=-2.443760,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_4_1",
-          "Id": 6018,
-          "Note": "完工矿厂实际墙体UCX4第2/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 18,
-          "LocalCenterMeters": "(X=-1.561291,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_4_2",
-          "Id": 6019,
-          "Note": "完工矿厂实际墙体UCX4第3/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 19,
-          "LocalCenterMeters": "(X=-0.678822,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_4_3",
-          "Id": 6020,
-          "Note": "完工矿厂实际墙体UCX4第4/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 20,
-          "LocalCenterMeters": "(X=0.203647,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_4_4",
-          "Id": 6021,
-          "Note": "完工矿厂实际墙体UCX4第5/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 21,
-          "LocalCenterMeters": "(X=1.086116,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_5_0",
-          "Id": 6022,
-          "Note": "完工矿厂实际墙体UCX5第1/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 22,
-          "LocalCenterMeters": "(X=-2.443761,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_5_1",
-          "Id": 6023,
-          "Note": "完工矿厂实际墙体UCX5第2/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 23,
-          "LocalCenterMeters": "(X=-1.561292,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_5_2",
-          "Id": 6024,
-          "Note": "完工矿厂实际墙体UCX5第3/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 24,
-          "LocalCenterMeters": "(X=-0.678823,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_5_3",
-          "Id": 6025,
-          "Note": "完工矿厂实际墙体UCX5第4/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 25,
-          "LocalCenterMeters": "(X=0.203646,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_5_4",
-          "Id": 6026,
-          "Note": "完工矿厂实际墙体UCX5第5/5段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 26,
-          "LocalCenterMeters": "(X=1.086116,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_6_0",
-          "Id": 6027,
-          "Note": "完工矿厂实际墙体UCX6第1/7段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 27,
-          "LocalCenterMeters": "(X=-3.733524,Y=-2.618315,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_6_1",
-          "Id": 6028,
-          "Note": "完工矿厂实际墙体UCX6第2/7段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 28,
-          "LocalCenterMeters": "(X=-3.733524,Y=-1.745543,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_6_2",
-          "Id": 6029,
-          "Note": "完工矿厂实际墙体UCX6第3/7段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 29,
-          "LocalCenterMeters": "(X=-3.733524,Y=-0.872771,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_6_3",
-          "Id": 6030,
-          "Note": "完工矿厂实际墙体UCX6第4/7段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 30,
-          "LocalCenterMeters": "(X=-3.733524,Y=0.000000,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_6_4",
-          "Id": 6031,
-          "Note": "完工矿厂实际墙体UCX6第5/7段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 31,
-          "LocalCenterMeters": "(X=-3.733524,Y=0.872772,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_6_5",
-          "Id": 6032,
-          "Note": "完工矿厂实际墙体UCX6第6/7段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 32,
-          "LocalCenterMeters": "(X=-3.733524,Y=1.745544,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "FactoryWall_6_6",
-          "Id": 6033,
-          "Note": "完工矿厂实际墙体UCX6第7/7段；保留交货通道",
-          "BuildingDefinitionId": 6,
-          "CircleIndex": 33,
-          "LocalCenterMeters": "(X=-3.733524,Y=2.618316,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
           "Name": "Acceptance_Building_4_0",
           "Id": 8001,
           "Note": "包围迁移前实际根碰撞盒；不影响模型缩放",
@@ -3064,410 +2667,14 @@
         {
           "Name": "Acceptance_Building_6_0",
           "Id": 8002,
-          "Note": "包围迁移前实际根碰撞盒；不影响模型缩放",
+          "Note": "先驱号兵营整体通行边界；出营单位暂时忽略自身兵营",
           "BuildingDefinitionId": 102,
           "CircleIndex": 0,
           "LocalCenterMeters": "(X=0.000000,Y=0.000000,Z=0.000000)",
           "RadiusMeters": 6,
           "HeightMinimumMeters": -3.0547,
           "HeightMaximumMeters": 3.0547,
-          "PhaseMask": 1
-        },
-        {
-          "Name": "Acceptance_FactoryWall_2_0",
-          "Id": 8003,
-          "Note": "完工矿厂实际墙体UCX2第1/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 1,
-          "LocalCenterMeters": "(X=-3.585031,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_2_1",
-          "Id": 8004,
-          "Note": "完工矿厂实际墙体UCX2第2/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 2,
-          "LocalCenterMeters": "(X=-2.609223,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_2_2",
-          "Id": 8005,
-          "Note": "完工矿厂实际墙体UCX2第3/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 3,
-          "LocalCenterMeters": "(X=-1.633416,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_2_3",
-          "Id": 8006,
-          "Note": "完工矿厂实际墙体UCX2第4/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 4,
-          "LocalCenterMeters": "(X=-0.657609,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_2_4",
-          "Id": 8007,
-          "Note": "完工矿厂实际墙体UCX2第5/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 5,
-          "LocalCenterMeters": "(X=0.318198,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_2_5",
-          "Id": 8008,
-          "Note": "完工矿厂实际墙体UCX2第6/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 6,
-          "LocalCenterMeters": "(X=1.294006,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_2_6",
-          "Id": 8009,
-          "Note": "完工矿厂实际墙体UCX2第7/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 7,
-          "LocalCenterMeters": "(X=2.269813,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_2_7",
-          "Id": 8010,
-          "Note": "完工矿厂实际墙体UCX2第8/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 8,
-          "LocalCenterMeters": "(X=3.245620,Y=3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_3_0",
-          "Id": 8011,
-          "Note": "完工矿厂实际墙体UCX3第1/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 9,
-          "LocalCenterMeters": "(X=-3.585032,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_3_1",
-          "Id": 8012,
-          "Note": "完工矿厂实际墙体UCX3第2/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 10,
-          "LocalCenterMeters": "(X=-2.609224,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_3_2",
-          "Id": 8013,
-          "Note": "完工矿厂实际墙体UCX3第3/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 11,
-          "LocalCenterMeters": "(X=-1.633417,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_3_3",
-          "Id": 8014,
-          "Note": "完工矿厂实际墙体UCX3第4/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 12,
-          "LocalCenterMeters": "(X=-0.657610,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_3_4",
-          "Id": 8015,
-          "Note": "完工矿厂实际墙体UCX3第5/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 13,
-          "LocalCenterMeters": "(X=0.318198,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_3_5",
-          "Id": 8016,
-          "Note": "完工矿厂实际墙体UCX3第6/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 14,
-          "LocalCenterMeters": "(X=1.294005,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_3_6",
-          "Id": 8017,
-          "Note": "完工矿厂实际墙体UCX3第7/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 15,
-          "LocalCenterMeters": "(X=2.269812,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_3_7",
-          "Id": 8018,
-          "Note": "完工矿厂实际墙体UCX3第8/8段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 16,
-          "LocalCenterMeters": "(X=3.245619,Y=-3.563818,Z=1.527351)",
-          "RadiusMeters": 0.70517,
-          "HeightMinimumMeters": 0.0424264,
-          "HeightMaximumMeters": 3.01227,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_4_0",
-          "Id": 8019,
-          "Note": "完工矿厂实际墙体UCX4第1/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 17,
-          "LocalCenterMeters": "(X=-2.443760,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_4_1",
-          "Id": 8020,
-          "Note": "完工矿厂实际墙体UCX4第2/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 18,
-          "LocalCenterMeters": "(X=-1.561291,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_4_2",
-          "Id": 8021,
-          "Note": "完工矿厂实际墙体UCX4第3/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 19,
-          "LocalCenterMeters": "(X=-0.678822,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_4_3",
-          "Id": 8022,
-          "Note": "完工矿厂实际墙体UCX4第4/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 20,
-          "LocalCenterMeters": "(X=0.203647,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_4_4",
-          "Id": 8023,
-          "Note": "完工矿厂实际墙体UCX4第5/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 21,
-          "LocalCenterMeters": "(X=1.086116,Y=4.582052,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_5_0",
-          "Id": 8024,
-          "Note": "完工矿厂实际墙体UCX5第1/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 22,
-          "LocalCenterMeters": "(X=-2.443761,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_5_1",
-          "Id": 8025,
-          "Note": "完工矿厂实际墙体UCX5第2/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 23,
-          "LocalCenterMeters": "(X=-1.561292,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_5_2",
-          "Id": 8026,
-          "Note": "完工矿厂实际墙体UCX5第3/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 24,
-          "LocalCenterMeters": "(X=-0.678823,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_5_3",
-          "Id": 8027,
-          "Note": "完工矿厂实际墙体UCX5第4/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 25,
-          "LocalCenterMeters": "(X=0.203646,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_5_4",
-          "Id": 8028,
-          "Note": "完工矿厂实际墙体UCX5第5/5段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 26,
-          "LocalCenterMeters": "(X=1.086116,Y=-4.582051,Z=0.984293)",
-          "RadiusMeters": 0.673722,
-          "HeightMinimumMeters": 0.0933381,
-          "HeightMaximumMeters": 1.87525,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_6_0",
-          "Id": 8029,
-          "Note": "完工矿厂实际墙体UCX6第1/7段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 27,
-          "LocalCenterMeters": "(X=-3.733524,Y=-2.618315,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_6_1",
-          "Id": 8030,
-          "Note": "完工矿厂实际墙体UCX6第2/7段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 28,
-          "LocalCenterMeters": "(X=-3.733524,Y=-1.745543,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_6_2",
-          "Id": 8031,
-          "Note": "完工矿厂实际墙体UCX6第3/7段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 29,
-          "LocalCenterMeters": "(X=-3.733524,Y=-0.872771,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_6_3",
-          "Id": 8032,
-          "Note": "完工矿厂实际墙体UCX6第4/7段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 30,
-          "LocalCenterMeters": "(X=-3.733524,Y=0.000000,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_6_4",
-          "Id": 8033,
-          "Note": "完工矿厂实际墙体UCX6第5/7段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 31,
-          "LocalCenterMeters": "(X=-3.733524,Y=0.872772,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_6_5",
-          "Id": 8034,
-          "Note": "完工矿厂实际墙体UCX6第6/7段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 32,
-          "LocalCenterMeters": "(X=-3.733524,Y=1.745544,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
-        },
-        {
-          "Name": "Acceptance_FactoryWall_6_6",
-          "Id": 8035,
-          "Note": "完工矿厂实际墙体UCX6第7/7段；保留交货通道",
-          "BuildingDefinitionId": 102,
-          "CircleIndex": 33,
-          "LocalCenterMeters": "(X=-3.733524,Y=2.618316,Z=1.510380)",
-          "RadiusMeters": 0.448118,
-          "HeightMinimumMeters": 0.152735,
-          "HeightMaximumMeters": 2.86802,
-          "PhaseMask": 2
+          "PhaseMask": 3
         }
       ]
     }
@@ -3475,16 +2682,16 @@
   "manifests": {
     "200": {
       "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-200.json",
-      "sha256": "0368a72683729b97a07030cafcfdbcaa0e2b42d8dafac0dba31686d9a782f936",
-      "config_hash": "964c7681e0b3e826397576406cd1213ed4d65094060bbaa421f41764f545d3da",
-      "map_hash": "b6eef6ce258dbaa5849d354bb892b5b1b1a34142c5c9966faa84cde54ae13e1f",
+      "sha256": "35fdb3faee6fb79da020b1f0c063a374d691dd102f01dd750e62575c94770b2a",
+      "config_hash": "0154446142c16080a3c7990709b4a4e5d83e9cb822a7afca15075270898890f3",
+      "map_hash": "c34bc8fd9049bd0be55e204c7e8007f2973607ad7df97d8c9df3a9207775658b",
       "objects": 292
     },
     "600": {
       "path": "D:\\UE5.7\\test1\\Config\\Hybrid\\AcceptanceManifest-600.json",
-      "sha256": "610472989e54d8846b89bc4511ad9e81b1913dd15d30dff0e20240911638e719",
-      "config_hash": "1cefc4e4666fe8e0b57be17e11ea9619e12aedb6d481996da4cb2713c5598227",
-      "map_hash": "bda2a64cad8bd549fd4ca4ce458900a8c01f73c9ac6415b0ee13dea6bc467b6c",
+      "sha256": "d43e8218249a5b9805d1a5a6ff6dc612a33bac844d93aa0ab2d5f3092203b766",
+      "config_hash": "abbc9952c5f4fbfbf6ba66ecc7ef74236a270093956f345507ffee032bc66b93",
+      "map_hash": "7b4de9e211bba56a14f3a74795c7f65b135c844afbd0dfdd25c9e1823609fa69",
       "objects": 692
     }
   },

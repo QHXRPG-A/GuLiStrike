@@ -56,9 +56,14 @@ void FIndex::RemoveFromCells(int32 Index)
         }
 }
 
+void FIndex::Reset(int32 ExpectedCircles)
+{
+    Circles.Reset(ExpectedCircles);FreeSlots.Reset();ById.Reset();Buckets.Reset();MaximumStepDistance=0;
+}
+
 void FIndex::Rebuild(TConstArrayView<FCircle> Input)
 {
-    Circles.Reset(Input.Num());FreeSlots.Reset();ById.Reset();Buckets.Reset();MaximumStepDistance=0;
+    Reset(Input.Num());
     for (const auto& C:Input) Upsert(C);
 }
 
@@ -230,8 +235,14 @@ FResult Solve(const FIndex& Static,const FIndex& Dynamic,const FConfig& Config,
             }
             return Choice;
         };
-        const FChoice Left=TestSide(-1),Right=TestSide(1);
-        const FChoice& Selected=Left.Side && (!Right.Side || Left.Cost<=Right.Cost)?Left:Right;
+        // Continue around the chosen side while it is passable. Re-scoring both
+        // sides every step can choose the exact reverse of the previous move.
+        FChoice Selected=TestSide(Preferred);
+        if (!State.Side || !Selected.Side)
+        {
+            const FChoice Other=TestSide(-Preferred);
+            if (!Selected.Side || (Other.Side && Other.Cost<Selected.Cost)) Selected=Other;
+        }
         if (Selected.Side)
         {
             Direction=Selected.Direction;Contact=Selected.Hit;State.Side=Selected.Side;
@@ -265,6 +276,9 @@ FResult Solve(const FIndex& Static,const FIndex& Dynamic,const FConfig& Config,
                 const FHit Slide=Sweep(Static,Dynamic,Sliding,SlideDirection*SlideDistance,Radius,false,Scratch,Counters);
                 const double SlideClear=Slide.Blocked?SlideDistance*Slide.Fraction:SlideDistance;
                 Result.Delta+=SlideDirection*FMath::Max(0.,SlideClear-Skin);
+                // Keep both contacts: either can be the original requester,
+                // which cannot receive its own command's relayed yield.
+                if (!R.AllowSteering && Slide.Blocked) Result.SlideBlockingCircleId=Slide.Circle.Id;
             }
         }
     }

@@ -7,7 +7,7 @@
 #include "GuLiMiningVehicleManager.generated.h"
 
 class AGuLiMiningVehiclePawn;
-class AGuLiResourceFactoryActor;
+class AGuLiShieldGeneratorActor;
 struct FCollisionQueryParams;
 struct FGuLiHybridObjectKey;
 

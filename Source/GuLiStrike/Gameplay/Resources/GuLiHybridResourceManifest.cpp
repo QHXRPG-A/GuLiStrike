@@ -17,7 +17,7 @@ static bool AppendResourceStartup(UWorld& World,FGuLiHybridManifestData& Data,FS
 {
     auto* Table=GetDefault<UGuLiUnitDataSettings>()->SoldierDataTable.LoadSynchronous();
     const auto* Map=LoadObject<UGuLiResourceMapDefinition>(nullptr,TEXT("/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap"));
-    const auto* Catalog=UGuLiBuildingCatalog::LoadDefaultCatalog();const auto* Factory=Catalog?Catalog->FindDefinition(EGuLiBuildingType::Factory):nullptr;
+    const auto* Catalog=UGuLiBuildingCatalog::LoadDefaultCatalog();const auto* Factory=Catalog?Catalog->FindDefinition(EGuLiBuildingType::ShieldGenerator):nullptr;
     const uint16 Type=static_cast<uint16>(Data.Numbers.FindRef(TEXT("economy/MiningVehicleUnitTypeId")));
     const int32 Initial=static_cast<int32>(Data.Numbers.FindRef(TEXT("economy/InitialMiningVehiclesPerTeam")));
     FGuLiSoldierDefinition Miner;bool Found=false;
@@ -30,16 +30,16 @@ static bool AppendResourceStartup(UWorld& World,FGuLiHybridManifestData& Data,FS
     const auto* NavData=Nav && Prototype?Nav->GetNavDataForProps(Prototype->GetNavAgentPropertiesRef()):nullptr;
     const auto* Grid=World.GetSubsystem<UGuLiGroundGridSubsystem>();
     if (!Map || !Factory || !Found || !Miner.ActorClass->IsChildOf(AGuLiMiningVehiclePawn::StaticClass()) || (!NavData && !(Grid && Grid->IsReady())) || Initial<0 || Initial>1024)
-    {Error=TEXT("Missing formal miner/factory startup configuration or navigation");return false;}
+    {Error=TEXT("Missing formal miner/shield startup configuration or navigation");return false;}
     uint32 Ordinal=0;for (const auto& O:Data.Objects) if (O.Key.Kind==EGuLiHybridObjectKind::Engineer || O.Key.Kind==EGuLiHybridObjectKind::Miner) Ordinal=FMath::Max(Ordinal,O.Ordinal);
     for (const auto Team:{EGuLiTeam::Red,EGuLiTeam::Blue})
     {
         const FVector Anchor=Team==EGuLiTeam::Red?Map->SpawnAnchors.RedFactory:Map->SpawnAnchors.BlueFactory;FNavLocation Ground;
         if (!GuLiGrid::ProjectBody(World,Anchor,Factory->FootprintCells,FVector(300,300,100000),Ground,NavData))
-        {Error=TEXT("Formal factory anchor has no navigable ground");return false;}
+        {Error=TEXT("Formal shield anchor has no navigable ground");return false;}
         auto& F=Data.Objects.AddDefaulted_GetRef();F.Team=Team;F.Ordinal=Team==EGuLiTeam::Red?101:102;F.Definition=FString::Printf(TEXT("building/%d"),Factory->DefinitionId);
-        F.Key=FGuLiHybridManifest::MakeStableKey(Data.MapPackage,EGuLiHybridObjectKind::Building,FString::Printf(TEXT("initial/factory/%u"),uint8(Team)));
-        F.Location=Ground.Location;F.FacingYawDegrees=Team==EGuLiTeam::Red?-90:90;F.Health=Factory->MaxHealth;F.Shield=Factory->MaxShield;F.EstimatedCost=.2;
+        F.Key=FGuLiHybridManifest::MakeStableKey(Data.MapPackage,EGuLiHybridObjectKind::Building,FString::Printf(TEXT("initial/shield/%u"),uint8(Team)));
+        F.Location=Ground.Location;F.FacingYawDegrees=Team==EGuLiTeam::Red?-90:90;F.Health=Factory->MaxHealth;F.Shield=Factory->MaxShield;F.ShieldRadius=Factory->ShieldRadius;F.EstimatedCost=.2;
         const FVector Assembly=Team==EGuLiTeam::Red?Map->SpawnAnchors.RedAssembly:Map->SpawnAnchors.BlueAssembly;
         for (int32 Index=0;Index<Initial;++Index)
         {
@@ -73,9 +73,9 @@ static bool AppendResourceStartup(UWorld& World,FGuLiHybridManifestData& Data,FS
         Add(FString::Printf(TEXT("mining/node/%u"),D.UnitTypeId),EGuLiHybridRuleKind::ClaimMiningNode,Definition);
         Add(FString::Printf(TEXT("mining/release/%u"),D.UnitTypeId),EGuLiHybridRuleKind::ReleaseMiningPosition,Definition);
     }
-    Data.Numbers.Add(TEXT("miner_adapter/health"),Miner.MaxHealth);Data.Numbers.Add(TEXT("startup/miner_count"),Initial*2);Data.Numbers.Add(TEXT("startup/factory_count"),2);
+    Data.Numbers.Add(TEXT("miner_adapter/health"),Miner.MaxHealth);Data.Numbers.Add(TEXT("startup/miner_count"),Initial*2);Data.Numbers.Add(TEXT("startup/shield_count"),2);
     Data.Strings.Add(TEXT("startup/mining_slots_adapter"),TEXT("2"));
-    Data.Strings.FindOrAdd(TEXT("startup/coverage"))+=TEXT(",Miner,Factory");
+    Data.Strings.FindOrAdd(TEXT("startup/coverage"))+=TEXT(",Miner,ShieldGenerator");
     Error.Reset();return true;
 }
 

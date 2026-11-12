@@ -55,7 +55,7 @@ with unreal.ScopedEditorTransaction('Prepare ground-only teleport landing review
     transit.set_editor_property('text',
         '据点出口观察：沿用真实部队占领R2C5并生成赠品，选工程车右键己方R2C5据点模型运输。'
         '出口周边含兵营等建筑时，工程车必须在建筑外可走地面落位；无安全位置保持空中等待，10Hz重试。'
-        '矿厂坡道与卸货地板仍供正常地面行驶使用；落地后继续观察普通移动及矿车入厂卸货。'
+        '先驱号兵营使用圆形通行边界，模型部件不提供移动碰撞；矿车在护盾发生器外围交矿。'
         '占点生成赠品挪开车辆时同样不得把车辆放到邻楼顶部。')
     camera = marker('TeleportGround_Overview', unreal.CameraActor, (6500, 85000, 6000))
     camera.set_actor_rotation(unreal.Rotator(-48, -135, 0), False)

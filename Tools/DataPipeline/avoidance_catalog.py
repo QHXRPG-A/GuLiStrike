@@ -40,7 +40,6 @@ def validate(tables, error_type=ValueError):
 
     definitions = {r["Id"]: r for r in tables["DT_GuLiStrikeBuildings_Buildings"]["rows"]}
     seen, covered = set(), set()
-    completed_factory = []
     for row in rows("BuildingCircles"):
         definition, index = row["BuildingDefinitionId"], row["CircleIndex"]
         if definition not in definitions or not 0 <= index <= 65535:
@@ -62,14 +61,10 @@ def validate(tables, error_type=ValueError):
         for flag in (1, 2):
             if phase & flag:
                 covered.add((definition, flag))
-        if definition == 6 and phase & 2:
-            completed_factory.append(row)
     for definition, row in definitions.items():
         required = (1,) if row.get("CompletionUnitTypeId", 0) else (1, 2)
         if any((definition, flag) not in covered for flag in required):
             raise error_type(f"BuildingCircles未覆盖建筑{definition}的有效施工阶段")
-    if len(completed_factory) < 2:
-        raise error_type("矿厂完工阶段必须使用实际墙体的多个圆，保留内部交货通道")
 
     ore = rows("OreClustering")
     if len(ore) != 1 or ore[0]["Id"] != 1:

@@ -80,7 +80,6 @@ bool FGuLiAvoidanceCatalog::Load(TConstArrayView<uint16> UnitIds,FGuLiAvoidanceC
     if (Cache.Units.Num()!=UnitIds.Num()) return Fail(TEXT("Avoidance Units must cover every Soldier UnitTypeId exactly once."));
     TMap<int32,uint8> RequiredPhases;TMap<int32,uint8> ActualPhases;
     for (const auto* B:BuildingRows) RequiredPhases.Add(B->Id,B->CompletionUnitTypeId?1:3);
-    int32 FactoryWalls=0;
     for (const auto* Row:CircleRows)
     {
         if (!RequiredPhases.Contains(Row->BuildingDefinitionId) || Row->CircleIndex<0 || Row->CircleIndex>MAX_uint16 || !Positive(Row->RadiusMeters)
@@ -94,7 +93,6 @@ bool FGuLiAvoidanceCatalog::Load(TConstArrayView<uint16> UnitIds,FGuLiAvoidanceC
         List.Add({Row->CircleIndex,Row->LocalCenterMeters*100.,Row->RadiusMeters*100,
             Row->HeightMinimumMeters*100,Row->HeightMaximumMeters*100,uint8(Row->PhaseMask)});
         ActualPhases.FindOrAdd(Row->BuildingDefinitionId)|=uint8(Row->PhaseMask);
-        FactoryWalls+=(Row->BuildingDefinitionId==6 && (Row->PhaseMask&2))?1:0;
         auto J=MakeShared<FJsonObject>();J->SetNumberField(TEXT("building"),Row->BuildingDefinitionId);
         J->SetNumberField(TEXT("index"),Row->CircleIndex);J->SetNumberField(TEXT("phase"),Row->PhaseMask);
         TArray<TSharedPtr<FJsonValue>> Values;
@@ -106,7 +104,6 @@ bool FGuLiAvoidanceCatalog::Load(TConstArrayView<uint16> UnitIds,FGuLiAvoidanceC
     for (const auto& Pair:RequiredPhases)
         if ((ActualPhases.FindRef(Pair.Key)&Pair.Value)!=Pair.Value)
             return Fail(TEXT("BuildingCircles is missing a required building phase."));
-    if (FactoryWalls<2) return Fail(TEXT("Completed factories require multiple wall circles with a preserved entrance."));
     for (auto& Pair:Cache.Buildings) Pair.Value.Sort([](const auto& A,const auto& B){return A.Index<B.Index;});
     if (OreRows.Num()!=1 || OreRows[0]->Id!=1 || !Positive(OreRows[0]->MaximumRadiusRatio)
         || OreRows[0]->MaximumRadiusRatio<1 || !Positive(OreRows[0]->MaximumAreaRatio)
