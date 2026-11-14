@@ -677,6 +677,23 @@ struct FGuLiHybridProjectileState
             Cue.ServerTime=E.State.StartTime;Cue.MuzzleIndex=V.Recipe.GroundMuzzleIndex;Cue.SlotId=TEXT("BasicAttack");
             Cue.bMuzzleOnly=true;Cue.FrozenMuzzleVfxId=V.Recipe.GroundAttack.MuzzleVfxId;Cue.FrozenFireRate=V.Recipe.GroundAttack.FireRate;
         }
+        else if (!Explosive && V.SourceKind==EGuLiTargetKind::CommanderSoldier
+            && (V.FrozenUnitTypeId==1 || V.FrozenUnitTypeId==2)
+            && V.Recipe.Context.WeaponBinding.SlotId==TEXT("BasicAttack")
+            && E.State.Phase==EGuLiCombatEffectPhase::Active)
+        {
+            // The legacy attack-batch delegate is not the Hybrid transport.
+            // Attach one cosmetic cue to the admitted flight, including owner
+            // handoff recipes. Bootstrap stays silent in ApplyFlightEvent.
+            E.bHasMuzzle=true;auto& Cue=E.Muzzle;
+            Cue.MatchEpoch=CurrentEpoch();Cue.ShotId=V.Key.StableId;
+            Cue.Source=E.State.Source;Cue.Target=E.State.Target;Cue.UnitTypeId=V.FrozenUnitTypeId;
+            Cue.SlotId=TEXT("BasicAttack");Cue.MuzzleIndex=V.Recipe.GroundMuzzleIndex;
+            Cue.Start=E.State.LaunchLocation;Cue.End=E.State.LastTargetLocation;
+            Cue.MuzzleOffset=E.State.MuzzleOffset;Cue.MuzzleDirection=E.State.LaunchDirection;
+            Cue.ServerTime=E.State.StartTime;Cue.MechanicalPoseTimeSeconds=E.State.StartTime;
+            Cue.bMuzzleOnly=true;Cue.bMechanicalShot=true;
+        }
         if (E.State.Phase==EGuLiCombatEffectPhase::Finished && E.State.Source.Kind==EGuLiTargetKind::GroundActor
             && (E.State.EndReason==EGuLiCombatEffectEndReason::Impact || E.State.EndReason==EGuLiCombatEffectEndReason::Blocked))
         {E.ImpactVfxId=Explosive?V.Recipe.GroundAttack.ExplosiveImpactVfxId:V.Recipe.GroundAttack.ImpactVfxId;E.bFrozenGroundImpact=true;}
@@ -686,7 +703,11 @@ struct FGuLiHybridProjectileState
         {
             const float Sample=E.State.SampleTime;
             UGuLiCombatEffectReplicationComponent::RebasePublishedState(Pool->GetWorld(),Hybrid->GetObjectLogicalTick(V.Key),E.State);
-            if (E.bHasMuzzle) E.Muzzle.ServerTime+=E.State.SampleTime-Sample;
+            if (E.bHasMuzzle)
+            {
+                E.Muzzle.ServerTime+=E.State.SampleTime-Sample;
+                if (E.Muzzle.bMechanicalShot) E.Muzzle.MechanicalPoseTimeSeconds+=E.State.SampleTime-Sample;
+            }
             TArray<uint8> Visual,Private;
             if (GuLiFlightWire::EncodeBatch(MakeArrayView(&E,1),Visual)!=1) return false;
             {
@@ -1068,7 +1089,11 @@ public:
         if (E.State.EffectId!=ExpectedId || E.State.MatchEpoch!=S->CurrentEpoch() || E.State.Kind!=EGuLiCombatEffectKind::LinearProjectile) return false;
         const float Before=E.State.SampleTime;
         UGuLiCombatEffectReplicationComponent::RebaseReceivedState(S->Pool->GetWorld(),At,E.State);
-        if (E.bHasMuzzle) E.Muzzle.ServerTime+=E.State.SampleTime-Before;
+        if (E.bHasMuzzle)
+        {
+            E.Muzzle.ServerTime+=E.State.SampleTime-Before;
+            if (E.Muzzle.bMechanicalShot) E.Muzzle.MechanicalPoseTimeSeconds+=E.State.SampleTime-Before;
+        }
         if (auto* V=S->Records.Find(Object.Key))
         {
             V->Recipe.Context.Source=E.State.Source;V->Recipe.Context.Target=E.State.Target;

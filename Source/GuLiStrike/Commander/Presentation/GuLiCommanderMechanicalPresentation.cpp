@@ -1,4 +1,5 @@
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Gameplay/Presentation/GuLiRecoilVAT.h"
 
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Commander/GuLiCommanderSimulationTiming.h"
@@ -106,6 +107,28 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 		}
 		Soldier.bConstructionVisualHandled=true;
 	}
+	if (bAlive)
+	{
+		for (int32 Index = 0; Index < Soldier.PendingRecoil.Num();)
+		{
+			const auto& Cue = Soldier.PendingRecoil[Index];
+			if (Cue.ServerTime > Soldier.RenderServerTimeSeconds) { ++Index; continue; }
+			if (Cue.bMissile)
+			{
+				if (const auto* Recoil=Definition->MechanicalAnimation.RecoilVAT)
+					Recoil->NotifyMissileShot(Soldier.MechanicalPose,Cue.ServerTime);
+			}
+			else if (Cue.ServerTime >= Soldier.MechanicalPose.RecoilStartTime[Cue.Side])
+			{
+				Soldier.MechanicalPose.RecoilStartTime[Cue.Side] = Cue.ServerTime;
+				Soldier.MechanicalPose.RecoilFromCentimeters[Cue.Side] = Cue.FromCentimeters;
+			}
+			Soldier.PendingRecoil.RemoveAt(Index, 1, EAllowShrinking::No);
+		}
+	}
+	else Soldier.PendingRecoil.Reset();
+	if (const auto* Recoil=Definition->MechanicalAnimation.RecoilVAT; Recoil && (bAlive || bReset))
+		GuLiRecoilVAT::Update(*Recoil,Soldier.MechanicalPose,Soldier.RenderServerTimeSeconds,bReset,Soldier.RecoilPlayback);
 	if (Definition->VATDefinition)
 	{
 		const auto& D = *Definition->VATDefinition;
@@ -163,8 +186,11 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 		}
 		else GuLiVATAnimation::Step(D, FVector::ZeroVector, Soldier.PresentedTransform.Rotator().Yaw, bAlive, Dt, Soldier.VATPlayback);
 		if (auto* Component = bWriteInstances ? FindUnitInstances(Handle->BatchUnitTypeId, Handle->BatchTeam) : nullptr)
+		{
 			GuLiVATAnimation::WriteInstance(*Component,Handle->UnitInstanceIndex,D,Soldier.VATPlayback,Soldier.PreviousVATPlayback,
 				Soldier.MechanicalPose,Soldier.PresentedTransform.Rotator().Yaw,bReset,VATVelocity);
+			GuLiRecoilVAT::Write(*Component,Handle->UnitInstanceIndex,Soldier.RecoilPlayback,bReset);
+		}
 
 		return;
 	}
@@ -219,17 +245,7 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 			GuLiMechanicalAnimation::StepLocomotion(C, BeforeVisual, Soldier.MechanicalVisual.Root, VisualDt, bResetVisual, S);
 		}
 		else GuLiMechanicalAnimation::StepLocomotion(C, Before, Soldier.PresentedTransform, Dt, bReset, S);
-		for (int32 Index = 0; Index < Soldier.PendingRecoil.Num();)
-		{
-			const auto& Cue = Soldier.PendingRecoil[Index];
-			if (Cue.ServerTime > Soldier.RenderServerTimeSeconds) { ++Index; continue; }
-			if (Cue.ServerTime >= S.RecoilStartTime[Cue.Side])
-			{
-				S.RecoilStartTime[Cue.Side] = Cue.ServerTime;
-				S.RecoilFromCentimeters[Cue.Side] = Cue.FromCentimeters;
-			}
-			Soldier.PendingRecoil.RemoveAt(Index, 1, EAllowShrinking::No);
-		}
+
 		Soldier.MechanicalFrame = Soldier.MechanicalVisual.bInitialized
 			? GuLiMechanicalAnimation::BuildVisualFrame(C, S, Soldier.MechanicalVisual, Soldier.RenderServerTimeSeconds)
 			: GuLiMechanicalAnimation::BuildFrame(C, S, Soldier.PresentedTransform.Rotator().Yaw, Soldier.RenderServerTimeSeconds);
@@ -242,8 +258,11 @@ void AGuLiCommanderPresentationActor::UpdateMechanicalPresentation(FGuLiSoldierI
 	else Soldier.PendingRecoil.Reset();
 	if (bResetPose) Soldier.PreviousMechanicalFrame = Soldier.MechanicalFrame;
 	if (auto* Component = bWriteInstances ? FindUnitInstances(Handle->BatchUnitTypeId, Handle->BatchTeam) : nullptr)
+	{
 		GuLiMechanicalAnimation::WriteInstance(*Component, Handle->UnitInstanceIndex,
 			Soldier.MechanicalFrame, Soldier.PreviousMechanicalFrame);
+		GuLiRecoilVAT::Write(*Component,Handle->UnitInstanceIndex,Soldier.RecoilPlayback,bResetPose);
+	}
 }
 
 void AGuLiCommanderPresentationActor::ObserveMechanicalShot(const FGuLiCombatShotCue& Cue)
@@ -252,7 +271,8 @@ void AGuLiCommanderPresentationActor::ObserveMechanicalShot(const FGuLiCombatSho
 	if (auto* Soldier = PresentedSoldiers.Find(FGuLiSoldierId(Cue.Source.LocalId)))
 	{
 		if (Soldier->PendingRecoil.Num() >= 16) Soldier->PendingRecoil.RemoveAt(0);
-		Soldier->PendingRecoil.Add({Cue.MechanicalPoseTimeSeconds, Cue.RecoilFromCentimeters, Cue.MuzzleIndex});
+		Soldier->PendingRecoil.Add({Cue.MechanicalPoseTimeSeconds, Cue.RecoilFromCentimeters, Cue.MuzzleIndex,
+			Cue.UnitTypeId==2 && Cue.SlotId==TEXT("MissileLauncher")});
 		Soldier->PendingRecoil.Sort([](const auto& A, const auto& B) { return A.ServerTime < B.ServerTime; });
 		++Soldier->PoseRevision;
 	}
@@ -269,8 +289,12 @@ bool AGuLiCommanderPresentationActor::ResolveMechanicalMuzzle(const FGuLiCombatS
 	if (!Soldier || !Soldier->bHasPresentedTransform || !Definition) return false;
 	RenderTime = Soldier->RenderServerTimeSeconds;
 	if (Definition->VATDefinition)
+	{
+		FTransform VATRoot=Soldier->PresentedTransform;
+		VATRoot.SetScale3D(FVector(Definition->PresentationScale));
 		return GuLiVATAnimation::ResolveMuzzle(*Definition->VATDefinition, Soldier->VATPlayback, Soldier->MechanicalPose,
-			Soldier->PresentedTransform, Cue.MuzzleIndex, Out);
+			VATRoot, Cue.MuzzleIndex, Out, Definition->MechanicalAnimation.RecoilVAT, RenderTime);
+	}
 	if (Soldier->MechanicalVisual.bInitialized)
 		return GuLiMechanicalAnimation::ResolveVisualMuzzle(Definition->MechanicalAnimation, Soldier->MechanicalPose,
 			Soldier->MechanicalVisual, Cue.SlotId, Cue.MuzzleIndex, Out);
@@ -323,5 +347,6 @@ void AGuLiCommanderPresentationActor::ApplyMechanicalOverlay(UInstancedStaticMes
 			if (D && D->VATDefinition) GuLiVATAnimation::WriteInstance(Component,Index,*D->VATDefinition,
 				Soldier->VATPlayback,Soldier->PreviousVATPlayback,Soldier->MechanicalPose,Soldier->PresentedTransform.Rotator().Yaw,true,
 				Soldier->Samples.IsEmpty() ? FVector::ZeroVector : Soldier->Samples.Last().Velocity);
+			GuLiRecoilVAT::Write(Component,Index,Soldier->RecoilPlayback,true);
 		}
 }

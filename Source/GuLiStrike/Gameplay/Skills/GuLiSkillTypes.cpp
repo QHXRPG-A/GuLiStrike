@@ -7,6 +7,7 @@ bool FGuLiResolvedSkillProfile::HasSameConfiguration(const FGuLiResolvedSkillPro
 		&& Damage == Other.Damage && AttackRatePerSecond == Other.AttackRatePerSecond
 		&& RangeCentimeters == Other.RangeCentimeters
 		&& ProjectileCount == Other.ProjectileCount
+		&& BurstRoundCount == Other.BurstRoundCount && BurstRestSeconds == Other.BurstRestSeconds
 		&& ProjectileSpeedCentimetersPerSecond == Other.ProjectileSpeedCentimetersPerSecond
 		&& ProjectileLifetimeSeconds == Other.ProjectileLifetimeSeconds
 		&& ProjectileSweepRadiusCentimeters == Other.ProjectileSweepRadiusCentimeters

@@ -32,6 +32,8 @@ struct FGuLiMuzzleSlot
 	double BornAt=-1, OffscreenSince=-1;
 	uint64 AcceptedFrame=0,PublishedFrame=MAX_uint64,BornFrame=MAX_uint64;
 	int32 Mode=0, Group=INDEX_NONE, ReviewMode=INDEX_NONE;
+	int32 VfxId=0;
+	float Lifetime=1.f;
 	bool bAdmitted=false, bKnownBounds=false;
 };
 
@@ -59,7 +61,7 @@ public:
 	void BeginFrame(uint64 Frame,double LocalWorldSeconds,float ServerSeconds,bool bEnabled,FPoseResolver Resolve);
 	void PublishFrame(uint64 Frame);
 	void Reset();
-	void ResetPreparation() { Reset(); bPrepared=false; Channel=nullptr; }
+	void ResetPreparation() { Reset(); bPrepared=false; Channel=nullptr; FullSystems.Reset(); }
 	int32 GetActiveCount() const { return Pool.ActiveIndices().Num(); }
 	int32 GetComponentCount() const;
 #if WITH_EDITOR
@@ -78,7 +80,7 @@ private:
 	UPROPERTY(Transient) TArray<FGuLiMuzzleSlot> Slots;
 	UPROPERTY(Transient) TArray<FGuLiMuzzleConsumerGroup> Groups;
 	UPROPERTY(Transient) TObjectPtr<UNiagaraDataChannelAsset> Channel;
-	UPROPERTY(Transient) TObjectPtr<UNiagaraSystem> FullSystem;
+	UPROPERTY(Transient) TMap<int32,TObjectPtr<UNiagaraSystem>> FullSystems;
 	TMap<FGuLiMuzzleIdentity,double> Seen;
 	TArray<TPair<FGuLiMuzzleIdentity,double>> SeenOrder;
 	TArray<int32> Pending, Retired;

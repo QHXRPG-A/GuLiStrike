@@ -36,19 +36,19 @@
   {
     "Name": "ElectromagneticMiner",
     "Id": 1003,
-    "Note": "本轮保留现有配色",
+    "Note": "用户放行 v5 正式替换；9854 面；增强行进与采矿；四足外侧阵营灯",
     "DisplayName": "电磁矿车",
     "ResourceType": "PresentationClass",
-    "ResourcePath": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/LOD_3Tier_v1/BP_ElectromagneticMiner_3Tier.BP_ElectromagneticMiner_3Tier_C",
+    "ResourcePath": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/BP_QuadrupedMiner.BP_QuadrupedMiner_C",
     "VATDefinition": "",
-    "bTeamColorEnabled": false,
+    "bTeamColorEnabled": true,
     "BluePrimaryHex": "#6AA4BE",
     "BlueSecondaryHex": "#274E61",
     "EnemyPrimaryHex": "#A34053",
     "EnemySecondaryHex": "#662249",
     "CandidateResourcePath": "",
     "CandidateVATDefinition": "",
-    "Description": "电磁矿车的组合展示蓝图；装配车体、采集器和附件，服务矿石采集与运输。"
+    "Description": "四足电磁矿车；专用位置/法线 VAT 数据由表现蓝图持有；固定中立外壳，四足灯按本地敌我关系改色。"
   },
   {
     "Name": "ConstructionVehicle",
@@ -1375,5 +1375,22 @@
     "CandidateResourcePath": "",
     "CandidateVATDefinition": "",
     "Description": "玩家 Ground 席位早期占位 Pawn 的兼容显示网格；独立于重防号 WM01 的模型与网络路径。"
+  },
+  {
+    "Name": "QuadrupedMinerBody",
+    "Id": 8017,
+    "Note": "v5 三档 VAT 网格，作为 1003 的 BodyVAT 装配部件",
+    "DisplayName": "四足采矿车网格",
+    "ResourceType": "StaticMesh",
+    "ResourcePath": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Meshes/SM_QuadrupedMiner_VAT.SM_QuadrupedMiner_VAT",
+    "VATDefinition": "",
+    "bTeamColorEnabled": false,
+    "BluePrimaryHex": "#6AA4BE",
+    "BlueSecondaryHex": "#274E61",
+    "EnemyPrimaryHex": "#A34053",
+    "EnemySecondaryHex": "#662249",
+    "CandidateResourcePath": "",
+    "CandidateVATDefinition": "",
+    "Description": "完整四足网格及反向描边；9854/4614/2676 三角面；不独立生成玩法单位。"
   }
 ]

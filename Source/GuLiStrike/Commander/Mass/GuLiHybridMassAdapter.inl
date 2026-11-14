@@ -15,7 +15,7 @@ namespace GuLiHybridMass
 using namespace GuLiCommanderMassPrivate;
 TAutoConsoleVariable<int32> PublishAfterMovement(TEXT("gs.Commander.PublishPoseAfterMovement"),1,
     TEXT("Sample due synchronous Mass poses after the shared movement step. Keeps 10 Hz publication and the existing wire format. 0 selects the comparison ordering."));
-constexpr uint32 ObjectVersion=10,SystemVersion=5;
+constexpr uint32 ObjectVersion=11,SystemVersion=5;
 const FName SystemName(TEXT("CommanderMass"));
 struct FYieldRequest
 {
@@ -84,6 +84,9 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
     {
         Ar.Value(W.SlotId); Ar.Value(W.ProfileIndex); Ar.Value(W.Attack.TargetId.Value); Ar.Value(W.Attack.NextFireSeconds);
         Ar.Value(W.Attack.PausedCooldownFraction); Ar.Value(W.Attack.bRatePaused); Ar.Value(W.Attack.ShotsFired);
+        Ar.Value(W.Attack.BurstRoundsFired); Ar.Value(W.Attack.BurstRestUntil); Ar.Value(W.Attack.LastRoundSeconds);
+        Ar.Value(W.Attack.bBurstResting); Ar.Value(W.Attack.LastActiveSeconds);
+        if (W.Attack.BurstRoundsFired>1024) Ar.Reject();
         Ar.Enum(W.Attack.StopReason,uint8(EGuLiCombatStopReason::Fired));
     });
     A.Value(S.bAllowAutomaticFire); A.Value(S.ActiveSkill.SkillId); A.Value(S.ActiveSkill.ReadyAt);
@@ -620,7 +623,13 @@ public:
             *S=MoveTemp(V.Soldier); S->DirectoryIndex=DirectoryIndex; S->Entity=Entity; S->WeaponProfiles=Profiles; S->bLocalSimulation=bLocal;
             S->MoveIntent=bRestoringQuery?nullptr:V.Intent;S->RouteGoal=S->MoveIntent?S->MoveIntent->Goal:nullptr;
             const double Offset=Self->AuthorityState->SimulationSeconds-V.CapturedSeconds;
-            for (auto& Weapon:S->Weapons) Weapon.Attack.NextFireSeconds+=Offset;
+            for (auto& Weapon:S->Weapons)
+            {
+                Weapon.Attack.NextFireSeconds+=Offset;
+                if (Weapon.Attack.bBurstResting) Weapon.Attack.BurstRestUntil+=Offset;
+                if (Weapon.Attack.ShotsFired>0) Weapon.Attack.LastActiveSeconds+=Offset;
+                if (Weapon.Attack.ShotsFired>0) Weapon.Attack.LastRoundSeconds+=Offset;
+            }
             S->ActiveSkill.ReadyAt+=Offset;S->LastMovementUpdateSimulationSeconds+=Offset;
             S->NextPersonalPathQuerySeconds+=Offset;S->FailureSimulationSeconds+=Offset;
             S->GridMotion.State.RetryAt=FMath::Max(0.,S->GridMotion.State.RetryAt+Offset);

@@ -44,6 +44,7 @@ struct FGuLiActiveHitOverlay
 	GENERATED_BODY()
 	UPROPERTY() TWeakObjectPtr<UMeshComponent> Mesh;
 	UPROPERTY() TObjectPtr<UMaterialInterface> PreviousMaterial;
+	UPROPERTY() TObjectPtr<UMaterialInterface> AppliedMaterial;
 	float ExpireTime = 0;
 };
 

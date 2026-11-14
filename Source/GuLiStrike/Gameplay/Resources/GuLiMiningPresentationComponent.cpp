@@ -5,110 +5,56 @@
 #include "NiagaraComponent.h"
 #include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 
-#include "Components/PrimitiveComponent.h"
-#include "GameFramework/Actor.h"
-#include "UObject/StructOnScope.h"
-#include "UObject/UnrealType.h"
-#if !UE_BUILD_SHIPPING
-#include "Development/GuLiHybridReviewSubsystem.h"
-#endif
+#include "Gameplay/Resources/GuLiQuadrupedMinerPresentation.h"
+#include "Gameplay/Presentation/GuLiEngineeringPoseComponent.h"
+
+bool UGuLiMiningPresentationComponent::IsReady() const
+{ return Presentation.IsValid() && Presentation->IsReady(); }
 
 bool UGuLiMiningPresentationComponent::InitializePresentation(AActor* Actor)
 {
-	if (GetWorld()) GetWorld()->GetTimerManager().ClearTimer(VisibilityTimer);
-	if (Presentation.IsValid() && bAppliedVisible) ApplyVisibleMining(false);
-	for (int32 Side=0;Side<2;++Side) { Pivots[Side].Reset(); Muzzles[Side].Reset(); }
-	Presentation = Actor; bAppliedVisible=false; bLatestActive=false; LatestTarget=FVector::ZeroVector; Visibility={};
-	if (!Actor || !Actor->FindFunction(TEXT("StartMiningAt")) || !Actor->FindFunction(TEXT("StopMining"))) return false;
-	Actor->SetActorEnableCollision(false);
-	TInlineComponentArray<USceneComponent*> Components(Actor);
-	for (USceneComponent* Component : Components)
-	{
-		Component->SetCanEverAffectNavigation(false);
-		for (int32 Side = 0; Side < 2; ++Side)
-		{
-			const FString Suffix = Side == 0 ? TEXT("L") : TEXT("R");
-			if (Component->GetFName() == FName(TEXT("CollectorPivot_") + Suffix)) Pivots[Side] = Component;
-			if (Component->GetFName() == FName(TEXT("LaserMuzzle_") + Suffix)) Muzzles[Side] = Component;
-		}
-	}
-	for (int32 Side = 0; Side < 2; ++Side)
-	{
-		if (!Pivots[Side].IsValid() || !Muzzles[Side].IsValid()) return false;
-		LocalPivots[Side] = GetOwner()->GetActorTransform().InverseTransformPosition(Pivots[Side]->GetComponentLocation());
-		BarrelLengths[Side] = FVector::Distance(Pivots[Side]->GetComponentLocation(), Muzzles[Side]->GetComponentLocation());
-		TravelRotations[Side] = Pivots[Side]->GetRelativeRotation();
-	}
-	bLatestActive=false; LatestTarget=FVector::ZeroVector; bAppliedVisible=true; ApplyVisibleMining(false);
-	if (GetWorld() && GuLiClientPresentation::CanPresent(GetWorld()))
-		GetWorld()->GetTimerManager().SetTimer(VisibilityTimer,this,&ThisClass::PollVisibility,
-			FGuLiPersistentEffectVisibility::CheckSeconds,true);
-	return true;
+    if (GetWorld()) GetWorld()->GetTimerManager().ClearTimer(VisibilityTimer);
+    if (Presentation.IsValid()) Presentation->SetMiningState(false,FVector::ZeroVector);
+    Presentation=Cast<AGuLiQuadrupedMinerPresentation>(Actor);
+    bAppliedVisible=false; bLatestActive=false; LatestTarget=FVector::ZeroVector; Visibility={};
+    if (!IsReady() || !Presentation->BodyVAT->Animation->IsValidData()) return false;
+    Actor->SetActorEnableCollision(false);
+    LocalMuzzle=GetOwner()->GetActorTransform().InverseTransformPosition(Presentation->GetReferenceMuzzleWorld());
+    if (GetWorld() && GuLiClientPresentation::CanPresent(GetWorld()))
+        GetWorld()->GetTimerManager().SetTimer(VisibilityTimer,this,&ThisClass::PollVisibility,
+            FGuLiPersistentEffectVisibility::CheckSeconds,true);
+    return true;
 }
 
-bool UGuLiMiningPresentationComponent::CalculateMuzzles(
-	const FVector& Target, const FTransform& VehiclePose, FVector& Left, FVector& Right) const
+bool UGuLiMiningPresentationComponent::CalculateMuzzle(const FTransform& VehiclePose, FVector& Muzzle) const
 {
-	if (!IsReady()) return false;
-	FVector* Results[] = { &Left, &Right };
-	for (int32 Side = 0; Side < 2; ++Side)
-	{
-		const FVector Pivot = VehiclePose.TransformPosition(LocalPivots[Side]);
-		*Results[Side] = Pivot + (Target - Pivot).GetSafeNormal() * BarrelLengths[Side];
-	}
-	return true;
-}
-
-void UGuLiMiningPresentationComponent::AimAt(const FVector& Target)
-{
-	if (!IsReady()) return;
-	for (const TWeakObjectPtr<USceneComponent>& Pivot : Pivots)
-		Pivot->SetWorldRotation((Target - Pivot->GetComponentLocation()).Rotation());
+    if (!IsReady()) return false;
+    Muzzle=VehiclePose.TransformPosition(LocalMuzzle);
+    return !Muzzle.ContainsNaN();
 }
 
 void UGuLiMiningPresentationComponent::RefreshDisplayedAim()
 {
-	if (bLatestActive && bAppliedVisible) AimAt(LatestTarget);
+    if (auto* Actor=Presentation.Get())
+    {
+        const auto* Pose=GetOwner()->FindComponentByClass<UGuLiEngineeringPoseComponent>();
+        Actor->NotifyDisplayedPose(Pose && Pose->IsDisplacementReset()); Actor->RefreshBeam();
+    }
 }
 
-void UGuLiMiningPresentationComponent::ApplyMining(const bool bActive, const FVector& Target)
+void UGuLiMiningPresentationComponent::ApplyMining(bool Active, const FVector& Target)
 {
-	AActor* Actor=Presentation.Get(); if (!Actor || !IsReady()) return;
-	const bool Changed=bLatestActive!=bActive;
-	bLatestActive=bActive; LatestTarget=Target;
-	// Authority muzzle geometry remains independent of cosmetic visibility.
-	if (bActive && (!GuLiClientPresentation::CanPresent(GetWorld()) || bAppliedVisible)) AimAt(Target);
-	if (!GuLiClientPresentation::CanPresent(GetWorld())) return;
-	if (Changed) PollVisibility();
+    if (!IsReady() || Target.ContainsNaN()) return;
+    const bool Changed=bLatestActive!=Active;
+    bLatestActive=Active; LatestTarget=Target;
+    Presentation->SetMiningState(Active,Target);
+    if (GuLiClientPresentation::CanPresent(GetWorld()) && Changed) PollVisibility();
 }
 
-void UGuLiMiningPresentationComponent::ApplyVisibleMining(const bool bShow)
+void UGuLiMiningPresentationComponent::ApplyVisibleMining(bool Show)
 {
-	AActor* Actor=Presentation.Get(); if (!Actor) return;
-	if (!bShow && !bAppliedVisible) return;
-	if (UFunction* Function=Actor->FindFunction(bShow ? TEXT("StartMiningAt") : TEXT("StopMining")))
-	{
-		FStructOnScope Parameters(Function);
-		if (bShow)
-		{
-			const FStructProperty* Parameter=FindFProperty<FStructProperty>(Function,TEXT("TargetWorldLocation"));
-			if (!ensure(Parameter && Parameter->Struct==TBaseStructure<FVector>::Get())) return;
-			*Parameter->ContainerPtrToValuePtr<FVector>(Parameters.GetStructMemory())=LatestTarget;
-		}
-		Actor->ProcessEvent(Function,Parameters.GetStructMemory());
-#if !UE_BUILD_SHIPPING
-        if (auto* Review=GetWorld()->GetSubsystem<UGuLiHybridReviewSubsystem>())
-            Review->ObserveBlueprintExecution(*Actor,Function->GetFName());
-#endif
-	}
-	Actor->SetActorTickEnabled(bShow);
-	bAppliedVisible=bShow;
-	if (!bShow)
-	{
-		TInlineComponentArray<UNiagaraComponent*> Beams(Actor);
-		for (auto* Beam : Beams) { Beam->DeactivateImmediate(); Beam->SetVisibility(false); }
-		for (int32 Side=0; Side<2; ++Side) if (Pivots[Side].IsValid()) Pivots[Side]->SetRelativeRotation(TravelRotations[Side]);
-	}
+    if (auto* Actor=Presentation.Get()) Actor->SetBeamVisible(Show);
+    bAppliedVisible=Show;
 }
 
 void UGuLiMiningPresentationComponent::PollVisibility()
@@ -120,7 +66,7 @@ void UGuLiMiningPresentationComponent::PollVisibility()
 		Visibility.Update(false,false,GetWorld()->GetTimeSeconds()); ApplyVisibleMining(false); return;
 	}
 	FBox Bounds(ForceInit); Bounds+=LatestTarget;
-	for (const auto& Muzzle : Muzzles) if (Muzzle.IsValid()) Bounds+=Muzzle->GetComponentLocation();
+	Bounds+=Presentation->GetDisplayedMuzzleWorld();
 	TInlineComponentArray<UNiagaraComponent*> Beams(Actor);
 	for (auto* Beam : Beams) if (Beam->Bounds.GetBox().IsValid) Bounds+=Beam->Bounds.GetBox();
 	// Include endpoint sprites even before the first Niagara bounds update.

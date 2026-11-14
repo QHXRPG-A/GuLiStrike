@@ -52,6 +52,7 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
     FGuLiGroundAttackSnapshot GroundAttack;
 	uint64 FireOrdinal=0;
 	double FireNotifyTime=0;
+	/** Shared serialized barrel slot; the historical name also covers Commander guns. */
 	uint8 GroundMuzzleIndex=0;
 	FVector GroundOutward=FVector::RightVector;
 	FVector GroundOutwardLocal=FVector::RightVector;

@@ -34,6 +34,10 @@ struct GULISTRIKE_API FGuLiUnitSkillConfig
 	UPROPERTY() float AttackRatePerSecond = 0.0f;
 	UPROPERTY() float RangeCentimeters = 0.0f;
 	UPROPERTY() int32 ProjectileCount = 1;
+	/** Successful trigger rounds per group; zero is continuous fire. */
+	UPROPERTY() int32 BurstRoundCount = 0;
+	/** Added after the ordinary inter-round interval; unaffected by attack-rate upgrades. */
+	UPROPERTY() float BurstRestSeconds = 0.f;
 	/** Authored availability; rewards may unlock this stable slot during the match. */
 	UPROPERTY() bool bInitiallyUnlocked = true;
 	UPROPERTY() float ProjectileSpeedCentimetersPerSecond = 0.0f;
@@ -58,6 +62,8 @@ struct GULISTRIKE_API FGuLiResolvedSkillProfile
 	UPROPERTY() float AttackRatePerSecond = 0.0f;
 	UPROPERTY() float RangeCentimeters = 0.0f;
 	UPROPERTY() int32 ProjectileCount = 1;
+	UPROPERTY() int32 BurstRoundCount = 0;
+	UPROPERTY() float BurstRestSeconds = 0.f;
 	UPROPERTY() uint32 Revision = 0;
 	UPROPERTY() bool bUnlocked = true;
 	UPROPERTY() bool bEquipped = true;

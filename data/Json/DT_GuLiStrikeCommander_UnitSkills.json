@@ -2,7 +2,7 @@
   {
     "Name": "SoldierA_Strafe",
     "Id": 1,
-    "Note": "先驱号左右主枪同时发射；每枪1发/秒，每发10伤害，总锥角2度",
+    "Note": "先驱者双枪齐射；1轮/秒，每轮2发、每发10伤害；8轮后额外休整2秒",
     "UnitTypeId": 1,
     "SlotId": "BasicAttack",
     "SkillId": "Strafe",
@@ -15,12 +15,14 @@
     "ProjectileLifetimeSeconds": 5.0,
     "ProjectileSweepRadiusCentimeters": 3.0,
     "ProjectileSpreadAngleDegrees": 2.0,
-    "ProjectileCount": 2
+    "ProjectileCount": 2,
+    "BurstRoundCount": 8,
+    "BurstRestSeconds": 2.0
   },
   {
     "Name": "WM01_Strafe",
     "Id": 2,
-    "Note": "WM01 默认普攻",
+    "Note": "重防号左右交替；2发/秒；4发后额外休整2秒",
     "UnitTypeId": 2,
     "SlotId": "BasicAttack",
     "SkillId": "Strafe",
@@ -33,7 +35,9 @@
     "ProjectileLifetimeSeconds": 5.0,
     "ProjectileSweepRadiusCentimeters": 3.0,
     "ProjectileSpreadAngleDegrees": 2.0,
-    "ProjectileCount": 1
+    "ProjectileCount": 1,
+    "BurstRoundCount": 4,
+    "BurstRestSeconds": 2.0
   },
   {
     "Name": "SoldierA_Test",
@@ -51,7 +55,9 @@
     "ProjectileLifetimeSeconds": 0.0,
     "ProjectileSweepRadiusCentimeters": 0.0,
     "ProjectileSpreadAngleDegrees": 0.0,
-    "ProjectileCount": 1
+    "ProjectileCount": 1,
+    "BurstRoundCount": 8,
+    "BurstRestSeconds": 2.0
   },
   {
     "Name": "WM01_Test",
@@ -69,7 +75,9 @@
     "ProjectileLifetimeSeconds": 0.0,
     "ProjectileSweepRadiusCentimeters": 0.0,
     "ProjectileSpreadAngleDegrees": 0.0,
-    "ProjectileCount": 1
+    "ProjectileCount": 1,
+    "BurstRoundCount": 4,
+    "BurstRestSeconds": 2.0
   },
   {
     "Name": "WM01_MissileLauncher",
@@ -87,7 +95,9 @@
     "ProjectileLifetimeSeconds": 0.0,
     "ProjectileSweepRadiusCentimeters": 0.0,
     "ProjectileSpreadAngleDegrees": 0.0,
-    "ProjectileCount": 1
+    "ProjectileCount": 1,
+    "BurstRoundCount": 0,
+    "BurstRestSeconds": 0.0
   },
   {
     "Name": "SweeperSummon_Strafe",
@@ -105,6 +115,8 @@
     "ProjectileLifetimeSeconds": 5.0,
     "ProjectileSweepRadiusCentimeters": 3.0,
     "ProjectileSpreadAngleDegrees": 2.0,
-    "ProjectileCount": 1
+    "ProjectileCount": 1,
+    "BurstRoundCount": 0,
+    "BurstRestSeconds": 0.0
   }
 ]

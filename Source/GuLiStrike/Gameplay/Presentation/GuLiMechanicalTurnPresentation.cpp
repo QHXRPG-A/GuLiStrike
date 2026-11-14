@@ -1,4 +1,5 @@
 #include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
+#include "Gameplay/Presentation/GuLiRecoilVAT.h"
 
 namespace
 {
@@ -115,14 +116,18 @@ bool GuLiMechanicalAnimation::ResolveVisualMuzzle(const FGuLiMechanicalAnimation
 	const auto& Neutral = bMissile ? C.MissileMuzzles[Side] : C.BasicMuzzles[Side];
 	FVector P = Neutral.GetLocation();
 	FQuat Q = Neutral.GetRotation();
+	const auto Recoil=C.RecoilVAT?C.RecoilVAT->Evaluate(S,V.PoseTime):FGuLiRecoilVATSample{};
 	if (!bMissile)
 	{
+		P+=(Side==0?Recoil.LeftGunTranslation:Recoil.RightGunTranslation)*C.ModelScale;
 		// V.PoseTime freezes with the final WPO frame on death/phasing.
 		P -= Neutral.GetUnitAxis(EAxis::X) * RecoilAt(C, S, Side, float(V.PoseTime));
 		P = C.GunPivots[Side] + V.GunRotation[Side].RotateVector(P - C.GunPivots[Side]);
 		Q = V.GunRotation[Side] * Q;
 	}
 	const FQuat Upper = UpperRotation(V);
+	P=C.UpperPivot+Recoil.UpperRotation.RotateVector(P-C.UpperPivot)+Recoil.UpperTranslation*C.ModelScale;
+	Q=Recoil.UpperRotation*Q;
 	P = C.UpperPivot + Upper.RotateVector(P - C.UpperPivot);
 	const auto Body = HoverBodyTransform(C, S);
 	Out = FTransform(V.Root.GetRotation() * Body.GetRotation() * Upper * Q,

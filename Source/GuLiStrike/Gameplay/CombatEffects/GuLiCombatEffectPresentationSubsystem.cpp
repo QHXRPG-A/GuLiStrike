@@ -507,6 +507,20 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 		FGuLiLocalCombatEffect Visual; Visual.State = State; Visual.RenderLocation = State.Location;
 		Visual.LoadedDefinition = State.ProjectileDefinition.LoadSynchronous();
 		Visual.bUsesMissileCluster = Visual.LoadedDefinition && Visual.LoadedDefinition->UsesMissileClusterRendering();
+		if (Visual.bUsesMissileCluster && State.Source.Kind==EGuLiTargetKind::CommanderSoldier
+			&& !bFromSnapshot && ServerTime()-State.StartTime<.35f)
+		{
+			// Accepted launch, not impact or a historical snapshot. Multiple rockets in
+			// one salvo extend the held posture without replaying the entry animation.
+			if (const auto* Provider=MuzzleProviders.Find(State.Source.Kind);
+				Provider && Provider->Owner.IsValid() && Provider->Observe)
+			{
+				FGuLiCombatShotCue Cue; Cue.Source=State.Source; Cue.UnitTypeId=2;
+				Cue.SlotId=TEXT("MissileLauncher"); Cue.bMechanicalShot=true;
+				Cue.MechanicalPoseTimeSeconds=State.StartTime;
+				Provider->Observe(Cue);
+			}
+		}
 		if (Visual.LoadedDefinition && State.Source.Kind==EGuLiTargetKind::Wingman)
 		{
 			Visual.LoadedFlightProfile=Visual.LoadedDefinition->FlightPresentationProfile.LoadSynchronous();

@@ -5,6 +5,7 @@
 class UStaticMesh;
 class UInstancedStaticMeshComponent;
 class UMaterialInterface;
+class UGuLiRecoilVATDefinition;
 
 enum class EGuLiMechanicalModel : uint8 { None, WarMachine, Sweeper };
 
@@ -14,6 +15,8 @@ enum class EGuLiMechanicalModel : uint8 { None, WarMachine, Sweeper };
 struct GULISTRIKE_API FGuLiMechanicalAnimationConfig
 {
 	EGuLiMechanicalModel Model = EGuLiMechanicalModel::None;
+	/** Owned strongly by the mesh's asset-user-data binding. */
+	const UGuLiRecoilVATDefinition* RecoilVAT = nullptr;
 	float ModelScale = 1.0f;
 	FVector UpperPivot = FVector::ZeroVector;
 	FVector GunPivots[2] = {};
@@ -69,6 +72,9 @@ struct GULISTRIKE_API FGuLiMechanicalAnimationState
 	float GunPitchDegrees[2] = {};
 	float RecoilStartTime[2] = {-1000.0f, -1000.0f};
 	float RecoilFromCentimeters[2] = {};
+	// Local presentation only, reconstructed from accepted missile launch records.
+	float MissileRecoilStartTime = -1000.0f;
+	float MissileRecoilLastShotTime = -1000.0f;
 	float WheelRadians[4] = {};
 	FVector2D DiscTiltRadians = FVector2D::ZeroVector;
 	FVector2D DiscTiltFrom = FVector2D::ZeroVector;

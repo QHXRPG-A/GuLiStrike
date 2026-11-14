@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
+#include "Gameplay/Presentation/GuLiRecoilVAT.h"
 #include "GuLiVATAnimation.generated.h"
 
 class UTexture2D;
@@ -113,13 +114,14 @@ namespace GuLiVATAnimation
 {
 	// Keep all 51 legacy mechanical slots (including Hit at 0) unchanged.
 	inline constexpr int32 FirstCustomData = 51;
-	inline constexpr int32 CustomDataFloatCount = 63;
+	inline constexpr int32 CustomDataFloatCount = GuLiRecoilVAT::CustomDataFloatCount;
 	GULISTRIKE_API void Step(const UGuLiVATDefinition& Definition, const FVector& Velocity,
 		float BodyYaw, bool bAlive, float Dt, FGuLiVATPlayback& Playback);
 	GULISTRIKE_API void StepAim(const UGuLiVATDefinition& Definition, const FGuLiVATPlayback& Playback,
 		const FTransform& Root, const FVector* Target, float Dt, FGuLiMechanicalAnimationState& Aim, float TurnRateScale = 1.0f);
 	GULISTRIKE_API bool ResolveMuzzle(const UGuLiVATDefinition& Definition, const FGuLiVATPlayback& Playback,
-		const FGuLiMechanicalAnimationState& Aim, const FTransform& Root, int32 Side, FTransform& Out);
+		const FGuLiMechanicalAnimationState& Aim, const FTransform& Root, int32 Side, FTransform& Out,
+		const UGuLiRecoilVATDefinition* Recoil = nullptr, double RecoilTime = 0);
 	GULISTRIKE_API void WriteInstance(UInstancedStaticMeshComponent& Component, int32 Index,
 		const UGuLiVATDefinition& Definition, const FGuLiVATPlayback& Current, const FGuLiVATPlayback& Previous,
 		const FGuLiMechanicalAnimationState& Aim, float BodyYaw, bool bReset,

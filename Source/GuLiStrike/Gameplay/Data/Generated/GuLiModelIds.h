@@ -84,4 +84,5 @@ namespace GuLiModelIds
 	inline constexpr int32 ConstructionVehicle_Top_Turret_2x_Lvl1 = 8014;
 	inline constexpr int32 ResourceFactory_AccessRamp = 8015;
 	inline constexpr int32 GroundSeatPlaceholder = 8016;
+	inline constexpr int32 QuadrupedMinerBody = 8017;
 }

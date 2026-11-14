@@ -25,6 +25,7 @@ inline FGuLiResolvedSkillProfile Profile(const GuLiNet::Army::Profile& P,EGuLiTe
     V.SkillId=FName(UTF8_TO_TCHAR(P.Skill.c_str()));V.ExecutorId=FName(UTF8_TO_TCHAR(P.Executor.c_str()));
     for (const auto& T:P.Tags) V.Tags.AddTag(FGameplayTag::RequestGameplayTag(FName(UTF8_TO_TCHAR(T.c_str())),false));
     V.Damage=P.Damage;V.AttackRatePerSecond=P.Rate;V.RangeCentimeters=P.Range;V.ProjectileCount=P.Count;
+    V.BurstRoundCount=P.BurstRounds;V.BurstRestSeconds=P.BurstRest;
     V.ProjectileSpeedCentimetersPerSecond=P.Speed;V.ProjectileLifetimeSeconds=P.Lifetime;V.ProjectileSweepRadiusCentimeters=P.Sweep;V.ProjectileSpreadAngleDegrees=P.Spread;
     V.bUnlocked=P.Unlocked;V.bEquipped=P.Equipped;V.TriggerMode=P.Active?EGuLiWeaponTriggerMode::Active:EGuLiWeaponTriggerMode::Automatic;V.Revision=Revision;return V;
 }

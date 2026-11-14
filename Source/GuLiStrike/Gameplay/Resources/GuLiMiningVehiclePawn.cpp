@@ -10,6 +10,7 @@
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 #include "Gameplay/Resources/GuLiMiningPresentationComponent.h"
+#include "Gameplay/Resources/GuLiQuadrupedMinerPresentation.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackComponent.h"
@@ -200,7 +201,11 @@ void AGuLiMiningVehiclePawn::SetEngineeringPresentationVisible(bool bVisible)
 {
 	bVisible=bVisible && GuLiClientPresentation::CanPresent(GetWorld());
 	MovementPresentation->SetPresentationVisible(bVisible);
-	if (AActor* Child = VehiclePresentation->GetChildActor()) Child->SetActorHiddenInGame(!bVisible);
+	if (AActor* Child = VehiclePresentation->GetChildActor())
+    {
+        Child->SetActorHiddenInGame(!bVisible);
+        if (auto* Quadruped=Cast<AGuLiQuadrupedMinerPresentation>(Child)) Quadruped->SetPresentationVisible(bVisible);
+    }
 }
 
 void AGuLiMiningVehiclePawn::TickMovingToCluster()
@@ -269,8 +274,8 @@ bool AGuLiMiningVehiclePawn::CanMineTargetFrom(const FVector& Target, const FTra
 {
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_Visibility);
     if (Target.ContainsNaN() || !Pose.IsValid()) return false;
-    FVector Left, Right;
-    if (!MiningPresentation->CalculateMuzzles(Target, Pose, Left, Right)) return false;
+    FVector Muzzle;
+    if (!MiningPresentation->CalculateMuzzle(Pose, Muzzle)) return false;
     const auto Base=GetResourceSubsystem()->GetMiningVisibilityParams();
     TSharedPtr<const FMiningVisibilityCache> Query;
     {
@@ -288,16 +293,13 @@ bool AGuLiMiningVehiclePawn::CanMineTargetFrom(const FVector& Target, const FTra
             for (const auto* Actor:Actors) {Next->Actors.Add(Actor);Next->Params.AddIgnoredActor(Actor);}
             MiningVisibilityCache=Next;Query=MoveTemp(Next);
         }
-        // The immutable lease keeps the exact filter alive through both traces.
+        // The immutable lease keeps the exact filter alive through the central trace.
         // Proxy replacement, registration/order changes and child replacement
         // are observed above on every query, including weak serial validation.
     }
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiMiner_VisibilityQueries);
-    for (const FVector& Muzzle : {Left, Right})
-    {
-        // Distance does not limit extraction. The reserved slot gates work; beams reach the target.
-        if (GetWorld()->LineTraceTestByChannel(Muzzle, Target, ECC_Visibility, Query->Params)) return false;
-    }
+    // The reserved slot gates extraction; the central emitter has no distance clamp.
+    if (GetWorld()->LineTraceTestByChannel(Muzzle, Target, ECC_Visibility, Query->Params)) return false;
     return true;
 }
 
@@ -554,12 +556,11 @@ void AGuLiMiningVehiclePawn::OnRep_Presentation()
     check(PresentationDefinition.ActorClass);
 	MovementPresentation->ReleaseVisual();
     VehiclePresentation->SetRelativeScale3D(FVector(PresentationDefinition.Scale));
-    VehiclePresentation->SetRelativeLocation(FVector(-17.62378f * PresentationDefinition.Scale, 0,
-        -GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - 3.2254f * PresentationDefinition.Scale));
+    VehiclePresentation->SetRelativeLocation(FVector(0, 0, -GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
     VehiclePresentation->SetChildActorClass(PresentationDefinition.ActorClass);
     UGuLiModelPresentationComponent::InstallForPresentationActor(VehiclePresentation->GetChildActor());
     const bool bInitialized = MiningPresentation->InitializePresentation(VehiclePresentation->GetChildActor());
-    checkf(bInitialized, TEXT("Mining presentation must provide both collectors, muzzles and StartMiningAt/StopMining."));
+    checkf(bInitialized, TEXT("Mining presentation requires the quadruped mesh, VAT data and central muzzle."));
     TravelBounds = FBox(ForceInit);
     TInlineComponentArray<UMeshComponent*> Meshes(VehiclePresentation->GetChildActor());
     for (UMeshComponent* VisualMesh : Meshes)

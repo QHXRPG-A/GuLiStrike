@@ -75,6 +75,7 @@ bool GuLiCommanderSkillCatalog::Resolve(const UGuLiCommanderDataSettings* Settin
 			Config.ProjectileSweepRadiusCentimeters = Row->ProjectileSweepRadiusCentimeters;
 			Config.ProjectileSpreadAngleDegrees = Row->ProjectileSpreadAngleDegrees;
 			Config.ProjectileCount = Row->ProjectileCount > 0 ? Row->ProjectileCount : 1;
+			Config.BurstRoundCount = Row->BurstRoundCount; Config.BurstRestSeconds = Row->BurstRestSeconds;
 		}
 		if (Error.IsEmpty() && Settings)
 		{

@@ -1,4 +1,5 @@
 #include "Gameplay/Presentation/GuLiMechanicalAnimation.h"
+#include "Gameplay/Presentation/GuLiRecoilVAT.h"
 
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -25,6 +26,8 @@ FGuLiMechanicalAnimationConfig FGuLiMechanicalAnimationConfig::FromStaticMesh(co
 {
 	FGuLiMechanicalAnimationConfig C;
 	if (!Mesh || !FMath::IsFinite(Scale) || Scale <= 0.0f) return C;
+	C.RecoilVAT = GuLiRecoilVAT::Find(Mesh);
+	C.ModelScale = Scale;
 	const auto* Gun = Mesh->FindSocket(TEXT("Rigid_GunPitch_01"));
 	const auto* Muzzle = Mesh->FindSocket(TEXT("FX_Muzzle_Basic_01"));
 	if (!Gun || !Muzzle) return C;
@@ -41,6 +44,12 @@ FGuLiMechanicalAnimationConfig FGuLiMechanicalAnimationConfig::FromStaticMesh(co
 		C.UpperPivot = Upper->RelativeLocation * Scale;
 		C.GunPivots[1] = Gun2->RelativeLocation * Scale;
 		C.BasicMuzzles[1] = SocketTransform(*Muzzle2, Scale);
+		if (C.RecoilVAT && C.RecoilVAT->IsValidDefinition())
+			for (int32 Side=0;Side<2;++Side)
+			{
+				C.GunPivots[Side]=C.RecoilVAT->GunPivots[Side]*Scale;
+				C.BasicMuzzles[Side].SetLocation(C.RecoilVAT->ReferenceMuzzles[Side]*Scale);
+			}
 		for (int32 Side = 0; Side < 2; ++Side)
 			if (const auto* Socket = Mesh->FindSocket(FName(*FString::Printf(TEXT("FX_Missile_%02d"), Side + 1))))
 				C.MissileMuzzles[Side] = SocketTransform(*Socket, Scale);
@@ -189,10 +198,12 @@ bool GuLiMechanicalAnimation::ResolveHoverNozzle(const FGuLiMechanicalAnimationC
 void GuLiMechanicalAnimation::ConfigureOverlay(UInstancedStaticMeshComponent& Component, UMaterialInterface* Material)
 {
 	const auto Config = FGuLiMechanicalAnimationConfig::FromStaticMesh(Component.GetStaticMesh(), 1.0f);
-	if (Material && Config.IsEnabled())
+	GuLiRecoilVAT::ConfigureBounds(Component);
+	if (Material && (Config.IsEnabled() || Config.RecoilVAT))
 	{
 		auto* Instance = UMaterialInstanceDynamic::Create(Material, &Component);
-		Instance->SetScalarParameterValue(TEXT("RigidKind"), Config.Model == EGuLiMechanicalModel::WarMachine ? 1.0f : 2.0f);
+		if (Config.RecoilVAT) Config.RecoilVAT->ConfigureMaterial(*Instance);
+		Instance->SetScalarParameterValue(TEXT("RigidKind"), Config.Model == EGuLiMechanicalModel::WarMachine ? 1.0f : Config.Model == EGuLiMechanicalModel::Sweeper ? 2.0f : 0.f);
 		Instance->SetVectorParameterValue(TEXT("RigidUpperPivot"), FLinearColor(Config.UpperPivot.X, Config.UpperPivot.Y, Config.UpperPivot.Z, 0));
 		for (int32 I = 0; I < 4; ++I)
 		{
@@ -279,7 +290,7 @@ void GuLiMechanicalAnimation::StepLocomotion(const FGuLiMechanicalAnimationConfi
 float GuLiMechanicalAnimation::RecoilAt(const FGuLiMechanicalAnimationConfig& C,
 	const FGuLiMechanicalAnimationState& S, int32 Side, float Now)
 {
-	if (Side < 0 || Side > 1 || C.RecoilDistance <= 0) return 0;
+	if (C.RecoilVAT || Side < 0 || Side > 1 || C.RecoilDistance <= 0) return 0;
 	const float Age = Now - S.RecoilStartTime[Side];
 	if (Age < 0 || Age >= C.RecoilKickSeconds + C.RecoilReturnSeconds) return 0;
 	const auto Smooth = [](float T) { T = FMath::Clamp(T, 0.0f, 1.0f); return T*T*(3-2*T); };
@@ -305,8 +316,10 @@ bool GuLiMechanicalAnimation::ResolveMuzzle(const FGuLiMechanicalAnimationConfig
 	const FTransform& Neutral = bMissile ? C.MissileMuzzles[Side] : C.BasicMuzzles[Side];
 	FVector Point = Neutral.GetLocation();
 	FQuat Rotation = Neutral.GetRotation();
+	const auto Recoil=C.RecoilVAT?C.RecoilVAT->Evaluate(S,Now):FGuLiRecoilVATSample{};
 	if (!bMissile)
 	{
+		Point+=(Side==0?Recoil.LeftGunTranslation:Recoil.RightGunTranslation)*C.ModelScale;
 		Point -= Neutral.GetUnitAxis(EAxis::X) * RecoilAt(C, S, Side, Now);
 		const FQuat Pitch = FRotator(S.GunPitchDegrees[Side], 0, 0).Quaternion();
 		Point = C.GunPivots[Side] + Pitch.RotateVector(Point-C.GunPivots[Side]);
@@ -314,6 +327,8 @@ bool GuLiMechanicalAnimation::ResolveMuzzle(const FGuLiMechanicalAnimationConfig
 	}
 	if (C.Model == EGuLiMechanicalModel::WarMachine)
 	{
+		Point=C.UpperPivot+Recoil.UpperRotation.RotateVector(Point-C.UpperPivot)+Recoil.UpperTranslation*C.ModelScale;
+		Rotation=Recoil.UpperRotation*Rotation;
 		const float YawDegrees = S.bInitialized ? FMath::FindDeltaAngleDegrees(Root.Rotator().Yaw, S.UpperYawDegrees) : 0;
 		const FQuat Yaw = FRotator(0, YawDegrees, 0).Quaternion();
 		Point = C.UpperPivot + Yaw.RotateVector(Point-C.UpperPivot);

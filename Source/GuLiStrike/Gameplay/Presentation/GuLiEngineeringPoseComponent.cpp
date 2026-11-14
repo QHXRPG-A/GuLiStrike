@@ -103,7 +103,9 @@ void UGuLiEngineeringPoseComponent::ExternalStateApplied()
 	{
 		DisplacementRevision = Control->GetState().DisplacementRevision;
 		bPhased = Control->IsPhased();
+		bDisplacementReset=true;
 		ResetToAuthority();
+		bDisplacementReset=false;
 	}
 }
 

@@ -7,7 +7,7 @@ namespace GuLiNet::Army
 {
 inline constexpr const char* StateCapability="army_state";
 inline constexpr const char* LinkCapability="army_rules";
-inline constexpr std::uint32_t Version=1;
+inline constexpr std::uint32_t Version=2;
 struct Slot
 {
     std::uint16_t Unit=0;std::string Name;
@@ -40,6 +40,8 @@ struct Profile
     std::vector<std::string> Tags;
     float Damage=0,Rate=0,Range=0,Speed=0,Lifetime=0,Sweep=0,Spread=0;
     std::int32_t Count=1,MaximumCount=INT32_MAX;
+    std::int32_t BurstRounds=0;
+    float BurstRest=0;
     bool Default=false,Unlocked=true,Equipped=true,Active=false;
 };
 struct Card

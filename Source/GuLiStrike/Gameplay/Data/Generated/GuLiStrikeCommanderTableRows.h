@@ -319,6 +319,14 @@ struct FGuLiStrikeCommanderUnitSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
 	int32 ProjectileCount = 0;
 
+	/** BurstRoundCount (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	int32 BurstRoundCount = 0;
+
+	/** BurstRestSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	float BurstRestSeconds = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeCommander_WeaponMounts 的行结构（源: GuLiStrikeSecondaryWeapons.xlsx / WeaponMounts）。 */

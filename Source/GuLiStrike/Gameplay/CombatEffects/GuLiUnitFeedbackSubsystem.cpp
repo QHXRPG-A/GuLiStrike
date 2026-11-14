@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+#include "Gameplay/Resources/GuLiQuadrupedMinerPresentation.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
@@ -196,7 +197,10 @@ void UGuLiUnitFeedbackSubsystem::FlashActor(AActor* Actor, float HealthFraction)
 		}
 		Hit->ExpireTime = Now + HitDuration;
 		Mesh->SetCustomPrimitiveDataFloat(HitTimeCustomDataIndex, Now);
-		Mesh->SetOverlayMaterial(HitMaterial);
+		Hit->AppliedMaterial=HitMaterial;
+		if (const auto* VAT=Cast<UGuLiMiningVATMeshComponent>(Mesh); VAT && VAT->Animation && VAT->Animation->HitMaterial)
+			Hit->AppliedMaterial=VAT->Animation->HitMaterial;
+		Mesh->SetOverlayMaterial(Hit->AppliedMaterial);
 	}
 }
 
@@ -210,7 +214,7 @@ void UGuLiUnitFeedbackSubsystem::ClearActorFlash(AActor* Actor)
 		UMeshComponent* Mesh = Hit.Mesh.Get();
 		if (!Mesh || Mesh->GetOwner() == Actor || (Mesh->GetOwner() && Mesh->GetOwner()->IsChildActor() && Mesh->GetOwner()->GetParentActor() == Actor))
 		{
-			if (Mesh && Mesh->GetOverlayMaterial() == HitMaterial) Mesh->SetOverlayMaterial(Hit.PreviousMaterial);
+			if (Mesh && Mesh->GetOverlayMaterial() == Hit.AppliedMaterial) Mesh->SetOverlayMaterial(Hit.PreviousMaterial);
 			ActiveHits.RemoveAtSwap(Index);
 		}
 	}
@@ -388,7 +392,7 @@ void UGuLiUnitFeedbackSubsystem::Tick(float DeltaTime)
 		UMeshComponent* Mesh = Hit.Mesh.Get();
 		if (!Mesh || Now >= Hit.ExpireTime || (Mesh->GetOwner() && Mesh->GetOwner()->IsHidden()))
 		{
-			if (Mesh && Mesh->GetOverlayMaterial() == HitMaterial) Mesh->SetOverlayMaterial(Hit.PreviousMaterial);
+			if (Mesh && Mesh->GetOverlayMaterial() == Hit.AppliedMaterial) Mesh->SetOverlayMaterial(Hit.PreviousMaterial);
 			ActiveHits.RemoveAtSwap(Index);
 		}
 	}
@@ -416,7 +420,7 @@ void UGuLiUnitFeedbackSubsystem::Deinitialize()
 	WreckMaterial = nullptr;
 	if (LoadHandle) { LoadHandle->CancelHandle(); LoadHandle.Reset(); }
 	for (const auto& Hit : ActiveHits)
-		if (UMeshComponent* Mesh = Hit.Mesh.Get(); Mesh && Mesh->GetOverlayMaterial() == HitMaterial) Mesh->SetOverlayMaterial(Hit.PreviousMaterial);
+		if (UMeshComponent* Mesh = Hit.Mesh.Get(); Mesh && Mesh->GetOverlayMaterial() == Hit.AppliedMaterial) Mesh->SetOverlayMaterial(Hit.PreviousMaterial);
 	for (const auto& Active : ActiveExplosions)
 		if (IsValid(Active.Component))
 		{

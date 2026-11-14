@@ -58,6 +58,10 @@ bool FGuLiSkillResolver::ValidateCatalog(const TArray<FGuLiSkillDefinition>& Def
 			|| !ValidAttribute(Row.Damage, 0) || !ValidAttribute(Row.AttackRatePerSecond, 1) || !ValidAttribute(Row.RangeCentimeters, 2))
 		{ OutError = FString::Printf(TEXT("Invalid/duplicate UnitSkills row %s (finite nonnegative; damage<=1e9, rate<=30, range<=1e6)."), *ConfigKey); return false; }
 		const auto* Definition = FindDefinition(Definitions, Row.SkillId);
+		if (Row.BurstRoundCount<0 || Row.BurstRoundCount>1024 || !FMath::IsFinite(Row.BurstRestSeconds)
+			|| Row.BurstRestSeconds<0 || Row.BurstRestSeconds>60
+			|| ((Row.BurstRoundCount==0)!=(Row.BurstRestSeconds==0)))
+		{ OutError=FString::Printf(TEXT("Invalid burst count/rest in UnitSkills row %s."),*ConfigKey); return false; }
 		if (!FMath::IsFinite(Row.ProjectileSpreadAngleDegrees)
 			|| Row.ProjectileSpreadAngleDegrees < 0.0f || Row.ProjectileSpreadAngleDegrees > 180.0f)
 		{ OutError = FString::Printf(TEXT("Invalid projectile spread in UnitSkills row %s (full cone angle must be finite and between 0 and 180 degrees)."), *ConfigKey); return false; }
@@ -264,6 +268,7 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 		{ OutError = TEXT("ProjectileCount must remain a positive int32; no clamp applied."); return false; }
 		auto& Profile = Result.AddDefaulted_GetRef();
 		Profile.ProjectileCount = static_cast<int32>(ProjectileCount);
+		Profile.BurstRoundCount = Config->BurstRoundCount; Profile.BurstRestSeconds = Config->BurstRestSeconds;
 		Profile.Team = Team; Profile.UnitTypeId = Default.UnitTypeId; Profile.SlotId = Default.SlotId;
 		Profile.SkillId = SelectedSkill; Profile.ExecutorId = Definition->ExecutorId; Profile.Tags = Definition->Tags;
 		Profile.bUnlocked = bUnlocked;

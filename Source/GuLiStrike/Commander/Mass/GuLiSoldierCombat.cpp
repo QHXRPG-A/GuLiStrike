@@ -94,7 +94,10 @@ bool GuLiSoldierCombat::IsProfileUsable(const FGuLiResolvedSkillProfile& Profile
 		&& FMath::IsFinite(Profile.Damage) && Profile.Damage > 0.0f
 		&& FMath::IsFinite(Profile.AttackRatePerSecond) && Profile.AttackRatePerSecond > 0.0f && Profile.AttackRatePerSecond <= 30.0f
 		&& FMath::IsFinite(Profile.RangeCentimeters) && Profile.RangeCentimeters > 0.0f
-		&& Profile.RangeCentimeters <= 1000000.0f;
+		&& Profile.RangeCentimeters <= 1000000.0f
+		&& Profile.BurstRoundCount>=0 && Profile.BurstRoundCount<=1024
+		&& FMath::IsFinite(Profile.BurstRestSeconds) && Profile.BurstRestSeconds>=0 && Profile.BurstRestSeconds<=60
+		&& ((Profile.BurstRoundCount==0)==(Profile.BurstRestSeconds==0));
 }
 
 void GuLiSoldierCombat::ReplaceProfile(const FGuLiResolvedSkillProfile& Previous,
@@ -150,6 +153,12 @@ FGuLiCombatStepMetrics GuLiSoldierCombat::CollectChannelAttacks(const TConstArra
 	{
 		if (!Source.Attack) continue;
 		FGuLiSoldierAttackState& State = *Source.Attack;
+		// A group counts trigger rounds, not projectiles. Retargeting cannot clear
+		// an outstanding rest, and inactivity never banks missed shots.
+		if (State.bBurstResting && SimulationSeconds+1.e-7>=State.BurstRestUntil)
+		{ State.bBurstResting=false; State.BurstRestUntil=0; State.BurstRoundsFired=0; }
+		if (!State.bBurstResting && State.ShotsFired>0 && SimulationSeconds-State.LastActiveSeconds>2.0)
+			State.BurstRoundsFired=0;
 		if (!Source.bAlive) { State.TargetId = {}; State.StopReason = EGuLiCombatStopReason::Dead; continue; }
 		if (!Source.SoldierId.IsValid() || !Source.Profile || !IsProfileUsable(*Source.Profile)
 			|| !GuLiCommanderProtocol::IsPlayableTeam(Source.Team) || Source.Location.ContainsNaN())
@@ -190,7 +199,8 @@ FGuLiCombatStepMetrics GuLiSoldierCombat::CollectChannelAttacks(const TConstArra
 			}
 		}
 		if (!Target) { State.StopReason = EGuLiCombatStopReason::NoTarget; continue; }
-		if (SimulationSeconds + 1.e-7 < State.NextFireSeconds)
+		State.LastActiveSeconds=SimulationSeconds;
+		if (SimulationSeconds + 1.e-7 < FMath::Max(State.NextFireSeconds,State.BurstRestUntil))
 		{ State.StopReason = EGuLiCombatStopReason::Cooldown; continue; }
 		if (Executors.Execute(Source, *Target, OutEvents))
 		{
@@ -203,6 +213,12 @@ FGuLiCombatStepMetrics GuLiSoldierCombat::CollectChannelAttacks(const TConstArra
 			State.NextFireSeconds = bOnlyStepRounding ? State.NextFireSeconds + Interval
 				: SimulationSeconds + Interval;
 			State.StopReason = EGuLiCombatStopReason::Fired;
+			State.LastRoundSeconds=SimulationSeconds;
+			if (Source.Profile->BurstRoundCount>0 && ++State.BurstRoundsFired>=Source.Profile->BurstRoundCount)
+			{
+				State.bBurstResting=true;
+				State.BurstRestUntil=SimulationSeconds+Interval+Source.Profile->BurstRestSeconds;
+			}
 			++State.ShotsFired;
 			++Metrics.Shots;
 		}

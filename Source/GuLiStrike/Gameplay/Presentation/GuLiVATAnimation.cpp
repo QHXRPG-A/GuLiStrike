@@ -166,7 +166,8 @@ void GuLiVATAnimation::StepAim(const UGuLiVATDefinition& D, const FGuLiVATPlayba
 }
 
 bool GuLiVATAnimation::ResolveMuzzle(const UGuLiVATDefinition& D, const FGuLiVATPlayback& P,
-	const FGuLiMechanicalAnimationState& Aim, const FTransform& Root, int32 Side, FTransform& Out)
+	const FGuLiMechanicalAnimationState& Aim, const FTransform& Root, int32 Side, FTransform& Out,
+	const UGuLiRecoilVATDefinition* RecoilDefinition, double RecoilTime)
 {
 	if (!D.Muzzles.IsValidIndex(Side)) return false;
 	const auto& M = D.Muzzles[Side];
@@ -175,11 +176,14 @@ bool GuLiVATAnimation::ResolveMuzzle(const UGuLiVATDefinition& D, const FGuLiVAT
 	const int32 Top = D.Bones.IndexOfByPredicate([&D](const auto& B) { return B.Name == D.UpperBoneName; });
 	const FVector Upper = D.SampleBone(Top, Frame).TransformPosition(D.UpperPivot);
 	const FVector Pivot = Delta.TransformPosition(M.PitchPivot);
-	FVector Position = Delta.TransformPosition(M.ReferencePosition);
+	const auto Recoil=RecoilDefinition?RecoilDefinition->Evaluate(Aim,RecoilTime):FGuLiRecoilVATSample{};
+	FVector Position = Delta.TransformPosition(M.ReferencePosition+(Side==0?Recoil.LeftGunTranslation:Recoil.RightGunTranslation));
 	FVector Direction = Delta.TransformVectorNoScale(M.ReferenceDirection);
 	const FQuat Pitch = FRotator(Aim.GunPitchDegrees[Side], 0, 0).Quaternion();
 	Position = Pivot + Pitch.RotateVector(Position - Pivot);
 	Direction = Pitch.RotateVector(Direction);
+	Position=Upper+Recoil.UpperRotation.RotateVector(Position-Upper)+Recoil.UpperTranslation;
+	Direction=Recoil.UpperRotation.RotateVector(Direction);
 	const FQuat Yaw = FRotator(0, FMath::FindDeltaAngleDegrees(Root.Rotator().Yaw, Aim.UpperYawDegrees), 0).Quaternion();
 	Position = Upper + Yaw.RotateVector(Position - Upper);
 	Direction = Yaw.RotateVector(Direction);

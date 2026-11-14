@@ -259,11 +259,19 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	FTransform MechanicalMuzzle;
 	if (VAT)
 	{
+		FTransform VATRoot=Request.SourceTransform;
+		VATRoot.SetScale3D(FVector(Definition->PresentationScale));
 		if (!GuLiVATAnimation::ResolveMuzzle(*VAT, Request.VATPlayback, Request.MechanicalPose,
-			Request.SourceTransform, MuzzleIndex, MechanicalMuzzle)) return;
+			VATRoot, MuzzleIndex, MechanicalMuzzle, Definition->MechanicalAnimation.RecoilVAT, ShotTime)) return;
 		Launch.Position = MechanicalMuzzle.GetLocation();
 		Launch.MuzzleOffset = Request.SourceTransform.InverseTransformPosition(Launch.Position);
 		Launch.Direction = MechanicalMuzzle.GetUnitAxis(EAxis::X);
+		// Large cosmetic recoil must not add a new ballistic aiming error.
+		FGuLiMechanicalAnimationState StableAim=Request.MechanicalPose;
+		StableAim.RecoilStartTime[0]=StableAim.RecoilStartTime[1]=-1000.f;
+		FTransform AimMuzzle;
+		if (GuLiVATAnimation::ResolveMuzzle(*VAT,Request.VATPlayback,StableAim,VATRoot,MuzzleIndex,AimMuzzle))
+			Launch.Direction=AimMuzzle.GetUnitAxis(EAxis::X);
 	}
 	if (Mechanical)
 	{
@@ -273,6 +281,14 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 		Launch.MuzzleOffset = Request.SourceTransform.InverseTransformPosition(Launch.Position);
 		Launch.Direction = Mechanical->Model == EGuLiMechanicalModel::WarMachine
 			? MechanicalMuzzle.GetUnitAxis(EAxis::X) : (Target.Location - Launch.Position).GetSafeNormal();
+		if (Mechanical->RecoilVAT)
+		{
+			FGuLiMechanicalAnimationState StableAim=Request.MechanicalPose;
+			StableAim.RecoilStartTime[0]=StableAim.RecoilStartTime[1]=-1000.f;
+			FTransform AimMuzzle;
+			if (GuLiMechanicalAnimation::ResolveMuzzle(*Mechanical,StableAim,Request.SourceTransform,
+				Request.Context.WeaponBinding.SlotId,MuzzleIndex,ShotTime,AimMuzzle)) Launch.Direction=AimMuzzle.GetUnitAxis(EAxis::X);
+		}
 	}
 	const FVector AimDirection = Launch.Direction.GetSafeNormal();
 	if (AimDirection.ContainsNaN() || AimDirection.IsNearlyZero()) return;
@@ -281,6 +297,9 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiComba
 	// Acquisition range only gates firing. Once launched, the frozen lifetime governs straight flight.
 	Launch.MaximumDistance = Launch.Speed * Launch.Lifetime;
 	Launch.SweepRadius = Request.Motion.SweepRadius; Launch.ServerTime = BattleSeconds();
+	// The Hybrid launch recipe outlives this attack batch. Preserve the accepted
+	// barrel there so both local and remote clients receive the same recoil cue.
+	Launch.GroundMuzzleIndex = MuzzleIndex;
 	if (!ProjectilePool->Launch(Launch).IsValid()) return;
 	FGuLiCombatShotCue& Cue = OutCues.AddDefaulted_GetRef();
 	Cue.MatchEpoch = Epoch; Cue.ShotId = Request.Context.ShotId;

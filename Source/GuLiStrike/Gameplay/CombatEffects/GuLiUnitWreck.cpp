@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiUnitWreck.h"
+#include "Gameplay/Resources/GuLiQuadrupedMinerPresentation.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
@@ -85,7 +86,14 @@ bool AGuLiUnitWreck::InitializeFromActor(AActor* Source, UMaterialInterface* Mat
 			auto* Copy = NewObject<UStaticMeshComponent>(this);
 			Copy->SetStaticMesh(Static->GetStaticMesh());
 			if (bExcludedUnit) GuLiUnitRenderPolicy::ApplyReflectionExclusions(*Copy);
-			ConfigureVisual(Copy, Static->GetComponentTransform(), Material);
+			const auto* VAT=Cast<UGuLiMiningVATMeshComponent>(Static);
+            UMaterialInterface* Appearance=VAT && VAT->Animation && VAT->Animation->WreckMaterial ? VAT->Animation->WreckMaterial.Get() : Material;
+            const auto& PrimitiveData=Static->GetCustomPrimitiveData().Data;
+            for (int32 I=0;I<PrimitiveData.Num();++I) Copy->SetCustomPrimitiveDataFloat(I,PrimitiveData[I]);
+            // Wrecks retain the captured pose and have no subsequent animation velocity.
+            if (VAT) for (int32 I=0;I<3;++I)
+                Copy->SetCustomPrimitiveDataFloat(22+I,PrimitiveData.IsValidIndex(19+I)?PrimitiveData[19+I]:0.f);
+            ConfigureVisual(Copy, Static->GetComponentTransform(), Appearance);
 		}
 		else if (auto* Skeletal = Cast<USkeletalMeshComponent>(SourceMesh))
 		{

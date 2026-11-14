@@ -63,6 +63,7 @@ namespace GuLiCommanderPresentation
 		TEXT("Present committed local manual Mass poses without network publication or playback-buffer delay."));
 	void DisableUnitDistanceCulling(UInstancedStaticMeshComponent& Component)
 	{
+		GuLiRecoilVAT::ConfigureBounds(Component);
 		Component.SetCullDistances(0, 0);
 		Component.SetCullDistance(0.0f);
 		Component.bNeverDistanceCull = true;
@@ -435,6 +436,7 @@ UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::EnsureUnitTeamBa
 	Component->SetupAttachment(SceneRoot);
 	ConfigureUnitInstanceComponent(*Component);
 	Component->SetStaticMesh(Model->GetStaticMesh());
+	GuLiRecoilVAT::ConfigureBounds(*Component);
 	for (int32 Slot = 0; Slot < Model->GetNumMaterials(); ++Slot)
 		Component->SetMaterial(Slot, Model->GetMaterial(Slot));
 	Component->SetVisibility(Model->IsVisible());
@@ -555,6 +557,7 @@ void AGuLiCommanderPresentationActor::InitializeUnitInstanceBatches()
 		if (Definition.Model)
 		{
 			Component->SetStaticMesh(Definition.Model);
+			GuLiRecoilVAT::ConfigureBounds(*Component);
 			Component->EmptyOverrideMaterials();
 		}
 		else if (UnitInstances->GetStaticMesh())

@@ -18,6 +18,11 @@ struct GULISTRIKE_API FGuLiSoldierAttackState
 	double PausedCooldownFraction = 1.0;
 	bool bRatePaused = false;
 	uint64 ShotsFired = 0;
+	uint16 BurstRoundsFired = 0;
+	double BurstRestUntil = 0.0;
+	bool bBurstResting = false;
+	double LastRoundSeconds = -1.0;
+	double LastActiveSeconds = -1.0;
 	EGuLiCombatStopReason StopReason = EGuLiCombatStopReason::NoTarget;
 };
 

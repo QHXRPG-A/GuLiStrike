@@ -69,9 +69,10 @@ struct FGuLiCommanderBufferedSoldierPose
 // 每个 SoldierId 的客户端缓存：远端保留有限历史样本，本机手动移动使用只读权威姿态。
 struct FGuLiCommanderPresentedSoldier
 {
-	struct FRecoilCue { float ServerTime = 0; float FromCentimeters = 0; uint8 Side = 0; };
+	struct FRecoilCue { float ServerTime = 0; float FromCentimeters = 0; uint8 Side = 0; bool bMissile = false; };
 	FGuLiMechanicalAnimationState MechanicalPose;
 	FGuLiVATPlayback VATPlayback, PreviousVATPlayback;
+	FGuLiRecoilVATPlayback RecoilPlayback;
 	FGuLiMechanicalVisualState MechanicalVisual;
 	FGuLiMechanicalAnimationFrame MechanicalFrame, PreviousMechanicalFrame;
 	TArray<FRecoilCue> PendingRecoil;

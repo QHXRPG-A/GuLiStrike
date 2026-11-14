@@ -39,6 +39,7 @@ bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
         GuLiNet::Army::Profile P;P.Key={Row.UnitTypeId,GuLiArmyBridge::Text(Row.SlotId)};P.Skill=GuLiArmyBridge::Text(Row.SkillId);P.Executor=GuLiArmyBridge::Text(Def->ExecutorId);
         TArray<FGameplayTag> Tags;Def->Tags.GetGameplayTagArray(Tags);for (auto T:Tags) P.Tags.push_back(GuLiArmyBridge::Text(T.GetTagName()));
         P.Damage=Row.Damage;P.Rate=Row.AttackRatePerSecond;P.Range=Row.RangeCentimeters;P.Count=Row.ProjectileCount;
+        P.BurstRounds=Row.BurstRoundCount;P.BurstRest=Row.BurstRestSeconds;
         P.Speed=Row.ProjectileSpeedCentimetersPerSecond;P.Lifetime=Row.ProjectileLifetimeSeconds;P.Sweep=Row.ProjectileSweepRadiusCentimeters;P.Spread=Row.ProjectileSpreadAngleDegrees;
         P.Default=Row.bDefault;P.Unlocked=Row.bInitiallyUnlocked;P.Active=Row.TriggerMode==EGuLiWeaponTriggerMode::Active;
         const auto* Active=ActiveCatalog?ActiveCatalog->FindUnitSkill(Row.UnitTypeId):nullptr;

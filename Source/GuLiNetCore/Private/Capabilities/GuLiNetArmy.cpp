@@ -49,6 +49,7 @@ void WriteProfile(Writer& W,const Profile& P)
     WriteSlot(W,P.Key);W.Text(P.Skill);W.Text(P.Executor);Texts(W,P.Tags);
     for (float V:{P.Damage,P.Rate,P.Range,P.Speed,P.Lifetime,P.Sweep,P.Spread}) W.F32(V);
     W.U32(std::uint32_t(P.Count));W.U32(std::uint32_t(P.MaximumCount));W.U8(P.Default);W.U8(P.Unlocked);W.U8(P.Equipped);W.U8(P.Active);
+    W.U32(std::uint32_t(P.BurstRounds));W.F32(P.BurstRest);
 }
 bool ReadProfile(Reader& R,Profile& P)
 {
@@ -56,7 +57,11 @@ bool ReadProfile(Reader& R,Profile& P)
     if (!ReadSlot(R,P.Key) || !R.Text(P.Skill,192) || !R.Text(P.Executor,192) || !Texts(R,P.Tags)) return false;
     for (auto* V:{&P.Damage,&P.Rate,&P.Range,&P.Speed,&P.Lifetime,&P.Sweep,&P.Spread}) if (!R.F32(*V)) return false;
     if (!R.U32(C) || !R.U32(M) || C>INT32_MAX || M>INT32_MAX || !C || C>M) return false;P.Count=std::int32_t(C);P.MaximumCount=std::int32_t(M);
-    return Bool(R,P.Default) && Bool(R,P.Unlocked) && Bool(R,P.Equipped) && Bool(R,P.Active);
+    std::uint32_t Burst;
+    if (!Bool(R,P.Default) || !Bool(R,P.Unlocked) || !Bool(R,P.Equipped) || !Bool(R,P.Active)
+        || !R.U32(Burst) || Burst>1024 || !R.F32(P.BurstRest)) return false;
+    P.BurstRounds=std::int32_t(Burst);
+    return std::isfinite(P.BurstRest) && P.BurstRest>=0 && P.BurstRest<=60 && ((P.BurstRounds==0)==(P.BurstRest==0));
 }
 bool Matches(const Selector& S,const Slot& K)
 {return S.SlotName==K.Name && (S.Units.empty() || std::find(S.Units.begin(),S.Units.end(),K.Unit)!=S.Units.end());}
@@ -143,6 +148,8 @@ bool ValidateCatalog(const Catalog& C,std::string& Error)
     {
         if (!P.Key.Unit || !Name(P.Key.Name) || !Name(P.Skill) || !Name(P.Executor) || !Keys.emplace(P.Key,P.Skill).second
             || !ValidNumber(P.Damage,0) || !ValidNumber(P.Rate,1) || !ValidNumber(P.Range,2) || P.Count<1 || P.Count>P.MaximumCount
+            || P.BurstRounds<0 || P.BurstRounds>1024 || !std::isfinite(P.BurstRest) || P.BurstRest<0 || P.BurstRest>60
+            || ((P.BurstRounds==0)!=(P.BurstRest==0))
             || !ValidNumber(P.Speed,0) || !ValidNumber(P.Lifetime,0) || !ValidNumber(P.Sweep,0) || !ValidNumber(P.Spread,0) || P.Spread>180) return Fail();
         Defaults[P.Key]+=P.Default;
     }

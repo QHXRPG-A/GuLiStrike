@@ -1,0 +1,1053 @@
+{
+  "date": "2026-11-14",
+  "work_id": "WORK-20261114-001",
+  "verification": "partial",
+  "scope": "Authorized PIE structured runtime checks; no screenshots, viewport visual review, or new automated tests.",
+  "build": {
+    "editor": "GuLiStrikeEditor Win64 Development succeeded",
+    "coordinator": "Release succeeded",
+    "loaded_build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+  },
+  "source_checks": {
+    "python_ast": "passed",
+    "WarMachine": {
+      "closed_loops": true,
+      "samples": 66,
+      "float_texture_error": 0,
+      "rigid_part_triangles": [
+        {
+          "lod": 0,
+          "vertices": 21315,
+          "triangles": 38843,
+          "parts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "mixed_triangles": 0
+        },
+        {
+          "lod": 1,
+          "vertices": 5905,
+          "triangles": 9687,
+          "parts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "mixed_triangles": 0
+        },
+        {
+          "lod": 2,
+          "vertices": 560,
+          "triangles": 776,
+          "parts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "mixed_triangles": 0
+        }
+      ],
+      "gun_housing_axial_overlap_at_peak_cm": [
+        607.5876970087929,
+        607.7099118779266
+      ],
+      "source_sha256": "7b8ddc4233ae9383c404b7baa772db17c8472885ea40fb81ecc227975555f9fc"
+    },
+    "Pioneer": {
+      "closed_loops": true,
+      "samples": 66,
+      "float_texture_error": 0,
+      "rigid_part_triangles": [
+        {
+          "lod": 0,
+          "vertices": 20290,
+          "triangles": 37338,
+          "parts": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "mixed_triangles": 0
+        },
+        {
+          "lod": 1,
+          "vertices": 9301,
+          "triangles": 15905,
+          "parts": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "mixed_triangles": 0
+        },
+        {
+          "lod": 2,
+          "vertices": 1407,
+          "triangles": 1943,
+          "parts": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "mixed_triangles": 0
+        }
+      ],
+      "gun_housing_axial_overlap_at_peak_cm": [
+        217.78591753880175,
+        217.7859137241045
+      ],
+      "source_sha256": "99d3f906233aca66047fb4e76f1d97cc202d16a225df7ccf16e9ed29425a7324"
+    },
+    "miner": {
+      "triangles": [
+        9854,
+        4614,
+        2676
+      ],
+      "rest_mesh_uv_material_data_unchanged": true,
+      "muzzle_loop_closed": true,
+      "clips": [
+        {
+          "name": "Idle",
+          "first": 0,
+          "count": 1,
+          "duration": 1
+        },
+        {
+          "name": "Walk",
+          "first": 1,
+          "count": 29,
+          "duration": 1.1666666666666667
+        },
+        {
+          "name": "Mining",
+          "first": 30,
+          "count": 73,
+          "duration": 2.46
+        }
+      ]
+    }
+  },
+  "assets": {
+    "success": true,
+    "assets": [
+      "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition",
+      "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation",
+      "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+      "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+      "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/DA_Recoil.DA_Recoil",
+      "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Materials/MI_Recoil_0.MI_Recoil_0",
+      "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Materials/MI_Recoil_1.MI_Recoil_1",
+      "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+      "/Game/GuLiStrike/Models/TeamColor_v1/WM01/Materials/Parents/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+      "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust.M_UnitWreckRust",
+      "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced.M_UnitHitWhite_Instanced",
+      "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT.MF_Pioneer_BoneVAT",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/DA_Recoil.DA_Recoil",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Materials/MI_Recoil_0.MI_Recoil_0",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Materials/MI_Recoil_1.MI_Recoil_1",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Materials/MI_Recoil_2.MI_Recoil_2",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Materials/MI_Recoil_3.MI_Recoil_3",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Hit.M_Pioneer_Hit",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Wreck.M_Pioneer_Wreck",
+      "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Phase.M_Pioneer_Phase",
+      "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD0.T_Position_LOD0",
+      "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD0.T_Normal_LOD0",
+      "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD1.T_Position_LOD1",
+      "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD1.T_Normal_LOD1",
+      "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD2.T_Position_LOD2",
+      "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD2.T_Normal_LOD2",
+      "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Animations/DA_QuadrupedMiner_VAT.DA_QuadrupedMiner_VAT"
+    ],
+    "models": {
+      "WarMachine": {
+        "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+        "data": "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/DA_Recoil.DA_Recoil",
+        "triangles": [
+          38843,
+          9711,
+          776
+        ],
+        "fbx_render_triangles": [
+          38843,
+          9687,
+          776
+        ],
+        "geometry_unchanged": true,
+        "samples": 175,
+        "render_bounds_cm": [
+          [
+            -6073.357587594717,
+            -5871.370282907217,
+            -3691.993224878042
+          ],
+          [
+            5786.229413766592,
+            5871.370527047842,
+            8463.814618844717
+          ]
+        ],
+        "source_sha256": "7b8ddc4233ae9383c404b7baa772db17c8472885ea40fb81ecc227975555f9fc"
+      },
+      "Pioneer": {
+        "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+        "data": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/DA_Recoil.DA_Recoil",
+        "triangles": [
+          37338,
+          15905,
+          1944
+        ],
+        "fbx_render_triangles": [
+          37338,
+          15905,
+          1943
+        ],
+        "geometry_unchanged": true,
+        "samples": 66,
+        "render_bounds_cm": [
+          [
+            -412.74613410618315,
+            -494.70113593723784,
+            -182.2011656420933
+          ],
+          [
+            462.2816413083316,
+            494.70113593723784,
+            635.6949103513003
+          ]
+        ],
+        "source_sha256": "99d3f906233aca66047fb4e76f1d97cc202d16a225df7ccf16e9ed29425a7324"
+      },
+      "Miner": {
+        "data": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Animations/DA_QuadrupedMiner_VAT.DA_QuadrupedMiner_VAT",
+        "triangles": [
+          9854,
+          4614,
+          2676
+        ],
+        "walk_duration": 1.1666666269302368,
+        "mining_duration": 2.4600000381469727,
+        "mesh_unchanged": true,
+        "muzzle_samples": 103
+      }
+    },
+    "user_visual_acceptance": false
+  },
+  "materials": {
+    "materials": [
+      {
+        "path": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+        "success": true,
+        "compiled": true,
+        "details": "<Struct 'MaterialDiagnostics' (0x0000019FDBADBCC0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition\",\"/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation\"), expression_count: 131, texture_sample_count: 2, texture_object_parameter_count: 2, function_call_count: 1, scalar_parameter_count: 6, vector_parameter_count: 14}>"
+      },
+      {
+        "path": "/Game/GuLiStrike/Models/TeamColor_v1/WM01/Materials/Parents/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+        "success": true,
+        "compiled": true,
+        "details": "<Struct 'MaterialDiagnostics' (0x0000019FDCFFFFC0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition\",\"/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation\",\"/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask\"), expression_count: 155, texture_sample_count: 4, texture_object_parameter_count: 2, function_call_count: 2, scalar_parameter_count: 8, vector_parameter_count: 17}>"
+      },
+      {
+        "path": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+        "success": true,
+        "compiled": true,
+        "details": "<Struct 'MaterialDiagnostics' (0x0000019F1B27A300) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask\"), expression_count: 65, texture_sample_count: 4, texture_object_parameter_count: 2, function_call_count: 2, scalar_parameter_count: 9, vector_parameter_count: 2}>"
+      },
+      {
+        "path": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+        "success": true,
+        "compiled": true,
+        "details": "<Struct 'MaterialDiagnostics' (0x0000019F1DADB3C0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation\"), expression_count: 44, texture_sample_count: 2, texture_object_parameter_count: 2, function_call_count: 1, scalar_parameter_count: 5, vector_parameter_count: 0}>"
+      },
+      {
+        "path": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+        "success": true,
+        "compiled": true,
+        "details": "<Struct 'MaterialDiagnostics' (0x0000019F1DAD8480) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask\"), expression_count: 65, texture_sample_count: 4, texture_object_parameter_count: 2, function_call_count: 2, scalar_parameter_count: 9, vector_parameter_count: 2}>"
+      },
+      {
+        "path": "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+        "success": true,
+        "compiled": true,
+        "details": "<Struct 'MaterialDiagnostics' (0x0000019F1DADFFC0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BonePosition.T_Pioneer_BonePosition\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_BoneRotation.T_Pioneer_BoneRotation\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation\",\"/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Textures/T_Pioneer_LineMask.T_Pioneer_LineMask\"), expression_count: 65, texture_sample_count: 4, texture_object_parameter_count: 2, function_call_count: 2, scalar_parameter_count: 9, vector_parameter_count: 2}>"
+      }
+    ]
+  },
+  "glow": {
+    "success": true,
+    "systems": [
+      {
+        "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow",
+        "batch": false,
+        "lod": 0,
+        "layers": [
+          {
+            "emitter": "Glow",
+            "renderers": [
+              "Sprite"
+            ]
+          },
+          {
+            "emitter": "Flash",
+            "renderers": [
+              "Sprite"
+            ]
+          }
+        ],
+        "lifetime": 0.18,
+        "compile_errors": 0,
+        "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Reduced",
+        "batch": false,
+        "lod": 1,
+        "layers": [
+          {
+            "emitter": "Glow",
+            "renderers": [
+              "Sprite"
+            ]
+          },
+          {
+            "emitter": "Flash",
+            "renderers": [
+              "Sprite"
+            ]
+          }
+        ],
+        "lifetime": 0.18,
+        "compile_errors": 0,
+        "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Minimal",
+        "batch": false,
+        "lod": 2,
+        "layers": [
+          {
+            "emitter": "Flash",
+            "renderers": [
+              "Sprite"
+            ]
+          }
+        ],
+        "lifetime": 0.18,
+        "compile_errors": 0,
+        "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch",
+        "batch": true,
+        "lod": 0,
+        "layers": [
+          {
+            "emitter": "Glow",
+            "renderers": [
+              "Sprite"
+            ]
+          },
+          {
+            "emitter": "Flash",
+            "renderers": [
+              "Sprite"
+            ]
+          }
+        ],
+        "lifetime": 0.18,
+        "compile_errors": 0,
+        "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch_Reduced",
+        "batch": true,
+        "lod": 1,
+        "layers": [
+          {
+            "emitter": "Glow",
+            "renderers": [
+              "Sprite"
+            ]
+          },
+          {
+            "emitter": "Flash",
+            "renderers": [
+              "Sprite"
+            ]
+          }
+        ],
+        "lifetime": 0.18,
+        "compile_errors": 0,
+        "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch_Minimal",
+        "batch": true,
+        "lod": 2,
+        "layers": [
+          {
+            "emitter": "Flash",
+            "renderers": [
+              "Sprite"
+            ]
+          }
+        ],
+        "lifetime": 0.18,
+        "compile_errors": 0,
+        "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+      }
+    ],
+    "dynamic_lights": 0,
+    "visual_review": "Pending user",
+    "performance_measurement": "Not run"
+  },
+  "runtime": {
+    "burst_capture_samples": 501,
+    "burst_capture_seconds": 24.01600000000326,
+    "bursts": [
+      {
+        "unit_type": 1,
+        "soldier_id": 114,
+        "observed_rounds": 19,
+        "round_intervals_seconds": [
+          1.0,
+          1.031,
+          2.969,
+          0.984,
+          1.0,
+          1.016,
+          0.984,
+          1.016,
+          1.0,
+          1.0,
+          3.0,
+          1.0,
+          1.016,
+          0.984,
+          1.0,
+          1.031,
+          0.953,
+          1.032
+        ],
+        "rest_gaps_seconds": [
+          2.969,
+          3.0
+        ],
+        "polling_not_authority_timestamp": true
+      },
+      {
+        "unit_type": 2,
+        "soldier_id": 333,
+        "observed_rounds": 24,
+        "round_intervals_seconds": [
+          0.484,
+          2.516,
+          0.484,
+          0.516,
+          0.468,
+          2.532,
+          0.468,
+          0.532,
+          0.484,
+          2.516,
+          0.484,
+          0.516,
+          0.484,
+          2.484,
+          0.516,
+          0.484,
+          0.516,
+          2.531,
+          0.469,
+          0.484,
+          0.547,
+          2.453,
+          0.516
+        ],
+        "rest_gaps_seconds": [
+          2.516,
+          2.532,
+          2.516,
+          2.484,
+          2.531,
+          2.453
+        ],
+        "polling_not_authority_timestamp": true
+      }
+    ],
+    "final_capture_samples": 253,
+    "effect_counters": {
+      "ReceivedShots": 19506,
+      "WrittenShots": 0,
+      "DroppedShots": 11386,
+      "ShotsTooOld": 0,
+      "ShotsFromFuture": 0,
+      "ReceivedStates": 27630,
+      "RejectedStates": 11181,
+      "BurstsPlayed": 192,
+      "MachineGunImpactsPlayed": 1396,
+      "ImpactActive": 0,
+      "ImpactComponents": 0,
+      "ImpactBatchPublished": 1396,
+      "ImpactBatchFallbacks": 0,
+      "MuzzleActive": 0,
+      "MuzzleComponents": 0,
+      "MuzzleAccepted": 8120,
+      "MuzzleBorn": 175,
+      "MuzzleDuplicates": 0,
+      "MuzzleExpired": 0,
+      "MuzzlePoseUnresolved": 0,
+      "MuzzleTooOld": 0,
+      "MuzzleAdmissionLate": 0,
+      "MuzzleOffscreenRecycled": 7948,
+      "MuzzleBatchPublished": 175,
+      "MuzzleBatchFallbacks": 0,
+      "MuzzlePoseQueries": 11286,
+      "MuzzleLifeUploads": 26,
+      "MuzzlePoseUploads": 58,
+      "WingmanFlightActive": 0,
+      "WingmanFlightComponents": 0,
+      "WingmanFlightUploads": 0,
+      "SynthesizedGunShots": 0,
+      "ComponentCount": 0,
+      "LaserActive": 0,
+      "LaserCapacity": 0,
+      "LaserVisible": 0,
+      "GroundMachineGunLights": 0,
+      "MassTrailActive": 0,
+      "BulletTrailComponents": 0,
+      "BulletTrailArrayUploads": 1134,
+      "LastUpdateMilliseconds": 0.324,
+      "ClientFlightActorCapacity": 0,
+      "ClientFlightActorActive": 0,
+      "ClientFlightDataCapacity": 768,
+      "ClientFlightDataActive": 392,
+      "ClientFlightDataReuses": 7451,
+      "ClientFlightDataReleases": 7745,
+      "ClientFlightDataEpoch": 1,
+      "PoseCacheHits": 0,
+      "PoseCacheMisses": 11286,
+      "NiagaraArrayUploads": 0,
+      "UpgradeActive": 0,
+      "UpgradeVisible": 0,
+      "UpgradeComponents": 0,
+      "UpgradeVisibleParticles": 0,
+      "UpgradeUpdateMilliseconds": 0.0,
+      "MissileClusterComponents": 0,
+      "MissileParticleCapacity": 0,
+      "MissileFullTrails": 0,
+      "MissileClusterUpdateMilliseconds": 0.0022
+    },
+    "missile": {
+      "successful_launches": 17,
+      "held_frame": 72,
+      "return_frame_max": 163.4240264892578,
+      "neutral_after_return": true,
+      "samples": [
+        {
+          "wall_seconds": 2.375,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.422,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.468,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.515,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.562,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.625,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.672,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.718,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.765,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.828,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.875,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.922,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 2.968,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.015,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.062,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.109,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.156,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.203,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.25,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.297,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.343,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.39,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.437,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.484,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.531,
+          "minimum_frame": 72.0,
+          "maximum_frame": 72.0
+        },
+        {
+          "wall_seconds": 3.578,
+          "minimum_frame": 147.98707580566406,
+          "maximum_frame": 149.98704528808594
+        },
+        {
+          "wall_seconds": 3.625,
+          "minimum_frame": 147.98707580566406,
+          "maximum_frame": 149.98704528808594
+        },
+        {
+          "wall_seconds": 3.672,
+          "minimum_frame": 147.98707580566406,
+          "maximum_frame": 149.98704528808594
+        },
+        {
+          "wall_seconds": 3.718,
+          "minimum_frame": 147.98707580566406,
+          "maximum_frame": 149.98704528808594
+        },
+        {
+          "wall_seconds": 3.765,
+          "minimum_frame": 161.42405700683594,
+          "maximum_frame": 163.4240264892578
+        },
+        {
+          "wall_seconds": 3.812,
+          "minimum_frame": 161.42405700683594,
+          "maximum_frame": 163.4240264892578
+        },
+        {
+          "wall_seconds": 3.859,
+          "minimum_frame": 161.42405700683594,
+          "maximum_frame": 163.4240264892578
+        },
+        {
+          "wall_seconds": 3.906,
+          "minimum_frame": 161.42405700683594,
+          "maximum_frame": 163.4240264892578
+        },
+        {
+          "wall_seconds": 3.953,
+          "minimum_frame": 161.42405700683594,
+          "maximum_frame": 163.4240264892578
+        }
+      ]
+    },
+    "miners": {
+      "count": 16,
+      "all_ready": true,
+      "clip_samples": {
+        "1": 4768,
+        "2": 1670,
+        "0": 1578
+      },
+      "beam_visible_samples": 827,
+      "walk_cycle_seconds": 1.1666666666666667,
+      "mining_cycle_seconds": 2.46
+    }
+  },
+  "resolved_blockers": [
+    "Rebuilt coordinator for Army capability version 2.",
+    "Transport accepted Commander basic-attack muzzle cues through Hybrid projectile events, including launch barrel and mechanical clock rebasing.",
+    "Niagara vector input requires comma-separated components; authored positive 60cm bounds in six systems and verified batch mode."
+  ],
+  "restoration": {
+    "pie_cleanup": {
+      "active": false,
+      "error": "",
+      "room": "99918C394A22EEF243B41286D279DF5B",
+      "role": "Commander",
+      "editor_pid": 27916,
+      "logic_pid": 33988,
+      "coordinator_pid": 39740,
+      "logic_running": false,
+      "coordinator_running": false,
+      "session_directory": "",
+      "shutdown": [
+        {
+          "role": "logic",
+          "pid": 33988,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        },
+        {
+          "role": "coordinator",
+          "pid": 39740,
+          "forced": false,
+          "has_exit_code": true,
+          "exit_code": 0
+        }
+      ],
+      "cleanup_complete": true
+    },
+    "production_manifest_restored": true,
+    "production_manifest_sha256": "3cf5ab99a749bb1c3a8fcca4e1821166d372cffb7568829e3dc41c00473dae30",
+    "original_role_settings_restored": true,
+    "miner_note_import": {
+      "tables": [
+        {
+          "asset": "DT_GuLiStrikeCommander_Soldiers",
+          "source_rows": [
+            "DefaultSoldier",
+            "WM01",
+            "ElectromagneticMiner",
+            "ConstructionVehicle",
+            "SweeperSummon",
+            "BiZhiMao"
+          ],
+          "created": false,
+          "row_names": [
+            "DefaultSoldier",
+            "WM01",
+            "ElectromagneticMiner",
+            "ConstructionVehicle",
+            "SweeperSummon",
+            "BiZhiMao"
+          ],
+          "row_checks": {
+            "DefaultSoldier": true,
+            "WM01": true,
+            "ElectromagneticMiner": true,
+            "ConstructionVehicle": true,
+            "SweeperSummon": true,
+            "BiZhiMao": true
+          },
+          "imported": true
+        }
+      ],
+      "config_wired": [
+        "DT_GuLiStrikeCommander_Soldiers"
+      ],
+      "unwired": [],
+      "errors": [],
+      "preflight": {
+        "tables": [
+          "DT_GuLiStrikeCommander_Soldiers"
+        ],
+        "native_schema": "loaded fields verified",
+        "models": "validated when referenced"
+      },
+      "part_ids": {},
+      "orphan_tables": []
+    }
+  },
+  "final_editor": {
+    "weapon_slot_rules": [
+      "(UnitTypeId=2,SlotId=\"MissileLauncher\",bInitiallyUnlocked=False)"
+    ],
+    "sha256": "6b7193987ab300fd709b75239ea0074e5e6d37b41b629bd419292643ad3475a2",
+    "dirty_content": [],
+    "dirty_maps": [],
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "success": true
+  },
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "notes": [
+      {
+        "label": "CommanderActionReview_red",
+        "location": [
+          0.0,
+          65100.0,
+          1249.9771118164062
+        ],
+        "editor_only": true
+      },
+      {
+        "label": "CommanderActionReview_blue",
+        "location": [
+          0.0,
+          -65100.0,
+          1249.9771118164062
+        ],
+        "editor_only": true
+      }
+    ],
+    "resource_layout_hash": "2f651358dde387ae695f3dc4fd200b4abcd1705a",
+    "initial_mining_vehicles_per_team": 8,
+    "mining_vehicle_unit_type_id": 3,
+    "miner": {
+      "Name": "ElectromagneticMiner",
+      "Id": 3,
+      "Note": "v5四足矿车；表现尺寸为初次接入的2.5倍；保留3.6米业务基准、900cm/s及网格缩放；行走按时间1.17秒循环，采矿直接后坐2.46秒循环",
+      "MovementSpeedCmPerSecond": 900,
+      "MaxHealth": 1000,
+      "Defense": 0,
+      "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+      "PresentationScale": 1.86566,
+      "DisplayName": "电磁矿车",
+      "ModelWidthMeters": 3.6,
+      "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+      "bSummonOnly": false,
+      "bConstructionOnly": false,
+      "FacingPolicy": 0,
+      "ModelId": 1003,
+      "MovementLayer": 0,
+      "AltitudeMeters": 0
+    },
+    "basic_attack_rows": [
+      {
+        "Name": "SoldierA_Strafe",
+        "Id": 1,
+        "Note": "先驱者双枪齐射；1轮/秒，每轮2发、每发10伤害；8轮后额外休整2秒",
+        "UnitTypeId": 1,
+        "SlotId": "BasicAttack",
+        "SkillId": "Strafe",
+        "bDefault": true,
+        "Damage": 10,
+        "AttackRatePerSecond": 1,
+        "RangeCentimeters": 6000,
+        "TriggerMode": "Automatic",
+        "ProjectileSpeedCentimetersPerSecond": 4800,
+        "ProjectileLifetimeSeconds": 5,
+        "ProjectileSweepRadiusCentimeters": 3,
+        "ProjectileSpreadAngleDegrees": 2,
+        "ProjectileCount": 2,
+        "BurstRoundCount": 8,
+        "BurstRestSeconds": 2
+      },
+      {
+        "Name": "WM01_Strafe",
+        "Id": 2,
+        "Note": "重防号左右交替；2发/秒；4发后额外休整2秒",
+        "UnitTypeId": 2,
+        "SlotId": "BasicAttack",
+        "SkillId": "Strafe",
+        "bDefault": true,
+        "Damage": 7.5,
+        "AttackRatePerSecond": 2,
+        "RangeCentimeters": 12000,
+        "TriggerMode": "Automatic",
+        "ProjectileSpeedCentimetersPerSecond": 4800,
+        "ProjectileLifetimeSeconds": 5,
+        "ProjectileSweepRadiusCentimeters": 3,
+        "ProjectileSpreadAngleDegrees": 2,
+        "ProjectileCount": 1,
+        "BurstRoundCount": 4,
+        "BurstRestSeconds": 2
+      },
+      {
+        "Name": "SoldierA_Test",
+        "Id": 3,
+        "Note": "A替换验证",
+        "UnitTypeId": 1,
+        "SlotId": "BasicAttack",
+        "SkillId": "StrafeTest",
+        "bDefault": false,
+        "Damage": 25,
+        "AttackRatePerSecond": 1,
+        "RangeCentimeters": 2400,
+        "TriggerMode": "Automatic",
+        "ProjectileSpeedCentimetersPerSecond": 0,
+        "ProjectileLifetimeSeconds": 0,
+        "ProjectileSweepRadiusCentimeters": 0,
+        "ProjectileSpreadAngleDegrees": 0,
+        "ProjectileCount": 1,
+        "BurstRoundCount": 8,
+        "BurstRestSeconds": 2
+      },
+      {
+        "Name": "WM01_Test",
+        "Id": 4,
+        "Note": "WM01 替换验证",
+        "UnitTypeId": 2,
+        "SlotId": "BasicAttack",
+        "SkillId": "StrafeTest",
+        "bDefault": false,
+        "Damage": 15,
+        "AttackRatePerSecond": 2,
+        "RangeCentimeters": 3600,
+        "TriggerMode": "Automatic",
+        "ProjectileSpeedCentimetersPerSecond": 0,
+        "ProjectileLifetimeSeconds": 0,
+        "ProjectileSweepRadiusCentimeters": 0,
+        "ProjectileSpreadAngleDegrees": 0,
+        "ProjectileCount": 1,
+        "BurstRoundCount": 4,
+        "BurstRestSeconds": 2
+      }
+    ],
+    "muzzle_effect": {
+      "Name": "CommanderMuzzleGlow",
+      "Id": 66,
+      "Note": "先驱者与重防号普攻亮芯和光晕；逐枪口批量呈现；无动态灯",
+      "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow.NS_CommanderMuzzleGlow",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+      "ReducedResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Reduced.NS_CommanderMuzzleGlow_Reduced",
+      "MinimalResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Minimal.NS_CommanderMuzzleGlow_Minimal",
+      "BatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch.NS_CommanderMuzzleGlow_Batch",
+      "ReducedBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch_Reduced.NS_CommanderMuzzleGlow_Batch_Reduced",
+      "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch_Minimal.NS_CommanderMuzzleGlow_Batch_Minimal",
+      "TrailLengthCm": 0,
+      "TrailHoldSeconds": 0,
+      "TrailFadeSeconds": 0,
+      "TrailBendCm": 0,
+      "PersistentTrailVfxId": 0,
+      "InitialStyleLengthMultiplier": 1,
+      "RadiusAtUnitScaleCm": 0
+    },
+    "game_mode": "<Object '/Script/GuLiStrike.GuLiCommanderGameMode' (0x0000021791836680) Class 'Class'>",
+    "play_started": false,
+    "runtime_visual_acceptance": "pending user",
+    "success": true
+  },
+  "not_claimed": [
+    "Player visual acceptance",
+    "Measured frame-time improvement",
+    "Exhaustive migration/attack-speed gameplay matrix"
+  ],
+  "editor_closed": true,
+  "documentation_check": {
+    "errors": 6,
+    "warnings": 20,
+    "new_task_errors": 0,
+    "preexisting_errors": "Missing 20261105 external performance reports; preserved historical records."
+  }
+}

@@ -89,6 +89,8 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [矿车动作与双兵种开火表现 — 实施记录](../DevelopmentDocumentation/20261114-矿车动作与双兵种开火表现.md) | animation, art, combat, commander | 9/9 (100%) | 本轮实施与运行数据交付完成；玩家后续复核动作观感、双阵营灯和LOD切换。 | 2026-11-14 |
+| [四足采矿车正式替换与阵营灯 — 实施与交付](../DevelopmentDocumentation/20261113-四足采矿车正式替换与阵营灯.md) | animation, art, assets, commander | 7/8 (88%) | 本轮交付完成；动作后续实现及运行证据见20261114矿车动作与双兵种开火表现。 | 2026-11-14 |
 | [护盾交矿与先驱号兵营 — 实施记录](../DevelopmentDocumentation/20261112-护盾交矿与先驱号兵营.md) | building, navigation, resources | 6/6 (100%) | — | 2026-11-12 |
 | [统一体型让路与接触传递](../DevelopmentDocumentation/20261111-统一体型让路与接触传递.md) | commander, performance | 7/7 (100%) | — | 2026-11-12 |
 | [人墙让路来源修复](../DevelopmentDocumentation/20261111-人墙让路来源修复.md) | commander, network | 7/7 (100%) | — | 2026-11-12 |

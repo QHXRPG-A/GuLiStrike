@@ -4270,6 +4270,8 @@ bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, 
 			Weapon.Attack.TargetId = FGuLiSoldierId();
 			Weapon.Attack.StopReason = EGuLiCombatStopReason::Dead;
 			Weapon.Attack.NextFireSeconds = 0.0;
+			Weapon.Attack.BurstRestUntil = 0.0; Weapon.Attack.BurstRoundsFired = 0;
+			Weapon.Attack.bBurstResting=false;
 		}
 		Soldier.ActiveOrderId = 0u;
 		Soldier.NavigationState = EGuLiSoldierNavigationState::Idle;
@@ -4484,7 +4486,13 @@ bool UGuLiBattleAuthoritySubsystem::ApplyExternalUnitState(TConstArrayView<FGuLi
 		if (!bLocked && Soldier.bExternalActionsLocked)
 		{
 			const double Paused = AuthorityState->SimulationSeconds - Soldier.ExternalLockSimulationTime;
-			for (auto& Weapon : Soldier.Weapons) Weapon.Attack.NextFireSeconds += Paused;
+			for (auto& Weapon : Soldier.Weapons)
+			{
+				Weapon.Attack.NextFireSeconds += Paused;
+				if (Weapon.Attack.bBurstResting) Weapon.Attack.BurstRestUntil+=Paused;
+				if (Weapon.Attack.ShotsFired>0) Weapon.Attack.LastActiveSeconds+=Paused;
+				if (Weapon.Attack.ShotsFired>0) Weapon.Attack.LastRoundSeconds+=Paused;
+			}
 		}
 		Soldier.ExternalControlToken = bLocked ? CastId : FGuid();
 		Soldier.bPhased = bPhased; Soldier.bExternalActionsLocked = bLocked;
@@ -5114,7 +5122,7 @@ bool UGuLiBattleAuthoritySubsystem::TryGetSoldierWeaponDebug(const FGuLiSoldierI
 	OutDebug.Damage = Profile ? Profile->Damage : 0.0f;
 	OutDebug.AttackRate = Profile ? Profile->AttackRatePerSecond : 0.0f;
 	OutDebug.RangeCentimeters = Profile ? Profile->RangeCentimeters : 0.0f;
-	OutDebug.CooldownRemaining = FMath::Max(0.0, Attack.NextFireSeconds - AuthorityState->SimulationSeconds);
+	OutDebug.CooldownRemaining = FMath::Max(0.0, FMath::Max(Attack.NextFireSeconds,Attack.BurstRestUntil) - AuthorityState->SimulationSeconds);
 	OutDebug.ProfileRevision = Profile ? Profile->Revision : 0u;
 	OutDebug.ShotsFired = Attack.ShotsFired;
 	OutDebug.StopReason = Attack.StopReason;
@@ -5871,6 +5879,11 @@ FString UGuLiBattleAuthoritySubsystem::GetMoveResponseDiagnostics() const
 			W->SetNumberField(TEXT("target"),Weapon.Attack.TargetId.Value);
 			W->SetNumberField(TEXT("shots"),double(Weapon.Attack.ShotsFired));
 			W->SetNumberField(TEXT("next_fire"),Weapon.Attack.NextFireSeconds);
+			W->SetNumberField(TEXT("burst_rounds"),Weapon.Attack.BurstRoundsFired);
+			W->SetNumberField(TEXT("burst_rest_until"),Weapon.Attack.BurstRestUntil);
+			W->SetNumberField(TEXT("last_round"),Weapon.Attack.LastRoundSeconds);
+			W->SetBoolField(TEXT("burst_resting"),Weapon.Attack.bBurstResting);
+			W->SetNumberField(TEXT("last_active"),Weapon.Attack.LastActiveSeconds);
 			const auto* Profile=Unit.WeaponProfiles && Unit.WeaponProfiles->IsValidIndex(Weapon.ProfileIndex)
 				? &(*Unit.WeaponProfiles)[Weapon.ProfileIndex]:nullptr;
 			W->SetBoolField(TEXT("profile_valid"),Profile!=nullptr);

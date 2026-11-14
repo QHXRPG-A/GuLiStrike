@@ -20,6 +20,7 @@ public:
 	void ResetToAuthority();
 	void SetPresentationVisible(bool bVisible);
 	const FTransform& GetPresentedRoot() const { return DisplayedRoot; }
+	bool IsDisplacementReset() const { return bDisplacementReset; }
 	UFUNCTION(BlueprintPure, Category="Engineering|Presentation") FString GetPoseDiagnosticsJson() const;
 	DECLARE_MULTICAST_DELEGATE(FDisplayedPoseChanged);
 	FDisplayedPoseChanged OnDisplayedPoseChanged;
@@ -42,4 +43,5 @@ private:
 	uint32 DisplacementRevision = 0;
 	bool bPending = false, bBlending = false, bVisible = true, bOffscreen = false, bPhased = false;
 	bool bCanPresent = false, bHasVisualPose = false;
+	bool bDisplacementReset = false;
 };

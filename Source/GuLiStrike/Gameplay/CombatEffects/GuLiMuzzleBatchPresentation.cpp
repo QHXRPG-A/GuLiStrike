@@ -33,11 +33,12 @@ void UGuLiMuzzleBatchPresentation::Prepare(const UGuLiCombatEffectCatalog* Catal
 	if (bPrepared || !Catalog || !GetWorld() || GetWorld()->GetNetMode()==NM_DedicatedServer) return;
 	bPrepared=true; Channel=Catalog->MuzzleChannel.LoadSynchronous();
 	if (auto* Registry=GetWorld()->GetSubsystem<UGuLiVfxRegistrySubsystem>())
+		for (const int32 VfxId:{GuLiVfxIds::GroundMachineGunMuzzle,GuLiVfxIds::CommanderMuzzleGlow})
 		for (int32 I=0;I<3;++I)
 		{
-			auto* Single=Registry->LoadNiagaraForLOD(GuLiVfxIds::GroundMachineGunMuzzle,EGuLiCommanderLODLevel(I));
-			if (I==0) FullSystem=Single;
-			Registry->LoadNiagaraForLOD(GuLiVfxIds::GroundMachineGunMuzzle,EGuLiCommanderLODLevel(I),true);
+			auto* Single=Registry->LoadNiagaraForLOD(VfxId,EGuLiCommanderLODLevel(I));
+			if (I==0) FullSystems.Add(VfxId,Single);
+			Registry->LoadNiagaraForLOD(VfxId,EGuLiCommanderLODLevel(I),true);
 		}
 }
 
@@ -52,6 +53,9 @@ bool UGuLiMuzzleBatchPresentation::Enqueue(const FGuLiCombatShotCue& Cue,int32 R
 	Seen.Add(Identity,Deadline); SeenOrder.Emplace(Identity,Deadline);
 	const auto Handle=Pool.Acquire(); Slots.SetNum(Pool.Capacity());
 	auto& Slot=Slots[Handle.Index]; Slot={}; Slot.Handle=Handle; Slot.Cue=Cue;
+	Slot.VfxId=Cue.Source.Kind==EGuLiTargetKind::CommanderSoldier && Cue.SlotId==TEXT("BasicAttack") && (Cue.UnitTypeId==1 || Cue.UnitTypeId==2)
+		? GuLiVfxIds::CommanderMuzzleGlow : GuLiVfxIds::GroundMachineGunMuzzle;
+	Slot.Lifetime=Slot.VfxId==GuLiVfxIds::CommanderMuzzleGlow?.18f:1.f;
 	Slot.AcceptedFrame=GFrameCounter;
 	Slot.ReviewMode=GetWorld()->IsPlayInEditor() ? ReviewMode : INDEX_NONE;
 	++Accepted; return true;
@@ -66,16 +70,16 @@ bool UGuLiMuzzleBatchPresentation::Admit(FGuLiMuzzleSlot& Slot)
 		{ FGuLiCommanderLODQuery Query; Query.Bounds=Slot.Bounds; Decision=LOD->EvaluateWorldEffectBounds(Query,20000); }
 	if (!Decision.bVisible) { ++Culled; return false; }
 	if (!GuLiClientPresentation::ThreeTierEffectsEnabled()) Decision.TargetLevel=EGuLiCommanderLODLevel::Full;
-	Slot.SingleSystem=Registry->LoadNiagaraForLOD(GuLiVfxIds::GroundMachineGunMuzzle,Decision.TargetLevel,false,false);
+	Slot.SingleSystem=Registry->LoadNiagaraForLOD(Slot.VfxId,Decision.TargetLevel,false,false);
 	if (!Slot.SingleSystem) return false;
 	Slot.Mode=FMath::Clamp(Slot.ReviewMode!=INDEX_NONE ? Slot.ReviewMode : GMuzzleBatchMode.GetValueOnGameThread(),0,2);
 	Slot.BirthPose=Slot.Pose; Slot.bAdmitted=true;
 	if (Slot.Mode==2)
 	{
-		Slot.BatchSystem=Registry->LoadNiagaraForLOD(GuLiVfxIds::GroundMachineGunMuzzle,Decision.TargetLevel,true,false);
+		Slot.BatchSystem=Registry->LoadNiagaraForLOD(Slot.VfxId,Decision.TargetLevel,true,false);
 		const bool bCertified=Channel && Channel->Get() && Slot.bKnownBounds && Slot.BatchSystem
 			&& UGuLiVfxRegistrySubsystem::NiagaraFloat(Slot.BatchSystem,TEXT("User.GuLiMuzzleInputVersion"),0)==1
-			&& UGuLiVfxRegistrySubsystem::NiagaraFloat(Slot.BatchSystem,TEXT("User.GuLiMuzzleMaximumLifetime"),0)>=1;
+			&& UGuLiVfxRegistrySubsystem::NiagaraFloat(Slot.BatchSystem,TEXT("User.GuLiMuzzleMaximumLifetime"),0)>=Slot.Lifetime;
 		if (!bCertified) { Slot.BatchSystem=nullptr; Slot.Mode=1; ++Fallbacks; }
 	}
 	return true;
@@ -132,11 +136,11 @@ void UGuLiMuzzleBatchPresentation::BeginFrame(uint64 Frame,double LocalSeconds,f
 			Retired.Add(I); continue;
 		}
 		const float AuthAge=RenderTime-Slot.Cue.MechanicalPoseTimeSeconds;
-		if (!Slot.bAdmitted && AuthAge>0.20f) { ++Expired; ++AdmissionLate; Retired.Add(I); continue; }
+		if (!Slot.bAdmitted && AuthAge>FMath::Min(.20f,Slot.Lifetime)) { ++Expired; ++AdmissionLate; Retired.Add(I); continue; }
 		if (!Pose.Equals(Slot.Pose)) { Slot.Pose=Pose; ++PoseRevision; }
-		Slot.Scale=GuLiVfx::Scale(this,GuLiVfxIds::GroundMachineGunMuzzle,
+		Slot.Scale=GuLiVfx::Scale(this,Slot.VfxId,
 			FVector(Slot.Cue.Source.Kind==EGuLiTargetKind::CommanderSoldier && Slot.Cue.UnitTypeId==2 ? 2.f : 1.f));
-		if (FullSystem)
+		if (const UNiagaraSystem* FullSystem=FullSystems.FindRef(Slot.VfxId).Get())
 		{
 			const FNiagaraVariable Var(FNiagaraTypeDefinition::GetVec3Def(),TEXT("User.GuLiPreSpawnBoundsExtent"));
 			const auto& Params=FullSystem->GetExposedParameters();
@@ -176,7 +180,7 @@ void UGuLiMuzzleBatchPresentation::BeginFrame(uint64 Frame,double LocalSeconds,f
 		}
 		if (Slot.BornAt<0) continue;
 		const double Age=WorldNow-Slot.BornAt;
-		if (Age>1 || (IsValid(Slot.SingleComponent) && Slot.SingleComponent->IsComplete()))
+		if (Age>Slot.Lifetime || (IsValid(Slot.SingleComponent) && Slot.SingleComponent->IsComplete()))
 		{ Retired.Add(I); continue; }
 		if (IsValid(Slot.SingleComponent))
 		{ Slot.SingleComponent->SetWorldLocationAndRotation(Pose.GetLocation(),Pose.GetRotation()); if (Age>.24) Slot.SingleComponent->Deactivate(); }
@@ -265,7 +269,7 @@ void UGuLiMuzzleBatchPresentation::PublishFrame(uint64 Frame)
 				const auto& Slot=Slots[Rows[R]];
 				Writer->WritePosition(TEXT("Position"),R,Slot.BirthPose.GetLocation()); Writer->WriteQuat(TEXT("Rotation"),R,Slot.BirthPose.GetRotation());
 				Writer->WriteVector(TEXT("Scale"),R,Slot.Scale); Writer->WriteLinearColor(TEXT("Tint"),R,FLinearColor::White);
-				Writer->WriteInt(TEXT("Seed"),R,int32(GetTypeHash(Slot.Cue.ShotId))); Writer->WriteFloat(TEXT("Lifetime"),R,1.f);
+				Writer->WriteInt(TEXT("Seed"),R,int32(GetTypeHash(Slot.Cue.ShotId))); Writer->WriteFloat(TEXT("Lifetime"),R,Slot.Lifetime);
 				Writer->WriteInt(TEXT("Slot"),R,Slot.Handle.Index); Writer->WriteInt(TEXT("Generation"),R,int32(Slot.Handle.Generation));
 				Writer->WriteInt(TEXT("Group"),R,Slot.Group); ++Published;
 			}
