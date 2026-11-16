@@ -28,7 +28,7 @@ bool SelectAuthoredObjects(UWorld& W,const FGuLiSelectionRequest& Input,FGuLiCom
     {
         const auto* Actor=H->FindBoundActor(O.Key);
         if (!Actor || Cast<IGuLiEngineeringVehicle>(Actor) || !H->HasControl(O.Key)
-            || O.OwnershipPolicy!=uint8(EGuLiHybridOwnershipPolicy::CommanderActivity)) continue;
+            || O.Key.Kind!=EGuLiHybridObjectKind::Soldier) continue;
         auto* Type=Types.Find(O.Definition);if (!Type) Type=&Types.Add(O.Definition,uint16(Types.Num()+1));
         Team=O.Team;Keys.Add(O.Key);auto& C=Population.AddDefaulted_GetRef();C.SoldierId=FGuLiSoldierId(Keys.Num());
         C.Location=Actor->GetActorLocation();C.Team=O.Team;C.UnitTypeId=*Type;C.WorldBounds=Actor->GetComponentsBoundingBox(true);

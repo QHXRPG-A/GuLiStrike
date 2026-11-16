@@ -1,0 +1,34 @@
+--- Source/GuLiNetCore/Private/GuLiNetPeerRoom.cpp before
++++ Source/GuLiNetCore/Private/GuLiNetPeerRoom.cpp
+@@ -31,9 +31,10 @@
+ {Message M;M.Header.Match=Match;M.Header.Epoch=1;M.Header.Kind=K;M.Header.Object=O;M.Body=std::move(B);return M;}
+ bool PeerRoom::Emit(Id To,const Message& M)
+ {
+-    if (Outbox.empty() && Output(To,M)) return true;
++    auto& Queue=Outbox[To];
++    if (Queue.empty() && Output(To,M)) return true;
+     if (OutboxBytes+M.Body.size()>16*1024*1024) {Error="Room control queue capacity exceeded";return false;}
+-    Outbox.emplace_back(To,M);OutboxBytes+=M.Body.size();return true;
++    Queue.push_back(M);OutboxBytes+=M.Body.size();return true;
+ }
+ void PeerRoom::Local(const Message& M) {Emit({},M);}
+ void PeerRoom::Broadcast(const Message& M)
+@@ -296,12 +297,14 @@
+ }
+ void PeerRoom::Tick(double Now)
+ {
+-    while (!Outbox.empty())
+-    {
+-        const auto& [To,M]=Outbox.front();
++    // Preserve ordering per recipient without letting a disconnected peer's
++    // full reliable channel block status reports and grants to surviving peers.
++    for (auto& [To,Queue]:Outbox) while (!Queue.empty())
++    {
++        const auto& M=Queue.front();
+         if (To.Valid() && Core && Core->Members().contains(To) && !Core->Members().at(To).Online) {}
+         else if (!Output(To,M)) break;
+-        OutboxBytes-=M.Body.size();Outbox.pop_front();
++        OutboxBytes-=M.Body.size();Queue.pop_front();
+     }
+     if (!Core||Ended) return;NowValue=Now;
+     if (!Error.empty()) {End(Error);return;}

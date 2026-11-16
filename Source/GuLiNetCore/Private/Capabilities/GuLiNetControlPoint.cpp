@@ -130,7 +130,7 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& Out)
         // Sampling unchanged ownership still advances the control-point
         // capability, but owns no resource-catalog mutation or new revision.
         if (C.Resources.Snapshot().Owners[P.Index]!=P.Owner) Out.TerritoryOwners.emplace(P.Index,P.Owner);
-        SetControlPoint(Out.Objects.at(R.Target),P);
+        auto& Captured=Out.Objects.at(R.Target);Captured.Grant.Faction=P.Owner;SetControlPoint(Captured,P);
         const auto UpdateChild=[&](const ObjectKey& Key,const ObjectRecord& O)
         {
             if (O.Parent!=R.Target || O.Grant.State>=Life::Dead
@@ -145,8 +145,8 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& Out)
                 {if (!Controller.Valid() || M.Seat==Role::Commander) Controller=Id;if (M.Seat==Role::Commander) break;}
                 Next.Grant.Faction=P.Owner;Next.Grant.Controller=Controller;++Next.Grant.ControlEpoch;
             }
-            // Capture changes who can order a facility, not which process is
-            // already simulating it. Existing ownership remains fixed.
+            // Publish capture first; the room then transfers this territory group
+            // to the capturing faction's world simulator.
             Out.Objects.emplace(Key,std::move(Next));
             return true;
         };
@@ -184,7 +184,8 @@ bool ValidateTransition(const ObjectRecord& Before,const ObjectRecord& After)
         || Before.RelationVersion==UINT64_MAX || After.RelationVersion!=Before.RelationVersion+1
         || B.SampledAt<A.SampledAt
         || (A.FirstCapture.Valid() && A.FirstCapture!=B.FirstCapture)) return false;
-    auto Unchanged=After;Unchanged.Capabilities[ControlPointCapability]=Before.Capabilities.at(ControlPointCapability);
+    if (After.Grant.Faction!=B.Owner) return false;
+    auto Unchanged=After;Unchanged.Grant.Faction=Before.Grant.Faction;Unchanged.Capabilities[ControlPointCapability]=Before.Capabilities.at(ControlPointCapability);
     Unchanged.Supplied=Before.Supplied;Unchanged.RelationVersion=Before.RelationVersion;
     Writer X,Y;WriteObject(X,Before);WriteObject(Y,Unchanged);return X.Take()==Y.Take();
 }
@@ -209,7 +210,8 @@ bool ValidateManifest(const RuntimeManifest& M,std::string& Error)
 }
 const bool Registered=RegisterCapability({ControlPointCapability,ControlPointCapabilityVersion,
     [](const ObjectRecord& O,const CapabilityState&) {ControlPointState P;return O.Grant.Object.Kind==ObjectKind::Territory
-        && O.Grant.Faction==Team::None && GetControlPoint(O,P);},ValidRuleContract,Prepare,ValidateTransition,
+        && GetControlPoint(O,P) && (O.Grant.Faction==P.Owner
+            || (O.Grant.Faction==Team::None && !O.Grant.OwnershipGroup.Valid()));},ValidRuleContract,Prepare,ValidateTransition,
     InitializeManifest,ValidateManifest,[](const ObjectRecord& O) {ControlPointState P;return GetControlPoint(O,P)?P.Owner:Team::None;},
     {},[](const ObjectRecord& Source,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,ObjectRecord& Child)
     {

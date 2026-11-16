@@ -116,7 +116,7 @@ TSharedRef<SWidget> UGuLiRogueCardOverlay::RebuildWidget()
 	for (UWidget* W : TArray<UWidget*>{Blur,Cards,Labels})
 	{ auto* OverlaySlot=Root->AddChildToOverlay(W); OverlaySlot->SetHorizontalAlignment(HAlign_Fill); OverlaySlot->SetVerticalAlignment(VAlign_Fill); }
     const auto* Player=GetOwningPlayer()?GetOwningPlayer()->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
-    const bool Ground=Player&&Player->GetBattleRole()==EGuLiCommanderRole::Ground;
+    const bool Ground=Player&&Player->GetActiveControlRole()==EGuLiCommanderRole::Ground;
     auto* Theme=Ground?LoadObject<UDataTable>(nullptr,TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeGroundHUD_Elements")):nullptr;
     bGroundTheme=Ground;
     auto Color=[&](FName Name,FLinearColor Fallback)
@@ -231,9 +231,9 @@ void UGuLiRogueCardPresentation::Open()
 	auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner());
 	if (bOpen || bCleaningUp || bTearingDown || !PC || !PC->IsLocalController()) return;
     const auto* Player=PC->GetPlayerState<AGuLiBattlePlayerState>();
-    if(!Player||!Player->IsBattleReady()||(!Player->IsCommander()&&Player->GetBattleRole()!=EGuLiCommanderRole::Ground)||(Player->IsCommander()&&!PC->CanIssueCommanderOrders()))return;
-    PresentationRole=uint8(Player->GetBattleRole());
-    bDirectSelection=Player->GetBattleRole()==EGuLiCommanderRole::Ground;DisplayedNotice=FText::GetEmpty();
+    if(!Player||!Player->IsBattleReady()||(!Player->IsCommanderControlActive()&&Player->GetActiveControlRole()!=EGuLiCommanderRole::Ground)||(Player->IsCommanderControlActive()&&!PC->CanIssueCommanderOrders()))return;
+    PresentationRole=uint8(Player->GetActiveControlRole());
+    bDirectSelection=Player->GetActiveControlRole()==EGuLiCommanderRole::Ground;DisplayedNotice=FText::GetEmpty();
 	bOpen=true; bClosing=false; bSubmitting=false; Fade=0; DisplayedPhase=INDEX_NONE; ErrorText=FText::GetEmpty();
 	bCommitted=false; bFinishedNormally=false;
 	bRerolling=false; RerollNotice=FText::GetEmpty();
@@ -586,7 +586,7 @@ void UGuLiRogueCardPresentation::TickComponent(float Dt,ELevelTick Type,FActorCo
 	const auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner());
 	const auto* Player=PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
 	const auto* State=GetWorld()->GetGameState<AGuLiBattleGameState>();
-	if (!Player || uint8(Player->GetBattleRole())!=PresentationRole || Player->GetPlayerGuid()!=PlayerGuid || static_cast<uint8>(Player->GetTeam())!=PresentationTeam)
+	if (!Player || uint8(Player->GetActiveControlRole())!=PresentationRole || Player->GetPlayerGuid()!=PlayerGuid || static_cast<uint8>(Player->GetTeam())!=PresentationTeam)
 	{ if (PC && !bSubmitting) PC->GetCommanderNetSyncComponent()->ServerCancelRogueCards(SessionId); Close(true); return; }
     // A retained selection keeps its session identity across a global restore.
     // Temporary lack of a battle permit is not a player cancellation.
@@ -625,7 +625,7 @@ void UGuLiRogueCardPresentationLibrary::SetLiveCardText(AActor* Card,const FStri
 	if (!Card || !Controller) return;
 	auto* Component=Cast<UWidgetComponent>(GetObject(Card,TEXT("EditableText"))); if (!Component) return;
 	const auto* Player=Controller->GetPlayerState<AGuLiBattlePlayerState>();
-    if(Player&&Player->GetBattleRole()==EGuLiCommanderRole::Ground)
+    if(Player&&Player->GetActiveControlRole()==EGuLiCommanderRole::Ground)
     {
         auto* Widget=CreateWidget<UGuLiGroundCardFace>(Controller,UGuLiGroundCardFace::StaticClass());Widget->TakeWidget();
         auto* Catalog=Card->GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();

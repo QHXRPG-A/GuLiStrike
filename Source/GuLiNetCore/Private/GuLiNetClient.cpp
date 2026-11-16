@@ -2,6 +2,7 @@
 #include "GuLiNetCommandSubset.h"
 #include "GuLiNetManifest.h"
 #include "GuLiNetHash.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetTrace.h"
 #include <algorithm>
 #include <cmath>
@@ -46,7 +47,7 @@ void ClientWorld::StoreRecord(const ObjectRecord& O)
             const auto I=CapabilityObjects.find({Previous.Grant.Faction,Name});
             if (I!=CapabilityObjects.end()) {I->second.erase(K);if (I->second.empty()) CapabilityObjects.erase(I);}
         }
-        if (Previous.Grant.Policy==OwnershipPolicy::CommanderActivity)
+        if (IsMassObject(Previous.Grant.Object.Kind))
         {const auto I=CommanderDefinitionCounts.find(Previous.Definition);if (I!=CommanderDefinitionCounts.end() && !--I->second) CommanderDefinitionCounts.erase(I);}
     }
     Directory[K]=O;
@@ -55,7 +56,7 @@ void ClientWorld::StoreRecord(const ObjectRecord& O)
     else ResourceObjectCandidates.erase(K);
     if (O.Parent.Valid() && O.Grant.Policy==OwnershipPolicy::ParentWork && O.Grant.State<Life::Dead) LiveParentWork[O.Parent].insert(K);
     if (O.Grant.State!=Life::Destroyed) for (const auto& [Name,Value]:O.Capabilities) CapabilityObjects[{O.Grant.Faction,Name}].insert(K);
-    if (O.Grant.Policy==OwnershipPolicy::CommanderActivity) ++CommanderDefinitionCounts[O.Definition];
+    if (IsMassObject(O.Grant.Object.Kind)) ++CommanderDefinitionCounts[O.Definition];
     if (O.Grant.State==Life::Alive) SimulationCandidates.insert(K);else SimulationCandidates.erase(K);
     if (OnRecord) OnRecord(O);
 }
@@ -661,11 +662,13 @@ void ClientWorld::RefreshRecords(std::span<const StateFragment> Fragments,bool E
     // A committed batch can contain both a newborn and its admitted parent.
     // Publish the complete directory before any adapter resolves those links;
     // ObjectKey order places buildings before BusinessWork parents.
-    std::set<ObjectKey> NewRecords;
+    std::set<ObjectKey> NewRecords,ChangedAuthority;
     for (const auto& F:Fragments) if (F.Key.Capability=="object")
     {
         const auto O=Numbers.Objects().find(F.Key.Object);if (O==Numbers.Objects().end()) continue;
         if (!Directory.contains(F.Key.Object)) NewRecords.insert(F.Key.Object);
+        else if (Directory.at(F.Key.Object).Grant.Faction!=O->second.Grant.Faction
+            || Directory.at(F.Key.Object).Grant.ControlEpoch!=O->second.Grant.ControlEpoch) ChangedAuthority.insert(F.Key.Object);
         StoreRecord(O->second);
     }
     for (const auto& F:Fragments) if (F.Key.Capability=="object")
@@ -688,7 +691,7 @@ void ClientWorld::RefreshRecords(std::span<const StateFragment> Fragments,bool E
         // Import can ignore an older fragment. The adapter receives the current
         // numeric record, so its revision must describe that same record.
         {A->second->SetAuthority(O->second.Grant,HasSimulation(F.Key.Object));A->second->ApplyLedger(O->second,Numbers.Version(F.Key),Effects);}
-        if (NewRecords.contains(F.Key.Object) && Numbers.Owner(F.Key.Object)==Player)
+        if ((NewRecords.contains(F.Key.Object) || ChangedAuthority.contains(F.Key.Object)) && Numbers.Owner(F.Key.Object)==Player)
         {Writer W;WriteAuthority(W,O->second.Grant);W.Text(O->second.Definition);W.U32(O->second.Ordinal);W.Key(O->second.Parent);SendMessage({},MessageKind::RegisterObject,{},F.Key.Object,W.Take());}
     }
 }

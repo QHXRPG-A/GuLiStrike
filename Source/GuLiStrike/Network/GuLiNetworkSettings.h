@@ -17,7 +17,10 @@ struct FGuLiNetworkLaunchConfig
     EGuLiNetworkMode Mode = EGuLiNetworkMode::Hybrid;
     EGuLiNetworkTransport Transport = EGuLiNetworkTransport::LocalUdp;
     EGuLiClientRunMode ClientRunMode = EGuLiClientRunMode::Rendered;
-    FString CoordinatorUrl = TEXT("ws://127.0.0.1:8787/v1/match");
+    FString PeerRosterFile;
+    FString LobbyId;
+    bool HostRoom = false;
+    int32 ExpectedPlayers = 4;
     FString ManifestFile;
     FGuid RoomId;
     FGuid DevelopmentPlayerId;
@@ -46,7 +49,10 @@ public:
     UPROPERTY(Config, EditAnywhere, Category="Session") EGuLiNetworkTransport Transport = EGuLiNetworkTransport::LocalUdp;
     UPROPERTY(Config, EditAnywhere, Category="Runtime") EGuLiClientRunMode ClientRunMode = EGuLiClientRunMode::Rendered;
     UPROPERTY(Config, VisibleAnywhere, Category="Simulation") int32 WingmanMotionRateHz = 10;
-    UPROPERTY(Config, EditAnywhere, Category="Session") FString CoordinatorUrl = TEXT("ws://127.0.0.1:8787/v1/match");
+    UPROPERTY(Config, EditAnywhere, Category="Session") FFilePath PeerRosterFile;
+    UPROPERTY(Config, EditAnywhere, Category="EOS") FString LobbyId;
+    UPROPERTY(Config, EditAnywhere, Category="EOS") bool HostRoom = false;
+    UPROPERTY(Config, EditAnywhere, Category="EOS", meta=(ClampMin="2",ClampMax="4")) int32 ExpectedPlayers = 4;
     UPROPERTY(Config, EditAnywhere, Category="Session") FFilePath ManifestFile;
     UPROPERTY(Config, EditAnywhere, Category="Session") FGuid RoomId;
     UPROPERTY(Config, EditAnywhere, Category="Development") FGuid DevelopmentPlayerId;
@@ -63,12 +69,7 @@ public:
     UPROPERTY(Config, EditAnywhere, Category="Timeouts", meta=(ClampMin="1")) float MembershipTimeoutSeconds = 15;
     UPROPERTY(Config, EditAnywhere, Category="Timeouts", meta=(ClampMin="1")) float EmptyTeamTimeoutSeconds = 30;
 
-    UPROPERTY(Config,EditAnywhere,Category="Ownership",meta=(ClampMin="0")) double CommanderIdleSeconds=10;
-    UPROPERTY(Config,EditAnywhere,Category="Ownership",meta=(ClampMin="0.1")) double OwnershipEvaluationSeconds=1;
     UPROPERTY(Config,EditAnywhere,Category="Ownership",meta=(ClampMin="0.1")) double HandoffTimeoutSeconds=5;
-    UPROPERTY(Config,EditAnywhere,Category="Ownership",meta=(ClampMin="0",ClampMax="0.99")) double MinimumRelativeLoadGap=0.20;
-    UPROPERTY(Config,EditAnywhere,Category="Ownership",meta=(ClampMin="0")) double MinimumLoadGapMilliseconds=0.5;
-    UPROPERTY(Config,EditAnywhere,Category="Ownership",meta=(ClampMin="1",ClampMax="4096")) int32 MaximumBackgroundHandoffBatch=32;
     /** Per-peer socket payload budgets. Simulation never waits on these lanes. */
     UPROPERTY(Config,EditAnywhere,Category="Transport",meta=(ClampMin="1000")) int32 ReliableBytesPerSecond=2097152;
     UPROPERTY(Config,EditAnywhere,Category="Transport",meta=(ClampMin="1000")) int32 MotionBytesPerSecond=160000;

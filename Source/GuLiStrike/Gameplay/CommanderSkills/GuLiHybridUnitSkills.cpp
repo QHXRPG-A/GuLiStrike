@@ -91,32 +91,59 @@ FGuid UGuLiCommanderSkillComponent::RouteHybridUnitSkillRequest(const FGuLiActiv
     if (const auto* Pending=HybridPending.Find(Request.RequestId)) return Pending->Request.HasSameContent(Request)?Request.RequestId:FGuid{};
     if (!H->CanPublishFacts() || HybridPending.Num()>=64 || Receipts.Num()>=4096) return {};
     auto* Sync=PC->GetCommanderNetSyncComponent();if (!Sync || Sync->HasUnresolvedSelectionIntent()) return {};
-    if (Request.SelectionRevision!=Sync->GetSelectionState().SelectionRevision) return {};
-    H->OnCommandCompleted.RemoveAll(this);H->OnCommandCompleted.AddUObject(this,&ThisClass::HandleHybridSkillResult);
-    TSet<uint32> Selected;for (const auto& Group:Sync->GetSelectionState().Cohorts) for (auto Id:Group.MemberIds) Selected.Add(Id.Value);
-    TArray<FGuLiHybridObjectState> Objects;H->GetObjects(Objects);Objects.Sort([](const auto& A,const auto& B){return A.Ordinal<B.Ordinal;});
+    const auto& Selection=Sync->GetSelectionState();
+    if (Request.SelectionRevision!=Selection.SelectionRevision) return {};
+    TSet<FGuLiSoldierId> SelectedIds;
+    for (const auto& Cohort : Selection.Cohorts)
+    {
+        for (const FGuLiSoldierId Id : Cohort.MemberIds) SelectedIds.Add(Id);
+    }
+    // Per-skill projectile capacity is allocated in ascending soldier ordinal order.
+    TArray<FGuLiSoldierId> SelectedSoldiers=SelectedIds.Array();
+    SelectedSoldiers.Sort();
     FGuLiHybridCommand C;C.Event=Request.RequestId;C.LogicalTick=H->GetLogicalTick();C.Operation=TEXT("UnitSkill");
     FSkillInput I;I.HasGround=Request.bHasGroundPoint;I.Ground=Request.GroundPoint;I.Batch=C.Event;
     FHybridPendingSkill Pending;Pending.Request=Request;TMap<FName,int32> Remaining;
     const auto* Army=GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
-    for (const auto& O:Objects)
+    const auto* Authority=GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+    for (const FGuLiSoldierId Id : SelectedSoldiers)
     {
-        if (O.Key.Kind!=EGuLiHybridObjectKind::Soldier || !Selected.Contains(O.Ordinal)) continue;
+        const auto* Key=Sync->FindTrackedSoldierKey(Id);
+        FGuLiHybridObjectState O;
+        if (!Key || Key->Kind!=EGuLiHybridObjectKind::Soldier || !H->GetObjectView(*Key,O) || O.Ordinal!=Id.Value) continue;
         if (!H->HasControl(O.Key) || O.Team!=PlayerState().GetTeam()) return {};
         uint16 Type=0;const FString Def=O.Definition.ToString();if (!Def.StartsWith(TEXT("unit/")) || !LexTryParseString(Type,*Def.RightChop(5))) return {};
         const auto* Skill=Catalog->FindAvailableUnitSkill(*GetWorld(),O.Team,Type);if (!Skill) continue;
+        FGuLiActiveSkillUnitResult Result;
+        Result.SoldierId=Id;
+        Result.SkillId=Skill->SkillId;
         int32 Allocation=INDEX_NONE;
         if (const auto* Point=Cast<UGuLiPointSkillConfiguration>(Skill->Configuration);Point && Point->MaxProjectilesPerActivation>0)
         {
+            const double CooldownRemaining=Authority ? Authority->GetLocalHybridUnitSkillCooldownRemaining(O) : 0.0;
+            if (CooldownRemaining>0.0)
+            {
+                Result.Code=EGuLiActiveSkillResultCode::Cooldown;
+                Result.ReadyAtServerSeconds=GetWorld()->GetTimeSeconds()+CooldownRemaining;
+                Pending.Units.Add(O.Key.StableId,Result);
+                continue;
+            }
             auto* Available=Remaining.Find(Skill->SkillId);if (!Available) Available=&Remaining.Add(Skill->SkillId,Point->MaxProjectilesPerActivation);
             const auto* Weapon=Army?Army->FindResolvedSkill(O.Team,Type,Point->SourceWeaponSlot):nullptr;
             const int32 Wanted=Weapon?Weapon->ProjectileCount:1;Allocation=*Available>=Wanted?Wanted:0;if (Allocation) *Available-=Wanted;
         }
         auto& Member=C.Members.AddDefaulted_GetRef();Member.Key=O.Key;Member.ControlEpoch=O.ControlEpoch;Member.OwnerEpoch=O.OwnerEpoch;Member.Slot=I.Allocations.Num();
-        I.Allocations.Add(Allocation);FGuLiActiveSkillUnitResult Result;Result.SoldierId=FGuLiSoldierId(O.Ordinal);Result.SkillId=Skill->SkillId;
+        I.Allocations.Add(Allocation);
         Pending.Units.Add(O.Key.StableId,Result);Pending.Waiting.Add(O.Key.StableId);
     }
-    if (C.Members.IsEmpty()) return {};FGuLiHybridStateArchive Archive;SerializeSkillInput(Archive,I);if (!Archive.Finish(C.Arguments)) return {};
+    if (C.Members.IsEmpty())
+    {
+        if (Pending.Units.IsEmpty()) return {};
+        CompleteHybridUnitSkillRequest(MoveTemp(Pending));
+        return C.Event;
+    }
+    FGuLiHybridStateArchive Archive;SerializeSkillInput(Archive,I);if (!Archive.Finish(C.Arguments)) return {};
+    H->OnCommandCompleted.RemoveAll(this);H->OnCommandCompleted.AddUObject(this,&ThisClass::HandleHybridSkillResult);
     HybridPending.Add(C.Event,MoveTemp(Pending));if (!H->RouteCommand(C)) {HybridPending.Remove(C.Event);return {};}return C.Event;
 }
 void UGuLiCommanderSkillComponent::RecordLocalHybridUnitSkillResult(FGuid Event,
@@ -141,11 +168,28 @@ void UGuLiCommanderSkillComponent::HandleHybridSkillResult(const FGuLiHybridComm
         {U->Code=M.bAccepted?EGuLiActiveSkillResultCode::Succeeded:EGuLiActiveSkillResultCode::ExecutionFailed;U->Execution.bSucceeded=M.bAccepted;}
         P->Waiting.Remove(M.Key.StableId);
     }
-    if (!P->Waiting.IsEmpty()) return;FGuLiActiveSkillReply Reply;Reply.RequestId=R.Event;
-    Reply.MatchEpoch=P->Request.MatchEpoch;P->Units.GenerateValueArray(Reply.Units);
+    if (P->Waiting.IsEmpty()) CompleteHybridUnitSkillRequest(MoveTemp(*P));
+}
+void UGuLiCommanderSkillComponent::CompleteHybridUnitSkillRequest(FHybridPendingSkill Pending)
+{
+    FGuLiActiveSkillReply Reply;
+    Reply.RequestId=Pending.Request.RequestId;
+    Reply.MatchEpoch=Pending.Request.MatchEpoch;
+    Pending.Units.GenerateValueArray(Reply.Units);
     Reply.Units.Sort([](const auto& A,const auto& B){return A.SoldierId.Value<B.SoldierId.Value;});
-    Reply.Code=Reply.Units.ContainsByPredicate([](const auto& U){return U.Code==EGuLiActiveSkillResultCode::Succeeded;})?EGuLiActiveSkillResultCode::Succeeded:EGuLiActiveSkillResultCode::ExecutionFailed;
-    Receipts.Add(R.Event,{P->Request,Reply});HybridPending.Remove(R.Event);ClientReceiveReply(Reply);
+    Reply.Code=EGuLiActiveSkillResultCode::Cooldown;
+    for (const auto& Unit : Reply.Units)
+    {
+        if (Unit.Code==EGuLiActiveSkillResultCode::Succeeded)
+        {
+            Reply.Code=EGuLiActiveSkillResultCode::Succeeded;
+            break;
+        }
+        if (Unit.Code!=EGuLiActiveSkillResultCode::Cooldown) Reply.Code=EGuLiActiveSkillResultCode::ExecutionFailed;
+    }
+    Receipts.Add(Reply.RequestId,{Pending.Request,Reply});
+    HybridPending.Remove(Reply.RequestId);
+    ClientReceiveReply(Reply);
 }
 void UGuLiCommanderSkillComponent::RebindHybridRequests()
 {

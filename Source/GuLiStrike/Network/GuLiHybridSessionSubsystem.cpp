@@ -6,8 +6,7 @@
 #include "GuLiNetGameplayTypes.h"
 #include "GuLiNetOwnerState.h"
 #include "GuLiNetHash.h"
-#include "WebSocketsModule.h"
-#include "IWebSocket.h"
+#include "GuLiNetPeerRoom.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 #include "Misc/FileHelper.h"
@@ -27,13 +26,10 @@ namespace
 {
 TAutoConsoleVariable<int32> NativePeerReceive(TEXT("gs.Hybrid.NativePeerReceive"),1,
     TEXT("Admit decoded native peer messages without copying through UE containers. Latched at session start; 0 selects the comparison bridge."));
-enum class ESocketEvent : uint8 { Connected, Message, Failed };
-struct FSocketEvent { ESocketEvent Kind; TArray<uint8> Bytes; FString Error; };
+struct FRoomEvent { TArray<uint8> Bytes; };
 struct FMailbox
 {
-    FCriticalSection Lock;
-    TArray<uint8> Partial;
-    TQueue<FSocketEvent, EQueueMode::Mpsc> Events;
+    TQueue<FRoomEvent, EQueueMode::Mpsc> Events;
     std::atomic<SIZE_T> QueuedBytes{0};
     std::atomic<bool> Overflow{false};
     std::atomic<uint64> ReceivedApplicationBytes{0};
@@ -56,7 +52,8 @@ struct UGuLiHybridSessionSubsystem::FState
     FGuLiNetworkLaunchConfig Config;
     FGuLiTransportIdentity Identity;
     TSharedPtr<IGuLiHybridTransport> Transport;
-    TSharedPtr<IWebSocket> Socket;
+    std::unique_ptr<GuLiNet::PeerRoom> Room;
+    GuLiNet::RuntimeManifest Manifest;
     TSharedPtr<FMailbox, ESPMode::ThreadSafe> Mailbox;
     std::map<GuLiNet::Id, std::shared_ptr<GuLiNet::PeerChannel>> Channels;
     std::map<GuLiNet::Id, std::shared_ptr<GuLiHybridReliablePayload::FPeerHistory>> PayloadHistories;
@@ -99,10 +96,7 @@ struct UGuLiHybridSessionSubsystem::FState
     double Started = 0, LastControl = 0, LastHeartbeat = 0, SimulationCost = 0;
     uint64 SimulationFrames=0;
     double ReviewLoadCost=-1;
-    double NextRetry = 0, RetryDelay = 1;
-    uint64 ControlInterruptions=0,ControlReconnects=0;
-    FString LastInterruption;
-    bool Active = false, Welcomed = false, FailureNotified = false, Reconnecting = false;
+    bool Active = false, Welcomed = false, FailureNotified = false;
     struct FReviewFault
     {
         FGuid Operation;
@@ -228,11 +222,10 @@ bool UGuLiHybridSessionSubsystem::Start(const FGuLiNetworkLaunchConfig& Config,c
     State->bNativePeerReceive=ReceiveOption!=0;
     auto Reject = [&](const TCHAR* Why) { Error = Why; State->Error = Error; return false; };
     if (!Config.ValidationError.IsEmpty()) return Reject(*Config.ValidationError);
-    if (Config.Mode != EGuLiNetworkMode::Hybrid || !Config.RoomId.IsValid()) return Reject(TEXT("Hybrid requires an explicit valid room identity"));
-    if (Config.Transport == EGuLiNetworkTransport::LocalUdp && !Config.CoordinatorUrl.StartsWith(TEXT("ws://127.0.0.1:")))
-        return Reject(TEXT("LocalUdp development authentication is restricted to loopback"));
-    if (Config.Transport == EGuLiNetworkTransport::EOS && !Config.CoordinatorUrl.StartsWith(TEXT("wss://"))
-        && !Config.CoordinatorUrl.StartsWith(TEXT("ws://127.0.0.1:"))) return Reject(TEXT("Public EOS coordinator connections require WSS"));
+    if (Config.Mode != EGuLiNetworkMode::Hybrid) return Reject(TEXT("Hybrid mode required"));
+    if (Config.Transport==EGuLiNetworkTransport::LocalUdp && (!Config.RoomId.IsValid() || Config.PeerRosterFile.IsEmpty()))
+        return Reject(TEXT("LocalUdp requires GuLiRoom and GuLiPeerRoster"));
+    State->Manifest=Manifest;
     // World initialization supplied the verified manifest. Build the aliases
     // and authenticate the handshake from the same snapshot.
     GuLiNet::ManifestHashes Hashes; std::string ManifestError;
@@ -252,7 +245,7 @@ bool UGuLiHybridSessionSubsystem::Start(const FGuLiNetworkLaunchConfig& Config,c
     {
         auto* Self = Weak.Get(); if (!Self || !Self->State->Active || Self->State->Generation != Generation) return;
         auto& S = *Self->State; S.Identity = Identity;
-        if (S.Error.IsEmpty() && !S.Socket && !S.Reconnecting) Self->ConnectCoordinator();
+
     }, [Weak, Generation](const FString& Why)
     { if (auto* Self = Weak.Get(); Self && Self->State->Active && Self->State->Generation == Generation) Self->Fail(Why); });
     if (!State->Error.IsEmpty()) { Error = State->Error; return false; } return true;
@@ -265,8 +258,7 @@ bool UGuLiHybridSessionSubsystem::RequestLeave()
 void UGuLiHybridSessionSubsystem::Stop()
 {
     ++State->Generation; State->Active = false; State->Welcomed = false;
-    State->Reconnecting = false; State->NextRetry = 0; State->RetryDelay = 1;
-    CloseCoordinator();
+    State->Room.reset();
     if (State->Transport) { State->Transport->Stop(); State->Transport.Reset(); }
     for (const auto& [Key,Slot]:State->MotionOutbox) Slot.DiscardPending();
     State->Channels.clear(); State->PayloadHistories.clear(); State->PairKeys.clear(); State->LastPeerSeen.clear();State->MotionOutbox.clear();
@@ -282,76 +274,87 @@ void UGuLiHybridSessionSubsystem::Stop()
     State->HistoryMessages=State->HistoryPlainBytes=State->HistoryStatelessBytes=State->HistoryWireBytes=State->HistoryReceivedMessages=0;
     State->NativePeerAdmissions=State->CopiedPeerAdmissions=0;
     State->Epoch = 0; State->NextControlSequence = 1;
-    State->ControlInterruptions=State->ControlReconnects=0;State->LastInterruption.Reset();
     State->Fault={};State->ReviewEpochRejected=State->ReviewIdentityRejected=0;State->ReviewHeaderRejections.Reset();
 }
-void UGuLiHybridSessionSubsystem::CloseCoordinator()
+void UGuLiHybridSessionSubsystem::TryStartRoom()
 {
-    if (State->Socket)
+    if (State->Room || !State->Identity.Player.IsValid() || !State->Error.IsEmpty()) return;
+    FGuLiTransportRoom Discovered;
+    if (State->Config.Transport==EGuLiNetworkTransport::EOS)
     {
-        State->Socket->OnConnected().Clear(); State->Socket->OnConnectionError().Clear(); State->Socket->OnClosed().Clear();
-        State->Socket->OnBinaryMessage().Clear(); State->Socket->Close(); State->Socket.Reset();
+        if (!State->Transport->DiscoverRoom(Discovered)) return;
     }
-    State->Mailbox.Reset();
-}
-void UGuLiHybridSessionSubsystem::ConnectCoordinator()
-{
-    if (!State->Active || State->Socket || !State->Identity.Player.IsValid()
-        || (!State->Error.IsEmpty() && !State->Reconnecting)) return;
-    State->Started = State->LastControl = FPlatformTime::Seconds();
-    State->Mailbox = MakeShared<FMailbox, ESPMode::ThreadSafe>();
-    State->Socket = FWebSocketsModule::Get().CreateWebSocket(State->Config.CoordinatorUrl);
-    const auto Mailbox = State->Mailbox;
-    State->Socket->OnConnected().AddLambda([Mailbox]() { Mailbox->Events.Enqueue({ESocketEvent::Connected, {}, {}}); });
-    State->Socket->OnConnectionError().AddLambda([Mailbox](const FString& Error)
-    { Mailbox->Events.Enqueue({ESocketEvent::Failed, {}, Error}); });
-    State->Socket->OnClosed().AddLambda([Mailbox](int32, const FString& Reason, bool)
-    { Mailbox->Events.Enqueue({ESocketEvent::Failed, {}, FString(TEXT("Coordinator connection closed: ")) + Reason}); });
-    // OnRawMessage's remaining byte count only covers the current WebSocket
-    // fragment. A coordinator directory can span several fragments.
-    State->Socket->OnBinaryMessage().AddLambda([Mailbox](const void* Data, SIZE_T Size, bool bIsLastFragment)
+    else
     {
-        Mailbox->ReceivedApplicationBytes.fetch_add(Size);
-        FScopeLock Guard(&Mailbox->Lock);
-        if (Mailbox->Overflow.load()) return;
-        if (Size > GuLiNet::MaxMessageBytes
-            || static_cast<SIZE_T>(Mailbox->Partial.Num()) + Size > GuLiNet::MaxMessageBytes)
-        { Mailbox->Overflow = true; Mailbox->Partial.Reset(); return; }
-        Mailbox->Partial.Append(static_cast<const uint8*>(Data), static_cast<int32>(Size));
-        if (bIsLastFragment)
+        FString Text;TSharedPtr<FJsonObject> Json;
+        if (!FFileHelper::LoadFileToString(Text,*State->Config.PeerRosterFile)
+            || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Text),Json) || !Json)
+        {Fail(TEXT("Cannot read local peer roster"));return;}
+        FString Match,Host;const TArray<TSharedPtr<FJsonValue>>* Rows=nullptr;
+        if (!Json->TryGetStringField(TEXT("room"),Match) || !FGuid::Parse(Match,Discovered.Match)
+            || Discovered.Match!=State->Config.RoomId || !Json->TryGetStringField(TEXT("host"),Host)
+            || !FGuid::Parse(Host,Discovered.Host) || !Json->TryGetArrayField(TEXT("members"),Rows))
+        {Fail(TEXT("Invalid local peer roster header"));return;}
+        for (const auto& Row:*Rows)
         {
-            const SIZE_T SizeNow = Mailbox->Partial.Num();
-            if (Mailbox->QueuedBytes.fetch_add(SizeNow) + SizeNow > 16 * 1024 * 1024)
-            { Mailbox->Overflow = true; Mailbox->Partial.Reset(); return; }
-            Mailbox->Events.Enqueue({ESocketEvent::Message, MoveTemp(Mailbox->Partial), {}}); Mailbox->Partial.Reset();
+            const auto J=Row->AsObject();FString Player,Team,Role,Address;FGuLiTransportRoomMember M;
+            if (!J || !J->TryGetStringField(TEXT("player"),Player) || !FGuid::Parse(Player,M.Player)
+                || !J->TryGetStringField(TEXT("team"),Team) || (Team!=TEXT("Red") && Team!=TEXT("Blue"))
+                || !J->TryGetStringField(TEXT("role"),Role) || (Role!=TEXT("Commander") && Role!=TEXT("Ground") && Role!=TEXT("Air"))
+                || !J->TryGetStringField(TEXT("endpoint"),Address) || !Address.StartsWith(TEXT("127.0.0.1:")))
+            {Fail(TEXT("Invalid local peer roster member"));return;}
+            M.Team=Team==TEXT("Red")?EGuLiTeam::Red:EGuLiTeam::Blue;
+            M.Role=Role==TEXT("Commander")?EGuLiCommanderRole::Commander:Role==TEXT("Air")?EGuLiCommanderRole::Air:EGuLiCommanderRole::Ground;
+            M.Address=Address;Discovered.Members.Add(M);
         }
-    });
-    State->Socket->Connect();
-}
-void UGuLiHybridSessionSubsystem::InterruptConnection(const FString& Error)
-{
-    if (!State->Active || (!State->Error.IsEmpty() && !State->Reconnecting)) return;
-    const double Now = FPlatformTime::Seconds();
-    ++State->ControlInterruptions;State->LastInterruption=Error;
-    UE_LOG(LogNet,Warning,TEXT("Hybrid control reconnect: %s (last receive %.3fs ago, metadata pending=%llu)"),
-        *Error,Now-State->LastControl,uint64(State->MetadataOutbox.size()));
-    if (!State->Reconnecting)
-    {
-        State->Reconnecting = true;
-        State->RetryDelay = 1; State->FailureNotified = false;
     }
-    State->Error = Error; State->Welcomed = false; State->NextRetry = Now + State->RetryDelay;
-    State->RetryDelay = FMath::Min(State->RetryDelay * 2, 4.0); CloseCoordinator();
+    State->Config.RoomId=Discovered.Match;State->Epoch=1;
+    std::map<GuLiNet::Id,GuLiNet::Member> Members;TMap<FGuid,FString> Addresses;
+    const auto Match=GuLiNetBridge::ToCore(Discovered.Match),Local=GuLiNetBridge::ToCore(State->Identity.Player);
+    for (const auto& Entry:Discovered.Members)
+    {
+        GuLiNet::Member M;M.Player=GuLiNetBridge::ToCore(Entry.Player);M.Faction=GuLiNetBridge::ToCore(Entry.Team);M.Seat=ToRole(Entry.Role);
+        M.Carrier=State->Config.Transport==EGuLiNetworkTransport::EOS?GuLiNet::Transport::EOS:GuLiNet::Transport::LocalUdp;
+        if (M.Carrier==GuLiNet::Transport::EOS) M.ProductUserId=TCHAR_TO_UTF8(*Entry.Address);else M.Endpoint=TCHAR_TO_UTF8(*Entry.Address);
+        if (!Members.emplace(M.Player,M).second) {Fail(TEXT("Duplicate peer identity"));return;}
+        if (M.Player==Local)
+        {
+            if (M.Faction!=GuLiNetBridge::ToCore(State->Config.Team) || M.Seat!=ToRole(State->Config.Role)
+                || (M.Carrier==GuLiNet::Transport::LocalUdp && Entry.Address!=State->Identity.Endpoint))
+            {Fail(TEXT("Local identity does not match peer roster"));return;}
+            continue;
+        }
+        Addresses.Add(Entry.Player,Entry.Address);
+        const auto Pair=GuLiNet::PeerRoom::PairIdentity(Match,Local,M.Player);
+        const auto* Settings=GetDefault<UGuLiNetworkSettings>();GuLiNet::QueueLimits Limits;
+        Limits.BytesPerSecond[0]=FMath::Max(1000,Settings->ReliableBytesPerSecond);
+        Limits.BytesPerSecond[1]=FMath::Max(1000,Settings->MotionBytesPerSecond);
+        Limits.BytesPerSecond[3]=FMath::Max(1000,Settings->HandoffBytesPerSecond);
+        State->PairKeys[M.Player]=Pair;
+        State->Channels[M.Player]=std::make_shared<GuLiNet::PeerChannel>(Pair,Limits,GuLiNet::PeerChannelBinding{Match,Local,M.Player,State->MotionObjects});
+        State->PayloadHistories[M.Player]=std::make_shared<GuLiHybridReliablePayload::FPeerHistory>();
+    }
+    State->Transport->SetPeers(Addresses);
+    State->Room=std::make_unique<GuLiNet::PeerRoom>(Match,Local,State->Manifest,[this](GuLiNet::Id To,const GuLiNet::Message& M)
+    {
+        if (To.Valid()) return SendPeerNative(GuLiNetBridge::ToUE(To),M);
+        GuLiNet::Bytes Wire;if (!GuLiNet::EncodeMessage(M,Wire)) return false;
+        if (State->Mailbox->QueuedBytes.fetch_add(Wire.size())+Wire.size()>16*1024*1024) {State->Mailbox->Overflow=true;return false;}
+        TArray<uint8> Bytes;Bytes.Append(Wire.data(),int32(Wire.size()));
+        State->Mailbox->ReceivedApplicationBytes.fetch_add(Wire.size());
+        State->Mailbox->Events.Enqueue({MoveTemp(Bytes)});return true;
+    });
+    std::string Error;
+    if (!State->Room->Start(std::move(Members),GuLiNetBridge::ToCore(Discovered.Host),FPlatformTime::Seconds(),Error))
+        Fail(UTF8_TO_TCHAR(Error.c_str()));
 }
 void UGuLiHybridSessionSubsystem::Fail(const FString& Error)
 {
-    if (!State->Error.IsEmpty() && !State->Reconnecting) return;
-    State->Error = Error; State->Welcomed = false; State->Reconnecting = false; State->FailureNotified = false;
-    CloseCoordinator();
-    // Existing ownership keeps running when only the coordinator is unavailable.
+    if (!State->Error.IsEmpty()) return;
+    State->Error=Error;State->Welcomed=false;State->FailureNotified=false;
 }
 bool UGuLiHybridSessionSubsystem::IsConnected() const { return State->Active && State->Welcomed && State->Error.IsEmpty(); }
-bool UGuLiHybridSessionSubsystem::IsReconnecting() const { return State->Active && State->Reconnecting; }
+bool UGuLiHybridSessionSubsystem::IsReconnecting() const { return false; }
 const FString& UGuLiHybridSessionSubsystem::GetError() const { return State->Error; }
 FGuid UGuLiHybridSessionSubsystem::GetLocalPlayerId() const { return State->Identity.Player; }
 FGuid UGuLiHybridSessionSubsystem::GetRoomId() const { return State->Config.RoomId; }
@@ -397,13 +400,9 @@ bool UGuLiHybridSessionSubsystem::SendControl(FGuLiHybridMessage Value)
             }
         }
     }
-    if (!State->Socket || !State->Socket->IsConnected()) return Retain;
-    if (!State->Welcomed && Core.Header.Kind!=GuLiNet::MessageKind::Hello) return Retain;
-    if ((!State->Welcomed && Value.Kind != static_cast<uint16>(GuLiNet::MessageKind::Hello)) || State->NextControlSequence == MAX_uint64) return false;
-    Value.Match = State->Config.RoomId; Value.Sender = State->Identity.Player; Value.MatchEpoch = State->Epoch;
-    Value.Sequence = State->NextControlSequence++;
-    GuLiNet::Bytes Wire; if (!GuLiNet::EncodeMessage(GuLiNetBridge::ToCore(Value), Wire)) return false;
-    State->Socket->Send(Wire.data(),Wire.size(),true);State->SubmittedControlBytes+=Wire.size();
+    if (!State->Room || !State->Welcomed) return Retain;
+    if (!State->Room->Request(Core,FPlatformTime::Seconds())) return false;
+    State->SubmittedControlBytes+=Core.Body.size();
     if (Retain) State->MetadataOutbox.at({Core.Header.Kind,Core.Header.Object}).Announced=true;
     return true;
 }
@@ -444,7 +443,7 @@ bool UGuLiHybridSessionSubsystem::SendPeerPreparedNative(const FGuid& Peer,const
 }
 bool UGuLiHybridSessionSubsystem::QueuePeerPayload(const FGuid& Peer,const GuLiNet::Message& Core,TConstArrayView<uint8> Prepared,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes)
 {
-    if (!State->Active || !State->Transport || !State->Epoch || (!State->Error.IsEmpty() && !State->Reconnecting)) return false;
+    if (!State->Active || !State->Transport || !State->Epoch || !State->Error.IsEmpty()) return false;
     const auto Id=GuLiNetBridge::ToCore(Peer);const auto It=State->Channels.find(Id);
     if (It==State->Channels.end()) return false;
     // Receipts join transport batches in the current pump without another
@@ -537,7 +536,7 @@ bool UGuLiHybridSessionSubsystem::QueuePeerPayload(const FGuid& Peer,const GuLiN
 }
 bool UGuLiHybridSessionSubsystem::SendPeerInternal(const FGuid& Peer,FGuLiHybridMessage Value,TConstArrayView<uint8> Prepared,bool bPrepared,bool bPacked,SIZE_T ReferenceBytes)
 {
-    if (!State->Active || !State->Transport || !State->Epoch || (!State->Error.IsEmpty() && !State->Reconnecting)) return false;
+    if (!State->Active || !State->Transport || !State->Epoch || !State->Error.IsEmpty()) return false;
     const auto Id = GuLiNetBridge::ToCore(Peer); const auto It = State->Channels.find(Id);
     if (It == State->Channels.end()) return false;
     Value.Match = State->Config.RoomId; Value.Sender = State->Identity.Player; Value.MatchEpoch = State->Epoch;
@@ -712,10 +711,8 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
     check(IsInGameThread());
     auto Root=MakeShared<FJsonObject>(); const auto Bytes=State->Transport ? State->Transport->GetByteCounters() : FGuLiTransportByteCounters{};
     Root->SetBoolField(TEXT("connected"),IsConnected()); Root->SetNumberField(TEXT("epoch"),double(State->Epoch));
-    Root->SetBoolField(TEXT("reconnecting"),State->Reconnecting);
-    Root->SetNumberField(TEXT("control_interruptions"),double(State->ControlInterruptions));
-    Root->SetNumberField(TEXT("control_reconnects"),double(State->ControlReconnects));
-    Root->SetStringField(TEXT("last_control_interruption"),State->LastInterruption);
+    Root->SetStringField(TEXT("room_host"),State->Room?GuLiNetBridge::ToUE(State->Room->Host()).ToString(EGuidFormats::Digits):FString());
+    Root->SetStringField(TEXT("authority_model"),TEXT("team-mass-commander/world-wushuang"));
     Root->SetNumberField(TEXT("pending_metadata"),double(State->MetadataOutbox.size()));
     uint64 WaitingBirths=0;
     for (const auto& [Key,Delivery]:State->MetadataOutbox) if (Delivery.Birth && !Delivery.Announced) ++WaitingBirths;
@@ -750,7 +747,7 @@ TSharedRef<FJsonObject> UGuLiHybridSessionSubsystem::GetNetworkCaptureSnapshot()
     Root->SetNumberField(TEXT("native_peer_admissions"),double(State->NativePeerAdmissions));
     Root->SetNumberField(TEXT("copied_peer_admissions"),double(State->CopiedPeerAdmissions));
     Root->SetNumberField(TEXT("control_received_application_bytes"),State->Mailbox ? double(State->Mailbox->ReceivedApplicationBytes.load()) : 0);
-    Root->SetStringField(TEXT("control_byte_basis"),TEXT("WebSocket application bytes; submitted bytes are queued by UE, not proof of socket delivery"));
+    Root->SetStringField(TEXT("control_byte_basis"),TEXT("Peer room metadata bytes; carried by reliable P2P"));
     TArray<TSharedPtr<FJsonValue>> Peers;
     constexpr struct { GuLiNet::MessageKind Kind; const TCHAR* Key; } MotionKinds[] = {
         {GuLiNet::MessageKind::Motion,TEXT("pose")},
@@ -888,39 +885,23 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_NetworkTick);
     if (!State->Active) return true;
     const uint64 Generation = State->Generation;
-    const double Now = FPlatformTime::Seconds(); FSocketEvent Event;
-    if (State->Mailbox && State->Mailbox->Overflow) Fail(TEXT("Coordinator inbox capacity exhausted"));
+    const double Now = FPlatformTime::Seconds(); FRoomEvent Event;
+    TryStartRoom();
+    if (State->Mailbox && State->Mailbox->Overflow) Fail(TEXT("Peer room inbox capacity exhausted"));
     while (State->Mailbox && State->Mailbox->Events.Dequeue(Event))
     {
-        if (Event.Kind == ESocketEvent::Message) State->Mailbox->QueuedBytes.fetch_sub(Event.Bytes.Num());
-        if (Event.Kind == ESocketEvent::Failed) { InterruptConnection(Event.Error); continue; }
-        if (Event.Kind == ESocketEvent::Connected)
-        {
-            GuLiNet::Hello H;
-            H.Carrier = State->Config.Transport == EGuLiNetworkTransport::EOS ? GuLiNet::Transport::EOS : GuLiNet::Transport::LocalUdp;
-            H.Faction = GuLiNetBridge::ToCore(State->Config.Team); H.Seat = ToRole(State->Config.Role);
-            H.ConfigHash = TCHAR_TO_UTF8(*State->ConfigHash); H.MapHash = TCHAR_TO_UTF8(*State->MapHash);
-            H.Endpoint = TCHAR_TO_UTF8(*State->Identity.Endpoint); H.ProductUserId = TCHAR_TO_UTF8(*State->Identity.ProductUserId);
-            H.IdentityToken = TCHAR_TO_UTF8(*State->Identity.IdentityToken);
-            GuLiNet::Message M; M.Header.Kind = GuLiNet::MessageKind::Hello; M.Body = GuLiNet::EncodeHello(H);
-            SendControl(GuLiNetBridge::ToUE(M)); continue;
-        }
+        State->Mailbox->QueuedBytes.fetch_sub(Event.Bytes.Num());
         GuLiNet::Message V;
         if (!GuLiNet::DecodeMessage(std::span<const uint8>(Event.Bytes.GetData(), Event.Bytes.Num()), V)
             || V.Header.Sender.Valid() || V.Header.Match != GuLiNetBridge::ToCore(State->Config.RoomId))
-        { Fail(TEXT("Invalid coordinator message")); continue; }
+        { Fail(TEXT("Invalid peer room message")); continue; }
         State->LastControl = Now;
         if (V.Header.Kind == GuLiNet::MessageKind::Error)
         {
             GuLiNet::Reader R(V.Body);std::string Reason;
             if (R.Text(Reason))
             {
-                // Close is asynchronous. A previously authenticated session
-                // may still be retiring when its replacement reaches the host.
-                // Keep the established P2P world alive and retry this control link.
-                if (State->Reconnecting && State->Epoch && Reason=="Identity already connected")
-                    InterruptConnection(UTF8_TO_TCHAR(Reason.c_str()));
-                else Fail(UTF8_TO_TCHAR(Reason.c_str()));
+                Fail(UTF8_TO_TCHAR(Reason.c_str()));
             }
             continue;
         }
@@ -930,10 +911,9 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
             if (!Welcome.Identity(Player) || Player != GuLiNetBridge::ToCore(State->Identity.Player)
                 || !Welcome.Text(ConfigHash,128) || ConfigHash != TCHAR_TO_UTF8(*State->ConfigHash)
                 || !Welcome.Text(MapHash,128) || MapHash != TCHAR_TO_UTF8(*State->MapHash) || !Welcome.Done() || !V.Header.Epoch)
-            { Fail(TEXT("Invalid coordinator welcome")); continue; }
-            if (State->Reconnecting) ++State->ControlReconnects;
+            { Fail(TEXT("Invalid peer room welcome")); continue; }
             State->Epoch = V.Header.Epoch; State->Welcomed = true;
-            State->Reconnecting = false; State->Error.Reset(); State->FailureNotified = false;
+            State->Error.Reset(); State->FailureNotified = false;
         }
         else if (V.Header.Epoch != State->Epoch) {++State->ReviewEpochRejected;continue;}
         if (V.Header.Kind == GuLiNet::MessageKind::Roster)
@@ -966,7 +946,7 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
                     ++State->MotionCounterGeneration;
                 }
             }
-            if (!Valid || !R.Done()) { Fail(TEXT("Invalid coordinator roster")); continue; }
+            if (!Valid || !R.Done()) { Fail(TEXT("Invalid peer room roster")); continue; }
             for (auto It = State->Channels.begin(); It != State->Channels.end();)
             {
                 if (!Live.contains(It->first))
@@ -997,6 +977,7 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
                 }
             }
         }
+        if (State->Room) State->Room->Observe(V,Now);
         OnControl.Broadcast(GuLiNetBridge::ToUE(V));
         if (!State->Active || State->Generation != Generation) return true;
     }
@@ -1012,14 +993,15 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
             if (State->ReviewHeaderRejections.Num()>=64) State->ReviewHeaderRejections.RemoveAt(0,1,EAllowShrinking::No);
             State->ReviewHeaderRejections.Add(MakeShared<FJsonValueObject>(FState::FReviewFault::Header(Packed)));
         }
-        if (CurrentHeader) State->LastPeerSeen[Id]=Now;
+        if (CurrentHeader) {State->LastPeerSeen[Id]=Now;if (State->Room) State->Room->Seen(Id,Now);}
         if (Packed.Header.Kind==GuLiNet::MessageKind::Heartbeat) return true;
         TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_AdmitPeerPayload);
         uint64 PlainBytes=0;
         if (!GuLiHybridReliablePayload::PlainSize(Packed,PlainBytes))
         {++State->PayloadDecodeFailures;State->Error=TEXT("Invalid bounded peer payload envelope");return true;}
         const bool bNative=State->bNativePeerReceive && AdmitNativePeer.IsBound();
-        if (CurrentHeader && ((!bNative && !AdmitPeer.IsBound()) || !CanAdmitPeer.IsBound()
+        const bool RoomMessage=Packed.Header.Kind==GuLiNet::MessageKind::RoomRequest || Packed.Header.Kind==GuLiNet::MessageKind::RoomUpdate;
+        if (CurrentHeader && !RoomMessage && ((!bNative && !AdmitPeer.IsBound()) || !CanAdmitPeer.IsBound()
             || !CanAdmitPeer.Execute(uint16(Packed.Header.Kind),PlainBytes))) return false;
         const auto History=State->PayloadHistories.at(Id);
         auto V=Packed;
@@ -1037,6 +1019,8 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
         // Epoch rejection still consumes this ordered transport record. Its
         // decoded bytes must enter the dictionary used by the following record.
         if (!CurrentHeader) {CommitHistory();return true;}
+        if (RoomMessage)
+        {if (!State->Room || !State->Room->Receive(Id,V,Now)) return false;CommitHistory();return true;}
         auto& Fault=State->Fault;
         if (V.Header.Kind==GuLiNet::MessageKind::TransactionResult && Fault.Mode==TEXT("receipt_hold")
             && Fault.Accepts(uint16(V.Header.Kind)) && Fault.MatchesBusiness(V) && Fault.Bytes+V.Body.size()<=16*1024*1024)
@@ -1069,7 +1053,7 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
             const bool Valid=Channel->ReceiveWithAdmission(std::span<const uint8>(Bytes.GetData(), Bytes.Num()), Now,
                 [Channel](std::span<const uint8> Packet) { Channel->DeferAcknowledgment(Packet);return false; },
                 [&](const GuLiNet::Message& V){return Admit(Sender,V);});
-            if (Valid) State->LastPeerSeen[Id]=Now;
+            if (Valid) {State->LastPeerSeen[Id]=Now;if (State->Room) State->Room->Seen(Id,Now);}
         });
         if (!State->Active || State->Generation!=Generation) return true;
         // Retry retained reliable deliveries even if no more datagrams arrive.
@@ -1123,22 +1107,11 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
     if (State->Epoch && Now-State->LastHeartbeat>=1)
     {
         State->LastHeartbeat=Now;GuLiNet::Message M;M.Header.Kind=GuLiNet::MessageKind::Heartbeat;
-        SendControl(GuLiNetBridge::ToUE(M));BroadcastPeer(GuLiNetBridge::ToUE(M));
-        if (State->SimulationFrames || State->ReviewLoadCost>=0)
-        {
-            // Include every logical frame and shared batch in the reporting window.
-            // Measuring only the last frame would alias Mass's 10 Hz work.
-            GuLiNet::Writer Cost;Cost.F64(State->ReviewLoadCost>=0?State->ReviewLoadCost:State->SimulationCost/State->SimulationFrames);
-            M.Header.Kind=GuLiNet::MessageKind::LoadReport;M.Body=Cost.Take();SendControl(GuLiNetBridge::ToUE(M));
-            State->SimulationCost=0;State->SimulationFrames=0;
-        }
-        for (const auto& [Peer,Channel]:State->Channels)
-        {
-            const auto Seen=State->LastPeerSeen.find(Peer);GuLiNet::Writer W;W.Identity(Peer);
-            W.U8(Seen!=State->LastPeerSeen.end() && Now-Seen->second<10?1:0);
-            M.Header.Kind=GuLiNet::MessageKind::PeerStatus;M.Body=W.Take();SendControl(GuLiNetBridge::ToUE(M));
-        }
+        BroadcastPeer(GuLiNetBridge::ToUE(M));
+        State->SimulationCost=0;State->SimulationFrames=0;
     }
+    if (State->Room)
+    {State->Room->Tick(Now);if (!State->Room->Failure().empty()) Fail(UTF8_TO_TCHAR(State->Room->Failure().c_str()));}
     if (IsConnected())
     {
         std::vector<GuLiNet::Message> Retry;
@@ -1146,19 +1119,9 @@ bool UGuLiHybridSessionSubsystem::NetworkTick(float)
             if ((Delivery.Birth && !Delivery.Announced) || Now-Delivery.SentAt>=1) Retry.push_back(Delivery.Request);
         for (const auto& M:Retry) SendControl(GuLiNetBridge::ToUE(M));
     }
-    if (State->Error.IsEmpty() || State->Reconnecting)
-    {
-        if (State->Socket && ((!State->Welcomed && Now - State->Started > State->Config.ConnectionTimeout)
-            || (State->Welcomed && Now - State->LastControl > State->Config.ConnectionTimeout)))
-            InterruptConnection(TEXT("Coordinator connection timed out"));
-        else if (!State->Identity.Player.IsValid() && Now - State->Started > State->Config.ConnectionTimeout)
-            Fail(TEXT("Transport identity initialization timed out"));
-    }
-    if (State->Reconnecting)
-    {
-        if (!State->Socket && Now >= State->NextRetry) ConnectCoordinator();
-    }
-    if (!State->Reconnecting && !State->Error.IsEmpty() && !State->FailureNotified)
+    if (!State->Welcomed && State->Error.IsEmpty() && Now-State->Started>60)
+        Fail(TEXT("Peer room discovery or handshake timed out"));
+    if (!State->Error.IsEmpty() && !State->FailureNotified)
     { State->FailureNotified = true; OnFailure.Broadcast(State->Error); }
     return true;
 }

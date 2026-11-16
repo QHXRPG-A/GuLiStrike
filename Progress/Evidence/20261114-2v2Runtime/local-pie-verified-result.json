@@ -1,0 +1,123 @@
+{
+  "status": "passed",
+  "editor_pid": 25432,
+  "initial": {
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+  },
+  "last_status": {
+    "active": true,
+    "error": "",
+    "room": "CE4D7BF14269508E4DB7A7BE501940A8",
+    "role": "Ground",
+    "editor_pid": 25432,
+    "logic_pid": 38120,
+    "coordinator_pid": 10392,
+    "logic_running": true,
+    "coordinator_running": true,
+    "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/CE4D7BF14269508E4DB7A7BE501940A8",
+    "shutdown": [],
+    "cleanup_complete": false,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+    "standalone": true,
+    "can_present": true,
+    "world_ready": true,
+    "network_error": "",
+    "members": [
+      {
+        "player": "55C8BE3742A11BCFE7B1EB8019CAF02B",
+        "online": true,
+        "ready": true,
+        "team": "Red",
+        "role": "Ground"
+      },
+      {
+        "player": "7B8B8A9347DEFDAD8C5336AC09535A3F",
+        "online": true,
+        "ready": true,
+        "team": "Blue",
+        "role": "Commander"
+      }
+    ],
+    "units": 600,
+    "peer_owned_objects": 0,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "commander_view_active": false,
+    "can_issue_orders": false,
+    "mouse_cursor_visible": false,
+    "commander_hud_widget": "",
+    "commander_hud_in_viewport": false,
+    "commander_hud_visible": false,
+    "commander_hud_owner_matches": false,
+    "commander_hud_width": 0,
+    "commander_hud_height": 0,
+    "ground_hud_widget": "/Script/GuLiStrike.GuLiGroundHUDWidget",
+    "ground_hud_in_viewport": true,
+    "ground_hud_visible": true,
+    "ground_hud_owner_matches": true,
+    "ground_hud_width": 1749.1148681640625,
+    "ground_hud_height": 1080.4107666015625,
+    "resource_query_ready": true,
+    "legacy_resource_runtime_ready": false
+  },
+  "local": {
+    "pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+    "slots": [
+      {
+        "index": 0,
+        "team": "RED",
+        "role": "COMMANDER",
+        "occupied": false
+      },
+      {
+        "index": 1,
+        "team": "RED",
+        "role": "GROUND",
+        "occupied": true
+      },
+      {
+        "index": 2,
+        "team": "BLUE",
+        "role": "COMMANDER",
+        "occupied": true
+      },
+      {
+        "index": 3,
+        "team": "BLUE",
+        "role": "UNASSIGNED",
+        "occupied": false
+      }
+    ]
+  },
+  "shutdown": {
+    "active": false,
+    "error": "",
+    "room": "CE4D7BF14269508E4DB7A7BE501940A8",
+    "role": "Ground",
+    "editor_pid": 25432,
+    "logic_pid": 38120,
+    "coordinator_pid": 10392,
+    "logic_running": false,
+    "coordinator_running": false,
+    "session_directory": "",
+    "shutdown": [
+      {
+        "role": "logic",
+        "pid": 38120,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      },
+      {
+        "role": "coordinator",
+        "pid": 10392,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      }
+    ],
+    "cleanup_complete": true
+  },
+  "editor_exit": 0
+}

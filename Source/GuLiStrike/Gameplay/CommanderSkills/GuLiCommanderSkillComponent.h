@@ -87,6 +87,7 @@ private:
     TMap<FGuid,FHybridPendingSkill> HybridPending;
     FGuid RouteHybridUnitSkillRequest(const FGuLiActiveSkillRequest& Request);
     void HandleHybridSkillResult(const FGuLiHybridCommandResult&);
+    void CompleteHybridUnitSkillRequest(FHybridPendingSkill Pending);
     TMap<FGuid,FReceipt> HybridGlobalRequests;
     FGuLiActiveSkillReply RequestHybridGlobal(const FGuLiActiveSkillRequest& Request);
     UFUNCTION() void CompleteHybridGlobal(const FGuLiHybridTransactionResult& Result);

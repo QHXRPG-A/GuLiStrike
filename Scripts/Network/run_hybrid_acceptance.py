@@ -503,6 +503,7 @@ def launch(plan: dict, args: argparse.Namespace, writer=None) -> dict:
     return result
 
 def main() -> int:
+    raise SystemExit("The Coordinator acceptance runner is retired. Use Local PIE with two or four clients; this runner targets the former topology.")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--mode', choices=('Hybrid',), default='Hybrid')

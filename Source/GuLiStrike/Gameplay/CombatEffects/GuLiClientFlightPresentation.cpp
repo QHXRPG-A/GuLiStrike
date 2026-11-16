@@ -67,24 +67,31 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateGroundTrail(FGuLiLocalCombatE
 {
 	const auto& State = Visual.State;
 	const bool bTerminal = State.Phase == EGuLiCombatEffectPhase::Finished;
-	const float Speed = Visual.bInstantGroundSegment?1000000000.f:FMath::Max(1.f, float(FVector(State.Velocity).Size()));
+	const bool bEnded = bTerminal || Now >= State.EndTime;
+	if (Visual.GroundTrailLength <= 0.f) return bEnded;
+
+	const float Speed = Visual.bInstantGroundSegment ? 1.e9f : FMath::Max(1.f, float(FVector(State.Velocity).Size()));
+	const float Hold = Visual.bInstantGroundSegment ? Visual.GroundTrailHold
+		: FMath::Min(Visual.GroundTrailHold, Visual.GroundTrailLength / Speed);
+	const float Lifetime = Hold + Visual.GroundTrailFade;
+	const float End = bTerminal ? FMath::Clamp(State.SampleTime, State.StartTime, State.EndTime) : State.EndTime;
+	const float EndAge = FMath::Max(0.f, Now - End);
+	const bool bExpired = bEnded && EndAge >= Lifetime;
 	const FVector Direction = FVector(State.LaunchDirection).GetSafeNormal();
 	const FVector Origin = State.LaunchLocation;
-	if (Visual.GroundTrailEndedAt < 0 && (bTerminal || Now >= State.EndTime))
-	{
-		// Store the impact in world space. Neither the character nor camera can move it.
-		Visual.GroundTrailEndedAt = bTerminal ? FMath::Clamp(State.SampleTime, State.StartTime, Now) : State.EndTime;
-		Visual.GroundTrailEnd = bTerminal ? FVector(State.Location) : Origin + FVector(State.Velocity) * (State.EndTime-State.StartTime);
-	}
-	const bool bEnded = Visual.GroundTrailEndedAt >= 0;
-	const float EndAge = bEnded ? FMath::Max(0.f, Now-Visual.GroundTrailEndedAt) : 0.f;
-	const bool bExpired = bEnded && EndAge >= Visual.GroundTrailHold+Visual.GroundTrailFade;
-	if (bEnded) Visual.RenderLocation = Visual.GroundTrailEnd;
-	else if (!Visual.bHasPrediction) Visual.RenderLocation = Origin + FVector(State.Velocity) * FMath::Max(0.f,Now-State.StartTime);
+	if (bTerminal) Visual.RenderLocation = State.Location;
+	else if (bEnded || !Visual.bHasPrediction)
+		Visual.RenderLocation = Origin + FVector(State.Velocity) * FMath::Clamp(Now - State.StartTime, 0.f, State.EndTime - State.StartTime);
+
 	const float Distance = FMath::Max(0.f, float(FVector::DotProduct(Visual.RenderLocation-Origin,Direction)));
 	const float Canvas = 2.f*(Visual.GroundTrailBend+Visual.GroundTrailWidth);
-    const float ChunkLength=Visual.bInstantGroundSegment?FMath::Max(Visual.GroundTrailLength,Distance):Visual.GroundTrailLength;
-	const int32 First=FMath::Max(0,FMath::FloorToInt((Distance-ChunkLength)/ChunkLength));
+	// The length setting caps the fully lit portion. Older points stay in world
+	// space until their own fade ends. A full lifetime fits within two fixed chunks.
+	const float HistoryLength = Visual.bInstantGroundSegment ? Distance : Speed * Lifetime;
+	const float ChunkLength = FMath::Max(Visual.GroundTrailLength, HistoryLength);
+	const float StartDistance = Visual.bInstantGroundSegment ? 0.f : FMath::Max(0.f, Distance - Speed * FMath::Max(0.f, Lifetime - EndAge));
+	const float WaveLength = Visual.bInstantGroundSegment ? ChunkLength : Visual.GroundTrailLength;
+	const int32 First=FMath::FloorToInt(StartDistance/ChunkLength);
 	const int32 Last=FMath::FloorToInt(FMath::Max(0.f,Distance-.01f)/ChunkLength);
 	const FRotator Rotation=Direction.Rotation();
 	if (Visual.GroundTrailFacing.IsNearlyZero())
@@ -105,12 +112,14 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateGroundTrail(FGuLiLocalCombatE
 		}
 	}
 	if (!bEnabled || bExpired || Distance<=1) return bExpired;
-	// At most two fixed spatial pieces cover the bounded recent trail. No component
-	// follows the bullet: reveal/fade advances over immutable world-space geometry.
 	for (int32 Index=First;Index<=Last;++Index)
 	{
-		const FVector Anchor=Origin+Direction*(Index*ChunkLength);
-		FBox Bounds(ForceInit); Bounds+=Anchor; Bounds+=Anchor+Direction*ChunkLength; Bounds=Bounds.ExpandBy(Canvas);
+		const float ChunkStart = Index * ChunkLength;
+		const FVector Anchor = Origin + Direction * ChunkStart;
+		FBox Bounds(ForceInit);
+		Bounds += Origin + Direction * FMath::Max(ChunkStart, StartDistance);
+		Bounds += Origin + Direction * FMath::Min(ChunkStart + ChunkLength, Distance);
+		Bounds = Bounds.ExpandBy(Canvas);
 		int32 Found=Visual.GroundTrailSegments.IndexOfByPredicate([Index](const auto& Piece){return Piece.Index==Index;});
 		if (!IsVisibleBounds(Bounds))
 		{
@@ -127,8 +136,9 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateGroundTrail(FGuLiLocalCombatE
 			Component->SetWorldScale3D(FVector::OneVector);
 			Component->SetVariableVec2(TEXT("User.TrailSize"),FVector2D(Canvas,ChunkLength));
 			Component->SetVariableVec3(TEXT("User.TrailFacing"),Visual.GroundTrailFacing);
-			Component->SetVariableVec4(TEXT("User.TrailStyle"),FVector4(Visual.GroundTrailWidth,Visual.GroundTrailBend,Visual.GroundTrailHold,Visual.GroundTrailFade));
-			Component->SetVariableVec4(TEXT("User.TrailShape"),FVector4(ChunkLength,Canvas,Index*ChunkLength,0));
+			Component->SetVariableVec4(TEXT("User.TrailStyle"),FVector4(Visual.GroundTrailWidth,Visual.GroundTrailBend,Hold,Visual.GroundTrailFade));
+			Component->SetVariableVec4(TEXT("User.TrailShape"),FVector4(WaveLength,Canvas,ChunkStart,0));
+			Component->SetSystemFixedBounds(FBox(FVector(-Canvas), FVector(ChunkLength+Canvas,Canvas,Canvas)));
 		}
 		Visual.GroundTrailSegments[Found].Component->SetVariableVec4(TEXT("User.TrailData"),FVector4(ChunkLength,Distance,EndAge,Speed));
 		if (bNew) Visual.GroundTrailSegments[Found].Component->Activate(true);
@@ -138,42 +148,54 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateGroundTrail(FGuLiLocalCombatE
 
 bool UGuLiCombatEffectPresentationSubsystem::UpdateExplosiveFlight(FGuLiLocalCombatEffect& Visual,float Now,bool bEnabled)
 {
-    const auto& State=Visual.State;const float Tail=Visual.GroundTrailHold+Visual.GroundTrailFade;
-    const bool Ended=State.Phase==EGuLiCombatEffectPhase::Finished || Now>=State.EndTime;
-    if(Ended)
-    {
-        if(Visual.GroundTrailEndedAt<0)
-        {
-            Visual.GroundTrailEndedAt=State.Phase==EGuLiCombatEffectPhase::Finished?State.SampleTime:State.EndTime;
-            if(Visual.Flight)
-            {
-                Visual.Flight->SetWorldLocation(State.Phase==EGuLiCombatEffectPhase::Finished?FVector(State.Location):FVector(State.LaunchLocation)+FVector(State.Velocity)*(State.EndTime-State.StartTime));
-                Visual.Flight->SetVariableFloat(TEXT("User.FlightActive"),0.f);
-                // The head stops emitting; existing world-space smoke/ribbon
-                // particles keep their own age and finish before pool reuse.
-                Retire(Visual.Flight,Tail,false);Visual.Flight=nullptr;
-            }
-        }
-        return Now>=Visual.GroundTrailEndedAt+Tail;
-    }
-    FBox Bounds(ForceInit);Bounds+=Visual.RenderLocation;Bounds+=Visual.RenderLocation-FVector(State.Velocity)*Tail;Bounds=Bounds.ExpandBy(300.f);
-    if(!bEnabled || !IsVisibleBounds(Bounds))
-    {if(Visual.Flight){Retire(Visual.Flight,0);Visual.Flight=nullptr;}return false;}
-    const bool New=!Visual.Flight;
-    if(New)Visual.Flight=SpawnPooled(State.PlayerBulletVfxId,Visual.RenderLocation,1.f,0,FVector(State.LaunchDirection).Rotation(),NAME_None,false);
-    if(Visual.Flight)
-    {
-        Visual.Flight->SetWorldLocationAndRotation(Visual.RenderLocation,FVector(State.LaunchDirection).Rotation());
-        Visual.Flight->SetVariableVec3(TEXT("User.FlightVelocity"),FVector(State.Velocity));
-        Visual.Flight->SetVariableFloat(TEXT("User.FlightLifetime"),State.EndTime-State.StartTime);
-        Visual.Flight->SetVariableFloat(TEXT("User.FlightScale"),GuLiVfx::Scale(this,State.PlayerBulletVfxId).X);
-        Visual.Flight->SetVariableFloat(TEXT("User.FlightActive"),1.f);
-        Visual.Flight->SetVariableFloat(TEXT("User.TrailHold"),Visual.GroundTrailHold);
-        Visual.Flight->SetVariableFloat(TEXT("User.TrailFade"),Visual.GroundTrailFade);
-        Visual.Flight->SetWorldScale3D(FVector::OneVector);
-        if(New)Visual.Flight->Activate(true);
-    }
-    return false;
+	const auto& State = Visual.State;
+	const float TailSeconds = Visual.GroundTrailHold + Visual.GroundTrailFade;
+	const bool bTerminal = State.Phase == EGuLiCombatEffectPhase::Finished;
+	if (bTerminal || Now >= State.EndTime)
+	{
+		if (Visual.Flight)
+		{
+			const FVector End = bTerminal ? FVector(State.Location)
+				: FVector(State.LaunchLocation) + FVector(State.Velocity) * (State.EndTime - State.StartTime);
+			Visual.Flight->SetWorldLocation(End);
+			Visual.Flight->SetVariableFloat(TEXT("User.FlightActive"), 0.f);
+			// Stopping the head stops the location stream. Its world-space
+			// followers finish on their own clocks before the component is reused.
+			Retire(Visual.Flight, bEnabled ? TailSeconds : 0.f, false);
+			Visual.Flight = nullptr;
+		}
+		return true;
+	}
+
+	if (Now < State.StartTime) return false;
+
+	const FRotator Rotation = FVector(State.LaunchDirection).Rotation();
+	const FVector Padding(300.f);
+	const FBox LocalBounds(-FVector(FVector(State.Velocity).Size() * TailSeconds, 0, 0) - Padding, Padding);
+	if (!bEnabled || !IsVisibleBounds(LocalBounds.TransformBy(FTransform(Rotation, Visual.RenderLocation))))
+	{
+		Retire(Visual.Flight, 0);
+		Visual.Flight = nullptr;
+		return false;
+	}
+
+	if (Visual.Flight)
+	{
+		Visual.Flight->SetWorldLocation(Visual.RenderLocation);
+		return false;
+	}
+	Visual.Flight = SpawnPooled(State.PlayerBulletVfxId, Visual.RenderLocation, 1.f, 0.f, Rotation, TEXT("User.Size"), false);
+	if (Visual.Flight)
+	{
+		Visual.Flight->SetVariableVec3(TEXT("User.FlightVelocity"), FVector(State.Velocity));
+		Visual.Flight->SetVariableFloat(TEXT("User.FlightLifetime"), State.EndTime - State.StartTime);
+		Visual.Flight->SetVariableFloat(TEXT("User.FlightActive"), 1.f);
+		Visual.Flight->SetVariableFloat(TEXT("User.TrailHoldSeconds"), Visual.GroundTrailHold);
+		Visual.Flight->SetVariableFloat(TEXT("User.TrailFadeSeconds"), Visual.GroundTrailFade);
+		Visual.Flight->SetSystemFixedBounds(LocalBounds);
+		Visual.Flight->Activate(true);
+	}
+	return false;
 }
 
 void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightEvent& Event)
@@ -187,7 +209,6 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
         if(Event.bBootstrap||Visuals.Contains(State.EffectId)||ServerTime()-State.StartTime>.5f)return;
         auto& V=Visuals.Add(State.EffectId);V.State=State;V.State.Phase=EGuLiCombatEffectPhase::Finished;V.State.SampleTime=State.StartTime;V.State.Location=Event.InstantEnd;V.RenderLocation=Event.InstantEnd;V.bInstantGroundSegment=true;
         ResolveGroundTrailConfiguration(V);
-        V.GroundTrailLength=FMath::Max(1.f,V.GroundTrailLength);
         if(Event.ImpactVfxId>0)if(auto* Burst=SpawnPooled(Event.ImpactVfxId,Event.InstantEnd,1.f,0)){Retire(Burst,.2f,false);++Counters.MachineGunImpactsPlayed;}
         Tombstones.Add(State.EffectId,State.Sequence);TombstoneOrder.Add(State.EffectId);
         if(TombstoneOrder.Num()>8192){for(int32 I=0;I<1024;++I)Tombstones.Remove(TombstoneOrder[I]);TombstoneOrder.RemoveAt(0,1024,EAllowShrinking::No);}

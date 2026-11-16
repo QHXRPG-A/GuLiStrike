@@ -24,7 +24,7 @@ namespace
 {
     FGuid RequestForPlayer(const AGuLiBattlePlayerState& PS,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session={},FString Choice={})
     {
-        if(PS.GetBattleRole()==EGuLiCommanderRole::Ground)return GuLiGroundRogue::Request(PS,Op,Event,Session,MoveTemp(Choice));
+        if(PS.IsWushuang() && PS.GetActiveControlRole()!=EGuLiCommanderRole::Commander)return GuLiGroundRogue::Request(PS,Op,Event,Session,MoveTemp(Choice));
         return PS.IsCommander()?GuLiHybridArmy::Request(*PS.GetWorld(),PS.GetTeam(),Op,Event,Session,MoveTemp(Choice)):FGuid{};
     }
 	bool ValidateCardRelations(const TMap<FString,FGuLiStrikeRogueCardsCardsRow>& Cards, FString& Error)

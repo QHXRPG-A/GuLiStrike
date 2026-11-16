@@ -22,7 +22,9 @@ public:
     UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Hybrid Review",meta=(ClampMin="200",ClampMax="600")) int32 Units=600;
     UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Hybrid Review",meta=(ClampMin="0",ClampMax="500")) int32 AdditionalFlights=500;
     UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Hybrid Review",meta=(ClampMin="0",ClampMax="65535")) int32 UdpPort=0;
-    UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Hybrid Review") FString CoordinatorUrl=TEXT("ws://127.0.0.1:8787/v1/match");
+    UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Hybrid Review") FString PeerRosterFile;
+    UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Hybrid Review") FString LobbyId;
+    UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Hybrid Review") bool HostRoom=false;
     UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Hybrid Review") FFilePath Manifest;
     UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Hybrid Review") FString LaunchArguments;
     UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Hybrid Review") FString PreparationError;

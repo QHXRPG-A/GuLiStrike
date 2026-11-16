@@ -106,7 +106,7 @@ bool AGuLiWarMachinePlaceholderPawn::CanAcceptGroundInput() const
 	const UGuLiPlayerNetSyncComponent* ConnectionSync = OwningPlayerController
 		? OwningPlayerController->GetPlayerNetSyncComponent() : nullptr;
 	return IsLocallyControlled() && OwningPlayerController && OwningPlayerController->IsLocalController()
-		&& BattlePlayerState && BattlePlayerState->GetBattleRole() == EGuLiCommanderRole::Ground
+		&& BattlePlayerState && BattlePlayerState->GetActiveControlRole() == EGuLiCommanderRole::Ground
 		&& BattlePlayerState->IsBattleReady() && ConnectionSync && ConnectionSync->IsConnectionReady();
 }
 

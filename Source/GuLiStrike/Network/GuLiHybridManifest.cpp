@@ -43,7 +43,7 @@ bool Parse(const FJsonObject& Root, RuntimeManifest& M)
     const TArray<TSharedPtr<FJsonValue>> *Objects = nullptr, *Rules = nullptr;
     const TSharedPtr<FJsonObject>* Numbers = nullptr;
     const TSharedPtr<FJsonObject>* Strings = nullptr;
-    if (Number(Root,TEXT("schema")) != ManifestVersion || Number(Root,TEXT("protocol_version"))!=ProtocolVersion
+    if (Number(Root,TEXT("schema")) != ManifestVersion || (Number(Root,TEXT("protocol_version"))!=ProtocolVersion && Number(Root,TEXT("protocol_version"))!=44)
         || Number(Root,TEXT("handoff_version"))!=HandoffVersion || !Root.TryGetArrayField(TEXT("objects"),Objects)
         || !Root.TryGetArrayField(TEXT("rules"),Rules) || !Root.TryGetObjectField(TEXT("numbers"),Numbers)
         || !Root.TryGetObjectField(TEXT("strings"),Strings)) return false;
@@ -120,7 +120,8 @@ bool Parse(const FJsonObject& Root, RuntimeManifest& M)
     }
     for (const auto& Entry : (*Strings)->Values)
     { FString V; if (!Entry.Value || !Entry.Value->TryGetString(V)) return false; M.Strings.emplace(TCHAR_TO_UTF8(*Entry.Key),TCHAR_TO_UTF8(*V)); }
-    std::string Why;return InitializeManifestCapabilities(M,Why);
+    // LoadVerified initializes capabilities once and preserves their failure reason.
+    return true;
 }
 TSharedRef<FJsonObject> ToJson(const RuntimeManifest& M, const ManifestHashes& H)
 {
@@ -177,9 +178,13 @@ bool LoadVerified(const FString& File,RuntimeManifest& M,ManifestHashes& H,FStri
         || !FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),Root) || !Root || !Parse(*Root,M))
     { Error=TEXT("Missing, oversized or malformed Hybrid runtime manifest"); return false; }
     std::string Why;
-    if (!InitializeManifestCapabilities(M,Why) || !HashManifest(M,H,Why)) { Error=UTF8_TO_TCHAR(Why.c_str()); return false; }
+    // Import the existing authored v44 data without an editor re-export. Verify
+    // its original hash first; all runtime handshakes use the current wire version.
+    const auto FileProtocol=static_cast<uint16>(Number(*Root,TEXT("protocol_version")));
+    if (!InitializeManifestCapabilities(M,Why) || !HashManifest(M,H,Why,FileProtocol)) { Error=UTF8_TO_TCHAR(Why.c_str()); return false; }
     if (Text(*Root,TEXT("config_hash"))!=H.Configuration || Text(*Root,TEXT("map_hash"))!=H.Map)
     { Error=TEXT("Manifest content does not match its hashes"); return false; }
+    if (FileProtocol!=ProtocolVersion && !HashManifest(M,H,Why)) {Error=UTF8_TO_TCHAR(Why.c_str());return false;}
     Error.Reset(); return true;
 }
 }
@@ -197,12 +202,7 @@ bool FGuLiHybridManifest::Write(const FGuLiHybridManifestData& Data,const FStrin
     M.Numbers.emplace("network/wingman/motion_hz",WingmanMotionHz);
     M.Numbers.emplace("network/state_hz",StatePublicationHz);
     const auto* Settings=GetDefault<UGuLiNetworkSettings>();
-    M.Numbers.emplace("ownership/idle_seconds",Settings->CommanderIdleSeconds);
-    M.Numbers.emplace("ownership/evaluation_seconds",Settings->OwnershipEvaluationSeconds);
     M.Numbers.emplace("ownership/handoff_timeout_seconds",Settings->HandoffTimeoutSeconds);
-    M.Numbers.emplace("ownership/minimum_relative_gap",Settings->MinimumRelativeLoadGap);
-    M.Numbers.emplace("ownership/minimum_gap_ms",Settings->MinimumLoadGapMilliseconds);
-    M.Numbers.emplace("ownership/maximum_background_batch",Settings->MaximumBackgroundHandoffBatch);
     M.StartingRed.Blue=Data.RedTeamBlue; M.StartingRed.Red=Data.RedTeamRed;
     M.StartingBlue.Blue=Data.BlueTeamBlue; M.StartingBlue.Red=Data.BlueTeamRed;
     for (const auto& V : Data.Objects)

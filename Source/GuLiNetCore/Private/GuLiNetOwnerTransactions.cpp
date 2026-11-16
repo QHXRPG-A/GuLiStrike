@@ -1,4 +1,5 @@
 #include "GuLiNetOwnerState.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetManifest.h"
 #include "GuLiNetCapability.h"
 #include "GuLiNetHash.h"
@@ -40,7 +41,7 @@ OwnerState OwnerState::Stage(const TransactionRequest* Request,const std::vector
         {
             const auto& Name=F.Key.Capability;
             Economy|=Name=="account";
-            Resources|=Name=="cargo" || Name=="processor" || Name.starts_with("ore/") || Name.starts_with("territory/");
+            Resources|=Name=="cargo" || Name=="processor" || Name.starts_with("cargo/") || Name.starts_with("processor/") || Name.starts_with("ore/") || Name.starts_with("territory/");
             Mining|=Name.starts_with("leases/");
         }
         if (Economy) V.EconomyLedger=EconomyLedger;
@@ -122,14 +123,21 @@ bool OwnerState::ApplyValidated(const std::vector<StateFragment>& Fragments,std:
 }
 bool OwnerState::Configure(const RuntimeManifest& M,std::string& Error)
 {
-    if (!Directory.empty() || !SetRules(M.Rules) || !BeginEconomy(M.StartingRed,M.StartingBlue)) return false;
+    if (!Directory.empty()) {Error="Owner directory was already configured";return false;}
+    if (!SetRules(M.Rules)) {Error="Owner numerical rules could not be configured";return false;}
+    if (!BeginEconomy(M.StartingRed,M.StartingBlue)) {Error="Owner economy could not be configured";return false;}
     std::map<std::string,CompiledUpgradeCatalog> Catalogs;
-    if (!ReadUpgradeCatalogs(M,Catalogs,Error) || !ConfigureUpgradeCatalogs(Catalogs)) return false;
+    if (!ReadUpgradeCatalogs(M,Catalogs,Error)) return false;
+    if (!ConfigureUpgradeCatalogs(Catalogs)) {Error="Owner upgrade catalogs could not be configured";return false;}
     std::map<std::string,OwnershipDefinition> Definitions;
     if (!ReadOwnershipDefinitions(M,Definitions,Error)) return false;OwnershipDefinitions=std::move(Definitions);
-    if (!RuntimeObjects(M,Directory,Error) || !ConfigureOwnerResources(*this,M,Error)
-        || !InitializeOwnedCapabilityState(Directory)) return false;
-    for (const auto& [K,O]:Directory) {if (!ValidateObjectCapabilities(O)) return false;IndexRecord(O);}
+    if (!RuntimeObjects(M,Directory,Error) || !ConfigureOwnerResources(*this,M,Error)) return false;
+    if (!InitializeOwnedCapabilityState(Directory)) {Error="Owner capability state could not be initialized";return false;}
+    for (const auto& [K,O]:Directory)
+    {
+        if (!ValidateObjectCapabilities(O)) {Error="Invalid owner object capability: "+O.Definition+"/"+K.StableId.ToString();return false;}
+        IndexRecord(O);
+    }
     return true;
 }
 bool OwnerState::Install(const ObjectRecord& O)
@@ -293,6 +301,8 @@ bool OwnerState::Authorize(Id Sender,const Envelope& H,Domain Field,bool AllowDe
 ObjectKey OwnerState::ExecutionDomain(const TransactionRequest& R) const
 {
     if (R.Kind==TransactionKind::Damage) return R.Target;
+    if (IsResourceTransaction(R.Kind) || IsMiningTransaction(R.Kind))
+    {if (const auto* Source=FindRecord(R.Header.Object)) return TeamAccountObject(Source->Grant.Faction);}
     if (R.Kind==TransactionKind::Credit || R.Kind==TransactionKind::Reserve || R.Kind==TransactionKind::Commit || R.Kind==TransactionKind::Refund)
         return TeamAccountObject(R.Faction);
     if (R.Kind==TransactionKind::AdmitWork)
@@ -327,7 +337,7 @@ std::set<StateKey> OwnerState::ChangedKeys(const TransactionRequest& Request,con
     if (Result.FinalizedWork) {Objects.insert(Result.FinalizedWork->Grant.Object);Objects.insert(Result.FinalizedWork->Parent);}
     for (const auto& K:Objects)
     {
-        Out.insert({K,"object"});Out.insert({K,"tasks"});Out.insert({K,"cargo"});Out.insert({K,"processor"});
+        Out.insert({K,"object"});Out.insert({K,"tasks"});Out.insert(InventoryStateKey(K,false));Out.insert(InventoryStateKey(K,true));
         if (K==TeamAccountObject(Team::Red) || K==TeamAccountObject(Team::Blue)) Out.insert({K,"account"});
     }
     Out.insert({AttackDomain(R),"attack/"+AttackIdentity(R).ToString()});
@@ -340,7 +350,7 @@ std::set<StateKey> OwnerState::ChangedKeys(const TransactionRequest& Request,con
     for (const auto& K:Objects) if (const auto I=MiningReservationsValue.Snapshot().Leases.find(K);I!=MiningReservationsValue.Snapshot().Leases.end()) Clusters.insert(I->second.Cluster);
     for (const auto C:Clusters) Out.insert({MiningClusterObject(C),"leases/"+std::to_string(C)});
     for (const auto& [Index,Owner]:Result.TerritoryOwners) Out.insert({TerritoryStateObject(Index),"territory/"+std::to_string(Index)});
-    for (const auto& [K,Owner]:Result.InventoryOwners) {Out.insert({K,"cargo"});Out.insert({K,"processor"});}
+    for (const auto& [K,Owner]:Result.InventoryOwners) {Out.insert(InventoryStateKey(K,false));Out.insert(InventoryStateKey(K,true));}
     return Out;
 }
 bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::string* WaitReason)
@@ -380,12 +390,10 @@ bool OwnerState::Plan(Id Sender,const TransactionRequest& R,OwnerWork& Out,std::
                     O.Grant.Policy=Policy->second.Policy;O.Grant.ControllerSeat=Policy->second.ControllerSeat;O.Grant.RetireOnVacancy=Policy->second.RetireOnVacancy;
                     if (O.Grant.Policy!=OwnershipPolicy::RetainedSource && O.Grant.Policy!=OwnershipPolicy::ParentWork)
                     {
-                        O.Grant.Controller={};O.Grant.ControlEpoch=1;
-                        for (const auto& [MemberId,Member]:Players)
-                            if (Member.Faction==O.Grant.Faction && Member.Seat==O.Grant.ControllerSeat && IsLiveMember(MemberId))
-                            {O.Grant.Controller=MemberId;break;}
+                        O.Grant.Controller=ResolveTeamSeat(Players,O.Grant.Faction,O.Grant.ControllerSeat);O.Grant.ControlEpoch=1;
                     }
-                    O.Grant.OwnershipGroup=Policy->second.Group.empty()?Id{}:StableId("GuLiOwnershipGroup/v1",Policy->second.Group);
+                    const auto ParentRecord=FindRecord(O.Parent);
+                    O.Grant.OwnershipGroup=ResolveAuthorityGroup(O.Grant,Policy->second,ParentRecord?&ParentRecord->Grant:nullptr);
                     O.Grant.GroupEpoch=0;
                     O.Grant.SimOwner=Owner(R.Header.Object);O.Grant.OwnerEpoch=1;
                     if (O.Grant.OwnershipGroup.Valid())
@@ -600,7 +608,8 @@ bool OwnerState::ImportStream(Id Sender,const FragmentSource& Read,bool Handoff,
             const auto& Definition=Trial.OwnershipDefinitions.at(Birth.Definition);
             if (Definition.Policy==OwnershipPolicy::SharedGroup)
             {
-                const auto Group=StableId("GuLiOwnershipGroup/v1",Definition.Group);
+                const auto ParentRecord=Trial.FindRecord(Birth.Parent);
+                const auto Group=ResolveAuthorityGroup(Birth.Grant,Definition,ParentRecord?&ParentRecord->Grant:nullptr);
                 const auto Current=GroupAuthority(Group);
                 if (!Current) return Reject("birth-group-unavailable");
                 if (Birth.Grant.Policy!=Definition.Policy || Birth.Grant.OwnershipGroup!=Group) return Reject("birth-group-identity");

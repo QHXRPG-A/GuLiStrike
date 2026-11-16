@@ -10,6 +10,18 @@ struct FGuLiTransportIdentity
     FString ProductUserId;
     FString IdentityToken;
 };
+struct FGuLiTransportRoomMember
+{
+    FGuid Player;
+    EGuLiTeam Team=EGuLiTeam::Unassigned;
+    EGuLiCommanderRole Role=EGuLiCommanderRole::Observer;
+    FString Address;
+};
+struct FGuLiTransportRoom
+{
+    FGuid Match,Host;
+    TArray<FGuLiTransportRoomMember> Members;
+};
 struct FGuLiTransportByteCounters
 {
     uint64 SentBytes=0,ReceivedBytes=0,SentPackets=0,ReceivedPackets=0;
@@ -29,6 +41,7 @@ public:
     using FFailure = TFunction<void(const FString&)>;
     virtual ~IGuLiHybridTransport() = default;
     virtual void Start(const FGuLiNetworkLaunchConfig& Config, FReady Ready, FFailure Failure) = 0;
+    virtual bool DiscoverRoom(FGuLiTransportRoom& Room) { return false; }
     virtual void SetPeers(const TMap<FGuid, FString>& Peers) = 0;
     virtual bool Send(const FGuid& Peer, TConstArrayView<uint8> Packet) = 0;
     virtual void Poll(const FReceive& Receive) = 0;

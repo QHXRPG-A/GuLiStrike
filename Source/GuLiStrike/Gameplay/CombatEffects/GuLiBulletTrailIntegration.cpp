@@ -31,7 +31,7 @@ FLinearColor UGuLiCombatEffectPresentationSubsystem::GroundBulletTint(const FGuL
 	return State.SourceTeam==BulletLocalTeam ? Catalog->FriendlyGroundMachineGunTint : Catalog->EnemyGroundMachineGunTint;
 }
 
-bool UGuLiCombatEffectPresentationSubsystem::UpdateMassBulletTrail(FGuLiLocalCombatEffect& Visual,float Now,bool bEnabled)
+bool UGuLiCombatEffectPresentationSubsystem::UpdateMassBulletTrail(FGuLiLocalCombatEffect& Visual, float Now)
 {
 	const auto& State=Visual.State;
 	auto* Trails=(Visual.FrozenUnitTypeId==1||Visual.FrozenUnitTypeId==5)?BasicBulletTrails.Get():BulletTrails.Get();
@@ -48,11 +48,8 @@ bool UGuLiCombatEffectPresentationSubsystem::UpdateMassBulletTrail(FGuLiLocalCom
 		if (const auto* PC=GetWorld()->GetFirstPlayerController()) PC->GetPlayerViewPoint(View,Rotation);
 		Visual.GroundTrailFacing=FVector::VectorPlaneProject(View-Origin,Direction).GetSafeNormal(UE_SMALL_NUMBER,FVector::UpVector);
 	}
-	// Bound the recent path, including its retiring portion; a visible old tail must survive head culling.
-	FBox Bounds(ForceInit); Bounds+=Visual.RenderLocation;
-	Bounds+=Visual.RenderLocation-Direction*Trails->GetMaximumLength();
-	Bounds=Bounds.ExpandBy(Trails->GetStrokeEnvelope());
-	return Trails->SubmitMass(State,Origin,Visual.GroundTrailFacing,GroundBulletTint(State),bEnabled && IsVisibleBounds(Bounds));
+	return Trails->SubmitMass(State,Direction,Visual.GroundTrailFacing,GroundBulletTint(State),
+		[this](const FBox& Bounds) { return IsVisibleBounds(Bounds); });
 }
 
 void UGuLiCombatEffectPresentationSubsystem::SubmitBulletLight(const FGuLiLocalCombatEffect& Visual,float Now,bool bEnabled)

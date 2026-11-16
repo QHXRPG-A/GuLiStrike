@@ -1,5 +1,6 @@
 #include "GuLiNetOwnerState.h"
 #include "GuLiNetHash.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetTrace.h"
 #include <algorithm>
 #include <charconv>
@@ -176,7 +177,7 @@ bool OwnerState::ReplaceCurrent(Id Source,std::span<const ObjectKey> Objects,con
     if (Records.size()!=Scope.size()) return Fail("missing-objects");
     // A valid checksum is not a completeness guarantee: require every current
     // capability (including empty inventories and task slots) before any write.
-    for (const auto& K:FragmentKeys(Objects,false)) if (!Seen.contains(K)) return Fail("missing-capability/"+K.Capability+"/"+K.Object.StableId.ToString());
+    for (const auto& K:FragmentKeys(Objects,false)) if (!Seen.contains(K) && !K.Capability.starts_with("cargo/") && !K.Capability.starts_with("processor/")) return Fail("missing-capability/"+K.Capability+"/"+K.Object.StableId.ToString());
     OwnerState Trial=Stage(nullptr,&Fragments);
     if (!Identity.empty()&&!Trial.MergeCurrentIdentity(Identity)) return Fail("identity");
     for (const auto K:Scope)
@@ -190,7 +191,19 @@ bool OwnerState::ReplaceCurrent(Id Source,std::span<const ObjectKey> Objects,con
         Trial.Directory[K]=O;Trial.IndexRecord(O);
         Trial.ActiveWorks.erase(K);
     }
-    if (!Trial.ApplyValidated(Fragments,CurrentStateFailure)) return false;
+    const auto PruneInventories=[&](OwnerState& State)
+    {
+        auto Resources=State.ResourceLedgerValue.Snapshot();
+        for (auto& [Carrier,V]:Resources.Miners)
+        {const auto K=State.InventoryStateKey(Carrier,false);if (IsMassObject(Carrier.Kind) && Scope.contains(K.Object) && !Seen.contains(K))
+            {V.Cargo={};V.NextExtraction=0;if (V.Version<UINT64_MAX) ++V.Version;}}
+        for (auto& [Carrier,V]:Resources.Factories)
+        {const auto K=State.InventoryStateKey(Carrier,true);if (IsMassObject(Carrier.Kind) && Scope.contains(K.Object) && !Seen.contains(K))
+            {V.Queue.clear();V.Processed={};V.NextProcessing=0;State.HeldFactoryCapacity.erase(Carrier);if (V.Version<UINT64_MAX) ++V.Version;}}
+        Resources.Processed={};for (const auto& [K,V]:Resources.Factories) {Resources.Processed.Blue+=V.Processed.Blue;Resources.Processed.Red+=V.Processed.Red;}
+        return State.ResourceLedgerValue.Restore(std::move(Resources));
+    };
+    if (!PruneInventories(Trial) || !Trial.ApplyValidated(Fragments,CurrentStateFailure)) return false;
     // Validation used only the affected current state. Do not copy completed
     // transaction history into a trial world as part of snapshot restoration.
     std::erase_if(Versions,[&](const auto& P){return Scope.contains(P.first.Object);});
@@ -198,7 +211,7 @@ bool OwnerState::ReplaceCurrent(Id Source,std::span<const ObjectKey> Objects,con
     std::erase_if(LastAttack,[&](const auto& P){return Scope.contains(P.first.first);});
     for (const auto& [K,O]:Records)
     {Directory[K]=Trial.Directory.at(K);Directory[K].LogicalAge=O.LogicalAge;IndexRecord(Directory[K]);HistoryFragments.erase(K);ActiveWorks.erase(K);}
-    if ((!Identity.empty()&&!MergeCurrentIdentity(Identity))||!ApplyValidated(Fragments,CurrentStateFailure))
+    if ((!Identity.empty()&&!MergeCurrentIdentity(Identity))||!PruneInventories(*this)||!ApplyValidated(Fragments,CurrentStateFailure))
     {Abort("Validated resource snapshot application failed");return false;}
     for (const auto& [K,O]:Records) Directory.at(K).LogicalAge=O.LogicalAge;
     FragmentCache.clear();FragmentCacheBytes=0;return true;

@@ -1,4 +1,5 @@
 #include "GuLiNetRoom.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetHash.h"
 #include <algorithm>
 #include <cmath>
@@ -24,10 +25,7 @@ bool Room::Live(Id Player) const
     return M!=Players.end() && M->second.Online && M->second.Ready && M->second.Seat!=Role::Observer;
 }
 Id Room::Controller(Team Faction,Role Seat) const
-{
-    for (const auto& [P,M]:Players) if (Live(P) && M.Faction==Faction && M.Seat==Seat) return P;
-    return {};
-}
+{return Seat==Role::Observer?Id{}:ResolveTeamSeat(Players,Faction,Seat);}
 Id Room::Custodian(Team Faction,Id Exclude) const
 {
     for (const auto& [P,M]:Players) if (P!=Exclude && Live(P) && M.Faction==Faction) return P;
@@ -35,37 +33,9 @@ Id Room::Custodian(Team Faction,Id Exclude) const
 }
 Id Room::Destination(const Authority& A,Id Exclude,const std::set<Id>* Unavailable) const
 {
-    if (A.Policy==OwnershipPolicy::ControllerPinned && A.Controller!=Exclude && Live(A.Controller)) return A.Controller;
-    if (A.Policy==OwnershipPolicy::SharedGroup)
-    {
-        const auto Group=Groups.find(A.OwnershipGroup);
-        if (Group!=Groups.end() && Group->second.Owner!=Exclude && Live(Group->second.Owner)) return Group->second.Owner;
-        return GroupDestination(A.OwnershipGroup,Exclude);
-    }
-    if (A.Policy==OwnershipPolicy::Fixed)
-    {
-        const Id C=Controller(A.Faction,A.ControllerSeat);
-        if (C!=Exclude && C.Valid()) return C;
-        if (A.SimOwner!=Exclude && Live(A.SimOwner)) return A.SimOwner;
-        return Custodian(A.Faction,Exclude);
-    }
-    Id Best;double Cost=0;
-    for (const auto& [P,M]:Players)
-    {
-        if (P==Exclude || !Live(P) || (Unavailable && Unavailable->contains(P))
-            || (Playable(A.Faction) && M.Faction!=A.Faction)) continue;
-        // Initial placement uses one unit (relative cost). Runtime offload uses
-        // the scheduler's measured milliseconds and converted reservations.
-        double Candidate=0;
-        for (const auto& [K,O]:Directory) if (O.Grant.SimOwner==P && O.Grant.State<Life::Dead) Candidate+=O.Grant.EstimatedCost;
-        for (const auto& [K,T]:PendingAssignments) if (T.ProposedOwner==P) Candidate+=Directory.at(K).Grant.EstimatedCost;
-        // A leave queues a bounded wave before any grant commits. Reserve its
-        // destination cost now rather than sending the entire wave to the same
-        // currently empty peer and only noticing that load after installation.
-        for (const auto& [K,T]:Scheduler.Transfers()) if (T.Target==P) Candidate+=Directory.at(K).Grant.EstimatedCost;
-        if (!Best.Valid() || Candidate<Cost) {Best=P;Cost=Candidate;}
-    }
-    return Best;
+    const auto Desired=A.OwnershipGroup.Valid()?GroupDestination(A.OwnershipGroup,Exclude)
+        :ResolveTeamSeat(Players,A.Faction,IsMassObject(A.Object.Kind)?Role::Commander:Role::Ground,Exclude);
+    return Unavailable && Unavailable->contains(Desired)?Id{}:Desired;
 }
 bool Room::Join(Member M,const std::string& Config,const std::string& Map,double Now,std::string& Error)
 {
@@ -76,48 +46,45 @@ bool Room::Join(Member M,const std::string& Config,const std::string& Map,double
     if (const auto Existing=Players.find(M.Player);Existing!=Players.end())
     {
         auto& Old=Existing->second;
+        if (!Old.Online || (MembershipValue && MembershipValue->Operation==MembershipOperation::Leave
+            && MembershipValue->Player==M.Player)) return Reject("Player has left this match");
         if (Old.Faction!=M.Faction || Old.Carrier!=M.Carrier || Old.ProductUserId!=M.ProductUserId) return Reject("Identity mismatch");
         if (Old.Seat!=M.Seat) return Reject("Role is locked for this match");
-        // Reattaching an existing control connection does not create a member
-        // change or reset any grant. The host rejects concurrent connections.
-        if (Old.Online) {Old.Endpoint=std::move(M.Endpoint);Old.LastSeen=Now;return true;}
-        if (Old.SeatVersion==UINT64_MAX) return Reject("Seat version exhausted");
-        M.Seat=Old.Seat;M.SeatVersion=Old.SeatVersion+1;M.OrdinalSlot=Old.OrdinalSlot;
+        // Only current members can reattach their control connection.
+        Old.Endpoint=std::move(M.Endpoint);Old.LastSeen=Now;return true;
     }
     if (MembershipValue) return Reject("Member handoff in progress");
     std::size_t Count=0;
-    for (const auto& [P,V]:Players) if (V.Online && V.Faction==M.Faction)
-    {++Count;if (M.Seat!=Role::Observer && V.Seat==M.Seat) return Reject("Role seat occupied");}
-    if (Count>=3 || (Players.size()>=64 && !Players.contains(M.Player))) return Reject("Room is full");
+    const auto Slot = RoleSlotIndex(M.Faction, M.Seat);
+    for (const auto& [P,V]:Players) if (V.Online && V.Faction==M.Faction && V.Seat!=Role::Observer)
+    {
+        ++Count;
+        if (RoleSlotIndex(V.Faction, V.Seat) == Slot) return Reject("Role seat occupied");
+    }
+    if (Count>=SeatsPerTeam || Players.size()>=64) return Reject("Room is full");
     if (!M.OrdinalSlot)
     {for (const auto& [P,V]:Players) M.OrdinalSlot=std::max(M.OrdinalSlot,V.OrdinalSlot);++M.OrdinalSlot;}
     M.Online=true;M.Ready=false;M.LastSeen=Now;M.ReservedCost=0;
-    Players[M.Player]=M;Scheduler.SetMember({M.Player,M.Faction,M.Seat,false});
+    AuthorityDirty=true;Players[M.Player]=M;Scheduler.SetMember({M.Player,M.Faction,M.Seat,false});
     if (CurrentPhase==RoomPhase::Running) return BeginMembership(M.Player,MembershipOperation::Join,false,Now);
     return true;
 }
 bool Room::Ready(Id Player)
 {
     const auto M=Players.find(Player);if (M==Players.end() || !M->second.Online) return false;
-    M->second.Ready=true;Scheduler.SetMember({Player,M->second.Faction,M->second.Seat,true});return true;
+    AuthorityDirty=true;M->second.Ready=true;Scheduler.SetMember({Player,M->second.Faction,M->second.Seat,true});return true;
 }
 bool Room::Heartbeat(Id Player,double Now)
 {
     const auto M=Players.find(Player);if (M==Players.end() || !M->second.Online || !std::isfinite(Now)) return false;
     M->second.LastSeen=Now;return true;
 }
-bool Room::LoadReport(Id Player,double Cost)
-{
-    const auto M=Players.find(Player);
-    if (M==Players.end() || !M->second.Online || !Scheduler.ReportLoad(Player,Cost)) return false;
-    M->second.MeasuredCost=Cost;return true;
-}
 bool Room::BeginMembership(Id Player,MembershipOperation Op,bool Abrupt,double Now)
 {
     if (MembershipValue || !NextMembership) return false;
     MembershipChange V;V.Version=NextMembership++;V.Player=Player;V.Operation=Op;V.Abrupt=Abrupt;V.Deadline=Now+Settings.MembershipTimeoutSeconds;
     for (const auto& [P,M]:Players) if (M.Online && (!Abrupt || P!=Player)) V.Waiting.insert(P);
-    MembershipValue=std::move(V);CurrentPhase=RoomPhase::MembershipChanging;Scheduler.SetMembershipPaused(true,Now);return true;
+    AuthorityDirty=true;MembershipValue=std::move(V);CurrentPhase=RoomPhase::MembershipChanging;Scheduler.SetMembershipPaused(true,Now);return true;
 }
 bool Room::BeginLeave(Id Player,bool Abrupt,double Now)
 {
@@ -139,7 +106,7 @@ bool Room::BeginLeave(Id Player,bool Abrupt,double Now)
         {Abort("Resource owner lost without an available snapshot custodian");return false;}
         ResourceRecovery V;auto& S=V.State;S.Group=Key;S.Owner=G.Owner;S.Backup=G.Backup;S.OwnerVersion=G.Version;
         S.RequestEpoch=++G.RequestEpoch;S.Recovery=MembershipValue->Version;S.PreviousOwner=Player;
-        S.Publisher=Abrupt?G.Backup:Player;S.Target=Target;S.Abrupt=Abrupt;S.Deadline=Now+Settings.ReadyTimeoutSeconds;
+        S.Publisher=Abrupt?G.Backup:Player;S.Target=Target;S.Abrupt=Abrupt;S.Deadline=Now+Settings.MembershipTimeoutSeconds;
         for (const auto& [P,Member]:Players) if (Member.Online&&(!Abrupt||P!=Player)) V.Waiting.insert(P);
         ResourceRecoveries.emplace(Key,std::move(V));
     }
@@ -157,7 +124,7 @@ bool Room::BeginLeave(Id Player,bool Abrupt,double Now)
         if (Abrupt)
         {
             A.SimOwner={};A.StateCustodian={};
-            if (A.RetireOnVacancy) A.State=Life::Destroyed;
+            if (A.RetireOnVacancy || A.Policy==OwnershipPolicy::RetainedSource) A.State=Life::Destroyed;
             MarkDirectoryChanged(K);
             Scheduler.SetObject({A,A.Policy,O.Parent},Now);
         }
@@ -266,7 +233,8 @@ bool Room::CanRecoverBirth(const ObjectRegistration& O,Id Player) const
         || !A.SimOwner.Valid() || A.SimOwner==Player || Old==Players.end() || Old->second.Online) return false;
     if (D->second.Policy==OwnershipPolicy::SharedGroup)
     {
-        const auto Group=Groups.find(StableId("GuLiOwnershipGroup/v1",D->second.Group));
+        const auto Parent=Directory.find(O.Parent);
+        const auto Group=Groups.find(ResolveAuthorityGroup(A,D->second,Parent==Directory.end()?nullptr:&Parent->second.Grant));
         if (Group==Groups.end() || Group->second.Owner!=Player) return false;
     }
     std::set<ObjectKey> Seen;ObjectKey Parent=O.Parent;
@@ -285,9 +253,12 @@ bool Room::Register(ObjectRegistration O,double Now,Id Creator)
     if (D==Definitions.end() || !A.Object.Valid() || !std::isfinite(A.EstimatedCost) || A.EstimatedCost<0
         || LivingDirectory.size()>=MaxLiveObjects || Directory.contains(A.Object) || (Creator.Valid() && !Live(Creator))) return false;
     const auto Original=A;
-    const bool Recovery=Creator.Valid() && A.SimOwner.Valid() && A.SimOwner!=Creator;
+    const auto PriorOwner=Players.find(A.SimOwner);
+    const bool Recovery=Creator.Valid() && A.SimOwner.Valid() && A.SimOwner!=Creator
+        && PriorOwner!=Players.end() && !PriorOwner->second.Online;
     if (Recovery && !CanRecoverBirth(O,Creator)) return false;
-    const Id Group=D->second.Group.empty()?Id{}:StableId("GuLiOwnershipGroup/v1",D->second.Group);
+    const auto ParentEntry=Directory.find(O.Parent);
+    const Id Group=ResolveAuthorityGroup(A,D->second,ParentEntry==Directory.end()?nullptr:&ParentEntry->second.Grant);
     if (Creator.Valid() && !Recovery && Playable(A.Faction) && Players.at(Creator).Faction!=A.Faction
         && (!Group.Valid() || !Groups.contains(Group) || Groups.at(Group).Owner!=Creator))
     {
@@ -300,11 +271,12 @@ bool Room::Register(ObjectRegistration O,double Now,Id Creator)
     if (Group.Valid())
     {
         auto& G=Groups[Group];A.OwnershipGroup=Group;A.GroupEpoch=G.Version;
-        if (Creator.Valid() && G.Owner.Valid() && Creator!=G.Owner) return false;
+        if (Creator.Valid() && G.Owner.Valid() && Creator!=G.Owner
+            && (ParentEntry==Directory.end() || ParentEntry->second.Grant.SimOwner!=Creator)) return false;
     }
     A.Policy=D->second.Policy;A.ControllerSeat=D->second.ControllerSeat;A.RetireOnVacancy=D->second.RetireOnVacancy;
     A.Controller=Controller(A.Faction,A.ControllerSeat);A.ControlEpoch=1;A.OwnerEpoch=0;A.SimOwner={};A.StateCustodian={};A.State=Life::Registered;
-    if (Creator.Valid()) {A.SimOwner=Creator;A.OwnerEpoch=1;A.State=Life::Alive;}
+    if (Creator.Valid()) {A.SimOwner=Group.Valid()?GroupDestination(Group):Creator;A.OwnerEpoch=1;A.State=Life::Alive;}
     if ((A.Policy==OwnershipPolicy::RetainedSource || A.Policy==OwnershipPolicy::ParentWork) && Creator.Valid())
     {A.Controller=Creator;A.SimOwner=Creator;A.OwnerEpoch=1;A.State=Life::Alive;}
     if (Recovery)
@@ -338,7 +310,7 @@ bool Room::SetController(ObjectKey K,Id Player,double Now)
     const auto O=Directory.find(K);const auto M=Players.find(Player);
     if (O==Directory.end() || M==Players.end() || !Live(Player)) return false;
     auto& A=O->second.Grant;
-    if (A.Faction!=M->second.Faction || A.ControllerSeat!=M->second.Seat || (A.Policy==OwnershipPolicy::RetainedSource || A.Policy==OwnershipPolicy::ParentWork)
+    if (A.Faction!=M->second.Faction || !MatchesControllerRole(M->second.Seat,A.ControllerSeat) || (A.Policy==OwnershipPolicy::RetainedSource || A.Policy==OwnershipPolicy::ParentWork)
         || A.State>=Life::Dead || A.ControlEpoch==UINT64_MAX) return false;
     if (A.Controller==Player) return true;
     if (A.Policy==OwnershipPolicy::ControllerPinned && A.SimOwner.Valid() && A.SimOwner!=Player) return false;
@@ -378,12 +350,15 @@ void Room::RefreshControllers(double Now)
 }
 Id Room::GroupDestination(Id Group,Id Exclude) const
 {
-    const auto G=Groups.find(Group);const Id Current=G==Groups.end()?Id{}:G->second.Owner;
-    if (Current!=Exclude && Live(Current) && Players.at(Current).Seat==Role::Commander) return Current;
-    for (const auto& [P,M]:Players) if (P!=Exclude && Live(P) && M.Seat==Role::Commander) return P;
-    if (Current!=Exclude && Live(Current)) return Current;
-    for (const auto& [P,M]:Players) if (P!=Exclude && Live(P)) return P;
-    return {};
+    Team F=Team::None;TeamDomain Domain=TeamDomain::World;
+    if (!DecodeTeamAuthorityGroup(Group,F,Domain))
+    {
+        const auto Root=GroupRoots.find(Group);
+        if (Root==GroupRoots.end()) return {};
+        const auto O=Directory.find(Root->second);if (O==Directory.end()) return {};
+        F=Playable(O->second.Grant.Faction)?O->second.Grant.Faction:NeutralAuthorityTeam(Root->second.StableId);
+    }
+    return ResolveTeamSeat(Players,F,Domain==TeamDomain::Mass?Role::Commander:Role::Ground,Exclude);
 }
 void Room::RefreshGroups(double Now)
 {
@@ -402,7 +377,7 @@ void Room::RefreshGroups(double Now)
             for (auto& [K,O]:Directory) if (O.Grant.OwnershipGroup==Key)
             {O.Grant.GroupEpoch=G.Version;MarkDirectoryChanged(K);Scheduler.SetObject({O.Grant,O.Grant.Policy,O.Parent},Now);}
         }
-        else if (MembershipValue || CurrentPhase==RoomPhase::Preparing)
+        else
         {
             for (const auto& [K,O]:Directory) if (O.Grant.OwnershipGroup==Key && O.Grant.State!=Life::Destroyed && O.Grant.SimOwner==G.Owner)
             {Scheduler.Transfer(K,Wanted,HandoffReason::SharedGroup,Now);break;}
@@ -414,19 +389,13 @@ std::vector<Assignment> Room::Propose(double Now)
 {
     std::vector<Assignment> Out;
     if (CurrentPhase==RoomPhase::Aborted || CurrentPhase==RoomPhase::Finished) return Out;
-    RefreshControllers(Now);RefreshGroups(Now);
+    if (AuthorityDirty) {AuthorityDirty=false;RefreshControllers(Now);RefreshGroups(Now);}
     ScheduleLeaveTransfers(Now);
-    // New ordinary units start at their producer for atomic birth, then enter
-    // their own team's simulation pool through the normal state handoff.
-    for (const auto& [K,O]:Directory)
-        if (O.Grant.Policy==OwnershipPolicy::CommanderActivity && O.Grant.State==Life::Alive
-            && Live(O.Grant.SimOwner) && Players.at(O.Grant.SimOwner).Faction!=O.Grant.Faction)
-            if (const auto To=Destination(O.Grant);To.Valid()) Scheduler.Transfer(K,To,HandoffReason::Placement,Now);
-    for (const auto& [K,O]:Directory)
+    for (const auto K:UnassignedObjects)
     {
-        const auto& A=O.Grant;
-        if (InResourceRecovery(K) || A.State>=Life::Dead || A.Dormant || A.SimOwner.Valid() || PendingAssignments.contains(K) || A.OwnerEpoch==UINT64_MAX
-            || (A.Policy==OwnershipPolicy::ControllerPinned && !A.Controller.Valid())) continue;
+        const auto& A=Directory.at(K).Grant;
+        if (InResourceRecovery(K) || A.State>=Life::Dead || A.Dormant || A.SimOwner.Valid()
+            || PendingAssignments.contains(K) || A.OwnerEpoch==UINT64_MAX) continue;
         const Id Exclude=MembershipValue && MembershipValue->Operation==MembershipOperation::Leave?MembershipValue->Player:Id{};
         const auto Best=Destination(A,Exclude);if (!Best.Valid()) continue;
         Assignment Offer{K,Best,A.OwnerEpoch+1,Now+Settings.ReadyTimeoutSeconds};PendingAssignments.emplace(K,Offer);Out.push_back(Offer);
@@ -449,8 +418,6 @@ bool Room::CommitAssignment(Id Player,ObjectKey K,Revision Version,double Now)
     MarkDirectoryChanged(K);
     PendingAssignments.erase(I);return Scheduler.SetObject({A,A.Policy,O->second.Parent},Now);
 }
-bool Room::Select(Id P,Revision V,std::span<const ObjectKey> K,double Now) {return Scheduler.Select(P,V,K,Now);}
-bool Room::Operate(Id P,std::span<const ObjectKey> K,double Now) {return Scheduler.Operate(P,K,Now);}
 std::vector<HandoffAction> Room::TakeOwnershipActions(double Now)
 {
     auto Actions=Scheduler.TakeActions();
@@ -470,7 +437,7 @@ std::vector<HandoffAction> Room::TakeOwnershipActions(double Now)
         if (A.OwnershipGroup.Valid())
         {
             auto& G=Groups.at(A.OwnershipGroup);
-            if (G.Owner!=V.Transfer.Target) {G.Owner=V.Transfer.Target;++G.Version;}
+            if (G.Owner!=V.Transfer.Target) {G.Owner=V.Transfer.Target;++G.Version;AuthorityDirty=true;}
             A.GroupEpoch=G.Version;
             MarkDirectoryChanged(V.Transfer.Object);
         }
@@ -480,13 +447,70 @@ std::vector<HandoffAction> Room::TakeOwnershipActions(double Now)
 bool Room::ImportMember(Member M)
 {
     if (!M.Player.Valid() || !Playable(M.Faction) || M.Seat>Role::Observer || !M.SeatVersion || Players.contains(M.Player)) return false;
-    Players.emplace(M.Player,M);return Scheduler.SetMember({M.Player,M.Faction,M.Seat,M.Online && M.Ready});
+    if (M.Online && M.Seat != Role::Observer)
+    {
+        const auto Slot = RoleSlotIndex(M.Faction, M.Seat);
+        for (const auto& [Player, Existing] : Players)
+            if (Existing.Online && RoleSlotIndex(Existing.Faction, Existing.Seat) == Slot)
+                return false;
+    }
+    if (!Scheduler.SetMember({M.Player,M.Faction,M.Seat,M.Online && M.Ready})) return false;
+    Players.emplace(M.Player,M);AuthorityDirty=true;
+    return true;
+}
+void Room::MirrorMember(Member M)
+{
+    Players.insert_or_assign(M.Player,M);AuthorityDirty=true;
+    Scheduler.SetMember({M.Player,M.Faction,M.Seat,M.Online&&M.Ready});
+}
+bool Room::MirrorRegistration(const ObjectRegistration& O,double Now)
+{
+    if (!Definitions.contains(O.Definition) || !O.Grant.Object.Valid()) return false;
+    const auto Old=Directory.find(O.Grant.Object);
+    if (Old!=Directory.end() && (Old->second.Grant.OwnerEpoch>O.Grant.OwnerEpoch
+        || Old->second.Grant.ControlEpoch>O.Grant.ControlEpoch)) return true;
+    Directory.insert_or_assign(O.Grant.Object,O);MarkDirectoryChanged(O.Grant.Object);
+    if (O.Grant.OwnershipGroup.Valid())
+    {
+        auto& G=Groups[O.Grant.OwnershipGroup];
+        if (O.Grant.GroupEpoch>=G.Version) {G.Version=O.Grant.GroupEpoch;G.Owner=O.Grant.SimOwner;}
+    }
+    return Scheduler.SetObject({O.Grant,O.Grant.Policy,O.Parent},Now);
+}
+bool Room::ObserveRegistration(Id Sender,const ObjectRegistration& O,double Now)
+{
+    const auto I=Directory.find(O.Grant.Object);
+    if (I==Directory.end()) return Register(O,Now,Sender);
+    const auto& A=I->second.Grant;
+    if (!Live(Sender) || A.SimOwner!=Sender || O.Grant.SimOwner!=Sender || O.Grant.OwnerEpoch!=A.OwnerEpoch
+        || O.Definition!=I->second.Definition || O.Ordinal!=I->second.Ordinal || O.Parent!=I->second.Parent
+        || O.Grant.OwnershipGroup!=A.OwnershipGroup || O.Grant.ControlEpoch<A.ControlEpoch) return false;
+    if (A.Faction!=O.Grant.Faction) AuthorityDirty=true;
+    return MirrorRegistration(O,Now);
+}
+void Room::MirrorGroups(const std::map<Id,ResourceGroupState>& Values,double Now)
+{
+    for (const auto& [Key,V]:Values)
+    {
+        Groups[Key]={V.Owner,V.OwnerVersion,V.Backup,V.RequestEpoch};
+        if (V.Recovery)
+        {
+            auto& R=ResourceRecoveries[Key];R.State=V;R.State.Deadline=Now+Settings.MembershipTimeoutSeconds;
+            for (const auto& [P,M]:Players) if (M.Online && P!=V.PreviousOwner) R.Waiting.insert(P);
+        }
+        else ResourceRecoveries.erase(Key);
+    }
+}
+void Room::MirrorMembership(const MembershipChange& V)
+{
+    MembershipValue=V;NextMembership=std::max(NextMembership,V.Version+1);
+    CurrentPhase=RoomPhase::MembershipChanging;AuthorityDirty=true;
 }
 void Room::Abort(std::string Reason) {FailureReason=std::move(Reason);CurrentPhase=RoomPhase::Aborted;}
 void Room::Poll(double Now)
 {
     for (const auto& [Key,R]:ResourceRecoveries) if (Now>=R.State.Deadline)
-    {Abort("Resource snapshot installation exceeded the original five second handoff deadline");return;}
+    {Abort("Team state recovery timed out");return;}
     Scheduler.Poll(Now);
     for (auto I=PendingAssignments.begin();I!=PendingAssignments.end();)
         if (I->second.Deadline<=Now) I=PendingAssignments.erase(I);else ++I;
@@ -500,22 +524,10 @@ void Room::Poll(double Now)
     }
     if (MembershipValue && MembershipValue->Deadline<=Now)
     {
-        // A join that cannot receive the initial state is rejected locally to
-        // membership; existing objects never rewind to an earlier battle state.
-        const Id P=MembershipValue->Player;
-        if (MembershipValue->Operation==MembershipOperation::Join)
-        {Players.at(P).Online=false;Players.at(P).Ready=false;Scheduler.RemoveMember(P);MembershipValue->Waiting.clear();}
-        else
-        {
-            for (const auto& [K,O]:Directory) if (O.Grant.SimOwner==P || O.Grant.StateCustodian==P)
-                if (const auto T=Scheduler.Transfers().find(K);T!=Scheduler.Transfers().end()) Scheduler.Reject(P,K,T->second.IdValue);
-            Players.at(P).Online=false;Players.at(P).Ready=false;Scheduler.RemoveMember(P);
-            for (auto& [K,O]:Directory) if (O.Grant.SimOwner==P || O.Grant.StateCustodian==P)
-            {O.Grant.SimOwner={};O.Grant.StateCustodian={};MarkDirectoryChanged(K);Scheduler.SetObject({O.Grant,O.Grant.Policy,O.Parent},Now);}
-            MembershipValue->Waiting.clear();
-        }
+        Abort("Membership recovery timed out; match ended without a result");return;
     }
-    RefreshGroups(Now);FinishMembership(Now);
+    if (AuthorityDirty) {AuthorityDirty=false;RefreshControllers(Now);RefreshGroups(Now);}
+    FinishMembership(Now);
     if (CurrentPhase==RoomPhase::Running)
     {
         for (const auto F:{Team::Red,Team::Blue})

@@ -179,7 +179,7 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& D)
 {
     State S;Army::Command Input;const auto& R=C.Request;const auto Member=C.Members.find(C.Source.Grant.Controller);
     if(R.Target!=R.Header.Object||R.ExpectedRelationVersion!=C.Source.RelationVersion||C.Source.RelationVersion==UINT64_MAX||!GetState(C.Source,S)||!Army::DecodeCommand(R.CapabilityPayload,Input)||Input.Request!=R.Header.Event)return CommitStatus::BadRequest;
-    if(Member==C.Members.end()||!Member->second.Online||!Member->second.Ready||Member->second.Seat!=Role::Ground||Member->second.Faction!=C.Source.Grant.Faction||R.Faction!=C.Source.Grant.Faction)return CommitStatus::Unauthorized;
+    if(Member==C.Members.end()||!Member->second.Online||!Member->second.Ready||!IsWushuangRole(Member->second.Seat)||Member->second.Faction!=C.Source.Grant.Faction||R.Faction!=C.Source.Grant.Faction)return CommitStatus::Unauthorized;
     auto& B=S.Players[C.Source.Grant.Controller];auto& O=B.Current;
     const float BaseRate=PlayerBaseRate(C.Objects,C.Source.Grant.Controller);if(BaseRate<=0)return CommitStatus::InvalidRule;
     if(Input.Op==Army::Operation::Offer||Input.Op==Army::Operation::Reroll)

@@ -69,56 +69,62 @@ void UGuLiBulletTrailPresentation::BeginFrame(float ServerNow, bool Enabled)
 	for (auto& Block:Blocks) Block.Bounds=FBox(ForceInit);
 }
 
-bool UGuLiBulletTrailPresentation::SubmitMass(const FGuLiCombatEffectState& State, FVector Origin, FVector Facing,
-	FLinearColor Tint, bool Visible)
+bool UGuLiBulletTrailPresentation::SubmitMass(const FGuLiCombatEffectState& State, FVector Direction, FVector Facing,
+	FLinearColor Tint, TFunctionRef<bool(const FBox&)> IsVisible)
 {
+	const FVector Origin = State.LaunchLocation;
 	if (!MassSystem || !State.EffectId.IsValid() || Origin.ContainsNaN()) return true;
-	const bool Terminal=State.Phase==EGuLiCombatEffectPhase::Finished;
-	const float End=Terminal ? FMath::Clamp(State.SampleTime,State.StartTime,State.EndTime) : State.EndTime;
-	if (Now>=End+Style.Z+Style.W) return true;
-	auto* Entry=Entries.Find(State.EffectId);
-	if (!bEnabled || !Visible)
+	const bool bTerminal = State.Phase == EGuLiCombatEffectPhase::Finished;
+	const float End = bTerminal ? FMath::Clamp(State.SampleTime, State.StartTime, State.EndTime) : State.EndTime;
+	const float Speed = FMath::Max(1.f, float(FVector(State.Velocity).Size()));
+	const float Lifetime = FMath::Min(float(Style.Z), MaximumLength / Speed) + float(Style.W);
+	const float EndAge = FMath::Max(0.f, Now - End);
+	if (EndAge >= Lifetime && Now >= End) return true;
+
+	const float Distance = bTerminal ? FMath::Max(0.f, float(FVector::DotProduct(FVector(State.Location)-Origin,Direction)))
+		: Speed * FMath::Clamp(Now-State.StartTime, 0.f, State.EndTime-State.StartTime);
+	const float Start = FMath::Max(0.f, Distance - Speed * FMath::Max(0.f, Lifetime - EndAge));
+	FBox Bounds(ForceInit);
+	Bounds += Origin + Direction * Start;
+	Bounds += Origin + Direction * Distance;
+	Bounds = Bounds.ExpandBy(2.f * float(Style.X + Style.Y));
+
+	auto* Handle = Entries.Find(State.EffectId);
+	if (!bEnabled || Distance-Start <= .01f || !IsVisible(Bounds))
 	{
 		// The analytic lifetime above still expires offscreen trails on time.
 		// Allocate/upload only when visible; returning uses the original launch
 		// and terminal timestamps, so it never restarts an old flight.
-		if (Entry && Slots.IsLive(Entry->Handle))
+		if (Handle && Slots.IsLive(*Handle))
 		{
-			auto& Block=Blocks[Entry->Handle.Index/BlockSize];const int32 I=Entry->Handle.Index%BlockSize;
+			auto& Block=Blocks[Handle->Index/BlockSize];const int32 I=Handle->Index%BlockSize;
 			if (Block.Generations[I]) {Block.Generations[I]=0;Block.Colors[I].A=0;Block.bColorDirty=true;}
 		}
 		return false;
 	}
-	if (!Entry)
+	if (!Handle)
 	{
-		FEntry New; New.Handle=Slots.Acquire(); New.Origin=Origin;
-		New.Direction=FVector(State.LaunchDirection).GetSafeNormal();
-		New.Speed=FMath::Max(1.f,float(FVector(State.Velocity).Size())); New.Start=State.StartTime; New.End=State.EndTime;
-		EnsureBlock(New.Handle.Index/BlockSize);
-		auto& Block=Blocks[New.Handle.Index/BlockSize]; const int32 I=New.Handle.Index%BlockSize;
-		Block.Origins[I]=Origin; Block.Directions[I]=New.Direction; Block.Facings[I]=Facing.GetSafeNormal(UE_SMALL_NUMBER,FVector::UpVector);
-		Block.Speeds[I]=New.Speed; Block.bLaunchDirty=true;
-		Entry=&Entries.Add(State.EffectId,New);
+		Handle = &Entries.Add(State.EffectId, Slots.Acquire());
+		EnsureBlock(Handle->Index / BlockSize);
+		auto& Block = Blocks[Handle->Index / BlockSize];
+		const int32 Index = Handle->Index % BlockSize;
+		Block.Origins[Index] = Origin;
+		Block.Directions[Index] = Direction;
+		Block.Facings[Index] = Facing.GetSafeNormal(UE_SMALL_NUMBER,FVector::UpVector);
+		Block.Speeds[Index] = Speed;
+		Block.bLaunchDirty = true;
 	}
-	if (!Slots.IsLive(Entry->Handle)) return true;
-	const float TerminalDistance=Terminal ? FMath::Max(0.f,float(FVector::DotProduct(FVector(State.Location)-Entry->Origin,Entry->Direction))) : 0;
-	Entry->TerminalTime=Terminal ? End : -1; Entry->TerminalDistance=TerminalDistance;
-	auto& Block=Blocks[Entry->Handle.Index/BlockSize]; const int32 I=Entry->Handle.Index%BlockSize;
+	if (!Slots.IsLive(*Handle)) return true;
+	auto& Block = Blocks[Handle->Index / BlockSize];
+	const int32 Index = Handle->Index % BlockSize;
 	// A terminal can predate this client's clock origin, so -1 is not a safe sentinel.
-	const FVector4 Times(Entry->Start-ClockOrigin,Entry->End-ClockOrigin,Terminal ? End-ClockOrigin : -1.e30,TerminalDistance);
-	if (Block.Times[I]!=Times) { Block.Times[I]=Times; Block.bLifeDirty=true; }
-	const int32 Generation=bEnabled && Visible ? int32(Entry->Handle.Generation) : 0;
-	Tint.A=Generation ? 1.f : 0.f;
-	if (Block.Colors[I]!=Tint || Block.Generations[I]!=Generation)
-	{ Block.Colors[I]=Tint; Block.Generations[I]=Generation; Block.bColorDirty=true; }
-	if (Generation)
-	{
-		const float Distance=Terminal ? TerminalDistance : Entry->Speed*FMath::Clamp(Now-Entry->Start,0.f,Entry->End-Entry->Start);
-		const float EndAge=FMath::Max(0.f,Now-End);
-		const float Start=FMath::Max(0.f,Distance-FMath::Min(MaximumLength,Entry->Speed*FMath::Max(0.f,float(Style.Z+Style.W)-EndAge)));
-		FBox Bounds(ForceInit); Bounds+=Entry->Origin+Entry->Direction*Start; Bounds+=Entry->Origin+Entry->Direction*Distance;
-		Block.Bounds+=Bounds.ExpandBy(2.f*float(Style.X+Style.Y));
-	}
+	const FVector4 Times(State.StartTime-ClockOrigin, State.EndTime-ClockOrigin, bTerminal ? End-ClockOrigin : -1.e30, bTerminal ? Distance : 0.f);
+	if (Block.Times[Index] != Times) { Block.Times[Index] = Times; Block.bLifeDirty = true; }
+	const int32 Generation = int32(Handle->Generation);
+	Tint.A = 1.f;
+	if (Block.Colors[Index] != Tint || Block.Generations[Index] != Generation)
+	{ Block.Colors[Index] = Tint; Block.Generations[Index] = Generation; Block.bColorDirty = true; }
+	Block.Bounds += Bounds;
 	return false;
 }
 
@@ -206,11 +212,11 @@ void UGuLiBulletTrailPresentation::EndFrame()
 void UGuLiBulletTrailPresentation::Remove(FGuid Id)
 {
 	NearLights.Remove(Id);
-	if (const auto* Entry=Entries.Find(Id); Entry && Slots.IsLive(Entry->Handle))
+	if (const auto* Handle=Entries.Find(Id); Handle && Slots.IsLive(*Handle))
 	{
-		auto& Block=Blocks[Entry->Handle.Index/BlockSize]; const int32 I=Entry->Handle.Index%BlockSize;
+		auto& Block=Blocks[Handle->Index/BlockSize]; const int32 I=Handle->Index%BlockSize;
 		Block.Colors[I]=FLinearColor::Transparent; Block.Generations[I]=0; Block.bColorDirty=true;
-		Slots.Release(Entry->Handle);
+		Slots.Release(*Handle);
 	}
 	Entries.Remove(Id);
 }

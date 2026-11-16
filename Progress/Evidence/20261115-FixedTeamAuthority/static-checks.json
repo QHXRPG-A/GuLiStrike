@@ -1,0 +1,326 @@
+{
+  "schema": "guli-static-delivery/v1",
+  "work_id": "WORK-20261115-001",
+  "date": "2026-11-15",
+  "scope": "static only",
+  "engine_build": false,
+  "runtime_tests": false,
+  "visual_checks": false,
+  "core_syntax": {
+    "compiler": "MSVC cl",
+    "flags": [
+      "/Zs",
+      "/std:c++20",
+      "/permissive-",
+      "/EHsc",
+      "/utf-8",
+      "/DGULINETCORE_STANDALONE=1"
+    ],
+    "translation_units": 44,
+    "exit_code": 0,
+    "followup_units": [
+      "GuLiNetCurrentState.cpp",
+      "GuLiNetPeerRoom.cpp"
+    ],
+    "followup_exit_code": 0,
+    "object_files_generated": false
+  },
+  "eos_sdk_symbols": {
+    "sdk": "D:/UnrealEngine-5.7/Engine/Source/ThirdParty/EOSSDK/SDK/Include",
+    "checked": 159,
+    "missing": 0
+  },
+  "ue_static_scope": "Declarations, references, SDK symbols, delimiter balance and authority call-path review. UHT, full module compile/link and EOS runtime were not executed.",
+  "files": [
+    {
+      "path": "Config/DefaultEditor.ini",
+      "sha256": "10fc03646775763cb844c192b01eed895dff0f6d47b6cdb6d5cccda8ba53c852",
+      "deleted": false
+    },
+    {
+      "path": "Scripts/Network/refresh_transport_manifests.py",
+      "sha256": "6a4a3c877921082c6165e8faca1797483f3ab33ab68546d77862a7b3defffac9",
+      "deleted": false
+    },
+    {
+      "path": "Scripts/Network/run_hybrid_acceptance.py",
+      "sha256": "cda5d41065255d6daf4530c720d9fb948b7da240851cc495b34cbfbbd7b30937",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/Capabilities/GuLiNetControlPoint.cpp",
+      "sha256": "6245306a5a63f34ab8861f28bf331af34efbf36357b80fa1204688f5513ccbc3",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetAsyncClient.cpp",
+      "sha256": "344afaad8c2b91913d92a7943d25b42f6c06a6669b9294407b9d118f9c02011f",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetClient.cpp",
+      "sha256": "3b21f1c4ba3d8b3b261a8860688a0602037a8df6e6e35e17d8d6b901d7be1410",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetCurrentState.cpp",
+      "sha256": "5cb45015e160e0f5cd74b7707371fd60fe56aa5549dfb36ccc75c0c13b81b3e5",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetManifest.cpp",
+      "sha256": "c68fad2cffe7153588e1e141cc7ed1a3df543d54d356dd219f7bb10da48edf4f",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetOwnerFragments.cpp",
+      "sha256": "59052441cccf5cd88ee08b04742b5cc91ab4bec29e5a1fd85518d0798af62ce0",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetOwnerState.cpp",
+      "sha256": "3ca36e5914eb72e8938fd78db66020f197fbb8b6ea8001270e04644bc249be5d",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetOwnerTransactions.cpp",
+      "sha256": "214f08832691e87a6f9ee1232febd135a56701b53dc28d11bddbcaf406600ffc",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetOwnership.cpp",
+      "sha256": "5e06ef2ce753d3945aad94bc8e82e952c60035aa23cea300de0c249428309dc1",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetPeerRoom.cpp",
+      "sha256": "faf4528ce9704884445467ea175f733a1012ae2dd2ee2318488f37cf2bd0da25",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetResourceRecovery.cpp",
+      "sha256": "a9f11d53f287ab4373d0a3fda6fb10b99363a013c9ddd9d530392d5b00ec0676",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetRoom.cpp",
+      "sha256": "a34989711ebdbabf505c9c6e0d18da27b31d1c1d9250c98c50e0d855a71af4ff",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetTeamAuthority.cpp",
+      "sha256": "9272590f4a58fb7248d44aa0b7f8c78d168272a77ac2343d623147b21747febc",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetManifest.h",
+      "sha256": "063f238e6166b7d6a6727820d4b9b6adcb10b0cc9937388b4500a64fc79789f7",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetOwnerState.h",
+      "sha256": "25f7df1b7dbb88699bf31cd73be718c6b7a22e755fc6c6984245dc0e65c69335",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetOwnership.h",
+      "sha256": "502b84b279595ec0e0482bc11d16e2dc785c99e8f0daf11725c4fec97f454d63",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetPeerRoom.h",
+      "sha256": "06b0821a05368ab5a1325d3906a7a3315a299e3796c96f0172e86f09f7a68f6e",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetRoom.h",
+      "sha256": "6cc1e4fdab99ea9e043489d136e570d407ca89e867cd8799cd942060eeccf138",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetTeamAuthority.h",
+      "sha256": "33d264ade9eca903cf12ab7062cc832e9f7bca63f14a557300ea57d04a8d90cc",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattleGameMode.cpp",
+      "sha256": "9900c89d2713b425992fc169efe3a3093cad13fac1618f494e494e187238a5df",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattlePlayerState.cpp",
+      "sha256": "4fa971e34b7318c5cb4a8d8fda98fd74fbfcc4d820d9b3c19ded2ccc4dbf1010",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattlePlayerState.h",
+      "sha256": "b6c98ddade15884493b4112bd49d14233cef1c67df506331871dfc120699f95f",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderOrderedCommands.cpp",
+      "sha256": "aaf37a45ea55d63c213eb52c64a74abd6e0b126a8c6664ada216ea3b6e284a10",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp",
+      "sha256": "fb48f8977c236d5980c5824a897012d3b802db807f219813342d1326bb3e846f",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.h",
+      "sha256": "0d669737693ba605ba262117886787b637ea97db8420f49e444a8b9147fd9510",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiHybridNetworkReviewActor.cpp",
+      "sha256": "f0a6c74ca5fd8d95eb45870b1d1b1b8440f744ea0ec3d831a0f4c7caaee2b404",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiHybridNetworkReviewActor.h",
+      "sha256": "5cab7a3d29d73f8c41c1e3e768541d07d601a3911d2222aa482e6f1ee12bf97a",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingPlacementComponent.cpp",
+      "sha256": "1fc60a10f5eecf62370948e066aae62a9401e905c09ba155edef97cdc2ae924a",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiHybridBuildingPlacement.cpp",
+      "sha256": "fbc58606402ac9b4dbbe6b4fead55efc6b1f3962789e5db57643ea69002482b8",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.cpp",
+      "sha256": "adc81fd333ebba462dd77bf2eb7d839619cc2303362ebaaf44f83d26582ea472",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardSubsystem.cpp",
+      "sha256": "9e1302bfa84076fa0a496c8365de5c7cf2b56ef287efccfa00e9c364f566a9bc",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrike.Build.cs",
+      "sha256": "b9983c536f8f93e9235ae9afa745292e35295ef585659d2b12f706f9ea7d4ab5",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridManifest.cpp",
+      "sha256": "b8233735ff0c7c4e60a740183203de0f918b2473f0aac61c4d4038750f574a8e",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridSessionSubsystem.cpp",
+      "sha256": "40d2f4568575ed003999e80a5ad3cce78f75153bb3b36c66df1b24fc31d37c93",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridSessionSubsystem.h",
+      "sha256": "38be0e1c06fb578148b88274a4e767970c4442cdd44042e54609857045694d39",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp",
+      "sha256": "8ca50f5723c1a7bf4a6530688b69ef6395d6e50aa349f4b4f09319dd8e7829d0",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiNetworkSettings.cpp",
+      "sha256": "0663c965034dd0e648057f4bc90fb13ad98aac1c270684c83ccf5ca445a8d9d8",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiNetworkSettings.h",
+      "sha256": "43a67c100c71cf40b37864c77e85f4ba0549834a84da9fed77426c9536cb5400",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Network/Private/GuLiEosTransport.cpp",
+      "sha256": "454a2b3108d2e04e313c83f5b8e1392a061feecd5659afacc3eab97e92b48333",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrike/Network/Private/GuLiHybridTransport.h",
+      "sha256": "aa3e0b03f56abc957d06c9e4f8df1ee00d96f620297a5f0623eeb450ad40fa68",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiHybridReviewAuthoring.cpp",
+      "sha256": "545e68390584f9e7123980f4a1de80d893d39a7ce94f8b25f4b08465f7eafad3",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp",
+      "sha256": "6f141d6fa9d031906ec4ce0fffaab33c1a87b3a7b7f3bce08ffa5f28fec486aa",
+      "deleted": false
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Public/GuLiLocalPIESubsystem.h",
+      "sha256": "969c8e566d4b58d0af3149fa53a33b204c88402312c187c88156c3e4ce28a472",
+      "deleted": false
+    },
+    {
+      "path": "Tools/GuLiCoordinator/CMakeLists.txt",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/build.ps1",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Coordinator.cpp",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Coordinator.h",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Identity.cpp",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Identity.h",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Review.cpp",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Review.h",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Store.cpp",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/Store.h",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/src/main.cpp",
+      "sha256": null,
+      "deleted": true
+    },
+    {
+      "path": "Tools/GuLiCoordinator/vcpkg.json",
+      "sha256": null,
+      "deleted": true
+    }
+  ]
+}

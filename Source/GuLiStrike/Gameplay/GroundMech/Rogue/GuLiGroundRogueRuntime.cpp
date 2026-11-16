@@ -34,7 +34,7 @@ bool ReadBuild(UWorld& W,FGuid Player,TMap<FString,int32>& Counts,uint64& Revisi
 FGuid Request(const AGuLiBattlePlayerState& PS,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session,FString Choice)
 {
     auto* H=PS.GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();FGuLiHybridObjectState Root;
-    if(PS.GetBattleRole()!=EGuLiCommanderRole::Ground||!PS.IsBattleReady()||!H||!H->GetTeamCapabilityObject(PS.GetTeam(),TEXT("ground_rogue"),Root)||!H->HasControl(Root.Key)||!H->CanPublishFacts())return {};
+    if(!PS.IsWushuang()||!PS.IsBattleReady()||!H||!H->GetTeamCapabilityObject(PS.GetTeam(),TEXT("ground_rogue"),Root)||!H->HasControl(Root.Key)||!H->CanPublishFacts())return {};
     GuLiNet::Army::Command Input;Input.Op=GuLiNet::Army::Operation(Op);Input.Request=GuLiNetBridge::ToCore(Event);Input.Session=GuLiNetBridge::ToCore(Session);Input.Choice=TCHAR_TO_UTF8(*Choice);
     const auto Bytes=GuLiNet::Army::EncodeCommand(Input);if(Bytes.empty())return {};FGuLiHybridCommand C;C.Event=Event;C.LogicalTick=H->GetLogicalTick();C.Operation=TEXT("GroundRogue");C.Arguments.Append(Bytes.data(),int32(Bytes.size()));C.Members.Add({Root.Key,Root.ControlEpoch,Root.OwnerEpoch,0,{}});return H->RouteCommand(C)?Event:FGuid{};
 }
@@ -58,7 +58,7 @@ static bool Apply(UWorld& W,const FGuLiHybridObjectState& O)
     for(auto It=W.GetPlayerControllerIterator();It;++It)
     {
         auto* PC=It->Get();auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;auto* Channel=PC?PC->FindComponentByClass<UGuLiCommanderNetSyncComponent>():nullptr;
-        if(!PS||!Channel||PS->GetTeam()!=O.Team||PS->GetBattleRole()!=EGuLiCommanderRole::Ground)continue;
+        if(!PS||!Channel||PS->GetTeam()!=O.Team||!PS->IsWushuang())continue;
         const auto Build=S.Players.find(GuLiNetBridge::ToCore(PS->GetPlayerGuid()));if(Build==S.Players.end())continue;const auto& Current=Build->second.Current;
         auto& Offer=Cards->Offers.FindOrAdd(Channel);const auto OldSession=Offer.Session,OldRequest=Offer.Request;const bool WasApplied=Offer.bApplied;
         const bool Context=Offer.Owner.Get()!=PS||Offer.Team!=O.Team||Offer.HybridPresentationEpoch!=Cards->Epoch;

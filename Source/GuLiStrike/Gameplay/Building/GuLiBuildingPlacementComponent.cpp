@@ -220,7 +220,7 @@ bool UGuLiBuildingPlacementComponent::CanLocallyBuild(
 	{
 		return false;
 	}
-	if (!GuLiBuildingPlacementPolicy::IsBuildingRole(PlayerState->GetBattleRole())
+	if (!GuLiBuildingPlacementPolicy::IsBuildingRole(PlayerState->GetActiveControlRole())
 		|| PlayerState->GetTeam() == EGuLiTeam::Unassigned)
 	{
 		OutReason = EGuLiBuildingPlacementRejectReason::UnauthorizedRole;
@@ -308,7 +308,7 @@ bool UGuLiBuildingPlacementComponent::HandleNumberKey(const int32 Number)
 		GuLiBuildingPlacementPolicy::ResolveNumberKey(
 			Number,
 			bBuildModeActive,
-			PlayerState ? PlayerState->GetBattleRole() : EGuLiCommanderRole::Unassigned);
+			PlayerState ? PlayerState->GetActiveControlRole() : EGuLiCommanderRole::Unassigned);
 	if (!Decision.bHandled)
 	{
 		return false;
@@ -740,7 +740,7 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateSpat
 	}
 	const APlayerController* PlayerController = GetOwningPlayerController();
 	const AGuLiBattlePlayerState* PlayerState = GetPlacementPlayer();
-	if (PlayerState && PlayerState->GetBattleRole() == EGuLiCommanderRole::Ground)
+	if (PlayerState && PlayerState->IsWushuang() && PlayerState->GetActiveControlRole()!=EGuLiCommanderRole::Commander)
 	{
 		const APawn* Pawn = GetPlacementPawn();
 		if (!Pawn || !GuLiBuildingPlacementPolicy::IsGroundPlacementInRange(
@@ -842,7 +842,8 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidatePlac
 	{
 		return EGuLiBuildingPlacementRejectReason::NotReady;
 	}
-	if (!GuLiBuildingPlacementPolicy::IsBuildingRole(PlayerState->GetBattleRole())
+	// Accepted ground commands may finish after the local player switches to Air.
+	if ((!PlayerState->IsCommander() && !PlayerState->IsWushuang())
 		|| PlayerState->GetTeam() == EGuLiTeam::Unassigned || !PlayerState->GetPlayerGuid().IsValid())
 	{
 		return EGuLiBuildingPlacementRejectReason::UnauthorizedRole;
@@ -1156,7 +1157,7 @@ namespace GuLiBuildingPIEQA
 				const FGuLiBuildingDefinition* Definition = Catalog ? Catalog->FindDefinition(Type) : nullptr;
 				if (!Controller || !Controller->IsLocalController() || !PlayerState
 					|| !PlayerState->IsBattleReady()
-					|| !GuLiBuildingPlacementPolicy::IsBuildingRole(PlayerState->GetBattleRole())
+					|| !GuLiBuildingPlacementPolicy::IsBuildingRole(PlayerState->GetActiveControlRole())
 					|| !Placement || !Definition || !Definition->IsUsable())
 				{
 					continue;
@@ -1170,7 +1171,7 @@ namespace GuLiBuildingPIEQA
 				const TWeakObjectPtr<UGuLiBuildingPlacementComponent> WeakPlacement(Placement);
 				const float YawDegrees = Controller->GetControlRotation().Yaw;
 				const FString ControllerName = Controller->GetName();
-				const int32 RoleValue = static_cast<int32>(PlayerState->GetBattleRole());
+				const int32 RoleValue = static_cast<int32>(PlayerState->GetActiveControlRole());
 				FTSTicker::GetCoreTicker().AddTicker(
 					FTickerDelegate::CreateLambda(
 						[WeakPlacement, Type, GroundLocation, YawDegrees,

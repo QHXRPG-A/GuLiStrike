@@ -1,0 +1,353 @@
+{
+  "result": "passed",
+  "stage": "simulation-resumed",
+  "final": {
+    "elapsed": 25.552,
+    "clients": [
+      {
+        "name": "red-commander",
+        "ready": true,
+        "world_ready": true,
+        "state_ready": true,
+        "paused": false,
+        "failure": "",
+        "tick": 2014,
+        "epoch": 1,
+        "host": "113F86B67B584B25805C555DD98F6339",
+        "victim_offline": true,
+        "mass_alive": 221,
+        "wrong_owner": 0,
+        "local_mass": 0,
+        "installed_groups": 1,
+        "send_failures": 0,
+        "damage_request_count": 2265
+      },
+      {
+        "name": "red-wushuang",
+        "ready": true,
+        "world_ready": true,
+        "state_ready": true,
+        "paused": false,
+        "failure": "",
+        "tick": 1985,
+        "epoch": 1,
+        "host": "113F86B67B584B25805C555DD98F6339",
+        "victim_offline": true,
+        "mass_alive": 221,
+        "wrong_owner": 0,
+        "local_mass": 0,
+        "installed_groups": 1,
+        "send_failures": 0,
+        "damage_request_count": 0
+      },
+      {
+        "name": "blue-wushuang",
+        "ready": true,
+        "world_ready": true,
+        "state_ready": true,
+        "paused": false,
+        "failure": "",
+        "tick": 2007,
+        "epoch": 1,
+        "host": "113F86B67B584B25805C555DD98F6339",
+        "victim_offline": true,
+        "mass_alive": 221,
+        "wrong_owner": 0,
+        "local_mass": 221,
+        "installed_groups": 1,
+        "send_failures": 0,
+        "damage_request_count": 0
+      }
+    ]
+  },
+  "progression": [
+    {
+      "name": "red-commander",
+      "tick_before": 1410,
+      "tick_after": 2014,
+      "live_mass_count": 221,
+      "mass_logical_age_advanced": 138,
+      "new_mass_damage_requests": 0,
+      "sample_new_damage_requests": [],
+      "remote_mass_motion_advanced": 140,
+      "engineering": {
+        "engineer_states": [
+          {
+            "id": "08B40B6D8417F29555A3729B72303C1B",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "0B4DCCE3EE019FFC613E39979D4CDE4E",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "50444E0568EE5EAEF89C62CEAE00E199",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "6AD0A5AE32418E6E250E786975F91EF5",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "7FAFDBF51C854B429B6F8F7B0DDED229",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "9EFA9F67178B921A118A3400B49F6DB6",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "D83F48454CFEB4FC0EB731A23FE6F266",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "EBDFB471C3413B350DF20DB4CFEDD525",
+            "local": false,
+            "advancing": false
+          }
+        ],
+        "miner_states": [
+          {
+            "id": "2A3242215D95EB68178D56D23A81617A",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "5CA88959A8AD49F2DC36807F007699F1",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "5D00287060DE56BD85AE45AFE0068B43",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "6056E48EA983BC350BE32380D93DA8EF",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "6F019BD83AF41AD0429FBF9C95D3C23A",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "BC714673F714814BC8D6E07FF612CECA",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "E47C4F0B6BCFDBBB09325D558541AAF4",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "F5AFAC2BA0DED48DF54BA5247B35D453",
+            "local": false,
+            "advancing": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "red-wushuang",
+      "tick_before": 1374,
+      "tick_after": 1985,
+      "live_mass_count": 221,
+      "mass_logical_age_advanced": 138,
+      "new_mass_damage_requests": 0,
+      "sample_new_damage_requests": [],
+      "remote_mass_motion_advanced": 140,
+      "engineering": {
+        "engineer_states": [
+          {
+            "id": "08B40B6D8417F29555A3729B72303C1B",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "0B4DCCE3EE019FFC613E39979D4CDE4E",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "50444E0568EE5EAEF89C62CEAE00E199",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "6AD0A5AE32418E6E250E786975F91EF5",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "7FAFDBF51C854B429B6F8F7B0DDED229",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "9EFA9F67178B921A118A3400B49F6DB6",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "D83F48454CFEB4FC0EB731A23FE6F266",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "EBDFB471C3413B350DF20DB4CFEDD525",
+            "local": false,
+            "advancing": false
+          }
+        ],
+        "miner_states": [
+          {
+            "id": "2A3242215D95EB68178D56D23A81617A",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "5CA88959A8AD49F2DC36807F007699F1",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "5D00287060DE56BD85AE45AFE0068B43",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "6056E48EA983BC350BE32380D93DA8EF",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "6F019BD83AF41AD0429FBF9C95D3C23A",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "BC714673F714814BC8D6E07FF612CECA",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "E47C4F0B6BCFDBBB09325D558541AAF4",
+            "local": false,
+            "advancing": false
+          },
+          {
+            "id": "F5AFAC2BA0DED48DF54BA5247B35D453",
+            "local": false,
+            "advancing": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "blue-wushuang",
+      "tick_before": 1398,
+      "tick_after": 2007,
+      "live_mass_count": 221,
+      "mass_logical_age_advanced": 138,
+      "new_mass_damage_requests": 0,
+      "sample_new_damage_requests": [],
+      "remote_mass_motion_advanced": 0,
+      "engineering": {
+        "engineer_states": [
+          {
+            "id": "08B40B6D8417F29555A3729B72303C1B",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "0B4DCCE3EE019FFC613E39979D4CDE4E",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "50444E0568EE5EAEF89C62CEAE00E199",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "6AD0A5AE32418E6E250E786975F91EF5",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "7FAFDBF51C854B429B6F8F7B0DDED229",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "9EFA9F67178B921A118A3400B49F6DB6",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "D83F48454CFEB4FC0EB731A23FE6F266",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "EBDFB471C3413B350DF20DB4CFEDD525",
+            "local": true,
+            "advancing": true
+          }
+        ],
+        "miner_states": [
+          {
+            "id": "2A3242215D95EB68178D56D23A81617A",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "5CA88959A8AD49F2DC36807F007699F1",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "5D00287060DE56BD85AE45AFE0068B43",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "6056E48EA983BC350BE32380D93DA8EF",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "6F019BD83AF41AD0429FBF9C95D3C23A",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "BC714673F714814BC8D6E07FF612CECA",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "E47C4F0B6BCFDBBB09325D558541AAF4",
+            "local": true,
+            "advancing": true
+          },
+          {
+            "id": "F5AFAC2BA0DED48DF54BA5247B35D453",
+            "local": true,
+            "advancing": true
+          }
+        ]
+      }
+    }
+  ]
+}

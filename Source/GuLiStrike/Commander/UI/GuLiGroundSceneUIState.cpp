@@ -15,7 +15,7 @@
 bool GuLiGroundSceneUI::IsView(const APlayerController* PC)
 {
     const auto* Player=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
-    return PC && PC->IsLocalController() && Player && Player->GetBattleRole()==EGuLiCommanderRole::Ground
+    return PC && PC->IsLocalController() && Player && Player->GetActiveControlRole()==EGuLiCommanderRole::Ground
         && Cast<AGuLiGroundMechCharacter>(PC->GetViewTarget());
 }
 bool GuLiGroundSceneUI::IsDisplayKind(EGuLiHybridObjectKind Kind)

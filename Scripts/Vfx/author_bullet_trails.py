@@ -40,7 +40,8 @@ float terminal = Times.z > -1.e19 ? 1.0 : 0.0;
 float endAt = terminal > 0.0 ? Times.z : Times.y;
 float headDistance = terminal > 0.0 ? Times.w : Speed*clamp(Now-Times.x,0.0,max(0.0,Times.y-Times.x));
 float endAge = max(0.0,Now-endAt);
-float recentLength = min(MaximumLength,Speed*max(0.0,Style.z+Style.w-endAge));
+float hold = min(Style.z,MaximumLength/max(Speed,1.0));
+float recentLength = Speed*max(0.0,hold+Style.w-endAge);
 float startDistance = max(0.0,headDistance-recentLength);
 float length = max(0.0,headDistance-startDistance);
 float canvas = 2.0*(Style.x+Style.y);
@@ -49,9 +50,9 @@ Alignment = Direction;
 Facing = Plane;
 Size = float2(canvas,length);
 Color = Tint;
-Color.a *= Generation != 0 && Now >= Times.x && length > 0.01 && endAge < Style.z+Style.w ? 1.0 : 0.0;
+Color.a *= Generation != 0 && Now >= Times.x && length > 0.01 && endAge < hold+Style.w ? 1.0 : 0.0;
 Data = float4(startDistance,headDistance,endAge,Speed);
-StrokeStyle = Style;
+StrokeStyle = float4(Style.xy,hold,Style.w);
 Shape = float4(MaximumLength,canvas,length,Emission);
 '''
 
@@ -90,6 +91,20 @@ def outputs(mat, node):
         require(EDIT.connect_material_property(mask,'',target),'Material output')
 
 
+def update_ground_trail_fade(material):
+    nodes = [node for node in unreal.ObjectIterator(unreal.MaterialExpressionCustom)
+             if node.get_outer() == material and 'float pointAge' in prop(node, 'code')]
+    require(len(nodes) == 1, 'Ground trail age expression')
+    node = nodes[0]
+    code = prop(node, 'code')
+    cutoff = 'smoothstep(0.0,150.0,WaveLength-behind)*'
+    if cutoff in code:
+        material.modify()
+        node.modify()
+        node.set_editor_property('code', code.replace(cutoff, ''))
+    return node
+
+
 def materials():
     ground=copy(SOURCE_GROUND_MATERIAL,GROUND_MATERIAL)
     values={'TailColor':linear('EE9D58'),'HeadColor':linear('EE9D58'),'CoreColor':linear('FEE4D9'),'Emission':8.}
@@ -97,6 +112,7 @@ def materials():
         for node in unreal.ObjectIterator(cls):
             if node.get_outer()==ground and str(prop(node,'parameter_name')) in values:
                 node.modify();node.set_editor_property('default_value',values[str(prop(node,'parameter_name'))])
+    update_ground_trail_fade(ground)
     ground.modify(); EDIT.recompile_material(ground)
     mat=unreal.load_asset(MASS_MATERIAL) or unreal.AssetToolsHelpers.get_asset_tools().create_asset(
         MASS_MATERIAL.rsplit('/',1)[1],BASE,unreal.Material,unreal.MaterialFactoryNew())
@@ -142,6 +158,36 @@ def scratch_helper():
     scope={'unreal':unreal,'SP':SP,'ASSETS':unreal.get_editor_subsystem(unreal.EditorAssetSubsystem),'require':require,'prop':prop}
     exec(compile(ast.Module(body=[function],type_ignores=[]),'owned_scratch_helper','exec'),scope)
     return scope['scratch']
+
+
+def update_lingering_trails():
+    ground = require(unreal.load_asset(GROUND_MATERIAL), 'Ground trail material')
+    ground_node = update_ground_trail_fade(ground)
+    EDIT.recompile_material(ground)
+    diagnostics = unreal.MaterialNodeService.get_material_diagnostics(GROUND_MATERIAL)
+    require(diagnostics.success and diagnostics.is_compiled_ok and not diagnostics.compile_errors, str(diagnostics))
+
+    emitter = 'LaserBolts'
+    module = next(str(m.module_name) for m in EM.list_modules(MASS, emitter)
+                  if str(m.module_name).startswith('EvaluateBulletTrail') and m.is_enabled)
+    node = next(n for n in SP.list_nodes(MASS, emitter, module) if 'customhlsl' in str(n.node_type).lower())
+    node_id = str(node.node_id)
+    require(SP.set_custom_hlsl_code(MASS, emitter, module, node_id, EVALUATE_CODE), 'Update batched trail aging')
+    require(SP.apply_changes(MASS), 'Apply batched trail aging')
+    compiled = NS.compile_with_results(MASS)
+    require(compiled.success and not compiled.errors, str(compiled))
+    system = unreal.load_asset(MASS)
+    diagnostics = unreal.GuLiCombatEffectAuthoringLibrary.get_war_machine_hover_compile_diagnostics(system)
+    require('GPU finished=1 complete=1' in diagnostics and 'GPU ERROR:' not in diagnostics
+            and 'VM ERROR:' not in diagnostics, diagnostics)
+
+    require(LIB.save_loaded_asset(ground, False), 'Save ground trail fade')
+    require(NS.save_system(MASS), 'Save batched trail fade')
+    require('WaveLength-behind' not in prop(ground_node, 'code'), 'Read ground fade')
+    code = SP.get_custom_hlsl_code(MASS, emitter, module, node_id)
+    require(code.strip() == EVALUATE_CODE.strip(), 'Read batched trail fade')
+    return {'success': True, 'ground_material': GROUND_MATERIAL, 'mass_system': MASS,
+            'mass_gpu_diagnostics': diagnostics}
 
 
 def strip_legacy_parameters(path):
@@ -309,5 +355,6 @@ def readback():
 if __name__=='__main__':
     require(not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor(),'Do not interrupt a running play session')
     stage=globals().get('BULLET_TRAIL_STAGE','materials')
-    result={'materials':materials,'systems':systems,'scene':scene,'readback':readback,'clean_parameters':clean_parameters,'repair_slot_pools':repair_slot_pools}[stage]()
+    result={'materials':materials,'systems':systems,'scene':scene,'readback':readback,'clean_parameters':clean_parameters,
+            'repair_slot_pools':repair_slot_pools,'linger':update_lingering_trails}[stage]()
     unreal.MCPythonHelper.submit_result(json.dumps(result,default=str))

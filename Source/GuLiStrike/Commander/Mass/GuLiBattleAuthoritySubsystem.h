@@ -266,6 +266,8 @@ class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final : public UTickableWorld
 	GENERATED_BODY()
 
 public:
+	/** Remaining cooldown on the owning simulation. Zero also covers unavailable or ineligible soldiers. */
+	double GetLocalHybridUnitSkillCooldownRemaining(const FGuLiHybridObjectState& Unit) const;
 	/** Called only inside the authority fixed step; validates before changing existing entities. */
 
     FGuLiActiveSkillUnitResult ExecuteHybridUnitSkill(const FGuLiHybridObjectKey& Key,FGuid Request,

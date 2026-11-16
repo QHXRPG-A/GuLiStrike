@@ -98,7 +98,5 @@ private:
     FTSTicker::FDelegateHandle Ticker;
     bool NetworkTick(float DeltaSeconds);
     void Fail(const FString& Error);
-    void InterruptConnection(const FString& Error);
-    void ConnectCoordinator();
-    void CloseCoordinator();
+    void TryStartRoom();
 };

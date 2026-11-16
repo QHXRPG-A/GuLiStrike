@@ -1061,7 +1061,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 			const auto& State = Visual.State;
 			if (State.Source.Kind==EGuLiTargetKind::CommanderSoldier && BulletTrails)
 			{
-				if (UpdateMassBulletTrail(Visual,Now,bEnabled)) Expired.Add(Pair.Key);
+				if (UpdateMassBulletTrail(Visual,Now)) Expired.Add(Pair.Key);
 				SubmitBulletLight(Visual,Now,bEnabled);
 				continue;
 			}

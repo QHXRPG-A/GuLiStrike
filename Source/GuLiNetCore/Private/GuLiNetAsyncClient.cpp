@@ -1,4 +1,5 @@
 #include "GuLiNetAsyncClient.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetManifest.h"
 #include "GuLiNetHash.h"
 #include "GuLiNetTrace.h"
@@ -799,7 +800,7 @@ void AsyncClientWorld::State::Publish()
     {
         auto& Previous=PublishedIndexes[K];IndexMetadata Next;ReadDelta::IndexChange C;
         if (R.Grant.State!=Life::Destroyed) for (const auto& [Name,Value]:R.Capabilities) Next.Capabilities.emplace(R.Grant.Faction,Name);
-        if (R.Grant.Policy==OwnershipPolicy::CommanderActivity) Next.Definition=R.Definition;
+        if (IsMassObject(K.Kind)) Next.Definition=R.Definition;
         std::set_difference(Previous.Capabilities.begin(),Previous.Capabilities.end(),Next.Capabilities.begin(),Next.Capabilities.end(),std::back_inserter(C.Removed));
         std::set_difference(Next.Capabilities.begin(),Next.Capabilities.end(),Previous.Capabilities.begin(),Previous.Capabilities.end(),std::back_inserter(C.Added));
         if (Previous.Definition!=Next.Definition) {C.RemovedDefinition=Previous.Definition;C.AddedDefinition=Next.Definition;}
@@ -816,10 +817,11 @@ void AsyncClientWorld::State::Publish()
     }
     else for (const auto& K:ResourceKeys)
     {
-        if (K.Capability=="cargo" || K.Capability=="object")
-        {const auto I=R.Miners.find(K.Object);if (I!=R.Miners.end()) Change.Miners[K.Object]=I->second;else Change.RemovedMiners.insert(K.Object);}
-        if (K.Capability=="processor" || K.Capability=="object")
-        {const auto I=R.Factories.find(K.Object);if (I!=R.Factories.end()) Change.Factories[K.Object]=I->second;else Change.RemovedFactories.insert(K.Object);}
+        ObjectKey Carrier=K.Object;bool Processor=false;const bool Inventory=ReadInventoryCapability(K.Capability,Carrier,Processor);
+        if (K.Capability=="cargo" || K.Capability=="object" || (Inventory && !Processor))
+        {const auto I=R.Miners.find(Carrier);if (I!=R.Miners.end()) Change.Miners[Carrier]=I->second;else Change.RemovedMiners.insert(Carrier);}
+        if (K.Capability=="processor" || K.Capability=="object" || (Inventory && Processor))
+        {const auto I=R.Factories.find(Carrier);if (I!=R.Factories.end()) Change.Factories[Carrier]=I->second;else Change.RemovedFactories.insert(Carrier);}
         if (K.Capability.starts_with("ore/"))
         {
             std::uint32_t Node=0;for (std::size_t I=4;I<K.Capability.size()&&K.Capability[I]>='0'&&K.Capability[I]<='9';++I) Node=Node*10+std::uint32_t(K.Capability[I]-'0');
@@ -1086,7 +1088,7 @@ void AsyncClientWorld::State::Run()
             // batch, including groups with no materialized object adapters.
             if (F.Key.Capability.starts_with("leases/")) MiningRestoreDirty=true;
             if (F.Key.Capability=="account") PublishedAccountVersions={UINT64_MAX,UINT64_MAX};
-            if (F.Key.Capability=="object"||F.Key.Capability=="cargo"||F.Key.Capability=="processor"||F.Key.Capability.starts_with("ore/")||F.Key.Capability.starts_with("territory/")) ResourceKeys.insert(F.Key);
+            if (F.Key.Capability=="object"||F.Key.Capability=="cargo"||F.Key.Capability=="processor"||F.Key.Capability.starts_with("cargo/")||F.Key.Capability.starts_with("processor/")||F.Key.Capability.starts_with("ore/")||F.Key.Capability.starts_with("territory/")) ResourceKeys.insert(F.Key);
             if (Detailed || (!F.Key.Capability.starts_with("event/")&&!F.Key.Capability.starts_with("attack/"))) ChangedVersions[F.Key]=V;
         }
     });

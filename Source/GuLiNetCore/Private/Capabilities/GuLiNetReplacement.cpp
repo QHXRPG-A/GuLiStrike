@@ -33,7 +33,7 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& D)
     std::uint32_t Ordinal=0;for (const auto& [K,V]:C.Objects) if (OrdinalScope(K.Kind)==OrdinalScope(Rule.SpawnKind)) Ordinal=std::max(Ordinal,V.Ordinal);
     if (Ordinal==UINT32_MAX) return CommitStatus::InvalidRule;
     Id Controller;
-    for (const auto& [ID,M]:C.Members) if (M.Online && M.Ready && M.Faction==R.Faction && M.Seat==Rule.SpawnControllerSeat)
+    for (const auto& [ID,M]:C.Members) if (M.Online && M.Ready && M.Faction==R.Faction && MatchesControllerRole(M.Seat,Rule.SpawnControllerSeat))
     {Controller=ID;break;}
     O.Grant.Faction=R.Faction;O.Grant.Controller=Controller;O.Grant.ControlEpoch=1;O.Grant.State=Life::Registered;
     O.Grant.SourceLease=R.Header.Event;O.Grant.EstimatedCost=Rule.SpawnCost;O.Definition=Rule.TargetDefinition;O.Ordinal=Ordinal+1;

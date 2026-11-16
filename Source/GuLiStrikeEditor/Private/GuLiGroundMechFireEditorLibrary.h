@@ -16,8 +16,6 @@ public:
     UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
     static FString ReadExplosiveImpactParticles(UNiagaraComponent* Component);
     UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
-    static FString ConfigureExplosiveHead(UNiagaraSystem* System,bool bApply);
-    UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
     static FString ConfigureImpactVariant(UNiagaraSystem* System,const TArray<UMaterialInterface*>& OriginalMaterials,
         const TArray<UMaterialInterface*>& VariantMaterials,bool bApply);
     UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")

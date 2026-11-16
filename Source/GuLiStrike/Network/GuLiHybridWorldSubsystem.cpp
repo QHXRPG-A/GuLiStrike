@@ -9,6 +9,7 @@
 #include "Network/Private/GuLiHybridObjectStateEnvelope.h"
 #include "Network/Private/GuLiHybridReliablePayload.h"
 #include "GuLiNetHash.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetAsyncClient.h"
 #include "Commander/Network/GuLiMoveLatency.h"
 #include "Async/Async.h"
@@ -1392,7 +1393,19 @@ void UGuLiHybridWorldSubsystem::SynchronizeGameplayRoster()
     auto* LocalState=LocalController ? LocalController->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
     if (!LocalState) return;
     TSet<FGuid> Online;
-    for (const auto& Member : Session->GetMembers()) if (Member.bOnline) Online.Add(Member.Player);
+    TSet<uint8> OccupiedSlots;
+    for (const auto& Member : Session->GetMembers())
+    {
+        if (!Member.bOnline) continue;
+        if (!Member.Player.IsValid() || Online.Contains(Member.Player))
+        { Suspend(TEXT("Hybrid roster contains a duplicate or invalid player identity")); return; }
+        Online.Add(Member.Player);
+        if (Member.Role == EGuLiCommanderRole::Observer) continue;
+        const uint8 Slot = AGuLiBattleGameState::ResolveRoleSlotIndex(Member.Team, Member.Role);
+        if (Slot == MAX_uint8 || OccupiedSlots.Contains(Slot))
+        { Suspend(TEXT("Hybrid roster conflicts with a 2v2 Commander or Wushuang seat")); return; }
+        OccupiedSlots.Add(Slot);
+    }
     const auto Slots=Battle->GetRoleSlots();
     for (const auto& Slot : Slots)
         if (Slot.PlayerGuid.IsValid() && !Session->GetMembers().ContainsByPredicate([&](const auto& M)
@@ -1407,10 +1420,8 @@ void UGuLiHybridWorldSubsystem::SynchronizeGameplayRoster()
             { LocalState->ApplyHybridRole(Member.Player,Member.Team,Member.Role,MAX_uint8,false); LocalState->SetHybridSeatVersion(Member.SeatVersion); }
             continue;
         }
-        uint8 Slot=MAX_uint8;
-        for (const auto& Candidate : Battle->GetRoleSlots())
-            if (Candidate.Team==Member.Team && Candidate.Role==Member.Role) { Slot=Candidate.SlotIndex; break; }
-        if (Slot==MAX_uint8 || !Battle->ClaimExactRoleSlot(Member.Player,Slot))
+        const uint8 Slot = AGuLiBattleGameState::ResolveRoleSlotIndex(Member.Team, Member.Role);
+        if (Slot==MAX_uint8 || !Battle->ClaimExactRoleSlot(Member.Player,Slot,Member.Role))
         { Suspend(TEXT("Hybrid roster conflicts with a gameplay role slot")); return; }
         AGuLiBattlePlayerState* Player=Member.Player==Session->GetLocalPlayerId() ? LocalState : nullptr;
         if (!Player) for (APlayerState* Entry : Battle->PlayerArray)
@@ -1424,9 +1435,11 @@ void UGuLiHybridWorldSubsystem::SynchronizeGameplayRoster()
         if (!Player || !Player->ApplyHybridRole(Member.Player,Member.Team,Member.Role,Slot,Ready))
         { Suspend(TEXT("Hybrid gameplay identity binding failed")); return; }
         Player->SetHybridSeatVersion(Member.SeatVersion);
+        const int32 OnlineTeam=Session->GetMembers().FilterByPredicate([&](const auto& M){return M.bOnline && M.Team==Member.Team;}).Num();
+        Player->SetControlsWholeTeam(OnlineTeam==1);
         Battle->SetRoleSlotBattleReady(Slot,Member.Player,Ready); Battle->SetRoleSlotSyncReady(Slot,Member.Player,Ready);
     }
-    if (LocalState->IsCommander() && LocalState->IsBattleReady())
+    if (LocalState->IsCommanderControlActive() && LocalState->IsBattleReady())
         if (auto* Mode=World->GetAuthGameMode<AGuLiBattleGameMode>(); Mode && !Mode->EnsureHybridCommanderPawn(*LocalController))
             Suspend(TEXT("Hybrid Commander camera/input Pawn could not be created from the production role configuration"));
 }
@@ -2316,6 +2329,12 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
         for (const auto& P:Interrupted) ApplyPreparedCommit(P);
         break;
     }
+    case MessageKind::RoomPause:
+    {
+        uint8 Paused;if (!R.U8(Paused) || Paused>1 || !R.Done()) return;
+        if (Paused || !State->MembershipVersion) State->Client->SetMembershipPaused(Paused!=0);
+        SynchronizeGameplayRoster();break;
+    }
     case MessageKind::MembershipBegin:
     {
         Revision Version;uint8 Op,Abrupt;Id Player;
@@ -2651,7 +2670,7 @@ void UGuLiHybridWorldSubsystem::SetCommanderSelection(const TArray<FGuLiHybridOb
     for (const auto& K:Objects)
     {
         const auto C=ToCore(K);const auto O=State->Client->Objects().find(C);
-        if (O!=State->Client->Objects().end() && O->second.Grant.Policy==OwnershipPolicy::CommanderActivity && State->Client->HasControl(C)) Selected.insert(C);
+        if (O!=State->Client->Objects().end() && IsMassObject(C.Kind) && State->Client->HasControl(C)) Selected.insert(C);
     }
     if (Selected==State->Selected) return;
     const double Now=FPlatformTime::Seconds();for (const auto& K:State->Selected) if (!Selected.contains(K)) State->DeselectedAt[K]=Now;
@@ -2664,7 +2683,7 @@ void UGuLiHybridWorldSubsystem::ReportDirectOperation(const TArray<FGuLiHybridOb
     for (const auto& U:Objects)
     {
         const auto K=ToCore(U);const auto O=State->Client->Objects().find(K);
-        if (O!=State->Client->Objects().end() && O->second.Grant.Policy==OwnershipPolicy::CommanderActivity && State->Client->HasControl(K)) Keys.insert(K);
+        if (O!=State->Client->Objects().end() && IsMassObject(K.Kind) && State->Client->HasControl(K)) Keys.insert(K);
     }
     if (Keys.empty()) return;Writer W;W.U32(static_cast<uint32>(Keys.size()));
     for (const auto& K:Keys) {W.Key(K);State->OperatedAt[K]=FPlatformTime::Seconds();}

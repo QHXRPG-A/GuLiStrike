@@ -1,13 +1,16 @@
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Battle/Framework/GuLiBattleGameMode.h"
 #include "Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h"
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Network/GuLiHybridAdapterRegistry.h"
+#include "Network/GuLiHybridActorComponent.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Commander/UI/GuLiSceneUIWidget.h"
 #include "Commander/UI/GuLiSceneUISubsystem.h"
 #include "Gameplay/Cards/GuLiRogueCardPresentation.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
 #include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
@@ -195,6 +198,67 @@ void AGuLiCommanderPlayerController::ApplyHUDModalInput()
 void AGuLiCommanderPlayerController::OpenGroundMap()
 {if(IsHUDModal())return;if(auto* HUD=Cast<AGuLiCommanderHUD>(GetHUD()))if(auto* Ground=HUD->GetGroundHUDWidget())Ground->ToggleMap();}
 
+void AGuLiCommanderPlayerController::SwitchWushuangControl()
+{
+    const auto* State=GetPlayerState<AGuLiBattlePlayerState>();
+    if (State) SwitchControlMode(State->GetActiveControlRole()==EGuLiCommanderRole::Ground?EGuLiCommanderRole::Air:EGuLiCommanderRole::Ground);
+}
+void AGuLiCommanderPlayerController::SwitchControlMode(EGuLiCommanderRole NextRole)
+{
+	auto* State=GetPlayerState<AGuLiBattlePlayerState>();
+	if (!IsLocalController() || !State || !State->CanControlRole(NextRole) || !State->IsBattleReady()
+		|| IsHUDModal() || IsCommanderMenuOpen() || IsMoveInputIgnored() || IsLookInputIgnored()) return;
+#if !UE_BUILD_SHIPPING
+	if (IsGMPanelOpen()) return;
+#endif
+	const auto PreviousRole=State->GetActiveControlRole();
+    if (NextRole==PreviousRole) return;
+    if (GetPawn() && GetPawn()->IsA<AGuLiCommanderCameraPawn>()) CommanderControlPawn=GetPawn();
+    if (NextRole==EGuLiCommanderRole::Commander)
+    {
+        APawn* PreviousPawn=GetPawn();
+        if (TeleportInput && TeleportInput->IsAiming()) TeleportInput->CancelTeleport();
+        if (BuildingPlacementComponent) BuildingPlacementComponent->HandleCancelAction();
+        FlushPressedKeys();
+        if (!State->SetActiveControlRole(NextRole)) return;
+        if (IsValid(CommanderControlPawn)) Possess(CommanderControlPawn);
+        else if (auto* Mode=GetWorld()->GetAuthGameMode<AGuLiBattleGameMode>()) Mode->EnsureHybridCommanderPawn(*this);
+        if (!GetPawn() || !GetPawn()->IsA<AGuLiCommanderCameraPawn>()) State->SetActiveControlRole(PreviousRole);
+        else {if (PreviousPawn && PreviousPawn!=GetPawn()) PreviousPawn->SetPlayerState(State);GetPawn()->SetPlayerState(State);CommanderControlPawn=GetPawn();}
+        bCommanderInputModeInitialized=false;UpdateCommanderInputMode();return;
+    }
+	APawn* Target=nullptr;
+	for (TActorIterator<APawn> It(GetWorld()); It; ++It)
+	{
+		auto* Candidate=*It;
+		if (NextRole==EGuLiCommanderRole::Ground ? !Candidate->IsA<AGuLiGroundMechCharacter>() : !Candidate->IsA<AGuLiStrikeShip>()) continue;
+		const auto* Binding=UGuLiHybridActorComponent::Find(Candidate);
+		if (!Binding || !Binding->CanControl() || !Binding->CanSimulate()) continue;
+		const auto& Object=Binding->GetState();
+		if (Object.Controller!=State->GetPlayerGuid() || Object.Team!=State->GetTeam()
+			|| Object.bDormant || Object.Health.bDead || Object.LifeState>=2) continue;
+		if (const auto* Ship=Cast<AGuLiStrikeShip>(Candidate); Ship && !Ship->IsShipReady()) continue;
+		Target=Candidate;
+		break;
+	}
+	if (!Target) return;
+	if (TeleportInput && TeleportInput->IsAiming()) TeleportInput->CancelTeleport();
+	if (BuildingPlacementComponent) BuildingPlacementComponent->HandleCancelAction();
+	FlushPressedKeys();
+	APawn* PreviousPawn=GetPawn();
+	if (!State->SetActiveControlRole(NextRole)) return;
+	Possess(Target);
+	// APawn::UnPossessed clears PlayerState. Both carriers still belong to this
+	// player, including equipment, rogue upgrades and pending placement receipts.
+	if (PreviousPawn && PreviousPawn!=Target)
+		if (const auto* Binding=UGuLiHybridActorComponent::Find(PreviousPawn); Binding && Binding->GetState().Controller==State->GetPlayerGuid())
+			PreviousPawn->SetPlayerState(State);
+	if (GetPawn()!=Target) State->SetActiveControlRole(PreviousRole);
+	else Target->SetPlayerState(State); // Keep PlayerState::GetPawn on the controlled carrier.
+	bCommanderInputModeInitialized=false;
+	UpdateCommanderInputMode();
+}
+
 void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if (SceneUIWidget) { SceneUIWidget->RemoveFromParent(); SceneUIWidget = nullptr; }
@@ -202,6 +266,7 @@ void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayR
 	{
 		BattleInputSubsystem->RemoveMappingContext(BattleCommandMappings);
 		BattleInputSubsystem->RemoveMappingContext(CommanderCommandMappings);
+		BattleInputSubsystem->RemoveMappingContext(WushuangCommandMappings);
 	}
 	BattleInputSubsystem.Reset();
 	CancelSelectionDrag();
@@ -236,6 +301,7 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
     BattleCommandMappings=BattleTemplate?DuplicateObject<UInputMappingContext>(BattleTemplate,this):NewObject<UInputMappingContext>(this);
     BattleCommandMappings->SetFlags(RF_Transient);
 	CommanderCommandMappings = NewObject<UInputMappingContext>(this);
+	WushuangCommandMappings = NewObject<UInputMappingContext>(this);
 	struct FBinding { const TCHAR* Name; void (ThisClass::*Handler)(); };
 	const FBinding Bindings[]={
 		{TEXT("Primary"),&ThisClass::HandlePrimaryActionAtCursor},
@@ -291,9 +357,16 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
     BattleCommandMappings->MapKey(RogueAction,EKeys::F4);
 	Enhanced.BindAction(RogueAction, ETriggerEvent::Started, this, &ThisClass::OpenRogueCards);
     auto GroundAction=[&](FKey Key){auto* Action=NewObject<UInputAction>(this);CommanderActions.Add(Action);BattleCommandMappings->MapKey(Action,Key);return Action;};
+    Enhanced.BindAction(GroundAction(EKeys::F1),ETriggerEvent::Started,this,&ThisClass::SwitchControlMode,EGuLiCommanderRole::Commander);
+    Enhanced.BindAction(GroundAction(EKeys::F2),ETriggerEvent::Started,this,&ThisClass::SwitchControlMode,EGuLiCommanderRole::Ground);
+    Enhanced.BindAction(GroundAction(EKeys::F3),ETriggerEvent::Started,this,&ThisClass::SwitchControlMode,EGuLiCommanderRole::Air);
     Enhanced.BindAction(GroundAction(EKeys::M),ETriggerEvent::Started,this,&ThisClass::OpenGroundMap);
 	Enhanced.BindAction(MakeAction(EKeys::S), ETriggerEvent::Started, this, &ThisClass::StopSelectedUnits);
 	Enhanced.BindAction(MakeAction(EKeys::Tab), ETriggerEvent::Started, this, &ThisClass::HandleInspectionTab);
+	auto* SwitchAction=NewObject<UInputAction>(this);
+	CommanderActions.Add(SwitchAction);
+	WushuangCommandMappings->MapKey(SwitchAction,EKeys::Tab);
+	Enhanced.BindAction(SwitchAction,ETriggerEvent::Started,this,&ThisClass::SwitchWushuangControl);
 	Enhanced.BindAction(MakeAction(EKeys::F10), ETriggerEvent::Started, this, &ThisClass::HandleLocalMenu);
 	const FKey Digits[] = { EKeys::Zero,EKeys::One,EKeys::Two,EKeys::Three,EKeys::Four,EKeys::Five,EKeys::Six,EKeys::Seven,EKeys::Eight,EKeys::Nine };
 	for (int32 I = 0; I < 10; ++I)
@@ -387,7 +460,7 @@ bool AGuLiCommanderPlayerController::CanIssueCommanderOrders() const
 	if (IsCommanderMenuOpen()) return false;
 	const AGuLiBattlePlayerState* CommanderPlayerState = GetPlayerState<AGuLiBattlePlayerState>();
 	return CommanderPlayerState
-		&& CommanderPlayerState->IsCommander()
+		&& CommanderPlayerState->IsCommanderControlActive()
 		&& NetSyncComponent && NetSyncComponent->IsConnectionReady()
 		&& NetSyncComponent->IsSoldierStreamReady();
 }
@@ -758,7 +831,7 @@ bool AGuLiCommanderPlayerController::BuildPointSelectionRequest(FGuLiSelectionRe
         for (const auto& O:Objects)
         {
             const auto* Actor=H->FindBoundActor(O.Key);
-            if (!Actor || !H->HasControl(O.Key) || O.OwnershipPolicy!=uint8(EGuLiHybridOwnershipPolicy::CommanderActivity) || Cast<IGuLiEngineeringVehicle>(Actor)) continue;
+            if (!Actor || !H->HasControl(O.Key) || O.Key.Kind!=EGuLiHybridObjectKind::Soldier || Cast<IGuLiEngineeringVehicle>(Actor)) continue;
             const FBox Bounds=Actor->GetComponentsBoundingBox(true);if (!Bounds.IsValid) continue;
             const double Along=FVector::DotProduct(Bounds.GetCenter()-Origin,Direction);
             if (Along<0 || Along>=Best) continue;
@@ -1278,7 +1351,7 @@ bool AGuLiCommanderPlayerController::IsCommanderViewActive() const
 	// Hybrid resource queries and gameplay capabilities have separate readiness
 	// gates. The retired full-resource startup flag must not hide this local view
 	// or remove its camera/command mappings; orders retain their own ready checks.
-	return IsLocalController() && BattlePlayerState && BattlePlayerState->IsCommander();
+	return IsLocalController() && BattlePlayerState && BattlePlayerState->IsCommanderControlActive();
 }
 
 void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
@@ -1297,18 +1370,20 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 #endif
 	const bool bShouldEnable = IsCommanderViewActive();
 	const auto* State=GetPlayerState<AGuLiBattlePlayerState>();
-	const bool bGround=State && State->GetBattleRole()==EGuLiCommanderRole::Ground;
+	const bool bGround=State && State->GetActiveControlRole()==EGuLiCommanderRole::Ground;
+	const bool bWushuang=State && State->IsWushuang() && State->GetActiveControlRole()!=EGuLiCommanderRole::Commander;
 	const bool bFreeCursor = bGround && (IsCommanderMenuOpen() || IsMoveInputIgnored() || IsLookInputIgnored()
 		|| (TeleportInput && TeleportInput->IsAiming())
 		|| (BuildingPlacementComponent && BuildingPlacementComponent->IsBuildModeActive()));
 	if (bCommanderInputModeInitialized && bCommanderInputActive == bShouldEnable && bGroundInputActive==bGround
-		&& bGroundCursorFree==bFreeCursor)
+		&& bGroundCursorFree==bFreeCursor && bWushuangInputActive==bWushuang)
 	{
 		return;
 	}
 	bCommanderInputModeInitialized = true;
 	bCommanderInputActive = bShouldEnable;
 	bGroundInputActive = bGround;
+	bWushuangInputActive = bWushuang;
 	bGroundCursorFree = bFreeCursor;
 	if (bFreeCursor)
 		if (auto* Mech=Cast<AGuLiGroundMechCharacter>(GetPawn())) Mech->GetWeapon()->SetFireHeld(false);
@@ -1316,13 +1391,16 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	{
 		BattleInputSubsystem->RemoveMappingContext(BattleCommandMappings);
 		BattleInputSubsystem->RemoveMappingContext(CommanderCommandMappings);
+		BattleInputSubsystem->RemoveMappingContext(WushuangCommandMappings);
 	}
 	BattleInputSubsystem.Reset();
-	if (bShouldEnable || bGround)
+	if (bShouldEnable || bWushuang)
 	{
 		BattleInputSubsystem=ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-		if (auto* Mapping = bShouldEnable ? CommanderCommandMappings.Get() : BattleCommandMappings.Get())
+		if (auto* Mapping = bShouldEnable ? CommanderCommandMappings.Get() : (bGround ? BattleCommandMappings.Get() : nullptr))
 			BattleInputSubsystem->AddMappingContext(Mapping,10);
+		if (bWushuang && WushuangCommandMappings)
+			BattleInputSubsystem->AddMappingContext(WushuangCommandMappings,10);
 	}
 	// HUD 可能晚于 PC 创建，由其 BeginPlay 补齐；角色切换释放不等待 DrawHUD。
 	if (AGuLiCommanderHUD* CommanderHUD = Cast<AGuLiCommanderHUD>(GetHUD()))

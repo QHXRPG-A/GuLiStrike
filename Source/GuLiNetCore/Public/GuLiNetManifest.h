@@ -22,7 +22,7 @@ struct RuntimeManifest
 };
 struct ManifestHashes { std::string Configuration, Map; };
 GULINETCORE_API bool ValidateManifest(const RuntimeManifest& Value, std::string& Error);
-GULINETCORE_API bool HashManifest(const RuntimeManifest& Value, ManifestHashes& Out, std::string& Error);
+GULINETCORE_API bool HashManifest(const RuntimeManifest& Value, ManifestHashes& Out, std::string& Error,std::uint16_t EncodingProtocol=ProtocolVersion);
 GULINETCORE_API bool ReadResourceCatalog(const RuntimeManifest& Value,ResourceLedgerState& Out,std::string& Error);
 GULINETCORE_API bool ReadUpgradeCatalogs(const RuntimeManifest& Value,std::map<std::string,CompiledUpgradeCatalog>& Out,std::string& Error);
 GULINETCORE_API bool ConfigureOwnerResources(class OwnerState& Target,const RuntimeManifest& Value,std::string& Error);

@@ -16,6 +16,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [六座 SSF 建筑工业标识配色参考 A](../RequirementDocument/20261112-SSF建筑工业标识配色参考A.md) | art, assets, rendering | — | — | 2026-11-13 |
 | [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | building, commander, map, ui | — | 围绕现有据点与Territory梳理势力源、扩散规则、刷新方式及覆盖渲染，形成技术方案。 | 2026-09-16 |
 | [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | combat, commander, economy, ship, ui | — | 细化战略机动的调用与支付方式、出入口和僚机随行规则，以及三线选牌频率、单次强化幅度和 Ship 卡牌内容规划。 | 2026-09-09 |
 | [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | building, combat, commander, economy, ship | — | 细化维护及断供恢复、战略机动支付与采集加工参数，以及三线经验曲线、Ship 高频选牌和强力牌费用。 | 2026-09-09 |
@@ -39,6 +40,8 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | commander, network, resources | 7/7 (100%) | 在现有地图验证正常PIE输入、接管后的F1/F2/F3操作与玩家效果；EOS和跨机器联机另行验收。 | 2026-11-16 |
+| [2v2指挥官与无双席位 — 双载具构建交付](../DevelopmentDocumentation/20261114-2v2指挥官与无双席位.md) | commander, network, ui | 10/11 (91%) | 玩家验证空地切换、未操控单位及召唤物模拟。 | 2026-11-14 |
 | [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | 用户通过本地关系图完成实际设计并保存草稿。 | 2026-11-09 |
 | [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | combat, performance, ui | — | 用户在LVL_CommanderMassPrototype进入Ground席位，按GroundSceneUIFeedback_Entry检查边界、敌方变化和实例隔离。 | 2026-11-06 |
 | [游骑兵交战长帧治理](../DevelopmentDocumentation/20261106-游骑兵交战长帧治理.md) | network, performance, rendering, ui | 8/9 (89%) | 用户在LVL_CommanderMassPrototype的PerfGroundCombatHitches_Entry核验游骑兵操作、HUD和首次命中特效；原始渲染尖峰再次发生时用新增资源名称计时追踪。 | 2026-11-06 |
@@ -89,8 +92,10 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [机枪与爆破弹尾迹修复](../DevelopmentDocumentation/20261113-机枪与爆破弹尾迹修复.md) | combat, vfx | 19/19 (100%) | — | 2026-11-16 |
 | [矿车动作与双兵种开火表现 — 实施记录](../DevelopmentDocumentation/20261114-矿车动作与双兵种开火表现.md) | animation, art, combat, commander | 9/9 (100%) | 本轮实施与运行数据交付完成；玩家后续复核动作观感、双阵营灯和LOD切换。 | 2026-11-14 |
 | [四足采矿车正式替换与阵营灯 — 实施与交付](../DevelopmentDocumentation/20261113-四足采矿车正式替换与阵营灯.md) | animation, art, assets, commander | 7/8 (88%) | 本轮交付完成；动作后续实现及运行证据见20261114矿车动作与双兵种开火表现。 | 2026-11-14 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-11-13 |
 | [护盾交矿与先驱号兵营 — 实施记录](../DevelopmentDocumentation/20261112-护盾交矿与先驱号兵营.md) | building, navigation, resources | 6/6 (100%) | — | 2026-11-12 |
 | [统一体型让路与接触传递](../DevelopmentDocumentation/20261111-统一体型让路与接触传递.md) | commander, performance | 7/7 (100%) | — | 2026-11-12 |
 | [人墙让路来源修复](../DevelopmentDocumentation/20261111-人墙让路来源修复.md) | commander, network | 7/7 (100%) | — | 2026-11-12 |
@@ -105,7 +110,6 @@
 | [游骑兵跑步与闪现动画 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵跑步与闪现动画.md) | movement, presentation | — | — | 2026-11-08 |
 | [游骑兵全向提速与腿甲明暗 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵全向提速与腿甲明暗.md) | movement, presentation | — | — | 2026-11-08 |
 | [游骑兵转腿走位 — 实施记录](../DevelopmentDocumentation/20261104-游骑兵转腿走位.md) | input, movement, network, presentation | — | — | 2026-11-08 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-11-06 |
 | [姿态同步与交互卡顿优化 — 实施记录](../DevelopmentDocumentation/20261105-姿态同步与交互卡顿优化.md) | commander, navigation, network, performance, resource | 9/9 (100%) | — | 2026-11-05 |
 | [游骑兵3C优化 — 实施记录](../DevelopmentDocumentation/20261103-游骑兵3C优化.md) | camera, input, movement, network, presentation | 12/12 (100%) | — | 2026-11-04 |
 | [游骑兵HUD正式接入](../DevelopmentDocumentation/20261102-游骑兵HUD正式接入.md) | combat, performance, presentation, ui | 6/7 (86%) | — | 2026-11-03 |

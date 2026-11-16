@@ -1,0 +1,535 @@
+{
+  "schema": 1,
+  "date": "2026-11-16",
+  "scope": "Four separate LogicOnly Local UDP clients; abrupt Commander exit, both host and non-host. Existing map and 200-unit manifest, 30 FPS cap. Approximately 10 seconds of simulation progression after all survivors first recover.",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "build": {
+    "engine": "D:/UnrealEngine-5.7",
+    "target": "GuLiStrikeEditor Win64 Development",
+    "exit_code": 0,
+    "final_log": "C:\\Users\\a\\AppData\\Local\\Temp\\GuLiMassTakeoverFix-Build-20261116-08.log",
+    "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+  },
+  "cases": [
+    {
+      "name": "host-commander",
+      "run_directory": "TestResults\\NetworkMinimal\\20261116-366442a48a8a4680b7de4d095289fcb4",
+      "takeover_client": "red-wushuang",
+      "result": "passed",
+      "observed_first_all_ready_seconds": 18.077,
+      "final": {
+        "elapsed": 28.865,
+        "clients": [
+          {
+            "name": "blue-commander",
+            "ready": true,
+            "world_ready": true,
+            "state_ready": true,
+            "paused": false,
+            "failure": "",
+            "tick": 1903,
+            "epoch": 1,
+            "host": "24FC67A9736D4B2097EF75510169E96D",
+            "victim_offline": true,
+            "mass_alive": 165,
+            "wrong_owner": 0,
+            "local_mass": 0,
+            "installed_groups": 1,
+            "send_failures": 0,
+            "damage_request_count": 0
+          },
+          {
+            "name": "red-wushuang",
+            "ready": true,
+            "world_ready": true,
+            "state_ready": true,
+            "paused": false,
+            "failure": "",
+            "tick": 1956,
+            "epoch": 1,
+            "host": "24FC67A9736D4B2097EF75510169E96D",
+            "victim_offline": true,
+            "mass_alive": 165,
+            "wrong_owner": 0,
+            "local_mass": 165,
+            "installed_groups": 1,
+            "send_failures": 0,
+            "damage_request_count": 646
+          },
+          {
+            "name": "blue-wushuang",
+            "ready": true,
+            "world_ready": true,
+            "state_ready": true,
+            "paused": false,
+            "failure": "",
+            "tick": 1961,
+            "epoch": 1,
+            "host": "24FC67A9736D4B2097EF75510169E96D",
+            "victim_offline": true,
+            "mass_alive": 165,
+            "wrong_owner": 0,
+            "local_mass": 0,
+            "installed_groups": 1,
+            "send_failures": 0,
+            "damage_request_count": 0
+          }
+        ]
+      },
+      "progression": [
+        {
+          "name": "blue-commander",
+          "tick_before": 1290,
+          "tick_after": 1903,
+          "live_mass_count": 165,
+          "mass_logical_age_advanced": 143,
+          "new_mass_damage_requests": 0,
+          "remote_mass_motion_advanced": 142,
+          "engineering": {
+            "engineer_states": {
+              "count": 8,
+              "local": 0,
+              "advancing": 0
+            },
+            "miner_states": {
+              "count": 8,
+              "local": 0,
+              "advancing": 0
+            }
+          }
+        },
+        {
+          "name": "red-wushuang",
+          "tick_before": 1286,
+          "tick_after": 1956,
+          "live_mass_count": 165,
+          "mass_logical_age_advanced": 143,
+          "new_mass_damage_requests": 646,
+          "remote_mass_motion_advanced": 0,
+          "engineering": {
+            "engineer_states": {
+              "count": 8,
+              "local": 8,
+              "advancing": 8
+            },
+            "miner_states": {
+              "count": 8,
+              "local": 8,
+              "advancing": 8
+            }
+          }
+        },
+        {
+          "name": "blue-wushuang",
+          "tick_before": 1288,
+          "tick_after": 1961,
+          "live_mass_count": 165,
+          "mass_logical_age_advanced": 143,
+          "new_mass_damage_requests": 0,
+          "remote_mass_motion_advanced": 142,
+          "engineering": {
+            "engineer_states": {
+              "count": 8,
+              "local": 0,
+              "advancing": 0
+            },
+            "miner_states": {
+              "count": 8,
+              "local": 0,
+              "advancing": 0
+            }
+          }
+        }
+      ],
+      "details": [
+        {
+          "name": "blue-commander",
+          "retired_target_records": 5,
+          "retired_target_lookups": 0,
+          "last_state_import_failure": "birth-proof-missing-or-mismatched object=3aa9e2c9fff58715cd3d9cd0813eda55 capability=object",
+          "rejected_state_imports": 0,
+          "handoff_issues": {
+            "capture/application-pending": 485,
+            "resource/receive/install-grant": 1
+          },
+          "recovery_snapshot": [
+            {
+              "group": "52a8cbb451b488b08b108f408c3910e3",
+              "owner": "24fc67a9736d4b2097ef75510169e96d",
+              "backup": "00000000000000000000000000000000",
+              "request_epoch": "2",
+              "owner_version": "2",
+              "recovering": "0",
+              "installed_recovery": "1",
+              "snapshot": "9",
+              "snapshot_epoch": "1",
+              "sample": "971",
+              "digest": "bc0b9f59bbae580f3ff30416b6fb39ed39f4c64678feacf9ed3b39cc2e272fe3",
+              "complete_copies": 0,
+              "stored_bytes": 0,
+              "queued_versions": 0
+            }
+          ]
+        },
+        {
+          "name": "red-wushuang",
+          "retired_target_records": 5,
+          "retired_target_lookups": 0,
+          "last_state_import_failure": "birth-proof-missing-or-mismatched object=1e58d1232d8e1759b62fbb3718cdc21b capability=object",
+          "rejected_state_imports": 0,
+          "handoff_issues": {
+            "capture/application-batch": 123,
+            "capture/application-pending": 13351
+          },
+          "recovery_snapshot": [
+            {
+              "group": "52a8cbb451b488b08b108f408c3910e3",
+              "owner": "24fc67a9736d4b2097ef75510169e96d",
+              "backup": "00000000000000000000000000000000",
+              "request_epoch": "2",
+              "owner_version": "2",
+              "recovering": "0",
+              "installed_recovery": "1",
+              "snapshot": "9",
+              "snapshot_epoch": "1",
+              "sample": "971",
+              "digest": "bc0b9f59bbae580f3ff30416b6fb39ed39f4c64678feacf9ed3b39cc2e272fe3",
+              "complete_copies": 0,
+              "stored_bytes": 0,
+              "queued_versions": 0
+            }
+          ]
+        },
+        {
+          "name": "blue-wushuang",
+          "retired_target_records": 5,
+          "retired_target_lookups": 0,
+          "last_state_import_failure": "birth-proof-missing-or-mismatched object=1e58d1232d8e1759b62fbb3718cdc21b capability=object",
+          "rejected_state_imports": 0,
+          "handoff_issues": {
+            "capture/application-batch": 233,
+            "capture/application-pending": 60249,
+            "capture/busy-numeric": 24,
+            "resource/receive/install-grant": 1
+          },
+          "recovery_snapshot": [
+            {
+              "group": "52a8cbb451b488b08b108f408c3910e3",
+              "owner": "24fc67a9736d4b2097ef75510169e96d",
+              "backup": "00000000000000000000000000000000",
+              "request_epoch": "2",
+              "owner_version": "2",
+              "recovering": "0",
+              "installed_recovery": "1",
+              "snapshot": "9",
+              "snapshot_epoch": "1",
+              "sample": "971",
+              "digest": "bc0b9f59bbae580f3ff30416b6fb39ed39f4c64678feacf9ed3b39cc2e272fe3",
+              "complete_copies": 0,
+              "stored_bytes": 0,
+              "queued_versions": 0
+            }
+          ]
+        }
+      ],
+      "limitations": "Sampling time includes process-kill command startup; not a precise recovery latency measurement."
+    },
+    {
+      "name": "nonhost-commander",
+      "run_directory": "TestResults\\NetworkMinimal\\20261116-72f5930772554090843743c8f4a4947f",
+      "takeover_client": "blue-wushuang",
+      "result": "passed",
+      "observed_first_all_ready_seconds": 14.776,
+      "final": {
+        "elapsed": 25.552,
+        "clients": [
+          {
+            "name": "red-commander",
+            "ready": true,
+            "world_ready": true,
+            "state_ready": true,
+            "paused": false,
+            "failure": "",
+            "tick": 2014,
+            "epoch": 1,
+            "host": "113F86B67B584B25805C555DD98F6339",
+            "victim_offline": true,
+            "mass_alive": 221,
+            "wrong_owner": 0,
+            "local_mass": 0,
+            "installed_groups": 1,
+            "send_failures": 0,
+            "damage_request_count": 2265
+          },
+          {
+            "name": "red-wushuang",
+            "ready": true,
+            "world_ready": true,
+            "state_ready": true,
+            "paused": false,
+            "failure": "",
+            "tick": 1985,
+            "epoch": 1,
+            "host": "113F86B67B584B25805C555DD98F6339",
+            "victim_offline": true,
+            "mass_alive": 221,
+            "wrong_owner": 0,
+            "local_mass": 0,
+            "installed_groups": 1,
+            "send_failures": 0,
+            "damage_request_count": 0
+          },
+          {
+            "name": "blue-wushuang",
+            "ready": true,
+            "world_ready": true,
+            "state_ready": true,
+            "paused": false,
+            "failure": "",
+            "tick": 2007,
+            "epoch": 1,
+            "host": "113F86B67B584B25805C555DD98F6339",
+            "victim_offline": true,
+            "mass_alive": 221,
+            "wrong_owner": 0,
+            "local_mass": 221,
+            "installed_groups": 1,
+            "send_failures": 0,
+            "damage_request_count": 0
+          }
+        ]
+      },
+      "progression": [
+        {
+          "name": "red-commander",
+          "tick_before": 1410,
+          "tick_after": 2014,
+          "live_mass_count": 221,
+          "mass_logical_age_advanced": 138,
+          "new_mass_damage_requests": 0,
+          "remote_mass_motion_advanced": 140,
+          "engineering": {
+            "engineer_states": {
+              "count": 8,
+              "local": 0,
+              "advancing": 0
+            },
+            "miner_states": {
+              "count": 8,
+              "local": 0,
+              "advancing": 0
+            }
+          }
+        },
+        {
+          "name": "red-wushuang",
+          "tick_before": 1374,
+          "tick_after": 1985,
+          "live_mass_count": 221,
+          "mass_logical_age_advanced": 138,
+          "new_mass_damage_requests": 0,
+          "remote_mass_motion_advanced": 140,
+          "engineering": {
+            "engineer_states": {
+              "count": 8,
+              "local": 0,
+              "advancing": 0
+            },
+            "miner_states": {
+              "count": 8,
+              "local": 0,
+              "advancing": 0
+            }
+          }
+        },
+        {
+          "name": "blue-wushuang",
+          "tick_before": 1398,
+          "tick_after": 2007,
+          "live_mass_count": 221,
+          "mass_logical_age_advanced": 138,
+          "new_mass_damage_requests": 0,
+          "remote_mass_motion_advanced": 0,
+          "engineering": {
+            "engineer_states": {
+              "count": 8,
+              "local": 8,
+              "advancing": 8
+            },
+            "miner_states": {
+              "count": 8,
+              "local": 8,
+              "advancing": 8
+            }
+          }
+        }
+      ],
+      "details": [
+        {
+          "name": "red-commander",
+          "retired_target_records": 1,
+          "retired_target_lookups": 0,
+          "last_state_import_failure": "birth-group-version object=74c9f97a89017bdb84cc398b4d5991f3 capability=object",
+          "rejected_state_imports": 2,
+          "handoff_issues": {
+            "capture/application-pending": 190,
+            "capture/busy-numeric": 5
+          },
+          "recovery_snapshot": [
+            {
+              "group": "331fb8a4fff5679d9b20757e7811c53c",
+              "owner": "71bfd32d7a1143889d379e1719e25391",
+              "backup": "00000000000000000000000000000000",
+              "request_epoch": "2",
+              "owner_version": "2",
+              "recovering": "0",
+              "installed_recovery": "1",
+              "snapshot": "9",
+              "snapshot_epoch": "1",
+              "sample": "978",
+              "digest": "9aae3c2e2dd90cf490d9d452eb6d8fcc21cef9cceca94ead38ceeaa3a7875e2c",
+              "complete_copies": 0,
+              "stored_bytes": 0,
+              "queued_versions": 0
+            }
+          ]
+        },
+        {
+          "name": "red-wushuang",
+          "retired_target_records": 1,
+          "retired_target_lookups": 0,
+          "last_state_import_failure": "birth-proof-missing-or-mismatched object=74cce7a0c3b9e9f57af59b894aafa562 capability=object",
+          "rejected_state_imports": 1,
+          "handoff_issues": {
+            "capture/application-batch": 334,
+            "capture/application-pending": 14928,
+            "capture/busy-numeric": 11,
+            "capture/busy-work": 17
+          },
+          "recovery_snapshot": [
+            {
+              "group": "331fb8a4fff5679d9b20757e7811c53c",
+              "owner": "71bfd32d7a1143889d379e1719e25391",
+              "backup": "00000000000000000000000000000000",
+              "request_epoch": "2",
+              "owner_version": "2",
+              "recovering": "0",
+              "installed_recovery": "1",
+              "snapshot": "9",
+              "snapshot_epoch": "1",
+              "sample": "978",
+              "digest": "9aae3c2e2dd90cf490d9d452eb6d8fcc21cef9cceca94ead38ceeaa3a7875e2c",
+              "complete_copies": 0,
+              "stored_bytes": 0,
+              "queued_versions": 0
+            }
+          ]
+        },
+        {
+          "name": "blue-wushuang",
+          "retired_target_records": 1,
+          "retired_target_lookups": 0,
+          "last_state_import_failure": "birth-proof-missing-or-mismatched object=74cce7a0c3b9e9f57af59b894aafa562 capability=object",
+          "rejected_state_imports": 2,
+          "handoff_issues": {
+            "capture/application-batch": 104,
+            "capture/application-pending": 24782,
+            "capture/busy-numeric": 21
+          },
+          "recovery_snapshot": [
+            {
+              "group": "331fb8a4fff5679d9b20757e7811c53c",
+              "owner": "71bfd32d7a1143889d379e1719e25391",
+              "backup": "00000000000000000000000000000000",
+              "request_epoch": "2",
+              "owner_version": "2",
+              "recovering": "0",
+              "installed_recovery": "1",
+              "snapshot": "9",
+              "snapshot_epoch": "1",
+              "sample": "978",
+              "digest": "9aae3c2e2dd90cf490d9d452eb6d8fcc21cef9cceca94ead38ceeaa3a7875e2c",
+              "complete_copies": 0,
+              "stored_bytes": 0,
+              "queued_versions": 0
+            }
+          ]
+        }
+      ],
+      "limitations": "Sampling time includes process-kill command startup; not a precise recovery latency measurement."
+    }
+  ],
+  "cleanup": {
+    "all_eight_final_test_pids_exited": true,
+    "editor_reopened_pid": 33736,
+    "editor_verification_pending": false,
+    "editor_state": {
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "pie": false,
+      "dirty_maps": [],
+      "dirty_content": [],
+      "review_actors": [
+        {
+          "name": "GuLiHybridNetworkReviewActor_0",
+          "label": "HybridNetworkReview",
+          "class": "GuLiHybridNetworkReviewActor",
+          "folder": "Review/HybridNetwork",
+          "location": [
+            0.0,
+            0.0,
+            200.0
+          ]
+        },
+        {
+          "name": "GuLiHybridNetworkReviewActor_1",
+          "label": "Grid300_Launch200",
+          "class": "GuLiHybridNetworkReviewActor",
+          "folder": "Development/Grid300Review20261022",
+          "location": [
+            -150.0,
+            55050.0,
+            899.9771118164062
+          ]
+        }
+      ]
+    }
+  },
+  "boundaries": [
+    "No PIE input or rendered output validation",
+    "No EOS/cross-machine test",
+    "Coarse snapshot recovery can roll back state or omit objects; no exact reconciliation",
+    "No reconnect, second simultaneous failure or performance benchmark"
+  ],
+  "intermediate_findings": [
+    {
+      "run": "20261116-c414d5c506d4494da73f3ecb68b02d81",
+      "result": "failed",
+      "finding": "Mass Link restored locally; remote snapshot install did not complete."
+    },
+    {
+      "run": "20261116-5d60048da85649cf8549cdd028b4a1b5",
+      "result": "failed",
+      "finding": "Remote resource/receive/install-grant=1 confirmed install snapshot preceded matching recovery metadata."
+    },
+    {
+      "run": "20261116-413ca34c1e434a1ab5a48fc008a798d7",
+      "result": "failed",
+      "finding": "Dead nonhost control lane hit 4096 messages; shared Outbox blocked survivor reports and caused false partition."
+    },
+    {
+      "run": "20261116-bbebb071d5ed4ea0a695253dfc0f97dc",
+      "result": "failed",
+      "finding": "Mass ownership transferred, then delivered-gift missing-directory assertion suspended takeover client. Exact earlier child-publication loss not established; final behavior preserves the consumed slot and continues coarse recovery."
+    },
+    {
+      "run": "20261116-18097765b030456f942036012f849383",
+      "result": "passed",
+      "finding": "Earlier Blue Commander regression, before final missing-gift tolerance."
+    },
+    {
+      "run": "20261116-73921f9b37564fb4a7d81c27320fe135",
+      "result": "passed",
+      "finding": "Earlier host Commander regression, before final missing-gift tolerance."
+    }
+  ]
+}

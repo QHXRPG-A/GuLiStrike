@@ -41,8 +41,8 @@ FText RoleName(EGuLiCommanderRole Role)
 {
     switch (Role)
     {
-    case EGuLiCommanderRole::Ground: return LOCTEXT("Ground", "游骑兵");
-    case EGuLiCommanderRole::Air: return LOCTEXT("Air", "巡天");
+    case EGuLiCommanderRole::Ground: return LOCTEXT("Ground", "无双·游骑兵");
+    case EGuLiCommanderRole::Air: return LOCTEXT("Air", "无双·巡天");
     default: return LOCTEXT("Commander", "指挥官");
     }
 }
@@ -71,7 +71,7 @@ public:
                 ]
                 + SVerticalBox::Slot().AutoHeight().Padding(0, 0, 0, 18)
                 [
-                    SNew(STextBlock).Text(LOCTEXT("Description", "选择你要操控的席位，再进入战场。"))
+                    SNew(STextBlock).Text(LOCTEXT("Description", "每队一名指挥官、一名无双。无双拥有游骑兵与巡天，选择起始操控单位，局内按 Tab 切换。"))
                     .AutoWrapText(true).ColorAndOpacity(Accent)
                 ]
                 + SVerticalBox::Slot().FillHeight(1)
@@ -80,9 +80,9 @@ public:
                     + SScrollBox::Slot().Padding(0, 0, 0, 8)
                     [RoleButton(EGuLiCommanderRole::Commander, LOCTEXT("CommanderDescription", "指挥部队，管理建设与战场。"))]
                     + SScrollBox::Slot().Padding(0, 0, 0, 8)
-                    [RoleButton(EGuLiCommanderRole::Ground, LOCTEXT("GroundDescription", "驾驶游骑兵，参与地面作战。"))]
+                    [RoleButton(EGuLiCommanderRole::Ground, LOCTEXT("GroundDescription", "选择无双席位，从驾驶游骑兵开始。局内按 Tab 切换巡天。"))]
                     + SScrollBox::Slot()
-                    [RoleButton(EGuLiCommanderRole::Air, LOCTEXT("AirDescription", "驾驶巡天，参与空中作战。"))]
+                    [RoleButton(EGuLiCommanderRole::Air, LOCTEXT("AirDescription", "选择无双席位，从驾驶巡天开始。局内按 Tab 切换游骑兵。"))]
                 ]
                 + SVerticalBox::Slot().AutoHeight().Padding(0, 16, 0, 12)
                 [

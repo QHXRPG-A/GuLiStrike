@@ -10,7 +10,7 @@ namespace GuLiNet
 namespace
 {
 // Periodic backup cadence only; initial copies and final leave snapshots remain immediate.
-constexpr double ResourceSnapshotIntervalSeconds=5.0;
+constexpr double ResourceSnapshotIntervalSeconds=2.0;
 std::string KeyName(ObjectKey K)
 {return std::to_string(unsigned(K.Kind))+"/"+K.StableId.ToString()+"/"+std::to_string(K.Generation);}
 ResourceSnapshot CurrentSnapshot(const ObjectHandoffState& S,const ResourceGroupState& G,Revision Number,Tick Sample)
@@ -234,7 +234,7 @@ void ClientWorld::SetResourceGroups(std::map<Id,ResourceGroupState> Groups)
 }
 bool ClientWorld::ReceiveResourceSnapshot(Id Sender,const Message& M)
 {
-    const auto G=ResourceAuthorities.find(M.Header.ResourceGroup);if (G==ResourceAuthorities.end()) return false;
+    const auto G=ResourceAuthorities.find(M.Header.ResourceGroup);if (G==ResourceAuthorities.end()) return HandoffIssue("resource/receive/missing-group");
     const auto& Grant=G->second;auto& Replica=ResourceReplicas[G->first];
     if (M.Header.Kind==MessageKind::ResourceSnapshotStored)
     {
@@ -247,12 +247,12 @@ bool ClientWorld::ReceiveResourceSnapshot(Id Sender,const Message& M)
     }
     const bool Installing=M.Header.Kind==MessageKind::ResourceSnapshotInstall;
     if (Installing?(!Grant.Recovery||Sender!=Grant.Publisher):
-        (Grant.Recovery||Sender!=Grant.Owner||Player!=Grant.Backup||Sender==Player)) return false;
+        (Grant.Recovery||Sender!=Grant.Owner||Player!=Grant.Backup||Sender==Player)) return HandoffIssue(Installing?"resource/receive/install-grant":"resource/receive/backup-grant");
     ResourceSnapshotDelta Delta;
     if (!DecodeResourceSnapshotDelta(M.Body,Delta)||Delta.Value.Match!=Match||Delta.Value.Group!=Grant.Group
         ||Delta.Value.Owner!=(Installing?Grant.PreviousOwner:Grant.Owner)||Delta.Value.OwnerVersion!=Grant.OwnerVersion
         ||(Installing?(Grant.Abrupt?Delta.Value.RequestEpoch+1!=Grant.RequestEpoch:Delta.Value.RequestEpoch!=Grant.RequestEpoch)
-            :Delta.Value.RequestEpoch!=Grant.RequestEpoch)) return false;
+            :Delta.Value.RequestEpoch!=Grant.RequestEpoch)) return HandoffIssue("resource/receive/snapshot-metadata");
     const auto Result=Replica.Store.Receive(Delta,NetworkTime);
     const bool Good=Result==ResourceSnapshotStore::Result::Installed||Result==ResourceSnapshotStore::Result::Duplicate;
     if (!Installing)
@@ -267,7 +267,7 @@ bool ClientWorld::ReceiveResourceSnapshot(Id Sender,const Message& M)
     if (!Replica.Installing)
     {
         ObjectHandoffState S;
-        if (!PrivateSnapshot(*Replica.Store.Latest(),Player,Player==Grant.Target?Grant.Recovery:0,Grant.RequestEpoch,S)) return false;
+        if (!PrivateSnapshot(*Replica.Store.Latest(),Player,Player==Grant.Target?Grant.Recovery:0,Grant.RequestEpoch,S)) return HandoffIssue("resource/receive/private-snapshot");
         // The complete immutable cut already passed its canonical digest check.
         // Scope that identity to this recovery/epoch once; polling a retained
         // application must not repeatedly encode and hash the full numeric cut.
@@ -316,9 +316,20 @@ void ClientWorld::PollResourceSnapshots()
             }
             if (G.Publisher==Player&&R.Sending)
             {
-                const auto Delta=DiffResourceSnapshot(*R.Sending,nullptr);
-                for (const auto& [Peer,Member]:Members) if (Member.Online&&!R.InstallSent.contains(Peer))
-                    if (SendSnapshot(Peer,MessageKind::ResourceSnapshotInstall,Delta)) R.InstallSent.insert(Peer);
+                // Peer snapshots and room grants travel independently. A reliable
+                // delivery may precede the matching recovery grant and be rejected.
+                // Retry the immutable cut until the room commits installation;
+                // duplicate snapshots are validated and never applied twice.
+                if (!R.Sent||NetworkTime-R.SentAt>=0.5)
+                {R.InstallSent.clear();R.Sent=true;R.SentAt=NetworkTime;}
+                const bool HasUnsentPeer=std::any_of(Members.begin(),Members.end(),[&](const auto& P)
+                    {return P.second.Online&&!R.InstallSent.contains(P.first);});
+                if (HasUnsentPeer)
+                {
+                    const auto Delta=DiffResourceSnapshot(*R.Sending,nullptr);
+                    for (const auto& [Peer,Member]:Members) if (Member.Online&&!R.InstallSent.contains(Peer))
+                        if (SendSnapshot(Peer,MessageKind::ResourceSnapshotInstall,Delta)) R.InstallSent.insert(Peer);
+                }
             }
             if (R.Installing&&R.InstalledRecovery!=G.Recovery)
             {
@@ -377,8 +388,11 @@ void Room::RefreshResourceBackups()
     const auto Leaving=MembershipValue&&MembershipValue->Operation==MembershipOperation::Leave?MembershipValue->Player:Id{};
     for (auto& [Key,G]:Groups) if (!ResourceRecoveries.contains(Key))
     {
-        if (G.Backup!=G.Owner&&G.Backup!=Leaving&&Live(G.Backup)) continue;
-        G.Backup={};for (const auto& [P,M]:Players) if (P!=G.Owner&&P!=Leaving&&Live(P)) {G.Backup=P;break;}
+        const auto Owner=Players.find(G.Owner),Backup=Players.find(G.Backup);
+        if (G.Backup!=G.Owner&&G.Backup!=Leaving&&Live(G.Backup) && Owner!=Players.end() && Backup!=Players.end() && Backup->second.Faction==Owner->second.Faction) continue;
+        G.Backup={};
+        for (const auto& [P,M]:Players) if (P!=G.Owner&&P!=Leaving&&Live(P)
+            && Owner!=Players.end() && M.Faction==Owner->second.Faction) {G.Backup=P;break;}
     }
 }
 bool Room::InResourceRecovery(ObjectKey K) const

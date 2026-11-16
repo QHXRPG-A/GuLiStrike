@@ -1,4 +1,5 @@
 #include "Gameplay/GroundMech/Network/GuLiHybridGroundUpgrade.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Network/GuLiHybridActorComponent.h"
 #include "Network/Private/GuLiHybridUpgradeCatalog.h"
@@ -10,6 +11,18 @@
 bool GuLiHybridGroundUpgrade::Append(const UGuLiGroundMechWeaponComponent& Weapon,FGuLiHybridManifestData& Data,FString& Error)
 {
     if (!Weapon.UpgradeTable || !Weapon.SkillTable) {Error=TEXT("Missing Ground upgrade tables");return false;}
+    GuLiNet::GroundRogue::Catalog RogueCatalog;
+    if (!GuLiGroundRogue::LoadCatalog(RogueCatalog,Error)) return false;
+    double MinimumExplosiveSpeedMultiplier=1.0;
+    for (const auto& [_,Effect]:RogueCatalog.Effects)
+    {
+        if (Effect.Handler!="ground/explosive_package") continue;
+        GuLiNet::Effects::ExplosivePackage Explosive;
+        if (!GuLiNet::Effects::DecodeExplosive(Effect.Parameters,Explosive))
+        { Error=TEXT("Invalid Ground explosive flight configuration");return false; }
+        MinimumExplosiveSpeedMultiplier=FMath::Min(MinimumExplosiveSpeedMultiplier,double(Explosive.SpeedMultiplier));
+    }
+
     TArray<const FGuLiStrikeMechUpgradesRow*> Rows;
     for (const auto& [_,Value]:Weapon.UpgradeTable->GetRowMap()) Rows.Add(reinterpret_cast<const FGuLiStrikeMechUpgradesRow*>(Value));
     Rows.Sort([](const auto& A,const auto& B) {return A.SkillId!=B.SkillId?A.SkillId<B.SkillId:A.Level<B.Level;});
@@ -24,6 +37,9 @@ bool GuLiHybridGroundUpgrade::Append(const UGuLiGroundMechWeaponComponent& Weapo
             || !FMath::IsFinite(Row->Damage) || Row->Damage<=0 || !FMath::IsFinite(Row->FireRate) || Row->FireRate<=0 || Row->FireRate>30
             || !FMath::IsFinite(Skill->ProjectileLifetime) || Skill->ProjectileLifetime<=0)
         {Error=TEXT("Invalid Ground weapon upgrade row: ")+Row->Id;return false;}
+        const double MaximumFlightLifetime=double(Skill->ProjectileLifetime)/MinimumExplosiveSpeedMultiplier;
+        if (MaximumFlightLifetime>120.0)
+        { Error=TEXT("Ground projectile lifetime exceeds the flight limit: ")+Row->Id;return false; }
         const std::string Id=TCHAR_TO_UTF8(*Row->Id.ToLower());
         GuLiNet::UpgradeNode Node;Node.Id=Node.Group=Id;Node.Route="skill/"+std::to_string(Row->SkillId);Node.Level=Row->Level;
         Node.Replaces=TCHAR_TO_UTF8(*Previous.FindRef(Row->SkillId).ToLower());Catalog.Nodes.push_back(Node);
@@ -33,7 +49,9 @@ bool GuLiHybridGroundUpgrade::Append(const UGuLiGroundMechWeaponComponent& Weapo
         auto& Rule=Data.Rules.AddDefaulted_GetRef();Rule.SourceDefinition=TEXT("player/ground");
         Rule.Id=FGuLiHybridManifest::MakeDamageRuleId(Rule.SourceDefinition,FName(*Row->Id),TEXT("BasicAttack"));
         Rule.Damage=Row->Damage;Rule.CooldownTicks=FMath::Max<int64>(1,FMath::CeilToInt64(60./Row->FireRate));
-        Rule.EffectTicks=FMath::Max<int64>(600,FMath::CeilToInt64(Skill->ProjectileLifetime*60.));Rule.MaximumTargets=1;
+        // The companion settles on the same flight record. Allow one tick for flight-step rounding.
+        Rule.EffectTicks=FMath::Max<int64>(600,FMath::CeilToInt64(MaximumFlightLifetime*GuLiNet::TicksPerSecond)+1);
+        Rule.MaximumTargets=1;
         Rule.RequiredCapabilityCatalog=Domain;Rule.RequiredCapabilityGroup=Row->Id.ToLower();Rule.RequiredCapability=TEXT("fire/")+Row->Id.ToLower();
         Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/bullet"),Skill->BulletVfxId);
         Data.Numbers.Add(TEXT("ground_attack/")+Rule.Id+TEXT("/impact"),Skill->ImpactVfxId);

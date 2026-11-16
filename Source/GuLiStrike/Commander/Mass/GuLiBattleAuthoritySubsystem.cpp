@@ -5765,6 +5765,21 @@ bool UGuLiBattleAuthoritySubsystem::QueryUnitSkillRuntime(FGuLiSoldierId Soldier
 	return true;
 }
 
+double UGuLiBattleAuthoritySubsystem::GetLocalHybridUnitSkillCooldownRemaining(const FGuLiHybridObjectState& Unit) const
+{
+	const int32* Index = AuthorityState ? AuthorityState->SoldierIndexById.Find(Unit.Ordinal) : nullptr;
+	const auto* Hybrid = GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	if (!Index || !Hybrid) return 0.0;
+
+	const auto& Soldier = AuthorityState->Soldiers[*Index];
+	if (Soldier.HybridKey != Unit.Key || !Soldier.bLocalSimulation || !Soldier.CanAct() || !Soldier.IsPresent()) return 0.0;
+
+	// The per-object clock in the view comes from the same main-thread record as command application.
+	const double SkillSeconds = double(Unit.LogicalAge) / GuLiNet::TicksPerSecond;
+	const double Remaining = Soldier.ActiveSkill.ReadyAt - SkillSeconds;
+	return Remaining > 0.0 && Hybrid->HasSimulation(Unit.Key) ? Remaining : 0.0;
+}
+
 FGuLiActiveSkillUnitResult UGuLiBattleAuthoritySubsystem::ExecuteHybridUnitSkill(const FGuLiHybridObjectKey& Key,
     FGuid Request,bool HasGround,FVector Ground,int32 Allocation,FGuid Batch)
 {

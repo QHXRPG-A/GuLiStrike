@@ -4,6 +4,30 @@
 
 namespace GuLiNet
 {
+inline constexpr std::uint8_t SeatsPerTeam = 2;
+inline constexpr std::uint8_t InvalidRoleSlot = 0xff;
+
+constexpr bool IsWushuangRole(Role Seat)
+{
+    return Seat == Role::Ground || Seat == Role::Air;
+}
+
+// Ground/Air identify the initial controlled carrier, not separate owners.
+constexpr bool MatchesControllerRole(Role MemberSeat, Role ControllerSeat)
+{
+    return MemberSeat == ControllerSeat || (IsWushuangRole(MemberSeat) && IsWushuangRole(ControllerSeat));
+}
+
+// Ground and Air retain their gameplay roles while sharing one Wushuang seat.
+constexpr std::uint8_t RoleSlotIndex(Team Faction, Role Seat)
+{
+    if ((Faction != Team::Red && Faction != Team::Blue) || Seat >= Role::Observer)
+        return InvalidRoleSlot;
+    const unsigned TeamOffset = Faction == Team::Red ? 0 : SeatsPerTeam;
+    const unsigned SeatOffset = Seat == Role::Commander ? 0 : 1;
+    return static_cast<std::uint8_t>(TeamOffset + SeatOffset);
+}
+
 struct Member
 {
     Id Player;

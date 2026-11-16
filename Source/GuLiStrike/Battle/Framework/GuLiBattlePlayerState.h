@@ -73,12 +73,30 @@ public:
 	FGuid GetPlayerGuid() const { return PlayerGuid; }
     UFUNCTION(BlueprintPure,Category="Battle|Role") int64 GetSeatVersion() const { return SeatVersion; }
     void SetHybridSeatVersion(uint64 Version);
+    void SetControlsWholeTeam(bool Value) { bControlsWholeTeam=Value; }
+    bool CanControlRole(EGuLiCommanderRole RequestedRole) const
+    { return RequestedRole==EGuLiCommanderRole::Commander?IsCommander():(RequestedRole==EGuLiCommanderRole::Ground || RequestedRole==EGuLiCommanderRole::Air) && IsWushuang(); }
+    bool IsCommanderControlActive() const { return IsCommander() && ActiveControlRole==EGuLiCommanderRole::Commander; }
+    bool bControlsWholeTeam=false; // Derived from the committed online roster, never from the selected view.
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Player")
 	EGuLiTeam GetTeam() const { return Team; }
 
 	UFUNCTION(BlueprintPure, Category = "Battle|Player")
 	EGuLiCommanderRole GetBattleRole() const { return CommanderRole; }
+
+	/** Local control selection; changing carriers never changes the committed room seat. */
+	UFUNCTION(BlueprintPure, Category = "Battle|Player")
+	EGuLiCommanderRole GetActiveControlRole() const { return ActiveControlRole; }
+
+	UFUNCTION(BlueprintPure, Category = "Battle|Player")
+	bool IsWushuang() const
+	{
+		return (bControlsWholeTeam || CommanderRole == EGuLiCommanderRole::Ground || CommanderRole == EGuLiCommanderRole::Air)
+			&& Team != EGuLiTeam::Unassigned;
+	}
+
+	bool SetActiveControlRole(EGuLiCommanderRole NewRole);
 
 	UFUNCTION(BlueprintPure, Category = "Battle|Player")
 	uint8 GetBattleSlotIndex() const { return SlotIndex; }
@@ -103,7 +121,7 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Commander|Player")
 	bool IsCommander() const
 	{
-		return CommanderRole == EGuLiCommanderRole::Commander && Team != EGuLiTeam::Unassigned;
+		return (bControlsWholeTeam || CommanderRole == EGuLiCommanderRole::Commander) && Team != EGuLiTeam::Unassigned;
 	}
 
 	/** Owner-only view of this player's team inventory. Other teams never receive it. */
@@ -175,6 +193,9 @@ private:
 
 	UPROPERTY()
 	EGuLiCommanderRole CommanderRole = EGuLiCommanderRole::Observer;
+
+	UPROPERTY(Transient)
+	EGuLiCommanderRole ActiveControlRole = EGuLiCommanderRole::Observer;
 
 	UPROPERTY()
 	uint8 SlotIndex = InvalidSlotIndex;

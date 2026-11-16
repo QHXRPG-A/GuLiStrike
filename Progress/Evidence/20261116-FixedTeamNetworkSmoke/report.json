@@ -1,0 +1,277 @@
+{
+  "schema": "guli-network-smoke/v1",
+  "date": "2026-11-16",
+  "work_id": "WORK-20261115-001",
+  "result": "passed_for_minimal_local_scope",
+  "transport": "LocalUdp loopback",
+  "run_mode": "Standalone LogicOnly NullRHI",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "manifest": "Config/Hybrid/RuntimeManifest-200.json",
+  "two_client_directory": "D:\\UE5.7\\test1\\TestResults\\NetworkMinimal\\20261116-6209834aa3e14cb897ece104e8ed8f88",
+  "four_client_directory": "D:\\UE5.7\\test1\\TestResults\\NetworkMinimal\\20261116-18528459a0974a7b83f79af7aacdceaa",
+  "two_client_authority_checks_per_client": [
+    226,
+    226
+  ],
+  "four_client_authority_checks_per_client": [
+    228,
+    228,
+    228,
+    228
+  ],
+  "card_open": {
+    "action": {
+      "id": "4035E2EF51FE4380860E85A6B1DDFB9B",
+      "kind": "rogue_open",
+      "player": "62CA7FF6DEF7460EBA57DA37C1C5958C",
+      "status": "completed",
+      "request": "00000000000000000000000000000000",
+      "error": "",
+      "submitted_tick": 3621,
+      "submitted_epoch": 1,
+      "result": {}
+    },
+    "executed_by": "red-wushuang",
+    "owner_request_count": 1
+  },
+  "disconnect": {
+    "seconds_since_disconnect": 34.692143,
+    "survivors": [
+      {
+        "name": "red-commander",
+        "ready": true,
+        "paused": false,
+        "failure": "",
+        "tick": 10386,
+        "offline_member": [
+          {
+            "player": "429D6A9FE5B34E0CB5D040CBC7733B0D",
+            "team": "Red",
+            "role": "Ground",
+            "online": false,
+            "seat_version": 1
+          }
+        ],
+        "former_wushuang_live_objects": 160,
+        "wrong_owner_after_takeover": [],
+        "installed_group_recoveries": 19,
+        "group_versions": [
+          [
+            "2",
+            "2"
+          ],
+          [
+            "2",
+            "4"
+          ]
+        ],
+        "red_local_definitions": {
+          "unit/1": 149,
+          "unit/2": 43,
+          "unit/5": 1,
+          "player/ship": 1,
+          "player/ground": 1,
+          "unit/4": 8,
+          "unit/3": 8,
+          "building/5": 5,
+          "building/4": 4,
+          "building/6": 4,
+          "effect/linear/damage/6:unit/1/6:Strafe/11:BasicAttack": 50,
+          "effect/linear/damage/6:unit/2/6:Strafe/11:BasicAttack": 99,
+          "state/territory": 18,
+          "territory/7": 18,
+          "state/resource-cluster": 105,
+          "state/team-account": 1,
+          "state/mass-authority": 1,
+          "team/army": 1,
+          "team/ground_rogue": 1,
+          "state/resource-runtime": 1
+        }
+      },
+      {
+        "name": "blue-commander",
+        "ready": true,
+        "paused": false,
+        "failure": "",
+        "tick": 10381,
+        "offline_member": [
+          {
+            "player": "429D6A9FE5B34E0CB5D040CBC7733B0D",
+            "team": "Red",
+            "role": "Ground",
+            "online": false,
+            "seat_version": 1
+          }
+        ],
+        "former_wushuang_live_objects": 160,
+        "wrong_owner_after_takeover": [],
+        "installed_group_recoveries": 19,
+        "group_versions": [
+          [
+            "2",
+            "2"
+          ],
+          [
+            "2",
+            "4"
+          ]
+        ],
+        "red_local_definitions": null
+      },
+      {
+        "name": "blue-wushuang",
+        "ready": true,
+        "paused": false,
+        "failure": "",
+        "tick": 10361,
+        "offline_member": [
+          {
+            "player": "429D6A9FE5B34E0CB5D040CBC7733B0D",
+            "team": "Red",
+            "role": "Ground",
+            "online": false,
+            "seat_version": 1
+          }
+        ],
+        "former_wushuang_live_objects": 160,
+        "wrong_owner_after_takeover": [],
+        "installed_group_recoveries": 19,
+        "group_versions": [
+          [
+            "2",
+            "2"
+          ],
+          [
+            "2",
+            "4"
+          ]
+        ],
+        "red_local_definitions": null
+      }
+    ]
+  },
+  "builds": [
+    {
+      "log": "C:\\Users\\a\\AppData\\Local\\Temp\\GuLiNetworkMinimal-Build-20261116-01.log",
+      "exit_code": 6,
+      "result": [
+        "Result: Failed (OtherCompilationError)",
+        "Total execution time: 64.44 seconds"
+      ],
+      "diagnostics": [
+        "UbaSessionServer - ERROR opening file D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrike.dll for write after retrying for 20 seconds (The process cannot access the file because it is being used by another process. - D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe)",
+        "LINK : fatal error LNK1104: ￎ￞ﾷﾨﾴ￲﾿ﾪￎￄﾼ￾ﾡﾰD:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor-GuLiStrike.dllﾡﾱ"
+      ]
+    },
+    {
+      "log": "C:\\Users\\a\\AppData\\Local\\Temp\\GuLiNetworkMinimal-Build-20261116-02.log",
+      "exit_code": 0,
+      "result": [
+        "Result: Succeeded",
+        "Total execution time: 5.46 seconds"
+      ],
+      "diagnostics": []
+    },
+    {
+      "log": "C:\\Users\\a\\AppData\\Local\\Temp\\GuLiNetworkMinimal-Build-20261116-03.log",
+      "exit_code": 0,
+      "result": [
+        "Result: Succeeded",
+        "Total execution time: 6.96 seconds"
+      ],
+      "diagnostics": []
+    }
+  ],
+  "build_ids": [
+    {
+      "path": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiFrameProfiler\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules",
+      "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+    }
+  ],
+  "files": [
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridManifest.cpp",
+      "sha256": "5ee9cbf46fa80977b8bb62788067bba2da3697f4d20a255ccf6e37925fb8d9a9"
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/Capabilities/GuLiNetControlPoint.cpp",
+      "sha256": "f525411c4fe74ab5b1d91ac1e8332ea40a22cc9e0879b0c2e73087e50c2a82e1"
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetOwnerTransactions.cpp",
+      "sha256": "089a38a0d18bdb3c8a73c73242348428e58fc1bae2884712f1990588f4133221"
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "sha256": "f6683ad82749ee818da56d9adda62e8d6cf9c34e8e97b9b25a31e28407bccd31"
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-600.json",
+      "sha256": "d3c59dfe2fee9e93f37d2dd6eef8aa149ca87dd29cb6bf3e8b877cc8fadb3252"
+    }
+  ],
+  "test_processes_remaining": 0,
+  "editor_restored_pid": 46160,
+  "not_run": [
+    "EOS or remote-machine network",
+    "PIE launch and interactive F1/F2/F3 input",
+    "Commander disconnect and host migration",
+    "Mining/build placement exhaustive cases",
+    "Visual checks",
+    "Performance acceptance"
+  ],
+  "initial_failures": [
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\NetworkMinimal\\20261116-09402ca6a1844cd79b09642fd1b739cc",
+      "reason": "Missing, oversized or malformed Hybrid runtime manifest; narrowed to stale 200-unit army v1 catalog"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\NetworkMinimal\\20261116-b7fc160e57ab49e4bbb71e39a327b2e5",
+      "reason": "Incompatible army catalog"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\TestResults\\NetworkMinimal\\20261116-ad4b9f44daca43349ff6e7d47ad4d094",
+      "reason": "Runtime configuration failed: control point validation still required neutral affiliation"
+    }
+  ],
+  "editor_restore": {
+    "verified": true,
+    "pid": 46160,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pie": false,
+    "dirty_maps": [],
+    "dirty_content": []
+  }
+}

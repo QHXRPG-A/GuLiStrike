@@ -1,0 +1,95 @@
+{
+  "status": "failed",
+  "editor_pid": 35092,
+  "initial": {
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype"
+  },
+  "last_status": {
+    "active": true,
+    "error": "",
+    "room": "DD6152D34714CA9F7CE325B7D5DE1069",
+    "role": "Ground",
+    "editor_pid": 35092,
+    "logic_pid": 23568,
+    "coordinator_pid": 36736,
+    "logic_running": true,
+    "coordinator_running": true,
+    "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/DD6152D34714CA9F7CE325B7D5DE1069",
+    "shutdown": [],
+    "cleanup_complete": false,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+    "standalone": true,
+    "can_present": true,
+    "world_ready": true,
+    "network_error": "",
+    "members": [
+      {
+        "player": "5ED92A664D836B97F6AF62816114D2D2",
+        "online": true,
+        "ready": true,
+        "team": "Blue",
+        "role": "Commander"
+      },
+      {
+        "player": "C4D7941142C905F85CD9118530F07194",
+        "online": true,
+        "ready": true,
+        "team": "Red",
+        "role": "Ground"
+      }
+    ],
+    "units": 600,
+    "peer_owned_objects": 0,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "commander_view_active": false,
+    "can_issue_orders": false,
+    "mouse_cursor_visible": false,
+    "commander_hud_widget": "",
+    "commander_hud_in_viewport": false,
+    "commander_hud_visible": false,
+    "commander_hud_owner_matches": false,
+    "commander_hud_width": 0,
+    "commander_hud_height": 0,
+    "ground_hud_widget": "/Script/GuLiStrike.GuLiGroundHUDWidget",
+    "ground_hud_in_viewport": true,
+    "ground_hud_visible": true,
+    "ground_hud_owner_matches": true,
+    "ground_hud_width": 1749.1148681640625,
+    "ground_hud_height": 1080.4107666015625,
+    "resource_query_ready": true,
+    "legacy_resource_runtime_ready": false
+  },
+  "failure": "{'success': True, 'message': 'Python command executed successfully.', 'result': {'success': False, 'traceback': 'Traceback (most recent call last):\\n  File \"<string>\", line 3, in <module>\\n  File \"<string>\", line 5, in <module>\\nAttributeError: \\'GuLiCommanderPlayerController\\' object has no attribute \\'get_pawn\\'\\n'}}",
+  "shutdown": {
+    "active": false,
+    "error": "",
+    "room": "DD6152D34714CA9F7CE325B7D5DE1069",
+    "role": "Ground",
+    "editor_pid": 35092,
+    "logic_pid": 23568,
+    "coordinator_pid": 36736,
+    "logic_running": false,
+    "coordinator_running": false,
+    "session_directory": "",
+    "shutdown": [
+      {
+        "role": "logic",
+        "pid": 23568,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      },
+      {
+        "role": "coordinator",
+        "pid": 36736,
+        "forced": false,
+        "has_exit_code": true,
+        "exit_code": 0
+      }
+    ],
+    "cleanup_complete": true
+  },
+  "editor_exit": 0
+}

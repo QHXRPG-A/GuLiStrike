@@ -278,7 +278,7 @@ void AGuLiCommanderHUD::RefreshCommanderRole()
 	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
 	SceneUI = CommanderController ? CommanderController->GetSceneUIWidget() : nullptr;
     const auto* GroundState=CommanderController?CommanderController->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
-    const bool Ground=GroundState&&GroundState->GetBattleRole()==EGuLiCommanderRole::Ground&&CommanderController&&CommanderController->IsLocalController()&&Cast<AGuLiGroundMechCharacter>(CommanderController->GetPawn())&&UGuLiNetworkSettings::CanPresent(GetWorld());
+    const bool Ground=GroundState&&GroundState->GetActiveControlRole()==EGuLiCommanderRole::Ground&&CommanderController&&CommanderController->IsLocalController()&&Cast<AGuLiGroundMechCharacter>(CommanderController->GetPawn())&&UGuLiNetworkSettings::CanPresent(GetWorld());
     if(Ground&&!GroundHUDWidget)
     {GroundHUDWidget=CreateWidget<UGuLiGroundHUDWidget>(PlayerOwner,UGuLiGroundHUDWidget::StaticClass());if(GroundHUDWidget){GroundHUDWidget->AddToPlayerScreen(15);GroundHUDWidget->SetRogueHidden(bRogueCardHidden);}}
     else if(!Ground&&GroundHUDWidget){auto* Old=GroundHUDWidget.Get();GroundHUDWidget=nullptr;Old->RemoveFromParent();}

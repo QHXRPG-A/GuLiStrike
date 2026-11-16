@@ -23,6 +23,8 @@ add_library(GuLiNetCore STATIC
     Private/GuLiNetOwnerFragments.cpp
     Private/GuLiNetOwnerTransactions.cpp
     Private/GuLiNetTypes.cpp
+    Private/GuLiNetTeamAuthority.cpp
+    Private/GuLiNetPeerRoom.cpp
     Private/GuLiNetOwnership.cpp
     Private/GuLiNetRules.cpp
     Private/GuLiNetResourceLedger.cpp

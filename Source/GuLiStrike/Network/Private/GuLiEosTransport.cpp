@@ -7,6 +7,7 @@
 #include "eos_sdk.h"
 #include "eos_connect.h"
 #include "eos_p2p.h"
+#include "eos_lobby.h"
 #endif
 
 namespace
@@ -26,6 +27,13 @@ struct FEosState : TSharedFromThis<FEosState>
     IEOSPlatformHandlePtr Platform;
     EOS_HConnect Connect = nullptr;
     EOS_HP2P P2P = nullptr;
+    EOS_HLobby Lobby = nullptr;
+    FGuLiNetworkLaunchConfig Config;
+    FString LobbyId;
+    FGuid PlayerId;
+    bool RoomOpening=false,AttributesReady=false;
+    double NextRoomRead=0;
+    EOS_NotificationId LobbyUpdated=EOS_INVALID_NOTIFICATIONID,MemberUpdated=EOS_INVALID_NOTIFICATIONID,MemberStatus=EOS_INVALID_NOTIFICATIONID;
     EOS_ProductUserId LocalUser = nullptr;
     EOS_P2P_SocketId Socket{};
     EOS_NotificationId Expiration = EOS_INVALID_NOTIFICATIONID;
@@ -69,26 +77,113 @@ struct FEosState : TSharedFromThis<FEosState>
     {
         if (LocalUser && LocalUser != User) { Fail(TEXT("EOS identity changed during the match")); return; }
         LocalUser = User;
-        EOS_Connect_CopyIdTokenOptions Copy{}; Copy.ApiVersion = EOS_CONNECT_COPYIDTOKEN_API_LATEST; Copy.LocalUserId = User;
-        EOS_Connect_IdToken* Token = nullptr;
-        if (EOS_Connect_CopyIdToken(Connect, &Copy, &Token) != EOS_EResult::EOS_Success || !Token)
-        { Fail(TEXT("EOS Connect did not supply an identity token")); return; }
         FGuLiTransportIdentity Identity;
         char Text[EOS_PRODUCTUSERID_MAX_LENGTH + 1]{}; int32 Size = UE_ARRAY_COUNT(Text);
-        if (EOS_ProductUserId_ToString(User, Text, &Size) != EOS_EResult::EOS_Success)
-        { EOS_Connect_IdToken_Release(Token); Fail(TEXT("Invalid EOS product user identity")); return; }
-        Identity.ProductUserId = UTF8_TO_TCHAR(Text); Identity.IdentityToken = UTF8_TO_TCHAR(Token->JsonWebToken);
-        EOS_Connect_IdToken_Release(Token);
-        if (!FGuid::ParseExact(Identity.ProductUserId, EGuidFormats::Digits, Identity.Player))
-        { Fail(TEXT("EOS product identity cannot be represented by the protocol")); return; }
+        if (EOS_ProductUserId_ToString(User,Text,&Size)!=EOS_EResult::EOS_Success)
+        {Fail(TEXT("Invalid EOS product user identity"));return;}
+        Identity.ProductUserId=UTF8_TO_TCHAR(Text);
+        if (!FGuid::ParseExact(Identity.ProductUserId,EGuidFormats::Digits,Identity.Player))
+        {Fail(TEXT("EOS product identity cannot be represented by the protocol"));return;}
+        PlayerId=Identity.Player;
         if (Expiration == EOS_INVALID_NOTIFICATIONID) RegisterNotifications();
         if (Expiration == EOS_INVALID_NOTIFICATIONID || LoginChanged == EOS_INVALID_NOTIFICATIONID
             || PeerRequest == EOS_INVALID_NOTIFICATIONID || PeerClosed == EOS_INVALID_NOTIFICATIONID)
         { Fail(TEXT("EOS notification registration failed")); return; }
         if (Ready) Ready(Identity);
+        if (!RoomOpening) OpenRoom();
+    }
+    void OpenRoom()
+    {
+        RoomOpening=true;
+        if (Config.HostRoom)
+        {
+            if (!Config.RoomId.IsValid()) Config.RoomId=FGuid::NewGuid();
+            const FTCHARToUTF8 Id(*Config.RoomId.ToString(EGuidFormats::Digits));
+            EOS_Lobby_CreateLobbyOptions O{};O.ApiVersion=EOS_LOBBY_CREATELOBBY_API_LATEST;O.LocalUserId=LocalUser;
+            O.MaxLobbyMembers=Config.ExpectedPlayers;O.PermissionLevel=EOS_ELobbyPermissionLevel::EOS_LPL_JOINVIAPRESENCE;
+            O.BucketId="GuLiHybrid45";O.bDisableHostMigration=EOS_FALSE;O.bEnableJoinById=EOS_TRUE;O.LobbyId=Id.Get();
+            auto* C=Callback<EOS_Lobby_CreateLobbyCallbackInfo>([](FEosState& S,const auto& I)
+            {if (I.ResultCode!=EOS_EResult::EOS_Success) {S.Fail(TEXT("EOS lobby creation failed"));return;}S.LobbyId=UTF8_TO_TCHAR(I.LobbyId);S.AdvertiseSeat();});
+            EOS_Lobby_CreateLobby(Lobby,&O,C,&TGuLiEosCallback<EOS_Lobby_CreateLobbyCallbackInfo>::Complete);
+        }
+        else
+        {
+            if (Config.LobbyId.IsEmpty()) {Fail(TEXT("EOS join requires -GuLiLobby=<lobby ID>"));return;}
+            const FTCHARToUTF8 Id(*Config.LobbyId);
+            EOS_Lobby_JoinLobbyByIdOptions O{};O.ApiVersion=EOS_LOBBY_JOINLOBBYBYID_API_LATEST;O.LocalUserId=LocalUser;O.LobbyId=Id.Get();
+            auto* C=Callback<EOS_Lobby_JoinLobbyByIdCallbackInfo>([](FEosState& S,const auto& I)
+            {if (I.ResultCode!=EOS_EResult::EOS_Success) {S.Fail(TEXT("EOS lobby join failed"));return;}S.LobbyId=UTF8_TO_TCHAR(I.LobbyId);S.AdvertiseSeat();});
+            EOS_Lobby_JoinLobbyById(Lobby,&O,C,&TGuLiEosCallback<EOS_Lobby_JoinLobbyByIdCallbackInfo>::Complete);
+        }
+    }
+    void AdvertiseSeat()
+    {
+        UE_LOG(LogNet,Display,TEXT("[GuLiPeerRoom] EOS lobby=%s"),*LobbyId);
+        const FTCHARToUTF8 Id(*LobbyId);EOS_HLobbyModification Modification=nullptr;
+        EOS_Lobby_UpdateLobbyModificationOptions O{};O.ApiVersion=EOS_LOBBY_UPDATELOBBYMODIFICATION_API_LATEST;O.LocalUserId=LocalUser;O.LobbyId=Id.Get();
+        if (EOS_Lobby_UpdateLobbyModification(Lobby,&O,&Modification)!=EOS_EResult::EOS_Success)
+        {Fail(TEXT("EOS lobby metadata unavailable"));return;}
+        const auto Add=[&](const char* Key,const FString& Value,bool Member)
+        {
+            const FTCHARToUTF8 Text(*Value);EOS_Lobby_AttributeData Data{};Data.ApiVersion=EOS_LOBBY_ATTRIBUTEDATA_API_LATEST;
+            Data.Key=Key;Data.ValueType=EOS_ELobbyAttributeType::EOS_AT_STRING;Data.Value.AsUtf8=Text.Get();
+            if (Member)
+            {EOS_LobbyModification_AddMemberAttributeOptions A{};A.ApiVersion=EOS_LOBBYMODIFICATION_ADDMEMBERATTRIBUTE_API_LATEST;A.Attribute=&Data;A.Visibility=EOS_ELobbyAttributeVisibility::EOS_LAT_PUBLIC;return EOS_LobbyModification_AddMemberAttribute(Modification,&A)==EOS_EResult::EOS_Success;}
+            EOS_LobbyModification_AddAttributeOptions A{};A.ApiVersion=EOS_LOBBYMODIFICATION_ADDATTRIBUTE_API_LATEST;A.Attribute=&Data;A.Visibility=EOS_ELobbyAttributeVisibility::EOS_LAT_PUBLIC;
+            return EOS_LobbyModification_AddAttribute(Modification,&A)==EOS_EResult::EOS_Success;
+        };
+        bool Good=Add("guli-team",Config.Team==EGuLiTeam::Red?TEXT("Red"):TEXT("Blue"),true)
+            && Add("guli-role",StaticEnum<EGuLiCommanderRole>()->GetNameStringByValue(int64(Config.Role)),true);
+        if (Config.HostRoom) Good=Good && Add("guli-match",Config.RoomId.ToString(EGuidFormats::Digits),false)
+            && Add("guli-host",PlayerId.ToString(EGuidFormats::Digits),false) && Add("guli-players",FString::FromInt(Config.ExpectedPlayers),false);
+        if (!Good) {EOS_LobbyModification_Release(Modification);Fail(TEXT("EOS lobby attributes rejected"));return;}
+        EOS_Lobby_UpdateLobbyOptions Update{};Update.ApiVersion=EOS_LOBBY_UPDATELOBBY_API_LATEST;Update.LobbyModificationHandle=Modification;
+        auto* C=Callback<EOS_Lobby_UpdateLobbyCallbackInfo>([](FEosState& S,const auto& I)
+        {if (I.ResultCode==EOS_EResult::EOS_Success) S.AttributesReady=true;else S.Fail(TEXT("EOS lobby seat publication failed"));});
+        EOS_Lobby_UpdateLobby(Lobby,&Update,C,&TGuLiEosCallback<EOS_Lobby_UpdateLobbyCallbackInfo>::Complete);
+        EOS_LobbyModification_Release(Modification);
+    }
+    bool ReadRoom(FGuLiTransportRoom& Out)
+    {
+        if (!AttributesReady || FPlatformTime::Seconds()<NextRoomRead) return false;NextRoomRead=FPlatformTime::Seconds()+.5;
+        const FTCHARToUTF8 Id(*LobbyId);EOS_HLobbyDetails Details=nullptr;
+        EOS_Lobby_CopyLobbyDetailsHandleOptions O{};O.ApiVersion=EOS_LOBBY_COPYLOBBYDETAILSHANDLE_API_LATEST;O.LobbyId=Id.Get();O.LocalUserId=LocalUser;
+        if (EOS_Lobby_CopyLobbyDetailsHandle(Lobby,&O,&Details)!=EOS_EResult::EOS_Success) return false;
+        const auto Attribute=[&](const char* Key,EOS_ProductUserId User=nullptr)
+        {
+            EOS_Lobby_Attribute* A=nullptr;
+            if (User) {EOS_LobbyDetails_CopyMemberAttributeByKeyOptions C{};C.ApiVersion=EOS_LOBBYDETAILS_COPYMEMBERATTRIBUTEBYKEY_API_LATEST;C.TargetUserId=User;C.AttrKey=Key;EOS_LobbyDetails_CopyMemberAttributeByKey(Details,&C,&A);}
+            else {EOS_LobbyDetails_CopyAttributeByKeyOptions C{};C.ApiVersion=EOS_LOBBYDETAILS_COPYATTRIBUTEBYKEY_API_LATEST;C.AttrKey=Key;EOS_LobbyDetails_CopyAttributeByKey(Details,&C,&A);}
+            FString Value;if (A && A->Data && A->Data->ValueType==EOS_ELobbyAttributeType::EOS_AT_STRING && A->Data->Value.AsUtf8) Value=UTF8_TO_TCHAR(A->Data->Value.AsUtf8);
+            if (A) EOS_Lobby_Attribute_Release(A);return Value;
+        };
+        bool Good=FGuid::Parse(Attribute("guli-match"),Out.Match) && FGuid::Parse(Attribute("guli-host"),Out.Host);
+        const int32 Expected=FCString::Atoi(*Attribute("guli-players"));
+        EOS_LobbyDetails_GetMemberCountOptions Count{};Count.ApiVersion=EOS_LOBBYDETAILS_GETMEMBERCOUNT_API_LATEST;
+        const uint32 N=EOS_LobbyDetails_GetMemberCount(Details,&Count);
+        Good=Good && Expected>=2 && Expected<=4 && N==uint32(Expected);
+        for (uint32 I=0;Good && I<N;++I)
+        {
+            EOS_LobbyDetails_GetMemberByIndexOptions Index{};Index.ApiVersion=EOS_LOBBYDETAILS_GETMEMBERBYINDEX_API_LATEST;Index.MemberIndex=I;
+            const auto User=EOS_LobbyDetails_GetMemberByIndex(Details,&Index);FGuLiTransportRoomMember M;
+            char Text[EOS_PRODUCTUSERID_MAX_LENGTH+1]{};int32 Size=UE_ARRAY_COUNT(Text);
+            if (!User || EOS_ProductUserId_ToString(User,Text,&Size)!=EOS_EResult::EOS_Success) {Good=false;break;}
+            M.Address=UTF8_TO_TCHAR(Text);Good=FGuid::ParseExact(M.Address,EGuidFormats::Digits,M.Player);
+            const FString Team=Attribute("guli-team",User),Role=Attribute("guli-role",User);
+            Good=Good && (Team==TEXT("Red") || Team==TEXT("Blue")) && (Role==TEXT("Commander") || Role==TEXT("Ground") || Role==TEXT("Air"));
+            M.Team=Team==TEXT("Red")?EGuLiTeam::Red:EGuLiTeam::Blue;
+            M.Role=Role==TEXT("Commander")?EGuLiCommanderRole::Commander:Role==TEXT("Air")?EGuLiCommanderRole::Air:EGuLiCommanderRole::Ground;Out.Members.Add(M);
+        }
+        EOS_LobbyDetails_Release(Details);return Good;
     }
     void RegisterNotifications()
     {
+        EOS_Lobby_AddNotifyLobbyUpdateReceivedOptions U{};U.ApiVersion=EOS_LOBBY_ADDNOTIFYLOBBYUPDATERECEIVED_API_LATEST;
+        LobbyUpdated=EOS_Lobby_AddNotifyLobbyUpdateReceived(Lobby,&U,this,[](const EOS_Lobby_LobbyUpdateReceivedCallbackInfo* I){static_cast<FEosState*>(I->ClientData)->NextRoomRead=0;});
+        EOS_Lobby_AddNotifyLobbyMemberUpdateReceivedOptions M{};M.ApiVersion=EOS_LOBBY_ADDNOTIFYLOBBYMEMBERUPDATERECEIVED_API_LATEST;
+        MemberUpdated=EOS_Lobby_AddNotifyLobbyMemberUpdateReceived(Lobby,&M,this,[](const EOS_Lobby_LobbyMemberUpdateReceivedCallbackInfo* I){static_cast<FEosState*>(I->ClientData)->NextRoomRead=0;});
+        EOS_Lobby_AddNotifyLobbyMemberStatusReceivedOptions S{};S.ApiVersion=EOS_LOBBY_ADDNOTIFYLOBBYMEMBERSTATUSRECEIVED_API_LATEST;
+        MemberStatus=EOS_Lobby_AddNotifyLobbyMemberStatusReceived(Lobby,&S,this,[](const EOS_Lobby_LobbyMemberStatusReceivedCallbackInfo* I){static_cast<FEosState*>(I->ClientData)->NextRoomRead=0;});
         EOS_Connect_AddNotifyAuthExpirationOptions Ex{}; Ex.ApiVersion = EOS_CONNECT_ADDNOTIFYAUTHEXPIRATION_API_LATEST;
         Expiration = EOS_Connect_AddNotifyAuthExpiration(Connect, &Ex, this, [](const EOS_Connect_AuthExpirationCallbackInfo* Info)
         { auto& S = *static_cast<FEosState*>(Info->ClientData); if (S.Active && Info->LocalUserId == S.LocalUser) S.Login(); });
@@ -116,11 +211,19 @@ struct FEosState : TSharedFromThis<FEosState>
         PeerClosed = EOS_P2P_AddNotifyPeerConnectionClosed(P2P, &Closed, this, [](const EOS_P2P_OnRemoteConnectionClosedInfo* Info)
         {
             auto& S = *static_cast<FEosState*>(Info->ClientData);
-            if (S.Active) S.Fail(TEXT("An EOS peer connection closed; the match must pause and recover"));
+            // The peer-room heartbeat handles loss; do not tear down surviving peers here.
         });
     }
     void Stop()
     {
+        if (Lobby)
+        {
+            if (LobbyUpdated!=EOS_INVALID_NOTIFICATIONID) EOS_Lobby_RemoveNotifyLobbyUpdateReceived(Lobby,LobbyUpdated);
+            if (MemberUpdated!=EOS_INVALID_NOTIFICATIONID) EOS_Lobby_RemoveNotifyLobbyMemberUpdateReceived(Lobby,MemberUpdated);
+            if (MemberStatus!=EOS_INVALID_NOTIFICATIONID) EOS_Lobby_RemoveNotifyLobbyMemberStatusReceived(Lobby,MemberStatus);
+            if (LocalUser && !LobbyId.IsEmpty())
+            {const FTCHARToUTF8 Id(*LobbyId);EOS_Lobby_LeaveLobbyOptions O{};O.ApiVersion=EOS_LOBBY_LEAVELOBBY_API_LATEST;O.LocalUserId=LocalUser;O.LobbyId=Id.Get();EOS_Lobby_LeaveLobby(Lobby,&O,nullptr,[](const EOS_Lobby_LeaveLobbyCallbackInfo*){});}
+        }
         Active = false;
         if (Connect)
         {
@@ -171,7 +274,7 @@ public:
         FModuleManager::LoadModuleChecked<IModuleInterface>(TEXT("EOSShared"));
         auto* Manager = IEOSSDKManager::Get();
         if (!Manager || !Manager->IsInitialized()) { Failure(TEXT("EOSShared SDK manager is unavailable")); return; }
-        State = MakeShared<FEosState>(); State->Ready = MoveTemp(Ready); State->Failure = MoveTemp(Failure);
+        State = MakeShared<FEosState>(); State->Config=Config;State->Ready = MoveTemp(Ready); State->Failure = MoveTemp(Failure);
         const FTCHARToUTF8 Product(*Config.ProductId), Sandbox(*Config.SandboxId), Deployment(*Config.DeploymentId),
             Client(*Config.ClientId), Secret(*Config.ClientSecret);
         EOS_Platform_Options Options{}; Options.ApiVersion = EOS_PLATFORM_OPTIONS_API_LATEST;
@@ -181,6 +284,7 @@ public:
         State->Platform = Manager->CreatePlatform(Options);
         if (!State->Platform) { State->Fail(TEXT("EOS platform creation failed")); return; }
         State->Connect = EOS_Platform_GetConnectInterface(*State->Platform); State->P2P = EOS_Platform_GetP2PInterface(*State->Platform);
+        State->Lobby=EOS_Platform_GetLobbyInterface(*State->Platform);
         State->Socket.ApiVersion = EOS_P2P_SOCKETID_API_LATEST;
         FCStringAnsi::Strncpy(State->Socket.SocketName, "GuLiHybrid_v1", UE_ARRAY_COUNT(State->Socket.SocketName));
         EOS_P2P_SetRelayControlOptions Relay{}; Relay.ApiVersion = EOS_P2P_SETRELAYCONTROL_API_LATEST;
@@ -199,6 +303,14 @@ public:
         EOS_Connect_CreateDeviceId(State->Connect, &Device, Context, &TGuLiEosCallback<EOS_Connect_CreateDeviceIdCallbackInfo>::Complete);
 #else
         Failure(TEXT("This platform was built without the EOS SDK"));
+#endif
+    }
+    virtual bool DiscoverRoom(FGuLiTransportRoom& Room) override
+    {
+#if WITH_EOS_SDK
+        return State && State->ReadRoom(Room);
+#else
+        return false;
 #endif
     }
     virtual void SetPeers(const TMap<FGuid, FString>& Peers) override

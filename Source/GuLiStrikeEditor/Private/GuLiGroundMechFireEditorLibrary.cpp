@@ -5,7 +5,6 @@
 #include "NiagaraScriptSource.h"
 #include "NiagaraSpriteRendererProperties.h"
 #include "NiagaraMeshRendererProperties.h"
-#include "NiagaraLightRendererProperties.h"
 #include "NiagaraRibbonRendererProperties.h"
 #include "NiagaraGraph.h"
 #include "NiagaraNodeFunctionCall.h"
@@ -76,36 +75,6 @@ FString UGuLiGroundMechFireEditorLibrary::ReadExplosiveImpactParticles(UNiagaraC
     }
     Root->SetArrayField(TEXT("emitters"),Emitters);Root->SetBoolField(TEXT("complete"),Component->IsComplete());
     FString Result;FJsonSerializer::Serialize(Root,TJsonWriterFactory<>::Create(&Result));return Result;
-}
-
-FString UGuLiGroundMechFireEditorLibrary::ConfigureExplosiveHead(UNiagaraSystem* System,bool bApply)
-{
-    if (!System || !GEditor || GEditor->PlayWorld || System->GetPathName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight.NS_GroundExplosiveFlight")) return TEXT("{\"success\":false}");
-    int32 Count=0;bool OK=true;FGuid Carrier;
-    for(const auto& Handle:System->GetEmitterHandles())if(Handle.GetName()==TEXT("GuLiMissileBody"))Carrier=Handle.GetId();
-    if(!Carrier.IsValid())return TEXT("{\"success\":false}");
-    for(auto& Handle:System->GetEmitterHandles())
-    {
-        if(!Handle.GetIsEnabled())continue;
-        auto* Data=Handle.GetInstance().GetEmitterData();if(!Data)return TEXT("{\"success\":false}");
-        if(bApply)Data->bLocalSpace=false;
-        // Missile_Cluster's carrier owns the location stream; VFX_Missile's
-        // smoke/fire/ribbon followers consume it in world space.
-        for(auto& Event:Data->EventHandlerScriptProps)
-        {if(bApply)Event.SourceEmitterID=Carrier;OK &= Event.SourceEmitterID==Carrier;}
-        const FVersionedNiagaraEmitterBase Emitter(Handle.GetInstance().Emitter,Handle.GetInstance().Version);
-        for(auto* Renderer:Data->GetRenderers())
-        {
-            if(auto* Light=Cast<UNiagaraLightRendererProperties>(Renderer)){if(bApply)Light->SetIsEnabled(false);continue;}
-            FNiagaraVariableAttributeBinding* Size=nullptr;FName Name;
-            if(auto* Sprite=Cast<UNiagaraSpriteRendererProperties>(Renderer)){Size=&Sprite->SpriteSizeBinding;Name=TEXT("Particles.GuLiScaledSpriteSize");}
-            if(auto* Mesh=Cast<UNiagaraMeshRendererProperties>(Renderer)){Size=&Mesh->ScaleBinding;Name=TEXT("Particles.GuLiScaledMeshScale");}
-            if(auto* Ribbon=Cast<UNiagaraRibbonRendererProperties>(Renderer)){Size=&Ribbon->RibbonWidthBinding;Name=TEXT("Particles.GuLiScaledRibbonWidth");}
-            if(Size){if(bApply){Renderer->Modify();Size->SetValue(Name,Emitter,Renderer->GetCurrentSourceMode());}OK &= Size->GetName()==Name;++Count;}
-        }
-    }
-    if (bApply) {System->RequestCompile(false);System->WaitForCompilationComplete();System->MarkPackageDirty();}
-    return FString::Printf(TEXT("{\"success\":%s,\"sprite_renderers\":%d}"),OK && Count>0?TEXT("true"):TEXT("false"),Count);
 }
 
 namespace

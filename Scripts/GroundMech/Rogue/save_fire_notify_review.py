@@ -9,10 +9,50 @@ ROOT=Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
 OUT=ROOT/'Artifacts/GroundAlternatingLoop_20261108'
 MAP='/Game/Maps/LVL_CommanderMassPrototype'
 PREFIX='GroundAmmo_'
+TRAIL_NOTE = (
+    '新局选择红队 Ground。到 GroundAmmo_ObserveDamage 对准远处地面，点按左键，观察弹道经过后在原位置滞留并渐隐。'
+    '游骑兵初始弹亮段约30米，残迹按各点的年龄淡出。F4选11.01爆破套餐后向远处连续开火，观察白灰带翼弹体及喷口后鼓开、向暖灰烟过渡的连续火焰。'
+    '弹头命中或超时后，已留下的火烟在原位消散。'
+    '在 GroundAmmo_ObserveExplosion 观察 Inside12m、Boundary15m、Outside24m、Friendly、Shield、BehindWall 靶。'
+    '墙体阻挡弹体，爆炸范围沿用现有受击体、护盾和敌我规则。超时直接回收。'
+)
 
 def require(value,message):
     if not value:raise RuntimeError(message)
     return value
+
+def save_trail_review():
+    level = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
+    require(not level.is_in_play_in_editor(), 'Preserve active PIE')
+    require(not unreal.EditorLoadingAndSavingUtils.get_dirty_map_packages(), 'Preserve unsaved map edits')
+    world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+    if not world or world.get_path_name().split('.')[0] != MAP:
+        require(level.load_level(MAP), 'Open Ground ammo review map')
+        world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+    actors = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
+    labels = ('GroundRogue_Entry', PREFIX+'ObserveDamage', PREFIX+'ObserveExplosion',
+              PREFIX+'PrimaryDamage', PREFIX+'BlockingWall', PREFIX+'Instructions_TrailAndDamage')
+
+    def review_actors():
+        matches = {actor.get_actor_label(): actor for actor in actors.get_all_level_actors()
+                   if actor.get_actor_label() in labels}
+        require(set(matches) == set(labels), 'Existing Ground ammo review entities')
+        return matches
+
+    before = review_actors()
+    transforms = {name: actor.get_actor_transform().to_tuple() for name, actor in before.items()}
+    note = before[labels[-1]]
+    require(isinstance(note, unreal.Note), 'Existing trail instructions')
+    note.modify()
+    note.set_editor_property('text', TRAIL_NOTE)
+    require(unreal.EditorLoadingAndSavingUtils.save_map(world, MAP), 'Save Ground ammo review map')
+    require(level.load_level(MAP), 'Reload Ground ammo review map')
+    after = review_actors()
+    require({name: actor.get_actor_transform().to_tuple() for name, actor in after.items()} == transforms,
+            'Saved Ground ammo review positions')
+    require(str(after[labels[-1]].get_editor_property('text')) == TRAIL_NOTE, 'Saved trail instructions')
+    return {'success': True, 'map': MAP,
+            'actors': {name: actor.get_actor_location().to_tuple() for name, actor in after.items()}}
 
 def main():
     require(all(json.loads((OUT/('asset_install_'+stage+'.json')).read_text(encoding='utf8'))['success'] for stage in ('animation','missile','tables')),'Load and save animations, VFX and tables first')
@@ -29,8 +69,8 @@ def main():
         'Entry':'新局进入红队Ground游骑兵。控制台执行 py "D:/UE5.7/test1/Scripts/GroundMech/Rogue/enter_ammo_review.py" 可到观察点；关闭控制台后左键开火、F4选牌。初始普攻6/9/12，强化10/15/20；初始弹长度3000cm、宽度不变、直线；先驱者/扫荡者当前长度再减半，重防号与强化弹不变。对准PrimaryDamage靶受击中心，使用ReadState读取flight_settlement.shots的ShotId、collision_hit、frozen_damage、damage_submitted、receipt_found、applied/absorbed/remaining_health，不能只看血条。',
         'FireNotify':'Anim_GroundFire_AlternatingLoop长1秒，单一Montage循环：右Fire=0、左Fire=0.5；播放倍率R/2。真实通知携带枪口侧，当前步骨骼更新后调用与Mass相同的公共Launch。按住持续循环，松开停止新增发射，重按保留下一侧与剩余冷却；升级保留相位。按fire_ordinal排序逐发检查严格右左交替及1/R间隔，不能只比较总数。回执不决定出弹顺序，失败单发不暂停战斗。',
         'AttackRate':'09.01一级、二级实际攻速R*1.08和R*1.08^2。R=4/8/12时最大等级26/17/11；下一等级不入候选且确认再次校验，超30组合换档拒绝。升级保留剩余冷却比例，动画与后坐恢复随实际攻速同步。',
-        'Explosion':'11.01等级1/2/3每5/4/2发附爆炸弹；打空计数。左右当前枪口分别向上身外侧偏移50cm，方向平行普攻，不能随枪管旋转。弹速16800cm/s（普攻70%），射程120000cm、寿命约7.14s、半径15cm。主弹先命中后，附弹继续独立飞行；近墙外移路径受阻时立即在首阻点爆炸，不穿墙出生。弹体和拖尾尺寸2倍，命中爆炸大小不变。',
-        'TrailAndDamage':'项目副本组合Missile_Cluster/飞弹载体、VFX_Missile飞行主体/烟火/Ribbon、NS_Explosion_19命中爆炸。世界空间尾迹停留0.12s、淡出0.38s；弹体结束后尾迹继续消散。未强化也造成20/30/40、半径1500cm、无衰减，仅一次范围伤害。分别观察Inside12m、Boundary15m、Outside24m、Friendly、Shield、BehindWall靶；沿用受击体/护盾/屏障规则，墙挡弹但现有范围规则不增加墙后射线过滤。超时/射程结束不爆炸，不触发折射、灼烧或递归。',
+        'Explosion':'11.01等级1/2/3每5/4/2发附爆炸弹；打空计数。左右当前枪口分别向上身外侧偏移50cm，方向平行普攻，不能随枪管旋转。弹速8400cm/s（普攻35%），射程120000cm、寿命约14.29s、半径15cm。主弹先命中后，附弹继续独立飞行；近墙外移路径受阻时立即在首阻点爆炸，不穿墙出生。弹体和拖尾尺寸2倍，命中爆炸大小不变。',
+        'TrailAndDamage':TRAIL_NOTE,
         'Recovery':'飞行中取得强化或升级爆破，旧弹保留旧快照；同一原始ShotId派生独立附弹ID。主弹、附弹、所有回执完成后才退休。恢复记录循环相位、下一枪侧别及通知序号。打空进度按PlayerGuid记录于Ground权威载体ground_shots能力，停火、载体休眠和同局恢复保留；死亡复活需有实际复活入口后验证；首次/升级11.01归零，新局清空。重复接纳/命中回执不再出弹或扣血。ReadState的attacks.primary_receipt和flight_settlement提供数值证据。新版协议40/Ground6/Linear10须开始新局。',
     }
     labels=[]
@@ -72,8 +112,12 @@ def main():
             'entities':entities,'existing_transforms_preserved':len(before),'manifests':manifests,'dependencies':dependencies,
             'PIE':False,'assistant_visual_test':False,'player_acceptance':'pending','runtime_evidence_report':str(OUT/'runtime_evidence_summary.json')}
 
-try:report=main()
+trail_only=globals().get('GULI_TRAIL_REVIEW_ONLY',False)
+try:report=save_trail_review() if trail_only else main()
 except Exception:report={'success':False,'error':traceback.format_exc()}
-OUT.mkdir(parents=True,exist_ok=True)
-(OUT/'scene_delivery.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
-unreal.MCPythonHelper.submit_result(json.dumps({'success':report['success'],'error':report.get('error'),'report':str(OUT/'scene_delivery.json')},ensure_ascii=False))
+if trail_only:
+    unreal.MCPythonHelper.submit_result(json.dumps(report,ensure_ascii=False))
+else:
+    OUT.mkdir(parents=True,exist_ok=True)
+    (OUT/'scene_delivery.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
+    unreal.MCPythonHelper.submit_result(json.dumps({'success':report['success'],'error':report.get('error'),'report':str(OUT/'scene_delivery.json')},ensure_ascii=False))

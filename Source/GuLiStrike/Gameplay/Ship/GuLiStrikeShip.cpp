@@ -1470,7 +1470,7 @@ void AGuLiStrikeShip::UpdateShipInputContext()
 	APlayerController* OwningPC = Cast<APlayerController>(GetController());
 	const AGuLiBattlePlayerState* BattlePS = OwningPC ? OwningPC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
 	const bool bOwnAirView = !bEndingShipPlay && IsLocallyControlled() && OwningPC
-		&& BattlePS && BattlePS->GetBattleRole() == EGuLiCommanderRole::Air;
+		&& BattlePS && BattlePS->GetActiveControlRole() == EGuLiCommanderRole::Air;
 	UEnhancedInputLocalPlayerSubsystem* DesiredSubsystem = bOwnAirView
 		? ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(OwningPC->GetLocalPlayer()) : nullptr;
 	if (InstalledInputSubsystem.Get() != DesiredSubsystem)
@@ -1982,6 +1982,7 @@ void AGuLiStrikeShip::HandleShipDeath()
 
 void AGuLiStrikeShip::UnPossessed()
 {
+	HybridInput={}; bSemanticFlightInput=false; bHybridInputSent=false;
 	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
 	if (HangarCapability) { HangarCapability->SetActiveAbilityInputEnabled(false); }

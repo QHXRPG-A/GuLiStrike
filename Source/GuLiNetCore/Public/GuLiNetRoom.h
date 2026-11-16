@@ -14,7 +14,6 @@ public:
     bool Join(Member Value,const std::string& ConfigurationHash,const std::string& MapHash,double Now,std::string& Error);
     bool Ready(Id Player);
     bool Heartbeat(Id Player,double Now);
-    bool LoadReport(Id Player,double MillisecondsPerTick);
     bool BeginLeave(Id Player,bool Abrupt,double Now);
     bool MembershipReady(Id Player,Revision Version,double Now);
     bool Register(ObjectRegistration Value,double Now,Id Creator={});
@@ -22,12 +21,16 @@ public:
     bool UpdateLifecycle(Id Sender,ObjectKey Object,Revision OwnerVersion,Life State,double Now);
     bool SetController(ObjectKey Object,Id Player,double Now);
     bool ImportMember(Member Value);
+    void MirrorMember(Member Value);
+    bool MirrorRegistration(const ObjectRegistration& Value,double Now);
+    void MirrorGroups(const std::map<Id,ResourceGroupState>& Values,double Now);
+    void MirrorPhase(RoomPhase Phase) {CurrentPhase=Phase;if (Phase==RoomPhase::Running) MembershipValue.reset();}
+    void MirrorMembership(const MembershipChange& Value);
+    bool ObserveRegistration(Id Sender,const ObjectRegistration& Value,double Now);
     Bytes ExportMetadata() const;
     bool ImportMetadata(std::span<const std::uint8_t> Value,double Now);
     std::vector<Assignment> Propose(double Now);
     bool CommitAssignment(Id Player,ObjectKey Object,Revision OwnerVersion,double Now);
-    bool Select(Id Player,Revision Version,std::span<const ObjectKey> Objects,double Now);
-    bool Operate(Id Player,std::span<const ObjectKey> Objects,double Now);
     OwnershipScheduler& Ownership() {return Scheduler;}
     const OwnershipScheduler& Ownership() const {return Scheduler;}
     std::vector<HandoffAction> TakeOwnershipActions(double Now);
@@ -96,11 +99,20 @@ private:
         const auto& O=Directory.at(K);
         if (O.Ordinal) ObjectOrdinals.try_emplace(std::pair{OrdinalScope(K.Kind),O.Ordinal},K);
         if (O.Grant.State<Life::Dead) LivingDirectory.insert(K);else LivingDirectory.erase(K);
+        if (O.Grant.State<Life::Dead && !O.Grant.SimOwner.Valid()) UnassignedObjects.insert(K);else UnassignedObjects.erase(K);
+        if (O.Grant.OwnershipGroup.Valid())
+        {
+            auto [Root,Added]=GroupRoots.try_emplace(O.Grant.OwnershipGroup,K);
+            if (K.Kind==ObjectKind::Territory && O.Ordinal) Root->second=K;
+            if (Added) AuthorityDirty=true;
+        }
         DirectoryUpdates.insert(K);DirtyMetadataBuckets.insert(MetadataBucket(K));
     }
     // Cache and publication bookkeeping only; neither is persisted or grants authority.
     std::set<ObjectKey> DirectoryUpdates;
-    std::set<ObjectKey> LivingDirectory;
+    std::set<ObjectKey> LivingDirectory,UnassignedObjects;
+    std::map<Id,ObjectKey> GroupRoots;
+    bool AuthorityDirty=true;
     // Ordinals are immutable and remain reserved after retirement. Derived on
     // every directory insertion/import; admission never scans match history.
     std::map<std::pair<ObjectKind,std::uint32_t>,ObjectKey> ObjectOrdinals;

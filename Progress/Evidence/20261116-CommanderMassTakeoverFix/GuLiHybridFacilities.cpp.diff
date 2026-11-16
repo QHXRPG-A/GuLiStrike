@@ -1,0 +1,30 @@
+--- Source/GuLiStrike/Gameplay/Stronghold/GuLiHybridFacilities.cpp before
++++ Source/GuLiStrike/Gameplay/Stronghold/GuLiHybridFacilities.cpp
+@@ -124,7 +124,9 @@
+             if (!Job.Target.IsValid()) Job.Target=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/StrongholdGifts"),EGuLiHybridObjectKind::Building,
+                 Source.Key.StableId.ToString(EGuidFormats::Digits)+FString::Printf(TEXT("/%u/%d"),Source.Key.LifeGeneration,Index));
+             FGuLiHybridObjectState Object;
+-            if (H->GetObjectView(Job.Target,Object))
++            // Destroyed gifts leave the live directory but still consume their
++            // one-time slot. Retired metadata retains the parent/definition proof.
++            if (H->GetObjectView(Job.Target,Object) || H->GetObjectMetadata(Job.Target,Object))
+             {
+                 if (Object.Parent!=Source.Key || Object.Definition!=FName(*FString::Printf(TEXT("building/%d"),Slot.DefinitionId)))
+                 {H->Suspend(TEXT("Gift slot resolved to an unrelated object"));return;}
+@@ -135,7 +137,15 @@
+                 if (H->ResolveObjectTarget(Job.Target,Handle) && W->GetSubsystem<UGuLiDamageLedgerSubsystem>()->TryGetTargetSnapshot(Handle,Snapshot)) Slot.Building=Snapshot.CollisionActor.Get();
+                 continue;
+             }
+-            if (Slot.bDelivered) {H->Suspend(TEXT("Delivered gift is absent from the restored directory"));return;}
++            if (Slot.bDelivered)
++            {
++                // Delivery is a one-time receipt, not a live-object guarantee.
++                // A coarse recovery can omit the child; keep the slot consumed
++                // and let a later directory update relink it without respawning.
++                Job.Submitted=false;Job.Prepared=false;Job.Event.Invalidate();
++                if (Grid) ReleaseGift(*Grid,Job.Target);
++                continue;
++            }
+             if (Job.Submitted)
+             {
+                 FGuLiHybridTransactionResult Result;if (!H->FindTransactionResult(Job.Event,Result)) continue;

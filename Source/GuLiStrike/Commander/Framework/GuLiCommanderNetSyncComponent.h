@@ -59,6 +59,8 @@ public:
     void RecordMoveInput(uint32 CommandId, double InputSeconds);
     const FString& GetMoveResponseText() const { return MoveResponseText; }
     const FGuLiCommanderSelectionState& GetSelectionState() const { return SelectionState; }
+    /** Exact Hybrid life tracked by the selection or a control group. */
+    const FGuLiHybridObjectKey* FindTrackedSoldierKey(FGuLiSoldierId Id) const { return SelectionSoldierLives.Find(Id); }
     const FGuLiCommandAck& GetLastCommandAck() const { return LastCommandAck; }
     const TArray<FGuLiUnitTaskSummary>& GetTaskSummaries() const;
     const TArray<int32>& GetControlGroupCounts() const { return ControlGroupCounts; }

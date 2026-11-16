@@ -53,12 +53,13 @@ bool AGuLiBattleGameMode::EnsureHybridCommanderPawn(APlayerController& Controlle
 {
     const auto* Player=Controller.GetPlayerState<AGuLiBattlePlayerState>();
     if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || !Controller.IsLocalController() || !Player
-        || !Player->IsCommander() || !Player->IsBattleReady() || !HasCurrentRoleSlot(*Player)) return false;
-    if (IsValid(Controller.GetPawn())) return true;
+        || !Player->IsCommanderControlActive() || !Player->IsBattleReady() || !HasCurrentRoleSlot(*Player)) return false;
+    if (IsValid(Controller.GetPawn()) && Controller.GetPawn()->IsA(ResolveConfiguredPawnClass(EGuLiCommanderRole::Commander))) return true;
     auto* Class=ResolveConfiguredPawnClass(EGuLiCommanderRole::Commander); if (!Class) return false;
     auto* Start=FindPlayerStart(&Controller);
     const FTransform Transform=Start?Start->GetActorTransform():FTransform::Identity;
-    if (auto* Pawn=SpawnDefaultPawnAtTransform(&Controller,Transform))
+    FActorSpawnParameters Params;Params.Owner=&Controller;Params.SpawnCollisionHandlingOverride=ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+    if (auto* Pawn=GetWorld()->SpawnActor<APawn>(Class,Transform,Params))
     { Pawn->SetReplicates(false); Controller.Possess(Pawn); return Controller.GetPawn()==Pawn; }
     return false;
 }

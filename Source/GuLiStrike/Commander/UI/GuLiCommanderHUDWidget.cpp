@@ -495,7 +495,7 @@ void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
 	const AGuLiBattlePlayerState* PlayerState = CommanderPlayerState.Get();
 	const EGuLiTeam LocalTeam = PlayerState ? PlayerState->GetTeam() : EGuLiTeam::Unassigned;
 	const EGuLiCommanderRole Role = PlayerState
-		? PlayerState->GetCommanderRole()
+		? PlayerState->GetActiveControlRole()
 		: EGuLiCommanderRole::Unassigned;
 	const bool bOnline = PlayerState && PlayerState->IsBattleReady();
 	const bool bRosterReady = PlayerState && PlayerState->IsSoldierStreamReady();

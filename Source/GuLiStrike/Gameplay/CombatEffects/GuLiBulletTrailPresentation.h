@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
 #include "Gameplay/CombatEffects/GuLiPresentationSlotPool.h"
+#include "Templates/Function.h"
 #include "GuLiBulletTrailPresentation.generated.h"
 
 class UNiagaraComponent;
@@ -32,11 +33,10 @@ public:
 	virtual UWorld* GetWorld() const override;
 	void Prepare(UGuLiCombatEffectCatalog* Catalog, bool bInitialStyle=false);
 	bool HasLightSystem() const { return LightSystem!=nullptr; }
-	float GetMaximumLength() const { return MaximumLength; }
-	float GetStrokeEnvelope() const { return 2.f*float(Style.X+Style.Y); }
 	void BeginFrame(float Now, bool bEnabled);
 	/** Returns true once the last historical point has faded. The caller still owns flight state. */
-	bool SubmitMass(const FGuLiCombatEffectState& State, FVector Origin, FVector Facing, FLinearColor Tint, bool bVisible);
+	bool SubmitMass(const FGuLiCombatEffectState& State, FVector Direction, FVector Facing, FLinearColor Tint,
+		TFunctionRef<bool(const FBox&)> IsVisible);
 	void SubmitLight(FGuid Id, FVector Head, FLinearColor Tint, double DistanceSquared, bool bVisible,
 		float NearDistance, float FarDistance);
 	void EndFrame();
@@ -49,12 +49,6 @@ public:
 private:
 	static constexpr int32 BlockSize=256;
 	static constexpr int32 MaximumLights=6;
-	struct FEntry
-	{
-		FGuLiPresentationSlotHandle Handle;
-		FVector Origin=FVector::ZeroVector, Direction=FVector::ForwardVector;
-		float Start=0, End=0, Speed=1, TerminalTime=-1, TerminalDistance=0;
-	};
 	struct FLight
 	{
 		FGuid Id;
@@ -70,7 +64,7 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UNiagaraComponent> Lights;
 	UPROPERTY(Transient) TArray<FGuLiBulletTrailBlock> Blocks;
 	FGuLiPresentationSlotPool Slots{BlockSize,BlockSize};
-	TMap<FGuid,FEntry> Entries;
+	TMap<FGuid,FGuLiPresentationSlotHandle> Entries;
 	TSet<FGuid> NearLights, SeenLights;
 	TArray<FLight,TInlineAllocator<MaximumLights>> LightCandidates;
 	TArray<FVector> LightPositions;

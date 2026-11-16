@@ -1,0 +1,124 @@
+{
+  "schema": "guli-editor-build/v1",
+  "work_id": "WORK-20261115-001",
+  "date": "2026-11-15",
+  "authorization": "用户明确要求：编译",
+  "engine": "D:/UnrealEngine-5.7",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "command": "& 'D:/UnrealEngine-5.7/Engine/Build/BatchFiles/Build.bat' GuLiStrikeEditor Win64 Development '-Project=D:/UE5.7/test1/GuLiStrike.uproject' -WaitMutex -NoHotReloadFromIDE",
+  "attempts": [
+    {
+      "attempt": 1,
+      "exit_code": 6,
+      "log": "C:\\Users\\a\\AppData\\Local\\Temp\\GuLiFixedTeam-EditorBuild-20261115-01.log",
+      "log_sha256": "abc38f839a792c9bbde1e56869861382a88a150857c76779df3c09bfba63c9ea",
+      "errors": [
+        "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Framework\\GuLiBattlePlayerState.h(77,44): error C4458: “Role”的声明隐藏了类成员",
+        "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\GuLiLocalPIESubsystem.cpp(228,102): error C2039: \"ToSharedRef\": 不是 \"TSharedRef<FJsonObject,ESPMode::ThreadSafe>\" 的成员",
+        "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\GuLiLocalPIESubsystem.cpp(228,85): error C2672: “TJsonSerializer<FJsonSerializerPolicy_JsonObject>::Serialize”: 未找到匹配的重载函数",
+        "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\GuLiLocalPIESubsystem.cpp(342,156): error C2664: “bool FWindowsPlatformProcess::IsProcRunning(FProcHandle &)”: 无法将参数 1 从“const FProcHandle”转换为“FProcHandle &”"
+      ],
+      "milestones": [
+        "UHT processed GuLiStrikeEditor in 8.4279878 seconds (10 files written)",
+        "[44/597] Link [x64] UnrealEditor-GuLiNetCore.lib",
+        "[47/597] Link [x64] UnrealEditor-GuLiNetCore.dll",
+        "Result: Failed (OtherCompilationError)",
+        "Total execution time: 233.09 seconds"
+      ]
+    },
+    {
+      "attempt": 2,
+      "exit_code": 6,
+      "log": "C:\\Users\\a\\AppData\\Local\\Temp\\GuLiFixedTeam-EditorBuild-20261115-02.log",
+      "log_sha256": "aa8815105a8745e9f4165b735879cd768a420df3639b8304294c5f4bea3941f2",
+      "errors": [
+        "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\GuLiLocalPIESubsystem.cpp(275,113): error C2664: “bool FWindowsPlatformProcess::IsProcRunning(FProcHandle &)”: 无法将参数 1 从“const FProcHandle”转换为“FProcHandle &”",
+        "D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Core\\Public\\Containers\\Array.h(1475,10): error C2672: “Invoke”: 未找到匹配的重载函数"
+      ],
+      "milestones": [
+        "UHT processed GuLiStrikeEditor in 7.499624 seconds (0 files written)",
+        "[91/97] Link [x64] UnrealEditor-GuLiStrike.lib",
+        "[92/97] Link [x64] UnrealEditor-GuLiStrike.dll",
+        "Result: Failed (OtherCompilationError)",
+        "Total execution time: 78.95 seconds"
+      ]
+    },
+    {
+      "attempt": 3,
+      "exit_code": 0,
+      "log": "C:\\Users\\a\\AppData\\Local\\Temp\\GuLiFixedTeam-EditorBuild-20261115-03.log",
+      "log_sha256": "f7da9cd18355647e1856a3623474ee2ae8441c0ede0ab399d4a0f486da811d1f",
+      "errors": [],
+      "milestones": [
+        "[2/4] Link [x64] UnrealEditor-GuLiStrikeEditor.lib",
+        "[3/4] Link [x64] UnrealEditor-GuLiStrikeEditor.dll",
+        "Result: Succeeded",
+        "Total execution time: 7.16 seconds"
+      ]
+    }
+  ],
+  "module_build_ids": [
+    {
+      "path": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiFrameProfiler\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules",
+      "BuildId": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "matches_engine": true
+    }
+  ],
+  "runtime_tests": false,
+  "visual_checks": false,
+  "game_target_build": false,
+  "fixes": [
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattlePlayerState.h",
+      "sha256": "eb265d2728a6773a0d190e34cafe823db11e7f190cf45b5053f0ff1633d934e1"
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.h",
+      "sha256": "07a25b4a60e851326f8acd1b2fb2a96e55692799556a45c57a686a41caa8d42c"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp",
+      "sha256": "a3eb6f71b4f15546838c9b766bbc501decd6f32bebffa700e8111cc71d6ac2e0"
+    }
+  ]
+}

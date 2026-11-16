@@ -1,5 +1,6 @@
 #include "GuLiNetCapability.h"
 #include "GuLiNetManifest.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetOwnerState.h"
 #include <tuple>
 #include "GuLiNetHash.h"
@@ -34,12 +35,7 @@ bool ReadOwnershipSettings(const RuntimeManifest& V,OwnershipSettings& Out,std::
 {
     OwnershipSettings C;
     const auto Read=[&](const char* Key,double& Value){if (const auto I=V.Numbers.find(Key);I!=V.Numbers.end()) Value=I->second;};
-    Read("ownership/idle_seconds",C.IdleSeconds);Read("ownership/evaluation_seconds",C.EvaluationSeconds);
-    Read("ownership/handoff_timeout_seconds",C.HandoffTimeoutSeconds);Read("ownership/minimum_relative_gap",C.MinimumRelativeGap);
-    Read("ownership/minimum_gap_ms",C.MinimumGapMilliseconds);
-    double Batch=C.MaximumBackgroundBatch;Read("ownership/maximum_background_batch",Batch);
-    if (!std::isfinite(Batch) || Batch<1 || Batch>4096 || std::floor(Batch)!=Batch) {Error="Invalid ownership batch size";return false;}
-    C.MaximumBackgroundBatch=static_cast<std::uint32_t>(Batch);OwnershipScheduler Check;
+    Read("ownership/handoff_timeout_seconds",C.HandoffTimeoutSeconds);OwnershipScheduler Check;
     if (!Check.Configure(C)) {Error="Invalid ownership configuration";return false;}Out=C;return true;
 }
 bool ValidateManifest(const RuntimeManifest& V, std::string& Error)
@@ -280,12 +276,20 @@ bool ReadOwnershipDefinitions(const RuntimeManifest& V,std::map<std::string,Owne
         if (Group!=V.Strings.end()) Entry.Group=Group->second;
         if ((Entry.Policy==OwnershipPolicy::SharedGroup)!=!Entry.Group.empty()) {Error="Invalid ownership group: "+D;return false;}
         if (Entry.RetireOnVacancy && Entry.Policy!=OwnershipPolicy::ControllerPinned) {Error="Invalid retirement policy: "+D;return false;}
+        // Runtime authority is fixed by team and simulation domain. The authored
+        // seat remains input ownership; transient work follows its producer.
+        if (Entry.Policy!=OwnershipPolicy::RetainedSource && Entry.Policy!=OwnershipPolicy::ParentWork)
+        {
+            Entry.Policy=OwnershipPolicy::SharedGroup;Entry.RetireOnVacancy=false;
+            Entry.Group="team/world";
+        }
         Result.emplace(D,Entry);
     }
     Result[TransactionWorkDefinition]={OwnershipPolicy::ParentWork,Role::Observer,false};
-    Result["state/team-account"]={OwnershipPolicy::SharedGroup,Role::Commander,false,"match/resources"};
-    Result["state/resource-cluster"]={OwnershipPolicy::SharedGroup,Role::Observer,false,"match/resources"};
-    Result["state/territory"]={OwnershipPolicy::SharedGroup,Role::Observer,false,"match/resources"};
+    Result["state/team-account"]={OwnershipPolicy::SharedGroup,Role::Commander,false,"team/world"};
+    Result["state/mass-authority"]={OwnershipPolicy::SharedGroup,Role::Commander,false,"team/mass"};
+    Result["state/resource-cluster"]={OwnershipPolicy::SharedGroup,Role::Observer,false,"territory"};
+    Result["state/territory"]={OwnershipPolicy::SharedGroup,Role::Observer,false,"territory"};
     Out=std::move(Result);return true;
 }
 bool RuntimeObjects(const RuntimeManifest& M,std::map<ObjectKey,ObjectRecord>& Out,std::string& Error)
@@ -299,22 +303,31 @@ bool RuntimeObjects(const RuntimeManifest& M,std::map<ObjectKey,ObjectRecord>& O
         O.Definition=Definition;O.Materialized=false;Objects.emplace(K,std::move(O));
     };
     Add(TeamAccountObject(Team::Red),Team::Red,"state/team-account");Add(TeamAccountObject(Team::Blue),Team::Blue,"state/team-account");
+    Add(MassAuthorityObject(Team::Red),Team::Red,"state/mass-authority");Add(MassAuthorityObject(Team::Blue),Team::Blue,"state/mass-authority");
     ResourceLedgerState Resources;if (!ReadResourceCatalog(M,Resources,Error)) return false;
+    std::map<std::uint32_t,ObjectKey> Territories;
+    for (const auto& [K,O]:Objects) if (K.Kind==ObjectKind::Territory && O.Ordinal) Territories[O.Ordinal-1]=K;
     for (const auto& [N,V]:Resources.Nodes) Add(MiningClusterObject(V.Cluster),Team::None,"state/resource-cluster");
     for (std::uint32_t I=0;I<Resources.Owners.size();++I) Add(TerritoryStateObject(I),Team::None,"state/territory");
+    for (const auto& [N,V]:Resources.Nodes) if (Territories.contains(V.Territory))
+    {auto& O=Objects.at(MiningClusterObject(V.Cluster));O.Parent=Territories.at(V.Territory);O.Grant.Faction=Resources.Owners[V.Territory];}
+    for (std::uint32_t I=0;I<Resources.Owners.size();++I) if (Territories.contains(I))
+    {Objects.at(TerritoryStateObject(I)).Parent=Territories.at(I);Objects.at(TerritoryStateObject(I)).Grant.Faction=Resources.Owners[I];
+     Objects.at(Territories.at(I)).Grant.Faction=Resources.Owners[I];}
     for (auto& [K,O]:Objects)
     {
         const auto& D=Definitions.at(O.Definition);
         O.Grant.Policy=D.Policy;O.Grant.ControllerSeat=D.ControllerSeat;O.Grant.RetireOnVacancy=D.RetireOnVacancy;
-        O.Grant.OwnershipGroup=D.Group.empty()?Id{}:StableId("GuLiOwnershipGroup/v1",D.Group);
+        const auto Parent=Objects.find(O.Parent);
+        O.Grant.OwnershipGroup=ResolveAuthorityGroup(O.Grant,D,Parent==Objects.end()?nullptr:&Parent->second.Grant);
     }
     Out=std::move(Objects);return true;
 }
-bool HashManifest(const RuntimeManifest& V, ManifestHashes& Out, std::string& Error)
+bool HashManifest(const RuntimeManifest& V, ManifestHashes& Out, std::string& Error,std::uint16_t EncodingProtocol)
 {
     if (!ValidateManifest(V, Error)) return false;
     Writer Config(16 * 1024 * 1024), Map(16 * 1024 * 1024);
-    Config.U32(V.Version); Config.U16(ProtocolVersion); Config.U32(HandoffVersion);
+    Config.U32(V.Version); Config.U16(EncodingProtocol); Config.U32(HandoffVersion);
     // Application payload packing is a negotiated configuration feature. An
     // older adapter cannot join with a hash that promises this wire decoder.
     Config.Text("peer-payload/zlib-1");

@@ -156,12 +156,15 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
         if (const auto* Battle=W->GetGameState<AGuLiBattleGameState>())
             for (APlayerState* Entry : Battle->PlayerArray)
                 if (auto* PS=Cast<AGuLiBattlePlayerState>(Entry); PS && PS->GetPlayerGuid()==Record.Controller) { Player=PS; break; }
-        P->SetPlayerState(Player);
+        if (P->GetPlayerState()!=Player) P->SetPlayerState(Player);
         const auto* Session=W->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>();
         auto* Controller=W->GetFirstPlayerController();
-        if (Controller && Session && Record.Controller==Session->GetLocalPlayerId())
+        if (Controller && Session && Player && Player->GetActiveControlRole()==EGuLiCommanderRole::Ground && Record.Controller==Session->GetLocalPlayerId())
         { if (Controller->GetPawn()!=P) Controller->Possess(P); }
         else if (Controller && Controller->GetPawn()==P) Controller->UnPossess();
+        if (P->GetPlayerState()!=Player) P->SetPlayerState(Player);
+        if (Controller && Player && Controller->PlayerState==Player && Controller->GetPawn() && Player->GetPawn()!=Controller->GetPawn())
+            Controller->GetPawn()->SetPlayerState(Player);
     }
     GuLiHybridGround::FPose ReadPose() const
     {

@@ -610,12 +610,50 @@ void LatestStateDuringFragmentedSend()
     Check(Tx.Queue(State(6),2),"expired index cannot remove a later sample");Tx.Pump(2.1,Send);
     Check(Received.back().Body==Bytes(1800,6) && Tx.Metrics().QueuedBytes==0,"latest state still delivers after expiry");
 }
+void RoomSeats2v2()
+{
+    for (const auto Wushuang : {Role::Ground,Role::Air})
+    {
+        Room R(ID(104),"config","map");std::string Error;
+        const auto Other=Wushuang==Role::Ground?Role::Air:Role::Ground;
+        unsigned N=0;
+        for (const auto Faction : {Team::Red,Team::Blue})
+        {
+            Member M;M.Player=ID(++N);M.Faction=Faction;M.Seat=Wushuang;
+            Check(R.Join(M,"config","map",0,Error),"first Wushuang claims its team seat");
+            auto Conflict=M;Conflict.Player=ID(20+N);Conflict.Seat=Other;
+            Check(!R.Join(Conflict,"config","map",0,Error) && Error=="Role seat occupied",
+                "Ground and Air conflict even before the Commander joins");
+            Conflict=M;Conflict.Seat=Other;
+            Check(!R.Join(Conflict,"config","map",0,Error) && Error=="Role is locked for this match",
+                "Wushuang cannot switch carrier through reconnect");
+            M.Player=ID(++N);M.Seat=Role::Commander;
+            Check(R.Join(M,"config","map",0,Error),"Commander fills the second team seat");
+            for (const auto Seat : {Role::Commander,Role::Ground,Role::Air})
+            {
+                Conflict=M;Conflict.Player=ID(30+N);Conflict.Seat=Seat;
+                Check(!R.Join(Conflict,"config","map",0,Error),"a third active teammate is refused");
+            }
+        }
+        Check(R.Members().size()==4,"rejected joins preserve the four-player roster");
+        Room Imported(ID(104),"config","map");
+        for (const auto& [P,M] : R.Members()) Check(Imported.ImportMember(M),"valid four-seat metadata imports");
+        auto Conflict=R.Members().at(ID(1));Conflict.Player=ID(50);Conflict.Seat=Other;
+        Check(!Imported.ImportMember(Conflict) && Imported.Members().size()==4,
+            "metadata cannot restore both Ground and Air on the same team");
+        Conflict.Online=false;
+        Check(Imported.ImportMember(Conflict),"offline identity history does not occupy a live seat");
+        auto Commander=R.Members().at(ID(2));Commander.Player=ID(51);
+        Check(!Imported.ImportMember(Commander),"metadata cannot restore two team Commanders");
+    }
+}
 void RoomMetadata()
 {
     Room R(ID(100),"config","map");std::string Error;
     Check(R.ConfigureDefinitions({{"data/unit",{OwnershipPolicy::CommanderActivity,Role::Commander,false}}}),"room definitions");
-    for (unsigned N=1;N<=3;++N)
-    {Member M;M.Player=ID(N);M.Faction=Team::Red;M.Seat=Role(N-1);Check(R.Join(M,"config","map",0,Error)&&R.Ready(M.Player),"three unique seats");}
+    for (unsigned N=1;N<=4;++N)
+    {Member M;M.Player=ID(N);M.Faction=N<=2?Team::Red:Team::Blue;M.Seat=N%2?Role::Commander:Role::Ground;
+        Check(R.Join(M,"config","map",0,Error)&&R.Ready(M.Player),"four 2v2 seats");}
     ObjectRegistration O;O.Grant.Object={ObjectKind::Soldier,ID(20),1};O.Grant.Faction=Team::Red;O.Definition="data/unit";
     Check(R.Register(O,0),"metadata registration");for (const auto& A:R.Propose(0)) Check(R.CommitAssignment(A.ProposedOwner,A.Object,A.ProposedEpoch,0),"initial assignment");
     R.SetInitialRosterReady(true);R.Poll(0);Check(R.Phase()==RoomPhase::Running,"start without any checkpoint");
@@ -628,8 +666,8 @@ void RoomMetadata()
     {
         Room Balanced(ID(103),"config","map");
         Check(Balanced.ConfigureDefinitions({{"data/unit",{OwnershipPolicy::CommanderActivity,Role::Commander,false}}}),"leave reservation definitions");
-        for (unsigned N=1;N<=3;++N)
-        {Member M;M.Player=ID(N);M.Faction=Team::Red;M.Seat=Role(N-1);
+        for (unsigned N=1;N<=4;++N)
+        {Member M;M.Player=ID(N);M.Faction=N<=2?Team::Red:Team::Blue;M.Seat=N%2?Role::Commander:Role::Ground;
             Check(Balanced.Join(M,"config","map",0,Error) && Balanced.Ready(M.Player),"leave reservation roster");}
         for (unsigned N=0;N<6;++N)
         {ObjectRegistration V;V.Grant.Object={ObjectKind::Soldier,ID(5000+N),1};V.Grant.Faction=Team::Red;V.Definition="data/unit";
@@ -638,8 +676,8 @@ void RoomMetadata()
         Check(Balanced.BeginLeave(ID(1),false,1),"start balanced departure before any installation");
         std::map<Id,unsigned> Destinations;
         for (const auto& [K,T]:Balanced.Ownership().Transfers()) ++Destinations[T.Target];
-        Check(Destinations[ID(2)]==3 && Destinations[ID(3)]==3,
-            "queued custody reservations balance equal-cost work across available receivers before grants commit");
+        Check(Destinations.size()==1 && Destinations.at(ID(2))==6,
+            "2v2 departure queues the whole wave to the remaining teammate, never the opposing team");
     }
     {
         OwnershipSettings Config;Config.MaximumLeaveBatch=2;
@@ -680,14 +718,14 @@ void RoomMetadata()
         Check(Restored.BeginLeave(Owner,false,7),"retired owner can leave normally");
         Check(Restored.Ownership().Transfers().empty(),"destroyed history never requests a nonexistent private-state transfer");
         const auto Version=Restored.Membership()->Version;
-        for (unsigned N=1;N<=3;++N) Restored.MembershipReady(ID(N),Version,7);
+        for (unsigned N=1;N<=4;++N) Restored.MembershipReady(ID(N),Version,7);
         Check(Restored.Phase()==RoomPhase::Running && !Restored.Members().at(Owner).Online,"retired history does not delay departure completion");
     }
     {
         Room Departures(ID(101),"config","map");
         Check(Departures.ConfigureDefinitions({{"data/unit",{OwnershipPolicy::CommanderActivity,Role::Commander,false}}}),"departure definitions");
         for (unsigned N=1;N<=4;++N)
-        {Member M;M.Player=ID(N);M.Faction=N<=3?Team::Red:Team::Blue;M.Seat=N<=3?Role(N-1):Role::Commander;
+        {Member M;M.Player=ID(N);M.Faction=N<=2?Team::Red:Team::Blue;M.Seat=N%2?Role::Commander:Role::Ground;
             Check(Departures.Join(M,"config","map",0,Error) && Departures.Ready(M.Player),"departure roster");}
         for (unsigned N=0;N<3;++N)
         {ObjectRegistration V;V.Grant.Object={ObjectKind::Soldier,ID(30+N),1};V.Grant.Faction=Team::Red;V.Definition="data/unit";
@@ -748,22 +786,26 @@ void IndivisibleGroupsAndFixedRoles()
         Check(RecoveredFlight.OwnerEpoch==2 && RecoveredFlight.SimOwner==ID(1) && RecoveredFlight.Controller==ID(3)
             && RecoveredFlight.SourceLease==Flight.Grant.SourceLease && RecoveredFlight.State==Life::Alive,
             "retained work preserves original provenance and rejects the old owner version");
-        Check(Carrier.Join(Original,"config","map",.2,Error) && Carrier.Ready(ID(3)),"original Air ready again");
+        Check(!Carrier.Join(Original,"config","map",.2,Error) && Error=="Player has left this match"
+            && !Carrier.Membership() && !Carrier.Members().at(ID(3)).Online,
+            "departed Air identity cannot start a join even when its seat is vacant");
+        GuLiNet::Member Replacement;Replacement.Player=ID(5);Replacement.Faction=Team::Red;Replacement.Seat=Role::Air;
+        Check(Carrier.Join(Replacement,"config","map",.2,Error) && Carrier.Ready(ID(5)),"new Air player fills vacant seat");
         const auto JoinVersion=Carrier.Membership()->Version;
         // No scheduling poll between the final bootstrap ACK and completion.
-        for (auto P:{ID(1),ID(4),ID(3)}) Carrier.MembershipReady(P,JoinVersion,.2);
+        for (auto P:{ID(1),ID(4),ID(5)}) Carrier.MembershipReady(P,JoinVersion,.2);
         Check(Carrier.Membership().has_value() && Carrier.Ownership().Transfers().size()==1,
             "final ready receipt cannot resume before pinned private custody returns");
         const auto Transfer=Carrier.Ownership().Transfers().at(Key);
-        Check(Transfer.Source==ID(1) && Transfer.Target==ID(3)
-            && Carrier.Ownership().TargetPrepared(ID(3),Key,Transfer.IdValue)
+        Check(Transfer.Source==ID(1) && Transfer.Target==ID(5)
+            && Carrier.Ownership().TargetPrepared(ID(5),Key,Transfer.IdValue)
             && Carrier.Ownership().SourceFrozen(ID(1),Key,Transfer.IdValue,5400)
-            && Carrier.Ownership().TargetInstalled(ID(3),Key,Transfer.IdValue,5400),"pinned private state returns through the normal handoff");
+            && Carrier.Ownership().TargetInstalled(ID(5),Key,Transfer.IdValue,5400),"new controller receives the dormant carrier through the normal handoff");
         Carrier.TakeOwnershipActions(.3);Carrier.Poll(.3);
         const auto& Grant=Carrier.Objects().at(Key).Grant;
         Check(!Carrier.Membership() && Carrier.Phase()==RoomPhase::Running && !Grant.Dormant
-            && Grant.Controller==ID(3) && Grant.SimOwner==ID(3) && !Grant.StateCustodian.Valid(),
-            "resumed fixed Air seat owns its active original carrier");
+            && Grant.Controller==ID(5) && Grant.SimOwner==ID(5) && !Grant.StateCustodian.Valid(),
+            "replacement Air seat owns its active carrier");
     }
     const std::map<std::string,OwnershipDefinition> Definitions{
         {"resource",{OwnershipPolicy::SharedGroup,Role::Commander,false,"match/resources"}},
@@ -846,6 +888,8 @@ void IndivisibleGroupsAndFixedRoles()
     auto Wrong=R.Members().at(ID(2));Wrong.Seat=Role::Air;
     Check(!R.Join(Wrong,"config","map",.1,Error) && Error=="Role is locked for this match","online role mutation refused");
     Check(R.BeginLeave(ID(1),false,1),"graceful group host exit");
+    Check(!R.Join(R.Members().at(ID(1)),"config","map",1,Error) && Error=="Player has left this match",
+        "departing identity cannot reattach while custody is transferring");
     const auto Group=StableId("GuLiOwnershipGroup/v1","match/resources");const auto Recovery=R.ResourceGroups().at(Group);
     Check(R.Ownership().Transfers().empty() && Recovery.Target==ID(4) && Recovery.RequestEpoch==2
         && Recovery.Deadline==6,"resource exit uses one snapshot epoch and the original five-second budget");
@@ -859,13 +903,15 @@ void IndivisibleGroupsAndFixedRoles()
     for (auto P:{ID(1),ID(2),ID(4)}) R.MembershipReady(P,R.Membership()->Version,1);
     for (const auto& K:Keys) Check(R.Objects().at(K).Grant.SimOwner==ID(4) && R.Objects().at(K).Grant.GroupEpoch==2,"group host/version move together");
     auto Return=R.Members().at(ID(1));Return.Seat=Role::Air;
-    Check(!R.Join(Return,"config","map",2,Error),"offline identity cannot change its seat");
+    Check(!R.Join(Return,"config","map",2,Error) && Error=="Player has left this match",
+        "departed identity cannot return in a different role");
     Member New;New.Player=ID(8);New.Faction=Team::Red;New.Seat=Role::Commander;
     Check(R.Join(New,"config","map",2,Error) && R.Ready(New.Player),"new identity may fill vacant seat");
     const auto JoinVersion=R.Membership()->Version;
     for (auto P:{ID(2),ID(4),ID(8)}) R.MembershipReady(P,JoinVersion,2);
     Return.Seat=Role::Commander;
-    Check(!R.Join(Return,"config","map",3,Error) && Error=="Role seat occupied","returning identity cannot displace replacement");
+    Check(!R.Join(Return,"config","map",3,Error) && Error=="Player has left this match",
+        "departed identity cannot displace replacement");
     for (const auto& K:Keys) Check(R.Objects().at(K).Grant.SimOwner==ID(4),"another Commander joining does not migrate a Commander-owned group");
     Room Copy(ID(5000),"config","map");Check(Copy.ConfigureDefinitions(Definitions) && Copy.ImportMetadata(R.ExportMetadata(),4),"group and fixed seats persist without gameplay data");
 }
@@ -2500,7 +2546,7 @@ int main(int argc,char** argv)
         ResourceInterruptionCutpoints();ResourceSnapshotQueueBounds();
         AbruptResourceRecoveryContracts(false);AbruptResourceRecoveryContracts(true);
         CurrentStateHistoryIndependence();
-        CurrentMiningLeaseContracts();
+        CurrentMiningLeaseContracts();RoomSeats2v2();
         ReceiptBeforeDomainAuthority();
         CompactPeerEnvelopeRoundTrip();BoundedReliableApplicationAdmission();AsyncSharedClockAndLazyDirectory();IndexedCrossObjectValidation();WaitingReceiptDependencyRecovery();PrivateRestoreRetainsNumericHistory();
         FrozenFlightAdmissionAndRequestTime();

@@ -1,0 +1,54 @@
+{
+  "source_result": "TestResults/2v2-no-rejoin-ground-air-78d1714f/result.json",
+  "status": "passed",
+  "same_team_soldiers_transferred": 147,
+  "former_carrier_dormant": true,
+  "wait_for_fourth": true,
+  "same_team_other_carrier_and_duplicate_commander_rejected": true,
+  "four_ready_running": {
+    "startup_soldiers": 600,
+    "live_soldiers": 599,
+    "soldiers_by_owner": {
+      "Red-Commander": 150,
+      "Red-Ground": 150,
+      "Blue-Commander": 149,
+      "Blue-Air": 150
+    },
+    "resource_objects": 385,
+    "resource_host": "9FE6EA75A19F49BABFC6AB56F310E529",
+    "carrier_count": 4
+  },
+  "departed_identity_rejected": true,
+  "remaining_three_still_running": {
+    "Red-Commander": 121,
+    "Red-Ground": 121,
+    "Blue-Commander": 121
+  },
+  "process_exit": {
+    "server": {
+      "pid": 11400,
+      "code": 0,
+      "forced": false
+    },
+    "Red-Commander": {
+      "pid": 30436,
+      "code": 0,
+      "forced": false
+    },
+    "Red-Ground": {
+      "pid": 34096,
+      "code": 0,
+      "forced": false
+    },
+    "Blue-Commander": {
+      "pid": 35296,
+      "code": 0,
+      "forced": false
+    },
+    "Blue-Air": {
+      "pid": 16284,
+      "code": 0,
+      "forced": false
+    }
+  }
+}

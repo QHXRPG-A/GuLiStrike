@@ -70,6 +70,7 @@ public:
     Id Owner(ObjectKey Object) const;
     Id MutationOwner(const OwnerWork& Work,const StateMutation& Mutation) const;
     bool Busy(ObjectKey Object) const;
+    StateKey InventoryStateKey(ObjectKey Carrier,bool Processor) const;
     ObjectKey ExecutionDomain(const TransactionRequest& Request) const;
     bool FreezeDamage(TransactionRequest& Request) const;
     bool Plan(Id AuthenticatedSender,const TransactionRequest& Request,OwnerWork& Out,std::string* WaitReason=nullptr);

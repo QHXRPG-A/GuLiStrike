@@ -115,11 +115,15 @@ class FGuLiHybridShipAdapter final : public IGuLiHybridSimulationAdapter
     }
     void BindPlayer()
     {
-        auto* P=Pawn.Get(); auto* W=World(); if (!P || !W) return; auto* PS=Player(); P->SetPlayerState(PS);
+        auto* P=Pawn.Get(); auto* W=World(); if (!P || !W) return; auto* PS=Player();
+        if (P->GetPlayerState()!=PS) P->SetPlayerState(PS);
         const auto* Session=W->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>(); auto* PC=W->GetFirstPlayerController();
-        if (PC && Session && PS && PS->GetBattleRole()==EGuLiCommanderRole::Air && Record.Controller==Session->GetLocalPlayerId())
+        if (PC && Session && PS && PS->GetActiveControlRole()==EGuLiCommanderRole::Air && Record.Controller==Session->GetLocalPlayerId())
         { if (PC->GetPawn()!=P) PC->Possess(P); }
         else if (PC && PC->GetPawn()==P) PC->UnPossess();
+        if (P->GetPlayerState()!=PS) P->SetPlayerState(PS);
+        if (PC && PS && PC->PlayerState==PS && PC->GetPawn() && PS->GetPawn()!=PC->GetPawn())
+            PC->GetPawn()->SetPlayerState(PS);
     }
     bool Create()
     {
@@ -211,6 +215,8 @@ public:
     void Advance(uint64 Tick,double Delta) override
     {
         auto* P=Pawn.Get(); if (!P || !bLocal || !UGuLiHybridActorComponent::HasSimulation(P)) return;
+        // Keep simulating the inactive carrier, but never replay held flight input.
+        if (!P->IsLocallyControlled()) Simulation={};
         P->AdvanceHybridFlight(Delta,Simulation); P->HybridPoseTick=Tick; if (Tick%2 || Tick==LastPublished) return;
         FGuLiHybridStateArchive A(700); uint32 Schema=1; A.Value(Schema); auto Pose=ReadPose(); GuLiHybridShip::Pose(A,Pose);
         TArray<uint8> Body;

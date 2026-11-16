@@ -2,6 +2,8 @@
 
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Network/Private/GuLiNetConversions.h"
+#include "GuLiNetRoomTypes.h"
 
 #include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -11,7 +13,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 
-namespace GuLiBattleRoleSlots { constexpr uint8 SlotCount = 6; }
+namespace GuLiBattleRoleSlots { constexpr uint8 SlotCount = 2 * GuLiNet::SeatsPerTeam; }
 
 AGuLiBattleGameState::AGuLiBattleGameState()
 {
@@ -41,17 +43,33 @@ bool AGuLiBattleGameState::ApplyHybridMatchIdentity(const FGuid& Identity,const 
 		MatchEpoch=static_cast<uint32>(Epoch); OnRep_MatchEpoch();
 		if (auto* Ledger=GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()) Ledger->BindMatchEpoch(MatchEpoch);
 	}
-	if (RoleSlots.IsEmpty()) InitializeDefaultRoleSlots();
+	if (RoleSlots.Num() != GuLiBattleRoleSlots::SlotCount) InitializeDefaultRoleSlots();
 	return true;
 }
 
-bool AGuLiBattleGameState::ClaimExactRoleSlot(const FGuid& PlayerGuid, uint8 SlotIndex)
+uint8 AGuLiBattleGameState::ResolveRoleSlotIndex(EGuLiTeam Team, EGuLiCommanderRole SeatRole)
 {
-	if (!PlayerGuid.IsValid() || !RoleSlots.IsValidIndex(SlotIndex)) return false;
-	for (const auto& Slot : RoleSlots)
-		if (Slot.bOccupied && Slot.PlayerGuid==PlayerGuid) return Slot.SlotIndex==SlotIndex;
-	uint8 Claimed; EGuLiTeam Team; EGuLiCommanderRole ClaimedRole;
-	return TryClaimRoleSlot(SlotIndex,PlayerGuid,Claimed,Team,ClaimedRole);
+    return GuLiNet::RoleSlotIndex(GuLiNetBridge::ToCore(Team), GuLiNetBridge::ToCore(SeatRole));
+}
+
+bool AGuLiBattleGameState::ClaimExactRoleSlot(
+    const FGuid& PlayerGuid, uint8 SlotIndex, EGuLiCommanderRole SeatRole)
+{
+    if (!PlayerGuid.IsValid() || !RoleSlots.IsValidIndex(SlotIndex)
+        || ResolveRoleSlotIndex(RoleSlots[SlotIndex].Team, SeatRole) != SlotIndex) return false;
+    for (const auto& Existing : RoleSlots)
+        if (Existing.bOccupied && Existing.PlayerGuid == PlayerGuid)
+            return Existing.SlotIndex == SlotIndex && Existing.Role == SeatRole;
+
+    auto& Slot = RoleSlots[SlotIndex];
+    if (Slot.bOccupied) return false;
+    Slot.Role = SeatRole;
+    Slot.PlayerGuid = PlayerGuid;
+    Slot.bOccupied = true;
+    Slot.bBattleReady = false;
+    Slot.bSyncReady = false;
+    NotifyRoleSlotsChanged();
+    return true;
 }
 
 void AGuLiBattleGameState::ReleaseRoleSlot(uint8 SlotIndex, const FGuid& ExpectedPlayerGuid)
@@ -71,6 +89,8 @@ void AGuLiBattleGameState::ReleaseRoleSlot(uint8 SlotIndex, const FGuid& Expecte
 	Slot.bOccupied = false;
 	Slot.bBattleReady = false;
 	Slot.bSyncReady = false;
+	Slot.Role = ResolveRoleSlotIndex(Slot.Team, EGuLiCommanderRole::Commander) == SlotIndex
+		? EGuLiCommanderRole::Commander : EGuLiCommanderRole::Unassigned;
 	NotifyRoleSlotsChanged();
 }
 
@@ -118,40 +138,11 @@ void AGuLiBattleGameState::InitializeDefaultRoleSlots()
 {
     RoleSlots.Reset(GuLiBattleRoleSlots::SlotCount);
     for (const auto Team : {EGuLiTeam::Red,EGuLiTeam::Blue})
-        for (const auto SeatRole : {EGuLiCommanderRole::Commander,EGuLiCommanderRole::Ground,EGuLiCommanderRole::Air})
+        for (const auto SeatRole : {EGuLiCommanderRole::Commander,EGuLiCommanderRole::Unassigned})
         {
             const uint8 Index=uint8(RoleSlots.Num());
             auto& Slot=RoleSlots.AddDefaulted_GetRef();Slot.SlotIndex=Index;Slot.Team=Team;Slot.Role=SeatRole;
         }
-}
-
-bool AGuLiBattleGameState::TryClaimRoleSlot(
-	uint8 SlotIndex,
-	const FGuid& PlayerGuid,
-	uint8& OutSlotIndex,
-	EGuLiTeam& OutTeam,
-	EGuLiCommanderRole& OutRole)
-{
-	if (!RoleSlots.IsValidIndex(SlotIndex))
-	{
-		return false;
-	}
-
-	FGuLiCommanderRoleSlotState& Slot = RoleSlots[SlotIndex];
-	if (Slot.bOccupied)
-	{
-		return false;
-	}
-
-	Slot.PlayerGuid = PlayerGuid;
-	Slot.bOccupied = true;
-	Slot.bBattleReady = false;
-	Slot.bSyncReady = false;
-	OutSlotIndex = Slot.SlotIndex;
-	OutTeam = Slot.Team;
-	OutRole = Slot.Role;
-	NotifyRoleSlotsChanged();
-	return true;
 }
 
 // Apply the accepted room view, then notify local subscribers.

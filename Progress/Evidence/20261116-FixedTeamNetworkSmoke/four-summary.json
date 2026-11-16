@@ -1,0 +1,86 @@
+[
+  {
+    "name": "red-commander",
+    "ready": true,
+    "failure": "",
+    "checked": 228,
+    "authority_mismatches": [],
+    "local_simulation_by_definition": {
+      "unit/1": 124,
+      "unit/2": 43,
+      "unit/5": 1,
+      "unit/4": 8,
+      "unit/3": 8,
+      "effect/linear/damage/6:unit/2/6:Strafe/11:BasicAttack": 151,
+      "effect/linear/damage/6:unit/1/6:Strafe/11:BasicAttack": 4,
+      "state/mass-authority": 1
+    },
+    "backup_groups_with_complete_copies": 20,
+    "backup_groups_with_two_copies": 20,
+    "group_count": 53
+  },
+  {
+    "name": "blue-commander",
+    "ready": true,
+    "failure": "",
+    "checked": 228,
+    "authority_mismatches": [],
+    "local_simulation_by_definition": {
+      "unit/1": 127,
+      "unit/2": 25,
+      "unit/4": 8,
+      "unit/3": 8,
+      "state/mass-authority": 1
+    },
+    "backup_groups_with_complete_copies": 33,
+    "backup_groups_with_two_copies": 33,
+    "group_count": 53
+  },
+  {
+    "name": "red-wushuang",
+    "ready": true,
+    "failure": "",
+    "checked": 228,
+    "authority_mismatches": [],
+    "local_simulation_by_definition": {
+      "player/ship": 1,
+      "player/ground": 1,
+      "building/5": 5,
+      "building/4": 4,
+      "building/6": 4,
+      "state/territory": 18,
+      "territory/7": 18,
+      "state/resource-cluster": 105,
+      "state/team-account": 1,
+      "team/army": 1,
+      "team/ground_rogue": 1,
+      "state/resource-runtime": 1
+    },
+    "backup_groups_with_complete_copies": 1,
+    "backup_groups_with_two_copies": 1,
+    "group_count": 53
+  },
+  {
+    "name": "blue-wushuang",
+    "ready": true,
+    "failure": "",
+    "checked": 228,
+    "authority_mismatches": [],
+    "local_simulation_by_definition": {
+      "player/ship": 1,
+      "player/ground": 1,
+      "building/6": 4,
+      "building/5": 5,
+      "building/4": 4,
+      "state/territory": 31,
+      "territory/7": 31,
+      "state/resource-cluster": 135,
+      "state/team-account": 1,
+      "team/ground_rogue": 1,
+      "team/army": 1
+    },
+    "backup_groups_with_complete_copies": 1,
+    "backup_groups_with_two_copies": 1,
+    "group_count": 53
+  }
+]

@@ -39,7 +39,7 @@ TSharedRef<FJsonObject> ReadReviewEntity(UWorld* World)
     J->SetStringField(TEXT("seat"),StaticEnum<EGuLiCommanderRole>()->GetNameStringByValue(int64(Entry->Seat)));
     J->SetStringField(TEXT("run_mode"),StaticEnum<EGuLiClientRunMode>()->GetNameStringByValue(int64(Entry->RunMode)));
     J->SetStringField(TEXT("room"),Entry->Room.ToString());J->SetStringField(TEXT("identity"),Entry->DevelopmentIdentity.ToString());
-    J->SetStringField(TEXT("manifest"),Entry->Manifest.FilePath);J->SetStringField(TEXT("coordinator"),Entry->CoordinatorUrl);
+    J->SetStringField(TEXT("manifest"),Entry->Manifest.FilePath);J->SetStringField(TEXT("peer_roster"),Entry->PeerRosterFile);
     J->SetNumberField(TEXT("udp_port"),Entry->UdpPort);J->SetNumberField(TEXT("units"),Entry->Units);
     J->SetNumberField(TEXT("additional_flights"),Entry->AdditionalFlights);
     J->SetStringField(TEXT("transform"),Entry->GetActorTransform().ToString());

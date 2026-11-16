@@ -1,0 +1,65 @@
+--- Source/GuLiStrike/Commander/Mass/GuLiHybridMassAdapter.inl before
++++ Source/GuLiStrike/Commander/Mass/GuLiHybridMassAdapter.inl
+@@ -293,7 +293,7 @@
+     TWeakObjectPtr<UGuLiBattleAuthoritySubsystem> Authority;
+     FGuLiHybridObjectState Record;
+     FGuLiTargetHandle RegisteredTarget;
+-    bool bLocal=false,bRestoringQuery=false;
++    bool bLocal=false,bRestoringQuery=false,bPendingGridRestore=false;
+     uint64 LastPublished=0;
+     uint32 PoseOwner=0,PoseEpoch=0;
+ #if !UE_BUILD_SHIPPING
+@@ -474,6 +474,23 @@
+             if (!Local) Self->AuthorityState->PriorityMoveIds.Remove(S->SoldierId.Value);
+             else if (Changed && S->ActiveOrderId && S->MoveIntent && !S->bAutomaticAdvance)
+                 Self->AuthorityState->PriorityMoveIds.Add(S->SoldierId.Value);
++            // Abrupt recovery installs the snapshot while the simulator grant is
++            // empty. Admit the restored footprint only after that grant commits.
++            if (bPendingGridRestore && R.SimulationOwner.IsValid() && R.OwnerEpoch)
++                if (auto* Grid=Self->GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();Grid && Grid->IsReady())
++                {
++                    if (!S->GridMotion.Bind(*Grid,R.Key,R.SimulationOwner,R.OwnerEpoch,uint8(R.Team),S->Location,
++                        S->GridReferenceFootprint,S->MovementLayer))
++                    {
++                        Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Recovered Mass footprint could not bind committed authority"));
++                        return;
++                    }
++                    S->GridMotion.Stop(*Grid,S->Location,Self->AuthorityState->SimulationSeconds,EGuLiGridMoveEnd::Stopped);
++                    bPendingGridRestore=false;
++                }
++            if (Local && Changed)
++                if (auto* Grid=Self->GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();Grid && Grid->IsReady())
++                    GuLiGridBirths::Recover(*Grid,R);
+         }
+         // Newborns are prepared with their final owner already installed. Their
+         // first remote SetAuthority need not change Record or bLocal, but still
+@@ -648,10 +665,17 @@
+                     Grid->BirthPlans.Add(Record.Key,V.Birth);Grid->BirthKeys.AddUnique(Record.Key);
+                     GuLiGridBirths::Recover(*Grid,Record);
+                 }
+-                if (!S->GridMotion.Bind(*Grid,Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),S->Location,
+-                    S->GridReferenceFootprint,S->MovementLayer)) return false;
+-                // Serialized grid fields remain readable, but no move reservation survives recovery.
+-                S->GridMotion.Stop(*Grid,S->Location,Self->AuthorityState->SimulationSeconds,EGuLiGridMoveEnd::Stopped);
++                // Recovery revokes the departed simulator before installing its
++                // backup. The grid requires a valid committed owner, so keep this
++                // private state unbound until SetAuthority receives the new grant.
++                bPendingGridRestore=!Record.SimulationOwner.IsValid();
++                if (!bPendingGridRestore)
++                {
++                    if (!S->GridMotion.Bind(*Grid,Record.Key,Record.SimulationOwner,Record.OwnerEpoch,uint8(Record.Team),S->Location,
++                        S->GridReferenceFootprint,S->MovementLayer)) return false;
++                    // Serialized grid fields remain readable, but no move reservation survives recovery.
++                    S->GridMotion.Stop(*Grid,S->Location,Self->AuthorityState->SimulationSeconds,EGuLiGridMoveEnd::Stopped);
++                }
+                 S->GridOrderId=0;
+             }
+             auto* S=Soldier(); auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(Self->GetWorld());
+@@ -697,6 +721,7 @@
+     { TGuardValue<bool> Query(bRestoringQuery,true);return !bLocal && Restore(Bytes,Stage); }
+     void Release() override
+     {
++        bPendingGridRestore=false;
+         auto* Self=Authority.Get(); auto* S=Soldier(); if (!Self || !S) return;
+         if (auto* Grid=Self->GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();Grid && Grid->IsReady())
+         {

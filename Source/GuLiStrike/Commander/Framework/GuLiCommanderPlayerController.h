@@ -142,6 +142,9 @@ public:
     bool IsHUDModal() const { return bRogueCardModal || bGroundHUDModal; }
     void SetGroundHUDModal(bool bActive);
     void OpenRogueCards();
+	void SwitchWushuangControl();
+    void SwitchControlMode(EGuLiCommanderRole NextRole);
+    UPROPERTY(Transient) TObjectPtr<APawn> CommanderControlPawn;
 	GULISTRIKE_API void StopSelectedUnits();
 	FVector GetSelectedUnitCenter() const { return FindConfirmedSelectionCenter(); }
 	void ToggleSelectionShape();
@@ -283,11 +286,14 @@ private:
 	EGuLiCommandLineState CommandLineState = EGuLiCommandLineState::None;
 	bool bCommanderInputModeInitialized = false;
 	bool bGroundInputActive = false;
+	bool bWushuangInputActive = false;
 	bool bGroundCursorFree = false;
 	UPROPERTY(Transient)
 	TObjectPtr<UInputMappingContext> BattleCommandMappings;
 	UPROPERTY(Transient)
 	TObjectPtr<UInputMappingContext> CommanderCommandMappings;
+	UPROPERTY(Transient)
+	TObjectPtr<UInputMappingContext> WushuangCommandMappings;
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<UInputAction>> CommanderActions;
 	TWeakObjectPtr<UEnhancedInputLocalPlayerSubsystem> BattleInputSubsystem;

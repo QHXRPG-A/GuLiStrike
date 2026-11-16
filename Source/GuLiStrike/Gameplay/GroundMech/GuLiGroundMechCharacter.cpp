@@ -415,6 +415,13 @@ void AGuLiGroundMechCharacter::PumpHybridInput()
 void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 {
 	if (!UGuLiHybridActorComponent::HasSimulation(this)) return;
+	if (!IsLocallyControlled())
+	{
+		// A command queued before switching must not leave the inactive carrier moving/firing.
+		SimulationInput.Axis=FVector2D::ZeroVector;
+		SimulationInput.bSprint=SimulationInput.bFire=SimulationInput.bRocket=false;
+		SimulationInput.bHasAim=SimulationInput.bFaceAim=false;
+	}
 	RocketJump->ApplyHybridInput(SimulationInput.bRocket);
 	auto* Movement=CastChecked<UGuLiGroundMechMovementComponent>(GetCharacterMovement());
 	if (SimulationInput.bHasAim)

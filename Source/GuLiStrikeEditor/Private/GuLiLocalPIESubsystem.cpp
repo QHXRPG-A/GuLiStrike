@@ -72,7 +72,7 @@ bool LoopbackSocket(int32 Port,bool Bind)
     if (!Sockets) return false;
     auto Address=Sockets->CreateInternetAddr();bool Valid=false;
     Address->SetIp(TEXT("127.0.0.1"),Valid);Address->SetPort(Port);
-    FSocket* Socket=Sockets->CreateSocket(NAME_Stream,TEXT("GuLiLocalPIE"),false);
+    FSocket* Socket=Sockets->CreateSocket(NAME_DGram,TEXT("GuLiLocalPIE"),false);
     if (!Valid || !Socket) return false;
     const bool Result=Bind?Socket->Bind(*Address):Socket->Connect(*Address);
     Socket->Close();Sockets->DestroySocket(Socket);return Result;
@@ -83,8 +83,8 @@ struct UGuLiLocalPIESubsystem::FState
 {
     FGuLiNetworkLaunchConfig Config;
     FGuid Peer;
-    FProcHandle Coordinator,Logic;
-    uint32 CoordinatorPid=0,LogicPid=0;
+    struct FChild { FProcHandle Handle;uint32 Pid=0; };
+    TArray<FChild> Children;
     FString Directory,Error;
     TArray<TSharedPtr<FJsonValue>> Shutdown;
     bool CleanupComplete=false;
@@ -147,22 +147,22 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     { State->Error=Why;Error=Why;StopChildren();UE_LOG(LogTemp,Error,TEXT("[GuLiLocalPIE] %s"),*Why);return false; };
     if (Settings->MainRole!=EGuLiCommanderRole::Commander && Settings->MainRole!=EGuLiCommanderRole::Ground
         && Settings->MainRole!=EGuLiCommanderRole::Air) return Fail(TEXT("Choose Commander, Ground or Air before PIE."));
-    if (Settings->CoordinatorPort<1024 || Settings->CoordinatorPort>65535)
-        return Fail(TEXT("The local Coordinator port must be in 1024..65535."));
-    if (!LoopbackSocket(Settings->CoordinatorPort,true))
-        return Fail(FString::Printf(TEXT("Local Coordinator port %d is occupied; choose another port in GuLi Local PIE settings."),Settings->CoordinatorPort));
+    const int32 ClientCount=Settings->bFourClients?4:2;
+    if (Settings->LocalUdpBasePort<1024 || Settings->LocalUdpBasePort+ClientCount>65536)
+        return Fail(TEXT("Invalid local UDP port range."));
+    for (int32 I=0;I<ClientCount;++I) if (!LoopbackSocket(Settings->LocalUdpBasePort+I,true))
+        return Fail(FString::Printf(TEXT("Local UDP port %d is occupied."),Settings->LocalUdpBasePort+I));
     const FString Root=FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-    const FString Server=Root/TEXT("Tools/GuLiCoordinator/build/windows/Release/GuLiCoordinator.exe");
     const FString Client=FPaths::ConvertRelativePathToFull(FPaths::EngineDir()/TEXT("Binaries/Win64/UnrealEditor-Cmd.exe"));
-    if (!FPaths::FileExists(Server) || !FPaths::FileExists(Client)) return Fail(TEXT("The compiled local Coordinator or source-engine editor is missing."));
+    if (!FPaths::FileExists(Client)) return Fail(TEXT("The source-engine editor is missing."));
     State->Config=UGuLiNetworkSettings::Resolve();
     auto& Config=State->Config;
     if (!Config.ValidationError.IsEmpty()) return Fail(Config.ValidationError);
     Config.Mode=EGuLiNetworkMode::Hybrid;Config.Transport=EGuLiNetworkTransport::LocalUdp;
     Config.ClientRunMode=EGuLiClientRunMode::Rendered;Config.Team=EGuLiTeam::Red;Config.Role=Settings->MainRole;
     Config.ManifestFile=Root/TEXT("Config/Hybrid/RuntimeManifest-600.json");
-    Config.RoomId=FGuid::NewGuid();Config.DevelopmentPlayerId=FGuid::NewGuid();Config.LocalUdpPort=0;
-    Config.CoordinatorUrl=FString::Printf(TEXT("ws://127.0.0.1:%d/v1/match"),Settings->CoordinatorPort);
+    Config.RoomId=FGuid::NewGuid();Config.DevelopmentPlayerId=FGuid::NewGuid();Config.LocalUdpPort=Settings->LocalUdpBasePort;
+    Config.HostRoom=true;Config.ExpectedPlayers=ClientCount;
     FString ConfigHash,MapHash,Map,Why;
     if (!FGuLiHybridManifest::ValidateFile(Config.ManifestFile,ConfigHash,MapHash,Map,Why) || Map!=LocalMap)
         return Fail(Why.IsEmpty()?TEXT("The normal runtime manifest belongs to another map."):Why);
@@ -172,7 +172,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     if (Units!=600 || Manifest.Numbers.FindRef(TEXT("acceptance/resource_supply"))!=0)
         return Fail(TEXT("Normal local PIE requires the production 600-unit manifest without acceptance supply."));
     // Keep unattended callers on their explicit role; interactive PIE chooses
-    // before creating the room directory, stop event, Coordinator or logic peer.
+    // before creating the room directory, stop event or logic peers.
     if (Settings->bPromptForRole && !FApp::IsUnattended() && !IsRunningCommandlet())
     {
         const auto Selected = GuLiLocalPIERolePicker::Show(State->LastSelectedRole.Get(Settings->MainRole));
@@ -189,12 +189,11 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     State->Directory=FPaths::Combine(FPlatformProcess::UserTempDir(),TEXT("GuLiStrikePIE"),Config.RoomId.ToString(EGuidFormats::Digits));
     if (!IFileManager::Get().MakeDirectory(*State->Directory,true)) return Fail(TEXT("Could not create the local session directory."));
     State->Active=true;State->Started=FPlatformTime::Seconds();
-    FString StopArguments,ClientStopArguments;
+    FString ClientStopArguments;
 #if PLATFORM_WINDOWS
     const FString StopName=TEXT("Local\\GuLiStrikePIEStop_")+Config.RoomId.ToString(EGuidFormats::Digits);
     State->StopEvent=CreateEventW(nullptr,1,0,*StopName);
     if (!State->StopEvent) return Fail(TEXT("Could not create the owned local PIE stop event."));
-    StopArguments=FString::Printf(TEXT(" --local-stop-event \"%s\""),*StopName);
     ClientStopArguments=FString::Printf(TEXT(" -GuLiLocalStopEvent=\"%s\""),*StopName);
     State->Job=CreateJobObjectW(nullptr,nullptr);
     JOBOBJECT_EXTENDED_LIMIT_INFORMATION Limits{};Limits.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
@@ -210,17 +209,26 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
 #endif
         return true;
     };
-    const FString ServerArgs=FString::Printf(TEXT("--dev --bind 127.0.0.1 --port %d --expected-red 1 --expected-blue 1 --manifest \"%s\" --database \"%s\""),
-        Settings->CoordinatorPort,*Config.ManifestFile,*(State->Directory/TEXT("room.sqlite")))+StopArguments;
-    if (!Launch(Server,ServerArgs,State->Coordinator,State->CoordinatorPid)) return Fail(TEXT("Could not start the owned Coordinator."));
-    bool Ready=false;
-    const double Deadline=FPlatformTime::Seconds()+5;
-    while (FPlatformTime::Seconds()<Deadline && FPlatformProcess::IsProcRunning(State->Coordinator))
+    struct FSeat {FGuid Player;EGuLiTeam Team;EGuLiCommanderRole Role;};
+    TArray<FSeat> Seats={{Config.DevelopmentPlayerId,EGuLiTeam::Red,Config.Role},{State->Peer,EGuLiTeam::Blue,EGuLiCommanderRole::Commander}};
+    if (Settings->bFourClients)
     {
-        if (LoopbackSocket(Settings->CoordinatorPort,false)) { Ready=true;break; }
-        FPlatformProcess::Sleep(0.02f);
+        Seats.Add({FGuid::NewGuid(),EGuLiTeam::Red,Config.Role==EGuLiCommanderRole::Commander?EGuLiCommanderRole::Ground:EGuLiCommanderRole::Commander});
+        Seats.Add({FGuid::NewGuid(),EGuLiTeam::Blue,EGuLiCommanderRole::Ground});
     }
-    if (!Ready) return Fail(TEXT("The owned Coordinator did not become ready."));
+    auto Ticket=MakeShared<FJsonObject>();Ticket->SetStringField(TEXT("room"),Config.RoomId.ToString(EGuidFormats::Digits));
+    Ticket->SetStringField(TEXT("host"),Config.DevelopmentPlayerId.ToString(EGuidFormats::Digits));TArray<TSharedPtr<FJsonValue>> Rows;
+    for (int32 I=0;I<Seats.Num();++I)
+    {
+        auto J=MakeShared<FJsonObject>();J->SetStringField(TEXT("player"),Seats[I].Player.ToString(EGuidFormats::Digits));
+        J->SetStringField(TEXT("team"),Seats[I].Team==EGuLiTeam::Red?TEXT("Red"):TEXT("Blue"));
+        J->SetStringField(TEXT("role"),StaticEnum<EGuLiCommanderRole>()->GetNameStringByValue(int64(Seats[I].Role)));
+        J->SetStringField(TEXT("endpoint"),FString::Printf(TEXT("127.0.0.1:%d"),Settings->LocalUdpBasePort+I));Rows.Add(MakeShared<FJsonValueObject>(J));
+    }
+    Ticket->SetArrayField(TEXT("members"),Rows);FString TicketText;FJsonSerializer::Serialize(Ticket,TJsonWriterFactory<>::Create(&TicketText));
+    Config.PeerRosterFile=State->Directory/TEXT("peers.json");
+    if (!FFileHelper::SaveStringToFile(TicketText,*Config.PeerRosterFile)) return Fail(TEXT("Cannot write peer roster."));
+    State->Children.SetNum(Seats.Num()-1);
     const FString Project=FPaths::GetProjectFilePath();
     const auto CVarValue=[](const TCHAR* Name)
     {const auto* V=IConsoleManager::Get().FindConsoleVariable(Name);return V?V->GetInt():1;};
@@ -231,17 +239,22 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
         CVarValue(TEXT("gs.Hybrid.FastSmallPayloadCompression")),
         CVarValue(TEXT("gs.Hybrid.FlightServiceFastPath")),CVarValue(TEXT("gs.Hybrid.NativePeerSend")),
         CVarValue(TEXT("gs.Hybrid.EntityLayoutCache")),CVarValue(TEXT("gs.Review.GroundIsolateCombat")),CVarValue(TEXT("gs.Perf.MovementFixtureHold")));
-    FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=Blue -GuLiRole=Commander -GuLiClientRunMode=LogicOnly -GuLiHotspotMask=%u -GuLiGameplayWorkers=%u -GuLiUdpPort=0 -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
-        *Project,LocalMap,*Config.RoomId.ToString(EGuidFormats::Digits),*State->Peer.ToString(EGuidFormats::Digits),
-        Config.HotspotMask,Config.GameplayWorkers,*Config.CoordinatorUrl,*Config.ManifestFile,*(State->Directory/TEXT("logic.log")))+ClientStopArguments+CpuOptions;
-    if (LogicDiagnostics.GetValueOnGameThread()!=0)
-        Args+=FString::Printf(TEXT(" -GuLiAcceptanceRun=%s -GuLiAcceptanceCase=%s -GuLiAcceptanceDirectory=\"%s\""),
-            *Config.RoomId.ToString(EGuidFormats::Digits),
-            LogicDiagnostics.GetValueOnGameThread()==2?TEXT("fault_ground_fire"):TEXT("combat-diagnostics"),
-            *FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()/TEXT("TestResults/LocalPIE")/Config.RoomId.ToString(EGuidFormats::Digits)/TEXT("Logic")));
-    if (!Launch(Client,Args,State->Logic,State->LogicPid)) return Fail(TEXT("Could not start the owned logic client."));
-    UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] room=%s editor=%u logic=%u coordinator=%u role=%s"),
-        *Config.RoomId.ToString(),FPlatformProcess::GetCurrentProcessId(),State->LogicPid,State->CoordinatorPid,
+    for (int32 I=1;I<Seats.Num();++I)
+    {
+        const auto& Seat=Seats[I];auto& Child=State->Children[I-1];
+        FString Args=FString::Printf(TEXT("\"%s\" %s -game -NullRHI -nosound -unattended -NoSplash -NoLiveCoding -GuLiNetMode=Hybrid -GuLiTransport=LocalUdp -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=%s -GuLiRole=%s -GuLiClientRunMode=LogicOnly -GuLiHotspotMask=%u -GuLiGameplayWorkers=%u -GuLiUdpPort=%d -GuLiPeerRoster=\"%s\" -GuLiManifest=\"%s\" -abslog=\"%s\""),
+            *Project,LocalMap,*Config.RoomId.ToString(EGuidFormats::Digits),*Seat.Player.ToString(EGuidFormats::Digits),
+            Seat.Team==EGuLiTeam::Red?TEXT("Red"):TEXT("Blue"),*StaticEnum<EGuLiCommanderRole>()->GetNameStringByValue(int64(Seat.Role)),
+            Config.HotspotMask,Config.GameplayWorkers,Settings->LocalUdpBasePort+I,*Config.PeerRosterFile,*Config.ManifestFile,
+            *(State->Directory/(I==1?TEXT("logic.log"):FString::Printf(TEXT("logic-%d.log"),I))))+ClientStopArguments+CpuOptions;
+        if (LogicDiagnostics.GetValueOnGameThread()!=0)
+            Args+=FString::Printf(TEXT(" -GuLiAcceptanceRun=%s -GuLiAcceptanceCase=combat-diagnostics -GuLiAcceptanceDirectory=\"%s\""),
+                *Config.RoomId.ToString(EGuidFormats::Digits),
+                *FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()/TEXT("TestResults/LocalPIE")/Config.RoomId.ToString(EGuidFormats::Digits)/FString::Printf(TEXT("Logic-%d"),I)));
+        if (!Launch(Client,Args,Child.Handle,Child.Pid)) return Fail(TEXT("Could not start an owned logic client."));
+    }
+    UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] room=%s clients=%d editor=%u role=%s"),
+        *Config.RoomId.ToString(),Seats.Num(),FPlatformProcess::GetCurrentProcessId(),
         *StaticEnum<EGuLiCommanderRole>()->GetNameStringByValue(int64(Config.Role)));
     return true;
 }
@@ -258,24 +271,31 @@ void UGuLiLocalPIESubsystem::StopChildren()
 #if PLATFORM_WINDOWS
     if (State->StopEvent) SetEvent(State->StopEvent);
     const double Deadline=FPlatformTime::Seconds()+15;
-    while (FPlatformTime::Seconds()<Deadline
-        && ((State->Logic.IsValid() && FPlatformProcess::IsProcRunning(State->Logic))
-            || (State->Coordinator.IsValid() && FPlatformProcess::IsProcRunning(State->Coordinator))))
-        FPlatformProcess::Sleep(0.02f);
-#endif
-    for (FProcHandle* Handle:{&State->Logic,&State->Coordinator}) if (Handle->IsValid())
+    while (FPlatformTime::Seconds()<Deadline)
     {
+        bool AnyChildRunning=false;
+        for (auto& Child:State->Children)
+        {
+            if (Child.Handle.IsValid() && FPlatformProcess::IsProcRunning(Child.Handle)) {AnyChildRunning=true;break;}
+        }
+        if (!AnyChildRunning) break;
+        FPlatformProcess::Sleep(0.02f);
+    }
+#endif
+    for (auto& Child:State->Children) if (Child.Handle.IsValid())
+    {
+        auto* Handle=&Child.Handle;
         const bool Forced=FPlatformProcess::IsProcRunning(*Handle);
         if (Forced) FPlatformProcess::TerminateProc(*Handle,true);
         FPlatformProcess::WaitForProc(*Handle);
         int32 Code=0;const bool HasCode=FPlatformProcess::GetProcReturnCode(*Handle,&Code);
-        auto Result=MakeShared<FJsonObject>();const bool Logic=Handle==&State->Logic;
-        Result->SetStringField(TEXT("role"),Logic?TEXT("logic"):TEXT("coordinator"));
-        Result->SetNumberField(TEXT("pid"),Logic?State->LogicPid:State->CoordinatorPid);
+        auto Result=MakeShared<FJsonObject>();
+        Result->SetStringField(TEXT("role"),TEXT("logic"));
+        Result->SetNumberField(TEXT("pid"),Child.Pid);
         Result->SetBoolField(TEXT("forced"),Forced);Result->SetBoolField(TEXT("has_exit_code"),HasCode);
         Result->SetNumberField(TEXT("exit_code"),Code);State->Shutdown.Add(MakeShared<FJsonValueObject>(Result));
         UE_LOG(LogTemp,Display,TEXT("[GuLiLocalPIE] stop role=%s forced=%d has_exit_code=%d exit_code=%d"),
-            Logic?TEXT("logic"):TEXT("coordinator"),Forced,HasCode,Code);
+            TEXT("logic"),Forced,HasCode,Code);
         FPlatformProcess::CloseProc(*Handle);Handle->Reset();
     }
 #if PLATFORM_WINDOWS
@@ -304,14 +324,17 @@ bool UGuLiLocalPIESubsystem::Tick(float)
 {
     if (!State->Active) return true;
     if (!GEditor || !GEditor->IsPlaySessionInProgress()) { StopChildren();return true; }
-    const bool Children=State->Coordinator.IsValid() && FPlatformProcess::IsProcRunning(State->Coordinator)
-        && State->Logic.IsValid() && FPlatformProcess::IsProcRunning(State->Logic);
+    bool Children=true;
+    for (auto& Child:State->Children)
+    {
+        if (!Child.Handle.IsValid() || !FPlatformProcess::IsProcRunning(Child.Handle)) {Children=false;break;}
+    }
     UWorld* World=GEditor->PlayWorld.Get();
     auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
     if(Hybrid && Hybrid->IsWorldReady())State->ReachedReady=true;
     const bool StartupTimedOut=!State->ReachedReady && State->Began && FPlatformTime::Seconds()-State->Started>120;
     const FString Failure=Hybrid?Hybrid->GetFailure():FString();
-    if(!Children || StartupTimedOut || !Failure.IsEmpty())
+    if((!Children && !State->ReachedReady) || StartupTimedOut || !Failure.IsEmpty())
     {
         State->Error=!Failure.IsEmpty()?Failure:!Children?TEXT("An owned local PIE child exited."):TEXT("Local PIE startup did not settle within 120 seconds.");
         UE_LOG(LogTemp,Error,TEXT("[GuLiLocalPIE] %s"),*State->Error);
@@ -325,9 +348,10 @@ FString UGuLiLocalPIESubsystem::GetSessionStatus() const
     J->SetStringField(TEXT("room"),State->Config.RoomId.ToString(EGuidFormats::Digits));
     J->SetStringField(TEXT("role"),StaticEnum<EGuLiCommanderRole>()->GetNameStringByValue(int64(State->Config.Role)));
     J->SetNumberField(TEXT("editor_pid"),FPlatformProcess::GetCurrentProcessId());
-    J->SetNumberField(TEXT("logic_pid"),State->LogicPid);J->SetNumberField(TEXT("coordinator_pid"),State->CoordinatorPid);
-    J->SetBoolField(TEXT("logic_running"),State->Logic.IsValid() && FPlatformProcess::IsProcRunning(State->Logic));
-    J->SetBoolField(TEXT("coordinator_running"),State->Coordinator.IsValid() && FPlatformProcess::IsProcRunning(State->Coordinator));
+    TArray<TSharedPtr<FJsonValue>> Processes;
+    for (auto& Child:State->Children)
+    {auto P=MakeShared<FJsonObject>();P->SetNumberField(TEXT("pid"),Child.Pid);P->SetBoolField(TEXT("running"),Child.Handle.IsValid() && FPlatformProcess::IsProcRunning(Child.Handle));Processes.Add(MakeShared<FJsonValueObject>(P));}
+    J->SetArrayField(TEXT("logic_processes"),Processes);
     J->SetStringField(TEXT("session_directory"),State->Directory);
     J->SetArrayField(TEXT("shutdown"),State->Shutdown);
     J->SetBoolField(TEXT("cleanup_complete"),State->CleanupComplete);

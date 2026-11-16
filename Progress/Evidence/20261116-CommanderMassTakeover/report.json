@@ -1,0 +1,168 @@
+{
+  "schema": "guli-commander-takeover-test/v1",
+  "date": "2026-11-16",
+  "work_id": "WORK-20261115-001",
+  "result": "failed",
+  "run_directory": "D:\\UE5.7\\test1\\TestResults\\NetworkMinimal\\20261116-0721db5ce1ac4dd6ada26f23cbcca56d",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "transport": "LocalUdp loopback",
+  "mode": "four standalone LogicOnly NullRHI clients",
+  "manifest": "Config/Hybrid/RuntimeManifest-200.json",
+  "disconnect": {
+    "player": "7741b22ea4e44ef1bd48b1c2c0939730",
+    "was_host": true,
+    "receiver": "red-wushuang",
+    "pid": 46408,
+    "abrupt": true,
+    "timestamp": 1794761876.437,
+    "victim": "red-commander"
+  },
+  "expected": "Surviving teammate restores Mass authority and resumes simulation",
+  "actual": "Host migrated; Mass family Link restore failed before authority activation",
+  "before_mass_count": 178,
+  "backup_complete_copies": 2,
+  "first_failure": {
+    "object": "046DDECAE42C704A39DA756F4C2DD1B9",
+    "definition": "unit/1",
+    "ordinal": 114,
+    "stage": "Link",
+    "stage_number": 2,
+    "query": false,
+    "reason": "family state",
+    "root_cause": "Specific failing branch not yet established"
+  },
+  "final_clients": [
+    {
+      "name": "blue-commander",
+      "ready": false,
+      "paused": true,
+      "failure": "Team state recovery timed out",
+      "logical_tick": 2833,
+      "room_host": "607ED52FD30D410EBD2D905B3E0F3F51",
+      "mass_live": 178,
+      "mass_transferred": 0,
+      "red_mass_damage_requests": 0,
+      "mass_group": [
+        {
+          "group": "52a8cbb451b488b08b108f408c3910e3",
+          "owner": "7741b22ea4e44ef1bd48b1c2c0939730",
+          "backup": "607ed52fd30d410ebd2d905b3e0f3f51",
+          "request_epoch": "2",
+          "owner_version": "2",
+          "recovering": "1",
+          "installed_recovery": "0",
+          "snapshot": "0",
+          "snapshot_epoch": "0",
+          "sample": "0",
+          "digest": "",
+          "complete_copies": 0,
+          "stored_bytes": 0,
+          "queued_versions": 0,
+          "installed_objects": []
+        }
+      ]
+    },
+    {
+      "name": "red-wushuang",
+      "ready": false,
+      "paused": true,
+      "failure": "Complete resource snapshot could not be installed",
+      "logical_tick": 2830,
+      "room_host": "607ED52FD30D410EBD2D905B3E0F3F51",
+      "mass_live": 178,
+      "mass_transferred": 0,
+      "red_mass_damage_requests": 0,
+      "mass_group": [
+        {
+          "group": "52a8cbb451b488b08b108f408c3910e3",
+          "owner": "7741b22ea4e44ef1bd48b1c2c0939730",
+          "backup": "607ed52fd30d410ebd2d905b3e0f3f51",
+          "request_epoch": "2",
+          "owner_version": "2",
+          "recovering": "1",
+          "installed_recovery": "0",
+          "snapshot": "0",
+          "snapshot_epoch": "0",
+          "sample": "0",
+          "digest": "",
+          "complete_copies": 2,
+          "stored_bytes": 1488424,
+          "queued_versions": 1,
+          "installed_objects": []
+        }
+      ]
+    },
+    {
+      "name": "blue-wushuang",
+      "ready": false,
+      "paused": true,
+      "failure": "Team state recovery timed out",
+      "logical_tick": 2832,
+      "room_host": "607ED52FD30D410EBD2D905B3E0F3F51",
+      "mass_live": 178,
+      "mass_transferred": 0,
+      "red_mass_damage_requests": 0,
+      "mass_group": [
+        {
+          "group": "52a8cbb451b488b08b108f408c3910e3",
+          "owner": "7741b22ea4e44ef1bd48b1c2c0939730",
+          "backup": "607ed52fd30d410ebd2d905b3e0f3f51",
+          "request_epoch": "2",
+          "owner_version": "2",
+          "recovering": "1",
+          "installed_recovery": "0",
+          "snapshot": "0",
+          "snapshot_epoch": "0",
+          "sample": "0",
+          "digest": "",
+          "complete_copies": 0,
+          "stored_bytes": 0,
+          "queued_versions": 0,
+          "installed_objects": []
+        }
+      ]
+    }
+  ],
+  "observed_failed_window_seconds": [
+    28.785,
+    59.011
+  ],
+  "files_match_prior": [
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridManifest.cpp",
+      "sha256": "5ee9cbf46fa80977b8bb62788067bba2da3697f4d20a255ccf6e37925fb8d9a9",
+      "matches_prior": true
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/Capabilities/GuLiNetControlPoint.cpp",
+      "sha256": "f525411c4fe74ab5b1d91ac1e8332ea40a22cc9e0879b0c2e73087e50c2a82e1",
+      "matches_prior": true
+    },
+    {
+      "path": "Source/GuLiNetCore/Private/GuLiNetOwnerTransactions.cpp",
+      "sha256": "089a38a0d18bdb3c8a73c73242348428e58fc1bae2884712f1990588f4133221",
+      "matches_prior": true
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "sha256": "f6683ad82749ee818da56d9adda62e8d6cf9c34e8e97b9b25a31e28407bccd31",
+      "matches_prior": true
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-600.json",
+      "sha256": "d3c59dfe2fee9e93f37d2dd6eef8aa149ca87dd29cb6bf3e8b877cc8fadb3252",
+      "matches_prior": true
+    }
+  ],
+  "source_changes": false,
+  "build_run": false,
+  "test_processes_remaining": 0,
+  "original_editor_pid": 46160,
+  "original_editor_untouched_and_running": true,
+  "not_run": [
+    "Non-host commander disconnect",
+    "EOS or remote-machine transport",
+    "Interactive input or visuals",
+    "Fix and rerun"
+  ]
+}

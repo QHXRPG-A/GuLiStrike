@@ -51,10 +51,8 @@ struct FGuLiLocalCombatEffect
 	// Ground trace lives independently of the projectile's terminal state. No wire fields.
 	int32 GroundTrailVfxId=0;
 	float GroundTrailLength = 0, GroundTrailHold = 0, GroundTrailFade = 0, GroundTrailBend = 0, GroundTrailWidth = 0;
-	float GroundTrailEndedAt = -1;
     bool bInstantGroundSegment=false;
 	int32 FrozenUnitTypeId=0;
-	FVector GroundTrailEnd = FVector::ZeroVector;
 	FVector GroundTrailFacing = FVector::ZeroVector;
 	UPROPERTY() TArray<FGuLiGroundTraceSegment> GroundTrailSegments;
 	bool bActivationPlayed = false;
@@ -277,7 +275,7 @@ private:
 	TArray<FVector> BulletLocalViews;
 	void BeginBulletTrailsFrame(float Now,bool bEnabled);
 	FLinearColor GroundBulletTint(const FGuLiCombatEffectState& State) const;
-	bool UpdateMassBulletTrail(FGuLiLocalCombatEffect& Visual,float Now,bool bEnabled);
+	bool UpdateMassBulletTrail(FGuLiLocalCombatEffect& Visual, float Now);
 	void SubmitBulletLight(const FGuLiLocalCombatEffect& Visual,float Now,bool bEnabled);
 	UPROPERTY(Transient) TObjectPtr<UGuLiImpactBatchPresentation> ImpactBatches;
 	UPROPERTY(Transient) TObjectPtr<UGuLiMuzzleBatchPresentation> MuzzleBatches;

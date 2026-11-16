@@ -1,4 +1,5 @@
 #include "GuLiNetOwnerState.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetHash.h"
 #include "GuLiNetCapability.h"
 #include <algorithm>
@@ -546,16 +547,14 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
             Id Desired=EffectAdmission ? Sender : S.Grant.Controller;
             if (RuleValue.SpawnControllerSeat!=Role::Observer)
             {
-                Desired={};
-                for (const auto& [CandidatePlayer,M] : Players)
-                    if (M.Faction==Faction && M.Seat==RuleValue.SpawnControllerSeat && IsLiveMember(CandidatePlayer)) { Desired=CandidatePlayer; break; }
+                Desired=ResolveTeamSeat(Players,Faction,RuleValue.SpawnControllerSeat);
             }
             if (SpawnDefinition==OwnershipDefinitions.end()) return Reject(CommitStatus::InvalidRule);
             const auto& SpawnPolicy=SpawnDefinition->second;
             const bool Pinned=SpawnPolicy.Policy==OwnershipPolicy::ControllerPinned;
             const auto AcceptedController=Players.find(Desired);
             if (Pinned && (AcceptedController==Players.end() || !IsLiveMember(Desired)
-                || AcceptedController->second.Faction!=Faction || AcceptedController->second.Seat!=SpawnPolicy.ControllerSeat))
+                || AcceptedController->second.Faction!=Faction || !MatchesControllerRole(AcceptedController->second.Seat,SpawnPolicy.ControllerSeat)))
                 return Reject(CommitStatus::Unauthorized);
             if (!Pinned && !EffectAdmission && (AcceptedController==Players.end() || !IsLiveMember(Desired)
                 || AcceptedController->second.Faction!=Faction)) Desired={};
@@ -564,7 +563,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
                 return Reject(CommitStatus::Unauthorized);
             Changed.Grant.Object=R.Target; Changed.Grant.Faction=Faction; Changed.Grant.Controller=Desired;
             Changed.Grant.Policy=SpawnPolicy.Policy;Changed.Grant.ControllerSeat=SpawnPolicy.ControllerSeat;Changed.Grant.RetireOnVacancy=SpawnPolicy.RetireOnVacancy;
-            Changed.Grant.OwnershipGroup=SpawnPolicy.Group.empty()?Id{}:StableId("GuLiOwnershipGroup/v1",SpawnPolicy.Group);
+            Changed.Grant.OwnershipGroup=ResolveAuthorityGroup(Changed.Grant,SpawnPolicy,&S.Grant);
             if (Changed.Grant.OwnershipGroup.Valid())
                 for (const auto& [K,V]:Previous) if (V.Grant.OwnershipGroup==Changed.Grant.OwnershipGroup)
                 {Changed.Grant.GroupEpoch=V.Grant.GroupEpoch;break;}

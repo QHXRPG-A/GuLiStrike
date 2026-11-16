@@ -20,6 +20,7 @@ enum class MessageKind : std::uint16_t
     WorkPrepare,WorkPrepared,WorkCommit,WorkReceipt,WorkCancel,WorkStateRequest,PeerStatus,CommandState,TransactionIntent,WorkState,
     ResourceGroups,ResourceSnapshot,ResourceSnapshotStored,ResourceSnapshotInstall,ResourceSnapshotInstalled,
     SharedStateEvent,
+    RoomRequest,RoomUpdate,RoomPause,
     // Keep last: exclusive bound for message validation and per-kind storage.
     // This sentinel is never transmitted and does not change existing wire IDs.
     Count

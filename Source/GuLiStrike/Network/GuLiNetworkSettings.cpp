@@ -23,7 +23,7 @@ FGuLiNetworkLaunchConfig UGuLiNetworkSettings::Resolve(const UWorld* World)
     FGuLiNetworkLaunchConfig Hosted;
     if (World && WorldLaunchOverride().IsBound() && WorldLaunchOverride().Execute(World, Hosted)) return Hosted;
     const auto* S = GetDefault<UGuLiNetworkSettings>(); FGuLiNetworkLaunchConfig C;
-    C.Mode = EGuLiNetworkMode::Hybrid; C.Transport = S->Transport; C.CoordinatorUrl = S->CoordinatorUrl;
+    C.Mode = EGuLiNetworkMode::Hybrid; C.Transport = S->Transport; C.PeerRosterFile=S->PeerRosterFile.FilePath; C.LobbyId=S->LobbyId; C.HostRoom=S->HostRoom; C.ExpectedPlayers=S->ExpectedPlayers;
     C.ClientRunMode = S->ClientRunMode;
     C.HotspotMask = UGuLiHotspotOptions::ResolveLaunchMask();
     C.GameplayWorkers = UGuLiHotspotOptions::ResolveGameplayWorkers();
@@ -54,7 +54,11 @@ FGuLiNetworkLaunchConfig UGuLiNetworkSettings::Resolve(const UWorld* World)
         if (!Value.Equals(TEXT("EOS"),ESearchCase::IgnoreCase) && !Value.Equals(TEXT("LocalUdp"),ESearchCase::IgnoreCase))
             C.ValidationError=TEXT("GuLiTransport must be LocalUdp or EOS");
     }
-    FParse::Value(Command, TEXT("GuLiCoordinatorUrl="), C.CoordinatorUrl);
+    FParse::Value(Command,TEXT("GuLiPeerRoster="),C.PeerRosterFile);
+    FParse::Value(Command,TEXT("GuLiLobby="),C.LobbyId);
+    if (FParse::Param(Command,TEXT("GuLiHost"))) C.HostRoom=true;
+    FParse::Value(Command,TEXT("GuLiPlayers="),C.ExpectedPlayers);
+    if (C.ExpectedPlayers<2 || C.ExpectedPlayers>4) C.ValidationError=TEXT("GuLiPlayers must be 2..4");
     FParse::Value(Command, TEXT("GuLiManifest="), C.ManifestFile);
     if (FParse::Value(Command, TEXT("GuLiRoom="), Value) && (!FGuid::Parse(Value, C.RoomId) || !C.RoomId.IsValid()))
         C.ValidationError=TEXT("GuLiRoom must be a valid nonzero GUID");

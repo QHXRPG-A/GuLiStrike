@@ -1,0 +1,11 @@
+--- Source/GuLiNetCore/Public/GuLiNetPeerRoom.h before
++++ Source/GuLiNetCore/Public/GuLiNetPeerRoom.h
+@@ -40,7 +40,7 @@
+     Send Output;
+     std::string Error;
+     std::set<Id> Handshakes,Leaving;
+-    std::deque<std::pair<Id,Message>> Outbox;
++    std::map<Id,std::deque<Message>> Outbox;
+     std::size_t OutboxBytes=0;
+     bool Emit(Id To,const Message& Value);
+     std::map<Id,double> LastSeen;

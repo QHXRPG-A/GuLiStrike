@@ -67,9 +67,9 @@ bool UGuLiBuildingPlacementComponent::RouteHybridPlacement(const FGuLiBuildingPl
     const auto* Player=GetPlacementPlayer();FGuLiHybridObjectState Source;
     if (!Hybrid || Hybrid->IsBattlePaused() || !Hybrid->CanPublishFacts() || !Request.IsWellFormed()
         || !Player || !Player->IsBattleReady()) return false;
-    if (Player->IsCommander())
+    if (Player->IsCommanderControlActive())
     {if (!GuLiHybridArmy::FindRoot(*GetWorld(),Player->GetTeam(),Source)) return false;}
-    else if (Player->GetBattleRole()==EGuLiCommanderRole::Ground && Binding && Binding->GetObjectKey().Kind==EGuLiHybridObjectKind::GroundPlayer)
+    else if (Player->IsWushuang() && Binding && Binding->GetObjectKey().Kind==EGuLiHybridObjectKind::GroundPlayer)
         Source=Binding->GetState();
     else return false;
     if (!Hybrid->HasControl(Source.Key)) return false;

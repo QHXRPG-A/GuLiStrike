@@ -1,7 +1,7 @@
 """Re-export the four current manifests after loading the matching native build.
 
 Run via commander_editor_python.py. Validate staged files with both the editor
-and the coordinator's offline manifest reader before publishing the files.
+using the editor's current GuLiNetCore reader before publishing the files.
 """
 import hashlib
 import json
@@ -23,8 +23,6 @@ profile_bytes = profile_path.read_bytes()
 profile = json.loads(profile_bytes.decode("utf-8-sig"))
 stage = root / "TestResults/Performance/20261105-network-stalls/manifests" / f"v{expected_protocol}"
 stage.mkdir(parents=True, exist_ok=True)
-coordinator = root / "Tools/GuLiCoordinator/build/windows/Release/GuLiCoordinator.exe"
-assert coordinator.is_file(), "Build the Release coordinator before publishing manifests"
 prepared = []
 runtime_contract = {}
 profile_changes = []
@@ -48,10 +46,6 @@ for population in (200, 600):
             manifest["protocol_version"], expected_protocol)
         validation = json.loads(api.validate_runtime_manifest(str(temporary)))
         assert validation.get("success"), validation
-        checked = subprocess.run([str(coordinator), "--validate-manifest", "--manifest", str(temporary)],
-                                 capture_output=True, timeout=60, creationflags=subprocess.CREATE_NO_WINDOW)
-        if checked.returncode:
-            raise RuntimeError(f"Coordinator rejected {name}: {checked.stderr.decode(errors='replace')}")
         previous = json.loads(original.decode("utf-8-sig"))
         if not acceptance:
             runtime_contract[population] = {(section, key): manifest[section][key] for section, key in ground_contract_fields}
@@ -104,7 +98,7 @@ except Exception:
     raise
 unreal.MCPythonHelper.submit_result(json.dumps({
     "success": True, "protocol": expected_protocol,
-    "scope": "Editor export, coordinator --validate-manifest and file readback",
+    "scope": "Editor export, current core manifest validation and file readback",
     "updated_acceptance_contracts": profile_changes,
     "manifests": [info for _, _, _, info in prepared],
 }, ensure_ascii=False))

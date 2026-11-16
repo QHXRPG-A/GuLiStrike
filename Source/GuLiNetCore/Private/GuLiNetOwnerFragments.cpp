@@ -1,5 +1,6 @@
 #include "GuLiNetOwnerState.h"
 #include "GuLiNetHash.h"
+#include "GuLiNetTeamAuthority.h"
 #include "GuLiNetTrace.h"
 #include <algorithm>
 #include <charconv>
@@ -29,6 +30,13 @@ void WriteLease(Writer& W,const MiningPositionLease& V)
 {W.Key(V.Source);W.U32(V.Cluster);W.U8(V.Sample);W.U32(V.Task);W.Identity(V.Token);W.U32(V.Node);W.U64(V.Version);}
 bool ReadLease(Reader& R,MiningPositionLease& V)
 {return R.Key(V.Source) && R.U32(V.Cluster) && R.U8(V.Sample) && R.U32(V.Task) && R.Identity(V.Token) && R.U32(V.Node) && R.U64(V.Version);}
+}
+StateKey OwnerState::InventoryStateKey(ObjectKey K,bool Processor) const
+{
+    const auto* O=FindRecord(K);
+    if (IsMassObject(K.Kind) && O && (O->Grant.Faction==Team::Red || O->Grant.Faction==Team::Blue))
+        return {TeamAccountObject(O->Grant.Faction),InventoryCapability(K,Processor)};
+    return {K,Processor?"processor":"cargo"};
 }
 ObjectKey TeamAccountObject(Team F) {return {ObjectKind::BusinessWork,StableId("GuLiTeamAccount/v1",std::to_string(static_cast<unsigned>(F))),1};}
 ObjectKey ResourceNodeObject(std::uint32_t N) {return {ObjectKind::ResourceNode,StableId("GuLiResourceNode/v1",std::to_string(N)),1};}
@@ -102,20 +110,23 @@ Bytes OwnerState::CaptureFragmentUncached(const StateKey& K) const
         return W.Take();
     }
     const auto& Resources=ResourceLedgerValue.Snapshot();
-    if (N=="cargo")
+    ObjectKey Inventory=K.Object;bool Processor=false;
+    const bool TeamInventory=ReadInventoryCapability(N,Inventory,Processor);
+    if (TeamInventory && InventoryStateKey(Inventory,Processor)!=K) return {};
+    if ((N=="cargo" && !IsMassObject(K.Object.Kind)) || (TeamInventory && !Processor))
     {
-        const auto I=Resources.Miners.find(K.Object);if (I==Resources.Miners.end()) return {};const auto& V=I->second;
+        const auto I=Resources.Miners.find(Inventory);if (I==Resources.Miners.end()) return {};const auto& V=I->second;
         W.U8(static_cast<std::uint8_t>(V.Faction));W.U32(V.Capacity);WriteResources(W,V.Cargo);
         W.U64(V.ExtractionPeriod);W.U64(V.NextExtraction);W.U64(V.Version);return W.Take();
     }
-    if (N=="processor")
+    if ((N=="processor" && !IsMassObject(K.Object.Kind)) || (TeamInventory && Processor))
     {
-        const auto I=Resources.Factories.find(K.Object);if (I==Resources.Factories.end()) return {};const auto& V=I->second;
+        const auto I=Resources.Factories.find(Inventory);if (I==Resources.Factories.end()) return {};const auto& V=I->second;
         W.U8(static_cast<std::uint8_t>(V.Faction));W.U32(V.Capacity);W.U64(V.ProcessingPeriod);W.U64(V.NextProcessing);W.U64(V.Version);
         W.U32(static_cast<std::uint32_t>(V.Queue.size()));
         for (const auto& B:V.Queue) {W.Identity(B.Event);W.Key(B.Source);W.U8(static_cast<std::uint8_t>(B.Beneficiary));WriteResources(W,B.Amount);}
         WriteResources(W,V.Processed);
-        const auto Held=HeldFactoryCapacity.find(K.Object);W.U64(Held==HeldFactoryCapacity.end()?0:Held->second);return W.Take();
+        const auto Held=HeldFactoryCapacity.find(Inventory);W.U64(Held==HeldFactoryCapacity.end()?0:Held->second);return W.Take();
     }
     std::uint32_t Index=0;
     if (SuffixNumber(N,"ore/",Index))
@@ -174,7 +185,7 @@ Bytes OwnerState::CaptureFragmentUncached(const StateKey& K) const
 bool OwnerState::UsesResourceLedger(const StateFragment& F)
 {
     const auto& N=F.Key.Capability;
-    return N=="cargo" || N=="processor" || N.starts_with("ore/") || N.starts_with("territory/");
+    return N=="cargo" || N=="processor" || N.starts_with("cargo/") || N.starts_with("processor/") || N.starts_with("ore/") || N.starts_with("territory/");
 }
 bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* ResourceBatch,MiningReservationState* MiningBatch)
 {
@@ -221,15 +232,19 @@ bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* Resou
         (Team==Team::Red?E.Red:E.Blue)=Balance;
         if (!EconomyLedger.Restore(std::move(E))) return false;FinalizedAccounts[Team]=std::move(Finals);
     }
-    else if (N=="cargo" || N=="processor")
+    else if (N=="cargo" || N=="processor" || N.starts_with("cargo/") || N.starts_with("processor/"))
     {
+        ObjectKey Inventory=K.Object;bool Processor=N=="processor";
+        if (N.starts_with("cargo/") || N.starts_with("processor/"))
+        {if (!ReadInventoryCapability(N,Inventory,Processor) || InventoryStateKey(Inventory,Processor)!=K) return false;}
+        else if (IsMassObject(K.Object.Kind)) return false;
         auto& S=*LedgerState;std::uint8_t Team;std::uint32_t Size;
-        if (N=="cargo")
+        if (!Processor)
         {
             MinerInventory V;
             if (!R.U8(Team) || Team<1 || Team>2 || !R.U32(V.Capacity) || !ReadResources(R,V.Cargo)
                 || !R.U64(V.ExtractionPeriod) || !R.U64(V.NextExtraction) || !R.U64(V.Version) || !R.Done()) return false;
-            V.Faction=static_cast<GuLiNet::Team>(Team);S.Miners[K.Object]=V;
+            V.Faction=static_cast<GuLiNet::Team>(Team);S.Miners[Inventory]=V;
         }
         else
         {
@@ -244,8 +259,8 @@ bool OwnerState::ApplyFragment(const StateFragment& F,ResourceLedgerState* Resou
                 B.Beneficiary=static_cast<GuLiNet::Team>(Team);V.Queue.push_back(B);
             }
             if (!ReadResources(R,V.Processed) || !R.U64(Held) || !R.Done() || Held+ResourceLedger::Queued(V)>V.Capacity) return false;
-            if (Held) HeldFactoryCapacity[K.Object]=Held;else HeldFactoryCapacity.erase(K.Object);
-            S.Factories[K.Object]=std::move(V);
+            if (Held) HeldFactoryCapacity[Inventory]=Held;else HeldFactoryCapacity.erase(Inventory);
+            S.Factories[Inventory]=std::move(V);
             std::int64_t Blue=0,Red=0;
             for (const auto& [Object,Factory]:S.Factories) {Blue+=Factory.Processed.Blue;Red+=Factory.Processed.Red;}
             if (Blue>INT32_MAX || Red>INT32_MAX) return false;
@@ -336,7 +351,15 @@ std::set<StateKey> OwnerState::FragmentKeys(std::span<const ObjectKey> Keys,bool
     {
         if (!Directory.contains(K)) continue;Out.insert({K,"object"});Out.insert({K,"tasks"});
         if (K==TeamAccountObject(Team::Red) || K==TeamAccountObject(Team::Blue)) Out.insert({K,"account"});
-        if (R.Miners.contains(K)) Out.insert({K,"cargo"});if (R.Factories.contains(K)) Out.insert({K,"processor"});
+        if (!IsMassObject(K.Kind))
+        {if (R.Miners.contains(K)) Out.insert(InventoryStateKey(K,false));if (R.Factories.contains(K)) Out.insert(InventoryStateKey(K,true));}
+        if (K==TeamAccountObject(Team::Red) || K==TeamAccountObject(Team::Blue))
+        {
+            for (const auto& [Carrier,V]:R.Miners) if (IsMassObject(Carrier.Kind))
+            {const auto Key=InventoryStateKey(Carrier,false);if (Key.Object==K) Out.insert(Key);}
+            for (const auto& [Carrier,V]:R.Factories) if (IsMassObject(Carrier.Kind))
+            {const auto Key=InventoryStateKey(Carrier,true);if (Key.Object==K) Out.insert(Key);}
+        }
     }
     // Ore and territory fragments cannot belong to a flight, player or unit.
     // A leave exports hundreds of individual flights: hashing all 6240 ore

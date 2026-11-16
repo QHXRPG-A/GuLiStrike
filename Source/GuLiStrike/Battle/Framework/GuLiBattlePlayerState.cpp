@@ -216,6 +216,7 @@ void AGuLiBattlePlayerState::CopyProperties(APlayerState* PlayerState)
 		NewPlayerState->PlayerGuid = PlayerGuid;
 		NewPlayerState->Team = Team;
 		NewPlayerState->CommanderRole = CommanderRole;
+		NewPlayerState->ActiveControlRole = ActiveControlRole;
 		NewPlayerState->SlotIndex = SlotIndex;
         NewPlayerState->SeatVersion=SeatVersion;
 		// 身份跨通用/指挥官派生类迁移，公共与士兵流握手都必须重新完成。
@@ -239,6 +240,7 @@ void AGuLiBattlePlayerState::OverrideWith(APlayerState* PlayerState)
 			PlayerGuid = IncomingPlayerState->PlayerGuid;
 			Team = IncomingPlayerState->Team;
 			CommanderRole = IncomingPlayerState->CommanderRole;
+			ActiveControlRole = IncomingPlayerState->ActiveControlRole;
 			SlotIndex = IncomingPlayerState->SlotIndex;
             SeatVersion=IncomingPlayerState->SeatVersion;
 		}
@@ -278,7 +280,11 @@ void AGuLiBattlePlayerState::SetServerRoleAssignment(
 		return;
 	}
 
-    if ((Team!=NewTeam || CommanderRole!=NewRole || SlotIndex!=NewSlotIndex) && SeatVersion<MAX_int64) ++SeatVersion;
+    if (Team!=NewTeam || CommanderRole!=NewRole || SlotIndex!=NewSlotIndex)
+    {
+        if (SeatVersion<MAX_int64) ++SeatVersion;
+        ActiveControlRole=NewRole;
+    }
 	Team = NewTeam;
 	CommanderRole = NewRole;
 	SlotIndex = NewSlotIndex;
@@ -286,6 +292,17 @@ void AGuLiBattlePlayerState::SetServerRoleAssignment(
 	bSyncReady = false;
 	NotifyStateChanged();
 
+}
+
+bool AGuLiBattlePlayerState::SetActiveControlRole(EGuLiCommanderRole NewRole)
+{
+	if (!CanControlRole(NewRole)) return false;
+	if (ActiveControlRole != NewRole)
+	{
+		ActiveControlRole = NewRole;
+		NotifyStateChanged();
+	}
+	return true;
 }
 
 // 公共握手仅开放通用玩法资格；此函数故意不写 bSyncReady。

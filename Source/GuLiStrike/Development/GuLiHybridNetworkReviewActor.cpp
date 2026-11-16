@@ -27,7 +27,7 @@ bool AGuLiHybridNetworkReviewActor::BuildLaunchArguments(FString& OutArguments,F
         || (Seat!=EGuLiCommanderRole::Commander && Seat!=EGuLiCommanderRole::Ground && Seat!=EGuLiCommanderRole::Air)
         || (Transport==EGuLiNetworkTransport::LocalUdp && !DevelopmentIdentity.IsValid())
         || (Team!=EGuLiTeam::Red && Team!=EGuLiTeam::Blue) || UdpPort<0 || UdpPort>65535
-        || Manifest.FilePath.IsEmpty() || !Safe(Manifest.FilePath) || !Safe(CoordinatorUrl))
+        || Manifest.FilePath.IsEmpty() || !Safe(Manifest.FilePath) || !Safe(PeerRosterFile) || !Safe(LobbyId))
     {OutError=TEXT("Select a valid Hybrid transport/seat/run mode, 200/0 or 600/500, a room, a development identity for LocalUdp, and a manifest.");return false;}
     FString ConfigHash,MapHash,Map,Error;
     if (!FGuLiHybridManifest::ValidateFile(Manifest.FilePath,ConfigHash,MapHash,Map,Error)) {OutError=Error;return false;}
@@ -38,10 +38,11 @@ bool AGuLiHybridNetworkReviewActor::BuildLaunchArguments(FString& OutArguments,F
     if (ActualUnits!=Units) {OutError=TEXT("Selected population differs from the manifest.");return false;}
     const FString SeatName=StaticEnum<EGuLiCommanderRole>()->GetNameStringByValue(int64(Seat));
     const FString ModeName=RunMode==EGuLiClientRunMode::LogicOnly?TEXT("LogicOnly"):TEXT("Rendered");
-    OutArguments=FString::Printf(TEXT("%s -game -GuLiNetMode=Hybrid -GuLiTransport=%s -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=%s -GuLiRole=%s -GuLiClientRunMode=%s -GuLiUdpPort=%d -GuLiCoordinatorUrl=\"%s\" -GuLiManifest=\"%s\"%s"),
+    OutArguments=FString::Printf(TEXT("%s -game -GuLiNetMode=Hybrid -GuLiTransport=%s -GuLiRoom=%s -GuLiDevPlayerId=%s -GuLiTeam=%s -GuLiRole=%s -GuLiClientRunMode=%s -GuLiUdpPort=%d -GuLiPeerRoster=\"%s\" -GuLiManifest=\"%s\"%s"),
         *Map,Transport==EGuLiNetworkTransport::EOS?TEXT("EOS"):TEXT("LocalUdp"),*Room.ToString(EGuidFormats::Digits),
         *DevelopmentIdentity.ToString(EGuidFormats::Digits),Team==EGuLiTeam::Red?TEXT("Red"):TEXT("Blue"),*SeatName,*ModeName,
-        UdpPort,*CoordinatorUrl,*FPaths::ConvertRelativePathToFull(Manifest.FilePath),RunMode==EGuLiClientRunMode::LogicOnly?TEXT(" -NullRHI"):TEXT(""));
+        UdpPort,*PeerRosterFile,*FPaths::ConvertRelativePathToFull(Manifest.FilePath),RunMode==EGuLiClientRunMode::LogicOnly?TEXT(" -NullRHI"):TEXT(""));
+    if (Transport==EGuLiNetworkTransport::EOS) OutArguments+=HostRoom?TEXT(" -GuLiHost"):FString::Printf(TEXT(" -GuLiLobby=\"%s\""),*LobbyId);
     OutArguments+=FString::Printf(TEXT(" -GuLiAcceptanceRun=review-%s -GuLiAcceptancePopulation=%d -GuLiAcceptanceExtraFlights=%d -GuLiAcceptanceSeed=20261011"),
         *Room.ToString(EGuidFormats::Digits),Units,AdditionalFlights);
     return true;

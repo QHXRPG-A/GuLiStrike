@@ -52,7 +52,9 @@ public:
 
     // No local allocation: callers apply identities and seats accepted by the coordination session.
     bool ApplyHybridMatchIdentity(const FGuid& Identity,uint64 Epoch);
-    bool ClaimExactRoleSlot(const FGuid& PlayerGuid,uint8 SlotIndex);
+    /** Red Commander/Wushuang, then Blue Commander/Wushuang; invalid roles return MAX_uint8. */
+    static uint8 ResolveRoleSlotIndex(EGuLiTeam Team, EGuLiCommanderRole SeatRole);
+    bool ClaimExactRoleSlot(const FGuid& PlayerGuid, uint8 SlotIndex, EGuLiCommanderRole SeatRole);
 
 	/** 应用已提交的席位释放；仅在席位仍属于 ExpectedPlayerGuid 时生效，避免旧退出回调清掉新玩家。 */
 	void ReleaseRoleSlot(uint8 SlotIndex, const FGuid& ExpectedPlayerGuid);
@@ -80,12 +82,6 @@ public:
 private:
     friend class UGuLiHybridWorldSubsystem;
 	void InitializeDefaultRoleSlots();
-	bool TryClaimRoleSlot(
-		uint8 SlotIndex,
-		const FGuid& PlayerGuid,
-		uint8& OutSlotIndex,
-		EGuLiTeam& OutTeam,
-		EGuLiCommanderRole& OutRole);
 	void NotifyRoleSlotsChanged();
 
 	UFUNCTION()

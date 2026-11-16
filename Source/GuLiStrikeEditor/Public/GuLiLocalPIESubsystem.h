@@ -19,12 +19,14 @@ public:
     bool bPromptForRole=true;
     UPROPERTY(Config, EditAnywhere, Category="Local PIE", meta=(ValidEnumValues="Commander,Ground,Air"))
     EGuLiCommanderRole MainRole=EGuLiCommanderRole::Commander;
-    UPROPERTY(Config, EditAnywhere, Category="Local PIE", meta=(ClampMin="1024",ClampMax="65535"))
-    int32 CoordinatorPort=18787;
+    UPROPERTY(Config, EditAnywhere, Category="Local PIE", meta=(ClampMin="1024",ClampMax="65532"))
+    int32 LocalUdpBasePort=18787;
+    UPROPERTY(Config, EditAnywhere, Category="Local PIE", meta=(DisplayName="四客户端 2v2"))
+    bool bFourClients=false;
     virtual FName GetCategoryName() const override { return TEXT("GuLiStrike"); }
 };
 
-/** Owns exactly two children; the existing editor hosts the rendered PIE client. */
+/** Owns one or three logic children; the existing editor hosts the rendered PIE client. */
 UCLASS()
 class GULISTRIKEEDITOR_API UGuLiLocalPIESubsystem final : public UEditorSubsystem
 {
