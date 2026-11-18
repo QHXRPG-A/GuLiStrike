@@ -8,3 +8,5 @@
 - [最终发布凭据](publication-result.json)：以实际远端提交与清单核对为准。
 
 两个原预览入口及当前下载包保留在本机。仓库中的制作HTML和清单依赖本地资源，此次文本/数据提交不包含这些素材。没有重编译、运行PIE、截图或助手结果读图。
+
+已发布到GitHub `main`：[源码与配置提交](https://github.com/QHXRPG-A/GuLiStrike/commit/89520582bb97d981f0d689383ae9b19e499b7839)。远端SHA已通过Git和GitHub API回读核实；本会话之外的工作区改动保持。
