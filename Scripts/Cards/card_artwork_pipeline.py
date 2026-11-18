@@ -159,7 +159,8 @@ def preflight(ids=None, require_native=False, mutation=False, reimport=False):
         independent = all(f'Layer {index} Map' in names['Texture'] for index in range(1, 7))
         masked = 'Foreground Front Mask' in names['Texture']
         expected = {'BlankPlaceholder': (False, False), 'ModelComicAtlasV9': (False, False), 'RegisteredSix': (True, False),
-                    'RegisteredSixForegroundMask': (True, True), 'RegisteredSixRigid': (True, True)}[template['CompositePreset']]
+                    'RegisteredSixForegroundMask': (True, True), 'RegisteredSixRigid': (True, True),
+                    'RegisteredSixRigidLayer3Mask': (True, True)}[template['CompositePreset']]
         assert (independent, masked) == expected, 'Parent material does not implement the selected composite template'
         for key, (kind, _) in parameter_values(catalog, ident).items():
             assert key in names[kind], f"Artwork {ident}: {key} is not a {kind} parameter of its template"
@@ -261,8 +262,10 @@ def apply_artworks(ids=None, reimport=False):
                 # use the role recorded in Excel, including the binary mask sampler.
                 if new_texture:
                     mask = param["TextureRole"] == "Mask"
-                    texture.set_editor_property("srgb", not mask)
                     texture.set_editor_property("compression_settings", unreal.TextureCompressionSettings.TC_MASKS if mask else unreal.TextureCompressionSettings.TC_BC7)
+                    # Compression changes can reset sRGB after PNG normal-map
+                    # auto-detection; apply the catalog color role last.
+                    texture.set_editor_property("srgb", not mask)
                     texture.set_editor_property("address_x", unreal.TextureAddress.TA_CLAMP)
                     texture.set_editor_property("address_y", unreal.TextureAddress.TA_CLAMP)
                     if mask:
@@ -317,7 +320,7 @@ def _table_matches(dt, source):
                 if expected.startswith(("/Game/", "/Engine/")):
                     if not (value == expected or str(value).endswith("'" + expected + "'")):
                         return False
-                elif ("" if value in (None, "None") else value) != expected:
+                elif value != expected and not (expected == "" and value in (None, "None")):
                     return False
             elif not _equal(value, expected):
                 return False
@@ -495,8 +498,17 @@ def execute(action="preflight", ids=None, reimport=False, run_id=None):
             report["application"] = apply_artworks(ids, reimport)
             report["tables"] = import_tables()
         elif action == "review":
-            assert ids and len(ids) == 1, "review requires one --ids value"
-            report["review"] = prepare_review(ids[0])
+            assert ids, "review requires --ids"
+            _, review_catalog, _ = load_catalog()
+            selected_ids(review_catalog, ids)
+            ground_frame = review_catalog['templates'][review_catalog['artworks'][ids[0]]['TemplateId']]['CompositePreset'] == 'RegisteredSixRigidLayer3Mask'
+            if len(ids) == 1 and not ground_frame:
+                report["review"] = prepare_review(ids[0])
+            else:
+                import importlib
+                import card_artwork_review
+                importlib.reload(card_artwork_review)
+                report["review"] = card_artwork_review.prepare(ids)
         elif action == 'test':
             report['parameter_update_test'] = test_parameter_update()
         else:

@@ -1,0 +1,499 @@
+{
+  "version": "r3",
+  "geometry": {
+    "canvas": [
+      1504,
+      1376
+    ],
+    "source_core": [
+      96,
+      96,
+      1408,
+      1280
+    ],
+    "visible_window": [
+      107.34833829594425,
+      96,
+      1396.6516617040556,
+      1280
+    ],
+    "visible_size": [
+      1289.3033234081115,
+      1184
+    ],
+    "aperture_ratio": 1.0889386177433373,
+    "crop_each_side_source_pixels": 11.348338295944245,
+    "source_extra_border": [
+      96,
+      96,
+      96,
+      96
+    ],
+    "max_travel_source_pixels": [
+      24,
+      24
+    ],
+    "max_card_tilt_degrees": 12,
+    "filter_margin": 2,
+    "transform": "whole-layer rigid translation; CSS tilt rotates the clipped card plane without changing the source sampling window",
+    "draw_order": [
+      6,
+      5,
+      4,
+      1,
+      2,
+      3
+    ],
+    "motion_owner_depths": {
+      "foreground": 1.15,
+      "speed_lines": 0.85,
+      "projectile": 0.65,
+      "ground": -0.15,
+      "sky": -0.5
+    },
+    "authorisation": {
+      "layers": "采用这六层（推荐）",
+      "aspect": "左右各裁约 11 像素"
+    }
+  },
+  "layers": [
+    {
+      "index": 1,
+      "name": "近景岩地",
+      "file": "Layers/L1_foreground.png",
+      "sha256": "3df9f4c64bca3b18d76b169e5fdc4c053c61495d811845ad0ad1b17e19241d71",
+      "canvas": [
+        1504,
+        1376
+      ],
+      "depth": 1.15,
+      "motion_owner": "foreground",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.8590976388545275,
+      "source": {
+        "core": "Registered/L1_foreground.png",
+        "outpaint": "Generated/L1_foreground_outpaint_r2.png",
+        "outpaint_to_original": [
+          [
+            1.4191253185272217,
+            0.0,
+            -273.0054931640625
+          ],
+          [
+            0.0,
+            1.4191253185272217,
+            -302.9619140625
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "outpaint_to_common": [
+          [
+            1.4193124237778534,
+            0.0,
+            -177.4301595777797
+          ],
+          [
+            0.0,
+            1.4193124237778534,
+            -235.1048855634872
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "registration": {
+          "matches": 186,
+          "inliers": 74,
+          "median_error_px": 1.8361811637878418
+        },
+        "core_rectangle_feather_px": 7,
+        "protected_original_master_pixels": 0
+      },
+      "static_refinement_matrix": [
+        [
+          0.9987169504165649,
+          0.0,
+          0.7632114887237549
+        ],
+        [
+          0.0,
+          0.9987169504165649,
+          1.8895763158798218
+        ]
+      ],
+      "source_revision": "r2"
+    },
+    {
+      "index": 2,
+      "name": "速度线",
+      "file": "Layers/L2_speed_lines.png",
+      "sha256": "2142cce98a0a3503a01628d7963c2761a60d352e54ade0f0552f812e53d9bda4",
+      "canvas": [
+        1504,
+        1376
+      ],
+      "depth": 0.85,
+      "motion_owner": "speed_lines",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.9844107573602177,
+      "source": {
+        "core": "Registered/L2_speed_lines.png",
+        "outpaint": "Generated/L2_speed_lines_outpaint_r2.png",
+        "outpaint_to_original": [
+          [
+            1.4662533311814334,
+            0.0,
+            -300.39376372549464
+          ],
+          [
+            0.0,
+            1.4662533311814334,
+            -308.11445067048555
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "outpaint_to_common": [
+          [
+            1.485836233391786,
+            0.0,
+            -202.69207741515993
+          ],
+          [
+            0.0,
+            1.485836233391786,
+            -237.5100060104716
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "registration": {
+          "method": "rigid fit to five internal stroke alpha centroids; extended edge stroke excluded",
+          "samples": 5,
+          "median_error_px": 5.334673782850388
+        },
+        "core_rectangle_feather_px": 7,
+        "protected_original_master_pixels": 0
+      },
+      "static_refinement_matrix": [
+        [
+          0.997543454170227,
+          0.0,
+          1.0921025276184082
+        ],
+        [
+          0.0,
+          0.997543454170227,
+          1.4419982433319092
+        ]
+      ],
+      "source_revision": "r2"
+    },
+    {
+      "index": 3,
+      "name": "弹体与尾焰",
+      "file": "Layers/L3_projectile.png",
+      "sha256": "bdd70db4fef22cda705142f85c34b0149d3c35e7d00fef703aab56cf8c8b955b",
+      "canvas": [
+        1504,
+        1376
+      ],
+      "depth": 0.65,
+      "motion_owner": "projectile",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.8147275869000494,
+      "source": {
+        "core": "Registered/L3_projectile.png",
+        "outpaint": null,
+        "reason": "Complete generated object already extends beyond the maximum visible sample region",
+        "protected_original_master_pixels": 0
+      },
+      "static_refinement_matrix": [
+        [
+          0.9979532361030579,
+          0.0,
+          1.8156237602233887
+        ],
+        [
+          0.0,
+          0.9979532361030579,
+          1.2078030109405518
+        ]
+      ],
+      "source_revision": "r2"
+    },
+    {
+      "index": 4,
+      "name": "爆炸与冲击波",
+      "file": "Layers/L4_ground_explosion.png",
+      "sha256": "25abdc3ac1d25e2b742581532f2b8db0c719c7a2ac3236729cc2949be4ddf331",
+      "canvas": [
+        1504,
+        1376
+      ],
+      "depth": -0.15,
+      "motion_owner": "ground",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.8063598814015339,
+      "source": {
+        "core": "Registered/L4_ground_explosion.png",
+        "outpaint": null,
+        "reason": "Complete generated object already extends beyond the maximum visible sample region",
+        "protected_original_master_pixels": 0
+      },
+      "static_refinement_matrix": [
+        [
+          0.9990029335021973,
+          0.0,
+          0.9381826519966125
+        ],
+        [
+          0.0,
+          0.9990029335021973,
+          0.37307441234588623
+        ]
+      ],
+      "source_revision": "r2"
+    },
+    {
+      "index": 5,
+      "name": "大陆与海面",
+      "file": "Layers/L5_mainland.png",
+      "sha256": "e34b69e4522748939220c378eed1698be3dad38ab5cf00a8f7b299f986d83209",
+      "canvas": [
+        1504,
+        1376
+      ],
+      "depth": -0.15,
+      "motion_owner": "ground",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.5771339412728848,
+      "source": {
+        "core": "Registered/L5_mainland.png",
+        "outpaint": "Generated/L5_mainland_outpaint_r2.png",
+        "outpaint_to_original": [
+          [
+            1.3321317434310913,
+            0.0,
+            -237.8076171875
+          ],
+          [
+            0.0,
+            1.3321317434310913,
+            -238.840087890625
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "outpaint_to_common": [
+          [
+            1.3295354817064577,
+            0.0,
+            -140.5321601947071
+          ],
+          [
+            0.0,
+            1.3295354817064577,
+            -150.2832912687154
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "registration": {
+          "matches": 571,
+          "inliers": 325,
+          "median_error_px": 1.5774110555648804
+        },
+        "core_rectangle_feather_px": 7,
+        "protected_original_master_pixels": 0
+      },
+      "static_refinement_matrix": [
+        [
+          1.0017027854919434,
+          0.0,
+          -0.5369740128517151
+        ],
+        [
+          0.0,
+          1.0017027854919434,
+          -1.3038299083709717
+        ]
+      ],
+      "source_revision": "r3"
+    },
+    {
+      "index": 6,
+      "name": "天空与云层",
+      "file": "Layers/L6_sky.png",
+      "sha256": "38b44392b79697008f7ae63ebeba320be5caa6f2a5022c77c4c4c85d04e53120",
+      "canvas": [
+        1504,
+        1376
+      ],
+      "depth": -0.5,
+      "motion_owner": "sky",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "transparent_fraction": 0.0,
+      "source": {
+        "core": "Registered/L6_sky.png",
+        "outpaint": "Generated/L6_sky_outpaint_r2.png",
+        "outpaint_to_original": [
+          [
+            1.3580520153045654,
+            0.0,
+            -230.11102294921875
+          ],
+          [
+            0.0,
+            1.3580520153045654,
+            -225.43295288085938
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "outpaint_to_common": [
+          [
+            1.3888457336286422,
+            0.0,
+            -151.93997762038634
+          ],
+          [
+            0.0,
+            1.3888457336286422,
+            -185.94471209054245
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "registration": {
+          "matches": 143,
+          "inliers": 92,
+          "median_error_px": 1.1620705127716064
+        },
+        "core_rectangle_feather_px": 7,
+        "protected_original_master_pixels": 0
+      },
+      "static_refinement_matrix": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "source_revision": "r2"
+    }
+  ],
+  "land_replacement": {
+    "file": "Generated/L5_mainland_fidelity_r3.png",
+    "matrix_to_common": [
+      [
+        0.9925631284713745,
+        0.0,
+        96.57789611816406
+      ],
+      [
+        0.0,
+        0.9925631284713745,
+        97.34930419921875
+      ]
+    ],
+    "matches": 253,
+    "inliers": 96,
+    "median_error_px": 1.0458587408065796
+  },
+  "static_refinement": {
+    "6": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "5": [
+      1.0017028056890127,
+      0.7435358873446712,
+      -0.13229956134684445
+    ],
+    "4": [
+      0.9990029100112372,
+      0.18837098835777405,
+      -0.3129234957186984
+    ],
+    "1": [
+      0.9987169254690242,
+      -0.20166055824839985,
+      1.0068210932027288
+    ],
+    "2": [
+      0.997543475701278,
+      -0.7552037318067591,
+      -0.2480904483841374
+    ],
+    "3": [
+      0.9979532589666095,
+      0.2764744487990302,
+      -0.20035481424359167
+    ]
+  },
+  "core_rgb_ssim": 0.8007891178131104,
+  "threshold": 0.8,
+  "passed": true,
+  "metric_parameters": {
+    "data_range": 1,
+    "channel_axis": 2,
+    "gaussian_weights": true,
+    "sigma": 1.5,
+    "win_size": 11,
+    "use_sample_covariance": false
+  },
+  "reference": "Inputs/FinalReference.png",
+  "reference_sha256": "237b694d314ce9b4e5aa55b91e86bd4daf403f875132a860f68c855ca5d93dc2",
+  "source_pixels_copied": false,
+  "assistant_visual_validation": false,
+  "user_visual_acceptance": "pending"
+}

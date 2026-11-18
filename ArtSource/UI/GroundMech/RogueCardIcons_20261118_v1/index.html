@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>游骑兵 · 五张肉鸽牌图标</title>
+<style>
+:root{color-scheme:dark;--tile:#FEE4D9;--icon-size:256px;font-family:system-ui,"Microsoft YaHei",sans-serif;background:#1A182F;color:#FEE4D9}*{box-sizing:border-box}body{margin:0;padding:32px;max-width:1550px;margin-inline:auto}h1{font-size:28px;margin:0 0 12px}p{color:#E3B6B1;line-height:1.7}.controls{display:flex;gap:24px;flex-wrap:wrap;margin:24px 0}fieldset{border:0;padding:0;margin:0;display:flex;align-items:center;gap:8px}legend{float:left;margin-right:12px;line-height:36px}button,a{font:inherit}button{border:1px solid #835061;background:#2A104B;color:#FEE4D9;border-radius:8px;padding:8px 14px;cursor:pointer}button[aria-pressed=true]{background:#6AA4BE;border-color:#6AA4BE;color:#1A182F}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}article{background:#2A104B;border:1px solid #522C5C;border-radius:18px;overflow:hidden}.stage{height:300px;background:var(--tile);display:grid;place-items:center}.stage img{width:var(--icon-size);height:var(--icon-size);object-fit:contain;max-width:95%}.caption{padding:18px;display:flex;align-items:center;justify-content:space-between;gap:12px}h2{font-size:18px;margin:0}.caption a{color:#E3B6B1;font-size:14px;text-underline-offset:4px}footer{margin-top:24px;font-size:14px;color:#E3B6B1}@media(max-width:600px){body{padding:20px}.grid{grid-template-columns:1fr}}
+</style>
+<h1>游骑兵 · 五张肉鸽牌图标</h1>
+<p><strong id="revision-name">新版 V2.1 · 三枚导弹轴线修订</strong>。可切换原版、底色与显示尺寸。</p>
+<div class="controls">
+<fieldset><legend>版本</legend><button data-version="v2" aria-pressed="true">新版 V2.1</button><button data-version="v1" aria-pressed="false">原版 V1</button></fieldset>
+<fieldset><legend>底色</legend><button data-bg="#FEE4D9" aria-pressed="true">浅色</button><button data-bg="#2C3735" aria-pressed="false">深色</button><button data-bg="#6AA4BE" aria-pressed="false">蓝色</button></fieldset>
+<fieldset><legend>尺寸</legend><button data-size="64" aria-pressed="false">64</button><button data-size="128" aria-pressed="false">128</button><button data-size="256" aria-pressed="true">256</button></fieldset>
+</div>
+<main class="grid">
+<article><div class="stage"><img src="Icons/09_NoSurvivors.png?v=20261118-v2" alt="无人生还图标"></div><div class="caption"><h2>无人生还</h2><a href="Icons/09_NoSurvivors.png?v=20261118-v2" download>下载 PNG</a></div></article>
+<article><div class="stage"><img src="Icons/10_EnhancedBullet.png?v=20261118-v2" alt="强化子弹图标"></div><div class="caption"><h2>强化子弹</h2><a href="Icons/10_EnhancedBullet.png?v=20261118-v2" download>下载 PNG</a></div></article>
+<article id="package-card"><div class="stage"><img src="Icons/11_ExplosivePackage.png?v=20261118-v2-1-package-axis" alt="爆破套餐图标"></div><div class="caption"><h2>爆破套餐</h2><a href="Icons/11_ExplosivePackage.png?v=20261118-v2-1-package-axis" download>下载 PNG</a></div><div style="padding:0 18px 18px"><button id="package-axis-before" data-before="Inputs/11_ExplosivePackage_v2_before_axis.png" aria-pressed="false" style="font-size:13px">查看轴线修订前</button></div></article>
+<article><div class="stage"><img src="Icons/12_FireRate.png?v=20261118-v2" alt="增加攻速图标"></div><div class="caption"><h2>增加攻速</h2><a href="Icons/12_FireRate.png?v=20261118-v2" download>下载 PNG</a></div></article>
+<article id="rocket-card"><div class="stage"><img src="Icons/13_ExplosiveEnhancement.png?v=20261118-v2-axis" alt="强化爆炸弹图标"></div><div class="caption"><h2>强化爆炸弹</h2><a href="Icons/13_ExplosiveEnhancement.png?v=20261118-v2-axis" download>下载 PNG</a></div><div style="padding:0 18px 18px"><button id="axis-before" data-before="Inputs/13_ExplosiveEnhancement_v2_before_axis.png" aria-pressed="false" style="font-size:13px">查看轴线修订前</button></div></article>
+</main>
+<footer>新版透明 PNG 与项目正式纹理共用同一套图稿。<a href="RogueCardIcons_20261118_v2_1.zip" download style="color:inherit">下载整套素材</a> · <a href="Research/prompt_research_20261118.json" style="color:inherit">提示词参考来源</a></footer>
+<script>
+for(const article of document.querySelectorAll('article'))article.dataset.file=article.querySelector('img').getAttribute('src').split('/').pop().split('?')[0];
+const axisButtons=document.querySelectorAll('[data-before]');
+function setVersion(version){
+ for(const article of document.querySelectorAll('article')){
+  const path=(version==='v1'?'Revisions/v1/Icons/':'Icons/')+article.dataset.file+'?v=20261118-'+version+'-1-package-axis';
+  article.querySelector('img').src=path;article.querySelector('a[download]').href=path;
+ }
+ for(const button of document.querySelectorAll('[data-version]'))button.setAttribute('aria-pressed',String(button.dataset.version===version));
+ document.querySelector('#revision-name').textContent=version==='v1'?'原版 V1':'新版 V2.1 · 三枚导弹轴线修订';
+ for(const axisButton of axisButtons){axisButton.disabled=version==='v1';axisButton.setAttribute('aria-pressed','false');axisButton.textContent='查看轴线修订前'}
+}
+for(const button of document.querySelectorAll('[data-version]'))button.addEventListener('click',()=>setVersion(button.dataset.version));
+for(const axisButton of axisButtons)axisButton.addEventListener('click',()=>{
+ const before=axisButton.getAttribute('aria-pressed')!=='true';
+ const card=axisButton.closest('article');
+ const path=before?axisButton.dataset.before:'Icons/'+card.dataset.file+'?v=20261118-v2-1-package-axis';
+ card.querySelector('img').src=path;card.querySelector('a[download]').href=path;
+ axisButton.setAttribute('aria-pressed',String(before));axisButton.textContent=before?'返回轴线修订后':'查看轴线修订前';
+});
+for(const button of document.querySelectorAll('[data-bg]'))button.addEventListener('click',()=>{document.documentElement.style.setProperty('--tile',button.dataset.bg);for(const other of document.querySelectorAll('[data-bg]'))other.setAttribute('aria-pressed',String(other===button))});
+for(const button of document.querySelectorAll('[data-size]'))button.addEventListener('click',()=>{document.documentElement.style.setProperty('--icon-size',button.dataset.size+'px');for(const other of document.querySelectorAll('[data-size]'))other.setAttribute('aria-pressed',String(other===button))});
+</script>
+</html>

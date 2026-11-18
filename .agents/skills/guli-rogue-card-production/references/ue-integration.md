@@ -2,7 +2,7 @@
 
 牌面资源现在统一使用[美术目录与导入入口](artwork-data-pipeline.md)。以下旧目录与交互说明继续适用；日常贴图/材质参数从GuLiStrikeCardArtwork.xlsx生成，不能运行历史写入脚本恢复旧值。
 
-以下为2026-09-28的当前目录和接口。商城源只读；历史制作脚本、README中的旧目录可能通过redirector仍可加载，但不是新资产归属。
+以下保留已有目录和接口，并补充当前Ground正式资源与评审流程；实际运行配置须回读。商城源只读；历史制作脚本、README中的旧目录可能通过redirector仍可加载，但不是新资产归属。
 
 ## 目录归属
 
@@ -16,9 +16,14 @@
     MoveSpeed/Materials, Textures
     MissilePod/Materials, Textures
     RainSalvo/Materials, Textures
+  GroundMech/
+    FireRate/Materials, Textures
+    EnhancedBullet/Materials, Textures
+    ExplosivePackage/Materials, Textures
+    NoSurvivors/Materials, Textures
 ```
 
-尚未接通的类型可采用语义清晰的Ship、GroundMech、Building目录；这是命名建议，落地前读项目已有对应目录，不宣称其运行时已实现。无适用单位时跳过单位层，不伪造WM01。
+GroundMech以上四个效果目录已用于正式资源；目录存在不代表每项都有玩法绑定。其他类型落地前读项目已有归属，采用语义清晰的类型/单位/效果路径；无适用单位时跳过单位层，不伪造WM01。
 
 共用资源：
 
@@ -40,9 +45,18 @@
 
 - 原牌对照：`/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardRevealDemo`。
 - 美漫评审：`/Game/GuLiStrike/CardSystem/WarMachineTarot/Maps/LVL_WarMachineTarotReview`，Actor `WarMachine_CardDirector`。
+- 美术目录评审：`/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview`，Actor `CardArtwork_CatalogDirector`；通过统一管线选择本批ArtworkId，支持多张切换。
 - 实际交付：`/Game/Maps/LVL_CommanderMassPrototype`，入口Note标识 `RogueCards_F4_Entry`。
 
 评审地图不发奖励，可重播。实战使用现有指挥官相机与战场，F4打开卡牌；不要为了演示替换战斗GameMode或暂停整局。
+
+评审必须复用正式MI和对应席位的卡框尺寸、开口、Widget/网格变换；不能只在评审图缩图或换框。Ground由`card_artwork_review.py`复用native Ground框，保持[原卡框比例硬指标](artwork-data-pipeline.md#卡框比例硬指标)：DrawSize=1280×1556，不能为适配2:3原画改窄框。标题/说明、卡背/厚度、鼠标命中与压动范围保持正式基线。原图窗口与完整画布按美术目录映射，不套用WM01旧框参数。
+
+### 切换和重播的实际连接
+
+新增按钮后读取保存蓝图中的实际委托与回调。当前项目VibeUE的`WidgetService.bind_event`实现只记录日志并返回成功，不产生绑定；使用实际`AddDelegate`/`CreateDelegate`节点连接OnClicked，或经核实会创建连接的接口。复用`card_artwork_review.py::bind`，不能以API返回True或编译成功代替接线证据。
+
+切换应清理当前牌再重建，重播重新应用当前选中的正式MI与文本，避免恢复首张默认值。卡名和已绑定牌的预览说明来自源表；仅美术入库的牌不虚构能力说明。按钮数量、回调、选中状态、重播与输入焦点分别核对，玩家实际点击仍由用户在Play验证。
 
 ## 现有组件与流程接口
 
@@ -103,6 +117,10 @@ AutoWrapText=false、WrapTextAt=0；沿用DescriptionFit的ScaleToFit/DownOnly�
 | 按F4场景白模 | 引擎继承F4→`viewmode lit_detaillighting`调试绑定；配置解除并在指挥官输入初始化去掉遗留项。F3可临时回Lit。先查ViewMode，不重做建筑材质，也不凭截图认定一定是模糊残留 |
 | 卡牌灰蒙蒙 | 卡牌捕获的Fog/VolumetricFog/Atmosphere等；注册组件会重置裸ShowFlags，应通过ShowFlagSettings或注册后有效设置。同时核对透明合成，不盲改原图饱和度 |
 | 看得见但点不了 | 检查覆盖控件LMB入口、焦点和命中索引；HUD文本不应拦截。避免以静态材质正常推断输入已通 |
+| 四张都有上下裁切/显示不全 | 先算原窗口到实际卡框的包含关系与可见比例，区分contain和cover；检查共用缩放/偏移，不先重绘图层或逐牌试调 |
+| 完整显示后两侧出现大块空白 | 原图与固定开口比例不一致，不能把contain视为完成，也不能擅自改框；新原画应按固定开口比例制作，现有资源按用户明确选择处理 |
+| 新导贴图颜色不对 | 回读压缩和sRGB；先设压缩后设颜色空间，不能凭导入请求参数认定保存值正确 |
+| 切换按钮编译成功却没有响应 | 读取真实OnClicked委托和回调；当前WidgetService.bind_event只返回成功，须确认实际蓝图节点连接 |
 | Alt+Tab还倾斜 | 已有最小原生焦点接口；保留应用焦点与鼠标离开回正。不要退回仅靠不可靠的纯蓝图窗口失焦检测 |
 | 图层边缘出现矩形/空洞 | 按分层参考核对外扩、共同UV、背景补全、固定窗口；不是继续加Bloom |
 | 标题正常但整行说明空白 | 先查已加载原生赋值类型、CardDescription实际控件类型及SetContent连接，再查StringTable文本键、格式化结果和可见性；不能只重填Excel或凭编译成功收口 |
@@ -123,6 +141,7 @@ AutoWrapText=false、WrapTextAt=0；沿用DescriptionFit的ScaleToFit/DownOnly�
 | `Scripts/Cards/finalize_rogue_upgrade_scene.py` | 历史固定三卡场景脚本，勿用于当前入口以免覆盖重选说明 |
 | `Scripts/Cards/prepare_rogue_card_reroll.py` | 定向导入卡/文本、重建StringTable，保存并回读指定F4入口；不启动PIE，运行前需已加载卡表反射类型 |
 | `Scripts/Cards/apply_single_line_card_text.py` | 匹配原生模块构建加载后接入单行黄色粗体；原地导入公共文本和Excel样式表，生成UMG样式并保存回读控件及F4入口，不启动PIE |
+| `Scripts/Cards/card_artwork_pipeline.py`、`card_artwork_review.py` | 当前目录部署/回读与同图多牌评审；使用本批ArtworkId，保留正式MI、卡框和已有交互 |
 | [旧卡面制作记录](https://github.com/QHXRPG-A/GuLiStrike/blob/c7974fb6a44b0dda05913318ff47f6506098dc55/Scripts/Cards/apply_modelcomic_v9.py) | 当前按美术表的 ArtworkId 通过共享管线部署。 |
 | `Scripts/Cards/validate_*`、`run_*preview*`、`benchmark_*` | 部分启动PIE/创建夹具；只有当前任务相应授权时运行，不当作默认检查 |
 
@@ -132,4 +151,4 @@ AutoWrapText=false、WrapTextAt=0；沿用DescriptionFit的ScaleToFit/DownOnly�
 
 完成静态检查与所需蓝图/材质编译，按任务授权做运行检查。保存对应地图并回读实体配置与引用；技术检查、运行时交互、性能、用户画面审核分开记录。F4→单击翻面→再次确认是实际玩家入口，QA直接调用命中函数不能当作真实鼠标命中验收。
 
-向用户给出地图、当前代码是否已加载、操作步骤和仍待核验项。调整比率后覆盖16:9、16:10、21:9；没有实际执行的档位标未验证，不能用其他比例截图代替。
+向用户给出地图、当前代码是否已加载、操作步骤和仍待核验项。交付前分别记录构图完整性计算、最大位移采样余量、资源保存回读和按钮结构；用户视觉反馈不通过时记录失败范围并修正，不能用已有技术通过结论抵消反馈。调整比率时将16:9、16:10、21:9列为用户检查项；助手只在获准范围内做相应结构或运行检查，不截图/读图，没有实际执行的档位标未验证。

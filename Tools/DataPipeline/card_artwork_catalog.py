@@ -12,6 +12,7 @@ PRESETS = {
     "RegisteredSix": "Independent6",
     "RegisteredSixForegroundMask": "Independent6",
     "RegisteredSixRigid": "Independent6",
+    "RegisteredSixRigidLayer3Mask": "Independent6",
 }
 COMMON_PARAMETER = re.compile(r"Layer [1-6] (?:Depth|Opacity|Scale|Offset)$")
 
@@ -134,15 +135,26 @@ def validate_catalog(tables):
                     _fail('Layers',layer,'MotionOwnerLayer requires 0=self or an acyclic layer reference within this artwork')
                 seen.add(owner)
                 owner=by_layers[ident][owner].get('MotionOwnerLayer',0)
-        for key in ("Layers global depth", "Ability behind machinery", "Foreground behind machinery"):
+        preset = templates[artwork["TemplateId"]]["CompositePreset"]
+        common_keys = ("Layers global depth",) if preset == "RegisteredSixRigidLayer3Mask" else (
+            "Layers global depth", "Ability behind machinery", "Foreground behind machinery")
+        for key in common_keys:
             if key not in params or params[key]["Kind"] != "Scalar":
                 _fail("Artworks", artwork, f"missing scalar {key}")
-        preset = templates[artwork["TemplateId"]]["CompositePreset"]
+        if preset == "RegisteredSixRigidLayer3Mask":
+            for key, kind in (("Parallax Travel", "Vector"), ("Artwork Aperture", "Vector"),
+                              ("Parallax Tilt Tangent", "Scalar"), ("Layer 3 Split Enabled", "Scalar")):
+                if key not in params or params[key]["Kind"] != kind:
+                    _fail("Artworks", artwork, f"missing {kind} {key}")
+            if params["Layer 3 Split Enabled"]["ScalarValue"]:
+                mask = params.get("Foreground Front Mask")
+                if not mask or mask["Kind"] != "Texture" or mask["TextureRole"] != "Mask":
+                    _fail("Artworks", artwork, "split layer 3 requires Foreground Front Mask")
         if preset == "RegisteredSixForegroundMask":
             mask = params.get("Foreground Front Mask")
             if not mask or mask["Kind"] != "Texture" or mask["TextureRole"] != "Mask":
                 _fail("Artworks", artwork, "foreground template requires Foreground Front Mask")
-        if preset != "ModelComicAtlasV9" and "Background Margin Map" not in params:
+        if preset not in ("ModelComicAtlasV9", "RegisteredSixRigidLayer3Mask") and "Background Margin Map" not in params:
             _fail("Artworks", artwork, "registered template requires Background Margin Map")
     return {"templates": templates, "artworks": artworks, "layers": by_layers, "parameters": by_parameters}
 

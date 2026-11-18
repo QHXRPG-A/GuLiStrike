@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-17",
+  "title": "强化爆炸弹",
+  "reference_instruction": "开始按照流程制作",
+  "layer_choice": "采用这六层（推荐）",
+  "aspect_choice": "左右各裁约 11 像素",
+  "layers": [
+    {
+      "index": 1,
+      "name": "近景岩地",
+      "motion_owner": "foreground"
+    },
+    {
+      "index": 2,
+      "name": "速度线",
+      "motion_owner": "speed_lines"
+    },
+    {
+      "index": 3,
+      "name": "弹体与尾焰",
+      "motion_owner": "projectile"
+    },
+    {
+      "index": 4,
+      "name": "爆炸与冲击波",
+      "motion_owner": "ground"
+    },
+    {
+      "index": 5,
+      "name": "大陆与海面",
+      "motion_owner": "ground"
+    },
+    {
+      "index": 6,
+      "name": "天空与云层",
+      "motion_owner": "sky"
+    }
+  ],
+  "approval_scope": "以新附件为制作参考；逐层完整生成并装配六层HTML；精确左右等量裁切"
+}

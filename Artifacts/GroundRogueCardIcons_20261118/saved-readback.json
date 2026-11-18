@@ -1,0 +1,255 @@
+{
+  "success": true,
+  "icons": [
+    {
+      "id": 9,
+      "name": "NoSurvivors",
+      "source": "D:/UE5.7/test1/ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Icons/09_NoSurvivors.png",
+      "sha256": "1f8217b18ad920ad8f3b8b4f57951e871b425f2057f1ebc6234767d649c64bea",
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "id": 10,
+      "name": "EnhancedBullet",
+      "source": "D:/UE5.7/test1/ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Icons/10_EnhancedBullet.png",
+      "sha256": "c7d0aafe36cdf264028df7f7ae0b6b151d194285164dfefc5d332fd05f58ae31",
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "id": 11,
+      "name": "ExplosivePackage",
+      "source": "D:/UE5.7/test1/ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Icons/11_ExplosivePackage.png",
+      "sha256": "eee9f1e7828a53f9722ec50e97c74887a08daa9a6179ae1fcd393bbc13d4f219",
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "id": 12,
+      "name": "FireRate",
+      "source": "D:/UE5.7/test1/ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Icons/12_FireRate.png",
+      "sha256": "b1645eef860543a1188e573f41b8b9cab92c967f33b00396b0cc9bd2bfd5c00c",
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "id": 13,
+      "name": "ExplosiveEnhancement",
+      "source": "D:/UE5.7/test1/ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Icons/13_ExplosiveEnhancement.png",
+      "sha256": "f19364358e81bb7296508fd698510f0724573c8860f73925d3f19b36cd10a48d",
+      "size": [
+        256,
+        256
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "Name": "GroundMech_Ricochet_Lv1",
+      "Id": "06.01",
+      "Note": "个人本局普攻折射；每次获取随机区间整体+1；首次命中点周围50米三维球；牌面显示取得后等级。",
+      "Type": 3,
+      "TextIds": [
+        "Card.GroundMech.Ricochet.Title",
+        "Card.GroundMech.Ricochet.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+      "UnitTypeId": 0,
+      "BonusPercent": 0,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+      "RequiredCardIds": [
+        "10.01"
+      ],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 0,
+      "BonusCount": 0,
+      "EffectIds": [
+        "1"
+      ],
+      "IconId": 2
+    },
+    {
+      "Name": "GroundMech_BurningBullet_Lv1",
+      "Id": "07.01",
+      "Note": "有效普攻和折射命中施加单份灼烧；刷新8秒，不重置周期。",
+      "Type": 3,
+      "TextIds": [
+        "Card.GroundMech.BurningBullet.Title",
+        "Card.GroundMech.BurningBullet.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+      "UnitTypeId": 0,
+      "BonusPercent": 0,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Materials/MI_GroundMech_BurningBullet_Artwork.MI_GroundMech_BurningBullet_Artwork",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+      "RequiredCardIds": [
+        "10.01"
+      ],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 1,
+      "BonusCount": 0,
+      "EffectIds": [
+        "2"
+      ],
+      "IconId": 3
+    },
+    {
+      "Name": "GroundMech_BurningBurst_Lv1",
+      "Id": "08.01",
+      "Note": "爆裂独立2秒计时；刷新不重置；一次爆裂冻结统一伤害及目标。",
+      "Type": 3,
+      "TextIds": [
+        "Card.GroundMech.BurningBurst.Title",
+        "Card.GroundMech.BurningBurst.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+      "UnitTypeId": 0,
+      "BonusPercent": 0,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Materials/MI_GroundMech_BurningBurst_Artwork.MI_GroundMech_BurningBurst_Artwork",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+      "RequiredCardIds": [
+        "07.01"
+      ],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 1,
+      "BonusCount": 0,
+      "EffectIds": [
+        "3"
+      ],
+      "IconId": 4
+    },
+    {
+      "Name": "GroundMech_FireRate_Lv1",
+      "Id": "09.01",
+      "Note": "游骑兵个人本局：增加攻速；候选显示取得后等级。",
+      "Type": 3,
+      "TextIds": [
+        "Card.GroundMech.FireRate.Title",
+        "Card.GroundMech.FireRate.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+      "UnitTypeId": 0,
+      "BonusPercent": 0,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Materials/MI_GroundMech_FireRate_Artwork.MI_GroundMech_FireRate_Artwork",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+      "RequiredCardIds": [],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 0,
+      "BonusCount": 0,
+      "EffectIds": [
+        "4"
+      ],
+      "IconId": 12
+    },
+    {
+      "Name": "GroundMech_EnhancedBullet_Lv1",
+      "Id": "10.01",
+      "Note": "游骑兵个人本局：强化子弹；候选显示取得后等级。",
+      "Type": 3,
+      "TextIds": [
+        "Card.GroundMech.EnhancedBullet.Title",
+        "Card.GroundMech.EnhancedBullet.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+      "UnitTypeId": 0,
+      "BonusPercent": 0,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/EnhancedBullet/Materials/MI_GroundMech_EnhancedBullet_Artwork.MI_GroundMech_EnhancedBullet_Artwork",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+      "RequiredCardIds": [],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 1,
+      "BonusCount": 0,
+      "EffectIds": [
+        "5"
+      ],
+      "IconId": 10
+    },
+    {
+      "Name": "GroundMech_ExplosivePackage_Lv1",
+      "Id": "11.01",
+      "Note": "游骑兵个人本局：爆破套餐；候选显示取得后等级。",
+      "Type": 3,
+      "TextIds": [
+        "Card.GroundMech.ExplosivePackage.Title",
+        "Card.GroundMech.ExplosivePackage.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+      "UnitTypeId": 0,
+      "BonusPercent": 0,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/ExplosivePackage/Materials/MI_GroundMech_ExplosivePackage_Artwork.MI_GroundMech_ExplosivePackage_Artwork",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+      "RequiredCardIds": [],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 3,
+      "BonusCount": 0,
+      "EffectIds": [
+        "6"
+      ],
+      "IconId": 11
+    },
+    {
+      "Name": "GroundMech_ExplosiveEnhancement_Lv1",
+      "Id": "12.01",
+      "Note": "游骑兵个人本局；前置任意爆破套餐；三级；不重置发射进度",
+      "Type": 3,
+      "TextIds": [
+        "Card.GroundMech.ExplosiveEnhancement.Title",
+        "Card.GroundMech.ExplosiveEnhancement.Description"
+      ],
+      "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+      "UnitTypeId": 0,
+      "BonusPercent": 0,
+      "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/ExplosiveEnhancement/Materials/MI_GroundMech_ExplosiveEnhancement_Artwork.MI_GroundMech_ExplosiveEnhancement_Artwork",
+      "UpgradeVfx": "/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite.NS_RogueUpgrade_Lite",
+      "UpgradeVfxScale": 1,
+      "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+      "RequiredCardIds": [
+        "11.01"
+      ],
+      "ExcludedCardIds": [],
+      "MaxAcquisitions": 3,
+      "BonusCount": 0,
+      "EffectIds": [
+        "7"
+      ],
+      "IconId": 13
+    }
+  ],
+  "artwork14": [
+    {
+      "artwork_id": 14,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/ExplosiveEnhancement/Materials/MI_GroundMech_ExplosiveEnhancement_Artwork.MI_GroundMech_ExplosiveEnhancement_Artwork",
+      "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSixProjectileFront_v1.M_CardArtwork_RegisteredSixProjectileFront_v1",
+      "parameters_checked": 35
+    }
+  ],
+  "map": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview.LVL_CardArtworkCatalogReview",
+  "review_ids": "[14, 10, 11, 12, 13]",
+  "dirty_content": [],
+  "dirty_maps": [],
+  "pie_started": false,
+  "assistant_visual_test": false,
+  "visual_acceptance": "pending_user"
+}

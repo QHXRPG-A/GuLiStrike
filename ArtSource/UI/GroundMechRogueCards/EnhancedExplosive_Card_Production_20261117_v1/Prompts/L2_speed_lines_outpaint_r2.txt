@@ -1,0 +1,8 @@
+OUTPAINT this already-generated isolated parallax layer by ZOOMING OUT to show a much larger surrounding canvas. Preserve every existing central drawing feature, exact colors, linework, shapes and transparency. The input is a complete GENERATED layer, not the original full-scene master. Do not recreate excluded scene objects.
+Critical layout: the input image must occupy the CENTRAL TWO THIRDS of the output width and height. Add new image area equal to 25% of the input width at BOTH left and right, and 25% of input height at BOTH top and bottom. Thus the output represents 150% of the original canvas in each dimension. Do not just return the input at the same framing. Explicitly make all original features 2/3 of their previous pixel sizes within the final frame, leaving substantial newly generated material around them. Do not move features relative to each other. Keep the same near-square landscape aspect ratio; a requested nominal output is approximately 1968 x 1800, but the central-two-thirds framing is the essential constraint even if output pixel dimensions differ.
+Layer identity: 速度线.
+
+Extend only the free-floating tapered speed strokes that meet the old top/side boundaries, following the same straight directions. Preserve all existing strokes in the central two-thirds. The entire remaining canvas must remain transparent. Do not add a starburst, new strokes, sky, cloud, object, rocket or explosion.
+
+
+Faithfully match the input's anime cel-shaded color blocks and contours. Do not add labels, borders, a visible rectangle around the old canvas, watermark, checkerboard, symbols or text. Return one full-canvas completed layer. Genuine RGBA transparency outside the listed objects, preserve soft edges and do not fill transparent regions.

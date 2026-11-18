@@ -121,3 +121,12 @@ ArtSource/MapDesigner/**/*.i32 filter=lfs diff=lfs merge=lfs -text
 ArtSource/MapDesigner/**/*.f32 filter=lfs diff=lfs merge=lfs -text
 ArtSource/MapDesigner/**/*.f64 filter=lfs diff=lfs merge=lfs -text
 ArtSource/MapDesigner/**/*.gmap filter=lfs diff=lfs merge=lfs -text
+
+# Preserve this card/icon session's recorded source and evidence bytes.
+.agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/*.txt -text
+ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/** -text
+ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/** -text
+Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/** -text
+Artifacts/GroundRogueCardIcons_20261118/** -text
+data/Json/DT_GuLiStrikeIcons_Icons.* -text
+data/Json/DT_GuLiStrikeRogueCards_Cards.* -text

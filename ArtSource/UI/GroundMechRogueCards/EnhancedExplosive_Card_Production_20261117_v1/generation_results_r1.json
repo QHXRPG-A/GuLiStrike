@@ -1,0 +1,176 @@
+[
+  {
+    "index": 1,
+    "name": "近景岩地",
+    "slug": "foreground",
+    "depth": 1.15,
+    "motion_owner": "foreground",
+    "transparent": true,
+    "draw": 3,
+    "brief": "Generate ONLY the nearest foreground terrain at the bottom: the distinct stepped rocky escarpment entering from the lower-left corner, its connected sage-green and sandstone ground plane, the few nearby angular stones, and the low dark rocky ledge at the lower-right/bottom edge. In source-image coordinates this nearest foreground lies mostly at y=1060..1184. Preserve the characteristic left stepped escarpment silhouettes around x=0..300, y=1060..1184 and the subtle right ledge around x=1080..1312, y=1120..1184. This is one continuous near-ground layer extending down and sideways into the added margin, including full surfaces behind any dust that was occluding it. Leave the remainder of the canvas truly transparent. Do not include the mainland middle distance, sea, sky, explosion, shockwave, speed streaks, rocket or its flame. Terrain surface completion may overlap the middle-ground terrain behind this layer, but there must be no object-shaped cutout or rectangular hole. Keep all foreground elements at their original locations, do not enlarge the narrow foreground strip or center the rocks.",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e97d-e960-76c2-bab9-8dc80eed5346\\exec-02e911a3-02e5-44bc-ad88-eec705fd2b12.png",
+    "raw_file": "Generated/L1_foreground_r1.png",
+    "sha256": "db6b0ed3b6bc52a1ccc13b0f38611462fd145f7ce057a22a141a6a9ea942359d",
+    "size": [
+      1311,
+      1200
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.9323474446987032,
+    "bbox": [
+      0,
+      85,
+      1311,
+      1200
+    ]
+  },
+  {
+    "index": 2,
+    "name": "速度线",
+    "slug": "speed_lines",
+    "depth": 0.85,
+    "motion_owner": "speed_lines",
+    "transparent": true,
+    "draw": 4,
+    "brief": "Generate ONLY the sparse free-floating cream/gold diagonal speed strokes from the sky, at their original positions and widths. Include their full straight tapered continuations hidden behind the rocket so the rocket can cover them when composited. These are clean elongated graphic strokes, NOT explosion sparks. Main source-coordinate anchors include the top-edge streak near x=290..380,y=0..60; the upper-middle long diagonal stroke near x=500..770,y=180..325; the left middle broad diagonal streak near x=0..360,y=375..570; the short streak near x=520..700,y=560..665; and the sparse diagonal stroke near x=625..780,y=645..755. Preserve the source's sparse arrangement and exact drawn character rather than inventing a radial starburst. Continue strokes crossing canvas edges through the extension. All space outside these strokes is true alpha=0. NO rocket outline, nose glare drawn on the nose, engine flame, fire, explosion particles, dust, shockwave arc, land, ocean, clouds or sky. Never include warm diagonal strokes that are attached to the explosion or the rocket; those belong to their own layers. Do not duplicate or multiply the strokes.",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e97d-e960-76c2-bab9-8dc80eed5346\\exec-f82d38e8-0c84-43b4-a7f8-433c7c5a3ebc.png",
+    "raw_file": "Generated/L2_speed_lines_r1.png",
+    "sha256": "a9b4c0b1e65499f0083cb9f89ed7bb41ecec15f5a54941401e3eb3e7f3c8b96a",
+    "size": [
+      1311,
+      1200
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.9844444444444445,
+    "bbox": [
+      0,
+      0,
+      1230,
+      1137
+    ]
+  },
+  {
+    "index": 3,
+    "name": "弹体与尾焰",
+    "slug": "projectile",
+    "depth": 0.65,
+    "motion_owner": "projectile",
+    "transparent": true,
+    "draw": 5,
+    "brief": "Generate ONLY the complete foreground rocket and its attached effects. Match the source rocket pixel registration, all charcoal armor segments, nose circle, two orange middle rings, beveled plates, fins, outlines and all original small features. Its source-coordinate silhouette spans approximately x=60..1225,y=82..771; nose at x=145,y=205, tail nozzle around x=1118,y=610. Upper-left facing nose and lower-right trailing nozzle remain in the exact original pose. Include the nose's short orange reflected/glare streak that lies on its own armor, and the full attached orange/cream engine flame extending from the nozzle toward the lower-right edge. Continue the engine flame naturally into the extra right-hand margin. All fins are solid complete objects; preserve 3-tone light and shadow boundaries. Nothing else may appear: no speed strokes floating elsewhere, explosion, shockwave, fragments, terrain, clouds or sky. The whole silhouette including its existing outline and restrained attached glow belongs to this one layer. All external space must be truly transparent, and no sky-colored holes may remain inside physical armor or fins. Do not recenter, resize, rotate, crop or reimagine the rocket.",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e97d-e960-76c2-bab9-8dc80eed5346\\exec-a615ae62-7781-417f-8b38-e12fe282bcb5.png",
+    "raw_file": "Generated/L3_projectile_r1.png",
+    "sha256": "6e724ead35c31d4c33375c516b356a41ca9e62a2181776b276c0f0c741be7c19",
+    "size": [
+      1313,
+      1198
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.7788520344265067,
+    "bbox": [
+      19,
+      49,
+      1313,
+      1141
+    ]
+  },
+  {
+    "index": 4,
+    "name": "爆炸与冲击波",
+    "slug": "ground_explosion",
+    "depth": -0.15,
+    "motion_owner": "ground",
+    "transparent": true,
+    "draw": 2,
+    "brief": "Generate ONLY the full ground explosion and its attached effects, maintaining source layout: the immense lower-right cream/orange fire cluster, pink/gray smoke lobes, ground-hugging dust skirt, sparse sparks/soil fragments, the impact crater's local disturbed-earth patch, and the SINGLE broad thin orange elliptical surface shockwave around it. Original impact center is approximately x=940,y=1055; explosion smoke extends from about x=300,y=560 to the right edge and y=1080. The wide ring sweeps from the left edge around x=15,y=960 through the foreground near x=675,y=1100 and continues into/behind the right-side blast. Preserve the source fire/smoke structure, color blocks and scale very closely. Reconstruct complete smoke/fire hidden behind the foreground rocket and all clipped extensions into the common padding. Keep the shockwave continuous behind smoke where needed, with a thin attached dust edge; no additional arc or new blast. Only a small local crater-contact ground patch belongs here, not the continent. DO NOT include the rocket or engine flame, aerial speed strokes, terrain landscape, sky, clouds, sea, or foreground cliffs. No sky-colored rocket-shaped hole within smoke; fully regenerate the smoke surface behind it. All space outside the effects is transparent. The base of the effects remains located exactly on the source ground coordinates; no detached airburst or floating circular fireball.",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e97d-e960-76c2-bab9-8dc80eed5346\\exec-280ae320-a12d-41aa-b86a-eae31a11615a.png",
+    "raw_file": "Generated/L4_ground_explosion_r1.png",
+    "sha256": "5f1f8738b4096e7cfb380657c3ff3bcc7859ca3b0cb2f1b5ebc10a246ddc904e",
+    "size": [
+      1313,
+      1198
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.7429741368897388,
+    "bbox": [
+      0,
+      33,
+      1313,
+      1121
+    ]
+  },
+  {
+    "index": 5,
+    "name": "大陆与海面",
+    "slug": "mainland",
+    "depth": -0.15,
+    "motion_owner": "ground",
+    "transparent": true,
+    "draw": 1,
+    "brief": "Generate ONLY the complete middle-distance mainland and coastal ocean, with the exact source horizon line, perspective, silhouettes and flat terrain color shapes. Source horizon/ridgeline is around y=690..755, with distant blue mountains near y=700, coastal inlet on the left around x=0..260,y=760..830, large muted sage/sandstone plains and stepped ridges extending through the lower half. Continue this land across the ENTIRE lower canvas and bottom padding as a continuous intact ground plane. Fill the regions formerly hidden behind the foreground rocket, the huge explosion, its dust/ring and the nearest foreground rocks with coherent natural terrain, preserving the visible ridges on the left. The top boundary should follow the distant mountain silhouette with true transparency above it. Keep the existing land/ocean shapes and colors, no newly invented city, trees or targets. Remove all rocket/engine flame, explosion, crater/impact patch, dust, shockwave, speed strokes, foreground cliff/near stones, sky and clouds. Do not leave holes shaped like removed objects. The continent is continuous behind other layers; opaque ground all the way to the bottom canvas edge, transparent sky region above the skyline. Do not shift or raise the horizon.",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e97d-e960-76c2-bab9-8dc80eed5346\\exec-12d42d0c-44c7-41f5-934b-0d91b9463ad2.png",
+    "raw_file": "Generated/L5_mainland_r1.png",
+    "sha256": "040c1fdbd911cccb346e760f61008ad581a16bf0aee641c91d9f1d1bc9498667",
+    "size": [
+      1312,
+      1199
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.5925332848511972,
+    "bbox": [
+      0,
+      37,
+      1312,
+      1199
+    ]
+  },
+  {
+    "index": 6,
+    "name": "天空与云层",
+    "slug": "sky",
+    "depth": -0.5,
+    "motion_owner": "sky",
+    "transparent": false,
+    "draw": 0,
+    "brief": "Generate ONLY a complete uninterrupted sky background covering the ENTIRE common canvas opaquely. Preserve the exact source's bright blue field and its pale pink/cream clouds: the long upper-right cloud formation, the left-middle scattered cloud bank around source y=560..690, and the smaller edge fragments. Extend the blue sky naturally behind all removed objects and beyond the original edges. Preserve the original cloud shapes and locations as closely as possible. Fill all lower regions with the same continuous sky, which will later be covered by land. DO NOT include mountains, land, horizon, coast, ocean, rocket, fins, exhaust, speed strokes, explosions, smoke columns, shockwaves or debris, and leave no silhouettes/ghosts of removed objects. Opaque RGB or RGBA alpha 255 everywhere, no transparent holes, no frame, no letterboxing. Do not add extra clouds to fill removed objects, just continue the correct underlying blue sky.",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e97d-e960-76c2-bab9-8dc80eed5346\\exec-a075abd9-ebb6-49bc-be88-366fa59f6cad.png",
+    "raw_file": "Generated/L6_sky_r1.png",
+    "sha256": "596d40328765aab16cb3a51f5ecfbe71d59e3a50f762cec293aecaa917ca6d22",
+    "size": [
+      1312,
+      1199
+    ],
+    "mode": "RGB",
+    "alpha_range": [
+      255,
+      255
+    ],
+    "transparent_fraction": 0.0,
+    "bbox": [
+      0,
+      0,
+      1312,
+      1199
+    ]
+  }
+]

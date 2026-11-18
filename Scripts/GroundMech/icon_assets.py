@@ -5,18 +5,23 @@ from pathlib import Path
 import unreal
 
 
-def import_catalog(root):
+def import_catalog(root, ids=None):
     root = Path(root)
     catalog = json.loads((root / 'ArtSource/UI/GroundMech/Icons/catalog.json').read_text(encoding='utf-8'))
+    entries = catalog['icons']
+    if ids is not None:
+        wanted = set(ids)
+        entries = [entry for entry in entries if entry['id'] in wanted]
+        assert {entry['id'] for entry in entries} == wanted, 'Unknown icon IDs'
     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
     assets = unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
     dirty = {package.get_name() for package in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()}
-    for entry in catalog['icons']:
+    for entry in entries:
         assert entry['resource_path'].split('.')[0] not in dirty, 'Preserve unsaved icon edits'
         png = root / entry['source_png']
         assert hashlib.sha256(png.read_bytes()).hexdigest() == entry['sha256'], str(png)
     report = []
-    for entry in catalog['icons']:
+    for entry in entries:
         path = entry['resource_path'].split('.')[0]
         task = unreal.AssetImportTask()
         task.filename = str(root / entry['source_png'])
@@ -43,7 +48,7 @@ def import_catalog(root):
         ]:
             texture.set_editor_property(prop, value)
         unreal.EditorAssetLibrary.set_metadata_tag(texture, 'GroundIconSourceSHA256', entry['sha256'])
-        unreal.EditorAssetLibrary.set_metadata_tag(texture, 'GroundIconVersion', catalog['version'])
+        unreal.EditorAssetLibrary.set_metadata_tag(texture, 'GroundIconVersion', entry.get('version', catalog['version']))
         assert assets.save_loaded_asset(texture)
         loaded = assets.load_asset(path)
         assert loaded.get_editor_property('max_texture_size') == 256

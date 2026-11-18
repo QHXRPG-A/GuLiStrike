@@ -38,5 +38,21 @@
     "ParentMaterial": "/Game/GuLiStrike/Cards/Shared/Placeholder/M_CardBlank.M_CardBlank",
     "Layout": "None",
     "CompositePreset": "BlankPlaceholder"
+  },
+  {
+    "Name": "RegisteredSixRigidLayer3Mask",
+    "Id": 6,
+    "Note": "HTML六层刚性视差；XY位移；第三层前后互补蒙版",
+    "ParentMaterial": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSix_v1.M_CardArtwork_RegisteredSix_v1",
+    "Layout": "Independent6",
+    "CompositePreset": "RegisteredSixRigidLayer3Mask"
+  },
+  {
+    "Name": "RegisteredSixRigidProjectileFront",
+    "Id": 7,
+    "Note": "独立父材质；按HTML顺序6/5/4/1/2/3；兼容现有六层参数接口",
+    "ParentMaterial": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSixProjectileFront_v1.M_CardArtwork_RegisteredSixProjectileFront_v1",
+    "Layout": "Independent6",
+    "CompositePreset": "RegisteredSixRigidLayer3Mask"
   }
 ]

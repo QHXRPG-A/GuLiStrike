@@ -1,0 +1,1460 @@
+{
+  "base_commit": "bc3190d524b45a2cbd681794dbcfafea82303a3f",
+  "local_head_preserved": "0249e1ff217b92a75421ec91cb19eb9568c99276",
+  "local_index_sha256": "9dbb2d2c27d40ffafed5479d2031c336abbc10665e766a890de0aa406af1cbe9",
+  "branch": "codex/rogue-card-closeout-20261118",
+  "scratch": "D:\\UE5.7\\test1\\.codex-tmp\\rogue-card-publish-20261118",
+  "index": "D:\\UE5.7\\test1\\.codex-tmp\\rogue-card-publish-20261118\\publish.index",
+  "destination": "origin/main",
+  "excel_configuration_sources": [
+    "data/Excel/GuLiStrikeCardArtwork.xlsx",
+    "data/Excel/GuLiStrikeIcons.xlsx",
+    "data/Excel/GuLiStrikeRogueCards.xlsx"
+  ],
+  "missing_markdown_dependencies": [],
+  "files": [
+    {
+      "path": ".agents/skills/guli-rogue-card-production/SKILL.md",
+      "bytes": 14462,
+      "sha256": "425a1dad55bf6265633d371d92545a8f35dad13c622ef3d63e4c9dec072de6e2",
+      "source_sha256": "b34055e779be782e2e94c4d8c1285b929bf0669a4ffbda1e5bfeb4aee55e2bc6"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/agents/openai.yaml",
+      "bytes": 376,
+      "sha256": "21e1b804251a618e11aa13f534f13a2e6fafb90fc0e5c04ff7eaa8262721ed3f"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/art-prompts.md",
+      "bytes": 9926,
+      "sha256": "2cf286b917b3efaf4e8c61ae3432494d2184d651a74167e6fad2feac8c2a3a08",
+      "source_sha256": "ee5e0786e6a521718c27a3c3aaefd679db33a24077a287b869cfd28125026003"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/artwork-data-pipeline.md",
+      "bytes": 14351,
+      "sha256": "02beb0fa68acfe0f69617aebb4f49cf1498525372f31b71ff2283437276bbd87",
+      "source_sha256": "f534d1cf5cd7321eac2f2d2e43a608e5d39678d6d7094e2ae52dc08a3417193b"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/data-pipeline.md",
+      "bytes": 15172,
+      "sha256": "4a40dbdf68b4586fbf0f7335e19b8ea75b8d8e54a58f2d534a81c610c29f4595"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/icon-prompts.md",
+      "bytes": 8154,
+      "sha256": "72c9390ea8e8d004abcfb6defc87a36a43fdccdfc25b91facc173e2d099e9346",
+      "source_sha256": "72c9390ea8e8d004abcfb6defc87a36a43fdccdfc25b91facc173e2d099e9346"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/image-to-html-workflow.md",
+      "bytes": 9335,
+      "sha256": "687ae1191b2dfaea28b3a4a45b98ebb473a0c3072442f8c5041aeee1b2b7d585",
+      "source_sha256": "687ae1191b2dfaea28b3a4a45b98ebb473a0c3072442f8c5041aeee1b2b7d585"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/parallax-production.md",
+      "bytes": 16793,
+      "sha256": "fd91a30c64b99f30701d9216f10044a0a074a7993431673358f9ecef7bfe777f",
+      "source_sha256": "2c9adbbbd3d8e43086a899c572be153ae3842a4b7247e606335184f388fa4697"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/09_NoSurvivors.v2.txt",
+      "bytes": 2824,
+      "sha256": "6967695a00f86079b7672c1f0a04d9245efe1a516175f6be55c4ce27f49df92d",
+      "source_sha256": "6967695a00f86079b7672c1f0a04d9245efe1a516175f6be55c4ce27f49df92d"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/10_EnhancedBullet.v2.txt",
+      "bytes": 2733,
+      "sha256": "1320b93bc1d45ce42bdab1bb2ab4407abf1064acecd81474c95e169c6269369f",
+      "source_sha256": "1320b93bc1d45ce42bdab1bb2ab4407abf1064acecd81474c95e169c6269369f"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/11_ExplosivePackage.v2-axis.txt",
+      "bytes": 2214,
+      "sha256": "bcc567469b9fdf2a704d7bccf4a12d25a9572d65f00ff6dcef8ad62e2ad7edbf",
+      "source_sha256": "bcc567469b9fdf2a704d7bccf4a12d25a9572d65f00ff6dcef8ad62e2ad7edbf"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/11_ExplosivePackage.v2.txt",
+      "bytes": 2833,
+      "sha256": "c07f74e48da94ce96cf9d488db6fe0a79abeb314ab8da125953bcbb6217ec63b",
+      "source_sha256": "c07f74e48da94ce96cf9d488db6fe0a79abeb314ab8da125953bcbb6217ec63b"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/12_FireRate.v2.txt",
+      "bytes": 2899,
+      "sha256": "5988d3293df3bc1024eb6939af346f441e9e75d55fcb709f44168e69ea868eb6",
+      "source_sha256": "5988d3293df3bc1024eb6939af346f441e9e75d55fcb709f44168e69ea868eb6"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/13_ExplosiveEnhancement.v2-axis.txt",
+      "bytes": 1649,
+      "sha256": "6c482f1a5f00af96e2fab815c028ade0bc4ae1c20de2e3ec06e0813da64952de",
+      "source_sha256": "6c482f1a5f00af96e2fab815c028ade0bc4ae1c20de2e3ec06e0813da64952de"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/13_ExplosiveEnhancement.v2.txt",
+      "bytes": 2905,
+      "sha256": "f760b3d7c45a2e9c35dbbf961ef934ebc2b26f494872b5b64ce321861cb6ab1c",
+      "source_sha256": "f760b3d7c45a2e9c35dbbf961ef934ebc2b26f494872b5b64ce321861cb6ab1c"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/ground-icons-20261118/provenance.json",
+      "bytes": 12259,
+      "sha256": "9ed785ae9b39948698344b42e23754fbbbf520a1b73263febd9311f238e087a6",
+      "source_sha256": "3c26138711144e520951ec97a0e23dcf034b434554aedbfb90720bac9be5c37e"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/prompts/prompt-provenance.json",
+      "bytes": 2527,
+      "sha256": "39f8201b298bc1cf6b03a34151a5db3aeed6f4d2feb531c8f48ca97128eab0b2"
+    },
+    {
+      "path": ".agents/skills/guli-rogue-card-production/references/ue-integration.md",
+      "bytes": 16060,
+      "sha256": "6c0576b868bb439ee61e66740aed4f9a0104cedf0cb50e14a2699d1e81d56113",
+      "source_sha256": "fde3648d8dd62c6cf4ca475df1f0651f8073a6b404051b5eca4ddc529dba6849"
+    },
+    {
+      "path": ".gitattributes",
+      "bytes": 7537,
+      "sha256": "4b4d46e4379686147c72e27e480f91c43c98140edccae08d5851819949085589",
+      "source_sha256": "57c31154220ad3f9cd6623b8def4156f8329a76e35252ea8c21d777aadf46ec3"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/Icons/catalog.json",
+      "bytes": 11503,
+      "sha256": "774d7309fc19b701c20763e387931ef098bc63430e30c3799578439f6de42137",
+      "source_sha256": "11e53630fa0d57505cac5859c7c79886b64ed801466b4a5b3a96ab29252542e1"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/09_NoSurvivors.request.json",
+      "bytes": 2390,
+      "sha256": "25a489cffd8584a4525c54e30739f406f8c144d44339026c32c5f9639a95cc20",
+      "source_sha256": "25a489cffd8584a4525c54e30739f406f8c144d44339026c32c5f9639a95cc20"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/09_NoSurvivors.txt",
+      "bytes": 1988,
+      "sha256": "8d015957793110e007f94503cb2c136acbebe0ebc9337930b8616846cf42713d",
+      "source_sha256": "8d015957793110e007f94503cb2c136acbebe0ebc9337930b8616846cf42713d"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/09_NoSurvivors.v2.request.json",
+      "bytes": 3222,
+      "sha256": "6eb38042acfea6e2ec9aea21382ce75d290e39b4f07b526fd4f9d9e4fb752f1b",
+      "source_sha256": "6eb38042acfea6e2ec9aea21382ce75d290e39b4f07b526fd4f9d9e4fb752f1b"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/09_NoSurvivors.v2.txt",
+      "bytes": 2825,
+      "sha256": "92ee479274d915d0a9afeaee017beff2a5f826c19100debe8e976da747d9a595",
+      "source_sha256": "92ee479274d915d0a9afeaee017beff2a5f826c19100debe8e976da747d9a595"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/10_EnhancedBullet.request.json",
+      "bytes": 2305,
+      "sha256": "5d20cd2baaf46673c3206276c6d00e963c9b40b4bc339139d469a1900904f263",
+      "source_sha256": "5d20cd2baaf46673c3206276c6d00e963c9b40b4bc339139d469a1900904f263"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/10_EnhancedBullet.txt",
+      "bytes": 1903,
+      "sha256": "6c6a88b8f6bf2a5c85daebc4f22f37e762a98a64b2d4fc906ca816582b188dc9",
+      "source_sha256": "6c6a88b8f6bf2a5c85daebc4f22f37e762a98a64b2d4fc906ca816582b188dc9"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/10_EnhancedBullet.v2.request.json",
+      "bytes": 3134,
+      "sha256": "b1df22931cf3028cea975b4303bdee5f966eab7d7baff0523829dcd197c48ed0",
+      "source_sha256": "b1df22931cf3028cea975b4303bdee5f966eab7d7baff0523829dcd197c48ed0"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/10_EnhancedBullet.v2.txt",
+      "bytes": 2734,
+      "sha256": "e93504e8926ed22bd01ad6eaa0608b4fba2d9fdc56e32266bb7737b01809aa6e",
+      "source_sha256": "e93504e8926ed22bd01ad6eaa0608b4fba2d9fdc56e32266bb7737b01809aa6e"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/11_ExplosivePackage.request.json",
+      "bytes": 2440,
+      "sha256": "76b2e6dc9306c6bd524285e4a2044a27260c2d7f80f150cbb7328e0beedf8a72",
+      "source_sha256": "76b2e6dc9306c6bd524285e4a2044a27260c2d7f80f150cbb7328e0beedf8a72"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/11_ExplosivePackage.txt",
+      "bytes": 2038,
+      "sha256": "b02526e39c7a666f8463aee42ecda4a8261d8030d588fc38b9f2b039a3058003",
+      "source_sha256": "b02526e39c7a666f8463aee42ecda4a8261d8030d588fc38b9f2b039a3058003"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/11_ExplosivePackage.v2-axis.request.json",
+      "bytes": 2535,
+      "sha256": "780b9aac86cd259afb53379d088b5bd71d581ab84ca2f38f01b4929d0e3b839e",
+      "source_sha256": "780b9aac86cd259afb53379d088b5bd71d581ab84ca2f38f01b4929d0e3b839e"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/11_ExplosivePackage.v2-axis.txt",
+      "bytes": 2215,
+      "sha256": "902cd38c9eefc14d8f70a9fba0ad930d00eb601ed6a5ed710553aaf4d71b5451",
+      "source_sha256": "902cd38c9eefc14d8f70a9fba0ad930d00eb601ed6a5ed710553aaf4d71b5451"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/11_ExplosivePackage.v2.request.json",
+      "bytes": 3236,
+      "sha256": "eecca54e5ad59dfe32094edc30cd91d4633d6ff2c61a8bc96f4912ca9c89c22c",
+      "source_sha256": "eecca54e5ad59dfe32094edc30cd91d4633d6ff2c61a8bc96f4912ca9c89c22c"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/11_ExplosivePackage.v2.txt",
+      "bytes": 2834,
+      "sha256": "79979f7af3b1c53c4922381ea12e78644a36bf7155a4957ca6af1ea828405d21",
+      "source_sha256": "79979f7af3b1c53c4922381ea12e78644a36bf7155a4957ca6af1ea828405d21"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/12_FireRate.request.json",
+      "bytes": 2435,
+      "sha256": "e4b6497a1b6a254c02c6d9b9f129b705eb0915f7fbe201a9aaa1a12816ed990b",
+      "source_sha256": "e4b6497a1b6a254c02c6d9b9f129b705eb0915f7fbe201a9aaa1a12816ed990b"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/12_FireRate.retry1.request.json",
+      "bytes": 1734,
+      "sha256": "57d07258d4dbea387005c52ac2c55092a8fd959a54aab0b13e7b5d9c906c7f63",
+      "source_sha256": "57d07258d4dbea387005c52ac2c55092a8fd959a54aab0b13e7b5d9c906c7f63"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/12_FireRate.retry1.txt",
+      "bytes": 1336,
+      "sha256": "1562f9d429106cdf2e43bf1a036ff94c22816c8f55762841bf02c32fcf616a19",
+      "source_sha256": "1562f9d429106cdf2e43bf1a036ff94c22816c8f55762841bf02c32fcf616a19"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/12_FireRate.txt",
+      "bytes": 2033,
+      "sha256": "60afda4aa51550eccc3fd480f8f3c8a2755e0454160cd2c42298fc50ee567998",
+      "source_sha256": "60afda4aa51550eccc3fd480f8f3c8a2755e0454160cd2c42298fc50ee567998"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/12_FireRate.v2.request.json",
+      "bytes": 3294,
+      "sha256": "588f053e71e99e52174f04bc7da5e038c4600d73896ab8a04f1d47754fb0d764",
+      "source_sha256": "588f053e71e99e52174f04bc7da5e038c4600d73896ab8a04f1d47754fb0d764"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/12_FireRate.v2.txt",
+      "bytes": 2900,
+      "sha256": "88a9eee21733608a49e4b64602284d5345c00183e9e27bcafb77a3990590affc",
+      "source_sha256": "88a9eee21733608a49e4b64602284d5345c00183e9e27bcafb77a3990590affc"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/13_ExplosiveEnhancement.request.json",
+      "bytes": 2419,
+      "sha256": "d2d95a1c43e0c708122b20ce50242167fe28d54c39d0134ee73025dfdc549857",
+      "source_sha256": "d2d95a1c43e0c708122b20ce50242167fe28d54c39d0134ee73025dfdc549857"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/13_ExplosiveEnhancement.txt",
+      "bytes": 2017,
+      "sha256": "46e90e084edf09bc2fcb9e7a756985f67af6e704c1a056bd2186f2507e26e873",
+      "source_sha256": "46e90e084edf09bc2fcb9e7a756985f67af6e704c1a056bd2186f2507e26e873"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/13_ExplosiveEnhancement.v2-axis.request.json",
+      "bytes": 1959,
+      "sha256": "50776362b51c3413e52ed80d24b5e8820dc18a39976564c0576430b66dbf48c0",
+      "source_sha256": "50776362b51c3413e52ed80d24b5e8820dc18a39976564c0576430b66dbf48c0"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/13_ExplosiveEnhancement.v2-axis.txt",
+      "bytes": 1650,
+      "sha256": "fdbb2a4b01bfe9f5dc6f2f4b5cb73ba7b7ef60380f0ea05dcbbc95ecd17d5e05",
+      "source_sha256": "fdbb2a4b01bfe9f5dc6f2f4b5cb73ba7b7ef60380f0ea05dcbbc95ecd17d5e05"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/13_ExplosiveEnhancement.v2.request.json",
+      "bytes": 3312,
+      "sha256": "0c0aedb433de3dcabda7df51e6d40c08dc138592a30a1dab1e8d3453d835f47a",
+      "source_sha256": "0c0aedb433de3dcabda7df51e6d40c08dc138592a30a1dab1e8d3453d835f47a"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Prompts/13_ExplosiveEnhancement.v2.txt",
+      "bytes": 2906,
+      "sha256": "a461ad7df0c3c495a65b021fb40eb461da2801564a41bf4d52dfc699abb05377",
+      "source_sha256": "a461ad7df0c3c495a65b021fb40eb461da2801564a41bf4d52dfc699abb05377"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/README.md",
+      "bytes": 6433,
+      "sha256": "8a201d153d6e81cf16c284d32ad667de68e32c8b8bfafd4cc23bb4e9ca3c72df",
+      "source_sha256": "8a201d153d6e81cf16c284d32ad667de68e32c8b8bfafd4cc23bb4e9ca3c72df"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Research/axis_correction_20261118.json",
+      "bytes": 981,
+      "sha256": "0fae84ce359ff6eb2e05666e92b937db8453c34dbac404bf4e492cf8bf800336",
+      "source_sha256": "0fae84ce359ff6eb2e05666e92b937db8453c34dbac404bf4e492cf8bf800336"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Research/prompt_research_20261118.json",
+      "bytes": 3646,
+      "sha256": "03d9f785c57664097c6ea6791c2bf1c7abb0c8d1c6367905bc2e5548be8c60aa",
+      "source_sha256": "03d9f785c57664097c6ea6791c2bf1c7abb0c8d1c6367905bc2e5548be8c60aa"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v1/README.md",
+      "bytes": 3060,
+      "sha256": "073b83877a1da1cd2e0507600387c9ae7a2a532c376ced7bf8d52953cf2743aa",
+      "source_sha256": "073b83877a1da1cd2e0507600387c9ae7a2a532c376ced7bf8d52953cf2743aa"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v1/generation-plan.json",
+      "bytes": 27188,
+      "sha256": "0dc97387995fdb95a5ba8377a25d402d4fe1cc93b28dc07fe8b485a8cd21fb41",
+      "source_sha256": "0dc97387995fdb95a5ba8377a25d402d4fe1cc93b28dc07fe8b485a8cd21fb41"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v1/generation-results.json",
+      "bytes": 4240,
+      "sha256": "31f74bd5e34e75e37a51e2fae11132d81b01f97484dc7d54400f15fd114b3c78",
+      "source_sha256": "31f74bd5e34e75e37a51e2fae11132d81b01f97484dc7d54400f15fd114b3c78"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v1/index.html",
+      "bytes": 4074,
+      "sha256": "f1ed025fc9689c5758913d6bb0c21a4776cfe9c3e76448e3ca8f907619787dd5",
+      "source_sha256": "f1ed025fc9689c5758913d6bb0c21a4776cfe9c3e76448e3ca8f907619787dd5"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v1/manifest.json",
+      "bytes": 6946,
+      "sha256": "f0f3b8166f3c4667b385d3160b88e78c03da1493d1eb0ab5db56f4f83fdcb91d",
+      "source_sha256": "f0f3b8166f3c4667b385d3160b88e78c03da1493d1eb0ab5db56f4f83fdcb91d"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v1/package.json",
+      "bytes": 209,
+      "sha256": "ad4d989efbe1d8e3022d40683344216d3e2babf8f7fdb660264fa1a41e0e56d6",
+      "source_sha256": "ad4d989efbe1d8e3022d40683344216d3e2babf8f7fdb660264fa1a41e0e56d6"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v1/snapshot-index.json",
+      "bytes": 3843,
+      "sha256": "e7ad09e844700037387c66d5af2a81294bcb196d8f8414843f6cafe564843935",
+      "source_sha256": "e7ad09e844700037387c66d5af2a81294bcb196d8f8414843f6cafe564843935"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v2_before_package_axis/README.md",
+      "bytes": 5277,
+      "sha256": "b4a3633726cf9bff1b7908669333a697e0afae600f5dae488f8329852a40f3ba",
+      "source_sha256": "b4a3633726cf9bff1b7908669333a697e0afae600f5dae488f8329852a40f3ba"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v2_before_package_axis/generation-results-v2.json",
+      "bytes": 4636,
+      "sha256": "caabbe93699c3a33488c94467d0af266d0f278d4137ccf8fd7c471f52cebffe9",
+      "source_sha256": "caabbe93699c3a33488c94467d0af266d0f278d4137ccf8fd7c471f52cebffe9"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v2_before_package_axis/index.html",
+      "bytes": 6229,
+      "sha256": "23d0747d1da6be270b1e7d107a3e483b7ebc8c909bacc543b16444bc92d13dd6",
+      "source_sha256": "23d0747d1da6be270b1e7d107a3e483b7ebc8c909bacc543b16444bc92d13dd6"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v2_before_package_axis/manifest.json",
+      "bytes": 7797,
+      "sha256": "c9de46c624518286ed3592e4331e9ed81d010923191bba88c0a1664f24adb42c",
+      "source_sha256": "c9de46c624518286ed3592e4331e9ed81d010923191bba88c0a1664f24adb42c"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/Revisions/v2_before_package_axis/package.json",
+      "bytes": 210,
+      "sha256": "cb97261af6ada998048227d27d33965f5b8fa57114b07736c722699990a4820e",
+      "source_sha256": "cb97261af6ada998048227d27d33965f5b8fa57114b07736c722699990a4820e"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/generation-initial-results-v2.json",
+      "bytes": 4346,
+      "sha256": "1a543903f95222df4d1cb7280e6f56ad34b5498b1a89d9bff634eece7894fd34",
+      "source_sha256": "1a543903f95222df4d1cb7280e6f56ad34b5498b1a89d9bff634eece7894fd34"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/generation-package-axis-result.json",
+      "bytes": 1064,
+      "sha256": "25f252924077e97ce9b85733bf0c523f78ead6bf70256260b1c51657d76060f4",
+      "source_sha256": "25f252924077e97ce9b85733bf0c523f78ead6bf70256260b1c51657d76060f4"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/generation-plan-v2.json",
+      "bytes": 37828,
+      "sha256": "db977686853959904490be9b7d5831ca9c5d3bdd40b1c7fb601a3a421252765b",
+      "source_sha256": "db977686853959904490be9b7d5831ca9c5d3bdd40b1c7fb601a3a421252765b"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/generation-plan.json",
+      "bytes": 27188,
+      "sha256": "0dc97387995fdb95a5ba8377a25d402d4fe1cc93b28dc07fe8b485a8cd21fb41",
+      "source_sha256": "0dc97387995fdb95a5ba8377a25d402d4fe1cc93b28dc07fe8b485a8cd21fb41"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/generation-results-v2.json",
+      "bytes": 4636,
+      "sha256": "caabbe93699c3a33488c94467d0af266d0f278d4137ccf8fd7c471f52cebffe9",
+      "source_sha256": "caabbe93699c3a33488c94467d0af266d0f278d4137ccf8fd7c471f52cebffe9"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/generation-results-v2_1.json",
+      "bytes": 5128,
+      "sha256": "4a1fc7fbe54749d9e907e8a95f0a82b7da0e3a585c789a9de6b543a710cc492b",
+      "source_sha256": "4a1fc7fbe54749d9e907e8a95f0a82b7da0e3a585c789a9de6b543a710cc492b"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/generation-results.json",
+      "bytes": 4240,
+      "sha256": "31f74bd5e34e75e37a51e2fae11132d81b01f97484dc7d54400f15fd114b3c78",
+      "source_sha256": "31f74bd5e34e75e37a51e2fae11132d81b01f97484dc7d54400f15fd114b3c78"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/index.html",
+      "bytes": 6618,
+      "sha256": "56b2ca425b07861339193ee9feeb4150f37404b851fee00366359abc9348ee4e",
+      "source_sha256": "56b2ca425b07861339193ee9feeb4150f37404b851fee00366359abc9348ee4e"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/inputs.json",
+      "bytes": 5676,
+      "sha256": "383d10c9594efddedfc30c6e6d65a5354d10f80be7d92f03ec0b1022516e6b4b",
+      "source_sha256": "383d10c9594efddedfc30c6e6d65a5354d10f80be7d92f03ec0b1022516e6b4b"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/manifest.json",
+      "bytes": 8742,
+      "sha256": "72edb1680ed96ef72e61b418875049fe1872b3604bfa2e767a5e1ccf6da97a92",
+      "source_sha256": "72edb1680ed96ef72e61b418875049fe1872b3604bfa2e767a5e1ccf6da97a92"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/package.json",
+      "bytes": 212,
+      "sha256": "22a0673fee7729d86b67949948950913e49110410bba1b1cc1bd3f06764ca6d4",
+      "source_sha256": "22a0673fee7729d86b67949948950913e49110410bba1b1cc1bd3f06764ca6d4"
+    },
+    {
+      "path": "ArtSource/UI/GroundMech/RogueCardIcons_20261118_v1/package_icons.py",
+      "bytes": 1893,
+      "sha256": "1096a63dc87de1aec981baae5664d6e48dcb3ad8d77285c8d5aff8f1d3368d66",
+      "source_sha256": "1096a63dc87de1aec981baae5664d6e48dcb3ad8d77285c8d5aff8f1d3368d66"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Checks/browser_verification.json",
+      "bytes": 7009,
+      "sha256": "61b6f4fda75d1882b3a2fbe6286fa4598984eeb1c40d07014fb2f1e6e33421d5",
+      "source_sha256": "61b6f4fda75d1882b3a2fbe6286fa4598984eeb1c40d07014fb2f1e6e33421d5"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Checks/progress_documentation_r4.json",
+      "bytes": 534,
+      "sha256": "d3343ac5d0fd113bbe9c92fefcd9588a8bf53f1283ec5b6ba66d1840f310fcdf",
+      "source_sha256": "d3343ac5d0fd113bbe9c92fefcd9588a8bf53f1283ec5b6ba66d1840f310fcdf"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Checks/projectile_r4_registration.json",
+      "bytes": 778,
+      "sha256": "7d9d54581a447a7b3c803c95f4a0c667613fb7f1171c9f36bce3af5342af352a",
+      "source_sha256": "7d9d54581a447a7b3c803c95f4a0c667613fb7f1171c9f36bce3af5342af352a"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Checks/projectile_r4_validation.json",
+      "bytes": 1868,
+      "sha256": "ab4f7e2f94b957d4ed715811220badbb15aee0fb88148a4080677e74d21404dd",
+      "source_sha256": "ab4f7e2f94b957d4ed715811220badbb15aee0fb88148a4080677e74d21404dd"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Checks/reference_identity.json",
+      "bytes": 829,
+      "sha256": "e29abe0090a327e5174ead7d038dd79e0f024b77bb206bd4ffe3aeff2ce04a55",
+      "source_sha256": "e29abe0090a327e5174ead7d038dd79e0f024b77bb206bd4ffe3aeff2ce04a55"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Checks/shockwave_r5_registration.json",
+      "bytes": 580,
+      "sha256": "b2127bd86221f221fc72bb87f39c68da754178430d103dd2e0164f6884eb000a",
+      "source_sha256": "b2127bd86221f221fc72bb87f39c68da754178430d103dd2e0164f6884eb000a"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Checks/shockwave_r5_validation.json",
+      "bytes": 2135,
+      "sha256": "1b74d378af953fbc4d4ef3552bfa6a547c21626719dad315e9e4c35d179e3b4b",
+      "source_sha256": "1b74d378af953fbc4d4ef3552bfa6a547c21626719dad315e9e4c35d179e3b4b"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L1_foreground.txt",
+      "bytes": 3798,
+      "sha256": "0b41421d95925e1f99901244ab55a141c2d0ad65cf61a4084046fa8517f788e8",
+      "source_sha256": "0b41421d95925e1f99901244ab55a141c2d0ad65cf61a4084046fa8517f788e8"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L1_foreground_outpaint_r2.txt",
+      "bytes": 1895,
+      "sha256": "42a0115f86785b1b7a769789b52f7d3968d58923f0fea90abd11be597aa744ba",
+      "source_sha256": "42a0115f86785b1b7a769789b52f7d3968d58923f0fea90abd11be597aa744ba"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L2_speed_lines.txt",
+      "bytes": 3840,
+      "sha256": "44a5eee5c01acb8763dcaba64353c2f81a545c6f2c41dd87d4616509b72f4ddc",
+      "source_sha256": "44a5eee5c01acb8763dcaba64353c2f81a545c6f2c41dd87d4616509b72f4ddc"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L2_speed_lines_outpaint_r2.txt",
+      "bytes": 1770,
+      "sha256": "70a614ce0ebdb8da5a4cd2c28a99330d33fc66e669360c65253f7ee5a95ff303",
+      "source_sha256": "70a614ce0ebdb8da5a4cd2c28a99330d33fc66e669360c65253f7ee5a95ff303"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L3_projectile.txt",
+      "bytes": 3900,
+      "sha256": "d1fcb5b26ac2b0f55d37730f38ffc272a5c963fbae69e615dc6e04d42b6f265f",
+      "source_sha256": "d1fcb5b26ac2b0f55d37730f38ffc272a5c963fbae69e615dc6e04d42b6f265f"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L3_projectile_clean_straight_r4.txt",
+      "bytes": 4550,
+      "sha256": "c4749814f04c5295e5cd0723d7f6a857924c33c72cd422361223c2fd1cca68d1",
+      "source_sha256": "c4749814f04c5295e5cd0723d7f6a857924c33c72cd422361223c2fd1cca68d1"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L4_ground_explosion.txt",
+      "bytes": 4119,
+      "sha256": "eff42a5a00dfc121883e53d0a1ef96db9dc9a8ce9b3c875843faace885aaf7b3",
+      "source_sha256": "eff42a5a00dfc121883e53d0a1ef96db9dc9a8ce9b3c875843faace885aaf7b3"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L4_shockwave_continuity_r5.txt",
+      "bytes": 4503,
+      "sha256": "7b1d5c07d57b6c27bcf6d6c7c7d5a4b86c76c7b392c837193afc517a2a7f9342",
+      "source_sha256": "7b1d5c07d57b6c27bcf6d6c7c7d5a4b86c76c7b392c837193afc517a2a7f9342"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L5_mainland.txt",
+      "bytes": 3950,
+      "sha256": "3b403e1a611b8b4a849c711cda89b4adf0e4476a7a3580a79ea42871708ea8f8",
+      "source_sha256": "3b403e1a611b8b4a849c711cda89b4adf0e4476a7a3580a79ea42871708ea8f8"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L5_mainland_fidelity_r3.txt",
+      "bytes": 2399,
+      "sha256": "63df5751529df3716a9c1d1c05fbccada358a5cfe0cd4821600ec268b2f74077",
+      "source_sha256": "63df5751529df3716a9c1d1c05fbccada358a5cfe0cd4821600ec268b2f74077"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L5_mainland_outpaint_r2.txt",
+      "bytes": 1935,
+      "sha256": "8b56826cc81dde5a4940598109faf712dde974d1917dd15f467bfd99e5824729",
+      "source_sha256": "8b56826cc81dde5a4940598109faf712dde974d1917dd15f467bfd99e5824729"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L6_sky.txt",
+      "bytes": 3521,
+      "sha256": "4e31923517f91e3b7595f6003cbbd0d666e5c2338747d6d25c41491586b1b776",
+      "source_sha256": "4e31923517f91e3b7595f6003cbbd0d666e5c2338747d6d25c41491586b1b776"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Prompts/L6_sky_outpaint_r2.txt",
+      "bytes": 1729,
+      "sha256": "f33c2e1170d4ca608ff42256d5471ff1ed39ec95a30ad006901455cef949b0dd",
+      "source_sha256": "f33c2e1170d4ca608ff42256d5471ff1ed39ec95a30ad006901455cef949b0dd"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/README.md",
+      "bytes": 9530,
+      "sha256": "1b85d920887712ecd0752b56ef83235701e2e88451836f39fb691c352bd3a43e",
+      "source_sha256": "1b85d920887712ecd0752b56ef83235701e2e88451836f39fb691c352bd3a43e"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r3/README.md",
+      "bytes": 5432,
+      "sha256": "c977e7666d9e69e743a4a4a283cfeec824f2c4cd4630e96e88b920e3b92dc0a4",
+      "source_sha256": "c977e7666d9e69e743a4a4a283cfeec824f2c4cd4630e96e88b920e3b92dc0a4"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r3/browser_verification.json",
+      "bytes": 7008,
+      "sha256": "6a015ea5664eb31554f7467a205b9bc2a4893ff423028023e854ffba439d48d0",
+      "source_sha256": "6a015ea5664eb31554f7467a205b9bc2a4893ff423028023e854ffba439d48d0"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r3/card-data.js",
+      "bytes": 2195,
+      "sha256": "6d26a6307bbc119bed6d5a08a179ea34d943fe8aa2923b4b5088476c310a510b",
+      "source_sha256": "6d26a6307bbc119bed6d5a08a179ea34d943fe8aa2923b4b5088476c310a510b"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r3/final_assembly.json",
+      "bytes": 11613,
+      "sha256": "bb864c44a3b71cc5c51c8027364604fb9c5d096733c3ef752b40a1f8f296c968",
+      "source_sha256": "bb864c44a3b71cc5c51c8027364604fb9c5d096733c3ef752b40a1f8f296c968"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r3/manifest.json",
+      "bytes": 12740,
+      "sha256": "00f1bd14e40dab9c94a3dfad3a8ccb67a8957b864bdb0d0d2f9b5af442458150",
+      "source_sha256": "00f1bd14e40dab9c94a3dfad3a8ccb67a8957b864bdb0d0d2f9b5af442458150"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r3/package.json",
+      "bytes": 210,
+      "sha256": "5077dc85f0428dab4846a1b494116f5db15e92a96a7dc78920f9af56ff119788",
+      "source_sha256": "5077dc85f0428dab4846a1b494116f5db15e92a96a7dc78920f9af56ff119788"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r4/README.md",
+      "bytes": 7551,
+      "sha256": "e53d52d7c76fa041c8f13e55ad937a6245a6335ab630fe4639088b7d449a7a75",
+      "source_sha256": "e53d52d7c76fa041c8f13e55ad937a6245a6335ab630fe4639088b7d449a7a75"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r4/browser_verification.json",
+      "bytes": 7009,
+      "sha256": "c279d8d79343de76003438fa80bbeb80de6e1ade2bda24fcc735f26f458a6ae5",
+      "source_sha256": "c279d8d79343de76003438fa80bbeb80de6e1ade2bda24fcc735f26f458a6ae5"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r4/card-data.js",
+      "bytes": 2195,
+      "sha256": "ca9f561a10ac678cc6c055932609eb15ac989da387d5be91a25b3cd74f27d15a",
+      "source_sha256": "ca9f561a10ac678cc6c055932609eb15ac989da387d5be91a25b3cd74f27d15a"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r4/final_assembly.json",
+      "bytes": 17921,
+      "sha256": "53aa0fb0a0ef89e560160818e157d8ef7d7d1d631658843992ac61bbde4ba095",
+      "source_sha256": "53aa0fb0a0ef89e560160818e157d8ef7d7d1d631658843992ac61bbde4ba095"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r4/manifest.json",
+      "bytes": 16834,
+      "sha256": "d021864a3a3f2c43937ca90b133dc10c708c07791526abf217bc0ce053939cab",
+      "source_sha256": "d021864a3a3f2c43937ca90b133dc10c708c07791526abf217bc0ce053939cab"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Revisions/r4/package.json",
+      "bytes": 293,
+      "sha256": "2eefadc41bc4f754805ed4757f10ac59e26aea82fa07df2f90c838c5351d8422",
+      "source_sha256": "2eefadc41bc4f754805ed4757f10ac59e26aea82fa07df2f90c838c5351d8422"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/apply_projectile_r4.py",
+      "bytes": 6240,
+      "sha256": "42669c0c57fd659363180fb41b2aab4c7fc4a3345340eb9fd0986ebbedfb7970",
+      "source_sha256": "42669c0c57fd659363180fb41b2aab4c7fc4a3345340eb9fd0986ebbedfb7970"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/apply_shockwave_r5.py",
+      "bytes": 7283,
+      "sha256": "caf637b8bc881c5b6819dcf71bc6c288ea5e8c2a0f547a7a59bcb3de333f0916",
+      "source_sha256": "caf637b8bc881c5b6819dcf71bc6c288ea5e8c2a0f547a7a59bcb3de333f0916"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/assemble_layers.py",
+      "bytes": 6774,
+      "sha256": "c4f511b4691dc8c9b8598c820c4999d43e827554b3a29144fb9e0cae3f97e206",
+      "source_sha256": "c4f511b4691dc8c9b8598c820c4999d43e827554b3a29144fb9e0cae3f97e206"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/assembly_r2.json",
+      "bytes": 8924,
+      "sha256": "c1b19f1572790af0b32fdff65741624ee42bd8d1544a215ec6062e92ca5ec087",
+      "source_sha256": "c1b19f1572790af0b32fdff65741624ee42bd8d1544a215ec6062e92ca5ec087"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/card-data.js",
+      "bytes": 2195,
+      "sha256": "d4f413872348d45f7889376a0094b7203c1abe3ac515deac848b8e593a3a0ff7",
+      "source_sha256": "d4f413872348d45f7889376a0094b7203c1abe3ac515deac848b8e593a3a0ff7"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/final_assembly.json",
+      "bytes": 24763,
+      "sha256": "89c966f5e10c49ab176d693554c665c0e6f9611440200d1cdfc7900b57d43860",
+      "source_sha256": "89c966f5e10c49ab176d693554c665c0e6f9611440200d1cdfc7900b57d43860"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/generation_requests.json",
+      "bytes": 10868,
+      "sha256": "844d2075a7be83527cd78811aeaf252bb045fee273c3d0f7469113627d7d2a42",
+      "source_sha256": "844d2075a7be83527cd78811aeaf252bb045fee273c3d0f7469113627d7d2a42"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/generation_results_r1.json",
+      "bytes": 11336,
+      "sha256": "bcd3c79e7293e954835c575a4659f60eeaae822d478b4d191f934d3b4b03a080",
+      "source_sha256": "bcd3c79e7293e954835c575a4659f60eeaae822d478b4d191f934d3b4b03a080"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/geometry.json",
+      "bytes": 1020,
+      "sha256": "c4f7511fbea11fe6d39e4bfeeb06ebaf8e7624985cc0117ecd446fed73827297",
+      "source_sha256": "c4f7511fbea11fe6d39e4bfeeb06ebaf8e7624985cc0117ecd446fed73827297"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/index.html",
+      "bytes": 2599,
+      "sha256": "54d8203d110612459d331f6415c85f92c7664f66adf3221660ecd85a79386484",
+      "source_sha256": "54d8203d110612459d331f6415c85f92c7664f66adf3221660ecd85a79386484"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/land_r3_request.json",
+      "bytes": 387,
+      "sha256": "189daff1978cee5561a8449404fa5816b6bcdd1f2b8ea08d05a533ff2170fe5d",
+      "source_sha256": "189daff1978cee5561a8449404fa5816b6bcdd1f2b8ea08d05a533ff2170fe5d"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/land_r3_source.json",
+      "bytes": 318,
+      "sha256": "12bffd585fab1149cfaaa53edf6eb2a3dfd3b96ade713856f11cbfebf6dac066",
+      "source_sha256": "12bffd585fab1149cfaaa53edf6eb2a3dfd3b96ade713856f11cbfebf6dac066"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/manifest.json",
+      "bytes": 20599,
+      "sha256": "09fbdfc49c5d3439f251e872711549ab992cb7dce4d79fa216e3042caebc9479",
+      "source_sha256": "09fbdfc49c5d3439f251e872711549ab992cb7dce4d79fa216e3042caebc9479"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/outpaint_requests_r2.json",
+      "bytes": 8585,
+      "sha256": "5c1aeaf0b930140341d72dc3d3ea234b7f34c9301761507ade5b1c2bb443f8ff",
+      "source_sha256": "5c1aeaf0b930140341d72dc3d3ea234b7f34c9301761507ade5b1c2bb443f8ff"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/outpaint_results_r2.json",
+      "bytes": 1764,
+      "sha256": "bdcdc6ae68e43448962fef62873fa568fdd84702142f7d1ad5393aa68f739d7a",
+      "source_sha256": "bdcdc6ae68e43448962fef62873fa568fdd84702142f7d1ad5393aa68f739d7a"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/package.json",
+      "bytes": 294,
+      "sha256": "6b357a81a5a09c0c8a3f13083300bdc72f630e0e3b8a69166dda588944516b99",
+      "source_sha256": "6b357a81a5a09c0c8a3f13083300bdc72f630e0e3b8a69166dda588944516b99"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/package_delivery.py",
+      "bytes": 1743,
+      "sha256": "c9ab276fa55b74ec89947c0683aa273e5832672345cb26e449d10a673e2834ed",
+      "source_sha256": "c9ab276fa55b74ec89947c0683aa273e5832672345cb26e449d10a673e2834ed"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/preview.css",
+      "bytes": 4316,
+      "sha256": "75e339d1bcc5fc5b515e28d01bb995696233d1d173789f6d75007f57b9a07f19",
+      "source_sha256": "75e339d1bcc5fc5b515e28d01bb995696233d1d173789f6d75007f57b9a07f19"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/preview.js",
+      "bytes": 7822,
+      "sha256": "8ad7c3124e878eb638e60e060f9136da95338e04665488c6abd5fc55e99b8985",
+      "source_sha256": "8ad7c3124e878eb638e60e060f9136da95338e04665488c6abd5fc55e99b8985"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/projectile_r4_request.json",
+      "bytes": 5864,
+      "sha256": "9ea9c7655a8648148b92bc1e90c451ad08bb8d76a2bb7af159f1dee59dd99586",
+      "source_sha256": "9ea9c7655a8648148b92bc1e90c451ad08bb8d76a2bb7af159f1dee59dd99586"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/projectile_r4_source.json",
+      "bytes": 2544,
+      "sha256": "de21ccfe500aa136ef18b690c20f28dab2b17223e687829cb39b1e312073baf4",
+      "source_sha256": "de21ccfe500aa136ef18b690c20f28dab2b17223e687829cb39b1e312073baf4"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/publish.py",
+      "bytes": 3384,
+      "sha256": "daf0ac2ee8be94b07e49b72b74a3364b12ecd7a5b1d87319cf58bd09b2dec66a",
+      "source_sha256": "daf0ac2ee8be94b07e49b72b74a3364b12ecd7a5b1d87319cf58bd09b2dec66a"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/reference_manifest.json",
+      "bytes": 1459,
+      "sha256": "b1f53e0d6d2df22c71dba5d64821b0e1521a9e5c0a7ae9a662995f436ae47bc2",
+      "source_sha256": "b1f53e0d6d2df22c71dba5d64821b0e1521a9e5c0a7ae9a662995f436ae47bc2"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/refine_registration.py",
+      "bytes": 6102,
+      "sha256": "931f61e5f33162c7ac1da0b3afd90f4e712974ff5e2c52cb146dd3f67c35b8f7",
+      "source_sha256": "931f61e5f33162c7ac1da0b3afd90f4e712974ff5e2c52cb146dd3f67c35b8f7"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/register_layers.py",
+      "bytes": 6501,
+      "sha256": "e3eb19cad2925dd010457257c2eef1f4b0ed71a110f282b413d8d2494a384359",
+      "source_sha256": "e3eb19cad2925dd010457257c2eef1f4b0ed71a110f282b413d8d2494a384359"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/registration_r1.json",
+      "bytes": 5887,
+      "sha256": "79171a93da3fe1dbb59bd59b3b6b02e7958f044c868f57335c3160d649d32881",
+      "source_sha256": "79171a93da3fe1dbb59bd59b3b6b02e7958f044c868f57335c3160d649d32881"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/requirements-artwork.txt",
+      "bytes": 121,
+      "sha256": "0f214cae39e950c6e4f50ad42c4e9a3e93d283b8a9355d305a6966bb97047c96",
+      "source_sha256": "0f214cae39e950c6e4f50ad42c4e9a3e93d283b8a9355d305a6966bb97047c96"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/serve_preview.py",
+      "bytes": 425,
+      "sha256": "e32aeb966f0a19cecbe5d32acf55ab46c78889eab77810df64928929e60ddfd8",
+      "source_sha256": "e32aeb966f0a19cecbe5d32acf55ab46c78889eab77810df64928929e60ddfd8"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/shockwave_r5_request.json",
+      "bytes": 5558,
+      "sha256": "ec5262ad5bb3ae8dd4a3a1ad190d254fcc959d556384ee73e8e046bb0f89385a",
+      "source_sha256": "ec5262ad5bb3ae8dd4a3a1ad190d254fcc959d556384ee73e8e046bb0f89385a"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/shockwave_r5_source.json",
+      "bytes": 3066,
+      "sha256": "31415b58924a5c698be29bbb19f7380a668907a3103e3c7b9c4b3bf4d3c3a398",
+      "source_sha256": "31415b58924a5c698be29bbb19f7380a668907a3103e3c7b9c4b3bf4d3c3a398"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/shockwave_r5_tool_output.json",
+      "bytes": 843,
+      "sha256": "1aecb36eae6d710630f463bd2935d8978db960e4b00426a5bdca0a28c9b91219",
+      "source_sha256": "1aecb36eae6d710630f463bd2935d8978db960e4b00426a5bdca0a28c9b91219"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/user_decisions.json",
+      "bytes": 919,
+      "sha256": "f2060fc971a260428c4662f847a9fd8f8ea43af65abb5c5b5795de3b82d69fdd",
+      "source_sha256": "f2060fc971a260428c4662f847a9fd8f8ea43af65abb5c5b5795de3b82d69fdd"
+    },
+    {
+      "path": "ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/verify_preview.py",
+      "bytes": 5801,
+      "sha256": "1372f5daecc947b08ff5622ba7010f85fc771491c2440fe15f33dcc5cc7bc6c3",
+      "source_sha256": "1372f5daecc947b08ff5622ba7010f85fc771491c2440fe15f33dcc5cc7bc6c3"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/README.md",
+      "bytes": 5589,
+      "sha256": "b59f727781dd560411b9042caea6ae6031198ad1c59b8ebfa4bdc9e255a9a002",
+      "source_sha256": "b59f727781dd560411b9042caea6ae6031198ad1c59b8ebfa4bdc9e255a9a002"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/RingRepair_r5/artwork-metadata-change.json",
+      "bytes": 1431,
+      "sha256": "e5616afad27dbf754de7bd1961a73eb4a73d8d335c5bc353da5aea8dc17c4dfb",
+      "source_sha256": "e5616afad27dbf754de7bd1961a73eb4a73d8d335c5bc353da5aea8dc17c4dfb"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/RingRepair_r5/delivery-consistency.json",
+      "bytes": 594,
+      "sha256": "69713fde792fb03e5f6480fbd03c38179ed7f0d6186fc4b92ec3ba9972dea7ff",
+      "source_sha256": "69713fde792fb03e5f6480fbd03c38179ed7f0d6186fc4b92ec3ba9972dea7ff"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/RingRepair_r5/deploy-report.json",
+      "bytes": 3857,
+      "sha256": "03cee62c6cdc6a98175252c712bcdedc81a8c8ae1c2bd49bb5676c31909412ff",
+      "source_sha256": "03cee62c6cdc6a98175252c712bcdedc81a8c8ae1c2bd49bb5676c31909412ff"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/RingRepair_r5/editor-before.json",
+      "bytes": 3174,
+      "sha256": "6e8d76e9dc529ae076e96f29db7113b5083ffecbf87efacf4c0c53ae996b0dc3",
+      "source_sha256": "6e8d76e9dc529ae076e96f29db7113b5083ffecbf87efacf4c0c53ae996b0dc3"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/RingRepair_r5/saved-readback.json",
+      "bytes": 2123,
+      "sha256": "1dfdc801d6c9371f3f80d759545664a520c68289feecd402d247304ed585ba09",
+      "source_sha256": "1dfdc801d6c9371f3f80d759545664a520c68289feecd402d247304ed585ba09"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/card-frame-readback.json",
+      "bytes": 443,
+      "sha256": "584364312d0c374d4cd02df6dfde90bd0a4e10f05b2101f517663ff3d5eb9edd",
+      "source_sha256": "584364312d0c374d4cd02df6dfde90bd0a4e10f05b2101f517663ff3d5eb9edd"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/deploy-report.json",
+      "bytes": 6175,
+      "sha256": "2187aca1a434ceea26de3f94780fd79a5af6696556900319c1d71e205ce6066f",
+      "source_sha256": "2187aca1a434ceea26de3f94780fd79a5af6696556900319c1d71e205ce6066f"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/editor-before.json",
+      "bytes": 19060,
+      "sha256": "d97cd8496baff48ccb194c19e3bd9112c75507288bf62c0c25ecbdda9d19d907",
+      "source_sha256": "d97cd8496baff48ccb194c19e3bd9112c75507288bf62c0c25ecbdda9d19d907"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/icon-image-sources.json",
+      "bytes": 945,
+      "sha256": "4f3401d7af28e4d43b82a24362c2e82ee7b88fe9699ef3bc40e9848877c7e61a",
+      "source_sha256": "4f3401d7af28e4d43b82a24362c2e82ee7b88fe9699ef3bc40e9848877c7e61a"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/icons-before.json",
+      "bytes": 2205,
+      "sha256": "08625c7d1672f385ddf47921925d134c9c61a8bcae4a9a98ea1aeb1c424565c0",
+      "source_sha256": "08625c7d1672f385ddf47921925d134c9c61a8bcae4a9a98ea1aeb1c424565c0"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/material-report.json",
+      "bytes": 1684,
+      "sha256": "6d8639001556b5dbd476e4c9604a74766a6fb87ee5e538cf1c0ffa295f432d17",
+      "source_sha256": "6d8639001556b5dbd476e4c9604a74766a6fb87ee5e538cf1c0ffa295f432d17"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/readback-report.json",
+      "bytes": 3757,
+      "sha256": "be7f7ab748e1dd11e628093e822d957e2b10b6f906dc62c5368545ec1305c608",
+      "source_sha256": "be7f7ab748e1dd11e628093e822d957e2b10b6f906dc62c5368545ec1305c608"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/registration-before.json",
+      "bytes": 151244,
+      "sha256": "f2be2e038c351b5c3da6c7167592f0facca7ab7e6e845769188e37fe0853a00a",
+      "source_sha256": "f2be2e038c351b5c3da6c7167592f0facca7ab7e6e845769188e37fe0853a00a"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/registration.json",
+      "bytes": 6009,
+      "sha256": "a60b8375173953308da8739cf5173dbd7bd6da56dfdeee6e91979525ed294df6",
+      "source_sha256": "a60b8375173953308da8739cf5173dbd7bd6da56dfdeee6e91979525ed294df6"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/review-report.json",
+      "bytes": 1539,
+      "sha256": "f0e2b863b9e0c1e6c81cdbf178182f46fdaebe6fbcea4a11a0ddfc19c797f516",
+      "source_sha256": "f0e2b863b9e0c1e6c81cdbf178182f46fdaebe6fbcea4a11a0ddfc19c797f516"
+    },
+    {
+      "path": "Artifacts/CardArtworkPipeline/EnhancedExplosive_20261117/source-manifest-r4.json",
+      "bytes": 16362,
+      "sha256": "f2ec968fac31b45b961b6a05ae15b4e4b22b21eef337d6ccc44b3e0ef17f0d1d",
+      "source_sha256": "f2ec968fac31b45b961b6a05ae15b4e4b22b21eef337d6ccc44b3e0ef17f0d1d"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/Before/catalog.json",
+      "bytes": 4184,
+      "sha256": "62ec8aff62435197523ae42fe06b7bf9aa18b8a6ee45d13179ee80935d526359",
+      "source_sha256": "62ec8aff62435197523ae42fe06b7bf9aa18b8a6ee45d13179ee80935d526359"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/README.md",
+      "bytes": 2048,
+      "sha256": "f685bfd9faccf5140b2e3949f0dc78e05c39784c5ea167f750ccb42abc9a590d",
+      "source_sha256": "f685bfd9faccf5140b2e3949f0dc78e05c39784c5ea167f750ccb42abc9a590d"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/adopt_source.py",
+      "bytes": 4387,
+      "sha256": "cc0991b0cfd78ac4a2b7efc35c1d247c4e204ac2bbc46556a42e017dbb939a4f",
+      "source_sha256": "cc0991b0cfd78ac4a2b7efc35c1d247c4e204ac2bbc46556a42e017dbb939a4f"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/catalog-before.json",
+      "bytes": 11856,
+      "sha256": "9925bde1f52f26a675af5ef1bd37def800961d53fc8e1b09e18b84e93bc46ad4",
+      "source_sha256": "9925bde1f52f26a675af5ef1bd37def800961d53fc8e1b09e18b84e93bc46ad4"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/delivery-verification.json",
+      "bytes": 3106,
+      "sha256": "8c7fbf112a69e13e438ce52371dfef504877745c033f57f72fdc4051f37660e4",
+      "source_sha256": "8c7fbf112a69e13e438ce52371dfef504877745c033f57f72fdc4051f37660e4"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/install-report.json",
+      "bytes": 4251,
+      "sha256": "5e0b898860e572e416ee5641a9b9a17ab5e97222731b3626a5637d16bb888908",
+      "source_sha256": "5e0b898860e572e416ee5641a9b9a17ab5e97222731b3626a5637d16bb888908"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/install_axis.py",
+      "bytes": 4747,
+      "sha256": "5bbf7b91b9e9e5c36d4ea74b21a7f8bf4ee51165cf3a85702c119dc4fa3a7e35",
+      "source_sha256": "5bbf7b91b9e9e5c36d4ea74b21a7f8bf4ee51165cf3a85702c119dc4fa3a7e35"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/source-before.json",
+      "bytes": 1562,
+      "sha256": "bcc7ac8357063fe57dfb83da2138d122c41ce0f7e941e2c14a3972f31a9f6da1",
+      "source_sha256": "bcc7ac8357063fe57dfb83da2138d122c41ce0f7e941e2c14a3972f31a9f6da1"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/source-update.json",
+      "bytes": 3034,
+      "sha256": "f5cb4ebd7b5406256cb74bc5644e0e5eff9180d46dc3fd6ffe01f3da0a67434a",
+      "source_sha256": "f5cb4ebd7b5406256cb74bc5644e0e5eff9180d46dc3fd6ffe01f3da0a67434a"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PackageAxisRepair/ue-before.json",
+      "bytes": 18808,
+      "sha256": "48c8851814f31161af07c86988b0ddd3b0e78f22f4f20e3b26523a77f6f5576b",
+      "source_sha256": "48c8851814f31161af07c86988b0ddd3b0e78f22f4f20e3b26523a77f6f5576b"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/README.md",
+      "bytes": 2131,
+      "sha256": "ff494f473103152d6f01c40514b438ac6992823deb0b096b0a4a2f05fe6c06a6",
+      "source_sha256": "ff494f473103152d6f01c40514b438ac6992823deb0b096b0a4a2f05fe6c06a6"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/delivery-verification.json",
+      "bytes": 760,
+      "sha256": "d03cbfb2b1834cd4b5f6d31f2336cbee1d8d9d48f0a6f889e9ef920592df3dd3",
+      "source_sha256": "d03cbfb2b1834cd4b5f6d31f2336cbee1d8d9d48f0a6f889e9ef920592df3dd3"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/deploy_live.py",
+      "bytes": 6196,
+      "sha256": "ea0bead85c8f1c5e10b2a0ce133991a01ef4ee43af2f103c7934235776513ecf",
+      "source_sha256": "ea0bead85c8f1c5e10b2a0ce133991a01ef4ee43af2f103c7934235776513ecf"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/export-verification.json",
+      "bytes": 443,
+      "sha256": "d73f951834141e9c91214d8fbf0dffd87f4fc2382024aecf36662c78a1a05589",
+      "source_sha256": "d73f951834141e9c91214d8fbf0dffd87f4fc2382024aecf36662c78a1a05589"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/install-report.json",
+      "bytes": 4777,
+      "sha256": "d78d4e6b25217fb146a626106a051e94eeea11a148cd3f955f91d2f2a85e679e",
+      "source_sha256": "d78d4e6b25217fb146a626106a051e94eeea11a148cd3f955f91d2f2a85e679e"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/registration.json",
+      "bytes": 473,
+      "sha256": "63df1a46f8c834df0b1641efdbc6f287eb1e99992679877aae992747dbcea8e1",
+      "source_sha256": "63df1a46f8c834df0b1641efdbc6f287eb1e99992679877aae992747dbcea8e1"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/source-before.json",
+      "bytes": 46731,
+      "sha256": "5c3e6b0f7c2bbcdb775ebec4d196124395544ade87ef67e74d7469a9ff774865",
+      "source_sha256": "5c3e6b0f7c2bbcdb775ebec4d196124395544ade87ef67e74d7469a9ff774865"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/sync_source.py",
+      "bytes": 5311,
+      "sha256": "7cb371264e4394412b1076871659a5be1cb2f14ba6694514aa482aa9c36fa510",
+      "source_sha256": "7cb371264e4394412b1076871659a5be1cb2f14ba6694514aa482aa9c36fa510"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/PipelineIntegration/ue-before.json",
+      "bytes": 14758,
+      "sha256": "0cef69c0c2768e82323f6373c006b7ac1273c523c1a4237f5c1609fadffffb4e",
+      "source_sha256": "0cef69c0c2768e82323f6373c006b7ac1273c523c1a4237f5c1609fadffffb4e"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/README.md",
+      "bytes": 3541,
+      "sha256": "9ae0408bb606cca97a32733cc16800df665cb2df14420c74dfc27f347f7ba6a0",
+      "source_sha256": "9ae0408bb606cca97a32733cc16800df665cb2df14420c74dfc27f347f7ba6a0"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/Before/catalog.json",
+      "bytes": 11473,
+      "sha256": "46c27dea8e801636a9030c0c0a55f22967d0c95ad1c8cc0628cee942ac8e5f0f",
+      "source_sha256": "46c27dea8e801636a9030c0c0a55f22967d0c95ad1c8cc0628cee942ac8e5f0f"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/README.md",
+      "bytes": 2541,
+      "sha256": "d40aed6fa0940da4ca3f14f3795d26071725c08dcc94b47179250126944216a4",
+      "source_sha256": "d40aed6fa0940da4ca3f14f3795d26071725c08dcc94b47179250126944216a4"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/delivery-verification.json",
+      "bytes": 2996,
+      "sha256": "35cadeb185e0e415d8f035ed2280efa35bdf6d96b31841c1f6c482a6007dbd92",
+      "source_sha256": "35cadeb185e0e415d8f035ed2280efa35bdf6d96b31841c1f6c482a6007dbd92"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/editor-before.json",
+      "bytes": 14775,
+      "sha256": "be318a7965d0dbee4d7266833e782668074e40aa8d248ca56bc78934b7b02d31",
+      "source_sha256": "be318a7965d0dbee4d7266833e782668074e40aa8d248ca56bc78934b7b02d31"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/export-verification.json",
+      "bytes": 254,
+      "sha256": "73c208ce3bec80cc5d603067539a3afbd4b20a4a5f27974e2487e6817e08528b",
+      "source_sha256": "73c208ce3bec80cc5d603067539a3afbd4b20a4a5f27974e2487e6817e08528b"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/install-report.json",
+      "bytes": 6250,
+      "sha256": "2e433863f86b1b262e95a0b51e6546271136f1b53076b271f02d69ad3f71d821",
+      "source_sha256": "2e433863f86b1b262e95a0b51e6546271136f1b53076b271f02d69ad3f71d821"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/install_v2.py",
+      "bytes": 3997,
+      "sha256": "3c7323c8e98c0ea2fee4c454619058f2bdf57f6add430b6c3e199f51e1a6ae62",
+      "source_sha256": "3c7323c8e98c0ea2fee4c454619058f2bdf57f6add430b6c3e199f51e1a6ae62"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/register_v2.py",
+      "bytes": 5514,
+      "sha256": "d70c21df9cb3b53906395948386701c5a33696aaed5be0e5e385ed1826a73eb2",
+      "source_sha256": "d70c21df9cb3b53906395948386701c5a33696aaed5be0e5e385ed1826a73eb2"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/registration.json",
+      "bytes": 1737,
+      "sha256": "c23a9a047bdcb779682f3092b422bb5387584d33f46869409e3e757fdbacd0c4",
+      "source_sha256": "c23a9a047bdcb779682f3092b422bb5387584d33f46869409e3e757fdbacd0c4"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/V2/source-before.json",
+      "bytes": 7771,
+      "sha256": "e3accd8253e077cd9d7e1bb858dd1129afbd23d8fc93614471bf89f556e848de",
+      "source_sha256": "e3accd8253e077cd9d7e1bb858dd1129afbd23d8fc93614471bf89f556e848de"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/delivery-verification.json",
+      "bytes": 1678,
+      "sha256": "ab4867a243d4567c53871418363f0679c2ea4878a4e3e0da7a62616fa3175184",
+      "source_sha256": "ab4867a243d4567c53871418363f0679c2ea4878a4e3e0da7a62616fa3175184"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/editor-before.json",
+      "bytes": 13517,
+      "sha256": "1095bd3ffd9be73970f7b463fbe4d77f27fef9ae52afa06d635b14ba16175043",
+      "source_sha256": "1095bd3ffd9be73970f7b463fbe4d77f27fef9ae52afa06d635b14ba16175043"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/export-verification.json",
+      "bytes": 2544,
+      "sha256": "567ced87772d522043e1330de58c3b2f6ebce2692f66635b3cd2d7b1356ec76b",
+      "source_sha256": "567ced87772d522043e1330de58c3b2f6ebce2692f66635b3cd2d7b1356ec76b"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/install-report.json",
+      "bytes": 18678,
+      "sha256": "1a3a18a0ac7a2cce1e02e8f1d01d5bd117057976016c9e8659be76e750c359c9",
+      "source_sha256": "1a3a18a0ac7a2cce1e02e8f1d01d5bd117057976016c9e8659be76e750c359c9"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/registration.json",
+      "bytes": 983,
+      "sha256": "498016446834a554e0e8e90acbd39f587f297483dd4c620aa6cbeaea4f78fb20",
+      "source_sha256": "498016446834a554e0e8e90acbd39f587f297483dd4c620aa6cbeaea4f78fb20"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/review-report.json",
+      "bytes": 1539,
+      "sha256": "f0e2b863b9e0c1e6c81cdbf178182f46fdaebe6fbcea4a11a0ddfc19c797f516",
+      "source_sha256": "f0e2b863b9e0c1e6c81cdbf178182f46fdaebe6fbcea4a11a0ddfc19c797f516"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/saved-readback.json",
+      "bytes": 9375,
+      "sha256": "0c1f98e857d1971d6c813a42678e656ecdf666050161155997d121d9c5626ba8",
+      "source_sha256": "0c1f98e857d1971d6c813a42678e656ecdf666050161155997d121d9c5626ba8"
+    },
+    {
+      "path": "Artifacts/GroundRogueCardIcons_20261118/source-before.json",
+      "bytes": 17450,
+      "sha256": "53f1cd696bfa24cfaa5c1ae58f9414ba59bdc35f3224e126aaf7577cb6462567",
+      "source_sha256": "53f1cd696bfa24cfaa5c1ae58f9414ba59bdc35f3224e126aaf7577cb6462567"
+    },
+    {
+      "path": "Artifacts/RogueCardSessionCloseout_20261118/README.md",
+      "bytes": 1167,
+      "sha256": "a3900e2f98e2642cbd8140bce41cec9d28c4795468430545cad3d38aea5ca2a8",
+      "source_sha256": "a3900e2f98e2642cbd8140bce41cec9d28c4795468430545cad3d38aea5ca2a8"
+    },
+    {
+      "path": "Artifacts/RogueCardSessionCloseout_20261118/cleanup-report.json",
+      "bytes": 12657,
+      "sha256": "659fb17fa7995f9ce32ea7e00e77eed5d8e24cbacb7e9282e0dfc3ee887ba7ab",
+      "source_sha256": "a7d8fea2f719abef7482d2d023be87f1c7fd928b738c1f3bf10141e10c72882e"
+    },
+    {
+      "path": "Artifacts/RogueCardSessionCloseout_20261118/prepare_publication.py",
+      "bytes": 9593,
+      "sha256": "bbf9d689676e17794b6e164f6fb2b8e977b46fcb090955f3aeeceeb07317f6f0",
+      "source_sha256": "bbf9d689676e17794b6e164f6fb2b8e977b46fcb090955f3aeeceeb07317f6f0"
+    },
+    {
+      "path": "Progress/Archive/20261117-强化爆炸弹地面光环断口补绘.md",
+      "bytes": 4233,
+      "sha256": "f2aa019a848c2bdf74215fe7c8d8029fd3ad387078113ff00bd072906b37311c",
+      "source_sha256": "d6d3b0d1b79f7f01d5c983db815ea5e29b63929c1b0c9e8893272c9c4691069e"
+    },
+    {
+      "path": "Progress/Archive/20261117-强化爆炸弹导弹表面与轴线修订.md",
+      "bytes": 3805,
+      "sha256": "70d3a6a26319562cf0f75161c6ab3f8038a446167d0e525f478f334175123473",
+      "source_sha256": "9997f9cfa1bc8459f0ece7f5d98303418e912069f9dac1d742fe807ee5e73d7c"
+    },
+    {
+      "path": "Progress/Archive/20261117-强化爆炸弹正式牌面入库与图标清单.md",
+      "bytes": 4204,
+      "sha256": "8b75eaa5c46b0a4075d90d0d8e6ed2be327db7daeab5ede60aa0e0d474c65730",
+      "source_sha256": "859c80ac740a36fe414bc727f70a3082b39c139b594954e7859fe730e983e436"
+    },
+    {
+      "path": "Progress/Archive/20261118-强化爆炸弹与游骑兵图标会话清理结项.md",
+      "bytes": 3795,
+      "sha256": "8d3a93fd67819307acdef6826c0dcf52ec7a618bf2e1b8db536905001ebd8e76",
+      "source_sha256": "8d3a93fd67819307acdef6826c0dcf52ec7a618bf2e1b8db536905001ebd8e76"
+    },
+    {
+      "path": "Progress/Archive/20261118-游骑兵五张肉鸽牌独立图标接入.md",
+      "bytes": 5066,
+      "sha256": "409a078ae366c558121dc7b41b962e7d56a5bd50905d055d118560a2f5b88115",
+      "source_sha256": "500d9115fd2772607120efb178cc940b0ae65505fc25efd892591c262df7e080"
+    },
+    {
+      "path": "Progress/Archive/20261118-游骑兵图标V2_1数据管线同步.md",
+      "bytes": 3318,
+      "sha256": "199f01cfa08230e8efd56e52c80bf9e170f52df198efe900373ddea2568c4bb7",
+      "source_sha256": "51de0157fc3301e371497785657d6b292951ad78d2ec51715e8eef85af5c5de1"
+    },
+    {
+      "path": "Progress/Archive/20261118-游骑兵图标提示词研究与V2轴线修订.md",
+      "bytes": 5062,
+      "sha256": "f3055cafc78a3533a9780eee2c48cf5eb9d6acefb935de17057b3301b40d340a",
+      "source_sha256": "2aecebd1abe38b7a73700889c1ac06f2a537ffc9062a9203c738bc66587b24e5"
+    },
+    {
+      "path": "Progress/Archive/20261118-爆破套餐三枚导弹图标轴线修订.md",
+      "bytes": 3827,
+      "sha256": "c584fea48ee9238d345d13622610002caf25f204e75d08ac3005483da94b44e8",
+      "source_sha256": "1780c4fb33a1775d6dfe6ca09994cc06717c6ac8b9baa05a3fd69a115ed70cdb"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md",
+      "bytes": 2594,
+      "sha256": "48cdd52995d045cca132087b19c725f34ac7d9b363441a86f7f6451e68685b89",
+      "source_sha256": "48cdd52995d045cca132087b19c725f34ac7d9b363441a86f7f6451e68685b89"
+    },
+    {
+      "path": "Progress/_Index/Archive.md",
+      "bytes": 108560,
+      "sha256": "1e48a2afb0c7f3d8d18570ab4f2c6db19be8732a4f17df110a2c255e3b05e899",
+      "source_sha256": "4552592d0d2cd1917bbf4de5ef8208759b2aeef65213341280115b111bea0bc2"
+    },
+    {
+      "path": "Progress/_Index/ByArea.md",
+      "bytes": 425629,
+      "sha256": "cc69bdd344f94e4251e2140a44239f8b7a69bdc2c800a1cfbde5aaab5c7cfb6d",
+      "source_sha256": "61ff686b1958c5689efdddf3a37843430477c6b1acc6448f77d900c2b64d97b4"
+    },
+    {
+      "path": "Progress/_Index/Current.md",
+      "bytes": 56660,
+      "sha256": "c4eb028e14ca66d7b914bcaab4ab14c791ee44eebcf7f9deafb0bb61e2bceffa",
+      "source_sha256": "32e2b561356becd6b704b6fcee76e1e673e0fb0cded5f81c1a72769de528d4b1"
+    },
+    {
+      "path": "Progress/_Index/Quality.md",
+      "bytes": 25596,
+      "sha256": "20dcb556b622059721dd88e5d17ac9f693a3c72993cdf5639969ba1df4598c85",
+      "source_sha256": "4606acadb0c9fc7b33292dcc7aa412ed6ea68b1f65c381afc722d4deb3a1820a"
+    },
+    {
+      "path": "Progress/_Index/Verification.md",
+      "bytes": 38595,
+      "sha256": "9ed0c002ce50aa5eba00ffa23e6d230a030675bdb0ba34aacc62247628d8b39b",
+      "source_sha256": "0ad0cb03d0208215a59c9d0c288e180c95c624793de77051d8c3606485248404"
+    },
+    {
+      "path": "Progress/_Index/catalog.jsonl",
+      "bytes": 846788,
+      "sha256": "1c1f5917c2320dec0ac202169ddf34f44679b56f2254530e5224cf35a71c3262",
+      "source_sha256": "01c5bd0177c51649336320d9b9a42a8f3b9b6f571906ce12cedbdb2ebce89b88"
+    },
+    {
+      "path": "Scripts/Cards/author_ground_four_card_artwork.py",
+      "bytes": 10231,
+      "sha256": "8960dedb033ec9f6c0a15be1f53b23e663f166c4457a4ded8f74ebc4de8068d9",
+      "source_sha256": "8960dedb033ec9f6c0a15be1f53b23e663f166c4457a4ded8f74ebc4de8068d9"
+    },
+    {
+      "path": "Scripts/Cards/author_registered_six_material.py",
+      "bytes": 7650,
+      "sha256": "06f0b692a2616cd058e27822c590ec298c05b645da1e4a20eee094ba3b6f8874",
+      "source_sha256": "06f0b692a2616cd058e27822c590ec298c05b645da1e4a20eee094ba3b6f8874"
+    },
+    {
+      "path": "Scripts/Cards/card_artwork_pipeline.py",
+      "bytes": 29923,
+      "sha256": "7ef27edac7669205408f5c462344e5a1dfc0b47a417d165dd78874cb3da419e0",
+      "source_sha256": "7ef27edac7669205408f5c462344e5a1dfc0b47a417d165dd78874cb3da419e0"
+    },
+    {
+      "path": "Scripts/Cards/card_artwork_review.py",
+      "bytes": 17929,
+      "sha256": "b47e971c30da233110c59f623f5f29a54f5a3fcb35b966ce06cc5683a3a3d9ae",
+      "source_sha256": "b47e971c30da233110c59f623f5f29a54f5a3fcb35b966ce06cc5683a3a3d9ae"
+    },
+    {
+      "path": "Scripts/Cards/install_enhanced_explosive_artwork.py",
+      "bytes": 5606,
+      "sha256": "73653791df5f01040bec0179d3ec7af1f4271482724124cd7c71222c7560fecd",
+      "source_sha256": "73653791df5f01040bec0179d3ec7af1f4271482724124cd7c71222c7560fecd"
+    },
+    {
+      "path": "Scripts/Cards/install_ground_four_card_artwork.py",
+      "bytes": 2576,
+      "sha256": "5f66732b639baca732f3e94ed5f569d48d605699d6db0ef5cd733c88c8fb1307",
+      "source_sha256": "5f66732b639baca732f3e94ed5f569d48d605699d6db0ef5cd733c88c8fb1307"
+    },
+    {
+      "path": "Scripts/Cards/register_enhanced_explosive_artwork.py",
+      "bytes": 8094,
+      "sha256": "effd750cabe46f15795e131ab0b6a84936a01cac884a94de6bdb29ef04bb057a",
+      "source_sha256": "effd750cabe46f15795e131ab0b6a84936a01cac884a94de6bdb29ef04bb057a"
+    },
+    {
+      "path": "Scripts/GroundMech/icon_assets.py",
+      "bytes": 3959,
+      "sha256": "d6bf2deae1f0bf05ebe3a4fdafb4e35973c150774d81edead893cf0ba0c9c9a4",
+      "source_sha256": "d6bf2deae1f0bf05ebe3a4fdafb4e35973c150774d81edead893cf0ba0c9c9a4"
+    },
+    {
+      "path": "Scripts/GroundMech/install_rogue_card_icons_20261118.py",
+      "bytes": 5101,
+      "sha256": "54974b6ddb0fe5596debdd82fa072602cce9a1eb610cd24d2fa63e18ecb377d7",
+      "source_sha256": "54974b6ddb0fe5596debdd82fa072602cce9a1eb610cd24d2fa63e18ecb377d7"
+    },
+    {
+      "path": "Scripts/GroundMech/register_rogue_card_icons_20261118.py",
+      "bytes": 6945,
+      "sha256": "dce8d6b57f63ad1e9f64b44aa4921f303d874ca9a24c8f75f8ce49161ac4320f",
+      "source_sha256": "dce8d6b57f63ad1e9f64b44aa4921f303d874ca9a24c8f75f8ce49161ac4320f"
+    },
+    {
+      "path": "Tools/DataPipeline/card_artwork_catalog.py",
+      "bytes": 10325,
+      "sha256": "90e48ef84a950a86dc1f7dc4801f06ec7544615b23edd4558b3ae139fa7a08d1",
+      "source_sha256": "90e48ef84a950a86dc1f7dc4801f06ec7544615b23edd4558b3ae139fa7a08d1"
+    },
+    {
+      "path": "data/Excel/GuLiStrikeCardArtwork.xlsx",
+      "bytes": 40599,
+      "sha256": "c7e0fad583e709ba4c5d3f52d3745db3a76f162e3002a4a09346715bb1fbbe55",
+      "source_sha256": "c7e0fad583e709ba4c5d3f52d3745db3a76f162e3002a4a09346715bb1fbbe55"
+    },
+    {
+      "path": "data/Excel/GuLiStrikeIcons.xlsx",
+      "bytes": 7151,
+      "sha256": "0f56b7b8ad6d4d2e0350aba41d56d3f3cd704869994a2fbfe03cdb6f2d7b5d20",
+      "source_sha256": "0f56b7b8ad6d4d2e0350aba41d56d3f3cd704869994a2fbfe03cdb6f2d7b5d20"
+    },
+    {
+      "path": "data/Excel/GuLiStrikeRogueCards.xlsx",
+      "bytes": 13989,
+      "sha256": "bc88e3335edda35ccbf059bfe2e71e7ddd9ac73a70ce4be8019eb29a9b43332d",
+      "source_sha256": "bc88e3335edda35ccbf059bfe2e71e7ddd9ac73a70ce4be8019eb29a9b43332d"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Artworks.csv",
+      "bytes": 5965,
+      "sha256": "37e8ee2b26ad37eb16e54cd203cb664b8d6e0bd43e3b42dd21f13b7e6e2a6a68",
+      "source_sha256": "37e8ee2b26ad37eb16e54cd203cb664b8d6e0bd43e3b42dd21f13b7e6e2a6a68"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Artworks.json",
+      "bytes": 8528,
+      "sha256": "66a955ba0526b24442743ba4e5a7d3d359f6e942e647d8dc37b0c232656793c1",
+      "source_sha256": "66a955ba0526b24442743ba4e5a7d3d359f6e942e647d8dc37b0c232656793c1"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Layers.csv",
+      "bytes": 14100,
+      "sha256": "54c1b8327ca6938098d6fdae8488c3852c7a668b6d4701055327fdb91bc367c6",
+      "source_sha256": "54c1b8327ca6938098d6fdae8488c3852c7a668b6d4701055327fdb91bc367c6"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Layers.json",
+      "bytes": 37978,
+      "sha256": "665b3be870ea97a6c2f89fd4b0da3b64c6145feb8a49fccbde00ed53008785d7",
+      "source_sha256": "665b3be870ea97a6c2f89fd4b0da3b64c6145feb8a49fccbde00ed53008785d7"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Parameters.csv",
+      "bytes": 56103,
+      "sha256": "ebacf978440b6b65657e0e297e041f9fc2aefd9b1f81b02d261a85b2efaf5470",
+      "source_sha256": "ebacf978440b6b65657e0e297e041f9fc2aefd9b1f81b02d261a85b2efaf5470"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Parameters.json",
+      "bytes": 135852,
+      "sha256": "9e033cf736d2d6dc9cf42c7b2604537cfc63d6fa0eb7c238a73510251365af22",
+      "source_sha256": "9e033cf736d2d6dc9cf42c7b2604537cfc63d6fa0eb7c238a73510251365af22"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Templates.csv",
+      "bytes": 1785,
+      "sha256": "2899751d276987a7d3cf04d69a5cfe1ff235ce13409a05b34e866f227cb00ae2",
+      "source_sha256": "2899751d276987a7d3cf04d69a5cfe1ff235ce13409a05b34e866f227cb00ae2"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeCardArtwork_Templates.json",
+      "bytes": 2555,
+      "sha256": "06fe5eda50ebda7ea16b7073e13ee10f1eb1d4bfc70341c441b7dab1da0fdf24",
+      "source_sha256": "06fe5eda50ebda7ea16b7073e13ee10f1eb1d4bfc70341c441b7dab1da0fdf24"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeIcons_Icons.csv",
+      "bytes": 1882,
+      "sha256": "70b2eaf7da3fd3a7717cc1eea6a796e09f53882610e430dacd43fd880668f0f4",
+      "source_sha256": "70b2eaf7da3fd3a7717cc1eea6a796e09f53882610e430dacd43fd880668f0f4"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeIcons_Icons.json",
+      "bytes": 2722,
+      "sha256": "9a048ea54357539e345cb32b2c537bcfcb38beb62df7c8dec3979cf211ce0b4d",
+      "source_sha256": "9a048ea54357539e345cb32b2c537bcfcb38beb62df7c8dec3979cf211ce0b4d"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeRogueCards_Cards.csv",
+      "bytes": 6459,
+      "sha256": "a3c6a0e93d718820930faadb117cb20be993545f1a8cbd3180947f59d30b622f",
+      "source_sha256": "a3c6a0e93d718820930faadb117cb20be993545f1a8cbd3180947f59d30b622f"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeRogueCards_Cards.json",
+      "bytes": 10922,
+      "sha256": "6d255f093acb2c1a9d870bd8c2f0c5a032d0ab04defa9ef83aa56c99f36f3fd9",
+      "source_sha256": "6d255f093acb2c1a9d870bd8c2f0c5a032d0ab04defa9ef83aa56c99f36f3fd9"
+    },
+    {
+      "path": "data/Json/manifest.json",
+      "bytes": 16484,
+      "sha256": "a88b1e570d4dfd4f3b377b3407666e8663a402e4690039cff5df78a4831f2c02",
+      "source_sha256": "a88b1e570d4dfd4f3b377b3407666e8663a402e4690039cff5df78a4831f2c02"
+    }
+  ],
+  "resource_files_excluded": true,
+  "lfs_objects_added": 0,
+  "source_tree": "local session files plus prerequisite card pipeline; remote-only Markdown dependencies preserved",
+  "checks": {
+    "python_ast": true,
+    "json_parse": true,
+    "resource_path_and_extension_guard": true,
+    "whitespace_except_historical_extra_eof": true,
+    "no_lfs_pointers": true,
+    "new_document_errors": 0
+  },
+  "text_line_endings": "Normal Git filters for text; archived prompts/evidence and hashed data preserve exact bytes via .gitattributes."
+}

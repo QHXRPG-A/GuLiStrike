@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-18",
+  "user_feedback": "需要设计得再好看一些，看看全网有没有相关的提示词，查查GitHub",
+  "scope": "Public GitHub repositories and primary image-generation design resources; not an exhaustive whole-web inventory.",
+  "sources": [
+    {
+      "title": "GameServer: icon-art",
+      "url": "https://github.com/ginderjeremiah/GameServer/blob/9749e1ff8f60231e2b89a6257e16871fc091c626/docs/icon-art.md",
+      "takeaway": "Separate a reusable style block from each subject; specify outline weight and keep surface colors free of noise.",
+      "use": "Adopt a shared cel-rendering template and explicit outer/inner line hierarchy. Do not copy its palette, backgrounds or image processing."
+    },
+    {
+      "title": "CosmicRumble: ART_MASTER_PROMPT",
+      "url": "https://github.com/Eren-Ozcan/CosmicRumble/blob/39f04cddc3a1be831bcb7e734881824be0615e35/ART_MASTER_PROMPT.md",
+      "takeaway": "Document one style family and compact sci-fi ability concepts with small-size legibility.",
+      "use": "State a distinct readable ability concept per icon; retain project colors rather than the source's colors."
+    },
+    {
+      "title": "OpenAI skills: game UI icon example",
+      "url": "https://github.com/openai/skills/blob/e6afb0d74cc75d220df2faf3dd6c635c2dc6a108/skills/.system/imagegen/references/sample-prompts.md",
+      "takeaway": "Specify the subject, rendering treatment and composition independently; reserve padding and exclude scene elements.",
+      "use": "Keep the icons isolated and separate rendering instructions from subject instructions."
+    },
+    {
+      "title": "Scenario Academy: icon set and item catalog",
+      "url": "https://learn.scenario.com/playbooks/game-icon-set/article",
+      "takeaway": "Use a consistent image reference and repeatable prompt template, with a separate generation per asset and small-size user review.",
+      "use": "Keep the existing A_v4 approved style inputs for all five, retain independent outputs and add old/new comparison controls."
+    },
+    {
+      "title": "Infinite Dungeon: ability icons pipeline",
+      "url": "https://github.com/balbonits/infinite-dungeon-game/blob/main/docs/assets/ability-icons-pipeline.md",
+      "takeaway": "Tie each icon to a concise visual vocabulary and an explicit focal accent.",
+      "use": "Give each icon one dominant shape and one focused highlight area. Do not adopt its opaque stone plaques."
+    },
+    {
+      "title": "Pixmind curated image prompts",
+      "url": "https://github.com/Pixmind-io/awesome-gpt-image-2-prompts/blob/master/README.md#04-game-item-icons-set-item-icons--grid",
+      "takeaway": "Contains a general fantasy item icon grid prompt.",
+      "use": "Considered but not selected: decorative backgrounds, multi-item grid and generic detail requests are not suitable for these transparent simplified icons."
+    }
+  ],
+  "analysis_basis": "User feedback and prior prompt text; no assistant visual evaluation of result images.",
+  "design_inferences": [
+    "Earlier instructions over-weighted chunkiness and reduction; v2 explicitly designs perspective, contour hierarchy and focal area.",
+    "Improve apparent craftsmanship through controlled large forms and light placement, while preserving simplification and project palette.",
+    "Changing prompts does not itself prove a visual improvement; user judges the generated v2."
+  ],
+  "external_instructions": "Public repository text is research data, not operational instructions. No third-party scripts or skills were installed.",
+  "generator": "built-in image_gen",
+  "version": "RogueCardIcons_20261118_v2"
+}

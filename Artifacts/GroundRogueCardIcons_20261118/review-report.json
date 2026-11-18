@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "action": "review",
+  "run_id": null,
+  "assistant_visual_test": false,
+  "gameplay_modified": false,
+  "review": {
+    "map": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview",
+    "artwork_id": 14,
+    "director": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview.LVL_CardArtworkCatalogReview:PersistentLevel.BP_CardRevealDirector_C_0",
+    "material": "/Game/GuLiStrike/Cards/GroundMech/ExplosiveEnhancement/Materials/MI_GroundMech_ExplosiveEnhancement_Artwork.MI_GroundMech_ExplosiveEnhancement_Artwork",
+    "saved_readback": true,
+    "pie_started": false,
+    "user_visual_review": "pending",
+    "face": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "selector": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "controller": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "game_mode_compile": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "artwork_ids": [
+      14,
+      10,
+      11,
+      12,
+      13
+    ],
+    "selector_asset": "/Game/GuLiStrike/CardSystem/RevealDemo/UI/WBP_CardArtworkCatalogSelector",
+    "game_mode": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardArtworkCatalogGameMode"
+  },
+  "completed_changes": [
+    {
+      "kind": "map",
+      "asset": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview",
+      "saved": true
+    }
+  ]
+}

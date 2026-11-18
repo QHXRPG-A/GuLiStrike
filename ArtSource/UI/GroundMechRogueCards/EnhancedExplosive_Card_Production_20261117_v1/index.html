@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>强化爆炸弹 · 六层视差</title><link rel="stylesheet" href="preview.css"><script defer src="card-data.js?v=20261117-r5"></script><script defer src="preview.js"></script></head>
+<body><main>
+<header><div><p class="eyebrow">游骑兵 · 肉鸽卡牌</p><h1>强化爆炸弹</h1><p class="sub">六层牌面 · 光环修订 05</p></div><div class="header-actions"><span id="status" role="status">正在载入</span><a class="button" href="EnhancedExplosive_SixLayers.zip?v=20261117-r5" download>下载素材包</a></div></header>
+<div class="workspace" id="workspace" data-mode="stack">
+<section class="stage" aria-label="牌面预览">
+<nav class="modes" aria-label="查看模式"><button data-mode="reference">原图</button><button data-mode="stack" aria-pressed="true">原位叠合</button><button data-mode="parallax">交互视差</button><button data-mode="compare">左右对照</button></nav>
+<div class="main-wrap" id="motion-area"><div id="card"><canvas id="art" aria-label="牌面或独立图层"></canvas></div></div>
+<div id="comparison"><figure><figcaption>用户原图 · 同一窗口</figcaption><canvas id="reference-view"></canvas></figure><figure><figcaption>六层原位叠合</figcaption><canvas id="stack-view"></canvas></figure></div>
+<p id="hint" class="hint">六层全开、100%透明度、零倾斜的原位叠合。</p>
+<div class="source-links"><a href="Inputs/FinalReference.png" download>下载用户原图</a><a href="Checks/Composite_final.png?v=20261117-r5" download>下载完整画布叠合图</a></div>
+</section>
+<aside class="panel"><div class="panel-heading"><h2>图层</h2><button id="reset">全部恢复</button></div>
+<div class="strength"><label for="strength">视差强度</label><input id="strength" type="range" min="0" max="100" value="75" disabled><output id="strength-value">75%</output></div>
+<ol id="layers"></ol><p class="note">弹体与尾焰共用一层；爆炸和大陆同步移动。</p><p class="note">独看显示完整图层及外扩区域。</p>
+<details><summary>制作记录</summary><p id="geometry-note"></p><p id="metric-note"></p><p>尺寸、相似度及页面运行检查独立记录；画面完整性与运动接合由你核验。</p><a href="manifest.json?v=20261117-r5" download>下载交付清单</a></details>
+</aside></div>
+<footer>按原图制作 · 左右等量裁切适配现有卡框图片区 · <a href="README.md">制作说明与完整提示词</a></footer>
+</main></body></html>

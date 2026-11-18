@@ -1,0 +1,106 @@
+{
+  "success": true,
+  "artwork": [
+    {
+      "artwork_id": 14,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/ExplosiveEnhancement/Materials/MI_GroundMech_ExplosiveEnhancement_Artwork.MI_GroundMech_ExplosiveEnhancement_Artwork",
+      "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSixProjectileFront_v1.M_CardArtwork_RegisteredSixProjectileFront_v1",
+      "parameters_checked": 35
+    }
+  ],
+  "draw_order": [
+    6,
+    5,
+    4,
+    1,
+    2,
+    3
+  ],
+  "material_diagnostics": "<Struct 'MaterialDiagnostics' (0x000001CD142CF800) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Engine/EngineResources/WhiteSquareTexture.WhiteSquareTexture\",\"/Game/GuLiStrike/CardSystem/RevealDemo/Textures/T_CardArtwork_WhiteMask.T_CardArtwork_WhiteMask\"), expression_count: 45, texture_sample_count: 7, texture_object_parameter_count: 7, function_call_count: 0, scalar_parameter_count: 15, vector_parameter_count: 14}>",
+  "icons": [
+    {
+      "card_id": "06.01",
+      "title": "折射子弹",
+      "icon_id": 2,
+      "icon_name": "Ricochet",
+      "resource": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Ricochet.T_GroundIcon_Ricochet",
+      "exists": true,
+      "status": "dedicated"
+    },
+    {
+      "card_id": "07.01",
+      "title": "灼烧子弹",
+      "icon_id": 3,
+      "icon_name": "Burning",
+      "resource": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Burning.T_GroundIcon_Burning",
+      "exists": true,
+      "status": "dedicated"
+    },
+    {
+      "card_id": "08.01",
+      "title": "灼烧爆裂子弹",
+      "icon_id": 4,
+      "icon_name": "BurningBurst",
+      "resource": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_BurningBurst.T_GroundIcon_BurningBurst",
+      "exists": true,
+      "status": "dedicated"
+    },
+    {
+      "card_id": "09.01",
+      "title": "增加攻速",
+      "icon_id": 5,
+      "icon_name": "Fire",
+      "resource": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Fire.T_GroundIcon_Fire",
+      "exists": true,
+      "status": "shared_fire_placeholder"
+    },
+    {
+      "card_id": "10.01",
+      "title": "强化子弹",
+      "icon_id": 5,
+      "icon_name": "Fire",
+      "resource": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Fire.T_GroundIcon_Fire",
+      "exists": true,
+      "status": "shared_fire_placeholder"
+    },
+    {
+      "card_id": "11.01",
+      "title": "爆破套餐",
+      "icon_id": 5,
+      "icon_name": "Fire",
+      "resource": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Fire.T_GroundIcon_Fire",
+      "exists": true,
+      "status": "shared_fire_placeholder"
+    },
+    {
+      "card_id": "12.01",
+      "title": "强化爆炸弹",
+      "icon_id": 0,
+      "icon_name": "",
+      "resource": "",
+      "exists": false,
+      "status": "missing"
+    }
+  ],
+  "unbound_artworks": [
+    {
+      "artwork_id": 13,
+      "title": "无人生还",
+      "icon_id": null,
+      "reason": "Artwork registered; no gameplay card references this material"
+    },
+    {
+      "artwork_id": 14,
+      "title": "强化爆炸弹",
+      "icon_id": null,
+      "reason": "Artwork registered; no gameplay card references this material"
+    }
+  ],
+  "map": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview.LVL_CardArtworkCatalogReview",
+  "review_ids": "[14, 10, 11, 12, 13]",
+  "director": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview.LVL_CardArtworkCatalogReview:PersistentLevel.BP_CardRevealDirector_C_0",
+  "dirty_content": [],
+  "dirty_maps": [],
+  "pie_started": false,
+  "assistant_visual_test": false
+}

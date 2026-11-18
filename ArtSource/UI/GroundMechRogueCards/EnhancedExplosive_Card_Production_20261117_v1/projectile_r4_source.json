@@ -1,0 +1,96 @@
+{
+  "revision": "20261117-r4",
+  "tool": "image_gen.imagegen",
+  "mode": "builtin_edit",
+  "file": "Generated/L3_projectile_clean_straight_r4.png",
+  "original_output": "C:/Users/a/.codex/generated_images/01a1ea0d-0066-7a93-a197-db399ccf3883/exec-9f7bb89e-b481-4f49-ac5c-45dc7e0aa67b.png",
+  "sha256": "ece8e3c6513dfffa0b36aa14e6e9e5a6e3135480576b62b423829cc7d8ebfb57",
+  "size": [
+    1311,
+    1200
+  ],
+  "mode_rgba": "RGBA",
+  "alpha_range": [
+    0,
+    255
+  ],
+  "prompt_file": "Prompts/L3_projectile_clean_straight_r4.txt",
+  "prompt_sha256": "c4749814f04c5295e5cd0723d7f6a857924c33c72cd422361223c2fd1cca68d1",
+  "inputs": [
+    {
+      "file": "Layers/L3_projectile.png",
+      "role": "edit_target",
+      "preserved_copy": "Inputs/L3_projectile_before_r4.png",
+      "preserved_sha256": "bdd70db4fef22cda705142f85c34b0149d3c35e7d00fef703aab56cf8c8b955b"
+    },
+    {
+      "file": "Inputs/FinalReference.png",
+      "role": "style_and_identity_reference",
+      "preserved_sha256": "237b694d314ce9b4e5aa55b91e86bd4daf403f875132a860f68c855ca5d93dc2"
+    },
+    {
+      "file": "Inputs/UserMissileCorrection_20261117.png",
+      "role": "user_feedback_annotation",
+      "preserved_sha256": "a068902a6f0bb57d291004a2f81b9f23247805f030cc05b35ebea6288e30fd48"
+    }
+  ],
+  "matrix_to_common": [
+    [
+      1.142183542251587,
+      0.0,
+      24.164306640625
+    ],
+    [
+      0.0,
+      1.142183542251587,
+      9.78839111328125
+    ]
+  ],
+  "registration": {
+    "method": "Uniform scale and translation fit to matching opaque source features, no rotation or deformation",
+    "matches": 148,
+    "inliers": 75,
+    "scale": 1.142183542251587,
+    "offset": [
+      24.164306640625,
+      9.78839111328125
+    ],
+    "median_error_px": 4.506771087646484,
+    "source_span": [
+      [
+        161.57501220703125,
+        169.89852905273438
+      ],
+      [
+        1070.44091796875,
+        723.7705688476562
+      ]
+    ],
+    "target_span": [
+      [
+        200.6825408935547,
+        203.12307739257812
+      ],
+      [
+        1243.9932861328125,
+        832.2534790039062
+      ]
+    ],
+    "matrix": [
+      [
+        1.142183542251587,
+        0,
+        24.164306640625
+      ],
+      [
+        0,
+        1.142183542251587,
+        9.78839111328125
+      ]
+    ]
+  },
+  "prior_generated_pixels_copied": false,
+  "original_reference_pixels_copied": false,
+  "assistant_visual_test": false,
+  "user_visual_acceptance": "pending"
+}

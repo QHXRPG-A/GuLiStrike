@@ -1,0 +1,115 @@
+{
+  "version": "A_v4",
+  "approval": "用户要求：通过数据管线实装在游戏里",
+  "source_manifest": "ArtSource/UI/GroundMech/IconStyle_Toon3D_20261103/SingleIcons_A_v4/manifest.json",
+  "icons": [
+    {
+      "id": 1,
+      "name": "JetCapacity",
+      "note": "喷气容量；3D三渲二三档描边 A_v4；喷气跳跃共用",
+      "resource_path": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_JetCapacity.T_GroundIcon_JetCapacity",
+      "source_png": "ArtSource/UI/GroundMech/IconStyle_Toon3D_20261103/SingleIcons_A_v4/01_JetCapacity.png",
+      "sha256": "93fe69563b5f7765a0e5ec071c93447c5d1008006e3cdd6efb1fffacc9e677cd",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "max_texture_size": 256
+    },
+    {
+      "id": 2,
+      "name": "Ricochet",
+      "note": "折射子弹；3D三渲二三档描边 A_v4",
+      "resource_path": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Ricochet.T_GroundIcon_Ricochet",
+      "source_png": "ArtSource/UI/GroundMech/IconStyle_Toon3D_20261103/SingleIcons_A_v4/02_Ricochet.png",
+      "sha256": "7d6cdaea6a68490d0fcc14c23dcddc18628b698f3a99b94cb7fa85cf34194186",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "max_texture_size": 256
+    },
+    {
+      "id": 3,
+      "name": "Burning",
+      "note": "灼烧子弹；3D三渲二三档描边 A_v4",
+      "resource_path": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Burning.T_GroundIcon_Burning",
+      "source_png": "ArtSource/UI/GroundMech/IconStyle_Toon3D_20261103/SingleIcons_A_v4/03_Burning.png",
+      "sha256": "a9914646a2627788843eb33f26fb4d5110117af6c9ee978c1f2f5ad70e02b33f",
+      "source_size": [
+        1448,
+        1086
+      ],
+      "max_texture_size": 256
+    },
+    {
+      "id": 4,
+      "name": "BurningBurst",
+      "note": "爆燃子弹；3D三渲二三档描边 A_v4",
+      "resource_path": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_BurningBurst.T_GroundIcon_BurningBurst",
+      "source_png": "ArtSource/UI/GroundMech/IconStyle_Toon3D_20261103/SingleIcons_A_v4/04_BurningBurst.png",
+      "sha256": "2bb6c60915c984e92c24d39514de8ae5d9c31861e818ea4a46de666bfc929dca",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "max_texture_size": 256
+    },
+    {
+      "id": 5,
+      "name": "Fire",
+      "note": "射击；3D三渲二三档描边 A_v4",
+      "resource_path": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Fire.T_GroundIcon_Fire",
+      "source_png": "ArtSource/UI/GroundMech/IconStyle_Toon3D_20261103/SingleIcons_A_v4/05_Fire.png",
+      "sha256": "673a00e43978863a029a3bad8bff9276a6a2512f720d7d3656ea5258cf00f16a",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "max_texture_size": 256
+    },
+    {
+      "id": 6,
+      "name": "Aim",
+      "note": "瞄准；3D三渲二三档描边 A_v4",
+      "resource_path": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Aim.T_GroundIcon_Aim",
+      "source_png": "ArtSource/UI/GroundMech/IconStyle_Toon3D_20261103/SingleIcons_A_v4/06_Aim.png",
+      "sha256": "37bb3465f4266ee6a0893513980d2918b4cb538e8126cc354e0e11d40d07a0a3",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "max_texture_size": 256
+    },
+    {
+      "id": 8,
+      "name": "Blink",
+      "note": "闪现；3D三渲二三档描边 A_v4",
+      "resource_path": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Blink.T_GroundIcon_Blink",
+      "source_png": "ArtSource/UI/GroundMech/IconStyle_Toon3D_20261103/SingleIcons_A_v4/08_Blink.png",
+      "sha256": "fd2390ba6f46a70a4877b56610048eadae75daef3db00e78648dd9a25696e2dc",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "max_texture_size": 256
+    }
+  ],
+  "slots": {
+    "JetCapacity": 1,
+    "Ricochet": 2,
+    "Burning": 3,
+    "BurningBurst": 4,
+    "Fire": 5,
+    "Aim": 6,
+    "Jump": 1,
+    "Blink": 8
+  },
+  "retired_ids": [
+    7
+  ],
+  "retired_assets": [
+    "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Jump"
+  ],
+  "pixel_processing": "none; Unreal texture build caps dimensions; HUD fits aspect ratio"
+}

@@ -1,0 +1,25 @@
+Use case: precise-object-edit.
+Asset: GuLiStrike Enhanced Explosive Round card, complete RGBA layer 4, ground explosion and surface shockwave.
+
+INPUTS, IN EXACT ORDER:
+Image 1 is the CURRENT TRANSPARENT LAYER TO EDIT. Preserve its full composition, fire, smoke, crater, dust, particles, and placement.
+Image 2 is the user's annotated current card view. The TWO RED RECTANGLES point to the broken far-left/back arc and the prematurely ending front-right arc of the ground halo. Red rectangles are feedback marks only and MUST NOT appear in the output. Use this input ONLY to locate the requested repairs, not as a new composition or a screenshot to reproduce.
+Image 3 is the original approved full illustration, for the same ellipse, ground perspective, thin luminous line, color and clean anime cel-shading reference. No other scene content belongs in the result.
+
+PRIMARY REQUEST: Repair the ONE orange elliptical ground shockwave so it is a coherent continuous closed ring around the blast, with no detached ends, missing sections or abrupt fading on unobstructed ground. This is a surgical repair of the luminous ring, not a redesign of the explosion.
+
+REPAIR BOTH LOCATIONS:
+A. Far/back arc on the left and left-center: continue the existing thin cream-core orange arc smoothly toward and under the base of the pink smoke. Fill the missing continuation so it does NOT taper to nothing a few pixels before reaching the smoke. The arc must reach and overlap the actual occluding smoke/dust edge naturally; its hidden continuation follows the same ellipse behind the blast.
+B. Front/lower-right arc: continue the existing bright foreground arc past its current premature endpoint, following the ellipse's smooth curvature to the right. Carry it beyond the original picture window and into the outer right margin, all the way to the right canvas boundary if still visible there. It may turn behind actual opaque blast smoke on the right but must never stop or dissolve in the middle of clear ground. Keep a uniform connected cream-white inner line, orange rim and restrained glow. No flat cut, detached glowing segment, fork or second ring.
+
+The ring is one wide perspective ellipse lying on the ground, NOT an upright halo and NOT a floating wheel. Keep its existing shape, location, width, perspective and scale. Preserve the already correct leftmost and foreground arcs. The loop's rear part is naturally occluded by the existing blast; do not draw an entire bright hoop over the fire cloud or create another offset ellipse. A thin attached dust edge follows the same curve. All visible arcs must be connected through a physically coherent ring; no unexplained ends on exposed ground.
+
+PLACEMENT / CANVAS:
+Full transparent common canvas is 1504 x 1376 pixels, same aspect and empty space as Image 1. The original picture is [96,96,1408,1280]. Do not crop, recenter, zoom, rotate or enlarge the explosion.
+The impact is approximately (1036,1151) in the common canvas; the left ring turnaround is near (110,1056); existing back arc runs near y=940 toward x=620 and the blast; existing lower/foreground arc runs near y=1190 across x=650..1400. These are anchors for the SAME existing ring, not additional objects. Complete the arc behind the smoke and extend the rightmost part through the 96-pixel outer margin. Most of the upper half of this layer remains empty transparent space.
+Maintain the original fire/smoke cluster, all major cloud shapes, thin dust skirt and contact patch at their current coordinates. Preserve the orange/cream fire, muted pink/brown smoke, controlled black contour lines and clean continuous cel-shaded color blocks. Do not add texture, noise, mottling, new sparks or a different explosion.
+
+EXCLUSIONS:
+Output this ONE complete independent layer: explosion, smoke, local crater/contact patch, its dust and the SINGLE repaired shockwave only. No missile, fins, engine flame, speed lines, sky, distant clouds, mainland, ocean, foreground rocks, terrain fill, UI, screenshot frame, red marks, labels, captions, border, watermark, checkerboard or black matte. Transparent gaps between effects remain truly alpha=0; preserve the generated soft alpha at glow and smoke edges. No rectangle erasures, chopped-off curves or new holes.
+
+OUTPUT: one full-canvas PNG in genuine RGBA transparency, requested 1504 x 1376, preserving all original empty space and the unchanged object placement. Keep everything except the two requested ring continuations as close to Image 1 as possible.

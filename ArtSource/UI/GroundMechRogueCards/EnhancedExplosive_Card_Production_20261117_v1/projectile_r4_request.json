@@ -1,0 +1,39 @@
+{
+  "revision": "20261117-r4",
+  "date": "2026-11-17",
+  "tool": "image_gen.imagegen",
+  "mode": "builtin_edit",
+  "transparent_background": true,
+  "prompt_file": "Prompts/L3_projectile_clean_straight_r4.txt",
+  "prompt": "Use case: precise-object-edit.\nAsset type: one complete transparent RGBA illustration layer, layer 3 (missile with attached engine flame) for the existing GuLiStrike Enhanced Explosive Round six-layer card.\n\nINPUT ROLES:\nImage 1 is the CURRENT LAYER TO EDIT, with a 1504 x 1376 transparent common canvas. It is the authoritative placement, canvas, size, flight direction, fins, nozzle, and flame reference.\nImage 2 is the user's original chosen whole illustration. Use only its clean anime ink, simple continuous smooth color blocks, existing charcoal/blue-gray armor and orange light colors as appearance reference. Do not draw its environment.\nImage 3 is the user's annotated feedback illustration. Red arrows are annotations identifying the axial/long contour problem; do NOT render any red marks, arrows, lines, background, frame, or text.\n\nPRIMARY REQUEST — TWO TARGETED CORRECTIONS:\n1. Make the missile armor perfectly clean and smooth. Remove ALL speckles, mottling, freckles, random stripes, patchy islands, tiny scratch marks, grunge, grain, scuffs, stone-like texture, and accidental fragments. Each mechanical panel has one continuous uniform base-color field plus only TWO large coherent cel-shaded light/shadow fields. Preserve clear simple hard-edged three-tone form shading. Long shading bands follow the straight cylinder and continue coherently from segment to segment. Do not confuse these broad form-lighting bands with decorative stripes: add no ornamental surface pattern. Retain only the few purposeful structural outlines, original panel boundaries, two restrained screw heads on the original brackets, and the existing luminous bands.\n2. Correct the crooked/bent body geometry. The nose, every cylindrical armor section, the TWO middle orange annular bands, rear nozzle, and attached thrust flame must share ONE mathematically straight central longitudinal axis, from upper-left nose to lower-right nozzle, in the SAME original diagonal flight direction. Both long body contour rails must be straight and coherent between the front shoulder and rear nozzle, with a consistent modest perspective taper. No kink, banana bend, sag, twist, independent section rotations, warped ellipses, or lumpy edges. Each circular cross-section has its center on that one axis and follows the same coherent perspective. Orange rings wrap the cylinder evenly at uniform thickness. Fins attach cleanly and remain solid flat symmetric planar parts, following the original positions and identity.\n\nINVARIANTS:\nKeep the existing missile design and identity: broad dark cylindrical front, orange/cream circular nose insert, short attached orange glare streak, two orange middle glow bands, original charcoal fins and brackets, orange rear nozzle ring, orange/cream triangular thrust flame. Keep the existing amount and arrangement of fins, overall length, overall thickness, direction, anchor points, and composition as close to Image 1 as the straightening allows. Correct the body itself; do not rotate the whole missile to horizontal.\nPreserve the exact shared 1504 x 1376 full canvas with all transparent space. Do not crop, auto-center, zoom, enlarge, or change framing. Nose insert center is approximately (241,301) and rear nozzle center approximately (1214,706) in this common canvas; those are placement anchors, not new drawn markers. The rigid missile silhouette, fins, and flame occupy the upper portion. Leave the existing large empty lower half fully transparent. Engine flame continues to the right edge as in Image 1 and remains seamlessly attached to the nozzle.\nOutput ONLY this complete missile and its attached effects. Generate the whole object, including solid complete armor and fins. No other layers, no sky, clouds, land, ocean, explosions, shockwaves, debris, or detached speed lines. No copied background and no sky-colored holes inside physical parts. No checkerboard baked into RGB.\nUse the original charcoal, blue-gray underside, orange and cream colors without changing the palette. Clean confident black contour drawing, precise simple anime cel shading, smooth continuous color shapes. NO photorealistic materials, brush texture, grain, noise, over-rendered surface detail, or extra embellishments.\n\nOUTPUT: one PNG, exactly 1504 x 1376 if supported, full original canvas, real RGBA transparency with alpha=0 outside the entire object and its restrained attached glow. Fully opaque solid surfaces; preserve true smooth alpha edges and attached flame glow. No text, watermark, labels, framing, or annotated arrows.",
+  "referenced_image_paths": [
+    "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Layers/L3_projectile.png",
+    "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Inputs/FinalReference.png",
+    "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Inputs/UserMissileCorrection_20261117.png"
+  ],
+  "input_roles": [
+    {
+      "file": "Layers/L3_projectile.png",
+      "role": "edit_target",
+      "preserved_copy": "Inputs/L3_projectile_before_r4.png"
+    },
+    {
+      "file": "Inputs/FinalReference.png",
+      "role": "style_and_identity_reference"
+    },
+    {
+      "file": "Inputs/UserMissileCorrection_20261117.png",
+      "role": "user_feedback_annotation"
+    }
+  ],
+  "user_request": "导弹表面改为光滑连续的色块，去除多余斑点、斑纹，并修正歪斜弹体。",
+  "unchanged_layers": [
+    1,
+    2,
+    4,
+    5,
+    6
+  ],
+  "visual_acceptance": "pending_user",
+  "assistant_visual_test": false
+}

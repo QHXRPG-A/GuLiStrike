@@ -1,0 +1,74 @@
+{
+  "revision": "20261117-r5",
+  "tool": "image_gen.imagegen",
+  "mode": "builtin_edit",
+  "file": "Generated/L4_shockwave_continuity_r5.png",
+  "sha256": "dcbddfb8551e06bba38bf5e689d51a660938e3cf46aa5f0e83f04b1503aea71e",
+  "native_size": [
+    1311,
+    1200
+  ],
+  "native_alpha_range": [
+    0,
+    255
+  ],
+  "prompt_file": "Prompts/L4_shockwave_continuity_r5.txt",
+  "prompt_sha256": "7b1d5c07d57b6c27bcf6d6c7c7d5a4b86c76c7b392c837193afc517a2a7f9342",
+  "inputs": [
+    {
+      "file": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Inputs/L4_ground_explosion_before_r5.png",
+      "role": "edit_target",
+      "sha256": "25abdc3ac1d25e2b742581532f2b8db0c719c7a2ac3236729cc2949be4ddf331"
+    },
+    {
+      "file": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Inputs/UserShockwaveRepair_20261117.png",
+      "role": "user_annotated_feedback",
+      "sha256": "b069a3d56cc0b9670edddafac45ea6e445c89f04f83675b94d6125340e8065e0"
+    },
+    {
+      "file": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Card_Production_20261117_v1/Inputs/FinalReference.png",
+      "role": "original_style_and_ellipse_reference",
+      "sha256": "237b694d314ce9b4e5aa55b91e86bd4daf403f875132a860f68c855ca5d93dc2"
+    }
+  ],
+  "registration": {
+    "method": "uniform scale and translation from unchanged opaque explosion features; no rotation, shear, local warp or ring shape fitting",
+    "matches": 422,
+    "inliers": 373,
+    "median_error_px": 0.9473825693130493,
+    "matrix_to_common": [
+      [
+        1.1456072330474854,
+        0.0,
+        1.38763427734375
+      ],
+      [
+        0.0,
+        1.1456072330474854,
+        6.68560791015625
+      ]
+    ],
+    "source_feature_span": [
+      [
+        370.52557373046875,
+        578.7426147460938
+      ],
+      [
+        1218.3946533203125,
+        1001.5838012695312
+      ]
+    ]
+  },
+  "original_reference_pixels_copied": false,
+  "prior_generated_pixels_pasted": false,
+  "assistant_visual_test": false,
+  "user_visual_acceptance": "pending",
+  "tool_output": {
+    "tool": "image_gen.imagegen",
+    "mode": "builtin_edit",
+    "original_output": "C:/Users/a/.codex/generated_images/01a1ea0d-0066-7a93-a197-db399ccf3883/exec-c82c9296-5396-4801-bbe5-c9817a905706.png",
+    "file": "Generated/L4_shockwave_continuity_r5.png",
+    "output_hint": "Generated images are saved to C:\\Users\\a\\.codex\\generated_images\\01a1ea0d-0066-7a93-a197-db399ccf3883 as C:\\Users\\a\\.codex\\generated_images\\01a1ea0d-0066-7a93-a197-db399ccf3883\\exec-c82c9296-5396-4801-bbe5-c9817a905706.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "assistant_visual_test": false
+  }
+}
