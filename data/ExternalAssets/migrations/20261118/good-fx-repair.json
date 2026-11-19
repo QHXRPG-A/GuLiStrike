@@ -1,0 +1,137 @@
+{
+  "date": "2026-11-18",
+  "pack": "good-fx-status",
+  "engine": "5.7.4-0+UE5",
+  "replacements": {
+    "ThirdPerson_AnimBP": {
+      "kind": "AnimBlueprint",
+      "method": "使用同骨架 IdleRun 混合空间、空中循环与速度/空中状态驱动重建。",
+      "source_package": "/Game/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP",
+      "target_package": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP"
+    },
+    "GS_GPS_Hera": {
+      "kind": "ParticleSystem",
+      "method": "沿用同包 PS_GPS_Heart 作为独立的头顶状态粒子。",
+      "source_package": "/Game/GoodParticleStatus/Particles/Head_Status/GS_GPS_Hera",
+      "target_package": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Particles/Head_Status/GS_GPS_Hera"
+    },
+    "PS_GPS_Chaos": {
+      "kind": "ParticleSystem",
+      "method": "沿用同包 PS_GPS_Stun 作为 Chaos 头顶眩晕效果。",
+      "source_package": "/Game/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos",
+      "target_package": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos"
+    },
+    "T_GPS_BurningTex_02_D": {
+      "kind": "Texture2D",
+      "method": "使用同包 T_GPS_BurningTex_D 作为燃烧贴图替代。",
+      "source_package": "/Game/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D",
+      "target_package": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D"
+    }
+  },
+  "demo_map": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Level_GoodParticleStatus.Level_GoodParticleStatus",
+  "verified_package_count": 249,
+  "repaired_blueprints": {
+    "ThirdPerson_AnimBP": {
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "num_errors": 0,
+      "num_warnings": 0
+    },
+    "ThirdPersonCharacter": {
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "num_errors": 0,
+      "num_warnings": 0
+    },
+    "BP_GoodParticleStatus": {
+      "errors": [],
+      "warnings": [],
+      "success": true,
+      "variable": "Head : Chaos",
+      "bound_particle": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos.PS_GPS_Chaos"
+    }
+  },
+  "materials": {
+    "shield": {
+      "path": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Sources/Materials/M_GPS_FireShield.M_GPS_FireShield",
+      "texture": "/Script/Engine.Texture2D'/Game/Assets/VFX/Buffs/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D.T_GPS_BurningTex_02_D'",
+      "sampler": "SAMPLERTYPE_Color",
+      "compiled_ok": true,
+      "errors": [],
+      "expression_count": 90
+    },
+    "land": {
+      "path": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/Materials/M_GPS_LavaLand.M_GPS_LavaLand",
+      "texture": "/Script/Engine.Texture2D'/Game/Assets/VFX/Buffs/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D.T_GPS_BurningTex_02_D'",
+      "sampler": "SAMPLERTYPE_Color",
+      "compiled_ok": true,
+      "errors": [],
+      "expression_count": 43
+    }
+  },
+  "character": {
+    "actor": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Level_GoodParticleStatus.Level_GoodParticleStatus:PersistentLevel.ThirdPersonCharacter_314",
+    "anim_class": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP.ThirdPerson_AnimBP_C"
+  },
+  "demo_input": {
+    "auto_possess_before": "<AutoReceiveInput.DISABLED: 0>",
+    "auto_possess_after": "<AutoReceiveInput.PLAYER0: 1>",
+    "game_mode_before": "/Script/Engine.GameMode",
+    "game_mode_after": "/Script/Engine.GameMode",
+    "input_context": "/Game/Assets/VFX/Weapons/BulletTraceVFX/IMC_Default.IMC_Default"
+  },
+  "jump_trigger_links": [
+    "Started",
+    "Completed",
+    "Canceled"
+  ],
+  "verified_asset_dependencies": {
+    "Maps/Maps_Source/ThirdPersonBP/Blueprints/ThirdPersonCharacter": [
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP",
+      "/Game/Assets/VFX/Weapons/BulletTraceVFX/IA_Move",
+      "/Game/Assets/VFX/Weapons/BulletTraceVFX/IA_Look",
+      "/Game/Assets/VFX/Weapons/BulletTraceVFX/IA_Jump",
+      "/Game/Assets/VFX/Weapons/BulletTraceVFX/IMC_Default"
+    ],
+    "Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP": [
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_IdleRun_2D",
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPersonJump_Loop"
+    ],
+    "Sources/Materials/M_GPS_FireShield": [
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D"
+    ],
+    "Maps/Maps_Source/Materials/M_GPS_LavaLand": [
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D"
+    ],
+    "Blueprint/BP_GoodParticleStatus": [
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos"
+    ],
+    "Particles/Status/Shield_Status/PS_GPS_ShieldFire": [
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Sources/Materials/M_GPS_FireShield"
+    ],
+    "Maps/Level_GoodParticleStatus": [
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Blueprints/ThirdPersonCharacter",
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Blueprint/BP_GoodParticleStatus",
+      "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/Materials/M_GPS_LavaLand"
+    ]
+  },
+  "validation": {
+    "unresolved_dependencies": {},
+    "broken_key_edges": {},
+    "dirty": [],
+    "visual": "pending_user",
+    "runtime": "not_run"
+  },
+  "editor_startup": {
+    "plugin": "NiagaraFluids",
+    "asset": "/Game/Assets/VFX/Buffs/BuffLoop/NS/Vfx_GpuVolumetricPoison",
+    "project_plugin_enabled": false,
+    "startup_blocker": "module_build_id_mismatch",
+    "build_ids": {
+      "editor": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "niagara_fluids_module": "9872a344-2108-49e2-b40c-34c4e2c3ccfe"
+    }
+  }
+}

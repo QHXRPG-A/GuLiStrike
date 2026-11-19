@@ -1,0 +1,98 @@
+{
+  "scope": "read-only inspection; no gameplay, assets or source modified; PIE retained",
+  "original_media": [
+    {
+      "component": "Panel_1",
+      "loop": true,
+      "play_on_open": true,
+      "duration_seconds": 50.333333333333336,
+      "frames": 1208
+    },
+    {
+      "component": "Special_Gadget_01",
+      "loop": true,
+      "play_on_open": true,
+      "duration_seconds": 60.0,
+      "frames": 1440
+    },
+    {
+      "component": "Circle_Elements_04",
+      "loop": true,
+      "play_on_open": true,
+      "duration_seconds": 60.0,
+      "frames": 1440
+    },
+    {
+      "component": "Circle_Elements_Bars_02",
+      "loop": true,
+      "play_on_open": true,
+      "duration_seconds": 60.0,
+      "frames": 1440
+    }
+  ],
+  "current_clips": [
+    {
+      "image": "/Engine/Transient.UnrealEdEngine_0:GameInstance_2.GuLiGroundHUDWidget_0.WidgetTree.Image_17",
+      "visibility": "<SlateVisibility.HIT_TEST_INVISIBLE: 3>",
+      "render_opacity": 1.0,
+      "canvas_z": -1,
+      "position": "<Struct 'Vector2D' (0x0000018264982460) {x: 5.000000, y: 3.000000}>",
+      "size": "<Struct 'Vector2D' (0x0000018264982460) {x: 80.000000, y: 80.000000}>",
+      "parent_material": "/Game/GuLiStrike/GroundMech/UI/Motion/Materials/M_GroundHUD_Ambient.M_GroundHUD_Ambient",
+      "atlas": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_AmbientMap.T_GroundHUD_AmbientMap",
+      "values": {
+        "Run": 1.0,
+        "StartTime": 3657.280517578125,
+        "PausedPhase": 0.0,
+        "PhaseOffset": 1.7000000476837158,
+        "Period": 4.0,
+        "SeamSeconds": 0.25,
+        "Opacity": 0.18000000715255737,
+        "Columns": 4.0,
+        "Rows": 12.0,
+        "LastFrame": 47.0
+      }
+    },
+    {
+      "image": "/Engine/Transient.UnrealEdEngine_0:GameInstance_2.GuLiGroundHUDWidget_0.WidgetTree.Image_0",
+      "visibility": "<SlateVisibility.HIT_TEST_INVISIBLE: 3>",
+      "render_opacity": 1.0,
+      "canvas_z": -1,
+      "position": "<Struct 'Vector2D' (0x0000018264982460) {x: 410.000000, y: 2.000000}>",
+      "size": "<Struct 'Vector2D' (0x0000018264982460) {x: 80.000000, y: 80.000000}>",
+      "parent_material": "/Game/GuLiStrike/GroundMech/UI/Motion/Materials/M_GroundHUD_Ambient.M_GroundHUD_Ambient",
+      "atlas": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_AmbientHealth.T_GroundHUD_AmbientHealth",
+      "values": {
+        "Run": 1.0,
+        "StartTime": 3657.280517578125,
+        "PausedPhase": 0.0,
+        "PhaseOffset": 0.0,
+        "Period": 4.0,
+        "SeamSeconds": 0.25,
+        "Opacity": 0.18000000715255737,
+        "Columns": 4.0,
+        "Rows": 12.0,
+        "LastFrame": 47.0
+      }
+    }
+  ],
+  "phase_samples": [
+    2.1377590000629425,
+    1.1766256988048553,
+    0.19888199865818024
+  ],
+  "runtime_control_running": true,
+  "material_compile_check": "not_run: MaterialNodeService refuses to load assets during PIE (LogUtils: The Editor is currently in a play mode); false success is not a shader compile failure",
+  "display_configuration": {
+    "widget_size": [
+      80,
+      80
+    ],
+    "material_alpha": 0.18,
+    "corner_uv_max": 0.49,
+    "maximum_design_pixel_coverage_per_axis": 39.2,
+    "period_seconds": 4
+  },
+  "visual_acceptance": "not_performed; user reports motion not apparent",
+  "conclusion": "Both derived loops are configured, visible and running with changing control phase; current evidence does not prove perceptible rendered motion. Original player Loop and PlayOnOpen settings are true."
+}

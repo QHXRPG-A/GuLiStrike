@@ -1,0 +1,214 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "saved": true,
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "entities": [
+      {
+        "label": "GroundBuff_FiveMeter_Host",
+        "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+        "location": [
+          -13950.0,
+          51150.0,
+          1075.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "map": "/Game/Maps/LVL_CommanderMassPrototype",
+        "team": "<GuLiTeam.BLUE: 2>",
+        "unit_type_id": "1",
+        "rows": "1",
+        "columns": "1",
+        "start_idle": "True",
+        "allow_automatic_fire": "False",
+        "use_in_population_manifest": "True",
+        "initial_max_health_override": "3000.0",
+        "initial_shield": "0.0"
+      },
+      {
+        "label": "GroundBuff_FiveMeter_Inside",
+        "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+        "location": [
+          -13950.0,
+          51750.0,
+          1075.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "map": "/Game/Maps/LVL_CommanderMassPrototype",
+        "team": "<GuLiTeam.BLUE: 2>",
+        "unit_type_id": "1",
+        "rows": "1",
+        "columns": "1",
+        "start_idle": "True",
+        "allow_automatic_fire": "False",
+        "use_in_population_manifest": "True",
+        "initial_max_health_override": "1000.0",
+        "initial_shield": "0.0"
+      },
+      {
+        "label": "GroundBuff_FiveMeter_BodyIntersection",
+        "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+        "location": [
+          -13350.0,
+          51150.0,
+          1075.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "map": "/Game/Maps/LVL_CommanderMassPrototype",
+        "team": "<GuLiTeam.BLUE: 2>",
+        "unit_type_id": "1",
+        "rows": "1",
+        "columns": "1",
+        "start_idle": "True",
+        "allow_automatic_fire": "False",
+        "use_in_population_manifest": "True",
+        "initial_max_health_override": "1000.0",
+        "initial_shield": "0.0"
+      },
+      {
+        "label": "GroundBuff_FiveMeter_Outside",
+        "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+        "location": [
+          -12750.0,
+          51750.0,
+          1075.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "map": "/Game/Maps/LVL_CommanderMassPrototype",
+        "team": "<GuLiTeam.BLUE: 2>",
+        "unit_type_id": "1",
+        "rows": "1",
+        "columns": "1",
+        "start_idle": "True",
+        "allow_automatic_fire": "False",
+        "use_in_population_manifest": "True",
+        "initial_max_health_override": "1000.0",
+        "initial_shield": "0.0"
+      },
+      {
+        "label": "GroundBuff_FiveMeter_Friendly",
+        "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+        "location": [
+          -13950.0,
+          50550.0,
+          1075.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "map": "/Game/Maps/LVL_CommanderMassPrototype",
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": "1",
+        "rows": "1",
+        "columns": "1",
+        "start_idle": "True",
+        "allow_automatic_fire": "False",
+        "use_in_population_manifest": "True",
+        "initial_max_health_override": "1000.0",
+        "initial_shield": "0.0"
+      },
+      {
+        "label": "GroundBuff_FiveMeter_Shield",
+        "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+        "location": [
+          -14550.0,
+          51150.0,
+          1075.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "map": "/Game/Maps/LVL_CommanderMassPrototype",
+        "team": "<GuLiTeam.BLUE: 2>",
+        "unit_type_id": "1",
+        "rows": "1",
+        "columns": "1",
+        "start_idle": "True",
+        "allow_automatic_fire": "False",
+        "use_in_population_manifest": "True",
+        "initial_max_health_override": "1000.0",
+        "initial_shield": "250.0"
+      },
+      {
+        "label": "GroundBuff_FiveMeter_Instructions",
+        "class": "/Script/Engine.Note",
+        "location": [
+          -13750.0,
+          50250.0,
+          1175.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "map": "/Game/Maps/LVL_CommanderMassPrototype"
+      }
+    ],
+    "manifests": [
+      {
+        "population": 200,
+        "export": {
+          "success": true,
+          "error": "",
+          "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+          "objects": 292,
+          "rules": 169,
+          "tables": 5
+        },
+        "validation": {
+          "success": true,
+          "error": "",
+          "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+          "objects": 292,
+          "rules": 169,
+          "tables": 0
+        }
+      },
+      {
+        "population": 600,
+        "export": {
+          "success": true,
+          "error": "",
+          "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+          "objects": 692,
+          "rules": 169,
+          "tables": 5
+        },
+        "validation": {
+          "success": true,
+          "error": "",
+          "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+          "objects": 692,
+          "rules": 169,
+          "tables": 0
+        }
+      }
+    ],
+    "resource": "<Struct 'GuLiResourceBakeResult' (0x00000276D4C36420) {success: True, message: \"Resource authoring source and baked runtime definition are current.\", issues: , source_hash: \"e1318c5a4fccaa4e14bd5f36f64d015230727d4e\", layout_hash: \"3536edf992deaf4c47fa7c0cab4d33eec14635b5\", territory_count: 49, cluster_count: 240, node_count: 6240, initial_soldier_count: 36, validated_initial_soldier_count: 36}>",
+    "navigation": "<Struct 'GuLiNavigationBakeResult' (0x00000274EFE1B860) {success: True, message: \"\", entries: ((ObjectPath=\"/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier\",Kind=\"Ground\",Status=\"Hit\",SourceHash=\"0be95cdf85956a7e\",Message=\"Validated saved ground tiles.\",CheckSeconds=0.004640),(ObjectPath=\"/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default\",Kind=\"Ground\",Status=\"Hit\",SourceHash=\"44a227d6be3c7863\",Message=\"Validated saved ground tiles.\",CheckSeconds=0.010284),(ObjectPath=\"/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0\",Kind=\"Flight\",Status=\"Hit\",SourceHash=\"4ce68f6ce5a72419\",Message=\"Validated saved flight graph.\",CheckSeconds=0.011911)), ground_connectivity: {analysis_succeeded: False, fully_connected: False, navigation_data_path: \"\", message: \"\", graph_polygon_count: 0, ground_polygon_count: 0, directed_edge_count: 0, excluded_polygon_count: 0, regions: , analysis_seconds: 0.000000}, ground_rebuilds: 0, flight_rebuilds: 0, save_seconds: 0.000000, total_seconds: 0.026873}>",
+    "certification": "<Struct 'GuLiResourceBakeResult' (0x00000276D188AE60) {success: True, message: \"Resource authoring source and baked runtime definition are current.\", issues: , source_hash: \"e1318c5a4fccaa4e14bd5f36f64d015230727d4e\", layout_hash: \"3536edf992deaf4c47fa7c0cab4d33eec14635b5\", territory_count: 49, cluster_count: 240, node_count: 6240, initial_soldier_count: 36, validated_initial_soldier_count: 36}>",
+    "assistant_visual_test": false
+  }
+}

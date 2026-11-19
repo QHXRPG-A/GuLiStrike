@@ -94,15 +94,20 @@ void UGuLiGroundHUDWidget::BuildLayout()
     {auto* S=WidgetTree->ConstructWidget<UBorder>();S->SetPadding(FMargin(0));Add(Jet,S,{146,32+I*12.},{23,9});FuelSegments.Add(S);}
     auto* Rail=Icon(TEXT("JetRail"),{13,193});Rail->SetColorAndOpacity(Color(TEXT("Secondary")));Add(Jet,Rail,{133,32},{13,193},-1);
 
-    auto* SkillRack=Instrument(Battle,TEXT("SkillRackInstrument"),{657,872},{606,160},0,false);SkillRack->SetBrushColor(Color(TEXT("PanelRaised")).CopyWithNewOpacity(.77f));
-    const TCHAR* Names[]={TEXT("Fire"),TEXT("Aim"),TEXT("Jump"),TEXT("Blink")};
-    for(int32 I=0;I<4;++I)
+    auto* SkillRack=WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass(),TEXT("SkillRack"));
+    auto* RackSlot=Add(Battle,SkillRack,{960,880},{0,140});RackSlot->SetAutoSize(true);RackSlot->SetAlignment({.5,0});
+    const FName Names[]={TEXT("Skill_Blink"),TEXT("Skill_NoSurvivors")};
+    for(int32 I=0;I<UE_ARRAY_COUNT(Names);++I)
     {
-        const auto Name=Names[I];auto* P=Instrument(Battle,*FString::Printf(TEXT("Skill_%s"),Name),{665+I*149.,880},{141,140},0,true);P->SetHighlighted(I==0);SkillPanels.Add(P);
-        auto* C=Contents(P);auto* SkillIcon=DataIcon(I==1?StyledIconId(TEXT("IconAim")):0,{97,94});SkillIcons.Add(SkillIcon);Add(C,SkillIcon,{22,11},{97,94});
+        auto* Entry=WidgetTree->ConstructWidget<USizeBox>();Entry->SetWidthOverride(149);Entry->SetHeightOverride(140);
+        SkillRack->AddChildToHorizontalBox(Entry);auto* Cell=WidgetTree->ConstructWidget<UCanvasPanel>();Entry->SetContent(Cell);
+        if(I==1){BarrageEntry=Entry;Entry->SetVisibility(ESlateVisibility::Collapsed);}
+        auto* P=Instrument(Cell,Names[I],{4,0},{141,140},0,true);SkillPanels.Add(P);
+        auto* C=Contents(P);auto* SkillIcon=DataIcon(0,{97,94});SkillIcons.Add(SkillIcon);Add(C,SkillIcon,{22,11},{97,94});
         auto* Mask=WidgetTree->ConstructWidget<UBorder>();Mask->SetBrushColor(Color(TEXT("Panel")).CopyWithNewOpacity(.82f));Mask->SetVisibility(ESlateVisibility::HitTestInvisible);Mask->SetRenderTransformPivot({0,0});Add(C,Mask,{12,9},{117,102});SkillMasks.Add(Mask);
-        BuildSkillMotion(C,I);
-        auto* State=Label(C,TEXT(""),{8,40},{125,42},30,ETextJustify::Center);SkillStates.Add(State);
+        if(I==0)BuildSkillMotion(C,3); // Blink uses bit 3 in Ground presentation events.
+        auto* State=I==0?Label(C,TEXT(""),{8,40},{125,42},30,ETextJustify::Center)
+                        :Label(C,TEXT(""),{4,79},{133,26},16,ETextJustify::Center);SkillStates.Add(State);
         auto* KeyPanel=Instrument(C,NAME_None,{12,109},{117,26},0,true);KeyPanel->bKeycap=true;KeyPanel->SetPadding(FMargin(0));
         auto* Key=Text(TEXT(""),17);Key->SetJustification(ETextJustify::Center);KeyPanel->SetContent(Key);KeyLabels.Add(Key);
     }
@@ -180,7 +185,7 @@ void UGuLiGroundHUDWidget::BuildLayout()
     for(UWidget* Widget:Battle->GetAllChildren())
     {
         const auto Position=CastChecked<UCanvasPanelSlot>(Widget->Slot)->GetPosition();
-        if(Widget==BuffList||Widget==SkillRack||SkillPanels.Contains(Cast<UGuLiGroundHUDPanel>(Widget)))Anchor(Widget,{.5,1});
+        if(Widget==BuffList||Widget==SkillRack)Anchor(Widget,{.5,1});
         else if(Position.X>1500)Anchor(Widget,{1,Position.Y>700?1.:0.});
         else if(Position.Y>800)Anchor(Widget,{0,1});
     }

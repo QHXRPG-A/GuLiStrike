@@ -1,0 +1,294 @@
+{
+  "success": true,
+  "saved_and_reloaded": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "name": "Note_106",
+      "label": "QuadrupedV5_Red_Entry",
+      "cls": "/Script/Engine.Note",
+      "location": [
+        0.0,
+        65100.0,
+        1249.9771118164062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": "四足采矿车 v5：通过本地图正常指挥官入口审核。\n双方各 8 辆矿车，UnitTypeId 3；移动、采矿、返厂均使用正式资源。\n移动后按 S 停车，再向可采矿簇下令；观察抬足、前伸、停车混合及采卸循环。\n用红/蓝双方视角分别查看：己方灯蓝，敌方灯红，中立熄灯；外壳保持中立色。\n拉近/拉远观察 LOD，停止、死亡、快速通道时光束应关闭。\n本轮仅完成编译及数据检查，运行观感由玩家审核。"
+    },
+    {
+      "name": "Note_107",
+      "label": "QuadrupedV5_Red_Ore",
+      "cls": "/Script/Engine.Note",
+      "location": [
+        -4200.0,
+        67200.0,
+        1249.9771118164062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": "附近可采矿簇 5，领地 Outpost_R1C4。\n使用真实矿车采矿指令；中央光束起点跟随机体动作，终点应落在正在开采的真实矿石。\n满载后自动返厂，卸货后继续采矿；本标记不创建矿石、不改变经济或任务规则。"
+    },
+    {
+      "name": "TargetPoint_96",
+      "label": "QuadrupedV5_Red_Assembly",
+      "cls": "/Script/Engine.TargetPoint",
+      "location": [
+        0.0,
+        65100.0,
+        899.9771118164062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": ""
+    },
+    {
+      "name": "TargetPoint_97",
+      "label": "QuadrupedV5_Red_Factory",
+      "cls": "/Script/Engine.TargetPoint",
+      "location": [
+        150.0,
+        70050.0,
+        899.9771118164062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": ""
+    },
+    {
+      "name": "CameraActor_41",
+      "label": "QuadrupedV5_Red_Camera",
+      "cls": "/Script/Engine.CameraActor",
+      "location": [
+        -2200.0,
+        61500.0,
+        3949.9771118164062
+      ],
+      "rotation": [
+        2.5700464334477147e-07,
+        -34.5033073425293,
+        58.5704345703125
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": ""
+    },
+    {
+      "name": "Note_108",
+      "label": "QuadrupedV5_Blue_Entry",
+      "cls": "/Script/Engine.Note",
+      "location": [
+        0.0,
+        -65100.0,
+        1249.9771118164062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": "四足采矿车 v5：通过本地图正常指挥官入口审核。\n双方各 8 辆矿车，UnitTypeId 3；移动、采矿、返厂均使用正式资源。\n移动后按 S 停车，再向可采矿簇下令；观察抬足、前伸、停车混合及采卸循环。\n用红/蓝双方视角分别查看：己方灯蓝，敌方灯红，中立熄灯；外壳保持中立色。\n拉近/拉远观察 LOD，停止、死亡、快速通道时光束应关闭。\n本轮仅完成编译及数据检查，运行观感由玩家审核。"
+    },
+    {
+      "name": "Note_109",
+      "label": "QuadrupedV5_Blue_Ore",
+      "cls": "/Script/Engine.Note",
+      "location": [
+        4200.0,
+        -67200.0,
+        1249.9771118164062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": "附近可采矿簇 235，领地 Outpost_R7C4。\n使用真实矿车采矿指令；中央光束起点跟随机体动作，终点应落在正在开采的真实矿石。\n满载后自动返厂，卸货后继续采矿；本标记不创建矿石、不改变经济或任务规则。"
+    },
+    {
+      "name": "TargetPoint_98",
+      "label": "QuadrupedV5_Blue_Assembly",
+      "cls": "/Script/Engine.TargetPoint",
+      "location": [
+        0.0,
+        -65100.0,
+        899.9771118164062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": ""
+    },
+    {
+      "name": "TargetPoint_99",
+      "label": "QuadrupedV5_Blue_Factory",
+      "cls": "/Script/Engine.TargetPoint",
+      "location": [
+        -150.0,
+        -70050.0,
+        899.9771118164062
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": ""
+    },
+    {
+      "name": "CameraActor_42",
+      "label": "QuadrupedV5_Blue_Camera",
+      "cls": "/Script/Engine.CameraActor",
+      "location": [
+        -2200.0,
+        -61500.0,
+        3949.9771118164062
+      ],
+      "rotation": [
+        -2.570046717664809e-07,
+        -34.5033073425293,
+        -58.5704345703125
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "folder": "GuLiStrike/Review/QuadrupedMiner_v5",
+      "note": ""
+    }
+  ],
+  "entry_points": [
+    {
+      "side": "Red",
+      "assembly": [
+        0.0,
+        65100.0,
+        899.9771118164062
+      ],
+      "factory": [
+        150.0,
+        70050.0,
+        899.9771118164062
+      ],
+      "ore_cluster": 5,
+      "ore_center": [
+        -4200.0,
+        67200.0,
+        899.9771118164062
+      ],
+      "ore_territory": "Outpost_R1C4",
+      "initial_owner": "<GuLiTeam.RED: 1>",
+      "nodes": 26
+    },
+    {
+      "side": "Blue",
+      "assembly": [
+        0.0,
+        -65100.0,
+        899.9771118164062
+      ],
+      "factory": [
+        -150.0,
+        -70050.0,
+        899.9771118164062
+      ],
+      "ore_cluster": 235,
+      "ore_center": [
+        4200.0,
+        -67200.0,
+        899.9771118164062
+      ],
+      "ore_territory": "Outpost_R7C4",
+      "initial_owner": "<GuLiTeam.BLUE: 2>",
+      "nodes": 26
+    }
+  ],
+  "game_mode": "/Script/GuLiStrike.GuLiCommanderGameMode",
+  "resource_map": "/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap.DA_CommanderResourceMap",
+  "layout_hash": "2f651358dde387ae695f3dc4fd200b4abcd1705a",
+  "economy": "/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy.DA_ResourceEconomy",
+  "miners_per_team": 8,
+  "unit_type_id": 3,
+  "existing_actors_unchanged": 753,
+  "runtime_started": false,
+  "model_id": 1003,
+  "mesh_model_id": 8017,
+  "player_visual_acceptance": "pending"
+}

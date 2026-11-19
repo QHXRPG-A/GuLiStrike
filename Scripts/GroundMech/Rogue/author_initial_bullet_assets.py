@@ -26,7 +26,7 @@ def main():
     require(evidence['success'],'Read exact source resources before adaptation')
     dirty={p.get_name() for p in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()}
     require(not any(p.startswith((BASE+'/',BLANK+'/')) for p in dirty) or globals().get('GULI_AMMO_OWNED_RETRY',False),'Preserve unsaved owned assets')
-    for source,target in zip(['/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_Missile','/Game/_VFXResources/Niagara_System/NS_Explosion_19'],[FLIGHT,IMPACT]):
+    for source,target in zip(['/Game/Assets/VFX/Weapons/WeaponBulletVFX/NS/VFX_Missile','/Game/_VFXResources/Niagara_System/NS_Explosion_19'],[FLIGHT,IMPACT]):
         require(ASSETS.load_asset(target) or ASSETS.duplicate_asset(source,target),'Copy '+target)
     # A previous interrupted scratch edit can leave dynamic add pins before
     # regular pins. Repair the owned graph before any stack-input UI API reads it.
@@ -102,7 +102,7 @@ def main():
     for path,source in evidence['systems'].items():
         require([str(e.emitter_name) for e in NS.list_emitters(path)]==[e['name'] for e in source['emitters']],'Vendor emitter identity')
     return {'success':True,'assets':assets,'blank':instance.get_path_name(),'PIE':False,'assistant_visual_test':False,
-        'logic_reference':'/Game/Assets/Missile_Cluster/飞弹: target interpolation replaced by native linear sweep; Niagara location events retained for flight tails'}
+        'logic_reference':'/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster/飞弹: target interpolation replaced by native linear sweep; Niagara location events retained for flight tails'}
 
 try:report=main()
 except Exception:report={'success':False,'error':traceback.format_exc()}

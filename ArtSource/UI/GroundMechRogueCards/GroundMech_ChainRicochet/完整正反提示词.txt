@@ -1,0 +1,38 @@
+ILXL 2.0 日漫三渲二机甲弹射参考图
+
+模型：Illustrious XL 2.0；LoRA：2.5D cel_rendering Style，强度0.6；Clip Skip 2。
+三张真实项目截图通过两组分区IPAdapter实际接入；已有构图通过VAE与Canny实际接入。
+背景采用统一色库的 #032E30、#274E61、#6AA4BE，暗线 #1A182F，火焰由 #EE9D58 派生；项目机甲与先驱者保留已审身份配色。
+
+全局正向（实际输入）
+masterpiece, best quality, very aesthetic, anime screencap, science fiction, mecha battle, game cg,
+(clean 2.5D cel shading:1.3), (three-tone shading:1.3), (flat color blocks:1.2), solid base color with one flat shadow and one narrow highlight, hard-edged shadows, clear midtones, crisp dark contour lines, angular mechanical plates, readable hard-surface geometry, matte armor, restrained surface detail,
+cinematic over-the-shoulder shot, rear three-quarter view, wide-angle action composition, vertical illustration,
+foreground gold and blue bipedal combat mech skidding to a sudden stop while firing, low braced stance, weight on planted mechanical feet, long sweeping skid wake, shoulder recoil, directional motion lines,
+exactly three cream and dark burgundy quadruped enemy drones in the middle distance, different orientations and tilted poses, shell armor shattered at impact, exposed dark mechanical frames, large armor fragments, violent orange explosions attached to damaged parts, sharp star-shaped impact flashes, graphic flame shapes with white hot centers and orange outer edges,
+bright connected golden ricochet tracer traveling from the foreground gun muzzle through three enemy impact points, clear bent projectile path, warm white core, orange outer light, short red enemy return-fire tracers passing beside the player,
+two short orange fire exhaust plumes rooted inside the paired rear nozzles, strong muzzle flash attached to the actual gun barrel,
+quiet teal water, broad simplified reflections and graphic splash shapes, sparse tall ruined pillars in cyan fog, low-detail background, cool teal and blue palette with restrained warm orange effects, clean readable silhouettes, no humans
+
+全局反向（实际输入）
+worst quality, low quality, lowres, blurry subject, photorealistic, photograph, realistic water, ray tracing, PBR material, glossy plastic, wax, oil painting, painterly brush texture, watercolor, soft airbrushed shading, soft dough-like armor, rounded toy limbs, butterfly wings, smooth featureless robots, film grain, dirty texture, random speckles, dense hatching, rust, dense scratches, overly intricate surface details, busy background, muddy colors, crushed black shadows, oversaturated, HDR, harsh bloom, overexposed white fireball,
+human, human face, girl, boy, pilot, skin, clothing, cape, scarf, human hands, handheld rifle, humanoid enemy, wheeled enemy, tank tracks, fourth enemy, duplicate enemies, identical poses, standing at attention, intact enemies, organic gore,
+floating exhaust, blue exhaust flame, flame detached from nozzle, exhaust from light strips, broken mech joints, missing feet, detached legs, warped barrel,
+disconnected bullet trails, random beams, closed triangle laser, laser net, shield, prism, floating impact sparks, explosions hiding all enemy silhouettes, smoke covering the whole image,
+text, numbers, labels, watermark, signature, logo, card border, UI, comic panel grid
+
+机甲区域正向（实际输入）
+golden rounded enclosed armored torso, no separate human head, paired black rear exhaust nozzles and warm yellow vent lights, slate blue hip and thigh armor, dark teal mechanical joints, broad angular mechanical feet, integrated right-side fixed gun mount, no human arms,
+rear over-the-shoulder view of the project mech, forceful hard braking skid, hips lowered, legs braced far apart, twisted torso firing forward-right, gun mount kicking backward in recoil, short directional recoil smear, orange flame jets physically attached to the two back nozzles, clean three-tone anime shading
+
+先驱者区域正向（实际输入）
+three project Pioneer enemy robots, cream oval armored body, (dark burgundy armor panels:1.3), burgundy shoulder blocks and upper leg plates, four articulated mechanical legs with cream shin plates and dark feet, paired side-mounted black rotary machine guns, two thin antennas,
+nearest robot violently rolling sideways with torn-open shell, exposed dark chassis and a broken gun mount; middle-left robot tumbling sideways in the air with splayed legs; far-right robot twisting away and collapsing,
+large orange fire blasts attached to shattered armor, several large red and cream armor shards, clear mechanical silhouettes, one surviving side gun aiming back toward the foreground mech, short pink-white muzzle flash, anime mechanical combat, clean flat colors
+
+中文反向对照（工作流节点实际使用上方英文反向）
+最差质量、低质量、低分辨率、主体模糊；照片感、写实摄影、写实水面、光线追踪、PBR材质、亮面塑料、蜡质；油画、笔刷纹理、水彩、柔软喷枪渐变、面团一样的装甲、玩具般圆润的肢体、蝴蝶翅膀、光滑无细节机器人；胶片颗粒、脏污纹理、随机噪点、密集排线、锈蚀、密集划痕、过度复杂的表面细节、杂乱背景、浑浊颜色、死黑阴影、过饱和、HDR、刺眼泛光、过曝白色火球。
+人类、人脸、女孩、男孩、驾驶员、皮肤、衣服、披风、围巾、人手、手持步枪、人形敌人、轮式敌人、坦克履带、第四个敌人、重复敌人、相同动作、立正站姿、完整无损敌人、血肉内脏。
+悬浮尾焰、蓝色尾焰、与喷口脱离的火焰、灯带喷火、机甲关节错误、缺少脚部、腿部脱节、枪管扭曲。
+断开的弹道、随机光束、封闭三角激光、激光网、护盾、棱镜、悬空受击火花、爆炸遮住全部敌人轮廓、浓烟覆盖全画面。
+文字、数字、标签、水印、签名、标志、卡牌边框、界面、漫画分格。

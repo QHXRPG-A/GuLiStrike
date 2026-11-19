@@ -8,6 +8,7 @@ class UBlendSpace;
 class USkeletalMesh;
 class UCurveFloat;
 class UBlueprint;
+class UDataTable;
 
 /** Scoped authoring and numerical inspection for the Ground player's imported animation assets. */
 UCLASS()
@@ -15,6 +16,11 @@ class UGuLiGroundMechAnimationEditorLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
+    UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+    static FString BindBarrageAnimation(UAnimBlueprint* Blueprint);
+    /** Sample the live gameplay camera path for the editable cinematic preview. */
+    UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
+    static FString SampleBarrageCamera(UDataTable* Cards);
     /** Read the already-open Blueprint's preview view. No open/focus, render, save or pose evaluation. */
     UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
     static FString ReadBlueprintPreviewCamera(UBlueprint* Blueprint);

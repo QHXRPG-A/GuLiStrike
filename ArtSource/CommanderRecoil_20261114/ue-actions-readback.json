@@ -1,0 +1,112 @@
+{
+  "success": true,
+  "assets": [
+    "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition",
+    "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation",
+    "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+    "/Game/Commander/Units/MechanicalAnimation/MF_GuLiRigidMechanical.MF_GuLiRigidMechanical",
+    "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/DA_Recoil.DA_Recoil",
+    "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Materials/MI_Recoil_0.MI_Recoil_0",
+    "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/Materials/MI_Recoil_1.MI_Recoil_1",
+    "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+    "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Dependencies/Commander/Units/MechanicalAnimation/M_WarMachine_Contour_Rigid.M_WarMachine_Contour_Rigid",
+    "/Game/GuLiStrike/Models/TeamColor_v1/WM01/Materials/Parents/M_WarMachine_Cel_Rigid.M_WarMachine_Cel_Rigid",
+    "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust.M_UnitWreckRust",
+    "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced.M_UnitHitWhite_Instanced",
+    "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilPosition.T_RecoilPosition",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Textures/T_RecoilRotation.T_RecoilRotation",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/MF_Pioneer_BoneVAT.MF_Pioneer_BoneVAT",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/DA_Recoil.DA_Recoil",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Materials/MI_Recoil_0.MI_Recoil_0",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Materials/MI_Recoil_1.MI_Recoil_1",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Materials/MI_Recoil_2.MI_Recoil_2",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/Materials/MI_Recoil_3.MI_Recoil_3",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+    "/Game/GuLiStrike/Models/TeamColor_v1/DefaultSoldier/Materials/Parents/M_Pioneer_Toon3.M_Pioneer_Toon3",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Materials/M_Pioneer_Contour.M_Pioneer_Contour",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Hit.M_Pioneer_Hit",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Wreck.M_Pioneer_Wreck",
+    "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/VAT/M_Pioneer_Phase.M_Pioneer_Phase",
+    "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD0.T_Position_LOD0",
+    "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD0.T_Normal_LOD0",
+    "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD1.T_Position_LOD1",
+    "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD1.T_Normal_LOD1",
+    "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD2.T_Position_LOD2",
+    "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD2.T_Normal_LOD2",
+    "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Animations/DA_QuadrupedMiner_VAT.DA_QuadrupedMiner_VAT"
+  ],
+  "models": {
+    "WarMachine": {
+      "mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid.SM_WarMachine_Rigid",
+      "data": "/Game/GuLiStrike/Commander/Units/WM01/Recoil_v1/DA_Recoil.DA_Recoil",
+      "triangles": [
+        38843,
+        9711,
+        776
+      ],
+      "fbx_render_triangles": [
+        38843,
+        9687,
+        776
+      ],
+      "geometry_unchanged": true,
+      "samples": 175,
+      "render_bounds_cm": [
+        [
+          -6073.357587594717,
+          -5871.370282907217,
+          -3691.993224878042
+        ],
+        [
+          5786.229413766592,
+          5871.370527047842,
+          8463.814618844717
+        ]
+      ],
+      "source_sha256": "7b8ddc4233ae9383c404b7baa772db17c8472885ea40fb81ecc227975555f9fc"
+    },
+    "Pioneer": {
+      "mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT.SM_Pioneer_VAT",
+      "data": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/Recoil_v1/DA_Recoil.DA_Recoil",
+      "triangles": [
+        37338,
+        15905,
+        1944
+      ],
+      "fbx_render_triangles": [
+        37338,
+        15905,
+        1943
+      ],
+      "geometry_unchanged": true,
+      "samples": 66,
+      "render_bounds_cm": [
+        [
+          -412.74613410618315,
+          -494.70113593723784,
+          -182.2011656420933
+        ],
+        [
+          462.2816413083316,
+          494.70113593723784,
+          635.6949103513003
+        ]
+      ],
+      "source_sha256": "99d3f906233aca66047fb4e76f1d97cc202d16a225df7ccf16e9ed29425a7324"
+    },
+    "Miner": {
+      "data": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Animations/DA_QuadrupedMiner_VAT.DA_QuadrupedMiner_VAT",
+      "triangles": [
+        9854,
+        4614,
+        2676
+      ],
+      "walk_duration": 1.1666666269302368,
+      "mining_duration": 2.4600000381469727,
+      "mesh_unchanged": true,
+      "muzzle_samples": 103
+    }
+  },
+  "user_visual_acceptance": false
+}

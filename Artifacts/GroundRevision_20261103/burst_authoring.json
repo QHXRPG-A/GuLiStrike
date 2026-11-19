@@ -1,0 +1,79 @@
+{
+  "success": true,
+  "source": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus",
+  "asset": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst",
+  "emitters": [
+    {
+      "emitter": "Dots",
+      "materials": [
+        "/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/M_ParticleTrail.M_ParticleTrail"
+      ],
+      "particles": 32,
+      "modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD9013DE0) {module_name: \"Vector2DFromFloat\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 0, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD9013890) {module_name: \"FloatFromCurve\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD90138E0) {module_name: \"InitializeParticle\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD9013840) {module_name: \"UniformRangedFloat003\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 3, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD9013930) {module_name: \"UniformRangedFloat005\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 4, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD9013700) {module_name: \"NormalizedAngleToDegrees001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees\", module_index: 5, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD90132A0) {module_name: \"UniformRangedFloat006\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 6, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD90126C0) {module_name: \"ParticleOwnerPosition\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition\", module_index: 7, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD9010870) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 8, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD9010BE0) {module_name: \"Vector2DFromFloat001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 9, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD9010CD0) {module_name: \"ColorFromCurve001\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve\", module_index: 10, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD90107D0) {module_name: \"ShapeLocation\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Location/V2/ShapeLocation.ShapeLocation\", module_index: 11, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD901FBE0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 12, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD901EF10) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 13, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD901F960) {module_name: \"GuLiBurstSeed_5\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.NiagaraScratchPadContainer_0.GuLiBurstSeed_5\", module_index: 14, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000020FD901F7D0) {module_name: \"GuLiBurstExpandFade_5\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.NiagaraScratchPadContainer_0.GuLiBurstExpandFade_5\", module_index: 15, is_enabled: True, inputs: }>"
+      ]
+    },
+    {
+      "emitter": "Smoke001",
+      "materials": [
+        "/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_SimpleTexture.MI_SimpleTexture"
+      ],
+      "particles": 32,
+      "modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096576B30) {module_name: \"Vector2DFromFloat\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 0, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096576B80) {module_name: \"FloatFromCurve\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096576C20) {module_name: \"InitializeParticle\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096576CC0) {module_name: \"UniformRangedFloat003\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 3, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096576D60) {module_name: \"UniformRangedFloat005\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 4, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096576E00) {module_name: \"NormalizedAngleToDegrees001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees\", module_index: 5, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096576EA0) {module_name: \"UniformRangedFloat006\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 6, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096576F40) {module_name: \"ParticleOwnerPosition\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition\", module_index: 7, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096577030) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 8, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096577120) {module_name: \"SubUVAnimation\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/SubUV/SubUVAnimation.SubUVAnimation\", module_index: 9, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096577210) {module_name: \"Vector2DFromFloat001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 10, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000210965772B0) {module_name: \"ColorFromCurve001\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve\", module_index: 11, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000210965773A0) {module_name: \"SphereLocation\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Location/SphereLocation.SphereLocation\", module_index: 12, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096577440) {module_name: \"ShapeLocation\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Location/V2/ShapeLocation.ShapeLocation\", module_index: 13, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096577530) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 14, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x00000210965775D0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 15, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096577B70) {module_name: \"GuLiBurstSeed_5\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.NiagaraScratchPadContainer_0.GuLiBurstSeed_5\", module_index: 16, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x0000021096577D50) {module_name: \"GuLiBurstExpandFade_5\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.NiagaraScratchPadContainer_0.GuLiBurstExpandFade_5\", module_index: 17, is_enabled: True, inputs: }>"
+      ]
+    }
+  ],
+  "parameters": [
+    "<Struct 'NiagaraParameterInfo_Custom' (0x00000211140A8D50) {parameter_name: \"User.ExpandSeconds\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.500000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x00000211140A28B0) {parameter_name: \"User.FadeSeconds\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.500000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x00000211140A2DF0) {parameter_name: \"User.InitialAge\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x00000211140A9A00) {parameter_name: \"User.Lifetime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x00000211140A2610) {parameter_name: \"User.Radius\", parameter_type: \"Float\", namespace: \"User\", current_value: \"500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x00000211140A2530) {parameter_name: \"User.Seed\", parameter_type: \"Int\", namespace: \"User\", current_value: \"0\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x00000211140A2D80) {parameter_name: \"User.StartRadius\", parameter_type: \"Float\", namespace: \"User\", current_value: \"100.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+  ],
+  "diagnostics": "System valid=1 ready=1 gpu=0 needs_compile=0 outstanding=0\nSprite material=/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/M_ParticleTrail.M_ParticleTrail platform=49 finished=1 complete=0 shader_map=1\nRender proxy fallback=1\nSprite material=/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_SimpleTexture.MI_SimpleTexture platform=49 finished=1 complete=0 shader_map=1\nRender proxy fallback=1\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.UpdateScript status=NCS_UpToDate\n",
+  "properties": [
+    "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000021117CD9A60) {emitter_name: \"Dots\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-502.000000,-502.000000,-502.000000) Max(502.000000,502.000000,502.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+    "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000021117CD7EE0) {emitter_name: \"Smoke001\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-502.000000,-502.000000,-502.000000) Max(502.000000,502.000000,502.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>"
+  ],
+  "expansion_seconds": 0.5,
+  "fade_seconds": 0.5,
+  "lifetime_seconds": 1,
+  "radius_cm": 500,
+  "initial_radius": "min(host collision radius, 175 cm)",
+  "visual_acceptance": "pending_user"
+}

@@ -2,6 +2,8 @@
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
 #include "Gameplay/Cards/GuLiRogueCardSettings.h"
+#include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRoguePresentation.h"
 #include "Gameplay/Data/Generated/GuLiStrikeGameTextsTableRows.h"
 #include "Internationalization/StringTable.h"
 #include "Internationalization/StringTableCore.h"
@@ -509,7 +511,7 @@ bool UGuLiRogueCardPresentation::ActivateCandidate(int32 CandidateIndex)
 bool UGuLiRogueCardPresentation::ConfirmSelection(int32 SelectedIndex)
 {
 	if (!bOpen || (UGuLiNetworkSettings::CanPresent(GetWorld()) && !Director) || bClosing || bSubmitting || bRerolling || bCommitted || bPreparingGroundCards || !CandidateIds.IsValidIndex(SelectedIndex)) return false;
-	bSubmitting=true; DisplayedPhase=INDEX_NONE;
+	bSubmitting=true; SubmittedIndex=SelectedIndex; DisplayedPhase=INDEX_NONE;
 	CastChecked<AGuLiCommanderPlayerController>(GetOwner())->GetCommanderNetSyncComponent()->ServerConfirmRogueCard(SessionId,CandidateIds[SelectedIndex]);
     return true;
 }
@@ -520,7 +522,17 @@ void UGuLiRogueCardPresentation::ReceiveResult(FGuid Session,bool bSuccess,const
 	if (bSuccess)
     {
         bCommitted=true;LastCommittedSession=Session;
-        if (UGuLiNetworkSettings::CanPresent(GetWorld())) Call(Director,TEXT("CompleteConfirmation"));
+        if (UGuLiNetworkSettings::CanPresent(GetWorld()))
+        {
+            if (bDirectSelection && CandidateIds.IsValidIndex(SubmittedIndex))
+            {
+                auto* Mech=Cast<AGuLiGroundMechCharacter>(CastChecked<APlayerController>(GetOwner())->GetPawn());
+                const FString& CardId=CandidateIds[SubmittedIndex];
+                const int32 Rank=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->GetAcquisitionCount(PlayerGuid,CardId);
+                if (Mech && Mech->ModelId==4001 && Rank>0) Mech->GetRoguePresentation()->PlayUpgrade(CardId,Rank);
+            }
+            Call(Director,TEXT("CompleteConfirmation"));
+        }
         else {bFinishedNormally=true;Close(true);}
     }
 	else ErrorText=FText::Format(GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->GetText(TEXT("UI.RogueCards.Failed")),FText::FromString(Error));
@@ -556,7 +568,7 @@ void UGuLiRogueCardPresentation::Cleanup()
 	SetComponentTickEnabled(false);
 	if (Overlay) { auto* Old=Overlay.Get(); Overlay=nullptr; Old->ResetPresentation(); }
 	DestroyStage();
-	RequestId.Invalidate(); SessionId.Invalidate(); PlayerGuid.Invalidate(); MatchEpoch=0;
+	RequestId.Invalidate(); SessionId.Invalidate(); PlayerGuid.Invalidate(); MatchEpoch=0; SubmittedIndex=INDEX_NONE;
 	Fade=0.f; DisplayedPhase=INDEX_NONE; ErrorText=FText::GetEmpty(); RerollNotice=FText::GetEmpty();
 	if (auto* PC=Cast<AGuLiCommanderPlayerController>(GetOwner()); !bTearingDown && PC && PC->IsLocalController())
 	{

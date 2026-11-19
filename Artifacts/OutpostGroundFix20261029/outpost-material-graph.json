@@ -1,0 +1,361 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Opaque",
+		"shading_model": "MSM_Unlit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_0000015BFA787A80",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -380,
+			"pos_y": 20,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_Roughness.T_OutpostConcrete_Roughness'",
+				"SamplerType": "SAMPLERTYPE_LinearGrayscale",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "ConcreteRoughness",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_0000015BFA787D00",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -380,
+			"pos_y": -230,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_BaseColor.T_OutpostConcrete_BaseColor'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "ConcreteBaseColor",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_0000015BFA787F80",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -380,
+			"pos_y": 20,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_Roughness.T_OutpostConcrete_Roughness'",
+				"SamplerType": "SAMPLERTYPE_LinearGrayscale",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "ConcreteRoughness",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_0000015BFA788200",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -380,
+			"pos_y": 270,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_NormalDX.T_OutpostConcrete_NormalDX'",
+				"SamplerType": "SAMPLERTYPE_Normal",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "ConcreteNormal",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVertexColor_0000015BF9F54B40",
+			"class": "VertexColor",
+			"class_full": "MaterialExpressionVertexColor",
+			"pos_x": -1500,
+			"pos_y": -700,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0",
+				"Output_1",
+				"Output_2",
+				"Output_3",
+				"Output_4"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000015BFA72D700",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -1200,
+			"pos_y": -700,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/GuLiStrike/Models/TeamColor_v1/Shared/MF_GuLiTeamRegion_v3.MF_GuLiTeamRegion_v3'"
+			},
+			"function_path": "/Game/GuLiStrike/Models/TeamColor_v1/Shared/MF_GuLiTeamRegion_v3.MF_GuLiTeamRegion_v3",
+			"inputs": [
+				"RoleAlpha (S)",
+				"FixedPalette (V3)"
+			],
+			"outputs": [
+				"TeamLampStrength",
+				"PaletteBeforeThreeTone"
+			]
+		},
+		{
+			"id": "MaterialExpressionPixelNormalWS_0000015BF9F55E80",
+			"class": "PixelNormalWS",
+			"class_full": "MaterialExpressionPixelNormalWS",
+			"pos_x": -1200,
+			"pos_y": -300,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionCustom_0000015BFA72D980",
+			"class": "Custom",
+			"class_full": "MaterialExpressionCustom",
+			"pos_x": -500,
+			"pos_y": -500,
+			"properties":
+			{
+				"Code": "// GuLiDarkSurfaceFill_v1: user requested lighter dark blocks, 2026-10-08\nfloat d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.62:(d<.68?.82:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band+float3(.030,.030,.030)*(1-saturate(dot(Palette,float3(.2126,.7152,.0722))/.18)),float3(.02518686,.03820437,.03560131),edge*.65);",
+				"OutputType": "CMOT_Float3",
+				"Description": "Custom",
+				"Inputs": "((InputName=\"Palette\",Input=(Expression=\"/Script/Engine.MaterialExpressionMaterialFunctionCall'/Game/GuLiStrike/Models/TeamColor_v1/ManualOutpost/Materials/Parents/M_OutpostConcrete.M_OutpostConcrete:MaterialExpressionMaterialFunctionCall_0'\",OutputIndex=1)),(InputName=\"N\",Input=(Expression=\"/Script/Engine.MaterialExpressionPixelNormalWS'/Game/GuLiStrike/Models/TeamColor_v1/ManualOutpost/Materials/Parents/M_OutpostConcrete.M_OutpostConcrete:MaterialExpressionPixelNormalWS_0'\")),(InputName=\"Lamp\",Input=(Expression=\"/Script/Engine.MaterialExpressionMaterialFunctionCall'/Game/GuLiStrike/Models/TeamColor_v1/ManualOutpost/Materials/Parents/M_OutpostConcrete.M_OutpostConcrete:MaterialExpressionMaterialFunctionCall_0'\")))",
+				"ShowCode": "False"
+			},
+			"hlsl_code": "// GuLiDarkSurfaceFill_v1: user requested lighter dark blocks, 2026-10-08\nfloat d=dot(normalize(N),normalize(float3(.35,.55,.76)));float band=d<.38?.62:(d<.68?.82:1.0);float edge=saturate((max(length(ddx(normalize(N))),length(ddy(normalize(N))))-.25)*4);return lerp(Palette*band+float3(.030,.030,.030)*(1-saturate(dot(Palette,float3(.2126,.7152,.0722))/.18)),float3(.02518686,.03820437,.03560131),edge*.65);",
+			"output_type": "CMOT_Float3",
+			"custom_input_names": "Palette,N,Lamp",
+			"inputs": [
+				"Palette",
+				"N",
+				"Lamp"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000015BFA72DAC0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 0,
+			"pos_y": 500,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionAdd_0000015BFA72DC00",
+			"class": "Add",
+			"class_full": "MaterialExpressionAdd",
+			"pos_x": 300,
+			"pos_y": 0,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionVertexColor_0000015BF9F54B40",
+			"source_output_index": 4,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000015BFA72D700",
+			"target_input": "RoleAlpha (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVertexColor_0000015BF9F54B40",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000015BFA72D700",
+			"target_input": "FixedPalette (V3)"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000015BFA72D700",
+			"source_output_index": 1,
+			"source_output_name": "PaletteBeforeThreeTone",
+			"target_id": "MaterialExpressionCustom_0000015BFA72D980",
+			"target_input": "Palette"
+		},
+		{
+			"source_id": "MaterialExpressionPixelNormalWS_0000015BF9F55E80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionCustom_0000015BFA72D980",
+			"target_input": "N"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000015BFA72D700",
+			"source_output_index": 0,
+			"source_output_name": "TeamLampStrength",
+			"target_id": "MaterialExpressionCustom_0000015BFA72D980",
+			"target_input": "Lamp"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000015BFA72D700",
+			"source_output_index": 1,
+			"source_output_name": "PaletteBeforeThreeTone",
+			"target_id": "MaterialExpressionMultiply_0000015BFA72DAC0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000015BFA72D700",
+			"source_output_index": 0,
+			"source_output_name": "TeamLampStrength",
+			"target_id": "MaterialExpressionMultiply_0000015BFA72DAC0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionCustom_0000015BFA72D980",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000015BFA72DC00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000015BFA72DAC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000015BFA72DC00",
+			"target_input": "B"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "BaseColor",
+			"expression_id": "MaterialExpressionTextureSampleParameter2D_0000015BFA787D00",
+			"output_index": 0,
+			"output_name": "RGB"
+		},
+		{
+			"property": "Roughness",
+			"expression_id": "MaterialExpressionTextureSampleParameter2D_0000015BFA787F80",
+			"output_index": 1,
+			"output_name": "R"
+		},
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionAdd_0000015BFA72DC00",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "Normal",
+			"expression_id": "MaterialExpressionTextureSampleParameter2D_0000015BFA788200",
+			"output_index": 0,
+			"output_name": "RGB"
+		}
+	]
+}

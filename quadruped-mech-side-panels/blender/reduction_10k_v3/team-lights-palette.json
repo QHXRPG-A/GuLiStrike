@@ -1,0 +1,141 @@
+{
+  "palette_srgb": {
+    "main": "D5C09C",
+    "accent": "FEE4D9",
+    "frame": "2C3735",
+    "friendly": "6AA4BE",
+    "enemy": "A34053"
+  },
+  "recolored_materials": {
+    "机甲 · 深灰腿部护甲": "#2C3735",
+    "机甲 · 米白小腿嵌板": "#FEE4D9",
+    "机甲 · 蓝灰喷涂外甲": "#D5C09C",
+    "机甲 · 黑色主体框架": "#2C3735",
+    "机甲 · 中立乳白尾部嵌板": "#FEE4D9"
+  },
+  "lamps": [
+    {
+      "leg": "Leg_Front_L",
+      "anchor": [
+        -1.5069293975830078,
+        -1.2049278020858765,
+        1.6135518550872803
+      ],
+      "normal": [
+        -0.8481654524803162,
+        0.5238789319992065,
+        -0.07852533459663391
+      ],
+      "housing_depth_m": 0.04373745977133513,
+      "housing_embed_min_m": 0.009,
+      "lens_overlap_m": 0.002,
+      "width_m": 0.1,
+      "length_m": 0.25,
+      "triangles": 40,
+      "scenes": [
+        "00_静态 · 当前资源",
+        "01_行进 · 顶点动画",
+        "02_采矿 · 顶点动画"
+      ]
+    },
+    {
+      "leg": "Leg_Front_R",
+      "anchor": [
+        1.5069293975830078,
+        -1.2049278020858765,
+        1.6135516166687012
+      ],
+      "normal": [
+        0.8481654524803162,
+        0.5238789319992065,
+        -0.07852533459663391
+      ],
+      "housing_depth_m": 0.043737581308931114,
+      "housing_embed_min_m": 0.009,
+      "lens_overlap_m": 0.002,
+      "width_m": 0.1,
+      "length_m": 0.25,
+      "triangles": 40,
+      "scenes": [
+        "00_静态 · 当前资源",
+        "01_行进 · 顶点动画",
+        "02_采矿 · 顶点动画"
+      ]
+    },
+    {
+      "leg": "Leg_Rear_L",
+      "anchor": [
+        -1.653313398361206,
+        1.253617286682129,
+        1.6907539367675781
+      ],
+      "normal": [
+        -0.8469350337982178,
+        -0.26351186633110046,
+        0.4618035852909088
+      ],
+      "housing_depth_m": 0.0702999931126833,
+      "housing_embed_min_m": 0.009,
+      "lens_overlap_m": 0.002,
+      "width_m": 0.1,
+      "length_m": 0.25,
+      "triangles": 40,
+      "scenes": [
+        "00_静态 · 当前资源",
+        "01_行进 · 顶点动画",
+        "02_采矿 · 顶点动画"
+      ]
+    },
+    {
+      "leg": "Leg_Rear_R",
+      "anchor": [
+        1.653313398361206,
+        1.253617286682129,
+        1.6907539367675781
+      ],
+      "normal": [
+        0.8469350337982178,
+        -0.26351186633110046,
+        0.4618035852909088
+      ],
+      "housing_depth_m": 0.07029996994603425,
+      "housing_embed_min_m": 0.009,
+      "lens_overlap_m": 0.002,
+      "width_m": 0.1,
+      "length_m": 0.25,
+      "triangles": 40,
+      "scenes": [
+        "00_静态 · 当前资源",
+        "01_行进 · 顶点动画",
+        "02_采矿 · 顶点动画"
+      ]
+    }
+  ],
+  "new_objects": [
+    "TeamLamp_FL_Housing",
+    "TeamLamp_FL_Lens",
+    "TeamLamp_FL_Housing · 行进",
+    "TeamLamp_FL_Lens · 行进",
+    "TeamLamp_FL_Housing · 采矿",
+    "TeamLamp_FL_Lens · 采矿",
+    "TeamLamp_FR_Housing",
+    "TeamLamp_FR_Lens",
+    "TeamLamp_FR_Housing · 行进",
+    "TeamLamp_FR_Lens · 行进",
+    "TeamLamp_FR_Housing · 采矿",
+    "TeamLamp_FR_Lens · 采矿",
+    "TeamLamp_RL_Housing",
+    "TeamLamp_RL_Lens",
+    "TeamLamp_RL_Housing · 行进",
+    "TeamLamp_RL_Lens · 行进",
+    "TeamLamp_RL_Housing · 采矿",
+    "TeamLamp_RL_Lens · 采矿",
+    "TeamLamp_RR_Housing",
+    "TeamLamp_RR_Lens",
+    "TeamLamp_RR_Housing · 行进",
+    "TeamLamp_RR_Lens · 行进",
+    "TeamLamp_RR_Housing · 采矿",
+    "TeamLamp_RR_Lens · 采矿"
+  ],
+  "art_revision": "1.15"
+}

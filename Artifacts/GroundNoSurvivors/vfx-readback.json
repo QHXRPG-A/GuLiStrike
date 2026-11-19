@@ -1,0 +1,62 @@
+{
+  "success": true,
+  "flight": {
+    "source": "/Game/Assets/VFX/Weapons/Missiles/HighSpeedThrusters/FX/NS_RocketExhaust_Meshes",
+    "system": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsFlight",
+    "originally_active": 4,
+    "active": [
+      "NE_Thrusters",
+      "NE_HeatHaze",
+      "NE_Smoke"
+    ],
+    "removed": [
+      "NE_Particulates"
+    ],
+    "head_mesh": "/Game/Assets/VFX/Weapons/Missiles/HighSpeedThrusters/Meshes/SM_Ring.SM_Ring",
+    "source_mesh_scale": [
+      0.10000000149011612,
+      0.10000000149011612,
+      0.10000000149011612
+    ],
+    "head_scale_multiplier": 2.0,
+    "trail_length_cm": 2730.0,
+    "trail_fade_seconds": 0.6,
+    "ribbon_samples_per_second": 100.0,
+    "ribbon_material": "/Game/GuLiStrike/FX/GroundMech/Blink/M_GroundMech_BlinkStrand",
+    "ribbon_emitter": "NE_Thrusters",
+    "ribbons_per_missile": 1,
+    "warnings": [],
+    "errors": 0,
+    "pool_prime": 0
+  },
+  "impact": {
+    "source": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01",
+    "system": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsImpact",
+    "originally_active": 18,
+    "active": [
+      "NE_Cloud_01",
+      "NE_Cloud_02",
+      "NE_Cloud_03",
+      "NE_Core01",
+      "NE_Core02",
+      "NE_CloudOut_01",
+      "NE_GlowOut",
+      "NE_Glow_Base",
+      "NE_Bullet_01",
+      "NE_DustOut_01",
+      "NE_Rock",
+      "NE_Dust_Trail",
+      "NE_Glow_End",
+      "NE_Ground_01",
+      "NE_Ground_02"
+    ],
+    "removed": [
+      "NE_Cloud_04",
+      "NE_Bullet_02",
+      "NE_Rock001"
+    ],
+    "warnings": [],
+    "errors": 0,
+    "pool_prime": 0
+  }
+}

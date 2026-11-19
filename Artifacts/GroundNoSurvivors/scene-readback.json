@@ -1,0 +1,163 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entry": [
+    2750.0,
+    63150.0,
+    1147.0139461839526
+  ],
+  "entities": 37,
+  "targets": [
+    {
+      "label": "NoSurvivors_Near",
+      "unit_type_id": 1,
+      "position": [
+        7350.0,
+        61200.0,
+        901.7790832519531
+      ],
+      "team": "<GuLiTeam.BLUE: 2>",
+      "team_id": 2
+    },
+    {
+      "label": "NoSurvivors_Center",
+      "unit_type_id": 1,
+      "position": [
+        12750.0,
+        63150.0,
+        903.4572781153711
+      ],
+      "team": "<GuLiTeam.BLUE: 2>",
+      "team_id": 2
+    },
+    {
+      "label": "NoSurvivors_Far",
+      "unit_type_id": 1,
+      "position": [
+        17550.0,
+        60750.0,
+        902.1931510487832
+      ],
+      "team": "<GuLiTeam.BLUE: 2>",
+      "team_id": 2
+    },
+    {
+      "label": "NoSurvivors_Inside",
+      "unit_type_id": 1,
+      "position": [
+        12750.0,
+        61950.0,
+        902.8253156240962
+      ],
+      "team": "<GuLiTeam.BLUE: 2>",
+      "team_id": 2
+    },
+    {
+      "label": "NoSurvivors_Outside",
+      "unit_type_id": 1,
+      "position": [
+        12750.0,
+        60450.0,
+        902.0351099049549
+      ],
+      "team": "<GuLiTeam.BLUE: 2>",
+      "team_id": 2
+    },
+    {
+      "label": "NoSurvivors_Friendly",
+      "unit_type_id": 1,
+      "position": [
+        12750.0,
+        64350.0,
+        923.4247247722153
+      ],
+      "team": "<GuLiTeam.RED: 1>",
+      "team_id": 1
+    },
+    {
+      "label": "NoSurvivors_LowAir",
+      "unit_type_id": 2,
+      "position": [
+        17250.0,
+        67400.0,
+        905.8783046243991
+      ],
+      "team": "<GuLiTeam.BLUE: 2>",
+      "team_id": 2
+    }
+  ],
+  "blast_radius_cm": 1484,
+  "horizontal_marker_cm": 20000.0,
+  "marker_collision": false,
+  "deck_top_z_cm": 4185.639493622369,
+  "floor_below_deck_z_cm": 985.6394936223664,
+  "deck_position_xy_cm": [
+    17250.0,
+    65450.0
+  ],
+  "blast_samples": {
+    "ground": {
+      "unit": "先驱号",
+      "movement_layer": 0,
+      "burst_cm": [
+        12750.0,
+        63150.0,
+        899.9771114671557
+      ],
+      "hit_center_cm": [
+        12725.232231140137,
+        63150.0,
+        1126.7239841710089
+      ],
+      "center_distance_cm": 228.09556474265997,
+      "body_radius_cm": 312.5,
+      "field_radius_cm": 1484
+    },
+    "low_air": {
+      "unit": "重防号",
+      "movement_layer": 1,
+      "burst_cm": [
+        17250.0,
+        66190.0,
+        4185.639493622369
+      ],
+      "hit_center_cm": [
+        17278.712817382813,
+        67349.99997558593,
+        4377.159251213074
+      ],
+      "center_distance_cm": 1176.0544999229514,
+      "body_radius_cm": 710.7016357421876,
+      "field_radius_cm": 1484
+    }
+  },
+  "manifests": {
+    "200": {
+      "success": true,
+      "error": "",
+      "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+      "objects": 292,
+      "rules": 173,
+      "tables": 0
+    },
+    "600": {
+      "success": true,
+      "error": "",
+      "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+      "objects": 692,
+      "rules": 173,
+      "tables": 0
+    },
+    "range": {
+      "objects": 692,
+      "rules": 176,
+      "added_rules": [
+        "admit/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage",
+        "retire/effect/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage",
+        "settle/effect/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage"
+      ]
+    }
+  },
+  "resource": "Resource authoring source and baked runtime definition are current.",
+  "pie": false
+}

@@ -1,0 +1,701 @@
+{
+  "scene": "OUTPOST_B_v1",
+  "asset_mesh_objects": 53,
+  "base_triangles": 1572,
+  "evaluated_triangles_including_mirror_bevel": 4824,
+  "dimensions_m": [
+    17.877653121948242,
+    20.233375549316406,
+    29.299270629882812
+  ],
+  "minimum_m": [
+    -8.938826560974121,
+    -10.116687774658203,
+    -14.649635314941406
+  ],
+  "maximum_m": [
+    8.938826560974121,
+    10.116687774658203,
+    14.649635314941406
+  ],
+  "parts": [
+    {
+      "name": "OP_Waist_Containment_Armor",
+      "base_triangles": 160,
+      "evaluated_triangles": 160,
+      "modifiers": []
+    },
+    {
+      "name": "OP_Waist_Cyan_Continuous_Band",
+      "base_triangles": 64,
+      "evaluated_triangles": 64,
+      "modifiers": []
+    },
+    {
+      "name": "OP_Waist_Light_Hot_Core",
+      "base_triangles": 64,
+      "evaluated_triangles": 64,
+      "modifiers": []
+    },
+    {
+      "name": "OP_Waist_Recess_Frame",
+      "base_triangles": 64,
+      "evaluated_triangles": 128,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Main_Armor_Rib_00",
+      "base_triangles": 48,
+      "evaluated_triangles": 272,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Armor_00",
+      "base_triangles": 20,
+      "evaluated_triangles": 136,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Belt_Long_Guard_00",
+      "base_triangles": 44,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Guard_Light_Recess_00",
+      "base_triangles": 12,
+      "evaluated_triangles": 88,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Guard_Cyan_Slot_00",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Rib_Inner_Energy_00",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Main_Armor_Rib_01",
+      "base_triangles": 48,
+      "evaluated_triangles": 272,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Armor_01",
+      "base_triangles": 20,
+      "evaluated_triangles": 136,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Belt_Long_Guard_01",
+      "base_triangles": 44,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Guard_Light_Recess_01",
+      "base_triangles": 12,
+      "evaluated_triangles": 88,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Guard_Cyan_Slot_01",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Rib_Inner_Energy_01",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Main_Armor_Rib_02",
+      "base_triangles": 48,
+      "evaluated_triangles": 272,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Armor_02",
+      "base_triangles": 20,
+      "evaluated_triangles": 136,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Belt_Long_Guard_02",
+      "base_triangles": 44,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Guard_Light_Recess_02",
+      "base_triangles": 12,
+      "evaluated_triangles": 88,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Guard_Cyan_Slot_02",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Rib_Inner_Energy_02",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Main_Armor_Rib_03",
+      "base_triangles": 48,
+      "evaluated_triangles": 272,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Armor_03",
+      "base_triangles": 20,
+      "evaluated_triangles": 136,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Belt_Long_Guard_03",
+      "base_triangles": 44,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Guard_Light_Recess_03",
+      "base_triangles": 12,
+      "evaluated_triangles": 88,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Guard_Cyan_Slot_03",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Rib_Inner_Energy_03",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Waist_Armor_Badge_00",
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Waist_Badge_Inset_00",
+      "base_triangles": 12,
+      "evaluated_triangles": 44,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Waist_Armor_Badge_01",
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Waist_Badge_Inset_01",
+      "base_triangles": 12,
+      "evaluated_triangles": 44,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Waist_Armor_Badge_02",
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Waist_Badge_Inset_02",
+      "base_triangles": 12,
+      "evaluated_triangles": 44,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Waist_Armor_Badge_03",
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Waist_Badge_Inset_03",
+      "base_triangles": 12,
+      "evaluated_triangles": 44,
+      "modifiers": [
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Dark_Spine",
+      "base_triangles": 28,
+      "evaluated_triangles": 56,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Energy_Surface",
+      "base_triangles": 28,
+      "evaluated_triangles": 56,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Bright_Window_00",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Window_Frame_00",
+      "base_triangles": 12,
+      "evaluated_triangles": 88,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Bright_Window_01",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Window_Frame_01",
+      "base_triangles": 12,
+      "evaluated_triangles": 88,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Bright_Window_02",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Window_Frame_02",
+      "base_triangles": 12,
+      "evaluated_triangles": 88,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Bright_Window_03",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Window_Frame_03",
+      "base_triangles": 12,
+      "evaluated_triangles": 88,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        },
+        {
+          "name": "Controlled_One_Segment_Bevel",
+          "type": "BEVEL"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Main_Collar",
+      "base_triangles": 96,
+      "evaluated_triangles": 192,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Core_Crown_Socket",
+      "base_triangles": 96,
+      "evaluated_triangles": 192,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Center_Spear",
+      "base_triangles": 76,
+      "evaluated_triangles": 152,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Cyan_Spear_Slit_00",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Cyan_Spear_Slit_01",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Cyan_Spear_Slit_02",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    },
+    {
+      "name": "OP_Crown_Cyan_Spear_Slit_03",
+      "base_triangles": 12,
+      "evaluated_triangles": 24,
+      "modifiers": [
+        {
+          "name": "Symmetry_Upper_Lower",
+          "type": "MIRROR"
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "OP_Armor_Cream",
+      "srgb": "#FEE4D9",
+      "contract": "EEVEE diffuse -> shader-to-RGB -> 3 constant steps -> base tint"
+    },
+    {
+      "name": "OP_Armor_BlueGray",
+      "srgb": "#274E61",
+      "contract": "EEVEE diffuse -> shader-to-RGB -> 3 constant steps -> base tint"
+    },
+    {
+      "name": "OP_Trim_SkyBlue",
+      "srgb": "#6AA4BE",
+      "contract": "EEVEE diffuse -> shader-to-RGB -> 3 constant steps -> base tint"
+    },
+    {
+      "name": "OP_Mechanism_Dark",
+      "srgb": "#1A182F",
+      "contract": "EEVEE diffuse -> shader-to-RGB -> 3 constant steps -> base tint"
+    },
+    {
+      "name": "OP_Energy_Teal",
+      "srgb": "#0D9099",
+      "contract": "functional emission"
+    },
+    {
+      "name": "OP_Energy_Cyan",
+      "srgb": "#6AA4BE",
+      "contract": "functional emission"
+    },
+    {
+      "name": "OP_Core_Ownership_Surface",
+      "srgb": null,
+      "contract": "Neutral White / Team Color / Use Team Color / Emission Strength"
+    },
+    {
+      "name": "OP_Core_Ownership_Highlight",
+      "srgb": null,
+      "contract": "Neutral White / Team Color / Use Team Color / Emission Strength"
+    }
+  ],
+  "review_ground_is_not_asset": true,
+  "reference_approval_A": "user: blender已开，一比一制作",
+  "user_review_B": "pending",
+  "ue_imported": false
+}

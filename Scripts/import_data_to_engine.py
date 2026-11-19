@@ -69,6 +69,8 @@ CONFIG_WIRED_TABLES = {
     "DT_GuLiStrikeMech_GroundIK",
     "DT_GuLiStrikeMech_Camera",
     "DT_GuLiStrikeRogueCards_Cards",
+    # Referenced by CastCamera on the Ranger's No Survivors card.
+    "DT_GuLiStrikeRogueCards_BarrageCamera",
     "DT_GuLiStrikeRogueCards_Effects",
     "DT_GuLiStrikeRogueCards_GroundRicochet",
     "DT_GuLiStrikeBuffs_Buffs",
@@ -242,13 +244,14 @@ def import_table(table_name, table_cfg):
                 raise RuntimeError("create_asset returned None")
         mark(f"dt-ready created={entry['created']}")
 
-        if table_name in {'DT_GuLiStrikeGameTexts_Texts','DT_GuLiStrikeGroundHUD_Elements'}:
+        if table_name in {'DT_GuLiStrikeGameTexts_Texts', 'DT_GuLiStrikeGroundHUD_Elements',
+                          'DT_GuLiStrikeRogueCards_Cards', 'DT_GuLiStrikeRogueCards_BarrageCamera'}:
             if dt.get_editor_property('row_struct') != row_struct:
-                raise RuntimeError('UI table native schema differs; reload the correct native module before import')
+                raise RuntimeError(f'{table_name}: native row schema differs from the manifest')
             problems = unreal.GuLiDataTableImportLibrary.update_from_json(dt,json.dumps(src_rows,ensure_ascii=False))
             if problems:
-                raise RuntimeError('In-place UI table import failed: ' + '; '.join(str(p) for p in problems))
-            entry['update_mode']='in_place';mark('in-place-ui-import-done')
+                raise RuntimeError('In-place table import failed: ' + '; '.join(str(p) for p in problems))
+            entry['update_mode']='in_place';mark('in-place-import-done')
         else:
             # Keep the established import route for other systems.
             try:

@@ -1,0 +1,443 @@
+{
+  "b17_sha256": "a8be1e40c3b7c93ea43b012da73ef9351f304d6f9f8395fad3ccafb1d2b2ffd0",
+  "models": [
+    {
+      "key": "AirBase",
+      "name": "空军基地",
+      "model_id": 3001,
+      "triangles": 5916,
+      "team_areas": "穹顶机构罩、塔台护板与下缘环带",
+      "fixed_swatches": [
+        [
+          "穹顶和塔台压条",
+          "#FEE4D9"
+        ],
+        [
+          "机库门",
+          "#D5C09C"
+        ],
+        [
+          "雷达",
+          "#2C3735"
+        ],
+        [
+          "定位标记",
+          "#EE9D58"
+        ]
+      ],
+      "source": "AirBase_A5.png",
+      "source_sha256": "1b13fa2dfa56c9b9bbd31203b4852952c95caf7e8ad0cf27e3361408c653fe78",
+      "source_crop": [
+        644,
+        477,
+        777,
+        644
+      ],
+      "detail_title": "近端导轨横纹",
+      "model_detail_crop_px": [
+        535,
+        370,
+        609,
+        466
+      ],
+      "angle_width_m": 23.89804,
+      "detail_width_m": 6.07295,
+      "red_blue_projection_error_px": 0.000176,
+      "rotation_euler": {
+        "Hero": [
+          0.9417607188224792,
+          -1.2841333330015914e-08,
+          -0.5621867775917053
+        ],
+        "Front": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "Left": [
+          1.5707963705062866,
+          -0.0,
+          -1.5707963705062866
+        ],
+        "Back": [
+          -1.570796251296997,
+          -3.141592502593994,
+          -0.0
+        ]
+      },
+      "exposure": 0.0,
+      "view_transform": "Standard",
+      "board": "AirBase_B17_Review.png",
+      "board_sha256": "aebd5b6f6091377a1a3a49d24210da35586830a59027e557e4d0ed3e904efb9f",
+      "board_size_px": [
+        2320,
+        1860
+      ]
+    },
+    {
+      "key": "CloningCenter",
+      "name": "克隆中心",
+      "model_id": 3002,
+      "triangles": 2750,
+      "team_areas": "顶罩边环和两侧设备箱",
+      "fixed_swatches": [
+        [
+          "塔身装甲",
+          "#FEE4D9"
+        ],
+        [
+          "支撑板",
+          "#D5C09C"
+        ],
+        [
+          "舱窗",
+          "#0D9099"
+        ],
+        [
+          "软管与背架",
+          "#2C3735"
+        ]
+      ],
+      "source": "CloningCenter_A5.png",
+      "source_sha256": "839728278b7fb79ba0b5392aee559e1023a8f38ab0ea09553305b8904053dba1",
+      "source_crop": [
+        481,
+        180,
+        594,
+        286
+      ],
+      "detail_title": "右上培养舱窗与锁扣",
+      "model_detail_crop_px": [
+        441,
+        185,
+        498,
+        247
+      ],
+      "angle_width_m": 16.61828,
+      "detail_width_m": 2.18444,
+      "red_blue_projection_error_px": 0.000189,
+      "rotation_euler": {
+        "Hero": [
+          0.9417607188224792,
+          -1.2841333330015914e-08,
+          -0.5621867775917053
+        ],
+        "Front": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "Left": [
+          1.5707963705062866,
+          -0.0,
+          -1.5707963705062866
+        ],
+        "Back": [
+          -1.570796251296997,
+          -3.141592502593994,
+          -0.0
+        ]
+      },
+      "exposure": 0.0,
+      "view_transform": "Standard",
+      "board": "CloningCenter_B17_Review.png",
+      "board_sha256": "3eb1277969f151aa1abcce95fc4ffd27f8b40f93521bf881a78fa12fc5a39e57",
+      "board_size_px": [
+        2320,
+        1860
+      ]
+    },
+    {
+      "key": "CommandCenter",
+      "name": "指挥中心",
+      "model_id": 3003,
+      "triangles": 5063,
+      "team_areas": "前部设备罩与平台顶板",
+      "fixed_swatches": [
+        [
+          "塔冠",
+          "#D5C09C"
+        ],
+        [
+          "观察环缘",
+          "#FEE4D9"
+        ],
+        [
+          "窗带",
+          "#1A182F"
+        ],
+        [
+          "状态灯",
+          "#0D9099"
+        ]
+      ],
+      "source": "CommandCenter_A5.png",
+      "source_sha256": "2cf8d783968b67747a0bbbfdf282ba6abc40ce4f2790594a1493f03dc7f96d6b",
+      "source_crop": [
+        458,
+        514,
+        647,
+        733
+      ],
+      "detail_title": "前部设备罩检修板",
+      "model_detail_crop_px": [
+        433,
+        386,
+        510,
+        505
+      ],
+      "angle_width_m": 22.2868,
+      "detail_width_m": 6.06526,
+      "red_blue_projection_error_px": 0.00012,
+      "rotation_euler": {
+        "Hero": [
+          0.9417607188224792,
+          -1.2841333330015914e-08,
+          -0.5621867775917053
+        ],
+        "Front": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "Left": [
+          1.5707963705062866,
+          -0.0,
+          -1.5707963705062866
+        ],
+        "Back": [
+          -1.570796251296997,
+          -3.141592502593994,
+          -0.0
+        ]
+      },
+      "exposure": 0.0,
+      "view_transform": "Standard",
+      "board": "CommandCenter_B17_Review.png",
+      "board_sha256": "11b7d2f6664a32b80c946409f6f7e3323bc16520a143a9651e6b34cb91c3c109",
+      "board_size_px": [
+        2320,
+        1860
+      ]
+    },
+    {
+      "key": "MilitaryFactory",
+      "name": "军工厂",
+      "model_id": 3004,
+      "triangles": 2202,
+      "team_areas": "屋顶护板、门楣与底裙",
+      "fixed_swatches": [
+        [
+          "墙板",
+          "#557B78"
+        ],
+        [
+          "卷门",
+          "#D5C09C"
+        ],
+        [
+          "弯管",
+          "#2C3735"
+        ],
+        [
+          "护角",
+          "#EE9D58"
+        ]
+      ],
+      "source": "MilitaryFactory_A5.png",
+      "source_sha256": "2209f2559f0a06c37e7d9624bc4c4c3966f0355301bb7f8628da40bd7800bf45",
+      "source_crop": [
+        143,
+        443,
+        396,
+        688
+      ],
+      "detail_title": "左侧装甲分板纹",
+      "model_detail_crop_px": [
+        271,
+        350,
+        400,
+        475
+      ],
+      "angle_width_m": 21.05759,
+      "detail_width_m": 5.48052,
+      "red_blue_projection_error_px": 0.000131,
+      "rotation_euler": {
+        "Hero": [
+          0.9417607188224792,
+          -1.2841333330015914e-08,
+          -0.5621867775917053
+        ],
+        "Front": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "Left": [
+          1.5707963705062866,
+          -0.0,
+          -1.5707963705062866
+        ],
+        "Back": [
+          -1.570796251296997,
+          -3.141592502593994,
+          -0.0
+        ]
+      },
+      "exposure": 0.0,
+      "view_transform": "Standard",
+      "board": "MilitaryFactory_B17_Review.png",
+      "board_sha256": "758699ac9ac73a2a41b2a8468f5ca34cde9aec641f909a7b691ccb2c75b01bb5",
+      "board_size_px": [
+        2320,
+        1860
+      ]
+    },
+    {
+      "key": "Reactor",
+      "name": "反应堆",
+      "model_id": 3005,
+      "triangles": 4040,
+      "team_areas": "壳体外护板与顶环",
+      "fixed_swatches": [
+        [
+          "环肩和腿甲",
+          "#FEE4D9"
+        ],
+        [
+          "散热片",
+          "#557B78"
+        ],
+        [
+          "锁柄",
+          "#EE9D58"
+        ],
+        [
+          "散热唇",
+          "#0D9099"
+        ]
+      ],
+      "source": "Reactor_A5.png",
+      "source_sha256": "5bb414105605a486e099152bc430f2b71b4b4b44e30b9eee350b7fd3e1030c35",
+      "source_crop": [
+        354,
+        93,
+        547,
+        269
+      ],
+      "detail_title": "顶盖锁柄",
+      "model_detail_crop_px": [
+        399,
+        181,
+        467,
+        258
+      ],
+      "angle_width_m": 7.90958,
+      "detail_width_m": 1.63171,
+      "red_blue_projection_error_px": 0.000325,
+      "rotation_euler": {
+        "Hero": [
+          0.9417607188224792,
+          -1.2841333330015914e-08,
+          -0.5621867775917053
+        ],
+        "Front": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "Left": [
+          1.5707963705062866,
+          -0.0,
+          -1.5707963705062866
+        ],
+        "Back": [
+          -1.570796251296997,
+          -3.141592502593994,
+          -0.0
+        ]
+      },
+      "exposure": 0.0,
+      "view_transform": "Standard",
+      "board": "Reactor_B17_Review.png",
+      "board_sha256": "ee3759b63eb84213d4eb84822509469b7fdcc068779627c730ef53b6ddc75ef2",
+      "board_size_px": [
+        2320,
+        1860
+      ]
+    },
+    {
+      "key": "StrategyCenter",
+      "name": "战略中心",
+      "model_id": 3006,
+      "triangles": 4775,
+      "team_areas": "腰部设备箱与阵列背箱",
+      "fixed_swatches": [
+        [
+          "阵列边框",
+          "#FEE4D9"
+        ],
+        [
+          "阵列工作面",
+          "#2C3735"
+        ],
+        [
+          "转台刻度",
+          "#0A6F73"
+        ],
+        [
+          "定位牌",
+          "#EE9D58"
+        ]
+      ],
+      "source": "StrategyCenter_A5.png",
+      "source_sha256": "1390ba7f56d7d025c710aa6fa8a4943525df9ca32c8f1d6bbfe0675bf140d559",
+      "source_crop": [
+        515,
+        473,
+        641,
+        585
+      ],
+      "detail_title": "回转座刻度和定位牌",
+      "model_detail_crop_px": [
+        433,
+        382,
+        504,
+        432
+      ],
+      "angle_width_m": 19.63163,
+      "detail_width_m": 2.03239,
+      "red_blue_projection_error_px": 0.000182,
+      "rotation_euler": {
+        "Hero": [
+          0.9417607188224792,
+          -1.2841333330015914e-08,
+          -0.5621867775917053
+        ],
+        "Front": [
+          1.5707964897155762,
+          -0.0,
+          0.0
+        ],
+        "Left": [
+          1.5707963705062866,
+          -0.0,
+          -1.5707963705062866
+        ],
+        "Back": [
+          -1.570796251296997,
+          -3.141592502593994,
+          -0.0
+        ]
+      },
+      "exposure": 0.0,
+      "view_transform": "Standard",
+      "board": "StrategyCenter_B17_Review.png",
+      "board_sha256": "d741990a4dfcf8bd0d866492b074caff410d4c6faedf3b78813d1c293c490946",
+      "board_size_px": [
+        2320,
+        1860
+      ]
+    }
+  ]
+}

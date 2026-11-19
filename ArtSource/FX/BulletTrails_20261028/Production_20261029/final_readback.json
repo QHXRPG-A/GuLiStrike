@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "PIE": false,
+  "visual_acceptance": "not_claimed",
+  "performance": "not_measured",
+  "pid": 2456,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "extra_switch": false,
+  "retired_class_absent": true,
+  "catalog": {
+    "ground_machine_gun_vfx_id": 38,
+    "bullet_light_vfx_id": 58,
+    "mass_trail_width": 6.0,
+    "maximum_tracer_lights_per_frame": 6,
+    "tracer_light_radius": 800.0,
+    "tracer_light_brightness": 25.0
+  },
+  "resource_gate": {
+    "success": true,
+    "slots": 23,
+    "source_hash": "594d53dfd929b13d23c4e84b50e262254169db45"
+  },
+  "navigation": {
+    "success": true,
+    "entries": [
+      {
+        "kind": "Ground",
+        "status": "Hit"
+      },
+      {
+        "kind": "Ground",
+        "status": "Hit"
+      },
+      {
+        "kind": "Flight",
+        "status": "Hit"
+      }
+    ]
+  },
+  "manifests": [
+    {
+      "population": 200,
+      "success": true,
+      "config_hash": "44ba3f6a0d2dd19dd0c09e4300d28d6e4f86829bb0cea6160cf0ae9f2f47ba8e",
+      "map_hash": "29d7e3429453c317cd22f65681ba9a1eb4116461d3b6457bf727c854ea2e0145"
+    },
+    {
+      "population": 600,
+      "success": true,
+      "config_hash": "b61e646a41e6a86ba09b077d4845167c6c2346101175945af963d42150235194",
+      "map_hash": "b7bd8c27b4dfc22cf684e5ed1ac79aa7f8c924c34b285ef912ce93cb41b85da0"
+    }
+  ],
+  "dirty_maps": [],
+  "dirty_content": []
+}

@@ -36,6 +36,7 @@ private:
     friend class FGuLiHybridGroundRogueBridge;
     TMap<FGuid,TMap<FString,int32>> GroundAcquisitions;
     TMap<FGuid,uint64> GroundRevisions;
+    TMap<FGuid,FGuid> GroundOpenSessions;
     uint32 GroundEpoch=0;
 	struct FOffer
 	{

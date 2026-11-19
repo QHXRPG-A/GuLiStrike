@@ -1,0 +1,73 @@
+{
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeIcons_Icons",
+      "source_rows": [
+        "JetCapacity",
+        "Ricochet",
+        "Burning",
+        "BurningBurst",
+        "Fire",
+        "Aim",
+        "Blink"
+      ],
+      "created": false,
+      "row_names": [
+        "JetCapacity",
+        "Ricochet",
+        "Burning",
+        "BurningBurst",
+        "Fire",
+        "Aim",
+        "Blink"
+      ],
+      "row_checks": {
+        "JetCapacity": true,
+        "Ricochet": true,
+        "Burning": true,
+        "BurningBurst": true,
+        "Fire": true,
+        "Aim": true,
+        "Blink": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeMech_Skills",
+      "source_rows": [
+        "BasicMachinegun",
+        "RocketJump",
+        "Blink"
+      ],
+      "created": false,
+      "imported": true,
+      "unchanged": true,
+      "row_names": [
+        "BasicMachinegun",
+        "RocketJump",
+        "Blink"
+      ],
+      "row_checks": {
+        "BasicMachinegun": true,
+        "RocketJump": true,
+        "Blink": true
+      }
+    }
+  ],
+  "config_wired": [
+    "DT_GuLiStrikeIcons_Icons",
+    "DT_GuLiStrikeMech_Skills"
+  ],
+  "unwired": [],
+  "errors": [],
+  "preflight": {
+    "tables": [
+      "DT_GuLiStrikeIcons_Icons",
+      "DT_GuLiStrikeMech_Skills"
+    ],
+    "native_schema": "loaded fields verified",
+    "models": "validated when referenced"
+  },
+  "part_ids": {},
+  "orphan_tables": []
+}

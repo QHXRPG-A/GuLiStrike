@@ -34,7 +34,7 @@ def run():
     level = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     assert not level.is_in_play_in_editor()
     for source, name in [('VFX_Smg_Loop','Bullet'), ('VFX_FireGun_Loop','Muzzle')]:
-        asset = duplicate('/Game/Assets/VFX/WeaponBulletVFX/NS/' + source, FX + '/NS_GroundMech_' + name)
+        asset = duplicate('/Game/Assets/VFX/Weapons/WeaponBulletVFX/NS/' + source, FX + '/NS_GroundMech_' + name)
         assert asset
         # Niagara refinement is performed by author_fire_niagara.py before review.
         save(asset)

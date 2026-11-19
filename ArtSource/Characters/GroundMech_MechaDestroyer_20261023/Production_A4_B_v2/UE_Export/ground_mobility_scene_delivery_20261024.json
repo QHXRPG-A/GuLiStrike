@@ -1,0 +1,197 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "pie_started": false,
+  "visual_review": "not_run; user acceptance",
+  "main_role": "<GuLiCommanderRole.GROUND: 2>",
+  "default_ground_pawn": "<Object '/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C' (0x000002281DFD1500) Class 'BlueprintGeneratedClass'>",
+  "entities": [
+    {
+      "label": "GroundMobility_Flat",
+      "class": "StaticMeshActor",
+      "location": [
+        -4000.0,
+        50000.0,
+        880.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        30.0,
+        40.0,
+        0.5
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "class": "StaticMeshActor",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "scale": [
+        14.0,
+        10.0,
+        0.4
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "class": "StaticMeshActor",
+      "location": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        5.4,
+        10.0,
+        0.4
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "class": "StaticMeshActor",
+      "location": [
+        -4800.0,
+        50900.0,
+        915.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.2
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "class": "StaticMeshActor",
+      "location": [
+        -4400.0,
+        50900.0,
+        925.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.4
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "class": "StaticMeshActor",
+      "location": [
+        -4000.0,
+        50900.0,
+        935.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.6
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "class": "StaticMeshActor",
+      "location": [
+        -3600.0,
+        50900.0,
+        945.0
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.8
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+      "profile": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "rotation_roll_pitch_yaw": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "manifests": [
+    {
+      "population": 200,
+      "config_hash": "f76ab87825f9fc51997abe5276be9d6fc09e337399bcdbc1156be302fec893c8",
+      "fingerprint": "9881b1a57cf20e9ed71b224e4148862a"
+    },
+    {
+      "population": 600,
+      "config_hash": "12adb9fadbdeeeb09e2fe3bee9c7b47984696c78f1c11246c04986824bed6ec6",
+      "fingerprint": "9881b1a57cf20e9ed71b224e4148862a"
+    }
+  ],
+  "entry": "Red Ground spawn approximately (-2175,58575,1148.8); review floor center (-4000,50000,905), south of spawn. Entry TargetPoint (-2800,50000,1149.04) is an editor locator only."
+}

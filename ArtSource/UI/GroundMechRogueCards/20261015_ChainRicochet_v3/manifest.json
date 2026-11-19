@@ -1,0 +1,115 @@
+{
+  "date": "2026-10-15",
+  "version": "v3",
+  "scope": "Project Ground mech, over-the-shoulder firing; one bullet ricochets across three project enemy Pioneers, local impact explosions and mechanical destruction.",
+  "source_url": "https://civitai.com/images/145143380",
+  "source_prompt_available": false,
+  "project_model_ids": [
+    4001,
+    4002,
+    4003,
+    4004,
+    1001
+  ],
+  "project_reference_report": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v3\\References\\project_models_capture.json",
+  "reference_inputs": [
+    {
+      "port": "images.image_1",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v3\\References\\GroundMech_Project_Rear3Q.png",
+      "input_filename": "GroundMech_Project_Rear3Q_v3.png",
+      "sha256": "9d8853cd0db9a5be1186a48e04d167d1207f4683b99f4073bf67f4daf9a5a059",
+      "role": "project Ground mech rear 3Q, model 4001 assembly",
+      "encoded_size": [
+        832,
+        1248
+      ]
+    },
+    {
+      "port": "images.image_2",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v3\\References\\GroundMech_Project_Weapon.png",
+      "input_filename": "GroundMech_Project_Weapon_v3.png",
+      "sha256": "eb82ace1a3a3dcb85c6d3b62c6c503be4fb4c14f1f4bf0bc5e50d4b5c412a6b7",
+      "role": "same Ground mech weapon and upper hull",
+      "encoded_size": [
+        512,
+        512
+      ]
+    },
+    {
+      "port": "images.image_3",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v3\\References\\Pioneer_Project_Enemy.png",
+      "input_filename": "Pioneer_Project_Enemy_v3.png",
+      "sha256": "e0f8e5ce7593669ee4e6f2f3567acc81ef127575f22a3f2e02f2f51d1e99372e",
+      "role": "project enemy Pioneer, model 1001",
+      "encoded_size": [
+        576,
+        768
+      ]
+    },
+    {
+      "port": "images.image_4",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v3\\References\\Civitai_145143380.jpeg",
+      "input_filename": "Civitai_145143380_style.jpeg",
+      "sha256": "a6fcf34baa9a5f54ccf38084fcc2aecbcd3da1cde164301db4353e514e7f2d6f",
+      "role": "Civitai visual style only",
+      "encoded_size": [
+        512,
+        768
+      ]
+    }
+  ],
+  "positive_utf8_sha256": "98d62119d2346eb384821fa1abb5a693acbff07e4980b327fe904bce33e4d6e2",
+  "negative_utf8_sha256": "2037d4fffb054f7d8f261590c63ba0d7d4e402c82bf6b58ea5679bc4e9312e6d",
+  "models": {
+    "diffusion": "qwen_image_2.1_int8_convrot.safetensors",
+    "text_encoder": "qwen3vl_8b_int8_convrot.safetensors",
+    "vae": "qwen_image_2.1_vae_bf16.safetensors",
+    "lora": null
+  },
+  "parameters": {
+    "width": 832,
+    "height": 1248,
+    "steps": 36,
+    "cfg": 1.5,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "seed": 145143383,
+    "denoise": 1,
+    "cache_device": "auto",
+    "cache_dtype": "int8",
+    "reference_resolution": 0
+  },
+  "transparent_background": false,
+  "generation_status": "success",
+  "user_art_approval": "pending",
+  "local_workflow": "archive:ARC-20261103-006#EXT-005",
+  "native_workflow": "archive:ARC-20261103-006#EXT-006",
+  "art_archive": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v3",
+  "prompt_id": "e2c4f4f1-770d-479f-8df2-d2c809069913",
+  "submitted_at_utc": "2026-10-15T13:05:25.206239+00:00",
+  "history_completed": true,
+  "outputs": [
+    {
+      "path": "D:\\gen-image\\output\\GroundMechRogue\\ChainRicochet_20261015_v3_00001_.png",
+      "archive_path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v3\\ChainRicochet_v3.png",
+      "size": [
+        832,
+        1248
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        251,
+        255
+      ],
+      "sha256": "a6ded835920b31dbdcfea15e74c35501b841557f4547b15d3c5de59ed2361d1c",
+      "embedded_prompts_verified": true
+    }
+  ],
+  "assistant_visual_review": "Project identities match, visible muzzle flash and impact damage. Four enemies and some disconnected trajectory segments; v4 corrects continuity and strengthens hit reactions.",
+  "completed_at_utc": "2026-10-15T13:09:01.999047+00:00",
+  "superseded_by": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4",
+  "positive_utf8_sha256_before_name_normalization": "99fc80f719bbed4d89518c511fc2a71e9707ff5b28c030f102951c8f58c85506",
+  "name_normalization_note": "2026-11-03 游骑兵名称规范化；提示词文本已修订，原始生成内容通过历史版本和迁移前哈希追溯。",
+  "negative_utf8_sha256_before_name_normalization": "8dfe6971754b8cce41dc6cef34904d7ff79d294bd0c368b6be03fc386bae8a51",
+  "external_path_note": "历史外部工作流路径见 ARC-20261103-006 归档的对应 EXT 编号；可复用的弹射工作流改为项目内正式副本。"
+}

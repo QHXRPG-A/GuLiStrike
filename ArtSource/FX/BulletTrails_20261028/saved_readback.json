@@ -1,0 +1,148 @@
+{
+  "success": true,
+  "PIE": false,
+  "systems": [
+    {
+      "path": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_MassBulletTrail_GPU",
+      "gpu": true,
+      "parameters": [
+        "User.TrailColors",
+        "User.TrailDirections",
+        "User.TrailEmission",
+        "User.TrailFacings",
+        "User.TrailGenerations",
+        "User.TrailMaximumLength",
+        "User.TrailNow",
+        "User.TrailOrigins",
+        "User.TrailSlotCount",
+        "User.TrailSpeeds",
+        "User.TrailStyle",
+        "User.TrailTimes"
+      ],
+      "emitters": [
+        {
+          "name": "LaserBolts",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001F7973CE420) {emitter_name: \"LaserBolts\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1500.000000,-1500.000000,-1500.000000) Max(1500.000000,1500.000000,1500.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderers": [
+            "<Struct 'NiagaraRendererDetailedInfo' (0x000001F7973CDB60) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"CustomFacingVector\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_BulletLights_CPU",
+      "gpu": false,
+      "parameters": [
+        "User.BulletLightColors",
+        "User.BulletLightEnabled",
+        "User.BulletLightPositions",
+        "User.BulletLightRadii",
+        "User.TrailSlotCount"
+      ],
+      "emitters": [
+        {
+          "name": "LaserBolts",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001F832CC8E80) {emitter_name: \"LaserBolts\", is_enabled: True, sim_target: \"CPUSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-1500.000000,-1500.000000,-1500.000000) Max(1500.000000,1500.000000,1500.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderers": [
+            "<Struct 'NiagaraRendererDetailedInfo' (0x000001F7973CB720) {renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True, material_path: \"\", has_material: False, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"\", mesh_path: \"\", ribbon_shape: \"\"}>"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_GroundBulletTrail_Orange",
+      "gpu": false,
+      "parameters": [
+        "User.AhdioOn",
+        "User.AudioOn",
+        "User.Color01",
+        "User.Color02",
+        "User.ColorLight",
+        "User.GlobleDuration",
+        "User.spread",
+        "User.SpriteSizeScale",
+        "User.TrailData",
+        "User.TrailFacing",
+        "User.TrailShape",
+        "User.TrailSize",
+        "User.TrailStyle"
+      ],
+      "emitters": [
+        {
+          "name": "NE_forward_simple_bullet",
+          "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001F5EFD32260) {emitter_name: \"NE_forward_simple_bullet\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-20.000000,-138.000000,-138.000000) Max(12020.000000,138.000000,138.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+          "renderers": [
+            "<Struct 'NiagaraRendererDetailedInfo' (0x000001F5EFD31720) {renderer_name: \"NiagaraSpriteRendererProperties_2\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_GroundBulletTrail_Orange.M_GroundBulletTrail_Orange\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"VelocityAligned\", facing_mode: \"CustomFacingVector\", sort_mode: \"ViewDistance\", mesh_path: \"\", ribbon_shape: \"\"}>"
+          ]
+        }
+      ]
+    }
+  ],
+  "light_settings": {
+    "bUseInverseSquaredFalloff": false,
+    "bAlphaScalesBrightness": true,
+    "bAffectsTranslucency": false,
+    "bAllowMegaLights": false,
+    "bMegaLightsCastShadows": false,
+    "RadiusScale": 1.0,
+    "DefaultExponent": 2.0,
+    "SpecularScale": 0.20000000298023224,
+    "DiffuseScale": 1.0
+  },
+  "light_bindings": {
+    "PositionBinding": "(RootName=\"BulletLightPosition\",ParamMapVariable=(Name=\"Particles.BulletLightPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"BulletLightPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.BulletLightPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+    "ColorBinding": "(RootName=\"BulletLightColor\",ParamMapVariable=(Name=\"Particles.BulletLightColor\",TypeDefHandle=(RegisteredTypeIndex=101)),DataSetName=\"BulletLightColor\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.BulletLightColor\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+    "RadiusBinding": "(RootName=\"BulletLightRadius\",ParamMapVariable=(Name=\"Particles.BulletLightRadius\",TypeDefHandle=(RegisteredTypeIndex=94)),DataSetName=\"BulletLightRadius\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.BulletLightRadius\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+    "LightRenderingEnabledBinding": "(RootName=\"BulletLightEnabled\",ParamMapVariable=(Name=\"Particles.BulletLightEnabled\",TypeDefHandle=(RegisteredTypeIndex=97)),DataSetName=\"BulletLightEnabled\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.BulletLightEnabled\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+    "VolumetricScatteringBinding": "(RootName=\"BulletLightScattering\",ParamMapVariable=(Name=\"Particles.BulletLightScattering\",TypeDefHandle=(RegisteredTypeIndex=94)),DataSetName=\"BulletLightScattering\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.BulletLightScattering\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+  },
+  "defaults": {
+    "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_MassBulletTrail_GPU": {
+      "User.TrailColors": "(uninitialized)",
+      "User.TrailDirections": "(uninitialized)",
+      "User.TrailEmission": "24.000000",
+      "User.TrailFacings": "(uninitialized)",
+      "User.TrailGenerations": "(uninitialized)",
+      "User.TrailMaximumLength": "1200.000000",
+      "User.TrailNow": "0.000000",
+      "User.TrailOrigins": "(uninitialized)",
+      "User.TrailSlotCount": "256",
+      "User.TrailSpeeds": "(uninitialized)",
+      "User.TrailStyle": "(X=6.000000,Y=12.000000,Z=0.060000,W=0.180000)",
+      "User.TrailTimes": "(uninitialized)"
+    },
+    "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_BulletLights_CPU": {
+      "User.BulletLightColors": "(uninitialized)",
+      "User.BulletLightEnabled": "(uninitialized)",
+      "User.BulletLightPositions": "(uninitialized)",
+      "User.BulletLightRadii": "(uninitialized)",
+      "User.TrailSlotCount": "6"
+    }
+  },
+  "ground_material_parameters": {
+    "TailColor": [
+      0.8549926280975342,
+      0.33716362714767456,
+      0.09758734703063965,
+      1.0
+    ],
+    "CoreColor": [
+      0.9911020994186401,
+      0.7758222222328186,
+      0.6938717365264893,
+      1.0
+    ],
+    "HeadColor": [
+      0.8549926280975342,
+      0.33716362714767456,
+      0.09758734703063965,
+      1.0
+    ],
+    "Emission": 8.0
+  },
+  "formal_references": {
+    "PlayerBullet": "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/NS_GroundMech_PersistentCurve_A4.NS_GroundMech_PersistentCurve_A4",
+    "GroundMachineGunTracer": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool_SmallBatches.NS_WingmanLaserPool_SmallBatches"
+  },
+  "native_review_actor_loaded": true
+}

@@ -1,0 +1,124 @@
+Log started at 11/19/2026 09:09:33 (2026-11-19T01:09:33Z)
+Resolved project argument D:/UE5.7/test1/GuLiStrike.uproject to D:\UE5.7\test1\GuLiStrike.uproject
+No config file at D:\UnrealEngine-5.7\Engine\Restricted\NotForLicensees\Programs\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\ProgramData\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\Users\a\AppData\Local\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\Users\a\Documents\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Configuration will be read from:
+  D:\UnrealEngine-5.7\Engine\Saved\UnrealBuildTool\BuildConfiguration.xml
+  C:\Users\a\AppData\Roaming\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UnrealEngine-5.7\Engine\Saved\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): C:\Users\a\AppData\Roaming\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UE5.7\test1\Saved\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UnrealEngine-5.7\Engine\Intermediate\Build\UnrealBuildTool.Env.BuildConfiguration.xml
+Log file: D:\UE5.7\test1\Artifacts\GroundRogueVfx_20261119\formal-build.log
+
+Setting temp directory to 'C:\Users\a\AppData\Local\Temp\UnrealBuildTool\1cda995f'
+    Registering build platform: UnrealBuildTool.AndroidPlatformFactory
+Unable to find valid SDK(s) for Android:
+  Found Sdk Version, MinRequired=r27c, MaxRequired=r28c.
+  Found AutoSdk Version, Required=r27c.
+        Registering build platform: Android - buildable: False
+    Registering build platform: UnrealBuildTool.IOSPlatformFactory
+Unable to find valid SDK(s) for IOS:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: IOS - buildable: False
+    Registering build platform: UnrealBuildTool.LinuxPlatformFactory
+Unable to find valid SDK(s) for Linux:
+  Found Sdk Version, Required=v26_clang-20.1.8-rockylinux8.
+  Found AutoSdk Version, Required=v26_clang-20.1.8-rockylinux8.
+        Registering build platform: Linux - buildable: False
+Unable to find valid SDK(s) for LinuxArm64:
+  Found Sdk Version, Required=v26_clang-20.1.8-rockylinux8.
+  Found AutoSdk Version, Required=v26_clang-20.1.8-rockylinux8.
+        Registering build platform: LinuxArm64 - buildable: False
+    Registering build platform: UnrealBuildTool.MacPlatformFactory
+Unable to find valid SDK(s) for Mac:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: Mac - buildable: False
+    Registering build platform: UnrealBuildTool.TVOSPlatformFactory
+Unable to find valid SDK(s) for TVOS:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: TVOS - buildable: False
+    Registering build platform: UnrealBuildTool.WindowsPlatformFactory
+Found Windows 10 SDK root at C:\Program Files (x86)\Windows Kits\10 (1)
+Found Windows 10 SDK root at C:\Program Files (x86)\Windows Kits\10 (2)
+Found Windows 10 SDK version 10.0.22621.0 at C:\Program Files (x86)\Windows Kits\10
+Found Universal CRT version 10.0.22621.0 at C:\Program Files (x86)\Windows Kits\10
+Found Windows 10 SDK version 10.0.26100.0 at C:\Program Files (x86)\Windows Kits\10
+Found Universal CRT version 10.0.26100.0 at C:\Program Files (x86)\Windows Kits\10
+Win64 Installed SDK(s): MinVersion_Sdk=10.0.19041.0, MaxVersion_Sdk=10.9.99999.0, CurrentVersion_Sdk=10.0.22621.0, Version_AutoSdk=10.0.22621.0, CurrentVersion_AutoSdk=
+        Registering build platform: Win64 - buildable: True
+    Registering build platform: UnrealBuildTool.VisionOSPlatformFactory
+        Registering build platform: VisionOS - buildable: False
+Command line: D:\UnrealEngine-5.7\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll GuLiStrikeEditor Win64 Development -Project=D:/UE5.7/test1/GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE -Log=D:/UE5.7/test1/Artifacts/GroundRogueVfx_20261119/formal-build.log
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Old command line arguments:
+-NoLink
+New command line arguments:
+
+Creating makefile for GuLiStrikeEditor (command line arguments changed)
+Found VisualStudio2022 installation: C:\Program Files\Microsoft Visual Studio\2022\Professional (Product=Microsoft.VisualStudio.Product.Professional, Version=17.14.36414.22)
+Found Visual Studio toolchain: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.38.33130 (Family=14.38.33130, FamilyRank=1, Version=14.38.33145, HostArchitecture=x64, ReleaseChannel=Latest, Architecture=x64, Error=False, Redist=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Redist\MSVC\14.38.33130)
+Found Visual Studio toolchain: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207 (Family=14.44.35207, FamilyRank=0, Version=14.44.35215, HostArchitecture=x64, ReleaseChannel=Latest, Architecture=x64, Error=False, Redist=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Redist\MSVC\14.44.35112)
+Building UnrealEditor - GuLiStrikeEditor - Win64 - Development
+Project 'GuLiStrikeEditor' depends on plugin 'StructUtils' which was deprecated in 5.5 and will soon be removed. Please update your dependencies.
+Warning: Plugin 'VibeUE' does not list plugin 'StructUtils' as a dependency, but module 'VibeUE' depends on module 'StructUtils'.
+Warning: Plugin 'VibeUE' does not list plugin 'GameplayTagsEditor' as a dependency, but module 'VibeUE' depends on module 'GameplayTagsEditor'.
+Warning: Plugin 'Tripo3DUEBridge' does not list plugin 'Interchange' as a dependency, but module 'Tripo3DUEBridge' depends on module 'InterchangePipelines'.
+Compiler: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe
+Linker: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\link.exe
+Library Manager: C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\link.exe
+Resource Compiler: C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\rc.exe
+Using EngineIncludeOrderVersion.Unreal5_7 for target GuLiStrikeEditor.Target.cs
+UHT compiled-in object format Default
+Generated code is up to date.
+Found 5 shared PCH headers (listed in order of preference):
+	UnrealEd
+	Engine
+	Slate
+	CoreUObject
+	Core
+VerseVMBytecodeGenerator.Generate, generating CPP headers in: 'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode'
+	Writing out generated header file. Changed:False Path:'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode\VVMBytecodeOps.gen.h'
+	Writing out generated header file. Changed:False Path:'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode\VVMBytecodesAndCaptures.gen.h'
+	Writing out generated header file. Changed:False Path:'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode\VVMMakeCapturesFuncs.gen.h'
+	Writing out generated header file. Changed:False Path:'D:\UnrealEngine-5.7\Engine\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject\VerseVMBytecode\VVMCaptureSwitch.gen.h'
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from Launch unity file: LaunchEngineLoop.cpp
+[Adaptive Build] Excluded from GuLiNetCore unity file: GuLiNetAsyncClient.cpp, GuLiNetClient.cpp, GuLiNetCurrentState.cpp, GuLiNetManifest.cpp, GuLiNetOwnerFragments.cpp, GuLiNetOwnership.cpp, GuLiNetOwnerState.cpp, GuLiNetOwnerTransactions.cpp, GuLiNetPeerRoom.cpp, GuLiNetProtocol.cpp, GuLiNetResourceRecovery.cpp, GuLiNetRoom.cpp, GuLiNetRoomMetadata.cpp, GuLiNetTeamAuthority.cpp, GuLiNetTypes.cpp, GuLiNetWork.cpp, GuLiNetArmy.cpp, GuLiNetArmyContract.cpp, GuLiNetControlPoint.cpp, GuLiNetEffects.cpp, GuLiNetGroundRogue.cpp, GuLiNetReplacement.cpp
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiCombatDamageLedger.cpp, GuLiBattleGameMode.cpp, GuLiBattleGameState.cpp, GuLiBattlePlayerState.cpp, GuLiWarMachineHoverQACommands.cpp, GuLiCommanderHybridCommands.cpp, GuLiCommanderMoveResponse.cpp, GuLiCommanderNetSyncComponent.cpp, GuLiCommanderOrderedCommands.cpp, GuLiCommanderPlayerController.cpp, GuLiCommanderRogueCardNetwork.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiSoldierCombat.cpp, GuLiSoldierCombatTests.cpp, GuLiCommanderHUD.cpp, GuLiCommanderMechanicalPresentation.cpp, GuLiCommanderPresentationActor.cpp, GuLiCommanderPresentationCommands.cpp, GuLiCommanderPresentationPerformanceTests.cpp, GuLiCommanderHUDWidget.cpp, GuLiGroundSceneUIState.cpp, GuLiHybridNetworkReviewActor.cpp, GuLiBuildingPlacementComponent.cpp, GuLiHybridBuildingPlacement.cpp, GuLiRogueCardPresentation.cpp, GuLiRogueCardSubsystem.cpp, GuLiBulletTrailIntegration.cpp, GuLiBulletTrailPresentation.cpp, GuLiClientFlightPool.cpp, GuLiClientFlightPresentation.cpp, GuLiCombatEffectDefinition.cpp, GuLiCombatEffectPresentationSubsystem.cpp, GuLiCombatEffectRuntimeSubsystem.cpp, GuLiCombatEffectTypes.cpp, GuLiFlightReplication.cpp, GuLiHybridEffectRuntime.cpp, GuLiHybridFlightManifest.cpp, GuLiHybridProjectilePool.cpp, GuLiMechanicalMuzzlePresentation.cpp, GuLiMuzzleBatchPresentation.cpp, GuLiProjectilePoolSubsystem.cpp, GuLiRogueUpgradePresentation.cpp, GuLiUnitFeedbackSubsystem.cpp, GuLiUnitWreck.cpp, GuLiCombatEffectRuntimeTests.cpp, GuLiCommanderSkillComponent.cpp, GuLiHybridGlobalSkills.cpp, GuLiHybridUnitSkills.cpp, GuLiCommanderSkillCatalog.cpp, GuLiScale020InterpolationTests.cpp, GuLiGroundMechCharacter.cpp, GuLiGroundBarrage.cpp, GuLiGroundStrikeSurface.cpp, GuLiGroundMechAnimInstance.cpp, GuLiHybridGroundAdapter.cpp, GuLiHybridGroundUpgrade.cpp, GuLiGroundRogueEffects.cpp, GuLiGroundRoguePresentation.cpp, GuLiGroundRogueRuntime.cpp, GuLiGroundHUDAmbient.cpp, GuLiGroundHUDData.cpp, GuLiGroundHUDIcons.cpp, GuLiGroundHUDLayout.cpp, GuLiGroundHUDMotion.cpp, GuLiGroundHUDWidget.cpp, GuLiEngineeringPoseComponent.cpp, GuLiMechanicalAnimation.cpp, GuLiMechanicalTurnPresentation.cpp, GuLiRecoilVAT.cpp, GuLiVATAnimation.cpp, GuLiMechanicalAnimationTests.cpp, GuLiMiningPresentationComponent.cpp, GuLiMiningVehiclePawn.cpp, GuLiQuadrupedMinerPresentation.cpp, GuLiResourceStrongholds.cpp, GuLiHybridShipAdapter.cpp, GuLiStrikeShip.cpp, GuLiHybridArmyManifest.cpp, GuLiSkillResolver.cpp, GuLiSkillTypes.cpp, GuLiHybridFacilities.cpp, GuLiWarMachinePlaceholderPawn.cpp, GuLiHybridManifest.cpp, GuLiHybridSessionSubsystem.cpp, GuLiHybridWorldSubsystem.cpp, GuLiNetworkSettings.cpp, GuLiEosTransport.cpp, GuLiLocalUdpTransport.cpp
+[Adaptive Build] Excluded from GuLiStrikeEditor unity file: GuLiGroundMechAnimationEditorLibrary.cpp, GuLiGroundMechFireEditorLibrary.cpp, GuLiHybridAuthoringLibrary.cpp, GuLiHybridBlueprintAuthoring.cpp, GuLiHybridBlueprintMigration.cpp, GuLiHybridReviewAuthoring.cpp, GuLiLocalPIERolePicker.cpp, GuLiLocalPIESubsystem.cpp
+[Adaptive Build] Excluded from Niagara unity file: NiagaraRendererRibbons.cpp
+[Adaptive Build] Excluded from StateTreeModule unity file: StateTreeExecutionContext.cpp
+[Adaptive Build] Excluded from Slate unity file: SlateApplication.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+[Adaptive Build] Excluded from D3D12RHI unity file: D3D12Buffer.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 15.27 GB available: limiting max parallel actions to 10
+Using Unreal Build Accelerator local executor to run 3 action(s)
+  Storage capacity 40Gb
+  RootDir C:\ProgramData\Epic\UnrealBuildAccelerator
+---- Starting trace: 261119_090957 ----
+UbaSessionServer - Disable remote execution (remote sessions will finish current processes)
+Cache bucket 416513229 used. Action: Link [x64] UnrealEditor-GuLiStrikeEditor.lib ()
+All processes queued
+[1/3] Link [x64] UnrealEditor-GuLiStrikeEditor.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.exp
+[2/3] Link [x64] UnrealEditor-GuLiStrike.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.exp
+[3/3] WriteMetadata GuLiStrikeEditor.target [NoUba]
+
+Trace written to file D:/UE5.7/test1/Artifacts/GroundRogueVfx_20261119/formal-build.uba with size 3.2kb
+Total time in Unreal Build Accelerator local executor: 3.07 seconds
+WriteFileIfChanged() wrote 0 changed files of 9543 requested writes.
+
+Result: Succeeded
+Total execution time: 27.22 seconds

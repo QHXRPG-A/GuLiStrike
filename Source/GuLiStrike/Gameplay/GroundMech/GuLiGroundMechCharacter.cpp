@@ -1,4 +1,5 @@
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRoguePresentation.h"
 #include "Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.h"
 #include "Gameplay/GroundMech/Camera/GuLiGroundMechCameraComponent.h"
 #include "Gameplay/Models/GuLiModelRegistrySubsystem.h"
@@ -48,6 +49,7 @@ AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Ini
 	FuelAttributes = CreateDefaultSubobject<UGuLiGroundMechAttributeSet>(TEXT("GroundMechFuelAttributes"));
 	RocketJump = CreateDefaultSubobject<UGuLiGroundMechRocketComponent>(TEXT("RocketJump"));
     Blink = CreateDefaultSubobject<UGuLiGroundMechBlinkComponent>(TEXT("Blink"));
+    RoguePresentation = CreateDefaultSubobject<UGuLiGroundRoguePresentation>(TEXT("RoguePresentation"));
     MechCameraController = CreateDefaultSubobject<UGuLiGroundMechCameraComponent>(TEXT("MechCameraController"));
 	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"))->bPlayerVehicle=true;
 	const float DimensionScale=GuLiGrid::FootprintFromDiameter(460.)*GuLiGrid::CellSize/460.f;
@@ -225,6 +227,7 @@ void AGuLiGroundMechCharacter::NotifyControllerChanged()
 
 void AGuLiGroundMechCharacter::UnPossessed()
 {
+    StopBarrage();
 	RemoveInputContext();
 	Super::UnPossessed();
 }
@@ -236,6 +239,7 @@ void AGuLiGroundMechCharacter::ApplyCarrierDormancy()
 {
     if (bCarrierDormant)
     {
+        RoguePresentation->ResetEffects();
         RemoveInputContext(); HybridInput={}; SimulationInput={}; bSemanticInput=false; ConsumeMovementInputVector();
         GetCharacterMovement()->StopMovementImmediately();
     }
@@ -250,6 +254,8 @@ void AGuLiGroundMechCharacter::EndPlay(EEndPlayReason::Type Reason)
 }
 void AGuLiGroundMechCharacter::HandleCommittedDeath()
 {
+    StopBarrage();
+    RoguePresentation->ResetEffects();
     RemoveInputContext(); HybridInput={}; SimulationInput={}; bSemanticInput=false; ConsumeMovementInputVector();
     GetCharacterMovement()->StopMovementImmediately(); GetCharacterMovement()->DisableMovement();
 }
@@ -258,6 +264,7 @@ void AGuLiGroundMechCharacter::SetupPlayerInputComponent(UInputComponent* Input)
 {
 	Super::SetupPlayerInputComponent(Input);
 	auto& Enhanced = *CastChecked<UEnhancedInputComponent>(Input);
+    if (BarrageAction) Enhanced.BindAction(BarrageAction,ETriggerEvent::Started,this,&ThisClass::RequestBarrage);
 	Enhanced.BindAction(MoveAction,ETriggerEvent::Triggered,this,&ThisClass::Move);
 	Enhanced.BindAction(MoveAction,ETriggerEvent::Completed,this,&ThisClass::StopMove);
 	Enhanced.BindAction(MoveAction,ETriggerEvent::Canceled,this,&ThisClass::StopMove);
@@ -317,22 +324,35 @@ void AGuLiGroundMechCharacter::Zoom(const FInputActionValue& Value)
     MechCameraController->AddZoomInput(Value.Get<float>());
 }
 
-bool AGuLiGroundMechCharacter::GetCursorAimPoint(FVector& OutPoint) const
+bool AGuLiGroundMechCharacter::GetReticleRay(FVector& Origin, FVector& Direction) const
 {
-	if (bSemanticInput) { OutPoint=HybridInput.Aim; return HybridInput.bHasAim; }
 	if (!IsShoulderLookActive()) return false;
 	if (!UGuLiNetworkSettings::CanPresent(GetWorld())) return false;
 	const auto* PC = Cast<APlayerController>(GetController());
 	if (!PC || !IsLocallyControlled() || !GetMachinegun()) return false;
-	FVector Origin,Direction;
+    // The presentation camera can be looking straight back at the Ranger. The
+    // normal shoulder camera and mouse input continue to drive the real aim ray.
+    if (RoguePresentation && RoguePresentation->IsCasting() && Camera)
+    {
+        Origin = Camera->GetComponentLocation();
+        Direction = Camera->GetForwardVector();
+        return true;
+    }
 	const ULocalPlayer* Player = PC->GetLocalPlayer();
 	FSceneViewProjectionData Projection;
 	if (!Player || !Player->ViewportClient || !Player->ViewportClient->Viewport
 		|| !Player->GetProjectionData(Player->ViewportClient->Viewport,Projection)) return false;
 	const FVector2D Center = FVector2D(Projection.GetConstrainedViewRect().Min)
 		+ FVector2D(Projection.GetConstrainedViewRect().Size()) * .5;
-	if (!PC->DeprojectScreenPositionToWorld(Center.X,Center.Y,Origin,Direction)
-		|| Origin.ContainsNaN() || Direction.ContainsNaN()) return false;
+	return PC->DeprojectScreenPositionToWorld(Center.X,Center.Y,Origin,Direction)
+		&& !Origin.ContainsNaN() && !Direction.ContainsNaN();
+}
+
+bool AGuLiGroundMechCharacter::GetCursorAimPoint(FVector& OutPoint) const
+{
+	if (bSemanticInput) { OutPoint=HybridInput.Aim; return HybridInput.bHasAim; }
+	FVector Origin, Direction;
+	if (!GetReticleRay(Origin, Direction)) return false;
 	FHitResult Hit;
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(GroundMechAim),true,this);
 	const FVector End = Origin + Direction.GetSafeNormal() * 600000.f;
@@ -347,6 +367,11 @@ bool AGuLiGroundMechCharacter::GetCursorAimPoint(FVector& OutPoint) const
 void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+    if (IsLocallyControlled() && GetWorld()->GetTimeSeconds()>=NextBarrageHeightUpdate)
+    {
+        if(GetBarrageLevel()>0)BarrageDisplayHeight=GetBarrageClearance();
+        NextBarrageHeightUpdate=GetWorld()->GetTimeSeconds()+.1;
+    }
 	if (CanUseControls())
 	{
 		if (!bSemanticInput)
@@ -359,7 +384,7 @@ void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)
 			HybridInput.Axis=CameraMoveAxis.GetClampedToMaxSize(1.);
 			HybridInput.WeaponAimMode=EGuLiGroundWeaponAimMode::Target;
 			FVector Point;
-			HybridInput.bHasAim=bLookActive && Weapon->ResolveLocalWeaponAim(Point);
+			HybridInput.bHasAim=bLookActive && (IsFiringBarrage() ? GetBarrageAimPoint(Point) : Weapon->ResolveLocalWeaponAim(Point));
 			HybridInput.bFaceAim=HybridInput.bHasAim;
 			HybridInput.Aim=HybridInput.bHasAim?Point:FVector::ZeroVector;
 		}
@@ -420,9 +445,11 @@ void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 		// A command queued before switching must not leave the inactive carrier moving/firing.
 		SimulationInput.Axis=FVector2D::ZeroVector;
 		SimulationInput.bSprint=SimulationInput.bFire=SimulationInput.bRocket=false;
-		SimulationInput.bHasAim=SimulationInput.bFaceAim=false;
+		if(!IsFiringBarrage())SimulationInput.bHasAim=SimulationInput.bFaceAim=false;
 	}
-	RocketJump->ApplyHybridInput(SimulationInput.bRocket);
+    if (IsCarrierDormant() || !CombatHealth->IsAlive()) StopBarrage();
+    const bool bHover = IsFiringBarrage();
+	RocketJump->ApplyHybridInput(SimulationInput.bRocket && !bHover);
 	auto* Movement=CastChecked<UGuLiGroundMechMovementComponent>(GetCharacterMovement());
 	if (SimulationInput.bHasAim)
 	{
@@ -447,19 +474,21 @@ void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 			Movement->Velocity=FRotator(0,DeltaYaw,0).RotateVector(Movement->Velocity);
 		}
 	}
-	Movement->AdvanceHybrid(DeltaSeconds,GetBlinkState().Phase?FVector2D::ZeroVector:WorldAxis,SimulationInput.bSprint);
+    if (bHover) Movement->StopMovementImmediately();
+    else Movement->AdvanceHybrid(DeltaSeconds,GetBlinkState().Phase?FVector2D::ZeroVector:WorldAxis,SimulationInput.bSprint);
 	AdvanceUpperAim(DeltaSeconds);
 	AdvanceWeaponAim(DeltaSeconds);
 	UpperBodyPivot->SetWorldRotation(FRotator(0,DisplayAimYaw-90.f,0));
     const bool bForward=SimulationInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
     const FVector FirePoint=bForward?GetMesh()->GetSocketLocation(TEXT("Gun_R"))+GetActorForwardVector()
         *(Weapon->ActiveSkill.ProjectileSpeed*Weapon->ActiveSkill.ProjectileLifetime):SimulationInput.Aim;
-    Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire && !GetBlinkState().Phase,FirePoint,bForward || SimulationInput.bHasAim);
+    Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire && !bHover && !GetBlinkState().Phase,FirePoint,bForward || SimulationInput.bHasAim);
     // Input precedes animation; only real Fire notifications enqueue shots. Read
     // the updated sockets after the pose, outside the montage's callback stack.
     GetMesh()->TickAnimation(DeltaSeconds,false); GetMesh()->RefreshBoneTransforms();
     if (!bIntegratedBodyMesh) { Machinegun->TickAnimation(DeltaSeconds,false); Machinegun->RefreshBoneTransforms(); }
     Weapon->TryFire();
+    if (bHover) AdvanceBarrage();
 	Blink->Present();
 	// A logical step can run after the display tick. Restore only the display
 	// overlay after firing; the next logical step always evaluates authority first.
@@ -608,6 +637,7 @@ void AGuLiGroundMechCharacter::AdvanceFacing(float DeltaSeconds)
 // Stable Character API used by Blueprints, animation and existing gameplay consumers.
 bool AGuLiGroundMechCharacter::RequestBlink()
 {
+    if (IsFiringBarrage()) return false;
     if (!CanUseControls() || !IsShoulderLookActive() || !MobilityConfiguration.bReady) return false;
     bSprintHeld=false;
     // Enhanced Input has evaluated every action before dispatching Started callbacks.

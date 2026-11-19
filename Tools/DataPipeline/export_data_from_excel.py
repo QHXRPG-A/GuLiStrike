@@ -416,6 +416,9 @@ def validate_rogue_cards(tables):
         elif effect == "GuLiRogueCardGroundEffect":
             if row["Type"] != 3 or percent != 0 or count != 0 or not row.get("EffectIds"):
                 fail(row,"Ground卡要求Type=3、两项增量为0及有效EffectIds")
+            for key in ("UpgradeVfxHeightMultiplier", "UpgradeVfxPlaybackRate"):
+                if not 0 <= row.get(key, 0) < math.inf:
+                    fail(row, f"{key} 必须为非负有限数，留空或 0 使用 1 倍")
         else:
             fail(row, f"效果类 {effect} 尚未登记数值契约")
         for key in ("ImplementationClass", "FrontMaterial", "UpgradeVfx"):
@@ -425,6 +428,49 @@ def validate_rogue_cards(tables):
             raise SheetError(f"卡牌 {row['Name']} 的升级特效必须为项目Niagara资产")
         if not math.isfinite(row['UpgradeVfxScale']) or row['UpgradeVfxScale'] <= 0:
             raise SheetError(f"卡牌 {row['Name']} 的升级特效缩放必须为有限正数")
+        def optional_asset(field):
+            path = row.get(field)
+            if path and not re.fullmatch(r'/Game/(?:[^/.]+/)*([^/.]+)\.\1', path):
+                fail(row, f"{field} 必须为完整的 UE 项目资源路径")
+            return bool(path)
+        if optional_asset('MaxRankUpgradeVfx'):
+            growth, duration = row['MaxRankGrowthSeconds'], row['MaxRankDurationSeconds']
+            if (row['MaxAcquisitions'] <= 0 or not 0 < growth <= duration or not math.isfinite(duration)
+                    or not 0 < row['MaxRankStartRatio'] <= 1 or not 0 < row['MaxRankUpgradeScale'] < math.inf):
+                fail(row, "满级特效需要有效等级上限、缩放比例和不超过总时长的成长时间")
+        cast_assets = [optional_asset(key) for key in ('CastPose', 'CastFlashVfx', 'CastLightningVfx')]
+        if optional_asset('CastCamera'):
+            camera = tables.get(row['CastCamera'].rsplit('.', 1)[-1], {}).get('rows', [])
+            phases = ('Fold', 'Hold', 'Open', 'Return')
+            times = []
+            for k in camera:
+                if (k['Phase'] not in phases or not 0 <= k['PhaseAlpha'] <= 1
+                        or not 0 < k['FieldOfViewDegrees'] < 180 or not k['RadiusCm'] > 0
+                        or not all(0 <= k[v] <= 1 for v in ('ShotWeight', 'FlashAlpha', 'ChargeArcScale'))
+                        or any(not math.isfinite(v) for v in k.values() if isinstance(v, float))):
+                    fail(row, f"无效运镜关键帧 {k['Name']}")
+                times.append(phases.index(k['Phase']) + k['PhaseAlpha'])
+            ordered = sorted(zip(times, (k['ShotWeight'] for k in camera)))
+            if (not ordered or ordered[0] != (0., 0.) or ordered[-1] != (4., 0.)
+                    or len(set(times)) != len(times) or not 0 < row['CastCameraReturnSeconds'] < math.inf):
+                fail(row, "运镜需有唯一的阶段时间、从玩家机位开始并回到玩家机位、回镜秒数为正")
+            if not 0 <= row.get('CastCameraReturnCueSeconds', 0.) < math.inf:
+                fail(row, "回镜特效关键帧参考时长须为非负有限数")
+        if not 0 <= row.get('CastLightningScaleMultiplier', 0.) < math.inf:
+            fail(row, "机身闪电倍率须为非负有限数")
+        if any(cast_assets) or row['Id'] == '13.01':
+            timings = [row['CastFoldSeconds'], row['CastOpenSeconds'], row['CastFlashSeconds']]
+            hold = row.get('CastCrossedHoldSeconds', 0.)
+            if not math.isfinite(hold) or hold < 0 or not math.isclose(hold*60, round(hold*60), rel_tol=0., abs_tol=1e-4):
+                fail(row, "双臂交叉保持时间须为非负数并对齐 60 Hz 逻辑帧")
+            shake = [row.get(key, 0.) for key in ('CastChargeShakeDegrees', 'CastReleaseShakeDegrees',
+                                                  'CastShotRecoilCm', 'CastShotRecoilSeconds')]
+            if any(not math.isfinite(value) or value < 0 for value in shake) or (shake[2] > 0 and shake[3] == 0):
+                fail(row, "机体抖动角度和肩部行程必须为非负有限数，有后坐行程时回稳时长须为正数")
+            if (not all(cast_assets) or not 0 < row['CastBodyScale'] < math.inf
+                    or not 0 < row['CastRecoverySeconds'] < math.inf
+                    or any(not 0 < t < 5 or not math.isclose(t*60, round(t*60), abs_tol=1e-4) for t in timings)):
+                fail(row, "施放动作、闪光、电弧必须配齐，前摇各段需要整逻辑帧，缩放和恢复时间须为正数")
         number = r'[+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?'
         color = re.fullmatch(r'\(\s*R=(' + number + r')\s*,\s*G=(' + number +
                              r')\s*,\s*B=(' + number + r')\s*,\s*A=(' + number + r')\s*\)', row['UpgradeVfxColor'])
@@ -660,6 +706,8 @@ def validate_vfx_references(tables):
                 if row.get('ExecutionType') == 'GAS':
                     required = {'RocketJump': ['JetVfxId', 'FuelBarVfxId'],
                                 'Blink': ['BlinkVfxId', 'BlinkShapeVfxId']}.get(row['Name'], [])
+                elif row.get('ExecutionType') == 'Barrage':
+                    required = ['BulletVfxId', 'ImpactVfxId']
                 else:
                     required = ['BulletVfxId', 'MuzzleVfxId']
             elif table == 'DT_GuLiStrikeSpellFields_Fields' and row.get('FieldType') == 'StrongholdTransit':
@@ -995,6 +1043,13 @@ def main():
                         raise SheetError(f"机甲升级行 {row['Name']} 的ID、技能引用或数值无效")
                 for row in tables['DT_GuLiStrikeMech_Skills']['rows']:
                     execution = row.get('ExecutionType', 'Weapon')
+                    if execution == 'Barrage':
+                        fields = ('HorizontalRangeCentimeters', 'ProjectileSpeed', 'ProjectileLifetime', 'DiveAccelerationCmPerSecondSquared')
+                        if any(not math.isfinite(row.get(key, 0)) or row.get(key, 0) <= 0 for key in fields):
+                            raise SheetError(f"机甲弹幕技能 {row['Name']} 的水平射程、弹速、巡航时限和下砸加速度必须为有限正数")
+                        if not math.isfinite(row['SweepRadius']) or row['SweepRadius'] < 0:
+                            raise SheetError(f"机甲弹幕技能 {row['Name']} 的扫掠半径必须为有限非负数")
+                        continue
                     if execution == 'GAS':
                         path = row.get('AbilityClass', '')
                         if not path.startswith(('/Game/', '/Script/')) or '.' not in path.rsplit('/', 1)[-1]:

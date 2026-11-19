@@ -1,0 +1,78 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "renderers": [
+      {
+        "emitter": "Glow",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Glow.MI_GroundImpact_Glow",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      },
+      {
+        "emitter": "Flash",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Flash.MI_GroundImpact_Flash",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      },
+      {
+        "emitter": "RIbbonTrailFollower",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_RIbbonTrailFollower.MI_GroundImpact_RIbbonTrailFollower",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      },
+      {
+        "emitter": "Sparks",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Sparks.MI_GroundImpact_Sparks",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      },
+      {
+        "emitter": "Debris",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Debris.MI_GroundImpact_Debris",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      }
+    ],
+    "emitter_count": 6,
+    "source": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations",
+    "asset": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/NS_GroundMech_Impact_Adjusted",
+    "materials": [
+      {
+        "asset": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundImpact_OriginalShape.M_GroundImpact_OriginalShape",
+        "compile_errors": []
+      },
+      {
+        "asset": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Glow.MI_GroundImpact_Glow",
+        "parent": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundImpact_OriginalShape.M_GroundImpact_OriginalShape",
+        "instance_overrides": "copied from original"
+      },
+      {
+        "asset": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Flash.MI_GroundImpact_Flash",
+        "parent": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundImpact_OriginalShape.M_GroundImpact_OriginalShape",
+        "instance_overrides": "copied from original"
+      },
+      {
+        "asset": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_RIbbonTrailFollower.MI_GroundImpact_RIbbonTrailFollower",
+        "parent": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundImpact_OriginalShape.M_GroundImpact_OriginalShape",
+        "instance_overrides": "copied from original"
+      },
+      {
+        "asset": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Sparks.MI_GroundImpact_Sparks",
+        "parent": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundImpact_OriginalShape.M_GroundImpact_OriginalShape",
+        "instance_overrides": "copied from original"
+      },
+      {
+        "asset": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Debris.MI_GroundImpact_Debris",
+        "parent": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundImpact_OriginalShape.M_GroundImpact_OriginalShape",
+        "instance_overrides": "copied from original"
+      }
+    ],
+    "preserves": "all six original emitters, five renderers, spawn counts, motion, size curves, textures, static instance overrides",
+    "changes": "VFX scale 2 -> 4; orange-yellow output hue; common 0.20s opacity fade",
+    "supersedes": "NS_GroundMech_Impact_B1 (shape redesign rejected; not referenced)",
+    "PIE": false,
+    "visual_acceptance": "pending user"
+  }
+}

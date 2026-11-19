@@ -33,7 +33,7 @@ def preview_descriptions(row, template, effects, weapons):
     if row["Type"] == 3:
         definitions = [effects[ident] for ident in row["EffectIds"]]
         has_level_values = any(
-            effect["Handler"] in ("ground/explosive_package", "ground/explosive_enhancement")
+            effect["Handler"] in ("ground/explosive_package", "ground/explosive_enhancement", "ground/no_survivors")
             for effect in definitions
         )
         levels = range(1, row["MaxAcquisitions"] + 1) if has_level_values else (1,)
@@ -64,6 +64,9 @@ def preview_descriptions(row, template, effects, weapons):
                     float(config[field][level - 1]) * 100
                     for field in ("ExplosiveRadiusBonuses", "ExplosiveDamageBonuses")
                 )
+            elif handler == "ground/no_survivors":
+                values.extend((float(config["BarrageIntervalsSeconds"][level-1]), int(config["BarrageShotCounts"][level-1]),
+                               float(config["BarrageDamageBonuses"][level-1])*100, float(config["BarrageConeHalfAnglesDegrees"][level-1])))
         return values
 
     previews = []
@@ -80,10 +83,13 @@ def preview_descriptions(row, template, effects, weapons):
     return previews
 
 
-def make_link(kind, source, target):
+def make_link(kind, source, target, min_level=1):
     if kind == "excludes":
         source, target = sorted((source, target))
-    return {"kind": kind, "source": source, "target": target}
+    link = {"kind": kind, "source": source, "target": target}
+    if kind == "requires" and min_level != 1:
+        link["minLevel"] = min_level
+    return link
 
 
 def load_catalog():
@@ -121,7 +127,9 @@ def load_catalog():
             "previews": preview_descriptions(row, description, effects, weapons),
             "handlers": [effects[ref]["Handler"] for ref in row["EffectIds"]],
         }
-        links.extend(make_link("requires", parent, ident) for parent in row["RequiredCardIds"])
+        parents = row["RequiredCardIds"]
+        levels = row.get("RequiredCardLevels") or [1]*len(parents)
+        links.extend(make_link("requires", parent, ident, int(level)) for parent, level in zip(parents, levels))
         exclusions.update(tuple(sorted((ident, other))) for other in row["ExcludedCardIds"])
     links.extend(make_link("excludes", a, b) for a, b in sorted(exclusions))
     return {
@@ -132,19 +140,22 @@ def load_catalog():
 
 def relationship_fields(graph):
     fields = {
-        card["id"]: {"RequiredCardIds": [], "ExcludedCardIds": []}
+        card["id"]: {"RequiredCardIds": [], "RequiredCardLevels": [], "ExcludedCardIds": []}
         for card in graph["cards"]
     }
     for link in graph["links"]:
         source, target = link["source"], link["target"]
         if link["kind"] == "requires":
             fields[target]["RequiredCardIds"].append(source)
+            fields[target]["RequiredCardLevels"].append(link.get("minLevel", 1))
         else:
             fields[target]["ExcludedCardIds"].append(source)
             fields[source]["ExcludedCardIds"].append(target)
     for row in fields.values():
-        for ids in row.values():
-            ids.sort()
+        pairs = sorted(zip(row["RequiredCardIds"], row["RequiredCardLevels"]))
+        row["RequiredCardIds"] = [parent for parent, _ in pairs]
+        row["RequiredCardLevels"] = [str(level) for _, level in pairs] if any(level!=1 for _, level in pairs) else []
+        row["ExcludedCardIds"].sort()
     return fields
 
 
@@ -214,8 +225,11 @@ def validate_graph(graph, base):
         source, target = link.get("source"), link.get("target")
         if any(not isinstance(ident, str) or ident not in by_id for ident in (source, target)):
             raise ValueError("连线引用了不存在的卡牌。")
-        entry = make_link(link["kind"], source, target)
-        key = tuple(entry.values())
+        level = link.get("minLevel", 1)
+        if type(level) is not int or level < 1 or level > 2147483647 or (level != 1 and link["kind"] != "requires"):
+            raise ValueError("前置等级无效。")
+        entry = make_link(link["kind"], source, target, level)
+        key = entry["kind"], entry["source"], entry["target"]
         if key in seen:
             raise ValueError("存在重复连线。")
         seen.add(key)
@@ -223,7 +237,7 @@ def validate_graph(graph, base):
     result = {"cards": list(by_id.values()), "links": normalized}
     fields = relationship_fields(result)
     rows = {
-        ident: {"Id": ident, "Type": card["seat"], **fields[ident]}
+        ident: {"Id": ident, "Type": card["seat"], "MaxAcquisitions": base["details"].get(ident, {}).get("maxAcquisitions", 0), **fields[ident]}
         for ident, card in by_id.items()
     }
 
@@ -250,7 +264,7 @@ def describe_changes(base, graph):
         for key in ("title", "description"):
             if old[key] != new[key]:
                 fields[key] = {"before": old[key], "after": new[key]}
-        for key in ("RequiredCardIds", "ExcludedCardIds"):
+        for key in ("RequiredCardIds", "RequiredCardLevels", "ExcludedCardIds"):
             if old_links[ident][key] != new_links[ident][key]:
                 fields[key] = {"before": old_links[ident][key], "after": new_links[ident][key]}
         if fields:

@@ -1,0 +1,451 @@
+{
+ "status": "completed",
+ "world": "RangerPresentationCase",
+ "pawn": "/Temp/Untitled_4.RangerPresentationCase:PersistentLevel.BP_GroundMech_Light_C_0",
+ "aim": [
+  {
+   "aim_pitch": -39.1101,
+   "root_pitch": -39.1101,
+   "error_deg": 0.0,
+   "weight": 1.0,
+   "root_position": [
+    851.5041961700381,
+    2038.6089089957902,
+    6811.268904560872
+   ],
+   "capsule_pitch": 0.0,
+   "capsule_roll": 0.0
+  },
+  {
+   "aim_pitch": 38.4208,
+   "root_pitch": 38.4208,
+   "error_deg": 0.0,
+   "weight": 1.0,
+   "root_position": [
+    1129.6110979337268,
+    2077.766658760236,
+    6809.436656010953
+   ],
+   "capsule_pitch": 0.0,
+   "capsule_roll": 0.0
+  },
+  {
+   "aim_pitch": 0.0,
+   "root_pitch": 0.0,
+   "error_deg": 0.0,
+   "weight": 1.0,
+   "root_position": [
+    1000.0,
+    2000.0,
+    6756.769496167514
+   ],
+   "capsule_pitch": 0.0,
+   "capsule_roll": 0.0
+  },
+  {
+   "aim_pitch": -90.0,
+   "root_pitch": -90.0,
+   "error_deg": 0.0,
+   "weight": 1.0,
+   "root_position": [
+    785.2402121312425,
+    1885.8101952485633,
+    7000.0
+   ],
+   "capsule_pitch": 0.0,
+   "capsule_roll": 0.0
+  },
+  {
+   "aim_pitch": 90.0,
+   "root_pitch": 90.0,
+   "error_deg": 0.0,
+   "weight": 1.0,
+   "root_position": [
+    1214.7597878687575,
+    2114.189804751437,
+    7000.0
+   ],
+   "capsule_pitch": 0.0,
+   "capsule_roll": 0.0
+  }
+ ],
+ "upgrades": [
+  {
+   "rank": 2,
+   "start": 2.0833,
+   "events": {
+    "P_UpgradeGlow_Converted": {
+     "first": 2.1,
+     "scales": [
+      [
+       0.0,
+       1.0
+      ]
+     ],
+     "particles": {
+      "mesh02": 1,
+      "mesh03": 1,
+      "mesh04": 1,
+      "circle001": 1,
+      "Circle02": 0,
+      "Circle03": 0,
+      "Circle04": 0,
+      "Circle05": 0,
+      "particles01": 0,
+      "Particle02": 0,
+      "Particle03": 0,
+      "circle": 0,
+      "light04": 0,
+      "light01": 0,
+      "light02": 0,
+      "light03": 3
+     },
+     "parent": "CollisionCylinder",
+     "offset": [
+      0.0,
+      0.0,
+      -244.03683471679688
+     ],
+     "visible": true,
+     "last": 5.5
+    }
+   },
+   "active_at_end": []
+  },
+  {
+   "rank": 5,
+   "start": 9.5,
+   "events": {
+    "P_UpgradeGlow_Converted": {
+     "first": 9.5167,
+     "scales": [
+      [
+       -0.0,
+       1.0
+      ]
+     ],
+     "particles": {
+      "mesh02": 1,
+      "mesh03": 1,
+      "mesh04": 1,
+      "circle001": 1,
+      "Circle02": 0,
+      "Circle03": 0,
+      "Circle04": 0,
+      "Circle05": 0,
+      "particles01": 0,
+      "Particle02": 0,
+      "Particle03": 0,
+      "circle": 0,
+      "light04": 0,
+      "light01": 0,
+      "light02": 0,
+      "light03": 3
+     },
+     "parent": "CollisionCylinder",
+     "offset": [
+      0.0,
+      0.0,
+      -244.03683471679688
+     ],
+     "visible": true,
+     "last": 12.85
+    },
+    "NS_Tornado_under": {
+     "first": 12.8667,
+     "scales": [
+      [
+       -0.0,
+       0.01843
+      ],
+      [
+       0.0166,
+       0.03225
+      ],
+      [
+       0.0333,
+       0.04608
+      ],
+      [
+       0.05,
+       0.0599
+      ],
+      [
+       0.0666,
+       0.07372
+      ],
+      [
+       0.0833,
+       0.08754
+      ],
+      [
+       0.1,
+       0.10137
+      ],
+      [
+       0.1166,
+       0.11519
+      ],
+      [
+       0.1333,
+       0.12901
+      ],
+      [
+       0.15,
+       0.14283
+      ],
+      [
+       0.1666,
+       0.15666
+      ],
+      [
+       0.1833,
+       0.17048
+      ],
+      [
+       0.2,
+       0.1843
+      ]
+     ],
+     "particles": {
+      "PointLight": 141,
+      "None": 0,
+      "outSide_b_under": 3,
+      "MeshMain004": 1,
+      "MeshMain006": 1,
+      "Gareki": 63,
+      "Smoke": 96,
+      "outSide_b": 3
+     },
+     "parent": "CollisionCylinder",
+     "offset": [
+      0.0,
+      0.0,
+      -244.03683471679688
+     ],
+     "visible": true,
+     "last": 13.85
+    }
+   },
+   "active_at_end": []
+  }
+ ],
+ "tornado_component": [
+  [
+   780,
+   13.0,
+   true,
+   false,
+   "CollisionCylinder",
+   0.12901,
+   true
+  ],
+  [
+   790,
+   13.167,
+   true,
+   false,
+   "CollisionCylinder",
+   0.1843,
+   true
+  ],
+  [
+   800,
+   13.333,
+   true,
+   false,
+   "CollisionCylinder",
+   0.1843,
+   true
+  ],
+  [
+   810,
+   13.5,
+   true,
+   false,
+   "CollisionCylinder",
+   0.1843,
+   true
+  ],
+  [
+   820,
+   13.667,
+   true,
+   false,
+   "CollisionCylinder",
+   0.1843,
+   true
+  ],
+  [
+   830,
+   13.833,
+   true,
+   false,
+   "CollisionCylinder",
+   0.1843,
+   true
+  ],
+  [
+   840,
+   14.0,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   850,
+   14.167,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   860,
+   14.333,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   870,
+   14.5,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   880,
+   14.667,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   890,
+   14.833,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   900,
+   15.0,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   910,
+   15.167,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   920,
+   15.333,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   930,
+   15.5,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   940,
+   15.667,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   950,
+   15.833,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   960,
+   16.0,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   970,
+   16.167,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   980,
+   16.333,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   990,
+   16.5,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   1000,
+   16.667,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ],
+  [
+   1010,
+   16.833,
+   false,
+   false,
+   null,
+   1.0,
+   false
+  ]
+ ]
+}

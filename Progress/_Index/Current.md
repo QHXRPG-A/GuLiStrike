@@ -42,7 +42,6 @@
 |---|---|---|---|---|
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | commander, network, resources | 7/7 (100%) | 在现有地图验证正常PIE输入、接管后的F1/F2/F3操作与玩家效果；EOS和跨机器联机另行验收。 | 2026-11-16 |
 | [2v2指挥官与无双席位 — 双载具构建交付](../DevelopmentDocumentation/20261114-2v2指挥官与无双席位.md) | commander, network, ui | 10/11 (91%) | 玩家验证空地切换、未操控单位及召唤物模拟。 | 2026-11-14 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | 用户通过本地关系图完成实际设计并保存草稿。 | 2026-11-09 |
 | [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | combat, performance, ui | — | 用户在LVL_CommanderMassPrototype进入Ground席位，按GroundSceneUIFeedback_Entry检查边界、敌方变化和实例隔离。 | 2026-11-06 |
 | [游骑兵交战长帧治理](../DevelopmentDocumentation/20261106-游骑兵交战长帧治理.md) | network, performance, rendering, ui | 8/9 (89%) | 用户在LVL_CommanderMassPrototype的PerfGroundCombatHitches_Entry核验游骑兵操作、HUD和首次命中特效；原始渲染尖峰再次发生时用新增资源名称计时追踪。 | 2026-11-06 |
 | [Hybrid状态应用耗时优化 — 技术方案](../DevelopmentDocumentation/20261106-Hybrid状态应用耗时优化.md) | network, performance | 7/7 (100%) | 用户在LVL_CommanderMassPrototype蓝方前沿交战区核验弹道、瞄准、命中、伤害、采矿和生产表现；入口PerfHybridCPU_Entry。 | 2026-11-06 |
@@ -92,7 +91,11 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | combat, input, map, performance, vfx | — | — | 2026-11-19 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | assets, ui | 6/6 (100%) | — | 2026-11-18 |
+| [四张游骑兵肉鸽牌正式资源 — 实施与交付](../DevelopmentDocumentation/20261117-四张游骑兵肉鸽牌正式资源.md) | assets, ui | 6/6 (100%) | — | 2026-11-17 |
+| [无人生还与爆破套餐牌面制作收尾](../DevelopmentDocumentation/20261117-无人生还与爆破套餐牌面制作收尾.md) | assets, ui | 5/5 (100%) | — | 2026-11-17 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | — | 2026-11-17 |
 | [机枪与爆破弹尾迹修复](../DevelopmentDocumentation/20261113-机枪与爆破弹尾迹修复.md) | combat, vfx | 19/19 (100%) | — | 2026-11-16 |
 | [矿车动作与双兵种开火表现 — 实施记录](../DevelopmentDocumentation/20261114-矿车动作与双兵种开火表现.md) | animation, art, combat, commander | 9/9 (100%) | 本轮实施与运行数据交付完成；玩家后续复核动作观感、双阵营灯和LOD切换。 | 2026-11-14 |
 | [四足采矿车正式替换与阵营灯 — 实施与交付](../DevelopmentDocumentation/20261113-四足采矿车正式替换与阵营灯.md) | animation, art, assets, commander | 7/8 (88%) | 本轮交付完成；动作后续实现及运行证据见20261114矿车动作与双兵种开火表现。 | 2026-11-14 |

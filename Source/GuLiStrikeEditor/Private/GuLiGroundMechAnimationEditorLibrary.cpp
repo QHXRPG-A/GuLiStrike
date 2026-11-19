@@ -1,4 +1,6 @@
 #include "GuLiGroundMechAnimationEditorLibrary.h"
+#include "Gameplay/GroundMech/Camera/GuLiGroundBarrageCameraPath.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
 #include "Gameplay/GroundMech/Animation/AnimNotify_GuLiGroundFire.h"
 #include "AnimGraphNode_GuLiGroundMechAim.h"
 #include "AnimGraphNode_GuLiGroundMechGrounding.h"
@@ -9,6 +11,7 @@
 #include "AnimGraphNode_BlendSpacePlayer.h"
 #include "AnimGraphNode_SequencePlayer.h"
 #include "AnimGraphNode_SequenceEvaluator.h"
+#include "AnimGraphNode_ModifyBone.h"
 #include "AnimGraphNode_BlendSpaceEvaluator.h"
 #include "AnimGraphNode_TwoWayBlend.h"
 #include "AnimGraphNode_BlendListByBool.h"
@@ -135,6 +138,135 @@ bool AddBlinkLayer(UEdGraph* Graph,UEdGraphNode* Base,UAnimGraphNode_Root* Root,
 	return Bind(Graph,Mix,TEXT("Alpha"),TEXT("BlinkSequenceWeight")) && Link(Base,TEXT("Pose"),Mix,TEXT("A"))
 		&& Link(Clip,TEXT("Pose"),Mix,TEXT("B")) && Link(Mix,TEXT("Pose"),Root,TEXT("Result"));
 }
+
+bool BoundTo(UEdGraphNode* Node,const TCHAR* Pin,const TCHAR* Variable)
+{
+    const auto* Getter=Cast<UK2Node_VariableGet>(InputSource(Node,Pin));
+    return Getter && Getter->VariableReference.GetMemberName()==Variable;
+}
+
+bool WireBarrageShoulders(UEdGraph* Graph, UAnimGraphNode_ModifyBone* Tilt)
+{
+    auto* Input=InputSource(Tilt,TEXT("ComponentPose"));
+    if (auto* Right=Cast<UAnimGraphNode_ModifyBone>(Input))
+    {
+        auto* Left=Cast<UAnimGraphNode_ModifyBone>(InputSource(Right,TEXT("ComponentPose")));
+        return Right->Node.BoneToModify.BoneName==TEXT("GunArm_R")
+            && BoundTo(Right,TEXT("Translation"),TEXT("BarrageRightShoulderOffset"))
+            && Left && Left->Node.BoneToModify.BoneName==TEXT("GunArm_L")
+            && BoundTo(Left,TEXT("Translation"),TEXT("BarrageLeftShoulderOffset"))
+            && Cast<UAnimGraphNode_LocalToComponentSpace>(InputSource(Left,TEXT("ComponentPose")));
+    }
+    auto* CS=Cast<UAnimGraphNode_LocalToComponentSpace>(Input);
+    if (!CS) return false;
+    auto AddShoulder=[&](const TCHAR* Bone,const TCHAR* Variable,int32 X) -> UAnimGraphNode_ModifyBone*
+    {
+        auto* Node=Add<UAnimGraphNode_ModifyBone>(Graph,X,CS->NodePosY+340);
+        Node->Node.BoneToModify.BoneName=Bone;
+        Node->Node.TranslationMode=BMM_Additive;
+        Node->Node.TranslationSpace=BCS_ComponentSpace;
+        for (auto& Pin:Node->ShowPinForProperties)
+            if (Pin.PropertyName==TEXT("Translation")) Pin.bShowPin=true;
+        Node->ReconstructNode();
+        return Bind(Graph,Node,TEXT("Translation"),Variable) ? Node : nullptr;
+    };
+    auto* Left=AddShoulder(TEXT("GunArm_L"),TEXT("BarrageLeftShoulderOffset"),CS->NodePosX+60);
+    auto* Right=AddShoulder(TEXT("GunArm_R"),TEXT("BarrageRightShoulderOffset"),CS->NodePosX+390);
+    return Left && Right && Link(CS,TEXT("ComponentPose"),Left,TEXT("ComponentPose"))
+        && Link(Left,TEXT("Pose"),Right,TEXT("ComponentPose")) && Link(Right,TEXT("Pose"),Tilt,TEXT("ComponentPose"));
+}
+
+bool WireBarrageFacing(UEdGraph* Graph, UEdGraphNode* Mix)
+{
+    auto* Source=InputSource(Mix,TEXT("B"));
+    if (auto* Local=Cast<UAnimGraphNode_ComponentToLocalSpace>(Source))
+    {
+        auto* Tilt=Cast<UAnimGraphNode_ModifyBone>(InputSource(Local,TEXT("ComponentPose")));
+        return Tilt && Tilt->Node.BoneToModify.BoneName==TEXT("root")
+            && BoundTo(Tilt,TEXT("Rotation"),TEXT("BarrageBodyRotation"))
+            && BoundTo(Tilt,TEXT("Translation"),TEXT("BarrageBodyTranslation")) && WireBarrageShoulders(Graph,Tilt);
+    }
+    auto* Clip=Cast<UAnimGraphNode_SequenceEvaluator>(Source);
+    if (!Clip || !BoundTo(Clip,TEXT("ExplicitTime"),TEXT("BarragePoseTime")) || !BoundTo(Clip,TEXT("Sequence"),TEXT("BarrageSequence"))) return false;
+    const int32 X=Clip->NodePosX, Y=Clip->NodePosY;
+    auto* CS=Add<UAnimGraphNode_LocalToComponentSpace>(Graph,X+240,Y);
+    auto* Tilt=Add<UAnimGraphNode_ModifyBone>(Graph,X+480,Y);
+    Tilt->Node.BoneToModify.BoneName=TEXT("root");
+    Tilt->Node.TranslationMode=BMM_Additive; Tilt->Node.RotationMode=BMM_Additive;
+    Tilt->Node.TranslationSpace=BCS_ComponentSpace; Tilt->Node.RotationSpace=BCS_ComponentSpace;
+    for (auto& Pin:Tilt->ShowPinForProperties)
+        if (Pin.PropertyName==TEXT("Rotation") || Pin.PropertyName==TEXT("Translation")) Pin.bShowPin=true;
+    Tilt->ReconstructNode();
+    auto* Local=Add<UAnimGraphNode_ComponentToLocalSpace>(Graph,X+810,Y);
+    return Bind(Graph,Tilt,TEXT("Rotation"),TEXT("BarrageBodyRotation"))
+        && Bind(Graph,Tilt,TEXT("Translation"),TEXT("BarrageBodyTranslation"))
+        && Link(Clip,TEXT("Pose"),CS,TEXT("LocalPose")) && Link(CS,TEXT("ComponentPose"),Tilt,TEXT("ComponentPose"))
+        && Link(Tilt,TEXT("Pose"),Local,TEXT("ComponentPose")) && Link(Local,TEXT("Pose"),Mix,TEXT("B"))
+        && WireBarrageShoulders(Graph,Tilt);
+}
+
+bool AddBarrageLayer(UEdGraph* Graph,UAnimGraphNode_Root* Root)
+{
+    auto* Base=InputSource(Root,TEXT("Result"));
+    if (!Base) return false;
+    if (BoundTo(Base,TEXT("Alpha"),TEXT("BarragePoseWeight")))
+    {
+        return WireBarrageFacing(Graph,Base);
+    }
+    auto* Clip=Add<UAnimGraphNode_SequenceEvaluator>(Graph,Base->NodePosX+200,Base->NodePosY+360);
+    for (auto& Field:Clip->ShowPinForProperties)
+        if (Field.PropertyName==TEXT("ExplicitTime") || Field.PropertyName==TEXT("Sequence")) Field.bShowPin=true;
+    Clip->ReconstructNode();
+    auto* Mix=Add<UAnimGraphNode_TwoWayBlend>(Graph,Base->NodePosX+530,Base->NodePosY);
+    Root->NodePosX=Mix->NodePosX+350;
+    return Bind(Graph,Clip,TEXT("Sequence"),TEXT("BarrageSequence")) && Bind(Graph,Clip,TEXT("ExplicitTime"),TEXT("BarragePoseTime"))
+        && Bind(Graph,Mix,TEXT("Alpha"),TEXT("BarragePoseWeight")) && Link(Base,TEXT("Pose"),Mix,TEXT("A"))
+        && Link(Clip,TEXT("Pose"),Mix,TEXT("B")) && WireBarrageFacing(Graph,Mix) && Link(Mix,TEXT("Pose"),Root,TEXT("Result"));
+}
+}
+
+FString UGuLiGroundMechAnimationEditorLibrary::SampleBarrageCamera(UDataTable* Cards)
+{
+    const auto* Row = Cards ? Cards->FindRow<FGuLiStrikeRogueCardsCardsRow>(TEXT("GroundMech_NoSurvivors_Lv1"),TEXT("Preview"),false) : nullptr;
+    FGuLiGroundBarrageCameraPath Path;
+    auto Report=MakeShared<FJsonObject>();
+    if (!Row || !Path.Load(*Row)) return Json(Report);
+    TArray<TSharedPtr<FJsonValue>> Frames;
+    const int32 End=FMath::RoundToInt(Path.Duration*60.f);
+    for (int32 Index=0; Index<=End; ++Index)
+    {
+        const float Time=FMath::Min(Index/60.f,Path.Duration);
+        FGuLiGroundBarrageCameraShot Shot;
+        if (!Path.Sample(Time,Shot)) return Json(Report);
+        TArray<TSharedPtr<FJsonValue>> Values;
+        for (double Value : {Shot.EyeFromFeet.X,Shot.EyeFromFeet.Y,Shot.EyeFromFeet.Z,
+             Shot.Rotation.Roll,Shot.Rotation.Pitch,Shot.Rotation.Yaw,double(Shot.Fov),double(Shot.Weight),
+             double(Shot.Flash),double(Path.ChargeArcScale(Time))})
+            Values.Add(MakeShared<FJsonValueNumber>(Value));
+        Frames.Add(MakeShared<FJsonValueArray>(Values));
+    }
+    Report->SetArrayField(TEXT("frames"),Frames);
+    Report->SetNumberField(TEXT("duration"),Path.Duration);
+    return Json(Report);
+}
+
+FString UGuLiGroundMechAnimationEditorLibrary::BindBarrageAnimation(UAnimBlueprint* BP)
+{
+    auto Report=MakeShared<FJsonObject>();
+    Report->SetBoolField(TEXT("success"),false);
+    if (!BP || !BP->GeneratedClass || !BP->GeneratedClass->IsChildOf(UGuLiGroundMechAnimInstance::StaticClass()) || !GEditor || GEditor->PlayWorld) return Json(Report);
+    for (UEdGraph* Graph:BP->FunctionGraphs)
+    {
+        if (Graph->GetFName()!=TEXT("AnimGraph")) continue;
+        TArray<UAnimGraphNode_Root*> Roots; Graph->GetNodesOfClass(Roots);
+        if (Roots.Num()!=1 || !AddBarrageLayer(Graph,Roots[0])) return Json(Report);
+        FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(BP);
+        FCompilerResultsLog Log; FKismetEditorUtilities::CompileBlueprint(BP,EBlueprintCompileOptions::None,&Log);
+        Report->SetNumberField(TEXT("errors"),Log.NumErrors);
+        Report->SetNumberField(TEXT("warnings"),Log.NumWarnings);
+        Report->SetBoolField(TEXT("success"),Log.NumErrors==0);
+    }
+    return Json(Report);
 }
 FString UGuLiGroundMechAnimationEditorLibrary::ReadBlueprintPreviewCamera(UBlueprint* Blueprint)
 {
@@ -416,6 +548,7 @@ FString UGuLiGroundMechAnimationEditorLibrary::BuildAnimationGraph(UAnimBlueprin
 	OK &= Link(IK,TEXT("Pose"),Aim,TEXT("ComponentPose"));
 	OK &= Link(Aim,TEXT("Pose"),ToLocal,TEXT("ComponentPose"));
 	OK &= AddBlinkLayer(Graph,ToLocal,Root,Blink);
+    OK &= AddBarrageLayer(Graph,Root);
 	for (const auto& Pair:TArray<TPair<FName,FName>>{
 		{TEXT("AimPointComponent"),TEXT("IntegratedAimPointComponent")},{TEXT("bAimValid"),TEXT("bIntegratedAimValid")},
 		{TEXT("bForwardAim"),TEXT("bForwardAim")},{TEXT("ReturnAlpha"),TEXT("ReturnAlpha")},
@@ -478,6 +611,8 @@ FString UGuLiGroundMechAnimationEditorLibrary::BindBlinkAnimation(UAnimBlueprint
     TArray<UAnimGraphNode_Root*> Roots; Graph->GetNodesOfClass(Roots);
     if (Roots.Num()!=1) return Json(R);
     auto* Root=Roots[0]; auto* Mix=Cast<UAnimGraphNode_TwoWayBlend>(InputSource(Root,TEXT("Result")));
+    if (Mix && BoundTo(Mix,TEXT("Alpha"),TEXT("BarragePoseWeight")))
+        Mix=Cast<UAnimGraphNode_TwoWayBlend>(InputSource(Mix,TEXT("A")));
     if (!Mix || !Cast<UAnimGraphNode_ComponentToLocalSpace>(InputSource(Mix,TEXT("A")))) return Json(R);
     auto Bound=[](UEdGraphNode* Node,const TCHAR* Pin,const TCHAR* Field)
     {

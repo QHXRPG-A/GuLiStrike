@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-09",
+  "card_id": "09.01",
+  "card_title": "增加攻速",
+  "model_id": 4001,
+  "version": 3,
+  "state": "reference_pending_user_review",
+  "generator": "built-in image_gen",
+  "mode": "image edit",
+  "transparent_background": false,
+  "feedback": "不要这个“+8%”了，改成枪管特效然后周围有一圈电围着，类似过载的感觉，电一部分溢出画面",
+  "inputs_in_order": [
+    {
+      "file": "../FireRate_Reference_20261109_v2/FireRate_Card_Reference_v2.png",
+      "sha256": "f2e0f565074365776bbcb530b425ffe935007dafe3f9eb561ed058d12fe489d2",
+      "role": "上一版完整牌面"
+    },
+    {
+      "file": "../FireRate_Reference_20261109_v1/Inputs/A4B2_Gun_Closeup.png",
+      "sha256": "c49558942b142cc859e76a544de60f2fe13f151c6bb2551435a45d5a804a24a2",
+      "role": "正式 A4B2 导出源的枪口装配参考"
+    }
+  ],
+  "prompt": "Card_Prompt.txt",
+  "prompt_payload_utf8_sha256": "2827e08db0946a12b5dde0546710389d5c8dbed8b188eddccc882425102ed4c0",
+  "output": {
+    "file": "FireRate_Card_Reference_v3.png",
+    "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-cee7c067-21ea-4afb-9860-1bcdb4e875a5.png",
+    "sha256": "6b815ac6d253fcdc5fb19da6d0c97df543840f4a05e012ebc7060092e81cf2d1",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB"
+  },
+  "assistant_output_visual_review": false
+}

@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-16",
+  "card_id": "11.01",
+  "card_title": "爆破套餐",
+  "seat": "Ground",
+  "version": 6,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "generation_mode": "reference-based foreground missile edit",
+  "transparent_background": false,
+  "art_direction": "将用户附件中左上被裁切的导弹改为一发可见完整弹体的贴镜头特写，延续暖黄尾焰、仰视与远处游骑兵俯冲构图。",
+  "palette_reference": "Progress/RequirementDocument/GuLiStrike美术规范.md §11",
+  "editor_asset_readback": {
+    "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+    "model_id": 4001,
+    "presentation_model_id": "4001",
+    "skeletal_mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+    "flight": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon.NS_GroundExplosiveFlight_Toon",
+    "flight_emitters": [
+      "ProjectileShell",
+      "ExhaustPlume"
+    ],
+    "relevant_flight_dependencies": [
+      "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonShell",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonPlume"
+    ],
+    "trail": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail.NS_GroundExplosiveTrail",
+    "impact": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact.NS_GroundExplosiveImpact",
+    "body_mesh": "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile.SM_WM01_Missile"
+  },
+  "flight_vfx_id": 63,
+  "inputs_in_order": [
+    {
+      "file": "Inputs/01_User_Frame.png",
+      "source": "C:\\Users\\a\\AppData\\Local\\Temp\\codex-clipboard-6faf5ee5-be6a-4203-8278-ff3540bc3597.png",
+      "sha256": "526ee018cd53332a41ba489b86c205a7e70d914a1bed7e3a8824cb0728629c48",
+      "role": "用户本轮指定的编辑底图"
+    },
+    {
+      "file": "../ExplosivePackage_Reference_20261116_v2/Inputs/03_Explosive_Flight_UE.png",
+      "sha256": "54562ed6404a4ea3f76992b45c45ca3126209254e65799853b6943a954cd17bf",
+      "role": "当前游戏爆炸弹外形与尾焰参考"
+    }
+  ],
+  "prompt": {
+    "file": "ExplosivePackage_Prompt.txt",
+    "sha256": "8bef11108ed7dd7fe09549f83d342816074bf564ae1d557c8533aaa0d465174f"
+  },
+  "output": {
+    "file": "ExplosivePackage_Card_Reference_v6.png",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e39f-c9b0-7602-ac68-13db3650a8bd\\exec-e4dbfab3-49cc-471a-b8b4-1bcb8b7c53ee.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB",
+    "sha256": "b606c4ca324fdcc13be8cba4820780935ae6182fc340501244e2e5a2202a86e9"
+  },
+  "assistant_output_visual_review": false
+}

@@ -95,6 +95,19 @@ struct GULISTRIKE_API FGuLiProjectileMotionSettings
 	bool IsValid() const;
 };
 
+/** The range and acceleration are frozen at launch. Dive age is relative to the launch clock. */
+USTRUCT(BlueprintType)
+struct GULISTRIKE_API FGuLiGroundStrikeFlight
+{
+	GENERATED_BODY()
+	UPROPERTY(BlueprintReadOnly) float HorizontalRange = 0.f;
+	UPROPERTY(BlueprintReadOnly) float DiveAcceleration = 0.f;
+	UPROPERTY() float DiveStartAge = -1.f;
+	UPROPERTY() FVector DiveOrigin = FVector::ZeroVector;
+	bool IsEnabled() const { return HorizontalRange > 0.f; }
+	bool IsDiving() const { return DiveStartAge >= 0.f; }
+};
+
 /** Replicated presentation state, never a damage command. Config is frozen at launch. */
 USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiCombatEffectState
@@ -127,6 +140,7 @@ struct GULISTRIKE_API FGuLiCombatEffectState
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize LastTargetLocation = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantizeNormal LaunchDirection = FVector::ForwardVector;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuLiProjectileMotionSettings Motion;
+	UPROPERTY() FGuLiGroundStrikeFlight GroundStrike;
 	/** Stable weapon identity and emitter-local muzzle used to synthesize a sustained stream on every client. */
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FName SlotId;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector MuzzleOffset = FVector::ZeroVector;
@@ -261,8 +275,9 @@ namespace GuLiCombatEffects
 	GULISTRIKE_API bool ShouldPrecomputeCurves();
 	GULISTRIKE_API FVector LiftPosition(const FGuLiCombatEffectState& State, float Age, const FGuLiProjectileCurveCoefficients* Coefficients = nullptr);
 	/** Pure, fixed-step, seed-stable flight. Caller owns target refresh and authoritative swept collision. */
-	GULISTRIKE_API FVector AdvanceProjectile(FGuLiCombatEffectState& State, float NewAge, float DeltaSeconds, const FGuLiProjectileCurveCoefficients* Coefficients = nullptr);
-	GULISTRIKE_API bool IntersectsSphere(const FVector& Center, float Radius, const FGuLiCombatTargetSnapshot& Target);
+	GULISTRIKE_API FVector AdvanceProjectile(FGuLiCombatEffectState& State, float NewAge, float DeltaSeconds,
+		const FGuLiProjectileCurveCoefficients* Coefficients = nullptr);
+	GULISTRIKE_API bool IntersectsSphere(const FVector& Center, float Radius, const FGuLiCombatTargetSnapshot& Target, bool bUseHitCenter = false);
 	/** Number of scheduled pulses due by Now, with the periodic interval [Activation, End). */
 	GULISTRIKE_API int32 PulsesDue(EGuLiSpellFieldTiming Timing, double Activation, double Duration, double Interval, double Now);
 	GULISTRIKE_API FGuid DamageId(const FGuid& EffectId, int32 PulseIndex, const FGuLiTargetHandle& Target);

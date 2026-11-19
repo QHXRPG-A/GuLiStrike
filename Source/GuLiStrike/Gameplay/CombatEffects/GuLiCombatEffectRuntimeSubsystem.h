@@ -3,7 +3,10 @@
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
+#include "Gameplay/GroundMech/Abilities/GuLiGroundStrikeSurface.h"
 #include "GuLiCombatEffectRuntimeSubsystem.generated.h"
+
+struct FCollisionQueryParams;
 
 USTRUCT()
 struct FGuLiRuntimeCombatEffect
@@ -11,6 +14,7 @@ struct FGuLiRuntimeCombatEffect
 	GENERATED_BODY()
 	UPROPERTY() FGuLiCombatEffectState State;
 	FGuLiProjectileCurveCoefficients CurveCoefficients;
+	FGuLiGroundStrikeHeightCache GroundHeightCache;
 	UPROPERTY() FGuLiCombatEffectContext Context;
 	UPROPERTY() TObjectPtr<UGuLiProjectileEffectDefinition> Projectile;
 	UPROPERTY() TObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;
@@ -126,6 +130,10 @@ private:
 	FGuid CreateFieldInternal(UGuLiSpellFieldDefinition* Definition, const FGuLiCombatEffectContext& Context, FVector Location,
 		const FGuid& Lease, const FGuLiRuntimeCombatEffect* Frozen = nullptr, const FGuLiSpellFieldConfig* Config = nullptr);
 	void StepProjectile(const FGuid& Id, float DeltaTime, float Now);
+	void StepGroundStrike(const FGuid& Id, const FGuLiRuntimeCombatEffect& Previous, float Now);
+	void ImpactProjectile(const FGuid& Id, const FGuLiRuntimeCombatEffect& Instance, FVector Impact, float Now);
+	bool SweepProjectilePath(TConstArrayView<FVector> Path, float Radius, EGuLiTeam Team,
+		const FCollisionQueryParams& Params, bool bCheckBodies, FVector& Impact);
 	void StepField(const FGuid& Id, float Now);
 	void StepSustainedHitscan(const FGuid& Id, float Now);
 	void HandlePooledState(const FGuLiCombatEffectState& State, bool bReliable);
@@ -134,7 +142,7 @@ private:
 	void Finish(const FGuid& Id, EGuLiCombatEffectEndReason Reason, float Now);
 	void Publish(const FGuid& Id, bool bReliable);
 	void BuildSpatialIndex();
-	void QuerySphere(FVector Center, float Radius, TArray<FGuLiCombatTargetSnapshot>& OutTargets);
+	void QuerySphere(FVector Center, float Radius, TArray<FGuLiCombatTargetSnapshot>& OutTargets, bool bUseHitCenters = false);
 	UGuLiCombatEffectCatalog* GetCatalog();
 	void ExecuteDirect(const FGuLiCombatAttackRequest& Request, TArray<FGuLiDamageRequest>& OutDamage, TArray<FGuLiCombatShotCue>& OutCues);
 	void ExecuteGroundMachineGun(const FGuLiCombatAttackRequest& Request, TArray<FGuLiCombatShotCue>& OutCues);

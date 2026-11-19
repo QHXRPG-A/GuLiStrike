@@ -8,7 +8,7 @@ import unreal
 def run():
     systems = {}
     for path in [
-        '/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow011_Converted',
+        '/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow011_Converted',
         '/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green',
     ]:
         info = unreal.NiagaraService.get_system_info(path)

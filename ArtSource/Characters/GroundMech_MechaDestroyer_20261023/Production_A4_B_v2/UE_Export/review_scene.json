@@ -1,0 +1,71 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_GroundMech_FireReview",
+  "saved": true,
+  "editor_review_actors": [
+    {
+      "label": "GMA4B2_EditorReview_BLUE",
+      "actor": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.BP_GroundMech_Light_C_0",
+      "location": [
+        8600.0,
+        -8800.0,
+        289.3455438035453
+      ],
+      "floor_z": 45.30870908674842,
+      "editor_only": true,
+      "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+      "animation_instance": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C",
+      "model_registration": 4001,
+      "sockets": {
+        "Muzzle": true,
+        "Muzzle_L": true,
+        "Jet_Outlet_R": true,
+        "Jet_Outlet_L": true
+      },
+      "preview_team": "BLUE"
+    },
+    {
+      "label": "GMA4B2_EditorReview_RED",
+      "actor": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.BP_GroundMech_Light_C_1",
+      "location": [
+        9400.0,
+        -8800.0,
+        244.02767930365917
+      ],
+      "floor_z": -0.009155413137705182,
+      "editor_only": true,
+      "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+      "animation_instance": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2_C",
+      "model_registration": 4001,
+      "sockets": {
+        "Muzzle": true,
+        "Muzzle_L": true,
+        "Jet_Outlet_R": true,
+        "Jet_Outlet_L": true
+      },
+      "preview_team": "RED"
+    }
+  ],
+  "game_mode": "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReviewMode.BP_GroundMech_FireReviewMode_C",
+  "role_pawn_classes": "{Commander: \"/Script/CoreUObject.Class'/Script/GuLiStrike.GuLiCommanderCameraPawn'\", Ground: \"/Script/Engine.BlueprintGeneratedClass'/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview.BP_GroundMech_FireReview_C'\", Air: \"/Script/Engine.BlueprintGeneratedClass'/Game/GuLiStrike/Ship/BP_CombatAvatarFly01.BP_CombatAvatarFly01_C'\"}",
+  "player_starts": [
+    {
+      "name": "GroundMech_Start_1",
+      "location": [
+        8600.0,
+        -7500.0,
+        421.55853748321533
+      ]
+    },
+    {
+      "name": "GroundMech_Start_2",
+      "location": [
+        9400.0,
+        -7500.0,
+        421.61516189575195
+      ]
+    }
+  ],
+  "play_started": false,
+  "visual_review": "User"
+}

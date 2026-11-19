@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-16",
+  "card_id": "10.01",
+  "card_title": "强化子弹",
+  "direction": "数字流中的破镜",
+  "version": 3,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "feedback": "参考这个，配色重新选，要求更科幻，最好配上黑客帝国的数字流效果",
+  "palette_reference": "Progress/RequirementDocument/GuLiStrike美术规范.md §11",
+  "palette_bases": [
+    "#021716",
+    "#032E30",
+    "#0D9099",
+    "#557B78",
+    "#6AA4BE"
+  ],
+  "inputs_in_order": [
+    {
+      "role": "用户提供的破镜构图和透视参考",
+      "source": "codex-clipboard-77eefcc5-4751-4b86-9f1b-840973338a8e.png",
+      "file": "Shattered_Glass_Input.png",
+      "sha256": "3102ef93a0546bf611f2b485d16109d120b8fc21281887ddfca12b77252ffdd4"
+    }
+  ],
+  "prompt": {
+    "file": "Shatter_Prompt.txt",
+    "sha256": "8ac788ad7855441dfef0db4c35c8d9d22a78cab611d0f320d627a8cf64f43af8"
+  },
+  "output": {
+    "file": "EnhancedBullet_DigitalGlass_v3.png",
+    "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-828bc322-c718-405e-b3cd-b4f1b7d09ef9.png",
+    "sha256": "92a0853f0c082635ff326eea912259227b42e35533b11260a2cdfa216bd2f245",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB"
+  }
+}

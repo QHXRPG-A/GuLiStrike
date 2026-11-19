@@ -102,6 +102,7 @@ h1 { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
 .world { position: absolute; inset: 0; transform-origin: 0 0; pointer-events: none; }
 .edge-canvas { position: absolute; overflow: visible; top: 0; left: 0; }
 .edge-stroke { fill: none; stroke: var(--dependency); stroke-width: 2; pointer-events: none; }
+.edge-level { fill: var(--dependency); font-size: 12px; font-weight: 650; pointer-events: none; }
 .excludes .edge-stroke, .edge-stroke.excludes { stroke: var(--exclusion); stroke-dasharray: 6 5; }
 .edge-hit { fill: none; stroke: transparent; stroke-width: 16; pointer-events: stroke; cursor: pointer; }
 .edge:hover .edge-stroke, .edge.selected .edge-stroke, .edge:focus-visible .edge-stroke { stroke-width: 3.4; }

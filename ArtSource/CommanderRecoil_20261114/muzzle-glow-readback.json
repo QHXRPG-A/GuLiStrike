@@ -1,0 +1,128 @@
+{
+  "success": true,
+  "systems": [
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow",
+      "batch": false,
+      "lod": 0,
+      "layers": [
+        {
+          "emitter": "Glow",
+          "renderers": [
+            "Sprite"
+          ]
+        },
+        {
+          "emitter": "Flash",
+          "renderers": [
+            "Sprite"
+          ]
+        }
+      ],
+      "lifetime": 0.18,
+      "compile_errors": 0,
+      "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Reduced",
+      "batch": false,
+      "lod": 1,
+      "layers": [
+        {
+          "emitter": "Glow",
+          "renderers": [
+            "Sprite"
+          ]
+        },
+        {
+          "emitter": "Flash",
+          "renderers": [
+            "Sprite"
+          ]
+        }
+      ],
+      "lifetime": 0.18,
+      "compile_errors": 0,
+      "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Minimal",
+      "batch": false,
+      "lod": 2,
+      "layers": [
+        {
+          "emitter": "Flash",
+          "renderers": [
+            "Sprite"
+          ]
+        }
+      ],
+      "lifetime": 0.18,
+      "compile_errors": 0,
+      "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch",
+      "batch": true,
+      "lod": 0,
+      "layers": [
+        {
+          "emitter": "Glow",
+          "renderers": [
+            "Sprite"
+          ]
+        },
+        {
+          "emitter": "Flash",
+          "renderers": [
+            "Sprite"
+          ]
+        }
+      ],
+      "lifetime": 0.18,
+      "compile_errors": 0,
+      "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch_Reduced",
+      "batch": true,
+      "lod": 1,
+      "layers": [
+        {
+          "emitter": "Glow",
+          "renderers": [
+            "Sprite"
+          ]
+        },
+        {
+          "emitter": "Flash",
+          "renderers": [
+            "Sprite"
+          ]
+        }
+      ],
+      "lifetime": 0.18,
+      "compile_errors": 0,
+      "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/RecoilGlow_v1/NS_CommanderMuzzleGlow_Batch_Minimal",
+      "batch": true,
+      "lod": 2,
+      "layers": [
+        {
+          "emitter": "Flash",
+          "renderers": [
+            "Sprite"
+          ]
+        }
+      ],
+      "lifetime": 0.18,
+      "compile_errors": 0,
+      "bounds": "(X=60.000000,Y=60.000000,Z=60.000000)"
+    }
+  ],
+  "dynamic_lights": 0,
+  "visual_review": "Pending user",
+  "performance_measurement": "Not run"
+}

@@ -1,0 +1,28 @@
+ILXL 游骑兵弹射卡图——当前唯一工作流
+
+已在本机 ComfyUI 点击“运行”验证成功，输出 832×1248。当前画布已打开本工作流。
+主模型：Illustrious XL 2.0；LoRA：2.5D cel_rendering Style，模型与CLIP强度均0.6；Clip Skip 2。
+采样：DPM++ 2M / Karras，32步，CFG 5.5，种子2026101601，重绘强度0.32。
+结构约束：SDXL Canny Small，强度0.70，结束0.85。
+真实单位参考：IPAdapter Plus SDXL ViT-H，机甲0.45，先驱者0.50，两组区域遮罩。
+
+使用：
+1. 已安装环境直接在 http://127.0.0.1:8188 的“工作流”打开 ILXL-游骑兵-弹射卡图，点击运行。
+2. 服务未启动时，运行 D:\gen-image\Start-Qwen-Image.ps1；脚本名称沿用旧名，当前图使用ILXL。
+3. 迁移素材时，将包内 inputs 中全部文件放到 ComfyUI 的 input 目录，再拖入同一JSON工作流。
+4. 输出在 D:\gen-image\output\GroundMechRogue。RAW 是模型重绘；FINAL 是叠加连续弹道与敌方还击后的交付图。
+
+画布从左到右：模型/风格 → 项目真实单位分区图像约束 → 战斗构图、Canny结构和区域提示词 → ILXL重绘、弹道合成。
+主机甲与先驱者都有真实截图输入，构图参考也有实际图像输入。不是仅在文字中提到参考图。
+
+调整：
+- 454全局正向，455全局反向，456机甲区域，459先驱者区域；完整文本另附。
+- 为了保留项目机械造型，本图采用低幅度重绘；提高485的denoise会更容易改变造型。
+- 轨迹是固定构图的透明特效层，黄金路径四个坐标为枪口和三个受击点；调整构图后必须重定位。
+- 修改trajectory_points.json后，用本地Python运行 create_ricochet_overlay.py --config trajectory_points.json --output D:\gen-image\input\GuLi_GroundMech_Ricochet_Trails.png，再运行同一工作流。仅改透明弹道时会复用缓存的重绘结果。
+- 不要把488的透明图像MASK直接接到合成；489反转遮罩用于恢复正确Alpha。
+
+依赖：ComfyUI_IPAdapter_plus（cubiq官方插件）、CLIP ViT-H、IPAdapter Plus SDXL ViT-H、SDXL Canny Small；本机已安装并实际运行。模型文件不重复塞入资源包。
+模型和参考图哈希、实际任务ID、运行状态记录在manifest.json与history_ilxl.json。
+
+本次只制作参考插画，尚未作为UE卡牌资源导入，风格审核状态为待用户确认。

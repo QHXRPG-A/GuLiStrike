@@ -111,6 +111,7 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UMaterialInstanceDynamic> CaptureMID;
 	UPROPERTY(Transient) TObjectPtr<UGuLiRogueCardOverlay> Overlay;
 	TArray<FString> CandidateIds;
+	int32 SubmittedIndex = INDEX_NONE;
 	FGuid RequestId, SessionId, PlayerGuid;
     FGuid LastCommittedSession;
 	uint32 MatchEpoch=0;

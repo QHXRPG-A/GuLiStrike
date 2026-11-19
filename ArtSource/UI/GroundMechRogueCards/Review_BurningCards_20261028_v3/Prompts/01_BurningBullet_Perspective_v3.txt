@@ -1,0 +1,22 @@
+Use case: precise-object-edit.
+This is a PERSPECTIVE RECONSTRUCTION of the supplied illustrated card. The attached image is the user's exact composition baseline. The green arrow is a mandatory geometric construction axis, NOT decoration. Build the scene around that line, then remove the arrow entirely from the finished art.
+
+HIGHEST PRIORITY: a single straight physical shot. Preserve the distant gun muzzle at the green arrow's upper-left start and the foreground bullet tip at its lower-right endpoint. The projectile's longitudinal centerline MUST lie exactly on this green line. Relocate and redraw the enemy's pierced torso and the entire bullet, including its rear base, if needed; do not preserve the present misaligned hole or the bullet's current skew simply to keep the old pixels. This request expressly permits reconstructing these central objects to achieve correct perspective.
+
+Construction, with normalized top-left-origin coordinates:
+Muzzle A = about (0.190, 0.167).
+Bullet nose N = about (0.945, 0.816).
+The straight line is L(t)=A+t*(0.755,0.649).
+Put the Pioneer EXIT wound centered at L(0.42)=(0.5071,0.4396).
+Put the center of the solid bullet's REAR BASE at L(0.60)=(0.6430,0.5564).
+Put the pointed bullet NOSE at L(1.0)=N.
+Thus muzzle -> wound -> rear base -> nose is ONE COLLINEAR sequence in the image and one straight firing ray in 3D.
+Rebuild the metal bullet as a rigid straight body of revolution centered on this line. Its silhouette and conical tip must be symmetric around this axis in perspective. Every rear/circumferential elliptical rim must have its center on the same axis, with a consistent transverse plane and depth foreshortening. The bright metal highlight follows the bullet surface and never substitutes for its physical centerline.
+The fiery wake tapers straight backward from the bullet's rear base to the exit wound along this line. Flames can curl locally around the projectile but cannot make an elbow or bend the central travel direction.
+The incoming tracer must also follow this same line from the muzzle to the far side of the Pioneer. Allow real occlusion by its armor: the tracer MUST disappear behind opaque hull/gun/limb parts rather than visibly tracing across the outside of the robot. A gold tracer following the old higher diagonal is forbidden.
+Rotate or slightly lower the wounded torso as necessary so the exit wound genuinely cuts through a coherent chest/hull volume centered on the prescribed line. Draw a single meaningful through-hole with bent armor lips and internal chassis behind it. Do not leave the old explosion/hole above the line as a second impact or connect it to the bullet with a curved flame hose.
+
+Retain the user's base composition and illustrated identities: distant small blue-and-ivory Ground shooter in the upper left, a large ivory/burgundy quadrupedal Pioneer in the middle, a huge near-camera flaming metal bullet pointed toward the lower right, flaming armor fragments near the edges, sunlit grassy ruins, blue sky and broken stone arches. Keep the older shooter appearance as explicitly requested by the user; this is an illustration exception, not a request to replace its model. Preserve four mechanical legs, two side guns and thin antennas on the Pioneer where unbroken.
+Maintain the clean purposeful dark anime outlines, matte large color blocks and three-tone cel shading. Preserve the original palette, daylight and strong foreground-to-distance depth. Motion streaks share the firing vanishing point and coherent depth. Keep flames, sparks and fragments subordinate to the clear straight-shot geometry.
+
+Output one full opaque square finished illustration. Remove the green arrow, all construction marks, labels and any annotation. No text, UI, card frame, diagrams, collage, extra projectiles, ricochet, curved projectile, laser cannon beam, human, blood or gore. When preserving source details conflicts with correct shot perspective, correct the shot perspective.

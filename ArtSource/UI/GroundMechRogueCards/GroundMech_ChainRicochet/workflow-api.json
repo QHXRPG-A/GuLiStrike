@@ -1,0 +1,625 @@
+{
+  "451": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "Illustrious-XL-v2.0.safetensors"
+    },
+    "_meta": {
+      "title": "01 ILXL 2.0 · 完整底模"
+    }
+  },
+  "452": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "2.5D cel_rendering Style.safetensors",
+      "strength_model": 0.6,
+      "strength_clip": 0.6,
+      "model": [
+        "451",
+        0
+      ],
+      "clip": [
+        "451",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "02 三渲二 LoRA · 0.6"
+    }
+  },
+  "453": {
+    "class_type": "CLIPSetLastLayer",
+    "inputs": {
+      "stop_at_clip_layer": -2,
+      "clip": [
+        "452",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "03 Clip Skip 2"
+    }
+  },
+  "454": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best quality, very aesthetic, anime screencap, science fiction, mecha battle, game cg,\n(clean 2.5D cel shading:1.3), (three-tone shading:1.3), (flat color blocks:1.2), solid base color with one flat shadow and one narrow highlight, hard-edged shadows, clear midtones, crisp dark contour lines, angular mechanical plates, readable hard-surface geometry, matte armor, restrained surface detail,\ncinematic over-the-shoulder shot, rear three-quarter view, wide-angle action composition, vertical illustration,\nforeground gold and blue bipedal combat mech skidding to a sudden stop while firing, low braced stance, weight on planted mechanical feet, long sweeping skid wake, shoulder recoil, directional motion lines,\nexactly three cream and dark burgundy quadruped enemy drones in the middle distance, different orientations and tilted poses, shell armor shattered at impact, exposed dark mechanical frames, large armor fragments, violent orange explosions attached to damaged parts, sharp star-shaped impact flashes, graphic flame shapes with white hot centers and orange outer edges,\nbright connected golden ricochet tracer traveling from the foreground gun muzzle through three enemy impact points, clear bent projectile path, warm white core, orange outer light, short red enemy return-fire tracers passing beside the player,\ntwo short orange fire exhaust plumes rooted inside the paired rear nozzles, strong muzzle flash attached to the actual gun barrel,\nquiet teal water, broad simplified reflections and graphic splash shapes, sparse tall ruined pillars in cyan fog, low-detail background, cool teal and blue palette with restrained warm orange effects, clean readable silhouettes, no humans",
+      "clip": [
+        "453",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "全局正向 · 日漫 / 三档明暗 / 电影动作"
+    }
+  },
+  "455": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "worst quality, low quality, lowres, blurry subject, photorealistic, photograph, realistic water, ray tracing, PBR material, glossy plastic, wax, oil painting, painterly brush texture, watercolor, soft airbrushed shading, soft dough-like armor, rounded toy limbs, butterfly wings, smooth featureless robots, film grain, dirty texture, random speckles, dense hatching, rust, dense scratches, overly intricate surface details, busy background, muddy colors, crushed black shadows, oversaturated, HDR, harsh bloom, overexposed white fireball,\nhuman, human face, girl, boy, pilot, skin, clothing, cape, scarf, human hands, handheld rifle, humanoid enemy, wheeled enemy, tank tracks, fourth enemy, duplicate enemies, identical poses, standing at attention, intact enemies, organic gore,\nfloating exhaust, blue exhaust flame, flame detached from nozzle, exhaust from light strips, broken mech joints, missing feet, detached legs, warped barrel,\ndisconnected bullet trails, random beams, closed triangle laser, laser net, shield, prism, floating impact sparks, explosions hiding all enemy silhouettes, smoke covering the whole image,\ntext, numbers, labels, watermark, signature, logo, card border, UI, comic panel grid",
+      "clip": [
+        "453",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "全局反向 · 防止脏污 / 模型走样"
+    }
+  },
+  "456": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "golden rounded enclosed armored torso, no separate human head, paired black rear exhaust nozzles and warm yellow vent lights, slate blue hip and thigh armor, dark teal mechanical joints, broad angular mechanical feet, integrated right-side fixed gun mount, no human arms,\nrear over-the-shoulder view of the project mech, forceful hard braking skid, hips lowered, legs braced far apart, twisted torso firing forward-right, gun mount kicking backward in recoil, short directional recoil smear, orange flame jets physically attached to the two back nozzles, clean three-tone anime shading",
+      "clip": [
+        "453",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "机甲区域正向 · 急刹 / 后坐 / 尾焰"
+    }
+  },
+  "457": {
+    "class_type": "ConditioningSetAreaPercentage",
+    "inputs": {
+      "width": 0.73,
+      "height": 0.7,
+      "x": 0.0,
+      "y": 0.3,
+      "strength": 0.85,
+      "conditioning": [
+        "456",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "机甲文字区域"
+    }
+  },
+  "458": {
+    "class_type": "ConditioningCombine",
+    "inputs": {
+      "conditioning_1": [
+        "454",
+        0
+      ],
+      "conditioning_2": [
+        "457",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "合并全局与机甲"
+    }
+  },
+  "459": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "three project Pioneer enemy robots, cream oval armored body, (dark burgundy armor panels:1.3), burgundy shoulder blocks and upper leg plates, four articulated mechanical legs with cream shin plates and dark feet, paired side-mounted black rotary machine guns, two thin antennas,\nnearest robot violently rolling sideways with torn-open shell, exposed dark chassis and a broken gun mount; middle-left robot tumbling sideways in the air with splayed legs; far-right robot twisting away and collapsing,\nlarge orange fire blasts attached to shattered armor, several large red and cream armor shards, clear mechanical silhouettes, one surviving side gun aiming back toward the foreground mech, short pink-white muzzle flash, anime mechanical combat, clean flat colors",
+      "clip": [
+        "453",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "先驱者区域正向 · 三种动作 / 爆炸破坏"
+    }
+  },
+  "460": {
+    "class_type": "ConditioningSetAreaPercentage",
+    "inputs": {
+      "width": 0.6,
+      "height": 0.38,
+      "x": 0.4,
+      "y": 0.22,
+      "strength": 0.85,
+      "conditioning": [
+        "459",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "敌群文字区域"
+    }
+  },
+  "461": {
+    "class_type": "ConditioningCombine",
+    "inputs": {
+      "conditioning_1": [
+        "458",
+        0
+      ],
+      "conditioning_2": [
+        "460",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "合并三份区域正向"
+    }
+  },
+  "462": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "GuLi_Ricochet_Composition.png"
+    },
+    "_meta": {
+      "title": "构图底图 · 已有项目机甲战斗参考"
+    }
+  },
+  "463": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "upscale_method": "lanczos",
+      "width": 832,
+      "height": 1248,
+      "crop": "disabled",
+      "image": [
+        "462",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "同坐标画布 · 832×1248"
+    }
+  },
+  "464": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "463",
+        0
+      ],
+      "vae": [
+        "451",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "底图进入 ILXL 潜空间"
+    }
+  },
+  "465": {
+    "class_type": "Canny",
+    "inputs": {
+      "low_threshold": 0.3,
+      "high_threshold": 0.65,
+      "image": [
+        "463",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "轮廓约束 · 保留机械与三个爆点"
+    }
+  },
+  "466": {
+    "class_type": "ControlNetLoader",
+    "inputs": {
+      "control_net_name": "diffusers_xl_canny_small.safetensors"
+    },
+    "_meta": {
+      "title": "SDXL Canny Small"
+    }
+  },
+  "467": {
+    "class_type": "ControlNetApplyAdvanced",
+    "inputs": {
+      "strength": 0.7,
+      "start_percent": 0.0,
+      "end_percent": 0.85,
+      "positive": [
+        "461",
+        0
+      ],
+      "negative": [
+        "455",
+        0
+      ],
+      "control_net": [
+        "466",
+        0
+      ],
+      "image": [
+        "465",
+        0
+      ],
+      "vae": [
+        "451",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "结构约束 · 0.70 / 截止0.85"
+    }
+  },
+  "468": {
+    "class_type": "CLIPVisionLoader",
+    "inputs": {
+      "clip_name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+    },
+    "_meta": {
+      "title": "项目参考编码 · ViT-H"
+    }
+  },
+  "469": {
+    "class_type": "IPAdapterModelLoader",
+    "inputs": {
+      "ipadapter_file": "ip-adapter-plus_sdxl_vit-h.safetensors"
+    },
+    "_meta": {
+      "title": "SDXL IPAdapter Plus"
+    }
+  },
+  "470": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "GroundMech_Project_Rear3Q_v3.png"
+    },
+    "_meta": {
+      "title": "真实项目机甲 · 后侧整机"
+    }
+  },
+  "471": {
+    "class_type": "ImageCrop",
+    "inputs": {
+      "width": 704,
+      "height": 704,
+      "x": 64,
+      "y": 288,
+      "image": [
+        "470",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "机甲主体裁切 · 排除展示天空"
+    }
+  },
+  "472": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "upscale_method": "lanczos",
+      "width": 512,
+      "height": 512,
+      "crop": "disabled",
+      "image": [
+        "471",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "机甲参考 512×512"
+    }
+  },
+  "473": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "GroundMech_Project_Weapon_v3.png"
+    },
+    "_meta": {
+      "title": "真实项目机甲 · 固定机枪"
+    }
+  },
+  "474": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "upscale_method": "lanczos",
+      "width": 512,
+      "height": 512,
+      "crop": "center",
+      "image": [
+        "473",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "机枪参考 512×512"
+    }
+  },
+  "475": {
+    "class_type": "ImageBatch",
+    "inputs": {
+      "image1": [
+        "472",
+        0
+      ],
+      "image2": [
+        "474",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "整机 + 机枪 · 同一身份"
+    }
+  },
+  "476": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "GuLi_Ricochet_HeroRegion.png"
+    },
+    "_meta": {
+      "title": "机甲参考影响范围"
+    }
+  },
+  "477": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "476",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "机甲区域遮罩"
+    }
+  },
+  "478": {
+    "class_type": "IPAdapterAdvanced",
+    "inputs": {
+      "weight_type": "linear",
+      "combine_embeds": "average",
+      "start_at": 0.0,
+      "end_at": 0.85,
+      "embeds_scaling": "V only",
+      "weight": 0.45,
+      "model": [
+        "452",
+        0
+      ],
+      "ipadapter": [
+        "469",
+        0
+      ],
+      "image": [
+        "475",
+        0
+      ],
+      "attn_mask": [
+        "477",
+        0
+      ],
+      "clip_vision": [
+        "468",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "真机甲约束 · 只影响前景"
+    }
+  },
+  "479": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "Pioneer_Project_Enemy_v3.png"
+    },
+    "_meta": {
+      "title": "真实项目先驱者 · 四足 / 双侧枪"
+    }
+  },
+  "480": {
+    "class_type": "ImageCrop",
+    "inputs": {
+      "width": 768,
+      "height": 768,
+      "x": 0,
+      "y": 256,
+      "image": [
+        "479",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "先驱者主体裁切"
+    }
+  },
+  "481": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "upscale_method": "lanczos",
+      "width": 512,
+      "height": 512,
+      "crop": "disabled",
+      "image": [
+        "480",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "先驱者参考 512×512"
+    }
+  },
+  "482": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "GuLi_Ricochet_EnemyRegion.png"
+    },
+    "_meta": {
+      "title": "先驱者参考影响范围"
+    }
+  },
+  "483": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "channel": "red",
+      "image": [
+        "482",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "先驱者区域遮罩"
+    }
+  },
+  "484": {
+    "class_type": "IPAdapterAdvanced",
+    "inputs": {
+      "weight_type": "linear",
+      "combine_embeds": "average",
+      "start_at": 0.0,
+      "end_at": 0.85,
+      "embeds_scaling": "V only",
+      "weight": 0.5,
+      "model": [
+        "478",
+        0
+      ],
+      "ipadapter": [
+        "469",
+        0
+      ],
+      "image": [
+        "481",
+        0
+      ],
+      "attn_mask": [
+        "483",
+        0
+      ],
+      "clip_vision": [
+        "468",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "真先驱者约束 · 只影响敌群"
+    }
+  },
+  "485": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 2026101601,
+      "steps": 32,
+      "cfg": 5.5,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.32,
+      "model": [
+        "484",
+        0
+      ],
+      "positive": [
+        "467",
+        0
+      ],
+      "negative": [
+        "467",
+        1
+      ],
+      "latent_image": [
+        "464",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "ILXL 重绘 · 32步 / CFG5.5 / 强度0.32"
+    }
+  },
+  "486": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "485",
+        0
+      ],
+      "vae": [
+        "451",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "ILXL 解码"
+    }
+  },
+  "487": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "GroundMechRogue/GroundMech_Ricochet_ILXL_RAW",
+      "images": [
+        "486",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "重绘原始图 · 弹道增强前"
+    }
+  },
+  "488": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "GuLi_GroundMech_Ricochet_Trails.png"
+    },
+    "_meta": {
+      "title": "连续弹道图层 · 三次命中 + 敌方还击"
+    }
+  },
+  "489": {
+    "class_type": "InvertMask",
+    "inputs": {
+      "mask": [
+        "488",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "PNG 透明度转正向遮罩"
+    }
+  },
+  "490": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "destination": [
+        "486",
+        0
+      ],
+      "source": [
+        "488",
+        0
+      ],
+      "mask": [
+        "489",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "连续粗亮弹道 · 同坐标合成"
+    }
+  },
+  "491": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "GroundMechRogue/GroundMech_Ricochet_ILXL_FINAL",
+      "images": [
+        "490",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "最终参考图 · ILXL 日漫三渲二"
+    }
+  }
+}

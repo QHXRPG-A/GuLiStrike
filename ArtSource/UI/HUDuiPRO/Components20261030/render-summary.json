@@ -1,0 +1,25 @@
+{
+  "exitCode": null,
+  "launcherExitCode": 0,
+  "rendererPid": 2416,
+  "startedAt": "2026-10-30T12:22:59.7099277Z",
+  "finishedAt": "2026-10-30T13:57:59.5033908Z",
+  "project": "D:/UE5.7/test1/ArtSource/UI/HUDuiPRO/Components20261030/HUDuiPRO_ComponentRender.aep",
+  "log": "render.log",
+  "multiFrameRendering": true,
+  "cpuPercent": 75,
+  "memoryPercent": 50,
+  "rendererCommandLine": "d -noui -m -s if (typeof gAECommandLineRenderer == 'undefined' ) { app.exitCode = 13;} else { gAECommandLineRenderer.Render(\"'-port'\",\"'[::1]:51805'\",\"'-project'\",\"'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\UI\\\\HUDuiPRO\\\\Components20261030\\\\HUDuiPRO_ComponentRender.aep'\",\"'-mfr'\",\"'ON'\",\"'75'\",\"'-mem_usage'\",\"'20'\",\"'50'\",\"'-sound'\",\"'OFF'\",\"'-v'\",\"'ERRORS_AND_PROGRESS'\",\"'-log'\",\"'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\UI\\\\HUDuiPRO\\\\Components20261030\\\\render.log'\"); }",
+  "completionVerified": true,
+  "completionEvidence": {
+    "rendererExited": true,
+    "frames": 111426,
+    "completeComponents": 81,
+    "pngContainersVerified": true,
+    "ueAssets": 405,
+    "logErrors": []
+  },
+  "exitCodeNote": "The attached Windows process did not expose its exit code; completion is established by renderer exit, complete verified sequences, saved UE references and no error in the render log.",
+  "logRemovedDuringSessionCleanup": true,
+  "logCleanupEvidence": "session-cleanup.json"
+}

@@ -1,0 +1,394 @@
+{
+  "batch": "20261118",
+  "date": "2026-11-18",
+  "new_source_inventory": [
+    {
+      "id": "buff-loop",
+      "source_files": 184,
+      "source_crc_verified_during_copy": true,
+      "target_root_counts": {
+        "/Game/Assets/VFX/Buffs/BuffLoop": 183
+      },
+      "preexisting_missing_game_dependencies": {},
+      "unmigrated_source_packages": [
+        {
+          "source_package": "/Game/BuffLoop/NS/Vfx_ControlParastie",
+          "archive_entry": "Buff and Debuff VFX ( Include Sun ,Bubble, Tentacle )/BuffLoop/NS/Vfx_ControlParastie.uasset",
+          "bytes": 1440,
+          "crc32": "21e4d5ab",
+          "reason": "source_redirector"
+        }
+      ]
+    },
+    {
+      "id": "fantasy-vfx-collection",
+      "source_files": 296,
+      "source_crc_verified_during_copy": true,
+      "target_root_counts": {
+        "/Game/Assets/VFX/Weapons/FantasyVFXCollection": 280,
+        "/Game/Assets/VFX/Buffs/FantasyVFXCollection": 16
+      },
+      "preexisting_missing_game_dependencies": {},
+      "unmigrated_source_packages": []
+    },
+    {
+      "id": "good-fx-status",
+      "source_files": 249,
+      "source_crc_verified_during_copy": true,
+      "target_root_counts": {
+        "/Game/Assets/VFX/Buffs/GoodParticleStatus": 245
+      },
+      "preexisting_missing_game_dependencies": {
+        "/Game/GoodParticleStatus/Blueprint/BP_GoodParticleStatus": [
+          [
+            "/Game/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos",
+            true
+          ]
+        ],
+        "/Game/GoodParticleStatus/Maps/Maps_Source/Materials/M_GPS_LavaLand": [
+          [
+            "/Game/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D",
+            true
+          ]
+        ],
+        "/Game/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Blueprints/ThirdPersonCharacter": [
+          [
+            "/Game/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP",
+            true
+          ]
+        ],
+        "/Game/GoodParticleStatus/Sources/Materials/M_GPS_FireShield": [
+          [
+            "/Game/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D",
+            true
+          ]
+        ]
+      },
+      "unmigrated_source_packages": [
+        {
+          "source_package": "/Game/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP",
+          "archive_entry": "Content/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP.uasset",
+          "bytes": 231475,
+          "crc32": "48947e68",
+          "reason": "unreadable_package_summary"
+        },
+        {
+          "source_package": "/Game/GoodParticleStatus/Particles/Head_Status/GS_GPS_Hera",
+          "archive_entry": "Content/GoodParticleStatus/Particles/Head_Status/GS_GPS_Hera.uasset",
+          "bytes": 8,
+          "crc32": "f7e0130a",
+          "reason": "unreadable_package_summary"
+        },
+        {
+          "source_package": "/Game/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos",
+          "archive_entry": "Content/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos.uasset",
+          "bytes": 209460,
+          "crc32": "6cacfb26",
+          "reason": "unreadable_package_summary"
+        },
+        {
+          "source_package": "/Game/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D",
+          "archive_entry": "Content/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D.uasset",
+          "bytes": 168722,
+          "crc32": "8e1fe238",
+          "reason": "unreadable_package_summary"
+        }
+      ]
+    },
+    {
+      "id": "high-speed-thrusters",
+      "source_files": 30,
+      "source_crc_verified_during_copy": true,
+      "target_root_counts": {
+        "/Game/Assets/VFX/Weapons/Missiles/HighSpeedThrusters": 30
+      },
+      "preexisting_missing_game_dependencies": {},
+      "unmigrated_source_packages": []
+    }
+  ],
+  "existing_vfx_reorganization": [
+    {
+      "id": "niagara-upgrade-glow",
+      "source_root": "/Game/Assets/VFX/NiagaraUpgradeGlow",
+      "target_root": "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow",
+      "package_count": 202,
+      "maps": [
+        "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Maps/NewWorld"
+      ]
+    },
+    {
+      "id": "weapon-bullet-vfx",
+      "source_root": "/Game/Assets/VFX/WeaponBulletVFX",
+      "target_root": "/Game/Assets/VFX/Weapons/WeaponBulletVFX",
+      "package_count": 134,
+      "maps": []
+    },
+    {
+      "id": "missile-cluster",
+      "source_root": "/Game/Assets/Missile_Cluster",
+      "target_root": "/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster",
+      "package_count": 46,
+      "maps": [
+        "/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster/001"
+      ]
+    },
+    {
+      "id": "beam-spells-vfx",
+      "source_root": "/Game/Assets/Beam_Spells_VFX",
+      "target_root": "/Game/Assets/VFX/Weapons/Beam_Spells_VFX",
+      "package_count": 62,
+      "maps": [
+        "/Game/Assets/VFX/Weapons/Beam_Spells_VFX/Demo_Scene/MapDemo"
+      ]
+    }
+  ],
+  "remaining_corrupt_staging_files_windows_error": null,
+  "niagara_fluids": {
+    "project_plugin_enabled": false,
+    "direct_package_dependencies_resolved": 51,
+    "module_status": "incompatible_build_id",
+    "build_ids": {
+      "editor": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+      "niagara_fluids_module": "9872a344-2108-49e2-b40c-34c4e2c3ccfe"
+    },
+    "editor_started_with_plugin_disabled": true
+  },
+  "weapon_vfx_collection": {
+    "name": "VFX_Weapons",
+    "share": "local",
+    "effects": 302,
+    "toon_projectiles_systems": 45
+  },
+  "checks": {
+    "engine": "5.7.4-0+UE5",
+    "world": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview.LVL_CardArtworkCatalogReview",
+    "pie": false,
+    "dirty_packages": [],
+    "registered_new": 754,
+    "registered_existing": 444,
+    "external_referencers": [
+      "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Flash35b",
+      "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_FlashGroundA",
+      "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Glow1a",
+      "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Point12b",
+      "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/MI_Trail82b",
+      "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/M_CircleRainbow11a",
+      "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/M_SS1b",
+      "/Game/Assets/Niagara_Toon_Projectiles_2/Materials/M_Stone3b",
+      "/Game/GuLiStrike/Buildings/Construction/M_ConstructionColumnTail",
+      "/Game/GuLiStrike/Buildings/Construction/M_ConstructionMote",
+      "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionComplete",
+      "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_GroundBulletTrail_Orange",
+      "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Glow",
+      "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/NS_GroundMech_Impact_B1",
+      "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveFlameRibbon",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Loop",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail",
+      "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A3/NS_GroundMech_Bullet_SingleCurve_A3",
+      "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A3/NS_GroundMech_Muzzle_A3",
+      "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/NS_GroundMech_PersistentCurve_A4",
+      "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet",
+      "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle",
+      "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet"
+    ],
+    "retained_redirectors": {
+      "/Game/Assets/Missile_Cluster/001": "/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster/001"
+    },
+    "bad_source_staging_files": [],
+    "plan": {
+      "buff-loop": {
+        "classes": {
+          "MapBuildDataRegistry": 1,
+          "Material": 34,
+          "MaterialFunction": 2,
+          "MaterialInstanceConstant": 42,
+          "NiagaraEmitter": 19,
+          "NiagaraScript": 1,
+          "NiagaraSystem": 20,
+          "StaticMesh": 18,
+          "Texture2D": 45,
+          "World": 1
+        },
+        "counts_by_root": {
+          "/Game/Assets/VFX/Buffs/BuffLoop": 183
+        },
+        "packages": 183,
+        "maps": [
+          "/Game/Assets/VFX/Buffs/BuffLoop/Demo/OverView_DemoScene"
+        ]
+      },
+      "fantasy-vfx-collection": {
+        "classes": {
+          "LevelSequence": 2,
+          "MapBuildDataRegistry": 1,
+          "Material": 10,
+          "MaterialFunction": 1,
+          "MaterialInstanceConstant": 90,
+          "ParticleSystem": 118,
+          "StaticMesh": 9,
+          "Texture2D": 64,
+          "World": 1
+        },
+        "counts_by_root": {
+          "/Game/Assets/VFX/Weapons/FantasyVFXCollection": 280,
+          "/Game/Assets/VFX/Buffs/FantasyVFXCollection": 16
+        },
+        "packages": 296,
+        "maps": [
+          "/Game/Assets/VFX/Weapons/FantasyVFXCollection/0_Scene/Preview_Scene"
+        ]
+      },
+      "good-fx-status": {
+        "classes": {
+          "AnimComposite": 1,
+          "AnimSequence": 8,
+          "BlendSpace1D": 1,
+          "Blueprint": 2,
+          "Material": 58,
+          "MaterialFunction": 6,
+          "MaterialInstanceConstant": 30,
+          "ParticleSystem": 36,
+          "PhysicsAsset": 1,
+          "SkeletalMesh": 1,
+          "Skeleton": 1,
+          "StaticMesh": 15,
+          "Texture2D": 81,
+          "TextureCube": 1,
+          "UserDefinedEnum": 1,
+          "WidgetBlueprint": 1,
+          "World": 1
+        },
+        "counts_by_root": {
+          "/Game/Assets/VFX/Buffs/GoodParticleStatus": 245
+        },
+        "packages": 245,
+        "maps": [
+          "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Level_GoodParticleStatus"
+        ]
+      },
+      "high-speed-thrusters": {
+        "classes": {
+          "MapBuildDataRegistry": 1,
+          "Material": 8,
+          "NiagaraEmitter": 5,
+          "NiagaraScript": 1,
+          "NiagaraSystem": 4,
+          "StaticMesh": 1,
+          "Texture2D": 9,
+          "World": 1
+        },
+        "counts_by_root": {
+          "/Game/Assets/VFX/Weapons/Missiles/HighSpeedThrusters": 30
+        },
+        "packages": 30,
+        "maps": [
+          "/Game/Assets/VFX/Weapons/Missiles/HighSpeedThrusters/Maps/Overview"
+        ]
+      },
+      "niagara-upgrade-glow": {
+        "classes": {
+          "Blueprint": 1,
+          "LevelSequence": 1,
+          "MapBuildDataRegistry": 1,
+          "Material": 54,
+          "MaterialFunction": 2,
+          "MaterialInstanceConstant": 19,
+          "NiagaraSystem": 17,
+          "StaticMesh": 30,
+          "Texture2D": 76,
+          "World": 1
+        },
+        "counts_by_root": {
+          "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow": 202
+        },
+        "packages": 202,
+        "maps": [
+          "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Maps/NewWorld"
+        ]
+      },
+      "weapon-bullet-vfx": {
+        "classes": {
+          "CurveFloat": 1,
+          "Material": 19,
+          "MaterialInstanceConstant": 23,
+          "NiagaraEmitter": 14,
+          "NiagaraSystem": 20,
+          "SoundCue": 14,
+          "SoundWave": 14,
+          "StaticMesh": 5,
+          "Texture2D": 24
+        },
+        "counts_by_root": {
+          "/Game/Assets/VFX/Weapons/WeaponBulletVFX": 134
+        },
+        "packages": 134,
+        "maps": []
+      },
+      "missile-cluster": {
+        "classes": {
+          "Blueprint": 2,
+          "Material": 7,
+          "MaterialInstanceConstant": 11,
+          "NiagaraSystem": 5,
+          "StaticMesh": 1,
+          "Texture2D": 19,
+          "World": 1
+        },
+        "counts_by_root": {
+          "/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster": 46
+        },
+        "packages": 46,
+        "maps": [
+          "/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster/001"
+        ]
+      },
+      "beam-spells-vfx": {
+        "classes": {
+          "Blueprint": 3,
+          "Material": 24,
+          "NiagaraSystem": 13,
+          "StaticMesh": 6,
+          "Texture2D": 15,
+          "World": 1
+        },
+        "counts_by_root": {
+          "/Game/Assets/VFX/Weapons/Beam_Spells_VFX": 62
+        },
+        "packages": 62,
+        "maps": [
+          "/Game/Assets/VFX/Weapons/Beam_Spells_VFX/Demo_Scene/MapDemo"
+        ]
+      }
+    },
+    "missing_target_packages": [],
+    "registry_class_errors": [],
+    "load_failures": [],
+    "stale_dependencies": {},
+    "unresolved_dependencies": {},
+    "lost_external_edges": {},
+    "passed": true
+  },
+  "visual_verification": "not_run_user_review",
+  "gameplay_verification": "not_run",
+  "staging_cleanup": {
+    "date": "2026-11-18",
+    "source_root": "/Game/GoodParticleStatus",
+    "staging_root_removed": true,
+    "removed_source_package_copies": [
+      "/Game/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP",
+      "/Game/GoodParticleStatus/Particles/Head_Status/GS_GPS_Hera",
+      "/Game/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos",
+      "/Game/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D"
+    ],
+    "previous_windows_error": 32,
+    "good_fx_destination_files_verified": 245,
+    "source_archive_sha256_matches": true
+  },
+  "good_fx_status_repair": {
+    "installed_replacements": 4,
+    "total_verified_packages": 249,
+    "report": "data/ExternalAssets/migrations/20261118/good-fx-repair.json"
+  }
+}

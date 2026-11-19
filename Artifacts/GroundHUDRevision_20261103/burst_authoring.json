@@ -1,0 +1,291 @@
+{
+  "success": true,
+  "source": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus",
+  "asset": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst",
+  "emitters": [
+    {
+      "emitter": "Dots",
+      "ribbon": false,
+      "materials": [
+        "/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/M_ParticleTrail.M_ParticleTrail"
+      ],
+      "spawn_budget": 96,
+      "modules": [
+        {
+          "name": "SolveForcesAndVelocity",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "SpriteSizeScale",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "Vector2DFromFloat",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "FloatFromCurve",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "InitializeParticle",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "UniformRangedFloat003",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "UniformRangedFloat005",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "NormalizedAngleToDegrees001",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "UniformRangedFloat006",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "ParticleOwnerPosition",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "Drag",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "ParticleState",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "Vector2DFromFloat001",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "ColorFromCurve",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "Color",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "ColorFromCurve001",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "SpawnBurst_Instantaneous",
+          "stage": "EmitterUpdate"
+        },
+        {
+          "name": "ShapeLocation",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "EmitterState",
+          "stage": "EmitterUpdate"
+        },
+        {
+          "name": "GuLiBurstCapture",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "GuLiBurstRestore",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "GuLiBurstEnvelope",
+          "stage": "ParticleUpdate"
+        }
+      ]
+    },
+    {
+      "emitter": "Smoke001",
+      "ribbon": false,
+      "materials": [
+        "/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_SimpleTexture.MI_SimpleTexture"
+      ],
+      "spawn_budget": 48,
+      "modules": [
+        {
+          "name": "SolveForcesAndVelocity",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "SpriteSizeScale",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "Vector2DFromFloat",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "FloatFromCurve",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "InitializeParticle",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "UniformRangedFloat003",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "UniformRangedFloat005",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "NormalizedAngleToDegrees001",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "UniformRangedFloat006",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "ParticleOwnerPosition",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "Drag",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "ParticleState",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "SubUVAnimation",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "Vector2DFromFloat001",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "ColorFromCurve",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "Color",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "ColorFromCurve001",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "SpawnRate",
+          "stage": "EmitterUpdate"
+        },
+        {
+          "name": "SphereLocation",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "ShapeLocation",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "EmitterState",
+          "stage": "EmitterUpdate"
+        },
+        {
+          "name": "GuLiBurstCapture",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "GuLiBurstRestore",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "GuLiBurstEnvelope",
+          "stage": "ParticleUpdate"
+        }
+      ]
+    },
+    {
+      "emitter": "Trails",
+      "ribbon": true,
+      "materials": [
+        "/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_TrailMaster.MI_TrailMaster"
+      ],
+      "spawn_budget": 128,
+      "modules": [
+        {
+          "name": "SolveForcesAndVelocity",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "InitializeParticle",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "ParticleOwnerPosition",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "ParticleState",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "InitializeRibbon",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "Drag",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "FloatFromCurve",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "ColorFromCurve",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "SpawnRate",
+          "stage": "EmitterUpdate"
+        },
+        {
+          "name": "Color",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "ColorFromCurve001",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "ShapeLocation",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "EmitterState",
+          "stage": "EmitterUpdate"
+        },
+        {
+          "name": "GuLiBurstCapture",
+          "stage": "ParticleSpawn"
+        },
+        {
+          "name": "GuLiBurstRestore",
+          "stage": "ParticleUpdate"
+        },
+        {
+          "name": "GuLiBurstEnvelope",
+          "stage": "ParticleUpdate"
+        }
+      ]
+    }
+  ],
+  "diagnostics": "System valid=1 ready=1 gpu=0 needs_compile=0 outstanding=0\nNiagaraSpriteRendererProperties material=/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/M_ParticleTrail.M_ParticleTrail platform=49 finished=1 complete=0 shader_map=1\nNiagara renderer proxy fallback=0\nNiagaraSpriteRendererProperties material=/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_SimpleTexture.MI_SimpleTexture platform=49 finished=1 complete=0 shader_map=1\nNiagara renderer proxy fallback=0\nNiagaraRibbonRendererProperties material=/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_TrailMaster.MI_TrailMaster platform=49 finished=1 complete=0 shader_map=1\nNiagara renderer proxy fallback=0\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_2.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_2.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_3.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_3.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Trails_2.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Trails_2.UpdateScript status=NCS_UpToDate\n",
+  "expansion_seconds": 0.5,
+  "fade_seconds": 0.5,
+  "lifetime_seconds": 1,
+  "radius_cm": 500,
+  "visual_acceptance": "pending_user"
+}

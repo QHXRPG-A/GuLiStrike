@@ -1,0 +1,28 @@
+{
+  "name": "quadruped-mech-side-panels",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "node .edit3d/run.mjs dev",
+    "check": "node .edit3d/run.mjs check",
+    "build": "node .edit3d/run.mjs build",
+    "start": "node dist/server.mjs --data-dir ./data"
+  },
+  "dependencies": {
+    "three": "0.186.0",
+    "@edit3d/sdk": "file:./.edit3d/edit3d-sdk.tgz"
+  },
+  "devDependencies": {
+    "@edit3d/cli": "file:./.edit3d/edit3d-cli.tgz"
+  },
+  "edit3d": {
+    "template": "editor",
+    "entry": "src/project.js",
+    "sceneProtocol": 1,
+    "artifactId": "f4fc21a6-9e17-48a3-87a2-3e50448f7c75"
+  }
+}

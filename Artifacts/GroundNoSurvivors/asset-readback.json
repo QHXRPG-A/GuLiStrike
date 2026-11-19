@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "projectile": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/DA_GroundNoSurvivorsMissile",
+  "field": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/DA_GroundNoSurvivorsExplosion",
+  "radius_cm": 1484,
+  "damage": 30,
+  "effects": {
+    "GroundNoSurvivorsFlight": {
+      "id": 67,
+      "system": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsFlight.NS_NoSurvivorsFlight",
+      "scale": "(X=2.000000,Y=2.000000,Z=2.000000)",
+      "extra_trail": 0,
+      "TrailLengthCm": 2730,
+      "TrailFadeSeconds": 0.6
+    },
+    "GroundNoSurvivorsImpact": {
+      "id": 68,
+      "system": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsImpact.NS_NoSurvivorsImpact",
+      "scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+      "extra_trail": 0
+    }
+  },
+  "impact_scale_parameter": "User.Area_Scale",
+  "use_hit_centers": true,
+  "skill_table": "DT_GuLiStrikeMech_Skills",
+  "skill_row": "GroundNoSurvivors",
+  "horizontal_dive_range_cm": 20000.0,
+  "dive_acceleration_cm_s2": 9500.0,
+  "intercept_enemy_bodies": false,
+  "maximum_cruise_seconds": 30.0,
+  "motion": "(Speed=4550.000000,LiftSeconds=0.260000,MinimumLiftHeight=420.000000,MaximumLiftHeight=900.000000,LateralOffset=2200.000000,VerticalCurve=1550.000000,LongitudinalCurve=700.000000,ConvergenceDistance=3900.000000,TurnRate=600.000000,SweepRadius=0.000000,MaximumLifetime=30.000000)",
+  "q": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_NoSurvivors",
+  "model_id": 4001,
+  "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+  "muzzle_sockets": [
+    "Jet_Outlet_L",
+    "Jet_Outlet_R"
+  ]
+}

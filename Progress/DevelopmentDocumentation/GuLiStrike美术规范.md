@@ -219,7 +219,7 @@ Ship组件分批制作与审核入口：[首批双联炮/CIWS/Thor](20260917-Shi
 
 ## 2026-09-20 地面机枪逐发特效候选
 
-用户明确指定`/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_Smg_Loop`和`VFX_FireGun_Loop`作为已确认参考A，并批准先制作可播放候选、正式接入前完成视觉审核。项目副本为`/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet`及`NS_GroundMech_Muzzle`，前者保留源中央弹道材质与配色、去双侧散射及枪口层，后者提取枪口焰与近口火星并改为逐发有限寿命。
+用户明确指定`/Game/Assets/VFX/Weapons/WeaponBulletVFX/NS/VFX_Smg_Loop`和`VFX_FireGun_Loop`作为已确认参考A，并批准先制作可播放候选、正式接入前完成视觉审核。项目副本为`/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet`及`NS_GroundMech_Muzzle`，前者保留源中央弹道材质与配色、去双侧散射及枪口层，后者提取枪口焰与近口火星并改为逐发有限寿命。
 
 当前B候选与炮管后坐已在`/Game/Maps/LVL_GroundMech_FireReview`实际播放，62帧连续图、时间轴和采样（历史附件已清理；原路径：`../../TestResults/GroundMech/Fire/Review.html`）覆盖起始、回缩、复位和消散。Niagara及动画蓝图编译0错误/0警告，单发粒子、池回收和双端同步技术检查通过；没有用户对当前B的通过决定，正式玩家蓝图武器开关保持关闭。全局规范仍v1.2，不改变其他资产审核状态。具体源/目标、镜像枪口轴向修正及边界见[开发记录](20260920-玩家游骑兵开火与升级配置.md)。
 

@@ -16,9 +16,13 @@ bool Valid(const Ricochet& V,bool Empty=false)
 {return (Empty&&!V.Minimum&&!V.Maximum&&!V.PerStack&&!V.Range&&!V.Retention)||!Effects::EncodeRicochet(V).empty();}
 Bytes RawCatalog(const Catalog& C)
 {
-    Writer W(MaximumCapabilityBytes);W.U32(Version);W.U32(std::uint32_t(C.Cards.size()));
+    constexpr std::uint32_t RankedCatalogVersion=8;
+    const bool Ranked=std::any_of(C.Cards.begin(),C.Cards.end(),[](const auto& Entry){return !Entry.second.RequiredLevels.empty();});
+    Writer W(MaximumCapabilityBytes);W.U32(Ranked?RankedCatalogVersion:Version);W.U32(std::uint32_t(C.Cards.size()));
     for(const auto& [Id,V]:C.Cards){W.Text(Id);W.U32(V.MaximumAcquisitions);Strings(W,V.Required);Strings(W,V.Excluded);W.U32(std::uint32_t(V.EffectIds.size()));for(auto E:V.EffectIds)W.U32(E);}
-    Effects::Set E;for(const auto& [Id,D]:C.Effects){if(Id!=D.Id)return {};E.push_back(D);}auto B=Effects::Encode(E);if(B.empty())return {};W.Blob(B);return W.Take();
+    Effects::Set E;for(const auto& [Id,D]:C.Effects){if(Id!=D.Id)return {};E.push_back(D);}auto B=Effects::Encode(E);if(B.empty())return {};W.Blob(B);
+    if(Ranked)for(const auto& [_,V]:C.Cards){W.U32(std::uint32_t(V.RequiredLevels.size()));for(auto Level:V.RequiredLevels)W.U32(Level);}
+    return W.Take();
 }
 std::uint32_t Acquired(const Build& B,const std::string& Id) {const auto I=B.Acquired.find(Id);return I==B.Acquired.end()?0:I->second;}
 Id Hash(Writer& W) {Id V;Id::Parse(Sha256(W.Take()).substr(0,32),V);return V;}
@@ -35,6 +39,14 @@ bool Compile(const Catalog& C,CompiledUpgradeCatalog& Out,std::string& Error)
     for(const auto& [Id,V]:C.Cards)
     {
         if(!Text(Id)||Id!=V.Id||V.EffectIds.empty()||V.EffectIds.size()>64){Error="Invalid Ground rogue card: "+Id;return false;}
+        if(!V.RequiredLevels.empty() && V.RequiredLevels.size()!=V.Required.size()){Error="Mismatched prerequisite levels: "+Id;return false;}
+        for(std::size_t I=0;I<V.RequiredLevels.size();++I)
+        {
+            const auto Parent=C.Cards.find(V.Required[I]);
+            const auto Min=V.RequiredLevels[I];
+            if(Parent==C.Cards.end()||!Min||(Parent->second.MaximumAcquisitions && Min>Parent->second.MaximumAcquisitions))
+            {Error="Unreachable prerequisite level: "+Id;return false;}
+        }
         std::set<std::uint32_t> EffectIds;for(auto E:V.EffectIds)if(!C.Effects.contains(E)||!EffectIds.insert(E).second){Error="Unknown or duplicate effect reference: "+Id;return false;}
         UpgradeNode N;N.Id=N.Route=N.Group=Id;
         if(!V.Required.empty())
@@ -59,6 +71,8 @@ bool Resolve(const Catalog& C,const Build& B,Effects::Set& Out)
     for(const auto& [Id,N]:B.Acquired)
     {
         const auto Index=Graph.NodeIndices.find(Id);if(Index==Graph.NodeIndices.end()||!EvaluateUpgradeExpression(Graph.Data.Nodes[Index->second].Requires,Context))return false;
+        const auto& Card=C.Cards.at(Id);
+        for(std::size_t I=0;I<Card.RequiredLevels.size();++I)if(Acquired(B,Card.Required[I])<Card.RequiredLevels[I])return false;
         if(const auto Conflicts=Graph.Conflicts.find(Id);Conflicts!=Graph.Conflicts.end())for(const auto& Other:Conflicts->second)if(Context.Chosen.contains(Other))return false;
     }
     std::map<std::uint32_t,std::uint32_t> Counts;
@@ -86,9 +100,16 @@ Bytes EncodeCatalog(const Catalog& C)
 }
 bool DecodeCatalog(std::span<const std::uint8_t> Bytes,Catalog& Out)
 {
-    Reader R(Bytes);Catalog C;std::uint32_t Ver,N;if(!R.U32(Ver)||Ver!=Version||!Count(R,N))return false;
+    Reader R(Bytes);Catalog C;std::uint32_t Ver,N;if(!R.U32(Ver)||(Ver!=Version&&Ver!=8)||!Count(R,N))return false;
     for(std::uint32_t I=0;I<N;++I){Card V;std::uint32_t K;if(!R.Text(V.Id,192)||!R.U32(V.MaximumAcquisitions)||!Strings(R,V.Required)||!Strings(R,V.Excluded)||!Count(R,K,64))return false;V.EffectIds.resize(K);for(auto& E:V.EffectIds)if(!R.U32(E))return false;if(!C.Cards.emplace(V.Id,V).second)return false;}
     GuLiNet::Bytes B;Effects::Set E;if(!R.Blob(B,MaximumCapabilityBytes)||!Effects::Decode(B,E))return false;for(auto& D:E)if(!C.Effects.emplace(D.Id,D).second)return false;
+    if(Ver==8)for(auto& [_,V]:C.Cards)
+    {
+        std::uint32_t Size;
+        if(!Count(R,Size)|| (Size && Size!=V.Required.size()))return false;
+        V.RequiredLevels.resize(Size);
+        for(auto& Level:V.RequiredLevels)if(!R.U32(Level))return false;
+    }
     CompiledUpgradeCatalog G;std::string Error;if(!R.Done()||!Compile(C,G,Error))return false;Out=std::move(C);return true;
 }
 Bytes EncodeCounters(const ShotCounters& S)
@@ -226,6 +247,26 @@ bool Init(RuntimeManifest& M,std::string& Error)
         for(const char* Field:{"bullet","impact","muzzle","initial_bullet"}){const auto I=M.Numbers.find("ground_attack/"+Id+"/"+Field);if(I==M.Numbers.end()||I->second<0||I->second>INT32_MAX)return false;Binding.U32(std::uint32_t(I->second));}
         for(const char* Field:{"base_rate","initial_ratio"}){const auto I=M.Numbers.find("ground_attack/"+Id+"/"+Field);if(I==M.Numbers.end()||!std::isfinite(I->second)||I->second<=0)return false;Binding.F32(float(I->second));}
     }
+    if(const auto Trial=M.Numbers.find("ground_rogue/barrage/trial_level");Trial!=M.Numbers.end())
+    {
+        if(Trial->second!=0&&Trial->second!=1)return false;
+        const auto Card=std::find_if(C.Cards.begin(),C.Cards.end(),[&](const auto& Entry){
+            return std::any_of(Entry.second.EffectIds.begin(),Entry.second.EffectIds.end(),[&](auto Id){return C.Effects.at(Id).Handler=="ground/no_survivors";});
+        });
+        if(Card==C.Cards.end()||!Card->second.MaximumAcquisitions||Card->second.MaximumAcquisitions>16)return false;
+        Binding.Text(Card->first);Binding.U32(Card->second.MaximumAcquisitions);
+        std::set<std::uint32_t> Levels;
+        for(const auto& [Id,Rule]:M.Rules)
+        {
+            const auto Rank=M.Numbers.find("ground_rogue/barrage/rank/"+Id);
+            if(Rank==M.Numbers.end())continue;
+            const double Value=Rank->second;
+            if(!(Value>=1&&Value<=Card->second.MaximumAcquisitions)||Value!=std::floor(Value)||Rule.SpawnKind!=ObjectKind::Field||
+               Rule.SourceDefinition!="player/ground"||!Levels.insert(std::uint32_t(Value)).second)return false;
+            Binding.Text(Id);Binding.U32(std::uint32_t(Value));
+        }
+        if(Levels.size()!=Card->second.MaximumAcquisitions)return false;
+    }
     auto Data=Binding.Take();if(Data.empty())return false;
     for(auto& [_,O]:M.Objects)if(O.Definition=="player/ground"){O.Capabilities["ground_binding"]={Version,Data};O.Capabilities[CounterName]={Version,EncodeCounters({})};}
     for(auto& [_,R]:M.Rules)if(R.TargetDefinition=="player/ground"&&R.SpawnKind==ObjectKind::GroundPlayer){R.SpawnCapabilities["ground_binding"]={Version,Data};R.SpawnCapabilities[CounterName]={Version,EncodeCounters({})};}
@@ -254,13 +295,26 @@ const bool AttackRegistered=[]
     return RegisterCapability(std::move(C));
 }();
 struct WeaponProfile {Attack Base;std::string Upgrade;std::uint32_t InitialBullet=0;float BaseRate=0,InitialRatio=0;};
-struct Binding {ObjectKey Roots[2];std::map<std::string,WeaponProfile> Rules;};
+struct Binding
+{
+    ObjectKey Roots[2];std::map<std::string,WeaponProfile> Rules;
+    std::string BarrageCard;
+    std::map<std::string,std::uint32_t> BarrageRules;
+};
 bool ReadBinding(std::span<const std::uint8_t> Bytes,Binding& B)
 {
     Reader R(Bytes);std::uint32_t V,N;if(!R.U32(V)||V!=Version||!R.Key(B.Roots[0])||!R.Key(B.Roots[1])||!Count(R,N))return false;
     for(std::uint32_t I=0;I<N;++I){std::string Id;WeaponProfile P;auto& A=P.Base;
         if(!R.Text(Id,192)||!R.Text(P.Upgrade,192)||!R.F32(A.Damage)||!R.U32(A.BulletVfx)||!R.U32(A.ImpactVfx)||!R.U32(A.MuzzleVfx)||!R.U32(P.InitialBullet)||!R.F32(P.BaseRate)||!R.F32(P.InitialRatio)
-            ||!std::isfinite(P.BaseRate)||P.BaseRate<=0||P.BaseRate>Effects::MaximumGroundFireRate||!std::isfinite(P.InitialRatio)||P.InitialRatio<=0||P.InitialRatio>1||!P.InitialBullet||!B.Rules.emplace(Id,P).second)return false;}return R.Done();
+            ||!std::isfinite(P.BaseRate)||P.BaseRate<=0||P.BaseRate>Effects::MaximumGroundFireRate||!std::isfinite(P.InitialRatio)||P.InitialRatio<=0||P.InitialRatio>1||!P.InitialBullet||!B.Rules.emplace(Id,P).second)return false;}
+    if(R.Done())return true;
+    if(!R.Text(B.BarrageCard,192)||!Text(B.BarrageCard)||!Count(R,N,16)||!N)return false;
+    for(std::uint32_t I=0;I<N;++I)
+    {
+        std::string Rule;std::uint32_t Rank;
+        if(!R.Text(Rule,192)||!R.U32(Rank)||!Rank||Rank>N||!B.BarrageRules.emplace(Rule,Rank).second)return false;
+    }
+    return R.Done();
 }
 const WeaponProfile* CurrentProfile(const ObjectRecord& O,const Binding& B)
 {const auto Selection=O.Upgrades.find("ground_weapon");if(Selection==O.Upgrades.end()||Selection->second.Chosen.empty())return nullptr;for(const auto& [_,P]:B.Rules)if(P.Upgrade==Selection->second.Chosen.back())return &P;return nullptr;}
@@ -325,8 +379,18 @@ const bool BindingRegistered=[]
     C.ValidateState=[](const ObjectRecord& O,const CapabilityState& S){Binding B;return O.Grant.Object.Kind==ObjectKind::GroundPlayer&&S.Version==Version&&ReadBinding(S.Data,B);};
     C.ValidateRule=[](const Rule&){return false;};C.Prepare=[](const CapabilityContext&,CapabilityDelta&){return CommitStatus::InvalidRule;};
     C.ValidateTransition=[](const ObjectRecord& A,const ObjectRecord& B){return A.Capabilities.at("ground_binding").Data==B.Capabilities.at("ground_binding").Data;};
-    C.DeriveSpawn=[](const ObjectRecord& Parent,const std::map<ObjectKey,ObjectRecord>& Objects,const TransactionRequest&,ObjectRecord& Child)
+    C.DeriveSpawn=[](const ObjectRecord& Parent,const std::map<ObjectKey,ObjectRecord>& Objects,const TransactionRequest& Request,ObjectRecord& Child)
     {
+        if(Child.Grant.Object.Kind==ObjectKind::Field)
+        {
+            Binding B;if(!ReadBinding(Parent.Capabilities.at("ground_binding").Data,B))return false;
+            const auto Rule=B.BarrageRules.find(Request.RuleId);
+            if(Rule==B.BarrageRules.end())return true;
+            const auto Root=Objects.find(B.Roots[Parent.Grant.Faction==Team::Red?0:1]);
+            State S;if(Root==Objects.end()||!GetState(Root->second,S))return false;
+            const auto Owner=S.Players.find(Parent.Grant.Controller);
+            return Owner!=S.Players.end() && Acquired(Owner->second,B.BarrageCard)>=Rule->second;
+        }
         if(Child.Grant.Object.Kind!=ObjectKind::Flight||!Child.Definition.starts_with("effect/linear/"))return true;
         Binding B;if(!ReadBinding(Parent.Capabilities.at("ground_binding").Data,B))return false;
         const auto Profile=B.Rules.find(Child.Definition.substr(std::string("effect/linear/").size()));if(Profile==B.Rules.end())return false;

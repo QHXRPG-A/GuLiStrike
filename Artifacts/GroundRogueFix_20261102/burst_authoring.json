@@ -1,0 +1,86 @@
+{
+  "success": true,
+  "source": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus",
+  "asset": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst",
+  "emitters": [
+    {
+      "emitter": "Dots",
+      "materials": [
+        "/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/M_ParticleTrail.M_ParticleTrail"
+      ],
+      "particles": 32,
+      "modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1853D40) {module_name: \"SolveForcesAndVelocity\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity\", module_index: 0, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1857E40) {module_name: \"SpriteSizeScale\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Size/ScaleSpriteSize.ScaleSpriteSize\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1853700) {module_name: \"Vector2DFromFloat\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1856040) {module_name: \"FloatFromCurve\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve\", module_index: 3, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1854DD0) {module_name: \"InitializeParticle\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle\", module_index: 4, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1854E20) {module_name: \"UniformRangedFloat003\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 5, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C18545B0) {module_name: \"UniformRangedFloat005\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 6, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1854420) {module_name: \"NormalizedAngleToDegrees001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees\", module_index: 7, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1854FB0) {module_name: \"UniformRangedFloat006\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 8, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1854B00) {module_name: \"ParticleOwnerPosition\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition\", module_index: 9, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1854A60) {module_name: \"Drag\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Forces/Drag.Drag\", module_index: 10, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C185E970) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 11, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1855BE0) {module_name: \"Vector2DFromFloat001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 12, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1855E60) {module_name: \"ColorFromCurve\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve\", module_index: 13, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1855E10) {module_name: \"Color\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Color/Color.Color\", module_index: 14, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1856130) {module_name: \"ColorFromCurve001\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve\", module_index: 15, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1856270) {module_name: \"ShapeLocation\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Location/V2/ShapeLocation.ShapeLocation\", module_index: 16, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C18561D0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 17, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C185CB20) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 18, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C185C990) {module_name: \"GuLiBurstSeed_2\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.NiagaraScratchPadContainer_0.GuLiBurstSeed_2\", module_index: 19, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C1859F10) {module_name: \"GuLiBurstExpandFade_2\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.NiagaraScratchPadContainer_0.GuLiBurstExpandFade_2\", module_index: 20, is_enabled: True, inputs: }>"
+      ]
+    },
+    {
+      "emitter": "Smoke001",
+      "materials": [
+        "/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_SimpleTexture.MI_SimpleTexture"
+      ],
+      "particles": 32,
+      "modules": [
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737C60) {module_name: \"SolveForcesAndVelocity\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity\", module_index: 0, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737CB0) {module_name: \"SpriteSizeScale\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Size/ScaleSpriteSize.ScaleSpriteSize\", module_index: 1, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737C10) {module_name: \"Vector2DFromFloat\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 2, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737D00) {module_name: \"FloatFromCurve\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve\", module_index: 3, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737D50) {module_name: \"InitializeParticle\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle\", module_index: 4, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737E90) {module_name: \"UniformRangedFloat003\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 5, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737E40) {module_name: \"UniformRangedFloat005\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 6, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737DF0) {module_name: \"NormalizedAngleToDegrees001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees\", module_index: 7, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737F30) {module_name: \"UniformRangedFloat006\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 8, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0737EE0) {module_name: \"ParticleOwnerPosition\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition\", module_index: 9, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736590) {module_name: \"Drag\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Forces/Drag.Drag\", module_index: 10, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736540) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 11, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C07365E0) {module_name: \"SubUVAnimation\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/SubUV/SubUVAnimation.SubUVAnimation\", module_index: 12, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736630) {module_name: \"Vector2DFromFloat001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 13, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736680) {module_name: \"ColorFromCurve\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve\", module_index: 14, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C07367C0) {module_name: \"Color\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Color/Color.Color\", module_index: 15, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736810) {module_name: \"ColorFromCurve001\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve\", module_index: 16, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736860) {module_name: \"SphereLocation\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Location/SphereLocation.SphereLocation\", module_index: 17, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736A40) {module_name: \"ShapeLocation\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Location/V2/ShapeLocation.ShapeLocation\", module_index: 18, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736A90) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 19, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C073D840) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 20, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C0736450) {module_name: \"GuLiBurstSeed_2\", module_type: \"ParticleSpawn\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.NiagaraScratchPadContainer_0.GuLiBurstSeed_2\", module_index: 21, is_enabled: True, inputs: }>",
+        "<Struct 'NiagaraModuleInfo_Custom' (0x000001C9C073D930) {module_name: \"GuLiBurstExpandFade_2\", module_type: \"ParticleUpdate\", script_asset_path: \"/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.NiagaraScratchPadContainer_0.GuLiBurstExpandFade_2\", module_index: 22, is_enabled: True, inputs: }>"
+      ]
+    }
+  ],
+  "parameters": [
+    "<Struct 'NiagaraParameterInfo_Custom' (0x000001CC969D8110) {parameter_name: \"User.InitialAge\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x000001CC969D8C00) {parameter_name: \"User.Lifetime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.400000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x000001CC969DAAA0) {parameter_name: \"User.Radius\", parameter_type: \"Float\", namespace: \"User\", current_value: \"500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x000001CC96998820) {parameter_name: \"User.Seed\", parameter_type: \"Int\", namespace: \"User\", current_value: \"0\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+    "<Struct 'NiagaraParameterInfo_Custom' (0x000001CC9699CA80) {parameter_name: \"User.StartRadius\", parameter_type: \"Float\", namespace: \"User\", current_value: \"100.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+  ],
+  "diagnostics": "System valid=1 ready=1 gpu=0 needs_compile=0 outstanding=0\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.UpdateScript status=NCS_UpToDate\n",
+  "properties": [
+    "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001CC96A66900) {emitter_name: \"Dots\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-502.000000,-502.000000,-502.000000) Max(502.000000,502.000000,502.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+    "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001CC96A66360) {emitter_name: \"Smoke001\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-502.000000,-502.000000,-502.000000) Max(502.000000,502.000000,502.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>"
+  ],
+  "expansion_seconds": 0.12,
+  "fade_seconds": 0.28,
+  "radius_cm": 500,
+  "initial_radius": "min(host collision radius, 175 cm)",
+  "visual_acceptance": "pending_user"
+}

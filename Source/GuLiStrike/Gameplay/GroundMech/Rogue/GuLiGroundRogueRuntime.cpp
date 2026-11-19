@@ -1,4 +1,9 @@
 #include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRoguePresentation.h"
+#include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "EngineUtils.h"
 #include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
 #include "Gameplay/Cards/GuLiRogueCardSettings.h"
 #include "Gameplay/Skills/GuLiHybridArmy.h"
@@ -43,17 +48,42 @@ FGuid Request(const AGuLiBattlePlayerState& PS,EGuLiHybridArmyOperation Op,FGuid
 class FGuLiHybridGroundRogueBridge
 {
 public:
-static bool Apply(UWorld& W,const FGuLiHybridObjectState& O)
+static bool Apply(UWorld& W,const FGuLiHybridObjectState& O,bool Effects)
 {
     auto* Cards=W.GetSubsystem<UGuLiRogueCardSubsystem>();const auto* B=W.GetGameState<AGuLiBattleGameState>();const auto* V=O.Capabilities.Find(TEXT("ground_rogue"));GuLiNet::GroundRogue::State S;
     if(!Cards||!B||!V||!GuLiNet::GroundRogue::DecodeState({V->Data.GetData(),SIZE_T(V->Data.Num())},S))return false;
     Cards->Epoch=B->GetMatchEpoch();
-    if(Cards->GroundEpoch!=Cards->Epoch){Cards->GroundAcquisitions.Reset();Cards->GroundRevisions.Reset();Cards->GroundEpoch=Cards->Epoch;}
+    if(Cards->GroundEpoch!=Cards->Epoch){Cards->GroundAcquisitions.Reset();Cards->GroundRevisions.Reset();Cards->GroundOpenSessions.Reset();Cards->GroundEpoch=Cards->Epoch;}
     for(const auto& [Id,Build]:S.Players)
     {
-        const FGuid Player=GuLiNetBridge::ToUE(Id);auto& Counts=Cards->GroundAcquisitions.FindOrAdd(Player);Counts.Reset();for(const auto& [Card,N]:Build.Acquired)Counts.Add(UTF8_TO_TCHAR(Card.c_str()),int32(N));
+        const FGuid Player=GuLiNetBridge::ToUE(Id);
+        const FGuid Session=GuLiNetBridge::ToUE(Build.Current.Session);
+        const FString CardId(UTF8_TO_TCHAR(Build.Current.Selected.c_str()));
+        auto& Counts=Cards->GroundAcquisitions.FindOrAdd(Player);
+        const int32 PreviousRank=Counts.FindRef(CardId);
+        const bool bObservedPlayer=Cards->GroundRevisions.Contains(Player);
+        const bool bObservedOffer=Session.IsValid() && Cards->GroundOpenSessions.FindRef(Player)==Session;
+        if (Session.IsValid() && !Build.Current.Finished) Cards->GroundOpenSessions.Add(Player,Session);
+        else Cards->GroundOpenSessions.Remove(Player);
+        Counts.Reset();for(const auto& [Card,N]:Build.Acquired)Counts.Add(UTF8_TO_TCHAR(Card.c_str()),int32(N));
         const bool Changed=Cards->GroundRevisions.FindRef(Player)!=Build.RevisionValue;Cards->GroundRevisions.Add(Player,Build.RevisionValue);Cards->HybridRequests.Remove(GuLiNetBridge::ToUE(Build.LastRequest));
         if(Changed)Cards->OnGroundBuildChanged.Broadcast(Player,int64(Build.RevisionValue));
+        const int32 Rank=Counts.FindRef(CardId);
+        // Both the replicated fragment and its receipt can carry the same pick.
+        // Consume the rank edge once. A late-join baseline has no observed offer or earlier build.
+        if (!Changed || !Build.Current.Finished || CardId.IsEmpty() || Rank<=PreviousRank ||
+            !(bObservedOffer || (Effects && bObservedPlayer)) || !UGuLiNetworkSettings::CanPresent(&W)) continue;
+        for (TActorIterator<AGuLiGroundMechCharacter> It(&W); It; ++It)
+        {
+            // The owning player queues the cue from their acknowledged choice and waits for its UI to close.
+            if (It->ModelId != 4001 || It->IsLocallyControlled()) continue;
+            const auto* Identity = UGuLiHybridActorComponent::Find(*It);
+            if (!Identity) continue;
+            const auto& State = Identity->GetState();
+            if (State.Controller!=Player || State.Team!=O.Team || State.bDormant || State.Health.bDead || State.LifeState>=2) continue;
+            It->GetRoguePresentation()->PlayUpgrade(CardId, Rank);
+            break;
+        }
     }
     for(auto It=W.GetPlayerControllerIterator();It;++It)
     {
@@ -98,7 +128,7 @@ public:
         if(H->FindTransactionResult(P.Event,R)){if(R.Status!=EGuLiHybridTransactionStatus::Deferred&&R.Status!=EGuLiHybridTransactionStatus::Paused)Private.Pending.RemoveAt(0);return;}
         if(!P.Submitted&&H->CanPublishFacts())P.Submitted=H->SubmitCapability(Record.Key,P.Event,TEXT("capability/ground_rogue/mutate"),Record.RelationRevision,P.Payload,Record.Team).IsValid();
     }
-    void ApplyLedger(const FGuLiHybridObjectState& O,uint64,bool)override{Record=O;if(World()&&!FGuLiHybridGroundRogueBridge::Apply(*World(),O))World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Ground rogue state could not apply"));}
+    void ApplyLedger(const FGuLiHybridObjectState& O,uint64,bool Effects)override{Record=O;if(World()&&!FGuLiHybridGroundRogueBridge::Apply(*World(),O,Effects))World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Ground rogue state could not apply"));}
     bool ApplyMotion(TConstArrayView<uint8>,uint64)override{return false;}
     bool Capture(TArray<uint8>& B)const override{auto P=Private;FGuLiHybridStateArchive A;Serialize(A,P);return A.Finish(B);}
     bool Validate(TConstArrayView<uint8> B)const override{FPrivate P;return Decode(B,P)&&P.Key==Record.Key;}
@@ -109,7 +139,10 @@ public:
 const FGuLiHybridAdapterRegistration Family({TEXT("GroundRogue"),EGuLiHybridObjectKind::BusinessWork,2,[](UGuLiHybridActorWorldSubsystem& O,const FGuLiHybridObjectState&)->TSharedPtr<IGuLiHybridSimulationAdapter>{return MakeShared<FGroundRogueAdapter>(O);},nullptr,nullptr,EGuLiHybridOwnershipPolicy::SharedGroup,1,false,TEXT("match/resources")});
 bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
 {
-    GuLiNet::GroundRogue::Catalog C;if(!GuLiGroundRogue::LoadCatalog(C,Error))return false;
+    int32 Windup=0;
+    GuLiNet::GroundRogue::Catalog C;if(!GuLiGroundRogue::LoadCatalog(C,Error,&Windup))return false;
+    if (Windup<=0) { Error=TEXT("Ground barrage cast timing is missing"); return false; }
+    M.Numbers.Add(GuLiGroundRogue::BarrageWindupKey,Windup);
     const auto Bytes=GuLiNet::GroundRogue::EncodeCatalog(C);if(Bytes.empty()){Error=TEXT("Ground rogue graph is invalid");return false;}
     M.Numbers.Add(TEXT("ground_rogue/catalog/chunks"),(Bytes.size()+2047)/2048);constexpr TCHAR Hex[]=TEXT("0123456789abcdef");
     for(SIZE_T At=0;At<Bytes.size();At+=2048){FString V;for(SIZE_T I=At;I<FMath::Min<SIZE_T>(At+2048,Bytes.size());++I){V.AppendChar(Hex[Bytes[I]>>4]);V.AppendChar(Hex[Bytes[I]&15]);}M.Strings.Add(TEXT("ground_rogue/catalog/")+FString::FromInt(int32(At/2048)),MoveTemp(V));}

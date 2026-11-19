@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-17",
+  "card": "强化爆炸弹",
+  "seat": "Ground",
+  "design_node_id": "12.01",
+  "scope": "Three alternative reference illustrations",
+  "art_spec": "Progress/RequirementDocument/GuLiStrike美术规范.md",
+  "art_revision": "1.15",
+  "reference_order": [
+    "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Reference_20261117_v1/Inputs/user_missile_reference.png"
+  ],
+  "reference_role": "User silhouette, two luminous rings and flight scene; reinterpretation in project art style",
+  "requested_aspect_ratio": 1.0889386,
+  "requested_pixel_dimensions_in_prompt": [
+    1568,
+    1440
+  ],
+  "visual_acceptance": "pending_user_review",
+  "assistant_visual_validation": "not_performed_per_project_rule",
+  "tool": "built-in image_gen.imagegen",
+  "requests": [
+    {
+      "variant": "A",
+      "prompt_file": "Prompts/A_twin_ring_cruise.txt",
+      "prompt_utf8_sha256": "3aa911cfcaf0ba03233c07fd59524d784f3cbcc3d38054978fef1e5ec7ab0efc",
+      "referenced_image_paths": [
+        "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Reference_20261117_v1/Inputs/user_missile_reference.png"
+      ],
+      "transparent_background": false
+    },
+    {
+      "variant": "B",
+      "prompt_file": "Prompts/B_heavy_blast.txt",
+      "prompt_utf8_sha256": "3107fa51a713ad267c88dc2368929148fa49ddb01050696f1e472f846f5b05e7",
+      "referenced_image_paths": [
+        "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Reference_20261117_v1/Inputs/user_missile_reference.png"
+      ],
+      "transparent_background": false
+    },
+    {
+      "variant": "C",
+      "prompt_file": "Prompts/C_expanding_blast.txt",
+      "prompt_utf8_sha256": "c731a85015eba0a19085104c23966d8af0ed106c5978fec5d605402db66b45ed",
+      "referenced_image_paths": [
+        "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/EnhancedExplosive_Reference_20261117_v1/Inputs/user_missile_reference.png"
+      ],
+      "transparent_background": false
+    }
+  ]
+}

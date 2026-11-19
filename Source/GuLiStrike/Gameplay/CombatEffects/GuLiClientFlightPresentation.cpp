@@ -270,5 +270,18 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 			}
 			if (!bDataPool) Visual->FlightActor = AcquireFlightActor(Event);
 		}
+		else if (State.GroundStrike.IsDiving() && !Visual->FlightRecipe.State.GroundStrike.IsDiving())
+		{
+			// Adopt the owner's exact turn point once. Keep the same Niagara and pooled slot.
+			Visual->FlightRecipe.State = State;
+			Visual->Prediction = State;
+			if (auto* Slot = ClientFlights.Find(Visual->FlightHandle))
+			{
+				Slot->Prediction = State;
+				Slot->PredictionTime = State.SampleTime;
+				Slot->DisplayLocation = State.Location;
+			}
+			if (Visual->FlightActor) Visual->FlightActor->ActivateFlight(Event);
+		}
 	}
 }

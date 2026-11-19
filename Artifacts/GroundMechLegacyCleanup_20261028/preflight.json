@@ -1,0 +1,232 @@
+{
+  "legacy": [
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_v1/Animations/ABP_GroundMech_MechaDestroyer",
+      "class": "AnimBlueprint",
+      "referencers": []
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_v1/Meshes/SK_MechaDestroyer",
+      "class": "SkeletalMesh",
+      "referencers": []
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Meshes/SK_Legs",
+      "class": "SkeletalMesh",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/BP_GroundMech_Light_BeforeStyle"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Meshes/SK_Machinegun",
+      "class": "SkeletalMesh",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/BP_GroundMech_Light_BeforeStyle"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Meshes/SM_Armor",
+      "class": "StaticMesh",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/BP_GroundMech_Light_BeforeStyle"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Meshes/SM_Shoulder",
+      "class": "StaticMesh",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/BP_GroundMech_Light_BeforeStyle"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Armor_InkCel",
+      "class": "Material",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Ink_Backfaces",
+      "class": "Material",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs",
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor",
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder",
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Legs_InkCel",
+      "class": "Material",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Machinegun_InkCel",
+      "class": "Material",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Shoulder_InkCel",
+      "class": "Material",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs",
+      "class": "SkeletalMesh",
+      "referencers": [
+        "/Game/Development/HybridAcceptance/DT_AcceptanceModels",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_FireReview_BeforeA4B2",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_GroundMech_BeforeA4B2"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun",
+      "class": "SkeletalMesh",
+      "referencers": [
+        "/Game/Development/HybridAcceptance/DT_AcceptanceModels",
+        "/Game/GuLiStrike/Mechs/StyleShowcase/LVL_MechAsset_Showcase",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_FireReview_BeforeA4B2",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_GroundMech_BeforeA4B2",
+        "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor",
+      "class": "StaticMesh",
+      "referencers": [
+        "/Game/Development/HybridAcceptance/DT_AcceptanceModels",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_FireReview_BeforeA4B2",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_GroundMech_BeforeA4B2",
+        "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder",
+      "class": "StaticMesh",
+      "referencers": [
+        "/Game/Development/HybridAcceptance/DT_AcceptanceModels",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_FireReview_BeforeA4B2",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Rollback/BP_GroundMech_BeforeA4B2",
+        "/Game/GuLiStrike/Data/DT_GuLiStrikeModels_Models"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/ABP_GroundMech_BeforeStyleValidation",
+      "class": "AnimBlueprint",
+      "referencers": []
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/BP_GroundMech_Light_BeforeStyle",
+      "class": "Blueprint",
+      "referencers": []
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_BaseColor",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Armor_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_Emissive",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Armor_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Armor_LineMask",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Armor_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_BaseColor",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Legs_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_Emissive",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Legs_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Legs_LineMask",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Legs_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_BaseColor",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Machinegun_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_Emissive",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Machinegun_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Machinegun_LineMask",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Machinegun_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_BaseColor",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Shoulder_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_Emissive",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Shoulder_InkCel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Textures/T_Shoulder_LineMask",
+      "class": "Texture2D",
+      "referencers": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Materials/M_Shoulder_InkCel"
+      ]
+    }
+  ],
+  "blueprint_component_api": [
+    "add_component",
+    "compare_components",
+    "component_exists",
+    "get_all_component_properties",
+    "get_available_components",
+    "get_component_hierarchy",
+    "get_component_info",
+    "get_component_property",
+    "list_component_properties",
+    "list_components",
+    "remove_component",
+    "reparent_component",
+    "set_component_property",
+    "set_root_component"
+  ],
+  "dirty_maps": 0,
+  "dirty_content": 0
+}

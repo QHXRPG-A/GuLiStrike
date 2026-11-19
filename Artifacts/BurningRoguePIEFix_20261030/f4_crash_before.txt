@@ -1,0 +1,8 @@
+[2026.10.30-00.32.19:361][821]LogWindows: Error: appError called: Assertion failed: Addr < GetData() || Addr >= (GetData() + ArrayMax) [File:D:\UnrealEngine-5.7\Engine\Source\Runtime\Core\Public\Containers\Array.h] [Line: 1957] 
+Attempting to use a container element (0000029E623F6CA0) which already comes from the container being modified (0000029E623F6CA0, ArrayMax: 4, ArrayNum: 2, SizeofElement: 8)!
+[2026.10.30-00.32.34:347][821]Message dialog closed, result: Ok, title: UE-GuLiStrike Editor已崩溃，即将关闭, text: Assertion failed: Addr < GetData() || Addr >= (GetData() + ArrayMax) [File:D:\UnrealEngine-5.7\Engine\Source\Runtime\Core\Public\Containers\Array.h] [Line: 1957] 
+Attempting to use a container element (0000029E623F6CA0) which already comes from the container being modified (0000029E623F6CA0, ArrayMax: 4, ArrayNum: 2, SizeofElement: 8)!
+[2026.10.30-00.32.34:347][821]LogWindows: Error: Assertion failed: Addr < GetData() || Addr >= (GetData() + ArrayMax) [File:D:\UnrealEngine-5.7\Engine\Source\Runtime\Core\Public\Containers\Array.h] [Line: 1957] 
+[2026.10.30-00.32.34:347][821]LogWindows: Error: Attempting to use a container element (0000029E623F6CA0) which already comes from the container being modified (0000029E623F6CA0, ArrayMax: 4, ArrayNum: 2, SizeofElement: 8)!
+[2026.10.30-00.32.34:347][821]LogWindows: Error: [Callstack] 0x0000029c19f7cee0 UnrealEditor-GuLiStrike.dll!UGuLiRogueCardPresentation::CreateStage() [D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Cards\GuLiRogueCardPresentation.cpp:256]
+[2026.10.30-00.32.34:347][821]LogWindows: Error: [Callstack] 0x0000029c19f80d67 UnrealEditor-GuLiStrike.dll!UGuLiRogueCardPresentation::ReceiveOffer() [D:\UE5.7\test1\Source\GuLiStrike\Gameplay\Cards\GuLiRogueCardPresentation.cpp:221]

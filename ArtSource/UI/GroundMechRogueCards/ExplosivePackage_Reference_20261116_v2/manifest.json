@@ -1,0 +1,68 @@
+{
+  "date": "2026-11-16",
+  "card_id": "11.01",
+  "card_title": "爆破套餐",
+  "seat": "Ground",
+  "version": 2,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "generation_mode": "reference-based generation",
+  "transparent_background": false,
+  "art_direction": "沿用蓝天白云与角落少量废墟。参考用户附件的仰视、滞空和远近构图，以现用爆炸弹外形和尾焰作艺术加工。",
+  "palette_reference": "Progress/RequirementDocument/GuLiStrike美术规范.md §11",
+  "editor_asset_readback": {
+    "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+    "model_id": 4001,
+    "presentation_model_id": "4001",
+    "skeletal_mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+    "flight": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon.NS_GroundExplosiveFlight_Toon",
+    "flight_emitters": [
+      "ProjectileShell",
+      "ExhaustPlume"
+    ],
+    "relevant_flight_dependencies": [
+      "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonShell",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonPlume"
+    ],
+    "trail": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail.NS_GroundExplosiveTrail",
+    "impact": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact.NS_GroundExplosiveImpact",
+    "body_mesh": "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile.SM_WM01_Missile"
+  },
+  "flight_vfx_id": 63,
+  "inputs_in_order": [
+    {
+      "file": "Inputs/01_Composition_Input.png",
+      "source": "C:/Users/a/AppData/Local/Temp/codex-clipboard-9cb28bff-7671-4709-b92f-18600992f6c9.png",
+      "role": "仰视镜头、滞空姿态、机甲与远近导弹的画面比例",
+      "sha256": "a9058fb4c9e463251f749f90e52f45f62bd65de8a7feedec1247fbea084be7c9"
+    },
+    {
+      "file": "Inputs/02_Ranger_A4B2.png",
+      "source": "ArtSource/UI/GroundMechRogueCards/FireRate_Reference_20261109_v1/Inputs/A4B2_Blue_Full.png",
+      "role": "当前游骑兵 A4B2 造型和阵营配色",
+      "sha256": "78bdea755abfd1b4d781914ecdd94d4762b920fcaef50d259952df189076916c"
+    },
+    {
+      "file": "Inputs/03_Explosive_Flight_UE.png",
+      "source": "Artifacts/GroundExplosiveToon_20261116/GroundExplosiveToon_Review_v4_RangerSide.png",
+      "role": "正式爆炸弹的弹体、喷口和连续尾焰",
+      "sha256": "54562ed6404a4ea3f76992b45c45ca3126209254e65799853b6943a954cd17bf"
+    }
+  ],
+  "prompt": {
+    "file": "ExplosivePackage_Prompt.txt",
+    "sha256": "76427c07fe0b907735bcba59d6ec8c72bcb8bf6f26c9b26644a723c20731ee0e"
+  },
+  "output": {
+    "file": "ExplosivePackage_Card_Reference_v2.png",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e39f-c9b0-7602-ac68-13db3650a8bd\\exec-bce1bec9-a3ef-4434-bbfd-2b9f13bdfc09.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB",
+    "sha256": "6a5df9f432b602d2bcebe39507d8befae1c575249e9c813d8a52154d68a34170"
+  },
+  "assistant_output_visual_review": false
+}

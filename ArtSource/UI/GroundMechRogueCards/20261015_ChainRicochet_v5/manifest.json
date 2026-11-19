@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-15",
+  "version": "v5",
+  "scope": "Project Ground mech, over-the-shoulder firing; one bullet ricochets across three project enemy Pioneers, local impact explosions and mechanical destruction.",
+  "source_url": "https://civitai.com/images/145143380",
+  "source_prompt_available": false,
+  "project_model_ids": [
+    4001,
+    4002,
+    4003,
+    4004,
+    1001
+  ],
+  "project_reference_report": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\References\\project_models_capture.json",
+  "reference_inputs": [
+    {
+      "port": "images.image_1",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\References\\CompositionDraft_v4.png",
+      "input_filename": "GroundMech_ChainRicochet_Draft_v4.png",
+      "sha256": "aae7c9813c6cae0815b6da6df89baa9b43591245f3224a9b89036521346948bf",
+      "role": "battle layout to repaint, remove old friendly long trajectories",
+      "encoded_size": [
+        832,
+        1248
+      ]
+    },
+    {
+      "port": "images.image_2",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\References\\GroundMech_Project_Rear3Q.png",
+      "input_filename": "GroundMech_Project_Rear3Q_v3.png",
+      "sha256": "9d8853cd0db9a5be1186a48e04d167d1207f4683b99f4073bf67f4daf9a5a059",
+      "role": "actual project Ground mech rear identity",
+      "encoded_size": [
+        512,
+        768
+      ]
+    },
+    {
+      "port": "images.image_3",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\References\\GroundMech_Project_Weapon.png",
+      "input_filename": "GroundMech_Project_Weapon_v3.png",
+      "sha256": "eb82ace1a3a3dcb85c6d3b62c6c503be4fb4c14f1f4bf0bc5e50d4b5c412a6b7",
+      "role": "actual project Ground mech upper body and weapon",
+      "encoded_size": [
+        512,
+        512
+      ]
+    },
+    {
+      "port": "images.image_4",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\References\\Pioneer_Project_Enemy.png",
+      "input_filename": "Pioneer_Project_Enemy_v3.png",
+      "sha256": "e0f8e5ce7593669ee4e6f2f3567acc81ef127575f22a3f2e02f2f51d1e99372e",
+      "role": "actual project enemy Pioneer identity",
+      "encoded_size": [
+        576,
+        768
+      ]
+    },
+    {
+      "port": "images.image_5",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\References\\Civitai_145143380.jpeg",
+      "input_filename": "Civitai_145143380_style.jpeg",
+      "sha256": "a6fcf34baa9a5f54ccf38084fcc2aecbcd3da1cde164301db4353e514e7f2d6f",
+      "role": "painterly style and braking motion only",
+      "encoded_size": [
+        512,
+        768
+      ]
+    }
+  ],
+  "positive_utf8_sha256": "f3d38ee2b07263d10d1f752ba2997febef145d7727dfee063031ec842a584b9d",
+  "negative_utf8_sha256": "0e649f12f1395f25842e1230f7ed42a6bb0203bab709b5f6af74edc226534f6e",
+  "models": {
+    "diffusion": "qwen_image_2.1_int8_convrot.safetensors",
+    "text_encoder": "qwen3vl_8b_int8_convrot.safetensors",
+    "vae": "qwen_image_2.1_vae_bf16.safetensors",
+    "lora": null
+  },
+  "parameters": {
+    "width": 832,
+    "height": 1248,
+    "steps": 36,
+    "cfg": 1.5,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "seed": 145143385,
+    "denoise": 1,
+    "cache_device": "auto",
+    "cache_dtype": "int8",
+    "reference_resolution": 0
+  },
+  "transparent_background": false,
+  "generation_status": "success",
+  "user_art_approval": "pending",
+  "local_workflow": "archive:ARC-20261103-006#EXT-009",
+  "native_workflow": "archive:ARC-20261103-006#EXT-010",
+  "art_archive": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5",
+  "parent_version": "v4",
+  "overlay_status": "actual_path_and_impacts_aligned",
+  "overlay_input_filename": "GuLi_ChainRicochet_Trails_v5.png",
+  "user_feedback": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\References\\UserFeedback_v3_Annotated.png",
+  "prompt_id_raw": "df43262f-f91f-4cbc-a4b0-96f1f81212d4",
+  "prompt_id": "df43262f-f91f-4cbc-a4b0-96f1f81212d4",
+  "submitted_at_utc": "2026-10-15T13:22:27.144702+00:00",
+  "raw_output": {
+    "path": "D:\\gen-image\\output\\GroundMechRogue\\ChainRicochet_Brake_v5_RAW_00001_.png",
+    "archive_path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\ChainRicochet_Brake_v5_RAW.png",
+    "size": [
+      832,
+      1248
+    ],
+    "sha256": "c02bd236a0f4a6a157534a70700f4df57bdb99baaa59f378ee0d5fde6ab93678"
+  },
+  "history_raw_completed": true,
+  "preceding_user_BF16_job_status": "success",
+  "prompt_id_final": "7f0f9d04-7358-45b6-88e5-d825f71bae87",
+  "overlay_sha256": "6373d03135549967112400f60e0449bcb2f48e2628901bfac74c2b6620f902f9",
+  "trajectory_config": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\trajectory_points.json",
+  "composite_submitted_at_utc": "2026-10-15T13:38:23.746414+00:00",
+  "history_final_completed": true,
+  "outputs": [
+    {
+      "node": "495",
+      "path": "D:\\gen-image\\output\\GroundMechRogue\\ChainRicochet_Brake_v5_FINAL_00002_.png",
+      "archive_path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v5\\ChainRicochet_Brake_v5_FINAL.png",
+      "size": [
+        832,
+        1248
+      ],
+      "mode": "RGBA",
+      "sha256": "fee5e8c741ac8a316a16c8b5fffba5ef617ee591241983ff928d262cdf6f02df",
+      "embedded_prompts_verified": true
+    }
+  ],
+  "assistant_visual_review": {
+    "project_ground_identity": "matches supplied actual assembly; back vents, gold hull, blue legs and mounted weapon retained",
+    "project_pioneer_identity": "three four-legged dual-gun units in supplied enemy palette",
+    "motion": "forward braking leg, lowered stance, sliding streaks, rear jets and muzzle flash visible; recoil edge blur present but restrained",
+    "trajectory": "One continuous three-segment path with shared exact endpoints; source muzzle and all impact points visually inspected",
+    "enemy_fire": "muzzle flashes and fine pale-rose near-miss tracers visible",
+    "water": "broader directional wakes, still retains fine painted surface detail",
+    "secondary_damage": "small independent impact/shrapnel layer; closest enemy contains the largest generated armor breach",
+    "review_status": "Assistant inspected; user art approval remains pending"
+  },
+  "preceding_user_BF16_comparison_paths": [
+    "D:\\gen-image\\output\\GroundMechRogue\\ChainRicochet_20261015_v3_00002_.png"
+  ],
+  "workflow_verified": {
+    "nodes": 22,
+    "links": 25,
+    "backend_node_errors": {},
+    "raw_history_success": true,
+    "final_history_success": true,
+    "final_pass_reused_sampling_cache": true,
+    "full_positive_negative_hashes_match_final_png": true
+  },
+  "completed_at_utc": "2026-10-15T13:46:08.237174+00:00",
+  "positive_utf8_sha256_before_name_normalization": "063c0a844acf2a7a5904e1c44d18b2041f2adce7cc4e83ab7f2246637f195121",
+  "name_normalization_note": "2026-11-03 游骑兵名称规范化；提示词文本已修订，原始生成内容通过历史版本和迁移前哈希追溯。",
+  "external_path_note": "历史外部工作流路径见 ARC-20261103-006 归档的对应 EXT 编号；可复用的弹射工作流改为项目内正式副本。"
+}

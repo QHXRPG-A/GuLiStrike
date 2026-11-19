@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-15",
+  "version": "v4",
+  "scope": "Project Ground mech, over-the-shoulder firing; one bullet ricochets across three project enemy Pioneers, local impact explosions and mechanical destruction.",
+  "source_url": "https://civitai.com/images/145143380",
+  "source_prompt_available": false,
+  "project_model_ids": [
+    4001,
+    4002,
+    4003,
+    4004,
+    1001
+  ],
+  "project_reference_report": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4\\References\\project_models_capture.json",
+  "reference_inputs": [
+    {
+      "port": "images.image_1",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4\\References\\CompositionDraft_v3.png",
+      "input_filename": "GroundMech_ChainRicochet_Draft_v3.png",
+      "sha256": "a6ded835920b31dbdcfea15e74c35501b841557f4547b15d3c5de59ed2361d1c",
+      "role": "previous generated composition to revise",
+      "encoded_size": [
+        832,
+        1248
+      ]
+    },
+    {
+      "port": "images.image_2",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4\\References\\GroundMech_Project_Rear3Q.png",
+      "input_filename": "GroundMech_Project_Rear3Q_v3.png",
+      "sha256": "9d8853cd0db9a5be1186a48e04d167d1207f4683b99f4073bf67f4daf9a5a059",
+      "role": "actual project Ground mech rear assembly",
+      "encoded_size": [
+        512,
+        768
+      ]
+    },
+    {
+      "port": "images.image_3",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4\\References\\GroundMech_Project_Weapon.png",
+      "input_filename": "GroundMech_Project_Weapon_v3.png",
+      "sha256": "eb82ace1a3a3dcb85c6d3b62c6c503be4fb4c14f1f4bf0bc5e50d4b5c412a6b7",
+      "role": "same project mech upper body and weapon",
+      "encoded_size": [
+        512,
+        512
+      ]
+    },
+    {
+      "port": "images.image_4",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4\\References\\Pioneer_Project_Enemy.png",
+      "input_filename": "Pioneer_Project_Enemy_v3.png",
+      "sha256": "e0f8e5ce7593669ee4e6f2f3567acc81ef127575f22a3f2e02f2f51d1e99372e",
+      "role": "actual project enemy Pioneer model",
+      "encoded_size": [
+        576,
+        768
+      ]
+    },
+    {
+      "port": "images.image_5",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4\\References\\Civitai_145143380.jpeg",
+      "input_filename": "Civitai_145143380_style.jpeg",
+      "sha256": "a6fcf34baa9a5f54ccf38084fcc2aecbcd3da1cde164301db4353e514e7f2d6f",
+      "role": "visual style only",
+      "encoded_size": [
+        512,
+        768
+      ]
+    }
+  ],
+  "positive_utf8_sha256": "c2944c3ba9ea470ac97688b24fe26d47d3da79dafba70d5409c29c016f4e5209",
+  "negative_utf8_sha256": "b209e763b74656f53f001f4092b1c731221d1a4560528cda629a93d3a1d69fc6",
+  "models": {
+    "diffusion": "qwen_image_2.1_int8_convrot.safetensors",
+    "text_encoder": "qwen3vl_8b_int8_convrot.safetensors",
+    "vae": "qwen_image_2.1_vae_bf16.safetensors",
+    "lora": null
+  },
+  "parameters": {
+    "width": 832,
+    "height": 1248,
+    "steps": 36,
+    "cfg": 1.5,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "seed": 145143384,
+    "denoise": 1,
+    "cache_device": "auto",
+    "cache_dtype": "int8",
+    "reference_resolution": 0
+  },
+  "transparent_background": false,
+  "generation_status": "success",
+  "user_art_approval": "pending",
+  "local_workflow": "archive:ARC-20261103-006#EXT-007",
+  "native_workflow": "archive:ARC-20261103-006#EXT-008",
+  "art_archive": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4",
+  "parent_version": "v3",
+  "prompt_id": "e742a0d2-64f8-4bcf-ab20-a0b2021ee44f",
+  "submitted_at_utc": "2026-10-15T13:11:41.245358+00:00",
+  "history_completed": true,
+  "outputs": [
+    {
+      "path": "D:\\gen-image\\output\\GroundMechRogue\\ChainRicochet_20261015_v4_00001_.png",
+      "archive_path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v4\\ChainRicochet_v4.png",
+      "sha256": "aae7c9813c6cae0815b6da6df89baa9b43591245f3224a9b89036521346948bf"
+    }
+  ],
+  "assistant_visual_review": "pending",
+  "positive_utf8_sha256_before_name_normalization": "983ae82a826d7d5f27388ed5f94d85c88a29d92a6685dae093ef49c0a3d116e5",
+  "name_normalization_note": "2026-11-03 游骑兵名称规范化；提示词文本已修订，原始生成内容通过历史版本和迁移前哈希追溯。",
+  "external_path_note": "历史外部工作流路径见 ARC-20261103-006 归档的对应 EXT 编号；可复用的弹射工作流改为项目内正式副本。"
+}

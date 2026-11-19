@@ -26,6 +26,8 @@ class UGuLiGroundMechAttributeSet;
 class UGuLiGroundMechRocketComponent;
 class UGuLiGroundMechBlinkComponent;
 class UGuLiGroundMechCameraComponent;
+class UGuLiGroundRoguePresentation;
+class UGuLiProjectileEffectDefinition;
 struct FInputActionValue;
 class FGuLiHybridGroundAdapter;
 /** Ground player locomotion and aim. Assembly and animation assets belong to its Blueprint. */
@@ -66,9 +68,20 @@ public:
     UFUNCTION(BlueprintPure,Category="Mech|Blink") bool CanActivateBlink() const;
     UFUNCTION(BlueprintPure,Category="Mech|Blink") float GetBlinkCooldownRemaining() const;
     UFUNCTION(BlueprintPure,Category="Mech|Blink") float GetBlinkCooldownDuration() const;
+    bool EnterBarrageRange(const FTransform& Start);
+    bool IsBarrageTrial() const { return bBarrageTrial; }
+    int32 GetBarrageLevel() const;
+    bool IsFiringBarrage() const { return BarrageNextShot < BarrageCount; }
+    int32 GetBarrageShotsRemaining() const { return BarrageCount - BarrageNextShot; }
+    float GetBarrageClearance() const;
+    bool GetBarrageAimPoint(FVector& Point) const;
+    bool GetBarrageDisplayTransform(FRotator& Rotation, FVector& Translation) const;
+    float GetDisplayedBarrageHeight() const { return BarrageDisplayHeight; }
+    static constexpr float BarrageMinimumHeight = 3000.f;
     UPROPERTY(BlueprintAssignable,Category="Mech|Blink") FGuLiBlinkStateChanged OnBlinkStateChanged;
 	bool HasMovementIntent() const { return !SimulationInput.Axis.IsNearlyZero(); }
     UGuLiGroundMechBlinkComponent* GetBlinkComponent() const { return Blink; }
+    UGuLiGroundRoguePresentation* GetRoguePresentation() const { return RoguePresentation; }
     UGuLiGroundMechCameraComponent* GetCameraController() const { return MechCameraController; }
     USkeletalMeshComponent* GetSeparateWeaponMesh() const { return Machinegun; }
     const FGuLiHybridGroundInput& GetHybridSimulationInput() const { return SimulationInput; }
@@ -98,6 +111,7 @@ protected:
 	UPROPERTY() TObjectPtr<UGuLiGroundMechAttributeSet> FuelAttributes;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mech|Rocket Jump") TObjectPtr<UGuLiGroundMechRocketComponent> RocketJump;
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mech|Blink") TObjectPtr<UGuLiGroundMechBlinkComponent> Blink;
+    UPROPERTY(VisibleAnywhere, Category="Mech|Rogue") TObjectPtr<UGuLiGroundRoguePresentation> RoguePresentation;
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mech|Camera") TObjectPtr<UGuLiGroundMechCameraComponent> MechCameraController;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(EEndPlayReason::Type Reason) override;
@@ -124,6 +138,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Mech|Input")
 	TObjectPtr<UInputAction> ZoomAction;
 	UPROPERTY(EditDefaultsOnly, Category="Mech|Input") TObjectPtr<UInputAction> RocketJumpAction;
+    UPROPERTY(EditDefaultsOnly, Category="Mech|Input") TObjectPtr<UInputAction> BarrageAction;
 	UPROPERTY(EditDefaultsOnly, Category="Mech|Input") TObjectPtr<UInputAction> LookAction;
 	UPROPERTY(EditDefaultsOnly, Category="Mech|Camera") float InitialCameraDistance = 1084.4236f;
 	UPROPERTY(EditDefaultsOnly, Category="Mech|Camera") float LookSensitivity = .15f;
@@ -133,6 +148,21 @@ protected:
 	float StandingHeight = 748.3796f * (300.f / 460.f);
 
 private:
+    int32 BarrageCount=0, BarrageIntervalTicks=0, BarrageCastLevel=0;
+    float BarrageDamage=0, BarrageHalfAngle=0;
+    UPROPERTY(Transient) TObjectPtr<UGuLiProjectileEffectDefinition> BarrageProjectile;
+    bool bBarrageTrial = false;
+    float BarrageDisplayHeight=0;
+    double NextBarrageHeightUpdate=0;
+    FGuid BarrageCast;
+    uint64 BarrageStartTick = 0;
+    int32 BarrageNextShot=0;
+    void RequestBarrage();
+    void StartBarrage(const FGuid& Event);
+    void AdvanceBarrage();
+    void StopBarrage();
+    bool ResolveBarrageDefinition();
+    bool GetReticleRay(FVector& Origin, FVector& Direction) const;
 	UPROPERTY() FGuLiGroundMechConfiguration MobilityConfiguration;
 	UPROPERTY() FGuLiGroundMechTurnState TurnState;
 	UPROPERTY() FGuLiGroundMechWeaponAimState WeaponAimState;

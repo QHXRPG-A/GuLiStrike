@@ -1,0 +1,65 @@
+{
+  "source": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-vertex-animation-10k-v3.blend",
+  "source_sha256": "532404787e467fc609ec6da5ee7577663c4dce04851d038c56e06ce1f9aba494",
+  "output": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-vertex-animation-10k-v4.blend",
+  "user_priority": "四足抬高；行进以3倍抬脚为主，步距稳定；采矿后坐及下压2倍",
+  "walk": {
+    "foot_lift_m": 0.72,
+    "old_foot_lift_m": 0.24,
+    "foot_lift_multiplier": 3.0,
+    "stride_m": 0.72,
+    "body_sway_multiplier": 3.0,
+    "body_vertical_amplitude_m": 0.126,
+    "body_lateral_amplitude_m": 0.078,
+    "pitch_amplitude_degrees": 3.3,
+    "roll_amplitude_degrees": 2.25,
+    "body_support_offset_z_m": -0.24,
+    "stance_recenter_fraction": 0.2
+  },
+  "mining": {
+    "motion_multiplier": 2.0,
+    "authored_peak_back_m": 0.68,
+    "authored_peak_down_m": 0.64,
+    "authored_peak_pitch_degrees": 7.0,
+    "front_foot_support_adjustment_y_m": 0.18,
+    "feet_planted": true
+  },
+  "scenes": {
+    "01_行进 · 顶点动画": {
+      "frames": [
+        1,
+        29
+      ],
+      "fps": 24,
+      "triangles": {
+        "body": 7912,
+        "outline": 1942,
+        "laser": 0,
+        "studio": 12,
+        "asset_total": 9854,
+        "scene_total": 9866
+      }
+    },
+    "02_采矿 · 顶点动画": {
+      "frames": [
+        1,
+        73
+      ],
+      "fps": 24,
+      "triangles": {
+        "body": 7912,
+        "outline": 1942,
+        "laser": 120,
+        "studio": 12,
+        "asset_total": 9974,
+        "scene_total": 9986
+      }
+    }
+  },
+  "maximum_joint_endpoint_error_m": 3.371747880871523e-07,
+  "minimum_joint_reach_margin_m": 0.021872244439643307,
+  "visual_acceptance": "待用户在Blender复审；未渲染、未由助手读图。",
+  "source_unchanged": true,
+  "output_sha256": "6645ea8d805ee13c046618bd03c50bb5b9c08ca2b6be98daeafa8d78477b050a",
+  "output_bytes": 5883014
+}

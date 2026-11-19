@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-15",
+  "version": "v1",
+  "scope": "Ground seat mech rogue-card STYLE CONCEPT. Not WM01. No game mechanics implemented.",
+  "user_selected_effect": "offensive bullet refraction and splitting",
+  "source_url": "https://civitai.com/images/145143380",
+  "source_author": "Hairpin",
+  "source_base_model": "Krea 2 Turbo",
+  "source_prompt_available": false,
+  "reference_inputs": [
+    {
+      "port": "images.image_1",
+      "path": "D:\\gen-image\\references\\Civitai_145143380\\style_reference.jpeg",
+      "sha256": "a6fcf34baa9a5f54ccf38084fcc2aecbcd3da1cde164301db4353e514e7f2d6f",
+      "role": "style, brushwork, lighting, atmosphere; concept mech, not an approved in-game identity"
+    }
+  ],
+  "positive_utf8_sha256": "80ae7a1612325979564cdab032bd05e4834101ee7feca608cd87c025e889ed54",
+  "negative_utf8_sha256": "088d80012d2bc5236bde8e8b6f51d251d1fd47d864b86947f08563d79584fd65",
+  "local_workflow": "archive:ARC-20261103-006#EXT-001",
+  "native_workflow": "archive:ARC-20261103-006#EXT-002",
+  "workflow_sha256": "9b68a82121f58cecf4e9261509ee2ae59268f70224ac3f851a31009ba2ee24f6",
+  "models": {
+    "diffusion": "qwen_image_2.1_int8_convrot.safetensors",
+    "text_encoder": "qwen3vl_8b_int8_convrot.safetensors",
+    "vae": "qwen_image_2.1_vae_bf16.safetensors",
+    "lora": null
+  },
+  "parameters": {
+    "width": 832,
+    "height": 1248,
+    "steps": 32,
+    "cfg": 1.5,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "seed": 145143380,
+    "denoise": 1,
+    "cache_device": "auto",
+    "cache_dtype": "int8",
+    "reference_resolution": 0
+  },
+  "transparent_background": false,
+  "generation_status": "success",
+  "user_art_approval": "superseded_by_explicit_project_mech_identity_requirement",
+  "art_archive": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_BulletRefraction_v1",
+  "prompt_id": "f00565a9-2620-4569-aba9-a49d042c96da",
+  "submitted_at_utc": "2026-10-15T12:48:22.843611+00:00",
+  "history_completed": true,
+  "outputs": [
+    {
+      "path": "D:\\gen-image\\output\\GroundMechRogue\\BulletRefraction_20261015_v1_00001_.png",
+      "archive_path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_BulletRefraction_v1\\BulletRefraction_v1.png",
+      "size": [
+        832,
+        1248
+      ],
+      "mode": "RGBA",
+      "sha256": "f3427a0e64d2dcead805b5ecc4218d4a0afd076c1bc110fc6521ac6ed2079d24",
+      "png_metadata": [
+        "prompt",
+        "workflow"
+      ]
+    }
+  ],
+  "assistant_visual_review": "Style readable; 1-in/3-out visible. Generic reference-derived subject, not the project mech.",
+  "superseded_by": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_BulletRefraction_v2",
+  "positive_utf8_sha256_before_name_normalization": "df10288a5861246715ef4ad0fa0297ec1033a204081dc108d8a0b46955eb951b",
+  "name_normalization_note": "2026-11-03 游骑兵名称规范化；提示词文本已修订，原始生成内容通过历史版本和迁移前哈希追溯。",
+  "external_path_note": "历史外部工作流路径见 ARC-20261103-006 归档的对应 EXT 编号；可复用的弹射工作流改为项目内正式副本。"
+}

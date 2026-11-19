@@ -1,0 +1,76 @@
+{
+  "success": true,
+  "action": "deploy",
+  "run_id": "6e2e9f50fc31414d813eaf46552a88d7",
+  "assistant_visual_test": false,
+  "gameplay_modified": false,
+  "application": {
+    "artwork_ids": [
+      13
+    ],
+    "native_schema_ready": true,
+    "native_schema_issues": [],
+    "missing_sources": [],
+    "adoptions": [],
+    "source_hashes": {
+      "13": {
+        "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer1.T_GroundMech_NoSurvivors_Layer1": "fbe57dcba5256f22fd583fddff677898055839c8a21abb919e6a692831dd8476",
+        "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer2.T_GroundMech_NoSurvivors_Layer2": "c7efae06245f39c380ad062b70627e4ef5f1db06a2477bcd748fa5c2d9cef178",
+        "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer3.T_GroundMech_NoSurvivors_Layer3": "eb7db60f1639e9514d9d0ab547913d29a7fd9aa915568213013a0e6b341278b8",
+        "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer4.T_GroundMech_NoSurvivors_Layer4": "83c14e84959ef59fecbdcfccc626fc0b2f85c4d93172f98c41da775e1834df37",
+        "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer5.T_GroundMech_NoSurvivors_Layer5": "3288ffd314721b30852f83854d8154ff30e25fae3d67fe29d44df94d1538b654",
+        "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer6.T_GroundMech_NoSurvivors_Layer6": "95fdd4137d34321896d1a6d121c40d66cd5fd70fdee2d970ad0220da1452d733"
+      }
+    },
+    "changed_materials": [
+      "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Materials/MI_GroundMech_NoSurvivors_Artwork.MI_GroundMech_NoSurvivors_Artwork"
+    ],
+    "imported_textures": [],
+    "readback": [
+      {
+        "artwork_id": 13,
+        "material": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Materials/MI_GroundMech_NoSurvivors_Artwork.MI_GroundMech_NoSurvivors_Artwork",
+        "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSix_v1.M_CardArtwork_RegisteredSix_v1",
+        "parameters_checked": 35
+      }
+    ]
+  },
+  "tables": [
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Templates",
+      "rows": 6,
+      "changed": false,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Artworks",
+      "rows": 13,
+      "changed": false,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Layers",
+      "rows": 72,
+      "changed": true,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Parameters",
+      "rows": 319,
+      "changed": false,
+      "saved_readback": true
+    }
+  ],
+  "completed_changes": [
+    {
+      "kind": "material",
+      "asset": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Materials/MI_GroundMech_NoSurvivors_Artwork.MI_GroundMech_NoSurvivors_Artwork",
+      "saved": true
+    },
+    {
+      "kind": "table",
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Layers",
+      "saved": true
+    }
+  ]
+}

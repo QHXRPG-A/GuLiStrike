@@ -1,0 +1,247 @@
+{
+  "card": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards",
+  "model": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+  "camera_manager": "/Script/GuLiStrike.GuLiTeamOutlineCameraManager",
+  "row_id": "13.01",
+  "ranks": [
+    "10",
+    "12",
+    "16",
+    "18",
+    "25"
+  ],
+  "cast_camera": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_BarrageCamera.DT_GuLiStrikeRogueCards_BarrageCamera",
+  "keys": 24,
+  "seconds": 2,
+  "return_seconds": 0.7,
+  "sampled_frames": 121,
+  "camera_keys": {
+    "0": {
+      "angle": 151.0,
+      "weight": 0,
+      "fov": 60.28,
+      "flash": 0,
+      "charge": 0
+    },
+    "12": {
+      "angle": 101.5,
+      "weight": 1,
+      "fov": 60.28,
+      "flash": 0,
+      "charge": 0
+    },
+    "34": {
+      "angle": 14.0,
+      "weight": 1,
+      "fov": 60.28,
+      "flash": 0,
+      "charge": 0.32
+    },
+    "72": {
+      "angle": 5.0,
+      "weight": 1,
+      "fov": 60.28,
+      "flash": 0,
+      "charge": 0.6
+    },
+    "78": {
+      "angle": -6.0,
+      "weight": 1,
+      "fov": 60.28,
+      "flash": 0.16,
+      "charge": 0
+    },
+    "80": {
+      "angle": -9.1,
+      "weight": 1,
+      "fov": 60.28,
+      "flash": 0.91,
+      "charge": 0
+    },
+    "81": {
+      "angle": -11.0,
+      "weight": 1,
+      "fov": 60.28,
+      "flash": 0.53,
+      "charge": 0
+    },
+    "90": {
+      "angle": -41.0,
+      "weight": 1,
+      "fov": 60.61,
+      "flash": 0,
+      "charge": 0
+    },
+    "96": {
+      "angle": -75.0,
+      "weight": 1,
+      "fov": 61.26,
+      "flash": 0,
+      "charge": 0
+    },
+    "102": {
+      "angle": -113.0,
+      "weight": 1,
+      "fov": 61.93,
+      "flash": 0,
+      "charge": 0
+    },
+    "108": {
+      "angle": -148.0,
+      "weight": 0.92,
+      "fov": 62.44,
+      "flash": 0,
+      "charge": 0
+    },
+    "114": {
+      "angle": -169.0,
+      "weight": 0.4,
+      "fov": 63.3,
+      "flash": 0,
+      "charge": 0
+    },
+    "120": {
+      "angle": -177.0,
+      "weight": 0,
+      "fov": 63.65,
+      "flash": 0,
+      "charge": 0
+    }
+  },
+  "return_peak_angular_step_deg_60hz": 9.146,
+  "first_shot_seconds": 1.35,
+  "lightning_before": 3.6,
+  "lightning_after": 7.2,
+  "chest_flash": 3.6,
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie_worlds": 0,
+  "niagara_sim_cache": {
+    "samples": [
+      {
+        "scale": 3.6,
+        "mean_sprite_width_cm": 392.27,
+        "min_width_cm": 360.25,
+        "max_width_cm": 431.24,
+        "sampled_widths": 100,
+        "max_live_sprites": 5,
+        "emitters": [
+          "Lightning"
+        ]
+      },
+      {
+        "scale": 7.2,
+        "mean_sprite_width_cm": 790.05,
+        "min_width_cm": 720.08,
+        "max_width_cm": 864.0,
+        "sampled_widths": 100,
+        "max_live_sprites": 5,
+        "emitters": [
+          "Lightning"
+        ]
+      }
+    ],
+    "mean_width_ratio": 2.014
+  },
+  "sequence": {
+    "sequence": "/Game/GuLiStrike/GroundMech/Cinematics/NoSurvivors/LS_Ranger_NoSurvivors_Camera_V02.LS_Ranger_NoSurvivors_Camera_V02",
+    "clip": "/Game/GuLiStrike/GroundMech/Cinematics/NoSurvivors/Anim_Ranger_NoSurvivors_Camera_V02.Anim_Ranger_NoSurvivors_Camera_V02",
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "fps": 60,
+    "frames": 180,
+    "opening": 78,
+    "first_shot": 81,
+    "missiles": [
+      81,
+      111,
+      141,
+      171
+    ],
+    "cameras": [
+      {
+        "binding": "Ranger | continuous orbit",
+        "frames": [
+          0,
+          180
+        ],
+        "handoff": 120
+      }
+    ],
+    "spawnables": 9,
+    "bindings": 17,
+    "stage": [
+      2750.0,
+      63150.0,
+      4503.783442351467
+    ],
+    "flash_keys": [
+      [
+        0,
+        0
+      ],
+      [
+        77,
+        0
+      ],
+      [
+        78,
+        0.1599999964237213
+      ],
+      [
+        79,
+        0.7599999904632568
+      ],
+      [
+        80,
+        0.9100000262260437
+      ],
+      [
+        81,
+        0.5299999713897705
+      ],
+      [
+        82,
+        0.23000000417232513
+      ],
+      [
+        83,
+        0.11500000208616257
+      ],
+      [
+        84,
+        0
+      ],
+      [
+        120,
+        0
+      ]
+    ]
+  },
+  "render": {
+    "file": "Ranger_NoSurvivors_Camera_V02.mp4",
+    "container": "MP4",
+    "codec": "H.264",
+    "resolution": [
+      1600,
+      900
+    ],
+    "fps": 60,
+    "seconds": 3.0,
+    "decoded_frames": 180,
+    "bytes": 2828864,
+    "shot_pose_samples": {
+      "0": -487.19,
+      "12": 193.89,
+      "42": 193.9,
+      "72": 193.91,
+      "78": -749.62,
+      "80": -749.61,
+      "81": -749.62,
+      "90": -749.61,
+      "102": -749.61,
+      "111": -749.62,
+      "120": -749.62,
+      "141": -749.61,
+      "179": -749.62
+    }
+  }
+}

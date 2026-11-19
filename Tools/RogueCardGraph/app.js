@@ -157,9 +157,15 @@ function curve(source, target) {
 }
 
 function positionEdges() {
-    for (const { link, paths } of edgeElements.values()) {
-        const path = curve(cardById(link.source), cardById(link.target));
+    for (const { link, paths, label } of edgeElements.values()) {
+        const source = cardById(link.source), target = cardById(link.target);
+        const path = curve(source, target);
         for (const node of paths) node.setAttribute("d", path);
+        if (label) {
+            const point = paths[0].getPointAtLength(paths[0].getTotalLength() / 2);
+            label.setAttribute("x", point.x);
+            label.setAttribute("y", point.y - 7);
+        }
     }
 }
 
@@ -234,7 +240,7 @@ function renderCanvas() {
         group.setAttribute("tabindex", "0");
         const left = cardById(link.source).title;
         const right = cardById(link.target).title;
-        group.setAttribute("aria-label", link.kind === "requires" ? `${left}是${right}的前置` : `${left}与${right}互斥`);
+        group.setAttribute("aria-label", link.kind === "requires" ? `${left}${link.minLevel || 1}级解锁${right}` : `${left}与${right}互斥`);
         const line = document.createElementNS(svgNamespace, "path");
         line.setAttribute("class", "edge-stroke");
         if (link.kind === "requires") line.setAttribute("marker-end", "url(#require-arrow)");
@@ -252,8 +258,16 @@ function renderCanvas() {
             }
         });
         group.append(line, hit);
+        let label;
+        if (link.minLevel > 1) {
+            label = document.createElementNS(svgNamespace, "text");
+            label.setAttribute("class", "edge-level");
+            label.setAttribute("text-anchor", "middle");
+            label.textContent = `${link.minLevel}级`;
+            group.append(label);
+        }
         edgeLayer.append(group);
-        edgeElements.set(key, { group, link, paths: [line, hit] });
+        edgeElements.set(key, { group, link, paths: [line, hit], label });
     }
     positionEdges();
     const empty = !cards.length;
@@ -272,7 +286,8 @@ function appendRelations(title, links, cardId) {
     for (const link of links) {
         const other = link.source === cardId ? link.target : link.source;
         const item = element("li");
-        item.append(button(cardById(other).title, () => select({ edge: linkKey(link) })));
+        const threshold = link.minLevel > 1 ? `（前置 ${link.minLevel} 级）` : "";
+        item.append(button(cardById(other).title + threshold, () => select({ edge: linkKey(link) })));
         list.append(item);
     }
     inspector.append(list);
@@ -315,7 +330,20 @@ function renderDetails() {
         const requires = link.kind === "requires";
         inspector.append(element("p", requires ? "前置关系" : "互斥关系", "caption"));
         inspector.append(element("h2", requires ? `${left} → ${right}` : `${left} ↔ ${right}`));
-        inspector.append(element("p", requires ? `取得「${right}」前须先取得「${left}」。` : "本局两张卡只能取得其中一张。", "description"));
+        inspector.append(element("p", requires ? `「${left}」达到 ${link.minLevel || 1} 级后，「${right}」可进入候选池。` : "本局两张卡只能取得其中一张。", "description"));
+        if (requires) {
+            const label = element("label", "前置等级 ");
+            const input = document.createElement("input");
+            input.type = "number"; input.min = "1";
+            input.max = String(state.base.details[link.source]?.maxAcquisitions || 2147483647);
+            input.value = String(link.minLevel || 1);
+            input.addEventListener("change", () => {
+                const level = input.valueAsNumber;
+                if (!Number.isInteger(level) || !input.checkValidity()) { input.reportValidity(); return; }
+                editGraph(() => { if (level === 1) delete link.minLevel; else link.minLevel = level; });
+            });
+            label.append(input); inspector.append(label);
+        }
         const actions = element("div", undefined, "detail-actions");
         actions.append(button("删除连线", deleteSelection, "danger quiet"));
         inspector.append(actions);

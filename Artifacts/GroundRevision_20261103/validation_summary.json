@@ -1,0 +1,81 @@
+{
+  "success": true,
+  "burst": {
+    "period_ticks": [
+      3673,
+      3793,
+      3913,
+      4033
+    ],
+    "presentation": {
+      "epoch": 1,
+      "prepared_vfx": 3,
+      "active_status": 0,
+      "tails": 0,
+      "burst_receipts": 4,
+      "burst_accepted": 4,
+      "burst_suppressed": 0,
+      "burst_rejected": 0
+    },
+    "max_radius": 500.00006103515625,
+    "particles_remaining": 0,
+    "target_checks": [
+      {
+        "key": "1/5457EC344361E2D1705947495BA6C276/1",
+        "intersecting_enemy": false,
+        "health_and_shield_lost": 0
+      },
+      {
+        "key": "1/1E2327FAF14ECAB91CB81C62C53DA521/1",
+        "intersecting_enemy": true,
+        "health_and_shield_lost": 93.99583435058594
+      },
+      {
+        "key": "1/DCA4CF983D0CD4D97B7207E727044646/1",
+        "intersecting_enemy": false,
+        "health_and_shield_lost": 0
+      },
+      {
+        "key": "1/D64CACE1CEFCA51304D53A9E05E7855E/1",
+        "intersecting_enemy": true,
+        "health_and_shield_lost": 93.99578857421875
+      },
+      {
+        "key": "1/EE30E23E5162C0313039BF8F051AEBCD/1",
+        "intersecting_enemy": true,
+        "health_and_shield_lost": 93.99578857421875
+      }
+    ],
+    "sum_of_burst_damage": 93.99583911895752
+  },
+  "continuous_fire": {
+    "started": 10087,
+    "burst_ticks": [
+      10207,
+      10327
+    ],
+    "expiry_extension": 166
+  },
+  "ricochet": {
+    "level": {
+      "06.01": 2,
+      "07.01": 1,
+      "08.01": 1
+    },
+    "hops": 6,
+    "maximum_distance": 3753.8376234368516
+  },
+  "ui": {
+    "badge_texts": [
+      "2",
+      "1",
+      "1"
+    ],
+    "refresh_hz": 5.006145268142927,
+    "hidden_elapsed": 21.922000000005937,
+    "hidden_refreshes": 0
+  },
+  "assistant_visual_test": false,
+  "performance": "Full CPU/GPU measurement not run",
+  "visual_acceptance": "pending_player"
+}

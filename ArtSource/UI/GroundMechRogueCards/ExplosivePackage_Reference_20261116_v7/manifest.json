@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-16",
+  "card_id": "11.01",
+  "card_title": "爆破套餐",
+  "seat": "Ground",
+  "version": 7,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "generation_mode": "reference-based airburst and impact edit",
+  "transparent_background": false,
+  "art_direction": "两处天空爆炸与废墟边缘撞击爆炸，沿用竖幅仰视、近景导弹和游骑兵俯冲构图。",
+  "palette_reference": "Progress/RequirementDocument/GuLiStrike美术规范.md §11",
+  "editor_asset_readback": {
+    "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+    "model_id": 4001,
+    "presentation_model_id": "4001",
+    "skeletal_mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+    "flight": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon.NS_GroundExplosiveFlight_Toon",
+    "flight_emitters": [
+      "ProjectileShell",
+      "ExhaustPlume"
+    ],
+    "relevant_flight_dependencies": [
+      "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonShell",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonPlume"
+    ],
+    "trail": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail.NS_GroundExplosiveTrail",
+    "impact": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact.NS_GroundExplosiveImpact",
+    "body_mesh": "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile.SM_WM01_Missile"
+  },
+  "flight_vfx_id": 63,
+  "inputs_in_order": [
+    {
+      "file": "../ExplosivePackage_Reference_20261116_v6/ExplosivePackage_Card_Reference_v6.png",
+      "sha256": "b606c4ca324fdcc13be8cba4820780935ae6182fc340501244e2e5a2202a86e9",
+      "role": "v6 牌面和导弹特写构图"
+    }
+  ],
+  "prompt": {
+    "file": "ExplosivePackage_Prompt.txt",
+    "sha256": "cca5f40bdce3a8b32e1825a2684ff8ce499354689ba56be7793a455ae6d121cd"
+  },
+  "output": {
+    "file": "ExplosivePackage_Card_Reference_v7.png",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e39f-c9b0-7602-ac68-13db3650a8bd\\exec-c1e7cb66-cb4a-4e0a-a0ca-248a469ed9bb.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB",
+    "sha256": "ca7ff46792f152aebf30bd9bda8eb1deb1e1de43decec038cf64fe7ca036df96"
+  },
+  "assistant_output_visual_review": false
+}

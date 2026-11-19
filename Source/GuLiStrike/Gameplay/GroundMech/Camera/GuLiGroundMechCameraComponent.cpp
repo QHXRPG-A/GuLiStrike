@@ -3,6 +3,9 @@
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRoguePresentation.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Engine/World.h"
 
 UGuLiGroundMechCameraComponent::UGuLiGroundMechCameraComponent()
 {
@@ -144,3 +147,30 @@ void UGuLiGroundMechCameraComponent::AddZoomInput(float Axis)
 }
 float UGuLiGroundMechCameraComponent::GetViewYaw() const
 { return CameraBoom?CameraBoom->GetTargetRotation().Yaw:0.f; }
+
+float UGuLiGroundMechCameraComponent::ApplyBarrageView(FMinimalViewInfo& View) const
+{
+    const auto* Pawn = Mech();
+    FGuLiGroundBarrageCameraShot Shot;
+    if (!Pawn || !CameraBoom || !Pawn->GetRoguePresentation()->ReadCastCamera(Shot) || Shot.Weight <= 0.f) return 0.f;
+    const FVector Pivot = Pawn->GetActorLocation();
+    FVector Aim;
+    const FVector Direction = Pawn->GetBarrageAimPoint(Aim) ? (Aim-Pivot).GetSafeNormal() : View.Rotation.Vector();
+    FRotator Facing = Direction.Rotation();
+    if (Direction.SizeSquared2D()<UE_KINDA_SMALL_NUMBER) Facing.Yaw=View.Rotation.Yaw;
+    const FQuat Basis = Facing.Quaternion();
+    const FVector LocalEye = Shot.EyeFromFeet + FVector::UpVector*Pawn->GetMesh()->GetRelativeLocation().Z;
+    FVector Eye = FMath::Lerp(View.Location,Pivot+Basis.RotateVector(LocalEye),Shot.Weight);
+    if (CameraBoom->bDoCollisionTest && CameraBoom->ProbeSize>0.f)
+    {
+        FHitResult Hit;
+        FCollisionQueryParams Params(SCENE_QUERY_STAT(RangerCastCamera),false,Pawn);
+        if (GetWorld()->SweepSingleByChannel(Hit,Pivot,Eye,FQuat::Identity,CameraBoom->ProbeChannel,
+            FCollisionShape::MakeSphere(CameraBoom->ProbeSize),Params))
+            Eye=Hit.bStartPenetrating ? View.Location : Hit.Location;
+    }
+    View.Location=Eye;
+    View.Rotation=FQuat::Slerp(View.Rotation.Quaternion(),Basis*Shot.Rotation.Quaternion(),Shot.Weight).Rotator();
+    View.FOV=FMath::Lerp(View.FOV,Shot.Fov,Shot.Weight);
+    return Shot.Flash;
+}

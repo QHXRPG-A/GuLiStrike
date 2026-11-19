@@ -8,7 +8,7 @@ import unreal
 ROOT = Path('D:/UE5.7/test1')
 OUT = ROOT / 'outputs/construction-vfx'
 DEST = '/Game/GuLiStrike/Buildings/Construction'
-SOURCE = '/Game/Assets/VFX/NiagaraUpgradeGlow'
+SOURCE = '/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow'
 NS, EM, SP = unreal.NiagaraService, unreal.NiagaraEmitterService, unreal.NiagaraScratchPadService
 report = {'saved': [], 'compiles': {}, 'materials': {}}
 

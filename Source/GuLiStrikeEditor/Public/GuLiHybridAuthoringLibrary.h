@@ -12,7 +12,7 @@ class GULISTRIKEEDITOR_API UGuLiHybridAuthoringLibrary final : public UBlueprint
 public:
     /** Uses the current map, validated production catalog and the real initial-army layout. */
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Hybrid|Authoring")
-    static FString ExportRuntimeManifest(int32 Population=200, const FString& File=TEXT(""));
+    static FString ExportRuntimeManifest(int32 Population=200, const FString& File=TEXT(""), bool bBarrageRange=false);
     /** Export another authored data profile without saving or mutating the project's defaults.
      * Overrides is a JSON array of {class, property, value}; value uses config text syntax. */
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Hybrid|Authoring")

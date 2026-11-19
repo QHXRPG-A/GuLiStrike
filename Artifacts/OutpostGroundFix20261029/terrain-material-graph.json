@@ -1,0 +1,375 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Opaque",
+		"shading_model": "MSM_Unlit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionLandscapeLayerBlend_0000015BD6AC86C0",
+			"class": "LandscapeLayerBlend",
+			"class_full": "MaterialExpressionLandscapeLayerBlend",
+			"pos_x": -520,
+			"pos_y": 0,
+			"properties":
+			{
+				"Layers": "((LayerName=\"FlatGround\",LayerInput=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones:MaterialExpressionVectorParameter_0'\",Mask=1,MaskR=1,MaskG=1,MaskB=1),PreviewWeight=1.000000),(LayerName=\"Hills\",LayerInput=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones:MaterialExpressionVectorParameter_1'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(LayerName=\"Plateau\",LayerInput=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones:MaterialExpressionVectorParameter_2'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(LayerName=\"Rock\",LayerInput=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones:MaterialExpressionVectorParameter_3'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(LayerName=\"Beach\",LayerInput=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones:MaterialExpressionVectorParameter_4'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(LayerName=\"Water\",LayerInput=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones:MaterialExpressionVectorParameter_5'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)))"
+			},
+			"landscape_layers": [
+				{
+					"layer_name": "FlatGround",
+					"blend_type": "LB_WeightBlend",
+					"preview_weight": 1
+				},
+				{
+					"layer_name": "Hills",
+					"blend_type": "LB_WeightBlend",
+					"preview_weight": 0
+				},
+				{
+					"layer_name": "Plateau",
+					"blend_type": "LB_WeightBlend",
+					"preview_weight": 0
+				},
+				{
+					"layer_name": "Rock",
+					"blend_type": "LB_WeightBlend",
+					"preview_weight": 0
+				},
+				{
+					"layer_name": "Beach",
+					"blend_type": "LB_WeightBlend",
+					"preview_weight": 0
+				},
+				{
+					"layer_name": "Water",
+					"blend_type": "LB_WeightBlend",
+					"preview_weight": 0
+				}
+			],
+			"inputs": [
+				"Layer FlatGround",
+				"Layer Hills",
+				"Layer Plateau",
+				"Layer Rock",
+				"Layer Beach",
+				"Layer Water"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000015BF91EE880",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -780,
+			"pos_y": 0,
+			"properties":
+			{
+				"DefaultValue": "(R=0.205000,G=0.355000,B=0.092000,A=1.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "FlatGroundColor",
+			"group": "Terrain zones",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000015BF91EEB80",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -780,
+			"pos_y": 176,
+			"properties":
+			{
+				"DefaultValue": "(R=0.145000,G=0.285000,B=0.078000,A=1.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "HillsColor",
+			"group": "Terrain zones",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000015BF91EED00",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -780,
+			"pos_y": 352,
+			"properties":
+			{
+				"DefaultValue": "(R=0.310000,G=0.290000,B=0.130000,A=1.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "PlateauColor",
+			"group": "Terrain zones",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000015BF91EEE80",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -780,
+			"pos_y": 528,
+			"properties":
+			{
+				"DefaultValue": "(R=0.290000,G=0.310000,B=0.300000,A=1.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "RockColor",
+			"group": "Terrain zones",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000015BF91EF000",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -780,
+			"pos_y": 704,
+			"properties":
+			{
+				"DefaultValue": "(R=0.670000,G=0.530000,B=0.250000,A=1.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "BeachColor",
+			"group": "Terrain zones",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000015BF91EF180",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -780,
+			"pos_y": 880,
+			"properties":
+			{
+				"DefaultValue": "(R=0.030000,G=0.120000,B=0.160000,A=1.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "WaterColor",
+			"group": "Terrain zones",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVertexNormalWS_0000015BD6ACA720",
+			"class": "VertexNormalWS",
+			"class_full": "MaterialExpressionVertexNormalWS",
+			"pos_x": -780,
+			"pos_y": 1056,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionCustom_0000015BF95BAF00",
+			"class": "Custom",
+			"class_full": "MaterialExpressionCustom",
+			"pos_x": -520,
+			"pos_y": 162,
+			"properties":
+			{
+				"Code": "float d=dot(normalize(N),normalize(float3(.35,-.55,.76))); return d<.18 ? .60 : (d<.46 ? .80 : 1.0);",
+				"OutputType": "CMOT_Float1",
+				"Description": "Custom",
+				"Inputs": "((InputName=\"N\",Input=(Expression=\"/Script/Engine.MaterialExpressionVertexNormalWS'/Game/GuLiStrike/Environment/CommanderIsland_1800m_v1/Materials/M_CombatIsland_Zones.M_CombatIsland_Zones:MaterialExpressionVertexNormalWS_0'\")))",
+				"ShowCode": "False",
+				"Desc": "Three terrain tones with the project's fixed art light"
+			},
+			"hlsl_code": "float d=dot(normalize(N),normalize(float3(.35,-.55,.76))); return d<.18 ? .60 : (d<.46 ? .80 : 1.0);",
+			"output_type": "CMOT_Float1",
+			"custom_input_names": "N",
+			"inputs": [
+				"N"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000015BF95BB2C0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -260,
+			"pos_y": 0,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000015BF91EE880",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLandscapeLayerBlend_0000015BD6AC86C0",
+			"target_input": "Layer FlatGround",
+			"is_layer_blend_input": true,
+			"layer_input_type": "Layer",
+			"layer_name": "FlatGround"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000015BF91EEB80",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLandscapeLayerBlend_0000015BD6AC86C0",
+			"target_input": "Layer Hills",
+			"is_layer_blend_input": true,
+			"layer_input_type": "Layer",
+			"layer_name": "Hills"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000015BF91EED00",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLandscapeLayerBlend_0000015BD6AC86C0",
+			"target_input": "Layer Plateau",
+			"is_layer_blend_input": true,
+			"layer_input_type": "Layer",
+			"layer_name": "Plateau"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000015BF91EEE80",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLandscapeLayerBlend_0000015BD6AC86C0",
+			"target_input": "Layer Rock",
+			"is_layer_blend_input": true,
+			"layer_input_type": "Layer",
+			"layer_name": "Rock"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000015BF91EF000",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLandscapeLayerBlend_0000015BD6AC86C0",
+			"target_input": "Layer Beach",
+			"is_layer_blend_input": true,
+			"layer_input_type": "Layer",
+			"layer_name": "Beach"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000015BF91EF180",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLandscapeLayerBlend_0000015BD6AC86C0",
+			"target_input": "Layer Water",
+			"is_layer_blend_input": true,
+			"layer_input_type": "Layer",
+			"layer_name": "Water"
+		},
+		{
+			"source_id": "MaterialExpressionVertexNormalWS_0000015BD6ACA720",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionCustom_0000015BF95BAF00",
+			"target_input": "N"
+		},
+		{
+			"source_id": "MaterialExpressionLandscapeLayerBlend_0000015BD6AC86C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000015BF95BB2C0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionCustom_0000015BF95BAF00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000015BF95BB2C0",
+			"target_input": "B"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionMultiply_0000015BF95BB2C0",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

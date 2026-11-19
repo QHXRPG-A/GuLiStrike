@@ -1,6 +1,6 @@
 {
   "schema": "gulistrike/external-assets/v1",
-  "scope": "已登记的外部资源；当前覆盖用户本次指定的四包，不代表全项目历史商城资产普查。",
+  "scope": "已登记的外部资源包含 20261026、20261118 两批。另记录本轮重组的既有 VFX。",
   "root": "/Game/Assets",
   "packs": [
     {
@@ -165,6 +165,184 @@
       "migration_batch": "20261026"
     },
     {
+      "id": "buff-loop",
+      "name": "Buff and Debuff VFX",
+      "category": "VFX/Buffs",
+      "source_archive": "D:/BaiduNetdiskDownload/Buff and Debuff VFX ( Include Sun ,Bubble, Tentacle ).zip",
+      "source_sha256": "03f58640e293461d7c980fd0ac0b62e03eebdd607abf772a355c6f096b8a086d",
+      "source_archive_prefix": "Buff and Debuff VFX ( Include Sun ,Bubble, Tentacle )/BuffLoop/",
+      "source_root": "/Game/BuffLoop",
+      "target_root": "/Game/Assets/VFX/Buffs/BuffLoop",
+      "target_roots": [
+        "/Game/Assets/VFX/Buffs/BuffLoop"
+      ],
+      "description": "护盾、回能、中毒、控制等状态特效。",
+      "source_file_count": 184,
+      "registered_package_count": 183,
+      "currently_loadable_package_count": 183,
+      "classes": {
+        "MapBuildDataRegistry": 1,
+        "Material": 34,
+        "MaterialFunction": 2,
+        "MaterialInstanceConstant": 42,
+        "NiagaraEmitter": 19,
+        "NiagaraScript": 1,
+        "NiagaraSystem": 20,
+        "StaticMesh": 18,
+        "Texture2D": 45,
+        "World": 1
+      },
+      "maps": [
+        "/Game/Assets/VFX/Buffs/BuffLoop/Demo/OverView_DemoScene"
+      ],
+      "omitted_archive_entries": [
+        "Buff and Debuff VFX ( Include Sun ,Bubble, Tentacle )/BuffLoop.rar"
+      ],
+      "unmigrated_source_packages": [
+        {
+          "source_package": "/Game/BuffLoop/NS/Vfx_ControlParastie",
+          "archive_entry": "Buff and Debuff VFX ( Include Sun ,Bubble, Tentacle )/BuffLoop/NS/Vfx_ControlParastie.uasset",
+          "bytes": 1440,
+          "crc32": "21e4d5ab",
+          "reason": "source_redirector"
+        }
+      ],
+      "external_actor_object_files": [],
+      "limitations": [
+        "体积毒雾 Vfx_GpuVolumetricPoison 需要 NiagaraFluids。当前源码版编辑器与现有插件模块的 BuildId 不同，已撤回项目启用项并验证编辑器启动。该效果的完整依赖需要匹配当前引擎的插件模块。",
+        "原包 Vfx_ControlParastie 是无参照的拼写旧重定向，正名 Vfx_ControlParasite 已迁入。",
+        "ZIP 内附 BuffLoop.rar 与展开的 UE 包路径清单相同，采用外层 ZIP 中已展开的 184 个包。"
+      ],
+      "validation": {
+        "migration_saved_and_inventory_matched": true,
+        "old_path_dependency_count": 0,
+        "missing_game_dependencies": {},
+        "unexpected_load_failures": [],
+        "visual": "not_run_user_review",
+        "runtime": "not_run",
+        "independent_cold_reload": "not_run"
+      },
+      "reports": "data/ExternalAssets/migrations/20261118/verification.json",
+      "migrated_on": "2026-11-18",
+      "migration_batch": "20261118",
+      "current_plugin_dependency": {
+        "plugin": "NiagaraFluids",
+        "asset": "/Game/Assets/VFX/Buffs/BuffLoop/NS/Vfx_GpuVolumetricPoison",
+        "project_plugin_enabled": false,
+        "startup_blocker": "module_build_id_mismatch",
+        "build_ids": {
+          "editor": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+          "niagara_fluids_module": "9872a344-2108-49e2-b40c-34c4e2c3ccfe"
+        }
+      }
+    },
+    {
+      "id": "good-fx-status",
+      "name": "GOOD FX Status",
+      "category": "VFX/Buffs",
+      "source_archive": "D:/BaiduNetdiskDownload/GOOD FX Status.zip",
+      "source_sha256": "24407f005448ecfd5b1728d7b4453f3fe5f343ecd26867bca24f282ffb6300ee",
+      "source_archive_prefix": "Content/GoodParticleStatus/",
+      "source_root": "/Game/GoodParticleStatus",
+      "target_root": "/Game/Assets/VFX/Buffs/GoodParticleStatus",
+      "target_roots": [
+        "/Game/Assets/VFX/Buffs/GoodParticleStatus"
+      ],
+      "description": "头顶、脚底、身体及护盾状态特效，带示例蓝图。",
+      "source_file_count": 249,
+      "registered_package_count": 249,
+      "currently_loadable_package_count": 249,
+      "classes": {
+        "AnimBlueprint": 1,
+        "AnimComposite": 1,
+        "AnimSequence": 8,
+        "BlendSpace1D": 1,
+        "Blueprint": 2,
+        "Material": 58,
+        "MaterialFunction": 6,
+        "MaterialInstanceConstant": 30,
+        "ParticleSystem": 38,
+        "PhysicsAsset": 1,
+        "SkeletalMesh": 1,
+        "Skeleton": 1,
+        "StaticMesh": 15,
+        "Texture2D": 82,
+        "TextureCube": 1,
+        "UserDefinedEnum": 1,
+        "WidgetBlueprint": 1,
+        "World": 1
+      },
+      "maps": [
+        "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Level_GoodParticleStatus"
+      ],
+      "omitted_archive_entries": [
+        "Content/把这里的文件夹放入你自己项目的content文件夹中.txt",
+        "素材导入方法！！！.jpg"
+      ],
+      "unmigrated_source_packages": [
+        {
+          "source_package": "/Game/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP",
+          "archive_entry": "Content/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP.uasset",
+          "bytes": 231475,
+          "crc32": "48947e68",
+          "reason": "unreadable_package_summary",
+          "replaced_by": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Maps/Maps_Source/ThirdPersonBP/Animations/ThirdPerson_AnimBP"
+        },
+        {
+          "source_package": "/Game/GoodParticleStatus/Particles/Head_Status/GS_GPS_Hera",
+          "archive_entry": "Content/GoodParticleStatus/Particles/Head_Status/GS_GPS_Hera.uasset",
+          "bytes": 8,
+          "crc32": "f7e0130a",
+          "reason": "unreadable_package_summary",
+          "replaced_by": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Particles/Head_Status/GS_GPS_Hera"
+        },
+        {
+          "source_package": "/Game/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos",
+          "archive_entry": "Content/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos.uasset",
+          "bytes": 209460,
+          "crc32": "6cacfb26",
+          "reason": "unreadable_package_summary",
+          "replaced_by": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Particles/Head_Status/PS_GPS_Chaos"
+        },
+        {
+          "source_package": "/Game/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D",
+          "archive_entry": "Content/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D.uasset",
+          "bytes": 168722,
+          "crc32": "8e1fe238",
+          "reason": "unreadable_package_summary",
+          "replaced_by": "/Game/Assets/VFX/Buffs/GoodParticleStatus/Sources/Textures/T_GPS_BurningTex_02_D"
+        }
+      ],
+      "external_actor_object_files": [],
+      "limitations": [
+        "原 ZIP 的四个不可读成员仍在来源记录中。项目对应路径现由四个可读的替代资产补齐。",
+        "GS_GPS_Hera 是独立 Cascade 头顶粒子。原演示菜单保持既有选项。",
+        "演示角色通过 Enhanced Input 使用已登记的 BulletTraceVFX 的 IA_Move、IA_Look、IA_Jump 和 IMC_Default。",
+        "退出编辑器后已清理旧暂存目录。修复后回读 249 个正式包。"
+      ],
+      "validation": {
+        "migration_saved_and_inventory_matched": true,
+        "old_path_dependency_count": 0,
+        "missing_game_dependencies": {},
+        "unexpected_load_failures": [],
+        "visual": "not_run_user_review",
+        "runtime": "not_run",
+        "independent_cold_reload": "not_run"
+      },
+      "reports": "data/ExternalAssets/migrations/20261118/verification.json",
+      "migrated_on": "2026-11-18",
+      "migration_batch": "20261118",
+      "migrated_original_package_count": 245,
+      "replacement_package_count": 4,
+      "repair_report": "data/ExternalAssets/migrations/20261118/good-fx-repair.json",
+      "dependencies": [
+        "/Game/Assets/VFX/Weapons/BulletTraceVFX/IMC_Default",
+        "/Game/Assets/VFX/Weapons/BulletTraceVFX/IA_Move",
+        "/Game/Assets/VFX/Weapons/BulletTraceVFX/IA_Look",
+        "/Game/Assets/VFX/Weapons/BulletTraceVFX/IA_Jump"
+      ]
+    },
+    {
       "id": "advanced-dash-vfx",
       "name": "Advanced Dash VFX Pack",
       "category": "VFX/Movement",
@@ -252,6 +430,69 @@
       "duplicate_sha256": "7281d99466c4d0a65e4f35dda51c77deba09fd7fdfccdf4bc7a6b48e9d9a0263"
     },
     {
+      "id": "fantasy-vfx-collection",
+      "name": "Fantasy VFX Collection",
+      "category": "VFX/Weapons",
+      "source_archive": "D:/BaiduNetdiskDownload/FANTASY VFX COLLECTION.zip",
+      "source_sha256": "dd6bad1cdc6ab9026cbe7b343d3aae013346d39336ade7972a8ab811ec9faa54",
+      "source_archive_prefix": "FantasyVFXCollection/",
+      "source_root": "/Game/FantasyVFXCollection",
+      "target_root": "/Game/Assets/VFX/Weapons/FantasyVFXCollection",
+      "target_roots": [
+        "/Game/Assets/VFX/Weapons/FantasyVFXCollection",
+        "/Game/Assets/VFX/Buffs/FantasyVFXCollection"
+      ],
+      "description": "武器弹丸、命中、爆炸、斩击、拖尾、法术和通用材质。Buff 与 Debuff 粒子及专用材质位于 Buffs。",
+      "source_file_count": 296,
+      "registered_package_count": 296,
+      "currently_loadable_package_count": 296,
+      "classes": {
+        "LevelSequence": 2,
+        "MapBuildDataRegistry": 1,
+        "Material": 10,
+        "MaterialFunction": 1,
+        "MaterialInstanceConstant": 90,
+        "ParticleSystem": 118,
+        "StaticMesh": 9,
+        "Texture2D": 64,
+        "World": 1
+      },
+      "maps": [
+        "/Game/Assets/VFX/Weapons/FantasyVFXCollection/0_Scene/Preview_Scene"
+      ],
+      "omitted_archive_entries": [],
+      "unmigrated_source_packages": [],
+      "external_actor_object_files": [],
+      "limitations": [
+        "16 个 Buff 相关包与 280 个武器及公共资源包分目录保存。跨目录继续共享原包主材质和贴图。",
+        "粒子资产类型为 Cascade ParticleSystem。"
+      ],
+      "validation": {
+        "migration_saved_and_inventory_matched": true,
+        "old_path_dependency_count": 0,
+        "missing_game_dependencies": {},
+        "unexpected_load_failures": [],
+        "visual": "not_run_user_review",
+        "runtime": "not_run",
+        "independent_cold_reload": "not_run"
+      },
+      "reports": "data/ExternalAssets/migrations/20261118/verification.json",
+      "migrated_on": "2026-11-18",
+      "migration_batch": "20261118",
+      "categories": [
+        "VFX/Buffs",
+        "VFX/Weapons"
+      ],
+      "routing": {
+        "buff_paths": [
+          "1_Material/MaterialInstance/Buff/",
+          "3_ParticleSystem/Buff/"
+        ],
+        "buff_root": "/Game/Assets/VFX/Buffs/FantasyVFXCollection",
+        "default_root": "/Game/Assets/VFX/Weapons/FantasyVFXCollection"
+      }
+    },
+    {
       "id": "muzzle-flashes",
       "name": "Muzzle Flashes",
       "category": "VFX/Weapons",
@@ -331,13 +572,113 @@
       "reports": "data/ExternalAssets/migrations/20261026/muzzle-flashes_validation.json",
       "migrated_on": "2026-10-27",
       "migration_batch": "20261026"
+    },
+    {
+      "id": "high-speed-thrusters",
+      "name": "High Speed Thrusters",
+      "category": "VFX/Weapons/Missiles",
+      "source_archive": "D:/BaiduNetdiskDownload/High Speed Thrusters 高速移动拖尾发光特效.zip",
+      "source_sha256": "be82cde63422c1ada491c72b1ecf07fdcd314a88d70ed5d08f07730625fcf3de",
+      "source_archive_prefix": "Content/HighSpeedThrusters/",
+      "source_root": "/Game/HighSpeedThrusters",
+      "target_root": "/Game/Assets/VFX/Weapons/Missiles/HighSpeedThrusters",
+      "target_roots": [
+        "/Game/Assets/VFX/Weapons/Missiles/HighSpeedThrusters"
+      ],
+      "description": "Cone、Meshes、Ribbons、Sprites 四种火箭尾焰，含烟雾、热浪和喷口脉冲。",
+      "source_file_count": 30,
+      "registered_package_count": 30,
+      "currently_loadable_package_count": 30,
+      "classes": {
+        "MapBuildDataRegistry": 1,
+        "Material": 8,
+        "NiagaraEmitter": 5,
+        "NiagaraScript": 1,
+        "NiagaraSystem": 4,
+        "StaticMesh": 1,
+        "Texture2D": 9,
+        "World": 1
+      },
+      "maps": [
+        "/Game/Assets/VFX/Weapons/Missiles/HighSpeedThrusters/Maps/Overview"
+      ],
+      "omitted_archive_entries": [
+        "80CG可提供技术指导 远程操作教学 安装 等多种服务.mhtml",
+        "80cg会员网站CG资源分享平台 www.ds80cg.com.mhtml"
+      ],
+      "unmigrated_source_packages": [],
+      "external_actor_object_files": [],
+      "limitations": [
+        "四个 NiagaraSystem 位于 FX，所带示例地图位于 Maps/Overview。"
+      ],
+      "validation": {
+        "migration_saved_and_inventory_matched": true,
+        "old_path_dependency_count": 0,
+        "missing_game_dependencies": {},
+        "unexpected_load_failures": [],
+        "visual": "not_run_user_review",
+        "runtime": "not_run",
+        "independent_cold_reload": "not_run"
+      },
+      "reports": "data/ExternalAssets/migrations/20261118/verification.json",
+      "migrated_on": "2026-11-18",
+      "migration_batch": "20261118"
     }
   ],
-  "updated": "2026-10-27",
+  "updated": "2026-11-18",
   "totals": {
-    "packs": 4,
-    "source_files": 807,
-    "registered_packages": 804,
-    "currently_loadable_packages": 803
+    "packs": 8,
+    "source_files": 1566,
+    "registered_packages": 1562,
+    "currently_loadable_packages": 1561
+  },
+  "existing_vfx_reorganization": {
+    "batch": "20261118",
+    "moves": [
+      {
+        "id": "niagara-upgrade-glow",
+        "source_root": "/Game/Assets/VFX/NiagaraUpgradeGlow",
+        "target_root": "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow",
+        "package_count": 202,
+        "maps": [
+          "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Maps/NewWorld"
+        ]
+      },
+      {
+        "id": "weapon-bullet-vfx",
+        "source_root": "/Game/Assets/VFX/WeaponBulletVFX",
+        "target_root": "/Game/Assets/VFX/Weapons/WeaponBulletVFX",
+        "package_count": 134,
+        "maps": []
+      },
+      {
+        "id": "missile-cluster",
+        "source_root": "/Game/Assets/Missile_Cluster",
+        "target_root": "/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster",
+        "package_count": 46,
+        "maps": [
+          "/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster/001"
+        ]
+      },
+      {
+        "id": "beam-spells-vfx",
+        "source_root": "/Game/Assets/Beam_Spells_VFX",
+        "target_root": "/Game/Assets/VFX/Weapons/Beam_Spells_VFX",
+        "package_count": 62,
+        "maps": [
+          "/Game/Assets/VFX/Weapons/Beam_Spells_VFX/Demo_Scene/MapDemo"
+        ]
+      }
+    ],
+    "retained_redirectors": {
+      "/Game/Assets/Missile_Cluster/001": "/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster/001"
+    },
+    "weapon_collection": {
+      "name": "VFX_Weapons",
+      "share": "local",
+      "effects": 302,
+      "toon_projectiles_systems": 45
+    },
+    "reports": "data/ExternalAssets/migrations/20261118/verification.json"
   }
 }

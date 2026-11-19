@@ -1,5 +1,8 @@
 #include "GuLiLocalPIESubsystem.h"
 #include "GuLiLocalPIERolePicker.h"
+#include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Engine/TargetPoint.h"
+#include "EngineUtils.h"
 #include "Network/GuLiHybridManifest.h"
 #include "Network/GuLiHybridSessionSubsystem.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
@@ -90,6 +93,7 @@ struct UGuLiLocalPIESubsystem::FState
     bool CleanupComplete=false;
     double Started=0;
     bool Active=false,Began=false,ReachedReady=false;
+    bool bBarrageRangePending=false;
     TOptional<EGuLiCommanderRole> LastSelectedRole;
 #if PLATFORM_WINDOWS
     HANDLE Job=nullptr,StopEvent=nullptr;
@@ -143,6 +147,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     if (!GEditor || !IsLocalMap(EditorWorld()) || !Settings->bEnabled) return true;
     if (State->Active) return true;
     State->Error.Reset();State->Began=false;State->ReachedReady=false;State->Shutdown.Reset();State->CleanupComplete=false;
+    State->bBarrageRangePending=false;
     auto Fail=[&](const FString& Why)
     { State->Error=Why;Error=Why;StopChildren();UE_LOG(LogTemp,Error,TEXT("[GuLiLocalPIE] %s"),*Why);return false; };
     if (Settings->MainRole!=EGuLiCommanderRole::Commander && Settings->MainRole!=EGuLiCommanderRole::Ground
@@ -175,7 +180,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     // before creating the room directory, stop event or logic peers.
     if (Settings->bPromptForRole && !FApp::IsUnattended() && !IsRunningCommandlet())
     {
-        const auto Selected = GuLiLocalPIERolePicker::Show(State->LastSelectedRole.Get(Settings->MainRole));
+        const auto Selected = GuLiLocalPIERolePicker::Show(State->LastSelectedRole.Get(Settings->MainRole),State->bBarrageRangePending);
         if (!Selected.IsSet())
         {
             Error=TEXT("已取消开局选择。");
@@ -189,6 +194,15 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     State->Directory=FPaths::Combine(FPlatformProcess::UserTempDir(),TEXT("GuLiStrikePIE"),Config.RoomId.ToString(EGuidFormats::Digits));
     if (!IFileManager::Get().MakeDirectory(*State->Directory,true)) return Fail(TEXT("Could not create the local session directory."));
     State->Active=true;State->Started=FPlatformTime::Seconds();
+    if (State->bBarrageRangePending)
+    {
+        Config.ManifestFile=Root/TEXT("Config/Hybrid/RuntimeManifest-NoSurvivors.json");
+        FString RangeConfigHash,RangeMapHash,RangeMap;
+        if (!FGuLiHybridManifest::ValidateFile(Config.ManifestFile,RangeConfigHash,RangeMapHash,RangeMap,Why))
+            return Fail(Why);
+        if (RangeMap!=LocalMap || RangeMapHash!=MapHash)
+            return Fail(TEXT("The barrage range roster does not match the current map. Re-export the range manifest."));
+    }
     FString ClientStopArguments;
 #if PLATFORM_WINDOWS
     const FString StopName=TEXT("Local\\GuLiStrikePIEStop_")+Config.RoomId.ToString(EGuidFormats::Digits);
@@ -332,6 +346,17 @@ bool UGuLiLocalPIESubsystem::Tick(float)
     UWorld* World=GEditor->PlayWorld.Get();
     auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
     if(Hybrid && Hybrid->IsWorldReady())State->ReachedReady=true;
+    if (State->bBarrageRangePending && State->ReachedReady && World)
+    {
+        auto* PC=World->GetFirstPlayerController();
+        if (auto* Mech=PC ? Cast<AGuLiGroundMechCharacter>(PC->GetPawn()) : nullptr)
+            for (TActorIterator<ATargetPoint> It(World);It;++It)
+                if (It->ActorHasTag(TEXT("GuLi.NoSurvivors.Start")))
+                {
+                    if (Mech->EnterBarrageRange(It->GetActorTransform())) State->bBarrageRangePending=false;
+                    break;
+                }
+    }
     const bool StartupTimedOut=!State->ReachedReady && State->Began && FPlatformTime::Seconds()-State->Started>120;
     const FString Failure=Hybrid?Hybrid->GetFailure():FString();
     if((!Children && !State->ReachedReady) || StartupTimedOut || !Failure.IsEmpty())

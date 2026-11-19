@@ -1,6 +1,8 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+#include "Gameplay/GroundMech/Abilities/GuLiGroundStrikeSurface.h"
+#include "GameFramework/WorldSettings.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
 
 #include "Engine/World.h"
@@ -21,6 +23,21 @@ namespace
 	constexpr float StepSeconds = 1.0f / 30.0f;
 	constexpr float CellSize = 2000.0f;
 	FIntPoint Cell(const FVector& Point) { return FIntPoint(static_cast<int32>(FMath::FloorToInt(Point.X / CellSize)), static_cast<int32>(FMath::FloorToInt(Point.Y / CellSize))); }
+
+	// First contact along a finite segment, including a projectile that starts inside the sphere.
+	bool SphereEntry(FVector Start, FVector End, FVector Center, double Radius, double& Fraction)
+	{
+		const FVector Offset = Start - Center;
+		const double C = Offset.SizeSquared() - Radius * Radius;
+		if (C <= 0.) { Fraction = 0.; return true; }
+		const FVector Delta = End - Start;
+		const double A = Delta.SizeSquared();
+		const double B = Offset | Delta;
+		const double Discriminant = B * B - A * C;
+		if (A <= UE_DOUBLE_SMALL_NUMBER || B >= 0. || Discriminant < 0.) return false;
+		Fraction = C / (-B + FMath::Sqrt(Discriminant));
+		return Fraction <= 1.;
+	}
 
 	FVector GroundMachineGunDirection(const FVector& AimDirection, const FGuLiCombatAttackRequest& Request, const uint8 MuzzleIndex)
 	{
@@ -576,6 +593,7 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
     if (Prepared.Emitter.IsValid()) State.Source=GuLiCombatTargets::MakeWingmanTargetHandle(Prepared.Emitter);
     State.ProjectileDefinition = Definition; State.FieldDefinition = Field; State.Motion = Request.Motion;
     State.bFixedPoint = true;
+    State.GroundStrike = Definition->GetGroundStrikeFlight();
     if (!Request.bUseAuthoredPointTrajectory)
     { State.Motion.LiftSeconds = 0; State.Motion.LateralOffset = 0; State.Motion.VerticalCurve = 0; State.Motion.LongitudinalCurve = 0; }
     State.GroundWarningStyle = Request.GroundWarningStyle;
@@ -591,6 +609,15 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
     State.Velocity = FVector(State.LaunchDirection) * State.Motion.Speed;
     State.StartTime = State.SampleTime = BattleSeconds();
     State.EndTime = State.StartTime + State.Motion.MaximumLifetime; State.Sequence = 1;
+    if (State.GroundStrike.IsEnabled())
+    {
+        // Allow even a near-vertical shot to fall from its maximum reachable altitude to KillZ.
+        const double Speed = State.Motion.Speed;
+        const double Height = FMath::Max(0., State.Location.Z - GetWorld()->GetWorldSettings()->KillZ)
+            + State.Motion.MaximumLiftHeight + Speed * State.Motion.MaximumLifetime;
+        const double FallTime = 2. * Height / (Speed + FMath::Sqrt(Speed * Speed + 2. * State.GroundStrike.DiveAcceleration * Height));
+        State.EndTime += float(FallTime + 1.);
+    }
     State.RandomSeed = static_cast<int32>(State.EffectId.A ^ State.EffectId.B);
     Instance.CurveCoefficients.Initialize(State);
     return true;
@@ -771,43 +798,140 @@ void UGuLiCombatEffectRuntimeSubsystem::StepWingmanBurstCooldowns(const float No
 void UGuLiCombatEffectRuntimeSubsystem::StepProjectile(const FGuid& Id, float DeltaTime, float Now)
 {
 	const auto* Found = Effects.Find(Id); if (!Found) return;
+	if (Found->State.GroundStrike.IsEnabled()) { StepGroundStrike(Id, *Found, Now); return; }
+	const bool bCheckBodies = Found->Projectile && Found->Projectile->bInterceptEnemyBodies;
+	const auto& Last = Found->State;
+	if (Now < Last.StartTime) return;
+	float Until = Now;
+	if (bCheckBodies)
+	{
+		// Keep the last fully swept state as the network checkpoint. A new owner resumes
+		// from that position, including any as-yet unswept fraction of the next window.
+		const int64 Ticks = FMath::RoundToInt64(double(Now) * 60.) - FMath::RoundToInt64(double(Last.StartTime) * 60.);
+		Until = Now >= Last.EndTime ? Last.EndTime : Last.StartTime + float(Ticks / 6) * .1f;
+		if (Until <= Last.SampleTime) return;
+	}
+	else if (Now >= Last.EndTime)
+	{
+		Finish(Id, EGuLiCombatEffectEndReason::Expired, Now); return;
+	}
 	// Callbacks may add/remove entries. Never retain references into Effects over a callback or child spawn.
 	FGuLiRuntimeCombatEffect Instance = *Found;
 	auto& State = Instance.State;
-	if (Now < State.StartTime) return;
-	if (Now >= State.EndTime) { Finish(Id, EGuLiCombatEffectEndReason::Expired, Now); return; }
 	FGuLiCombatTargetSnapshot Target;
 	const bool bTargetAlive = !State.bFixedPoint && Ledger->TryGetTargetSnapshot(State.Target, Target) && Target.bAlive;
 	if (bTargetAlive) State.LastTargetLocation = Target.Location;
-	const FVector Previous = State.Location;
-	GuLiCombatEffects::AdvanceProjectile(State, Now - State.StartTime, DeltaTime,
-		GuLiCombatEffects::ShouldPrecomputeCurves() ? &Instance.CurveCoefficients : nullptr);
-	State.SampleTime = Now; ++State.Sequence;
-	FHitResult Hit;
+	const auto* Curve = GuLiCombatEffects::ShouldPrecomputeCurves() ? &Instance.CurveCoefficients : nullptr;
+	const float ArrivalRadius = State.Motion.SweepRadius + (bTargetAlive ? FMath::Max(0.f, Target.CollisionRadius) : 30.f);
+	TArray<FVector, TInlineAllocator<4>> Path;
+	Path.Add(State.Location);
+	bool bArrived = false;
+	if (bCheckBodies)
+	{
+		// Keep the client's authored 30 Hz curve, including its high-curvature launch.
+		// Compute ages from the launch clock to avoid accumulating float error across windows.
+		const double EndAge = Until >= State.EndTime ? double(State.EndTime - State.StartTime)
+			: FMath::RoundToInt64(double(Until - State.StartTime) * 10.) * .1;
+		double Age = FMath::RoundToInt64(double(State.SampleTime - State.StartTime) * 30.) / 30.;
+		while (Age + UE_SMALL_NUMBER < EndAge)
+		{
+			const double NextAge = FMath::Min(Age + 1./30., EndAge);
+			const FVector Next = GuLiCombatEffects::AdvanceProjectile(State, float(NextAge), float(NextAge - Age), Curve);
+			Age = NextAge;
+			double Entry;
+			if (Age > State.Motion.LiftSeconds && SphereEntry(Path.Last(), Next, State.LastTargetLocation, ArrivalRadius, Entry))
+			{
+				const FVector Arrival = FMath::Lerp(Path.Last(), Next, Entry);
+				Path.Add(Arrival);
+				bArrived = true;
+				break;
+			}
+			Path.Add(Next);
+		}
+	}
+	else
+	{
+		Path.Add(GuLiCombatEffects::AdvanceProjectile(State, Until - State.StartTime, DeltaTime, Curve));
+		bArrived = Until - State.StartTime > State.Motion.LiftSeconds &&
+			FMath::PointDistToSegmentSquared(FVector(State.LastTargetLocation), Path[0], Path.Last()) <= FMath::Square(double(ArrivalRadius));
+	}
+	State.SampleTime = Until; ++State.Sequence;
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiCombatProjectile), false);
 	FGuLiCombatTargetSnapshot Source;
 	if (Ledger->TryGetTargetSnapshot(State.Source, Source) && Source.CollisionActor.IsValid()) Params.AddIgnoredActor(Source.CollisionActor.Get());
 	if (Target.CollisionActor.IsValid()) Params.AddIgnoredActor(Target.CollisionActor.Get());
-	const bool bBlocked = GetWorld()->SweepSingleByObjectType(Hit, Previous, State.Location, FQuat::Identity,
-		FCollisionObjectQueryParams(ECC_WorldStatic), FCollisionShape::MakeSphere(FMath::Max(1.0f, State.Motion.SweepRadius)), Params);
-	const float ArrivalRadius = State.Motion.SweepRadius + (bTargetAlive ? FMath::Max(0.0f, Target.CollisionRadius) : 30.0f);
-	const bool bArrived = Now - State.StartTime > State.Motion.LiftSeconds
-		&& FMath::PointDistToSegmentSquared(FVector(State.LastTargetLocation), Previous, State.Location) <= FMath::Square(static_cast<double>(ArrivalRadius));
+	FVector Impact;
+	const bool bHit = SweepProjectilePath(Path, State.Motion.SweepRadius, State.SourceTeam, Params, bCheckBodies, Impact);
 	Effects[Id] = Instance;
-	if (bBlocked || bArrived)
+	if (bHit || bArrived)
 	{
-		const FVector Impact = bBlocked ? Hit.ImpactPoint : FVector(State.LastTargetLocation);
-		Effects[Id].State.Location = Impact;
-		if (Instance.Field && (HybridEffects || Ledger->RetainEffectSource(Instance.SourceLease)))
-		{
-			if (!CreateFieldInternal(Instance.Field, Instance.Context, Impact, Instance.SourceLease, &Instance).IsValid() && HybridEffects)
-            {GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Admitted projectile could not transition into its impact field"));return;}
-		}
-		Finish(Id, EGuLiCombatEffectEndReason::Impact, Now);
+		ImpactProjectile(Id, Instance, bHit ? Impact : FVector(State.LastTargetLocation), Now);
 	}
+	else if (Until >= State.EndTime) Finish(Id, EGuLiCombatEffectEndReason::Expired, Now);
 	else if (Now - Instance.LastCorrection >= 0.2f)
 	{
 		Effects[Id].LastCorrection = Now; Publish(Id, false);
+	}
+}
+
+void UGuLiCombatEffectRuntimeSubsystem::ImpactProjectile(const FGuid& Id, const FGuLiRuntimeCombatEffect& Instance, FVector Impact, float Now)
+{
+	Effects[Id].State.Location = Impact;
+	if (Instance.Field && (HybridEffects || Ledger->RetainEffectSource(Instance.SourceLease)))
+	{
+		if (!CreateFieldInternal(Instance.Field, Instance.Context, Impact, Instance.SourceLease, &Instance).IsValid() && HybridEffects)
+		{
+			GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Admitted projectile could not transition into its impact field"));
+			return;
+		}
+	}
+	Finish(Id, EGuLiCombatEffectEndReason::Impact, Now);
+}
+
+void UGuLiCombatEffectRuntimeSubsystem::StepGroundStrike(const FGuid& Id, const FGuLiRuntimeCombatEffect& Previous, float Now)
+{
+	const auto& Last = Previous.State;
+	if (Now <= Last.SampleTime) return;
+	const int64 Ticks = FMath::RoundToInt64(double(Now) * 60.) - FMath::RoundToInt64(double(Last.StartTime) * 60.);
+	const double UntilAge = Now >= Last.EndTime ? double(Last.EndTime - Last.StartTime) : double(Ticks / 6) * .1;
+	double Age = FMath::RoundToInt64(double(Last.SampleTime - Last.StartTime) * 30.) / 30.;
+	if (UntilAge <= Age + UE_SMALL_NUMBER) return;
+	FGuLiRuntimeCombatEffect Instance = Previous;
+	auto& State = Instance.State;
+	const auto* Curve = GuLiCombatEffects::ShouldPrecomputeCurves() ? &Instance.CurveCoefficients : nullptr;
+	const bool WasDiving = State.GroundStrike.IsDiving();
+	bool Contact = false;
+	FVector Impact = FVector::ZeroVector;
+	while (Age + UE_SMALL_NUMBER < UntilAge && !Contact)
+	{
+		const double WindowEnd = FMath::Min(Age + .1, UntilAge);
+		TArray<FVector, TInlineAllocator<5>> Path;
+		Path.Add(State.Location);
+		while (Age + UE_SMALL_NUMBER < WindowEnd)
+		{
+			const bool InDive = State.GroundStrike.IsDiving();
+			const double NextAge = InDive ? WindowEnd : FMath::Min(Age + 1./30., WindowEnd);
+			const FVector Next = GuLiCombatEffects::AdvanceProjectile(State, float(NextAge), float(NextAge - Age), Curve);
+			if (!InDive && State.GroundStrike.IsDiving()) Path.Add(State.GroundStrike.DiveOrigin);
+			Path.Add(Next);
+			Age = NextAge;
+		}
+		Contact = GuLiGroundStrikeSurface::FindContact(*GetWorld(), Path, Instance.GroundHeightCache, Impact);
+	}
+	State.SampleTime = State.StartTime + float(Age);
+	++State.Sequence;
+	Effects[Id] = Instance;
+	if (Contact) { ImpactProjectile(Id, Instance, Impact, Now); return; }
+	if (Now >= State.EndTime || State.Location.Z < GetWorld()->GetWorldSettings()->KillZ)
+	{
+		Finish(Id, EGuLiCombatEffectEndReason::Expired, Now);
+		return;
+	}
+	const bool StartedDive = !WasDiving && State.GroundStrike.IsDiving();
+	if (StartedDive || Now - Instance.LastCorrection >= .2f)
+	{
+		Effects[Id].LastCorrection = Now;
+		Publish(Id, StartedDive);
 	}
 }
 
@@ -824,8 +948,68 @@ void UGuLiCombatEffectRuntimeSubsystem::BuildSpatialIndex()
 	bIndexReady = true;
 }
 
-void UGuLiCombatEffectRuntimeSubsystem::QuerySphere(FVector Center, float Radius, TArray<FGuLiCombatTargetSnapshot>& OutTargets)
+bool UGuLiCombatEffectRuntimeSubsystem::SweepProjectilePath(TConstArrayView<FVector> Path, float Radius,
+	EGuLiTeam Team, const FCollisionQueryParams& Params, bool bCheckBodies, FVector& Impact)
 {
+	if (Path.Num() < 2) return false;
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCombatProjectileSweep);
+	TArray<FGuLiCombatTargetSnapshot> Candidates;
+	if (bCheckBodies)
+	{
+		FBox Bounds(ForceInit);
+		for (const FVector& Sample : Path) Bounds += Sample;
+		Ledger->GetNearbyTargetSnapshots(Bounds.ExpandBy(Radius), Candidates);
+		Counters.CandidateChecks += Candidates.Num();
+	}
+	const FCollisionObjectQueryParams StaticObjects(ECC_WorldStatic);
+	const float WorldRadius = FMath::Max(1.f, Radius);
+	const FCollisionShape Sphere = FCollisionShape::MakeSphere(WorldRadius);
+	bool bCheckWorld = true;
+	if (Path.Num() > 2)
+	{
+		double MaxDeviationSq = 0.;
+		for (int32 I = 1; I < Path.Num()-1; ++I)
+			MaxDeviationSq = FMath::Max(MaxDeviationSq, double(FMath::PointDistToSegmentSquared(Path[I], Path[0], Path.Last())));
+		// This capsule encloses every segment and its sweep radius. Only near geometry
+		// do we refine on the original polyline, avoiding both shortcuts and tunnelling.
+		const auto Envelope = FCollisionShape::MakeSphere(WorldRadius + float(FMath::Sqrt(MaxDeviationSq)));
+		bCheckWorld = GetWorld()->SweepTestByObjectType(Path[0], Path.Last(), FQuat::Identity, StaticObjects, Envelope, Params);
+	}
+	for (int32 I = 1; I < Path.Num(); ++I)
+	{
+		const FVector Start = Path[I-1], End = Path[I];
+		FHitResult Wall;
+		bool bHit = bCheckWorld && GetWorld()->SweepSingleByObjectType(Wall, Start, End, FQuat::Identity, StaticObjects, Sphere, Params);
+		double First = bHit ? Wall.Time : 1.;
+		if (bHit) Impact = Wall.ImpactPoint;
+		for (const auto& Target : Candidates)
+		{
+			if (Target.Team == Team || Target.Team == EGuLiTeam::Unassigned) continue;
+			const FVector Center = Target.GetHitCenter();
+			double Entry;
+			if (!SphereEntry(Start, End, Center, Target.CollisionRadius + Radius, Entry) || Entry > First) continue;
+			const FVector Normal = (FMath::Lerp(Start, End, Entry) - Center).GetSafeNormal(UE_SMALL_NUMBER, (Start-End).GetSafeNormal());
+			Impact = Center + Normal * Target.CollisionRadius;
+			First = Entry;
+			bHit = true;
+		}
+		if (bHit) return true;
+	}
+	return false;
+}
+
+void UGuLiCombatEffectRuntimeSubsystem::QuerySphere(FVector Center, float Radius, TArray<FGuLiCombatTargetSnapshot>& OutTargets, bool bUseHitCenters)
+{
+	if (bUseHitCenters)
+	{
+		Ledger->GetNearbyTargetSnapshots(FBox::BuildAABB(Center, FVector(Radius)), OutTargets);
+		Counters.CandidateChecks += OutTargets.Num();
+		OutTargets.RemoveAll([&](const FGuLiCombatTargetSnapshot& Target)
+		{
+			return !GuLiCombatEffects::IntersectsSphere(Center, Radius, Target, true);
+		});
+		return;
+	}
 	if (!bIndexReady) BuildSpatialIndex();
 	OutTargets.Reset();
 	const float Extent = Radius + MaximumTargetRadius;
@@ -837,7 +1021,7 @@ void UGuLiCombatEffectRuntimeSubsystem::QuerySphere(FVector Center, float Radius
 		for (const auto& Target : TargetSnapshots)
 		{
 			++Counters.CandidateChecks;
-			if (GuLiCombatEffects::IntersectsSphere(Center, Radius, Target)) OutTargets.Add(Target);
+			if (GuLiCombatEffects::IntersectsSphere(Center, Radius, Target, bUseHitCenters)) OutTargets.Add(Target);
 		}
 		return;
 	}
@@ -846,7 +1030,7 @@ void UGuLiCombatEffectRuntimeSubsystem::QuerySphere(FVector Center, float Radius
 		if (const auto* Indices = SpatialGrid.Find(FIntPoint(X, Y))) for (const int32 Index : *Indices)
 		{
 			++Counters.CandidateChecks;
-			if (GuLiCombatEffects::IntersectsSphere(Center, Radius, TargetSnapshots[Index])) OutTargets.Add(TargetSnapshots[Index]);
+			if (GuLiCombatEffects::IntersectsSphere(Center, Radius, TargetSnapshots[Index], bUseHitCenters)) OutTargets.Add(TargetSnapshots[Index]);
 		}
 	}
 }
@@ -871,7 +1055,7 @@ void UGuLiCombatEffectRuntimeSubsystem::StepField(const FGuid& Id, float Now)
 		{
 			// Damage callbacks can move/register/remove targets between catch-up pulses.
 			if (Pulse>Instance.DeliveredPulses) bIndexReady=false;
-			QuerySphere(Instance.State.Location, Instance.State.Radius, Candidates);
+			QuerySphere(Instance.State.Location, Instance.State.Radius, Candidates, Instance.Field && Instance.Field->bUseTargetHitCenters);
 			auto* Live = Effects.Find(Id); if (!Live) return;
 			// Advance before damage notifications: re-entrant queries/cancel cannot repeat this pulse.
 			Live->DeliveredPulses = Pulse + 1; ++Counters.Pulses;
@@ -879,6 +1063,8 @@ void UGuLiCombatEffectRuntimeSubsystem::StepField(const FGuid& Id, float Now)
 			{
 				if (!Effects.Contains(Id)) return;
 				if (Target.Handle == Instance.Context.Source) continue;
+				if (Instance.Field && Instance.Field->bUseTargetHitCenters &&
+					(Target.Team == EGuLiTeam::Unassigned || Target.Team == Instance.State.SourceTeam)) continue;
                 if (HybridEffects)
                 {
                     if (!SubmitHybridPulse(Id,Pulse,Target))

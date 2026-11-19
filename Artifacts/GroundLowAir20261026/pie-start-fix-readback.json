@@ -1,0 +1,38 @@
+{
+  "pid": 70140,
+  "resource_bake": {
+    "success": "True",
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "source_hash": "e1fee1d2461dec9ab29c2f578db5af93f2280608",
+    "layout_hash": "1449dc14a87d5825ab96ee22ce244eb51985d062",
+    "initial_soldier_count": "11",
+    "validated_initial_soldier_count": "11"
+  },
+  "navigation": {
+    "success": false,
+    "message": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0: Stale flight-navigation bake: static blocking geometry changed.",
+    "entries": [
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "kind": "Ground",
+        "status": "Hit",
+        "message": "Validated saved ground tiles."
+      },
+      {
+        "kind": "Flight",
+        "status": "Stale",
+        "message": "Stale flight-navigation bake: static blocking geometry changed."
+      }
+    ]
+  },
+  "resource_layout_unchanged": true,
+  "runtime_validation": "not_run",
+  "scene_entities": 14,
+  "dirty_maps": [],
+  "dirty_content": [],
+  "success": false
+}

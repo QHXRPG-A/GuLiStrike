@@ -16,6 +16,13 @@ def validate(cards, fail):
                 fail(row, f"{field}引用未知卡: {sorted(missing)}")
             if any(cards[other]["Type"] != row["Type"] for other in refs):
                 fail(row, f"{field}不允许跨卡池引用")
+        levels = row.get("RequiredCardLevels", [])
+        if levels and len(levels) != len(row["RequiredCardIds"]):
+            fail(row, "前置等级数量必须与前置卡一致")
+        for parent, value in zip(row["RequiredCardIds"], levels):
+            cap = cards[parent].get("MaxAcquisitions", 0)
+            if not str(value).isdigit() or not 1 <= int(value) <= (cap or 2**31-1):
+                fail(row, f"前置卡 {parent} 的等级无效")
         for other in row["ExcludedCardIds"]:
             excluded[ident].add(other)
             excluded[other].add(ident)

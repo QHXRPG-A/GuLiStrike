@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "pie_started": false,
+  "visual_review": "pending_user",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "label": "GroundHUD_v1_PlayerEntry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_83",
+      "class": "Note",
+      "location": [
+        -2800.0,
+        54000.0,
+        1229.04
+      ]
+    },
+    {
+      "label": "GroundHUD_ShieldTarget",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_28",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -5000.0,
+        53000.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundHUD_KillTarget",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderDeploymentPoint_29",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -6200.0,
+        53000.0,
+        905.0
+      ]
+    },
+    {
+      "label": "GroundRogue_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_88",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        54000.0,
+        1149.04
+      ]
+    }
+  ],
+  "note": "Ground HUD：强化三列图标、右下当前等级，最多五行后滚动；F4候选显示取得后等级，正面单击选牌。八张极简图标由Icons表统一管理，血量和属性合并。M地图、F4选牌，已移除I详情；原包局部刻度弧在入场后循环，模态打开或HUD隐藏时暂停。普通刷新5Hz，事件帧末同步。视觉由玩家验收，助手不截图读图。\n图标 A_v4：3D三渲二三档描边；子弹铜金/深灰统一，喷气跳跃与容量共用双喷口，闪现为淡蓝机甲/闪电/残影。F4取得强化后查看图标及等级；Space喷气、Shift闪现，键位/CD/动效保持。图标表唯一资源7张，均按原比例显示。视觉由玩家核验。",
+  "ground_pawn": {
+    "class": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+    "model_id": 4001,
+    "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2"
+  },
+  "dirty_maps_after": []
+}

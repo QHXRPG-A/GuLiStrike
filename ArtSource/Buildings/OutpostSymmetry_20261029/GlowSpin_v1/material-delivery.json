@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "material": "/Game/GuLiStrike/Buildings/OutpostSymmetric/Materials/M_OutpostSymmetric_Toon.M_OutpostSymmetric_Toon",
+  "style": "GuLiOutpostHDR_v1",
+  "hdr_peaks": {
+    "column": 2.2,
+    "line": 6.0,
+    "teal_slot": 2.8,
+    "cyan_slot": 4.0
+  },
+  "chroma_protection": 1.35,
+  "cpd_unchanged": [
+    8,
+    16,
+    17,
+    18
+  ],
+  "geometry_snapshot_unchanged": true,
+  "triangles": 4824,
+  "preview_references": 49,
+  "existing_postprocess": [
+    {
+      "actor": "PostProcessVolume",
+      "bloom": 1.399999976158142,
+      "override_bloom": true
+    }
+  ],
+  "postprocess_modified": false,
+  "diagnostics": {
+    "success": true,
+    "compiled_ok": true,
+    "errors": [],
+    "textures": [
+      "/Game/GuLiStrike/Buildings/OutpostSymmetric/Textures/T_OutpostSymmetric_LineMask.T_OutpostSymmetric_LineMask"
+    ]
+  },
+  "shader_sha256": "1e45ca00453e4e26aa3aab7413d01a6d58f0cf597659dffbfcba871c94f730e3",
+  "saved": true,
+  "native_compile_for_material_required": false
+}

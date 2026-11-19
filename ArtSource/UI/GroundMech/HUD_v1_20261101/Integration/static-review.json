@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-02",
+  "scope": "Static source review; native build and loaded asset verification are recorded separately.",
+  "python_ast": [
+    "Scripts/GroundMech/prepare_ground_hud_data.py",
+    "Scripts/GroundMech/author_ground_hud.py",
+    "Scripts/Cards/card_artwork_config.py",
+    "Scripts/import_data_to_engine.py"
+  ],
+  "cpp_include_resolution": {
+    "files": 6,
+    "unresolved": []
+  },
+  "diff_check_exit": 0,
+  "reviewed": [
+    "0.2 second ordinary timer, bMaxOncePerFrame, changed-value setters",
+    "coalesced end-frame events, scoped delegate removal and timer pause/clear",
+    "local Ground damage receipts, epoch/event dedup, existing result suppression",
+    "cached object membership, no per-refresh Actor/world scan",
+    "cached height mesh/contours; no map scene capture",
+    "shared M/I/F4 modal input release and focus restore",
+    "Ground direct choice locks before RPC; Commander retains shared reveal contract",
+    "card capture only while visible, resize only on viewport event, animated material exception retained",
+    "retired Canvas reticle and world fuel bar removed",
+    "reticle cache visibility changes explicitly invalidate paint; reticle layer is hit-test invisible above the map"
+  ],
+  "native_build": "passed; see build-result.json",
+  "runtime": "not_run",
+  "performance": "not_measured",
+  "visual_acceptance": "user_pending",
+  "new_cpp_sha256": {
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.h": "49314205ce50a7f54084748cd6556a51c4334b5ea2b1b6a1266e0a3ce3dbdfc7",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h": "645b59f05fb39f9f9dbaf607fe77fa298aa6fb997f7bbbe1af93b87b9498548f",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.h": "2c88ff9bec4007fb1a2efa65345c9dfd34d597dbbd09e5b66513dac3430ee495",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.cpp": "eb54dc71682c9315593e970407ef0ea7f0dcfe21162c6852204343f81dce3cf7",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp": "55691df1585486be447f2682508d842aaac4da38a1471effe3548f737898fc07",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.cpp": "ac74465e1231a54345df8d8ac14b34e8ea8636cfdacac583032142b61eebc5f3"
+  },
+  "post_compiler_fix_review": {
+    "date": "2026-11-02",
+    "diff_check_exit": 0,
+    "paths": [
+      "Scripts/Cards/card_artwork_config.py",
+      "Scripts/GroundMech",
+      "Scripts/import_data_to_engine.py",
+      "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp",
+      "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.h",
+      "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp",
+      "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.h",
+      "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.cpp",
+      "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.h",
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.cpp",
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.h",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.cpp",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.h",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.cpp",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.h",
+      "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp",
+      "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.h"
+    ],
+    "result": "warning: in the working copy of 'Scripts/Cards/card_artwork_config.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.h', LF will be replaced by CRLF the next time Git touches it\n",
+    "source_sha256": {
+      "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp": "e2d14e72c3c599c1d8437156a6ccbcb2b601077ac20c3266de7a94545ca04229",
+      "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp": "95b142843b1fe455ef31f85ef8d235aa2051c11f2196c68dff64faa03c3ab275",
+      "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.cpp": "583383914d7310f7b598b1443d484b1fb9d57790bcce152f0c76316b2f659820",
+      "Source/GuLiStrike/Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.cpp": "9b383234f7f3bbfa831fd566000984c055b53569947cb4d138ed9a4022d2853e",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDData.cpp": "eb54dc71682c9315593e970407ef0ea7f0dcfe21162c6852204343f81dce3cf7",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundHUDWidget.cpp": "55691df1585486be447f2682508d842aaac4da38a1471effe3548f737898fc07",
+      "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundMapWidget.cpp": "ac74465e1231a54345df8d8ac14b34e8ea8636cfdacac583032142b61eebc5f3",
+      "Source/GuLiStrike/Network/GuLiHybridWorldSubsystem.cpp": "df2d3b5443de55d5c0775c96f4a89d37430fcece15520a487cff62e8a384e1ba"
+    },
+    "author_script_ast": "passed",
+    "changes": [
+      "Primary headers placed first",
+      "Explicit JSON policy include",
+      "Explicit APawn pointer conditional",
+      "Inherited member shadow names removed",
+      "Retired fuel-bar branch repaired",
+      "Projected reticle point initialized"
+    ]
+  },
+  "loaded_evidence": [
+    "build-result.json",
+    "loaded-readback.json",
+    "tables-readback.json",
+    "scene-readback.json"
+  ],
+  "author_script_sha256": "5a90d124cc480a506cb6dca051122e75c12034822f795e1aa0311a2b4e00e06e",
+  "PIE_followup": "Data/MapAuthoringValidation/PIEStart-20261102; startup and clean exit passed; full HUD interaction pending"
+}

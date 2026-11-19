@@ -1,0 +1,26 @@
+{
+  "valid_tables": 42,
+  "icons": 8,
+  "negative_cases": [
+    {
+      "case": "duplicate",
+      "rejected": true,
+      "reason": "图标 ID 必须为唯一正整数: 1"
+    },
+    {
+      "case": "invalid_path",
+      "rejected": true,
+      "reason": "Icons/JetCapacity: ResourcePath 必须为完整资源路径"
+    },
+    {
+      "case": "dangling",
+      "rejected": true,
+      "reason": "DT_GuLiStrikeMech_Skills/BasicMachinegun: 悬空或非法 IconId 999"
+    },
+    {
+      "case": "missing_required",
+      "rejected": true,
+      "reason": "DT_GuLiStrikeMech_Skills/BasicMachinegun: 必须配置 IconId"
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "success": true,
+  "scope": "saved package reload, read-only binding check, map entity data; no PIE, images, animation rebuild or pose evaluation",
+  "assets_reloaded": [
+    "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/NS_GroundMech_PersistentCurve_A4",
+    "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/M_GroundMech_PersistentCurve_A4",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeVfx_Effects"
+  ],
+  "asset": {
+    "success": true,
+    "bindings": [
+      {
+        "name": "User.TrailSize",
+        "host_binding": true
+      },
+      {
+        "name": "User.TrailData",
+        "host_binding": true
+      },
+      {
+        "name": "User.TrailStyle",
+        "host_binding": true
+      },
+      {
+        "name": "User.TrailShape",
+        "host_binding": true
+      },
+      {
+        "name": "User.TrailFacing",
+        "host_binding": true
+      }
+    ],
+    "max_length_cm": 12000,
+    "width_cm": 24,
+    "hold_seconds": 0.11999999731779099,
+    "fade_seconds": 0.3799999952316284,
+    "bend_cm": 45,
+    "renderers": 1
+  },
+  "modules": [
+    "AddVelocity",
+    "UpdateAge",
+    "InitializeParticle",
+    "UniformRangedFloat003",
+    "UniformRangedFloat004",
+    "NormalizedAngleToDegrees001",
+    "UniformRangedFloat005",
+    "ParticleOwnerPosition",
+    "EmitterState",
+    "VectorFromFloat",
+    "Vector2DFromFloat",
+    "Multiply_VectorByFloat",
+    "SpawnBurst_Instantaneous"
+  ],
+  "renderers": [
+    "<Struct 'NiagaraRendererInfo_Custom' (0x000001660204A200) {renderer_name: \"NiagaraSpriteRendererProperties_2\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+  ],
+  "material": "<Struct 'MaterialDiagnostics' (0x0000016787E9E5C0) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 15, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 1, vector_parameter_count: 5}>",
+  "row": {
+    "Name": "PlayerBullet",
+    "Id": 8,
+    "Note": "Ground\u957f\u66f2\u7ebf\u5c3e\u8ff9\uff1b\u957f\u5ea6/\u6b8b\u7559/\u6d88\u6563/\u5f2f\u66f2\u6309\u72ec\u7acb\u5b57\u6bb5\uff1bScaleY\u63a7\u523624cm\u7ebf\u5bbd\uff0c\u771f\u5b9e\u5f39\u9053\u4fdd\u6301\u76f4\u7ebf",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/NS_GroundMech_PersistentCurve_A4.NS_GroundMech_PersistentCurve_A4",
+    "Scale": "(X=2.000000,Y=2.000000,Z=2.000000)",
+    "ReducedResourcePath": "None",
+    "MinimalResourcePath": "None",
+    "BatchResourcePath": "None",
+    "ReducedBatchResourcePath": "None",
+    "MinimalBatchResourcePath": "None",
+    "TrailLengthCm": 12000,
+    "TrailHoldSeconds": 0.12,
+    "TrailFadeSeconds": 0.38,
+    "TrailBendCm": 45
+  },
+  "main_role": "<GuLiCommanderRole.GROUND: 2>",
+  "pawn": "<Object '/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C' (0x000001668F463800) Class 'BlueprintGeneratedClass'>",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "map_saved": true,
+  "entities": [
+    {
+      "label": "GroundMobility_Flat",
+      "class": "StaticMeshActor",
+      "location": [
+        -4000.0,
+        50000.0,
+        880.0
+      ]
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "class": "StaticMeshActor",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ]
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "class": "StaticMeshActor",
+      "location": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ]
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "class": "StaticMeshActor",
+      "location": [
+        -4800.0,
+        50900.0,
+        915.0
+      ]
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "class": "StaticMeshActor",
+      "location": [
+        -4400.0,
+        50900.0,
+        925.0
+      ]
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "class": "StaticMeshActor",
+      "location": [
+        -4000.0,
+        50900.0,
+        935.0
+      ]
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "class": "StaticMeshActor",
+      "location": [
+        -3600.0,
+        50900.0,
+        945.0
+      ]
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ]
+    }
+  ],
+  "dirty_content": [],
+  "dirty_maps": []
+}

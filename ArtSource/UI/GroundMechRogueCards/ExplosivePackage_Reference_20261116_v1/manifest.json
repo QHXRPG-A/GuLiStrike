@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-16",
+  "card_id": "11.01",
+  "card_title": "爆破套餐",
+  "seat": "Ground",
+  "version": 1,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "art_direction": "后现代废墟、蓝天白云。夸张近处飞弹透视，远处为游骑兵。",
+  "palette_reference": "Progress/RequirementDocument/GuLiStrike美术规范.md §11",
+  "ranger": {
+    "model_id": 4001,
+    "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+    "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2",
+    "model_table": "data/Excel/GuLiStrikeModels.xlsx",
+    "reference_image": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/FireRate_Reference_20261109_v1/Inputs/A4B2_Blue_Full.png"
+  },
+  "explosive_round": {
+    "flight_vfx_id": 63,
+    "flying_effect": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon",
+    "body_mesh": "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile",
+    "source_appearance_record": "Progress/Archive/20261116-爆破弹连续尾焰正式接入与PIE复测.md"
+  },
+  "inputs_in_order": [
+    {
+      "file": "Inputs/01_Composition_Input.png",
+      "original": "C:/Users/a/AppData/Local/Temp/codex-clipboard-67864ec7-00e2-415a-b44c-d5a01fc48025.png",
+      "role": "用户构图参考，远处机甲和近处飞弹的透视",
+      "sha256": "a9058fb4c9e463251f749f90e52f45f62bd65de8a7feedec1247fbea084be7c9"
+    },
+    {
+      "file": "Inputs/02_Ranger_A4B2.png",
+      "original": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/FireRate_Reference_20261109_v1/Inputs/A4B2_Blue_Full.png",
+      "role": "游骑兵 A4B2 的外形、双臂枪和蓝队配色",
+      "sha256": "78bdea755abfd1b4d781914ecdd94d4762b920fcaef50d259952df189076916c"
+    },
+    {
+      "file": "Inputs/03_Explosive_Flight_UE.png",
+      "original": "D:/UE5.7/test1/Artifacts/GroundExplosiveToon_20261116/GroundExplosiveToon_Review_v4_RangerSide.png",
+      "role": "正式爆炸弹白灰带翼弹体、喷口位置与连续尾焰比例",
+      "sha256": "54562ed6404a4ea3f76992b45c45ca3126209254e65799853b6943a954cd17bf"
+    }
+  ],
+  "assistant_output_visual_review": false,
+  "prompt": {
+    "file": "ExplosivePackage_Prompt.txt",
+    "sha256": "451e6ca7d24fe6dce9cefd55eb976492a904af6189255d85fd3a6ad26267932c"
+  },
+  "output": {
+    "file": "ExplosivePackage_Card_Reference_v1.png",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-ff63b323-7f80-4661-a2e1-788e6829cecf.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB",
+    "sha256": "d1bee13d667e076b8f8e21e5952afed5bb633c20755b13164423f480f1a060c5"
+  }
+}

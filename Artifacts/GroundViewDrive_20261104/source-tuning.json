@@ -1,0 +1,38 @@
+{
+  "source": "data/Excel/GuLiStrikeMech.xlsx",
+  "source_sha256_before": "7ee00cdbf1d4b0360f0a2f87719ce6951aa3b8ebb8b525bbe04829e86bb80fcd",
+  "source_sha256_after": "b2b565abe1d27aafad763e16d65846ee390e9e5a4bf0818794242bbc3c3317cf",
+  "retired_field": "StrafeSpeedMultiplier",
+  "removed_column": "P",
+  "removed_default": "0.8",
+  "checked_worksheet_cells": [
+    "升级表",
+    "技能表",
+    "Visuals",
+    "Mobility",
+    "Gait",
+    "GroundIK",
+    "Camera"
+  ],
+  "all_other_cells_unchanged": true,
+  "exported_tables_before": {
+    "data/Json/DT_GuLiStrikeMech_Camera.json": "30919229a3fdd1940180fa2713c14f6abff2a670473e7434860ea4fb82b875a1",
+    "data/Json/DT_GuLiStrikeMech_Gait.json": "5c5f1a54ef829af9908a992213b8d45411db598e63b88acceb4fdf9708407f41",
+    "data/Json/DT_GuLiStrikeMech_GroundIK.json": "38353c3f1e6f3b7fe822600de3ed6fe237718d0e1235128965594160471e1884",
+    "data/Json/DT_GuLiStrikeMech_Mobility.json": "87f4c67b7dbe60465aeb4b6378eb1e2c8a370667829723b8eb2aacbeae89fc9f",
+    "data/Json/DT_GuLiStrikeMech_Skills.json": "a9286d81d7a13ee4201527a4e7b298d185ecd82deb980e06a776903cb8fa63c3",
+    "data/Json/DT_GuLiStrikeMech_Upgrades.json": "88ae128c5125cf0f8b148418083130e9e5ec04d6b537d0f3e805922bad600747",
+    "data/Json/DT_GuLiStrikeMech_Visuals.json": "64d8f25745ecd2691ab1f47fe57df6b30c749722bb1999b85eb6cf124edba0b3"
+  },
+  "rocket_control_note": {
+    "sheet": "技能表",
+    "cell": "C5",
+    "row": "RocketJump",
+    "property": "Note"
+  },
+  "restore_3c_check_on_temporary_workbook": {
+    "current_schema_idempotent": true,
+    "legacy_field_removed": true,
+    "all_seven_sheets_equal_to_current_source": true
+  }
+}

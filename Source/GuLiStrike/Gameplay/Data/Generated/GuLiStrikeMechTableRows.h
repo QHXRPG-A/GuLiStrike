@@ -307,6 +307,14 @@ struct FGuLiStrikeMechSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float InitialBulletDamageRatio = 0.0f;
 
+	/** HorizontalRangeCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float HorizontalRangeCentimeters = 0.0f;
+
+	/** DiveAccelerationCmPerSecondSquared (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float DiveAccelerationCmPerSecondSquared = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeMech_Visuals 的行结构（源: GuLiStrikeMech.xlsx / Visuals）。 */

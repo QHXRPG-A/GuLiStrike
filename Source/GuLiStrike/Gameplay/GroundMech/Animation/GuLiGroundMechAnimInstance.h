@@ -16,6 +16,13 @@ class GULISTRIKE_API UGuLiGroundMechAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public:
+    UPROPERTY(BlueprintReadOnly,Category="No Survivors") TObjectPtr<UAnimSequence> BarrageSequence;
+    UPROPERTY(BlueprintReadOnly,Category="No Survivors") float BarragePoseTime=0.f;
+    UPROPERTY(BlueprintReadOnly,Category="No Survivors") float BarragePoseWeight=0.f;
+    UPROPERTY(BlueprintReadOnly,Category="No Survivors") FRotator BarrageBodyRotation=FRotator::ZeroRotator;
+    UPROPERTY(BlueprintReadOnly,Category="No Survivors") FVector BarrageBodyTranslation=FVector::ZeroVector;
+    UPROPERTY(BlueprintReadOnly,Category="No Survivors") FVector BarrageLeftShoulderOffset=FVector::ZeroVector;
+    UPROPERTY(BlueprintReadOnly,Category="No Survivors") FVector BarrageRightShoulderOffset=FVector::ZeroVector;
 	UPROPERTY(BlueprintReadOnly,Category="Ground Tuning") FGuLiMechGroundingSnapshot Grounding;
 	/** Full-body clip, sampled at the replicated ability phase rather than a second clock. */
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Blink") TObjectPtr<UBlendSpace> BlinkBlend;
@@ -99,6 +106,7 @@ public:
 	void EndUpperAimPresentation();
 	void SetUsePresentedUpperAim(bool bValue) { bUsePresentedUpperAim=bValue; }
 private:
+    float PresentedBarrageWeight=0.f;
 	int32 FireLoopInstance=INDEX_NONE;
 	bool bGameplayFireLoop=false,bReportedFireAsset=false;
 	double RemoteFireUntil=0;

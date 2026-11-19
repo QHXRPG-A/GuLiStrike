@@ -1,0 +1,103 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "widget_methods": [
+      "call_method",
+      "force_layout_prepass",
+      "has_keyboard_focus",
+      "invalidate_layout_and_volatility",
+      "on_key_char",
+      "on_key_down",
+      "on_key_up",
+      "on_preview_key_down",
+      "set_keyboard_focus",
+      "validate_icon_layouts"
+    ],
+    "all_input_services": [
+      "AutomationUtilsBlueprintLibrary",
+      "BTService_BlueprintBase",
+      "BlueprintCameraContextDataTableFunctionLibrary",
+      "BlueprintCameraEvaluationDataFunctionLibrary",
+      "BlueprintCameraPoseFunctionLibrary",
+      "BlueprintCameraVariableTableFunctionLibrary",
+      "BlueprintEditorLibrary",
+      "BlueprintFunctionLibrary",
+      "BlueprintFunctionLibraryFactory",
+      "BlueprintInstancedStructLibrary",
+      "BlueprintService",
+      "BlueprintSpringMathLibrary",
+      "ChaosBlueprintLibrary",
+      "ChaosSolverEngineBlueprintLibrary",
+      "ChaosVDRuntimeBlueprintLibrary",
+      "ConstraintInstanceBlueprintLibrary",
+      "ControlRigBlueprintLibrary",
+      "DataflowBlueprintLibrary",
+      "DataflowEditorBlueprintLibrary",
+      "EditorSubsystemBlueprintLibrary",
+      "EnhancedInputLibrary",
+      "GlobalConfigurationDataBlueprintLibrary",
+      "HealthSnapshotBlueprintLibrary",
+      "ImageWriteBlueprintLibrary",
+      "InputDeviceLibrary",
+      "InputLibrary",
+      "InputService",
+      "InterchangeTestsBlueprintFunctionLibrary",
+      "LayersBlueprintLibrary",
+      "LevelSequenceEditorBlueprintLibrary",
+      "LightWeightInstanceBlueprintFunctionLibrary",
+      "MVVMBlueprintLibrary",
+      "MassEQSBlueprintLibrary",
+      "PhysicsObjectBlueprintLibrary",
+      "PlatformInputDeviceMapperLibrary",
+      "PluginBlueprintLibrary",
+      "ResonanceAudioBlueprintFunctionLibrary",
+      "RigVMBlueprintLibrary",
+      "SubobjectDataBlueprintFunctionLibrary",
+      "SynthesisUtilitiesBlueprintFunctionLibrary",
+      "TakeRecorderBlueprintLibrary",
+      "TakesCoreBlueprintLibrary",
+      "TakesCoreBlueprintLibrary_OnTakeRecorderSlateChanged",
+      "TakesCoreBlueprintLibrary_OnTakeRecorderTakeNumberChanged",
+      "TransformTrajectoryBlueprintLibrary",
+      "UserWidgetFunctionLibrary",
+      "WidgetAnimationHandleFunctionLibrary",
+      "WidgetLayoutLibrary",
+      "WidgetLibrary",
+      "WidgetLibrary_OnGameWindowCloseButtonClickedDelegate",
+      "WidgetService",
+      "WorldPartitionBlueprintLibrary"
+    ],
+    "layout": {
+      "success": true,
+      "cases": [
+        {
+          "icons": 0,
+          "visible_height": 0,
+          "passed": true
+        },
+        {
+          "icons": 1,
+          "visible_height": 80,
+          "passed": true
+        },
+        {
+          "icons": 3,
+          "visible_height": 80,
+          "passed": true
+        },
+        {
+          "icons": 15,
+          "visible_height": 400,
+          "passed": true
+        },
+        {
+          "icons": 16,
+          "visible_height": 400,
+          "passed": true
+        }
+      ],
+      "visual_test": false
+    }
+  }
+}

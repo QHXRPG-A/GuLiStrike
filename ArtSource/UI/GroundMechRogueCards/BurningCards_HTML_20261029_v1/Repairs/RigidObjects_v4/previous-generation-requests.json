@@ -1,0 +1,290 @@
+[
+  {
+    "id": "Burst_1",
+    "card": "Burst",
+    "index": 1,
+    "slug": "01_BurningFragments",
+    "name": "飞溅的燃烧的碎片",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Burst / layer 1 / 飞溅的燃烧的碎片\nPaint only the FREE-FLYING burning mechanical fragments. Keep the large burgundy/ivory armor shard in the bottom-left foreground, the cropped matching shard at bottom-right, the high upper-right armor shard, the small left shard and scattered small charred fragments. Reconstruct each individual shard as a solid complete object even where it was crossed by shockwave lines, grass, smoke or another part. Preserve flames attached to each shard; their tongues and tails are continuous and travel with the shard. Large fragments remain near the original corners, rather than collecting around the center. Do not paint any intact robot, ground, foreground boulder, shockwave or central fire plume. Object interiors have solid material; transparency belongs outside silhouettes, or within soft flame edges.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Burst_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "e4b868f91d411955784bbd5ef6c00291dc6a4e995625c5fcdeef7959ab44b185",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Burst_01_BurningFragments.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_01_BurningFragments.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Burst_2",
+    "card": "Burst",
+    "index": 2,
+    "slug": "02_ForegroundRocks",
+    "name": "前景石块",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Burst / layer 2 / 前景石块\nPaint only the close gray angular foreground rocks and stone terrace faces at the bottom-left and along the bottom edge/lower middle. Reconstruct whole continuous rock surfaces underneath the removed armor fragments, grass foreground overlays, crossing orange pressure lines and robot legs. Keep the original sloping perspective and gray three-tone stone facets, continuing cropped rocks into the outer canvas where needed. These are grounded stone objects, not floating black debris. No robots, red armor, fire, smoke, shockwave or distant scenery. There must be no robot-shaped holes, stripe-shaped missing bands or rectangular transparent patches inside a rock.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Burst_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "e4b868f91d411955784bbd5ef6c00291dc6a4e995625c5fcdeef7959ab44b185",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Burst_02_ForegroundRocks.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_02_ForegroundRocks.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Burst_3",
+    "card": "Burst",
+    "index": 3,
+    "slug": "03_Shockwave",
+    "name": "冲击环",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Burst / layer 3 / 冲击环\nPaint ONE huge expanding orange/gold shockwave ring, on the plane through the CENTRAL ROBOT'S TORSO AND GUN-MOUNT HEIGHT. Its ellipse spans far beyond the left/right source-window edges. The far arc sweeps through the upper third; the near arc sweeps diagonally across the lower-middle in front of the machine, following the same tilted perspective as the reference. Complete the entire continuous ring where the robot and fragments previously occluded it. Use a bright thin leading rim on the OUTSIDE, inward-trailing tapered streaks, radial outward flame tongues and sparks to make outward propagation readable. It is a single ring with foreground/background arcs, not several laser lines and not a circle at the feet. The center and surrounding canvas are transparent. No robot, armor, rocks, terrain, arrows, annotations or text. Do not cut robot-shaped gaps into the ring; occlusion will be applied by the renderer.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Burst_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "e4b868f91d411955784bbd5ef6c00291dc6a4e995625c5fcdeef7959ab44b185",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Burst_03_Shockwave.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_03_Shockwave.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Burst_4",
+    "card": "Burst",
+    "index": 4,
+    "slug": "04_BurningPioneer",
+    "name": "爆燃的机甲",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Burst / layer 4 / 爆燃的机甲\nPaint only the LARGE CENTRAL PIONEER quadruped and the fire/smoke physically attached to its body. Keep its ivory/burgundy armor, dark joints, FOUR articulated legs, TWO side-mounted multi-barrel guns and TWO long antennae. Retain the same diagonal pose and approximate occupied area as the reference. Its torso is engulfed in ongoing orange deflagration: charred engine internals, glowing cracks, curling flames clinging to armor and rising smoke. Preserve the intentional ruptured armor, but reconstruct complete solid mechanical surfaces hidden by foreground fragments, orange ring stripes and floating debris. All four legs and both guns must be independently continuous; no segmentation pinholes or cut-out strips across the chassis. Remove detached foreground armor, flying debris, shockwave, other robots and scenery. Explosion cavities contain dark burnt internals and flame, not accidental transparent holes. Attached flame may surround the silhouette; no independent ring.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Burst_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "e4b868f91d411955784bbd5ef6c00291dc6a4e995625c5fcdeef7959ab44b185",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Burst_04_BurningPioneer.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_04_BurningPioneer.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Burst_5",
+    "card": "Burst",
+    "index": 5,
+    "slug": "05_DistantPioneers",
+    "name": "远处机甲",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Burst / layer 5 / 远处机甲\nPaint only the TWO SMALL DISTANT PIONEER quadrupeds, separately and completely. One stays at the left near source coordinate (130,410), the other at the right near (930,580), with their original approximate scales (about 210 pixels wide in the 1024 source window). Each has ivory/burgundy armor, four connected legs, paired side guns and antennae. Reconstruct surfaces that were hidden by the shockwave, dust or flying debris, including feet and gun barrels. Keep a large transparent separation between them; do not move them together, enlarge them to central characters or mirror the entire composition. No central robot, terrain, fire plume, loose fragments or ring.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Burst_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "e4b868f91d411955784bbd5ef6c00291dc6a4e995625c5fcdeef7959ab44b185",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Burst_05_DistantPioneers.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_05_DistantPioneers.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Burst_6",
+    "card": "Burst",
+    "index": 6,
+    "slug": "06_Environment",
+    "name": "背景草地和远景",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Burst / layer 6 / 背景草地和远景\nPaint a COMPLETE OPAQUE CLEAN ENVIRONMENT PLATE, every pixel filled. Keep the sloping grassy terraces, stone ground, monumental ruined gray arches and towers, blue sky, white clouds and restrained distant dust of the reference. Remove ALL robots, bullets, free flying debris, close foreground boulders, burning armor, attached smoke plumes, fire and shockwave stripes. Reconstruct the previously hidden grassland, intact terrace faces, ruins and sky underneath their entire silhouettes. Do not leave robot ghosts, black silhouette cavities, orange-line remnants, erased stripes or repeated edge smears. Continue the landscape naturally into ALL four gutters. Keep the same tilted horizon and flat illustrated perspective; no change to the color design.\nOutput a fully opaque complete image.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Burst_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "e4b868f91d411955784bbd5ef6c00291dc6a4e995625c5fcdeef7959ab44b185",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ],
+    "transparent_background": false,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Burst_06_Environment.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_06_Environment.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Bullet_1",
+    "card": "Bullet",
+    "index": 1,
+    "slug": "01_BurningBullet",
+    "name": "子弹（含附着燃烧）",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Bullet / layer 1 / 子弹（含附着燃烧）\nPaint ONE LARGE GOLD/BRASS BULLET with ALL ITS ATTACHED ORANGE FLAMES, as a single complete transparent layer. The bullet is dominant in the lower-right foreground, travelling straight toward the viewer after crossing the enemy. Its conical metal body, highlights, bands, pointed tip and complete attached swirling flame envelope must be continuous, with no cutout bands, holes or leftover enemy parts. Use this shared SOURCE-WINDOW ballistic axis: distant muzzle (195,176), torso impact (510,469), pointed bullet tip (946,875). Those three points are on one straight ray; align the bullet's longitudinal axis to it, with a small rear at the impact and strong perspective enlargement toward the foreground tip. Keep the source composition's dramatic scale. Flame is visibly ATTACHED around and behind the metal, with curling tongues and red/orange outer edges, not a bare metal bullet with unrelated fire elsewhere. No robot, independent impact fireball, debris, ground, shockwave, beam or muzzle flash. Reconstruct all bullet surfaces and flame boundaries previously occluded by other layers.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Bullet_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "7e208f76ed7bf1c20ead9e7ef33495e03ca1e16d31d803b017c4c71b91dcd643",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Bullet_01_BurningBullet.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_01_BurningBullet.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Bullet_2",
+    "card": "Bullet",
+    "index": 2,
+    "slug": "02_BurningFragments",
+    "name": "飞溅的燃烧的碎片",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Bullet / layer 2 / 飞溅的燃烧的碎片\nPaint only the FREE-FLYING burning ivory/burgundy mechanical fragments and charred small fragments around the edges of the reference. Keep the large cropped armor fragments at bottom-left and bottom-center, the red/ivory shard near the upper-right, and smaller scattered fragments at their original approximate positions. Each piece is a coherent solid object with complete faces and attached continuous flames, restoring any surfaces crossed by speed lines, the bullet silhouette or background. Preserve edge crops naturally into the gutters. No intact robot, bullet, independent fireball, tracer, terrain or distant architecture. Avoid leftover snippets of a gun or robot that belong to the central character.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Bullet_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "7e208f76ed7bf1c20ead9e7ef33495e03ca1e16d31d803b017c4c71b91dcd643",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Bullet_02_BurningFragments.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_02_BurningFragments.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Bullet_3",
+    "card": "Bullet",
+    "index": 3,
+    "slug": "03_Flames",
+    "name": "火焰（命中爆燃）",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Bullet / layer 3 / 火焰（命中爆燃）\nPaint only the INDEPENDENT TORSO IMPACT DEFLAGRATION at source-window coordinate (510,469): a compact bright hot core, branching orange/red flame tongues and sparks directed outward from this center. This is the contact fire at the enemy chest; the bullet plus flame sheath belongs to another layer. Reconstruct a coherent complete organic fire shape across the removed projectile and robot occlusions, with clean continuous tapered tongues and a soft transparent perimeter. Do not turn it into a massive circular blast or cover the whole card. No bullet, robots, black metal parts, floating armor, muzzle flash, long tracer, shockwave ring, ground or scenery. Intentional transparent spaces between flame tongues are allowed; straight cutout stripes and robot-shaped cavities are not.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Bullet_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "7e208f76ed7bf1c20ead9e7ef33495e03ca1e16d31d803b017c4c71b91dcd643",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Bullet_03_Flames.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_03_Flames.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Bullet_4",
+    "card": "Bullet",
+    "index": 4,
+    "slug": "04_HitPioneer",
+    "name": "受击的机甲",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Bullet / layer 4 / 受击的机甲\nPaint only the LARGE CENTRAL ivory/burgundy PIONEER quadruped being perforated, in the same dramatic pose and scale. Keep FOUR connected legs, TWO side-mounted multi-barrel guns and TWO long antennae. Reconstruct all missing hard-surface armor and inner mechanisms hidden by the giant bullet, separate impact flame, flying fragments and speed stripes. It must be a coherent full isolated quadruped, with no projectile-shaped transparent tunnel, stray grass pixels or sheared leg surfaces. Keep the intended damaged torso as a solid charred mechanical cavity with exposed dark internals around the impact, not an empty alpha hole. Shared source-window ballistic axis: muzzle (195,176), chest impact (510,469), foreground tip (946,875). Locate the chest rupture at that impact point, preserving the main composition and leg positions. Remove ALL independent fireball, bullet, floating debris, background, tracer and other robots. Small glow/embers clinging to the ruptured armor are allowed; do not add a large separate flame layer.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Bullet_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "7e208f76ed7bf1c20ead9e7ef33495e03ca1e16d31d803b017c4c71b91dcd643",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Bullet_04_HitPioneer.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_04_HitPioneer.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Bullet_5",
+    "card": "Bullet",
+    "index": 5,
+    "slug": "05_ShooterAndTrajectory",
+    "name": "远处正在射击的机甲和弹道",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Bullet / layer 5 / 远处正在射击的机甲和弹道\nPaint only the SMALL BLUE/IVORY GROUND MECH at upper-left and its muzzle flash plus the STRAIGHT outgoing trajectory. Preserve the reference's blue mech appearance and approximate source-window footprint x=45..225, y=115..275; no redesign to another runtime model. It has fixed side-mounted weapons, no handheld rifle. Its firing muzzle is at source coordinate (195,176). Keep the blue mech complete under all removed dust, speed streaks and other objects. Draw one straight tapering orange/red trajectory from muzzle (195,176) through chest impact (510,469), fading just past impact; it is collinear with the foreground bullet tip (946,875). The whole line belongs to this layer and must remain connected to its muzzle. No central enemy, giant bullet, free fragments, separate impact fireball, terrain, backdrop or other robots.\nOutput real RGBA PNG, transparent outside the requested objects; preserve full canvas margins.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Bullet_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "7e208f76ed7bf1c20ead9e7ef33495e03ca1e16d31d803b017c4c71b91dcd643",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Bullet_05_ShooterAndTrajectory.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_05_ShooterAndTrajectory.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  },
+  {
+    "id": "Bullet_6",
+    "card": "Bullet",
+    "index": 6,
+    "slug": "06_Environment",
+    "name": "背景草地和远景",
+    "prompt": "Use case: precise-object-edit / complete layered game-card illustration.\nAsset type: ONE independent full-canvas parallax layer, revision CompleteLayers_v3.\nImage 1 is the EXACT SHARED POSITION CANVAS: 1536 x 1536; the selected 1024 x 1024 reference occupies [256,256,1280,1280]. The transparent surrounding gutter is additional paintable room. Image 2 is the same original unpadded reference, for design, perspective and flat cel-shaded linework only.\nProduce one square full-canvas image respecting that SAME source-window layout. Every source coordinate below is in the 1024 reference, so add (256,256) to locate it in the padded input. Preserve the broad composition, character identities, number of parts and clear linework, with three-tone shading and the existing colors; no recoloring. Do not automatically crop away the transparent margins or center/scale isolated objects to fill the whole frame. Do not copy the reference scene into the background of this layer.\nThe user permits approximate reconstruction, not pixel identity. REPAINT COMPLETE independent objects and the previously hidden surfaces. Raw segmentation cutouts are NOT the finished art. Repair occlusion gaps, severed armor faces, white/orange stripe holes, pinholes and stray pixels. Do not preserve holes caused by another layer. Keep deliberate designed mechanical damage, silhouette gaps between legs, and empty space between separate objects. Use clean coherent silhouettes, solid material interiors and natural soft flame/smoke alpha edges. No added objects unrelated to the requested layer; no labels, frame, text, checkerboard, watermark or presentation sheet.\n\nTHIS OUTPUT: Bullet / layer 6 / 背景草地和远景\nPaint a COMPLETE OPAQUE CLEAN LANDSCAPE PLATE. Keep the sloping grassy terraces, weathered stone ground, gray ruined arches/towers, bright blue sky, white clouds and restrained beige distant dust. Remove ALL mechs including the blue shooter, all bullets, armor fragments, airborne stones, flames, orange tracers, speed lines and muzzle flashes. Reconstruct continuous grass, terrace stone, architecture, clouds and sky over every removed silhouette. No robot-shaped holes or ghosts, white cutout lanes, residual fire, warped repeated edge pixels or random central dark patches. Continue the same tilted landscape naturally across all four gutters. All canvas pixels must be opaque. Keep the reference's linework and three-tone style.\nOutput a fully opaque complete image.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Inputs/Bullet_Composition.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "input_roles": [
+      "shared full-canvas composition and position input",
+      "selected original design/style reference"
+    ],
+    "input_sha256": [
+      "7e208f76ed7bf1c20ead9e7ef33495e03ca1e16d31d803b017c4c71b91dcd643",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ],
+    "transparent_background": false,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Repairs/CompleteLayers_v3/Raw/Bullet_06_Environment.png",
+    "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_06_Environment.txt",
+    "assembly_policy": "whole generated objects registered on the common canvas; no old ownership mask, no source RGB paste"
+  }
+]

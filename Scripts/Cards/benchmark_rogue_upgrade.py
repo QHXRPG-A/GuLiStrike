@@ -16,7 +16,7 @@ ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir(
 OUT = ROOT / 'Artifacts/RogueCards/Upgrade/performance.json'
 QA = unreal.GuLiRogueCardQALibrary
 ARRAY = unreal.NiagaraDataInterfaceArrayFunctionLibrary
-ORIGINAL = unreal.load_asset('/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted')
+ORIGINAL = unreal.load_asset('/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted')
 LITE = unreal.load_asset('/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite')
 BENCH = {'phase':'ready', 'start':time.monotonic(), 'since':time.monotonic(), 'cases':[], 'case_index':0,
          'components':[], 'success':False, 'visual_review':'user_pending',

@@ -1,0 +1,241 @@
+{
+  "updated_in_place": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-side-panels.blend",
+  "recovery_backup": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-side-panels.pre-toon.blend",
+  "render_engine": "BLENDER_EEVEE",
+  "three_tone": {
+    "shadow_factor": 0.58,
+    "middle_factor": 0.8,
+    "highlight_factor": 1.0,
+    "thresholds": [
+      0.32,
+      0.68
+    ],
+    "interpolation": "CONSTANT"
+  },
+  "materials": [
+    {
+      "name": "机甲 · 关节枪铁",
+      "base_color_linear": [
+        0.052860647439956665,
+        0.07036009430885315,
+        0.07227185368537903,
+        1.0
+      ],
+      "emission_strength": 1.0,
+      "pbr_backup": "PBR_BACKUP · 机甲 · 关节枪铁",
+      "ramp_interpolation": "CONSTANT",
+      "ramp_stops": [
+        {
+          "position": 0.0,
+          "factor": 0.5799999833106995
+        },
+        {
+          "position": 0.3199999928474426,
+          "factor": 0.800000011920929
+        },
+        {
+          "position": 0.6800000071525574,
+          "factor": 1.0
+        }
+      ]
+    },
+    {
+      "name": "机甲 · 冷白灯缝",
+      "base_color_linear": [
+        0.6938717365264893,
+        0.8879231214523315,
+        0.8631572127342224,
+        1.0
+      ],
+      "emission_strength": 2.200000047683716,
+      "pbr_backup": "PBR_BACKUP · 机甲 · 冷白灯缝",
+      "ramp_interpolation": "CONSTANT",
+      "ramp_stops": [
+        {
+          "position": 0.0,
+          "factor": 0.5799999833106995
+        },
+        {
+          "position": 0.3199999928474426,
+          "factor": 0.800000011920929
+        },
+        {
+          "position": 0.6800000071525574,
+          "factor": 1.0
+        }
+      ]
+    },
+    {
+      "name": "机甲 · 橡胶与线缆",
+      "base_color_linear": [
+        0.010960093699395657,
+        0.01599629409611225,
+        0.016807375475764275,
+        1.0
+      ],
+      "emission_strength": 1.0,
+      "pbr_backup": "PBR_BACKUP · 机甲 · 橡胶与线缆",
+      "ramp_interpolation": "CONSTANT",
+      "ramp_stops": [
+        {
+          "position": 0.0,
+          "factor": 0.5799999833106995
+        },
+        {
+          "position": 0.3199999928474426,
+          "factor": 0.800000011920929
+        },
+        {
+          "position": 0.6800000071525574,
+          "factor": 1.0
+        }
+      ]
+    },
+    {
+      "name": "机甲 · 液压杆",
+      "base_color_linear": [
+        0.25015828013420105,
+        0.2917706370353699,
+        0.2917706370353699,
+        1.0
+      ],
+      "emission_strength": 1.0,
+      "pbr_backup": "PBR_BACKUP · 机甲 · 液压杆",
+      "ramp_interpolation": "CONSTANT",
+      "ramp_stops": [
+        {
+          "position": 0.0,
+          "factor": 0.5799999833106995
+        },
+        {
+          "position": 0.3199999928474426,
+          "factor": 0.800000011920929
+        },
+        {
+          "position": 0.6800000071525574,
+          "factor": 1.0
+        }
+      ]
+    },
+    {
+      "name": "机甲 · 深灰腿部护甲",
+      "base_color_linear": [
+        0.04373503103852272,
+        0.061246052384376526,
+        0.05951123684644699,
+        1.0
+      ],
+      "emission_strength": 1.0,
+      "pbr_backup": "PBR_BACKUP · 机甲 · 深灰腿部护甲",
+      "ramp_interpolation": "CONSTANT",
+      "ramp_stops": [
+        {
+          "position": 0.0,
+          "factor": 0.5799999833106995
+        },
+        {
+          "position": 0.3199999928474426,
+          "factor": 0.800000011920929
+        },
+        {
+          "position": 0.6800000071525574,
+          "factor": 1.0
+        }
+      ]
+    },
+    {
+      "name": "机甲 · 米白小腿嵌板",
+      "base_color_linear": [
+        0.577580451965332,
+        0.5149176716804504,
+        0.34191441535949707,
+        1.0
+      ],
+      "emission_strength": 1.0,
+      "pbr_backup": "PBR_BACKUP · 机甲 · 米白小腿嵌板",
+      "ramp_interpolation": "CONSTANT",
+      "ramp_stops": [
+        {
+          "position": 0.0,
+          "factor": 0.5799999833106995
+        },
+        {
+          "position": 0.3199999928474426,
+          "factor": 0.800000011920929
+        },
+        {
+          "position": 0.6800000071525574,
+          "factor": 1.0
+        }
+      ]
+    },
+    {
+      "name": "机甲 · 蓝灰喷涂外甲",
+      "base_color_linear": [
+        0.15896083414554596,
+        0.31854677200317383,
+        0.37123769521713257,
+        1.0
+      ],
+      "emission_strength": 1.0,
+      "pbr_backup": "PBR_BACKUP · 机甲 · 蓝灰喷涂外甲",
+      "ramp_interpolation": "CONSTANT",
+      "ramp_stops": [
+        {
+          "position": 0.0,
+          "factor": 0.5799999833106995
+        },
+        {
+          "position": 0.3199999928474426,
+          "factor": 0.800000011920929
+        },
+        {
+          "position": 0.6800000071525574,
+          "factor": 1.0
+        }
+      ]
+    },
+    {
+      "name": "机甲 · 黑色主体框架",
+      "base_color_linear": [
+        0.017641954123973846,
+        0.026241222396492958,
+        0.027320891618728638,
+        1.0
+      ],
+      "emission_strength": 1.0,
+      "pbr_backup": "PBR_BACKUP · 机甲 · 黑色主体框架",
+      "ramp_interpolation": "CONSTANT",
+      "ramp_stops": [
+        {
+          "position": 0.0,
+          "factor": 0.5799999833106995
+        },
+        {
+          "position": 0.3199999928474426,
+          "factor": 0.800000011920929
+        },
+        {
+          "position": 0.6800000071525574,
+          "factor": 1.0
+        }
+      ]
+    }
+  ],
+  "outline_object_count": 42,
+  "outline_color_srgb": "#1A182F",
+  "freestyle_enabled": true,
+  "freestyle_lineset": "主要折角与组件分界",
+  "freestyle_crease_angle_degrees": 134.00000600561944,
+  "source_mesh_count": 43,
+  "source_geometry_and_transforms_unchanged": true,
+  "side_panel_angles_preserved": true,
+  "rendered_review_views": [
+    "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\review\\toon\\three-quarter.png",
+    "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\review\\toon\\front.png",
+    "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\review\\toon\\side.png",
+    "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\review\\toon\\rear.png"
+  ],
+  "visual_acceptance": "待用户审核 B；未进行助手读图目检",
+  "ue_imported": false
+}

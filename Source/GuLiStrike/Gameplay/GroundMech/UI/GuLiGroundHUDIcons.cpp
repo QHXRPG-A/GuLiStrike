@@ -5,6 +5,7 @@
 #include "Gameplay/Data/Generated/GuLiStrikeBuffsTableRows.h"
 #include "Gameplay/Data/Generated/GuLiStrikeRogueCardsTableRows.h"
 #include "Gameplay/Cards/GuLiRogueCardSettings.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Image.h"
 #include "Engine/Texture2D.h"
@@ -12,10 +13,13 @@
 void UGuLiGroundHUDWidget::PrepareIcons()
 {
     if(!IconCatalog)IconCatalog=NewObject<UGuLiIconCatalog>(this);
-    TSet<int32> Ids;BuffIconIds.Reset();
+    TSet<int32> Ids;BuffIconIds.Reset();BarrageIconId=0;
     if(Style)Style->ForeachRow<FGuLiStrikeGroundHUDElementsRow>(TEXT("HUD icons"),[&](FName,const auto& R){if(R.IconId>0)Ids.Add(R.IconId);});
     if(auto* Table=GetDefault<UGuLiRogueCardSettings>()->Cards.LoadSynchronous();Table&&Table->GetRowStruct()==FGuLiStrikeRogueCardsCardsRow::StaticStruct())
-        Table->ForeachRow<FGuLiStrikeRogueCardsCardsRow>(TEXT("HUD card icons"),[&](FName,const auto& R){if(R.IconId>0)Ids.Add(R.IconId);});
+        Table->ForeachRow<FGuLiStrikeRogueCardsCardsRow>(TEXT("HUD card icons"),[&](FName,const auto& R){
+            if(R.IconId>0)Ids.Add(R.IconId);
+            if(R.Id==GuLiGroundRogue::BarrageCardId)BarrageIconId=R.IconId;
+        });
     if(auto* Table=LoadObject<UDataTable>(nullptr,TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills"));Table&&Table->GetRowStruct()==FGuLiStrikeMechSkillsRow::StaticStruct())
         Table->ForeachRow<FGuLiStrikeMechSkillsRow>(TEXT("HUD skill icons"),[&](FName,const auto& R){if(R.IconId>0)Ids.Add(R.IconId);});
     if(auto* Table=LoadObject<UDataTable>(nullptr,TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeBuffs_Buffs"));Table&&Table->GetRowStruct()==FGuLiStrikeBuffsBuffsRow::StaticStruct())
@@ -54,7 +58,7 @@ void UGuLiGroundHUDWidget::UpdateSkillIcons(const FGuLiGroundHUDSnapshot& View)
 {
     for(int32 I=0;I<SkillIcons.Num();++I)
     {
-        const int32 Id=I==1?StyledIconId(TEXT("IconAim")):View.SkillIconIds[I];
+        const int32 Id=I==0?View.BlinkIconId:BarrageIconId;
         auto* Texture=IconCatalog?IconCatalog->Find(Id):nullptr;
         SetDataIconTexture(SkillIcons[I],Texture);
     }

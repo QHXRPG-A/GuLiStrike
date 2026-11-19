@@ -206,8 +206,9 @@ const FGuLiGroundHUDSnapshot& UGuLiGroundHUDData::Read(EGuLiGroundHUDGroup Group
     if(EnumHasAnyFlags(Groups,EGuLiGroundHUDGroup::Skills))
     {
         const auto* W=P->GetWeapon();const auto* R=P->GetRocketJump();
-        View.SkillIconIds[0]=W->GetSkillIconId();View.SkillIconIds[2]=R->GetConfiguration().IconId;
-        View.SkillIconIds[3]=P->GetMobilityConfiguration().Blink.IconId;
+        View.BlinkIconId=P->GetMobilityConfiguration().Blink.IconId;
+        View.BarrageLevel=P->GetBarrageLevel();View.BarrageRemaining=P->GetBarrageShotsRemaining();
+        View.bBarrageHighEnough=P->GetDisplayedBarrageHeight()>=P->BarrageMinimumHeight;
         View.Fuel=R->GetFuelRatio();View.bThrusting=R->IsThrusting();View.bJetReady=R->CanActivateRocket();
         View.bAiming=P->IsShoulderZoomHeld();
         View.bAimReady=!P->GetCombatHealthComponent()->GetHealthState().bDead && P->GetBlinkPhase()==0 && !P->IsCarrierDormant();

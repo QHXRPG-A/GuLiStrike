@@ -4,7 +4,7 @@
 
 [打开并排审核画廊](index.html)
 
-范围：四种 Mass 兵种、八类玩法建筑、六座现有 SSF 建筑。采矿车、建造车、玩家地面机甲和 DIY 飞船模型不改色。
+范围：四种 Mass 兵种、八类玩法建筑、六座现有 SSF 建筑。采矿车、建造车、玩家游骑兵和 DIY 飞船模型不改色。
 
 先核对黄色分区，再确认蓝红参考色。敌方可配置其他非蓝色，本版先用红色参考。固定机构、线稿、功能色和已有明暗参数保留；黄色标注采用独立显示，便于识别金属区域。
 
@@ -66,7 +66,7 @@
 
 [蓝色原图](Renders/ShieldGenerator_blue.png) · [红色原图](Renders/ShieldGenerator_red.png) · [黄色分区](Renders/ShieldGenerator_regions.png) · [配色配置](Configs/ShieldGenerator.json)
 
-## 10 · 矿厂
+## 10 · 先驱号兵营
 
 实际工厂蓝图 Body 的 Armor 材质窄条带；门、室内、细部与坡道固定
 

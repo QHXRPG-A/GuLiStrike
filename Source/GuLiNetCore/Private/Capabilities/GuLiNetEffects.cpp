@@ -53,6 +53,34 @@ bool DecodeExplosive(std::span<const std::uint8_t> B,ExplosivePackage& Out)
     for(auto& I:V.Intervals)if(!R.U32(I))return false;
     if(!R.U32(V.Level)||!R.F32(V.DamageMultiplier)||!R.F32(V.Radius)||!R.U32(V.BulletVfx)||!R.U32(V.ImpactVfx)||!R.F32(V.SpeedMultiplier)||!R.F32(V.OutwardOffset)||!R.Done()||EncodeExplosive(V).empty())return false;Out=std::move(V);return true;
 }
+Bytes EncodeBarrage(const Barrage& V)
+{
+    if(V.Ranks.empty()||V.Ranks.size()>16||V.Level>V.Ranks.size())return {};
+    Writer W(4096);W.U32(V.Level);W.U32(std::uint32_t(V.Ranks.size()));
+    for(const auto& Rank:V.Ranks)
+    {
+        if(!Rank.IntervalTicks||Rank.IntervalTicks>3600||!Rank.ShotCount||Rank.ShotCount>256||
+           !std::isfinite(Rank.DamageBonus)||Rank.DamageBonus<0||Rank.DamageBonus>10||
+           !std::isfinite(Rank.ConeHalfAngleDegrees)||Rank.ConeHalfAngleDegrees<0||Rank.ConeHalfAngleDegrees>90)return {};
+        W.U32(Rank.IntervalTicks);W.U32(Rank.ShotCount);W.F32(Rank.DamageBonus);W.F32(Rank.ConeHalfAngleDegrees);
+    }
+    return W.Take();
+}
+bool DecodeBarrage(std::span<const std::uint8_t> B,Barrage& Out)
+{
+    Reader R(B);Barrage V;std::uint32_t Count;
+    if(!R.U32(V.Level)||!R.U32(Count)||!Count||Count>16)return false;
+    V.Ranks.resize(Count);
+    for(auto& Rank:V.Ranks)
+        if(!R.U32(Rank.IntervalTicks)||!R.U32(Rank.ShotCount)||!R.F32(Rank.DamageBonus)||!R.F32(Rank.ConeHalfAngleDegrees))return false;
+    if(!R.Done()||EncodeBarrage(V).empty())return false;
+    Out=std::move(V);return true;
+}
+const Definition* FindBarrage(const Set& S)
+{
+    for(const auto& D:S)if(D.Handler=="ground/no_survivors")return &D;
+    return nullptr;
+}
 Bytes EncodeExplosiveEnhancement(const ExplosiveEnhancement& V)
 {
     const auto N=V.RadiusBonuses.size();if(!N||N>16||V.DamageBonuses.size()!=N||V.Level>N)return {};
@@ -97,6 +125,11 @@ const bool EnhancedRegistered=Register({"ground/enhanced_bullet",1,[](const Defi
     [](const Definition& D,std::uint32_t N,Set& S){if(N!=1)return false;S.push_back(D);return true;}});
 const bool ExplosiveRegistered=Register({"ground/explosive_package",2,[](const Definition& D){ExplosivePackage V;return DecodeExplosive(D.Parameters,V);},
     [](const Definition& D,std::uint32_t N,Set& S){ExplosivePackage V;if(!N||!DecodeExplosive(D.Parameters,V)||N>V.Intervals.size())return false;V.Level=N;auto Copy=D;Copy.Parameters=EncodeExplosive(V);S.push_back(std::move(Copy));return true;}});
+const bool BarrageRegistered=Register({"ground/no_survivors",1,[](const Definition& D){Barrage V;return DecodeBarrage(D.Parameters,V);},
+    [](const Definition& D,std::uint32_t N,Set& S){
+        Barrage V;if(!N||!DecodeBarrage(D.Parameters,V)||N>V.Ranks.size()||FindBarrage(S))return false;
+        V.Level=N;auto Copy=D;Copy.Parameters=EncodeBarrage(V);S.push_back(std::move(Copy));return true;
+    }});
 const bool ExplosiveEnhancementRegistered=Register({"ground/explosive_enhancement",1,[](const Definition& D){ExplosiveEnhancement V;return DecodeExplosiveEnhancement(D.Parameters,V);},
     [](const Definition& D,std::uint32_t N,Set& S){ExplosiveEnhancement V;if(!N||!DecodeExplosiveEnhancement(D.Parameters,V)||N>V.RadiusBonuses.size())return false;V.Level=N;auto Copy=D;Copy.Parameters=EncodeExplosiveEnhancement(V);S.push_back(std::move(Copy));return true;}});
 const bool Registered=Register({"ricochet",1,[](const Definition& D){Ricochet V;return DecodeRicochet(D.Parameters,V);},

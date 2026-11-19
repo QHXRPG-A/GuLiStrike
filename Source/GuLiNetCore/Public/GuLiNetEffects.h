@@ -39,6 +39,19 @@ struct ExplosiveEnhancement
     std::vector<float> RadiusBonuses,DamageBonuses;
     std::uint32_t Level=0;
 };
+struct BarrageRank
+{
+    std::uint32_t IntervalTicks=0, ShotCount=0;
+    float DamageBonus=0, ConeHalfAngleDegrees=0;
+};
+struct Barrage
+{
+    std::vector<BarrageRank> Ranks;
+    std::uint32_t Level=0;
+};
+GULINETCORE_API Bytes EncodeBarrage(const Barrage&);
+GULINETCORE_API bool DecodeBarrage(std::span<const std::uint8_t>,Barrage&);
+GULINETCORE_API const Definition* FindBarrage(const Set&);
 GULINETCORE_API Bytes EncodeExplosiveEnhancement(const ExplosiveEnhancement&);
 GULINETCORE_API bool DecodeExplosiveEnhancement(std::span<const std::uint8_t>,ExplosiveEnhancement&);
 inline constexpr float MaximumGroundFireRate=30.f;

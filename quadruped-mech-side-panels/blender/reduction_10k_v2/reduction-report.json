@@ -1,0 +1,163 @@
+{
+  "source": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-vertex-animation.blend",
+  "output": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-vertex-animation-10k-v2.blend",
+  "source_sha256": "c4d2649b5d6edce48d6475a6988ac8ac1677f6676994288019c5de97be583850",
+  "components_preserved": 326,
+  "mirrored_component_pairs": 130,
+  "body_objects": 43,
+  "scenes": {
+    "00_静态 · 当前资源": {
+      "triangles": {
+        "body": 7636,
+        "outline": 2232,
+        "laser": 0,
+        "studio": 12,
+        "asset_total": 9868,
+        "scene_total": 9880
+      },
+      "frames": [
+        1,
+        250
+      ],
+      "fps": 24
+    },
+    "01_行进 · 顶点动画": {
+      "triangles": {
+        "body": 7636,
+        "outline": 2232,
+        "laser": 0,
+        "studio": 12,
+        "asset_total": 9868,
+        "scene_total": 9880
+      },
+      "frames": [
+        1,
+        29
+      ],
+      "fps": 24
+    },
+    "02_采矿 · 顶点动画": {
+      "triangles": {
+        "body": 7636,
+        "outline": 2232,
+        "laser": 120,
+        "studio": 12,
+        "asset_total": 9988,
+        "scene_total": 10000
+      },
+      "frames": [
+        1,
+        73
+      ],
+      "fps": 24
+    }
+  },
+  "source_animation_formula_max_sample_error_m": 4.872558379081132e-07,
+  "materials_unchanged": false,
+  "visual_acceptance": "待用户验收；未渲染、未截图、未由助手读图检查。",
+  "source_file_unchanged": true,
+  "source_surface_sample_max_error_m": 0.03485267236828804,
+  "rigid_bearing_overrides": [
+    {
+      "object": "Leg_Front_L · 机甲 · 橡胶与线缆",
+      "component": 2,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Front_L · 机甲 · 关节枪铁",
+      "component": 2,
+      "old_transition": "hip",
+      "rigid_group": "upper"
+    },
+    {
+      "object": "Leg_Front_L · 机甲 · 关节枪铁",
+      "component": 5,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Front_L · 机甲 · 液压杆",
+      "component": 10,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Rear_L · 机甲 · 橡胶与线缆",
+      "component": 2,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Rear_L · 机甲 · 关节枪铁",
+      "component": 2,
+      "old_transition": "hip",
+      "rigid_group": "upper"
+    },
+    {
+      "object": "Leg_Rear_L · 机甲 · 关节枪铁",
+      "component": 5,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Rear_L · 机甲 · 液压杆",
+      "component": 10,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Front_R · 机甲 · 橡胶与线缆",
+      "component": 2,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Front_R · 机甲 · 关节枪铁",
+      "component": 2,
+      "old_transition": "hip",
+      "rigid_group": "upper"
+    },
+    {
+      "object": "Leg_Front_R · 机甲 · 关节枪铁",
+      "component": 5,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Front_R · 机甲 · 液压杆",
+      "component": 10,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Rear_R · 机甲 · 橡胶与线缆",
+      "component": 2,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Rear_R · 机甲 · 关节枪铁",
+      "component": 2,
+      "old_transition": "hip",
+      "rigid_group": "upper"
+    },
+    {
+      "object": "Leg_Rear_R · 机甲 · 关节枪铁",
+      "component": 5,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    },
+    {
+      "object": "Leg_Rear_R · 机甲 · 液压杆",
+      "component": 10,
+      "old_transition": "knee",
+      "rigid_group": "lower"
+    }
+  ],
+  "body_materials_unchanged": true,
+  "outline_material_backface_transparency_added": true,
+  "animation_source_sha256": "7e3629250b8ec7665757cbbf8c1a3363b99b1883bd97e10d2f6bac8f124cd05f",
+  "output_sha256": "5417be5cc79e3c3b2cfd86fedb25dcca5e4765b82cec411d56110fc1f16f8089",
+  "output_bytes": 5619836
+}

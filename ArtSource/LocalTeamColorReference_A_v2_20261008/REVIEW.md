@@ -1,6 +1,6 @@
 # 13 个模型配色参考 A_v2 审核
 
-共 26 张独立蓝红图板，每张包含三分之四效果、正视、左侧视和后视。新增防空炮、哨戒炮、矿厂已纳入。
+共 26 张独立蓝红图板，每张包含三分之四效果、正视、左侧视和后视。新增防空炮、哨戒炮、先驱号兵营已纳入。
 
 [可放大审核画廊](index.html) · [全套总览](overview.html) · [完整配置与来源清单](review-manifest.json) · [审核状态](approval_A.json)
 
@@ -20,7 +20,7 @@
 | 前哨建筑 | [图板](Boards/ManualOutpost_blue.png) | [图板](Boards/ManualOutpost_red.png) | [分区](Configs/ManualOutpost.json) | 待用户决定 |
 | 防空炮 | [图板](Boards/MissileTurret_blue.png) | [图板](Boards/MissileTurret_red.png) | [分区](Configs/MissileTurret.json) | 待用户决定 |
 | 哨戒炮 | [图板](Boards/SentryTurret_blue.png) | [图板](Boards/SentryTurret_red.png) | [分区](Configs/SentryTurret.json) | 待用户决定 |
-| 矿厂 | [图板](Boards/ResourceFactory_blue.png) | [图板](Boards/ResourceFactory_red.png) | [分区](Configs/ResourceFactory.json) | 待用户决定 |
+| 先驱号兵营 | [图板](Boards/ResourceFactory_blue.png) | [图板](Boards/ResourceFactory_red.png) | [分区](Configs/ResourceFactory.json) | 待用户决定 |
 | SSF 空军基地 | [图板](Boards/SSF_AirBase_blue.png) | [图板](Boards/SSF_AirBase_red.png) | [分区](Configs/SSF_AirBase.json) | 待用户决定 |
 | SSF 克隆中心 | [图板](Boards/SSF_CloningCenter_blue.png) | [图板](Boards/SSF_CloningCenter_red.png) | [分区](Configs/SSF_CloningCenter.json) | 待用户决定 |
 | SSF 指挥中心 | [图板](Boards/SSF_CommandCenter_blue.png) | [图板](Boards/SSF_CommandCenter_red.png) | [分区](Configs/SSF_CommandCenter.json) | 待用户决定 |

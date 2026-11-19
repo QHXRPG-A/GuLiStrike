@@ -81,6 +81,13 @@ public:
                     [RoleButton(EGuLiCommanderRole::Commander, LOCTEXT("CommanderDescription", "指挥部队，管理建设与战场。"))]
                     + SScrollBox::Slot().Padding(0, 0, 0, 8)
                     [RoleButton(EGuLiCommanderRole::Ground, LOCTEXT("GroundDescription", "选择无双席位，从驾驶游骑兵开始。局内按 Tab 切换巡天。"))]
+                    + SScrollBox::Slot().Padding(18,0,0,8)
+                    [
+                        SNew(SButton).ButtonStyle(&ButtonStyle())
+                        .Visibility_Lambda([this]{return SelectedRole==EGuLiCommanderRole::Ground ? EVisibility::Visible : EVisibility::Collapsed;})
+                        .OnClicked_Lambda([this]{bRange=true;return Confirm();})
+                        [SNew(STextBlock).Text(LOCTEXT("BarrageRange","无人生还靶场")).ColorAndOpacity(Accent)]
+                    ]
                     + SScrollBox::Slot()
                     [RoleButton(EGuLiCommanderRole::Air, LOCTEXT("AirDescription", "选择无双席位，从驾驶巡天开始。局内按 Tab 切换游骑兵。"))]
                 ]
@@ -124,6 +131,7 @@ public:
     }
 
     TSharedPtr<SWidget> InitialFocus() const { return RoleButtons.FindRef(SelectedRole); }
+    bool ChoseRange() const { return bConfirmed && bRange; }
     TOptional<EGuLiCommanderRole> Result() const
     {
         return bConfirmed ? TOptional<EGuLiCommanderRole>(SelectedRole) : TOptional<EGuLiCommanderRole>();
@@ -134,6 +142,7 @@ private:
     TMap<EGuLiCommanderRole, TSharedPtr<SButton>> RoleButtons;
     EGuLiCommanderRole SelectedRole = EGuLiCommanderRole::Commander;
     bool bConfirmed = false;
+    bool bRange = false;
 
     TSharedRef<SWidget> RoleButton(EGuLiCommanderRole Role, const FText& Description)
     {
@@ -176,7 +185,7 @@ private:
     }
 };
 
-TOptional<EGuLiCommanderRole> Show(EGuLiCommanderRole InitialRole)
+TOptional<EGuLiCommanderRole> Show(EGuLiCommanderRole InitialRole,bool& bBarrageRange)
 {
     if (!GEditor || !FSlateApplication::IsInitialized()) return {};
     const TWeakPtr<SWidget> PreviousFocus = FSlateApplication::Get().GetKeyboardFocusedWidget();
@@ -193,6 +202,7 @@ TOptional<EGuLiCommanderRole> Show(EGuLiCommanderRole InitialRole)
     GEditor->EditorAddModalWindow(Window);
     if (const auto Focus = PreviousFocus.Pin())
         FSlateApplication::Get().SetKeyboardFocus(Focus, EFocusCause::SetDirectly);
+    bBarrageRange=Picker->ChoseRange();
     return Picker->Result();
 }
 }

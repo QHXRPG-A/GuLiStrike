@@ -1,0 +1,123 @@
+{
+  "workflow": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\ILXL-游骑兵-弹射卡图.json",
+  "workflow_id": "b866deee-1554-4268-9277-b2a7b3e1c068",
+  "api": "D:\\gen-image\\workflows\\GroundMech_ChainRicochet\\workflow-api.json",
+  "nodes": 41,
+  "links": 53,
+  "references": {
+    "composition": "GuLi_Ricochet_Composition.png",
+    "hero": [
+      "GroundMech_Project_Rear3Q_v3.png",
+      "GroundMech_Project_Weapon_v3.png"
+    ],
+    "enemy": "Pioneer_Project_Enemy_v3.png"
+  },
+  "size": [
+    832,
+    1248
+  ],
+  "stack": "Illustrious XL 2.0 + 2.5D cel rendering LoRA + regional IPAdapter + Canny img2img",
+  "prompt_sha256": {
+    "Positive.txt": "8344d2d1b5f4cf898f7c1e10c84464e7d36e4e37eae75cfd05320ed84abb4ca3",
+    "Negative.txt": "77f72c729c13a4d621e6f673dedbdd5ab79b3d32c1e1a4c618a0237f25ec8802",
+    "Hero_Positive.txt": "839f1e4f14ce5d1f04e43e62f288152f79aed2100746084a6433c8afa2d6c623",
+    "Enemy_Positive.txt": "a64d50c439e11fc4fedf9914a4a1a2ed7d257bca2a68a6c1cc4254beae0ff2ed"
+  },
+  "user_art_approval": "pending",
+  "state": "generated_and_gui_verified",
+  "verified_utc": "2026-10-16T01:34:15.362216+00:00",
+  "prompt_id": "d4bf9c6b-c1fd-44e1-a003-f8b39b2c1916",
+  "execution_status": "success",
+  "workflow_sha256": "94fe2937c2f1ef1d0c62f44a7f0d77dfb7b6c013f9d91940774ccb813f7c7862",
+  "sampler": {
+    "seed": 2026101601,
+    "steps": 32,
+    "cfg": 5.5,
+    "sampler": "dpmpp_2m",
+    "scheduler": "karras",
+    "denoise": 0.32
+  },
+  "outputs": {
+    "RAW": {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\GroundMech_Ricochet_ILXL_RAW.png",
+      "sha256": "ac4f4e3e62eac3c12b87b41ca21a6801585d0e934b3884993edd6ac1240ca885"
+    },
+    "FINAL": {
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\GroundMech_Ricochet_ILXL_FINAL.png",
+      "sha256": "ac0f7eaf4eb7ae1dd88d66bbf5adf8b754470b91dacffc585b01384fb083f824"
+    }
+  },
+  "input_sha256": {
+    "GuLi_Ricochet_Composition.png": "acfb06a6c1841d2aed1e555fd5b03077b7a8110d19e3afbea2d4dda5e9ea8d54",
+    "GroundMech_Project_Rear3Q_v3.png": "9d8853cd0db9a5be1186a48e04d167d1207f4683b99f4073bf67f4daf9a5a059",
+    "GroundMech_Project_Weapon_v3.png": "eb82ace1a3a3dcb85c6d3b62c6c503be4fb4c14f1f4bf0bc5e50d4b5c412a6b7",
+    "Pioneer_Project_Enemy_v3.png": "e0f8e5ce7593669ee4e6f2f3567acc81ef127575f22a3f2e02f2f51d1e99372e",
+    "GuLi_Ricochet_HeroRegion.png": "d900bc6a9212c9fef2ffc6f1be8c26a681c99bf70a901661d6a92bb1415e282d",
+    "GuLi_Ricochet_EnemyRegion.png": "600f49bb67beb7167c90dbe7c6955069a7d4a05d96749aced564b39fba1a3eb1",
+    "GuLi_GroundMech_Ricochet_Trails.png": "88ce9b4787aad8daa4e58cdf94e1aae773a6ecf161076851feeaf46a343376d8"
+  },
+  "validation": "Actual GUI Run succeeded; all inference nodes reused verified cached render, final composite re-executed; image visually inspected.",
+  "models": {
+    "checkpoint": {
+      "name": "Illustrious XL 2.0 STABLE",
+      "url": "https://huggingface.co/OnomaAIResearch/Illustrious-XL-v2.0/resolve/main/Illustrious-XL-v2.0.safetensors",
+      "relative_path": "ComfyUI_windows_portable/ComfyUI/models/checkpoints/Illustrious-XL-v2.0.safetensors",
+      "size": 6938040674,
+      "sha256": "c2a1a3eaa13d4c107dc7e00c3fe830cab427aa026362740ea094745b3422a331",
+      "parallel_download": true
+    },
+    "lora": {
+      "name": "2.5D Cel Shading Modeling Style v1.0",
+      "url": "https://civitai.com/models/1652997?modelVersionId=1871035",
+      "path": "D:\\gen-image\\ComfyUI_windows_portable\\ComfyUI\\models\\loras\\2.5D cel_rendering Style.safetensors",
+      "bytes": 57458460,
+      "sha256": "9924a77215332fd6c3497a9698a8033005e53ac9fe6a64ef843b83a0c8c9d8ec",
+      "recommended_strength": 0.6,
+      "clip_skip": 2
+    }
+  },
+  "reference_dependencies": {
+    "downloads": [
+      {
+        "name": "CLIP Vision ViT-H",
+        "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors",
+        "relative_path": "ComfyUI_windows_portable/ComfyUI/models/clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+        "size": 2528373448,
+        "sha256": "6ca9667da1ca9e0b0f75e46bb030f7e011f44f86cbfb8d5a36590fcd7507b030"
+      },
+      {
+        "name": "IPAdapter Plus SDXL ViT-H",
+        "url": "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors",
+        "relative_path": "ComfyUI_windows_portable/ComfyUI/models/ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors",
+        "size": 847517512,
+        "sha256": "3f5062b8400c94b7159665b21ba5c62acdcd7682262743d7f2aefedef00e6581"
+      },
+      {
+        "name": "SDXL Canny Small",
+        "url": "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/diffusers_xl_canny_small.safetensors",
+        "relative_path": "ComfyUI_windows_portable/ComfyUI/models/controlnet/diffusers_xl_canny_small.safetensors",
+        "size": 320237152,
+        "sha256": "65a3169af8b29de6a2b37771d6da41d29509dfb1ad0116ec98adfb22204bd571"
+      }
+    ],
+    "plugin_source": {
+      "url": "https://codeload.github.com/cubiq/ComfyUI_IPAdapter_plus/zip/refs/heads/main",
+      "archive": "D:\\gen-image\\downloads\\ComfyUI_IPAdapter_plus.zip",
+      "sha256": "c10f07e4bdda70775d6161707813fce5f4449dfe4fc92ab7a90970d749603f94"
+    },
+    "state": "installed_and_runtime_verified",
+    "installed_files": [
+      "D:\\gen-image\\ComfyUI_windows_portable\\ComfyUI\\models\\clip_vision\\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+      "D:\\gen-image\\ComfyUI_windows_portable\\ComfyUI\\models\\ipadapter\\ip-adapter-plus_sdxl_vit-h.safetensors",
+      "D:\\gen-image\\ComfyUI_windows_portable\\ComfyUI\\models\\controlnet\\diffusers_xl_canny_small.safetensors"
+    ],
+    "verified_nodes": [
+      "IPAdapterAdvanced",
+      "IPAdapterModelLoader",
+      "CLIPVisionLoader",
+      "ControlNetApplyAdvanced"
+    ],
+    "verified_prompt_id": "d4bf9c6b-c1fd-44e1-a003-f8b39b2c1916"
+  },
+  "external_path_note": "历史外部工作流路径见 ARC-20261103-006 归档的对应 EXT 编号；可复用的弹射工作流改为项目内正式副本。"
+}

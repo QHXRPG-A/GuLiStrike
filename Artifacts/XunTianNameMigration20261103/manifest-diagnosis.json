@@ -1,0 +1,86 @@
+{
+  "scope": "read-only diagnosis; no configuration, code, assets, PIE or network sessions changed",
+  "expected": "Current parser accepts matching manifest schema 24 / protocol 34 / handoff 3 and validates content hashes",
+  "observed": "Existing acceptance snapshots have protocol 33 and hit the generic load/parse error",
+  "root_cause": "The first version gate rejects protocol_version 33 against current ProtocolVersion 34 before object/rule parsing.",
+  "source_evidence": [
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetTypes.h",
+      "line": 35,
+      "fact": "ProtocolVersion = 34"
+    },
+    {
+      "path": "Source/GuLiNetCore/Public/GuLiNetManifest.h",
+      "line": 9,
+      "fact": "ManifestVersion = 24"
+    },
+    {
+      "path": "Source/GuLiStrike/Network/GuLiHybridManifest.cpp",
+      "line": 46,
+      "fact": "Strict version equality is the first Parse gate"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiLocalPIESubsystem.cpp",
+      "line": 163,
+      "fact": "Normal local PIE selects RuntimeManifest-600.json"
+    }
+  ],
+  "files": [
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-200.json",
+      "sha256": "8c8ce83702e942e5700f1273ca3e1b5864d2d3ee5ff39e8900e72d66954531fc",
+      "bytes": 1186039,
+      "valid_json": true,
+      "schema": 24,
+      "protocol_version": 33,
+      "handoff_version": 3,
+      "version_gate_matches_current_code": false
+    },
+    {
+      "path": "Config/Hybrid/AcceptanceManifest-600.json",
+      "sha256": "3332f4c8af259312ee2d2af39053e327b8333e9777198d4790204554f16d9529",
+      "bytes": 1339323,
+      "valid_json": true,
+      "schema": 24,
+      "protocol_version": 33,
+      "handoff_version": 3,
+      "version_gate_matches_current_code": false
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "sha256": "31f341e8ded8e21fe9051fe57cc286b21e34a9cbcdf0058ae39268b6381df048",
+      "bytes": 1110507,
+      "valid_json": true,
+      "schema": 24,
+      "protocol_version": 34,
+      "handoff_version": 3,
+      "version_gate_matches_current_code": true
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-600.json",
+      "sha256": "e1167456390a12c68990f1a568f57f779d02c179276689f8ccdcad27947717ce",
+      "bytes": 1263966,
+      "valid_json": true,
+      "schema": 24,
+      "protocol_version": 34,
+      "handoff_version": 3,
+      "version_gate_matches_current_code": true
+    }
+  ],
+  "runtime_static_validation": {
+    "RuntimeManifest-600.json": {
+      "success": true,
+      "objects": 692,
+      "rules": 169
+    },
+    "RuntimeManifest-200.json": {
+      "success": true,
+      "objects": 292,
+      "rules": 169
+    }
+  },
+  "initial_failure_file_unchanged_since_naming_migration": true,
+  "impact": "Existing acceptance entry snapshots require regeneration; normal local PIE uses the current runtime snapshot that passed static validation. No live gameplay or networking test performed.",
+  "proposed_fix": "Regenerate the two acceptance snapshots with the existing acceptance-profile export pipeline, update dependent hashes, and repeat static parsing. Do not merely edit the protocol integer or alter the current network protocol.",
+  "verification_boundary": "Runtime snapshots passed native static validation; acceptance protocol mismatch confirmed by file headers and parser source. No repair performed."
+}

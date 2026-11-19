@@ -45,6 +45,14 @@ namespace
 					if(Cards.FindChecked(Id).Type!=Card.Type){Error=TEXT("Card relation crosses owner domains: ")+Pair.Key;return false;}
 				}
 			}
+            if(!Card.RequiredCardLevels.IsEmpty() && Card.RequiredCardLevels.Num()!=Card.RequiredCardIds.Num())
+            {Error=TEXT("Mismatched prerequisite levels: ")+Pair.Key;return false;}
+            for(int32 I=0;I<Card.RequiredCardLevels.Num();++I)
+            {
+                int32 Level;const int32 Cap=Cards.FindChecked(Card.RequiredCardIds[I]).MaxAcquisitions;
+                if(!LexTryParseString(Level,*Card.RequiredCardLevels[I]) || Level<1 || (Cap && Level>Cap))
+                {Error=TEXT("Invalid prerequisite level: ")+Pair.Key;return false;}
+            }
 			for (const FString& Id : Card.ExcludedCardIds)
 			{ Excluded.FindOrAdd(Pair.Key).Add(Id); Excluded.FindOrAdd(Id).Add(Pair.Key); }
 		}
@@ -229,7 +237,7 @@ void UGuLiRogueCardSubsystem::Deinitialize()
     if (auto* H=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
     {H->OnTransactionCompleted.RemoveAll(this);H->OnCommandCompleted.Remove(HybridCommandReceiptHandle);H->OnOwnershipStateApplied.RemoveAll(this);}
     HybridCommandReceiptHandle.Reset();
-    HybridRequests.Reset();HybridClosedSessions.Reset();Offers.Reset();Acquisitions.Reset();GroundAcquisitions.Reset();GroundRevisions.Reset();Super::Deinitialize();
+    HybridRequests.Reset();HybridClosedSessions.Reset();Offers.Reset();Acquisitions.Reset();GroundAcquisitions.Reset();GroundRevisions.Reset();GroundOpenSessions.Reset();Super::Deinitialize();
 }
 void UGuLiRogueCardSubsystem::Cancel(UGuLiCommanderNetSyncComponent& Channel, FGuid Session)
 {

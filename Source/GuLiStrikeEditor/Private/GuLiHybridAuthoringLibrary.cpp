@@ -1,4 +1,5 @@
 #include "GuLiHybridAuthoringLibrary.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
 #include "Network/GuLiHybridManifestRegistry.h"
 #include "GuLiInitialArmyAuthoring.h"
 #include "Network/GuLiHybridManifest.h"
@@ -6,6 +7,7 @@
 #include "Gameplay/Data/GuLiCommanderSoldierResolver.h"
 #include "Gameplay/Data/GuLiCommanderDataSettings.h"
 #include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiRuntimeFieldManifest.h"
 #include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
@@ -219,11 +221,11 @@ FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifestWithOverrides(int32 Po
     Refresh();return ExportRuntimeManifest(Population,File);
 }
 
-FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifest(int32 Population,const FString& RequestedFile)
+FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifest(int32 Population,const FString& RequestedFile,bool bBarrageRange)
 {
     FString Error;
-    const FString File=FPaths::ConvertRelativePathToFull(RequestedFile.IsEmpty()
-        ? FPaths::ProjectConfigDir()/FString::Printf(TEXT("Hybrid/RuntimeManifest-%d.json"),Population) : RequestedFile);
+    const FString DefaultFile=bBarrageRange ? TEXT("Hybrid/RuntimeManifest-NoSurvivors.json") : FString::Printf(TEXT("Hybrid/RuntimeManifest-%d.json"),Population);
+    const FString File=FPaths::ConvertRelativePathToFull(RequestedFile.IsEmpty() ? FPaths::ProjectConfigDir()/DefaultFile : RequestedFile);
     auto* World=GEditor ? GEditor->GetEditorWorldContext().World() : nullptr;
     if (!World || World->IsGameWorld() || GEditor->PlayWorld || (Population!=200 && Population!=600))
         return Report(false,TEXT("Export requires an idle editor and population 200 or 600"),File,0,0,0);
@@ -322,8 +324,32 @@ FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifest(int32 Population,cons
     for (const auto& B : Buildings->Definitions)
         if (!CatalogStruct(*FGuLiBuildingDefinition::StaticStruct(),&B,FString::Printf(TEXT("building/%d"),B.DefinitionId),Data,Error))
             return Report(false,Error,File,Data.Objects.Num(),Data.Rules.Num(),Tables);
-    if (!FGuLiHybridManifestRegistration::AppendAll(*World,Data,Error)
-        || !ExportTables(Data,Paths,Tables,Error)
+    if (!FGuLiHybridManifestRegistration::AppendAll(*World,Data,Error))
+        return Report(false,Error,File,Data.Objects.Num(),Data.Rules.Num(),Tables);
+    if (bBarrageRange && Population!=600)
+        return Report(false,TEXT("The barrage range uses the 600-unit roster."),File,0,0,Tables);
+    {
+        FGuLiSpellFieldConfig Field;
+        GuLiNet::Effects::Barrage Profile;
+        if (!UGuLiSpellFieldDataSubsystem::ResolveAuthoredConfig(GuLiGroundRogue::BarrageFieldId,Field) || !GuLiGroundRogue::LoadBarrage(Profile,Error))
+            return Report(false,TEXT("Missing Ground barrage field or rank table: ")+Error,File,0,0,Tables);
+        Data.Numbers.Add(TEXT("ground_rogue/barrage/trial_level"),bBarrageRange?1:0);
+        // A separate admission ID grants only the range's level-one preview. The normal
+        // rules and the initial Ground roster are identical across both 600-unit rooms.
+        for(size_t Index=0;Index<Profile.Ranks.size()+(bBarrageRange?1:0);++Index)
+        {
+            const bool Preview=Index==Profile.Ranks.size();
+            const size_t RankIndex=Preview?0:Index;
+            FGuLiHybridRuleEntry Damage;
+            Damage.SourceDefinition=TEXT("player/ground");
+            Damage.Id=FGuLiHybridManifest::MakeDamageRuleId(Damage.SourceDefinition,GuLiGroundRogue::BarrageRuleSkill(int32(RankIndex+1),Preview),TEXT("Barrage"));
+            Damage.Damage=Field.Damage*(1.f+Profile.Ranks[RankIndex].DamageBonus);Damage.EffectTicks=900;
+            if (!GuLiRuntimeFields::AddRules(Data,Damage,Error))
+                return Report(false,Error,File,Data.Objects.Num(),Data.Rules.Num(),Tables);
+            if(!Preview)Data.Numbers.Add(TEXT("ground_rogue/barrage/rank/admit/runtime/")+Damage.Id,double(RankIndex+1));
+        }
+    }
+    if (!ExportTables(Data,Paths,Tables,Error)
         || !FGuLiHybridManifest::Write(Data,File,Error)) return Report(false,Error,File,Data.Objects.Num(),Data.Rules.Num(),Tables);
     return Report(true,TEXT(""),File,Data.Objects.Num(),Data.Rules.Num(),Tables);
 }

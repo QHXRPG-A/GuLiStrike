@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-16",
+  "card_id": "11.01",
+  "card_title": "爆破套餐",
+  "seat": "Ground",
+  "version": 3,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "generation_mode": "reference-based scale revision",
+  "transparent_background": false,
+  "art_direction": "沿用蓝天白云和角落废墟。依照附件缩小远处滞空游骑兵与近处弹体，保留仰视构图和现用爆炸弹的暖色尾焰。",
+  "palette_reference": "Progress/RequirementDocument/GuLiStrike美术规范.md §11",
+  "editor_asset_readback": {
+    "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+    "model_id": 4001,
+    "presentation_model_id": "4001",
+    "skeletal_mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+    "flight": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon.NS_GroundExplosiveFlight_Toon",
+    "flight_emitters": [
+      "ProjectileShell",
+      "ExhaustPlume"
+    ],
+    "relevant_flight_dependencies": [
+      "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonShell",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonPlume"
+    ],
+    "trail": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail.NS_GroundExplosiveTrail",
+    "impact": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact.NS_GroundExplosiveImpact",
+    "body_mesh": "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile.SM_WM01_Missile"
+  },
+  "flight_vfx_id": 63,
+  "inputs_in_order": [
+    {
+      "file": "../ExplosivePackage_Reference_20261116_v2/ExplosivePackage_Card_Reference_v2.png",
+      "role": "初稿 v2，提供现有的 A4B2 形态、牌面风格与待修尺寸",
+      "sha256": "6a5df9f432b602d2bcebe39507d8befae1c575249e9c813d8a52154d68a34170"
+    },
+    {
+      "file": "../ExplosivePackage_Reference_20261116_v2/Inputs/01_Composition_Input.png",
+      "role": "用户构图参考，约束滞空机甲和远近导弹的落点、相对大小与仰视角",
+      "sha256": "a9058fb4c9e463251f749f90e52f45f62bd65de8a7feedec1247fbea084be7c9"
+    },
+    {
+      "file": "../ExplosivePackage_Reference_20261116_v2/Inputs/03_Explosive_Flight_UE.png",
+      "role": "正式爆炸弹的白灰弹体、小尾翼和连续暖色尾焰",
+      "sha256": "54562ed6404a4ea3f76992b45c45ca3126209254e65799853b6943a954cd17bf"
+    }
+  ],
+  "original_composition_attachment": "C:\\Users\\a\\AppData\\Local\\Temp\\codex-clipboard-9cb28bff-7671-4709-b92f-18600992f6c9.png",
+  "prompt": {
+    "file": "ExplosivePackage_Prompt.txt",
+    "sha256": "434b88c8a53871ad6bab9f82af6c404db98a93975858801eb7c194e7b4aa31f4"
+  },
+  "output": {
+    "file": "ExplosivePackage_Card_Reference_v3.png",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e39f-c9b0-7602-ac68-13db3650a8bd\\exec-5ddeb0dc-f907-49a1-976e-f3c41e3b86f6.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB",
+    "sha256": "c0c5da1520bdaef9f82009a4b73f14909763c3f8db23388b55a00798418081a2"
+  },
+  "assistant_output_visual_review": false
+}

@@ -1,6 +1,7 @@
 #include "GuLiGroundMechFireEditorLibrary.h"
 #include "Editor.h"
 #include "NiagaraSystem.h"
+#include "NiagaraScript.h"
 #include "NiagaraEmitter.h"
 #include "NiagaraScriptSource.h"
 #include "NiagaraSpriteRendererProperties.h"
@@ -19,9 +20,32 @@
 #include "NiagaraDataSetAccessor.h"
 #include "Engine/StaticMesh.h"
 
+int64 UGuLiGroundMechFireEditorLibrary::GetCompiledVMBufferBytes(UNiagaraSystem* System)
+{
+    if (!System || !System->IsReadyToRun()) return -1;
+    TArray<UNiagaraScript*> Scripts = {System->GetSystemSpawnScript(), System->GetSystemUpdateScript()};
+    for (const auto& Handle : System->GetEmitterHandles())
+        if (Handle.GetIsEnabled() && Handle.GetEmitterData())
+            Handle.GetEmitterData()->GetScripts(Scripts, true, true);
+    TSet<UNiagaraScript*> Counted;
+    int64 Bytes = 0;
+    for (auto* Script : Scripts)
+    {
+        if (!Script || Counted.Contains(Script)) continue;
+        Counted.Add(Script);
+        const auto& VM = Script->GetVMExecutableData();
+        Bytes += VM.ByteCode.GetData().GetAllocatedSize() + VM.ExperimentalContextData.GetAllocatedSize();
+    }
+    return Bytes;
+}
+
 FString UGuLiGroundMechFireEditorLibrary::ReadExplosiveImpactParticles(UNiagaraComponent* Component)
 {
-    if(!Component || !Component->GetAsset() || Component->GetAsset()->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact"))return TEXT("{}");
+    if(!Component || !Component->GetAsset())return TEXT("{}");
+    const FString AssetName=Component->GetAsset()->GetOutermost()->GetName();
+    if(AssetName!=TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact")
+        && AssetName!=TEXT("/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01")
+        && AssetName!=TEXT("/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsImpact"))return TEXT("{}");
     auto Controller=Component->GetSystemInstanceController();if(!Controller.IsValid())return TEXT("{}");
     Controller->WaitForConcurrentTickAndFinalize();const auto* Instance=Controller->GetSystemInstance_Unsafe();if(!Instance)return TEXT("{}");
     auto Root=MakeShared<FJsonObject>();TArray<TSharedPtr<FJsonValue>> Emitters;

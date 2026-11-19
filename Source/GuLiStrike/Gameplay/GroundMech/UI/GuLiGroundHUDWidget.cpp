@@ -210,14 +210,21 @@ void UGuLiGroundHUDWidget::Apply(EGuLiGroundHUDGroup Groups)
         const auto FuelColor=Color(V.Fuel<.2?TEXT("Accent"):TEXT("Line"));
         for(int32 I=0;I<FuelSegments.Num();++I){const auto C=(FuelSegments.Num()-I)<=FMath::CeilToInt(V.Fuel*FuelSegments.Num())?GuLiGroundUI::Light(FuelColor):Color(TEXT("PanelRaised"));if(FuelSegments[I]->GetBrushColor()!=C)FuelSegments[I]->SetBrushColor(C);}
         Set(StatValues[0],FString::Printf(TEXT("%02d"),V.WeaponLevel));Set(StatValues[1],FString::Printf(TEXT("%.1f"),V.FireRate));Set(StatValues[2],FString::Printf(TEXT("%.1f"),V.Speed));
-        Set(SkillStates[0],V.bWeaponReady?FText::GetEmpty():Copy(TEXT("Disabled")));Set(SkillStates[1],V.bAimReady?FText::GetEmpty():Copy(TEXT("Disabled")));
-        Set(SkillStates[2],V.bThrusting||V.bJetReady?FText::GetEmpty():Copy(V.Fuel<=0?TEXT("Empty"):TEXT("Disabled")));
-        Set(SkillStates[3],V.BlinkRemaining>0?FText::FromString(FString::Printf(TEXT("%.1f"),V.BlinkRemaining)):V.bBlinkReady?FText::GetEmpty():Copy(TEXT("Disabled")));
-        SkillPanels[0]->SetHighlighted(V.bWeaponReady);SkillPanels[2]->SetHighlighted(V.bThrusting);
+        Set(SkillStates[0],V.BlinkRemaining>0?FText::FromString(FString::Printf(TEXT("%.1f"),V.BlinkRemaining)):V.bBlinkReady?FText::GetEmpty():Copy(TEXT("Disabled")));
+        SkillPanels[0]->SetHighlighted(V.bBlinkReady);
+        BarrageEntry->SetVisibility(V.BarrageLevel>0?ESlateVisibility::HitTestInvisible:ESlateVisibility::Collapsed);
+        if(V.BarrageLevel>0)
+        {
+            if(V.BarrageRemaining)Set(SkillStates[1],Format(TEXT("BarrageFiring"),{FString::FromInt(V.BarrageRemaining)}));
+            else if(!V.bAimReady)Set(SkillStates[1],Copy(TEXT("Disabled")));
+            else if(!V.bBarrageHighEnough)Set(SkillStates[1],Format(TEXT("BarrageLow"),{FString::FromInt(int32(AGuLiGroundMechCharacter::BarrageMinimumHeight/100.f))}));
+            else Set(SkillStates[1],Copy(TEXT("BarrageReady")));
+            SkillPanels[1]->SetHighlighted(V.bBarrageHighEnough && V.bAimReady);
+        }
         bHeldAim=V.bAiming;bHeldJet=V.bThrusting;bCooling=V.BlinkRemaining>0;
         BlinkEndsAt=V.BlinkEndsAt;BlinkDuration=V.BlinkDuration;
-        const float Masks[]={V.bWeaponReady?0.f:1.f,V.bAimReady?0.f:1.f,V.bJetReady||V.bThrusting?0.f:1.f,V.bBlinkReady||bCooling?0.f:1.f};
-        for(int32 I=0;I<4;++I)
+        const float Masks[]={V.bBlinkReady||bCooling?0.f:1.f,V.bAimReady&&V.bBarrageHighEnough?0.f:1.f};
+        for(int32 I=0;I<UE_ARRAY_COUNT(Masks);++I)
         {
             TargetMasks[I]=Masks[I];if(!bBarsInitialized)SkillMasks[I]->SetRenderScale(FVector2D(1,Masks[I]));
         }
@@ -384,8 +391,8 @@ void UGuLiGroundHUDWidget::UpdateReticle()
 void UGuLiGroundHUDWidget::RefreshKeyLabels()
 {
     auto* PC=Controller();auto* Input=PC&&PC->GetLocalPlayer()?PC->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>():nullptr;
-    const TCHAR* Names[]={TEXT("IA_Battle_Primary"),TEXT("IA_Battle_Secondary"),TEXT("IA_Ground_RocketJump"),TEXT("IA_Ground_Sprint")};
-    for(int32 I=0;I<4;++I)
+    const TCHAR* Names[]={TEXT("IA_Ground_Sprint"),TEXT("IA_Ground_NoSurvivors")};
+    for(int32 I=0;I<UE_ARRAY_COUNT(Names);++I)
     {
         const auto* A=LoadObject<UInputAction>(nullptr,*(FString(TEXT("/Game/GuLiStrike/GroundMech/Input/"))+Names[I]));
         const auto Keys=Input&&A?Input->QueryKeysMappedToAction(A):TArray<FKey>();FString Label;

@@ -73,7 +73,11 @@ bool FGuLiCombatEffectState::IsWellFormed() const
 		return false;
 	}
 	if (Kind == EGuLiCombatEffectKind::Projectile)
-		return Motion.IsValid() && (GroundWarningStyle.IsNull() || (bFixedPoint && Radius > 0 && Radius <= 100000))
+		return Motion.IsValid() && FMath::IsFinite(GroundStrike.HorizontalRange) && GroundStrike.HorizontalRange >= 0.f
+			&& (!GroundStrike.IsEnabled() || (bFixedPoint && FMath::IsFinite(GroundStrike.DiveAcceleration)
+				&& GroundStrike.DiveAcceleration > 0.f && FMath::IsFinite(GroundStrike.DiveStartAge)
+				&& (GroundStrike.DiveStartAge == -1.f || (GroundStrike.IsDiving() && !GroundStrike.DiveOrigin.ContainsNaN()))))
+			&& (GroundWarningStyle.IsNull() || (bFixedPoint && Radius > 0 && Radius <= 100000))
 			&& (!GuidanceBatchId.IsValid() || (bFixedPoint && !GroundWarningStyle.IsNull()
 				&& !GuidanceCenter.ContainsNaN() && GuidanceCenter.GetAbsMax() <= 10000000
 				&& FMath::IsFinite(GuidanceRadius) && GuidanceRadius > 0 && GuidanceRadius <= 100000));
@@ -203,7 +207,15 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 			}
 			Velocity.NetSerialize(Ar,Map,bVector); LaunchLocation.NetSerialize(Ar,Map,bVector);
 			LastTargetLocation.NetSerialize(Ar,Map,bVector); LaunchDirection.NetSerialize(Ar,Map,bVector);
-			Ar << bFixedPoint;
+			uint32 PointFlags = (bFixedPoint ? 1u : 0u) | (GroundStrike.IsEnabled() ? 2u : 0u);
+			Ar << PointFlags;
+			if (Ar.IsLoading()) { bFixedPoint = (PointFlags & 1u) != 0; GroundStrike = {}; }
+			if (PointFlags > 3u || PointFlags == 2u) Ar.SetError();
+			if (PointFlags & 2u)
+			{
+				Ar << GroundStrike.HorizontalRange << GroundStrike.DiveAcceleration << GroundStrike.DiveStartAge;
+				if (GroundStrike.IsDiving()) Ar << GroundStrike.DiveOrigin;
+			}
 			Ar << Motion.Speed << Motion.LiftSeconds << Motion.MinimumLiftHeight << Motion.MaximumLiftHeight
 				<< Motion.LateralOffset << Motion.VerticalCurve << Motion.LongitudinalCurve
 				<< Motion.ConvergenceDistance << Motion.TurnRate << Motion.SweepRadius << Motion.MaximumLifetime;
@@ -299,17 +311,46 @@ FVector GuLiCombatEffects::LiftPosition(const FGuLiCombatEffectState& State, con
 		+ Right * Side * FMath::Sin(Alpha * HALF_PI);
 }
 
-FVector GuLiCombatEffects::AdvanceProjectile(FGuLiCombatEffectState& State, const float NewAge, const float DeltaSeconds, const FGuLiProjectileCurveCoefficients* Coefficients)
+namespace
+{
+bool FindDiveStart(const FGuLiCombatEffectState& State, FVector From, FVector To, double& Fraction)
+{
+	const double Radius = State.GroundStrike.HorizontalRange;
+	const FVector Origin = State.LaunchLocation;
+	const FVector2D Offset(From - Origin);
+	const double Remaining = Radius * Radius - Offset.SizeSquared();
+	if (Remaining <= 0.)
+	{
+		Fraction = 0.;
+		return true;
+	}
+	if (FVector::DistSquared2D(Origin, To) < Radius * Radius) return false;
+	const FVector2D Delta(To - From);
+	const double A = Delta.SizeSquared();
+	const double B = FVector2D::DotProduct(Offset, Delta);
+	const double Root = FMath::Sqrt(B * B + A * Remaining);
+	// Solve the positive exit root without cancellation when travelling outwards.
+	Fraction = FMath::Clamp(B >= 0. ? Remaining / (Root + B) : (Root - B) / A, 0., 1.);
+	return true;
+}
+
+FVector CruisePosition(FGuLiCombatEffectState& State, const float NewAge, const float DeltaSeconds,
+	const FGuLiProjectileCurveCoefficients* Coefficients)
 {
 	const FVector Previous = State.Location;
-	if (DeltaSeconds <= 0 || !FMath::IsFinite(DeltaSeconds)) return Previous;
 	if (State.Motion.LiftSeconds > 0 && NewAge <= State.Motion.LiftSeconds)
 	{
-		State.Location = LiftPosition(State, NewAge, Coefficients);
-		State.Velocity = (FVector(State.Location) - Previous) / DeltaSeconds;
-		return State.Location;
+		const FVector Next = GuLiCombatEffects::LiftPosition(State, NewAge, Coefficients);
+		State.Velocity = (Next - Previous) / DeltaSeconds;
+		return Next;
 	}
 	const FVector ToTarget = FVector(State.LastTargetLocation) - Previous;
+	if (State.GroundStrike.IsEnabled() && FVector::DotProduct(ToTarget,
+		FVector(State.LastTargetLocation) - FVector(State.LaunchLocation)) <= 0.)
+	{
+		// A virtual aim point can lie over empty space beside a deck. Continue through it.
+		return Previous + FVector(State.Velocity) * DeltaSeconds;
+	}
 	const double Distance = ToTarget.Size();
 	FRandomStream Random(State.RandomSeed);
 	if (!Coefficients) Random.FRand(); // Preserve the original sequence in the rollback path.
@@ -342,15 +383,48 @@ FVector GuLiCombatEffects::AdvanceProjectile(FGuLiCombatEffectState& State, cons
 		Direction = FQuat::Slerp(FQuat::Identity, FQuat::FindBetweenNormals(Direction, Desired), Fraction).RotateVector(Direction).GetSafeNormal();
 	}
 	State.Velocity = Direction * State.Motion.Speed;
-	State.Location = Previous + FVector(State.Velocity) * DeltaSeconds;
+	return Previous + FVector(State.Velocity) * DeltaSeconds;
+}
+}
+
+FVector GuLiCombatEffects::AdvanceProjectile(FGuLiCombatEffectState& State, float NewAge, float DeltaSeconds,
+	const FGuLiProjectileCurveCoefficients* Coefficients)
+{
+	if (DeltaSeconds <= 0.f || !FMath::IsFinite(DeltaSeconds)) return State.Location;
+	auto& Strike = State.GroundStrike;
+	if (!Strike.IsEnabled())
+	{
+		State.Location = CruisePosition(State, NewAge, DeltaSeconds, Coefficients);
+		return State.Location;
+	}
+	if (!Strike.IsDiving())
+	{
+		const float PreviousAge = NewAge - DeltaSeconds;
+		const float CruiseEnd = FMath::Min(State.Motion.MaximumLifetime, NewAge);
+		const float CruiseStep = FMath::Max(0.f, CruiseEnd - PreviousAge);
+		const FVector From = State.Location;
+		const FVector To = CruiseStep > 0.f ? CruisePosition(State, CruiseEnd, CruiseStep, Coefficients) : From;
+		double Fraction = 1.;
+		if (!FindDiveStart(State, From, To, Fraction) && NewAge < State.Motion.MaximumLifetime)
+		{
+			State.Location = To;
+			return To;
+		}
+		Strike.DiveOrigin = FMath::Lerp(From, To, Fraction);
+		Strike.DiveStartAge = FMath::Min(State.Motion.MaximumLifetime, float(PreviousAge + Fraction * CruiseStep));
+	}
+	const double Time = FMath::Max(0., double(NewAge - Strike.DiveStartAge));
+	State.Location = Strike.DiveOrigin - FVector::UpVector * (Time * (State.Motion.Speed + .5 * Strike.DiveAcceleration * Time));
+	State.Velocity = FVector::DownVector * (State.Motion.Speed + Strike.DiveAcceleration * Time);
 	return State.Location;
 }
 
-bool GuLiCombatEffects::IntersectsSphere(const FVector& Center, const float Radius, const FGuLiCombatTargetSnapshot& Target)
+bool GuLiCombatEffects::IntersectsSphere(const FVector& Center, const float Radius, const FGuLiCombatTargetSnapshot& Target, bool bUseHitCenter)
 {
-	return Target.bAlive && !Center.ContainsNaN() && !Target.Location.ContainsNaN()
+	const FVector TargetCenter = bUseHitCenter ? Target.GetHitCenter() : Target.Location;
+	return Target.bAlive && !Center.ContainsNaN() && !TargetCenter.ContainsNaN()
 		&& FMath::IsFinite(Radius) && Radius >= 0 && FMath::IsFinite(Target.CollisionRadius) && Target.CollisionRadius >= 0
-		&& FVector::DistSquared(Center, Target.Location) <= FMath::Square(static_cast<double>(Radius + Target.CollisionRadius));
+		&& FVector::DistSquared(Center, TargetCenter) <= FMath::Square(static_cast<double>(Radius + Target.CollisionRadius));
 }
 
 int32 GuLiCombatEffects::PulsesDue(const EGuLiSpellFieldTiming Timing, const double Activation,

@@ -1,0 +1,186 @@
+{
+  "native_compiled": false,
+  "ue_imported": false,
+  "user_visual_review": "pending",
+  "checks": {
+    "python_ast": "passed",
+    "WarMachine": {
+      "closed_loops": true,
+      "samples": 66,
+      "float_texture_error": 0,
+      "rigid_part_triangles": [
+        {
+          "lod": 0,
+          "vertices": 21315,
+          "triangles": 38843,
+          "parts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "mixed_triangles": 0
+        },
+        {
+          "lod": 1,
+          "vertices": 5905,
+          "triangles": 9687,
+          "parts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "mixed_triangles": 0
+        },
+        {
+          "lod": 2,
+          "vertices": 560,
+          "triangles": 776,
+          "parts": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "mixed_triangles": 0
+        }
+      ],
+      "gun_housing_axial_overlap_at_peak_cm": [
+        607.5876970087929,
+        607.7099118779266
+      ],
+      "source_sha256": "7b8ddc4233ae9383c404b7baa772db17c8472885ea40fb81ecc227975555f9fc"
+    },
+    "Pioneer": {
+      "closed_loops": true,
+      "samples": 66,
+      "float_texture_error": 0,
+      "rigid_part_triangles": [
+        {
+          "lod": 0,
+          "vertices": 20290,
+          "triangles": 37338,
+          "parts": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "mixed_triangles": 0
+        },
+        {
+          "lod": 1,
+          "vertices": 9301,
+          "triangles": 15905,
+          "parts": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "mixed_triangles": 0
+        },
+        {
+          "lod": 2,
+          "vertices": 1407,
+          "triangles": 1943,
+          "parts": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "mixed_triangles": 0
+        }
+      ],
+      "gun_housing_axial_overlap_at_peak_cm": [
+        217.78591753880175,
+        217.7859137241045
+      ],
+      "source_sha256": "99d3f906233aca66047fb4e76f1d97cc202d16a225df7ccf16e9ed29425a7324"
+    },
+    "miner": {
+      "triangles": [
+        9854,
+        4614,
+        2676
+      ],
+      "rest_mesh_uv_material_data_unchanged": true,
+      "muzzle_loop_closed": true,
+      "clips": [
+        {
+          "name": "Idle",
+          "first": 0,
+          "count": 1,
+          "duration": 1
+        },
+        {
+          "name": "Walk",
+          "first": 1,
+          "count": 29,
+          "duration": 1.1666666666666667
+        },
+        {
+          "name": "Mining",
+          "first": 30,
+          "count": 73,
+          "duration": 2.46
+        }
+      ]
+    }
+  },
+  "progress_index": {
+    "built": true,
+    "global_check": "6 existing broken external report links; no errors in new documents",
+    "native_runtime_tests": "not run; user requested none"
+  }
+}

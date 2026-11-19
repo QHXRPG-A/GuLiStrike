@@ -1,0 +1,461 @@
+{
+  "success": true,
+  "blueprint": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/BP_QuadrupedMiner.BP_QuadrupedMiner_C",
+  "mesh": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Meshes/SM_QuadrupedMiner_VAT.SM_QuadrupedMiner_VAT",
+  "animation": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Animations/DA_QuadrupedMiner_VAT.DA_QuadrupedMiner_VAT",
+  "source_sha256": "9b2fd48e472117d6c2dfed25e437305137b1b1b2a1c9c2f5ca8c4e9cb3ca454c",
+  "reference_muzzle": [
+    197.5008087158203,
+    -5.826495275157049e-15,
+    170.2761688232422
+  ],
+  "muzzle_samples": 103,
+  "render_bounds": "(Min=(X=-281.528992,Y=-254.536682,Z=-0.000000),Max=(X=267.601990,Y=251.213196,Z=269.617554),IsValid=True)",
+  "mesh_bounds": "(Min=(X=-283.528992,Y=-256.536682,Z=-2.000000),Max=(X=269.601990,Y=253.213196,Z=271.617554),IsValid=True)",
+  "materials": {
+    "Body": {
+      "vertex_instructions": 524,
+      "pixel_instructions": 120,
+      "sampler_count": 6,
+      "scalar_parameters": [
+        "GuLi_MinerFrameA",
+        "GuLi_MinerPreviousFrameA",
+        "GuLi_MinerFrameB",
+        "GuLi_MinerPreviousFrameB",
+        "GuLi_MinerBlend",
+        "GuLi_MinerPreviousBlend"
+      ]
+    },
+    "Outline": {
+      "vertex_instructions": 524,
+      "pixel_instructions": 87,
+      "sampler_count": 6,
+      "scalar_parameters": [
+        "GuLi_MinerFrameA",
+        "GuLi_MinerPreviousFrameA",
+        "GuLi_MinerFrameB",
+        "GuLi_MinerPreviousFrameB",
+        "GuLi_MinerBlend",
+        "GuLi_MinerPreviousBlend"
+      ]
+    },
+    "Lamp": {
+      "vertex_instructions": 524,
+      "pixel_instructions": 136,
+      "sampler_count": 6,
+      "scalar_parameters": [
+        "GuLi_MinerFrameA",
+        "GuLi_MinerPreviousFrameA",
+        "GuLi_MinerFrameB",
+        "GuLi_MinerPreviousFrameB",
+        "GuLi_MinerBlend",
+        "GuLi_MinerPreviousBlend",
+        "GuLi_TeamEnabled",
+        "GuLi_TeamLightStrength"
+      ]
+    },
+    "Hit": {
+      "vertex_instructions": 654,
+      "pixel_instructions": 137,
+      "sampler_count": 7,
+      "scalar_parameters": [
+        "GuLi_HitTime",
+        "GuLi_MinerFrameA",
+        "GuLi_MinerPreviousFrameA",
+        "GuLi_MinerFrameB",
+        "GuLi_MinerPreviousFrameB",
+        "GuLi_MinerBlend",
+        "GuLi_MinerPreviousBlend"
+      ]
+    },
+    "Wreck": {
+      "vertex_instructions": 524,
+      "pixel_instructions": 122,
+      "sampler_count": 6,
+      "scalar_parameters": [
+        "GuLi_MinerFrameA",
+        "GuLi_MinerPreviousFrameA",
+        "GuLi_MinerFrameB",
+        "GuLi_MinerPreviousFrameB",
+        "GuLi_MinerBlend",
+        "GuLi_MinerPreviousBlend"
+      ]
+    }
+  },
+  "textures": [
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD0.T_Position_LOD0",
+      "size": [
+        2048,
+        309
+      ],
+      "compression": "<TextureCompressionSettings.TC_HDR: 6>"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD0.T_Normal_LOD0",
+      "size": [
+        2048,
+        1545
+      ],
+      "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD1.T_Position_LOD1",
+      "size": [
+        2048,
+        206
+      ],
+      "compression": "<TextureCompressionSettings.TC_HDR: 6>"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD1.T_Normal_LOD1",
+      "size": [
+        2048,
+        721
+      ],
+      "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Position_LOD2.T_Position_LOD2",
+      "size": [
+        2048,
+        206
+      ],
+      "compression": "<TextureCompressionSettings.TC_HDR: 6>"
+    },
+    {
+      "path": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Textures/T_Normal_LOD2.T_Normal_LOD2",
+      "size": [
+        2048,
+        412
+      ],
+      "compression": "<TextureCompressionSettings.TC_VECTOR_DISPLACEMENTMAP: 5>"
+    }
+  ],
+  "tables": {
+    "Models_Models": [
+      {
+        "Name": "ElectromagneticMiner",
+        "Id": 1003,
+        "Note": "用户放行 v5 正式替换；9854 面；增强行进与采矿；四足外侧阵营灯",
+        "DisplayName": "电磁矿车",
+        "ResourceType": "PresentationClass",
+        "ResourcePath": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/BP_QuadrupedMiner.BP_QuadrupedMiner_C",
+        "VATDefinition": "None",
+        "bTeamColorEnabled": true,
+        "BluePrimaryHex": "#6AA4BE",
+        "BlueSecondaryHex": "#274E61",
+        "EnemyPrimaryHex": "#A34053",
+        "EnemySecondaryHex": "#662249",
+        "CandidateResourcePath": "None",
+        "CandidateVATDefinition": "None",
+        "Description": "四足电磁矿车；专用位置/法线 VAT 数据由表现蓝图持有；固定中立外壳，四足灯按本地敌我关系改色。"
+      },
+      {
+        "Name": "QuadrupedMinerBody",
+        "Id": 8017,
+        "Note": "v5 三档 VAT 网格，作为 1003 的 BodyVAT 装配部件",
+        "DisplayName": "四足采矿车网格",
+        "ResourceType": "StaticMesh",
+        "ResourcePath": "/Game/GuLiStrike/Commander/Units/ElectromagneticMiner/QuadrupedMiner_10k_v5/Meshes/SM_QuadrupedMiner_VAT.SM_QuadrupedMiner_VAT",
+        "VATDefinition": "None",
+        "bTeamColorEnabled": false,
+        "BluePrimaryHex": "#6AA4BE",
+        "BlueSecondaryHex": "#274E61",
+        "EnemyPrimaryHex": "#A34053",
+        "EnemySecondaryHex": "#662249",
+        "CandidateResourcePath": "None",
+        "CandidateVATDefinition": "None",
+        "Description": "完整四足网格及反向描边；9854/4614/2676 三角面；不独立生成玩法单位。"
+      }
+    ],
+    "Models_Parts": [
+      {
+        "Name": "Parts_5",
+        "Id": 5,
+        "Note": "v5 完整网格，替换旧双采集器装配",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "ComponentPath": "BodyVAT",
+        "ChildModelId": 8017
+      }
+    ],
+    "Models_MaterialParameters": [
+      {
+        "Name": "QuadrupedMiner_TeamPrimary",
+        "Id": 2865,
+        "Note": "四足灯芯队色；固定外壳不参与改色",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "MaterialSlotName": "*",
+        "ParameterKey": "TeamPrimary",
+        "ParameterName": "GuLi_TeamPrimary",
+        "ParameterType": "Vector",
+        "Driver": "CPD",
+        "CustomDataIndex": 8,
+        "Scope": "Existing",
+        "bRuntimeWritable": false,
+        "bTeamManaged": true,
+        "DefaultScalar": 0,
+        "DefaultR": 0.144128,
+        "DefaultG": 0.371238,
+        "DefaultB": 0.514918,
+        "DefaultA": 1
+      },
+      {
+        "Name": "QuadrupedMiner_TeamSecondary",
+        "Id": 2866,
+        "Note": "四足灯芯队色；固定外壳不参与改色",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "MaterialSlotName": "*",
+        "ParameterKey": "TeamSecondary",
+        "ParameterName": "GuLi_TeamSecondary",
+        "ParameterType": "Vector",
+        "Driver": "CPD",
+        "CustomDataIndex": 12,
+        "Scope": "Existing",
+        "bRuntimeWritable": false,
+        "bTeamManaged": true,
+        "DefaultScalar": 0,
+        "DefaultR": 0.0202886,
+        "DefaultG": 0.0761854,
+        "DefaultB": 0.119538,
+        "DefaultA": 1
+      },
+      {
+        "Name": "QuadrupedMiner_TeamEnabled",
+        "Id": 2867,
+        "Note": "四足灯芯队色；固定外壳不参与改色",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "MaterialSlotName": "*",
+        "ParameterKey": "TeamEnabled",
+        "ParameterName": "GuLi_TeamEnabled",
+        "ParameterType": "Scalar",
+        "Driver": "CPD",
+        "CustomDataIndex": 16,
+        "Scope": "Existing",
+        "bRuntimeWritable": false,
+        "bTeamManaged": true,
+        "DefaultScalar": 0,
+        "DefaultR": 0,
+        "DefaultG": 0,
+        "DefaultB": 0,
+        "DefaultA": 1
+      },
+      {
+        "Name": "QuadrupedMiner_TeamLightStrength",
+        "Id": 2868,
+        "Note": "四足灯芯队色；固定外壳不参与改色",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "MaterialSlotName": "*",
+        "ParameterKey": "TeamLightStrength",
+        "ParameterName": "GuLi_TeamLightStrength",
+        "ParameterType": "Scalar",
+        "Driver": "CPD",
+        "CustomDataIndex": 17,
+        "Scope": "Existing",
+        "bRuntimeWritable": false,
+        "bTeamManaged": true,
+        "DefaultScalar": 1.8,
+        "DefaultR": 0,
+        "DefaultG": 0,
+        "DefaultB": 0,
+        "DefaultA": 1
+      }
+    ],
+    "Models_ColorRegions": [
+      {
+        "Name": "QuadrupedMiner_TeamLamp_FL",
+        "Id": 9405,
+        "Note": "三档 LOD 保留，灯罩为固定色",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "RegionKey": "TeamLamp_FL",
+        "DisplayName": "FL 外侧阵营灯",
+        "PaintRole": 7,
+        "MaskSource": "VertexColorAlpha",
+        "MaskId": 7,
+        "Scope": "Existing"
+      },
+      {
+        "Name": "QuadrupedMiner_TeamLamp_FR",
+        "Id": 9406,
+        "Note": "三档 LOD 保留，灯罩为固定色",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "RegionKey": "TeamLamp_FR",
+        "DisplayName": "FR 外侧阵营灯",
+        "PaintRole": 7,
+        "MaskSource": "VertexColorAlpha",
+        "MaskId": 7,
+        "Scope": "Existing"
+      },
+      {
+        "Name": "QuadrupedMiner_TeamLamp_RL",
+        "Id": 9407,
+        "Note": "三档 LOD 保留，灯罩为固定色",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "RegionKey": "TeamLamp_RL",
+        "DisplayName": "RL 外侧阵营灯",
+        "PaintRole": 7,
+        "MaskSource": "VertexColorAlpha",
+        "MaskId": 7,
+        "Scope": "Existing"
+      },
+      {
+        "Name": "QuadrupedMiner_TeamLamp_RR",
+        "Id": 9408,
+        "Note": "三档 LOD 保留，灯罩为固定色",
+        "ModelId": 1003,
+        "PartKey": "Root",
+        "RegionKey": "TeamLamp_RR",
+        "DisplayName": "RR 外侧阵营灯",
+        "PaintRole": 7,
+        "MaskSource": "VertexColorAlpha",
+        "MaskId": 7,
+        "Scope": "Existing"
+      }
+    ],
+    "Commander_Soldiers": [
+      {
+        "Name": "ElectromagneticMiner",
+        "Id": 3,
+        "Note": "v5 四足矿车；表现尺寸为初次接入的2.5倍；保留3.6米业务基准、900cm/s及网格缩放；按缩放后的实际步距驱动步频",
+        "MovementSpeedCmPerSecond": 900,
+        "MaxHealth": 1000,
+        "Defense": 0,
+        "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+        "PresentationScale": 1.86566,
+        "DisplayName": "电磁矿车",
+        "ModelWidthMeters": 3.6,
+        "StateTreeAsset": "/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner",
+        "bSummonOnly": false,
+        "bConstructionOnly": false,
+        "FacingPolicy": 0,
+        "ModelId": 1003,
+        "MovementLayer": 0,
+        "AltitudeMeters": 0
+      }
+    ]
+  },
+  "gameplay_started": false,
+  "geometry": {
+    "success": true,
+    "lods": [
+      {
+        "lod": 0,
+        "attributes": {
+          "vertex/Position ": "B2D8D95C66290EB6476113F1D46604050CEBE7FB",
+          "corner/VertexIndex": "ADB79767E1127C6E6E8B518BBB2C74D490992867",
+          "corner/TextureCoordinate": "2770DD96BDFD059DBF6642B71264E25318B7DF6B",
+          "corner/Normal": "BC950945243572FC319AFE83248EA1BF6BA50303",
+          "corner/Tangent": "29B6933899C61A4D7DE8346DD77B7482663AC123",
+          "corner/BinormalSign": "018D9925544E6BFD4D46FA73C26F8A0097346A2C",
+          "edge/VertexIndex": "EA44F3A4E1AF832978B04D76F626B9E403C3ECC0",
+          "edge/IsHard": "8D3FC7356C7AE0B0DDF25A75EC6169AB8BD474A5",
+          "triangle/VertexInstanceIndex": "DAA85531D5DAF5156127AAC1C6390EA9AF0C81CB",
+          "triangle/PolygonIndex": "A6841FAEA49ABA861198B5E57589C96721BE5317",
+          "triangle/PolygonGroupIndex": "7B4E413B6D50C4F0350910B2CD16B87A18692A2F",
+          "triangle/UVIndex": "9069CA78E7450A285173431B3E52C5C25299E473",
+          "triangle/EdgeIndex": "6B20260856A64597C23AE7414A27FA0D019BC86D",
+          "triangle/VertexIndex": "7661FCFC694E3502D110DC36E0803D56223A7EAF",
+          "polygon/PolygonGroupIndex": "7B4E413B6D50C4F0350910B2CD16B87A18692A2F",
+          "slot/ImportedMaterialSlotName": "8C07441BA45E960B80EEED4C8C10B18E44DCEEE2"
+        },
+        "vertices": 5660,
+        "triangles": 9854,
+        "triangle_attributes_sha1": "967A3A83B53FD17901165B78B7AB5C1A331D3A6E"
+      },
+      {
+        "lod": 1,
+        "attributes": {
+          "vertex/Position ": "DF0A9674EC2655B29C402D321955A7A4149D0D15",
+          "corner/VertexIndex": "7EB6FBCB08876962324838BD8FFC7A70337E0D87",
+          "corner/TextureCoordinate": "532B729658796C2B12A0AE07052EC5FE8DAF0DD9",
+          "corner/Normal": "232F7F07677CC295578BD6E2201DB3BF182CC95B",
+          "corner/Tangent": "338692EA1C24E144BB9CE864C2DD269CB39ED014",
+          "corner/BinormalSign": "24B3037A204D80E868EF5E6C764F78982BDC084B",
+          "edge/VertexIndex": "85CC2ABF7081B13437363DBEFBE815DEEA04F910",
+          "edge/IsHard": "BFFDDCD9350F9CF4AAF072EA848661CD0484F8EF",
+          "triangle/VertexInstanceIndex": "1752F75FB9A57A53FD2A806DCDE4AF90B1E01A46",
+          "triangle/PolygonIndex": "81B1247EF3378F5FE1DDBE082418277F0656D340",
+          "triangle/PolygonGroupIndex": "72FEF6E16CD2A74F713FDD0B48FFBB7C27E3B764",
+          "triangle/UVIndex": "9069CA78E7450A285173431B3E52C5C25299E473",
+          "triangle/EdgeIndex": "9AEC2522C7398D1C3F852B53451617EDB3E0CF88",
+          "triangle/VertexIndex": "43B033CF6A2D8D2EAAB85CC6C7629FCE3B9DC9A4",
+          "polygon/PolygonGroupIndex": "72FEF6E16CD2A74F713FDD0B48FFBB7C27E3B764",
+          "slot/ImportedMaterialSlotName": "8C07441BA45E960B80EEED4C8C10B18E44DCEEE2"
+        },
+        "vertices": 3027,
+        "triangles": 4614,
+        "triangle_attributes_sha1": "AAF2F83DBFF0CB8C4D1641088C712CA063FF8328"
+      },
+      {
+        "lod": 2,
+        "attributes": {
+          "vertex/Position ": "EFD1403B729A9A39A5F8BEAAE05AAA1FF8DAE136",
+          "corner/VertexIndex": "CD2D474E5E545944A73BB02F79B717D5996B32C8",
+          "corner/TextureCoordinate": "5577C4F07EA296391DC65F9C357197486EBA951F",
+          "corner/Normal": "79D5AAFF7AA066D4AF729BC49BA993F8C68F56E2",
+          "corner/Tangent": "AC365F6EE0A8DE53958830AD993992D35A907AB1",
+          "corner/BinormalSign": "5570E8BACF093EBE221BCB64A3E53D0DE141E31B",
+          "edge/VertexIndex": "9C27742936B87A1F52925A26AC1363AFF82621C6",
+          "edge/IsHard": "CA95603F13AAC07A7434DED80D67438D23644C19",
+          "triangle/VertexInstanceIndex": "04F5C39DA228740D8EE6496A16F1C7F4A5D82D0D",
+          "triangle/PolygonIndex": "1E0CE8A5C255C85E2DC34B4715EECCCB835E576C",
+          "triangle/PolygonGroupIndex": "49D4C81E052D8FC9D36FF31E3A82BB6776D0E4A4",
+          "triangle/UVIndex": "9069CA78E7450A285173431B3E52C5C25299E473",
+          "triangle/EdgeIndex": "71B892019D1600C921B07B0C89DA7FE92872E7FB",
+          "triangle/VertexIndex": "BC5598BCBC52C12723BD87F250CC575AFC460EDF",
+          "polygon/PolygonGroupIndex": "49D4C81E052D8FC9D36FF31E3A82BB6776D0E4A4",
+          "slot/ImportedMaterialSlotName": "8C07441BA45E960B80EEED4C8C10B18E44DCEEE2"
+        },
+        "vertices": 2055,
+        "triangles": 2676,
+        "triangle_attributes_sha1": "230B667EAB2D0F9F60A4ED8D251324F298F016D5"
+      }
+    ],
+    "render_lods": [
+      {
+        "lod": 0,
+        "vertices": 29562,
+        "geometry_uv_normal_index_sha1": "2D578F87C4BBD58856366771F982E5A1C613D518",
+        "triangles": 9854,
+        "triangle_surface_sha1": "046CB255F731956F0CAC2D53C80C1CB6BCFB95E4",
+        "triangle_geometry_uv_skin_sha1": "B49FCA54B45AAB64EE6517D33575E502A2AF20C2"
+      },
+      {
+        "lod": 1,
+        "vertices": 13842,
+        "geometry_uv_normal_index_sha1": "D1AB3C0DBB45826948B3FCA050FA198F7F4505B4",
+        "triangles": 4614,
+        "triangle_surface_sha1": "1B317443F846AF7816A2978DEF93FA11C2752E1D",
+        "triangle_geometry_uv_skin_sha1": "DDA4D3B11F85849E28DA0DDAA004B7B7DE00BD23"
+      },
+      {
+        "lod": 2,
+        "vertices": 8028,
+        "geometry_uv_normal_index_sha1": "9CD935BA457C591E7C360BEB1C69D28F07092D54",
+        "triangles": 2676,
+        "triangle_surface_sha1": "2CCD09C76845C12C09B23F223FA2AFA0A2720BAC",
+        "triangle_geometry_uv_skin_sha1": "B4E585F4560F7D1ACE740D805D5F01DFF70343E6"
+      }
+    ]
+  },
+  "cpd": {
+    "GuLi_TeamEnabled": 16,
+    "GuLi_TeamLightStrength": 17,
+    "GuLi_MinerFrameA": 19,
+    "GuLi_MinerFrameB": 20,
+    "GuLi_MinerBlend": 21,
+    "GuLi_MinerPreviousFrameA": 22,
+    "GuLi_MinerPreviousFrameB": 23,
+    "GuLi_MinerPreviousBlend": 24,
+    "GuLi_TeamPrimary": 8,
+    "GuLi_TeamSecondary": 12
+  }
+}

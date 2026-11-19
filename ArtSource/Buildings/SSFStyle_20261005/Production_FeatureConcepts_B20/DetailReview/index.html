@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SSF 建筑 · A5 与 B20 分件对照</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, "Microsoft YaHei UI", sans-serif; color: #202a33; background: #eef1f3; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1460px; margin: auto; padding: 28px 24px 36px; }
+    header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px; }
+    h1 { margin: 0; font-size: clamp(22px, 3vw, 30px); }
+    a { color: #274e61; text-underline-offset: 3px; }
+    nav { display: flex; flex-wrap: wrap; gap: 10px 16px; }
+    .controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 20px; margin: 18px 0 12px; }
+    label { display: flex; flex-direction: column; gap: 5px; color: #435361; font-size: 13px; }
+    select, button { min-height: 36px; padding: 5px 10px; border: 1px solid #bac6ce; border-radius: 5px; background: #fff; color: #202a33; font: inherit; }
+    select { max-width: 100%; }
+    button { cursor: pointer; }
+    button:disabled { opacity: .45; cursor: default; }
+    .step { display: flex; gap: 6px; }
+    .toggle { flex-direction: row; align-items: center; min-height: 36px; }
+    .notes { min-height: 22px; margin: 8px 0 10px; color: #405564; font-size: 13px; }
+    .notes p { margin: 3px 0; }
+    .difference { border-left: 3px solid #ae7748; padding: 3px 9px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+    figure { margin: 0; border: 1px solid #cbd4db; border-radius: 7px; overflow: hidden; background: #fdfefe; }
+    figcaption { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 12px; font-size: 14px; }
+    figcaption a { font-size: 12px; }
+    .blue { box-shadow: inset 4px 0 #6aa4be; }
+    .red { box-shadow: inset 4px 0 #a34053; }
+    canvas { display: block; width: 100%; aspect-ratio: 8 / 5; background: #dce2e6; }
+    .status { margin: 0; color: #526371; font-size: 13px; }
+    @media (max-width: 620px) { main { padding: 17px 12px 24px; } .grid { gap: 7px; } figcaption { padding: 6px; font-size: 12px; } figcaption a { display: none; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>A5 与 B20 分件对照</h1>
+    <nav aria-label="相关文件"><a href="../SSF_A5_HardwareDetails_B20.blend">Blender 工程</a><a href="../ReviewBoards/index.html">四视角图板</a><a href="../Previews/SSF_Overview_B20.png">战术总览</a></nav>
+  </header>
+  <div class="controls">
+    <label>建筑 <select id="building"></select></label>
+    <label>分件 <select id="feature"></select></label>
+    <div class="step"><button id="previous" type="button">上一处</button><button id="next" type="button">下一处</button></div>
+    <label>视图 <select id="mode"><option value="close">局部</option><option value="zoom">局部放大</option><option value="full">整栋</option></select></label>
+    <label class="toggle"><input id="guides" type="checkbox"> 显示定位线</label>
+  </div>
+  <div id="notes" class="notes" aria-live="polite"></div>
+  <div class="grid">
+    <figure><figcaption class="blue"><b>A5 蓝方原图</b><a id="sourceBlueLink">原尺寸</a></figcaption><canvas id="sourceBlue" role="img" aria-label="A5 蓝方参考局部"></canvas></figure>
+    <figure><figcaption class="red"><b>A5 红方原图</b><a id="sourceRedLink">原尺寸</a></figcaption><canvas id="sourceRed" role="img" aria-label="A5 红方参考局部"></canvas></figure>
+    <figure><figcaption class="blue"><b>B20 蓝方模型</b><a id="modelBlueLink">原尺寸</a></figcaption><canvas id="modelBlue" role="img" aria-label="B20 蓝方模型局部"></canvas></figure>
+    <figure><figcaption class="red"><b>B20 红方模型</b><a id="modelRedLink">原尺寸</a></figcaption><canvas id="modelRed" role="img" aria-label="B20 红方模型局部"></canvas></figure>
+  </div>
+  <p id="status" class="status" role="status"></p>
+</main>
+<script src="review-data.js"></script>
+<script src="review.js"></script>
+</body>
+</html>

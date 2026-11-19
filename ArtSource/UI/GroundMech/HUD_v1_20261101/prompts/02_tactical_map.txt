@@ -1,0 +1,23 @@
+Use case: precise UI recomposition / game interface concept.
+Asset type: GuLiStrike Ground Mech tactical world-map screen, second screen of the same v1 UI family.
+Primary request: Transform the first input battle-HUD concept into its opened FULL MAP interface. ONE edge-to-edge 16:9 landscape image, ideally 3840x2160, with 1920x1080 design proportions. Maintain a very strong visual family resemblance to input 1: same chamfered dark-teal panels, angular perimeter arcs, restrained cyan light edges, typography, stroke weights, keycap treatment, and orange focus color.
+
+Input images:
+1. Generated Ground Mech battle HUD v1: exact visual-system reference. Preserve the outer framing and typography language, then replace the internal screen composition with a tactical map. Remove the large third-person character, crosshairs, action bar, health and jet displays from this opened-map state.
+2. HUDuiPRO Topo 3 original: reference for clean continuous/dashed topographic contour-line vocabulary. This is a fictional local valley map, NOT planet Earth or a world atlas.
+
+Composition:
+- Slim upper header: small "GULISTRIKE" upper left, large exact Chinese title "战术地图" at the top centre with small "GROUND / 4001" beneath. Small "[M] 地图" upper right.
+- Main map occupies about 72 percent of the usable screen width, left and centre, inside one large clipped-corner pane. Show a strictly VERTICAL ORTHOGRAPHIC TOP-DOWN PLAN, flat 2D, north-up, no perspective tilt, no extruded 3D slab. This is intentionally different from the tilted small minimap.
+- Portray the same broad fictional industrial mountain valley as input 1 from above: branching roads between industrial platforms, steep rocky ridges on east and west, a central open platform, a northern industrial base, a narrow western canyon. Use quiet deep-teal polygon fills, contour lines with consistent intervals and limited lighter blue height bands; clearly distinguish roads from contours. Schematic, legible cartography rather than a satellite photograph.
+- Large discreet "N" north arrow near the map top. Fine coordinate grid with sparse A-F / 1-4 marginal ticks, no wall of tiny text.
+- Place a bright pale-blue player arrow in the lower-middle region, pointing north-east, with a subtle translucent view cone. Add five small friendly blue circular markers, three hostile muted-red triangular markers, and two hollow objective diamonds. A selected central objective is warm-orange with a thin focus outline and a simple short locator leader.
+- Labels on the map exactly: "北侧基地", "中央平台", "西侧峡谷", "东侧高地". Keep these clear and sparse.
+- Right-side information column, about 24 percent of usable width: header "地点信息"; prominent selected name "中央平台"; a clean little schematic outpost glyph; rows "据点 03", "距离 420 m", "状态 争夺中". A compact orange-accent selection line and a subtle "已选位置" badge. Lower down, include a legend headed "图例" with four distinct symbols and labels "自身", "友方", "敌方", "据点".
+- Bottom command strip: clear buttons / key hints exactly "滚轮  缩放", "定位自身", "[M] 地图", "[Esc] 关闭". A small clean scale bar "0    250    500 m" at the bottom-left of the map pane.
+- Small quiet bottom-edge caption "UI CONCEPT · V1".
+
+Color palette: #021716 and #032E30 panel fills; #0D9099 and #6AA4BE strokes and contours; #FEE4D9 main text; #EE9D58 selected objective/accent; #A34053 hostile markers. Use dark-to-mid contrast for the map and stronger contrast for symbols and labels. No excessive fluorescent bloom.
+
+Typography: sharp legible Simplified Chinese UI text, exact short quoted labels, matching input 1, clean technical numerals. No pseudo-code, made-up microtext, artwork annotations, or extra explanatory prose.
+Constraints: a usable 2D tactical-map UI screen in the same cockpit-inspired design system as the first image, no monitor mockup, no split layout, no pause label, no photorealistic grime, no first-person cockpit interior, no game screenshot authenticity claim. All geography and numerical values are conceptual examples.

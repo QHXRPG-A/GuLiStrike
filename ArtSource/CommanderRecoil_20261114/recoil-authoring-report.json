@@ -1,0 +1,296 @@
+{
+  "WarMachine": {
+    "unit": "WarMachine",
+    "source_mesh": "/Game/GuLiStrike/Commander/Units/WM01/LOD_3Tier_v1/Meshes/SM_WarMachine_Rigid",
+    "source_sha256": "7b8ddc4233ae9383c404b7baa772db17c8472885ea40fb81ecc227975555f9fc",
+    "frames_per_side": 33,
+    "cycle_seconds": 0.5,
+    "upper_pivot": [
+      -387.3536682128906,
+      0.0,
+      1920.1622314453125
+    ],
+    "gun_pivots": [
+      [
+        -954.2127685546875,
+        -1228.19482421875,
+        2335.85888671875
+      ],
+      [
+        -954.2127685546875,
+        1228.19482421875,
+        2335.85888671875
+      ]
+    ],
+    "reference_muzzles": [
+      [
+        1769.8602676391602,
+        -1461.23685836792,
+        2335.858785900774
+      ],
+      [
+        1769.8602676391602,
+        1468.76314163208,
+        2335.858785900774
+      ]
+    ],
+    "upper_parts": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11
+    ],
+    "left_parts": [
+      2,
+      4
+    ],
+    "right_parts": [
+      3,
+      5
+    ],
+    "render_bounds": {
+      "min": [
+        -2759.675537109375,
+        -2907.688720703125,
+        -62.43073272705078
+      ],
+      "max": [
+        2472.547607421875,
+        2907.68994140625,
+        4197.529296875
+      ]
+    },
+    "lods": [
+      {
+        "lod": 0,
+        "vertices": 21315,
+        "triangles": 38843,
+        "parts": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "mixed_triangles": 0
+      },
+      {
+        "lod": 1,
+        "vertices": 5905,
+        "triangles": 9687,
+        "parts": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "mixed_triangles": 0
+      },
+      {
+        "lod": 2,
+        "vertices": 560,
+        "triangles": 776,
+        "parts": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "mixed_triangles": 0
+      }
+    ],
+    "texture_readback": {
+      "position": {
+        "width": 3,
+        "height": 66,
+        "max_readback_error": 0.0,
+        "file_rows": "UE top-down frame order"
+      },
+      "rotation": {
+        "width": 1,
+        "height": 66,
+        "max_readback_error": 0.0,
+        "file_rows": "UE top-down frame order"
+      }
+    },
+    "peak_gun_translation_cm": [
+      683.5057639804738,
+      683.6687171393188
+    ],
+    "peak_upper_translation_cm": 179.373837890625,
+    "maximum_rigid_orthogonality_error": 1.1920928955078125e-07,
+    "gun_pivot_y_corrected": true,
+    "visual_review": "Pending user B; no assistant image inspection",
+    "blend": "D:\\UE5.7\\test1\\ArtSource\\CommanderRecoil_20261114\\WarMachine\\WarMachine_Recoil_v1.blend"
+  },
+  "Pioneer": {
+    "unit": "Pioneer",
+    "source_mesh": "/Game/GuLiStrike/Commander/Units/DefaultSoldier/LOD_3Tier_v1/Meshes/SM_Pioneer_VAT",
+    "source_sha256": "99d3f906233aca66047fb4e76f1d97cc202d16a225df7ccf16e9ed29425a7324",
+    "frames_per_side": 33,
+    "cycle_seconds": 1.0,
+    "upper_pivot": [
+      28.98333740234375,
+      1.8061685977954767e-06,
+      189.48114013671875
+    ],
+    "gun_pivots": [
+      [
+        109.08460235595703,
+        -118.6705551147461,
+        233.9600830078125
+      ],
+      [
+        109.08458709716797,
+        118.67057037353516,
+        233.9600830078125
+      ]
+    ],
+    "reference_muzzles": [
+      [
+        279.1171875,
+        -143.30313110351562,
+        241.1873321533203
+      ],
+      [
+        279.1171875,
+        143.3031463623047,
+        241.1873321533203
+      ]
+    ],
+    "upper_parts": [
+      1,
+      2,
+      3
+    ],
+    "left_parts": [
+      2
+    ],
+    "right_parts": [
+      3
+    ],
+    "render_bounds": {
+      "min": [
+        -280.34015786119414,
+        -324.2142639160156,
+        -10.000029704855478
+      ],
+      "max": [
+        290.2745056152344,
+        324.2142639160156,
+        463.4937744140625
+      ]
+    },
+    "lods": [
+      {
+        "lod": 0,
+        "vertices": 20290,
+        "triangles": 37338,
+        "parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mixed_triangles": 0
+      },
+      {
+        "lod": 1,
+        "vertices": 9301,
+        "triangles": 15905,
+        "parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mixed_triangles": 0
+      },
+      {
+        "lod": 2,
+        "vertices": 1407,
+        "triangles": 1943,
+        "parts": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "mixed_triangles": 0
+      }
+    ],
+    "texture_readback": {
+      "position": {
+        "width": 3,
+        "height": 66,
+        "max_readback_error": 0.0,
+        "file_rows": "UE top-down frame order"
+      },
+      "rotation": {
+        "width": 1,
+        "height": 66,
+        "max_readback_error": 0.0,
+        "file_rows": "UE top-down frame order"
+      }
+    },
+    "peak_gun_translation_cm": [
+      42.98988177220019,
+      42.98988177220019
+    ],
+    "peak_upper_translation_cm": 26.390250549316406,
+    "maximum_rigid_orthogonality_error": 1.1920928955078125e-07,
+    "gun_pivot_y_corrected": false,
+    "visual_review": "Pending user B; no assistant image inspection",
+    "blend": "D:\\UE5.7\\test1\\ArtSource\\CommanderRecoil_20261114\\Pioneer\\Pioneer_Recoil_v1.blend"
+  }
+}

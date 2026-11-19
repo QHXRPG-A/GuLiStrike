@@ -1,0 +1,42 @@
+{
+  "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards",
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "model": 4001,
+  "mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+  "card_rows_verified": 13,
+  "ground_card_ids": [
+    "06.01",
+    "07.01",
+    "08.01",
+    "09.01",
+    "10.01",
+    "11.01",
+    "12.01",
+    "13.01"
+  ],
+  "max_rank_vfx_ids": [
+    "13.01"
+  ],
+  "card_fields": {
+    "UpgradeVfxScale": 2.5,
+    "UpgradeVfxHeightMultiplier": 2,
+    "UpgradeVfxPlaybackRate": 2,
+    "MaxAcquisitions": 5,
+    "MaxRankUpgradeScale": 0.46075,
+    "MaxRankStartRatio": 0.1,
+    "MaxRankGrowthSeconds": 0.2,
+    "MaxRankDurationSeconds": 1.5
+  },
+  "emitters": {
+    "UpgradeVfx": {
+      "asset": "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow_Converted.P_UpgradeGlow_Converted",
+      "local_space_emitters": 16
+    },
+    "MaxRankUpgradeVfx": {
+      "asset": "/Game/Assets/ExternalPacks/NiagaraBigVFX/Effects/Niagara/Tornado/NS_Tornado_under.NS_Tornado_under",
+      "local_space_emitters": 7
+    }
+  },
+  "reloaded_from_disk": true,
+  "was_pie_started": false
+}

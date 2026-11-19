@@ -1,0 +1,146 @@
+[
+  {
+    "layer": 1,
+    "name": "近景",
+    "slug": "01_Foreground",
+    "prompt": "Edit ONLY the supplied full square image. The neutral grey background is an editing guide and occupies the entire 1536x1536 canvas. Do not crop the grey space, center the artwork, zoom, scale, relocate or reframe the coloured elements. Their existing absolute positions and apparent sizes are fixed. The source illustration is the central 1024x1024 rectangle [256,256,1280,1280]. Complete missing surfaces at these fixed positions, and extend objects through the 256-pixel outer gutter where they continue. Output the same full square framing, with all grey guide pixels removed to genuine transparency. Match the existing clean cel-shaded anime artwork, three flat lighting levels, black outlines and matte colour blocks. No text, labels, frame, checkerboard pattern or new subject. Preserve the whole input canvas even where most of it is intentionally empty.\nComplete ONLY the closest foreground: left bottom rocks and green foliage, the massive right lower moss-covered wall, braking earth, free stones and beige dust. Remove all leftover white speed streaks, orange exhaust-flame scraps and mechanical armour fragments. Make rock, masonry and dust masses continuous coherent shapes without segmentation holes. Extend the closest wall beyond the right and bottom old crop boundaries and the closest rock/foliage beyond the left/bottom boundaries, filling the new outer gutter wherever those objects continue, at the original unchanged scale. Keep all central visible intended surfaces anchored. No player mech, enemies, sky, distant meadow or buildings. Use opaque solid surfaces and natural softly transparent dust edges.",
+    "prompt_file": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Prompts\\CompletionR3_01_Foreground.txt",
+    "prompt_sha256": "ada65a40df16998dcf824522893eb0176b42710be3024f75b60562e876dee57d",
+    "referenced_image_paths": [
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Inputs\\CompletionR3\\01_Foreground_FixedCanvas_Edit.png"
+    ],
+    "transparent_background": true,
+    "requested_canvas": [
+      1536,
+      1536
+    ],
+    "source_window": [
+      256,
+      256,
+      1280,
+      1280
+    ],
+    "raw_output": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_01_Foreground_Raw.png",
+    "revision_note": "Opaque fixed-canvas input prevents alpha bounding-box auto-framing; one edit target only"
+  },
+  {
+    "layer": 2,
+    "name": "速度线",
+    "slug": "02_SpeedLines",
+    "prompt": "Use case: precise-object-edit / layer completion for a parallax card.\nImage 1 is the actual edit target: an incomplete isolated layer on a 1536x1536 canvas. The original 1024x1024 image occupies exactly the central rectangle [256,256,1280,1280]; the 256-pixel surrounding gutter is intentional new working space. Preserve that full canvas and coordinate system. Never crop to the object, auto-fit its bounds, center it, change the camera, scale it, or straighten the tilted horizon.\nImage 2 is the original complete illustration, supplied only to identify the original design, placement, hidden connections, colours and clean anime three-tone cel shading. Do NOT put the entire second image into the output.\nComplete ONLY the specified isolated layer into a coherent usable painted asset. Repair cutout nicks and tiny missing colour islands, remove traces of objects belonging to other layers, reconstruct the parts hidden by other objects, and continue any object that crosses the old central rectangle into the new gutter. Keep all originally visible intended structure, pose, contours, colours, outlines and locations as closely as possible. Existing coloured fragments are coordinate anchors, not pieces to rearrange. Do not leave transparent cracks inside solid surfaces, torn rectangular crop edges or detached pieces caused by segmentation.\nMatch the original clean black mechanical outlines, matte large colour blocks, three hard-edged light levels, bright daylight and low-noise anime rendering. No photoreal texture, grain, scratches, new story elements, text, watermarks, labels, UI, card frame or checkerboard texture.\n\nTHIS OUTPUT LAYER: 2 / 速度线\nComplete only the original white/light-grey comic speed streaks as clean continuous tapered strokes. Use the original complete image to recover portions missing from this cutout. Keep each original direction, width, start and end, density and perspective; join broken portions instead of adding unrelated rays. Extend cropped streaks naturally into the new gutter without relocating their central visible portions.\nNo dust, rocks, armour, grass, buildings, sky, orange flames, golden ricochet lines or missile smoke. Genuinely transparent RGBA around the white/light-grey strokes, with clean anti-aliased stroke edges.",
+    "prompt_file": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Prompts\\CompletionR3_02_SpeedLines.txt",
+    "prompt_sha256": "ef4b59adf8b392e351ded1c67251135ee174dc5fea1dc40a4420adfdd75965bc",
+    "referenced_image_paths": [
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Inputs\\CompletionR3\\02_SpeedLines_Edit.png",
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Master.png"
+    ],
+    "transparent_background": true,
+    "requested_canvas": [
+      1536,
+      1536
+    ],
+    "source_window": [
+      256,
+      256,
+      1280,
+      1280
+    ],
+    "raw_output": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_02_SpeedLines_Raw.png"
+  },
+  {
+    "layer": 3,
+    "name": "机甲",
+    "slug": "03_PlayerMech",
+    "prompt": "Use case: precise-object-edit / layer completion for a parallax card.\nImage 1 is the actual edit target: an incomplete isolated layer on a 1536x1536 canvas. The original 1024x1024 image occupies exactly the central rectangle [256,256,1280,1280]; the 256-pixel surrounding gutter is intentional new working space. Preserve that full canvas and coordinate system. Never crop to the object, auto-fit its bounds, center it, change the camera, scale it, or straighten the tilted horizon.\nImage 2 is the original complete illustration, supplied only to identify the original design, placement, hidden connections, colours and clean anime three-tone cel shading. Do NOT put the entire second image into the output.\nComplete ONLY the specified isolated layer into a coherent usable painted asset. Repair cutout nicks and tiny missing colour islands, remove traces of objects belonging to other layers, reconstruct the parts hidden by other objects, and continue any object that crosses the old central rectangle into the new gutter. Keep all originally visible intended structure, pose, contours, colours, outlines and locations as closely as possible. Existing coloured fragments are coordinate anchors, not pieces to rearrange. Do not leave transparent cracks inside solid surfaces, torn rectangular crop edges or detached pieces caused by segmentation.\nMatch the original clean black mechanical outlines, matte large colour blocks, three hard-edged light levels, bright daylight and low-noise anime rendering. No photoreal texture, grain, scratches, new story elements, text, watermarks, labels, UI, card frame or checkerboard texture.\n\nTHIS OUTPUT LAYER: 3 / 机甲\nComplete the one blue-and-ivory bipedal player ground mech, its two attached orange-yellow exhaust flames and the attached muzzle flash. Reconstruct missing armour surfaces, black mechanical joints, leg/foot pieces and structural connections obscured by dust or speed streaks. Preserve the exact original over-shoulder pose, left-foreground scale, firing direction, two rear nozzles, gun geometry and braking stance. Complete hidden parts by continuing the same existing mechanical design; do not invent extra limbs, barrels, antennas or faces. Close small transparent holes and disconnected seams inside the mech. Keep the two flame roots attached directly to their original outlets.\nIf a mech part or flame crosses the old original canvas edge, extend it naturally into the new gutter. No recentering or zooming out. Do NOT include dirt, dust clouds, loose rocks, white speed streaks, golden ricochet trail, enemies or environment. Genuinely transparent RGBA outside this one complete mech and its attached effects.",
+    "prompt_file": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Prompts\\CompletionR3_03_PlayerMech.txt",
+    "prompt_sha256": "a2c43c94930dfb65b21e21de6bd67eada8876924f4cadc74a5248f92fa0c17a5",
+    "referenced_image_paths": [
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Inputs\\CompletionR3\\03_PlayerMech_Edit.png",
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Master.png"
+    ],
+    "transparent_background": true,
+    "requested_canvas": [
+      1536,
+      1536
+    ],
+    "source_window": [
+      256,
+      256,
+      1280,
+      1280
+    ],
+    "raw_output": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_03_PlayerMech_Raw.png"
+  },
+  {
+    "layer": 4,
+    "name": "场景",
+    "slug": "04_Scene",
+    "prompt": "Edit ONLY the supplied full square image. The neutral grey background is an editing guide and occupies the entire 1536x1536 canvas. Do not crop the grey space, center the artwork, zoom, scale, relocate or reframe the coloured elements. Their existing absolute positions and apparent sizes are fixed. The source illustration is the central 1024x1024 rectangle [256,256,1280,1280]. Complete missing surfaces at these fixed positions, and extend objects through the 256-pixel outer gutter where they continue. Output the same full square framing, with all grey guide pixels removed to genuine transparency. Match the existing clean cel-shaded anime artwork, three flat lighting levels, black outlines and matte colour blocks. No text, labels, frame, checkerboard pattern or new subject. Preserve the whole input canvas even where most of it is intentionally empty.\nComplete ONLY the midground environment: sunny sloping green meadow, stone terraces, the existing large near arch and middle-distance ruined geometry. Fill the removed unit/foreground holes with continuous meadow and terrain at the same camera tilt and perspective. Remove white speed streaks, beige braking dust, golden flashes, armour scraps and foreground chips. Do not add the closest lower-right foreground wall, bottom-left foreground rocks/foliage, any mech, enemy, golden bullet, flame, impact smoke or sky. Sky openings and space above the environmental silhouettes must be genuinely transparent. The lower ground and existing architecture must be continuous, clean, and hole-free.",
+    "prompt_file": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Prompts\\CompletionR3_04_Scene.txt",
+    "prompt_sha256": "9d87124f0ffee54e9994c4c748b3d539305cda2a3330737be39d75e3088b5cb8",
+    "referenced_image_paths": [
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Inputs\\CompletionR3\\04_Scene_FixedCanvas_Edit.png"
+    ],
+    "transparent_background": true,
+    "requested_canvas": [
+      1536,
+      1536
+    ],
+    "source_window": [
+      256,
+      256,
+      1280,
+      1280
+    ],
+    "raw_output": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_04_Scene_Raw.png",
+    "revision_note": "Opaque fixed-canvas input prevents alpha bounding-box auto-framing; one edit target only"
+  },
+  {
+    "layer": 5,
+    "name": "折射弹道和三个敌方机甲",
+    "slug": "05_Ricochet_Enemies",
+    "prompt": "Use case: precise-object-edit / layer completion for a parallax card.\nImage 1 is the actual edit target: an incomplete isolated layer on a 1536x1536 canvas. The original 1024x1024 image occupies exactly the central rectangle [256,256,1280,1280]; the 256-pixel surrounding gutter is intentional new working space. Preserve that full canvas and coordinate system. Never crop to the object, auto-fit its bounds, center it, change the camera, scale it, or straighten the tilted horizon.\nImage 2 is the original complete illustration, supplied only to identify the original design, placement, hidden connections, colours and clean anime three-tone cel shading. Do NOT put the entire second image into the output.\nComplete ONLY the specified isolated layer into a coherent usable painted asset. Repair cutout nicks and tiny missing colour islands, remove traces of objects belonging to other layers, reconstruct the parts hidden by other objects, and continue any object that crosses the old central rectangle into the new gutter. Keep all originally visible intended structure, pose, contours, colours, outlines and locations as closely as possible. Existing coloured fragments are coordinate anchors, not pieces to rearrange. Do not leave transparent cracks inside solid surfaces, torn rectangular crop edges or detached pieces caused by segmentation.\nMatch the original clean black mechanical outlines, matte large colour blocks, three hard-edged light levels, bright daylight and low-noise anime rendering. No photoreal texture, grain, scratches, new story elements, text, watermarks, labels, UI, card frame or checkerboard texture.\n\nTHIS OUTPUT LAYER: 5 / 折射弹道和三个敌方机甲\nComplete one connected group consisting of exactly the THREE original ivory-and-burgundy quadrupedal enemy mechs, their three impact explosions, their associated loose armour/parts and the single connected golden ricochet path. Reconstruct missing structural pieces hidden by fire/smoke and repair accidental transparent nicks in armour while retaining deliberate battle damage, broken armour, explosive fragmentation and all three different staggered poses.\nKeep the exact original three enemy positions, apparent sizes and trajectory connection order. Keep the gold path beginning just outside the player muzzle, then joining all three original impact points. Repair broken short segments so the path is continuous; do not move its bends or add independent beams. Complete localized impact smoke and detached fragments as coherent effects with clean alpha. Extend any enemy part clipped by the old right canvas boundary into the gutter in the same perspective.\nNo player mech, player exhaust flame, player muzzle flash, white speed streaks, foreground dirt or environment. Genuinely transparent RGBA between the enemies, legs, path segments and particles. No solid rectangular background.",
+    "prompt_file": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Prompts\\CompletionR3_05_Ricochet_Enemies.txt",
+    "prompt_sha256": "3e8b29de2d30d191a846d953c57a26e2bd9ce9ea759d230fef878155eab328a0",
+    "referenced_image_paths": [
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Inputs\\CompletionR3\\05_Ricochet_Enemies_Edit.png",
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Master.png"
+    ],
+    "transparent_background": true,
+    "requested_canvas": [
+      1536,
+      1536
+    ],
+    "source_window": [
+      256,
+      256,
+      1280,
+      1280
+    ],
+    "raw_output": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_05_Ricochet_Enemies_Raw.png"
+  },
+  {
+    "layer": 6,
+    "name": "远景",
+    "slug": "06_FarBackground",
+    "prompt": "Use case: precise-object-edit / layer completion for a parallax card.\nImage 1 is the actual edit target: an incomplete isolated layer on a 1536x1536 canvas. The original 1024x1024 image occupies exactly the central rectangle [256,256,1280,1280]; the 256-pixel surrounding gutter is intentional new working space. Preserve that full canvas and coordinate system. Never crop to the object, auto-fit its bounds, center it, change the camera, scale it, or straighten the tilted horizon.\nImage 2 is the original complete illustration, supplied only to identify the original design, placement, hidden connections, colours and clean anime three-tone cel shading. Do NOT put the entire second image into the output.\nComplete ONLY the specified isolated layer into a coherent usable painted asset. Repair cutout nicks and tiny missing colour islands, remove traces of objects belonging to other layers, reconstruct the parts hidden by other objects, and continue any object that crosses the old central rectangle into the new gutter. Keep all originally visible intended structure, pose, contours, colours, outlines and locations as closely as possible. Existing coloured fragments are coordinate anchors, not pieces to rearrange. Do not leave transparent cracks inside solid surfaces, torn rectangular crop edges or detached pieces caused by segmentation.\nMatch the original clean black mechanical outlines, matte large colour blocks, three hard-edged light levels, bright daylight and low-noise anime rendering. No photoreal texture, grain, scratches, new story elements, text, watermarks, labels, UI, card frame or checkerboard texture.\n\nTHIS OUTPUT LAYER: 6 / 远景\nComplete a full opaque far background plate: original blue sky, white clouds, distant grassland terraces, far postmodern ruined skyline, distant smoke and fires, and original distant missiles with smoke trails. Retain their original camera tilt, layout, lighting, colour blocks and scale. Fill every hole in the input and all four outer gutters with continuous quiet distant terrain or sky as appropriate.\nRemove all player/enemy mechs, close golden ricochet, close impact bursts, player flames, speed lines, foreground braking dust, close rocks, closest right wall and large near arch foregrounds. No silhouettes of removed units or repeated mechs. This must be a genuinely FULLY OPAQUE PNG covering the entire 1536x1536 canvas, suitable behind all other layers.",
+    "prompt_file": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Prompts\\CompletionR3_06_FarBackground.txt",
+    "prompt_sha256": "ea8feffd69ad43df3e5d7cd989a0a23dbdde63a5d2b1e3f37e6f0ba1459937e2",
+    "referenced_image_paths": [
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Inputs\\CompletionR3\\06_FarBackground_Edit.png",
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Master.png"
+    ],
+    "transparent_background": false,
+    "requested_canvas": [
+      1536,
+      1536
+    ],
+    "source_window": [
+      256,
+      256,
+      1280,
+      1280
+    ],
+    "raw_output": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_06_FarBackground_Raw.png"
+  }
+]

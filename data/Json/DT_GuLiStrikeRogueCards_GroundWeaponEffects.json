@@ -12,7 +12,11 @@
     "ExplosiveSpeedMultiplier": 0.0,
     "ExplosiveOutwardOffsetCentimeters": 0.0,
     "ExplosiveRadiusBonuses": [],
-    "ExplosiveDamageBonuses": []
+    "ExplosiveDamageBonuses": [],
+    "BarrageIntervalsSeconds": [],
+    "BarrageShotCounts": [],
+    "BarrageDamageBonuses": [],
+    "BarrageConeHalfAnglesDegrees": []
   },
   {
     "Name": "GroundEnhancedBullet",
@@ -27,7 +31,11 @@
     "ExplosiveSpeedMultiplier": 0.0,
     "ExplosiveOutwardOffsetCentimeters": 0.0,
     "ExplosiveRadiusBonuses": [],
-    "ExplosiveDamageBonuses": []
+    "ExplosiveDamageBonuses": [],
+    "BarrageIntervalsSeconds": [],
+    "BarrageShotCounts": [],
+    "BarrageDamageBonuses": [],
+    "BarrageConeHalfAnglesDegrees": []
   },
   {
     "Name": "GroundExplosivePackage",
@@ -46,12 +54,16 @@
     "ExplosiveSpeedMultiplier": 0.35,
     "ExplosiveOutwardOffsetCentimeters": 50.0,
     "ExplosiveRadiusBonuses": [],
-    "ExplosiveDamageBonuses": []
+    "ExplosiveDamageBonuses": [],
+    "BarrageIntervalsSeconds": [],
+    "BarrageShotCounts": [],
+    "BarrageDamageBonuses": [],
+    "BarrageConeHalfAnglesDegrees": []
   },
   {
     "Name": "GroundExplosiveEnhancement",
     "Id": 4,
-    "Note": "三级各乘1.02/1.02/1.04；不修改爆破进度",
+    "Note": "每次取得以当前爆炸弹数值乘算伤害与范围",
     "FireRateBonusPercent": 0.0,
     "ExplosiveIntervals": [],
     "ExplosiveDamageMultiplier": 0.0,
@@ -63,12 +75,63 @@
     "ExplosiveRadiusBonuses": [
       "0.02",
       "0.02",
-      "0.04"
+      "0.04",
+      "0.04",
+      "0.08"
     ],
     "ExplosiveDamageBonuses": [
       "0.02",
       "0.02",
-      "0.04"
+      "0.04",
+      "0.04",
+      "0.08"
+    ],
+    "BarrageIntervalsSeconds": [],
+    "BarrageShotCounts": [],
+    "BarrageDamageBonuses": [],
+    "BarrageConeHalfAnglesDegrees": []
+  },
+  {
+    "Name": "GroundNoSurvivors",
+    "Id": 5,
+    "Note": "对地Q；伤害加成相对于基础伤害，散布为半角",
+    "FireRateBonusPercent": 0.0,
+    "ExplosiveIntervals": [],
+    "ExplosiveDamageMultiplier": 0.0,
+    "ExplosiveRadiusCentimeters": 0.0,
+    "ExplosiveBulletVfxId": 0,
+    "ExplosiveImpactVfxId": 0,
+    "ExplosiveSpeedMultiplier": 0.0,
+    "ExplosiveOutwardOffsetCentimeters": 0.0,
+    "ExplosiveRadiusBonuses": [],
+    "ExplosiveDamageBonuses": [],
+    "BarrageIntervalsSeconds": [
+      "0.5",
+      "0.3",
+      "0.3",
+      "0.3",
+      "0.2"
+    ],
+    "BarrageShotCounts": [
+      "10",
+      "12",
+      "16",
+      "18",
+      "25"
+    ],
+    "BarrageDamageBonuses": [
+      "0",
+      "0",
+      "0.08",
+      "0.08",
+      "0.16"
+    ],
+    "BarrageConeHalfAnglesDegrees": [
+      "2.5",
+      "2.5",
+      "2.5",
+      "2.5",
+      "4"
     ]
   }
 ]

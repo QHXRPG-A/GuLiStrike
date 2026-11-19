@@ -1,0 +1,44 @@
+[2026.11.02-07.16.33:484][319]LogTemp: UMaterialNodeService::ExportMaterialGraph: Exported 9 expressions, 17 connections from /Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail
+[2026.11.02-07.16.33:521][319]LogFileHelpers: Saving Package: /Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: ================================================
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: === FShaderJobCache stats ===
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Total job queries 873, among them cache hits 234 (26.80%), DDC hits 542 (62.08%), Duplicates 54 (6.19%)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Tracking 568 distinct input hashes that result in 400 distinct outputs (70.42%)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: RAM used: 3.72 MiB of 1.60 GiB budget. Usage: 0.23%
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: === Shader Compilation stats ===
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Shaders Compiled: 43
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Jobs assigned 43, completed 43 (100%)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Average time worker was idle: 42.79 s
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Time job spent in pending queue: average 0.06 s, longest 0.11 s
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Job execution time: average 0.89 s, max 1.68 s
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Job life time (pending + execution): average 0.95 s, max 1.73
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Shader code size: total 121.197 KiB, numShaders 13, average 9.322 KiB, min 2.777 KiB, max 17.629 KiB
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Time at least one job was in flight (either pending or executed): 4.66 s
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Mutex wait stall in FShaderJobCache::SubmitJobs:  0.06%
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Jobs were issued in 43 batches (only local compilation was used), average 1.00 jobs/batch
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Average processing rate: 9.22 jobs/sec
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Total thread time: 4.384 s
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Total thread preprocess time: 12.716 s
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Percentage time preprocessing: 290.04%
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Effective parallelization: 0.94 (times faster than compiling all shaders on one thread). Compare with number of workers: 16 - 0.058772
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Top 5 most expensive shader types by average time:
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                                      FPathTracingMaterialCHS (compiled    6 times, average 0.20 sec, max 0.47 sec, min 0.06 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                                TMaterialCHSFNoLightMapPolicy (compiled    6 times, average 0.19 sec, max 0.45 sec, min 0.06 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                                             FDebugViewModePS (compiled    6 times, average 0.12 sec, max 0.37 sec, min 0.02 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                         TBasePassPSFNoLightMapPolicySkylight (compiled    3 times, average 0.07 sec, max 0.14 sec, min 0.03 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                        FLumenTranslucencyRadianceCacheMarkPS (compiled    6 times, average 0.06 sec, max 0.13 sec, min 0.03 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Top 5 shader types by total compile time:
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                                      FPathTracingMaterialCHS - 27.24% of total time (compiled    6 times, average 0.20 sec, max 0.47 sec, min 0.06 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                                TMaterialCHSFNoLightMapPolicy - 25.99% of total time (compiled    6 times, average 0.19 sec, max 0.45 sec, min 0.06 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                                             FDebugViewModePS - 16.90% of total time (compiled    6 times, average 0.12 sec, max 0.37 sec, min 0.02 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                        FLumenTranslucencyRadianceCacheMarkPS - 8.48% of total time (compiled    6 times, average 0.06 sec, max 0.13 sec, min 0.03 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display:                                                  FHitProxyPS - 7.37% of total time (compiled    8 times, average 0.04 sec, max 0.09 sec, min 0.02 sec)
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: === Material stats ===
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Materials Cooked:        0
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Materials Translated:    300
+[2026.11.02-07.16.39:812][691]LogShaderCompilers: Display: Material Total Translate Time: 0.14 s
+[2026.11.02-07.16.39:813][691]LogShaderCompilers: Display: Material Translation Only: 0.06 s (44%)
+[2026.11.02-07.16.39:813][691]LogShaderCompilers: Display: Material DDC Serialization Only: 0.00 s (2%)
+[2026.11.02-07.16.39:813][691]LogShaderCompilers: Display: Material Cache Hits: 51 (17%)
+[2026.11.02-07.16.39:813][691]LogShaderCompilers: Display: ================================================
+[2026.11.02-07.19.35:994][248]LogTemp: UMaterialNodeService::ExportMaterialGraph: Exported 9 expressions, 17 connections from /Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail

@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-28",
+  "scope": "Static source/interface review and Python syntax only",
+  "python_ast": "passed",
+  "python_files": [
+    "Scripts/CommanderIsland/outpost_presentation.py",
+    "Scripts/CommanderIsland/author_scene.py",
+    "Scripts/CommanderIsland/readback_scene.py",
+    "Scripts/CommanderIsland/write_delivery_notes.py"
+  ],
+  "git_diff_check": "passed",
+  "outpost_config": {
+    "referencebuildingid": "5",
+    "referencesizemultiplier": "3.0",
+    "hoverheightcm": "100.0",
+    "floatamplitudecm": "50.0",
+    "floatperiodseconds": "8.0",
+    "landingseconds": "0.5"
+  },
+  "source_review": [
+    "Uses reference mesh bounds times resolved catalog MeshScale exactly once; independent XYZ scale",
+    "Ground offset cancels scaled XY origin and bottom Z; ground collision remains fixed",
+    "Owned hover center 100cm, amplitude 50cm, period 8s; 0.5s SmoothStep takeoff/landing",
+    "Owner-state epoch and existing synchronized time source retained across Red/Blue transfers",
+    "Dedicated-server branch returns before mesh/material creation",
+    "Editor layout JSON and runtime creation call the same native resolver; current pre-build scene labelled pending_native_compile"
+  ],
+  "native_compile": "not_run_pending_user_permission",
+  "pie": "not_run",
+  "automated_tests": "not_run",
+  "new_test_files": false,
+  "visual_inspection": "not_performed",
+  "source_sha256": {
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiOutpostPresentationComponent.h": "8ffb733fe5c8299136d316b2d7cd703147c2784e76d4bd44dafc2ced5ce51731",
+    "Source/GuLiStrike/Gameplay/Stronghold/GuLiOutpostPresentationComponent.cpp": "f48000f3a543933792fc24d6b99050525d18619d08e30e9f94f1a96ae7697a87",
+    "Source/GuLiStrikeEditor/Public/GuLiCommanderIslandAuthoringLibrary.h": "c8d0da453d7c7533a5c7dea781b20df1cd7b82183d7fc97c059cab2201601bf0",
+    "Source/GuLiStrikeEditor/Private/GuLiCommanderIslandAuthoringLibrary.cpp": "4be8256e5c80ed17d4eb3e473f2de19e6b52619dcf1f4d9603e0f0c213bd66f8",
+    "Scripts/CommanderIsland/outpost_presentation.py": "43f35a5010e2c00929757de7c2f069a4e473e9b6a186ca172bc1dae4942c26a7",
+    "Scripts/CommanderIsland/author_scene.py": "ef68fcdf2eecb152b01a8f892dd49e92d95028b5b8bd9532de8035387073a33c",
+    "Scripts/CommanderIsland/readback_scene.py": "c19d8107c44708788838761b153a736d43c923d86d1447db08deab6b1bbe8e96",
+    "Scripts/CommanderIsland/write_delivery_notes.py": "2d5c6075d186470e64534c9fa0d8d5c33ad185c084f9dde020bec05d338b1cd9",
+    "Config/DefaultGame.ini": "cb8c1e95ae50e9b7139150d72a01b080617d0391bf993b895d9c34a1ba5ac495"
+  },
+  "progress_check": {
+    "errors": 0,
+    "warnings": 19,
+    "notes": "Existing document length/task-list warnings; no new errors"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "success": true,
+  "PIE_started": false,
+  "visual_acceptance": "pending user",
+  "module_comparison": [
+    {
+      "emitter": "Glow",
+      "count": 9,
+      "metadata_and_order_preserved": true
+    },
+    {
+      "emitter": "Flash",
+      "count": 10,
+      "metadata_and_order_preserved": true
+    },
+    {
+      "emitter": "RibbonCore",
+      "count": 12,
+      "metadata_and_order_preserved": true
+    },
+    {
+      "emitter": "RIbbonTrailFollower",
+      "count": 10,
+      "metadata_and_order_preserved": true
+    },
+    {
+      "emitter": "Sparks",
+      "count": 17,
+      "metadata_and_order_preserved": true
+    },
+    {
+      "emitter": "Debris",
+      "count": 18,
+      "metadata_and_order_preserved": true
+    }
+  ],
+  "material_overrides": [
+    {
+      "emitter": "Glow",
+      "preserved": {
+        "scalar_parameter_values": true,
+        "vector_parameter_values": true,
+        "texture_parameter_values": true
+      }
+    },
+    {
+      "emitter": "Flash",
+      "preserved": {
+        "scalar_parameter_values": true,
+        "vector_parameter_values": true,
+        "texture_parameter_values": true
+      }
+    },
+    {
+      "emitter": "RIbbonTrailFollower",
+      "preserved": {
+        "scalar_parameter_values": true,
+        "vector_parameter_values": true,
+        "texture_parameter_values": true
+      }
+    },
+    {
+      "emitter": "Sparks",
+      "preserved": {
+        "scalar_parameter_values": true,
+        "vector_parameter_values": true,
+        "texture_parameter_values": true
+      }
+    },
+    {
+      "emitter": "Debris",
+      "preserved": {
+        "scalar_parameter_values": true,
+        "vector_parameter_values": true,
+        "texture_parameter_values": true
+      }
+    }
+  ],
+  "variant_bindings": {
+    "success": true,
+    "renderers": [
+      {
+        "emitter": "Glow",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Glow.MI_GroundImpact_Glow",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      },
+      {
+        "emitter": "Flash",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Flash.MI_GroundImpact_Flash",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      },
+      {
+        "emitter": "RIbbonTrailFollower",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_RIbbonTrailFollower.MI_GroundImpact_RIbbonTrailFollower",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      },
+      {
+        "emitter": "Sparks",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Sparks.MI_GroundImpact_Sparks",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      },
+      {
+        "emitter": "Debris",
+        "material": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/MI_GroundImpact_Debris.MI_GroundImpact_Debris",
+        "binding": "User.GroundImpactTintFade",
+        "host_binding": true
+      }
+    ],
+    "emitter_count": 6
+  },
+  "active_rows": [
+    {
+      "Name": "MachineGunImpact",
+      "Id": 5,
+      "Note": "指挥官、僚机、玩家游骑兵机枪命中单位或地形",
+      "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations.NS_MachineGunImpact_AllOptimizations",
+      "Scale": "(X=2.000000,Y=2.000000,Z=2.000000)",
+      "ReducedResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations_Reduced.NS_MachineGunImpact_AllOptimizations_Reduced",
+      "MinimalResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_AllOptimizations_Minimal.NS_MachineGunImpact_AllOptimizations_Minimal",
+      "BatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch.NS_MachineGunImpact_Batch",
+      "ReducedBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Reduced.NS_MachineGunImpact_Batch_Reduced",
+      "MinimalBatchResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_MachineGunImpact_Batch_Minimal.NS_MachineGunImpact_Batch_Minimal",
+      "TrailLengthCm": 0,
+      "TrailHoldSeconds": 0,
+      "TrailFadeSeconds": 0,
+      "TrailBendCm": 0
+    },
+    {
+      "Name": "GroundMechImpact",
+      "Id": 54,
+      "Note": "Ground 命中：保留原命中形态/贴图/运动；线性尺寸 x2；子弹橙黄；0.20秒淡出",
+      "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/NS_GroundMech_Impact_Adjusted.NS_GroundMech_Impact_Adjusted",
+      "Scale": "(X=4.000000,Y=4.000000,Z=4.000000)",
+      "ReducedResourcePath": "None",
+      "MinimalResourcePath": "None",
+      "BatchResourcePath": "None",
+      "ReducedBatchResourcePath": "None",
+      "MinimalBatchResourcePath": "None",
+      "TrailLengthCm": 0,
+      "TrailHoldSeconds": 0,
+      "TrailFadeSeconds": 0,
+      "TrailBendCm": 0
+    },
+    {
+      "Name": "GroundMechAfterimage",
+      "Id": 55,
+      "Note": "Ground 闪现：冻结双臂后展姿势；阵营色；世界位置固定；材质淡出",
+      "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/BlinkImpact_B1/M_GroundMech_Afterimage_B1.M_GroundMech_Afterimage_B1",
+      "Scale": "(X=1.000000,Y=1.000000,Z=1.000000)",
+      "ReducedResourcePath": "None",
+      "MinimalResourcePath": "None",
+      "BatchResourcePath": "None",
+      "ReducedBatchResourcePath": "None",
+      "MinimalBatchResourcePath": "None",
+      "TrailLengthCm": 0,
+      "TrailHoldSeconds": 0,
+      "TrailFadeSeconds": 0,
+      "TrailBendCm": 0
+    }
+  ],
+  "rejected_asset_referencers": [],
+  "text_exports": [
+    "impact_source.t3d",
+    "impact_adjusted.t3d"
+  ]
+}

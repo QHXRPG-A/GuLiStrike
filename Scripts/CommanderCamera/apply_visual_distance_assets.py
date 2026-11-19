@@ -7,7 +7,7 @@ import unreal
 ROOT = Path('D:/UE5.7/test1')
 OUT = ROOT / 'ArtSource/WarMachineHover_20260930/LOD2/distance-assets.json'
 LIB, NS, EM = unreal.EditorAssetLibrary, unreal.NiagaraService, unreal.NiagaraEmitterService
-SOURCE = '/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_FireGun_Loop'
+SOURCE = '/Game/Assets/VFX/Weapons/WeaponBulletVFX/NS/VFX_FireGun_Loop'
 DEST = '/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet'
 report = {'success': False, 'saved': [], 'effect_types': {}, 'rocket_jet': {'source': SOURCE, 'target': DEST}}
 

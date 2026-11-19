@@ -44,6 +44,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field") EGuLiSpellFieldTiming Timing = EGuLiSpellFieldTiming::Instant;
 	/** Inline gameplay fallback. Table-driven fields freeze their final world-centimeter radius. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field", meta=(ClampMin="0", Units="cm")) float Radius = 160.0f;
+	/** Measure the blast against each target's combat body, including elevated meshes. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field") bool bUseTargetHitCenters = false;
 	/** Unscaled art radius. Never migrate together with the gameplay radius: that cancels the visual scale. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0.001", Units="cm")) float VisualReferenceRadius = 800.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field", meta=(ClampMin="0", Units="s")) float Delay = 0.0f;
@@ -73,11 +75,16 @@ class GULISTRIKE_API UGuLiProjectileEffectDefinition : public UDataAsset
 {
 	GENERATED_BODY()
 public:
-	/** Production motion is authored in GuLiStrikeSecondaryWeapons.xlsx / Projectiles. */
+	/** Secondary unit projectile profile or a player's Ground skill row. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") FDataTableRowHandle MotionProfileRow;
 	/** Native/test fallback used only when MotionProfileRow is empty. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") FGuLiProjectileMotionSettings Motion;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") TSoftObjectPtr<UGuLiSpellFieldDefinition> ImpactField;
+    /** Detonate a point projectile on the first hostile logical body crossed by its actual flight path. */
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") bool bInterceptEnemyBodies=false;
+	/** An empty result uses the ordinary projectile behavior. */
+	UFUNCTION(BlueprintPure, Category="Projectile")
+	FGuLiGroundStrikeFlight GetGroundStrikeFlight() const;
 	/** Per-projectile visual, also used while the production WM01 GPU resources are unavailable. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") int32 FlightVfxId = 0;
 	/** Empty preserves the legacy flight/WM01 route. Only opted-in definitions load it on clients. */

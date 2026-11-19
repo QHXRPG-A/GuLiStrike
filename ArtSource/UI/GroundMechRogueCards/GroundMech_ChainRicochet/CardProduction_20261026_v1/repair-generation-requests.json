@@ -1,0 +1,24 @@
+[
+  {
+    "purpose": "hidden_environment_fill",
+    "prompt": "Edit target: the provided square illustration. Produce a clean environment plate for parallax hole filling. Keep the same exact fixed camera, tilted horizon, framing, environment perspective, sunlight, original clean anime cel shading, outlines, grassland, moss-covered broken geometric arches and walls, sky, distant missiles and distant smoke. Remove ONLY the blue player mech, both attached flames and muzzle flash, all white foreground speed lines, the three enemy robots and their associated impact explosions and flying debris, all golden ricochet trails, the closest bottom-left rocks/leaves, the closest bottom-right mossy wall, and the foreground braking dust and dirt. Reconstruct the continuous meadow, ground terraces and architecture hidden behind those removed objects. Do not redesign or move any surviving environment feature. No new units, vehicles, people, text, UI or frame. Full opaque PNG, same square canvas. This output is used only behind the original cutout pixels, never as a replacement for original visible objects.",
+    "referenced_image_paths": [
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Master.png"
+    ],
+    "transparent_background": false,
+    "raw_source": "C:\\Users\\a\\.codex\\generated_images\\01a13f96-8add-7ee0-95a0-01a7d20439ce\\exec-63783a35-6ce8-4293-b90a-77fcdb408ffb.png",
+    "file": "Supplements/CleanEnvironment_Raw.png",
+    "allowed_domain": "beneath original opaque cutouts only"
+  },
+  {
+    "purpose": "outer_canvas_extension",
+    "prompt": "Edit / outpainting only. The supplied 1280×1280 PNG contains the fixed original 1024×1024 illustration in the exact central rectangle [128,128] to [1152,1152], with a 128 pixel empty gutter on all four sides. Fill ONLY this outer gutter by naturally extending the nearest existing material and perspective: continue the bottom-left close gray rocks and green foliage, continue the closest moss-covered right wall beyond the right and bottom edges, continue left-edge beige braking dust, and extend sky where the top border needs sky. Existing foreground must extend across the old canvas edge with continuous volume and contours. Preserve the complete central illustration unchanged in position and scale; never zoom, shrink, recompose, center the mech or move enemies. Match its original clean anime cel-shaded outlines and large flat three-tone shapes. Do not add units, faces, weapons, ricochet beams, texts or a card frame. Full opaque square PNG covering the entire 1280×1280 canvas. The central square will be restored from original pixels programmatically; only the genuinely new surrounding border will be consumed.",
+    "referenced_image_paths": [
+      "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Inputs\\OuterCanvasGuide.png"
+    ],
+    "transparent_background": false,
+    "raw_source": "C:\\Users\\a\\.codex\\generated_images\\01a13f96-8add-7ee0-95a0-01a7d20439ce\\exec-8ba5701f-b796-4ab9-88f4-57ef1bb80911.png",
+    "file": "Supplements/OuterCanvas_Raw.png",
+    "allowed_domain": "outside original [128,128,1152,1152] rectangle only"
+  }
+]

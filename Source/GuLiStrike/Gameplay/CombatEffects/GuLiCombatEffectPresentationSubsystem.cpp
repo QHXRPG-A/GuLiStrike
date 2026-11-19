@@ -1125,8 +1125,24 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		if (Visual.Flight && Visual.Flight->Bounds.GetBox().IsValid) FlightBounds+=Visual.Flight->Bounds.GetBox();
 		if (!GuLiClientPresentation::OffscreenFlightsEnabled() || !bKnownFlightBounds || IsVisibleBounds(FlightBounds))
 		{
-			if (!Visual.Flight) Visual.Flight = SpawnPooled(Definition->FlightVfxId,
-				DisplayLocation, 1.0f, 0.0f, FRotator::ZeroRotator, TEXT("User.VisualScale"));
+			if (!Visual.Flight)
+			{
+				Visual.Flight = SpawnPooled(Definition->FlightVfxId, DisplayLocation, 1.0f, 0.0f,
+					FVector(Prediction.Velocity).Rotation(), TEXT("User.VisualScale"), false);
+				if (Visual.Flight)
+				{
+					FGuLiStrikeVfxEffectsRow Row;
+					if (UGuLiVfxRegistrySubsystem::Query(this, Definition->FlightVfxId, Row) && Row.TrailLengthCm > 0)
+					{
+						Visual.Flight->SetVariableFloat(TEXT("User.TrailLengthCm"), Row.TrailLengthCm);
+						Visual.Flight->SetVariableFloat(TEXT("User.TrailFadeSeconds"), Row.TrailFadeSeconds);
+						if (Prediction.GroundStrike.IsEnabled() && Row.TrailFadeSeconds > 0.f)
+							Visual.Flight->SetVariableFloat(TEXT("User.Thrusters_SpawnRate"), 60.f / Row.TrailFadeSeconds);
+					}
+					Visual.Flight->SetVariableVec3(TEXT("User.Velocity"), Prediction.Velocity);
+					Visual.Flight->Activate(true);
+				}
+			}
 			if (Visual.Flight)
 			{
 				Visual.Flight->SetWorldLocationAndRotation(DisplayLocation, FVector(Prediction.Velocity).Rotation());

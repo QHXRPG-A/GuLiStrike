@@ -1,0 +1,36 @@
+Using bundled DotNet SDK version: 8.0.412 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" GuLiStrikeEditor Win64 Development -Project=D:/UE5.7/test1/GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Waiting for 'git status' command to complete
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from Launch unity file: LaunchEngineLoop.cpp
+[Adaptive Build] Excluded from GuLiNetCore unity file: GuLiNetAsyncClient.cpp, GuLiNetClient.cpp, GuLiNetCurrentState.cpp, GuLiNetManifest.cpp, GuLiNetOwnerFragments.cpp, GuLiNetOwnership.cpp, GuLiNetOwnerState.cpp, GuLiNetOwnerTransactions.cpp, GuLiNetPeerRoom.cpp, GuLiNetProtocol.cpp, GuLiNetResourceRecovery.cpp, GuLiNetRoom.cpp, GuLiNetRoomMetadata.cpp, GuLiNetTeamAuthority.cpp, GuLiNetTypes.cpp, GuLiNetWork.cpp, GuLiNetArmy.cpp, GuLiNetArmyContract.cpp, GuLiNetControlPoint.cpp, GuLiNetGroundRogue.cpp, GuLiNetReplacement.cpp
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiBattleGameMode.cpp, GuLiBattleGameState.cpp, GuLiBattlePlayerState.cpp, GuLiWarMachineHoverQACommands.cpp, GuLiCommanderHybridCommands.cpp, GuLiCommanderMoveResponse.cpp, GuLiCommanderNetSyncComponent.cpp, GuLiCommanderOrderedCommands.cpp, GuLiCommanderPlayerController.cpp, GuLiCommanderRogueCardNetwork.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiSoldierCombat.cpp, GuLiSoldierCombatTests.cpp, GuLiCommanderHUD.cpp, GuLiCommanderMechanicalPresentation.cpp, GuLiCommanderPresentationActor.cpp, GuLiCommanderPresentationCommands.cpp, GuLiCommanderPresentationPerformanceTests.cpp, GuLiCommanderHUDWidget.cpp, GuLiGroundSceneUIState.cpp, GuLiHybridNetworkReviewActor.cpp, GuLiBuildingPlacementComponent.cpp, GuLiHybridBuildingPlacement.cpp, GuLiRogueCardPresentation.cpp, GuLiRogueCardSubsystem.cpp, GuLiBulletTrailIntegration.cpp, GuLiBulletTrailPresentation.cpp, GuLiClientFlightPresentation.cpp, GuLiCombatEffectPresentationSubsystem.cpp, GuLiCombatEffectRuntimeSubsystem.cpp, GuLiHybridProjectilePool.cpp, GuLiMechanicalMuzzlePresentation.cpp, GuLiMuzzleBatchPresentation.cpp, GuLiProjectilePoolSubsystem.cpp, GuLiRogueUpgradePresentation.cpp, GuLiUnitFeedbackSubsystem.cpp, GuLiUnitWreck.cpp, GuLiCommanderSkillComponent.cpp, GuLiHybridGlobalSkills.cpp, GuLiHybridUnitSkills.cpp, GuLiCommanderSkillCatalog.cpp, GuLiScale020InterpolationTests.cpp, GuLiGroundMechCharacter.cpp, GuLiHybridGroundAdapter.cpp, GuLiHybridGroundUpgrade.cpp, GuLiGroundRogueRuntime.cpp, GuLiEngineeringPoseComponent.cpp, GuLiMechanicalAnimation.cpp, GuLiMechanicalTurnPresentation.cpp, GuLiRecoilVAT.cpp, GuLiVATAnimation.cpp, GuLiMechanicalAnimationTests.cpp, GuLiMiningPresentationComponent.cpp, GuLiMiningVehiclePawn.cpp, GuLiQuadrupedMinerPresentation.cpp, GuLiResourceStrongholds.cpp, GuLiHybridShipAdapter.cpp, GuLiStrikeShip.cpp, GuLiHybridArmyManifest.cpp, GuLiSkillResolver.cpp, GuLiSkillTypes.cpp, GuLiHybridFacilities.cpp, GuLiWarMachinePlaceholderPawn.cpp, GuLiHybridManifest.cpp, GuLiHybridSessionSubsystem.cpp, GuLiHybridWorldSubsystem.cpp, GuLiNetworkSettings.cpp, GuLiEosTransport.cpp, GuLiLocalUdpTransport.cpp
+[Adaptive Build] Excluded from GuLiStrikeEditor unity file: GuLiGroundMechFireEditorLibrary.cpp, GuLiHybridReviewAuthoring.cpp, GuLiLocalPIERolePicker.cpp, GuLiLocalPIESubsystem.cpp
+[Adaptive Build] Excluded from Niagara unity file: NiagaraRendererRibbons.cpp
+[Adaptive Build] Excluded from StateTreeModule unity file: StateTreeExecutionContext.cpp
+[Adaptive Build] Excluded from Slate unity file: SlateApplication.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+[Adaptive Build] Excluded from D3D12RHI unity file: D3D12Buffer.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 31.82 GB available: limiting max parallel actions to 21
+Using Unreal Build Accelerator local executor to run 4 action(s)
+  Storage capacity 40Gb
+---- Starting trace: 261116_014226 ----
+UbaSessionServer - Disable remote execution (remote sessions will finish current processes)
+[1/4] Compile [x64] GuLiHybridFacilities.cpp
+[2/4] Link [x64] UnrealEditor-GuLiStrike.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.exp
+[3/4] Link [x64] UnrealEditor-GuLiStrike.dll
+[4/4] WriteMetadata GuLiStrikeEditor.target [NoUba]
+
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 3.7kb
+Total time in Unreal Build Accelerator local executor: 6.62 seconds
+
+Result: Succeeded
+Total execution time: 9.45 seconds

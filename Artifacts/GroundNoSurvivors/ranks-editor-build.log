@@ -1,0 +1,220 @@
+Log started at 11/18/2026 23:52:09 (2026-11-18T15:52:09Z)
+Resolved project argument D:/UE5.7/test1/GuLiStrike.uproject to D:\UE5.7\test1\GuLiStrike.uproject
+No config file at D:\UnrealEngine-5.7\Engine\Restricted\NotForLicensees\Programs\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\ProgramData\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\Users\a\AppData\Local\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+No config file at C:\Users\a\Documents\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Configuration will be read from:
+  D:\UnrealEngine-5.7\Engine\Saved\UnrealBuildTool\BuildConfiguration.xml
+  C:\Users\a\AppData\Roaming\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UnrealEngine-5.7\Engine\Saved\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): C:\Users\a\AppData\Roaming\Unreal Engine\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UE5.7\test1\Saved\UnrealBuildTool\BuildConfiguration.xml
+Reading configuration file from cache (D:\UE5.7\test1\Intermediate\Build\XmlConfigCache.bin): D:\UnrealEngine-5.7\Engine\Intermediate\Build\UnrealBuildTool.Env.BuildConfiguration.xml
+Log file: D:\UE5.7\test1\Artifacts\GroundNoSurvivors\ranks-editor-build.log
+
+Setting temp directory to 'C:\Users\a\AppData\Local\Temp\UnrealBuildTool\1cda995f'
+    Registering build platform: UnrealBuildTool.AndroidPlatformFactory
+Unable to find valid SDK(s) for Android:
+  Found Sdk Version, MinRequired=r27c, MaxRequired=r28c.
+  Found AutoSdk Version, Required=r27c.
+        Registering build platform: Android - buildable: False
+    Registering build platform: UnrealBuildTool.IOSPlatformFactory
+Unable to find valid SDK(s) for IOS:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: IOS - buildable: False
+    Registering build platform: UnrealBuildTool.LinuxPlatformFactory
+Unable to find valid SDK(s) for Linux:
+  Found Sdk Version, Required=v26_clang-20.1.8-rockylinux8.
+  Found AutoSdk Version, Required=v26_clang-20.1.8-rockylinux8.
+        Registering build platform: Linux - buildable: False
+Unable to find valid SDK(s) for LinuxArm64:
+  Found Sdk Version, Required=v26_clang-20.1.8-rockylinux8.
+  Found AutoSdk Version, Required=v26_clang-20.1.8-rockylinux8.
+        Registering build platform: LinuxArm64 - buildable: False
+    Registering build platform: UnrealBuildTool.MacPlatformFactory
+Unable to find valid SDK(s) for Mac:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: Mac - buildable: False
+    Registering build platform: UnrealBuildTool.TVOSPlatformFactory
+Unable to find valid SDK(s) for TVOS:
+  Found Sdk Version, MinRequired=1100.0.0.0, MaxRequired=8999.0.
+  Found AutoSdk Version, Required=15.2.
+        Registering build platform: TVOS - buildable: False
+    Registering build platform: UnrealBuildTool.WindowsPlatformFactory
+Found Windows 10 SDK root at C:\Program Files (x86)\Windows Kits\10 (1)
+Found Windows 10 SDK root at C:\Program Files (x86)\Windows Kits\10 (2)
+Found Windows 10 SDK version 10.0.22621.0 at C:\Program Files (x86)\Windows Kits\10
+Found Universal CRT version 10.0.22621.0 at C:\Program Files (x86)\Windows Kits\10
+Found Windows 10 SDK version 10.0.26100.0 at C:\Program Files (x86)\Windows Kits\10
+Found Universal CRT version 10.0.26100.0 at C:\Program Files (x86)\Windows Kits\10
+Win64 Installed SDK(s): MinVersion_Sdk=10.0.19041.0, MaxVersion_Sdk=10.9.99999.0, CurrentVersion_Sdk=10.0.22621.0, Version_AutoSdk=10.0.22621.0, CurrentVersion_AutoSdk=
+        Registering build platform: Win64 - buildable: True
+    Registering build platform: UnrealBuildTool.VisionOSPlatformFactory
+        Registering build platform: VisionOS - buildable: False
+Command line: D:\UnrealEngine-5.7\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll GuLiStrikeEditor Win64 Development -Project=D:/UE5.7/test1/GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE -Log=D:/UE5.7/test1/Artifacts/GroundNoSurvivors/ranks-editor-build.log
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Waiting for 'git status' command to complete
+UnrealHeaderTool needs to run because SavedTimestamp is older than HeaderFileTimestamp (D:\UE5.7\test1\Source\GuLiStrike\Gameplay\GroundMech\UI\GuLiGroundHUDData.h) for module GuLiStrike
+Parsing headers for GuLiStrikeEditor
+  Running Internal UnrealHeaderTool D:\UE5.7\test1\GuLiStrike.uproject D:\UE5.7\test1\Intermediate\Build\Win64\GuLiStrikeEditor\Development\GuLiStrikeEditor.uhtmanifest -WarningsAsErrors
+Reading engine version from file: D:\UnrealEngine-5.7\Engine\Source\Runtime\Launch\Resources\Version.h
+Got engine version 5.7.4
+Step - Exports
+       Exporter Stats skipped
+       Exporter Json skipped
+       Running exporter CodeGen
+UHT processed GuLiStrikeEditor in 1.1846102 seconds (0 files written)
+Deleting outdated item: D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiNetCore\UnrealEditor-GuLiNetCore.lib
+Deleting outdated item: D:\UE5.7\test1\Binaries\Win64\UnrealEditor-GuLiNetCore.pdb
+Deleting outdated item: D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrike\UnrealEditor-GuLiStrike.lib
+Deleting outdated item: D:\UE5.7\test1\Binaries\Win64\UnrealEditor-GuLiStrike.pdb
+Deleting outdated item: D:\UE5.7\test1\Binaries\Win64\UnrealEditor-GuLiStrikeEditor.pdb
+Deleting outdated item: D:\UE5.7\test1\Intermediate\Build\Win64\x64\UnrealEditor\Development\GuLiStrikeEditor\UnrealEditor-GuLiStrikeEditor.lib
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from Launch unity file: LaunchEngineLoop.cpp
+[Adaptive Build] Excluded from GuLiNetCore unity file: GuLiNetAsyncClient.cpp, GuLiNetClient.cpp, GuLiNetCurrentState.cpp, GuLiNetManifest.cpp, GuLiNetOwnerFragments.cpp, GuLiNetOwnership.cpp, GuLiNetOwnerState.cpp, GuLiNetOwnerTransactions.cpp, GuLiNetPeerRoom.cpp, GuLiNetProtocol.cpp, GuLiNetResourceRecovery.cpp, GuLiNetRoom.cpp, GuLiNetRoomMetadata.cpp, GuLiNetTeamAuthority.cpp, GuLiNetTypes.cpp, GuLiNetWork.cpp, GuLiNetArmy.cpp, GuLiNetArmyContract.cpp, GuLiNetControlPoint.cpp, GuLiNetEffects.cpp, GuLiNetGroundRogue.cpp, GuLiNetReplacement.cpp
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiCombatDamageLedger.cpp, GuLiBattleGameMode.cpp, GuLiBattleGameState.cpp, GuLiBattlePlayerState.cpp, GuLiWarMachineHoverQACommands.cpp, GuLiCommanderHybridCommands.cpp, GuLiCommanderMoveResponse.cpp, GuLiCommanderNetSyncComponent.cpp, GuLiCommanderOrderedCommands.cpp, GuLiCommanderPlayerController.cpp, GuLiCommanderRogueCardNetwork.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiSoldierCombat.cpp, GuLiSoldierCombatTests.cpp, GuLiCommanderHUD.cpp, GuLiCommanderMechanicalPresentation.cpp, GuLiCommanderPresentationActor.cpp, GuLiCommanderPresentationCommands.cpp, GuLiCommanderPresentationPerformanceTests.cpp, GuLiCommanderHUDWidget.cpp, GuLiGroundSceneUIState.cpp, GuLiHybridNetworkReviewActor.cpp, GuLiBuildingPlacementComponent.cpp, GuLiHybridBuildingPlacement.cpp, GuLiRogueCardPresentation.cpp, GuLiRogueCardSubsystem.cpp, GuLiBulletTrailIntegration.cpp, GuLiBulletTrailPresentation.cpp, GuLiClientFlightPool.cpp, GuLiClientFlightPresentation.cpp, GuLiCombatEffectDefinition.cpp, GuLiCombatEffectPresentationSubsystem.cpp, GuLiCombatEffectRuntimeSubsystem.cpp, GuLiCombatEffectTypes.cpp, GuLiFlightReplication.cpp, GuLiHybridEffectRuntime.cpp, GuLiHybridFlightManifest.cpp, GuLiHybridProjectilePool.cpp, GuLiMechanicalMuzzlePresentation.cpp, GuLiMuzzleBatchPresentation.cpp, GuLiProjectilePoolSubsystem.cpp, GuLiRogueUpgradePresentation.cpp, GuLiUnitFeedbackSubsystem.cpp, GuLiUnitWreck.cpp, GuLiCombatEffectRuntimeTests.cpp, GuLiCommanderSkillComponent.cpp, GuLiHybridGlobalSkills.cpp, GuLiHybridUnitSkills.cpp, GuLiCommanderSkillCatalog.cpp, GuLiScale020InterpolationTests.cpp, GuLiGroundMechCharacter.cpp, GuLiGroundBarrage.cpp, GuLiGroundStrikeSurface.cpp, GuLiHybridGroundAdapter.cpp, GuLiHybridGroundUpgrade.cpp, GuLiGroundRogueEffects.cpp, GuLiGroundRogueRuntime.cpp, GuLiGroundHUDAmbient.cpp, GuLiGroundHUDData.cpp, GuLiGroundHUDIcons.cpp, GuLiGroundHUDLayout.cpp, GuLiGroundHUDMotion.cpp, GuLiGroundHUDWidget.cpp, GuLiEngineeringPoseComponent.cpp, GuLiMechanicalAnimation.cpp, GuLiMechanicalTurnPresentation.cpp, GuLiRecoilVAT.cpp, GuLiVATAnimation.cpp, GuLiMechanicalAnimationTests.cpp, GuLiMiningPresentationComponent.cpp, GuLiMiningVehiclePawn.cpp, GuLiQuadrupedMinerPresentation.cpp, GuLiResourceStrongholds.cpp, GuLiHybridShipAdapter.cpp, GuLiStrikeShip.cpp, GuLiHybridArmyManifest.cpp, GuLiSkillResolver.cpp, GuLiSkillTypes.cpp, GuLiHybridFacilities.cpp, GuLiWarMachinePlaceholderPawn.cpp, GuLiHybridManifest.cpp, GuLiHybridSessionSubsystem.cpp, GuLiHybridWorldSubsystem.cpp, GuLiNetworkSettings.cpp, GuLiEosTransport.cpp, GuLiLocalUdpTransport.cpp
+[Adaptive Build] Excluded from GuLiStrikeEditor unity file: GuLiGroundMechFireEditorLibrary.cpp, GuLiHybridAuthoringLibrary.cpp, GuLiHybridBlueprintAuthoring.cpp, GuLiHybridBlueprintMigration.cpp, GuLiHybridReviewAuthoring.cpp, GuLiLocalPIERolePicker.cpp, GuLiLocalPIESubsystem.cpp
+[Adaptive Build] Excluded from Niagara unity file: NiagaraRendererRibbons.cpp
+[Adaptive Build] Excluded from StateTreeModule unity file: StateTreeExecutionContext.cpp
+[Adaptive Build] Excluded from Slate unity file: SlateApplication.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+[Adaptive Build] Excluded from D3D12RHI unity file: D3D12Buffer.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 13.05 GB available: limiting max parallel actions to 8
+Using Unreal Build Accelerator local executor to run 31 action(s)
+  Storage capacity 40Gb
+  RootDir C:\ProgramData\Epic\UnrealBuildAccelerator
+---- Starting trace: 261118_235215 ----
+UbaServer - Listening on 0.0.0.0:1345
+Cache bucket 2611342960 used. Action: Compile [x64] GuLiNetGroundRogue.cpp ()
+Cache bucket 416513229 used. Action: Link [x64] UnrealEditor-GuLiNetCore.lib ()
+Cache bucket 2259019253 used. Action: Compile [x64] GuLiCommanderHUD.cpp ()
+Cache bucket 994921010 used. Action: Compile [x64] Module.GuLiStrike.gen.9.cpp ()
+All processes queued
+[1/31] Compile [x64] GuLiGroundHUDAmbient.cpp
+[2/31] Compile [x64] GuLiNetGroundRogue.cpp
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetTypes.h(151,29): warning C4251: “GuLiNet::SequenceWindow::Recent”:“std::set<uint64_t,std::less<uint64_t>,std::allocator<uint64_t>>”需要有 dll 接口以供“GuLiNet::SequenceWindow”的客户端使用
+    std::set<std::uint64_t> Recent;
+                            ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\set(51,7): note: 参见“std::set<uint64_t,std::less<uint64_t>,std::allocator<uint64_t>>”的声明
+class set : public _Tree<_Tset_traits<_Kty, _Pr, _Alloc, false>> {
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetRules.h(80,35): warning C4251: “GuLiNet::Economy::Storage”:“std::shared_ptr<GuLiNet::EconomyState>”需要有 dll 接口以供“GuLiNet::Economy”的客户端使用
+    std::shared_ptr<EconomyState> Storage=std::make_shared<EconomyState>();
+                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\memory(1565,7): note: 参见“std::shared_ptr<GuLiNet::EconomyState>”的声明
+class shared_ptr : public _Ptr_base<_Ty> { // class for reference counted resource management
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetProtocol.h(86,19): warning C4251: “GuLiNet::Writer::Buffer”:“std::vector<uint8_t,std::allocator<uint8_t>>”需要有 dll 接口以供“GuLiNet::Writer”的客户端使用
+    mutable Bytes Buffer;
+                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\vector(442,7): note: 参见“std::vector<uint8_t,std::allocator<uint8_t>>”的声明
+class vector { // varying size array of values
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetProtocol.h(114,35): warning C4251: “GuLiNet::Reader::Buffer”:“std::span<const uint8_t,18446744073709551615>”需要有 dll 接口以供“GuLiNet::Reader”的客户端使用
+    std::span<const std::uint8_t> Buffer;
+                                  ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\span(275,7): note: 参见“std::span<const uint8_t,18446744073709551615>”的声明
+class span : private _Span_extent_type<_Ty, _Extent> {
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetResourceSnapshot.h(65,34): warning C4251: “GuLiNet::ResourceSnapshotStore::Complete”:“std::deque<GuLiNet::ResourceSnapshot,std::allocator<GuLiNet::ResourceSnapshot>>”需要有 dll 接口以供“GuLiNet::ResourceSnapshotStore”的客户端使用
+    std::deque<ResourceSnapshot> Complete;
+                                 ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\deque(600,7): note: 参见“std::deque<GuLiNet::ResourceSnapshot,std::allocator<GuLiNet::ResourceSnapshot>>”的声明
+class deque {
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetResourceLedger.h(118,42): warning C4251: “GuLiNet::ResourceLedger::Storage”:“std::shared_ptr<GuLiNet::ResourceLedgerState>”需要有 dll 接口以供“GuLiNet::ResourceLedger”的客户端使用
+    std::shared_ptr<ResourceLedgerState> Storage=std::make_shared<ResourceLedgerState>();
+                                         ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\memory(1565,7): note: 参见“std::shared_ptr<GuLiNet::ResourceLedgerState>”的声明
+class shared_ptr : public _Ptr_base<_Ty> { // class for reference counted resource management
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetMiningReservations.h(91,30): warning C4251: “GuLiNet::MiningReservations::Value”:“std::shared_ptr<GuLiNet::MiningReservations::Storage>”需要有 dll 接口以供“GuLiNet::MiningReservations”的客户端使用
+    std::shared_ptr<Storage> Value=std::make_shared<Storage>();
+                             ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\memory(1565,7): note: 参见“std::shared_ptr<GuLiNet::MiningReservations::Storage>”的声明
+class shared_ptr : public _Ptr_base<_Ty> { // class for reference counted resource management
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetOwnership.h(88,34): warning C4251: “GuLiNet::OwnershipScheduler::Members”:“std::map<GuLiNet::Id,GuLiNet::OwnershipMember,std::less<GuLiNet::Id>,std::allocator<std::pair<const GuLiNet::Id,GuLiNet::OwnershipMember>>>”需要有 dll 接口以供“GuLiNet::OwnershipScheduler”的客户端使用
+    std::map<Id,OwnershipMember> Members;
+                                 ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\map(72,7): note: 参见“std::map<GuLiNet::Id,GuLiNet::OwnershipMember,std::less<GuLiNet::Id>,std::allocator<std::pair<const GuLiNet::Id,GuLiNet::OwnershipMember>>>”的声明
+class map : public _Tree<_Tmap_traits<_Kty, _Ty, _Pr, _Alloc, false>> {
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetOwnership.h(89,40): warning C4251: “GuLiNet::OwnershipScheduler::Entries”:“std::map<GuLiNet::ObjectKey,GuLiNet::OwnershipEntry,std::less<GuLiNet::ObjectKey>,std::allocator<std::pair<const GuLiNet::ObjectKey,GuLiNet::OwnershipEntry>>>”需要有 dll 接口以供“GuLiNet::OwnershipScheduler”的客户端使用
+    std::map<ObjectKey,OwnershipEntry> Entries;
+                                       ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\map(72,7): note: 参见“std::map<GuLiNet::ObjectKey,GuLiNet::OwnershipEntry,std::less<GuLiNet::ObjectKey>,std::allocator<std::pair<const GuLiNet::ObjectKey,GuLiNet::OwnershipEntry>>>”的声明
+class map : public _Tree<_Tmap_traits<_Kty, _Ty, _Pr, _Alloc, false>> {
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetOwnership.h(90,38): warning C4251: “GuLiNet::OwnershipScheduler::GroupMembers”:“std::map<GuLiNet::Id,std::set<GuLiNet::ObjectKey,std::less<GuLiNet::ObjectKey>,std::allocator<GuLiNet::ObjectKey>>,std::less<GuLiNet::Id>,std::allocator<std::pair<const GuLiNet::Id,std::set<GuLiNet::ObjectKey,std::less<GuLiNet::ObjectKey>,std::allocator<GuLiNet::ObjectKey>>>>>”需要有 dll 接口以供“GuLiNet::OwnershipScheduler”的客户端使用
+    std::map<Id,std::set<ObjectKey>> GroupMembers;
+                                     ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\map(72,7): note: 参见“std::map<GuLiNet::Id,std::set<GuLiNet::ObjectKey,std::less<GuLiNet::ObjectKey>,std::allocator<GuLiNet::ObjectKey>>,std::less<GuLiNet::Id>,std::allocator<std::pair<const GuLiNet::Id,std::set<GuLiNet::ObjectKey,std::less<GuLiNet::ObjectKey>,std::allocator<GuLiNet::ObjectKey>>>>>”的声明
+class map : public _Tree<_Tmap_traits<_Kty, _Ty, _Pr, _Alloc, false>> {
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetOwnership.h(91,45): warning C4251: “GuLiNet::OwnershipScheduler::ParentWorkChildren”:“std::map<GuLiNet::ObjectKey,std::set<GuLiNet::ObjectKey,std::less<GuLiNet::ObjectKey>,std::allocator<GuLiNet::ObjectKey>>,std::less<GuLiNet::ObjectKey>,std::allocator<std::pair<const GuLiNet::ObjectKey,std::set<GuLiNet::ObjectKey,std::less<GuLiNet::ObjectKey>,std::allocator<GuLiNet::ObjectKey>>>>>”需要有 dll 接口以供“GuLiNet::OwnershipScheduler”的客户端使用
+    std::map<ObjectKey,std::set<ObjectKey>> ParentWorkChildren;
+                                            ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\map(72,7): note: 参见“std::map<GuLiNet::ObjectKey,std::set<GuLiNet::ObjectKey,std::less<GuLiNet::ObjectKey>,std::allocator<GuLiNet::ObjectKey>>,std::less<GuLiNet::ObjectKey>,std::allocator<std::pair<const GuLiNet::ObjectKey,std::set<GuLiNet::ObjectKey,std::less<GuLiNet::ObjectKey>,std::allocator<GuLiNet::ObjectKey>>>>>”的声明
+class map : public _Tree<_Tmap_traits<_Kty, _Ty, _Pr, _Alloc, false>> {
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetOwnership.h(92,39): warning C4251: “GuLiNet::OwnershipScheduler::Pending”:“std::map<GuLiNet::ObjectKey,GuLiNet::ObjectHandoff,std::less<GuLiNet::ObjectKey>,std::allocator<std::pair<const GuLiNet::ObjectKey,GuLiNet::ObjectHandoff>>>”需要有 dll 接口以供“GuLiNet::OwnershipScheduler”的客户端使用
+    std::map<ObjectKey,ObjectHandoff> Pending;
+                                      ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\map(72,7): note: 参见“std::map<GuLiNet::ObjectKey,GuLiNet::ObjectHandoff,std::less<GuLiNet::ObjectKey>,std::allocator<std::pair<const GuLiNet::ObjectKey,GuLiNet::ObjectHandoff>>>”的声明
+class map : public _Tree<_Tmap_traits<_Kty, _Ty, _Pr, _Alloc, false>> {
+      ^
+D:\UE5.7\test1\Source\GuLiNetCore\Public\GuLiNetOwnership.h(93,32): warning C4251: “GuLiNet::OwnershipScheduler::Actions”:“std::vector<GuLiNet::HandoffAction,std::allocator<GuLiNet::HandoffAction>>”需要有 dll 接口以供“GuLiNet::OwnershipScheduler”的客户端使用
+    std::vector<HandoffAction> Actions;
+                               ^
+C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207\INCLUDE\vector(442,7): note: 参见“std::vector<GuLiNet::HandoffAction,std::allocator<GuLiNet::HandoffAction>>”的声明
+class vector { // varying size array of values
+      ^
+[3/31] Compile [x64] GuLiGroundHUDIcons.cpp
+[4/31] Compile [x64] GuLiGroundBarrage.cpp
+[5/31] Link [x64] UnrealEditor-GuLiNetCore.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiNetCore/UnrealEditor-GuLiNetCore.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiNetCore/UnrealEditor-GuLiNetCore.exp
+[6/31] Link [x64] UnrealEditor-GuLiNetCore.dll
+[7/31] Compile [x64] GuLiGroundHUDData.cpp
+[8/31] Compile [x64] GuLiCommanderHUD.cpp
+[9/31] Compile [x64] GuLiGroundHUDLayout.cpp
+[10/31] Compile [x64] GuLiGroundHUDMotion.cpp
+[11/31] Compile [x64] GuLiGroundMapTerrain.cpp
+[12/31] Compile [x64] GuLiCommanderPlayerController.cpp
+[13/31] Compile [x64] GuLiGroundRogueEffects.cpp
+[14/31] Compile [x64] GuLiGroundMapWidget.cpp
+[15/31] Compile [x64] GuLiGroundHUDWidget.cpp
+[16/31] Compile [x64] GuLiGroundRogueRuntime.cpp
+[17/31] Compile [x64] GuLiGroundMechCharacter.cpp
+[18/31] Compile [x64] GuLiRogueCardEffect.cpp
+[19/31] Compile [x64] GuLiHybridGroundUpgrade.cpp
+[20/31] Compile [x64] GuLiGroundRogueDebugLibrary.cpp
+[21/31] Compile [x64] GuLiGroundMechWeaponComponent.cpp
+[22/31] Compile [x64] GuLiRogueCardSubsystem.cpp
+[23/31] Compile [x64] Module.GuLiStrike.gen.9.cpp
+[24/31] Compile [x64] GuLiLocalPIESubsystem.cpp
+[25/31] Compile [x64] GuLiHybridAuthoringLibrary.cpp
+[26/31] Link [x64] UnrealEditor-GuLiStrike.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.exp
+[27/31] Link [x64] UnrealEditor-GuLiStrike.dll
+[28/31] Compile [x64] Module.GuLiStrikeEditor.3.cpp
+[29/31] Link [x64] UnrealEditor-GuLiStrikeEditor.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrikeEditor/UnrealEditor-GuLiStrikeEditor.exp
+[30/31] Link [x64] UnrealEditor-GuLiStrikeEditor.dll
+[31/31] WriteMetadata GuLiStrikeEditor.target [NoUba]
+
+Trace written to file D:/UE5.7/test1/Artifacts/GroundNoSurvivors/ranks-editor-build.uba with size 12.5kb
+Total time in Unreal Build Accelerator local executor: 30.63 seconds
+WriteFileIfChanged() wrote 0 changed files of 1 requested writes.
+
+Result: Succeeded
+Total execution time: 36.90 seconds

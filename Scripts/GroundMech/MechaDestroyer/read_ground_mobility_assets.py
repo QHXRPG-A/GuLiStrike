@@ -41,7 +41,7 @@ for n in nodes:
  pins={p.pin_name:p.is_connected for p in unreal.BlueprintService.get_node_pins(abp.get_path_name(),'AnimGraph',n.node_id)}
  assert all(pins.get(k,False) for k in required[n.node_type]),(n.node_type,pins)
  connections.append({'type':n.node_type,'pins':pins})
-for kind,count in {'AnimGraphNode_GuLiGroundMechGrounding':1,'AnimGraphNode_GuLiGroundMechAim':1,'AnimGraphNode_BlendSpacePlayer':2,'AnimGraphNode_BlendSpaceEvaluator':1,'AnimGraphNode_SequenceEvaluator':3,'AnimGraphNode_TwoWayBlend':1,'AnimGraphNode_SequencePlayer':3,'AnimGraphNode_ApplyAdditive':2,'AnimGraphNode_LayeredBoneBlend':2,'AnimGraphNode_Slot':1}.items():
+for kind,count in {'AnimGraphNode_GuLiGroundMechGrounding':1,'AnimGraphNode_GuLiGroundMechAim':1,'AnimGraphNode_BlendSpacePlayer':2,'AnimGraphNode_BlendSpaceEvaluator':1,'AnimGraphNode_SequenceEvaluator':4,'AnimGraphNode_TwoWayBlend':2,'AnimGraphNode_SequencePlayer':3,'AnimGraphNode_ApplyAdditive':2,'AnimGraphNode_LayeredBoneBlend':2,'AnimGraphNode_Slot':1}.items():
  assert counts.get(kind)==count,(kind,counts)
 assets=json.loads(unreal.GuLiGroundMechAnimationEditorLibrary.configure_mobility_assets(False))
 assert assets['success'],assets
@@ -63,7 +63,12 @@ def upstream(node,pin):
  node_id,out_pin=links[0].split(':',1)
  return node_by_id[node_id],out_pin
 root=next(n for n in nodes if n.node_type=='AnimGraphNode_Root')
-mix=upstream(root,'Result')[0]; seq=upstream(mix,'B')[0]
+cast=upstream(root,'Result')[0]
+body=upstream(upstream(cast,'B')[0],'ComponentPose')[0]
+assert body.node_type=='AnimGraphNode_ModifyBone' and [upstream(body,p)[1] for p in ('Rotation','Translation')]==['BarrageBodyRotation','BarrageBodyTranslation']
+cast_clip=upstream(upstream(body,'ComponentPose')[0],'LocalPose')[0]
+assert [upstream(n,p)[1] for n,p in ((cast,'Alpha'),(cast_clip,'Sequence'),(cast_clip,'ExplicitTime'))]==['BarragePoseWeight','BarrageSequence','BarragePoseTime']
+mix=upstream(cast,'A')[0]; seq=upstream(mix,'B')[0]
 assert mix.node_type=='AnimGraphNode_TwoWayBlend' and seq.node_type=='AnimGraphNode_BlendSpaceEvaluator'
 assert upstream(mix,'A')[0].node_type=='AnimGraphNode_ComponentToLocalSpace'
 assert [upstream(n,p)[1] for n,p in ((mix,'Alpha'),(seq,'BlendSpace'),(seq,'X'),(seq,'NormalizedTime'))]==['BlinkSequenceWeight','BlinkBlend','BlinkDirectionDegrees','BlinkNormalizedTime']

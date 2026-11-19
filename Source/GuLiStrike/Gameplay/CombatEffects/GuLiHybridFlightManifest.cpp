@@ -3,6 +3,34 @@
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Gameplay/CombatEffects/GuLiLinearFlightContract.h"
 #include "GuLiNetGameplayTypes.h"
+#include "Gameplay/CombatEffects/GuLiRuntimeFieldManifest.h"
+
+bool GuLiRuntimeFields::AddRules(FGuLiHybridManifestData& Data,const FGuLiHybridRuleEntry& Damage,FString& Error)
+{
+    const FString Definition=TEXT("effect/runtime/")+Damage.Id;
+    if (!FGuLiHybridAdapterRegistry::BindDefinition(Data,Definition,TEXT("CombatEffect"),Error)) return false;
+    FGuLiHybridRuleEntry Admission;
+    Admission.Id=TEXT("admit/runtime/")+Damage.Id; Admission.SourceDefinition=Damage.SourceDefinition;
+    Admission.Kind=EGuLiHybridRuleKind::Spawn; Admission.TargetDefinition=Definition;
+    Admission.SpawnKind=EGuLiHybridObjectKind::Field; Admission.SpawnCost=.001;
+    Admission.MaximumLiveChildren=2048; Admission.MaximumFactionObjects=16384; Admission.EffectTicks=Damage.EffectTicks;
+    Admission.MaximumTargets=1; Admission.RequiredCapabilityCatalog=Damage.RequiredCapabilityCatalog;
+    Admission.RequiredCapabilityGroup=Damage.RequiredCapabilityGroup; Admission.RequiredCapability=Damage.RequiredCapability;
+    FGuLiHybridRuleEntry Settlement=Damage;
+    Settlement.Id=TEXT("settle/")+Definition; Settlement.SourceDefinition=Definition;
+    Settlement.RequiredCapabilityCatalog.Reset(); Settlement.RequiredCapabilityGroup.Reset(); Settlement.RequiredCapability.Reset();
+    Settlement.MaximumTargets=GuLiNet::MaximumEffectTargets; Settlement.CooldownTicks=0;
+    FGuLiHybridRuleEntry Retirement;
+    Retirement.Id=TEXT("retire/")+Definition; Retirement.SourceDefinition=Retirement.TargetDefinition=Definition;
+    Retirement.Kind=EGuLiHybridRuleKind::Destroy; Retirement.EffectTicks=Damage.EffectTicks;
+    for (const auto& Rule:{Admission,Settlement,Retirement})
+    {
+        if (Data.Rules.ContainsByPredicate([&](const auto& Existing){return Existing.Id==Rule.Id;}))
+        { Error=TEXT("Duplicate combat-effect manifest rule: ")+Rule.Id; return false; }
+        Data.Rules.Add(Rule);
+    }
+    return true;
+}
 
 static bool AppendFlightCatalog(FGuLiHybridManifestData& Data,FString& Error)
 {
@@ -33,22 +61,7 @@ static bool AppendFlightCatalog(FGuLiHybridManifestData& Data,FString& Error)
             if (Ids.Contains(R.Id)) { Error=TEXT("Duplicate linear-flight manifest rule: ")+R.Id; return false; }
             Ids.Add(R.Id); Data.Rules.Add(MoveTemp(R));
         }
-        const FString RuntimeDefinition=TEXT("effect/runtime/")+Damage.Id;
-        if (!FGuLiHybridAdapterRegistry::BindDefinition(Data,RuntimeDefinition,TEXT("CombatEffect"),Error)) return false;
-        Admission.Id=TEXT("admit/runtime/")+Damage.Id;Admission.TargetDefinition=RuntimeDefinition;
-        Admission.SpawnKind=EGuLiHybridObjectKind::Field;
-        Settlement.Id=TEXT("settle/")+RuntimeDefinition;Settlement.SourceDefinition=RuntimeDefinition;
-        // A pulse may hit several distinct objects. Its stable root is per pulse;
-        // retries retain that root, so a repeated target cannot be charged twice.
-        // Pending receipts span many effects; they are not a per-pulse limit.
-        Settlement.MaximumTargets=GuLiNet::MaximumEffectTargets;
-        Retirement.Id=TEXT("retire/")+RuntimeDefinition;
-        Retirement.SourceDefinition=Retirement.TargetDefinition=RuntimeDefinition;
-        for (auto R:{Admission,Settlement,Retirement})
-        {
-            if (Ids.Contains(R.Id)) {Error=TEXT("Duplicate combat-effect manifest rule: ")+R.Id;return false;}
-            Ids.Add(R.Id);Data.Rules.Add(MoveTemp(R));
-        }
+        if (!GuLiRuntimeFields::AddRules(Data,Damage,Error)) return false;
     }
     Data.Strings.Add(TEXT("startup/acceptance_flight_adapter"),TEXT("2"));
     return true;

@@ -1,0 +1,173 @@
+{
+  "closed_armor": [
+    {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "connected_components": 1,
+      "leg": "Leg_Front_L"
+    },
+    {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "connected_components": 1,
+      "leg": "Leg_Front_R"
+    },
+    {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "connected_components": 1,
+      "leg": "Leg_Rear_L"
+    },
+    {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "connected_components": 1,
+      "leg": "Leg_Rear_R"
+    }
+  ],
+  "lamps": [
+    {
+      "leg": "Leg_Front_L",
+      "housing": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1
+      },
+      "lens": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1
+      },
+      "housing_armor_intersections": 28,
+      "lens_housing_intersections": 12,
+      "lens_role_7": true
+    },
+    {
+      "leg": "Leg_Front_R",
+      "housing": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1
+      },
+      "lens": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1
+      },
+      "housing_armor_intersections": 28,
+      "lens_housing_intersections": 12,
+      "lens_role_7": true
+    },
+    {
+      "leg": "Leg_Rear_L",
+      "housing": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1
+      },
+      "lens": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1
+      },
+      "housing_armor_intersections": 33,
+      "lens_housing_intersections": 12,
+      "lens_role_7": true
+    },
+    {
+      "leg": "Leg_Rear_R",
+      "housing": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1
+      },
+      "lens": {
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "connected_components": 1
+      },
+      "housing_armor_intersections": 35,
+      "lens_housing_intersections": 12,
+      "lens_role_7": true
+    }
+  ],
+  "lamp_animation": {
+    "states_checked": 816,
+    "maximum_host_lamp_distance_error_m": 2.682209014892578e-07,
+    "maximum_loop_error_m": 0.0
+  },
+  "team_modes": {
+    "0": {
+      "color_error": 7.177727995300032e-10,
+      "emission_strength": 0.0,
+      "expected_emission_strength": 0.0
+    },
+    "1": {
+      "color_error": 1.4742983445170665e-08,
+      "emission_strength": 1.7999999523162842,
+      "expected_emission_strength": 1.8
+    },
+    "2": {
+      "color_error": 5.54785850592765e-09,
+      "emission_strength": 1.7999999523162842,
+      "expected_emission_strength": 1.8
+    }
+  },
+  "palette": {
+    "机甲 · 深灰腿部护甲": {
+      "hex": "#2C3735",
+      "maximum_linear_error": 7.177727995300032e-10
+    },
+    "机甲 · 米白小腿嵌板": {
+      "hex": "#FEE4D9",
+      "maximum_linear_error": 2.4765500650225647e-08
+    },
+    "机甲 · 蓝灰喷涂外甲": {
+      "hex": "#D5C09C",
+      "maximum_linear_error": 2.5447494222952116e-08
+    },
+    "机甲 · 黑色主体框架": {
+      "hex": "#2C3735",
+      "maximum_linear_error": 7.177727995300032e-10
+    },
+    "机甲 · 中立乳白尾部嵌板": {
+      "hex": "#FEE4D9",
+      "maximum_linear_error": 2.4765500650225647e-08
+    }
+  },
+  "checks": {
+    "four_upper_shells_closed_connected": true,
+    "four_lamps_closed_and_mounted": true,
+    "lamps_follow_armor_without_drift": true,
+    "badge_closed_and_symmetric": true,
+    "badge_top_not_occluded": true,
+    "neutral_palette_exact": true,
+    "three_team_modes_work": true
+  },
+  "badge_topology": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "connected_components": 1
+  },
+  "badge_symmetry_error_m": 0.0,
+  "badge_surface": {
+    "top_samples": 1848,
+    "occluded_samples": 0,
+    "minimum_sampled_top_clearance_m": 0.00709223747253418
+  },
+  "all_new_feature_checks_passed": true,
+  "visual_acceptance": "待用户复审，未渲染或助手读图。"
+}

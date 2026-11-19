@@ -9,7 +9,7 @@ ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir(
 OUT = ROOT / 'Artifacts/RogueCards/Upgrade'
 DEST = '/Game/GuLiStrike/FX/RogueCards'
 SYSTEM = DEST + '/NS_RogueUpgrade_Lite'
-SOURCE = '/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted'
+SOURCE = '/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted'
 ASSETS = unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
 NS, EM, SP = unreal.NiagaraService, unreal.NiagaraEmitterService, unreal.NiagaraScratchPadService
 MAT = unreal.MaterialEditingLibrary
@@ -144,7 +144,7 @@ def build():
     audit_source()
     mesh_path = DEST + '/SM_UpgradeCylinder'
     if not ASSETS.does_asset_exist(mesh_path):
-        require(ASSETS.duplicate_asset('/Game/Assets/VFX/NiagaraUpgradeGlow/Mesh/SM_cylinder', mesh_path), 'Duplicate glow cylinder')
+        require(ASSETS.duplicate_asset('/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Mesh/SM_cylinder', mesh_path), 'Duplicate glow cylinder')
     glow = material('M_UpgradeGlow', True)
     sprite = material('M_UpgradeRingMotes')
     mesh = unreal.load_asset(mesh_path); mesh.set_material(0, unreal.load_asset(glow)); save(mesh_path)

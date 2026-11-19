@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-10",
+  "card_id": "09.01",
+  "card_title": "增加攻速",
+  "model_id": 4001,
+  "version": 7,
+  "state": "reference_pending_user_review",
+  "generator": "built-in image_gen",
+  "mode": "motion blur on user supplied card art",
+  "transparent_background": false,
+  "feedback": "再做一遍动态模糊",
+  "inputs_in_order": [
+    {
+      "attachment_name": "codex-clipboard-9ee6d219-78de-457b-a2bd-3170984d2d56.png",
+      "file": "User_Card_Base.png",
+      "sha256": "95f3a961e9eee8c7bf43edb3d11c99e90136c85b23fbb295ba6a56b0f9029aa9",
+      "role": "用户提供的当前牌面底图"
+    }
+  ],
+  "prompt": "Card_Prompt.txt",
+  "prompt_payload_utf8_sha256": "7682a075fe66f09de326155ef69aed8615bd60e8f79c4f4bdab583742a7ef707",
+  "output": {
+    "file": "FireRate_Card_Reference_v7.png",
+    "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-32bbf88f-f773-4567-a0b5-0df2258d8f40.png",
+    "sha256": "916ea38238b6019bacb90c15b2f1a01ab73e7dbb60ec861fde2ec072107eb11b",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB"
+  },
+  "assistant_output_visual_review": false
+}

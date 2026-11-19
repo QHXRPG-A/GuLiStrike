@@ -69,4 +69,6 @@ namespace GuLiVfxIds
 	inline constexpr int32 GroundExplosiveImpact = 64;
 	inline constexpr int32 GroundExplosiveTrail = 65;
 	inline constexpr int32 CommanderMuzzleGlow = 66;
+	inline constexpr int32 GroundNoSurvivorsFlight = 67;
+	inline constexpr int32 GroundNoSurvivorsImpact = 68;
 }

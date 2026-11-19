@@ -6,6 +6,7 @@
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/Image.h"
+#include "Components/SizeBox.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Engine/Texture2D.h"
 #include "Dom/JsonObject.h"
@@ -123,6 +124,7 @@ void UGuLiGroundHUDWidget::Motion(const FGuLiGroundHUDMotion& E)
     }
     for(int32 I=0;I<4;++I)
     {
+        if(!CastClips[I].Image.IsValid())continue;
         // Aim has a held-state fade. It does not use the cast burst.
         if((E.Cast&(1<<I))&&I!=1&&(I!=0||FreshShot))
         {CastStarted[I]=Now-(I==0?E.ShotAge:0);++CastPlays[I];}
@@ -159,6 +161,7 @@ void UGuLiGroundHUDWidget::TickMotion(double Now,float Delta)
     {
         for(int32 I=0;I<4;++I)
         {
+            if(!CastClips[I].Image.IsValid())continue;
             const float Target=I==1&&bHeldAim?1.f:I==2&&bHeldJet?1.f:0.f;
             if(!FMath::IsNearlyEqual(HeldAlpha[I],Target,.001f))
             {Active=true;HeldAlpha[I]=FMath::FInterpConstantTo(HeldAlpha[I],Target,Delta,1/MotionStyle.Aim);}
@@ -210,9 +213,10 @@ FString UGuLiGroundHUDWidget::GetMotionDiagnostics() const
         auto S=MakeShared<FJsonObject>();S->SetNumberField(TEXT("slot"),I);S->SetNumberField(TEXT("casts"),CastPlays[I]);S->SetNumberField(TEXT("ready"),ReadyPlays[I]);
         S->SetBoolField(TEXT("cast_material"),CastClips[I].Material.IsValid());S->SetBoolField(TEXT("ready_material"),ReadyClips[I].Material.IsValid());
         S->SetNumberField(TEXT("held_alpha"),HeldAlpha[I]);Skills.Add(MakeShared<FJsonValueObject>(S));
-        S->SetStringField(TEXT("icon"),SkillIcons.IsValidIndex(I)?GetPathNameSafe(SkillIcons[I]->GetBrush().GetResourceObject()):TEXT("None"));
+        S->SetStringField(TEXT("icon"),I==3&&SkillIcons.IsValidIndex(0)?GetPathNameSafe(SkillIcons[0]->GetBrush().GetResourceObject()):TEXT("None"));
     }
     J->SetArrayField(TEXT("skills"),Skills);
+    J->SetBoolField(TEXT("barrage_slot_visible"),BarrageEntry && BarrageEntry->GetVisibility()!=ESlateVisibility::Collapsed);
     TArray<TSharedPtr<FJsonValue>> Textures;uint64 Bytes=0;
     for(const auto& O:Art)if(const auto* T=Cast<UTexture2D>(O.Get());T&&T->GetPathName().Contains(TEXT("/UI/Motion/")))
     {

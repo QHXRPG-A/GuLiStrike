@@ -12,6 +12,10 @@ class UGuLiGroundMechFireEditorLibrary : public UBlueprintFunctionLibrary
 {
     GENERATED_BODY()
 public:
+    /** Allocated bytecode and VectorVM context buffers of the system and its enabled emitters, in bytes. */
+    UFUNCTION(BlueprintCallable, Category="GuLiStrike|GroundMech|Editor")
+    static int64 GetCompiledVMBufferBytes(UNiagaraSystem* System);
+
     /** Numeric particle and renderer geometry for the approved explosion; never changes assets. */
     UFUNCTION(BlueprintCallable,Category="GuLiStrike|GroundMech|Editor")
     static FString ReadExplosiveImpactParticles(UNiagaraComponent* Component);

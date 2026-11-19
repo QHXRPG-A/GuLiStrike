@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>据点 B_v1 · Blender成品对照</title>
+<style>
+  :root{color-scheme:light;font-family:"Microsoft YaHei",system-ui,sans-serif;color:#1a182f;background:#e8eef4}
+  *{box-sizing:border-box}body{margin:0;padding:28px;max-width:1800px;margin-inline:auto}
+  h1{font-size:25px;margin:0 0 8px}p{line-height:1.7;margin:8px 0 18px}
+  a{color:#274e61}nav{display:flex;gap:18px;margin:16px 0 24px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  figure{margin:0;border-radius:12px;overflow:hidden;background:#fff;border:1px solid #b7c8d3}
+  figcaption{padding:13px 16px;font-weight:600}img{display:block;width:100%;height:auto}
+  section{margin-top:26px}.color-wrap{display:grid;grid-template-columns:minmax(260px,560px) 1fr;gap:22px;align-items:start}
+  button{font:inherit;padding:10px 18px;border-radius:7px;border:1px solid #6aa4be;background:white;color:#274e61;cursor:pointer;margin:0 8px 10px 0}
+  button[aria-pressed="true"]{background:#274e61;color:white}button:focus-visible{outline:3px solid #0d9099;outline-offset:3px}
+  .muted{color:#506573;font-size:14px}.views{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:800px){body{padding:15px}.grid,.color-wrap{grid-template-columns:1fr}.views{grid-template-columns:1fr 1fr}}
+</style>
+<h1>据点 B_v1 · Blender 成品对照</h1>
+<p>4,824 三角面（含镜像和倒角） · 17.88 × 20.23 × 29.30 米 · 上下镜像 · 光柱白／阵营色切换</p>
+<nav><a href="Outpost_Symmetric_B_v1.blend">Blender 源文件</a><a href="README.md">操作与交付说明</a><a href="manifest.json">模型清单</a></nav>
+<div class="grid">
+  <figure><figcaption>已确认的参考 A_v2</figcaption><img src="../References_A_v2/Outpost_Symmetric_A_v2.png" alt="已确认据点设计参考A_v2"></figure>
+  <figure><figcaption>真实 Blender 成品 B_v1</figcaption><img src="Previews/08_Review_Sheet.png" alt="同一Blender网格的主效果与三视图"></figure>
+</div>
+<section>
+<h2>中央光柱配色</h2>
+<div class="color-wrap">
+  <figure><img id="core-preview" src="Previews/01_Hero.png" alt="中央光柱：中立白"><figcaption id="core-caption">中立白</figcaption></figure>
+  <div>
+    <div role="group" aria-label="选择光柱配色预览">
+      <button type="button" data-image="01_Hero.png" data-label="中立白" aria-pressed="true">中立白</button>
+      <button type="button" data-image="06_Core_Blue.png" data-label="己方蓝" aria-pressed="false">己方蓝</button>
+      <button type="button" data-image="07_Core_Red.png" data-label="敌方红" aria-pressed="false">敌方红</button>
+    </div>
+    <p>三张均为同一模型、同一机位的实际 Blender 渲染，仅切换中央光柱的归属材质。外壳与其他灯带独立保留。</p>
+    <p>在 Blender 中按 N → GuLi，可通过按钮切换。根对象 OP_Root_Midplane 的 Core_Color_Mode 原生属性也可直接使用：0 白、1 蓝、2 红。</p>
+    <p class="muted">本页按钮切换渲染图片。Blender 模型和材质控制已保存，当前等待成品审核，尚未导入 UE。</p>
+  </div>
+</div>
+</section>
+<section><h2>正、侧、背及下侧视图</h2>
+<div class="views">
+  <figure><figcaption>正视 +X</figcaption><img loading="lazy" src="Previews/02_Front.png" alt="据点正视"></figure>
+  <figure><figcaption>侧视 −Y</figcaption><img loading="lazy" src="Previews/03_Side.png" alt="据点侧视"></figure>
+  <figure><figcaption>背视 −X</figcaption><img loading="lazy" src="Previews/04_Back.png" alt="据点背视"></figure>
+  <figure><figcaption>下侧观察</figcaption><img loading="lazy" src="Previews/05_Underside.png" alt="据点完整下半部与腰环下表面"></figure>
+</div></section>
+<script>
+for(const button of document.querySelectorAll('button[data-image]')){
+  button.addEventListener('click',()=>{
+    for(const item of document.querySelectorAll('button[data-image]'))item.setAttribute('aria-pressed',String(item===button));
+    const image=document.getElementById('core-preview');image.src='Previews/'+button.dataset.image;image.alt='中央光柱：'+button.dataset.label;
+    document.getElementById('core-caption').textContent=button.dataset.label;
+  });
+}
+</script>
+</html>

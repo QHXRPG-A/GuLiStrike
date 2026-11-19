@@ -1,0 +1,27 @@
+游骑兵 · 链式弹射 · 本地 Qwen 工作流 v3
+
+本次画面：项目游骑兵的过肩视角，一颗子弹依次弹射三台敌方先驱者，强调开火后坐、连续曳光轨迹、局部装甲爆炸与失衡动作。
+
+图像输入（已实际接入 TextEncodeQwenImage21，而非只写入标题）：
+images.image_1：GroundMech_Project_Rear3Q_v3.png，项目 Ground 玩家整机后侧，ModelId 4001，并装配 4002/4003/4004。
+images.image_2：GroundMech_Project_Weapon_v3.png，同一版本的上身、炮座与机枪近景。
+images.image_3：Pioneer_Project_Enemy_v3.png，项目先驱者（数据名称先驱号），ModelId 1001，敌方莓红/暗红队色。
+images.image_4：Civitai_145143380_style.jpeg，仅参考绘画画风、笔触、光影与气氛。
+
+当前机器：打开 ComfyUI 中 Qwen-Image-2.1-游骑兵-链式弹射-v3，点击运行即可。已保留用户原有工作流。
+独立复用：将包内 input 中的四张图片复制到 ComfyUI 的 input 目录，再将工作流 JSON 拖入画布。若文件列表未刷新，重新加载 ComfyUI 页面。
+文件格式：主 JSON 是界面工作流；workflow-api.json 是 POST /prompt 使用的 API 图，两者不能直接互换。
+
+模型：qwen_image_2.1_int8_convrot.safetensors
+文字与视觉编码器：qwen3vl_8b_int8_convrot.safetensors，type=qwen_image
+VAE：qwen_image_2.1_vae_bf16.safetensors
+本图不加载人物 LoRA。
+输出：832×1248，批量 1，36 steps，CFG 1.5，euler/simple，denoise 1，seed 145143383（fixed）。
+缓存：auto / int8。编码器 resolution=0；四张参考在上游分别有界缩放到 832×1248、512×512、576×768、512×768。
+采样 latent 来自编码器第一个参考图的尺寸，未另接不匹配尺寸的空 latent。
+正向与反向分别使用 Positive.txt、Negative.txt 的全文，并接入采样器；CFG 1.5 使采样计算正反条件分支。
+
+画风来源：https://civitai.com/images/145143380
+公开接口未提供该图原始提示词；本次正反提示词是按用户画面要求重新编写的。
+项目图像由 UE 的实际 Style_v9 Ground 装配、正式先驱者网格和现有材质渲染。没有重做项目模型或替换正式资源。
+本次产物是美术参考候选，不代表用户美术验收或游戏功能接入。实际输出、prompt_id、来源、参数与哈希见 manifest.json。

@@ -9,6 +9,8 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "GuLiCombatDamageLedger.generated.h"
 
+class USceneComponent;
+
 USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiCombatHealthState
 {
@@ -337,6 +339,9 @@ private:
 
 	void RegisterWithLedger();
 	void UnregisterFromLedger();
+	void RefreshActorFootprint();
+	TWeakObjectPtr<USceneComponent> FootprintRoot;
+	FDelegateHandle FootprintTransformHandle;
 	void BroadcastHealthState(bool bWasDead);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat|Health", meta = (ClampMin = "1.0"))
@@ -375,6 +380,10 @@ public:
 	void UnregisterTarget(const FGuLiTargetHandle& Handle, const UObject* ExpectedOwner = nullptr);
 
 	bool TryGetTargetSnapshot(const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot);
+	/** The broad phase follows registered bodies, independently of their current hit eligibility. */
+	void SetTargetFootprint(const FGuLiTargetHandle& Handle, const FVector& Anchor, float PlanarReach);
+	void MoveTargetFootprint(const FGuLiTargetHandle& Handle, const FVector& Anchor);
+	void GetNearbyTargetSnapshots(const FBox& Bounds, TArray<FGuLiCombatTargetSnapshot>& Out);
 	/** Authority-only stable snapshot of the current target directory for server target acquisition. */
 	void GetTargetSnapshots(TArray<FGuLiCombatTargetSnapshot>& OutSnapshots, EGuLiTargetKind Kind = EGuLiTargetKind::None);
 	/** Returns request identity; completion is reported by the responsible client. */
@@ -414,6 +423,7 @@ private:
 	void PruneInvalidTargets();
 
 	TMap<FGuLiTargetHandle, FGuLiCombatTargetAdapter> TargetAdapters;
+	TSharedPtr<struct FGuLiCombatBodyIndex> BodyIndex;
 	/** Live directory membership by domain; snapshots are still read freshly for every caller. */
 	TMap<EGuLiTargetKind, TSet<FGuLiTargetHandle>> TargetDomains;
 	TMap<FGuLiTargetHandle, FGuLiCombatSourceAdapter> SourceAdapters;

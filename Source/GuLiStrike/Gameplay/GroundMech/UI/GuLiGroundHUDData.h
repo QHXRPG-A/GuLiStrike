@@ -23,7 +23,8 @@ struct FGuLiGroundHUDSnapshot
     FGuLiCombatHealthState Health;
     float Fuel=0,FireRate=0,Damage=0,Speed=0,BlinkRemaining=0,BlinkDuration=0;
     int32 WeaponLevel=0;bool bThrusting=false,bJetReady=false,bBlinkReady=false,bWeaponReady=false,bAimReady=false,bAiming=false;
-    int32 SkillIconIds[4]{};
+    int32 BlinkIconId=0,BarrageLevel=0,BarrageRemaining=0;
+    bool bBarrageHighEnough=false;
     double BlinkEndsAt=0;uint64 MotionGeneration=0;
     EGuLiTeam Team=EGuLiTeam::Unassigned;
     FVector Position=FVector::ZeroVector;

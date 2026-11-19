@@ -1,0 +1,211 @@
+{
+ "status": "completed",
+ "scenario": "Rendered PIE, accepted selection callback replay with Ground ranks 2 and 5; duplicate success callback injected for each choice.",
+ "aim": [
+  {
+   "target_pitch": -39.1101,
+   "body_pitch": -39.1101,
+   "angle_error_deg": 0.0,
+   "capsule_pitch": 0.0,
+   "weight": 1.0
+  },
+  {
+   "target_pitch": 38.4208,
+   "body_pitch": 38.4208,
+   "angle_error_deg": 0.0,
+   "capsule_pitch": 0.0,
+   "weight": 1.0
+  },
+  {
+   "target_pitch": 0.0,
+   "body_pitch": 0.0,
+   "angle_error_deg": 0.0,
+   "capsule_pitch": 0.0,
+   "weight": 1.0
+  },
+  {
+   "target_pitch": -90.0,
+   "body_pitch": -90.0,
+   "angle_error_deg": 0.0,
+   "capsule_pitch": 0.0,
+   "weight": 1.0
+  },
+  {
+   "target_pitch": 90.0,
+   "body_pitch": 90.0,
+   "angle_error_deg": 0.0,
+   "capsule_pitch": 0.0,
+   "weight": 1.0
+  }
+ ],
+ "picks": [
+  {
+   "card": "12.01",
+   "before": 1,
+   "rank": 2,
+   "ack": 2.4081,
+   "events": {
+    "P_UpgradeGlow_Converted": {
+     "starts": 1,
+     "first": 2.97502,
+     "scales": [
+      [
+       0.0,
+       1.0
+      ]
+     ],
+     "particles": {
+      "mesh02": 1,
+      "mesh03": 1,
+      "mesh04": 1,
+      "circle001": 1,
+      "Circle02": 0,
+      "Circle03": 0,
+      "Circle04": 0,
+      "Circle05": 0,
+      "particles01": 0,
+      "Particle02": 0,
+      "Particle03": 0,
+      "circle": 0,
+      "light04": 0,
+      "light01": 0,
+      "light02": 0,
+      "light03": 3
+     },
+     "parent": "CollisionCylinder",
+     "foot_offset_cm": -244.03683471679688,
+     "visible": true,
+     "last": 6.39213,
+     "sample": 3.1011
+    }
+   },
+   "frames_with_fx_while_open": 0,
+   "closed": 2.9663
+  },
+  {
+   "card": "13.01",
+   "before": 4,
+   "rank": 5,
+   "ack": 10.4164,
+   "events": {
+    "P_UpgradeGlow_Converted": {
+     "starts": 1,
+     "first": 10.97473,
+     "scales": [
+      [
+       0.0,
+       1.0
+      ]
+     ],
+     "particles": {
+      "mesh02": 1,
+      "mesh03": 1,
+      "mesh04": 1,
+      "circle001": 1,
+      "Circle02": 0,
+      "Circle03": 0,
+      "Circle04": 0,
+      "Circle05": 0,
+      "particles01": 0,
+      "Particle02": 0,
+      "Particle03": 0,
+      "circle": 0,
+      "light04": 0,
+      "light01": 0,
+      "light02": 0,
+      "light03": 3
+     },
+     "parent": "CollisionCylinder",
+     "foot_offset_cm": -244.03683471679688,
+     "visible": true,
+     "last": 14.4524,
+     "sample": 11.098
+    },
+    "NS_Tornado_under": {
+     "starts": 1,
+     "first": 14.81933,
+     "scales": [
+      [
+       0.0,
+       0.01843
+      ],
+      [
+       0.0241,
+       0.03838
+      ],
+      [
+       0.0324,
+       0.04529
+      ],
+      [
+       0.0407,
+       0.0522
+      ],
+      [
+       0.0491,
+       0.05911
+      ],
+      [
+       0.0574,
+       0.06602
+      ],
+      [
+       0.0674,
+       0.07434
+      ],
+      [
+       0.0783,
+       0.08333
+      ],
+      [
+       0.1113,
+       0.11076
+      ],
+      [
+       0.1254,
+       0.12239
+      ],
+      [
+       0.1354,
+       0.13069
+      ],
+      [
+       0.1478,
+       0.14099
+      ],
+      [
+       0.1945,
+       0.17975
+      ],
+      [
+       0.2067,
+       0.1843
+      ]
+     ],
+     "particles": {
+      "PointLight": 150,
+      "None": 0,
+      "outSide_b_under": 3,
+      "MeshMain004": 1,
+      "MeshMain006": 1,
+      "Gareki": 63,
+      "Smoke": 95,
+      "outSide_b": 3
+     },
+     "parent": "CollisionCylinder",
+     "foot_offset_cm": -244.03683471679688,
+     "visible": true,
+     "last": 15.81921,
+     "sample": 14.9447
+    }
+   },
+   "frames_with_fx_while_open": 0,
+   "closed": 10.9664,
+   "compiler_requested": 14.3439,
+   "active_after": []
+  }
+ ],
+ "world": "/Engine/Maps/UEDPIE_0_Entry.Entry",
+ "controller": "GuLiCommanderPlayerController",
+ "pawn": "/Engine/Maps/UEDPIE_0_Entry.Entry:PersistentLevel.BP_GroundMech_Light_C_0"
+}

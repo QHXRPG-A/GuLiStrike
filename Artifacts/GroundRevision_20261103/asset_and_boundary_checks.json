@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "routes": {
+      "version": 3,
+      "range": 5000,
+      "4990": true,
+      "5000": true,
+      "5010": false,
+      "drifting_chain_rejected": true,
+      "vertical_outside_rejected": true,
+      "v2_rejected": true
+    },
+    "ui": {
+      "success": true,
+      "cases": [
+        {
+          "icons": 0,
+          "visible_height": 0,
+          "passed": true
+        },
+        {
+          "icons": 1,
+          "visible_height": 80,
+          "passed": true
+        },
+        {
+          "icons": 3,
+          "visible_height": 80,
+          "passed": true
+        },
+        {
+          "icons": 15,
+          "visible_height": 400,
+          "passed": true
+        },
+        {
+          "icons": 16,
+          "visible_height": 400,
+          "passed": true
+        }
+      ],
+      "visual_test": false
+    },
+    "vfx": {
+      "NS_GroundBurningBullet": "System valid=1 ready=1 gpu=0 needs_compile=0 outstanding=0\nSprite material=/Game/GuLiStrike/FX/GroundMech/Burning/M_GroundBurningBullet.M_GroundBurningBullet platform=49 finished=1 complete=1\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet.NS_GroundBurningBullet:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet.NS_GroundBurningBullet:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet.NS_GroundBurningBullet:NE_forward_simple_bullet.SpawnScript_0 status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBullet.NS_GroundBurningBullet:NE_forward_simple_bullet.UpdateScript_1 status=NCS_UpToDate\n",
+      "NS_GroundBurningBurst": "System valid=1 ready=1 gpu=0 needs_compile=0 outstanding=0\nSprite material=/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/M_ParticleTrail.M_ParticleTrail platform=49 finished=1 complete=0\nSprite material=/Game/Assets/VFX/Movement/AdvancedDashVFX/Materials/MaterialInstances/MI_SimpleTexture.MI_SimpleTexture platform=49 finished=1 complete=0\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:SystemSpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:SystemUpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Dots_0.UpdateScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.SpawnScript status=NCS_UpToDate\n/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst:Smoke001_1.UpdateScript status=NCS_UpToDate\n"
+    },
+    "timing": {
+      "ExpandSeconds": "<Struct 'NiagaraParameterInfo_Custom' (0x000001D44E13AA40) {parameter_name: \"User.ExpandSeconds\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.500000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "FadeSeconds": "<Struct 'NiagaraParameterInfo_Custom' (0x000001D44E133120) {parameter_name: \"User.FadeSeconds\", parameter_type: \"Float\", namespace: \"User\", current_value: \"0.500000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+      "Lifetime": "<Struct 'NiagaraParameterInfo_Custom' (0x000001D39BA5EBD0) {parameter_name: \"User.Lifetime\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+    }
+  }
+}

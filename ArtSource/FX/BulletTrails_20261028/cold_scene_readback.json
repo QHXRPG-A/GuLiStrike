@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "loaded_after_native_rebuild": true,
+  "PIE": false,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "actor": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiBulletTrailReviewActor_0",
+  "enabled_by_default": false,
+  "resources": {
+    "mass_trail": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_MassBulletTrail_GPU.NS_MassBulletTrail_GPU",
+    "ground_trail": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_GroundBulletTrail_Orange.NS_GroundBulletTrail_Orange",
+    "bullet_lights": "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_BulletLights_CPU.NS_BulletLights_CPU"
+  },
+  "mass_gpu": true,
+  "light_cpu": true,
+  "defaults": {
+    "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_MassBulletTrail_GPU": {
+      "User.TrailColors": "(uninitialized)",
+      "User.TrailDirections": "(uninitialized)",
+      "User.TrailEmission": "24.000000",
+      "User.TrailFacings": "(uninitialized)",
+      "User.TrailGenerations": "(uninitialized)",
+      "User.TrailMaximumLength": "1200.000000",
+      "User.TrailNow": "0.000000",
+      "User.TrailOrigins": "(uninitialized)",
+      "User.TrailSlotCount": "256",
+      "User.TrailSpeeds": "(uninitialized)",
+      "User.TrailStyle": "(X=6.000000,Y=12.000000,Z=0.060000,W=0.180000)",
+      "User.TrailTimes": "(uninitialized)"
+    },
+    "/Game/GuLiStrike/FX/BulletTrails/Review_A1/NS_BulletLights_CPU": {
+      "User.BulletLightColors": "(uninitialized)",
+      "User.BulletLightEnabled": "(uninitialized)",
+      "User.BulletLightPositions": "(uninitialized)",
+      "User.BulletLightRadii": "(uninitialized)",
+      "User.TrailSlotCount": "6"
+    }
+  },
+  "formal_references": {
+    "PlayerBullet": "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A4/NS_GroundMech_PersistentCurve_A4.NS_GroundMech_PersistentCurve_A4",
+    "GroundMachineGunTracer": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool_SmallBatches.NS_WingmanLaserPool_SmallBatches"
+  }
+}

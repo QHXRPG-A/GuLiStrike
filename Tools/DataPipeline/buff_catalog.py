@@ -38,9 +38,22 @@ def validate(tables, error):
                 fail(f'Effect {ident}: 折射配置无效')
         elif e['Handler']=='buff/on_hit':
             if e['BuffId'] not in buffs or e['ConfigId']!=0: fail(f'Effect {ident}: Buff引用无效')
-        elif e['Handler'] in ('ground/fire_rate','ground/enhanced_bullet','ground/explosive_package','ground/explosive_enhancement'):
+        elif e['Handler'] in ('ground/fire_rate','ground/enhanced_bullet','ground/explosive_package','ground/explosive_enhancement','ground/no_survivors'):
             c=weapon.get(e['ConfigId'])
             if not c or e['BuffId']!=0: fail(f'Effect {ident}: 缺少武器效果配置')
+            if e['Handler']=='ground/no_survivors':
+                columns = [c[k] for k in ('BarrageIntervalsSeconds','BarrageShotCounts','BarrageDamageBonuses','BarrageConeHalfAnglesDegrees')]
+                if not 1 <= len(columns[0]) <= 16 or any(len(v)!=len(columns[0]) for v in columns):
+                    fail(f'Effect {ident}: 对地齐射等级列长度不一致')
+                for seconds, shots, bonus, angle in zip(*columns):
+                    try:
+                        ticks = float(seconds)*60
+                        valid = (math.isfinite(ticks) and 1<=ticks<=3600 and abs(ticks-round(ticks))<1e-5
+                                 and str(shots).isdigit() and 1<=int(shots)<=256
+                                 and 0<=float(bonus)<=10 and 0<=float(angle)<=90)
+                    except (ValueError, TypeError):
+                        valid = False
+                    if not valid: fail(f'Effect {ident}: 对地齐射等级数值无效')
             if e['Handler']=='ground/fire_rate' and (not positive(c['FireRateBonusPercent']) or c['FireRateBonusPercent']>=29):
                 fail(f'Effect {ident}: 攻速增量无效')
             if e['Handler']=='ground/explosive_enhancement':
@@ -70,6 +83,8 @@ def validate(tables, error):
                 fail(f'卡牌 {card["Id"]}: 未知或重复EffectIds')
             for ref in refs:
                 effect=effects[int(ref)]
+                if effect['Handler']=='ground/no_survivors' and card['MaxAcquisitions']!=len(weapon[effect['ConfigId']]['BarrageShotCounts']):
+                    fail(f'卡牌 {card["Id"]}: 等级上限与对地齐射档数不一致')
                 if effect['Handler']=='ground/explosive_enhancement':
                     config=weapon[effect['ConfigId']]
                     if card['MaxAcquisitions']!=len(config['ExplosiveRadiusBonuses']):

@@ -1,0 +1,990 @@
+{
+  "remote_base": "1e54c542a89dbcf12ff379ad29792dd095b7cf62",
+  "local_head": "35509aebfb36c7fd6a41948342ce6a99345efd73",
+  "scope": [
+    {
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/build-result.json",
+      "blob": "d6ba378944601e0fe7e5d551ae4956ab2d154180",
+      "sha256": "1de07f62c880c7e04f567dba49b15c398fc572d84b0e18991be7262cf617ce18",
+      "working_sha256": "1de07f62c880c7e04f567dba49b15c398fc572d84b0e18991be7262cf617ce18"
+    },
+    {
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/cold-readback.json",
+      "blob": "1ddee4a99fea04b68152045c2add5b292713641d",
+      "sha256": "1e5c1048e7115cdacad3f10b5fdcc239899639d0cc52d5219b6e89acc51df8fc",
+      "working_sha256": "1e5c1048e7115cdacad3f10b5fdcc239899639d0cc52d5219b6e89acc51df8fc"
+    },
+    {
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/deleted.json",
+      "blob": "359e444ca1aeab2e8fe47cfb0bc130001f0b4798",
+      "sha256": "c2a3922fbf844fc6e860a900518ef1aae815bc139dd85231884e849e820f47ea",
+      "working_sha256": "c2a3922fbf844fc6e860a900518ef1aae815bc139dd85231884e849e820f47ea"
+    },
+    {
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/editor-handoff.json",
+      "blob": "940404c46d2e348a20880485ccc840921b0351a5",
+      "sha256": "aec581e57c7cbfe4ebe71a537a235669ce73e0ff308336352937ea19838873e4",
+      "working_sha256": "aec581e57c7cbfe4ebe71a537a235669ce73e0ff308336352937ea19838873e4"
+    },
+    {
+      "path": "Artifacts/GroundAnimationConsolidation_20261104/verification.json",
+      "blob": "2653b49adaeb1ab707c7fa9549b28c8dba419516",
+      "sha256": "55f414e781e80f831727457d917e06cfb527ad7d1d37bc26922cc5417d69ffb2",
+      "working_sha256": "55f414e781e80f831727457d917e06cfb527ad7d1d37bc26922cc5417d69ffb2"
+    },
+    {
+      "path": "Artifacts/GroundBaseSpeed_20261104/blink-reference.json",
+      "blob": "950de48765ad76f143388d24c8f9f4ed4467bca7",
+      "sha256": "f0d22d82451951906e14ac5151d4c68b9e91512fc6b922603a7844b4e4a67c86",
+      "working_sha256": "f0d22d82451951906e14ac5151d4c68b9e91512fc6b922603a7844b4e4a67c86"
+    },
+    {
+      "path": "Artifacts/GroundBaseSpeed_20261104/mobility-readback.json",
+      "blob": "b81bff1f0997eef5e3afc654160cd97347c4cc78",
+      "sha256": "4edb532c951492afb4f4fc7004824bb791e590e97be600beec2defbdb44924c4",
+      "working_sha256": "4edb532c951492afb4f4fc7004824bb791e590e97be600beec2defbdb44924c4"
+    },
+    {
+      "path": "Artifacts/GroundBaseSpeed_20261104/scene-delivery.json",
+      "blob": "4fe27518aa72a484efcd04d5d41974e23bf46ba1",
+      "sha256": "976db7ae36e8758ff9bc27b18144bf6ab7ab71be84af9abceffec5055f8c9057",
+      "working_sha256": "976db7ae36e8758ff9bc27b18144bf6ab7ab71be84af9abceffec5055f8c9057"
+    },
+    {
+      "path": "Artifacts/GroundBaseSpeed_20261104/source-tuning.json",
+      "blob": "95814358aa045923d9c35aee2b22e5438729a81b",
+      "sha256": "7f8e69576d9a896b4c87b870f9d5ed98e10bef53d7399f3bb1d239e03fd7b0d8",
+      "working_sha256": "7f8e69576d9a896b4c87b870f9d5ed98e10bef53d7399f3bb1d239e03fd7b0d8"
+    },
+    {
+      "path": "Artifacts/GroundBlinkMuzzle_20261107/references.json",
+      "blob": "dadb4cfe5d069a1de04e49f021f953a0faeb4645",
+      "sha256": "b3b93fba154ead0ab4138bc3404a2e78c8ee5462ff04565224ae52ddf52a53d4",
+      "working_sha256": "b3b93fba154ead0ab4138bc3404a2e78c8ee5462ff04565224ae52ddf52a53d4"
+    },
+    {
+      "path": "Artifacts/GroundBlinkMuzzle_20261107/repair.json",
+      "blob": "a7521be4100fbd428a252b59a503b939bcccabb1",
+      "sha256": "2dc6aefdd4cafa3a9c4b4ed96069e966b7c9807d0a541e3d12b78f4b50b6687c",
+      "working_sha256": "2dc6aefdd4cafa3a9c4b4ed96069e966b7c9807d0a541e3d12b78f4b50b6687c"
+    },
+    {
+      "path": "Artifacts/GroundBlinkRun_20261104/asset-structure.json",
+      "blob": "0bc8cd278c1f232c08d1f838dbcf6744eebe97f8",
+      "sha256": "57dc52f238c54ae454e5a204a85f041f770a4c16d43a3a67e72d25cac38ef997",
+      "working_sha256": "57dc52f238c54ae454e5a204a85f041f770a4c16d43a3a67e72d25cac38ef997"
+    },
+    {
+      "path": "Artifacts/GroundBlinkRun_20261104/bone-keys.json",
+      "blob": "7474098aca2a9577656d99ff0a8009ced57a3943",
+      "sha256": "ffdf824080686b7405325b6b31451a6489b3d6b7d43ea5afea457d6bc7431629",
+      "working_sha256": "ffdf824080686b7405325b6b31451a6489b3d6b7d43ea5afea457d6bc7431629"
+    },
+    {
+      "path": "Artifacts/GroundBlinkRun_20261104/graph.json",
+      "blob": "0c823aaf676a039b3cc51882c6bfe8d0b60122bd",
+      "sha256": "8c41290dd4f7d690d0cf693563e62c373782216756aa1ea15b74e884e5acc470",
+      "working_sha256": "8c41290dd4f7d690d0cf693563e62c373782216756aa1ea15b74e884e5acc470"
+    },
+    {
+      "path": "Artifacts/GroundBlinkRun_20261104/reload.json",
+      "blob": "7e0504f7fe075efa035187e224983d4fa3b8df0d",
+      "sha256": "0be1e82b052be307be3b7023974dcfe601ca7fcaac7e94ce46f410bc420ea98d",
+      "working_sha256": "0be1e82b052be307be3b7023974dcfe601ca7fcaac7e94ce46f410bc420ea98d"
+    },
+    {
+      "path": "Artifacts/GroundBlinkRun_20261104/scene.json",
+      "blob": "3774aa377bd5699c1ab7067582f1b3151d91f43c",
+      "sha256": "aec9b94682bd86c9c40bb0818a6441e554e94bd5524a5f10246c90d015858351",
+      "working_sha256": "aec9b94682bd86c9c40bb0818a6441e554e94bd5524a5f10246c90d015858351"
+    },
+    {
+      "path": "Artifacts/GroundBlinkVariantReset_20261107/final.json",
+      "blob": "0cfc65e1ce0096fe4dd8bd9cd7edfa67d7b86eff",
+      "sha256": "eb0112832b07449fe532ff04aee709de99357063112305b656bc06f2a407f7a8",
+      "working_sha256": "eb0112832b07449fe532ff04aee709de99357063112305b656bc06f2a407f7a8"
+    },
+    {
+      "path": "Artifacts/GroundBlinkVariantReset_20261107/removed-additive-curves.json",
+      "blob": "1222efc826e8e605f42e98f8fbb584e1294402ed",
+      "sha256": "83b7a6e302035d0546733030fc9806a90f2fd46c7ae3f2872ae4a1c917afcec3",
+      "working_sha256": "83b7a6e302035d0546733030fc9806a90f2fd46c7ae3f2872ae4a1c917afcec3"
+    },
+    {
+      "path": "Artifacts/GroundBlinkVariantReset_20261107/upper-body-clear.json",
+      "blob": "be1235c7829b7c0a33fc41db2d00363d9364d1c7",
+      "sha256": "6923efbbf053fe2cfd1b79e6bfe3cccc450b6e48c73dab1f9dc2c4194787c2b9",
+      "working_sha256": "6923efbbf053fe2cfd1b79e6bfe3cccc450b6e48c73dab1f9dc2c4194787c2b9"
+    },
+    {
+      "path": "Artifacts/GroundCamera_20261104/DELIVERY.md",
+      "blob": "60c51aafcfdd4467a62fc71a7c2ead52cc09032f",
+      "sha256": "761a37b50ef27097331264d02b4450c7a8efea9ce0733f4770edd01659624fb5",
+      "working_sha256": "761a37b50ef27097331264d02b4450c7a8efea9ce0733f4770edd01659624fb5"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/animation-authoring.json",
+      "blob": "6faf0c270db7945e2039f444849db0cf6eab1bc1",
+      "sha256": "569ffb03988fa18703fea5b1de2f8fd0ef6efc2f4ea562f86028fbe5dfc67921",
+      "working_sha256": "569ffb03988fa18703fea5b1de2f8fd0ef6efc2f4ea562f86028fbe5dfc67921"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/animation-readback.json",
+      "blob": "03fd6e58489c722ef5e84e8748400cf75315187b",
+      "sha256": "2563df2913e23043a2c8d3c3ac41f1d14c4133c72e0d56043fc737071fc51b24",
+      "working_sha256": "2563df2913e23043a2c8d3c3ac41f1d14c4133c72e0d56043fc737071fc51b24"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/asset-structure.json",
+      "blob": "8c8efba90cbb6ddb32de6a36ca8b1d6893aa1b52",
+      "sha256": "ed7661c10670e73eba1620115878efe84bba4cc80334dce2274fd92d9bf4ea48",
+      "working_sha256": "ed7661c10670e73eba1620115878efe84bba4cc80334dce2274fd92d9bf4ea48"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/blend-and-curves-readback.json",
+      "blob": "80d800ffd23d196523ee52d4e58fa8afba3ce72d",
+      "sha256": "14f14941526aecf2a8449757583f4f8d6753324b124d0db1d0d0e34da19ddc84",
+      "working_sha256": "14f14941526aecf2a8449757583f4f8d6753324b124d0db1d0d0e34da19ddc84"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/build-ids.json",
+      "blob": "768e43afb241f755dd3ba9937ff83669a682c067",
+      "sha256": "2a628212356845a2adec96f235682c200130a26112a095479c5dbffa8e5bd4b9",
+      "working_sha256": "2a628212356845a2adec96f235682c200130a26112a095479c5dbffa8e5bd4b9"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/editor-final-load.json",
+      "blob": "7a81d3d908ceac8175abec4e9163a484ce6125e6",
+      "sha256": "2b15a7a57f368062da45d68e967f5daeca85d38ffc00b81a2ad4de12bb536296",
+      "working_sha256": "2b15a7a57f368062da45d68e967f5daeca85d38ffc00b81a2ad4de12bb536296"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/final-editor-readback.json",
+      "blob": "ad99df9677a831d84f0af13318619a522520467a",
+      "sha256": "f3067b8a5ee2e2910d955f1cc374aae40b13d49842131cb7dadba092ab2811c9",
+      "working_sha256": "f3067b8a5ee2e2910d955f1cc374aae40b13d49842131cb7dadba092ab2811c9"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/gait-import.json",
+      "blob": "5f8ccf26fa17b6ff3072032a9f843a9b0bdbe5c7",
+      "sha256": "f5ff3bcc684b716ad4349867502bf1c57c81a21fd0f1b12ac6af1fc357e3264b",
+      "working_sha256": "f5ff3bcc684b716ad4349867502bf1c57c81a21fd0f1b12ac6af1fc357e3264b"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/integration-result.json",
+      "blob": "625253c5e4af22f6865d78347edc858b22f8c68b",
+      "sha256": "ca64bf47acc795062cb3f28e4679066e24bc5400dd4f509bdbfe07e4ae923a42",
+      "working_sha256": "ca64bf47acc795062cb3f28e4679066e24bc5400dd4f509bdbfe07e4ae923a42"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/scene-readback.json",
+      "blob": "ca24f840162eafe6afc0e4d1321fe848d669108a",
+      "sha256": "b5a360b0b87623ddb3a2ebfc7e5b8e14ef04d0d5ed12c388cf723b18e7f8fde8",
+      "working_sha256": "b5a360b0b87623ddb3a2ebfc7e5b8e14ef04d0d5ed12c388cf723b18e7f8fde8"
+    },
+    {
+      "path": "Artifacts/GroundDirectionalBlink_20261107/static-check.json",
+      "blob": "aac0f37478a09731ac99eef20156cccd32ff5fd1",
+      "sha256": "c89bb91a2f84ee16ed0105f8558b15e7692751b9c9f71f873ac0ac8311289e6c",
+      "working_sha256": "c89bb91a2f84ee16ed0105f8558b15e7692751b9c9f71f873ac0ac8311289e6c"
+    },
+    {
+      "path": "Artifacts/GroundSessionCloseout_20261108/cleanup-plan.json",
+      "blob": "3c0ca77151e76d623aca07fd16aa5230642a81af",
+      "sha256": "dc83189bcf68ebb0a0648c2ebcdd7b897d25bede111ff0051c133e0ea6b11278",
+      "working_sha256": "dc83189bcf68ebb0a0648c2ebcdd7b897d25bede111ff0051c133e0ea6b11278"
+    },
+    {
+      "path": "Artifacts/GroundSessionCloseout_20261108/cleanup-result.json",
+      "blob": "5a3c5a0eed7065a94e1710f8dd52682c12dc7740",
+      "sha256": "15b6bd96a6c4c51822572a1ce88d2e852921fa8b8875e4d53f32dc16834c8baa",
+      "working_sha256": "15b6bd96a6c4c51822572a1ce88d2e852921fa8b8875e4d53f32dc16834c8baa"
+    },
+    {
+      "path": "Artifacts/GroundSessionCloseout_20261108/document-updates.json",
+      "blob": "6d2b1edf1fc36622a43f21d4f575ba23a2e0bd7d",
+      "sha256": "6915a2abca9bc59d90f141679b35d3787880a1e03f6184c35db4a2355f549b52",
+      "working_sha256": "6915a2abca9bc59d90f141679b35d3787880a1e03f6184c35db4a2355f549b52"
+    },
+    {
+      "path": "Artifacts/GroundSessionCloseout_20261108/source-data-check.json",
+      "blob": "358164e6ea0234d3a3ce9a6c48057cdc0c0cef8b",
+      "sha256": "04a82c4f9a3d9299efe0a00f7db3c41bdefc771e6e1281f5270919e01911ac66",
+      "working_sha256": "04a82c4f9a3d9299efe0a00f7db3c41bdefc771e6e1281f5270919e01911ac66"
+    },
+    {
+      "path": "Artifacts/GroundSpeedLegShading_20261104/editor-final-state.json",
+      "blob": "98836365413b29e2ae30ce5f9c9129b95292feea",
+      "sha256": "ad197bd7285274a604a35efa57ec265b0c5a7719fb4e58ca3ba65dd55b9d08da",
+      "working_sha256": "ad197bd7285274a604a35efa57ec265b0c5a7719fb4e58ca3ba65dd55b9d08da"
+    },
+    {
+      "path": "Artifacts/GroundSpeedLegShading_20261104/mask-saved.json",
+      "blob": "ae1332432fb2c06ce59b725d7a2151f106ff89b3",
+      "sha256": "cb86f600ba0197f9ab5dee3611079f7ee87af7397d5386792ff24cc42be850a1",
+      "working_sha256": "cb86f600ba0197f9ab5dee3611079f7ee87af7397d5386792ff24cc42be850a1"
+    },
+    {
+      "path": "Artifacts/GroundSpeedLegShading_20261104/materials-verified.json",
+      "blob": "b16cc89d10b47648870574ddc6831a39670f73ff",
+      "sha256": "c30be45a9383b155f53c48d9f466c3d6d1639e078c7df9638a5d497e7e9c5bcb",
+      "working_sha256": "c30be45a9383b155f53c48d9f466c3d6d1639e078c7df9638a5d497e7e9c5bcb"
+    },
+    {
+      "path": "Artifacts/GroundSpeedLegShading_20261104/mobility-readback.json",
+      "blob": "a9636f93e239cdab51de33b0818663bd625817de",
+      "sha256": "74a8908c93e5cb0786731ac22764087b2d416364239370c32d708952c020d5f7",
+      "working_sha256": "74a8908c93e5cb0786731ac22764087b2d416364239370c32d708952c020d5f7"
+    },
+    {
+      "path": "Artifacts/GroundSpeedLegShading_20261104/reloaded-model.json",
+      "blob": "abebf2fe1cd7bdd619780ad7b22d8e790fa212fe",
+      "sha256": "51c0bc25ac61f63b80716bd35161632b2784e2df5e5f015a11db944a7ed760ee",
+      "working_sha256": "51c0bc25ac61f63b80716bd35161632b2784e2df5e5f015a11db944a7ed760ee"
+    },
+    {
+      "path": "Artifacts/GroundSpeedLegShading_20261104/scene-delivery.json",
+      "blob": "edab76da03b5ea59b5ef9517a718f22e317c11eb",
+      "sha256": "d159d9a5fda67850d6080fde0b704a9de99abb9252d75d112412064c4f483009",
+      "working_sha256": "d159d9a5fda67850d6080fde0b704a9de99abb9252d75d112412064c4f483009"
+    },
+    {
+      "path": "Artifacts/GroundSpeedLegShading_20261104/source-tuning.json",
+      "blob": "aff71ac8632bd7156b484031f2d863ef993effd0",
+      "sha256": "04f80b18c67f5088314b6593cb390a33ad4ea5d352d3e705bce9feab8aaf70ba",
+      "working_sha256": "04f80b18c67f5088314b6593cb390a33ad4ea5d352d3e705bce9feab8aaf70ba"
+    },
+    {
+      "path": "Artifacts/GroundUpperAim_20261104/DELIVERY.md",
+      "blob": "10091b1f95a23b91467f96554d9276634d3012c1",
+      "sha256": "eee90660e3cb31cc2ae3492cbfec8d3d4cd5a72dbbed8ee218b52b2d597438c4",
+      "working_sha256": "eee90660e3cb31cc2ae3492cbfec8d3d4cd5a72dbbed8ee218b52b2d597438c4"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/DELIVERY.md",
+      "blob": "4e09645a3b191e705ceea7da7b41b977631b4a1e",
+      "sha256": "96e872ea04c3db4490e207a7a70eb78e9c237efdad8ae161f7f3e20ae829d8e6",
+      "working_sha256": "96e872ea04c3db4490e207a7a70eb78e9c237efdad8ae161f7f3e20ae829d8e6"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/asset-import.json",
+      "blob": "ba513d5d8901bc83e82151cb2484338844d9acf8",
+      "sha256": "724f72a0ad4985e1d371d05de01ce4d44a7914b3a07004f44972a64edeef08c8",
+      "working_sha256": "724f72a0ad4985e1d371d05de01ce4d44a7914b3a07004f44972a64edeef08c8"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/asset-structure.json",
+      "blob": "cba1050757b08c9dd9fc7e8fdca1a65c2b8f09af",
+      "sha256": "0052fede01ddfbbd6f4fe39e28bb2ee2e25de691cf1f5e31a38b17494e5f6d11",
+      "working_sha256": "0052fede01ddfbbd6f4fe39e28bb2ee2e25de691cf1f5e31a38b17494e5f6d11"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/build-result.json",
+      "blob": "45e84b298b212afdfe1afbf113e178c4297b94be",
+      "sha256": "a4c90e9b7d5e06816f228ebd0570b5783d9ecefb82280e29cba9ccfc56a6752f",
+      "working_sha256": "a4c90e9b7d5e06816f228ebd0570b5783d9ecefb82280e29cba9ccfc56a6752f"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/editor-final-state.json",
+      "blob": "dc1c50d5fc8e3075c7e4c89ac83e7d720bc92a0a",
+      "sha256": "15f91f98107231b7604ab0d3fb64a2b5b57fab1fd3e983771ed225dee583c5e0",
+      "working_sha256": "15f91f98107231b7604ab0d3fb64a2b5b57fab1fd3e983771ed225dee583c5e0"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/input-assets.json",
+      "blob": "ea1288e98e1320a1a617276274ca5bcba5e76173",
+      "sha256": "83a339ac0eba0d3293d8bc9210b5c67174a51002dee3e42d64dc65e42764a6d5",
+      "working_sha256": "83a339ac0eba0d3293d8bc9210b5c67174a51002dee3e42d64dc65e42764a6d5"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/asset-import.json",
+      "blob": "a47d62740c3a1380a587ab56870621daf80e56a2",
+      "sha256": "bd0bbf0283cc66fbaf1021b5ee50607fda1d9191a3898f5b94e13e730d3124d9",
+      "working_sha256": "bd0bbf0283cc66fbaf1021b5ee50607fda1d9191a3898f5b94e13e730d3124d9"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/build-result.json",
+      "blob": "e2ece0f03e8516e0109b39988a18c23ac84d819a",
+      "sha256": "3e0e0245b49acd586be2427372f6783997609a800001886e22ab247fb97266e2",
+      "working_sha256": "3e0e0245b49acd586be2427372f6783997609a800001886e22ab247fb97266e2"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/editor-final-state.json",
+      "blob": "bc8b195eb9be5d4587306e1807102285314eab9a",
+      "sha256": "d33666cf99f753c157120db2c16a334b42e194598a46242dd8e71760b3b8f999",
+      "working_sha256": "d33666cf99f753c157120db2c16a334b42e194598a46242dd8e71760b3b8f999"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/restored-configuration.json",
+      "blob": "5e683292ff9261cd453becc79d617d78ea35d843",
+      "sha256": "c25245e0070c3469d08bef02e17a29b362ef5c8457dfc7689d73682d550e5ee9",
+      "working_sha256": "c25245e0070c3469d08bef02e17a29b362ef5c8457dfc7689d73682d550e5ee9"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/scene-delivery.json",
+      "blob": "eaaf500caa379a3c7553abd1b718fb85fbf526d0",
+      "sha256": "28272266e9c12ef0717bfd4d362cad51d2a2f98e90bd6ceb729d244269890ffd",
+      "working_sha256": "28272266e9c12ef0717bfd4d362cad51d2a2f98e90bd6ceb729d244269890ffd"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/scene-preflight.json",
+      "blob": "9a77e854733c70ba181a066248f10b421697ae7d",
+      "sha256": "70a48e3eddb53763e93ebe25d02714fc7ca4f61a49336a896481db73027ce036",
+      "working_sha256": "70a48e3eddb53763e93ebe25d02714fc7ca4f61a49336a896481db73027ce036"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/source-rollback.json",
+      "blob": "3f368fee67519a9b48d5e95e900ea782fceee4ca",
+      "sha256": "66663254cd7cb7f69e531c906a4e8a6bdad697147c5d2a1d7b46f802bf075e25",
+      "working_sha256": "66663254cd7cb7f69e531c906a4e8a6bdad697147c5d2a1d7b46f802bf075e25"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/rollback/static-review.json",
+      "blob": "032dfa170d931f00f9fc621a80a80a76fa5beab5",
+      "sha256": "7fcbbff4106f5ba6668c536fe231503f203125a7d4c8be1043e96d7b8393d1f6",
+      "working_sha256": "7fcbbff4106f5ba6668c536fe231503f203125a7d4c8be1043e96d7b8393d1f6"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/scene-delivery.json",
+      "blob": "44da51055b790e41e643a15b4a7a208b1e90218a",
+      "sha256": "e974a460e323989df650788dcb3cef20fef216fafa6e30b0c3728ad7bd19b095",
+      "working_sha256": "e974a460e323989df650788dcb3cef20fef216fafa6e30b0c3728ad7bd19b095"
+    },
+    {
+      "path": "Artifacts/GroundViewDrive_20261104/static-review.json",
+      "blob": "919824298b15b26cf60351d63754ec38af89eba2",
+      "sha256": "7a80eedad0d70fdde323f4a948d044fb8fbd19219019499a8c9f4a09d4214f5d",
+      "working_sha256": "7a80eedad0d70fdde323f4a948d044fb8fbd19219019499a8c9f4a09d4214f5d"
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-200.json",
+      "blob": "4117516269fd551d2655118ccc4dc0e46d696904",
+      "sha256": "9ecd84c33c0b0433757fd02b43611bbe6869710e40d2d9e17a24bcd4bb21c366",
+      "working_sha256": "9ecd84c33c0b0433757fd02b43611bbe6869710e40d2d9e17a24bcd4bb21c366"
+    },
+    {
+      "path": "Config/Hybrid/RuntimeManifest-600.json",
+      "blob": "edd6b313c0b01430c6f1de977fee800395e0c6a5",
+      "sha256": "d0bed516fc905fb6ff6883b9575576864a04bc0a7b737c3c3f55a901b8d96a65",
+      "working_sha256": "d0bed516fc905fb6ff6883b9575576864a04bc0a7b737c3c3f55a901b8d96a65"
+    },
+    {
+      "path": "Progress/Archive/20261104-游骑兵动画目录整合与旧资源退役.md",
+      "blob": "1f37bcfc1709b7897947968c9aa33be1912c41b7",
+      "sha256": "44f8611a34b36b6a7160fd3d04812ec6f23d8bb9b773c3259ec9d3d146c77bbb",
+      "working_sha256": "44f8611a34b36b6a7160fd3d04812ec6f23d8bb9b773c3259ec9d3d146c77bbb"
+    },
+    {
+      "path": "Progress/Archive/20261104-游骑兵原横移恢复版编译加载.md",
+      "blob": "3633cd8e0956cfe2f5646e1e135782173a970d03",
+      "sha256": "2853d95b003a4ef654e59f0195b3ad4a80343d48843ebd2a4c4b1285cb40b77b",
+      "working_sha256": "2853d95b003a4ef654e59f0195b3ad4a80343d48843ebd2a4c4b1285cb40b77b"
+    },
+    {
+      "path": "Progress/Archive/20261104-游骑兵基础速度再次翻倍.md",
+      "blob": "3455ca341b87a05027cc3ee9e97645acd1796335",
+      "sha256": "ad7d729c7a80643528b7521ae360b2381485ea1d8b8ede6d605bed6186da8b5b",
+      "working_sha256": "ad7d729c7a80643528b7521ae360b2381485ea1d8b8ede6d605bed6186da8b5b"
+    },
+    {
+      "path": "Progress/Archive/20261104-游骑兵撤回转腿走位并恢复横移.md",
+      "blob": "5a70172d8a4c1f30ef93fbea5f50d75414b4c705",
+      "sha256": "8fd64c549d2a7dc962b43a1d67869d7a849c845aaf91266fcdf810b98daf178c",
+      "working_sha256": "8fd64c549d2a7dc962b43a1d67869d7a849c845aaf91266fcdf810b98daf178c"
+    },
+    {
+      "path": "Progress/Archive/20261104-游骑兵正式闪现动画与跑步切换.md",
+      "blob": "7f4dbc8b4d511a275f949bb3f154bf34a6fbfd29",
+      "sha256": "da819729010e93c181fe4f86ea40c09febc2e377d1a547755f9f187d88a86e48",
+      "working_sha256": "da819729010e93c181fe4f86ea40c09febc2e377d1a547755f9f187d88a86e48"
+    },
+    {
+      "path": "Progress/Archive/20261104-游骑兵水平提速与腿甲材质接入.md",
+      "blob": "68dd4057db9822cd7f4a3b09d3f62c3872fe365f",
+      "sha256": "1bcfd20178ce4105cad987db3305561215311114b8f1c870625e350d8f185dab",
+      "working_sha256": "1bcfd20178ce4105cad987db3305561215311114b8f1c870625e350d8f185dab"
+    },
+    {
+      "path": "Progress/Archive/20261104-游骑兵转腿走位源码与数据导出.md",
+      "blob": "534c583d1f5e2c3dac1248a3d9a4e67760597d05",
+      "sha256": "d0aa0417fb496beca4417375db735a2d20c8ba1fb8e29370193a074a7b57af9f",
+      "working_sha256": "d0aa0417fb496beca4417375db735a2d20c8ba1fb8e29370193a074a7b57af9f"
+    },
+    {
+      "path": "Progress/Archive/20261104-游骑兵转腿走位编译接入与机动区交付.md",
+      "blob": "a790a9232cc9c8c2d7430585c899d98807973635",
+      "sha256": "8c1cbdc4a43a8abaab5d8ec082608ff28297eb175140b71ae64784b4e48427b2",
+      "working_sha256": "8c1cbdc4a43a8abaab5d8ec082608ff28297eb175140b71ae64784b4e48427b2"
+    },
+    {
+      "path": "Progress/Archive/20261107-游骑兵四向闪现动画与机动区.md",
+      "blob": "46a03d288fa0f9d2e035624626afecf3593811d5",
+      "sha256": "ece7efe24d80d61d10fd88bbb586c6fbad8633af96b0af223d7247b0fc6ed35c",
+      "working_sha256": "ece7efe24d80d61d10fd88bbb586c6fbad8633af96b0af223d7247b0fc6ed35c"
+    },
+    {
+      "path": "Progress/Archive/20261107-游骑兵定向闪现编译与正式接入.md",
+      "blob": "3972e3327478cbef31e4cebf309b6799c06630d8",
+      "sha256": "c49fa32d4a5b154fbee2354997ddcc4fd1c535de86d00ecd56372131016f9526",
+      "working_sha256": "c49fa32d4a5b154fbee2354997ddcc4fd1c535de86d00ecd56372131016f9526"
+    },
+    {
+      "path": "Progress/Archive/20261107-游骑兵方向闪现重制准备.md",
+      "blob": "9a7eda6e1b9da66f9dc283b04fda06324da3ce5a",
+      "sha256": "9a969424397405bec37ca7a0b88cefe266a5c8503cd03517698c69848d076f7b",
+      "working_sha256": "9a969424397405bec37ca7a0b88cefe266a5c8503cd03517698c69848d076f7b"
+    },
+    {
+      "path": "Progress/Archive/20261107-游骑兵闪现枪口分离修复.md",
+      "blob": "0374a279958a69be7e92c05b6b3c865ff2562ab3",
+      "sha256": "1edc718dc5d9d56fea3f5ab690f0a87c6bcf3cdbfaa64f5e558d245c6bf39be4",
+      "working_sha256": "1edc718dc5d9d56fea3f5ab690f0a87c6bcf3cdbfaa64f5e558d245c6bf39be4"
+    },
+    {
+      "path": "Progress/Archive/20261108-游骑兵会话清理与代码交付.md",
+      "blob": "8a8ecd1aa832f9ffb85a33d5dcd272e3707a492e",
+      "sha256": "2a0b8ef024a4c68f9e8bce110c17fee01360c7e55aeeb0ed26ca7997ac0220eb",
+      "working_sha256": "2a0b8ef024a4c68f9e8bce110c17fee01360c7e55aeeb0ed26ca7997ac0220eb"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261104-游骑兵全向提速与腿甲明暗.md",
+      "blob": "441b2aeb2f25cc3cbeb0952944687ed428d6798a",
+      "sha256": "4c86568243baa860853b43c431b7ecbdcf245d3a9beabbaf3bca25109944ee52",
+      "working_sha256": "4c86568243baa860853b43c431b7ecbdcf245d3a9beabbaf3bca25109944ee52"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261104-游骑兵跑步与闪现动画.md",
+      "blob": "34850cf12a9c25716689f13e415f6ce85d9a41ea",
+      "sha256": "a0454d9517db7f4724d7b6d70d2786cd5c63710b4b20d1a9dba201232ce4c62d",
+      "working_sha256": "a0454d9517db7f4724d7b6d70d2786cd5c63710b4b20d1a9dba201232ce4c62d"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261104-游骑兵转腿走位.md",
+      "blob": "12c2df53a0edd76d92cf913cccce033eea95787b",
+      "sha256": "9c1261d99489ae2f04e54e67a51596ad7b14cf565828296062804773292965d5",
+      "working_sha256": "9c1261d99489ae2f04e54e67a51596ad7b14cf565828296062804773292965d5"
+    },
+    {
+      "path": "Progress/DevelopmentDocumentation/20261107-游骑兵按键定向闪现与惯性拖拽动画.md",
+      "blob": "2e917398ac360266eec835dc2c8d7130e861c5d1",
+      "sha256": "b66abb8c260ca7605150f5da8b1c933c220a3ac79334bcf9bbaa40b56beacb63",
+      "working_sha256": "b66abb8c260ca7605150f5da8b1c933c220a3ac79334bcf9bbaa40b56beacb63"
+    },
+    {
+      "path": "Progress/Gameplay/游骑兵.md",
+      "blob": "cc38e9f253c5797ec71bb410deed0af6fdd62cad",
+      "sha256": "7a69e52c77b117f3aaf84b1e33799283159cb5a03368faae531700a2eac4886f",
+      "working_sha256": "34b3c1d463cda03821cca0e87a16a9783c9be6c3f046b8db82416f3e2dfea2f6"
+    },
+    {
+      "path": "Progress/Gameplay/游骑兵闪现.md",
+      "blob": "81c98aca6830b3901aa18c3642863e79e28fcce5",
+      "sha256": "8194289c3e462592424b687a80cb7b263d79b0e4df3f15016b5e7e853396d64f",
+      "working_sha256": "8194289c3e462592424b687a80cb7b263d79b0e4df3f15016b5e7e853396d64f"
+    },
+    {
+      "path": "Progress/RequirementDocument/20261104-游骑兵全向提速与腿甲明暗.md",
+      "blob": "79a6481ea6b10cd0560369a86dba675cbd9fd03e",
+      "sha256": "c5354bb629cf432845f072d1d1c908458bbc39a4642719648d58db7f29074643",
+      "working_sha256": "c5354bb629cf432845f072d1d1c908458bbc39a4642719648d58db7f29074643"
+    },
+    {
+      "path": "Progress/RequirementDocument/20261104-游骑兵跑步与闪现动画.md",
+      "blob": "ad8da3b5e74a7903dea8c627d788c80b606a6b20",
+      "sha256": "fb454cd1adc07d1922539d8fd3235f396ffe4a467800dbf819d9b4dc50aa9210",
+      "working_sha256": "fb454cd1adc07d1922539d8fd3235f396ffe4a467800dbf819d9b4dc50aa9210"
+    },
+    {
+      "path": "Progress/RequirementDocument/20261104-游骑兵转腿走位.md",
+      "blob": "4ba0de29b001006ed17d629f8338982d7b66e84b",
+      "sha256": "82c4012a0de5c88a951cd867644a96af0a400ec593d6c666aeb52f7f52294f6c",
+      "working_sha256": "82c4012a0de5c88a951cd867644a96af0a400ec593d6c666aeb52f7f52294f6c"
+    },
+    {
+      "path": "Progress/RequirementDocument/20261107-游骑兵按键定向闪现与惯性拖拽动画.md",
+      "blob": "adb4dd5479791571c7e7459e096962625dcaf12d",
+      "sha256": "cdbf2bf964d7014e2be775b36ccc12b7052578803c4b49e4cd0f01de3ed2796e",
+      "working_sha256": "cdbf2bf964d7014e2be775b36ccc12b7052578803c4b49e4cd0f01de3ed2796e"
+    },
+    {
+      "path": "Progress/_Index/Archive.md",
+      "blob": "6f3862e03589e8ffb3f2068bd8191ca518eac530",
+      "sha256": "5c8924c1795ec6b018317cba401c7708560975a0ffb972b006470315e7519d16",
+      "working_sha256": "125596126ba7bbe43b8ccad251fc02125bef8f0d2b63e3bf5bf682319901b436"
+    },
+    {
+      "path": "Progress/_Index/ByArea.md",
+      "blob": "3b27ae3e41efb250b21dc537d0d19edf399eea56",
+      "sha256": "42c0d3a29b9a95b4ed9a71c402c7b66f7baa26bd67df294904ba49c2fbc3c560",
+      "working_sha256": "91f2ac41c0c11c71d291d5fab3dd4f2594d13a0365382e704d21d394abb69090"
+    },
+    {
+      "path": "Progress/_Index/Current.md",
+      "blob": "1dba29f4e2b8543c8d7209d83822fef33d1a2ce2",
+      "sha256": "b17b4c0016a4b84f7cdca74bf4fada9af87ef07600a4eef0b777b41ea747c8a2",
+      "working_sha256": "0cdc5caf49db89198fc093361bccc441aa2d85280af0c36e0819bb2f072df59f"
+    },
+    {
+      "path": "Progress/_Index/Quality.md",
+      "blob": "bec2aeba458532fda001a363d3e391cd01595cc1",
+      "sha256": "8d84a47735e74459a2c3be0d26ca2e4d40f156b0b5109e733c980b6ac57dd254",
+      "working_sha256": "a493b8490efca70a975918f0127085ba828e281d57a3fd7067ce72230336851f"
+    },
+    {
+      "path": "Progress/_Index/Verification.md",
+      "blob": "b5ec7c0759d85c4b9d6b1e7f0ec970ee0aae2919",
+      "sha256": "fff668455ce72c39e51f24b25435f37b4378dc99fccc2df3e45df46623ecc2e2",
+      "working_sha256": "a9190bbce89807e165ec60b0675377349f1b738b5859eee7d7689b406b7d1671"
+    },
+    {
+      "path": "Progress/_Index/catalog.jsonl",
+      "blob": "451bbd0a4d7d47db22208f8f887ded2998dd702b",
+      "sha256": "ac329cd103cced14d2107db86992098f511cabbe40dba9a21931032cef0a9145",
+      "working_sha256": "320436a2acf0827dfc097ee304053b18c83f13decac3e7498aa9757e3fb10a50"
+    },
+    {
+      "path": "Scripts/GroundMech/Blink/author_blink_animation.py",
+      "blob": "3a242f0b4b180de3760417886a53a1e86511d7e3",
+      "sha256": "22be2f674009d340ed2c6d9535ce2bcec6162be028314c50e5d0289a6ab24bcd",
+      "working_sha256": "22be2f674009d340ed2c6d9535ce2bcec6162be028314c50e5d0289a6ab24bcd"
+    },
+    {
+      "path": "Scripts/GroundMech/Blink/prepare_blink_scene.py",
+      "blob": "cb7570bf6128b81ed45fa0ec45dc3ede09317994",
+      "sha256": "c348a9f9f32f768bd9016834785aca676e788b88f6f48052c4eb4d4be3410d64",
+      "working_sha256": "c348a9f9f32f768bd9016834785aca676e788b88f6f48052c4eb4d4be3410d64"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/README.md",
+      "blob": "8a9a7a80e186b000746a05734aeccf9473b85bfc",
+      "sha256": "6652b66a2670e5172eec76cdd9d78fdedc532d5099a5945e376eb1d63467ca69",
+      "working_sha256": "6652b66a2670e5172eec76cdd9d78fdedc532d5099a5945e376eb1d63467ca69"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/audit_b2_resources.py",
+      "blob": "f690c2e628e124b17c24ab00d292aca1286cc1a9",
+      "sha256": "38f01143f13685727c66bf9b48cf20cf540ed940cb210b13d01243a870a0c583",
+      "working_sha256": "38f01143f13685727c66bf9b48cf20cf540ed940cb210b13d01243a870a0c583"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/author_heavy_gait_tuning.py",
+      "blob": "d44bd23372135d3cf54b1fa94b387e65e9fc6797",
+      "sha256": "b5819cc61987a9b33ef4a81d8582a9c8424e0b678d1d0067e2cdfa41df084ccf",
+      "working_sha256": "b5819cc61987a9b33ef4a81d8582a9c8424e0b678d1d0067e2cdfa41df084ccf"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/author_mobility_tables.py",
+      "blob": "ada74223d3731a73da539385cb05f0842c2610a8",
+      "sha256": "ea5b40fefe20373de477f08c15a07e61a9a9ec6ba3aebf388eb87c26509d1ea0",
+      "working_sha256": "ea5b40fefe20373de477f08c15a07e61a9a9ec6ba3aebf388eb87c26509d1ea0"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/bake_ground_contacts.py",
+      "blob": "8540c023192cb890ac7ac93fdf17015cbfc2d844",
+      "sha256": "1faf714bb5361b4741f16becc4a5e25df80719482bdde4600d674ab17358e02b",
+      "working_sha256": "1faf714bb5361b4741f16becc4a5e25df80719482bdde4600d674ab17358e02b"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/export_b2_source_animation_data.py",
+      "blob": "51ed294ea6863c16ab09775fa49618069e29ff31",
+      "sha256": "952e800afa74bea60b27c705fa7f420b1b71cdddeba77d9eb0c05d4051bbef75",
+      "working_sha256": "952e800afa74bea60b27c705fa7f420b1b71cdddeba77d9eb0c05d4051bbef75"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/export_b2_ue.py",
+      "blob": "0daf05ac25f20d3505282a2a7baa175397665c50",
+      "sha256": "074d17615f5dae23c5591cb58b3f410ca3c7a0f18064a07cebc44c293e611be4",
+      "working_sha256": "074d17615f5dae23c5591cb58b3f410ca3c7a0f18064a07cebc44c293e611be4"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/finalize_b2_blueprints.py",
+      "blob": "90fe224f33b93f8ae7e686b5e3a63e0296d3bd77",
+      "sha256": "50af778a90c94482a67562e05a794add125c664fea24d23e3bcac09dad16d11e",
+      "working_sha256": "50af778a90c94482a67562e05a794add125c664fea24d23e3bcac09dad16d11e"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/inspect_b2_animation_camera.py",
+      "blob": "c6c692adda134ef1d03708da9a036b61c88373ee",
+      "sha256": "a3fb54741f5c490df8502eace9fec8908156e55d100893596479025777c05b71",
+      "working_sha256": "a3fb54741f5c490df8502eace9fec8908156e55d100893596479025777c05b71"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/install_b2_animations.py",
+      "blob": "56585371e4caaa6e4a0d0175760a4092f8e9a24b",
+      "sha256": "a9c35bd269c0fa452cdd22282529f47cd2a398d3cf5acd4e0951829d8b726f09",
+      "working_sha256": "a9c35bd269c0fa452cdd22282529f47cd2a398d3cf5acd4e0951829d8b726f09"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/install_b2_materials_sockets.py",
+      "blob": "43456f8e1656bb055e7ece09a8d75dfd4970612c",
+      "sha256": "9354b627961410b2b6bcbde9a500b71b58008dcc4ecc6b01da410bbbf564d9b9",
+      "working_sha256": "9354b627961410b2b6bcbde9a500b71b58008dcc4ecc6b01da410bbbf564d9b9"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/install_b2_player.py",
+      "blob": "203168d58b7eaa3c485b6f9879bf369583c73dde",
+      "sha256": "4a2f832f578664d66e2486b7d90af0551dc03f48ab71e7f39cbf34439c547b03",
+      "working_sha256": "4a2f832f578664d66e2486b7d90af0551dc03f48ab71e7f39cbf34439c547b03"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/install_ground_mobility.py",
+      "blob": "a09df64fc78a3f869e3fb39765cfbb396800759e",
+      "sha256": "136ba6fe0681d953348f3f9434f3e981c0cd686601efa98648742cd1638f1e6e",
+      "working_sha256": "136ba6fe0681d953348f3f9434f3e981c0cd686601efa98648742cd1638f1e6e"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/install_upper_body_recoil.py",
+      "blob": "2ab67b8294757dd7887966c7db76e7e61378dce6",
+      "sha256": "d438d0c23caa5960282a2dbac0b926f67a298920036c3987fff0b79e26dc9f3e",
+      "working_sha256": "d438d0c23caa5960282a2dbac0b926f67a298920036c3987fff0b79e26dc9f3e"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/prepare_b2_review_scene.py",
+      "blob": "6bfe46575a29863645d323e9f0219579528bf02c",
+      "sha256": "6b5bd653a5972b834ba4606de810c9aedfc0bac211b62c0fc826797d05d45b11",
+      "working_sha256": "6b5bd653a5972b834ba4606de810c9aedfc0bac211b62c0fc826797d05d45b11"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/promote_b2_catalog.py",
+      "blob": "e2f244483790b2060cf2ef22a41d1ff8d2363968",
+      "sha256": "ca04c9837b234468d81d0081601bfc739d5ea51e394cd088ded0329561160c29",
+      "working_sha256": "ca04c9837b234468d81d0081601bfc739d5ea51e394cd088ded0329561160c29"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/promote_catalog.py",
+      "blob": "b0cec721509dc9850fd2a85d5093d64d945c9d16",
+      "sha256": "c18bbbacddb541c838c8e9bbe26cc326a004c53cb5962a80faaef38a7bc37bb8",
+      "working_sha256": "c18bbbacddb541c838c8e9bbe26cc326a004c53cb5962a80faaef38a7bc37bb8"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/publish_a4_b2_review.py",
+      "blob": "3ad4bb3ce67857371fc6e4aedfa17b15eefe3590",
+      "sha256": "65bb62edbc570c27851fb1368c7fc900c3d3d9750c58901776a1f70c6ea15bb9",
+      "working_sha256": "65bb62edbc570c27851fb1368c7fc900c3d3d9750c58901776a1f70c6ea15bb9"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/read_ground_mobility_assets.py",
+      "blob": "fcd71db00e0de6fce4832a5a68d6f8a73b371072",
+      "sha256": "fd78c60b10fbe46d0134fac0f4d1ff06c26ce8941947771d4c51ed4e6d16a419",
+      "working_sha256": "fd78c60b10fbe46d0134fac0f4d1ff06c26ce8941947771d4c51ed4e6d16a419"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/save_mobility_review_scene.py",
+      "blob": "24a800190ab793b5482e943930957164a3711314",
+      "sha256": "ca5111fcdc0eb7e1d7cdcc8cf2527aeb41aeb7626493be8cf9404e43bdf63606",
+      "working_sha256": "ca5111fcdc0eb7e1d7cdcc8cf2527aeb41aeb7626493be8cf9404e43bdf63606"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/sync_heavy_gait_assets.py",
+      "blob": "572c0220a136aaa537e8f4c02b0c0d5e1851fe15",
+      "sha256": "5f734a8e360247ddb6e7fafcc5dc7566905c837f3dd501080487f2478d915ee9",
+      "working_sha256": "5f734a8e360247ddb6e7fafcc5dc7566905c837f3dd501080487f2478d915ee9"
+    },
+    {
+      "path": "Scripts/GroundMech/MechaDestroyer/sync_mobility_assets.py",
+      "blob": "d12702ba77ad7d6f4b9a3b83774ec6d438746e59",
+      "sha256": "c650b85e6343dc4fd1cf0fda911887bdf0525a91684a90179f21d9193897c048",
+      "working_sha256": "c650b85e6343dc4fd1cf0fda911887bdf0525a91684a90179f21d9193897c048"
+    },
+    {
+      "path": "Scripts/GroundMech/README.md",
+      "blob": "bbf2f51abbb9d38751064b88d65b6c6500abe80b",
+      "sha256": "eb6a0f991b9d406de0bfd9500d778ecb21aa8e678d9b6a50e968b13951745480",
+      "working_sha256": "c6e34014a10d129a5c746c80e71aeca061af3228276eb21af75f64cca68a0f47"
+    },
+    {
+      "path": "Scripts/GroundMech/author_animation_assets.py",
+      "deleted": true
+    },
+    {
+      "path": "Scripts/GroundMech/author_fire_assets.py",
+      "blob": "57eba0f69098f0ef068c6857c552a50ec6dd720b",
+      "sha256": "c052c0a8785fb07f840267d2697845a1db450650890e54f89bfee704b316a05f",
+      "working_sha256": "c052c0a8785fb07f840267d2697845a1db450650890e54f89bfee704b316a05f"
+    },
+    {
+      "path": "Scripts/GroundMech/build_fire_data.py",
+      "blob": "847a6ac91121742b24ab8bf363fd62a9e624f60a",
+      "sha256": "cb19a7b3b1fc28117f1f7c1b555926abbcbe339bfe85fddd2cbc84fbd39483de",
+      "working_sha256": "cb19a7b3b1fc28117f1f7c1b555926abbcbe339bfe85fddd2cbc84fbd39483de"
+    },
+    {
+      "path": "Scripts/GroundMech/import_assets.py",
+      "blob": "e6909e6c3b0001ebefc9103c1d34b57a7a74ac91",
+      "sha256": "1cea69d0e34e85cad7a245061e647707563156f0cf30b5329bebfea8666792d9",
+      "working_sha256": "1cea69d0e34e85cad7a245061e647707563156f0cf30b5329bebfea8666792d9"
+    },
+    {
+      "path": "Scripts/GroundMech/inspect_assets.py",
+      "deleted": true
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.cpp",
+      "blob": "1fa29f18c0d26e9505b4637e175257a513e13419",
+      "sha256": "5a02693d4a173a02db6922430ea90fef78b32d101be0e865e67f6dfb1a0faf3b",
+      "working_sha256": "5a02693d4a173a02db6922430ea90fef78b32d101be0e865e67f6dfb1a0faf3b"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkTypes.h",
+      "blob": "6385e9f49d5a62f0e0d24e84f7eab968e3e00810",
+      "sha256": "db3baabf40014f8a98a2f240d365e2787610217d71ca8f1f74de6053b72de9d6",
+      "working_sha256": "db3baabf40014f8a98a2f240d365e2787610217d71ca8f1f74de6053b72de9d6"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.cpp",
+      "blob": "871378561d9fc6c3676d399f5e70072b4e132df7",
+      "sha256": "86fcb3b606886e17d74354a5f19eec5e900368dbe721b3da2bb12eaa440d5cee",
+      "working_sha256": "86fcb3b606886e17d74354a5f19eec5e900368dbe721b3da2bb12eaa440d5cee"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.h",
+      "blob": "7cd1c5756a876f0ccf21dcbb9b84edf4f0231190",
+      "sha256": "6747770536451db06290f756026d25a0151d530f8cbbe0d40c4972c853319f6d",
+      "working_sha256": "6747770536451db06290f756026d25a0151d530f8cbbe0d40c4972c853319f6d"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.cpp",
+      "blob": "d5fedec4683d128fb84d8d9e8b29dd541259c405",
+      "sha256": "fd1b5a20c1222824b47d6bab0296747e0acc65cc5a4981fdb504eeecf13ebd7f",
+      "working_sha256": "fd1b5a20c1222824b47d6bab0296747e0acc65cc5a4981fdb504eeecf13ebd7f"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h",
+      "blob": "7c6d3310a4ff3ed059803bb62a7cf6f901ab5d01",
+      "sha256": "666186513321bc0a1c6aa054d4ff3ac0dbd7223f25844a5f95a1d00b87254d69",
+      "working_sha256": "666186513321bc0a1c6aa054d4ff3ac0dbd7223f25844a5f95a1d00b87254d69"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp",
+      "blob": "03e4d6705d14a5a243520491c0dc9d2f60240b9b",
+      "sha256": "b7bdd3901b969054c23cce9f105d49a20ec418b42ac2e6b1368f8b93f30de315",
+      "working_sha256": "b7bdd3901b969054c23cce9f105d49a20ec418b42ac2e6b1368f8b93f30de315"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h",
+      "blob": "033c7e20e7396f36938f79d804f23411ed87144a",
+      "sha256": "aaba93dede0501c97b1dc5b1dbf5eedd3edb8c996d2cf4c5562cd547bbaca0ce",
+      "working_sha256": "aaba93dede0501c97b1dc5b1dbf5eedd3edb8c996d2cf4c5562cd547bbaca0ce"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.cpp",
+      "blob": "5d5492468497dad055e45df51fd882a09f11ad5b",
+      "sha256": "2c93c5c56e2697114ee4387de13bfd0c5711566322aa4d062ab2f5a6afeccf3d",
+      "working_sha256": "2c93c5c56e2697114ee4387de13bfd0c5711566322aa4d062ab2f5a6afeccf3d"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp",
+      "blob": "1e6d780b2d0a5dbcc934862eacbaffabe2a6102c",
+      "sha256": "473edf07c006e12d060854fb8857e24b8387d4172967c7c53675875c3ef45a74",
+      "working_sha256": "473edf07c006e12d060854fb8857e24b8387d4172967c7c53675875c3ef45a74"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp",
+      "blob": "229cc4032640ce936505e5cd5b385fbd87e50e30",
+      "sha256": "9f46995a78a37f150b7ffbd9329c86371417916265887106b167d869eaf51e8c",
+      "working_sha256": "9f46995a78a37f150b7ffbd9329c86371417916265887106b167d869eaf51e8c"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GroundMech/Tests/GuLiGroundMechFireTests.cpp",
+      "blob": "78ce483c7e9e5625e6603d57c54e7bc20688d348",
+      "sha256": "38bef8c1c0dc1af7ef62550c418c042ee844eaf2b20464de3132df5120190251",
+      "working_sha256": "38bef8c1c0dc1af7ef62550c418c042ee844eaf2b20464de3132df5120190251"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.cpp",
+      "blob": "1985da1e3f8f2d9a4b9adc25add1e3c8db6ff9d7",
+      "sha256": "714ca8bb33c8b81a96e006f28b8a0d998aa1974c9f0e23af5dd2183f305a55c1",
+      "working_sha256": "714ca8bb33c8b81a96e006f28b8a0d998aa1974c9f0e23af5dd2183f305a55c1"
+    },
+    {
+      "path": "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.h",
+      "blob": "b8a7102e4b80f2f8aac97104cac1da4b176baceb",
+      "sha256": "0081b8b7516048b2a534fd2ca272fb4fdd863e5bfde32f89e84f2f289b060cdb",
+      "working_sha256": "0081b8b7516048b2a534fd2ca272fb4fdd863e5bfde32f89e84f2f289b060cdb"
+    },
+    {
+      "path": "Tools/DataPipeline/export_data_from_excel.py",
+      "blob": "81e1c9e42923b3a5c2fd16b2a2c472a471b8a141",
+      "sha256": "4cd7a6dfac20f3994fe88b2abb19679eeb5b4f73dd4262ced6fbfc8f8fbdc3a2",
+      "working_sha256": "4cd7a6dfac20f3994fe88b2abb19679eeb5b4f73dd4262ced6fbfc8f8fbdc3a2"
+    },
+    {
+      "path": "data/Excel/GuLiStrikeMech.xlsx",
+      "blob": "8394639661f1da42541c8406a4c59b21e79c95e8",
+      "sha256": "d3ff9e1991ce07afbe59c5a5775a9c6c4ce20beccf6e5cbb83deb67ba42d9ee3",
+      "working_sha256": "91839ce89e6b6d0300a21e4eb72e1bc8a578e8954f4549631d42f8e8e7232194"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Gait.json",
+      "blob": "97e4a7fc4f39ae150d117cf650e20ad91f82d05f",
+      "sha256": "f7e473c30574e7ef8e79bd70b91e5f0b470aa6249b5999a3c5819ac69f87236d",
+      "working_sha256": "f7e473c30574e7ef8e79bd70b91e5f0b470aa6249b5999a3c5819ac69f87236d"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Mobility.json",
+      "blob": "909f0ce268623739803aa06d5fec13d64f090163",
+      "sha256": "1c79e5b5ba8919592ebb4bcc79479ee0affb4f78798ce70b1e09652fefae9883",
+      "working_sha256": "1c79e5b5ba8919592ebb4bcc79479ee0affb4f78798ce70b1e09652fefae9883"
+    },
+    {
+      "path": "data/Json/DT_GuLiStrikeMech_Skills.json",
+      "blob": "6f3977fcc4fcd18f01c8e9e1fb75a4f8c1a965fa",
+      "sha256": "4e5ae9e929e2dec87f8e0b8c1b987b41104ce30386e5b152ff1db37bcd41808f",
+      "working_sha256": "4e5ae9e929e2dec87f8e0b8c1b987b41104ce30386e5b152ff1db37bcd41808f"
+    }
+  ],
+  "changed_paths": [
+    "Artifacts/GroundAnimationConsolidation_20261104/build-result.json",
+    "Artifacts/GroundAnimationConsolidation_20261104/cold-readback.json",
+    "Artifacts/GroundAnimationConsolidation_20261104/deleted.json",
+    "Artifacts/GroundAnimationConsolidation_20261104/editor-handoff.json",
+    "Artifacts/GroundAnimationConsolidation_20261104/verification.json",
+    "Artifacts/GroundBaseSpeed_20261104/blink-reference.json",
+    "Artifacts/GroundBaseSpeed_20261104/mobility-readback.json",
+    "Artifacts/GroundBaseSpeed_20261104/scene-delivery.json",
+    "Artifacts/GroundBaseSpeed_20261104/source-tuning.json",
+    "Artifacts/GroundBlinkMuzzle_20261107/references.json",
+    "Artifacts/GroundBlinkMuzzle_20261107/repair.json",
+    "Artifacts/GroundBlinkRun_20261104/asset-structure.json",
+    "Artifacts/GroundBlinkRun_20261104/bone-keys.json",
+    "Artifacts/GroundBlinkRun_20261104/graph.json",
+    "Artifacts/GroundBlinkRun_20261104/reload.json",
+    "Artifacts/GroundBlinkRun_20261104/scene.json",
+    "Artifacts/GroundBlinkVariantReset_20261107/final.json",
+    "Artifacts/GroundBlinkVariantReset_20261107/removed-additive-curves.json",
+    "Artifacts/GroundBlinkVariantReset_20261107/upper-body-clear.json",
+    "Artifacts/GroundDirectionalBlink_20261107/animation-authoring.json",
+    "Artifacts/GroundDirectionalBlink_20261107/animation-readback.json",
+    "Artifacts/GroundDirectionalBlink_20261107/asset-structure.json",
+    "Artifacts/GroundDirectionalBlink_20261107/blend-and-curves-readback.json",
+    "Artifacts/GroundDirectionalBlink_20261107/build-ids.json",
+    "Artifacts/GroundDirectionalBlink_20261107/editor-final-load.json",
+    "Artifacts/GroundDirectionalBlink_20261107/final-editor-readback.json",
+    "Artifacts/GroundDirectionalBlink_20261107/gait-import.json",
+    "Artifacts/GroundDirectionalBlink_20261107/integration-result.json",
+    "Artifacts/GroundDirectionalBlink_20261107/scene-readback.json",
+    "Artifacts/GroundDirectionalBlink_20261107/static-check.json",
+    "Artifacts/GroundSessionCloseout_20261108/cleanup-plan.json",
+    "Artifacts/GroundSessionCloseout_20261108/cleanup-result.json",
+    "Artifacts/GroundSessionCloseout_20261108/document-updates.json",
+    "Artifacts/GroundSessionCloseout_20261108/source-data-check.json",
+    "Artifacts/GroundSpeedLegShading_20261104/editor-final-state.json",
+    "Artifacts/GroundSpeedLegShading_20261104/mask-saved.json",
+    "Artifacts/GroundSpeedLegShading_20261104/materials-verified.json",
+    "Artifacts/GroundSpeedLegShading_20261104/mobility-readback.json",
+    "Artifacts/GroundSpeedLegShading_20261104/reloaded-model.json",
+    "Artifacts/GroundSpeedLegShading_20261104/scene-delivery.json",
+    "Artifacts/GroundSpeedLegShading_20261104/source-tuning.json",
+    "Artifacts/GroundViewDrive_20261104/DELIVERY.md",
+    "Artifacts/GroundViewDrive_20261104/asset-import.json",
+    "Artifacts/GroundViewDrive_20261104/asset-structure.json",
+    "Artifacts/GroundViewDrive_20261104/build-result.json",
+    "Artifacts/GroundViewDrive_20261104/editor-final-state.json",
+    "Artifacts/GroundViewDrive_20261104/input-assets.json",
+    "Artifacts/GroundViewDrive_20261104/rollback/asset-import.json",
+    "Artifacts/GroundViewDrive_20261104/rollback/build-result.json",
+    "Artifacts/GroundViewDrive_20261104/rollback/editor-final-state.json",
+    "Artifacts/GroundViewDrive_20261104/rollback/restored-configuration.json",
+    "Artifacts/GroundViewDrive_20261104/rollback/scene-delivery.json",
+    "Artifacts/GroundViewDrive_20261104/rollback/scene-preflight.json",
+    "Artifacts/GroundViewDrive_20261104/rollback/source-rollback.json",
+    "Artifacts/GroundViewDrive_20261104/rollback/static-review.json",
+    "Artifacts/GroundViewDrive_20261104/scene-delivery.json",
+    "Artifacts/GroundViewDrive_20261104/static-review.json",
+    "Config/Hybrid/RuntimeManifest-200.json",
+    "Config/Hybrid/RuntimeManifest-600.json",
+    "Progress/Archive/20261104-游骑兵动画目录整合与旧资源退役.md",
+    "Progress/Archive/20261104-游骑兵原横移恢复版编译加载.md",
+    "Progress/Archive/20261104-游骑兵基础速度再次翻倍.md",
+    "Progress/Archive/20261104-游骑兵撤回转腿走位并恢复横移.md",
+    "Progress/Archive/20261104-游骑兵正式闪现动画与跑步切换.md",
+    "Progress/Archive/20261104-游骑兵水平提速与腿甲材质接入.md",
+    "Progress/Archive/20261104-游骑兵转腿走位源码与数据导出.md",
+    "Progress/Archive/20261104-游骑兵转腿走位编译接入与机动区交付.md",
+    "Progress/Archive/20261107-游骑兵四向闪现动画与机动区.md",
+    "Progress/Archive/20261107-游骑兵定向闪现编译与正式接入.md",
+    "Progress/Archive/20261107-游骑兵方向闪现重制准备.md",
+    "Progress/Archive/20261107-游骑兵闪现枪口分离修复.md",
+    "Progress/Archive/20261108-游骑兵会话清理与代码交付.md",
+    "Progress/DevelopmentDocumentation/20261104-游骑兵全向提速与腿甲明暗.md",
+    "Progress/DevelopmentDocumentation/20261104-游骑兵跑步与闪现动画.md",
+    "Progress/DevelopmentDocumentation/20261104-游骑兵转腿走位.md",
+    "Progress/DevelopmentDocumentation/20261107-游骑兵按键定向闪现与惯性拖拽动画.md",
+    "Progress/Gameplay/游骑兵.md",
+    "Progress/Gameplay/游骑兵闪现.md",
+    "Progress/RequirementDocument/20261104-游骑兵全向提速与腿甲明暗.md",
+    "Progress/RequirementDocument/20261104-游骑兵跑步与闪现动画.md",
+    "Progress/RequirementDocument/20261104-游骑兵转腿走位.md",
+    "Progress/RequirementDocument/20261107-游骑兵按键定向闪现与惯性拖拽动画.md",
+    "Progress/_Index/Archive.md",
+    "Progress/_Index/ByArea.md",
+    "Progress/_Index/Current.md",
+    "Progress/_Index/Quality.md",
+    "Progress/_Index/Verification.md",
+    "Progress/_Index/catalog.jsonl",
+    "Scripts/GroundMech/Blink/author_blink_animation.py",
+    "Scripts/GroundMech/Blink/prepare_blink_scene.py",
+    "Scripts/GroundMech/MechaDestroyer/README.md",
+    "Scripts/GroundMech/MechaDestroyer/audit_b2_resources.py",
+    "Scripts/GroundMech/MechaDestroyer/author_heavy_gait_tuning.py",
+    "Scripts/GroundMech/MechaDestroyer/author_mobility_tables.py",
+    "Scripts/GroundMech/MechaDestroyer/bake_ground_contacts.py",
+    "Scripts/GroundMech/MechaDestroyer/export_b2_source_animation_data.py",
+    "Scripts/GroundMech/MechaDestroyer/export_b2_ue.py",
+    "Scripts/GroundMech/MechaDestroyer/finalize_b2_blueprints.py",
+    "Scripts/GroundMech/MechaDestroyer/inspect_b2_animation_camera.py",
+    "Scripts/GroundMech/MechaDestroyer/install_b2_animations.py",
+    "Scripts/GroundMech/MechaDestroyer/install_b2_materials_sockets.py",
+    "Scripts/GroundMech/MechaDestroyer/install_b2_player.py",
+    "Scripts/GroundMech/MechaDestroyer/install_ground_mobility.py",
+    "Scripts/GroundMech/MechaDestroyer/install_upper_body_recoil.py",
+    "Scripts/GroundMech/MechaDestroyer/prepare_b2_review_scene.py",
+    "Scripts/GroundMech/MechaDestroyer/promote_b2_catalog.py",
+    "Scripts/GroundMech/MechaDestroyer/promote_catalog.py",
+    "Scripts/GroundMech/MechaDestroyer/publish_a4_b2_review.py",
+    "Scripts/GroundMech/MechaDestroyer/read_ground_mobility_assets.py",
+    "Scripts/GroundMech/MechaDestroyer/save_mobility_review_scene.py",
+    "Scripts/GroundMech/MechaDestroyer/sync_heavy_gait_assets.py",
+    "Scripts/GroundMech/MechaDestroyer/sync_mobility_assets.py",
+    "Scripts/GroundMech/README.md",
+    "Scripts/GroundMech/author_animation_assets.py",
+    "Scripts/GroundMech/author_fire_assets.py",
+    "Scripts/GroundMech/build_fire_data.py",
+    "Scripts/GroundMech/import_assets.py",
+    "Scripts/GroundMech/inspect_assets.py",
+    "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkTypes.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechAim.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/AnimNode_GuLiGroundMechGrounding.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Animation/GuLiGroundMechAnimInstance.h",
+    "Source/GuLiStrike/Gameplay/GroundMech/Data/GuLiGroundMechConfiguration.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechCharacter.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Network/GuLiHybridGroundAdapter.cpp",
+    "Source/GuLiStrike/Gameplay/GroundMech/Tests/GuLiGroundMechFireTests.cpp",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.cpp",
+    "Source/GuLiStrikeEditor/Private/GuLiGroundMechAnimationEditorLibrary.h",
+    "Tools/DataPipeline/export_data_from_excel.py",
+    "data/Excel/GuLiStrikeMech.xlsx",
+    "data/Json/DT_GuLiStrikeMech_Gait.json",
+    "data/Json/DT_GuLiStrikeMech_Mobility.json",
+    "data/Json/DT_GuLiStrikeMech_Skills.json"
+  ],
+  "excluded": [
+    "UE assets, maps, art sources, native binaries",
+    "unrelated pending work and local asset history",
+    "unrelated machinegun upgrade fire-rate edit"
+  ],
+  "whitespace_check": "passed",
+  "compiled_sources_unchanged": 15,
+  "publication_tree": "5c116ff4c16005e3ab57cc9dadf3a546fa3844a8",
+  "publication_commit": "7fa399ecc8b7aa21635a1e88cb3cbd76c8427714",
+  "publication_branch": "refs/heads/codex/ranger-session-closeout-20261108",
+  "local_integration_commit": "e044d01b0008bc298b14f2308c084b5ba10c7cea",
+  "remote_verified": true,
+  "remote_url": "https://github.com/QHXRPG-A/GuLiStrike/commit/7fa399ecc8b7aa21635a1e88cb3cbd76c8427714",
+  "working_files_preserved": true,
+  "resource_tree_preserved": true
+}

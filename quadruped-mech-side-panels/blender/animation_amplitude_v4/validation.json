@@ -1,0 +1,50 @@
+{
+  "checks": {
+    "materials_and_colors_unchanged": true,
+    "object_hierarchy_transforms_topology_key_timing_unchanged": true,
+    "static_model_geometry_unchanged": true,
+    "v3_source_file_unchanged": true,
+    "body_motion_multiplier_correct": true,
+    "walk_foot_lift_three_times": true,
+    "feet_above_ground": true,
+    "rigid_components_preserved": true,
+    "lamps_stay_mounted": true,
+    "loops_closed": true,
+    "laser_attached_timing_and_radius_preserved": true,
+    "mining_feet_planted": true,
+    "no_outline_inversions": true,
+    "no_degenerate_or_nonfinite_geometry": true
+  },
+  "scenes": {
+    "01_行进 · 顶点动画": {
+      "frames_checked": 29,
+      "scene_triangle_count": 9866,
+      "constant": true,
+      "within_10000": true
+    },
+    "02_采矿 · 顶点动画": {
+      "frames_checked": 73,
+      "scene_triangle_count": 9986,
+      "constant": true,
+      "within_10000": true
+    }
+  },
+  "measurements": {
+    "body_amplitude_max_error_m": 2.182126044969479e-06,
+    "foot_lift_3x_max_error_m": 4.993379113527041e-07,
+    "old_sampled_foot_lift_m": 0.23892954148352152,
+    "new_sampled_foot_lift_m": 0.7167884205281735,
+    "minimum_animated_body_z_m": 0.00923830270767212,
+    "maximum_rigid_error_m": 7.152557373046875e-07,
+    "maximum_lamp_mount_error_m": 2.384185791015625e-07,
+    "maximum_loop_error_m": 0.0,
+    "maximum_laser_attachment_error_m": 8.441636260819818e-07,
+    "maximum_laser_radius_change_m": 3.3961032386287116e-07,
+    "maximum_mining_foot_drift_m": 0.0,
+    "degenerate_body_faces_across_frames": 0,
+    "nonfinite_states": 0
+  },
+  "outline_failures": [],
+  "all_checks_passed": true,
+  "visual_acceptance": "待用户复审；未渲染、未截图、未由助手读图。"
+}

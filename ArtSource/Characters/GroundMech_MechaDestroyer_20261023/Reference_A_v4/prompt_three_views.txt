@@ -1,0 +1,15 @@
+Use case: precise-object-edit.
+EDIT ONLY THE LEG JOINT ANGLES of input image 1, the original A_v2 sheet. Treat this as a tightly constrained pose edit, NOT a redesign. Image 2 is the user's red leg-angle guide. Do not reproduce that red annotation.
+
+Critical user correction: the previous squat redesign became too bulky. Return to the ORIGINAL A_v2 in image 1. Keep EVERYTHING about its physical design and dimensions unchanged: exact torso, chest, head/upper fixtures, shoulders, both arms, cannons, pelvis casing, armor segmentation, thigh thickness, shin thickness, foot size, overall body width, lateral spacing between feet, color blocks, line style, lighting and page layout. Do not broaden or thicken any part. Do not shorten any rigid limb segment. No new parts. No chibi proportions. No giant feet. No deep spread-legged squat. No spherical or plump forms. No compression or nonuniform scaling.
+
+The ONLY physical change is rotation of the existing leg segments at their existing joints in the forward/backward (sagittal) plane:
+In the strict left-facing SIDE columns, rotate the existing upper legs a little farther down-forward, so the knees project forward/LEFT of both hips and ankles; rotate the existing shins down-back to the RIGHT, so hip -> knee -> ankle forms a clear forward-pointing "<" angular fold following the user's red guide. Preserve the full lengths and the original relatively slim armor shapes. Use a moderate mechanical crouch, roughly 115-125 degrees between thigh and shin (not an extreme fully folded squat). Keep a visible stretch of shin and ankle between the knee and foot. Feet remain exactly the same size and flat on the ground. Let the pelvis lower naturally only as much as those joint rotations require. Do not target an exaggerated height reduction and do not scale the model to fill a shorter rectangle. The upper body is allowed only rigid translation with the pelvis; its geometry and scale are locked.
+Front and rear views should depict that same leg-angle adjustment, with the exact original stance width and same slender plates. No outward thigh splay or sideways knee angle. The lower links must not overlap into bulky balls. Both teams share the identical mechanical pose and proportions. Draw all six views consistently.
+
+Preserve the existing 2-row, 3-column composition, BLUE above RED; FRONT, SIDE, BACK columns. Preserve source canvas, font styling and spacing, light neutral background. Change only the title version to "GROUND MECH — A_v4". Keep the original chest and gun drawings as closely as possible; this is a surgical adjustment below the waist.
+Preserve the original matte anime style, three cel-lighting bands, thin inner lines, clean silhouette and exact existing palette. No new design details, extra vents, surface texture or ornaments.
+Priority 1: original A_v2 mechanical design and part dimensions absolutely unchanged.
+Priority 2: clearly more angular forward-knee / rear-ankle leg pose visible in profile, mildly lower stance.
+Priority 3: consistent front/rear and both team variants.
+Output a clean edited reference sheet without red marks or explanatory callouts.

@@ -1,0 +1,41 @@
+游骑兵 · 急刹停链式弹射 v5
+
+画面要求
+项目游骑兵的过肩电影镜头；滑步急刹、一脚前伸蹬地、一腿屈膝支撑；尾焰、明显开火与定向后坐模糊；三台敌方先驱者连续受击、局部装甲破坏；部分敌人还击，细短弹迹掠过机甲；水面与水花采用手绘大色块。
+
+图像编码输入
+图1：CompositionDraft_v4.png，上一版战斗底稿，重绘动作、尾焰、水面和交火；去掉旧的错误长弹道。
+图2：GroundMech_Project_Rear3Q.png，实际项目 Ground 玩家整机后侧，组合 ModelId 4001/4002/4003/4004。
+图3：GroundMech_Project_Weapon.png，实际项目同版本炮座与机枪，约束装配和炮口。
+图4：Pioneer_Project_Enemy.png，实际项目敌方先驱者（数据名称先驱号），ModelId 1001，四足、双侧机枪、双天线、敌方莓红/暗红配色。
+图5：Civitai_145143380.jpeg，仅供绘画风格、冷暖光影与急停动势参考。
+UserFeedback_v3_Annotated.png 只归档为用户反馈依据，不进入图像编码，避免烘焙红框和标注文字。
+
+两段输出
+VAEDecode → RAW SaveImage：战斗底图。
+VAEDecode + 透明主弹道图层 → InvertMask / ImageCompositeMasked → FINAL SaveImage：最终图。
+主弹道图层还包含中远处命中闪光、机械破口、碎甲和少量敌方掠过弹迹。主弹道透明 PNG 与底图都是 832×1248，在实际枪口和三个爆点之间画一条恰好三段的连续折线，避免生成模型画出断线、闭环和空中拐点。使用 ComfyUI 标准节点，无自定义节点安装。
+
+复用
+将包内 input 的全部图片复制到 ComfyUI 的 input 目录，把 Qwen-Image-2.1-游骑兵-急刹停弹射-v5.json 拖入画布。工作流文件是界面图；workflow-api.json 是 /prompt 用的 API 图。
+保留当前 seed、提示词和尺寸时，弹道坐标对应本版的固定构图。改 seed、改构图或尺寸后，需按新图实际枪口与爆点更新 trajectory_points.json，并用 create_ricochet_overlay.py 重建透明弹道图层，刷新 LoadImage 后再合成。
+脚本示例：
+D:\gen-image\ComfyUI_windows_portable\python_embeded\python.exe create_ricochet_overlay.py --config trajectory_points.json --output D:\gen-image\input\GuLi_ChainRicochet_Trails_v5.png
+
+参数
+Qwen-Image-2.1 INT8 ConvRot；qwen3vl_8b_int8_convrot 编码器；qwen_image_2.1_vae_bf16；不加载人物 LoRA。
+832×1248，36 steps，CFG 1.5，euler/simple，denoise 1，seed 145143385（fixed）。缓存 auto/int8，编码器 resolution=0。
+各输入预算有界：832×1248、512×768、512×512、576×768、512×768。正反向提示词分别完整接入采样器，actual payload 与文件 SHA256 见 manifest.json。
+
+来源与交付
+风格来源：https://civitai.com/images/145143380（公开接口没有原图原始提示词；本次词为重新撰写）。
+项目模型图通过当前 UE 资产与材质实际渲染，参考截图所用临时演员已移除；没有替换正式资源，也没有接入游戏功能。
+完整正反词位于 Prompts/Positive.txt、Prompts/Negative.txt。原始图、合成图、全部输入、图层与任务历史分别保留。
+此为美术参考候选，用户美术验收状态仍待确认。
+
+实际最终图：ChainRicochet_Brake_v5_FINAL.png
+实际原始底图：ChainRicochet_Brake_v5_RAW.png
+透明特效图层：GuLi_ChainRicochet_Trails_v5.png
+轨迹与命中坐标：trajectory_points.json
+
+正向提示词全文 1702 字，反向提示词全文 570 字。用户美术验收待确认。

@@ -5,6 +5,7 @@
 #include "Gameplay/Navigation/Grid/GuLiGridQueries.h"
 #include "Gameplay/GroundMech/Network/Private/GuLiHybridGroundInput.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRoguePresentation.h"
 #include "Gameplay/GroundMech/Abilities/Blink/GuLiGroundMechBlinkComponent.h"
 #include "Gameplay/GroundMech/Camera/GuLiGroundMechCameraComponent.h"
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h"
@@ -24,8 +25,19 @@
 
 namespace GuLiHybridGround
 {
-constexpr uint32 StateVersion=15;
-constexpr uint32 MotionVersion=9;
+constexpr uint32 StateVersion=17;
+constexpr uint32 MotionVersion=11;
+// Reuse the cast flag byte. Its upper five bits describe a recent admitted shot
+// in battle ticks, so late packets play the remainder of the recoil envelope.
+constexpr uint8 CastingFlag=1, RecentShotFlag=2, LeftShotFlag=4, ShotAgeShift=3;
+uint8 BarrageMotion(bool bCasting, const UGuLiGroundRoguePresentation& Cues, uint64 At)
+{
+    uint8 Flags=bCasting ? CastingFlag : 0;
+    const uint64 Shot=Cues.LatestShotTick();
+    if (Shot && At>=Shot && At-Shot<=(MAX_uint8>>ShotAgeShift))
+        Flags|=RecentShotFlag | (Cues.LatestShotWasLeft() ? LeftShotFlag : 0) | uint8((At-Shot)<<ShotAgeShift);
+    return Flags;
+}
 struct FPose
 {
     FVector Position=FVector::ZeroVector,Velocity=FVector::ZeroVector;
@@ -60,6 +72,11 @@ struct FPrivate
     float RecoilAge=100,RecoilStart=0,RecoilRest=0,RecoilAlpha=0,RecoilOffset=0;
     TArray<FGuid> SeenShots;
     TArray<uint8> Placement;
+    bool bBarrageTrial=false;
+    FGuid BarrageCast;
+    uint64 BarrageStartTick=0;
+    int32 BarrageNextShot=0,BarrageCount=0,BarrageIntervalTicks=0,BarrageCastLevel=0;
+    float BarrageDamage=0,BarrageHalfAngle=0;
 };
 void Pose(FGuLiHybridStateArchive& A,FPose& V)
 {
@@ -90,7 +107,7 @@ void Pose(FGuLiHybridStateArchive& A,FPose& V)
 }
 void Private(FGuLiHybridStateArchive& A,FPrivate& V)
 {
-    uint32 Version=StateVersion; A.Value(Version); if (Version!=StateVersion) A.Reject();
+    uint32 Version=StateVersion; A.Value(Version); if (Version!=StateVersion && Version!=16) A.Reject();
     A.Value(V.Key); Pose(A,V.Pose); Input(A,V.Simulation); Input(A,V.ControllerInput);
     A.Value(V.bSemantic); A.Value(V.bShoulderZoom); A.Value(V.bSprint); A.Value(V.bAbility); A.Value(V.bRocketHeld); A.Value(V.bRocketRequested);
     A.Value(V.bRocketThrusting); A.Value(V.bRocketAllowed); A.Value(V.FuelRecoveryElapsed);
@@ -101,6 +118,26 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
     A.Value(V.RecoilAge); A.Value(V.RecoilStart); A.Value(V.RecoilRest); A.Value(V.RecoilAlpha); A.Value(V.RecoilOffset);
     A.Array(V.SeenShots,8192,[](auto& Ar,auto& ID){ Ar.Value(ID); if (!ID.IsValid()) Ar.Reject(); });
     A.Bytes(V.Placement,65536);
+    A.Value(V.bBarrageTrial); A.Value(V.BarrageCast); A.Value(V.BarrageStartTick); A.Value(V.BarrageNextShot);
+    if(Version==16)
+    {
+        if(V.BarrageNextShot==10)V.BarrageNextShot=0;
+        else if(V.bBarrageTrial && V.BarrageNextShot>=0 && V.BarrageNextShot<10)
+        {
+            // A v16 range volley stored only its ordinal; these were its fixed launch settings.
+            V.BarrageCount=10;V.BarrageIntervalTicks=30;V.BarrageCastLevel=1;V.BarrageDamage=30.f;V.BarrageHalfAngle=5.f;
+        }
+        else A.Reject();
+    }
+    else
+    {
+        A.Value(V.BarrageCount);A.Value(V.BarrageIntervalTicks);A.Value(V.BarrageCastLevel);
+        A.Value(V.BarrageDamage);A.Value(V.BarrageHalfAngle);
+    }
+    if(V.BarrageCount<0 || V.BarrageCount>256 || V.BarrageNextShot<0 || V.BarrageNextShot>V.BarrageCount ||
+       (V.BarrageCount && (!V.BarrageCast.IsValid() || V.BarrageCastLevel<1 || V.BarrageCastLevel>16 ||
+        V.BarrageIntervalTicks<1 || V.BarrageIntervalTicks>3600 || !FMath::IsFinite(V.BarrageDamage) || V.BarrageDamage<=0 ||
+        !FMath::IsFinite(V.BarrageHalfAngle) || V.BarrageHalfAngle<0 || V.BarrageHalfAngle>90)))A.Reject();
     if (!V.Key.IsValid() || V.Key.Kind!=EGuLiHybridObjectKind::GroundPlayer || V.FuelRecoveryElapsed<0
         || S.Radius<0 || S.SimulationSeconds<0
         || (V.bAbility && !V.Simulation.bRocket) || V.Upgrade.IsEmpty() || V.NextShot<0 || V.Shots<0 || V.NextFireSide>1 || !FMath::IsFinite(V.FirePhase) || V.FirePhase<0 || V.FirePhase>1 || V.RecoilAge<0
@@ -220,6 +257,11 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
             ApplyPose(V.Pose);
             P->GetBlinkComponent()->PrepareRestore();
             P->SimulationInput=V.Simulation; P->HybridInput=V.ControllerInput; P->bSemanticInput=V.bSemantic;
+            P->bBarrageTrial=V.bBarrageTrial; P->BarrageCast=V.BarrageCast;
+            P->BarrageStartTick=V.BarrageStartTick; P->BarrageNextShot=V.BarrageNextShot;
+            P->BarrageCount=V.BarrageCount;P->BarrageCastLevel=V.BarrageCastLevel;P->BarrageIntervalTicks=V.BarrageIntervalTicks;
+            P->BarrageDamage=V.BarrageDamage;P->BarrageHalfAngle=V.BarrageHalfAngle;
+            if ((V.bBarrageTrial || P->IsFiringBarrage()) && !P->ResolveBarrageDefinition()) return false;
             P->bSprintHeld=V.bSprint; P->bHybridInputSent=false; P->LastHybridInputTick=0;
             P->bShoulderZoomHeld=V.bShoulderZoom && !V.bSemantic && P->IsLocallyControlled();
             M->SupportState=V.Support;
@@ -247,7 +289,18 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
             LastApplied=0; LastPublished=0; return true;
         }
         if (Stage!=EGuLiHybridRestoreStage::Activate) return false;
-        if (Record.bDormant) ResetControlInput();
+        if (Record.bDormant || Record.LifeState>=2 || Record.Health.bDead) ResetControlInput();
+        else
+        {
+            auto* Cues=P->GetRoguePresentation();
+            Cues->ClearShotRecoil();
+            Cues->SetCast(P->IsFiringBarrage() ? P->BarrageStartTick : 0);
+            if (P->IsFiringBarrage() && P->BarrageNextShot>0)
+            {
+                const int32 Last=P->BarrageNextShot-1;
+                Cues->RecordShot(P->BarrageStartTick+uint64(Last)*P->BarrageIntervalTicks, Last%2==0);
+            }
+        }
         return true;
     }
     bool bRestoreAbility=false;
@@ -263,6 +316,8 @@ public:
     {
         auto* P=Pawn.Get(); auto* M=Movement(); if (!P || !M) return;
         P->GetBlinkComponent()->ResetControl();
+        P->StopBarrage();
+        P->GetRoguePresentation()->ClearShotRecoil();
         P->SimulationInput={}; P->HybridInput={}; P->bSemanticInput=false; P->bSprintHeld=false;
         P->GetCameraController()->ResetBlink();
         P->CameraMoveAxis=FVector2D::ZeroVector;
@@ -298,10 +353,19 @@ public:
         if (At%2 || At==LastPublished) return;
         LastPublished=At; FGuLiHybridStateArchive A(1024); uint32 Schema=GuLiHybridGround::MotionVersion; A.Value(Schema); auto Pose=ReadPose(); GuLiHybridGround::Pose(A,Pose);
         auto Aim=FVector(P->Weapon->AimPoint); A.Value(Aim);
+        const bool bCasting=P->IsFiringBarrage();
+        uint8 Flags=GuLiHybridGround::BarrageMotion(bCasting,*P->GetRoguePresentation(),At);
+        A.Value(Flags);
+        if (bCasting) A.Value(P->BarrageStartTick);
         TArray<uint8> Body; if (A.Finish(Body)) World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body,Pose.Velocity.IsZero());
     }
     bool Execute(const FGuLiHybridCommand& Command,const FGuLiHybridCommandMember& Member) override
     {
+        if (Pawn.IsValid() && bLocal && Command.Operation==TEXT("GroundBarrage") && Member.Key==Record.Key)
+        {
+            Pawn->StartBarrage(Command.Event);
+            return true;
+        }
         if (Pawn.IsValid() && bLocal && Command.Operation==TEXT("BuildingPlace"))
             return Pawn->FindComponentByClass<UGuLiBuildingPlacementComponent>()->ExecuteHybridPlacement(Command,Member);
         FGuLiHybridGroundInput Input;
@@ -314,8 +378,29 @@ public:
         if (!Pawn.IsValid() || bLocal) return false; if (At<=LastApplied) return true;
         FGuLiHybridStateArchive A(Bytes,1024); uint32 Schema=0; A.Value(Schema);
         GuLiHybridGround::FPose V; GuLiHybridGround::Pose(A,V); FVector Aim; A.Value(Aim);
-        if (Schema!=GuLiHybridGround::MotionVersion || !A.Done()) return false;
+        uint64 FirstShotTick=0;
+        uint8 Flags=0;
+        if (Schema==GuLiHybridGround::MotionVersion)
+        {
+            A.Value(Flags);
+            if (Flags&GuLiHybridGround::CastingFlag) A.Value(FirstShotTick);
+            if ((Flags&GuLiHybridGround::RecentShotFlag) && (Flags>>GuLiHybridGround::ShotAgeShift)>At) return false;
+        }
+        else if (Schema==10)
+        {
+            bool bCasting=false;
+            A.Value(bCasting);
+            if (bCasting) A.Value(FirstShotTick);
+        }
+        else if (Schema!=9) return false;
+        if (!A.Done()) return false;
         ApplyPose(V);
+        auto* Cues=Pawn->GetRoguePresentation();
+        const bool bInactive=Record.bDormant || Record.LifeState>=2 || Record.Health.bDead;
+        Cues->SetCast(bInactive ? 0 : FirstShotTick);
+        if (bInactive) Cues->ClearShotRecoil();
+        else if (Flags&GuLiHybridGround::RecentShotFlag)
+            Cues->RecordShot(At-(Flags>>GuLiHybridGround::ShotAgeShift), (Flags&GuLiHybridGround::LeftShotFlag)!=0);
         GuLiGrid::ObserveRemoteBody(*World(),Record,V.Position,1,V.Mode==MOVE_Walking || V.Mode==MOVE_NavWalking);
         Pawn->Weapon->AimPoint=Aim; Pawn->Weapon->AlignGun(); LastApplied=At; return true;
     }
@@ -337,6 +422,10 @@ public:
         auto* P=Pawn.Get(); auto* M=Movement(); if (!P || !M || M->bMoveContextActive || M->bSweepStepActive) return false;
         GuLiHybridGround::FPrivate V; V.Key=Record.Key; V.Pose=ReadPose();
         V.Simulation=P->SimulationInput; V.ControllerInput=P->HybridInput; V.bSemantic=P->bSemanticInput; V.bSprint=P->bSprintHeld;
+        V.bBarrageTrial=P->bBarrageTrial; V.BarrageCast=P->BarrageCast;
+        V.BarrageStartTick=P->BarrageStartTick; V.BarrageNextShot=P->BarrageNextShot;
+        V.BarrageCount=P->BarrageCount;V.BarrageCastLevel=P->BarrageCastLevel;V.BarrageIntervalTicks=P->BarrageIntervalTicks;
+        V.BarrageDamage=P->BarrageDamage;V.BarrageHalfAngle=P->BarrageHalfAngle;
         V.bShoulderZoom=P->bShoulderZoomHeld;
         V.bAbility=P->RocketJump->bAbilityActive; V.bRocketHeld=M->bRocketHeld; V.bRocketRequested=M->bRocketRequested;
         V.bRocketThrusting=M->bRocketThrusting; V.bRocketAllowed=M->bRocketAllowedThisMove;

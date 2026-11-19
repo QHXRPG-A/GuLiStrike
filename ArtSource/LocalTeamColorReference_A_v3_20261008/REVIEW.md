@@ -21,7 +21,7 @@
 | 前哨建筑 | [图板](Boards/ManualOutpost_blue.png) | [图板](Boards/ManualOutpost_red.png) | [分区](Configs/ManualOutpost.json) | 待用户决定 |
 | 防空炮 | [图板](Boards/MissileTurret_blue.png) | [图板](Boards/MissileTurret_red.png) | [分区](Configs/MissileTurret.json) | 待用户决定 |
 | 哨戒炮 | [图板](Boards/SentryTurret_blue.png) | [图板](Boards/SentryTurret_red.png) | [分区](Configs/SentryTurret.json) | 待用户决定 |
-| 矿厂 | [图板](Boards/ResourceFactory_blue.png) | [图板](Boards/ResourceFactory_red.png) | [分区](Configs/ResourceFactory.json) | 待用户决定 |
+| 先驱号兵营 | [图板](Boards/ResourceFactory_blue.png) | [图板](Boards/ResourceFactory_red.png) | [分区](Configs/ResourceFactory.json) | 待用户决定 |
 | SSF 空军基地 | [图板](Boards/SSF_AirBase_blue.png) | [图板](Boards/SSF_AirBase_red.png) | [分区](Configs/SSF_AirBase.json) | 待用户决定 |
 | SSF 克隆中心 | [图板](Boards/SSF_CloningCenter_blue.png) | [图板](Boards/SSF_CloningCenter_red.png) | [分区](Configs/SSF_CloningCenter.json) | 待用户决定 |
 | SSF 指挥中心 | [图板](Boards/SSF_CommandCenter_blue.png) | [图板](Boards/SSF_CommandCenter_red.png) | [分区](Configs/SSF_CommandCenter.json) | 待用户决定 |

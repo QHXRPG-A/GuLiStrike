@@ -1,0 +1,443 @@
+{
+  "success": true,
+  "assistant_visual_test": false,
+  "pie_started": false,
+  "native_build": false,
+  "materials": [
+    {
+      "artwork_id": 10,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Materials/MI_GroundMech_FireRate_Artwork.MI_GroundMech_FireRate_Artwork",
+      "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSix_v1.M_CardArtwork_RegisteredSix_v1",
+      "parameters_checked": 36
+    },
+    {
+      "artwork_id": 11,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/EnhancedBullet/Materials/MI_GroundMech_EnhancedBullet_Artwork.MI_GroundMech_EnhancedBullet_Artwork",
+      "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSix_v1.M_CardArtwork_RegisteredSix_v1",
+      "parameters_checked": 35
+    },
+    {
+      "artwork_id": 12,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/ExplosivePackage/Materials/MI_GroundMech_ExplosivePackage_Artwork.MI_GroundMech_ExplosivePackage_Artwork",
+      "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSix_v1.M_CardArtwork_RegisteredSix_v1",
+      "parameters_checked": 35
+    },
+    {
+      "artwork_id": 13,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Materials/MI_GroundMech_NoSurvivors_Artwork.MI_GroundMech_NoSurvivors_Artwork",
+      "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSix_v1.M_CardArtwork_RegisteredSix_v1",
+      "parameters_checked": 35
+    }
+  ],
+  "textures": [
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Textures/T_GroundMech_FireRate_Layer1.T_GroundMech_FireRate_Layer1",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Textures/T_GroundMech_FireRate_Layer2.T_GroundMech_FireRate_Layer2",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Textures/T_GroundMech_FireRate_Layer3.T_GroundMech_FireRate_Layer3",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Textures/T_GroundMech_FireRate_Layer4.T_GroundMech_FireRate_Layer4",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Textures/T_GroundMech_FireRate_Layer5.T_GroundMech_FireRate_Layer5",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Textures/T_GroundMech_FireRate_Layer6.T_GroundMech_FireRate_Layer6",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Textures/T_GroundMech_FireRate_LightningFrontMask.T_GroundMech_FireRate_LightningFrontMask",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Mask",
+      "srgb": false,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/EnhancedBullet/Textures/T_GroundMech_EnhancedBullet_Layer1.T_GroundMech_EnhancedBullet_Layer1",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/EnhancedBullet/Textures/T_GroundMech_EnhancedBullet_Layer2.T_GroundMech_EnhancedBullet_Layer2",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/EnhancedBullet/Textures/T_GroundMech_EnhancedBullet_Layer3.T_GroundMech_EnhancedBullet_Layer3",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/EnhancedBullet/Textures/T_GroundMech_EnhancedBullet_Layer4.T_GroundMech_EnhancedBullet_Layer4",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/EnhancedBullet/Textures/T_GroundMech_EnhancedBullet_Layer5.T_GroundMech_EnhancedBullet_Layer5",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/EnhancedBullet/Textures/T_GroundMech_EnhancedBullet_Layer6.T_GroundMech_EnhancedBullet_Layer6",
+      "size": [
+        1152,
+        1728
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/ExplosivePackage/Textures/T_GroundMech_ExplosivePackage_Layer1.T_GroundMech_ExplosivePackage_Layer1",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/ExplosivePackage/Textures/T_GroundMech_ExplosivePackage_Layer2.T_GroundMech_ExplosivePackage_Layer2",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/ExplosivePackage/Textures/T_GroundMech_ExplosivePackage_Layer3.T_GroundMech_ExplosivePackage_Layer3",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/ExplosivePackage/Textures/T_GroundMech_ExplosivePackage_Layer4.T_GroundMech_ExplosivePackage_Layer4",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/ExplosivePackage/Textures/T_GroundMech_ExplosivePackage_Layer5.T_GroundMech_ExplosivePackage_Layer5",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/ExplosivePackage/Textures/T_GroundMech_ExplosivePackage_Layer6.T_GroundMech_ExplosivePackage_Layer6",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer1.T_GroundMech_NoSurvivors_Layer1",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer2.T_GroundMech_NoSurvivors_Layer2",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer3.T_GroundMech_NoSurvivors_Layer3",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer4.T_GroundMech_NoSurvivors_Layer4",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer5.T_GroundMech_NoSurvivors_Layer5",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    },
+    {
+      "path": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Textures/T_GroundMech_NoSurvivors_Layer6.T_GroundMech_NoSurvivors_Layer6",
+      "size": [
+        1088,
+        1632
+      ],
+      "role": "Color",
+      "srgb": true,
+      "alpha_preserved": true
+    }
+  ],
+  "shader": "<Struct 'MaterialDiagnostics' (0x000001C6DFC06C80) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Engine/EngineResources/WhiteSquareTexture.WhiteSquareTexture\",\"/Game/GuLiStrike/CardSystem/RevealDemo/Textures/T_CardArtwork_WhiteMask.T_CardArtwork_WhiteMask\"), expression_count: 68, texture_sample_count: 10, texture_object_parameter_count: 10, function_call_count: 0, scalar_parameter_count: 24, vector_parameter_count: 20}>",
+  "source_integrity": [
+    {
+      "id": 10,
+      "hashes_match": true,
+      "full_strength_margin_pixels": [
+        25.745716071762345,
+        346.4359654119914,
+        25.745716071762217,
+        346.43596541199133
+      ]
+    },
+    {
+      "id": 11,
+      "hashes_match": true,
+      "full_strength_margin_pixels": [
+        21.745716071762345,
+        342.4359654119914,
+        21.745716071762217,
+        342.4359654119913
+      ]
+    },
+    {
+      "id": 12,
+      "hashes_match": true,
+      "full_strength_margin_pixels": [
+        5.745716071762265,
+        312.43596541199145,
+        5.7457160717621445,
+        312.43596541199133
+      ]
+    },
+    {
+      "id": 13,
+      "hashes_match": true,
+      "full_strength_margin_pixels": [
+        5.745716071762265,
+        312.43596541199145,
+        5.7457160717621445,
+        312.43596541199133
+      ]
+    }
+  ],
+  "button_event_bindings": [
+    "<Struct 'BlueprintNodeInfo' (0x000001C73B90C180) {node_id: \"66DB4EA24ED55F8C4192719B9C8C1050\", node_type: \"K2Node_AddDelegate\", node_title: \"Bind Event to On Clicked\", pos_x: 940.000000, pos_y: 100.000000, pin_names: (\"execute\",\"then\",\"self\",\"Delegate\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True),(PinName=\"self\",PinType=\"object\",bIsConnected=True),(PinName=\"Delegate\",PinType=\"delegate\",bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C73B9074A0) {node_id: \"A664B5AD4B1FF1254E4358BC92BFE974\", node_type: \"K2Node_AddDelegate\", node_title: \"Bind Event to On Clicked\", pos_x: 1360.000000, pos_y: 100.000000, pin_names: (\"execute\",\"then\",\"self\",\"Delegate\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True),(PinName=\"self\",PinType=\"object\",bIsConnected=True),(PinName=\"Delegate\",PinType=\"delegate\",bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C73B909D20) {node_id: \"BCBFE67D4A4C2FCDDD9D069BD3E87D10\", node_type: \"K2Node_AddDelegate\", node_title: \"Bind Event to On Clicked\", pos_x: 1780.000000, pos_y: 100.000000, pin_names: (\"execute\",\"then\",\"self\",\"Delegate\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True),(PinName=\"self\",PinType=\"object\",bIsConnected=True),(PinName=\"Delegate\",PinType=\"delegate\",bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C73B90AD40) {node_id: \"8A77E6B445FF4361B89EE3B37A6D9DB6\", node_type: \"K2Node_AddDelegate\", node_title: \"Bind Event to On Clicked\", pos_x: 2200.000000, pos_y: 100.000000, pin_names: (\"execute\",\"then\",\"self\",\"Delegate\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True),(PinName=\"self\",PinType=\"object\",bIsConnected=True),(PinName=\"Delegate\",PinType=\"delegate\",bIsConnected=True))}>"
+  ],
+  "button_callbacks": [
+    "<Struct 'BlueprintNodeInfo' (0x000001C73B900300) {node_id: \"73CE6BA24886510D05B859832C863E15\", node_type: \"K2Node_CreateDelegate\", node_title: \"创建事件\", pos_x: 100.000000, pos_y: 447.000000, pin_names: (\"self\",\"OutputDelegate\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"OutputDelegate\",PinType=\"delegate\",bIsInput=False,bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C73B90DAA0) {node_id: \"8D8D09D24753EFDA8BCEA286DBB5DCF9\", node_type: \"K2Node_CreateDelegate\", node_title: \"创建事件\", pos_x: 100.000000, pos_y: 755.000000, pin_names: (\"self\",\"OutputDelegate\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"OutputDelegate\",PinType=\"delegate\",bIsInput=False,bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C73B9031E0) {node_id: \"A11EB193463B41C5267AB6B3720FC77D\", node_type: \"K2Node_CreateDelegate\", node_title: \"创建事件\", pos_x: 100.000000, pos_y: 1063.000000, pin_names: (\"self\",\"OutputDelegate\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"OutputDelegate\",PinType=\"delegate\",bIsInput=False,bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C73B906B40) {node_id: \"D2E17B9E4A9740D7224EB5909651EBEE\", node_type: \"K2Node_CreateDelegate\", node_title: \"创建事件\", pos_x: 100.000000, pos_y: 1371.000000, pin_names: (\"self\",\"OutputDelegate\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"OutputDelegate\",PinType=\"delegate\",bIsInput=False,bIsConnected=True))}>"
+  ],
+  "selector_graphs": {
+    "0": [
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B90ED60) {node_id: \"74328BF54D27E8D7E8F3A08FC1B4F9DC\", node_type: \"K2Node_FunctionEntry\", node_title: \"Select0\", pos_x: 100.000000, pos_y: 165.000000, pin_names: (\"then\"), pins: ((PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B90B580) {node_id: \"236A7D084B1765AC4A7936A9EACC7974\", node_type: \"K2Node_CallFunction\", node_title: \"转换为文本（字符串）\", pos_x: 100.000000, pos_y: 319.000000, pin_names: (\"self\",\"InString\",\"ReturnValue\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"InString\",PinType=\"string\",DefaultValue=\"增加攻速\"),(PinName=\"ReturnValue\",PinType=\"text\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B90A4A0) {node_id: \"F6E298B74AFB7F01FFF1C18D4F294A8C\", node_type: \"K2Node_CallFunction\", node_title: \"转换为文本（字符串）\", pos_x: 100.000000, pos_y: 473.000000, pin_names: (\"self\",\"InString\",\"ReturnValue\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"InString\",PinType=\"string\",DefaultValue=\"<Unit>游骑兵</> <Gain>普攻攻速+8% · 1级</>\"),(PinName=\"ReturnValue\",PinType=\"text\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B90F9C0) {node_id: \"0DB7E4314C6E01EF1434B79B8C95AF0B\", node_type: \"K2Node_CallFunction\", node_title: \"Select Artwork\\n目标是WBP Card Artwork Catalog Selector\", pos_x: 520.000000, pos_y: 100.000000, pin_names: (\"execute\",\"then\",\"self\",\"Material\",\"Title\",\"Description\",\"UseGroundFrame\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False),(PinName=\"self\",PinType=\"object\"),(PinName=\"Material\",PinType=\"object\"),(PinName=\"Title\",PinType=\"text\",bIsConnected=True),(PinName=\"Description\",PinType=\"text\",bIsConnected=True),(PinName=\"UseGroundFrame\",PinType=\"bool\",DefaultValue=\"true\"))}>"
+    ],
+    "1": [
+      "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA13B0) {node_id: \"A67B7D164C4578E16D1EB1BAB5376C96\", node_type: \"K2Node_FunctionEntry\", node_title: \"Select1\", pos_x: 100.000000, pos_y: 165.000000, pin_names: (\"then\"), pins: ((PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA0E70) {node_id: \"F4691FF44DF7D2BA8B6CDA925DAFDE9A\", node_type: \"K2Node_CallFunction\", node_title: \"转换为文本（字符串）\", pos_x: 100.000000, pos_y: 319.000000, pin_names: (\"self\",\"InString\",\"ReturnValue\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"InString\",PinType=\"string\",DefaultValue=\"强化子弹\"),(PinName=\"ReturnValue\",PinType=\"text\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA1960) {node_id: \"20C224104B06EEE634D9AF98649A829D\", node_type: \"K2Node_CallFunction\", node_title: \"转换为文本（字符串）\", pos_x: 100.000000, pos_y: 473.000000, pin_names: (\"self\",\"InString\",\"ReturnValue\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"InString\",PinType=\"string\",DefaultValue=\"<Unit>游骑兵</> <Gain>普攻升级为强化子弹</>\"),(PinName=\"ReturnValue\",PinType=\"text\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA1E30) {node_id: \"F129E7684D90F2BFF07536907C9401E1\", node_type: \"K2Node_CallFunction\", node_title: \"Select Artwork\\n目标是WBP Card Artwork Catalog Selector\", pos_x: 520.000000, pos_y: 100.000000, pin_names: (\"execute\",\"then\",\"self\",\"Material\",\"Title\",\"Description\",\"UseGroundFrame\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False),(PinName=\"self\",PinType=\"object\"),(PinName=\"Material\",PinType=\"object\"),(PinName=\"Title\",PinType=\"text\",bIsConnected=True),(PinName=\"Description\",PinType=\"text\",bIsConnected=True),(PinName=\"UseGroundFrame\",PinType=\"bool\",DefaultValue=\"true\"))}>"
+    ],
+    "2": [
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B90F9C0) {node_id: \"1C95AEC5491FB1B6E80D48946DF78D76\", node_type: \"K2Node_FunctionEntry\", node_title: \"Select2\", pos_x: 100.000000, pos_y: 165.000000, pin_names: (\"then\"), pins: ((PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B90A4A0) {node_id: \"3FC2E06C49C41BD0297B84B26879DF9F\", node_type: \"K2Node_CallFunction\", node_title: \"转换为文本（字符串）\", pos_x: 100.000000, pos_y: 319.000000, pin_names: (\"self\",\"InString\",\"ReturnValue\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"InString\",PinType=\"string\",DefaultValue=\"爆破套餐\"),(PinName=\"ReturnValue\",PinType=\"text\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B90B580) {node_id: \"F1FDDA8D404997DAD5815AA8232988C2\", node_type: \"K2Node_CallFunction\", node_title: \"转换为文本（字符串）\", pos_x: 100.000000, pos_y: 473.000000, pin_names: (\"self\",\"InString\",\"ReturnValue\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"InString\",PinType=\"string\",DefaultValue=\"<Unit>游骑兵</> <Gain>1级 · 每5发附爆炸弹 · 2倍伤害/2.66米</>\"),(PinName=\"ReturnValue\",PinType=\"text\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B909840) {node_id: \"FE2AC7064E2B95C9A5D999ABA86BF3A4\", node_type: \"K2Node_CallFunction\", node_title: \"Select Artwork\\n目标是WBP Card Artwork Catalog Selector\", pos_x: 520.000000, pos_y: 100.000000, pin_names: (\"execute\",\"then\",\"self\",\"Material\",\"Title\",\"Description\",\"UseGroundFrame\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False),(PinName=\"self\",PinType=\"object\"),(PinName=\"Material\",PinType=\"object\"),(PinName=\"Title\",PinType=\"text\",bIsConnected=True),(PinName=\"Description\",PinType=\"text\",bIsConnected=True),(PinName=\"UseGroundFrame\",PinType=\"bool\",DefaultValue=\"true\"))}>"
+    ],
+    "3": [
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B9040E0) {node_id: \"CEB8926242422E49130FEC94FA90C27E\", node_type: \"K2Node_FunctionEntry\", node_title: \"Select3\", pos_x: 100.000000, pos_y: 165.000000, pin_names: (\"then\"), pins: ((PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B9031E0) {node_id: \"F5AF48C1461C544E7EAB82968A19948A\", node_type: \"K2Node_CallFunction\", node_title: \"转换为文本（字符串）\", pos_x: 100.000000, pos_y: 319.000000, pin_names: (\"self\",\"InString\",\"ReturnValue\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"InString\",PinType=\"string\",DefaultValue=\"无人生还\"),(PinName=\"ReturnValue\",PinType=\"text\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B9036C0) {node_id: \"84601AA24830EFB39F14E5944E265B40\", node_type: \"K2Node_CallFunction\", node_title: \"转换为文本（字符串）\", pos_x: 100.000000, pos_y: 473.000000, pin_names: (\"self\",\"InString\",\"ReturnValue\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"InString\",PinType=\"string\"),(PinName=\"ReturnValue\",PinType=\"text\",bIsInput=False,bIsConnected=True))}>",
+      "<Struct 'BlueprintNodeInfo' (0x000001C73B908220) {node_id: \"63BDEA1141891D7E02F44CBCA47D456B\", node_type: \"K2Node_CallFunction\", node_title: \"Select Artwork\\n目标是WBP Card Artwork Catalog Selector\", pos_x: 520.000000, pos_y: 100.000000, pin_names: (\"execute\",\"then\",\"self\",\"Material\",\"Title\",\"Description\",\"UseGroundFrame\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False),(PinName=\"self\",PinType=\"object\"),(PinName=\"Material\",PinType=\"object\"),(PinName=\"Title\",PinType=\"text\",bIsConnected=True),(PinName=\"Description\",PinType=\"text\",bIsConnected=True),(PinName=\"UseGroundFrame\",PinType=\"bool\",DefaultValue=\"true\"))}>"
+    ]
+  },
+  "replay_and_focus_bindings": [
+    "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA2220) {node_id: \"F29EB98C4B7E5CE5578A0DA6A1799A42\", node_type: \"K2Node_AddDelegate\", node_title: \"Bind Event to On Clicked\", pos_x: 5980.000000, pos_y: 152.000000, pin_names: (\"execute\",\"then\",\"self\",\"Delegate\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True),(PinName=\"self\",PinType=\"object\",bIsConnected=True),(PinName=\"Delegate\",PinType=\"delegate\",bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA2290) {node_id: \"0C7091C34740DD6FFF2A7185ACA82B56\", node_type: \"K2Node_CreateDelegate\", node_title: \"创建事件\", pos_x: 100.000000, pos_y: 653.000000, pin_names: (\"self\",\"OutputDelegate\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"OutputDelegate\",PinType=\"delegate\",bIsInput=False,bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA2450) {node_id: \"28E62C234EB2CF23DA267F9460BC6043\", node_type: \"K2Node_AddDelegate\", node_title: \"Bind Event to Application Will Deactivate Delegate\", pos_x: 6400.000000, pos_y: 152.000000, pin_names: (\"execute\",\"then\",\"self\",\"Delegate\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True),(PinName=\"self\",PinType=\"object\",bIsConnected=True),(PinName=\"Delegate\",PinType=\"delegate\",bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA26F0) {node_id: \"9B21EF3645599CE15B0CF5A2C04025E1\", node_type: \"K2Node_CreateDelegate\", node_title: \"创建事件\", pos_x: 100.000000, pos_y: 961.000000, pin_names: (\"self\",\"OutputDelegate\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"OutputDelegate\",PinType=\"delegate\",bIsInput=False,bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA27D0) {node_id: \"D637B311486DECD1A00B34A650DB3B21\", node_type: \"K2Node_AddDelegate\", node_title: \"Bind Event to Application Has Reactivated Delegate\", pos_x: 6820.000000, pos_y: 152.000000, pin_names: (\"execute\",\"then\",\"self\",\"Delegate\"), pins: ((PinName=\"execute\",PinType=\"exec\",bIsConnected=True),(PinName=\"then\",PinType=\"exec\",bIsInput=False,bIsConnected=True),(PinName=\"self\",PinType=\"object\",bIsConnected=True),(PinName=\"Delegate\",PinType=\"delegate\",bIsConnected=True))}>",
+    "<Struct 'BlueprintNodeInfo' (0x000001C6EFBA2A70) {node_id: \"95F66C7440C03C68089E82866C51ACB7\", node_type: \"K2Node_CreateDelegate\", node_title: \"创建事件\", pos_x: 100.000000, pos_y: 1115.000000, pin_names: (\"self\",\"OutputDelegate\"), pins: ((PinName=\"self\",PinType=\"object\"),(PinName=\"OutputDelegate\",PinType=\"delegate\",bIsInput=False,bIsConnected=True))}>"
+  ],
+  "blueprints": {
+    "/Game/GuLiStrike/CardSystem/RevealDemo/UI/WBP_CardArtworkGroundReviewFace": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/CardSystem/RevealDemo/UI/WBP_CardArtworkCatalogSelector": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardArtworkCatalogController": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardArtworkCatalogGameMode": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "map": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview.LVL_CardArtworkCatalogReview",
+  "game_mode": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardArtworkCatalogGameMode.BP_CardArtworkCatalogGameMode_C",
+  "actors": [
+    {
+      "label": "CardArtwork_CatalogDirector",
+      "class": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C",
+      "location": "<Struct 'Vector' (0x000001C51C221140) {x: 0.000000, y: 0.000000, z: 0.000000}>"
+    },
+    {
+      "label": "CardArtwork_CatalogInstructions",
+      "class": "/Script/Engine.Note",
+      "location": "<Struct 'Vector' (0x000001C51C2231C0) {x: 0.000000, y: 0.000000, z: -100.000000}>"
+    },
+    {
+      "label": "CardArtwork_PlayerStart",
+      "class": "/Script/Engine.PlayerStart",
+      "location": "<Struct 'Vector' (0x000001C51C223120) {x: 0.000000, y: 140.000000, z: 0.000000}>"
+    }
+  ],
+  "widget_hierarchy": [
+    "<Struct 'WidgetInfo' (0x000001C744BD9420) {widget_name: \"Canvas\", widget_class: \"CanvasPanel\", parent_widget: \"\", is_root_widget: True, is_variable: True, children: (\"GroundFrame\",\"TitleFit\",\"DescriptionFit\")}>",
+    "<Struct 'WidgetInfo' (0x000001C744BD1F40) {widget_name: \"GroundFrame\", widget_class: \"GuLiGroundCardFace\", parent_widget: \"Canvas\", is_root_widget: False, is_variable: True, children: }>",
+    "<Struct 'WidgetInfo' (0x000001C744BDDCF0) {widget_name: \"TitleFit\", widget_class: \"ScaleBox\", parent_widget: \"Canvas\", is_root_widget: False, is_variable: True, children: (\"CardTitle\")}>",
+    "<Struct 'WidgetInfo' (0x000001C744BDCDF0) {widget_name: \"CardTitle\", widget_class: \"TextBlock\", parent_widget: \"TitleFit\", is_root_widget: False, is_variable: True, children: }>",
+    "<Struct 'WidgetInfo' (0x000001C744BDC4E0) {widget_name: \"DescriptionFit\", widget_class: \"ScaleBox\", parent_widget: \"Canvas\", is_root_widget: False, is_variable: True, children: (\"DescriptionDensity\")}>",
+    "<Struct 'WidgetInfo' (0x000001C744BD8610) {widget_name: \"DescriptionDensity\", widget_class: \"ScaleBox\", parent_widget: \"DescriptionFit\", is_root_widget: False, is_variable: True, children: (\"CardDescription\")}>",
+    "<Struct 'WidgetInfo' (0x000001C744BDA5F0) {widget_name: \"CardDescription\", widget_class: \"RichTextBlock\", parent_widget: \"DescriptionDensity\", is_root_widget: False, is_variable: True, children: }>"
+  ],
+  "preview_copy": {
+    "10": [
+      "增加攻速",
+      "<Unit>游骑兵</> <Gain>普攻攻速+8% · 1级</>"
+    ],
+    "11": [
+      "强化子弹",
+      "<Unit>游骑兵</> <Gain>普攻升级为强化子弹</>"
+    ],
+    "12": [
+      "爆破套餐",
+      "<Unit>游骑兵</> <Gain>1级 · 每5发附爆炸弹 · 2倍伤害/2.66米</>"
+    ],
+    "13": [
+      "无人生还",
+      ""
+    ]
+  },
+  "dirty_content": [],
+  "dirty_maps": []
+}

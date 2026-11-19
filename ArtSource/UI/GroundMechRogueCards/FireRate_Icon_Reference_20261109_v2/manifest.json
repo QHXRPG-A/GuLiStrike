@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-09",
+  "card_id": "09.01",
+  "card_title": "增加攻速",
+  "model_id": 4001,
+  "asset_kind": "hud_icon",
+  "version": 2,
+  "state": "reference_pending_user_review",
+  "generator": "built-in image_gen",
+  "mode": "reference-based icon redraw",
+  "transparent_background": true,
+  "feedback": "顺带把icon也重新制作了，加上弹道和电",
+  "inputs_in_order": [
+    {
+      "file": "../FireRate_Reference_20261109_v1/FireRate_HUD_Icon_Reference_v1.png",
+      "sha256": "ebff973814d90158873c73b37b419ba46f83b38c71657ea25c2d3d872a305966",
+      "role": "原图标的枪管造型"
+    },
+    {
+      "file": "../FireRate_Reference_20261109_v6/FireRate_Card_Reference_v6.png",
+      "sha256": "78ca3f91b1e988c03adb05c15b551cec65bc0194d3e915c61feebeaeeafef2d1",
+      "role": "最新版牌面的弹道和过载电弧"
+    }
+  ],
+  "prompt": "Icon_Prompt.txt",
+  "prompt_payload_utf8_sha256": "64fa6ba44e9ae9454bbb73e3bc628393e9d50f852835ac8333312e28ae6f39d7",
+  "output": {
+    "file": "FireRate_HUD_Icon_Reference_v2.png",
+    "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-f8ba5dbd-4e03-4f4e-af0b-c965d9388416.png",
+    "sha256": "cfa0a1e5c3b9a7ec2d3502076baeb720df18208d87e41b8fa0bf2d4992bf1278",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  "assistant_output_visual_review": false
+}

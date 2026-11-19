@@ -1,0 +1,903 @@
+{
+  "reason": "completed",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "role": "Commander",
+  "camera": {
+    "pawn": "SpectatorPawn",
+    "pawn_location": "<Struct 'Vector' (0x000001CE31E1F4E0) {x: -4300.000000, y: 54000.000000, z: 905.000000}>"
+  },
+  "samples": [
+    {
+      "seconds": 0.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001D01C026360) {capacity: 1024, active: 0, peak_active: 0, launched: 0, recycled: 0, expansions: 0, hits: 0, blocked: 0, candidate_checks: 0, last_step_milliseconds: 0.000000}>"
+    },
+    {
+      "seconds": 2.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001CD407D56E0) {capacity: 1024, active: 0, peak_active: 0, launched: 0, recycled: 0, expansions: 0, hits: 0, blocked: 0, candidate_checks: 0, last_step_milliseconds: 0.000000}>"
+    },
+    {
+      "seconds": 4.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001CD407D7B20) {capacity: 1024, active: 0, peak_active: 0, launched: 0, recycled: 0, expansions: 0, hits: 0, blocked: 0, candidate_checks: 0, last_step_milliseconds: 0.000000}>"
+    },
+    {
+      "seconds": 6.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001CF07FAFBA0) {capacity: 1024, active: 0, peak_active: 0, launched: 0, recycled: 0, expansions: 0, hits: 0, blocked: 0, candidate_checks: 0, last_step_milliseconds: 0.000000}>"
+    },
+    {
+      "seconds": 8.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001CD407D5730) {capacity: 1024, active: 0, peak_active: 0, launched: 0, recycled: 0, expansions: 0, hits: 0, blocked: 0, candidate_checks: 0, last_step_milliseconds: 0.000000}>"
+    },
+    {
+      "seconds": 10.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001CD407DCD50) {capacity: 1024, active: 0, peak_active: 0, launched: 0, recycled: 0, expansions: 0, hits: 0, blocked: 0, candidate_checks: 0, last_step_milliseconds: 0.000000}>"
+    },
+    {
+      "seconds": 12.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001CD407D4E70) {capacity: 1024, active: 0, peak_active: 0, launched: 0, recycled: 0, expansions: 0, hits: 0, blocked: 0, candidate_checks: 0, last_step_milliseconds: 0.000000}>"
+    },
+    {
+      "seconds": 14.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [
+        {
+          "name": "NiagaraComponent_2",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 16,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 65,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 66,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 68,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 75,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        }
+      ],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001D02544DC50) {capacity: 1024, active: 142, peak_active: 142, launched: 142, recycled: 0, expansions: 0, hits: 0, blocked: 0, candidate_checks: 1280, last_step_milliseconds: 0.002299}>"
+    },
+    {
+      "seconds": 16.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [
+        {
+          "name": "NiagaraComponent_6",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 13,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 0,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 16,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 17,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 27,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NiagaraComponent_3",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 17,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 212,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 250,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 128,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 140,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NiagaraComponent_2",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 16,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 31,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 213,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 219,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 227,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        }
+      ],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001D01D1BFD20) {capacity: 1024, active: 566, peak_active: 587, launched: 680, recycled: 114, expansions: 0, hits: 81, blocked: 29, candidate_checks: 54332, last_step_milliseconds: 0.011999}>"
+    },
+    {
+      "seconds": 18.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [
+        {
+          "name": "NiagaraComponent_9",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 1,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 4,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NiagaraComponent_6",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 15,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 4,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 21,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 85,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 111,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NiagaraComponent_3",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 33,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 64,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 68,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                556.71484375,
+                24.0
+              ]
+            },
+            {
+              "slot": 71,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 75,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NiagaraComponent_2",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 17,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 132,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 166,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 168,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 180,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        }
+      ],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001D012BE9010) {capacity: 1024, active: 694, peak_active: 810, launched: 1236, recycled: 542, expansions: 0, hits: 206, blocked: 324, candidate_checks: 138389, last_step_milliseconds: 0.012599}>"
+    },
+    {
+      "seconds": 20.0,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "components": [
+        {
+          "name": "NiagaraComponent_9",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 11,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 3,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 7,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 19,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 29,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NiagaraComponent_6",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 18,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 85,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 102,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 115,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 117,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NiagaraComponent_3",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 13,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 24,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 45,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 76,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 102,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "NiagaraComponent_2",
+          "material": "None",
+          "particles": 256,
+          "shape_count": 256,
+          "unique_slots": 256,
+          "positive_alpha": 14,
+          "black_live_colors": 0,
+          "nonpositive_emission": 0,
+          "sample_particles": [
+            {
+              "slot": 12,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 23,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 28,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            },
+            {
+              "slot": 60,
+              "rgba": [
+                1.0,
+                1.0,
+                0.0,
+                1.0
+              ],
+              "shape": [
+                1200.0,
+                36.0,
+                1152.0,
+                24.0
+              ]
+            }
+          ]
+        }
+      ],
+      "projectile_stats": "<Struct 'GuLiProjectilePoolStats' (0x000001CD40E5CF00) {capacity: 1024, active: 692, peak_active: 859, launched: 1746, recycled: 1054, expansions: 0, hits: 318, blocked: 671, candidate_checks: 210293, last_step_milliseconds: 0.011399}>"
+    }
+  ],
+  "errors": [],
+  "settings_restored": true,
+  "visual_acceptance": "pending_user"
+}

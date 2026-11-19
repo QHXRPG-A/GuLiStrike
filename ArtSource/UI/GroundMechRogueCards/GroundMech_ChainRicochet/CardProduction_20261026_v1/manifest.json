@@ -1,0 +1,526 @@
+{
+  "state": "model_completed_preview_ready",
+  "created_at": "2026-10-27T08:37:01.724259+08:00",
+  "generator": "built-in image_gen; one completion request for each of six layers",
+  "comfyui_used": false,
+  "gameplay_modified": false,
+  "canvas": [
+    1536,
+    1536
+  ],
+  "source_canvas": [
+    1024,
+    1024
+  ],
+  "padding_each_side": 256,
+  "source_window": [
+    256,
+    256,
+    1280,
+    1280
+  ],
+  "source_window_uv": [
+    0.16666666666666666,
+    0.16666666666666666,
+    0.8333333333333334,
+    0.8333333333333334
+  ],
+  "master_sha256": "efd25159d902f1b721506e228b9f4646e34a24dc758dfb2a60b69384517acb82",
+  "layers": [
+    {
+      "index": 1,
+      "name": "近景",
+      "raw": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_01_Foreground_Raw.png",
+      "raw_size": [
+        1254,
+        1254
+      ],
+      "raw_mode": "RGBA",
+      "raw_sha256": "b446e43358377dbdaab3786ada753f70ba4fb9671f63a45272080006c250a4d1",
+      "prompt_sha256": "ada65a40df16998dcf824522893eb0176b42710be3024f75b60562e876dee57d",
+      "registration": {
+        "operation": "generated-fill registration only",
+        "applied": true,
+        "source_pixels_transformed": false,
+        "feature_matches": 117,
+        "inlier_anchors": 24,
+        "estimated_scale": 0.676532938681866,
+        "estimated_angle_degrees": 0.1763166716519557,
+        "estimated_center_displacement": 36.23939763863255,
+        "reference_anchor_bounds": [
+          [
+            443.464111328125,
+            885.2943725585938
+          ],
+          [
+            1244.664794921875,
+            1148.998779296875
+          ]
+        ],
+        "matrix": [
+          [
+            0.6765297353635202,
+            -0.002081895887599623,
+            250.65843166451305
+          ],
+          [
+            0.002081895887599623,
+            0.6765297353635202,
+            283.0601120529759
+          ]
+        ]
+      },
+      "file": "Layers/01_Foreground.png",
+      "canvas": [
+        1536,
+        1536
+      ],
+      "source_window": [
+        256,
+        256,
+        1280,
+        1280
+      ],
+      "protected_original_core_pixels": 142108,
+      "source_pixels_resampled": false,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 1931073,
+      "sha256": "a53f205849ebb09efde4677a4f8f37a68f7dc62f68e04fb9ef57527c4f7039fc"
+    },
+    {
+      "index": 2,
+      "name": "速度线",
+      "raw": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_02_SpeedLines_Raw.png",
+      "raw_size": [
+        1254,
+        1254
+      ],
+      "raw_mode": "RGBA",
+      "raw_sha256": "3fe90e823459737e7cff8cc059f87c6c1fb4658a9d084a6046175d0d5e00daad",
+      "prompt_sha256": "ef4b59adf8b392e351ded1c67251135ee174dc5fea1dc40a4420adfdd75965bc",
+      "registration": {
+        "operation": "generated-fill registration only",
+        "applied": true,
+        "source_pixels_transformed": false,
+        "feature_matches": 3,
+        "method": "sparse stroke geometry fitting",
+        "matrix": [
+          [
+            0.7076487982708117,
+            0.002926542633183899,
+            239.51111074721436
+          ],
+          [
+            -0.002926542633183899,
+            0.7076487982708117,
+            261.7008287841223
+          ]
+        ]
+      },
+      "file": "Layers/02_SpeedLines.png",
+      "canvas": [
+        1536,
+        1536
+      ],
+      "source_window": [
+        256,
+        256,
+        1280,
+        1280
+      ],
+      "protected_original_core_pixels": 1307,
+      "source_pixels_resampled": false,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 2253639,
+      "sha256": "124bc1ed5fc44aacc1174f204c8a19680427cf74c0e3a74bfffdc1bed133e47a"
+    },
+    {
+      "index": 3,
+      "name": "机甲",
+      "raw": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_03_PlayerMech_Raw.png",
+      "raw_size": [
+        1254,
+        1254
+      ],
+      "raw_mode": "RGBA",
+      "raw_sha256": "a801b9a9ce1169332568691d47850acaa6a8d9677f007225cfebb104a9189f30",
+      "prompt_sha256": "a2c43c94930dfb65b21e21de6bd67eada8876924f4cadc74a5248f92fa0c17a5",
+      "registration": {
+        "operation": "generated-fill registration only",
+        "applied": true,
+        "source_pixels_transformed": false,
+        "feature_matches": 207,
+        "inlier_anchors": 141,
+        "estimated_scale": 0.48902187326733576,
+        "estimated_angle_degrees": 0.740414240909306,
+        "estimated_center_displacement": 193.14066218517615,
+        "reference_anchor_bounds": [
+          [
+            301.0440368652344,
+            468.20330810546875
+          ],
+          [
+            820.3612670898438,
+            1059.2286376953125
+          ]
+        ],
+        "matrix": [
+          [
+            0.48898104165709083,
+            -0.00631929061213451,
+            204.65827062454744
+          ],
+          [
+            0.00631929061213451,
+            0.48898104165709083,
+            401.2622317303129
+          ]
+        ]
+      },
+      "file": "Layers/03_PlayerMech.png",
+      "canvas": [
+        1536,
+        1536
+      ],
+      "source_window": [
+        256,
+        256,
+        1280,
+        1280
+      ],
+      "protected_original_core_pixels": 84651,
+      "source_pixels_resampled": false,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 2168854,
+      "sha256": "147b69a96a55fab2071f4793035c8fb858b1b5adb3f0f90ebe953cdf757656d5"
+    },
+    {
+      "index": 4,
+      "name": "场景",
+      "raw": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_04_Scene_Raw.png",
+      "raw_size": [
+        1254,
+        1254
+      ],
+      "raw_mode": "RGBA",
+      "raw_sha256": "99e68a0fbbaf1c1cf00bde7babc54131007878f8d262e35ac06a26597ef2fe21",
+      "prompt_sha256": "9d87124f0ffee54e9994c4c748b3d539305cda2a3330737be39d75e3088b5cb8",
+      "registration": {
+        "operation": "generated-fill registration only",
+        "applied": true,
+        "source_pixels_transformed": false,
+        "feature_matches": 38,
+        "inlier_anchors": 16,
+        "estimated_scale": 0.6941148025018181,
+        "estimated_angle_degrees": 0.9051035424890199,
+        "estimated_center_displacement": 37.6154561998326,
+        "reference_anchor_bounds": [
+          [
+            441.0340270996094,
+            310.1196594238281
+          ],
+          [
+            893.479736328125,
+            760.954345703125
+          ]
+        ],
+        "matrix": [
+          [
+            0.694028197386636,
+            -0.01096450110103061,
+            237.89300314962065
+          ],
+          [
+            0.01096450110103061,
+            0.694028197386636,
+            189.3565026569577
+          ]
+        ]
+      },
+      "file": "Layers/04_Scene.png",
+      "canvas": [
+        1536,
+        1536
+      ],
+      "source_window": [
+        256,
+        256,
+        1280,
+        1280
+      ],
+      "protected_original_core_pixels": 71831,
+      "source_pixels_resampled": false,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 1765283,
+      "sha256": "2e614966807d00441b48d71399b6945d7819e6fecf4eba2c726078f3646dce44"
+    },
+    {
+      "index": 5,
+      "name": "折射弹道和三个敌方机甲",
+      "raw": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_05_Ricochet_Enemies_Raw.png",
+      "raw_size": [
+        1254,
+        1254
+      ],
+      "raw_mode": "RGBA",
+      "raw_sha256": "6f896850efeef5a3ef5db795054dac95d4699cdff792183c773ada30fb5ea2b3",
+      "prompt_sha256": "3e8b29de2d30d191a846d953c57a26e2bd9ce9ea759d230fef878155eab328a0",
+      "registration": {
+        "operation": "per-unit generated-fill registration and original trajectory extraction",
+        "applied": true,
+        "source_pixels_transformed": false,
+        "unit_regions": [
+          {
+            "unit": 1,
+            "source_box": [
+              475,
+              205,
+              670,
+              410
+            ],
+            "method": "unit feature registration",
+            "feature_matches": 38,
+            "inlier_anchors": 34,
+            "matrix": [
+              [
+                0.3340101241157759,
+                0.003978169318921551,
+                707.6228536519875
+              ],
+              [
+                -0.003978169318921551,
+                0.3340101241157759,
+                391.92419531958785
+              ]
+            ]
+          },
+          {
+            "unit": 2,
+            "source_box": [
+              605,
+              328,
+              838,
+              491
+            ],
+            "method": "unit feature registration",
+            "feature_matches": 17,
+            "inlier_anchors": 9,
+            "matrix": [
+              [
+                0.3762444070436601,
+                0.004846933593623008,
+                700.8768181837112
+              ],
+              [
+                -0.004846933593623008,
+                0.3762444070436601,
+                370.4178274449413
+              ]
+            ]
+          },
+          {
+            "unit": 3,
+            "source_box": [
+              810,
+              390,
+              1024,
+              605
+            ],
+            "method": "unit feature registration",
+            "feature_matches": 33,
+            "inlier_anchors": 21,
+            "matrix": [
+              [
+                0.33649095126237655,
+                0.020310888032182072,
+                750.0026509035912
+              ],
+              [
+                -0.020310888032182072,
+                0.33649095126237655,
+                426.84697880913376
+              ]
+            ]
+          }
+        ],
+        "trajectory_source_pixels": 6158,
+        "object_count_visual_review": "pending"
+      },
+      "file": "Layers/05_Ricochet_Enemies.png",
+      "canvas": [
+        1536,
+        1536
+      ],
+      "source_window": [
+        256,
+        256,
+        1280,
+        1280
+      ],
+      "protected_original_core_pixels": 13452,
+      "source_pixels_resampled": false,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 2294010,
+      "sha256": "62f07dcb2479eabe36aabe56c466e8a4d9460f4ca5167c0b1cd7e5445786de68"
+    },
+    {
+      "index": 6,
+      "name": "远景",
+      "raw": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\GroundMech_ChainRicochet\\CardProduction_20261026_v1\\Supplements\\CompletedR3_06_FarBackground_Raw.png",
+      "raw_size": [
+        1254,
+        1254
+      ],
+      "raw_mode": "RGB",
+      "raw_sha256": "7665c0684cd44044e2d3b540416e1c3a44b16680dfb98a81c376e6f27d3ea522",
+      "prompt_sha256": "ea8feffd69ad43df3e5d7cd989a0a23dbdde63a5d2b1e3f37e6f0ba1459937e2",
+      "registration": {
+        "operation": "generated-fill registration only",
+        "applied": true,
+        "source_pixels_transformed": false,
+        "feature_matches": 76,
+        "inlier_anchors": 51,
+        "estimated_scale": 0.6673217869802237,
+        "estimated_angle_degrees": 0.010066177742856956,
+        "estimated_center_displacement": 0.22268200211744357,
+        "reference_anchor_bounds": [
+          [
+            752.563232421875,
+            365.2098388671875
+          ],
+          [
+            1263.0272216796875,
+            645.4759521484375
+          ]
+        ],
+        "matrix": [
+          [
+            0.6673217766813618,
+            -0.00011724039260751058,
+            255.3642517530717
+          ],
+          [
+            0.00011724039260751058,
+            0.6673217766813618,
+            255.40963653113275
+          ]
+        ]
+      },
+      "file": "Layers/06_FarBackground.png",
+      "canvas": [
+        1536,
+        1536
+      ],
+      "source_window": [
+        256,
+        256,
+        1280,
+        1280
+      ],
+      "protected_original_core_pixels": 134638,
+      "source_pixels_resampled": false,
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "transparent_pixels": 0,
+      "sha256": "440a8bc3e568d57918bd8e3901707b5d5786a3af79f5a8f0b1f1c3b81859109a"
+    }
+  ],
+  "foreground_front_mask": {
+    "file": "Masks/ForegroundFront_R3.png",
+    "sha256": "4ed41c9a59d5cf9a8c2266c07aa7f794bc6b9999df1aa910c3bb5fa780df9fc0",
+    "canvas": [
+      1536,
+      1536
+    ],
+    "front_value": 255,
+    "behind_player_value": 0
+  },
+  "foreground_rendering": {
+    "fixed_window_rim": 0.02,
+    "motion_ramp_end": 0.12,
+    "same_artwork_two_occlusion_passes": true
+  },
+  "composition_groups_back_to_front": [
+    6,
+    4,
+    5,
+    "1 behind player",
+    3,
+    "1 in front",
+    2
+  ],
+  "scope": "Original core colours retained where consistent; masks, hidden surfaces and exterior are model completed. Registration affects generated fill only.",
+  "assistant_output_visual_test": false,
+  "user_art_review": "pending",
+  "ue_imported": true,
+  "updated_at": "2026-10-27T20:44:33.986851+08:00",
+  "reference": "Master.png",
+  "generation_requests": "completion-r3-requests.json",
+  "generation_results": "completion-r3-results.json",
+  "technical_validation": {
+    "passed": true,
+    "scope": "file dimensions, real alpha, hashes, binary occlusion mask, shared UV mapping, Python/JavaScript syntax only",
+    "browser_resource_loading": true,
+    "foreground_shader_programs_linked": true
+  },
+  "preview": {
+    "url": "http://127.0.0.1:8191/preview.html",
+    "file": "preview.html",
+    "renderer": "foreground-renderer.js",
+    "shared_css": {
+      "width_percent": 150,
+      "height_percent": 150,
+      "left_percent": -25,
+      "top_percent": -25
+    },
+    "foreground_fixed_rim": 0.02,
+    "foreground_motion_ramp_end": 0.12,
+    "foreground_compositing": "same completed foreground split around player with one binary occlusion mask",
+    "default_mode": "flat",
+    "default_parallax_pixels": 4,
+    "maximum_parallax_pixels": 8,
+    "browser_check": "browser-check.json"
+  },
+  "ue_delivery": {
+    "import_script": "ImportToUE.py",
+    "imported": true,
+    "execution": "executed and saved/read back in the live UE editor",
+    "material": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1",
+    "review_map": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview",
+    "review_actor": "GroundMech_RicochetCardDirector",
+    "review_author_script": "D:/UE5.7/test1/Scripts/Cards/author_ground_ricochet_review.py",
+    "runtime_readback_script": "D:/UE5.7/test1/Scripts/Cards/inspect_ground_ricochet_pie.py",
+    "import_report": "ue-import.json",
+    "map_report": "ue-review-map.json",
+    "pie_start_report": "ue-pie-start.json",
+    "pie_readback_report": "ue-pie.json",
+    "pie_started": true,
+    "pie_running_at_delivery": true,
+    "user_visual_review": "pending",
+    "assistant_visual_test": false,
+    "gameplay_modified": false,
+    "shared_blueprints_modified": false,
+    "native_build_run": false,
+    "delivered_on": "2026-10-27",
+    "artwork_id": 6,
+    "artwork_catalog": "GuLiStrikeCardArtwork.xlsx",
+    "unified_entry": "Scripts/Cards/card_artwork_pipeline.py"
+  }
+}

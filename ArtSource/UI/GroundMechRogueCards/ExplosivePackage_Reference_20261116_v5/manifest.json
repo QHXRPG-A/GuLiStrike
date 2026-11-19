@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-16",
+  "card_id": "11.01",
+  "card_title": "爆破套餐",
+  "seat": "Ground",
+  "version": 5,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "generation_mode": "reference-based scale correction",
+  "transparent_background": false,
+  "art_direction": "侧身俯冲、收膝与后甩，近侧炮指向镜头。远处游骑兵按 v3 远景比例调整。",
+  "palette_reference": "Progress/RequirementDocument/GuLiStrike美术规范.md §11",
+  "editor_asset_readback": {
+    "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+    "model_id": 4001,
+    "presentation_model_id": "4001",
+    "skeletal_mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+    "flight": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon.NS_GroundExplosiveFlight_Toon",
+    "flight_emitters": [
+      "ProjectileShell",
+      "ExhaustPlume"
+    ],
+    "relevant_flight_dependencies": [
+      "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonShell",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonPlume"
+    ],
+    "trail": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail.NS_GroundExplosiveTrail",
+    "impact": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact.NS_GroundExplosiveImpact",
+    "body_mesh": "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile.SM_WM01_Missile"
+  },
+  "flight_vfx_id": 63,
+  "inputs_in_order": [
+    {
+      "file": "../ExplosivePackage_Reference_20261116_v4/ExplosivePackage_Card_Reference_v4.png",
+      "sha256": "97f01f326605d8961491f45bb25b6b1ce0440298a40a0627f3d5f8129fc87d44",
+      "role": "保留 v4 新姿态的编辑目标"
+    },
+    {
+      "file": "../ExplosivePackage_Reference_20261116_v3/ExplosivePackage_Card_Reference_v3.png",
+      "sha256": "c0c5da1520bdaef9f82009a4b73f14909763c3f8db23388b55a00798418081a2",
+      "role": "参照 v3 的游骑兵远景尺度"
+    }
+  ],
+  "prompt": {
+    "file": "ExplosivePackage_Prompt.txt",
+    "sha256": "945216ae9a3b82031081f1605289dfe81a817b69e13ccd1fddc4b9b7095f4986"
+  },
+  "output": {
+    "file": "ExplosivePackage_Card_Reference_v5.png",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e39f-c9b0-7602-ac68-13db3650a8bd\\exec-523a1f25-71a5-47a0-964a-8d2caf9fd9fd.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB",
+    "sha256": "6b3ffbf08f60221de5775e748d71cebae11eb44de2e1080caff68373f65a918d"
+  },
+  "assistant_output_visual_review": false
+}

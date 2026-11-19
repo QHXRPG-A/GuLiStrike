@@ -1,0 +1,74 @@
+{
+  "source_blend": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-original.blend",
+  "output_blend": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-side-panels.blend",
+  "output_glb": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\public\\models\\quadruped-mech-side-panels.glb",
+  "panels": [
+    {
+      "panel": "Side_Panel_Front_L",
+      "source": "Front_Armor · 机甲 · 蓝灰喷涂外甲",
+      "side": "L",
+      "inward_angle_degrees": 32.5,
+      "signed_rotation_y_degrees": 32.5,
+      "pivot": [
+        -1.0534772872924805,
+        -1.2256255149841309,
+        1.9146692752838135
+      ],
+      "vertex_count": 168,
+      "attachment_components_rotated": 1
+    },
+    {
+      "panel": "Side_Panel_Front_R",
+      "source": "Front_Armor · 机甲 · 蓝灰喷涂外甲",
+      "side": "R",
+      "inward_angle_degrees": 32.5,
+      "signed_rotation_y_degrees": -32.5,
+      "pivot": [
+        1.0534772872924805,
+        -1.2256256341934204,
+        1.914669394493103
+      ],
+      "vertex_count": 168,
+      "attachment_components_rotated": 1
+    },
+    {
+      "panel": "Side_Panel_Rear_L",
+      "source": "Rear_Armor · 机甲 · 蓝灰喷涂外甲",
+      "side": "L",
+      "inward_angle_degrees": 35.0,
+      "signed_rotation_y_degrees": 35.0,
+      "pivot": [
+        -1.0926513671875,
+        0.5542559623718262,
+        1.8497246503829956
+      ],
+      "vertex_count": 160,
+      "attachment_components_rotated": 4
+    },
+    {
+      "panel": "Side_Panel_Rear_R",
+      "source": "Rear_Armor · 机甲 · 蓝灰喷涂外甲",
+      "side": "R",
+      "inward_angle_degrees": 35.0,
+      "signed_rotation_y_degrees": -35.0,
+      "pivot": [
+        1.0926513671875,
+        0.5542559623718262,
+        1.8497246503829956
+      ],
+      "vertex_count": 160,
+      "attachment_components_rotated": 4
+    }
+  ],
+  "floating_fastener_gap_before_m": 0.02611,
+  "floating_fastener_gap_after_m": {
+    "L": 7.399661262752488e-05,
+    "R": 7.407848170259967e-05
+  },
+  "original_mesh_count": 40,
+  "final_mesh_count": 44,
+  "original_vertex_count": 63131,
+  "final_vertex_count": 63131,
+  "vertex_count_preserved": true,
+  "four_independent_panels_created": true
+}

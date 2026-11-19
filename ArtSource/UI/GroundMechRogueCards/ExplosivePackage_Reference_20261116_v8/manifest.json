@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-16",
+  "card_id": "11.01",
+  "card_title": "爆破套餐",
+  "seat": "Ground",
+  "version": 8,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "generation_mode": "reference-based trail and Ranger redraw",
+  "transparent_background": false,
+  "art_direction": "按用户附件拆开上方两发导弹的尾迹，并按现用 A4B2 结构重绘远处游骑兵的侧身俯冲姿态。",
+  "palette_reference": "Progress/RequirementDocument/GuLiStrike美术规范.md §11",
+  "editor_asset_readback": {
+    "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+    "model_id": 4001,
+    "presentation_model_id": "4001",
+    "skeletal_mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+    "flight": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon.NS_GroundExplosiveFlight_Toon",
+    "flight_emitters": [
+      "ProjectileShell",
+      "ExhaustPlume"
+    ],
+    "relevant_flight_dependencies": [
+      "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonShell",
+      "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/M_GroundExplosiveToonPlume"
+    ],
+    "trail": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveTrail.NS_GroundExplosiveTrail",
+    "impact": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact.NS_GroundExplosiveImpact",
+    "body_mesh": "/Game/GuLiStrike/FX/CommanderWeapons/SM_WM01_Missile.SM_WM01_Missile"
+  },
+  "flight_vfx_id": 63,
+  "inputs_in_order": [
+    {
+      "file": "Inputs/01_User_Frame.png",
+      "source": "C:/Users/a/AppData/Local/Temp/codex-clipboard-af100541-6013-4351-97a1-601c5e8acefe.png",
+      "sha256": "4bfbebc670d846fa3f46b2cd8c15101dd282738ec63757a44b986ed48f70ead3",
+      "role": "用户本轮指定的编辑底图"
+    },
+    {
+      "file": "../ExplosivePackage_Reference_20261116_v2/Inputs/02_Ranger_A4B2.png",
+      "sha256": "78bdea755abfd1b4d781914ecdd94d4762b920fcaef50d259952df189076916c",
+      "role": "当前游骑兵 A4B2 整机结构和配色参考"
+    }
+  ],
+  "prompt": {
+    "file": "ExplosivePackage_Prompt.txt",
+    "sha256": "a7044703be3470999b06ea69ff55b83fdded86e81f2733782a3b53b0a34ca0d0"
+  },
+  "output": {
+    "file": "ExplosivePackage_Card_Reference_v8.png",
+    "source": "C:\\Users\\a\\.codex\\generated_images\\01a1e39f-c9b0-7602-ac68-13db3650a8bd\\exec-2ae7482e-546d-4dfb-b883-76aaec1dcbba.png",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB",
+    "sha256": "97fc3cfc8cdf9bde58d8eae5185fa498e983222cbd1b9fe61c4a5da98085efa7"
+  },
+  "assistant_output_visual_review": false
+}

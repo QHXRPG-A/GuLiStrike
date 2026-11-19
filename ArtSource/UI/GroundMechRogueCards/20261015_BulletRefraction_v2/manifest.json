@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-15",
+  "version": "v2",
+  "scope": "Ground player mech ModelId 4001. Actual project model images provide identity; Civitai image provides style only.",
+  "user_selected_effect": "offensive bullet refraction and splitting",
+  "project_blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+  "project_model_ids": [
+    4001,
+    4002,
+    4003,
+    4004
+  ],
+  "project_capture_report": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_BulletRefraction_v2\\References\\project_mech_capture.json",
+  "source_url": "https://civitai.com/images/145143380",
+  "source_prompt_available": false,
+  "reference_inputs": [
+    {
+      "port": "images.image_1",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_BulletRefraction_v2\\References\\GroundMech_Project_Hero.png",
+      "role": "actual full project mech model",
+      "encoded_size": [
+        832,
+        1248
+      ]
+    },
+    {
+      "port": "images.image_2",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_BulletRefraction_v2\\References\\GroundMech_Project_UpperWeapon.png",
+      "role": "same actual project mech upper body and weapon",
+      "encoded_size": [
+        512,
+        512
+      ]
+    },
+    {
+      "port": "images.image_3",
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_BulletRefraction_v2\\References\\Civitai_145143380.jpeg",
+      "role": "visual style only",
+      "encoded_size": [
+        512,
+        768
+      ]
+    }
+  ],
+  "positive_utf8_sha256": "3d4d97428c74168d1c508a03e51da1b848113d5e76019c5121ba5e1b3bf22d34",
+  "negative_utf8_sha256": "72e333e3976af68887cb248650a451dee4b048c281c5fd0423818fb04e24541d",
+  "models": {
+    "diffusion": "qwen_image_2.1_int8_convrot.safetensors",
+    "text_encoder": "qwen3vl_8b_int8_convrot.safetensors",
+    "vae": "qwen_image_2.1_vae_bf16.safetensors",
+    "lora": null
+  },
+  "parameters": {
+    "width": 832,
+    "height": 1248,
+    "steps": 32,
+    "cfg": 1.5,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "seed": 145143381,
+    "denoise": 1,
+    "cache_device": "auto",
+    "cache_dtype": "int8",
+    "reference_resolution": 0
+  },
+  "transparent_background": false,
+  "generation_status": "superseded_before_generation",
+  "user_art_approval": "pending",
+  "local_workflow": "archive:ARC-20261103-006#EXT-003",
+  "native_workflow": "archive:ARC-20261103-006#EXT-004",
+  "art_archive": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_BulletRefraction_v2",
+  "superseded_by": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\20261015_ChainRicochet_v3",
+  "reason": "User specified project Pioneer enemies, over-the-shoulder composition, sequential ricochet and strong firing/impact actions.",
+  "positive_utf8_sha256_before_name_normalization": "7ecfdcf25effcf6420924b75529aa0f090878847b32ef4970a06cf2e7f40d86d",
+  "name_normalization_note": "2026-11-03 游骑兵名称规范化；提示词文本已修订，原始生成内容通过历史版本和迁移前哈希追溯。",
+  "external_path_note": "历史外部工作流路径见 ARC-20261103-006 归档的对应 EXT 编号；可复用的弹射工作流改为项目内正式副本。"
+}

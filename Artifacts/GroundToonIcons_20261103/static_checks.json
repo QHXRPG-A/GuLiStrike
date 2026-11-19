@@ -1,0 +1,78 @@
+{
+  "success": true,
+  "schema_headers_unchanged": true,
+  "icons": 7,
+  "foreign_keys": [
+    {
+      "table": "DT_GuLiStrikeBuffs_Buffs",
+      "row": "Burning",
+      "id": 3
+    },
+    {
+      "table": "DT_GuLiStrikeBuffs_Buffs",
+      "row": "BurningBurst",
+      "id": 4
+    },
+    {
+      "table": "DT_GuLiStrikeGroundHUD_Elements",
+      "row": "IconAim",
+      "id": 6
+    },
+    {
+      "table": "DT_GuLiStrikeGroundHUD_Elements",
+      "row": "IconJetCapacity",
+      "id": 1
+    },
+    {
+      "table": "DT_GuLiStrikeMech_Skills",
+      "row": "BasicMachinegun",
+      "id": 5
+    },
+    {
+      "table": "DT_GuLiStrikeMech_Skills",
+      "row": "RocketJump",
+      "id": 1
+    },
+    {
+      "table": "DT_GuLiStrikeMech_Skills",
+      "row": "Blink",
+      "id": 8
+    },
+    {
+      "table": "DT_GuLiStrikeRogueCards_Cards",
+      "row": "GroundMech_Ricochet_Lv1",
+      "id": 2
+    },
+    {
+      "table": "DT_GuLiStrikeRogueCards_Cards",
+      "row": "GroundMech_BurningBullet_Lv1",
+      "id": 3
+    },
+    {
+      "table": "DT_GuLiStrikeRogueCards_Cards",
+      "row": "GroundMech_BurningBurst_Lv1",
+      "id": 4
+    }
+  ],
+  "python_syntax_files": [
+    "prepare_ground_toon_icons.py",
+    "icon_assets.py",
+    "author_ground_toon_icons.py",
+    "author_ground_hud_revision.py",
+    "prepare_ground_hud_revision.py",
+    "save_toon_icon_scene.py"
+  ],
+  "source_pixel_edits": false,
+  "dedicated_server_guard": "existing GuLiIconCatalog::Prepare guard unchanged",
+  "update_policy": "5Hz/events unchanged; brush and fit update only when cached texture pointer changes",
+  "native_build": "passed",
+  "final_asset_readback": "passed_7_textures_longest_edge_256",
+  "scene_saved_readback": "passed_4_existing_entities",
+  "documentation_check": {
+    "errors": 0,
+    "warnings": 21,
+    "warnings_scope": "existing_document_size_and_task_count"
+  },
+  "pie": "not_run",
+  "player_visual": "pending"
+}

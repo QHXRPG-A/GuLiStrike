@@ -87,6 +87,106 @@ struct FGuLiStrikeRogueCardsCardsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
 	int32 IconId = 0;
 
+	/** RequiredCardLevels (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TArray<FString> RequiredCardLevels;
+
+	/** MaxRankUpgradeVfx (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TSoftObjectPtr<UObject> MaxRankUpgradeVfx;
+
+	/** MaxRankUpgradeScale (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float MaxRankUpgradeScale = 0.0f;
+
+	/** MaxRankStartRatio (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float MaxRankStartRatio = 0.0f;
+
+	/** MaxRankGrowthSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float MaxRankGrowthSeconds = 0.0f;
+
+	/** MaxRankDurationSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float MaxRankDurationSeconds = 0.0f;
+
+	/** CastPose (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TSoftObjectPtr<UObject> CastPose;
+
+	/** CastFlashVfx (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TSoftObjectPtr<UObject> CastFlashVfx;
+
+	/** CastLightningVfx (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TSoftObjectPtr<UObject> CastLightningVfx;
+
+	/** CastBodyScale (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastBodyScale = 0.0f;
+
+	/** CastFoldSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastFoldSeconds = 0.0f;
+
+	/** CastOpenSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastOpenSeconds = 0.0f;
+
+	/** CastFlashSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastFlashSeconds = 0.0f;
+
+	/** CastRecoverySeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastRecoverySeconds = 0.0f;
+
+	/** UpgradeVfxHeightMultiplier (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float UpgradeVfxHeightMultiplier = 0.0f;
+
+	/** UpgradeVfxPlaybackRate (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float UpgradeVfxPlaybackRate = 0.0f;
+
+	/** CastCrossedHoldSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastCrossedHoldSeconds = 0.0f;
+
+	/** CastChargeShakeDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastChargeShakeDegrees = 0.0f;
+
+	/** CastReleaseShakeDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastReleaseShakeDegrees = 0.0f;
+
+	/** CastShotRecoilCm (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastShotRecoilCm = 0.0f;
+
+	/** CastShotRecoilSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastShotRecoilSeconds = 0.0f;
+
+	/** CastCamera (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	TSoftObjectPtr<UObject> CastCamera;
+
+	/** CastCameraReturnSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastCameraReturnSeconds = 0.0f;
+
+	/** CastLightningScaleMultiplier (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastLightningScaleMultiplier = 0.0f;
+
+	/** CastCameraReturnCueSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Cards")
+	float CastCameraReturnCueSeconds = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeRogueCards_GroundRicochet 的行结构（源: GuLiStrikeRogueCards.xlsx / GroundRicochet）。 */
@@ -210,5 +310,89 @@ struct FGuLiStrikeRogueCardsGroundWeaponEffectsRow : public FTableRowBase
 	/** ExplosiveDamageBonuses (str[], Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
 	TArray<FString> ExplosiveDamageBonuses;
+
+	/** BarrageIntervalsSeconds (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> BarrageIntervalsSeconds;
+
+	/** BarrageShotCounts (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> BarrageShotCounts;
+
+	/** BarrageDamageBonuses (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> BarrageDamageBonuses;
+
+	/** BarrageConeHalfAnglesDegrees (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> BarrageConeHalfAnglesDegrees;
+
+};
+
+/** DataTable DT_GuLiStrikeRogueCards_BarrageCamera 的行结构（源: GuLiStrikeRogueCards.xlsx / BarrageCamera）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeRogueCardsBarrageCameraRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	FString Note;
+
+	/** Phase (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	FString Phase;
+
+	/** PhaseAlpha (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float PhaseAlpha = 0.0f;
+
+	/** AzimuthDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float AzimuthDegrees = 0.0f;
+
+	/** RadiusCm (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float RadiusCm = 0.0f;
+
+	/** EyeHeightCm (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float EyeHeightCm = 0.0f;
+
+	/** FocusForwardCm (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float FocusForwardCm = 0.0f;
+
+	/** FocusRightCm (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float FocusRightCm = 0.0f;
+
+	/** FocusHeightCm (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float FocusHeightCm = 0.0f;
+
+	/** RollDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float RollDegrees = 0.0f;
+
+	/** FieldOfViewDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float FieldOfViewDegrees = 0.0f;
+
+	/** ShotWeight (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float ShotWeight = 0.0f;
+
+	/** FlashAlpha (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float FlashAlpha = 0.0f;
+
+	/** ChargeArcScale (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BarrageCamera")
+	float ChargeArcScale = 0.0f;
 
 };

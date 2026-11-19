@@ -1,0 +1,213 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pawn": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_GroundMech_Light_C_1",
+    "hud": {
+      "entry_plays": 1,
+      "shots": 0,
+      "hit_plays": 0,
+      "kill_plays": 0,
+      "ordinary_refreshes": 874,
+      "motion_frames": 25,
+      "generation": 1,
+      "modal": 0,
+      "hidden": false,
+      "closing": false,
+      "modal_alpha": 0,
+      "shot_expansion": 0,
+      "cooldown_progress": -1,
+      "cooling": false,
+      "aiming": false,
+      "thrusting": false,
+      "ambient_running": true,
+      "ambient_transitions": 7,
+      "ambient_paused_phase": 2.7248454988002777,
+      "ambient_started": 110.89124980196357,
+      "ambient_clock": "SlateAppTime",
+      "ambient_sample_phase": 1.1150480955839157,
+      "loaded_icons": 8,
+      "skills": [
+        {
+          "slot": 0,
+          "casts": 0,
+          "ready": 0,
+          "cast_material": true,
+          "ready_material": true,
+          "held_alpha": 0,
+          "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Fire.T_GroundIcon_Fire"
+        },
+        {
+          "slot": 1,
+          "casts": 0,
+          "ready": 0,
+          "cast_material": true,
+          "ready_material": true,
+          "held_alpha": 0,
+          "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Aim.T_GroundIcon_Aim"
+        },
+        {
+          "slot": 2,
+          "casts": 0,
+          "ready": 0,
+          "cast_material": true,
+          "ready_material": true,
+          "held_alpha": 0,
+          "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Jump.T_GroundIcon_Jump"
+        },
+        {
+          "slot": 3,
+          "casts": 0,
+          "ready": 0,
+          "cast_material": true,
+          "ready_material": true,
+          "held_alpha": 0,
+          "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_Blink.T_GroundIcon_Blink"
+        }
+      ],
+      "textures": [
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_AmbientHealth.T_GroundHUD_AmbientHealth",
+          "resident_bytes": 1966080
+        },
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cast.T_GroundHUD_Cast",
+          "resident_bytes": 4587520
+        },
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Ready.T_GroundHUD_Ready",
+          "resident_bytes": 5636096
+        },
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Cooldown.T_GroundHUD_Cooldown",
+          "resident_bytes": 327680
+        },
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_AmbientMap.T_GroundHUD_AmbientMap",
+          "resident_bytes": 1966080
+        },
+        {
+          "asset": "/Game/GuLiStrike/GroundMech/UI/Motion/Textures/T_GroundHUD_Intro.T_GroundHUD_Intro",
+          "resident_bytes": 48431104
+        }
+      ],
+      "resident_mib": 60
+    },
+    "gameplay": {
+      "buff_version": 2,
+      "rogue_version": 3,
+      "ready": true,
+      "tick": 10969,
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "presentation": {
+        "epoch": 0,
+        "prepared_vfx": 3,
+        "active_status": 0,
+        "tails": 0,
+        "burst_receipts": 0,
+        "burst_accepted": 0,
+        "burst_suppressed": 0,
+        "burst_rejected": 0
+      },
+      "targets": [
+        {
+          "key": "1/5457EC344361E2D1705947495BA6C276/1",
+          "local_id": 1,
+          "center": [
+            -13926.22294242599,
+            50550,
+            1117.8677274582396
+          ],
+          "radius": 300,
+          "team": 1,
+          "health": 1000,
+          "max_health": 1000,
+          "shield": 0,
+          "dead": false
+        },
+        {
+          "key": "1/1E2327FAF14ECAB91CB81C62C53DA521/1",
+          "local_id": 4,
+          "center": [
+            -14536.22294242599,
+            51160,
+            1145.6769925949584
+          ],
+          "radius": 300,
+          "team": 2,
+          "health": 0,
+          "max_health": 1000,
+          "shield": 0,
+          "dead": true
+        },
+        {
+          "key": "1/DCA4CF983D0CD4D97B7207E727044646/1",
+          "local_id": 5,
+          "center": [
+            -12736.22294242599,
+            51760,
+            1143.6769925949584
+          ],
+          "radius": 300,
+          "team": 2,
+          "health": 0,
+          "max_health": 1000,
+          "shield": 0,
+          "dead": true
+        },
+        {
+          "key": "1/D64CACE1CEFCA51304D53A9E05E7855E/1",
+          "local_id": 6,
+          "center": [
+            -13336.22294242599,
+            51160,
+            1127.6769925949584
+          ],
+          "radius": 300,
+          "team": 2,
+          "health": 0,
+          "max_health": 1000,
+          "shield": 0,
+          "dead": true
+        },
+        {
+          "key": "1/EE30E23E5162C0313039BF8F051AEBCD/1",
+          "local_id": 7,
+          "center": [
+            -13936.22294242599,
+            51760,
+            1179.6769925949584
+          ],
+          "radius": 300,
+          "team": 2,
+          "health": 0,
+          "max_health": 1000,
+          "shield": 0,
+          "dead": true
+        },
+        {
+          "key": "1/045A91283D570DB19FAA17A4DF177543/1",
+          "local_id": 8,
+          "center": [
+            -13936.22294242599,
+            51160,
+            1135.6769925949584
+          ],
+          "radius": 300,
+          "team": 2,
+          "health": 0,
+          "max_health": 3000,
+          "shield": 0,
+          "dead": true
+        }
+      ],
+      "buffs": [],
+      "ricochets": []
+    },
+    "isolation": 0,
+    "prompt_restored": true,
+    "dirty_content": [],
+    "dirty_maps": []
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "success": true,
+  "method": "fresh Blender background process; saved blend reopened; no generation module imported",
+  "blend": "D:\\UE5.7\\test1\\ArtSource\\QuadrupedMiner_20261113\\Production_10k_v1\\quadruped-mech-production-10k.blend",
+  "blend_sha256": "5388911aaca7c6bce4720d63f26762cd936142d684af46041a98bc7a2f2d355c",
+  "source_sha256_before": "c4d2649b5d6edce48d6475a6988ac8ac1677f6676994288019c5de97be583850",
+  "scenes_present": [
+    "00_静态 · 当前资源",
+    "01_行进 · 顶点动画",
+    "02_采矿 · 顶点动画"
+  ],
+  "active_scene_on_open": "00_静态 · 当前资源",
+  "body_objects": 43,
+  "outline_objects": 42,
+  "body_triangles": 5172,
+  "outline_triangles": 5160,
+  "total_triangles": 10332,
+  "zero_area_static_triangles": 0,
+  "materials_match_source_three_tone_shaders": true,
+  "material_names": [
+    "机甲 · 关节枪铁",
+    "机甲 · 冷白灯缝",
+    "机甲 · 橡胶与线缆",
+    "机甲 · 液压杆",
+    "机甲 · 深灰腿部护甲",
+    "机甲 · 米白小腿嵌板",
+    "机甲 · 蓝灰喷涂外甲",
+    "机甲 · 黑色主体框架"
+  ],
+  "side_panel_angles_match_source": true,
+  "side_panel_angles_degrees": {
+    "Side_Panel_Front_L": 32.5,
+    "Side_Panel_Front_R": 32.5,
+    "Side_Panel_Rear_L": 35.0,
+    "Side_Panel_Rear_R": 35.0
+  },
+  "protected_foot_parts": 64,
+  "protected_foot_vertices_per_scene": 738,
+  "clips": {
+    "01_行进 · 顶点动画": {
+      "frames_evaluated": 29,
+      "animated_mesh_objects": 85,
+      "evaluated_key_max_error_m": 7.34855404971313e-07,
+      "static_first_frame_max_error_m": 7.450580596923828e-09,
+      "loop_max_vertex_error_m": 0.0,
+      "maximum_vertex_motion_m": 0.7294285297393799,
+      "zero_area_animation_triangles": 0,
+      "triangles_evaluated_including_outline": 299628
+    },
+    "02_采矿 · 顶点动画": {
+      "frames_evaluated": 73,
+      "animated_mesh_objects": 85,
+      "evaluated_key_max_error_m": 2.793163048409042e-06,
+      "static_first_frame_max_error_m": 4.656612873077393e-10,
+      "loop_max_vertex_error_m": 0.0,
+      "maximum_vertex_motion_m": 0.5862041711807251,
+      "zero_area_animation_triangles": 0,
+      "triangles_evaluated_including_outline": 754236,
+      "protected_foot_max_motion_m": 2.384185791015625e-07,
+      "chassis_down_travel_m": 0.32158052921295166,
+      "chassis_back_travel_m": 0.34634801745414734
+    }
+  },
+  "source_sha256_after": "c4d2649b5d6edce48d6475a6988ac8ac1677f6676994288019c5de97be583850",
+  "source_file_unchanged": true,
+  "visual_review": "pending owner in Blender; no assistant rendering, screenshots or visual inspection",
+  "ue_runtime_and_performance_validation": "not performed; formal mining-cart replacement not performed"
+}

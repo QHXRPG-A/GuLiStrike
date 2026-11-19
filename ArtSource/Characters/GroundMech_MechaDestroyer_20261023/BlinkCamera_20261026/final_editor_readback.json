@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "cold_read_without_rebuild": true,
+  "nodes": 73,
+  "fingerprint": "a4575f32efcd0ecd6b9f1dcccdf42449",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "blink_timing": {
+    "BlinkDistance": 1200,
+    "BlinkCooldownSeconds": 2,
+    "BlinkWindupSeconds": 0.4,
+    "BlinkRecoverySeconds": 0.6,
+    "BlinkArmBackDegrees": 120,
+    "BlinkBodyLeanDegrees": 18,
+    "BlinkAfterimageCount": 3,
+    "BlinkAfterimageSeconds": 0.38,
+    "BlinkAfterimageOpacity": 0.55,
+    "BlinkLoopSeconds": 0.5,
+    "BlinkLoopSwayDegrees": 3
+  },
+  "camera": [
+    {
+      "Name": "Free",
+      "BlinkHoldSeconds": 0.04,
+      "BlinkCatchupSeconds": 0.45
+    },
+    {
+      "Name": "Aim",
+      "BlinkHoldSeconds": 0.04,
+      "BlinkCatchupSeconds": 0.45
+    }
+  ],
+  "dirty_maps": [],
+  "dirty_content": [],
+  "PIE": false
+}

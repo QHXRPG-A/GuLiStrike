@@ -11,14 +11,70 @@
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 
 #include "Components/PrimitiveComponent.h"
+#include "HierarchicalHashGrid2D.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Net/UnrealNetwork.h"
 
+// Each target occupies one size-appropriate cell. Large and off-centre bodies remain
+// discoverable without expanding a local query by the largest unit on the map.
+struct FGuLiCombatBodyIndex
+{
+	using FGrid = THierarchicalHashGrid2D<5, 4, int32>;
+	struct FEntry { int32 Slot; FGrid::FCellLocation Cell; float Reach; };
+	FGrid Grid{1000.f};
+	TSparseArray<FGuLiTargetHandle> Handles;
+	TMap<FGuLiTargetHandle, FEntry> Entries;
+
+	void Set(const FGuLiTargetHandle& Handle, const FVector& Anchor, float Reach)
+	{
+		const FBox Bounds = FBox::BuildAABB(Anchor, FVector(Reach));
+		if (FEntry* Entry = Entries.Find(Handle))
+		{
+			Entry->Cell = Grid.Move(Entry->Slot, Entry->Cell, Bounds);
+			Entry->Reach = Reach;
+			return;
+		}
+		const int32 Slot = Handles.Add(Handle);
+		Entries.Add(Handle, {Slot, Grid.Add(Slot, Bounds), Reach});
+	}
+
+	void Remove(const FGuLiTargetHandle& Handle)
+	{
+		FEntry Entry;
+		if (Entries.RemoveAndCopyValue(Handle, Entry))
+		{
+			Grid.Remove(Entry.Slot, Entry.Cell);
+			Handles.RemoveAt(Entry.Slot);
+		}
+	}
+};
+
 namespace
 {
+void ReadActorBody(const AActor& Owner, FGuLiCombatTargetSnapshot& Snapshot)
+{
+	Snapshot.Location = Owner.GetActorLocation();
+	if (const auto* Root = Cast<UPrimitiveComponent>(Owner.GetRootComponent()))
+	{
+		Snapshot.CollisionRadius = Root->Bounds.SphereRadius;
+		Snapshot.HitCenter = Root->Bounds.Origin;
+		Snapshot.bHasHitCenter = true;
+	}
+	else if (const FBox Bounds = Owner.GetComponentsBoundingBox(false); Bounds.IsValid)
+	{
+		Snapshot.HitCenter = Bounds.GetCenter();
+		Snapshot.bHasHitCenter = true;
+	}
+}
+
+float PlanarBodyReach(const FGuLiCombatTargetSnapshot& Snapshot)
+{
+	return Snapshot.CollisionRadius + float(FVector::Dist2D(Snapshot.Location, Snapshot.GetHitCenter()));
+}
+
 bool IsCurrentSoldierHandle(const FGuLiTargetHandle& Handle,uint32 Epoch)
 {
     return Handle.Kind!=EGuLiTargetKind::CommanderSoldier || (Epoch
@@ -200,12 +256,33 @@ void UGuLiCombatHealthComponent::RegisterWithLedger()
 	}
 	if (UGuLiDamageLedgerSubsystem* Ledger = GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>())
 	{
-		Ledger->RegisterHealthComponent(*this);
+		if (!Ledger->RegisterHealthComponent(*this)) return;
+		USceneComponent* Root = GetOwner()->GetRootComponent();
+		if (FootprintRoot.Get() != Root)
+		{
+			if (auto* Old = FootprintRoot.Get()) Old->TransformUpdated.Remove(FootprintTransformHandle);
+			FootprintRoot = Root;
+			if (Root) FootprintTransformHandle = Root->TransformUpdated.AddWeakLambda(this,
+				[this](USceneComponent*, EUpdateTransformFlags, ETeleportType) { RefreshActorFootprint(); });
+		}
+		RefreshActorFootprint();
+	}
+}
+
+void UGuLiCombatHealthComponent::RefreshActorFootprint()
+{
+	if (auto* Ledger = GetWorld() ? GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>() : nullptr)
+	{
+		FGuLiCombatTargetSnapshot Body;
+		ReadActorBody(*GetOwner(), Body);
+		Ledger->SetTargetFootprint(TargetHandle, Body.Location, PlanarBodyReach(Body));
 	}
 }
 
 void UGuLiCombatHealthComponent::UnregisterFromLedger()
 {
+	if (auto* Root = FootprintRoot.Get()) Root->TransformUpdated.Remove(FootprintTransformHandle);
+	FootprintRoot.Reset();
 	if (!GetWorld() || !TargetHandle.IsValid())
 	{
 		return;
@@ -231,6 +308,7 @@ void UGuLiDamageLedgerSubsystem::Deinitialize()
 	PendingSubmissions.Reset();
 	RetainedEffectSources.Reset();
 	TargetAdapters.Reset();
+	BodyIndex.Reset();
 	TargetDomains.Reset();
 	SourceAdapters.Reset();
 	ResultsByEvent.Reset();
@@ -282,7 +360,46 @@ bool UGuLiDamageLedgerSubsystem::RegisterTarget(
 	}
 	TargetAdapters.Add(Handle, MoveTemp(Adapter));
 	TargetDomains.FindOrAdd(Handle.Kind).Add(Handle);
+	if (!BodyIndex) BodyIndex = MakeShared<FGuLiCombatBodyIndex>();
+	FGuLiCombatTargetSnapshot Snapshot;
+	if (TargetAdapters.FindChecked(Handle).ReadSnapshot(Snapshot) && Snapshot.Handle == Handle)
+		SetTargetFootprint(Handle, Snapshot.Location, PlanarBodyReach(Snapshot));
 	return true;
+}
+
+void UGuLiDamageLedgerSubsystem::SetTargetFootprint(const FGuLiTargetHandle& Handle, const FVector& Anchor, float Reach)
+{
+	if (BodyIndex && TargetAdapters.Contains(Handle) && !Anchor.ContainsNaN() && FMath::IsFinite(Reach) && Reach >= 0)
+		BodyIndex->Set(Handle, Anchor, Reach);
+}
+
+void UGuLiDamageLedgerSubsystem::MoveTargetFootprint(const FGuLiTargetHandle& Handle, const FVector& Anchor)
+{
+	if (!BodyIndex || Anchor.ContainsNaN()) return;
+	if (auto* Entry = BodyIndex->Entries.Find(Handle))
+		Entry->Cell = BodyIndex->Grid.Move(Entry->Slot, Entry->Cell, FBox::BuildAABB(Anchor, FVector(Entry->Reach)));
+	else
+	{
+		// A body can first register while phased and become hittable on relocation.
+		FGuLiCombatTargetSnapshot Snapshot;
+		if (TryGetTargetSnapshot(Handle, Snapshot)) SetTargetFootprint(Handle, Anchor, PlanarBodyReach(Snapshot));
+	}
+}
+
+void UGuLiDamageLedgerSubsystem::GetNearbyTargetSnapshots(const FBox& Bounds, TArray<FGuLiCombatTargetSnapshot>& Out)
+{
+	Out.Reset();
+	if (!BodyIndex || !Bounds.IsValid) return;
+	TArray<int32, TInlineAllocator<32>> Slots;
+	BodyIndex->Grid.QuerySmall(Bounds, Slots);
+	for (int32 Slot : Slots)
+	{
+		const FGuLiTargetHandle Handle = BodyIndex->Handles[Slot];
+		FGuLiCombatTargetSnapshot Snapshot;
+		if (TryGetTargetSnapshot(Handle, Snapshot) && Snapshot.bAlive && FMath::IsFinite(Snapshot.CollisionRadius)
+			&& Snapshot.CollisionRadius >= 0 && Bounds.ComputeSquaredDistanceToPoint(Snapshot.GetHitCenter()) <= FMath::Square(double(Snapshot.CollisionRadius)))
+			Out.Add(MoveTemp(Snapshot));
+	}
 }
 
 bool UGuLiDamageLedgerSubsystem::RegisterHealthComponent(UGuLiCombatHealthComponent& HealthComponent)
@@ -302,22 +419,11 @@ bool UGuLiDamageLedgerSubsystem::RegisterHealthComponent(UGuLiCombatHealthCompon
 		OutSnapshot = FGuLiCombatTargetSnapshot();
 		OutSnapshot.Handle = Handle;
 		OutSnapshot.Team = Health->GetCombatTeam();
-		OutSnapshot.Location = Owner->GetActorLocation();
+		ReadActorBody(*Owner, OutSnapshot);
 		OutSnapshot.Health = Health->GetHealthState().Health;
 		OutSnapshot.MaxHealth = Health->GetHealthState().MaxHealth;
 		OutSnapshot.bAlive = Health->IsAlive();
 		OutSnapshot.CollisionActor = const_cast<AActor*>(Owner);
-		if (const UPrimitiveComponent* RootPrimitive = Cast<UPrimitiveComponent>(Owner->GetRootComponent()))
-		{
-			OutSnapshot.CollisionRadius = RootPrimitive->Bounds.SphereRadius;
-			OutSnapshot.HitCenter = RootPrimitive->Bounds.Origin;
-			OutSnapshot.bHasHitCenter = true;
-		}
-		else if (const FBox Bounds = Owner->GetComponentsBoundingBox(false); Bounds.IsValid)
-		{
-			OutSnapshot.HitCenter = Bounds.GetCenter();
-			OutSnapshot.bHasHitCenter = true;
-		}
 		return !OutSnapshot.Location.ContainsNaN();
 	};
 
@@ -332,6 +438,7 @@ void UGuLiDamageLedgerSubsystem::UnregisterTarget(
 		if (!ExpectedOwner || Existing->LifetimeOwner.Get() == ExpectedOwner)
 		{
 			TargetAdapters.Remove(Handle);
+			if (BodyIndex) BodyIndex->Remove(Handle);
 			if (auto* Domain = TargetDomains.Find(Handle.Kind)) Domain->Remove(Handle);
 		}
 	}
@@ -349,6 +456,7 @@ bool UGuLiDamageLedgerSubsystem::TryGetTargetSnapshot(
 		if (Adapter && !Adapter->LifetimeOwner.IsValid())
 		{
 			TargetAdapters.Remove(Handle);
+			if (BodyIndex) BodyIndex->Remove(Handle);
 			if (auto* Domain = TargetDomains.Find(Handle.Kind)) Domain->Remove(Handle);
 		}
 		return false;
@@ -372,10 +480,10 @@ void UGuLiDamageLedgerSubsystem::GetTargetSnapshots(
 			for (auto It = Domain->CreateIterator(); It; ++It)
 			{
 				const FGuLiTargetHandle Handle = *It;
-				if (!IsCurrentSoldierHandle(Handle,MatchEpoch)) { TargetAdapters.Remove(Handle); It.RemoveCurrent(); continue; }
+				if (!IsCurrentSoldierHandle(Handle,MatchEpoch)) { TargetAdapters.Remove(Handle); if (BodyIndex) BodyIndex->Remove(Handle); It.RemoveCurrent(); continue; }
 				const auto* Adapter = TargetAdapters.Find(Handle);
 				if (!Adapter || !Adapter->IsBound())
-				{ TargetAdapters.Remove(Handle); It.RemoveCurrent(); continue; }
+				{ TargetAdapters.Remove(Handle); if (BodyIndex) BodyIndex->Remove(Handle); It.RemoveCurrent(); continue; }
 				FGuLiCombatTargetSnapshot Snapshot;
 				if (Adapter->ReadSnapshot(Snapshot) && Snapshot.Handle == Handle && Snapshot.Handle.IsValid()
 					&& !Snapshot.Location.ContainsNaN()) OutSnapshots.Add(MoveTemp(Snapshot));
@@ -540,8 +648,9 @@ void UGuLiDamageLedgerSubsystem::PruneInvalidTargets()
 {
 	for (auto Iterator = TargetAdapters.CreateIterator(); Iterator; ++Iterator)
 	{
-		if (!Iterator.Value().IsBound())
+		if (!Iterator.Value().IsBound() || (MatchEpoch && !IsCurrentSoldierHandle(Iterator.Key(), MatchEpoch)))
 		{
+			if (BodyIndex) BodyIndex->Remove(Iterator.Key());
 			if (auto* Domain = TargetDomains.Find(Iterator.Key().Kind)) Domain->Remove(Iterator.Key());
 			Iterator.RemoveCurrent();
 		}

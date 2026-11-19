@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-10",
+  "card_id": "09.01",
+  "card_title": "增加攻速",
+  "model_id": 4001,
+  "asset_kind": "hud_icon",
+  "version": 3,
+  "state": "reference_pending_user_review",
+  "generator": "built-in image_gen",
+  "mode": "annotated trajectory redraw",
+  "transparent_background": true,
+  "feedback": "重新生成",
+  "inputs_in_order": [
+    {
+      "file": "../FireRate_Icon_Reference_20261109_v2/FireRate_HUD_Icon_Reference_v2.png",
+      "sha256": "cfa0a1e5c3b9a7ec2d3502076baeb720df18208d87e41b8fa0bf2d4992bf1278",
+      "role": "未标注的透明底 v2 图标"
+    },
+    {
+      "file": "C:\\Users\\a\\AppData\\Local\\Temp\\codex-clipboard-d1747ebe-91ef-4893-bc08-c6dcc9ecd2e8.png",
+      "sha256": "908f91d37f1979085caf1449b8e5cb2f2825ed58733444a0155793d6bf1c7947",
+      "role": "用户红线标注的弹道方向和边缘"
+    }
+  ],
+  "prompt": "Icon_Prompt.txt",
+  "prompt_payload_utf8_sha256": "f035b7048b52a02e21d295cf0e758d040a76bcb998ab9d8688ed24f05bfd4358",
+  "output": {
+    "file": "FireRate_HUD_Icon_Reference_v3.png",
+    "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-d685f6f5-aeff-47b5-aa96-4be76c1c7f10.png",
+    "sha256": "7f31b3f6a2ca207a812e2f91c34ad9c8ccbe5338c472d31f04b06ac1d5133658",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  "assistant_output_visual_review": false
+}

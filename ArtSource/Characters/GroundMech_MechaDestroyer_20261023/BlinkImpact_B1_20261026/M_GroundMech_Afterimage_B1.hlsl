@@ -1,0 +1,1 @@
+float rim=saturate(Rim); return float4(Tint.rgb*(0.7+rim*2.0), saturate(Opacity)*(0.30+rim*0.55));

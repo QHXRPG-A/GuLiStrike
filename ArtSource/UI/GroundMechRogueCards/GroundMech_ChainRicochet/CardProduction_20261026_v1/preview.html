@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>折射子弹 · 六层补绘牌面</title>
+<style>
+:root{color-scheme:dark;font-family:"Microsoft YaHei UI","Noto Sans CJK SC",sans-serif;color:#fee4d9;background:#101722}
+*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button,a{touch-action:manipulation}button{color:inherit;background:#202f3b;border:1px solid #3f5967;border-radius:7px;padding:9px 15px;cursor:pointer}button[aria-pressed=true]{background:#6aa4be;color:#021716}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ee9d58;outline-offset:3px}a{color:#90c1d6;text-decoration:none}a:hover{text-decoration:underline}
+header{max-width:1240px;margin:auto;padding:26px 30px 16px;display:flex;justify-content:space-between;align-items:baseline;gap:18px;flex-wrap:wrap}h1{font-size:22px;margin:0;font-weight:600}header span{color:#9fb0b9;font-size:13px}.layout{max-width:1240px;margin:auto;padding:8px 30px 30px;display:grid;grid-template-columns:minmax(400px,1fr) 330px;gap:42px;align-items:start}
+.stage{min-height:680px;display:grid;place-items:center;perspective:1000px;position:relative;overflow:visible;touch-action:none;user-select:none}.card-shell{width:min(100%,440px);aspect-ratio:2/3;position:relative;transform-style:preserve-3d;will-change:transform;transition:transform 120ms ease-out;filter:drop-shadow(0 26px 28px #0008)}.thickness{position:absolute;inset:1px;background:#0a101b;border-radius:17px;transform:translateZ(-9px);border:2px solid #557b78}.card-face{position:absolute;inset:0;background:linear-gradient(140deg,#274e61,#1a182f 38%,#032e30);border:2px solid #6aa4be;border-radius:17px;overflow:hidden;box-shadow:inset 0 0 0 5px #1a182f,inset 0 0 0 6px #d5c09c80}.card-face:before,.card-face:after{content:"";position:absolute;z-index:10;pointer-events:none;width:38px;height:38px;border-color:#d5c09c;border-style:solid;opacity:.8}.card-face:before{top:12px;left:12px;border-width:2px 0 0 2px}.card-face:after{bottom:12px;right:12px;border-width:0 2px 2px 0}
+.heading{position:absolute;top:21px;left:28px;right:28px;display:flex;justify-content:space-between;align-items:center}.heading strong{font-size:21px;letter-spacing:3px}.heading span{font-size:11px;letter-spacing:2px;color:#d5c09c}.art{position:absolute;left:15px;right:15px;top:66px;aspect-ratio:1;overflow:hidden;border:1px solid #d5c09c99;background:repeating-conic-gradient(#23323b 0 25%,#2a3b44 0 50%) 0/18px 18px}.layer,.master{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;will-change:transform}.master{z-index:20;display:none}.caption{position:absolute;left:28px;right:28px;bottom:34px;border-top:1px solid #6aa4be66;padding-top:17px}.caption p{margin:0;font-size:16px;line-height:1.7;letter-spacing:1px}.caption small{display:block;font-size:10px;color:#9fb0b9;letter-spacing:2px;margin-top:13px}.shine{position:absolute;inset:0;z-index:30;pointer-events:none;background:linear-gradient(120deg,#fff0 30%,#6aa4be0d 47%,#fff0 66%);border-radius:17px}.stage-label{position:absolute;bottom:0;left:0;right:0;text-align:center;color:#9fb0b9;font-size:12px;pointer-events:none}
+.controls{padding-top:16px}h2{font-size:14px;margin:25px 0 12px;letter-spacing:1px;font-weight:500;color:#c4d1d7}.modes{display:flex;gap:8px;flex-wrap:wrap}.control{margin:20px 0}.control>label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:9px;color:#c4d1d7}input[type=range]{width:100%;accent-color:#6aa4be}input[type=checkbox]{accent-color:#6aa4be;width:17px;height:17px}.layer-control{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center;padding:11px 0;border-bottom:1px solid #6aa4be22}.layer-control label{font-size:13px}.layer-control input[type=range]{grid-column:2/4;margin-top:2px}.layer-control a{font-size:11px}.small{font-size:12px;line-height:1.8;color:#9fb0b9}.status{margin-top:20px;color:#d5c09c;font-size:12px;line-height:1.7}.footer{display:flex;gap:16px;flex-wrap:wrap;margin-top:22px;font-size:12px}.card-shell[data-mode=master] .master{display:block}.card-shell[data-mode=master] .layer{visibility:hidden}.loading{position:absolute;z-index:21;inset:0;display:grid;place-items:center;background:#1a182f;color:#d5c09c;font-size:13px}.loading[hidden]{display:none}
+@media(max-width:840px){.layout{grid-template-columns:1fr;gap:12px;max-width:590px}.stage{min-height:660px}.controls{padding:0 8px}header{max-width:590px}.card-shell{width:min(100%,410px)}}@media(max-width:440px){header,.layout{padding-left:14px;padding-right:14px}.stage{min-height:600px}.card-shell{max-width:360px}.heading strong{font-size:18px}.heading{left:24px;right:24px}.heading span{font-size:9px}.caption{bottom:28px;padding-top:12px}.caption p{font-size:14px}.caption small{margin-top:8px}.art{top:60px}}
+@media(prefers-reduced-motion:reduce){.card-shell{transition:none}}
+.layer{inset:auto;left:-25%;top:-25%;width:150%;height:150%;object-fit:fill}.shine{display:none}.fg-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.card-shell[data-mode=master] .fg-canvas{visibility:hidden}
+</style>
+<header><h1>折射子弹</h1><span>六层逐层补绘 · 前景遮挡与边缘固定</span></header>
+<main class="layout">
+  <section class="stage" id="stage" aria-label="可倾斜的折射子弹牌面">
+    <div class="card-shell" id="card" data-mode="flat">
+      <div class="thickness"></div><div class="card-face">
+        <div class="heading"><strong>折射子弹</strong><span>GROUND / RICOCHET</span></div>
+        <div class="art" id="art">
+          <img class="layer" data-layer="6" src="Layers/06_FarBackground.png?v=completion-r3" alt="远景底图">
+          <img class="layer" data-layer="4" src="Layers/04_Scene.png?v=completion-r3" alt="场景">
+          <img class="layer" data-layer="5" src="Layers/05_Ricochet_Enemies.png?v=completion-r3" alt="折射弹道和三个敌方机甲">
+          <img class="layer" data-layer="3" src="Layers/03_PlayerMech.png?v=completion-r3" alt="机甲与附着火焰">
+          <img class="layer" data-layer="1" src="Layers/01_Foreground.png?v=completion-r3" alt="近景">
+          <img class="layer" data-layer="2" src="Layers/02_SpeedLines.png?v=completion-r3" alt="速度线">
+          <img class="master" src="Reference_RGB.png?v=completion-r3" alt="原图RGB对照">
+          <div class="loading" id="loading">正在读取图层…</div>
+        </div>
+        <div class="caption"><p>折射弹道 · 连锁冲击</p><small>ARTWORK PREVIEW / NO GAMEPLAY EFFECT</small></div>
+        <div class="shine"></div>
+      </div>
+    </div>
+    <div class="stage-label">先对照原位叠合；切换视差后移动鼠标或拖动牌面</div>
+  </section>
+  <aside class="controls">
+    <div class="modes" aria-label="查看方式">
+      <button type="button" data-mode="parallax" aria-pressed="false">视差牌面</button>
+      <button type="button" data-mode="flat" aria-pressed="true">原位叠合</button>
+      <button type="button" data-mode="master" aria-pressed="false">原图</button>
+    </div>
+    <div class="control"><label for="tilt">牌面倾斜 <output id="tilt-value">12°</output></label><input id="tilt" type="range" min="0" max="16" value="12" step="1"></div>
+    <div class="control"><label for="strength">层间视差 <output id="strength-value">4 px</output></label><input id="strength" type="range" min="0" max="8" value="4" step="1"></div>
+    <button type="button" id="reset">回正并重置</button>
+    <h2>图层开关与透明度</h2>
+    <div id="layer-controls"></div>
+    <div class="status" id="status" role="status" aria-live="polite">等待图层</div>
+    <p class="small">六层分别用生图模型补齐缺失表面、遮挡区域和外沿，并按原图坐标装配。统一画布四边各预留256像素。前景使用同一张补绘图和遮挡蒙版处理机甲前后关系，窗口外沿保持固定。</p>
+    <p class="small">本页只展示卡牌美术。标题和短语用于标识预览，没有新增卡表、效果数值或技能逻辑。UE 实际牌面仍需完成材质导入与玩家核验。</p>
+    <div class="footer"><a href="Master.png" download>固定原图</a><a href="manifest.json" download>素材清单</a><a href="RicochetCard_Package.zip" download>完整素材包</a></div>
+  </aside>
+</main>
+<script src="foreground-renderer.js?v=completion-r3"></script>
+<script>
+(()=>{
+  const stage=document.getElementById('stage'),card=document.getElementById('card');
+  const status=document.getElementById('status'),loading=document.getElementById('loading');
+  const tilt=document.getElementById('tilt'),strength=document.getElementById('strength');
+  const images=[...document.querySelectorAll('.layer')];
+  const foreground=new window.RicochetForegroundRenderer(images.find(image=>image.dataset.layer==='1'),document.getElementById('art'));
+  const names={1:'近景',2:'速度线',3:'机甲',4:'场景',5:'折射弹道与三个敌人',6:'远景'};
+  const depth={1:1,2:.9,3:.60,4:.20,5:.36,6:0};
+  let px=0,py=0,mode='flat',loaded=0,failed=0,raf=0;
+  const state={};
+  const controls=document.getElementById('layer-controls');
+  for(let n=1;n<=6;n++){
+    const image=images.find(img=>+img.dataset.layer===n);state[n]={visible:true,opacity:1};
+    const row=document.createElement('div');row.className='layer-control';
+    const toggle=document.createElement('input');toggle.type='checkbox';toggle.checked=true;toggle.id='show-'+n;
+    const label=document.createElement('label');label.htmlFor=toggle.id;label.textContent=n+' · '+names[n];
+    const link=document.createElement('a');link.href=image.getAttribute('src');link.download=image.getAttribute('src').split('/').pop().split('?')[0];link.textContent='PNG';
+    const opacity=document.createElement('input');opacity.type='range';opacity.min=0;opacity.max=100;opacity.value=100;opacity.setAttribute('aria-label',names[n]+'透明度');
+    toggle.addEventListener('change',()=>{state[n].visible=toggle.checked;paint()});
+    opacity.addEventListener('input',()=>{state[n].opacity=+opacity.value/100;paint()});
+    row.append(toggle,label,link,opacity);controls.append(row);
+  }
+  function paint(){
+    const active=mode==='parallax';const tx=active?px:0,ty=active?py:0;
+    card.style.transform='rotateX('+(-ty*+tilt.value)+'deg) rotateY('+(tx*+tilt.value)+'deg)';
+    for(const image of images){const n=+image.dataset.layer;const opacity=state[n].visible?state[n].opacity:0;image.style.opacity=opacity;if(n===1){image.style.transform='none';foreground.draw(-tx*depth[n]*+strength.value,-ty*depth[n]*+strength.value,opacity);}else{image.style.transform='translate('+(-tx*depth[n]*+strength.value)+'px,'+(-ty*depth[n]*+strength.value)+'px)';}}
+    document.getElementById('tilt-value').value=tilt.value+'°';document.getElementById('strength-value').value=strength.value+' px';
+  }
+  function setPointer(event){const r=stage.getBoundingClientRect();px=Math.max(-1,Math.min(1,(event.clientX-r.left)/r.width*2-1));py=Math.max(-1,Math.min(1,(event.clientY-r.top)/r.height*2-1));if(!raf)raf=requestAnimationFrame(()=>{raf=0;paint()});}
+  stage.addEventListener('pointermove',setPointer);stage.addEventListener('pointerdown',event=>{stage.setPointerCapture(event.pointerId);setPointer(event)});
+  stage.addEventListener('pointerleave',()=>{px=py=0;paint()});stage.addEventListener('pointerup',()=>{px=py=0;paint()});
+  for(const button of document.querySelectorAll('button[data-mode]'))button.addEventListener('click',()=>{mode=button.dataset.mode;card.dataset.mode=mode;document.querySelectorAll('button[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));paint()});
+  tilt.addEventListener('input',paint);strength.addEventListener('input',paint);
+  document.getElementById('reset').addEventListener('click',()=>{px=py=0;mode='flat';card.dataset.mode=mode;document.querySelectorAll('button[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));tilt.value=12;strength.value=4;for(let n=1;n<=6;n++){state[n]={visible:true,opacity:1};document.getElementById('show-'+n).checked=true;}document.querySelectorAll('.layer-control input[type=range]').forEach(i=>i.value=100);paint()});
+  function progress(){status.textContent=failed?'图层载入失败：'+failed+' 张；请检查素材文件。':loaded===6&&foreground.ready?'6 / 6 补绘图层已载入 · 待用户视觉验收':loaded===6?'图层已载入，正在读取前景遮挡…':loaded+' / 6 图层已载入';if(loaded+failed===6&&foreground.ready)loading.hidden=true;}
+  document.getElementById('art').addEventListener('foreground-ready',progress);
+  for(const image of images){if(image.complete&&image.naturalWidth){loaded++;}else{image.addEventListener('load',()=>{loaded++;progress()},{once:true});image.addEventListener('error',()=>{failed++;progress()},{once:true});}}
+  window.addEventListener('blur',()=>{px=py=0;paint()});progress();paint();
+})();
+</script>
+</html>

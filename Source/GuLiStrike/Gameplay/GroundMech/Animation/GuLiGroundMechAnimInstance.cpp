@@ -2,6 +2,7 @@
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/GroundMech/Animation/AnimNotify_GuLiGroundFire.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/Rogue/GuLiGroundRoguePresentation.h"
 #include "Gameplay/GroundMech/Movement/GuLiGroundMechMovementComponent.h"
 #include "Gameplay/GroundMech/Abilities/RocketJump/GuLiGroundMechRocketComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -20,6 +21,9 @@
 void UGuLiGroundMechAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
+    BarrageSequence=nullptr; BarragePoseTime=BarragePoseWeight=PresentedBarrageWeight=0.f;
+    BarrageBodyRotation=FRotator::ZeroRotator; BarrageBodyTranslation=FVector::ZeroVector;
+    BarrageLeftShoulderOffset=BarrageRightShoulderOffset=FVector::ZeroVector;
 	FireLoopInstance=INDEX_NONE;bGameplayFireLoop=false;RemoteFireUntil=0;FireRecoveryScale[0]=FireRecoveryScale[1]=1.f;
 	bUsePresentedUpperAim=bUpperAimOnly=bHasLocomotionSnapshot=false; UpperBodyFrame=FQuat::Identity;
 	UpperBodyRecoilConfiguration.Reset(); UpperBodyRecoilSkeleton.Reset(); UpperBodyRecoilSources.Reset();
@@ -53,6 +57,8 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	const auto* Move = Pawn ? Cast<UGuLiGroundMechMovementComponent>(Pawn->GetCharacterMovement()) : nullptr;
 	if (!Pawn || !Move || !Pawn->GetMobilityConfiguration().bReady)
 	{
+        BarragePoseWeight=PresentedBarrageWeight=0.f;
+        BarrageLeftShoulderOffset=BarrageRightShoulderOffset=FVector::ZeroVector;
 		bHasLocomotionSnapshot=false; UpperBodyFrame=FQuat::Identity;
 		ResetUpperBodyRecoil();
 		BlinkEntryDirection=FVector::ZeroVector; BlinkPhase=0; BlinkPhaseProgress=0.f;
@@ -71,12 +77,22 @@ void UGuLiGroundMechAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Grounding.GroundAlpha=0;
 		return;
 	}
+    if (bUsePresentedUpperAim && Pawn->GetRoguePresentation()->IsCasting())
+        Pawn->GetBarrageDisplayTransform(BarrageBodyRotation,BarrageBodyTranslation);
+    if (bUsePresentedUpperAim && (PresentedBarrageWeight > 0.f || Pawn->GetRoguePresentation()->IsCasting()))
+        Pawn->GetRoguePresentation()->ReadShotRecoil(BarrageLeftShoulderOffset, BarrageRightShoulderOffset);
 	if (bUpperAimOnly)
 	{
+        BarragePoseWeight=PresentedBarrageWeight;
 		// All lower-body, recoil and montage state remains at the logical sample.
 		UpdateUpperAim(*Pawn); return;
 	}
 	if (!bGameplayFireLoop && IsFireLoopPlaying() && UGuLiHybridActorComponent::BattleSeconds(Pawn)>RemoteFireUntil) StopFireLoop();
+    UAnimSequence* CastSequence=BarrageSequence.Get();
+    Pawn->GetRoguePresentation()->ReadPose(CastSequence,BarragePoseTime,PresentedBarrageWeight,DeltaSeconds);
+    BarrageSequence=CastSequence;
+    // The logical mesh supplies launch sockets. The display pass uses the full-body cast pose.
+    BarragePoseWeight=bUsePresentedUpperAim ? PresentedBarrageWeight : 0.f;
 	Grounding.bPresentationOnly=false;
 	bHasLocomotionSnapshot=true;
 	const float Yaw = Pawn->GetActorRotation().Yaw;

@@ -1,17 +1,45 @@
 {
   "success": true,
   "action": "review",
-  "run_id": "0ce8f7602a564dde96557af45a01da25",
+  "run_id": "29a30dd1ee274e9f822dd00cc434120f",
   "assistant_visual_test": false,
   "gameplay_modified": false,
   "review": {
     "map": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview",
-    "artwork_id": 8,
+    "artwork_id": 10,
     "director": "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview.LVL_CardArtworkCatalogReview:PersistentLevel.BP_CardRevealDirector_C_0",
-    "material": "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Materials/MI_GroundMech_BurningBurst_Artwork.MI_GroundMech_BurningBurst_Artwork",
+    "material": "/Game/GuLiStrike/Cards/GroundMech/FireRate/Materials/MI_GroundMech_FireRate_Artwork.MI_GroundMech_FireRate_Artwork",
     "saved_readback": true,
     "pie_started": false,
-    "user_visual_review": "pending"
+    "user_visual_review": "pending",
+    "face": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "selector": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "controller": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "game_mode_compile": {
+      "success": true,
+      "errors": [],
+      "warnings": []
+    },
+    "artwork_ids": [
+      10,
+      11,
+      12,
+      13
+    ],
+    "selector_asset": "/Game/GuLiStrike/CardSystem/RevealDemo/UI/WBP_CardArtworkCatalogSelector",
+    "game_mode": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardArtworkCatalogGameMode"
   },
   "completed_changes": [
     {

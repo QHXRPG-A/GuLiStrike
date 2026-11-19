@@ -1,0 +1,97 @@
+{
+  "success": true,
+  "action": "deploy",
+  "run_id": "f4933085de8b493099adeba8a37e7a3d",
+  "assistant_visual_test": false,
+  "gameplay_modified": false,
+  "application": {
+    "artwork_ids": [
+      7,
+      8
+    ],
+    "native_schema_ready": true,
+    "native_schema_issues": [],
+    "missing_sources": [],
+    "adoptions": [],
+    "source_hashes": {
+      "7": {
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Textures/T_GroundMech_BurningBullet_Layer1.T_GroundMech_BurningBullet_Layer1": "bc66671111d169c3c6668ebd20aeb7f5e92e96a1fb9cac036181606ff6700ea1",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Textures/T_GroundMech_BurningBullet_Layer2.T_GroundMech_BurningBullet_Layer2": "de15e7f6a6e0cd9f5c7965f9dbac86254cbece29fa1cf013a08f8abb1c20d54d",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Textures/T_GroundMech_BurningBullet_Layer3.T_GroundMech_BurningBullet_Layer3": "9096c789ee5e5580f476f34775ba347f6240130b18472a442a89c4bd10feb7ac",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Textures/T_GroundMech_BurningBullet_Layer4.T_GroundMech_BurningBullet_Layer4": "6b567884e66cf75daea8aeb49722473bd9f5850579609231fbaf79ff38b33ae9",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Textures/T_GroundMech_BurningBullet_Layer5.T_GroundMech_BurningBullet_Layer5": "3f24a1e1c9517a3cc1fffe08e040ed2144da4521bb160dae98cc816a5aa242c8",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Textures/T_GroundMech_BurningBullet_Layer6.T_GroundMech_BurningBullet_Layer6": "2fc8771a6511ef55d4e12a3f111579516a024bc59ee6c85602fa63b4d0978ed0"
+      },
+      "8": {
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Textures/T_GroundMech_BurningBurst_Layer1.T_GroundMech_BurningBurst_Layer1": "6c18b00c69c961aec97c5809b25767cfaa7ee2856a657fef72585764b49dc399",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Textures/T_GroundMech_BurningBurst_Layer2.T_GroundMech_BurningBurst_Layer2": "ea4ed4d2e7a8d6aeb2a19a9bc9265150d180ce78f0cd411f4204c97af7f796ef",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Textures/T_GroundMech_BurningBurst_Layer3.T_GroundMech_BurningBurst_Layer3": "4325a0ed7e0ca9fb117951c1dfecfab34a013e3c23a7b1d0a74baff0d502516a",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Textures/T_GroundMech_BurningBurst_Layer4.T_GroundMech_BurningBurst_Layer4": "f864907ce198fc7ffca82815679d5b4d1e0ff69a75040a38bbadd949ba251c16",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Textures/T_GroundMech_BurningBurst_Layer5.T_GroundMech_BurningBurst_Layer5": "3b68b74a6aa15cc64cb71a2293a80ed179171a5868b942692f7dc85431d5eca7",
+        "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Textures/T_GroundMech_BurningBurst_Layer6.T_GroundMech_BurningBurst_Layer6": "036d849caa144a40954684ddd616df79980a2429081478c9aa3f6c041caacdab"
+      }
+    },
+    "changed_materials": [
+      "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Materials/MI_GroundMech_BurningBullet_Artwork.MI_GroundMech_BurningBullet_Artwork",
+      "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Materials/MI_GroundMech_BurningBurst_Artwork.MI_GroundMech_BurningBurst_Artwork"
+    ],
+    "imported_textures": [],
+    "readback": [
+      {
+        "artwork_id": 7,
+        "material": "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Materials/MI_GroundMech_BurningBullet_Artwork.MI_GroundMech_BurningBullet_Artwork",
+        "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredRigid_v1.M_CardArtwork_RegisteredRigid_v1",
+        "parameters_checked": 36
+      },
+      {
+        "artwork_id": 8,
+        "material": "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Materials/MI_GroundMech_BurningBurst_Artwork.MI_GroundMech_BurningBurst_Artwork",
+        "parent": "/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredRigid_v1.M_CardArtwork_RegisteredRigid_v1",
+        "parameters_checked": 36
+      }
+    ]
+  },
+  "tables": [
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Templates",
+      "rows": 4,
+      "changed": false,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Artworks",
+      "rows": 8,
+      "changed": false,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Layers",
+      "rows": 48,
+      "changed": true,
+      "saved_readback": true
+    },
+    {
+      "table": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Parameters",
+      "rows": 274,
+      "changed": false,
+      "saved_readback": true
+    }
+  ],
+  "completed_changes": [
+    {
+      "kind": "material",
+      "asset": "/Game/GuLiStrike/Cards/GroundMech/BurningBullet/Materials/MI_GroundMech_BurningBullet_Artwork.MI_GroundMech_BurningBullet_Artwork",
+      "saved": true
+    },
+    {
+      "kind": "material",
+      "asset": "/Game/GuLiStrike/Cards/GroundMech/BurningBurst/Materials/MI_GroundMech_BurningBurst_Artwork.MI_GroundMech_BurningBurst_Artwork",
+      "saved": true
+    },
+    {
+      "kind": "table",
+      "asset": "/Game/GuLiStrike/Data/DT_GuLiStrikeCardArtwork_Layers",
+      "saved": true
+    }
+  ]
+}

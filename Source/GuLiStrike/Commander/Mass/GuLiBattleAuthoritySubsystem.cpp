@@ -3006,6 +3006,7 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 		Soldier.LastMovementUpdateSimulationSeconds = A.SimulationSeconds;
 		if (!Previous.Equals(Soldier.Location, .01))
 		{
+			if (!Soldier.bEngineering) MoveCombatTargetFootprint(Soldier.SoldierId, Soldier.Location);
 			// Reuse the existing authoritative displacement barrier so stale poses cannot undo repair.
 			Soldier.DisplacementFrameFloor = A.NextPoseFrameSequence;
 			Soldier.DisplacementLocation = Soldier.Location;
@@ -3356,6 +3357,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			&& bRunsMovementUpdate[SoldierIndex]
 			&& !bSuppressMovementForStep[SoldierIndex])
 		{
+			const FVector PreviousLocation = Soldier.Location;
 			const float MovementDeltaSeconds = MovementUpdateDeltaSeconds[SoldierIndex];
 
             const auto& Config=UnitCatalog->GetAvoidanceCatalog().Units.FindChecked(Soldier.UnitTypeId).Solver;
@@ -3484,6 +3486,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 					}
 				}
 			}
+			if (!Soldier.bEngineering && PreviousLocation != Soldier.Location)
+				MoveCombatTargetFootprint(Soldier.SoldierId, Soldier.Location);
 		}
 		else if (!bHasMovingOrder || bSuppressMovementForStep[SoldierIndex])
 		{
@@ -4321,6 +4325,12 @@ FGuLiTargetHandle UGuLiBattleAuthoritySubsystem::MakeSoldierTargetHandle(
     return Result;
 }
 
+void UGuLiBattleAuthoritySubsystem::MoveCombatTargetFootprint(FGuLiSoldierId SoldierId, const FVector& Location)
+{
+	if (auto* Ledger = GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>())
+		Ledger->MoveTargetFootprint(MakeSoldierTargetHandle(SoldierId), Location);
+}
+
 void UGuLiBattleAuthoritySubsystem::RegisterCombatLedgerTargets()
 {
 	UnregisterCombatLedgerTargets();
@@ -4516,6 +4526,7 @@ bool UGuLiBattleAuthoritySubsystem::ApplyExternalUnitState(TConstArrayView<FGuLi
 			Soldier.DisplacementLocation = Soldier.Location;
 			Soldier.DisplacementSimulationTime = AuthorityState->SimulationSeconds;
 		}
+        if (!Soldier.bEngineering && !bPhased) MoveCombatTargetFootprint(Soldier.SoldierId, Soldier.Location);
         if (auto* G=GetWorld()->GetSubsystem<UGuLiGroundGridSubsystem>();G && G->IsReady())
         {
             auto& M=Soldier.GridMotion;M.Stop(*G,Soldier.Location,AuthorityState->SimulationSeconds,EGuLiGridMoveEnd::Stopped);

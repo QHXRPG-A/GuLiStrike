@@ -1,0 +1,45 @@
+{
+  "success": true,
+  "map": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Maps/LVL_GroundMechRicochetReview",
+  "pie_started": false,
+  "gameplay_modified": false,
+  "shared_blueprints_modified": false,
+  "assistant_visual_test": false,
+  "user_visual_review": "pending",
+  "previous_map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved_readback": true,
+  "world": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Maps/LVL_GroundMechRicochetReview.LVL_GroundMechRicochetReview",
+  "director": "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Maps/LVL_GroundMechRicochetReview.LVL_GroundMechRicochetReview:PersistentLevel.BP_CardRevealDirector_C_0",
+  "fronts": [
+    "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1",
+    "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1",
+    "/Game/GuLiStrike/Cards/GroundMech/Ricochet/Materials/MI_Ricochet_Artwork_Builtin_v1.MI_Ricochet_Artwork_Builtin_v1"
+  ],
+  "frame": "/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/MI_WarMachineFrame.MI_WarMachineFrame",
+  "active_card_count": 1,
+  "game_mode": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealGameMode.BP_CardRevealGameMode_C",
+  "maximum_tilt": 12.0,
+  "area": 2.0,
+  "actors": [
+    {
+      "label": "GroundMech_RicochetCardDirector",
+      "class": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C"
+    },
+    {
+      "label": "RicochetReview_Key",
+      "class": "/Script/Engine.DirectionalLight"
+    },
+    {
+      "label": "RicochetReview_Ambient",
+      "class": "/Script/Engine.SkyLight"
+    },
+    {
+      "label": "RicochetReview_PlayerStart",
+      "class": "/Script/Engine.PlayerStart"
+    },
+    {
+      "label": "RicochetCard_ReviewInstructions",
+      "class": "/Script/Engine.Note"
+    }
+  ]
+}

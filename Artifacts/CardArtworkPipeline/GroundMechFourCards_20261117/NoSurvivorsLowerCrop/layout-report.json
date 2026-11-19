@@ -1,0 +1,214 @@
+{
+  "success": true,
+  "artwork_id": 13,
+  "intent": "底部导弹局部与游骑兵同时保留；上方大导弹允许裁切",
+  "old_offset_v": -0.0883066255144033,
+  "new_offset_v": -0.1696711379817406,
+  "old_source_crop_y_with_underlap": [
+    342.4359654119914,
+    1289.5640345880097
+  ],
+  "new_source_crop_with_underlap": [
+    29.745716071762086,
+    480.0,
+    1058.2542839282378,
+    1427.1280691760182
+  ],
+  "visible_source_crop": [
+    31.99999999999975,
+    483.3814258923565,
+    1056.0000000000002,
+    1423.7466432836618
+  ],
+  "source_crop_shift_down_px": 137.5640345880086,
+  "frame_canvas": [
+    1280,
+    1556
+  ],
+  "frame_ratio": [
+    320,
+    389
+  ],
+  "scale_unchanged": [
+    0.965273261607794,
+    0.965273261607794
+  ],
+  "aperture_unchanged": [
+    0.0437537592433908,
+    0.131596131687243,
+    0.956246240756609,
+    0.691790617283951
+  ],
+  "cell_changes": [
+    {
+      "sheet": "Layers",
+      "row": 70,
+      "cell": "O70",
+      "column": "OffsetV",
+      "id": "131",
+      "before": "-0.0883066255144033",
+      "after": "-0.169671137981741"
+    },
+    {
+      "sheet": "Layers",
+      "row": 71,
+      "cell": "O71",
+      "column": "OffsetV",
+      "id": "132",
+      "before": "-0.0883066255144033",
+      "after": "-0.169671137981741"
+    },
+    {
+      "sheet": "Layers",
+      "row": 72,
+      "cell": "O72",
+      "column": "OffsetV",
+      "id": "133",
+      "before": "-0.0883066255144033",
+      "after": "-0.169671137981741"
+    },
+    {
+      "sheet": "Layers",
+      "row": 73,
+      "cell": "O73",
+      "column": "OffsetV",
+      "id": "134",
+      "before": "-0.0883066255144033",
+      "after": "-0.169671137981741"
+    },
+    {
+      "sheet": "Layers",
+      "row": 74,
+      "cell": "O74",
+      "column": "OffsetV",
+      "id": "135",
+      "before": "-0.0883066255144033",
+      "after": "-0.169671137981741"
+    },
+    {
+      "sheet": "Layers",
+      "row": 75,
+      "cell": "O75",
+      "column": "OffsetV",
+      "id": "136",
+      "before": "-0.0883066255144033",
+      "after": "-0.169671137981741"
+    }
+  ],
+  "protected_hashes": {
+    "data/Excel/GuLiStrikeRogueCards.xlsx": "d0d43a094d6bcefa59b771ad345023dd601292e2a0fa30a04a81e2c07600f3e8",
+    "data/Excel/GuLiStrikeGroundHUD.xlsx": "9ed4412cc5a3db2172f2e79e0ee64a6299362fa78165753888e98d64b9861d08",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundCardFace.cpp": "b41225afccf698dbd29464026ca29e34af541980a7ae1ae1db5de0ad84c666c6",
+    "Source/GuLiStrike/Gameplay/GroundMech/UI/GuLiGroundCardFace.h": "85fb6f2226a866ac28e1c428c5b679daefe715296a83f395d4f68b328bfdc0f6",
+    "Source/GuLiStrike/Gameplay/Cards/GuLiRogueCardPresentation.cpp": "adc81fd333ebba462dd77bf2eb7d839619cc2303362ebaaf44f83d26582ea472",
+    "Scripts/Cards/card_artwork_review.py": "be867bd66b8f1fa502b0142987c5ac521db3171dde14fb3c58d7df24cc970182",
+    "Scripts/Cards/author_registered_six_material.py": "29077d3ac0a3fd477b53824e06b3d8f3a479127c1e7e6a9e9a09f69813d6b719"
+  },
+  "source_checks": [
+    {
+      "layer": 1,
+      "file": "ArtSource\\UI\\GroundMechRogueCards\\ExplosiveCards_Production_20261116_v1\\NoSurvivors\\Generation_v7\\Layers\\01_Missile_Close.png",
+      "sha256": "fbe57dcba5256f22fd583fddff677898055839c8a21abb919e6a692831dd8476",
+      "alpha_bbox_gt32": [
+        65,
+        63,
+        741,
+        755
+      ],
+      "full_strength_canvas_margin_px": [
+        5.745716071762086,
+        450.0,
+        5.745716071762217,
+        174.87193082398176
+      ]
+    },
+    {
+      "layer": 2,
+      "file": "ArtSource\\UI\\GroundMechRogueCards\\ExplosiveCards_Production_20261116_v1\\NoSurvivors\\Generation_v7\\Layers\\02_Ruin_Blasts.png",
+      "sha256": "c7efae06245f39c380ad062b70627e4ef5f1db06a2477bcd748fa5c2d9cef178",
+      "alpha_bbox_gt32": [
+        0,
+        1091,
+        1088,
+        1632
+      ],
+      "full_strength_canvas_margin_px": [
+        9.585716071762086,
+        454.8,
+        9.585716071762217,
+        179.67193082398177
+      ]
+    },
+    {
+      "layer": 3,
+      "file": "ArtSource\\UI\\GroundMechRogueCards\\ExplosiveCards_Production_20261116_v1\\NoSurvivors\\Generation_v7\\Layers\\03_Missile_Fan.png",
+      "sha256": "eb7db60f1639e9514d9d0ab547913d29a7fd9aa915568213013a0e6b341278b8",
+      "alpha_bbox_gt32": [
+        0,
+        162,
+        1088,
+        1444
+      ],
+      "full_strength_canvas_margin_px": [
+        14.385716071762086,
+        460.8,
+        14.385716071762218,
+        185.67193082398177
+      ]
+    },
+    {
+      "layer": 4,
+      "file": "ArtSource\\UI\\GroundMechRogueCards\\ExplosiveCards_Production_20261116_v1\\NoSurvivors\\Generation_v7\\Layers\\04_Ranger.png",
+      "sha256": "83c14e84959ef59fecbdcfccc626fc0b2f85c4d93172f98c41da775e1834df37",
+      "alpha_bbox_gt32": [
+        451,
+        511,
+        753,
+        718
+      ],
+      "full_strength_canvas_margin_px": [
+        18.225716071762086,
+        465.6,
+        18.225716071762218,
+        190.47193082398175
+      ],
+      "ranger_alpha_bounds_contained_at_strength_1": true
+    },
+    {
+      "layer": 5,
+      "file": "ArtSource\\UI\\GroundMechRogueCards\\ExplosiveCards_Production_20261116_v1\\NoSurvivors\\Generation_v7\\Layers\\05_Air_Blasts.png",
+      "sha256": "3288ffd314721b30852f83854d8154ff30e25fae3d67fe29d44df94d1538b654",
+      "alpha_bbox_gt32": [
+        780,
+        296,
+        960,
+        799
+      ],
+      "full_strength_canvas_margin_px": [
+        23.025716071762083,
+        471.6,
+        23.02571607176222,
+        196.47193082398175
+      ]
+    },
+    {
+      "layer": 6,
+      "file": "ArtSource\\UI\\GroundMechRogueCards\\ExplosiveCards_Production_20261116_v1\\NoSurvivors\\Generation_v7\\Layers\\06_Sky.png",
+      "sha256": "95fdd4137d34321896d1a6d121c40d66cd5fd70fdee2d970ad0220da1452d733",
+      "alpha_bbox_gt32": [
+        0,
+        0,
+        1088,
+        1632
+      ],
+      "full_strength_canvas_margin_px": [
+        29.745716071762086,
+        480.0,
+        29.745716071762217,
+        204.87193082398176
+      ]
+    }
+  ],
+  "assistant_visual_test": false,
+  "user_visual_review": "pending"
+}

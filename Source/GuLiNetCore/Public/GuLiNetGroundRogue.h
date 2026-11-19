@@ -23,6 +23,8 @@ struct Card
     std::uint32_t MaximumAcquisitions=0;
     std::vector<std::string> Required,Excluded;
     std::vector<std::uint32_t> EffectIds;
+    // Empty in legacy catalogs, where acquiring each prerequisite once suffices.
+    std::vector<std::uint32_t> RequiredLevels;
 };
 struct Catalog
 {

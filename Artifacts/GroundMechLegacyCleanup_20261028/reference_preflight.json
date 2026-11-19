@@ -1,0 +1,95 @@
+{
+  "production_blueprints": [
+    {
+      "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+      "mesh": "None",
+      "animation": "None"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview",
+      "mesh": "None",
+      "animation": "None"
+    }
+  ],
+  "showcase": "/Game/GuLiStrike/Mechs/StyleShowcase/LVL_MechAsset_Showcase",
+  "showcase_old_actors": [
+    {
+      "label": "MSS_Machinegun_lvl1",
+      "path": "/Game/GuLiStrike/Mechs/StyleShowcase/LVL_MechAsset_Showcase.LVL_MechAsset_Showcase:PersistentLevel.SkeletalMeshActor_3",
+      "class": "SkeletalMeshActor",
+      "refs": [
+        "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun"
+      ]
+    }
+  ],
+  "acceptance_rows": [
+    {
+      "Name": "GroundMech",
+      "Id": 4001,
+      "Note": "本轮保留现有配色",
+      "DisplayName": "玩家游骑兵",
+      "ResourceType": "SkeletalMesh",
+      "ResourcePath": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.SK_Legs",
+      "VATDefinition": "None",
+      "bTeamColorEnabled": false,
+      "BluePrimaryHex": "#6AA4BE",
+      "BlueSecondaryHex": "#274E61",
+      "EnemyPrimaryHex": "#A34053",
+      "EnemySecondaryHex": "#662249",
+      "CandidateResourcePath": "None",
+      "CandidateVATDefinition": "None",
+      "Description": "玩家 Ground 游骑兵的腿部骨骼网格兼组合入口；通过 Parts 装配装甲、肩部和机枪，保留原动画与挂点。"
+    },
+    {
+      "Name": "GroundMech_Armor",
+      "Id": 4002,
+      "Note": "本轮保留现有配色",
+      "DisplayName": "游骑兵 Armor",
+      "ResourceType": "StaticMesh",
+      "ResourcePath": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.SM_Armor",
+      "VATDefinition": "None",
+      "bTeamColorEnabled": false,
+      "BluePrimaryHex": "#6AA4BE",
+      "BlueSecondaryHex": "#274E61",
+      "EnemyPrimaryHex": "#A34053",
+      "EnemySecondaryHex": "#662249",
+      "CandidateResourcePath": "None",
+      "CandidateVATDefinition": "None",
+      "Description": "玩家 Ground 游骑兵的装甲子模型；挂载到原装甲组件，不属于 WM01 兵种。"
+    },
+    {
+      "Name": "GroundMech_Shoulder",
+      "Id": 4003,
+      "Note": "本轮保留现有配色",
+      "DisplayName": "游骑兵 Shoulder",
+      "ResourceType": "StaticMesh",
+      "ResourcePath": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.SM_Shoulder",
+      "VATDefinition": "None",
+      "bTeamColorEnabled": false,
+      "BluePrimaryHex": "#6AA4BE",
+      "BlueSecondaryHex": "#274E61",
+      "EnemyPrimaryHex": "#A34053",
+      "EnemySecondaryHex": "#662249",
+      "CandidateResourcePath": "None",
+      "CandidateVATDefinition": "None",
+      "Description": "玩家 Ground 游骑兵的肩部子模型；保留原装配位置与活动关系。"
+    },
+    {
+      "Name": "GroundMech_Machinegun",
+      "Id": 4004,
+      "Note": "本轮保留现有配色",
+      "DisplayName": "游骑兵 Machinegun",
+      "ResourceType": "SkeletalMesh",
+      "ResourcePath": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun",
+      "VATDefinition": "None",
+      "bTeamColorEnabled": false,
+      "BluePrimaryHex": "#6AA4BE",
+      "BlueSecondaryHex": "#274E61",
+      "EnemyPrimaryHex": "#A34053",
+      "EnemySecondaryHex": "#662249",
+      "CandidateResourcePath": "None",
+      "CandidateVATDefinition": "None",
+      "Description": "玩家 Ground 游骑兵的机枪子模型；保留原武器挂点和骨骼姿态。"
+    }
+  ]
+}

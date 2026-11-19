@@ -1,0 +1,14 @@
+[2026.11.02-07.11.18:175][168]LogShaderCompilers: Warning: Failed to compile Material /Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail for platform PCD3D_SM6, Default Material will be used in game.
+Shader debug info dumped to: "D:\UE5.7\test1\Saved\ShaderDebugInfo\PCD3D_SM6\M_MassBulletTrail_1eb66f79438b1f15\Default\FNiagaraSpriteVertexFactory\TBasePassPSFNoLightMapPolicy\0"
+D:\UnrealEngine-5.7\Engine\Shaders\Private\MaterialTemplate.ush(3693,54): Shader TBasePassPSFNoLightMapPolicy, Permutation 0, VF FNiagaraSpriteVertexFactory:
+	/Engine/Generated/Material.ush:3693:54: error: vector swizzle 'a' is out of bounds
+return float4(rgb,saturate(body+halo)*life*edge*Tint.a*step(0.01,Length));
+                                                     ^
+[2026.11.02-07.11.22:903][426]LogNiagara: Compiling System NiagaraSystem /Game/GuLiStrike/FX/Mining/NS_MiningLaser_Optimized_GPU_All_ThreeTier.NS_MiningLaser_Optimized_GPU_All_ThreeTier took 0.055475 sec (time since issued).
+[2026.11.02-07.15.34:494][719]LogShaderCompilers: Warning: Failed to compile Material /Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail for platform PCD3D_SM6, Default Material will be used in game.
+Shader debug info dumped to: "D:\UE5.7\test1\Saved\ShaderDebugInfo\PCD3D_SM6\M_MassBulletTrail_1eb66f79438b1f15\Default\FNiagaraSpriteVertexFactory\FDebugViewModePS\0_12f9cf6a4855305a"
+D:\UnrealEngine-5.7\Engine\Shaders\Private\MaterialTemplate.ush(3693,54): Shader FDebugViewModePS, Permutation 0, VF FNiagaraSpriteVertexFactory:
+	/Engine/Generated/Material.ush:3693:54: error: vector swizzle 'a' is out of bounds
+return float4(rgb,saturate(body+halo)*life*edge*Tint.a*step(0.01,Length));
+                                                     ^
+[2026.11.02-07.15.39:313][  8]LogPython: {"level_play": "x.editor_play_simulate() -> None\r\nEditor Play Simulate", "library_play": ["editor_end_play", "editor_play_simulate"], "services": ["GuLiLocalPIESubsystem", "OnEditorUtilityPIEEvent", "PIEWidgetHandle", "PlayerStartPIE"], "cache": ["get_attribute_capture_mode", "get_num_frames", "read_color_attribute", "read_data_interface_as", "read_float_attribute", "read_id_attribute", "read_int_attribute", "read_position_attribute", "read_position_attribute_with_rebase", "read_quat_attribute", "read_quat_attribute_with_rebase", "read_vector2_attribute", "read_vector4_attribute", "read_vector_attribute"]}

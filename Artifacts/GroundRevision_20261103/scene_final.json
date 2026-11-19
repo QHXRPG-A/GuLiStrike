@@ -1,0 +1,567 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entities": [
+    {
+      "label": "GroundRogue_Floor",
+      "class": "StaticMeshActor",
+      "location": [
+        -8500.0,
+        54000.0,
+        880.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype"
+    },
+    {
+      "label": "GroundRogue_Wall",
+      "class": "StaticMeshActor",
+      "location": [
+        -4300.0,
+        55100.0,
+        1505.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype"
+    },
+    {
+      "label": "GroundRogue_Entry",
+      "class": "TargetPoint",
+      "location": [
+        -2800.0,
+        54000.0,
+        1149.04
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype"
+    },
+    {
+      "label": "GroundRogue_Enemy_01",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -4350.0,
+        54150.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Enemy_02",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -5250.0,
+        54150.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Enemy_03",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -6150.0,
+        53550.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Enemy_04",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -7050.0,
+        54150.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Enemy_05",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -7350.0,
+        53550.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Enemy_06",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -8850.0,
+        54750.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Enemy_07",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -9750.0,
+        53550.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Enemy_08",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -10650.0,
+        54150.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Enemy_09",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -10950.0,
+        54750.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_BehindWall",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -4350.0,
+        56250.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_OutOfRange",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -15150.0,
+        54750.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundRogue_Friendly",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -4050.0,
+        53250.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "0.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_Health750",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -5250.0,
+        51750.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "750.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_Shield250",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -7050.0,
+        51750.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "1000.0",
+      "initial_shield": "250.0"
+    },
+    {
+      "label": "GroundBuff_LargeBurnHost",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -19650.0,
+        54000.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "6",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "3000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_BehindBurstWall",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -17250.0,
+        54150.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "1000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_FriendlyInBurst",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -19650.0,
+        56250.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "1000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_BurstWall",
+      "class": "StaticMeshActor",
+      "location": [
+        -17850.0,
+        54000.0,
+        2205.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype"
+    },
+    {
+      "label": "GroundBuff_Instructions",
+      "class": "Note",
+      "location": [
+        -2800.0,
+        54000.0,
+        1200.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype"
+    },
+    {
+      "label": "GroundHUD_v1_PlayerEntry",
+      "class": "Note",
+      "location": [
+        -2800.0,
+        54000.0,
+        1229.04
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype"
+    },
+    {
+      "label": "GroundHUD_ShieldTarget",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -5000.0,
+        53000.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "400.0",
+      "initial_shield": "500.0"
+    },
+    {
+      "label": "GroundHUD_KillTarget",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -6200.0,
+        53000.0,
+        905.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "20.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_FiveMeter_Host",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -13950.0,
+        51150.0,
+        1075.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "3000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_FiveMeter_Inside",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -13950.0,
+        51750.0,
+        1075.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "1000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_FiveMeter_BodyIntersection",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -13350.0,
+        51150.0,
+        1075.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "1000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_FiveMeter_Outside",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -12750.0,
+        51750.0,
+        1075.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "1000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_FiveMeter_Friendly",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -13950.0,
+        50550.0,
+        1075.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "1000.0",
+      "initial_shield": "0.0"
+    },
+    {
+      "label": "GroundBuff_FiveMeter_Shield",
+      "class": "GuLiCommanderDeploymentPoint",
+      "location": [
+        -14550.0,
+        51150.0,
+        1075.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": "1",
+      "rows": "1",
+      "columns": "1",
+      "allow_automatic_fire": "False",
+      "start_idle": "True",
+      "initial_max_health_override": "1000.0",
+      "initial_shield": "250.0"
+    },
+    {
+      "label": "GroundBuff_FiveMeter_Instructions",
+      "class": "Note",
+      "location": [
+        -13750.0,
+        50250.0,
+        1175.0
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype"
+    }
+  ],
+  "manifests": [
+    {
+      "population": 200,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 169,
+        "tables": 5
+      },
+      "validation": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-200.json",
+        "objects": 292,
+        "rules": 169,
+        "tables": 0
+      }
+    },
+    {
+      "population": 600,
+      "export": {
+        "success": true,
+        "error": "",
+        "file": "D:/UE5.7/test1/Config/Hybrid/RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 169,
+        "tables": 5
+      },
+      "validation": {
+        "success": true,
+        "error": "",
+        "file": "D:\\UE5.7\\test1\\Config\\Hybrid\\RuntimeManifest-600.json",
+        "objects": 692,
+        "rules": 169,
+        "tables": 0
+      }
+    }
+  ],
+  "visual_test": false
+}

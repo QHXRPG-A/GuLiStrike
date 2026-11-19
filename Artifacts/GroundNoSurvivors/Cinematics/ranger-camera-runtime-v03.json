@@ -1,0 +1,190 @@
+{
+  "card_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards.DT_GuLiStrikeRogueCards_Cards",
+  "profile": {
+    "id": "13.01",
+    "camera_return_seconds": 0.2,
+    "cue_reference_seconds": 0.7,
+    "open_at": 1.3,
+    "first_shot": 1.35,
+    "hold": 1,
+    "lightning_multiplier": 2,
+    "chest_flash_seconds": 0.05
+  },
+  "row_checks": 13,
+  "source_keys": 24,
+  "full_samples_60hz": 91,
+  "end_seconds": 1.5,
+  "first_return_frame": 78,
+  "last_return_frame": 90,
+  "azimuth_degrees": [
+    -6.0,
+    -12.005,
+    -21.36,
+    -34.306,
+    -51.356,
+    -71.991,
+    -93.938,
+    -116.066,
+    -137.481,
+    -154.591,
+    -166.543,
+    -173.907,
+    -177.0
+  ],
+  "camera_weight": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0.9995,
+    0.96564,
+    0.83668,
+    0.48787,
+    0.18432,
+    0
+  ],
+  "flash_at_frames_77_to_85": [
+    0,
+    0.16,
+    0.76,
+    0.91,
+    0.53,
+    0.23,
+    0.115,
+    0,
+    0
+  ],
+  "initial_0_2s_readback_before_tangent_fix": {
+    "frame_78": -6.0,
+    "frame_79": 173.7,
+    "frame_80": -73.5
+  },
+  "sequence": {
+    "sequence": "/Game/GuLiStrike/GroundMech/Cinematics/NoSurvivors/LS_Ranger_NoSurvivors_Camera_V03.LS_Ranger_NoSurvivors_Camera_V03",
+    "clip": "/Game/GuLiStrike/GroundMech/Cinematics/NoSurvivors/Anim_Ranger_NoSurvivors_Camera_V03.Anim_Ranger_NoSurvivors_Camera_V03",
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "fps": 60,
+    "frames": 150,
+    "opening": 78,
+    "first_shot": 81,
+    "missiles": [
+      81,
+      111,
+      141
+    ],
+    "cameras": [
+      {
+        "binding": "Ranger | continuous orbit",
+        "frames": [
+          0,
+          150
+        ],
+        "handoff": 90
+      }
+    ],
+    "spawnables": 8,
+    "bindings": 15,
+    "stage": [
+      2750.0,
+      63150.0,
+      4503.783442351467
+    ],
+    "flash_keys": [
+      [
+        0,
+        0
+      ],
+      [
+        77,
+        0
+      ],
+      [
+        78,
+        0.1599999964237213
+      ],
+      [
+        79,
+        0.7599999904632568
+      ],
+      [
+        80,
+        0.9100000262260437
+      ],
+      [
+        81,
+        0.5299999713897705
+      ],
+      [
+        82,
+        0.23000000417232513
+      ],
+      [
+        83,
+        0.11500000208616257
+      ],
+      [
+        84,
+        0
+      ],
+      [
+        90,
+        0
+      ]
+    ]
+  },
+  "render": {
+    "file": "Ranger_NoSurvivors_Camera_V03.mp4",
+    "container": "MP4",
+    "codec": "H.264",
+    "resolution": [
+      1600,
+      900
+    ],
+    "fps": 60,
+    "seconds": 2.5,
+    "decoded_frames": 150,
+    "bytes": 2159345,
+    "shot_pose_samples": {
+      "0": -487.19,
+      "12": 193.89,
+      "42": 193.9,
+      "72": 193.91,
+      "78": -749.62,
+      "80": -749.61,
+      "81": -749.62,
+      "84": -749.62,
+      "87": -749.61,
+      "89": -749.61,
+      "90": -749.61,
+      "111": -749.62,
+      "141": -749.61,
+      "149": -749.62
+    }
+  },
+  "pie_launch_readback": {
+    "local_time": "2026-11-19 15:11:43 Asia/Shanghai",
+    "entry": "Play (Alt+P) -> Ground -> No Survivors range",
+    "manifest": "RuntimeManifest-NoSurvivors.json",
+    "active_at_sample": true,
+    "world_ready": true,
+    "network_error": "",
+    "role": "Ground",
+    "pawn": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light_C",
+    "model_id": 4001,
+    "position_cm": [
+      2750,
+      63150,
+      1146
+    ],
+    "units": 600,
+    "ground_hud_in_viewport": true,
+    "ground_hud_visible": true,
+    "online_and_ready_roles": [
+      "Ground",
+      "Commander"
+    ]
+  }
+}

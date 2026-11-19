@@ -4,7 +4,11 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | done | partial | — | 2026-11-19 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | done | partial | — | 2026-11-18 |
+| [四张游骑兵肉鸽牌正式资源 — 实施与交付](../DevelopmentDocumentation/20261117-四张游骑兵肉鸽牌正式资源.md) | done | partial | — | 2026-11-17 |
+| [无人生还与爆破套餐牌面制作收尾](../DevelopmentDocumentation/20261117-无人生还与爆破套餐牌面制作收尾.md) | done | partial | — | 2026-11-17 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | done | partial | — | 2026-11-17 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | verification | partial | 在现有地图验证正常PIE输入、接管后的F1/F2/F3操作与玩家效果；EOS和跨机器联机另行验收。 | 2026-11-16 |
 | [2v2指挥官与无双席位 — 双载具构建交付](../DevelopmentDocumentation/20261114-2v2指挥官与无双席位.md) | verification | partial | 玩家验证空地切换、未操控单位及召唤物模拟。 | 2026-11-14 |
 | [矿车动作与双兵种开火表现 — 实施记录](../DevelopmentDocumentation/20261114-矿车动作与双兵种开火表现.md) | done | partial | 本轮实施与运行数据交付完成；玩家后续复核动作观感、双阵营灯和LOD切换。 | 2026-11-14 |
@@ -16,7 +20,6 @@
 | [Mass权威数据迁移与千单位对比](../DevelopmentDocumentation/20261111-Mass权威数据迁移与千单位对比.md) | done | partial | — | 2026-11-12 |
 | [Mass移动数据去重与批量读写 — 技术方案](../DevelopmentDocumentation/20261111-Mass移动数据去重与批量读写.md) | done | partial | — | 2026-11-12 |
 | [圆形障碍与限次侧绕 — 技术方案](../DevelopmentDocumentation/20261110-圆形障碍与限次侧绕.md) | done | partial | — | 2026-11-12 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | verification | partial | 用户通过本地关系图完成实际设计并保存草稿。 | 2026-11-09 |
 | [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | done | partial | — | 2026-11-09 |
 | [爆炸范围对齐与强化爆炸弹 — 实施与交付](../DevelopmentDocumentation/20261109-爆炸范围对齐与强化爆炸弹.md) | done | partial | — | 2026-11-09 |
 | [游骑兵初始弹与三张肉鸽卡 — 实施与交付](../DevelopmentDocumentation/20261108-游骑兵初始弹与三张肉鸽卡.md) | done | partial | — | 2026-11-09 |

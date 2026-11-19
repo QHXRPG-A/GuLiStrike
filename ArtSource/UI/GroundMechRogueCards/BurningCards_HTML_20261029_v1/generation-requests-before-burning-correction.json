@@ -1,0 +1,230 @@
+[
+  {
+    "id": "Burst_1",
+    "card": "Burst",
+    "index": 1,
+    "name": "飞溅的燃烧的碎片",
+    "slug": "01_BurningFragments",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Burst / layer 1 / 飞溅的燃烧的碎片\nComplete ONLY the free flying burning mechanical fragments and small airborne shards: large burgundy/ivory slab at bottom left, cropped slab at bottom right, detached burgundy top-right armor, top-left fragment and the other small debris anchors. Reconstruct their complete mechanical surfaces behind fire streaks and continue edge-clipped fragments into the gutter. Fire attached to EACH detached fragment travels WITH that fragment in this layer. Exclude the entire central robot, all attached central fire/smoke, shockwave arcs, foreground rocks, both distant robots and landscape. Preserve every fragment's original location and apparent scale. True alpha=0 outside separate fragments and their own flames.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Inputs/01_BurningFragments_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Supplements/01_BurningFragments_Raw.png",
+    "source_owned_pixels": 98802,
+    "input_sha256": [
+      "f6dba8101d3d6903335a68b5f5d4ac0dcad87798213e7a6e9fee8019652b2cdf",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ]
+  },
+  {
+    "id": "Burst_2",
+    "card": "Burst",
+    "index": 2,
+    "name": "前景石块",
+    "slug": "02_ForegroundRocks",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Burst / layer 2 / 前景石块\nComplete ONLY the closest grey foreground stone blocks and broken stone terrace along the lower-left and lower edge. Reconstruct rock faces hidden by the flying armor fragment; make them continuous solid stone, not robot-shaped holes or floating slivers. Preserve the sloping original perspective and extend the bottom/left cropped rock surfaces into the gutter. Keep a small amount of moss attached to stone. No burning metal fragments, orange fire, shockwave, machine, grass-field background or sky. True alpha=0 outside these foreground stone silhouettes.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Inputs/02_ForegroundRocks_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Supplements/02_ForegroundRocks_Raw.png",
+    "source_owned_pixels": 40790,
+    "input_sha256": [
+      "fcb04d4cafa74c49a53eb0749bc75674d5feff0f2cdbc3379adaa8069d34e00e",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ]
+  },
+  {
+    "id": "Burst_3",
+    "card": "Burst",
+    "index": 3,
+    "name": "冲击环",
+    "slug": "03_Shockwave",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Burst / layer 3 / 冲击环\nComplete ONLY the huge outward-propagating orange/cream shockwave at the central machine's MIDBODY height: its bright near arc sweeps diagonally across the lower torso, far arc curves behind the torso, and outward pressure/flame streaks fan laterally. Reconstruct portions hidden by the robot and debris so this one full coherent wave can be occluded in HTML. Keep both side turning points beyond the source crop and continue through the gutter. Preserve the near arc's exact diagonal course and the outward motion. It is a thin transparent pressure front, not a ground circle, spherical shield or opaque fire disc. No robot, attached burning plume, smoke cloud, fragments, rocks or scenery. All space between strokes is real transparency.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Inputs/03_Shockwave_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Supplements/03_Shockwave_Raw.png",
+    "source_owned_pixels": 30677,
+    "input_sha256": [
+      "c4291ea6631176caaec5e70c9a79422454e03b0c14f4978aa49ae29905a4cf9a",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ]
+  },
+  {
+    "id": "Burst_4",
+    "card": "Burst",
+    "index": 4,
+    "name": "爆炸的机甲",
+    "slug": "04_BurningPioneer",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Burst / layer 4 / 爆炸的机甲\nComplete ONLY the central burning ivory/burgundy quadrupedal Pioneer: four original legs, both lateral multi-barrel guns, two long antennae, exposed black internal mechanisms, torn installed armor, attached deflagration flames and the central rising smoke plume. Repair body surfaces hidden by the shockwave, free debris and foreground stone; keep intentional torn/exploded armor and the original exact pose. Flame roots stay attached to this machine. Remove the thin long shockwave ring and radial pressure lines; no free flying armor shards or other robots. No environment. Complete clipped antennas/smoke through the upper gutter. True transparent background around this one complete burning machine and its attached fire/smoke.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Inputs/04_BurningPioneer_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Supplements/04_BurningPioneer_Raw.png",
+    "source_owned_pixels": 400200,
+    "input_sha256": [
+      "139a1edcc88c22abff902a75f854e81129a390b751be5e9a76644085c354d3ef",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ]
+  },
+  {
+    "id": "Burst_5",
+    "card": "Burst",
+    "index": 5,
+    "name": "远处机甲",
+    "slug": "05_DistantPioneers",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Burst / layer 5 / 远处机甲\nComplete ONLY the TWO distant small ivory/burgundy Pioneer machines, at the exact original left-middle and right-middle positions. Each has four legs, two guns and antennae. Preserve their different original sizes and angles. Restore small hidden surfaces/legs where pressure streaks or foreground fire crossed them. Continue the right machine through the old crop if needed. No central machine, flames, shockwave, loose fragments, terrain, dust wall, architecture or sky. The TWO machines stay separate on one common full canvas, with real alpha=0 everywhere between them. Never enlarge or center this pair.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Inputs/05_DistantPioneers_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Supplements/05_DistantPioneers_Raw.png",
+    "source_owned_pixels": 28501,
+    "input_sha256": [
+      "85f39c4f03e37fa17f3cad6c40ea4e6aaf3f9c06259fe5bd97bb0be942cdd05d",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ]
+  },
+  {
+    "id": "Burst_6",
+    "card": "Burst",
+    "index": 6,
+    "name": "背景草地和远景",
+    "slug": "06_Environment",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Burst / layer 6 / 背景草地和远景\nCreate the COMPLETE FULLY OPAQUE background plate: sloping green grassland and stone terraces, far ruined monumental arches and towers, bright blue sky and white clouds, subdued distant dust. Remove every central/distant machine, bullet, loose fragment, close foreground rock, attached burning plume, orange fire and shockwave. Paint the full terrain/ruins/sky hidden underneath all removed objects; leave NO robot-shaped holes or ghost outlines. Preserve the original tilted horizon, layout and flat cel-shaded palette. Continue this complete landscape through all four gutters. This one layer covers EVERY canvas pixel with opaque color.\nOutput a fully opaque full-canvas PNG.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Inputs/06_Environment_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Master.png"
+    ],
+    "transparent_background": false,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Burst/Supplements/06_Environment_Raw.png",
+    "source_owned_pixels": 449606,
+    "input_sha256": [
+      "3d1c450950554667b468251f307a01e0d543651fb15597a32265b8f9eb33b29d",
+      "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da"
+    ]
+  },
+  {
+    "id": "Bullet_1",
+    "card": "Bullet",
+    "index": 1,
+    "name": "子弹",
+    "slug": "01_Bullet",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Bullet / layer 1 / 子弹\nComplete ONLY the giant solid metallic projectile, from its small rear/base near original (524,375) toward its sharp nose near original (952,879). Preserve this exact perspective axis, orientation, position and scale; do not center or rotate it. Reconstruct the golden/bronze metal body, dark panels, ivory reflection stripes, curved bands and sharp tip wherever engulfing fire obscured them. The metal body must be a complete solid object, not a flame-shaped cutout. Exclude ALL orange/red flames and glow, impact burst, fragments, machine, trajectory lines and environment. Keep true alpha=0 everywhere outside the metal projectile. Preserve full canvas/empty upper-left area.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Inputs/01_Bullet_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Supplements/01_Bullet_Raw.png",
+    "source_owned_pixels": 61273,
+    "input_sha256": [
+      "649813048c16fd7b9a6aba20af7a815e9c04df1df75d749c052d86700592a0b4",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ]
+  },
+  {
+    "id": "Bullet_2",
+    "card": "Bullet",
+    "index": 2,
+    "name": "飞溅的燃烧的碎片",
+    "slug": "02_BurningFragments",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Bullet / layer 2 / 飞溅的燃烧的碎片\nComplete ONLY free flying fragments and their attached small burning flames: huge cut-off burgundy/ivory slabs at left and lower edge, burgundy pieces at upper right and lower right, free dark mechanical/stone shards scattered around the hit. Reconstruct solid fragment faces hidden by streaks and continue edge-clipped pieces through the gutter. Keep their exact original positions, sizes and perspective. No giant bullet, central robot, main flame envelope, impact burst, distant shooter, beam, landscape or sky. True alpha=0 between detached pieces; attached flames stay with their own fragments.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Inputs/02_BurningFragments_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Supplements/02_BurningFragments_Raw.png",
+    "source_owned_pixels": 141325,
+    "input_sha256": [
+      "ab4e4b4040dcc4b708cfe78f2d0231bcd9f639dad6bef9c6edbbb9953c01e9a8",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ]
+  },
+  {
+    "id": "Bullet_3",
+    "card": "Bullet",
+    "index": 3,
+    "name": "火焰",
+    "slug": "03_Flames",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Bullet / layer 3 / 火焰\nComplete ONLY the fire/effect layer: orange-red/gold flames enveloping the giant projectile from the small impact origin near original (524,365) toward its nose near (952,879), the hot star-shaped impact at the puncture, and the existing tapered hot impact rays. Recover portions hidden by the metallic projectile or foreground fragments, retaining the original flame envelope shape and all its coordinates. Its center must remain transparent so the independently layered metal projectile can show. Fire may overlap that projectile via a separate technical occlusion mask; do not paint the actual metal in this image. No gold metal bullet, armor fragments, robot body, shooter or scenery. Real transparent alpha around and between fire tongues; no opaque orange background, explosion ball or dark smoke slab.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Inputs/03_Flames_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Supplements/03_Flames_Raw.png",
+    "source_owned_pixels": 65413,
+    "input_sha256": [
+      "43636359fedbebf7edc1d34558ef807afb9cfc80e09d6b50c875f0fd322192b2",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ]
+  },
+  {
+    "id": "Bullet_4",
+    "card": "Bullet",
+    "index": 4,
+    "name": "爆炸的机甲",
+    "slug": "04_HitPioneer",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Bullet / layer 4 / 爆炸的机甲\nComplete ONLY the one large central ivory/burgundy quadrupedal Pioneer being punctured: four legs, both black lateral multi-barrel guns, two tall antennae, torn armor and dark exposed mechanisms. Preserve its exact original pose, placement, apparent scale, deliberate armor damage and puncture. Reconstruct surfaces hidden by the independent projectile, flame envelope and flying fragments; leave the intentional central penetration opening as damaged exposed structure, not an arbitrary transparency hole. Exclude all flames, orange speed/impact lines, projectile, free flying panels, small distant shooter and environment. True alpha=0 around this one machine. Extend clipped body pieces and antennas through the gutter without changing position.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Inputs/04_HitPioneer_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Supplements/04_HitPioneer_Raw.png",
+    "source_owned_pixels": 177971,
+    "input_sha256": [
+      "a1b1a6ca46014d49087d439ba30e4939d14255aeed0582cdb8122926b437ba45",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ]
+  },
+  {
+    "id": "Bullet_5",
+    "card": "Bullet",
+    "index": 5,
+    "name": "远处正在射击的机甲和弹道",
+    "slug": "05_ShooterAndTrajectory",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Bullet / layer 5 / 远处正在射击的机甲和弹道\nComplete ONLY the original small BLUE/IVORY bipedal firing mech in the upper-left background, its attached muzzle flash, and its SINGLE straight shot trajectory toward the central puncture. The user deliberately chose this exact mech appearance: do not substitute any newer model or redesign it. Keep the original shooter scale and upper-left coordinates. The muzzle near original (187,176), trajectory and target puncture near (524,365) must remain collinear. Restore any interrupted part of this path behind the main enemy, for occlusion by that separate layer; do not move the impact endpoint. No large central enemy, giant near projectile, free fragments, main impact explosion, landscape or sky. True alpha=0 around this shooter/flash/trajectory group. No recentering.\nOutput a genuinely transparent RGBA PNG outside this layer.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Inputs/05_ShooterAndTrajectory_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "transparent_background": true,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Supplements/05_ShooterAndTrajectory_Raw.png",
+    "source_owned_pixels": 14910,
+    "input_sha256": [
+      "448ee538ec2a12b7df0e42c475345537d1392e95236604e76ec3afef833559f4",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ]
+  },
+  {
+    "id": "Bullet_6",
+    "card": "Bullet",
+    "index": 6,
+    "name": "背景草地和远景",
+    "slug": "06_Environment",
+    "prompt": "Use case: precise-object-edit / registered parallax-layer completion.\nImage 1 is the EDIT TARGET: a source-pixel layer anchor on a full 1536x1536 canvas. The original 1024x1024 illustration occupies exactly [256,256,1280,1280]. The transparent 256-pixel gutter on every side is intentional working space. Keep this ENTIRE canvas and all object positions. Never crop to the object, center it, auto-fit its bounds, change scale, rotate the horizon, mirror the scene, or alter the camera. Reconstruct the missing/occluded parts in place. Extend objects which cross the old source boundary naturally into the outer gutter; do not stretch or repeat edge pixels.\nImage 2 is the user's FROZEN COMPLETE REFERENCE, for identity, layout, occlusion and exact drawing style. It is NOT a request to redraw the full scene in this layer.\nThe user selected this clean flat anime version: crisp black outlines, three clear value groups, large matte color shapes, burgundy/ivory machines, golden orange fire. Preserve it exactly; do not revert to a detailed painted earlier draft, glossy 3D or photoreal texture. Original visible fragments in image 1 are coordinate anchors, not pieces to rearrange. Fill small holes and missing solid surfaces but preserve intentional battle damage. Remove all mistakenly included pixels from OTHER layers. Output only the one named layer, never a six-panel atlas or contact sheet. No text, labels, card frame, ruler, guide marks, watermark, checkerboard or background color for transparent layers.\n\nTHIS ONE OUTPUT: Bullet / layer 6 / 背景草地和远景\nCreate a COMPLETE FULLY OPAQUE environment plate: original sloping green grassland, stepped grey stone terraces, monumental ruined towers and arches with small moss areas, blue sky, white clouds and distant tan dust. Remove the huge projectile and all its flame, every main/distant mech, all shot/impact rays and flying debris. Rebuild the landscape hidden by these objects with continuous ground and complete ruin surfaces. Keep the exact original tilted camera, horizon, architecture positions and flat three-tone palette. Extend all four gutters naturally. No object-shaped holes, floating armor remnants, seams or silhouettes. EVERY pixel fully opaque.\nOutput a fully opaque full-canvas PNG.",
+    "referenced_image_paths": [
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Inputs/06_Environment_Edit.png",
+      "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Master.png"
+    ],
+    "transparent_background": false,
+    "output": "D:/UE5.7/test1/ArtSource/UI/GroundMechRogueCards/BurningCards_HTML_20261029_v1/Bullet/Supplements/06_Environment_Raw.png",
+    "source_owned_pixels": 587684,
+    "input_sha256": [
+      "8e706dc4a9ec121a8c059f30b01a1c721a1f44211ef981fe384f764eb3caea7e",
+      "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    ]
+  }
+]

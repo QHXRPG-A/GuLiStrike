@@ -1,0 +1,112 @@
+{
+  "file": "D:\\UE5.7\\test1\\quadruped-mech-side-panels\\blender\\quadruped-mech-vertex-animation-10k-v3.blend",
+  "scenes": {
+    "00_静态 · 当前资源": {
+      "frames_evaluated": 1,
+      "triangles": {
+        "body": 7912,
+        "outline": 1942,
+        "laser": 0,
+        "studio": 12,
+        "scene_total": 9866,
+        "asset_total": 9854
+      },
+      "counts_constant": true,
+      "within_10000_triangles": true,
+      "body_objects": 51,
+      "outline_objects": 42
+    },
+    "01_行进 · 顶点动画": {
+      "frames_evaluated": 29,
+      "triangles": {
+        "body": 7912,
+        "outline": 1942,
+        "laser": 0,
+        "studio": 12,
+        "scene_total": 9866,
+        "asset_total": 9854
+      },
+      "counts_constant": true,
+      "within_10000_triangles": true,
+      "body_objects": 51,
+      "outline_objects": 42
+    },
+    "02_采矿 · 顶点动画": {
+      "frames_evaluated": 73,
+      "triangles": {
+        "body": 7912,
+        "outline": 1942,
+        "laser": 120,
+        "studio": 12,
+        "scene_total": 9986,
+        "asset_total": 9974
+      },
+      "counts_constant": true,
+      "within_10000_triangles": true,
+      "body_objects": 51,
+      "outline_objects": 42
+    }
+  },
+  "checks": {
+    "source_hash_unchanged": true,
+    "unchanged_materials_preserved": true,
+    "recolored_materials_keep_three_tone_shader": true,
+    "outline_colors_unchanged": true,
+    "outline_explicit_backface_transparency": true,
+    "original_object_names_preserved": true,
+    "only_authorized_new_objects": true,
+    "transforms_preserved": true,
+    "material_assignments_preserved": true,
+    "all_mesh_components_preserved": true,
+    "animation_keys_and_timing_preserved": true,
+    "laser_animation_unchanged": true,
+    "no_armatures": true,
+    "all_coordinates_finite": true,
+    "topology_stable_all_frames": true,
+    "outline_shared_mesh_and_animation": true,
+    "outline_reversed_winding_all_frames": true,
+    "no_degenerate_body_triangles": true,
+    "no_wire_or_multi_face_edges": true,
+    "source_open_surfaces_and_closed_parts_preserved": true,
+    "animation_loops_closed": true,
+    "rigid_parts_remain_rigid": true,
+    "all_round_bearings_rigid_in_every_frame": true
+  },
+  "visual_acceptance": "待用户在 Blender 核验；未渲染或读图。",
+  "bounds_m": {
+    "original_min": [
+      -2.236999988555908,
+      -2.492011547088623,
+      0.00599998515099287
+    ],
+    "original_max": [
+      2.236999988555908,
+      2.334486722946167,
+      2.691148281097412
+    ],
+    "reduced_min": [
+      -2.2363979816436768,
+      -2.492011547088623,
+      0.009238305501639843
+    ],
+    "reduced_max": [
+      2.2363979816436768,
+      2.3320276737213135,
+      2.69211483001709
+    ],
+    "maximum_bound_shift": 0.0032383203506469727
+  },
+  "measurements": {
+    "degenerate_body_triangles": 0,
+    "nonmanifold_body_edges": 164,
+    "maximum_loop_error_m": 0.0,
+    "rigid_components_checked": 532,
+    "maximum_rigid_distance_error_m": 3.4056019743156085e-07,
+    "source_animation_formula_max_sample_error_m": 4.872558379081132e-07,
+    "source_surface_sample_max_error_m": 0.06523776054382324,
+    "rigid_bearings_checked": 104,
+    "maximum_bearing_pair_distance_error_m": 2.514966380151584e-07
+  },
+  "outline_winding_failures": [],
+  "all_technical_checks_passed": true
+}

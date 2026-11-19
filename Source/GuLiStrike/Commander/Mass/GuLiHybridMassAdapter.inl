@@ -576,7 +576,9 @@ public:
     {
         const auto& Decoded=static_cast<const GuLiHybridMass::FDecodedPose&>(Value);const auto& Chunk=Decoded.Chunk;
         auto* S=Soldier();auto* Self=Authority.Get();if (!S||!Self||bLocal||Chunk.Samples.Num()!=1||Chunk.Samples[0].SoldierId.Value!=Record.Ordinal) return false;
+        const FVector PreviousLocation = S->Location;
         const auto& P=Chunk.Samples[0]; S->Location=P.GetWorldLocationCentimeters(); S->Velocity=P.GetVelocityCentimetersPerSecond(); S->FacingYawDegrees=FRotator::DecompressAxisFromByte(P.FacingYaw);
+        if (PreviousLocation != S->Location) Self->MoveCombatTargetFootprint(S->SoldierId, S->Location);
         GuLiGrid::ObserveRemoteBody(*Self->GetWorld(),Record,S->Location,
             GuLiGrid::FootprintFromDiameter(S->AvoidanceRadiusCentimeters*2.),true);
         S->ActiveOrderId=P.ActiveOrderId; S->MechanicalPose.UpperYawDegrees=FRotator::DecompressAxisFromShort(P.UpperYaw);

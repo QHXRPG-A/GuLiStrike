@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-23",
+  "current_reference": "A_v4",
+  "generation_tool": "built-in image_gen",
+  "approval_A": "approved",
+  "approval_B": "pending",
+  "model_production_started": true,
+  "output_visual_QA": "not_performed_by_assistant; user review required",
+  "user_decisions": [
+    {
+      "version": "A_v1",
+      "status": "changes_requested",
+      "quote": "下半部分参考原游骑兵，上半部分减面和简化（按上下文解释原输入笔误）"
+    },
+    {
+      "version": "A_v2",
+      "status": "changes_requested",
+      "quote": "腿像这样有折角，使其整体更低趴"
+    },
+    {
+      "version": "A_v3",
+      "status": "changes_requested",
+      "quote": "太臃肿了，在原来的基础上调；只改腿折角就好了，其他不要动"
+    },
+    {
+      "version": "A_v4",
+      "status": "approved",
+      "date": "2026-10-23",
+      "quote": "两张 A_v4 图作为本次建模定稿，在blender中一比一建模，完全一致后交付",
+      "record": "../Production_A4_B_v1/approval_A.json"
+    }
+  ],
+  "A_v4_scope": "Return to A_v2 physical design; change sagittal hip/knee/ankle angles only, preserve torso, width, armor dimensions, foot size, stance width, dual guns and color regions",
+  "files": [
+    {
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v2/GroundMech_BlueRed_Concept_A_v2.png",
+      "bytes": 1912254,
+      "sha256": "33c78cdeca2d396ae06c83b50fd9e002a785a20636f041c7d8b949d18262706b"
+    },
+    {
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v2/GroundMech_BlueRed_ThreeViews_A_v2.png",
+      "bytes": 1898361,
+      "sha256": "29616cd4ae7127626e80d4fdf22c9881c94c5cac64599a4bd8b8dfda0670c5f1"
+    },
+    {
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v3/User_LegFold_Feedback.png",
+      "bytes": 1895187,
+      "sha256": "a4d85ec0a714fc93bfc639771edcc6d581316e5f48f3e0779e8047ee02fc3471"
+    },
+    {
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v4/GroundMech_BlueRed_Concept_A_v4.png",
+      "bytes": 1905227,
+      "sha256": "62ad5466922fd8c230a830e8e7ce5c57356b4dde677b4acbff7c7025198a7f67"
+    },
+    {
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v4/GroundMech_BlueRed_ThreeViews_A_v4.png",
+      "bytes": 1860380,
+      "sha256": "dc5e9a169a120cb2ea5ad502988ce2bf416846669ec1c54bc15b4edd8d170f15"
+    },
+    {
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v4/prompt_hero.txt",
+      "bytes": 2127,
+      "sha256": "e568e3f09e599cb5c56f996e71f424c1aa2b20f7ce50c2d238adf907b3b0b572"
+    },
+    {
+      "path": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Reference_A_v4/prompt_three_views.txt",
+      "bytes": 3146,
+      "sha256": "ef48ad9a7ace29ccdffd676a0bbeb5b43d81cb69228e377ac805f2d87322b397"
+    }
+  ],
+  "production_review": "../Production_A4_B_v1/REVIEW.md",
+  "production_reference_authority": "Latest two user-attached A_v4 images, preserved in Production_A4_B_v1/References; historical generated images below remain unchanged"
+}

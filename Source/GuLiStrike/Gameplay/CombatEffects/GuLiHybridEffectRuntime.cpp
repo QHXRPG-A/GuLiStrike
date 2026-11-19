@@ -62,7 +62,17 @@ void State(FGuLiHybridStateArchive& A,FGuLiCombatEffectState& S)
     A.Value(Position);A.Value(Velocity);A.Value(Launch);A.Value(Target);A.Value(Direction);
     if (A.IsReading()) {S.Location=Position;S.Velocity=Velocity;S.LaunchLocation=Launch;S.LastTargetLocation=Target;S.LaunchDirection=Direction;}
     FGuLiHybridReflectedState::Value(A,S.Motion);A.Value(S.SlotId);A.Value(S.MuzzleOffset);A.Value(S.FireRateHz);
-    A.Value(S.bFixedPoint);A.Value(S.RandomSeed);A.Value(S.VariantIndex);
+    // Old checkpoints store the fixed-point flag as a single byte (0 or 1).
+    uint8 PointFlags = (S.bFixedPoint ? 1 : 0) | (S.GroundStrike.IsEnabled() ? 2 : 0);
+    A.Value(PointFlags);
+    if (PointFlags > 3 || PointFlags == 2) { A.Reject(); return; }
+    if (A.IsReading()) { S.bFixedPoint = (PointFlags & 1) != 0; S.GroundStrike = {}; }
+    if (PointFlags & 2)
+    {
+        A.Value(S.GroundStrike.HorizontalRange); A.Value(S.GroundStrike.DiveAcceleration); A.Value(S.GroundStrike.DiveStartAge);
+        if (S.GroundStrike.IsDiving()) A.Value(S.GroundStrike.DiveOrigin);
+    }
+    A.Value(S.RandomSeed);A.Value(S.VariantIndex);
     A.Value(S.StartTime);A.Value(S.SampleTime);A.Value(S.ActivationTime);A.Value(S.EndTime);A.Value(S.Radius);A.Value(S.Sequence);
     if (!S.IsWellFormed()) A.Reject();
 }

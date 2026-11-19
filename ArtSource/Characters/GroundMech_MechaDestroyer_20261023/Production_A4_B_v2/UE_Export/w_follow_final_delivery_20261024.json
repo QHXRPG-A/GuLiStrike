@@ -1,0 +1,292 @@
+{
+  "success": true,
+  "scope": "Static asset/configuration and saved scene readback; no PIE or pose/image checks",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": true,
+  "main_role": "<GuLiCommanderRole.GROUND: 2>",
+  "mobility": {
+    "WalkSpeed": 216,
+    "SprintSpeed": 432,
+    "Acceleration": 864,
+    "Braking": 864,
+    "MovingTurnRate": 1080
+  },
+  "turn_rates": {
+    "TurnLeft": 2,
+    "TurnRight": 2
+  },
+  "reference_speeds_preserved": true,
+  "other_action_rates_preserved": true,
+  "configuration": {
+    "configuration_fingerprint": "fec3967f727c6450742b593c38d155df",
+    "samples": [
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "Idle",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "StrafeLeft",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "StrafeRight",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "WalkForward",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Walk_FWD.Anim_Mecha_Walk_FWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+        "row": "WalkBackward",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_WalK_BWD.Anim_Mecha_WalK_BWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "Idle",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "StrafeLeft",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "StrafeRight",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "RunForward",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Run_FWD.Anim_Run_FWD",
+        "matches": true
+      },
+      {
+        "blend": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "row": "RunBackward",
+        "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Run_BWD.Anim_Mecha_Run_BWD",
+        "matches": true
+      }
+    ],
+    "curves": [
+      {
+        "row": "Idle",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 150,
+        "GroundPlant_R": 150
+      },
+      {
+        "row": "WalkForward",
+        "reference_speed": 99.73643493652344,
+        "sync_markers": 2,
+        "GroundPlant_L": 78,
+        "GroundPlant_R": 78
+      },
+      {
+        "row": "WalkBackward",
+        "reference_speed": 58.691673278808594,
+        "sync_markers": 2,
+        "GroundPlant_L": 75,
+        "GroundPlant_R": 75
+      },
+      {
+        "row": "StrafeLeft",
+        "reference_speed": 96.79471588134766,
+        "sync_markers": 2,
+        "GroundPlant_L": 35,
+        "GroundPlant_R": 35
+      },
+      {
+        "row": "StrafeRight",
+        "reference_speed": 106.95912170410156,
+        "sync_markers": 2,
+        "GroundPlant_L": 35,
+        "GroundPlant_R": 35
+      },
+      {
+        "row": "RunForward",
+        "reference_speed": 325.0162353515625,
+        "sync_markers": 2,
+        "GroundPlant_L": 24,
+        "GroundPlant_R": 24
+      },
+      {
+        "row": "RunBackward",
+        "reference_speed": 284.7080383300781,
+        "sync_markers": 2,
+        "GroundPlant_L": 31,
+        "GroundPlant_R": 31
+      },
+      {
+        "row": "TurnLeft",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 63,
+        "GroundPlant_R": 63,
+        "turn_progress_end": 1
+      },
+      {
+        "row": "TurnRight",
+        "reference_speed": 1,
+        "sync_markers": 0,
+        "GroundPlant_L": 63,
+        "GroundPlant_R": 63,
+        "turn_progress_end": 1
+      }
+    ],
+    "walk_speed": 216,
+    "sprint_speed": 432,
+    "success": true,
+    "asset_mutations": false
+  },
+  "manifests": [
+    {
+      "population": 200,
+      "hash": "3e8f96184c9ad26c9405ae61990fb9b0c5cc34fe3cb9c710931b463e0eaa2d3f",
+      "ground_state_version": 7,
+      "fingerprint": "fec3967f727c6450742b593c38d155df"
+    },
+    {
+      "population": 600,
+      "hash": "132ae96f440bafcdcea689e96784ba5a472c35c1e2c66c0a80d0ca9142f923e2",
+      "ground_state_version": 7,
+      "fingerprint": "fec3967f727c6450742b593c38d155df"
+    }
+  ],
+  "scene_entities": [
+    {
+      "label": "GroundMobility_Flat",
+      "class": "StaticMeshActor",
+      "position": [
+        -4000.0,
+        50000.0,
+        880.0
+      ],
+      "scale": [
+        30.0,
+        40.0,
+        0.5
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "class": "StaticMeshActor",
+      "position": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "scale": [
+        14.0,
+        10.0,
+        0.4
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "class": "StaticMeshActor",
+      "position": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ],
+      "scale": [
+        5.4,
+        10.0,
+        0.4
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "class": "StaticMeshActor",
+      "position": [
+        -4800.0,
+        50900.0,
+        915.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.2
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "class": "StaticMeshActor",
+      "position": [
+        -4400.0,
+        50900.0,
+        925.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.4
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "class": "StaticMeshActor",
+      "position": [
+        -4000.0,
+        50900.0,
+        935.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.6
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "class": "StaticMeshActor",
+      "position": [
+        -3600.0,
+        50900.0,
+        945.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.8
+      ],
+      "collision": "BlockAll"
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "class": "TargetPoint",
+      "position": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "pie_started": false
+}

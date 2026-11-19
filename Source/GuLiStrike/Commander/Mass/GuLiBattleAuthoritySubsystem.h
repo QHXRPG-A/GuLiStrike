@@ -560,6 +560,7 @@ private:
 	void TickSoldierCombat();
 	void RegisterCombatLedgerTargets();
 	bool RegisterCombatLedgerTarget(FGuLiSoldierId SoldierId);
+	void MoveCombatTargetFootprint(FGuLiSoldierId SoldierId, const FVector& Location);
 	void UnregisterCombatLedgerTargets();
 
 	/** 每世界帧按预算采样可走性、提交纯数据后台构建，并核对版本后接收流场结果。 */

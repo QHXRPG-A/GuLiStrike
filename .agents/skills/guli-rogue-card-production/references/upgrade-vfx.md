@@ -5,7 +5,7 @@
 ## 资源、尺寸与颜色
 
 - 当前系统 `/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite`，材质 `M_UpgradeGlow`、`M_UpgradeRingMotes`，网格 `SM_UpgradeCylinder`。
-- 只读参考 `/Game/Assets/VFX/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted`，原资源不改。
+- 只读参考 `/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow04_Converted`，原资源不改。
 - 表字段 `UpgradeVfx / UpgradeVfxScale / UpgradeVfxColor`，默认己方色取原主要光圈起始值：线性HDR `(R=20,G=6.930114,B=0.933554,A=1)`，不是sRGB十六进制。
 - 敌方按**每个观看客户端自己的阵营**覆盖红色，保留亮度/淡出节奏；不要以服务器队伍固定涂色。运行时颜色与材质亮度参数分别核对。
 - WM01当前统一缩放6，源于实际宽约12.5m、高约7.5m与原特效太小。新增单位需根据最终网格包围盒和PresentationScale适配，不能全军乘6或重复缩放。

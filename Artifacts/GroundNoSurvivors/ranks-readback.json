@@ -1,0 +1,62 @@
+{
+  "success": true,
+  "tables": {
+    "DT_GuLiStrikeRogueCards_Cards": 13,
+    "DT_GuLiStrikeRogueCards_Effects": 8,
+    "DT_GuLiStrikeRogueCards_GroundWeaponEffects": 5,
+    "DT_GuLiStrikeGameTexts_Texts": 328
+  },
+  "card": "13.01",
+  "artwork": "/Game/GuLiStrike/Cards/GroundMech/NoSurvivors/Materials/MI_GroundMech_NoSurvivors_Artwork.MI_GroundMech_NoSurvivors_Artwork",
+  "icon": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_NoSurvivors.T_GroundIcon_NoSurvivors",
+  "levels": [
+    [
+      0.5,
+      10.0,
+      0.0,
+      2.5
+    ],
+    [
+      0.3,
+      12.0,
+      0.0,
+      2.5
+    ],
+    [
+      0.3,
+      16.0,
+      0.08,
+      2.5
+    ],
+    [
+      0.3,
+      18.0,
+      0.08,
+      2.5
+    ],
+    [
+      0.2,
+      25.0,
+      0.16,
+      4.0
+    ]
+  ],
+  "strings": {
+    "Card.GroundMech.NoSurvivors.Title": "无人生还",
+    "Card.GroundMech.NoSurvivors.Description": "<Unit>游骑兵</> <Gain>对地齐射{0}级 · 每{1}秒1发，共{2}发 · 基础伤害+{3}% · 散布半角{4}°</>",
+    "UI.GroundHUD.BarrageReady": "就绪",
+    "UI.GroundHUD.BarrageLow": "需离地{0}米",
+    "UI.GroundHUD.BarrageFiring": "余{0}发"
+  },
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "pie": false,
+    "markers": 37,
+    "model": 4001,
+    "q": [
+      "IA_Ground_NoSurvivors"
+    ],
+    "start": "<Struct 'Vector' (0x000001F9D5C93120) {x: 2750.000000, y: 63150.000000, z: 1147.013946}>",
+    "range_marker": "NoSurvivors_DiveMark"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "created_at": "2026-10-28T20:53:13.389051+08:00",
+  "stage": "reference_images_ready_for_user_review",
+  "generator": "built-in image_gen",
+  "outputs": [
+    {
+      "id": "burning_bullet",
+      "label": "灼烧子弹",
+      "file": "01_BurningBullet_Reference_v1.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 2691034,
+      "sha256": "0721837bef199e3b0b695d80e0d166ae91ac72533c4956a2306980bd71794534",
+      "prompt_file": "Prompts/01_BurningBullet.txt",
+      "prompt_utf8_sha256": "133105dfe2e6100718edd469fa324256034c3151fa880943fefac2cd12103365",
+      "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-f2a8f90b-00ba-4e53-8cbf-664766366633.png",
+      "user_art_review": "revision_requested_perspective"
+    },
+    {
+      "id": "burning_burst",
+      "label": "灼烧爆裂子弹",
+      "file": "02_BurningBurst_Reference_v1.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 2844131,
+      "sha256": "3581b204d23fb2143e8e9ca924dbf5fb1d9f0cd0ea17464b84ac71542938d396",
+      "prompt_file": "Prompts/02_BurningBurst.txt",
+      "prompt_utf8_sha256": "71392f6a237a93f3ac4b01a2b44e3d7fbc1159f787a05b713c367efe04ba26c9",
+      "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-a4d3dbe1-05bb-4874-b26a-1e4f0b9817c0.png",
+      "user_art_review": "revision_requested_deflagration"
+    },
+    {
+      "id": "ricochet_rear_fix",
+      "label": "折射子弹正背面修正版",
+      "file": "03_Ricochet_RearFix_Reference_v1.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 2655443,
+      "sha256": "fd0a0a054661a9b1d1ef307a92a2fa87168ed96b6c3e8a160e367b4523dfc105",
+      "prompt_file": "Prompts/03_Ricochet_RearFix.txt",
+      "prompt_utf8_sha256": "e82d2cb35905e5231d202dc481fc6dba2a7bb11320698282776e0acb096ff166",
+      "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-3399dd27-a198-4eee-b8f0-75d563f7da42.png",
+      "user_art_review": "pending"
+    }
+  ],
+  "technical_checks": "file copy equality, SHA256, PNG decoding and square dimensions only",
+  "assistant_output_visual_test": false,
+  "user_art_review": "pending",
+  "formal_art_replaced": false,
+  "new_logic_implemented": false,
+  "ue_import_started": false,
+  "user_feedback": {
+    "old_mech_appearance": "user explicitly retains for these illustrations only",
+    "runtime_model_reference_eligible": false,
+    "burning_v1": "perspective correction requested",
+    "burning_current_reference": "../Review_BurningCards_20261028_v2/01_BurningBullet_Perspective_v2.png",
+    "burst_20261029": "simple explosion insufficient; requires sustained burning plus deflagration",
+    "burst_current_reference": "../BurningBurst_Deflagration_20261029_v2/02_BurningBurst_Deflagration_v2.png"
+  }
+}

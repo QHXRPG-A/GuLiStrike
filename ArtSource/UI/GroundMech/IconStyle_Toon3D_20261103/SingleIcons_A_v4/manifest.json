@@ -1,0 +1,171 @@
+{
+  "version": "A_v4",
+  "created": "2026-11-03",
+  "tool": "built-in image_gen",
+  "request": "Bullet colors unified to Fire; Jump reuses JetCapacity; Blink combines pale blue mech, lightning and afterimages.",
+  "prompts": "prompts.json",
+  "model_reference_record": "model_reference.json",
+  "pixel_postprocessing": "none",
+  "source_images_preserved": true,
+  "jump_and_capacity_byte_identical": true,
+  "approval": "user_authorized_game_integration",
+  "assistant_visual_test": "not_performed",
+  "runtime_import": "installed_via_excel_and_datatable_pipeline",
+  "files": [
+    {
+      "id": 1,
+      "name": "JetCapacity",
+      "label": "喷气容量",
+      "filename": "01_JetCapacity.png",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v3\\01_JetCapacity.png",
+      "action": "unchanged_from_A_v3",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 862371,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v4\\01_JetCapacity.png",
+      "bytes": 1000063,
+      "sha256": "93fe69563b5f7765a0e5ec071c93447c5d1008006e3cdd6efb1fffacc9e677cd"
+    },
+    {
+      "id": 2,
+      "name": "Ricochet",
+      "label": "折射子弹",
+      "filename": "02_Ricochet.png",
+      "source": "C:\\Users\\a\\.codex\\generated_images\\01a1976b-cfec-7460-af4a-f2eb5a4a76bf\\exec-d96a44e3-e68d-4fc0-b202-72698808aa55.png",
+      "action": "imagegen_recolor",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 1223732,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v4\\02_Ricochet.png",
+      "bytes": 589935,
+      "sha256": "7d6cdaea6a68490d0fcc14c23dcddc18628b698f3a99b94cb7fa85cf34194186"
+    },
+    {
+      "id": 3,
+      "name": "Burning",
+      "label": "灼烧子弹",
+      "filename": "03_Burning.png",
+      "source": "C:\\Users\\a\\.codex\\generated_images\\01a1976b-cfec-7460-af4a-f2eb5a4a76bf\\exec-314d34ed-81e1-4bbe-861e-ba04214abf76.png",
+      "action": "imagegen_recolor",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 962471,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v4\\03_Burning.png",
+      "bytes": 820431,
+      "sha256": "a9914646a2627788843eb33f26fb4d5110117af6c9ee978c1f2f5ad70e02b33f"
+    },
+    {
+      "id": 4,
+      "name": "BurningBurst",
+      "label": "爆燃子弹",
+      "filename": "04_BurningBurst.png",
+      "source": "C:\\Users\\a\\.codex\\generated_images\\01a1976b-cfec-7460-af4a-f2eb5a4a76bf\\exec-ebd4ae6d-71d1-4b7e-9191-506a9a18b55c.png",
+      "action": "imagegen_recolor",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 836192,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v4\\04_BurningBurst.png",
+      "bytes": 1034323,
+      "sha256": "2bb6c60915c984e92c24d39514de8ae5d9c31861e818ea4a46de666bfc929dca"
+    },
+    {
+      "id": 5,
+      "name": "Fire",
+      "label": "射击",
+      "filename": "05_Fire.png",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v3\\05_Fire.png",
+      "action": "unchanged_from_A_v3",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "transparent_pixels": 1135547,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v4\\05_Fire.png",
+      "bytes": 1097475,
+      "sha256": "673a00e43978863a029a3bad8bff9276a6a2512f720d7d3656ea5258cf00f16a"
+    },
+    {
+      "id": 6,
+      "name": "Aim",
+      "label": "瞄准",
+      "filename": "06_Aim.png",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v3\\06_Aim.png",
+      "action": "unchanged_from_A_v3",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 1004390,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v4\\06_Aim.png",
+      "bytes": 769364,
+      "sha256": "37bb3465f4266ee6a0893513980d2918b4cb538e8126cc354e0e11d40d07a0a3"
+    },
+    {
+      "id": 7,
+      "name": "Jump",
+      "label": "喷气跳跃",
+      "filename": "07_Jump.png",
+      "source": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v3\\01_JetCapacity.png",
+      "action": "byte_identical_reuse_of_JetCapacity",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 862371,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v4\\07_Jump.png",
+      "bytes": 1000063,
+      "sha256": "93fe69563b5f7765a0e5ec071c93447c5d1008006e3cdd6efb1fffacc9e677cd"
+    },
+    {
+      "id": 8,
+      "name": "Blink",
+      "label": "闪现",
+      "filename": "08_Blink.png",
+      "source": "C:\\Users\\a\\.codex\\generated_images\\01a1976b-cfec-7460-af4a-f2eb5a4a76bf\\exec-35741b36-5530-417d-a8bf-0d3479541bf3.png",
+      "action": "imagegen_new_blink",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "transparent_pixels": 694052,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMech\\IconStyle_Toon3D_20261103\\SingleIcons_A_v4\\08_Blink.png",
+      "bytes": 1260260,
+      "sha256": "fd2390ba6f46a70a4877b56610048eadae75daef3db00e78648dd9a25696e2dc"
+    }
+  ],
+  "approval_basis": "通过数据管线实装在游戏里",
+  "installation_report": "Artifacts/GroundToonIcons_20261103/DELIVERY.md",
+  "game_visual_acceptance": "pending_user"
+}

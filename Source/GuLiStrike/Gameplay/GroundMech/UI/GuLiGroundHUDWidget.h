@@ -107,6 +107,7 @@ private:
     UPROPERTY(Transient) TArray<TObjectPtr<UImage>> SkillIcons;
     UPROPERTY(Transient) TMap<FString,TObjectPtr<UImage>> RogueImages;
     TMap<int32,int32> BuffIconIds;
+    int32 BarrageIconId=0;
     UPROPERTY(Transient) TArray<TObjectPtr<UObject>> Art;
     UPROPERTY(Transient) TObjectPtr<UCanvasPanel> Root;
     UPROPERTY(Transient) TObjectPtr<USizeBox> DesignSize;
@@ -143,6 +144,7 @@ private:
     UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillStates;
     UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> KeyLabels;
     UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> SkillMasks;
+    UPROPERTY(Transient) TObjectPtr<USizeBox> BarrageEntry;
     UPROPERTY(Transient) TArray<TObjectPtr<UGuLiGroundHUDPanel>> SkillPanels;
     UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> BuffTimes;
     TWeakObjectPtr<APawn> BoundPawn;
@@ -151,7 +153,7 @@ private:
     TSharedPtr<SGuLiGroundReticle> Reticle;
     FVector2D MuzzlePoint=FVector2D::ZeroVector;
     bool bMuzzle=false,bKill=false,bRogueHidden=false,bReticleVisible=false;
-    float TargetHealth=0,TargetMasks[4]{};bool bBarsInitialized=false;
+    float TargetHealth=0,TargetMasks[2]{};bool bBarsInitialized=false;
     double HitUntil=0,HitStarted=0;uint8 ModalMode=0;
     FString LastBuffText;
     FGuLiGroundHUDMotionStyle MotionStyle;

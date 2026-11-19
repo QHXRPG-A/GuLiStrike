@@ -1,0 +1,142 @@
+{
+  "success": true,
+  "HeelLeft_rest_component": "X=108.442 Y=-61.816 Z=-0.401",
+  "ToeLeft_rest_component": "X=156.223 Y=86.686 Z=-0.392",
+  "HeelRight_rest_component": "X=-108.442 Y=-61.816 Z=-0.401",
+  "ToeRight_rest_component": "X=-156.223 Y=86.686 Z=-0.392",
+  "sole": {
+    "HeelLeftX": 11.137256071791999,
+    "HeelLeftY": -16.555110844619133,
+    "HeelLeftZ": -64.07825468897654,
+    "ToeLeftX": -26.317433176355966,
+    "ToeLeftY": -40.541989863225,
+    "ToeLeftZ": -17.721223872188236,
+    "HeelRightX": -11.14620067154957,
+    "HeelRightY": -16.27406601076058,
+    "HeelRightZ": -64.14857250214561,
+    "ToeRightX": 26.25656938901623,
+    "ToeRightY": -40.57658868528186,
+    "ToeRightZ": -17.732499806680945
+  },
+  "gait": {
+    "Idle": {
+      "ReferenceSpeed": 1,
+      "TurnDegrees": 0
+    },
+    "WalkForward": {
+      "ReferenceSpeed": 99.73643493652344,
+      "TurnDegrees": 0
+    },
+    "WalkBackward": {
+      "ReferenceSpeed": 58.691673278808594,
+      "TurnDegrees": 0
+    },
+    "RunForward": {
+      "ReferenceSpeed": 325.0162353515625,
+      "TurnDegrees": 0
+    },
+    "RunBackward": {
+      "ReferenceSpeed": 284.7080383300781,
+      "TurnDegrees": 0
+    },
+    "StrafeLeft": {
+      "ReferenceSpeed": 96.79471588134766,
+      "TurnDegrees": 0
+    },
+    "StrafeRight": {
+      "ReferenceSpeed": 106.95912170410156,
+      "TurnDegrees": 0
+    },
+    "TurnLeft": {
+      "ReferenceSpeed": 1,
+      "TurnDegrees": -53.07269287109375
+    },
+    "TurnRight": {
+      "ReferenceSpeed": 1,
+      "TurnDegrees": 54.76774597167969
+    }
+  },
+  "clips": [
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+      "frames": 150,
+      "planted_velocity_samples": 0,
+      "reference_speed_cm_s": 1,
+      "left_min_sole_height": -0.39203211665153503,
+      "right_min_sole_height": -0.39210718870162964,
+      "turn_degrees": 0
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Walk_FWD.Anim_Mecha_Walk_FWD",
+      "frames": 78,
+      "planted_velocity_samples": 94,
+      "reference_speed_cm_s": 99.73643493652344,
+      "left_min_sole_height": -0.7948565483093262,
+      "right_min_sole_height": -0.07929354161024094,
+      "turn_degrees": 0
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_WalK_BWD.Anim_Mecha_WalK_BWD",
+      "frames": 75,
+      "planted_velocity_samples": 96,
+      "reference_speed_cm_s": 58.691673278808594,
+      "left_min_sole_height": -1.5555442571640015,
+      "right_min_sole_height": -0.8609503507614136,
+      "turn_degrees": 0
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Run_FWD.Anim_Run_FWD",
+      "frames": 24,
+      "planted_velocity_samples": 17,
+      "reference_speed_cm_s": 325.0162353515625,
+      "left_min_sole_height": -0.28967124223709106,
+      "right_min_sole_height": -0.3259900212287903,
+      "turn_degrees": 0
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Run_BWD.Anim_Mecha_Run_BWD",
+      "frames": 31,
+      "planted_velocity_samples": 20,
+      "reference_speed_cm_s": 284.7080383300781,
+      "left_min_sole_height": -0.9634795784950256,
+      "right_min_sole_height": -1.3074586391448975,
+      "turn_degrees": 0
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+      "frames": 35,
+      "planted_velocity_samples": 35,
+      "reference_speed_cm_s": 96.79471588134766,
+      "left_min_sole_height": -4.592275619506836,
+      "right_min_sole_height": -1.63013756275177,
+      "turn_degrees": 0
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+      "frames": 35,
+      "planted_velocity_samples": 40,
+      "reference_speed_cm_s": 106.95912170410156,
+      "left_min_sole_height": 0.30280065536499023,
+      "right_min_sole_height": -1.6302517652511597,
+      "turn_degrees": 0
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_L.Anim_Mecha_Turn_L",
+      "frames": 63,
+      "planted_velocity_samples": 0,
+      "reference_speed_cm_s": 1,
+      "left_min_sole_height": -0.2730826437473297,
+      "right_min_sole_height": -0.18129268288612366,
+      "turn_degrees": -53.07269287109375
+    },
+    {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_R.Anim_Mecha_Turn_R",
+      "frames": 63,
+      "planted_velocity_samples": 0,
+      "reference_speed_cm_s": 1,
+      "left_min_sole_height": 0.5272626280784607,
+      "right_min_sole_height": -1.1638634204864502,
+      "turn_degrees": 54.76774597167969
+    }
+  ]
+}

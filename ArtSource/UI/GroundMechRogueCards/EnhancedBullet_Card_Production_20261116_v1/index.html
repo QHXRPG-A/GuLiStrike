@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>强化子弹 · 六层牌面</title>
+  <link rel="stylesheet" href="preview.css">
+  <script defer src="card-data.js?v=1"></script>
+  <script defer src="preview.js?v=1"></script>
+</head>
+<body>
+  <main>
+    <header class="heading">
+      <div>
+        <h1>强化子弹</h1>
+        <p class="subtitle">游骑兵 · 六层牌面</p>
+      </div>
+      <p class="load-status" id="status" role="status">正在载入图层</p>
+    </header>
+    <div class="workspace" data-mode="stack">
+      <section class="stage" aria-label="牌面预览">
+        <nav class="modes" aria-label="查看方式">
+          <button type="button" data-mode-choice="reference" aria-pressed="false">原图</button>
+          <button type="button" data-mode-choice="stack" aria-pressed="true">原位叠合</button>
+          <button type="button" data-mode-choice="parallax" aria-pressed="false">交互视差</button>
+        </nav>
+        <div id="motion-area">
+          <div id="card">
+            <canvas id="art" aria-label="强化子弹牌面"></canvas>
+          </div>
+        </div>
+        <p class="hint" id="hint">六层原位叠合。可切换原图，或单独查看一层。</p>
+      </section>
+      <aside class="panel" aria-labelledby="layer-title">
+        <div class="panel-heading">
+          <h2 id="layer-title">图层</h2>
+          <button type="button" id="reset">回正</button>
+        </div>
+        <div class="motion-controls">
+          <label for="strength">视差强度</label>
+          <input type="range" id="strength" min="0" disabled max="100" value="75">
+          <output for="strength" id="strength-value">75%</output>
+        </div>
+        <ol id="layers"></ol>
+        <p class="note">弹体与破口同步移动。玻璃反射随各自碎片移动。</p>
+        <p class="footnote">共用画布 1152 × 1728 · 原图窗口 1024 × 1536</p>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

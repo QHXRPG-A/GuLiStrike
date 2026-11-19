@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>游骑兵肉鸽牌面</title>
+  <link rel="stylesheet" href="preview_v6.css?ui=closed-20261117">
+  <script defer src="card-data_v7.js?ui=closed-20261117"></script>
+  <script defer src="gallery.js?ui=closed-20261117"></script>
+  <script defer src="preview_v7.js?ui=closed-20261117"></script>
+</head>
+<body>
+  <main>
+    <header class="heading">
+      <div>
+        <h1 id="card-title">无人生还</h1>
+        <nav class="card-switch" id="card-switch" aria-label="选择牌面"></nav>
+      </div>
+      <p class="load-status" id="status" role="status">正在载入图层</p>
+    </header>
+    <section class="production-status" id="production-status" aria-label="制作状态">
+      <strong>本次制作已完成 · v7 外沿补绘版</strong>
+      <p>已按用户要求收尾。保留原位画面、外沿补绘与历史实测记录。</p>
+    </section>
+    <div class="workspace" id="layer-preview" data-mode="stack">
+      <section class="stage" aria-label="牌面预览">
+        <nav class="modes" aria-label="查看方式">
+          <button type="button" data-mode-choice="reference" aria-pressed="false">原图</button>
+          <button type="button" data-mode-choice="stack" aria-pressed="true">原位叠合</button>
+          <button type="button" data-mode-choice="parallax" aria-pressed="false">交互视差</button>
+        </nav>
+        <div id="motion-area">
+          <div id="card">
+            <canvas id="art" aria-label="牌面"></canvas>
+          </div>
+        </div>
+        <p class="hint" id="hint">六层原位叠合。可切换原图，或单独查看一层。</p>
+      </section>
+      <aside class="panel" aria-labelledby="layer-title">
+        <div class="panel-heading">
+          <h2 id="layer-title">图层</h2>
+          <button type="button" id="reset">回正</button>
+        </div>
+        <div class="motion-controls">
+          <label for="strength">视差强度</label>
+          <input type="range" id="strength" min="0" disabled max="100" value="75">
+          <output for="strength" id="strength-value">75%</output>
+        </div>
+        <ol id="layers"></ol>
+        <p class="note" id="similarity"></p>
+        <p class="footnote" id="canvas-size"></p>
+        <p class="footnote"><a class="download" id="card-bundle" href="ExplosiveCards_v7_edge_review.zip" download>下载两张牌的 12 层与补绘记录</a></p>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>
+

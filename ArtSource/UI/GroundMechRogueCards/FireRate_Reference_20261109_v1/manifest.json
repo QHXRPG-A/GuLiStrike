@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-09",
+  "state": "reference_pending_user_review",
+  "card_id": "09.01",
+  "card_title": "增加攻速",
+  "seat": "Ground",
+  "generator": "built-in image_gen",
+  "mode": "reference-based image transformation",
+  "model": {
+    "id": 4001,
+    "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+    "skeletal_mesh": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2",
+    "table": "data/Json/DT_GuLiStrikeModels_Models.json",
+    "blueprint_readback": "ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export/final_blueprint_material_checks.json",
+    "render_inputs": "Inputs/source_render.json",
+    "export_source_sha256": "7a7182fe49c1cd1305718fbc4124036a4f7480bf425d6f0c0d44400d2563067a"
+  },
+  "inputs_in_order": [
+    {
+      "file": "Inputs/A4B2_Blue_Full.png",
+      "role": "整机造型与蓝队配色"
+    },
+    {
+      "file": "Inputs/A4B2_Gun_Closeup.png",
+      "role": "枪管装配、枪口与侧甲"
+    }
+  ],
+  "outputs": [
+    {
+      "kind": "card",
+      "file": "FireRate_Card_Reference_v1.png",
+      "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-a2bae0e5-5686-4d61-b344-d98c3932102e.png",
+      "sha256": "52d926087024763cd72ad8f3bea950c6ac5a2a9e45a06cc18e81f487a314eb40",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "transparent_background": false,
+      "prompt": "Card_Prompt.txt",
+      "prompt_payload_utf8_sha256": "966046b7037884044fc3ee94cdc4e013a838d3223d182b03956451b6de6310d2"
+    },
+    {
+      "kind": "hud_icon",
+      "file": "FireRate_HUD_Icon_Reference_v1.png",
+      "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-8f9763db-482c-4d7b-842a-19b92edb2bb2.png",
+      "sha256": "ebff973814d90158873c73b37b419ba46f83b38c71657ea25c2d3d872a305966",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "transparent_background": true,
+      "prompt": "Icon_Prompt.txt",
+      "prompt_payload_utf8_sha256": "01b7e9c47175ae8d0b62dec677ccf6935f2f8e56eda2be2f6c8bcb521bd011a6",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    }
+  ],
+  "user_review": "pending",
+  "assistant_output_visual_review": false
+}

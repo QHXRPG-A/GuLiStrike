@@ -1,0 +1,205 @@
+{
+  "success": true,
+  "scope": "Raw saved curve keys, config, asset references and saved scene entities only; no PIE, input injection, bone-pose evaluation or image inspection",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "saved": true,
+  "main_role": "<GuLiCommanderRole.GROUND: 2>",
+  "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+  "animation_blueprint": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2",
+  "mobility": {
+    "Name": "Default",
+    "Id": 1,
+    "Note": "cm / s / deg; Ground player only",
+    "WalkSpeed": 216,
+    "SprintSpeed": 432,
+    "Acceleration": 864,
+    "Braking": 864,
+    "MovingTurnRate": 1080,
+    "TurnStartDegrees": 15,
+    "TurnStopDegrees": 5,
+    "TurnMovementThreshold": 10,
+    "GunYawLimit": 75,
+    "GunPitchUpLimit": 80,
+    "GunPitchDownLimit": 65
+  },
+  "turn_progress_curves": {
+    "L": {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_L.Anim_Mecha_Turn_L",
+      "keys": 63,
+      "first_time": 0.0,
+      "last_time": 2.066666603088379,
+      "first_value": 0.0,
+      "last_value": 1.0
+    },
+    "R": {
+      "asset": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_R.Anim_Mecha_Turn_R",
+      "keys": 63,
+      "first_time": 0.0,
+      "last_time": 2.066666603088379,
+      "first_value": 0.0,
+      "last_value": 1.0
+    }
+  },
+  "actors": [
+    {
+      "label": "GroundMobility_Flat",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -4000.0,
+        50000.0,
+        880.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        30.0,
+        40.0,
+        0.5
+      ],
+      "folder": "Review/GroundMobility_20261024"
+    },
+    {
+      "label": "GroundMobility_Slope18",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -4250.0,
+        48900.0,
+        1102.2907657365602
+      ],
+      "rotation": [
+        0.0,
+        18.0,
+        0.0
+      ],
+      "scale": [
+        14.0,
+        10.0,
+        0.4
+      ],
+      "folder": "Review/GroundMobility_20261024"
+    },
+    {
+      "label": "GroundMobility_SlopeLanding",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -3320.0,
+        48900.0,
+        1317.6237921249262
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        5.4,
+        10.0,
+        0.4
+      ],
+      "folder": "Review/GroundMobility_20261024"
+    },
+    {
+      "label": "GroundMobility_Step20",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -4800.0,
+        50900.0,
+        915.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.2
+      ],
+      "folder": "Review/GroundMobility_20261024"
+    },
+    {
+      "label": "GroundMobility_Step40",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -4400.0,
+        50900.0,
+        925.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.4
+      ],
+      "folder": "Review/GroundMobility_20261024"
+    },
+    {
+      "label": "GroundMobility_Step60",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -4000.0,
+        50900.0,
+        935.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.6
+      ],
+      "folder": "Review/GroundMobility_20261024"
+    },
+    {
+      "label": "GroundMobility_Step80",
+      "class": "/Script/Engine.StaticMeshActor",
+      "location": [
+        -3600.0,
+        50900.0,
+        945.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        4.0,
+        10.0,
+        0.8
+      ],
+      "folder": "Review/GroundMobility_20261024"
+    },
+    {
+      "label": "GroundMobility_Entry",
+      "class": "/Script/Engine.TargetPoint",
+      "location": [
+        -2800.0,
+        50000.0,
+        1149.04
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "folder": "Review/GroundMobility_20261024"
+    }
+  ]
+}

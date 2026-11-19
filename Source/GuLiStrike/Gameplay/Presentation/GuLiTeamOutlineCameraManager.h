@@ -16,8 +16,12 @@ class GULISTRIKE_API AGuLiTeamOutlineCameraManager : public APlayerCameraManager
 public:
 	virtual void InitializeFor(APlayerController* PC) override;
 	virtual void UpdateCamera(float DeltaTime) override;
+protected:
+    virtual void UpdateViewTargetInternal(FTViewTarget& Target, float DeltaTime) override;
 
 private:
+    float BarrageFlash = 0.f;
+    float AppliedBarrageFlash = 0.f;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Presentation|Outline")
 	int32 OutlineVfxId = 0;
 	UPROPERTY(Transient)

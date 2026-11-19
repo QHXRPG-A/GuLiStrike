@@ -1,0 +1,95 @@
+{
+  "scope": "Analytical timeline and exact spring integration only; no PIE, rendered frames, runtime collision or visual acceptance",
+  "total_seconds": 1.5,
+  "stages_seconds": {
+    "Begin": 0.4,
+    "Loop": 0.5,
+    "End": 0.6
+  },
+  "samples": [
+    {
+      "time": 0,
+      "phase": "Begin",
+      "pose_alpha": 0.0,
+      "unblocked_distance_cm": 0.0
+    },
+    {
+      "time": 0.2,
+      "phase": "Begin",
+      "pose_alpha": 0.5,
+      "unblocked_distance_cm": 0.0
+    },
+    {
+      "time": 0.4,
+      "phase": "Loop",
+      "pose_alpha": 1,
+      "unblocked_distance_cm": 0.0
+    },
+    {
+      "time": 0.525,
+      "phase": "Loop",
+      "pose_alpha": 1,
+      "unblocked_distance_cm": 124.21875
+    },
+    {
+      "time": 0.65,
+      "phase": "Loop",
+      "pose_alpha": 1,
+      "unblocked_distance_cm": 600.0
+    },
+    {
+      "time": 0.775,
+      "phase": "Loop",
+      "pose_alpha": 1,
+      "unblocked_distance_cm": 1075.78125
+    },
+    {
+      "time": 0.9,
+      "phase": "End",
+      "pose_alpha": 1.0,
+      "unblocked_distance_cm": 1200.0
+    },
+    {
+      "time": 1.2,
+      "phase": "End",
+      "pose_alpha": 0.5000000000000001,
+      "unblocked_distance_cm": 1200.0
+    },
+    {
+      "time": 1.5,
+      "phase": "Ready",
+      "pose_alpha": 0,
+      "unblocked_distance_cm": 1200.0
+    }
+  ],
+  "camera_rows": [
+    {
+      "Name": "Free",
+      "BlinkHoldSeconds": 0.04,
+      "BlinkCatchupSeconds": 0.45
+    },
+    {
+      "Name": "Aim",
+      "BlinkHoldSeconds": 0.04,
+      "BlinkCatchupSeconds": 0.45
+    }
+  ],
+  "camera_stationary_target_95pct": 0.04999440557799463,
+  "spring_partition_readback": [
+    {
+      "partitions": 30,
+      "offset_after_one_second_cm": -0.3656299301237418,
+      "exact_cm": -0.3656299301237422
+    },
+    {
+      "partitions": 60,
+      "offset_after_one_second_cm": -0.3656299301237435,
+      "exact_cm": -0.3656299301237422
+    },
+    {
+      "partitions": 144,
+      "offset_after_one_second_cm": -0.36562993012374284,
+      "exact_cm": -0.3656299301237422
+    }
+  ]
+}

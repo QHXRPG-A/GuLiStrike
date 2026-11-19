@@ -7,7 +7,7 @@ import unreal
 ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
 OUT = ROOT / 'Artifacts/GroundAmmo_20261108'
 SOURCES = ['/Game/_VFXResources/Niagara_System/NS_Explosion_19',
-           '/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_Missile']
+           '/Game/Assets/VFX/Weapons/WeaponBulletVFX/NS/VFX_Missile']
 
 def main():
     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
@@ -26,7 +26,7 @@ def main():
                                         for r in em.list_renderers(path, str(e.emitter_name))]}
                          for e in ns.list_emitters(path)]}
     registry = unreal.AssetRegistryHelpers.get_asset_registry()
-    for row in registry.get_assets_by_path('/Game/Assets/Missile_Cluster', recursive=True):
+    for row in registry.get_assets_by_path('/Game/Assets/VFX/Weapons/Missiles/Missile_Cluster', recursive=True):
         report['logic_assets'].append({'path': str(row.package_name), 'class': str(row.asset_class_path)})
     assert report['logic_assets'], 'Specified Missile_Cluster reference is missing'
     report['editor_world'] = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world().get_path_name()

@@ -63,6 +63,9 @@ bool UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(UWorld* World,cons
         Channel->FinishedFlights+=Channel->ActiveFlights.Remove(Event.State.EffectId);
     else
     {
+        if (Event.State.GroundStrike.IsEnabled())
+            if (const auto* Known = Channel->ActiveFlights.Find(Event.State.EffectId);
+                Known && Known->State.Sequence > Event.State.Sequence) return true;
         if (!Channel->ActiveFlights.Contains(Event.State.EffectId)) ++Channel->ObservedFlights;
         Channel->ActiveFlights.Add(Event.State.EffectId,Event);
     }

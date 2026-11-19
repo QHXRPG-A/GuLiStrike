@@ -1,5 +1,14 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 #include "Gameplay/Data/Generated/GuLiStrikeSecondaryWeaponsTableRows.h"
+#include "Gameplay/Data/Generated/GuLiStrikeMechTableRows.h"
+
+namespace
+{
+bool IsGroundSkill(const FDataTableRowHandle& Handle)
+{
+	return Handle.DataTable && Handle.DataTable->GetRowStruct() == FGuLiStrikeMechSkillsRow::StaticStruct();
+}
+}
 
 bool UGuLiSpellFieldDefinition::IsValidDefinition() const
 {
@@ -21,7 +30,7 @@ bool FGuLiProjectileVisualSettings::IsValid() const
 
 bool UGuLiProjectileEffectDefinition::UsesMissileClusterRendering() const
 {
-	if (MotionProfileRow.IsNull()) return false;
+	if (MotionProfileRow.IsNull() || IsGroundSkill(MotionProfileRow)) return false;
 	const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeSecondaryWeaponsProjectilesRow>(TEXT("Projectile presentation routing"));
 	return Row && Row->UnitTypeId == 2 && Row->SlotId == TEXT("MissileLauncher")
 		&& Row->ProjectileAsset.ToSoftObjectPath() == FSoftObjectPath(this);
@@ -30,7 +39,7 @@ bool UGuLiProjectileEffectDefinition::UsesMissileClusterRendering() const
 bool UGuLiProjectileEffectDefinition::ResolveVisualSettings(FGuLiProjectileVisualSettings& OutVisual) const
 {
 	OutVisual = {};
-	if (MotionProfileRow.IsNull()) return false;
+	if (MotionProfileRow.IsNull() || IsGroundSkill(MotionProfileRow)) return false;
 	const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeSecondaryWeaponsProjectilesRow>(TEXT("Secondary weapon visuals"));
 	if (!Row || Row->ProjectileAsset.ToSoftObjectPath() != FSoftObjectPath(this)) return false;
 	OutVisual.SmokeInitialWidthCentimeters = Row->SmokeInitialWidthCentimeters;
@@ -47,12 +56,39 @@ bool UGuLiProjectileEffectDefinition::IsValidDefinition() const
 		&& FMath::IsFinite(TrailFadeSeconds) && TrailFadeSeconds >= 0 && TrailFadeSeconds <= 10;
 }
 
+FGuLiGroundStrikeFlight UGuLiProjectileEffectDefinition::GetGroundStrikeFlight() const
+{
+	FGuLiGroundStrikeFlight Flight;
+	if (IsGroundSkill(MotionProfileRow))
+	{
+		const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeMechSkillsRow>(TEXT("Ground strike flight"));
+		if (Row && Row->ExecutionType == TEXT("Barrage"))
+		{
+			Flight.HorizontalRange = Row->HorizontalRangeCentimeters;
+			Flight.DiveAcceleration = Row->DiveAccelerationCmPerSecondSquared;
+		}
+	}
+	return Flight;
+}
+
 bool UGuLiProjectileEffectDefinition::ResolveMotionSettings(FGuLiProjectileMotionSettings& OutMotion) const
 {
 	OutMotion = {};
 	if (MotionProfileRow.IsNull())
 	{
 		OutMotion = Motion;
+		return OutMotion.IsValid();
+	}
+	if (IsGroundSkill(MotionProfileRow))
+	{
+		const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeMechSkillsRow>(TEXT("Ground projectile motion"));
+		if (!Row || Row->ExecutionType != TEXT("Barrage") || Row->BulletVfxId != FlightVfxId
+			|| !FMath::IsFinite(Row->HorizontalRangeCentimeters) || Row->HorizontalRangeCentimeters <= 0.f
+			|| !FMath::IsFinite(Row->DiveAccelerationCmPerSecondSquared) || Row->DiveAccelerationCmPerSecondSquared <= 0.f) return false;
+		OutMotion = Motion;
+		OutMotion.Speed = Row->ProjectileSpeed;
+		OutMotion.SweepRadius = Row->SweepRadius;
+		OutMotion.MaximumLifetime = Row->ProjectileLifetime;
 		return OutMotion.IsValid();
 	}
 	const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeSecondaryWeaponsProjectilesRow>(TEXT("Secondary weapon projectile"));

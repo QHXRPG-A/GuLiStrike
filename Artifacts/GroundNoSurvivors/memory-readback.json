@@ -1,0 +1,37 @@
+{
+  "pid": 43348,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "already_loaded": [
+    false,
+    false
+  ],
+  "systems": [
+    {
+      "system": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsFlight",
+      "compiled_vm_buffer_bytes": 17911,
+      "pool_prime": 0
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsImpact",
+      "compiled_vm_buffer_bytes": 108564,
+      "pool_prime": 0
+    }
+  ],
+  "first_load": {
+    "baseline_private_bytes": 8735518720,
+    "settled_private_bytes": 8804724736,
+    "delta_private_bytes": 69206016,
+    "sampled_peak_delta_bytes": 72355840,
+    "baseline_range_bytes": 0,
+    "settled_range_bytes": 16424960
+  },
+  "repeat_loaded": {
+    "baseline_private_bytes": 8799485952,
+    "settled_private_bytes": 8816005120,
+    "delta_private_bytes": 16519168,
+    "sampled_peak_delta_bytes": 16547840,
+    "baseline_range_bytes": 8388608,
+    "settled_range_bytes": 11812864
+  },
+  "sampling": "Windows editor process private commit at 50 ms; baseline and settled medians over 1.5 s. Includes editor activity and pre-existing shared dependencies. No play world, component pool priming, GPU memory measurement or on-disk cache reset. VM bytes count allocated bytecode and context buffers."
+}

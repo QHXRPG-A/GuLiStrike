@@ -107,7 +107,13 @@ FVector GuLiClientFlight::DisplayLocation(const FGuLiCombatEffectState& Predicti
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiClientFlightPureDisplay);
 	if (Prediction.Kind == EGuLiCombatEffectKind::LinearProjectile) return Prediction.Location;
 	const double Residual = FMath::Clamp(double(ServerTime) - PredictionTime, 0.0, 1.0 / 30.0);
-	if (ServerTime - Prediction.StartTime <= Prediction.Motion.LiftSeconds)
-		return GuLiCombatEffects::LiftPosition(Prediction, FMath::Max(0.f, ServerTime - Prediction.StartTime), Coefficients);
-	return FVector(Prediction.Location) + FVector(Prediction.Velocity) * Residual;
+	if (Prediction.GroundStrike.IsEnabled())
+	{
+		if (Residual <= 0.) return Prediction.Location;
+		auto Display = Prediction;
+		return GuLiCombatEffects::AdvanceProjectile(Display, float(PredictionTime - Prediction.StartTime + Residual), float(Residual), Coefficients);
+	}
+	return ServerTime - Prediction.StartTime <= Prediction.Motion.LiftSeconds
+		? GuLiCombatEffects::LiftPosition(Prediction, FMath::Max(0.f, ServerTime - Prediction.StartTime), Coefficients)
+		: FVector(Prediction.Location) + FVector(Prediction.Velocity) * Residual;
 }

@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-16",
+  "card_id": "10.01",
+  "card_title": "强化子弹",
+  "direction": "破镜与二进制数字雨",
+  "version": 4,
+  "state": "reference_pending_user_review",
+  "generator": "built-in imagegen",
+  "feedback": "数字二进制就好，避免乱码",
+  "digit_set": [
+    "0",
+    "1"
+  ],
+  "inputs_in_order": [
+    {
+      "role": "第三版破镜牌面，作为局部字符重绘底图",
+      "file": "../EnhancedBullet_Reference_20261116_v3/EnhancedBullet_DigitalGlass_v3.png",
+      "sha256": "92a0853f0c082635ff326eea912259227b42e35533b11260a2cdfa216bd2f245"
+    }
+  ],
+  "prompt": {
+    "file": "Binary_Rain_Prompt.txt",
+    "sha256": "94820d029544e5e05ae4cceca7f44622aee5ce5ee38902963af9da1382dfdfbb"
+  },
+  "output": {
+    "file": "EnhancedBullet_BinaryRain_v4.png",
+    "generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-aa4a3347-cfad-42f5-8558-4bc12339105e.png",
+    "sha256": "061f7a33eacfb3d08889da676840941380e43f495d1cec4979bb80b65a6919d8",
+    "size": [
+      1024,
+      1536
+    ],
+    "mode": "RGB"
+  }
+}

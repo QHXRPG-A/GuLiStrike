@@ -8,6 +8,7 @@ class AGuLiGroundMechCharacter;
 class USpringArmComponent;
 class UCameraComponent;
 struct FGuLiGroundMechConfiguration;
+struct FMinimalViewInfo;
 
 /** Controls the existing Character camera subobjects; never advances gameplay or owns an independent Tick. */
 UCLASS(ClassGroup=(GuLiStrike))
@@ -21,6 +22,7 @@ public:
     void AddZoomInput(float Axis);
     float GetViewYaw() const;
     void Update(float DeltaSeconds);
+    float ApplyBarrageView(FMinimalViewInfo& View) const;
     void AddBlinkDisplacement(const FVector& Delta, bool bFirst);
     void ResetBlink();
 private:

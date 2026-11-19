@@ -1,0 +1,250 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "pie": false,
+    "burst_helper": true,
+    "schema": "<Struct 'GuLiStrikeBuffsBurningBurstRow' (0x000001CB25E44D00) {id: 0, note: \"\", parent_buff_id: 0, interval_seconds: 0.000000, lost_health_damage_ratio: 0.000000, radius_centimeters: 0.000000, burst_vfx_id: 0}>",
+    "emitters": [
+      {
+        "name": "Dots",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001CBC154D5C0) {emitter_name: \"Dots\", is_enabled: True, sim_target: \"GPUComputeSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "modules": [
+          {
+            "name": "SolveForcesAndVelocity",
+            "path": "/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity"
+          },
+          {
+            "name": "SpriteSizeScale",
+            "path": "/Niagara/Modules/Update/Size/ScaleSpriteSize.ScaleSpriteSize"
+          },
+          {
+            "name": "Vector2DFromFloat",
+            "path": "/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat"
+          },
+          {
+            "name": "FloatFromCurve",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve"
+          },
+          {
+            "name": "InitializeParticle",
+            "path": "/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle"
+          },
+          {
+            "name": "UniformRangedFloat003",
+            "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat"
+          },
+          {
+            "name": "UniformRangedFloat005",
+            "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat"
+          },
+          {
+            "name": "NormalizedAngleToDegrees001",
+            "path": "/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees"
+          },
+          {
+            "name": "UniformRangedFloat006",
+            "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat"
+          },
+          {
+            "name": "ParticleOwnerPosition",
+            "path": "/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition"
+          },
+          {
+            "name": "Drag",
+            "path": "/Niagara/Modules/Update/Forces/Drag.Drag"
+          },
+          {
+            "name": "ParticleState",
+            "path": "/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState"
+          },
+          {
+            "name": "EmitterState",
+            "path": "/Niagara/Modules/Emitter/EmitterState.EmitterState"
+          },
+          {
+            "name": "Vector2DFromFloat001",
+            "path": "/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat"
+          },
+          {
+            "name": "ColorFromCurve",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve"
+          },
+          {
+            "name": "Color",
+            "path": "/Niagara/Modules/Update/Color/Color.Color"
+          },
+          {
+            "name": "ColorFromCurve001",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve"
+          },
+          {
+            "name": "SpawnBurst_Instantaneous",
+            "path": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous"
+          },
+          {
+            "name": "ShapeLocation",
+            "path": "/Niagara/Modules/Spawn/Location/V2/ShapeLocation.ShapeLocation"
+          }
+        ],
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001CB281344D0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "Smoke001",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001CBC1549E20) {emitter_name: \"Smoke001\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "modules": [
+          {
+            "name": "SolveForcesAndVelocity",
+            "path": "/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity"
+          },
+          {
+            "name": "SpriteSizeScale",
+            "path": "/Niagara/Modules/Update/Size/ScaleSpriteSize.ScaleSpriteSize"
+          },
+          {
+            "name": "Vector2DFromFloat",
+            "path": "/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat"
+          },
+          {
+            "name": "FloatFromCurve",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve"
+          },
+          {
+            "name": "InitializeParticle",
+            "path": "/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle"
+          },
+          {
+            "name": "UniformRangedFloat003",
+            "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat"
+          },
+          {
+            "name": "UniformRangedFloat005",
+            "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat"
+          },
+          {
+            "name": "NormalizedAngleToDegrees001",
+            "path": "/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees"
+          },
+          {
+            "name": "UniformRangedFloat006",
+            "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat"
+          },
+          {
+            "name": "ParticleOwnerPosition",
+            "path": "/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition"
+          },
+          {
+            "name": "Drag",
+            "path": "/Niagara/Modules/Update/Forces/Drag.Drag"
+          },
+          {
+            "name": "ParticleState",
+            "path": "/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState"
+          },
+          {
+            "name": "EmitterState",
+            "path": "/Niagara/Modules/Emitter/EmitterState.EmitterState"
+          },
+          {
+            "name": "SubUVAnimation",
+            "path": "/Niagara/Modules/Update/SubUV/SubUVAnimation.SubUVAnimation"
+          },
+          {
+            "name": "Vector2DFromFloat001",
+            "path": "/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat"
+          },
+          {
+            "name": "ColorFromCurve",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve"
+          },
+          {
+            "name": "Color",
+            "path": "/Niagara/Modules/Update/Color/Color.Color"
+          },
+          {
+            "name": "ColorFromCurve001",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve"
+          },
+          {
+            "name": "SpawnRate",
+            "path": "/Niagara/Modules/Emitter/SpawnRate.SpawnRate"
+          },
+          {
+            "name": "SphereLocation",
+            "path": "/Niagara/Modules/Spawn/Location/SphereLocation.SphereLocation"
+          },
+          {
+            "name": "ShapeLocation",
+            "path": "/Niagara/Modules/Spawn/Location/V2/ShapeLocation.ShapeLocation"
+          }
+        ],
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001CB28132A90) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "Trails",
+        "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001CBC1543F20) {emitter_name: \"Trails\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Fixed\", fixed_bounds: \"Min(-400.000000,-400.000000,-400.000000) Max(400.000000,400.000000,400.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "modules": [
+          {
+            "name": "SolveForcesAndVelocity",
+            "path": "/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity"
+          },
+          {
+            "name": "InitializeParticle",
+            "path": "/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle"
+          },
+          {
+            "name": "ParticleOwnerPosition",
+            "path": "/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition"
+          },
+          {
+            "name": "ParticleState",
+            "path": "/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState"
+          },
+          {
+            "name": "EmitterState",
+            "path": "/Niagara/Modules/Emitter/EmitterState.EmitterState"
+          },
+          {
+            "name": "InitializeRibbon",
+            "path": "/Niagara/Modules/Spawn/Initialization/InitializeRibbon.InitializeRibbon"
+          },
+          {
+            "name": "Drag",
+            "path": "/Niagara/Modules/Update/Forces/Drag.Drag"
+          },
+          {
+            "name": "FloatFromCurve",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve"
+          },
+          {
+            "name": "ColorFromCurve",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve"
+          },
+          {
+            "name": "SpawnRate",
+            "path": "/Niagara/Modules/Emitter/SpawnRate.SpawnRate"
+          },
+          {
+            "name": "Color",
+            "path": "/Niagara/Modules/Update/Color/Color.Color"
+          },
+          {
+            "name": "ColorFromCurve001",
+            "path": "/Niagara/DynamicInputs/ValueFromCurve/ColorFromCurve.ColorFromCurve"
+          },
+          {
+            "name": "ShapeLocation",
+            "path": "/Niagara/Modules/Spawn/Location/V2/ShapeLocation.ShapeLocation"
+          }
+        ],
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001CB2813C120) {renderer_name: \"NiagaraRibbonRendererProperties_0\", renderer_type: \"Ribbon\", renderer_index: 0, is_enabled: True}>"
+        ]
+      }
+    ]
+  }
+}

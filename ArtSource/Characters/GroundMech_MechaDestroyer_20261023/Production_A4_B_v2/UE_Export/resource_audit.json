@@ -1,0 +1,367 @@
+{
+  "success": true,
+  "assets": [
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2.SK_GroundMech_A4B2",
+      "class": "SkeletalMesh"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Meshes/SK_GroundMech_A4B2_Skeleton.SK_GroundMech_A4B2_Skeleton",
+      "class": "Skeleton"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Jump_Start.Anim_Mecha_Jump_Start",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 0.3333333432674408
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Jump_Loop.Anim_Mecha_Jump_Loop",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 3.366666555404663
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+      "class": "BlendSpace",
+      "same_skeleton": true,
+      "samples": [
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Run_FWD.Anim_Run_FWD",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Run_BWD.Anim_Mecha_Run_BWD"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk",
+      "class": "BlendSpace",
+      "same_skeleton": true,
+      "samples": [
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Walk_FWD.Anim_Mecha_Walk_FWD",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_WalK_BWD.Anim_Mecha_WalK_BWD"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Run_FWD.Anim_Run_FWD",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 0.7666666507720947
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Walk_FWD.Anim_Mecha_Walk_FWD",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 2.566666603088379
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/ABP_GroundMech_A4B2.ABP_GroundMech_A4B2",
+      "class": "AnimBlueprint",
+      "graph_animation_refs": [
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Jump_Loop.Anim_Mecha_Jump_Loop",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Jump_Start.Anim_Mecha_Jump_Start",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Rocket_L.Anim_Mecha_Rocket_L",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Rocket_R.Anim_Mecha_Rocket_R",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Shoot.Anim_Mecha_Shoot",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_L.Anim_Mecha_Turn_L",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_R.Anim_Mecha_Turn_R",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Run.BlendSpace_Loco_Run",
+        "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/BlendSpace_Loco_Walk.BlendSpace_Loco_Walk"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_WalK_BWD.Anim_Mecha_WalK_BWD",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 2.4666666984558105
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_R.Anim_Mecha_Turn_R",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 2.066666603088379
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Turn_L.Anim_Mecha_Turn_L",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 2.066666603088379
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_R.Anim_Mecha_Strafe_R",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 1.1333333253860474
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Montage_Mecha_Turn_R_Montage.Montage_Mecha_Turn_R_Montage",
+      "class": "AnimMontage",
+      "same_skeleton": true
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Strafe_L.Anim_Mecha_Strafe_L",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 1.1333333253860474
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Shoot.Anim_Mecha_Shoot",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 0.9666666388511658
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Run_BWD.Anim_Mecha_Run_BWD",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 1.0
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Rocket_R.Anim_Mecha_Rocket_R",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 1.1666666269302368
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Rocket_L.Anim_Mecha_Rocket_L",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 1.1666666269302368
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Montage_Mecha_Turn_L_Montage.Montage_Mecha_Turn_L_Montage",
+      "class": "AnimMontage",
+      "same_skeleton": true
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Animations/Anim_Mecha_Idle.Anim_Mecha_Idle",
+      "class": "AnimSequence",
+      "same_skeleton": true,
+      "tracks": 17,
+      "seconds": 4.9666666984558105
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Outline.M_A4B2_Outline",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_TeamSecondary.M_A4B2_TeamSecondary",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_TeamPrimary.M_A4B2_TeamPrimary",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Amber.M_A4B2_Amber",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Ink.M_A4B2_Ink",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Mechanism.M_A4B2_Mechanism",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Sand.M_A4B2_Sand",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/MechaDestroyer_A4B2/Materials/M_A4B2_Cream.M_A4B2_Cream",
+      "class": "Material"
+    }
+  ],
+  "missing_hard_dependencies": [],
+  "preserved_gameplay_defaults": [
+    {
+      "path": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+      "values": {
+        "model_id": 4001,
+        "walk_speed": 720.0,
+        "standing_height": 488.0736389160156,
+        "mapping_context": "/Game/GuLiStrike/GroundMech/Input/IMC_GroundMech.IMC_GroundMech",
+        "move_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_Move.IA_Ground_Move",
+        "sprint_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_Sprint.IA_Ground_Sprint",
+        "zoom_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_Zoom.IA_Ground_Zoom",
+        "rocket_jump_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_RocketJump.IA_Ground_RocketJump",
+        "replicates": false,
+        "weapon": {
+          "weapon_enabled": true,
+          "upgrade_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Upgrades.DT_GuLiStrikeMech_Upgrades",
+          "skill_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills.DT_GuLiStrikeMech_Skills",
+          "current_upgrade_id": "1.1"
+        },
+        "movement": {
+          "max_walk_speed": 1440.0,
+          "max_acceleration": 2880.0,
+          "braking_deceleration_walking": 2880.0,
+          "max_step_height": 75.0,
+          "gravity_scale": 1.0,
+          "rotation_rate": [
+            0.0,
+            0.0,
+            540.0
+          ]
+        },
+        "capsule": {
+          "capsule_half_height": 244.03683471679688,
+          "capsule_radius": 150.0
+        },
+        "camera": {
+          "field_of_view": 60.0
+        },
+        "camera_boom": {
+          "target_arm_length": 2993.518310546875,
+          "do_collision_test": false,
+          "relative_rotation": [
+            0.0,
+            -55.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "path": "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview",
+      "values": {
+        "model_id": 4001,
+        "walk_speed": 720.0,
+        "standing_height": 488.0736389160156,
+        "mapping_context": "/Game/GuLiStrike/GroundMech/Input/IMC_GroundMech.IMC_GroundMech",
+        "move_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_Move.IA_Ground_Move",
+        "sprint_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_Sprint.IA_Ground_Sprint",
+        "zoom_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_Zoom.IA_Ground_Zoom",
+        "rocket_jump_action": "/Game/GuLiStrike/GroundMech/Input/IA_Ground_RocketJump.IA_Ground_RocketJump",
+        "replicates": false,
+        "weapon": {
+          "weapon_enabled": true,
+          "upgrade_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Upgrades.DT_GuLiStrikeMech_Upgrades",
+          "skill_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills.DT_GuLiStrikeMech_Skills",
+          "current_upgrade_id": "1.1"
+        },
+        "movement": {
+          "max_walk_speed": 1440.0,
+          "max_acceleration": 2880.0,
+          "braking_deceleration_walking": 2880.0,
+          "max_step_height": 75.0,
+          "gravity_scale": 1.0,
+          "rotation_rate": [
+            0.0,
+            0.0,
+            540.0
+          ]
+        },
+        "capsule": {
+          "capsule_half_height": 244.03683471679688,
+          "capsule_radius": 150.0
+        },
+        "camera": {
+          "field_of_view": 60.0
+        },
+        "camera_boom": {
+          "target_arm_length": 2993.518310546875,
+          "do_collision_test": false,
+          "relative_rotation": [
+            0.0,
+            -55.0,
+            0.0
+          ]
+        }
+      }
+    }
+  ],
+  "source_animations": [
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Idle",
+      "unchanged_length": 4.9666666984558105,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Jump_Loop",
+      "unchanged_length": 3.366666555404663,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Jump_Start",
+      "unchanged_length": 0.3333333432674408,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Rocket_L",
+      "unchanged_length": 1.1666666269302368,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Rocket_R",
+      "unchanged_length": 1.1666666269302368,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Run_BWD",
+      "unchanged_length": 1.0,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Shoot",
+      "unchanged_length": 0.9666666388511658,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Strafe_L",
+      "unchanged_length": 1.1333333253860474,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Strafe_R",
+      "unchanged_length": 1.1333333253860474,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Turn_L",
+      "unchanged_length": 2.066666603088379,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Turn_R",
+      "unchanged_length": 2.066666603088379,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_WalK_BWD",
+      "unchanged_length": 2.4666666984558105,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Mecha_Walk_FWD",
+      "unchanged_length": 2.566666603088379,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    },
+    {
+      "path": "/Game/MechaDestroyer/Animation/Anim_Run_FWD",
+      "unchanged_length": 0.7666666507720947,
+      "skeleton": "/Game/MechaDestroyer/Skeleton/Skeleton_Mecha.Skeleton_Mecha"
+    }
+  ],
+  "visual_checked": false,
+  "play_started": false,
+  "source_package_preserved": true
+}

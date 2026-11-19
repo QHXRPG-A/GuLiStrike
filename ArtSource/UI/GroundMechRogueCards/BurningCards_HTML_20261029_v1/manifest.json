@@ -1,0 +1,952 @@
+{
+  "revision": "rigid-objects-v4",
+  "created_at": "2026-10-29T20:37:08.685996+08:00",
+  "canvas": [
+    1536,
+    1536
+  ],
+  "source_window": [
+    256,
+    256,
+    1280,
+    1280
+  ],
+  "shared_uv": {
+    "scale": 1.5,
+    "offset": [
+      -0.25,
+      -0.25
+    ]
+  },
+  "assistant_visual_test": false,
+  "user_art_review": "pending",
+  "assembly_policy": {
+    "complete_generated_layers": true,
+    "original_rgb_paste": false,
+    "ownership_mask_alpha_clip": false,
+    "registration": "generated art positioning only; all painted surfaces retained",
+    "alpha_filtering": "premultiplied affine interpolation; straight-alpha PNG",
+    "motion_model": "rigid-translation",
+    "spatial_uv_warp": false,
+    "physical_object_owner": "one content layer per object; declared registry, visual confirmation pending",
+    "ring": "one complete texture; one occlusion-composite draw, no split layer or baked cut mask"
+  },
+  "cards": {
+    "Burst": {
+      "id": "Burst",
+      "title": "灼烧爆裂子弹",
+      "reference": "Burst/Master.png",
+      "reference_sha256": "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da",
+      "layers": [
+        {
+          "index": 1,
+          "name": "飞溅的燃烧的碎片",
+          "file": "Burst/Layers/01_BurningFragments.png",
+          "sha256": "6c18b00c69c961aec97c5809b25767cfaa7ee2856a657fef72585764b49dc399",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-b6ec1485-6ed8-48c8-ba86-256a43da86f2.png",
+          "raw_generated_copy": "Repairs/CompleteLayers_v3/Raw/Burst_01_BurningFragments.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "20d4d4867afb57e7e6c517dfac6e3290c3c44114724902bf4cdfa476ad211d47",
+          "generated_fill_registration": {
+            "method": "complete-object bounds registration",
+            "feature_pairs": 26,
+            "inlier_anchors": 3,
+            "estimated_scale": 0.7757674052688882,
+            "rotation_degrees": -10.648784752052034,
+            "anchor_span": [
+              703.5780029296875,
+              12.8319091796875
+            ],
+            "matrix": [
+              [
+                0.9669621273166801,
+                0.0,
+                151.97904915390814
+              ],
+              [
+                0.0,
+                0.9669621273166801,
+                163.42949234488322
+              ]
+            ]
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_01_BurningFragments.txt",
+          "object_ids": [
+            "free_burning_armor_shards",
+            "free_charred_mechanical_chips"
+          ],
+          "motion_owner_layer": 1
+        },
+        {
+          "index": 2,
+          "name": "前景石块",
+          "file": "Burst/Layers/02_ForegroundRocks.png",
+          "sha256": "ea4ed4d2e7a8d6aeb2a19a9bc9265150d180ce78f0cd411f4204c97af7f796ef",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-94354a46-af03-4ed6-8591-a01c3850e5e0.png",
+          "raw_generated_copy": "Repairs/RigidObjects_v4/Raw/Burst_2.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "7ad273022d72d7b55f45b031c49983ea03debbd67c925ae6e9c5265133c9d778",
+          "generated_fill_registration": {
+            "method": "complete separate objects, shared-canvas registration",
+            "matrix": [
+              [
+                1.0282776349614395,
+                0.0,
+                223.35218508997434
+              ],
+              [
+                0.0,
+                1.0282776349614395,
+                186.5398457583549
+              ]
+            ],
+            "exclusions": "no connected central robot parts; no other layer object copies"
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/RigidObjects_v4/Prompts/Burst_2.txt",
+          "object_ids": [
+            "near_gray_foreground_stones"
+          ],
+          "motion_owner_layer": 2
+        },
+        {
+          "index": 3,
+          "name": "冲击环",
+          "file": "Burst/Layers/03_Shockwave.png",
+          "sha256": "4325a0ed7e0ca9fb117951c1dfecfab34a013e3c23a7b1d0a74baff0d502516a",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            254
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-57bf537b-9e69-4f71-9eca-4551f1d8b35b.png",
+          "raw_generated_copy": "Repairs/RigidObjects_v4/Raw/Burst_3.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "1da4296cac96ef5fab2af353174d66b2452e36e6e7ee7dd08e712f8631dbbe4a",
+          "generated_fill_registration": {
+            "method": "complete ellipse registered to torso plane with overscan",
+            "matrix": [
+              [
+                1.1647254575707155,
+                0.0,
+                35.717138103161396
+              ],
+              [
+                0.0,
+                0.8569182389937107,
+                175.21383647798746
+              ]
+            ],
+            "raw_border_alpha_max": 1,
+            "painted_canvas_bounds": [
+              66.0,
+              447.0,
+              1466.0,
+              991.0
+            ],
+            "source_window_ring_bounds": [
+              -190,
+              190,
+              1210,
+              735
+            ],
+            "left_right_turns": "inside full texture, outside the visible card window",
+            "texture_crop_mask": false,
+            "independent_ring_parts": false
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/RigidObjects_v4/Prompts/Burst_3.txt",
+          "object_ids": [
+            "complete_torso_shockwave_ring"
+          ],
+          "motion_owner_layer": 3
+        },
+        {
+          "index": 4,
+          "name": "爆燃的机甲",
+          "file": "Burst/Layers/04_BurningPioneer.png",
+          "sha256": "f864907ce198fc7ffca82815679d5b4d1e0ff69a75040a38bbadd949ba251c16",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-fbed361d-46e3-41e6-affd-dd51c9e1419d.png",
+          "raw_generated_copy": "Repairs/CompleteLayers_v3/Raw/Burst_04_BurningPioneer.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "318011204c5f335ae7ac61047296bafb981b030cea3ac540b692485997c91c53",
+          "generated_fill_registration": {
+            "method": "whole-object source-feature registration",
+            "feature_pairs": 292,
+            "inlier_anchors": 143,
+            "estimated_scale": 0.6818369322774411,
+            "rotation_degrees": 0.23755133600925107,
+            "anchor_span": [
+              434.76116943359375,
+              270.7189636230469
+            ],
+            "matrix": [
+              [
+                0.6818310719808895,
+                -0.0028269239294542053,
+                361.88544537086756
+              ],
+              [
+                0.0028269239294542053,
+                0.6818310719808895,
+                282.6850170117165
+              ]
+            ]
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_04_BurningPioneer.txt",
+          "object_ids": [
+            "central_pioneer_chassis",
+            "central_pioneer_four_legs",
+            "central_pioneer_two_guns",
+            "central_pioneer_two_antennae",
+            "central_attached_fire_and_smoke"
+          ],
+          "motion_owner_layer": 4
+        },
+        {
+          "index": 5,
+          "name": "远处机甲",
+          "file": "Burst/Layers/05_DistantPioneers.png",
+          "sha256": "3b68b74a6aa15cc64cb71a2293a80ed179171a5868b942692f7dc85431d5eca7",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-6b2a0daf-eb80-46c6-b91c-c712da6c53c5.png",
+          "raw_generated_copy": "Repairs/CompleteLayers_v3/Raw/Burst_05_DistantPioneers.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "a9796a7deaffaa34167e3e410ed0509fc2e2f3bd7dfe78ae757ef09b9a9be693",
+          "generated_fill_registration": {
+            "method": "two complete distant units independently registered",
+            "units": [
+              {
+                "method": "whole-object source-feature registration",
+                "feature_pairs": 30,
+                "inlier_anchors": 24,
+                "estimated_scale": 0.5219586430008183,
+                "rotation_degrees": 0.8780549296816805,
+                "anchor_span": [
+                  96.77874755859375,
+                  63.042724609375
+                ],
+                "matrix": [
+                  [
+                    0.5218973521423625,
+                    -0.0079986767684744,
+                    226.40689171567882
+                  ],
+                  [
+                    0.0079986767684744,
+                    0.5218973521423625,
+                    389.37475655523644
+                  ]
+                ]
+              },
+              {
+                "method": "complete-object bounds registration",
+                "feature_pairs": 14,
+                "inlier_anchors": 6,
+                "estimated_scale": 0.44882099909554174,
+                "rotation_degrees": 5.378133064401385,
+                "anchor_span": [
+                  9.9949951171875,
+                  32.758544921875
+                ],
+                "matrix": [
+                  [
+                    0.5239179954441914,
+                    0.0,
+                    663.1070615034168
+                  ],
+                  [
+                    0.0,
+                    0.5239179954441914,
+                    377.9760820045558
+                  ]
+                ]
+              }
+            ],
+            "split": "spatial separation between units; no source ownership silhouette"
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Burst_05_DistantPioneers.txt",
+          "object_ids": [
+            "left_distant_pioneer",
+            "right_distant_pioneer"
+          ],
+          "motion_owner_layer": 5
+        },
+        {
+          "index": 6,
+          "name": "背景草地和远景",
+          "file": "Burst/Layers/06_Environment.png",
+          "sha256": "036d849caa144a40954684ddd616df79980a2429081478c9aa3f6c041caacdab",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            255,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-d1908747-67e4-4817-9fac-ce46343fa487.png",
+          "raw_generated_copy": "Repairs/RigidObjects_v4/Raw/Burst_6.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            255,
+            255
+          ],
+          "raw_sha256": "26b19d8323006b72cecf6fb705df53bce535155dbeae4e3970e0b7f97889174b",
+          "generated_fill_registration": {
+            "method": "complete cleaned environment, common full-canvas normalization",
+            "removed_foreground_objects": "near gray stones; retained exclusively in layer 2"
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/RigidObjects_v4/Prompts/Burst_6.txt",
+          "object_ids": [
+            "grass_and_soil_landscape",
+            "distant_stone_terraces",
+            "distant_ruins",
+            "sky_and_clouds"
+          ],
+          "motion_owner_layer": 6
+        }
+      ],
+      "passes": [
+        {
+          "layer": 6
+        },
+        {
+          "layer": 5
+        },
+        {
+          "layer": 3,
+          "host_layer": 4,
+          "occlusion_plane": [
+            0.13,
+            393.7
+          ]
+        },
+        {
+          "layer": 2
+        },
+        {
+          "layer": 1
+        }
+      ],
+      "depth": [
+        1,
+        0.78,
+        0.54,
+        0.32,
+        0.13,
+        0
+      ],
+      "note": "完整冲击圈；每个物件只归属一层，整体平移。",
+      "source_contract": {
+        "state": "complete-painted-independent-layers",
+        "original_pixel_identity_required": false,
+        "old_ownership_mask_used_for_clipping": false,
+        "original_rgb_pasted_back": false,
+        "hidden_surface_appearance": "pending_user_review",
+        "physical_object_assignment": "single-owner registry",
+        "spatial_uv_warp": false
+      },
+      "object_ownership": {
+        "rule": "one physical object has one owning texture layer",
+        "registry": {
+          "1": [
+            "free_burning_armor_shards",
+            "free_charred_mechanical_chips"
+          ],
+          "2": [
+            "near_gray_foreground_stones"
+          ],
+          "3": [
+            "complete_torso_shockwave_ring"
+          ],
+          "4": [
+            "central_pioneer_chassis",
+            "central_pioneer_four_legs",
+            "central_pioneer_two_guns",
+            "central_pioneer_two_antennae",
+            "central_attached_fire_and_smoke"
+          ],
+          "5": [
+            "left_distant_pioneer",
+            "right_distant_pioneer"
+          ],
+          "6": [
+            "grass_and_soil_landscape",
+            "distant_stone_terraces",
+            "distant_ruins",
+            "sky_and_clouds"
+          ]
+        },
+        "duplicate_declared_ids": [],
+        "visual_content_uniqueness": "pending_user_review"
+      },
+      "motion_model": "rigid-translation"
+    },
+    "Bullet": {
+      "id": "Bullet",
+      "title": "灼烧子弹",
+      "reference": "Bullet/Master.png",
+      "reference_sha256": "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a",
+      "layers": [
+        {
+          "index": 1,
+          "name": "子弹（含附着燃烧）",
+          "file": "Bullet/Layers/01_BurningBullet.png",
+          "sha256": "bc66671111d169c3c6668ebd20aeb7f5e92e96a1fb9cac036181606ff6700ea1",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-e999afe0-f9ee-4e3f-9065-f3b615bdc289.png",
+          "raw_generated_copy": "Repairs/CompleteLayers_v3/Raw/Bullet_01_BurningBullet.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "eca4c5499552f0dfa6cda3431014243a804040a526878046453e5e744d156267",
+          "generated_fill_registration": {
+            "method": "painted metal longitudinal-axis registration",
+            "matrix": [
+              [
+                0.43411874050756766,
+                0.020413143056534702,
+                664.9275295657526
+              ],
+              [
+                -0.020413143056534702,
+                0.43411874050756766,
+                660.6698425079728
+              ]
+            ],
+            "source_window_rear": [
+              510,
+              469
+            ],
+            "source_window_tip": [
+              946,
+              875
+            ],
+            "attached_flames_transformed_with_bullet": true
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_01_BurningBullet.txt",
+          "object_ids": [
+            "projectile_body_and_attached_flame"
+          ],
+          "motion_owner_layer": 1
+        },
+        {
+          "index": 2,
+          "name": "飞溅的燃烧的碎片",
+          "file": "Bullet/Layers/02_BurningFragments.png",
+          "sha256": "de15e7f6a6e0cd9f5c7965f9dbac86254cbece29fa1cf013a08f8abb1c20d54d",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-6a1ff3dd-f982-4f14-8e64-d697891265c9.png",
+          "raw_generated_copy": "Repairs/RigidObjects_v4/Raw/Bullet_2.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "7c449b9631f1812c203c0612ddf6c1fa74de63711bdd851cee13d40117398c78",
+          "generated_fill_registration": {
+            "method": "complete separate objects, shared-canvas registration",
+            "matrix": [
+              [
+                0.9669621273166801,
+                0.0,
+                159.71474617244155
+              ],
+              [
+                0.0,
+                0.9669621273166801,
+                163.42949234488322
+              ]
+            ],
+            "exclusions": "no connected central robot parts; no other layer object copies"
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/RigidObjects_v4/Prompts/Bullet_2.txt",
+          "object_ids": [
+            "lower_left_free_armor_shard",
+            "bottom_free_armor_plate",
+            "upper_right_free_armor_shard",
+            "free_small_charred_chips"
+          ],
+          "motion_owner_layer": 2
+        },
+        {
+          "index": 3,
+          "name": "火焰（命中爆燃）",
+          "file": "Bullet/Layers/03_Flames.png",
+          "sha256": "9096c789ee5e5580f476f34775ba347f6240130b18472a442a89c4bd10feb7ac",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-e2f3cfb5-55ed-4e83-ab6b-a8a8f6ef8bd0.png",
+          "raw_generated_copy": "Repairs/CompleteLayers_v3/Raw/Bullet_03_Flames.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "129efa321740308f4823133f9fb066bbf98adf98ab4a932de3cf5b430549ce41",
+          "generated_fill_registration": {
+            "method": "complete impact flame with shared ballistic origin",
+            "matrix": [
+              [
+                0.3264094955489614,
+                0.0,
+                571.13353115727
+              ],
+              [
+                0.0,
+                0.3264094955489614,
+                554.6142433234421
+              ]
+            ],
+            "source_window_origin": [
+              510,
+              469
+            ]
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_03_Flames.txt",
+          "object_ids": [
+            "independent_torso_impact_flare"
+          ],
+          "motion_owner_layer": 4
+        },
+        {
+          "index": 4,
+          "name": "受击的机甲",
+          "file": "Bullet/Layers/04_HitPioneer.png",
+          "sha256": "6b567884e66cf75daea8aeb49722473bd9f5850579609231fbaf79ff38b33ae9",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-86f09bd9-e68e-4fcd-af2d-80e335c9f84d.png",
+          "raw_generated_copy": "Repairs/CompleteLayers_v3/Raw/Bullet_04_HitPioneer.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "b20574396609655290e53e7d30ffaf8461b9046bbf38a17388c83d8aeb51f7f9",
+          "generated_fill_registration": {
+            "method": "complete-object bounds registration",
+            "feature_pairs": 139,
+            "inlier_anchors": 72,
+            "estimated_scale": 0.7124888013826803,
+            "rotation_degrees": 0.8808360054193153,
+            "anchor_span": [
+              389.84991455078125,
+              191.909423828125
+            ],
+            "matrix": [
+              [
+                0.805668016194332,
+                0.0,
+                292.13765182186233
+              ],
+              [
+                0.0,
+                0.805668016194332,
+                191.05870445344124
+              ]
+            ]
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_04_HitPioneer.txt",
+          "object_ids": [
+            "hit_pioneer_chassis",
+            "hit_pioneer_four_legs",
+            "hit_pioneer_two_guns",
+            "hit_pioneer_two_antennae",
+            "hit_pioneer_embedded_embers"
+          ],
+          "motion_owner_layer": 4
+        },
+        {
+          "index": 5,
+          "name": "远处正在射击的机甲和弹道",
+          "file": "Bullet/Layers/05_ShooterAndTrajectory.png",
+          "sha256": "3f24a1e1c9517a3cc1fffe08e040ed2144da4521bb160dae98cc816a5aa242c8",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            0,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-b7a61494-bb4a-496f-804b-1812de14205f.png",
+          "raw_generated_copy": "Repairs/CompleteLayers_v3/Raw/Bullet_05_ShooterAndTrajectory.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            0,
+            255
+          ],
+          "raw_sha256": "f4dc890d9652e9b302d3c3929cccecbd165ab28b493d0997e1c6495f81c8707e",
+          "generated_fill_registration": {
+            "method": "whole shooter and painted trajectory ray registration",
+            "matrix": [
+              [
+                0.5839456174695031,
+                -0.07091034539357052,
+                283.0038132125586
+              ],
+              [
+                0.07091034539357052,
+                0.5839456174695031,
+                234.42530846910174
+              ]
+            ],
+            "source_window_muzzle": [
+              195,
+              176
+            ],
+            "source_window_impact": [
+              510,
+              469
+            ],
+            "source_window_tip": [
+              946,
+              875
+            ],
+            "connected_trajectory_retained": true
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_05_ShooterAndTrajectory.txt",
+          "object_ids": [
+            "distant_blue_shooter",
+            "shooter_attached_muzzle_flash_and_trajectory"
+          ],
+          "motion_owner_layer": 5
+        },
+        {
+          "index": 6,
+          "name": "背景草地和远景",
+          "file": "Bullet/Layers/06_Environment.png",
+          "sha256": "2fc8771a6511ef55d4e12a3f111579516a024bc59ee6c85602fa63b4d0978ed0",
+          "canvas": [
+            1536,
+            1536
+          ],
+          "alpha_extrema": [
+            255,
+            255
+          ],
+          "raw_generated_source": "C:\\Users\\a\\.codex\\generated_images\\01a18150-677b-76e3-b70a-94874fa7ed67\\exec-21dcfe1f-495f-4ebe-b1aa-c7ba1100034c.png",
+          "raw_generated_copy": "Repairs/CompleteLayers_v3/Raw/Bullet_06_Environment.png",
+          "raw_size": [
+            1254,
+            1254
+          ],
+          "raw_alpha": [
+            255,
+            255
+          ],
+          "raw_sha256": "1c31b8f4442d297ff386eda8e645905116971734b1f191ebff27808d25e973af",
+          "generated_fill_registration": {
+            "method": "complete opaque environment, common full-canvas normalization",
+            "scale": [
+              1.2248803827751196,
+              1.2248803827751196
+            ]
+          },
+          "complete_painting_used": true,
+          "original_pixel_paste": false,
+          "ownership_mask_applied": false,
+          "prompt_file": "Repairs/CompleteLayers_v3/Prompts/Bullet_06_Environment.txt",
+          "object_ids": [
+            "grass_and_stone_landscape",
+            "distant_ruins",
+            "sky_and_clouds"
+          ],
+          "motion_owner_layer": 6
+        }
+      ],
+      "passes": [
+        {
+          "layer": 6
+        },
+        {
+          "layer": 5
+        },
+        {
+          "layer": 4
+        },
+        {
+          "layer": 3
+        },
+        {
+          "layer": 2
+        },
+        {
+          "layer": 1
+        }
+      ],
+      "depth": [
+        1,
+        0.78,
+        0.54,
+        0.32,
+        0.13,
+        0
+      ],
+      "note": "燃烧弹体与附着火焰同层；命中火焰跟随受击机甲整体移动。",
+      "source_contract": {
+        "state": "complete-painted-independent-layers",
+        "original_pixel_identity_required": false,
+        "old_ownership_mask_used_for_clipping": false,
+        "original_rgb_pasted_back": false,
+        "hidden_surface_appearance": "pending_user_review",
+        "physical_object_assignment": "single-owner registry",
+        "spatial_uv_warp": false
+      },
+      "object_ownership": {
+        "rule": "one physical object has one owning texture layer",
+        "registry": {
+          "1": [
+            "projectile_body_and_attached_flame"
+          ],
+          "2": [
+            "lower_left_free_armor_shard",
+            "bottom_free_armor_plate",
+            "upper_right_free_armor_shard",
+            "free_small_charred_chips"
+          ],
+          "3": [
+            "independent_torso_impact_flare"
+          ],
+          "4": [
+            "hit_pioneer_chassis",
+            "hit_pioneer_four_legs",
+            "hit_pioneer_two_guns",
+            "hit_pioneer_two_antennae",
+            "hit_pioneer_embedded_embers"
+          ],
+          "5": [
+            "distant_blue_shooter",
+            "shooter_attached_muzzle_flash_and_trajectory"
+          ],
+          "6": [
+            "grass_and_stone_landscape",
+            "distant_ruins",
+            "sky_and_clouds"
+          ]
+        },
+        "duplicate_declared_ids": [],
+        "visual_content_uniqueness": "pending_user_review"
+      },
+      "motion_model": "rigid-translation"
+    }
+  },
+  "new_imagegen_edits": 4,
+  "retained_painted_layers": 8,
+  "state": "rigid-object-repair-ready-for-user-review",
+  "generation_requests": "generation-requests.json",
+  "generation_results": "generation-results.json",
+  "preview": {
+    "file": "index.html",
+    "url": "http://127.0.0.1:8192/",
+    "offline": "BurningCards_Standalone.html",
+    "default_mode": "flat",
+    "default_card": "Burst",
+    "default_parallax_px": 6,
+    "maximum_parallax_px": 14,
+    "default_tilt_degrees": 10,
+    "motion_model": "rigid-translation",
+    "spatial_uv_warp": false,
+    "source_gutter_pixels": 256
+  },
+  "user_correction": "两卡取消果冻式局部拉伸；同物件只归属一个内容层，附着火焰跟随物件；冲击圈保持完整。燃烧弹体及附着火焰同层。",
+  "palette_policy": "Preserve user-selected reference colors and flat three-tone linework; no recoloring.",
+  "acceptance": {
+    "standard": "reference elements present, correct six layer groups, principal composition retained; hidden surfaces and edges require user review",
+    "pixel_exactness_required": false,
+    "user_instruction": "不用像素级还原，该有的元素都有就算通过"
+  },
+  "validation": {
+    "checked_at": "2026-10-29T20:52:38.661370+08:00",
+    "python_syntax": "passed",
+    "javascript_syntax": "passed",
+    "layer_files": 12,
+    "layers_per_card": 6,
+    "canvas": [
+      1536,
+      1536
+    ],
+    "source_window": [
+      256,
+      256,
+      1280,
+      1280
+    ],
+    "alpha": "first five layers true RGBA, sixth fully opaque, for each card",
+    "source_reference_hashes": {
+      "Burst": "3f29bdc656cd8797ed5d4bfab13e465957582b6354024b62b7fb9d7ff5ba51da",
+      "Bullet": "387d23a80612d63c4d2d21435a7cc29e7003dd50a3ad7585c79c53b15226708a"
+    },
+    "offline_html_embedded_images": 14,
+    "assistant_visual_test": false,
+    "browser_shader_execution": "passed: current complete-layer build and native 1024 framebuffer initialized",
+    "user_visual_review": "pending",
+    "ue_import": "not_run",
+    "source_contract": "source-contract.json",
+    "current_generated_layers": 12,
+    "original_rgb_paste": false,
+    "ownership_alpha_clip": false,
+    "motion_model": "rigid-translation",
+    "spatial_uv_warp": false,
+    "ring_baked_cut_mask": false,
+    "object_registry": "unique declared object owners; actual picture content awaits user review",
+    "source_data_verification": "real generation provenance, file hashes, alpha, common canvas and complete-layer assembly policy",
+    "native_composition_resolution": [
+      1024,
+      1024
+    ],
+    "browser_check": "browser-check.json"
+  },
+  "source_contract": "source-contract.json",
+  "formal_art_replaced": false,
+  "ue_imported": false,
+  "gameplay_modified": false
+}

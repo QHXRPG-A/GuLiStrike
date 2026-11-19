@@ -1,0 +1,343 @@
+{
+  "material": {
+    "blend_mode": "BLEND_Additive",
+    "shading_model": "MSM_Unlit",
+    "two_sided": true
+  },
+  "expressions": [
+    {
+      "id": "MaterialExpressionTextureCoordinate_000001CEBFA5CCC0",
+      "class": "TextureCoordinate",
+      "class_full": "MaterialExpressionTextureCoordinate",
+      "pos_x": -800,
+      "pos_y": -200,
+      "properties": {
+        "CoordinateIndex": "0",
+        "UTiling": "1.000000",
+        "VTiling": "1.000000",
+        "UnMirrorU": "False",
+        "UnMirrorV": "False"
+      },
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionParticleColor_000001CEBFA5B360",
+      "class": "ParticleColor",
+      "class_full": "MaterialExpressionParticleColor",
+      "pos_x": -800,
+      "pos_y": 0,
+      "properties": {},
+      "inputs": [],
+      "outputs": [
+        "RGB",
+        "R",
+        "G",
+        "B",
+        "A",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionVectorParameter_000001CEA0E53600",
+      "class": "VectorParameter",
+      "class_full": "MaterialExpressionVectorParameter",
+      "pos_x": -800,
+      "pos_y": 180,
+      "properties": {
+        "DefaultValue": "(R=0.991102,G=0.775822,B=0.693872,A=1.000000)",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "ChannelNames": "()",
+        "SortPriority": "32"
+      },
+      "is_parameter": true,
+      "parameter_name": "CoreColor",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "RGB",
+        "R",
+        "G",
+        "B",
+        "A",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionDynamicParameter_000001CE9F61B500",
+      "class": "DynamicParameter",
+      "class_full": "MaterialExpressionDynamicParameter",
+      "pos_x": -800,
+      "pos_y": 400,
+      "properties": {
+        "ParamNames": "(\"StartDistance\",\"HeadDistance\",\"EndAge\",\"Speed\")",
+        "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+        "ParameterIndex": "0"
+      },
+      "inputs": [],
+      "outputs": [
+        "StartDistance",
+        "HeadDistance",
+        "EndAge",
+        "Speed",
+        "RGB",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionDynamicParameter_000001CE9F617C00",
+      "class": "DynamicParameter",
+      "class_full": "MaterialExpressionDynamicParameter",
+      "pos_x": -800,
+      "pos_y": 580,
+      "properties": {
+        "ParamNames": "(\"Width\",\"Bend\",\"Hold\",\"Fade\")",
+        "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+        "ParameterIndex": "1"
+      },
+      "inputs": [],
+      "outputs": [
+        "Width",
+        "Bend",
+        "Hold",
+        "Fade",
+        "RGB",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionDynamicParameter_000001CE9F61AE00",
+      "class": "DynamicParameter",
+      "class_full": "MaterialExpressionDynamicParameter",
+      "pos_x": -800,
+      "pos_y": 760,
+      "properties": {
+        "ParamNames": "(\"WaveLength\",\"Canvas\",\"Length\",\"Emission\")",
+        "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+        "ParameterIndex": "2"
+      },
+      "inputs": [],
+      "outputs": [
+        "WaveLength",
+        "Canvas",
+        "Length",
+        "Emission",
+        "RGB",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "class": "Custom",
+      "class_full": "MaterialExpressionCustom",
+      "pos_x": -200,
+      "pos_y": 0,
+      "properties": {
+        "Code": "\nfloat along = StartDistance + (1.0-saturate(UV.y))*Length;\nfloat age = max(0.0,HeadDistance-along)/max(Speed,1.0)+max(EndAge,0.0);\nfloat life = 1.0-smoothstep(Hold,Hold+max(Fade,0.01),age);\nfloat curve = Bend*sin(6.2831853*along/max(WaveLength,100.0))*smoothstep(0.0,100.0,along);\nfloat d = abs((UV.x-0.5)*Canvas-curve);\nfloat aa = max(fwidth(d),0.12);\nfloat radius = Width*0.5*lerp(0.35,1.0,life);\nfloat body = 1.0-smoothstep(radius-aa,radius+aa,d);\nfloat core = 1.0-smoothstep(radius*0.24-aa,radius*0.24+aa,d);\nfloat halo = exp(-pow(d/max(radius*1.5,0.1),2.0)*3.0)*0.13;\nfloat edge = smoothstep(0.0,4.0,HeadDistance-along)*smoothstep(0.0,12.0,along);\nfloat3 rgb = Emission*(Tint.rgb*(body+halo)+lerp(Tint.rgb,CoreColor.rgb,0.45)*core*0.45);\nreturn float4(rgb,saturate(body+halo)*life*edge*Tint.a*step(0.01,Length));\n",
+        "OutputType": "CMOT_Float4",
+        "Description": "Fixed world-space curve; per-point age; bounded visible window; no textures",
+        "Inputs": "((InputName=\"UV\",Input=(Expression=\"/Script/Engine.MaterialExpressionTextureCoordinate'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionTextureCoordinate_0'\")),(InputName=\"Tint\",Input=(Expression=\"/Script/Engine.MaterialExpressionParticleColor'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionParticleColor_0'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"CoreColor\",Input=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionVectorParameter_0'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)),(InputName=\"StartDistance\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_0'\",Mask=1,MaskR=1)),(InputName=\"HeadDistance\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_0'\",OutputIndex=1,Mask=1,MaskG=1)),(InputName=\"EndAge\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_0'\",OutputIndex=2,Mask=1,MaskB=1)),(InputName=\"Speed\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_0'\",OutputIndex=3,Mask=1,MaskA=1)),(InputName=\"Width\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_1'\",Mask=1,MaskR=1)),(InputName=\"Bend\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_1'\",OutputIndex=1,Mask=1,MaskG=1)),(InputName=\"Hold\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_1'\",OutputIndex=2,Mask=1,MaskB=1)),(InputName=\"Fade\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_1'\",OutputIndex=3,Mask=1,MaskA=1)),(InputName=\"WaveLength\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_2'\",Mask=1,MaskR=1)),(InputName=\"Canvas\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_2'\",OutputIndex=1,Mask=1,MaskG=1)),(InputName=\"Length\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_2'\",OutputIndex=2,Mask=1,MaskB=1)),(InputName=\"Emission\",Input=(Expression=\"/Script/Engine.MaterialExpressionDynamicParameter'/Game/GuLiStrike/FX/BulletTrails/Review_A1/M_MassBulletTrail.M_MassBulletTrail:MaterialExpressionDynamicParameter_2'\",OutputIndex=3,Mask=1,MaskA=1)))",
+        "ShowCode": "False"
+      },
+      "hlsl_code": "\nfloat along = StartDistance + (1.0-saturate(UV.y))*Length;\nfloat age = max(0.0,HeadDistance-along)/max(Speed,1.0)+max(EndAge,0.0);\nfloat life = 1.0-smoothstep(Hold,Hold+max(Fade,0.01),age);\nfloat curve = Bend*sin(6.2831853*along/max(WaveLength,100.0))*smoothstep(0.0,100.0,along);\nfloat d = abs((UV.x-0.5)*Canvas-curve);\nfloat aa = max(fwidth(d),0.12);\nfloat radius = Width*0.5*lerp(0.35,1.0,life);\nfloat body = 1.0-smoothstep(radius-aa,radius+aa,d);\nfloat core = 1.0-smoothstep(radius*0.24-aa,radius*0.24+aa,d);\nfloat halo = exp(-pow(d/max(radius*1.5,0.1),2.0)*3.0)*0.13;\nfloat edge = smoothstep(0.0,4.0,HeadDistance-along)*smoothstep(0.0,12.0,along);\nfloat3 rgb = Emission*(Tint.rgb*(body+halo)+lerp(Tint.rgb,CoreColor.rgb,0.45)*core*0.45);\nreturn float4(rgb,saturate(body+halo)*life*edge*Tint.a*step(0.01,Length));\n",
+      "output_type": "CMOT_Float4",
+      "custom_input_names": "UV,Tint,CoreColor,StartDistance,HeadDistance,EndAge,Speed,Width,Bend,Hold,Fade,WaveLength,Canvas,Length,Emission",
+      "inputs": [
+        "UV",
+        "Tint",
+        "CoreColor",
+        "StartDistance",
+        "HeadDistance",
+        "EndAge",
+        "Speed",
+        "Width",
+        "Bend",
+        "Hold",
+        "Fade",
+        "WaveLength",
+        "Canvas",
+        "Length",
+        "Emission"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionComponentMask_000001CE9F61B700",
+      "class": "ComponentMask",
+      "class_full": "MaterialExpressionComponentMask",
+      "pos_x": 240,
+      "pos_y": 0,
+      "properties": {
+        "R": "True",
+        "G": "True",
+        "B": "True",
+        "A": "False"
+      },
+      "inputs": [
+        "Input"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionComponentMask_000001CE9F61DB00",
+      "class": "ComponentMask",
+      "class_full": "MaterialExpressionComponentMask",
+      "pos_x": 240,
+      "pos_y": 180,
+      "properties": {
+        "R": "False",
+        "G": "False",
+        "B": "False",
+        "A": "True"
+      },
+      "inputs": [
+        "Input"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "source_id": "MaterialExpressionTextureCoordinate_000001CEBFA5CCC0",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "UV"
+    },
+    {
+      "source_id": "MaterialExpressionParticleColor_000001CEBFA5B360",
+      "source_output_index": 0,
+      "source_output_name": "RGB",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Tint"
+    },
+    {
+      "source_id": "MaterialExpressionVectorParameter_000001CEA0E53600",
+      "source_output_index": 0,
+      "source_output_name": "RGB",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "CoreColor"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F61B500",
+      "source_output_index": 0,
+      "source_output_name": "StartDistance",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "StartDistance"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F61B500",
+      "source_output_index": 1,
+      "source_output_name": "HeadDistance",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "HeadDistance"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F61B500",
+      "source_output_index": 2,
+      "source_output_name": "EndAge",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "EndAge"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F61B500",
+      "source_output_index": 3,
+      "source_output_name": "Speed",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Speed"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F617C00",
+      "source_output_index": 0,
+      "source_output_name": "Width",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Width"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F617C00",
+      "source_output_index": 1,
+      "source_output_name": "Bend",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Bend"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F617C00",
+      "source_output_index": 2,
+      "source_output_name": "Hold",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Hold"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F617C00",
+      "source_output_index": 3,
+      "source_output_name": "Fade",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Fade"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F61AE00",
+      "source_output_index": 0,
+      "source_output_name": "WaveLength",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "WaveLength"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F61AE00",
+      "source_output_index": 1,
+      "source_output_name": "Canvas",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Canvas"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F61AE00",
+      "source_output_index": 2,
+      "source_output_name": "Length",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Length"
+    },
+    {
+      "source_id": "MaterialExpressionDynamicParameter_000001CE9F61AE00",
+      "source_output_index": 3,
+      "source_output_name": "Emission",
+      "target_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "target_input": "Emission"
+    },
+    {
+      "source_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionComponentMask_000001CE9F61B700",
+      "target_input": "Input"
+    },
+    {
+      "source_id": "MaterialExpressionCustom_000001CF3F96CA80",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionComponentMask_000001CE9F61DB00",
+      "target_input": "Input"
+    }
+  ],
+  "output_connections": [
+    {
+      "property": "EmissiveColor",
+      "expression_id": "MaterialExpressionComponentMask_000001CE9F61B700",
+      "output_index": 0,
+      "output_name": ""
+    },
+    {
+      "property": "Opacity",
+      "expression_id": "MaterialExpressionComponentMask_000001CE9F61DB00",
+      "output_index": 0,
+      "output_name": ""
+    }
+  ]
+}

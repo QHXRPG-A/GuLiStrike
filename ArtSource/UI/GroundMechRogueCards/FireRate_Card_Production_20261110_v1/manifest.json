@@ -1,0 +1,326 @@
+{
+  "card_id": "09.01",
+  "title": "增加攻速",
+  "model_id": 4001,
+  "source": "Master.png",
+  "source_reference": "D:\\UE5.7\\test1\\ArtSource\\UI\\GroundMechRogueCards\\FireRate_Reference_20261110_v7\\FireRate_Card_Reference_v7.png",
+  "source_sha256": "916ea38238b6019bacb90c15b2f1a01ab73e7dbb60ec861fde2ec072107eb11b",
+  "canvas": [
+    1152,
+    1728
+  ],
+  "window": [
+    64,
+    96,
+    1088,
+    1632
+  ],
+  "travel_px": [
+    36,
+    44
+  ],
+  "revision": 4,
+  "lightning_front_mask": "Masks/LightningFront.png",
+  "draw_order": [
+    6,
+    "3-back",
+    4,
+    5,
+    "3-front",
+    2,
+    1
+  ],
+  "generation": "Original-coordinate mattes with separate imagegen completions, solid RGBA background",
+  "reference_similarity": {
+    "metric": "RGB SSIM",
+    "window": [
+      64,
+      96,
+      1088,
+      1632
+    ],
+    "gaussian_sigma": 1.5,
+    "gaussian_width": 11,
+    "minimum": 0.95,
+    "value": 0.9820958375930786,
+    "source": "Six saved-equivalent RGBA planes at zero displacement and full opacity"
+  },
+  "latest_generation_receipts": "Raw/complete-revisions.json",
+  "visual_acceptance": "待用户验收",
+  "layers": [
+    {
+      "index": 1,
+      "name": "近处尘埃 · 前",
+      "file": "Layers/01_DustNear.png",
+      "method": "reference_matte_with_painted_completion",
+      "prompt": "Prompts/01_DustNear.txt",
+      "prompt_sha256": "70fd9372f5cefb6e7ea0c23d7cd328dff6c63880e475eccf48b4f4d200996821",
+      "raw_file": "Raw/01_DustNear.png",
+      "raw_origin": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-47e222a8-8f2c-4f7e-8b4d-99f26aa0df79.png",
+      "raw_size": [
+        965,
+        1629
+      ],
+      "raw_alpha_range": [
+        0,
+        255
+      ],
+      "raw_sha256": "c7d38e6d42d798ab3e53604c88862fe548af48d78938bbe1e0814e01af434dc1",
+      "inputs": [
+        {
+          "file": "Inputs/01_DustNear_Edit.png",
+          "sha256": "e298d509c1e800562352bc22ac70c3f3b63ae2ffa405e8951b50390a7d9c070c"
+        },
+        {
+          "file": "Master.png",
+          "sha256": "916ea38238b6019bacb90c15b2f1a01ab73e7dbb60ec861fde2ec072107eb11b"
+        }
+      ],
+      "placement": {
+        "scale": 1.1667588583860533,
+        "offset": [
+          8,
+          -120
+        ]
+      },
+      "depth": 1.0,
+      "sha256": "a32142e2f67c1e2317163e72175591b2bae8e58cf890ffcfa8ecce959553d38a",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "index": 2,
+      "name": "近处尘埃 · 后",
+      "file": "Layers/02_DustBehind.png",
+      "method": "reference_matte_with_painted_completion",
+      "prompt": "Prompts/02_DustBehind_v2.txt",
+      "prompt_sha256": "95b7b89a6ab87d96c02f1051c2cec09006b1f1a2011337d68739ed6372660bf3",
+      "raw_file": "Raw/02_DustBehind_v2.png",
+      "raw_origin": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-b8520efe-9ecc-453e-9997-cf412222bcac.png",
+      "raw_size": [
+        965,
+        1629
+      ],
+      "raw_alpha_range": [
+        0,
+        255
+      ],
+      "raw_sha256": "05eddf2785511f42396c73a06c913b63ad57b5327fb0a063b68d8469f3f57540",
+      "inputs": [
+        {
+          "file": "Inputs/02_DustBehind_Edit.png",
+          "sha256": "b74b1a73bdadbeaac217c6700b79adfe0d22b339ade90057c4ac2f742705f4a1"
+        },
+        {
+          "file": "Master.png",
+          "sha256": "916ea38238b6019bacb90c15b2f1a01ab73e7dbb60ec861fde2ec072107eb11b"
+        }
+      ],
+      "placement": {
+        "scale": 1.192955383162053,
+        "offset": [
+          0,
+          -184
+        ]
+      },
+      "depth": 0.7,
+      "sha256": "24039eb5f638b17018db1db9ce47f5000db75c7bdbf454c23387924ffe2f24c1",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "index": 3,
+      "name": "闪电",
+      "file": "Layers/03_Lightning.png",
+      "method": "reference_matte_with_painted_completion",
+      "prompt": "Prompts/03_Lightning_v3.txt",
+      "prompt_sha256": "e01bf2f6a05dcb67830d6bc722fd0d0468e71c13cb470126b5d6c03e0c8a29f2",
+      "raw_file": "Raw/03_Lightning_v3.png",
+      "raw_origin": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-b4bb33f9-3e07-4ecb-a9d4-c47e57623b67.png",
+      "raw_size": [
+        1024,
+        1536
+      ],
+      "raw_alpha_range": [
+        0,
+        254
+      ],
+      "raw_sha256": "c7430878685b1c1ab62e9b6108c9505169fee6d26504208c63d07518c648f5d4",
+      "inputs": [
+        {
+          "file": "Inputs/03_Lightning_Complete_Guide.png",
+          "sha256": "e7d917c71f3f15299332ef55cbe51bf1074b7bf8b6c4467879ed531f1c18d5e0"
+        },
+        {
+          "file": "Inputs/03_Lightning_Style.png",
+          "sha256": "8224babe8519986e989c6cad2174155f3f214309faa7fbcea5b729e3f1a7e35c"
+        }
+      ],
+      "placement": {
+        "scale": 1.125,
+        "offset": [
+          0,
+          0
+        ]
+      },
+      "depth": 0.44,
+      "sha256": "9743851e95c9fafec01faa38e3c8e7f8c93fb985881189dd410f0fd6b64ecd18",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "index": 4,
+      "name": "枪管和机甲身体",
+      "file": "Layers/04_GunAndMech.png",
+      "method": "reference_matte_with_painted_completion",
+      "prompt": "Prompts/04_GunAndMech.txt",
+      "prompt_sha256": "e26f0d08f35d7ca52bfea9b7617ed1337b69736db6cd9bba6416677b16def385",
+      "raw_file": "Raw/04_GunAndMech.png",
+      "raw_origin": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-9955cccd-0982-4803-acda-435823da6edd.png",
+      "raw_size": [
+        1024,
+        1536
+      ],
+      "raw_alpha_range": [
+        0,
+        254
+      ],
+      "raw_sha256": "ef9ea9e5ce091f13f5ae239b7fbb0e3aaf7d9bdabda5e93620f2bcfd559d1199",
+      "inputs": [
+        {
+          "file": "Inputs/04_GunAndMech_Edit.png",
+          "sha256": "3cb77594c4fd3e4fc53e884b3c1ac3da10ad990e602c0659e85f32c89ce6de12"
+        },
+        {
+          "file": "Master.png",
+          "sha256": "916ea38238b6019bacb90c15b2f1a01ab73e7dbb60ec861fde2ec072107eb11b"
+        }
+      ],
+      "placement": {
+        "scale": 1.03575,
+        "offset": [
+          40,
+          72
+        ]
+      },
+      "depth": 0.44,
+      "sha256": "7ffd9718f12479620176675712ef0a4654026a7ac30ae7473bcd5bf9b8752f1c",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "index": 5,
+      "name": "枪口火焰与弹道",
+      "file": "Layers/05_MuzzleFlame.png",
+      "method": "reference_matte_with_painted_completion",
+      "prompt": "Prompts/05_MuzzleFlame_v3.txt",
+      "prompt_sha256": "381155604f9aea164daa7dd371b2db3294dc452aaa2abf935229154996728f9a",
+      "raw_file": "Raw/05_MuzzleFlame_v3.png",
+      "raw_origin": "C:\\Users\\a\\.codex\\generated_images\\01a1b8a0-d411-7d53-80e0-8879b4cdf88d\\exec-c3296739-8d33-46ec-8b52-e9769b9b7bc1.png",
+      "raw_size": [
+        994,
+        1582
+      ],
+      "raw_alpha_range": [
+        0,
+        255
+      ],
+      "raw_sha256": "e0cce48ea1f581f70577fb575a8c56abefc270a2836105a745511f7d9673c92a",
+      "inputs": [
+        {
+          "file": "Raw/05_MuzzleFlame.png",
+          "sha256": "10697e73e2e62431fc5cef5629731419e9d73be7a0aa89f28ef210255f39bede"
+        }
+      ],
+      "placement": {
+        "scale": 1.1,
+        "offset": [
+          120.86699999999985,
+          -16.903000000000134
+        ]
+      },
+      "attachment": {
+        "flame_root_source": [
+          563,
+          755
+        ],
+        "mech_bore_source": [
+          676,
+          716
+        ]
+      },
+      "depth": 0.44,
+      "sha256": "4dd4f84c630dab16160a48f0efe599b6ca7e266238fe6944e81830eecfb5da35",
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "index": 6,
+      "name": "背景",
+      "file": "Layers/06_Background.png",
+      "method": "solid_color",
+      "rgba": [
+        8,
+        64,
+        102,
+        255
+      ],
+      "reference_swatch": [
+        200,
+        48,
+        580,
+        245
+      ],
+      "depth": 0.0,
+      "sha256": "0d712648522732966d779ecca4ffb3a5b82b9a16df5c87ec3e76d1a22a65a9c0",
+      "alpha_range": [
+        255,
+        255
+      ]
+    }
+  ],
+  "technical_verification": {
+    "assets": {
+      "revision": 4,
+      "rgb_ssim": 0.9820958375930786,
+      "mean_rgb_difference_8bit": 1.7341638803482056,
+      "fitted_mech_enclosed_holes": 0,
+      "main_mech_area_fraction": 1,
+      "closed_lightning_loop_interior_pixels": 164935,
+      "continuous_mech_left_boundary": true,
+      "solid_background_rgba": [
+        8,
+        64,
+        102,
+        255
+      ]
+    },
+    "preview": {
+      "single_layer_draws_verified": 60,
+      "mech_corner_draws": 10,
+      "full_stack_passes": 7,
+      "independent_reference_overlay": 0,
+      "http_resources": 12,
+      "layers": 6,
+      "preview_dimensions": [
+        1024,
+        1536
+      ],
+      "original_stack_parallax": "passed",
+      "toggle_opacity_solo_downloads": "passed",
+      "pointer_and_recenter": "passed",
+      "offline_file": "passed",
+      "runtime_exceptions": 0
+    }
+  }
+}
