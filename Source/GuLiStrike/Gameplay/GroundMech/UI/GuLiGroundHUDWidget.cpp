@@ -70,9 +70,11 @@ public:
             FSlateDrawElement::MakeLines(E,L+1,G.ToPaintGeometry(),P,ESlateDrawEffect::None,Tint,true,W*Scale);
         };
         const double Now=FPlatformTime::Seconds();
-        const float Kick=Owner->ShotExpansion(Now);
+        Owner->AIOptics.Paint(G,E,L,Now,Owner->MotionStyle.MaxKick);
+        const bool bBaseReticleKick = !Owner->AIOptics.IsVisible();
+        const float Kick = bBaseReticleKick ? Owner->ShotExpansion(Now) : 0.f;
         const float ShotAge=Now-Owner->ShotStarted;
-        const float Jitter=Owner->ShotStarted>=0&&ShotAge<Owner->MotionStyle.Shot?
+        const float Jitter=bBaseReticleKick && Owner->ShotStarted>=0&&ShotAge<Owner->MotionStyle.Shot?
             Owner->MotionStyle.Jitter*FMath::Sin(ShotAge*85+Owner->ShotPulses*.73f)*(1-ShotAge/Owner->MotionStyle.Shot):0;
         for(const FVector2D D:{FVector2D(-1,0),FVector2D(1,0),FVector2D(0,-1),FVector2D(0,1)})
         {
@@ -82,9 +84,8 @@ public:
         if(Owner->bMuzzle)
         {
             const auto P=Owner->MuzzlePoint;
-            const auto MuzzleColor=GuLiGroundUI::Light(Owner->Color(TEXT("Secondary")));
-            // Preserve the actual impact point. When both rays align, a compact
-            // diamond fits inside the aim cross instead of disappearing.
+            const auto MuzzleColor=Owner->AIOptics.IsVisible()?FLinearColor(FColor(198,255,206)):GuLiGroundUI::Light(Owner->Color(TEXT("Secondary")));
+            // The diamond marks the AI aperture center or the base weapon's impact point.
             const double R=(FVector2D::Distance(P,C)<18*Scale?5.:12.)*Scale;
             Line(P+FVector2D(-R,0),P+FVector2D(0,-R),MuzzleColor,2.2f);
             Line(P+FVector2D(0,-R),P+FVector2D(R,0),MuzzleColor,2.2f);
@@ -152,6 +153,7 @@ void UGuLiGroundHUDWidget::NativeConstruct()
         Data=PC->GetLocalPlayer()->GetSubsystem<UGuLiGroundHUDData>();Data->Bind(PC);Data->SetActive(true);BoundPawn=PC->GetPawn();
         UrgentHandle=Data->OnUrgent.AddUObject(this,&ThisClass::Apply);HitHandle=Data->OnHit.AddUObject(this,&ThisClass::Hit);
         MotionHandle=Data->OnMotion.AddUObject(this,&ThisClass::Motion);
+        AIShotHandle=Data->OnAcceptedShot.AddUObject(this,&ThisClass::AcceptedShot);
     }
     if(auto* PC=Controller();PC&&PC->GetLocalPlayer())PC->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>()->ControlMappingsRebuiltDelegate.AddDynamic(this,&ThisClass::RefreshKeyLabels);
     RefreshKeyLabels();Refresh();FTimerManagerTimerParameters P;P.bLoop=true;P.bMaxOncePerFrame=true;
@@ -162,7 +164,7 @@ void UGuLiGroundHUDWidget::NativeDestruct()
 {
     if(auto* PC=Controller();PC&&PC->GetLocalPlayer())PC->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>()->ControlMappingsRebuiltDelegate.RemoveDynamic(this,&ThisClass::RefreshKeyLabels);
     UpdateAmbient(true);CloseModal(true);ClearMotion();if(GetWorld())GetWorld()->GetTimerManager().ClearTimer(RefreshTimer);
-    if(Data){Data->OnUrgent.Remove(UrgentHandle);Data->OnHit.Remove(HitHandle);Data->OnMotion.Remove(MotionHandle);Data->SetActive(false);Data->Unbind();}Data=nullptr;
+    if(Data){Data->OnUrgent.Remove(UrgentHandle);Data->OnHit.Remove(HitHandle);Data->OnMotion.Remove(MotionHandle);Data->OnAcceptedShot.Remove(AIShotHandle);Data->SetActive(false);Data->Unbind();}Data=nullptr;
     if(IconCatalog)IconCatalog->Release();
     Super::NativeDestruct();
 }
@@ -362,10 +364,15 @@ void UGuLiGroundHUDWidget::NativeTick(const FGeometry& G,float D)
         }
     }
     const double Now=FPlatformTime::Seconds();
-    const bool ReticleMoving=HitUntil>Now||(ShotStarted>=0&&Now-ShotStarted<MotionStyle.Shot);
+    const bool ReticleMoving=AIOptics.IsVisible() || HitUntil>Now||(ShotStarted>=0&&Now-ShotStarted<MotionStyle.Shot);
     if(Reticle&&(ReticleMoving||bReticleMotionActive))Reticle->Invalidate(EInvalidateWidgetReason::Paint);
     bReticleMotionActive=ReticleMoving;
     if(HitUntil<=Now)HitUntil=0;
+}
+void UGuLiGroundHUDWidget::AcceptedShot(float Age)
+{
+    if(!ModalMode && !bRogueHidden && !bWasDead && Age<MotionStyle.Shot)
+        AIOptics.Shot(FPlatformTime::Seconds()-Age,MotionStyle.Kick,MotionStyle.Jitter,MotionStyle.Shot);
 }
 void UGuLiGroundHUDWidget::UpdateReticle()
 {
@@ -373,16 +380,29 @@ void UGuLiGroundHUDWidget::UpdateReticle()
     const auto* PC=Controller();const auto* P=PC?Cast<AGuLiGroundMechCharacter>(PC->GetPawn()):nullptr;
     const bool Visible=P&&PC->CanUseGroundMechFireInput()&&!PC->bShowMouseCursor;
     if(Visible!=bReticleVisible){bReticleVisible=Visible;if(Reticle)Reticle->Invalidate(EInvalidateWidgetReason::Paint);}
-    if(!Visible){if(bMuzzle&&Reticle)Reticle->Invalidate(EInvalidateWidgetReason::Paint);bMuzzle=false;return;}
-    const auto Size=GetCachedGeometry().GetLocalSize();FVector Origin,Direction;bool Valid=false;FVector2D Point=MuzzlePoint;
-    if(P->GetWeapon()->GetActualShotRay(Origin,Direction))
+    if(!Visible){if(bMuzzle&&Reticle)Reticle->Invalidate(EInvalidateWidgetReason::Paint);bMuzzle=false;AIOptics.Reset();return;}
+    auto* Weapon=P->GetWeapon();
+    const float DPI=FMath::Max(.01f,UWidgetLayoutLibrary::GetViewportScale(this));
+    const bool bAIEngine = Weapon->HasAIEngine();
+    const FGuLiAILockSight& LockSight = Weapon->GetAILockSight();
+    if(bAIEngine && !AIOptics.Atlas.GetResourceObject() && Style)
+        if(const auto* Row=Style->FindRow<FGuLiStrikeGroundHUDElementsRow>(TEXT("AIEngineOptics"),TEXT("AI optics"),false))
+            if(auto* Texture=Cast<UTexture2D>(Row->Texture.LoadSynchronous())){Art.AddUnique(Texture);AIOptics.Atlas.SetResourceObject(Texture);AIOptics.Atlas.ImageSize=FVector2f(1024,1024);}
+    const bool PlayAIEntry=LockSight.bProjected && Data && Data->ConsumeAIEngineEntry();
+    AIOptics.Update(*Weapon,DPI,FPlatformTime::Seconds(),PlayAIEntry);
+    const auto Size=GetCachedGeometry().GetLocalSize();FVector Sight,Direction;bool Valid=false;FVector2D Point=MuzzlePoint;
+    if (bAIEngine)
     {
-        FHitResult H;FCollisionQueryParams Q(SCENE_QUERY_STAT(GroundHUDActualRay),false,P);const FVector End=Origin+Direction*600000;
-        bool Hit;
-        {TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_ReticleTrace);Hit=GetWorld()->LineTraceSingleByChannel(H,Origin,End,ECC_Visibility,Q);}
-        Valid=PC->ProjectWorldLocationToScreen(Hit?H.ImpactPoint:End,Point,true);
-        Point/=FMath::Max(.01f,UWidgetLayoutLibrary::GetViewportScale(this));
+        Point = LockSight.Center / DPI;
+        Valid = LockSight.bProjected;
+    }
+    else if(Weapon->GetActualSightPoint(Sight,Direction))
+    {
+        Valid=PC->ProjectWorldLocationToScreen(Sight,Point,true);Point/=DPI;
         if(!Valid){const auto Local=PC->PlayerCameraManager->GetCameraRotation().UnrotateVector(Direction);auto Edge=FVector2D(Local.Y,-Local.Z).GetSafeNormal();if(Edge.IsNearlyZero())Edge=FVector2D(0,1);Point=Size*.5+Edge*FMath::Max(Size.X,Size.Y);Valid=true;}
+    }
+    if(Valid)
+    {
         const double Margin=14*FMath::Min(Size.X/1920.,Size.Y/1080.);
         Point.X=FMath::Clamp(Point.X,Margin,FMath::Max(Margin,Size.X-Margin));Point.Y=FMath::Clamp(Point.Y,Margin,FMath::Max(Margin,Size.Y-Margin));
     }

@@ -23,7 +23,32 @@ bool WeaponEffect(const FGuLiStrikeRogueCardsEffectsRow& R,GuLiNet::Effects::Def
     FGuLiStrikeRogueCardsGroundWeaponEffectsRow V;
     if(!Row(GetDefault<UGuLiRogueCardSettings>()->GroundWeaponEffects,R.ConfigId,V)){Error=TEXT("Missing Ground weapon effect configuration");return false;}
     if(R.Handler==TEXT("ground/fire_rate"))D.Parameters=GuLiNet::Effects::EncodeFireRate(1.f+V.FireRateBonusPercent);
-    else if(R.Handler==TEXT("ground/enhanced_bullet"))D.Parameters.clear();
+    else if(R.Handler==TEXT("ground/enhanced_bullet"))
+    {
+        GuLiNet::Effects::EnhancedBullet Bullet;
+        if(V.BulletDamageMultipliers.Num()!=V.BulletRateMultipliers.Num() || V.BulletFlightVfxIds.Num()!=V.BulletRateMultipliers.Num())return false;
+        for(int32 I=0;I<V.BulletFlightVfxIds.Num();++I)
+        {
+            GuLiNet::Effects::BulletRank Rank;
+            if(!LexTryParseString(Rank.DamageMultiplier,*V.BulletDamageMultipliers[I]) || !LexTryParseString(Rank.RateMultiplier,*V.BulletRateMultipliers[I])
+                || !LexTryParseString(Rank.Vfx,*V.BulletFlightVfxIds[I]))return false;
+            Bullet.Ranks.push_back(Rank);
+        }
+        D.Parameters=GuLiNet::Effects::EncodeEnhancedBullet(Bullet);
+        if(D.Parameters.empty())return false;
+    }
+    else if(R.Handler==TEXT("ground/ai_engine"))
+    {
+        GuLiNet::Effects::AIEngine Engine;
+        if(V.LockSeconds.Num()!=V.LockRangeCentimeters.Num())return false;
+        for(int32 I=0;I<V.LockSeconds.Num();++I)
+        {
+            GuLiNet::Effects::AILockRank Rank;
+            if(!LexTryParseString(Rank.Seconds,*V.LockSeconds[I]) || !LexTryParseString(Rank.RangeCm,*V.LockRangeCentimeters[I]))return false;
+            Engine.Ranks.push_back(Rank);
+        }
+        D.Parameters=GuLiNet::Effects::EncodeAIEngine(Engine);
+    }
     else if(R.Handler==TEXT("ground/no_survivors"))
     {
         GuLiNet::Effects::Barrage Profile;
@@ -60,6 +85,23 @@ bool WeaponEffect(const FGuLiStrikeRogueCardsEffectsRow& R,GuLiNet::Effects::Def
 bool WeaponPreview(const GuLiNet::Effects::Definition& D,uint32 N,FFormatOrderedArguments& Args,const FNumberFormattingOptions& Format)
 {
     Args.Add(FText::AsNumber(N,&Format));
+    if(D.Handler=="ground/enhanced_bullet")
+    {
+        GuLiNet::Effects::EnhancedBullet Bullet;
+        if(!N || !GuLiNet::Effects::DecodeEnhancedBullet(D.Parameters,Bullet) || N>Bullet.Ranks.size())return false;
+        const auto& Rank=Bullet.Ranks[N-1];
+        Args.Add(FText::AsNumber(FMath::RoundToInt((Rank.DamageMultiplier-1.f)*100),&Format));
+        Args.Add(FText::AsNumber(FMath::RoundToInt((1.f-Rank.RateMultiplier)*100),&Format));
+        return true;
+    }
+    if(D.Handler=="ground/ai_engine")
+    {
+        GuLiNet::Effects::AIEngine Engine;
+        if(!N || !GuLiNet::Effects::DecodeAIEngine(D.Parameters,Engine) || N>Engine.Ranks.size())return false;
+        const auto& Rank=Engine.Ranks[N-1];
+        Args.Add(FText::AsNumber(Rank.Seconds,&Format)); Args.Add(FText::AsNumber(Rank.RangeCm/100.f,&Format));
+        return true;
+    }
     if(D.Handler=="ground/no_survivors")
     {
         GuLiNet::Effects::Barrage Profile;
@@ -91,7 +133,8 @@ struct FHandler
 };
 const TMap<FName,FHandler> Handlers={{TEXT("ricochet"),{Ricochet,RicochetPreview}},{TEXT("buff/on_hit"),{OnHit,BuffPreview}},
     {TEXT("ground/fire_rate"),{WeaponEffect,WeaponPreview}},{TEXT("ground/enhanced_bullet"),{WeaponEffect,WeaponPreview}},{TEXT("ground/explosive_package"),{WeaponEffect,WeaponPreview}},
-    {TEXT("ground/explosive_enhancement"),{WeaponEffect,WeaponPreview}},{TEXT("ground/no_survivors"),{WeaponEffect,WeaponPreview}}};
+    {TEXT("ground/explosive_enhancement"),{WeaponEffect,WeaponPreview}},{TEXT("ground/no_survivors"),{WeaponEffect,WeaponPreview}},
+    {TEXT("ground/ai_engine"),{WeaponEffect,WeaponPreview}}};
 }
 bool LoadEffect(int32 Id,GuLiNet::Effects::Definition& D,FString& Error)
 {

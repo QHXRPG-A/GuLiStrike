@@ -49,6 +49,31 @@ struct Barrage
     std::vector<BarrageRank> Ranks;
     std::uint32_t Level=0;
 };
+struct AILockRank
+{
+    float Seconds=0, RangeCm=0;
+};
+struct AIEngine
+{
+    std::vector<AILockRank> Ranks;
+    std::uint32_t Level=0;
+};
+GULINETCORE_API Bytes EncodeAIEngine(const AIEngine&);
+GULINETCORE_API bool DecodeAIEngine(std::span<const std::uint8_t>,AIEngine&);
+GULINETCORE_API AILockRank GetAILockRank(const Set&);
+struct BulletRank
+{
+    float DamageMultiplier=1, RateMultiplier=1;
+    std::uint32_t Vfx=0;
+};
+struct EnhancedBullet
+{
+    std::vector<BulletRank> Ranks;
+    std::uint32_t Level=0;
+};
+GULINETCORE_API Bytes EncodeEnhancedBullet(const EnhancedBullet&);
+GULINETCORE_API bool DecodeEnhancedBullet(std::span<const std::uint8_t>,EnhancedBullet&);
+GULINETCORE_API BulletRank GetBulletRank(const Set&);
 GULINETCORE_API Bytes EncodeBarrage(const Barrage&);
 GULINETCORE_API bool DecodeBarrage(std::span<const std::uint8_t>,Barrage&);
 GULINETCORE_API const Definition* FindBarrage(const Set&);

@@ -15,6 +15,41 @@ class AGuLiCommanderPresentationActor;
 class AGuLiWingmanPresentationActor;
 struct FGuLiHybridObjectState;
 struct FGuLiGroundAttackSnapshot;
+struct FSceneViewProjectionData;
+
+/** One side of the point-up target marker, in 1080p design pixels. */
+struct FGuLiAILockHexSide
+{
+	static constexpr double LockedRadius = 62.;
+	FGuLiAILockHexSide(int32 Index, double Progress, double Release = 0.);
+	bool TouchesAperture(const FVector2D& ApertureFromTarget, double ApertureRadius) const;
+	double Angle, Closure, Radius, Outset;
+};
+
+/** Player-viewport pixels from the same projection used to admit a target. */
+struct FGuLiAILockSight
+{
+	static constexpr float DesignRadius = 342.f;
+	static constexpr double RecenterRadiusRatio = 1.25;
+	static constexpr double RecenterSeconds = 0.15;
+    FVector2D Center=FVector2D::ZeroVector, TargetPoint=FVector2D::ZeroVector;
+    FGuLiTargetHandle Target;
+    float Radius=0, Progress=0, DistanceMeters=0;
+    bool bProjected=false;
+    bool IsLocked() const { return Target.IsValid() && Progress>=1.f; }
+	bool IncludesTarget(const FGuLiTargetHandle& Candidate, const FVector2D& PlayerPixel) const;
+	bool PrefersCandidate(const FGuLiTargetHandle& Candidate, double ReticleDistanceSq,
+		const FGuLiTargetHandle& Best, double BestReticleDistanceSq) const;
+	void UpdateAperture(const FSceneViewProjectionData& Projection, double Now);
+	void HoldOnShot(double ShotAt);
+
+private:
+	enum class EMotion : uint8 { Following, Held, Recentering };
+	EMotion Motion = EMotion::Following;
+	FVector ApertureDirection = FVector::ZeroVector;
+	FVector2D OffsetInRadii = FVector2D::ZeroVector;
+	double FollowResumesAt = -1.0;
+};
 
 namespace GuLiMechFire
 {
@@ -40,6 +75,9 @@ public:
     bool CanUseLocalWeapon() const { return CanControl(true); }
 	UFUNCTION(BlueprintPure, Category="Mech|Weapon") bool IsWeaponReady() const { return bConfigured; }
 	bool GetActualShotRay(FVector& Origin,FVector& Direction) const;
+    bool GetActualSightPoint(FVector& Point,FVector& Direction) const;
+    const FGuLiAILockSight& GetAILockSight() const { return AILockSight; }
+    bool HasAIEngine() const { return AILockRank.Seconds>0; }
     /** Build the per-shot payload; admission independently freezes its authorized numeric capability. */
     FGuLiGroundAttackSnapshot BuildAttackSnapshot() const;
 	/** Local presentation only; called from the unified accepted launch event. */
@@ -72,6 +110,7 @@ private:
 	bool AcceptAim(const FVector& Point);
 	/** Keeps the raw cursor/upper-body aim independent from the assisted weapon point. */
 	bool ResolveLocalWeaponAim(FVector& OutPoint);
+    void ClearAILock();
 	void RefreshAimAssistSources(uint32 MatchEpoch);
 	void QueueAimAssistActor(AActor* Actor);
 	void CacheAimAssistActor(AActor* Actor);
@@ -83,6 +122,9 @@ private:
     UFUNCTION() void OnRogueBuildChanged(FGuid Player,int64 Revision);
     void RefreshRogueBuild(FGuid Player=FGuid(),int64 Revision=0);
     FGuLiGroundAttackSnapshot CachedAttack;
+    GuLiNet::Effects::AILockRank AILockRank;
+    FGuLiAILockSight AILockSight;
+    double LockStarted=0;
     float EffectiveFireRate=0;
 	USkeletalMeshComponent* Gun() const;
 	FName MuzzleSocket(uint8 Index) const;

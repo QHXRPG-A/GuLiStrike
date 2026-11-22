@@ -452,7 +452,7 @@
   {
     "Name": "GroundMech_EnhancedBullet_Lv1",
     "Id": "10.01",
-    "Note": "游骑兵个人本局：强化子弹；候选显示取得后等级。",
+    "Note": "按当前等级修正武器档位的基础伤害与射速",
     "Type": 3,
     "TextIds": [
       "Card.GroundMech.EnhancedBullet.Title",
@@ -469,7 +469,7 @@
     "ExcludedCardIds": [
       "11.01"
     ],
-    "MaxAcquisitions": 1,
+    "MaxAcquisitions": 5,
     "BonusCount": 0,
     "EffectIds": [
       "5"
@@ -658,5 +658,59 @@
     "CastCameraReturnSeconds": 0.2,
     "CastLightningScaleMultiplier": 2.0,
     "CastCameraReturnCueSeconds": 0.7
+  },
+  {
+    "Name": "GroundMech_AIEngine_Lv1",
+    "Id": "14.01",
+    "Note": "游骑兵个人本局，强化子弹三级后解锁",
+    "Type": 3,
+    "TextIds": [
+      "Card.GroundMech.AIEngine.Title",
+      "Card.GroundMech.AIEngine.Description"
+    ],
+    "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+    "UnitTypeId": 0,
+    "BonusPercent": 0.0,
+    "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/AIEngine/Materials/MI_GroundMech_AIEngine_Artwork.MI_GroundMech_AIEngine_Artwork",
+    "UpgradeVfx": "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow_Converted.P_UpgradeGlow_Converted",
+    "UpgradeVfxScale": 2.5,
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [
+      "10.01"
+    ],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 3,
+    "BonusCount": 0,
+    "EffectIds": [
+      "9"
+    ],
+    "IconId": 16,
+    "RequiredCardLevels": [
+      "3"
+    ],
+    "MaxRankUpgradeVfx": "",
+    "MaxRankUpgradeScale": 0.0,
+    "MaxRankStartRatio": 0.0,
+    "MaxRankGrowthSeconds": 0.0,
+    "MaxRankDurationSeconds": 0.0,
+    "CastPose": "",
+    "CastFlashVfx": "",
+    "CastLightningVfx": "",
+    "CastBodyScale": 0.0,
+    "CastFoldSeconds": 0.0,
+    "CastOpenSeconds": 0.0,
+    "CastFlashSeconds": 0.0,
+    "CastRecoverySeconds": 0.0,
+    "UpgradeVfxHeightMultiplier": 2.0,
+    "UpgradeVfxPlaybackRate": 2.0,
+    "CastCrossedHoldSeconds": 0.0,
+    "CastChargeShakeDegrees": 0.0,
+    "CastReleaseShakeDegrees": 0.0,
+    "CastShotRecoilCm": 0.0,
+    "CastShotRecoilSeconds": 0.0,
+    "CastCamera": "",
+    "CastCameraReturnSeconds": 0.0,
+    "CastLightningScaleMultiplier": 0.0,
+    "CastCameraReturnCueSeconds": 0.0
   }
 ]

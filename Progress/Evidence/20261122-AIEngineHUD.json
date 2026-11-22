@@ -1,0 +1,358 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entry": "GroundRogue_Entry",
+  "installation": {
+    "tables": {
+      "DT_GuLiStrikeRogueCards_Cards": [
+        "GroundMech_EnhancedBullet_Lv1",
+        "GroundMech_AIEngine_Lv1"
+      ],
+      "DT_GuLiStrikeRogueCards_Effects": [
+        "GroundAIEngine"
+      ],
+      "DT_GuLiStrikeRogueCards_GroundWeaponEffects": [
+        "GroundEnhancedBullet",
+        "GroundAIEngine"
+      ],
+      "DT_GuLiStrikeGameTexts_Texts": [
+        "Card.GroundMech.EnhancedBullet.Description",
+        "Card.GroundMech.AIEngine.Title",
+        "Card.GroundMech.AIEngine.Description"
+      ],
+      "DT_GuLiStrikeGroundHUD_Elements": [
+        "AIEngineOptics"
+      ],
+      "DT_GuLiStrikeVfx_Effects": [
+        "GroundEnhancedGold",
+        "GroundEnhancedViolet",
+        "GroundEnhancedSilver"
+      ]
+    },
+    "card": "14.01",
+    "required_cards": [
+      "10.01"
+    ],
+    "required_levels": [
+      "3"
+    ],
+    "seconds": [
+      "2",
+      "1.5",
+      "1"
+    ],
+    "range_cm": [
+      "8000",
+      "10000",
+      "15000"
+    ],
+    "scene_entities_present": true,
+    "locked_pair": {
+      "GroundRogue_Enemy_03": {
+        "team": "<GuLiTeam.BLUE: 2>",
+        "idle": true
+      },
+      "GroundRogue_Enemy_04": {
+        "team": "<GuLiTeam.BLUE: 2>",
+        "idle": true
+      }
+    },
+    "catalogs": [
+      "200",
+      "600",
+      "NoSurvivors"
+    ],
+    "catalog_bytes": 1116,
+    "catalog_sha256": "18fd3b3d13c428fb9ac496f8568e9058be44cb43e2cbc05da44dad0b090c2b86"
+  },
+  "builds": {
+    "1127": {
+      "target": "GuLiStrikeEditor Win64 Development",
+      "result": "Succeeded",
+      "log_sha256": "d56d1836a785b0c357010bb0f014c0182768fc6975c7f52ffcf8355e8ad85b62"
+    },
+    "1128": {
+      "target": "GuLiStrikeEditor Win64 Development",
+      "result": "Succeeded",
+      "log_sha256": "5cd306ef613337e008f6cb473109e2094c86c83baa02d2d1fbabc5a46715996a"
+    },
+    "1129": {
+      "target": "GuLiStrikeEditor Win64 Development",
+      "result": "Succeeded",
+      "log_sha256": "52dd45b798756309d2c75bb88035b272785bb67b5d639426072e39b6b285aedb"
+    }
+  },
+  "pie_1126": {
+    "modules": [
+      "GuLiNetCore",
+      "GuLiStrike",
+      "GuLiStrikeAnimGraph",
+      "GuLiStrikeEditor"
+    ],
+    "row_layout_bytes": {
+      "GuLiVfxRegistrySubsystem.cpp.obj": [
+        392
+      ],
+      "GuLiClientFlightPresentation.cpp.obj": [
+        392
+      ],
+      "GuLiVfxRegistryTests.cpp.obj": [
+        392
+      ],
+      "GuLiBulletTrailPresentation.cpp.obj": [
+        392
+      ],
+      "GuLiCombatEffectPresentationSubsystem.cpp.obj": [
+        392
+      ]
+    },
+    "logic_exit_code": 0,
+    "cleanup_complete": true
+  },
+  "pie_1128": {
+    "gameplay_pass": true,
+    "samples": [
+      {
+        "stage": "first_target",
+        "shots": 0,
+        "next_barrel": 0,
+        "progress": 0.0667,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      },
+      {
+        "stage": "other_target_closer",
+        "shots": 0,
+        "next_barrel": 0,
+        "progress": 0.2667,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      },
+      {
+        "stage": "continuing_original_target",
+        "shots": 0,
+        "next_barrel": 0,
+        "progress": 0.5083,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      },
+      {
+        "stage": "accepted_automatic",
+        "shots": 1,
+        "next_barrel": 1,
+        "progress": 1,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      },
+      {
+        "stage": "other_barrel",
+        "shots": 2,
+        "next_barrel": 0,
+        "progress": 1,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      },
+      {
+        "stage": "left_circle_recentered",
+        "shots": 2,
+        "next_barrel": 0,
+        "progress": 0,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      },
+      {
+        "stage": "accepted_manual",
+        "shots": 3,
+        "next_barrel": 1,
+        "progress": 0,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      },
+      {
+        "stage": "released_below_threshold",
+        "shots": 3,
+        "next_barrel": 1,
+        "progress": 0,
+        "center_px": [
+          438.2608337402344,
+          259.1493225097656
+        ]
+      },
+      {
+        "stage": "translation_same_direction",
+        "shots": 3,
+        "next_barrel": 1,
+        "progress": 0,
+        "center_px": [
+          438.2608337402344,
+          259.1493225097656
+        ]
+      },
+      {
+        "stage": "manual_anchor_recentered",
+        "shots": 3,
+        "next_barrel": 1,
+        "progress": 0,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      },
+      {
+        "stage": "fresh_lock_after_loss",
+        "shots": 3,
+        "next_barrel": 1,
+        "progress": 0.0667,
+        "center_px": [
+          489.5,
+          260.5
+        ]
+      }
+    ]
+  },
+  "pie_1129": {
+    "version": 1129,
+    "automation": "GuLiStrike.GroundMech.Fire.AILockAperture",
+    "automation_result": "passed",
+    "viewport_px": [
+      979,
+      521
+    ],
+    "design_viewport_px": [
+      1920,
+      1080
+    ],
+    "design_radius_px": 342,
+    "soldiers": 600,
+    "ground_hud_in_viewport": true,
+    "members": [
+      {
+        "team": "Red",
+        "role": "Ground",
+        "online": true,
+        "ready": true
+      },
+      {
+        "team": "Blue",
+        "role": "Commander",
+        "online": true,
+        "ready": true
+      }
+    ],
+    "samples": [
+      {
+        "stage": "first_target",
+        "target": "original",
+        "progress": 0.05,
+        "shots": 0,
+        "circle_center_px": [
+          489.5,
+          260.5
+        ],
+        "circle_radius_px": 164.98,
+        "original_center_distance_px": 0.0,
+        "original_hex_clearance_px": -139.08,
+        "second_center_inside": true
+      },
+      {
+        "stage": "other_target_nearer",
+        "target": "original",
+        "progress": 0.1833,
+        "shots": 0,
+        "circle_center_px": [
+          489.5,
+          260.5
+        ],
+        "circle_radius_px": 164.98,
+        "original_center_distance_px": 54.01,
+        "original_hex_clearance_px": -137.94,
+        "second_center_inside": true
+      },
+      {
+        "stage": "locked_automatic_shot",
+        "target": "original",
+        "progress": 1,
+        "shots": 1,
+        "circle_center_px": [
+          489.5,
+          260.5
+        ],
+        "circle_radius_px": 164.98,
+        "original_center_distance_px": 54.01,
+        "original_hex_clearance_px": -137.94,
+        "second_center_inside": true
+      },
+      {
+        "stage": "center_outside_hex_overlapping",
+        "target": "original",
+        "progress": 1,
+        "shots": 1,
+        "circle_center_px": [
+          489.5,
+          260.5
+        ],
+        "circle_radius_px": 164.98,
+        "original_center_distance_px": 167.73,
+        "original_hex_clearance_px": -23.16,
+        "second_center_inside": true
+      },
+      {
+        "stage": "automatic_shot_while_overlapping",
+        "target": "original",
+        "progress": 1,
+        "shots": 2,
+        "circle_center_px": [
+          489.5,
+          260.5
+        ],
+        "circle_radius_px": 164.98,
+        "original_center_distance_px": 178.4,
+        "original_hex_clearance_px": -12.49,
+        "second_center_inside": true
+      },
+      {
+        "stage": "fully_clear",
+        "target": "new",
+        "progress": 0.0083,
+        "shots": 2,
+        "circle_center_px": [
+          489.5,
+          260.5
+        ],
+        "circle_radius_px": 164.98,
+        "original_center_distance_px": 201.3,
+        "original_hex_clearance_px": 10.41,
+        "second_center_inside": true
+      },
+      {
+        "stage": "release_into_empty_view",
+        "target": null,
+        "progress": 0,
+        "shots": 2,
+        "circle_center_px": [
+          489.5,
+          260.5
+        ],
+        "circle_radius_px": 164.98,
+        "original_center_distance_px": 542.26,
+        "original_hex_clearance_px": 350.35,
+        "second_center_inside": false
+      }
+    ],
+    "range_pass": true,
+    "cleanup_complete": true
+  }
+}

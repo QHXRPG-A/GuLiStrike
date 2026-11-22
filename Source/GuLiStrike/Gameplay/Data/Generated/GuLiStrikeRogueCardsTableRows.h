@@ -327,6 +327,26 @@ struct FGuLiStrikeRogueCardsGroundWeaponEffectsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
 	TArray<FString> BarrageConeHalfAnglesDegrees;
 
+	/** LockSeconds (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> LockSeconds;
+
+	/** LockRangeCentimeters (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> LockRangeCentimeters;
+
+	/** BulletDamageMultipliers (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> BulletDamageMultipliers;
+
+	/** BulletRateMultipliers (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> BulletRateMultipliers;
+
+	/** BulletFlightVfxIds (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> BulletFlightVfxIds;
+
 };
 
 /** DataTable DT_GuLiStrikeRogueCards_BarrageCamera 的行结构（源: GuLiStrikeRogueCards.xlsx / BarrageCamera）。 */

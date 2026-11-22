@@ -66,6 +66,15 @@ FString UGuLiGroundRogueDebugLibrary::ReadState(UObject* WorldContextObject,FVec
             J->SetNumberField(TEXT("next_side"),Weapon->NextFireSide);J->SetNumberField(TEXT("next_shot_time"),Weapon->NextShotTime);
             J->SetNumberField(TEXT("fire_rate"),Weapon->GetFireRate());J->SetNumberField(TEXT("damage"),Weapon->GetShotDamage());
             J->SetNumberField(TEXT("shots_fired"),Weapon->ShotsFired);J->SetBoolField(TEXT("held"),Weapon->bFireHeld);
+            const FGuLiAILockSight& Sight = Weapon->GetAILockSight();
+            auto Lock = MakeShared<FJsonObject>();
+            Lock->SetBoolField(TEXT("projected"), Sight.bProjected);
+            Lock->SetNumberField(TEXT("radius"), Sight.Radius);
+            Lock->SetArrayField(TEXT("center"), {MakeShared<FJsonValueNumber>(Sight.Center.X), MakeShared<FJsonValueNumber>(Sight.Center.Y)});
+            Lock->SetStringField(TEXT("target"), Sight.Target.IsValid() ? FString::Printf(TEXT("%d/%s/%u/%u"), int32(Sight.Target.Kind), *Sight.Target.AuthorityId.ToString(), Sight.Target.Generation, Sight.Target.LocalId) : FString());
+            Lock->SetArrayField(TEXT("target_pixel"), {MakeShared<FJsonValueNumber>(Sight.TargetPoint.X), MakeShared<FJsonValueNumber>(Sight.TargetPoint.Y)});
+            Lock->SetNumberField(TEXT("progress"), Sight.Progress);
+            J->SetObjectField(TEXT("ai_lock"), Lock);
             J->SetStringField(TEXT("upgrade"),Weapon->CurrentUpgradeId);Position(J,Pawn->GetActorLocation());
             if(const auto* Anim=Cast<UGuLiGroundMechAnimInstance>(Pawn->GetMesh()->GetAnimInstance()))
             {J->SetNumberField(TEXT("phase"),Anim->GetFireLoopPhase());J->SetBoolField(TEXT("playing"),Anim->IsFireLoopPlaying());}

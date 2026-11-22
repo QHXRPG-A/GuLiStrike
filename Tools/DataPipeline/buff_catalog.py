@@ -38,9 +38,20 @@ def validate(tables, error):
                 fail(f'Effect {ident}: 折射配置无效')
         elif e['Handler']=='buff/on_hit':
             if e['BuffId'] not in buffs or e['ConfigId']!=0: fail(f'Effect {ident}: Buff引用无效')
-        elif e['Handler'] in ('ground/fire_rate','ground/enhanced_bullet','ground/explosive_package','ground/explosive_enhancement','ground/no_survivors'):
+        elif e['Handler'] in ('ground/fire_rate','ground/enhanced_bullet','ground/explosive_package','ground/explosive_enhancement','ground/no_survivors','ground/ai_engine'):
             c=weapon.get(e['ConfigId'])
             if not c or e['BuffId']!=0: fail(f'Effect {ident}: 缺少武器效果配置')
+            if e['Handler'] in ('ground/ai_engine','ground/enhanced_bullet'):
+                lock = e['Handler']=='ground/ai_engine'
+                keys = ('LockSeconds','LockRangeCentimeters') if lock else ('BulletDamageMultipliers','BulletRateMultipliers','BulletFlightVfxIds')
+                columns = [c.get(k,[]) for k in keys]
+                if not 1<=len(columns[0])<=16 or any(len(col)!=len(columns[0]) for col in columns):
+                    fail(f'Effect {ident}: 逐级参数的档数不一致')
+                try:
+                    valid=all(positive(float(value)) for col in columns for value in col)
+                    if not lock: valid=valid and all(int(v) in vfx for v in columns[2])
+                except (TypeError,ValueError): valid=False
+                if not valid: fail(f'Effect {ident}: 等级数值或弹体特效引用无效')
             if e['Handler']=='ground/no_survivors':
                 columns = [c[k] for k in ('BarrageIntervalsSeconds','BarrageShotCounts','BarrageDamageBonuses','BarrageConeHalfAnglesDegrees')]
                 if not 1 <= len(columns[0]) <= 16 or any(len(v)!=len(columns[0]) for v in columns):
@@ -83,6 +94,9 @@ def validate(tables, error):
                 fail(f'卡牌 {card["Id"]}: 未知或重复EffectIds')
             for ref in refs:
                 effect=effects[int(ref)]
+                rank_key={'ground/enhanced_bullet':'BulletDamageMultipliers','ground/ai_engine':'LockSeconds'}.get(effect['Handler'])
+                if rank_key and len(weapon[effect['ConfigId']][rank_key])!=card['MaxAcquisitions']:
+                    fail(f'卡牌 {card["Id"]}: 等级上限与武器档数不一致')
                 if effect['Handler']=='ground/no_survivors' and card['MaxAcquisitions']!=len(weapon[effect['ConfigId']]['BarrageShotCounts']):
                     fail(f'卡牌 {card["Id"]}: 等级上限与对地齐射档数不一致')
                 if effect['Handler']=='ground/explosive_enhancement':

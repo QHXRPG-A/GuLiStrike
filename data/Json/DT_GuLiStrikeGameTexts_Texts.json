@@ -1910,8 +1910,8 @@
   {
     "Name": "Card.GroundMech.EnhancedBullet.Description",
     "TextId": "Card.GroundMech.EnhancedBullet.Description",
-    "Introduction": "游骑兵武器肉鸽；参数来自效果配置",
-    "Content": "<Unit>游骑兵</> <Gain>普攻升级为强化子弹</>"
+    "Introduction": "游骑兵个人肉鸽",
+    "Content": "<Unit>游骑兵</> 普攻伤害 <Gain>+{1}%</>，射速降低 {2}%。"
   },
   {
     "Name": "Card.GroundMech.ExplosivePackage.Title",
@@ -1966,5 +1966,17 @@
     "TextId": "UI.GroundHUD.BarrageReady",
     "Introduction": "游骑兵无人生还",
     "Content": "就绪"
+  },
+  {
+    "Name": "Card.GroundMech.AIEngine.Title",
+    "TextId": "Card.GroundMech.AIEngine.Title",
+    "Introduction": "游骑兵个人肉鸽",
+    "Content": "人工智能引擎"
+  },
+  {
+    "Name": "Card.GroundMech.AIEngine.Description",
+    "TextId": "Card.GroundMech.AIEngine.Description",
+    "Introduction": "游骑兵个人肉鸽",
+    "Content": "<Unit>游骑兵</> 在 <Gain>{2} 米</> 内瞄准框中最靠近准星的敌人，持续 <Gain>{1} 秒</> 后按当前普攻射速自动连射。"
   }
 ]

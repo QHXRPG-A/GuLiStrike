@@ -166,6 +166,7 @@ void AGuLiGroundMechCharacter::ClearLocalControlInput()
 	HybridInput.BlinkRequest=SimulationInput.BlinkRequest;
 	HybridInput.BlinkYaw=SimulationInput.BlinkYaw;
 	UpperAimPresentation.Stop();
+	Weapon->ClearAILock();
 	SetShoulderZoomHeld(false);
 	Weapon->SetFireHeld(false);
 }
@@ -385,6 +386,7 @@ void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)
 			HybridInput.WeaponAimMode=EGuLiGroundWeaponAimMode::Target;
 			FVector Point;
 			HybridInput.bHasAim=bLookActive && (IsFiringBarrage() ? GetBarrageAimPoint(Point) : Weapon->ResolveLocalWeaponAim(Point));
+			if(!HybridInput.bHasAim || IsFiringBarrage())Weapon->ClearAILock();
 			HybridInput.bFaceAim=HybridInput.bHasAim;
 			HybridInput.Aim=HybridInput.bHasAim?Point:FVector::ZeroVector;
 		}
@@ -418,6 +420,7 @@ bool AGuLiGroundMechCharacter::SubmitGameplayInput(FVector2D Axis,FVector AimPoi
 {
 	if (!CanUseControls() || Axis.ContainsNaN() || AimPoint.ContainsNaN() || (bFire && !bHasAim)) return false;
 	bSemanticInput=true; HybridInput={Axis.GetClampedToMaxSize(1.),AimPoint,bSprint,bFire,bRocket,bHasAim,bFaceAim};
+	Weapon->ClearAILock();
 	return true;
 }
 void AGuLiGroundMechCharacter::PumpHybridInput()
@@ -427,15 +430,18 @@ void AGuLiGroundMechCharacter::PumpHybridInput()
 	if (!Identity || !Identity->CanControl() || !Hybrid) return;
 	const uint64 At=Hybrid->GetLogicalTick();
 	if (bHybridInputSent && At==LastHybridInputTick) return;
-	if (bHybridInputSent && HybridInput==LastHybridInput && At>=LastHybridInputTick && At-LastHybridInputTick<30) return;
+	auto Input=HybridInput;
+	// Preserve the actual trigger in the controller snapshot; both sources share one weapon command.
+	if(!bSemanticInput && Input.bHasAim && Weapon->GetAILockSight().IsLocked())Input.bFire=true;
+	if (bHybridInputSent && Input==LastHybridInput && At>=LastHybridInputTick && At-LastHybridInputTick<30) return;
 	FGuLiHybridObjectState Current;
 	if (!Hybrid->GetObject(Identity->GetObjectKey(),Current)) return;
-	FGuLiHybridStateArchive A(256); auto Input=HybridInput; GuLiHybridGround::Input(A,Input);
+	FGuLiHybridStateArchive A(256); GuLiHybridGround::Input(A,Input);
 	FGuLiHybridCommand Command; if (!A.Finish(Command.Arguments)) return;
 	Command.Event=FGuid::NewGuid(); Command.LogicalTick=At; Command.Operation=TEXT("GroundInput");
 	auto& Member=Command.Members.AddDefaulted_GetRef(); Member.Key=Current.Key;
 	Member.ControlEpoch=Current.ControlEpoch; Member.OwnerEpoch=Current.OwnerEpoch; Member.Slot=Current.Ordinal;
-	if (Hybrid->RouteCommand(Command)) { LastHybridInput=HybridInput; LastHybridInputTick=At; bHybridInputSent=true; }
+	if (Hybrid->RouteCommand(Command)) { LastHybridInput=Input; LastHybridInputTick=At; bHybridInputSent=true; }
 }
 void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
 {

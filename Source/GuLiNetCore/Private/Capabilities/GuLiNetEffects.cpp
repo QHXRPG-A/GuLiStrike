@@ -37,7 +37,7 @@ Bytes EncodeFireRate(float Multiplier)
 bool DecodeFireRate(std::span<const std::uint8_t> B,float& Out)
 {Reader R(B);float V;if(!R.F32(V)||!R.Done()||EncodeFireRate(V).empty())return false;Out=V;return true;}
 float FireRateMultiplier(const Set& S)
-{float Value=1;for(const auto& D:S)if(D.Handler=="ground/fire_rate"){float V;if(!DecodeFireRate(D.Parameters,V))return 0;Value*=V;}return Value;}
+{float Value=GetBulletRank(S).RateMultiplier;for(const auto& D:S)if(D.Handler=="ground/fire_rate"){float V;if(!DecodeFireRate(D.Parameters,V))return 0;Value*=V;}return Value;}
 bool HasEnhancedBullet(const Set& S)
 {return std::any_of(S.begin(),S.end(),[](const auto& D){return D.Handler=="ground/enhanced_bullet";});}
 Bytes EncodeExplosive(const ExplosivePackage& V)
@@ -52,6 +52,64 @@ bool DecodeExplosive(std::span<const std::uint8_t> B,ExplosivePackage& Out)
     Reader R(B);ExplosivePackage V;std::uint32_t N;if(!R.U32(N)||!N||N>16)return false;V.Intervals.resize(N);
     for(auto& I:V.Intervals)if(!R.U32(I))return false;
     if(!R.U32(V.Level)||!R.F32(V.DamageMultiplier)||!R.F32(V.Radius)||!R.U32(V.BulletVfx)||!R.U32(V.ImpactVfx)||!R.F32(V.SpeedMultiplier)||!R.F32(V.OutwardOffset)||!R.Done()||EncodeExplosive(V).empty())return false;Out=std::move(V);return true;
+}
+Bytes EncodeEnhancedBullet(const EnhancedBullet& Bullet)
+{
+    if(Bullet.Ranks.empty() || Bullet.Ranks.size()>16 || Bullet.Level>Bullet.Ranks.size())return {};
+    Writer W; W.U32(Bullet.Level); W.U32(std::uint32_t(Bullet.Ranks.size()));
+    for(const auto& R:Bullet.Ranks)
+    {
+        if(!std::isfinite(R.DamageMultiplier) || R.DamageMultiplier<=0 || !std::isfinite(R.RateMultiplier) || R.RateMultiplier<=0 || !R.Vfx)return {};
+        W.F32(R.DamageMultiplier); W.F32(R.RateMultiplier); W.U32(R.Vfx);
+    }
+    return W.Take();
+}
+bool DecodeEnhancedBullet(std::span<const std::uint8_t> Data,EnhancedBullet& Out)
+{
+    Reader R(Data); EnhancedBullet Bullet; std::uint32_t Count;
+    if(!R.U32(Bullet.Level) || !R.U32(Count) || !Count || Count>16 || Bullet.Level>Count)return false;
+    Bullet.Ranks.resize(Count);
+    for(auto& Rank:Bullet.Ranks)if(!R.F32(Rank.DamageMultiplier) || !R.F32(Rank.RateMultiplier) || !R.U32(Rank.Vfx))return false;
+    if(!R.Done() || EncodeEnhancedBullet(Bullet).empty())return false;
+    Out=std::move(Bullet); return true;
+}
+BulletRank GetBulletRank(const Set& Effects)
+{
+    for(const auto& D:Effects)if(D.Handler=="ground/enhanced_bullet" && !D.Parameters.empty())
+    {
+        EnhancedBullet Bullet;
+        if(DecodeEnhancedBullet(D.Parameters,Bullet) && Bullet.Level)return Bullet.Ranks[Bullet.Level-1];
+    }
+    return {};
+}
+Bytes EncodeAIEngine(const AIEngine& Engine)
+{
+    if(Engine.Ranks.empty() || Engine.Ranks.size()>16 || Engine.Level>Engine.Ranks.size())return {};
+    Writer W; W.U32(Engine.Level); W.U32(std::uint32_t(Engine.Ranks.size()));
+    for(const auto& Rank:Engine.Ranks)
+    {
+        if(!std::isfinite(Rank.Seconds) || Rank.Seconds<=0 || !std::isfinite(Rank.RangeCm) || Rank.RangeCm<=0)return {};
+        W.F32(Rank.Seconds); W.F32(Rank.RangeCm);
+    }
+    return W.Take();
+}
+bool DecodeAIEngine(std::span<const std::uint8_t> Data,AIEngine& Out)
+{
+    Reader R(Data); AIEngine Engine; std::uint32_t Count;
+    if(!R.U32(Engine.Level) || !R.U32(Count) || !Count || Count>16 || Engine.Level>Count)return false;
+    Engine.Ranks.resize(Count);
+    for(auto& Rank:Engine.Ranks)if(!R.F32(Rank.Seconds) || !R.F32(Rank.RangeCm))return false;
+    if(!R.Done() || EncodeAIEngine(Engine).empty())return false;
+    Out=std::move(Engine); return true;
+}
+AILockRank GetAILockRank(const Set& Effects)
+{
+    for(const auto& D:Effects)if(D.Handler=="ground/ai_engine")
+    {
+        AIEngine Engine;
+        if(DecodeAIEngine(D.Parameters,Engine) && Engine.Level)return Engine.Ranks[Engine.Level-1];
+    }
+    return {};
 }
 Bytes EncodeBarrage(const Barrage& V)
 {
@@ -121,10 +179,29 @@ namespace
 {
 const bool RateRegistered=Register({"ground/fire_rate",1,[](const Definition& D){float V;return DecodeFireRate(D.Parameters,V);},
     [](const Definition& D,std::uint32_t N,Set& S){float V;if(!N||!DecodeFireRate(D.Parameters,V))return false;auto Copy=D;Copy.Parameters=EncodeFireRate(float(std::pow(double(V),N)));if(Copy.Parameters.empty())return false;S.push_back(std::move(Copy));return true;}});
-const bool EnhancedRegistered=Register({"ground/enhanced_bullet",1,[](const Definition& D){return D.Parameters.empty();},
-    [](const Definition& D,std::uint32_t N,Set& S){if(N!=1)return false;S.push_back(D);return true;}});
+const bool EnhancedRegistered=Register({"ground/enhanced_bullet",1,[](const Definition& D){EnhancedBullet B;return D.Parameters.empty() || DecodeEnhancedBullet(D.Parameters,B);},
+    [](const Definition& D,std::uint32_t N,Set& S)
+    {
+        // The original single-rank catalogue and already airborne shots use an empty payload.
+        if(D.Parameters.empty()){if(N!=1)return false;S.push_back(D);return true;}
+        EnhancedBullet B;if(!N || !DecodeEnhancedBullet(D.Parameters,B) || N>B.Ranks.size())return false;
+        B.Level=N;auto Resolved=D;Resolved.Parameters=EncodeEnhancedBullet(B);S.push_back(std::move(Resolved));return true;
+    },{},[](const Definition& D,std::uint32_t& Flight,std::uint32_t&,std::uint32_t&)
+    {
+        if(D.Parameters.empty())return true;
+        EnhancedBullet B;if(!DecodeEnhancedBullet(D.Parameters,B) || !B.Level)return false;
+        Flight=B.Ranks[B.Level-1].Vfx;return true;
+    }});
 const bool ExplosiveRegistered=Register({"ground/explosive_package",2,[](const Definition& D){ExplosivePackage V;return DecodeExplosive(D.Parameters,V);},
     [](const Definition& D,std::uint32_t N,Set& S){ExplosivePackage V;if(!N||!DecodeExplosive(D.Parameters,V)||N>V.Intervals.size())return false;V.Level=N;auto Copy=D;Copy.Parameters=EncodeExplosive(V);S.push_back(std::move(Copy));return true;}});
+const bool AIEngineRegistered=Register({"ground/ai_engine",1,[](const Definition& D){AIEngine Engine;return DecodeAIEngine(D.Parameters,Engine);},
+    [](const Definition& D,std::uint32_t Level,Set& Effects)
+    {
+        AIEngine Engine;
+        if(!Level || !DecodeAIEngine(D.Parameters,Engine) || Level>Engine.Ranks.size())return false;
+        Engine.Level=Level;
+        auto Resolved=D; Resolved.Parameters=EncodeAIEngine(Engine); Effects.push_back(std::move(Resolved)); return true;
+    }});
 const bool BarrageRegistered=Register({"ground/no_survivors",1,[](const Definition& D){Barrage V;return DecodeBarrage(D.Parameters,V);},
     [](const Definition& D,std::uint32_t N,Set& S){
         Barrage V;if(!N||!DecodeBarrage(D.Parameters,V)||N>V.Ranks.size()||FindBarrage(S))return false;

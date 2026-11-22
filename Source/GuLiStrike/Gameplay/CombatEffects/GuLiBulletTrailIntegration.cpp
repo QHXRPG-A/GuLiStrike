@@ -66,6 +66,7 @@ void UGuLiCombatEffectPresentationSubsystem::SubmitBulletLight(const FGuLiLocalC
 	double DistanceSquared=TNumericLimits<double>::Max();
 	for (const FVector& View:BulletLocalViews) DistanceSquared=FMath::Min(DistanceSquared,FVector::DistSquared(View,Visual.RenderLocation));
 	if (DistanceSquared>FMath::Square(double(Far))) return;
-	BulletTrails->SubmitLight(State.EffectId,Visual.RenderLocation,GroundBulletTint(State),DistanceSquared,IsVisibleBounds(Bounds),Near,Far);
+    const auto Color=Visual.GroundTrailTint.A>0?Visual.GroundTrailTint:GroundBulletTint(State);
+	BulletTrails->SubmitLight(State.EffectId,Visual.RenderLocation,Color,DistanceSquared,IsVisibleBounds(Bounds),Near,Far);
 }
 

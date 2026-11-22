@@ -35,6 +35,7 @@ struct FGuLiGroundHUDSnapshot
 };
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiGroundHUDUrgent,EGuLiGroundHUDGroup);
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiGroundHUDHit,bool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiGroundHUDShot,float);
 /** Fixed-size frame accumulator: slot bits Fire/Aim/Jet/Blink, no animation queue. */
 struct FGuLiGroundHUDMotion
 {
@@ -58,6 +59,8 @@ public:
     void Invalidate(EGuLiGroundHUDGroup Groups,bool Urgent=false);
     FGuLiGroundHUDUrgent OnUrgent;FGuLiGroundHUDHit OnHit;
     FGuLiGroundHUDMotionChanged OnMotion;
+    FGuLiGroundHUDShot OnAcceptedShot;
+    bool ConsumeAIEngineEntry();
     double GetLogicalSeconds() const;
 private:
     void PresentationChanged(const FGuLiGroundPresentationEvent& Event);
@@ -77,6 +80,7 @@ private:
     FGuLiHybridObjectKey PlayerKey;
     FGuid PlayerGuid;uint32 Epoch=0;
     FGuid FeedbackPlayer;uint32 FeedbackEpoch=0;TWeakObjectPtr<UWorld> FeedbackWorld;
+    bool bAIEntrySeen=false;
     double NextPositionSample=0;
     FDelegateHandle ObjectHandle,DamageHandle,FrameHandle,PresentationHandle;
     EGuLiGroundHUDGroup Dirty=EGuLiGroundHUDGroup::All,Urgent=EGuLiGroundHUDGroup::None;

@@ -253,6 +253,7 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
         {
             BindPlayer(); auto* Weapon=P->Weapon.Get(); auto* Rocket=P->RocketJump.Get();
             if (!Weapon->LoadConfiguration(V.Upgrade)) return false;
+            Weapon->ClearAILock();
             P->NotifyLocalPresentation({EGuLiGroundPresentationAction::Reset});
             ApplyPose(V.Pose);
             P->GetBlinkComponent()->PrepareRestore();

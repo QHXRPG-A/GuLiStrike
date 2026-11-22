@@ -16,7 +16,12 @@
     "BarrageIntervalsSeconds": [],
     "BarrageShotCounts": [],
     "BarrageDamageBonuses": [],
-    "BarrageConeHalfAnglesDegrees": []
+    "BarrageConeHalfAnglesDegrees": [],
+    "LockSeconds": [],
+    "LockRangeCentimeters": [],
+    "BulletDamageMultipliers": [],
+    "BulletRateMultipliers": [],
+    "BulletFlightVfxIds": []
   },
   {
     "Name": "GroundEnhancedBullet",
@@ -35,7 +40,30 @@
     "BarrageIntervalsSeconds": [],
     "BarrageShotCounts": [],
     "BarrageDamageBonuses": [],
-    "BarrageConeHalfAnglesDegrees": []
+    "BarrageConeHalfAnglesDegrees": [],
+    "LockSeconds": [],
+    "LockRangeCentimeters": [],
+    "BulletDamageMultipliers": [
+      "1.5",
+      "1.7",
+      "2.5",
+      "2.8",
+      "4"
+    ],
+    "BulletRateMultipliers": [
+      "0.9",
+      "0.9",
+      "0.8",
+      "0.8",
+      "0.7"
+    ],
+    "BulletFlightVfxIds": [
+      "69",
+      "69",
+      "70",
+      "70",
+      "71"
+    ]
   },
   {
     "Name": "GroundExplosivePackage",
@@ -58,7 +86,12 @@
     "BarrageIntervalsSeconds": [],
     "BarrageShotCounts": [],
     "BarrageDamageBonuses": [],
-    "BarrageConeHalfAnglesDegrees": []
+    "BarrageConeHalfAnglesDegrees": [],
+    "LockSeconds": [],
+    "LockRangeCentimeters": [],
+    "BulletDamageMultipliers": [],
+    "BulletRateMultipliers": [],
+    "BulletFlightVfxIds": []
   },
   {
     "Name": "GroundExplosiveEnhancement",
@@ -89,7 +122,12 @@
     "BarrageIntervalsSeconds": [],
     "BarrageShotCounts": [],
     "BarrageDamageBonuses": [],
-    "BarrageConeHalfAnglesDegrees": []
+    "BarrageConeHalfAnglesDegrees": [],
+    "LockSeconds": [],
+    "LockRangeCentimeters": [],
+    "BulletDamageMultipliers": [],
+    "BulletRateMultipliers": [],
+    "BulletFlightVfxIds": []
   },
   {
     "Name": "GroundNoSurvivors",
@@ -132,6 +170,43 @@
       "2.5",
       "2.5",
       "4"
-    ]
+    ],
+    "LockSeconds": [],
+    "LockRangeCentimeters": [],
+    "BulletDamageMultipliers": [],
+    "BulletRateMultipliers": [],
+    "BulletFlightVfxIds": []
+  },
+  {
+    "Name": "GroundAIEngine",
+    "Id": 6,
+    "Note": "游骑兵单目标枪口视场",
+    "FireRateBonusPercent": 0.0,
+    "ExplosiveIntervals": [],
+    "ExplosiveDamageMultiplier": 0.0,
+    "ExplosiveRadiusCentimeters": 0.0,
+    "ExplosiveBulletVfxId": 0,
+    "ExplosiveImpactVfxId": 0,
+    "ExplosiveSpeedMultiplier": 0.0,
+    "ExplosiveOutwardOffsetCentimeters": 0.0,
+    "ExplosiveRadiusBonuses": [],
+    "ExplosiveDamageBonuses": [],
+    "BarrageIntervalsSeconds": [],
+    "BarrageShotCounts": [],
+    "BarrageDamageBonuses": [],
+    "BarrageConeHalfAnglesDegrees": [],
+    "LockSeconds": [
+      "2",
+      "1.5",
+      "1"
+    ],
+    "LockRangeCentimeters": [
+      "8000",
+      "10000",
+      "15000"
+    ],
+    "BulletDamageMultipliers": [],
+    "BulletRateMultipliers": [],
+    "BulletFlightVfxIds": []
   }
 ]

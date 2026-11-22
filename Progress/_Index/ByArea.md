@@ -492,8 +492,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵人工智能引擎与锁定 HUD](../RequirementDocument/20261122-游骑兵人工智能引擎锁定HUD.md) | requirement | approved | 2026-11-22 |
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-22 |
+| [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | development | done | 2026-11-22 |
+| [游骑兵人工智能引擎 HUD 结项](../Archive/20261122-游骑兵人工智能引擎HUD结项.md) | archive | recorded | 2026-11-22 |
+| [游骑兵人工智能引擎 HUD 首版接入](../Archive/20261122-人工智能引擎HUD首版接入.md) | archive | recorded | 2026-11-22 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-19 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | development | done | 2026-11-19 |
 | [游骑兵无人生还结项与项目同步](../Archive/20261119-游骑兵无人生还结项与项目同步.md) | archive | recorded | 2026-11-19 |
 | [游骑兵快速回镜](../Archive/20261119-游骑兵快速回镜.md) | archive | recorded | 2026-11-19 |
@@ -1327,8 +1331,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-22 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-19 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | development | done | 2026-11-19 |
 | [游骑兵双路线与无人生还五级接入](../Archive/20261118-游骑兵双路线与无人生还五级接入.md) | archive | recorded | 2026-11-19 |
 | [游骑兵无人生还大招靶场交付](../Archive/20261118-游骑兵无人生还大招靶场交付.md) | archive | recorded | 2026-11-19 |
@@ -1596,7 +1600,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-19 |
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-22 |
 | [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-16 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
@@ -2101,6 +2105,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵人工智能引擎与锁定 HUD](../RequirementDocument/20261122-游骑兵人工智能引擎锁定HUD.md) | requirement | approved | 2026-11-22 |
+| [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | development | done | 2026-11-22 |
+| [游骑兵人工智能引擎 HUD 结项](../Archive/20261122-游骑兵人工智能引擎HUD结项.md) | archive | recorded | 2026-11-22 |
+| [游骑兵人工智能引擎 HUD 首版接入](../Archive/20261122-人工智能引擎HUD首版接入.md) | archive | recorded | 2026-11-22 |
 | [游骑兵按键定向闪现与惯性拖拽动画](../RequirementDocument/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | requirement | approved | 2026-11-08 |
 | [游骑兵跑步与闪现动画](../RequirementDocument/20261104-游骑兵跑步与闪现动画.md) | requirement | approved | 2026-11-08 |
 | [游骑兵全向提速与腿甲明暗](../RequirementDocument/20261104-游骑兵全向提速与腿甲明暗.md) | requirement | approved | 2026-11-08 |
@@ -2494,6 +2502,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵人工智能引擎与锁定 HUD](../RequirementDocument/20261122-游骑兵人工智能引擎锁定HUD.md) | requirement | approved | 2026-11-22 |
+| [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | development | done | 2026-11-22 |
+| [游骑兵人工智能引擎 HUD 结项](../Archive/20261122-游骑兵人工智能引擎HUD结项.md) | archive | recorded | 2026-11-22 |
+| [游骑兵人工智能引擎 HUD 首版接入](../Archive/20261122-人工智能引擎HUD首版接入.md) | archive | recorded | 2026-11-22 |
 | [游骑兵双路线与无人生还五级接入](../Archive/20261118-游骑兵双路线与无人生还五级接入.md) | archive | recorded | 2026-11-19 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | development | done | 2026-11-18 |
 | [强化爆炸弹与游骑兵图标会话清理结项](../Archive/20261118-强化爆炸弹与游骑兵图标会话清理结项.md) | archive | recorded | 2026-11-18 |

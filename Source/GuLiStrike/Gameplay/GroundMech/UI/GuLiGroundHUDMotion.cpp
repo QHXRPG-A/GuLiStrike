@@ -92,6 +92,7 @@ void UGuLiGroundHUDWidget::BuildMotionLayout(UCanvasPanel* Design,UWidget* Heade
 }
 void UGuLiGroundHUDWidget::ClearMotion()
 {
+    AIOptics.Reset();
     EntryStarted=-1;ShotStarted=-1;ShotKick=0;HitUntil=0;bKill=false;
     ShowClip(EntryClip,0,0);ShowClip(ModalClip,0,0);ShowClip(CooldownClip,0,0);
     bCooling=false;LastCooldownProgress=-1;

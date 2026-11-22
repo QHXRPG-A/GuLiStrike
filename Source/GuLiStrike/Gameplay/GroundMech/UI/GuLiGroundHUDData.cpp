@@ -27,7 +27,12 @@ bool IsMapKind(EGuLiHybridObjectKind K)
         || K==EGuLiHybridObjectKind::Miner || K==EGuLiHybridObjectKind::Engineer;
 }
 }
-void UGuLiGroundHUDData::Deinitialize(){Unbind();OnUrgent.Clear();OnHit.Clear();OnMotion.Clear();Super::Deinitialize();}
+void UGuLiGroundHUDData::Deinitialize(){Unbind();OnUrgent.Clear();OnHit.Clear();OnMotion.Clear();OnAcceptedShot.Clear();Super::Deinitialize();}
+bool UGuLiGroundHUDData::ConsumeAIEngineEntry()
+{
+    if(bAIEntrySeen || !PlayerGuid.IsValid() || !Epoch)return false;
+    bAIEntrySeen=true;return true;
+}
 void UGuLiGroundHUDData::Unbind()
 {
     if(auto* P=Pawn.Get())
@@ -57,7 +62,7 @@ void UGuLiGroundHUDData::Bind(AGuLiCommanderPlayerController* PC)
     Unbind();if(!P||!PS||!PC->IsLocalController())return;
     Controller=PC;Pawn=P;PlayerGuid=PS->GetPlayerGuid();PlayerKey=Key;Epoch=NextEpoch;
     if(FeedbackWorld.Get()!=W||FeedbackEpoch!=Epoch||FeedbackPlayer!=PlayerGuid)
-    {HitEvents.Reset();HitOrder.Reset();HitCursor=0;FeedbackWorld=W;FeedbackEpoch=Epoch;FeedbackPlayer=PlayerGuid;}
+    {HitEvents.Reset();HitOrder.Reset();HitCursor=0;FeedbackWorld=W;FeedbackEpoch=Epoch;FeedbackPlayer=PlayerGuid;bAIEntrySeen=false;}
     Hybrid=W->GetSubsystem<UGuLiHybridWorldSubsystem>();Rogue=W->GetSubsystem<UGuLiRogueCardSubsystem>();
     // Copy the already-resolved gameplay bounds once for this local Ground
     // binding. Object events and 5 Hz motion samples never load art/catalogs.
@@ -134,6 +139,7 @@ void UGuLiGroundHUDData::PresentationChanged(const FGuLiGroundPresentationEvent&
     const uint8 Slot=E.Action==EGuLiGroundPresentationAction::Fire?0:E.Action==EGuLiGroundPresentationAction::Aim?1:3;
     if(E.Action==EGuLiGroundPresentationAction::Fire)
     {
+        if(E.Phase==EGuLiGroundPresentationPhase::Started)OnAcceptedShot.Broadcast(E.Age);
         PendingMotion.ShotAge=PendingMotion.Shots?FMath::Min(PendingMotion.ShotAge,E.Age):E.Age;
         PendingMotion.Shots=FMath::Min<int32>(3,PendingMotion.Shots+1);
     }

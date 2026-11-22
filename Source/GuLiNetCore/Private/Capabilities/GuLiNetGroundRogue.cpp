@@ -404,6 +404,7 @@ const bool BindingRegistered=[]
         const auto Extra=Effects::GetExplosive(A.Effects);
         if(Extra.Interval()&&Progress+1==Extra.Interval()){A.ExplosiveDamage=A.Damage*Extra.DamageMultiplier;A.ExplosiveRadius=Extra.Radius;A.ExplosiveBulletVfx=Extra.BulletVfx;A.ExplosiveImpactVfx=Extra.ImpactVfx;}
         if(!Effects::HasEnhancedBullet(A.Effects)){A.Damage*=P.InitialRatio;A.BulletVfx=P.InitialBullet;}
+        else A.Damage*=Effects::GetBulletRank(A.Effects).DamageMultiplier;
         if(!Effects::FreezePresentation(A.Effects,A.BulletVfx,A.ImpactVfx,A.MuzzleVfx))return false;
         auto Bytes=EncodeAttack(A);if(Bytes.empty())return false;Child.Capabilities[AttackName]={Version,std::move(Bytes)};
         Child.Capabilities[ChainName]={Version,{}};

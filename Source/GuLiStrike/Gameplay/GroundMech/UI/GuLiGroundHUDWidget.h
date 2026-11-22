@@ -3,6 +3,7 @@
 #include "TimerManager.h"
 #include "Widgets/Layout/Anchors.h"
 #include "Gameplay/GroundMech/UI/GuLiGroundHUDData.h"
+#include "Gameplay/GroundMech/UI/GuLiAIEngineSight.h"
 #include "GuLiGroundHUDWidget.generated.h"
 class UCanvasPanel;
 class UBorder;
@@ -84,6 +85,7 @@ private:
     float ShotExpansion(double Now) const;
     void OpenModal(uint8 Mode);
     void UpdateReticle();
+    void AcceptedShot(float Age);
     void SelectMarker(const FGuLiGroundHUDMarker* Marker);
     UFUNCTION() void RefreshKeyLabels();
     UTextBlock* Text(const FString& Key,int32 Size=18);
@@ -150,6 +152,8 @@ private:
     TWeakObjectPtr<APawn> BoundPawn;
     FTimerHandle RefreshTimer;
     FDelegateHandle UrgentHandle,HitHandle,MotionHandle;
+    FDelegateHandle AIShotHandle;
+    FGuLiAIEngineSight AIOptics;
     TSharedPtr<SGuLiGroundReticle> Reticle;
     FVector2D MuzzlePoint=FVector2D::ZeroVector;
     bool bMuzzle=false,bKill=false,bRogueHidden=false,bReticleVisible=false;

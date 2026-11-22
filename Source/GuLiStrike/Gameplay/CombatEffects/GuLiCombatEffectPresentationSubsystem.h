@@ -51,6 +51,7 @@ struct FGuLiLocalCombatEffect
 	// Ground trace lives independently of the projectile's terminal state. No wire fields.
 	int32 GroundTrailVfxId=0;
 	float GroundTrailLength = 0, GroundTrailHold = 0, GroundTrailFade = 0, GroundTrailBend = 0, GroundTrailWidth = 0;
+    FLinearColor GroundTrailTint=FLinearColor::Transparent;
     bool bInstantGroundSegment=false;
 	int32 FrozenUnitTypeId=0;
 	FVector GroundTrailFacing = FVector::ZeroVector;

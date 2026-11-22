@@ -33,7 +33,7 @@ def preview_descriptions(row, template, effects, weapons):
     if row["Type"] == 3:
         definitions = [effects[ident] for ident in row["EffectIds"]]
         has_level_values = any(
-            effect["Handler"] in ("ground/explosive_package", "ground/explosive_enhancement", "ground/no_survivors")
+            effect["Handler"] in ("ground/explosive_package", "ground/explosive_enhancement", "ground/no_survivors", "ground/ai_engine", "ground/enhanced_bullet")
             for effect in definitions
         )
         levels = range(1, row["MaxAcquisitions"] + 1) if has_level_values else (1,)
@@ -53,6 +53,11 @@ def preview_descriptions(row, template, effects, weapons):
             config = weapons[str(effect["ConfigId"])]
             if handler == "ground/fire_rate":
                 values.append(config["FireRateBonusPercent"] * 100)
+            elif handler == "ground/ai_engine":
+                values.extend((float(config["LockSeconds"][level-1]),float(config["LockRangeCentimeters"][level-1])/100))
+            elif handler == "ground/enhanced_bullet" and config.get("BulletDamageMultipliers"):
+                values.extend(((float(config["BulletDamageMultipliers"][level-1])-1)*100,
+                               (1-float(config["BulletRateMultipliers"][level-1]))*100))
             elif handler == "ground/explosive_package":
                 values.extend((
                     float(config["ExplosiveIntervals"][level - 1]),

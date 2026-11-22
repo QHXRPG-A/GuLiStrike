@@ -56,6 +56,7 @@ void UGuLiCombatEffectPresentationSubsystem::ResolveGroundTrailConfiguration(FGu
 	if (Visual.State.Kind != EGuLiCombatEffectKind::LinearProjectile || Visual.State.Source.Kind != EGuLiTargetKind::GroundActor) return;
 	FGuLiStrikeVfxEffectsRow Row;
 	if (!UGuLiVfxRegistrySubsystem::Query(this, Visual.State.PlayerBulletVfxId, Row)) return;
+    if(!Row.TrailTintSRGB.IsEmpty())Visual.GroundTrailTint=FLinearColor(FColor::FromHex(Row.TrailTintSRGB));
 	Visual.GroundTrailVfxId=Row.PersistentTrailVfxId>0?Row.PersistentTrailVfxId:Visual.State.PlayerBulletVfxId;
     if(Row.PersistentTrailVfxId>0 && !UGuLiVfxRegistrySubsystem::Query(this,Row.PersistentTrailVfxId,Row))return;
     Visual.GroundTrailLength = Row.TrailLengthCm;

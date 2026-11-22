@@ -83,4 +83,8 @@ struct FGuLiStrikeVfxEffectsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
 	float RadiusAtUnitScaleCm = 0.0f;
 
+	/** TrailTintSRGB (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Effects")
+	FString TrailTintSRGB;
+
 };
