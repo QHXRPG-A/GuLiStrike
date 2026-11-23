@@ -9,20 +9,25 @@ OUT=ROOT/'Artifacts/CardArtworkPipeline/GroundMechFourCards_20261117'
 DEST='/Game/GuLiStrike/CardSystem/RevealDemo/Materials/M_CardArtwork_RegisteredSix_v1'
 
 
-def main(destination=None, normal_draw_order=None):
+def main(destination=None, normal_draw_order=None, masked_passes=(6,-3,4,5,3,2,1)):
     dest=destination or DEST
     order=list(normal_draw_order or [6,5,4,3,2,1])
     assert sorted(order)==list(range(1,7)), 'Expected each of the six layers once'
+    back = [abs(i) for i in masked_passes if i < 0]
+    assert len(back) == 1 and sorted(i for i in masked_passes if i > 0) == list(range(1, 7))
+    split_layer = back[0]
+    assert split_layer in range(1, 7) and masked_passes.index(-split_layer) < masked_passes.index(split_layer)
+    preset = f'RegisteredSixRigidLayer{split_layer}Mask'
     assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
     assert dest not in {p.get_name() for p in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()}
     lib,edit=unreal.EditorAssetLibrary,unreal.MaterialEditingLibrary
     material=unreal.load_asset(dest)
     if material:
-        assert lib.get_metadata_tag(material,'GuLi.CardArtwork.Template')=='RegisteredSixRigidLayer3Mask'
+        assert lib.get_metadata_tag(material,'GuLi.CardArtwork.Template')==preset
     else:
         material=unreal.AssetToolsHelpers.get_asset_tools().create_asset(dest.rsplit('/',1)[1],dest.rsplit('/',1)[0],unreal.Material,unreal.MaterialFactoryNew())
     assert material
-    lib.set_metadata_tag(material,'GuLi.CardArtwork.Template','RegisteredSixRigidLayer3Mask')
+    lib.set_metadata_tag(material,'GuLi.CardArtwork.Template',preset)
     edit.delete_all_material_expressions(material)
     material.set_editor_property('blend_mode',unreal.BlendMode.BLEND_MASKED)
     material.set_editor_property('shading_model',unreal.MaterialShadingModel.MSM_UNLIT)
@@ -46,7 +51,7 @@ def main(destination=None, normal_draw_order=None):
     assert edit.connect_material_expressions(delta,'',tangent,'Input') or edit.connect_material_expressions(delta,'',tangent,'')
     inputs={'UV':uv,'Camera':tangent,'Strength':scalar('Layers global depth',.75),
         'Travel':vector('Parallax Travel',(.02,.02,0,0)), 'TiltTangent':scalar('Parallax Tilt Tangent',.2867453858),
-        'Aperture':vector('Artwork Aperture',(0,0,1,1)), 'Split':scalar('Layer 3 Split Enabled',0)}
+        'Aperture':vector('Artwork Aperture',(0,0,1,1)), 'Split':scalar(f'Layer {split_layer} Split Enabled',0)}
     for i in range(1,7):
         inputs[f'T{i}']=node(unreal.MaterialExpressionTextureObjectParameter,parameter_name=f'Layer {i} Map',texture=white)
         inputs[f'D{i}']=scalar(f'Layer {i} Depth',0)
@@ -56,9 +61,10 @@ def main(destination=None, normal_draw_order=None):
     mask_path='/Game/GuLiStrike/CardSystem/RevealDemo/Textures/T_CardArtwork_WhiteMask'
     white_mask=unreal.load_asset(mask_path) or lib.duplicate_asset(white.get_path_name(),mask_path)
     assert white_mask
-    white_mask.set_editor_property('srgb',False)
-    white_mask.set_editor_property('compression_settings',unreal.TextureCompressionSettings.TC_MASKS)
-    assert lib.save_loaded_asset(white_mask,False)
+    if white_mask.get_editor_property('srgb') or white_mask.get_editor_property('compression_settings') != unreal.TextureCompressionSettings.TC_MASKS:
+        white_mask.set_editor_property('compression_settings',unreal.TextureCompressionSettings.TC_MASKS)
+        white_mask.set_editor_property('srgb',False)
+        assert lib.save_loaded_asset(white_mask,False)
     inputs['Mask']=node(unreal.MaterialExpressionTextureObjectParameter,parameter_name='Foreground Front Mask',texture=white_mask,sampler_type=unreal.MaterialSamplerType.SAMPLERTYPE_MASKS)
     full_aperture=node(unreal.MaterialExpressionAppendVector)
     assert edit.connect_material_expressions(inputs['Aperture'],'',full_aperture,'A')
@@ -69,13 +75,17 @@ def main(destination=None, normal_draw_order=None):
         code += [f'float2 p{i}=(UV.xy-0.5-B{i}.xy)/S{i}.xy+0.5-motion*D{i};',
             f'float4 c{i}=Texture2DSample(T{i},T{i}Sampler,saturate(p{i}));',
             f'c{i}.a*=O{i}*step(0,p{i}.x)*step(p{i}.x,1)*step(0,p{i}.y)*step(p{i}.y,1);']
-    code += ['float m=saturate(Texture2DSample(Mask,MaskSampler,saturate(p3)).r);', 'float3 normal=float3(0,0,0);']
+    code += [f'float m=saturate(Texture2DSample(Mask,MaskSampler,saturate(p{split_layer})).r);', 'float3 normal=float3(0,0,0);']
     for i in order:
         code.append(f'normal=lerp(normal,c{i}.rgb,c{i}.a);')
+    code.append('float3 split=float3(0,0,0);')
+    for plane in masked_passes:
+        i = abs(plane)
+        alpha = f'c{i}.a'
+        if i == split_layer:
+            alpha += '*(1-m)' if plane < 0 else '*m'
+        code.append(f'split=lerp(split,c{i}.rgb,{alpha});')
     code += [
-        'float3 split=c6.rgb*c6.a;', 'split=lerp(split,c3.rgb,c3.a*(1-m));',
-        'split=lerp(split,c4.rgb,c4.a);','split=lerp(split,c5.rgb,c5.a);','split=lerp(split,c3.rgb,c3.a*m);',
-        'split=lerp(split,c2.rgb,c2.a);','split=lerp(split,c1.rgb,c1.a);',
         'float3 color=lerp(normal,split,saturate(Split));',
         'float clip=step(Aperture.x,UV.x)*step(UV.x,Aperture.z)*step(Aperture.y,UV.y)*step(UV.y,Aperture.w);',
         'return float4(color,clip);']
@@ -92,8 +102,8 @@ def main(destination=None, normal_draw_order=None):
     assert edit.connect_material_property(rgb,'',unreal.MaterialProperty.MP_EMISSIVE_COLOR)
     assert edit.connect_material_property(alpha,'',unreal.MaterialProperty.MP_OPACITY_MASK)
     edit.recompile_material(material)
-    lib.set_metadata_tag(material,'GuLi.CardArtwork.Template','RegisteredSixRigidLayer3Mask')
     lib.set_metadata_tag(material,'GuLi.CardArtwork.DrawOrder',json.dumps(order))
+    lib.set_metadata_tag(material,'GuLi.CardArtwork.MaskedPasses',json.dumps(masked_passes))
     assert lib.save_loaded_asset(material,False)
     return {'success':True,'material':dest,'draw_order':order,'diagnostics':str(unreal.MaterialNodeService.get_material_diagnostics(dest)),
         'scalar_parameters':list(map(str,edit.get_scalar_parameter_names(material))),

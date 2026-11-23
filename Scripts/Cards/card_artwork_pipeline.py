@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "Tools/DataPipeline"))
-from card_artwork_catalog import TABLES, validate_catalog
+from card_artwork_catalog import GROUND_MASK_LAYERS, TABLES, validate_catalog
 
 DATA = "/Game/GuLiStrike/Data"
 REVIEW_MAP = "/Game/GuLiStrike/CardSystem/RevealDemo/Maps/LVL_CardArtworkCatalogReview"
@@ -161,7 +161,7 @@ def preflight(ids=None, require_native=False, mutation=False, reimport=False):
         masked = 'Foreground Front Mask' in names['Texture']
         expected = {'BlankPlaceholder': (False, False), 'ModelComicAtlasV9': (False, False), 'RegisteredSix': (True, False),
                     'RegisteredSixForegroundMask': (True, True), 'RegisteredSixRigid': (True, True),
-                    'RegisteredSixRigidLayer3Mask': (True, True)}[template['CompositePreset']]
+                    **dict.fromkeys(GROUND_MASK_LAYERS, (True, True))}[template['CompositePreset']]
         assert (independent, masked) == expected, 'Parent material does not implement the selected composite template'
         for key, (kind, _) in parameter_values(catalog, ident).items():
             assert key in names[kind], f"Artwork {ident}: {key} is not a {kind} parameter of its template"
@@ -346,7 +346,8 @@ def import_tables():
             changed = True
         assert isinstance(dt, unreal.DataTable) and dt.get_editor_property("row_struct") == struct, "Wrong row type: " + name
         if not _table_matches(dt, rows):
-            assert unreal.DataTableFunctionLibrary.fill_data_table_from_json_string(dt, json.dumps(rows, ensure_ascii=False), struct), name
+            problems = unreal.GuLiDataTableImportLibrary.update_from_json(dt, json.dumps(rows, ensure_ascii=False))
+            assert not problems, f"{name}: {list(problems)}"
             changed = True
         assert _table_matches(dt, rows), "DataTable readback mismatch: " + name
         if changed:
@@ -508,7 +509,7 @@ def execute(action="preflight", ids=None, reimport=False, run_id=None):
             assert ids, "review requires --ids"
             _, review_catalog, _ = load_catalog()
             selected_ids(review_catalog, ids)
-            ground_frame = review_catalog['templates'][review_catalog['artworks'][ids[0]]['TemplateId']]['CompositePreset'] == 'RegisteredSixRigidLayer3Mask'
+            ground_frame = review_catalog['templates'][review_catalog['artworks'][ids[0]]['TemplateId']]['CompositePreset'] in GROUND_MASK_LAYERS
             if len(ids) == 1 and not ground_frame:
                 report["review"] = prepare_review(ids[0])
             else:

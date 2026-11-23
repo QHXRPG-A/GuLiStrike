@@ -47,6 +47,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | development | done | 2026-11-23 |
+| [游骑兵增伤与折射会话结项](../Archive/20261123-游骑兵增伤与折射会话结项.md) | archive | recorded | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐及沙漏牌面接入](../Archive/20261123-已开发肉鸽牌与关系图对齐.md) | archive | recorded | 2026-11-23 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
 | [游骑兵引擎路线图标配色](../Archive/20261121-游骑兵引擎路线图标配色.md) | archive | recorded | 2026-11-21 |
@@ -199,6 +203,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵「增强持续伤害」六层视差牌面](../Archive/20261123-增强持续伤害六层视差牌面.md) | archive | recorded | 2026-11-23 |
+| [游骑兵「增强持续伤害」牌面与独立图标](../Archive/20261123-增强持续伤害牌面与独立图标.md) | archive | recorded | 2026-11-23 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
 | [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | development | done | 2026-11-21 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
@@ -502,13 +508,23 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
+| [游骑兵范围与持续增伤](../RequirementDocument/20261123-游骑兵范围与持续增伤.md) | requirement | approved | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
 | [肉鸽牌等级 GM 命令](../RequirementDocument/20261123-肉鸽牌等级GM命令.md) | requirement | approved | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
 | [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | development | done | 2026-11-23 |
+| [游骑兵范围与持续增伤](../DevelopmentDocumentation/20261123-游骑兵范围与持续增伤.md) | development | done | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | development | done | 2026-11-23 |
 | [肉鸽牌等级 GM 命令](../DevelopmentDocumentation/20261123-肉鸽牌等级GM命令.md) | development | done | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | development | done | 2026-11-23 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | done | 2026-11-23 |
+| [游骑兵增伤与折射会话结项](../Archive/20261123-游骑兵增伤与折射会话结项.md) | archive | recorded | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐及沙漏牌面接入](../Archive/20261123-已开发肉鸽牌与关系图对齐.md) | archive | recorded | 2026-11-23 |
+| [游骑兵两张分类增伤卡接入](../Archive/20261123-游骑兵两张分类增伤卡接入.md) | archive | recorded | 2026-11-23 |
+| [游骑兵「增强持续伤害」六层视差牌面](../Archive/20261123-增强持续伤害六层视差牌面.md) | archive | recorded | 2026-11-23 |
+| [游骑兵「增强持续伤害」牌面与独立图标](../Archive/20261123-增强持续伤害牌面与独立图标.md) | archive | recorded | 2026-11-23 |
 | [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
 | [游骑兵电磁弧枪口端点](../Archive/20261123-游骑兵电磁弧枪口端点.md) | archive | recorded | 2026-11-23 |
 | [游骑兵 PIE 开局崩溃修复](../Archive/20261123-游骑兵PIE开局崩溃修复.md) | archive | recorded | 2026-11-23 |
@@ -525,7 +541,6 @@
 | [游骑兵人工智能引擎 HUD 结项](../Archive/20261122-游骑兵人工智能引擎HUD结项.md) | archive | recorded | 2026-11-22 |
 | [游骑兵人工智能引擎 HUD 首版接入](../Archive/20261122-人工智能引擎HUD首版接入.md) | archive | recorded | 2026-11-22 |
 | [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-21 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | done | 2026-11-21 |
 | [关系图补齐现有肉鸽牌美术](../Archive/20261121-关系图补齐现有肉鸽牌美术.md) | archive | recorded | 2026-11-21 |
 | [关系图嵌入游骑兵五张牌面与图标](../Archive/20261121-关系图嵌入游骑兵五张牌面与图标.md) | archive | recorded | 2026-11-21 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
@@ -838,7 +853,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
 | [指挥官掉线后无双接管Mass失败实测](../Archive/20261116-指挥官掉线Mass接管失败实测.md) | archive | recorded | 2026-11-16 |
@@ -1238,8 +1253,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
+| [游骑兵范围与持续增伤](../RequirementDocument/20261123-游骑兵范围与持续增伤.md) | requirement | approved | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | development | done | 2026-11-23 |
+| [游骑兵范围与持续增伤](../DevelopmentDocumentation/20261123-游骑兵范围与持续增伤.md) | development | done | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | development | done | 2026-11-23 |
+| [游骑兵增伤与折射会话结项](../Archive/20261123-游骑兵增伤与折射会话结项.md) | archive | recorded | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐及沙漏牌面接入](../Archive/20261123-已开发肉鸽牌与关系图对齐.md) | archive | recorded | 2026-11-23 |
+| [游骑兵两张分类增伤卡接入](../Archive/20261123-游骑兵两张分类增伤卡接入.md) | archive | recorded | 2026-11-23 |
 | [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
 | [游骑兵 PIE 开局崩溃修复](../Archive/20261123-游骑兵PIE开局崩溃修复.md) | archive | recorded | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../Archive/20261123-游骑兵肉鸽卡牌与武器解耦.md) | archive | recorded | 2026-11-23 |
@@ -1634,19 +1656,26 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
+| [游骑兵范围与持续增伤](../RequirementDocument/20261123-游骑兵范围与持续增伤.md) | requirement | approved | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
 | [肉鸽牌等级 GM 命令](../RequirementDocument/20261123-肉鸽牌等级GM命令.md) | requirement | approved | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
 | [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-23 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | development | done | 2026-11-23 |
+| [游骑兵范围与持续增伤](../DevelopmentDocumentation/20261123-游骑兵范围与持续增伤.md) | development | done | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | development | done | 2026-11-23 |
 | [肉鸽牌等级 GM 命令](../DevelopmentDocumentation/20261123-肉鸽牌等级GM命令.md) | development | done | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | development | done | 2026-11-23 |
+| [游骑兵增伤与折射会话结项](../Archive/20261123-游骑兵增伤与折射会话结项.md) | archive | recorded | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐及沙漏牌面接入](../Archive/20261123-已开发肉鸽牌与关系图对齐.md) | archive | recorded | 2026-11-23 |
+| [游骑兵两张分类增伤卡接入](../Archive/20261123-游骑兵两张分类增伤卡接入.md) | archive | recorded | 2026-11-23 |
 | [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
 | [游骑兵 PIE 开局崩溃修复](../Archive/20261123-游骑兵PIE开局崩溃修复.md) | archive | recorded | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../Archive/20261123-游骑兵肉鸽卡牌与武器解耦.md) | archive | recorded | 2026-11-23 |
 | [肉鸽牌等级 GM 命令](../Archive/20261123-肉鸽牌等级GM命令.md) | archive | recorded | 2026-11-23 |
 | [游骑兵多目标锁定与电磁弹道接入](../Archive/20261122-游骑兵分裂枪管与电磁技术.md) | archive | recorded | 2026-11-23 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
 | [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-16 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
@@ -2431,7 +2460,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [巡天命名统一](../Archive/20261103-巡天命名统一.md) | archive | recorded | 2026-11-03 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
 | [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-10-22 |
@@ -2559,8 +2588,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | development | done | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | development | done | 2026-11-23 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | done | 2026-11-23 |
+| [游骑兵增伤与折射会话结项](../Archive/20261123-游骑兵增伤与折射会话结项.md) | archive | recorded | 2026-11-23 |
+| [已开发肉鸽牌与关系图对齐及沙漏牌面接入](../Archive/20261123-已开发肉鸽牌与关系图对齐.md) | archive | recorded | 2026-11-23 |
+| [游骑兵「增强持续伤害」六层视差牌面](../Archive/20261123-增强持续伤害六层视差牌面.md) | archive | recorded | 2026-11-23 |
+| [游骑兵「增强持续伤害」牌面与独立图标](../Archive/20261123-增强持续伤害牌面与独立图标.md) | archive | recorded | 2026-11-23 |
 | [游骑兵多目标锁定与电磁弹道接入](../Archive/20261122-游骑兵分裂枪管与电磁技术.md) | archive | recorded | 2026-11-23 |
 | [游骑兵人工智能引擎与锁定 HUD](../RequirementDocument/20261122-游骑兵人工智能引擎锁定HUD.md) | requirement | approved | 2026-11-22 |
 | [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | development | done | 2026-11-22 |
@@ -2568,7 +2604,6 @@
 | [游骑兵人工智能引擎 HUD 首版接入](../Archive/20261122-人工智能引擎HUD首版接入.md) | archive | recorded | 2026-11-22 |
 | [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-21 |
 | [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | development | done | 2026-11-21 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | done | 2026-11-21 |
 | [游骑兵实战选牌整卡响应](../Archive/20261121-游骑兵实战选牌整卡响应.md) | archive | recorded | 2026-11-21 |
 | [游骑兵牌面整卡视差响应](../Archive/20261121-游骑兵牌面整卡视差响应.md) | archive | recorded | 2026-11-21 |
 | [游骑兵五张牌面与图标正式入库](../Archive/20261121-游骑兵五张牌面与图标正式入库.md) | archive | recorded | 2026-11-21 |
@@ -2816,9 +2851,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | development | done | 2026-11-19 |
 | [游骑兵无人生还结项与项目同步](../Archive/20261119-游骑兵无人生还结项与项目同步.md) | archive | recorded | 2026-11-19 |
@@ -2970,7 +3005,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |

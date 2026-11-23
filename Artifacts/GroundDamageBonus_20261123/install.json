@@ -1,0 +1,166 @@
+{
+  "icon": [
+    {
+      "id": 19,
+      "path": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_DamageOverTime.T_GroundIcon_DamageOverTime",
+      "source": "ArtSource/UI/GroundMechRogueCards/DamageOverTime_20261123_v1/增强持续伤害_图标_V1.png",
+      "sha256": "57d230d72731db650e783396a1cc1ed110dc284509b58f0a7d236938175f554a",
+      "size": [
+        256,
+        256
+      ],
+      "max_texture_size": 256,
+      "compression": "<TextureCompressionSettings.TC_EDITOR_ICON: 7>",
+      "lod_group": "<TextureGroup.TEXTUREGROUP_UI: 16>",
+      "alpha_preserved": true
+    }
+  ],
+  "tables": {
+    "DT_GuLiStrikeIcons_Icons": [
+      "DamageOverTime"
+    ],
+    "DT_GuLiStrikeGameTexts_Texts": [
+      "Card.GroundMech.EnhancedAOE.Title",
+      "Card.GroundMech.EnhancedAOE.Description",
+      "Card.GroundMech.DamageOverTime.Title",
+      "Card.GroundMech.DamageOverTime.Description"
+    ],
+    "DT_GuLiStrikeRogueCards_GroundWeaponEffects": [
+      "GroundEnhancedAOE",
+      "GroundDamageOverTime"
+    ],
+    "DT_GuLiStrikeRogueCards_Effects": [
+      "GroundEnhancedAOE",
+      "GroundDamageOverTime"
+    ],
+    "DT_GuLiStrikeRogueCards_Cards": [
+      "GroundMech_EnhancedAOE_Lv1",
+      "GroundMech_DamageOverTime_Lv1"
+    ]
+  },
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "entities": {
+      "GroundRogue_Entry": {
+        "class": "TargetPoint",
+        "position": [
+          -2800.0,
+          54000.0,
+          1149.04
+        ]
+      },
+      "GroundBuff_Health750": {
+        "class": "GuLiCommanderDeploymentPoint",
+        "position": [
+          -5250.0,
+          51750.0,
+          905.0
+        ],
+        "team": "<GuLiTeam.BLUE: 2>",
+        "initial_max_health_override": 750.0,
+        "initial_shield": 0.0,
+        "use_in_population_manifest": true,
+        "start_idle": true
+      },
+      "GroundBuff_Shield250": {
+        "class": "GuLiCommanderDeploymentPoint",
+        "position": [
+          -7050.0,
+          51750.0,
+          905.0
+        ],
+        "team": "<GuLiTeam.BLUE: 2>",
+        "initial_max_health_override": 1000.0,
+        "initial_shield": 250.0,
+        "use_in_population_manifest": true,
+        "start_idle": true
+      },
+      "GroundBuff_LargeBurnHost": {
+        "class": "GuLiCommanderDeploymentPoint",
+        "position": [
+          -19650.0,
+          54000.0,
+          905.0
+        ],
+        "team": "<GuLiTeam.BLUE: 2>",
+        "initial_max_health_override": 3000.0,
+        "initial_shield": 0.0,
+        "use_in_population_manifest": true,
+        "start_idle": true
+      },
+      "GroundBuff_FriendlyInBurst": {
+        "class": "GuLiCommanderDeploymentPoint",
+        "position": [
+          -19650.0,
+          56250.0,
+          905.0
+        ],
+        "team": "<GuLiTeam.RED: 1>",
+        "initial_max_health_override": 1000.0,
+        "initial_shield": 0.0,
+        "use_in_population_manifest": true,
+        "start_idle": true
+      },
+      "GroundDamageBonuses_Review": {
+        "class": "Note",
+        "position": [
+          -5250.0,
+          51750.0,
+          1005.0
+        ]
+      }
+    }
+  },
+  "manifests": {
+    "RuntimeManifest-200.json": {
+      "catalog_sha256": "f45d5689b25dabb9f16b6b358d9070b28269e359086e0dc784cb2bcdd5f2efae",
+      "card_count": 13,
+      "field_damage_traits": {
+        "admit/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv2/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv3/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv4/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv5/7:Barrage": 1
+      },
+      "card_ids": [
+        "17.01",
+        "18.01"
+      ],
+      "config_hash": "8675fd120b4b23d83f3ac6ac00e42d9605450fa03b710c87741a27155321455f"
+    },
+    "RuntimeManifest-600.json": {
+      "catalog_sha256": "f45d5689b25dabb9f16b6b358d9070b28269e359086e0dc784cb2bcdd5f2efae",
+      "card_count": 13,
+      "field_damage_traits": {
+        "admit/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv2/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv3/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv4/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv5/7:Barrage": 1
+      },
+      "card_ids": [
+        "17.01",
+        "18.01"
+      ],
+      "config_hash": "cb4cef2bd12ed8f39c95f62bd402cef4c6c072a4e51e5793c33d4f8d09733c00"
+    },
+    "RuntimeManifest-NoSurvivors.json": {
+      "catalog_sha256": "f45d5689b25dabb9f16b6b358d9070b28269e359086e0dc784cb2bcdd5f2efae",
+      "card_count": 13,
+      "field_damage_traits": {
+        "admit/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv2/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv3/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv4/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv5/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/23:GroundNoSurvivors_Trial/7:Barrage": 1
+      },
+      "card_ids": [
+        "17.01",
+        "18.01"
+      ],
+      "config_hash": "36cc51f180d7f6732be1ebe8dbe102e567ce2e198ad34eb33505a45bd8f3b416"
+    }
+  },
+  "success": true
+}

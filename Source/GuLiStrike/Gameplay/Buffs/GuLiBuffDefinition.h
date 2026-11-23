@@ -25,6 +25,7 @@ public:
     virtual bool Build(const FGuLiStrikeBuffsBuffsRow&,GuLiNet::Buffs::Definition&,FString&) const;
     virtual float PreviewSeconds(const GuLiNet::Buffs::Definition&) const;
     static bool Load(int32 Id,GuLiNet::Buffs::Definition&,FString&);
+    static bool LoadRanks(int32 Id,std::vector<GuLiNet::Buffs::Definition>&,FString&);
 };
 UCLASS()
 class GULISTRIKE_API UGuLiBurningBuffHandler final : public UGuLiBuffHandler

@@ -2,10 +2,50 @@
   {
     "Name": "Burning",
     "Id": 1,
-    "Note": "伤害不受折射直接伤害倍率影响",
+    "Note": "第1级，每跳取目标最大生命值。",
+    "DurationSeconds": 8.0,
+    "TickIntervalSeconds": 1.0,
+    "MaxHealthDamageRatio": 0.02,
+    "StatusVfxId": 59,
+    "BulletVfxId": 61
+  },
+  {
+    "Name": "Burning_Rank2",
+    "Id": 2,
+    "Note": "第2级，每跳取目标最大生命值。",
+    "DurationSeconds": 8.0,
+    "TickIntervalSeconds": 1.0,
+    "MaxHealthDamageRatio": 0.03,
+    "StatusVfxId": 59,
+    "BulletVfxId": 61
+  },
+  {
+    "Name": "Burning_Rank3",
+    "Id": 3,
+    "Note": "第3级，每跳取目标最大生命值。",
     "DurationSeconds": 8.0,
     "TickIntervalSeconds": 1.0,
     "MaxHealthDamageRatio": 0.05,
+    "StatusVfxId": 59,
+    "BulletVfxId": 61
+  },
+  {
+    "Name": "Burning_Rank4",
+    "Id": 4,
+    "Note": "第4级，每跳取目标最大生命值。",
+    "DurationSeconds": 8.0,
+    "TickIntervalSeconds": 1.0,
+    "MaxHealthDamageRatio": 0.06,
+    "StatusVfxId": 59,
+    "BulletVfxId": 61
+  },
+  {
+    "Name": "Burning_Rank5",
+    "Id": 5,
+    "Note": "第5级，每跳取目标最大生命值。",
+    "DurationSeconds": 8.0,
+    "TickIntervalSeconds": 1.0,
+    "MaxHealthDamageRatio": 0.08,
     "StatusVfxId": 59,
     "BulletVfxId": 61
   }

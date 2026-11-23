@@ -58,6 +58,8 @@ def passes_for(template, params):
         return [6, 5, 4, 1, 2, 3], None
     if template == "RegisteredSixForegroundMask":
         return [6, 4, 5, -1, 3, 1, 2], 1
+    if params.get("Layer 2 Split Enabled", {}).get("ScalarValue"):
+        return [6, 5, -2, 3, 4, 2, 1], 2
     if params.get("Layer 3 Split Enabled", {}).get("ScalarValue"):
         return [6, -3, 4, 5, 3, 2, 1], 3
     if params.get("Ring Occlusion Enabled", {}).get("ScalarValue"):

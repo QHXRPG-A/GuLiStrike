@@ -73,7 +73,7 @@ def main():
     mesh.set_mobility(unreal.ComponentMobility.STATIC);mesh.set_collision_profile_name('BlockAll')
     mesh.set_collision_enabled(unreal.CollisionEnabled.QUERY_AND_PHYSICS)
     note=get('GroundBuff_Instructions',unreal.Note,(-2800,54000,1200))
-    note.set_editor_property('text','Red Ground：F4 先取灼烧子弹，再取灼烧爆裂子弹；折射可重复获取。\n'
+    note.set_editor_property('text','红队游骑兵在 F4 取得强化子弹，灼烧子弹二级解锁灼烧爆裂子弹，灼烧爆裂三级解锁折射。三张牌各有五级。\n'
         '东侧原折射群；南侧750生命/250护盾靶；西侧大型宿主、薄墙后的敌人及友军。\n'
         '爆裂从首次启用后独立2秒计时，刷新不重置；按8秒边界观察。\n'
         '助手仅保存与回读场景，未运行PIE；画面、伤害与迁移重试由玩家验收。')

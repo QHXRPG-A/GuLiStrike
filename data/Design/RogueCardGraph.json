@@ -1,13 +1,17 @@
 {
   "schema": 2,
-  "savedAt": "2026-11-22T15:25:06.457081+00:00",
+  "savedAt": "2026-11-23T14:27:26.523502+00:00",
   "base": {
-    "fingerprint": "60fbb5b852a2a35c239a797e5a945f836cb7024a8efe0731d60bca35ad0fd301",
+    "fingerprint": "24d8db027a6250e8cb6fd182b985e96cb8dd02e5b42270315a50792201aa6420",
     "sources": {
       "cards": "data/Json/DT_GuLiStrikeRogueCards_Cards.json",
       "texts": "data/Json/DT_GuLiStrikeGameTexts_Texts.json",
       "effects": "data/Json/DT_GuLiStrikeRogueCards_Effects.json",
-      "weapons": "data/Json/DT_GuLiStrikeRogueCards_GroundWeaponEffects.json"
+      "weapons": "data/Json/DT_GuLiStrikeRogueCards_GroundWeaponEffects.json",
+      "ricochet": "data/Json/DT_GuLiStrikeRogueCards_GroundRicochet.json",
+      "buffs": "data/Json/DT_GuLiStrikeBuffs_Buffs.json",
+      "burning": "data/Json/DT_GuLiStrikeBuffs_Burning.json",
+      "burning_burst": "data/Json/DT_GuLiStrikeBuffs_BurningBurst.json"
     },
     "cards": [
       {
@@ -44,25 +48,25 @@
         "id": "06.01",
         "seat": "Ground",
         "title": "折射子弹",
-        "description": "游骑兵 普攻折射-{0}"
+        "description": "游骑兵 折射{1}个额外目标，每个受{2}%普攻伤害"
       },
       {
         "id": "07.01",
         "seat": "Ground",
         "title": "灼烧子弹",
-        "description": "游骑兵 普攻附加灼烧-{0}"
+        "description": "游骑兵 灼烧{2}秒，每{3}秒造成{1}%最大生命伤害"
       },
       {
         "id": "08.01",
         "seat": "Ground",
         "title": "灼烧爆裂子弹",
-        "description": "游骑兵 灼烧每隔一段时间发生爆燃"
+        "description": "游骑兵 每{3}秒爆燃，{1}%已损生命伤害，半径{4}米"
       },
       {
         "id": "09.01",
         "seat": "Ground",
         "title": "增加攻速",
-        "description": "游骑兵 普攻攻速+{1}% · {0}级"
+        "description": "游骑兵 普攻攻速+{1}%（累计+{2}%）"
       },
       {
         "id": "10.01",
@@ -105,6 +109,18 @@
         "seat": "Ground",
         "title": "电磁技术",
         "description": "游骑兵 电磁瞬击，减速 {1}% 持续 {2} 秒，对盾 +{3}%"
+      },
+      {
+        "id": "17.01",
+        "seat": "Ground",
+        "title": "增强AOE",
+        "description": "游骑兵 范围伤害+{1}%（累计+{2}%）"
+      },
+      {
+        "id": "18.01",
+        "seat": "Ground",
+        "title": "增强持续伤害",
+        "description": "游骑兵 持续伤害+{1}%（累计+{2}%）"
       }
     ],
     "links": [
@@ -120,8 +136,9 @@
       },
       {
         "kind": "requires",
-        "source": "10.01",
-        "target": "06.01"
+        "source": "08.01",
+        "target": "06.01",
+        "minLevel": 3
       },
       {
         "kind": "requires",
@@ -131,7 +148,8 @@
       {
         "kind": "requires",
         "source": "07.01",
-        "target": "08.01"
+        "target": "08.01",
+        "minLevel": 2
       },
       {
         "kind": "requires",
@@ -243,11 +261,15 @@
           "Card.GroundMech.Ricochet.Title",
           "Card.GroundMech.Ricochet.Description"
         ],
-        "descriptionTemplate": "<Unit>游骑兵</> <Gain>普攻折射-{0}</>",
-        "note": "个人本局普攻折射；每次获取随机区间整体+1；首次命中点周围50米三维球；牌面显示取得后等级。",
-        "maxAcquisitions": 0,
+        "descriptionTemplate": "<Unit>游骑兵</> <Gain>折射{1}个额外目标</>，每个受<Gain>{2}%普攻伤害</>",
+        "note": "个人本局普攻折射，五级分别确定额外目标数和每目标伤害比例。",
+        "maxAcquisitions": 5,
         "previews": [
-          "游骑兵 普攻折射-1"
+          "游骑兵 折射1个额外目标，每个受30%普攻伤害",
+          "游骑兵 折射2个额外目标，每个受40%普攻伤害",
+          "游骑兵 折射2个额外目标，每个受50%普攻伤害",
+          "游骑兵 折射3个额外目标，每个受60%普攻伤害",
+          "游骑兵 折射3个额外目标，每个受80%普攻伤害"
         ],
         "handlers": [
           "ricochet"
@@ -259,11 +281,15 @@
           "Card.GroundMech.BurningBullet.Title",
           "Card.GroundMech.BurningBullet.Description"
         ],
-        "descriptionTemplate": "<Unit>游骑兵</> 普攻附加<Gain>灼烧-{0}</>",
-        "note": "有效普攻和折射命中施加单份灼烧；刷新8秒，不重置周期。",
-        "maxAcquisitions": 1,
+        "descriptionTemplate": "<Unit>游骑兵</> 灼烧<Gain>{2}秒</>，每{3}秒造成<Gain>{1}%最大生命伤害</>",
+        "note": "五级命中灼烧。按当前最大生命值跳伤，同一目标刷新持续时间并沿用原跳伤时刻。",
+        "maxAcquisitions": 5,
         "previews": [
-          "游骑兵 普攻附加灼烧-1"
+          "游骑兵 灼烧8秒，每1秒造成2%最大生命伤害",
+          "游骑兵 灼烧8秒，每1秒造成3%最大生命伤害",
+          "游骑兵 灼烧8秒，每1秒造成5%最大生命伤害",
+          "游骑兵 灼烧8秒，每1秒造成6%最大生命伤害",
+          "游骑兵 灼烧8秒，每1秒造成8%最大生命伤害"
         ],
         "handlers": [
           "buff/on_hit"
@@ -275,11 +301,15 @@
           "Card.GroundMech.BurningBurst.Title",
           "Card.GroundMech.BurningBurst.Description"
         ],
-        "descriptionTemplate": "<Unit>游骑兵</> 灼烧每隔一段时间发生<Gain>爆燃</>",
-        "note": "爆裂独立2秒计时；刷新不重置；一次爆裂冻结统一伤害及目标。",
-        "maxAcquisitions": 1,
+        "descriptionTemplate": "<Unit>游骑兵</> 每{3}秒爆燃，<Gain>{1}%已损生命伤害</>，半径<Gain>{4}米</>",
+        "note": "灼烧子弹二级解锁。五级分别确定爆燃伤害比例与实际半径。",
+        "maxAcquisitions": 5,
         "previews": [
-          "游骑兵 灼烧每隔一段时间发生爆燃"
+          "游骑兵 每2秒爆燃，2%已损生命伤害，半径5米",
+          "游骑兵 每2秒爆燃，3%已损生命伤害，半径5.5米",
+          "游骑兵 每2秒爆燃，5%已损生命伤害，半径5.5米",
+          "游骑兵 每2秒爆燃，9%已损生命伤害，半径6米",
+          "游骑兵 每2秒爆燃，12%已损生命伤害，半径6.5米"
         ],
         "handlers": [
           "buff/on_hit"
@@ -291,11 +321,15 @@
           "Card.GroundMech.FireRate.Title",
           "Card.GroundMech.FireRate.Description"
         ],
-        "descriptionTemplate": "<Unit>游骑兵</> <Gain>普攻攻速+{1}% · {0}级</>",
+        "descriptionTemplate": "<Unit>游骑兵</> 普攻攻速<Gain>+{1}%</>（累计<Gain>+{2}%</>）",
         "note": "游骑兵个人本局：增加攻速；候选显示取得后等级。",
         "maxAcquisitions": 5,
         "previews": [
-          "游骑兵 普攻攻速+8% · 1级"
+          "游骑兵 普攻攻速+8%（累计+8%）",
+          "游骑兵 普攻攻速+8%（累计+16.64%）",
+          "游骑兵 普攻攻速+8%（累计+25.97%）",
+          "游骑兵 普攻攻速+8%（累计+36.05%）",
+          "游骑兵 普攻攻速+8%（累计+46.93%）"
         ],
         "handlers": [
           "ground/fire_rate"
@@ -431,6 +465,46 @@
         ],
         "handlers": [
           "ground/electromagnetic"
+        ]
+      },
+      "17.01": {
+        "rowName": "GroundMech_EnhancedAOE_Lv1",
+        "textIds": [
+          "Card.GroundMech.EnhancedAOE.Title",
+          "Card.GroundMech.EnhancedAOE.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> <Gain>范围伤害+{1}%</>（累计<Gain>+{2}%</>）",
+        "note": "游骑兵个人本局，五级范围伤害逐级累加",
+        "maxAcquisitions": 5,
+        "previews": [
+          "游骑兵 范围伤害+6%（累计+6%）",
+          "游骑兵 范围伤害+6%（累计+12%）",
+          "游骑兵 范围伤害+6%（累计+18%）",
+          "游骑兵 范围伤害+8%（累计+26%）",
+          "游骑兵 范围伤害+12%（累计+38%）"
+        ],
+        "handlers": [
+          "ground/damage_bonus"
+        ]
+      },
+      "18.01": {
+        "rowName": "GroundMech_DamageOverTime_Lv1",
+        "textIds": [
+          "Card.GroundMech.DamageOverTime.Title",
+          "Card.GroundMech.DamageOverTime.Description"
+        ],
+        "descriptionTemplate": "<Unit>游骑兵</> <Gain>持续伤害+{1}%</>（累计<Gain>+{2}%</>）",
+        "note": "游骑兵个人本局，五级持续伤害逐级累加",
+        "maxAcquisitions": 5,
+        "previews": [
+          "游骑兵 持续伤害+2%（累计+2%）",
+          "游骑兵 持续伤害+2%（累计+4%）",
+          "游骑兵 持续伤害+4%（累计+8%）",
+          "游骑兵 持续伤害+4%（累计+12%）",
+          "游骑兵 持续伤害+6%（累计+18%）"
+        ],
+        "handlers": [
+          "ground/damage_bonus"
         ]
       }
     }
@@ -800,7 +874,7 @@
         }
       },
       {
-        "id": "draft-3f4be030-0a25-43fa-baf2-ab56f1eebddf",
+        "id": "18.01",
         "seat": "Ground",
         "title": "增强持续伤害",
         "description": "提高同一效果按周期结算的伤害，包括灼烧、吸取和叹息狂涌。下列为每级新增，累计持续增伤为2%、4%、8%、12%、18%。一份伤害同时属于范围与持续时，两张牌各自的累计倍率相乘。",
@@ -816,7 +890,7 @@
         }
       },
       {
-        "id": "draft-c36c227b-ba6f-4ac4-8c16-d9e80c20de27",
+        "id": "17.01",
         "seat": "Ground",
         "title": "增强AOE",
         "description": "提高按作用区域结算的伤害。旺斯特自毁程序1、2级的爆炸获得加成，3至5级半径为0m，每架按单体命中结算。下列为每级新增，累计范围增伤为6%、12%、18%、26%、38%。",
@@ -1165,44 +1239,6 @@
         ],
         "DisabledCardIds": [],
         "StopAcquisitionCardIds": []
-      },
-      {
-        "id": "draft-3f4be030-0a25-43fa-baf2-ab56f1eebddf",
-        "seat": "Ground",
-        "title": "增强持续伤害",
-        "description": "提高同一效果按周期结算的伤害，包括灼烧、吸取和叹息狂涌。下列为每级新增，累计持续增伤为2%、4%、8%、12%、18%。一份伤害同时属于范围与持续时，两张牌各自的累计倍率相乘。",
-        "maxLevel": 5,
-        "levelEffects": {
-          "1": "持续伤害+2%",
-          "2": "持续伤害+2%",
-          "3": "持续伤害+4%",
-          "4": "持续伤害+4%",
-          "5": "持续伤害+6%"
-        },
-        "RequiredCardIds": [],
-        "RequiredCardLevels": [],
-        "ExcludedCardIds": [],
-        "DisabledCardIds": [],
-        "StopAcquisitionCardIds": []
-      },
-      {
-        "id": "draft-c36c227b-ba6f-4ac4-8c16-d9e80c20de27",
-        "seat": "Ground",
-        "title": "增强AOE",
-        "description": "提高按作用区域结算的伤害。旺斯特自毁程序1、2级的爆炸获得加成，3至5级半径为0m，每架按单体命中结算。下列为每级新增，累计范围增伤为6%、12%、18%、26%、38%。",
-        "maxLevel": 5,
-        "levelEffects": {
-          "1": "范围伤害+6%",
-          "2": "范围伤害+6%",
-          "3": "范围伤害+6%",
-          "4": "范围伤害+8%",
-          "5": "范围伤害+12%"
-        },
-        "RequiredCardIds": [],
-        "RequiredCardLevels": [],
-        "ExcludedCardIds": [],
-        "DisabledCardIds": [],
-        "StopAcquisitionCardIds": []
       }
     ],
     "removed": [],
@@ -1217,16 +1253,16 @@
         ],
         "fields": {
           "description": {
-            "before": "游骑兵 普攻折射-{0}",
+            "before": "游骑兵 折射{1}个额外目标，每个受{2}%普攻伤害",
             "after": "直接前置为灼烧爆裂子弹。子弹从普攻命中的敌人折射到其他敌人。使用恶魔引擎时，从普攻直接吸取的单位向其他敌人折射吸取。折射数量只计额外目标，每个折射目标的伤害都取本次普攻伤害的当级比例，吸取时按每跳计算。"
-          },
-          "maxLevel": {
-            "before": 0,
-            "after": 5
           },
           "levelEffects": {
             "before": {
-              "1": "游骑兵 普攻折射-1"
+              "1": "游骑兵 折射1个额外目标，每个受30%普攻伤害",
+              "2": "游骑兵 折射2个额外目标，每个受40%普攻伤害",
+              "3": "游骑兵 折射2个额外目标，每个受50%普攻伤害",
+              "4": "游骑兵 折射3个额外目标，每个受60%普攻伤害",
+              "5": "游骑兵 折射3个额外目标，每个受80%普攻伤害"
             },
             "after": {
               "1": "折射数量+1，共1个额外目标，每个受到普攻伤害的30%",
@@ -1235,20 +1271,6 @@
               "4": "折射数量+1，共3个额外目标，每个受到普攻伤害的60%",
               "5": "共3个额外目标，每个受到普攻伤害的80%"
             }
-          },
-          "RequiredCardIds": {
-            "before": [
-              "10.01"
-            ],
-            "after": [
-              "08.01"
-            ]
-          },
-          "RequiredCardLevels": {
-            "before": [],
-            "after": [
-              "3"
-            ]
           }
         }
       },
@@ -1262,16 +1284,16 @@
         ],
         "fields": {
           "description": {
-            "before": "游骑兵 普攻附加灼烧-{0}",
+            "before": "游骑兵 灼烧{2}秒，每{3}秒造成{1}%最大生命伤害",
             "after": "普攻或折射命中敌人时施加8秒灼烧。使用恶魔引擎时，直接吸取和折射吸取命中的敌人都会附上灼烧。首次在第1秒结算，重复命中刷新至8秒，同一目标只保留一份灼烧，沿用原来的跳伤计时。 折射吸取附加的灼烧也按该目标当时的最大生命值计算。"
-          },
-          "maxLevel": {
-            "before": 1,
-            "after": 5
           },
           "levelEffects": {
             "before": {
-              "1": "游骑兵 普攻附加灼烧-1"
+              "1": "游骑兵 灼烧8秒，每1秒造成2%最大生命伤害",
+              "2": "游骑兵 灼烧8秒，每1秒造成3%最大生命伤害",
+              "3": "游骑兵 灼烧8秒，每1秒造成5%最大生命伤害",
+              "4": "游骑兵 灼烧8秒，每1秒造成6%最大生命伤害",
+              "5": "游骑兵 灼烧8秒，每1秒造成8%最大生命伤害"
             },
             "after": {
               "1": "每秒造成目标当时最大生命值2%的伤害，持续8秒",
@@ -1293,16 +1315,16 @@
         ],
         "fields": {
           "description": {
-            "before": "游骑兵 灼烧每隔一段时间发生爆燃",
+            "before": "游骑兵 每{3}秒爆燃，{1}%已损生命伤害，半径{4}米",
             "after": "取得这张牌后，首次对目标施加或刷新灼烧时开始计时，2秒后首次爆燃。燃烧目标和球形范围内的其他敌人各受到相同伤害，按燃烧目标当时已损生命值计算。敌方受击体与球相交即受伤，可穿墙，无距离衰减。刷新灼烧时沿用原来的爆燃计时。 爆燃的基础半径为5m，第2、4、5级各增加基础半径的10%（0.5m），累计到满级为6.5m。 同刻先结算灼烧，再计算爆燃。"
-          },
-          "maxLevel": {
-            "before": 1,
-            "after": 5
           },
           "levelEffects": {
             "before": {
-              "1": "游骑兵 灼烧每隔一段时间发生爆燃"
+              "1": "游骑兵 每2秒爆燃，2%已损生命伤害，半径5米",
+              "2": "游骑兵 每2秒爆燃，3%已损生命伤害，半径5.5米",
+              "3": "游骑兵 每2秒爆燃，5%已损生命伤害，半径5.5米",
+              "4": "游骑兵 每2秒爆燃，9%已损生命伤害，半径6米",
+              "5": "游骑兵 每2秒爆燃，12%已损生命伤害，半径6.5米"
             },
             "after": {
               "1": "每2秒爆燃，伤害为燃烧目标当时已损生命值的2%，半径5m",
@@ -1311,12 +1333,6 @@
               "4": "每2秒爆燃，伤害为燃烧目标当时已损生命值的9%，半径6m（本级增加基础半径的10%）",
               "5": "每2秒爆燃，伤害为燃烧目标当时已损生命值的12%，半径6.5m（本级增加基础半径的10%）"
             }
-          },
-          "RequiredCardLevels": {
-            "before": [],
-            "after": [
-              "2"
-            ]
           }
         }
       },
@@ -1330,12 +1346,16 @@
         ],
         "fields": {
           "description": {
-            "before": "游骑兵 普攻攻速+{1}% · {0}级",
+            "before": "游骑兵 普攻攻速+{1}%（累计+{2}%）",
             "after": "每升1级，游骑兵普攻射速乘1.08。使用恶魔引擎时，这项加成缩短吸取普攻的结算间隔。"
           },
           "levelEffects": {
             "before": {
-              "1": "游骑兵 普攻攻速+8% · 1级"
+              "1": "游骑兵 普攻攻速+8%（累计+8%）",
+              "2": "游骑兵 普攻攻速+8%（累计+16.64%）",
+              "3": "游骑兵 普攻攻速+8%（累计+25.97%）",
+              "4": "游骑兵 普攻攻速+8%（累计+36.05%）",
+              "5": "游骑兵 普攻攻速+8%（累计+46.93%）"
             },
             "after": {
               "1": "普攻射速提高8%",
@@ -1461,6 +1481,68 @@
               "1": "降低敌人移动速度 20%，持续2s，对护盾伤害+10%",
               "2": "降低敌人移动速度 30%，持续2s，对护盾伤害+10%",
               "3": "降低敌人移动速度 40%，持续3s，对护盾伤害+15%"
+            }
+          }
+        }
+      },
+      {
+        "id": "17.01",
+        "seat": "Ground",
+        "title": "增强AOE",
+        "textIds": [
+          "Card.GroundMech.EnhancedAOE.Title",
+          "Card.GroundMech.EnhancedAOE.Description"
+        ],
+        "fields": {
+          "description": {
+            "before": "游骑兵 范围伤害+{1}%（累计+{2}%）",
+            "after": "提高按作用区域结算的伤害。旺斯特自毁程序1、2级的爆炸获得加成，3至5级半径为0m，每架按单体命中结算。下列为每级新增，累计范围增伤为6%、12%、18%、26%、38%。"
+          },
+          "levelEffects": {
+            "before": {
+              "1": "游骑兵 范围伤害+6%（累计+6%）",
+              "2": "游骑兵 范围伤害+6%（累计+12%）",
+              "3": "游骑兵 范围伤害+6%（累计+18%）",
+              "4": "游骑兵 范围伤害+8%（累计+26%）",
+              "5": "游骑兵 范围伤害+12%（累计+38%）"
+            },
+            "after": {
+              "1": "范围伤害+6%",
+              "2": "范围伤害+6%",
+              "3": "范围伤害+6%",
+              "4": "范围伤害+8%",
+              "5": "范围伤害+12%"
+            }
+          }
+        }
+      },
+      {
+        "id": "18.01",
+        "seat": "Ground",
+        "title": "增强持续伤害",
+        "textIds": [
+          "Card.GroundMech.DamageOverTime.Title",
+          "Card.GroundMech.DamageOverTime.Description"
+        ],
+        "fields": {
+          "description": {
+            "before": "游骑兵 持续伤害+{1}%（累计+{2}%）",
+            "after": "提高同一效果按周期结算的伤害，包括灼烧、吸取和叹息狂涌。下列为每级新增，累计持续增伤为2%、4%、8%、12%、18%。一份伤害同时属于范围与持续时，两张牌各自的累计倍率相乘。"
+          },
+          "levelEffects": {
+            "before": {
+              "1": "游骑兵 持续伤害+2%（累计+2%）",
+              "2": "游骑兵 持续伤害+2%（累计+4%）",
+              "3": "游骑兵 持续伤害+4%（累计+8%）",
+              "4": "游骑兵 持续伤害+4%（累计+12%）",
+              "5": "游骑兵 持续伤害+6%（累计+18%）"
+            },
+            "after": {
+              "1": "持续伤害+2%",
+              "2": "持续伤害+2%",
+              "3": "持续伤害+4%",
+              "4": "持续伤害+4%",
+              "5": "持续伤害+6%"
             }
           }
         }

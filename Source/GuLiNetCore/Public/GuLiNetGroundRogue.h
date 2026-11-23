@@ -11,6 +11,8 @@ inline constexpr const char* AttackName="ground_attack";
 inline constexpr const char* ChainName="ground_ricochet";
 inline constexpr const char* BlastName="ground_explosion";
 inline constexpr const char* CounterName="ground_shots";
+inline constexpr const char* FieldDamageTraitsPrefix="ground_rogue/field_damage_traits/";
+inline constexpr std::uint8_t FieldAreaDamage=1, FieldPeriodicDamage=2;
 // v7 adds the per-level explosive radius/damage modifier to the shared catalogue.
 inline constexpr std::uint32_t Version=7;
 // Both the portable capability and the UE flight recovery record must fit 64 KiB.

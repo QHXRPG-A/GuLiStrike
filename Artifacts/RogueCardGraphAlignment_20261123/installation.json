@@ -1,0 +1,1012 @@
+{
+  "scene": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "notes": {
+      "GroundBuff_Instructions": "红队游骑兵在 GroundRogue_Entry 面向靶群。用 F4 或依次执行 gs.GM.Card.Set 10.01 1、gs.GM.Card.Set 07.01 2、gs.GM.Card.Set 08.01 3、gs.GM.Card.Set 06.01 1。灼烧、爆裂和折射各有五级。折射最多额外命中 1/2/2/3/3 个不同敌人，每个受到本次普攻的 30/40/50/60/80%。在首个命中点50米内按距离与视线选敌。南侧750生命靶可核对单跳，爆燃每两秒按宿主当时的已损生命结算。",
+      "GroundDamageBonuses_Review": "红队游骑兵。用 F4 或 gs.GM.Card.Set 17.01 max 和 gs.GM.Card.Set 18.01 max 取得两张牌。爆破套餐的爆炸伤害满级增加38%。另一局取得强化子弹、二级灼烧子弹和一级灼烧爆裂子弹。对 GroundBuff_Health750 施加二级灼烧，持续增伤满级使单跳由22.5升至26.55。两张增伤牌满级时，一级爆燃对每个目标造成宿主当时已损生命 × 0.02 × 1.38 × 1.18。按住扳机的连续直击和分裂枪管同时锁定的多个目标都按各自的单次命中结算。",
+      "GroundAmmo_Instructions_Prerequisites": "强化子弹（10.01）1级解锁灼烧子弹（07.01），灼烧2级解锁灼烧爆裂子弹（08.01），爆裂3级解锁折射子弹（06.01）。爆破套餐（11.01）1级解锁强化爆炸弹（12.01），强化爆炸弹3级解锁无人生还（13.01）。",
+      "GroundBuff_FiveMeter_Instructions": "用一级灼烧爆裂子弹向 Host 射击。爆燃半径5米，表现用0.5秒扩张，再用0.5秒淡出。爆燃每2秒结算，Inside/BodyIntersection 的受击体进入5米球，Outside 在圈外，Friendly 是友军。爆裂二至五级分别使用5.5、5.5、6、6.5米。"
+    },
+    "positions": {
+      "GroundRogue_Entry": [
+        -2800.0,
+        54000.0,
+        1149.04
+      ],
+      "GroundRogue_Enemy_01": [
+        -4350.0,
+        54150.0,
+        905.0
+      ],
+      "GroundRogue_Enemy_02": [
+        -5250.0,
+        54150.0,
+        905.0
+      ],
+      "GroundRogue_Enemy_03": [
+        -6150.0,
+        53550.0,
+        905.0
+      ],
+      "GroundRogue_Enemy_04": [
+        -7050.0,
+        54150.0,
+        905.0
+      ],
+      "GroundRogue_BehindWall": [
+        -4350.0,
+        56250.0,
+        905.0
+      ],
+      "GroundRogue_OutOfRange": [
+        -15150.0,
+        54750.0,
+        905.0
+      ],
+      "GroundRogue_Friendly": [
+        -4050.0,
+        53250.0,
+        905.0
+      ],
+      "GroundBuff_Health750": [
+        -5250.0,
+        51750.0,
+        905.0
+      ],
+      "GroundBuff_Instructions": [
+        -2800.0,
+        54000.0,
+        1200.0
+      ],
+      "GroundBuff_FiveMeter_Instructions": [
+        -13750.0,
+        50250.0,
+        1175.0
+      ],
+      "GroundAmmo_Instructions_Prerequisites": [
+        -2500.0,
+        54000.0,
+        1200.0
+      ],
+      "GroundDamageBonuses_Review": [
+        -5250.0,
+        51750.0,
+        1005.0
+      ]
+    },
+    "saved_readback": true
+  },
+  "all_cards": {
+    "01.01": {
+      "title": "增加射速",
+      "max_level": 0,
+      "parents": [],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardFireRateEffect"
+    },
+    "02.01": {
+      "title": "极速机动",
+      "max_level": 0,
+      "parents": [],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardMoveSpeedEffect"
+    },
+    "03.01": {
+      "title": "增加导弹伤害",
+      "max_level": 0,
+      "parents": [
+        "04.01"
+      ],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardMissileDamageEffect"
+    },
+    "04.01": {
+      "title": "重防导弹仓",
+      "max_level": 1,
+      "parents": [],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardMissilePodEffect"
+    },
+    "05.01": {
+      "title": "雨点攻势",
+      "max_level": 59,
+      "parents": [
+        "04.01"
+      ],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardMissileCountEffect"
+    },
+    "06.01": {
+      "title": "折射子弹",
+      "max_level": 5,
+      "parents": [
+        "08.01"
+      ],
+      "parent_levels": [
+        "3"
+      ],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "07.01": {
+      "title": "灼烧子弹",
+      "max_level": 5,
+      "parents": [
+        "10.01"
+      ],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "08.01": {
+      "title": "灼烧爆裂子弹",
+      "max_level": 5,
+      "parents": [
+        "07.01"
+      ],
+      "parent_levels": [
+        "2"
+      ],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "09.01": {
+      "title": "增加攻速",
+      "max_level": 5,
+      "parents": [],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "10.01": {
+      "title": "强化子弹",
+      "max_level": 5,
+      "parents": [],
+      "parent_levels": [],
+      "excluded": [
+        "11.01"
+      ],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "11.01": {
+      "title": "爆破套餐",
+      "max_level": 3,
+      "parents": [],
+      "parent_levels": [],
+      "excluded": [
+        "10.01"
+      ],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "12.01": {
+      "title": "强化爆炸弹",
+      "max_level": 5,
+      "parents": [
+        "11.01"
+      ],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "13.01": {
+      "title": "无人生还",
+      "max_level": 5,
+      "parents": [
+        "12.01"
+      ],
+      "parent_levels": [
+        "3"
+      ],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "14.01": {
+      "title": "人工智能引擎",
+      "max_level": 3,
+      "parents": [
+        "10.01"
+      ],
+      "parent_levels": [
+        "3"
+      ],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "15.01": {
+      "title": "分裂枪管",
+      "max_level": 3,
+      "parents": [
+        "14.01"
+      ],
+      "parent_levels": [
+        "1"
+      ],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "16.01": {
+      "title": "电磁技术",
+      "max_level": 3,
+      "parents": [
+        "14.01"
+      ],
+      "parent_levels": [
+        "1"
+      ],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "17.01": {
+      "title": "增强AOE",
+      "max_level": 5,
+      "parents": [],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    },
+    "18.01": {
+      "title": "增强持续伤害",
+      "max_level": 5,
+      "parents": [],
+      "parent_levels": [],
+      "excluded": [],
+      "handler": "/Script/GuLiStrike.GuLiRogueCardGroundEffect"
+    }
+  },
+  "formal_links": [
+    {
+      "kind": "requires",
+      "source": "04.01",
+      "target": "03.01"
+    },
+    {
+      "kind": "requires",
+      "source": "04.01",
+      "target": "05.01"
+    },
+    {
+      "kind": "requires",
+      "source": "07.01",
+      "target": "08.01",
+      "minLevel": 2
+    },
+    {
+      "kind": "requires",
+      "source": "11.01",
+      "target": "12.01"
+    },
+    {
+      "kind": "excludes",
+      "source": "10.01",
+      "target": "11.01"
+    },
+    {
+      "kind": "requires",
+      "source": "12.01",
+      "target": "13.01",
+      "minLevel": 3
+    },
+    {
+      "kind": "requires",
+      "source": "10.01",
+      "target": "07.01"
+    },
+    {
+      "kind": "requires",
+      "source": "10.01",
+      "target": "14.01",
+      "minLevel": 3
+    },
+    {
+      "kind": "requires",
+      "source": "14.01",
+      "target": "16.01"
+    },
+    {
+      "kind": "requires",
+      "source": "14.01",
+      "target": "15.01"
+    },
+    {
+      "kind": "requires",
+      "source": "08.01",
+      "target": "06.01",
+      "minLevel": 3
+    }
+  ],
+  "design_only": [
+    "恶魔引擎",
+    "旺斯特科技",
+    "旺斯特自毁程序",
+    "旺斯特过载",
+    "暴力汲取",
+    "灵魂汲取",
+    "死亡契约",
+    "叹息狂涌",
+    "千钧之力"
+  ],
+  "manifests": {
+    "RuntimeManifest-200.json": {
+      "catalog_sha256": "086fa933573085863356a070b92eb6eb3c1781b8e08a37fd453eb9e31f31f1f5",
+      "card_count": 13,
+      "field_damage_traits": {
+        "admit/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv2/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv3/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv4/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv5/7:Barrage": 1
+      },
+      "card_ids": [
+        "17.01",
+        "18.01"
+      ],
+      "config_hash": "a6f438c63a70f0abb526b78a79dce6d3fb82183b6299f8eba9df981360c5dfb0",
+      "rules": 188,
+      "ground_effects_checked": 13,
+      "authority_validated": true
+    },
+    "RuntimeManifest-600.json": {
+      "catalog_sha256": "086fa933573085863356a070b92eb6eb3c1781b8e08a37fd453eb9e31f31f1f5",
+      "card_count": 13,
+      "field_damage_traits": {
+        "admit/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv2/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv3/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv4/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv5/7:Barrage": 1
+      },
+      "card_ids": [
+        "17.01",
+        "18.01"
+      ],
+      "config_hash": "804e0809ecb0e3b3aaeee1352819f81d9f6409726545888a39828874de8a7f0b",
+      "rules": 188,
+      "ground_effects_checked": 13,
+      "authority_validated": true
+    },
+    "RuntimeManifest-NoSurvivors.json": {
+      "catalog_sha256": "086fa933573085863356a070b92eb6eb3c1781b8e08a37fd453eb9e31f31f1f5",
+      "card_count": 13,
+      "field_damage_traits": {
+        "admit/runtime/damage/13:player/ground/17:GroundNoSurvivors/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv2/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv3/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv4/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/21:GroundNoSurvivors_Lv5/7:Barrage": 1,
+        "admit/runtime/damage/13:player/ground/23:GroundNoSurvivors_Trial/7:Barrage": 1
+      },
+      "card_ids": [
+        "17.01",
+        "18.01"
+      ],
+      "config_hash": "3b8443cd140de5f0ef2bffef3aa9a37de078786830cd1cdbc3e4fba3f64571de",
+      "rules": 191,
+      "ground_effects_checked": 13,
+      "authority_validated": true
+    }
+  },
+  "rank_profiles": {
+    "06.01": {
+      "additional_targets": [
+        1,
+        2,
+        2,
+        3,
+        3
+      ],
+      "damage_fraction": [
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.8
+      ]
+    },
+    "07.01": {
+      "max_health_fraction": [
+        0.02,
+        0.03,
+        0.05,
+        0.06,
+        0.08
+      ],
+      "interval_seconds": 1,
+      "duration_seconds": 8
+    },
+    "08.01": {
+      "lost_health_fraction": [
+        0.02,
+        0.03,
+        0.05,
+        0.09,
+        0.12
+      ],
+      "radius_m": [
+        5,
+        5.5,
+        5.5,
+        6,
+        6.5
+      ],
+      "interval_seconds": 2
+    }
+  },
+  "success": true,
+  "started_pie": false,
+  "design_graph_sha256": "63dc093c89a308505dfe02bf233a48ff207816b0d2fd3d8962bb31301ab00bf1",
+  "rank_value_audit": {
+    "01.01": [
+      {
+        "level": 1,
+        "design_text": "重防号 普攻射速+20%",
+        "values_checked": [
+          20.0
+        ]
+      }
+    ],
+    "02.01": [
+      {
+        "level": 1,
+        "design_text": "重防号 移动速度+50%",
+        "values_checked": [
+          50.0
+        ]
+      }
+    ],
+    "03.01": [
+      {
+        "level": 1,
+        "design_text": "重防号 导弹伤害+20%",
+        "values_checked": [
+          20.0
+        ]
+      }
+    ],
+    "04.01": [
+      {
+        "level": 1,
+        "design_text": "重防号 解锁导弹技能",
+        "values_checked": []
+      }
+    ],
+    "05.01": [
+      {
+        "level": 1,
+        "design_text": "重防号 导弹齐射数量+1",
+        "values_checked": [
+          1
+        ]
+      }
+    ],
+    "06.01": [
+      {
+        "level": 1,
+        "design_text": "折射数量+1，共1个额外目标，每个受到普攻伤害的30%",
+        "values_checked": [
+          1,
+          30.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "折射数量+1，共2个额外目标，每个受到普攻伤害的40%",
+        "values_checked": [
+          2,
+          40.0
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "共2个额外目标，每个受到普攻伤害的50%",
+        "values_checked": [
+          2,
+          50.0
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "折射数量+1，共3个额外目标，每个受到普攻伤害的60%",
+        "values_checked": [
+          3,
+          60.0
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "共3个额外目标，每个受到普攻伤害的80%",
+        "values_checked": [
+          3,
+          80.0
+        ]
+      }
+    ],
+    "07.01": [
+      {
+        "level": 1,
+        "design_text": "每秒造成目标当时最大生命值2%的伤害，持续8秒",
+        "values_checked": [
+          2.0,
+          8.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "每秒造成目标当时最大生命值3%的伤害，持续8秒",
+        "values_checked": [
+          3.0,
+          8.0
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "每秒造成目标当时最大生命值5%的伤害，持续8秒",
+        "values_checked": [
+          5.0,
+          8.0
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "每秒造成目标当时最大生命值6%的伤害，持续8秒",
+        "values_checked": [
+          6.0,
+          8.0
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "每秒造成目标当时最大生命值8%的伤害，持续8秒",
+        "values_checked": [
+          8.0,
+          8.0
+        ]
+      }
+    ],
+    "08.01": [
+      {
+        "level": 1,
+        "design_text": "每2秒爆燃，伤害为燃烧目标当时已损生命值的2%，半径5m",
+        "values_checked": [
+          2.0,
+          2.0,
+          5.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "每2秒爆燃，伤害为燃烧目标当时已损生命值的3%，半径5.5m（本级增加基础半径的10%）",
+        "values_checked": [
+          2.0,
+          3.0,
+          5.5
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "每2秒爆燃，伤害为燃烧目标当时已损生命值的5%，半径5.5m",
+        "values_checked": [
+          2.0,
+          5.0,
+          5.5
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "每2秒爆燃，伤害为燃烧目标当时已损生命值的9%，半径6m（本级增加基础半径的10%）",
+        "values_checked": [
+          2.0,
+          9.0,
+          6.0
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "每2秒爆燃，伤害为燃烧目标当时已损生命值的12%，半径6.5m（本级增加基础半径的10%）",
+        "values_checked": [
+          2.0,
+          12.0,
+          6.5
+        ]
+      }
+    ],
+    "09.01": [
+      {
+        "level": 1,
+        "design_text": "普攻射速提高8%",
+        "values_checked": [
+          8.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "普攻射速再提高8%，累计提高16.64%",
+        "values_checked": [
+          8.0,
+          16.64
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "普攻射速再提高8%，累计提高约25.97%",
+        "values_checked": [
+          8.0,
+          25.9712
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "普攻射速再提高8%，累计提高约36.05%",
+        "values_checked": [
+          8.0,
+          36.0489
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "普攻射速再提高8%，累计提高约46.93%",
+        "values_checked": [
+          8.0,
+          46.9328
+        ]
+      }
+    ],
+    "10.01": [
+      {
+        "level": 1,
+        "design_text": "黄色子弹，伤害+50%，射速-10%",
+        "values_checked": [
+          50.0,
+          10.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "黄色子弹，伤害+70%，射速-10%",
+        "values_checked": [
+          70.0,
+          10.0
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "紫色子弹，伤害+150%，射速-20%",
+        "values_checked": [
+          150.0,
+          20.0
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "紫色子弹，伤害+180%，射速-20%",
+        "values_checked": [
+          180.0,
+          20.0
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "银白色子弹，伤害+300%，射速-30%",
+        "values_checked": [
+          300.0,
+          30.0
+        ]
+      }
+    ],
+    "11.01": [
+      {
+        "level": 1,
+        "design_text": "游骑兵 1级 · 每5发附爆炸弹 · 2倍伤害/2.66米",
+        "values_checked": [
+          1,
+          5,
+          2.0,
+          2.66
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "游骑兵 2级 · 每4发附爆炸弹 · 2倍伤害/2.66米",
+        "values_checked": [
+          2,
+          4,
+          2.0,
+          2.66
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "游骑兵 3级 · 每2发附爆炸弹 · 2倍伤害/2.66米",
+        "values_checked": [
+          3,
+          2,
+          2.0,
+          2.66
+        ]
+      }
+    ],
+    "12.01": [
+      {
+        "level": 1,
+        "design_text": "游骑兵 1级 · 爆炸半径+2%、伤害+2%",
+        "values_checked": [
+          1,
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "游骑兵 2级 · 爆炸半径+2%、伤害+2%",
+        "values_checked": [
+          2,
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "游骑兵 3级 · 爆炸半径+4%、伤害+4%",
+        "values_checked": [
+          3,
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "游骑兵 4级 · 爆炸半径+4%、伤害+4%",
+        "values_checked": [
+          4,
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "游骑兵 5级 · 爆炸半径+8%、伤害+8%",
+        "values_checked": [
+          5,
+          8.0,
+          8.0
+        ]
+      }
+    ],
+    "13.01": [
+      {
+        "level": 1,
+        "design_text": "游骑兵 对地齐射1级 · 每0.5秒1发，共10发 · 基础伤害+0% · 散布半角2.5°",
+        "values_checked": [
+          1,
+          0.5,
+          1,
+          10,
+          0.0,
+          2.5
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "游骑兵 对地齐射2级 · 每0.3秒1发，共12发 · 基础伤害+0% · 散布半角2.5°",
+        "values_checked": [
+          2,
+          0.3,
+          1,
+          12,
+          0.0,
+          2.5
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "游骑兵 对地齐射3级 · 每0.3秒1发，共16发 · 基础伤害+8% · 散布半角2.5°",
+        "values_checked": [
+          3,
+          0.3,
+          1,
+          16,
+          8.0,
+          2.5
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "游骑兵 对地齐射4级 · 每0.3秒1发，共18发 · 基础伤害+8% · 散布半角2.5°",
+        "values_checked": [
+          4,
+          0.3,
+          1,
+          18,
+          8.0,
+          2.5
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "游骑兵 对地齐射5级 · 每0.2秒1发，共25发 · 基础伤害+16% · 散布半角4°",
+        "values_checked": [
+          5,
+          0.2,
+          1,
+          25,
+          16.0,
+          4.0
+        ]
+      }
+    ],
+    "14.01": [
+      {
+        "level": 1,
+        "design_text": "瞄准2.0秒，射程80m",
+        "values_checked": [
+          2.0,
+          80.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "瞄准1.5秒，射程100m",
+        "values_checked": [
+          1.5,
+          100.0
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "瞄准1.0秒，射程150m",
+        "values_checked": [
+          1.0,
+          150.0
+        ]
+      }
+    ],
+    "15.01": [
+      {
+        "level": 1,
+        "design_text": "能够同时瞄准2个敌人",
+        "values_checked": [
+          2
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "能够同时瞄准3个敌人",
+        "values_checked": [
+          3
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "能够同时瞄准5个敌人",
+        "values_checked": [
+          5
+        ]
+      }
+    ],
+    "16.01": [
+      {
+        "level": 1,
+        "design_text": "降低敌人移动速度 20%，持续2s，对护盾伤害+10%",
+        "values_checked": [
+          20.0,
+          2.0,
+          10.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "降低敌人移动速度 30%，持续2s，对护盾伤害+10%",
+        "values_checked": [
+          30.0,
+          2.0,
+          10.0
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "降低敌人移动速度 40%，持续3s，对护盾伤害+15%",
+        "values_checked": [
+          40.0,
+          3.0,
+          15.0
+        ]
+      }
+    ],
+    "17.01": [
+      {
+        "level": 1,
+        "design_text": "范围伤害+6%",
+        "values_checked": [
+          6.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "范围伤害+6%",
+        "values_checked": [
+          6.0
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "范围伤害+6%",
+        "values_checked": [
+          6.0
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "范围伤害+8%",
+        "values_checked": [
+          8.0
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "范围伤害+12%",
+        "values_checked": [
+          12.0
+        ]
+      }
+    ],
+    "18.01": [
+      {
+        "level": 1,
+        "design_text": "持续伤害+2%",
+        "values_checked": [
+          2.0
+        ]
+      },
+      {
+        "level": 2,
+        "design_text": "持续伤害+2%",
+        "values_checked": [
+          2.0
+        ]
+      },
+      {
+        "level": 3,
+        "design_text": "持续伤害+4%",
+        "values_checked": [
+          4.0
+        ]
+      },
+      {
+        "level": 4,
+        "design_text": "持续伤害+4%",
+        "values_checked": [
+          4.0
+        ]
+      },
+      {
+        "level": 5,
+        "design_text": "持续伤害+6%",
+        "values_checked": [
+          6.0
+        ]
+      }
+    ]
+  },
+  "pre_update_pie": {
+    "card": "06.01",
+    "rank": 1,
+    "latest_confirmed_extra_targets": [
+      7,
+      8,
+      7,
+      6
+    ],
+    "source": "GuLiGroundRogueDebugLibrary.read_state"
+  },
+  "editor_import": {
+    "prior_crash": "UECC-Windows-D438E77C4177F168431BF6AC74436CC5",
+    "call": "DataTableFunctionLibrary.FillDataTableFromJSONString",
+    "assertion": "UObjectArray.cpp:398",
+    "recovery": "GuLiDataTableImportLibrary.update_from_json",
+    "saved_readback": true
+  }
+}

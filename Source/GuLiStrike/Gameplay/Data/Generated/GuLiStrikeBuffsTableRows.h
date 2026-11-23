@@ -47,6 +47,10 @@ struct FGuLiStrikeBuffsBuffsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buffs")
 	int32 IconId = 0;
 
+	/** AdditionalRankConfigIds (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buffs")
+	TArray<FString> AdditionalRankConfigIds;
+
 };
 
 /** DataTable DT_GuLiStrikeBuffs_Burning 的行结构（源: GuLiStrikeBuffs.xlsx / Burning）。 */

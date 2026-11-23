@@ -211,7 +211,7 @@ bool DecodeBlast(std::span<const std::uint8_t> Bytes,Blast& Out)
 {Reader R(Bytes);Blast B;std::uint32_t V,N;if(!R.U32(V)||V!=Version||!R.Identity(B.Shot)||!R.U64(B.At)||!R.F64(B.X)||!R.F64(B.Y)||!R.F64(B.Z)||!Count(R,N,MaximumBlastTargets))return false;B.Targets.resize(N);for(auto& K:B.Targets)if(!R.Key(K))return false;if(!R.Done()||EncodeBlast(B).empty())return false;Out=std::move(B);return true;}
 Id HopEvent(const Id& Shot,std::uint32_t Index,const ObjectKey& Target){Writer W;W.Identity(Shot);W.U32(Index);W.Key(Target);W.Text("ground/ricochet/hit");return Hash(W);}
 std::uint32_t HopBudget(const Id& Shot,const Ricochet& E)
-{if(!Valid(E))return 0;Writer W;W.Identity(Shot);W.Text("ground/ricochet/budget");const auto H=Sha256(W.Take());return E.Minimum+std::uint32_t(std::stoull(H.substr(0,16),nullptr,16)%(E.Maximum-E.Minimum+1));}
+{if(!Valid(E))return 0;if(E.Minimum==E.Maximum)return E.Maximum;Writer W;W.Identity(Shot);W.Text("ground/ricochet/budget");const auto H=Sha256(W.Take());return E.Minimum+std::uint32_t(std::stoull(H.substr(0,16),nullptr,16)%(E.Maximum-E.Minimum+1));}
 Bytes EncodeChain(const Chain& C)
 {
     auto A=EncodeAttack(C.Frozen);if(A.empty()||!C.First.Valid()||!C.Shot.Valid()||!std::isfinite(C.X)||!std::isfinite(C.Y)||!std::isfinite(C.Z)||C.Budget!=HopBudget(C.Shot,Effects::GetRicochet(C.Frozen.Effects))||C.Hops.size()>C.Budget)return {};
@@ -299,6 +299,40 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& D)
 }
 bool Transition(const ObjectRecord& A,const ObjectRecord& B)
 {State X,Y;if(!GetState(A,X)||!GetState(B,Y)||EncodeCatalog(X.Definitions)!=EncodeCatalog(Y.Definitions)||A.RelationVersion==UINT64_MAX||B.RelationVersion!=A.RelationVersion+1)return false;auto Same=B;Same.Capabilities[Name]=A.Capabilities.at(Name);Same.RelationVersion=A.RelationVersion;Writer W,V;WriteObject(W,A);WriteObject(V,Same);return W.Take()==V.Take();}
+constexpr const char* FieldDamageName="ground_field_damage";
+Bytes FieldDamageState(std::uint8_t traits,float multiplier)
+{
+    Writer w; w.U8(traits); w.F32(multiplier); return w.Take();
+}
+bool ReadFieldDamage(const CapabilityState& state,std::uint8_t& traits,float& multiplier)
+{
+    Reader r(state.Data);
+    return state.Version==1 && r.U8(traits) && traits<=(FieldAreaDamage|FieldPeriodicDamage)
+        && r.F32(multiplier) && std::isfinite(multiplier) && multiplier>=1.f && r.Done();
+}
+const bool FieldDamageRegistered=[]{
+    CapabilityContract c;
+    c.Name=FieldDamageName;c.Version=1;
+    c.ValidateState=[](const ObjectRecord& o,const CapabilityState& state)
+    {
+        std::uint8_t traits;float multiplier;
+        return o.Grant.Object.Kind==ObjectKind::Field && ReadFieldDamage(state,traits,multiplier);
+    };
+    c.ValidateRule=[](const Rule&){return false;};
+    c.Prepare=[](const CapabilityContext&,CapabilityDelta&){return CommitStatus::InvalidRule;};
+    c.ValidateTransition=[](const ObjectRecord& a,const ObjectRecord& b){
+        return a.Capabilities.at(FieldDamageName).Data==b.Capabilities.at(FieldDamageName).Data;
+    };
+    c.ResolveRule=[](const ObjectRecord& field,const std::map<ObjectKey,ObjectRecord>&,const std::string&,Rule& rule)
+    {
+        if(rule.Kind!=TransactionKind::Damage)return true;
+        std::uint8_t traits;float multiplier;
+        if(!ReadFieldDamage(field.Capabilities.at(FieldDamageName),traits,multiplier))return false;
+        rule.Damage*=multiplier;
+        return std::isfinite(rule.Damage) && rule.Damage>0.f;
+    };
+    return RegisterCapability(std::move(c));
+}();
 bool Init(RuntimeManifest& M,std::string& Error)
 {
     const auto N=M.Numbers.find("ground_rogue/catalog/chunks");if(N==M.Numbers.end())return true;if(N->second<1||N->second>32)return false;Bytes Bytes;
@@ -337,6 +371,16 @@ bool Init(RuntimeManifest& M,std::string& Error)
         if(Levels.size()!=Card->second.MaximumAcquisitions)return false;
     }
     auto Data=Binding.Take();if(Data.empty())return false;
+    for(auto& [id,rule]:M.Rules)
+    {
+        const auto authored=M.Numbers.find(std::string(FieldDamageTraitsPrefix)+id);
+        if(authored==M.Numbers.end())continue;
+        const double traits=authored->second;
+        if(rule.Kind!=TransactionKind::Spawn || rule.SpawnKind!=ObjectKind::Field || rule.SourceDefinition!="player/ground"
+            || !(traits>=0 && traits<=(FieldAreaDamage|FieldPeriodicDamage)) || traits!=std::floor(traits))return false;
+        rule.SpawnCapabilities[FieldDamageName]={1,FieldDamageState(static_cast<std::uint8_t>(traits),1.f)};
+        M.Numbers[std::string("capability/")+FieldDamageName+"/version"]=1;
+    }
     for(auto& [_,O]:M.Objects)if(O.Definition=="player/ground"){O.Capabilities["ground_binding"]={Version,Data};O.Capabilities[CounterName]={Version,EncodeCounters({})};}
     for(auto& [_,R]:M.Rules)if(R.TargetDefinition=="player/ground"&&R.SpawnKind==ObjectKind::GroundPlayer){R.SpawnCapabilities["ground_binding"]={Version,Data};R.SpawnCapabilities[CounterName]={Version,EncodeCounters({})};}
     for(const char* Capability:{Name,AttackName,ChainName,BlastName,CounterName,"ground_binding"})
@@ -466,11 +510,22 @@ const bool BindingRegistered=[]
         {
             Binding B;if(!ReadBinding(Parent.Capabilities.at("ground_binding").Data,B))return false;
             const auto Rule=B.BarrageRules.find(Request.RuleId);
-            if(Rule==B.BarrageRules.end())return true;
+            const auto field=Child.Capabilities.find(FieldDamageName);
+            if(Rule==B.BarrageRules.end() && field==Child.Capabilities.end())return true;
             const auto Root=Objects.find(B.Roots[Parent.Grant.Faction==Team::Red?0:1]);
             State S;if(Root==Objects.end()||!GetState(Root->second,S))return false;
             const auto Owner=S.Players.find(Parent.Grant.Controller);
-            return Owner!=S.Players.end() && Acquired(Owner->second,B.BarrageCard)>=Rule->second;
+            if(Rule!=B.BarrageRules.end() && (Owner==S.Players.end() || Acquired(Owner->second,B.BarrageCard)<Rule->second))return false;
+            if(field==Child.Capabilities.end() || Owner==S.Players.end())return true;
+            Effects::Set effects;
+            Effects::DamageBonuses bonuses;
+            std::uint8_t traits;float current;
+            if(!ReadFieldDamage(field->second,traits,current) || !Resolve(S.Definitions,Owner->second,effects)
+                || !Effects::ResolveDamageBonuses(effects,bonuses))return false;
+            const auto scope=(traits&FieldAreaDamage) ? Effects::DamageScope::Area : Effects::DamageScope::SingleTarget;
+            const auto timing=(traits&FieldPeriodicDamage) ? Effects::DamageTiming::Periodic : Effects::DamageTiming::Once;
+            field->second.Data=FieldDamageState(traits,bonuses.Apply(1.f,scope,timing));
+            return true;
         }
         if(Child.Grant.Object.Kind!=ObjectKind::Flight||!Child.Definition.starts_with("effect/linear/"))return true;
         Binding B;if(!ReadBinding(Parent.Capabilities.at("ground_binding").Data,B))return false;
@@ -484,7 +539,15 @@ const bool BindingRegistered=[]
         Effects::GroundShotStats shot;
         if(!Effects::ResolveGroundShot(base,A.Effects,shot))return false;
         const auto Extra=Effects::GetExplosive(A.Effects);
-        if(Extra.Interval()&&Progress+1==Extra.Interval()){A.ExplosiveDamage=A.Damage*Extra.DamageMultiplier;A.ExplosiveRadius=Extra.Radius;A.ExplosiveBulletVfx=Extra.BulletVfx;A.ExplosiveImpactVfx=Extra.ImpactVfx;}
+        if(Extra.Interval() && Progress+1==Extra.Interval())
+        {
+            Effects::DamageBonuses bonuses;
+            if(!Effects::ResolveDamageBonuses(A.Effects,bonuses))return false;
+            A.ExplosiveDamage=bonuses.Apply(A.Damage*Extra.DamageMultiplier,Effects::DamageScope::Area,Effects::DamageTiming::Once);
+            A.ExplosiveRadius=Extra.Radius;
+            A.ExplosiveBulletVfx=Extra.BulletVfx;
+            A.ExplosiveImpactVfx=Extra.ImpactVfx;
+        }
         A.FireRate=shot.FireRate; A.Damage=shot.Damage;
         A.BulletVfx=shot.BulletVfx; A.ImpactVfx=shot.ImpactVfx; A.MuzzleVfx=shot.MuzzleVfx;
         auto Bytes=EncodeAttack(A);if(Bytes.empty())return false;Child.Capabilities[AttackName]={Version,std::move(Bytes)};
@@ -512,7 +575,12 @@ const bool ChainRegistered=[]
         if(R.Kind!=TransactionKind::Damage||R.RootEvent==BlastHitEvent(O.Grant.Object.StableId,R.Target))return true;const auto& Data=O.Capabilities.at(ChainName).Data;if(Data.empty())return true;Chain P;if(!DecodeChain(Data,P))return false;
         if(R.Target==P.First)return true;
         for(std::size_t I=0;I<P.Hops.size();++I)if(P.Hops[I].Target==R.Target)
-        {if(R.RootEvent!=HopEvent(P.Shot,std::uint32_t(I+1),R.Target)||R.Header.Event!=R.RootEvent||R.Header.At!=P.At)return false;Rule.Damage=float(double(P.Frozen.Damage)*std::pow(double(Effects::GetRicochet(P.Frozen.Effects).Retention),double(I+1)));return std::isfinite(Rule.Damage)&&Rule.Damage>0;}
+        {
+            const auto hop=std::uint32_t(I+1);
+            if(R.RootEvent!=HopEvent(P.Shot,hop,R.Target)||R.Header.Event!=R.RootEvent||R.Header.At!=P.At)return false;
+            Rule.Damage=float(P.Frozen.Damage*Effects::GetRicochet(P.Frozen.Effects).DamageScale(hop));
+            return std::isfinite(Rule.Damage)&&Rule.Damage>0;
+        }
         return false;
     };
     return RegisterCapability(std::move(C));

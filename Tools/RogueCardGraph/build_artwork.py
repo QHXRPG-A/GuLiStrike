@@ -20,7 +20,7 @@ CARD_IDS = {
     "electromagnetic": "16.01",
     "split_barrel": "15.01",
     "ai_engine": "14.01",
-    "aoe": "draft-c36c227b-ba6f-4ac4-8c16-d9e80c20de27",
+    "aoe": "17.01",
     "demon": "draft-7ededb47-9902-4560-83b4-a3c824375246",
 }
 
@@ -92,6 +92,46 @@ def registered_cards():
     return result
 
 
+def damage_over_time_artwork():
+    source = UI / "GroundMechRogueCards/DamageOverTime_20261123_v1"
+    manifest = json.loads((source / "generation.json").read_text(encoding="utf-8"))
+    parallax_file = source / manifest["parallax"]["manifest"]
+    if hashlib.sha256(parallax_file.read_bytes()).hexdigest() != manifest["parallax"]["sha256"]:
+        raise ValueError("Hourglass layer manifest does not match its published revision")
+    root = parallax_file.parent
+    art = json.loads(parallax_file.read_text(encoding="utf-8"))
+    face = read_image(root, art["poster"])
+    icon = read_image(source, manifest["icon"])
+    icon.thumbnail((192, 192), Image.Resampling.LANCZOS)
+    x, y, width, height = art["window"]
+    tile = tuple(n // 2 for n in art["canvas"])
+    face = face.resize((width // 2, height // 2), Image.Resampling.LANCZOS)
+    layers = {layer["index"]: read_image(root, layer) for layer in art["layers"]}
+    mask = read_image(root, art["mask"]).convert("L")
+    passes = list(reversed(art["passes"]))
+    atlas = Image.new("RGBA", (3 * tile[0], ((len(passes) + 2) // 3) * tile[1]))
+    shifts = []
+    for i, draw in enumerate(passes):
+        n = draw["layer"]
+        image = layers[n]
+        if "part" in draw:
+            image = image.copy()
+            a = image.getchannel("A")
+            zero = Image.new("L", a.size)
+            image.putalpha(Image.composite(a, zero, mask) if draw["part"] == "front" else Image.composite(zero, a, mask))
+        atlas.paste(image.resize(tile, Image.Resampling.LANCZOS), ((i % 3) * tile[0], (i // 3) * tile[1]))
+        step = art["defaultTravel"] * art["depth"][n - 1] / 2
+        shifts.append([step, step])
+    return "18.01", {
+        "face": export("damage_over_time", "face", face),
+        "icon": export("damage_over_time", "icon", icon),
+        "layers": export("damage_over_time", "layers", atlas),
+        "window": [x / 2, y / 2, width / 2, height / 2],
+        "motion": {"tile": tile, "shifts": shifts, "tilt": art["maxTilt"]},
+        "caption": "V8 六层视差 · 待美术审核" if art["meetsTarget"] else "V8 六层试稿 · 原位保真待校准",
+    }
+
+
 def build():
     faces = json.loads((FACES / "manifest.json").read_text(encoding="utf-8"))
     icons = json.loads((ICONS / "manifest.json").read_text(encoding="utf-8"))
@@ -129,15 +169,8 @@ def build():
             "layers": export(key, "layers", atlas), "window": [v / 2 for v in card["window"]],
         }
     result["cards"].update(registered_cards())
-    reference_root = UI / "GroundMechRogueCards/AbilityReferences_20261120_v7"
-    generation = json.loads((reference_root / "generation.json").read_text(encoding="utf-8"))
-    hourglass = next(row for row in generation["cards"] if row["title"] == "增强持续伤害")
-    image = read_image(reference_root, {"file": hourglass["file"], "sha256": hourglass["artSHA256"]})
-    image.thumbnail((650, 650), Image.Resampling.LANCZOS)
-    result["cards"]["draft-3f4be030-0a25-43fa-baf2-ab56f1eebddf"] = {
-        "face": export("damage_over_time", "face", image), "window": [0, 0, *image.size],
-        "caption": f"参考稿 · {generation['review']}",
-    }
+    card_id, media = damage_over_time_artwork()
+    result["cards"][card_id] = media
     write_atomic(DEST / "catalog.json", (json.dumps(result, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
     cards = result["cards"].values()
     print(f"Published {sum('face' in c for c in cards)} faces, {sum('icon' in c for c in cards)} icons "

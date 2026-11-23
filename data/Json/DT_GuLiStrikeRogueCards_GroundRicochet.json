@@ -2,11 +2,21 @@
   {
     "Name": "GroundMech_Ricochet",
     "Id": 1,
-    "Note": "首次命中点为固定球心；受击中心距球心不超过50米；各跳就近、无遮挡、不重复；直接伤害逐跳乘0.8。",
-    "MinimumHops": 5,
-    "MaximumHops": 8,
-    "HopsPerStack": 1,
-    "RangeCentimeters": 5000.0,
-    "DamageRetention": 0.8
+    "Note": "首个目标之外的额外目标数，命中点50米内。每个折射目标均按本次普攻基础伤害乘当级比例。",
+    "TargetCounts": [
+      "1",
+      "2",
+      "2",
+      "3",
+      "3"
+    ],
+    "DamageFractions": [
+      "0.30",
+      "0.40",
+      "0.50",
+      "0.60",
+      "0.80"
+    ],
+    "RangeCentimeters": 5000.0
   }
 ]

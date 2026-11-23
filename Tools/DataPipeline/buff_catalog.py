@@ -15,32 +15,55 @@ def validate(tables, error):
         kind=classes.get(b['ImplementationClass'])
         if ident<=0 or b['Version']!=2 or b['DescriptionTextId'] not in texts or not kind:
             fail(f'Buff {ident}: ID、版本、公共描述或处理器类无效')
-        c=configs[kind].get(b['ConfigId'])
-        if not c: fail(f'Buff {ident}: 缺少 {kind} 配置 {b["ConfigId"]}')
-        if kind=='Burning':
-            if not all(positive(c[k]) for k in ('DurationSeconds','TickIntervalSeconds','MaxHealthDamageRatio')) or c['DurationSeconds']>3600 or c['TickIntervalSeconds']>c['DurationSeconds'] or c['MaxHealthDamageRatio']>1:
-                fail(f'Buff {ident}: 灼烧持续时间、周期或伤害比例无效')
-            if any(c[k] not in vfx for k in ('StatusVfxId','BulletVfxId')): fail(f'Buff {ident}: 未知VFX引用')
-        else:
-            parent=buffs.get(c['ParentBuffId'])
-            if not parent or parent['ImplementationClass']!='/Script/GuLiStrike.GuLiBurningBuffHandler' or c['ParentBuffId']==ident:
-                fail(f'Buff {ident}: 爆裂必须引用灼烧父Buff')
-            if not all(positive(c[k]) for k in ('IntervalSeconds','LostHealthDamageRatio','RadiusCentimeters')) or c['IntervalSeconds']>3600 or c['LostHealthDamageRatio']>1 or c['RadiusCentimeters']>100000:
-                fail(f'Buff {ident}: 爆裂周期、伤害比例或范围无效')
-            if c['BurstVfxId'] not in vfx: fail(f'Buff {ident}: 未知爆裂VFX')
+        additional=b.get('AdditionalRankConfigIds',[])
+        if len(additional)>15 or any(not str(key).isdigit() for key in additional):
+            fail(f'Buff {ident}: 逐级配置引用无效')
+        parents=set()
+        for key in [b['ConfigId'],*map(int,additional)]:
+            c=configs[kind].get(key)
+            if not c: fail(f'Buff {ident}: 缺少 {kind} 配置 {key}')
+            if kind=='Burning':
+                if not all(positive(c[k]) for k in ('DurationSeconds','TickIntervalSeconds','MaxHealthDamageRatio')) or c['DurationSeconds']>3600 or c['TickIntervalSeconds']>c['DurationSeconds'] or c['MaxHealthDamageRatio']>1:
+                    fail(f'Buff {ident}: 灼烧持续时间、周期或伤害比例无效')
+                if any(c[k] not in vfx for k in ('StatusVfxId','BulletVfxId')): fail(f'Buff {ident}: 未知VFX引用')
+            else:
+                parent=buffs.get(c['ParentBuffId'])
+                parents.add(c['ParentBuffId'])
+                if len(parents)>1 or not parent or parent['ImplementationClass']!='/Script/GuLiStrike.GuLiBurningBuffHandler' or c['ParentBuffId']==ident:
+                    fail(f'Buff {ident}: 爆裂各档必须引用相同的灼烧父Buff')
+                if not all(positive(c[k]) for k in ('IntervalSeconds','LostHealthDamageRatio','RadiusCentimeters')) or c['IntervalSeconds']>3600 or c['LostHealthDamageRatio']>1 or c['RadiusCentimeters']>100000:
+                    fail(f'Buff {ident}: 爆裂周期、伤害比例或范围无效')
+                if c['BurstVfxId'] not in vfx: fail(f'Buff {ident}: 未知爆裂VFX')
     ricochet={r['Id']:r for r in rows('DT_GuLiStrikeRogueCards_GroundRicochet')}
     weapon={r['Id']:r for r in rows('DT_GuLiStrikeRogueCards_GroundWeaponEffects')}
     for ident,e in effects.items():
         if ident<=0 or e['Version']!=(2 if e['Handler']=='ground/explosive_package' else 1): fail(f'Effect {ident}: ID或版本无效')
         if e['Handler']=='ricochet':
             c=ricochet.get(e['ConfigId'])
-            if not c or e['BuffId']!=0 or not 0<c['MinimumHops']<=c['MaximumHops']<=(65536-8192)//192 or c['HopsPerStack']<=0 or not positive(c['RangeCentimeters']) or c['RangeCentimeters']>1000000 or not positive(c['DamageRetention']) or c['DamageRetention']>1:
+            if not c or e['BuffId']!=0 or not positive(c['RangeCentimeters']) or c['RangeCentimeters']>1000000:
                 fail(f'Effect {ident}: 折射配置无效')
+            counts, fractions = c['TargetCounts'], c['DamageFractions']
+            if not 1 <= len(counts) <= 16 or len(fractions) != len(counts):
+                fail(f'Effect {ident}: 折射目标数与伤害比例的档数不一致')
+            try:
+                valid = all(str(n).isdigit() and 1 <= int(n) <= (65536-8192)//192 for n in counts)
+                valid = valid and all(0 < float(x) <= 1 for x in fractions)
+            except (TypeError, ValueError):
+                valid = False
+            if not valid:
+                fail(f'Effect {ident}: 折射目标数或伤害比例无效')
         elif e['Handler']=='buff/on_hit':
             if e['BuffId'] not in buffs or e['ConfigId']!=0: fail(f'Effect {ident}: Buff引用无效')
-        elif e['Handler'] in ('ground/fire_rate','ground/enhanced_bullet','ground/explosive_package','ground/explosive_enhancement','ground/no_survivors','ground/ai_engine','ground/split_barrel','ground/electromagnetic'):
+        elif e['Handler'] in ('ground/fire_rate','ground/enhanced_bullet','ground/explosive_package','ground/explosive_enhancement','ground/no_survivors','ground/ai_engine','ground/split_barrel','ground/electromagnetic','ground/damage_bonus'):
             c=weapon.get(e['ConfigId'])
             if not c or e['BuffId']!=0: fail(f'Effect {ident}: 缺少武器效果配置')
+            if e['Handler']=='ground/damage_bonus':
+                try:
+                    increments=[float(value) for value in c.get('DamageBonusIncrements',[])]
+                except (ValueError,TypeError):
+                    fail(f'Effect {ident}: 逐级伤害增量必须为数值')
+                if c.get('DamageBonusAxis') not in (1,2) or not 1<=len(increments)<=16 or not all(0<v<=1 for v in increments):
+                    fail(f'Effect {ident}: 伤害类型或逐级增量无效')
             if e['Handler'] in ('ground/ai_engine','ground/enhanced_bullet'):
                 lock = e['Handler']=='ground/ai_engine'
                 keys = ('LockSeconds','LockRangeCentimeters') if lock else ('BulletDamageMultipliers','BulletRateMultipliers','BulletFlightVfxIds')
@@ -111,7 +134,11 @@ def validate(tables, error):
                 fail(f'卡牌 {card["Id"]}: 未知或重复EffectIds')
             for ref in refs:
                 effect=effects[int(ref)]
-                rank_key={'ground/enhanced_bullet':'BulletDamageMultipliers','ground/ai_engine':'LockSeconds','ground/split_barrel':'LockTargetCounts','ground/electromagnetic':'SlowFractions'}.get(effect['Handler'])
+                if effect['Handler']=='buff/on_hit' and 1+len(buffs[effect['BuffId']].get('AdditionalRankConfigIds',[]))!=card['MaxAcquisitions']:
+                    fail(f'卡牌 {card["Id"]}: 等级上限与命中附加状态的档数不一致')
+                if effect['Handler']=='ricochet' and len(ricochet[effect['ConfigId']]['TargetCounts'])!=card['MaxAcquisitions']:
+                    fail(f'卡牌 {card["Id"]}: 等级上限与折射档数不一致')
+                rank_key={'ground/enhanced_bullet':'BulletDamageMultipliers','ground/ai_engine':'LockSeconds','ground/split_barrel':'LockTargetCounts','ground/electromagnetic':'SlowFractions','ground/damage_bonus':'DamageBonusIncrements'}.get(effect['Handler'])
                 if rank_key and len(weapon[effect['ConfigId']][rank_key])!=card['MaxAcquisitions']:
                     fail(f'卡牌 {card["Id"]}: 等级上限与武器档数不一致')
                 if effect['Handler']=='ground/no_survivors' and card['MaxAcquisitions']!=len(weapon[effect['ConfigId']]['BarrageShotCounts']):

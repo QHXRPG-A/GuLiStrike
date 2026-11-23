@@ -56,14 +56,16 @@ def same_value(actual,expected):
     return False
 
 
-def install_tables():
-    unreal.GuLiStrikeRogueCardsGroundWeaponEffectsRow().get_editor_property("lock_seconds")
-    unreal.GuLiStrikeVfxEffectsRow().get_editor_property("trail_tint_srgb")
+def install_tables(scope=None):
+    if scope is None:
+        unreal.GuLiStrikeRogueCardsGroundWeaponEffectsRow().get_editor_property("lock_seconds")
+        unreal.GuLiStrikeVfxEffectsRow().get_editor_property("trail_tint_srgb")
+        scope=SCOPE
     dirty={p.get_name() for p in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()}
-    packages={DATA+"DT_"+key for key in SCOPE}|{DATA+"ST_GuLiStrikeGameTexts"}
+    packages={DATA+"DT_"+key for key in scope}|{DATA+"ST_GuLiStrikeGameTexts"}
     require(not dirty.intersection(packages),"Unsaved data packages: "+str(dirty.intersection(packages)))
     saved={}
-    for key,edits in SCOPE.items():
+    for key,edits in scope.items():
         name="DT_"+key
         table=require(unreal.load_asset(DATA+name),name)
         before=rows(table)
@@ -75,7 +77,8 @@ def install_tables():
                                      for col in columns or source[row].keys()) for row,columns in edits.items()):
             saved[name]=list(edits)
             continue
-        require(TABLES.fill_data_table_from_json_string(table,json.dumps(list(proposed.values()),ensure_ascii=False),table.get_editor_property("row_struct")),name)
+        problems=unreal.GuLiDataTableImportLibrary.update_from_json(table,json.dumps(list(proposed.values()),ensure_ascii=False))
+        require(not problems,name+" import: "+str(list(problems)))
         after=rows(table)
         require(set(after)==set(proposed) and all(after[r]==before[r] for r in before if r not in edits),name+" unrelated rows")
         for r,cols in edits.items():
@@ -90,7 +93,7 @@ def install_tables():
     strings=require(unreal.load_asset(DATA+"ST_GuLiStrikeGameTexts"),"Public text")
     require(unreal.GuLiRogueCardPresentationLibrary.rebuild_game_text_string_table(strings,game_texts),"Public text rebuild")
     require(LIB.save_loaded_asset(strings,False),"Save public text")
-    for key in SCOPE["GuLiStrikeGameTexts_Texts"]:
+    for key in scope["GuLiStrikeGameTexts_Texts"]:
         value=unreal.TextLibrary.text_from_string_table(unreal.Name(strings.get_path_name()),key)
         require(unreal.TextLibrary.text_is_from_string_table(value) and str(value)==rows(game_texts)[key]["Content"],"Public text "+key)
     return saved

@@ -349,6 +349,10 @@ FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifest(int32 Population,cons
             Damage.Damage=Field.Damage*(1.f+Profile.Ranks[RankIndex].DamageBonus);Damage.EffectTicks=900;
             if (!GuLiRuntimeFields::AddRules(Data,Damage,Error))
                 return Report(false,Error,File,Data.Objects.Num(),Data.Rules.Num(),Tables);
+            const FString admission=TEXT("admit/runtime/")+Damage.Id;
+            const uint8 traits=(Field.Radius>0 ? GuLiNet::GroundRogue::FieldAreaDamage : 0)
+                | (Field.Timing==EGuLiSpellFieldTiming::Periodic ? GuLiNet::GroundRogue::FieldPeriodicDamage : 0);
+            Data.Numbers.Add(FString(UTF8_TO_TCHAR(GuLiNet::GroundRogue::FieldDamageTraitsPrefix))+admission,traits);
             if(!Preview)Data.Numbers.Add(TEXT("ground_rogue/barrage/rank/admit/runtime/")+Damage.Id,double(RankIndex+1));
         }
     }

@@ -14,7 +14,7 @@ assert not unreal.EditorLoadingAndSavingUtils.get_dirty_map_packages()
 actors={a.get_actor_label():a for a in unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors()}
 notes={
  'GroundBuff_Instructions':'Red Ground：F4正面单击获取灼烧，再获取爆燃；折射可重复取得。灼烧弹道为火红色，已修复SM6材质。折射以首次命中点为固定50米三维球，各跳就近、无遮挡、不重复；原Enemy_07至09和远靶用于检查不会逐跳扩散出圈。',
- 'GroundBuff_FiveMeter_Instructions':'向Host射击：爆燃0.5秒扩张到5米外缘，再0.5秒保持范围淡出；伤害仍在2秒周期立即结算。Inside/BodyIntersection中心6米但碰撞体进入5米球；Outside约13.4米不受伤，Friendly友军不受伤，Shield优先吸收。以真实受击中心核对，基础灼烧独立播放。',
+ 'GroundBuff_FiveMeter_Instructions':'用一级灼烧爆裂子弹向 Host 射击。爆燃半径5米，表现用0.5秒扩张，再用0.5秒淡出。爆燃每2秒结算，Inside/BodyIntersection 的受击体进入5米球，Outside 在圈外，Friendly 是友军。爆裂二至五级分别使用5.5、5.5、6、6.5米。',
  'GroundHUD_v1_PlayerEntry':'Ground HUD：强化三列图标、右下当前等级，最多五行后滚动；F4候选显示取得后等级，正面单击选牌。八张极简图标由Icons表统一管理，血量和属性合并。M地图、F4选牌，已移除I详情；原包局部刻度弧在入场后循环，模态打开或HUD隐藏时暂停。普通刷新5Hz，事件帧末同步。视觉由玩家验收，助手不截图读图。'}
 for name,text in notes.items():
  a=actors[name];a.modify();a.set_editor_property('text',text)

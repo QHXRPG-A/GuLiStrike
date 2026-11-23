@@ -1448,8 +1448,8 @@
   {
     "Name": "Card.GroundMech.Ricochet.Description",
     "TextId": "Card.GroundMech.Ricochet.Description",
-    "Introduction": "{0}为取得后的卡牌等级",
-    "Content": "<Unit>游骑兵</> <Gain>普攻折射-{0}</>"
+    "Introduction": "{1}为额外目标数，{2}为每个目标受到的普攻伤害百分比",
+    "Content": "<Unit>游骑兵</> <Gain>折射{1}个额外目标</>，每个受<Gain>{2}%普攻伤害</>"
   },
   {
     "Name": "UI.RogueCards.Capacity",
@@ -1472,8 +1472,8 @@
   {
     "Name": "Card.GroundMech.BurningBullet.Description",
     "TextId": "Card.GroundMech.BurningBullet.Description",
-    "Introduction": "{0}为取得后的卡牌等级，当前限取一次",
-    "Content": "<Unit>游骑兵</> 普攻附加<Gain>灼烧-{0}</>"
+    "Introduction": "{1}为本档当前最大生命值伤害百分比，{2}秒持续，{3}秒周期",
+    "Content": "<Unit>游骑兵</> 灼烧<Gain>{2}秒</>，每{3}秒造成<Gain>{1}%最大生命伤害</>"
   },
   {
     "Name": "Card.GroundMech.BurningBurst.Title",
@@ -1484,8 +1484,8 @@
   {
     "Name": "Card.GroundMech.BurningBurst.Description",
     "TextId": "Card.GroundMech.BurningBurst.Description",
-    "Introduction": "单行效果；数值规则仍由Buff配置维护",
-    "Content": "<Unit>游骑兵</> 灼烧每隔一段时间发生<Gain>爆燃</>"
+    "Introduction": "{1}为本档宿主已损生命值伤害百分比，{3}秒周期，{4}米半径",
+    "Content": "<Unit>游骑兵</> 每{3}秒爆燃，<Gain>{1}%已损生命伤害</>，半径<Gain>{4}米</>"
   },
   {
     "Name": "Buff.Burning.Description",
@@ -1898,8 +1898,8 @@
   {
     "Name": "Card.GroundMech.FireRate.Description",
     "TextId": "Card.GroundMech.FireRate.Description",
-    "Introduction": "游骑兵武器肉鸽；参数来自效果配置",
-    "Content": "<Unit>游骑兵</> <Gain>普攻攻速+{1}% · {0}级</>"
+    "Introduction": "{1}为当级相乘的增幅，{2}为累计攻速增幅",
+    "Content": "<Unit>游骑兵</> 普攻攻速<Gain>+{1}%</>（累计<Gain>+{2}%</>）"
   },
   {
     "Name": "Card.GroundMech.EnhancedBullet.Title",
@@ -2002,5 +2002,29 @@
     "TextId": "Card.GroundMech.ElectromagneticTech.Description",
     "Introduction": "游骑兵个人肉鸽",
     "Content": "<Unit>游骑兵</> 电磁瞬击，减速 <Gain>{1}%</> 持续 <Gain>{2} 秒</>，对盾 <Gain>+{3}%</>"
+  },
+  {
+    "Name": "Card.GroundMech.EnhancedAOE.Title",
+    "TextId": "Card.GroundMech.EnhancedAOE.Title",
+    "Introduction": "游骑兵个人肉鸽",
+    "Content": "增强AOE"
+  },
+  {
+    "Name": "Card.GroundMech.EnhancedAOE.Description",
+    "TextId": "Card.GroundMech.EnhancedAOE.Description",
+    "Introduction": "游骑兵个人肉鸽",
+    "Content": "<Unit>游骑兵</> <Gain>范围伤害+{1}%</>（累计<Gain>+{2}%</>）"
+  },
+  {
+    "Name": "Card.GroundMech.DamageOverTime.Title",
+    "TextId": "Card.GroundMech.DamageOverTime.Title",
+    "Introduction": "游骑兵个人肉鸽",
+    "Content": "增强持续伤害"
+  },
+  {
+    "Name": "Card.GroundMech.DamageOverTime.Description",
+    "TextId": "Card.GroundMech.DamageOverTime.Description",
+    "Introduction": "游骑兵个人肉鸽",
+    "Content": "<Unit>游骑兵</> <Gain>持续伤害+{1}%</>（累计<Gain>+{2}%</>）"
   }
 ]

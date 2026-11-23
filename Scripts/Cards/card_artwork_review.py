@@ -4,6 +4,7 @@ import json
 import math
 from pathlib import Path
 import unreal
+from card_artwork_catalog import GROUND_MASK_LAYERS
 from card_reveal_graph import B, Graph, Node, require, variable, function, compile_save
 
 SYSTEM='/Game/GuLiStrike/CardSystem/RevealDemo'
@@ -71,13 +72,21 @@ def preview_copy(artwork):
     configs={r['Id']:r for r in json.loads((ROOT/'data/Json/DT_GuLiStrikeRogueCards_GroundWeaponEffects.json').read_text(encoding='utf-8'))}
     effect=effects.get(str(card['EffectIds'][0])) if card.get('EffectIds') else None
     if effect and effect['Handler']=='ground/fire_rate':
-        config=configs[effect['ConfigId']];description=description.format('1',f"{config['FireRateBonusPercent']*100:g}")
+        first=f"{configs[effect['ConfigId']]['FireRateBonusPercent']*100:g}"
+        description=description.format('1',first,first)
     elif effect and effect['Handler']=='ground/explosive_package':
         config=configs[effect['ConfigId']]
         description=description.format('1',config['ExplosiveIntervals'][0],f"{config['ExplosiveDamageMultiplier']:g}",f"{config['ExplosiveRadiusCentimeters']/100:g}")
     elif effect and effect['Handler']=='ground/explosive_enhancement':
         config=configs[effect['ConfigId']]
         description=description.format('1',f"{float(config['ExplosiveRadiusBonuses'][0])*100:g}",f"{float(config['ExplosiveDamageBonuses'][0])*100:g}")
+    elif effect and effect['Handler']=='ground/damage_bonus':
+        first=f"{float(configs[effect['ConfigId']]['DamageBonusIncrements'][0])*100:g}"
+        description=description.format('1',first,first)
+    elif effect and effect['Handler']=='ricochet':
+        ranks=json.loads((ROOT/'data/Json/DT_GuLiStrikeRogueCards_GroundRicochet.json').read_text(encoding='utf-8'))
+        config=next(row for row in ranks if row['Id']==effect['ConfigId'])
+        description=description.format('1',config['TargetCounts'][0],f"{float(config['DamageFractions'][0])*100:g}")
     elif '{' in description: description=''  # No invented numbers for other catalog effects.
     return title,description
 
@@ -184,7 +193,7 @@ def make_selector(ids,catalog,frame):
     variable(SELECTOR,'SelectedMaterial','UMaterialInterface',catalog['artworks'][ids[0]]['Material'])
     initial=catalog['artworks'][ids[0]]
     first_title,first_description=preview_copy(initial)
-    initial_ground_frame=catalog['templates'][initial['TemplateId']]['CompositePreset']=='RegisteredSixRigidLayer3Mask'
+    initial_ground_frame=catalog['templates'][initial['TemplateId']]['CompositePreset'] in GROUND_MASK_LAYERS
     variable(SELECTOR,'SelectedTitle','FText',first_title)
     variable(SELECTOR,'SelectedDescription','FText',first_description)
     variable(SELECTOR,'GroundFrame','bool',initial_ground_frame)
@@ -217,7 +226,7 @@ def make_selector(ids,catalog,frame):
         title_pin=g.call('KismetTextLibrary','Conv_StringToText',InString=title)['ReturnValue']
         description_pin=g.call('KismetTextLibrary','Conv_StringToText',InString=description)['ReturnValue']
         g.invoke('SelectArtwork',Material=row['Material'],Title=title_pin,Description=description_pin,
-            UseGroundFrame=catalog['templates'][row['TemplateId']]['CompositePreset']=='RegisteredSixRigidLayer3Mask',
+            UseGroundFrame=catalog['templates'][row['TemplateId']]['CompositePreset'] in GROUND_MASK_LAYERS,
             TiltDegrees=review_tilt(catalog,ident))
         g.layout()
     unreal.EditorAssetLibrary.set_metadata_tag(blueprint,'GuLi.CardArtwork.ButtonCount',str(len(ids)))

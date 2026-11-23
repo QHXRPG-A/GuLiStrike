@@ -2,11 +2,51 @@
   {
     "Name": "BurningBurst",
     "Id": 1,
-    "Note": "固定5米球与碰撞体相交；穿墙；冻结共同伤害与目标；零伤害仍表现",
+    "Note": "第1级，按宿主当时已损生命值，穿墙、无距离衰减。",
+    "ParentBuffId": 1,
+    "IntervalSeconds": 2.0,
+    "LostHealthDamageRatio": 0.02,
+    "RadiusCentimeters": 500.0,
+    "BurstVfxId": 60
+  },
+  {
+    "Name": "BurningBurst_Rank2",
+    "Id": 2,
+    "Note": "第2级，按宿主当时已损生命值，穿墙、无距离衰减。",
     "ParentBuffId": 1,
     "IntervalSeconds": 2.0,
     "LostHealthDamageRatio": 0.03,
-    "RadiusCentimeters": 500.0,
+    "RadiusCentimeters": 550.0,
+    "BurstVfxId": 60
+  },
+  {
+    "Name": "BurningBurst_Rank3",
+    "Id": 3,
+    "Note": "第3级，按宿主当时已损生命值，穿墙、无距离衰减。",
+    "ParentBuffId": 1,
+    "IntervalSeconds": 2.0,
+    "LostHealthDamageRatio": 0.05,
+    "RadiusCentimeters": 550.0,
+    "BurstVfxId": 60
+  },
+  {
+    "Name": "BurningBurst_Rank4",
+    "Id": 4,
+    "Note": "第4级，按宿主当时已损生命值，穿墙、无距离衰减。",
+    "ParentBuffId": 1,
+    "IntervalSeconds": 2.0,
+    "LostHealthDamageRatio": 0.09,
+    "RadiusCentimeters": 600.0,
+    "BurstVfxId": 60
+  },
+  {
+    "Name": "BurningBurst_Rank5",
+    "Id": 5,
+    "Note": "第5级，按宿主当时已损生命值，穿墙、无距离衰减。",
+    "ParentBuffId": 1,
+    "IntervalSeconds": 2.0,
+    "LostHealthDamageRatio": 0.12,
+    "RadiusCentimeters": 650.0,
     "BurstVfxId": 60
   }
 ]

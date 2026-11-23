@@ -52,6 +52,7 @@ struct State
     double BurstX=0,BurstY=0,BurstZ=0;
     float BurstRadius=0,BurstStartRadius=0;
     std::uint32_t BurstVfx=0;
+    Effects::DamageBonuses SourceBonuses;
 };
 struct Command
 {
@@ -66,6 +67,7 @@ GULINETCORE_API const Handler* Find(const std::string&);
 GULINETCORE_API bool Validate(const Definition&);
 GULINETCORE_API Bytes EncodeDefinition(const Definition&);
 GULINETCORE_API bool DecodeDefinition(std::span<const std::uint8_t>,Definition&);
+GULINETCORE_API Bytes EncodeOnHitRanks(const std::vector<Definition>&);
 GULINETCORE_API std::vector<Definition> FromEffects(const Effects::Set&);
 GULINETCORE_API Bytes Encode(const State&);
 GULINETCORE_API bool Decode(std::span<const std::uint8_t>,State&);

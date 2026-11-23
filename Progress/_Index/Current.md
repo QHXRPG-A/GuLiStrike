@@ -91,12 +91,14 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | art, combat, data, network, ui | — | — | 2026-11-23 |
+| [游骑兵范围与持续增伤](../DevelopmentDocumentation/20261123-游骑兵范围与持续增伤.md) | combat, data, network | — | — | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | combat, data, network | — | — | 2026-11-23 |
 | [肉鸽牌等级 GM 命令](../DevelopmentDocumentation/20261123-肉鸽牌等级GM命令.md) | combat, network | — | — | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | combat, network, presentation, ui | — | — | 2026-11-23 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | — | 2026-11-23 |
 | [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | combat, presentation, ui | — | — | 2026-11-22 |
 | [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | assets, ui | 3/3 (100%) | — | 2026-11-21 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | — | 2026-11-21 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-11-21 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | combat, input, map, performance, vfx | — | — | 2026-11-19 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | assets, ui | 6/6 (100%) | — | 2026-11-18 |

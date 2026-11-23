@@ -447,7 +447,8 @@ struct FGuLiHybridProjectileState
         for(int32 I=0;I<V.Hops.Num();++I)
         {
             auto& H=V.Hops[I];if(!H.Published)All=false;if(H.Resolved)continue;
-            FGuLiDamageCommitResult Result;const float Scale=FMath::Pow(V.Recipe.GroundAttack.GetRicochet().Retention,float(I+1));
+            FGuLiDamageCommitResult Result;
+            const float Scale=float(V.Recipe.GroundAttack.GetRicochet().DamageScale(I+1));
             if(Hybrid->FindDamageResult(H.Event,Result))
             {
                 H.Resolved=true;if(Result.Status==EGuLiDamageCommitStatus::Committed&&!H.Notified)

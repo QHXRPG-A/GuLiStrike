@@ -12,6 +12,20 @@ struct Definition
     friend bool operator==(const Definition&,const Definition&)=default;
 };
 using Set=std::vector<Definition>;
+enum class DamageScope { SingleTarget, Area };
+enum class DamageTiming { Once, Periodic };
+struct DamageBonuses
+{
+    float Area=0, Periodic=0;
+
+    float Apply(float base,DamageScope scope,DamageTiming timing) const
+    {
+        return base*(scope==DamageScope::Area ? 1.f+Area : 1.f)
+                   *(timing==DamageTiming::Periodic ? 1.f+Periodic : 1.f);
+    }
+};
+// Read the source's resolved effects once when an attack, cast or status is frozen.
+GULINETCORE_API bool ResolveDamageBonuses(const Set&,DamageBonuses&);
 // Numeric columns come from the authoring adapter. Gameplay codecs remain independent of UE and Excel.
 using ReadWeaponColumn=std::function<bool(const char*,std::vector<double>&)>;
 struct WeaponAuthoring
@@ -51,6 +65,18 @@ struct Ricochet
 {
     std::uint32_t Minimum=0,Maximum=0,PerStack=0;
     float Range=0,Retention=0;
+    bool FixedDamagePerTarget=false;
+    GULINETCORE_API double DamageScale(std::uint32_t hop) const;
+};
+struct RicochetRank
+{
+    std::uint32_t Targets=0;
+    float DamageFraction=0;
+};
+struct RicochetProfile
+{
+    float Range=0;
+    std::vector<RicochetRank> Ranks;
 };
 struct ExplosivePackage
 {
@@ -146,6 +172,7 @@ GULINETCORE_API Bytes Encode(const Set&);
 GULINETCORE_API bool Decode(std::span<const std::uint8_t>,Set&);
 GULINETCORE_API Bytes EncodeRicochet(const Ricochet&);
 GULINETCORE_API bool DecodeRicochet(std::span<const std::uint8_t>,Ricochet&);
+GULINETCORE_API Bytes EncodeRicochetProfile(const RicochetProfile&);
 GULINETCORE_API Ricochet GetRicochet(const Set&);
 GULINETCORE_API bool AcceptedHit(const Set&,const TransactionRequest&,const CommitResult&,const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&);
 GULINETCORE_API bool ResolveHitProperties(const Set&,GroundHitProperties&);

@@ -20,10 +20,30 @@ float UGuLiBuffHandler::PreviewSeconds(const GuLiNet::Buffs::Definition& D) cons
 {return float(D.Duration?D.Duration:D.Interval)/GuLiNet::TicksPerSecond;}
 bool UGuLiBuffHandler::Load(int32 Id,GuLiNet::Buffs::Definition& D,FString& Error)
 {
+    std::vector<GuLiNet::Buffs::Definition> ranks;
+    if(!LoadRanks(Id,ranks,Error))return false;
+    D=std::move(ranks.front());
+    return true;
+}
+bool UGuLiBuffHandler::LoadRanks(int32 Id,std::vector<GuLiNet::Buffs::Definition>& Out,FString& Error)
+{
     FGuLiStrikeBuffsBuffsRow R;if(!Row(GetDefault<UGuLiBuffSettings>()->Buffs,Id,R)){Error=TEXT("Missing Buff ID ")+FString::FromInt(Id);return false;}
     auto* Class=R.ImplementationClass.LoadSynchronous();if(!Class||!Class->IsChildOf(StaticClass())){Error=TEXT("Buff class must derive from UGuLiBuffHandler");return false;}
-    D={};D.Id=uint32(R.Id);D.VersionValue=uint32(R.Version);
-    if(!Class->GetDefaultObject<UGuLiBuffHandler>()->Build(R,D,Error)||!GuLiNet::Buffs::Validate(D)){if(Error.IsEmpty())Error=TEXT("Invalid Buff definition");return false;}return true;
+    if(R.AdditionalRankConfigIds.Num()>=16){Error=TEXT("Too many Buff ranks");return false;}
+    const auto* handler=Class->GetDefaultObject<UGuLiBuffHandler>();
+    std::vector<GuLiNet::Buffs::Definition> ranks;
+    for(int32 index=0;index<=R.AdditionalRankConfigIds.Num();++index)
+    {
+        if(index && (!LexTryParseString(R.ConfigId,*R.AdditionalRankConfigIds[index-1]) || R.ConfigId<1))
+        {Error=TEXT("Invalid Buff rank configuration ID");return false;}
+        GuLiNet::Buffs::Definition rank;
+        rank.Id=uint32(R.Id);rank.VersionValue=uint32(R.Version);
+        if(!handler->Build(R,rank,Error) || !GuLiNet::Buffs::Validate(rank))
+        {if(Error.IsEmpty())Error=TEXT("Invalid Buff rank definition");return false;}
+        ranks.push_back(std::move(rank));
+    }
+    Out=std::move(ranks);
+    return true;
 }
 bool UGuLiBurningBuffHandler::Build(const FGuLiStrikeBuffsBuffsRow& R,GuLiNet::Buffs::Definition& D,FString& Error) const
 {

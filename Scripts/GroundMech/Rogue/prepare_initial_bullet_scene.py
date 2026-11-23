@@ -78,7 +78,7 @@ def main():
     instructions={
         'Entry': '从 GroundRogue_Entry 进入红队游骑兵。初始普攻伤害6/9/12；10.01强化后10/15/20。南侧100000生命靶读单发差值；先驱者/扫荡者半宽半长直线，重防号原样。三台红方对照单位默认待机，在Commander席手动命令开火。',
         'AttackRate': 'F4取09.01一级、二级，HUD攻速为R*1.08和R*1.08^2。R=4/8/12时最多26/17/11级。再升一级不出候选；超过30的武器换档被拒绝。保留开火冷却剩余比例。',
-        'Prerequisites': '新局Ground候选可有09.01/10.01/11.01，不含06.01/07.01/08.01。先取10.01再观察06.01/07.01；07.01后才有08.01。三张新牌空白但保留卡框、文字、HUD空槽及等级。',
+        'Prerequisites': '强化子弹（10.01）1级解锁灼烧子弹（07.01），灼烧2级解锁灼烧爆裂子弹（08.01），爆裂3级解锁折射子弹（06.01）。爆破套餐（11.01）1级解锁强化爆炸弹（12.01），强化爆炸弹3级解锁无人生还（13.01）。',
         'Explosion': '11.01三级分别每5/4/2发普攻附一枚。先打空n-1发，下一发命中BlastCenter。普攻与20/30/40范围伤害分别结算，未强化也为2D。附近12米、15米边界、24米外、友军、护盾和墙后靶；边界使用实际受击体，不只按演员中心。超时消失不爆炸；爆炸不产生灼烧或折射。',
         'Recovery': '先打空积累进度，停火、死亡复活、换席再回来，下一阈值保持；首次取得/升级11.01归零。发射后马上升级10.01或11.01，旧弹保持旧快照。用现有Hybrid恢复入口恢复同局；ReadState的builds.shot_progress、attacks.revision/companion、explosions.hits事件ID与伤害应保持，重复回执不得新增扣血。新局清空。',
     }
@@ -91,7 +91,7 @@ def main():
     notes=[]
     for name in ('GroundBuff_Instructions','GroundRogue_Instructions'):
         if name in actors and isinstance(actors[name],unreal.Note):
-            a=actors[name];old=str(a.get_editor_property('text'));prefix='当前前置：先取得强化子弹10.01，再取折射06.01/灼烧07.01；灼烧爆裂08.01仍依赖07.01。\n'
+            a=actors[name];old=str(a.get_editor_property('text'));prefix=instructions['Prerequisites']+'\n'
             if not old.startswith(prefix):a.modify();a.set_editor_property('text',prefix+old)
             notes.append(name)
     require(unreal.EditorLoadingAndSavingUtils.save_map(world,MAP),'Save authored scene')

@@ -16,6 +16,10 @@ EXPORTS = {
     "texts": "data/Json/DT_GuLiStrikeGameTexts_Texts.json",
     "effects": "data/Json/DT_GuLiStrikeRogueCards_Effects.json",
     "weapons": "data/Json/DT_GuLiStrikeRogueCards_GroundWeaponEffects.json",
+    "ricochet": "data/Json/DT_GuLiStrikeRogueCards_GroundRicochet.json",
+    "buffs": "data/Json/DT_GuLiStrikeBuffs_Buffs.json",
+    "burning": "data/Json/DT_GuLiStrikeBuffs_Burning.json",
+    "burning_burst": "data/Json/DT_GuLiStrikeBuffs_BurningBurst.json",
 }
 
 sys.path.insert(0, str(PROJECT / "Tools/DataPipeline"))
@@ -31,11 +35,11 @@ def plain_text(value):
     return re.sub(r"<(?:/?[A-Za-z][A-Za-z0-9_]*|/)>", "", value)
 
 
-def preview_descriptions(row, template, effects, weapons):
+def preview_descriptions(row, template, effects, weapons, ricochets, buff_ranks):
     if row["Type"] == 3:
         definitions = [effects[ident] for ident in row["EffectIds"]]
         has_level_values = any(
-            effect["Handler"] in ("ground/explosive_package", "ground/explosive_enhancement", "ground/no_survivors", "ground/ai_engine", "ground/enhanced_bullet", "ground/split_barrel", "ground/electromagnetic")
+            effect["Handler"] in ("ricochet", "buff/on_hit", "ground/fire_rate", "ground/explosive_package", "ground/explosive_enhancement", "ground/no_survivors", "ground/ai_engine", "ground/enhanced_bullet", "ground/split_barrel", "ground/electromagnetic", "ground/damage_bonus")
             for effect in definitions
         )
         levels = range(1, row["MaxAcquisitions"] + 1) if has_level_values else (1,)
@@ -50,11 +54,23 @@ def preview_descriptions(row, template, effects, weapons):
         for effect in definitions:
             handler = effect["Handler"]
             values.append(level)
+            if handler == "ricochet":
+                profile = ricochets[str(effect["ConfigId"])]
+                values.extend((int(profile["TargetCounts"][level-1]), float(profile["DamageFractions"][level-1])*100))
+            if handler == "buff/on_hit":
+                config = buff_ranks[effect["BuffId"]][level-1]
+                ratio = config["MaxHealthDamageRatio"] if "MaxHealthDamageRatio" in config else config["LostHealthDamageRatio"]
+                interval = config["TickIntervalSeconds"] if "TickIntervalSeconds" in config else config["IntervalSeconds"]
+                values.extend((ratio*100, config.get("DurationSeconds",0), interval, config.get("RadiusCentimeters",0)/100))
             if not handler.startswith("ground/"):
                 continue
             config = weapons[str(effect["ConfigId"])]
             if handler == "ground/fire_rate":
-                values.append(config["FireRateBonusPercent"] * 100)
+                bonus = config["FireRateBonusPercent"]
+                values.extend((bonus*100, ((1+bonus)**level-1)*100))
+            elif handler == "ground/damage_bonus":
+                increments = [float(value) for value in config["DamageBonusIncrements"][:level]]
+                values.extend((increments[-1]*100, sum(increments)*100))
             elif handler == "ground/split_barrel":
                 values.append(int(config["LockTargetCounts"][level-1]))
             elif handler == "ground/electromagnetic":
@@ -122,6 +138,12 @@ def load_catalog():
     texts = {row["TextId"]: row for row in tables["texts"]}
     effects = {str(row["Id"]): row for row in tables["effects"]}
     weapons = {str(row["Id"]): row for row in tables["weapons"]}
+    ricochets = {str(row["Id"]): row for row in tables["ricochet"]}
+    buff_ranks = {}
+    for buff in tables["buffs"]:
+        source = {"GuLiBurningBuffHandler":"burning", "GuLiBurningBurstBuffHandler":"burning_burst"}[buff["ImplementationClass"].rsplit(".",1)[-1]]
+        configs = {row["Id"]:row for row in tables[source]}
+        buff_ranks[buff["Id"]] = [configs[int(key)] for key in [buff["ConfigId"], *buff.get("AdditionalRankConfigIds",[])]]
     cards, links, details = [], [], {}
     used_texts, exclusions = {}, set()
     for ident, row in sorted(rows.items()):
@@ -138,7 +160,7 @@ def load_catalog():
             "rowName": row["Name"], "textIds": row["TextIds"],
             "descriptionTemplate": description_row["Content"],
             "note": row["Note"], "maxAcquisitions": row["MaxAcquisitions"],
-            "previews": preview_descriptions(row, description, effects, weapons),
+            "previews": preview_descriptions(row, description, effects, weapons, ricochets, buff_ranks),
             "handlers": [effects[ref]["Handler"] for ref in row["EffectIds"]],
         }
         parents = row["RequiredCardIds"]
@@ -147,7 +169,7 @@ def load_catalog():
         exclusions.update(tuple(sorted((ident, other))) for other in row["ExcludedCardIds"])
     links.extend(make_link("excludes", a, b) for a, b in sorted(exclusions))
     return {
-        "fingerprint": digest([rows, used_texts, effects, weapons]),
+        "fingerprint": digest([rows, used_texts, effects, weapons, ricochets, buff_ranks]),
         "sources": EXPORTS, "cards": cards, "links": links, "details": details,
     }
 

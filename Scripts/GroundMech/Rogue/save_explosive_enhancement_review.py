@@ -70,7 +70,7 @@ def main():
     replacements = {
         'GroundAmmo_Instructions_TrailAndDamage': f'爆炸弹仍用Missile_Cluster载体、VFX_Missile飞行层和NS_Explosion_19命中副本；飞行参数、尺寸及尾迹不变。基础伤害20/30/40、半径{radius}cm；12.01累计半径/伤害倍率1.02/1.0404/1.082016，命中表现同比例放大。无衰减，仅一次范围伤害，按现有受击体/护盾/墙体规则。原Inside12m、Boundary15m、Outside24m现均在基础范围外。',
         'GroundAmmo_Instructions_Recovery': '升级12.01不清空爆破计数；升级11.01仍归零，保留已有12.01倍率。飞行中升级只影响之后发射的弹丸。重复确认和重复回执不能额外升级或扣血。沿用已有Loop、独立附弹与公共发射时序。新协议41/Ground7/Manifest27从新局生效。',
-        'GroundAmmo_Instructions_Prerequisites': '新局候选09.01/10.01/11.01；12.01依赖任意11.01，不依赖10.01。06.01/07.01仍依赖10.01；08.01仍依赖07.01。新卡沿用空白牌面、HUD空图标槽及等级。'}
+        'GroundAmmo_Instructions_Prerequisites': '强化子弹（10.01）1级解锁灼烧子弹（07.01），灼烧2级解锁灼烧爆裂子弹（08.01），爆裂3级解锁折射子弹（06.01）。爆破套餐（11.01）1级解锁强化爆炸弹（12.01），强化爆炸弹3级解锁无人生还（13.01）。'}
     for label, text in replacements.items():
         a = require(actors.get(label), label)
         a.modify(); a.set_editor_property('text', text)

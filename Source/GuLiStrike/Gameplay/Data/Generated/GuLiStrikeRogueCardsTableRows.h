@@ -203,25 +203,17 @@ struct FGuLiStrikeRogueCardsGroundRicochetRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
 	FString Note;
 
-	/** MinimumHops (int, Necessary) */
+	/** TargetCounts (str[], Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
-	int32 MinimumHops = 0;
+	TArray<FString> TargetCounts;
 
-	/** MaximumHops (int, Necessary) */
+	/** DamageFractions (str[], Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
-	int32 MaximumHops = 0;
-
-	/** HopsPerStack (int, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
-	int32 HopsPerStack = 0;
+	TArray<FString> DamageFractions;
 
 	/** RangeCentimeters (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
 	float RangeCentimeters = 0.0f;
-
-	/** DamageRetention (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundRicochet")
-	float DamageRetention = 0.0f;
 
 };
 
@@ -374,6 +366,14 @@ struct FGuLiStrikeRogueCardsGroundWeaponEffectsRow : public FTableRowBase
 	/** ArcVfxId (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
 	int32 ArcVfxId = 0;
+
+	/** DamageBonusAxis (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	int32 DamageBonusAxis = 0;
+
+	/** DamageBonusIncrements (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> DamageBonusIncrements;
 
 };
 

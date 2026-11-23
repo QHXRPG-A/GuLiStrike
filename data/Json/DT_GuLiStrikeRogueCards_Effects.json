@@ -2,7 +2,7 @@
   {
     "Name": "GroundRicochet",
     "Id": 1,
-    "Note": "重复获取整体增加折射段区间",
+    "Note": "按持有等级取额外目标上限和每个目标的普攻伤害比例",
     "Handler": "ricochet",
     "Version": 1,
     "ConfigId": 1,
@@ -96,6 +96,24 @@
     "Handler": "ground/electromagnetic",
     "Version": 1,
     "ConfigId": 8,
+    "BuffId": 0
+  },
+  {
+    "Name": "GroundEnhancedAOE",
+    "Id": 12,
+    "Note": "范围伤害按当级新增累加",
+    "Handler": "ground/damage_bonus",
+    "Version": 1,
+    "ConfigId": 9,
+    "BuffId": 0
+  },
+  {
+    "Name": "GroundDamageOverTime",
+    "Id": 13,
+    "Note": "持续伤害按当级新增累加",
+    "Handler": "ground/damage_bonus",
+    "Version": 1,
+    "ConfigId": 10,
     "BuffId": 0
   }
 ]

@@ -2,6 +2,7 @@
 #include "GuLiNetWeaponAuthoring.h"
 #include <algorithm>
 #include <cmath>
+#include <numeric>
 
 namespace GuLiNet::Effects
 {
@@ -11,6 +12,26 @@ std::map<std::string,Handler>& Registry(){static std::map<std::string,Handler> R
 bool Name(const std::string& S){return !S.empty()&&S.size()<=192&&S.find('\0')==std::string::npos;}
 bool ValidRicochet(const Ricochet& V)
 {return V.Minimum&&V.Minimum<=V.Maximum&&V.Maximum<=MaximumRicochetHops&&V.PerStack&&std::isfinite(V.Range)&&V.Range>0&&V.Range<=1000000&&std::isfinite(V.Retention)&&V.Retention>0&&V.Retention<=1;}
+bool ValidRicochetRank(const RicochetRank& rank)
+{
+    return rank.Targets && rank.Targets<=MaximumRicochetHops
+        && std::isfinite(rank.DamageFraction) && rank.DamageFraction>0.f && rank.DamageFraction<=1.f;
+}
+bool DecodeRicochetProfile(std::span<const std::uint8_t> bytes,RicochetProfile& out)
+{
+    Reader reader(bytes);
+    std::uint32_t marker,count;
+    RicochetProfile profile;
+    // A zero first word distinguishes a rank table from a frozen shot's positive minimum.
+    if(!reader.U32(marker) || marker!=0 || !reader.F32(profile.Range) || !std::isfinite(profile.Range)
+        || profile.Range<=0.f || profile.Range>1000000.f || !reader.U32(count) || !count || count>16)return false;
+    profile.Ranks.resize(count);
+    for(auto& rank:profile.Ranks)
+        if(!reader.U32(rank.Targets) || !reader.F32(rank.DamageFraction) || !ValidRicochetRank(rank))return false;
+    if(!reader.Done())return false;
+    out=std::move(profile);
+    return true;
+}
 }
 bool Register(Handler H)
 {if(!Name(H.Name)||!H.VersionValue||!H.Validate||!H.Accumulate)return false;const auto K=H.Name;return Registry().emplace(K,std::move(H)).second;}
@@ -24,9 +45,39 @@ Bytes Encode(const Set& S)
 bool Decode(std::span<const std::uint8_t> B,Set& Out)
 {Reader R(B);Set S;std::uint32_t V,N;if(!R.U32(V)||V!=Version||!R.U32(N)||N>64)return false;S.resize(N);for(auto& D:S)if(!R.U32(D.Id)||!R.U32(D.VersionValue)||!R.Text(D.Handler,192)||!R.Blob(D.Parameters,4096))return false;if(!R.Done()||!Validate(S))return false;Out=std::move(S);return true;}
 Bytes EncodeRicochet(const Ricochet& V)
-{if(!ValidRicochet(V))return {};Writer W;W.U32(V.Minimum);W.U32(V.Maximum);W.U32(V.PerStack);W.F32(V.Range);W.F32(V.Retention);return W.Take();}
+{if(!ValidRicochet(V))return {};Writer W;W.U32(V.Minimum);W.U32(V.Maximum);W.U32(V.PerStack);W.F32(V.Range);W.F32(V.Retention);if(V.FixedDamagePerTarget)W.U8(1);return W.Take();}
 bool DecodeRicochet(std::span<const std::uint8_t> B,Ricochet& Out)
-{Reader R(B);Ricochet V;if(!R.U32(V.Minimum)||!R.U32(V.Maximum)||!R.U32(V.PerStack)||!R.F32(V.Range)||!R.F32(V.Retention)||!R.Done()||!ValidRicochet(V))return false;Out=V;return true;}
+{
+    Reader reader(B);
+    Ricochet value;
+    if(!reader.U32(value.Minimum) || !reader.U32(value.Maximum) || !reader.U32(value.PerStack)
+        || !reader.F32(value.Range) || !reader.F32(value.Retention) || !ValidRicochet(value))return false;
+    if(!reader.Done())
+    {
+        std::uint8_t mode;
+        if(!reader.U8(mode) || mode!=1 || !reader.Done())return false;
+        value.FixedDamagePerTarget=true;
+    }
+    Out=value;
+    return true;
+}
+Bytes EncodeRicochetProfile(const RicochetProfile& profile)
+{
+    if(!std::isfinite(profile.Range) || profile.Range<=0.f || profile.Range>1000000.f
+        || profile.Ranks.empty() || profile.Ranks.size()>16)return {};
+    Writer writer;
+    writer.U32(0);writer.F32(profile.Range);writer.U32(std::uint32_t(profile.Ranks.size()));
+    for(const auto& rank:profile.Ranks)
+    {
+        if(!ValidRicochetRank(rank))return {};
+        writer.U32(rank.Targets);writer.F32(rank.DamageFraction);
+    }
+    return writer.Take();
+}
+double Ricochet::DamageScale(std::uint32_t hop) const
+{
+    return FixedDamagePerTarget ? double(Retention) : std::pow(double(Retention),double(hop));
+}
 Ricochet GetRicochet(const Set& S)
 {Ricochet V;for(const auto& D:S)if(D.Handler=="ricochet"&&!DecodeRicochet(D.Parameters,V))return {};return V;}
 bool AcceptedHit(const Set& S,const TransactionRequest& R,const CommitResult& Result,const std::map<ObjectKey,ObjectRecord>& Previous,std::map<ObjectKey,ObjectRecord>& Changes)
@@ -286,6 +337,63 @@ Handler RankedHandler(const char* name,WeaponAuthoring authoring)
             output.push_back(std::move(resolved)); return true;
         },{},{},authoring};
 }
+enum class DamageBonusAxis : std::uint8_t { Area=1, Periodic=2 };
+constexpr const char* DamageBonusHandler="ground/damage_bonus";
+struct DamageBonusProfile
+{
+    DamageBonusAxis Axis=DamageBonusAxis::Area;
+    std::uint32_t Level=0;
+    std::vector<float> Ranks;
+    float Total() const {return std::accumulate(Ranks.begin(),Ranks.begin()+Level,0.f);}
+};
+Bytes EncodeDamageBonus(const DamageBonusProfile& profile)
+{
+    if((profile.Axis!=DamageBonusAxis::Area && profile.Axis!=DamageBonusAxis::Periodic)
+        || profile.Ranks.empty() || profile.Ranks.size()>16 || profile.Level>profile.Ranks.size())return {};
+    Writer writer;
+    writer.U8(static_cast<std::uint8_t>(profile.Axis));
+    writer.U32(profile.Level);
+    writer.U32(static_cast<std::uint32_t>(profile.Ranks.size()));
+    for(float increment:profile.Ranks)
+    {
+        if(!std::isfinite(increment) || increment<=0 || increment>1)return {};
+        writer.F32(increment);
+    }
+    return writer.Take();
+}
+bool DecodeDamageBonus(std::span<const std::uint8_t> bytes,DamageBonusProfile& out)
+{
+    Reader reader(bytes);
+    std::uint8_t axis;
+    std::uint32_t count;
+    DamageBonusProfile profile;
+    if(!reader.U8(axis) || !reader.U32(profile.Level) || !reader.U32(count) || !count || count>16)return false;
+    profile.Axis=static_cast<DamageBonusAxis>(axis);
+    profile.Ranks.resize(count);
+    for(float& value:profile.Ranks)if(!reader.F32(value))return false;
+    if(!reader.Done() || EncodeDamageBonus(profile).empty())return false;
+    out=std::move(profile);
+    return true;
+}
+const WeaponAuthoring DamageBonusAuthoring{
+    [](const ReadWeaponColumn& read)
+    {
+        DamageBonusProfile profile;
+        std::uint8_t axis;
+        if(!WeaponData::Scalar(read,"DamageBonusAxis",axis) || !WeaponData::Column(read,"DamageBonusIncrements",profile.Ranks))return Bytes{};
+        profile.Axis=static_cast<DamageBonusAxis>(axis);
+        return EncodeDamageBonus(profile);
+    },
+    [](const Definition& def,std::uint32_t level,std::vector<double>& args)
+    {
+        DamageBonusProfile profile;
+        if(!DecodeDamageBonus(def.Parameters,profile) || !level || level>profile.Ranks.size())return false;
+        profile.Level=level;
+        args={profile.Ranks[level-1]*100.,profile.Total()*100.};
+        return true;
+    }
+};
+const bool DamageBonusRegistered=Register(RankedHandler<DamageBonusProfile,DecodeDamageBonus,EncodeDamageBonus>(DamageBonusHandler,DamageBonusAuthoring));
 const bool SplitRegistered=Register(RankedHandler<SplitBarrel,DecodeSplitBarrel,EncodeSplitBarrel>("ground/split_barrel",WeaponData::Split));
 const bool RailRegistered=[]
 {
@@ -302,6 +410,20 @@ const bool RailRegistered=[]
     };
     return Register(std::move(handler));
 }();
+}
+bool ResolveDamageBonuses(const Set& effects,DamageBonuses& out)
+{
+    DamageBonuses bonuses;
+    for(const auto& effect:effects)
+    {
+        if(effect.Handler!=DamageBonusHandler)continue;
+        DamageBonusProfile profile;
+        if(!DecodeDamageBonus(effect.Parameters,profile) || !profile.Level)return false;
+        float& axis=profile.Axis==DamageBonusAxis::Area ? bonuses.Area : bonuses.Periodic;
+        axis+=profile.Total();
+    }
+    out=bonuses;
+    return true;
 }
 float MovementMultiplier(std::span<const std::uint8_t> status,Tick now)
 {
@@ -409,15 +531,32 @@ const bool BarrageRegistered=Register({BarrageHandler,1,[](const Definition& D){
     },{},{},WeaponData::Salvo});
 const bool ExplosiveEnhancementRegistered=Register({"ground/explosive_enhancement",1,[](const Definition& D){ExplosiveEnhancement V;return DecodeExplosiveEnhancement(D.Parameters,V);},
     [](const Definition& D,std::uint32_t N,Set& S){ExplosiveEnhancement V;if(!N||!DecodeExplosiveEnhancement(D.Parameters,V)||N>V.RadiusBonuses.size())return false;V.Level=N;auto Copy=D;Copy.Parameters=EncodeExplosiveEnhancement(V);S.push_back(std::move(Copy));return true;},{},{},WeaponData::BlastBonus});
-const bool Registered=Register({"ricochet",1,[](const Definition& D){Ricochet V;return DecodeRicochet(D.Parameters,V);},
+const bool Registered=Register({"ricochet",1,[](const Definition& D){
+        Ricochet shot;RicochetProfile profile;
+        return DecodeRicochet(D.Parameters,shot) || DecodeRicochetProfile(D.Parameters,profile);
+    },
     [](const Definition& D,std::uint32_t N,Set& S)
     {
-        Ricochet E;if(!N||!DecodeRicochet(D.Parameters,E))return false;
-        const auto Extra=std::uint64_t(N-1)*E.PerStack;if(Extra+E.Maximum>MaximumRicochetHops)return false;
-        E.Minimum+=std::uint32_t(Extra);E.Maximum+=std::uint32_t(Extra);
+        if(!N)return false;
+        Ricochet E;
+        RicochetProfile profile;
+        if(DecodeRicochetProfile(D.Parameters,profile))
+        {
+            if(N>profile.Ranks.size())return false;
+            const auto& rank=profile.Ranks[N-1];
+            E={rank.Targets,rank.Targets,1,profile.Range,rank.DamageFraction,true};
+        }
+        else
+        {
+            // Manifests recorded before ranked ricochet store a starting interval.
+            if(!DecodeRicochet(D.Parameters,E))return false;
+            const auto extra=std::uint64_t(N-1)*E.PerStack;
+            if(extra+E.Maximum>MaximumRicochetHops)return false;
+            E.Minimum+=std::uint32_t(extra);E.Maximum+=std::uint32_t(extra);
+        }
         auto I=std::find_if(S.begin(),S.end(),[](const auto& V){return V.Handler=="ricochet";});
         if(I!=S.end())
-        {Ricochet Old;if(!DecodeRicochet(I->Parameters,Old)||Old.Range!=E.Range||Old.Retention!=E.Retention||std::uint64_t(Old.Maximum)+E.Maximum>MaximumRicochetHops)return false;E.Minimum+=Old.Minimum;E.Maximum+=Old.Maximum;I->Parameters=EncodeRicochet(E);}
+        {Ricochet Old;if(!DecodeRicochet(I->Parameters,Old)||Old.Range!=E.Range||Old.Retention!=E.Retention||Old.FixedDamagePerTarget!=E.FixedDamagePerTarget||std::uint64_t(Old.Maximum)+E.Maximum>MaximumRicochetHops)return false;E.Minimum+=Old.Minimum;E.Maximum+=Old.Maximum;I->Parameters=EncodeRicochet(E);}
         else {auto V=D;V.Parameters=EncodeRicochet(E);S.push_back(std::move(V));}return true;
     }});
 }

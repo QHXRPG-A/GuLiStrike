@@ -45,11 +45,12 @@ bool Ranks(const ReadWeaponColumn& read,const char* name,std::vector<Rank>& rank
 
 inline const WeaponAuthoring FireRate{
     [](const ReadWeaponColumn& read){float bonus;return Scalar(read,"FireRateBonusPercent",bonus)?EncodeFireRate(1.f+bonus):Bytes{};},
-    [](const Definition& def,std::uint32_t,std::vector<double>& args)
+    [](const Definition& def,std::uint32_t level,std::vector<double>& args)
     {
         float multiplier;
         if(!DecodeFireRate(def.Parameters,multiplier))return false;
         args.push_back(std::round((multiplier-1.f)*10000.f)/100.f);
+        args.push_back((std::pow(double(multiplier),level)-1.)*100.);
         return true;
     }
 };

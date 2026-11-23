@@ -6,13 +6,14 @@ from pathlib import Path
 STEM = "GuLiStrikeCardArtwork"
 SHEETS = ("Templates", "Artworks", "Layers", "Parameters")
 TABLES = tuple("DT_" + STEM + "_" + sheet for sheet in SHEETS)
+GROUND_MASK_LAYERS = {"RegisteredSixRigidLayer3Mask": 3, "RegisteredSixRigidLayer2Mask": 2}
 PRESETS = {
     "BlankPlaceholder": "None",
     "ModelComicAtlasV9": "Atlas3x2",
     "RegisteredSix": "Independent6",
     "RegisteredSixForegroundMask": "Independent6",
     "RegisteredSixRigid": "Independent6",
-    "RegisteredSixRigidLayer3Mask": "Independent6",
+    **dict.fromkeys(GROUND_MASK_LAYERS, "Independent6"),
 }
 COMMON_PARAMETER = re.compile(r"Layer [1-6] (?:Depth|Opacity|Scale|Offset)$")
 
@@ -136,25 +137,27 @@ def validate_catalog(tables):
                 seen.add(owner)
                 owner=by_layers[ident][owner].get('MotionOwnerLayer',0)
         preset = templates[artwork["TemplateId"]]["CompositePreset"]
-        common_keys = ("Layers global depth",) if preset == "RegisteredSixRigidLayer3Mask" else (
+        split_layer = GROUND_MASK_LAYERS.get(preset)
+        common_keys = ("Layers global depth",) if split_layer else (
             "Layers global depth", "Ability behind machinery", "Foreground behind machinery")
         for key in common_keys:
             if key not in params or params[key]["Kind"] != "Scalar":
                 _fail("Artworks", artwork, f"missing scalar {key}")
-        if preset == "RegisteredSixRigidLayer3Mask":
+        if split_layer:
+            enabled = f"Layer {split_layer} Split Enabled"
             for key, kind in (("Parallax Travel", "Vector"), ("Artwork Aperture", "Vector"),
-                              ("Parallax Tilt Tangent", "Scalar"), ("Layer 3 Split Enabled", "Scalar")):
+                              ("Parallax Tilt Tangent", "Scalar"), (enabled, "Scalar")):
                 if key not in params or params[key]["Kind"] != kind:
                     _fail("Artworks", artwork, f"missing {kind} {key}")
-            if params["Layer 3 Split Enabled"]["ScalarValue"]:
+            if params[enabled]["ScalarValue"]:
                 mask = params.get("Foreground Front Mask")
                 if not mask or mask["Kind"] != "Texture" or mask["TextureRole"] != "Mask":
-                    _fail("Artworks", artwork, "split layer 3 requires Foreground Front Mask")
+                    _fail("Artworks", artwork, f"split layer {split_layer} requires Foreground Front Mask")
         if preset == "RegisteredSixForegroundMask":
             mask = params.get("Foreground Front Mask")
             if not mask or mask["Kind"] != "Texture" or mask["TextureRole"] != "Mask":
                 _fail("Artworks", artwork, "foreground template requires Foreground Front Mask")
-        if preset not in ("ModelComicAtlasV9", "RegisteredSixRigidLayer3Mask") and "Background Margin Map" not in params:
+        if not split_layer and preset != "ModelComicAtlasV9" and "Background Margin Map" not in params:
             _fail("Artworks", artwork, "registered template requires Background Margin Map")
     return {"templates": templates, "artworks": artworks, "layers": by_layers, "parameters": by_parameters}
 

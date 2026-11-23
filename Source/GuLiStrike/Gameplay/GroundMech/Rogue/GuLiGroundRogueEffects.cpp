@@ -52,15 +52,23 @@ bool BuildParameters(const FGuLiStrikeRogueCardsEffectsRow& row,const GuLiNet::E
     else if(handler.Name=="ricochet")
     {
         FGuLiStrikeRogueCardsGroundRicochetRow config;
-        if(!Row(settings->GroundRicochet,row.ConfigId,config))return false;
-        effect.Parameters=GuLiNet::Effects::EncodeRicochet({uint32(config.MinimumHops),uint32(config.MaximumHops),
-            uint32(config.HopsPerStack),config.RangeCentimeters,config.DamageRetention});
+        if(!Row(settings->GroundRicochet,row.ConfigId,config) || config.TargetCounts.Num()!=config.DamageFractions.Num())return false;
+        GuLiNet::Effects::RicochetProfile profile;
+        profile.Range=config.RangeCentimeters;
+        for(int32 index=0;index<config.TargetCounts.Num();++index)
+        {
+            GuLiNet::Effects::RicochetRank rank;
+            if(!LexTryParseString(rank.Targets,*config.TargetCounts[index])
+                || !LexTryParseString(rank.DamageFraction,*config.DamageFractions[index]))return false;
+            profile.Ranks.push_back(rank);
+        }
+        effect.Parameters=GuLiNet::Effects::EncodeRicochetProfile(profile);
     }
     else if(handler.Name=="buff/on_hit")
     {
-        GuLiNet::Buffs::Definition buff;
-        if(!UGuLiBuffHandler::Load(row.BuffId,buff,error))return false;
-        effect.Parameters=GuLiNet::Buffs::EncodeDefinition(buff);
+        std::vector<GuLiNet::Buffs::Definition> ranks;
+        if(!UGuLiBuffHandler::LoadRanks(row.BuffId,ranks,error))return false;
+        effect.Parameters=GuLiNet::Buffs::EncodeOnHitRanks(ranks);
     }
     return !effect.Parameters.empty() && GuLiNet::Effects::Validate(effect);
 }
@@ -194,6 +202,9 @@ FText Preview(const FGuLiStrikeRogueCardsCardsRow& R,const FText& Pattern,int32 
         {
             GuLiNet::Effects::Set resolved;
             if(!handler->Accumulate(D,level,resolved))return FText::GetEmpty();
+            const auto ricochet=GuLiNet::Effects::GetRicochet(resolved);
+            Args.Add(FText::AsNumber(ricochet.Maximum,&Format));
+            Args.Add(FText::AsNumber(ricochet.Retention*100.f,&Format));
         }
     }
     return FText::Format(Pattern,Args);
