@@ -10,6 +10,7 @@
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Gameplay/Wingman/Movement/GuLiWingmanSwarmFlow.h"
 #include "GuLiFlightNavigationSubsystem.h"
+#include "Network/GuLiHybridActorComponent.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GuLiWingmanFlightMovementComponent)
 
@@ -347,7 +348,7 @@ void UGuLiWingmanFlightMovementComponent::SimulateFixedStep(
 	const float DesiredSpeed = FMath::Clamp(
 		static_cast<float>(RequestedVelocity.Size()),
 		Tuning.MinimumSpeedCentimetersPerSecond,
-		Tuning.CatchUpSpeedCentimetersPerSecond);
+		Tuning.CatchUpSpeedCentimetersPerSecond)*UGuLiHybridActorComponent::MovementMultiplier(Pawn);
 	const FVector DesiredDirection = GuLiWingmanSteering::TurnDirectionToward(
 		CurrentForward,
 		RequestedVelocity.GetSafeNormal(),

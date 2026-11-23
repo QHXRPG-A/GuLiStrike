@@ -2,6 +2,7 @@
 #include "Gameplay/Skills/Private/GuLiHybridArmyConversions.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
+#include "Gameplay/Cards/GuLiRogueCardPresentation.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -26,7 +27,7 @@ public:
         const uint32 Epoch=Battle->GetMatchEpoch();std::vector<GuLiNet::Army::Profile> Profiles;std::string Error;
         if (!GuLiNet::Army::Resolve(S.Definitions,S.Sources,S.Equipment,Profiles,Error)) return false;
         // Applying the committed capability after a handoff also completes its UI request.
-        Cards->HybridRequests.Remove(GuLiNetBridge::ToUE(S.LastRequest));
+        Cards->CompleteHybridRequest(GuLiNetBridge::ToUE(S.LastRequest));
         Skills->CommittedProfiles.RemoveAll([&](const auto& P){return P.Team==O.Team;});
         for (const auto& P:Profiles) Skills->CommittedProfiles.Add(GuLiArmyBridge::Profile(P,O.Team,uint32(S.RevisionValue)));
         Skills->CommittedMatchEpoch=Epoch;Skills->HybridTeamRevisions.Add(O.Team,uint32(S.RevisionValue));Skills->RebuildLookup();
@@ -66,6 +67,8 @@ public:
             Offer.Owner=PS;Offer.Team=O.Team;Offer.Candidates.Reset();for (const auto& Id:S.Current.Candidates) Offer.Candidates.Add(UTF8_TO_TCHAR(Id.c_str()));
             Offer.Selected=UTF8_TO_TCHAR(S.Current.Selected.c_str());Offer.bFinished=S.Current.Finished;Offer.bSubmitted=false;Offer.bApplied=!Offer.Selected.IsEmpty();
             Offer.bUpgradePublished=S.Current.PresentationClosed;Offer.CommittedTime=float(S.Current.CommittedAt/60.);
+            if (PS->IsCommanderControlActive() && OldSession.IsValid() && !Offer.Session.IsValid())
+                if (auto* UI=PC->FindComponentByClass<UGuLiRogueCardPresentation>()) UI->InvalidateOffer(OldSession);
             Offer.HybridPresentationEpoch=Epoch;
             const bool OfferChanged=ContextChanged || OldSession!=Offer.Session || OldRequest!=Offer.Request || OldCandidates!=Offer.Candidates;
             if (!Offer.bUpgradePublished && Offer.Session.IsValid() && OfferChanged)
@@ -87,12 +90,12 @@ bool FindRoot(UWorld& W,EGuLiTeam Team,FGuLiHybridObjectState& Out)
     const auto* H=W.GetSubsystem<UGuLiHybridWorldSubsystem>();
     return H && H->GetTeamCapabilityObject(Team,TEXT("army_state"),Out);
 }
-FGuid Request(UWorld& W,EGuLiTeam Team,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session,FString Choice,uint32 Expected,uint16 Unit,FName Slot)
+FGuid Request(UWorld& W,EGuLiTeam Team,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session,FString Choice,uint32 Expected,uint16 Unit,FName Slot,uint32 TargetLevel)
 {
     auto* H=W.GetSubsystem<UGuLiHybridWorldSubsystem>();FGuLiHybridObjectState O;
     if (!Event.IsValid() || !H || !FindRoot(W,Team,O) || !H->HasControl(O.Key) || !H->CanPublishFacts()) return {};
     GuLiNet::Army::Command Input;Input.Op=GuLiNet::Army::Operation(Op);Input.Request=GuLiNetBridge::ToCore(Event);Input.Session=GuLiNetBridge::ToCore(Session);
-    Input.Choice=TCHAR_TO_UTF8(*Choice);Input.Expected=Expected;Input.EquipmentSlot={Unit,GuLiArmyBridge::Text(Slot)};const auto Bytes=GuLiNet::Army::EncodeCommand(Input);
+    Input.Choice=TCHAR_TO_UTF8(*Choice);Input.Expected=Expected;Input.TargetLevel=TargetLevel;Input.EquipmentSlot={Unit,GuLiArmyBridge::Text(Slot)};const auto Bytes=GuLiNet::Army::EncodeCommand(Input);
     if (Bytes.empty()) return {};FGuLiHybridCommand C;C.Event=Event;C.LogicalTick=H->GetLogicalTick();C.Operation=TEXT("ArmyCapability");C.Arguments.Append(Bytes.data(),int32(Bytes.size()));
     C.Members.Add({O.Key,O.ControlEpoch,O.OwnerEpoch,0,{}});return H->RouteCommand(C)?Event:FGuid{};
 }

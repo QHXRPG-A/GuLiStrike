@@ -8,6 +8,7 @@ public class GuLiNetCore : ModuleRules
         // Portable translation units have independent internal helpers.
         bUseUnity = false;
         CppStandard = CppStandardVersion.Cpp20;
+        PrivateDefinitions.Add("GULINET_CARD_GM=" + (Target.Configuration == UnrealTargetConfiguration.Shipping ? "0" : "1"));
         if (Target.LinkType == TargetLinkType.Modular)
         {
             PublicDefinitions.Add("GULINETCORE_SHARED=1");

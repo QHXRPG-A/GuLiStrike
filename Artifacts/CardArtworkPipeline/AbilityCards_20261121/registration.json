@@ -1,0 +1,738 @@
+{
+  "source_manifests": [
+    "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/manifest.json",
+    "ArtSource/UI/GroundMech/RogueCardIcons_20261121_v1/manifest.json"
+  ],
+  "default_travel_px": 24,
+  "max_tilt_degrees": 12,
+  "draw_order": [
+    6,
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  "pairs": [
+    {
+      "key": "electromagnetic",
+      "title": "电磁技术",
+      "artwork_id": 15,
+      "icon_id": 14,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/ElectromagneticTech/Materials/MI_GroundMech_ElectromagneticTech_Artwork.MI_GroundMech_ElectromagneticTech_Artwork",
+      "icon_texture": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_ElectromagneticTech.T_GroundIcon_ElectromagneticTech",
+      "source_window": [
+        168.88085110317922,
+        167,
+        1325.2382977936416,
+        1217
+      ],
+      "canvas": [
+        1664,
+        1552
+      ],
+      "scale": [
+        1.1407242695557787,
+        0.709296500941734
+      ],
+      "offset": [
+        0.0003427657059963423,
+        -0.08807811504373905
+      ],
+      "aperture": [
+        0.04375375924339092,
+        0.13159613168724293,
+        0.956246240756609,
+        0.6917906172839505
+      ],
+      "layers": [
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/electromagnetic/L1_platform.png",
+          "sha256": "96ff1fec2dc2eff33ef9639f4cce377368a46bbd633e8c71aa6f36c394edc815",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 1,
+          "depth": 1,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/ElectromagneticTech/Textures/T_GroundMech_ElectromagneticTech_Layer1.T_GroundMech_ElectromagneticTech_Layer1",
+          "label": "平台与台面投光"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/electromagnetic/L2_orb.png",
+          "sha256": "848b252fd96b82d2945845c9d9e8a0813992301def9c6b8d4f27f8bee0c8d668",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 2,
+          "depth": 0.75,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/ElectromagneticTech/Textures/T_GroundMech_ElectromagneticTech_Layer2.T_GroundMech_ElectromagneticTech_Layer2",
+          "label": "主体球"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/electromagnetic/L3_left_stones.png",
+          "sha256": "20a8ac477f3b4b7166a365ee7d269e60fd11acb48ceb54fa176f6cfa658f0749",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            254
+          ],
+          "index": 3,
+          "depth": 0.45,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/ElectromagneticTech/Textures/T_GroundMech_ElectromagneticTech_Layer3.T_GroundMech_ElectromagneticTech_Layer3",
+          "label": "左侧浮石"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/electromagnetic/L4_right_stones.png",
+          "sha256": "53f2f420e80d4106c41c5f8203653ee25bfbfb1f64a62a4ae51dfca9a8731399",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 4,
+          "depth": 0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/ElectromagneticTech/Textures/T_GroundMech_ElectromagneticTech_Layer4.T_GroundMech_ElectromagneticTech_Layer4",
+          "label": "右侧浮石"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/electromagnetic/L5_arms.png",
+          "sha256": "7734c3af89c352496393b8c73beb1408ef61edff9394a04cf0276f238f9cf84d",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 5,
+          "depth": -0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/ElectromagneticTech/Textures/T_GroundMech_ElectromagneticTech_Layer5.T_GroundMech_ElectromagneticTech_Layer5",
+          "label": "两侧机械臂与探头"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/electromagnetic/L6_lab.png",
+          "sha256": "b4d7e7848852c0077e22f8b4c830b6cd56c939360b9827e9a7e0c539b0b2b9f2",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            255,
+            255
+          ],
+          "index": 6,
+          "depth": -0.4,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/ElectromagneticTech/Textures/T_GroundMech_ElectromagneticTech_Layer6.T_GroundMech_ElectromagneticTech_Layer6",
+          "label": "实验室背景"
+        }
+      ],
+      "icon": {
+        "file": "ArtSource/UI/GroundMech/RogueCardIcons_20261121_v1/Icons/电磁技术.png",
+        "sha256": "0ef29fd7dc091e8644c54192c7ad83eb07684db798e483c889fcd7f1bcc84452",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "alpha_range": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "key": "split_barrel",
+      "title": "分裂枪管",
+      "artwork_id": 16,
+      "icon_id": 15,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/SplitBarrel/Materials/MI_GroundMech_SplitBarrel_Artwork.MI_GroundMech_SplitBarrel_Artwork",
+      "icon_texture": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_SplitBarrel.T_GroundIcon_SplitBarrel",
+      "source_window": [
+        169.92532041205095,
+        168,
+        1324.149359175898,
+        1216
+      ],
+      "canvas": [
+        1664,
+        1552
+      ],
+      "scale": [
+        1.1416623651721896,
+        0.7098798039852716
+      ],
+      "offset": [
+        0.0,
+        -0.08830662551440327
+      ],
+      "aperture": [
+        0.04375375924339092,
+        0.13159613168724293,
+        0.956246240756609,
+        0.6917906172839505
+      ],
+      "layers": [
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/split_barrel/L1_upper_shard.png",
+          "sha256": "3cdb6c760f23bad69e0878193405e7a409d0c752d726507f154b7e4cc3175819",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            254
+          ],
+          "index": 1,
+          "depth": 1,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/SplitBarrel/Textures/T_GroundMech_SplitBarrel_Layer1.T_GroundMech_SplitBarrel_Layer1",
+          "label": "左上发光片"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/split_barrel/L2_gun.png",
+          "sha256": "68da8e71c55250320be968dabe9d2d19729473cdd0f17124c517665709216f28",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 2,
+          "depth": 0.75,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/SplitBarrel/Textures/T_GroundMech_SplitBarrel_Layer2.T_GroundMech_SplitBarrel_Layer2",
+          "label": "完整枪体与枪身灯纹"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/split_barrel/L3_lower_shard.png",
+          "sha256": "5af5cfd6d20bc434d911be5209619bdb402c14737feac72a35f87d5ec35a7742",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            253
+          ],
+          "index": 3,
+          "depth": 0.45,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/SplitBarrel/Textures/T_GroundMech_SplitBarrel_Layer3.T_GroundMech_SplitBarrel_Layer3",
+          "label": "右下发光片"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/split_barrel/L4_upper_lights.png",
+          "sha256": "dac7a872461fa131cda7592877f87ca1e21eb5dfa60301cfde9d1aa5f4d96d68",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            254
+          ],
+          "index": 4,
+          "depth": 0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/SplitBarrel/Textures/T_GroundMech_SplitBarrel_Layer4.T_GroundMech_SplitBarrel_Layer4",
+          "label": "其他环境发光体 A"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/split_barrel/L5_lower_lights.png",
+          "sha256": "7fb5fa130a3bf9383d1afa7abee0c3b8626f96273c7bac3411031f3014c92dc7",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            251
+          ],
+          "index": 5,
+          "depth": -0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/SplitBarrel/Textures/T_GroundMech_SplitBarrel_Layer5.T_GroundMech_SplitBarrel_Layer5",
+          "label": "其他环境发光体 B"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/split_barrel/L6_teal.png",
+          "sha256": "c31e8a824c2ea655b655e436f2a83b185c3ceab9a3e8fc3855eaba2d2eb1c283",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            255,
+            255
+          ],
+          "index": 6,
+          "depth": -0.4,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/SplitBarrel/Textures/T_GroundMech_SplitBarrel_Layer6.T_GroundMech_SplitBarrel_Layer6",
+          "label": "青黑环境背景"
+        }
+      ],
+      "icon": {
+        "file": "ArtSource/UI/GroundMech/RogueCardIcons_20261121_v1/Icons/分裂枪管.png",
+        "sha256": "f9b37c63b82770dc81596c060b7305974cab1a1fb30f97b7fa94c19980795c3d",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "alpha_range": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "key": "ai_engine",
+      "title": "人工智能引擎",
+      "artwork_id": 17,
+      "icon_id": 16,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/AIEngine/Materials/MI_GroundMech_AIEngine_Artwork.MI_GroundMech_AIEngine_Artwork",
+      "icon_texture": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_AIEngine.T_GroundIcon_AIEngine",
+      "source_window": [
+        177,
+        174.95602072010865,
+        1309,
+        1202.0879585597827
+      ],
+      "canvas": [
+        1664,
+        1552
+      ],
+      "scale": [
+        1.1548750872711955,
+        0.7180954068288844
+      ],
+      "offset": [
+        0.0003470177545887154,
+        -0.08830662551440327
+      ],
+      "aperture": [
+        0.04375375924339092,
+        0.13159613168724293,
+        0.956246240756609,
+        0.6917906172839505
+      ],
+      "layers": [
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/ai_engine/L1_lower_track.png",
+          "sha256": "b960b3c2a2d3e5088dd66afcc57600bdc4bcae96266861208bf87951daacf976",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 1,
+          "depth": 1,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/AIEngine/Textures/T_GroundMech_AIEngine_Layer1.T_GroundMech_AIEngine_Layer1",
+          "label": "左下贴近镜头的宽轨"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/ai_engine/L2_incoming_track.png",
+          "sha256": "da78af6a633426e7a06eeb9712cca4cd943e33408e61ada2f529af1427be384e",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 2,
+          "depth": 0.75,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/AIEngine/Textures/T_GroundMech_AIEngine_Layer2.T_GroundMech_AIEngine_Layer2",
+          "label": "右上伸入球心的亮轨"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/ai_engine/L3_core.png",
+          "sha256": "ccea99744b57fa1124ed828e5498acf2d503b146c1a6e1bdfb73239a2c6819a7",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 3,
+          "depth": 0.45,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/AIEngine/Textures/T_GroundMech_AIEngine_Layer3.T_GroundMech_AIEngine_Layer3",
+          "label": "蓝色核心球"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/ai_engine/L4_top_arch.png",
+          "sha256": "486352bdafc678c429bca37d7e87adc3da8e44e2fb31b4b9bf50ad809f6c17f5",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 4,
+          "depth": 0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/AIEngine/Textures/T_GroundMech_AIEngine_Layer4.T_GroundMech_AIEngine_Layer4",
+          "label": "球后顶部横拱"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/ai_engine/L5_rear_track.png",
+          "sha256": "8e7d4a114827c8c653d87c8eb783e6f2ff901b1d1fca213825481905b4eb6519",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 5,
+          "depth": -0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/AIEngine/Textures/T_GroundMech_AIEngine_Layer5.T_GroundMech_AIEngine_Layer5",
+          "label": "球后回弯轨"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/ai_engine/L6_data_rain.png",
+          "sha256": "466037a9253a38dfe9a84667f7eb7a4c33387531dec8a79145b3b40d876a836b",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            255,
+            255
+          ],
+          "index": 6,
+          "depth": -0.4,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/AIEngine/Textures/T_GroundMech_AIEngine_Layer6.T_GroundMech_AIEngine_Layer6",
+          "label": "绿色数据雨背景"
+        }
+      ],
+      "icon": {
+        "file": "ArtSource/UI/GroundMech/RogueCardIcons_20261121_v1/Icons/人工智能引擎.png",
+        "sha256": "871d322bd94f00719e4d538dbc8c16cbd4215cc38c18e369b70e2c974f1c974d",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "alpha_range": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "key": "aoe",
+      "title": "增强AOE",
+      "artwork_id": 18,
+      "icon_id": 17,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/EnhancedAOE/Materials/MI_GroundMech_EnhancedAOE_Artwork.MI_GroundMech_EnhancedAOE_Artwork",
+      "icon_texture": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_EnhancedAOE.T_GroundIcon_EnhancedAOE",
+      "source_window": [
+        169.92532041205095,
+        168,
+        1324.149359175898,
+        1216
+      ],
+      "canvas": [
+        1664,
+        1552
+      ],
+      "scale": [
+        1.1416623651721896,
+        0.7098798039852716
+      ],
+      "offset": [
+        0.0,
+        -0.08830662551440327
+      ],
+      "aperture": [
+        0.04375375924339092,
+        0.13159613168724293,
+        0.956246240756609,
+        0.6917906172839505
+      ],
+      "layers": [
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/aoe/L1_terrain.png",
+          "sha256": "fd073d9b4128d198f11fa0c65f093fc62d22f54647dd7842f608b7ade5c91b31",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 1,
+          "depth": 1,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/EnhancedAOE/Textures/T_GroundMech_EnhancedAOE_Layer1.T_GroundMech_EnhancedAOE_Layer1",
+          "label": "前景岩地"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/aoe/L2_shockwave.png",
+          "sha256": "0644af5198c1c0c91f32eb375ecd8a20e78a068d2ebbb8a929cf1e6cabcb3f7a",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 2,
+          "depth": 0.75,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/EnhancedAOE/Textures/T_GroundMech_EnhancedAOE_Layer2.T_GroundMech_EnhancedAOE_Layer2",
+          "label": "底部贴地冲击波"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/aoe/L3_blast.png",
+          "sha256": "7e90810810991a4a73a5c8251fec6dda2b11ca349a8caa2555f053116584e969",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 3,
+          "depth": 0.45,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/EnhancedAOE/Textures/T_GroundMech_EnhancedAOE_Layer3.T_GroundMech_EnhancedAOE_Layer3",
+          "label": "左下爆心与放射状动态模糊线"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/aoe/L4_blue_flame.png",
+          "sha256": "dae165bb1e92ef0b58d82d35f1f26f64fdb3597064e6d3b31d7cf083662e71b1",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 4,
+          "depth": 0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/EnhancedAOE/Textures/T_GroundMech_EnhancedAOE_Layer4.T_GroundMech_EnhancedAOE_Layer4",
+          "label": "蓝焰"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/aoe/L5_violet_flame.png",
+          "sha256": "477874068ef91d0e914e7bbb77913c9ab43e00b736646a144519bf9cf382d3cd",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 5,
+          "depth": -0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/EnhancedAOE/Textures/T_GroundMech_EnhancedAOE_Layer5.T_GroundMech_EnhancedAOE_Layer5",
+          "label": "紫焰"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/aoe/L6_distance.png",
+          "sha256": "b910539b8231ba5d2ba43d83f95adb9928cdc79c0a66197ee218ef49f5b65021",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            255,
+            255
+          ],
+          "index": 6,
+          "depth": -0.4,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/EnhancedAOE/Textures/T_GroundMech_EnhancedAOE_Layer6.T_GroundMech_EnhancedAOE_Layer6",
+          "label": "紫色远景背景"
+        }
+      ],
+      "icon": {
+        "file": "ArtSource/UI/GroundMech/RogueCardIcons_20261121_v1/Icons/增强AOE.png",
+        "sha256": "e9a21dd112e1e4de87965895d44cb102e12bba932a85d3e4226c0618bee337a9",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "alpha_range": [
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "key": "demon",
+      "title": "恶魔引擎",
+      "artwork_id": 19,
+      "icon_id": 18,
+      "material": "/Game/GuLiStrike/Cards/GroundMech/DemonEngine/Materials/MI_GroundMech_DemonEngine_Artwork.MI_GroundMech_DemonEngine_Artwork",
+      "icon_texture": "/Game/GuLiStrike/GroundMech/UI/Icons/T_GroundIcon_DemonEngine.T_GroundIcon_DemonEngine",
+      "source_window": [
+        177.54789073625432,
+        175,
+        1308.9042185274914,
+        1202
+      ],
+      "canvas": [
+        1664,
+        1552
+      ],
+      "scale": [
+        1.1549595973788542,
+        0.7181479547804414
+      ],
+      "offset": [
+        0.0,
+        -0.08830662551440327
+      ],
+      "aperture": [
+        0.04375375924339092,
+        0.13159613168724293,
+        0.956246240756609,
+        0.6917906172839505
+      ],
+      "layers": [
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/demon/L1_mist.png",
+          "sha256": "387723703e95c1ef65f42414c1629872596fae79f694a0fe5abb9392c7ec3a77",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            254
+          ],
+          "index": 1,
+          "depth": 1,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/DemonEngine/Textures/T_GroundMech_DemonEngine_Layer1.T_GroundMech_DemonEngine_Layer1",
+          "label": "前景雾"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/demon/L2_curled_imp.png",
+          "sha256": "27e0aa529298258fa5afd9c2cf47fd082e5a909a5bf793c25e5ffe3fdaceb095",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 2,
+          "depth": 0.75,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/DemonEngine/Textures/T_GroundMech_DemonEngine_Layer2.T_GroundMech_DemonEngine_Layer2",
+          "label": "右下卷尾小魔"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/demon/L3_great_demon.png",
+          "sha256": "ca25f076f9b1b2245ec5bba857c0afcdccb4977c3a45da7eb4e11f27e6053720",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            255
+          ],
+          "index": 3,
+          "depth": 0.45,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/DemonEngine/Textures/T_GroundMech_DemonEngine_Layer3.T_GroundMech_DemonEngine_Layer3",
+          "label": "红胸长尾大魔"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/demon/L4_left_sprite.png",
+          "sha256": "3f99c4546ab1967542659ab8db5995bf4e05ecdbc4f8ec040b8d5420099a4f5e",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            254
+          ],
+          "index": 4,
+          "depth": 0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/DemonEngine/Textures/T_GroundMech_DemonEngine_Layer4.T_GroundMech_DemonEngine_Layer4",
+          "label": "左侧远景灵魂群（4只）"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/demon/L5_right_sprite.png",
+          "sha256": "3ca4110e652df43dc3ae32a7108cd1928984879d877b1d8921ef1e3569d9e731",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            0,
+            254
+          ],
+          "index": 5,
+          "depth": -0.15,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/DemonEngine/Textures/T_GroundMech_DemonEngine_Layer5.T_GroundMech_DemonEngine_Layer5",
+          "label": "右侧远景灵魂群（4只）"
+        },
+        {
+          "file": "ArtSource/UI/GroundMechRogueCards/AbilityCards_HTML_20261120_v1/Layers/demon/L6_red_environment.png",
+          "sha256": "6d824ea1bfa81fcd535ca7622196ce5bc258f704aedb083e4b10b32064bf2c06",
+          "dimensions": [
+            1664,
+            1552
+          ],
+          "alpha_range": [
+            255,
+            255
+          ],
+          "index": 6,
+          "depth": -0.4,
+          "texture": "/Game/GuLiStrike/Cards/GroundMech/DemonEngine/Textures/T_GroundMech_DemonEngine_Layer6.T_GroundMech_DemonEngine_Layer6",
+          "label": "暗红雾境背景"
+        }
+      ],
+      "icon": {
+        "file": "ArtSource/UI/GroundMech/RogueCardIcons_20261121_v1/Icons/恶魔引擎.png",
+        "sha256": "47edd9810d9758483040ab5b59a3d03acde823ff0ca085f09a036bcc6f240698",
+        "dimensions": [
+          1254,
+          1254
+        ],
+        "alpha_range": [
+          0,
+          255
+        ]
+      }
+    }
+  ],
+  "workbooks": {
+    "GuLiStrikeCardArtwork.xlsx": {
+      "before": "c7e0fad583e709ba4c5d3f52d3745db3a76f162e3002a4a09346715bb1fbbe55",
+      "after": "108f11ea68af2f7b464e744bad28c9e70d9e7747274e573603e241c38e828515"
+    },
+    "GuLiStrikeIcons.xlsx": {
+      "before": "0f56b7b8ad6d4d2e0350aba41d56d3f3cd704869994a2fbfe03cdb6f2d7b5d20",
+      "after": "bdcd102a5dfb6981817255eb88a4d4ad371dd3e58cda2a6818e797a76864d979"
+    }
+  }
+}

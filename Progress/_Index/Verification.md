@@ -4,12 +4,16 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | done | partial | — | 2026-11-23 |
+| [肉鸽牌等级 GM 命令](../DevelopmentDocumentation/20261123-肉鸽牌等级GM命令.md) | done | partial | — | 2026-11-23 |
+| [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | done | partial | — | 2026-11-23 |
 | [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | done | partial | — | 2026-11-22 |
+| [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | done | partial | — | 2026-11-21 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | done | partial | — | 2026-11-21 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | done | partial | — | 2026-11-19 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | done | partial | — | 2026-11-18 |
 | [四张游骑兵肉鸽牌正式资源 — 实施与交付](../DevelopmentDocumentation/20261117-四张游骑兵肉鸽牌正式资源.md) | done | partial | — | 2026-11-17 |
 | [无人生还与爆破套餐牌面制作收尾](../DevelopmentDocumentation/20261117-无人生还与爆破套餐牌面制作收尾.md) | done | partial | — | 2026-11-17 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | done | partial | — | 2026-11-17 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | verification | partial | 在现有地图验证正常PIE输入、接管后的F1/F2/F3操作与玩家效果；EOS和跨机器联机另行验收。 | 2026-11-16 |
 | [2v2指挥官与无双席位 — 双载具构建交付](../DevelopmentDocumentation/20261114-2v2指挥官与无双席位.md) | verification | partial | 玩家验证空地切换、未操控单位及召唤物模拟。 | 2026-11-14 |
 | [矿车动作与双兵种开火表现 — 实施记录](../DevelopmentDocumentation/20261114-矿车动作与双兵种开火表现.md) | done | partial | 本轮实施与运行数据交付完成；玩家后续复核动作观感、双阵营灯和LOD切换。 | 2026-11-14 |

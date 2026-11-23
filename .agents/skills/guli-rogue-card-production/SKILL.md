@@ -38,7 +38,7 @@ description: "制作与维护 GuLiStrike 肉鸽卡牌：内置生图初稿、用
 | 新卡、等级、数值、单行文案设计、关键词高亮、多语言、效果类 | [数据、文案设计与文本管线](references/data-pipeline.md) |
 | ArtworkId、正式资源、卡框适配、显示不全、六层参数、统一导入与评审 | [卡牌美术目录与统一导入](references/artwork-data-pipeline.md) |
 | 生图、重绘、改模型参考、保持文字prompt、风格复刻 | [美术与提示词](references/art-prompts.md)，再读取其中对应prompt文件 |
-| 独立技能图标、简画风格、单枚或多枚导弹错轴 | [图标提示词与导弹轴线修订](references/icon-prompts.md)，含五图V2及两次轴线编辑完整原文；独立图标按本轮范围制作透明PNG，不自动进入六层牌面流程 |
+| 独立技能图标、简画风格、单枚或多枚导弹错轴 | 游骑兵引擎路线图标先核对当前卡牌归属，再将[美术规范 §11.3 的路线配色](D:/UE5.7/test1/Progress/RequirementDocument/GuLiStrike美术规范.md#113-游骑兵肉鸽牌引擎路线图标)写入本次提示词。透明 PNG 的制作方法与历史提示词见[图标提示词与导弹轴线修订](references/icon-prompts.md)。 |
 | 拆层、图层错位、原图叠合、3D效果、倾斜露边 | [全画布分层与六层视差](references/parallax-production.md) |
 | 导入/替换UE资产、目录、F4、模糊、点击、流程 | [UE接入与交付](references/ue-integration.md) |
 | 获得卡牌后的部队升级光效、敌我颜色、批量性能 | [升级特效](references/upgrade-vfx.md) |

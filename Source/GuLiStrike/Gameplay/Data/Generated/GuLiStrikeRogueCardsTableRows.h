@@ -347,6 +347,34 @@ struct FGuLiStrikeRogueCardsGroundWeaponEffectsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
 	TArray<FString> BulletFlightVfxIds;
 
+	/** LockAperturePixels (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	float LockAperturePixels = 0.0f;
+
+	/** LockHexPixels (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	float LockHexPixels = 0.0f;
+
+	/** LockTargetCounts (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> LockTargetCounts;
+
+	/** SlowFractions (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> SlowFractions;
+
+	/** SlowDurations (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> SlowDurations;
+
+	/** ShieldDamageBonuses (str[], Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	TArray<FString> ShieldDamageBonuses;
+
+	/** ArcVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GroundWeaponEffects")
+	int32 ArcVfxId = 0;
+
 };
 
 /** DataTable DT_GuLiStrikeRogueCards_BarrageCamera 的行结构（源: GuLiStrikeRogueCards.xlsx / BarrageCamera）。 */

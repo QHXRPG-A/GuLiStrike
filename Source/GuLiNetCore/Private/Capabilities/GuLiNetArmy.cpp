@@ -10,6 +10,7 @@ namespace GuLiNet::Army
 namespace
 {
 constexpr std::uint32_t Limit=512;
+constexpr std::uint32_t RankedCatalogVersion=3;
 bool Name(const std::string& S) {return !S.empty() && S.size()<=192 && S.find('\0')==std::string::npos;}
 bool Count(Reader& R,std::uint32_t& N,std::uint32_t Maximum=Limit) {return R.U32(N) && N<=Maximum;}
 bool Bool(Reader& R,bool& V) {std::uint8_t N;if (!R.U8(N) || N>1) return false;V=N!=0;return true;}
@@ -158,6 +159,13 @@ bool ValidateCatalog(const Catalog& C,std::string& Error)
     for (const auto& [Name,Crd]:C.Cards)
     {
         if (!Army::Name(Name) || Crd.Id!=Name || !ValidSource(Crd.Effect,C)) return Fail();
+        if (!Crd.RequiredLevels.empty() && Crd.RequiredLevels.size()!=Crd.Required.size()) return Fail();
+        for (std::size_t I=0;I<Crd.RequiredLevels.size();++I)
+        {
+            const auto Parent=C.Cards.find(Crd.Required[I]);
+            const auto Level=Crd.RequiredLevels[I];
+            if (Parent==C.Cards.end() || !Level || (Parent->second.Maximum && Level>Parent->second.Maximum)) return Fail();
+        }
         for (const auto* V:{&Crd.Required,&Crd.Excluded})
         {std::set<std::string> Seen;for (const auto& Id:*V) if (Id==Name || !C.Cards.contains(Id) || !Seen.insert(Id).second) return Fail();}
     }
@@ -178,18 +186,31 @@ bool Resolve(const Catalog& C,const std::map<Id,Source>& S,const std::map<Slot,s
 {if (!ValidateCatalog(C,Error) || !ResolveImpl(C,S,E,P)) {Error="Army source/equipment numeric resolution rejected";return false;}Error.clear();return true;}
 Bytes EncodeCatalog(const Catalog& C)
 {
-    Writer W(MaximumCapabilityBytes);W.U32(Version);W.U32(std::uint32_t(C.Profiles.size()));for (const auto& P:C.Profiles) WriteProfile(W,P);
+    const bool Ranked=std::any_of(C.Cards.begin(),C.Cards.end(),[](const auto& Entry){return !Entry.second.RequiredLevels.empty();});
+    Writer W(MaximumCapabilityBytes);W.U32(Ranked?RankedCatalogVersion:Version);W.U32(std::uint32_t(C.Profiles.size()));for (const auto& P:C.Profiles) WriteProfile(W,P);
     W.U32(std::uint32_t(C.Cards.size()));for (const auto& [_,V]:C.Cards) {W.Text(V.Id);W.U32(V.Maximum);Texts(W,V.Required);Texts(W,V.Excluded);WriteSource(W,V.Effect);}
     W.U32(std::uint32_t(C.Rules.size()));for (const auto& [Id,V]:C.Rules) {W.Text(Id);WriteSlot(W,V.Key);W.Text(V.Skill);W.U8(V.Admission);W.Text(V.SourceDefinition);}
-    W.U32(std::uint32_t(C.MovementBase.size()));for (const auto& [U,V]:C.MovementBase) {W.U16(U);W.F32(V);}return W.Take();
+    W.U32(std::uint32_t(C.MovementBase.size()));for (const auto& [U,V]:C.MovementBase) {W.U16(U);W.F32(V);}
+    if (Ranked) for (const auto& [_,Card]:C.Cards)
+    {
+        W.U32(std::uint32_t(Card.RequiredLevels.size()));
+        for (auto Level:Card.RequiredLevels) W.U32(Level);
+    }
+    return W.Take();
 }
 bool DecodeCatalog(std::span<const std::uint8_t> B,Catalog& Out)
 {
-    Reader R(B);Catalog C;std::uint32_t SerializedVersion,N;if (!R.U32(SerializedVersion) || SerializedVersion!=Version || !Count(R,N)) return false;C.Profiles.resize(N);
+    Reader R(B);Catalog C;std::uint32_t SerializedVersion,N;if (!R.U32(SerializedVersion) || (SerializedVersion!=Version && SerializedVersion!=RankedCatalogVersion) || !Count(R,N)) return false;C.Profiles.resize(N);
     for (auto& P:C.Profiles) if (!ReadProfile(R,P)) return false;
     if (!Count(R,N)) return false;for (std::uint32_t I=0;I<N;++I) {Card V;if (!R.Text(V.Id,192) || !R.U32(V.Maximum) || !Texts(R,V.Required) || !Texts(R,V.Excluded) || !ReadSource(R,V.Effect)) return false;auto Id=V.Id;if (!C.Cards.emplace(Id,std::move(V)).second) return false;}
     if (!Count(R,N,4096)) return false;for (std::uint32_t I=0;I<N;++I) {std::string Id;RuleBinding V;if (!R.Text(Id,256) || !ReadSlot(R,V.Key) || !R.Text(V.Skill,192) || !Bool(R,V.Admission) || !R.Text(V.SourceDefinition,192) || !Name(V.SourceDefinition) || !C.Rules.emplace(Id,std::move(V)).second) return false;}
     if (!Count(R,N)) return false;for (std::uint32_t I=0;I<N;++I) {std::uint16_t U;float V;if (!R.U16(U) || !R.F32(V) || !C.MovementBase.emplace(U,V).second) return false;}
+    if (SerializedVersion==RankedCatalogVersion) for (auto& [_,Card]:C.Cards)
+    {
+        if (!Count(R,N) || (N && N!=Card.Required.size())) return false;
+        Card.RequiredLevels.resize(N);
+        for (auto& Level:Card.RequiredLevels) if (!R.U32(Level)) return false;
+    }
     std::string Error;if (!R.Done() || !ValidateCatalog(C,Error)) return false;Out=std::move(C);return true;
 }
 Bytes EncodeState(const State& S)
@@ -215,10 +236,42 @@ bool DecodeState(std::span<const std::uint8_t> B,State& Out)
 }
 bool GetState(const ObjectRecord& O,State& S) {const auto I=O.Capabilities.find(StateCapability);return I!=O.Capabilities.end() && I->second.Version==Version && DecodeState(I->second.Data,S);}
 bool SetState(ObjectRecord& O,const State& S) {auto B=EncodeState(S);if (B.empty()) return false;O.Capabilities[StateCapability]={Version,std::move(B)};return true;}
+bool SameCardEffect(const Source& A,const Source& B)
+{
+    // Existing F4 acquisitions store the offer session as their source ID.
+    // Compare the complete catalog effect with that single field normalized.
+    auto Template=B;
+    Template.Identity=A.Identity;
+    Writer Left(MaximumCapabilityBytes),Right(MaximumCapabilityBytes);
+    WriteSource(Left,A);
+    WriteSource(Right,Template);
+    return Left.Take()==Right.Take();
+}
 Bytes EncodeCommand(const Command& C)
-{Writer W(2048);W.U32(Version);W.U8(std::uint8_t(C.Op));W.Identity(C.Request);W.Identity(C.Session);W.U64(C.Expected);W.Text(C.Choice);W.U16(C.EquipmentSlot.Unit);W.Text(C.EquipmentSlot.Name);return W.Take();}
+{
+    Writer W(2048);W.U32(Version);W.U8(std::uint8_t(C.Op));W.Identity(C.Request);W.Identity(C.Session);
+    W.U64(C.Expected);W.Text(C.Choice);W.U16(C.EquipmentSlot.Unit);W.Text(C.EquipmentSlot.Name);
+    if (C.Op==Operation::SetCardLevel) W.U32(C.TargetLevel);
+    return W.Take();
+}
 bool DecodeCommand(std::span<const std::uint8_t> B,Command& C)
-{Reader R(B);std::uint32_t V;std::uint8_t O;if (!R.U32(V) || V!=Version || !R.U8(O) || O>std::uint8_t(Operation::ClosePresentation)) return false;C.Op=Operation(O);return R.Identity(C.Request) && C.Request.Valid() && R.Identity(C.Session) && R.U64(C.Expected) && R.Text(C.Choice,192) && R.U16(C.EquipmentSlot.Unit) && R.Text(C.EquipmentSlot.Name,192) && R.Done();}
+{
+    Reader R(B);std::uint32_t V;std::uint8_t O;
+    if (!R.U32(V) || V!=Version || !R.U8(O) || O>std::uint8_t(Operation::SetCardLevel)) return false;
+    C.Op=Operation(O);C.TargetLevel=0;
+    if (!R.Identity(C.Request) || !C.Request.Valid() || !R.Identity(C.Session) || !R.U64(C.Expected)
+        || !R.Text(C.Choice,192) || !R.U16(C.EquipmentSlot.Unit) || !R.Text(C.EquipmentSlot.Name,192)) return false;
+    if (C.Op==Operation::SetCardLevel)
+    {
+#if GULINET_CARD_GM
+        if (C.Session.Valid() || C.Expected || !C.EquipmentSlot.Name.empty() || C.EquipmentSlot.Unit
+            || !Name(C.Choice) || !R.U32(C.TargetLevel) || C.TargetLevel>INT32_MAX) return false;
+#else
+        return false;
+#endif
+    }
+    return R.Done();
+}
 Bytes EncodeLink(const Link& L)
 {Writer W(MaximumCapabilityBytes);W.U32(Version);for (const auto& K:L.Roots) W.Key(K);W.U32(std::uint32_t(L.Frozen.size()));for (const auto& [Id,P]:L.Frozen) {W.Text(Id);WriteProfile(W,P);}return W.Take();}
 bool DecodeLink(std::span<const std::uint8_t> B,Link& L)

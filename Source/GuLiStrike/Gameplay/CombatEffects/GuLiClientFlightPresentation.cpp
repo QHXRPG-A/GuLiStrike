@@ -205,11 +205,43 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 	if (!State.IsWellFormed() || !GuLiFlightWire::IsFlight(State.Kind)) return;
 	if (State.MatchEpoch!=Epoch) BeginEpoch(State.MatchEpoch);
 	if (State.MatchEpoch!=Epoch || Tombstones.Contains(State.EffectId)) return;
+	// A bootstrap and live create can be adjacent on the same ordered channel.
+	// Bootstrap is silent; the live event still supplies its one accepted muzzle.
+	if (State.Phase!=EGuLiCombatEffectPhase::Finished && Event.bHasMuzzle && !Event.bBootstrap)
+	{
+		if (State.Source.Kind==EGuLiTargetKind::GroundActor)
+		{
+			for (TActorIterator<APawn> It(GetWorld()); It; ++It)
+				if (auto* Weapon=It->FindComponentByClass<UGuLiGroundMechWeaponComponent>(); Weapon && Weapon->SourceHandle==State.Source)
+					{ Weapon->PlayFlightShot(State.EffectId,Event.Muzzle.ServerTime,Event.Muzzle.MuzzleIndex,Event.Muzzle.FrozenMuzzleVfxId,Event.Muzzle.FrozenFireRate); break; }
+		}
+		else ApplyShots({Event.Muzzle});
+	}
     if(Event.bInstantGroundSegment)
     {
         if(Event.bBootstrap||Visuals.Contains(State.EffectId)||ServerTime()-State.StartTime>.5f)return;
-        auto& V=Visuals.Add(State.EffectId);V.State=State;V.State.Phase=EGuLiCombatEffectPhase::Finished;V.State.SampleTime=State.StartTime;V.State.Location=Event.InstantEnd;V.RenderLocation=Event.InstantEnd;V.bInstantGroundSegment=true;
-        ResolveGroundTrailConfiguration(V);
+        if(Event.ArcVfxId>0)
+        {
+            const FVector end=Event.InstantEnd,offset=FVector(State.LaunchLocation)-end;
+            FBox localBounds(ForceInit);
+            localBounds+=FVector::ZeroVector;
+            localBounds+=offset;
+            localBounds=localBounds.ExpandBy(150.f);
+            if(IsVisibleBounds(localBounds.ShiftBy(end)))
+                if(auto* arc=SpawnPooled(Event.ArcVfxId,end,1.f,0,FRotator::ZeroRotator,NAME_None,false))
+                {
+                    arc->SetVariableVec3(TEXT("User.ArcStart"),offset);
+                    arc->SetVariableVec3(TEXT("User.ArcEnd"),FVector::ZeroVector);
+                    arc->SetSystemFixedBounds(localBounds);
+                    arc->Activate(true);
+                    Retire(arc,2.f,false);
+                }
+        }
+        else
+        {
+            auto& V=Visuals.Add(State.EffectId);V.State=State;V.State.Phase=EGuLiCombatEffectPhase::Finished;V.State.SampleTime=State.StartTime;V.State.Location=Event.InstantEnd;V.RenderLocation=Event.InstantEnd;V.bInstantGroundSegment=true;
+            ResolveGroundTrailConfiguration(V);
+        }
         if(Event.ImpactVfxId>0)if(auto* Burst=SpawnPooled(Event.ImpactVfxId,Event.InstantEnd,1.f,0)){Retire(Burst,.2f,false);++Counters.MachineGunImpactsPlayed;}
         Tombstones.Add(State.EffectId,State.Sequence);TombstoneOrder.Add(State.EffectId);
         if(TombstoneOrder.Num()>8192){for(int32 I=0;I<1024;++I)Tombstones.Remove(TombstoneOrder[I]);TombstoneOrder.RemoveAt(0,1024,EAllowShrinking::No);}
@@ -231,18 +263,6 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
 		// their local flight has already expired. Authored impact fields stay distinct.
 		if (Event.bUseCatalogImpact)
 		{ auto Impact=State; Impact.Kind=EGuLiCombatEffectKind::LinearProjectile; PlayMachineGunImpact(Impact); }
-	}
-	// A bootstrap and live create can be adjacent on the same ordered channel.
-	// Bootstrap is silent; the live event still supplies its one accepted muzzle.
-	if (!Finished && Event.bHasMuzzle && !Event.bBootstrap)
-	{
-		if (State.Source.Kind==EGuLiTargetKind::GroundActor)
-		{
-			for (TActorIterator<APawn> It(GetWorld()); It; ++It)
-				if (auto* Weapon=It->FindComponentByClass<UGuLiGroundMechWeaponComponent>(); Weapon && Weapon->SourceHandle==State.Source)
-					{ Weapon->PlayFlightShot(State.EffectId,Event.Muzzle.ServerTime,Event.Muzzle.MuzzleIndex,Event.Muzzle.FrozenMuzzleVfxId,Event.Muzzle.FrozenFireRate); break; }
-		}
-		else ApplyShots({Event.Muzzle});
 	}
 	ApplyState(State,Event.bBootstrap,Finished && (Event.ImpactVfxId>0 || Event.bUseCatalogImpact || Event.bFrozenGroundImpact));
 	if (auto* Visual = Visuals.Find(State.EffectId))

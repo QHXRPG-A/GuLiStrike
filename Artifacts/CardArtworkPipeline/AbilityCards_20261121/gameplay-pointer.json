@@ -1,0 +1,330 @@
+{
+  "battle_map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "saved_entry_actors": [
+    {
+      "label": "GroundRogue_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.TargetPoint_88",
+      "location": [
+        -2800.0,
+        54000.0,
+        1149.04
+      ]
+    },
+    {
+      "label": "RogueCards_F4_Entry",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_24",
+      "location": [
+        -3024.0,
+        68512.5,
+        -1200.0
+      ]
+    }
+  ],
+  "director_class": "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector.BP_CardRevealDirector_C",
+  "blueprints_compiled": true,
+  "blueprint_warnings": [],
+  "registered_on_disk": {
+    "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_CardRevealDirector": true,
+    "/Game/GuLiStrike/CardSystem/RevealDemo/UI/WBP_CardArtworkCatalogSelector": true,
+    "/Game/GuLiStrike/CardSystem/RevealDemo/Blueprints/BP_ParallaxRevealCard": true,
+    "/Game/Maps/LVL_CommanderMassPrototype": true
+  },
+  "source": "Native Ground F4 setup plus editor readback of compiled Blueprint pins and offline evaluation of their arithmetic",
+  "pie_started": false,
+  "player_verification": "pending",
+  "card_widget_size": [
+    1280,
+    1556
+  ],
+  "neutral_center_cm": [
+    0.0,
+    0.611,
+    -0.8745
+  ],
+  "half_extent_cm": [
+    19.99670951156812,
+    0,
+    24.3085
+  ],
+  "registration": "After SetLiveCardText for all slots and before SetPhase. Ground F4 and the Ground review call SetPointerFrameFromCard.",
+  "cursor": "Slate desktop to local viewport with window focus guard",
+  "projection": "actual capture texture dimensions for live Ground; viewport dimensions for review",
+  "click": "refresh pointer, evaluate all three slots, act on current visible hovered index",
+  "cases": [
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "render_target": [
+        1920,
+        1080
+      ],
+      "candidates": 1,
+      "inside": 13,
+      "outside": 4,
+      "between_cards": 0,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "render_target": [
+        1920,
+        1080
+      ],
+      "candidates": 2,
+      "inside": 26,
+      "outside": 8,
+      "between_cards": 1,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "render_target": [
+        1920,
+        1080
+      ],
+      "candidates": 3,
+      "inside": 39,
+      "outside": 12,
+      "between_cards": 2,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1920,
+        1200
+      ],
+      "render_target": [
+        1920,
+        1200
+      ],
+      "candidates": 1,
+      "inside": 13,
+      "outside": 4,
+      "between_cards": 0,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1920,
+        1200
+      ],
+      "render_target": [
+        1920,
+        1200
+      ],
+      "candidates": 2,
+      "inside": 26,
+      "outside": 8,
+      "between_cards": 1,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1920,
+        1200
+      ],
+      "render_target": [
+        1920,
+        1200
+      ],
+      "candidates": 3,
+      "inside": 39,
+      "outside": 12,
+      "between_cards": 2,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        2560,
+        1080
+      ],
+      "render_target": [
+        2048,
+        864
+      ],
+      "candidates": 1,
+      "inside": 13,
+      "outside": 4,
+      "between_cards": 0,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        2560,
+        1080
+      ],
+      "render_target": [
+        2048,
+        864
+      ],
+      "candidates": 2,
+      "inside": 26,
+      "outside": 8,
+      "between_cards": 1,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        2560,
+        1080
+      ],
+      "render_target": [
+        2048,
+        864
+      ],
+      "candidates": 3,
+      "inside": 39,
+      "outside": 12,
+      "between_cards": 2,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        3440,
+        1440
+      ],
+      "render_target": [
+        2048,
+        857
+      ],
+      "candidates": 1,
+      "inside": 13,
+      "outside": 4,
+      "between_cards": 0,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        3440,
+        1440
+      ],
+      "render_target": [
+        2048,
+        857
+      ],
+      "candidates": 2,
+      "inside": 26,
+      "outside": 8,
+      "between_cards": 1,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        3440,
+        1440
+      ],
+      "render_target": [
+        2048,
+        857
+      ],
+      "candidates": 3,
+      "inside": 39,
+      "outside": 12,
+      "between_cards": 2,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1213,
+        887
+      ],
+      "render_target": [
+        1213,
+        887
+      ],
+      "candidates": 1,
+      "inside": 13,
+      "outside": 4,
+      "between_cards": 0,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1213,
+        887
+      ],
+      "render_target": [
+        1213,
+        887
+      ],
+      "candidates": 2,
+      "inside": 26,
+      "outside": 8,
+      "between_cards": 1,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1213,
+        887
+      ],
+      "render_target": [
+        1213,
+        887
+      ],
+      "candidates": 3,
+      "inside": 39,
+      "outside": 12,
+      "between_cards": 2,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1080,
+        1920
+      ],
+      "render_target": [
+        1080,
+        1920
+      ],
+      "candidates": 1,
+      "inside": 13,
+      "outside": 4,
+      "between_cards": 0,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1080,
+        1920
+      ],
+      "render_target": [
+        1080,
+        1920
+      ],
+      "candidates": 2,
+      "inside": 26,
+      "outside": 8,
+      "between_cards": 1,
+      "inactive_indices_rejected": true
+    },
+    {
+      "viewport": [
+        1080,
+        1920
+      ],
+      "render_target": [
+        1080,
+        1920
+      ],
+      "candidates": 3,
+      "inside": 39,
+      "outside": 12,
+      "between_cards": 2,
+      "inactive_indices_rejected": true
+    }
+  ],
+  "counts": {
+    "inside": 468,
+    "outside": 144,
+    "between_cards": 18
+  }
+}

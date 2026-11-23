@@ -50,6 +50,7 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
 	/** Frozen player presentation reference, also usable after the firing Pawn disappears. */
 	int32 PlayerBulletVfxId = 0;
     FGuLiGroundAttackSnapshot GroundAttack;
+	bool bSecondaryBarrelRound=false;
 	uint64 FireOrdinal=0;
 	double FireNotifyTime=0;
 	/** Shared serialized barrel slot; the historical name also covers Commander guns. */
@@ -101,6 +102,8 @@ private:
 	void InitializeHybrid(FSubsystemCollectionBase& Collection);
 	void ResetHybrid();
 	FGuLiProjectilePoolHandle LaunchHybrid(const FGuLiPooledProjectileLaunch& Request,EGuLiTeam SourceTeam);
+	void SnapshotGroundVolley(const FGuLiPooledProjectileLaunch& Shot);
+	EGuLiCombatEffectEndReason TraceGroundSegment(const FGuLiPooledProjectileLaunch& Shot,EGuLiTeam Team,FVector& End,FGuLiTargetHandle& Target);
 	bool IsPendingHybrid(FGuLiProjectilePoolHandle Handle) const;
 	void RetireHybrid(const FGuLiCombatEffectState& State,const FGuLiCombatEffectContext& Context,
 		EGuLiCombatEffectEndReason Reason,const FVector& Position,float Time,const FGuLiTargetHandle* Target);
@@ -141,6 +144,12 @@ private:
 	TArray<int32> FreeSlots;
 	TArray<int32> ActiveSlots;
 	TArray<int32> DomainSlots[2];
+    // Independent of the stepped projectile grid. All rounds from the same
+    // animation notify query the same poses, even when activation calls back.
+    FGuLiTargetHandle VolleySource;
+    uint64 VolleyOrdinal=0;
+    double VolleyTime=0;
+    TArray<FGuLiCombatTargetSnapshot> VolleyBodies, VolleySources;
 	TArray<FGuLiCombatTargetSnapshot> SourceOnly;
 	TArray<FGuLiProjectilePoolHandle> StepHandles;
 	TMap<FGuid, FGuLiProjectilePoolHandle> ById;

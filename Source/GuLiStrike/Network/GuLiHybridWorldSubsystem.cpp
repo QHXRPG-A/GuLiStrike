@@ -1,4 +1,5 @@
 #include "Network/GuLiHybridWorldSubsystem.h"
+#include "GuLiNetEffects.h"
 #include "Gameplay/Navigation/Grid/GuLiGroundGridSubsystem.h"
 #include "Gameplay/Navigation/Grid/GuLiGridNetwork.h"
 #include "GuLiStrike.h"
@@ -867,6 +868,16 @@ bool UGuLiHybridWorldSubsystem::RouteCommand(const FGuLiHybridCommand& Command)
     for (const auto& Member:Command.Members) if (!Seen.Contains(Member.Key)) {Seen.Add(Member.Key);Objects.Add(Member.Key);}
     ReportDirectOperation(Objects);
     return State->Client->Route(ToCore(Command));
+}
+float UGuLiHybridWorldSubsystem::GetMovementMultiplier(const FGuLiHybridObjectKey& Key) const
+{
+    if(!State->Client || !Key.IsValid())return 1.f;
+    const auto object=ToCore(Key);
+    const auto* record=State->Client->FindObject(object);
+    if(!record)return 1.f;
+    const auto status=record->Capabilities.find(GuLiNet::Effects::SlowCapability);
+    return status==record->Capabilities.end()?1.f:
+        GuLiNet::Effects::MovementMultiplier(status->second.Data,State->Client->ObjectNow(object));
 }
 uint64 UGuLiHybridWorldSubsystem::GetObjectLogicalTick(const FGuLiHybridObjectKey& Key) const
 { return State->Client?State->Client->ObjectNow(ToCore(Key)):0; }

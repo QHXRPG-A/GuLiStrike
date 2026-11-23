@@ -712,5 +712,113 @@
     "CastCameraReturnSeconds": 0.0,
     "CastLightningScaleMultiplier": 0.0,
     "CastCameraReturnCueSeconds": 0.0
+  },
+  {
+    "Name": "GroundMech_SplitBarrel_Lv1",
+    "Id": "15.01",
+    "Note": "游骑兵个人普攻，人工智能引擎一级后解锁",
+    "Type": 3,
+    "TextIds": [
+      "Card.GroundMech.SplitBarrel.Title",
+      "Card.GroundMech.SplitBarrel.Description"
+    ],
+    "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+    "UnitTypeId": 0,
+    "BonusPercent": 0.0,
+    "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/SplitBarrel/Materials/MI_GroundMech_SplitBarrel_Artwork.MI_GroundMech_SplitBarrel_Artwork",
+    "UpgradeVfx": "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow_Converted.P_UpgradeGlow_Converted",
+    "UpgradeVfxScale": 2.5,
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [
+      "14.01"
+    ],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 3,
+    "BonusCount": 0,
+    "EffectIds": [
+      "10"
+    ],
+    "IconId": 15,
+    "RequiredCardLevels": [
+      "1"
+    ],
+    "MaxRankUpgradeVfx": "",
+    "MaxRankUpgradeScale": 0.0,
+    "MaxRankStartRatio": 0.0,
+    "MaxRankGrowthSeconds": 0.0,
+    "MaxRankDurationSeconds": 0.0,
+    "CastPose": "",
+    "CastFlashVfx": "",
+    "CastLightningVfx": "",
+    "CastBodyScale": 0.0,
+    "CastFoldSeconds": 0.0,
+    "CastOpenSeconds": 0.0,
+    "CastFlashSeconds": 0.0,
+    "CastRecoverySeconds": 0.0,
+    "UpgradeVfxHeightMultiplier": 2.0,
+    "UpgradeVfxPlaybackRate": 2.0,
+    "CastCrossedHoldSeconds": 0.0,
+    "CastChargeShakeDegrees": 0.0,
+    "CastReleaseShakeDegrees": 0.0,
+    "CastShotRecoilCm": 0.0,
+    "CastShotRecoilSeconds": 0.0,
+    "CastCamera": "",
+    "CastCameraReturnSeconds": 0.0,
+    "CastLightningScaleMultiplier": 0.0,
+    "CastCameraReturnCueSeconds": 0.0
+  },
+  {
+    "Name": "GroundMech_ElectromagneticTech_Lv1",
+    "Id": "16.01",
+    "Note": "游骑兵个人普攻，人工智能引擎一级后解锁",
+    "Type": 3,
+    "TextIds": [
+      "Card.GroundMech.ElectromagneticTech.Title",
+      "Card.GroundMech.ElectromagneticTech.Description"
+    ],
+    "ImplementationClass": "/Script/GuLiStrike.GuLiRogueCardGroundEffect",
+    "UnitTypeId": 0,
+    "BonusPercent": 0.0,
+    "FrontMaterial": "/Game/GuLiStrike/Cards/GroundMech/ElectromagneticTech/Materials/MI_GroundMech_ElectromagneticTech_Artwork.MI_GroundMech_ElectromagneticTech_Artwork",
+    "UpgradeVfx": "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow_Converted.P_UpgradeGlow_Converted",
+    "UpgradeVfxScale": 2.5,
+    "UpgradeVfxColor": "(R=20,G=6.930114,B=0.933554,A=1)",
+    "RequiredCardIds": [
+      "14.01"
+    ],
+    "ExcludedCardIds": [],
+    "MaxAcquisitions": 3,
+    "BonusCount": 0,
+    "EffectIds": [
+      "11"
+    ],
+    "IconId": 14,
+    "RequiredCardLevels": [
+      "1"
+    ],
+    "MaxRankUpgradeVfx": "",
+    "MaxRankUpgradeScale": 0.0,
+    "MaxRankStartRatio": 0.0,
+    "MaxRankGrowthSeconds": 0.0,
+    "MaxRankDurationSeconds": 0.0,
+    "CastPose": "",
+    "CastFlashVfx": "",
+    "CastLightningVfx": "",
+    "CastBodyScale": 0.0,
+    "CastFoldSeconds": 0.0,
+    "CastOpenSeconds": 0.0,
+    "CastFlashSeconds": 0.0,
+    "CastRecoverySeconds": 0.0,
+    "UpgradeVfxHeightMultiplier": 2.0,
+    "UpgradeVfxPlaybackRate": 2.0,
+    "CastCrossedHoldSeconds": 0.0,
+    "CastChargeShakeDegrees": 0.0,
+    "CastReleaseShakeDegrees": 0.0,
+    "CastShotRecoilCm": 0.0,
+    "CastShotRecoilSeconds": 0.0,
+    "CastCamera": "",
+    "CastCameraReturnSeconds": 0.0,
+    "CastLightningScaleMultiplier": 0.0,
+    "CastCameraReturnCueSeconds": 0.0
   }
 ]

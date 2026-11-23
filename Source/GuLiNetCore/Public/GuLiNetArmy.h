@@ -49,6 +49,7 @@ struct Card
     std::string Id;std::uint32_t Maximum=0;
     std::vector<std::string> Required,Excluded;
     Source Effect;
+    std::vector<std::uint32_t> RequiredLevels;
 };
 struct RuleBinding {Slot Key;std::string Skill;bool Admission=false;std::string SourceDefinition;};
 struct Catalog
@@ -84,7 +85,7 @@ struct Link
     // of subsequent loadout/card changes and of its source's lifetime.
     std::map<std::string,Profile> Frozen;
 };
-enum class Operation:std::uint8_t {Offer,Reroll,Choose,Equip,ClosePresentation};
+enum class Operation:std::uint8_t {Offer,Reroll,Choose,Equip,ClosePresentation,SetCardLevel};
 struct Command
 {
     Operation Op=Operation::Offer;
@@ -92,6 +93,7 @@ struct Command
     Revision Expected=0;
     std::string Choice;
     Slot EquipmentSlot;
+    std::uint32_t TargetLevel=0;
 };
 GULINETCORE_API bool Resolve(const Catalog&,const std::map<Id,Source>&,const std::map<Slot,std::string>&,
     std::vector<Profile>&,std::string& Error);
@@ -104,6 +106,7 @@ GULINETCORE_API bool GetState(const ObjectRecord&,State&);
 GULINETCORE_API bool SetState(ObjectRecord&,const State&);
 GULINETCORE_API Bytes EncodeCommand(const Command&);
 GULINETCORE_API bool DecodeCommand(std::span<const std::uint8_t>,Command&);
+bool SameCardEffect(const Source&,const Source&);
 GULINETCORE_API Bytes EncodeLink(const Link&);
 GULINETCORE_API bool DecodeLink(std::span<const std::uint8_t>,Link&);
 }

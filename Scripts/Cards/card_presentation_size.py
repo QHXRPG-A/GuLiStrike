@@ -4,8 +4,8 @@ Executed inside the editor; defaults retain the original tarot presentation.
 """
 import math
 import unreal
-from card_reveal_graph import B, Graph, require, variable, function, compile_save
-from card_artwork_config import CARD, DIRECTOR, write_start_function
+from card_reveal_graph import B, Graph, Node, require, variable, function, compile_save
+from card_artwork_config import CARD, DIRECTOR, ensure_review_pointer_bounds, write_start_function
 
 HUD='/Game/GuLiStrike/CardSystem/RevealDemo/UI/WBP_CardRevealHUD'
 EDGE='/Game/GuLiStrike/CardSystem/WarMachineTarot/Materials/M_CelCardEdge'
@@ -23,21 +23,56 @@ def ensure_size_variables():
 
 def write_pointer_function():
     ensure_size_variables()
+    ensure_review_pointer_bounds()
     g=Graph(DIRECTOR,'UpdatePointer',True)
     size=g.method('PlayerController','GetViewportSize',g.get('Controller'))
     sx=g.native('Conv_IntToDouble',InInt=size['SizeX'])
     sy=g.native('Conv_IntToDouble',InInt=size['SizeY'])
+    seq=Node(g,B.create_node_by_key(DIRECTOR,g.name,'NODE K2Node_ExecutionSequence',*g.pos()))
+    seq.put('execute',g.tail);g.tail=seq['then_0']
+    extent=g.call('KismetMathLibrary','BreakVector',InVec=g.get('ReviewFrameHalfExtent'))
+    sampling=g.branch(g.compare('Greater',extent['X'],0))
+    # Slate continues to update the desktop cursor when a UMG child handles the mouse event.
+    # Both positions below are in the same viewport-local Slate units, including in docked PIE.
+    geometry=g.call('WidgetLayoutLibrary','GetViewportWidgetGeometry')['ReturnValue']
+    cursor=g.call('WidgetLayoutLibrary','GetMousePositionOnPlatform')['ReturnValue']
+    local=g.call('SlateBlueprintLibrary','AbsoluteToLocal',Geometry=geometry,AbsoluteCoordinate=cursor)['ReturnValue']
+    viewport=g.call('SlateBlueprintLibrary','GetLocalSize',Geometry=geometry)['ReturnValue']
+    point=g.call('KismetMathLibrary','BreakVector2D',InVec=local)
+    dimensions=g.call('KismetMathLibrary','BreakVector2D',InVec=viewport)
+    g.set('MouseU',point['X']/g.native('FMax',A=dimensions['X'],B=1))
+    g.set('MouseV',point['Y']/g.native('FMax',A=dimensions['Y'],B=1))
+    inside=g.call('SlateBlueprintLibrary','IsUnderLocation',Geometry=geometry,AbsoluteCoordinate=cursor)['ReturnValue']
+    g.set('MouseValid',g.both(inside,g.compare('Greater',dimensions['X'],0),g.compare('Greater',dimensions['Y'],0)))
+    g.tail=sampling['else']
     mx=g.method('PlayerController','GetMousePosition',g.get('Controller'))
     g.set('MouseU',mx['LocationX']/g.native('FMax',A=sx,B=1))
     g.set('MouseV',mx['LocationY']/g.native('FMax',A=sy,B=1))
+    g.set('MouseValid',mx['ReturnValue'])
+    g.tail=seq['then_1']
     focused=g.call('GuLiCardRevealViewportLibrary','IsCardRevealViewportFocused',PlayerController=g.get('Controller'))['ReturnValue']
-    permitted=[mx['ReturnValue'],focused,g.get('WindowActive'),g.compare('Greater',sx,0),g.compare('Greater',sy,0)]
+    permitted=[g.get('MouseValid'),focused,g.get('WindowActive'),g.compare('Greater',sx,0),g.compare('Greater',sy,0)]
     if B.variable_exists(DIRECTOR,'AwaitingConfirmation'):
         permitted.append(g.native('Not_PreBool',A=g.get('AwaitingConfirmation')))
     g.set('MouseValid',g.both(*permitted))
     half=g.get('CameraDistance')*g.native('Tan',A=g.get('HorizontalFOV')*(math.pi/360))
     g.set('ViewWidth',half*2)
     g.set('ViewHeight',g.get('ViewWidth')*g.native('FMax',A=sy,B=1)/g.native('FMax',A=sx,B=1))
+    if B.variable_exists(DIRECTOR,'DirectSelection') and B.variable_exists(DIRECTOR,'UseLiveCardData'):
+        # F4 stretches its capture across the viewport. A resized target can have
+        # a slightly different aspect once its dimensions are rounded to whole texels.
+        seq=Node(g,B.create_node_by_key(DIRECTOR,g.name,'NODE K2Node_ExecutionSequence',*g.pos()))
+        seq.put('execute',g.tail)
+        g.tail=seq['then_0']
+        g.branch(g.both(g.get('DirectSelection'),g.get('UseLiveCardData')))
+        capture=g.call('Actor','GetComponentByClass',ComponentClass='/Script/Engine.SceneCaptureComponent2D')['ReturnValue']
+        g.branch(g.call('KismetSystemLibrary','IsValid',Object=capture)['ReturnValue'])
+        target=g.member('SceneCaptureComponent2D','TextureTarget',capture)
+        g.branch(g.call('KismetSystemLibrary','IsValid',Object=target)['ReturnValue'])
+        width=g.native('Conv_IntToDouble',InInt=g.member('TextureRenderTarget2D','SizeX',target))
+        height=g.native('Conv_IntToDouble',InInt=g.member('TextureRenderTarget2D','SizeY',target))
+        g.set('ViewHeight',g.get('ViewWidth')*height/g.native('FMax',A=width,B=1))
+        g.tail=seq['then_1']
     base=g.native('FMin',A=g.get('ViewHeight')*(.5/48.617),B=g.get('ViewWidth')*(.24/32.175))
     width_scale=g.native('Sqrt',A=g.native('FMax',A=g.get('CardAreaMultiplier'),B=.01))
     scale=base*width_scale

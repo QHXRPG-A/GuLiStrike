@@ -283,6 +283,7 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/BulletTrails/"))
             && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Blink/"))
             && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/"))
+            && System->GetOutermost()->GetName()!=TEXT("/Game/GuLiStrike/FX/GroundMech/Electromagnetic/NS_GroundElectromagneticArc")
             && !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/GroundMech/Burning/")))) return false;
 	}
 	ForEachObjectWithOuter(System, [](UObject* Object)

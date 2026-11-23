@@ -65,6 +65,12 @@ bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
         if (!Row || !Effect || Row->UnitTypeId<=0 || Row->UnitTypeId>MAX_uint16 || Row->MaxAcquisitions<0 || !Effect->Describe(*Row,Desc,Error)) return false;
         GuLiNet::Army::Card Card;Card.Id=TCHAR_TO_UTF8(*Row->Id);Card.Maximum=uint32(Row->MaxAcquisitions);Card.Effect=GuLiArmyBridge::Source(Desc.Source);
         for (const auto& Id:Row->RequiredCardIds) Card.Required.push_back(TCHAR_TO_UTF8(*Id));
+        for (const auto& Text:Row->RequiredCardLevels)
+        {
+            int32 Level=0;
+            if (!LexTryParseString(Level,*Text) || Level<1) {Error=TEXT("Invalid prerequisite level: ")+Row->Id;return false;}
+            Card.RequiredLevels.push_back(uint32(Level));
+        }
         for (const auto& Id:Row->ExcludedCardIds) Card.Excluded.push_back(TCHAR_TO_UTF8(*Id));
         for (const auto& [Unit,V]:Desc.MovementPercent) Card.Effect.MovementPercent.emplace(Unit,V);
         const auto Id=Card.Id;if (!C.Cards.emplace(Id,std::move(Card)).second) {Error=TEXT("Duplicate card identity");return false;}

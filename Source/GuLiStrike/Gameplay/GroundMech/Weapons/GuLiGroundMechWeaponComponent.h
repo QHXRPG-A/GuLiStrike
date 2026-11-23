@@ -4,6 +4,7 @@
 #include "Gameplay/Data/Generated/GuLiStrikeMechTableRows.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "GuLiGroundAttackSnapshot.h"
+#include "Gameplay/GroundMech/Network/GuLiHybridGroundInputTypes.h"
 #include "GuLiGroundMechWeaponComponent.generated.h"
 
 class UNiagaraSystem;
@@ -20,8 +21,7 @@ struct FSceneViewProjectionData;
 /** One side of the point-up target marker, in 1080p design pixels. */
 struct FGuLiAILockHexSide
 {
-	static constexpr double LockedRadius = 62.;
-	FGuLiAILockHexSide(int32 Index, double Progress, double Release = 0.);
+	FGuLiAILockHexSide(int32 Index, double Progress, double LockedRadius, double Release = 0.);
 	bool TouchesAperture(const FVector2D& ApertureFromTarget, double ApertureRadius) const;
 	double Angle, Closure, Radius, Outset;
 };
@@ -29,26 +29,16 @@ struct FGuLiAILockHexSide
 /** Player-viewport pixels from the same projection used to admit a target. */
 struct FGuLiAILockSight
 {
-	static constexpr float DesignRadius = 342.f;
-	static constexpr double RecenterRadiusRatio = 1.25;
-	static constexpr double RecenterSeconds = 0.15;
+    float DesignRadius=0, HexRadius=0;
+    double Started=0;
+    FVector WorldPoint=FVector::ZeroVector;
     FVector2D Center=FVector2D::ZeroVector, TargetPoint=FVector2D::ZeroVector;
     FGuLiTargetHandle Target;
     float Radius=0, Progress=0, DistanceMeters=0;
     bool bProjected=false;
     bool IsLocked() const { return Target.IsValid() && Progress>=1.f; }
 	bool IncludesTarget(const FGuLiTargetHandle& Candidate, const FVector2D& PlayerPixel) const;
-	bool PrefersCandidate(const FGuLiTargetHandle& Candidate, double ReticleDistanceSq,
-		const FGuLiTargetHandle& Best, double BestReticleDistanceSq) const;
-	void UpdateAperture(const FSceneViewProjectionData& Projection, double Now);
-	void HoldOnShot(double ShotAt);
-
-private:
-	enum class EMotion : uint8 { Following, Held, Recentering };
-	EMotion Motion = EMotion::Following;
-	FVector ApertureDirection = FVector::ZeroVector;
-	FVector2D OffsetInRadii = FVector2D::ZeroVector;
-	double FollowResumesAt = -1.0;
+    void UpdateAperture(const FSceneViewProjectionData& Projection);
 };
 
 namespace GuLiMechFire
@@ -77,6 +67,7 @@ public:
 	bool GetActualShotRay(FVector& Origin,FVector& Direction) const;
     bool GetActualSightPoint(FVector& Point,FVector& Direction) const;
     const FGuLiAILockSight& GetAILockSight() const { return AILockSight; }
+    const TArray<FGuLiAILockSight>& GetLockTargets() const { return LocalLocks; }
     bool HasAIEngine() const { return AILockRank.Seconds>0; }
     /** Build the per-shot payload; admission independently freezes its authorized numeric capability. */
     FGuLiGroundAttackSnapshot BuildAttackSnapshot() const;
@@ -110,6 +101,8 @@ private:
 	bool AcceptAim(const FVector& Point);
 	/** Keeps the raw cursor/upper-body aim independent from the assisted weapon point. */
 	bool ResolveLocalWeaponAim(FVector& OutPoint);
+    bool UsesTargetLocks() const { return HasAIEngine() || MaxLockTargets>1; }
+    bool InManualSplitSight(const FGuLiGroundLockInput& View,const FVector& Point) const;
     void ClearAILock();
 	void RefreshAimAssistSources(uint32 MatchEpoch);
 	void QueueAimAssistActor(AActor* Actor);
@@ -124,7 +117,12 @@ private:
     FGuLiGroundAttackSnapshot CachedAttack;
     GuLiNet::Effects::AILockRank AILockRank;
     FGuLiAILockSight AILockSight;
-    double LockStarted=0;
+    TArray<FGuLiAILockSight> LocalLocks;
+    FGuLiGroundLockInput LocalLockInput;
+    TMap<FGuLiHybridObjectKey,double> AuthorityLockStarts;
+    int32 MaxLockTargets=1;
+    bool CheckAuthorityTarget(const FGuLiHybridObjectKey& Key,uint8 Side,double Progress,bool Retain,FVector& Point) const;
+    void UpdateAuthorityLocks(bool bAim);
     float EffectiveFireRate=0;
 	USkeletalMeshComponent* Gun() const;
 	FName MuzzleSocket(uint8 Index) const;

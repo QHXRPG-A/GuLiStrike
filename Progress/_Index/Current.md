@@ -91,16 +91,20 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | combat, data, network | — | — | 2026-11-23 |
+| [肉鸽牌等级 GM 命令](../DevelopmentDocumentation/20261123-肉鸽牌等级GM命令.md) | combat, network | — | — | 2026-11-23 |
+| [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | combat, network, presentation, ui | — | — | 2026-11-23 |
 | [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | combat, presentation, ui | — | — | 2026-11-22 |
+| [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | assets, ui | 3/3 (100%) | — | 2026-11-21 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | — | 2026-11-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-11-21 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | combat, input, map, performance, vfx | — | — | 2026-11-19 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | assets, ui | 6/6 (100%) | — | 2026-11-18 |
 | [四张游骑兵肉鸽牌正式资源 — 实施与交付](../DevelopmentDocumentation/20261117-四张游骑兵肉鸽牌正式资源.md) | assets, ui | 6/6 (100%) | — | 2026-11-17 |
 | [无人生还与爆破套餐牌面制作收尾](../DevelopmentDocumentation/20261117-无人生还与爆破套餐牌面制作收尾.md) | assets, ui | 5/5 (100%) | — | 2026-11-17 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | — | 2026-11-17 |
 | [机枪与爆破弹尾迹修复](../DevelopmentDocumentation/20261113-机枪与爆破弹尾迹修复.md) | combat, vfx | 19/19 (100%) | — | 2026-11-16 |
 | [矿车动作与双兵种开火表现 — 实施记录](../DevelopmentDocumentation/20261114-矿车动作与双兵种开火表现.md) | animation, art, combat, commander | 9/9 (100%) | 本轮实施与运行数据交付完成；玩家后续复核动作观感、双阵营灯和LOD切换。 | 2026-11-14 |
 | [四足采矿车正式替换与阵营灯 — 实施与交付](../DevelopmentDocumentation/20261113-四足采矿车正式替换与阵营灯.md) | animation, art, assets, commander | 7/8 (88%) | 本轮交付完成；动作后续实现及运行证据见20261114矿车动作与双兵种开火表现。 | 2026-11-14 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-11-13 |
 | [护盾交矿与先驱号兵营 — 实施记录](../DevelopmentDocumentation/20261112-护盾交矿与先驱号兵营.md) | building, navigation, resources | 6/6 (100%) | — | 2026-11-12 |
 | [统一体型让路与接触传递](../DevelopmentDocumentation/20261111-统一体型让路与接触传递.md) | commander, performance | 7/7 (100%) | — | 2026-11-12 |
 | [人墙让路来源修复](../DevelopmentDocumentation/20261111-人墙让路来源修复.md) | commander, network | 7/7 (100%) | — | 2026-11-12 |

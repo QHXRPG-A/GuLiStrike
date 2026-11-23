@@ -18,6 +18,7 @@ public:
     UFUNCTION(BlueprintPure,Category="Hybrid|Authority") bool CanSimulate() const;
     UFUNCTION(BlueprintPure,Category="Hybrid|Authority") bool CanControl() const;
     UFUNCTION(BlueprintPure,Category="Hybrid|Clock") double GetBattleSeconds() const;
+    static float MovementMultiplier(const AActor* Actor);
     static const UGuLiHybridActorComponent* Find(const AActor* Actor);
     UFUNCTION(BlueprintPure,Category="Hybrid|Authority",meta=(DefaultToSelf="Actor",DisplayName="Has Object Simulation Authority"))
     static bool HasSimulation(const AActor* Actor);

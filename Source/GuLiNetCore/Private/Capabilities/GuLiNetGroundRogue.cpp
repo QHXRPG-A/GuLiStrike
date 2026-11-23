@@ -25,6 +25,15 @@ Bytes RawCatalog(const Catalog& C)
     return W.Take();
 }
 std::uint32_t Acquired(const Build& B,const std::string& Id) {const auto I=B.Acquired.find(Id);return I==B.Acquired.end()?0:I->second;}
+constexpr std::uint32_t RankedDownStateVersion=8;
+bool ValidBuildRevision(const Build& B)
+{
+    std::uint64_t Total=1;
+    for (const auto& [_,Level]:B.Acquired) Total+=Level;
+    // Every gained or removed rank advances the generation by one.
+    return B.RemovedRanks<=(UINT64_MAX-Total)/2 && B.RevisionValue==Total+2*B.RemovedRanks
+        && B.ExplosiveResetRevision<=B.RevisionValue && (!B.ExplosiveResetRevision || B.RemovedRanks);
+}
 Id Hash(Writer& W) {Id V;Id::Parse(Sha256(W.Take()).substr(0,32),V);return V;}
 std::uint64_t Random(Build& B) {auto V=B.Random;V^=V>>12;V^=V<<25;V^=V>>27;B.Random=V;return V*2685821657736338717ULL;}
 void Sample(Build& B,std::vector<std::string>& V,std::size_t N)
@@ -114,37 +123,51 @@ bool DecodeCatalog(std::span<const std::uint8_t> Bytes,Catalog& Out)
 }
 Bytes EncodeCounters(const ShotCounters& S)
 {
-    if(S.Players.size()>128)return {};Writer W(MaximumCapabilityBytes);W.U32(Version);W.U32(std::uint32_t(S.Players.size()));
+    if(S.Players.size()>128)return {};
+    const bool HasReset=std::any_of(S.Players.begin(),S.Players.end(),[](const auto& P){return P.second.ResetRevision!=0;});
+    Writer W(MaximumCapabilityBytes);W.U32(HasReset?RankedDownStateVersion:Version);W.U32(std::uint32_t(S.Players.size()));
     for(const auto& [Player,P]:S.Players)
-    {if(!Player.Valid()||!P.ExplosiveLevel||P.ExplosiveLevel>3)return {};W.Identity(Player);W.U32(P.ExplosiveLevel);W.U32(P.Count);}
+    {
+        if(!Player.Valid()||!P.ExplosiveLevel||P.ExplosiveLevel>3)return {};
+        W.Identity(Player);W.U32(P.ExplosiveLevel);W.U32(P.Count);
+        if(HasReset) W.U64(P.ResetRevision);
+    }
     return W.Take();
 }
 bool DecodeCounters(std::span<const std::uint8_t> Bytes,ShotCounters& Out)
 {
-    Reader R(Bytes);ShotCounters S;std::uint32_t V,N;if(!R.U32(V)||V!=Version||!Count(R,N,128))return false;
-    for(std::uint32_t I=0;I<N;++I){Id Player;ShotProgress P;if(!R.Identity(Player)||!R.U32(P.ExplosiveLevel)||!R.U32(P.Count)||!S.Players.emplace(Player,P).second)return false;}
+    Reader R(Bytes);ShotCounters S;std::uint32_t V,N;if(!R.U32(V)||(V!=Version&&V!=RankedDownStateVersion)||!Count(R,N,128))return false;
+    for(std::uint32_t I=0;I<N;++I)
+    {
+        Id Player;ShotProgress P;
+        if(!R.Identity(Player)||!R.U32(P.ExplosiveLevel)||!R.U32(P.Count)
+            ||(V==RankedDownStateVersion&&!R.U64(P.ResetRevision))||!S.Players.emplace(Player,P).second)return false;
+    }
     if(!R.Done()||EncodeCounters(S).empty())return false;Out=std::move(S);return true;
 }
-std::uint32_t ReadProgress(const ShotCounters& S,const Id& Player,const Effects::Set& E)
+std::uint32_t ReadProgress(const ShotCounters& S,const Id& Player,const Effects::Set& E,Revision ResetRevision)
 {
     const auto I=S.Players.find(Player);const auto Level=Effects::GetExplosive(E).Level;
     // A newly acquired explosive level starts at zero immediately, including
     // after restore, without making every shot lock the remote card catalog.
-    return I!=S.Players.end()&&I->second.ExplosiveLevel==Level?I->second.Count:0;
+    return I!=S.Players.end()&&I->second.ExplosiveLevel==Level&&I->second.ResetRevision==ResetRevision?I->second.Count:0;
 }
 Bytes EncodeState(const State& S)
 {
-    const auto Catalog=EncodeCatalog(S.Definitions);if(Catalog.empty()||S.Players.size()>128)return {};Writer W(MaximumCapabilityBytes);W.U32(Version);W.Blob(Catalog);W.U32(std::uint32_t(S.Players.size()));
+    const auto Catalog=EncodeCatalog(S.Definitions);if(Catalog.empty()||S.Players.size()>128)return {};
+    const bool HasRemovals=std::any_of(S.Players.begin(),S.Players.end(),[](const auto& P){return P.second.RemovedRanks!=0;});
+    Writer W(MaximumCapabilityBytes);W.U32(HasRemovals?RankedDownStateVersion:Version);W.Blob(Catalog);W.U32(std::uint32_t(S.Players.size()));
     for(const auto& [Player,B]:S.Players)
     {
-        Effects::Set E;if(!Player.Valid()||!B.RevisionValue||!B.Random||B.Acquired.size()>512||!Resolve(S.Definitions,B,E))return {};
+        Effects::Set E;if(!Player.Valid()||!B.Random||B.Acquired.size()>512||!ValidBuildRevision(B)||!Resolve(S.Definitions,B,E))return {};
         W.Identity(Player);W.U64(B.RevisionValue);W.Identity(B.LastRequest);W.U64(B.Random);W.U32(std::uint32_t(B.Acquired.size()));for(const auto& [Id,N]:B.Acquired){W.Text(Id);W.U32(N);}
         const auto& O=B.Current;W.Identity(O.Request);W.Identity(O.Session);W.Identity(O.PreviousSession);Strings(W,O.Candidates);W.Text(O.Selected);W.U64(O.CommittedAt);W.U8(O.Finished);W.U8(O.PresentationClosed);
+        if (HasRemovals) {W.U64(B.RemovedRanks);W.U64(B.ExplosiveResetRevision);}
     }return W.Take();
 }
 bool DecodeState(std::span<const std::uint8_t> Bytes,State& Out)
 {
-    Reader R(Bytes);State S;std::uint32_t Ver,N;GuLiNet::Bytes Catalog;if(!R.U32(Ver)||Ver!=Version||!R.Blob(Catalog,MaximumCapabilityBytes)||!DecodeCatalog(Catalog,S.Definitions)||!Count(R,N,128))return false;
+    Reader R(Bytes);State S;std::uint32_t Ver,N;GuLiNet::Bytes Catalog;if(!R.U32(Ver)||(Ver!=Version&&Ver!=RankedDownStateVersion)||!R.Blob(Catalog,MaximumCapabilityBytes)||!DecodeCatalog(Catalog,S.Definitions)||!Count(R,N,128))return false;
     for(std::uint32_t I=0;I<N;++I)
     {
         Id Player;Build B;std::uint32_t K;if(!R.Identity(Player)||!Player.Valid()||!R.U64(B.RevisionValue)||!B.RevisionValue||!R.Identity(B.LastRequest)||!R.U64(B.Random)||!B.Random||!Count(R,K))return false;
@@ -153,8 +176,8 @@ bool DecodeState(std::span<const std::uint8_t> Bytes,State& Out)
         O.Finished=Finished;O.PresentationClosed=Closed;std::set<std::string> Seen;
         for(const auto& Id:O.Candidates)if(!S.Definitions.Cards.contains(Id)||!Seen.insert(Id).second)return false;
         if(!O.Selected.empty()&&(!O.Finished||!Seen.contains(O.Selected)))return false;
-        std::uint64_t Total=1;for(const auto& [_,Count]:B.Acquired)Total+=Count;
-        Effects::Set E;if(B.RevisionValue!=Total||!Resolve(S.Definitions,B,E))return false;
+        if (Ver==RankedDownStateVersion && (!R.U64(B.RemovedRanks)||!R.U64(B.ExplosiveResetRevision))) return false;
+        Effects::Set E;if(!ValidBuildRevision(B)||!Resolve(S.Definitions,B,E))return false;
         if(!S.Players.emplace(Player,std::move(B)).second)return false;
     }if(!R.Done())return false;Out=std::move(S);return true;
 }
@@ -165,10 +188,17 @@ Bytes EncodeAttack(const Attack& A)
     if(!std::isfinite(A.ExplosiveDamage)||A.ExplosiveDamage<0||!std::isfinite(A.ExplosiveRadius)||A.ExplosiveRadius<0||A.ExplosiveRadius>100000||A.ExplosiveBulletVfx>INT32_MAX||A.ExplosiveImpactVfx>INT32_MAX)return {};
     if(A.ExplosiveDamage>0 ? (!A.ExplosiveRadius||!A.ExplosiveBulletVfx||!A.ExplosiveImpactVfx) : (A.ExplosiveRadius||A.ExplosiveBulletVfx||A.ExplosiveImpactVfx))return {};
     Writer W(MaximumCapabilityBytes);W.U32(Version);W.Key(A.Source);W.Key(A.Root);W.Identity(A.Player);W.U64(A.RevisionValue);W.Blob(E);W.F32(A.Damage);W.F32(A.FireRate);W.U32(A.BulletVfx);W.U32(A.ImpactVfx);W.U32(A.MuzzleVfx);
-    W.F32(A.ExplosiveDamage);W.F32(A.ExplosiveRadius);W.U32(A.ExplosiveBulletVfx);W.U32(A.ExplosiveImpactVfx);return W.Take();
+    W.F32(A.ExplosiveDamage);W.F32(A.ExplosiveRadius);W.U32(A.ExplosiveBulletVfx);W.U32(A.ExplosiveImpactVfx);
+    if (A.ExplosiveResetRevision>A.RevisionValue) return {};
+    if (A.ExplosiveResetRevision) W.U64(A.ExplosiveResetRevision);
+    return W.Take();
 }
 bool DecodeAttack(std::span<const std::uint8_t> Bytes,Attack& Out)
-{Reader R(Bytes);Attack A;GuLiNet::Bytes E;std::uint32_t V;if(!R.U32(V)||V!=Version||!R.Key(A.Source)||!R.Key(A.Root)||!R.Identity(A.Player)||!R.U64(A.RevisionValue)||!R.Blob(E,MaximumCapabilityBytes)||!Effects::Decode(E,A.Effects)||!R.F32(A.Damage)||!R.F32(A.FireRate)||!R.U32(A.BulletVfx)||!R.U32(A.ImpactVfx)||!R.U32(A.MuzzleVfx)||!R.F32(A.ExplosiveDamage)||!R.F32(A.ExplosiveRadius)||!R.U32(A.ExplosiveBulletVfx)||!R.U32(A.ExplosiveImpactVfx)||!R.Done()||EncodeAttack(A).empty())return false;Out=std::move(A);return true;}
+{Reader R(Bytes);Attack A;GuLiNet::Bytes E;std::uint32_t V;if(!R.U32(V)||V!=Version||!R.Key(A.Source)||!R.Key(A.Root)||!R.Identity(A.Player)||!R.U64(A.RevisionValue)||!R.Blob(E,MaximumCapabilityBytes)||!Effects::Decode(E,A.Effects)||!R.F32(A.Damage)||!R.F32(A.FireRate)||!R.U32(A.BulletVfx)||!R.U32(A.ImpactVfx)||!R.U32(A.MuzzleVfx)||!R.F32(A.ExplosiveDamage)||!R.F32(A.ExplosiveRadius)||!R.U32(A.ExplosiveBulletVfx)||!R.U32(A.ExplosiveImpactVfx))return false;
+    if (!R.Done() && (!R.U64(A.ExplosiveResetRevision) || !A.ExplosiveResetRevision)) return false;
+    if (!R.Done() || EncodeAttack(A).empty()) return false;
+    Out=std::move(A);return true;
+}
 Id BlastEvent(const Id& Shot){Writer W;W.Identity(Shot);W.Text("ground/explosive/companion");return Hash(W);}
 Id BlastHitEvent(const Id& Shot,const ObjectKey& Target){Writer W;W.Identity(BlastEvent(Shot));W.Key(Target);W.Text("ground/explosive/hit");return Hash(W);}
 Bytes EncodeBlast(const Blast& B)
@@ -196,6 +226,41 @@ namespace
 float PlayerBaseRate(const std::map<ObjectKey,ObjectRecord>& Objects,const Id& Player);
 bool ProjectAcceptedShots(const std::map<ObjectKey,ObjectRecord>& Previous,std::map<ObjectKey,ObjectRecord>& Changes);
 bool ValidateWeapons(const std::map<ObjectKey,ObjectRecord>& Previous,std::span<const ObjectRecord> Changes);
+bool SetCardLevel(const Catalog& Catalog,Build& B,const Army::Command& Input,float BaseRate)
+{
+    const auto Card=Catalog.Cards.find(Input.Choice);
+    if (Card==Catalog.Cards.end()) return false;
+    const auto Old=Acquired(B,Input.Choice), Target=Input.TargetLevel;
+    if (Old==Target) return true;
+    const auto Steps=Old>Target?Old-Target:Target-Old;
+    if (Steps>UINT64_MAX-B.RevisionValue || (Card->second.MaximumAcquisitions && Target>Card->second.MaximumAcquisitions)) return false;
+
+    // Validate the destination first so an out-of-range request for an uncapped card
+    // can be rejected without walking an arbitrary number of intermediate ranks.
+    auto Proposed=B;
+    if (Target) Proposed.Acquired[Input.Choice]=Target;
+    else Proposed.Acquired.erase(Input.Choice);
+    Effects::Set EffectsAfter;
+    if (!Resolve(Catalog,Proposed,EffectsAfter) || double(BaseRate)*Effects::FireRateMultiplier(EffectsAfter)>Effects::MaximumGroundFireRate) return false;
+    for (auto Rank=Old;Rank<Target;++Rank)
+    {
+        if (!Eligible(Catalog,B,Input.Choice,BaseRate)) return false;
+        ++B.Acquired[Input.Choice];
+    }
+    if (Old>Target)
+    {
+        Effects::Set Before;
+        if (!Resolve(Catalog,B,Before)) return false;
+        // Dropping and reacquiring the same explosive rank without firing must not resume an old magazine count.
+        if (Effects::GetExplosive(Before).Level!=Effects::GetExplosive(EffectsAfter).Level)
+            B.ExplosiveResetRevision=B.RevisionValue+Steps;
+        B.RemovedRanks+=Steps;
+    }
+    B.Acquired=std::move(Proposed.Acquired);
+    B.RevisionValue+=Steps;
+    B.Current={};
+    return true;
+}
 CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& D)
 {
     State S;Army::Command Input;const auto& R=C.Request;const auto Member=C.Members.find(C.Source.Grant.Controller);
@@ -222,6 +287,10 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& D)
         if(O.Session!=Input.Session||O.Finished||std::find(O.Candidates.begin(),O.Candidates.end(),Input.Choice)==O.Candidates.end()||!Eligible(S.Definitions,B,Input.Choice,BaseRate)||B.RevisionValue==UINT64_MAX)return CommitStatus::InvalidRule;
         ++B.Acquired[Input.Choice];++B.RevisionValue;O.Selected=Input.Choice;O.Finished=true;O.CommittedAt=R.Header.At;
         Effects::Set After;if(!Resolve(S.Definitions,B,After))return CommitStatus::InvalidRule;
+    }
+    else if(Input.Op==Army::Operation::SetCardLevel)
+    {
+        if (!SetCardLevel(S.Definitions,B,Input,BaseRate)) return CommitStatus::InvalidRule;
     }
     else if(Input.Op==Army::Operation::ClosePresentation)
     {if(O.Session!=Input.Session||!O.Finished||O.Selected.empty())return CommitStatus::InvalidRule;O.PresentationClosed=true;}
@@ -251,7 +320,7 @@ bool Init(RuntimeManifest& M,std::string& Error)
     {
         if(Trial->second!=0&&Trial->second!=1)return false;
         const auto Card=std::find_if(C.Cards.begin(),C.Cards.end(),[&](const auto& Entry){
-            return std::any_of(Entry.second.EffectIds.begin(),Entry.second.EffectIds.end(),[&](auto Id){return C.Effects.at(Id).Handler=="ground/no_survivors";});
+            return std::any_of(Entry.second.EffectIds.begin(),Entry.second.EffectIds.end(),[&](auto Id){return C.Effects.at(Id).Handler==Effects::BarrageHandler;});
         });
         if(Card==C.Cards.end()||!Card->second.MaximumAcquisitions||Card->second.MaximumAcquisitions>16)return false;
         Binding.Text(Card->first);Binding.U32(Card->second.MaximumAcquisitions);
@@ -270,7 +339,10 @@ bool Init(RuntimeManifest& M,std::string& Error)
     auto Data=Binding.Take();if(Data.empty())return false;
     for(auto& [_,O]:M.Objects)if(O.Definition=="player/ground"){O.Capabilities["ground_binding"]={Version,Data};O.Capabilities[CounterName]={Version,EncodeCounters({})};}
     for(auto& [_,R]:M.Rules)if(R.TargetDefinition=="player/ground"&&R.SpawnKind==ObjectKind::GroundPlayer){R.SpawnCapabilities["ground_binding"]={Version,Data};R.SpawnCapabilities[CounterName]={Version,EncodeCounters({})};}
-    for(const char* Capability:{Name,AttackName,ChainName,BlastName,CounterName,"ground_binding"})M.Numbers[std::string("capability/")+Capability+"/version"]=Version;return true;
+    for(const char* Capability:{Name,AttackName,ChainName,BlastName,CounterName,"ground_binding"})
+        M.Numbers[std::string("capability/")+Capability+"/version"]=Version;
+    M.Numbers[std::string("capability/")+Effects::SlowCapability+"/version"]=1;
+    return true;
 }
 const bool Registered=[]
 {
@@ -288,6 +360,15 @@ const bool AttackRegistered=[]
     C.ValidateTransition=[](const ObjectRecord& A,const ObjectRecord& B){return A.Capabilities.at(AttackName).Data==B.Capabilities.at(AttackName).Data;};
     C.ResolveRule=[](const ObjectRecord& O,const std::map<ObjectKey,ObjectRecord>&,const std::string&,Rule& R)
     {if(R.Kind!=TransactionKind::Damage)return true;Attack A;if(!DecodeAttack(O.Capabilities.at(AttackName).Data,A))return false;R.Damage=A.Damage;return true;};
+    C.ModifyShieldDamage=[](const CapabilityState& state,const TransactionRequest& request,float& multiplier)
+    {
+        if(request.RootEvent==BlastHitEvent(request.Header.Object.StableId,request.Target))return true;
+        Attack attack;
+        Effects::GroundHitProperties hit;
+        if(!DecodeAttack(state.Data,attack) || !Effects::ResolveHitProperties(attack.Effects,hit))return false;
+        multiplier*=hit.ShieldMultiplier;
+        return true;
+    };
     C.AcceptedDamage=[](const TransactionRequest& R,const CommitResult& Result,const std::map<ObjectKey,ObjectRecord>& Objects,std::map<ObjectKey,ObjectRecord>& Changes)
     {Attack A;const auto Source=Objects.find(R.Header.Object);if(Source==Objects.end()||!DecodeAttack(Source->second.Capabilities.at(AttackName).Data,A))return false;
         if(R.RootEvent==BlastHitEvent(R.Header.Object.StableId,R.Target))return true;
@@ -331,9 +412,9 @@ bool ProjectAcceptedShots(const std::map<ObjectKey,ObjectRecord>& Previous,std::
     {
         if(!Changes.contains(A.Source)){const auto Source=Previous.find(A.Source);if(Source==Previous.end())return false;Changes.emplace(A.Source,Source->second);}
         auto& Source=Changes.at(A.Source);ShotCounters S;if(!GetCounters(Source,S))return false;
-        const auto E=Effects::GetExplosive(A.Effects);const auto Progress=ReadProgress(S,A.Player,A.Effects);
+        const auto E=Effects::GetExplosive(A.Effects);const auto Progress=ReadProgress(S,A.Player,A.Effects,A.ExplosiveResetRevision);
         if(!E.Interval()||Progress>=E.Interval()||bool(A.ExplosiveDamage>0)!=(Progress+1==E.Interval()))return false;
-        S.Players[A.Player]={E.Level,(Progress+1)%E.Interval()};auto Bytes=EncodeCounters(S);if(Bytes.empty())return false;
+        S.Players[A.Player]={E.Level,(Progress+1)%E.Interval(),A.ExplosiveResetRevision};auto Bytes=EncodeCounters(S);if(Bytes.empty())return false;
         Source.Capabilities[CounterName]={Version,std::move(Bytes)};
         if(Updated.insert(A.Source).second){if(Source.RelationVersion==UINT64_MAX)return false;++Source.RelationVersion;}
     }return true;
@@ -397,15 +478,15 @@ const bool BindingRegistered=[]
         const auto& P=Profile->second;Attack A=P.Base;A.Source=Parent.Grant.Object;A.Root=B.Roots[Parent.Grant.Faction==Team::Red?0:1];A.Player=Parent.Grant.Controller;A.RevisionValue=1;
         const auto Root=Objects.find(A.Root);State S;if(Root==Objects.end()||!GetState(Root->second,S))return false;
         std::uint32_t Progress=0;
-        if(const auto Build=S.Players.find(A.Player);Build!=S.Players.end()){A.RevisionValue=Build->second.RevisionValue;if(!Resolve(S.Definitions,Build->second,A.Effects))return false;}
-        ShotCounters Counters;if(!GetCounters(Parent,Counters))return false;Progress=ReadProgress(Counters,A.Player,A.Effects);
-        A.FireRate=P.BaseRate*Effects::FireRateMultiplier(A.Effects);
-        if(!std::isfinite(A.FireRate)||A.FireRate<=0||A.FireRate>Effects::MaximumGroundFireRate)return false;
+        if(const auto Build=S.Players.find(A.Player);Build!=S.Players.end()){A.RevisionValue=Build->second.RevisionValue;A.ExplosiveResetRevision=Build->second.ExplosiveResetRevision;if(!Resolve(S.Definitions,Build->second,A.Effects))return false;}
+        ShotCounters Counters;if(!GetCounters(Parent,Counters))return false;Progress=ReadProgress(Counters,A.Player,A.Effects,A.ExplosiveResetRevision);
+        const Effects::GroundWeaponBase base{A.Damage,P.BaseRate,P.InitialRatio,A.BulletVfx,P.InitialBullet,A.ImpactVfx,A.MuzzleVfx};
+        Effects::GroundShotStats shot;
+        if(!Effects::ResolveGroundShot(base,A.Effects,shot))return false;
         const auto Extra=Effects::GetExplosive(A.Effects);
         if(Extra.Interval()&&Progress+1==Extra.Interval()){A.ExplosiveDamage=A.Damage*Extra.DamageMultiplier;A.ExplosiveRadius=Extra.Radius;A.ExplosiveBulletVfx=Extra.BulletVfx;A.ExplosiveImpactVfx=Extra.ImpactVfx;}
-        if(!Effects::HasEnhancedBullet(A.Effects)){A.Damage*=P.InitialRatio;A.BulletVfx=P.InitialBullet;}
-        else A.Damage*=Effects::GetBulletRank(A.Effects).DamageMultiplier;
-        if(!Effects::FreezePresentation(A.Effects,A.BulletVfx,A.ImpactVfx,A.MuzzleVfx))return false;
+        A.FireRate=shot.FireRate; A.Damage=shot.Damage;
+        A.BulletVfx=shot.BulletVfx; A.ImpactVfx=shot.ImpactVfx; A.MuzzleVfx=shot.MuzzleVfx;
         auto Bytes=EncodeAttack(A);if(Bytes.empty())return false;Child.Capabilities[AttackName]={Version,std::move(Bytes)};
         Child.Capabilities[ChainName]={Version,{}};
         if(A.ExplosiveDamage>0)Child.Capabilities[BlastName]={Version,{}};return true;

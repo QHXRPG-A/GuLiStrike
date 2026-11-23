@@ -1,0 +1,462 @@
+{
+  "date": "2026-11-22",
+  "editor_build": {
+    "authorization": "同意编译 Editor 目标",
+    "engine": "D:/UnrealEngine-5.7",
+    "target": "GuLiStrikeEditor Win64 Development",
+    "exit_code": 0,
+    "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+  },
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "tables": {
+    "DT_GuLiStrikeRogueCards_Cards": [
+      "GroundMech_AIEngine_Lv1",
+      "GroundMech_SplitBarrel_Lv1",
+      "GroundMech_ElectromagneticTech_Lv1"
+    ],
+    "DT_GuLiStrikeRogueCards_Effects": [
+      "GroundAIEngine",
+      "GroundSplitBarrel",
+      "GroundElectromagnetic"
+    ],
+    "DT_GuLiStrikeRogueCards_GroundWeaponEffects": [
+      "GroundAIEngine",
+      "GroundSplitBarrel",
+      "GroundElectromagnetic"
+    ],
+    "DT_GuLiStrikeGameTexts_Texts": [
+      "Card.GroundMech.AIEngine.Description",
+      "Card.GroundMech.SplitBarrel.Title",
+      "Card.GroundMech.SplitBarrel.Description",
+      "Card.GroundMech.ElectromagneticTech.Title",
+      "Card.GroundMech.ElectromagneticTech.Description"
+    ],
+    "DT_GuLiStrikeVfx_Effects": [
+      "GroundElectromagneticArc"
+    ]
+  },
+  "saved_packages_read_back": [
+    "/Game/GuLiStrike/FX/GroundMech/Electromagnetic/NS_GroundElectromagneticArc",
+    "/Game/GuLiStrike/Data/ST_GuLiStrikeGameTexts",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Cards",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_Effects",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeRogueCards_GroundWeaponEffects",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeGameTexts_Texts",
+    "/Game/GuLiStrike/Data/DT_GuLiStrikeVfx_Effects"
+  ],
+  "niagara": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/Electromagnetic/NS_GroundElectromagneticArc.NS_GroundElectromagneticArc",
+    "parameters": [
+      "User.ArcEnd",
+      "User.ArcStart"
+    ],
+    "material": "/Game/Assets/ExternalPacks/NiagaraRealisticStarter/Realistic_Starter_VFX_Pack_Niagara/Materials/M_Lightning.M_Lightning",
+    "alignment": "CustomAlignment",
+    "emitters": [
+      "Lightning",
+      "spark",
+      "glow",
+      "smoke"
+    ],
+    "bindings": {
+      "ParticleSpawn": [
+        [
+          "Aligned",
+          "Particles.SpriteAlignment"
+        ],
+        [
+          "Center",
+          "Particles.Position"
+        ],
+        [
+          "Size",
+          "Particles.SpriteSize"
+        ],
+        [
+          "User.ArcEnd",
+          "EndPos"
+        ],
+        [
+          "User.ArcStart",
+          "StartPos"
+        ]
+      ],
+      "ParticleUpdate": [
+        [
+          "Aligned",
+          "Particles.SpriteAlignment"
+        ],
+        [
+          "Center",
+          "Particles.Position"
+        ],
+        [
+          "Size",
+          "Particles.SpriteSize"
+        ],
+        [
+          "User.ArcEnd",
+          "EndPos"
+        ],
+        [
+          "User.ArcStart",
+          "StartPos"
+        ]
+      ]
+    }
+  },
+  "catalogs": {
+    "RuntimeManifest-200.json": {
+      "config_hash": "60418e6e49f32bb6d0be2c47edc7581472f2e6e249f3a01beb4cef83181256ff",
+      "cards": {
+        "14.01": [
+          3,
+          [
+            "10.01"
+          ],
+          [],
+          [
+            9
+          ],
+          [
+            3
+          ]
+        ],
+        "15.01": [
+          3,
+          [
+            "14.01"
+          ],
+          [],
+          [
+            10
+          ],
+          [
+            1
+          ]
+        ],
+        "16.01": [
+          3,
+          [
+            "14.01"
+          ],
+          [],
+          [
+            11
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      "population": 200
+    },
+    "RuntimeManifest-600.json": {
+      "config_hash": "470845c42c1178d744c7964f455f18af1127b7014aff9ed16af6f433f331b24f",
+      "cards": {
+        "14.01": [
+          3,
+          [
+            "10.01"
+          ],
+          [],
+          [
+            9
+          ],
+          [
+            3
+          ]
+        ],
+        "15.01": [
+          3,
+          [
+            "14.01"
+          ],
+          [],
+          [
+            10
+          ],
+          [
+            1
+          ]
+        ],
+        "16.01": [
+          3,
+          [
+            "14.01"
+          ],
+          [],
+          [
+            11
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      "population": 600
+    },
+    "RuntimeManifest-NoSurvivors.json": {
+      "config_hash": "d21f1d886eef155bc32a7a75bcbc90b0b2c3bc8b27d18df59c1805c11538f085",
+      "cards": {
+        "14.01": [
+          3,
+          [
+            "10.01"
+          ],
+          [],
+          [
+            9
+          ],
+          [
+            3
+          ]
+        ],
+        "15.01": [
+          3,
+          [
+            "14.01"
+          ],
+          [],
+          [
+            10
+          ],
+          [
+            1
+          ]
+        ],
+        "16.01": [
+          3,
+          [
+            "14.01"
+          ],
+          [],
+          [
+            11
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      "population": 600
+    }
+  },
+  "adapter_versions": {
+    "adapter/family/GroundPlayer/state_version": "18",
+    "adapter/family/LinearFlight/state_version": "11",
+    "capability/electromagnetic_slow/version": "1"
+  },
+  "range_entities": {
+    "GroundRogue_Entry": {
+      "class": "TargetPoint",
+      "position": [
+        -2800.0,
+        54000.0,
+        1149.04
+      ]
+    },
+    "GroundRogue_Enemy_01": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -4350.0,
+        54150.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 100000.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Enemy_02": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -5250.0,
+        54150.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 100000.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Enemy_03": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -6150.0,
+        53550.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 100000.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Enemy_04": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -7050.0,
+        54150.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 100000.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Enemy_05": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -7350.0,
+        53550.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 55.0,
+      "initial_max_health_override": 100000.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Enemy_06": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -8850.0,
+        54750.0,
+        905.0
+      ],
+      "start_idle": false,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 100000.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Enemy_07": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -9750.0,
+        53550.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 0.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Enemy_08": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -10650.0,
+        54150.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 0.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Enemy_09": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -10950.0,
+        54750.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 0.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_BehindWall": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -4350.0,
+        56250.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 0.0,
+      "team": "<GuLiTeam.BLUE: 2>"
+    },
+    "GroundRogue_Friendly": {
+      "class": "GuLiCommanderDeploymentPoint",
+      "position": [
+        -4050.0,
+        53250.0,
+        905.0
+      ],
+      "start_idle": true,
+      "allow_automatic_fire": false,
+      "use_in_population_manifest": true,
+      "initial_shield": 0.0,
+      "initial_max_health_override": 0.0,
+      "team": "<GuLiTeam.RED: 1>"
+    },
+    "GroundAmmo_BlockingWall": {
+      "class": "StaticMeshActor",
+      "position": [
+        -750.0,
+        54750.0,
+        1505.0
+      ]
+    },
+    "GroundAIEngine_Instructions": {
+      "class": "Note",
+      "position": [
+        -1950.0,
+        52050.0,
+        1249.04
+      ]
+    },
+    "GroundRogue_SplitObserve": {
+      "class": "TargetPoint",
+      "position": [
+        -2100.0,
+        48700.0,
+        1149.0
+      ]
+    },
+    "GroundRogue_Wall": {
+      "class": "StaticMeshActor",
+      "position": [
+        -4300.0,
+        55100.0,
+        1505.0
+      ],
+      "collision": "BlockAll",
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    }
+  },
+  "verification": "代码静态检查，Editor 编译，已保存资源与地图实体回读。玩家效果待验证。",
+  "progress_check": {
+    "errors": 6,
+    "scope": "20261105 通信文档引用的外部 PerformanceCaptures 报告链接",
+    "feature_document_errors": 0
+  },
+  "fresh_editor_readback": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "range_actors": 16,
+    "data_tables": 5,
+    "runtime_manifests": 3,
+    "arc_renderer": "CustomAlignment",
+    "play_session": false
+  }
+}

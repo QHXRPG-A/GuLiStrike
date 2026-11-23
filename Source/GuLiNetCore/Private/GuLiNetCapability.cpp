@@ -155,6 +155,18 @@ bool ProjectCapabilityChanges(const std::map<ObjectKey,ObjectRecord>& Previous,s
     for (const auto& [Name,C]:Contracts().Values) if (C.ProjectChanges && !C.ProjectChanges(Previous,Changes)) return false;
     return true;
 }
+bool ResolveShieldDamageMultiplier(const ObjectRecord& source,const TransactionRequest& request,float& out)
+{
+    float multiplier=1.f;
+    for(const auto& [name,state]:source.Capabilities)
+    {
+        const auto* contract=FindCapability(name);
+        if(!contract || (contract->ModifyShieldDamage && !contract->ModifyShieldDamage(state,request,multiplier)))return false;
+    }
+    if(!std::isfinite(multiplier) || multiplier<=0.f)return false;
+    out=multiplier;
+    return true;
+}
 bool ProjectAcceptedDamage(const TransactionRequest& R,const CommitResult& Result,const std::map<ObjectKey,ObjectRecord>& Previous,std::map<ObjectKey,ObjectRecord>& Changes)
 {
     if(R.Kind!=TransactionKind::Damage||Result.Status!=CommitStatus::Committed)return true;

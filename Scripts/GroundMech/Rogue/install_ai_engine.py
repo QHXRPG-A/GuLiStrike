@@ -43,6 +43,19 @@ def rows(table):
     return {r["Name"]:r for r in json.loads(TABLES.export_data_table_to_json_string(table))}
 
 
+def same_value(actual,expected):
+    if object_path(actual)==object_path(expected) or (expected=="" and actual=="None"):return True
+    if isinstance(expected,str) and expected.startswith("(") and isinstance(actual,str):
+        import re
+        a=dict(re.findall(r"(\w+)=([^,)]+)",actual)); b=dict(re.findall(r"(\w+)=([^,)]+)",expected))
+        if a.keys()==b.keys() and all(abs(float(a[k])-float(b[k]))<.0001 for k in a):return True
+    if isinstance(expected,dict) and isinstance(actual,str):
+        import re
+        a=dict(re.findall(r"(\w+)=([^,)]+)",actual))
+        if set(expected)==set(a) and all(abs(float(a[k])-v)<.0001 for k,v in expected.items()):return True
+    return False
+
+
 def install_tables():
     unreal.GuLiStrikeRogueCardsGroundWeaponEffectsRow().get_editor_property("lock_seconds")
     unreal.GuLiStrikeVfxEffectsRow().get_editor_property("trail_tint_srgb")
@@ -58,21 +71,17 @@ def install_tables():
         source={r["Name"]:r for r in json.loads((ROOT/"data/Json"/(name+".json")).read_text(encoding="utf-8"))}
         for row,columns in edits.items():
             proposed[row]=source[row] if columns is None else {**before[row],**{k:source[row][k] for k in columns}}
+        if all(row in before and all(same_value(before[row].get(col),proposed[row][col])
+                                     for col in columns or source[row].keys()) for row,columns in edits.items()):
+            saved[name]=list(edits)
+            continue
         require(TABLES.fill_data_table_from_json_string(table,json.dumps(list(proposed.values()),ensure_ascii=False),table.get_editor_property("row_struct")),name)
         after=rows(table)
         require(set(after)==set(proposed) and all(after[r]==before[r] for r in before if r not in edits),name+" unrelated rows")
         for r,cols in edits.items():
             for col in cols or source[r].keys():
                 actual,expected=after[r][col],proposed[r][col]
-                if object_path(actual)==object_path(expected) or (expected=="" and actual=="None"):continue
-                if isinstance(expected,str) and expected.startswith("(") and isinstance(actual,str):
-                    import re
-                    a=dict(re.findall(r"(\w+)=([^,)]+)",actual)); b=dict(re.findall(r"(\w+)=([^,)]+)",expected))
-                    if a.keys()==b.keys() and all(abs(float(a[k])-float(b[k]))<.0001 for k in a):continue
-                if isinstance(expected,dict) and isinstance(actual,str):
-                    import re
-                    a=dict(re.findall(r"(\w+)=([^,)]+)",actual))
-                    if set(expected)==set(a) and all(abs(float(a[k])-v)<.0001 for k,v in expected.items()):continue
+                if same_value(actual,expected):continue
                 raise RuntimeError(f"{name}/{r}/{col}: {actual!r} vs {expected!r}")
         if after!=before:
             require(LIB.save_loaded_asset(table,False),name+" save")

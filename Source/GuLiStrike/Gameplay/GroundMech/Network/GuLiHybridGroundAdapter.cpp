@@ -25,7 +25,7 @@
 
 namespace GuLiHybridGround
 {
-constexpr uint32 StateVersion=17;
+constexpr uint32 StateVersion=18;
 constexpr uint32 MotionVersion=11;
 // Reuse the cast flag byte. Its upper five bits describe a recent admitted shot
 // in battle ticks, so late packets play the remainder of the recoil envelope.
@@ -71,6 +71,7 @@ struct FPrivate
     bool bFire=false,bHasAim=false;
     float RecoilAge=100,RecoilStart=0,RecoilRest=0,RecoilAlpha=0,RecoilOffset=0;
     TArray<FGuid> SeenShots;
+    TArray<TPair<FGuLiHybridObjectKey,double>> LockStarts;
     TArray<uint8> Placement;
     bool bBarrageTrial=false;
     FGuid BarrageCast;
@@ -107,7 +108,7 @@ void Pose(FGuLiHybridStateArchive& A,FPose& V)
 }
 void Private(FGuLiHybridStateArchive& A,FPrivate& V)
 {
-    uint32 Version=StateVersion; A.Value(Version); if (Version!=StateVersion && Version!=16) A.Reject();
+    uint32 Version=StateVersion; A.Value(Version); if (Version!=StateVersion && Version!=17 && Version!=16) A.Reject();
     A.Value(V.Key); Pose(A,V.Pose); Input(A,V.Simulation); Input(A,V.ControllerInput);
     A.Value(V.bSemantic); A.Value(V.bShoulderZoom); A.Value(V.bSprint); A.Value(V.bAbility); A.Value(V.bRocketHeld); A.Value(V.bRocketRequested);
     A.Value(V.bRocketThrusting); A.Value(V.bRocketAllowed); A.Value(V.FuelRecoveryElapsed);
@@ -117,6 +118,9 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
     A.String(V.Upgrade,128); A.Value(V.NextShot); A.Value(V.Shots);A.Value(V.FireSerial);A.Value(V.NextFireSide);A.Value(V.FirePhase); A.Value(V.WeaponAim); A.Value(V.bFire); A.Value(V.bHasAim);
     A.Value(V.RecoilAge); A.Value(V.RecoilStart); A.Value(V.RecoilRest); A.Value(V.RecoilAlpha); A.Value(V.RecoilOffset);
     A.Array(V.SeenShots,8192,[](auto& Ar,auto& ID){ Ar.Value(ID); if (!ID.IsValid()) Ar.Reject(); });
+    if(Version>=18)
+        A.Array(V.LockStarts,GuLiNet::Effects::MaximumLockTargets,[](auto& ar,auto& entry){
+            ar.Value(entry.Key);ar.Value(entry.Value);if(!entry.Key.IsValid() || entry.Value<0)ar.Reject();});
     A.Bytes(V.Placement,65536);
     A.Value(V.bBarrageTrial); A.Value(V.BarrageCast); A.Value(V.BarrageStartTick); A.Value(V.BarrageNextShot);
     if(Version==16)
@@ -254,6 +258,7 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
             BindPlayer(); auto* Weapon=P->Weapon.Get(); auto* Rocket=P->RocketJump.Get();
             if (!Weapon->LoadConfiguration(V.Upgrade)) return false;
             Weapon->ClearAILock();
+            Weapon->AuthorityLockStarts.Reset();
             P->NotifyLocalPresentation({EGuLiGroundPresentationAction::Reset});
             ApplyPose(V.Pose);
             P->GetBlinkComponent()->PrepareRestore();
@@ -279,6 +284,7 @@ class FGuLiHybridGroundAdapter final : public IGuLiHybridSimulationAdapter
             // Activation runs after the new authority/permit is installed, without charging fuel at restore time.
             bRestoreAbility=V.bAbility;
             Weapon->CurrentUpgradeId=V.Upgrade; Weapon->NextShotTime=V.NextShot; Weapon->ShotsFired=V.Shots;
+            for(const auto& lock:V.LockStarts)Weapon->AuthorityLockStarts.Add(lock.Key,lock.Value);
             Weapon->FireSerial=V.FireSerial;Weapon->NextFireSide=V.NextFireSide;Weapon->SavedFirePhase=V.FirePhase;
             Weapon->bRestoreFirePhase=V.bFire;Weapon->PendingFireNotifications.Reset();Weapon->bAcceptingFireNotifies=false;
             Weapon->AimPoint=V.WeaponAim; Weapon->bHasAim=V.bHasAim; Weapon->bFireHeld=V.bFire;
@@ -432,6 +438,7 @@ public:
         V.bRocketThrusting=M->bRocketThrusting; V.bRocketAllowed=M->bRocketAllowedThisMove;
         V.FuelRecoveryElapsed=M->RocketState.RecoveryElapsed; V.Support=M->SupportState;
         const auto* Weapon=P->Weapon.Get(); V.Upgrade=Weapon->CurrentUpgradeId; V.NextShot=Weapon->NextShotTime; V.Shots=Weapon->ShotsFired;
+        for(const auto& lock:Weapon->AuthorityLockStarts)V.LockStarts.Emplace(lock.Key,lock.Value);
         V.FireSerial=Weapon->FireSerial;V.NextFireSide=Weapon->NextFireSide;V.FirePhase=Weapon->SavedFirePhase;
         V.WeaponAim=Weapon->AimPoint; V.bFire=Weapon->bFireHeld; V.bHasAim=Weapon->bHasAim; V.SeenShots=Weapon->SeenShots.Array();
         if (const auto* Anim=Weapon->ConfiguredAnim.Get())

@@ -431,12 +431,13 @@ void AGuLiGroundMechCharacter::PumpHybridInput()
 	const uint64 At=Hybrid->GetLogicalTick();
 	if (bHybridInputSent && At==LastHybridInputTick) return;
 	auto Input=HybridInput;
-	// Preserve the actual trigger in the controller snapshot; both sources share one weapon command.
-	if(!bSemanticInput && Input.bHasAim && Weapon->GetAILockSight().IsLocked())Input.bFire=true;
+    if(Weapon->HasAIEngine())Input.bFire=false;
+    if(Weapon->UsesTargetLocks() && !bSemanticInput && Input.bHasAim && Input.WeaponAimMode==EGuLiGroundWeaponAimMode::Target)
+        Input.Lock=Weapon->LocalLockInput;
 	if (bHybridInputSent && Input==LastHybridInput && At>=LastHybridInputTick && At-LastHybridInputTick<30) return;
 	FGuLiHybridObjectState Current;
 	if (!Hybrid->GetObject(Identity->GetObjectKey(),Current)) return;
-	FGuLiHybridStateArchive A(256); GuLiHybridGround::Input(A,Input);
+	FGuLiHybridStateArchive A(1024); GuLiHybridGround::Input(A,Input);
 	FGuLiHybridCommand Command; if (!A.Finish(Command.Arguments)) return;
 	Command.Event=FGuid::NewGuid(); Command.LogicalTick=At; Command.Operation=TEXT("GroundInput");
 	auto& Member=Command.Members.AddDefaulted_GetRef(); Member.Key=Current.Key;
@@ -488,6 +489,8 @@ void AGuLiGroundMechCharacter::AdvanceHybrid(float DeltaSeconds)
     const bool bForward=SimulationInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
     const FVector FirePoint=bForward?GetMesh()->GetSocketLocation(TEXT("Gun_R"))+GetActorForwardVector()
         *(Weapon->ActiveSkill.ProjectileSpeed*Weapon->ActiveSkill.ProjectileLifetime):SimulationInput.Aim;
+    const bool mayAimLock=!bHover && !GetBlinkState().Phase && !bForward && SimulationInput.bHasAim;
+    Weapon->UpdateAuthorityLocks(mayAimLock);
     Weapon->AdvanceHybrid(DeltaSeconds,SimulationInput.bFire && !bHover && !GetBlinkState().Phase,FirePoint,bForward || SimulationInput.bHasAim);
     // Input precedes animation; only real Fire notifications enqueue shots. Read
     // the updated sockets after the pose, outside the montage's callback stack.

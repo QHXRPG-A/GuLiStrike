@@ -1,5 +1,7 @@
 """Catalog-driven multi-artwork review using the existing reveal actor and input flow."""
+import gc
 import json
+import math
 from pathlib import Path
 import unreal
 from card_reveal_graph import B, Graph, Node, require, variable, function, compile_save
@@ -30,13 +32,6 @@ def theme_color(name):
 
 
 def cls(path):return path+'.'+path.rsplit('/',1)[1]+'_C'
-
-
-def member(g,owner,name,target):
-    target_class=unreal.load_asset(owner).generated_class().get_name()
-    n=Node(g,B.add_member_get_node(g.bp,g.name,target_class,name,*g.pos()))
-    n.put('self',target)
-    return n[name]
 
 
 def widget(path,kind,name,parent=''):
@@ -87,6 +82,27 @@ def preview_copy(artwork):
     return title,description
 
 
+def ensure_review_pointer_input():
+    # Upgrade older reveal directors once when preparing this review from source.
+    from card_artwork_config import write_start_function, write_update_card_function, write_tick_function
+    from card_presentation_size import write_pointer_function
+    writers={'UpdatePointer':('TextureTarget',write_pointer_function),'UpdateCard':('ReviewFrameHalfExtent',write_update_card_function),
+             'TickPresentation':('ActiveCardCount',write_tick_function)}
+    missing=[write for fn,(pin,write) in writers.items() if not any(pin in n.pin_names for n in B.get_nodes_in_graph(DIRECTOR,fn))]
+    if not B.function_exists(DIRECTOR,'SetPointerFrameFromCard') or not any(
+            'Card' in n.pin_names and 'CallFunction' in n.node_type
+            and B.get_node_details(DIRECTOR,'StartPresentation',n.node_id).function_name=='SetPointerFrameFromCard'
+            for n in B.get_nodes_in_graph(DIRECTOR,'StartPresentation')):
+        missing.append(write_start_function)
+    if not missing:
+        return
+    assert not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor()
+    assert DIRECTOR not in {p.get_name() for p in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()}
+    for write in missing:
+        write()
+    compile_save(DIRECTOR)
+
+
 def make_face():
     ensure_widget(FACE)
     widget(FACE,'CanvasPanel','Canvas')
@@ -119,85 +135,143 @@ def make_face():
 
 
 def make_selector(ids,catalog,frame):
+    ensure_review_pointer_input()
     ensure_widget(SELECTOR)
     widget(SELECTOR,'CanvasPanel','Canvas')
     property_(SELECTOR,'Canvas','Visibility','SelfHitTestInvisible')
-    # Hide obsolete owned buttons when preparing a smaller catalog selection.
+    # Gameplay cards own their IconId. Art-only entries carry the same pairing in the icon catalog.
+    data_dir=ROOT/'data/Json'
+    icons={r['Id']:r['ResourcePath'] for r in json.loads((data_dir/'DT_GuLiStrikeIcons_Icons.json').read_text(encoding='utf-8'))}
+    card_icons={r['FrontMaterial']:r['IconId'] for r in json.loads((data_dir/'DT_GuLiStrikeRogueCards_Cards.json').read_text(encoding='utf-8')) if r['IconId']}
+    icon_catalog=json.loads((ROOT/'ArtSource/UI/GroundMech/Icons/catalog.json').read_text(encoding='utf-8'))
+    artwork_icons={r['artwork_id']:r['id'] for r in icon_catalog['icons'] if 'artwork_id' in r}
+    theme=theme_rows()
     blueprint=unreal.load_asset(SELECTOR)
     previous=int(unreal.EditorAssetLibrary.get_metadata_tag(blueprint,'GuLi.CardArtwork.ButtonCount') or '0')
-    for index in range(len(ids),previous):property_(SELECTOR,f'Artwork{index}','Visibility','Collapsed')
+    for index in range(len(ids),previous):
+        property_(SELECTOR,f'Artwork{index}','Visibility','Collapsed')
+        if W.widget_exists(SELECTOR,f'ArtworkIcon{index}'):
+            property_(SELECTOR,f'ArtworkIcon{index}','Visibility','Collapsed')
     for index,ident in enumerate(ids):
-        button,label=f'Artwork{index}',f'ArtworkLabel{index}'
+        button,label,image=f'Artwork{index}',f'ArtworkLabel{index}',f'ArtworkIcon{index}'
+        artwork=catalog['artworks'][ident]
+        icon_id=card_icons.get(artwork['Material']) or artwork_icons.get(ident)
+        line,col=divmod(index,5)
+        count=min(5,len(ids)-line*5)
+        center_x=(col-(count-1)/2)*200
+        top=18+line*48
         widget(SELECTOR,'Button',button,'Canvas');widget(SELECTOR,'TextBlock',label,button)
         property_(SELECTOR,button,'Visibility','Visible')
-        slot(SELECTOR,button,(index-(len(ids)-1)/2)*180,18,170,42,ax=.5)
+        slot(SELECTOR,button,center_x,top,194,42,ax=.5,alignx=.5)
         property_(SELECTOR,button,'IsFocusable','false')
-        property_(SELECTOR,label,'Text',catalog['artworks'][ident]['Title'])
+        property_(SELECTOR,label,'Text',artwork['Title'])
         property_(SELECTOR,label,'Justification','Center')
         property_(SELECTOR,label,'Visibility','HitTestInvisible')
-        require(W.set_font(SELECTOR,label,unreal.WidgetFontInfo(font_family=theme_rows()['UIFont']['Texture'],
-            typeface='Medium',size=int(theme_rows()['BodyFont']['Value']),color=theme_color('Text'))),'Selector font')
+        property_(SELECTOR,label,'Padding Left',42 if icon_id else 4)
+        require(W.set_font(SELECTOR,label,unreal.WidgetFontInfo(font_family=theme['UIFont']['Texture'],
+            typeface='Medium',size=int(theme['SmallFont']['Value']),color=theme_color('Text'))),'Selector font')
+        if icon_id:
+            widget(SELECTOR,'Image',image,'Canvas')
+            slot(SELECTOR,image,center_x-89,top+5,32,32,ax=.5)
+            property_(SELECTOR,image,'ZOrder',1)
+            property_(SELECTOR,image,'Visibility','HitTestInvisible')
+            brush=unreal.WidgetBrushInfo(resource_path=icons[icon_id],image_size='(X=32,Y=32)')
+            require(W.set_brush(SELECTOR,image,'Brush',brush),f'Artwork {ident} icon {icon_id}')
+        elif W.widget_exists(SELECTOR,image):
+            property_(SELECTOR,image,'Visibility','Collapsed')
         property_(SELECTOR,button,'BackgroundColor',theme_color('Panel'))
     variable(SELECTOR,'Director',DIRECTOR)
     variable(SELECTOR,'SelectedMaterial','UMaterialInterface',catalog['artworks'][ids[0]]['Material'])
-    title,description=preview_copy(catalog['artworks'][ids[0]])
-    variable(SELECTOR,'SelectedTitle','FText',title)
-    variable(SELECTOR,'SelectedDescription','FText',description)
-    variable(SELECTOR,'GroundFrame','bool',catalog['templates'][catalog['artworks'][ids[0]]['TemplateId']]['CompositePreset']=='RegisteredSixRigidLayer3Mask')
+    initial=catalog['artworks'][ids[0]]
+    first_title,first_description=preview_copy(initial)
+    initial_ground_frame=catalog['templates'][initial['TemplateId']]['CompositePreset']=='RegisteredSixRigidLayer3Mask'
+    variable(SELECTOR,'SelectedTitle','FText',first_title)
+    variable(SELECTOR,'SelectedDescription','FText',first_description)
+    variable(SELECTOR,'GroundFrame','bool',initial_ground_frame)
     function(SELECTOR,'InitializeReview',[('ReviewDirector',DIRECTOR)])
-    function(SELECTOR,'SelectArtwork',[('Material','UMaterialInterface'),('Title','FText'),('Description','FText'),('UseGroundFrame','bool')])
+    function(SELECTOR,'SelectArtwork',[('Material','UMaterialInterface'),('Title','FText'),('Description','FText'),('UseGroundFrame','bool'),('TiltDegrees','float')])
     function(SELECTOR,'ApplyReviewFrame')
     for index in range(len(ids)):function(SELECTOR,f'Select{index}')
     compile_save(SELECTOR)
     g=Graph(SELECTOR,'InitializeReview',True)
     g.set('Director',g.arg('ReviewDirector'))
+    g.set('SelectedMaterial',initial['Material'])
+    g.set('SelectedTitle',g.call('KismetTextLibrary','Conv_StringToText',InString=first_title)['ReturnValue'])
+    g.set('SelectedDescription',g.call('KismetTextLibrary','Conv_StringToText',InString=first_description)['ReturnValue'])
+    g.set('GroundFrame',initial_ground_frame)
     # WidgetService.bind_event is a logging stub in this project's plugin.
     # Real multicast binding nodes are required; initialization runs once per widget.
     for index in range(len(ids)):bind(g,'Button','OnClicked',g.get(f'Artwork{index}'),f'Select{index}')
     g.invoke('ApplyReviewFrame');g.layout()
     g=Graph(SELECTOR,'SelectArtwork',True)
     for key,arg in [('SelectedMaterial','Material'),('SelectedTitle','Title'),('SelectedDescription','Description'),('GroundFrame','UseGroundFrame')]:g.set(key,g.arg(arg))
+    g.call('KismetSystemLibrary','SetDoublePropertyByName',Object=g.get('Director'),PropertyName='MaximumTilt',Value=g.arg('TiltDegrees'))
     g.method(DIRECTOR,'CleanupCards',g.get('Director'))
     g.method(DIRECTOR,'SetPhase',g.get('Director'),NewPhase=6)
     g.method(DIRECTOR,'StartPresentation',g.get('Director'))
     g.invoke('ApplyReviewFrame');g.layout()
-    g=Graph(SELECTOR,'ApplyReviewFrame',True)
-    card=member(g,DIRECTOR,'Card0',g.get('Director'))
-    g.branch(g.call('KismetSystemLibrary','IsValid',Object=card)['ReturnValue'])
-    g.method(CARD,'SetArtwork',card,FrontMaterial=g.get('SelectedMaterial'),TextMaterial=frame,HideDecorativeFrame=True)
-    g.branch(g.get('GroundFrame'))
-    pc=g.call('GameplayStatics','GetPlayerController',PlayerIndex=0)['ReturnValue']
-    made=g.call('WidgetBlueprintLibrary','Create',WidgetType=cls(FACE),OwningPlayer=pc)['ReturnValue']
-    face=g.cast(FACE,made)
-    g.method(FACE,'SetCopy',face,Title=g.get('SelectedTitle'),Description=g.get('SelectedDescription'))
-    text=member(g,CARD,'EditableText',card)
-    g.method('WidgetComponent','SetDrawSize',text,Size='(X=1280,Y=1556)')
-    g.method('SceneComponent','K2_SetRelativeLocation',text,NewLocation=g.vec(0,.8,0),bSweep=False,bTeleport=True)
-    g.method('SceneComponent','SetRelativeScale3D',text,NewScale3D=g.vec(48.617/1556,48.617/1556,48.617/1556))
-    # SetBlendMode is native-only. This reviewed component is resized above and
-    # made visible below, rebuilding its render state with the reflected enum.
-    g.call('KismetSystemLibrary','SetBytePropertyByName',Object=text,PropertyName='BlendMode',Value=2)
-    g.method('WidgetComponent','SetWidget',text,Widget=face)
-    g.method('SceneComponent','SetVisibility',text,bNewVisibility=True,bPropagateToChildren=False)
-    g.method('WidgetComponent','RequestRenderUpdate',text)
-    mesh=member(g,CARD,'CardFace',card)
-    g.method('SceneComponent','K2_SetRelativeLocation',mesh,NewLocation=g.vec(0,0,-5),bSweep=False,bTeleport=True)
-    g.method('SceneComponent','SetRelativeScale3D',mesh,NewScale3D=g.vec(1.35,1.35,1.35))
-    g.method('SceneComponent','SetVisibility',member(g,CARD,'CardText',card),bNewVisibility=False,bPropagateToChildren=False)
-    edge=member(g,CARD,'CardSolidEdge',card)
-    # Keep the review thickness within the same Ground cut-corner frame.
-    g.method('SceneComponent','SetRelativeScale3D',edge,NewScale3D=g.vec(.374,.012,.46))
-    g.layout()
+    write_apply_review_frame(frame)
     for index,ident in enumerate(ids):
         row=catalog['artworks'][ident];title,description=preview_copy(row)
         g=Graph(SELECTOR,f'Select{index}',True)
         title_pin=g.call('KismetTextLibrary','Conv_StringToText',InString=title)['ReturnValue']
         description_pin=g.call('KismetTextLibrary','Conv_StringToText',InString=description)['ReturnValue']
         g.invoke('SelectArtwork',Material=row['Material'],Title=title_pin,Description=description_pin,
-            UseGroundFrame=catalog['templates'][row['TemplateId']]['CompositePreset']=='RegisteredSixRigidLayer3Mask')
+            UseGroundFrame=catalog['templates'][row['TemplateId']]['CompositePreset']=='RegisteredSixRigidLayer3Mask',
+            TiltDegrees=review_tilt(catalog,ident))
         g.layout()
     unreal.EditorAssetLibrary.set_metadata_tag(blueprint,'GuLi.CardArtwork.ButtonCount',str(len(ids)))
-    return compile_save(SELECTOR)
+    result=compile_save(SELECTOR)
+    # Compilation can retain a prior generated-class default when a text field becomes empty.
+    defaults=unreal.get_default_object(blueprint.generated_class())
+    if str(defaults.get_editor_property('SelectedDescription'))!=first_description:
+        defaults.set_editor_property('SelectedDescription',first_description)
+        require(unreal.EditorAssetLibrary.save_loaded_asset(blueprint,False),'Save selector description')
+    return result
+
+
+def write_apply_review_frame(frame):
+    g=Graph(SELECTOR,'ApplyReviewFrame',True)
+    card=g.member(DIRECTOR,'Card0',g.get('Director'))
+    g.branch(g.call('KismetSystemLibrary','IsValid',Object=card)['ReturnValue'])
+    g.method(CARD,'SetArtwork',card,FrontMaterial=g.get('SelectedMaterial'),TextMaterial=frame,HideDecorativeFrame=True)
+    ground=g.branch(g.get('GroundFrame'))
+    g.tail=ground['else']
+    g.method(DIRECTOR,'SetPointerFrameFromCard',g.get('Director'))
+    g.tail=ground['then']
+    pc=g.call('GameplayStatics','GetPlayerController',PlayerIndex=0)['ReturnValue']
+    made=g.call('WidgetBlueprintLibrary','Create',WidgetType=cls(FACE),OwningPlayer=pc)['ReturnValue']
+    face=g.cast(FACE,made)
+    g.method(FACE,'SetCopy',face,Title=g.get('SelectedTitle'),Description=g.get('SelectedDescription'))
+    text=g.member(CARD,'EditableText',card)
+    g.method('WidgetComponent','SetDrawSize',text,Size='(X=1280,Y=1556)')
+    g.method('SceneComponent','K2_SetRelativeLocation',text,NewLocation=g.vec(0,.8,0),bSweep=False,bTeleport=True)
+    g.method('SceneComponent','SetRelativeScale3D',text,NewScale3D=g.vec(48.617/1556,48.617/1556,48.617/1556))
+    g.method(DIRECTOR,'SetPointerFrameFromCard',g.get('Director'),Card=card)
+    # SetBlendMode is native-only. This reviewed component is resized above and
+    # made visible below, rebuilding its render state with the reflected enum.
+    g.call('KismetSystemLibrary','SetBytePropertyByName',Object=text,PropertyName='BlendMode',Value=2)
+    g.method('WidgetComponent','SetWidget',text,Widget=face)
+    g.method('SceneComponent','SetVisibility',text,bNewVisibility=True,bPropagateToChildren=False)
+    g.method('WidgetComponent','RequestRenderUpdate',text)
+    mesh=g.member(CARD,'CardFace',card)
+    g.method('SceneComponent','K2_SetRelativeLocation',mesh,NewLocation=g.vec(0,0,-5),bSweep=False,bTeleport=True)
+    g.method('SceneComponent','SetRelativeScale3D',mesh,NewScale3D=g.vec(1.35,1.35,1.35))
+    g.method('SceneComponent','SetVisibility',g.member(CARD,'CardText',card),bNewVisibility=False,bPropagateToChildren=False)
+    edge=g.member(CARD,'CardSolidEdge',card)
+    # Keep the review thickness within the same Ground cut-corner frame.
+    g.method('SceneComponent','SetRelativeScale3D',edge,NewScale3D=g.vec(.374,.012,.46))
+    g.layout()
+
+
+def review_tilt(catalog,ident):
+    authored=catalog['parameters'][ident].get('Parallax Tilt Tangent')
+    return math.degrees(math.atan(authored['ScalarValue'])) if authored else 16.
+
+
+def review_instructions(ids):
+    return ('点击顶部图标选择牌面。鼠标在卡框内移动可查看视差，标题、插画和底栏均可响应。'
+            '单击翻面，再次单击退场，点击重播。已绑定卡的说明来自首次获取的源表文案，未绑定的牌面仅展示标题，不发奖励。\nArtworkIds='+','.join(map(str,ids)))
 
 
 def make_controller():
@@ -218,13 +292,13 @@ def make_controller():
     hud=g.cast(HUD,created);g.set('PresentationHUD',hud)
     g.method('UserWidget','AddToViewport',hud,ZOrder=0)
     title=g.call('KismetTextLibrary','Conv_StringToText',InString='游骑兵牌面评审')['ReturnValue']
-    g.method('TextBlock','SetText',member(g,HUD,'Title',hud),InText=title)
+    g.method('TextBlock','SetText',g.member(HUD,'Title',hud),InText=title)
     g.call('WidgetBlueprintLibrary','SetInputMode_GameAndUIEx',PlayerController=g.get('self'),InMouseLockMode='DoNotLock',bHideCursorDuringCapture=False,bFlushInput=True)
     g.call('WidgetBlueprintLibrary','SetFocusToGameViewport')
     sub=g.call('SubsystemBlueprintLibrary','GetLocalPlayerSubSystemFromPlayerController',PlayerController=g.get('self'),Class='/Script/EnhancedInput.EnhancedInputLocalPlayerSubsystem')['ReturnValue']
     enhanced=g.cast('EnhancedInputLocalPlayerSubsystem',sub)
     g.method('EnhancedInputLocalPlayerSubsystem','AddMappingContext',enhanced,MappingContext=IMC,Priority=0)
-    bind(g,'Button','OnClicked',member(g,HUD,'Replay',hud),'HandleReplay')
+    bind(g,'Button','OnClicked',g.member(HUD,'Replay',hud),'HandleReplay')
     bind(g,'ApplicationLifecycleComponent','ApplicationWillDeactivateDelegate',g.get('ApplicationLifecycle'),'WindowDeactivated')
     bind(g,'ApplicationLifecycleComponent','ApplicationHasReactivatedDelegate',g.get('ApplicationLifecycle'),'WindowReactivated')
     g.method(DIRECTOR,'Initialize',director,PlayerController=g.get('self'),HUD=hud)
@@ -250,19 +324,21 @@ def prepare(ids):
     _,catalog,_=pipeline.load_catalog();ids=pipeline.selected_ids(catalog,ids)
     dirty={p.get_name() for p in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()}
     assert not dirty.intersection({PC,GM,SELECTOR,FACE}), 'Preserve unsaved review assets'
-    report=pipeline.prepare_review(ids[0])
+    report=pipeline.prepare_review(ids[0],reload_saved=False)
     world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
     actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     director=next(a for a in actors.get_all_level_actors() if a.get_actor_label()==pipeline.REVIEW_ACTOR)
     frame=director.get_editor_property('CardTextMaterials')[0].get_path_name()
     report['face']=make_face();report['selector']=make_selector(ids,catalog,frame);report.update(make_controller())
-    director.set_editor_property('MaximumTilt',16.)
+    director.set_editor_property('MaximumTilt',review_tilt(catalog,ids[0]))
     director.set_editor_property('DirectSelection',False)
     world.get_world_settings().set_editor_property('default_game_mode',unreal.EditorAssetLibrary.load_blueprint_class(GM))
     note=next(a for a in actors.get_all_level_actors() if a.get_actor_label()=='CardArtwork_CatalogInstructions')
-    note.set_editor_property('text','牌面评审：Play后点击顶部按钮切换；鼠标压动，单击翻面，再次单击退场，点击重播。已绑定卡的说明来自首次获取的源表文案；未绑定的牌面仅展示标题，不发奖励。\nArtworkIds='+','.join(map(str,ids)))
+    note.set_editor_property('text',review_instructions(ids))
     unreal.EditorAssetLibrary.set_metadata_tag(world,'GuLi.CardArtwork.ReviewIds',json.dumps(ids))
     require(unreal.EditorLoadingAndSavingUtils.save_map(world,pipeline.REVIEW_MAP),'Save catalog review')
+    del world,director,note
+    gc.collect()
     level=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem);require(level.load_level(pipeline.REVIEW_MAP),'Reload catalog review')
     world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
     assert world.get_world_settings().get_editor_property('default_game_mode').get_path_name()==cls(GM)

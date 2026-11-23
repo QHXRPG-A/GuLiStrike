@@ -93,6 +93,13 @@ class Graph:
     def method(self, owner, name, target, **args):
         return self.call(owner, name, self=target, **args)
 
+    def member(self, owner, name, target):
+        if owner.startswith('/Game/'):
+            owner = unreal.load_asset(owner).generated_class().get_name()
+        node = Node(self, B.add_member_get_node(self.bp, self.name, owner, name, *self.pos()))
+        node.put('self', target)
+        return node[name]
+
     def cast(self, target_class, value):
         if target_class.startswith('/Game/'):
             target_class = unreal.load_asset(target_class).generated_class().get_name()

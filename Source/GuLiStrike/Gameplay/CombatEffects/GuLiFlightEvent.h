@@ -15,6 +15,7 @@ struct GULISTRIKE_API FGuLiFlightEvent
 	UPROPERTY() bool bBootstrap = false;
 	UPROPERTY() bool bHasMuzzle = false;
     UPROPERTY() bool bInstantGroundSegment=false;
+    UPROPERTY() int32 ArcVfxId=0;
     UPROPERTY() bool bFrozenGroundImpact=false;
     UPROPERTY() FVector_NetQuantize InstantEnd=FVector::ZeroVector;
 	UPROPERTY() int32 ImpactVfxId = 0;

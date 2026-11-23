@@ -38,7 +38,7 @@ double GuLiMechFire::RescaleCooldown(double Now, double NextShot, float OldRate,
 	return Now + FMath::Clamp((NextShot - Now) * OldRate, 0., 1.) / NewRate;
 }
 
-FGuLiAILockHexSide::FGuLiAILockHexSide(int32 Index, double Progress, double Release)
+FGuLiAILockHexSide::FGuLiAILockHexSide(int32 Index, double Progress, double LockedRadius, double Release)
 {
 	static constexpr int32 CloseOrder[] = {0, 2, 4, 1, 3, 5};
 	Angle = (Index - 1) * UE_DOUBLE_PI / 3.;
@@ -65,75 +65,16 @@ bool FGuLiAILockSight::IncludesTarget(const FGuLiTargetHandle& Candidate, const 
 	if (Candidate != Target || !Target.IsValid()) return false;
 	const FVector2D DesignCenter = ToCenter * (double(DesignRadius) / Radius);
 	for (int32 Side = 0; Side < 6; ++Side)
-		if (FGuLiAILockHexSide(Side, Progress).TouchesAperture(DesignCenter, DesignRadius)) return true;
+		if (FGuLiAILockHexSide(Side, Progress, HexRadius).TouchesAperture(DesignCenter, DesignRadius)) return true;
 	return false;
 }
 
-bool FGuLiAILockSight::PrefersCandidate(const FGuLiTargetHandle& Candidate, double ReticleDistanceSq,
-	const FGuLiTargetHandle& Best, double BestReticleDistanceSq) const
+void FGuLiAILockSight::UpdateAperture(const FSceneViewProjectionData& Projection)
 {
-	if (!Best.IsValid() || Candidate == Target) return true;
-	if (Best == Target) return false;
-	return ReticleDistanceSq < BestReticleDistanceSq || (ReticleDistanceSq == BestReticleDistanceSq
-		&& FGuLiWingmanTargetAcquisition::IsStableHandleLess(Candidate, Best));
-}
-
-void FGuLiAILockSight::HoldOnShot(double ShotAt)
-{
-	// A delayed cue from the previous burst cannot re-arm the aperture after a return.
-	if (!bProjected || IsLocked() || Motion == EMotion::Held || ShotAt < FollowResumesAt) return;
-	OffsetInRadii = FVector2D::ZeroVector;
-	Motion = EMotion::Held;
-}
-
-void FGuLiAILockSight::UpdateAperture(const FSceneViewProjectionData& Projection, double Now)
-{
-	const FIntRect& ViewRect = Projection.GetConstrainedViewRect();
-	const FVector2D Reticle = FVector2D(ViewRect.Size()) * 0.5;
-	Radius = DesignRadius * FMath::Min(ViewRect.Width() / 1920.f, ViewRect.Height() / 1080.f);
-	bProjected = true;
-	Center = Reticle;
-	if (IsLocked())
-	{
-		Motion = EMotion::Following;
-		FollowResumesAt = Now;
-	}
-	if (Motion != EMotion::Held)
-	{
-		// Use the optical center of this frame. Screen-pixel deprojection truncates half pixels in odd-sized viewports.
-		const FMatrix& Lens = Projection.ProjectionMatrix;
-		const FVector CenterRay(-Lens.M[2][0] / Lens.M[0][0], -Lens.M[2][1] / Lens.M[1][1], 1.);
-		ApertureDirection = FVector(Projection.ViewRotationMatrix.GetTransposed().TransformVector(CenterRay)).GetSafeNormal();
-	}
-	if (Motion == EMotion::Following) return;
-
-	if (Motion == EMotion::Held)
-	{
-		// Project a direction using camera rotation only, so strafing cannot drag the ring.
-		const FVector ViewDirection(Projection.ViewRotationMatrix.TransformVector(ApertureDirection));
-		FVector2D Pixel;
-		if (FSceneView::ProjectWorldToScreen(ViewDirection, ViewRect, Projection.ProjectionMatrix, Pixel) && !Pixel.ContainsNaN())
-		{
-			OffsetInRadii = (Pixel - FVector2D(ViewRect.Min) - Reticle) / Radius;
-			if (OffsetInRadii.SizeSquared() < FMath::Square(RecenterRadiusRatio))
-			{
-				Center += OffsetInRadii * Radius;
-				return;
-			}
-			OffsetInRadii = OffsetInRadii.GetSafeNormal() * RecenterRadiusRatio;
-		}
-		// A turn past the camera plane returns from the last visible offset.
-		Motion = EMotion::Recentering;
-		FollowResumesAt = Now + RecenterSeconds;
-	}
-
-	if (Now >= FollowResumesAt)
-	{
-		Motion = EMotion::Following;
-		return;
-	}
-	const double Remaining = FMath::SmoothStep(0.0, RecenterSeconds, FollowResumesAt - Now);
-	Center += OffsetInRadii * (Radius * Remaining);
+    const auto& rect=Projection.GetConstrainedViewRect();
+    Center=FVector2D(rect.Size())*.5;
+    Radius=DesignRadius*FMath::Min(rect.Width()/1920.f,rect.Height()/1080.f);
+    bProjected=Radius>0;
 }
 
 UGuLiGroundMechWeaponComponent::UGuLiGroundMechWeaponComponent()
@@ -341,6 +282,17 @@ void UGuLiGroundMechWeaponComponent::ResetAimAssistSources()
 	AimMatchEpoch = 0; bAimSourcesInitialized = false;
 }
 
+bool UGuLiGroundMechWeaponComponent::InManualSplitSight(const FGuLiGroundLockInput& view,const FVector& point) const
+{
+    if(view.Focal.X<=0 || view.Focal.Y>=0)return false;
+    const FVector up=FVector::CrossProduct(view.Forward,view.Right);
+    const FVector axis=(view.Forward-view.Right*(view.Offset.X/view.Focal.X)-up*(view.Offset.Y/view.Focal.Y)).GetSafeNormal();
+    const FVector relative=point-view.Origin;
+    const double depth=FVector::DotProduct(relative,axis);
+    const double radius=FMath::Max(ActiveSkill.SweepRadius,ActiveSkill.AimAssistEnabled?ActiveSkill.AimAssistRadiusCentimeters:0.f);
+    return depth>0 && (relative-axis*depth).SizeSquared()<=FMath::Square(radius);
+}
+
 bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 {
 	const auto* Mech = Cast<AGuLiGroundMechCharacter>(GetOwner());
@@ -352,7 +304,7 @@ bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 	}
 	// Excel's weapon skill row is the only tuning source. The raw sky/raycast point is the fallback.
 	const bool Assist=ActiveSkill.AimAssistEnabled && ActiveSkill.AimAssistRadiusCentimeters>0;
-	if (!HasAIEngine() && !Assist)
+	if (!UsesTargetLocks() && !Assist)
 	{
 		ResetAimAssistSources();
 		return true;
@@ -389,9 +341,15 @@ bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 	const double Now = UGuLiHybridActorComponent::BattleSeconds(GetOwner());
 	if (HasAIEngine())
 	{
-		// Use this frame's closure for both the drawn sides and the retention test.
-		AILockSight.Progress = AILockSight.Target.IsValid() ? FMath::Clamp(float((Now - LockStarted) / AILockRank.Seconds), 0.f, 1.f) : 0.f;
-		AILockSight.UpdateAperture(Projection, FPlatformTime::Seconds());
+        AILockSight.DesignRadius=AILockRank.AperturePixels;
+        AILockSight.HexRadius=AILockRank.HexPixels;
+        AILockSight.UpdateAperture(Projection);
+        for(auto& sight:LocalLocks)
+        {
+            sight.Center=AILockSight.Center; sight.Radius=AILockSight.Radius;
+            sight.DesignRadius=AILockSight.DesignRadius; sight.HexRadius=AILockSight.HexRadius;
+            sight.Progress=FMath::Clamp(float((Now-sight.Started)/AILockRank.Seconds),0.f,1.f);
+        }
 	}
 	// Projection view axes are X=right, Y=up, Z=forward; do not use the mech's ControlRotation.
 	const FMatrix ViewToWorld = Projection.ViewRotationMatrix.InverseFast();
@@ -400,15 +358,20 @@ bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 	const FVector CameraOrigin = Projection.ViewOrigin;
 	const FVector Muzzle = Gun()->GetSocketLocation(MuzzleSocket(NextFireSide));
 	const double Range = FMath::Min(static_cast<double>(ActiveSkill.ProjectileSpeed) * ActiveSkill.ProjectileLifetime, 599999.0);
+    FGuLiGroundLockInput view;
+    view.Origin=CameraOrigin; view.Forward=CameraForward; view.Right=CameraRight;
+    const double designScale=HasAIEngine() && AILockSight.Radius>0 ? AILockSight.DesignRadius/AILockSight.Radius : 1.;
+    const FVector2D half=FVector2D(ViewRect.Size())*(.5*designScale);
+    const auto& lens=Projection.ProjectionMatrix;
+    view.Focal={half.X*lens.M[0][0],-half.Y*lens.M[1][1]};
+    view.Offset={half.X*lens.M[2][0],-half.Y*lens.M[2][1]};
 	const EGuLiTeam OwnTeam = Mech->GetPlayerState<AGuLiBattlePlayerState>()->GetTeam();
 	TSet<FGuLiTargetHandle> SeenTargets;
 	FGuLiTargetHandle BestTarget;
 	double BestDistanceSquared = TNumericLimits<double>::Max();
 	double BestDepth = TNumericLimits<double>::Max();
-	FGuLiTargetHandle Candidate;
-	FVector CandidateWorld=FVector::ZeroVector;
-	FVector2D CandidateScreen=FVector2D::ZeroVector;
-	double CandidateDistanceSquared=TNumericLimits<double>::Max();
+    struct FCandidate { FGuLiTargetHandle Target; FVector Point; FVector2D Screen; double Distance; bool Retained; };
+    TArray<FCandidate> candidates;
 	auto Consider = [&](const FGuLiTargetHandle& Target, EGuLiTeam Team, const FVector& Point, AActor* CollisionActor)
 	{
 		if (!Target.IsValid() || SeenTargets.Contains(Target) || Team == OwnTeam
@@ -422,24 +385,26 @@ bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 		if (!FSceneView::ProjectWorldToScreen(Point, ViewRect, ViewProjection, Screen) || Screen.ContainsNaN()) return;
 		const FVector2D PlayerPixel = Screen - ViewMin;
 		// The release animation starts at the departing target's current position, even outside the aperture.
-		if (Target == AILockSight.Target) AILockSight.TargetPoint = PlayerPixel;
+
 		if (!InView(Screen)) return;
 		const double DistanceSquared = FVector2D::DistSquared(Mouse, Screen);
 		const bool BetterAssist=Assist && FSceneView::ProjectWorldToScreen(Point+CameraRight*ActiveSkill.AimAssistRadiusCentimeters,ViewRect,ViewProjection,Edge)
 			&& !Edge.ContainsNaN() && DistanceSquared<=FVector2D::DistSquared(Edge,Screen)
 			&& (!BestTarget.IsValid() || DistanceSquared<BestDistanceSquared || (DistanceSquared==BestDistanceSquared
 				&& (Depth<BestDepth || (Depth==BestDepth && FGuLiWingmanTargetAcquisition::IsStableHandleLess(Target,BestTarget)))));
-		const bool InScope=AILockSight.IncludesTarget(Target, PlayerPixel)
-			&& FVector::DistSquared(Mech->GetActorLocation(),Point)<=FMath::Square(double(AILockRank.RangeCm));
-		const bool BetterLock=InScope && AILockSight.PrefersCandidate(Target, DistanceSquared, Candidate, CandidateDistanceSquared);
-		if(!BetterAssist && !BetterLock)return;
+        const auto* prior=LocalLocks.FindByPredicate([&](const auto& slot){return slot.Target==Target;});
+        const bool canLock=HasAIEngine()
+            ? (prior?*prior:AILockSight).IncludesTarget(prior?Target:FGuLiTargetHandle{},PlayerPixel)
+                && FVector::DistSquared(Mech->GetActorLocation(),Point)<=FMath::Square(double(AILockRank.RangeCm))
+            : MaxLockTargets>1 && InManualSplitSight(view,Point);
+        if(!BetterAssist && !canLock)return;
 		FCollisionQueryParams Query(SCENE_QUERY_STAT(GroundMechAimAssist), true, GetOwner());
 		if (CollisionActor) Query.AddIgnoredActor(CollisionActor);
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, CameraOrigin, Point, ECC_Visibility, Query)
 			|| GetWorld()->LineTraceSingleByChannel(Hit, Muzzle, Point, ECC_Visibility, Query)) return;
 		if(BetterAssist){BestTarget=Target; BestDistanceSquared=DistanceSquared; BestDepth=Depth; OutPoint=Point;}
-		if(BetterLock){Candidate=Target; CandidateDistanceSquared=DistanceSquared; CandidateWorld=Point; CandidateScreen=PlayerPixel;}
+		if(canLock)candidates.Add({Target,Point,PlayerPixel,DistanceSquared,prior!=nullptr});
 	};
 
 	// Reliable health/identity and accepted poses remain the target truth on both listen and remote clients.
@@ -490,25 +455,42 @@ bool UGuLiGroundMechWeaponComponent::ResolveLocalWeaponAim(FVector& OutPoint)
 				Pose.Transform.GetLocation(), Wingmen->FindPresentedPawn(Pose.Wingman));
 		}
 	}
-	if (!Candidate.IsValid() || Candidate != AILockSight.Target || Now < LockStarted)
-	{
-		LockStarted = Now;
-		AILockSight.Progress = 0.f;
-	}
-	AILockSight.Target=Candidate;
-	if(Candidate.IsValid())
-	{
-		AILockSight.TargetPoint=CandidateScreen;
-		AILockSight.DistanceMeters=FVector::Distance(Mech->GetActorLocation(),CandidateWorld)*.01;
-	}
-	if(AILockSight.IsLocked())OutPoint=CandidateWorld;
+    if(!UsesTargetLocks())return true;
+    candidates.Sort([](const FCandidate& a,const FCandidate& b)
+    {
+        if(a.Retained!=b.Retained)return a.Retained;
+        if(a.Distance!=b.Distance)return a.Distance<b.Distance;
+        return FGuLiWingmanTargetAcquisition::IsStableHandleLess(a.Target,b.Target);
+    });
+    auto old=MoveTemp(LocalLocks); LocalLocks.Reset(); LocalLockInput=MoveTemp(view);
+    AILockSight.Target={}; AILockSight.Progress=0;
+    auto* hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    for(const auto& candidate:candidates)
+    {
+        if(LocalLocks.Num()>=MaxLockTargets)break;
+        FGuLiHybridObjectKey key;
+        if(!hybrid || !hybrid->ResolveTarget(candidate.Target,key))continue;
+        const auto* prior=old.FindByPredicate([&](const auto& s){return s.Target==candidate.Target;});
+        auto& slot=LocalLocks.Add_GetRef(prior?*prior:AILockSight);
+        if(!prior){slot.Started=Now;slot.Progress=0;}
+        if(!HasAIEngine())slot.Progress=1;
+        slot.Target=candidate.Target; slot.TargetPoint=candidate.Screen; slot.WorldPoint=candidate.Point;
+        slot.DistanceMeters=FVector::Distance(Mech->GetActorLocation(),candidate.Point)*.01;
+        LocalLockInput.Candidates.Add(key);
+    }
+    if(!LocalLocks.IsEmpty())
+    {
+        const auto* ready=LocalLocks.FindByPredicate([](const auto& s){return s.IsLocked();});
+        AILockSight=ready?*ready:LocalLocks[0];
+        if(HasAIEngine() && ready)OutPoint=ready->WorldPoint;
+    }
 	return true;
 }
 
 void UGuLiGroundMechWeaponComponent::ClearAILock()
 {
 	AILockSight={};
-	LockStarted=0;
+    LocalLocks.Reset(); LocalLockInput={};
 }
 
 void UGuLiGroundMechWeaponComponent::SetFireHeld(bool bHeld)
@@ -519,7 +501,7 @@ void UGuLiGroundMechWeaponComponent::SetFireHeld(bool bHeld)
 		const bool bForward=Mech->HybridInput.WeaponAimMode==EGuLiGroundWeaponAimMode::Forward;
 		if (bHeld && !bForward && ResolveLocalWeaponAim(Point)) { Mech->HybridInput.Aim=Point; Mech->HybridInput.bHasAim=true; }
 		if (bForward) ResetAimAssistSources();
-		Mech->HybridInput.bFire=bHeld && CanControl(true) && (bForward || Mech->HybridInput.bHasAim);
+		Mech->HybridInput.bFire=!HasAIEngine() && bHeld && CanControl(true) && (bForward || Mech->HybridInput.bHasAim);
 	}
 }
 
@@ -566,21 +548,78 @@ void UGuLiGroundMechWeaponComponent::RefreshRogueBuild(FGuid Player,int64)
     FGuLiGroundAttackSnapshot S;
     if(const auto* Identity=UGuLiHybridActorComponent::Find(GetOwner()))
     {S.Player=Identity->GetState().Controller;if(Player.IsValid()&&Player!=S.Player)return;TMap<FString,int32> Counts;if(!GuLiGroundRogue::ReadBuild(*GetWorld(),S.Player,Counts,S.Revision,&S.Effects))return;}
-    const float Rate=ActiveUpgrade.FireRate*GuLiNet::Effects::FireRateMultiplier(S.Effects);
-    if(!FMath::IsFinite(Rate)||Rate<=0||Rate>GuLiNet::Effects::MaximumGroundFireRate)return;
-    const bool Enhanced=GuLiNet::Effects::HasEnhancedBullet(S.Effects);
-    S.Damage=ActiveUpgrade.Damage*(Enhanced?GuLiNet::Effects::GetBulletRank(S.Effects).DamageMultiplier:ActiveSkill.InitialBulletDamageRatio);
-    S.BulletVfxId=Enhanced?ActiveSkill.BulletVfxId:ActiveSkill.InitialBulletVfxId;S.MuzzleVfxId=ActiveSkill.MuzzleVfxId;S.ImpactVfxId=ActiveSkill.ImpactVfxId;
-    uint32 Bullet=uint32(S.BulletVfxId),Impact=uint32(S.ImpactVfxId),Muzzle=uint32(S.MuzzleVfxId);
-    GuLiNet::Effects::FreezePresentation(S.Effects,Bullet,Impact,Muzzle);S.BulletVfxId=int32(Bullet);S.ImpactVfxId=int32(Impact);S.MuzzleVfxId=int32(Muzzle);
+    const GuLiNet::Effects::GroundWeaponBase base{ActiveUpgrade.Damage,ActiveUpgrade.FireRate,ActiveSkill.InitialBulletDamageRatio,
+        uint32(ActiveSkill.BulletVfxId),uint32(ActiveSkill.InitialBulletVfxId),uint32(ActiveSkill.ImpactVfxId),uint32(ActiveSkill.MuzzleVfxId)};
+    GuLiNet::Effects::GroundShotStats shot;
+    if(!GuLiNet::Effects::ResolveGroundShot(base,S.Effects,shot) || !GuLiNet::Effects::ResolveHitProperties(S.Effects,S.Hit))return;
+    const float Rate=shot.FireRate;
+    S.Damage=shot.Damage; S.BulletVfxId=int32(shot.BulletVfx);
+    S.ImpactVfxId=int32(shot.ImpactVfx); S.MuzzleVfxId=int32(shot.MuzzleVfx);
     if(EffectiveFireRate>0&&EffectiveFireRate!=Rate)NextShotTime=GuLiMechFire::RescaleCooldown(UGuLiHybridActorComponent::BattleSeconds(GetOwner()),NextShotTime,EffectiveFireRate,Rate);
     S.FireRate=Rate;EffectiveFireRate=Rate;CachedAttack=MoveTemp(S);
+    const bool wasAutomatic=HasAIEngine();
     AILockRank=GuLiNet::Effects::GetAILockRank(CachedAttack.Effects);
-    if(!HasAIEngine())ClearAILock();
+    MaxLockTargets=int32(GuLiNet::Effects::LockCapacity(CachedAttack.Effects));
+    if(wasAutomatic!=HasAIEngine() || !UsesTargetLocks()){ClearAILock();AuthorityLockStarts.Reset();}
     if(auto* Anim=Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance()))Anim->SetFireAnimationRate(Rate);
     if(UGuLiNetworkSettings::CanPresent(GetWorld()))
     {const auto Extra=GuLiNet::Effects::GetExplosive(CachedAttack.Effects);if(Extra.Interval()){GuLiVfx::Load<UNiagaraSystem>(this,int32(Extra.BulletVfx));GuLiVfx::Load<UNiagaraSystem>(this,int32(Extra.ImpactVfx));}}
 }
+bool UGuLiGroundMechWeaponComponent::CheckAuthorityTarget(const FGuLiHybridObjectKey& key,uint8 side,
+    double progress,bool retain,FVector& point) const
+{
+    const auto* mech=CastChecked<AGuLiGroundMechCharacter>(GetOwner());
+    const auto& view=mech->GetHybridSimulationInput().Lock;
+    const auto* identity=UGuLiHybridActorComponent::Find(mech);
+    auto* hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+    auto* ledger=GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>();
+    FGuLiTargetHandle target;
+    FGuLiCombatTargetSnapshot body;
+    if(!identity || !hybrid || !ledger || !hybrid->ResolveObjectTarget(key,target) ||
+       !ledger->TryGetTargetSnapshot(target,body) || !body.bAlive || body.Team==EGuLiTeam::Unassigned ||
+       body.Team==identity->GetState().Team)return false;
+    point=body.GetHitCenter();
+    const FVector relative=point-view.Origin;
+    const double depth=FVector::DotProduct(relative,view.Forward);
+    if(depth<=0)return false;
+    if(HasAIEngine())
+    {
+        if(FVector::DistSquared(mech->GetActorLocation(),point)>FMath::Square(double(AILockRank.RangeCm)))return false;
+        const FVector up=FVector::CrossProduct(view.Forward,view.Right);
+        const FVector2D pixel=view.Offset+FVector2D(FVector::DotProduct(relative,view.Right)*view.Focal.X/depth,
+                                                    FVector::DotProduct(relative,up)*view.Focal.Y/depth);
+        FGuLiAILockSight sight;
+        sight.bProjected=true; sight.DesignRadius=sight.Radius=AILockRank.AperturePixels;
+        sight.HexRadius=AILockRank.HexPixels; sight.Progress=progress;
+        if(retain)sight.Target=target;
+        if(!sight.IncludesTarget(target,pixel))return false;
+    }
+    else if(!InManualSplitSight(view,point) || FVector::DistSquared(Gun()->GetSocketLocation(MuzzleSocket(side)),point)
+            >FMath::Square(double(ActiveSkill.ProjectileSpeed)*ActiveSkill.ProjectileLifetime))return false;
+    FCollisionQueryParams query(SCENE_QUERY_STAT(GroundAILock),true,mech);
+    if(body.CollisionActor.IsValid())query.AddIgnoredActor(body.CollisionActor.Get());
+    return !GetWorld()->LineTraceTestByChannel(view.Origin,point,ECC_Visibility,query) &&
+           !GetWorld()->LineTraceTestByChannel(Gun()->GetSocketLocation(MuzzleSocket(side)),point,ECC_Visibility,query);
+}
+void UGuLiGroundMechWeaponComponent::UpdateAuthorityLocks(bool mayAim)
+{
+    if(!mayAim || !UsesTargetLocks() || !CanControl(false)){AuthorityLockStarts.Reset();return;}
+    const auto& candidates=CastChecked<AGuLiGroundMechCharacter>(GetOwner())->GetHybridSimulationInput().Lock.Candidates;
+    const double now=UGuLiHybridActorComponent::BattleSeconds(GetOwner());
+    TMap<FGuLiHybridObjectKey,double> next;
+    for(const auto& key:candidates)
+    {
+        if(next.Num()>=MaxLockTargets)break;
+        const double* old=AuthorityLockStarts.Find(key);
+        const double start=old && *old<=now?*old:now;
+        FVector point;
+        const double progress=HasAIEngine()?FMath::Clamp((now-start)/AILockRank.Seconds,0.,1.):1.;
+        if(CheckAuthorityTarget(key,NextFireSide,progress,old!=nullptr,point))
+            next.Add(key,start);
+    }
+    AuthorityLockStarts=MoveTemp(next);
+}
+
 void UGuLiGroundMechWeaponComponent::QueueFireAnimationNotify(uint8 Side)
 {
     // Only an authoritative, positive-delta animation step may enqueue a shot.
@@ -619,11 +658,37 @@ void UGuLiGroundMechWeaponComponent::FireFromAnimation(uint8 MuzzleIndex,uint64 
     Launch.MaximumDistance=Launch.Speed*Launch.Lifetime;Launch.SweepRadius=ActiveSkill.SweepRadius;
     Launch.ServerTime=FireTime;Launch.FireNotifyTime=FireTime;Launch.FireOrdinal=Serial;Launch.GroundMuzzleIndex=MuzzleIndex;
     Launch.PlayerBulletVfxId=CachedAttack.BulletVfxId;Launch.GroundAttack=BuildAttackSnapshot();
-    // Exactly the Mass launch contract: local acceptance produces feedback now;
-    // registration, collision and settlement remain in the common projectile pool.
-    if(!Pool->Launch(Launch).IsValid())
-    {UE_LOG(LogTemp,Warning,TEXT("[GroundFire] launch-rejected shot=%s side=%u serial=%llu"),*Launch.Context.ShotId.ToString(EGuidFormats::Digits),uint32(MuzzleIndex),Serial);return;}
-    ++ShotsFired;PresentAnimationFire(Launch.Context.ShotId,float(FireTime),MuzzleIndex,Launch.GroundAttack.MuzzleVfxId);
+    const FGuid volley=Launch.Context.ShotId;
+    int32 rounds=0;
+    const auto& input=Mech->GetHybridSimulationInput().Lock;
+    for(const auto& key:input.Candidates)
+    {
+        if(rounds>=MaxLockTargets)break;
+        const double* start=AuthorityLockStarts.Find(key);
+        FVector point;
+        if(!start || FireTime-*start+UE_SMALL_NUMBER<AILockRank.Seconds ||
+           !CheckAuthorityTarget(key,MuzzleIndex,1,true,point))continue;
+        auto child=Launch;
+        child.Direction=(point-Launch.Position).GetSafeNormal();
+        if(child.Direction.IsNearlyZero())continue;
+        auto* hybrid=GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();
+        if(!hybrid || !hybrid->ResolveObjectTarget(key,child.Context.Target))continue;
+        if(rounds>0)
+        {
+            const FString suffix=FString::Printf(TEXT("/target/%u/%s/%u"),uint32(key.Kind),*key.StableId.ToString(EGuidFormats::Digits),key.LifeGeneration);
+            child.Context.ShotId=FGuLiHybridManifest::MakeStableKey(TEXT("/Game/GuLiStrike/GroundMech"),EGuLiHybridObjectKind::Flight,StableShot+suffix).StableId;
+            child.Context.RootEventId=child.Context.ShotId;
+            child.bSecondaryBarrelRound=true;
+        }
+        if(child.GroundAttack.Hit.Instant)child.MaximumDistance=FVector::Dist(Launch.Position,point);
+        if(Pool->Launch(child).IsValid())++rounds;
+    }
+    if(!rounds && !HasAIEngine() && Pool->Launch(Launch).IsValid())++rounds;
+    if(rounds)
+    {
+        ++ShotsFired;
+        PresentAnimationFire(volley,float(FireTime),MuzzleIndex,Launch.GroundAttack.MuzzleVfxId);
+    }
 }
 
 void UGuLiGroundMechWeaponComponent::PresentAnimationFire(FGuid ShotId,float ShotTime,uint8 MuzzleIndex,int32 FrozenMuzzleVfxId)
@@ -633,7 +698,7 @@ void UGuLiGroundMechWeaponComponent::PresentAnimationFire(FGuid ShotId,float Sho
 	SeenShots.Add(ShotId);
 	const double Clock=UGuLiHybridActorComponent::BattleSeconds(GetOwner());
     const float Age = FMath::Max(0.f,float(Clock-ShotTime));
-	AILockSight.HoldOnShot(FPlatformTime::Seconds() - Age);
+
 	// The source barrel clip is longer than the recoil flash. Late accepted cues still seek
 	// the independent barrel player, but never replay an expired muzzle flash.
 	if (auto* BodyAnim = Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance())) BodyAnim->TriggerIntegratedRecoil(Age,MuzzleIndex);
@@ -678,7 +743,16 @@ void UGuLiGroundMechWeaponComponent::TickComponent(float DeltaSeconds, ELevelTic
 void UGuLiGroundMechWeaponComponent::AdvanceHybrid(float DeltaSeconds,bool bFire,const FVector& Aim,bool bAim)
 {
 	if (!UGuLiHybridActorComponent::HasSimulation(GetOwner()) || !bConfigured) return;
-	RegisterSource(); bHasAim=bAim && AcceptAim(Aim); bFireHeld=bFire && bHasAim && CanControl(false);
+	RegisterSource(); bHasAim=bAim && AcceptAim(Aim);
+    bool wantsFire=bFire;
+    if(HasAIEngine())
+    {
+        wantsFire=false;
+        const double now=UGuLiHybridActorComponent::BattleSeconds(GetOwner());
+        for(const auto& lock:AuthorityLockStarts)
+            if(now-lock.Value+UE_SMALL_NUMBER>=AILockRank.Seconds){wantsFire=true;break;}
+    }
+    bFireHeld=wantsFire && bHasAim && CanControl(false);
     AlignGun();
     auto* Anim=Cast<UGuLiGroundMechAnimInstance>(Gun()->GetAnimInstance());if(!Anim)return;
     bAcceptingFireNotifies=bFireHeld && EffectiveFireRate>0 && CachedAttack.Damage>0;

@@ -11,12 +11,21 @@ bool FGuLiFlightEvent::Serialize(FArchive& Ar)
 	Ar.SerializeBits(&bBootstrap, 1);
 	Ar.SerializeBits(&bHasMuzzle, 1);
     Ar.SerializeBits(&bInstantGroundSegment,1);
-    Ar.SerializeBits(&bFrozenGroundImpact,1);
+    bool frozenOrArc=bInstantGroundSegment?ArcVfxId>0:bFrozenGroundImpact;
+    Ar.SerializeBits(&frozenOrArc,1);
+    if(Ar.IsLoading()){bFrozenGroundImpact=!bInstantGroundSegment && frozenOrArc;ArcVfxId=0;}
     if(bInstantGroundSegment)
     {
         InstantEnd.NetSerialize(Ar,nullptr,Success);
         uint32 Vfx=uint32(ImpactVfxId);Ar.SerializeIntPacked(Vfx);if(Ar.IsLoading())ImpactVfxId=int32(Vfx);
-        if(!Success||Vfx>MAX_int32||bHasMuzzle||State.Kind!=EGuLiCombatEffectKind::LinearProjectile||State.Phase!=EGuLiCombatEffectPhase::Active||State.Source.Kind!=EGuLiTargetKind::GroundActor||InstantEnd.ContainsNaN())Ar.SetError();
+        if(frozenOrArc)
+        {
+            uint32 arc=uint32(ArcVfxId);
+            Ar.SerializeIntPacked(arc);
+            if(!arc || arc>MAX_int32)Ar.SetError();
+            if(Ar.IsLoading())ArcVfxId=int32(arc);
+        }
+        if(!Success||Vfx>MAX_int32||State.Kind!=EGuLiCombatEffectKind::LinearProjectile||State.Phase!=EGuLiCombatEffectPhase::Active||State.Source.Kind!=EGuLiTargetKind::GroundActor||InstantEnd.ContainsNaN())Ar.SetError();
     }
 	if (bHasMuzzle)
 	{

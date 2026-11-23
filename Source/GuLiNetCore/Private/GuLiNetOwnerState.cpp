@@ -466,6 +466,9 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
         if (T.Grant.Faction == Source->Grant.Faction) return Reject(CommitStatus::FriendlyFire);
         if (T.Phased || RuleValue.Damage <= 0 || !std::isfinite(R.TargetX) || !std::isfinite(R.TargetY))
             return Reject(CommitStatus::InvalidRule);
+        float shieldMultiplier=1.f;
+        if(!ResolveShieldDamageMultiplier(*Source,R,shieldMultiplier))return Reject(CommitStatus::InvalidRule);
+        float barrierDamage=0;
         float Remaining = RuleValue.Damage;
         for (const auto& Key : IndexedSource().ShieldObjects)
         {
@@ -475,12 +478,14 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
                 || B.ShieldRadius <= 0 || !ValidHealth(B.Vitals) || B.Vitals.Dead
                 || !InShieldRadius(R.TargetX, R.TargetY, B.X, B.Y, B.ShieldRadius)) continue;
             auto& Shield=EditRecord(Key)->Vitals;
-            const float Amount = AbsorbShield(Shield, Remaining); Remaining -= Amount;
+            const float Amount = AbsorbShield(Shield, Remaining*shieldMultiplier);
+            Remaining=Amount>=Remaining*shieldMultiplier?0.f:std::max(0.f,Remaining-Amount/shieldMultiplier);
+            barrierDamage+=Amount;
             if (Amount > 0) Out.Barriers.emplace_back(Key, Shield);
         }
         DamageDelta Delta;
-        if (Remaining > 0 && !ApplyDamage(T.Vitals, Remaining, Delta)) return Reject(CommitStatus::InvalidRule);
-        Delta.Absorbed += RuleValue.Damage - Remaining; Out.Damage = Delta; Out.Vitals = T.Vitals;
+        if (Remaining > 0 && !ApplyDamage(T.Vitals, Remaining, Delta, shieldMultiplier)) return Reject(CommitStatus::InvalidRule);
+        Delta.Absorbed += barrierDamage; Out.Damage = Delta; Out.Vitals = T.Vitals;
         if (Delta.Killed)
         {
             T.Grant.State = Life::Dead; T.DiedAt = T.LogicalAge;

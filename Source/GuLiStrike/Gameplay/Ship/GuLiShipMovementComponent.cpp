@@ -311,6 +311,7 @@ void UGuLiShipMovementComponent::AdvanceHybridFlight(float DeltaSeconds,const FG
 	ActiveInput.LocalThrust=Input.Thrust; ActiveInput.Turn=Input.Turn; ActiveInput.Strafe=Input.Strafe; ActiveInput.bBoost=Input.bBoost;
 	ActiveInput.ConfigRevision=MovementSyncState.ConfigRevision; ActiveInput.BarrierGeneration=MovementSyncState.BarrierGeneration;
 	ActiveInput.bSimulationEnabled=IsMovementConfigReady(); bRunPhysicsWithNoController=true;
+	TGuardValue<float> speed(MaxFlySpeed,EffectiveConfig.MaxFlySpeed*UGuLiHybridActorComponent::MovementMultiplier(CharacterOwner));
 	PerformMovement(DeltaSeconds);
 }
 

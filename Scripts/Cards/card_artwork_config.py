@@ -1,10 +1,43 @@
 """Shared, scoped artwork configuration for the existing card-reveal flow."""
 import unreal
-from card_reveal_graph import B, Graph, Node, require, variable, compile_save
+from card_reveal_graph import B, Graph, Node, require, variable, function, compile_save
 
 ROOT='/Game/GuLiStrike/CardSystem/RevealDemo'
 CARD=ROOT+'/Blueprints/BP_ParallaxRevealCard'
 DIRECTOR=ROOT+'/Blueprints/BP_CardRevealDirector'
+
+
+def ensure_review_pointer_bounds():
+    for name in ('ReviewFrameCenter','ReviewFrameHalfExtent'):
+        if not B.variable_exists(DIRECTOR,name):
+            variable(DIRECTOR,name,'FVector',category='Card Artwork')
+
+
+def write_pointer_frame_function():
+    ensure_review_pointer_bounds()
+    name='SetPointerFrameFromCard'
+    if not B.function_exists(DIRECTOR,name):
+        function(DIRECTOR,name,[('Card',CARD)])
+    g=Graph(DIRECTOR,name,True)
+    card=g.arg('Card')
+    valid=g.branch(g.call('KismetSystemLibrary','IsValid',Object=card)['ReturnValue'])
+    g.tail=valid['else']
+    g.set('ReviewFrameCenter',g.vec())
+    g.set('ReviewFrameHalfExtent',g.vec())
+    g.tail=valid['then']
+    # Measure in the resting card's coordinates, below its moving hover and flip pivots.
+    text=g.member(CARD,'EditableText',card)
+    artwork_center=g.member(CARD,'ArtworkCenter',card)
+    rest=g.native('ComposeTransforms',A=g.method('SceneComponent','GetRelativeTransform',text)['ReturnValue'],
+                  B=g.method('SceneComponent','GetRelativeTransform',artwork_center)['ReturnValue'])
+    transform=g.call('KismetMathLibrary','BreakTransform',InTransform=rest)
+    scale=g.call('KismetMathLibrary','BreakVector',InVec=transform['Scale'])
+    size=g.call('KismetMathLibrary','BreakVector2D',InVec=g.method('WidgetComponent','GetDrawSize',text)['ReturnValue'])
+    pivot=g.call('KismetMathLibrary','BreakVector2D',InVec=g.method('WidgetComponent','GetPivot',text)['ReturnValue'])
+    midpoint=g.vec(0,size['X']*(pivot['X']-.5),size['Y']*(pivot['Y']-.5))
+    g.set('ReviewFrameCenter',g.native('TransformLocation',T=rest,Location=midpoint))
+    g.set('ReviewFrameHalfExtent',g.vec(size['X']*g.native('Abs',A=scale['Y'])*.5,0,size['Y']*g.native('Abs',A=scale['Z'])*.5))
+    g.layout()
 
 
 def ensure_artwork_variables():
@@ -48,6 +81,12 @@ def write_artwork_function():
 
 
 def write_start_function():
+    live_frame=(B.variable_exists(DIRECTOR,'DirectSelection') and B.variable_exists(DIRECTOR,'UseLiveCardData')
+                and B.component_exists(CARD,'EditableText'))
+    if live_frame and not B.function_exists(DIRECTOR,'SetPointerFrameFromCard'):
+        write_pointer_frame_function()
+        compiled=B.compile_blueprint(DIRECTOR)
+        require(compiled.success,str(list(compiled.errors)))
     g=Graph(DIRECTOR,'StartPresentation',True)
     def item(name,index):
         n=Node(g,B.create_node_by_key(DIRECTOR,g.name,'NODE K2Node_GetArrayItem',*g.pos()))
@@ -89,12 +128,24 @@ def write_start_function():
                 g.tail=seq['then_1']
             else:
                 g.method(CARD,'SetEditableText',actor,TextTable=g.get('CardTextDataTable'),CardId=item('CardTextRowNames',i))
+    if live_frame:
+        # All live Ground candidates use the same chrome. Measure once after SetLiveCardText
+        # has installed it and before slots can receive pointer input. Review binds its own frame.
+        seq=Node(g,B.create_node_by_key(DIRECTOR,g.name,'NODE K2Node_ExecutionSequence',*g.pos()))
+        seq.put('execute',g.tail)
+        g.tail=seq['then_0']
+        ground=g.branch(g.both(g.get('DirectSelection'),g.get('UseLiveCardData')))
+        g.invoke('SetPointerFrameFromCard',Card=g.get('Card0'))
+        g.tail=ground['else']
+        g.invoke('SetPointerFrameFromCard')
+        g.tail=seq['then_1']
     g.invoke('SetPhase',NewPhase=0)
     g.layout()
 
 
 def write_update_card_function():
     """Same reveal/hover contract, with one to three centered, hittable cards."""
+    ensure_review_pointer_bounds()
     g=Graph(DIRECTOR,'UpdateCard',True)
     phase=g.get('Phase'); t=g.get('PhaseTime')
     index=g.native('Conv_IntToDouble',InInt=g.arg('Index'))
@@ -113,10 +164,23 @@ def write_update_card_function():
         half_width=g.select(20.,16.0875,g.get('DirectSelection'))
     center=(index-(count-1)*.5)*spacing+.5
     vertical_offset=g.select(g.get('GroundFitHeight')*.035,0,g.get('DirectSelection')) if B.variable_exists(DIRECTOR,'DirectSelection') else 0
-    x=(g.get('MouseU')-center)/(g.get('CardScale')*half_width/g.get('ViewWidth'))
-    y=(g.get('MouseV')-g.math('Subtract',.5,vertical_offset))/(g.get('CardScale')*24.3085/g.get('ViewHeight'))
+    # The Ground frame sits slightly in front of and below the card pivot. Intersect
+    # the pointer with its resting plane so tilting the artwork cannot shrink its hit area.
+    extent=g.call('KismetMathLibrary','BreakVector',InVec=g.get('ReviewFrameHalfExtent'))
+    origin=g.call('KismetMathLibrary','BreakVector',InVec=g.get('ReviewFrameCenter'))
+    framed=g.compare('Greater',extent['X'],0)
+    half_width=g.select(extent['X'],half_width,framed)
+    half_height=g.select(extent['Z'],24.3085,framed)
+    scale_x=g.get('CardScale')/g.get('ViewWidth')
+    scale_y=g.get('CardScale')/g.get('ViewHeight')
+    plane_depth=g.math('Subtract',1,origin['Y']*g.get('CardScale')/g.native('FMax',A=g.get('CameraDistance'),B=.01))
+    u=(g.get('MouseU')-.5)*plane_depth
+    v=(g.get('MouseV')-.5)*plane_depth
+    x=(u-(center-.5)-origin['X']*scale_x)/(half_width*scale_x)
+    y=(v+vertical_offset+origin['Z']*scale_y)/(half_height*scale_y)
     permitted=g.either(g.compare('Equal',phase,1,'Int'),g.both(g.compare('Equal',phase,3,'Int'),selected))
-    hit=g.both(active,permitted,g.get('MouseValid'),g.compare('LessEqual',g.native('Abs',A=x),1),g.compare('LessEqual',g.native('Abs',A=y),1))
+    edge=g.select(1.00001,1,framed)  # Include the frame boundary after projection roundoff.
+    hit=g.both(active,permitted,g.get('MouseValid'),g.compare('LessEqual',g.native('Abs',A=x),edge),g.compare('LessEqual',g.native('Abs',A=y),edge))
     seq=Node(g,B.create_node_by_key(DIRECTOR,g.name,'NODE K2Node_ExecutionSequence',*g.pos()))
     seq.put('execute',g.tail); g.tail=seq['then_0']
     g.branch(hit); g.set('HoveredIndex',g.arg('Index')); g.tail=seq['then_1']
@@ -137,6 +201,28 @@ def write_update_card_function():
         # ApplyFrame writes the absolute relative transform each tick. This offset
         # therefore never accumulates; the same offset above defines the hit area.
         g.method('Actor','K2_AddActorWorldOffset',g.arg('Card'),DeltaLocation=g.vec(0,0,vertical_offset*g.get('ViewHeight')*flight),bSweep=False,bTeleport=True)
+    g.layout()
+
+
+def write_tick_function():
+    g=Graph(DIRECTOR,'TickPresentation',True)
+    g.branch(g.compare('Less',g.get('Phase'),6,'Int'))
+    g.set('PhaseTime',g.get('PhaseTime')+g.arg('DeltaSeconds'))
+    g.invoke('UpdatePointer')
+    for i in range(3):
+        g.invoke('UpdateCard',Card=g.get(f'Card{i}'),Index=i,DeltaSeconds=g.arg('DeltaSeconds'))
+    count=g.native('Conv_IntToDouble',InInt=g.get('ActiveCardCount')) if B.variable_exists(DIRECTOR,'ActiveCardCount') else 3
+    for phase,duration,following in [(0,g.get('EntryDuration')*count,1),(2,g.get('FlipDuration'),3),
+                                     (4,g.get('FlashDuration'),5),(5,g.get('ExitDuration'),6)]:
+        branch=g.branch(g.both(g.compare('Equal',g.get('Phase'),phase,'Int'),g.compare('GreaterEqual',g.get('PhaseTime'),duration)))
+        if following==6:
+            g.invoke('CleanupCards')
+        g.invoke('SetPhase',NewPhase=following)
+        if following==6:
+            finished=Node(g,B.add_call_delegate_node(DIRECTOR,g.name,'OnPresentationFinished',*g.pos()))
+            finished.put('execute',g.tail)
+            finished.put('SelectedIndex',g.get('SelectedIndex'))
+        g.tail=branch['else']
     g.layout()
 
 

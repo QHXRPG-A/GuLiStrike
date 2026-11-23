@@ -381,6 +381,7 @@ public:
     TSharedRef<FJsonObject> GetSimulationCensus() const;
     bool HasSimulation(const FGuLiHybridObjectKey& Key, bool bRetainedSource = false) const;
     bool HasControl(const FGuLiHybridObjectKey& Key) const;
+    float GetMovementMultiplier(const FGuLiHybridObjectKey& Key) const;
     uint64 GetObjectLogicalTick(const FGuLiHybridObjectKey& Key) const;
     bool RouteCommand(const FGuLiHybridCommand& Command);
     UFUNCTION(BlueprintCallable,Category="Hybrid|Ownership") void SetCommanderSelection(const TArray<FGuLiHybridObjectKey>& Objects);

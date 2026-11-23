@@ -38,6 +38,12 @@ bool UGuLiHybridActorComponent::HasSimulation(const AActor* Actor)
     if (!IsValid(Actor)) return false;
     const auto* Identity=Find(Actor); return Identity && Identity->CanSimulate();
 }
+float UGuLiHybridActorComponent::MovementMultiplier(const AActor* Actor)
+{
+    const auto* identity=Find(Actor);
+    const auto* hybrid=identity?identity->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
+    return hybrid?hybrid->GetMovementMultiplier(identity->GetObjectKey()):1.f;
+}
 double UGuLiHybridActorComponent::BattleSeconds(const AActor* Actor)
 {
     auto* World=IsValid(Actor)?Actor->GetWorld():nullptr;

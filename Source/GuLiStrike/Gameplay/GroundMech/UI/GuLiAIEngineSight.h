@@ -20,11 +20,17 @@ struct FGuLiAIEngineSight
 
 private:
     struct FImpulse { double At; float Kick,Jitter,Duration,Side; };
-    TArray<FImpulse,TInlineAllocator<8>> Impulses;
-    FVector2D Center{}, TargetPoint{};
-    FGuLiTargetHandle Target;
-    float Radius=0,Progress=0,NextSide=1;
-    int32 LastPercent=INDEX_NONE,LastMeters=INDEX_NONE;
-    FString PercentLabel,DistanceLabel;
-    double Entry=-1,Released=-1,Seated=-1;
+    struct FMarker
+    {
+        FVector2D TargetPoint{};
+        float Progress=0, NextSide=1;
+        int32 LastPercent=INDEX_NONE, LastMeters=INDEX_NONE;
+        FString PercentLabel,DistanceLabel;
+        double Released=-1,Seated=-1;
+        TArray<FImpulse,TInlineAllocator<8>> Impulses;
+    };
+    TMap<FGuLiTargetHandle,FMarker> Markers;
+    FVector2D Center{};
+    float Radius=0,DesignRadius=0,HexRadius=0;
+    double Entry=-1;
 };

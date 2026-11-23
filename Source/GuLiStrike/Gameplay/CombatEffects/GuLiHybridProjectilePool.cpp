@@ -76,6 +76,10 @@ struct FRecord
     FGuLiCombatEffectState Geometry,ExplosiveGeometry;
     FGuLiProjectilePoolHandle ExplosiveHandle;
     uint64 ExplosiveImpactAt=0;
+    // The muzzle sweep is sampled once when the animation fires. Admission and
+    // ownership transfer may run later, after the target or an obstacle moves.
+    FVector SegmentEnd=FVector::ZeroVector;
+    EGuLiCombatEffectEndReason SegmentReason=EGuLiCombatEffectEndReason::None;
     bool bAttackFrozen=false;
     bool bExplosiveFinished=false,bExplosiveLaunchPublished=false,bExplosiveTerminalPublished=false;
     EGuLiTeam Team=EGuLiTeam::Unassigned;
@@ -127,7 +131,7 @@ void SerializeEmitter(FGuLiHybridStateArchive& Archive, FGuLiWingmanHandle& Emit
     }
     FGuLiHybridReflectedState::Value(Archive, Emitter);
 }
-void Record(FGuLiHybridStateArchive& A,FRecord& V)
+void Record(FGuLiHybridStateArchive& A,FRecord& V,uint32 Schema=Version)
 {
     A.Value(V.Key); A.Value(V.Source); A.Value(V.Target); A.Value(V.HitTarget);
     A.Enum(V.Team,2); A.Enum(V.SourceKind,4); A.Value(V.Admission); A.Value(V.Retirement); A.Value(V.Damage); A.Value(V.HistoryGroup);
@@ -141,11 +145,23 @@ void Record(FGuLiHybridStateArchive& A,FRecord& V)
     A.Value(R.MaximumDistance); A.Value(R.SweepRadius); A.Value(R.ServerTime); A.Value(R.PlayerBulletVfxId); A.Value(R.bAcceptanceAdditional);
     A.Value(R.ScheduledActivationSeconds);
     A.Value(R.FireOrdinal);A.Value(R.FireNotifyTime);A.Value(R.GroundMuzzleIndex);A.Value(R.GroundOutward);A.Value(R.GroundOutwardLocal);
+    if(Schema>=11 && R.FireOrdinal)
+    {
+        A.Value(R.bSecondaryBarrelRound);
+        A.Enum(V.SegmentReason,6);
+        if(V.SegmentReason!=EGuLiCombatEffectEndReason::None)
+        {
+            A.Value(V.SegmentEnd);
+            if(V.SegmentEnd.ContainsNaN() ||
+               (V.SegmentReason==EGuLiCombatEffectEndReason::Impact)!=V.HitTarget.IsValid())A.Reject();
+        }
+    }
     A.Value(V.bAttackFrozen);
     auto& G=R.GroundAttack;A.Value(G.Player);A.Value(G.Revision);A.Value(G.Damage);A.Value(G.FireRate);A.Value(G.BulletVfxId);A.Value(G.ImpactVfxId);A.Value(G.MuzzleVfxId);
     A.Value(G.ExplosiveDamage);A.Value(G.ExplosiveRadius);A.Value(G.ExplosiveBulletVfxId);A.Value(G.ExplosiveImpactVfxId);
     TArray<uint8> Effects;if(!A.IsReading()){const auto EffectBytes=GuLiNet::Effects::Encode(G.Effects);Effects.Append(EffectBytes.data(),int32(EffectBytes.size()));}
     A.Bytes(Effects,GuLiNet::MaximumCapabilityBytes);if(A.IsReading()&&!GuLiNet::Effects::Decode({Effects.GetData(),SIZE_T(Effects.Num())},G.Effects))A.Reject();
+    if(A.IsReading() && !GuLiNet::Effects::ResolveHitProperties(G.Effects,G.Hit))A.Reject();
     A.Value(V.PlanEvent);A.Array(V.Plan,GuLiNet::MaximumCapabilityBytes,[](auto& A,uint8& B){A.Value(B);});
     A.Array(V.Hops,GuLiNet::GroundRogue::MaximumHops,[](auto& A,FHopStatus& H){A.Value(H.Target);A.Value(H.Position);A.Value(H.Event);A.Value(H.Submitted);A.Value(H.Resolved);A.Value(H.Published);A.Value(H.Notified);});
     A.Value(V.bPlanFrozen);A.Value(V.bPlanSubmitted);A.Value(V.bPlanResolved);A.Value(V.bFirstDamageCommitted);A.Value(V.bFirstHitNotified);
@@ -203,8 +219,8 @@ void Record(FGuLiHybridStateArchive& A,FRecord& V)
 void Piece(FGuLiHybridStateArchive& A,FPiece& V)
 {
     uint32 Ver=Version; A.Value(Ver); A.Value(V.Epoch); A.Value(V.At);
-    if (Ver!=Version || !V.Epoch || V.At<0) A.Reject();
-    A.Array(V.Records,MaximumRecords,[](auto& Ar,auto& R){Record(Ar,R);});
+    if ((Ver!=Version && Ver!=10) || !V.Epoch || V.At<0) A.Reject();
+    A.Array(V.Records,MaximumRecords,[Ver](auto& Ar,auto& R){Record(Ar,R,Ver);});
     A.Array(V.Histories,128,[](auto& Ar,auto& H)
     {
         Ar.Value(H.Group); Ar.Value(H.Domain); Ar.Value(H.Time);
@@ -318,24 +334,38 @@ struct FGuLiHybridProjectileState
         {Hybrid->Suspend(TEXT("Invalid Ground attack while freezing ricochet"));return;}
         V.bPlanFrozen=true;
         const auto Effect=GuLiNet::Effects::GetRicochet(Attack.Effects);if(!Effect.Maximum)return;
+        const bool instant=V.SegmentReason!=EGuLiCombatEffectEndReason::None;
+        if(instant)Pool->SnapshotGroundVolley(V.Recipe);
         GuLiNet::GroundRogue::Chain Plan;Plan.Frozen=Attack;Plan.First=GuLiNetBridge::ToCore(V.HitTarget);Plan.Shot=GuLiNetBridge::ToCore(V.Key.StableId);Plan.At=V.DamageAt;
         const FVector Origin=V.Geometry.Location;Plan.X=Origin.X;Plan.Y=Origin.Y;Plan.Z=Origin.Z;Plan.Budget=GuLiNet::GroundRogue::HopBudget(Plan.Shot,Effect);
         FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiGroundRicochet),false);
-        for(const auto& Snapshot:Pool->Snapshots)if(Snapshot.CollisionActor.IsValid())Params.AddIgnoredActor(Snapshot.CollisionActor.Get());
-        for(const auto& Source:Pool->SourceOnly)if(Source.CollisionActor.IsValid())Params.AddIgnoredActor(Source.CollisionActor.Get());
+        const auto& bodies=instant?Pool->VolleyBodies:Pool->Snapshots;
+        const auto& sources=instant?Pool->VolleySources:Pool->SourceOnly;
+        for(const auto& body:bodies)if(body.CollisionActor.IsValid())Params.AddIgnoredActor(body.CollisionActor.Get());
+        for(const auto& source:sources)if(source.CollisionActor.IsValid())Params.AddIgnoredActor(source.CollisionActor.Get());
         FCollisionObjectQueryParams Objects;Objects.AddObjectTypesToQuery(ECC_WorldStatic);Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
         TSet<FGuLiHybridObjectKey> Visited;Visited.Add(V.HitTarget);FVector Point=Origin;
         const auto Cell=[](const FVector& P){const double Size=UGuLiProjectilePoolSubsystem::SpatialCellCentimeters;return FIntVector(FMath::FloorToInt(P.X/Size),FMath::FloorToInt(P.Y/Size),FMath::FloorToInt(P.Z/Size));};
         // The search volume belongs to the first impact, never follows the chain.
         const auto Min=Cell(Origin-FVector(Effect.Range)),Max=Cell(Origin+FVector(Effect.Range));
         struct FCandidate {FGuLiHybridObjectKey Key;FVector Point;double Distance;};TArray<FCandidate> Eligible;TSet<int32> Seen;
-        for(int32 X=Min.X;X<=Max.X;++X)for(int32 Y=Min.Y;Y<=Max.Y;++Y)for(int32 Z=Min.Z;Z<=Max.Z;++Z)
-        if(const auto* Bucket=Pool->SpatialGrid.Find(FIntVector(X,Y,Z)))for(int32 Index:*Bucket)
+        auto consider=[&](const FGuLiCombatTargetSnapshot& body)
         {
-            if(Seen.Contains(Index))continue;Seen.Add(Index);const auto& S=Pool->Targets[Index].Snapshot;
-            if(!S.bAlive||S.Team==V.Team||S.Team==EGuLiTeam::Unassigned)continue;
-            const FVector Center=S.GetHitCenter();if(Center.ContainsNaN()||FVector::DistSquared(Origin,Center)>FMath::Square(double(Effect.Range)))continue;
-            FGuLiHybridObjectKey Key;if(!Hybrid->ResolveTarget(S.Handle,Key)||Visited.Contains(Key))continue;Eligible.Add({Key,Center,0});
+            if(!body.bAlive || body.Team==V.Team || body.Team==EGuLiTeam::Unassigned)return;
+            const FVector center=body.GetHitCenter();
+            if(center.ContainsNaN() || FVector::DistSquared(Origin,center)>FMath::Square(double(Effect.Range)))return;
+            FGuLiHybridObjectKey key;
+            if(Hybrid->ResolveTarget(body.Handle,key) && !Visited.Contains(key))Eligible.Add({key,center,0});
+        };
+        if(instant)
+        {
+            for(const auto& body:bodies)consider(body);
+        }
+        else
+        {
+            for(int32 X=Min.X;X<=Max.X;++X)for(int32 Y=Min.Y;Y<=Max.Y;++Y)for(int32 Z=Min.Z;Z<=Max.Z;++Z)
+                if(const auto* bucket=Pool->SpatialGrid.Find(FIntVector(X,Y,Z)))for(int32 index:*bucket)
+                    if(!Seen.Contains(index)){Seen.Add(index);consider(Pool->Targets[index].Snapshot);}
         }
         // One spatial query per frozen route; only order/visibility changes per hop.
         for(uint32 Hop=0;Hop<Plan.Budget;++Hop)
@@ -359,12 +389,13 @@ struct FGuLiHybridProjectileState
     }
     bool PublishRicochet(FRecord& V)
     {
+        const uint32 arc=V.Recipe.GroundAttack.Hit.ArcVfx;
         TArray<FGuLiFlightEvent> Events;TArray<int32> Indices;FVector Start=V.Geometry.Location;
         for(int32 I=0;I<V.Hops.Num();++I)
         {
             const auto& H=V.Hops[I];if(!H.Published)
             {
-                FGuLiFlightEvent E;E.bInstantGroundSegment=true;E.InstantEnd=H.Position;E.ImpactVfxId=V.Recipe.GroundAttack.ImpactVfxId;E.State=V.Geometry;
+                FGuLiFlightEvent E;E.bInstantGroundSegment=true;E.InstantEnd=H.Position;E.ArcVfxId=int32(arc);E.ImpactVfxId=arc?0:V.Recipe.GroundAttack.ImpactVfxId;E.State=V.Geometry;
                 auto& S=E.State;S.EffectId=H.Event;S.Sequence=1;S.Phase=EGuLiCombatEffectPhase::Active;S.EndReason=EGuLiCombatEffectEndReason::None;S.LaunchLocation=S.Location=Start;
                 S.LaunchDirection=(H.Position-Start).GetSafeNormal(UE_SMALL_NUMBER,FVector::ForwardVector);S.Motion.Speed=300000.f;S.Velocity=FVector(S.LaunchDirection)*S.Motion.Speed;
                 S.StartTime=S.SampleTime=S.ActivationTime=V.Geometry.SampleTime;S.EndTime=S.StartTime+.02f;Hybrid->ResolveObjectTarget(H.Target,S.Target);S.LastTargetLocation=H.Position;
@@ -529,6 +560,7 @@ struct FGuLiHybridProjectileState
         R.Context.ShotId=GuLiNetBridge::ToUE(GuLiNet::GroundRogue::BlastEvent(GuLiNetBridge::ToCore(V.Key.StableId)));
         R.Context.RootEventId=V.Key.StableId;R.Context.Damage=A.ExplosiveDamage;R.Context.Target={};
         R.Position+=R.GroundOutward*E.OutwardOffset;R.MuzzleOffset+=R.GroundOutwardLocal*E.OutwardOffset;
+        if(V.SegmentReason!=EGuLiCombatEffectEndReason::None)R.MaximumDistance=R.Speed*R.Lifetime;
         R.Speed*=E.SpeedMultiplier;R.Lifetime/=E.SpeedMultiplier;R.PlayerBulletVfxId=A.ExplosiveBulletVfxId;
         R.GroundAttack={};return R;
     }
@@ -619,7 +651,22 @@ struct FGuLiHybridProjectileState
             GuLiNet::GroundRogue::Attack A;if(!GuLiNet::GroundRogue::DecodeAttack({Frozen.Data.GetData(),SIZE_T(Frozen.Data.Num())},A)){Hybrid->Suspend(TEXT("Invalid admitted Ground attack"));return;}
             auto& G=V.Recipe.GroundAttack;G.Player=GuLiNetBridge::ToUE(A.Player);G.Revision=A.RevisionValue;G.Damage=A.Damage;G.FireRate=A.FireRate;G.BulletVfxId=int32(A.BulletVfx);G.ImpactVfxId=int32(A.ImpactVfx);G.MuzzleVfxId=int32(A.MuzzleVfx);
             G.ExplosiveDamage=A.ExplosiveDamage;G.ExplosiveRadius=A.ExplosiveRadius;G.ExplosiveBulletVfxId=int32(A.ExplosiveBulletVfx);G.ExplosiveImpactVfxId=int32(A.ExplosiveImpactVfx);
-            G.Effects=A.Effects;V.Recipe.PlayerBulletVfxId=G.BulletVfxId;V.Recipe.Context.Damage=G.Damage;V.bAttackFrozen=true;
+            G.Effects=A.Effects;V.Recipe.PlayerBulletVfxId=G.BulletVfxId;V.Recipe.Context.Damage=G.Damage;
+            if(!GuLiNet::Effects::ResolveHitProperties(G.Effects,G.Hit)){Hybrid->Suspend(TEXT("Invalid Ground hit properties"));return;}
+            if(G.Hit.Instant && V.Recipe.FireOrdinal && V.SegmentReason==EGuLiCombatEffectEndReason::None)
+            {
+                if(V.Target.IsValid())V.Recipe.MaximumDistance=FMath::Max(1.,FVector::Distance(V.Recipe.Position,V.Geometry.LastTargetLocation));
+                FGuLiTargetHandle hit;
+                V.SegmentReason=P->TraceGroundSegment(V.Recipe,V.Team,V.SegmentEnd,hit);
+                if(hit.IsValid() && !Hybrid->ResolveTarget(hit,V.HitTarget))return;
+            }
+            else if(!G.Hit.Instant && V.SegmentReason!=EGuLiCombatEffectEndReason::None)
+            {
+                V.SegmentReason=EGuLiCombatEffectEndReason::None;
+                V.HitTarget={};
+                V.Recipe.MaximumDistance=V.Recipe.Speed*V.Recipe.Lifetime;
+            }
+            V.bAttackFrozen=true;
         }
         if (!V.bAdmitted && !bRestoring)
         {
@@ -637,6 +684,22 @@ struct FGuLiHybridProjectileState
             return;
         }
         if (!V.Handle.IsValid()) Reserve(V);
+        if(V.SegmentReason!=EGuLiCombatEffectEndReason::None)
+        {
+            V.Geometry.Location=V.Geometry.LastTargetLocation=V.SegmentEnd;
+            V.Geometry.Phase=EGuLiCombatEffectPhase::Finished;
+            V.Geometry.EndReason=V.SegmentReason;
+            V.Geometry.SampleTime=V.Recipe.ServerTime;
+            V.Geometry.EndTime=FMath::Max(V.Geometry.EndTime,V.Recipe.ServerTime+.02f);
+            ++V.Geometry.Sequence;
+            V.bFinished=V.bLaunchPublished=true;
+            V.bHit=V.HitTarget.IsValid();
+            V.DamageAt=Hybrid->GetObjectLogicalTick(V.Key);
+            if(V.SegmentReason==EGuLiCombatEffectEndReason::Blocked)++P->Stats.Blocked;
+            FreezeRicochet(V);
+            ActivateExplosive(V);
+            return;
+        }
         const auto Private=V.Geometry;
         V.Handle=P->ActivateLaunch(V.Recipe,V.Team,{},V.Handle.Slot);
         Trace(TEXT("activated"),V);
@@ -657,6 +720,7 @@ struct FGuLiHybridProjectileState
         // catch-up batch before its earlier shared steps reach Service().
         // Keep the publication pending until that actual sample is current;
         // do not replay local effects or attempt an invalid private encoding.
+        if(Bootstrap && !Explosive && V.SegmentReason!=EGuLiCombatEffectEndReason::None)return true;
         const auto& Handle=Explosive?V.ExplosiveHandle:V.Handle;
         const auto& Geometry=Pool->Matches(Handle)?Pool->Slots[Handle.Slot].State:(Explosive?V.ExplosiveGeometry:V.Geometry);
         if (!Bootstrap && Geometry.Phase!=EGuLiCombatEffectPhase::Waiting
@@ -669,7 +733,16 @@ struct FGuLiHybridProjectileState
         E.FrozenUnitTypeId=V.FrozenUnitTypeId;
         E.bExplosiveFlight=Explosive;
         E.ExplosiveRadius=Explosive?V.Recipe.GroundAttack.ExplosiveRadius:0.f;
-        if (!Explosive && V.SourceKind==EGuLiTargetKind::GroundActor && E.State.Phase==EGuLiCombatEffectPhase::Active)
+        if(!Explosive && V.bFinished && V.SegmentReason!=EGuLiCombatEffectEndReason::None)
+        {
+            E.ArcVfxId=int32(V.Recipe.GroundAttack.Hit.ArcVfx);
+            E.bInstantGroundSegment=true;
+            E.InstantEnd=V.SegmentEnd;
+            E.State.Location=E.State.LaunchLocation;
+            E.State.Phase=EGuLiCombatEffectPhase::Active;
+            E.State.EndReason=EGuLiCombatEffectEndReason::None;
+        }
+        if (!Explosive && !V.Recipe.bSecondaryBarrelRound && V.SourceKind==EGuLiTargetKind::GroundActor && E.State.Phase==EGuLiCombatEffectPhase::Active)
         {
             E.bHasMuzzle=true;auto& Cue=E.Muzzle;
             Cue.MatchEpoch=CurrentEpoch();Cue.ShotId=V.Key.StableId;Cue.Source=E.State.Source;
@@ -830,7 +903,9 @@ struct FGuLiHybridProjectileState
                 TRACE_CPUPROFILER_EVENT_SCOPE(GuLiLinearFlight_ReadView);
                 if (!Hybrid->GetObjectView(Key,O)) continue;
             }
+            const bool instantAdmission=!V->bFinished && V->SegmentReason!=EGuLiCombatEffectEndReason::None;
             Activate(*V,O);
+            if(instantAdmission && V->bFinished && FastPath && !Hybrid->GetObjectView(Key,O))continue;
             if (V->Recipe.GroundAttack.ExplosiveDamage>0)
             {
                 if (!V->bExplosiveLaunchPublished && Pool->Matches(V->ExplosiveHandle)) V->bExplosiveLaunchPublished=Publish(*V,false,true);
@@ -1253,7 +1328,16 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::LaunchHybrid(const FGuLi
     V.Geometry.Phase=EGuLiCombatEffectPhase::Waiting; V.Geometry.Location=R.Position; V.Geometry.Velocity=R.Direction*R.Speed;
     V.Geometry.SampleTime=V.Recipe.ServerTime; V.Geometry.EndTime=V.Recipe.ServerTime+FMath::Min(R.Lifetime,R.MaximumDistance/R.Speed); S->Rebuild(V);
     FGuLiCombatTargetSnapshot TargetSnapshot;
-    if (Ledger->TryGetTargetSnapshot(R.Context.Target,TargetSnapshot)) V.Geometry.LastTargetLocation=TargetSnapshot.Location;
+    if (Ledger->TryGetTargetSnapshot(R.Context.Target,TargetSnapshot))
+        V.Geometry.LastTargetLocation=R.FireOrdinal?TargetSnapshot.GetHitCenter():TargetSnapshot.Location;
+    auto& attack=V.Recipe.GroundAttack;
+    if(R.FireOrdinal && !GuLiNet::Effects::ResolveHitProperties(attack.Effects,attack.Hit)){S->Records.Remove(Key);return {};}
+    if(R.FireOrdinal && attack.Hit.Instant)
+    {
+        FGuLiTargetHandle hit;
+        V.SegmentReason=TraceGroundSegment(R,Team,V.SegmentEnd,hit);
+        if(hit.IsValid() && !H->ResolveTarget(hit,V.HitTarget)) { S->Records.Remove(Key); return {}; }
+    }
     FGuLiHybridObjectRequest Request; Request.Source=Source; Request.Target=Key; Request.Event=V.Admission;
     Request.Rule=FName(*Rule->Id); Request.Operation=EGuLiHybridObjectOperation::Spawn; Request.Location=R.Position;
     TArray<uint8> Birth;
@@ -1269,7 +1353,7 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::LaunchHybrid(const FGuLi
     // Submit can enter adapter callbacks. Re-find solely for diagnostics rather
     // than dereferencing a possibly relocated TMap value in the trace itself.
     if (const auto* Current=S->Records.Find(Key)) S->Trace(TEXT("submit-return"),*Current);
-    if (auto* Current=S->Records.Find(Key)) return S->Reserve(*Current);
+    if (auto* Current=S->Records.Find(Key)) return Current->Handle.IsValid()?Current->Handle:S->Reserve(*Current);
     return {};
 }
 void UGuLiProjectilePoolSubsystem::RetireHybrid(const FGuLiCombatEffectState& State,const FGuLiCombatEffectContext& Context,

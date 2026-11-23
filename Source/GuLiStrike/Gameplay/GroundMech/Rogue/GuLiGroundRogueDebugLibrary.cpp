@@ -106,7 +106,7 @@ FString UGuLiGroundRogueDebugLibrary::ReadState(UObject* WorldContextObject,FVec
                 uint32 Progress=0;
                 for(const auto& Carrier:Objects)if(Carrier.Key.Kind==EGuLiHybridObjectKind::GroundPlayer)
                     if(const auto* Counts=Carrier.Capabilities.Find(TEXT("ground_shots")))
-                    {GuLiNet::GroundRogue::ShotCounters CounterState;if(GuLiNet::GroundRogue::DecodeCounters({Counts->Data.GetData(),SIZE_T(Counts->Data.Num())},CounterState)&&CounterState.Players.contains(Player))Progress=GuLiNet::GroundRogue::ReadProgress(CounterState,Player,E);}
+                    {GuLiNet::GroundRogue::ShotCounters CounterState;if(GuLiNet::GroundRogue::DecodeCounters({Counts->Data.GetData(),SIZE_T(Counts->Data.Num())},CounterState)&&CounterState.Players.contains(Player))Progress=GuLiNet::GroundRogue::ReadProgress(CounterState,Player,E,B.ExplosiveResetRevision);}
                 J->SetNumberField(TEXT("revision"),double(B.RevisionValue));J->SetNumberField(TEXT("shot_progress"),Progress);
                 J->SetNumberField(TEXT("fire_rate_multiplier"),GuLiNet::Effects::FireRateMultiplier(E));
                 J->SetBoolField(TEXT("enhanced"),GuLiNet::Effects::HasEnhancedBullet(E));J->SetNumberField(TEXT("explosive_interval"),GuLiNet::Effects::GetExplosive(E).Interval());

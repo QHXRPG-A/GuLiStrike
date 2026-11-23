@@ -3,13 +3,14 @@
 import argparse
 import hashlib
 import json
+import re
 import tempfile
 import threading
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from graph import DRAFT_PATH, PROJECT, describe_changes, initial_graph, load_catalog, validate_graph
+from graph import DRAFT_PATH, PROJECT, SCHEMA, describe_changes, initial_graph, load_catalog, validate_graph
 
 APP = "guli-rogue-card-graph"
 ROOT = Path(__file__).resolve().parent
@@ -17,7 +18,9 @@ STATIC = {
     "/": ("index.html", "text/html"),
     "/style.css": ("style.css", "text/css"),
     "/app.js": ("app.js", "text/javascript"),
+    "/artwork/catalog.json": ("artwork/catalog.json", "application/json"),
 }
+ARTWORK_URL = re.compile(r"/artwork/[a-z0-9_]+-(?:icon|face|layers)\.[0-9a-f]{16}\.webp")
 
 
 def read_draft(path):
@@ -25,7 +28,7 @@ def read_draft(path):
         return None, None
     data = path.read_bytes()
     saved = json.loads(data)
-    if not isinstance(saved, dict) or saved.get("schema") != 1:
+    if not isinstance(saved, dict) or saved.get("schema") not in (1, SCHEMA):
         raise ValueError("草稿版本无法读取。")
     return saved, hashlib.sha256(data).hexdigest()
 
@@ -64,14 +67,17 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(403, {"error": "请用启动工具显示的本地地址访问。"})
         return False
 
-    def send_bytes(self, status, content_type, data):
+    def send_bytes(self, status, content_type, data, cache_control="no-store"):
         self.send_response(status)
-        self.send_header("Content-Type", f"{content_type}; charset=utf-8")
+        self.send_header("Content-Type", content_type if content_type.startswith("image/") else f"{content_type}; charset=utf-8")
         self.send_header("Content-Length", str(len(data)))
-        self.send_header("Cache-Control", "no-store")
+        self.send_header("Cache-Control", cache_control)
         self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
-        self.wfile.write(data)
+        try:
+            self.wfile.write(data)
+        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+            pass
 
     def send_json(self, status, payload):
         self.send_bytes(status, "application/json", json.dumps(payload, ensure_ascii=False).encode("utf-8"))
@@ -80,15 +86,15 @@ class Handler(BaseHTTPRequestHandler):
         if not self.accepts_host():
             return
         if self.path == "/api/health":
-            self.send_json(200, {"app": APP, "project": str(PROJECT)})
+            self.send_json(200, {"app": APP, "project": str(PROJECT), "schema": SCHEMA})
         elif self.path == "/api/graph":
             try:
                 latest = load_catalog()
                 saved, revision = read_draft(self.server.draft_path)
                 base = saved["base"] if saved else latest
-                graph = validate_graph(saved["graph"], base) if saved else initial_graph(base)
+                graph = validate_graph(saved["graph"], base, legacy=saved["schema"] == 1) if saved else initial_graph(base)
                 response = {
-                    "base": base, "graph": graph, "revision": revision,
+                    "schema": SCHEMA, "base": base, "graph": graph, "revision": revision,
                     "savedAt": saved["savedAt"] if saved else None,
                     "sourceChanged": base["fingerprint"] != latest["fingerprint"],
                 }
@@ -98,7 +104,19 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(200, response)
         elif self.path in STATIC:
             name, content_type = STATIC[self.path]
-            self.send_bytes(200, content_type, (ROOT / name).read_bytes())
+            try:
+                data = (ROOT / name).read_bytes()
+            except FileNotFoundError:
+                self.send_error(404)
+                return
+            self.send_bytes(200, content_type, data)
+        elif ARTWORK_URL.fullmatch(self.path):
+            try:
+                data = (ROOT / self.path[1:]).read_bytes()
+            except FileNotFoundError:
+                self.send_error(404)
+                return
+            self.send_bytes(200, "image/webp", data, "private, max-age=31536000, immutable")
         else:
             self.send_error(404)
 
@@ -127,6 +145,9 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         with self.server.save_lock:
+            if request.get("schema") != SCHEMA:
+                self.send_json(409, {"error": "编辑器已升级，请刷新页面后编辑等级和关系。"})
+                return
             try:
                 saved, revision = read_draft(self.server.draft_path)
                 latest = load_catalog()
@@ -146,7 +167,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_json(422, {"error": str(error)})
                 return
             updated = {
-                "schema": 1,
+                "schema": SCHEMA,
                 "savedAt": datetime.now(timezone.utc).isoformat(),
                 "base": base, "graph": graph, "changes": describe_changes(base, graph),
             }

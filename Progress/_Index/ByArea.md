@@ -47,6 +47,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
+| [游骑兵引擎路线图标配色](../Archive/20261121-游骑兵引擎路线图标配色.md) | archive | recorded | 2026-11-21 |
 | [GOOD FX Status 缺件修复](../Archive/20261118-GOOD-FX-Status缺件修复.md) | archive | recorded | 2026-11-18 |
 | [升级、Buff 与武器特效资产迁移](../Archive/20261118-升级Buff与武器特效资产迁移.md) | archive | recorded | 2026-11-18 |
 | [矿车动作与双兵种开火表现](../RequirementDocument/20261114-矿车动作与双兵种开火表现.md) | requirement | approved | 2026-11-14 |
@@ -56,8 +59,6 @@
 | [矿车与双兵种动作正式导入和运行交付](../Archive/20261114-矿车与双兵种动作正式导入和运行交付.md) | archive | recorded | 2026-11-14 |
 | [四足采矿车面朝向与2.5倍尺寸修正](../Archive/20261114-四足采矿车面朝向与2.5倍尺寸修正.md) | archive | recorded | 2026-11-14 |
 | [六座 SSF 建筑工业标识配色参考 A](../RequirementDocument/20261112-SSF建筑工业标识配色参考A.md) | requirement | approved | 2026-11-13 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-13 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-13 |
 | [四足采矿车v5正式替换与阵营灯接入](../Archive/20261113-四足采矿车v5正式替换与阵营灯接入.md) | archive | recorded | 2026-11-13 |
 | [四足机甲行进步幅加大](../Archive/20261113-四足机甲行进步幅加大.md) | archive | recorded | 2026-11-13 |
 | [四足机甲抬足与采矿幅度增强](../Archive/20261113-四足机甲抬足与采矿幅度增强.md) | archive | recorded | 2026-11-13 |
@@ -198,6 +199,17 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
+| [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | development | done | 2026-11-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
+| [游骑兵实战选牌整卡响应](../Archive/20261121-游骑兵实战选牌整卡响应.md) | archive | recorded | 2026-11-21 |
+| [游骑兵牌面整卡视差响应](../Archive/20261121-游骑兵牌面整卡视差响应.md) | archive | recorded | 2026-11-21 |
+| [游骑兵五张牌面与图标正式入库](../Archive/20261121-游骑兵五张牌面与图标正式入库.md) | archive | recorded | 2026-11-21 |
+| [游骑兵引擎路线图标配色](../Archive/20261121-游骑兵引擎路线图标配色.md) | archive | recorded | 2026-11-21 |
+| [关系图补齐现有肉鸽牌美术](../Archive/20261121-关系图补齐现有肉鸽牌美术.md) | archive | recorded | 2026-11-21 |
+| [关系图嵌入游骑兵五张牌面与图标](../Archive/20261121-关系图嵌入游骑兵五张牌面与图标.md) | archive | recorded | 2026-11-21 |
+| [五张肉鸽牌六层审核](../RequirementDocument/20261120-五张肉鸽牌六层审核.md) | requirement | approved | 2026-11-20 |
+| [五张肉鸽牌交付与会话清理](../Archive/20261120-五张肉鸽牌交付与会话清理.md) | archive | recorded | 2026-11-20 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | development | done | 2026-11-18 |
 | [GOOD FX Status 缺件修复](../Archive/20261118-GOOD-FX-Status缺件修复.md) | archive | recorded | 2026-11-18 |
 | [升级、Buff 与武器特效资产迁移](../Archive/20261118-升级Buff与武器特效资产迁移.md) | archive | recorded | 2026-11-18 |
@@ -223,8 +235,6 @@
 | [四足采矿车正式替换与阵营灯 — 实施与交付](../DevelopmentDocumentation/20261113-四足采矿车正式替换与阵营灯.md) | development | done | 2026-11-14 |
 | [四足采矿车面朝向与2.5倍尺寸修正](../Archive/20261114-四足采矿车面朝向与2.5倍尺寸修正.md) | archive | recorded | 2026-11-14 |
 | [六座 SSF 建筑工业标识配色参考 A](../RequirementDocument/20261112-SSF建筑工业标识配色参考A.md) | requirement | approved | 2026-11-13 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-13 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-13 |
 | [四足采矿车v5正式替换与阵营灯接入](../Archive/20261113-四足采矿车v5正式替换与阵营灯接入.md) | archive | recorded | 2026-11-13 |
 | [四足机甲行进步幅加大](../Archive/20261113-四足机甲行进步幅加大.md) | archive | recorded | 2026-11-13 |
 | [四足机甲抬足与采矿幅度增强](../Archive/20261113-四足机甲抬足与采矿幅度增强.md) | archive | recorded | 2026-11-13 |
@@ -492,11 +502,32 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
+| [肉鸽牌等级 GM 命令](../RequirementDocument/20261123-肉鸽牌等级GM命令.md) | requirement | approved | 2026-11-23 |
+| [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-23 |
+| [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | development | done | 2026-11-23 |
+| [肉鸽牌等级 GM 命令](../DevelopmentDocumentation/20261123-肉鸽牌等级GM命令.md) | development | done | 2026-11-23 |
+| [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | development | done | 2026-11-23 |
+| [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧枪口端点](../Archive/20261123-游骑兵电磁弧枪口端点.md) | archive | recorded | 2026-11-23 |
+| [游骑兵 PIE 开局崩溃修复](../Archive/20261123-游骑兵PIE开局崩溃修复.md) | archive | recorded | 2026-11-23 |
+| [游骑兵肉鸽卡牌与武器解耦](../Archive/20261123-游骑兵肉鸽卡牌与武器解耦.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧十六帧播放](../Archive/20261123-游骑兵电磁弧十六帧播放.md) | archive | recorded | 2026-11-23 |
+| [游骑兵多电弧形状变化](../Archive/20261123-游骑兵多电弧形状变化.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧末帧渐隐](../Archive/20261123-游骑兵电磁弧末帧渐隐.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧节奏与亮度](../Archive/20261123-游骑兵电磁弧节奏与亮度.md) | archive | recorded | 2026-11-23 |
+| [肉鸽牌等级 GM 命令](../Archive/20261123-肉鸽牌等级GM命令.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧高频开火性能优化](../Archive/20261123-游骑兵电磁弧性能优化.md) | archive | recorded | 2026-11-23 |
+| [游骑兵多目标锁定与电磁弹道接入](../Archive/20261122-游骑兵分裂枪管与电磁技术.md) | archive | recorded | 2026-11-23 |
 | [游骑兵人工智能引擎与锁定 HUD](../RequirementDocument/20261122-游骑兵人工智能引擎锁定HUD.md) | requirement | approved | 2026-11-22 |
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-22 |
 | [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | development | done | 2026-11-22 |
 | [游骑兵人工智能引擎 HUD 结项](../Archive/20261122-游骑兵人工智能引擎HUD结项.md) | archive | recorded | 2026-11-22 |
 | [游骑兵人工智能引擎 HUD 首版接入](../Archive/20261122-人工智能引擎HUD首版接入.md) | archive | recorded | 2026-11-22 |
+| [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-21 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | done | 2026-11-21 |
+| [关系图补齐现有肉鸽牌美术](../Archive/20261121-关系图补齐现有肉鸽牌美术.md) | archive | recorded | 2026-11-21 |
+| [关系图嵌入游骑兵五张牌面与图标](../Archive/20261121-关系图嵌入游骑兵五张牌面与图标.md) | archive | recorded | 2026-11-21 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | development | done | 2026-11-19 |
 | [游骑兵无人生还结项与项目同步](../Archive/20261119-游骑兵无人生还结项与项目同步.md) | archive | recorded | 2026-11-19 |
@@ -511,8 +542,6 @@
 | [无人生还水平射程与连续尾迹](../Archive/20261118-无人生还水平射程与连续尾迹.md) | archive | recorded | 2026-11-19 |
 | [无人生还碰撞与特效减量](../Archive/20261118-无人生还碰撞与特效减量.md) | archive | recorded | 2026-11-19 |
 | [游骑兵无人生还大招靶场交付](../Archive/20261118-游骑兵无人生还大招靶场交付.md) | archive | recorded | 2026-11-19 |
-| [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-17 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | done | 2026-11-17 |
 | [游骑兵肉鸽牌制作与会话结项](../Archive/20261117-游骑兵肉鸽牌制作与会话结项.md) | archive | recorded | 2026-11-17 |
 | [机枪与爆破弹尾迹修复](../DevelopmentDocumentation/20261113-机枪与爆破弹尾迹修复.md) | development | done | 2026-11-16 |
 | [机枪与爆破弹尾迹会话结项](../Archive/20261116-机枪与爆破弹尾迹会话结项.md) | archive | recorded | 2026-11-16 |
@@ -809,6 +838,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
 | [指挥官掉线后无双接管Mass失败实测](../Archive/20261116-指挥官掉线Mass接管失败实测.md) | archive | recorded | 2026-11-16 |
@@ -1117,7 +1147,6 @@
 | [指挥官单位体型与避障距离配置及接入分析](../RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md) | requirement | approved | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
 | [重防号Q导弹与通用地面预警](../RequirementDocument/20260917-重防号Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [Ship导入与扫荡者重防号风格重制](../RequirementDocument/20260916-Ship导入与扫荡者重防号风格重制.md) | requirement | approved | 2026-09-17 |
@@ -1209,6 +1238,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
+| [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | development | done | 2026-11-23 |
+| [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
+| [游骑兵 PIE 开局崩溃修复](../Archive/20261123-游骑兵PIE开局崩溃修复.md) | archive | recorded | 2026-11-23 |
+| [游骑兵肉鸽卡牌与武器解耦](../Archive/20261123-游骑兵肉鸽卡牌与武器解耦.md) | archive | recorded | 2026-11-23 |
 | [游骑兵无人生还结项与项目同步](../Archive/20261119-游骑兵无人生还结项与项目同步.md) | archive | recorded | 2026-11-19 |
 | [游骑兵快速回镜](../Archive/20261119-游骑兵快速回镜.md) | archive | recorded | 2026-11-19 |
 | [游骑兵施放运镜接入](../Archive/20261119-游骑兵施放运镜接入.md) | archive | recorded | 2026-11-19 |
@@ -1331,7 +1365,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-22 |
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-23 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | development | done | 2026-11-19 |
 | [游骑兵双路线与无人生还五级接入](../Archive/20261118-游骑兵双路线与无人生还五级接入.md) | archive | recorded | 2026-11-19 |
@@ -1600,7 +1634,19 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-22 |
+| [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
+| [肉鸽牌等级 GM 命令](../RequirementDocument/20261123-肉鸽牌等级GM命令.md) | requirement | approved | 2026-11-23 |
+| [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
+| [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-23 |
+| [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | development | done | 2026-11-23 |
+| [肉鸽牌等级 GM 命令](../DevelopmentDocumentation/20261123-肉鸽牌等级GM命令.md) | development | done | 2026-11-23 |
+| [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | development | done | 2026-11-23 |
+| [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
+| [游骑兵 PIE 开局崩溃修复](../Archive/20261123-游骑兵PIE开局崩溃修复.md) | archive | recorded | 2026-11-23 |
+| [游骑兵肉鸽卡牌与武器解耦](../Archive/20261123-游骑兵肉鸽卡牌与武器解耦.md) | archive | recorded | 2026-11-23 |
+| [肉鸽牌等级 GM 命令](../Archive/20261123-肉鸽牌等级GM命令.md) | archive | recorded | 2026-11-23 |
+| [游骑兵多目标锁定与电磁弹道接入](../Archive/20261122-游骑兵分裂枪管与电磁技术.md) | archive | recorded | 2026-11-23 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
 | [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-16 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
@@ -1809,7 +1855,6 @@
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [重防号Q导弹与通用地面预警](../RequirementDocument/20260917-重防号Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [游骑兵弹幕肉鸽与塔防建造](../RequirementDocument/20260917-游骑兵弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
@@ -1906,6 +1951,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧高频开火性能优化](../Archive/20261123-游骑兵电磁弧性能优化.md) | archive | recorded | 2026-11-23 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | development | done | 2026-11-19 |
 | [无人生还对地弹幕](../Archive/20261118-无人生还对地弹幕.md) | archive | recorded | 2026-11-19 |
@@ -2105,6 +2152,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
+| [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | development | done | 2026-11-23 |
+| [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧枪口端点](../Archive/20261123-游骑兵电磁弧枪口端点.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧十六帧播放](../Archive/20261123-游骑兵电磁弧十六帧播放.md) | archive | recorded | 2026-11-23 |
+| [游骑兵多电弧形状变化](../Archive/20261123-游骑兵多电弧形状变化.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧末帧渐隐](../Archive/20261123-游骑兵电磁弧末帧渐隐.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧节奏与亮度](../Archive/20261123-游骑兵电磁弧节奏与亮度.md) | archive | recorded | 2026-11-23 |
+| [游骑兵电磁弧高频开火性能优化](../Archive/20261123-游骑兵电磁弧性能优化.md) | archive | recorded | 2026-11-23 |
+| [游骑兵多目标锁定与电磁弹道接入](../Archive/20261122-游骑兵分裂枪管与电磁技术.md) | archive | recorded | 2026-11-23 |
 | [游骑兵人工智能引擎与锁定 HUD](../RequirementDocument/20261122-游骑兵人工智能引擎锁定HUD.md) | requirement | approved | 2026-11-22 |
 | [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | development | done | 2026-11-22 |
 | [游骑兵人工智能引擎 HUD 结项](../Archive/20261122-游骑兵人工智能引擎HUD结项.md) | archive | recorded | 2026-11-22 |
@@ -2226,9 +2283,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
 | [六座 SSF 建筑工业标识配色参考 A](../RequirementDocument/20261112-SSF建筑工业标识配色参考A.md) | requirement | approved | 2026-11-13 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-13 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-13 |
 | [六座 SSF 建筑配色与线稿会话结项](../Archive/20261113-六座SSF建筑配色与线稿会话结项.md) | archive | recorded | 2026-11-13 |
 | [游骑兵主线程整帧平均降低30%](../RequirementDocument/20261106-游骑兵主线程整帧降低30.md) | requirement | approved | 2026-11-06 |
 | [游骑兵交战长帧治理](../RequirementDocument/20261106-游骑兵交战长帧治理.md) | requirement | approved | 2026-11-06 |
@@ -2374,6 +2431,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
 | [巡天命名统一](../Archive/20261103-巡天命名统一.md) | archive | recorded | 2026-11-03 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
 | [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-10-22 |
@@ -2409,7 +2467,6 @@
 | [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | done | 2026-09-21 |
 | [数据管线：Excel 配置飞船数值 — 技术方案](../DevelopmentDocumentation/20260821-数据管线Excel配置.md) | development | done | 2026-09-21 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [Ship剩余四组件贴图与框线制作](../RequirementDocument/20260917-Ship剩余四组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
 | [Ship第三批支援组件贴图与框线制作](../RequirementDocument/20260917-Ship第三批支援组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
 | [Ship第二批三组件贴图与框线制作](../RequirementDocument/20260917-Ship第二批三组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
@@ -2502,10 +2559,24 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
+| [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | development | done | 2026-11-23 |
+| [游骑兵多目标锁定与电磁弹道接入](../Archive/20261122-游骑兵分裂枪管与电磁技术.md) | archive | recorded | 2026-11-23 |
 | [游骑兵人工智能引擎与锁定 HUD](../RequirementDocument/20261122-游骑兵人工智能引擎锁定HUD.md) | requirement | approved | 2026-11-22 |
 | [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | development | done | 2026-11-22 |
 | [游骑兵人工智能引擎 HUD 结项](../Archive/20261122-游骑兵人工智能引擎HUD结项.md) | archive | recorded | 2026-11-22 |
 | [游骑兵人工智能引擎 HUD 首版接入](../Archive/20261122-人工智能引擎HUD首版接入.md) | archive | recorded | 2026-11-22 |
+| [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-21 |
+| [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | development | done | 2026-11-21 |
+| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | done | 2026-11-21 |
+| [游骑兵实战选牌整卡响应](../Archive/20261121-游骑兵实战选牌整卡响应.md) | archive | recorded | 2026-11-21 |
+| [游骑兵牌面整卡视差响应](../Archive/20261121-游骑兵牌面整卡视差响应.md) | archive | recorded | 2026-11-21 |
+| [游骑兵五张牌面与图标正式入库](../Archive/20261121-游骑兵五张牌面与图标正式入库.md) | archive | recorded | 2026-11-21 |
+| [游骑兵引擎路线图标配色](../Archive/20261121-游骑兵引擎路线图标配色.md) | archive | recorded | 2026-11-21 |
+| [关系图补齐现有肉鸽牌美术](../Archive/20261121-关系图补齐现有肉鸽牌美术.md) | archive | recorded | 2026-11-21 |
+| [关系图嵌入游骑兵五张牌面与图标](../Archive/20261121-关系图嵌入游骑兵五张牌面与图标.md) | archive | recorded | 2026-11-21 |
+| [五张肉鸽牌六层审核](../RequirementDocument/20261120-五张肉鸽牌六层审核.md) | requirement | approved | 2026-11-20 |
+| [五张肉鸽牌交付与会话清理](../Archive/20261120-五张肉鸽牌交付与会话清理.md) | archive | recorded | 2026-11-20 |
 | [游骑兵双路线与无人生还五级接入](../Archive/20261118-游骑兵双路线与无人生还五级接入.md) | archive | recorded | 2026-11-19 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | development | done | 2026-11-18 |
 | [强化爆炸弹与游骑兵图标会话清理结项](../Archive/20261118-强化爆炸弹与游骑兵图标会话清理结项.md) | archive | recorded | 2026-11-18 |
@@ -2517,10 +2588,8 @@
 | [强化爆炸弹正式牌面入库与图标清单](../Archive/20261117-强化爆炸弹正式牌面入库与图标清单.md) | archive | recorded | 2026-11-18 |
 | [强化爆炸弹导弹表面与轴线修订](../Archive/20261117-强化爆炸弹导弹表面与轴线修订.md) | archive | recorded | 2026-11-18 |
 | [四张游骑兵肉鸽牌正式资源](../RequirementDocument/20261117-四张游骑兵肉鸽牌正式资源.md) | requirement | approved | 2026-11-17 |
-| [肉鸽牌关系图工具](../RequirementDocument/20261109-肉鸽牌关系图工具.md) | requirement | approved | 2026-11-17 |
 | [四张游骑兵肉鸽牌正式资源 — 实施与交付](../DevelopmentDocumentation/20261117-四张游骑兵肉鸽牌正式资源.md) | development | done | 2026-11-17 |
 | [无人生还与爆破套餐牌面制作收尾](../DevelopmentDocumentation/20261117-无人生还与爆破套餐牌面制作收尾.md) | development | done | 2026-11-17 |
-| [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | development | done | 2026-11-17 |
 | [四张正式肉鸽牌会话清理与结项](../Archive/20261117-四张正式肉鸽牌会话清理与结项.md) | archive | recorded | 2026-11-17 |
 | [无人生还底部与游骑兵取景调整](../Archive/20261117-无人生还底部与游骑兵取景调整.md) | archive | recorded | 2026-11-17 |
 | [恢复原卡框与固定制作比例](../Archive/20261117-恢复原卡框与固定制作比例.md) | archive | recorded | 2026-11-17 |
@@ -2747,6 +2816,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | development | done | 2026-11-19 |
 | [游骑兵无人生还结项与项目同步](../Archive/20261119-游骑兵无人生还结项与项目同步.md) | archive | recorded | 2026-11-19 |
@@ -2768,8 +2840,6 @@
 | [爆破弹白灰弹体与火烟候选](../Archive/20261116-爆破弹白灰弹体与火烟候选.md) | archive | superseded | 2026-11-16 |
 | [爆破弹飞行特效重新加载修复与复测](../Archive/20261116-爆破弹飞行特效重新加载修复与复测.md) | archive | recorded | 2026-11-16 |
 | [爆破弹尾迹零生成修复](../Archive/20261116-爆破弹尾迹零生成修复.md) | archive | superseded | 2026-11-16 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-13 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-13 |
 | [爆破弹减速与结算窗口构建](../Archive/20261113-爆破弹减速与结算窗口构建.md) | archive | recorded | 2026-11-13 |
 | [爆破弹动画火焰带与稀疏尾迹](../Archive/20261113-爆破弹动画火焰带与稀疏尾迹.md) | archive | recorded | 2026-11-13 |
 | [爆破弹火烟尾迹按距离发射](../Archive/20261113-爆破弹火烟尾迹按距离发射.md) | archive | recorded | 2026-11-13 |
@@ -2877,7 +2947,6 @@
 | [重防号导弹范围与特效调整](../RequirementDocument/20260919-重防号导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [重防号导弹范围与特效调整](../DevelopmentDocumentation/20260919-重防号导弹范围与特效调整.md) | development | done | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [重防号Q导弹与通用地面预警](../RequirementDocument/20260917-重防号Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [游骑兵弹幕肉鸽与塔防建造](../RequirementDocument/20260917-游骑兵弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [重防号Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-重防号Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
@@ -2901,6 +2970,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-20 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
@@ -2919,7 +2989,6 @@
 | [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | done | 2026-09-21 |
 | [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | done | 2026-09-21 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
 | [僚机对地轰炸动漫爆炸样板](../RequirementDocument/20260916-僚机对地轰炸动漫爆炸样板.md) | requirement | approved | 2026-09-16 |
 | [GPU渲染降耗](../RequirementDocument/20260916-GPU渲染降耗.md) | requirement | approved | 2026-09-16 |

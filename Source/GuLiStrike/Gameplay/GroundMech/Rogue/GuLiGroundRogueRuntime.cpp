@@ -5,6 +5,7 @@
 #include "Network/GuLiNetworkSettings.h"
 #include "EngineUtils.h"
 #include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
+#include "Gameplay/Cards/GuLiRogueCardPresentation.h"
 #include "Gameplay/Cards/GuLiRogueCardSettings.h"
 #include "Gameplay/Skills/GuLiHybridArmy.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -36,11 +37,12 @@ bool ReadBuild(UWorld& W,FGuid Player,TMap<FString,int32>& Counts,uint64& Revisi
         }
     }return true;
 }
-FGuid Request(const AGuLiBattlePlayerState& PS,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session,FString Choice)
+FGuid Request(const AGuLiBattlePlayerState& PS,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session,FString Choice,uint32 TargetLevel)
 {
     auto* H=PS.GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>();FGuLiHybridObjectState Root;
     if(!PS.IsWushuang()||!PS.IsBattleReady()||!H||!H->GetTeamCapabilityObject(PS.GetTeam(),TEXT("ground_rogue"),Root)||!H->HasControl(Root.Key)||!H->CanPublishFacts())return {};
     GuLiNet::Army::Command Input;Input.Op=GuLiNet::Army::Operation(Op);Input.Request=GuLiNetBridge::ToCore(Event);Input.Session=GuLiNetBridge::ToCore(Session);Input.Choice=TCHAR_TO_UTF8(*Choice);
+    Input.TargetLevel=TargetLevel;
     const auto Bytes=GuLiNet::Army::EncodeCommand(Input);if(Bytes.empty())return {};FGuLiHybridCommand C;C.Event=Event;C.LogicalTick=H->GetLogicalTick();C.Operation=TEXT("GroundRogue");C.Arguments.Append(Bytes.data(),int32(Bytes.size()));C.Members.Add({Root.Key,Root.ControlEpoch,Root.OwnerEpoch,0,{}});return H->RouteCommand(C)?Event:FGuid{};
 }
 }
@@ -66,7 +68,7 @@ static bool Apply(UWorld& W,const FGuLiHybridObjectState& O,bool Effects)
         if (Session.IsValid() && !Build.Current.Finished) Cards->GroundOpenSessions.Add(Player,Session);
         else Cards->GroundOpenSessions.Remove(Player);
         Counts.Reset();for(const auto& [Card,N]:Build.Acquired)Counts.Add(UTF8_TO_TCHAR(Card.c_str()),int32(N));
-        const bool Changed=Cards->GroundRevisions.FindRef(Player)!=Build.RevisionValue;Cards->GroundRevisions.Add(Player,Build.RevisionValue);Cards->HybridRequests.Remove(GuLiNetBridge::ToUE(Build.LastRequest));
+        const bool Changed=Cards->GroundRevisions.FindRef(Player)!=Build.RevisionValue;Cards->GroundRevisions.Add(Player,Build.RevisionValue);Cards->CompleteHybridRequest(GuLiNetBridge::ToUE(Build.LastRequest));
         if(Changed)Cards->OnGroundBuildChanged.Broadcast(Player,int64(Build.RevisionValue));
         const int32 Rank=Counts.FindRef(CardId);
         // Both the replicated fragment and its receipt can carry the same pick.
@@ -94,6 +96,8 @@ static bool Apply(UWorld& W,const FGuLiHybridObjectState& O,bool Effects)
         const bool Context=Offer.Owner.Get()!=PS||Offer.Team!=O.Team||Offer.HybridPresentationEpoch!=Cards->Epoch;
         Offer.Owner=PS;Offer.Team=O.Team;Offer.HybridPresentationEpoch=Cards->Epoch;Offer.Request=GuLiNetBridge::ToUE(Current.Request);Offer.Session=GuLiNetBridge::ToUE(Current.Session);Offer.RerolledFrom=GuLiNetBridge::ToUE(Current.PreviousSession);Offer.Candidates.Reset();
         for(const auto& Id:Current.Candidates)Offer.Candidates.Add(UTF8_TO_TCHAR(Id.c_str()));Offer.Selected=UTF8_TO_TCHAR(Current.Selected.c_str());Offer.bApplied=!Offer.Selected.IsEmpty();Offer.bFinished=Current.Finished;Offer.bSubmitted=false;Offer.bUpgradePublished=Current.PresentationClosed;
+        if (PS->GetActiveControlRole()==EGuLiCommanderRole::Ground && OldSession.IsValid() && !Offer.Session.IsValid())
+            if (auto* UI=PC->FindComponentByClass<UGuLiRogueCardPresentation>()) UI->InvalidateOffer(OldSession);
         GuLiNet::Effects::Set Resolved;const bool Capacity=Offer.Candidates.IsEmpty()&&GuLiNet::GroundRogue::Resolve(S.Definitions,Build->second,Resolved)&&GuLiNet::Effects::GetRicochet(Resolved).Maximum>=GuLiNet::GroundRogue::MaximumHops;
         if(Offer.Session.IsValid()&&!Offer.bUpgradePublished&&(Context||OldSession!=Offer.Session||OldRequest!=Offer.Request))Channel->ClientRogueCardOffer(Offer.Request,Offer.Session,Cards->Epoch,Offer.Candidates,Capacity?TEXT("UI.RogueCards.Capacity"):TEXT(""));
         if(Offer.bApplied&&(Context||OldSession!=Offer.Session||!WasApplied))Channel->ClientRogueCardResult(Offer.Session,true,TEXT(""));
@@ -139,10 +143,9 @@ public:
 const FGuLiHybridAdapterRegistration Family({TEXT("GroundRogue"),EGuLiHybridObjectKind::BusinessWork,2,[](UGuLiHybridActorWorldSubsystem& O,const FGuLiHybridObjectState&)->TSharedPtr<IGuLiHybridSimulationAdapter>{return MakeShared<FGroundRogueAdapter>(O);},nullptr,nullptr,EGuLiHybridOwnershipPolicy::SharedGroup,1,false,TEXT("match/resources")});
 bool Append(UWorld&,FGuLiHybridManifestData& M,FString& Error)
 {
-    int32 Windup=0;
-    GuLiNet::GroundRogue::Catalog C;if(!GuLiGroundRogue::LoadCatalog(C,Error,&Windup))return false;
-    if (Windup<=0) { Error=TEXT("Ground barrage cast timing is missing"); return false; }
-    M.Numbers.Add(GuLiGroundRogue::BarrageWindupKey,Windup);
+    GuLiGroundRogue::FBarrageCard barrage;
+    GuLiNet::GroundRogue::Catalog C;if(!GuLiGroundRogue::LoadCatalog(C,Error,&barrage))return false;
+    if(!barrage.CardId.IsEmpty())M.Numbers.Add(GuLiGroundRogue::BarrageWindupKey,barrage.WindupTicks);
     const auto Bytes=GuLiNet::GroundRogue::EncodeCatalog(C);if(Bytes.empty()){Error=TEXT("Ground rogue graph is invalid");return false;}
     M.Numbers.Add(TEXT("ground_rogue/catalog/chunks"),(Bytes.size()+2047)/2048);constexpr TCHAR Hex[]=TEXT("0123456789abcdef");
     for(SIZE_T At=0;At<Bytes.size();At+=2048){FString V;for(SIZE_T I=At;I<FMath::Min<SIZE_T>(At+2048,Bytes.size());++I){V.AppendChar(Hex[Bytes[I]>>4]);V.AppendChar(Hex[Bytes[I]&15]);}M.Strings.Add(TEXT("ground_rogue/catalog/")+FString::FromInt(int32(At/2048)),MoveTemp(V));}

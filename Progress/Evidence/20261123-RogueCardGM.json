@@ -1,0 +1,397 @@
+{
+  "date": "2026-11-23",
+  "build": {
+    "engine": "D:/UnrealEngine-5.7",
+    "target": "GuLiStrikeEditor Win64 Development",
+    "exit_code": 0,
+    "engine_build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+    "project_build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+  },
+  "pie": {
+    "map": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "seat": "Ground",
+    "pawn": "BP_GroundMech_Light_C",
+    "controller": "GuLiCommanderPlayerController",
+    "markers": [
+      "GroundRogue_Enemy_01",
+      "GroundRogue_Enemy_02",
+      "GroundRogue_Enemy_03",
+      "GroundRogue_Enemy_04",
+      "GroundRogue_Enemy_05",
+      "GroundRogue_Enemy_06",
+      "GroundRogue_Enemy_07",
+      "GroundRogue_Enemy_08",
+      "GroundRogue_Enemy_09",
+      "GroundRogue_Entry",
+      "GroundRogue_SplitObserve"
+    ],
+    "levels_read_from": "UGuLiRogueCardSubsystem::GetAcquisitionCount (local player)",
+    "revision_read_from": "ground_rogue capability on the authoritative build via UGuLiGroundRogueDebugLibrary::ReadState",
+    "card_order": [
+      "10.01",
+      "14.01",
+      "15.01",
+      "16.01",
+      "11.01"
+    ],
+    "initial_levels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "cases": [
+      {
+        "command": "gs.GM.Card.Set 14.01 max",
+        "before": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_before": null,
+        "result": "14.01 = 3 被拒绝。14.01 需要 10.01 至少 3 级 (Army transaction rejected (10))",
+        "after": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_after": null
+      },
+      {
+        "command": "gs.GM.Card.Set 10.01 3",
+        "before": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_before": null,
+        "result": "10.01 = 3，肉鸽系统已确认。",
+        "after": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_after": 4
+      },
+      {
+        "command": "gs.GM.Card.Set 11.01 1",
+        "before": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_before": 4,
+        "result": "11.01 = 1 被拒绝。10.01 与 11.01 互斥 (Army transaction rejected (10))",
+        "after": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_after": 4
+      },
+      {
+        "command": "gs.GM.Card.Set 14.01 max",
+        "before": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_before": 4,
+        "result": "14.01 = 3，肉鸽系统已确认。",
+        "after": [
+          3,
+          3,
+          0,
+          0,
+          0
+        ],
+        "revision_after": 7
+      },
+      {
+        "command": "gs.GM.Card.Set 分裂枪管 max",
+        "before": [
+          3,
+          3,
+          0,
+          0,
+          0
+        ],
+        "revision_before": 7,
+        "result": "15.01 = 3，肉鸽系统已确认。",
+        "after": [
+          3,
+          3,
+          3,
+          0,
+          0
+        ],
+        "revision_after": 10
+      },
+      {
+        "command": "gs.GM.Card.Set 16.01 max",
+        "before": [
+          3,
+          3,
+          3,
+          0,
+          0
+        ],
+        "revision_before": 10,
+        "result": "16.01 = 3，肉鸽系统已确认。",
+        "after": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_after": 13
+      },
+      {
+        "command": "gs.GM.Card.Set 15.01 3",
+        "before": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_before": 13,
+        "result": "15.01 = 3，肉鸽系统已确认。",
+        "after": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_after": 13
+      },
+      {
+        "command": "gs.GM.Card.Set 15.01 4",
+        "before": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_before": 13,
+        "result": "15.01 最高 3 级。",
+        "after": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_after": 13
+      },
+      {
+        "command": "gs.GM.Card.Set 14.01 0",
+        "before": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_before": 13,
+        "result": "14.01 = 0 被拒绝。15.01 需要 14.01 至少 1 级 (Army transaction rejected (10))",
+        "after": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_after": 13
+      },
+      {
+        "command": "gs.GM.Card.Set 10.01 2",
+        "before": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_before": 13,
+        "result": "10.01 = 2 被拒绝。14.01 需要 10.01 至少 3 级 (Army transaction rejected (10))",
+        "after": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_after": 13
+      },
+      {
+        "command": "gs.GM.Card.Set 15.01 1",
+        "before": [
+          3,
+          3,
+          3,
+          3,
+          0
+        ],
+        "revision_before": 13,
+        "result": "15.01 = 1，肉鸽系统已确认。",
+        "after": [
+          3,
+          3,
+          1,
+          3,
+          0
+        ],
+        "revision_after": 15
+      },
+      {
+        "command": "gs.GM.Card.Set 15.01 0",
+        "before": [
+          3,
+          3,
+          1,
+          3,
+          0
+        ],
+        "revision_before": 15,
+        "result": "15.01 = 0，肉鸽系统已确认。",
+        "after": [
+          3,
+          3,
+          0,
+          3,
+          0
+        ],
+        "revision_after": 16
+      },
+      {
+        "command": "gs.GM.Card.Set 16.01 0",
+        "before": [
+          3,
+          3,
+          0,
+          3,
+          0
+        ],
+        "revision_before": 16,
+        "result": "16.01 = 0，肉鸽系统已确认。",
+        "after": [
+          3,
+          3,
+          0,
+          0,
+          0
+        ],
+        "revision_after": 19
+      },
+      {
+        "command": "gs.GM.Card.Set 14.01 0",
+        "before": [
+          3,
+          3,
+          0,
+          0,
+          0
+        ],
+        "revision_before": 19,
+        "result": "14.01 = 0，肉鸽系统已确认。",
+        "after": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_after": 22
+      },
+      {
+        "command": "gs.GM.Card.Set 10.01 0",
+        "before": [
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_before": 22,
+        "result": "10.01 = 0，肉鸽系统已确认。",
+        "after": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_after": 25
+      },
+      {
+        "command": "gs.GM.Card.Set 11.01 1",
+        "before": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_before": 25,
+        "result": "11.01 = 1，肉鸽系统已确认。",
+        "after": [
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "revision_after": 26
+      },
+      {
+        "command": "gs.GM.Card.Set 11.01 0",
+        "before": [
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "revision_before": 26,
+        "result": "11.01 = 0，肉鸽系统已确认。",
+        "after": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "revision_after": 27
+      }
+    ],
+    "final_levels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "final_revision": 27,
+    "passed": 17,
+    "ended": true
+  }
+}

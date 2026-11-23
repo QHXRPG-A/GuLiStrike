@@ -9,16 +9,22 @@ namespace GuLiNet::Army
 namespace
 {
 std::uint32_t Acquired(const State& S,const std::string& Id) {const auto I=S.Acquired.find(Id);return I==S.Acquired.end()?0:I->second;}
-bool Eligible(const State& S,const Card& C,Id Session)
+bool MeetsCardRelations(const State& S,const Card& C)
 {
-    if (S.Sources.size()>=512 || Acquired(S,C.Id)==UINT32_MAX || (C.Maximum && Acquired(S,C.Id)>=C.Maximum)) return false;
-    for (const auto& Required:C.Required) if (!Acquired(S,Required)) return false;
+    for (std::size_t I=0;I<C.Required.size();++I)
+        if (Acquired(S,C.Required[I])<(C.RequiredLevels.empty()?1:C.RequiredLevels[I])) return false;
     for (const auto& [Id,N]:S.Acquired) if (N)
     {
         const auto& Other=S.Definitions.Cards.at(Id);
         if (std::find(C.Excluded.begin(),C.Excluded.end(),Id)!=C.Excluded.end()
             || std::find(Other.Excluded.begin(),Other.Excluded.end(),C.Id)!=Other.Excluded.end()) return false;
     }
+    return true;
+}
+bool Eligible(const State& S,const Card& C,Id Session)
+{
+    if (S.Sources.size()>=512 || Acquired(S,C.Id)==UINT32_MAX || (C.Maximum && Acquired(S,C.Id)>=C.Maximum)
+        || !MeetsCardRelations(S,C)) return false;
     auto Sources=S.Sources;auto Effect=C.Effect;Effect.Identity=Session;
     if (!Sources.emplace(Session,std::move(Effect)).second) return false;
     std::vector<Profile> P;std::string Error;return Resolve(S.Definitions,Sources,S.Equipment,P,Error);
@@ -36,6 +42,55 @@ void Sample(State& S,std::vector<std::string>& V,std::size_t Count)
 }
 Id SessionId(const ObjectRecord& O,const Command& C)
 {Writer W;W.Key(O.Grant.Object);W.Identity(C.Request);W.Text("army/offer");Id Id;Id::Parse(Sha256(W.Take()).substr(0,32),Id);return Id;}
+bool AcquireCard(State& S,const Card& C,Id SourceId)
+{
+    if (!Eligible(S,C,SourceId)) return false;
+    auto Effect=C.Effect;
+    Effect.Identity=SourceId;
+    S.Sources.emplace(SourceId,std::move(Effect));
+    ++S.Acquired[C.Id];
+    return true;
+}
+bool SetCardLevel(State& S,const Command& Input)
+{
+    const auto Card=S.Definitions.Cards.find(Input.Choice);
+    if (Card==S.Definitions.Cards.end()) return false;
+    const auto& Definition=Card->second;
+    const auto Old=Acquired(S,Definition.Id), Target=Input.TargetLevel;
+    if (Old==Target) return true;
+    if (Target>Old)
+    {
+        if ((Definition.Maximum && Target>Definition.Maximum) || Target-Old>512-S.Sources.size()) return false;
+        for (auto Rank=Old;Rank<Target;++Rank)
+        {
+            Writer W;W.Identity(Input.Request);W.Text("army/gm/card-rank");W.U32(Rank+1);
+            Id SourceId;
+            if (!Id::Parse(Sha256(W.Take()).substr(0,32),SourceId) || !AcquireCard(S,Definition,SourceId)) return false;
+        }
+    }
+    else
+    {
+        if (Target) S.Acquired[Definition.Id]=Target;
+        else S.Acquired.erase(Definition.Id);
+        for (const auto& [Id,_]:S.Acquired) if (!MeetsCardRelations(S,S.Definitions.Cards.at(Id))) return false;
+        auto Remaining=Old-Target;
+        for (auto It=S.Sources.begin();It!=S.Sources.end() && Remaining;)
+        {
+            if (SameCardEffect(It->second,Definition.Effect)) {It=S.Sources.erase(It);--Remaining;}
+            else ++It;
+        }
+        std::vector<Profile> Profiles;std::string Error;
+        if (Remaining || !Resolve(S.Definitions,S.Sources,S.Equipment,Profiles,Error)) return false;
+        for (const auto& P:Profiles)
+        {
+            const auto Slot=S.Equipment.find(P.Key);
+            if (!P.Unlocked && Slot!=S.Equipment.end() && !Slot->second.empty()) S.Equipment.erase(Slot);
+        }
+    }
+    S.Current={};
+    ++S.RevisionValue;
+    return true;
+}
 CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& D)
 {
     const auto& R=C.Request;State S;Command Input;
@@ -68,9 +123,12 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& D)
         const auto Card=S.Definitions.Cards.find(Input.Choice);
         if (O.Session!=Input.Session || O.Finished || Card==S.Definitions.Cards.end()
             || std::find(O.Candidates.begin(),O.Candidates.end(),Input.Choice)==O.Candidates.end()
-            || !Eligible(S,Card->second,O.Session)) return CommitStatus::InvalidRule;
-        auto Effect=Card->second.Effect;Effect.Identity=O.Session;S.Sources.emplace(O.Session,std::move(Effect));++S.Acquired[Input.Choice];
+            || !AcquireCard(S,Card->second,O.Session)) return CommitStatus::InvalidRule;
         O.Selected=Input.Choice;O.Finished=true;O.CommittedAt=R.Header.At;++S.RevisionValue;
+    }
+    else if (Input.Op==Operation::SetCardLevel)
+    {
+        if (!SetCardLevel(S,Input)) return CommitStatus::InvalidRule;
     }
     else if (Input.Op==Operation::Equip)
     {

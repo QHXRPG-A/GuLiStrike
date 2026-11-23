@@ -40,6 +40,7 @@ private:
         TWeakObjectPtr<UNiagaraComponent> Component;
         TWeakObjectPtr<UGuLiRogueCardPresentation> LocalSelection;
     };
+    FString BarrageCardId;
     TMap<FString,FGuLiStrikeRogueCardsCardsRow> Rows;
     TArray<FUpgrade> Upgrades;
     TSharedPtr<FStreamableHandle> Assets;

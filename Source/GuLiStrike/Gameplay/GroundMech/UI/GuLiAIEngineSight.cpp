@@ -70,48 +70,60 @@ struct FOpticsBatch
 
 void FGuLiAIEngineSight::Reset()
 {
-    Radius=0; Target={}; Progress=0; Entry=Released=Seated=-1; Impulses.Reset(); NextSide=1;
+    Radius=0; Entry=-1; Markers.Reset();
 }
 void FGuLiAIEngineSight::Update(const UGuLiGroundMechWeaponComponent& Weapon,float DPI,double Now,bool PlayEntry)
 {
-    const auto& Sight=Weapon.GetAILockSight();
-    if(!Weapon.HasAIEngine() || !Sight.bProjected){Reset();return;}
+    const auto& sight=Weapon.GetAILockSight();
+    if(!Weapon.HasAIEngine() || !sight.bProjected){Reset();return;}
     if(PlayEntry)Entry=Now;
     else if(Entry<0)Entry=Now-1.;
-    Center=Sight.Center/DPI; Radius=Sight.Radius/DPI;
-    if(Sight.Target.IsValid())
+    Center=sight.Center/DPI; Radius=sight.Radius/DPI; DesignRadius=sight.DesignRadius; HexRadius=sight.HexRadius;
+    const auto& slots=Weapon.GetLockTargets();
+    for(auto it=Markers.CreateIterator();it;++it)
     {
-        if(Target!=Sight.Target){Seated=-1;Impulses.Reset();}
-        if(Sight.IsLocked() && Seated<0)Seated=Now;
-        if(!Sight.IsLocked())Seated=-1;
-        Released=-1; Progress=Sight.Progress; TargetPoint=Sight.TargetPoint/DPI;
-        const int32 Percent=Sight.IsLocked()?100:FMath::Min(99,FMath::FloorToInt(Progress*100));
-        const int32 Meters=FMath::RoundToInt(Sight.DistanceMeters);
-        if(LastPercent!=Percent){LastPercent=Percent; PercentLabel=FString::Printf(TEXT("%d%%"),Percent);}
-        if(LastMeters!=Meters){LastMeters=Meters; DistanceLabel=FString::Printf(TEXT("%d m"),Meters);}
+        auto& marker=it.Value();
+        if(!slots.ContainsByPredicate([&](const auto& s){return s.Target==it.Key();}))
+        {
+            if(marker.Released<0){marker.Released=Now;marker.Seated=-1;}
+            if(Now-marker.Released>=ReleaseSeconds){it.RemoveCurrent();continue;}
+        }
+        marker.Impulses.RemoveAll([Now](const FImpulse& i){return Now-i.At>=i.Duration;});
     }
-    else if(Target.IsValid()){TargetPoint=Sight.TargetPoint/DPI; Released=Now; Seated=-1;}
-    Target=Sight.Target;
-    Impulses.RemoveAll([Now](const FImpulse& I){return Now-I.At>=I.Duration;});
+    for(const auto& slot:slots)
+    {
+        auto& m=Markers.FindOrAdd(slot.Target);
+        if(slot.IsLocked() && m.Seated<0)m.Seated=Now;
+        if(!slot.IsLocked())m.Seated=-1;
+        m.Released=-1; m.Progress=slot.Progress; m.TargetPoint=slot.TargetPoint/DPI;
+        const int32 percent=slot.IsLocked()?100:FMath::Min(99,FMath::FloorToInt(slot.Progress*100));
+        const int32 meters=FMath::RoundToInt(slot.DistanceMeters);
+        if(m.LastPercent!=percent){m.LastPercent=percent;m.PercentLabel=FString::Printf(TEXT("%d%%"),percent);}
+        if(m.LastMeters!=meters){m.LastMeters=meters;m.DistanceLabel=FString::Printf(TEXT("%d m"),meters);}
+    }
 }
 void FGuLiAIEngineSight::Shot(double At,float Kick,float Jitter,float Duration)
 {
-    if(IsVisible() && Target.IsValid() && Duration>0)
+    if(!IsVisible() || Duration<=0)return;
+    for(auto& pair:Markers)
     {
-        Impulses.Add({At,Kick,Jitter,Duration,NextSide}); NextSide=-NextSide;
+        auto& marker=pair.Value;
+        if(marker.Released>=0 || marker.Progress<1)continue;
+        marker.Impulses.Add({At,Kick,Jitter,Duration,marker.NextSide});
+        marker.NextSide=-marker.NextSide;
     }
 }
 void FGuLiAIEngineSight::Paint(const FGeometry& G,FSlateWindowElementList& Out,int32 Layer,double Now,float MaxKick) const
 {
     if(!IsVisible() || !Atlas.GetResourceObject())return;
     FOpticsBatch B{G}; B.Vertices.Reserve(1600); B.Indices.Reserve(3600);
-    const double Scale=Radius/FGuLiAILockSight::DesignRadius,Age=Now-Entry;
+    const double Scale=Radius/DesignRadius,Age=Now-Entry;
     const double Open=Ease(.20,.80,Age),RailOpen=Ease(.16,.61,Age),Ambient=FMath::Max(0.,Age-.8);
     for(const double Sign:{-1.,1.})
     {
         if(Age<.55)
         {
-            const double Head=7+(FGuLiAILockSight::DesignRadius-6)*Ease(.02,.4,Age),Alpha=Ease(0,.055,Age)*(1-Ease(.32,.55,Age));
+            const double Head=7+(DesignRadius-6)*Ease(.02,.4,Age),Alpha=Ease(0,.055,Age)*(1-Ease(.32,.55,Age));
             const auto Tip=Center+FVector2D(Sign*Head*Scale,0);
             B.Line(Center+FVector2D(Sign*FMath::Max(6.,Head-44)*Scale,0),Tip,1.8*Scale,Ink(Signal,Alpha));
             B.Line(Tip-FVector2D(0,4*Scale),Tip+FVector2D(0,4*Scale),1.2*Scale,Ink(Hot,Alpha));
@@ -126,7 +138,7 @@ void FGuLiAIEngineSight::Paint(const FGeometry& G,FSlateWindowElementList& Out,i
             B.Quad(Left,Right,Right+H,Left+H,(Rail.Origin+FVector2D(Rail.Size.X*(1-From),0))/1024.,
                 (Rail.Origin+FVector2D(Rail.Size.X*(1-To),Rail.Size.Y))/1024.,Tint);
         };
-        RailSlice(0,1,Ink(Green,.78));const double Packet=FMath::Frac(Ambient*(Target.IsValid()?1.25:.65))*1.4;
+        RailSlice(0,1,Ink(Green,.78));const double Packet=FMath::Frac(Ambient*(!Markers.IsEmpty()?1.25:.65))*1.4;
         RailSlice(Packet-.30,Packet-.08,Ink(Signal,.40));RailSlice(Packet-.09,Packet,Ink(Hot,.92));
         const double Origin=Sign>0?0.:UE_PI;
         const double Half=.5*UE_PI*Open;
@@ -145,80 +157,90 @@ void FGuLiAIEngineSight::Paint(const FGeometry& G,FSlateWindowElementList& Out,i
         for(double Offset:{0.,double(UE_PI)})
             B.Sector(Ring,Center,Radius*500./205,Sweep+Offset,Sweep+Offset+.24,0,Ink(Hot,.77*Tint));
     }
-    const double Release=Released>=0?Ease(0,ReleaseSeconds,Now-Released):0.;
-    if((Target.IsValid() || (Released>=0 && Release<1)) && Age>.15)
+    for(const auto& pair:Markers)
     {
-        const double Alpha=(1-Release)*Ease(.15,.36,Age);
-        FVector2D Kick=FVector2D::ZeroVector;double Twist=0;
-        for(const auto& I:Impulses)
+        const auto& marker=pair.Value;
+        const auto& TargetPoint=marker.TargetPoint;
+        const auto& Impulses=marker.Impulses;
+        const auto& PercentLabel=marker.PercentLabel;
+        const auto& DistanceLabel=marker.DistanceLabel;
+        const double Progress=marker.Progress,Released=marker.Released,Seated=marker.Seated;
+        const bool active=Released<0;
+        const double Release=Released>=0?Ease(0,ReleaseSeconds,Now-Released):0.;
+        if((active || (Released>=0 && Release<1)) && Age>.15)
         {
-            const double T=(Now-I.At)/I.Duration;
-            if(T<0 || T>=1)continue;
-            const double Decay=FMath::Square(1.-T),Bounce=Decay*FMath::Cos(Tau*1.4*T),Buzz=I.Jitter*Decay*FMath::Sin(Tau*2.2*T);
-            Kick+=FVector2D(I.Side*(I.Kick*Bounce+.35*Buzz),-.84*I.Kick*Bounce+Buzz);
-            Twist+=I.Side*Bounce*UE_PI/180.;
-        }
-        const double Length=Kick.Size();
-        if(Length>MaxKick && Length>0)Kick*=MaxKick/Length;
-        Twist=FMath::Clamp(Twist,-.028,.028);
-        FVector2D P=TargetPoint+Kick*Scale;
-        const FVector2D FromCenter=TargetPoint-Center;
-        if (Target.IsValid() && !Impulses.IsEmpty() && FromCenter.SizeSquared()>FMath::Square(Radius))
-        {
-            // At the rim, swing the marker around the aperture so recoil preserves its overlap.
-            const double Distance=FromCenter.Size();
-            const FVector2D Tangent=FVector2D(-FromCenter.Y,FromCenter.X)/Distance;
-            Twist=(FVector2D::DotProduct(Kick,Tangent)+FGuLiAILockHexSide::LockedRadius*Twist)*Scale/Distance;
-            P=Center+Rotate(FromCenter,Twist);
-        }
-        if(Target.IsValid() && Progress<1)
-        {
-            const double Cycles=2*Progress,Phase=Cycles*Tau;
-            const double Rot=(Cycles-FMath::Sin(Phase)/Tau)*UE_PI/3;
-            const double Size=(FGuLiAILockHexSide::LockedRadius+21*(1-Ease(0,1,Progress)))*.61*(1+.145*(1-FMath::Cos(Phase)))*316./156*Scale;
-            B.Sector(Inner,P,Size,0,Tau,Rot+Twist,Ink(Signal,Alpha*(.8+.16*Progress)));
-            B.Sector(Inner,P,Size,-.64*UE_PI,-.35*UE_PI,Rot+Twist,Ink(Hot,Alpha*.70));
-        }
-        for(int32 I=0;I<6;++I)
-        {
-            const FGuLiAILockHexSide Side(I,Progress,Release);
-            const double A=Side.Angle,ArtSize=Side.Radius*500./220*Scale;
-            const auto Edge=P+Direction(A+Twist)*(Side.Outset*Scale);
-            B.Sector(Hex,Edge,ArtSize,A-UE_PI/6,A+UE_PI/6,Twist,Ink(Signal,Alpha*(.64+.30*Side.Closure)));
-            const double Fill=FMath::Clamp(double(Progress)*6-I,0.,1.);
-            B.Sector(Hex,Edge,ArtSize,A-UE_PI/6,A-UE_PI/6+Fill*UE_PI/3,Twist,Ink(Hot,Alpha*.62));
-            if(Seated>=0)
+            const double Alpha=(1-Release)*Ease(.15,.36,Age);
+            FVector2D Kick=FVector2D::ZeroVector;double Twist=0;
+            for(const auto& I:Impulses)
             {
-                const auto Tip=P+Direction(A+Twist-UE_PI/6)*FGuLiAILockHexSide::LockedRadius*Scale;
-                const double Flash=1-Ease(0,.22,Now-Seated);
-                B.Line(Tip-FVector2D(0,1.4*Scale),Tip+FVector2D(0,1.4*Scale),(2.2+Flash*2)*Scale,Ink(Hot,.80+Flash*.2));
+                const double T=(Now-I.At)/I.Duration;
+                if(T<0 || T>=1)continue;
+                const double Decay=FMath::Square(1.-T),Bounce=Decay*FMath::Cos(Tau*1.4*T),Buzz=I.Jitter*Decay*FMath::Sin(Tau*2.2*T);
+                Kick+=FVector2D(I.Side*(I.Kick*Bounce+.35*Buzz),-.84*I.Kick*Bounce+Buzz);
+                Twist+=I.Side*Bounce*UE_PI/180.;
+            }
+            const double Length=Kick.Size();
+            if(Length>MaxKick && Length>0)Kick*=MaxKick/Length;
+            Twist=FMath::Clamp(Twist,-.028,.028);
+            FVector2D P=TargetPoint+Kick*Scale;
+            const FVector2D FromCenter=TargetPoint-Center;
+            if (active && !Impulses.IsEmpty() && FromCenter.SizeSquared()>FMath::Square(Radius))
+            {
+                // At the rim, swing the marker around the aperture so recoil preserves its overlap.
+                const double Distance=FromCenter.Size();
+                const FVector2D Tangent=FVector2D(-FromCenter.Y,FromCenter.X)/Distance;
+                Twist=(FVector2D::DotProduct(Kick,Tangent)+HexRadius*Twist)*Scale/Distance;
+                P=Center+Rotate(FromCenter,Twist);
+            }
+            if(active && Progress<1)
+            {
+                const double Cycles=2*Progress,Phase=Cycles*Tau;
+                const double Rot=(Cycles-FMath::Sin(Phase)/Tau)*UE_PI/3;
+                const double Size=(HexRadius+21*(1-Ease(0,1,Progress)))*.61*(1+.145*(1-FMath::Cos(Phase)))*316./156*Scale;
+                B.Sector(Inner,P,Size,0,Tau,Rot+Twist,Ink(Signal,Alpha*(.8+.16*Progress)));
+                B.Sector(Inner,P,Size,-.64*UE_PI,-.35*UE_PI,Rot+Twist,Ink(Hot,Alpha*.70));
+            }
+            for(int32 I=0;I<6;++I)
+            {
+                const FGuLiAILockHexSide Side(I,Progress,HexRadius,Release);
+                const double A=Side.Angle,ArtSize=Side.Radius*500./220*Scale;
+                const auto Edge=P+Direction(A+Twist)*(Side.Outset*Scale);
+                B.Sector(Hex,Edge,ArtSize,A-UE_PI/6,A+UE_PI/6,Twist,Ink(Signal,Alpha*(.64+.30*Side.Closure)));
+                const double Fill=FMath::Clamp(double(Progress)*6-I,0.,1.);
+                B.Sector(Hex,Edge,ArtSize,A-UE_PI/6,A-UE_PI/6+Fill*UE_PI/3,Twist,Ink(Hot,Alpha*.62));
+                if(Seated>=0)
+                {
+                    const auto Tip=P+Direction(A+Twist-UE_PI/6)*HexRadius*Scale;
+                    const double Flash=1-Ease(0,.22,Now-Seated);
+                    B.Line(Tip-FVector2D(0,1.4*Scale),Tip+FVector2D(0,1.4*Scale),(2.2+Flash*2)*Scale,Ink(Hot,.80+Flash*.2));
+                }
             }
         }
-    }
-    FVector2D Label=FVector2D::ZeroVector;
-    if(Target.IsValid() && Age>.15)
-    {
-        const double R=104-42*Progress;
-        const auto View=G.GetLocalSize();
-        const double Side=TargetPoint.X+(R*.8+96)*Scale>View.X?-1.:1.;
-        const auto Bend=TargetPoint+FVector2D(Side*(R*.8+10),R*.32-7)*Scale;
-        Label=Bend+FVector2D(Side>0?8:-72,2)*Scale;
-        Label.Y=FMath::Clamp(Label.Y,0.,FMath::Max(0.,double(View.Y)-54*Scale));
-        const auto Lead=Ink(Signal,.66);
-        B.Line(TargetPoint+FVector2D(Side*R*.79,R*.15)*Scale,Bend,1.2*Scale,Lead);
-        B.Line(Bend,Bend+FVector2D(Side*33*Scale,0),1.2*Scale,Lead);
+        FVector2D Label=FVector2D::ZeroVector;
+        if(active && Age>.15)
+        {
+            const double R=104-42*Progress;
+            const auto View=G.GetLocalSize();
+            const double Side=TargetPoint.X+(R*.8+96)*Scale>View.X?-1.:1.;
+            const auto Bend=TargetPoint+FVector2D(Side*(R*.8+10),R*.32-7)*Scale;
+            Label=Bend+FVector2D(Side>0?8:-72,2)*Scale;
+            Label.Y=FMath::Clamp(Label.Y,0.,FMath::Max(0.,double(View.Y)-54*Scale));
+            const auto Lead=Ink(Signal,.66);
+            B.Line(TargetPoint+FVector2D(Side*R*.79,R*.15)*Scale,Bend,1.2*Scale,Lead);
+            B.Line(Bend,Bend+FVector2D(Side*33*Scale,0),1.2*Scale,Lead);
+        }
+        if(active && Age>.15)
+        {
+            auto DrawLabel=[&](const FString& Text,FVector2D P,bool Strong)
+            {
+                const auto Font=FCoreStyle::GetDefaultFontStyle(Strong?"Bold":"Regular",Strong?19:14);
+                for(int32 Pass=0;Pass<2;++Pass)
+                    FSlateDrawElement::MakeText(Out,Layer+1+Pass,G.ToPaintGeometry(FVector2D(92,32),
+                        FSlateLayoutTransform(static_cast<float>(Scale),P+FVector2D(0,Pass?0:1.4*Scale))),
+                        Text,Font,ESlateDrawEffect::None,FLinearColor(Pass?(Strong?Hot:Green):Back));
+            };
+            DrawLabel(PercentLabel,Label,true);DrawLabel(DistanceLabel,Label+FVector2D(0,24*Scale),false);
+        }
     }
     if(B.Indices.Num())FSlateDrawElement::MakeCustomVerts(Out,Layer,FSlateApplication::Get().GetRenderer()->GetResourceHandle(Atlas),B.Vertices,B.Indices,nullptr,0,0);
-    if(Target.IsValid() && Age>.15)
-    {
-        auto DrawLabel=[&](const FString& Text,FVector2D P,bool Strong)
-        {
-            const auto Font=FCoreStyle::GetDefaultFontStyle(Strong?"Bold":"Regular",Strong?19:14);
-            for(int32 Pass=0;Pass<2;++Pass)
-                FSlateDrawElement::MakeText(Out,Layer+Pass,G.ToPaintGeometry(FVector2D(92,32),
-                    FSlateLayoutTransform(static_cast<float>(Scale),P+FVector2D(0,Pass?0:1.4*Scale))),
-                    Text,Font,ESlateDrawEffect::None,FLinearColor(Pass?(Strong?Hot:Green):Back));
-        };
-        DrawLabel(PercentLabel,Label,true);DrawLabel(DistanceLabel,Label+FVector2D(0,24*Scale),false);
-    }
 }

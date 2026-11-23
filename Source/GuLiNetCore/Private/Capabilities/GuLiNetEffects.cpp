@@ -1,4 +1,5 @@
 #include "GuLiNetEffects.h"
+#include "GuLiNetWeaponAuthoring.h"
 #include <algorithm>
 #include <cmath>
 
@@ -32,6 +33,32 @@ bool AcceptedHit(const Set& S,const TransactionRequest& R,const CommitResult& Re
 {std::set<std::string> Seen;for(const auto& D:S)if(Seen.insert(D.Handler).second){const auto* H=Find(D.Handler);if(!H||(H->AcceptedHit&&!H->AcceptedHit(S,R,Result,Previous,Changes)))return false;}return true;}
 bool FreezePresentation(const Set& S,std::uint32_t& Bullet,std::uint32_t& Impact,std::uint32_t& Muzzle)
 {for(const auto& D:S){const auto* H=Find(D.Handler);if(!H||(H->Presentation&&!H->Presentation(D,Bullet,Impact,Muzzle)))return false;}return true;}
+bool ResolveHitProperties(const Set& effects,GroundHitProperties& out)
+{
+    GroundHitProperties hit;
+    for(const auto& effect:effects)
+    {
+        const auto* handler=Find(effect.Handler);
+        if(!handler || (handler->ModifyHit && !handler->ModifyHit(effect,hit)))return false;
+    }
+    out=hit;
+    return true;
+}
+bool ResolveGroundShot(const GroundWeaponBase& base,const Set& effects,GroundShotStats& out)
+{
+    const bool enhanced=HasEnhancedBullet(effects);
+    GroundShotStats shot;
+    shot.FireRate=base.FireRate*FireRateMultiplier(effects);
+    shot.Damage=base.Damage*(enhanced?GetBulletRank(effects).DamageMultiplier:base.InitialDamageRatio);
+    shot.BulletVfx=enhanced?base.BulletVfx:base.InitialBulletVfx;
+    shot.ImpactVfx=base.ImpactVfx;
+    shot.MuzzleVfx=base.MuzzleVfx;
+    if(!std::isfinite(shot.Damage) || shot.Damage<=0 || !std::isfinite(shot.FireRate)
+        || shot.FireRate<=0 || shot.FireRate>MaximumGroundFireRate
+        || !FreezePresentation(effects,shot.BulletVfx,shot.ImpactVfx,shot.MuzzleVfx))return false;
+    out=shot;
+    return true;
+}
 Bytes EncodeFireRate(float Multiplier)
 {if(!std::isfinite(Multiplier)||Multiplier<=1||Multiplier>MaximumGroundFireRate)return {};Writer W;W.F32(Multiplier);return W.Take();}
 bool DecodeFireRate(std::span<const std::uint8_t> B,float& Out)
@@ -91,6 +118,13 @@ Bytes EncodeAIEngine(const AIEngine& Engine)
         if(!std::isfinite(Rank.Seconds) || Rank.Seconds<=0 || !std::isfinite(Rank.RangeCm) || Rank.RangeCm<=0)return {};
         W.F32(Rank.Seconds); W.F32(Rank.RangeCm);
     }
+    const auto& geometry=Engine.Ranks.front();
+    if(geometry.AperturePixels || geometry.HexPixels)
+    {
+        if(!std::isfinite(geometry.AperturePixels) || !std::isfinite(geometry.HexPixels) ||
+           geometry.HexPixels<=0 || geometry.HexPixels>geometry.AperturePixels)return {};
+        W.F32(geometry.AperturePixels); W.F32(geometry.HexPixels);
+    }
     return W.Take();
 }
 bool DecodeAIEngine(std::span<const std::uint8_t> Data,AIEngine& Out)
@@ -99,6 +133,12 @@ bool DecodeAIEngine(std::span<const std::uint8_t> Data,AIEngine& Out)
     if(!R.U32(Engine.Level) || !R.U32(Count) || !Count || Count>16 || Engine.Level>Count)return false;
     Engine.Ranks.resize(Count);
     for(auto& Rank:Engine.Ranks)if(!R.F32(Rank.Seconds) || !R.F32(Rank.RangeCm))return false;
+    if(!R.Done())
+    {
+        float aperture,hex;
+        if(!R.F32(aperture) || !R.F32(hex) || aperture<=0 || hex<=0)return false;
+        for(auto& rank:Engine.Ranks){rank.AperturePixels=aperture;rank.HexPixels=hex;}
+    }
     if(!R.Done() || EncodeAIEngine(Engine).empty())return false;
     Out=std::move(Engine); return true;
 }
@@ -107,9 +147,169 @@ AILockRank GetAILockRank(const Set& Effects)
     for(const auto& D:Effects)if(D.Handler=="ground/ai_engine")
     {
         AIEngine Engine;
-        if(DecodeAIEngine(D.Parameters,Engine) && Engine.Level)return Engine.Ranks[Engine.Level-1];
+        if(DecodeAIEngine(D.Parameters,Engine) && Engine.Level)
+        {
+            auto rank=Engine.Ranks[Engine.Level-1];
+            // The original catalogue stored only time and range.
+            if(!rank.AperturePixels){rank.AperturePixels=342;rank.HexPixels=62;}
+            return rank;
+        }
     }
     return {};
+}
+Bytes EncodeSplitBarrel(const SplitBarrel& profile)
+{
+    if(profile.Ranks.empty() || profile.Ranks.size()>16 || profile.Level>profile.Ranks.size())return {};
+    Writer w;
+    w.U32(profile.Level); w.U32(std::uint32_t(profile.Ranks.size()));
+    std::uint32_t previous=0;
+    for(auto cap:profile.Ranks)
+    {
+        if(cap<=previous || cap>MaximumLockTargets)return {};
+        w.U32(cap); previous=cap;
+    }
+    return w.Take();
+}
+bool DecodeSplitBarrel(std::span<const std::uint8_t> bytes,SplitBarrel& out)
+{
+    SplitBarrel profile;
+    Reader r(bytes); std::uint32_t count;
+    if(!r.U32(profile.Level) || !r.U32(count) || !count || count>16)return false;
+    profile.Ranks.resize(count);
+    for(auto& cap:profile.Ranks)if(!r.U32(cap))return false;
+    if(!r.Done() || EncodeSplitBarrel(profile).empty())return false;
+    out=std::move(profile); return true;
+}
+std::uint32_t LockCapacity(const Set& effects)
+{
+    for(const auto& def:effects)if(def.Handler=="ground/split_barrel")
+    {
+        SplitBarrel profile;
+        if(DecodeSplitBarrel(def.Parameters,profile) && profile.Level)return profile.Ranks[profile.Level-1];
+    }
+    return 1;
+}
+Bytes EncodeElectromagnetic(const Electromagnetic& profile)
+{
+    if(profile.ArcVfx>INT32_MAX || profile.Ranks.empty() || profile.Ranks.size()>16 || profile.Level>profile.Ranks.size())return {};
+    Writer w;
+    w.U32(profile.Level); w.U32(profile.ArcVfx); w.U32(std::uint32_t(profile.Ranks.size()));
+    for(const auto& rank:profile.Ranks)
+    {
+        if(!(rank.SlowFraction>0 && rank.SlowFraction<1 && rank.Duration>0 && rank.Duration<=3600 &&
+             rank.ShieldBonus>=0 && rank.ShieldBonus<=10))return {};
+        w.F32(rank.SlowFraction); w.F32(rank.Duration); w.F32(rank.ShieldBonus);
+    }
+    return w.Take();
+}
+bool DecodeElectromagnetic(std::span<const std::uint8_t> bytes,Electromagnetic& out)
+{
+    Electromagnetic profile;
+    Reader r(bytes); std::uint32_t count;
+    if(!r.U32(profile.Level) || !r.U32(profile.ArcVfx) || !r.U32(count) || !count || count>16)return false;
+    profile.Ranks.resize(count);
+    for(auto& rank:profile.Ranks)
+        if(!r.F32(rank.SlowFraction) || !r.F32(rank.Duration) || !r.F32(rank.ShieldBonus))return false;
+    if(!r.Done() || EncodeElectromagnetic(profile).empty())return false;
+    out=std::move(profile); return true;
+}
+ElectromagneticRank GetElectromagnetic(const Set& effects,std::uint32_t* arc)
+{
+    if(arc)*arc=0;
+    for(const auto& def:effects)if(def.Handler=="ground/electromagnetic")
+    {
+        Electromagnetic profile;
+        if(DecodeElectromagnetic(def.Parameters,profile) && profile.Level)
+        {
+            if(arc)*arc=profile.ArcVfx;
+            return profile.Ranks[profile.Level-1];
+        }
+    }
+    return {};
+}
+
+namespace
+{
+struct SlowEntry { Id Player; Tick Expires; float Fraction; };
+bool ReadSlows(std::span<const std::uint8_t> bytes,std::vector<SlowEntry>& entries)
+{
+    Reader r(bytes); std::uint32_t count;
+    if(!r.U32(count) || !count || count>256)return false;
+    entries.resize(count);
+    for(auto& e:entries)
+        if(!r.Identity(e.Player) || !e.Player.Valid() || !r.U64(e.Expires) || !e.Expires ||
+           !r.F32(e.Fraction) || !(e.Fraction>0 && e.Fraction<1))return false;
+    return r.Done();
+}
+bool ApplySlow(const Set& effects,const TransactionRequest& request,const CommitResult&,
+               const std::map<ObjectKey,ObjectRecord>& previous,std::map<ObjectKey,ObjectRecord>& changes)
+{
+    auto host=changes.find(request.Target);
+    if(host==changes.end() || host->second.Vitals.Dead)return true;
+    const auto rank=GetElectromagnetic(effects);
+    const auto player=previous.at(request.Header.Object).Grant.Controller;
+    if(!player.Valid() || !rank.Duration)return false;
+    auto& record=host->second;
+    const auto now=record.LogicalAge;
+    std::vector<SlowEntry> entries;
+    if(auto it=record.Capabilities.find(SlowCapability);it!=record.Capabilities.end() && !ReadSlows(it->second.Data,entries))return false;
+    std::erase_if(entries,[&](const SlowEntry& e){return e.Expires<=now || e.Player==player;});
+    const Tick duration=std::max<Tick>(1,Tick(std::llround(rank.Duration*TicksPerSecond)));
+    if(now>UINT64_MAX-duration || entries.size()>=256)return false;
+    entries.push_back({player,now+duration,rank.SlowFraction});
+    Writer w; w.U32(std::uint32_t(entries.size()));
+    for(const auto& e:entries){w.Identity(e.Player);w.U64(e.Expires);w.F32(e.Fraction);}
+    record.Capabilities[SlowCapability]={1,w.Take()};
+    return true;
+}
+const bool SlowRegistered=[]
+{
+    CapabilityContract contract;
+    contract.Name=SlowCapability; contract.Version=1;
+    contract.ValidateState=[](const ObjectRecord&,const CapabilityState& state)
+    {std::vector<SlowEntry> entries;return state.Version==1 && ReadSlows(state.Data,entries);};
+    contract.ValidateRule=[](const Rule&){return false;};
+    contract.Prepare=[](const CapabilityContext&,CapabilityDelta&){return CommitStatus::InvalidRule;};
+    contract.ValidateTransition=[](const ObjectRecord&,const ObjectRecord&){return false;};
+    return RegisterCapability(std::move(contract));
+}();
+template<class Profile,auto DecodeProfile,auto EncodeProfile>
+Handler RankedHandler(const char* name,WeaponAuthoring authoring)
+{
+    return {name,1,[](const Definition& def){Profile profile;return DecodeProfile(def.Parameters,profile);},
+        [](const Definition& def,std::uint32_t level,Set& output)
+        {
+            Profile profile;
+            if(!DecodeProfile(def.Parameters,profile) || !level || level>profile.Ranks.size())return false;
+            profile.Level=level;
+            auto resolved=def; resolved.Parameters=EncodeProfile(profile);
+            output.push_back(std::move(resolved)); return true;
+        },{},{},authoring};
+}
+const bool SplitRegistered=Register(RankedHandler<SplitBarrel,DecodeSplitBarrel,EncodeSplitBarrel>("ground/split_barrel",WeaponData::Split));
+const bool RailRegistered=[]
+{
+    auto handler=RankedHandler<Electromagnetic,DecodeElectromagnetic,EncodeElectromagnetic>("ground/electromagnetic",WeaponData::Rail);
+    handler.AcceptedHit=ApplySlow;
+    handler.ModifyHit=[](const Definition& d,GroundHitProperties& hit)
+    {
+        Electromagnetic profile;
+        if(!DecodeElectromagnetic(d.Parameters,profile) || !profile.Level)return false;
+        hit.Instant=true;
+        hit.ArcVfx=profile.ArcVfx;
+        hit.ShieldMultiplier+=profile.Ranks[profile.Level-1].ShieldBonus;
+        return true;
+    };
+    return Register(std::move(handler));
+}();
+}
+float MovementMultiplier(std::span<const std::uint8_t> status,Tick now)
+{
+    std::vector<SlowEntry> entries;
+    if(!ReadSlows(status,entries))return 1;
+    float strongest=0;
+    for(const auto& entry:entries)if(entry.Expires>now)strongest=std::max(strongest,entry.Fraction);
+    return 1.f-strongest;
 }
 Bytes EncodeBarrage(const Barrage& V)
 {
@@ -136,7 +336,7 @@ bool DecodeBarrage(std::span<const std::uint8_t> B,Barrage& Out)
 }
 const Definition* FindBarrage(const Set& S)
 {
-    for(const auto& D:S)if(D.Handler=="ground/no_survivors")return &D;
+    for(const auto& D:S)if(D.Handler==BarrageHandler)return &D;
     return nullptr;
 }
 Bytes EncodeExplosiveEnhancement(const ExplosiveEnhancement& V)
@@ -178,7 +378,7 @@ ExplosivePackage GetExplosive(const Set& S)
 namespace
 {
 const bool RateRegistered=Register({"ground/fire_rate",1,[](const Definition& D){float V;return DecodeFireRate(D.Parameters,V);},
-    [](const Definition& D,std::uint32_t N,Set& S){float V;if(!N||!DecodeFireRate(D.Parameters,V))return false;auto Copy=D;Copy.Parameters=EncodeFireRate(float(std::pow(double(V),N)));if(Copy.Parameters.empty())return false;S.push_back(std::move(Copy));return true;}});
+    [](const Definition& D,std::uint32_t N,Set& S){float V;if(!N||!DecodeFireRate(D.Parameters,V))return false;auto Copy=D;Copy.Parameters=EncodeFireRate(float(std::pow(double(V),N)));if(Copy.Parameters.empty())return false;S.push_back(std::move(Copy));return true;},{},{},WeaponData::FireRate});
 const bool EnhancedRegistered=Register({"ground/enhanced_bullet",1,[](const Definition& D){EnhancedBullet B;return D.Parameters.empty() || DecodeEnhancedBullet(D.Parameters,B);},
     [](const Definition& D,std::uint32_t N,Set& S)
     {
@@ -191,9 +391,9 @@ const bool EnhancedRegistered=Register({"ground/enhanced_bullet",1,[](const Defi
         if(D.Parameters.empty())return true;
         EnhancedBullet B;if(!DecodeEnhancedBullet(D.Parameters,B) || !B.Level)return false;
         Flight=B.Ranks[B.Level-1].Vfx;return true;
-    }});
+    },WeaponData::Enhanced});
 const bool ExplosiveRegistered=Register({"ground/explosive_package",2,[](const Definition& D){ExplosivePackage V;return DecodeExplosive(D.Parameters,V);},
-    [](const Definition& D,std::uint32_t N,Set& S){ExplosivePackage V;if(!N||!DecodeExplosive(D.Parameters,V)||N>V.Intervals.size())return false;V.Level=N;auto Copy=D;Copy.Parameters=EncodeExplosive(V);S.push_back(std::move(Copy));return true;}});
+    [](const Definition& D,std::uint32_t N,Set& S){ExplosivePackage V;if(!N||!DecodeExplosive(D.Parameters,V)||N>V.Intervals.size())return false;V.Level=N;auto Copy=D;Copy.Parameters=EncodeExplosive(V);S.push_back(std::move(Copy));return true;},{},{},WeaponData::Explosive});
 const bool AIEngineRegistered=Register({"ground/ai_engine",1,[](const Definition& D){AIEngine Engine;return DecodeAIEngine(D.Parameters,Engine);},
     [](const Definition& D,std::uint32_t Level,Set& Effects)
     {
@@ -201,14 +401,14 @@ const bool AIEngineRegistered=Register({"ground/ai_engine",1,[](const Definition
         if(!Level || !DecodeAIEngine(D.Parameters,Engine) || Level>Engine.Ranks.size())return false;
         Engine.Level=Level;
         auto Resolved=D; Resolved.Parameters=EncodeAIEngine(Engine); Effects.push_back(std::move(Resolved)); return true;
-    }});
-const bool BarrageRegistered=Register({"ground/no_survivors",1,[](const Definition& D){Barrage V;return DecodeBarrage(D.Parameters,V);},
+    },{},{},WeaponData::AI});
+const bool BarrageRegistered=Register({BarrageHandler,1,[](const Definition& D){Barrage V;return DecodeBarrage(D.Parameters,V);},
     [](const Definition& D,std::uint32_t N,Set& S){
         Barrage V;if(!N||!DecodeBarrage(D.Parameters,V)||N>V.Ranks.size()||FindBarrage(S))return false;
         V.Level=N;auto Copy=D;Copy.Parameters=EncodeBarrage(V);S.push_back(std::move(Copy));return true;
-    }});
+    },{},{},WeaponData::Salvo});
 const bool ExplosiveEnhancementRegistered=Register({"ground/explosive_enhancement",1,[](const Definition& D){ExplosiveEnhancement V;return DecodeExplosiveEnhancement(D.Parameters,V);},
-    [](const Definition& D,std::uint32_t N,Set& S){ExplosiveEnhancement V;if(!N||!DecodeExplosiveEnhancement(D.Parameters,V)||N>V.RadiusBonuses.size())return false;V.Level=N;auto Copy=D;Copy.Parameters=EncodeExplosiveEnhancement(V);S.push_back(std::move(Copy));return true;}});
+    [](const Definition& D,std::uint32_t N,Set& S){ExplosiveEnhancement V;if(!N||!DecodeExplosiveEnhancement(D.Parameters,V)||N>V.RadiusBonuses.size())return false;V.Level=N;auto Copy=D;Copy.Parameters=EncodeExplosiveEnhancement(V);S.push_back(std::move(Copy));return true;},{},{},WeaponData::BlastBonus});
 const bool Registered=Register({"ricochet",1,[](const Definition& D){Ricochet V;return DecodeRicochet(D.Parameters,V);},
     [](const Definition& D,std::uint32_t N,Set& S)
     {

@@ -5,7 +5,8 @@
 #include "Gameplay/Data/Generated/GuLiStrikeBuffsTableRows.h"
 #include "Gameplay/Data/Generated/GuLiStrikeRogueCardsTableRows.h"
 #include "Gameplay/Cards/GuLiRogueCardSettings.h"
-#include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
+#include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
+#include "Engine/World.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Image.h"
 #include "Engine/Texture2D.h"
@@ -14,11 +15,13 @@ void UGuLiGroundHUDWidget::PrepareIcons()
 {
     if(!IconCatalog)IconCatalog=NewObject<UGuLiIconCatalog>(this);
     TSet<int32> Ids;BuffIconIds.Reset();BarrageIconId=0;
+    auto* cards=GetWorld()?GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>():nullptr;
+    const FString barrageId=cards?cards->GetBarrageCardId():FString{};
     if(Style)Style->ForeachRow<FGuLiStrikeGroundHUDElementsRow>(TEXT("HUD icons"),[&](FName,const auto& R){if(R.IconId>0)Ids.Add(R.IconId);});
     if(auto* Table=GetDefault<UGuLiRogueCardSettings>()->Cards.LoadSynchronous();Table&&Table->GetRowStruct()==FGuLiStrikeRogueCardsCardsRow::StaticStruct())
         Table->ForeachRow<FGuLiStrikeRogueCardsCardsRow>(TEXT("HUD card icons"),[&](FName,const auto& R){
             if(R.IconId>0)Ids.Add(R.IconId);
-            if(R.Id==GuLiGroundRogue::BarrageCardId)BarrageIconId=R.IconId;
+            if(R.Id==barrageId)BarrageIconId=R.IconId;
         });
     if(auto* Table=LoadObject<UDataTable>(nullptr,TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills"));Table&&Table->GetRowStruct()==FGuLiStrikeMechSkillsRow::StaticStruct())
         Table->ForeachRow<FGuLiStrikeMechSkillsRow>(TEXT("HUD skill icons"),[&](FName,const auto& R){if(R.IconId>0)Ids.Add(R.IconId);});

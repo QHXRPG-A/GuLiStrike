@@ -27,13 +27,14 @@ bool RechargeShield(Health& State, float Amount)
     State.Shield = std::min(State.MaximumShield, State.Shield + Amount);
     State.Version = NextRevision(State.Version); return true;
 }
-bool ApplyDamage(Health& State, float Amount, DamageDelta& Out)
+bool ApplyDamage(Health& State, float Amount, DamageDelta& Out, float ShieldMultiplier)
 {
     Out = {};
-    if (!ValidHealth(State) || State.Dead || !std::isfinite(Amount) || Amount <= 0) return false;
+    if (!ValidHealth(State) || State.Dead || !std::isfinite(Amount) || Amount <= 0 || !std::isfinite(ShieldMultiplier) || ShieldMultiplier<1) return false;
     const float Previous = State.Value;
-    Out.Absorbed = AbsorbShield(State, Amount);
-    State.Value = std::max(0.0f, State.Value - (Amount - Out.Absorbed));
+    Out.Absorbed = AbsorbShield(State, Amount*ShieldMultiplier);
+    const float remaining=Out.Absorbed>=Amount*ShieldMultiplier?0.f:std::max(0.f,Amount-Out.Absorbed/ShieldMultiplier);
+    State.Value=std::max(0.f,State.Value-remaining);
     State.Dead = State.Value <= 0;
     State.Version = NextRevision(State.Version);
     Out.Applied = Previous - State.Value; Out.Killed = State.Dead;

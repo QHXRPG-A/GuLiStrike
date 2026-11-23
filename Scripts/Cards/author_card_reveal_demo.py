@@ -14,7 +14,7 @@ SCRIPT_DIR = Path('D:/UE5.7/test1/Scripts/Cards')
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 from card_reveal_graph import B, Graph, Node, require, variable, function, compile_save
-from card_artwork_config import ensure_artwork_variables, write_artwork_function, write_start_function
+from card_artwork_config import ensure_artwork_variables, write_artwork_function, write_start_function, write_tick_function
 
 ROOT = '/Game/GuLiStrike/CardSystem/RevealDemo'
 CARD = ROOT + '/Blueprints/BP_ParallaxRevealCard'
@@ -412,24 +412,7 @@ def director_graphs():
     g.branch(g.both(g.compare('Equal', g.get('Phase'), 3, 'Int'), g.compare('Equal', g.arg('HitIndex'), g.get('SelectedIndex'), 'Int')))
     g.invoke('SetPhase', NewPhase=4)
     g.layout()
-    g = Graph(DIRECTOR, 'TickPresentation', True)
-    g.branch(g.compare('Less', g.get('Phase'), 6, 'Int'))
-    g.set('PhaseTime', g.get('PhaseTime') + g.arg('DeltaSeconds'))
-    g.invoke('UpdatePointer')
-    for i in range(3):
-        g.invoke('UpdateCard', Card=g.get(f'Card{i}'), Index=i, DeltaSeconds=g.arg('DeltaSeconds'))
-    for phase, duration, following in [(0, g.get('EntryDuration') * 3, 1), (2, g.get('FlipDuration'), 3),
-                                        (4, g.get('FlashDuration'), 5), (5, g.get('ExitDuration'), 6)]:
-        b = g.branch(g.both(g.compare('Equal', g.get('Phase'), phase, 'Int'), g.compare('GreaterEqual', g.get('PhaseTime'), duration)))
-        if following == 6:
-            g.invoke('CleanupCards')
-        g.invoke('SetPhase', NewPhase=following)
-        if following == 6:
-            n = Node(g, B.add_call_delegate_node(DIRECTOR, g.name, 'OnPresentationFinished', *g.pos()))
-            n.put('execute', g.tail)
-            n.put('SelectedIndex', g.get('SelectedIndex'))
-        g.tail = b['else']
-    g.layout()
+    write_tick_function()
     g = Graph(DIRECTOR, 'EventGraph')
     ev = g.event('ReceiveTick')
     g.invoke('TickPresentation', DeltaSeconds=ev['DeltaSeconds'])

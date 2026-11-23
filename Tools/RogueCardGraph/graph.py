@@ -8,6 +8,8 @@ from pathlib import Path
 
 PROJECT = Path(__file__).resolve().parents[2]
 DRAFT_PATH = PROJECT / "data/Design/RogueCardGraph.json"
+SCHEMA = 2
+MAX_LEVEL = 2**31 - 1
 SEATS = {1: "Commander", 2: "Air", 3: "Ground"}
 EXPORTS = {
     "cards": "data/Json/DT_GuLiStrikeRogueCards_Cards.json",
@@ -33,7 +35,7 @@ def preview_descriptions(row, template, effects, weapons):
     if row["Type"] == 3:
         definitions = [effects[ident] for ident in row["EffectIds"]]
         has_level_values = any(
-            effect["Handler"] in ("ground/explosive_package", "ground/explosive_enhancement", "ground/no_survivors", "ground/ai_engine", "ground/enhanced_bullet")
+            effect["Handler"] in ("ground/explosive_package", "ground/explosive_enhancement", "ground/no_survivors", "ground/ai_engine", "ground/enhanced_bullet", "ground/split_barrel", "ground/electromagnetic")
             for effect in definitions
         )
         levels = range(1, row["MaxAcquisitions"] + 1) if has_level_values else (1,)
@@ -53,6 +55,11 @@ def preview_descriptions(row, template, effects, weapons):
             config = weapons[str(effect["ConfigId"])]
             if handler == "ground/fire_rate":
                 values.append(config["FireRateBonusPercent"] * 100)
+            elif handler == "ground/split_barrel":
+                values.append(int(config["LockTargetCounts"][level-1]))
+            elif handler == "ground/electromagnetic":
+                values.extend((float(config["SlowFractions"][level-1])*100, float(config["SlowDurations"][level-1]),
+                               float(config["ShieldDamageBonuses"][level-1])*100))
             elif handler == "ground/ai_engine":
                 values.extend((float(config["LockSeconds"][level-1]),float(config["LockRangeCentimeters"][level-1])/100))
             elif handler == "ground/enhanced_bullet" and config.get("BulletDamageMultipliers"):
@@ -88,12 +95,14 @@ def preview_descriptions(row, template, effects, weapons):
     return previews
 
 
-def make_link(kind, source, target, min_level=1):
+def make_link(kind, source, target, min_level=1, future_only=False):
     if kind == "excludes":
         source, target = sorted((source, target))
     link = {"kind": kind, "source": source, "target": target}
     if kind == "requires" and min_level != 1:
         link["minLevel"] = min_level
+    if kind == "disables" and future_only:
+        link["futureOnly"] = True
     return link
 
 
@@ -145,7 +154,8 @@ def load_catalog():
 
 def relationship_fields(graph):
     fields = {
-        card["id"]: {"RequiredCardIds": [], "RequiredCardLevels": [], "ExcludedCardIds": []}
+        card["id"]: {"RequiredCardIds": [], "RequiredCardLevels": [], "ExcludedCardIds": [],
+                     "DisabledCardIds": [], "StopAcquisitionCardIds": []}
         for card in graph["cards"]
     }
     for link in graph["links"]:
@@ -153,15 +163,28 @@ def relationship_fields(graph):
         if link["kind"] == "requires":
             fields[target]["RequiredCardIds"].append(source)
             fields[target]["RequiredCardLevels"].append(link.get("minLevel", 1))
-        else:
+        elif link["kind"] == "excludes":
             fields[target]["ExcludedCardIds"].append(source)
             fields[source]["ExcludedCardIds"].append(target)
+        elif link["kind"] == "disables":
+            field = "StopAcquisitionCardIds" if link.get("futureOnly") else "DisabledCardIds"
+            fields[source][field].append(target)
     for row in fields.values():
         pairs = sorted(zip(row["RequiredCardIds"], row["RequiredCardLevels"]))
         row["RequiredCardIds"] = [parent for parent, _ in pairs]
         row["RequiredCardLevels"] = [str(level) for _, level in pairs] if any(level!=1 for _, level in pairs) else []
         row["ExcludedCardIds"].sort()
+        row["DisabledCardIds"].sort()
+        row["StopAcquisitionCardIds"].sort()
     return fields
+
+
+def catalog_levels(details):
+    """Keep the saved catalog's previews and its unlimited-acquisition convention."""
+    return {
+        "maxLevel": details.get("maxAcquisitions", 0),
+        "levelEffects": {str(i): text for i, text in enumerate(details.get("previews", []), 1) if text},
+    }
 
 
 def initial_graph(catalog):
@@ -184,11 +207,12 @@ def initial_graph(catalog):
         for column, members in sorted(columns.items()):
             for index, card in enumerate(members):
                 y = 36 + (index + (tallest - len(members)) / 2) * 110
-                cards.append({**card, "x": 36 + column * 266, "y": y})
+                levels = catalog_levels(catalog["details"][card["id"]])
+                cards.append({**card, **levels, "x": 36 + column * 266, "y": y})
     return {"cards": cards, "links": catalog["links"]}
 
 
-def validate_graph(graph, base):
+def validate_graph(graph, base, *, legacy=False):
     if not isinstance(graph, dict):
         raise ValueError("缺少卡牌节点图。")
     cards, links = graph.get("cards"), graph.get("links")
@@ -215,25 +239,53 @@ def validate_graph(graph, base):
             raise ValueError("卡名须为 1–80 个字符的单行文字。")
         if not isinstance(description, str) or len(description) > 2000:
             raise ValueError("描述最多 2000 个字符。")
+        if legacy:
+            levels = catalog_levels(base["details"].get(ident, {}))
+            if ident in existing and description != existing[ident]["description"]:
+                levels["levelEffects"] = {}
+        else:
+            levels = card
+        cap, effects = levels.get("maxLevel"), levels.get("levelEffects")
+        if type(cap) is not int or not 0 <= cap <= MAX_LEVEL:
+            raise ValueError(f"「{title}」总等级须为非负整数，0 表示不限。")
+        if not isinstance(effects, dict):
+            raise ValueError(f"「{title}」缺少逐级效果。")
+        cleaned = {}
+        for key, value in effects.items():
+            if (not isinstance(key, str) or not re.fullmatch(r"[1-9][0-9]{0,9}", key)
+                    or int(key) > (cap or MAX_LEVEL)):
+                raise ValueError(f"「{title}」的效果等级超出范围。")
+            if not isinstance(value, str) or len(value) > 2000:
+                raise ValueError(f"「{title}」第 {key} 级效果最多 2000 个字符。")
+            if value.strip():
+                cleaned[key] = value.strip()
         x, y = card.get("x"), card.get("y")
         if any(type(v) not in (int, float) or not -100000 <= v <= 100000 for v in (x, y)):
             raise ValueError("节点位置超出画布范围。")
         by_id[ident] = {
             "id": ident, "seat": seat, "title": title.strip(),
-            "description": description.strip(), "x": x, "y": y,
+            "description": description.strip(), "x": x, "y": y, "maxLevel": cap,
+            "levelEffects": {key: cleaned[key] for key in sorted(cleaned, key=int)},
         }
 
     normalized, seen = [], set()
     for link in links:
-        if not isinstance(link, dict) or link.get("kind") not in ("requires", "excludes"):
+        if not isinstance(link, dict) or link.get("kind") not in ("requires", "excludes", "disables"):
             raise ValueError("未知连线类型。")
         source, target = link.get("source"), link.get("target")
         if any(not isinstance(ident, str) or ident not in by_id for ident in (source, target)):
             raise ValueError("连线引用了不存在的卡牌。")
+        if source == target or by_id[source]["seat"] != by_id[target]["seat"]:
+            raise ValueError("连线须连接同一席位的两张不同卡牌。")
         level = link.get("minLevel", 1)
-        if type(level) is not int or level < 1 or level > 2147483647 or (level != 1 and link["kind"] != "requires"):
+        if type(level) is not int or not 1 <= level <= MAX_LEVEL or (level != 1 and link["kind"] != "requires"):
             raise ValueError("前置等级无效。")
-        entry = make_link(link["kind"], source, target, level)
+        if link["kind"] == "requires" and level > (by_id[source]["maxLevel"] or MAX_LEVEL):
+            raise ValueError(f"「{by_id[target]['title']}」需要「{by_id[source]['title']}」达到 {level} 级，超过其草稿总等级。")
+        future_only = link.get("futureOnly", False)
+        if type(future_only) is not bool or (future_only and link["kind"] != "disables"):
+            raise ValueError("仅停止后续获取适用于单向禁用线。")
+        entry = make_link(link["kind"], source, target, level, future_only)
         key = entry["kind"], entry["source"], entry["target"]
         if key in seen:
             raise ValueError("存在重复连线。")
@@ -242,7 +294,7 @@ def validate_graph(graph, base):
     result = {"cards": list(by_id.values()), "links": normalized}
     fields = relationship_fields(result)
     rows = {
-        ident: {"Id": ident, "Type": card["seat"], "MaxAcquisitions": base["details"].get(ident, {}).get("maxAcquisitions", 0), **fields[ident]}
+        ident: {"Id": ident, "Type": card["seat"], "MaxAcquisitions": card["maxLevel"], **fields[ident]}
         for ident, card in by_id.items()
     }
 
@@ -264,12 +316,13 @@ def describe_changes(base, graph):
     removed = [card for ident, card in before.items() if ident not in after]
     updated = []
     for ident in before.keys() & after.keys():
-        old, new = before[ident], after[ident]
+        old = {**before[ident], **catalog_levels(base["details"][ident])}
+        new = after[ident]
         fields = {}
-        for key in ("title", "description"):
+        for key in ("title", "description", "maxLevel", "levelEffects"):
             if old[key] != new[key]:
                 fields[key] = {"before": old[key], "after": new[key]}
-        for key in ("RequiredCardIds", "RequiredCardLevels", "ExcludedCardIds"):
+        for key in old_links[ident]:
             if old_links[ident][key] != new_links[ident][key]:
                 fields[key] = {"before": old_links[ident][key], "after": new_links[ident][key]}
         if fields:

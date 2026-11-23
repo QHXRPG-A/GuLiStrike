@@ -5,6 +5,7 @@
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/CommanderSkills/GuLiPointSkill.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
+#include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "GameFramework/PlayerController.h"
@@ -19,14 +20,26 @@
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/GuLiHybridManifest.h"
 #include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
+#include "GuLiStrike.h"
+#include "HAL/IConsoleManager.h"
 
 namespace
 {
-    FGuid RequestForPlayer(const AGuLiBattlePlayerState& PS,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session={},FString Choice={})
+    FGuid RequestForPlayer(const AGuLiBattlePlayerState& PS,EGuLiHybridArmyOperation Op,FGuid Event,FGuid Session={},FString Choice={},uint32 TargetLevel=0)
     {
-        if(PS.IsWushuang() && PS.GetActiveControlRole()!=EGuLiCommanderRole::Commander)return GuLiGroundRogue::Request(PS,Op,Event,Session,MoveTemp(Choice));
-        return PS.IsCommander()?GuLiHybridArmy::Request(*PS.GetWorld(),PS.GetTeam(),Op,Event,Session,MoveTemp(Choice)):FGuid{};
+        if(PS.IsWushuang() && PS.GetActiveControlRole()!=EGuLiCommanderRole::Commander)return GuLiGroundRogue::Request(PS,Op,Event,Session,MoveTemp(Choice),TargetLevel);
+        return PS.IsCommander()?GuLiHybridArmy::Request(*PS.GetWorld(),PS.GetTeam(),Op,Event,Session,MoveTemp(Choice),0,0,NAME_None,TargetLevel):FGuid{};
     }
+#if !UE_BUILD_SHIPPING
+    FAutoConsoleCommandWithWorldAndArgs SetRogueCardLevelCommand(
+        TEXT("gs.GM.Card.Set"),TEXT("Set a card for the active seat: gs.GM.Card.Set <card ID or title> <level|max>. Level 0 removes a card."),
+        FConsoleCommandWithWorldAndArgsDelegate::CreateLambda([](const TArray<FString>& Args,UWorld* World)
+        {
+            auto* Cards=World?World->GetSubsystem<UGuLiRogueCardSubsystem>():nullptr;
+            if (Cards) Cards->SetCardLevelFromConsole(Args);
+            else UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: enter a running game first."));
+        }));
+#endif
 	bool ValidateCardRelations(const TMap<FString,FGuLiStrikeRogueCardsCardsRow>& Cards, FString& Error)
 	{
 		TMap<FString,TSet<FString>> Excluded, Closures;
@@ -91,10 +104,12 @@ bool UGuLiRogueCardSubsystem::LoadCatalog(FString& Error)
     GroundEffectTable=Settings->GroundRicochet.LoadSynchronous();
 	if (!Table || Table->GetRowStruct()!=FGuLiStrikeRogueCardsCardsRow::StaticStruct() || !StringTable)
 	{ Error=TEXT("Card table or StringTable is unavailable"); return false; }
+    if(!LoadGroundCatalog(Error))return false;
 	TMap<FString,FGuLiStrikeRogueCardsCardsRow> Validated;
 	for (const FName Name : Table->GetRowNames())
 	{
 		const auto& R=*Table->FindRow<FGuLiStrikeRogueCardsCardsRow>(Name,TEXT("RogueCards"));
+        if(R.Type==3 && !AvailableGroundCards.Contains(R.Id))continue;
 		UClass* Class=R.ImplementationClass.LoadSynchronous();
 		const auto* Data=GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 		// Card identity is data, not an encoded unit/category number. Match the
@@ -112,7 +127,8 @@ bool UGuLiRogueCardSubsystem::LoadCatalog(FString& Error)
 		for (const FString& Key : R.TextIds)
 			if (!StringTable->GetStringTable()->FindEntry(Key).IsValid())
 			{ Error=TEXT("Missing card text: ")+Key; return false; }
-		Validated.Add(R.Id,R);
+        auto& local=Validated.Add(R.Id,R);
+        if(R.Type==3)local.ExcludedCardIds.RemoveAll([&](const FString& id){return !AvailableGroundCards.Contains(id);});
 	}
 	if (!ValidateCardRelations(Validated,Error)) return false;
 	Catalog=MoveTemp(Validated); return true;
@@ -124,8 +140,87 @@ FText UGuLiRogueCardSubsystem::GetText(const FString& Key)
 	if (!StringTable) StringTable=GetDefault<UGuLiRogueCardSettings>()->Texts.LoadSynchronous();
 	return StringTable ? FText::FromStringTable(StringTable->GetStringTableId(),Key) : FText::FromString(Key);
 }
+bool UGuLiRogueCardSubsystem::LoadGroundCatalog(FString& error)
+{
+    if(bGroundCatalogLoaded)return true;
+    GuLiNet::GroundRogue::Catalog catalog;
+    GuLiGroundRogue::FBarrageCard barrage;
+    if(!GuLiGroundRogue::LoadCatalog(catalog,error,&barrage))return false;
+    for(const auto& entry:catalog.Cards)AvailableGroundCards.Add(UTF8_TO_TCHAR(entry.first.c_str()));
+    GroundBarrageId=MoveTemp(barrage.CardId);
+    bGroundCatalogLoaded=true;
+    return true;
+}
+const FString& UGuLiRogueCardSubsystem::GetBarrageCardId()
+{
+    FString error;
+    LoadGroundCatalog(error);
+    return GroundBarrageId;
+}
 int32 UGuLiRogueCardSubsystem::GetAcquisitionCount(FGuid Player,const FString& Id) const
 {const auto* Counts=GroundAcquisitions.Find(Player);return Counts?Counts->FindRef(Id):0;}
+#if !UE_BUILD_SHIPPING
+void UGuLiRogueCardSubsystem::SetCardLevelFromConsole(const TArray<FString>& Args)
+{
+    if (Args.Num()!=2)
+    {
+        UE_LOG(LogGuLiStrike,Warning,TEXT("用法 gs.GM.Card.Set <卡牌ID或名称> <等级|max>，0 为移除。"));
+        return;
+    }
+    auto* PC=Cast<AGuLiCommanderPlayerController>(GetWorld()->GetFirstPlayerController());
+    auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+    auto* Channel=PC?PC->FindComponentByClass<UGuLiCommanderNetSyncComponent>():nullptr;
+    const bool Ground=PS && PS->IsWushuang() && PS->GetActiveControlRole()==EGuLiCommanderRole::Ground;
+    if (!PC || !PC->IsLocalController() || !PS || !PS->IsBattleReady() || !Channel
+        || (!Ground && (!PS->IsCommanderControlActive() || !PC->CanIssueCommanderOrders())))
+    {
+        UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: 请先进入游骑兵或指挥官席位。"));
+        return;
+    }
+    const int32 CardType=Ground?3:1;
+    const auto* Card=FindCard(Args[0]);
+    if (!Card)
+    {
+        for (const auto& Entry:Catalog)
+        {
+            const auto& Row=Entry.Value;
+            if (Row.Type!=CardType || Row.TextIds.IsEmpty() || GetText(Row.TextIds[0]).ToString()!=Args[0]) continue;
+            if (Card) {UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: 存在同名卡牌，请使用卡牌ID。"));return;}
+            Card=&Row;
+        }
+    }
+    if (!Card || Card->Type!=CardType)
+    {
+        UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: 当前席位没有卡牌 %s。"),*Args[0]);
+        return;
+    }
+    int64 Level=Card->MaxAcquisitions;
+    if (Args[1].Equals(TEXT("max"),ESearchCase::IgnoreCase))
+    {
+        if (!Level) {UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: %s 没有表内等级上限，请指定数字。"),*Card->Id);return;}
+    }
+    else
+    {
+        TCHAR* End=nullptr;
+        Level=FCString::Strtoi64(*Args[1],&End,10);
+        if (Args[1].IsEmpty() || Args[1][0]<'0' || Args[1][0]>'9' || *End || Level<0 || Level>MAX_int32)
+        {UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: 等级应为非负整数或 max。"));return;}
+    }
+    if (Card->MaxAcquisitions && Level>Card->MaxAcquisitions)
+    {
+        UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: %s 最高 %d 级。"),*Card->Id,Card->MaxAcquisitions);
+        return;
+    }
+    const FGuid Event=FGuid::NewGuid();
+    if (WatchHybridRequest(Event,{},false,*Channel)!=EHybridWatch::Added)
+    {UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: 肉鸽请求队列暂不可用。"));return;}
+    auto& Pending=HybridRequests.FindChecked(Event);
+    Pending.GMCard=Card->Id;
+    Pending.GMLevel=int32(Level);
+    if (!RequestForPlayer(*PS,EGuLiHybridArmyOperation::SetCardLevel,Event,{},Card->Id,uint32(Level)).IsValid())
+        RejectHybridRequest(Event,TEXT("当前席位的肉鸽权威尚未就绪"));
+}
+#endif
 FText UGuLiRogueCardSubsystem::GetCardText(const FString& Id, int32 Index,FGuid Player,bool bPreviewAcquisition)
 {
 	const auto* R=FindCard(Id); if (!R || !R->TextIds.IsValidIndex(Index)) return FText::GetEmpty();
@@ -217,7 +312,7 @@ UGuLiRogueCardSubsystem::EHybridWatch UGuLiRogueCardSubsystem::WatchHybridReques
 void UGuLiRogueCardSubsystem::HybridTransactionFinished(const FGuLiHybridTransactionResult& R)
 {
     if (R.Status==EGuLiHybridTransactionStatus::Paused || R.Status==EGuLiHybridTransactionStatus::Deferred) return;
-    if (R.IsCommitted()) {HybridRequests.Remove(R.Event);return;}
+    if (R.IsCommitted()) {CompleteHybridRequest(R.Event);return;}
     RejectHybridRequest(R.Event,FString::Printf(TEXT("Army transaction rejected (%u)"),uint8(R.Status)));
 }
 void UGuLiRogueCardSubsystem::HybridCommandFinished(const FGuLiHybridCommandResult& R)
@@ -225,9 +320,45 @@ void UGuLiRogueCardSubsystem::HybridCommandFinished(const FGuLiHybridCommandResu
     if (!R.Members.ContainsByPredicate([](const auto& M){return M.bAccepted;}))
         RejectHybridRequest(R.Event,TEXT("Army command was rejected before settlement"));
 }
+void UGuLiRogueCardSubsystem::CompleteHybridRequest(FGuid Event)
+{
+    FPendingHybridUI Pending;
+    if (HybridRequests.RemoveAndCopyValue(Event,Pending) && !Pending.GMCard.IsEmpty())
+        UE_LOG(LogGuLiStrike,Display,TEXT("gs.GM.Card.Set: %s = %d，肉鸽系统已确认。"),*Pending.GMCard,Pending.GMLevel);
+}
+FString UGuLiRogueCardSubsystem::ExplainCardLevelRejection(const FPendingHybridUI& Pending) const
+{
+    const auto* Channel=Pending.Channel.Get();
+    const auto* PC=Channel?Cast<APlayerController>(Channel->GetOwner()):nullptr;
+    const auto* PS=PC?PC->GetPlayerState<AGuLiBattlePlayerState>():nullptr;
+    const auto* Target=Catalog.Find(Pending.GMCard);
+    if (!PS || !Target) return {};
+    const auto* Counts=Target->Type==3?GroundAcquisitions.Find(PS->GetPlayerGuid()):Acquisitions.Find(uint32(PS->GetTeam()));
+    const auto Rank=[&](const FString& Id){return Id==Pending.GMCard?Pending.GMLevel:(Counts?Counts->FindRef(Id):0);};
+    for (const auto& Entry:Catalog)
+    {
+        const auto& Card=Entry.Value;
+        if (Card.Type!=Target->Type || !Rank(Card.Id)) continue;
+        for (int32 I=0;I<Card.RequiredCardIds.Num();++I)
+        {
+            const int32 Needed=Card.RequiredCardLevels.IsValidIndex(I)?FCString::Atoi(*Card.RequiredCardLevels[I]):1;
+            if (Rank(Card.RequiredCardIds[I])<Needed)
+                return FString::Printf(TEXT("%s 需要 %s 至少 %d 级"),*Card.Id,*Card.RequiredCardIds[I],Needed);
+        }
+        for (const auto& Excluded:Card.ExcludedCardIds)
+            if (Rank(Excluded)) return FString::Printf(TEXT("%s 与 %s 互斥"),*Card.Id,*Excluded);
+    }
+    return TEXT("请核对当前席位、武器数值上限和肉鸽系统状态");
+}
 void UGuLiRogueCardSubsystem::RejectHybridRequest(FGuid Event,const FString& Error)
 {
     FPendingHybridUI Pending;if (!HybridRequests.RemoveAndCopyValue(Event,Pending)) return;
+    if (!Pending.GMCard.IsEmpty())
+    {
+        UE_LOG(LogGuLiStrike,Warning,TEXT("gs.GM.Card.Set: %s = %d 被拒绝。%s (%s)"),
+            *Pending.GMCard,Pending.GMLevel,*ExplainCardLevelRejection(Pending),*Error);
+        return;
+    }
     auto* Channel=Pending.Channel.Get();if (!Channel) return;
     if (Pending.Selection) Channel->ClientRogueCardResult(Pending.Session,false,Error);
     else Channel->ClientRogueCardOffer(Event,Pending.Session,Epoch,{},Error);

@@ -1,5 +1,6 @@
 #include "Gameplay/GroundMech/Rogue/GuLiGroundRoguePresentation.h"
 #include "Gameplay/GroundMech/Rogue/GuLiGroundRogueRuntime.h"
+#include "Gameplay/Cards/GuLiRogueCardSubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/Cards/GuLiRogueCardSettings.h"
 #include "Gameplay/Cards/GuLiRogueCardPresentation.h"
@@ -43,6 +44,7 @@ void UGuLiGroundRoguePresentation::BeginPlay()
     if (!bCanPresent) return;
     const auto* Table = GetDefault<UGuLiRogueCardSettings>()->Cards.LoadSynchronous();
     if (!Table) return;
+    if(auto* cards=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>())BarrageCardId=cards->GetBarrageCardId();
     TArray<FSoftObjectPath> Paths;
     Table->ForeachRow<FGuLiStrikeRogueCardsCardsRow>(TEXT("Ranger card cues"), [&](const FName&, const FGuLiStrikeRogueCardsCardsRow& Row)
     {
@@ -51,7 +53,7 @@ void UGuLiGroundRoguePresentation::BeginPlay()
         for (const auto* Asset : {&Row.UpgradeVfx, &Row.MaxRankUpgradeVfx, &Row.CastPose, &Row.CastFlashVfx, &Row.CastLightningVfx})
             if (!Asset->IsNull()) Paths.AddUnique(Asset->ToSoftObjectPath());
     });
-    if (const auto* Row = Rows.Find(GuLiGroundRogue::BarrageCardId); Row && !Row->CastCamera.IsNull())
+    if (const auto* Row = Rows.Find(BarrageCardId); Row && !Row->CastCamera.IsNull())
     {
         if (!CameraPath.Load(*Row))
             UE_LOG(LogGroundRogueCues, Warning, TEXT("Invalid barrage camera table %s"), *Row->CastCamera.ToString());
@@ -125,7 +127,7 @@ void UGuLiGroundRoguePresentation::SetCast(uint64 FirstShotTick)
     if (FirstShotTick)
     {
         ClearShotRecoil();
-        const auto* Row = Rows.Find(GuLiGroundRogue::BarrageCardId);
+        const auto* Row = Rows.Find(BarrageCardId);
         // A late observer enters the current phase without replaying the charge flash.
         bFlashPassed = Row && CastAge(*Row) >= GuLiGroundRogue::BarrageWindupSeconds(*Row) - KINDA_SMALL_NUMBER;
         if (CanShowBody()) UpdateCast();
@@ -143,7 +145,7 @@ void UGuLiGroundRoguePresentation::ReadShotRecoil(FVector& Left, FVector& Right)
 {
     Left = Right = FVector::ZeroVector;
     if (!bCanPresent || !LatestShotTick()) return;
-    const auto* Row = Rows.Find(GuLiGroundRogue::BarrageCardId);
+    const auto* Row = Rows.Find(BarrageCardId);
     if (!Row || Row->CastShotRecoilSeconds <= 0.f || Row->CastShotRecoilCm <= 0.f) return;
     const double Now = UGuLiHybridActorComponent::BattleSeconds(GetOwner());
     auto Offset = [&](uint64 ShotTick) -> FVector
@@ -164,7 +166,7 @@ void UGuLiGroundRoguePresentation::ReadShotRecoil(FVector& Left, FVector& Right)
 void UGuLiGroundRoguePresentation::ReadPose(UAnimSequence*& Sequence, float& Time, float& Weight, float Delta) const
 {
     if (!CastFirstShotTick && Weight <= 0.f) return;
-    const auto* Row = Rows.Find(GuLiGroundRogue::BarrageCardId);
+    const auto* Row = Rows.Find(BarrageCardId);
     if (!Row || !bCanPresent) { Weight = 0; return; }
     Sequence = Cast<UAnimSequence>(Row->CastPose.Get());
     if (CastFirstShotTick && Sequence)
@@ -182,14 +184,14 @@ void UGuLiGroundRoguePresentation::ReadPose(UAnimSequence*& Sequence, float& Tim
 bool UGuLiGroundRoguePresentation::ReadCastCamera(FGuLiGroundBarrageCameraShot& Shot) const
 {
     if (!bCanPresent || !CastFirstShotTick) return false;
-    const auto* Row = Rows.Find(GuLiGroundRogue::BarrageCardId);
+    const auto* Row = Rows.Find(BarrageCardId);
     return Row && CameraPath.Sample(CastAge(*Row),Shot);
 }
 
 void UGuLiGroundRoguePresentation::UpdateCast()
 {
     if ((bFlashPassed && Lightning.IsValid()) || (Assets && !Assets->HasLoadCompleted())) return;
-    const auto* Row = Rows.Find(GuLiGroundRogue::BarrageCardId);
+    const auto* Row = Rows.Find(BarrageCardId);
     if (!Row) return;
     const float Age = CastAge(*Row);
     const float FlashAt = GuLiGroundRogue::BarrageDeployedAtSeconds(*Row);

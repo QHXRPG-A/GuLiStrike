@@ -328,10 +328,13 @@ FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifest(int32 Population,cons
         return Report(false,Error,File,Data.Objects.Num(),Data.Rules.Num(),Tables);
     if (bBarrageRange && Population!=600)
         return Report(false,TEXT("The barrage range uses the 600-unit roster."),File,0,0,Tables);
+    if(Data.Numbers.Contains(GuLiGroundRogue::BarrageWindupKey))
     {
         FGuLiSpellFieldConfig Field;
-        GuLiNet::Effects::Barrage Profile;
-        if (!UGuLiSpellFieldDataSubsystem::ResolveAuthoredConfig(GuLiGroundRogue::BarrageFieldId,Field) || !GuLiGroundRogue::LoadBarrage(Profile,Error))
+        GuLiNet::GroundRogue::Catalog catalog;
+        GuLiGroundRogue::FBarrageCard barrage;
+        const auto& Profile=barrage.Profile;
+        if (!UGuLiSpellFieldDataSubsystem::ResolveAuthoredConfig(GuLiGroundRogue::BarrageFieldId,Field) || !GuLiGroundRogue::LoadCatalog(catalog,Error,&barrage) || barrage.CardId.IsEmpty())
             return Report(false,TEXT("Missing Ground barrage field or rank table: ")+Error,File,0,0,Tables);
         Data.Numbers.Add(TEXT("ground_rogue/barrage/trial_level"),bBarrageRange?1:0);
         // A separate admission ID grants only the range's level-one preview. The normal

@@ -14,6 +14,8 @@ struct FGuLiGroundAttackSnapshot
     int32 ExplosiveBulletVfxId=0,ExplosiveImpactVfxId=0;
     int32 BulletVfxId=0,ImpactVfxId=0,MuzzleVfxId=0;
     GuLiNet::Effects::Set Effects;
+    // Derived from Effects when the shot freezes or is restored. Not part of the wire format.
+    GuLiNet::Effects::GroundHitProperties Hit;
     GuLiNet::Effects::Ricochet GetRicochet() const { return GuLiNet::Effects::GetRicochet(Effects); }
 };
 struct FGuLiGroundWeaponHit

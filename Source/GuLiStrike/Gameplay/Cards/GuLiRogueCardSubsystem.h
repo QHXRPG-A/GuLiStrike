@@ -21,6 +21,7 @@ public:
 	const FGuLiStrikeRogueCardsCardsRow* FindCard(const FString& Id);
 	FText GetText(const FString& Key);
 	FText GetCardText(const FString& Id, int32 Index,FGuid Player={},bool bPreviewAcquisition=true);
+    const FString& GetBarrageCardId();
     UFUNCTION(BlueprintPure,Category="Cards|Ground") int32 GetAcquisitionCount(FGuid Player,const FString& CardId) const;
     UFUNCTION(BlueprintPure,Category="Cards|Ground") bool HasCard(FGuid Player,const FString& CardId) const {return GetAcquisitionCount(Player,CardId)>0;}
     UPROPERTY(BlueprintAssignable,Category="Cards|Ground") FGuLiGroundRogueBuildChanged OnGroundBuildChanged;
@@ -29,11 +30,22 @@ public:
 	void Confirm(UGuLiCommanderNetSyncComponent& Channel, FGuid Session, const FString& CardId);
 	void Cancel(UGuLiCommanderNetSyncComponent& Channel, FGuid Session);
 	void PresentationClosed(UGuLiCommanderNetSyncComponent& Channel, FGuid Session);
+#if !UE_BUILD_SHIPPING
+    void SetCardLevelFromConsole(const TArray<FString>& Args);
+#endif
 
     virtual void Deinitialize() override;
 private:
     friend class FGuLiHybridArmyBridge;
     friend class FGuLiHybridGroundRogueBridge;
+    bool LoadGroundCatalog(FString& Error);
+    // Each play world builds its own catalog from the active card data.
+    UPROPERTY(Transient, DuplicateTransient)
+    TSet<FString> AvailableGroundCards;
+    UPROPERTY(Transient, DuplicateTransient)
+    FString GroundBarrageId;
+    UPROPERTY(Transient, DuplicateTransient)
+    bool bGroundCatalogLoaded = false;
     TMap<FGuid,TMap<FString,int32>> GroundAcquisitions;
     TMap<FGuid,uint64> GroundRevisions;
     TMap<FGuid,FGuid> GroundOpenSessions;
@@ -63,10 +75,19 @@ private:
     TMap<uint32,FGuid> HybridClosedSessions;
     enum class EHybridWatch : uint8 { Rejected, Added, Pending };
     EHybridWatch WatchHybridRequest(FGuid Event,FGuid Session,bool bSelection,UGuLiCommanderNetSyncComponent& Channel);
-    struct FPendingHybridUI {FGuid Session;bool Selection=false;TWeakObjectPtr<UGuLiCommanderNetSyncComponent> Channel;};
+    struct FPendingHybridUI
+    {
+        FGuid Session;
+        bool Selection=false;
+        TWeakObjectPtr<UGuLiCommanderNetSyncComponent> Channel;
+        FString GMCard;
+        int32 GMLevel=0;
+    };
     TMap<FGuid,FPendingHybridUI> HybridRequests;
     FDelegateHandle HybridCommandReceiptHandle;
     void RejectHybridRequest(FGuid Event,const FString& Error);
+    void CompleteHybridRequest(FGuid Event);
+    FString ExplainCardLevelRejection(const FPendingHybridUI& Pending) const;
     void HybridCommandFinished(const FGuLiHybridCommandResult& Result);
     UFUNCTION() void HybridTransactionFinished(const FGuLiHybridTransactionResult& Result);
 };

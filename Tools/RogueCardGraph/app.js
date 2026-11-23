@@ -13,8 +13,17 @@ const seatNames = { Commander: "指挥官", Ground: "地面", Air: "空中" };
 const nodeWidth = parseFloat(getComputedStyle(canvas).getPropertyValue("--node-width"));
 const nodeHeight = parseFloat(getComputedStyle(canvas).getPropertyValue("--node-height"));
 const svgNamespace = "http://www.w3.org/2000/svg";
+const maxLevel = 2147483647;
+const levelsPerPage = 5;
+const relationNames = { requires: "前置", excludes: "互斥", disables: "单向禁用" };
+const linkGuides = {
+    requires: "从前置卡右侧的圆点拖到后继卡，选中连线可设解锁等级。",
+    excludes: "从卡片右侧的圆点拖到另一张卡，两张卡互斥。",
+    disables: "从触发禁用的卡拖到被停用的卡，箭头指向被停用方。",
+};
 
 let state;
+let artwork;
 let graph;
 let savedGraph;
 let saving = false;
@@ -24,6 +33,8 @@ let selected;
 let pending;
 let gesture;
 let editing;
+let editingEffects;
+let firstEffectLevel = 1;
 const views = new Map();
 const undoStack = [];
 const nodeElements = new Map();
@@ -34,6 +45,20 @@ const cardById = (id) => graph.cards.find((card) => card.id === id);
 const linkKey = (link) => [link.kind, link.source, link.target].join("|");
 const isDirty = () => graph && JSON.stringify(graph) !== savedGraph;
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const limitText = (card) => card.maxLevel ? `${card.maxLevel} 级` : "不限等级";
+
+function relationText(link) {
+    const source = cardById(link.source).title;
+    const target = cardById(link.target).title;
+    if (link.kind === "requires") return `「${source}」达到 ${link.minLevel || 1} 级解锁「${target}」`;
+    if (link.kind === "excludes") return `「${source}」与「${target}」互斥`;
+    return link.futureOnly ? `「${source}」停止「${target}」的后续获取` : `「${source}」单向禁用「${target}」`;
+}
+
+function markDirection(path, kind) {
+    if (kind === "excludes") path.removeAttribute("marker-end");
+    else path.setAttribute("marker-end", kind === "disables" ? "url(#disable-arrow)" : "url(#require-arrow)");
+}
 
 function element(tag, text, className) {
     const node = document.createElement(tag);
@@ -47,6 +72,76 @@ function button(text, action, className) {
     node.type = "button";
     node.addEventListener("click", action);
     return node;
+}
+
+function artImage(url, alt, className) {
+    const image = element("img", undefined, className);
+    image.alt = alt;
+    image.draggable = false;
+    image.src = url;
+    return image;
+}
+
+function cardFace(card, media) {
+    const frame = element("div", undefined, "card-face");
+    const surface = element("div", undefined, "card-face-surface");
+    const [x, y, width, height] = media.window;
+    frame.style.aspectRatio = `${width} / ${height}`;
+    const poster = artImage(media.face, `${card.title}牌面`, "card-face-poster");
+    surface.append(poster);
+    frame.append(surface);
+    if (!media.layers) return frame;
+
+    const canvas = element("canvas");
+    canvas.width = Math.round(width);
+    canvas.height = Math.round(height);
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.hidden = true;
+    surface.append(canvas);
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const [tileWidth, tileHeight] = media.motion?.tile ?? artwork.tile;
+    const shifts = media.motion?.shifts ?? artwork.depth.map((depth) => [artwork.travel * depth, artwork.travel * depth]);
+    const tilt = media.motion?.tilt ?? artwork.tilt;
+    let atlas, pose, animation = 0;
+    function draw() {
+        animation = 0;
+        if (!pose || !frame.isConnected || !atlas?.naturalWidth) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        ctx.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
+        ctx.clearRect(0, 0, width, height);
+        for (let i = shifts.length - 1; i >= 0; i--) {
+            const [dx, dy] = shifts[i];
+            ctx.drawImage(atlas, (i % 3) * tileWidth, Math.floor(i / 3) * tileHeight, tileWidth, tileHeight,
+                pose[0] * dx - x, pose[1] * dy - y, tileWidth, tileHeight);
+        }
+        canvas.hidden = false;
+        surface.style.transform = `perspective(800px) rotateX(${-pose[1] * tilt}deg) rotateY(${pose[0] * tilt}deg)`;
+    }
+    function schedule() {
+        if (!animation && pose && atlas?.naturalWidth) animation = requestAnimationFrame(draw);
+    }
+    function reset() {
+        pose = null;
+        canvas.hidden = true;
+        surface.style.removeProperty("transform");
+    }
+    frame.addEventListener("pointermove", (event) => {
+        if (event.pointerType === "touch" || reducedMotion.matches) return reset();
+        const rect = frame.getBoundingClientRect();
+        pose = [clamp(2 * (event.clientX - rect.left) / rect.width - 1, -1, 1),
+            clamp(2 * (event.clientY - rect.top) / rect.height - 1, -1, 1)];
+        if (!atlas) {
+            atlas = new Image();
+            atlas.onload = schedule;
+            atlas.src = media.layers;
+        }
+        schedule();
+    });
+    frame.addEventListener("pointerleave", reset);
+    frame.addEventListener("pointercancel", reset);
+    return frame;
 }
 
 function notify(text, error = false) {
@@ -137,7 +232,7 @@ function positionNode(card) {
     nodeElements.get(card.id).style.transform = `translate(${card.x}px, ${card.y}px)`;
 }
 
-function curve(source, target) {
+function curve(source, target, lane) {
     const x1 = source.x + nodeWidth / 2;
     const y1 = source.y + nodeHeight / 2;
     const x2 = target.x + nodeWidth / 2;
@@ -147,19 +242,19 @@ function curve(source, target) {
         const a = x1 + direction * (nodeWidth / 2 + 4);
         const b = x2 - direction * (nodeWidth / 2 + 6);
         const bend = direction * Math.max(30, Math.abs(b - a) * .5);
-        return `M${a} ${y1} C${a + bend} ${y1} ${b - bend} ${y2} ${b} ${y2}`;
+        return `M${a} ${y1 + lane} C${a + bend} ${y1 + lane} ${b - bend} ${y2 + lane} ${b} ${y2 + lane}`;
     }
     const direction = y2 >= y1 ? 1 : -1;
     const a = y1 + direction * (nodeHeight / 2 + 4);
     const b = y2 - direction * (nodeHeight / 2 + 6);
     const bend = direction * Math.max(30, Math.abs(b - a) * .5);
-    return `M${x1} ${a} C${x1} ${a + bend} ${x2} ${b - bend} ${x2} ${b}`;
+    return `M${x1 + lane} ${a} C${x1 + lane} ${a + bend} ${x2 + lane} ${b - bend} ${x2 + lane} ${b}`;
 }
 
 function positionEdges() {
-    for (const { link, paths, label } of edgeElements.values()) {
+    for (const { link, paths, label, lane } of edgeElements.values()) {
         const source = cardById(link.source), target = cardById(link.target);
-        const path = curve(source, target);
+        const path = curve(source, target, lane);
         for (const node of paths) node.setAttribute("d", path);
         if (label) {
             const point = paths[0].getPointAtLength(paths[0].getTotalLength() / 2);
@@ -180,16 +275,16 @@ function refreshSelection() {
     }
     const guide = pending
         ? `已选「${cardById(pending.source).title}」，点选另一张卡完成连线。`
-        : mode === "requires"
-            ? "从前置卡右侧的圆点拖到需要它的卡。"
-            : "从卡片右侧的圆点拖到另一张卡，两张卡互斥。";
+        : linkGuides[mode];
     $("guide").textContent = guide;
 }
 
 function select(value) {
+    const changed = selected?.card !== value?.card || selected?.edge !== value?.edge;
     selected = value;
     refreshSelection();
     renderDetails();
+    if (changed) inspector.scrollTop = 0;
 }
 
 function selectCard(id) {
@@ -219,7 +314,12 @@ function renderCanvas() {
             if (event.detail === 0) selectCard(card.id);
         }, "node-label");
         label.title = card.title;
-        label.append(element("span", card.title));
+        const media = artwork?.cards[card.id];
+        if (media?.icon) {
+            label.classList.add("has-icon");
+            label.append(artImage(media.icon, "", "node-icon"));
+        }
+        label.append(element("span", card.title), element("small", limitText(card)));
         const port = button(undefined, (event) => {
             if (event.detail === 0) startLink(card.id);
         }, "port");
@@ -230,20 +330,28 @@ function renderCanvas() {
         nodeLayer.append(node);
         positionNode(card);
     }
-    for (const link of graph.links) {
-        if (!nodeElements.has(link.source) || !nodeElements.has(link.target)) continue;
+    const links = graph.links.filter((link) => nodeElements.has(link.source) && nodeElements.has(link.target));
+    const pairKey = (link) => [link.source, link.target].sort().join("|");
+    const pairs = new Map();
+    for (const link of links) {
+        const key = pairKey(link);
+        if (!pairs.has(key)) pairs.set(key, []);
+        pairs.get(key).push(link);
+    }
+    for (const link of links) {
         const key = linkKey(link);
         const group = document.createElementNS(svgNamespace, "g");
         group.setAttribute("class", `edge ${link.kind}`);
         group.dataset.edge = key;
         group.setAttribute("role", "button");
         group.setAttribute("tabindex", "0");
-        const left = cardById(link.source).title;
-        const right = cardById(link.target).title;
-        group.setAttribute("aria-label", link.kind === "requires" ? `${left}${link.minLevel || 1}级解锁${right}` : `${left}与${right}互斥`);
+        group.setAttribute("aria-label", relationText(link));
+        const tooltip = document.createElementNS(svgNamespace, "title");
+        tooltip.textContent = relationText(link);
+        group.append(tooltip);
         const line = document.createElementNS(svgNamespace, "path");
         line.setAttribute("class", "edge-stroke");
-        if (link.kind === "requires") line.setAttribute("marker-end", "url(#require-arrow)");
+        markDirection(line, link.kind);
         const hit = document.createElementNS(svgNamespace, "path");
         hit.setAttribute("class", "edge-hit");
         const showLink = () => {
@@ -267,7 +375,9 @@ function renderCanvas() {
             group.append(label);
         }
         edgeLayer.append(group);
-        edgeElements.set(key, { group, link, paths: [line, hit], label });
+        const pair = pairs.get(pairKey(link));
+        const lane = (pair.indexOf(link) - (pair.length - 1) / 2) * 18;
+        edgeElements.set(key, { group, link, paths: [line, hit], label, lane });
     }
     positionEdges();
     const empty = !cards.length;
@@ -286,7 +396,8 @@ function appendRelations(title, links, cardId) {
     for (const link of links) {
         const other = link.source === cardId ? link.target : link.source;
         const item = element("li");
-        const threshold = link.minLevel > 1 ? `（前置 ${link.minLevel} 级）` : "";
+        const threshold = link.kind === "requires" ? `（前置 ${link.minLevel || 1} 级）`
+            : link.futureOnly ? "（仅停止获取）" : "";
         item.append(button(cardById(other).title + threshold, () => select({ edge: linkKey(link) })));
         list.append(item);
     }
@@ -302,47 +413,90 @@ function renderDetails() {
         const original = state.base.cards.find((entry) => entry.id === card.id);
         inspector.append(element("p", details ? `${seatNames[seat]} · ${card.id}` : `${seatNames[seat]} · 草稿`, "caption"));
         inspector.append(element("h2", card.title));
-        inspector.append(element("h3", "说明"));
-        const descriptions = details && card.description === original.description
-            ? details.previews : [card.description];
-        for (const description of descriptions) {
-            inspector.append(element("p", description || "还没有填写描述。", "description"));
+        inspector.append(element("p", `总等级　${limitText(card)}`, "identity"));
+        const media = artwork?.cards[card.id];
+        if (media?.face) {
+            inspector.append(cardFace(card, media));
+            if (media.caption) inspector.append(element("p", media.caption, "caption"));
         }
-        if (details) {
-            const limit = details.maxAcquisitions || "不限";
-            inspector.append(element("p", `获取上限　${limit}`, "identity"));
-            if (details.note) {
-                const note = element("details");
-                note.append(element("summary", "机制备注"), element("p", details.note, "note"));
-                inspector.append(note);
+        const actions = element("div", undefined, "detail-actions");
+        actions.append(button("编辑卡牌", () => openCardDialog(card)), button("删除卡牌", deleteSelection, "danger quiet"));
+        inspector.append(actions);
+        const effects = Object.entries(card.levelEffects);
+        const formalTemplate = original?.description === card.description && /\{\d+\}/.test(card.description);
+        if (card.description && !formalTemplate && !effects.some(([, text]) => text === card.description)) {
+            inspector.append(element("h3", "通用说明"), element("p", card.description, "description"));
+        }
+        inspector.append(element("h3", "每级效果"));
+        if (effects.length) {
+            const list = element("dl", undefined, "effect-list");
+            for (const [level, effect] of effects) {
+                list.append(element("dt", `${level} 级`), element("dd", effect));
             }
+            inspector.append(list);
+        } else {
+            inspector.append(element("p", "尚未填写逐级效果。", "muted"));
+        }
+        if (details?.note) {
+            const note = element("details");
+            note.append(element("summary", "正式卡表备注"), element("p", details.note, "note"));
+            inspector.append(note);
         }
         const linked = graph.links.filter((entry) => entry.source === card.id || entry.target === card.id);
         appendRelations("前置卡", linked.filter((entry) => entry.kind === "requires" && entry.target === card.id), card.id);
         appendRelations("后继卡", linked.filter((entry) => entry.kind === "requires" && entry.source === card.id), card.id);
         appendRelations("互斥卡", linked.filter((entry) => entry.kind === "excludes"), card.id);
-        const actions = element("div", undefined, "detail-actions");
-        actions.append(button("编辑卡牌", () => openCardDialog(card)), button("删除卡牌", deleteSelection, "danger quiet"));
-        inspector.append(actions);
+        appendRelations("本牌禁用", linked.filter((entry) => entry.kind === "disables" && entry.source === card.id), card.id);
+        appendRelations("被以下卡牌禁用", linked.filter((entry) => entry.kind === "disables" && entry.target === card.id), card.id);
     } else if (link) {
         const left = cardById(link.source).title;
         const right = cardById(link.target).title;
         const requires = link.kind === "requires";
-        inspector.append(element("p", requires ? "前置关系" : "互斥关系", "caption"));
-        inspector.append(element("h2", requires ? `${left} → ${right}` : `${left} ↔ ${right}`));
-        inspector.append(element("p", requires ? `「${left}」达到 ${link.minLevel || 1} 级后，「${right}」可进入候选池。` : "本局两张卡只能取得其中一张。", "description"));
+        inspector.append(element("p", relationNames[link.kind], "caption"));
+        inspector.append(element("h2", link.kind === "excludes" ? `${left} ↔ ${right}` : `${left} → ${right}`));
+        const explanation = requires ? `「${left}」达到 ${link.minLevel || 1} 级后，满足这条前置。`
+            : link.kind === "excludes" ? "本局两张卡只能取得其中一张。"
+            : `先取得「${right}」仍可选择「${left}」。取得「${left}」时，「${right}」退出后续候选。`;
+        const relationshipDescription = element("p", explanation, "description");
+        inspector.append(relationshipDescription);
         if (requires) {
             const label = element("label", "前置等级 ");
             const input = document.createElement("input");
-            input.type = "number"; input.min = "1";
-            input.max = String(state.base.details[link.source]?.maxAcquisitions || 2147483647);
+            input.type = "number"; input.min = "1"; input.required = true;
+            input.max = String(cardById(link.source).maxLevel || maxLevel);
             input.value = String(link.minLevel || 1);
-            input.addEventListener("change", () => {
+            let recorded = false;
+            function updateThreshold() {
                 const level = input.valueAsNumber;
-                if (!Number.isInteger(level) || !input.checkValidity()) { input.reportValidity(); return; }
-                editGraph(() => { if (level === 1) delete link.minLevel; else link.minLevel = level; });
+                if (!input.validity.valid || level === (link.minLevel || 1)) return;
+                if (!recorded) remember(structuredClone(graph));
+                recorded = true;
+                if (level === 1) delete link.minLevel;
+                else link.minLevel = level;
+                relationshipDescription.textContent = relationText(link) + "。";
+                renderCanvas();
+                refreshSelection();
+                refreshStatus();
+            }
+            input.addEventListener("input", updateThreshold);
+            input.addEventListener("change", () => {
+                if (!input.validity.valid) {
+                    notify(`前置等级须为 1 至 ${input.max} 的整数。`, true);
+                    input.value = String(link.minLevel || 1);
+                } else updateThreshold();
+                recorded = false;
             });
             label.append(input); inspector.append(label);
+        } else if (link.kind === "disables") {
+            const label = element("label", "禁用方式 ");
+            const select = element("select");
+            select.append(new Option("停用已有效果并停止获取", "all"), new Option("保留已有等级，仅停止后续获取", "future"));
+            select.value = link.futureOnly ? "future" : "all";
+            select.addEventListener("change", () => editGraph(() => {
+                if (select.value === "future") link.futureOnly = true;
+                else delete link.futureOnly;
+            }));
+            label.append(select); inspector.append(label);
         }
         const actions = element("div", undefined, "detail-actions");
         actions.append(button("删除连线", deleteSelection, "danger quiet"));
@@ -374,7 +528,7 @@ function validateLinks(links) {
     const conflicts = new Map(graph.cards.map((card) => [card.id, new Set()]));
     for (const { kind, source, target } of links) {
         if (kind === "requires") parents.get(target).push(source);
-        else {
+        else if (kind === "excludes") {
             conflicts.get(source).add(target);
             conflicts.get(target).add(source);
         }
@@ -426,7 +580,7 @@ function addLink(source, target, kind) {
     }
     selected = { edge: key };
     editGraph(() => graph.links.push(link));
-    notify(kind === "requires" ? "已添加前置关系。" : "已添加互斥关系。");
+    notify(`已添加${relationNames[kind]}关系。`);
 }
 
 function deleteSelection() {
@@ -444,6 +598,44 @@ function deleteSelection() {
     notify(current.card ? "已移除卡牌及其连线，可撤销。" : "已删除连线，可撤销。");
 }
 
+function renderEffectInputs() {
+    const capInput = $("card-max-level");
+    const cap = capInput.valueAsNumber;
+    const limit = cap === 0 ? maxLevel : Number.isInteger(cap) && cap > 0 ? Math.min(cap, maxLevel) : 1;
+    firstEffectLevel = 1 + levelsPerPage * Math.floor((clamp(firstEffectLevel, 1, limit) - 1) / levelsPerPage);
+    const last = Math.min(limit, firstEffectLevel + levelsPerPage - 1);
+    const fields = $("level-inputs");
+    fields.replaceChildren();
+    for (let level = firstEffectLevel; level <= last; level++) {
+        const label = element("label", `第 ${level} 级`);
+        const input = element("textarea");
+        input.id = `effect-${level}`;
+        label.htmlFor = input.id;
+        input.rows = 2;
+        input.maxLength = 2000;
+        input.value = editingEffects[level] || "";
+        input.addEventListener("input", () => {
+            if (input.value.trim()) editingEffects[level] = input.value;
+            else delete editingEffects[level];
+        });
+        fields.append(label, input);
+    }
+    $("level-pages").hidden = limit <= levelsPerPage;
+    $("prev-levels").disabled = firstEffectLevel === 1;
+    $("next-levels").disabled = last === limit;
+    $("jump-level").max = String(limit);
+    $("jump-level").value = String(firstEffectLevel);
+
+    const conflict = editing && cap > 0 && graph.links.find((link) =>
+        link.kind === "requires" && link.source === editing && (link.minLevel || 1) > cap);
+    const error = conflict ? `「${cardById(conflict.target).title}」需要本牌 ${conflict.minLevel} 级，请先调整该前置线。` : "";
+    capInput.setCustomValidity(error);
+    const removed = Object.keys(editingEffects).filter((level) => Number(level) > limit).length;
+    const message = error || (removed ? `确定后将移除超出总等级的 ${removed} 条效果，可撤销。` : "");
+    $("level-notice").hidden = !message;
+    $("level-notice").textContent = message;
+}
+
 function openCardDialog(card) {
     if (!state) return;
     editing = card?.id;
@@ -451,11 +643,15 @@ function openCardDialog(card) {
     $("card-title").value = card?.title || "";
     $("card-title").setCustomValidity("");
     $("card-description").value = card?.description || "";
+    $("card-max-level").value = String(card?.maxLevel ?? 1);
+    editingEffects = { ...card?.levelEffects };
+    firstEffectLevel = 1;
+    renderEffectInputs();
     dialog.showModal();
     $("card-title").focus();
 }
 
-function addCard(title, description) {
+function addCard(values) {
     const view = getView();
     const x = Math.round((canvas.clientWidth / 2 - view.x) / view.scale - nodeWidth / 2);
     let y = Math.round((canvas.clientHeight / 2 - view.y) / view.scale - nodeHeight / 2);
@@ -466,7 +662,7 @@ function addCard(title, description) {
     const id = `draft-${crypto.randomUUID()}`;
     selected = { card: id };
     pending = null;
-    editGraph(() => graph.cards.push({ id, seat, title, description, x, y }));
+    editGraph(() => graph.cards.push({ id, seat, ...values, x, y }));
     view.y = canvas.clientHeight / 2 - (y + nodeHeight / 2) * view.scale;
     updateView();
     nodeElements.get(id).querySelector(".node-label").focus({ preventScroll: true });
@@ -539,6 +735,8 @@ function moveGesture(event) {
         const center = card.y + nodeHeight / 2;
         preview.setAttribute("d", `M${from} ${center} C${from + 38} ${center} ${x - 30} ${y} ${x} ${y}`);
         preview.classList.toggle("excludes", gesture.kind === "excludes");
+        preview.classList.toggle("disables", gesture.kind === "disables");
+        markDirection(preview, gesture.kind);
         preview.setAttribute("visibility", "visible");
         gesture.target = document.elementFromPoint(event.clientX, event.clientY)?.closest(".graph-node")?.dataset.card;
         refreshSelection();
@@ -593,7 +791,7 @@ async function save() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                graph: JSON.parse(snapshot), revision: state.revision, baseFingerprint: state.base.fingerprint,
+                schema: state.schema, graph: JSON.parse(snapshot), revision: state.revision, baseFingerprint: state.base.fingerprint,
             }),
         });
         const result = await response.json();
@@ -634,6 +832,24 @@ $("fit").addEventListener("click", fit);
 $("zoom-in").addEventListener("click", () => zoom(1.18));
 $("zoom-out").addEventListener("click", () => zoom(1 / 1.18));
 $("card-title").addEventListener("input", () => $("card-title").setCustomValidity(""));
+$("card-max-level").addEventListener("input", renderEffectInputs);
+$("prev-levels").addEventListener("click", () => { firstEffectLevel -= levelsPerPage; renderEffectInputs(); });
+$("next-levels").addEventListener("click", () => { firstEffectLevel += levelsPerPage; renderEffectInputs(); });
+function jumpToLevel(event) {
+    const input = event.target;
+    if (!Number.isInteger(input.valueAsNumber) || !input.checkValidity()) { input.reportValidity(); return; }
+    const level = input.valueAsNumber;
+    firstEffectLevel = level;
+    renderEffectInputs();
+    $(`effect-${level}`).focus();
+}
+$("jump-level").addEventListener("change", jumpToLevel);
+$("jump-level").addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        jumpToLevel(event);
+    }
+});
 $("card-form").addEventListener("submit", (event) => {
     event.preventDefault();
     const title = $("card-title").value.trim();
@@ -643,14 +859,20 @@ $("card-form").addEventListener("submit", (event) => {
         $("card-title").reportValidity();
         return;
     }
+    const cap = $("card-max-level").valueAsNumber;
+    const effects = Object.fromEntries(Object.entries(editingEffects)
+        .filter(([level]) => cap === 0 || Number(level) <= cap)
+        .map(([level, text]) => [level, text.trim()]));
+    const values = { title, description, maxLevel: cap, levelEffects: effects };
     dialog.close();
     if (editing) {
         const card = cardById(editing);
-        if (title === card.title && description === card.description) return;
-        editGraph(() => Object.assign(card, { title, description }));
+        if (title === card.title && description === card.description && cap === card.maxLevel &&
+            JSON.stringify(effects) === JSON.stringify(card.levelEffects)) return;
+        editGraph(() => Object.assign(card, values));
         notify("已修改卡牌。");
     } else {
-        addCard(title, description);
+        addCard(values);
         notify("已新增草稿卡牌。");
     }
 });
@@ -668,9 +890,14 @@ canvas.addEventListener("wheel", (event) => {
 window.addEventListener("keydown", (event) => {
     if (!graph || dialog.open || gesture) return;
     const modifier = event.ctrlKey || event.metaKey;
+    const field = event.target.closest?.("input, textarea, select, [contenteditable=true]");
     if (modifier && event.key.toLowerCase() === "s") {
         event.preventDefault();
+        if (field?.reportValidity && !field.reportValidity()) return;
+        if (field) field.blur();
         save();
+    } else if (field) {
+        return;
     } else if (modifier && !event.shiftKey && event.key.toLowerCase() === "z") {
         event.preventDefault();
         undo();
@@ -691,15 +918,21 @@ window.addEventListener("beforeunload", (event) => {
 
 async function load() {
     try {
-        const response = await fetch("/api/graph");
+        const [response, media] = await Promise.all([
+            fetch("/api/graph"),
+            fetch("/artwork/catalog.json").then((r) => r.ok ? r.json() : null).catch(() => null),
+        ]);
         const result = await response.json();
         if (!response.ok) throw new Error(result.error);
+        if (result.schema !== 2) throw new Error("正在更新等级编辑器，请刷新页面。");
         state = result;
+        artwork = media;
         graph = state.graph;
         savedGraph = JSON.stringify(graph);
         setMode("requires");
         render();
         fit();
+        if (!artwork) notify("暂时无法载入卡牌美术。", true);
     } catch (error) {
         $("empty-title").textContent = "卡表读取失败";
         $("empty-text").textContent = error.message;

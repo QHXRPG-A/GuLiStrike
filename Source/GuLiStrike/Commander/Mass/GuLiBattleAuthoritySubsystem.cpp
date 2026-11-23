@@ -3297,6 +3297,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 
     const auto* UnitCatalog=World->GetSubsystem<UGuLiUnitDataSubsystem>();
     check(UnitCatalog && UnitCatalog->IsCatalogValid());
+    const auto* movementWorld=World->GetSubsystem<UGuLiHybridWorldSubsystem>();
     const auto& StaticCircles=GroundObstacleRegistry->GetCircleIndex();
     auto& DynamicCircles=AuthorityState->CircleIndex;
     auto& QueryScratch=AuthorityState->CircleScratch;
@@ -3364,7 +3365,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
             GuLiCircleAvoidance::FRequest Request;Request.SelfId=Soldier.SoldierId.Value;
             Request.IgnoredSource=Soldier.BirthBuildingSource;
             Request.Position=Soldier.GroundLocation();Request.Direction=DesiredVelocities[SoldierIndex];
-            Request.Speed=DesiredVelocities[SoldierIndex].Size2D();Request.DeltaSeconds=MovementDeltaSeconds;
+            Request.Speed=DesiredVelocities[SoldierIndex].Size2D()*(movementWorld?movementWorld->GetMovementMultiplier(Soldier.HybridKey):1.f);
+            Request.DeltaSeconds=MovementDeltaSeconds;
             Request.AllowSteering=!bYieldsThisStep[SoldierIndex];
             Request.LayerMask=uint8(1u<<uint8(Soldier.MovementLayer));
             Request.MinimumZ=Request.Position.Z;Request.MaximumZ=Request.Position.Z+AvoidanceAgentHeightCentimeters;

@@ -42,6 +42,10 @@
                         <svg viewBox="0 0 23 12" aria-hidden="true"><path d="M1 6H22"/></svg>
                         互斥
                     </button>
+                    <button type="button" data-mode="disables" aria-pressed="false">
+                        <svg viewBox="0 0 23 12" aria-hidden="true"><path d="M1 6H16M12 2L16 6L12 10M20 1V11"/></svg>
+                        单向禁用
+                    </button>
                 </div>
                 <p id="guide">从前置卡右侧的圆点拖到需要它的卡。</p>
                 <button type="button" class="quiet fit" id="fit" title="将当前页所有节点放入视野">适应画布</button>
@@ -53,6 +57,9 @@
                         <defs>
                             <marker id="require-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
                                 <path d="M1 1L9 5L1 9" fill="none" stroke="var(--dependency)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </marker>
+                            <marker id="disable-arrow" markerWidth="13" markerHeight="12" refX="11" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+                                <path d="M1 2L7 6L1 10M10 1V11" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </marker>
                         </defs>
                         <g id="edges"></g>
@@ -93,8 +100,24 @@
             <h2 id="dialog-title">新增卡牌</h2>
             <label for="card-title">卡名</label>
             <input id="card-title" name="title" maxlength="80" required autocomplete="off">
-            <label for="card-description">描述</label>
-            <textarea id="card-description" name="description" rows="5" maxlength="2000"></textarea>
+            <label for="card-description">通用说明</label>
+            <textarea id="card-description" name="description" rows="3" maxlength="2000"></textarea>
+            <div class="level-limit">
+                <label for="card-max-level">总等级</label>
+                <input id="card-max-level" type="number" min="0" max="2147483647" step="1" required aria-describedby="level-limit-hint">
+                <small id="level-limit-hint">0 为不限等级</small>
+            </div>
+            <fieldset class="level-editor">
+                <legend>每级效果</legend>
+                <div id="level-inputs"></div>
+                <div id="level-pages" class="level-pages" hidden>
+                    <button type="button" id="prev-levels">上一组</button>
+                    <label for="jump-level">跳到等级</label>
+                    <input id="jump-level" type="number" min="1" step="1">
+                    <button type="button" id="next-levels">下一组</button>
+                </div>
+            </fieldset>
+            <p id="level-notice" class="level-notice" role="status" hidden></p>
             <div class="dialog-actions">
                 <button id="cancel-card" type="button" class="quiet">取消</button>
                 <button type="submit" class="primary">确定</button>

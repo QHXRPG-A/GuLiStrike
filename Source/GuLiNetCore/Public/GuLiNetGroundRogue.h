@@ -41,14 +41,17 @@ struct Build
     std::uint64_t Random=1;
     Army::Offer Current;
     std::map<std::string,std::uint32_t> Acquired;
+    // Each removal also advances the revision. Previously frozen attacks retain their revision.
+    std::uint64_t RemovedRanks=0;
+    Revision ExplosiveResetRevision=0;
 };
 // The state carrier follows the Ground seat; builds inside it always belong to the player ID.
 struct State {Catalog Definitions;std::map<Id,Build> Players;};
-struct ShotProgress {std::uint32_t ExplosiveLevel=0,Count=0;};
+struct ShotProgress {std::uint32_t ExplosiveLevel=0,Count=0;Revision ResetRevision=0;};
 struct ShotCounters {std::map<Id,ShotProgress> Players;};
 GULINETCORE_API Bytes EncodeCounters(const ShotCounters&);
 GULINETCORE_API bool DecodeCounters(std::span<const std::uint8_t>,ShotCounters&);
-GULINETCORE_API std::uint32_t ReadProgress(const ShotCounters&,const Id&,const Effects::Set&);
+GULINETCORE_API std::uint32_t ReadProgress(const ShotCounters&,const Id&,const Effects::Set&,Revision ResetRevision=0);
 struct Attack
 {
     ObjectKey Source,Root;
@@ -60,6 +63,7 @@ struct Attack
     std::uint32_t BulletVfx=0,ImpactVfx=0,MuzzleVfx=0;
     float ExplosiveDamage=0,ExplosiveRadius=0;
     std::uint32_t ExplosiveBulletVfx=0,ExplosiveImpactVfx=0;
+    Revision ExplosiveResetRevision=0;
 };
 // Fit the frozen area target keys beside the full ricochet route in the shared
 // 64 KiB capability envelope. UE's private receipt payload has a separate limit.

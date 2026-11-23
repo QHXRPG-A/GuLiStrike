@@ -6,6 +6,7 @@ The CLI sends the same functions to the live editor through Scripts/ue_exec.py.
 Direct editor execution defaults to the nonmutating preflight action.
 """
 import argparse
+import gc
 import hashlib
 import json
 import math
@@ -355,7 +356,7 @@ def import_tables():
     return result
 
 
-def prepare_review(ident):
+def prepare_review(ident, reload_saved=True):
     unreal = _ue()
     preflight([ident], mutation=True)
     _, catalog, _ = load_catalog()
@@ -365,7 +366,8 @@ def prepare_review(ident):
     actors = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     assert not unreal.EditorLoadingAndSavingUtils.get_dirty_map_packages(), "Preserve unsaved map work"
     if lib.does_asset_exist(REVIEW_MAP):
-        assert level.load_level(REVIEW_MAP)
+        if editor.get_editor_world().get_path_name().split('.', 1)[0] != REVIEW_MAP:
+            assert level.load_level(REVIEW_MAP)
         world = editor.get_editor_world()
         assert lib.get_metadata_tag(world, "GuLi.CardArtwork.Review") == "1", "Unrelated review map"
         director = next(a for a in actors.get_all_level_actors() if a.get_actor_label() == REVIEW_ACTOR)
@@ -386,6 +388,7 @@ def prepare_review(ident):
         sky.set_editor_property("source_type", unreal.SkyLightSourceType.SLS_SPECIFIED_CUBEMAP)
         sky.set_editor_property("cubemap", unreal.load_asset("/Engine/MapTemplates/Sky/DaylightAmbientCubemap"))
         sky.set_intensity(0.7)
+        del start, light, sky
     row = catalog["artworks"][ident]
     artwork = unreal.load_asset(row["Material"])
     assert artwork
@@ -423,7 +426,11 @@ def prepare_review(ident):
     editor.set_level_viewport_camera_info(unreal.Vector(0, 140, 0), unreal.Rotator(yaw=-90))
     assert unreal.EditorLoadingAndSavingUtils.save_map(world, REVIEW_MAP)
     EVENTS.append({'kind': 'map', 'asset': REVIEW_MAP, 'saved': True})
-    assert level.load_level(REVIEW_MAP)
+    if reload_saved:
+        # Python wrappers retain the old world during a map load, including through components.
+        del world, director, note, camera, pp
+        gc.collect()
+        assert level.load_level(REVIEW_MAP)
     world = editor.get_editor_world()
     director = next(a for a in actors.get_all_level_actors() if a.get_actor_label() == REVIEW_ACTOR)
     assert [_asset_path(m) for m in director.get_editor_property("CardFrontMaterials")] == [row["Material"]] * 3

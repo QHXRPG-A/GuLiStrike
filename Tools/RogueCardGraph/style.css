@@ -21,7 +21,7 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body { margin: 0; min-height: 100dvh; display: flex; flex-direction: column; }
-button, input, textarea { font: inherit; color: inherit; }
+button, input, textarea, select { font: inherit; color: inherit; }
 button {
     display: inline-flex;
     align-items: center;
@@ -82,6 +82,7 @@ h1 { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
 .modes { flex: none; }
 .modes svg { width: 19px; height: 13px; fill: none; stroke: var(--dependency); stroke-width: 1.6; }
 .modes [data-mode="excludes"] svg { stroke: var(--exclusion); stroke-dasharray: 4 3; }
+.modes [data-mode="disables"] svg { stroke: var(--accent); }
 #guide { margin: 0; color: var(--muted); font-size: 12px; }
 .fit { margin-left: auto; }
 .source-notice { padding: 8px 14px; color: var(--accent); border-block-start: 1px solid var(--border); }
@@ -104,6 +105,7 @@ h1 { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
 .edge-stroke { fill: none; stroke: var(--dependency); stroke-width: 2; pointer-events: none; }
 .edge-level { fill: var(--dependency); font-size: 12px; font-weight: 650; pointer-events: none; }
 .excludes .edge-stroke, .edge-stroke.excludes { stroke: var(--exclusion); stroke-dasharray: 6 5; }
+.disables .edge-stroke, .edge-stroke.disables { stroke: var(--accent); stroke-dasharray: 9 3 2 3; }
 .edge-hit { fill: none; stroke: transparent; stroke-width: 16; pointer-events: stroke; cursor: pointer; }
 .edge:hover .edge-stroke, .edge.selected .edge-stroke, .edge:focus-visible .edge-stroke { stroke-width: 3.4; }
 #link-preview { opacity: .7; }
@@ -116,7 +118,10 @@ h1 { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
     pointer-events: auto;
     width: 100%;
     height: 100%;
-    justify-content: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1px;
     padding: 0 16px;
     text-align: left;
     background: var(--node);
@@ -126,7 +131,18 @@ h1 { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
     font-weight: 620;
     cursor: grab;
 }
-.node-label span { overflow: hidden; text-overflow: ellipsis; }
+.node-label span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.node-label small { color: var(--muted); font-size: 11px; font-weight: 500; }
+.node-label.has-icon {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-content: center;
+    align-items: center;
+    gap: 0 8px;
+    padding-inline: 10px 14px;
+}
+.node-icon { grid-row: 1 / 3; width: 44px; height: 44px; object-fit: contain; pointer-events: none; }
 .node-label:active { cursor: grabbing; }
 .draft-node .node-label { border-style: dashed; }
 .graph-node.selected .node-label, .graph-node.drop-target .node-label {
@@ -151,6 +167,8 @@ h1 { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
 .port:hover::before, .link-source .port::before { background: var(--dependency); }
 .canvas[data-mode="excludes"] .port::before { border-color: var(--exclusion); }
 .canvas[data-mode="excludes"] .port:hover::before { background: var(--exclusion); }
+.canvas[data-mode="disables"] .port::before { border-color: var(--accent); }
+.canvas[data-mode="disables"] .port:hover::before { background: var(--accent); }
 .empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; pointer-events: none; padding: 20px; }
 .empty p { margin: 6px 0; }
 #empty-title { font-size: 17px; font-weight: 620; }
@@ -168,6 +186,18 @@ h1 { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
 .inspector .caption { margin: 0; color: var(--dependency); font-size: 12px; letter-spacing: .05em; }
 .inspector .description, .inspector .note { margin: 6px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .inspector .note, .inspector .identity { color: var(--muted); font-size: 12px; }
+.inspector .identity { margin: 4px 0; }
+.card-face { position: relative; width: 100%; margin: 12px 0 14px; }
+.card-face-surface { position: absolute; inset: 0; overflow: hidden; border-radius: 7px; background: var(--board); }
+.card-face-poster, .card-face canvas { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.card-face canvas { position: absolute; inset: 0; }
+.effect-list { display: grid; grid-template-columns: max-content 1fr; gap: 9px; margin: 8px 0; }
+.effect-list dt { color: var(--dependency); font-size: 12px; font-weight: 600; }
+.effect-list dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.inspector label { display: grid; gap: 5px; color: var(--muted); margin: 12px 0; }
+.inspector input, .inspector select {
+    min-width: 0; width: 100%; padding: 6px 8px; border-radius: 5px; border: 1px solid var(--border); background: var(--base);
+}
 .inspector details { margin-top: 12px; color: var(--muted); font-size: 12px; }
 .inspector summary { cursor: pointer; }
 .relation-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 3px; }
@@ -180,7 +210,9 @@ h1 { margin: 2px 0 0; font-size: 16px; font-weight: 650; }
 #message.error { color: var(--exclusion); }
 
 dialog {
-    width: min(440px, calc(100vw - 28px));
+    width: min(560px, calc(100vw - 28px));
+    max-height: calc(100dvh - 40px);
+    overflow: auto;
     padding: 21px;
     background: var(--panel);
     color: var(--text);
@@ -199,7 +231,18 @@ dialog input, dialog textarea {
 }
 dialog textarea { resize: vertical; }
 dialog input:focus, dialog textarea:focus { outline: 1px solid var(--dependency); }
-.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 15px; }
+.level-limit, .level-pages { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
+.level-limit label, .level-pages label { margin: 0; }
+.level-limit input, .level-pages input { width: 7em; }
+.level-limit small { color: var(--muted); }
+.level-editor { min-width: 0; margin: 16px 0 0; border: 0; border-top: 1px solid var(--border); padding: 0; }
+.level-editor legend { padding: 0 8px 0 0; font-weight: 600; }
+.level-editor textarea { display: block; }
+.level-notice { margin: 8px 0; color: var(--accent); }
+.dialog-actions {
+    position: sticky; bottom: -21px; display: flex; justify-content: flex-end; gap: 8px;
+    margin: 12px -4px -6px; padding: 10px 4px; background: var(--panel);
+}
 
 @media (max-width: 880px) {
     .topbar { gap: 9px 15px; flex-wrap: wrap; }

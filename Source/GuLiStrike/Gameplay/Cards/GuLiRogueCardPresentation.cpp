@@ -537,6 +537,10 @@ void UGuLiRogueCardPresentation::ReceiveResult(FGuid Session,bool bSuccess,const
     }
 	else ErrorText=FText::Format(GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>()->GetText(TEXT("UI.RogueCards.Failed")),FText::FromString(Error));
 }
+void UGuLiRogueCardPresentation::InvalidateOffer(FGuid Session)
+{
+    if (bOpen && !bCommitted && Session==SessionId) Close(true);
+}
 void UGuLiRogueCardPresentation::Cancel()
 {
 	if (!bOpen || bClosing || bSubmitting) return;

@@ -203,9 +203,9 @@ float UGuLiGroundMechMovementComponent::GetMaxSpeed() const
 	const auto* Ability = Rocket();
 	const auto* Mech = Cast<AGuLiGroundMechCharacter>(CharacterOwner);
 	if (IsFalling() && Mech && Ability && Ability->IsConfigured())
-		return FMath::Max(Mech->GetWalkSpeed()*Ability->GetConfiguration().AirSpeedMultiplier,
+		return FMath::Max(Mech->GetWalkSpeed()*Ability->GetConfiguration().AirSpeedMultiplier*UGuLiHybridActorComponent::MovementMultiplier(Mech),
 			float(GetAirTargetVelocity(bRocketAllowedThisMove && RocketState.Fuel>UE_SMALL_NUMBER).Size()));
-	return IsMassSupportMode() ? MaxWalkSpeed : Super::GetMaxSpeed();
+	return (IsMassSupportMode() ? MaxWalkSpeed : Super::GetMaxSpeed())*UGuLiHybridActorComponent::MovementMultiplier(CharacterOwner);
 }
 FVector UGuLiGroundMechMovementComponent::GetAirTargetVelocity(bool bThrust) const
 {
@@ -219,7 +219,7 @@ FVector UGuLiGroundMechMovementComponent::GetAirTargetVelocity(bool bThrust) con
 	const float Base=Mech->GetWalkSpeed()*Config.AirSpeedMultiplier;
 	const float Forward=bThrust && Input.X>UE_KINDA_SMALL_NUMBER ? MaxWalkSpeed*Config.JetForwardSpeedMultiplier : Base;
 	const float Strafe=Base*Mech->GetMobilityConfiguration().Mobility.StrafeSpeedMultiplier;
-	return Facing.RotateVector(FVector(Input.X*Forward,Input.Y*Strafe,0));
+	return Facing.RotateVector(FVector(Input.X*Forward,Input.Y*Strafe,0))*UGuLiHybridActorComponent::MovementMultiplier(Mech);
 }
 float UGuLiGroundMechMovementComponent::GetMaxBrakingDeceleration() const
 {
@@ -540,7 +540,7 @@ void UGuLiGroundMechMovementComponent::PhysFalling(float DeltaTime, int32 Iterat
 			if (bAirSteering)
 			{
 				const auto* Mech=CastChecked<AGuLiGroundMechCharacter>(CharacterOwner);
-				const float Base=Mech->GetWalkSpeed()*Ability->GetConfiguration().AirSpeedMultiplier;
+				const float Base=Mech->GetWalkSpeed()*Ability->GetConfiguration().AirSpeedMultiplier*UGuLiHybridActorComponent::MovementMultiplier(Mech);
 				// Preserve world inertia. Releasing thrust/W changes the target, never
 				// instantly clips the current velocity or rotates it with the body.
 				const FVector Target=Acceleration.IsNearlyZero() ? Velocity.GetClampedToMaxSize(Base) : GetAirTargetVelocity(bThrust);

@@ -79,6 +79,7 @@ void UGuLiProjectilePoolSubsystem::Clear()
 	NextGroundStepTime = 0; Stats = {}; Stats.Capacity = Slots.Num();
 	HybridHistories[0].Reset(); HybridHistories[1].Reset();
     PendingGroundHits.Reset();
+    VolleyBodies.Reset(); VolleySources.Reset(); VolleySource={}; VolleyOrdinal=0;
 }
 
 void UGuLiProjectilePoolSubsystem::BeginEpoch(const uint32 NewEpoch)
@@ -267,6 +268,50 @@ bool UGuLiProjectilePoolSubsystem::Retire(const FGuLiProjectilePoolHandle Handle
 	Terminal.Location = Position; Terminal.SampleTime = FMath::Max(Time, Terminal.StartTime); ++Terminal.Sequence;
 	OnState.Broadcast(Terminal, true);
 	return true;
+}
+
+void UGuLiProjectilePoolSubsystem::SnapshotGroundVolley(const FGuLiPooledProjectileLaunch& Shot)
+{
+    if(VolleyOrdinal && VolleyOrdinal==Shot.FireOrdinal && VolleyTime==Shot.FireNotifyTime && VolleySource==Shot.Context.Source)return;
+    VolleySource=Shot.Context.Source;
+    VolleyOrdinal=Shot.FireOrdinal;
+    VolleyTime=Shot.FireNotifyTime;
+    Ledger->GetTargetSnapshots(VolleyBodies);
+    Ledger->GetSourceOnlySnapshots(VolleySources);
+}
+
+EGuLiCombatEffectEndReason UGuLiProjectilePoolSubsystem::TraceGroundSegment(
+    const FGuLiPooledProjectileLaunch& Shot,EGuLiTeam Team,FVector& End,FGuLiTargetHandle& Target)
+{
+    const FVector Delta=Shot.Direction*Shot.MaximumDistance;
+    End=Shot.Position+Delta;
+    double first=1.;
+    FCollisionQueryParams query(SCENE_QUERY_STAT(GuLiElectromagneticSegment),false);
+    SnapshotGroundVolley(Shot);
+    for(const auto& body:VolleyBodies)
+    {
+        if(body.CollisionActor.IsValid())query.AddIgnoredActor(body.CollisionActor.Get());
+        if(!body.bAlive || body.Team==Team || body.Team==EGuLiTeam::Unassigned ||
+           body.Handle==Shot.Context.Source || body.GetHitCenter().ContainsNaN())continue;
+        double alpha;
+        if(SphereContact(Shot.Position-body.GetHitCenter(),Delta,Shot.SweepRadius+body.CollisionRadius,alpha)
+           && (alpha<first || (alpha==first && (!Target.IsValid() || body.Handle==Shot.Context.Target))))
+        {first=alpha;Target=body.Handle;}
+    }
+    for(const auto& body:VolleySources)if(body.CollisionActor.IsValid())query.AddIgnoredActor(body.CollisionActor.Get());
+    FCollisionObjectQueryParams objects;
+    objects.AddObjectTypesToQuery(ECC_WorldStatic);
+    objects.AddObjectTypesToQuery(ECC_WorldDynamic);
+    FHitResult hit;
+    if(GetWorld()->SweepSingleByObjectType(hit,Shot.Position,End,FQuat::Identity,objects,
+        FCollisionShape::MakeSphere(FMath::Max(1.f,Shot.SweepRadius)),query) && hit.Time<=first)
+    {
+        Target={};
+        End=Shot.Position+Delta*hit.Time;
+        return EGuLiCombatEffectEndReason::Blocked;
+    }
+    End=Shot.Position+Delta*first;
+    return Target.IsValid()?EGuLiCombatEffectEndReason::Impact:EGuLiCombatEffectEndReason::Expired;
 }
 
 void UGuLiProjectilePoolSubsystem::BuildSpatialIndex(const float Now, const FSimulationHistory& History)

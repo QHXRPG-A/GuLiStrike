@@ -68,11 +68,13 @@ def main():
     update("RogueCards","Effects",[(None,dict(id=9,name="GroundAIEngine",Note="按等级取得锁定时间和范围",Handler="ground/ai_engine",Version=1,ConfigId=6,BuffId=0))])
     update("RogueCards","GroundWeaponEffects",[
         ("2",dict(id=6,name="GroundAIEngine",Note="游骑兵单目标枪口视场",LockSeconds=[2,1.5,1],LockRangeCentimeters=[8000,10000,15000],
+                  LockAperturePixels=342,LockHexPixels=62,
                   BulletDamageMultipliers=[],BulletRateMultipliers=[],BulletFlightVfxIds=[])),
         (None,dict(id=2,BulletDamageMultipliers=[1.5,1.7,2.5,2.8,4],BulletRateMultipliers=[.9,.9,.8,.8,.7],BulletFlightVfxIds=[69,69,70,70,71]))],
-        ("LockSeconds","LockRangeCentimeters","BulletDamageMultipliers","BulletRateMultipliers","BulletFlightVfxIds"))
+        ("LockSeconds","LockRangeCentimeters","BulletDamageMultipliers","BulletRateMultipliers","BulletFlightVfxIds",
+         ("LockAperturePixels","float"),("LockHexPixels","float")))
     update("GameTexts","Texts",[(None,{"文本id":"Card.GroundMech."+key,"介绍":"游骑兵个人肉鸽","内容":value}) for key,value in [
-        ("AIEngine.Title","人工智能引擎"),("AIEngine.Description","<Unit>游骑兵</> 在 <Gain>{2} 米</> 内瞄准框中最靠近准星的敌人，持续 <Gain>{1} 秒</> 后按当前普攻射速自动连射。"),
+        ("AIEngine.Title","人工智能引擎"),("AIEngine.Description","<Unit>游骑兵</> 仅自动射击，<Gain>{2} 米</>内瞄准 <Gain>{1} 秒</>后锁定开火"),
         ("EnhancedBullet.Description","<Unit>游骑兵</> 普攻伤害 <Gain>+{1}%</>，射速降低 {2}%。")]])
     update("GroundHUD","Elements",[(None,dict(id=88,name="AIEngineOptics",Note="已审绿色枪口光圈、侧轨和分层六边形图集",Texture=ATLAS,Sprite=-1,Value=0,ColorSRGB="",IconId=0))])
     bullet_styles()

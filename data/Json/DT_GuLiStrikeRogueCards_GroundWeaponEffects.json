@@ -21,7 +21,14 @@
     "LockRangeCentimeters": [],
     "BulletDamageMultipliers": [],
     "BulletRateMultipliers": [],
-    "BulletFlightVfxIds": []
+    "BulletFlightVfxIds": [],
+    "LockAperturePixels": 0.0,
+    "LockHexPixels": 0.0,
+    "LockTargetCounts": [],
+    "SlowFractions": [],
+    "SlowDurations": [],
+    "ShieldDamageBonuses": [],
+    "ArcVfxId": 0
   },
   {
     "Name": "GroundEnhancedBullet",
@@ -63,7 +70,14 @@
       "70",
       "70",
       "71"
-    ]
+    ],
+    "LockAperturePixels": 0.0,
+    "LockHexPixels": 0.0,
+    "LockTargetCounts": [],
+    "SlowFractions": [],
+    "SlowDurations": [],
+    "ShieldDamageBonuses": [],
+    "ArcVfxId": 0
   },
   {
     "Name": "GroundExplosivePackage",
@@ -91,7 +105,14 @@
     "LockRangeCentimeters": [],
     "BulletDamageMultipliers": [],
     "BulletRateMultipliers": [],
-    "BulletFlightVfxIds": []
+    "BulletFlightVfxIds": [],
+    "LockAperturePixels": 0.0,
+    "LockHexPixels": 0.0,
+    "LockTargetCounts": [],
+    "SlowFractions": [],
+    "SlowDurations": [],
+    "ShieldDamageBonuses": [],
+    "ArcVfxId": 0
   },
   {
     "Name": "GroundExplosiveEnhancement",
@@ -127,7 +148,14 @@
     "LockRangeCentimeters": [],
     "BulletDamageMultipliers": [],
     "BulletRateMultipliers": [],
-    "BulletFlightVfxIds": []
+    "BulletFlightVfxIds": [],
+    "LockAperturePixels": 0.0,
+    "LockHexPixels": 0.0,
+    "LockTargetCounts": [],
+    "SlowFractions": [],
+    "SlowDurations": [],
+    "ShieldDamageBonuses": [],
+    "ArcVfxId": 0
   },
   {
     "Name": "GroundNoSurvivors",
@@ -175,12 +203,19 @@
     "LockRangeCentimeters": [],
     "BulletDamageMultipliers": [],
     "BulletRateMultipliers": [],
-    "BulletFlightVfxIds": []
+    "BulletFlightVfxIds": [],
+    "LockAperturePixels": 0.0,
+    "LockHexPixels": 0.0,
+    "LockTargetCounts": [],
+    "SlowFractions": [],
+    "SlowDurations": [],
+    "ShieldDamageBonuses": [],
+    "ArcVfxId": 0
   },
   {
     "Name": "GroundAIEngine",
     "Id": 6,
-    "Note": "游骑兵单目标枪口视场",
+    "Note": "仅锁满目标开火；入圈及留锁几何使用1080p设计像素",
     "FireRateBonusPercent": 0.0,
     "ExplosiveIntervals": [],
     "ExplosiveDamageMultiplier": 0.0,
@@ -207,6 +242,91 @@
     ],
     "BulletDamageMultipliers": [],
     "BulletRateMultipliers": [],
-    "BulletFlightVfxIds": []
+    "BulletFlightVfxIds": [],
+    "LockAperturePixels": 342.0,
+    "LockHexPixels": 62.0,
+    "LockTargetCounts": [],
+    "SlowFractions": [],
+    "SlowDurations": [],
+    "ShieldDamageBonuses": [],
+    "ArcVfxId": 0
+  },
+  {
+    "Name": "GroundSplitBarrel",
+    "Id": 7,
+    "Note": "每个枪口每轮可锁定的不同目标数",
+    "FireRateBonusPercent": 0.0,
+    "ExplosiveIntervals": [],
+    "ExplosiveDamageMultiplier": 0.0,
+    "ExplosiveRadiusCentimeters": 0.0,
+    "ExplosiveBulletVfxId": 0,
+    "ExplosiveImpactVfxId": 0,
+    "ExplosiveSpeedMultiplier": 0.0,
+    "ExplosiveOutwardOffsetCentimeters": 0.0,
+    "ExplosiveRadiusBonuses": [],
+    "ExplosiveDamageBonuses": [],
+    "BarrageIntervalsSeconds": [],
+    "BarrageShotCounts": [],
+    "BarrageDamageBonuses": [],
+    "BarrageConeHalfAnglesDegrees": [],
+    "LockSeconds": [],
+    "LockRangeCentimeters": [],
+    "BulletDamageMultipliers": [],
+    "BulletRateMultipliers": [],
+    "BulletFlightVfxIds": [],
+    "LockAperturePixels": 0.0,
+    "LockHexPixels": 0.0,
+    "LockTargetCounts": [
+      "2",
+      "3",
+      "5"
+    ],
+    "SlowFractions": [],
+    "SlowDurations": [],
+    "ShieldDamageBonuses": [],
+    "ArcVfxId": 0
+  },
+  {
+    "Name": "GroundElectromagnetic",
+    "Id": 8,
+    "Note": "直击和每段折射瞬时命中",
+    "FireRateBonusPercent": 0.0,
+    "ExplosiveIntervals": [],
+    "ExplosiveDamageMultiplier": 0.0,
+    "ExplosiveRadiusCentimeters": 0.0,
+    "ExplosiveBulletVfxId": 0,
+    "ExplosiveImpactVfxId": 0,
+    "ExplosiveSpeedMultiplier": 0.0,
+    "ExplosiveOutwardOffsetCentimeters": 0.0,
+    "ExplosiveRadiusBonuses": [],
+    "ExplosiveDamageBonuses": [],
+    "BarrageIntervalsSeconds": [],
+    "BarrageShotCounts": [],
+    "BarrageDamageBonuses": [],
+    "BarrageConeHalfAnglesDegrees": [],
+    "LockSeconds": [],
+    "LockRangeCentimeters": [],
+    "BulletDamageMultipliers": [],
+    "BulletRateMultipliers": [],
+    "BulletFlightVfxIds": [],
+    "LockAperturePixels": 0.0,
+    "LockHexPixels": 0.0,
+    "LockTargetCounts": [],
+    "SlowFractions": [
+      "0.2",
+      "0.3",
+      "0.4"
+    ],
+    "SlowDurations": [
+      "2",
+      "2",
+      "3"
+    ],
+    "ShieldDamageBonuses": [
+      "0.1",
+      "0.1",
+      "0.15"
+    ],
+    "ArcVfxId": 72
   }
 ]

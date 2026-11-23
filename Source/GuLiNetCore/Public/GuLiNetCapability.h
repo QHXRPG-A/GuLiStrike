@@ -56,6 +56,8 @@ struct CapabilityContract
     std::function<bool(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,ObjectRecord&,bool&)> FreezeSpawn;
     // A frozen hit plan may resolve a target-specific amount. Existing numeric resolvers run first.
     std::function<bool(const ObjectRecord&,const std::map<ObjectKey,ObjectRecord>&,const TransactionRequest&,Rule&)> ResolveTransactionRule;
+    // Resolve shield absorption from authoritative source capabilities before damage is committed.
+    std::function<bool(const CapabilityState&,const TransactionRequest&,float&)> ModifyShieldDamage;
     // Persist on-hit applications / pulse acknowledgments in the accepted damage's
     // owner-work delta. No presentation callback can grant a gameplay effect.
     std::function<bool(const TransactionRequest&,const CommitResult&,const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&)> AcceptedDamage;
@@ -75,5 +77,6 @@ GULINETCORE_API bool ValidateCapabilityMutation(const std::map<ObjectKey,ObjectR
     const std::map<std::string,std::set<ObjectKey>>* MutationMembers=nullptr);
 GULINETCORE_API bool ProjectCapabilityChanges(const std::map<ObjectKey,ObjectRecord>& Previous,std::map<ObjectKey,ObjectRecord>& Changes);
 GULINETCORE_API bool InitializeOwnedCapabilityState(std::map<ObjectKey,ObjectRecord>& Objects);
+GULINETCORE_API bool ResolveShieldDamageMultiplier(const ObjectRecord&,const TransactionRequest&,float&);
 GULINETCORE_API bool ProjectAcceptedDamage(const TransactionRequest&,const CommitResult&,const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&);
 }

@@ -60,12 +60,12 @@ bool FMechAILockApertureTest::RunTest(const FString&)
 	View.ViewOrigin = FVector::ZeroVector;
 	View.ProjectionMatrix = FReversedZPerspectiveMatrix(UE_DOUBLE_PI / 4, 1920., 1080., 1.);
 	const FVector2D Reticle(960, 540);
-	FGuLiAILockSight Sight;
+	FGuLiAILockSight Sight; Sight.DesignRadius=342; Sight.HexRadius=62;
 	auto Sample = [&](double Now, double HorizontalPixels)
 	{
 		const FQuat Turn(FVector::RightVector, FMath::Atan2(HorizontalPixels, Reticle.X));
 		View.ViewRotationMatrix = FQuatRotationMatrix(Turn);
-		Sight.UpdateAperture(View, Now);
+		Sight.UpdateAperture(View);
 		return (Sight.Center - Reticle).Size();
 	};
 	TestEqual(TEXT("Unfired sight follows the player reticle"), Sample(1., 90.), 0.);
@@ -75,56 +75,28 @@ bool FMechAILockApertureTest::RunTest(const FString&)
 	TestEqual(TEXT("Design radius is 1.5 times the original"), Sight.Radius, 342.f);
 	TestTrue(TEXT("First acquisition includes the circle edge"), Sight.IncludesTarget(A, Reticle + FVector2D(342., 0.)));
 	TestFalse(TEXT("A new target outside the circle cannot acquire"), Sight.IncludesTarget(A, Reticle + FVector2D(343., 0.)));
-	TestTrue(TEXT("Acquire the nearest initial candidate"), Sight.PrefersCandidate(A, 10., B, 20.));
 	Sight.Target = A;
 	Sight.Progress = .25f;
-	TestFalse(TEXT("A closer target cannot replace a partial lock"), Sight.PrefersCandidate(B, 0., A, 200.));
-	TestTrue(TEXT("The original target wins in reverse enumeration order"), Sight.PrefersCandidate(A, 200., B, 0.));
-	TestTrue(TEXT("When A is ineligible B can start a new lock"), Sight.PrefersCandidate(B, 0., {}, 0.));
 	TestTrue(TEXT("Partially closed sides keep the original target"), Sight.IncludesTarget(A, Reticle + FVector2D(415., 0.)));
 	TestFalse(TEXT("Overlapping graphics cannot start a different target"), Sight.IncludesTarget(B, Reticle + FVector2D(345., 0.)));
 
-	Sample(2., 0.);
-	Sight.HoldOnShot(2.);
-	TestNearlyEqual(TEXT("Manual fire before lock holds direction below the threshold"), Sample(2.1, 426.), 426., .01);
-	Sight.HoldOnShot(2.2);
-	View.ViewOrigin = FVector(50000., -60000., 340.);
-	TestNearlyEqual(TEXT("A second manual shot, strafing and ceasefire preserve the anchor"), Sample(4., 426.), 426., .01);
-	TestNearlyEqual(TEXT("At 1.25 radii an unlocked aperture starts returning"), Sample(5., 427.5), 427.5, .01);
-	Sight.HoldOnShot(5.04);
-	TestNearlyEqual(TEXT("Halfway through the return, another shot has not restarted it"), Sample(5.075, 500.), 213.75, .01);
-	TestNearlyEqual(TEXT("Return finishes in 0.15 seconds"), Sample(5.151, 400.), 0., .001);
-	Sight.HoldOnShot(5.05);
-	TestEqual(TEXT("A delayed shot from the return cannot freeze following"), Sample(6., 200.), 0.);
-	Sample(7., 0.);
-	Sight.HoldOnShot(7.);
-	TestNearlyEqual(TEXT("A new shot after the return pins the new direction"), Sample(7.1, 90.), 90., .01);
-	View.SetViewRectangle(FIntRect(0, 0, 960, 540));
-	Sight.UpdateAperture(View, 7.2);
-	TestEqual(TEXT("Radius follows the local viewport scale"), Sight.Radius, 171.f);
-	TestNearlyEqual(TEXT("The projected offset scales with the ring"), (Sight.Center - Reticle * .5).Size(), 45., .01);
-	View.SetViewRectangle(FIntRect(0, 0, 1920, 1080));
-	Sight.Progress = 1.f;
-	TestEqual(TEXT("Reaching full lock releases a prior manual hold immediately"), Sample(7.3, 120.), 0.);
-	Sight.HoldOnShot(7.3);
-	TestEqual(TEXT("Panning during automatic fire keeps the circle on the reticle"), Sample(7.4, 40.), 0.);
-	Sight.HoldOnShot(7.41);
-	TestEqual(TEXT("The next barrel also follows the reticle"), Sample(7.5, -310.), 0.);
+    Sight.Progress=1.f;
+    TestEqual(TEXT("Locked sight follows the reticle during rotation"),Sample(7.4,40.),0.);
 	const double FlatLimit = Sight.Radius + 62. * UE_DOUBLE_HALF_SQRT_3;
 	TestTrue(TEXT("A tangent flat side retains the target"), Sight.IncludesTarget(A, Reticle + FVector2D(FlatLimit, 0.)));
 	TestFalse(TEXT("A clear flat side releases even inside the hex bounding circle"), Sight.IncludesTarget(A, Reticle + FVector2D(FlatLimit + .1, 0.)));
 	TestTrue(TEXT("The touching vertex retains the target"), Sight.IncludesTarget(A, Reticle + FVector2D(0., 404.)));
 	TestFalse(TEXT("A vertex completely clear releases the target"), Sight.IncludesTarget(A, Reticle + FVector2D(0., 404.1)));
 	View.SetViewRectangle(FIntRect(40, 20, 1000, 560));
-	Sight.UpdateAperture(View, 7.6);
+	Sight.UpdateAperture(View);
 	TestTrue(TEXT("A tangent vertex retains the target at half scale"), Sight.IncludesTarget(A, Sight.Center + FVector2D(0., 202.)));
 	TestFalse(TEXT("A clear vertex releases at half scale"), Sight.IncludesTarget(A, Sight.Center + FVector2D(0., 202.1)));
-	Sight = {};
+	Sight = {}; Sight.DesignRadius=342; Sight.HexRadius=62;
 	View.SetViewRectangle(FIntRect(0, 0, 979, 521));
 	View.ProjectionMatrix.M[2][0] = .04;
-	Sight.UpdateAperture(View, 8.);
-	Sight.HoldOnShot(8.);
-	Sight.UpdateAperture(View, 8.1);
+	Sight.UpdateAperture(View);
+
+	Sight.UpdateAperture(View);
 	TestTrue(TEXT("A stationary shot on an odd viewport keeps the exact crosshair center"), Sight.Center.Equals(FVector2D(489.5, 260.5), .0001));
 	return true;
 }

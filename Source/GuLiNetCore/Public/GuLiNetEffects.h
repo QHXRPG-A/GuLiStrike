@@ -12,6 +12,30 @@ struct Definition
     friend bool operator==(const Definition&,const Definition&)=default;
 };
 using Set=std::vector<Definition>;
+// Numeric columns come from the authoring adapter. Gameplay codecs remain independent of UE and Excel.
+using ReadWeaponColumn=std::function<bool(const char*,std::vector<double>&)>;
+struct WeaponAuthoring
+{
+    Bytes (*Build)(const ReadWeaponColumn&)=nullptr;
+    bool (*Describe)(const Definition&,std::uint32_t,std::vector<double>&)=nullptr;
+};
+struct GroundHitProperties
+{
+    bool Instant=false;
+    std::uint32_t ArcVfx=0;
+    float ShieldMultiplier=1.f;
+};
+struct GroundWeaponBase
+{
+    float Damage=0, FireRate=0, InitialDamageRatio=1;
+    std::uint32_t BulletVfx=0, InitialBulletVfx=0, ImpactVfx=0, MuzzleVfx=0;
+};
+struct GroundShotStats
+{
+    float Damage=0, FireRate=0;
+    std::uint32_t BulletVfx=0, ImpactVfx=0, MuzzleVfx=0;
+};
+inline constexpr const char* BarrageHandler="ground/no_survivors";
 struct Handler
 {
     std::string Name;
@@ -20,6 +44,8 @@ struct Handler
     std::function<bool(const Definition&,std::uint32_t,Set&)> Accumulate;
     std::function<bool(const Set&,const TransactionRequest&,const CommitResult&,const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&)> AcceptedHit;
     std::function<bool(const Definition&,std::uint32_t&,std::uint32_t&,std::uint32_t&)> Presentation;
+    WeaponAuthoring Authoring{};
+    bool (*ModifyHit)(const Definition&,GroundHitProperties&)=nullptr;
 };
 struct Ricochet
 {
@@ -52,6 +78,7 @@ struct Barrage
 struct AILockRank
 {
     float Seconds=0, RangeCm=0;
+    float AperturePixels=0, HexPixels=0;
 };
 struct AIEngine
 {
@@ -61,6 +88,29 @@ struct AIEngine
 GULINETCORE_API Bytes EncodeAIEngine(const AIEngine&);
 GULINETCORE_API bool DecodeAIEngine(std::span<const std::uint8_t>,AIEngine&);
 GULINETCORE_API AILockRank GetAILockRank(const Set&);
+inline constexpr std::uint32_t MaximumLockTargets=16;
+struct SplitBarrel
+{
+    std::vector<std::uint32_t> Ranks;
+    std::uint32_t Level=0;
+};
+struct ElectromagneticRank
+{
+    float SlowFraction=0, Duration=0, ShieldBonus=0;
+};
+struct Electromagnetic
+{
+    std::vector<ElectromagneticRank> Ranks;
+    std::uint32_t Level=0, ArcVfx=0;
+};
+GULINETCORE_API Bytes EncodeSplitBarrel(const SplitBarrel&);
+GULINETCORE_API bool DecodeSplitBarrel(std::span<const std::uint8_t>,SplitBarrel&);
+GULINETCORE_API std::uint32_t LockCapacity(const Set&);
+GULINETCORE_API Bytes EncodeElectromagnetic(const Electromagnetic&);
+GULINETCORE_API bool DecodeElectromagnetic(std::span<const std::uint8_t>,Electromagnetic&);
+GULINETCORE_API ElectromagneticRank GetElectromagnetic(const Set&,std::uint32_t* ArcVfx=nullptr);
+inline constexpr const char* SlowCapability="electromagnetic_slow";
+GULINETCORE_API float MovementMultiplier(std::span<const std::uint8_t> Status,Tick Now);
 struct BulletRank
 {
     float DamageMultiplier=1, RateMultiplier=1;
@@ -98,5 +148,7 @@ GULINETCORE_API Bytes EncodeRicochet(const Ricochet&);
 GULINETCORE_API bool DecodeRicochet(std::span<const std::uint8_t>,Ricochet&);
 GULINETCORE_API Ricochet GetRicochet(const Set&);
 GULINETCORE_API bool AcceptedHit(const Set&,const TransactionRequest&,const CommitResult&,const std::map<ObjectKey,ObjectRecord>&,std::map<ObjectKey,ObjectRecord>&);
+GULINETCORE_API bool ResolveHitProperties(const Set&,GroundHitProperties&);
+GULINETCORE_API bool ResolveGroundShot(const GroundWeaponBase&,const Set&,GroundShotStats&);
 GULINETCORE_API bool FreezePresentation(const Set&,std::uint32_t& Bullet,std::uint32_t& Impact,std::uint32_t& Muzzle);
 }

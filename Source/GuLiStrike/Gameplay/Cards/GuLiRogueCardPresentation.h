@@ -74,6 +74,7 @@ public:
     bool ConfirmSelection(int32 SelectedIndex);
     const TArray<FString>& GetCandidateIds() const { return CandidateIds; }
     FGuid GetSessionId() const { return SessionId; }
+    void InvalidateOffer(FGuid Session);
     bool IsChoicePending() const { return bSubmitting; }
     bool IsChoiceCommitted() const { return bCommitted; }
     FGuid GetLastCommittedSession() const { return LastCommittedSession; }

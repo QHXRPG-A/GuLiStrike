@@ -21,8 +21,11 @@ int32 AGuLiGroundMechCharacter::GetBarrageLevel() const
 {
     if(ModelId!=4001)return 0;
     const auto* Identity=UGuLiHybridActorComponent::Find(this);
-    const auto* Cards=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();
-    const int32 Owned=Cards&&Identity ? Cards->GetAcquisitionCount(Identity->GetState().Controller,GuLiGroundRogue::BarrageCardId) : 0;
+    auto* cards=GetWorld()->GetSubsystem<UGuLiRogueCardSubsystem>();
+    if(!cards || !Identity)return 0;
+    const FString& id=cards->GetBarrageCardId();
+    if(id.IsEmpty())return 0;
+    const int32 Owned=cards->GetAcquisitionCount(Identity->GetState().Controller,id);
     return FMath::Max(Owned,bBarrageTrial?1:0);
 }
 
@@ -149,7 +152,10 @@ void AGuLiGroundMechCharacter::StartBarrage(const FGuid& Event)
     else
     {
         FString Error;
-        if(!bBarrageTrial || !GuLiGroundRogue::LoadBarrage(Profile,Error))return;
+        GuLiNet::GroundRogue::Catalog catalog;
+        GuLiGroundRogue::FBarrageCard trial;
+        if(!bBarrageTrial || !GuLiGroundRogue::LoadCatalog(catalog,Error,&trial) || trial.CardId.IsEmpty())return;
+        Profile=MoveTemp(trial.Profile);
         Profile.Level=1;
     }
     const auto* Fields=GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>();
