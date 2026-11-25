@@ -297,6 +297,23 @@ bool RuntimeObjects(const RuntimeManifest& M,std::map<ObjectKey,ObjectRecord>& O
     std::map<std::string,OwnershipDefinition> Definitions;
     if (!ReadOwnershipDefinitions(M,Definitions,Error)) return false;
     auto Objects=M.Objects;
+    // Seed the unattended Air seat from the same catalogue used for player choices.
+    if (const auto choice=M.Strings.find(WingmanRangeOpponentHangar); choice!=M.Strings.end())
+    {
+        std::map<std::string,CompiledUpgradeCatalog> catalogs;
+        if (!ReadUpgradeCatalogs(M,catalogs,Error)) return false;
+        const auto catalog=catalogs.find("ship");
+        if (catalog==catalogs.end() || !CanChooseUpgrade(catalog->second,{},choice->second,Error))
+        { Error="Invalid wingman range opponent loadout: "+Error; return false; }
+        unsigned carriers=0;
+        for (auto& [key,object]:Objects)
+        {
+            if (key.Kind!=ObjectKind::Ship || object.Grant.Faction!=Team::Blue || object.Definition!="player/ship") continue;
+            object.Upgrades["ship"]={catalog->second.Data.Version,1,{choice->second}};
+            ++carriers;
+        }
+        if (carriers!=1) { Error="Wingman range requires one Blue player ship"; return false; }
+    }
     const auto Add=[&](ObjectKey K,Team Team,const char* Definition)
     {
         ObjectRecord O;O.Grant.Object=K;O.Grant.Faction=Team;O.Grant.EstimatedCost=0;

@@ -340,3 +340,31 @@ struct FGuLiStrikeShipCameraRow : public FTableRowBase
 	float CameraPitchMax = 0.0f;
 
 };
+
+/** DataTable DT_GuLiStrikeShip_WingmanFlight 的行结构（源: GuLiStrikeShip.xlsx / WingmanFlight）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeShipWingmanFlightRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanFlight")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanFlight")
+	FString Note;
+
+	/** MaxSpeedMps (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanFlight")
+	float MaxSpeedMps = 0.0f;
+
+	/** MaxTurnRateDegPerSec (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanFlight")
+	float MaxTurnRateDegPerSec = 0.0f;
+
+	/** SafetyMarginM (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanFlight")
+	float SafetyMarginM = 0.0f;
+
+};

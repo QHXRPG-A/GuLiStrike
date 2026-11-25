@@ -33,6 +33,7 @@ import re
 import traceback
 import sys
 
+from pathlib import Path
 import unreal
 
 PROJECT = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()).rstrip("/\\")
@@ -82,6 +83,7 @@ CONFIG_WIRED_TABLES = {
     # Ship V3 assets reference these rows; deployed by deploy_wingman_attack_assets.py.
     "DT_GuLiStrikeShip_WingmanWeapons",
     "DT_GuLiStrikeShip_WingmanTargeting",
+    "DT_GuLiStrikeShip_WingmanFlight",
     "DT_GuLiStrikeCommander_Soldiers",
     "DT_GuLiStrikeCommander_Camera",
     "DT_GuLiStrikeCommander_Skills",
@@ -245,7 +247,7 @@ def import_table(table_name, table_cfg):
         mark(f"dt-ready created={entry['created']}")
 
         if table_name in {'DT_GuLiStrikeGameTexts_Texts', 'DT_GuLiStrikeGroundHUD_Elements',
-                          'DT_GuLiStrikeRogueCards_Cards', 'DT_GuLiStrikeRogueCards_BarrageCamera'}:
+                          'DT_GuLiStrikeRogueCards_Cards', 'DT_GuLiStrikeRogueCards_BarrageCamera', 'DT_GuLiStrikeShip_WingmanFlight'}:
             if dt.get_editor_property('row_struct') != row_struct:
                 raise RuntimeError(f'{table_name}: native row schema differs from the manifest')
             problems = unreal.GuLiDataTableImportLibrary.update_from_json(dt,json.dumps(src_rows,ensure_ascii=False))
@@ -458,6 +460,35 @@ def wire_secondary_projectile_profiles():
     return result
 
 
+def wire_wingman_flight_profiles():
+    name = 'DT_GuLiStrikeShip_WingmanFlight'
+    table = unreal.load_asset(f'{DEST_PATH}/{name}')
+    rows = {r['Name']: r for r in json.loads(Path(f'{PROJECT}/Data/Json/{name}.json').read_text(encoding='utf-8'))}
+    registry = unreal.AssetRegistryHelpers.get_asset_registry()
+    profiles = registry.get_assets_by_class(unreal.TopLevelAssetPath('/Script/GuLiStrike', 'GuLiWingmanFormationDefinition'), True)
+    result = []
+    for entry in profiles:
+        asset = entry.get_asset()
+        previous = asset.get_editor_property('flight_profile_row')
+        key = str(previous.get_editor_property('row_name'))
+        key = 'DefaultWingman' if key in ('', 'None') else key
+        row = rows[key]
+        asset.modify()
+        asset.set_editor_property('flight_profile_row', unreal.DataTableRowHandle(data_table=table, row_name=key))
+        cfg = asset.get_resolved_flight_config()
+        actual = [cfg.get_editor_property(k) for k in ('catch_up_speed_centimeters_per_second',
+                  'maximum_turn_rate_degrees_per_second', 'obstacle_look_ahead_centimeters')]
+        expected = [row['MaxSpeedMps'] * 100, row['MaxTurnRateDegPerSec'], row['SafetyMarginM'] * 100]
+        if not all(math.isclose(a, b, rel_tol=1e-6) for a, b in zip(actual, expected)):
+            raise RuntimeError(f'{asset.get_path_name()} resolved {actual}, expected {expected}')
+        if not unreal.EditorAssetLibrary.save_loaded_asset(asset, False):
+            raise RuntimeError(f'Failed to save {asset.get_path_name()}')
+        result.append({'asset': asset.get_path_name(), 'row': key, 'resolved': actual})
+    if not result:
+        raise RuntimeError('No wingman formation assets found')
+    return result
+
+
 def wire_secondary_wingman_profiles():
     name = 'DT_GuLiStrikeShip_WingmanWeapons'
     table = unreal.load_asset(f'{DEST_PATH}/{name}')
@@ -558,6 +589,9 @@ try:
         report['projectile_profiles'] = wire_secondary_projectile_profiles()
     if any(e.get('asset') == 'DT_GuLiStrikeShip_WingmanWeapons' and e.get('imported') for e in report['tables']):
         report['wingman_profiles'] = wire_secondary_wingman_profiles()
+
+    if any(e.get('asset') == 'DT_GuLiStrikeShip_WingmanFlight' and e.get('imported') for e in report['tables']):
+        report['wingman_flight_profiles'] = wire_wingman_flight_profiles()
 
     # --- 游戏侧接线：赋值到飞船蓝图 CDO（属性名来自 WIRING） ---
     if imported_dts:

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "GameFramework/Info.h"
+#include "Gameplay/CombatEffects/GuLiHealthBarEvent.h"
 #include "GuLiSoldierStateReplicator.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierStatesChangedSignature, uint32);
@@ -59,6 +60,8 @@ public:
 		return ReplicatedSoldiers.Items;
 	}
 
+	const TMap<FGuLiSoldierId, FGuLiHealthBarEvent>& GetActiveVitalChanges();
+
 	uint32 GetSnapshotMatchEpoch() const { return SnapshotMatchEpoch; }
 
 	uint32 GetSnapshotRevision() const { return SnapshotRevision; }
@@ -77,6 +80,9 @@ private:
 	int32 ApplyAuthorityState(TConstArrayView<FGuLiSoldierStateItem> States, uint32 MatchEpoch, bool bComplete);
 	TMap<FGuLiSoldierId, FGuLiSoldierStateItem> LocalSoldierStates;
 	uint32 LocalCacheEpoch = 0;
+	TMap<FGuLiSoldierId, FGuLiHealthBarEvent> VitalChanges;
+	double NextVitalCleanup = -1;
+	uint64 NextBarGeneration = 1;
 
 
 	UPROPERTY(Transient)

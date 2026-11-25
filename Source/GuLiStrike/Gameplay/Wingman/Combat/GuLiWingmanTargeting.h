@@ -42,6 +42,9 @@ struct GULISTRIKE_API FGuLiWingmanGroundCorridorCache
 
 namespace GuLiWingmanTargeting
 {
+    GULISTRIKE_API bool HasClearGroundBombingCorridor(UWorld* World, const FVector& GroundTarget,
+        const FVector& PreferredApproach, const FGuLiWingmanAttackProfile& Profile, const FGuLiWingmanFormationRuntimeConfig& Formation,
+        const FVector* IngressStart = nullptr);
     GULISTRIKE_API bool IsWithinAcquireRange(double DistanceCentimeters,
         const FGuLiWingmanTargetingTuning& Tuning);
     GULISTRIKE_API bool IsWithinReleaseRange(double DistanceCentimeters,

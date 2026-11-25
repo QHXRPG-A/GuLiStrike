@@ -5,7 +5,6 @@
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanTargeting.h"
 #include "Battle/Combat/GuLiWingmanWeaponPolicy.h"
-#include "GuLiFlightNavigationQuery.h"
 
 void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHandle& Group,
 	const FGuLiWingmanAttackAuthorityState& State, uint32 LeaseEpoch, uint32 ClientTick, double Now, bool bActive)
@@ -57,6 +56,11 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuntime(FGuLiWingmanLocalGroupRu
 			GuLiWingmanAttack::IsFrozenGroundExecutionPhase(Attack.Phase);
 		const bool bPreparingGround =
 			GuLiWingmanAttack::IsGroundPreparationPhase(Attack.Phase);
+		if (bExecutingGround && PawnState.FlightPlan.Mode != EGuLiWingmanSteer::Track)
+		{
+			Cancel(8);
+			continue;
+		}
 		const bool bAirPhase = Attack.Phase == EGuLiWingmanAttackPhase::AirSeparate
 			|| Attack.Phase == EGuLiWingmanAttackPhase::AirApproachFire
 			|| Attack.Phase == EGuLiWingmanAttackPhase::AirReturnToOrbit
@@ -243,8 +247,8 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuntime(FGuLiWingmanLocalGroupRu
 		if (!bExecutingGround && (!bPreparingGround || bTargetRelationChanged)) Attack.Target = *DesiredTarget;
 		Attack.SlotId = Channel->Binding.SlotId; Attack.ProfileRevision = Channel->ProfileRevision; Attack.LeaseEpoch = LeaseEpoch;
 		Attack.SkillId = Channel->SkillId; Attack.DefinitionChecksum = Channel->DefinitionChecksum;
-		// Dive/PullUp/Climb already follow a complete FlightNav + terrain checked
-		// path. Only ground preparation responds to the movement recovery state.
+		// The fixed dive corridor was terrain-checked at entry. A new local avoidance
+		// command interrupts an active run above, before firing.
 		if (!bExecutingGround
 			&& (Avoidance.bControlledRecovery || Avoidance.ConsecutiveBlockedSeconds > 0.1f))
 		{ Cancel(); continue; }
@@ -263,7 +267,7 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuntime(FGuLiWingmanLocalGroupRu
 				FGuLiWingmanGroundRunPath CandidatePath;
 				GuLiWingmanAttack::EGroundPathRejectReason RejectReason =
 					GuLiWingmanAttack::EGroundPathRejectReason::InvalidInput;
-				EGuLiFlightNavSegmentStatus NavigationStatus = EGuLiFlightNavSegmentStatus::Valid;
+
 				const bool bBuiltPath = GuLiWingmanAttack::BuildGroundPath(Attack.Target.Location, Approach, Profile,
 					Config.FormationRuntime.MaximumTurnRateDegreesPerSecond, CandidatePath);
 				const FVector CandidateSetup = bBuiltPath
@@ -274,7 +278,7 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuntime(FGuLiWingmanLocalGroupRu
 						<= Config.FormationRuntime.AgentRadiusCentimeters;
 				const bool bClearPath = bBuiltPath
 					&& GuLiWingmanAttack::GroundRunClearsTerrain(GetWorld(), CandidatePath,
-						Config.FormationRuntime.AgentRadiusCentimeters, &RejectReason, &NavigationStatus)
+						Config.FormationRuntime.AgentRadiusCentimeters + Config.FormationRuntime.SafetyMarginCentimeters(), &RejectReason)
 					&& (bIngressAlreadyReached
 						|| GuLiWingmanAttack::AirSegmentClearsWorld(GetWorld(), Position,
 							CandidateSetup, Config.FormationRuntime.AgentRadiusCentimeters));
@@ -282,8 +286,7 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuntime(FGuLiWingmanLocalGroupRu
 				{
 					const uint8 ReasonBit = 1u << static_cast<uint8>(RejectReason);
 					Attack.GroundPathFailureMask |= ReasonBit;
-					if (RejectReason == GuLiWingmanAttack::EGroundPathRejectReason::Navigation)
-						Attack.GroundNavigationFailureMask |= 1u << static_cast<uint8>(NavigationStatus);
+
 					continue;
 				}
 				Attack.Path = CandidatePath;

@@ -181,7 +181,7 @@ def main():
         cls=a['class']
         if cls in ('Landscape','GuLiMapMarker','GuLiMapDensityMap','RecastNavMesh'):continue
         target=copy.deepcopy(a['transform']);target['location'][:2]=[v*SCALE for v in target['location'][:2]]
-        if cls in ('StaticMeshActor','NavModifierVolume','NavMeshBoundsVolume','GuLiFlightNavigationVolume','InstancedFoliageActor'):
+        if cls in ('StaticMeshActor','NavModifierVolume','NavMeshBoundsVolume','InstancedFoliageActor'):
             target['scale'][:2]=[v*SCALE for v in target['scale'][:2]]
         if cls in demo_sizes:
             d=demo_sizes[cls];target['scale']=[v*d['scale'] for v in a['transform']['scale']]

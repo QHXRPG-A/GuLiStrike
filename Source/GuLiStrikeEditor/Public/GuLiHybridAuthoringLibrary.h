@@ -17,6 +17,9 @@ public:
      * Overrides is a JSON array of {class, property, value}; value uses config text syntax. */
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Hybrid|Authoring")
     static FString ExportRuntimeManifestWithOverrides(int32 Population,const FString& File,const FString& Overrides);
+    /** Read the three saved wingman trials and resolve their real startup objects and clearance in the editor world. */
+    UFUNCTION(BlueprintCallable, Category="GuLiStrike|Hybrid|Authoring")
+    static FString InspectWingmanPlayRange();
     /** Read back a file using the loaded runtime's registered contracts. */
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Hybrid|Authoring")
     static FString ValidateRuntimeManifest(const FString& File);

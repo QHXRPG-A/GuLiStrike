@@ -971,6 +971,12 @@ def main():
                     if stem == SECONDARY_WORKBOOK else (stem, ws.title)
                 if is_mech:
                     identity_sheet = {"升级表": "Upgrades", "技能表": "Skills"}.get(ws.title, ws.title)
+                if stem == "GuLiStrikeShip" and ws.title == "WingmanFlight":
+                    for row in rows:
+                        speed, turn, margin = (row.get(k, float('nan')) for k in
+                                               ('MaxSpeedMps', 'MaxTurnRateDegPerSec', 'SafetyMarginM'))
+                        if not all(isinstance(v, (float, int)) and math.isfinite(v) for v in (speed, turn, margin)) or not (speed > 0 and 0 < turn <= 180 and margin >= 0):
+                            raise SheetError(f"WingmanFlight/{row['Name']}: 速度须为正，转向率须在 (0,180]，安全余量须非负")
                 if stem == "GuLiStrikeCommander" and ws.title == "Camera":
                     identity_sheet = "Camera"
                     if len(rows) != 1 or rows[0]['Name'] != 'Default' or rows[0]['Id'] != 1:

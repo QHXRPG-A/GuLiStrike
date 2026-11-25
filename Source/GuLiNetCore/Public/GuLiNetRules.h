@@ -21,7 +21,7 @@ struct DamageDelta
     bool Killed = false;
 };
 GULINETCORE_API bool ValidHealth(const Health& State);
-GULINETCORE_API bool ApplyDamage(Health& State, float Amount, DamageDelta& Out, float ShieldMultiplier=1.f);
+GULINETCORE_API bool ApplyDamage(Health& State, float Amount, DamageDelta& Out, float ShieldMultiplier=1.f, bool ProtectHealth=false);
 GULINETCORE_API float AbsorbShield(Health& State, float Amount);
 GULINETCORE_API bool RechargeShield(Health& State, float Amount);
 GULINETCORE_API bool InShieldRadius(double TargetX, double TargetY, double CenterX, double CenterY, double Radius);

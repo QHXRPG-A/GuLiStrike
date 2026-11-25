@@ -1,5 +1,6 @@
 #include "Network/GuLiHybridActorWorldSubsystem.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Performance/GuLiMovementCapture.h"
 #include "Network/GuLiHybridAdapterRegistry.h"
 #include "Network/Private/GuLiHybridEntityState.h"
 #include "Engine/World.h"
@@ -41,6 +42,9 @@ void UGuLiHybridActorWorldSubsystem::Initialize(FSubsystemCollectionBase& Collec
     FString Error;
     if (!FGuLiHybridManifest::Read(UGuLiNetworkSettings::Resolve(GetWorld()).ManifestFile,Manifest,Error))
     { GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(Error); return; }
+#if WITH_EDITOR
+    EditorActivityHoldMask = static_cast<int32>(Manifest.Numbers.FindRef(GuLiMovementCapture::RoomHoldMaskKey));
+#endif
     // Manifest is private and immutable until this World is deinitialized.
     const double IndexStart=FPlatformTime::Seconds();
     FGuLiHybridEntityState::BuildDefinitionIndex(Manifest,EntityCapabilityNames);

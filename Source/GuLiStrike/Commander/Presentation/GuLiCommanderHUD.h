@@ -11,7 +11,6 @@
 
 class AGuLiCommanderPlayerController;
 class AGuLiCommanderCameraPawn;
-class AGuLiCommanderHealthBarRenderer;
 class AGuLiCommanderPresentationActor;
 class AGuLiSoldierStateReplicator;
 class UGuLiCommanderHUDWidget;
@@ -73,7 +72,7 @@ private:
 	void SceneRect(FLinearColor Color, float X, float Y, float W, float H);
 	void SceneText(const FString& Text, FLinearColor Color, float X, float Y, UFont* Font=nullptr, float Scale=1, bool bScalePosition=false);
 	TWeakObjectPtr<UGuLiSceneUIWidget> SceneUI;
-	void BuildOverviewMarkers();
+	void BuildOverviewMarkers(bool GatherHealthBars = false);
 	void DrawOverviewMarkers();
 	TArray<FGuLiCommanderOverviewMarker> OverviewMarkers;
 	TWeakObjectPtr<AActor> InspectedOverviewActor;
@@ -133,9 +132,6 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<UGuLiCommanderHUDWidget> RuntimeHUDWidget;
     UPROPERTY(Transient) TObjectPtr<UGuLiGroundHUDWidget> GroundHUDWidget;
-
-	UPROPERTY(Transient)
-	TObjectPtr<AGuLiCommanderHealthBarRenderer> HealthBarRenderer;
 
 	TWeakObjectPtr<UGuLiBuildingPlacementComponent> BuildingPlacementComponent;
 	FDelegateHandle BuildingFeedbackHandle;

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Gameplay/CombatEffects/GuLiUnitVitalHistory.h"
 #include "GuLiUnitFeedbackComponent.generated.h"
 
 class UGuLiCombatHealthComponent;
@@ -28,7 +29,7 @@ private:
 	TArray<TWeakObjectPtr<UMeshComponent>> HiddenLivingMeshes;
 	TWeakObjectPtr<AGuLiUnitWreck> Wreck;
 	TWeakObjectPtr<UGuLiCombatHealthComponent> HealthComponent;
-	float PreviousHealth = 0;
-	bool bHasHealthBaseline = false;
+	FGuLiUnitVitalHistory Vitals;
+	FGuLiTargetHandle ObservedTarget;
 	bool bDestructionPlayed = false;
 };

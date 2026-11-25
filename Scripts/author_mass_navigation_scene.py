@@ -151,7 +151,7 @@ def run():
     assert original == current, 'Unrelated actor transforms changed.'
     assert definition.get_editor_property('layout_hash') == layout_hash
     navigation = unreal.GuLiNavigationBakeLibrary.prepare_world_navigation(world, True)
-    report['navigation'] = {k: str(navigation.get_editor_property(k)) for k in ['success','message','ground_rebuilds','flight_rebuilds','total_seconds']}
+    report['navigation'] = {k: str(navigation.get_editor_property(k)) for k in ['success','message','ground_rebuilds','total_seconds']}
     assert navigation.get_editor_property('success'), navigation.get_editor_property('message')
     bake = unreal.GuLiResourceAuthoringLibrary.validate_current_bake()
     report['resource_validation'] = {k: str(bake.get_editor_property(k)) for k in ['success','message','source_hash','initial_soldier_count','validated_initial_soldier_count']}

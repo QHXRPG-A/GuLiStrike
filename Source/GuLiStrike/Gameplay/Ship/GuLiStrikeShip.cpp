@@ -164,6 +164,8 @@ AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
 
 void AGuLiStrikeShip::BeginPlay()
 {
+    // A wingman queries the hull at its simulation pose, independently of visual smoothing.
+    HullMesh->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore);
 	Super::BeginPlay();
 	TInlineComponentArray<UMeshComponent*> AuthoredMeshes(this);
 	for (UMeshComponent* AuthoredMesh : AuthoredMeshes) GuLiObjectScale::ApplyOutlineScale(AuthoredMesh);

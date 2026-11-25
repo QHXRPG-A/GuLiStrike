@@ -927,7 +927,10 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 
 void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect& Visual, float Now)
 {
-	UGuLiSpellFieldDefinition* Definition = Visual.State.FieldDefinition.LoadSynchronous();
+	const auto& Field = Visual.State.FieldDefinition;
+	UGuLiSpellFieldDefinition* Definition = Field.Get();
+	if (!Definition && !GetDefault<UGuLiCombatEffectSettings>()->StartupExplosionFields.Contains(Field))
+		Definition = Field.LoadSynchronous();
 	if (!Definition) return;
 	const FVector Position = Visual.State.Location;
 	// Radius is frozen from SpellFields on the server. Scale every phase from the

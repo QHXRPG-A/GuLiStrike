@@ -37,13 +37,10 @@ AGuLiWingmanPawn::AGuLiWingmanPawn()
 	CollisionRoot = CreateDefaultSubobject<USphereComponent>(TEXT("WingmanCollision"));
 	CollisionRoot->InitSphereRadius(300.0f);
 	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CollisionRoot->SetCollisionObjectType(ECC_Pawn);
+	CollisionRoot->SetCollisionObjectType(ECC_GameTraceChannel1);
 	CollisionRoot->SetCollisionResponseToAllChannels(ECR_Ignore);
 	CollisionRoot->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	CollisionRoot->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
-	// Wingmen are presentation aircraft, not mutually blocking physics bodies.
-	// Their paths may cross during a dense attack without generating Pawn contacts.
-	CollisionRoot->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+	CollisionRoot->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Overlap);
 	SetRootComponent(CollisionRoot);
 
 	PresentationRoot = CreateDefaultSubobject<USceneComponent>(TEXT("WingmanPresentation"));
@@ -114,6 +111,7 @@ bool AGuLiWingmanPawn::InitializeOwnerSimulation(
 	RebaseRetryAfterServerTimeSeconds = 0.0;
 
 	ConfigureMesh(Mesh);
+	CollisionRoot->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	CollisionRoot->SetSphereRadius(Runtime.Tuning.Formation.AgentRadiusCentimeters, false);
 	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetActorHiddenInGame(false);
@@ -168,8 +166,9 @@ bool AGuLiWingmanPawn::InitializeRemotePresentation(
 	bHasRemoteVisualPose = false;
 	PresentationRoot->SetRelativeTransform(FTransform::Identity);
 	ConfigureMesh(Mesh);
+	CollisionRoot->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Ignore);
 	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SetActorEnableCollision(false);
+	SetActorEnableCollision(true);
 	SetActorHiddenInGame(false);
 	SetActorTickEnabled(false);
 	return true;
@@ -177,6 +176,12 @@ bool AGuLiWingmanPawn::InitializeRemotePresentation(
 
 void AGuLiWingmanPawn::ResetForPool()
 {
+    if (bRenderHybridPoses)
+    {
+        HybridPoseSamples.Reset();
+        bRenderHybridPoses = false;
+        PresentationRoot->SetAbsolute(false,false,false);
+    }
 	SetPhaseAppearance(false);
 	if (GetWorld()) if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>()) Feedback->ClearActorFlash(this);
 	TeamOutline->SetOutlineTeam(EGuLiTeam::Unassigned);
@@ -245,7 +250,6 @@ EGuLiWingmanMemberBehavior AGuLiWingmanPawn::EvaluateDesiredBehavior() const
 		GetActorLocation(), Runtime.Carrier.Transform.GetLocation()));
 	if (Runtime.Dynamics.Mode == EGuLiWingmanFlightMode::CatchUp
 		|| Runtime.Dynamics.Mode == EGuLiWingmanFlightMode::Recover
-		|| Runtime.Navigation.bHasPath
 		|| Distance > Runtime.Tuning.Formation.SwarmOrbit.OuterSoftRadiusCentimeters)
 	{
 		return EGuLiWingmanMemberBehavior::Rejoin;
@@ -289,12 +293,70 @@ bool AGuLiWingmanPawn::ApplyStateTreeBehavior(const EGuLiWingmanMemberBehavior B
 	return true;
 }
 
+void AGuLiWingmanPawn::ResetHybridPresentation()
+{
+    if (!bRenderHybridPoses) return;
+    HybridPoseSamples.Reset();
+    PresentationRoot->SetWorldTransform(GetActorTransform());
+    bRefreshHybridTrail = true;
+    if (bFlightTrailRunning) StopFlightTrail();
+}
+
+void AGuLiWingmanPawn::SampleHybridPresentation(uint64 LogicalTick, bool bLocal)
+{
+    if (!bRenderHybridPoses || !Runtime.Dynamics.bAlive) return;
+    // Preserve source spacing even when multiple logical steps arrive in a single frame.
+    const double SourceTime = double(LogicalTick) / 60.;
+    if (!HybridPoseSamples.IsEmpty())
+    {
+        const auto& Last = HybridPoseSamples.Last();
+        const double Gap = SourceTime - Last.SourceTimeSeconds;
+        if (bLocal == bLocalPoseSource && Gap <= 0.) return;
+        const double Speed = FMath::Max3(double(Runtime.Tuning.Formation.CatchUpSpeedCentimetersPerSecond),
+            Last.Velocity.Size(), Runtime.Dynamics.Velocity.Size());
+        const double ContinuousDistance = FMath::Max(0., Gap) * Speed + 2. * Runtime.Tuning.Formation.AgentRadiusCentimeters;
+        if (bLocal != bLocalPoseSource || Gap > .5 || FVector::DistSquared(Last.Location, GetActorLocation()) > FMath::Square(ContinuousDistance))
+            ResetHybridPresentation();
+    }
+    bLocalPoseSource = bLocal;
+    // One local physics interval, or 1.5 remote publication intervals for packet jitter.
+    if (HybridPoseSamples.IsEmpty()) HybridPlaybackSeconds = SourceTime - (bLocal ? 2. : 9.) / 60.;
+    FGuLiWingmanPresentationPose Pose;
+    Pose.SourceTimeSeconds = SourceTime;
+    Pose.ServerAcceptedTimeSeconds = GetWorld()->GetTimeSeconds();
+    Pose.Sequence = HybridPoseSamples.IsEmpty() ? 1u : HybridPoseSamples.Last().Sequence + 1u;
+    if (!Pose.Sequence) ++Pose.Sequence;
+    Pose.Location = GetActorLocation();
+    Pose.Rotation = GetActorQuat();
+    Pose.Velocity = Runtime.Dynamics.Velocity;
+    if (GuLiWingmanPresentationPolicy::AppendPose(HybridPoseSamples, Pose)) bRefreshHybridTrail = true;
+}
+
+void AGuLiWingmanPawn::RenderHybridPresentation(double WorldSeconds, double DeltaSeconds)
+{
+    if (HybridPoseSamples.IsEmpty() || !Runtime.Dynamics.bAlive || IsHidden()) return;
+    const auto& Latest = HybridPoseSamples.Last();
+    const double SourceNow = Latest.SourceTimeSeconds + WorldSeconds - Latest.ServerAcceptedTimeSeconds;
+    const double TargetTime = SourceNow - (bLocalPoseSource ? 2. : 9.) / 60.;
+    const double Next = HybridPlaybackSeconds + DeltaSeconds;
+    // Slew through small timing corrections. A delayed packet can never send the mesh past the last verified pose.
+    HybridPlaybackSeconds = FMath::Min(Latest.SourceTimeSeconds, Next + FMath::Clamp(TargetTime - Next, -.1 * DeltaSeconds, .1 * DeltaSeconds));
+    const auto Pose = GuLiWingmanPresentationPolicy::Evaluate(HybridPoseSamples, HybridPlaybackSeconds, SourceNow,
+        GuLiWingmanPresentationPolicy::EStalePolicy::RetainLastPose);
+    PresentationRoot->SetWorldLocationAndRotation(Pose.Transform.GetLocation(), Pose.Transform.GetRotation());
+    if (bRefreshHybridTrail)
+    {
+        if (bPresentationInteractable) UpdateFlightTrail();
+        bRefreshHybridTrail = false;
+    }
+}
+
 void AGuLiWingmanPawn::ApplyHybridQueryPose(const FTransform& Transform,const FVector& Velocity)
 {
     if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) || Transform.ContainsNaN() || Velocity.ContainsNaN()) return;
     SetActorTransform(Transform,false,nullptr,ETeleportType::TeleportPhysics);
     Runtime.Dynamics.Velocity=Velocity;
-    ApplyOwnerPresentationTransform(Transform);UpdateFlightTrail();
+    if (!bRenderHybridPoses) ApplyOwnerPresentationTransform(Transform);
 }
 void AGuLiWingmanPawn::ApplyRemotePresentation(
 	const FTransform& Transform,
@@ -323,6 +385,10 @@ void AGuLiWingmanPawn::ApplyRemotePresentation(
 	PresentationRoot->SetWorldTransform(VisualTransform);
 	bHasRemoteVisualPose = true;
 	RemoteVisualTimeSeconds = VisualNow;
+	if (bPresentationInteractable != bInteractable)
+	{
+		CollisionRoot->SetCollisionEnabled(bInteractable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+	}
 	bPresentationInteractable = bInteractable;
 	const float SafeOpacity = FMath::Clamp(Opacity, 0.0f, 1.0f);
 	VisualMesh->SetScalarParameterValueOnMaterials(TEXT("WingmanOpacity"), SafeOpacity);
@@ -444,6 +510,7 @@ void AGuLiWingmanPawn::CancelFrozenAttackForRecovery()
 
 void AGuLiWingmanPawn::SetAlive(const bool bAlive)
 {
+	if (Runtime.Dynamics.bAlive != bAlive) ResetHybridPresentation();
 	Runtime.Dynamics.bAlive = bAlive;
 	bPresentationInteractable = bAlive;
 	CollisionRoot->SetCollisionEnabled(bAlive && IsOwnerSimulationPawn()
@@ -482,6 +549,7 @@ FTransform AGuLiWingmanPawn::GetPresentationTransform() const
 
 void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetTrail)
 {
+	if (UGuLiNetworkSettings::IsLogicOnly()) return;
 	float SafeOpacity = FMath::IsFinite(Opacity) ? FMath::Clamp(Opacity, 0.0f, 1.0f) : 0.0f;
 	if (GetWorld())
 		if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>())

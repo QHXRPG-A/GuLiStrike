@@ -4,7 +4,7 @@
 
 #include "Algo/AllOf.h"
 #include "Dom/JsonObject.h"
-#include "GuLiFlightNavigationLog.h"
+DEFINE_LOG_CATEGORY_STATIC(LogGuLiWingmanFlight, Log, All);
 #include "GuLiStrike.h"
 #include "HAL/CriticalSection.h"
 #include "HAL/FileManager.h"
@@ -106,8 +106,8 @@ namespace GuLiWingmanQAEvidence
 	{
 		switch (Stream)
 		{
-		case EGuLiWingmanQALogStream::FlightNav:
-			UE_LOG(LogGuLiFlightNav, Verbose, TEXT("[GULI_WINGMAN_QA] %s"), *Line);
+		case EGuLiWingmanQALogStream::FlightControl:
+			UE_LOG(LogGuLiWingmanFlight, Verbose, TEXT("[GULI_WINGMAN_QA] %s"), *Line);
 			break;
 		case EGuLiWingmanQALogStream::Wingman:
 			UE_LOG(LogGuLiWingman, Verbose, TEXT("[GULI_WINGMAN_QA] %s"), *Line);
@@ -276,7 +276,7 @@ const TCHAR* FGuLiWingmanQASchema::StreamName(const EGuLiWingmanQALogStream Stre
 {
 	switch (Stream)
 	{
-	case EGuLiWingmanQALogStream::FlightNav: return TEXT("LogGuLiFlightNav");
+	case EGuLiWingmanQALogStream::FlightControl: return TEXT("LogGuLiWingmanFlight");
 	case EGuLiWingmanQALogStream::Wingman: return TEXT("LogGuLiWingman");
 	case EGuLiWingmanQALogStream::WingmanAI: return TEXT("LogGuLiWingmanAI");
 	case EGuLiWingmanQALogStream::WingmanRelay: return TEXT("LogGuLiWingmanRelay");

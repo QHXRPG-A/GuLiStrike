@@ -20,7 +20,6 @@ $guliRelativeTargets=@(
     '.zcode','GuLiStrike.sln','Intermediate','DerivedDataCache',
     'Saved/Logs','Saved/Crashes','Saved/Screenshots','Saved/Profiling',
     'Saved/Automation','Saved/Temp','Saved/Autosaves',
-    'Plugins/GuLiFlightNavigation/Intermediate',
     'Plugins/GuLiMapAuthoring/Intermediate',
     'Plugins/Tripo3DUEBridge-UE5.7-Win64/Intermediate',
     'Plugins/UnrealMCP/Intermediate','Plugins/UnrealMCPython/Intermediate',

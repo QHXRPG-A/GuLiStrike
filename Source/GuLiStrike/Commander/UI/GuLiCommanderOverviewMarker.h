@@ -14,8 +14,6 @@ struct FGuLiCommanderOverviewMarker
 	FVector2D ScreenPosition = FVector2D::ZeroVector;
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 	float Size = 14;
-	float HealthFraction = 1;
-	float BarOpacity = 0;
 	bool bBuilding = false;
 	bool bSelected = false;
 };

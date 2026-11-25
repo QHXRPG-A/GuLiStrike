@@ -6,6 +6,7 @@
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Commander/UI/GuLiSceneUITypes.h"
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+#include "Commander/UI/GuLiHealthBarLayout.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
@@ -41,6 +42,7 @@
 #include "Rendering/DrawElements.h"
 #include "Rendering/SlateRenderer.h"
 #include "Framework/Application/SlateApplication.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Widgets/SLeafWidget.h"
 #include "Widgets/SOverlay.h"
 #include "Widgets/SInvalidationPanel.h"
@@ -103,6 +105,9 @@ struct FGuLiSceneUIWidgetData
 	uint64 HUDFrame = MAX_uint64;
 	TArray<FGuLiSceneUIRing> Rings;
 	TArray<FGuLiSceneUIHealthBar> Bars;
+	FGuLiHealthBarLayout BarLayout;
+	FGuLiWorldHealthBars WorldBars;
+	TArray<FGuLiSceneUIHealthBar> OverviewBars;
 	TArray<FGuLiSceneUIHealthBar> GroundBars;
 	TArray<FGuLiSceneUILine> Routes;
 	TArray<FGuLiSceneUIWorldWidget> WorldWidgets;
@@ -499,12 +504,15 @@ void UGuLiSceneUIWidget::SetModalHidden(bool bHidden)
 {
     if (bModalHidden==bHidden) return;
 	bModalHidden = bHidden;
+	if (bHidden) Data->BarLayout.Reset();
     if (!bHidden) HandleIdentityChanged();
 	SetVisibility(bHidden ? ESlateVisibility::Hidden : ESlateVisibility::HitTestInvisible);
 }
 
 void UGuLiSceneUIWidget::HandleIdentityChanged()
 {
+	Data->BarLayout.Reset();
+	Data->OverviewBars.Reset();
     // Identity notifications also run while a modal hides the widget and its Tick.
     if(GroundState)
     {
@@ -546,7 +554,6 @@ void UGuLiSceneUIWidget::RefreshSources()
 		RouteData->InitializeForController(Cast<AGuLiCommanderPlayerController>(LocalController.Get()),Presentation.Get());
 		LocalController->AddInstanceComponent(RouteData); RouteData->RegisterComponent();
 	}
-	if (!HealthBars.IsValid()) HealthBars = AGuLiCommanderHealthBarRenderer::FindOrSpawn(GetWorld(), LocalController.Get());
 	const bool Ground=GuLiGroundSceneUI::IsView(LocalController.Get());
 	if(Ground)
 	{
@@ -658,13 +665,29 @@ void UGuLiSceneUIWidget::NativeTick(const FGeometry& Geometry, float DeltaSecond
 	{ FGuLiSceneUIWidgetData::FHalo H; if (Halo->GetSceneUIHalo(H.Center,H.Team,H.Radii)) Halos.Add(H); }
 	if (Halos != Data->Halos) { Data->Halos=MoveTemp(Halos); ++Data->ContentRevision; WorldChanged=true; }
 	TArray<FGuLiSceneUIHealthBar> Bars;
-	if(GroundState)Bars=MoveTemp(Data->GroundBars);
-	else if (HealthBars.IsValid()) HealthBars->GatherSceneUIBars(Bars);
-	if (Bars != Data->Bars) { Data->Bars=MoveTemp(Bars); ++Data->ContentRevision; WorldChanged=true; }
-	TArray<FGuLiSceneUILine> Routes; if (RouteData) RouteData->GatherSceneUILines(Routes);
-	if (Routes != Data->Routes) { Data->Routes=MoveTemp(Routes); ++Data->ContentRevision; WorldChanged=true; }
 	const auto* Camera=PC ? Cast<AGuLiCommanderCameraPawn>(PC->GetViewTarget()) : nullptr;
 	const bool Overview=Camera && Camera->IsOverviewPresentation();
+	if (Overview != Data->bOverview) Data->BarLayout.Reset();
+	const double BarTime = GetWorld()->GetTimeSeconds();
+	auto& Poses = Data->BarLayout.Poses;
+	Poses.BeginFrame(BarTime);
+	if (Overview || GroundState)
+	{
+		if (Overview && Data->HUDFrame != MAX_uint64 && GFrameCounter - Data->HUDFrame <= 1) Bars = Data->OverviewBars;
+		else if (GroundState) Bars = MoveTemp(Data->GroundBars);
+		Poses.ApplySupplied(Bars);
+	}
+	else if (PC) Data->WorldBars.Gather(*PC, Presentation.Get(), Poses, Bars);
+	Poses.EndFrame();
+	const bool Published = Data->BarLayout.Publish(Bars, BarTime);
+	if (Published || Bars != Data->Bars || Overview != Data->bOverview)
+	{
+		Data->Bars = MoveTemp(Bars);
+		++Data->ContentRevision;
+		WorldChanged = true;
+	}
+	TArray<FGuLiSceneUILine> Routes; if (RouteData) RouteData->GatherSceneUILines(Routes);
+	if (Routes != Data->Routes) { Data->Routes=MoveTemp(Routes); ++Data->ContentRevision; WorldChanged=true; }
 	if (Overview != Data->bOverview) { Data->bOverview=Overview; ++Data->ContentRevision; WorldChanged=true; }
 	const auto* Placement=PC ? PC->FindComponentByClass<UGuLiBuildingPlacementComponent>() : nullptr;
 	const auto* Preview=Placement && Placement->IsBuildModeActive() ? Placement->GetSceneUIPreview() : nullptr;
@@ -730,6 +753,7 @@ void UGuLiSceneUIWidget::DestroyOutlineCapture()
 
 void UGuLiSceneUIWidget::NativeDestruct()
 {
+	Data->BarLayout.Reset();
 	if(GroundState)GroundState->Unbind();GroundState=nullptr;Data->GroundBars.Reset();
 	if (BoundIdentity.IsValid()) BoundIdentity->OnCommanderPlayerStateChanged.RemoveDynamic(this, &ThisClass::HandleIdentityChanged);
 	BoundIdentity.Reset();
@@ -737,7 +761,7 @@ void UGuLiSceneUIWidget::NativeDestruct()
 	DestroyPlacementCapture();
 	if (RouteData) RouteData->DestroyComponent();
 	RouteData=nullptr;
-	LocalController.Reset(); Presentation.Reset(); HealthBars.Reset();
+	LocalController.Reset(); Presentation.Reset(); Data->WorldBars = {};
 	Data->HUDShapes.Reset(); Data->PendingHUDShapes.Reset();
 	for (auto& Cache : Data->GeometryCaches) Cache.Batches.Reset();
 	Data->HUDFrame = MAX_uint64; Data->bPendingHUD = false;
@@ -934,7 +958,16 @@ void UGuLiSceneUIWidget::RefreshWorldWidgets()
 	// Surface instances are released after Slate resources during NativeDestruct.
 }
 
-void UGuLiSceneUIWidget::BeginHUDFrame() { Data->PendingHUDShapes.Reset(); Data->bPendingHUD = true; }
+void UGuLiSceneUIWidget::BeginHUDFrame()
+{
+	Data->PendingHUDShapes.Reset();
+	Data->OverviewBars.Reset();
+	Data->bPendingHUD = true;
+}
+void UGuLiSceneUIWidget::AddOverviewHealthBar(const FGuLiSceneUIHealthBar& Bar)
+{
+	if (Data->bPendingHUD) Data->OverviewBars.Add(Bar);
+}
 void UGuLiSceneUIWidget::EndHUDFrame()
 {
 	if (!Data->bPendingHUD) return;
@@ -1084,26 +1117,6 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 			if (Opacity>0) View.Ring(Ring,GuLiLocalTeamColors::GetUI(Ring.Team,ViewTeam).CopyWithNewOpacity(Opacity));
 		}
 	}
-	if (World && PrepareGeometry && !bOverview && HealthBars.IsValid())
-	{
-
-		for (const auto& Bar : Data->Bars)
-		{
-			const float Opacity=Bar.Opacity*(Bar.bEventOverride?1.f:View.WorldUIOpacity(Bar.Center,0,Bar.bSelected));
-			if (Opacity<=0) continue;
-			TGuardValue<float> Detail(View.DetailOpacity,Opacity);
-			FVector2D P; if (!View.Project(Bar.Center, P)) continue;
-			P-=FVector2D(42,6);
-			View.Box(P-FVector2D(1), FVector2D(86,14), (Bar.bSelected ? FLinearColor::White : FLinearColor::Black).CopyWithNewOpacity(Opacity));
-			View.Box(P,FVector2D(84,12),FLinearColor(.025f,.03f,.035f,Opacity));
-			View.Box(P,FVector2D(84*Bar.Fraction,12),FLinearColor(.15f,.9f,.35f,Opacity));
-			if(Bar.bHasShield)
-			{
-				View.Box(P+FVector2D(0,14),FVector2D(84,3),FLinearColor(.025f,.03f,.035f,Opacity));
-				View.Box(P+FVector2D(0,14),FVector2D(84*Bar.ShieldFraction,3),FLinearColor(FColor::FromHex(TEXT("6AA4BE"))).CopyWithNewOpacity(Opacity));
-			}
-		}
-	}
 	if (World && View.bBuild) for (const auto& Line : Data->PlacementLocalLines)
 		View.WorldLine(Data->PlacementTransform.TransformPosition(Line.Key),Data->PlacementTransform.TransformPosition(Line.Value),1,
 			Data->bPlacementValid ? FLinearColor(.04f,1,.12f) : FLinearColor(1,.03f,.02f));
@@ -1130,6 +1143,51 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 		case FGuLiSceneUIWidgetData::EShape::Text:
 			FSlateDrawElement::MakeText(Elements,Layer+2,Geometry.ToPaintGeometry(FSlateLayoutTransform(FVector2f((S.A+View.Inset)*View.Scale))),
 				S.Text,FCoreStyle::GetDefaultFontStyle("Regular",10),ESlateDrawEffect::None,S.Color); break;
+		}
+	}
+	if (World && PrepareGeometry)
+	{
+		const float DPI = bOverview ? UWidgetLayoutLibrary::GetViewportScale(this) : 1.f;
+		const FBox2D Viewport(View.Inset, View.Inset + FVector2D(View.Rect.Width(), View.Rect.Height()));
+		Data->BarLayout.ProjectVisible(Data->Bars, Viewport, [&](int32 Index, FBox2D& Bounds, float& Opacity)
+		{
+			const auto& Bar = Data->Bars[Index];
+			Opacity = Bar.Opacity * ((bOverview || GroundState) ? 1.f : View.WorldUIOpacity(Bar.Center, 0, Bar.bSelected));
+			FVector2D Anchor;
+			if (Opacity <= 0 || !View.Project(Bar.Center, Anchor)) return false;
+			Bounds = FGuLiHealthBarLayout::ScreenBounds(Bar, Anchor, DPI, bOverview);
+			return true;
+		});
+		auto DrawBarRect = [&](const FVector2D& Origin, const FVector2D& Size, const FLinearColor& Color)
+		{
+			const FVector2D Min = Origin.ComponentMax(Viewport.Min);
+			const FVector2D Max = (Origin + Size).ComponentMin(Viewport.Max);
+			if (Max.X > Min.X && Max.Y > Min.Y) View.Box(Min, Max - Min, Color);
+		};
+		for (const auto& Item : Data->BarLayout.Visible)
+		{
+			const auto& Bar = Data->Bars[Item.Index];
+			const float Opacity = Item.Opacity;
+			TGuardValue<float> Detail(View.DetailOpacity, Opacity);
+			if (bOverview)
+			{
+				const FVector2D Min = Item.Bounds.Min;
+				const double Width = Item.Bounds.GetSize().X - 2 * DPI;
+				DrawBarRect(Min, Item.Bounds.GetSize(), FLinearColor::Black);
+				DrawBarRect(Min + FVector2D(DPI), FVector2D(Width * Bar.Fraction, 3 * DPI), FLinearColor(.15f,.9f,.35f));
+				if (Bar.bHasShield)
+					DrawBarRect(Min + FVector2D(DPI,5*DPI), FVector2D(Width * Bar.ShieldFraction, 2*DPI), FLinearColor(FColor::FromHex(TEXT("6AA4BE"))));
+				continue;
+			}
+			const FVector2D P = Item.Bounds.Min + FVector2D(1);
+			DrawBarRect(P-FVector2D(1), FVector2D(86,14), (Bar.bSelected ? FLinearColor::White : FLinearColor::Black).CopyWithNewOpacity(Opacity));
+			DrawBarRect(P,FVector2D(84,12),FLinearColor(.025f,.03f,.035f,Opacity));
+			DrawBarRect(P,FVector2D(84*Bar.Fraction,12),FLinearColor(.15f,.9f,.35f,Opacity));
+			if(Bar.bHasShield)
+			{
+				DrawBarRect(P+FVector2D(0,14),FVector2D(84,3),FLinearColor(.025f,.03f,.035f,Opacity));
+				DrawBarRect(P+FVector2D(0,14),FVector2D(84*Bar.ShieldFraction,3),FLinearColor(FColor::FromHex(TEXT("6AA4BE"))).CopyWithNewOpacity(Opacity));
+			}
 		}
 	}
 	if (World && PrepareGeometry) {Data->WorldUIDetailed=View.WorldUIDetailed;Data->WorldUICulled=View.WorldUICulled;}
@@ -1175,8 +1233,16 @@ FString UGuLiSceneUIWidget::GetFrameStatsJson() const
  CVarSceneUIOptimizedPaint.GetValueOnGameThread() ? TEXT("true"):TEXT("false"));
  Result.LeftChopInline(1);
  Result+=FString::Printf(TEXT(",\"world_ui_detailed\":%u,\"world_ui_culled\":%u,\"outline_max_distance_cm\":%.1f}"),Data->WorldUIDetailed,Data->WorldUICulled,Data->OutlineMaximumDistance);
+ Result.LeftChopInline(1);
+ Result+=FString::Printf(TEXT(",\"health_bar_drawn\":%d,\"health_bar_projected\":%d,\"health_bar_publications\":%llu}"),
+     Data->BarLayout.Visible.Num(),Data->BarLayout.Projected,Data->BarLayout.Publications);
  if(GroundState){Result.LeftChopInline(1);Result+=TEXT(",\"ground_feedback\":")+GroundState->GetStatsJson()+TEXT("}");}
  return Result;
+}
+
+FString UGuLiSceneUIWidget::GetHealthBarLayoutJson(bool bIncludeCandidates) const
+{
+	return Data ? Data->BarLayout.Describe(Data->Bars, bIncludeCandidates) : TEXT("{}");
 }
 
 void UGuLiSceneUIWidget::BackgroundChanged()

@@ -484,7 +484,8 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
             if (Amount > 0) Out.Barriers.emplace_back(Key, Shield);
         }
         DamageDelta Delta;
-        if (Remaining > 0 && !ApplyDamage(T.Vitals, Remaining, Delta, shieldMultiplier)) return Reject(CommitStatus::InvalidRule);
+        const bool protectedHull = IndexedSource().ProtectRangeShipHulls && R.Target.Kind==ObjectKind::Ship && T.Definition=="player/ship";
+        if (Remaining > 0 && !ApplyDamage(T.Vitals, Remaining, Delta, shieldMultiplier, protectedHull)) return Reject(CommitStatus::InvalidRule);
         Delta.Absorbed += barrierDamage; Out.Damage = Delta; Out.Vitals = T.Vitals;
         if (Delta.Killed)
         {

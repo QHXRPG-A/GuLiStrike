@@ -141,17 +141,33 @@ TSubclassOf<AActor> UGuLiVfxRegistrySubsystem::LoadActorClass(int32 VfxId, TSubc
 	return nullptr;
 }
 
+FSoftObjectPath UGuLiVfxRegistrySubsystem::ReservePreload(int32 VfxId)
+{
+	FGuLiStrikeVfxEffectsRow Row;
+	if (!GetDefinition(VfxId, Row)) return {};
+	const FSoftObjectPath Path = Row.ResourcePath.ToSoftObjectPath();
+	Resources.FindOrAdd(Path);
+	return Path;
+}
+
+UObject* UGuLiVfxRegistrySubsystem::ResolveResourcePath(const FSoftObjectPath& Path, bool bLoadIfNeeded) const
+{
+	// A reserved empty entry can be loading or unavailable. Neither case should block a combat frame.
+	if (const auto* Cached = Resources.Find(Path))
+		return *Cached ? Cached->Get() : Path.ResolveObject();
+	return bLoadIfNeeded ? Path.TryLoad() : Path.ResolveObject();
+}
+
 UObject* UGuLiVfxRegistrySubsystem::LoadResource(int32 VfxId, TSubclassOf<UObject> ExpectedClass, bool LoadIfNeeded)
 {
 	if (!GetWorld() || GetWorld()->GetNetMode() == NM_DedicatedServer || !ExpectedClass) return nullptr;
 	FGuLiStrikeVfxEffectsRow Definition;
 	if (!GetDefinition(VfxId, Definition)) return nullptr;
 	const auto Path = Definition.ResourcePath.ToSoftObjectPath();
-	UObject* Object = Resources.FindRef(Path);
-	if (!Object) Object = LoadIfNeeded ? Path.TryLoad() : Path.ResolveObject();
+	UObject* Object = ResolveResourcePath(Path, LoadIfNeeded);
 	if (!MatchesType(Object, ExpectedClass))
 	{
-		if (LoadIfNeeded || Object) UE_LOG(LogGuLiVfx, Error, TEXT("VfxId %d (%s) cannot resolve as %s; skipping presentation."),
+		if (Object || (LoadIfNeeded && !Resources.Contains(Path))) UE_LOG(LogGuLiVfx, Error, TEXT("VfxId %d (%s) cannot resolve as %s; skipping presentation."),
 			VfxId, *Path.ToString(), *ExpectedClass->GetName());
 		return nullptr;
 	}
@@ -199,8 +215,7 @@ UNiagaraSystem* UGuLiVfxRegistrySubsystem::LoadNiagaraForLOD(int32 VfxId, EGuLiC
 	for (int32 Index=FMath::Clamp(int32(Level),0,2); Index>=0; --Index)
 	{
 		const auto Path=Paths[Index].ToSoftObjectPath();
-		UObject* Object=Path.IsNull() ? nullptr : Resources.FindRef(Path);
-		if (!Object && !Path.IsNull()) Object=bLoadIfNeeded ? Path.TryLoad() : Path.ResolveObject();
+		UObject* Object = Path.IsNull() ? nullptr : ResolveResourcePath(Path, bLoadIfNeeded);
 		if (auto* System=Cast<UNiagaraSystem>(Object)) { Resources.Add(Path,System); return System; }
 		if (OutFallbacks) ++*OutFallbacks;
 	}

@@ -32,6 +32,7 @@
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Network/GuLiHybridActorComponent.h"
+#include "Network/GuLiHybridActorWorldSubsystem.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraActor.h"
 #include "Camera/CameraComponent.h"
@@ -45,16 +46,19 @@ TAutoConsoleVariable<int32> MovementFixtureHold(TEXT("gs.Perf.MovementFixtureHol
 bool FixtureHold(const UWorld* World,int32 Bit)
 {
 #if WITH_EDITOR
-    return World&&World->IsGameWorld()&&World->GetMapName().EndsWith(TEXT("LVL_CommanderMassPrototype"))
-        &&(MovementFixtureHold.GetValueOnGameThread()&Bit)!=0;
+    if (!World || !World->IsGameWorld()) return false;
+    const auto* Actors = World->GetSubsystem<UGuLiHybridActorWorldSubsystem>();
+    if (Actors && (Actors->GetEditorActivityHoldMask() & Bit) != 0) return true;
+    return (MovementFixtureHold.GetValueOnGameThread() & Bit) != 0
+        && World->GetMapName().EndsWith(TEXT("LVL_CommanderMassPrototype"));
 #else
     return false;
 #endif
 }
 }
-bool GuLiMovementCapture::HoldTerritoryChanges(const UWorld* World) {return FixtureHold(World,1);}
+bool GuLiMovementCapture::HoldTerritoryChanges(const UWorld* World) {return FixtureHold(World,TerritoryCapture);}
 bool GuLiMovementCapture::HoldAutomaticWork(const UWorld* World,const AActor* Worker)
-{return FixtureHold(World,2) && (!Worker || !Worker->ActorHasTag(TEXT("MovementCaptureActiveWorker")));}
+{return FixtureHold(World,AutomaticEconomy) && (!Worker || !Worker->ActorHasTag(TEXT("MovementCaptureActiveWorker")));}
 
 // The fixture is deliberately independent of the avoidance implementation. It
 // replays ordinary commander moves and observes applied navigation state.

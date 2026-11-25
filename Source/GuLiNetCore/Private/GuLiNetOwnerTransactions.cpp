@@ -124,6 +124,8 @@ bool OwnerState::ApplyValidated(const std::vector<StateFragment>& Fragments,std:
 bool OwnerState::Configure(const RuntimeManifest& M,std::string& Error)
 {
     if (!Directory.empty()) {Error="Owner directory was already configured";return false;}
+    const auto protection=M.Numbers.find(WingmanRangeProtectShipHulls);
+    ProtectRangeShipHulls=protection!=M.Numbers.end() && protection->second==1;
     if (!SetRules(M.Rules)) {Error="Owner numerical rules could not be configured";return false;}
     if (!BeginEconomy(M.StartingRed,M.StartingBlue)) {Error="Owner economy could not be configured";return false;}
     std::map<std::string,CompiledUpgradeCatalog> Catalogs;

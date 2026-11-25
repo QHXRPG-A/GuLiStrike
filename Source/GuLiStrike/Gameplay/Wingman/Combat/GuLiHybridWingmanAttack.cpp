@@ -37,6 +37,31 @@ FGuLiWingmanAttackTarget ManualTarget(UWorld& World,UGuLiDamageLedgerSubsystem& 
 }
 }
 
+#if WITH_EDITOR
+void UGuLiWingmanSimulationSubsystem::ReadEditorRange(const FGuLiHybridManifestData& Manifest)
+{
+    // The room manifest is shared by the rendered and logic peers, including after an ownership transfer.
+    bReadEditorRange = true;
+    const FString* Participants = Manifest.Strings.Find(EditorRangeParticipants);
+    if (!Participants) return;
+    TArray<FString> Ids;
+    Participants->ParseIntoArray(Ids, TEXT(","));
+    if (Ids.IsEmpty()) return;
+    TSet<FGuid> Allowed;
+    for (const FString& Entry : Ids)
+    {
+        FGuid Id;
+        if (FGuid::ParseExact(Entry, EGuidFormats::Digits, Id)) Allowed.Add(Id);
+    }
+    for (const auto& Object : Manifest.Objects)
+    {
+        if (!Allowed.Contains(Object.Key.StableId)) continue;
+        if (Object.Key.Kind == EGuLiHybridObjectKind::Ship) EditorRangeCarriers.Add(Object.Key.StableId);
+        EditorRangeTargets.Add(Object.Key);
+    }
+}
+#endif
+
 void UGuLiWingmanSimulationSubsystem::AdvanceHybridAttack(FGuLiWingmanLocalGroupRuntime& Runtime,
     uint32 OwnerVersion,uint64 Tick,double Now)
 {
@@ -73,10 +98,40 @@ void UGuLiWingmanSimulationSubsystem::AdvanceHybridAttack(FGuLiWingmanLocalGroup
         const auto* Binding=Ship->FindComponentByClass<UGuLiHybridActorComponent>();
         FGuLiTargetHandle SourceHandle;
         if (!Binding || !H->ResolveObjectTarget(Binding->GetObjectKey(),SourceHandle) || !Ledger->TryGetSourceSnapshot(SourceHandle,Source)) return;
-        const auto Manual=ManualTarget(*W,*Ledger,Ship->GetWingmanAttackTarget(),Source.Team,Now);
+        auto Manual=ManualTarget(*W,*Ledger,Ship->GetWingmanAttackTarget(),Source.Team,Now);
+#if WITH_EDITOR
+        if (!bReadEditorRange)
+        {
+            const auto* Actors = W->GetSubsystem<UGuLiHybridActorWorldSubsystem>();
+            if (Actors) ReadEditorRange(Actors->GetManifest());
+        }
+        const bool bRange = EditorRangeCarriers.Contains(Binding->GetObjectKey().StableId);
+        const bool bDuel = bRange && EditorRangeCarriers.Num() == 2;
+        if (bRange && Manual.IsValid() && !(bDuel && Manual.Target.Kind == EGuLiTargetKind::Wingman))
+        {
+            FGuLiHybridObjectKey Key;
+            if (!H->ResolveTarget(Manual.Target, Key) || !EditorRangeTargets.Contains(Key)) Manual = {};
+        }
+#endif
         if (!Manual.IsValid())
         {
-            TArray<FGuLiCombatTargetSnapshot> Targets;Ledger->GetTargetSnapshots(Targets);
+            TArray<FGuLiCombatTargetSnapshot> Targets;
+#if WITH_EDITOR
+            if (bRange)
+            {
+                if (bDuel) Ledger->GetTargetSnapshots(Targets, EGuLiTargetKind::Wingman);
+                for (const FGuLiHybridObjectKey& Key : EditorRangeTargets)
+                {
+                    FGuLiCombatTargetSnapshot Target;
+                    FGuLiTargetHandle Handle;
+                    if (H->ResolveObjectTarget(Key, Handle) && Ledger->TryGetTargetSnapshot(Handle, Target)) Targets.Add(Target);
+                }
+            }
+            else
+#endif
+            {
+                Ledger->GetTargetSnapshots(Targets);
+            }
             // This cache is derived terrain data. Private target revisions are retained by the members.
             TMap<FGuLiTargetHandle,FGuLiWingmanGroundCorridorCache> Corridors;
             if (!GuLiWingmanTargeting::SelectAutomaticTargets(W,Source,Configuration,Tuning,Now,Members,Targets,Previous,Corridors,Assignments))

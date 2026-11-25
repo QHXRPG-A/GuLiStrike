@@ -8,7 +8,6 @@
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Gameplay/CombatEffects/GuLiUnitWreck.h"
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
-#include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Commander/Presentation/GuLiCommanderRouteLineComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/PrimitiveComponent.h"
@@ -63,7 +62,7 @@ void UGuLiCommanderOverviewSubsystem::GatherHiddenComponents(TSet<FPrimitiveComp
 	{
 		AActor* Actor = Weak.Get();
 		bool bHide = Actor->IsA<AGuLiCommanderPresentationActor>() || Actor->IsA<AGuLiWingmanPresentationActor>()
-			|| Actor->IsA<AGuLiCommanderHealthBarRenderer>() || Actor->IsA<AGuLiBuildingPlacementPreview>()
+			|| Actor->IsA<AGuLiBuildingPlacementPreview>()
 			|| Actor->IsA<AGuLiUnitWreck>() || IsUnitOrBuilding(Actor);
 		for (const AActor* Parent = Actor->GetAttachParentActor(); !bHide && Parent; Parent = Parent->GetAttachParentActor())
 			bHide = IsUnitOrBuilding(Parent) || Parent->IsA<AGuLiCommanderPresentationActor>();

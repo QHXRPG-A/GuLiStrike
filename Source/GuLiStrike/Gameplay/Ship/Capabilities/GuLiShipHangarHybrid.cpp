@@ -22,7 +22,17 @@ void UGuLiShipHangarCapabilityComponent::AdvanceHybrid(uint64 Tick,double)
     const auto& Manifest=Factories->GetManifest();const auto& Source=Binding->GetState();
     const FString Profile=GuLiHybridWingman::Profile(Assembly->UpgradeDomain,GroupDefinition->ConfigurationId,GetCapabilityId());
     const FString Rule=Manifest.Strings.FindRef(Profile+TEXT("/spawn_rule"));if (Rule.IsEmpty()) {H->Suspend(TEXT("Hangar has no admitted member factory"));return;}
-    const auto Group=GuLiHybridWingman::Group(Manifest,Source.Key,Profile);const auto* Definition=Cast<UGuLiShipHangarDefinition>(CapabilityConfiguration);
+    if (HybridMemberGroup.ShipInstanceId != Source.Key.StableId || HybridMemberGroup.ShipGeneration != Source.Key.LifeGeneration
+        || HybridMemberProfile != Profile)
+    {
+        HybridMemberGroup = GuLiHybridWingman::Group(Manifest, Source.Key, Profile);
+        HybridMemberProfile = Profile;
+        HybridMemberKeys.Reset(GULI_WINGMAN_GROUP_SIZE);
+        for (uint8 Slot = 0; Slot < GULI_WINGMAN_GROUP_SIZE; ++Slot)
+            HybridMemberKeys.Add(GuLiHybridWingman::MemberKey(Manifest, Source.Key, Profile, Slot));
+    }
+    const auto& Group = HybridMemberGroup;
+    const auto* Definition=Cast<UGuLiShipHangarDefinition>(CapabilityConfiguration);
     if (!Definition || !Definition->AbilitySet) return;
     auto Context=ProjectionContext;Context.ShipInstanceId=Group.ShipInstanceId;Context.ShipGeneration=Group.ShipGeneration;
     Context.GroupGeneration=Group.GroupGeneration;Context.MatchEpoch=GetWorld()->GetGameState<AGuLiBattleGameState>()->GetMatchEpoch();
@@ -30,13 +40,14 @@ void UGuLiShipHangarCapabilityComponent::AdvanceHybrid(uint64 Tick,double)
     Context.FormationCommandRevision=FMath::Max(1u,Context.FormationCommandRevision);Context.EffectiveClientSimTick=FMath::Max(1u,Context.EffectiveClientSimTick);
     SetProjectionContext(Context);FGuLiGroupAbilityConfigSnapshot Configuration;if (!BuildGroupAbilityConfigSnapshot(Configuration) || !Configuration.IsUsableByLeaseOwner())
     {HybridMemberStatus=TEXT("incompatible_hangar_projection");H->Suspend(TEXT("Committed Hangar has an invalid member projection"));return;}
-    TArray<FGuLiHybridObjectState> Directory;H->GetObjects(Directory);
     TArray<uint8> Finished;
     for (const auto& [Slot,Pending]:HybridSpawns)
     {
-        const auto Key=GuLiHybridWingman::MemberKey(Manifest,Source.Key,Profile,Slot,Pending.Generation);FGuLiHybridObjectState Member;
+        auto Key = HybridMemberKeys[Slot];
+        Key.LifeGeneration = Pending.Generation;
+        FGuLiHybridObjectState Member;
         FGuLiHybridTransactionResult Result;
-        if (H->GetObject(Key,Member) && Member.Parent==Source.Key && Member.SpawnEvent==Pending.Event) Finished.Add(Slot);
+        if (H->GetObjectView(Key,Member) && Member.Parent==Source.Key && Member.SpawnEvent==Pending.Event) Finished.Add(Slot);
         else if (H->FindTransactionResult(Pending.Event,Result) && Result.LedgerRevision>0 && !Result.IsCommitted())
         {Finished.Add(Slot);NextHybridSpawnTick=Tick+60;}
     }
@@ -45,34 +56,38 @@ void UGuLiShipHangarCapabilityComponent::AdvanceHybrid(uint64 Tick,double)
     for (uint8 Slot=0;Slot<GULI_WINGMAN_GROUP_SIZE;++Slot)
     {
         if (HybridSpawns.Contains(Slot)) continue;
-        const auto Stable=GuLiHybridWingman::MemberKey(Manifest,Source.Key,Profile,Slot);const FGuLiHybridObjectState* Latest=nullptr;
-        for (const auto& O:Directory) if (O.Key.Kind==Stable.Kind && O.Key.StableId==Stable.StableId && (!Latest || O.Key.LifeGeneration>Latest->Key.LifeGeneration)) Latest=&O;
-        const uint32 RetiredLife=H->GetLatestRetiredLife(Stable);
-        if (Latest && Latest->LifeState<2 && Latest->Key.LifeGeneration>RetiredLife) {HybridReplenishment.Remove(Slot);continue;}
+        const auto& Stable = HybridMemberKeys[Slot];
+        uint8 LatestState = 0;
+        const uint32 LatestLife = H->FindLatestObjectGeneration(Stable, LatestState);
+        const uint32 RetiredLife = H->GetLatestRetiredLife(Stable);
+        if (LatestLife > RetiredLife && LatestState < 2) {HybridReplenishment.Remove(Slot);continue;}
         uint32 Generation=1;
-        if (RetiredLife && (!Latest || RetiredLife>=Latest->Key.LifeGeneration))
+        if (RetiredLife && RetiredLife >= LatestLife)
         {
             if (RetiredLife==MAX_uint32) {H->Suspend(TEXT("Wingman life generation exhausted"));return;}
             Generation=RetiredLife+1;
         }
-        else if (Latest)
+        else if (LatestLife)
         {
-            if (Latest->Key.LifeGeneration==MAX_uint32) {H->Suspend(TEXT("Wingman life generation exhausted"));return;}
-            if (Latest->LifeState!=3)
+            if (LatestLife==MAX_uint32) {H->Suspend(TEXT("Wingman life generation exhausted"));return;}
+            if (LatestState!=3)
             {
                 auto* Schedule=HybridReplenishment.Find(Slot);
-                if (!Schedule || Schedule->Generation!=Latest->Key.LifeGeneration)
-                {HybridReplenishment.Add(Slot,{Latest->Key.LifeGeneration,Tick+900});continue;}
+                if (!Schedule || Schedule->Generation!=LatestLife)
+                {HybridReplenishment.Add(Slot,{LatestLife,Tick+900});continue;}
                 if (Tick<Schedule->DueAt) continue;
             }
             // A vacant Air seat retired the whole group. Takeover regenerates
             // every slot immediately, with a new life and no old inputs.
-            Generation=Latest->Key.LifeGeneration+1;
+            Generation=LatestLife+1;
         }
+        if (Tick < ClearanceRetryTick.FindRef(Slot)) continue;
+        const int32 SpawnSlot=Slot;
         TArray<FVector> Positions;
-        if (!UGuLiWingmanSimulationSubsystem::PlanExternalFormationPositions(GetWorld(),GetOwner()->GetActorTransform(),Configuration.FormationRuntime,Positions,{},&HybridMemberStatus)
-            || !Positions.IsValidIndex(Slot)) {NextHybridSpawnTick=Tick+60;return;}
-        FGuLiHybridObjectRequest Request;Request.Source=Source.Key;Request.Target=GuLiHybridWingman::MemberKey(Manifest,Source.Key,Profile,Slot,Generation);
+        if (!UGuLiWingmanSimulationSubsystem::PlanExternalFormationPositions(GetWorld(),GetOwner()->GetActorTransform(),Configuration.FormationRuntime,Positions,MakeArrayView(&SpawnSlot,1),&HybridMemberStatus)
+            || !Positions.IsValidIndex(Slot)) {ClearanceRetryTick.Add(Slot,Tick+30);continue;}
+        ClearanceRetryTick.Remove(Slot);
+        FGuLiHybridObjectRequest Request;Request.Source=Source.Key;Request.Target=Stable;Request.Target.LifeGeneration=Generation;
         Request.Related=Source.Key;Request.Event=FGuid::NewGuid();Request.Rule=FName(*Rule);Request.Operation=EGuLiHybridObjectOperation::Spawn;
         Request.Location=Positions[Slot];Request.FacingYaw=GetOwner()->GetActorRotation().Yaw;Request.StartedAt=Tick;
         HybridMemberStatus=TEXT("member_admission_pending");

@@ -15,7 +15,7 @@ bool FGuLiWingmanIndependentRecoveryTest::RunTest(const FString&)
     World.Value->InitializeActorsForPlay(FURL());
     auto* Simulation=World.Value->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
     if (!TestNotNull(TEXT("Independent simulation subsystem available"),Simulation)) return false;
-    Simulation->SetNavigationRequirementBypassForTests(true);
+
     auto* Carrier=World.Value->SpawnActor<AActor>();auto* Definition=NewObject<UGuLiShipHangarDefinition>(Carrier);
     Definition->AbilitySet=UGuLiShipAbilitySet::CreateNativeV3Transient(Definition);Definition->Loadout=FGuLiShipAbilityLoadoutState::MakeNativeV3();
     auto* Hangar=NewObject<UGuLiShipHangarCapabilityComponent>(Carrier);Hangar->Prepare(TEXT("Hangar"),TEXT("Hangar"),Definition);

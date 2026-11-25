@@ -40,14 +40,6 @@ def readback():
                 elif field in ('center','outpost_ground_location'):v=list(v.to_tuple())
                 assert same(v,target[field]),(kind,field)
     actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors()
-    flight=[]
-    for actor in actors:
-        if not isinstance(actor,unreal.GuLiFlightNavigationVolume):continue
-        settings=actor.get_editor_property('authoring_bake_settings')
-        assert unreal.GuLiFlightNavigationEditorLibrary.validate_volume(actor,settings) is not None
-        asset=actor.get_editor_property('navigation_data');assert asset
-        flight.append({'volume':actor.get_path_name(),'asset':asset.get_path_name(),'current_geometry_valid':True})
-    state['flight_navigation']=flight
     by_path={a.get_path_name():a for a in actors}
     for row in json.loads((DATA/'layout_actors.json').read_text(encoding='utf-8')):
         assert row['path'] in by_path,row['path']

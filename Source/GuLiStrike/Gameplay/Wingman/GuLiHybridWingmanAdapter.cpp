@@ -103,7 +103,7 @@ class FGuLiHybridWingmanAdapter final:public IGuLiHybridSimulationAdapter
         for (auto& Channel:C.WeaponChannels) {Channel.Binding.MatchEpoch=C.MatchEpoch;Channel.Binding.OwnerPlayerGuid=C.OwnerPlayerGuid;}
         C.RefreshHash();Pawn()->GetMutableRuntimeState().Attack.LeaseEpoch=uint32(Record.OwnerEpoch);
     }
-    bool RestoreImpl(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage,bool Query)
+    bool RestoreImpl(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage)
     {
         FState S;if (!ReadWingman(Bytes,S) || S.Key!=Record.Key || S.Parent!=Record.Parent) return false;
         if (Stage==EGuLiHybridRestoreStage::Detach) {Release();return true;}
@@ -111,7 +111,7 @@ class FGuLiHybridWingmanAdapter final:public IGuLiHybridSimulationAdapter
         if (!Pawn() || !Validate(Bytes)) return false;
         if (Stage==EGuLiHybridRestoreStage::Link)
         {
-            if (!Simulation()->RestoreIndependentMember(*Runtime,S.Member,!Query)) return false;
+            if (!Simulation()->RestoreIndependentMember(*Runtime,S.Member)) return false;
             Runtime->CarrierActor=Hybrid()->FindBoundActor(Record.Parent);
             Runtime->HybridAttack=S.Attack;Runtime->NextHybridTargetScan=S.NextScan;
             LastPublished=LastApplied=0;RebaseProjection();Pawn()->ObserveHybridRestore();return true;
@@ -129,19 +129,28 @@ public:
     bool Prepare(const FGuLiHybridObjectState& State) override {Record=State;return State.LifeState==3 || Create();}
     void SetAuthority(const FGuLiHybridObjectState& State,bool IsLocal) override
     {
+        const bool bGainedAuthority=IsLocal && !Local;
+        const bool bChangedSource = IsLocal != Local || State.OwnerEpoch != Record.OwnerEpoch;
         Record=State;Local=IsLocal;
         if (State.LifeState==3) {Release();return;}
         if (!Create()) {Hybrid()->Suspend(TEXT("Wingman entity recreation failed"));return;}
-        if (auto* P=Pawn()) {P->FindComponentByClass<UGuLiHybridActorComponent>()->Install(State,Local);RebaseProjection();}
+        if (auto* P=Pawn())
+        {
+            if (bChangedSource) P->ResetHybridPresentation();
+            if (bGainedAuthority) P->GetMutableRuntimeState().FlightPlan.SenseAfter=0;
+            P->FindComponentByClass<UGuLiHybridActorComponent>()->Install(State,Local);
+            RebaseProjection();
+        }
     }
     void Advance(uint64 Tick,double Delta) override
     {
         auto* P=Pawn();if (!P || !Local || !Hybrid()->HasSimulation(Record.Key) || Tick%2) return;
         auto& State=P->GetMutableRuntimeState();
         if (auto* Carrier=Hybrid()->FindBoundActor(Record.Parent))
-        {State.Carrier.Transform=Carrier->GetActorTransform();State.Carrier.Velocity=Carrier->GetVelocity();State.Carrier.Source.CanonicalEpoch=Epoch();State.Carrier.Source.MoveRevision=uint32(FMath::Max<uint64>(1,Tick));Runtime->CarrierActor=Carrier;P->GetFlightMovement()->SetCarrierActor(Carrier);}
+        {State.Carrier.Transform=Carrier->GetActorTransform();State.Carrier.Velocity=Carrier->GetVelocity();State.Carrier.Source.CanonicalEpoch=Epoch();State.Carrier.Source.MoveRevision=uint32(FMath::Max<uint64>(1,Tick));Runtime->CarrierActor=Carrier;}
         Simulation()->AdvanceHybridAttack(*Runtime,uint32(Record.OwnerEpoch),Tick,double(Tick)/60.);
         if (!Simulation()->AdvanceIndependentMember(*Runtime,float(Delta*2.),double(Tick)/60.)) {Hybrid()->Suspend(TEXT("Independent Wingman integrator failed"));return;}
+        P->SampleHybridPresentation(Tick, true);
         P->ObserveHybridSimulation(Tick);
         if (Tick%6 || Tick==LastPublished) return;
         FGuLiHybridStateArchive A(700);uint32 Schema=1;A.Value(Schema);auto Pose=P->GetActorTransform();auto Velocity=State.Dynamics.Velocity;
@@ -156,7 +165,7 @@ public:
         auto* P=Pawn();if (!P || Local || Tick<=LastApplied) return false;
         FGuLiHybridStateArchive A(Bytes,700);uint32 Schema=0;FTransform Pose;FVector Velocity;A.Value(Schema);A.Value(Pose);A.Value(Velocity);
         if (Schema!=1 || !A.Done()) return false;
-        P->ApplyHybridQueryPose(Pose,Velocity);P->ObserveHybridReception(Tick);LastApplied=Tick;return true;
+        P->ApplyHybridQueryPose(Pose,Velocity);P->SampleHybridPresentation(Tick, false);P->ObserveHybridReception(Tick);LastApplied=Tick;return true;
     }
     void ApplyLedger(const FGuLiHybridObjectState& State,uint64 Revision,bool Effects) override
     {
@@ -177,8 +186,8 @@ public:
     {FState S;return ReadWingman(Bytes,S) && S.Key==Record.Key && S.Parent==Record.Parent && Simulation() && Simulation()->ValidateIndependentMember(S.Member,Member);}
 
 
-    bool Restore(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage) override {return RestoreImpl(Bytes,Stage,false);}
-    bool RestoreQuery(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage) override {return RestoreImpl(Bytes,Stage,true);}
+    bool Restore(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage) override {return RestoreImpl(Bytes,Stage);}
+    bool RestoreQuery(TConstArrayView<uint8> Bytes,EGuLiHybridRestoreStage Stage) override {return RestoreImpl(Bytes,Stage);}
     void Release() override
     {
         if (World() && Owner.IsValid()) World()->GetSubsystem<UGuLiExternalControlRegistry>()->Unbind(Record.Key,*Owner.Get());

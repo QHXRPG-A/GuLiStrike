@@ -4,6 +4,8 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | verification | partial | 在指挥官原型图的无双·巡天入口验证越岭、双编队空战和跨区对地手感。 | 2026-11-25 |
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | done | partial | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-11-25 |
 | [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | done | partial | — | 2026-11-23 |
 | [游骑兵范围与持续增伤](../DevelopmentDocumentation/20261123-游骑兵范围与持续增伤.md) | done | partial | — | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | done | partial | — | 2026-11-23 |
@@ -58,7 +60,6 @@
 | [GuLi 独立地图设计器 — 技术方案与交付](../DevelopmentDocumentation/20261024-GuLi独立地图设计器.md) | verification | partial | 用户通过 Tools/MapDesigner/start.cmd 验收交互和视觉，完成设计后将导出目录交给助手应用 UE。 | 2026-10-25 |
 | [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | done | partial | — | 2026-10-24 |
 | [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | in_progress | partial | 减少回执匹配、前置快照与起步提交成本；候选维持各自默认状态，全部成员响应稳定达标后再复核整帧性能，玩家效果独立验收。 | 2026-10-21 |
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | done | partial | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-10-18 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | verification | partial | 玩家通过原地图固定优化入口核对窄路、墙边、拥堵和重防号转向观感；网络协议整改另立任务。 | 2026-10-11 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | verification | partial | 玩家按原地图网络诊断入口验收保留功能；本轮四候选停止推进，不自动继续P95实验。初始化StateTree异常与压力网络积压另列待确认。 | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | verification | partial | 本轮容量调整已编译；重新开启独立服务端PIE，核对自动增援后的Crowd容量及工程车避让。 | 2026-10-11 |

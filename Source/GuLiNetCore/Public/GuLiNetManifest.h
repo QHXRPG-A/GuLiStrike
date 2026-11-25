@@ -7,6 +7,8 @@
 namespace GuLiNet
 {
 inline constexpr std::uint32_t ManifestVersion = 27;
+inline constexpr char WingmanRangeOpponentHangar[] = "editor/wingman_range/opponent_hangar";
+inline constexpr char WingmanRangeProtectShipHulls[] = "editor/wingman_range/protect_ship_hulls";
 struct RuntimeManifest
 {
     std::uint32_t Version = ManifestVersion;

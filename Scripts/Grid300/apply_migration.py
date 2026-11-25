@@ -187,32 +187,6 @@ def apply_authoring():
         result=service.update_density_cells(json.dumps({'schema_version':1,'layer_key':dst['layer_key'],'cells':list(cells.values())}))
         assert result.get_editor_property('success'),str(result)
 
-def refresh_flight_navigation(directory):
-    # Layout/terrain changes invalidate the existing flight bake; retain its own settings and rules.
-    actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors()
-    report_path=DATA/'flight_migration.json'
-    previous={r['volume']:r for r in read(report_path)['volumes']} if report_path.exists() else {}
-    report=[]
-    for volume in actors:
-        if not isinstance(volume,unreal.GuLiFlightNavigationVolume):continue
-        asset=volume.get_editor_property('navigation_data');assert asset
-        settings=volume.get_editor_property('authoring_bake_settings')
-        package=asset.get_path_name().split('.')[0]
-        backup(package,directory/'flight_before_bake')
-        valid=unreal.GuLiFlightNavigationEditorLibrary.validate_volume(volume,settings)
-        changed=valid is None
-        if changed:
-            result=unreal.GuLiFlightNavigationEditorLibrary.bake_volume(volume,settings)
-            assert result is not None,'Flight bake failed: '+volume.get_path_name()
-        assert unreal.GuLiFlightNavigationEditorLibrary.validate_volume(volume,settings) is not None
-        check(unreal.EditorAssetLibrary.save_loaded_asset(asset,False))
-        metadata=asset.get_editor_property('metadata')
-        report.append({'volume':volume.get_path_name(),'asset':asset.get_path_name(),'rebaked':changed,
-            'ever_rebaked':changed or previous.get(volume.get_path_name(),{}).get('ever_rebaked',False),
-            'bake_id':metadata.get_editor_property('bake_id').to_string(),
-            'settings_hash':metadata.get_editor_property('settings_hash'),
-            'geometry_signature':metadata.get_editor_property('geometry_signature')})
-    write(DATA/'flight_migration.json',{'success':True,'volumes':report,'gameplay_run':False})
 
 def main():
     level,world,actors,manifest,terrain=preflight()
@@ -248,7 +222,6 @@ def main():
     phase('grid',lambda:check(unreal.GuLiGridAuthoringLibrary.import_prepared_grid(str(DATA/'Terrain'),True)))
     phase('resources',apply_resources)
     phase('navigation',lambda:check(unreal.GuLiGridAuthoringLibrary.select_grid_navigation()))
-    phase('flight',lambda:refresh_flight_navigation(directory))
     phase('review',lambda:runpy.run_path(str(ROOT/'Scripts/Grid300/author_review.py'),run_name='grid300_author_review')['author']())
     def save():
         check(unreal.EditorAssetLibrary.save_loaded_asset(unreal.load_asset(RESOURCE),False))

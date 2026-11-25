@@ -293,6 +293,9 @@ struct GULISTRIKE_API FGuLiWingmanFormationRuntimeConfig
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Avoidance")
 	float ObstacleLookAheadCentimeters = 1000.0f;
 
+	// The checkpoint field name predates curved prediction. Its value is surface clearance in cm.
+	float SafetyMarginCentimeters() const { return ObstacleLookAheadCentimeters; }
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Recovery")
 	float CatchUpDistanceCentimeters = 24000.0f;
 

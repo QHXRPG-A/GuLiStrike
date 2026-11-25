@@ -7,9 +7,6 @@
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
-#include "GuLiFlightNavigationData.h"
-#include "GuLiFlightNavigationSubsystem.h"
-#include "GuLiFlightNavigationVolume.h"
 #include "Battle/Relay/GuLiWingmanRelayTypes.h"
 #include "Gameplay/Wingman/Behavior/GuLiWingmanMemberBehavior.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
@@ -79,63 +76,6 @@ namespace GuLiWingmanPawnSimulationTests
 		Group.ShipGeneration = 3u;
 		Group.GroupGeneration = 9u;
 		return Group;
-	}
-
-	bool AddSingleCellFlightNavigation(
-		FAutomationTestBase& Test,
-		UWorld* World,
-		const float HalfExtent)
-	{
-		UGuLiFlightNavigationSubsystem* Navigation = World
-			? World->GetSubsystem<UGuLiFlightNavigationSubsystem>() : nullptr;
-		if (!Test.TestNotNull(TEXT("Flight navigation subsystem exists for attack execution"), Navigation))
-		{
-			return false;
-		}
-		AGuLiFlightNavigationVolume* Volume = World->SpawnActor<AGuLiFlightNavigationVolume>(
-			FVector::ZeroVector, FRotator::ZeroRotator);
-		if (!Test.TestNotNull(TEXT("Flight navigation volume exists for attack execution"), Volume))
-		{
-			return false;
-		}
-		UBrushComponent* Brush = Volume->GetBrushComponent();
-		if (!Test.TestNotNull(TEXT("Flight navigation volume has bounds"), Brush))
-		{
-			return false;
-		}
-		Brush->BrushBodySetup = NewObject<UBodySetup>(Brush);
-		FKBoxElem& Bounds = Brush->BrushBodySetup->AggGeom.BoxElems.AddDefaulted_GetRef();
-		Bounds.X = HalfExtent * 2.0f;
-		Bounds.Y = HalfExtent * 2.0f;
-		Bounds.Z = HalfExtent * 2.0f;
-		Brush->UpdateBounds();
-
-		UGuLiFlightNavigationData* Data = NewObject<UGuLiFlightNavigationData>(Volume);
-		Data->Metadata.FormatVersion = GuLiFlightNavigation::CurrentDataFormatVersion;
-		Data->Metadata.DefinitionRevision = 1u;
-		Data->Metadata.BakeId = FGuid(101u, 102u, 103u, 104u);
-		Data->Metadata.Bounds = FBox::BuildAABB(FVector::ZeroVector, FVector(HalfExtent));
-		Data->Metadata.MinimumCellSize = HalfExtent * 2.0f;
-		Data->Metadata.BakedAgentRadius = 2000.0f;
-		Data->Metadata.GeometrySignature = 0x10203040ull;
-		Data->Metadata.SettingsHash = 0x50607080ull;
-		FGuLiFlightNavOctreeNode& Node = Data->Nodes.AddDefaulted_GetRef();
-		Node.Center = FVector::ZeroVector;
-		Node.Extent = FVector(HalfExtent);
-		Node.LeafCellIndex = 0;
-		FGuLiFlightNavCell& Cell = Data->Cells.AddDefaulted_GetRef();
-		Cell.Center = FVector::ZeroVector;
-		Cell.Extent = FVector(HalfExtent);
-		Cell.Clearance = 2000.0f;
-		Cell.ComponentId = 0;
-		Cell.StableId = 1u;
-		Data->Metadata.ContentChecksum = Data->ComputeContentChecksum();
-		Volume->NavigationData = Data;
-		Navigation->RegisterVolume(Volume);
-		return Test.TestEqual(TEXT("Attack fixture navigation accepts its interior"),
-			Navigation->ValidateAuthoritativeSegment(
-				FVector::ZeroVector, FVector(150000.0, 0.0, 20000.0), 1500.0f),
-			EGuLiFlightNavSegmentStatus::Valid);
 	}
 
 	bool BuildValidV7AbilityConfig(
@@ -451,7 +391,7 @@ bool FGuLiWingmanAuthoredStateTreeOwnerRuntimeTest::RunTest(const FString& Param
 	UGuLiWingmanSimulationSubsystem* Simulation =
 		Fixture.World->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
 	if (!TestNotNull(TEXT("Standalone owner simulation exists"), Simulation)) return false;
-	Simulation->SetNavigationRequirementBypassForTests(true);
+
 	UStateTree* StateTree = LoadObject<UStateTree>(nullptr,
 		TEXT("/Game/GuLiStrike/Wingman/ST_WingmanMemberBehavior.ST_WingmanMemberBehavior"));
 	if (!TestNotNull(TEXT("Runtime test authored StateTree loads"), StateTree)) return false;
@@ -552,7 +492,7 @@ bool FGuLiWingmanOwnerPawnCandidateLifecycleTest::RunTest(const FString& Paramet
 			Group, AbilityConfig, FTransform::Identity, FVector::ZeroVector, CarrierSource));
 	TestEqual(TEXT("Rejected navigation gate creates no Pawns"),
 		Simulation->GetTotalOwnedPawnCount(), 0);
-	Simulation->SetNavigationRequirementBypassForTests(true);
+
 	if (!TestTrue(TEXT("Valid v7 config creates one complete owner group"),
 		Simulation->CreateOrResetOwnedGroup(
 			Group, AbilityConfig, FTransform::Identity, FVector::ZeroVector, CarrierSource)))
@@ -641,7 +581,7 @@ bool FGuLiWingmanLocalContinuityAndNoPeerCollisionTest::RunTest(const FString& P
 	UGuLiWingmanSimulationSubsystem* Simulation =
 		Fixture.World->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
 	if (!TestNotNull(TEXT("Local continuity simulation exists"), Simulation)) return false;
-	Simulation->SetNavigationRequirementBypassForTests(true);
+
 	Simulation->SetMemberBehaviorStateTreeForTests(nullptr);
 
 	const FGuLiWingmanGroupHandle Group = MakeGroup();
@@ -677,22 +617,6 @@ bool FGuLiWingmanLocalContinuityAndNoPeerCollisionTest::RunTest(const FString& P
 		return false;
 	}
 
-	const FVector BeforeRecovery = First->GetActorLocation();
-	TestTrue(TEXT("Deadlock recovery is executed locally without an authority request"),
-		First->GetFlightMovement()->PerformLocalDeadlockRecoveryForTests());
-	TestTrue(TEXT("Local recovery immediately leaves the failed point"),
-		FVector::Distance(BeforeRecovery, First->GetActorLocation())
-			>= AbilityConfig.FormationRuntime.AgentRadiusCentimeters * 2.0f);
-	TestTrue(TEXT("Local recovery restores at least minimum fixed-wing speed"),
-		First->GetRuntimeState().Dynamics.Velocity.Size() + UE_KINDA_SMALL_NUMBER
-			>= AbilityConfig.FormationRuntime.MinimumSpeedCentimetersPerSecond);
-	TestFalse(TEXT("Local recovery never waits for an authority rebase"),
-		First->GetRuntimeState().Avoidance.bAwaitingRebase);
-	TestFalse(TEXT("Local recovery emits no automatic rebase request"),
-		First->GetRuntimeState().Avoidance.bRebaseRequested);
-	TestFalse(TEXT("Local recovery never marks the owner Pawn stale"),
-		First->GetRuntimeState().Dynamics.bStale);
-
 	const FGuLiCarrierSourceRef MissingNetworkSource;
 	const FTransform MovedCarrier(
 		FRotator(-12.0, 137.0, 5.0), FVector(220000.0, 90000.0, 45000.0));
@@ -725,113 +649,6 @@ bool FGuLiWingmanLocalContinuityAndNoPeerCollisionTest::RunTest(const FString& P
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
-	FGuLiWingmanFlightNavigationLifecycleTest,
-	"GuLiStrike.Wingman.Pawn.FlightNavigationAsyncStateLifecycle",
-	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
-
-bool FGuLiWingmanFlightNavigationLifecycleTest::RunTest(const FString& Parameters)
-{
-	using namespace GuLiWingmanPawnSimulationTests;
-	FTransientGameWorldFixture Fixture;
-	if (!Fixture.Initialize(*this)) return false;
-	UGuLiWingmanSimulationSubsystem* Simulation =
-		Fixture.World->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
-	if (!TestNotNull(TEXT("Standalone navigation test simulation exists"), Simulation)) return false;
-	Simulation->SetNavigationRequirementBypassForTests(true);
-
-	const FGuLiWingmanGroupHandle Group = MakeGroup();
-	FGuLiGroupAbilityConfigSnapshot AbilityConfig;
-	if (!BuildValidV7AbilityConfig(*this, Simulation, Group, AbilityConfig)) return false;
-	FGuLiCarrierSourceRef CarrierSource;
-	CarrierSource.CanonicalEpoch = 4u;
-	CarrierSource.MoveRevision = 12u;
-	if (!TestTrue(TEXT("Navigation lifecycle group creates 25 owner Pawns"),
-		Simulation->CreateOrResetOwnedGroup(
-			Group, AbilityConfig, FTransform::Identity, FVector::ZeroVector, CarrierSource)))
-	{
-		return false;
-	}
-
-	FGuLiWingmanCandidateBatch BeforeNavigation;
-	if (!TestTrue(TEXT("Capture pre-navigation transform cut"),
-		Simulation->BuildCandidate(Group, 7u, 5u, 1u, 31u, BeforeNavigation)))
-	{
-		return false;
-	}
-
-	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
-	{
-		const double LateralOffset = static_cast<double>(FlightIndex) * 10000.0;
-		const TArray<FVector> SmoothedPath = {
-			FVector(0.0, LateralOffset, 0.0),
-			FVector(25000.0, LateralOffset + 5000.0, 10000.0),
-			FVector(50000.0, LateralOffset, 15000.0)
-		};
-		if (!TestTrue(TEXT("Each of five Flights owns an independent accepted path state"),
-			Simulation->PrimeFlightNavigationStateForTests(
-				Group, FlightIndex, SmoothedPath, FlightIndex == 0u)))
-		{
-			return false;
-		}
-	}
-
-	FGuLiWingmanNavigationDiagnostics ActiveDiagnostics;
-	if (!TestTrue(TEXT("Navigation diagnostics resolve the active group"),
-		Simulation->GetNavigationDiagnostics(Group, ActiveDiagnostics))) return false;
-	TestEqual(TEXT("All five Flights retain independent navigation paths"),
-		ActiveDiagnostics.ActiveFlightPaths, static_cast<int32>(GULI_WINGMAN_FLIGHT_COUNT));
-	TestEqual(TEXT("One simulated request is pending before the revision switch"),
-		ActiveDiagnostics.PendingFlightRequests, 1);
-	TestEqual(TEXT("One waypoint cut guides all five members of every Flight"),
-		ActiveDiagnostics.NavigationGuidedEntities, static_cast<int32>(GULI_WINGMAN_GROUP_SIZE));
-
-	FGuLiWingmanCandidateBatch AfterPathPublication;
-	TestTrue(TEXT("Publishing path Guidance keeps candidate production valid"),
-		Simulation->BuildCandidate(Group, 7u, 5u, 2u, 32u, AfterPathPublication));
-	TestEqual(TEXT("Path publication never teleports the first owner Pawn"),
-		AfterPathPublication.Samples[0].PositionCentimeters, BeforeNavigation.Samples[0].PositionCentimeters);
-
-	FGuLiGroupAbilityConfigSnapshot SwitchedConfig = AbilityConfig;
-	++SwitchedConfig.SnapshotRevision;
-	++SwitchedConfig.FormationCommandRevision;
-	SwitchedConfig.FormationRuntime.InnerRingRadiusCentimeters += 10000.0f;
-	SwitchedConfig.RefreshHash();
-	if (!TestTrue(TEXT("Formation revision switch commits without a Transform write"),
-		Simulation->ApplyCommittedAbilityConfig(Group, SwitchedConfig))) return false;
-
-	FGuLiWingmanNavigationDiagnostics ClearedDiagnostics;
-	if (!TestTrue(TEXT("Post-switch navigation diagnostics resolve the group"),
-		Simulation->GetNavigationDiagnostics(Group, ClearedDiagnostics))) return false;
-	TestEqual(TEXT("Formation switch clears all old Flight paths"), ClearedDiagnostics.ActiveFlightPaths, 0);
-	TestEqual(TEXT("Formation switch clears every pending Flight request"),
-		ClearedDiagnostics.PendingFlightRequests, 0);
-	TestEqual(TEXT("Formation switch removes stale navigation Guidance from all entities"),
-		ClearedDiagnostics.NavigationGuidedEntities, 0);
-	TestEqual(TEXT("Formation switch cancels the old request token exactly once"),
-		ClearedDiagnostics.PendingRequestsCancelled, static_cast<uint64>(1));
-
-	FGuLiWingmanCandidateBatch AfterFormationSwitch;
-	TestTrue(TEXT("New formation cut remains candidate-authorized"),
-		Simulation->BuildCandidate(Group, 7u, 5u, 3u, 33u, AfterFormationSwitch));
-	TestEqual(TEXT("Formation switch changes Guidance only and never teleports"),
-		AfterFormationSwitch.Samples[0].PositionCentimeters,
-		BeforeNavigation.Samples[0].PositionCentimeters);
-
-	TestTrue(TEXT("Seed one more pending request for destruction cleanup"),
-		Simulation->PrimeFlightNavigationStateForTests(Group, 2u, TArray<FVector>(), true));
-	TestTrue(TEXT("Destroying the group clears entities and cancels navigation"),
-		Simulation->DestroyOwnedGroup(Group));
-	TestEqual(TEXT("No owner Pawns survive group destruction"),
-		Simulation->GetTotalOwnedPawnCount(), 0);
-	FGuLiWingmanNavigationDiagnostics DestroyedDiagnostics;
-	TestFalse(TEXT("Destroyed group has no navigation runtime"),
-		Simulation->GetNavigationDiagnostics(Group, DestroyedDiagnostics));
-	TestEqual(TEXT("Group destruction cancels its final pending request token"),
-		DestroyedDiagnostics.PendingRequestsCancelled, static_cast<uint64>(2));
-	return true;
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiWingmanBasicWeaponIntentStateTest,
 	"GuLiStrike.Wingman.Pawn.BasicWeaponIndependentAcceptedState",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
@@ -843,7 +660,7 @@ bool FGuLiWingmanBasicWeaponIntentStateTest::RunTest(const FString& Parameters)
 	if (!Fixture.Initialize(*this)) return false;
 	UGuLiWingmanSimulationSubsystem* Simulation = Fixture.World->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
 	if (!TestNotNull(TEXT("Standalone simulation exists"), Simulation)) return false;
-	Simulation->SetNavigationRequirementBypassForTests(true);
+
 
 	const FGuLiWingmanGroupHandle Group = MakeGroup();
 	FGuLiGroupAbilityConfigSnapshot AbilityConfig;
@@ -944,7 +761,7 @@ bool FGuLiWingmanPerMemberAttackExecutionTest::RunTest(const FString& Parameters
 	UGuLiWingmanSimulationSubsystem* Simulation =
 		Fixture.World->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
 	if (!TestNotNull(TEXT("Standalone attack simulation exists"), Simulation)) return false;
-	Simulation->SetNavigationRequirementBypassForTests(true);
+
 	Simulation->SetMemberBehaviorStateTreeForTests(nullptr);
 
 	const FGuLiWingmanGroupHandle Group = MakeGroup();
@@ -965,7 +782,7 @@ bool FGuLiWingmanPerMemberAttackExecutionTest::RunTest(const FString& Parameters
 	{
 		return false;
 	}
-	if (!AddSingleCellFlightNavigation(*this, Fixture.World, 500000.0f)) return false;
+
 	AActor* Floor = Fixture.World->SpawnActor<AActor>();
 	if (!TestNotNull(TEXT("Per-member ground run floor exists"), Floor)) return false;
 	UBoxComponent* FloorBox = NewObject<UBoxComponent>(Floor);
@@ -1137,7 +954,7 @@ bool FGuLiWingmanWeaponOnlyConfigPreservesFormationTest::RunTest(const FString& 
 	{
 		return false;
 	}
-	Simulation->SetNavigationRequirementBypassForTests(true);
+
 	Simulation->SetMemberBehaviorStateTreeForTests(nullptr);
 
 	const FGuLiWingmanGroupHandle Group = MakeGroup();
@@ -1167,20 +984,6 @@ bool FGuLiWingmanWeaponOnlyConfigPreservesFormationTest::RunTest(const FString& 
 	const FGuLiWingmanAcceptedBatch InitialAccepted = MakeAcceptedBatch(InitialCandidate, 0.0);
 	if (!TestTrue(TEXT("Initial accepted cut authorizes weapon state"),
 		Simulation->ApplyAcceptedBatch(InitialAccepted)))
-	{
-		return false;
-	}
-
-	const TArray<FVector> NavigationPath = {
-		FVector(0.0, 0.0, 0.0), FVector(25000.0, 5000.0, 10000.0), FVector(50000.0, 0.0, 15000.0)};
-	if (!TestTrue(TEXT("Seed one pending navigation path"),
-		Simulation->PrimeFlightNavigationStateForTests(Group, 0u, NavigationPath, true)))
-	{
-		return false;
-	}
-	FGuLiWingmanNavigationDiagnostics NavigationBefore;
-	if (!TestTrue(TEXT("Read navigation state before the weapon-only commit"),
-		Simulation->GetNavigationDiagnostics(Group, NavigationBefore)))
 	{
 		return false;
 	}
@@ -1224,15 +1027,6 @@ bool FGuLiWingmanWeaponOnlyConfigPreservesFormationTest::RunTest(const FString& 
 		return false;
 	}
 
-	FGuLiWingmanNavigationDiagnostics NavigationAfter;
-	TestTrue(TEXT("Navigation diagnostics remain available after weapon-only commit"),
-		Simulation->GetNavigationDiagnostics(Group, NavigationAfter));
-	TestEqual(TEXT("Weapon-only commit preserves the active path"),
-		NavigationAfter.ActiveFlightPaths, NavigationBefore.ActiveFlightPaths);
-	TestEqual(TEXT("Weapon-only commit preserves the pending request"),
-		NavigationAfter.PendingFlightRequests, NavigationBefore.PendingFlightRequests);
-	TestEqual(TEXT("Weapon-only commit cancels no navigation request"),
-		NavigationAfter.PendingRequestsCancelled, NavigationBefore.PendingRequestsCancelled);
 	FGuLiWingmanCandidateBatch AfterWeaponOnlyCandidate;
 	TestTrue(TEXT("Weapon-only commit preserves candidate production and accepted pose"),
 		Simulation->BuildCandidate(Group, Config.MatchEpoch, 5u, 2u, 34u, AfterWeaponOnlyCandidate));

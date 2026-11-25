@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
+#include "Engine/World.h"
+#include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 
 
 AGuLiSoldierStateReplicator::AGuLiSoldierStateReplicator()
@@ -153,10 +155,25 @@ const FGuLiSoldierStateItem* AGuLiSoldierStateReplicator::FindSoldierState(
 	return LocalSoldierStates.Find(SoldierId);
 }
 
+const TMap<FGuLiSoldierId, FGuLiHealthBarEvent>& AGuLiSoldierStateReplicator::GetActiveVitalChanges()
+{
+	const double Now = GetWorld()->GetTimeSeconds();
+	if (!VitalChanges.IsEmpty() && (Now >= NextVitalCleanup || Now + 0.1 < NextVitalCleanup))
+	{
+		NextVitalCleanup = Now + 0.1;
+		const auto* Timing = GetDefault<UGuLiUnitFeedbackSettings>();
+		for (auto It = VitalChanges.CreateIterator(); It; ++It)
+			if (Timing->HealthBarOpacity(Now, It.Value().LastChange) <= 0) It.RemoveCurrent();
+	}
+	return VitalChanges;
+}
+
 void AGuLiSoldierStateReplicator::RefreshLocalEpoch()
 {
 	if (LocalCacheEpoch == SnapshotMatchEpoch) return;
 	LocalCacheEpoch = SnapshotMatchEpoch;
+	VitalChanges.Reset();
+	NextVitalCleanup = -1;
 	LocalSoldierStates.Reset();
 	LocalSoldierStates.Reserve(ReplicatedSoldiers.Items.Num());
 	FGuLiSoldierRosterDelta Delta;
@@ -178,6 +195,7 @@ void AGuLiSoldierStateReplicator::ApplyLocalDelta(
 	FGuLiSoldierRosterDelta Delta;
 	for (const FGuLiSoldierId Id : Removed)
 	{
+		VitalChanges.Remove(Id);
 		if (LocalSoldierStates.Remove(Id)) Delta.Removed.Add(Id);
 	}
 	for (const FGuLiSoldierStateItem& State : States)
@@ -200,6 +218,18 @@ void AGuLiSoldierStateReplicator::ApplyLocalDelta(
 			if (Previous->DisplacementFrameFloor != State.DisplacementFrameFloor
 				|| Previous->DisplacementLocation != State.DisplacementLocation
 				|| Previous->DisplacementSimulationTime != State.DisplacementSimulationTime) Flags |= EGuLiSoldierStateChange::Displacement;
+			if (!Previous->IsAlive() || !State.IsAlive() || Previous->bPhased || State.bPhased
+				|| Previous->Team != State.Team || Previous->UnitTypeId != State.UnitTypeId)
+			{
+				VitalChanges.Remove(State.SoldierId);
+			}
+			else if (EnumHasAnyFlags(Flags, EGuLiSoldierStateChange::Health))
+			{
+				auto& Change = VitalChanges.FindOrAdd(State.SoldierId);
+				if (!Change.Generation) Change.Generation = NextBarGeneration++;
+				Change.LastChange = GetWorld()->GetTimeSeconds();
+				Change.HealthFraction = FMath::Clamp(State.Health / State.MaxHealth, 0.f, 1.f);
+			}
 			if (Flags != EGuLiSoldierStateChange::None) Delta.Changed.FindOrAdd(State.SoldierId) |= Flags;
 		}
 		LocalSoldierStates.Add(State.SoldierId, State);

@@ -218,7 +218,7 @@ def check_preconditions(args: argparse.Namespace, plan: dict) -> None:
                 validate_gate(Path(gate_folder), 'fault', plan['baseline']['identity'])
     elif args.case != 'bootstrap':
         raise RuntimeError('Use the integrated fault scenarios after the gameplay gate')
-    for plugin in ('GuLiFlightNavigation', 'GuLiMapAuthoring', 'UnrealMCP', 'UnrealMCPython', 'VibeUE', 'Tripo3DUEBridge-UE5.7-Win64'):
+    for plugin in ('GuLiMapAuthoring', 'UnrealMCP', 'UnrealMCPython', 'VibeUE', 'Tripo3DUEBridge-UE5.7-Win64'):
         module_path = ROOT / 'Plugins' / plugin / 'Binaries/Win64/UnrealEditor.modules'
         if json.loads(module_path.read_text(encoding='utf-8-sig'))['BuildId'] != engine_id:
             raise RuntimeError(f'Plugin {plugin} does not match the source engine')

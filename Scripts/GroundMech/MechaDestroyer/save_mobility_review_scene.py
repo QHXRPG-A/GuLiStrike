@@ -109,23 +109,6 @@ entry.set_actor_location(entry_location, False, False)
 entry.set_actor_rotation(unreal.Rotator(pitch=0, yaw=180, roll=0), False)
 add_tag(entry, 'Ground3CReview')
 
-navigation = []
-for volume in subsystem.get_all_level_actors():
-    if not isinstance(volume, unreal.GuLiFlightNavigationVolume):
-        continue
-    asset = volume.get_editor_property('navigation_data')
-    settings = volume.get_editor_property('authoring_bake_settings')
-    assert asset, volume.get_path_name()
-    nav = unreal.GuLiFlightNavigationEditorLibrary
-    rebaked = nav.validate_volume(volume, settings) is None
-    if rebaked:
-        assert nav.bake_volume(volume, settings) is not None
-        assert unreal.EditorAssetLibrary.save_loaded_asset(asset, False)
-    assert nav.validate_volume(volume, settings) is not None
-    meta = asset.get_editor_property('metadata')
-    navigation.append(dict(volume=volume.get_path_name(), asset=asset.get_path_name(), rebaked=rebaked,
-                           bake_id=meta.get_editor_property('bake_id').to_string(),
-                           geometry_signature=meta.get_editor_property('geometry_signature')))
 assert level.save_current_level()
 entities = []
 expected = {name for name, *_ in specs} | {entry_name}
@@ -174,7 +157,7 @@ with tempfile.TemporaryDirectory(dir=manifest_dir, prefix='ground-mobility-') as
         raise
 report = dict(success=True, map=world.get_path_name(), saved=True, map_saved=True, entities=entities,
               default_ground_pawn=pawn_class.get_path_name(), ground_pawn=pawn_class.get_path_name(),
-              production_references=production, manifests=manifests, navigation=navigation, pie_started=False)
+              production_references=production, manifests=manifests, pie_started=False)
 if 'GULI_SCENE_REPORT' in globals():
     # Existing callers can supply an absolute path or the old UE_Export-relative report name.
     path = root/'ArtSource/Characters/GroundMech_MechaDestroyer_20261023/Production_A4_B_v2/UE_Export'/GULI_SCENE_REPORT

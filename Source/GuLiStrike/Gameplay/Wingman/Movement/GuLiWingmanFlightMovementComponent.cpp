@@ -9,20 +9,13 @@
 #include "Gameplay/Wingman/Behavior/GuLiWingmanMemberBehavior.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Gameplay/Wingman/Movement/GuLiWingmanSwarmFlow.h"
-#include "GuLiFlightNavigationSubsystem.h"
+#include "Gameplay/Wingman/Movement/GuLiWingmanPredictiveFlight.h"
 #include "Network/GuLiHybridActorComponent.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GuLiWingmanFlightMovementComponent)
 
 namespace
 {
-	constexpr float EmergencyEntrySeconds = 0.5f;
-	constexpr float LocalDeadlockRecoverySeconds = 0.5f;
-	constexpr float RecoveryClearSeconds = 0.5f;
-	constexpr float FlightModeEvaluationPeriodSeconds = 0.1f;
-	constexpr float MinimumProgressPerStepCentimeters = 3.0f;
-	constexpr float EmergencyHoverTurnRateDegreesPerSecond = 90.0f;
-
 	FVector BuildForwardFromTransform(const FTransform& Transform)
 	{
 		const FVector Forward = Transform.GetUnitAxis(EAxis::X).GetSafeNormal();
@@ -60,39 +53,20 @@ void UGuLiWingmanFlightMovementComponent::InitializeForOwner(AGuLiWingmanPawn& I
 {
 	WingmanPawn = &InPawn;
 	SetUpdatedComponent(InPawn.GetRootComponent());
-	SetCarrierActor(CarrierActor.Get());
+	Hulls.Reset();
 	FGuLiWingmanRuntimeState& State = InPawn.GetMutableRuntimeState();
 	State.Dynamics.FixedStepAccumulator = 0.0f;
 	State.Dynamics.CaptureSimulationTick = FMath::Max(1u, State.Dynamics.CaptureSimulationTick);
 	State.SwarmAgent.FlowSimulationTick = State.Dynamics.CaptureSimulationTick;
 	State.Avoidance.LastVerifiedSafePoint = InPawn.GetActorLocation();
 	State.Avoidance.bHasVerifiedSafePoint = true;
-	State.Avoidance.bRecoveryPointCurrentlyValid = true;
 	PreviousSimulationTransform = InPawn.GetActorTransform();
 	CurrentSimulationTransform = PreviousSimulationTransform;
 	InPawn.ApplyOwnerPresentationTransform(CurrentSimulationTransform);
 }
 
-void UGuLiWingmanFlightMovementComponent::SetCarrierActor(AActor* InCarrierActor)
-{
-	UPrimitiveComponent* MovementPrimitive = Cast<UPrimitiveComponent>(UpdatedComponent);
-	if (MovementPrimitive)
-	{
-		if (AActor* PreviousCarrier = CarrierActor.Get())
-		{
-			MovementPrimitive->IgnoreActorWhenMoving(PreviousCarrier, false);
-		}
-		if (InCarrierActor)
-		{
-			MovementPrimitive->IgnoreActorWhenMoving(InCarrierActor, true);
-		}
-	}
-	CarrierActor = InCarrierActor;
-}
-
 void UGuLiWingmanFlightMovementComponent::AdvanceFixedSteps(
-	const float FrameDeltaSeconds,
-	const bool bBypassNavigationForTests)
+	const float FrameDeltaSeconds)
 {
 	AGuLiWingmanPawn* Pawn = WingmanPawn.Get();
 	if (!Pawn || !Pawn->IsOwnerSimulationPawn() || !UpdatedComponent)
@@ -112,14 +86,12 @@ void UGuLiWingmanFlightMovementComponent::AdvanceFixedSteps(
 	{
 		State.Dynamics.FixedStepAccumulator -= GuLiWingmanSteering::FixedStepSeconds;
 		PreviousSimulationTransform = CurrentSimulationTransform;
-		SimulateFixedStep(
-			GuLiWingmanSteering::FixedStepSeconds,
-			bBypassNavigationForTests);
+		SimulateFixedStep(GuLiWingmanSteering::FixedStepSeconds);
 		CurrentSimulationTransform = UpdatedComponent->GetComponentTransform();
 		++Steps;
 	}
-	UpdateOwnerPresentation(State.Dynamics.FixedStepAccumulator
-		/ GuLiWingmanSteering::FixedStepSeconds);
+	if (!Pawn->UsesHybridPresentation())
+		UpdateOwnerPresentation(State.Dynamics.FixedStepAccumulator / GuLiWingmanSteering::FixedStepSeconds);
 }
 
 void UGuLiWingmanFlightMovementComponent::UpdateOwnerPresentation(const float Alpha)
@@ -158,24 +130,14 @@ FVector UGuLiWingmanFlightMovementComponent::BuildRequestedVelocity() const
 	{
 		Preferred = State.Attack.PreferredVelocity;
 	}
-	else if (Behavior == EGuLiWingmanMemberBehavior::Rejoin
-		&& State.Navigation.bHasPath)
+	else if (State.Tuning.Formation.Model == EGuLiWingmanFormationModel::DoubleRingLegacy)
 	{
-		const FVector ToWaypoint = State.Navigation.Waypoint - Pawn->GetActorLocation();
-		Preferred = ToWaypoint.GetSafeNormal()
-			* State.Tuning.Formation.CatchUpSpeedCentimetersPerSecond;
-	}
-	else if (Behavior == EGuLiWingmanMemberBehavior::EmergencyAvoid)
-	{
-		const FVector SafePoint = State.Avoidance.bHasVerifiedSafePoint
-			? State.Avoidance.LastVerifiedSafePoint
-			: State.Carrier.Transform.GetLocation();
-		const FVector Direction = GuLiWingmanSteering::BuildRecoveryOrbitDirection(
-			Pawn->GetActorLocation(),
-			BuildForwardFromTransform(Pawn->GetActorTransform()),
-			SafePoint,
-			FMath::Max(State.Tuning.Formation.AgentRadiusCentimeters * 4.0f, 6000.0f));
-		Preferred = Direction * State.Tuning.Formation.MinimumSpeedCentimetersPerSecond;
+		const FGuLiWingmanFormationSlotState& Slot = State.FormationSlot;
+		const FVector Offset = Slot.Offset();
+		const FVector Target = State.Carrier.Transform.GetLocation() + Offset;
+		const FVector OrbitVelocity = FVector::CrossProduct(FVector::UpVector, Offset) * Slot.SignedAngularSpeed();
+		constexpr double SlotResponseSeconds = 1.0;
+		Preferred = State.Carrier.Velocity + OrbitVelocity + (Target - Pawn->GetActorLocation()) / SlotResponseSeconds;
 	}
 	else
 	{
@@ -206,69 +168,6 @@ FVector UGuLiWingmanFlightMovementComponent::BuildRequestedVelocity() const
 	return Preferred.ContainsNaN() ? FVector::ZeroVector : Preferred;
 }
 
-GuLiWingmanSteering::FHeadingProbeResult
-UGuLiWingmanFlightMovementComponent::ProbeHeading(
-	const FVector& Start,
-	const FVector& Direction,
-	const float Distance,
-	const float AgentRadius,
-	const bool bBypassNavigationForTests) const
-{
-	GuLiWingmanSteering::FHeadingProbeResult Result;
-	Result.ClearanceCentimeters = 0.0f;
-	Result.bFlightNavSegmentValid = false;
-	const FVector UnitDirection = Direction.GetSafeNormal();
-	UWorld* World = GetWorld();
-	if (!World || UnitDirection.IsNearlyZero() || Distance <= 0.0f)
-	{
-		return Result;
-	}
-	const FVector End = Start + UnitDirection * Distance;
-	Result.bFlightNavSegmentValid = bBypassNavigationForTests;
-	if (!bBypassNavigationForTests)
-	{
-		const UGuLiFlightNavigationSubsystem* Navigation =
-			World->GetSubsystem<UGuLiFlightNavigationSubsystem>();
-		Result.bFlightNavSegmentValid = Navigation
-			&& Navigation->ValidateAuthoritativeSegment(Start, End, AgentRadius)
-				== EGuLiFlightNavSegmentStatus::Valid;
-	}
-
-	FCollisionQueryParams QueryParams(SCENE_QUERY_STAT(GuLiWingmanPawnProbe), false);
-	if (const AActor* Owner = GetOwner())
-	{
-		QueryParams.AddIgnoredActor(Owner);
-	}
-	if (const AActor* Carrier = CarrierActor.Get())
-	{
-		QueryParams.AddIgnoredActor(Carrier);
-	}
-	FCollisionObjectQueryParams ObjectTypes;
-	ObjectTypes.AddObjectTypesToQuery(ECC_WorldStatic);
-	ObjectTypes.AddObjectTypesToQuery(ECC_WorldDynamic);
-	TArray<FHitResult> Hits;
-	World->SweepMultiByObjectType(Hits, Start, End, FQuat::Identity, ObjectTypes,
-		FCollisionShape::MakeSphere(FMath::Max(1.0f, AgentRadius)), QueryParams);
-	Result.ClearanceCentimeters = Distance;
-	for (const FHitResult& Hit : Hits)
-	{
-		const UPrimitiveComponent* Component = Hit.GetComponent();
-		const AActor* HitActor = Hit.GetActor();
-		if (!Component || (!Hit.bBlockingHit && !Hit.bStartPenetrating)
-			|| (HitActor && (HitActor->IsA<AGuLiWingmanPawn>()
-				|| HitActor->ActorHasTag(TEXT("WingmanAvoidanceIgnore")))))
-		{
-			continue;
-		}
-		const ECollisionChannel ObjectType = Component->GetCollisionObjectType();
-		Result.bWorldStatic |= ObjectType == ECC_WorldStatic;
-		Result.bWorldDynamic |= ObjectType == ECC_WorldDynamic;
-		Result.ClearanceCentimeters = FMath::Min(Result.ClearanceCentimeters,
-			Hit.bStartPenetrating ? 0.0f : FMath::Clamp(Hit.Distance, 0.0f, Distance));
-	}
-	return Result;
-}
-
 bool UGuLiWingmanFlightMovementComponent::TryMoveAlong(
 	const FVector& Direction,
 	const float Speed,
@@ -277,7 +176,7 @@ bool UGuLiWingmanFlightMovementComponent::TryMoveAlong(
 {
 	AGuLiWingmanPawn* Pawn = WingmanPawn.Get();
 	if (!Pawn || !UpdatedComponent || Direction.IsNearlyZero()
-		|| Speed <= 0.0f || StepSeconds <= 0.0f)
+		|| StepSeconds <= 0.0f)
 	{
 		return false;
 	}
@@ -296,270 +195,141 @@ bool UGuLiWingmanFlightMovementComponent::TryMoveAlong(
 	const FRotator Facing = NewForward.Rotation();
 	const FQuat Rotation = FRotator(
 		Facing.Pitch, Facing.Yaw, State.Dynamics.BankDegrees).Quaternion();
-	const FVector Start = UpdatedComponent->GetComponentLocation();
-	const FVector Delta = NewForward * Speed * StepSeconds;
-	SafeMoveUpdatedComponent(Delta, Rotation, true, OutHit);
-	if (OutHit.bBlockingHit)
-	{
-		SlideAlongSurface(Delta, 1.0f - OutHit.Time, OutHit.Normal, OutHit, true);
-	}
-	return !UpdatedComponent->GetComponentLocation().Equals(Start, UE_KINDA_SMALL_NUMBER);
+    const FVector Start = UpdatedComponent->GetComponentLocation();
+    using namespace GuLiWingmanFlightCollision;
+    const float Radius = State.Tuning.Formation.AgentRadiusCentimeters;
+    const FVector Delta = NewForward * Speed * StepSeconds;
+    FHitResult FirstHull;
+    FVector EndPlane = FVector::ZeroVector;
+    for (const FHull& Hull : Hulls)
+    {
+        FHitResult Hit;
+        FVector Plane;
+        if (HullContact(Hull, Start, Start + Delta, Radius, -StepSeconds, 0, Hit, Plane) &&
+            (!FirstHull.bBlockingHit || Hit.Time < FirstHull.Time))
+        {
+            FirstHull = Hit;
+            EndPlane = Plane;
+        }
+    }
+    auto MoveAgainstTerrain = [&](const FVector& Move) {
+        FHitResult Hit;
+        SafeMoveUpdatedComponent(Move, Rotation, true, Hit);
+        if (Hit.bBlockingHit)
+        {
+            OutHit = Hit;
+            SlideAlongSurface(Move, 1.f - Hit.Time, Hit.Normal, Hit, true);
+            return true;
+        }
+        return false;
+    };
+    if (FirstHull.bBlockingHit)
+    {
+        OutHit = FirstHull;
+        MoveAgainstTerrain(Delta * FirstHull.Time);
+        const FVector Goal = Start + Delta;
+        const double Push = FMath::Max(0., FVector::DotProduct(EndPlane - Goal, FirstHull.Normal) + 1.);
+        MoveAgainstTerrain(Goal + FirstHull.Normal * Push - UpdatedComponent->GetComponentLocation());
+    }
+    else
+        MoveAgainstTerrain(Delta);
+    // A terrain slide or a second moving ship can change the first contact plane.
+    for (const FHull& Hull : Hulls)
+    {
+        const FVector At = UpdatedComponent->GetComponentLocation();
+        FHitResult Hit;
+        FVector Plane;
+        if (HullContact(Hull, At, At, Radius, 0, 0, Hit, Plane))
+        {
+            OutHit = Hit;
+            if (MoveAgainstTerrain(Plane + Hit.Normal - At))
+            {
+                // A low hull can press the sphere against the ground. If its normal
+                // correction is blocked, slide toward the hull edge along the terrain.
+                const FVector TerrainNormal = OutHit.Normal;
+                const FVector Contact = UpdatedComponent->GetComponentLocation();
+                if (HullContact(Hull, Contact, Contact, Radius, 0, 0, Hit, Plane))
+                {
+                    const FVector AlongGround = FVector::VectorPlaneProject(Hit.Normal, TerrainNormal);
+                    const FVector Radial =
+                        FVector::VectorPlaneProject(Contact - Hull.Current.GetLocation(), TerrainNormal);
+                    FVector Tangent, Bitangent;
+                    TerrainNormal.FindBestAxisVectors(Tangent, Bitangent);
+                    const FVector Escape =
+                        AlongGround.GetSafeNormal(0.01, Radial.GetSafeNormal(UE_SMALL_NUMBER, Tangent));
+                    const double Distance = FMath::Clamp(FVector::Distance(Contact, Plane), 1.0, double(Radius));
+                    MoveAgainstTerrain(Escape * Distance);
+                }
+            }
+        }
+    }
+    return !UpdatedComponent->GetComponentLocation().Equals(Start, UE_KINDA_SMALL_NUMBER);
 }
 
-void UGuLiWingmanFlightMovementComponent::SimulateFixedStep(
-	const float StepSeconds,
-	const bool bBypassNavigationForTests)
+void UGuLiWingmanFlightMovementComponent::SimulateFixedStep(const float StepSeconds)
 {
-	(void)bBypassNavigationForTests;
-	AGuLiWingmanPawn* Pawn = WingmanPawn.Get();
-	if (!Pawn || !UpdatedComponent)
-	{
-		return;
-	}
-	FGuLiWingmanRuntimeState& State = Pawn->GetMutableRuntimeState();
-	if (++State.Dynamics.CaptureSimulationTick == 0u)
-	{
-		State.Dynamics.CaptureSimulationTick = 1u;
-	}
-	State.SwarmAgent.FlowSimulationTick = State.Dynamics.CaptureSimulationTick;
+    AGuLiWingmanPawn* Pawn = WingmanPawn.Get();
+    if (!Pawn || !UpdatedComponent)
+    {
+        return;
+    }
+    FGuLiWingmanRuntimeState& State = Pawn->GetMutableRuntimeState();
+    if (++State.Dynamics.CaptureSimulationTick == 0u)
+    {
+        State.Dynamics.CaptureSimulationTick = 1u;
+    }
+    State.SwarmAgent.FlowSimulationTick = State.Dynamics.CaptureSimulationTick;
 
-	const FVector Start = Pawn->GetActorLocation();
-	State.Avoidance = FGuLiWingmanAvoidanceState{};
-	State.Avoidance.LastVerifiedSafePoint = Start;
-	State.Avoidance.bHasVerifiedSafePoint = true;
-	State.Avoidance.bRecoveryPointCurrentlyValid = true;
-	if (!State.Dynamics.bAlive)
-	{
-		State.Dynamics.Velocity = FVector::ZeroVector;
-		return;
-	}
-
-	const FVector CurrentForward = BuildForwardFromTransform(Pawn->GetActorTransform());
-	const FVector RequestedVelocity = BuildRequestedVelocity();
-	if (RequestedVelocity.IsNearlyZero())
-	{
-		State.Dynamics.Velocity = FVector::ZeroVector;
-		State.Dynamics.Mode = EvaluateNominalFlightMode(Start, State);
-		return;
-	}
-
-	const FGuLiWingmanFormationRuntimeConfig& Tuning = State.Tuning.Formation;
-	const float CurrentSpeed = static_cast<float>(State.Dynamics.Velocity.Size());
-	const float DesiredSpeed = FMath::Clamp(
-		static_cast<float>(RequestedVelocity.Size()),
-		Tuning.MinimumSpeedCentimetersPerSecond,
-		Tuning.CatchUpSpeedCentimetersPerSecond)*UGuLiHybridActorComponent::MovementMultiplier(Pawn);
-	const FVector DesiredDirection = GuLiWingmanSteering::TurnDirectionToward(
-		CurrentForward,
-		RequestedVelocity.GetSafeNormal(),
-		FMath::DegreesToRadians(
-			Tuning.MaximumTurnRateDegreesPerSecond * StepSeconds));
-	const float Acceleration = DesiredSpeed >= CurrentSpeed
-		? Tuning.MaximumAccelerationCentimetersPerSecondSquared
-		: Tuning.MaximumDecelerationCentimetersPerSecondSquared;
-	const float NewSpeed = FMath::FInterpConstantTo(
-		CurrentSpeed, DesiredSpeed, StepSeconds, Acceleration);
-	FHitResult Hit;
-	const bool bMoved = TryMoveAlong(
-		DesiredDirection, NewSpeed, StepSeconds, Hit);
-
-	const FVector ActualDelta = Pawn->GetActorLocation() - Start;
-	const float MovedDistance = static_cast<float>(ActualDelta.Size());
-	if (bMoved && MovedDistance > UE_KINDA_SMALL_NUMBER)
-	{
-		State.Dynamics.Velocity = ActualDelta / StepSeconds;
-		State.Avoidance.LastVerifiedSafePoint = Pawn->GetActorLocation();
-	}
-	else
-	{
-		State.Dynamics.Velocity = FVector::ZeroVector;
-		State.Dynamics.BankDegrees = FMath::FInterpTo(
-			State.Dynamics.BankDegrees, 0.0f, StepSeconds, 5.0f);
-	}
-	State.Avoidance.SafeDirection = DesiredDirection;
-	State.Avoidance.NextStepSafeDirection = DesiredDirection;
-	State.Avoidance.bHasSafeDirection = true;
-	State.Avoidance.bHasNextStepSafeDirection = true;
-	State.Dynamics.Mode = EvaluateNominalFlightMode(
-		Pawn->GetActorLocation(), State);
+    if (!State.Dynamics.bAlive)
+    {
+        State.Dynamics.Velocity = FVector::ZeroVector;
+        return;
+    }
+    if (State.Tuning.Formation.Model == EGuLiWingmanFormationModel::DoubleRingLegacy)
+    {
+        auto& Slot = State.FormationSlot;
+        Slot.PhaseRadians = FMath::UnwindRadians(Slot.PhaseRadians + Slot.SignedAngularSpeed() * StepSeconds);
+    }
+    UWorld& World = *GetWorld();
+    GuLiWingmanFlightCollision::SampleHulls(World, StepSeconds, Hulls);
+    const FVector Start = Pawn->GetActorLocation();
+    const auto& Tuning = State.Tuning.Formation;
+    const float SpeedMultiplier = UGuLiHybridActorComponent::MovementMultiplier(Pawn);
+    const float MaxSpeed = Tuning.CatchUpSpeedCentimetersPerSecond * SpeedMultiplier;
+    const FVector Requested = BuildRequestedVelocity() * SpeedMultiplier;
+    GuLiWingmanPredictiveFlight::FPose Pose{Start, BuildForwardFromTransform(Pawn->GetActorTransform()),
+                                            FMath::Min(float(State.Dynamics.Velocity.Size()), MaxSpeed)};
+    GuLiWingmanPredictiveFlight::Choose(World, Hulls, State, Pose, Requested, MaxSpeed, StepSeconds);
+    auto& Plan = State.FlightPlan;
+    GuLiWingmanPredictiveFlight::Integrate(Pose, Plan.Direction, FMath::Min(Plan.Speed, MaxSpeed), Tuning,
+                                           StepSeconds);
+    float VerifiedFraction = FMath::Clamp(Plan.SafeSeconds / StepSeconds, 0.f, 1.f);
+    // When starting inside the safety band the separating half-space is reachable
+    // before a full inflated corridor is clear. The actual body still sweeps.
+    if (Plan.Mode == EGuLiWingmanSteer::Escape && FVector::DotProduct(Pose.Forward, Plan.ContactNormal) > 0)
+        VerifiedFraction = 1.f;
+    FHitResult Hit;
+    TryMoveAlong(Pose.Forward, Pose.Speed * VerifiedFraction, StepSeconds, Hit);
+    Plan.SafeSeconds = FMath::Max(0.f, Plan.SafeSeconds - StepSeconds);
+    // Ship displacement is external; it cannot create extra thrust in the next step.
+    State.Dynamics.Velocity = Pose.Forward * (Pose.Speed * VerifiedFraction);
+    if (Hit.bBlockingHit)
+    {
+        State.Dynamics.Velocity = FVector::VectorPlaneProject(State.Dynamics.Velocity, Hit.Normal);
+        Plan.ContactNormal = Hit.Normal;
+        Plan.SenseAfter = 0;
+    }
+    auto& Avoidance = State.Avoidance;
+    Avoidance.bControlledRecovery = Plan.Mode == EGuLiWingmanSteer::Escape;
+    Avoidance.ConsecutiveBlockedSeconds =
+        Hit.bBlockingHit || VerifiedFraction < 1 ? Avoidance.ConsecutiveBlockedSeconds + StepSeconds : 0.f;
+    Avoidance.LastVerifiedSafePoint = Pawn->GetActorLocation();
+    Avoidance.bHasVerifiedSafePoint = true;
+    State.Dynamics.Mode = EvaluateNominalFlightMode(Pawn->GetActorLocation(), State);
 }
 
-bool UGuLiWingmanFlightMovementComponent::PerformLocalDeadlockRecovery(
-	const bool bBypassNavigationForTests)
-{
-	AGuLiWingmanPawn* Pawn = WingmanPawn.Get();
-	UWorld* World = GetWorld();
-	if (!Pawn || !World || !UpdatedComponent)
-	{
-		return false;
-	}
-
-	FGuLiWingmanRuntimeState& State = Pawn->GetMutableRuntimeState();
-	const FGuLiWingmanFormationRuntimeConfig& Formation = State.Tuning.Formation;
-	const float AgentRadius = FMath::Max(1.0f, Formation.AgentRadiusCentimeters);
-	const FVector CarrierPosition = State.Carrier.Transform.GetLocation();
-	const int32 StableSlot = State.Identity.Handle.GetGroupMemberIndex();
-	const float BaseAngle = State.FormationSlot.PhaseRadians;
-	const FVector FormationLocal(
-		FMath::Cos(BaseAngle) * State.FormationSlot.RadiusCentimeters,
-		FMath::Sin(BaseAngle) * State.FormationSlot.RadiusCentimeters,
-		State.FormationSlot.HeightCentimeters);
-
-	TArray<FVector, TInlineAllocator<16>> Candidates;
-	if (!State.Guidance.DesiredPosition.IsNearlyZero())
-	{
-		Candidates.Add(State.Guidance.DesiredPosition);
-	}
-	Candidates.Add(State.Carrier.Transform.TransformPositionNoScale(FormationLocal));
-	const float RingRadius = FMath::Max(
-		AgentRadius * 6.0f,
-		0.5f * (Formation.SwarmOrbit.InnerSoftRadiusCentimeters
-			+ Formation.SwarmOrbit.OuterSoftRadiusCentimeters));
-	const float StableAngle = UE_TWO_PI
-		* static_cast<float>(FMath::Max(0, StableSlot))
-		/ static_cast<float>(GULI_WINGMAN_GROUP_SIZE);
-	for (const float AngleOffsetDegrees : { 0.0f, 25.0f, -25.0f, 60.0f, -60.0f, 120.0f, -120.0f, 180.0f })
-	{
-		const float Angle = StableAngle + FMath::DegreesToRadians(AngleOffsetDegrees);
-		Candidates.Add(CarrierPosition + State.Carrier.Transform.TransformVectorNoScale(FVector(
-			FMath::Cos(Angle) * RingRadius,
-			FMath::Sin(Angle) * RingRadius,
-			State.FormationSlot.HeightCentimeters + AgentRadius * 2.0f)));
-	}
-
-	FVector ChosenPosition = FVector::ZeroVector;
-	FVector ChosenDirection = FVector::ZeroVector;
-	for (const FVector& Candidate : Candidates)
-	{
-		if (Candidate.ContainsNaN()
-			|| FVector::Distance(Candidate, Pawn->GetActorLocation())
-				< AgentRadius * 2.0f
-			|| FVector::Distance(Candidate, CarrierPosition)
-				> Formation.RecoveryDistanceCentimeters - AgentRadius)
-		{
-			continue;
-		}
-		FVector FlyOutDirection = (Candidate - CarrierPosition).GetSafeNormal();
-		if (FlyOutDirection.IsNearlyZero())
-		{
-			FlyOutDirection = State.Carrier.Transform.GetUnitAxis(EAxis::X).GetSafeNormal();
-		}
-		const GuLiWingmanSteering::FHeadingProbeResult Probe = ProbeHeading(
-			Candidate,
-			FlyOutDirection,
-			FMath::Max(AgentRadius * 2.0f, 2000.0f),
-			AgentRadius,
-			bBypassNavigationForTests);
-		if (Probe.bFlightNavSegmentValid
-			&& Probe.ClearanceCentimeters >= AgentRadius * 1.5f)
-		{
-			ChosenPosition = Candidate;
-			ChosenDirection = FlyOutDirection;
-			break;
-		}
-	}
-
-	if (ChosenDirection.IsNearlyZero())
-	{
-		// Last-resort client failsafe: preserve a live aircraft even if local nav data
-		// is temporarily unavailable or every sampled point is obstructed. Rotate the
-		// deterministic fallback on each half-second attempt so an enclosed aircraft
-		// can never remain parked at one failed point while waiting for a server reply.
-		const uint32 RecoveryAttempt = State.Dynamics.CaptureSimulationTick / 15u;
-		const float FallbackRadius = FMath::Min(
-			FMath::Max(RingRadius, AgentRadius * 8.0f),
-			FMath::Max(AgentRadius * 8.0f,
-				Formation.RecoveryDistanceCentimeters * 0.5f));
-		const float FallbackAngle = StableAngle
-			+ static_cast<float>(RecoveryAttempt % 16u) * (UE_TWO_PI / 16.0f);
-		const float HeightStep = static_cast<float>(
-			static_cast<int32>(RecoveryAttempt % 5u) - 2) * AgentRadius * 2.0f;
-		ChosenPosition = CarrierPosition
-			+ State.Carrier.Transform.TransformVectorNoScale(FVector(
-				FMath::Cos(FallbackAngle) * FallbackRadius,
-				FMath::Sin(FallbackAngle) * FallbackRadius,
-				State.FormationSlot.HeightCentimeters + HeightStep));
-		ChosenDirection = (ChosenPosition - CarrierPosition).GetSafeNormal();
-		if (ChosenDirection.IsNearlyZero())
-		{
-			ChosenDirection = State.Carrier.Transform.GetUnitAxis(EAxis::X).GetSafeNormal();
-		}
-	}
-
-	Pawn->CancelFrozenAttackForRecovery();
-	ApplyReposition(
-		FTransform(ChosenDirection.Rotation(), ChosenPosition),
-		ChosenDirection * Formation.MinimumSpeedCentimetersPerSecond);
-	return true;
-}
-
-void UGuLiWingmanFlightMovementComponent::UpdateProgressState(
-	const float StepSeconds,
-	const float MovedDistance,
-	const bool bHadSafeHeading,
-	const bool bBlockedByCarrierBoundary)
-{
-	AGuLiWingmanPawn* Pawn = WingmanPawn.Get();
-	if (!Pawn)
-	{
-		return;
-	}
-	FGuLiWingmanRuntimeState& State = Pawn->GetMutableRuntimeState();
-	const bool bProgress = MovedDistance >= MinimumProgressPerStepCentimeters;
-	if (bProgress)
-	{
-		State.Avoidance.NoProgressSeconds = 0.0f;
-		State.Avoidance.ConsecutiveBlockedSeconds = 0.0f;
-		State.Avoidance.NormalProgressSeconds = FMath::Min(
-			State.Avoidance.NormalProgressSeconds + StepSeconds,
-			RecoveryClearSeconds + 0.25f);
-		State.Avoidance.ConsecutiveClearSeconds = State.Avoidance.NormalProgressSeconds;
-		if (State.Avoidance.bControlledRecovery
-			&& State.Avoidance.NormalProgressSeconds + UE_KINDA_SMALL_NUMBER
-				>= RecoveryClearSeconds)
-		{
-			ResetRecovery();
-		}
-		if (!State.Avoidance.bControlledRecovery)
-		{
-			State.Dynamics.ModeEvaluationAccumulator += StepSeconds;
-			if (State.Dynamics.ModeEvaluationAccumulator + UE_KINDA_SMALL_NUMBER
-				>= FlightModeEvaluationPeriodSeconds)
-			{
-				State.Dynamics.ModeEvaluationAccumulator = FMath::Fmod(
-					State.Dynamics.ModeEvaluationAccumulator,
-					FlightModeEvaluationPeriodSeconds);
-				State.Dynamics.Mode = EvaluateNominalFlightMode(
-					Pawn->GetActorLocation(), State);
-			}
-		}
-		return;
-	}
-
-	State.Dynamics.ModeEvaluationAccumulator = 0.0f;
-	State.Avoidance.NormalProgressSeconds = 0.0f;
-	State.Avoidance.ConsecutiveClearSeconds = 0.0f;
-	State.Avoidance.NoProgressSeconds = FMath::Min(
-		State.Avoidance.NoProgressSeconds + StepSeconds,
-		LocalDeadlockRecoverySeconds + 1.0f);
-	State.Avoidance.ConsecutiveBlockedSeconds = State.Avoidance.NoProgressSeconds;
-	if (State.Avoidance.NoProgressSeconds + UE_KINDA_SMALL_NUMBER >= EmergencyEntrySeconds)
-	{
-		if (!State.Avoidance.bControlledRecovery)
-		{
-			State.Avoidance.bControlledRecovery = true;
-			State.Avoidance.RecoveryEscapeDirection =
-				(State.Carrier.Transform.GetLocation() - Pawn->GetActorLocation()).GetSafeNormal();
-			State.Avoidance.bHasRecoveryEscapeDirection =
-				!State.Avoidance.RecoveryEscapeDirection.IsNearlyZero();
-			Pawn->CancelFrozenAttackForRecovery();
-		}
-	}
-}
-
-void UGuLiWingmanFlightMovementComponent::ApplyAuthorityRebase(
-	const FTransform& Transform,
-	const FVector& InitialVelocity)
+void UGuLiWingmanFlightMovementComponent::ApplyAuthorityRebase(const FTransform& Transform,
+                                                               const FVector& InitialVelocity)
 {
 	ApplyReposition(Transform, InitialVelocity);
 }
@@ -576,7 +346,8 @@ void UGuLiWingmanFlightMovementComponent::ApplyReposition(
 	UpdatedComponent->SetWorldTransform(Transform, false, nullptr, ETeleportType::TeleportPhysics);
 	PreviousSimulationTransform = UpdatedComponent->GetComponentTransform();
 	CurrentSimulationTransform = PreviousSimulationTransform;
-	Pawn->ApplyOwnerPresentationTransform(CurrentSimulationTransform);
+	if (Pawn->UsesHybridPresentation()) Pawn->ResetHybridPresentation();
+	else Pawn->ApplyOwnerPresentationTransform(CurrentSimulationTransform);
 	FGuLiWingmanRuntimeState& State = Pawn->GetMutableRuntimeState();
 	State.Dynamics.Velocity = InitialVelocity;
 	State.Dynamics.Mode = EGuLiWingmanFlightMode::CatchUp;
@@ -589,13 +360,14 @@ void UGuLiWingmanFlightMovementComponent::ResetRecovery()
 {
 	if (AGuLiWingmanPawn* Pawn = WingmanPawn.Get())
 	{
+		Hulls.Reset();
+		Pawn->GetMutableRuntimeState().FlightPlan = {};
 		FGuLiWingmanAvoidanceState& Avoidance = Pawn->GetMutableRuntimeState().Avoidance;
 		const FVector SafePoint = Avoidance.LastVerifiedSafePoint;
 		const bool bHasSafePoint = Avoidance.bHasVerifiedSafePoint;
 		Avoidance = FGuLiWingmanAvoidanceState{};
 		Avoidance.LastVerifiedSafePoint = SafePoint;
 		Avoidance.bHasVerifiedSafePoint = bHasSafePoint;
-		Avoidance.bRecoveryPointCurrentlyValid = bHasSafePoint;
 	}
 }
 

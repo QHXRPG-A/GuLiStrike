@@ -29,6 +29,8 @@ public:
 	/** Set LoadIfNeeded=false after an asynchronous load to avoid introducing a synchronous load. */
 	UFUNCTION(BlueprintCallable, Category="VFX", meta=(DeterminesOutputType="ExpectedClass"))
 	UObject* LoadResource(int32 VfxId, TSubclassOf<UObject> ExpectedClass, bool LoadIfNeeded = true);
+	/** Reserve this path for asynchronous loading. Consumers only resolve it from memory thereafter. */
+	FSoftObjectPath ReservePreload(int32 VfxId);
 	/** Missing detail falls towards full; a missing batch never silently becomes a single-shot system. */
 	UNiagaraSystem* LoadNiagaraForLOD(int32 VfxId, EGuLiCommanderLODLevel Level, bool bBatch=false, bool bLoadIfNeeded=true, int32* OutFallbacks=nullptr);
 	static float NiagaraFloat(const UNiagaraSystem* System, FName Name, float DefaultValue);
@@ -54,6 +56,7 @@ public:
 
 private:
 	bool EnsureCatalog();
+	UObject* ResolveResourcePath(const FSoftObjectPath& Path, bool bLoadIfNeeded) const;
 	bool bCatalogAttempted = false;
 	UPROPERTY(Transient) TObjectPtr<UDataTable> Catalog;
 	UPROPERTY(Transient) TMap<int32, FGuLiStrikeVfxEffectsRow> Definitions;

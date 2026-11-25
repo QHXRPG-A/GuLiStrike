@@ -85,11 +85,20 @@ public:
                     [
                         SNew(SButton).ButtonStyle(&ButtonStyle())
                         .Visibility_Lambda([this]{return SelectedRole==EGuLiCommanderRole::Ground ? EVisibility::Visible : EVisibility::Collapsed;})
-                        .OnClicked_Lambda([this]{bRange=true;return Confirm();})
+                        .OnClicked_Lambda([this]{Trial=ETrial::Barrage;return Confirm();})
                         [SNew(STextBlock).Text(LOCTEXT("BarrageRange","无人生还靶场")).ColorAndOpacity(Accent)]
                     ]
                     + SScrollBox::Slot()
                     [RoleButton(EGuLiCommanderRole::Air, LOCTEXT("AirDescription", "选择无双席位，从驾驶巡天开始。局内按 Tab 切换游骑兵。"))]
+                    + SScrollBox::Slot().Padding(18,0,0,8)
+                    [
+                        SNew(SHorizontalBox)
+                        .Visibility_Lambda([this]{return SelectedRole==EGuLiCommanderRole::Air ? EVisibility::Visible : EVisibility::Collapsed;})
+                        + SHorizontalBox::Slot().AutoWidth()[WingmanButton(ETrial::WingmanFlight, LOCTEXT("WingmanFlight","僚机试飞"))]
+                        + SHorizontalBox::Slot().AutoWidth().Padding(4,0)[WingmanButton(ETrial::WingmanAir, LOCTEXT("WingmanAir","僚机对空"))]
+                        + SHorizontalBox::Slot().AutoWidth()[WingmanButton(ETrial::WingmanGround, LOCTEXT("WingmanGround","僚机对地"))]
+                        + SHorizontalBox::Slot().AutoWidth().Padding(4,0)[WingmanButton(ETrial::WingmanCombined, LOCTEXT("WingmanCombined","僚机综合"))]
+                    ]
                 ]
                 + SVerticalBox::Slot().AutoHeight().Padding(0, 16, 0, 12)
                 [
@@ -131,7 +140,7 @@ public:
     }
 
     TSharedPtr<SWidget> InitialFocus() const { return RoleButtons.FindRef(SelectedRole); }
-    bool ChoseRange() const { return bConfirmed && bRange; }
+    ETrial ChosenTrial() const { return bConfirmed ? Trial : ETrial::None; }
     TOptional<EGuLiCommanderRole> Result() const
     {
         return bConfirmed ? TOptional<EGuLiCommanderRole>(SelectedRole) : TOptional<EGuLiCommanderRole>();
@@ -142,7 +151,14 @@ private:
     TMap<EGuLiCommanderRole, TSharedPtr<SButton>> RoleButtons;
     EGuLiCommanderRole SelectedRole = EGuLiCommanderRole::Commander;
     bool bConfirmed = false;
-    bool bRange = false;
+    ETrial Trial = ETrial::None;
+
+    TSharedRef<SWidget> WingmanButton(ETrial Choice, const FText& Label)
+    {
+        return SNew(SButton).ButtonStyle(&ButtonStyle())
+            .OnClicked_Lambda([this, Choice]{ Trial = Choice; return Confirm(); })
+            [ SNew(STextBlock).Text(Label).ColorAndOpacity(Accent) ];
+    }
 
     TSharedRef<SWidget> RoleButton(EGuLiCommanderRole Role, const FText& Description)
     {
@@ -185,7 +201,7 @@ private:
     }
 };
 
-TOptional<EGuLiCommanderRole> Show(EGuLiCommanderRole InitialRole,bool& bBarrageRange)
+TOptional<EGuLiCommanderRole> Show(EGuLiCommanderRole InitialRole, ETrial& Trial)
 {
     if (!GEditor || !FSlateApplication::IsInitialized()) return {};
     const TWeakPtr<SWidget> PreviousFocus = FSlateApplication::Get().GetKeyboardFocusedWidget();
@@ -202,7 +218,7 @@ TOptional<EGuLiCommanderRole> Show(EGuLiCommanderRole InitialRole,bool& bBarrage
     GEditor->EditorAddModalWindow(Window);
     if (const auto Focus = PreviousFocus.Pin())
         FSlateApplication::Get().SetKeyboardFocus(Focus, EFocusCause::SetDirectly);
-    bBarrageRange=Picker->ChoseRange();
+    Trial=Picker->ChosenTrial();
     return Picker->Result();
 }
 }

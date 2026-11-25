@@ -85,7 +85,7 @@ handoff=f'''# 指挥官 1800 米海岛与 7×7 据点交付
 2. 项目根目录运行 `python Scripts/CommanderIsland/prepare_ue_sources.py`，生成翻转后的高度与共同归一化的六层权重。
 3. 使用已打开的源码版 UE 编辑器与 Python 桥，按 `run_stage.py import_island.py import_height`、`import_weights`、`water_navigation`、`verify`、`collision_checks` 更新当前指挥官地形。已交付工程已有地形，不重复运行首次 `setup/create_terrain/scene`。
 4. 更新布局时先运行 `calibrate_budget_metadata.py` 和 `prepare_layout_migration.py`，再执行 `author_layout.py resume_markers`、`author_clearance.py update`。`migrate/create` 只用于显式首次迁移，不能对现有文件重复执行。
-5. 执行 `author_scene.py flight_bounds`、`navigation_query_budget`、`navigation` 和 `author_layout.py bake`；返回结果必须明确 success，失败不会覆盖正式资源 DataAsset。
+5. 执行 `author_scene.py navigation_query_budget`、`navigation` 和 `author_layout.py bake`；返回结果必须明确 success，失败不会覆盖正式资源 DataAsset。
 6. 最后执行 `author_scene.py fixtures`、`preview_off`、`import_island.py save/reopen`、`readback_scene.py read`，保存当前地图并读取相关实体。使用 `verify_ue_delivery.py` 对比源与 UE 回读像素。
 
 入口示例：`python Scripts/CommanderIsland/run_stage.py author_layout.py bake --timeout 600`。此桥连接已打开的编辑器；不启动 PIE、Standalone 或自动化测试。原生改动沿用项目编译授权规则。

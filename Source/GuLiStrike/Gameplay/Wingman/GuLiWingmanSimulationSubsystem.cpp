@@ -7,25 +7,22 @@
 #include "Battle/Relay/GuLiWingmanRelayTypes.h"
 #include "Development/GuLiWingmanQAEvidence.h"
 #include "Engine/World.h"
+#include "Misc/App.h"
+#include "Network/GuLiNetworkSettings.h"
+#include "EngineUtils.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Engine/StaticMesh.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Gameplay/Wingman/Movement/GuLiWingmanFlightMovementComponent.h"
 #include "Gameplay/Wingman/Movement/GuLiWingmanSteering.h"
 #include "Gameplay/Wingman/Movement/GuLiWingmanSwarmFlow.h"
-#include "GuLiFlightNavigationSubsystem.h"
+#include "Gameplay/Wingman/Movement/GuLiWingmanFlightCollision.h"
 #include "StateTree.h"
 #include "Subsystems/SubsystemCollection.h"
-#include "Gameplay/Wingman/Private/GuLiWingmanNavigationRuntime.h"
 
 namespace
 {
-	constexpr float NavigationEvaluationPeriodSeconds = 0.1f;
-	constexpr double MinimumRepathIntervalSeconds = 0.5;
-	constexpr double FailedPathRetrySeconds = 1.0;
-	constexpr float MinimumGoalDriftForRepathCentimeters = 2000.0f;
-	constexpr float MinimumWaypointReachDistanceCentimeters = 1000.0f;
-	constexpr int32 MaximumNavigationExpandedNodes = GuLiWingmanNavigationMaximumExpandedNodes;
-	constexpr uint32 MaximumInitialSwarmCandidateCount = 64u;
+	constexpr uint32 MaximumSpawnCandidatesPerMember = 64u;
 
 	bool ConfigMatchesGroup(
 		const FGuLiGroupAbilityConfigSnapshot& Config,
@@ -70,122 +67,79 @@ namespace
 		return A.EntityGeneration < B.EntityGeneration;
 	}
 
-	const TCHAR* GetFlightNavSegmentStatusName(const EGuLiFlightNavSegmentStatus Status)
+	FGuLiWingmanFormationSlotState MakeDoubleRingSlot(const FGuLiWingmanFormationRuntimeConfig& Formation, int32 Slot)
 	{
-		switch (Status)
-		{
-		case EGuLiFlightNavSegmentStatus::Valid: return TEXT("Valid");
-		case EGuLiFlightNavSegmentStatus::InvalidData: return TEXT("InvalidData");
-		case EGuLiFlightNavSegmentStatus::EndpointOutsideNavigation: return TEXT("EndpointOutsideNavigation");
-		case EGuLiFlightNavSegmentStatus::InsufficientClearance: return TEXT("InsufficientClearance");
-		case EGuLiFlightNavSegmentStatus::Disconnected: return TEXT("Disconnected");
-		case EGuLiFlightNavSegmentStatus::MissingLink: return TEXT("MissingLink");
-		case EGuLiFlightNavSegmentStatus::InvalidPortal: return TEXT("InvalidPortal");
-		default: return TEXT("Unknown");
-		}
+		const bool bInner = Slot < Formation.InnerRingSlots;
+		const int32 Index = bInner ? Slot : Slot - Formation.InnerRingSlots;
+		const int32 Count = bInner ? Formation.InnerRingSlots : Formation.OuterRingSlots;
+		FGuLiWingmanFormationSlotState Result;
+		Result.RadiusCentimeters = bInner ? Formation.InnerRingRadiusCentimeters : Formation.OuterRingRadiusCentimeters;
+		Result.HeightCentimeters = bInner ? Formation.InnerRingHeightCentimeters : Formation.OuterRingHeightCentimeters;
+		Result.AngularSpeedRadiansPerSecond = bInner ? Formation.InnerAngularSpeedRadiansPerSecond : Formation.OuterAngularSpeedRadiansPerSecond;
+		Result.PhaseRadians = float(Index) * UE_TWO_PI / FMath::Max(1, Count);
+		Result.bClockwise = bInner;
+		return Result;
 	}
 
-	FVector BuildDoubleRingOffset(
-		const FGuLiWingmanFormationRuntimeConfig& Formation,
-		const int32 StableSlot)
-	{
-		const int32 InnerCount = static_cast<int32>(Formation.InnerRingSlots);
-		const bool bInner = StableSlot < InnerCount;
-		const int32 RingIndex = bInner ? StableSlot : StableSlot - InnerCount;
-		const int32 RingCount = bInner
-			? InnerCount : static_cast<int32>(Formation.OuterRingSlots);
-		const float Radius = bInner
-			? Formation.InnerRingRadiusCentimeters : Formation.OuterRingRadiusCentimeters;
-		const float Height = bInner
-			? Formation.InnerRingHeightCentimeters : Formation.OuterRingHeightCentimeters;
-		const float Phase = static_cast<float>(RingIndex) * UE_TWO_PI
-			/ static_cast<float>(FMath::Max(1, RingCount));
-		return FVector(Radius * FMath::Cos(Phase), Radius * FMath::Sin(Phase), Height);
-	}
-
-	bool BuildInitialFormationPositions(
-		const UGuLiFlightNavigationSubsystem* Navigation,
-		const bool bRequireNavigation,
-		const FTransform& CarrierTransform,
-		const FGuLiWingmanFormationRuntimeConfig& Formation,
-		TArray<FVector>& OutPositions,
-		int32& OutFailedMemberIndex,
-		FVector& OutFailedPosition,
-		EGuLiFlightNavSegmentStatus& OutFailureStatus, TConstArrayView<int32> LivingSlots = {})
-	{
-		OutPositions.Reset();
-		OutPositions.Reserve(GULI_WINGMAN_GROUP_SIZE);
-		OutFailedMemberIndex = INDEX_NONE;
-		OutFailedPosition = CarrierTransform.GetLocation();
-		OutFailureStatus = EGuLiFlightNavSegmentStatus::InvalidData;
-		if (!Formation.IsWellFormed())
-		{
-			return false;
-		}
-		if (bRequireNavigation && !Navigation)
-		{
-			return false;
-		}
-
-		for (int32 StableSlot = 0; StableSlot < GULI_WINGMAN_GROUP_SIZE; ++StableSlot)
-		{
-			if (!LivingSlots.IsEmpty() && !LivingSlots.Contains(StableSlot)) { OutPositions.Add(FVector(MAX_flt)); continue; }
-			FGuLiWingmanHandle Handle;
-			Handle.Flight.FlightIndex = static_cast<uint8>(
-				StableSlot / GULI_WINGMAN_MEMBERS_PER_FLIGHT);
-			Handle.MemberIndex = static_cast<uint8>(
-				StableSlot % GULI_WINGMAN_MEMBERS_PER_FLIGHT);
-			Handle.EntityGeneration = 1u;
-			FGuLiWingmanSwarmAgentState Agent;
-			GuLiWingmanSwarmFlow::InitializeAgent(Formation, Handle, 1u, Agent);
-			const uint32 CandidateCount = Formation.Model == EGuLiWingmanFormationModel::SwarmOrbit
-				&& bRequireNavigation ? MaximumInitialSwarmCandidateCount : 1u;
-			bool bResolved = false;
-			for (uint32 CandidateIndex = 0u; CandidateIndex < CandidateCount; ++CandidateIndex)
-			{
-				const FVector Offset = Formation.Model == EGuLiWingmanFormationModel::SwarmOrbit
-					? GuLiWingmanSwarmFlow::BuildInitialOffset(
-						Formation, Handle, Agent, CandidateIndex)
-					: BuildDoubleRingOffset(Formation, StableSlot);
-				const FVector Position = CarrierTransform.GetLocation() + Offset;
-				OutFailedMemberIndex = StableSlot;
-				OutFailedPosition = Position;
-				OutFailureStatus = Position.ContainsNaN()
-					? EGuLiFlightNavSegmentStatus::InvalidData
-					: bRequireNavigation
-						? Navigation->ValidateEndpointsInSameComponent(
-							CarrierTransform.GetLocation(), Position,
-							Formation.AgentRadiusCentimeters)
-						: EGuLiFlightNavSegmentStatus::Valid;
-				if (OutFailureStatus != EGuLiFlightNavSegmentStatus::Valid)
-				{
-					continue;
-				}
-				const float MinimumSpacing = FMath::Max(
-					Formation.SeparationRadiusCentimeters,
-					Formation.AgentRadiusCentimeters * 2.0f);
-				if (OutPositions.ContainsByPredicate([&](const FVector& Existing)
-				{
-					return FVector::DistSquared(Existing, Position)
-						< FMath::Square(MinimumSpacing);
-				}))
-				{
-					continue;
-				}
-				OutPositions.Add(Position);
-				bResolved = true;
-				break;
-			}
-			if (!bResolved)
-			{
-				OutPositions.Reset();
-				return false;
-			}
-		}
-		OutFailedMemberIndex = INDEX_NONE;
-		OutFailureStatus = EGuLiFlightNavSegmentStatus::Valid;
-		return OutPositions.Num() == GULI_WINGMAN_GROUP_SIZE;
-	}
+    bool BuildInitialFormationPositions(UWorld* World, const FTransform& Carrier,
+        const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& Positions,
+        int32& FailedSlot, TConstArrayView<int32> Slots = {})
+    {
+        using namespace GuLiWingmanFlightCollision;
+        FailedSlot = INDEX_NONE;
+        if (!World || !Formation.IsWellFormed()) return false;
+        TArray<FHull> Hulls;
+        SampleHulls(*World, GuLiWingmanSteering::FixedStepSeconds, Hulls, true);
+        Positions.Init(FVector(MAX_flt), GULI_WINGMAN_GROUP_SIZE);
+        const float ClearanceRadius = Formation.AgentRadiusCentimeters + Formation.SafetyMarginCentimeters();
+        const bool bSwarm = Formation.Model == EGuLiWingmanFormationModel::SwarmOrbit;
+        for (int32 Slot = 0; Slot < GULI_WINGMAN_GROUP_SIZE; ++Slot)
+        {
+            if (!Slots.IsEmpty() && !Slots.Contains(Slot)) continue;
+            FGuLiWingmanHandle Handle;
+            Handle.Flight.FlightIndex = Slot / GULI_WINGMAN_MEMBERS_PER_FLIGHT;
+            Handle.MemberIndex = Slot % GULI_WINGMAN_MEMBERS_PER_FLIGHT;
+            Handle.EntityGeneration = 1;
+            FGuLiWingmanSwarmAgentState Agent;
+            GuLiWingmanSwarmFlow::InitializeAgent(Formation, Handle, 1, Agent);
+            const FVector RingOffset = bSwarm ? FVector::ZeroVector : MakeDoubleRingSlot(Formation, Slot).Offset();
+            bool bFound = false;
+            for (uint32 Attempt = 0; Attempt < MaximumSpawnCandidatesPerMember; ++Attempt)
+            {
+                const FVector Offset = bSwarm
+                    ? GuLiWingmanSwarmFlow::BuildInitialOffset(Formation, Handle, Agent, Attempt)
+                    : RingOffset;
+                const FVector Anchor = Carrier.GetLocation() + Offset;
+                FVector Point = Anchor;
+                // A double-ring slot has a fixed XY. Try successively higher positions
+                // only if its first exterior position is still occupied by a ship.
+                Point.Z += ClearanceRadius * (bSwarm ? Attempt / 8 : Attempt);
+                if (Point.Z - Anchor.Z > Formation.CatchUpDistanceCentimeters) break;
+                FHitResult Surface;
+                // A sweep from above can find the top even when the nominal slot is
+                // underneath a single-sided Landscape. Location is the sphere center.
+                if (SweepTerrain(*World, Point + FVector(0, 0, 1000000), Point, ClearanceRadius, Surface))
+                {
+                    if (Surface.bStartPenetrating) continue;
+                    Point.Z = FMath::Max(Point.Z, Surface.Location.Z + 2.0);
+                }
+                if (Point.Z - Anchor.Z > Formation.CatchUpDistanceCentimeters
+                    || !ClearPosition(*World, Hulls, Point, ClearanceRadius))
+                {
+                    continue;
+                }
+                Positions[Slot] = Point;
+                bFound = true;
+                break;
+            }
+            if (!bFound)
+            {
+                FailedSlot = Slot;
+                return false;
+            }
+        }
+        return true;
+    }
 
 	FGuLiWingmanCandidateSample BuildCandidateSample(const AGuLiWingmanPawn& Pawn)
 	{
@@ -223,13 +177,38 @@ bool UGuLiWingmanSimulationSubsystem::ShouldCreateSubsystem(UObject* Outer) cons
 		&& IsOwnerSimulationNetMode(World->GetNetMode());
 }
 
+TConstArrayView<TWeakObjectPtr<AGuLiStrikeShip>> UGuLiWingmanSimulationSubsystem::GetFlightObstacleShips(bool bRefresh)
+{
+    if (bRefresh || FlightObstacleFrame != GFrameCounter)
+    {
+        FlightObstacleShips.Reset();
+        for (TActorIterator<AGuLiStrikeShip> Ship(GetWorld()); Ship; ++Ship)
+        {
+            FlightObstacleShips.Add(*Ship);
+        }
+        FlightObstacleFrame = GFrameCounter;
+    }
+    return FlightObstacleShips;
+}
+
 void UGuLiWingmanSimulationSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
+    if (FApp::CanEverRender() && !UGuLiNetworkSettings::IsLogicOnly() && UGuLiNetworkSettings::IsHybrid(GetWorld()))
+        HybridPresentationTick = FWorldDelegates::OnWorldTickEnd.AddUObject(this, &ThisClass::RenderHybridMembers);
+}
+
+void UGuLiWingmanSimulationSubsystem::RenderHybridMembers(UWorld* World, ELevelTick TickType, float DeltaSeconds)
+{
+    if (World != GetWorld() || TickType == LEVELTICK_ViewportsOnly || World->IsPaused() || DeltaSeconds <= 0) return;
+    const double Now = World->GetTimeSeconds();
+    for (const auto& Entry : IndependentPawns)
+        if (auto* Pawn = Entry.Value.Get()) Pawn->RenderHybridPresentation(Now, DeltaSeconds);
 }
 
 void UGuLiWingmanSimulationSubsystem::Deinitialize()
 {
+    FWorldDelegates::OnWorldTickEnd.Remove(HybridPresentationTick);
 	TArray<TSharedPtr<FGuLiWingmanLocalGroupRuntime>> Independent;
 	for (const auto& Pair:IndependentRuntimes) if (auto Runtime=Pair.Value.Pin()) Independent.Add(MoveTemp(Runtime));
 	for (const auto& Runtime:Independent) ReleaseIndependentMember(*Runtime);
@@ -275,34 +254,9 @@ bool UGuLiWingmanSimulationSubsystem::CreateOrResetOwnedGroup(
 	{
 		return false;
 	}
-	bool bBypassNavigation = false;
-#if WITH_DEV_AUTOMATION_TESTS
-	bBypassNavigation = bBypassNavigationRequirementForTests;
-#endif
-	const UGuLiFlightNavigationSubsystem* Navigation = GetWorld()
-		? GetWorld()->GetSubsystem<UGuLiFlightNavigationSubsystem>() : nullptr;
-	TArray<FVector> InitialPositions;
-	int32 FailedMemberIndex = INDEX_NONE;
-	FVector FailedPosition = CarrierTransform.GetLocation();
-	EGuLiFlightNavSegmentStatus FailureStatus = EGuLiFlightNavSegmentStatus::InvalidData;
-	if (!BuildInitialFormationPositions(Navigation, !bBypassNavigation,
-		CarrierTransform, AbilityConfig.FormationRuntime, InitialPositions,
-		FailedMemberIndex, FailedPosition, FailureStatus))
-	{
-		if (!InitialFormationNavigationFailuresLogged.Contains(Group))
-		{
-			InitialFormationNavigationFailuresLogged.Add(Group);
-			UE_LOG(LogTemp, Warning,
-				TEXT("[GULI_WINGMAN_INITIAL_NAV_GATE] Ship=%s ShipGen=%u GroupGen=%u "
-					"FailedMember=%d Status=%s(%d) Position=%s"),
-				*Group.ShipInstanceId.ToString(), Group.ShipGeneration,
-				Group.GroupGeneration, FailedMemberIndex,
-				GetFlightNavSegmentStatusName(FailureStatus),
-				static_cast<int32>(FailureStatus), *FailedPosition.ToCompactString());
-		}
-		return false;
-	}
-	InitialFormationNavigationFailuresLogged.Remove(Group);
+    TArray<FVector> InitialPositions;
+    int32 FailedSlot;
+    if (!BuildInitialFormationPositions(GetWorld(),CarrierTransform,AbilityConfig.FormationRuntime,InitialPositions,FailedSlot)) return false;
 
 	if (FGuLiWingmanLocalGroupRuntime* Existing = OwnedGroups.Find(Group))
 	{
@@ -334,12 +288,6 @@ bool UGuLiWingmanSimulationSubsystem::CreateOrResetOwnedGroup(
 	NewRuntime.bCombatAuthorizationValid = true;
 	NewRuntime.CarrierActor = CarrierActor;
 	NewRuntime.Pawns.Reserve(GULI_WINGMAN_GROUP_SIZE);
-	NewRuntime.FlightNavigation.Reserve(GULI_WINGMAN_FLIGHT_COUNT);
-	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
-	{
-		NewRuntime.FlightNavigation.Add(MakeShared<FGuLiWingmanFlightNavigationRuntime>());
-	}
-
 	UWorld* World = GetWorld();
 	for (int32 StableSlot = 0; StableSlot < GULI_WINGMAN_GROUP_SIZE; ++StableSlot)
 	{
@@ -417,27 +365,9 @@ bool UGuLiWingmanSimulationSubsystem::InitializeOwnedPawn(
 	FVector Forward = FVector::ForwardVector;
 	if (AbilityConfig.FormationRuntime.Model == EGuLiWingmanFormationModel::DoubleRingLegacy)
 	{
-		const int32 InnerCount = static_cast<int32>(AbilityConfig.FormationRuntime.InnerRingSlots);
-		const bool bInner = StableSlot < InnerCount;
-		const int32 RingIndex = bInner ? StableSlot : StableSlot - InnerCount;
-		const int32 RingCount = bInner ? InnerCount
-			: static_cast<int32>(AbilityConfig.FormationRuntime.OuterRingSlots);
-		State.FormationSlot.RadiusCentimeters = bInner
-			? AbilityConfig.FormationRuntime.InnerRingRadiusCentimeters
-			: AbilityConfig.FormationRuntime.OuterRingRadiusCentimeters;
-		State.FormationSlot.HeightCentimeters = bInner
-			? AbilityConfig.FormationRuntime.InnerRingHeightCentimeters
-			: AbilityConfig.FormationRuntime.OuterRingHeightCentimeters;
-		State.FormationSlot.PhaseRadians = static_cast<float>(RingIndex) * UE_TWO_PI
-			/ static_cast<float>(FMath::Max(1, RingCount));
-		State.FormationSlot.AngularSpeedRadiansPerSecond = bInner
-			? AbilityConfig.FormationRuntime.InnerAngularSpeedRadiansPerSecond
-			: AbilityConfig.FormationRuntime.OuterAngularSpeedRadiansPerSecond;
-		State.FormationSlot.bClockwise = bInner;
-		const float DirectionSign = bInner ? -1.0f : 1.0f;
-		Forward = (DirectionSign * FVector(
-			-FMath::Sin(State.FormationSlot.PhaseRadians),
-			FMath::Cos(State.FormationSlot.PhaseRadians), 0.0f)).GetSafeNormal();
+		State.FormationSlot = MakeDoubleRingSlot(AbilityConfig.FormationRuntime, StableSlot);
+		Forward = FVector::CrossProduct(FVector::UpVector, State.FormationSlot.Offset()).GetSafeNormal();
+		if (State.FormationSlot.bClockwise) Forward *= -1.0;
 		InitialVelocity = Forward
 			* AbilityConfig.FormationRuntime.CruiseSpeedCentimetersPerSecond;
 	}
@@ -473,13 +403,8 @@ bool UGuLiWingmanSimulationSubsystem::InitializeOwnedPawn(
 
 	Pawn.SetActorTransform(FTransform(Forward.Rotation(), InitialPosition),
 		false, nullptr, ETeleportType::TeleportPhysics);
-	const bool bInitialized = Pawn.InitializeOwnerSimulation(
+	return Pawn.InitializeOwnerSimulation(
 		State, ResolveMemberBehaviorStateTree(), ResolveWingmanMesh());
-	if (bInitialized && Pawn.GetFlightMovement())
-	{
-		Pawn.GetFlightMovement()->SetCarrierActor(CarrierActor);
-	}
-	return bInitialized;
 }
 
 bool UGuLiWingmanSimulationSubsystem::UpdateOwnedGroupCarrier(
@@ -512,10 +437,6 @@ bool UGuLiWingmanSimulationSubsystem::UpdateOwnedGroupCarrier(
 		{
 			Carrier.Source = CarrierSource;
 		}
-		if (Pawn->GetFlightMovement())
-		{
-			Pawn->GetFlightMovement()->SetCarrierActor(CarrierActor);
-		}
 	}
 	return true;
 }
@@ -541,10 +462,6 @@ bool UGuLiWingmanSimulationSubsystem::ApplyCommittedAbilityConfig(
 	const FGuLiGroupAbilityConfigSnapshot PreviousConfig = Runtime->AbilityConfig;
 	const bool bFormationChanged =
 		FormationProjectionHash(PreviousConfig) != FormationProjectionHash(AbilityConfig);
-	if (bFormationChanged)
-	{
-		CancelNavigationForRuntime(*Runtime, true);
-	}
 	const double NowSeconds = GetWorld()
 		? static_cast<double>(GetWorld()->GetTimeSeconds()) : 0.0;
 	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime->Pawns)
@@ -564,23 +481,12 @@ bool UGuLiWingmanSimulationSubsystem::ApplyCommittedAbilityConfig(
 		State.Identity.WingmanTypeId = AbilityConfig.WingmanTypeId;
 		if (bFormationChanged)
 		{
+			State.FlightPlan = {};
 			GuLiWingmanSwarmFlow::InitializeAgent(
 				AbilityConfig.FormationRuntime, State.Identity.Handle,
 				FMath::Max(1u, State.Dynamics.CaptureSimulationTick), State.SwarmAgent);
-			const int32 StableSlot = State.Identity.Handle.GetGroupMemberIndex();
-			const int32 InnerCount = static_cast<int32>(
-				AbilityConfig.FormationRuntime.InnerRingSlots);
-			const bool bInner = StableSlot < InnerCount;
-			State.FormationSlot.RadiusCentimeters = bInner
-				? AbilityConfig.FormationRuntime.InnerRingRadiusCentimeters
-				: AbilityConfig.FormationRuntime.OuterRingRadiusCentimeters;
-			State.FormationSlot.HeightCentimeters = bInner
-				? AbilityConfig.FormationRuntime.InnerRingHeightCentimeters
-				: AbilityConfig.FormationRuntime.OuterRingHeightCentimeters;
-			State.FormationSlot.AngularSpeedRadiansPerSecond = bInner
-				? AbilityConfig.FormationRuntime.InnerAngularSpeedRadiansPerSecond
-				: AbilityConfig.FormationRuntime.OuterAngularSpeedRadiansPerSecond;
-			State.FormationSlot.bClockwise = bInner;
+			State.FormationSlot = MakeDoubleRingSlot(AbilityConfig.FormationRuntime, State.Identity.Handle.GetGroupMemberIndex());
+			State.Guidance.bUsesVelocityField = AbilityConfig.FormationRuntime.Model == EGuLiWingmanFormationModel::SwarmOrbit;
 			State.Weapon.SourceAcceptedState = FGuLiAcceptedStateRef{};
 			State.Weapon.SourceAcceptedAbilitySetRevision = 0u;
 			State.Weapon.SourceAcceptedFormationCommandRevision = 0u;
@@ -619,10 +525,6 @@ bool UGuLiWingmanSimulationSubsystem::ApplyCommittedAbilityConfig(
 	}
 	Runtime->AbilityConfig = AbilityConfig;
 	Runtime->bCombatAuthorizationValid = true;
-	if (bFormationChanged)
-	{
-		Runtime->NavigationEvaluationAccumulator = 0.0f;
-	}
 	return true;
 }
 
@@ -662,7 +564,7 @@ bool UGuLiWingmanSimulationSubsystem::ApplyRosterCut(
 		// Copy the old generation and its flight velocity before the reliable roster hides/reuses it.
 		if (State.Dynamics.bAlive && (RosterEntry->bDead || State.Identity.Handle != RosterEntry->Wingman))
 			if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
-				Feedback->ApplyWingmanFeedback(State.Identity.Handle, Pawn->GetPresentationTransform().GetLocation(), true);
+				Feedback->PlayWingmanDestruction(State.Identity.Handle, Pawn->GetPresentationTransform().GetLocation());
 		if (State.Identity.Handle != RosterEntry->Wingman)
 		{
 			const FTransform PreservedTransform = Pawn->GetActorTransform();
@@ -737,7 +639,7 @@ bool UGuLiWingmanSimulationSubsystem::DestroyOwnedGroup(
 	{
 		return false;
 	}
-	CancelNavigationForRuntime(*Existing, true);
+
 	FGuLiWingmanLocalGroupRuntime Runtime;
 	if (!OwnedGroups.RemoveAndCopyValue(Group, Runtime))
 	{
@@ -764,15 +666,18 @@ void UGuLiWingmanSimulationSubsystem::DestroyAllOwnedGroups()
 	OwnedGroups.Reset();
 }
 
+bool UGuLiWingmanSimulationSubsystem::GetClearFormationPositions(UObject* Context, const FTransform& Carrier,
+    const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions)
+{
+    return PlanExternalFormationPositions(Context ? Context->GetWorld() : nullptr,Carrier,Formation,OutPositions);
+}
+
 bool UGuLiWingmanSimulationSubsystem::PlanExternalFormationPositions(UWorld* World, const FTransform& Carrier,
 	const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions, TConstArrayView<int32> LivingSlots,FString* Failure)
 {
-	int32 Failed; FVector Point; EGuLiFlightNavSegmentStatus Status;
-	if (!World) {if (Failure) *Failure=TEXT("Missing formation world");return false;}
-    const bool Ready=BuildInitialFormationPositions(World->GetSubsystem<UGuLiFlightNavigationSubsystem>(), true,
-		Carrier, Formation, OutPositions, Failed, Point, Status, LivingSlots);
-    if (Failure) *Failure=Ready?FString{}:FString::Printf(TEXT("Formation navigation: member=%d status=%u point=%s carrier=%s"),
-        Failed,uint8(Status),*Point.ToString(),*Carrier.GetLocation().ToString());
+    int32 Failed=INDEX_NONE;
+    const bool Ready=BuildInitialFormationPositions(World,Carrier,Formation,OutPositions,Failed,LivingSlots);
+    if (Failure) *Failure=Ready ? FString{} : FString::Printf(TEXT("No clear spawn for wingman slot %d"),Failed);
     return Ready;
 }
 
@@ -782,7 +687,7 @@ void UGuLiWingmanSimulationSubsystem::SetGroupExternalControlState(const FGuLiWi
 	{
 		if (bLocked && !Runtime->bExternalActionsLocked)
 		{
-			CancelNavigationForRuntime(*Runtime, true);
+
 			Runtime->PendingAttackShots.Reset();
 		}
 		Runtime->bExternalActionsLocked = bLocked;
@@ -813,7 +718,6 @@ bool UGuLiWingmanSimulationSubsystem::AdvanceRuntime(FGuLiWingmanLocalGroupRunti
 	{
 		return false;
 	}
-	TickNavigationRuntime(*Runtime, DeltaSeconds,NowSeconds);
 
 	TArray<AGuLiWingmanPawn*, TInlineAllocator<GULI_WINGMAN_GROUP_SIZE>> SortedPawns;
 	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime->Pawns)
@@ -829,19 +733,15 @@ bool UGuLiWingmanSimulationSubsystem::AdvanceRuntime(FGuLiWingmanLocalGroupRunti
 	{
 		return WingmanLess(Lhs, Rhs);
 	});
-	bool bBypassNavigation = false;
-#if WITH_DEV_AUTOMATION_TESTS
-	bBypassNavigation = bBypassNavigationRequirementForTests;
-#endif
 	for (AGuLiWingmanPawn* Pawn : SortedPawns)
 	{
 		Pawn->UpdateBehaviorObservation(DeltaSeconds);
         if (LogicalBehavior) Pawn->AdvanceLogicalBehavior(DeltaSeconds);
 		if (UGuLiWingmanFlightMovementComponent* Movement = Pawn->GetFlightMovement())
 		{
-			Movement->AdvanceFixedSteps(DeltaSeconds, bBypassNavigation);
+			Movement->AdvanceFixedSteps(DeltaSeconds);
 		}
-		Pawn->UpdateFlightTrail();
+		if (!Pawn->UsesHybridPresentation()) Pawn->UpdateFlightTrail();
 	}
 	return true;
 }
@@ -1244,384 +1144,6 @@ bool UGuLiWingmanSimulationSubsystem::TryBuildBasicFireIntent(
 		bClientPredictedLineOfSight, OutIntent);
 }
 
-void UGuLiWingmanSimulationSubsystem::ClearFlightNavigationGuidance(
-	FGuLiWingmanLocalGroupRuntime& Runtime,
-	const uint8 FlightIndex,
-	const bool bUsingSafeFallback)
-{
-	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime.Pawns)
-	{
-		AGuLiWingmanPawn* Pawn = Entry.Get();
-		if (!Pawn || Pawn->GetWingmanHandle().Flight.FlightIndex != FlightIndex)
-		{
-			continue;
-		}
-		FGuLiWingmanNavigationGuidanceState& Guidance =
-			Pawn->GetMutableRuntimeState().Navigation;
-		Guidance = FGuLiWingmanNavigationGuidanceState{};
-		Guidance.bUsingSafeFallback = bUsingSafeFallback;
-	}
-}
-
-void UGuLiWingmanSimulationSubsystem::PublishFlightNavigationGuidance(
-	FGuLiWingmanLocalGroupRuntime& Runtime,
-	const uint8 FlightIndex,
-	const FVector& Waypoint,
-	const FVector& PathGoal,
-	const uint32 RequestSerial,
-	const uint16 PathPointIndex)
-{
-	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime.Pawns)
-	{
-		AGuLiWingmanPawn* Pawn = Entry.Get();
-		if (!Pawn || Pawn->GetWingmanHandle().Flight.FlightIndex != FlightIndex)
-		{
-			continue;
-		}
-		FGuLiWingmanNavigationGuidanceState& Guidance =
-			Pawn->GetMutableRuntimeState().Navigation;
-		Guidance.Waypoint = Waypoint;
-		Guidance.PathGoal = PathGoal;
-		Guidance.AbilitySetRevision = Runtime.AbilityConfig.AbilitySetRevision;
-		Guidance.FormationCommandRevision =
-			Runtime.AbilityConfig.FormationCommandRevision;
-		Guidance.RequestSerial = RequestSerial;
-		Guidance.PathPointIndex = PathPointIndex;
-		Guidance.bHasPath = true;
-		Guidance.bUsingSafeFallback = false;
-	}
-}
-
-void UGuLiWingmanSimulationSubsystem::CancelNavigationForRuntime(
-	FGuLiWingmanLocalGroupRuntime& Runtime,
-	const bool bClearPawnGuidance)
-{
-	for (int32 FlightIndex = 0; FlightIndex < Runtime.FlightNavigation.Num(); ++FlightIndex)
-	{
-		TSharedPtr<FGuLiWingmanFlightNavigationRuntime>& State =
-			Runtime.FlightNavigation[FlightIndex];
-		if (!State.IsValid())
-		{
-			State = MakeShared<FGuLiWingmanFlightNavigationRuntime>();
-		}
-		if (State->bRequestPending && State->CancellationToken.IsValid()
-			&& !State->CancellationToken->IsCancelled())
-		{
-			State->CancellationToken->Cancel();
-			++NavigationPendingRequestsCancelled;
-		}
-		*State = FGuLiWingmanFlightNavigationRuntime{};
-		if (bClearPawnGuidance && FlightIndex < GULI_WINGMAN_FLIGHT_COUNT)
-		{
-			ClearFlightNavigationGuidance(
-				Runtime, static_cast<uint8>(FlightIndex), false);
-		}
-	}
-	Runtime.NavigationEvaluationAccumulator = 0.0f;
-}
-
-void UGuLiWingmanSimulationSubsystem::TickNavigationBehavior(
-	const FGuLiWingmanGroupHandle& Group,
-	const float DeltaSeconds)
-{
-    if (auto* Runtime=OwnedGroups.Find(Group)) TickNavigationRuntime(*Runtime,DeltaSeconds,GetWorld()->GetTimeSeconds());
-}
-void UGuLiWingmanSimulationSubsystem::TickNavigationRuntime(FGuLiWingmanLocalGroupRuntime& Value,float DeltaSeconds,double NowSeconds)
-{
-	if (const UWorld* World = GetWorld();
-		World && World->GetNetMode() == NM_DedicatedServer)
-	{
-		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_WINGMAN_PATHFINDING_EXECUTED"));
-	}
-    auto* Runtime=&Value;
-	if (!Runtime || !CanOwnSimulation()
-		|| !Runtime->AbilityConfig.IsUsableByLeaseOwner())
-	{
-		return;
-	}
-	Runtime->NavigationEvaluationAccumulator +=
-		FMath::Clamp(DeltaSeconds, 0.0f, 0.25f);
-	if (Runtime->NavigationEvaluationAccumulator < NavigationEvaluationPeriodSeconds)
-	{
-		return;
-	}
-	Runtime->NavigationEvaluationAccumulator = FMath::Fmod(
-		Runtime->NavigationEvaluationAccumulator, NavigationEvaluationPeriodSeconds);
-	if (Runtime->FlightNavigation.Num() != GULI_WINGMAN_FLIGHT_COUNT)
-	{
-		CancelNavigationForRuntime(*Runtime, true);
-		Runtime->FlightNavigation.Reset(GULI_WINGMAN_FLIGHT_COUNT);
-		for (uint8 Index = 0u; Index < GULI_WINGMAN_FLIGHT_COUNT; ++Index)
-		{
-			Runtime->FlightNavigation.Add(
-				MakeShared<FGuLiWingmanFlightNavigationRuntime>());
-		}
-	}
-
-	struct FFlightObservation
-	{
-		FVector PositionSum = FVector::ZeroVector;
-		FVector FormationGoalSum = FVector::ZeroVector;
-		float AgentRadiusCentimeters = 0.0f;
-		int32 AliveMemberCount = 0;
-		bool bNeedsNavigationPath = false;
-	};
-	FFlightObservation Observations[GULI_WINGMAN_FLIGHT_COUNT];
-	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime->Pawns)
-	{
-		const AGuLiWingmanPawn* Pawn = Entry.Get();
-		if (!Pawn)
-		{
-			continue;
-		}
-		const FGuLiWingmanRuntimeState& State = Pawn->GetRuntimeState();
-		const uint8 FlightIndex = State.Identity.Handle.Flight.FlightIndex;
-		if (FlightIndex >= GULI_WINGMAN_FLIGHT_COUNT || !State.Dynamics.bAlive)
-		{
-			continue;
-		}
-		FFlightObservation& Observation = Observations[FlightIndex];
-		FVector FormationOffset = FVector::ZeroVector;
-		if (State.Tuning.Formation.Model == EGuLiWingmanFormationModel::SwarmOrbit)
-		{
-			FormationOffset = GuLiWingmanSwarmFlow::BuildFlightRecoveryOffset(
-				State.Tuning.Formation, FlightIndex);
-		}
-		else
-		{
-			FormationOffset = FVector(
-				State.FormationSlot.RadiusCentimeters
-					* FMath::Cos(State.FormationSlot.PhaseRadians),
-				State.FormationSlot.RadiusCentimeters
-					* FMath::Sin(State.FormationSlot.PhaseRadians),
-				State.FormationSlot.HeightCentimeters);
-		}
-		Observation.PositionSum += Pawn->GetActorLocation();
-		Observation.FormationGoalSum +=
-			State.Carrier.Transform.GetLocation() + FormationOffset;
-		Observation.AgentRadiusCentimeters = FMath::Max(
-			Observation.AgentRadiusCentimeters,
-			State.Tuning.Formation.AgentRadiusCentimeters);
-		++Observation.AliveMemberCount;
-		Observation.bNeedsNavigationPath |=
-			State.Dynamics.Mode == EGuLiWingmanFlightMode::CatchUp
-			|| State.Dynamics.Mode == EGuLiWingmanFlightMode::Recover;
-	}
-
-	const UGuLiFlightNavigationSubsystem* Navigation = GetWorld()
-		? GetWorld()->GetSubsystem<UGuLiFlightNavigationSubsystem>() : nullptr;
-	bool bBypassNavigation = false;
-#if WITH_DEV_AUTOMATION_TESTS
-	bBypassNavigation = bBypassNavigationRequirementForTests;
-#endif
-	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
-	{
-		FFlightObservation& Observation = Observations[FlightIndex];
-		TSharedPtr<FGuLiWingmanFlightNavigationRuntime>& StatePtr =
-			Runtime->FlightNavigation[FlightIndex];
-		if (!StatePtr.IsValid())
-		{
-			StatePtr = MakeShared<FGuLiWingmanFlightNavigationRuntime>();
-		}
-		FGuLiWingmanFlightNavigationRuntime& State = *StatePtr;
-		if (Observation.AliveMemberCount == 0 || !Observation.bNeedsNavigationPath)
-		{
-			if (State.bRequestPending && State.CancellationToken.IsValid()
-				&& !State.CancellationToken->IsCancelled())
-			{
-				State.CancellationToken->Cancel();
-				++NavigationPendingRequestsCancelled;
-			}
-			State = FGuLiWingmanFlightNavigationRuntime{};
-			ClearFlightNavigationGuidance(*Runtime, FlightIndex, false);
-			continue;
-		}
-		const FVector Start = Observation.PositionSum
-			/ static_cast<float>(Observation.AliveMemberCount);
-		const FVector Goal = Observation.FormationGoalSum
-			/ static_cast<float>(Observation.AliveMemberCount);
-		if (Start.ContainsNaN() || Goal.ContainsNaN())
-		{
-			State.PathPoints.Reset();
-			State.NextPathPointIndex = INDEX_NONE;
-			State.bUsingSafeFallback = true;
-			State.NextRequestSeconds = NowSeconds + FailedPathRetrySeconds;
-			ClearFlightNavigationGuidance(*Runtime, FlightIndex, true);
-			continue;
-		}
-		if (bBypassNavigation)
-		{
-			if (++State.RequestSerial == 0u)
-			{
-				State.RequestSerial = 1u;
-			}
-			State.PathPoints = {Start, Goal};
-			State.ActivePathGoal = Goal;
-			State.NextPathPointIndex = 1;
-			PublishFlightNavigationGuidance(
-				*Runtime, FlightIndex, Goal, Goal, State.RequestSerial, 1u);
-			continue;
-		}
-
-		const float RepathDistance = FMath::Max(
-			MinimumGoalDriftForRepathCentimeters,
-			Observation.AgentRadiusCentimeters * 4.0f);
-		const float WaypointReachDistance = FMath::Max(
-			MinimumWaypointReachDistanceCentimeters,
-			Observation.AgentRadiusCentimeters * 2.0f);
-		if (State.bRequestPending
-			&& FVector::DistSquared(Goal, State.RequestedGoal)
-				> FMath::Square(RepathDistance)
-			&& NowSeconds >= State.NextRequestSeconds)
-		{
-			if (State.CancellationToken.IsValid()
-				&& !State.CancellationToken->IsCancelled())
-			{
-				State.CancellationToken->Cancel();
-				++NavigationPendingRequestsCancelled;
-			}
-			State.PendingResult.Reset();
-			State.CancellationToken.Reset();
-			State.bRequestPending = false;
-		}
-		if (State.bRequestPending && State.PendingResult.IsValid()
-			&& State.PendingResult->IsReady())
-		{
-			const uint32 CompletedSerial = State.PendingRequestSerial;
-			FGuLiFlightNavPathResult Result = State.PendingResult->Get();
-			State.PendingResult.Reset();
-			State.CancellationToken.Reset();
-			State.bRequestPending = false;
-			const bool bMatchingProjection = CompletedSerial != 0u
-				&& CompletedSerial == State.RequestSerial
-				&& State.RequestedAbilitySetRevision
-					== Runtime->AbilityConfig.AbilitySetRevision
-				&& State.RequestedFormationCommandRevision
-					== Runtime->AbilityConfig.FormationCommandRevision;
-			bool bFinitePath = Result.IsSuccess() && Result.Points.Num() >= 2;
-			for (const FVector& Point : Result.Points)
-			{
-				bFinitePath &= !Point.ContainsNaN();
-			}
-			if (bMatchingProjection && bFinitePath)
-			{
-				State.PathPoints = MoveTemp(Result.Points);
-				State.ActivePathGoal = State.RequestedGoal;
-				State.NextPathPointIndex = 1;
-				State.bUsingSafeFallback = false;
-				++NavigationResultsAccepted;
-			}
-			else
-			{
-				State.PathPoints.Reset();
-				State.NextPathPointIndex = INDEX_NONE;
-				State.bUsingSafeFallback = true;
-				State.NextRequestSeconds = NowSeconds + FailedPathRetrySeconds;
-				++NavigationSafeFallbackResults;
-				ClearFlightNavigationGuidance(*Runtime, FlightIndex, true);
-			}
-		}
-		if (State.PathPoints.IsValidIndex(State.NextPathPointIndex))
-		{
-			while (State.NextPathPointIndex + 1 < State.PathPoints.Num()
-				&& FVector::DistSquared(Start,
-					State.PathPoints[State.NextPathPointIndex])
-					<= FMath::Square(WaypointReachDistance))
-			{
-				++State.NextPathPointIndex;
-			}
-			PublishFlightNavigationGuidance(*Runtime, FlightIndex,
-				State.PathPoints[State.NextPathPointIndex], State.ActivePathGoal,
-				State.RequestSerial, static_cast<uint16>(
-					FMath::Min(State.NextPathPointIndex, 65535)));
-		}
-		else if (!State.bRequestPending)
-		{
-			ClearFlightNavigationGuidance(
-				*Runtime, FlightIndex, State.bUsingSafeFallback);
-		}
-		const bool bHasActivePath =
-			State.PathPoints.IsValidIndex(State.NextPathPointIndex);
-		const bool bGoalDrifted = bHasActivePath
-			&& FVector::DistSquared(Goal, State.ActivePathGoal)
-				> FMath::Square(RepathDistance);
-		if (State.bRequestPending || NowSeconds < State.NextRequestSeconds
-			|| (bHasActivePath && !bGoalDrifted))
-		{
-			continue;
-		}
-		if (!Navigation)
-		{
-			State.bUsingSafeFallback = true;
-			State.NextRequestSeconds = NowSeconds + FailedPathRetrySeconds;
-			ClearFlightNavigationGuidance(*Runtime, FlightIndex, true);
-			continue;
-		}
-		uint32 NextSerial = State.RequestSerial + 1u;
-		if (NextSerial == 0u)
-		{
-			NextSerial = 1u;
-		}
-		State.RequestSerial = NextSerial;
-		State.PendingRequestSerial = NextSerial;
-		State.RequestedStart = Start;
-		State.RequestedGoal = Goal;
-		State.RequestedAbilitySetRevision = Runtime->AbilityConfig.AbilitySetRevision;
-		State.RequestedFormationCommandRevision =
-			Runtime->AbilityConfig.FormationCommandRevision;
-		State.CancellationToken =
-			MakeShared<FGuLiFlightNavCancellationToken, ESPMode::ThreadSafe>();
-		FGuLiFlightNavPathQueryOptions Options;
-		Options.AgentRadius = FMath::Max(0.0f, Observation.AgentRadiusCentimeters);
-		Options.MaximumExpandedNodes = MaximumNavigationExpandedNodes;
-		Options.bSmoothPath = true;
-		TFuture<FGuLiFlightNavPathResult> Future = Navigation->FindPathAsync(
-			Start, Goal, Options, State.CancellationToken);
-		State.PendingResult =
-			MakeShared<TFuture<FGuLiFlightNavPathResult>>(MoveTemp(Future));
-		State.bRequestPending = true;
-		State.bUsingSafeFallback = false;
-		State.NextRequestSeconds = NowSeconds + MinimumRepathIntervalSeconds;
-		++NavigationAsyncRequestsIssued;
-	}
-}
-
-bool UGuLiWingmanSimulationSubsystem::GetNavigationDiagnostics(
-	const FGuLiWingmanGroupHandle& Group,
-	FGuLiWingmanNavigationDiagnostics& OutDiagnostics) const
-{
-	OutDiagnostics = FGuLiWingmanNavigationDiagnostics{};
-	OutDiagnostics.AsyncRequestsIssued = NavigationAsyncRequestsIssued;
-	OutDiagnostics.ResultsAccepted = NavigationResultsAccepted;
-	OutDiagnostics.SafeFallbackResults = NavigationSafeFallbackResults;
-	OutDiagnostics.PendingRequestsCancelled = NavigationPendingRequestsCancelled;
-	const FGuLiWingmanLocalGroupRuntime* Runtime = OwnedGroups.Find(Group);
-	if (!Runtime)
-	{
-		return false;
-	}
-	for (const TSharedPtr<FGuLiWingmanFlightNavigationRuntime>& State :
-		Runtime->FlightNavigation)
-	{
-		if (!State.IsValid())
-		{
-			continue;
-		}
-		OutDiagnostics.PendingFlightRequests += State->bRequestPending ? 1 : 0;
-		OutDiagnostics.ActiveFlightPaths +=
-			State->PathPoints.IsValidIndex(State->NextPathPointIndex) ? 1 : 0;
-	}
-	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime->Pawns)
-	{
-		const AGuLiWingmanPawn* Pawn = Entry.Get();
-		if (Pawn && Pawn->GetRuntimeState().Navigation.bHasPath)
-		{
-			++OutDiagnostics.NavigationGuidedEntities;
-		}
-	}
-	return true;
-}
-
 bool UGuLiWingmanSimulationSubsystem::GetAvoidanceDiagnostics(
 	const FGuLiWingmanGroupHandle& Group,
 	FGuLiWingmanAvoidanceDiagnostics& OutDiagnostics) const
@@ -1650,8 +1172,6 @@ bool UGuLiWingmanSimulationSubsystem::GetAvoidanceDiagnostics(
 			State.bControlledRecovery ? 1 : 0;
 		OutDiagnostics.VerifiedRecoveryPointEntities +=
 			State.bHasVerifiedSafePoint ? 1 : 0;
-		OutDiagnostics.FlightNavBoundaryThreatEntities +=
-			State.bDetectedFlightNavBoundary ? 1 : 0;
 		OutDiagnostics.WorldStaticThreatEntities +=
 			State.bDetectedWorldStatic ? 1 : 0;
 		OutDiagnostics.WorldDynamicThreatEntities +=
@@ -1811,70 +1331,4 @@ void UGuLiWingmanSimulationSubsystem::SetMemberBehaviorStateTreeForTests(UStateT
 	bAllowBehaviorAssetBypassForTests = StateTree == nullptr;
 }
 
-bool UGuLiWingmanSimulationSubsystem::PrimeFlightNavigationStateForTests(
-	const FGuLiWingmanGroupHandle& Group,
-	const uint8 FlightIndex,
-	const TArray<FVector>& PathPoints,
-	const bool bPendingRequest)
-{
-	FGuLiWingmanLocalGroupRuntime* Runtime = OwnedGroups.Find(Group);
-	if (!Runtime || FlightIndex >= GULI_WINGMAN_FLIGHT_COUNT
-		|| !Runtime->FlightNavigation.IsValidIndex(FlightIndex)
-		|| (!PathPoints.IsEmpty() && PathPoints.Num() < 2))
-	{
-		return false;
-	}
-	for (const FVector& Point : PathPoints)
-	{
-		if (Point.ContainsNaN())
-		{
-			return false;
-		}
-	}
-	TSharedPtr<FGuLiWingmanFlightNavigationRuntime>& StatePtr =
-		Runtime->FlightNavigation[FlightIndex];
-	if (!StatePtr.IsValid())
-	{
-		StatePtr = MakeShared<FGuLiWingmanFlightNavigationRuntime>();
-	}
-	FGuLiWingmanFlightNavigationRuntime& State = *StatePtr;
-	if (State.bRequestPending && State.CancellationToken.IsValid()
-		&& !State.CancellationToken->IsCancelled())
-	{
-		State.CancellationToken->Cancel();
-		++NavigationPendingRequestsCancelled;
-	}
-	uint32 NextSerial = State.RequestSerial + 1u;
-	if (NextSerial == 0u)
-	{
-		NextSerial = 1u;
-	}
-	State = FGuLiWingmanFlightNavigationRuntime{};
-	State.RequestSerial = NextSerial;
-	State.PendingRequestSerial = bPendingRequest ? NextSerial : 0u;
-	State.RequestedAbilitySetRevision = Runtime->AbilityConfig.AbilitySetRevision;
-	State.RequestedFormationCommandRevision =
-		Runtime->AbilityConfig.FormationCommandRevision;
-	State.PathPoints = PathPoints;
-	if (!PathPoints.IsEmpty())
-	{
-		State.RequestedStart = PathPoints[0];
-		State.RequestedGoal = PathPoints.Last();
-		State.ActivePathGoal = PathPoints.Last();
-		State.NextPathPointIndex = 1;
-		PublishFlightNavigationGuidance(*Runtime, FlightIndex,
-			PathPoints[1], PathPoints.Last(), State.RequestSerial, 1u);
-	}
-	else
-	{
-		ClearFlightNavigationGuidance(*Runtime, FlightIndex, false);
-	}
-	if (bPendingRequest)
-	{
-		State.CancellationToken =
-			MakeShared<FGuLiFlightNavCancellationToken, ESPMode::ThreadSafe>();
-		State.bRequestPending = true;
-	}
-	return true;
-}
 #endif

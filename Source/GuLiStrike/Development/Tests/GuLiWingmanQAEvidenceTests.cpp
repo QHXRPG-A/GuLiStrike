@@ -17,8 +17,8 @@ bool FGuLiWingmanQASchemaAllowlistTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
 	TestTrue(TEXT("All seven stream names are stable"),
-		FString(FGuLiWingmanQASchema::StreamName(EGuLiWingmanQALogStream::FlightNav))
-			== TEXT("LogGuLiFlightNav")
+		FString(FGuLiWingmanQASchema::StreamName(EGuLiWingmanQALogStream::FlightControl))
+			== TEXT("LogGuLiWingmanFlight")
 		&& FString(FGuLiWingmanQASchema::StreamName(EGuLiWingmanQALogStream::Wingman))
 			== TEXT("LogGuLiWingman")
 		&& FString(FGuLiWingmanQASchema::StreamName(EGuLiWingmanQALogStream::WingmanAI))

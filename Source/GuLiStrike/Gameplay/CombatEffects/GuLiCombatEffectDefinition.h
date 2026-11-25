@@ -176,6 +176,8 @@ class GULISTRIKE_API UGuLiCombatEffectSettings : public UObject
 	GENERATED_BODY()
 public:
 	UPROPERTY(Config, EditAnywhere, Category="Combat Effects") TSoftObjectPtr<UGuLiCombatEffectCatalog> Catalog;
+	/** Impact fields whose authored variants and layers must be ready before combat begins. */
+	UPROPERTY(Config, EditAnywhere, Category="Combat Effects") TArray<TSoftObjectPtr<UGuLiSpellFieldDefinition>> StartupExplosionFields;
 	UPROPERTY(Config, EditAnywhere, Category="Projectile Pool", meta=(ClampMin="1")) int32 ProjectilePoolInitialCapacity = 1024;
 	UPROPERTY(Config, EditAnywhere, Category="Projectile Pool", meta=(ClampMin="1")) int32 ProjectilePoolGrowthSize = 1024;
 	UPROPERTY(Config, EditAnywhere, Category="Client Flight Pool", meta=(ClampMin="1")) int32 ClientFlightPoolInitialCapacity = 512;

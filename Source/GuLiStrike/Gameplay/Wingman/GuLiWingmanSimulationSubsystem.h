@@ -5,27 +5,16 @@
 #include "CoreMinimal.h"
 #include "Battle/Contracts/GuLiWingmanProtocolTypes.h"
 #include "Subsystems/WorldSubsystem.h"
+#include "Network/GuLiHybridObjectKey.h"
 #include "GuLiWingmanSimulationSubsystem.generated.h"
 
 class AGuLiWingmanPawn;
+class AGuLiStrikeShip;
 class AActor;
 class UStateTree;
 class UStaticMesh;
 struct FGuLiWingmanAcceptedBatch;
 struct FGuLiWingmanRosterEntry;
-struct FGuLiWingmanFlightNavigationRuntime;
-
-struct GULISTRIKE_API FGuLiWingmanNavigationDiagnostics
-{
-	int32 PendingFlightRequests = 0;
-	int32 ActiveFlightPaths = 0;
-	int32 NavigationGuidedEntities = 0;
-	uint64 AsyncRequestsIssued = 0u;
-	uint64 ResultsAccepted = 0u;
-	uint64 SafeFallbackResults = 0u;
-	uint64 PendingRequestsCancelled = 0u;
-};
-
 struct GULISTRIKE_API FGuLiWingmanAvoidanceDiagnostics
 {
 	int32 EvaluatedEntities = 0;
@@ -33,7 +22,6 @@ struct GULISTRIKE_API FGuLiWingmanAvoidanceDiagnostics
 	int32 SafeHeadingEntities = 0;
 	int32 ControlledRecoveryEntities = 0;
 	int32 VerifiedRecoveryPointEntities = 0;
-	int32 FlightNavBoundaryThreatEntities = 0;
 	int32 WorldStaticThreatEntities = 0;
 	int32 WorldDynamicThreatEntities = 0;
 	uint64 HeadingProbes = 0u;
@@ -62,9 +50,7 @@ struct FGuLiWingmanLocalGroupRuntime
 	bool bCombatAuthorizationValid = true;
 	bool bExternalActionsLocked = false;
 	TArray<TWeakObjectPtr<AGuLiWingmanPawn>> Pawns;
-	TArray<TSharedPtr<FGuLiWingmanFlightNavigationRuntime>> FlightNavigation;
 	TWeakObjectPtr<AActor> CarrierActor;
-	float NavigationEvaluationAccumulator = 0.0f;
 	TArray<TPair<uint8, FGuLiWingmanAttackFireRecord>> PendingAttackShots;
 	uint32 LastAttackTick = 0u;
     /** Private owner state. Each member captures only its own assignment and accepted shots. */
@@ -141,17 +127,25 @@ public:
     bool ApplyIndependentExternalControl(FGuLiWingmanLocalGroupRuntime& Runtime,bool Phased,bool Locked,const FTransform* Destination);
     void TickIndependentAttackRuns(FGuLiWingmanLocalGroupRuntime& Runtime,const FGuLiWingmanAttackAuthorityState& State,
         uint32 OwnerVersion,uint32 SimulationTick,double LogicalSeconds,bool Active);
+#if WITH_EDITOR
+    static constexpr const TCHAR* EditorRangeParticipants = TEXT("editor/wingman_range/participants");
+#endif
     void AdvanceHybridAttack(FGuLiWingmanLocalGroupRuntime& Runtime,uint32 OwnerVersion,
         uint64 LogicalTick,double LogicalSeconds);
     void ReleaseIndependentMember(FGuLiWingmanLocalGroupRuntime& Runtime);
     bool CaptureIndependentMember(const FGuLiWingmanLocalGroupRuntime& Runtime,TArray<uint8>& Bytes) const;
     bool ValidateIndependentMember(TConstArrayView<uint8> Bytes,const FGuLiWingmanHandle& Member) const;
-    bool RestoreIndependentMember(FGuLiWingmanLocalGroupRuntime& Runtime,TConstArrayView<uint8> Bytes,bool ReissueNavigation=true);
+    bool RestoreIndependentMember(FGuLiWingmanLocalGroupRuntime& Runtime,TConstArrayView<uint8> Bytes);
 	void SetGroupExternalControlState(const FGuLiWingmanGroupHandle& Group, bool bPhased, bool bLocked);
-	/** Uses the existing escort layout and FlightNav point validation, with no source-to-target path test. */
+	/** Find ship-exterior slots with sufficient terrain clearance. */
+	UFUNCTION(BlueprintCallable, Category="Wingman|Formation", meta=(WorldContext="WorldContextObject"))
+	static bool GetClearFormationPositions(UObject* WorldContextObject, const FTransform& Carrier,
+		const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions);
+
 	static bool PlanExternalFormationPositions(UWorld* World, const FTransform& Carrier,
 		const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions,
 		TConstArrayView<int32> LivingSlots = {},FString* Failure=nullptr);
+    TConstArrayView<TWeakObjectPtr<AGuLiStrikeShip>> GetFlightObstacleShips(bool bRefresh);
 	AGuLiWingmanPawn* FindOwnedPawn(const FGuLiWingmanHandle& Wingman) const;
 	int32 GetOwnedPawnCount(const FGuLiWingmanGroupHandle& Group) const;
 	int32 GetTotalOwnedPawnCount() const;
@@ -192,9 +186,6 @@ public:
 	bool GetCompletedSimulationTick(const FGuLiWingmanGroupHandle& Group,
 		uint32& OutTick) const;
 
-	void TickNavigationBehavior(const FGuLiWingmanGroupHandle& Group, float DeltaSeconds);
-	bool GetNavigationDiagnostics(const FGuLiWingmanGroupHandle& Group,
-		FGuLiWingmanNavigationDiagnostics& OutDiagnostics) const;
 	bool GetAvoidanceDiagnostics(const FGuLiWingmanGroupHandle& Group,
 		FGuLiWingmanAvoidanceDiagnostics& OutDiagnostics) const;
 	bool GetMotionDiagnostics(FGuLiWingmanMotionDiagnostics& OutDiagnostics) const;
@@ -215,20 +206,13 @@ public:
 	}
 
 #if WITH_DEV_AUTOMATION_TESTS
-	void SetNavigationRequirementBypassForTests(bool bBypass)
-	{
-		bBypassNavigationRequirementForTests = bBypass;
-	}
 	void SetMemberBehaviorStateTreeForTests(UStateTree* StateTree);
-	bool PrimeFlightNavigationStateForTests(const FGuLiWingmanGroupHandle& Group,
-		uint8 FlightIndex, const TArray<FVector>& PathPoints, bool bPendingRequest);
 	bool PrimeGroundDiveForTests(const FGuLiWingmanGroupHandle& Group,
 		const FGuLiWingmanHandle& Wingman, double StartTime);
 #endif
 
 private:
     bool AdvanceRuntime(FGuLiWingmanLocalGroupRuntime& Runtime,float DeltaSeconds,double NowSeconds,bool LogicalBehavior);
-    void TickNavigationRuntime(FGuLiWingmanLocalGroupRuntime& Runtime,float DeltaSeconds,double NowSeconds);
     void TickAttackRuntime(FGuLiWingmanLocalGroupRuntime& Runtime,const FGuLiWingmanAttackAuthorityState& State,
         uint32 LeaseEpoch,uint32 ClientTick,double Now,bool Active);
 	bool CanOwnSimulation() const;
@@ -240,25 +224,22 @@ private:
 		AActor* CarrierActor);
 	AGuLiWingmanPawn* FindOwnedPawn(const FGuLiWingmanLocalGroupRuntime& Runtime,
 		const FGuLiWingmanHandle& Wingman) const;
-	void CancelNavigationForRuntime(FGuLiWingmanLocalGroupRuntime& Runtime,
-		bool bClearPawnGuidance);
-	void ClearFlightNavigationGuidance(FGuLiWingmanLocalGroupRuntime& Runtime,
-		uint8 FlightIndex, bool bUsingSafeFallback);
-	void PublishFlightNavigationGuidance(FGuLiWingmanLocalGroupRuntime& Runtime,
-		uint8 FlightIndex, const FVector& Waypoint, const FVector& PathGoal,
-		uint32 RequestSerial, uint16 PathPointIndex);
 	UStateTree* ResolveMemberBehaviorStateTree() const;
 	UStaticMesh* ResolveWingmanMesh() const;
 
+#if WITH_EDITOR
+    void ReadEditorRange(const struct FGuLiHybridManifestData& Manifest);
+    bool bReadEditorRange = false;
+    TSet<FGuid> EditorRangeCarriers;
+    TArray<FGuLiHybridObjectKey> EditorRangeTargets;
+#endif
+    void RenderHybridMembers(UWorld* World, ELevelTick TickType, float DeltaSeconds);
+    FDelegateHandle HybridPresentationTick;
+    uint64 FlightObstacleFrame = MAX_uint64;
+    TArray<TWeakObjectPtr<AGuLiStrikeShip>> FlightObstacleShips;
 	TMap<FGuLiWingmanGroupHandle, FGuLiWingmanLocalGroupRuntime> OwnedGroups;
     TMap<FGuLiWingmanHandle,TWeakObjectPtr<AGuLiWingmanPawn>> IndependentPawns;
     TMap<FGuLiWingmanHandle,TWeakPtr<FGuLiWingmanLocalGroupRuntime>> IndependentRuntimes;
-	TSet<FGuLiWingmanGroupHandle> InitialFormationNavigationFailuresLogged;
-	uint64 NavigationAsyncRequestsIssued = 0u;
-	uint64 NavigationResultsAccepted = 0u;
-	uint64 NavigationSafeFallbackResults = 0u;
-	uint64 NavigationPendingRequestsCancelled = 0u;
-
 	UPROPERTY(Config, EditAnywhere, Category="Wingman|Behavior")
 	TSoftObjectPtr<UStateTree> MemberBehaviorStateTree;
 
@@ -267,7 +248,6 @@ private:
 	UPROPERTY(Config, EditAnywhere, Category="Models") int32 DefaultModelId = 6001;
 
 #if WITH_DEV_AUTOMATION_TESTS
-	bool bBypassNavigationRequirementForTests = false;
 	bool bAllowBehaviorAssetBypassForTests = false;
 #endif
 };

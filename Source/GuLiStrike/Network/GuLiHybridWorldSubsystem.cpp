@@ -720,6 +720,22 @@ AActor* UGuLiHybridWorldSubsystem::FindBoundActor(const FGuLiHybridObjectKey& Ke
 uint64 UGuLiHybridWorldSubsystem::GetActorBindingRevision() const {return State->ActorBindingRevision;}
 bool UGuLiHybridWorldSubsystem::ResolveTarget(const FGuLiTargetHandle& Target,FGuLiHybridObjectKey& Out) const
 { const auto* K=State->Targets.Find(Target); if (!K) return false; Out=*K; return true; }
+uint32 UGuLiHybridWorldSubsystem::FindLatestObjectGeneration(const FGuLiHybridObjectKey& Stable, uint8& LifeState) const
+{
+    LifeState = 0;
+    if (!State->Client) return 0;
+    auto Last = ToCore(Stable);
+    Last.Generation = MAX_uint32;
+    // The applied object directory orders keys by (kind, stable id, generation).
+    const auto& Directory = State->Client->Objects();
+    auto It = Directory.upper_bound(Last);
+    if (It == Directory.begin()) return 0;
+    --It;
+    if (It->first.Kind != Last.Kind || It->first.StableId != Last.StableId) return 0;
+    LifeState = static_cast<uint8>(It->second.Grant.State);
+    return It->first.Generation;
+}
+
 uint32 UGuLiHybridWorldSubsystem::GetLatestRetiredLife(const FGuLiHybridObjectKey& Stable) const
 {
     const auto Key=ToCore(Stable);

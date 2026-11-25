@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
 #include "Commander/UI/GuLiSceneUITypes.h"
+#include "Gameplay/CombatEffects/GuLiUnitVitalHistory.h"
 #include "GuLiGroundSceneUIState.generated.h"
 
 class APlayerController;
@@ -38,17 +39,7 @@ namespace GuLiGroundSceneUI
     GULISTRIKE_API bool IsView(const APlayerController* Controller);
     GULISTRIKE_API bool IsDisplayKind(EGuLiHybridObjectKind Kind);
     GULISTRIKE_API float DistanceOpacity(double Distance,float Start,float End);
-    GULISTRIKE_API float EventOpacity(double Now,double LastChange,float Hold,float Fade);
 
-    /** Previous values are display-only. A life/team/visibility transition seeds a new baseline. */
-    struct GULISTRIKE_API FVitalHistory
-    {
-        FGuLiCombatHealthState Health;
-        EGuLiTeam Team=EGuLiTeam::Unassigned;
-        double LastChange=-1;
-        bool bInitialized=false;
-        bool Observe(const FGuLiCombatHealthState& Next,EGuLiTeam NextTeam,bool bEligible,double Now);
-    };
 }
 
 /** One local view's read model, never a gameplay writer or a second damage detector. */
@@ -68,7 +59,7 @@ public:
 private:
     struct FEntry
     {
-        GuLiGroundSceneUI::FVitalHistory Vitals;
+        FGuLiUnitVitalHistory Vitals;
         uint32 Ordinal=0;
         uint64 Element=0;
         FVector Location=FVector::ZeroVector;

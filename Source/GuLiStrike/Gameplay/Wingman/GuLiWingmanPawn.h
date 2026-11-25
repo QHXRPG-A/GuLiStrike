@@ -7,6 +7,7 @@
 #include "GameFramework/Pawn.h"
 #include "Gameplay/Wingman/Behavior/GuLiWingmanMemberBehavior.h"
 #include "Gameplay/Wingman/GuLiWingmanRuntimeTypes.h"
+#include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationPolicy.h"
 #include "GuLiWingmanPawn.generated.h"
 
 class UGuLiWingmanFlightMovementComponent;
@@ -63,6 +64,9 @@ public:
 		bool bInteractable, bool bAuthorityRebase);
     /** Applies a received query pose without advancing behavior or publishing it. */
     void ApplyHybridQueryPose(const FTransform& Transform,const FVector& Velocity);
+    void SampleHybridPresentation(uint64 LogicalTick, bool bLocal);
+    void ResetHybridPresentation();
+    bool UsesHybridPresentation() const { return bRenderHybridPoses; }
     const FGuLiWingmanHybridActivity& GetHybridActivity() const { return HybridActivity; }
     void ObserveHybridSimulation(uint64 Tick)
     { if (HybridActivity.SimulationSamples && Tick-HybridActivity.LastSimulationTick!=2) ++HybridActivity.CadenceErrors;
@@ -86,6 +90,7 @@ public:
 	void ApplyOwnerPresentationTransform(const FTransform& Transform);
 	/** Model/nozzle space for local effects, never a collision or attack-authority input. */
 	FTransform GetPresentationTransform() const;
+	const UStaticMeshComponent* GetBodyMesh() const { return VisualMesh; }
 	/** Called after movement by the existing owner/remote presentation update. */
 	void UpdateFlightTrail(float Opacity = 1.0f, bool bResetTrail = false);
 
@@ -125,6 +130,13 @@ private:
 	/** Reused with the Pawn pool; never replicated or allocated on a dedicated server. */
 	UPROPERTY(Transient)
 	TObjectPtr<UNiagaraComponent> FlightTrail;
+
+    void RenderHybridPresentation(double WorldSeconds, double DeltaSeconds);
+    TArray<FGuLiWingmanPresentationPose> HybridPoseSamples;
+    double HybridPlaybackSeconds = 0;
+    bool bRenderHybridPoses = false;
+    bool bLocalPoseSource = false;
+    bool bRefreshHybridTrail = false;
 
 	FVector LastFlightTrailLocation = FVector::ZeroVector;
 	bool bHasFlightTrailLocation = false;

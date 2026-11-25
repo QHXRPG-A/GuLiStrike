@@ -29,7 +29,6 @@ struct FGuLiNavigationBakeResult
 	UPROPERTY(BlueprintReadOnly) TArray<FGuLiNavigationBakeEntry> Entries;
 	UPROPERTY(BlueprintReadOnly) FGuLiNavigationConnectivityResult GroundConnectivity;
 	UPROPERTY(BlueprintReadOnly) int32 GroundRebuilds = 0;
-	UPROPERTY(BlueprintReadOnly) int32 FlightRebuilds = 0;
 	UPROPERTY(BlueprintReadOnly) double SaveSeconds = 0;
 	UPROPERTY(BlueprintReadOnly) double TotalSeconds = 0;
 };

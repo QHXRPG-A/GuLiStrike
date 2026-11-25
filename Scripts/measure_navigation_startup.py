@@ -60,7 +60,7 @@ def summarize(lines):
     for line in result["navigation_preparation_logs"]:
         if "result=Ready" in line:
             for field, key in (("total_s", "prepare_seconds"), ("save_s", "save_seconds"),
-                               ("ground_rebuilds", "ground_rebuilds"), ("flight_rebuilds", "flight_rebuilds")):
+                               ("ground_rebuilds", "ground_rebuilds")):
                 match = re.search(rf"\b{field}=([\d.]+)", line)
                 if match:
                     result[key] = float(match[1]) if field.endswith("_s") else int(match[1])

@@ -26,14 +26,11 @@ def prepare_scene_dependencies(world, actors):
     require(navigation.success,'Save navigation for authored collision: '+str(navigation.message))
     # Read the saved dependent assets as well as the map before reporting ready.
     assets=[require(unreal.load_asset('/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap'),'Resource definition')]
-    for a in unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors():
-        if isinstance(a,unreal.GuLiFlightNavigationVolume):
-            assets.append(require(a.get_editor_property('navigation_data'),'Flight navigation data'))
     reloaded,error=unreal.EditorLoadingAndSavingUtils.reload_packages(
         [a.get_outer() for a in assets],unreal.ReloadPackagesInteractionMode.ASSUME_NEGATIVE)
     require(reloaded and not str(error),'Reload saved scene dependencies: '+str(error))
     return {'resource':str(resource.message),'ground_rebuilds':navigation.ground_rebuilds,
-            'flight_rebuilds':navigation.flight_rebuilds,'saved_assets_reloaded':True}
+            'saved_assets_reloaded':True}
 
 def main():
     level=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)

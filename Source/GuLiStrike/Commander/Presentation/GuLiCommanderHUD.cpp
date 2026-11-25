@@ -18,7 +18,6 @@
 #include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
 #include "Commander/Presentation/GuLiCommanderMiniMapTransform.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
-#include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Commander/UI/GuLiSceneUIWidget.h"
 #include "Gameplay/Presentation/GuLiLocalTeamColors.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
@@ -288,7 +287,6 @@ void AGuLiCommanderHUD::RefreshCommanderRole()
 	}
 	else
 	{
-		// RemoveFromParent 会触发 Widget 清理定时器与委托；离开指挥角色时同步释放血条 Actor。
 		DestroyRuntimeHUD();
 	}
 }
@@ -317,10 +315,6 @@ void AGuLiCommanderHUD::CreateRuntimeHUD()
 		}
 	}
 
-	if (!HealthBarRenderer)
-	{
-		HealthBarRenderer = AGuLiCommanderHealthBarRenderer::FindOrSpawn(GetWorld(), CommanderController);
-	}
 }
 
 void AGuLiCommanderHUD::DestroyRuntimeHUD()
@@ -329,11 +323,6 @@ void AGuLiCommanderHUD::DestroyRuntimeHUD()
 	{
 		RuntimeHUDWidget->RemoveFromParent();
 		RuntimeHUDWidget = nullptr;
-	}
-	if (HealthBarRenderer)
-	{
-		// The world-owned batch also serves Ship/ground views; only drop this HUD's reference.
-		HealthBarRenderer = nullptr;
 	}
 }
 
@@ -392,7 +381,6 @@ void AGuLiCommanderHUD::SetRogueCardHidden(bool bShouldHide)
 	bRogueCardHidden=bShouldHide;
     if(GroundHUDWidget)GroundHUDWidget->SetRogueHidden(bShouldHide);
 	if (RuntimeHUDWidget) RuntimeHUDWidget->SetVisibility(bShouldHide?ESlateVisibility::Collapsed:ESlateVisibility::SelfHitTestInvisible);
-	if (HealthBarRenderer) HealthBarRenderer->SetActorHiddenInGame(bShouldHide);
 }
 
 void AGuLiCommanderHUD::DrawPerformanceStats()

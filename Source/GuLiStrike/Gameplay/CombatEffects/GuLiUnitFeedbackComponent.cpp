@@ -26,10 +26,11 @@ void UGuLiUnitFeedbackComponent::BeginPlay()
 	if (HealthComponent.IsValid())
 	{
 		const auto& State = HealthComponent->GetHealthState();
-		bHasHealthBaseline = State.IsWellFormed();
-		PreviousHealth = State.Health;
+		ObservedTarget = HealthComponent->GetTargetHandle();
+		Vitals.Observe(State, HealthComponent->GetCombatTeam(), ObservedTarget.IsValid() && HealthComponent->IsAlive(),
+			GetWorld()->GetTimeSeconds());
 		// A late-joining client must not replay an already dead Actor's explosion.
-		bDestructionPlayed = bHasHealthBaseline && State.bDead;
+		bDestructionPlayed = State.IsWellFormed() && State.bDead;
 		if (bDestructionPlayed) HideLivingMeshes();
 		HealthComponent->OnHealthChanged.AddDynamic(this, &ThisClass::HandleHealth);
 		HealthComponent->OnDeath.AddDynamic(this, &ThisClass::HandleDeath);
@@ -38,8 +39,25 @@ void UGuLiUnitFeedbackComponent::BeginPlay()
 
 void UGuLiUnitFeedbackComponent::HandleHealth(float Health, float Maximum)
 {
-	if (bHasHealthBaseline && Health < PreviousHealth)
-		if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>()) Feedback->FlashActor(GetOwner());
+	if (!HealthComponent.IsValid()) return;
+	const auto& State = HealthComponent->GetHealthState();
+	const auto& Target = HealthComponent->GetTargetHandle();
+	const bool bNewTarget = ObservedTarget != Target;
+	if (bNewTarget) Vitals = {};
+	ObservedTarget = Target;
+	const bool bHadBaseline = Vitals.Health.IsWellFormed();
+	const float PreviousHealth = Vitals.Health.Health;
+	const bool bChanged = Vitals.Observe(State, HealthComponent->GetCombatTeam(),
+		Target.IsValid() && HealthComponent->IsAlive(), GetWorld()->GetTimeSeconds());
+	if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
+	{
+		if (bChanged)
+		{
+			Feedback->RecordActorVitalChange(GetOwner(), Vitals);
+			if (Health < PreviousHealth) Feedback->FlashActor(GetOwner());
+		}
+		else if (Vitals.LastChange < 0) Feedback->RemoveActorHealthBar(GetOwner());
+	}
 	if (Health > 0)
 	{
 		bDestructionPlayed = false;
@@ -48,8 +66,7 @@ void UGuLiUnitFeedbackComponent::HandleHealth(float Health, float Maximum)
 		if (Wreck.IsValid()) Wreck->Destroy();
 		Wreck.Reset();
 	}
-	else if (!bHasHealthBaseline) { bDestructionPlayed = true; HideLivingMeshes(); }
-	PreviousHealth = Health; bHasHealthBaseline = true;
+	else if (!bHadBaseline && !bDestructionPlayed) { bDestructionPlayed = true; HideLivingMeshes(); }
 }
 
 void UGuLiUnitFeedbackComponent::HandleDeath()
@@ -106,7 +123,8 @@ void UGuLiUnitFeedbackComponent::EndPlay(const EEndPlayReason::Type Reason)
 	{
 		Owner->OnDestroyed.RemoveDynamic(this, &ThisClass::HandleDestroyed);
 		Owner->OnTakeAnyDamage.RemoveDynamic(this, &ThisClass::HandleAnyDamage);
-		if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>()) Feedback->ClearActorFlash(Owner);
+		if (UWorld* World = GetWorld())
+			if (auto* Feedback = World->GetSubsystem<UGuLiUnitFeedbackSubsystem>()) Feedback->ClearActorFlash(Owner);
 	}
 	if (HealthComponent.IsValid())
 	{

@@ -9,7 +9,7 @@
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
-#include "GuLiFlightNavigationSubsystem.h"
+#include "Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h"
 #include "GuLiStrike.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
@@ -43,43 +43,11 @@ namespace GuLiWingmanQAFixture
 		}
 	}
 
-	bool IsFormationNavigable(
-		const UGuLiFlightNavigationSubsystem& Navigation,
-		const FTransform& CarrierTransform)
-	{
-		const FGuLiWingmanFormationRuntimeConfig Formation;
-		const FVector CarrierLocation = CarrierTransform.GetLocation();
-		if (Navigation.ValidateAuthoritativeSegment(
-			CarrierLocation, CarrierLocation, Formation.AgentRadiusCentimeters)
-			!= EGuLiFlightNavSegmentStatus::Valid)
-		{
-			return false;
-		}
-
-		for (int32 MemberIndex = 0; MemberIndex < GULI_WINGMAN_GROUP_SIZE; ++MemberIndex)
-		{
-			const int32 InnerRingSlots = static_cast<int32>(Formation.InnerRingSlots);
-			const bool bInnerRing = MemberIndex < InnerRingSlots;
-			const int32 RingIndex = bInnerRing ? MemberIndex : MemberIndex - InnerRingSlots;
-			const int32 RingCount = bInnerRing
-				? InnerRingSlots : static_cast<int32>(Formation.OuterRingSlots);
-			const float Radius = bInnerRing
-				? Formation.InnerRingRadiusCentimeters : Formation.OuterRingRadiusCentimeters;
-			const float Height = bInnerRing
-				? Formation.InnerRingHeightCentimeters : Formation.OuterRingHeightCentimeters;
-			const float Phase = static_cast<float>(RingIndex) * UE_TWO_PI
-				/ static_cast<float>(RingCount);
-			const FVector Position = CarrierTransform.TransformPositionNoScale(FVector(
-				Radius * FMath::Cos(Phase), Radius * FMath::Sin(Phase), Height));
-			if (Navigation.ValidateEndpointsInSameComponent(
-				CarrierLocation, Position, Formation.AgentRadiusCentimeters)
-				!= EGuLiFlightNavSegmentStatus::Valid)
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+    bool IsFormationNavigable(UWorld* World,const FTransform& Carrier)
+    {
+        TArray<FVector> Positions;
+        return UGuLiWingmanSimulationSubsystem::PlanExternalFormationPositions(World,Carrier,FGuLiWingmanFormationRuntimeConfig{},Positions);
+    }
 }
 
 AGuLiWingmanQAGameMode::AGuLiWingmanQAGameMode()
@@ -106,8 +74,7 @@ void AGuLiWingmanQAGameMode::BeginPlay()
 #if !UE_BUILD_SHIPPING
 	if (FParse::Param(FCommandLine::Get(), TEXT("GuLiWingmanQA")))
 	{
-		// FlightNav volumes finish registration during actor BeginPlay. The next tick
-		// still precedes a localhost login, while exposing the immutable runtime graph.
+		// Resolve the start positions after the world collision components register.
 		GetWorldTimerManager().SetTimerForNextTick(
 			this, &AGuLiWingmanQAGameMode::CreateDeterministicPlayerStarts);
 	}
@@ -179,7 +146,7 @@ void AGuLiWingmanQAGameMode::CreateDeterministicPlayerStarts()
 	if (!SelectNavigableAirStarts(SlotTransforms))
 	{
 		UE_LOG(LogGuLiWingmanQA, Error,
-			TEXT("Wingman QA could not select four complete-formation FlightNav starts."));
+			TEXT("Wingman QA could not select four complete-formation clear starts."));
 	}
 
 	QAPlayerStarts.SetNum(GuLiWingmanQAFixture::RoleSlotCount);
@@ -203,10 +170,8 @@ void AGuLiWingmanQAGameMode::CreateDeterministicPlayerStarts()
 bool AGuLiWingmanQAGameMode::SelectNavigableAirStarts(
 	TArray<FTransform>& InOutSlotTransforms) const
 {
-	const UWorld* World = GetWorld();
-	const UGuLiFlightNavigationSubsystem* Navigation = World
-		? World->GetSubsystem<UGuLiFlightNavigationSubsystem>() : nullptr;
-	if (!Navigation || InOutSlotTransforms.Num() != GuLiWingmanQAFixture::RoleSlotCount)
+	UWorld* World = GetWorld();
+	if (!World || InOutSlotTransforms.Num() != GuLiWingmanQAFixture::RoleSlotCount)
 	{
 		return false;
 	}
@@ -256,7 +221,7 @@ bool AGuLiWingmanQAGameMode::SelectNavigableAirStarts(
 
 					const FTransform CandidateTransform(
 						FRotator(0.0f, Desired.YawDegrees, 0.0f), Candidate);
-					if (!GuLiWingmanQAFixture::IsFormationNavigable(*Navigation, CandidateTransform))
+					if (!GuLiWingmanQAFixture::IsFormationNavigable(World, CandidateTransform))
 					{
 						continue;
 					}
@@ -277,7 +242,7 @@ bool AGuLiWingmanQAGameMode::SelectNavigableAirStarts(
 		InOutSlotTransforms[Desired.SlotIndex] = BestTransform;
 		SelectedLocations.Add(BestTransform.GetLocation());
 		UE_LOG(LogGuLiWingmanQA, Display,
-			TEXT("Wingman QA FlightNav start selected: slot=%u location=%s yaw=%.1f"),
+			TEXT("Wingman QA clear start selected: slot=%u location=%s yaw=%.1f"),
 			Desired.SlotIndex, *BestTransform.GetLocation().ToCompactString(), Desired.YawDegrees);
 	}
 	return true;

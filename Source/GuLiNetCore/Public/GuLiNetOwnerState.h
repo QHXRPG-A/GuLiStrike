@@ -147,6 +147,7 @@ private:
     Revision MatchEpoch=1;
     ObjectKey DecisionDomain;
     const OwnerState* StageSource=nullptr;
+    bool ProtectRangeShipHulls=false;
     bool ReuseResourceValidationSnapshot=false;
     std::string FailureReason;
     SharedCatalog<Id,Member> Players;

@@ -33,20 +33,6 @@ float GuLiGroundSceneUI::DistanceOpacity(double Distance,float Start,float End)
     if(!FMath::IsFinite(Distance)||!FMath::IsFinite(Start)||!FMath::IsFinite(End)||End<=Start)return 0;
     return float(FMath::Clamp((End-FMath::Max(0.,Distance))/double(End-Start),0.,1.));
 }
-float GuLiGroundSceneUI::EventOpacity(double Now,double LastChange,float Hold,float Fade)
-{
-    if(LastChange<0||Now<LastChange||!FMath::IsFinite(Now)||!FMath::IsFinite(LastChange))return 0;
-    return float(FMath::Clamp(1.-FMath::Max(0.,Now-LastChange-FMath::Max(0.f,Hold))/FMath::Max(.0001f,Fade),0.,1.));
-}
-bool GuLiGroundSceneUI::FVitalHistory::Observe(const FGuLiCombatHealthState& Next,EGuLiTeam NextTeam,bool Eligible,double Now)
-{
-    const bool Changed=Eligible && bInitialized && Team==NextTeam
-        && (Health.Health!=Next.Health||Health.MaxHealth!=Next.MaxHealth||Health.Shield!=Next.Shield||Health.MaxShield!=Next.MaxShield);
-    if(!Eligible||Team!=NextTeam)LastChange=-1;
-    Health=Next;Team=NextTeam;bInitialized=Eligible;
-    if(Changed)LastChange=Now;
-    return Changed;
-}
 UWorld* UGuLiGroundSceneUIState::GetWorld() const {return Controller.IsValid()?Controller->GetWorld():nullptr;}
 float UGuLiGroundSceneUIState::DistanceOpacity(double Distance)
 {
@@ -131,7 +117,7 @@ void UGuLiGroundSceneUIState::Update(const FSceneViewProjectionData& Projection,
     for(auto& Pair:Entries)
     {
         const auto& Key=Pair.Key;auto& E=Pair.Value;
-        const float Event=GuLiGroundSceneUI::EventOpacity(Now,E.Vitals.LastChange,Timing->HealthBarHoldSeconds,Timing->HealthBarFadeSeconds);
+        const float Event=Timing->HealthBarOpacity(Now,E.Vitals.LastChange);
         if(Event>0)++ActiveEvents;
         UInstancedStaticMeshComponent* Instances=nullptr;int32 InstanceIndex=INDEX_NONE;
         AActor* Actor=nullptr;FBox Bounds(ForceInit);
@@ -157,12 +143,12 @@ void UGuLiGroundSceneUIState::Update(const FSceneViewProjectionData& Projection,
         }
         if(Event>0)
         {
-            auto& Bar=Bars.AddDefaulted_GetRef();Bar.Key={this,E.Element,Key.LifeGeneration};Bar.Target=Key;Bar.Team=E.Vitals.Team;
+            auto& Bar=Bars.AddDefaulted_GetRef();Bar.Key={this,E.Element,Key.LifeGeneration};Bar.Target=Key;
             Bar.Center=Bounds.GetCenter();Bar.Center.Z=Bounds.Max.Z+4;
             Bar.Fraction=FMath::Clamp(E.Vitals.Health.Health/E.Vitals.Health.MaxHealth,0.f,1.f);
             Bar.bHasShield=E.Vitals.Health.MaxShield>0;
             Bar.ShieldFraction=Bar.bHasShield?FMath::Clamp(E.Vitals.Health.Shield/E.Vitals.Health.MaxShield,0.f,1.f):0;
-            Bar.Opacity=Event;Bar.bEventOverride=true;++VisibleBars;
+            Bar.Opacity=Event;++VisibleBars;
         }
     }
     OutlinePool->End();

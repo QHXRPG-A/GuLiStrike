@@ -16,8 +16,7 @@ def main():
     allowed={'/Game/Maps/LVL_CommanderMassPrototype',
              '/Game/GuLiStrike/Data/Resources/DA_CommanderResourceMap',
              '/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy',
-             '/Game/GuLiStrike/Editor/MapAuthoring/Types/DA_Outpost',
-             '/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype'}
+             '/Game/GuLiStrike/Editor/MapAuthoring/Types/DA_Outpost'}
     dirty=list(unreal.EditorLoadingAndSavingUtils.get_dirty_map_packages())+list(unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages())
     packages=[p for p in dirty if p.get_path_name() in allowed]
     unrelated=[p.get_path_name() for p in dirty if p.get_path_name() not in allowed]

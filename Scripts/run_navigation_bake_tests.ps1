@@ -5,7 +5,7 @@ $ReportRoot = Join-Path $ProjectRoot "TestResults\NavigationBake-20260915\$Repor
 $LogPath = "$ReportRoot.log"
 & 'D:\UnrealEngine-5.7\Engine\Binaries\Win64\UnrealEditor-Cmd.exe' (Join-Path $ProjectRoot 'GuLiStrike.uproject') /Engine/Maps/Entry `
     -Unattended -NullRHI -NoSound -NoSplash -NoLiveCoding -DisablePlugins=Fab `
-    '-ExecCmds=Automation RunTests GuLi.NavigationBake+GuLi.FlightNavigation.Editor' '-TestExit=Automation Test Queue Empty' `
+    '-ExecCmds=Automation RunTests GuLi.NavigationBake' '-TestExit=Automation Test Queue Empty' `
     "-ReportExportPath=$ReportRoot" "-abslog=$LogPath"
 if ($LASTEXITCODE -ne 0) { throw "Navigation automation exited with $LASTEXITCODE; inspect $LogPath" }
 $Report = Get-Content -LiteralPath (Join-Path $ReportRoot 'index.json') -Raw | ConvertFrom-Json

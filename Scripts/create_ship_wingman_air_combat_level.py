@@ -36,8 +36,12 @@ REPORT_PATH = os.path.join(
 
 START_TAG = "GuLi.ShipWingmanAirCombat.PlayerStart.v1"
 CENTER_TAG = "GuLi.ShipWingmanAirCombat.Center.v1"
-FLIGHT_NAV_MARKER = "GuLiFlightNavigation.Managed.v1"
-FLIGHT_NAV_MAP_TAG = "GuLiFlightNavigation.Map.LVL_ShipWingmanAirCombatPrototype"
+RIDGE_MARKERS = (
+    ("Approach", 10_000, 95_000),
+    ("Crest", -10_000, 75_000),
+    ("Rejoin", -25_000, 60_000),
+)
+RIDGE_MARKER_CLEARANCE_CM = 2_500
 
 # The inherited Commander armies are centered near (-100 m, 1275 m) and
 # (1100 m, 375 m).  Keep all Ship starts inside the same verified south-east
@@ -236,40 +240,39 @@ def _configure_center(actor_subsystem: Any) -> dict[str, Any]:
     }
 
 
-def _retarget_flight_navigation(actor_subsystem: Any) -> dict[str, Any]:
-    volume_class = unreal.load_class(
-        None,
-        "/Script/GuLiFlightNavigationRuntime.GuLiFlightNavigationVolume",
-    )
-    if volume_class is None:
-        raise AuthoringError("GuLiFlightNavigationVolume class is unavailable")
-    volumes = [
-        actor
-        for actor in actor_subsystem.get_all_level_actors()
-        if actor.get_class().get_path_name() == volume_class.get_path_name()
-    ]
-    if len(volumes) != 1:
-        raise AuthoringError(
-            f"Expected exactly one inherited FlightNav volume, found {len(volumes)}"
+def _configure_ridge_course(world: Any, actor_subsystem: Any) -> list[dict[str, Any]]:
+    actors = actor_subsystem.get_all_level_actors()
+    ignore = [actor for actor in actors if not isinstance(actor, unreal.LandscapeProxy)]
+    records = []
+    for name, x, y in RIDGE_MARKERS:
+        tag = f"GuLi.WingmanFlight.Ridge.{name}"
+        hit = unreal.SystemLibrary.line_trace_single_for_objects(
+            world, unreal.Vector(x, y, 180_000), unreal.Vector(x, y, -180_000),
+            [unreal.ObjectTypeQuery.OBJECT_TYPE_QUERY1], False, ignore, unreal.DrawDebugTrace.NONE,
         )
-    volume = volumes[0]
-    volume.modify()
-    volume.set_actor_label("FlightNav_LVL_ShipWingmanAirCombatPrototype", False)
-    volume.set_folder_path(unreal.Name("GuLiStrike/Navigation"))
-    tags = {
-        value
-        for value in _actor_tags(volume)
-        if not value.startswith("GuLiFlightNavigation.Map.")
-    }
-    tags.update((FLIGHT_NAV_MARKER, FLIGHT_NAV_MAP_TAG))
-    _write_tags(volume, tags)
-    data = volume.get_editor_property("navigation_data")
-    return {
-        "label": str(volume.get_actor_label()),
-        "path": str(volume.get_path_name()),
-        "inherited_navigation_data": str(data.get_path_name()) if data else None,
-        "tags": sorted(tags),
-    }
+        if not hit:
+            raise AuthoringError(f"No Landscape surface under ridge marker {name}")
+        ground_z = float(hit.to_tuple()[5].z)
+        point = unreal.Vector(x, y, ground_z + RIDGE_MARKER_CLEARANCE_CM)
+        rotation = unreal.Rotator(0, 0, -135)
+        existing = [actor for actor in actors if tag in _actor_tags(actor)]
+        if len(existing) > 1 or (existing and not isinstance(existing[0], unreal.TargetPoint)):
+            raise AuthoringError(f"Ambiguous ridge marker {tag}")
+        marker = existing[0] if existing else actor_subsystem.spawn_actor_from_class(
+            unreal.TargetPoint, point, rotation
+        )
+        if marker is None:
+            raise AuthoringError(f"Could not create ridge marker {tag}")
+        marker.modify()
+        marker.set_actor_label(f"Wingman_Ridge_{name}", False)
+        marker.set_folder_path(unreal.Name("Gameplay/AirCombat/WingmanRidge"))
+        marker.set_editor_property("is_editor_only_actor", True)
+        marker.set_actor_location(point, False, False)
+        marker.set_actor_rotation(rotation, False)
+        _set_managed_tag(marker, tag)
+        records.append(dict(label=marker.get_actor_label(), ground_z_cm=ground_z,
+                            location=_vector(marker.get_actor_location())))
+    return records
 
 
 def main() -> dict[str, Any]:
@@ -298,7 +301,7 @@ def main() -> dict[str, Any]:
 
         report["player_starts"] = _configure_player_starts(actor_subsystem)
         report["combat_center"] = _configure_center(actor_subsystem)
-        report["flight_navigation"] = _retarget_flight_navigation(actor_subsystem)
+        report["ridge_course"] = _configure_ridge_course(world, actor_subsystem)
 
         if not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).save_current_level():
             raise AuthoringError("Saving the configured target level failed")

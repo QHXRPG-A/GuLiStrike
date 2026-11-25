@@ -48,6 +48,14 @@ struct GULISTRIKE_API FGuLiWingmanFormationSlotState
 	float PhaseRadians = 0.0f;
 	float AngularSpeedRadiansPerSecond = 0.16f;
 	bool bClockwise = true;
+
+	float SignedAngularSpeed() const { return bClockwise ? -AngularSpeedRadiansPerSecond : AngularSpeedRadiansPerSecond; }
+	FVector Offset() const
+	{
+		float Sin, Cos;
+		FMath::SinCos(&Sin, &Cos, PhaseRadians);
+		return FVector(RadiusCentimeters * Cos, RadiusCentimeters * Sin, HeightCentimeters);
+	}
 };
 
 struct GULISTRIKE_API FGuLiWingmanSwarmAgentState
@@ -73,45 +81,37 @@ struct GULISTRIKE_API FGuLiWingmanGuidanceState
 	bool bAttackGuidance = false;
 };
 
-struct GULISTRIKE_API FGuLiWingmanNavigationGuidanceState
-{
-	FVector Waypoint = FVector::ZeroVector;
-	FVector PathGoal = FVector::ZeroVector;
-	uint32 AbilitySetRevision = 0u;
-	uint32 FormationCommandRevision = 0u;
-	uint32 RequestSerial = 0u;
-	uint16 PathPointIndex = 0u;
-	bool bHasPath = false;
-	bool bUsingSafeFallback = false;
-};
-
 struct GULISTRIKE_API FGuLiWingmanAvoidanceState
 {
 	FVector SafeDirection = FVector::ForwardVector;
-	FVector NextStepSafeDirection = FVector::ForwardVector;
 	FVector LastVerifiedSafePoint = FVector::ZeroVector;
-	FVector RecoveryEscapeDirection = FVector::ForwardVector;
 	float ConsecutiveBlockedSeconds = 0.0f;
-	float ConsecutiveClearSeconds = 0.0f;
-	float RecoveryPointValidationAccumulator = 0.0f;
-	float NavigationSpeedLimitCentimetersPerSecond = 0.0f;
-	float NoProgressSeconds = 0.0f;
-	float NormalProgressSeconds = 0.0f;
-	uint32 VerifiedWaypointRequestSerial = 0u;
-	uint16 VerifiedWaypointPathPointIndex = 0u;
 	uint16 HeadingProbeCount = 0u;
 	bool bHasSafeDirection = false;
 	bool bHasNextStepSafeDirection = false;
-	bool bHasNavigationSpeedLimit = false;
 	bool bHasVerifiedSafePoint = false;
-	bool bHasRecoveryEscapeDirection = false;
-	bool bRecoveryPointCurrentlyValid = false;
 	bool bControlledRecovery = false;
 	bool bAwaitingRebase = false;
 	bool bRebaseRequested = false;
 	bool bDetectedWorldStatic = false;
 	bool bDetectedWorldDynamic = false;
-	bool bDetectedFlightNavBoundary = false;
+};
+
+enum class EGuLiWingmanSteer : uint8 { Track, Climb, Left, Right, Trail, Escape };
+
+struct FGuLiWingmanFlightPlan
+{
+    EGuLiWingmanSteer Mode = EGuLiWingmanSteer::Track;
+    FVector Direction = FVector::ForwardVector;
+    FVector LastNominal = FVector::ZeroVector;
+    FVector ContactNormal = FVector::UpVector;
+    float Speed = 0;
+    float SenseAfter = 0;
+    float Hold = 0;
+    float SafeSeconds = 0;
+    uint8 ClearVotes = 0;
+    uint32 TaskRevision = 0;
+    TArray<FVector> CarrierTrail;
 };
 
 struct GULISTRIKE_API FGuLiWingmanFlightDynamicsState
@@ -214,9 +214,9 @@ struct GULISTRIKE_API FGuLiWingmanRuntimeState
 	FGuLiWingmanFormationSlotState FormationSlot;
 	FGuLiWingmanSwarmAgentState SwarmAgent;
 	FGuLiWingmanGuidanceState Guidance;
-	FGuLiWingmanNavigationGuidanceState Navigation;
 	FGuLiWingmanAvoidanceState Avoidance;
 	FGuLiWingmanFlightDynamicsState Dynamics;
+	FGuLiWingmanFlightPlan FlightPlan;
 	FGuLiWingmanAttackRunState Attack;
 	FGuLiWingmanWeaponState Weapon;
 };

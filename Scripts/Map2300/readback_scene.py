@@ -93,7 +93,7 @@ def main():
         assert abs(x-(c-5)*20000)<1 and abs(y-(5-r)*20000)<1
     nav=[]
     for actor in actors:
-        if actor.get_class().get_name() in ('NavMeshBoundsVolume','GuLiFlightNavigationVolume','RecastNavMesh'):
+        if actor.get_class().get_name() in ('NavMeshBoundsVolume','RecastNavMesh'):
             origin,extent=actor.get_actor_bounds(False)
             item={'path':actor.get_path_name(),'class':actor.get_class().get_name(),'origin':value(origin),'extent':value(extent)}
             names=('AgentRadius','AgentHeight','AgentMaxSlope','RuntimeGeneration','TileSizeUU','NavMeshResolutionParams',
@@ -101,11 +101,6 @@ def main():
             for name in names:
                 try: item[name]=value(actor.get_editor_property(name))
                 except Exception: pass
-            if isinstance(actor,unreal.GuLiFlightNavigationVolume):
-                assert abs(extent.x-167300)<1 and abs(extent.y-167300)<1
-                data=actor.get_editor_property('navigation_data')
-                item['navigation_data']=data.get_path_name()
-                item['graph_counts']={key:len(data.get_editor_property(key)) for key in ('nodes','cells','portals','links')}
             if isinstance(actor,unreal.NavMeshBoundsVolume):
                 assert abs(extent.x-90000)<1 and abs(extent.y-90000)<1
             nav.append(item)

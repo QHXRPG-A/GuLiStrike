@@ -508,6 +508,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
+| [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
+| [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
+| [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
+| [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
+| [战场爆炸预载与僚机首次命中帧时间](../Archive/20261125-战场爆炸预载与首次命中帧时间.md) | archive | recorded | 2026-11-25 |
 | [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
 | [游骑兵范围与持续增伤](../RequirementDocument/20261123-游骑兵范围与持续增伤.md) | requirement | approved | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
@@ -692,8 +699,6 @@
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | development | in_progress | 2026-10-21 |
 | [近期性能优化整合归档（10月18–21日）](../Archive/20261021-近期性能优化整合归档.md) | archive | recorded | 2026-10-21 |
-| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
 | [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-10-16 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
@@ -853,6 +858,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
+| [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
+| [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
+| [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
+| [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
@@ -984,8 +996,6 @@
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | development | in_progress | 2026-10-21 |
 | [近期性能优化整合归档（10月18–21日）](../Archive/20261021-近期性能优化整合归档.md) | archive | recorded | 2026-10-21 |
-| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
 | [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-10-16 |
 | [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-10-16 |
@@ -996,7 +1006,6 @@
 | [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-10-16 |
 | [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-10-16 |
 | [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-10-16 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
 | [Mass避障简化与转向提速](../RequirementDocument/20261011-Mass避障简化与转向提速.md) | requirement | approved | 2026-10-11 |
 | [Mass避障简化与转向提速 — 技术方案](../DevelopmentDocumentation/20261011-Mass避障简化与转向提速.md) | development | verification | 2026-10-11 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-10-11 |
@@ -1504,6 +1513,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | verification | 2026-11-25 |
+| [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
+| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-24 |
+| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-24 |
+| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-24 |
 | [游骑兵按键定向闪现与惯性拖拽动画](../RequirementDocument/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | requirement | approved | 2026-11-08 |
 | [游骑兵跑步与闪现动画](../RequirementDocument/20261104-游骑兵跑步与闪现动画.md) | requirement | approved | 2026-11-08 |
 | [游骑兵全向提速与腿甲明暗](../RequirementDocument/20261104-游骑兵全向提速与腿甲明暗.md) | requirement | approved | 2026-11-08 |
@@ -1656,6 +1670,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
+| [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-25 |
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | verification | 2026-11-25 |
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
+| [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
+| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-24 |
+| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-24 |
+| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-24 |
 | [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
 | [游骑兵范围与持续增伤](../RequirementDocument/20261123-游骑兵范围与持续增伤.md) | requirement | approved | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
@@ -1676,7 +1699,6 @@
 | [游骑兵肉鸽卡牌与武器解耦](../Archive/20261123-游骑兵肉鸽卡牌与武器解耦.md) | archive | recorded | 2026-11-23 |
 | [肉鸽牌等级 GM 命令](../Archive/20261123-肉鸽牌等级GM命令.md) | archive | recorded | 2026-11-23 |
 | [游骑兵多目标锁定与电磁弹道接入](../Archive/20261122-游骑兵分裂枪管与电磁技术.md) | archive | recorded | 2026-11-23 |
-| [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-16 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
 | [指挥官掉线后无双接管Mass失败实测](../Archive/20261116-指挥官掉线Mass接管失败实测.md) | archive | recorded | 2026-11-16 |
@@ -1821,8 +1843,6 @@
 | [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | development | in_progress | 2026-10-21 |
 | [近期性能优化整合归档（10月18–21日）](../Archive/20261021-近期性能优化整合归档.md) | archive | recorded | 2026-10-21 |
-| [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-10-18 |
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-10-18 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
 | [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-10-16 |
 | [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-10-16 |
@@ -1834,7 +1854,6 @@
 | [02 所有权与 RPC](../DevelopmentDocumentation/相关读物/UE网络教材/02-所有权与RPC.md) | reference | reference | 2026-10-16 |
 | [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-10-16 |
 | [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-10-16 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
 | [遗留发射路径清理与地图保存阻塞恢复](../Archive/20261010-遗留发射路径清理与地图保存阻塞恢复.md) | archive | recorded | 2026-10-10 |
@@ -1980,6 +1999,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
+| [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
+| [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
+| [战场爆炸预载与僚机首次命中帧时间](../Archive/20261125-战场爆炸预载与首次命中帧时间.md) | archive | recorded | 2026-11-25 |
+| [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
 | [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
 | [游骑兵电磁弧高频开火性能优化](../Archive/20261123-游骑兵电磁弧性能优化.md) | archive | recorded | 2026-11-23 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
@@ -2460,6 +2484,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | verification | 2026-11-25 |
+| [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
+| [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
+| [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
+| [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
+| [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
+| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-24 |
+| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-24 |
+| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-24 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [巡天命名统一](../Archive/20261103-巡天命名统一.md) | archive | recorded | 2026-11-03 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
@@ -2470,7 +2504,6 @@
 | [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-10-16 |
 | [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-10-16 |
 | [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-10-16 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | development | in_progress | 2026-10-10 |
 | [遗留发射路径清理与地图保存阻塞恢复](../Archive/20261010-遗留发射路径清理与地图保存阻塞恢复.md) | archive | recorded | 2026-10-10 |
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
@@ -2588,6 +2621,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
+| [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-25 |
+| [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
+| [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
+| [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
+| [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
 | [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
 | [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | development | done | 2026-11-23 |
@@ -2632,7 +2671,6 @@
 | [四张游骑兵肉鸽牌正式入库与评审交付](../Archive/20261117-四张游骑兵肉鸽牌正式入库与评审交付.md) | archive | recorded | 2026-11-17 |
 | [游骑兵肉鸽牌制作与会话结项](../Archive/20261117-游骑兵肉鸽牌制作与会话结项.md) | archive | recorded | 2026-11-17 |
 | [无人生还与爆破套餐会话收尾](../Archive/20261117-无人生还与爆破套餐会话收尾.md) | archive | recorded | 2026-11-17 |
-| [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-16 |
 | [固定阵营分工最小联机测试](../Archive/20261116-固定阵营分工最小联机测试.md) | archive | recorded | 2026-11-16 |
 | [固定阵营分工与简化接管授权编译](../Archive/20261115-固定阵营分工与简化接管授权编译.md) | archive | recorded | 2026-11-15 |
 | [固定阵营分工与简化接管静态交付](../Archive/20261115-固定阵营分工与简化接管静态交付.md) | archive | recorded | 2026-11-15 |
@@ -2728,7 +2766,6 @@
 | [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-10-16 |
 | [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-10-16 |
 | [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-10-16 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
 | [PIE性能基线与快照多线程优化 — 技术方案](../DevelopmentDocumentation/20261010-PIE性能基线与快照多线程优化.md) | development | verification | 2026-10-11 |
 | [PIE性能基线与快照多线程优化](../RequirementDocument/20261010-PIE性能基线与快照多线程优化.md) | requirement | approved | 2026-10-10 |
 | [客户端视野裁剪与特效三档LOD优化](../RequirementDocument/20261009-客户端视野裁剪与特效三档LOD优化.md) | requirement | approved | 2026-10-10 |
@@ -2851,6 +2888,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战场爆炸预载与僚机首次命中帧时间](../Archive/20261125-战场爆炸预载与首次命中帧时间.md) | archive | recorded | 2026-11-25 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
@@ -3005,9 +3043,19 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | verification | 2026-11-25 |
+| [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
+| [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
+| [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
+| [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
+| [战场爆炸预载与僚机首次命中帧时间](../Archive/20261125-战场爆炸预载与首次命中帧时间.md) | archive | recorded | 2026-11-25 |
+| [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
+| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-24 |
+| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-24 |
+| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-24 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-10-12 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
 | [车辆CharacterMovement与飞船僚机移动开销拆分](../Archive/20261010-车辆CharacterMovement与飞船僚机移动开销拆分.md) | archive | recorded | 2026-10-10 |

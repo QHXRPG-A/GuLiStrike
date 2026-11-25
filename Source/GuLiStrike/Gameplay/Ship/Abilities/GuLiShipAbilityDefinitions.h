@@ -17,6 +17,12 @@ class GULISTRIKE_API UGuLiWingmanFormationDefinition : public UDataAsset
 public:
 	UGuLiWingmanFormationDefinition();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Flight", meta=(RowType="/Script/GuLiStrike.GuLiStrikeShipWingmanFlightRow"))
+	FDataTableRowHandle FlightProfileRow;
+
+	UFUNCTION(BlueprintPure, Category="Flight")
+	FGuLiWingmanFormationRuntimeConfig GetResolvedFlightConfig() const;
+
 	UPROPERTY(EditAnywhere, Category = "Formation", meta = (ClampMin = "1"))
 	uint32 Revision = 4u;
 
@@ -66,11 +72,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
 	float CruiseFlightSpeedCentimetersPerSecond = 1800.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float CatchUpFlightSpeedCentimetersPerSecond = 3000.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "0.1", ClampMax = "180.0"))
-	float MaximumTurnRateDegreesPerSecond = 80.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
 	float MaximumAccelerationCentimetersPerSecondSquared = 800.0f;
@@ -87,8 +89,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Avoidance", meta = (ClampMin = "1.0"))
 	float SeparationRadiusCentimeters = 600.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Avoidance", meta = (ClampMin = "1.0"))
-	float ObstacleLookAheadCentimeters = 1000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Recovery", meta = (ClampMin = "1.0"))
 	float CatchUpDistanceCentimeters = 24000.0f;

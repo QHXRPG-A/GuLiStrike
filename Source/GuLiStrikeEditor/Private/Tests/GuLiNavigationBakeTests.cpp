@@ -15,9 +15,6 @@
 #include "Gameplay/Building/GuLiBuildingSpawner.h"
 #include "Gameplay/Building/GuLiGroundAccessRampComponent.h"
 #include "Gameplay/Resources/GuLiResourceActors.h"
-#include "GuLiFlightNavigationData.h"
-#include "GuLiFlightNavigationQuery.h"
-#include "GuLiFlightNavigationVolume.h"
 #include "GuLiNavigationBakeLibrary.h"
 #include "GuLiNavigationSourceHash.h"
 #include "LandscapeHeightfieldCollisionComponent.h"
@@ -246,49 +243,6 @@ bool FGuLiNavigationSourceHashTest::RunTest(const FString& Parameters)
 	Layers[1] = 2;
 	Terrain->DominantLayerData.Unlock();
 	TestNotEqual(TEXT("Changing a sample to a visibility hole invalidates navigation"), TerrainHash(), PaintedTerrain);
-	return true;
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiAutomaticFlightBakeTest,
-	"GuLi.NavigationBake.AutomaticFlightRebakeAndReachability", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-
-bool FGuLiAutomaticFlightBakeTest::RunTest(const FString& Parameters)
-{
-	using namespace GuLiNavigationBakeTests;
-	FWorldFixture Fixture; Fixture.Initialize();
-	AGuLiFlightNavigationVolume* Volume = Fixture.World->SpawnActor<AGuLiFlightNavigationVolume>();
-	UCubeBuilder* Builder = NewObject<UCubeBuilder>(); Builder->X = Builder->Y = Builder->Z = 4000;
-	UActorFactory::CreateBrushForVolumeActor(Volume, Builder);
-	Volume->NavigationData = NewObject<UGuLiFlightNavigationData>(Volume);
-	Volume->AuthoringBakeSettings.MinimumCellSize = 250;
-	Volume->AuthoringBakeSettings.AgentRadius = 25;
-	Volume->AuthoringBakeSettings.MaximumDepth = 5;
-	Fixture.World->UpdateWorldComponents(true, false);
-	const auto Path = [&]()
-	{
-		FGuLiFlightNavigationQuery Query(Volume->NavigationData->CreateRuntimeGraph());
-		return Query.ValidateEndpointsInSameComponent(FVector(-1000, 0, 0), FVector(1000, 0, 0), 25)
-			== EGuLiFlightNavSegmentStatus::Valid;
-	};
-	auto Result = UGuLiNavigationBakeLibrary::PrepareWorldNavigation(Fixture.World, false);
-	if (!TestTrue(*Result.Message, Result.bSuccess)) return false;
-	TestEqual(TEXT("Empty flight payload automatically bakes once"), Result.FlightRebuilds, 1);
-	TestTrue(TEXT("Initial open flight volume connects endpoints"), Path());
-	Result = UGuLiNavigationBakeLibrary::PrepareWorldNavigation(Fixture.World, false);
-	TestTrue(TEXT("Unchanged flight graph is reused"), Result.bSuccess && Result.FlightRebuilds == 0);
-	UStaticMeshComponent* Wall = Fixture.Floor(TEXT("FlightWall"), FVector::ZeroVector, FVector(200, 2500, 2500));
-	Wall->SetMobility(EComponentMobility::Static);
-	TestFalse(TEXT("Map obstacle makes previous flight graph stale"),
-		UGuLiNavigationBakeLibrary::ValidateWorldNavigation(Fixture.World).bSuccess);
-	Result = UGuLiNavigationBakeLibrary::PrepareWorldNavigation(Fixture.World, false);
-	TestTrue(TEXT("Changed map automatically rebakes flight navigation"), Result.bSuccess && Result.FlightRebuilds == 1);
-	TestFalse(TEXT("Rebaked solid wall disconnects flight endpoints"), Path());
-	Fixture.World->DestroyActor(Wall->GetOwner());
-	Result = UGuLiNavigationBakeLibrary::PrepareWorldNavigation(Fixture.World, false);
-	TestTrue(TEXT("Removing static obstacle automatically restores flight reachability"), Result.bSuccess && Path());
-	Volume->NavigationData->Metadata.ContentChecksum ^= 1;
-	TestFalse(TEXT("Corrupt flight graph fails even with an unchanged source"),
-		UGuLiNavigationBakeLibrary::ValidateWorldNavigation(Fixture.World).bSuccess);
 	return true;
 }
 

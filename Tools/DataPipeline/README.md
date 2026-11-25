@@ -1,5 +1,11 @@
 # GuLiStrike Excel 数据维护
 
+## 僚机飞行性能
+
+在 `data/Excel/GuLiStrikeShip.xlsx` 的 `WingmanFlight` 表编辑 `DefaultWingman`。三个字段分别是最大速度（m/s）、最大转向率（°/s）和机体表面安全余量（m）。默认值为 48、120、10。编队在构造运行配置时将米换算成厘米，攻击动作速度应在编队许可的速度范围内。
+
+运行 `python Tools/DataPipeline/export_data_from_excel.py`，再通过项目编辑器执行 `Scripts/import_data_to_engine.py`。只导入本表时使用 `GULI_TABLE_FILTER = ["DT_GuLiStrikeShip_WingmanFlight"]`。导入报告列出每个编队实际解析的数值。修改正式性能后重新导出并校验 200 和 600 两档 Hybrid 清单。
+
 ## 肉鸽卡牌美术资源
 
 `data/Excel/GuLiStrikeCardArtwork.xlsx`集中管理牌面、三种材质模板、六层参数与贴图绑定。

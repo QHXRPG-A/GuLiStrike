@@ -76,31 +76,12 @@ def main():
         by_name[name].set_actor_location(unreal.Vector(old[0]*23/32,old[1]*23/32,old[2]),False,False)
     fog=by_name['ExponentialHeightFog_0'];p=fog.get_actor_location()
     fog.set_actor_location(unreal.Vector(0,0,p.z),False,False)
-    formations=[]
-    for name in ('DoubleRing','SwarmOrbit'):
-        asset=unreal.load_asset('/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_'+name)
-        inner,outer=asset.inner_ring_radius_centimeters,asset.outer_ring_radius_centimeters
-        ih,oh=asset.inner_ring_height_centimeters,asset.outer_ring_height_centimeters
-        swarm=asset.swarm_orbit;radius=asset.agent_radius_centimeters
-        probe=max(2000,asset.obstacle_look_ahead_centimeters,radius*2)
-        radial=max(inner,outer,swarm.outer_soft_radius_centimeters,asset.recovery_distance_centimeters)
-        vertical=max(math.hypot(inner,ih),math.hypot(outer,oh),math.hypot(swarm.outer_soft_radius_centimeters,swarm.vertical_half_extent_centimeters))
-        formations.append({'asset':asset.get_path_name(),'xy_padding_cm':radial+radius+probe,'lower_padding_cm':vertical+radius+probe})
-    land=next(a for a in actors if isinstance(a,unreal.LandscapeProxy))
-    origin,extent=land.get_actor_bounds(False)
-    half=max(extent.x,extent.y)+max(f['xy_padding_cm'] for f in formations)
-    low=math.floor((origin.z-extent.z-max(f['lower_padding_cm'] for f in formations))/1000)*1000
-    flight=by_name['GuLiFlightNavigationVolume_0']
-    old_origin,old_extent=flight.get_actor_bounds(False)
-    high=old_origin.z+old_extent.z;scale=flight.get_actor_scale3d()
-    flight.set_actor_location(unreal.Vector(0,0,(low+high)/2),False,False)
-    flight.set_actor_scale3d(unreal.Vector(scale.x*half/old_extent.x,scale.y*half/old_extent.y,scale.z*(high-low)/2/old_extent.z))
     unreal.EditorLevelLibrary.set_level_viewport_camera_info(camera_pos,camera.get_actor_rotation())
     instance_count=sum(len(c.get('instances_world',[])) for a in baseline['actors'] for c in a['components'])
     assert instance_count==0,'Additional foliage needs explicit relocation from the captured baseline.'
     result={'success':True,'preserved_markers':len(identities),'new_markers_pending_canonical_prepare':0,
             'original_instance_count':instance_count,'prop_group_spacing_preserved':True,'object_sizes_preserved':True,
-            'notes_updated':list(specs),'flight_half_extent_xy_cm':half,'flight_z_range':[low,high],'formations':formations,'saved':False}
+            'notes_updated':list(specs),'saved':False}
     (OUT/'scene-migration.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     return result
 

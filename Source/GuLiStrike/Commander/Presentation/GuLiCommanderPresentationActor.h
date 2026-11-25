@@ -281,8 +281,8 @@ public:
 	bool TryGetPresentedVisualTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
 	/** Current display-model bounds center in world centimeters, including prediction and hover. */
 	bool TryGetPresentedSoldierModelCenter(FGuLiSoldierId SoldierId, FVector& OutCenter) const;
-	/** Same timestamp used by the hit-white overlay; no independent health-delta detector in the HUD. */
-	float GetSoldierHitStartTime(FGuLiSoldierId SoldierId) const;
+	/** Local roster supplying the models in this presentation. */
+	AGuLiSoldierStateReplicator* GetSoldierRoster() const;
 	FGuLiCommanderVisualStatesChanged OnVisualStatesChanged;
 
 	/**

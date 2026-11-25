@@ -1,6 +1,6 @@
 """Idempotently add the second ship spawn required by the two-client smoke map.
 
-The selected transform is verified against the saved FlightNav graph for the
+The selected transform is verified against the resolved wingman flight profile for the
 carrier and all 25 default double-ring endpoints before the map is modified.
 Run in a clean, non-PIE editor through Scripts/ue_exec.py.
 """
@@ -17,14 +17,9 @@ import unreal
 
 
 MAP = "/Game/Maps/LVL_ShipTest"
-NAV_DATA = (
-    "/Game/GuLiStrike/Navigation/Baked/LVL_ShipTest/"
-    "DA_FlightNav_LVL_ShipTest"
-)
 MANAGED_TAG = "GuLi.ShipTest.MultiplayerSpawn.v1"
 ACTOR_LABEL = "PS_ShipSpawn_Remote"
 LOCATION = (20_000.0, 20_000.0, 0.0)
-AGENT_RADIUS = 1_500.0
 PROJECT_DIR = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
 REPORT_PATH = os.path.join(
     PROJECT_DIR,
@@ -78,45 +73,17 @@ def _set_tag(actor, tag):
     actor.set_editor_property("tags", [unreal.Name(value) for value in sorted(tags)])
 
 
-def _formation_endpoints(center):
-    yield center
-    for slots, radius, height in ((13, 60_000.0, 15_000.0), (12, 90_000.0, -15_000.0)):
-        for slot in range(slots):
-            phase = slot * math.tau / slots
-            yield (
-                center[0] + radius * math.cos(phase),
-                center[1] + radius * math.sin(phase),
-                center[2] + height,
-            )
 
 
-def _validate_formation(nav_data, center):
-    results = []
-    for index, endpoint in enumerate(_formation_endpoints(center)):
-        raw = unreal.GuLiFlightNavigationEditorLibrary.validate_navigation_data_endpoints(
-            nav_data,
-            unreal.Vector(*center),
-            unreal.Vector(*endpoint),
-            AGENT_RADIUS,
-        )
-        values = list(raw) if isinstance(raw, tuple) else []
-        results.append(
-            {
-                "index": index,
-                "endpoint": endpoint,
-                "valid": raw is not None,
-                "start_cell": int(values[0]) if len(values) > 0 else -1,
-                "end_cell": int(values[1]) if len(values) > 1 else -1,
-                "status": int(values[2]) if len(values) > 2 else -1,
-                "error": str(values[3]) if len(values) > 3 else "",
-            }
-        )
-    if not all(result["valid"] for result in results):
-        failed = [result["index"] for result in results if not result["valid"]]
-        raise DeploymentError(
-            f"Managed spawn formation is not usable in one FlightNav component: {failed}"
-        )
-    return results
+
+
+def _validate_formation(tuning, center):
+    world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+    pose = unreal.Transform(location=unreal.Vector(*center))
+    points = unreal.GuLiWingmanSimulationSubsystem.get_clear_formation_positions(world, pose, tuning)
+    if points is None or len(points) != 25:
+        raise DeploymentError(f"No clear formation at {center}")
+    return [dict(index=i, endpoint=list(p.to_tuple()), valid=True) for i,p in enumerate(points)]
 
 
 def main():
@@ -141,10 +108,9 @@ def main():
         if _dirty_packages():
             raise DeploymentError("Loading ShipTest unexpectedly dirtied packages")
 
-        nav_data = unreal.EditorAssetLibrary.load_asset(NAV_DATA)
-        if nav_data is None:
-            raise DeploymentError("ShipTest FlightNav data is missing")
-        probes = _validate_formation(nav_data, LOCATION)
+        formation = unreal.load_asset('/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit')
+        tuning = formation.get_resolved_flight_config()
+        probes = _validate_formation(tuning, LOCATION)
 
         level_actors = list(actors.get_all_level_actors())
         managed = [actor for actor in level_actors if MANAGED_TAG in _actor_tags(actor)]

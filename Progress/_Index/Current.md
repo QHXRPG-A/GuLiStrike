@@ -40,6 +40,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | movement, network, ship, wingman | — | 在指挥官原型图的无双·巡天入口验证越岭、双编队空战和跨区对地手感。 | 2026-11-25 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | commander, network, resources | 7/7 (100%) | 在现有地图验证正常PIE输入、接管后的F1/F2/F3操作与玩家效果；EOS和跨机器联机另行验收。 | 2026-11-16 |
 | [2v2指挥官与无双席位 — 双载具构建交付](../DevelopmentDocumentation/20261114-2v2指挥官与无双席位.md) | commander, network, ui | 10/11 (91%) | 玩家验证空地切换、未操控单位及召唤物模拟。 | 2026-11-14 |
 | [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | combat, performance, ui | — | 用户在LVL_CommanderMassPrototype进入Ground席位，按GroundSceneUIFeedback_Entry检查边界、敌方变化和实例隔离。 | 2026-11-06 |
@@ -91,6 +92,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, network | — | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-11-25 |
 | [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | art, combat, data, network, ui | — | — | 2026-11-23 |
 | [游骑兵范围与持续增伤](../DevelopmentDocumentation/20261123-游骑兵范围与持续增伤.md) | combat, data, network | — | — | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | combat, data, network | — | — | 2026-11-23 |
@@ -132,7 +134,6 @@
 | [重防号悬浮与GPU引擎喷流](../DevelopmentDocumentation/20260929-重防号悬浮与GPU引擎喷流.md) | commander, performance, presentation | — | 玩家在LVL_CommanderMassPrototype以300m/700m移动与攻击，检查第二档持续显示及总览隐藏/返回恢复；无需再次编译。 | 2026-10-26 |
 | [单颗矿石采空与异步导航恢复 — 实施记录](../DevelopmentDocumentation/20261024-单颗矿石采空与异步导航恢复.md) | commander, navigation, performance, resource | 9/9 (100%) | — | 2026-10-24 |
 | [3米整数格地面导航 — 实施记录](../DevelopmentDocumentation/20261022-3米整数格地面导航.md) | commander, navigation, network, performance | 14/14 (100%) | — | 2026-10-23 |
-| [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, network | — | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-10-18 |
 | [十四模型配色参考与三视图 A_v3 — 参考审核交付](../DevelopmentDocumentation/20261008-十四模型配色参考与三视图A_v3.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2 — 参考审核交付](../DevelopmentDocumentation/20261008-十三模型配色参考与三视图A_v2.md) | art, assets, rendering | 6/9 (67%) | 最终模型观感沿统一目录的实际UE画廊与Mass地图确认，不重复本旧参考阶段。 | 2026-10-09 |
 | [SSF建筑美术统一与三档LOD](../DevelopmentDocumentation/20261005-SSF建筑美术统一与三档LOD.md) | art, assets, rendering | 11/11 (100%) | 本轮资产制作与交付已验收；后续游戏接入或新版本改造另按用户任务执行。 | 2026-10-07 |

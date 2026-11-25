@@ -1,5 +1,5 @@
 #include "GuLiLocalPIESubsystem.h"
-#include "GuLiLocalPIERolePicker.h"
+#include "GuLiWingmanPlayRange.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Engine/TargetPoint.h"
 #include "EngineUtils.h"
@@ -93,7 +93,8 @@ struct UGuLiLocalPIESubsystem::FState
     bool CleanupComplete=false;
     double Started=0;
     bool Active=false,Began=false,ReachedReady=false;
-    bool bBarrageRangePending=false;
+    GuLiLocalPIERolePicker::ETrial Trial=GuLiLocalPIERolePicker::ETrial::None;
+    FGuLiWingmanPlayRange WingmanRange;
     TOptional<EGuLiCommanderRole> LastSelectedRole;
 #if PLATFORM_WINDOWS
     HANDLE Job=nullptr,StopEvent=nullptr;
@@ -147,7 +148,8 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     if (!GEditor || !IsLocalMap(EditorWorld()) || !Settings->bEnabled) return true;
     if (State->Active) return true;
     State->Error.Reset();State->Began=false;State->ReachedReady=false;State->Shutdown.Reset();State->CleanupComplete=false;
-    State->bBarrageRangePending=false;
+    State->Trial=GuLiLocalPIERolePicker::ETrial::None;
+    State->WingmanRange={};
     auto Fail=[&](const FString& Why)
     { State->Error=Why;Error=Why;StopChildren();UE_LOG(LogTemp,Error,TEXT("[GuLiLocalPIE] %s"),*Why);return false; };
     if (Settings->MainRole!=EGuLiCommanderRole::Commander && Settings->MainRole!=EGuLiCommanderRole::Ground
@@ -180,7 +182,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     // before creating the room directory, stop event or logic peers.
     if (Settings->bPromptForRole && !FApp::IsUnattended() && !IsRunningCommandlet())
     {
-        const auto Selected = GuLiLocalPIERolePicker::Show(State->LastSelectedRole.Get(Settings->MainRole),State->bBarrageRangePending);
+        const auto Selected = GuLiLocalPIERolePicker::Show(State->LastSelectedRole.Get(Settings->MainRole),State->Trial);
         if (!Selected.IsSet())
         {
             Error=TEXT("已取消开局选择。");
@@ -194,7 +196,7 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
     State->Directory=FPaths::Combine(FPlatformProcess::UserTempDir(),TEXT("GuLiStrikePIE"),Config.RoomId.ToString(EGuidFormats::Digits));
     if (!IFileManager::Get().MakeDirectory(*State->Directory,true)) return Fail(TEXT("Could not create the local session directory."));
     State->Active=true;State->Started=FPlatformTime::Seconds();
-    if (State->bBarrageRangePending)
+    if (State->Trial==GuLiLocalPIERolePicker::ETrial::Barrage)
     {
         Config.ManifestFile=Root/TEXT("Config/Hybrid/RuntimeManifest-NoSurvivors.json");
         FString RangeConfigHash,RangeMapHash,RangeMap;
@@ -202,6 +204,11 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
             return Fail(Why);
         if (RangeMap!=LocalMap || RangeMapHash!=MapHash)
             return Fail(TEXT("The barrage range roster does not match the current map. Re-export the range manifest."));
+    }
+    else if (GuLiLocalPIERolePicker::IsWingmanTrial(State->Trial))
+    {
+        Config.ManifestFile=State->Directory/TEXT("WingmanRange.json");
+        if (!State->WingmanRange.Prepare(*EditorWorld(),State->Trial,Manifest,Config.ManifestFile,Why)) return Fail(Why);
     }
     FString ClientStopArguments;
 #if PLATFORM_WINDOWS
@@ -224,11 +231,13 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
         return true;
     };
     struct FSeat {FGuid Player;EGuLiTeam Team;EGuLiCommanderRole Role;};
-    TArray<FSeat> Seats={{Config.DevelopmentPlayerId,EGuLiTeam::Red,Config.Role},{State->Peer,EGuLiTeam::Blue,EGuLiCommanderRole::Commander}};
+    const bool bAirOpponent=GuLiLocalPIERolePicker::HasAirOpponent(State->Trial);
+    const auto BlueMainRole=bAirOpponent && !Settings->bFourClients ? EGuLiCommanderRole::Air : EGuLiCommanderRole::Commander;
+    TArray<FSeat> Seats={{Config.DevelopmentPlayerId,EGuLiTeam::Red,Config.Role},{State->Peer,EGuLiTeam::Blue,BlueMainRole}};
     if (Settings->bFourClients)
     {
         Seats.Add({FGuid::NewGuid(),EGuLiTeam::Red,Config.Role==EGuLiCommanderRole::Commander?EGuLiCommanderRole::Ground:EGuLiCommanderRole::Commander});
-        Seats.Add({FGuid::NewGuid(),EGuLiTeam::Blue,EGuLiCommanderRole::Ground});
+        Seats.Add({FGuid::NewGuid(),EGuLiTeam::Blue,bAirOpponent?EGuLiCommanderRole::Air:EGuLiCommanderRole::Ground});
     }
     auto Ticket=MakeShared<FJsonObject>();Ticket->SetStringField(TEXT("room"),Config.RoomId.ToString(EGuidFormats::Digits));
     Ticket->SetStringField(TEXT("host"),Config.DevelopmentPlayerId.ToString(EGuidFormats::Digits));TArray<TSharedPtr<FJsonValue>> Rows;
@@ -346,16 +355,22 @@ bool UGuLiLocalPIESubsystem::Tick(float)
     UWorld* World=GEditor->PlayWorld.Get();
     auto* Hybrid=World?World->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
     if(Hybrid && Hybrid->IsWorldReady())State->ReachedReady=true;
-    if (State->bBarrageRangePending && State->ReachedReady && World)
+    if (State->Trial==GuLiLocalPIERolePicker::ETrial::Barrage && State->ReachedReady && World)
     {
         auto* PC=World->GetFirstPlayerController();
         if (auto* Mech=PC ? Cast<AGuLiGroundMechCharacter>(PC->GetPawn()) : nullptr)
             for (TActorIterator<ATargetPoint> It(World);It;++It)
                 if (It->ActorHasTag(TEXT("GuLi.NoSurvivors.Start")))
                 {
-                    if (Mech->EnterBarrageRange(It->GetActorTransform())) State->bBarrageRangePending=false;
+                    if (Mech->EnterBarrageRange(It->GetActorTransform())) State->Trial=GuLiLocalPIERolePicker::ETrial::None;
                     break;
                 }
+    }
+    if (State->ReachedReady && World && GuLiLocalPIERolePicker::IsWingmanTrial(State->Trial) && !State->WingmanRange.bReady
+        && !State->WingmanRange.Advance(*World,State->Error))
+    {
+        UE_LOG(LogTemp,Error,TEXT("[GuLiLocalPIE] %s"),*State->Error);
+        GEditor->RequestEndPlayMap();StopChildren();return true;
     }
     const bool StartupTimedOut=!State->ReachedReady && State->Began && FPlatformTime::Seconds()-State->Started>120;
     const FString Failure=Hybrid?Hybrid->GetFailure():FString();

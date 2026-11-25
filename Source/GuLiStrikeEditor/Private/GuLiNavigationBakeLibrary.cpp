@@ -14,11 +14,6 @@
 #include "EngineUtils.h"
 #include "GameFramework/WorldSettings.h"
 #include "FileHelpers.h"
-#include "GuLiFlightNavigationCookGate.h"
-#include "GuLiFlightNavigationCookSettings.h"
-#include "GuLiFlightNavigationData.h"
-#include "GuLiFlightNavigationEditorLibrary.h"
-#include "GuLiFlightNavigationVolume.h"
 #include "GuLiNavigationSourceHash.h"
 #include "GuLiNavigationConnectivitySettings.h"
 #include "GuLiCommanderGroundNavigationProfile.h"
@@ -187,16 +182,6 @@ namespace GuLiNavigationBake
 		return false;
 	}
 
-	TArray<AGuLiFlightNavigationVolume*> FlightVolumes(UWorld* World)
-	{
-		TArray<AGuLiFlightNavigationVolume*> Result;
-		for (TActorIterator<AGuLiFlightNavigationVolume> It(World); It; ++It)
-			if (It->bNavigationEnabled) Result.Add(*It);
-		Result.Sort([](const AGuLiFlightNavigationVolume& A, const AGuLiFlightNavigationVolume& B)
-		{ return A.GetPathName() < B.GetPathName(); });
-		return Result;
-	}
-
 	/** Hash persistent Detour geometry, excluding runtime links, salts and allocator layout. */
 	bool GroundPayload(const ARecastNavMesh* Navigation, FString& OutHash, FString& OutError)
 	{
@@ -327,27 +312,6 @@ namespace GuLiNavigationBake
 		return bValid;
 	}
 
-	bool CheckFlight(AGuLiFlightNavigationVolume* Volume, FGuLiNavigationBakeEntry& Entry)
-	{
-		const double Start = FPlatformTime::Seconds();
-		Entry.Kind = TEXT("Flight");
-		Entry.ObjectPath = Volume->GetPathName();
-		FText Error;
-		bool bValid = UGuLiFlightNavigationEditorLibrary::ValidateVolume(Volume, Volume->AuthoringBakeSettings, Error);
-		if (bValid)
-		{
-			FString PayloadError;
-			bValid = Volume->NavigationData->ValidateSerializedPayload(PayloadError);
-			if (!bValid) Error = FText::FromString(PayloadError);
-		}
-		Entry.SourceHash = Hex(UGuLiFlightNavigationEditorLibrary::ComputeSourceGeometrySignature(
-			Volume->GetWorld(), Volume, Volume->AuthoringBakeSettings));
-		Entry.Status = bValid ? TEXT("Hit") : TEXT("Stale");
-		Entry.Message = bValid ? TEXT("Validated saved flight graph.") : Error.ToString();
-		Entry.CheckSeconds = FPlatformTime::Seconds() - Start;
-		return bValid;
-	}
-
 	bool CheckWorld(UWorld* World, FString& Error)
 	{
 		if (!World || World->IsGameWorld())
@@ -359,9 +323,6 @@ namespace GuLiNavigationBake
 			if (Streaming && !Streaming->GetLoadedLevel())
 			{ Error = TEXT("Load all source sublevels before preparing navigation."); return false; }
 		}
-		const auto* Settings = GetDefault<UGuLiFlightNavigationCookSettings>();
-		if (Settings->RequiredWorldPackages.Contains(World->GetOutermost()->GetFName()) && FlightVolumes(World).IsEmpty())
-		{ Error = TEXT("This required flight map has no enabled navigation volume."); return false; }
 		return true;
 	}
 
@@ -406,8 +367,6 @@ namespace GuLiNavigationBake
 			{ Result.bSuccess = false; Result.Message = TEXT("Navigation bounds exist but a required ground agent NavData is missing."); break; }
 		for (ARecastNavMesh* Navigation : GroundData(World))
 			Result.bSuccess &= CheckGround(World, Navigation, Result.Entries.AddDefaulted_GetRef());
-		for (AGuLiFlightNavigationVolume* Volume : FlightVolumes(World))
-			Result.bSuccess &= CheckFlight(Volume, Result.Entries.AddDefaulted_GetRef());
 		if (!Result.bSuccess && Result.Message.IsEmpty())
 			for (const auto& Entry : Result.Entries)
 				if (Entry.Status != TEXT("Hit")) { Result.Message = Entry.ObjectPath + TEXT(": ") + Entry.Message; break; }
@@ -420,9 +379,9 @@ namespace GuLiNavigationBake
 			UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] kind=%s status=%s object=%s hash=%s check_s=%.6f build_s=%.6f reason=%s"),
 				*Entry.Kind, *Entry.Status, *Entry.ObjectPath, *Entry.SourceHash, Entry.CheckSeconds, Entry.BuildSeconds, *Entry.Message);
 		UE_LOG(LogGuLiNavigationBake, Display,
-			TEXT("[GULI_NAV_PREPARE] result=%s world=%s ground_rebuilds=%d flight_rebuilds=%d save_s=%.6f total_s=%.6f reason=%s"),
+			TEXT("[GULI_NAV_PREPARE] result=%s world=%s ground_rebuilds=%d save_s=%.6f total_s=%.6f reason=%s"),
 			Result.bSuccess ? TEXT("Ready") : TEXT("Failed"), *GetPathNameSafe(World),
-			Result.GroundRebuilds, Result.FlightRebuilds, Result.SaveSeconds, Result.TotalSeconds, *Result.Message);
+			Result.GroundRebuilds, Result.SaveSeconds, Result.TotalSeconds, *Result.Message);
 	}
 }
 
@@ -451,7 +410,7 @@ uint64 UGuLiNavigationBakeLibrary::ComputeGroundSourceHash(UWorld* World, const 
 	}
 	TArray<AActor*> Actors;
 	for (TActorIterator<AActor> It(World); It; ++It)
-		if (!It->IsEditorOnly() && !It->IsA<ANavigationData>() && !It->IsA<AGuLiFlightNavigationVolume>()) Actors.Add(*It);
+		if (!It->IsEditorOnly() && !It->IsA<ANavigationData>()) Actors.Add(*It);
 	Actors.Sort([](const AActor& A, const AActor& B) { return A.GetPathName() < B.GetPathName(); });
 	for (AActor* Actor : Actors)
 	{
@@ -606,53 +565,6 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 		Packages.AddUnique(Navigation->GetPackage());
 	}
 	Progress.EnterProgressFrame(1);
-	for (AGuLiFlightNavigationVolume* Volume : FlightVolumes(World))
-	{
-		const UGuLiFlightNavigationData* Existing = Volume->NavigationData;
-		const bool bOwnedByAnotherSource = Existing && !Existing->Metadata.SourceWorldPackage.IsNone()
-			&& (Existing->Metadata.SourceWorldPackage != World->GetOutermost()->GetFName()
-				|| Existing->Metadata.SourceVolumePath != Volume->GetPathName());
-		if (!Existing || bOwnedByAnotherSource)
-		{
-			// Duplicated maps/volumes must not overwrite another source world's shared graph.
-			const FString MapPackage = World->GetOutermost()->GetName();
-			const FString AssetName = FString::Printf(TEXT("DA_Flight_%s_%08x"),
-				*FPackageName::GetShortName(MapPackage), FCrc::StrCrc32(*Volume->GetPathName()));
-			const FString PackageName = FPackageName::GetLongPackagePath(MapPackage) + TEXT("/Navigation/") + AssetName;
-			UGuLiFlightNavigationData* Data = LoadObject<UGuLiFlightNavigationData>(nullptr, *(PackageName + TEXT(".") + AssetName), nullptr, LOAD_NoWarn);
-			if (!Data)
-			{
-				UPackage* Package = CreatePackage(*PackageName);
-				Data = NewObject<UGuLiFlightNavigationData>(Package, FName(*AssetName), RF_Public | RF_Standalone);
-				FAssetRegistryModule::AssetCreated(Data);
-				Data->MarkPackageDirty();
-			}
-			Volume->Modify();
-			Volume->NavigationData = Data;
-			Volume->MarkPackageDirty();
-			Packages.AddUnique(Volume->GetPackage());
-		}
-		if (Volume->NavigationData->GetPackage()->IsDirty())
-		{
-			Packages.AddUnique(Volume->NavigationData->GetPackage());
-			Packages.AddUnique(Volume->GetPackage());
-		}
-		FGuLiNavigationBakeEntry& Entry = Result.Entries.AddDefaulted_GetRef();
-		if (CheckFlight(Volume, Entry)) continue;
-		if (Progress.ShouldCancel()) { Result.Message = TEXT("Navigation preparation cancelled."); return Finish(); }
-		const double BuildStart = FPlatformTime::Seconds();
-		FText Error;
-		if (!UGuLiFlightNavigationEditorLibrary::BakeVolume(Volume, Volume->AuthoringBakeSettings, Error))
-		{ Result.Message = Volume->GetPathName() + TEXT(": ") + Error.ToString(); return Finish(); }
-		Entry.BuildSeconds = FPlatformTime::Seconds() - BuildStart;
-		++Result.FlightRebuilds;
-		if (Entry.SourceHash != Hex(Volume->NavigationData->Metadata.GeometrySignature)
-			|| !UGuLiFlightNavigationEditorLibrary::ValidateVolume(Volume, Volume->AuthoringBakeSettings, Error))
-		{ Result.Message = TEXT("Flight source changed during baking: ") + Error.ToString(); return Finish(); }
-		Entry.Status = TEXT("Rebuilt");
-		Packages.AddUnique(Volume->NavigationData->GetPackage());
-		Packages.AddUnique(Volume->GetPackage());
-	}
 	if (Progress.ShouldCancel()) { Result.Message = TEXT("Navigation preparation cancelled."); return Finish(); }
 	// Run even when every ground cache was a hit. Disconnected tiles never receive a success certificate.
 	if (!CheckConnectivity(World, Result)) return Finish();
@@ -694,7 +606,7 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 
 TArray<FName> UGuLiNavigationBakeLibrary::GetPreparationWorldPackages()
 {
-	TArray<FName> Result = GetDefault<UGuLiFlightNavigationCookSettings>()->RequiredWorldPackages;
+	TArray<FName> Result;
 	for (const FName Map : GetDefault<UGuLiNavigationConnectivitySettings>()->RequiredWorldPackages)
 		Result.AddUnique(Map);
 	for (const FFilePath& Map : GetDefault<UProjectPackagingSettings>()->MapsToCook)
@@ -743,25 +655,6 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::MigrateObjectScale020(UObj
 			? TEXT("Commander profile applied: radius=150; cellXY=19/19/9.5; cellZ=2; step=20; slope=44; slope-based ledge filter.")
 			: FString::Printf(TEXT("Radius %.3f -> %.3f; height %.3f -> %.3f; cellZ=5; step=%.3f; XY unchanged"),
 				Before.AgentRadius, Target->AgentRadius, Before.AgentHeight, Target->AgentHeight, Target->AgentStepHeight);
-	}
-	for (AGuLiFlightNavigationVolume* Volume : FlightVolumes(World))
-	{
-		auto& Settings = Volume->AuthoringBakeSettings;
-		const float BeforeRadius = Settings.AgentRadius;
-		const float BeforePortal = Settings.MinimumPortalSpan;
-		if (!FMath::IsNearlyEqual(BeforeRadius, 1500.0f) && !FMath::IsNearlyEqual(BeforeRadius, 300.0f))
-		{ Result.Message = TEXT("Unexpected Flight Agent radius; manual merge required."); return Result; }
-		Volume->Modify();
-		Settings.AgentRadius = 300.0f;
-		if (FMath::IsNearlyEqual(BeforePortal, 25.0f)) Settings.MinimumPortalSpan = 5.0f;
-		else if (FMath::IsNearlyEqual(BeforePortal, 10.0f)) Settings.MinimumPortalSpan = 2.0f;
-		else if (!FMath::IsNearlyEqual(BeforePortal, 5.0f) && !FMath::IsNearlyEqual(BeforePortal, 2.0f))
-		{ Result.Message = TEXT("Unexpected Flight portal span; manual merge required."); return Result; }
-		Volume->MarkPackageDirty();
-		auto& Entry = Result.Entries.AddDefaulted_GetRef();
-		Entry.ObjectPath = Volume->GetPathName(); Entry.Kind = TEXT("FlightScale020"); Entry.Status = TEXT("Configured");
-		Entry.Message = FString::Printf(TEXT("Radius %.3f -> %.3f; portal %.3f -> %.3f; bounds/cells unchanged"),
-			BeforeRadius, Settings.AgentRadius, BeforePortal, Settings.MinimumPortalSpan);
 	}
 	ScaleMigrationWorlds.Add(World);
 	Result.bSuccess = true; Result.Message = TEXT("Scale020 configured; rebuild and validation still required.");

@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "Gameplay/Ship/Capabilities/GuLiShipCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
+#include "Network/GuLiHybridObjectKey.h"
+#include "Battle/Contracts/GuLiWingmanProtocolTypes.h"
 #include "GuLiShipHangarCapabilityComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FGuLiShipAbilityProjectionChanged);
@@ -120,8 +122,13 @@ private:
 	FGuLiShipAbilityPresentationChanged PresentationChanged;
     struct FHybridSpawn {uint8 Slot=0;uint32 Generation=1;FGuid Event;uint64 StartedAt=0;FVector Position=FVector::ZeroVector;float Facing=0;};
     struct FHybridReplenish {uint32 Generation=0;uint64 DueAt=0;};
+    // Derived identities only. Current generations and ownership are read from the applied ledger.
+    FGuLiWingmanGroupHandle HybridMemberGroup;
+    FString HybridMemberProfile;
+    TArray<FGuLiHybridObjectKey> HybridMemberKeys;
     TMap<uint8,FHybridSpawn> HybridSpawns;
     TMap<uint8,FHybridReplenish> HybridReplenishment;
+    TMap<uint8,uint64> ClearanceRetryTick;
     uint64 NextHybridSpawnTick=0;
     FString HybridMemberStatus=TEXT("waiting_for_enabled_capability");uint64 HybridAdvanceTick=0;
 };

@@ -7,7 +7,6 @@
 class AGuLiCommanderPlayerController;
 class APlayerController;
 class AGuLiCommanderPresentationActor;
-class AGuLiCommanderHealthBarRenderer;
 class AGuLiBattlePlayerState;
 class ASceneCapture2D;
 class UMaterialInterface;
@@ -19,6 +18,7 @@ class UGuLiCommanderRouteLineComponent;
 class UGuLiOutpostPresentationComponent;
 class UGuLiGroundSceneUIState;
 struct FGuLiSceneUIWidgetData;
+struct FGuLiSceneUIHealthBar;
 enum class EGuLiSceneUIPaintPart : uint8 { Combined, Background, World, HUD, Panels };
 
 /** One non-interactive, post-scene Slate batch for each local player's viewport. */
@@ -32,7 +32,9 @@ public:
 	void SetModalHidden(bool bHidden);
 	void BeginHUDFrame();
 	void EndHUDFrame();
+	void AddOverviewHealthBar(const FGuLiSceneUIHealthBar& Bar);
 	UFUNCTION(BlueprintPure, Category="Scene UI|Diagnostics") FString GetFrameStatsJson() const;
+	UFUNCTION(BlueprintPure, Category="Scene UI|Diagnostics", meta=(DevelopmentOnly)) FString GetHealthBarLayoutJson(bool bIncludeCandidates = false) const;
 	void AddScreenLine(float X1, float Y1, float X2, float Y2, FLinearColor Color, float Width=1);
 	void AddScreenRect(FLinearColor Color, float X, float Y, float W, float H);
 	void AddScreenDisc(FVector2D Center, float Radius, FLinearColor Color);
@@ -72,7 +74,6 @@ private:
 	UPROPERTY(Transient) TMap<TObjectPtr<UTexture>, TObjectPtr<UMaterialInstanceDynamic>> SurfaceInstances;
 	TWeakObjectPtr<APlayerController> LocalController;
 	TWeakObjectPtr<AGuLiCommanderPresentationActor> Presentation;
-	TWeakObjectPtr<AGuLiCommanderHealthBarRenderer> HealthBars;
 	UPROPERTY(Transient) TObjectPtr<UGuLiGroundSceneUIState> GroundState;
 	TWeakObjectPtr<AGuLiBattlePlayerState> BoundIdentity;
 	TArray<TWeakObjectPtr<AActor>> ActorRingSources;

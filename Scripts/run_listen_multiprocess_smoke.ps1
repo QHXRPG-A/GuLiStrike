@@ -624,19 +624,12 @@ $serverDiagnosticObservations = [ordered]@{
         ($serverSamples | Measure-Object world_validator_context_reject_count -Maximum).Maximum
     world_validator_invalid_radius_reject_count_max =
         ($serverSamples | Measure-Object world_validator_invalid_radius_reject_count -Maximum).Maximum
-    world_validator_missing_flight_nav_reject_count_max =
-        ($serverSamples | Measure-Object world_validator_missing_flight_nav_reject_count -Maximum).Maximum
     world_validator_static_collision_reject_count_max =
         ($serverSamples | Measure-Object world_validator_static_collision_reject_count -Maximum).Maximum
     world_validator_tagged_dynamic_reject_count_max =
         ($serverSamples | Measure-Object world_validator_tagged_dynamic_reject_count -Maximum).Maximum
-    world_validator_flight_nav_segment_reject_count_max =
-        ($serverSamples | Measure-Object world_validator_flight_nav_segment_reject_count -Maximum).Maximum
     world_validator_accepted_count_max =
         ($serverSamples | Measure-Object world_validator_accepted_count -Maximum).Maximum
-    world_validator_flight_nav_statuses_observed = @($serverSamples |
-        Where-Object { $_.PSObject.Properties['world_validator_last_flight_nav_status'] } |
-        Select-Object -ExpandProperty world_validator_last_flight_nav_status -Unique)
     world_validator_static_hit_actors_observed = @($serverSamples |
         Where-Object { $_.world_validator_last_static_hit_actor } |
         Select-Object -ExpandProperty world_validator_last_static_hit_actor -Unique)

@@ -845,10 +845,9 @@ void AGuLiCommanderPresentationActor::Tick(const float DeltaSeconds)
 #endif
 }
 
-float AGuLiCommanderPresentationActor::GetSoldierHitStartTime(const FGuLiSoldierId SoldierId) const
+AGuLiSoldierStateReplicator* AGuLiCommanderPresentationActor::GetSoldierRoster() const
 {
-	const auto* Soldier = PresentedSoldiers.Find(SoldierId);
-	return Soldier ? Soldier->HitFlashStartTime : -1000.0f;
+	return StateReplicator.Get();
 }
 
 bool AGuLiCommanderPresentationActor::GetSceneUIInstance(FGuLiSoldierId Id,UInstancedStaticMeshComponent*& Component,int32& Index,FBox& Bounds) const
@@ -2465,7 +2464,6 @@ void AGuLiCommanderPresentationActor::ApplyReliableStateChanges(const AGuLiSoldi
 {
 	if (PendingStateIds.IsEmpty()) return;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_StateChanges);
-	bool bAnyHit = false;
 	TArray<FGuLiSoldierId> Changed;
 	for (const auto Id : PendingStateIds)
 	{
@@ -2504,7 +2502,6 @@ void AGuLiCommanderPresentationActor::ApplyReliableStateChanges(const AGuLiSoldi
 		if (Soldier.bLifeStateInitialized && ReliableState.Health < Soldier.LastObservedHealth)
 		{
 			Soldier.HitFlashStartTime = static_cast<float>(Now);
-			bAnyHit = true;
 		}
 		Soldier.LastObservedHealth = ReliableState.Health;
 		if (!Soldier.bLifeStateInitialized)
@@ -2535,7 +2532,6 @@ void AGuLiCommanderPresentationActor::ApplyReliableStateChanges(const AGuLiSoldi
 		Changed.Add(Id);
 	}
 	PendingStateIds.Reset();
-	if (bAnyHit) if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>()) Feedback->EnsureHealthBarRenderers();
 	PendingVisualChangeIds.Append(Changed);
 }
 

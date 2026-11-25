@@ -1,4 +1,4 @@
-"""Move both LVL_ShipTest PlayerStarts onto FlightNav-safe formation anchors.
+"""Move both LVL_ShipTest PlayerStarts onto terrain-clear formation anchors.
 
 The relay bootstrap can legitimately arrive after the ship has settled roughly
 1600 cm along local -Y.  Each authored start and that observed settled position
@@ -18,11 +18,6 @@ import unreal
 
 
 MAP = "/Game/Maps/LVL_ShipTest"
-NAV_DATA = (
-    "/Game/GuLiStrike/Navigation/Baked/LVL_ShipTest/"
-    "DA_FlightNav_LVL_ShipTest"
-)
-AGENT_RADIUS = 1_500.0
 SETTLE_OFFSET = (0.0, -1_600.0, 0.0)
 SPAWNS = (
     {
@@ -74,45 +69,8 @@ def _offset(point, delta):
     return tuple(float(value + change) for value, change in zip(point, delta))
 
 
-def _formation_endpoints(center):
-    yield center
-    for slots, radius, height in ((13, 60_000.0, 15_000.0), (12, 90_000.0, -15_000.0)):
-        for slot in range(slots):
-            phase = slot * math.tau / slots
-            yield (
-                center[0] + radius * math.cos(phase),
-                center[1] + radius * math.sin(phase),
-                center[2] + height,
-            )
 
 
-def _validate_formation(nav_data, center):
-    probes = []
-    for index, endpoint in enumerate(_formation_endpoints(center)):
-        raw = unreal.GuLiFlightNavigationEditorLibrary.validate_navigation_data_endpoints(
-            nav_data,
-            unreal.Vector(*center),
-            unreal.Vector(*endpoint),
-            AGENT_RADIUS,
-        )
-        values = list(raw) if isinstance(raw, tuple) else []
-        probes.append(
-            {
-                "index": index,
-                "endpoint": endpoint,
-                "valid": raw is not None,
-                "start_cell": int(values[0]) if len(values) > 0 else -1,
-                "end_cell": int(values[1]) if len(values) > 1 else -1,
-                "status": int(values[2]) if len(values) > 2 else -1,
-                "error": str(values[3]) if len(values) > 3 else "",
-            }
-        )
-    failed = [probe["index"] for probe in probes if not probe["valid"]]
-    if failed:
-        raise DeploymentError(
-            f"Formation at {center} is not usable in one FlightNav component: {failed}"
-        )
-    return probes
 
 
 def _atomic_write(value):
@@ -134,12 +92,20 @@ def _atomic_write(value):
         raise
 
 
+def _validate_formation(tuning, center):
+    world = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+    pose = unreal.Transform(location=unreal.Vector(*center))
+    points = unreal.GuLiWingmanSimulationSubsystem.get_clear_formation_positions(world, pose, tuning)
+    if points is None or len(points) != 25:
+        raise DeploymentError(f"No clear formation at {center}")
+    return [dict(index=i, endpoint=list(p.to_tuple()), valid=True) for i,p in enumerate(points)]
+
+
 def main():
     report = {
         "schema": "guli.shiptest-safe-player-starts.v1",
         "success": False,
         "map": MAP,
-        "agent_radius": AGENT_RADIUS,
         "settle_offset": SETTLE_OFFSET,
         "spawns": [],
     }
@@ -156,9 +122,8 @@ def main():
         if _dirty_packages():
             raise DeploymentError("Loading ShipTest unexpectedly dirtied packages")
 
-        nav_data = unreal.EditorAssetLibrary.load_asset(NAV_DATA)
-        if nav_data is None:
-            raise DeploymentError("ShipTest FlightNav data is missing")
+        formation = unreal.load_asset('/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit')
+        tuning = formation.get_resolved_flight_config()
         actors = list(actor_subsystem.get_all_level_actors())
 
         for spec in SPAWNS:
@@ -170,9 +135,9 @@ def main():
                 raise DeploymentError(
                     f"Expected exactly one PlayerStart labelled {spec['label']}"
                 )
-            authored_probes = _validate_formation(nav_data, spec["location"])
+            authored_probes = _validate_formation(tuning, spec["location"])
             settled_location = _offset(spec["location"], SETTLE_OFFSET)
-            settled_probes = _validate_formation(nav_data, settled_location)
+            settled_probes = _validate_formation(tuning, settled_location)
             actor = matches[0]
             before = actor.get_actor_location()
             actor.modify()

@@ -2,7 +2,6 @@
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Battle/Combat/GuLiWingmanTargetAssignment.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.h"
-#include "GuLiFlightNavigationSubsystem.h"
 #include "Engine/World.h"
 
 namespace
@@ -42,38 +41,45 @@ namespace
 		});
 	}
 
-	bool HasClearGroundBombingCorridor(
-		UWorld* World,
-		const FVector& GroundTarget,
-		const FVector& PreferredApproach,
-		const FGuLiWingmanAttackProfile& Profile,
-		const FGuLiWingmanFormationRuntimeConfig& Formation)
+}
+
+bool GuLiWingmanTargeting::HasClearGroundBombingCorridor(
+	UWorld* World,
+	const FVector& GroundTarget,
+	const FVector& PreferredApproach,
+	const FGuLiWingmanAttackProfile& Profile,
+	const FGuLiWingmanFormationRuntimeConfig& Formation,
+	const FVector* IngressStart)
+{
+	if (!World || GroundTarget.ContainsNaN() || PreferredApproach.ContainsNaN())
 	{
-		if (!World || GroundTarget.ContainsNaN() || PreferredApproach.ContainsNaN())
+		return false;
+	}
+	for (int32 CandidateIndex = 0;
+		CandidateIndex < GuLiWingmanAttack::MaximumGroundApproachCandidates;
+		++CandidateIndex)
+	{
+		const FVector Approach = GuLiWingmanAttack::BuildGroundApproachCandidate(
+			PreferredApproach, 0u, CandidateIndex);
+		FGuLiWingmanGroundRunPath Path;
+		if (GuLiWingmanAttack::BuildGroundPath(
+				GroundTarget,
+				Approach,
+				Profile,
+				Formation.MaximumTurnRateDegreesPerSecond,
+				Path)
+			&& GuLiWingmanAttack::GroundRunClearsTerrain(
+				World, Path, Formation.AgentRadiusCentimeters + Formation.SafetyMarginCentimeters()))
 		{
-			return false;
-		}
-		for (int32 CandidateIndex = 0;
-			CandidateIndex < GuLiWingmanAttack::MaximumGroundApproachCandidates;
-			++CandidateIndex)
-		{
-			const FVector Approach = GuLiWingmanAttack::BuildGroundApproachCandidate(
-				PreferredApproach, 0u, CandidateIndex);
-			FGuLiWingmanGroundRunPath Path;
-			if (GuLiWingmanAttack::BuildGroundPath(
-					GroundTarget,
-					Approach,
-					Profile,
-					Formation.MaximumTurnRateDegreesPerSecond,
-					Path)
-				&& GuLiWingmanAttack::GroundRunClearsTerrain(
-					World, Path, Formation.AgentRadiusCentimeters))
+			const FVector Setup = GuLiWingmanAttack::GroundRunSetupPoint(Path);
+			if (!IngressStart || FVector::DistSquared(*IngressStart, Setup) <= FMath::Square(Formation.AgentRadiusCentimeters)
+				|| GuLiWingmanAttack::AirSegmentClearsWorld(World, *IngressStart, Setup, Formation.AgentRadiusCentimeters))
 			{
 				return true;
 			}
 		}
-		return false;
 	}
+	return false;
 }
 
 bool FGuLiWingmanTargetingTuning::IsWellFormed() const
@@ -171,24 +177,23 @@ bool GuLiWingmanTargeting::SelectAutomaticTargets(UWorld* World,
 		{
 			continue;
 		}
+		const double ShipDistance = FVector::Distance(Source.Location, Snapshot.Location);
+		const bool bInsideAcquire = IsWithinAcquireRange(ShipDistance, Tuning);
+		if (!bInsideAcquire && (!IsWithinReleaseRange(ShipDistance, Tuning)
+			|| !PreviousAutomaticTargets.ContainsByPredicate([&Snapshot](const FGuLiWingmanAutoTargetAssignment& Previous)
+			{
+				return Previous.Target.Target == Snapshot.Handle;
+			})))
+		{
+			continue;
+		}
 		FAutomaticTargetInput Target;
 		Target.Snapshot = Snapshot;
 		Target.AttackLocation = Snapshot.Location;
 		Target.bGround = bGround;
+		Target.bCanAssignNewMember = bInsideAcquire;
 		if (bGround)
 		{
-			const double ShipDistance = FVector::Distance(Source.Location, Snapshot.Location);
-			const bool bInsideAcquire =
-				GuLiWingmanTargeting::IsWithinAcquireRange(ShipDistance, Tuning);
-			const bool bRetainedInsideRelease = PreviousAutomaticTargets.ContainsByPredicate(
-				[&Snapshot, ShipDistance, &Tuning](
-					const FGuLiWingmanAutoTargetAssignment& Previous)
-				{
-					return Previous.Target.Target == Snapshot.Handle
-						&& GuLiWingmanTargeting::IsWithinReleaseRange(ShipDistance, Tuning);
-				});
-			if (!bInsideAcquire && !bRetainedInsideRelease) continue;
-			Target.bCanAssignNewMember = bInsideAcquire;
 			FHitResult Hit;
 			FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiWingmanGroundTarget), false);
 			if (Snapshot.CollisionActor.IsValid()) Params.AddIgnoredActor(Snapshot.CollisionActor.Get());
@@ -259,11 +264,7 @@ bool GuLiWingmanTargeting::SelectAutomaticTargets(UWorld* World,
 			return Channel.bEnabled
 				&& Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::GroundDive;
 		});
-	FString NavigationError;
-	const UGuLiFlightNavigationSubsystem* Navigation =
-		World ? World->GetSubsystem<UGuLiFlightNavigationSubsystem>() : nullptr;
-	const bool bCanPreflightGroundCorridors = GroundChannel && Navigation
-		&& Navigation->HasUsableNavigationAt(Source.Location, NavigationError);
+	const bool bCanPreflightGroundCorridors = GroundChannel && World;
 	TSet<FGuLiTargetHandle> ClearGroundTargets;
 	TSet<FGuLiTargetHandle> BlockedGroundTargets;
 	TArray<FGuLiWingmanTargetAssignmentPair> SolvedAssignments;

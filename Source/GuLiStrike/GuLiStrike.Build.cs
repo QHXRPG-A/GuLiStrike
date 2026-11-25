@@ -38,7 +38,7 @@ public class GuLiStrike : ModuleRules
 			"PhysicsCore", // Ore instances reuse and validate the models' simple collision.
 			"ApplicationCore", // Foreground-state evidence during explicitly requested performance captures.
 			"EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "TraceLog",
-			"GuLiFlightNavigationRuntime", "RenderCore", "RHI",
+			"RenderCore", "RHI",
 			// Commander 网络合同使用 FastArray 与自定义 NetSerialize。
 			"NetCore",
 			"OnlineSubsystemUtils",

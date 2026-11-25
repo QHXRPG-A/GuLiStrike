@@ -7,7 +7,7 @@ world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world
 rows=[]
 for actor in unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors():
     cls=actor.get_class().get_name()
-    if any(x in cls for x in ['RecastNavMesh','FlightNavigationVolume','DeploymentPoint']):
+    if any(x in cls for x in ['RecastNavMesh','DeploymentPoint']):
         rows.append({'path':actor.get_path_name(),'class':cls,'transform':value(actor.get_actor_transform()),'properties':properties(actor)})
 out=ROOT/('TestResults/Scale020/nav-'+world.get_name()+'-baseline.json')
 if not out.exists():

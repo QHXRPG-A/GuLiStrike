@@ -26,29 +26,11 @@ def fixtures():
     return prepare_scene()
 
 
-def flight_bounds():
-    volumes=[a for a in ACTORS.get_all_level_actors() if isinstance(a,unreal.GuLiFlightNavigationVolume)]
-    assert len(volumes)==1
-    padding=[]
-    for name in ('DoubleRing','SwarmOrbit'):
-        f=unreal.load_asset('/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_'+name)
-        radius=f.agent_radius_centimeters
-        padding.append(max(f.inner_ring_radius_centimeters,f.outer_ring_radius_centimeters,
-            f.swarm_orbit.outer_soft_radius_centimeters,f.recovery_distance_centimeters)+radius+
-            max(2000,f.obstacle_look_ahead_centimeters,radius*2))
-    half=90000+max(padding)
-    a=volumes[0];origin,extent=a.get_actor_bounds(False);scale=a.get_actor_scale3d()
-    a.set_actor_scale3d(unreal.Vector(scale.x*half/extent.x,scale.y*half/extent.y,scale.z))
-    after_origin,after_extent=a.get_actor_bounds(False)
-    assert abs(after_extent.x-half)<1 and abs(after_extent.y-half)<1 and abs(after_extent.z-extent.z)<1
-    return {'success':True,'physical_map_half_extent_cm':90000,'flight_half_extent_xy_cm':half,
-        'formation_padding_cm':max(padding),'vertical_range_cm':[origin.z-extent.z,origin.z+extent.z],
-        'navigation_asset':a.navigation_data.get_path_name()}
 
 def navigation():
     r=unreal.GuLiNavigationBakeLibrary.prepare_world_navigation(WORLD,True)
     entries=[{k:getattr(e,k) for k in ('object_path','kind','status','source_hash','message','check_seconds','build_seconds')} for e in r.entries]
-    return {**{k:getattr(r,k) for k in ('success','message','ground_rebuilds','flight_rebuilds','save_seconds','total_seconds')},'entries':entries}
+    return {**{k:getattr(r,k) for k in ('success','message','ground_rebuilds','save_seconds','total_seconds')},'entries':entries}
 
 def navigation_query_budget():
     meshes=[a for a in ACTORS.get_all_level_actors() if isinstance(a,unreal.RecastNavMesh)]
@@ -69,5 +51,5 @@ def preview_visibility():
     assert count==49
     return {'success':True,'editor_poses':count,'preview_visible':visible}
 
-unreal.MCPythonHelper.submit_result(json.dumps({'fixtures':fixtures,'flight_bounds':flight_bounds,'navigation':navigation,'navigation_query_budget':navigation_query_budget,
+unreal.MCPythonHelper.submit_result(json.dumps({'fixtures':fixtures,'navigation':navigation,'navigation_query_budget':navigation_query_budget,
     'preview_on':preview_visibility,'preview_off':preview_visibility}[ISLAND_ACTION](),ensure_ascii=False))

@@ -1,0 +1,1189 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>僚机飞控实验台 · GuLiStrike</title>
+<!-- 示意机体与合成地形。配色取自《GuLiStrike 美术规范》v1.16 第 11 节，青绿地形、蓝灰巡天、橙色僚机。 -->
+<style>
+:root {
+  --ink:#021716; --deep:#032e30; --teal:#0a6f73; --aqua:#0d9099;
+  --blue:#6aa4be; --slate:#274e61; --sage:#557b78; --stone:#d5c09c;
+  --peach:#fee4d9; --orange:#ee9d58; --rose:#a34053;
+  --paper:color-mix(in srgb,var(--stone) 10%,white); --panel:color-mix(in srgb,var(--stone) 5%,white);
+  --line:color-mix(in srgb,var(--sage) 25%,var(--paper)); --secondary:#475f5b;
+  font-family:Inter,"Microsoft YaHei UI","PingFang SC",sans-serif; color:var(--ink); background:var(--paper);
+  font-size:15px; font-variant-numeric:tabular-nums; color-scheme:light;
+}
+* { box-sizing:border-box }
+body { margin:0 }
+button,input,select { font:inherit }
+button,select,input[type=range],input[type=checkbox] { cursor:pointer; accent-color:var(--teal) }
+button { border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:6px; padding:7px 12px; min-height:34px }
+button:hover,select:hover { border-color:var(--sage) }
+button:active { transform:translateY(1px) }
+button:disabled,select:disabled { opacity:.45; cursor:default; transform:none }
+:focus-visible { outline:3px solid var(--aqua); outline-offset:3px }
+main { max-width:1660px; margin:0 auto; padding:24px clamp(12px,3vw,48px) 25px }
+header { display:flex; align-items:center; justify-content:space-between; gap:15px; padding-bottom:19px; margin-bottom:18px; border-bottom:1px solid var(--line) }
+.brand { display:flex; gap:13px; align-items:center }
+.brand-mark { width:41px; height:41px; background:var(--ink); color:var(--orange); display:grid; place-items:center; border-radius:9px }
+.brand-mark::before { content:""; width:25px; height:22px; background:currentColor; clip-path:polygon(3% 64%,34% 55%,51% 0%,60% 50%,100% 32%,71% 73%,56% 70%,44% 100%,37% 75%) }
+.brand-name,.mono,.value,output { font-family:"IBM Plex Mono","Cascadia Mono",Consolas,"Microsoft YaHei UI",monospace }
+.brand-name { color:var(--teal); font-size:11px; letter-spacing:.13em; font-weight:700 }
+h1 { font-size:clamp(21px,2.15vw,32px); line-height:1.15; letter-spacing:-.055em; margin:4px 0 0 }
+h2,h3,p { margin:0 }
+h2 { font-size:16px } h3 { font-size:14px }
+.runtime { display:flex; align-items:center; gap:9px; color:var(--secondary); font-size:13px }
+.lamp { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--aqua) }
+.lamp.paused { background:var(--orange) }
+.layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(250px,286px); gap:20px; align-items:start }
+.workspace,.settings { min-width:0 }
+.toolbar,.stage-foot,.setting-title,.param-head,.inline,.buttons,.number-box,.keyline { display:flex; align-items:center; gap:8px }
+.toolbar,.stage-foot,.setting-title,.param-head { justify-content:space-between }
+.toolbar { flex-wrap:wrap; margin-bottom:10px; min-height:33px }
+.toolbar .inline { flex-wrap:wrap }
+.caps { font-size:12px; color:var(--secondary) }
+select { color:var(--ink); background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:6px 20px 6px 8px; min-height:32px }
+#scene { font-weight:650 }
+.stage { position:relative; isolation:isolate; overflow:hidden; border-radius:10px; background:var(--ink); color:var(--peach); box-shadow:0 8px 24px #02171616 }
+#viewport { display:block; width:100%; height:clamp(360px,56vh,660px); touch-action:none; cursor:grab }
+#viewport:active { cursor:grabbing }
+.hud { display:flex; align-items:center; gap:9px; pointer-events:none; position:absolute; top:15px; left:17px; color:var(--peach); background:#021716dc; border:1px solid #557b7870; padding:6px 9px; border-radius:5px; font-size:12px }
+.hud .bar { height:12px; width:1px; background:var(--sage) }
+.stage-foot { color:var(--peach); background:#032e30; border-top:1px solid #557b7855; padding:9px 13px; gap:10px; font-size:12px; flex-wrap:wrap }
+.legend { display:flex; align-items:center; flex-wrap:wrap; gap:12px }
+.legend span { display:inline-flex; align-items:center; gap:5px }
+.swatch { width:15px; height:0; border-top:2px solid var(--orange) }
+.swatch.carrier { border-color:var(--blue) } .swatch.safe { border-color:#a8e0bd } .swatch.blocked { border-color:#efa6a5; border-top-style:dashed }
+.stage-foot .mono { color:#c4d5cb }
+.telemetry { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-bottom:1px solid var(--line); padding:17px 0 }
+.telemetry>div { border-left:1px solid var(--line); padding:0 13px }
+.telemetry>div:first-child { border:0; padding-left:2px }
+.telemetry dt { color:var(--secondary); font-size:12px; margin-bottom:4px }
+.telemetry dd { margin:0; font-weight:650; font-size:clamp(15px,1.6vw,24px); letter-spacing:-.035em }
+.telemetry small { font:normal 11px "Cascadia Mono",Consolas,monospace; color:var(--secondary); margin-left:3px }
+dl { margin:0 }
+.playbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:12px 0 }
+.primary { background:var(--deep); border-color:var(--deep); color:var(--peach) }
+.playbar button { font-size:13px }
+.check { display:inline-flex; align-items:center; gap:5px; font-size:13px }
+.check input { width:15px; height:15px; margin:0 }
+.settings { border:1px solid var(--line); background:var(--panel); border-radius:9px; overflow:hidden }
+.settings section { padding:15px 17px; border-top:1px solid var(--line) }
+.settings section:first-child { border-top:none }
+.setting-title { margin-bottom:10px }
+.setting-title small,.label-note,.hint { color:var(--secondary); font-size:12px }
+.hint { line-height:1.62; margin-top:8px }
+.seg { display:flex; width:100%; gap:3px; padding:3px; background:var(--paper); border:1px solid var(--line); border-radius:7px }
+.seg button { flex:1; font-size:13px; border:0; background:transparent; min-height:29px; padding:5px 6px }
+.seg button[aria-pressed=true] { background:var(--deep); color:var(--peach) }
+.keyline { justify-content:space-between; gap:4px; margin-top:6px }
+.keyline button { touch-action:none; user-select:none; min-width:0; flex:1; font-size:12px; padding:4px 0; display:grid; gap:1px; place-content:center; background:var(--paper) }
+.keyline button b { font:600 12px "Cascadia Mono",Consolas,monospace; color:var(--teal) }
+.keyline button.held { background:var(--orange); border-color:var(--orange) }
+.number-box { gap:5px } .number-box button { padding:0; min-height:26px; width:26px; font-weight:bold } .number-box output { min-width:21px; text-align:center; font-weight:700 }
+input[type=range] { width:100%; height:20px; margin:2px 0 0 }
+.param+.param { margin-top:8px }
+.param-head { font-size:13px }
+.param-head output { font-size:13px; color:var(--teal); font-weight:650 }
+.focus-row { display:flex; align-items:center; justify-content:space-between; gap:5px; font-size:12px; margin:7px 0 0 }
+.focus-row select { max-width:70%; padding:3px 6px; min-height:27px; font-size:12px }
+.statusline { margin:2px 0 0; color:var(--secondary); font-size:13px; line-height:1.65 }
+.statusline strong { color:var(--ink) }
+.performance { margin-top:10px; font-size:12px; color:var(--secondary) }
+.performance summary { cursor:pointer }
+.performance output { display:block; white-space:pre-line; margin-top:6px; line-height:1.65; color:var(--ink) }
+.performance button { margin-top:8px; font-size:12px }
+@media(max-width:930px) { .layout{gap:13px;grid-template-columns:minmax(0,1fr) 245px} main{padding-left:14px;padding-right:14px}.settings section{padding:12px} .telemetry>div{padding:0 8px} }
+@media(max-width:730px) { main{padding-top:14px} header{padding-bottom:12px;margin-bottom:12px}.layout{display:block}.settings{margin-top:9px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.settings section{border:1px solid var(--line)}#viewport{height:clamp(315px,52vh,460px)} }
+@media(max-width:470px) { .runtime .hz{display:none}.toolbar{gap:5px}.toolbar select{max-width:124px;font-size:12px}.settings{grid-template-columns:1fr}.legend{gap:7px}.telemetry{grid-template-columns:repeat(2,1fr);gap:12px}.telemetry>div:nth-child(3){border:0;padding-left:2px}.stage-foot{padding:7px 9px}.stage-foot .mono{display:none}.hud{top:9px;left:9px} }
+@media(pointer:coarse){button,select,.keyline button,.number-box button{min-height:40px}.check{min-height:38px}input[type=range]{height:26px}}
+</style>
+<main>
+  <header>
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span><div><div class="brand-name">GULISTRIKE</div><h1>僚机飞控实验台</h1></div></div>
+    <div class="runtime"><i id="lamp" class="lamp"></i><span id="run-state" role="status">运行中</span><span class="hz mono">/ 30 Hz</span></div>
+  </header>
+  <div class="layout">
+    <section class="workspace" aria-label="试飞空域">
+      <div class="toolbar">
+        <label class="inline"><span class="caps">试飞场景</span><select id="scene"><option value="ridge">山脊越障</option><option value="pass">双峰山口</option><option value="rejoin">隔山归队</option></select></label>
+        <label class="inline"><span class="caps">视角</span><select id="camera"><option value="overview">全景</option><option value="carrier">跟随巡天</option><option value="wing">跟随观测僚机</option><option value="top">俯视</option></select></label>
+      </div>
+      <div class="stage"><canvas id="viewport" role="img" aria-label="三维试飞空域，蓝色巡天、橙色僚机与实时探测轨迹">此演示需要支持 Canvas 的浏览器。</canvas>
+        <div class="hud"><span class="mono" id="clock">00:00</span><i class="bar"></i><span id="decision">归队</span></div>
+        <div class="stage-foot"><div class="legend"><span><i class="swatch carrier"></i>巡天</span><span><i class="swatch"></i>僚机</span><span><i class="swatch safe"></i>采用轨迹</span><span><i class="swatch blocked"></i>受阻探测</span><span>◇ 编队点</span></div><span class="mono">拖动旋转 · 滚轮缩放</span></div>
+      </div>
+      <dl class="telemetry" aria-label="遥测">
+        <div><dt>观测机速度</dt><dd><span id="speed-out" class="value">—</span><small>m/s</small></dd></div>
+        <div><dt>机腹离地</dt><dd><span id="clearance" class="value">—</span><small>m</small></dd></div>
+        <div><dt title="观测机上次选方向时的球扫总数，单步移动碰撞单独计算">最近决策扫掠</dt><dd><span id="queries" class="value">—</span><small>次</small></dd></div>
+        <div><dt>全队接触地形</dt><dd><span id="contacts" class="value">0</span><small>次</small></dd></div>
+      </dl>
+      <div class="playbar"><div class="buttons"><button type="button" id="play" class="primary">暂停</button><button type="button" id="step">单步</button><button type="button" id="reset">重置场景</button></div><div class="buttons"><label class="check"><input type="checkbox" id="show-probes" checked>探测轨迹</label><label class="check"><input type="checkbox" id="show-trails" checked>航迹</label></div></div>
+      <p class="statusline"><strong id="focus-name">僚机 01</strong>　<span id="detail"></span></p>
+    </section>
+    <aside class="settings" aria-label="试飞设置">
+      <section>
+        <div class="setting-title"><h2>巡天驾驶</h2><span class="label-note" id="pilot-info"></span></div>
+        <div class="seg" aria-label="驾驶模式"><button type="button" id="auto" aria-pressed="true">自动巡航</button><button type="button" id="manual" aria-pressed="false">手动驾驶</button></div>
+        <p class="hint">按键或按住下方按钮即可接管。巡天带近地保护。</p>
+        <div class="keyline" aria-label="驾驶按键"><button type="button" data-key="a"><b>A</b>左转</button><button type="button" data-key="d"><b>D</b>右转</button><button type="button" data-key="w"><b>W</b>加速</button><button type="button" data-key="s"><b>S</b>减速</button><button type="button" data-key="e"><b>E</b>爬升</button><button type="button" data-key="q"><b>Q</b>下降</button></div>
+      </section>
+      <section>
+        <div class="setting-title"><h2><label for="count">僚机数量</label></h2><small>0–25 架</small><div class="number-box"><button type="button" id="less" aria-label="减少一架">−</button><output id="count-out" for="count">5</output><button type="button" id="more" aria-label="增加一架">+</button></div></div>
+        <input id="count" type="range" min="0" max="25" value="5">
+        <label class="focus-row">观测对象<select id="focus"></select></label>
+      </section>
+      <section>
+        <div class="setting-title"><h2>僚机飞控</h2></div>
+        <div class="seg" aria-label="僚机控制器"><button type="button" id="predict" aria-pressed="true">预测避障</button><button type="button" id="direct" aria-pressed="false">直接跟随</button></div>
+        <p class="hint" id="scene-note"></p>
+      </section>
+      <section>
+        <div class="setting-title"><h2>更新方式</h2></div>
+        <div class="seg" role="group" aria-label="飞控更新方式"><button type="button" id="backend-object" aria-pressed="false">逐机更新（原版）</button><button type="button" id="backend-ecs" aria-pressed="true">ECS 批处理</button></div>
+        <details class="performance" id="system-stats"><summary>运行统计与性能对照</summary><output id="system-counts">等待下一模拟步</output><button type="button" id="compare">同输入性能对照</button><output id="comparison" role="status"></output></details>
+      </section>
+      <section>
+        <div class="setting-title"><h2>僚机性能</h2><small>机体半径 3 m</small></div>
+        <div class="param"><div class="param-head"><label for="max-speed">最大速度</label><output id="max-speed-out" for="max-speed"></output></div><input id="max-speed" type="range" min="16" max="48" step="1" value="30"></div>
+        <div class="param"><div class="param-head"><label for="turn">最大转向率</label><output id="turn-out" for="turn"></output></div><input id="turn" type="range" min="28" max="120" step="2" value="80"></div>
+        <div class="param"><div class="param-head"><label for="margin">安全余量</label><output id="margin-out" for="margin"></output></div><input id="margin" type="range" min="2" max="15" step="1" value="6"></div>
+      </section>
+    </aside>
+  </div>
+</main>
+<script id="flight-core">
+"use strict";
+const FlightLab = (() => {
+  const DT = 1/30, RAD = Math.PI/180, RADIUS = 3, X = 328, Y = 216, CELL = 8, MAX_WINGS = 25;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a+(b-a)*t;
+  const vec = (x=0,y=0,z=0) => ({x,y,z});
+  const add = (a,b) => vec(a.x+b.x,a.y+b.y,a.z+b.z);
+  const sub = (a,b) => vec(a.x-b.x,a.y-b.y,a.z-b.z);
+  const mul = (a,s) => vec(a.x*s,a.y*s,a.z*s);
+  const dot = (a,b) => a.x*b.x+a.y*b.y+a.z*b.z;
+  const cross = (a,b) => vec(a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.z,a.x*b.y-a.y*b.x);
+  const norm = a => Math.sqrt(dot(a,a));
+  const unit = (a,fallback=vec(1,0,0)) => {const l=norm(a); return l>1e-8?mul(a,1/l):fallback};
+  const blend = (a,b,t) => add(a,mul(sub(b,a),t));
+  const flat = a => unit(vec(a.x,a.y,0));
+  const left = a => vec(-a.y,a.x,0);
+  const toward = (a,b,step) => a+clamp(b-a,-step,step);
+  const scenes = {
+    ridge:{name:"山脊越障",note:"巡天在山脊另一侧。观察僚机接近坡面时的提前拉起。", start:[-223,-30],phase:.18, routeY:-27,routeAmp:38,ceiling:190,
+      peaks:[[-43,-16,69,60,82,.28],[-112,101,66,48,100,-.32],[62,-133,80,53,112,-.35],[108,105,58,48,110,.5],[228,19,40,55,42,.4],[-249,130,44,38,56,.5]]},
+    pass:{name:"双峰山口",note:"双峰之间有低鞍部，此场景僚机限高 76 m。观察侧向绕行。", start:[-225,-55],phase:.38,routeY:21,routeAmp:29,ceiling:76,
+      peaks:[[-37,-70,45,58,116,-.18],[-12,104,62,47,132,.25],[110,-126,64,49,92,.4],[162,108,59,48,89,-.5],[-186,129,55,47,81,.35]]},
+    rejoin:{name:"隔山归队",note:"僚机与巡天隔着山肩。巡天的实际航迹提供可尝试的归队接入点。", start:[-172,-112],phase:.43,routeY:57,routeAmp:29,ceiling:190,
+      peaks:[[-45,-5,61,46,126,-.38],[-142,106,57,44,82,.3],[58,-119,55,52,115,.35],[131,102,51,44,91,-.5],[211,-67,55,50,65,.2]]}
+  };
+  function terrainHeight(config,x,y) {
+    const ripple=2.3*Math.sin(x*.040+y*.022)+1.3*Math.cos(y*.065-x*.017)+1.6*Math.sin(x*.037-y*.051);
+    let h=5+ripple;
+    for(const [cx,cy,rx,ry,height,angle] of config.peaks) {
+      const dx=x-cx, dy=y-cy, c=Math.cos(angle), s=Math.sin(angle);
+      const a=(dx*c+dy*s)/rx, b=(-dx*s+dy*c)/ry;
+      h+=height*Math.exp(-.9*(a*a+b*b))*(1+.068*Math.sin(x*.069+y*.045)+.041*Math.cos(y*.11-x*.038));
+    }
+    const edge=clamp(Math.min(X-Math.abs(x),Y-Math.abs(y))/35,0,1);
+    return 3+Math.max(0,h)*edge;
+  }
+  function terrain(config) {
+    const nx=2*X/CELL, ny=2*Y/CELL, vertices=[], triangles=[], cells=[];
+    for(let j=0;j<=ny;j++) for(let i=0;i<=nx;i++) {
+      const x=i*CELL-X,y=j*CELL-Y; vertices.push(vec(x,y,terrainHeight(config,x,y)));
+    }
+    function triangle(a,b,c) {
+      const n=unit(cross(sub(b,a),sub(c,a)));
+      const f={a,b,c,n,max:Math.max(a.z,b.z,c.z),z:(a.z+b.z+c.z)/3};
+      triangles.push(f); return f;
+    }
+    for(let j=0;j<ny;j++) for(let i=0;i<nx;i++) {
+      const k=j*(nx+1)+i,a=vertices[k],b=vertices[k+1],c=vertices[k+nx+2],d=vertices[k+nx+1];
+      cells.push([triangle(a,b,c),triangle(a,c,d)]);
+    }
+    function height(x,y) {
+      if(Math.abs(x)>X || Math.abs(y)>Y) return 3;
+      const u=(x+X)/CELL,v=(y+Y)/CELL,i=Math.min(nx-1,Math.floor(u)),j=Math.min(ny-1,Math.floor(v));
+      const f=cells[j*nx+i][u-i>=v-j?0:1];
+      return f.a.z-((x-f.a.x)*f.n.x+(y-f.a.y)*f.n.y)/f.n.z;
+    }
+    // Capsule against the actual displayed triangles. Test the face and all three edges.
+    function edgeDistance2(p,q,a,b) {
+      const d=sub(q,p), e=sub(b,a), w=sub(p,a);
+      const dd=dot(d,d), ee=dot(e,e), de=dot(d,e), dw=dot(d,w), ew=dot(e,w);
+      const den=dd*ee-de*de;
+      let s=den>1e-9?clamp((de*ew-ee*dw)/den,0,1):0;
+      let t=(de*s+ew)/ee;
+      if(t<0 || t>1) { t=clamp(t,0,1); s=dd?clamp((de*t-dw)/dd,0,1):0; }
+      const delta=vec(w.x+d.x*s-e.x*t,w.y+d.y*s-e.y*t,w.z+d.z*s-e.z*t);
+      return dot(delta,delta);
+    }
+    function inside(f,p) {
+      const side=(a,b) => (b.x-a.x)*(p.y-a.y)-(b.y-a.y)*(p.x-a.x);
+      return side(f.a,f.b)>=-1e-7 && side(f.b,f.c)>=-1e-7 && side(f.c,f.a)>=-1e-7;
+    }
+    function faceHit(f,p,q,r) {
+      const d0=dot(sub(p,f.a),f.n),d1=dot(sub(q,f.a),f.n);
+      if(Math.min(d0,d1)>r || Math.max(d0,d1)<-r) return false;
+      const projected=(point,d) => inside(f,sub(point,mul(f.n,d)));
+      if(Math.abs(d0)<=r && projected(p,d0) || Math.abs(d1)<=r && projected(q,d1)) return true;
+      if(d0*d1<0 && inside(f,blend(p,q,d0/(d0-d1)))) return true;
+      return edgeDistance2(p,q,f.a,f.b)<=r*r || edgeDistance2(p,q,f.b,f.c)<=r*r || edgeDistance2(p,q,f.c,f.a)<=r*r;
+    }
+    function sweep(p,q,r,hit=null) {
+      let found=false;
+      if(hit){hit.fraction=1;hit.normal=vec(0,0,1)}
+      if(p.z<=height(p.x,p.y) || p.z<=3+r){
+        if(hit) hit.fraction=0;
+        return true;
+      }
+      if(q.z<=3+r){
+        if(!hit) return true;
+        found=true;hit.fraction=clamp((p.z-3-r)/(p.z-q.z),0,1);
+      }
+      const i0=clamp(Math.floor((Math.min(p.x,q.x)-r+X)/CELL),0,nx-1), i1=clamp(Math.floor((Math.max(p.x,q.x)+r+X)/CELL),0,nx-1);
+      const j0=clamp(Math.floor((Math.min(p.y,q.y)-r+Y)/CELL),0,ny-1), j1=clamp(Math.floor((Math.max(p.y,q.y)+r+Y)/CELL),0,ny-1);
+      const bottom=Math.min(p.z,q.z)-r;
+      for(let j=j0;j<=j1;j++) for(let i=i0;i<=i1;i++) {
+        for(const f of cells[j*nx+i]) {
+          if(f.max<bottom || !faceHit(f,p,q,r)) continue;
+          if(!hit) return true;
+          found=true;
+          // Refine only against this triangle, within the same spatial query.
+          let lo=0,hi=1;
+          for(let k=0;k<10;k++){const m=(lo+hi)/2;if(faceHit(f,p,blend(p,q,m),r)) hi=m;else lo=m}
+          if(lo<hit.fraction){hit.fraction=lo;hit.normal=f.n}
+        }
+      }
+      return found;
+    }
+    return {vertices,triangles,height,sweep,nx,ny};
+  }
+  function turn(dir,goal,limit) {
+    const cosine=clamp(dot(dir,goal),-1,1), angle=Math.acos(cosine);
+    if(angle<=limit || angle<1e-7) return goal;
+    const axis=unit(sub(goal,mul(dir,cosine)),Math.abs(dir.z)<.96?unit(cross(vec(0,0,1),dir)):vec(1,0,0));
+    return unit(add(mul(dir,Math.cos(limit)),mul(axis,Math.sin(limit))));
+  }
+  function predictStep(pose,cmd,params,point=vec(),result={}) {
+    const speed=toward(pose.speed, cmd.speed,(cmd.speed>pose.speed?9:12)*DT);
+    const forward=turn(pose.forward,cmd.dir,params.turn*RAD*DT);
+    const travel=speed*DT;
+    point.x=pose.p.x+forward.x*travel;point.y=pose.p.y+forward.y*travel;point.z=pose.p.z+forward.z*travel;
+    result.p=point;result.forward=forward;result.speed=speed;
+    return result;
+  }
+  function route(cfg,phase) {
+    return vec(247*Math.sin(phase), cfg.routeY+cfg.routeAmp*Math.cos(phase)+19*Math.sin(2*phase),0);
+  }
+  function slotOffset(id) {
+    const row=Math.floor(id/2), side=id%2?1:-1;
+    return {back:18+row*4.3,side:side*(12+row*2.4),up:2+(row%3)*3};
+  }
+  // Each dense entity index addresses one component in each store. The demo adds/removes
+  // from the tail, so the IDs and component records of living members never move.
+  function createFleet() {
+    return {
+      motion:[], steering:[], contact:[], display:[],
+      formation:Array.from({length:MAX_WINGS},(_,id)=>slotOffset(id)),
+      dueIds:new Uint8Array(MAX_WINGS), probe:verifyBuffered, workspace:{pose:{},segments:[],hit:{}},
+      carrierFrame:{tick:-1,forward:vec(),left:vec(),velocity:vec()}
+    };
+  }
+  function carrierFrame(sim) {
+    const frame=sim.fleet.carrierFrame;
+    if(frame.tick!==sim.tick){
+      frame.forward=flat(sim.ship.forward);
+      frame.left=left(frame.forward);
+      frame.velocity=mul(sim.ship.forward,sim.ship.speed);
+      frame.tick=sim.tick;
+    }
+    return frame;
+  }
+  function slot(sim,agent) {
+    if(sim.backend==="object"){
+      const off=slotOffset(agent.id), f=flat(sim.ship.forward);
+      const goal=add(sim.ship.p,add(mul(f,-off.back),add(mul(left(f),off.side),vec(0,0,off.up))));
+      goal.z=Math.min(goal.z,sim.cfg.ceiling-3);
+      return goal;
+    }
+    const off=sim.fleet.formation[agent.id], frame=carrierFrame(sim), p=sim.ship.p;
+    return vec(p.x+(frame.forward.x*-off.back+frame.left.x*off.side),
+      p.y+(frame.forward.y*-off.back+frame.left.y*off.side),Math.min(p.z+off.up,sim.cfg.ceiling-3));
+  }
+  // Presentation and telemetry read these components directly. No pose is copied or
+  // driven by the display. A removed view keeps its old records if an observer holds it.
+  class WingView {
+    constructor(id,motion,steering,contact,display){Object.assign(this,{id,motion,steering,contact,display})}
+    get p(){return this.motion.p}
+    get forward(){return this.motion.forward}
+    get speed(){return this.motion.speed}
+    get bank(){return this.motion.bank}
+    get cmd(){return this.steering.cmd}
+    get mode(){return this.steering.mode}
+    get plan(){return this.display.plan}
+    get trail(){return this.display.trail}
+    get lastQueries(){return this.display.lastQueries}
+    get contacts(){return this.contact.contacts}
+    get touching(){return this.contact.touching}
+    get contactUntil(){return this.contact.contactUntil}
+    get minClear(){return this.contact.minClear}
+  }
+  function addEntity(sim,member){
+    if(sim.backend==="object"){sim.agents.push(member);return}
+    const {id}=member, fleet=sim.fleet;
+    const motion={p:{...member.p},forward:{...member.forward},speed:member.speed,bank:member.bank};
+    const steering={desired:null,cmd:member.cmd,mode:member.mode,side:member.side,hold:member.hold,
+      clearVotes:member.clearVotes,nextSense:member.nextSense,historyIndex:member.historyIndex};
+    const contact={contacts:member.contacts,touching:member.touching,contactUntil:member.contactUntil,
+      minClear:member.minClear,lastNormal:member.lastNormal};
+    const display={plan:member.plan,trail:member.trail,lastQueries:member.lastQueries,paths:[]};
+    fleet.motion.push(motion);fleet.steering.push(steering);fleet.contact.push(contact);fleet.display.push(display);
+    sim.agents.push(new WingView(id,motion,steering,contact,display));
+  }
+  function setBackend(sim,next) {
+    if(next===sim.backend || !["ecs","object"].includes(next))return;
+    const previous=sim.agents;
+    sim.agents=[];sim.backend=next;sim.fleet=next==="ecs"?createFleet():null;
+    for(const member of previous){
+      if(next==="ecs"){addEntity(sim,member);continue}
+      const {desired,...control}=member.steering;
+      const {plan,trail,lastQueries}=member.display;
+      addEntity(sim,{id:member.id,...member.motion,...control,...member.contact,plan,trail,lastQueries});
+    }
+  }
+  function remember(list,p,limit) {list.push(p); if(list.length>limit) list.shift()}
+  function joinPose(sim,id) {
+    const goal=slot(sim,{id}), f=flat(sim.ship.forward), side=left(f);
+    const radius=RADIUS+sim.params.margin, speed=clamp(sim.ship.speed,7,sim.params.speed);
+    const distance=speed*(.85+55/sim.params.turn)+radius;
+    const directions=[sim.ship.forward,f,unit(add(f,vec(0,0,.78))),side,mul(side,-1),mul(f,-1)];
+    function trySite(x,y){
+      const floor=sim.land.height(x,y)+radius+4, cap=sim.cfg.ceiling-2;
+      if(floor>cap) return null;
+      for(const lift of [0,12,28]){
+        const p=vec(x,y,clamp(Math.max(goal.z,floor)+lift,floor,cap));
+        for(const forward of directions){
+          const end=add(p,mul(forward,distance));
+          if(end.z<=sim.cfg.ceiling && !sim.land.sweep(p,end,radius)) return {p,forward,speed};
+        }
+        if(p.z===cap) break;
+      }
+      return null;
+    }
+    for(const range of [0,28,65,120,215]){
+      for(let k=0;k<(range?8:1);k++){
+        const angle=k*Math.PI/4+id*.67;
+        const found=trySite(clamp(goal.x+range*Math.cos(angle),-X+10,X-10),clamp(goal.y+range*Math.sin(angle),-Y+10,Y-10));
+        if(found) return found;
+      }
+    }
+    // All three test terrains have a flat apron along the map edge.
+    return {p:vec(-X+2,-Y+15+id*4,Math.min(45,sim.cfg.ceiling-3)),forward:vec(0,1,0),speed:7};
+  }
+  function resizeGroup(sim,count,initial=false) {
+    count=clamp(Math.round(count),0,MAX_WINGS);
+    const fleet=sim.fleet;
+    if(count<sim.agents.length){
+      if(fleet)for(const store of [fleet.motion,fleet.steering,fleet.contact,fleet.display])store.length=count;
+      sim.agents.length=count;
+    }
+    while(sim.agents.length<count) {
+      const id=sim.agents.length, off=fleet?fleet.formation[id]:slotOffset(id), origin=sim.cfg.start;
+      let pose;
+      if(initial){
+        const p=vec(origin[0]-Math.floor(id/2)*3.1,origin[1]+off.side,0);
+        p.z=sim.land.height(p.x,p.y)+30+off.up;
+        while(sim.land.sweep(p,p,RADIUS+2)) p.z+=2;
+        pose={p,forward:unit(vec(1,.12,-.08)),speed:Math.min(sim.params.speed,23)};
+      }else pose=joinPose(sim,id);
+      addEntity(sim,{id,...pose,bank:0,cmd:null,mode:"track",side:0,hold:0,clearVotes:0,nextSense:0,
+        plan:null,trail:[pose.p],lastQueries:0,contacts:0,touching:false,contactUntil:-1,minClear:Infinity,
+        historyIndex:-1,lastNormal:null});
+    }
+    sim.focus=clamp(sim.focus,0,Math.max(0,count-1));
+  }
+  function create(key="ridge",count=5,params={speed:30,turn:80,margin:6},backend="ecs",sharedTerrain=null) {
+    const cfg=scenes[key], land=sharedTerrain || terrain(cfg), phase=cfg.phase;
+    const p=route(cfg,phase), f=flat(sub(route(cfg,phase+.02),p)); p.z=land.height(p.x,p.y)+26;
+    const sim={key,cfg,land,params:{...params},backend,fleet:backend==="ecs"?createFleet():null,agents:[],time:0,tick:0,focus:0,totalContacts:0,mode:"predict",
+      stats:{decisions:0,forecastSweeps:0,movementSweeps:0},
+      ship:{p,forward:f,speed:15,throttle:15,yaw:Math.atan2(f.y,f.x),bank:0,phase,manual:false},
+      shipTrail:[],history:[],historySerial:0};
+    resizeGroup(sim,count,true);
+    // Only lived positions enter the shared trail, including after a manual takeover.
+    sim.shipTrail.push(p); sim.history.push({p,seq:sim.historySerial++});
+    return sim;
+  }
+  function setPilot(sim,manual) {
+    const ship=sim.ship;
+    if(ship.manual===manual) return;
+    ship.manual=manual; ship.throttle=ship.speed;
+    if(!manual) {
+      let best=Infinity;
+      for(let i=0;i<160;i++) {
+        const phi=i*2*Math.PI/160, p=route(sim.cfg,phi), d=Math.hypot(p.x-ship.p.x,p.y-ship.p.y);
+        if(d<best){best=d; ship.phase=phi}
+      }
+    }
+  }
+  function flyShip(sim,keys) {
+    const ship=sim.ship, old=ship.p, oldYaw=ship.yaw;
+    let wantZ=old.z, speed=ship.speed;
+    if(ship.manual) {
+      ship.throttle=clamp(ship.throttle+((keys.w?1:0)-(keys.s?1:0))*16*DT,0,42);
+      speed=toward(speed,ship.throttle,17*DT);
+      ship.yaw+=((keys.a?1:0)-(keys.d?1:0))*1.30*DT;
+      wantZ+=((keys.e?1:0)-(keys.q?1:0))*29*DT;
+    } else {
+      const next=route(sim.cfg,ship.phase+.015), now=route(sim.cfg,ship.phase);
+      ship.phase+=15*DT/Math.max(38,Math.hypot(next.x-now.x,next.y-now.y)/.015);
+      const target=route(sim.cfg,ship.phase+.065);
+      const wanted=Math.atan2(target.y-old.y,target.x-old.x), diff=Math.atan2(Math.sin(wanted-ship.yaw),Math.cos(wanted-ship.yaw));
+      ship.yaw+=clamp(diff,-1.4*DT,1.4*DT);
+      speed=toward(speed,15,12*DT);
+      wantZ=toward(old.z,sim.land.height(target.x,target.y)+24,26*DT);
+    }
+    const x=clamp(old.x+Math.cos(ship.yaw)*speed*DT,-X+12,X-12), y=clamp(old.y+Math.sin(ship.yaw)*speed*DT,-Y+12,Y-12);
+    // The player ship has terrain-follow assistance so it remains available to drive.
+    const z=clamp(Math.max(wantZ,sim.land.height(x,y)+11),12,205);
+    ship.p=vec(x,y,z);ship.speed=speed;
+    ship.forward=unit(vec(Math.cos(ship.yaw),Math.sin(ship.yaw),(z-old.z)/Math.max(.2,speed*DT)));
+    ship.bank=lerp(ship.bank,clamp((ship.yaw-oldYaw)/DT,-1,1)*.45,.12);
+    if(sim.tick%5===0) remember(sim.shipTrail,ship.p,105);
+    const newest=sim.history[sim.history.length-1];
+    if(norm(sub(newest.p,ship.p))>=8) remember(sim.history,{p:ship.p,seq:sim.historySerial++},110);
+  }
+  function trajectory(a,cmd,params,seconds) {
+    let pose=a; const points=[a.p], steps=Math.ceil(seconds/DT);
+    for(let n=0;n<steps;n++) {pose=predictStep(pose,cmd,params);points.push(pose.p)}
+    return points;
+  }
+  function chordError(p,a,b) {
+    const ab=sub(b,a), len=dot(ab,ab);
+    return norm(sub(p,blend(a,b,len?clamp(dot(sub(p,a),ab)/len,0,1):0)));
+  }
+  function verify(sim,a,cmd,horizon) {
+    const points=trajectory(a,cmd,sim.params,horizon), segments=[];
+    function group(lo,hi) {
+      let worst=0,split=lo;
+      for(let k=lo+1;k<hi;k++){
+        const err=chordError(points[k],points[lo],points[hi]);
+        if(err>worst){worst=err;split=k}
+      }
+      if(worst>1.25){group(lo,split);group(split,hi)}
+      else segments.push({lo,hi,error:worst});
+    }
+    group(0,points.length-1);
+    return checkSegments(sim,a,cmd,points,segments,segments.length,{},null);
+  }
+  function sizePath(buffers,count){
+    const {points,pool}=buffers;
+    for(let i=points.length;i<count;i++)points[i]=pool[i] || (pool[i]=vec());
+    points.length=count;
+    return points;
+  }
+  function verifyBuffered(sim,a,cmd,horizon,trace,attempt){
+    // One private path per tried command per entity. Its display can outlive this
+    // decision. The pose and segment scratch belong to the single avoidance system.
+    const buffers=trace.paths[attempt] || (trace.paths[attempt]={points:[],pool:[]});
+    const work=sim.fleet.workspace,steps=Math.ceil(horizon/DT),points=sizePath(buffers,steps+1);
+    const pose=work.pose;
+    Object.assign(points[0],a.p);
+    pose.p=points[0];pose.forward=a.forward;pose.speed=a.speed;
+    for(let i=1;i<=steps;i++)predictStep(pose,cmd,sim.params,points[i],pose);
+    let count=0;
+    function group(lo,hi) {
+      const start=points[lo],end=points[hi];
+      const dx=end.x-start.x,dy=end.y-start.y,dz=end.z-start.z;
+      const chord2=dx*dx+dy*dy+dz*dz;
+      let maxError2=0,split=lo;
+      for(let k=lo+1;k<hi;k++){
+        const p=points[k];
+        const t=chord2?clamp(((p.x-start.x)*dx+(p.y-start.y)*dy+(p.z-start.z)*dz)/chord2,0,1):0;
+        const ex=p.x-(start.x+dx*t),ey=p.y-(start.y+dy*t),ez=p.z-(start.z+dz*t);
+        const error2=ex*ex+ey*ey+ez*ez;
+        if(error2>maxError2){maxError2=error2;split=k}
+      }
+      if(maxError2>1.25*1.25){group(lo,split);group(split,hi);return}
+      const segment=work.segments[count] || (work.segments[count]={});
+      segment.lo=lo;segment.hi=hi;segment.error=Math.sqrt(maxError2);count++;
+    }
+    group(0,steps);
+    return checkSegments(sim,a,cmd,points,work.segments,count,work.hit,buffers);
+  }
+  function checkSegments(sim,a,cmd,points,segments,count,hit,buffers) {
+    let queries=0;
+    for(let i=0;i<count;i++) {
+      const seg=segments[i];
+      const from=points[seg.lo],to=points[seg.hi];
+      const radius=RADIUS+(cmd.escape?0:sim.params.margin)+seg.error;
+      const ceiling=Math.max(sim.cfg.ceiling,a.p.z+.05);
+      let cap=1;
+      for(let k=seg.lo+1;k<=seg.hi;k++){
+        if(points[k].z>ceiling){
+          const u=clamp((ceiling-points[k-1].z)/Math.max(.0001,points[k].z-points[k-1].z),0,1);
+          cap=(k-1-seg.lo+u)/(seg.hi-seg.lo);break;
+        }
+      }
+      const limit=cap<1;
+      queries++;
+      if(sim.land.sweep(from,to,radius,hit) || limit) {
+        const t=Math.min(hit.fraction,cap), at=lerp(seg.lo,seg.hi,t), end=blend(from,to,t);
+        const prefix=Math.floor(at)+1;
+        let clipped;
+        if(buffers){
+          clipped=sizePath(buffers,prefix+1);
+          Object.assign(clipped[prefix],end);
+        }else clipped=points.slice(0,prefix).concat([end]);
+        return {cmd,points:clipped,safe:false,until:at*DT,queries,limit};
+      }
+    }
+    return {cmd,points,safe:true,until:(points.length-1)*DT,queries,limit:false};
+  }
+  const modeNames={track:"编队跟随",climb:"提前拉起",left:"左侧绕行",right:"右侧绕行",trail:"沿航迹归队",slow:"减速脱离",direct:"直接跟随"};
+  function intent(sim,a,goal) {
+    const delta=sub(goal,a.p), distance=norm(delta);
+    const relative=mul(delta,.65);
+    const feed=sim.fleet?carrierFrame(sim).velocity:mul(sim.ship.forward,sim.ship.speed);
+    const velocity=add(feed,relative);
+    velocity.z=Math.min(velocity.z,(sim.cfg.ceiling-3-a.p.z)*.55);
+    return {mode:"track",dir:unit(velocity,a.forward),speed:clamp(norm(velocity),9,sim.params.speed),distance};
+  }
+  function choose(sim,id,a,control,collision,trace,desired,probe) {
+    const cfg=sim.params;
+    if(sim.mode==="direct") {
+      control.cmd={...desired,mode:"direct"};control.mode="direct";trace.plan=null;trace.lastQueries=0;
+      control.nextSense=sim.time+.16;return;
+    }
+    const horizon=clamp(.75+a.speed/19+42/cfg.turn,1.35,4.7), horizontal=flat(desired.dir);
+    let used=0,attempt=0,firstRejected=null,bestPartial=null,winner=null;
+    function tryCommand(cmd) {
+      const result=probe(sim,a,cmd,horizon,trace,attempt++); used+=result.queries;
+      if(!result.safe){
+        if(!firstRejected) firstRejected=result;
+        if(!bestPartial || result.until>bestPartial.until) bestPartial=result;
+      }
+      return result;
+    }
+    const direct=tryCommand(desired), avoiding=control.mode!=="track" && control.mode!=="direct";
+    if(direct.safe){
+      control.clearVotes++;
+      if(!avoiding || sim.time>=control.hold && control.clearVotes>=2) winner=direct;
+    }else control.clearVotes=0;
+    const slow=Math.max(11,Math.min(cfg.speed*.78,desired.speed));
+    const maxRise=clamp((sim.cfg.ceiling-4-a.p.z)/Math.max(18,slow*horizon),-.5,1.5);
+    const lean=(side,pitch) => unit(add(add(mul(horizontal,.46),mul(left(horizontal),side*.89)),vec(0,0,Math.min(pitch,maxRise))));
+    if(!winner) {
+      const up={mode:"climb",dir:unit(add(horizontal,vec(0,0,Math.min(1.48,maxRise)))),speed:slow};
+      const sides=[1,-1].map(side=>({side,mode:side>0?"left":"right",dir:lean(side,.24),speed:slow}));
+      function sideCost(c) {
+        const probe=add(a.p,mul(c.dir,Math.max(34,a.speed*horizon)));
+        return sim.land.height(probe.x,probe.y) - (c.side===control.side?14:0);
+      }
+      sides.sort((l,r)=>sideCost(l)-sideCost(r));
+      const candidates=sim.key==="pass"?[...sides,up]:[up,...sides];
+      if(sim.key==="rejoin" && sim.history.length>2){
+        const options=sim.history.filter(h=>h.seq>=control.historyIndex && norm(sub(h.p,a.p))>20);
+        options.sort((l,r)=>norm(sub(l.p,a.p))-norm(sub(r.p,a.p)));
+        if(options.length){
+          const wp=options[0];
+          candidates.unshift({mode:"trail",dir:unit(sub(add(wp.p,vec(0,0,5)),a.p)),speed:slow,seq:wp.seq});
+        }
+      }
+      if(avoiding) {
+        const i=candidates.findIndex(c=>c.mode===control.mode);
+        if(i>0) candidates.unshift(candidates.splice(i,1)[0]);
+      }
+      for(const cmd of candidates){
+        const result=tryCommand(cmd);
+        if(result.safe){winner=result;break}
+      }
+    }
+    if(!winner && !direct.safe){
+      const p=a.p,h=sim.land.height;
+      const outward=collision.touching && collision.lastNormal ? collision.lastNormal : unit(vec((h(p.x-3,p.y)-h(p.x+3,p.y))/6,(h(p.x,p.y-3)-h(p.x,p.y+3))/6,1));
+      const downhill=unit(vec(outward.x,outward.y,0),mul(horizontal,-1));
+      const escape={mode:"slow",dir:unit(add(downhill,vec(0,0,Math.min(1.1,maxRise)))),speed:Math.min(12,cfg.speed),escape:true};
+      const escapePlan=tryCommand(escape);
+      if(escapePlan.safe || collision.touching || bestPartial.until<=DT) winner=escapePlan;
+    }
+    winner=winner || (direct.safe?direct:bestPartial);
+    if(control.mode!==winner.cmd.mode){control.hold=sim.time+.72;control.clearVotes=0}
+    if(winner.cmd.side) control.side=winner.cmd.side;
+    if(winner.cmd.seq!==undefined) control.historyIndex=winner.cmd.seq;
+    control.mode=winner.cmd.mode;control.cmd=winner.cmd;trace.lastQueries=used;
+    trace.plan={selected:winner,rejected:firstRejected,time:sim.time};
+    const interval=winner.safe ? (winner.cmd.mode==="track"?.55:.30)+(id%5)*.022 : Math.max(DT,Math.min(.12,winner.until*.45));
+    control.nextSense=sim.time+interval;
+  }
+  function invalidate(sim) {
+    for(const control of sim.fleet?.steering || sim.agents){control.nextSense=0;control.clearVotes=0;control.hold=0}
+    for(const trace of sim.fleet?.display || sim.agents)trace.plan=null;
+  }
+  function setController(sim,mode) {
+    sim.mode=mode;
+    for(const control of sim.fleet?.steering || sim.agents){
+      control.cmd=null;control.mode=mode==="direct"?"direct":"track";control.side=0;
+    }
+    invalidate(sim);
+  }
+  function guidanceSystem(sim) {
+    const fleet=sim.fleet;
+    let due=0;
+    for(let id=0;id<fleet.steering.length;id++){
+      const control=fleet.steering[id];
+      if(control.cmd && sim.time+1e-8<control.nextSense) continue;
+      control.desired=intent(sim,fleet.motion[id],slot(sim,{id}));
+      fleet.dueIds[due++]=id;
+    }
+    return due;
+  }
+  function avoidanceSystem(sim,due) {
+    const fleet=sim.fleet;
+    let sweeps=0;
+    for(let i=0;i<due;i++){
+      const id=fleet.dueIds[i];
+      const control=fleet.steering[id];
+      choose(sim,id,fleet.motion[id],control,fleet.contact[id],fleet.display[id],control.desired,fleet.probe);
+      sweeps+=fleet.display[id].lastQueries;
+    }
+    sim.stats.forecastSweeps=sweeps;
+  }
+  function moveMember(sim,pose,control,collision,trace){
+    const old=pose.p,before=pose.forward,next=predictStep(pose,control.cmd,sim.params),hit={};
+    if(sim.land.sweep(old,next.p,RADIUS,hit)){
+      pose.p=blend(old,next.p,hit.fraction);pose.speed=norm(sub(pose.p,old))/DT;collision.lastNormal=hit.normal;
+      if(!collision.touching){collision.contacts++;sim.totalContacts++}
+      collision.touching=true;collision.contactUntil=sim.time+.35;control.nextSense=0;
+    }else{
+      pose.p=next.p;pose.speed=next.speed;
+      if(sim.time>collision.contactUntil)collision.touching=false;
+    }
+    pose.forward=next.forward;
+    pose.bank=lerp(pose.bank,clamp(cross(before,pose.forward).z/DT,-1,1)*.63,.14);
+    collision.minClear=Math.min(collision.minClear,pose.p.z-sim.land.height(pose.p.x,pose.p.y)-RADIUS);
+    if(sim.tick%5===0)remember(trace.trail,pose.p,68);
+  }
+  function movementSystem(sim) {
+    const {motion,steering,contact,display}=sim.fleet;
+    for(let id=0;id<motion.length;id++)moveMember(sim,motion[id],steering[id],contact[id],display[id]);
+    sim.stats.movementSweeps=motion.length;
+  }
+  // Reference backend: one object owns the complete member state and runs decision,
+  // motion and contact consecutively, using the original allocating trajectory predictor.
+  function updateObjects(sim){
+    let decisions=0,sweeps=0;
+    for(const a of sim.agents){
+      if(!a.cmd || sim.time+1e-8>=a.nextSense){
+        choose(sim,a.id,a,a,a,a,intent(sim,a,slot(sim,a)),verify);
+        decisions++;sweeps+=a.lastQueries;
+      }
+      moveMember(sim,a,a,a,a);
+    }
+    sim.stats.decisions=decisions;sim.stats.forecastSweeps=sweeps;sim.stats.movementSweeps=sim.agents.length;
+  }
+  function tick(sim,keys={}) {
+    sim.time+=DT;sim.tick++;
+    flyShip(sim,keys);
+    if(sim.backend==="object"){updateObjects(sim);return}
+    sim.stats.decisions=guidanceSystem(sim);
+    avoidanceSystem(sim,sim.stats.decisions);
+    movementSystem(sim);
+  }
+  // An isolated replay for the browser worker. The intermediate variant runs the
+  // same ECS scheduler with the reference predictor to distinguish the two costs.
+  function comparePerformance(count,params,mode,onProgress=()=>{}){
+    const steps=3600, maps=Object.keys(scenes), variants=["object","layout","ecs"];
+    const lands=Object.fromEntries(maps.map(key=>[key,terrain(scenes[key])]));
+    const inputs=Array.from({length:steps},(_,i)=>({
+      w:i>=900 && i<1020,a:i>=978 && i<1060,d:i>=1120 && i<1170,
+      q:i>=1080 && i<1185,e:i>=1210 && i<1260,s:i>=1260 && i<1350
+    }));
+    function start(key,variant){
+      const sim=create(key,count,params,variant==="object"?"object":"ecs",lands[key]);
+      if(variant==="layout")sim.fleet.probe=verify;
+      setController(sim,mode);
+      return sim;
+    }
+    function replayStep(sim,i){
+      if(i===900)setPilot(sim,true);
+      if(i===1500)setPilot(sim,false);
+      tick(sim,inputs[i]);
+    }
+    function run(variant){
+      let total=0;
+      for(const key of maps){
+        const sim=start(key,variant), begin=performance.now();
+        for(let i=0;i<steps;i++)replayStep(sim,i);
+        total+=performance.now()-begin;
+      }
+      return total;
+    }
+    const orders=[[0,1,2],[2,1,0],[1,2,0],[0,2,1],[2,0,1],[1,0,2]];
+    const timings=Object.fromEntries(variants.map(v=>[v,{samplesMs:[]}]));
+    for(let warm=0;warm<2;warm++)for(const v of variants)run(v);
+    for(let r=0;r<orders.length;r++){
+      for(const idx of orders[r])timings[variants[idx]].samplesMs.push(run(variants[idx]));
+      onProgress(r+1,orders.length);
+    }
+    for(const result of Object.values(timings)){
+      const sorted=[...result.samplesMs].sort((a,b)=>a-b);
+      result.medianMs=(sorted[2]+sorted[3])/2;
+      result.microsecondsPerStep=result.medianMs*1000/(steps*maps.length);
+    }
+    const totals=()=>({decisions:0,forecastSweeps:0,movementSweeps:0,contacts:0});
+    const parity={object:totals(),ecs:totals(),maxPositionDeltaM:0,differentModes:0,differentStepCounts:0,byScene:[]};
+    for(const key of maps){
+      const original=start(key,"object"), ecs=start(key,"ecs");
+      for(let i=0;i<steps;i++){
+        replayStep(original,i);replayStep(ecs,i);
+        for(const field of ["decisions","forecastSweeps","movementSweeps"]){
+          parity.object[field]+=original.stats[field];parity.ecs[field]+=ecs.stats[field];
+          if(original.stats[field]!==ecs.stats[field])parity.differentStepCounts++;
+        }
+        for(let id=0;id<count;id++){
+          const a=original.agents[id],b=ecs.agents[id];
+          parity.maxPositionDeltaM=Math.max(parity.maxPositionDeltaM,Math.hypot(a.p.x-b.p.x,a.p.y-b.p.y,a.p.z-b.p.z));
+          if(a.mode!==b.mode)parity.differentModes++;
+        }
+      }
+      parity.object.contacts+=original.totalContacts;parity.ecs.contacts+=ecs.totalContacts;
+      parity.byScene.push({key,objectContacts:original.totalContacts,ecsContacts:ecs.totalContacts});
+    }
+    return {count,params,mode,maps,simulatedSecondsPerScene:120,stepsPerRun:steps*maps.length,warmupRounds:2,measuredRounds:orders.length,timings,parity};
+  }
+  return {DT,RAD,RADIUS,X,Y,CELL,clamp,lerp,vec,add,sub,mul,dot,cross,norm,unit,blend,flat,left,scenes,modeNames,create,slot,resizeGroup,setPilot,setController,setBackend,invalidate,tick,comparePerformance};
+})();
+</script>
+<script id="flight-view">
+"use strict";
+const FlightView = (() => {
+  const {X,Y,RADIUS,clamp,lerp,vec,add,sub,mul,dot,cross,unit,blend}=FlightLab;
+  const colors={ink:"#021716",deep:"#032e30",teal:"#0a6f73",blue:"#6aa4be",slate:"#274e61",sage:"#557b78",stone:"#d5c09c",cream:"#fee4d9",orange:"#ee9d58",
+    safe:"#a8e0bd",reject:"#efa6a5"};
+  const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+  const tint=(a,b,t)=>a.map((v,i)=>Math.round(lerp(v,b[i],t)));
+  const css=c=>"rgb("+c.join(",")+")";
+  const low=rgb(colors.sage), middle=tint(low,rgb(colors.stone),.49), summit=tint(rgb(colors.stone),rgb(colors.cream),.62), dark=rgb(colors.deep), light=rgb(colors.cream);
+  const sun=unit(vec(-.53,.16,.83));
+  function topography(land) {
+    for(const f of land.triangles){
+      const t=clamp(f.z/124,0,1), base=t<.48?tint(low,middle,t/.48):tint(middle,summit,(t-.48)/.52);
+      const luminance=dot(f.n,sun);
+      f.color=css(luminance>.70?tint(base,light,(luminance-.70)*.34):tint(base,dark,clamp((.70-luminance)*.54,0,.63)));
+      f.contours=[];
+      const min=Math.min(f.a.z,f.b.z,f.c.z), max=f.max;
+      for(let z=Math.ceil(min/10)*10;z<=max;z+=10){
+        const hits=[];
+        for(const [a,b] of [[f.a,f.b],[f.b,f.c],[f.c,f.a]]){
+          if((a.z<z)!==(b.z<z)) hits.push(blend(a,b,(z-a.z)/(b.z-a.z)));
+        }
+        if(hits.length===2) f.contours.push({a:hits[0],b:hits[1],major:z%30===0});
+      }
+    }
+  }
+  const aircraft={
+    carrier:[
+      ["#274e61",[[.72,0,0],[-.31,.72,-.04],[-.74,.60,-.03],[-.43,.14,.12]]],
+      ["#6aa4be",[[.72,0,0],[-.31,-.72,-.04],[-.74,-.60,-.03],[-.43,-.14,.12]]],
+      ["#6aa4be",[[.95,0,.01],[-.64,.24,0],[-.82,.15,.1],[-.43,0,.19]]],
+      ["#d5c09c",[[.95,0,.01],[-.43,0,.19],[-.82,-.15,.1],[-.64,-.24,0]]],
+      ["#032e30",[[.44,0,.15],[.02,.09,.185],[-.28,0,.22],[.02,-.09,.185]]],
+      ["#6aa4be",[[-.36,.12,.10],[-.84,.24,.30],[-.68,.26,.08]]],
+      ["#d5c09c",[[-.36,-.12,.10],[-.84,-.24,.30],[-.68,-.26,.08]]]
+    ],
+    wing:[
+      ["#ee9d58",[[.69,0,0],[-.33,.88,-.05],[-.63,.75,-.05],[-.47,.14,.04]]],
+      ["#d5c09c",[[.69,0,0],[-.33,-.88,-.05],[-.63,-.75,-.05],[-.47,-.14,.04]]],
+      ["#ee9d58",[[1.0,0,.01],[-.60,.16,.01],[-.70,0,.16],[-.28,0,.20]]],
+      ["#fee4d9",[[1.0,0,.01],[-.28,0,.20],[-.70,0,.16],[-.60,-.16,.01]]],
+      ["#274e61",[[.43,0,.13],[.04,.07,.15],[-.20,0,.21],[.04,-.07,.15]]],
+      ["#ee9d58",[[-.30,0,.13],[-.85,0,.38],[-.69,0,.06]]]
+    ]
+  };
+  class View {
+    constructor(canvas) {
+      this.canvas=canvas;this.ctx=canvas.getContext("2d",{alpha:false});this.tile=document.createElement("canvas");
+      this.yaw=-.29;this.pitch=.68;this.zoom=1;this.mode="overview";this.dirty=true;this.pick=[];
+    }
+    setScene(land){this.land=land;topography(land);this.dirty=true}
+    angles(){
+      const pitch=this.mode==="top"?Math.PI/2-.001:this.pitch;
+      this.ca=Math.cos(this.yaw); this.sa=Math.sin(this.yaw);this.cp=Math.cos(pitch);this.sp=Math.sin(pitch);
+    }
+    project(p){
+      const depth=-p.x*this.sa+p.y*this.ca;
+      return {x:p.x*this.ca+p.y*this.sa,y:-depth*this.sp-p.z*this.cp,d:-depth*this.cp+p.z*this.sp};
+    }
+    screen(p){const q=this.project(p);return {x:this.ox+q.x*this.scale,y:this.oy+q.y*this.scale,d:q.d}}
+    rebuild(){
+      this.angles();
+      const points=new Map(), faces=[];
+      let x0=Infinity,x1=-Infinity,y0=Infinity,y1=-Infinity;
+      const p2=p=>{
+        let q=points.get(p);
+        if(!q){q=this.project(p);points.set(p,q);x0=Math.min(x0,q.x);x1=Math.max(x1,q.x);y0=Math.min(y0,q.y);y1=Math.max(y1,q.y)}
+        return q;
+      };
+      for(const f of this.land.triangles){
+        const a=p2(f.a),b=p2(f.b),c=p2(f.c);
+        faces.push({v:[a,b,c],d:(a.d+b.d+c.d)/3,color:f.color,lines:f.contours});
+      }
+      const borders=[vec(-X,-Y,3),vec(X,-Y,3),vec(X,Y,3),vec(-X,Y,3)];
+      for(let i=0;i<4;i++){
+        const a=borders[i],b=borders[(i+1)%4];
+        const z0=p2(vec(a.x,a.y,-13)),z1=p2(vec(b.x,b.y,-13));
+        // Draw only the two outward faces facing the observer.
+        const outward=unit(vec(b.y-a.y,a.x-b.x,0)), eye=vec(this.sa*this.cp,-this.ca*this.cp,this.sp);
+        if(dot(outward,eye)>0) faces.push({v:[p2(a),p2(b),z1,z0],d:1e7,color:i%2?"#274e61":"#324e4c",lines:[]});
+      }
+      const pad=3, ts=clamp(this.w*this.dpr/(x1-x0)*1.30,1.4,3.05);
+      this.bounds={x0:x0-pad,y0:y0-pad,x1:x1+pad,y1:y1+pad};
+      const bw=this.bounds.x1-this.bounds.x0,bh=this.bounds.y1-this.bounds.y0;
+      this.tile.width=Math.ceil(bw*ts);this.tile.height=Math.ceil(bh*ts);
+      const g=this.tile.getContext("2d");g.setTransform(ts,0,0,ts,-this.bounds.x0*ts,-this.bounds.y0*ts);
+      g.lineJoin="round";faces.sort((a,b)=>a.d-b.d);
+      for(const f of faces) {
+        g.beginPath();g.moveTo(f.v[0].x,f.v[0].y);for(let i=1;i<f.v.length;i++)g.lineTo(f.v[i].x,f.v[i].y);g.closePath();
+        g.fillStyle=f.color;g.fill();g.strokeStyle=f.color;g.lineWidth=.78/ts;g.stroke();
+        for(const line of f.lines){
+          const a=this.project(line.a),b=this.project(line.b);
+          g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.lineWidth=line.major?.95:.53;
+          g.strokeStyle=line.major?"rgba(23,52,48,.48)":"rgba(39,70,62,.37)";g.stroke();
+        }
+      }
+      this.dirty=false;
+    }
+    setMode(mode){if((mode==="top")!==(this.mode==="top"))this.dirty=true;this.mode=mode;this.zoom=1}
+    rotate(dx,dy){
+      this.yaw+=dx*.005; if(this.mode!=="top")this.pitch=clamp(this.pitch+dy*.004,.27,1.24);
+      this.dirty=true;
+    }
+    changeZoom(delta){this.zoom=clamp(this.zoom*Math.exp(-delta*.0014),.68,2.65)}
+    fit(sim){
+      const rect=this.canvas.getBoundingClientRect();
+      const w=Math.max(1,Math.round(rect.width)), h=Math.max(1,Math.round(rect.height)),dpr=Math.min(2,window.devicePixelRatio||1);
+      if(w!==this.w || h!==this.h || dpr!==this.dpr){
+        this.w=w;this.h=h;this.dpr=dpr;this.canvas.width=Math.round(w*dpr);this.canvas.height=Math.round(h*dpr);this.dirty=true;
+      }
+      if(this.dirty)this.rebuild();
+      const b=this.bounds,bw=b.x1-b.x0,bh=b.y1-b.y0, margin=Math.min(40,w*.045);
+      const fit=Math.min((w-margin*2)/bw,(h-48)/bh);
+      this.scale=fit*this.zoom;
+      let cx=(b.x1+b.x0)/2,cy=(b.y1+b.y0)/2;
+      if(this.mode==="wing" || this.mode==="carrier"){
+        const body=this.mode==="wing"?(sim.agents[sim.focus]||sim.ship):sim.ship;
+        const p=this.project(body.p);
+        this.scale*=2.2;cx=p.x;cy=p.y+10;
+      }
+      this.ox=w*.50-cx*this.scale;this.oy=h*.52-cy*this.scale;
+    }
+    path(points,color,width=1,dash=[]){
+      if(points.length<2)return;
+      const g=this.ctx;g.beginPath();g.setLineDash(dash);g.lineWidth=width;g.strokeStyle=color;
+      points.forEach((p,i)=>{const q=this.screen(p);if(i)g.lineTo(q.x,q.y);else g.moveTo(q.x,q.y)});
+      g.stroke();g.setLineDash([]);
+    }
+    marker(p,color,kind,size){
+      const g=this.ctx,q=this.screen(p);g.save();g.translate(q.x,q.y);g.strokeStyle=color;g.lineWidth=1.65;g.beginPath();
+      if(kind==="cross"){g.moveTo(-size,-size);g.lineTo(size,size);g.moveTo(size,-size);g.lineTo(-size,size)}
+      else if(kind==="target"){g.moveTo(0,-size);g.lineTo(size,0);g.lineTo(0,size);g.lineTo(-size,0);g.closePath()}
+      else g.arc(0,0,size,0,Math.PI*2);
+      g.stroke();g.restore();
+    }
+    machine(body,carrier,selected) {
+      const g=this.ctx, F=body.forward,L=FlightLab.left(FlightLab.flat(F)), U=unit(cross(F,L));
+      const c=Math.cos(body.bank),s=Math.sin(body.bank), lateral=add(mul(L,c),mul(U,s)), up=add(mul(U,c),mul(L,-s));
+      const scale=carrier?Math.max(12,11/this.scale):Math.max(5.4,(selected?6.8:4.8)/this.scale);
+      const world=([x,y,z])=>add(body.p,mul(add(mul(F,x),add(mul(lateral,y),mul(up,z))),scale));
+      const pieces=aircraft[carrier?"carrier":"wing"].map(([color,vs])=>{const p=vs.map(v=>this.screen(world(v)));return {p,color,d:p.reduce((n,k)=>n+k.d,0)/p.length}});
+      pieces.sort((a,b)=>a.d-b.d);
+      for(const face of pieces){
+        g.beginPath();face.p.forEach((p,i)=>{if(i)g.lineTo(p.x,p.y);else g.moveTo(p.x,p.y)});g.closePath();
+        g.fillStyle=face.color;g.fill();g.strokeStyle=colors.deep;g.lineWidth=carrier?.86:.7;g.stroke();
+      }
+    }
+    label(p,text,color,row,occupied){
+      const g=this.ctx,q=this.screen(p);g.font='600 11px "Microsoft YaHei UI",sans-serif';
+      const width=Math.ceil(g.measureText(text).width)+12,h=20;
+      if(q.x<0||q.x>this.w||q.y<0||q.y>this.h)return;
+      const x=clamp(q.x+14,3,Math.max(3,this.w-width-3));
+      let y=clamp(q.y+row,4,this.h-h-2);
+      if(occupied && x<occupied.x+occupied.w+4 && x+width>occupied.x-4 && y<occupied.y+occupied.h+3 && y+h>occupied.y-3){
+        y=clamp(occupied.y+occupied.h+4,3,this.h-h-2);
+      }
+      g.strokeStyle=color;g.lineWidth=.8;g.beginPath();g.moveTo(q.x+2,q.y);g.lineTo(x,y+h*.5);g.stroke();
+      g.fillStyle="#021716e8";g.fillRect(x,y,width,h);g.fillStyle=color;g.fillRect(x,y,2,h);
+      g.fillStyle=colors.cream;g.textAlign="left";g.fillText(text,x+6,y+14);return {x,y,w:width,h};
+    }
+    instrument(){
+      const g=this.ctx,n=this.project(vec(0,1,0)), len=Math.hypot(n.x,n.y)||1;
+      const x=this.w-30,y=29;
+      g.save();g.translate(x,y);g.strokeStyle="#8da8a0";g.lineWidth=.8;g.beginPath();g.arc(0,0,12,0,2*Math.PI);g.stroke();
+      g.fillStyle=colors.stone;g.font="10px Consolas,monospace";g.textAlign="center";g.fillText("N",n.x/len*20,n.y/len*20+3);
+      g.beginPath();g.moveTo(n.x/len*9,n.y/len*9);g.lineTo(-n.y/len*3,-2);g.lineTo(n.y/len*3,2);g.closePath();g.fill();g.restore();
+      const meters=this.scale>2?20:50,w=meters*this.scale;
+      g.strokeStyle="#88a29c";g.fillStyle="#bfcdc4";g.font="10px Consolas,monospace";g.textAlign="left";g.lineWidth=1;
+      g.beginPath();g.moveTo(16,this.h-17);g.lineTo(16,this.h-13);g.lineTo(16+w,this.h-13);g.lineTo(16+w,this.h-17);g.stroke();
+      g.fillText(meters+" m",18+w,this.h-10);
+    }
+    draw(sim,probes,trails){
+      this.fit(sim);const g=this.ctx,w=this.w,h=this.h,b=this.bounds;
+      g.setTransform(this.dpr,0,0,this.dpr,0,0);
+      g.fillStyle=colors.ink;g.fillRect(0,0,w,h);
+      g.strokeStyle="#a1c4bb14";g.lineWidth=.7;g.beginPath();
+      for(let x=0;x<w;x+=32){g.moveTo(x,0);g.lineTo(x,h)}for(let y=0;y<h;y+=32){g.moveTo(0,y);g.lineTo(w,y)}g.stroke();
+      const px=this.ox+b.x0*this.scale,py=this.oy+b.y0*this.scale;
+      g.drawImage(this.tile,px,py,(b.x1-b.x0)*this.scale,(b.y1-b.y0)*this.scale);
+      const focus=sim.agents[sim.focus];
+      if(trails){
+        this.path([...sim.shipTrail,sim.ship.p],colors.blue,2.2);
+        for(const a of sim.agents)this.path([...a.trail,a.p],a===focus?"#f8b67e":"#eeb08891",a===focus?1.9:1.05);
+      }
+      if(probes && focus){
+        const target=FlightLab.slot(sim,focus);
+        this.marker(target,colors.blue,"target",4);
+        const plan=focus.plan;
+        if(plan){
+          if(plan.rejected){
+            const r=plan.rejected.points;this.path(r,colors.reject,2.1,[5,4]);this.marker(r[r.length-1],colors.reject,"cross",4);
+          }
+          if(plan.selected.safe){const pts=plan.selected.points;this.path(pts,colors.safe,2.7);this.marker(pts[pts.length-1],colors.safe,"circle",3)}
+        }
+      }
+      const bodies=[...sim.agents,sim.ship].sort((a,b)=>this.project(a.p).d-this.project(b.p).d);
+      this.pick=[];
+      for(const body of bodies){
+        const carrier=body===sim.ship,selected=body===focus,ground=vec(body.p.x,body.p.y,sim.land.height(body.p.x,body.p.y));
+        if(carrier||selected){
+          const q=this.screen(ground);g.fillStyle="#02171640";g.beginPath();g.ellipse(q.x,q.y,carrier?7:4,carrier?3.6:2,0,0,2*Math.PI);g.fill();
+          this.path([ground,body.p],carrier?"#80b7cfaa":"#ecb381bb",1,[2,4]);
+        }
+        this.machine(body,carrier,selected);
+        if(!carrier)this.pick.push({id:body.id,p:this.screen(body.p)});
+      }
+      const first=this.label(sim.ship.p,"巡天",colors.blue,-24);
+      if(focus)this.label(focus.p,"僚机 "+String(focus.id+1).padStart(2,"0"),colors.orange,10,first);
+      this.instrument();
+    }
+  }
+  return View;
+})();
+</script>
+<script id="flight-ui">
+"use strict";
+(() => {
+  const $=id=>document.getElementById(id), params={speed:30,turn:80,margin:6}, keys={};
+  const stage=$("viewport"), view=new FlightView(stage), pads=[...document.querySelectorAll("[data-key]")];
+  let sim=FlightLab.create("ridge",5,params),running=!matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let accumulator=0,lastTime=0,lastText=0,redraw=true;
+  const samples=new Uint16Array(30*3), totals=[0,0,0];
+  let sampleCount=0,sampleCursor=0;
+  view.setScene(sim.land);
+  const num=id=>String(id+1).padStart(2,"0");
+  const modeText={track:"正在接近编队位置。",climb:"按转向上限向上拉起，越过前方坡面。",
+    left:"保持左侧绕行，等待归队弧线恢复净空。",right:"保持右侧绕行，等待归队弧线恢复净空。",
+    trail:"正在接入巡天实际飞过的一段航迹。",slow:"正降低速度，争取下一步机动空间。",direct:"仅按期望方向追赶，前视探测已关闭。"};
+  function pressed(id,yes){$(id).setAttribute("aria-pressed",String(yes))}
+  function syncRun(){
+    $("play").textContent=running?"暂停":"继续";$("run-state").textContent=running?"运行中":"已暂停";
+    $("lamp").classList.toggle("paused",!running);
+  }
+  function syncPilot(){pressed("manual",sim.ship.manual);pressed("auto",!sim.ship.manual)}
+  function clearKeys(){for(const key of Object.keys(keys))delete keys[key];pads.forEach(b=>b.classList.remove("held"))}
+  function resetMeter(){
+    samples.fill(0);totals.fill(0);sampleCount=sampleCursor=0;
+    $("system-counts").textContent="等待下一模拟步";
+  }
+  function advance(){
+    FlightLab.tick(sim,keys);
+    if(!$("system-stats").open)return;
+    const {decisions,forecastSweeps,movementSweeps}=sim.stats;
+    const values=[decisions,forecastSweeps,movementSweeps];
+    for(let i=0;i<3;i++){
+      const k=sampleCursor*3+i;
+      totals[i]+=values[i]-samples[k];samples[k]=values[i];
+    }
+    sampleCursor=(sampleCursor+1)%30;sampleCount=Math.min(sampleCount+1,30);
+  }
+  function backend(value){
+    if(sim.backend!==value){FlightLab.setBackend(sim,value);resetMeter()}
+    pressed("backend-object",value==="object");pressed("backend-ecs",value==="ecs");
+    telemetry();redraw=true;
+  }
+  function compare(){
+    const button=$("compare"), result=$("comparison"), count=sim.agents.length, mode=sim.mode;
+    if(!count){result.textContent="增加僚机后可对照两种飞控。";return}
+    const source=$("flight-core").textContent+"\nonmessage=e=>{try{const {count,params,mode}=e.data;"+
+      "const result=FlightLab.comparePerformance(count,params,mode,(round,total)=>postMessage({round,total}));"+
+      "postMessage({result})}catch(error){postMessage({error:error.message})}}";
+    const url=URL.createObjectURL(new Blob([source],{type:"text/javascript"}));
+    let worker;
+    function finish(){
+      worker?.terminate();URL.revokeObjectURL(url);button.disabled=false;
+    }
+    button.disabled=true;result.textContent=count+" 架，正在后台预热。";
+    try{
+      worker=new Worker(url);
+      worker.onmessage=e=>{
+        const message=e.data;
+        if(message.round){result.textContent=count+" 架，已测 "+message.round+" / "+message.total+" 轮。";return}
+        if(message.error){result.textContent="对照未完成。"+message.error;finish();return}
+        const r=message.result,t=r.timings,p=r.parity;
+        const us=v=>v.microsecondsPerStep.toFixed(1);
+        result.textContent=[
+          r.count+" 架 · "+(r.mode==="direct"?"直接跟随":"预测避障")+" · 三张图各 120 模拟秒",
+          "六轮总耗时取中位数，折算每个固定步（不含绘制）",
+          "逐机 "+us(t.object)+" µs　仅批处理 "+us(t.layout)+" µs　完整 ECS "+us(t.ecs)+" µs",
+          "逐机 / ECS 前视球扫 "+p.object.forecastSweeps+" / "+p.ecs.forecastSweeps+"，地形接触 "+p.object.contacts+" / "+p.ecs.contacts+"。"
+        ].join("\n");
+        finish();
+      };
+      worker.onerror=e=>{result.textContent="对照未完成。"+e.message;finish()};
+      worker.postMessage({count,params:{...sim.params},mode});
+    }catch(error){result.textContent="无法启动后台对照。"+error.message;finish()}
+  }
+  function pilot(manual){FlightLab.setPilot(sim,manual);syncPilot();redraw=true}
+  function updateKeys(key,held){
+    if(held){pilot(true);keys[key]=true}else delete keys[key];
+    pads.find(b=>b.dataset.key===key)?.classList.toggle("held",held);
+  }
+  function selectCount(count){
+    FlightLab.resizeGroup(sim,count);
+    if(!sim.agents.length && view.mode==="wing"){view.setMode("carrier");$("camera").value="carrier"}
+    groupControls();telemetry();redraw=true;
+  }
+  function groupControls(){
+    const count=sim.agents.length,focus=$("focus");
+    $("count").value=count;$("count-out").textContent=count;
+    $("less").disabled=count===0;$("more").disabled=count===25;
+    focus.replaceChildren();
+    if(!count) focus.add(new Option("仅巡天","-1"));
+    sim.agents.forEach(a=>focus.add(new Option("僚机 "+num(a.id),String(a.id))));
+    focus.value=String(count?sim.focus:-1);focus.disabled=!count;
+    $("camera").querySelector('option[value="wing"]').disabled=!count;
+  }
+  function telemetry(){
+    const a=sim.agents[sim.focus],t=Math.floor(sim.time), ship=sim.ship;
+    $("clock").textContent=String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0");
+    $("pilot-info").textContent=Math.round(ship.speed)+" m/s · "+Math.round(ship.p.z)+" m 高";
+    $("contacts").textContent=sim.totalContacts;
+    if(sampleCount && $("system-stats").open){
+      $("system-counts").textContent=sampleCount+" 步内选向 "+totals[0]+" 次，前视球扫 "+totals[1]+" 次，移动球扫 "+totals[2]+" 次。";
+    }
+    if(a){
+      $("speed-out").textContent=a.speed.toFixed(1);
+      $("clearance").textContent=(a.p.z-sim.land.height(a.p.x,a.p.y)-FlightLab.RADIUS).toFixed(1);
+      $("queries").textContent=a.cmd?a.lastQueries:"—";
+      const touching=a.contactUntil>sim.time;
+      const onlyPrefix=a.plan && !a.plan.selected.safe;
+      $("decision").textContent=touching?"接触地形":(onlyPrefix?"短程避让":FlightLab.modeNames[a.mode]||"就绪");
+      $("focus-name").textContent="僚机 "+num(a.id);
+      const distance=Math.round(FlightLab.norm(FlightLab.sub(FlightLab.slot(sim,a),a.p)));
+      const detail=touching?"机身球体已接触坡面，移动截在接触点。":onlyPrefix?"整段预测受阻，正在重新探测可用的短航段。":modeText[a.mode];
+      $("detail").textContent=detail+" 距编队位置 "+distance+" m。";
+    }else{
+      for(const id of ["speed-out","clearance","queries"])$(id).textContent="—";
+      $("focus-name").textContent="巡天";$("decision").textContent="单船飞行";
+      $("detail").textContent="当前空域只有巡天。增加僚机即可观察编队与避障。";
+    }
+  }
+  function setController(mode){
+    FlightLab.setController(sim,mode);pressed("predict",mode==="predict");pressed("direct",mode==="direct");
+    telemetry();redraw=true;
+  }
+  function restart(){
+    const previous=sim;
+    sim=FlightLab.create($("scene").value,previous.agents.length,params,previous.backend);
+    sim.focus=previous.focus;FlightLab.setPilot(sim,previous.ship.manual);
+    clearKeys();accumulator=0;resetMeter();
+    view.setScene(sim.land);view.zoom=1;
+    groupControls();syncPilot();setController(previous.mode);
+    $("scene-note").textContent=sim.cfg.note;telemetry();redraw=true;
+  }
+  function setRunning(next){running=next;accumulator=0;lastTime=0;clearKeys();syncRun();redraw=true}
+  $("play").addEventListener("click",()=>setRunning(!running));
+  $("step").addEventListener("click",()=>{setRunning(false);advance();telemetry();redraw=true});
+  $("reset").addEventListener("click",restart);$("scene").addEventListener("change",restart);
+  $("auto").addEventListener("click",()=>{clearKeys();pilot(false)});
+  $("manual").addEventListener("click",()=>pilot(true));
+  $("predict").addEventListener("click",()=>setController("predict"));
+  $("direct").addEventListener("click",()=>setController("direct"));
+  $("backend-object").addEventListener("click",()=>backend("object"));
+  $("backend-ecs").addEventListener("click",()=>backend("ecs"));
+  $("system-stats").addEventListener("toggle",resetMeter);
+  $("compare").addEventListener("click",compare);
+  $("count").addEventListener("input",e=>selectCount(Number(e.currentTarget.value)));
+  $("less").addEventListener("click",()=>selectCount(sim.agents.length-1));
+  $("more").addEventListener("click",()=>selectCount(sim.agents.length+1));
+  $("focus").addEventListener("change",e=>{sim.focus=Number(e.currentTarget.value);telemetry();redraw=true});
+  $("camera").addEventListener("change",e=>{view.setMode(e.currentTarget.value);redraw=true});
+  for(const id of ["show-probes","show-trails"])$(id).addEventListener("change",()=>{redraw=true});
+  for(const [id,key,unit] of [["max-speed","speed"," m/s"],["turn","turn"," °/s"],["margin","margin"," m"]]){
+    const show=()=>{$(id+"-out").textContent=params[key]+unit};show();
+    $(id).addEventListener("input",e=>{
+      params[key]=Number(e.currentTarget.value);sim.params[key]=params[key];show();
+      FlightLab.invalidate(sim);redraw=true;
+    });
+  }
+  const driveKeys=new Set(["w","a","s","d","q","e"]);
+  const driveKey=e=>/^Key[WASDQE]$/.test(e.code)?e.code.slice(3).toLowerCase():e.key.toLowerCase();
+  window.addEventListener("keydown",e=>{
+    if(e.ctrlKey||e.metaKey||e.altKey)return;
+    const key=driveKey(e);
+    if(driveKeys.has(key)){e.preventDefault();updateKeys(key,true)}
+    else if(e.code==="Space" && !/BUTTON|INPUT|SELECT/.test(e.target.tagName)){
+      e.preventDefault();if(!e.repeat)setRunning(!running);
+    }
+  });
+  window.addEventListener("keyup",e=>{const key=driveKey(e);if(driveKeys.has(key))updateKeys(key,false)});
+  window.addEventListener("blur",clearKeys);
+  document.addEventListener("visibilitychange",()=>{lastTime=0;accumulator=0;if(document.hidden)clearKeys()});
+  pads.forEach(b=>{
+    const key=b.dataset.key;
+    b.addEventListener("pointerdown",e=>{e.preventDefault();b.setPointerCapture(e.pointerId);updateKeys(key,true)});
+    for(const name of ["pointerup","pointercancel","lostpointercapture"])b.addEventListener(name,()=>updateKeys(key,false));
+    b.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();updateKeys(key,true)}});
+    b.addEventListener("keyup",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();updateKeys(key,false)}});
+  });
+  let drag=null;
+  stage.addEventListener("pointerdown",e=>{if(e.button!==0||drag)return;stage.setPointerCapture(e.pointerId);drag={id:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,moved:false}});
+  stage.addEventListener("pointermove",e=>{
+    if(!drag||e.pointerId!==drag.id)return;
+    drag.moved ||= Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>4;
+    if(drag.moved){view.rotate(e.clientX-drag.x,e.clientY-drag.y);redraw=true}
+    drag.x=e.clientX;drag.y=e.clientY;
+  });
+  stage.addEventListener("pointerup",e=>{
+    if(!drag||e.pointerId!==drag.id)return;
+    if(!drag.moved){
+      const r=stage.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+      const picks=view.pick.map(k=>({id:k.id,d:Math.hypot(x-k.p.x,y-k.p.y)})).sort((a,b)=>a.d-b.d);
+      if(picks.length && picks[0].d<18){sim.focus=picks[0].id;$("focus").value=String(sim.focus);telemetry();redraw=true}
+    }
+    drag=null;
+  });
+  stage.addEventListener("pointercancel",()=>{drag=null});
+  stage.addEventListener("wheel",e=>{e.preventDefault();view.changeZoom(e.deltaY);redraw=true},{passive:false});
+  new ResizeObserver(()=>{redraw=true}).observe(stage);
+  function frame(now){
+    if(running && !document.hidden){
+      accumulator+=lastTime?Math.min(.15,(now-lastTime)/1000):0;
+      while(accumulator+1e-10>=FlightLab.DT){advance();accumulator-=FlightLab.DT;redraw=true}
+    }
+    lastTime=now;
+    if(redraw){
+      if(now-lastText>90){telemetry();lastText=now}
+      view.draw(sim,$("show-probes").checked,$("show-trails").checked);redraw=false;
+    }
+    requestAnimationFrame(frame);
+  }
+  $("scene-note").textContent=sim.cfg.note;syncRun();syncPilot();groupControls();telemetry();requestAnimationFrame(frame);
+})();
+</script>
+</html>

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Battle/Contracts/GuLiWingmanProtocolTypes.h"
 #include "Subsystems/WorldSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiHealthBarEvent.h"
 #include "GuLiUnitFeedbackSubsystem.generated.h"
 
 class UMaterialInterface;
@@ -10,8 +11,9 @@ class AGuLiUnitWreck;
 class UMeshComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UGuLiSpellFieldDefinition;
 struct FStreamableHandle;
-DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiActorHealthBarChanged, TWeakObjectPtr<AActor>);
+struct FGuLiUnitVitalHistory;
 
 /** Local presentation defaults. The config references are also covered by an explicit cook directory. */
 UCLASS(Config=Game, DefaultConfig)
@@ -36,6 +38,7 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0")) float CullDistance = 36000.0f;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0", Units="s")) float HealthBarHoldSeconds = 3.0f;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0.01", Units="s")) float HealthBarFadeSeconds = 0.5f;
+	float HealthBarOpacity(double Now, double LastChange) const;
 };
 
 USTRUCT()
@@ -57,13 +60,6 @@ struct FGuLiUnitExplosion
 	bool bFinished = false;
 };
 
-/** Client-local transient cue, not a second source of gameplay health. Negative fraction means no health provider. */
-struct FGuLiActorHitHealthBar
-{
-	float StartTime = 0.0f;
-	float HealthFraction = -1.0f;
-};
-
 /** One client-local owner of active hit overlays and pooled destruction effects; never exists on a dedicated server. */
 UCLASS()
 class GULISTRIKE_API UGuLiUnitFeedbackSubsystem : public UTickableWorldSubsystem
@@ -75,23 +71,24 @@ public:
 	static constexpr int32 HitTimeCustomDataIndex = 7;
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void OnWorldBeginPlay(UWorld& InWorld) override;
 	virtual void Deinitialize() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual bool IsTickable() const override;
 	virtual TStatId GetStatId() const override;
 
-	UFUNCTION(BlueprintCallable, Category="Unit Feedback") void FlashActor(AActor* Actor, float HealthFraction = -1.0f);
+	void RecordActorVitalChange(AActor* Actor, const FGuLiUnitVitalHistory& Vitals);
+	void RemoveActorHealthBar(AActor* Actor);
+	UFUNCTION(BlueprintCallable, Category="Unit Feedback") void FlashActor(AActor* Actor);
 	UFUNCTION(BlueprintCallable, Category="Unit Feedback") void ClearActorFlash(AActor* Actor);
 	UFUNCTION(BlueprintCallable, Category="Unit Feedback") void PlayDestruction(FVector Location, float UnitSize = 0.0f);
 	/** Ground Mass deaths use one third of the model-relative explosion size. */
 	void PlayGroundMassDestruction(FVector Location, float UnitSize);
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") float CalculateDestructionScale(float UnitSize) const;
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") float GetReferenceUnitSize() const { return ReferenceUnitSize; }
+	static bool GetHealthBarAnchor(const AActor* Actor, FVector& Top);
 	static bool GetActorVisualBounds(const AActor* Actor, FBox& OutWorldBounds, float& OutSize);
-	static float HealthBarOpacity(float Age);
-	void EnsureHealthBarRenderers();
-	const TMap<TWeakObjectPtr<AActor>, FGuLiActorHitHealthBar>& GetActorHealthBars() const { return ActorHealthBars; }
-	FGuLiActorHealthBarChanged OnActorHealthBarChanged;
+	const TMap<TWeakObjectPtr<AActor>, FGuLiHealthBarEvent>& GetActorHealthBars() const { return ActorHealthBars; }
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetActiveExplosionCount() const { return ActiveExplosions.Num(); }
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetLoadedExplosionCount() const { return LoadedExplosions.Num(); }
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetPendingExplosionCompileCount() const { return PreparingExplosionSystems.Num(); }
@@ -100,24 +97,32 @@ public:
 	UMaterialInterface* GetWreckMaterial() const { return WreckMaterial; }
 	UFUNCTION(BlueprintCallable, Category="Unit Feedback") AGuLiUnitWreck* SpawnActorWreck(AActor* Source, FVector InitialVelocity, bool bFalling);
 	bool IsWithinCullDistance(const FVector& Location) const;
-	void ApplyWingmanFeedback(const FGuLiWingmanHandle& Wingman, const FVector& Location, bool bDestroyed, float HealthFraction = -1.0f);
+	void PlayWingmanDestruction(const FGuLiWingmanHandle& Wingman, const FVector& Location);
 
 private:
 	UFUNCTION() void HandleExplosionFinished(UNiagaraComponent* Component);
-	void FinishLoading();
+	enum class EExplosionPreloadStage : uint8 { Stopped, Definitions, Systems, Finished };
+	void StartExplosionPreload();
+	void RequestExplosionSystems();
+	void FinishExplosionPreload();
 	void PrepareExplosionCompilation(UNiagaraSystem* System);
 	bool ShouldRenderExplosion(const FVector& Location) const;
 	void QueueDestruction(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier = 1.0f);
 	void SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier);
 	AGuLiUnitWreck* AllocateWreck(const FVector& Location);
 	float ReferenceUnitSize = 0.0f;
-	TMap<TWeakObjectPtr<AActor>, FGuLiActorHitHealthBar> ActorHealthBars;
+	TMap<TWeakObjectPtr<AActor>, FGuLiHealthBarEvent> ActorHealthBars;
+	uint64 NextBarGeneration = 1;
 	float NextHealthBarCleanupTime = 0.0f;
 	struct FPendingExplosion { FVector Location; float UnitSize; float ExpireTime; bool bWingman; float ScaleMultiplier; };
 	TArray<FPendingExplosion> PendingExplosions;
 	TArray<TWeakObjectPtr<UNiagaraSystem>> PreparingExplosionSystems;
 	int32 ExplosionCompileRequests=0;
-	TSharedPtr<FStreamableHandle> LoadHandle;
+	EExplosionPreloadStage ExplosionPreloadStage = EExplosionPreloadStage::Stopped;
+	TSharedPtr<FStreamableHandle> ExplosionDefinitionsLoad;
+	TSharedPtr<FStreamableHandle> ExplosionSystemsLoad;
+	TArray<int32> StartupExplosionVfxIds;
+	UPROPERTY(Transient) TArray<TObjectPtr<UGuLiSpellFieldDefinition>> LoadedExplosionFields;
 	FRandomStream CosmeticRandom;
 	TSet<FGuLiWingmanHandle> DestroyedWingmen;
 	TArray<FGuLiWingmanHandle> DestroyedWingmanOrder;

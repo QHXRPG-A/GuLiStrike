@@ -110,7 +110,7 @@ def main():
     write_json("density-before.json", json.loads(density.json))
     for type_asset in service.list_types():
         backup_package(type_asset.get_path_name().split(".")[0])
-    nav = [row for row in rows if row["class"] in ("RecastNavMesh", "GuLiFlightNavigationVolume", "NavMeshBoundsVolume")]
+    nav = [row for row in rows if row["class"] in ("RecastNavMesh", "NavMeshBoundsVolume")]
     height_path = OUT / "terrain/source-height.png"
     height_path.parent.mkdir(parents=True, exist_ok=True)
     assert unreal.LandscapeService.export_heightmap(land.get_name(), str(height_path))

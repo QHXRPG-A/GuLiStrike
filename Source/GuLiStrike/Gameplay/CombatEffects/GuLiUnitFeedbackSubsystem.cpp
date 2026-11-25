@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiUnitVitalHistory.h"
 #include "Gameplay/Resources/GuLiQuadrupedMinerPresentation.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
@@ -10,28 +11,18 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
-#include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Engine/StaticMesh.h"
-#include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
-#include "HAL/IConsoleManager.h"
 #include "HAL/PlatformTime.h"
 #include "Materials/MaterialInterface.h"
-#include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
-
-namespace
-{
-TAutoConsoleVariable<int32> PrecompileDestruction(TEXT("gs.CombatEffects.PrecompileDestruction"),1,
-    TEXT("Prepare pending Niagara compilation when destruction resources finish loading. Does not spawn or simulate effects. 0 keeps on-demand compilation."));
-}
 
 bool UGuLiUnitFeedbackSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
@@ -60,46 +51,7 @@ void UGuLiUnitFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection
 	HitMaterial = GuLiVfx::Load<UMaterialInterface>(this, Settings->HitVfxId);
 	InstancedHitMaterial = GuLiVfx::Load<UMaterialInterface>(this, Settings->InstancedHitVfxId);
 	WreckMaterial = GuLiVfx::Load<UMaterialInterface>(this, Settings->WreckVfxId);
-	TArray<FSoftObjectPath> Paths;
-	for (const auto& Asset : Settings->ExplosionVfxIds) { const auto Path = GuLiVfx::Path(this, Asset); if (!Path.IsNull()) Paths.AddUnique(Path); }
-	for (const auto& Asset : Settings->WingmanExplosionVfxIds) { const auto Path = GuLiVfx::Path(this, Asset); if (!Path.IsNull()) Paths.AddUnique(Path); }
-	if (!Paths.IsEmpty())
-	{
-		LoadHandle = UAssetManager::GetStreamableManager().RequestAsyncLoad(Paths,
-			FStreamableDelegate::CreateUObject(this, &ThisClass::FinishLoading));
-	}
-}
-
-void UGuLiUnitFeedbackSubsystem::FinishLoading()
-{
-	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
-	for (const auto& Asset : Settings->ExplosionVfxIds)
-		if (auto* System=GuLiVfx::Load<UNiagaraSystem>(this, Asset, false))
-		{ LoadedExplosions.AddUnique(Asset); PrepareExplosionCompilation(System); }
-	for (const auto& Asset : Settings->WingmanExplosionVfxIds)
-		if (auto* System=GuLiVfx::Load<UNiagaraSystem>(this, Asset, false))
-		{ LoadedWingmanExplosions.AddUnique(Asset); PrepareExplosionCompilation(System); }
-	const float Now = GetWorld()->GetTimeSeconds();
-	for (const auto& Pending : PendingExplosions)
-		if (Pending.ExpireTime >= Now) SpawnExplosion(Pending.Location, Pending.UnitSize, Pending.bWingman, Pending.ScaleMultiplier);
-	PendingExplosions.Reset();
-}
-
-void UGuLiUnitFeedbackSubsystem::PrepareExplosionCompilation(UNiagaraSystem* System)
-{
-#if WITH_EDITORONLY_DATA
-	if (!System || PrecompileDestruction.GetValueOnGameThread()==0) return;
-	// Loading leaves editor Niagara scripts pending on demand. Submit the same
-	// non-forced compilation before the first death, without creating a component
-	// or consuming the cosmetic random stream. Cooked resources need no compile.
-	if (System->NeedsRequestCompile())
-	{
-		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiUnitFeedback_PrepareExplosionCompilation);
-		++ExplosionCompileRequests;
-		System->RequestCompile(false);
-	}
-	if (System->HasOutstandingCompilationRequests(true)) PreparingExplosionSystems.AddUnique(System);
-#endif
+	StartExplosionPreload();
 }
 
 bool UGuLiUnitFeedbackSubsystem::IsWithinCullDistance(const FVector& Location) const
@@ -119,19 +71,11 @@ bool UGuLiUnitFeedbackSubsystem::IsWithinCullDistance(const FVector& Location) c
 	return false;
 }
 
-float UGuLiUnitFeedbackSubsystem::HealthBarOpacity(const float Age)
+float UGuLiUnitFeedbackSettings::HealthBarOpacity(double Now, double LastChange) const
 {
-	if (!FMath::IsFinite(Age) || Age < 0.0f) return 0.0f;
-	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
-	return FMath::Clamp(1.0f - FMath::Max(0.0f, Age - Settings->HealthBarHoldSeconds)
-		/ FMath::Max(Settings->HealthBarFadeSeconds, UE_SMALL_NUMBER), 0.0f, 1.0f);
-}
-
-void UGuLiUnitFeedbackSubsystem::EnsureHealthBarRenderers()
-{
-	for (auto It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-		if (APlayerController* Controller = It->Get(); Controller && Controller->IsLocalController())
-			AGuLiCommanderHealthBarRenderer::FindOrSpawn(GetWorld(), Controller);
+	if (!FMath::IsFinite(Now) || !FMath::IsFinite(LastChange) || LastChange < 0 || Now < LastChange) return 0.f;
+	const double FadeAge = FMath::Max(0., Now - LastChange - FMath::Max(0.f, HealthBarHoldSeconds));
+	return float(FMath::Clamp(1. - FadeAge / FMath::Max(UE_SMALL_NUMBER, HealthBarFadeSeconds), 0., 1.));
 }
 
 bool UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(const AActor* Actor, FBox& OutWorldBounds, float& OutSize)
@@ -161,6 +105,27 @@ bool UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(const AActor* Actor, FBox&
 	return FMath::IsFinite(OutSize) && OutSize > UE_SMALL_NUMBER;
 }
 
+bool UGuLiUnitFeedbackSubsystem::GetHealthBarAnchor(const AActor* Actor, FVector& Top)
+{
+	FBox Bounds(ForceInit);
+	if (const auto* Wingman = Cast<AGuLiWingmanPawn>(Actor))
+	{
+		if (!Wingman->IsPresentationInteractable()) return false;
+		const UStaticMeshComponent* Mesh = Wingman->GetBodyMesh();
+		if (!Wingman->IsPresentationInteractable() || !Mesh || !Mesh->IsVisible() || !Mesh->GetStaticMesh()) return false;
+		Bounds = Mesh->GetStaticMesh()->GetBoundingBox().TransformBy(Mesh->GetComponentTransform());
+	}
+	else
+	{
+		float Size = 0;
+		if (!GetActorVisualBounds(Actor, Bounds, Size)) return false;
+	}
+	if (!Bounds.IsValid) return false;
+	Top = Bounds.GetCenter();
+	Top.Z = Bounds.Max.Z + 4;
+	return !Top.ContainsNaN();
+}
+
 float UGuLiUnitFeedbackSubsystem::CalculateDestructionScale(const float UnitSize) const
 {
 	constexpr float BaseScale = 1.0f; // Only the model-size ratio; each VfxId owns its authored scale.
@@ -170,18 +135,26 @@ float UGuLiUnitFeedbackSubsystem::CalculateDestructionScale(const float UnitSize
 	return FMath::IsFinite(Scale) && Scale > 0.0f ? Scale : BaseScale;
 }
 
-void UGuLiUnitFeedbackSubsystem::FlashActor(AActor* Actor, float HealthFraction)
+void UGuLiUnitFeedbackSubsystem::RecordActorVitalChange(AActor* Actor, const FGuLiUnitVitalHistory& Vitals)
+{
+	if (!IsValid(Actor) || Actor->IsHidden()) return;
+	const auto& State = Vitals.Health;
+	const bool bHasShield = State.MaxShield > 0;
+	auto& Bar = ActorHealthBars.FindOrAdd(Actor);
+	const uint64 Generation = Bar.Generation ? Bar.Generation : NextBarGeneration++;
+	Bar = {Vitals.LastChange, Generation, State.Health / State.MaxHealth,
+		bHasShield ? State.Shield / State.MaxShield : 0.f, bHasShield};
+}
+
+void UGuLiUnitFeedbackSubsystem::RemoveActorHealthBar(AActor* Actor)
+{
+	ActorHealthBars.Remove(Actor);
+}
+
+void UGuLiUnitFeedbackSubsystem::FlashActor(AActor* Actor)
 {
 	if (!IsValid(Actor) || Actor->IsHidden()) return;
 	const float Now = GetWorld()->GetTimeSeconds();
-	if (const auto* Health = Actor->FindComponentByClass<UGuLiCombatHealthComponent>())
-	{
-		const auto& State = Health->GetHealthState();
-		HealthFraction = State.IsWellFormed() && State.MaxHealth > 0 ? State.Health / State.MaxHealth : -1.0f;
-	}
-	ActorHealthBars.Add(Actor, {Now, HealthFraction});
-	EnsureHealthBarRenderers();
-	OnActorHealthBarChanged.Broadcast(Actor);
 	if (!HitMaterial || !IsWithinCullDistance(Actor->GetActorLocation())) return;
 	TInlineComponentArray<UMeshComponent*> Meshes;
 	Actor->GetComponents(Meshes, true);
@@ -206,8 +179,7 @@ void UGuLiUnitFeedbackSubsystem::FlashActor(AActor* Actor, float HealthFraction)
 
 void UGuLiUnitFeedbackSubsystem::ClearActorFlash(AActor* Actor)
 {
-	ActorHealthBars.Remove(Actor);
-	OnActorHealthBarChanged.Broadcast(Actor);
+	RemoveActorHealthBar(Actor);
 	for (int32 Index = ActiveHits.Num() - 1; Index >= 0; --Index)
 	{
 		auto& Hit = ActiveHits[Index];
@@ -267,55 +239,51 @@ void UGuLiUnitFeedbackSubsystem::QueueDestruction(const FVector& Location, float
 	const auto& Variants = bWingman ? LoadedWingmanExplosions : LoadedExplosions;
 	if (Variants.IsEmpty())
 	{
-		if (LoadHandle && !LoadHandle->HasLoadCompleted() && PendingExplosions.Num() < 64)
+		if ((ExplosionPreloadStage == EExplosionPreloadStage::Definitions || ExplosionPreloadStage == EExplosionPreloadStage::Systems)
+			&& PendingExplosions.Num() < 64)
 			PendingExplosions.Add({Location, UnitSize, static_cast<float>(GetWorld()->GetTimeSeconds()) + 1.0f, bWingman, ScaleMultiplier});
 		return;
 	}
 	SpawnExplosion(Location, UnitSize, bWingman, ScaleMultiplier);
 }
 
-void UGuLiUnitFeedbackSubsystem::ApplyWingmanFeedback(const FGuLiWingmanHandle& Wingman, const FVector& Location, bool bDestroyed, float HealthFraction)
+void UGuLiUnitFeedbackSubsystem::PlayWingmanDestruction(const FGuLiWingmanHandle& Wingman, const FVector& Location)
 {
 	if (!Wingman.IsValid() || DestroyedWingmen.Contains(Wingman)) return;
 	auto* Presentation = AGuLiWingmanPresentationActor::FindOrSpawn(GetWorld());
 	AGuLiWingmanPawn* Pawn = Presentation ? Presentation->FindPresentedPawn(Wingman) : nullptr;
-	if (bDestroyed)
+	DestroyedWingmen.Add(Wingman); DestroyedWingmanOrder.Add(Wingman);
+	if (DestroyedWingmanOrder.Num() > 4096)
 	{
-		DestroyedWingmen.Add(Wingman); DestroyedWingmanOrder.Add(Wingman);
-		if (DestroyedWingmanOrder.Num() > 4096)
-		{
-			DestroyedWingmen.Remove(DestroyedWingmanOrder[0]);
-			DestroyedWingmanOrder.RemoveAt(0, 1, EAllowShrinking::No);
-		}
-		FTransform Pose;
-		FVector Velocity = FVector::ZeroVector;
-		const bool bHasPose = Presentation && Presentation->TryGetDestructionMotion(Wingman, Pose, Velocity);
-		if (Pawn)
-		{
-			SpawnActorWreck(Pawn, Velocity, true);
-		}
-		else if (bHasPose)
-		{
-			// A roster refresh can release a Pawn before the reliable fallback reaches this client.
-			if (AGuLiUnitWreck* Wreck = AllocateWreck(Pose.GetLocation()))
-			{
-				const FTransform MeshPose = FTransform(FRotator(0, 180, 0), FVector::ZeroVector, FVector(0.2f)) * Pose;
-				if (Wreck->InitializeFromStaticMesh(Presentation->GetFeedbackMesh(), MeshPose, WreckMaterial))
-					Wreck->StartFalling(Velocity, GetDefault<UGuLiUnitFeedbackSettings>()->FallingWreckMaximumLifetime);
-				else Wreck->Destroy();
-			}
-		}
-		FBox Bounds(ForceInit); float Size = 0.0f;
-		if (GetActorVisualBounds(Pawn, Bounds, Size))
-			QueueDestruction(Bounds.GetCenter(), Size, true);
-		else if (const UStaticMesh* Mesh = Presentation ? Presentation->GetFeedbackMesh() : nullptr)
-			QueueDestruction(Location, Mesh->GetBoundingBox().GetExtent().GetMax() * 0.2f, true);
-		else
-			QueueDestruction(Location, 0.0f, true);
-		if (Pawn) ClearActorFlash(Pawn);
-		return;
+		DestroyedWingmen.Remove(DestroyedWingmanOrder[0]);
+		DestroyedWingmanOrder.RemoveAt(0, 1, EAllowShrinking::No);
 	}
-	if (Pawn) FlashActor(Pawn, HealthFraction);
+	FTransform Pose;
+	FVector Velocity = FVector::ZeroVector;
+	const bool bHasPose = Presentation && Presentation->TryGetDestructionMotion(Wingman, Pose, Velocity);
+	if (Pawn)
+	{
+		SpawnActorWreck(Pawn, Velocity, true);
+	}
+	else if (bHasPose)
+	{
+		// A roster refresh can release a Pawn before the reliable fallback reaches this client.
+		if (AGuLiUnitWreck* Wreck = AllocateWreck(Pose.GetLocation()))
+		{
+			const FTransform MeshPose = FTransform(FRotator(0, 180, 0), FVector::ZeroVector, FVector(0.2f)) * Pose;
+			if (Wreck->InitializeFromStaticMesh(Presentation->GetFeedbackMesh(), MeshPose, WreckMaterial))
+				Wreck->StartFalling(Velocity, GetDefault<UGuLiUnitFeedbackSettings>()->FallingWreckMaximumLifetime);
+			else Wreck->Destroy();
+		}
+	}
+	FBox Bounds(ForceInit); float Size = 0.0f;
+	if (GetActorVisualBounds(Pawn, Bounds, Size))
+		QueueDestruction(Bounds.GetCenter(), Size, true);
+	else if (const UStaticMesh* Mesh = Presentation ? Presentation->GetFeedbackMesh() : nullptr)
+		QueueDestruction(Location, Mesh->GetBoundingBox().GetExtent().GetMax() * 0.2f, true);
+	else
+		QueueDestruction(Location, 0.0f, true);
+	if (Pawn) ClearActorFlash(Pawn);
 }
 
 void UGuLiUnitFeedbackSubsystem::SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier)
@@ -366,8 +334,7 @@ TStatId UGuLiUnitFeedbackSubsystem::GetStatId() const
 void UGuLiUnitFeedbackSubsystem::Tick(float DeltaTime)
 {
 #if WITH_EDITORONLY_DATA
-	// Finalize ready compilation without waiting. The original activation path
-	// still handles an effect requested before preparation has completed.
+	// Allow compilation to finish while the World is still loading.
 	PreparingExplosionSystems.RemoveAllSwap([](const TWeakObjectPtr<UNiagaraSystem>& Weak)
 	{
 		auto* System=Weak.Get();
@@ -380,11 +347,10 @@ void UGuLiUnitFeedbackSubsystem::Tick(float DeltaTime)
 	if (Now >= NextHealthBarCleanupTime)
 	{
 		NextHealthBarCleanupTime = Now + 0.1f;
-		TArray<TWeakObjectPtr<AActor>> RemovedBars;
+		const auto* Timing = GetDefault<UGuLiUnitFeedbackSettings>();
 		for (auto It = ActorHealthBars.CreateIterator(); It; ++It)
-			if (!It.Key().IsValid() || It.Key()->IsHidden() || HealthBarOpacity(Now - It.Value().StartTime) <= 0.0f)
-			{ RemovedBars.Add(It.Key()); It.RemoveCurrent(); }
-		for (auto Actor : RemovedBars) OnActorHealthBarChanged.Broadcast(Actor);
+			if (!It.Key().IsValid() || It.Key()->IsHidden() || Timing->HealthBarOpacity(Now, It.Value().LastChange) <= 0)
+				It.RemoveCurrent();
 	}
 	for (int32 Index = ActiveHits.Num() - 1; Index >= 0; --Index)
 	{
@@ -418,7 +384,11 @@ void UGuLiUnitFeedbackSubsystem::Deinitialize()
 	for (const auto& Wreck : ActiveWrecks) if (Wreck.IsValid()) Wreck->Destroy();
 	ActiveWrecks.Reset();
 	WreckMaterial = nullptr;
-	if (LoadHandle) { LoadHandle->CancelHandle(); LoadHandle.Reset(); }
+	ExplosionPreloadStage = EExplosionPreloadStage::Stopped;
+	if (ExplosionDefinitionsLoad) { ExplosionDefinitionsLoad->CancelHandle(); ExplosionDefinitionsLoad.Reset(); }
+	if (ExplosionSystemsLoad) { ExplosionSystemsLoad->CancelHandle(); ExplosionSystemsLoad.Reset(); }
+	LoadedExplosionFields.Reset();
+	StartupExplosionVfxIds.Reset();
 	for (const auto& Hit : ActiveHits)
 		if (UMeshComponent* Mesh = Hit.Mesh.Get(); Mesh && Mesh->GetOverlayMaterial() == Hit.AppliedMaterial) Mesh->SetOverlayMaterial(Hit.PreviousMaterial);
 	for (const auto& Active : ActiveExplosions)

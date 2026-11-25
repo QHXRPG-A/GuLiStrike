@@ -373,6 +373,8 @@ public:
     FGuLiDamageFeedbackEvent OnDamageFeedback;
     /** Current object or authenticated exact-life retired metadata; never grants an entity or simulation. */
     bool GetObjectMetadata(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
+    /** Newest resident generation of one stable identity, including tombstones. Zero if none. */
+    uint32 FindLatestObjectGeneration(const FGuLiHybridObjectKey& Stable, uint8& LifeState) const;
     uint32 GetLatestRetiredLife(const FGuLiHybridObjectKey& Stable) const;
     void GetObjects(TArray<FGuLiHybridObjectState>& Out) const;
     /** Live Actor bindings only, with lightweight metadata and stable directory ordering. */

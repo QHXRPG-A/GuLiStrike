@@ -30,7 +30,8 @@ def register(name, resource, scale, location, note=''):
         definitions.append(existing)
     elif note and note not in existing['Note']:
         existing['Note']+='；'+note
-    uses.append(dict(location=location,resource=resource,scale=scale,vfx_id=existing['id'],name=existing['name']))
+    if location:
+        uses.append(dict(location=location,resource=resource,scale=scale,vfx_id=existing['id'],name=existing['name']))
     return existing['id']
 
 names={'M_GroundWarning_Circle':'GroundWarning','NS_WM01_MissileFlight':'MissileFlight',
@@ -77,7 +78,7 @@ for line in config.splitlines():
         register(ini_names[key],value,7.552620 if 'Explosions' in key else 1,'Config/DefaultGame.ini:'+key)
 
 for name,resource,scale,location,note in [
- ('UnitHitHealthBar','/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitHealthBarWorld.M_UnitHitHealthBarWorld',1,'GuLiCommanderHealthBarRenderer','受击世界血条'),
+ ('UnitHitHealthBar','/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitHealthBarWorld.M_UnitHitHealthBarWorld',1,None,'受击世界血条'),  # Stable resource ID 22 from the original migration.
  ('BlinkAfterimage','/Game/GuLiStrike/FX/M_BlinkAfterimage.M_BlinkAfterimage',1,'BlinkVFX.Afterimage','闪现残影材质'),
  ('BlinkHeatwave','/Game/GuLiStrike/FX/M_BlinkHeatwave.M_BlinkHeatwave',1,'BlinkVFX.Heatwave','闪现热波材质'),
  ('BlinkSphere','/Engine/BasicShapes/Sphere.Sphere',.48,'BlinkVFX.HeatwaveMesh','闪现热波网格，时间曲线保留为动态系数'),

@@ -31,6 +31,26 @@ namespace
 
 UGuLiWingmanFormationDefinition::UGuLiWingmanFormationDefinition() = default;
 
+namespace
+{
+const FGuLiStrikeShipWingmanFlightRow* ResolveFlightRow(const UGuLiWingmanFormationDefinition& Definition)
+{
+	if (Definition.FlightProfileRow.DataTable || !Definition.FlightProfileRow.RowName.IsNone())
+		return Definition.FlightProfileRow.GetRow<FGuLiStrikeShipWingmanFlightRow>(TEXT("Wingman flight profile"));
+	// Native transient ability sets use the same authored row as production.
+	const UDataTable* Table = LoadObject<UDataTable>(nullptr,
+		TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanFlight.DT_GuLiStrikeShip_WingmanFlight"));
+	return Table ? Table->FindRow<FGuLiStrikeShipWingmanFlightRow>(TEXT("DefaultWingman"), TEXT("Default wingman flight")) : nullptr;
+}
+}
+
+FGuLiWingmanFormationRuntimeConfig UGuLiWingmanFormationDefinition::GetResolvedFlightConfig() const
+{
+	FGuLiWingmanFormationRuntimeConfig Result;
+	BuildRuntimeConfig(1, Result);
+	return Result;
+}
+
 bool UGuLiWingmanFormationDefinition::IsWellFormed(FString* OutError) const
 {
 	if (Revision == 0u)
@@ -84,15 +104,18 @@ bool UGuLiWingmanFormationDefinition::IsWellFormed(FString* OutError) const
 	{
 		return Fail(OutError, TEXT("Formation model is unknown."));
 	}
+	const auto* Flight = ResolveFlightRow(*this);
+	if (!Flight || !IsFinitePositive(Flight->MaxSpeedMps) || !IsFiniteNonNegative(Flight->SafetyMarginM))
+		return Fail(OutError, TEXT("Missing or invalid wingman flight profile."));
 	if (!IsFinitePositive(MinimumFlightSpeedCentimetersPerSecond)
 		|| !IsFinitePositive(CruiseFlightSpeedCentimetersPerSecond)
-		|| !IsFinitePositive(CatchUpFlightSpeedCentimetersPerSecond)
+		|| !IsFinitePositive((Flight->MaxSpeedMps * 100.0f))
 		|| MinimumFlightSpeedCentimetersPerSecond > CruiseFlightSpeedCentimetersPerSecond
-		|| CruiseFlightSpeedCentimetersPerSecond > CatchUpFlightSpeedCentimetersPerSecond)
+		|| CruiseFlightSpeedCentimetersPerSecond > (Flight->MaxSpeedMps * 100.0f))
 	{
 		return Fail(OutError, TEXT("Formation speeds must be finite, positive, and ordered minimum <= cruise <= catch-up."));
 	}
-	if (!IsFinitePositive(MaximumTurnRateDegreesPerSecond) || MaximumTurnRateDegreesPerSecond > 180.0f
+	if (!IsFinitePositive(Flight->MaxTurnRateDegPerSec) || Flight->MaxTurnRateDegPerSec > 180.0f
 		|| !IsFinitePositive(MaximumAccelerationCentimetersPerSecondSquared)
 		|| !IsFinitePositive(MaximumDecelerationCentimetersPerSecondSquared)
 		|| !IsFinitePositive(MaximumBankDegrees) || MaximumBankDegrees > 90.0f)
@@ -101,8 +124,7 @@ bool UGuLiWingmanFormationDefinition::IsWellFormed(FString* OutError) const
 	}
 	if (!IsFinitePositive(AgentRadiusCentimeters)
 		|| !IsFinitePositive(SeparationRadiusCentimeters)
-		|| SeparationRadiusCentimeters < AgentRadiusCentimeters * 2.0f
-		|| !IsFinitePositive(ObstacleLookAheadCentimeters))
+		|| SeparationRadiusCentimeters < AgentRadiusCentimeters * 2.0f)
 	{
 		return Fail(OutError, TEXT("Formation avoidance distances must be finite and positive."));
 	}
@@ -135,6 +157,7 @@ bool UGuLiWingmanFormationDefinition::BuildRuntimeConfig(
 		return false;
 	}
 
+	const auto* Flight = ResolveFlightRow(*this);
 	OutRuntime.Model = Model;
 	OutRuntime.GuidanceAlgorithmVersion = GuidanceAlgorithmVersion;
 	OutRuntime.FormationSeed = FormationSeed;
@@ -149,16 +172,16 @@ bool UGuLiWingmanFormationDefinition::BuildRuntimeConfig(
 	OutRuntime.OuterAngularSpeedRadiansPerSecond = OuterAngularSpeedRadiansPerSecond;
 	OutRuntime.MinimumSpeedCentimetersPerSecond = MinimumFlightSpeedCentimetersPerSecond;
 	OutRuntime.CruiseSpeedCentimetersPerSecond = CruiseFlightSpeedCentimetersPerSecond;
-	OutRuntime.CatchUpSpeedCentimetersPerSecond = CatchUpFlightSpeedCentimetersPerSecond;
+	OutRuntime.CatchUpSpeedCentimetersPerSecond = (Flight->MaxSpeedMps * 100.0f);
 	OutRuntime.MaximumAccelerationCentimetersPerSecondSquared =
 		MaximumAccelerationCentimetersPerSecondSquared;
 	OutRuntime.MaximumDecelerationCentimetersPerSecondSquared =
 		MaximumDecelerationCentimetersPerSecondSquared;
-	OutRuntime.MaximumTurnRateDegreesPerSecond = MaximumTurnRateDegreesPerSecond;
+	OutRuntime.MaximumTurnRateDegreesPerSecond = Flight->MaxTurnRateDegPerSec;
 	OutRuntime.MaximumBankDegrees = MaximumBankDegrees;
 	OutRuntime.AgentRadiusCentimeters = AgentRadiusCentimeters;
 	OutRuntime.SeparationRadiusCentimeters = SeparationRadiusCentimeters;
-	OutRuntime.ObstacleLookAheadCentimeters = ObstacleLookAheadCentimeters;
+	OutRuntime.ObstacleLookAheadCentimeters = Flight->SafetyMarginM * 100.0f;
 	OutRuntime.CatchUpDistanceCentimeters = CatchUpDistanceCentimeters;
 	OutRuntime.RecoveryDistanceCentimeters = RecoveryDistanceCentimeters;
 	if (!OutRuntime.IsWellFormed())
@@ -176,7 +199,8 @@ uint64 UGuLiWingmanFormationDefinition::ComputeStableChecksum() const
 	}
 
 	uint64 Hash = GuLiShipAbilityHash::OffsetBasis;
-	GuLiShipAbilityHash::AddString(Hash, TEXT("GuLi.WingmanFormation.v2"));
+	GuLiShipAbilityHash::AddString(Hash, TEXT("GuLi.WingmanFormation.Predictive.v3"));
+	const auto* Flight = ResolveFlightRow(*this);
 	GuLiShipAbilityHash::AddUInt32(Hash, Revision);
 	GuLiShipAbilityHash::AddUInt32(Hash, ExpectedWingmanCount);
 	GuLiShipAbilityHash::AddUInt32(Hash, FlightCount);
@@ -199,14 +223,14 @@ uint64 UGuLiWingmanFormationDefinition::ComputeStableChecksum() const
 	}
 	GuLiShipAbilityHash::AddFloat(Hash, MinimumFlightSpeedCentimetersPerSecond);
 	GuLiShipAbilityHash::AddFloat(Hash, CruiseFlightSpeedCentimetersPerSecond);
-	GuLiShipAbilityHash::AddFloat(Hash, CatchUpFlightSpeedCentimetersPerSecond);
-	GuLiShipAbilityHash::AddFloat(Hash, MaximumTurnRateDegreesPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, (Flight->MaxSpeedMps * 100.0f));
+	GuLiShipAbilityHash::AddFloat(Hash, Flight->MaxTurnRateDegPerSec);
 	GuLiShipAbilityHash::AddFloat(Hash, MaximumAccelerationCentimetersPerSecondSquared);
 	GuLiShipAbilityHash::AddFloat(Hash, MaximumDecelerationCentimetersPerSecondSquared);
 	GuLiShipAbilityHash::AddFloat(Hash, MaximumBankDegrees);
 	GuLiShipAbilityHash::AddFloat(Hash, AgentRadiusCentimeters);
 	GuLiShipAbilityHash::AddFloat(Hash, SeparationRadiusCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, ObstacleLookAheadCentimeters);
+	GuLiShipAbilityHash::AddFloat(Hash, Flight->SafetyMarginM * 100.0f);
 	GuLiShipAbilityHash::AddFloat(Hash, CatchUpDistanceCentimeters);
 	GuLiShipAbilityHash::AddFloat(Hash, RecoveryDistanceCentimeters);
 	return GuLiShipAbilityHash::Finish(Hash);

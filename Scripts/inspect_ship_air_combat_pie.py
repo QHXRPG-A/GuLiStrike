@@ -21,11 +21,6 @@ EXPECTED_ABILITY_SET = (
     "/Game/GuLiStrike/Ship/Abilities/"
     "DA_ShipAbilitySet_WingmanV3.DA_ShipAbilitySet_WingmanV3"
 )
-EXPECTED_NAV_DATA = (
-    "/Game/GuLiStrike/Navigation/Baked/LVL_ShipWingmanAirCombatPrototype/"
-    "DA_FlightNav_LVL_ShipWingmanAirCombatPrototype."
-    "DA_FlightNav_LVL_ShipWingmanAirCombatPrototype"
-)
 EXPECTED_BASE_MAX_SPEED = 16_200.0
 EXPECTED_BASE_ACCELERATION = 2_400.0
 EXPECTED_EFFECTIVE_ACCELERATION = 1_200.0
@@ -77,7 +72,6 @@ def main() -> dict[str, Any]:
         "checks": {},
         "players": [],
         "presentations": [],
-        "flight_navigation": [],
         "combat_effects": {},
         "network_sample": [],
         "editor_settings": {},
@@ -231,16 +225,6 @@ def main() -> dict[str, Any]:
                         else None,
                     }
                 )
-            elif class_path.endswith("GuLiFlightNavigationVolume"):
-                data = actor.get_editor_property("navigation_data")
-                report["flight_navigation"].append(
-                    {
-                        "actor": str(actor.get_name()),
-                        "enabled": bool(actor.get_editor_property("navigation_enabled")),
-                        "data": _object_path(data),
-                    }
-                )
-
         checks = report["checks"]
         if os.path.isfile(NETWORK_SAMPLE_PATH):
             with open(NETWORK_SAMPLE_PATH, "r", encoding="utf-8-sig") as stream:
@@ -301,10 +285,6 @@ def main() -> dict[str, Any]:
         checks["owner_wingmen_25"] = any(
             len(row.get("planes", [])) == EXPECTED_OWNER_WINGMEN
             for row in client_worlds
-        )
-        checks["map_specific_flight_nav"] = any(
-            row["enabled"] and row["data"] == EXPECTED_NAV_DATA
-            for row in report["flight_navigation"]
         )
         checks["background_cpu_throttle_disabled"] = not report[
             "editor_settings"

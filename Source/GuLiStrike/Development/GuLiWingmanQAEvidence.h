@@ -8,7 +8,7 @@
 /** The seven stable log/evidence streams frozen by the Wingman development contract. */
 enum class EGuLiWingmanQALogStream : uint8
 {
-	FlightNav = 0,
+	FlightControl = 0,
 	Wingman,
 	WingmanAI,
 	WingmanRelay,

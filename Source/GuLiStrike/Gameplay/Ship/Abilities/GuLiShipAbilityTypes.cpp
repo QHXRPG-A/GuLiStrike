@@ -249,7 +249,7 @@ bool FGuLiWingmanFormationRuntimeConfig::IsWellFormed() const
 		&& PositiveFinite(AgentRadiusCentimeters)
 		&& PositiveFinite(SeparationRadiusCentimeters)
 		&& SeparationRadiusCentimeters >= AgentRadiusCentimeters * 2.0f
-		&& PositiveFinite(ObstacleLookAheadCentimeters)
+		&& FMath::IsFinite(ObstacleLookAheadCentimeters) && ObstacleLookAheadCentimeters >= 0
 		&& PositiveFinite(CatchUpDistanceCentimeters)
 		&& PositiveFinite(RecoveryDistanceCentimeters)
 		&& RecoveryDistanceCentimeters > CatchUpDistanceCentimeters;

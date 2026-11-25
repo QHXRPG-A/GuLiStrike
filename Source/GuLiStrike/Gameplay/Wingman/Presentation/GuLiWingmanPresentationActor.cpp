@@ -273,7 +273,7 @@ bool AGuLiWingmanPresentationActor::ApplyBootstrap(
 				if (Before.bAlive && Before.bHasPresentedTransform
 					&& ((!After.bAlive && Before.Handle == After.Handle)
 						|| (Bundle.bActiveRosterRefresh && Before.Handle != After.Handle)))
-					Feedback->ApplyWingmanFeedback(Before.Handle, Before.PresentedTransform.GetLocation(), true);
+					Feedback->PlayWingmanDestruction(Before.Handle, Before.PresentedTransform.GetLocation());
 			}
 		}
 		if (Existing->Role == Staged.Role)
@@ -723,7 +723,7 @@ bool AGuLiWingmanPresentationActor::SetWingmanAlive(
 	}
 	if (Track->bAlive && !bAlive && Track->bHasPresentedTransform)
 		if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
-			Feedback->ApplyWingmanFeedback(Wingman, Track->PresentedTransform.GetLocation(), true);
+			Feedback->PlayWingmanDestruction(Wingman, Track->PresentedTransform.GetLocation());
 	Track->bAlive = bAlive;
 	if (!bAlive)
 	{
