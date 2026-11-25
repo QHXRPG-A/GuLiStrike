@@ -28,7 +28,7 @@
 | Progress/DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md | oversize | 39.0KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20260929-重防号导弹解锁与肉鸽卡牌.md | oversize | 30.3KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md | oversize | 35.1KB，建议阈值 30KB |
-| Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md | oversize | 55.4KB，建议阈值 30KB |
+| Progress/DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md | oversize | 55.5KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20261023-游骑兵MechaDestroyer替换与风格化.md | oversize | 39.2KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/20261028-灼烧卡牌与能力系统解耦.md | oversize | 31.3KB，建议阈值 30KB |
 | Progress/DevelopmentDocumentation/GuLiStrike美术规范.md | oversize | 77.8KB，建议阈值 30KB |

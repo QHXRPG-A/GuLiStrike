@@ -508,8 +508,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-25 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
+| [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | development | verification | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
 | [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
 | [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
@@ -596,8 +600,6 @@
 | [游骑兵动画触发与独立爆炸弹修复](../Archive/20261108-游骑兵动画触发与独立爆炸弹修复.md) | archive | recorded | 2026-11-08 |
 | [游骑兵验证场景PIE启动修复](../Archive/20261108-游骑兵验证场景PIE启动修复.md) | archive | recorded | 2026-11-08 |
 | [游骑兵初始弹与肉鸽卡技术交付](../Archive/20261108-游骑兵初始弹与肉鸽卡技术交付.md) | archive | superseded | 2026-11-08 |
-| [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-06 |
-| [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | development | verification | 2026-11-06 |
 | [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | development | verification | 2026-11-06 |
 | [游骑兵世界UI分档与敌方变化提示交付](../Archive/20261106-游骑兵世界UI分档与敌方变化提示交付.md) | archive | recorded | 2026-11-06 |
 | [直线弹丸三轮交火性能复测](../Archive/20261106-直线弹丸三轮交火性能复测.md) | archive | recorded | 2026-11-06 |
@@ -805,10 +807,8 @@
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | development | done | 2026-09-15 |
 | [僚机短激光与炮弹池](../RequirementDocument/20260914-僚机短激光与炮弹池.md) | requirement | approved | 2026-09-14 |
 | [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
-| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | development | done | 2026-09-14 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
-| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
 | [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
 | [Ship 僚机对空攻击—盘旋冷却循环](../RequirementDocument/20260911-Ship僚机对空攻击盘旋冷却循环.md) | requirement | approved | 2026-09-11 |
@@ -859,8 +859,10 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
 | [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
 | [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
@@ -1194,9 +1196,7 @@
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | development | done | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | development | done | 2026-09-15 |
 | [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
-| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
-| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
 | [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
@@ -1513,11 +1513,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | verification | 2026-11-25 |
+| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | done | 2026-11-25 |
 | [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
-| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-24 |
-| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-24 |
-| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-24 |
+| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-25 |
+| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-25 |
 | [游骑兵按键定向闪现与惯性拖拽动画](../RequirementDocument/20261107-游骑兵按键定向闪现与惯性拖拽动画.md) | requirement | approved | 2026-11-08 |
 | [游骑兵跑步与闪现动画](../RequirementDocument/20261104-游骑兵跑步与闪现动画.md) | requirement | approved | 2026-11-08 |
 | [游骑兵全向提速与腿甲明暗](../RequirementDocument/20261104-游骑兵全向提速与腿甲明暗.md) | requirement | approved | 2026-11-08 |
@@ -1670,15 +1670,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
 | [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-25 |
-| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | verification | 2026-11-25 |
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | done | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
 | [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
-| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-24 |
-| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-24 |
-| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-24 |
+| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-25 |
+| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-25 |
 | [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
 | [游骑兵范围与持续增伤](../RequirementDocument/20261123-游骑兵范围与持续增伤.md) | requirement | approved | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
@@ -1999,6 +1999,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-25 |
+| [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | development | verification | 2026-11-25 |
 | [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
 | [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
 | [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
@@ -2044,11 +2046,9 @@
 | [开局交火网络同步量优化实施记录](../DevelopmentDocumentation/20261109-开局交火网络同步量优化.md) | development | done | 2026-11-09 |
 | [开局网络优化会话完成清理与项目同步](../Archive/20261109-开局网络优化会话完成清理与项目同步.md) | archive | recorded | 2026-11-09 |
 | [开局交火网络 1 MB/s 目标验收](../Archive/20261109-开局交火网络1MB每秒验收.md) | archive | recorded | 2026-11-09 |
-| [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-06 |
 | [游骑兵主线程整帧平均降低30%](../RequirementDocument/20261106-游骑兵主线程整帧降低30.md) | requirement | approved | 2026-11-06 |
 | [游骑兵交战长帧治理](../RequirementDocument/20261106-游骑兵交战长帧治理.md) | requirement | approved | 2026-11-06 |
 | [Hybrid状态应用耗时优化](../RequirementDocument/20261106-Hybrid状态应用耗时优化.md) | requirement | approved | 2026-11-06 |
-| [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | development | verification | 2026-11-06 |
 | [游骑兵主线程整帧平均降低30%](../DevelopmentDocumentation/20261106-游骑兵主线程整帧降低30.md) | development | in_progress | 2026-11-06 |
 | [游骑兵交战长帧治理](../DevelopmentDocumentation/20261106-游骑兵交战长帧治理.md) | development | verification | 2026-11-06 |
 | [Hybrid状态应用耗时优化 — 技术方案](../DevelopmentDocumentation/20261106-Hybrid状态应用耗时优化.md) | development | verification | 2026-11-06 |
@@ -2441,6 +2441,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
 | [固定阵营分工最小联机测试](../Archive/20261116-固定阵营分工最小联机测试.md) | archive | recorded | 2026-11-16 |
@@ -2473,8 +2475,6 @@
 | [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
 | [工程车地面动态避障](../RequirementDocument/20260915-工程车地面动态避障.md) | requirement | approved | 2026-09-15 |
 | [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | development | done | 2026-09-15 |
-| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
-| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
 | [激光采矿与矿车进出厂](../RequirementDocument/20260913-激光采矿与矿车进出厂.md) | requirement | approved | 2026-09-13 |
 | [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
@@ -2484,16 +2484,18 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
-| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | verification | 2026-11-25 |
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | done | 2026-11-25 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
 | [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
 | [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
 | [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
 | [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
-| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-24 |
-| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-24 |
-| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-24 |
+| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-25 |
+| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-25 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [巡天命名统一](../Archive/20261103-巡天命名统一.md) | archive | recorded | 2026-11-03 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
@@ -2544,8 +2546,6 @@
 | [Ship动漫低模风格Blender样板 — 制作与交付](../DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md) | development | done | 2026-09-16 |
 | [Ship组件能力与指挥官技能去GAS重构](../RequirementDocument/20260914-Ship组件能力与指挥官技能去GAS重构.md) | requirement | approved | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | development | done | 2026-09-15 |
-| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
-| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
 | [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
@@ -2621,8 +2621,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-25 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
 | [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-25 |
+| [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | development | verification | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
 | [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
 | [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
@@ -2694,10 +2696,8 @@
 | [游骑兵左右Loop与公共战斗链路交付](../Archive/20261109-游骑兵左右Loop与公共战斗链路交付.md) | archive | recorded | 2026-11-09 |
 | [游骑兵动画触发与独立爆炸弹修复](../Archive/20261108-游骑兵动画触发与独立爆炸弹修复.md) | archive | recorded | 2026-11-08 |
 | [游骑兵初始弹与肉鸽卡技术交付](../Archive/20261108-游骑兵初始弹与肉鸽卡技术交付.md) | archive | superseded | 2026-11-08 |
-| [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-06 |
 | [游骑兵主线程整帧平均降低30%](../RequirementDocument/20261106-游骑兵主线程整帧降低30.md) | requirement | approved | 2026-11-06 |
 | [游骑兵交战长帧治理](../RequirementDocument/20261106-游骑兵交战长帧治理.md) | requirement | approved | 2026-11-06 |
-| [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | development | verification | 2026-11-06 |
 | [游骑兵主线程整帧平均降低30%](../DevelopmentDocumentation/20261106-游骑兵主线程整帧降低30.md) | development | in_progress | 2026-11-06 |
 | [游骑兵交战长帧治理](../DevelopmentDocumentation/20261106-游骑兵交战长帧治理.md) | development | verification | 2026-11-06 |
 | [游骑兵世界UI分档与敌方变化提示交付](../Archive/20261106-游骑兵世界UI分档与敌方变化提示交付.md) | archive | recorded | 2026-11-06 |
@@ -2888,6 +2888,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [战场爆炸预载与僚机首次命中帧时间](../Archive/20261125-战场爆炸预载与首次命中帧时间.md) | archive | recorded | 2026-11-25 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
@@ -3025,9 +3027,7 @@
 | [重防号Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-重防号Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
 | [僚机对地轰炸动漫爆炸样板](../RequirementDocument/20260916-僚机对地轰炸动漫爆炸样板.md) | requirement | approved | 2026-09-16 |
 | [僚机短激光与炮弹池](../RequirementDocument/20260914-僚机短激光与炮弹池.md) | requirement | approved | 2026-09-14 |
-| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | development | done | 2026-09-14 |
-| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
 | [僚机飞行尾焰与拖尾](../RequirementDocument/20260910-僚机飞行尾焰与拖尾.md) | requirement | approved | 2026-09-10 |
 | [Ship僚机战斗表现、HUD与相机调整](../RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md) | requirement | approved | 2026-09-10 |
@@ -3043,17 +3043,19 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
-| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | verification | 2026-11-25 |
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | done | 2026-11-25 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
 | [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
 | [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
 | [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
 | [战场爆炸预载与僚机首次命中帧时间](../Archive/20261125-战场爆炸预载与首次命中帧时间.md) | archive | recorded | 2026-11-25 |
 | [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
-| [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-24 |
-| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-24 |
-| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-24 |
+| [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-25 |
+| [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-25 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
@@ -3080,10 +3082,8 @@
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | development | done | 2026-09-15 |
 | [僚机短激光与炮弹池](../RequirementDocument/20260914-僚机短激光与炮弹池.md) | requirement | approved | 2026-09-14 |
 | [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
-| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | development | done | 2026-09-14 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
-| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
 | [通用敌方描边与普通PIE僚机跳变修复](../RequirementDocument/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | requirement | approved | 2026-09-12 |

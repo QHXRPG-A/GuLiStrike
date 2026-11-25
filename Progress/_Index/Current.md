@@ -40,10 +40,9 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | movement, network, ship, wingman | — | 在指挥官原型图的无双·巡天入口验证越岭、双编队空战和跨区对地手感。 | 2026-11-25 |
+| [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | combat, performance, ui | — | 在 GroundSceneUIFeedback_Entry 核验描边距离分档、阵营判定和同批次实例隔离。 | 2026-11-25 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | commander, network, resources | 7/7 (100%) | 在现有地图验证正常PIE输入、接管后的F1/F2/F3操作与玩家效果；EOS和跨机器联机另行验收。 | 2026-11-16 |
 | [2v2指挥官与无双席位 — 双载具构建交付](../DevelopmentDocumentation/20261114-2v2指挥官与无双席位.md) | commander, network, ui | 10/11 (91%) | 玩家验证空地切换、未操控单位及召唤物模拟。 | 2026-11-14 |
-| [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | combat, performance, ui | — | 用户在LVL_CommanderMassPrototype进入Ground席位，按GroundSceneUIFeedback_Entry检查边界、敌方变化和实例隔离。 | 2026-11-06 |
 | [游骑兵交战长帧治理](../DevelopmentDocumentation/20261106-游骑兵交战长帧治理.md) | network, performance, rendering, ui | 8/9 (89%) | 用户在LVL_CommanderMassPrototype的PerfGroundCombatHitches_Entry核验游骑兵操作、HUD和首次命中特效；原始渲染尖峰再次发生时用新增资源名称计时追踪。 | 2026-11-06 |
 | [Hybrid状态应用耗时优化 — 技术方案](../DevelopmentDocumentation/20261106-Hybrid状态应用耗时优化.md) | network, performance | 7/7 (100%) | 用户在LVL_CommanderMassPrototype蓝方前沿交战区核验弹道、瞄准、命中、伤害、采矿和生产表现；入口PerfHybridCPU_Entry。 | 2026-11-06 |
 | [非Mass飞行弹丸六项性能优化 — 分析与开发方案](../DevelopmentDocumentation/20261009-非Mass飞行弹丸六项性能优化.md) | combat, network, performance, presentation, vfx | 12/13 (92%) | 玩家在对应地图核对开火、命中与弹道表现。跨版本混连、晚加入和所有权交接可单独验证。 | 2026-11-06 |
@@ -92,7 +91,9 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | movement, network, ship, wingman | — | — | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, network | — | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-11-25 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | combat, commander, resources, ship, vfx, wingman | 10/10 (100%) | — | 2026-11-25 |
 | [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | art, combat, data, network, ui | — | — | 2026-11-23 |
 | [游骑兵范围与持续增伤](../DevelopmentDocumentation/20261123-游骑兵范围与持续增伤.md) | combat, data, network | — | — | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | combat, data, network | — | — | 2026-11-23 |
@@ -213,7 +214,6 @@
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | commander, network, performance | 8/8 (100%) | 后续先解决初始名册分片与姿态带宽预算，再以打包分机、长时多轮条件复测部署容量。 | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | combat, commander, network, ship, wingman | 8/8 (100%) | — | 2026-09-15 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | combat, vfx, wingman | 7/7 (100%) | 后续另行处理既有失败断言；独立GPU计时与强制扩容未纳入本次实测。 | 2026-09-14 |
-| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | combat, commander, resources, ship, vfx, wingman | 10/10 (100%) | — | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | combat, commander, data, resources, ship | 7/7 (100%) | 单独维护旧网络包预算和Ship快照测试夹具；跟踪场外绕矿簇减速及已有距离场ensure。 | 2026-09-13 |
 | [激光采矿与矿车进出厂](../DevelopmentDocumentation/20260913-激光采矿与矿车进出厂.md) | resources | 6/6 (100%) | 等待矿车受击专项测试范围确认；保留距离场渲染警告供后续定位。 | 2026-09-13 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | commander, network, ship, ui, wingman | 12/12 (100%) | — | 2026-09-13 |
