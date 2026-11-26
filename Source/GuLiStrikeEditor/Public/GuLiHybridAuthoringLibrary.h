@@ -20,6 +20,9 @@ public:
     /** Read the three saved wingman trials and resolve their real startup objects and clearance in the editor world. */
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Hybrid|Authoring")
     static FString InspectWingmanPlayRange();
+    /** Resolve saved HUD trial markers using the production Air and target families. */
+    UFUNCTION(BlueprintCallable,Category="GuLiStrike|Hybrid|Authoring")
+    static FString ExportXuntianHUDRange(const FString& File);
     /** Read back a file using the loaded runtime's registered contracts. */
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Hybrid|Authoring")
     static FString ValidateRuntimeManifest(const FString& File);

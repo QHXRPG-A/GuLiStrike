@@ -54,7 +54,7 @@ bool UGuLiShipAssemblyComponent::PrepareBuild(const FGuLiShipRunBuildState& Buil
 			const auto* Occupant = Ship().GetPartAt(Mount.SocketName);
 			if (!CDO || Class->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated)
 				|| !Ship().GetHullMeshComponent()->DoesSocketExist(Mount.SocketName) || !CDO->CanAttachToSocket(Mount.SocketName)
-				|| (Occupant && !OwnsPart(Occupant)))
+				|| (Occupant && !OwnsPart(Occupant) && !Ship().IsBaseBatteryPart(Mount.SocketName,Occupant)))
 			{
 				Error = FString::Printf(TEXT("Cannot prepare %s at %s: class, socket compatibility, or occupancy failed."), *ConfigurationId.ToString(), *Mount.SocketName.ToString());
 				DiscardPreparedBuild(); return false;
@@ -119,8 +119,18 @@ void UGuLiShipAssemblyComponent::CommitPreparedBuild()
 		for (const auto& Capability : Group.Capabilities) { Capability->RuntimeChanged.RemoveAll(this); Capability->ReleaseCapability(); }
 		for (const auto& Part : Group.Parts) if (Part) PreviousParts.Add(Part);
 	}
+	TArray<UGuLiStrikeShipPartComponent*> ReplacedBaseParts;
 	for (auto& Group : StagedGroups)
 	{
+        for (const auto& Part : Group.Parts)
+        {
+            auto* Previous = Ship().GetPartAt(Part->GetAttachSocketName());
+            if (Previous && !PreviousParts.Contains(Previous))
+            {
+                PreviousParts.Add(Previous);
+                ReplacedBaseParts.Add(Previous);
+            }
+        }
 		for (const auto& Capability : Group.Capabilities)
 		{
 			Capability->RuntimeChanged.AddUObject(this, &ThisClass::PublishRuntime);
@@ -135,6 +145,7 @@ void UGuLiShipAssemblyComponent::CommitPreparedBuild()
 	AppliedResolved = MoveTemp(PreparedResolved);
 	AppliedCatalog = Catalog; AppliedCatalogRevision = Catalog->Revision;
 	Ship().CommitAssemblyParts(PreviousParts, NewParts);
+	for (auto* Part : ReplacedBaseParts) Part->DestroyComponent();
 	for (auto& Group : Removed)
 	{
 		for (const auto& Capability : Group.Capabilities) Capability->DestroyComponent();

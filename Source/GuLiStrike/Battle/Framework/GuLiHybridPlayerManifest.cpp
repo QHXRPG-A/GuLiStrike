@@ -8,6 +8,7 @@
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
+#include "Gameplay/Ship/Aiming/GuLiXuntianGunnery.h"
 #include "Gameplay/Ship/GuLiShipMovementComponent.h"
 #include "Gameplay/Ship/Build/GuLiShipAssemblyComponent.h"
 #include "Gameplay/Ship/Build/Private/GuLiShipSharedBuildRules.h"
@@ -95,6 +96,7 @@ static bool AppendShipStartup(UWorld& World,FGuLiHybridManifestData& Data,FStrin
     const auto* Health=Ship?Ship->GetCombatHealthComponent():nullptr;
     if (!Ship || !Ship->GetShipMovement() || !Mesh || !Health || Health->GetConfiguredMaxHealth()<=0)
     { Error=TEXT("Air role has no configured production Ship, movement, hull or health"); return false; }
+    if (Ship->IsXuntian()) UGuLiXuntianGunnery::AddManifestRules(Data);
     Data.Strings.Add(TEXT("startup/ship_class"),ShipClass->GetPathName());
     if (!FGuLiHybridComponentState::BindDefinitionLayout(Data,TEXT("player/ship"),*ShipClass,Error)) return false;
     Data.Strings.Add(TEXT("startup/ship_hull"),Mesh->GetPathName());

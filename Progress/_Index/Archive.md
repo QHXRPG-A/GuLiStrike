@@ -4,6 +4,9 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-11-26 | [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | ship, ui, network, presentation | passed | 修复对局补登记与内置性能采样的两处逐秒全目录扫描，转向时复用地形网格并在后台计算射界。 |
+| 2026-11-26 | [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | ship, ui, combat, presentation | partial | 巡天使用由试玩版绘制指令生成的原生仪表图集和窄体数字，地面射界与空域改用各自的深度测试材质。 |
+| 2026-11-26 | [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | ship, ui, combat, presentation | partial | 巡天原生 3C 与 HUD 已编入编辑器，六个试飞站位及正式炮口、输入和资源均已读回。 |
 | 2026-11-25 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | ui, commander, ship, wingman, combat | partial | 世界单位血条直接消费生命与护盾的变化记录。清理隐藏渲染 Actor、实例池、材质加载及失效接口后，运行时 C++ 净减少 799 行。 |
 | 2026-11-25 | [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | ui, commander, ship, wingman, combat, performance | partial | 生命、护盾及其上限变化触发血条，各视口绘制全部合格矩形。指挥官总览实测同一帧 601 条候选全部绘制。 |
 | 2026-11-25 | [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | ui, commander, ship, wingman, combat, performance | partial | 血条世界锚点改为 30 Hz，镜头逐帧投影，生命与护盾仍为 10 Hz。240 帧近距跟拍实测模型与血条的世界位置误差 P95 为 55.1 厘米。 |

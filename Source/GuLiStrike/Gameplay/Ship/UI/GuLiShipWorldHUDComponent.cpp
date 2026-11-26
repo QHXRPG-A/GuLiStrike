@@ -2,6 +2,9 @@
 
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Ship/UI/GuLiXuntianHUDWidget.h"
+#include "Gameplay/Ship/UI/GuLiXuntianSceneGuide.h"
+#include "Gameplay/Ship/Aiming/GuLiXuntianGunnery.h"
 #include "Commander/UI/GuLiSceneUITypes.h"
 #include "Commander/UI/GuLiSceneUISourceRegistry.h"
 
@@ -95,6 +98,13 @@ void UGuLiShipWorldHUDComponent::TickComponent(
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	(void)DeltaTime;
+	if (XuntianHUD && XuntianGuide && OwnerShip.IsValid())
+	{
+		const bool Visible=ShouldPresent() && !OwnerShip->IsCarrierDormant();
+		XuntianGuide->SetVisibility(Visible,true);
+		if (Visible) XuntianGuide->UpdateGuide(*OwnerShip->GetXuntianGunnery());
+		return;
+	}
 
 	if (!ShouldPresent())
 	{
@@ -134,6 +144,22 @@ void UGuLiShipWorldHUDComponent::HandleOwnerControllerChanged()
 	}
 
 	LocalController = Controller;
+	if (Ship->IsXuntian())
+    {
+        if (!XuntianHUD)
+        {
+            XuntianHUD=CreateWidget<UGuLiXuntianHUDWidget>(Controller,UGuLiXuntianHUDWidget::StaticClass());
+            if (XuntianHUD) XuntianHUD->AddToPlayerScreen(15);
+        }
+        if (!XuntianGuide)
+        {
+            XuntianGuide=NewObject<UGuLiXuntianSceneGuide>(Ship);
+            Ship->AddInstanceComponent(XuntianGuide);
+            XuntianGuide->RegisterComponent();
+        }
+        SetComponentTickEnabled(true);
+        return;
+    }
 	HullMesh = Ship->GetHullMeshComponent();
 	BindAimComponent(Ship->GetShipAimComponent());
 	CreateRuntimeWidgets();
@@ -276,6 +302,8 @@ void UGuLiShipWorldHUDComponent::CreateRuntimeWidgets()
 
 void UGuLiShipWorldHUDComponent::DestroyRuntimeWidgets()
 {
+	if (XuntianHUD) { XuntianHUD->RemoveFromParent(); XuntianHUD=nullptr; }
+	if (XuntianGuide) { XuntianGuide->DestroyComponent(); XuntianGuide=nullptr; }
 	const bool bHadNodes = StatusWidget || FlightNode || CombatNode || ReticleNode || AimBoundsNode;
 	BindAimComponent(nullptr);
 	SetComponentTickEnabled(false);

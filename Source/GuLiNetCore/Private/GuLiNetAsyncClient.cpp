@@ -1,4 +1,5 @@
 #include "GuLiNetAsyncClient.h"
+#include "GuLiNetCensus.h"
 #include "GuLiNetTeamAuthority.h"
 #include "GuLiNetManifest.h"
 #include "GuLiNetHash.h"
@@ -213,6 +214,7 @@ struct AsyncClientWorld::State
             &&(!G->second.Recovery||R.Status==CommitStatus::Interrupted);
     }
     std::map<ObjectKey,ObjectRecord> Directory;
+    ClientCensusIndex Census;
     // Directory assignments preserve addresses, and retirement retains a tombstone.
     // This bounded, caller-thread cache never caches a miss or an authority decision.
     mutable std::array<const ObjectRecord*,4096> ReadCache{};
@@ -753,6 +755,7 @@ void AsyncClientWorld::State::ApplyDelta(ReadDelta D)
     for (auto& [K,R]:D.Records)
     {
         auto* Previous=FindRecord(K);
+        Census.Update(Previous,R);
         if (!Previous || Previous->Grant!=R.Grant) HashDirty=true;
         if (Previous) *Previous=std::move(R);
         else Directory.emplace(K,std::move(R));
@@ -2105,6 +2108,7 @@ const std::string& AsyncClientWorld::DirectoryHash() const
     return S->Hash;
 }
 const std::map<ObjectKey,ObjectRecord>& AsyncClientWorld::Objects() const {return S->Directory;}
+const ClientCensusIndex& AsyncClientWorld::CensusIndex() const {S->CheckMain();return S->Census;}
 const ObjectRecord* AsyncClientWorld::FindObject(ObjectKey K) const {S->CheckMain();return S->FindRecord(K);}
 const ObjectRecord* AsyncClientWorld::FindObject(ObjectKey K,ObjectReadCursor& Cursor) const
 {

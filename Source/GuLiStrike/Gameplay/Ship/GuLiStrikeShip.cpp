@@ -19,6 +19,7 @@
 #include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Gameplay/Ship/Aiming/GuLiShipAimComponent.h"
+#include "Gameplay/Ship/Aiming/GuLiXuntianGunnery.h"
 #include "Gameplay/Ship/GuLiShipCameraCollision.h"
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
 #include "Gameplay/Ship/GuLiShipTargetingRangeComponent.h"
@@ -92,6 +93,9 @@ AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
 	auto* ExternalControl=CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"));
 	ExternalControl->bPlayerVehicle=true;ExternalControl->bAirborne=true;
 	ShipAim = CreateDefaultSubobject<UGuLiShipAimComponent>(TEXT("ShipAim"));
+	XuntianGunnery = CreateDefaultSubobject<UGuLiXuntianGunnery>(TEXT("XuntianGunnery"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> PrimaryInput(TEXT("/Game/GuLiStrike/Input/Actions/IA_Ship_Fire.IA_Ship_Fire"));
+	BatteryFireAction = PrimaryInput.Object;
 	ShipWorldHUD = CreateDefaultSubobject<UGuLiShipWorldHUDComponent>(TEXT("ShipWorldHUD"));
 	WingmanTargetingRange = CreateDefaultSubobject<UGuLiShipTargetingRangeComponent>(TEXT("WingmanTargetingRange"));
 	WingmanTargetingRange->SetupAttachment(GetRootComponent());
@@ -208,6 +212,18 @@ void AGuLiStrikeShip::BeginPlay()
 	// 先应用调参表/相机表预设（可能覆盖本类默认值），再装配部件与推导数值
 	ApplyTuningRow();
 	ApplyCameraRow();
+	if (IsXuntian() && ShipAssembly->Catalog)
+	{
+		for (const auto& Group : ShipAssembly->Catalog->Groups)
+		{
+			if (Group.ConfigurationId != TEXT("Group_05") && Group.ConfigurationId != TEXT("Group_02")) continue;
+			for (const auto& Mount : Group.Mounts)
+			{
+				if (DefaultParts.ContainsByPredicate([&](const auto& P){ return P.SocketName == Mount.SocketName; })) continue;
+				if (auto* Class = Mount.PartClass.LoadSynchronous()) DefaultParts.Add({Mount.SocketName, Class});
+			}
+		}
+	}
 
 	// 滚轮期望臂长从蓝图配置的臂长起步；实际臂长由 Tick 的舰体/地形避障统一结算
 	DesiredArmLength = SpringArm ? SpringArm->TargetArmLength : CameraZoomMax;
@@ -304,6 +320,7 @@ void AGuLiStrikeShip::OnRep_CarrierDormant()
     if (bCarrierDormant)
     {
         HybridInput={}; bSemanticFlightInput=false; ConsumeMovementInputVector();
+        if (XuntianGunnery) XuntianGunnery->ResetControls();
         Movement->FreezeCarrierMotion();
     }
 }
@@ -315,6 +332,12 @@ void AGuLiStrikeShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	// 建立 Enhanced Input 动作绑定
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
+		if (IsXuntian() && BatteryFireAction)
+		{
+			EnhancedInputComponent->BindAction(BatteryFireAction, ETriggerEvent::Started, this, &AGuLiStrikeShip::BatteryPressed);
+			EnhancedInputComponent->BindAction(BatteryFireAction, ETriggerEvent::Completed, this, &AGuLiStrikeShip::BatteryReleased);
+			EnhancedInputComponent->BindAction(BatteryFireAction, ETriggerEvent::Canceled, this, &AGuLiStrikeShip::BatteryReleased);
+		}
 		EnhancedInputComponent->BindAction(ForwardAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::ThrustForward);
 		EnhancedInputComponent->BindAction(BackwardAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::ThrustBackward);
 		EnhancedInputComponent->BindAction(StrafeRightAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::ThrustRight);
@@ -415,6 +438,11 @@ void AGuLiStrikeShip::Look(const FInputActionValue& Value)
 	if (!IsLocallyControlled()) { return; }
 	// 取输入向量
 	const FVector2D InputVector = Value.Get<FVector2D>();
+	if (IsXuntian() && XuntianGunnery)
+	{
+		XuntianGunnery->Orbit({InputVector.X * MouseYawScale, InputVector.Y * MousePitchScale});
+		return;
+	}
 	if (ShipAim && ShipAim->ConsumeLookInput(InputVector))
 	{
 		return;
@@ -437,6 +465,7 @@ void AGuLiStrikeShip::ZoomCamera(const FInputActionValue& Value)
 	if (!IsLocallyControlled()) { return; }
 	// 滚轮上滚（+1）= 拉近；只改期望臂长，实际臂长由 Tick 的舰体/地形避障统一结算
 	const float Notches = Value.Get<float>();
+	if (IsXuntian() && XuntianGunnery) { XuntianGunnery->Zoom(Notches); return; }
 	DesiredArmLength = FMath::Clamp(DesiredArmLength - Notches * CameraZoomStep, CameraZoomMin, CameraZoomMax);
 }
 
@@ -449,12 +478,26 @@ namespace
 	}
 }
 
+void AGuLiStrikeShip::CalcCamera(float DeltaTime, FMinimalViewInfo& View)
+{
+    if (IsXuntian() && XuntianGunnery && IsLocallyControlled()) XuntianGunnery->GetCameraView(View);
+    else Super::CalcCamera(DeltaTime, View);
+}
+void AGuLiStrikeShip::BatteryPressed() { if (CanUseShipControls() && XuntianGunnery) XuntianGunnery->SetTrigger(true); }
+void AGuLiStrikeShip::BatteryReleased() { if (XuntianGunnery) XuntianGunnery->SetTrigger(false); }
+
 void AGuLiStrikeShip::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	PumpHybridFlightInput();
-		if (UGuLiNetworkSettings::CanPresent(GetWorld()) && IsLocallyControlled()) ResolveCameraArmCollision();
-		return;
+    if (IsXuntian() && XuntianGunnery)
+    {
+        const bool bPilot = IsLocallyControlled() && !bCarrierDormant && !bShipDeathHandled;
+        if (bPilot) XuntianGunnery->UpdateLocalView();
+        if (!UGuLiHybridActorComponent::Find(this)) XuntianGunnery->Advance(DeltaTime, bPilot && HasAuthority());
+        else if (!UGuLiHybridActorComponent::HasSimulation(this)) XuntianGunnery->Advance(DeltaTime, false);
+    }
+    else if (UGuLiNetworkSettings::CanPresent(GetWorld()) && IsLocallyControlled()) ResolveCameraArmCollision();
 }
 
 void AGuLiStrikeShip::ResolveCameraArmCollision()
@@ -1317,10 +1360,36 @@ bool AGuLiStrikeShip::CanAcceptServerIntent() const
 		&& BattleGS && BattleGS->IsMatchInProgress() && IsShipReady();
 }
 
+bool AGuLiStrikeShip::IntersectHull(const FVector& Start,const FVector& End,float Radius,float& HitTime) const
+{
+    const UStaticMesh* Asset=HullMesh?HullMesh->GetStaticMesh().Get():nullptr;
+    if (!Asset) return false;
+    const FTransform& Frame=HullMesh->GetComponentTransform();
+    const FVector A=Frame.InverseTransformPosition(Start),B=Frame.InverseTransformPosition(End);
+    const FVector Extent=FVector(Radius)*Frame.GetSafeScaleReciprocal(Frame.GetScale3D()).GetAbs();
+    const FBox Box=Asset->GetBoundingBox();
+    if (Box.ExpandBy(Extent).IsInsideOrOn(A)) { HitTime=0; return true; }
+    FVector Point,Normal;
+    return FMath::LineExtentBoxIntersection(Box,A,B,Extent,Point,Normal,HitTime);
+}
+
+bool AGuLiStrikeShip::IsBaseBatteryPart(FName Socket,const UGuLiStrikeShipPartComponent* Part) const
+{
+    if (!IsXuntian() || !Part || !ShipAssembly || !ShipAssembly->Catalog) return false;
+    return ShipAssembly->Catalog->Groups.ContainsByPredicate([&](const auto& Group)
+    {
+        return (Group.ConfigurationId == TEXT("Group_05") || Group.ConfigurationId == TEXT("Group_02")) &&
+            Group.Mounts.ContainsByPredicate([&](const auto& M){return M.SocketName==Socket && M.PartClass.Get()==Part->GetClass();});
+    });
+}
+
 bool AGuLiStrikeShip::IsKnownPartClass(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass) const
 {
 	return PartClass && !PartClass->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists)
-		&& (PartCatalogue.Contains(PartClass) || DefaultParts.ContainsByPredicate(
+		&& ((IsXuntian() && ShipAssembly && ShipAssembly->Catalog && ShipAssembly->Catalog->Groups.ContainsByPredicate(
+            [&](const auto& Group){ return (Group.ConfigurationId == TEXT("Group_05") || Group.ConfigurationId == TEXT("Group_02")) &&
+                Group.Mounts.ContainsByPredicate([&](const auto& M){return M.PartClass.ToSoftObjectPath()==FSoftObjectPath(PartClass.Get());}); }))
+            || PartCatalogue.Contains(PartClass) || DefaultParts.ContainsByPredicate(
 			[PartClass](const FGuLiStrikeShipDefaultPart& Entry) { return Entry.PartClass == PartClass; }));
 }
 
@@ -1642,7 +1711,14 @@ bool AGuLiStrikeShip::BuildLocalWingmanMissileAim(
 	{
 		return false;
 	}
-	if (Camera)
+	if (IsXuntian() && XuntianGunnery)
+	{
+        FMinimalViewInfo View;
+        XuntianGunnery->GetCameraView(View);
+        OutAimOrigin=View.Location;
+        OutAimForward=View.Rotation.Vector();
+    }
+    else if (Camera)
 	{
 		OutAimOrigin = Camera->GetComponentLocation();
 		OutAimForward = Camera->GetForwardVector().GetSafeNormal();
@@ -1961,6 +2037,7 @@ void AGuLiStrikeShip::HandleShipDeath()
 		return;
 	}
 	bShipDeathHandled = true;
+	if (XuntianGunnery) XuntianGunnery->ResetControls();
 	WingmanMissileRequestResults.Reset();
 	WingmanMissileRequestOrder.Reset();
 	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
@@ -1984,6 +2061,7 @@ void AGuLiStrikeShip::HandleShipDeath()
 
 void AGuLiStrikeShip::UnPossessed()
 {
+	if (XuntianGunnery) XuntianGunnery->ResetControls();
 	HybridInput={}; bSemanticFlightInput=false; bHybridInputSent=false;
 	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }

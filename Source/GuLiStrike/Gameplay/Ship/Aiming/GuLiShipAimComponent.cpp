@@ -75,7 +75,7 @@ void UGuLiShipAimComponent::HandleOwnerControllerChanged()
 	}
 
 	APlayerController* Controller = Ship ? Cast<APlayerController>(Ship->GetController()) : nullptr;
-	if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || !Ship || !Ship->IsLocallyControlled() || !Controller || !Controller->IsLocalController())
+	if (!UGuLiNetworkSettings::CanPresent(GetWorld()) || !Ship || Ship->IsXuntian() || !Ship->IsLocallyControlled() || !Controller || !Controller->IsLocalController())
 	{
 		ResetAimState();
 		UnbindHangar();

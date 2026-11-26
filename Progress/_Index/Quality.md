@@ -34,7 +34,7 @@
 | Progress/DevelopmentDocumentation/GuLiStrike美术规范.md | oversize | 77.8KB，建议阈值 30KB |
 | Progress/Gameplay/战斗.md | oversize | 39.4KB，建议阈值 30KB |
 | Progress/Gameplay/游骑兵.md | oversize | 50.1KB，建议阈值 30KB |
-| Progress/Gameplay/飞船.md | oversize | 61.9KB，建议阈值 30KB |
+| Progress/Gameplay/飞船.md | oversize | 62.6KB，建议阈值 30KB |
 | Progress/RequirementDocument/20260826-5v5大战场玩法草案.md | oversize | 36.7KB，建议阈值 20KB |
 | Progress/RequirementDocument/20260827-Mass双端同步架构草案.md | oversize | 24.9KB，建议阈值 20KB |
 | Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md | oversize | 27.7KB，建议阈值 20KB |

@@ -130,6 +130,7 @@ Bytes EncodeCommitWithStatus(const CommitResult& V,CommitStatus Status)
     W.U32(static_cast<std::uint32_t>(V.Births.size()));for (const auto& B:V.Births) WriteObject(W,B);
     W.U32(static_cast<std::uint32_t>(V.RequiredStates.size()));
     for (const auto& S:V.RequiredStates) {W.Key(S.Object);W.Text(S.Capability);W.U64(S.Version);}
+    if (V.KillingSource.Valid()) W.Key(V.KillingSource);
     return W.Take();
 }
 }
@@ -229,6 +230,7 @@ bool DecodeCommit(std::span<const std::uint8_t> BytesValue, CommitResult& Out)
         if (!R.Key(S.Object) || !S.Object.Valid() || !R.Text(S.Capability,512) || S.Capability.empty() || !R.U64(S.Version)) return false;
         V.RequiredStates.push_back(std::move(S));
     }
+    if (!R.Done() && (V.Kind!=TransactionKind::Damage || !V.Damage.Killed || !R.Key(V.KillingSource) || !V.KillingSource.Valid())) return false;
     if (!R.Done() || ((!V.TerritoryOwners.empty() || !V.InventoryOwners.empty())
         && (V.Kind!=TransactionKind::Capability || !V.ResourceRevision
             || (V.Status!=CommitStatus::Committed && V.Status!=CommitStatus::Duplicate)))) return false;

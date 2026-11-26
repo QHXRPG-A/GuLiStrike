@@ -6,6 +6,8 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 #include "Algo/BinarySearch.h"
 #include "CollisionQueryParams.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
+#include "Components/StaticMeshComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "HAL/PlatformTime.h"
@@ -107,7 +109,8 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 	if (!Ledger || !GetWorld() || GetWorld()->GetNetMode() == NM_Client) return {};
 	BeginEpoch(Ledger->GetMatchEpoch());
 	const bool bGround = R.Context.Source.Kind == EGuLiTargetKind::CommanderSoldier && !R.Context.Emitter.IsValid();
-	const bool bPlayer = R.Context.Source.Kind == EGuLiTargetKind::GroundActor && !R.Context.Emitter.IsValid();
+	const bool bPlayer = !R.Context.Emitter.IsValid() && (R.Context.Source.Kind == EGuLiTargetKind::GroundActor ||
+        (R.Context.Source.Kind == EGuLiTargetKind::Ship && R.Context.WeaponBinding.Domain == EGuLiWeaponDomain::ShipMounted && R.Context.WeaponBinding.IsWellFormed()));
 	if (Epoch == 0 || R.Context.MatchEpoch != Epoch || !R.Context.ShotId.IsValid()
 		|| (!bGround && !bPlayer && !R.Context.Emitter.IsValid()) || !R.Context.Source.IsValid() || ById.Contains(R.Context.ShotId)
 		|| R.Position.ContainsNaN() || R.Direction.ContainsNaN() || R.Direction.IsNearlyZero() || R.MuzzleOffset.ContainsNaN()
@@ -331,6 +334,11 @@ void UGuLiProjectilePoolSubsystem::BuildSpatialIndex(const float Now, const FSim
 		const FVector* Previous = History.PreviousTargets.Find(Snapshot.Handle);
 		Target.Previous = Previous && Now > History.PreviousTime ? *Previous : Snapshot.GetHitCenter();
 		FBox Box = FBox(Target.Previous.ComponentMin(Snapshot.GetHitCenter()), Target.Previous.ComponentMax(Snapshot.GetHitCenter())).ExpandBy(Snapshot.CollisionRadius);
+		if (const auto* Ship=Cast<AGuLiStrikeShip>(Snapshot.CollisionActor.Get()))
+        {
+            const FBox Hull=Ship->GetHullMeshComponent()->Bounds.GetBox();
+            Box+=Hull; Box+=Hull.ShiftBy(Target.Previous-Snapshot.GetHitCenter());
+        }
 		const FIntVector Min = ProjectileGridCell(Box.Min), Max = ProjectileGridCell(Box.Max);
 		for (int32 X = Min.X; X <= Max.X; ++X) for (int32 Y = Min.Y; Y <= Max.Y; ++Y) for (int32 Z = Min.Z; Z <= Max.Z; ++Z)
 			SpatialGrid.FindOrAdd(FIntVector(X, Y, Z)).Add(Targets.Num() - 1);
@@ -458,7 +466,7 @@ void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGroun
 		for (const int32 Index : OrderedCandidates)
 		{
 			const auto& Candidate = Targets[Index]; const auto& Target = Candidate.Snapshot;
-			if (!Target.bAlive || Target.Team == SourceTeam || Target.Team == EGuLiTeam::Unassigned
+			if (!Target.bAlive || (Target.Team == SourceTeam && Source.Kind != EGuLiTargetKind::Ship) || Target.Team == EGuLiTeam::Unassigned
 				|| Target.Handle == Source || Target.Handle == ContextSource) continue;
 			++Stats.CandidateChecks;
 			// Both broad and narrow phases use the authored body center. Mass
@@ -466,8 +474,15 @@ void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGroun
 			const FVector TargetStart = FMath::Lerp(Candidate.Previous, Target.GetHitCenter(), StartAlpha);
 			const FVector TargetEnd = FMath::Lerp(Candidate.Previous, Target.GetHitCenter(), EndAlpha);
 			double Alpha;
-			if (SphereContact(Start - TargetStart, (End - Start) - (TargetEnd - TargetStart), SweepRadius + Target.CollisionRadius, Alpha)
-				&& (Alpha < FirstAlpha || (Alpha == FirstAlpha && Index < FirstTarget)))
+			bool bContact;
+            if (const auto* Hull=Source.Kind==EGuLiTargetKind::Ship?Cast<AGuLiStrikeShip>(Target.CollisionActor.Get()):nullptr)
+            {
+                float HitTime=0;
+                bContact=Hull->IntersectHull(Start+Target.GetHitCenter()-TargetStart,End+Target.GetHitCenter()-TargetEnd,SweepRadius,HitTime);
+                Alpha=HitTime;
+            }
+            else bContact=SphereContact(Start-TargetStart,(End-Start)-(TargetEnd-TargetStart),SweepRadius+Target.CollisionRadius,Alpha);
+			if (bContact && (Alpha < FirstAlpha || (Alpha == FirstAlpha && Index < FirstTarget)))
 			{
 				FGuLiCombatTargetSnapshot Fresh;
 				if (Ledger->TryGetTargetSnapshot(Target.Handle, Fresh) && Fresh.bAlive && Fresh.Team == Target.Team)
@@ -490,9 +505,11 @@ void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGroun
 		}
 		else if (FirstTarget != INDEX_NONE)
 		{
-			const auto HitHandle = Targets[FirstTarget].Snapshot.Handle;
-			Retire(Handle, EGuLiCombatEffectEndReason::Impact, FMath::Lerp(Start, End, FirstAlpha),
-				FMath::Lerp(SampleTime, EndTime, FirstAlpha), &HitHandle);
+			const auto& Body=Targets[FirstTarget].Snapshot;
+            const bool Friendly=Body.Team==SourceTeam;
+            const FGuLiTargetHandle HitTarget=Body.Handle;
+            Retire(Handle,Friendly?EGuLiCombatEffectEndReason::Blocked:EGuLiCombatEffectEndReason::Impact,
+                FMath::Lerp(Start,End,FirstAlpha),FMath::Lerp(SampleTime,EndTime,FirstAlpha),Friendly?nullptr:&HitTarget);
 		}
 		else if (EndTime >= ExpiryTime) Retire(Handle, EGuLiCombatEffectEndReason::Expired, End, EndTime);
 		else if (Matches(Handle))

@@ -28,6 +28,7 @@ TSharedRef<FJsonObject> UGuLiCommanderNetSyncComponent::GetStreamCaptureSnapshot
 
 void UGuLiPerformanceSubsystem::CaptureNetworkSample(bool ObservationOnly)
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProfile_NetworkSample);
 	check(IsInGameThread());
 	const double Now = FPlatformTime::Seconds();
     if (ObservationOnly)

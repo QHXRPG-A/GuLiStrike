@@ -130,6 +130,8 @@ struct CommitResult
     Reservation Reserved;
     DamageDelta Damage;
     Id DeathEvent;
+    // Optional for old receipts. Written only on a committed lethal hit.
+    ObjectKey KillingSource;
     Id RewardEvent;
     std::vector<std::pair<ObjectKey, Health>> Barriers;
     // Absolute committed records, applied once without republishing a request.

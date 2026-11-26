@@ -489,6 +489,7 @@ CommitResult OwnerState::Evaluate(Id Sender, const TransactionRequest& Delivery,
         Delta.Absorbed += barrierDamage; Out.Damage = Delta; Out.Vitals = T.Vitals;
         if (Delta.Killed)
         {
+            Out.KillingSource = R.Header.Object;
             T.Grant.State = Life::Dead; T.DiedAt = T.LogicalAge;
             Out.DeathEvent = DeriveDeathId(R.Header.Event); Out.RewardEvent = DeriveRewardId(R.Header.Event);
         }

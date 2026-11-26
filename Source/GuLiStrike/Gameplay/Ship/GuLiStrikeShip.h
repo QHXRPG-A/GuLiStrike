@@ -16,6 +16,7 @@ class UInputMappingContext;
 class UDataTable;
 class UGuLiCombatHealthComponent;
 class UGuLiShipAimComponent;
+class UGuLiXuntianGunnery;
 class UGuLiShipHangarCapabilityComponent;
 class UGuLiShipAssemblyComponent;
 class UGuLiShipCapabilityComponent;
@@ -176,6 +177,9 @@ class AGuLiStrikeShip : public ACharacter
 	/** Local-only capability reticle ownership, virtual cursor and aim-camera bridge. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UGuLiShipAimComponent* ShipAim;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="巡天", meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UGuLiXuntianGunnery> XuntianGunnery;
+	UPROPERTY() TObjectPtr<UInputAction> BatteryFireAction;
 
 	/** Local-only world-space HUD presenter; creates no visible nodes for remote Ships or servers. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
@@ -418,6 +422,12 @@ public:
 
 	/** 构造函数 */
 	AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	bool IntersectHull(const FVector& Start,const FVector& End,float Radius,float& HitTime) const;
+	bool IsBaseBatteryPart(FName Socket,const UGuLiStrikeShipPartComponent* Part) const;
+	bool IsXuntian() const { return HullModelId == 5002 || (HullModelId == 0 && TuningPreset == TEXT("Dreadnought")); }
+	UGuLiXuntianGunnery* GetXuntianGunnery() const { return XuntianGunnery; }
+	const TArray<FGuLiStrikeInstalledPart>& GetInstalledParts() const { return InstalledParts; }
+	virtual void CalcCamera(float DeltaTime, FMinimalViewInfo& OutResult) override;
     void SetCarrierDormant(bool Dormant);
     UFUNCTION(BlueprintPure,Category="Ship|Control") bool IsCarrierDormant() const { return bCarrierDormant; }
 
@@ -527,6 +537,8 @@ protected:
 	void BoostEnd(const FInputActionValue& Value);
 
 	void WingmanMissilePressed(const FInputActionValue& Value);
+	void BatteryPressed();
+	void BatteryReleased();
 	void WingmanMissileReleased(const FInputActionValue& Value);
 
 	/** 处理引擎热切换输入 */
@@ -631,6 +643,7 @@ public:
 
 private:
     UPROPERTY() bool bCarrierDormant=false;
+	friend class UGuLiXuntianGunnery;
     UFUNCTION() void OnRep_CarrierDormant();
 	UFUNCTION()
 	void OnRep_LoadoutState();

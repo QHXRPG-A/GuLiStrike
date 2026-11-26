@@ -5,6 +5,7 @@
 #include "Gameplay/Ship/Private/GuLiHybridShipInput.h"
 #include "Network/Private/GuLiHybridReflectedState.h"
 #include "Gameplay/Ship/GuLiShipMovementComponent.h"
+#include "Gameplay/Ship/Aiming/GuLiXuntianGunnery.h"
 #include "Gameplay/Ship/GuLiStrikeShipPartComponent.h"
 #include "Gameplay/Ship/Build/GuLiShipAssemblyComponent.h"
 #include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
@@ -18,7 +19,7 @@
 
 namespace GuLiHybridShip
 {
-constexpr uint32 StateVersion=7;
+constexpr uint32 StateVersion=8;
 struct FPose
 {
     FTransform Transform=FTransform::Identity;
@@ -38,6 +39,7 @@ struct FPrivate
     uint32 LoadoutRevision=0,ConfigRevision=0,Barrier=0,CanonicalEpoch=0,CanonicalRevision=0;
     uint64 PoseTick=0;
     TArray<FPart> Parts;
+    FGuLiXuntianBatteryState Battery;
     TArray<FGuLiStrikeStatModifier> Modifiers;
     FGuLiShipGMRuntimeReplicatedState GM;
     TArray<FGuLiShipCanonicalMoveState> History;
@@ -57,7 +59,7 @@ void Configuration(FGuLiHybridStateArchive& A,FGuLiShipMovementConfig& V)
 }
 void Private(FGuLiHybridStateArchive& A,FPrivate& V)
 {
-    uint32 Version=StateVersion; A.Value(Version); if (Version!=StateVersion) A.Reject();
+    uint32 Version=StateVersion; A.Value(Version); if (Version!=7 && Version!=StateVersion) A.Reject();
     A.Value(V.Key); Pose(A,V.Pose); Input(A,V.Simulation); Input(A,V.ControllerInput);
     A.Value(V.bSemantic); A.Value(V.bDeathHandled); Configuration(A,V.Config);
     A.Value(V.LoadoutRevision); A.Value(V.ConfigRevision); A.Value(V.Barrier);
@@ -79,6 +81,7 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
         FGuLiHybridReflectedState::Value(Ar,S.Result.SelectedTarget);
         if (!S.Request.IsValid() || S.Result.LaunchedCount<0 || S.Result.LaunchedCount>GULI_WINGMAN_MEMBERS_PER_FLIGHT) Ar.Reject();
     });
+    if (Version>=8) V.Battery.Serialize(A);
     TSet<FGuid> Requests;for (const auto& S:V.Salvos) {if (Requests.Contains(S.Request)) A.Reject();Requests.Add(S.Request);}
     if (!V.Key.IsValid() || V.Key.Kind!=EGuLiHybridObjectKind::Ship || !V.LoadoutRevision || !V.ConfigRevision || !V.Barrier
         || V.GM.MaxSpeedMultiplier<0 || V.GM.AccelerationMultiplier<0) A.Reject();
@@ -108,6 +111,7 @@ class FGuLiHybridShipAdapter final : public IGuLiHybridSimulationAdapter
     UWorld* World() const { return Owner.IsValid()?Owner->GetWorld():nullptr; }
     AGuLiBattlePlayerState* Player() const
     {
+        if (Record.Definition!=TEXT("player/ship") || !Record.Controller.IsValid()) return nullptr;
         const auto* Battle=World()?World()->GetGameState<AGuLiBattleGameState>():nullptr;
         if (Battle) for (APlayerState* Entry : Battle->PlayerArray)
             if (auto* PS=Cast<AGuLiBattlePlayerState>(Entry); PS && PS->GetPlayerGuid()==Record.Controller) return PS;
@@ -115,6 +119,7 @@ class FGuLiHybridShipAdapter final : public IGuLiHybridSimulationAdapter
     }
     void BindPlayer()
     {
+        if (Record.Definition!=TEXT("player/ship")) return;
         auto* P=Pawn.Get(); auto* W=World(); if (!P || !W) return; auto* PS=Player();
         if (P->GetPlayerState()!=PS) P->SetPlayerState(PS);
         const auto* Session=W->GetGameInstance()->GetSubsystem<UGuLiHybridSessionSubsystem>(); auto* PC=W->GetFirstPlayerController();
@@ -131,7 +136,7 @@ class FGuLiHybridShipAdapter final : public IGuLiHybridSimulationAdapter
         auto* W=World(); const auto* ClassPath=Owner.IsValid()?Owner->GetManifest().Strings.Find(TEXT("startup/ship_class")):nullptr;
         UClass* Class=ClassPath?LoadClass<AGuLiStrikeShip>(nullptr,**ClassPath):nullptr;
         const auto* CDO=Class?Class->GetDefaultObject<AGuLiStrikeShip>():nullptr;
-        if (!W || !Class || Class->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated) || Record.Definition!=TEXT("player/ship")
+        if (!W || !Class || Class->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated) || (Record.Definition!=TEXT("player/ship") && Record.Definition!=TEXT("range/xuntian_target"))
             || !CDO->GetShipAssembly()->ValidateHybridCapabilityContracts(Owner->GetManifest())) return false;
         const FTransform Transform(FRotator(0,Record.FacingYawDegrees,0),Record.Location);
         auto* P=W->SpawnActorDeferred<AGuLiStrikeShip>(Class,Transform,nullptr,nullptr,ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
@@ -184,6 +189,7 @@ class FGuLiHybridShipAdapter final : public IGuLiHybridSimulationAdapter
             M->CanonicalMoveHistory.LatestRevision=V.CanonicalRevision; M->CanonicalMoveHistory.MaxEntries=256;
             ApplyPose(V.Pose); Simulation=V.Simulation; P->HybridInput=V.ControllerInput; P->bSemanticFlightInput=V.bSemantic;
             P->HybridPoseTick=V.PoseTick;
+            if (P->IsXuntian()) P->XuntianGunnery->RestoreState(V.Battery,true);
             P->WingmanAttackTarget=V.ManualTarget;
             P->WingmanMissileRequestResults.Reset();P->WingmanMissileRequestOrder.Reset();
             for (const auto& S:V.Salvos) {P->WingmanMissileRequestOrder.Add(S.Request);P->WingmanMissileRequestResults.Add(S.Request,S.Result);}
@@ -209,6 +215,7 @@ public:
         {
             Simulation={}; P->HybridInput={}; P->bSemanticFlightInput=false; P->bHybridInputSent=false;
             P->ConsumeMovementInputVector();
+            if (P->IsXuntian()) P->XuntianGunnery->SetTrigger(false);
             auto* M=P->GetShipMovement(); M->Velocity=FVector::ZeroVector; M->YawVelocity=0;
         }
     }
@@ -217,11 +224,15 @@ public:
         auto* P=Pawn.Get(); if (!P || !bLocal || !UGuLiHybridActorComponent::HasSimulation(P)) return;
         // Keep simulating the inactive carrier, but never replay held flight input.
         if (!P->IsLocallyControlled()) Simulation={};
-        P->AdvanceHybridFlight(Delta,Simulation); P->HybridPoseTick=Tick; if (Tick%2 || Tick==LastPublished) return;
-        FGuLiHybridStateArchive A(700); uint32 Schema=1; A.Value(Schema); auto Pose=ReadPose(); GuLiHybridShip::Pose(A,Pose);
+        P->AdvanceHybridFlight(Delta,Simulation); P->HybridPoseTick=Tick;
+        if (P->IsXuntian()) P->XuntianGunnery->Advance(Delta,P->IsLocallyControlled() && !Record.bDormant && !P->bShipDeathHandled);
+        if (Tick%2 || Tick==LastPublished) return;
+        FGuLiHybridStateArchive A(700); uint32 Schema=P->IsXuntian()?2:1; A.Value(Schema); auto Pose=ReadPose(); GuLiHybridShip::Pose(A,Pose);
+        FGuLiXuntianBatteryState Battery;
+        if (Schema==2) { P->XuntianGunnery->ReadState(Battery,false); Battery.SerializeAim(A); }
         TArray<uint8> Body;
         if (!A.Finish(Body)) { ++P->HybridMotionEncodingFailures; return; }
-        if (World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body,Pose.Velocity.IsZero())) LastPublished=Tick;
+        if (World()->GetSubsystem<UGuLiHybridWorldSubsystem>()->PublishMotion(Record.Key,Body,Pose.Velocity.IsZero() && !Battery.bHasAim)) LastPublished=Tick;
     }
     bool Execute(const FGuLiHybridCommand& Command,const FGuLiHybridCommandMember& Member) override
     {
@@ -233,7 +244,11 @@ public:
     {
         if (!Pawn.IsValid() || bLocal) return false; if (Tick<=LastApplied) return true;
         FGuLiHybridStateArchive A(Bytes,700); uint32 Schema=0; A.Value(Schema); GuLiHybridShip::FPose V; GuLiHybridShip::Pose(A,V);
-        if (Schema!=1 || !A.Done()) return false; ApplyPose(V); Pawn->HybridPoseTick=Tick; LastApplied=Tick; return true;
+        FGuLiXuntianBatteryState Battery;
+        if (Schema==2) Battery.SerializeAim(A);
+        if ((Schema!=1 && Schema!=2) || !A.Done()) return false;
+        if (Schema==2 && Pawn->IsXuntian()) Pawn->XuntianGunnery->RestoreState(Battery,false);
+        ApplyPose(V); Pawn->HybridPoseTick=Tick; LastApplied=Tick; return true;
     }
     void ApplyLedger(const FGuLiHybridObjectState& State,uint64 Revision,bool Effects) override
     {
@@ -253,6 +268,7 @@ public:
         V.LoadoutRevision=P->LoadoutState.Revision; V.ConfigRevision=M->MovementSyncState.ConfigRevision; V.Barrier=M->MovementSyncState.BarrierGeneration;
         V.CanonicalEpoch=M->CanonicalMoveHistory.CanonicalEpoch; V.CanonicalRevision=M->CanonicalMoveHistory.LatestRevision; V.History=M->CanonicalMoveHistory.States;
         V.PoseTick=P->HybridPoseTick;
+        if (P->IsXuntian()) P->XuntianGunnery->ReadState(V.Battery,true);
         V.ManualTarget=P->WingmanAttackTarget;
         for (const auto Request:P->WingmanMissileRequestOrder)
         {
@@ -328,6 +344,12 @@ public:
         return true;
     }
 };
+
+// Range hulls use the production health, collision and loadout adapter. Ownership is fixed,
+ // so adding an unpiloted target never claims either team's Air seat.
+static const FGuLiHybridAdapterRegistration XuntianRangeHull({TEXT("XuntianRangeHull"),EGuLiHybridObjectKind::Ship,GuLiHybridShip::StateVersion,
+    [](UGuLiHybridActorWorldSubsystem& Owner,const FGuLiHybridObjectState&)->TSharedPtr<IGuLiHybridSimulationAdapter>
+    {return MakeShared<FGuLiHybridShipAdapter>(Owner);},nullptr,GuLiHybridTargets::Actor<EGuLiTargetKind::Ship>,EGuLiHybridOwnershipPolicy::Fixed,0,false});
 
 static const FGuLiHybridAdapterRegistration GGuLiShipAdapterFamily({TEXT("ShipPlayer"),EGuLiHybridObjectKind::Ship,GuLiHybridShip::StateVersion,
     [](UGuLiHybridActorWorldSubsystem& Owner,const FGuLiHybridObjectState&)->TSharedPtr<IGuLiHybridSimulationAdapter>

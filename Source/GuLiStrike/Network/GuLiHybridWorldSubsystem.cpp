@@ -20,6 +20,7 @@
 #include "Trace/Trace.h"
 #include "Gameplay/Performance/GuLiPerformanceSubsystem.h"
 #include "GuLiNetManifest.h"
+#include "GuLiNetCensus.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattleGameMode.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -35,6 +36,7 @@
 #include "Engine/World.h"
 #include "HAL/PlatformTime.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "ProfilingDebugging/CsvProfiler.h"
 #include "HAL/FileManager.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
@@ -43,6 +45,8 @@
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonSerializer.h"
 #include "Policies/CondensedJsonPrintPolicy.h"
+
+CSV_DEFINE_CATEGORY(GuLiBirthRecovery, true);
 
 namespace
 {
@@ -532,6 +536,10 @@ struct UGuLiHybridWorldSubsystem::FState
     std::map<ObjectKey,ObjectRecord> WaitingDirectory;
     std::set<ObjectKey> DirectoryKeys;
     std::set<ObjectKey> CoordinatorDirectoryKeys;
+    // A remote birth can reach a replica before its coordinator registration.
+    std::set<ObjectKey> UnregisteredRemoteBirths;
+    std::optional<ObjectKey> LastBirthRecoveryKey;
+    uint32 BirthRecoverySendBudget=0;
     std::map<ObjectKey,Revision> Offers;
     TArray<TSharedPtr<FJsonValue>> AssignmentDiagnostics;
     void RecordAssignment(ObjectKey K,Revision Version,const TCHAR* Status)
@@ -828,6 +836,7 @@ void UGuLiHybridWorldSubsystem::GetBoundObjectViews(TArray<FGuLiHybridObjectStat
 }
 TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetSimulationCensus() const
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProfile_SimulationCensus);
     auto Root=MakeShared<FJsonObject>();auto Definitions=MakeShared<FJsonObject>();
     if (const auto* Options=GetWorld()->GetSubsystem<UGuLiHotspotOptions>())
         Root->SetObjectField(TEXT("sync_identity"),Options->GetSyncIdentity());
@@ -836,19 +845,30 @@ TSharedRef<FJsonObject> UGuLiHybridWorldSubsystem::GetSimulationCensus() const
     struct FCounts {uint64 Total=0,Alive=0,LocalOwned=0,PeerOwned=0,Simulating=0,Dormant=0,Dead=0,Destroyed=0;};
     std::map<std::string,FCounts> ByDefinition,ByTeam;
     uint64 Soldiers=0,LocalSoldiers=0,PeerSoldiers=0;
-    if (State->Client) for (const auto& [K,O]:State->Client->Objects())
+    if (State->Client)
     {
-        const bool Alive=O.Grant.State==Life::Alive,Owned=O.Grant.SimOwner==Local;
-        const bool Simulating=State->Client->HasSimulation(K);
-        const auto Count=[&](FCounts& C)
+        const auto& Index=State->Client->CensusIndex();
+        auto AddInactive=[](FCounts& Out,const GuLiNet::ClientCensusIndex::InactiveCounts& In)
         {
-            ++C.Total;C.Alive+=Alive;C.LocalOwned+=Alive&&Owned;
-            C.PeerOwned+=Alive&&!Owned&&O.Grant.SimOwner.Valid();C.Simulating+=Simulating;
-            C.Dormant+=O.Grant.Dormant;C.Dead+=O.Grant.State==Life::Dead;C.Destroyed+=O.Grant.State==Life::Destroyed;
+            Out.Total+=In.Total; Out.Dormant+=In.Dormant; Out.Dead+=In.Dead; Out.Destroyed+=In.Destroyed;
         };
-        Count(ByDefinition[O.Definition]);Count(ByTeam[std::to_string(uint8(O.Grant.Faction))]);
-        if (K.Kind==ObjectKind::Soldier && Alive)
-        {++Soldiers;LocalSoldiers+=Simulating;PeerSoldiers+=!Owned&&O.Grant.SimOwner.Valid();}
+        for (const auto& [Name,C] : Index.InactiveDefinitions) AddInactive(ByDefinition[Name],C);
+        for (const auto& [Team,C] : Index.InactiveTeams) AddInactive(ByTeam[std::to_string(uint8(Team))],C);
+        for (const auto& K : Index.Alive)
+        {
+            const auto& O=*State->Client->FindObject(K);
+            const bool Owned=O.Grant.SimOwner==Local;
+            const bool Peer=!Owned && O.Grant.SimOwner.Valid();
+            const bool Simulating=State->Client->HasSimulation(K);
+            auto Count=[&](FCounts& C)
+            {
+                ++C.Total; ++C.Alive; C.LocalOwned+=Owned; C.PeerOwned+=Peer;
+                C.Simulating+=Simulating; C.Dormant+=O.Grant.Dormant;
+            };
+            Count(ByDefinition[O.Definition]); Count(ByTeam[std::to_string(uint8(O.Grant.Faction))]);
+            if (K.Kind==ObjectKind::Soldier)
+            { ++Soldiers; LocalSoldiers+=Simulating; PeerSoldiers+=Peer; }
+        }
     }
     const auto Write=[](const auto& Source,const TSharedRef<FJsonObject>& Destination)
     {
@@ -1372,7 +1392,12 @@ void UGuLiHybridWorldSubsystem::Tick(float Delta)
         if (State->Client->SetBootstrapMaterializationDeferred(false)) State->DirectoryResumePending=false;
         else if (!State->Client->Error().empty()) {Suspend(UTF8_TO_TCHAR(State->Client->Error().c_str()));return;}
     }
-    const auto Async=State->Client->Statistics();const auto Previous=State->LastAsyncStats;State->LastAsyncStats=Async;
+    GuLiNet::AsyncClientStats Async;
+    {
+        TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_ReadAsyncStatistics);
+        Async=State->Client->Statistics();
+    }
+    const auto Previous=State->LastAsyncStats;State->LastAsyncStats=Async;
     State->UnreportedSimulationMilliseconds+=Async.SimulationMilliseconds-Previous.SimulationMilliseconds;
     if (auto* Session=State->Session.Get()) if (Async.SimulationSteps>Previous.SimulationSteps)
     {Session->AccumulateSimulationCost(State->UnreportedSimulationMilliseconds,uint32(Async.SimulationSteps-Previous.SimulationSteps));State->UnreportedSimulationMilliseconds=0;}
@@ -1904,6 +1929,21 @@ void UGuLiHybridWorldSubsystem::ApplyPreparedCommit(const PreparedCommit& Prepar
             Out.CommitOrdinal=Result.StateVersion;
             if (!State->DamageResults.Contains(Event))
             {
+                if (Out.bKilled && Result.Status==CommitStatus::Committed && Result.KillingSource.Valid())
+                {
+                    FGuLiDamageFeedback Kill;
+                    Kill.Event=Out.DeathEventId; Kill.bKilled=true;
+                    auto SourceKey=ToUE(Result.KillingSource);
+                    // Follow retained effects back to the combat entity that created them.
+                    for (int Depth=0;Depth<8 && !ResolveObjectTarget(SourceKey,Kill.Source);++Depth)
+                    {
+                        FGuLiHybridObjectState Object;
+                        if (!GetObjectMetadata(SourceKey,Object) || !Object.Parent.IsValid() || Object.Parent==SourceKey) break;
+                        SourceKey=Object.Parent;
+                    }
+                    if (Kill.Source.IsValid() && ResolveObjectTarget(ToUE(Result.Target),Kill.Target))
+                        OnCombatKill.Broadcast(Kill);
+                }
                 if (State->DamageResultOrder.Num()>=16384)
                 {
                     {State->DamageResults.Remove(State->DamageResultOrder[State->DamageResultHead]);State->DamageResultOrder[State->DamageResultHead]=Event;State->DamageResultHead=(State->DamageResultHead+1)%16384;}
@@ -2170,8 +2210,19 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
         });
         State->Client->SetQueryObserver([Weak](const ClientQueryDelta& Delta)
         {if (auto* Self=Weak.Get()) Self->ApplyQueryDelta(Delta);});
-        State->Client->SetRecordObserver([Weak](const ObjectRecord& Record)
-        {if (auto* Self=Weak.Get()) Self->OnObjectChanged.Broadcast(ToUE(Record.Grant.Object));});
+        State->Client->SetRecordObserver([Weak,LocalPlayer=ToCore(Session->GetLocalPlayerId())](const ObjectRecord& Record)
+        {
+            auto* Self=Weak.Get();
+            if (!Self) return;
+            auto& World=*Self->State;
+            const auto& Grant=Record.Grant;
+            if (Grant.SourceLease.Valid() && Grant.SimOwner.Valid() && Grant.SimOwner!=LocalPlayer &&
+                !World.CoordinatorDirectoryKeys.contains(Grant.Object))
+                World.UnregisteredRemoteBirths.insert(Grant.Object);
+            else if (!World.UnregisteredRemoteBirths.empty())
+                World.UnregisteredRemoteBirths.erase(Grant.Object);
+            Self->OnObjectChanged.Broadcast(ToUE(Grant.Object));
+        });
         std::string Error;if (!State->Client->Configure(State->Manifest,Error)) {Suspend(UTF8_TO_TCHAR(Error.c_str()));return;}
         State->Client->SetBootstrapMaterializationDeferred(true);
         State->Client->SetCommitCallback([Weak](const PreparedCommit& Result)
@@ -2233,6 +2284,7 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
         if (!ReadAuthority(R,Grant) || !R.Text(Definition) || !R.U32(Ordinal) || !R.Key(Parent) || !R.Done() || Grant.Object!=V.Header.Object)
         {Suspend(TEXT("Invalid ownership directory"));return;}
         State->DirectoryKeys.insert(Grant.Object);State->CoordinatorDirectoryKeys.insert(Grant.Object);
+        State->UnregisteredRemoteBirths.erase(Grant.Object);
         State->RequiredDirectoryValidated=false;
         if (Grant.State==Life::Destroyed)
         {
@@ -2403,8 +2455,91 @@ void UGuLiHybridWorldSubsystem::HandleControl(const FGuLiHybridMessage& Value)
     default:break;
     }
 }
+// Retry a committed birth whose producer disconnected before registering it.
+// Read deltas and registrations maintain the candidate set on the game thread.
+void UGuLiHybridWorldSubsystem::PumpBirthRecovery(UGuLiHybridSessionSubsystem& Session)
+{
+    if (!State->Ready) return;
+    const double Now=FPlatformTime::Seconds();
+    if (!State->BirthRecoverySendBudget && Now<State->NextBirthRecovery) return;
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_BirthRecovery);
+    if (!State->BirthRecoverySendBudget)
+    {
+        State->NextBirthRecovery=Now+1.;
+        State->BirthRecoverySendBudget=32;
+    }
+
+    const auto& Pending=State->UnregisteredRemoteBirths;
+    const auto& Members=Session.GetMembers();
+    const Id Local=ToCore(Session.GetLocalPlayerId());
+    CSV_CUSTOM_STAT(GuLiBirthRecovery, DirectoryRecords, int32(State->Client->Objects().size()), ECsvCustomStatOp::Set);
+    CSV_CUSTOM_STAT(GuLiBirthRecovery, Pending, int32(Pending.size()), ECsvCustomStatOp::Set);
+    if (Pending.empty() || !Members.ContainsByPredicate(
+        [Local](const FGuLiHybridMember& M){ return !M.bOnline && ToCore(M.Player)!=Local; }))
+    {
+        CSV_CUSTOM_STAT(GuLiBirthRecovery, Visited, 0, ECsvCustomStatOp::Set);
+        CSV_CUSTOM_STAT(GuLiBirthRecovery, Announced, 0, ECsvCustomStatOp::Set);
+        State->LastBirthRecoveryKey.reset();
+        State->BirthRecoverySendBudget=0;
+        return;
+    }
+
+    // Keep a value cursor: acknowledgements may erase the last key between frames.
+    auto It=State->LastBirthRecoveryKey ? Pending.upper_bound(*State->LastBirthRecoveryKey) : Pending.begin();
+    constexpr int32 MaxCandidatesPerFrame=64;
+    int32 Visited=0, Published=0;
+    while (It!=Pending.end() && Visited<MaxCandidatesPerFrame && State->BirthRecoverySendBudget)
+    {
+        const ObjectKey Key=*It++;
+        State->LastBirthRecoveryKey=Key;
+        ++Visited;
+        const ObjectRecord* Record=State->Client->FindObject(Key);
+        if (!Record) continue;
+        const auto& Grant=Record->Grant;
+        const auto* Producer=Members.FindByPredicate([&](const FGuLiHybridMember& M){return ToCore(M.Player)==Grant.SimOwner;});
+        if (!Producer || Producer->bOnline) continue;
+
+        std::set<ObjectKey> Seen;
+        ObjectKey Parent=Record->Parent;
+        bool Authorized=false;
+        while (Parent.Valid() && Seen.size()<64 && Seen.insert(Parent).second)
+        {
+            if (!State->CoordinatorDirectoryKeys.contains(Parent)) break;
+            const auto* Ancestor=State->Client->FindObject(Parent);
+            if (!Ancestor) break;
+            const auto& Owner=Ancestor->Grant;
+            if (HasPrivateCustody(Owner,Local) || (Owner.State==Life::Destroyed && Owner.SimOwner==Local))
+            {
+                Authorized=true;
+                break;
+            }
+            if (Owner.State!=Life::Destroyed) break;
+            Parent=Ancestor->Parent;
+        }
+        if (!Authorized) continue;
+
+        Writer W;
+        WriteAuthority(W,Grant); W.Text(Record->Definition); W.U32(Record->Ordinal); W.Key(Record->Parent);
+        Message M; M.Header.Kind=MessageKind::RegisterObject; M.Header.Object=Key; M.Body=W.Take();
+        if (Session.SendControl(ToUE(M)))
+        {
+            --State->BirthRecoverySendBudget;
+            ++State->BirthRecoveryAnnouncements;
+            ++Published;
+        }
+    }
+    CSV_CUSTOM_STAT(GuLiBirthRecovery, Visited, Visited, ECsvCustomStatOp::Set);
+    CSV_CUSTOM_STAT(GuLiBirthRecovery, Announced, Published, ECsvCustomStatOp::Set);
+    if (It==Pending.end())
+    {
+        State->LastBirthRecoveryKey.reset();
+        State->BirthRecoverySendBudget=0;
+    }
+}
+
 void UGuLiHybridWorldSubsystem::PumpMembership()
 {
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiHybrid_PumpMembership);
     auto* S=State->Session.Get();if (!S || !State->Client) return;
     for (auto I=State->Offers.begin();I!=State->Offers.end();)
     {
@@ -2432,34 +2567,7 @@ void UGuLiHybridWorldSubsystem::PumpMembership()
         Writer W;W.U32(static_cast<uint32>(State->PendingOperations.size()));for (const auto& K:State->PendingOperations) W.Key(K);
         Message M;M.Header.Kind=MessageKind::DirectOperation;M.Body=W.Take();if (S->SendControl(ToUE(M))) State->PendingOperations.clear();
     }
-    // A crash can follow publication of a committed birth but precede its
-    // metadata declaration. Reannounce the actual received numeric record
-    // only from the current custodian of its parent/retired parent chain.
-    const double RecoveryNow=FPlatformTime::Seconds();
-    if (State->Ready && RecoveryNow>=State->NextBirthRecovery)
-    {
-        State->NextBirthRecovery=RecoveryNow+1;const Id Local=ToCore(S->GetLocalPlayerId());uint32 Published=0;
-        for (const auto& [K,O]:State->Client->Objects())
-        {
-            if (Published>=32) break;const auto& A=O.Grant;
-            if (State->CoordinatorDirectoryKeys.contains(K) || !A.SourceLease.Valid() || !A.SimOwner.Valid() || A.SimOwner==Local) continue;
-            const auto* Producer=S->GetMembers().FindByPredicate([&](const FGuLiHybridMember& M){return ToCore(M.Player)==A.SimOwner;});
-            if (!Producer || Producer->bOnline) continue;
-            std::set<ObjectKey> Seen;ObjectKey Parent=O.Parent;bool Authorized=false;
-            while (Parent.Valid() && Seen.size()<64 && Seen.insert(Parent).second)
-            {
-                if (!State->CoordinatorDirectoryKeys.contains(Parent)) break;
-                const auto P=State->Client->Objects().find(Parent);if (P==State->Client->Objects().end()) break;
-                const auto& Grant=P->second.Grant;
-                if (HasPrivateCustody(Grant,Local) || (Grant.State==Life::Destroyed && Grant.SimOwner==Local)) {Authorized=true;break;}
-                if (Grant.State!=Life::Destroyed) break;Parent=P->second.Parent;
-            }
-            if (!Authorized) continue;
-            Writer W;WriteAuthority(W,A);W.Text(O.Definition);W.U32(O.Ordinal);W.Key(O.Parent);
-            Message M;M.Header.Kind=MessageKind::RegisterObject;M.Header.Object=K;M.Body=W.Take();
-            if (S->SendControl(ToUE(M))) {++Published;++State->BirthRecoveryAnnouncements;}
-        }
-    }
+    PumpBirthRecovery(*S);
     if (!State->MembershipVersion || State->MembershipAcked) return;
     auto Early=MoveTemp(State->EarlyBootstrap);State->EarlyBootstrap.Reset();State->EarlyBootstrapBytes=0;
     for (const auto& V:Early) HandlePeer(V.Key,V.Value);

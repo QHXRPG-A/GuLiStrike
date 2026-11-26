@@ -1,5 +1,6 @@
 #include "GuLiLocalPIESubsystem.h"
 #include "GuLiWingmanPlayRange.h"
+#include "GuLiXuntianRange.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Engine/TargetPoint.h"
 #include "EngineUtils.h"
@@ -204,6 +205,11 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
             return Fail(Why);
         if (RangeMap!=LocalMap || RangeMapHash!=MapHash)
             return Fail(TEXT("The barrage range roster does not match the current map. Re-export the range manifest."));
+    }
+    else if (State->Trial==GuLiLocalPIERolePicker::ETrial::XuntianHUD)
+    {
+        Config.ManifestFile=State->Directory/TEXT("XuntianHUD.json");
+        if (!GuLiXuntianRange::Prepare(*EditorWorld(),Manifest,Config.ManifestFile,Why)) return Fail(Why);
     }
     else if (GuLiLocalPIERolePicker::IsWingmanTrial(State->Trial))
     {

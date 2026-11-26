@@ -371,6 +371,7 @@ public:
     void GetCommanderDefinitions(TArray<FName>& Out) const;
     FGuLiHybridObjectChanged OnObjectChanged;
     FGuLiDamageFeedbackEvent OnDamageFeedback;
+    FGuLiDamageFeedbackEvent OnCombatKill;
     /** Current object or authenticated exact-life retired metadata; never grants an entity or simulation. */
     bool GetObjectMetadata(const FGuLiHybridObjectKey& Key, FGuLiHybridObjectState& Out) const;
     /** Newest resident generation of one stable identity, including tombstones. Zero if none. */
@@ -477,6 +478,7 @@ private:
     void TryWorldReady();
     void SynchronizeGameplayRoster();
     void PumpMembership();
+    void PumpBirthRecovery(UGuLiHybridSessionSubsystem& Session);
     void ApplyQueryDelta(const GuLiNet::ClientQueryDelta& Delta);
     void HandlePreparedCommit(const GuLiNet::PreparedCommit& Commit);
     void ApplyPreparedCommit(const GuLiNet::PreparedCommit& Commit);

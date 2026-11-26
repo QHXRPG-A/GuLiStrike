@@ -5,7 +5,7 @@
 
 namespace GuLiLocalPIERolePicker
 {
-enum class ETrial : uint8 { None, Barrage, WingmanFlight, WingmanAir, WingmanGround, WingmanCombined };
+enum class ETrial : uint8 { None, Barrage, WingmanFlight, WingmanAir, WingmanGround, WingmanCombined, XuntianHUD };
 inline bool HasAirOpponent(ETrial Trial)
 {
     return Trial == ETrial::WingmanAir || Trial == ETrial::WingmanCombined;

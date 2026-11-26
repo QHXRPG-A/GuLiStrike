@@ -98,6 +98,7 @@ public:
                         + SHorizontalBox::Slot().AutoWidth().Padding(4,0)[WingmanButton(ETrial::WingmanAir, LOCTEXT("WingmanAir","僚机对空"))]
                         + SHorizontalBox::Slot().AutoWidth()[WingmanButton(ETrial::WingmanGround, LOCTEXT("WingmanGround","僚机对地"))]
                         + SHorizontalBox::Slot().AutoWidth().Padding(4,0)[WingmanButton(ETrial::WingmanCombined, LOCTEXT("WingmanCombined","僚机综合"))]
+                        + SHorizontalBox::Slot().AutoWidth()[WingmanButton(ETrial::XuntianHUD, LOCTEXT("XuntianHUD","巡天 HUD"))]
                     ]
                 ]
                 + SVerticalBox::Slot().AutoHeight().Padding(0, 16, 0, 12)

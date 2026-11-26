@@ -35,6 +35,7 @@ public class GuLiStrike : ModuleRules
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
+			"ProceduralMeshComponent", // Depth-tested surface for the pilot’s terrain coverage overlay.
 			"PhysicsCore", // Ore instances reuse and validate the models' simple collision.
 			"ApplicationCore", // Foreground-state evidence during explicitly requested performance captures.
 			"EOSShared", "EOSSDK", "Sockets", "Networking", "HTTP", "TraceLog",

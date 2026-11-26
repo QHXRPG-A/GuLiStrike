@@ -5,6 +5,7 @@
 
 namespace GuLiNet
 {
+struct ClientCensusIndex;
 /** Immutable ledger values and incrementally applied metadata; no trial/commit API. */
 struct GULINETCORE_API ClientNumericView
 {
@@ -204,6 +205,7 @@ public:
     const std::string& Error() const;
     const std::string& DirectoryHash() const;
     const std::map<ObjectKey,ObjectRecord>& Objects() const;
+    const ClientCensusIndex& CensusIndex() const;
     /** Immediate caller-thread lookup. The cache stores addresses, never authority
      * decisions; every read observes the current applied record and exact life. */
     const ObjectRecord* FindObject(ObjectKey) const;

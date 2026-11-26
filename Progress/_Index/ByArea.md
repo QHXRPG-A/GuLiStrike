@@ -508,6 +508,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-26 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-26 |
+| [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | archive | recorded | 2026-11-26 |
+| [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | archive | recorded | 2026-11-26 |
 | [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-25 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
@@ -858,9 +862,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
@@ -1670,9 +1674,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
+| [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | archive | recorded | 2026-11-26 |
 | [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
 | [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-25 |
 | [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | done | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
@@ -2205,6 +2210,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-26 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-26 |
+| [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | archive | recorded | 2026-11-26 |
+| [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | archive | recorded | 2026-11-26 |
+| [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | archive | recorded | 2026-11-26 |
 | [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../DevelopmentDocumentation/20261122-游骑兵分裂枪管与电磁技术.md) | development | done | 2026-11-23 |
 | [游骑兵肉鸽与电磁弧会话结项](../Archive/20261123-游骑兵肉鸽与电磁弧会话结项.md) | archive | recorded | 2026-11-23 |
@@ -2484,9 +2494,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-26 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-26 |
+| [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | archive | recorded | 2026-11-26 |
+| [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | archive | recorded | 2026-11-26 |
+| [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | archive | recorded | 2026-11-26 |
 | [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
 | [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | done | 2026-11-25 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
@@ -2621,8 +2636,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-26 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-26 |
+| [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | archive | recorded | 2026-11-26 |
+| [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | archive | recorded | 2026-11-26 |
+| [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | archive | recorded | 2026-11-26 |
 | [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-25 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
 | [本地试玩](../Gameplay/本地试玩.md) | gameplay | current | 2026-11-25 |
 | [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | development | verification | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |
@@ -3043,9 +3063,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
 | [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-25 |
 | [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | done | 2026-11-25 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [清理单位血条旧渲染路径](../Archive/20261125-清理单位血条旧渲染路径.md) | archive | recorded | 2026-11-25 |

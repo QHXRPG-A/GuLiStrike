@@ -14,6 +14,8 @@ class UGuLiShipAimComponent;
 class UGuLiShipMovementComponent;
 class UGuLiShipHangarCapabilityComponent;
 class UGuLiShipWorldAimBoundsWidget;
+class UGuLiXuntianHUDWidget;
+class UGuLiXuntianSceneGuide;
 class UGuLiShipWorldCombatWidget;
 class UGuLiShipWorldFlightWidget;
 class UGuLiShipWorldReticleWidget;
@@ -125,6 +127,8 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<UWidgetComponent> AimBoundsNode;
 
+	UPROPERTY(Transient) TObjectPtr<UGuLiXuntianHUDWidget> XuntianHUD;
+	UPROPERTY(Transient) TObjectPtr<UGuLiXuntianSceneGuide> XuntianGuide;
 	TWeakObjectPtr<AGuLiStrikeShip> OwnerShip;
 	TWeakObjectPtr<APlayerController> LocalController;
 	TWeakObjectPtr<UStaticMeshComponent> HullMesh;
