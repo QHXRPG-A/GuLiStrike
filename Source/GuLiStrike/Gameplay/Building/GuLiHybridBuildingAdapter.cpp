@@ -230,7 +230,7 @@ static bool AppendBuildingCatalog(UWorld& World,FGuLiHybridManifestData& Data,FS
             R.Kind=EGuLiHybridRuleKind::Capability;R.Capability=UTF8_TO_TCHAR(GuLiNet::Replacement::Capability);
             R.CapabilityVersion=GuLiNet::Replacement::Version;R.CapabilityOperation=TEXT("replace");
             R.TargetDefinition=FString::Printf(TEXT("unit/%d"),D.CompletionUnitTypeId);R.SpawnKind=EGuLiHybridObjectKind::Soldier;
-            R.SpawnHealth=Unit.MaxHealth;R.SpawnControllerSeat=0;
+            R.SpawnHealth=Unit.MaxHealth;R.SpawnShield=Unit.MaxShield;R.SpawnControllerSeat=0;
         }
         const auto Cost=D.Cost;
         for (const auto Kind : {EGuLiHybridRuleKind::Reserve,EGuLiHybridRuleKind::Refund,EGuLiHybridRuleKind::Spawn})
@@ -272,7 +272,7 @@ static bool AppendBuildingCatalog(UWorld& World,FGuLiHybridManifestData& Data,FS
             R.Kind=EGuLiHybridRuleKind::Spawn; R.TargetDefinition=FString::Printf(TEXT("unit/%d"),D.ProductionUnitId);
             // The family may be registered by another Startup provider. Resolve
             // its kind after all definitions, never infer it from the unit id.
-            R.SpawnKind=EGuLiHybridObjectKind::None; R.SpawnHealth=Soldier.MaxHealth; R.SpawnControllerSeat=0;
+            R.SpawnKind=EGuLiHybridObjectKind::None; R.SpawnHealth=Soldier.MaxHealth; R.SpawnShield=Soldier.MaxShield; R.SpawnControllerSeat=0;
         }
     }
     Data.Strings.Add(TEXT("startup/building_definitions"),TEXT("CatalogCapabilities/v1")); Error.Reset(); return true;

@@ -1,0 +1,107 @@
+{
+  "tiers": [
+    {
+      "tier": 1,
+      "sockets": [
+        "bottom_0",
+        "bottom_1",
+        "bottom_2"
+      ],
+      "radius": 800.0,
+      "damage": "80",
+      "air_damage": 55.999999046325684,
+      "explosion": "/Game/Stylized_Explosion_Pack_Vol1/VFX/N_Stylized_Explosion_1A_Classic_Explosion.N_Stylized_Explosion_1A_Classic_Explosion",
+      "speed": 14000.0,
+      "lifetime": 14.0,
+      "round_seconds": 1.0,
+      "burst_interval": 0.5,
+      "flight": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WingmanGroundFlight_SphereTrail.NS_WingmanGroundFlight_SphereTrail",
+      "smoke": "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianBlackSmoke.NS_XuntianBlackSmoke",
+      "glow": null,
+      "core": "<Struct 'LinearColor' (0x000002699B2411CC) {r: 0.879622, g: 0.623960, b: 0.141263, a: 1.000000}>",
+      "warning": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red.DA_GroundWarning_Red"
+    },
+    {
+      "tier": 2,
+      "sockets": [
+        "bottom_0",
+        "bottom_2"
+      ],
+      "radius": 1200.0,
+      "damage": "100",
+      "air_damage": 69.9999988079071,
+      "explosion": "/Game/_VFXResources/Niagara_System/NS_Explosion_04.NS_Explosion_04",
+      "speed": 14000.0,
+      "lifetime": 14.0,
+      "round_seconds": 3.0,
+      "burst_interval": 0.5,
+      "flight": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WingmanGroundFlight_SphereTrail.NS_WingmanGroundFlight_SphereTrail",
+      "smoke": "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianBlackSmoke.NS_XuntianBlackSmoke",
+      "glow": null,
+      "core": "<Struct 'LinearColor' (0x000002699B2414CC) {r: 0.434154, g: 0.254152, b: 0.806952, a: 1.000000}>",
+      "warning": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red.DA_GroundWarning_Red"
+    },
+    {
+      "tier": 3,
+      "sockets": [
+        "bottom_0",
+        "bottom_2",
+        "bottom_3",
+        "bottom_4",
+        "bottom_5"
+      ],
+      "radius": 1600.0,
+      "damage": "120",
+      "air_damage": 83.99999856948853,
+      "explosion": "/Game/_VFXResources/Niagara_System/NS_Explosion_07.NS_Explosion_07",
+      "speed": 14000.0,
+      "lifetime": 14.0,
+      "round_seconds": 3.0,
+      "burst_interval": 0.5,
+      "flight": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WingmanGroundFlight_SphereTrail.NS_WingmanGroundFlight_SphereTrail",
+      "smoke": "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianBlackSmoke.NS_XuntianBlackSmoke",
+      "glow": "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianSilverGlow.NS_XuntianSilverGlow",
+      "core": "<Struct 'LinearColor' (0x000002699B2403CC) {r: 0.693872, g: 0.791298, b: 0.846873, a: 1.000000}>",
+      "warning": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red.DA_GroundWarning_Red"
+    }
+  ],
+  "manifests": {
+    "RuntimeManifest-200.json": 219,
+    "RuntimeManifest-600.json": 219,
+    "RuntimeManifest-NoSurvivors.json": 222
+  },
+  "emitters": {
+    "NS_XuntianBlackSmoke": [
+      "WorldSmoke"
+    ],
+    "NS_XuntianSilverGlow": [
+      "SilverGlow"
+    ]
+  },
+  "trails": {
+    "NS_XuntianBlackSmoke": {
+      "world_space": true,
+      "inactive_response": "Complete (Let Particles Finish then Kill Emitter)",
+      "modules": [
+        "SpawnRate",
+        "ParticleState",
+        "EmitterState",
+        "InitializeParticle",
+        "InitializeWorldSmoke",
+        "HoldThenFade"
+      ]
+    },
+    "NS_XuntianSilverGlow": {
+      "world_space": true,
+      "inactive_response": "Complete (Let Particles Finish then Kill Emitter)",
+      "modules": [
+        "SpawnRate",
+        "ParticleState",
+        "EmitterState",
+        "InitializeParticle",
+        "InitializeSilverGlow",
+        "FollowShell"
+      ]
+    }
+  }
+}

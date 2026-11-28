@@ -4,6 +4,7 @@
 
 #include "Engine/World.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 #include "HAL/IConsoleManager.h"
 #include "NiagaraComponent.h"
 #include "NiagaraDataInterfaceArrayFunctionLibrary.h"
@@ -108,7 +109,9 @@ void UGuLiWarMachineHoverComponent::Submit(const FGuLiHoverNozzleSource& Source)
 	B.TrailSizes[I] = FVector2D(Width, Source.bReset ? 0 : Source.HorizontalSpeed);
 	// Carry the shared view policy to GPU history, so tactical tails are not
 	// independently clipped by the old 200 m camera-distance limit.
-	B.TrailColors[I] = FLinearColor(float(Slot.Generation), 1, Fade, 0);
+	const auto Detail = GuLiClientPresentation::DistanceDetail(GetWorld(), Source.Position);
+	const int32 HistoryStride = Detail == EGuLiCommanderLODLevel::Full ? 1 : Detail == EGuLiCommanderLODLevel::Reduced ? 3 : 9;
+	B.TrailColors[I] = FLinearColor(float(Slot.Generation), 1, Fade, float(HistoryStride));
 	B.Bounds += FBox(Source.Position - FVector(Width), Source.Position + FVector(Width));
 	B.Bounds += Source.Position + Down * Length;
 	++ActiveNozzles;

@@ -1,0 +1,221 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "stage": "complete",
+  "tiers": [
+    {
+      "tier": 1,
+      "sockets": [
+        "bottom_0",
+        "bottom_1",
+        "bottom_2"
+      ],
+      "mapped_keys": [
+        "F4"
+      ],
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Xuntian_BellyUpgrade.IA_Xuntian_BellyUpgrade",
+      "can_control": true,
+      "opened_by_f4": true,
+      "confirmed_nodes": [
+        "01",
+        "08",
+        "02"
+      ]
+    },
+    {
+      "tier": 2,
+      "sockets": [
+        "bottom_0",
+        "bottom_2"
+      ],
+      "mapped_keys": [
+        "F4"
+      ],
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Xuntian_BellyUpgrade.IA_Xuntian_BellyUpgrade",
+      "can_control": true,
+      "opened_by_f4": true,
+      "confirmed_nodes": [
+        "01",
+        "08",
+        "02",
+        "03"
+      ]
+    },
+    {
+      "tier": 3,
+      "sockets": [
+        "bottom_0",
+        "bottom_2",
+        "bottom_3",
+        "bottom_4",
+        "bottom_5"
+      ],
+      "mapped_keys": [
+        "F4"
+      ],
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Xuntian_BellyUpgrade.IA_Xuntian_BellyUpgrade",
+      "can_control": true,
+      "opened_by_f4": true
+    }
+  ],
+  "before_input": {
+    "ready": true,
+    "tier": 1,
+    "modal": false,
+    "coverage": 0,
+    "ground_bank": false,
+    "terrain_aim": false,
+    "aim": "X=0.000 Y=0.000 Z=0.000",
+    "sockets": [
+      "bottom_0",
+      "bottom_1",
+      "bottom_2"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "world_seconds": 4.946641318500042,
+    "battle_seconds": 0,
+    "warnings": 0,
+    "bursts": 0,
+    "effects": [],
+    "commits": 0,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 1000,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 1000
+    }
+  },
+  "max_level_menu": {
+    "ready": true,
+    "tier": 3,
+    "modal": true,
+    "coverage": 0,
+    "ground_bank": false,
+    "terrain_aim": false,
+    "aim": "X=125810.389 Y=84066.371 Z=25466.383",
+    "sockets": [
+      "bottom_0",
+      "bottom_2",
+      "bottom_3",
+      "bottom_4",
+      "bottom_5"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "world_seconds": 8.649750143289566,
+    "battle_seconds": 3.433333333333333,
+    "warnings": 0,
+    "bursts": 0,
+    "effects": [],
+    "commits": 482,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 870,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 980
+    }
+  },
+  "passed": true,
+  "error": "",
+  "last_state": {
+    "ready": true,
+    "tier": 3,
+    "modal": true,
+    "coverage": 0,
+    "ground_bank": false,
+    "terrain_aim": false,
+    "aim": "X=125810.389 Y=84066.371 Z=25466.383",
+    "sockets": [
+      "bottom_0",
+      "bottom_2",
+      "bottom_3",
+      "bottom_4",
+      "bottom_5"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "world_seconds": 8.649750143289566,
+    "battle_seconds": 3.433333333333333,
+    "warnings": 0,
+    "bursts": 0,
+    "effects": [],
+    "commits": 482,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 870,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 980
+    }
+  },
+  "session": {
+    "active": true,
+    "error": "",
+    "room": "01586D5F4F57279B8674BE88C04FEC1E",
+    "role": "Air",
+    "editor_pid": 9232,
+    "logic_processes": [
+      {
+        "pid": 23252,
+        "running": true
+      }
+    ],
+    "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/01586D5F4F57279B8674BE88C04FEC1E",
+    "shutdown": [],
+    "cleanup_complete": false,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+    "standalone": true,
+    "can_present": true,
+    "world_ready": true,
+    "network_error": "",
+    "members": [
+      {
+        "player": "42A2A84F4089172627721E9842A8A9F6",
+        "online": true,
+        "ready": true,
+        "team": "Red",
+        "role": "Air"
+      },
+      {
+        "player": "E3023A194F1C09CFA8AA8198AFA85EA2",
+        "online": true,
+        "ready": true,
+        "team": "Blue",
+        "role": "Commander"
+      }
+    ],
+    "units": 600,
+    "peer_owned_objects": 534,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "pawn": "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01.BP_CombatAvatarFly01_C",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "commander_view_active": false,
+    "can_issue_orders": false,
+    "mouse_cursor_visible": true,
+    "commander_hud_widget": "",
+    "commander_hud_in_viewport": false,
+    "commander_hud_visible": false,
+    "commander_hud_owner_matches": false,
+    "commander_hud_width": 0,
+    "commander_hud_height": 0,
+    "ground_hud_widget": "",
+    "ground_hud_in_viewport": false,
+    "ground_hud_visible": false,
+    "ground_hud_owner_matches": false,
+    "ground_hud_width": 0,
+    "ground_hud_height": 0,
+    "resource_query_ready": true,
+    "legacy_resource_runtime_ready": false
+  }
+}

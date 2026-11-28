@@ -1,0 +1,265 @@
+{
+  "source_capture": "20261127-090423-FC9840A4",
+  "capture_frames": 293,
+  "cpu_scope_baseline": {
+    "NS_GroundDestruction_03": {
+      "all_thread_inclusive_ms_per_frame": 0.9107,
+      "game_thread_inclusive_ms_per_frame": 0.0665,
+      "scope_occurrences_all_threads": 6953
+    },
+    "NS_WingmanLaserPool": {
+      "all_thread_inclusive_ms_per_frame": 0.3925,
+      "game_thread_inclusive_ms_per_frame": 0.0281,
+      "scope_occurrences_all_threads": 2051
+    },
+    "NS_Explosion_07": {
+      "all_thread_inclusive_ms_per_frame": 0.3119,
+      "game_thread_inclusive_ms_per_frame": 0.0176,
+      "scope_occurrences_all_threads": 2295
+    },
+    "NS_XuntianBlackSmoke": {
+      "all_thread_inclusive_ms_per_frame": 0.2036,
+      "game_thread_inclusive_ms_per_frame": 0.0221,
+      "scope_occurrences_all_threads": 4571
+    },
+    "NS_XuntianSilverGlow": {
+      "all_thread_inclusive_ms_per_frame": 0.0816,
+      "game_thread_inclusive_ms_per_frame": 0.0113,
+      "scope_occurrences_all_threads": 2781
+    }
+  },
+  "gpu_time_after": null,
+  "matched_frame_time_after": null,
+  "native_build": "not run",
+  "saved_effects_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeVfx_Effects",
+  "saved_systems": {
+    "GroundDestruction": [
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03",
+        "emitter_count": 10,
+        "emitters": [
+          "NE_Cloud_01",
+          "NE_Impact",
+          "NE_Cloud_02",
+          "NE_Rock001",
+          "NE_Rock",
+          "NE_Dust_Trail",
+          "NE_CloudLine01",
+          "NE_Cloud_01B",
+          "NE_CloudLine02",
+          "NE_GroundShockwave"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_GroundDestruction_Reduced",
+        "emitter_count": 5,
+        "emitters": [
+          "NE_Cloud_01",
+          "NE_Impact",
+          "NE_Cloud_02",
+          "NE_CloudLine01",
+          "NE_GroundShockwave"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_GroundDestruction_Minimal",
+        "emitter_count": 3,
+        "emitters": [
+          "NE_Cloud_01",
+          "NE_Impact",
+          "NE_GroundShockwave"
+        ]
+      }
+    ],
+    "WingmanDestruction": [
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05",
+        "emitter_count": 9,
+        "emitters": [
+          "NS_Cloud_02",
+          "NE_Impact",
+          "NE_GlowOut",
+          "NE_Bullet_01",
+          "NE_DustOut_01",
+          "NE_Rock001",
+          "NE_Rock",
+          "NE_Dust_Trail",
+          "NE_AirShockwave"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_WingmanDestruction_Reduced",
+        "emitter_count": 5,
+        "emitters": [
+          "NS_Cloud_02",
+          "NE_Impact",
+          "NE_GlowOut",
+          "NE_DustOut_01",
+          "NE_AirShockwave"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_WingmanDestruction_Minimal",
+        "emitter_count": 3,
+        "emitters": [
+          "NS_Cloud_02",
+          "NE_Impact",
+          "NE_AirShockwave"
+        ]
+      }
+    ],
+    "XuntianBellyExplosion1": [
+      {
+        "path": "/Game/Stylized_Explosion_Pack_Vol1/VFX/N_Stylized_Explosion_1A_Classic_Explosion",
+        "emitter_count": 3,
+        "emitters": [
+          "Explosion_Flipbook",
+          "Distortion",
+          "OmnidirectionalBurst"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion1_Reduced",
+        "emitter_count": 2,
+        "emitters": [
+          "Explosion_Flipbook",
+          "OmnidirectionalBurst"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion1_Minimal",
+        "emitter_count": 1,
+        "emitters": [
+          "Explosion_Flipbook"
+        ]
+      }
+    ],
+    "XuntianBellyExplosion2": [
+      {
+        "path": "/Game/_VFXResources/Niagara_System/NS_Explosion_04",
+        "emitter_count": 5,
+        "emitters": [
+          "NE_Cloud_01",
+          "NE_Cloud_02",
+          "NE_GlowOut",
+          "NE_CloudLine01",
+          "NE_Ground_01"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion2_Reduced",
+        "emitter_count": 3,
+        "emitters": [
+          "NE_Cloud_01",
+          "NE_Cloud_02",
+          "NE_GlowOut"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion2_Minimal",
+        "emitter_count": 2,
+        "emitters": [
+          "NE_Cloud_01",
+          "NE_Cloud_02"
+        ]
+      }
+    ],
+    "XuntianBellyExplosion3": [
+      {
+        "path": "/Game/_VFXResources/Niagara_System/NS_Explosion_07",
+        "emitter_count": 4,
+        "emitters": [
+          "NS_Cloud03",
+          "NE_Cloud_01",
+          "NE_Cloud_02",
+          "NE_Cloud_01B"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Reduced",
+        "emitter_count": 2,
+        "emitters": [
+          "NS_Cloud03",
+          "NE_Cloud_02"
+        ]
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Minimal",
+        "emitter_count": 1,
+        "emitters": [
+          "NE_Cloud_02"
+        ]
+      }
+    ],
+    "XuntianBlackSmoke": [
+      {
+        "path": "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianBlackSmoke",
+        "emitter_count": 1,
+        "emitters": [
+          "WorldSmoke"
+        ],
+        "rate": 100.0
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBlackSmoke_Reduced",
+        "emitter_count": 1,
+        "emitters": [
+          "WorldSmoke"
+        ],
+        "rate": 50.0
+      },
+      {
+        "path": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBlackSmoke_Minimal",
+        "emitter_count": 1,
+        "emitters": [
+          "WorldSmoke"
+        ],
+        "rate": 25.0
+      }
+    ]
+  },
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "editor_review_auto_activate_before": {
+    "MachineGunReview_MuzzleBefore": true,
+    "MachineGunReview_MuzzleWM01After": true,
+    "MachineGunReview_MuzzleSweeperAfter": true,
+    "MachineGunReview_ImpactBefore": true,
+    "MachineGunReview_ImpactAfter": true,
+    "MachineGunReview_TracerBefore": true,
+    "MachineGunReview_TracerAfter": true
+  },
+  "editor_review_auto_activate_saved": {
+    "MachineGunReview_MuzzleBefore": false,
+    "MachineGunReview_MuzzleWM01After": false,
+    "MachineGunReview_MuzzleSweeperAfter": false,
+    "MachineGunReview_ImpactBefore": false,
+    "MachineGunReview_ImpactAfter": false,
+    "MachineGunReview_TracerBefore": false,
+    "MachineGunReview_TracerAfter": false
+  },
+  "original_laser_asset_map_referrers": [
+    "/Game/Maps/LVL_CommanderMassPrototype",
+    "/Game/Development/EditorBackups/LVL_CommanderMassPrototype_D25_PID7324"
+  ],
+  "display_template": {
+    "parts": 78,
+    "startup_ticks": 0
+  },
+  "particle_geometry": {
+    "basis": "existing calibrated particle data; retained primary emitters compared without running the modified module",
+    "runs": 12,
+    "targets_cm": [
+      800.0,
+      1200.0,
+      1600.0
+    ],
+    "reference_median_peak_cm": [
+      800.0,
+      1199.04,
+      1605.72
+    ],
+    "tier3_full_cm": 1605.7,
+    "tier3_reduced_cm": 1605.7,
+    "tier3_minimal_cm": 1605.7
+  }
+}

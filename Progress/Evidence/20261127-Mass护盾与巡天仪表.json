@@ -1,0 +1,144 @@
+{
+  "date": "2026-11-27",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entry": "无双·巡天 → 巡天 HUD",
+  "build": {
+    "target": "GuLiStrikeEditor Win64 Development",
+    "result": "Succeeded",
+    "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+  },
+  "unit": "先驱号",
+  "hit": "巡天一级舰腹炮",
+  "mass_samples": {
+    "full": {
+      "render_frame": 26658,
+      "roster": {
+        "unit_type_id": 1,
+        "health": 300.0,
+        "max_health": 300.0,
+        "shield": 100.0,
+        "max_shield": 100.0
+      },
+      "paint": {
+        "id": 503,
+        "hp": 300,
+        "has_shield": true,
+        "shield_fraction": 1,
+        "vital_change": false,
+        "x": 917.995404714958,
+        "y": 495.5111498065505
+      }
+    },
+    "shield_only": {
+      "render_frame": 26896,
+      "roster": {
+        "unit_type_id": 1,
+        "health": 300.0,
+        "max_health": 300.0,
+        "shield": 20.0,
+        "max_shield": 100.0
+      },
+      "paint": {
+        "id": 503,
+        "hp": 300,
+        "has_shield": true,
+        "shield_fraction": 0.20000000298023224,
+        "vital_change": true,
+        "x": 917.995404714958,
+        "y": 495.5111498065505
+      }
+    },
+    "zero": {
+      "render_frame": 26624,
+      "roster": {
+        "unit_type_id": 1,
+        "health": 3000.0,
+        "max_health": 3000.0,
+        "shield": 0.0,
+        "max_shield": 0.0
+      },
+      "paint": {
+        "id": 31,
+        "hp": 3000,
+        "has_shield": false,
+        "shield_fraction": 0,
+        "vital_change": false,
+        "x": 750.8067195436447,
+        "y": 1016.2104726945836
+      }
+    }
+  },
+  "zero_capacity_additional": {
+    "unit_type_id": 5,
+    "soldier_id": 3,
+    "max_shield": 0,
+    "drew_shield": false
+  },
+  "hull_layout_design_units": {
+    "air_to_ground": [
+      {
+        "frame": 38469,
+        "ground": false,
+        "hull_x": 668,
+        "hull_y": 540,
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "frame": 38470,
+        "ground": true,
+        "hull_x": 988,
+        "hull_y": 951.8,
+        "width": 1920,
+        "height": 1080
+      }
+    ],
+    "ground_to_air": [
+      {
+        "frame": 38471,
+        "ground": true,
+        "hull_x": 988,
+        "hull_y": 951.8,
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "frame": 38472,
+        "ground": false,
+        "hull_x": 668,
+        "hull_y": 540,
+        "width": 1920,
+        "height": 1080
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "ArtSource/UI/MassShieldHUD_20261127/01-Full.png",
+      "state": "full",
+      "width_px": 2400,
+      "height_px": 1350
+    },
+    {
+      "file": "ArtSource/UI/MassShieldHUD_20261127/02-ShieldHit.png",
+      "state": "shield_only",
+      "width_px": 2400,
+      "height_px": 1350
+    },
+    {
+      "file": "ArtSource/UI/MassShieldHUD_20261127/03-AirHUD.png",
+      "state": "air",
+      "width_px": 2400,
+      "height_px": 1350
+    }
+  ],
+  "automation_passed": [
+    "GuLiStrike.Commander.UI.HealthBar.Activity",
+    "GuLiStrike.Commander.UI.HealthBar.AllVisibleAndCadence",
+    "GuLiStrike.Commander.UI.HealthBar.Pose30HzCameraPerFrame",
+    "GuLiStrike.Commander.UI.HealthBar.ShieldChangeHistory",
+    "GuLiStrike.Commander.UI.HealthBar.SizingPolicy",
+    "GuLiStrike.Commander.UI.HealthBar.VisibilityPolicy"
+  ],
+  "verification_editor_shutdown": "After the screenshots and tests, FPythonScriptPlugin::ShutdownPython produced an access violation during editor shutdown. The interactive editor reopened the original map and reported all six range stations."
+}

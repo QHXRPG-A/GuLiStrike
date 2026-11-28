@@ -36,6 +36,25 @@
 #include "Gameplay/Resources/GuLiMiningPresentationComponent.h"
 #include "Commander/UI/GuLiSceneUISubsystem.h"
 #include "Commander/UI/GuLiSceneUIWidget.h"
+#include "Commander/Network/GuLiSoldierStateReplicator.h"
+
+int32 UGuLiComponentSkillQALibrary::PrimeHealthBarReview(APlayerController* Controller, const TArray<int32>& SoldierIds)
+{
+	if (!Controller || !Controller->IsLocalController() || !Controller->GetWorld()->IsPlayInEditor()) return 0;
+	for (TActorIterator<AGuLiSoldierStateReplicator> It(Controller->GetWorld()); It; ++It)
+	{
+		TArray<FGuLiSoldierStateItem> Changed;
+		for (const int32 Id : SoldierIds)
+			if (const auto* State = It->FindSoldierState(FGuLiSoldierId(Id)); State && State->IsAlive() && State->Health > 1.f)
+			{
+				auto& Item = Changed.Add_GetRef(*State);
+				Item.Health -= 1.f;
+				++Item.StateRevision;
+			}
+		return It->ApplyAuthorityDelta(Changed, It->GetSnapshotMatchEpoch());
+	}
+	return 0;
+}
 
 bool UGuLiComponentSkillQALibrary::SetPerformanceViewportSize(APlayerController* Controller,int32 Width,int32 Height)
 {

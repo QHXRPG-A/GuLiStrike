@@ -4,7 +4,9 @@ Run through Scripts/ue_exec.py. Only /Game/GuLiStrike/FX/WingmanFlight is saved.
 """
 import json
 import traceback
+from functools import partial
 from pathlib import Path
+from runpy import run_path
 import unreal
 
 DEST = '/Game/GuLiStrike/FX/WingmanFlight'
@@ -13,7 +15,7 @@ TEMPLATE = '/Niagara/DefaultAssets/Templates/Emitters/Fountain.Fountain'
 OUT = Path('D:/UE5.7/test1/TestResults/WingmanFlightVFX')
 ASSETS = unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
-NS, EM, SP = unreal.NiagaraService, unreal.NiagaraEmitterService, unreal.NiagaraScratchPadService
+NS, EM = unreal.NiagaraService, unreal.NiagaraEmitterService
 MAT = unreal.MaterialEditingLibrary
 report = {'system': SYSTEM, 'template': TEMPLATE, 'saved': [], 'materials': {}}
 
@@ -31,35 +33,7 @@ def save(asset):
     report['saved'].append(path)
 
 
-def scratch(emitter, stage, name, inputs, outputs, code):
-    result = SP.create_scratch_module(SYSTEM, emitter, stage, name)
-    require(result.success, 'Create scratch ' + name)
-    module = str(result.module_name)
-    hlsl = SP.add_custom_hlsl_node(SYSTEM, emitter, module, code)
-    require(hlsl.success, 'HLSL ' + name)
-    node = str(hlsl.node_id)
-    read = SP.add_node(SYSTEM, emitter, module, 'MapGet')
-    require(read.success, 'MapGet ' + name)
-    read_id = str(read.node_id)
-    input_node = next(n for n in SP.list_nodes(SYSTEM, emitter, module)
-                      if str(n.node_type) in ('Input', 'NiagaraNodeInput') or str(n.node_type).endswith('NodeInput'))
-    input_id = str(input_node.node_id)
-    input_pin = next(str(p.pin_name) for p in SP.get_node_pins(SYSTEM, emitter, module, input_id)
-                     if str(p.direction).lower() == 'output')
-    read_pin = next(str(p.pin_name) for p in SP.get_node_pins(SYSTEM, emitter, module, read_id)
-                    if str(p.direction).lower() == 'input')
-    require(SP.connect_pins(SYSTEM, emitter, module, input_id, input_pin, read_id, read_pin), 'Map read')
-    for pin, kind, variable in inputs:
-        require(SP.add_pin(SYSTEM, emitter, module, read_id, 'Output', kind, variable).success, 'Read ' + variable)
-        require(SP.add_pin(SYSTEM, emitter, module, node, 'Input', kind, pin).success, 'Input ' + pin)
-        require(SP.connect_pins(SYSTEM, emitter, module, read_id, variable, node, pin), 'Wire ' + pin)
-    for pin, kind, variable in outputs:
-        require(SP.add_pin(SYSTEM, emitter, module, node, 'Output', kind, pin).success, 'Output ' + pin)
-        target = SP.add_module_output(SYSTEM, emitter, module, variable, kind)
-        require(target.success, 'Map output ' + variable)
-        require(SP.connect_pins(SYSTEM, emitter, module, node, pin, str(target.node_id), variable), 'Wire ' + variable)
-    require(unreal.GuLiCombatEffectAuthoringLibrary.finalize_scratch_pins(ASSETS.load_asset(SYSTEM)), 'Finalize pins')
-    require(SP.apply_changes(SYSTEM), 'Apply scratch')
+scratch = partial(run_path(str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / 'Scripts/Vfx/niagara_scratch.py'))['scratch'], SYSTEM)
 
 
 def material(name, ribbon):
@@ -137,9 +111,13 @@ def main():
         shape = ('float3 dir=Forward/max(length(Forward),0.001); '
                  f'Life={life}; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); '
                  'Size=float2(200*Throttle,30); Alignment=dir; Rotation=0; Width=22; ')
+        spawn_inputs = shared_inputs
+        if name.endswith('EngineFlame'):
+            spawn_inputs = shared_inputs + [('LODDistance','float','Engine.Owner.LODDistance')]
+            shape = shape.replace('Life=0.1;', 'Life=LODDistance>=8000.0 ? 0.14 : 0.1;')
         nozzle = f'Owner+Right*Spacing*{side}.0'
         shape += f'Position={nozzle}-dir*Size.x*0.43;' if name.endswith('EngineFlame') else f'Position={nozzle};'
-        scratch(emitter, 'ParticleSpawn', 'InitializeWingman' + name, shared_inputs, outputs, shape)
+        scratch(emitter, 'ParticleSpawn', 'InitializeWingman' + name, spawn_inputs, outputs, shape)
         if name.endswith('EngineFlame'):
             scratch(emitter, 'ParticleUpdate', 'FollowWingmanNozzle', shared_inputs,
                     [o for o in outputs if o[0] in ('Position','Color','Size','Alignment')],

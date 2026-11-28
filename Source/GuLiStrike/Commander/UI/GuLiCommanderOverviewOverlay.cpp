@@ -47,11 +47,17 @@ void AGuLiCommanderHUD::BuildOverviewMarkers(bool GatherHealthBars)
 	const auto* Theme = RuntimeHUDWidget ? RuntimeHUDWidget->GetConsoleTheme() : nullptr;
 	const auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
 	const double Now = GetWorld()->GetTimeSeconds();
-	auto AddHealthBar = [this, Now](const FGuLiCommanderOverviewMarker& Marker, const UObject* Source,
-		uint64 Element, const FGuLiHealthBarEvent& Change)
+	const FVector Origin = GuLiHealthBars::ViewOrigin(*PC);
+	auto AddHealthBar = [this, Now, Origin](const FGuLiCommanderOverviewMarker& Marker, FGuLiSceneUIElementKey Key,
+		const auto& State, const FGuLiHealthBarEvent* Change)
 	{
-		auto Bar = GuLiHealthBars::FromEvent(Source, Element, Change, Now);
+		const float Damage = Change ? GuLiHealthBars::DamageOpacity(Now, Change->LastDamage) : 0.f;
+		FGuLiSceneUIHealthBar Bar;
+		Bar.Opacity = GuLiHealthBars::Visibility(Origin, Marker.WorldLocation, Damage);
 		if (Bar.Opacity <= 0) return;
+		Bar.Key = Key;
+		Bar.bRecentDamage = Damage > 0;
+		GuLiHealthBars::SetVitals(Bar, State.Health, State.MaxHealth, State.Shield, State.MaxShield);
 		Bar.Center = Marker.WorldLocation;
 		Bar.OverviewIconPixels = Marker.Size;
 		Bar.bSelected = Marker.bSelected;
@@ -76,8 +82,8 @@ void AGuLiCommanderHUD::BuildOverviewMarkers(bool GatherHealthBars)
 			if (!PC->ProjectWorldLocationToScreen(Marker.WorldLocation, Marker.ScreenPosition)) continue;
 			Marker.Size = Config.OverviewUnitIconPixels * DPI;
 			Marker.bSelected = Selected.Contains(Soldier.SoldierId.Value) || InspectedOverviewSoldier == Soldier.SoldierId;
-			if (const auto* Change = Events ? Events->Find(Soldier.SoldierId) : nullptr)
-				AddHealthBar(Marker, Roster, Soldier.SoldierId.Value, *Change);
+			if (Events)
+				AddHealthBar(Marker, {Roster, Soldier.SoldierId.Value, Roster->GetSnapshotMatchEpoch()}, Soldier, Events->Find(Soldier.SoldierId));
 			// Do not substitute the theme's generic square portrait for the circular unit fallback.
 			if (Theme) if (const auto* Icon = Theme->Portraits.Find(Soldier.UnitTypeId)) Marker.Icon = Icon->Get();
 			OverviewMarkers.Add(Marker);
@@ -110,8 +116,9 @@ void AGuLiCommanderHUD::BuildOverviewMarkers(bool GatherHealthBars)
 		}
 		if (Lifecycle && Theme) Marker.Icon = Theme->FindIcon(*FString::Printf(TEXT("Building.%d"), int32(Lifecycle->GetDefinition().Type)));
 		Marker.bSelected = (Marker.ActorId.IsValid() && Selection.ActorIds.Contains(Marker.ActorId)) || InspectedOverviewActor == Actor;
-		if (const auto* Change = GatherHealthBars && Feedback ? Feedback->GetActorHealthBars().Find(Actor) : nullptr)
-			AddHealthBar(Marker, Actor, 0, *Change);
+		if (GatherHealthBars && Health && Health->GetTargetHandle().IsValid())
+			AddHealthBar(Marker, {Actor, 0, Health->GetTargetHandle().Generation}, Health->GetHealthState(),
+				Feedback ? Feedback->GetActorHealthBars().Find(Actor) : nullptr);
 		OverviewMarkers.Add(Marker);
 	}
 }

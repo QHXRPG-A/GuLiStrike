@@ -41,6 +41,8 @@ public:
 	/** Visibility-only consumers do not need distance, screen size or tier classification. */
 	bool IsBoundsVisible(const FBox& Bounds);
 	FGuLiCommanderLODDecision EvaluateWorldEffectBounds(const FGuLiCommanderLODQuery& Query, double NonCommanderMaximumDistance);
+	/** Distance-only tiers for non-commander views. The far tier has no distance cutoff. */
+	FGuLiCommanderLODDecision EvaluateWorldEffectBounds(const FGuLiCommanderLODQuery& Query, const FGuLiWorldEffectDistanceBands& Bands);
 	/** World-effect admission: commander LOD0/1/2 allow, LOD3 suppresses. Other views use the
 	 * caller's distance limit (<= 0 means unlimited). Any eligible local view wins;
 	 * registered visual components remain hidden per overview view by its own mask. */
@@ -75,6 +77,8 @@ private:
 		TOptional<EGuLiPresentationTier> PresentationTier;
 	};
 	void EnsureViews();
+	FGuLiCommanderLODDecision EvaluateWorldEffectViews(const FGuLiCommanderLODQuery& Query, double NonCommanderMaximumDistance,
+		const FGuLiWorldEffectDistanceBands* NonCommanderBands);
 	struct FOutlineSlot
 	{
 		TStrongObjectPtr<UMaterialInterface> Override;

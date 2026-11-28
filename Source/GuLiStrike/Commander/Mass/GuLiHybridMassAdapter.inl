@@ -421,6 +421,7 @@ public:
         if (!Self->InstallGrantedSoldier(R.Team,static_cast<uint16>(Type),R.Location,Id,R.FacingYawDegrees,FMath::Max(1.f,R.Health.Health))) return false;
         auto& S=Self->AuthorityState->Soldiers[Self->AuthorityState->SoldierIndexById.FindChecked(Id.Value)]; S.HybridKey=R.Key; S.bLocalSimulation=false;
         S.Health=R.Health.Health;S.MaxHealth=R.Health.MaxHealth;
+        S.Shield=R.Health.Shield;S.MaxShield=R.Health.MaxShield;
         if (auto* H=Self->GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>())
             if (const auto* Barracks=Cast<AGuLiPioneerBarracksActor>(H->FindBoundActor(R.Parent)))
             {
@@ -601,6 +602,7 @@ public:
         if (R.Health.Health<S->Health)
         { TGuardValue<bool> Apply(Self->bApplyingHybridLedger,true); Self->ApplyDamage(S->SoldierId,S->Health-R.Health.Health); }
         S->Health=R.Health.Health; S->MaxHealth=R.Health.MaxHealth;
+        S->Shield=R.Health.Shield; S->MaxShield=R.Health.MaxShield;
         ReadModel();
     }
     bool Capture(TArray<uint8>& Bytes) const override
@@ -640,6 +642,7 @@ public:
             if (!Prepare(Create)) return false; Record.Location=V.Soldier.Location;
             auto* S=Soldier(); const auto Entity=S->Entity; const auto Profiles=S->WeaponProfiles; const int32 DirectoryIndex=S->DirectoryIndex;
             *S=MoveTemp(V.Soldier); S->DirectoryIndex=DirectoryIndex; S->Entity=Entity; S->WeaponProfiles=Profiles; S->bLocalSimulation=bLocal;
+            S->Shield=Record.Health.Shield; S->MaxShield=Record.Health.MaxShield;
             S->MoveIntent=bRestoringQuery?nullptr:V.Intent;S->RouteGoal=S->MoveIntent?S->MoveIntent->Goal:nullptr;
             const double Offset=Self->AuthorityState->SimulationSeconds-V.CapturedSeconds;
             for (auto& Weapon:S->Weapons)

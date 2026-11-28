@@ -33,9 +33,11 @@ struct GULISTRIKE_API FGuLiGroundWarningParams
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") TObjectPtr<UGuLiGroundWarningStyle> Style;
 	/** Optional pooling boundary: independent casts at the same point keep separate circles. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") FGuid PoolGroupId;
-	/** GameState server-world clock, including for local-only previews. */
+	/** Local previews use GameState time. Replicated flights supply their own battle timestamps. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") double StartServerSeconds = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ground Warning") double ExpireServerSeconds = 0;
+	bool bUsesBattleClock = false;
+	bool bPilotOutline = false;
 };
 
 USTRUCT()
@@ -46,6 +48,7 @@ struct FGuLiGroundWarningCircle
 	UPROPERTY() TObjectPtr<UDecalComponent> Decal;
 	UPROPERTY() TObjectPtr<UMaterialInstanceDynamic> Material;
 	int32 References = 0;
+	TArray<FVector> PilotRim;
 };
 
 /** Render-world service. Callers own stable IDs; matching circles share a pooled decal. */
@@ -64,9 +67,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Ground Warning") void RemoveWarning(FGuid WarningId);
 	UFUNCTION(BlueprintPure, Category="Ground Warning") int32 GetActiveWarningCount() const { return Entries.Num(); }
 	UFUNCTION(BlueprintPure, Category="Ground Warning") int32 GetActiveCircleCount() const;
+	void VisitPilotRims(TFunctionRef<void(TConstArrayView<FVector>, const FLinearColor&)> Visit) const;
 private:
 	struct FEntry { int32 Circle = INDEX_NONE; double ExpireServerSeconds = 0; };
-	double ServerTime() const;
+	double WarningTime(bool bBattleClock) const;
 	UPROPERTY(Transient) TArray<FGuLiGroundWarningCircle> Circles;
 	TMap<FGuid, FEntry> Entries;
 };

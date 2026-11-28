@@ -1,0 +1,102 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "entry": "无双·巡天 → 巡天 HUD",
+  "build": {
+    "target": "GuLiStrikeEditor Win64 Development",
+    "result": "Succeeded",
+    "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6"
+  },
+  "material": "/Game/GuLiStrike/UI/SceneOverlay/M_SegmentedVitals",
+  "geometry": {
+    "ordinary_shielded_marker_design_px": [
+      86,
+      18
+    ],
+    "ordinary_unshielded_marker_design_px": [
+      86,
+      14
+    ],
+    "outer_corner_radius_max_design_px": 3,
+    "inside_height_fractions": {
+      "shield": 0.3,
+      "solid_divider": 0.1,
+      "health": 0.6
+    },
+    "health_and_shield_points_per_cell": 100,
+    "vertices_per_marker": 4,
+    "indices_per_marker": 6
+  },
+  "matched_pie_capture": {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "roster": {
+      "id": 174,
+      "unit_type_id": 2,
+      "health": 800.0,
+      "max_health": 800.0,
+      "shield": 400.0,
+      "max_shield": 400.0
+    },
+    "hud": {
+      "id": 174,
+      "hp": 800,
+      "has_shield": true,
+      "shield_fraction": 1,
+      "vital_change": false,
+      "x": 917.181475212009,
+      "y": 495.70011401513443
+    },
+    "previous_frame": 3028,
+    "current_frame": 3872,
+    "previous_png": "ArtSource/UI/MassShieldGrid_20261127/WM01-400-800.png",
+    "current_png": "ArtSource/UI/MassShieldRound_20261127/WM01-400-800.png",
+    "comparison_png": "ArtSource/UI/MassShieldRound_20261127/Round-Comparison.png",
+    "comparison_viewport_region_xywh": [
+      905,
+      487,
+      112,
+      36
+    ],
+    "comparison_magnification": 4
+  },
+  "depleted": {
+    "id": 39,
+    "frame": 47856,
+    "health": 272.5,
+    "max_health": 300.0,
+    "shield": 0.0,
+    "max_shield": 100.0,
+    "paint": {
+      "id": 39,
+      "hp": 272.5,
+      "has_shield": true,
+      "shield_fraction": 0,
+      "vital_change": false,
+      "x": 917.3046101081119,
+      "y": 497.17225966650676
+    }
+  },
+  "without_shield": {
+    "id": 8,
+    "frame": 9266,
+    "health": 1000.0,
+    "max_shield": 0,
+    "paint_has_shield": false
+  },
+  "automation": {
+    "prefix": "GuLiStrike.Commander.UI.HealthBar.",
+    "passed": [
+      "Activity",
+      "AllVisibleAndCadence",
+      "Pose30HzCameraPerFrame",
+      "ShieldChangeHistory",
+      "SizingPolicy",
+      "StackedTracks",
+      "VisibilityPolicy"
+    ],
+    "shader_map_and_compile_errors_checked_in": "StackedTracks"
+  },
+  "player_visual_review": "pending"
+}

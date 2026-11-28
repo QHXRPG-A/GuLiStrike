@@ -297,6 +297,16 @@ bool RuntimeObjects(const RuntimeManifest& M,std::map<ObjectKey,ObjectRecord>& O
     std::map<std::string,OwnershipDefinition> Definitions;
     if (!ReadOwnershipDefinitions(M,Definitions,Error)) return false;
     auto Objects=M.Objects;
+    if (const auto starter=M.Strings.find("startup/ship_belly_node");starter!=M.Strings.end())
+    {
+        std::map<std::string,CompiledUpgradeCatalog> catalogs;
+        if (!ReadUpgradeCatalogs(M,catalogs,Error)) return false;
+        const auto ship=catalogs.find("ship");
+        if (ship==catalogs.end() || !CanChooseUpgrade(ship->second,{},starter->second,Error)) return false;
+        for (auto& [key,object]:Objects)
+            if (key.Kind==ObjectKind::Ship && object.Definition=="player/ship")
+                object.Upgrades["ship"]={ship->second.Data.Version,1,{starter->second}};
+    }
     // Seed the unattended Air seat from the same catalogue used for player choices.
     if (const auto choice=M.Strings.find(WingmanRangeOpponentHangar); choice!=M.Strings.end())
     {
@@ -309,7 +319,11 @@ bool RuntimeObjects(const RuntimeManifest& M,std::map<ObjectKey,ObjectRecord>& O
         for (auto& [key,object]:Objects)
         {
             if (key.Kind!=ObjectKind::Ship || object.Grant.Faction!=Team::Blue || object.Definition!="player/ship") continue;
-            object.Upgrades["ship"]={catalog->second.Data.Version,1,{choice->second}};
+            auto& selection=object.Upgrades["ship"];
+            if (!CanChooseUpgrade(catalog->second,selection.Chosen,choice->second,Error)) return false;
+            selection.CatalogVersion=catalog->second.Data.Version;
+            selection.Chosen.push_back(choice->second);
+            selection.Version=selection.Chosen.size();
             ++carriers;
         }
         if (carriers!=1) { Error="Wingman range requires one Blue player ship"; return false; }

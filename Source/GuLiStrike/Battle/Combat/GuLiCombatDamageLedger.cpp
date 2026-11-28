@@ -420,8 +420,11 @@ bool UGuLiDamageLedgerSubsystem::RegisterHealthComponent(UGuLiCombatHealthCompon
 		OutSnapshot.Handle = Handle;
 		OutSnapshot.Team = Health->GetCombatTeam();
 		ReadActorBody(*Owner, OutSnapshot);
-		OutSnapshot.Health = Health->GetHealthState().Health;
-		OutSnapshot.MaxHealth = Health->GetHealthState().MaxHealth;
+		const auto& Vitals = Health->GetHealthState();
+		OutSnapshot.Health = Vitals.Health;
+		OutSnapshot.MaxHealth = Vitals.MaxHealth;
+		OutSnapshot.Shield = Vitals.Shield;
+		OutSnapshot.MaxShield = Vitals.MaxShield;
 		OutSnapshot.bAlive = Health->IsAlive();
 		OutSnapshot.CollisionActor = const_cast<AActor*>(Owner);
 		return !OutSnapshot.Location.ContainsNaN();

@@ -12,6 +12,9 @@ namespace GuLiClientPresentation
  GULISTRIKE_API bool OffscreenFlightsEnabled();
  GULISTRIKE_API bool ThreeTierEffectsEnabled();
  GULISTRIKE_API void ApplyEndpointDetail(UNiagaraComponent* Beam, EGuLiCommanderLODLevel Level);
+ /** Distance from the event to the closest local view, in the same bands as the Niagara layers. */
+ GULISTRIKE_API EGuLiCommanderLODLevel DistanceDetail(double DistanceSquared);
+ GULISTRIKE_API EGuLiCommanderLODLevel DistanceDetail(const UWorld* World, const FVector& Position);
  constexpr double OffscreenGraceSeconds = .15;
  constexpr double OffscreenUnitInterval = .2;
 }

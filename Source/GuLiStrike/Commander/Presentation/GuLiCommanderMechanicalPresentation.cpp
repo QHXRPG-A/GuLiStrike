@@ -48,14 +48,26 @@ const FGuLiCommanderPresentedSoldier* AGuLiCommanderPresentationActor::GetQueryS
 	return &Pose;
 }
 
+bool AGuLiCommanderPresentationActor::GetVisibleSoldierLocation(FGuLiSoldierId Id, FVector& Location, uint64& Generation) const
+{
+	const auto* Soldier = PresentedSoldiers.Find(Id);
+	if (!Soldier || !Soldier->bMainViewVisible || !Soldier->bHasPresentedTransform) return false;
+	const auto* Instance = SoldierInstanceHandles.Find(Id);
+	if (!Instance) return false;
+	Location = Soldier->PresentedTransform.GetLocation();
+	Generation = Instance->SceneUIGeneration;
+	return true;
+}
+
 bool AGuLiCommanderPresentationActor::TryGetPresentedVisualTransform(FGuLiSoldierId Id, FTransform& Out) const
 {
-	if (!TryGetPresentedSoldierTransform(Id, Out)) return false;
 	const auto* Soldier = GetQuerySoldier(Id);
+	if (!Id.IsValid() || !Soldier || !Soldier->bHasPresentedTransform) return false;
+	Out = Soldier->PresentedTransform;
 	const auto* Handle = SoldierInstanceHandles.Find(Id);
 	const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	const auto* Def = Handle && Data ? Data->FindSoldierDefinition(Handle->BatchUnitTypeId) : nullptr;
-	if (Def && Soldier)
+	if (Def)
 	{
 		if (Soldier->MechanicalVisual.bInitialized) Out = Soldier->MechanicalVisual.Root;
 		Out = GuLiMechanicalAnimation::HoverBodyTransform(Def->MechanicalAnimation, Soldier->MechanicalPose) * Out;

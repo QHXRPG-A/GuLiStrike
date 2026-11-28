@@ -9,6 +9,9 @@
 #include "Engine/World.h"
 #include "HAL/IConsoleManager.h"
 #include "NiagaraSystem.h"
+#include "Gameplay/CombatEffects/GuLiProjectileFlightPresentationProfile.h"
+#include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+#include "Materials/MaterialInterface.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogGuLiExplosionPreload, Log, All);
@@ -30,6 +33,8 @@ void UGuLiUnitFeedbackSubsystem::StartExplosionPreload()
 	TArray<FSoftObjectPath> Paths;
 	for (const auto& Field : GetDefault<UGuLiCombatEffectSettings>()->StartupExplosionFields)
 		if (!Field.IsNull()) Paths.AddUnique(Field.ToSoftObjectPath());
+	for (const auto& Shell : GetDefault<UGuLiCombatEffectSettings>()->StartupProjectiles)
+		if (!Shell.IsNull()) Paths.AddUnique(Shell.ToSoftObjectPath());
 	const auto& WeaponTable = GetDefault<UGuLiRogueCardSettings>()->GroundWeaponEffects;
 	if (!WeaponTable.IsNull()) Paths.AddUnique(WeaponTable.ToSoftObjectPath());
 
@@ -81,11 +86,41 @@ void UGuLiUnitFeedbackSubsystem::RequestExplosionSystems()
 
 	auto* Registry = GetWorld()->GetSubsystem<UGuLiVfxRegistrySubsystem>();
 	TArray<FSoftObjectPath> Paths;
+	for (const auto& Reference : GetDefault<UGuLiCombatEffectSettings>()->StartupProjectiles)
+	{
+		auto* Shell = Reference.Get();
+		if (!Shell) { UE_LOG(LogGuLiExplosionPreload, Error, TEXT("Could not preload projectile %s"), *Reference.ToString()); continue; }
+		LoadedProjectileAssets.AddUnique(Shell);
+		AddVisual(StartupExplosionVfxIds, Shell->FlightVfxId);
+		if (auto* Profile = Shell->FlightPresentationProfile.LoadSynchronous())
+		{
+			LoadedProjectileAssets.AddUnique(Profile);
+			if (!Profile->WorldSmoke.IsNull() && Profile->WorldSmoke.ToSoftObjectPath() == GuLiVfx::Path(this, GuLiVfxIds::XuntianBlackSmoke))
+				AddVisual(StartupExplosionVfxIds, GuLiVfxIds::XuntianBlackSmoke);
+			for (const auto& System : {Profile->BatchSystem, Profile->WorldSmoke, Profile->HeadGlow})
+				if (!System.IsNull()) StartupAdditionalSystemPaths.AddUnique(System.ToSoftObjectPath());
+		}
+		if (auto* Style = Shell->GroundWarningStyle.LoadSynchronous())
+		{
+			LoadedProjectileAssets.AddUnique(Style);
+			AddVisual(StartupWarningVfxIds, Style->MaterialVfxId);
+		}
+	}
+	for (int32 Id : StartupWarningVfxIds)
+	{
+		const auto Path = Registry->ReservePreload(Id);
+		if (!Path.IsNull()) Paths.AddUnique(Path);
+	}
 	for (int32 Id : StartupExplosionVfxIds)
 	{
 		const FSoftObjectPath Path = Registry->ReservePreload(Id);
 		if (!Path.IsNull()) Paths.AddUnique(Path);
+		FGuLiStrikeVfxEffectsRow Row;
+		if (Registry->GetDefinition(Id, Row))
+			for (const auto& Detail : {Row.ReducedResourcePath, Row.MinimalResourcePath})
+				if (!Detail.IsNull()) StartupAdditionalSystemPaths.AddUnique(Detail.ToSoftObjectPath());
 	}
+	for (const auto& Path : StartupAdditionalSystemPaths) Paths.AddUnique(Path);
 	if (!Paths.IsEmpty())
 		ExplosionSystemsLoad = UAssetManager::GetStreamableManager().RequestAsyncLoad(Paths,
 			FStreamableDelegate::CreateUObject(this, &ThisClass::FinishExplosionPreload));
@@ -109,6 +144,20 @@ void UGuLiUnitFeedbackSubsystem::FinishExplosionPreload()
 		{
 			UE_LOG(LogGuLiExplosionPreload, Error, TEXT("Could not preload Niagara system for explosion VfxId %d."), Id);
 		}
+	}
+	for (const auto& Path : StartupAdditionalSystemPaths)
+	{
+		if (auto* System = Cast<UNiagaraSystem>(Path.ResolveObject()))
+		{
+			Systems.Add(System);
+			LoadedProjectileAssets.AddUnique(System);
+		}
+		else UE_LOG(LogGuLiExplosionPreload, Error, TEXT("Niagara system unavailable at startup: %s"), *Path.ToString());
+	}
+	for (int32 Id : StartupWarningVfxIds)
+	{
+		if (auto* Material = GuLiVfx::Load<UMaterialInterface>(this, Id, false)) LoadedProjectileAssets.AddUnique(Material);
+		else UE_LOG(LogGuLiExplosionPreload, Error, TEXT("Warning material unavailable at startup: %d"), Id);
 	}
 	for (UNiagaraSystem* System : Systems) PrepareExplosionCompilation(System);
 	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();

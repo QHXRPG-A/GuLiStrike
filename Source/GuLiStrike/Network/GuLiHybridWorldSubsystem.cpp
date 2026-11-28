@@ -1619,8 +1619,17 @@ FGuid UGuLiHybridWorldSubsystem::SubmitDamage(const FGuLiDamageRequest& R,uint64
     V.RootEvent=ToCore(R.RootEventId.IsValid() ? R.RootEventId : R.ShotId); V.StartedAt=StartedAt;
     FGuLiHybridObjectState SourceState;
     if (!GetObject(Source,SourceState)) return {};
-    V.RuleId=TCHAR_TO_UTF8(*(EffectAuthority ? TEXT("settle/")+SourceState.Definition.ToString()
-        : FGuLiHybridManifest::MakeDamageRuleId(SourceState.Definition.ToString(),R.SkillId,R.WeaponBinding.SlotId)));
+    const FString Definition = SourceState.Definition.ToString();
+    FString Rule = EffectAuthority ? TEXT("settle/")+Definition
+        : FGuLiHybridManifest::MakeDamageRuleId(Definition,R.SkillId,R.WeaponBinding.SlotId);
+    if (EffectAuthority && (R.Target.Kind == EGuLiTargetKind::Ship || R.Target.Kind == EGuLiTargetKind::Wingman))
+    {
+        FString BaseRule = Definition;
+        const auto* Actors = GetWorld()->GetSubsystem<UGuLiHybridActorWorldSubsystem>();
+        if (Actors && BaseRule.RemoveFromStart(TEXT("effect/runtime/")) &&
+            Actors->GetManifest().Numbers.Contains(TEXT("air_damage/")+BaseRule)) Rule += TEXT("/air");
+    }
+    V.RuleId = TCHAR_TO_UTF8(*Rule);
     V.TargetX=R.HitLocation.X; V.TargetY=R.HitLocation.Y;
     const TWeakObjectPtr<UGuLiHybridWorldSubsystem> Weak(this);
     FGuLiDamageFeedback Feedback;Feedback.Epoch=R.MatchEpoch;Feedback.Event=R.DamageEventId;

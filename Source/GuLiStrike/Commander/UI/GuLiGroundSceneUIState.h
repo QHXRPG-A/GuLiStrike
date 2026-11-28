@@ -5,6 +5,7 @@
 #include "Commander/UI/GuLiSceneUITypes.h"
 #include "Gameplay/CombatEffects/GuLiUnitVitalHistory.h"
 #include "GuLiGroundSceneUIState.generated.h"
+struct FGuLiWorldHealthBars;
 
 class APlayerController;
 class AGuLiCommanderPresentationActor;
@@ -52,7 +53,7 @@ public:
     void Bind(APlayerController* Controller);
     void Unbind();
     void Update(const FSceneViewProjectionData& Projection,AGuLiCommanderPresentationActor* Presentation,
-        USceneCaptureComponent2D& Capture,TArray<FGuLiSceneUIHealthBar>& Bars);
+        USceneCaptureComponent2D& Capture,FGuLiWorldHealthBars& Models,TArray<FGuLiSceneUIHealthBar>& Bars);
     FString GetStatsJson() const;
     static float DistanceOpacity(double Distance);
 

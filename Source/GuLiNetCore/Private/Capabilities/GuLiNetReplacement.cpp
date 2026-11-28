@@ -14,6 +14,12 @@ bool Result(const ObjectRecord& O,ObjectKey& Key)
 }
 namespace
 {
+float CarryRemaining(float Remaining, float OldCapacity, float NewCapacity)
+{
+    // Capacity added on completion starts intact. Damage already taken by the site carries over.
+    return std::min(NewCapacity, Remaining + std::max(0.0f, NewCapacity - OldCapacity));
+}
+
 bool Initialize(RuntimeManifest& M,std::string&)
 {
     std::set<std::string> Definitions;for (const auto& [_,R]:M.Rules) if (R.Capability==Capability) Definitions.insert(R.SourceDefinition);
@@ -39,8 +45,10 @@ CommitStatus Prepare(const CapabilityContext& C,CapabilityDelta& D)
     O.Grant.SourceLease=R.Header.Event;O.Grant.EstimatedCost=Rule.SpawnCost;O.Definition=Rule.TargetDefinition;O.Ordinal=Ordinal+1;
     O.Parent=S.Grant.Object;O.BornAt=R.Header.At;O.RelationVersion=1;O.Completed=Rule.SpawnCompleted;
     O.X=S.X;O.Y=S.Y;O.Z=S.Z;O.FacingYaw=S.FacingYaw;O.ShieldRadius=Rule.SpawnShieldRadius;
-    O.Vitals.Maximum=Rule.SpawnHealth;O.Vitals.Value=std::min(S.Vitals.Value,Rule.SpawnHealth);
-    O.Vitals.MaximumShield=Rule.SpawnShield;O.Vitals.Shield=std::min(S.Vitals.Shield,Rule.SpawnShield);O.Vitals.Version=1;
+    O.Vitals.Maximum=Rule.SpawnHealth;
+    O.Vitals.Value=CarryRemaining(S.Vitals.Value,S.Vitals.Maximum,Rule.SpawnHealth);
+    O.Vitals.MaximumShield=Rule.SpawnShield;
+    O.Vitals.Shield=CarryRemaining(S.Vitals.Shield,S.Vitals.MaximumShield,Rule.SpawnShield);O.Vitals.Version=1;
     O.Capabilities=Rule.SpawnCapabilities;O.Upgrades=Rule.SpawnUpgrades;
     if (!DeriveSpawnCapabilities(S,C.Objects,R,O)) return CommitStatus::InvalidRule;
     auto Retired=S;Retired.Grant.State=Life::Destroyed;Retired.DiedAt=R.Header.At;Retired.Vitals.Value=0;Retired.Vitals.Dead=true;

@@ -3,7 +3,11 @@
 #include "Gameplay/Ship/UI/GuLiShipWorldWidgets.h"
 
 #include "Components/ProgressBar.h"
+#include "UI/GuLiSegmentedHealthBar.h"
 #include "Components/TextBlock.h"
+#include "Components/CanvasPanel.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Blueprint/WidgetTree.h"
 
 namespace GuLiShipWorldWidgets
 {
@@ -26,13 +30,33 @@ void UGuLiShipWorldStatusWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	GuLiShipWorldWidgets::ConfigureDisplayOnlyWidget(*this);
+	// Existing cooked status panels supply their authored canvas placement through PB_Hull.
+	if (PB_Hull && !PB_Hull->IsA<UGuLiSegmentedHealthBar>())
+	{
+		auto* Canvas = Cast<UCanvasPanel>(PB_Hull->GetParent());
+		auto* SlotData = Cast<UCanvasPanelSlot>(PB_Hull->Slot);
+		if (Canvas && SlotData)
+		{
+			const auto Layout = SlotData->GetLayout();
+			const int32 Order = SlotData->GetZOrder();
+			const bool AutoSize = SlotData->GetAutoSize();
+			PB_Hull->RemoveFromParent();
+			PB_Hull = WidgetTree->ConstructWidget<UGuLiSegmentedHealthBar>();
+			auto* Replacement = Canvas->AddChildToCanvas(PB_Hull);
+			Replacement->SetLayout(Layout);
+			Replacement->SetAutoSize(AutoSize);
+			Replacement->SetZOrder(Order);
+		}
+	}
 }
 
 void UGuLiShipWorldStatusWidget::SetStatus(
 	const bool bReady,
 	const bool bAlive,
 	const float Health,
-	const float MaxHealth)
+	const float MaxHealth,
+	const float Shield,
+	const float MaxShield)
 {
 	if (TXT_Readiness)
 	{
@@ -41,14 +65,8 @@ void UGuLiShipWorldStatusWidget::SetStatus(
 				: NSLOCTEXT("GuLiShipWorldHUD", "Synchronizing", "SHIP / SYNC"))
 			: NSLOCTEXT("GuLiShipWorldHUD", "Offline", "SHIP / OFFLINE"));
 	}
-	const float HealthFraction = FMath::IsFinite(Health) && FMath::IsFinite(MaxHealth)
-		&& MaxHealth > UE_SMALL_NUMBER
-		? FMath::Clamp(Health / MaxHealth, 0.0f, 1.0f)
-		: 0.0f;
-	if (PB_Hull)
-	{
-		PB_Hull->SetPercent(HealthFraction);
-	}
+	if (auto* Hull = Cast<UGuLiSegmentedHealthBar>(PB_Hull))
+		Hull->SetHealth(Health, MaxHealth, Shield, MaxShield);
 	if (TXT_Hull)
 	{
 		TXT_Hull->SetText(FText::Format(

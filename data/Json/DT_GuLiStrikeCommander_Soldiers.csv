@@ -1,0 +1,7 @@
+Name,Id,Note,MovementSpeedCmPerSecond,MaxHealth,Defense,ActorClass,PresentationScale,DisplayName,ModelWidthMeters,StateTreeAsset,bSummonOnly,bConstructionOnly,FacingPolicy,ModelId,MovementLayer,AltitudeMeters,MaxShield
+DefaultSoldier,1,B-v1先驱号；6.25米；刚性骨骼纹理VAT；默认双枪与Q召唤,1440,300,0,,1,先驱号,6.25,/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass,False,False,0,1001,0,0,100
+WM01,2,WM01 第二兵种；首版沿用调试数值，尚未平衡,720,800,0,,0.2,重防号,12.5,/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass,False,False,0,1002,1,30,400
+ElectromagneticMiner,3,v5四足矿车；表现尺寸为初次接入的2.5倍；保留3.6米业务基准、900cm/s及网格缩放；行走按时间1.17秒循环，采矿直接后坐2.46秒循环,900,1000,0,/Script/GuLiStrike.GuLiMiningVehiclePawn,1.8656564733503425,电磁矿车,3.6,/Game/GuLiStrike/Commander/Behavior/ST_CommanderMiner.ST_CommanderMiner,False,False,0,1003,0,0,0
+ConstructionVehicle,4,开局每队一辆；独立建造车，施工与采矿分工,900,1000,0,/Script/GuLiStrike.GuLiConstructionVehiclePawn,0.6084579714416871,建造车,3.6,/Game/GuLiStrike/Commander/Behavior/ST_CommanderBuilder.ST_CommanderBuilder,False,False,0,1004,0,0,0
+SweeperSummon,5,先驱号Q专用召唤兵；永久可控、可累积、不计生产人口,720,300,0,,0.2,扫荡者,3.1,/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass,True,False,0,1005,0,0,0
+BiZhiMao,6,工程车施工生成；底座锁定出生朝向；首轮不攻击；已审ControlRig B_v4放大2倍,144,2000,0,,2,彼之矛,18.4386,/Game/GuLiStrike/Commander/Behavior/ST_CommanderMass.ST_CommanderMass,False,True,1,1006,0,0,1000

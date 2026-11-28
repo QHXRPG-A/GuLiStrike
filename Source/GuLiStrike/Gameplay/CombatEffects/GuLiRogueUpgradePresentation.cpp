@@ -1,5 +1,7 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
+#include "Commander/Presentation/GuLiCommanderLODPolicy.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 #include "Engine/World.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -98,7 +100,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateRogueUpgradePool(float Now,bo
 	int32 Width=0,Height=0; if (Viewer) Viewer->GetViewportSize(Width,Height);
 	const auto* EffectsQuality=IConsoleManager::Get().FindConsoleVariable(TEXT("sg.EffectsQuality"));
 	const int32 Quality=FMath::Clamp(FMath::Min(UpgradeQuality.GetValueOnGameThread(),EffectsQuality?EffectsQuality->GetInt():2),0,2);
-	const int32 Motes=Quality==2 ? 18 : Quality==1 ? 6 : 0;
+	const int32 QualityMotes=Quality==2 ? 18 : Quality==1 ? 6 : 0;
 	const auto* Roster=UpgradeRoster.Get();
 	for (auto& B : UpgradeBlocks)
 	{
@@ -129,6 +131,9 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateRogueUpgradePool(float Now,bo
 				Color.B=Peak*FMath::Clamp(UpgradeEnemyB.GetValueOnGameThread(),0.f,1.f);
 			}
 			B.Positions[I]=Position;
+			const auto Detail = GuLiClientPresentation::DistanceDetail(GetWorld(), Position);
+			const int32 Motes = Detail == EGuLiCommanderLODLevel::Full ? QualityMotes
+				: Detail == EGuLiCommanderLODLevel::Reduced ? FMath::Min(QualityMotes, 6) : 0;
 			B.Parameters[I]=FVector(FMath::Max(Age,0.f),S.Scale,Motes); B.Colors[I]=Color;
 			Bounds+=Position; MaxScale=FMath::Max(MaxScale,S.Scale); bVisible=true;
 			++Counters.UpgradeVisible; Counters.UpgradeVisibleParticles+=2+Motes;

@@ -477,6 +477,12 @@ struct GULISTRIKE_API FGuLiSoldierStateItem
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	float MaxHealth = 100.0f;
 
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	float Shield = 0.0f;
+
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	float MaxShield = 0.0f;
+
 	// 单兵离散状态版本，与整份名册的 SnapshotRevision、选择版本互相独立。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 StateRevision = 0u;
@@ -485,6 +491,10 @@ struct GULISTRIKE_API FGuLiSoldierStateItem
 	uint32 ActiveOrderId = 0u;
 
 	bool IsAlive() const;
+	bool HasSameVitals(const FGuLiSoldierStateItem& Other) const
+	{
+		return Health == Other.Health && MaxHealth == Other.MaxHealth && Shield == Other.Shield && MaxShield == Other.MaxShield;
+	}
 	void Sanitize();
 };
 

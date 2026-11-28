@@ -1,0 +1,578 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "stage": "complete",
+  "tiers": [
+    {
+      "tier": 1,
+      "sockets": [
+        "bottom_0",
+        "bottom_1",
+        "bottom_2"
+      ],
+      "before_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 1000,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "before_bursts": 0,
+      "before_commits": 0,
+      "max_warnings": 1,
+      "air_hits": [
+        56
+      ],
+      "after_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 944,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "projectiles": 1,
+      "impacts": 1,
+      "after_commits": 476,
+      "after_bursts": 1,
+      "warnings_after": 0,
+      "shots": [
+        {
+          "id": "3FE6A2C94D0DDDCB1F9053A789407D98",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 0.8999999761581421,
+          "ground_warning": true
+        }
+      ],
+      "fields": [
+        {
+          "id": "80D09FD2583C271135113EC795A41AF6",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 1.7999999523162842,
+          "ground_warning": false
+        }
+      ]
+    },
+    {
+      "tier": 2,
+      "sockets": [
+        "bottom_0",
+        "bottom_2"
+      ],
+      "before_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 944,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "before_bursts": 1,
+      "before_commits": 784,
+      "max_warnings": 4,
+      "air_hits": [
+        140,
+        140
+      ],
+      "after_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 664,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "projectiles": 4,
+      "impacts": 4,
+      "after_commits": 1469,
+      "after_bursts": 5,
+      "warnings_after": 0,
+      "shots": [
+        {
+          "id": "68983ED94E0CDBC9F01FE183D3126070",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 6.816666603088379,
+          "ground_warning": true
+        },
+        {
+          "id": "1D0B5451468F6A3704F7F7AD7FAC4558",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 6.883333206176758,
+          "ground_warning": true
+        },
+        {
+          "id": "17A0635A4FDEA5233E90349627FD38D2",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 7.316666603088379,
+          "ground_warning": true
+        },
+        {
+          "id": "AB78CE464D53B4BEC6B703BE999FE6E8",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 7.383333206176758,
+          "ground_warning": true
+        }
+      ],
+      "fields": [
+        {
+          "id": "33168F67F0AFFCB4385486674CC2071E",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 7.733333110809326,
+          "ground_warning": false
+        },
+        {
+          "id": "B4691B4937AE48962BD0D782D7C5CD40",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 7.800000190734863,
+          "ground_warning": false
+        },
+        {
+          "id": "D13A4CE9ACA10A0933FFE5E8FB08599E",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 8.233333587646484,
+          "ground_warning": false
+        },
+        {
+          "id": "EE0D390D328B3AC4EFABE77A5812428D",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 8.300000190734863,
+          "ground_warning": false
+        }
+      ]
+    },
+    {
+      "tier": 3,
+      "sockets": [
+        "bottom_0",
+        "bottom_2",
+        "bottom_3",
+        "bottom_4",
+        "bottom_5"
+      ],
+      "before_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 664,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "before_bursts": 5,
+      "before_commits": 1554,
+      "max_warnings": 4,
+      "air_hits": [
+        168,
+        168,
+        168
+      ],
+      "after_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 160,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "projectiles": 6,
+      "impacts": 6,
+      "after_commits": 2022,
+      "after_bursts": 11,
+      "warnings_after": 0,
+      "shots": [
+        {
+          "id": "E5D8227C4D59DB133BFED58F5245B277",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 11.933333396911621,
+          "ground_warning": true
+        },
+        {
+          "id": "80C59DA642C65E89EBBB2FADA5FE6756",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 11.966666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "82536A4340F37DE35B22B6A1BF6043A0",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 12.466666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "69BA057648D710B320DD8B991715D132",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 12.416666984558105,
+          "ground_warning": true
+        },
+        {
+          "id": "D681AC2E424DFD8FF17DD7A074310926",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 12.933333396911621,
+          "ground_warning": true
+        },
+        {
+          "id": "C64E8D884912C5E5BA6EAE8B0E5931D8",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 12.966666221618652,
+          "ground_warning": true
+        }
+      ],
+      "fields": [
+        {
+          "id": "1CA952E66D09C2302081210A38C6B09A",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 12.833333015441895,
+          "ground_warning": false
+        },
+        {
+          "id": "D31E6DFB98D17A652725D5D321467F77",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 12.866666793823242,
+          "ground_warning": false
+        },
+        {
+          "id": "2097F650D71761E41F3560B0FAAF6E50",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 13.366666793823242,
+          "ground_warning": false
+        },
+        {
+          "id": "5F1C5FC15D1598431512A39657B3438B",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 13.333333015441895,
+          "ground_warning": false
+        },
+        {
+          "id": "13C8711745C9644C4C076F776A6E08A0",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 13.833333015441895,
+          "ground_warning": false
+        },
+        {
+          "id": "7C9FC73B28F5FF0D5FF668DBB74801C3",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 13.866666793823242,
+          "ground_warning": false
+        }
+      ]
+    }
+  ],
+  "before_input": {
+    "ready": true,
+    "tier": 1,
+    "modal": false,
+    "coverage": 0,
+    "ground_bank": false,
+    "terrain_aim": false,
+    "aim": "X=0.000 Y=0.000 Z=0.000",
+    "sockets": [
+      "bottom_0",
+      "bottom_1",
+      "bottom_2"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "warnings": 0,
+    "bursts": 0,
+    "effects": [],
+    "commits": 0,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 1000,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 1000
+    }
+  },
+  "max_level_menu": {
+    "ready": true,
+    "tier": 3,
+    "modal": true,
+    "coverage": 5,
+    "ground_bank": true,
+    "terrain_aim": false,
+    "aim": "X=-34380.439 Y=16169.352 Z=9098.495",
+    "sockets": [
+      "bottom_0",
+      "bottom_2",
+      "bottom_3",
+      "bottom_4",
+      "bottom_5"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "warnings": 0,
+    "bursts": 11,
+    "effects": [
+      {
+        "id": "2097F650D71761E41F3560B0FAAF6E50",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 13.366666793823242,
+        "ground_warning": false
+      },
+      {
+        "id": "5F1C5FC15D1598431512A39657B3438B",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 13.333333015441895,
+        "ground_warning": false
+      },
+      {
+        "id": "D31E6DFB98D17A652725D5D321467F77",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 12.866666793823242,
+        "ground_warning": false
+      },
+      {
+        "id": "1CA952E66D09C2302081210A38C6B09A",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 12.833333015441895,
+        "ground_warning": false
+      },
+      {
+        "id": "13C8711745C9644C4C076F776A6E08A0",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 13.833333015441895,
+        "ground_warning": false
+      },
+      {
+        "id": "7C9FC73B28F5FF0D5FF668DBB74801C3",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 13.866666793823242,
+        "ground_warning": false
+      }
+    ],
+    "commits": 2022,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 160,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 1000
+    }
+  },
+  "passed": true,
+  "error": "",
+  "last_state": {
+    "ready": true,
+    "tier": 3,
+    "modal": false,
+    "coverage": 5,
+    "ground_bank": true,
+    "terrain_aim": false,
+    "aim": "X=-34380.439 Y=16169.352 Z=9098.495",
+    "sockets": [
+      "bottom_0",
+      "bottom_2",
+      "bottom_3",
+      "bottom_4",
+      "bottom_5"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "warnings": 0,
+    "bursts": 11,
+    "effects": [
+      {
+        "id": "2097F650D71761E41F3560B0FAAF6E50",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 13.366666793823242,
+        "ground_warning": false
+      },
+      {
+        "id": "5F1C5FC15D1598431512A39657B3438B",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 13.333333015441895,
+        "ground_warning": false
+      },
+      {
+        "id": "D31E6DFB98D17A652725D5D321467F77",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 12.866666793823242,
+        "ground_warning": false
+      },
+      {
+        "id": "1CA952E66D09C2302081210A38C6B09A",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 12.833333015441895,
+        "ground_warning": false
+      },
+      {
+        "id": "13C8711745C9644C4C076F776A6E08A0",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 13.833333015441895,
+        "ground_warning": false
+      },
+      {
+        "id": "7C9FC73B28F5FF0D5FF668DBB74801C3",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 13.866666793823242,
+        "ground_warning": false
+      }
+    ],
+    "commits": 2022,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 160,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 1000
+    }
+  },
+  "session": {
+    "active": true,
+    "error": "",
+    "room": "4342C8BB432C96899A2B76A328AF1DD1",
+    "role": "Air",
+    "editor_pid": 36904,
+    "logic_processes": [
+      {
+        "pid": 8768,
+        "running": true
+      }
+    ],
+    "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/4342C8BB432C96899A2B76A328AF1DD1",
+    "shutdown": [],
+    "cleanup_complete": false,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+    "standalone": true,
+    "can_present": true,
+    "world_ready": true,
+    "network_error": "",
+    "members": [
+      {
+        "player": "6B723C194CC50FD651987CB5F8A46632",
+        "online": true,
+        "ready": true,
+        "team": "Red",
+        "role": "Air"
+      },
+      {
+        "player": "85F7BFBB4F09F616D5F437B118106CB8",
+        "online": true,
+        "ready": true,
+        "team": "Blue",
+        "role": "Commander"
+      }
+    ],
+    "units": 611,
+    "peer_owned_objects": 544,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "pawn": "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01.BP_CombatAvatarFly01_C",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "commander_view_active": false,
+    "can_issue_orders": false,
+    "mouse_cursor_visible": false,
+    "commander_hud_widget": "",
+    "commander_hud_in_viewport": false,
+    "commander_hud_visible": false,
+    "commander_hud_owner_matches": false,
+    "commander_hud_width": 0,
+    "commander_hud_height": 0,
+    "ground_hud_widget": "",
+    "ground_hud_in_viewport": false,
+    "ground_hud_visible": false,
+    "ground_hud_owner_matches": false,
+    "ground_hud_width": 0,
+    "ground_hud_height": 0,
+    "resource_query_ready": true,
+    "legacy_resource_runtime_ready": false
+  }
+}

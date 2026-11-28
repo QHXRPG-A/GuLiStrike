@@ -1,0 +1,77 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "build_target": "GuLiStrikeEditor Win64 Development",
+  "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+  "entry": "Xuntian HUD range, live trigger and level selection, production impact fields",
+  "method": "Active Niagara component in the private PIE world matched by effect system, User.Radius and camera distance to the impact bounds",
+  "startup_resources_resident": [
+    true,
+    true,
+    true
+  ],
+  "observations": [
+    {
+      "level": 1,
+      "band": "near",
+      "camera_to_bounds_m": 65.0,
+      "system": "N_Stylized_Explosion_1A_Classic_Explosion",
+      "radius_cm": 800.0
+    },
+    {
+      "level": 1,
+      "band": "mid",
+      "camera_to_bounds_m": 247.0,
+      "system": "NS_XuntianBellyExplosion1_Reduced",
+      "radius_cm": 800.0
+    },
+    {
+      "level": 1,
+      "band": "far",
+      "camera_to_bounds_m": 630.0,
+      "system": "NS_XuntianBellyExplosion1_Minimal",
+      "radius_cm": 800.0
+    },
+    {
+      "level": 2,
+      "band": "near",
+      "camera_to_bounds_m": 61.0,
+      "system": "NS_Explosion_04",
+      "radius_cm": 1200.0
+    },
+    {
+      "level": 2,
+      "band": "mid",
+      "camera_to_bounds_m": 243.0,
+      "system": "NS_XuntianBellyExplosion2_Reduced",
+      "radius_cm": 1200.0
+    },
+    {
+      "level": 2,
+      "band": "far",
+      "camera_to_bounds_m": 626.0,
+      "system": "NS_XuntianBellyExplosion2_Minimal",
+      "radius_cm": 1200.0
+    },
+    {
+      "level": 3,
+      "band": "near",
+      "camera_to_bounds_m": 57.0,
+      "system": "NS_Explosion_07",
+      "radius_cm": 1600.0
+    },
+    {
+      "level": 3,
+      "band": "mid",
+      "camera_to_bounds_m": 239.0,
+      "system": "NS_XuntianBellyExplosion3_Reduced",
+      "radius_cm": 1600.0
+    },
+    {
+      "level": 3,
+      "band": "far",
+      "camera_to_bounds_m": 622.0,
+      "system": "NS_XuntianBellyExplosion3_Reduced",
+      "radius_cm": 1600.0
+    }
+  ]
+}

@@ -118,7 +118,9 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		const bool bBoltVisible=Detail.bVisible;
 		FVector Muzzle = State.LaunchLocation;
 		FGuLiCombatShotCue Cue; Cue.Source = State.Source; Cue.MuzzleOffset = State.MuzzleOffset;
-		const bool bMuzzleVisible = LocalNow < Visual.LaserMuzzleUntil && ResolveMuzzlePosition(Cue, Muzzle) && IsVisibleBounds(FBox(Muzzle-FVector(Catalog->LaserCoreWidth*3.f*Block.BaseScale.Y+30.f), Muzzle+FVector(Catalog->LaserCoreWidth*3.f*Block.BaseScale.Y+30.f)));
+		const bool bMuzzleVisible = LocalNow < Visual.LaserMuzzleUntil && ResolveMuzzlePosition(Cue, Muzzle)
+			&& (!bBoltVisible || GuLiClientPresentation::DistanceDetail(GetWorld(), Muzzle) != EGuLiCommanderLODLevel::Minimal)
+			&& IsVisibleBounds(FBox(Muzzle-FVector(Catalog->LaserCoreWidth*3.f*Block.BaseScale.Y+30.f), Muzzle+FVector(Catalog->LaserCoreWidth*3.f*Block.BaseScale.Y+30.f)));
 		if (!bBoltVisible && !bMuzzleVisible) continue;
 		Block.UsedSlots.Add(Index);
 		FLinearColor Tint = LocalTeam == EGuLiTeam::Unassigned ? FLinearColor::White

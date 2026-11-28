@@ -1,4 +1,5 @@
 #include "Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h"
+#include "UI/GuLiSegmentedHealthBar.h"
 #include "Gameplay/GroundMech/UI/GuLiGroundMapWidget.h"
 #include "Gameplay/GroundMech/UI/GuLiGroundHUDVisuals.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
@@ -15,7 +16,6 @@
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 #include "Components/NativeWidgetHost.h"
-#include "Components/ProgressBar.h"
 #include "Components/VerticalBox.h"
 #include "Components/HorizontalBox.h"
 #include "Components/HorizontalBoxSlot.h"
@@ -201,8 +201,7 @@ void UGuLiGroundHUDWidget::Apply(EGuLiGroundHUDGroup Groups)
         bWasDead=V.Health.bDead;bObservedHealth=true;
         Set(HealthText,V.Health.bDead?Copy(TEXT("Dead")):FText::FromString(FString::Printf(TEXT("%.0f"),V.Health.Health)));
         Set(HealthMaximum,FString::Printf(TEXT("/ %.0f"),V.Health.MaxHealth));
-        const float HP=V.Health.MaxHealth>0?FMath::Clamp(V.Health.Health/V.Health.MaxHealth,0.f,1.f):0;
-        TargetHealth=HP;if(!bBarsInitialized)HealthBar->SetPercent(HP);
+        HealthBar->SetHealth(V.Health.Health,V.Health.MaxHealth,V.Health.Shield,V.Health.MaxShield);
         Set(ShieldText,V.Health.MaxShield>0?Format(TEXT("Shield"),{FString::Printf(TEXT("%.0f"),V.Health.Shield),FString::Printf(TEXT("%.0f"),V.Health.MaxShield)}):FString());
     }
     if(!ModalMode&&EnumHasAnyFlags(Groups,EGuLiGroundHUDGroup::Skills))
@@ -352,7 +351,6 @@ void UGuLiGroundHUDWidget::NativeTick(const FGeometry& G,float D)
         // Presentation interpolation never advances a gameplay timer or samples gameplay data.
         {
             TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundHUD_Interpolate);
-            const float HP=HealthBar->GetPercent();if(!FMath::IsNearlyEqual(HP,TargetHealth,.0001f))HealthBar->SetPercent(FMath::FInterpTo(HP,TargetHealth,D,18.f));
             for(int32 I=0;I<SkillMasks.Num();++I)
             {const float Current=SkillMasks[I]->GetRenderTransform().Scale.Y;if(!FMath::IsNearlyEqual(Current,TargetMasks[I],.0001f))SkillMasks[I]->SetRenderScale(FVector2D(1,FMath::FInterpTo(Current,TargetMasks[I],D,18.f)));}
         }

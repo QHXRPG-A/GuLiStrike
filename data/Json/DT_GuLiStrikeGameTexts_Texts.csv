@@ -1,0 +1,405 @@
+Name,TextId,Introduction,Content
+UI.ConsoleLayout.001,UI.ConsoleLayout.001,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,左键定位   右键移动   Shift追加
+UI.ConsoleLayout.002,UI.ConsoleLayout.002,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"单击召回 · 双击定位
+Ctrl覆盖 · Shift加入
+Alt覆盖并移出其他编队 · Shift+Alt追加并移出"
+UI.ConsoleLayout.003,UI.ConsoleLayout.003,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,点选或框选部队
+UI.ConsoleLayout.004,UI.ConsoleLayout.004,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,指挥官
+UI.ConsoleLayout.005,UI.ConsoleLayout.005,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"生命
+当前生命 / 生命上限；查看多个单位时显示合计。"
+UI.ConsoleLayout.006,UI.ConsoleLayout.006,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"护盾
+当前护盾 / 护盾上限；查看多个单位时显示合计。"
+UI.ConsoleLayout.007,UI.ConsoleLayout.007,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"移动速度
+兵种的基础移动速度，单位：米/秒。"
+UI.ConsoleLayout.008,UI.ConsoleLayout.008,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"防御
+当前查看兵种的基础防御值。"
+UI.ConsoleLayout.009,UI.ConsoleLayout.009,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"蓝矿载货
+这辆矿车当前携带的蓝矿数量。"
+UI.ConsoleLayout.010,UI.ConsoleLayout.010,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"红矿载货
+这辆矿车当前携带的红矿数量。"
+UI.ConsoleLayout.011,UI.ConsoleLayout.011,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,部队指令 · 全部选择
+UI.ConsoleLayout.012,UI.ConsoleLayout.012,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,移动 M
+UI.ConsoleLayout.013,UI.ConsoleLayout.013,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,停止 S
+UI.ConsoleLayout.014,UI.ConsoleLayout.014,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,技能 Q
+UI.ConsoleLayout.015,UI.ConsoleLayout.015,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,定位
+UI.ConsoleLayout.016,UI.ConsoleLayout.016,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,任务
+UI.ConsoleLayout.017,UI.ConsoleLayout.017,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,采矿
+UI.ConsoleLayout.018,UI.ConsoleLayout.018,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,交矿
+UI.ConsoleLayout.019,UI.ConsoleLayout.019,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,施工
+UI.ConsoleLayout.020,UI.ConsoleLayout.020,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,据点运输
+UI.ConsoleLayout.021,UI.ConsoleLayout.021,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,建造 B
+UI.ConsoleLayout.022,UI.ConsoleLayout.022,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,战术 T
+UI.ConsoleLayout.023,UI.ConsoleLayout.023,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"帮助
+查看选兵、编队和任务操作说明。"
+UI.ConsoleLayout.024,UI.ConsoleLayout.024,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,"菜单 [F10]
+继续对局、查看说明或退出游戏。"
+UI.ConsoleLayout.025,UI.ConsoleLayout.025,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,任务状态 · 未选择单位
+UI.ConsoleLayout.026,UI.ConsoleLayout.026,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,指挥官 · 同步中
+UI.ConsoleLayout.027,UI.ConsoleLayout.027,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,蓝矿 —   红矿 —
+UI.ConsoleLayout.028,UI.ConsoleLayout.028,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,任务队列 · 点击目标可定位 · 关闭
+UI.ConsoleLayout.029,UI.ConsoleLayout.029,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,局内菜单
+UI.ConsoleLayout.030,UI.ConsoleLayout.030,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,继续对局
+UI.ConsoleLayout.031,UI.ConsoleLayout.031,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,操作说明
+UI.ConsoleLayout.032,UI.ConsoleLayout.032,Commander/UI/GuLiCommanderConsoleLayout.cpp；界面文案,退出游戏…
+UI.ConsoleView.033,UI.ConsoleView.033,Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0} 由运行数据提供,兵种 {0}
+UI.ConsoleView.034,UI.ConsoleView.034,"Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2}, {3}, {4} 由运行数据提供","{0} · {1}
+生命 {2} / {3}
+单击单选 · Shift移除
+Ctrl保留当前选择内同类 · Ctrl+Shift移除同类{4}"
+UI.ConsoleView.035,UI.ConsoleView.035,"Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供",选中 {0}   查看 {1}   ·   Tab切详情   ·   Q始终作用于全部选择
+UI.ConsoleView.036,UI.ConsoleView.036,"Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供","
+具有技能 {0} · 冷却结束 {1}"
+UI.ConsoleView.037,UI.ConsoleView.037,Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0} 由运行数据提供,"
+最近冷却 {0} 秒"
+UI.ConsoleView.038,UI.ConsoleView.038,"Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供","
+全部选择 {0} · 当前适用 {1}"
+UI.ConsoleView.039,UI.ConsoleView.039,"Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2}, {3} 由运行数据提供","{0}
+{3}
+蓝矿 {1} · 红矿 {2}"
+UI.ConsoleView.040,UI.ConsoleView.040,"Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2} 由运行数据提供",选中 {0} · 共同前缀 {1} · 差异 {2} 组
+UI.ConsoleView.041,UI.ConsoleView.041,Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0} 由运行数据提供, · 持续停止 {0}
+UI.ConsoleView.042,UI.ConsoleView.042,Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0} 由运行数据提供, · 等待安全退出 {0}
+UI.ConsoleView.043,UI.ConsoleView.043,"Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2}, {3} 由运行数据提供",技能：成功 {0} / {1} {2}{3}
+UI.ConsoleView.044,UI.ConsoleView.044,"Commander/UI/GuLiCommanderConsoleView.cpp；动态界面文案；占位符 {0}, {1}, {2}, {3} 由运行数据提供","{0} 个单位 · 手动 {1}/32{2}{3}
+"
+UI.ConsoleView.045,UI.ConsoleView.045,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,全部
+UI.ConsoleView.046,UI.ConsoleView.046,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"仅切换查看类型 [Tab]
+不修改选择；Q作用于全部选中单位"
+UI.ConsoleView.047,UI.ConsoleView.047,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"
+运输中，成员资格保留"
+UI.ConsoleView.048,UI.ConsoleView.048,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,正在同步选中单位…
+UI.ConsoleView.049,UI.ConsoleView.049,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,未选择部队
+UI.ConsoleView.050,UI.ConsoleView.050,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,混合部队
+UI.ConsoleView.051,UI.ConsoleView.051,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"移动 [M]
+选择目的地。按住 Shift 可追加到队列。"
+UI.ConsoleView.052,UI.ConsoleView.052,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"停止 [S]
+停止移动和工作，清空队列。运输或厂内单位先安全退出。"
+UI.ConsoleView.053,UI.ConsoleView.053,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"单位技能 [Q]
+对全部选中单位施放。点击图标后选择目标，Tab 只切换查看类型。"
+UI.ConsoleView.054,UI.ConsoleView.054,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"定位部队
+将镜头移到当前选中部队的中心。"
+UI.ConsoleView.055,UI.ConsoleView.055,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"任务队列
+查看当前工作、后续任务与可恢复的自动任务。"
+UI.ConsoleView.056,UI.ConsoleView.056,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"采矿
+选择矿点。矿车采集后自动前往护盾发生器交矿；Shift 可追加。"
+UI.ConsoleView.057,UI.ConsoleView.057,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"交矿
+选择我方护盾发生器，在外围卸货。"
+UI.ConsoleView.058,UI.ConsoleView.058,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"施工
+选择我方未完工建筑，派遣建造车继续施工。"
+UI.ConsoleView.059,UI.ConsoleView.059,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"据点运输
+选择目标据点，通过既有路线运输部队。"
+UI.ConsoleView.060,UI.ConsoleView.060,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"
+当前无法下令。"
+UI.ConsoleView.061,UI.ConsoleView.061,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"
+暂无可执行单位。"
+UI.ConsoleView.062,UI.ConsoleView.062,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"建造目录 [B]
+"
+UI.ConsoleView.063,UI.ConsoleView.063,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"战术运输 [T]
+"
+UI.ConsoleView.064,UI.ConsoleView.064,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"战术运输 [T]
+选择起点与落点，运输范围内的我方单位。
+"
+UI.ConsoleView.065,UI.ConsoleView.065,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"建造 [B]
+选择建筑图标，再选择建造位置。
+"
+UI.ConsoleView.066,UI.ConsoleView.066,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,等待
+UI.ConsoleView.067,UI.ConsoleView.067,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,执行中
+UI.ConsoleView.068,UI.ConsoleView.068,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,等待安全退出
+UI.ConsoleView.069,UI.ConsoleView.069,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,失败
+UI.ConsoleView.070,UI.ConsoleView.070,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,完成
+UI.ConsoleView.071,UI.ConsoleView.071,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,阶段完成
+UI.ConsoleView.072,UI.ConsoleView.072,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,停止
+UI.ConsoleView.073,UI.ConsoleView.073,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案, · 部分单位暂无任务摘要
+UI.ConsoleView.074,UI.ConsoleView.074,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,自动
+UI.ConsoleView.075,UI.ConsoleView.075,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,手动
+UI.ConsoleView.076,UI.ConsoleView.076,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,冷却中
+UI.ConsoleView.077,UI.ConsoleView.077,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,超出射程
+UI.ConsoleView.078,UI.ConsoleView.078,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,无效地面点
+UI.ConsoleView.079,UI.ConsoleView.079,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,无技能
+UI.ConsoleView.080,UI.ConsoleView.080,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,单位当前不可施法
+UI.ConsoleView.081,UI.ConsoleView.081,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,执行失败
+UI.ConsoleView.082,UI.ConsoleView.082,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,技能目标：左键选择地面 · Esc取消
+UI.ConsoleView.083,UI.ConsoleView.083,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,目标模式：左键提交 · Shift追加 · Esc取消
+UI.ConsoleView.084,UI.ConsoleView.084,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案, · 持续停止
+UI.ConsoleView.085,UI.ConsoleView.085,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案, · 等待安全停止
+UI.ConsoleView.086,UI.ConsoleView.086,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,保留资格：
+UI.ConsoleView.087,UI.ConsoleView.087,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"等待合法自动目标
+"
+UI.ConsoleView.088,UI.ConsoleView.088,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,等待有效目标
+UI.ConsoleView.089,UI.ConsoleView.089,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"操作说明
+
+左键点选 / 框选 · Shift追加或减选
+头像 Ctrl保留同类，Ctrl+Shift移除同类
+Tab切详情，Q仍作用于全部选择
+Ctrl+数字覆盖编队 · Shift+数字加入
+Alt组合移出其他编队 · 双按定位
+M移动 · S持续停止 · Shift追加任务
+B建造 · T战术运输
+Ctrl+F5–F8存镜头，F5–F8召回
+小地图左键定位 / 右键移动
+Esc关闭界面或取消未提交目标"
+UI.ConsoleView.090,UI.ConsoleView.090,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"退出游戏？
+再次点击“退出游戏”确认。
+当前多人对局不会暂停。
+Esc返回菜单，继续对局关闭菜单。"
+UI.ConsoleView.091,UI.ConsoleView.091,Commander/UI/GuLiCommanderConsoleView.cpp；界面文案,"局内菜单
+对局继续运行"
+UI.HUDWidget.092,UI.HUDWidget.092,"Commander/UI/GuLiCommanderHUDWidget.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供",蓝矿 {0}   红矿 {1}
+UI.HUDWidget.093,UI.HUDWidget.093,Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案,蓝方
+UI.HUDWidget.094,UI.HUDWidget.094,Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案,红方
+UI.HUDWidget.095,UI.HUDWidget.095,Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案,未分配
+UI.HUDWidget.096,UI.HUDWidget.096,Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案,地面
+UI.HUDWidget.097,UI.HUDWidget.097,Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案,空中
+UI.HUDWidget.098,UI.HUDWidget.098,Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案,观察
+UI.HUDWidget.099,UI.HUDWidget.099,Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案,在线
+UI.HUDWidget.100,UI.HUDWidget.100,Commander/UI/GuLiCommanderHUDWidget.cpp；界面文案,同步中
+UI.OrderedCommands.101,UI.OrderedCommands.101,"Commander/Framework/GuLiCommanderOrderedCommands.cpp；动态界面文案；占位符 {0}, {1} 由运行数据提供",已接收 {0}，拒绝 {1}
+UI.OrderedCommands.102,UI.OrderedCommands.102,Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案,头像操作暂未提交：等待选择或连接确认
+UI.OrderedCommands.103,UI.OrderedCommands.103,Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案,头像操作未接受：连接或顺序已失效
+UI.OrderedCommands.104,UI.OrderedCommands.104,Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案,头像操作未接受：选择已变化，请重新操作
+UI.OrderedCommands.105,UI.OrderedCommands.105,Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案,头像操作未接受：成员已失效或不在当前选择中
+UI.OrderedCommands.106,UI.OrderedCommands.106,Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案,选择未接受：目标或容量无效
+UI.OrderedCommands.107,UI.OrderedCommands.107,Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案,命令未接受：连接、顺序或选择无效
+UI.OrderedCommands.108,UI.OrderedCommands.108,Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案,目标不适用于当前命令，原任务保持执行
+UI.OrderedCommands.109,UI.OrderedCommands.109,Commander/Framework/GuLiCommanderOrderedCommands.cpp；界面文案,编队超过选择容量
+UI.UnitTaskSubsystem.110,UI.UnitTaskSubsystem.110,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,移动
+UI.UnitTaskSubsystem.111,UI.UnitTaskSubsystem.111,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,特殊任务
+UI.UnitTaskSubsystem.112,UI.UnitTaskSubsystem.112,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,该兵种不支持此特殊任务
+UI.UnitTaskSubsystem.113,UI.UnitTaskSubsystem.113,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,该单位的一次性任务资格已消耗
+UI.UnitTaskSubsystem.114,UI.UnitTaskSubsystem.114,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,交矿仅适用于矿车
+UI.UnitTaskSubsystem.115,UI.UnitTaskSubsystem.115,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,该单位不支持据点运输
+UI.UnitTaskSubsystem.116,UI.UnitTaskSubsystem.116,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,据点运输目标无效
+UI.UnitTaskSubsystem.117,UI.UnitTaskSubsystem.117,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,据点运输目标或路线无效
+UI.UnitTaskSubsystem.118,UI.UnitTaskSubsystem.118,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,移动目标超出地图边界
+UI.UnitTaskSubsystem.119,UI.UnitTaskSubsystem.119,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,命令或选择版本无效
+UI.UnitTaskSubsystem.120,UI.UnitTaskSubsystem.120,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,单位或命令不适用
+UI.UnitTaskSubsystem.121,UI.UnitTaskSubsystem.121,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,单位手动队列已满（32项）
+UI.UnitTaskSubsystem.122,UI.UnitTaskSubsystem.122,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,未选择可控制单位
+UI.UnitTaskSubsystem.123,UI.UnitTaskSubsystem.123,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,运输路线已失效
+UI.UnitTaskSubsystem.124,UI.UnitTaskSubsystem.124,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,安全落地后无法到达目标位置
+UI.UnitTaskSubsystem.125,UI.UnitTaskSubsystem.125,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,任务执行失败，已跳过
+UI.UnitTaskSubsystem.126,UI.UnitTaskSubsystem.126,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,移动路径规划失败
+UI.UnitTaskSubsystem.127,UI.UnitTaskSubsystem.127,Commander/Orders/GuLiUnitTaskSubsystem.cpp；界面文案,移动规划已失效
+UI.SpecialTaskExecutor.128,UI.SpecialTaskExecutor.128,Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案,无可采集的目标矿区
+UI.SpecialTaskExecutor.129,UI.SpecialTaskExecutor.129,Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案,采矿或交矿路径失效
+UI.SpecialTaskExecutor.130,UI.SpecialTaskExecutor.130,Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案,工地无效或无可达施工位置
+UI.SpecialTaskExecutor.131,UI.SpecialTaskExecutor.131,Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案,工地已失效
+UI.SpecialTaskExecutor.132,UI.SpecialTaskExecutor.132,Commander/Behavior/GuLiCommanderAbilityBridge.cpp；界面文案,施工已中断
+UI.BuildingPlacementComponent.133,UI.BuildingPlacementComponent.133,Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案,已退出建造模式
+UI.BuildingPlacementComponent.134,UI.BuildingPlacementComponent.134,Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案,无法建造：鼠标位于界面上
+UI.BuildingPlacementComponent.135,UI.BuildingPlacementComponent.135,Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案；占位符 {0} 由运行数据提供,已建造：{0}
+UI.BuildingPlacementComponent.136,UI.BuildingPlacementComponent.136,Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案；占位符 {0} 由运行数据提供,建造：{0}
+UI.BuildingPlacementComponent.137,UI.BuildingPlacementComponent.137,Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案；占位符 {0} 由运行数据提供,无法建造：{0}
+UI.BuildingPlacementComponent.138,UI.BuildingPlacementComponent.138,Gameplay/Building/GuLiBuildingPlacementComponent.cpp；界面文案,左键放置 · Esc 取消 · 数字键用于编队
+UI.BuildingTypes.139,UI.BuildingTypes.139,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,工地已放置，右键派建造车施工
+UI.BuildingTypes.140,UI.BuildingTypes.140,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,战局或连接尚未就绪
+UI.BuildingTypes.141,UI.BuildingTypes.141,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,当前角色无法建造
+UI.BuildingTypes.142,UI.BuildingTypes.142,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,建造资源不可用
+UI.BuildingTypes.143,UI.BuildingTypes.143,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,建造请求无效
+UI.BuildingTypes.144,UI.BuildingTypes.144,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,未找到合法地面
+UI.BuildingTypes.145,UI.BuildingTypes.145,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,超出 100 米建造距离
+UI.BuildingTypes.146,UI.BuildingTypes.146,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,目标被遮挡
+UI.BuildingTypes.147,UI.BuildingTypes.147,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,地面坡度超过 15 度
+UI.BuildingTypes.148,UI.BuildingTypes.148,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,建造区域被占用
+UI.BuildingTypes.149,UI.BuildingTypes.149,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,个人建筑已达 6 个
+UI.BuildingTypes.150,UI.BuildingTypes.150,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,本局建筑已达 24 个
+UI.BuildingTypes.151,UI.BuildingTypes.151,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,建造请求过快
+UI.BuildingTypes.152,UI.BuildingTypes.152,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,建造请求已过期
+UI.BuildingTypes.153,UI.BuildingTypes.153,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,团队蓝矿或红矿不足
+UI.BuildingTypes.154,UI.BuildingTypes.154,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,建筑生成失败
+UI.BuildingTypes.155,UI.BuildingTypes.155,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,未知建造错误
+UI.BuildingTypes.156,UI.BuildingTypes.156,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,防空炮
+UI.BuildingTypes.157,UI.BuildingTypes.157,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,哨戒炮
+UI.BuildingTypes.158,UI.BuildingTypes.158,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,据点
+UI.BuildingTypes.159,UI.BuildingTypes.159,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,基础兵营
+UI.BuildingTypes.160,UI.BuildingTypes.160,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,护盾发生器
+UI.BuildingTypes.161,UI.BuildingTypes.161,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,先驱号兵营
+UI.BuildingTypes.162,UI.BuildingTypes.162,Gameplay/Building/GuLiBuildingTypes.cpp；界面文案,未知建筑
+UI.TeleportInputComponent.163,UI.TeleportInputComponent.163,Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0} 由运行数据提供,传送  [T]   Lv.{0}
+UI.TeleportInputComponent.164,UI.TeleportInputComponent.164,Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0} 由运行数据提供,源点充能  {0} 秒 · 右键取消
+UI.TeleportInputComponent.165,UI.TeleportInputComponent.165,"Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0}, {1}, {2} 由运行数据提供",选择落点 {0} 秒 · {1} 个单位{2}
+UI.TeleportInputComponent.166,UI.TeleportInputComponent.166,Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0} 由运行数据提供,{0} 米 · 可传 WM / Ship 及僚机
+UI.TeleportInputComponent.167,UI.TeleportInputComponent.167,Gameplay/Teleport/GuLiTeleportInputComponent.cpp；动态界面文案；占位符 {0} 由运行数据提供,{0} 米 · 己方普通部队
+UI.TeleportInputComponent.168,UI.TeleportInputComponent.168,Gameplay/Teleport/GuLiTeleportInputComponent.cpp；界面文案,请点击合法地面
+UI.TeleportInputComponent.169,UI.TeleportInputComponent.169,Gameplay/Teleport/GuLiTeleportInputComponent.cpp；界面文案,已落地，正在恢复行动
+UI.TeleportInputComponent.170,UI.TeleportInputComponent.170,Gameplay/Teleport/GuLiTeleportInputComponent.cpp；界面文案,正在送回源点附近
+UI.TeleportInputComponent.171,UI.TeleportInputComponent.171,Gameplay/Teleport/GuLiTeleportInputComponent.cpp；界面文案,点击源点 · 右键 / Esc 取消
+UI.TeleportFieldActor.172,UI.TeleportFieldActor.172,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,当前不能使用指挥官传送
+UI.TeleportFieldActor.173,UI.TeleportFieldActor.173,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,传送配置未就绪
+UI.TeleportFieldActor.174,UI.TeleportFieldActor.174,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,已有传送正在进行
+UI.TeleportFieldActor.175,UI.TeleportFieldActor.175,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,请点击地图内可站立地面
+UI.TeleportFieldActor.176,UI.TeleportFieldActor.176,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,创建法术场失败
+UI.TeleportFieldActor.177,UI.TeleportFieldActor.177,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,圈内没有可传送的己方单位
+UI.TeleportFieldActor.178,UI.TeleportFieldActor.178,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,单位状态已变化，取消传送
+UI.TeleportFieldActor.179,UI.TeleportFieldActor.179,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,已安全返回源点附近
+UI.TeleportFieldActor.180,UI.TeleportFieldActor.180,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,传送成功
+UI.TeleportFieldActor.181,UI.TeleportFieldActor.181,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,当前不在选择落点阶段
+UI.TeleportFieldActor.182,UI.TeleportFieldActor.182,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,落点选择超时
+UI.TeleportFieldActor.183,UI.TeleportFieldActor.183,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,此处无法容纳整批部队，请选择其他落点
+UI.TeleportFieldActor.184,UI.TeleportFieldActor.184,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,已取消传送
+UI.TeleportFieldActor.185,UI.TeleportFieldActor.185,Gameplay/Teleport/GuLiTeleportFieldActor.cpp；界面文案,施法者已离开或失去指挥官资格
+UI.BuildingPlacementComponent.RotateHint,UI.BuildingPlacementComponent.RotateHint,建筑放置操作提示,R：旋转90°
+UI.Performance.FPSPending,UI.Performance.FPSPending,Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标,FPS --
+UI.Performance.FPS,UI.Performance.FPS,Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标,FPS {0}
+UI.Performance.LatencyPending,UI.Performance.LatencyPending,Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标,延迟 --
+UI.Performance.LatencyLocal,UI.Performance.LatencyLocal,Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标,延迟 本地
+UI.Performance.LatencyRTT,UI.Performance.LatencyRTT,Commander/Presentation/GuLiCommanderHUD.cpp；本地性能指标,延迟 {0} ms (RTT)
+Card.WM01.FireRate.Title,Card.WM01.FireRate.Title,重防号肉鸽卡标题,增加射速
+Card.WM01.FireRate.Description,Card.WM01.FireRate.Description,重防号肉鸽卡说明；{0}来自BonusPercent×100,<Unit>重防号</> <Gain>普攻射速+{0}%</>
+Card.WM01.HighSpeed.Title,Card.WM01.HighSpeed.Title,重防号肉鸽卡标题,极速机动
+Card.WM01.HighSpeed.Description,Card.WM01.HighSpeed.Description,重防号肉鸽卡说明；{0}来自BonusPercent×100,<Unit>重防号</> <Gain>移动速度+{0}%</>
+Card.WM01.MissileDamage.Title,Card.WM01.MissileDamage.Title,重防号肉鸽卡标题,增加导弹伤害
+Card.WM01.MissileDamage.Description,Card.WM01.MissileDamage.Description,重防号肉鸽卡说明；{0}来自BonusPercent×100,<Unit>重防号</> <Gain>导弹伤害+{0}%</>
+UI.RogueCards.Title,UI.RogueCards.Title,实战选牌界面,命运之选
+UI.RogueCards.Entering,UI.RogueCards.Entering,实战选牌界面,卡牌入场中…
+UI.RogueCards.Choose,UI.RogueCards.Choose,实战选牌界面,移动鼠标轻压牌面 · 单击选择 · Esc 取消
+UI.RogueCards.Flip,UI.RogueCards.Flip,实战选牌界面,翻牌中…
+UI.RogueCards.Confirm,UI.RogueCards.Confirm,实战选牌界面,再次点击所选卡牌确认 · Esc 取消
+UI.RogueCards.Submitting,UI.RogueCards.Submitting,实战选牌界面,正在确认加成…
+UI.RogueCards.Success,UI.RogueCards.Success,实战选牌界面,加成已生效
+UI.RogueCards.Failed,UI.RogueCards.Failed,实战选牌界面,选牌失败：{0} · Esc 返回战场
+UI.RogueCards.OpenFailed,UI.RogueCards.OpenFailed,实战选牌界面,无法打开选牌：{0}
+UI.RogueCards.Replay,UI.RogueCards.Replay,实战选牌界面,重新播放
+UI.RogueCards.Done,UI.RogueCards.Done,实战选牌界面,选择完成
+UI.Camera.GroundDistances,UI.Camera.GroundDistances,指挥官只读距离采样；参数为垂直离地高度及画面中心地面距离,离地高度 {0}  |  中心地面距离 {1}
+UI.Camera.Meters,UI.Camera.Meters,指挥官距离数值；米，保留一位小数,{0} 米
+UI.Camera.NoGround,UI.Camera.NoGround,摄像机正下方无地形或中心射线未命中地形,无地形
+Card.WM01.MissilePod.Title,Card.WM01.MissilePod.Title,重防号肉鸽卡标题,重防导弹仓
+Card.WM01.MissilePod.Description,Card.WM01.MissilePod.Description,重防号导弹槽解锁；无数值占位符,<Unit>重防号</> 解锁<Gain>导弹技能</>
+Card.WM01.RainSalvo.Title,Card.WM01.RainSalvo.Title,重防号肉鸽卡标题,雨点攻势
+Card.WM01.RainSalvo.Description,Card.WM01.RainSalvo.Description,重防号肉鸽卡说明；{0}来自BonusCount,<Unit>重防号</> <Gain>导弹齐射数量+{0}</>
+UI.RogueCards.Empty,UI.RogueCards.Empty,无合格候选卡时显示,暂无可选牌
+UI.RogueCards.AcquisitionLimit,UI.RogueCards.AcquisitionLimit,结算复核：达到获取次数,该卡已达到本局获取上限
+UI.RogueCards.RequirementNotMet,UI.RogueCards.RequirementNotMet,结算复核：缺少依赖,尚未获得该卡要求的前置卡牌
+UI.RogueCards.Excluded,UI.RogueCards.Excluded,结算复核：双向互斥,该卡与本队已获得的卡牌互斥
+UI.RogueCards.Reroll,UI.RogueCards.Reroll,F4选牌重选按钮,重选
+UI.RogueCards.Rerolling,UI.RogueCards.Rerolling,F4选牌等待重选结果,正在重选…
+UI.RogueCards.RerollHint,UI.RogueCards.RerollHint,F4重选按钮说明,免费重新随机可选卡牌，优先换成当前未显示的牌。
+UI.RogueCards.NoAlternatives,UI.RogueCards.NoAlternatives,没有其他合格卡时保留当前选择,暂无其他可选卡牌
+UI.RogueCards.RerollUnavailable,UI.RogueCards.RerollUnavailable,重选会话过期或已提交,当前无法重选，请重新打开选牌界面
+UI.RogueCards.RerollBusy,UI.RogueCards.RerollBusy,重选触发服务器请求限流,操作过快，请稍后重选
+UI.CommanderSkills.GuidanceBatch,UI.CommanderSkills.GuidanceBatch,重防号Q本批导弹及下一Q就绪单位反馈, · 本次发射{0}发导弹，{1}台留待下次Q
+UI.CommanderSkills.PioneerSummon,UI.CommanderSkills.PioneerSummon,先驱号Q召唤提示,"
+先驱号：按Q立即在周围召唤5个扫荡者，每台独立冷却30秒，无资源消耗。召唤兵永久可控、可累积、不占生产人口；空间或容量不足时整批失败，冷却保持不变。"
+UI.BuildingTypes.PopulationLimit,UI.BuildingTypes.PopulationLimit,彼之矛首轮建造,军队人口已满，无法预留彼之矛人口
+UI.BuildingTypes.BiZhiMao,UI.BuildingTypes.BiZhiMao,彼之矛首轮建造,彼之矛
+UI.Performance.NetThroughput,UI.Performance.NetThroughput,当前客户端连接实际累计字节差/真实秒；收+发合计；1KB=1000B，不是配置上限,网络 收 {0} KB/s | 发 {1} KB/s | 合计 {2} KB/s
+UI.Performance.NetPackets,UI.Performance.NetPackets,当前连接包速率；丢包为UE计数差/秒，并非丢包百分比,包 收 {0}/s 发 {1}/s | 丢包 收 {2}/s 发 {3}/s
+UI.Performance.NetTransport,UI.Performance.NetTransport,"本端发送额度、所有通道可靠bunch待ACK数；欠账=max(QueuedBits,0)/8，非应用队列大小",本端额度 {0} KB/s | 可靠待确认 {1} 块 | 欠账 {2} KB
+UI.Performance.NetFlightReceive,UI.Performance.NetFlightReceive,解码飞行事件速率及应用载荷；不等于画面播放量；年龄用估计服务器时间，排除bootstrap，可能含时钟误差,飞行事件 收 {0}/s | 载荷 {1} KB/s | 平均估龄 {2} ms
+UI.Performance.NetPIETransport,UI.Performance.NetPIETransport,同进程PIE匹配此客户端的服务器连接：下行发送额度、可靠待ACK块数和发送欠账,PIE下行额度 {0} KB/s | 可靠待确认 {1} 块 | 欠账 {2} KB
+UI.Performance.NetPIEFlightQueue,UI.Performance.NetPIEFlightQueue,同进程PIE中此客户端的飞行应用队列；队首样本时间至服务器当前时间，不等于纯排队时间,PIE本连接 飞行待发 {0} 条 | 队首事件年龄 {1} ms
+UI.Performance.NetPending,UI.Performance.NetPending,新建或重连后先等待完整采样区间；未知值不能显示成零,网络 收 -- KB/s | 发 -- KB/s | 合计 -- KB/s
+UI.Performance.NetLocal,UI.Performance.NetLocal,本面板按客户端ServerConnection统计，本地/服务端视口不显示其他客户端汇总,网络：本地视口（无客户端到服务器连接）
+UI.Performance.NetFlightPending,UI.Performance.NetFlightPending,未得到连续两次飞行计数采样,飞行事件 收 --/s | 载荷 -- KB/s | 平均估龄 -- ms
+UI.Performance.NetPIEQueuePending,UI.Performance.NetPIEQueuePending,尚未建立此客户端的服务端飞行事件通道,PIE本连接 飞行待发 --（等待通道）
+UI.Performance.NetPIEUnavailable,UI.Performance.NetPIEUnavailable,跨进程PIE或身份尚未匹配时，不产生额外RPC取得服务端信息,PIE服务端队列 --（需同进程服务端）
+Card.GroundMech.Ricochet.Title,Card.GroundMech.Ricochet.Title,游骑兵肉鸽卡标题,折射子弹
+Card.GroundMech.Ricochet.Description,Card.GroundMech.Ricochet.Description,{1}为额外目标数，{2}为每个目标受到的普攻伤害百分比,<Unit>游骑兵</> <Gain>折射{1}个额外目标</>，每个受<Gain>{2}%普攻伤害</>
+UI.RogueCards.Capacity,UI.RogueCards.Capacity,肉鸽技术容量提示,当前构筑已达到系统容量，无法继续强化
+UI.RogueCards.GroundUnavailable,UI.RogueCards.GroundUnavailable,地面肉鸽入口不可用,游骑兵肉鸽能力尚未就绪
+Card.GroundMech.BurningBullet.Title,Card.GroundMech.BurningBullet.Title,卡牌标题,灼烧子弹
+Card.GroundMech.BurningBullet.Description,Card.GroundMech.BurningBullet.Description,{1}为本档当前最大生命值伤害百分比，{2}秒持续，{3}秒周期,<Unit>游骑兵</> 灼烧<Gain>{2}秒</>，每{3}秒造成<Gain>{1}%最大生命伤害</>
+Card.GroundMech.BurningBurst.Title,Card.GroundMech.BurningBurst.Title,卡牌标题,灼烧爆裂子弹
+Card.GroundMech.BurningBurst.Description,Card.GroundMech.BurningBurst.Description,{1}为本档宿主已损生命值伤害百分比，{3}秒周期，{4}米半径,<Unit>游骑兵</> 每{3}秒爆燃，<Gain>{1}%已损生命伤害</>，半径<Gain>{4}米</>
+Buff.Burning.Description,Buff.Burning.Description,Buff参数化说明,每秒受到最大生命值的{0}%伤害，持续{1}秒。重复命中刷新时间，不叠加。
+Buff.BurningBurst.Description,Buff.BurningBurst.Description,Buff参数化说明,灼烧期间独立每{0}秒爆燃，造成宿主已损失生命值的{1}%范围伤害，半径{2}米，接触范围的敌人受到同等伤害。
+UI.GroundHUD.Title,UI.GroundHUD.Title,Ground HUD 正式界面文案,游骑兵
+UI.GroundHUD.Health,UI.GroundHUD.Health,Ground HUD 正式界面文案,生命值
+UI.GroundHUD.Jet,UI.GroundHUD.Jet,Ground HUD 正式界面文案,喷气容量
+UI.GroundHUD.Fire,UI.GroundHUD.Fire,Ground HUD 正式界面文案,射击
+UI.GroundHUD.Aim,UI.GroundHUD.Aim,Ground HUD 正式界面文案,瞄准
+UI.GroundHUD.Jump,UI.GroundHUD.Jump,Ground HUD 正式界面文案,喷气跳跃
+UI.GroundHUD.Blink,UI.GroundHUD.Blink,Ground HUD 正式界面文案,闪现
+UI.GroundHUD.Ready,UI.GroundHUD.Ready,Ground HUD 正式界面文案,就绪
+UI.GroundHUD.Empty,UI.GroundHUD.Empty,Ground HUD 正式界面文案,燃料不足
+UI.GroundHUD.Active,UI.GroundHUD.Active,Ground HUD 正式界面文案,使用中
+UI.GroundHUD.Disabled,UI.GroundHUD.Disabled,Ground HUD 正式界面文案,不可用
+UI.GroundHUD.Stats,UI.GroundHUD.Stats,Ground HUD 正式界面文案,"武器等级 {0}   射速 {1}
+移速 {2}"
+UI.GroundHUD.Details,UI.GroundHUD.Details,Ground HUD 正式界面文案,属性与强化
+UI.GroundHUD.DetailsHint,UI.GroundHUD.DetailsHint,Ground HUD 正式界面文案,[I] 详情
+UI.GroundHUD.RogueHint,UI.GroundHUD.RogueHint,Ground HUD 正式界面文案,[F4] 选牌
+UI.GroundHUD.Owned,UI.GroundHUD.Owned,Ground HUD 正式界面文案,已获强化
+UI.GroundHUD.NoOwned,UI.GroundHUD.NoOwned,Ground HUD 正式界面文案,尚未获得强化
+UI.GroundHUD.MapHint,UI.GroundHUD.MapHint,Ground HUD 正式界面文案,M  战术地图
+UI.GroundHUD.MapTitle,UI.GroundHUD.MapTitle,Ground HUD 正式界面文案,战术地图
+UI.GroundHUD.MapHelp,UI.GroundHUD.MapHelp,Ground HUD 正式界面文案,滚轮缩放 · 左键拖动 / 选择标记 · Space 定位自身 · M / Esc 关闭
+UI.GroundHUD.MapUnavailable,UI.GroundHUD.MapUnavailable,Ground HUD 正式界面文案,地形数据暂不可用
+UI.GroundHUD.MapLegend,UI.GroundHUD.MapLegend,Ground HUD 正式界面文案,▲ 自身   ▪ 友方   ◆ 敌方   □ 据点
+UI.GroundHUD.MapLocation,UI.GroundHUD.MapLocation,Ground HUD 正式界面文案,"坐标 {0}, {1} m"
+UI.GroundHUD.MapSelected,UI.GroundHUD.MapSelected,Ground HUD 正式界面文案,"{0}
+坐标 {1}, {2} m"
+UI.GroundHUD.Friendly,UI.GroundHUD.Friendly,Ground HUD 正式界面文案,友方单位
+UI.GroundHUD.Enemy,UI.GroundHUD.Enemy,Ground HUD 正式界面文案,敌方单位
+UI.GroundHUD.Territory,UI.GroundHUD.Territory,Ground HUD 正式界面文案,据点
+UI.GroundHUD.Self,UI.GroundHUD.Self,Ground HUD 正式界面文案,游骑兵
+UI.GroundHUD.Close,UI.GroundHUD.Close,Ground HUD 正式界面文案,[Esc] 关闭
+UI.GroundHUD.SelectDirect,UI.GroundHUD.SelectDirect,Ground HUD 正式界面文案,单击卡牌，直接获得强化
+UI.GroundHUD.Burning,UI.GroundHUD.Burning,Ground HUD 正式界面文案,灼烧
+UI.GroundHUD.BurningBurst,UI.GroundHUD.BurningBurst,Ground HUD 正式界面文案,灼烧爆裂
+UI.GroundHUD.BuffOther,UI.GroundHUD.BuffOther,Ground HUD 正式界面文案,状态 {0}
+UI.GroundHUD.BuffMore,UI.GroundHUD.BuffMore,Ground HUD 正式界面文案,+{0}
+UI.GroundHUD.Shield,UI.GroundHUD.Shield,Ground HUD 正式界面文案,护盾 {0} / {1}
+UI.GroundHUD.Dead,UI.GroundHUD.Dead,Ground HUD 正式界面文案,机体失能
+UI.GroundHUD.Damage,UI.GroundHUD.Damage,Ground HUD 正式界面文案,单发伤害 {0}
+UI.GroundHUD.Buffs,UI.GroundHUD.Buffs,Ground HUD 正式界面文案,当前状态
+UI.GroundHUD.ModelShort,UI.GroundHUD.ModelShort,Ground HUD 正式界面文案,A4B2
+UI.GroundHUD.RogueAvailable,UI.GroundHUD.RogueAvailable,Ground HUD 正式界面文案,强化选择
+UI.GroundHUD.RicochetShort,UI.GroundHUD.RicochetShort,Ground HUD 正式界面文案,折射
+UI.GroundHUD.BurstShort,UI.GroundHUD.BurstShort,Ground HUD 正式界面文案,爆裂
+UI.GroundHUD.LocalTerrain,UI.GroundHUD.LocalTerrain,Ground HUD 正式界面文案,局部地形
+UI.GroundHUD.MapHintShort,UI.GroundHUD.MapHintShort,Ground HUD 正式界面文案,[M] 地图
+UI.GroundHUD.Attributes,UI.GroundHUD.Attributes,Ground HUD 正式界面文案,机体属性
+UI.GroundHUD.WeaponLevel,UI.GroundHUD.WeaponLevel,Ground HUD 正式界面文案,武器等级
+UI.GroundHUD.FireRate,UI.GroundHUD.FireRate,Ground HUD 正式界面文案,射速
+UI.GroundHUD.MoveSpeed,UI.GroundHUD.MoveSpeed,Ground HUD 正式界面文案,移速
+UI.GroundHUD.LocationInfo,UI.GroundHUD.LocationInfo,Ground HUD 正式界面文案,地点信息
+UI.GroundHUD.MapPickLocation,UI.GroundHUD.MapPickLocation,Ground HUD 正式界面文案,选择地图标记
+UI.GroundHUD.Distance,UI.GroundHUD.Distance,Ground HUD 正式界面文案,距离
+UI.GroundHUD.Coordinates,UI.GroundHUD.Coordinates,Ground HUD 正式界面文案,坐标
+UI.GroundHUD.Affiliation,UI.GroundHUD.Affiliation,Ground HUD 正式界面文案,状态
+UI.GroundHUD.NoSelection,UI.GroundHUD.NoSelection,Ground HUD 正式界面文案,—
+UI.GroundHUD.LegendTitle,UI.GroundHUD.LegendTitle,Ground HUD 正式界面文案,图例
+UI.GroundHUD.SelfLegend,UI.GroundHUD.SelfLegend,Ground HUD 正式界面文案,自身
+UI.GroundHUD.FriendlyLegend,UI.GroundHUD.FriendlyLegend,Ground HUD 正式界面文案,友方
+UI.GroundHUD.EnemyLegend,UI.GroundHUD.EnemyLegend,Ground HUD 正式界面文案,敌方
+UI.GroundHUD.MapWheelHint,UI.GroundHUD.MapWheelHint,Ground HUD 正式界面文案,滚轮  缩放
+UI.GroundHUD.LocateSelf,UI.GroundHUD.LocateSelf,Ground HUD 正式界面文案,Space  定位自身
+UI.GroundHUD.GroundIdentity,UI.GroundHUD.GroundIdentity,Ground HUD 正式界面文案,GROUND / 4001
+UI.GroundHUD.Brand,UI.GroundHUD.Brand,Ground HUD 正式界面文案,GULISTRIKE
+UI.GroundHUD.SystemIdentity,UI.GroundHUD.SystemIdentity,Ground HUD 正式界面文案,GROUND SYSTEM
+UI.GroundHUD.SelectTitle,UI.GroundHUD.SelectTitle,Ground HUD 正式界面文案,选择强化
+UI.GroundHUD.SelectOne,UI.GroundHUD.SelectOne,Ground HUD 正式界面文案,选择 1 项强化
+Card.GroundMech.FireRate.Title,Card.GroundMech.FireRate.Title,游骑兵武器肉鸽；参数来自效果配置,增加攻速
+Card.GroundMech.FireRate.Description,Card.GroundMech.FireRate.Description,{1}为当级相乘的增幅，{2}为累计攻速增幅,<Unit>游骑兵</> 普攻攻速<Gain>+{1}%</>（累计<Gain>+{2}%</>）
+Card.GroundMech.EnhancedBullet.Title,Card.GroundMech.EnhancedBullet.Title,游骑兵武器肉鸽；参数来自效果配置,强化子弹
+Card.GroundMech.EnhancedBullet.Description,Card.GroundMech.EnhancedBullet.Description,游骑兵个人肉鸽,<Unit>游骑兵</> 普攻伤害 <Gain>+{1}%</>，射速降低 {2}%。
+Card.GroundMech.ExplosivePackage.Title,Card.GroundMech.ExplosivePackage.Title,游骑兵武器肉鸽；参数来自效果配置,爆破套餐
+Card.GroundMech.ExplosivePackage.Description,Card.GroundMech.ExplosivePackage.Description,游骑兵武器肉鸽；参数来自效果配置,<Unit>游骑兵</> <Gain>{0}级 · 每{1}发附爆炸弹 · {2}倍伤害/{3}米</>
+Card.GroundMech.ExplosiveEnhancement.Title,Card.GroundMech.ExplosiveEnhancement.Title,游骑兵爆炸强化卡标题,强化爆炸弹
+Card.GroundMech.ExplosiveEnhancement.Description,Card.GroundMech.ExplosiveEnhancement.Description,参数为取得后等级、本次半径%、本次伤害%,<Unit>游骑兵</> <Gain>{0}级 · 爆炸半径+{1}%、伤害+{2}%</>
+Card.GroundMech.NoSurvivors.Title,Card.GroundMech.NoSurvivors.Title,游骑兵无人生还,无人生还
+Card.GroundMech.NoSurvivors.Description,Card.GroundMech.NoSurvivors.Description,游骑兵无人生还,<Unit>游骑兵</> <Gain>对地齐射{0}级 · 每{1}秒1发，共{2}发 · 基础伤害+{3}% · 散布半角{4}°</>
+UI.GroundHUD.BarrageLow,UI.GroundHUD.BarrageLow,游骑兵无人生还,需离地{0}米
+UI.GroundHUD.BarrageFiring,UI.GroundHUD.BarrageFiring,游骑兵无人生还,余{0}发
+UI.GroundHUD.BarrageReady,UI.GroundHUD.BarrageReady,游骑兵无人生还,就绪
+Card.GroundMech.AIEngine.Title,Card.GroundMech.AIEngine.Title,游骑兵个人肉鸽,人工智能引擎
+Card.GroundMech.AIEngine.Description,Card.GroundMech.AIEngine.Description,游骑兵个人肉鸽,<Unit>游骑兵</> 仅自动射击，<Gain>{2} 米</>内瞄准 <Gain>{1} 秒</>后锁定开火
+Card.GroundMech.SplitBarrel.Title,Card.GroundMech.SplitBarrel.Title,游骑兵个人肉鸽,分裂枪管
+Card.GroundMech.SplitBarrel.Description,Card.GroundMech.SplitBarrel.Description,游骑兵个人肉鸽,<Unit>游骑兵</> 每枪最多向 <Gain>{1} 个</>已锁敌人各射一弹
+Card.GroundMech.ElectromagneticTech.Title,Card.GroundMech.ElectromagneticTech.Title,游骑兵个人肉鸽,电磁技术
+Card.GroundMech.ElectromagneticTech.Description,Card.GroundMech.ElectromagneticTech.Description,游骑兵个人肉鸽,<Unit>游骑兵</> 电磁瞬击，减速 <Gain>{1}%</> 持续 <Gain>{2} 秒</>，对盾 <Gain>+{3}%</>
+Card.GroundMech.EnhancedAOE.Title,Card.GroundMech.EnhancedAOE.Title,游骑兵个人肉鸽,增强AOE
+Card.GroundMech.EnhancedAOE.Description,Card.GroundMech.EnhancedAOE.Description,游骑兵个人肉鸽,<Unit>游骑兵</> <Gain>范围伤害+{1}%</>（累计<Gain>+{2}%</>）
+Card.GroundMech.DamageOverTime.Title,Card.GroundMech.DamageOverTime.Title,游骑兵个人肉鸽,增强持续伤害
+Card.GroundMech.DamageOverTime.Description,Card.GroundMech.DamageOverTime.Description,游骑兵个人肉鸽,<Unit>游骑兵</> <Gain>持续伤害+{1}%</>（累计<Gain>+{2}%</>）
+UI.Xuntian.Belly.Title,UI.Xuntian.Belly.Title,巡天 F4 舰腹火炮,舰腹火炮
+UI.Xuntian.Belly.Tier1,UI.Xuntian.Belly.Tier1,巡天 F4 舰腹火炮,一级 · 机炮
+UI.Xuntian.Belly.Tier2,UI.Xuntian.Belly.Tier2,巡天 F4 舰腹火炮,二级 · 双联火炮
+UI.Xuntian.Belly.Tier3,UI.Xuntian.Belly.Tier3,巡天 F4 舰腹火炮,三级 · 三联火炮
+UI.Xuntian.Belly.Upgrade,UI.Xuntian.Belly.Upgrade,巡天 F4 舰腹火炮,升级
+UI.Xuntian.Belly.Max,UI.Xuntian.Belly.Max,巡天 F4 舰腹火炮,舰腹火炮已满级 · 已满足雷神导弹舱前置
+UI.Xuntian.Belly.Close,UI.Xuntian.Belly.Close,巡天 F4 舰腹火炮,关闭
+UI.Xuntian.Belly.Pending,UI.Xuntian.Belly.Pending,巡天 F4 舰腹火炮,正在装配…
+UI.Xuntian.Belly.Failed,UI.Xuntian.Belly.Failed,巡天 F4 舰腹火炮,装配未完成，请重新选择。

@@ -19,6 +19,10 @@ class UGuLiOutpostPresentationComponent;
 class UGuLiGroundSceneUIState;
 struct FGuLiSceneUIWidgetData;
 struct FGuLiSceneUIHealthBar;
+struct FGuLiHealthBarView;
+struct FGuLiPilotHealthFrame;
+class UGuLiXuntianGunnery;
+namespace GuLiHealthGrid { struct FCanvas; }
 enum class EGuLiSceneUIPaintPart : uint8 { Combined, Background, World, HUD, Panels };
 
 /** One non-interactive, post-scene Slate batch for each local player's viewport. */
@@ -35,6 +39,8 @@ public:
 	void AddOverviewHealthBar(const FGuLiSceneUIHealthBar& Bar);
 	UFUNCTION(BlueprintPure, Category="Scene UI|Diagnostics") FString GetFrameStatsJson() const;
 	UFUNCTION(BlueprintPure, Category="Scene UI|Diagnostics", meta=(DevelopmentOnly)) FString GetHealthBarLayoutJson(bool bIncludeCandidates = false) const;
+	const FGuLiPilotHealthFrame& GetPilotHealthFrame(const UGuLiXuntianGunnery& Gun, const FGuLiHealthBarView& View,
+		const GuLiHealthGrid::FCanvas& Canvas, FVector Hull) const;
 	void AddScreenLine(float X1, float Y1, float X2, float Y2, FLinearColor Color, float Width=1);
 	void AddScreenRect(FLinearColor Color, float X, float Y, float W, float H);
 	void AddScreenDisc(FVector2D Center, float Radius, FLinearColor Color);

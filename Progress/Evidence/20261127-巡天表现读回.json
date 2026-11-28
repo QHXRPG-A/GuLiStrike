@@ -1,0 +1,125 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "test_entry": "无双·巡天 → 巡天 HUD",
+  "markers_cm": {
+    "XuntianHUD_Start": [
+      -40000.0,
+      12000.0,
+      18899.977111467128
+    ],
+    "XuntianHUD_High": [
+      -11000.0,
+      -1000.0,
+      24899.977111467128
+    ],
+    "XuntianHUD_Level": [
+      -12000.0,
+      16000.0,
+      18899.977111467128
+    ],
+    "XuntianHUD_Low": [
+      -33800.0,
+      16600.0,
+      8399.977111467128
+    ],
+    "XuntianHUD_Inside": [
+      -35000.0,
+      7800.0,
+      899.9771114671266
+    ],
+    "XuntianHUD_Outside": [
+      -7000.0,
+      19200.0,
+      1502.857353309194
+    ]
+  },
+  "target_distance_from_spawn_m": {
+    "XuntianHUD_Inside": 191.48,
+    "XuntianHUD_Outside": 379.93
+  },
+  "full_effect_cutoff_cm": 20000.0,
+  "prechange_native_module_in_current_pie": true,
+  "ciws_before": {
+    "total": 190,
+    "tick_enabled": 190,
+    "native_hinge_animations": 135,
+    "display_reference_pose": 55
+  },
+  "ciws_current_ticks": 135,
+  "display_same_actor": {
+    "asset": "/Game/Development/ShipUpgradeRange/BP_XuntianUpgradeRange",
+    "parts": 78,
+    "before_ticks": 78,
+    "after_ticks": 0,
+    "meshes": {
+      "SKM_SC_Autocannon": 3,
+      "SKM_SC_Twin_Barrel_Turret": 2,
+      "SKM_SC_Triple_Barrel_Turret": 5,
+      "SKM_SC_CIWS": 55,
+      "SKM_SC_Single_Barrel_Turret": 13
+    }
+  },
+  "observed_max_health": {
+    "BP_CombatAvatarFly01_C": [
+      1000.0
+    ],
+    "GuLiShieldGeneratorActor": [
+      2000.0
+    ],
+    "GuLiPioneerBarracksActor": [
+      3000.0
+    ],
+    "BP_GroundMech_Light_C": [
+      1000.0
+    ],
+    "GuLiConstructionVehiclePawn": [
+      1000.0
+    ],
+    "GuLiMiningVehiclePawn": [
+      1000.0
+    ],
+    "GuLiPlacedBuilding": [
+      2000.0
+    ]
+  },
+  "baseline": {
+    "id": "FC9840A44E9581EE00550CBCA92146EF",
+    "file": "20261127-090423-FC9840A4/report.json",
+    "window_frames": 293,
+    "frame_mean_ms": 17.045,
+    "frame_p95_ms": 26.53,
+    "sample": "CPU",
+    "game_thread_scopes": {
+      "USkinnedMeshComponent_TickComponent": {
+        "calls": 95811,
+        "inclusive_ms_per_frame": 0.8066
+      },
+      "USkeletalMeshComponent_CompleteParallelAnimationEvaluation": {
+        "calls": 64460,
+        "inclusive_ms_per_frame": 0.3398
+      },
+      "SKM_SC_CIWS": {
+        "calls": 150895,
+        "inclusive_ms_per_frame": 0.788
+      },
+      "GuLiXuntianBarrelAnim": {
+        "calls": 60944,
+        "inclusive_ms_per_frame": 0.1609
+      }
+    }
+  },
+  "staged_blueprint_readback": {
+    "path": "/Game/Development/ShipUpgradeRange/BP_XuntianUpgradeRange.BP_XuntianUpgradeRange",
+    "parts": 78,
+    "ticks": 0
+  },
+  "live_package_save": "installed the previously verified Blueprint package after the editor and PIE exited; independent project package readback passed",
+  "after_frame_timing": null,
+  "native_build": "not run",
+  "native_cpp_syntax_files": 34,
+  "asset_save_trigger": "the original on_end_pie callback ended with the terminated editor; the staged package was installed directly",
+  "installed_blueprint_readback": {
+    "parts": 78,
+    "startup_ticks": 0
+  }
+}

@@ -10,7 +10,8 @@ FGuid UGuLiShipAssemblyComponent::RequestHybridChoice(FGuid RequestId,FName Node
 {
     const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
     auto* Hybrid=GetWorld()?GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>():nullptr;
-    if (!RequestId.IsValid() || NodeId.IsNone() || !Binding || !Binding->CanControl() || !Binding->CanSimulate() || !Hybrid) return {};
+    // The pilot owns the selection. SubmitUpgrade routes it to the ship's simulation owner.
+    if (!RequestId.IsValid() || NodeId.IsNone() || !Binding || !Binding->CanControl() || !Hybrid) return {};
     if (const auto* Previous=ChoiceReceipts.Find(RequestId))
         return Previous->Node==NodeId && Previous->Epoch==MatchEpoch && Previous->Revision==ExpectedBuildRevision
             && Previous->Requester==Binding->GetState().Controller?RequestId:FGuid{};
@@ -78,11 +79,24 @@ void UGuLiShipAssemblyComponent::AdvanceHybridChoices()
         const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
         if (!Binding || !Binding->CanControl() || Binding->GetState().Controller!=Receipt->Requester) continue;
         const auto Result=Receipt->Result;
-        if (auto* Player=Ship().GetPlayerState<AGuLiBattlePlayerState>())
-            if (Player->GetShipBuild()->NotifyHybridChoiceResolved(*this,Result)) Receipt->Notified=true;
+        auto* Player=Ship().GetPlayerState<AGuLiBattlePlayerState>();
+        if (Player && Player->GetShipBuild()->NotifyHybridChoiceResolved(*this,Result))
+        {
+            // A listener can submit the next choice and reallocate the receipt map.
+            if (auto* Notified=ChoiceReceipts.Find(Event)) Notified->Notified=true;
+        }
     }
 }
 TArray<FGuid> UGuLiShipAssemblyComponent::GetPendingHybridChoices() const
 {
     TArray<FGuid> Out;for (const auto& [Event,Receipt]:ChoiceReceipts) if (!Receipt.Resolved) Out.Add(Event);return Out;
+}
+bool UGuLiShipAssemblyComponent::HasPendingChoiceForPilot() const
+{
+    const auto* Binding=UGuLiHybridActorComponent::Find(GetOwner());
+    if (!Binding) return false;
+    const FGuid Pilot=Binding->GetState().Controller;
+    for (const auto& Entry:ChoiceReceipts)
+        if (!Entry.Value.Resolved && Entry.Value.Requester==Pilot) return true;
+    return false;
 }

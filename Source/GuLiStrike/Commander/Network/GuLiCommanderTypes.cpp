@@ -572,10 +572,13 @@ void FGuLiSoldierStateItem::Sanitize()
 	MaxHealth = FMath::IsFinite(MaxHealth) && MaxHealth > 0.0f
 		? FMath::Min(MaxHealth, 1000000000.0f) : 1.0f;
 	Health = FMath::IsFinite(Health) ? FMath::Clamp(Health, 0.0f, MaxHealth) : 0.0f;
+	MaxShield = FMath::IsFinite(MaxShield) ? FMath::Max(MaxShield, 0.0f) : 0.0f;
+	Shield = FMath::IsFinite(Shield) ? FMath::Clamp(Shield, 0.0f, MaxShield) : 0.0f;
 
 	if (Health <= 0.0f || LifeState == EGuLiSoldierLifeState::Destroyed)
 	{
 		Health = 0.0f;
+		Shield = 0.0f;
 		LifeState = EGuLiSoldierLifeState::Destroyed;
 		ActiveOrderId = 0u;
 	}

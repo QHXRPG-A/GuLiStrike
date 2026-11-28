@@ -7,9 +7,11 @@
 #include "Commander/UI/GuLiSceneUITypes.h"
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Commander/UI/GuLiHealthBarLayout.h"
+#include "UI/GuLiSegmentedHealthBar.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderRouteLineComponent.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
@@ -25,6 +27,8 @@
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Gameplay/Building/GuLiBuildingPlacementPreview.h"
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
+#include "Gameplay/Ship/Aiming/GuLiXuntianGunnery.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -106,7 +110,36 @@ struct FGuLiSceneUIWidgetData
 	TArray<FGuLiSceneUIRing> Rings;
 	TArray<FGuLiSceneUIHealthBar> Bars;
 	FGuLiHealthBarLayout BarLayout;
+	// Rings, routes and other world primitives can invalidate the world layer while every bar is stationary.
+	struct FWorldBarCache
+	{
+		GuLiHealthGrid::FMeshBatch Mesh;
+		FMatrix Matrix = FMatrix::Identity;
+		FSlateRenderTransform Transform;
+		FVector2D Scale = FVector2D::ZeroVector;
+		FBox2D Viewport{ForceInit};
+		float DPI = 0;
+		bool bOverview = false;
+		uint64 Revision = MAX_uint64, Builds = 0, Hits = 0, Submissions = 0;
+		bool Begin(const FMatrix& Camera, const GuLiHealthGrid::FCanvas& Canvas, uint64 Inputs,
+			float Pixel, bool Overview, bool AllowReuse)
+		{
+			if (AllowReuse && Revision==Inputs && Matrix.Equals(Camera,0) && Transform==Canvas.Transform && Scale==Canvas.Scale
+				&& Viewport==Canvas.Clip && DPI==Pixel && bOverview==Overview)
+			{ ++Hits; return false; }
+			Revision=Inputs; Matrix=Camera; Transform=Canvas.Transform; Scale=Canvas.Scale; Viewport=Canvas.Clip;
+			DPI=Pixel; bOverview=Overview;
+			Mesh.Reset(); ++Builds; return true;
+		}
+	} WorldBarCache;
+	uint64 BarRevision = 0;
 	FGuLiWorldHealthBars WorldBars;
+	TMap<TWeakObjectPtr<const UObject>, FGuLiSceneUIHealthBar> PilotActorBars;
+	TMap<uint32, FGuLiSceneUIHealthBar> PilotSoldierBars;
+	decltype(PilotActorBars) NextPilotActors;
+	decltype(PilotSoldierBars) NextPilotSoldiers;
+	uint64 PilotVitalRevision = 0;
+	bool bPilotActive = false;
 	TArray<FGuLiSceneUIHealthBar> OverviewBars;
 	TArray<FGuLiSceneUIHealthBar> GroundBars;
 	TArray<FGuLiSceneUILine> Routes;
@@ -504,7 +537,7 @@ void UGuLiSceneUIWidget::SetModalHidden(bool bHidden)
 {
     if (bModalHidden==bHidden) return;
 	bModalHidden = bHidden;
-	if (bHidden) Data->BarLayout.Reset();
+	if (bHidden) { Data->BarLayout.Reset(); ++Data->BarRevision; }
     if (!bHidden) HandleIdentityChanged();
 	SetVisibility(bHidden ? ESlateVisibility::Hidden : ESlateVisibility::HitTestInvisible);
 }
@@ -513,6 +546,7 @@ void UGuLiSceneUIWidget::HandleIdentityChanged()
 {
 	Data->BarLayout.Reset();
 	Data->OverviewBars.Reset();
+	++Data->BarRevision;
     // Identity notifications also run while a modal hides the widget and its Tick.
     if(GroundState)
     {
@@ -535,6 +569,7 @@ void UGuLiSceneUIWidget::RefreshSources()
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiSceneUI_SourceSnapshot);
 		TArray<FGuLiSceneUISource> Sources; Registry->GetSnapshot(Sources);
 		ActorRingSources.Reset(); OutpostHaloSources.Reset(); OutlineActorSources.Reset();
+		Data->WorldBars.ActorHealthSources.Reset();
 		for (const auto& Source : Sources)
 		{
 			switch (Source.Kind)
@@ -542,7 +577,13 @@ void UGuLiSceneUIWidget::RefreshSources()
 			case EGuLiSceneUISourceKind::PawnRing: if (auto* Actor = Cast<AActor>(Source.Object.Get())) ActorRingSources.Add(Actor); break;
 			case EGuLiSceneUISourceKind::OutpostHalo: if (auto* Halo = Cast<UGuLiOutpostPresentationComponent>(Source.Object.Get())) OutpostHaloSources.Add(Halo); break;
 			case EGuLiSceneUISourceKind::Presentation: if (!Presentation.IsValid()) Presentation = Cast<AGuLiCommanderPresentationActor>(Source.Object.Get()); break;
-			case EGuLiSceneUISourceKind::OutlineActor: if (auto* Actor = Cast<AActor>(Source.Object.Get())) OutlineActorSources.Add(Actor); break;
+			case EGuLiSceneUISourceKind::OutlineActor:
+				if (auto* Actor = Cast<AActor>(Source.Object.Get()))
+				{
+					OutlineActorSources.Add(Actor);
+					if (auto* Health = Actor->FindComponentByClass<UGuLiCombatHealthComponent>()) Data->WorldBars.ActorHealthSources.Add(Health);
+				}
+				break;
 			}
 		}
 		SourceMembershipRevision = Registry->GetMembershipRevision();
@@ -679,10 +720,34 @@ void UGuLiSceneUIWidget::NativeTick(const FGeometry& Geometry, float DeltaSecond
 	}
 	else if (PC) Data->WorldBars.Gather(*PC, Presentation.Get(), Poses, Bars);
 	Poses.EndFrame();
-	const bool Published = Data->BarLayout.Publish(Bars, BarTime);
-	if (Published || Bars != Data->Bars || Overview != Data->bOverview)
+	Data->BarLayout.Publish(Bars, BarTime);
+	Data->NextPilotActors.Reset();
+	Data->NextPilotSoldiers.Reset();
+	const auto* Ship = PC ? Cast<AGuLiStrikeShip>(PC->GetViewTarget()) : nullptr;
+	const bool PilotActive = Ship && Ship->GetController()==PC && Ship->GetXuntianGunnery()
+		&& Ship->GetShipWorldHUDComponent() && Ship->GetShipWorldHUDComponent()->ShowsPilotContactHealth();
+	if (!PilotActive && Data->bPilotActive) Data->BarLayout.ResetPilot();
+	Data->bPilotActive = PilotActive;
+	if (!Bars.IsEmpty() && PilotActive)
+	{
+		// One owner draws a contact throughout its life. Hand hit/shield information to the
+		// pilot's existing marker so taking damage never moves the bar to another anchor.
+		Bars.RemoveAll([&](const FGuLiSceneUIHealthBar& Bar)
+		{
+			if (Bar.Opacity<=0 || !Ship->GetXuntianGunnery()->HasHealthContact(Bar.Key.Source.Get(), Bar.Key.Element)) return false;
+			if (Bar.Key.Element) Data->NextPilotSoldiers.Add(uint32(Bar.Key.Element),Bar);
+			else Data->NextPilotActors.Add(Bar.Key.Source,Bar);
+			return true;
+		});
+	}
+	if (!Data->PilotActorBars.OrderIndependentCompareEqual(Data->NextPilotActors) ||
+		!Data->PilotSoldierBars.OrderIndependentCompareEqual(Data->NextPilotSoldiers)) ++Data->PilotVitalRevision;
+	Swap(Data->PilotActorBars, Data->NextPilotActors);
+	Swap(Data->PilotSoldierBars, Data->NextPilotSoldiers);
+	if (Bars != Data->Bars || Overview != Data->bOverview)
 	{
 		Data->Bars = MoveTemp(Bars);
+		++Data->BarRevision;
 		++Data->ContentRevision;
 		WorldChanged = true;
 	}
@@ -754,6 +819,7 @@ void UGuLiSceneUIWidget::DestroyOutlineCapture()
 void UGuLiSceneUIWidget::NativeDestruct()
 {
 	Data->BarLayout.Reset();
+	++Data->BarRevision;
 	if(GroundState)GroundState->Unbind();GroundState=nullptr;Data->GroundBars.Reset();
 	if (BoundIdentity.IsValid()) BoundIdentity->OnCommanderPlayerStateChanged.RemoveDynamic(this, &ThisClass::HandleIdentityChanged);
 	BoundIdentity.Reset();
@@ -845,7 +911,7 @@ void UGuLiSceneUIWidget::RefreshOutline(float DeltaSeconds)
 		// source ISM capture range. The camera projection keeps its ordinary far plane.
 		Data->OutlineMaximumDistance=GetDefault<UGuLiGroundSceneUISettings>()->FadeEndCm;
 		Capture->MaxViewDistanceOverride=-1;
-		GroundState->Update(Projection,Presentation.Get(),*Capture,Data->GroundBars);
+		GroundState->Update(Projection,Presentation.Get(),*Capture,Data->WorldBars,Data->GroundBars);
 		Capture->CaptureScene();return;
 	}
 	// A Ground/Air view has no commander height tier. Its outline pass must
@@ -1145,53 +1211,43 @@ void UGuLiSceneUIWidget::PaintSceneUI(const FGeometry& Geometry, FSlateWindowEle
 				S.Text,FCoreStyle::GetDefaultFontStyle("Regular",10),ESlateDrawEffect::None,S.Color); break;
 		}
 	}
-	if (World && PrepareGeometry)
+	if (World || HUD) View.Submit();
+	if (World)
 	{
 		const float DPI = bOverview ? UWidgetLayoutLibrary::GetViewportScale(this) : 1.f;
 		const FBox2D Viewport(View.Inset, View.Inset + FVector2D(View.Rect.Width(), View.Rect.Height()));
-		Data->BarLayout.ProjectVisible(Data->Bars, Viewport, [&](int32 Index, FBox2D& Bounds, float& Opacity)
+		const GuLiHealthGrid::FCanvas Canvas(Geometry, View.Scale, Viewport);
+		auto& Cache = Data->WorldBarCache;
+		if (Cache.Begin(View.Matrix,Canvas,Data->BarRevision,DPI,bOverview,
+			CVarSceneUIProjectionCache.GetValueOnGameThread()!=0))
 		{
-			const auto& Bar = Data->Bars[Index];
-			Opacity = Bar.Opacity * ((bOverview || GroundState) ? 1.f : View.WorldUIOpacity(Bar.Center, 0, Bar.bSelected));
-			FVector2D Anchor;
-			if (Opacity <= 0 || !View.Project(Bar.Center, Anchor)) return false;
-			Bounds = FGuLiHealthBarLayout::ScreenBounds(Bar, Anchor, DPI, bOverview);
-			return true;
-		});
-		auto DrawBarRect = [&](const FVector2D& Origin, const FVector2D& Size, const FLinearColor& Color)
-		{
-			const FVector2D Min = Origin.ComponentMax(Viewport.Min);
-			const FVector2D Max = (Origin + Size).ComponentMin(Viewport.Max);
-			if (Max.X > Min.X && Max.Y > Min.Y) View.Box(Min, Max - Min, Color);
-		};
-		for (const auto& Item : Data->BarLayout.Visible)
-		{
-			const auto& Bar = Data->Bars[Item.Index];
-			const float Opacity = Item.Opacity;
-			TGuardValue<float> Detail(View.DetailOpacity, Opacity);
-			if (bOverview)
+			const FGuLiHealthBarView BarView(Projection, FVector2D(Projection.GetViewRect().Size()), &View.Matrix);
+			Data->BarLayout.ProjectVisible(Data->Bars, Viewport, [&](int32 Index, FBox2D& Bounds, float& Opacity)
 			{
-				const FVector2D Min = Item.Bounds.Min;
-				const double Width = Item.Bounds.GetSize().X - 2 * DPI;
-				DrawBarRect(Min, Item.Bounds.GetSize(), FLinearColor::Black);
-				DrawBarRect(Min + FVector2D(DPI), FVector2D(Width * Bar.Fraction, 3 * DPI), FLinearColor(.15f,.9f,.35f));
-				if (Bar.bHasShield)
-					DrawBarRect(Min + FVector2D(DPI,5*DPI), FVector2D(Width * Bar.ShieldFraction, 2*DPI), FLinearColor(FColor::FromHex(TEXT("6AA4BE"))));
-				continue;
-			}
-			const FVector2D P = Item.Bounds.Min + FVector2D(1);
-			DrawBarRect(P-FVector2D(1), FVector2D(86,14), (Bar.bSelected ? FLinearColor::White : FLinearColor::Black).CopyWithNewOpacity(Opacity));
-			DrawBarRect(P,FVector2D(84,12),FLinearColor(.025f,.03f,.035f,Opacity));
-			DrawBarRect(P,FVector2D(84*Bar.Fraction,12),FLinearColor(.15f,.9f,.35f,Opacity));
-			if(Bar.bHasShield)
+				const auto& Bar = Data->Bars[Index];
+				Opacity = Bar.Opacity;
+				if (Opacity <= 0) return false;
+				if (!bOverview) return Data->BarLayout.WorldBounds(BarView, Bar, Bounds);
+				FVector2D Anchor;
+				if (!View.Project(Bar.Center, Anchor)) return false;
+				Bounds = FGuLiHealthBarLayout::OverviewBounds(Bar, Anchor, DPI);
+				return true;
+			});
+			for (const auto& Item : Data->BarLayout.Visible)
 			{
-				DrawBarRect(P+FVector2D(0,14),FVector2D(84,3),FLinearColor(.025f,.03f,.035f,Opacity));
-				DrawBarRect(P+FVector2D(0,14),FVector2D(84*Bar.ShieldFraction,3),FLinearColor(FColor::FromHex(TEXT("6AA4BE"))).CopyWithNewOpacity(Opacity));
+				const auto& Bar = Data->Bars[Item.Index];
+				Cache.Mesh.Add(Canvas, Item.Bounds.Min, Item.Bounds.GetSize(),
+					{Bar.Fraction * Bar.MaxHealth, Bar.MaxHealth}, {Bar.ShieldFraction * Bar.MaxShield, Bar.MaxShield},
+					Item.Opacity, bOverview ? DPI : GuLiHealthGrid::FMarkerSize::StylePixel(Item.Bounds.GetSize().X));
 			}
+		}
+		if (!Data->BarLayout.Visible.IsEmpty())
+		{
+			Cache.Mesh.Submit(Elements, View.Layer);
+			++Cache.Submissions;
 		}
 	}
 	if (World && PrepareGeometry) {Data->WorldUIDetailed=View.WorldUIDetailed;Data->WorldUICulled=View.WorldUICulled;}
-	if (World || HUD) View.Submit();
 	if (const auto* Commander=Cast<AGuLiCommanderPlayerController>(PC); World && Commander && Commander->IsCommanderViewActive())
 		if (!Data->Routes.IsEmpty() && RouteData && !bOverview && GuLiMoveLatency::IsEnabled())
 		{
@@ -1234,10 +1290,33 @@ FString UGuLiSceneUIWidget::GetFrameStatsJson() const
  Result.LeftChopInline(1);
  Result+=FString::Printf(TEXT(",\"world_ui_detailed\":%u,\"world_ui_culled\":%u,\"outline_max_distance_cm\":%.1f}"),Data->WorldUIDetailed,Data->WorldUICulled,Data->OutlineMaximumDistance);
  Result.LeftChopInline(1);
- Result+=FString::Printf(TEXT(",\"health_bar_drawn\":%d,\"health_bar_projected\":%d,\"health_bar_publications\":%llu}"),
-     Data->BarLayout.Visible.Num(),Data->BarLayout.Projected,Data->BarLayout.Publications);
+ Result+=FString::Printf(TEXT(",\"health_bar_drawn\":%d,\"health_bar_projected\":%d,\"health_bar_publications\":%llu,\"health_bar_builds\":%llu,\"health_bar_cache_hits\":%llu,\"health_bar_submissions\":%llu}"),
+     Data->BarLayout.Visible.Num(),Data->BarLayout.Projected,Data->BarLayout.Publications,
+     Data->WorldBarCache.Builds,Data->WorldBarCache.Hits,Data->WorldBarCache.Submissions);
  if(GroundState){Result.LeftChopInline(1);Result+=TEXT(",\"ground_feedback\":")+GroundState->GetStatsJson()+TEXT("}");}
  return Result;
+}
+
+const FGuLiPilotHealthFrame& UGuLiSceneUIWidget::GetPilotHealthFrame(const UGuLiXuntianGunnery& Gun,
+	const FGuLiHealthBarView& View, const GuLiHealthGrid::FCanvas& Canvas, FVector Hull) const
+{
+	const auto* Presented = Presentation.Get();
+	const auto* Roster = Presented ? Presented->GetSoldierRoster() : nullptr;
+	auto Vitals = [&](const FGuLiCombatTargetSnapshot& C) -> const FGuLiSceneUIHealthBar*
+	{
+		if (bModalHidden || !IsVisible()) return nullptr;
+		return C.Handle.Kind == EGuLiTargetKind::CommanderSoldier ? Data->PilotSoldierBars.Find(C.Handle.LocalId)
+			: Data->PilotActorBars.Find(C.CollisionActor.Get());
+	};
+	auto ReadModel = [&](const FGuLiCombatTargetSnapshot& C, FGuLiHealthBarModel& Model)
+	{
+		if (const auto* Bar = Vitals(C)) { Model = *Bar; return true; }
+		if (C.Handle.Kind != EGuLiTargetKind::CommanderSoldier) return FGuLiWorldHealthBars::ReadActorModel(C.CollisionActor.Get(), Model);
+		const FGuLiSoldierId Id(C.Handle.LocalId);
+		const auto* State = Roster ? Roster->FindSoldierState(Id) : nullptr;
+		return State && Data->WorldBars.ReadSoldierModel(*Presented, Id, State->UnitTypeId, Model);
+	};
+	return Data->BarLayout.PilotFrame(Gun, View, Canvas, Hull, Data->PilotVitalRevision, GetWorld()->GetTimeSeconds(), ReadModel, Vitals);
 }
 
 FString UGuLiSceneUIWidget::GetHealthBarLayoutJson(bool bIncludeCandidates) const

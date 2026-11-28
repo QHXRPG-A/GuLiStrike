@@ -22,6 +22,7 @@ FGuLiCommanderUIPresentation BuildGuLiCommanderUIPresentation(UWorld* World,
 		if (!State->IsAlive()) continue;
 		auto& Row = View.Members.AddDefaulted_GetRef(); Row.Soldier = Id; Row.Type = State->UnitTypeId;
 		Row.Health = State->Health; Row.MaximumHealth = State->MaxHealth; Row.bTransporting = State->bPhased;
+		Row.Shield = State->Shield; Row.MaximumShield = State->MaxShield;
 	}
 	TSet<FGuLiControllableActorId> Pending(Selection.ActorIds);
 	for (TActorIterator<APawn> It(World); It && !Pending.IsEmpty(); ++It)

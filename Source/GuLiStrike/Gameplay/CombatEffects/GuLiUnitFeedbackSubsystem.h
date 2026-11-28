@@ -86,8 +86,7 @@ public:
 	void PlayGroundMassDestruction(FVector Location, float UnitSize);
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") float CalculateDestructionScale(float UnitSize) const;
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") float GetReferenceUnitSize() const { return ReferenceUnitSize; }
-	static bool GetHealthBarAnchor(const AActor* Actor, FVector& Top);
-	static bool GetActorVisualBounds(const AActor* Actor, FBox& OutWorldBounds, float& OutSize);
+	static bool GetActorVisualBounds(const AActor* Actor, FBox& OutWorldBounds, float& OutSize, double* OutHorizontalWidth = nullptr);
 	const TMap<TWeakObjectPtr<AActor>, FGuLiHealthBarEvent>& GetActorHealthBars() const { return ActorHealthBars; }
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetActiveExplosionCount() const { return ActiveExplosions.Num(); }
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetLoadedExplosionCount() const { return LoadedExplosions.Num(); }
@@ -106,7 +105,6 @@ private:
 	void RequestExplosionSystems();
 	void FinishExplosionPreload();
 	void PrepareExplosionCompilation(UNiagaraSystem* System);
-	bool ShouldRenderExplosion(const FVector& Location) const;
 	void QueueDestruction(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier = 1.0f);
 	void SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier);
 	AGuLiUnitWreck* AllocateWreck(const FVector& Location);
@@ -122,6 +120,9 @@ private:
 	TSharedPtr<FStreamableHandle> ExplosionDefinitionsLoad;
 	TSharedPtr<FStreamableHandle> ExplosionSystemsLoad;
 	TArray<int32> StartupExplosionVfxIds;
+	TArray<int32> StartupWarningVfxIds;
+	TArray<FSoftObjectPath> StartupAdditionalSystemPaths;
+	UPROPERTY(Transient) TArray<TObjectPtr<UObject>> LoadedProjectileAssets;
 	UPROPERTY(Transient) TArray<TObjectPtr<UGuLiSpellFieldDefinition>> LoadedExplosionFields;
 	FRandomStream CosmeticRandom;
 	TSet<FGuLiWingmanHandle> DestroyedWingmen;

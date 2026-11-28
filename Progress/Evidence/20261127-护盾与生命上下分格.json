@@ -1,0 +1,40 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "build": "GuLiStrikeEditor Win64 Development",
+  "build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+  "build_result": "Succeeded",
+  "test_map_entry": "无双·巡天 → 巡天 HUD",
+  "unit": "重防号",
+  "roster": {
+    "id": 174,
+    "unit_type_id": 2,
+    "health": 800.0,
+    "max_health": 800.0,
+    "shield": 400.0,
+    "max_shield": 400.0
+  },
+  "paint": {
+    "id": 174,
+    "hp": 800,
+    "has_shield": true,
+    "shield_fraction": 1,
+    "vital_change": false,
+    "x": 917.181475212009,
+    "y": 495.70011401513443
+  },
+  "frame": 3028,
+  "viewport": [
+    1920,
+    1080
+  ],
+  "screenshot": "ArtSource/UI/MassShieldGrid_20261127/WM01-400-800.png",
+  "automation_passed": [
+    "Activity",
+    "AllVisibleAndCadence",
+    "Pose30HzCameraPerFrame",
+    "ShieldChangeHistory",
+    "SizingPolicy",
+    "StackedTracks",
+    "VisibilityPolicy"
+  ]
+}

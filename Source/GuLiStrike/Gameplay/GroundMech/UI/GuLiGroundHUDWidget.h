@@ -8,7 +8,7 @@
 class UCanvasPanel;
 class UBorder;
 class UTextBlock;
-class UProgressBar;
+class UGuLiSegmentedHealthBar;
 class UVerticalBox;
 class UHorizontalBox;
 class UUniformGridPanel;
@@ -129,7 +129,7 @@ private:
     UPROPERTY(Transient) TObjectPtr<UTextBlock> MapTitle;
     UPROPERTY(Transient) TObjectPtr<UTextBlock> MapHelp;
     UPROPERTY(Transient) TObjectPtr<UTextBlock> MiniMapStatus;
-    UPROPERTY(Transient) TObjectPtr<UProgressBar> HealthBar;
+    UPROPERTY(Transient) TObjectPtr<UGuLiSegmentedHealthBar> HealthBar;
     UPROPERTY(Transient) TObjectPtr<UUniformGridPanel> RogueList;
     UPROPERTY(Transient) TObjectPtr<UScrollBox> RogueScroll;
     UPROPERTY(Transient) TObjectPtr<UBorder> RoguePanel;
@@ -157,7 +157,7 @@ private:
     TSharedPtr<SGuLiGroundReticle> Reticle;
     FVector2D MuzzlePoint=FVector2D::ZeroVector;
     bool bMuzzle=false,bKill=false,bRogueHidden=false,bReticleVisible=false;
-    float TargetHealth=0,TargetMasks[2]{};bool bBarsInitialized=false;
+    float TargetMasks[2]{};bool bBarsInitialized=false;
     double HitUntil=0,HitStarted=0;uint8 ModalMode=0;
     FString LastBuffText;
     FGuLiGroundHUDMotionStyle MotionStyle;

@@ -1,0 +1,761 @@
+{
+  "date": "2026-11-27",
+  "distances_m": [
+    35,
+    110,
+    190
+  ],
+  "capture_layout": "每项三列等宽取景",
+  "effects": [
+    {
+      "name": "游骑兵满级升级旋风",
+      "system": "NS_Tornado_under",
+      "gif": "GIF/NS_Tornado_under.gif",
+      "recording_world": "Editor",
+      "paths_by_distance": [
+        "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundMaxRankTornado",
+        "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundMaxRankTornado",
+        "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundMaxRankTornado"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "PointLight": 149,
+          "outSide_b_under": 4,
+          "MeshMain004": 1,
+          "MeshMain006": 1,
+          "Gareki": 53,
+          "Smoke": 102,
+          "outSide_b": 3
+        },
+        {
+          "outSide_b_under": 4,
+          "MeshMain004": 1,
+          "Gareki": 53,
+          "Smoke": 101
+        },
+        {
+          "outSide_b_under": 4,
+          "MeshMain004": 1,
+          "Gareki": 53,
+          "Smoke": 103
+        }
+      ],
+      "shared_middle_emitters": [
+        "Gareki",
+        "MeshMain004",
+        "Smoke",
+        "outSide_b_under"
+      ]
+    },
+    {
+      "name": "游骑兵升级光效",
+      "system": "P_UpgradeGlow_Converted",
+      "gif": "GIF/P_UpgradeGlow_Converted.gif",
+      "recording_world": "Editor",
+      "paths_by_distance": [
+        "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundUpgradeGlow",
+        "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundUpgradeGlow",
+        "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundUpgradeGlow"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "mesh02": 1,
+          "mesh03": 1,
+          "mesh04": 1,
+          "circle001": 1,
+          "light03": 3,
+          "Circle02": 3,
+          "Circle03": 3,
+          "Circle04": 2,
+          "Circle05": 2,
+          "particles01": 36,
+          "Particle02": 3,
+          "Particle03": 45,
+          "circle": 3,
+          "light04": 1,
+          "light01": 2,
+          "light02": 3
+        },
+        {
+          "mesh02": 1,
+          "mesh03": 1,
+          "circle001": 1,
+          "Circle02": 3,
+          "particles01": 36,
+          "Particle02": 3,
+          "light04": 1
+        },
+        {
+          "mesh02": 1,
+          "mesh03": 1,
+          "circle001": 1,
+          "Circle02": 3,
+          "particles01": 36,
+          "Particle02": 3,
+          "light04": 1
+        }
+      ],
+      "shared_middle_emitters": [
+        "Circle02",
+        "Particle02",
+        "circle001",
+        "light04",
+        "mesh02",
+        "mesh03",
+        "particles01"
+      ]
+    },
+    {
+      "name": "重防号备用单枚导弹",
+      "system": "NS_WM01_MissileFlight",
+      "gif": "GIF/NS_WM01_MissileFlight.gif",
+      "recording_world": "Editor",
+      "paths_by_distance": [
+        "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+        "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+        "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "Core": 1,
+          "Exhaust": 13,
+          "Trail": 23
+        },
+        {
+          "Core": 1,
+          "Exhaust": 13
+        },
+        {
+          "Core": 1,
+          "Exhaust": 13
+        }
+      ],
+      "shared_middle_emitters": [
+        "Core",
+        "Exhaust"
+      ]
+    },
+    {
+      "name": "游骑兵燃烧爆发",
+      "system": "NS_GroundBurningBurst",
+      "gif": "GIF/NS_GroundBurningBurst.gif",
+      "recording_world": "PIE",
+      "paths_by_distance": [
+        "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst",
+        "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst",
+        "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "BurningShell": 1
+        },
+        {
+          "BurningShell": 1
+        },
+        {
+          "BurningShell": 1
+        }
+      ],
+      "recipe": {
+        "success": true,
+        "asset": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst",
+        "source": "/Game/Assets/VFX/Buffs/BuffLoop/NS/Vfx_MagicShell",
+        "mesh": "/Game/Assets/VFX/Buffs/BuffLoop/__GenericSource/FBX/SM_Sphere_464D58D6.SM_Sphere_464D58D6",
+        "material": "/Game/GuLiStrike/FX/GroundMech/Burning/M_GroundBurningShell.M_GroundBurningShell",
+        "noise": "/Game/Assets/VFX/Buffs/BuffLoop/__GenericSource/Texture/T_Vfx_Noise_01.T_Vfx_Noise_01",
+        "color_srgb": "#A34053",
+        "emitters": [
+          "BurningShell"
+        ],
+        "burst_count": 1,
+        "radius_cm": 500,
+        "expansion_seconds": 0.25,
+        "fade_seconds": 0.25,
+        "lifetime_seconds": 0.5,
+        "visual_acceptance": "pending_user"
+      },
+      "mesh_particle_samples_by_distance": [
+        [
+          {
+            "frame": 0,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              100.0,
+              100.0,
+              100.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.008333333767950535,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 2,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              156.449,
+              156.449,
+              156.449
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.06730769574642181,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 6,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              417.647,
+              417.647,
+              417.647
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.18525640666484833,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 9,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              500.0,
+              500.0,
+              500.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              0.9889661073684692
+            ],
+            "age_seconds": 0.2737179696559906,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 12,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              500.0,
+              500.0,
+              500.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              0.6251276731491089
+            ],
+            "age_seconds": 0.36217963695526123,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 17,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          },
+          {
+            "frame": 19,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          },
+          {
+            "frame": 22,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          }
+        ],
+        [
+          {
+            "frame": 0,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              100.0,
+              100.0,
+              100.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.008333333767950535,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 2,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              156.449,
+              156.449,
+              156.449
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.06730769574642181,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 6,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              417.647,
+              417.647,
+              417.647
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.18525640666484833,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 9,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              500.0,
+              500.0,
+              500.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              0.9889661073684692
+            ],
+            "age_seconds": 0.2737179696559906,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 12,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              500.0,
+              500.0,
+              500.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              0.6251276731491089
+            ],
+            "age_seconds": 0.36217963695526123,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 17,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          },
+          {
+            "frame": 19,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          },
+          {
+            "frame": 22,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          }
+        ],
+        [
+          {
+            "frame": 0,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              100.0,
+              100.0,
+              100.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.008333333767950535,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 2,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              156.449,
+              156.449,
+              156.449
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.06730769574642181,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 6,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              417.647,
+              417.647,
+              417.647
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              1.0
+            ],
+            "age_seconds": 0.18525640666484833,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 9,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              500.0,
+              500.0,
+              500.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              0.9889661073684692
+            ],
+            "age_seconds": 0.2737179696559906,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 12,
+            "count": 1,
+            "capture_valid": true,
+            "component_active": true,
+            "radii_cm": [
+              500.0,
+              500.0,
+              500.0
+            ],
+            "rgba": [
+              1.465010404586792,
+              0.20507782697677612,
+              0.34600186347961426,
+              0.6251276731491089
+            ],
+            "age_seconds": 0.36217963695526123,
+            "lifetime_seconds": 0.5
+          },
+          {
+            "frame": 17,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          },
+          {
+            "frame": 19,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          },
+          {
+            "frame": 22,
+            "count": 0,
+            "capture_valid": true,
+            "component_active": true
+          }
+        ]
+      ],
+      "playback_speed_relative_to_first_red_shell": 2
+    },
+    {
+      "name": "游骑兵电磁电弧",
+      "system": "NS_GroundElectromagneticArc",
+      "gif": "GIF/NS_GroundElectromagneticArc.gif",
+      "recording_world": "Editor",
+      "paths_by_distance": [
+        "/Game/GuLiStrike/FX/GroundMech/Electromagnetic/NS_GroundElectromagneticArc",
+        "/Game/GuLiStrike/FX/GroundMech/Electromagnetic/NS_GroundElectromagneticArc",
+        "/Game/GuLiStrike/FX/GroundMech/Electromagnetic/NS_GroundElectromagneticArc"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "Lightning": 1,
+          "spark": 5,
+          "glow": 3,
+          "smoke": 2
+        },
+        {
+          "Lightning": 1,
+          "glow": 5
+        },
+        {
+          "Lightning": 1,
+          "glow": 5
+        }
+      ],
+      "shared_middle_emitters": [
+        "Lightning",
+        "glow"
+      ]
+    },
+    {
+      "name": "游骑兵爆炸弹飞行主体",
+      "system": "NS_GroundExplosiveFlight_Toon",
+      "gif": "GIF/NS_GroundExplosiveFlight_Toon.gif",
+      "recording_world": "Editor",
+      "paths_by_distance": [
+        "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon",
+        "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon",
+        "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "ProjectileShell": 1,
+          "ExhaustPlume": 3
+        },
+        {
+          "ProjectileShell": 1,
+          "ExhaustPlume_Reduced": 3
+        },
+        {
+          "ProjectileShell": 1,
+          "ExhaustPlume_Reduced": 3
+        }
+      ],
+      "shared_middle_emitters": [
+        "ExhaustPlume",
+        "ProjectileShell"
+      ]
+    },
+    {
+      "name": "游骑兵「无人生还」施法闪电",
+      "system": "NS_NoSurvivorsCastLightning",
+      "gif": "GIF/NS_NoSurvivorsCastLightning.gif",
+      "recording_world": "Editor",
+      "paths_by_distance": [
+        "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsCastLightning",
+        "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsCastLightning",
+        "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsCastLightning"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "Lightning": 3
+        },
+        {
+          "Lightning_Reduced": 2
+        },
+        {
+          "Lightning_Reduced": 2
+        }
+      ],
+      "shared_middle_emitters": [
+        "Lightning"
+      ],
+      "shared_density": {
+        "Lightning": [
+          "SpawnRate.SpawnRate",
+          30,
+          30
+        ]
+      }
+    },
+    {
+      "name": "僚机自身尾焰和双飘带",
+      "system": "NS_WingmanFlightTrail",
+      "gif": "GIF/NS_WingmanFlightTrail.gif",
+      "recording_world": "Editor",
+      "paths_by_distance": [
+        "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+        "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+        "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "LeftEngineFlame": 2,
+          "RightEngineFlame": 2,
+          "LeftFlightRibbon": 23,
+          "RightFlightRibbon": 23
+        },
+        {
+          "LeftFlightRibbon_Reduced": 11,
+          "RightFlightRibbon_Reduced": 11,
+          "LeftEngineFlame_Reduced": 2,
+          "RightEngineFlame_Reduced": 2
+        },
+        {
+          "LeftFlightRibbon_Reduced": 11,
+          "RightFlightRibbon_Reduced": 11,
+          "LeftEngineFlame_Reduced": 2,
+          "RightEngineFlame_Reduced": 2
+        }
+      ],
+      "shared_middle_emitters": [
+        "LeftEngineFlame",
+        "LeftFlightRibbon",
+        "RightEngineFlame",
+        "RightFlightRibbon"
+      ],
+      "shared_density": {
+        "LeftEngineFlame": [
+          "SpawnRate.SpawnRate",
+          10,
+          10
+        ],
+        "RightEngineFlame": [
+          "SpawnRate.SpawnRate",
+          10,
+          10
+        ],
+        "LeftFlightRibbon": [
+          "SpawnRate.SpawnRate",
+          24,
+          24
+        ],
+        "RightFlightRibbon": [
+          "SpawnRate.SpawnRate",
+          24,
+          24
+        ]
+      }
+    },
+    {
+      "name": "巡天三级三联火炮爆炸",
+      "system": "NS_Explosion_07",
+      "gif": "GIF/NS_Explosion_07.gif",
+      "recording_world": "Editor",
+      "paths_by_distance": [
+        "/Game/_VFXResources/Niagara_System/NS_Explosion_07",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Reduced",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Reduced"
+      ],
+      "emitter_peak_particles_by_distance": [
+        {
+          "NS_Cloud03": 20,
+          "NE_Cloud_01": 40,
+          "NE_Cloud_01B": 50,
+          "NE_Cloud_02": 308
+        },
+        {
+          "NS_Cloud03": 20,
+          "NE_Cloud_02": 308
+        },
+        {
+          "NS_Cloud03": 20,
+          "NE_Cloud_02": 308
+        }
+      ],
+      "shared_middle_resource": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Reduced.NS_XuntianBellyExplosion3_Reduced"
+    }
+  ],
+  "default_match": {
+    "started": "2026-11-27T14:29:35.789525+08:00",
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "samples": 11,
+    "sample_wall_seconds": 17.53,
+    "worlds": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "game_s": 15.853,
+        "controller": "GuLiCommanderPlayerController",
+        "pawn": "BP_GroundMech_Light_C",
+        "game_state": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiCommanderGameState_0"
+      }
+    },
+    "resident_niagara_count": 67,
+    "effect_table_resources_by_id": {
+      "20": [
+        "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03.NS_GroundDestruction_03",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_GroundDestruction_Reduced.NS_GroundDestruction_Reduced",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_GroundDestruction_Minimal.NS_GroundDestruction_Minimal"
+      ],
+      "21": [
+        "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05.NS_WingmanDestruction_05",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_WingmanDestruction_Reduced.NS_WingmanDestruction_Reduced",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_WingmanDestruction_Minimal.NS_WingmanDestruction_Minimal"
+      ],
+      "73": [
+        "/Game/Stylized_Explosion_Pack_Vol1/VFX/N_Stylized_Explosion_1A_Classic_Explosion.N_Stylized_Explosion_1A_Classic_Explosion",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion1_Reduced.NS_XuntianBellyExplosion1_Reduced",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion1_Minimal.NS_XuntianBellyExplosion1_Minimal"
+      ],
+      "74": [
+        "/Game/_VFXResources/Niagara_System/NS_Explosion_04.NS_Explosion_04",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion2_Reduced.NS_XuntianBellyExplosion2_Reduced",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion2_Minimal.NS_XuntianBellyExplosion2_Minimal"
+      ],
+      "75": [
+        "/Game/_VFXResources/Niagara_System/NS_Explosion_07.NS_Explosion_07",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Reduced.NS_XuntianBellyExplosion3_Reduced",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Reduced.NS_XuntianBellyExplosion3_Reduced"
+      ],
+      "76": [
+        "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianBlackSmoke.NS_XuntianBlackSmoke",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBlackSmoke_Reduced.NS_XuntianBlackSmoke_Reduced",
+        "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBlackSmoke_Minimal.NS_XuntianBlackSmoke_Minimal"
+      ]
+    },
+    "distinct_tier_resources_resident": 17,
+    "cached_on_play": {
+      "60": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst.NS_GroundBurningBurst",
+      "75": "/Game/_VFXResources/Niagara_System/NS_Explosion_07.NS_Explosion_07"
+    },
+    "old_triple_cannon_minimal_resident": false,
+    "errors": []
+  },
+  "visual_acceptance": "pending_user"
+}

@@ -12,6 +12,11 @@ class GULISTRIKE_API UGuLiProjectileFlightPresentationProfile final : public UDa
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Presentation") TSoftObjectPtr<UNiagaraSystem> BatchSystem;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Presentation") TSoftObjectPtr<UNiagaraSystem> WorldSmoke;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Presentation") TSoftObjectPtr<UNiagaraSystem> HeadGlow;
+	static constexpr float SmokeTailSeconds = 2.f;
+	/** Radius around each new emission point, including the full sprite. Zero keeps unknown extents visible. */
+	UPROPERTY(EditAnywhere, Category="Presentation", meta=(Units="cm", ClampMin="0")) float AccentEmissionRadius = 350.f;
 	/** Frozen rendered transverse diameter from the legacy mesh/particle/registry/component scale chain. */
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Presentation",meta=(Units="cm",ClampMin="0")) float LegacyCoreDiameter=0;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Presentation") FLinearColor CoreColor=FLinearColor::FromSRGBColor(FColor(254,228,217));

@@ -78,6 +78,7 @@ bool FGuLiCombatEffectState::IsWellFormed() const
 				&& GroundStrike.DiveAcceleration > 0.f && FMath::IsFinite(GroundStrike.DiveStartAge)
 				&& (GroundStrike.DiveStartAge == -1.f || (GroundStrike.IsDiving() && !GroundStrike.DiveOrigin.ContainsNaN()))))
 			&& (GroundWarningStyle.IsNull() || (bFixedPoint && Radius > 0 && Radius <= 100000))
+            && (!bHasWarningGroundPoint || (!GroundWarningStyle.IsNull() && !WarningGroundPoint.ContainsNaN()))
 			&& (!GuidanceBatchId.IsValid() || (bFixedPoint && !GroundWarningStyle.IsNull()
 				&& !GuidanceCenter.ContainsNaN() && GuidanceCenter.GetAbsMax() <= 10000000
 				&& FMath::IsFinite(GuidanceRadius) && GuidanceRadius > 0 && GuidanceRadius <= 100000));
@@ -196,6 +197,8 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 			if (bHasGroundWarning)
 			{
 				bMapped &= SerializeEffectAsset(Ar, Map, GroundWarningStyle);
+                Ar.SerializeBits(&bHasWarningGroundPoint, 1);
+                if (bHasWarningGroundPoint) WarningGroundPoint.NetSerialize(Ar,Map,bVector);
 				Ar << Radius;
 			}
 			bool bHasGuidance = GuidanceBatchId.IsValid();

@@ -1,0 +1,323 @@
+{
+  "date": "2026-11-28",
+  "editor_target": "GuLiStrikeEditor Win64 Development",
+  "editor_module": "UnrealEditor-GuLiStrike-2832.dll",
+  "editor_tools_module": "UnrealEditor-GuLiStrikeEditor-2832.dll",
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "preset": "无双·巡天 / 僚机综合",
+  "previous_asset": {
+    "reported_by_previous_delivery_module": 2823,
+    "read_before_fix": {
+      "material": "/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianAirMarker.M_XuntianAirMarker",
+      "errors": "",
+      "shader_map": true,
+      "own_render_shader": false,
+      "ready": false
+    },
+    "compile_failure": {
+      "platform": "PCD3D_SM6",
+      "compiler": "DXC",
+      "offending_declaration": "float line = ...",
+      "diagnostic": "modifiers must appear before type",
+      "engine_action": "Default Material will be used in game"
+    },
+    "initial_menu_test_used": "Direct widget callback"
+  },
+  "saved_asset": {
+    "material": "/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianAirMarker.M_XuntianAirMarker",
+    "errors": "",
+    "shader_map": true,
+    "own_render_shader": true,
+    "ready": true,
+    "expression_source_matches": true,
+    "depth_test": true,
+    "blend": "<BlendMode.BLEND_TRANSLUCENT: 2>",
+    "saved": true
+  },
+  "disk_reload_in_new_editor": {
+    "material": "/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianAirMarker.M_XuntianAirMarker",
+    "errors": "",
+    "shader_map": true,
+    "own_render_shader": true,
+    "ready": true,
+    "pid": 20128,
+    "project": "D:/UE5.7/test1/"
+  },
+  "material_graph_from_outputs": {
+    "<MaterialProperty.MP_EMISSIVE_COLOR: 0>": {
+      "mask": "MaterialExpressionComponentMask_0",
+      "channels": [
+        "r",
+        "g",
+        "b"
+      ],
+      "graph": [
+        {
+          "node": "MaterialExpressionCustom_0",
+          "desc": "AirMarker.hlsl",
+          "pins": [
+            [
+              "UV",
+              "MaterialExpressionTextureCoordinate",
+              0
+            ],
+            [
+              "Style",
+              "MaterialExpressionTextureCoordinate",
+              1
+            ],
+            [
+              "Ink",
+              "MaterialExpressionVertexColor",
+              null
+            ],
+            [
+              "DarkInk",
+              "MaterialExpressionConstant3Vector",
+              null
+            ]
+          ]
+        }
+      ]
+    },
+    "<MaterialProperty.MP_OPACITY: 1>": {
+      "mask": "MaterialExpressionComponentMask_1",
+      "channels": [
+        "a"
+      ],
+      "graph": [
+        {
+          "node": "MaterialExpressionCustom_0",
+          "desc": "AirMarker.hlsl",
+          "pins": [
+            [
+              "UV",
+              "MaterialExpressionTextureCoordinate",
+              0
+            ],
+            [
+              "Style",
+              "MaterialExpressionTextureCoordinate",
+              1
+            ],
+            [
+              "Ink",
+              "MaterialExpressionVertexColor",
+              null
+            ],
+            [
+              "DarkInk",
+              "MaterialExpressionConstant3Vector",
+              null
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "actual_pilot": {
+    "editor_pid": 20128,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "bound_at_start": {
+      "guide": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_CombatAvatarFly01_C_0.GuLiXuntianSceneGuide_0",
+      "material": "/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianAirMarker.M_XuntianAirMarker",
+      "errors": "",
+      "shader_map": true,
+      "own_render_shader": true,
+      "ready": true
+    },
+    "bound_at_end": {
+      "guide": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_CombatAvatarFly01_C_0.GuLiXuntianSceneGuide_0",
+      "material": "/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianAirMarker.M_XuntianAirMarker",
+      "errors": "",
+      "shader_map": true,
+      "own_render_shader": true,
+      "ready": true
+    },
+    "target_state_samples": {
+      "samples": 360,
+      "targets": 26,
+      "target_frame_pairs": 9273,
+      "badge_changes": 8,
+      "one_frame_reversals": 0,
+      "one_frame_disappearances": 0,
+      "sample_frames_with_two_shapes": 360,
+      "frames_with_published_markers": 360
+    },
+    "state_definition": "Targets are keyed by kind, authority, generation and local ID. Reversal = A/B/A on consecutive sampled frames. Disappearance = present/absent/present on consecutive frames.",
+    "start_build": {
+      "tier": 1,
+      "modal": false,
+      "assembly_revision": 3,
+      "sockets": [
+        "bottom_0",
+        "bottom_1",
+        "bottom_2"
+      ],
+      "installed_nodes": [
+        "01",
+        "08"
+      ],
+      "player_nodes": [
+        "01",
+        "08"
+      ],
+      "ledger_nodes": [
+        "01",
+        "08"
+      ],
+      "hangar_enabled": true
+    },
+    "pointer_steps": [
+      {
+        "opened_by_F4_at_tier": 1,
+        "slate_pointer_clicked": true,
+        "after": {
+          "tier": 2,
+          "modal": false,
+          "assembly_revision": 4,
+          "sockets": [
+            "bottom_0",
+            "bottom_2"
+          ],
+          "installed_nodes": [
+            "01",
+            "08",
+            "02"
+          ],
+          "player_nodes": [
+            "01",
+            "08",
+            "02"
+          ],
+          "ledger_nodes": [
+            "01",
+            "08",
+            "02"
+          ],
+          "hangar_enabled": true
+        }
+      },
+      {
+        "opened_by_F4_at_tier": 2,
+        "slate_pointer_clicked": true,
+        "after": {
+          "tier": 3,
+          "modal": false,
+          "assembly_revision": 5,
+          "sockets": [
+            "bottom_0",
+            "bottom_2",
+            "bottom_3",
+            "bottom_4",
+            "bottom_5"
+          ],
+          "installed_nodes": [
+            "01",
+            "08",
+            "02",
+            "03"
+          ],
+          "player_nodes": [
+            "01",
+            "08",
+            "02",
+            "03"
+          ],
+          "ledger_nodes": [
+            "01",
+            "08",
+            "02",
+            "03"
+          ],
+          "hangar_enabled": true
+        }
+      }
+    ],
+    "end_build": {
+      "tier": 3,
+      "modal": false,
+      "assembly_revision": 5,
+      "sockets": [
+        "bottom_0",
+        "bottom_2",
+        "bottom_3",
+        "bottom_4",
+        "bottom_5"
+      ],
+      "installed_nodes": [
+        "01",
+        "08",
+        "02",
+        "03"
+      ],
+      "player_nodes": [
+        "01",
+        "08",
+        "02",
+        "03"
+      ],
+      "ledger_nodes": [
+        "01",
+        "08",
+        "02",
+        "03"
+      ],
+      "hangar_enabled": true
+    },
+    "wingmen_at_ready": 18,
+    "wingmen_at_end": 63,
+    "mass_units": 36,
+    "network": {
+      "room": "A134CCDB47D2DB6C12ED89BBED87275E",
+      "ready_observations": 29,
+      "seconds_observed_after_ready": 85.02,
+      "max_post_tick_gap_s": 0.094,
+      "all_ready_samples_active": true,
+      "errors": [],
+      "members_at_handoff": 2,
+      "all_online_at_handoff": true
+    },
+    "aa_method_cvar": 1
+  },
+  "normal_render_csv": {
+    "profiler_frames": 240,
+    "frames_with_both_badges": 233,
+    "gun_badges": 3170,
+    "cross_badges": 3009,
+    "batches": 240,
+    "profiler_bins_by_batch_count": {
+      "0": 7,
+      "1": 226,
+      "2": 7
+    },
+    "file": "air-marker-frame-submissions.csv",
+    "frame_key": "CSV profiler intervals, aggregated across render submissions",
+    "run": "docked"
+  },
+  "synchronized_independent_render_csv": {
+    "profiler_frames": 180,
+    "frames_with_both_badges": 180,
+    "gun_badges": 2624,
+    "cross_badges": 2056,
+    "batches": 180,
+    "profiler_bins_by_batch_count": {
+      "1": 180
+    },
+    "one_frame_thread_lag": 0,
+    "finish_current_frame": 1,
+    "room": "43CA63C44FED6E7D471EE69995F490A0",
+    "bound_material": {
+      "guide": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_CombatAvatarFly01_C_0.GuLiXuntianSceneGuide_0",
+      "material": "/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianAirMarker.M_XuntianAirMarker",
+      "errors": "",
+      "shader_map": true,
+      "own_render_shader": true,
+      "ready": true
+    },
+    "purpose": "Isolated render-submission count. Synchronization applies only to this extra run."
+  },
+  "concurrent_hangar_button_test": "../XuntianBelly/f4-hangar-pointer.json",
+  "visual_acceptance": "pending player review",
+  "render_submission_samples": "air-marker-frame-submissions.csv"
+}

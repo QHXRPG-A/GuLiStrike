@@ -1,10 +1,12 @@
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+#include "Gameplay/Ship/UI/GuLiShipBlastComponent.h"
 #include "Gameplay/CombatEffects/GuLiUnitVitalHistory.h"
 #include "Gameplay/Resources/GuLiQuadrupedMinerPresentation.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Commander/Presentation/GuLiCommanderOverviewSubsystem.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 #include "Gameplay/CombatEffects/GuLiUnitWreck.h"
 
 #include "Components/MeshComponent.h"
@@ -78,7 +80,7 @@ float UGuLiUnitFeedbackSettings::HealthBarOpacity(double Now, double LastChange)
 	return float(FMath::Clamp(1. - FadeAge / FMath::Max(UE_SMALL_NUMBER, HealthBarFadeSeconds), 0., 1.));
 }
 
-bool UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(const AActor* Actor, FBox& OutWorldBounds, float& OutSize)
+bool UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(const AActor* Actor, FBox& OutWorldBounds, float& OutSize, double* OutHorizontalWidth)
 {
 	OutWorldBounds = FBox(ForceInit);
 	OutSize = 0.0f;
@@ -102,28 +104,8 @@ bool UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(const AActor* Actor, FBox&
 	}
 	if (!ModelBounds.IsValid || !OutWorldBounds.IsValid) return false;
 	OutSize = ModelBounds.GetExtent().GetMax();
+	if (OutHorizontalWidth) *OutHorizontalWidth = FMath::Max(ModelBounds.GetSize().X, ModelBounds.GetSize().Y);
 	return FMath::IsFinite(OutSize) && OutSize > UE_SMALL_NUMBER;
-}
-
-bool UGuLiUnitFeedbackSubsystem::GetHealthBarAnchor(const AActor* Actor, FVector& Top)
-{
-	FBox Bounds(ForceInit);
-	if (const auto* Wingman = Cast<AGuLiWingmanPawn>(Actor))
-	{
-		if (!Wingman->IsPresentationInteractable()) return false;
-		const UStaticMeshComponent* Mesh = Wingman->GetBodyMesh();
-		if (!Wingman->IsPresentationInteractable() || !Mesh || !Mesh->IsVisible() || !Mesh->GetStaticMesh()) return false;
-		Bounds = Mesh->GetStaticMesh()->GetBoundingBox().TransformBy(Mesh->GetComponentTransform());
-	}
-	else
-	{
-		float Size = 0;
-		if (!GetActorVisualBounds(Actor, Bounds, Size)) return false;
-	}
-	if (!Bounds.IsValid) return false;
-	Top = Bounds.GetCenter();
-	Top.Z = Bounds.Max.Z + 4;
-	return !Top.ContainsNaN();
 }
 
 float UGuLiUnitFeedbackSubsystem::CalculateDestructionScale(const float UnitSize) const
@@ -143,7 +125,7 @@ void UGuLiUnitFeedbackSubsystem::RecordActorVitalChange(AActor* Actor, const FGu
 	auto& Bar = ActorHealthBars.FindOrAdd(Actor);
 	const uint64 Generation = Bar.Generation ? Bar.Generation : NextBarGeneration++;
 	Bar = {Vitals.LastChange, Generation, State.Health / State.MaxHealth,
-		bHasShield ? State.Shield / State.MaxShield : 0.f, bHasShield};
+		bHasShield ? State.Shield / State.MaxShield : 0.f, State.MaxHealth, State.MaxShield, Vitals.LastDamage};
 }
 
 void UGuLiUnitFeedbackSubsystem::RemoveActorHealthBar(AActor* Actor)
@@ -227,20 +209,15 @@ AGuLiUnitWreck* UGuLiUnitFeedbackSubsystem::SpawnActorWreck(AActor* Source, FVec
 	return Wreck;
 }
 
-bool UGuLiUnitFeedbackSubsystem::ShouldRenderExplosion(const FVector& Location) const
-{
-	return IsWithinCullDistance(Location);
-}
-
 void UGuLiUnitFeedbackSubsystem::QueueDestruction(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier)
 {
-	if (!ShouldRenderExplosion(Location) || !FMath::IsFinite(UnitSize)
-		|| !FMath::IsFinite(ScaleMultiplier) || ScaleMultiplier <= 0.0f) return;
+	if (!FMath::IsFinite(UnitSize) || !FMath::IsFinite(ScaleMultiplier) || ScaleMultiplier <= 0.0f) return;
+	UGuLiShipBlastComponent::NotifyPilots(*GetWorld(), Location, UnitSize*ScaleMultiplier);
 	const auto& Variants = bWingman ? LoadedWingmanExplosions : LoadedExplosions;
 	if (Variants.IsEmpty())
 	{
 		if ((ExplosionPreloadStage == EExplosionPreloadStage::Definitions || ExplosionPreloadStage == EExplosionPreloadStage::Systems)
-			&& PendingExplosions.Num() < 64)
+			&& PendingExplosions.Num() < 64 && IsWithinCullDistance(Location))
 			PendingExplosions.Add({Location, UnitSize, static_cast<float>(GetWorld()->GetTimeSeconds()) + 1.0f, bWingman, ScaleMultiplier});
 		return;
 	}
@@ -289,13 +266,30 @@ void UGuLiUnitFeedbackSubsystem::PlayWingmanDestruction(const FGuLiWingmanHandle
 void UGuLiUnitFeedbackSubsystem::SpawnExplosion(const FVector& Location, float UnitSize, bool bWingman, float ScaleMultiplier)
 {
 	const auto& Variants = bWingman ? LoadedWingmanExplosions : LoadedExplosions;
-	if (Variants.IsEmpty() || !ShouldRenderExplosion(Location)
+	if (Variants.IsEmpty() || Location.ContainsNaN()
 		|| ActiveExplosions.Num() >= FMath::Max(1, GetDefault<UGuLiUnitFeedbackSettings>()->MaximumConcurrentExplosions)) return;
 	const int32 VfxId = Variants[CosmeticRandom.RandRange(0, Variants.Num() - 1)];
 	UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, VfxId, false);
 	const FVector Scale = GuLiVfx::Scale(this, VfxId, FVector(CalculateDestructionScale(UnitSize))) * ScaleMultiplier;
 	if (!System || !UGuLiVfxRegistrySubsystem::IsValidScale(Scale)) return;
 	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
+	// Use the actual peak shockwave to select detail. Other particles have dynamic bounds
+	// and may still cross a screen edge when just the shockwave is outside.
+	const float Diameter = UGuLiVfxRegistrySubsystem::NiagaraFloat(System, TEXT("User.ShockwaveDiameter"), 0.f);
+	const float PresentationScale = UGuLiVfxRegistrySubsystem::NiagaraFloat(System, TEXT("User.PresentationScale"), 1.f);
+	const double RingRadius = 0.5 * Diameter * Scale.GetMax() * PresentationScale;
+	if (auto* LOD = GetWorld()->GetSubsystem<UGuLiCommanderLODSubsystem>(); LOD && RingRadius > 0 && FMath::IsFinite(RingRadius))
+	{
+		FGuLiCommanderLODQuery Query;
+		Query.Bounds = FBox::BuildAABB(Location, FVector(FMath::Max(1.0, RingRadius)));
+		const auto Detail = LOD->EvaluateWorldEffectBounds(Query, Settings->CullDistance);
+		if (!Detail.bVisible && !IsWithinCullDistance(Location)) return;
+		const auto Level = Detail.bVisible ? Detail.TargetLevel : EGuLiCommanderLODLevel::Minimal;
+		if (Level != EGuLiCommanderLODLevel::Full && GuLiClientPresentation::ThreeTierEffectsEnabled())
+			if (auto* Registry = GetWorld()->GetSubsystem<UGuLiVfxRegistrySubsystem>())
+				if (auto* Variant = Registry->LoadNiagaraForLOD(VfxId, Level, false, false)) System = Variant;
+	}
+	else if (!IsWithinCullDistance(Location)) return;
 	const FName ScaleParameter = bWingman ? Settings->WingmanExplosionScaleParameter : Settings->GroundExplosionScaleParameter;
 	if (!ScaleParameter.IsNone() && (!FMath::IsNearlyEqual(Scale.X, Scale.Y) || !FMath::IsNearlyEqual(Scale.X, Scale.Z)))
 	{ UE_LOG(LogTemp, Error, TEXT("VfxId %d requires uniform Niagara parameter scale."), VfxId); return; }
@@ -389,6 +383,9 @@ void UGuLiUnitFeedbackSubsystem::Deinitialize()
 	if (ExplosionSystemsLoad) { ExplosionSystemsLoad->CancelHandle(); ExplosionSystemsLoad.Reset(); }
 	LoadedExplosionFields.Reset();
 	StartupExplosionVfxIds.Reset();
+	StartupWarningVfxIds.Reset();
+	StartupAdditionalSystemPaths.Reset();
+	LoadedProjectileAssets.Reset();
 	for (const auto& Hit : ActiveHits)
 		if (UMeshComponent* Mesh = Hit.Mesh.Get(); Mesh && Mesh->GetOverlayMaterial() == Hit.AppliedMaterial) Mesh->SetOverlayMaterial(Hit.PreviousMaterial);
 	for (const auto& Active : ActiveExplosions)

@@ -65,8 +65,7 @@ bool FGuLiShipPartVisualLifecycleTest::RunTest(const FString& Parameters)
 	Hull->RegisterComponent();
 	Owner->SetActorTransform(FTransform(FRotator(5, 80, 0), FVector(500, 700, 900), FVector(1.5)));
 	UGuLiStrikeWeaponPart* Part = NewObject<UGuLiStrikeWeaponPart>(Owner, PartClass);
-	Part->StaticMesh = SocketMesh;
-	Part->VisualType = EGuLiStrikeShipPartVisualType::StaticMesh;
+	Part->SetStaticMesh(SocketMesh);
 	Part->RegisterComponent();
 	Part->AttachToComponent(Hull, FAttachmentTransformRules::KeepRelativeTransform, TEXT("PreservedMount"));
 	Part->SetRelativeTransform(FTransform(FRotator(0, 30, 0), FVector(3, 5, 7), FVector(.75)));
@@ -101,11 +100,15 @@ bool FGuLiShipPartVisualLifecycleTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Visibility propagates to the visual"), Part->GetVisualMeshComponent()->IsVisible());
 	Part->SetHiddenInGame(true);
 	TestTrue(TEXT("Hidden-in-game propagates"), Part->GetVisualMeshComponent()->bHiddenInGame);
+	Part->SetVisibility(true);
+	TestTrue(TEXT("A staged part retains its visible flag"), Part->GetVisualMeshComponent()->GetVisibleFlag());
 	TWeakObjectPtr<UMeshComponent> BeforeUnregister = Part->GetVisualMeshComponent();
 	Part->UnregisterComponent();
 	TestFalse(TEXT("Unregister destroys the visual"), BeforeUnregister.IsValid());
 	Part->RegisterComponent();
 	TestTrue(TEXT("Reregister recreates one visual"), Part->IsVisualMeshReady());
+	Part->SetHiddenInGame(false, true);
+	TestTrue(TEXT("Committing a part registered while hidden reveals its mesh"), Part->GetVisualMeshComponent()->IsVisible());
 	TWeakObjectPtr<UMeshComponent> BeforeDestroy = Part->GetVisualMeshComponent();
 	Part->DestroyComponent();
 	TestFalse(TEXT("Destroy removes the visual"), BeforeDestroy.IsValid());

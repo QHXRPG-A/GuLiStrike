@@ -96,7 +96,6 @@ static bool AppendShipStartup(UWorld& World,FGuLiHybridManifestData& Data,FStrin
     const auto* Health=Ship?Ship->GetCombatHealthComponent():nullptr;
     if (!Ship || !Ship->GetShipMovement() || !Mesh || !Health || Health->GetConfiguredMaxHealth()<=0)
     { Error=TEXT("Air role has no configured production Ship, movement, hull or health"); return false; }
-    if (Ship->IsXuntian()) UGuLiXuntianGunnery::AddManifestRules(Data);
     Data.Strings.Add(TEXT("startup/ship_class"),ShipClass->GetPathName());
     if (!FGuLiHybridComponentState::BindDefinitionLayout(Data,TEXT("player/ship"),*ShipClass,Error)) return false;
     Data.Strings.Add(TEXT("startup/ship_hull"),Mesh->GetPathName());
@@ -114,6 +113,7 @@ static bool AppendShipStartup(UWorld& World,FGuLiHybridManifestData& Data,FStrin
     FGuLiShipCompiledBuildRules UpgradeRules;
     if (!Catalog || !Catalog->Compile(UpgradeRules) || !UpgradeRules.Shared)
     {Error=TEXT("Invalid production Ship upgrade catalog: ")+UpgradeRules.Error;return false;}
+    if (Ship->IsXuntian() && !UGuLiXuntianGunnery::AddManifestRules(*Catalog,Data,Error)) return false;
     if (!Assembly->ExportHybridCapabilityContracts(Data,Error)) return false;
     auto& UpgradeRule=Data.Rules.AddDefaulted_GetRef();UpgradeRule.Id=Assembly->UpgradeRule.ToString().ToLower();
     UpgradeRule.Kind=EGuLiHybridRuleKind::Upgrade;UpgradeRule.SourceDefinition=UpgradeRule.TargetDefinition=TEXT("player/ship");

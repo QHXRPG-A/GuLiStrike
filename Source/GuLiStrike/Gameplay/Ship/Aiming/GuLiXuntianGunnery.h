@@ -7,6 +7,8 @@
 
 class AGuLiStrikeShip;
 class UGuLiStrikeWeaponPart;
+class UGuLiShipBuildCatalog;
+class UGuLiXuntianShellDefinition;
 class USkeletalMeshComponent;
 struct FGuLiDamageFeedback;
 class FGuLiHybridStateArchive;
@@ -27,6 +29,13 @@ struct FGuLiXuntianGroundCoverage
     double MarginAt(const FVector& WorldPoint) const;
 };
 
+struct FGuLiXuntianSalvoClock
+{
+    double RoundCooldown = 0, ShotDelay = 0;
+    int32 Remaining = 0;
+    bool bScheduled = false;
+};
+
 struct FGuLiXuntianMount : FGuLiXuntianBoreGeometry
 {
     FName Socket;
@@ -42,6 +51,7 @@ struct FGuLiXuntianMount : FGuLiXuntianBoreGeometry
     FVector WorldHinge = FVector::ZeroVector;
     double BoreDistance = 0;
     int32 Barrel = 0;
+    FGuLiXuntianSalvoClock Salvo;
     bool bGround = false, bReachable = false;
 };
 
@@ -62,7 +72,7 @@ struct FGuLiXuntianCardSlot
 
 struct FGuLiXuntianBatteryState
 {
-    struct FBore { FName Socket; FQuat Aim = FQuat::Identity; int32 Barrel = 0; };
+    struct FBore { FName Socket; FQuat Aim = FQuat::Identity; int32 Barrel = 0; FGuLiXuntianSalvoClock Salvo; };
     FVector Point = FVector::ZeroVector;
     float MinAngle = 45, MaxAngle = 90;
     bool bGround = false, bHasAim = false;
@@ -70,7 +80,7 @@ struct FGuLiXuntianBatteryState
     int32 NextAir = 0, NextGround = 0;
     TArray<FBore> Bores;
     void SerializeAim(FGuLiHybridStateArchive& Ar);
-    void Serialize(FGuLiHybridStateArchive& Ar);
+    void Serialize(FGuLiHybridStateArchive& Ar, bool bHasSalvos);
 };
 
 /** Combat controls and authoritative mount geometry for the 5002 chassis. */
@@ -94,7 +104,7 @@ public:
     static bool ValidLimits(float MinDeg, float MaxDeg);
     static bool Covers(const FVector& HullLocalDirection, float MinDeg, float MaxDeg);
     static bool BindRangeHull(FGuLiHybridManifestData& Data,FString& Error);
-    static void AddManifestRules(FGuLiHybridManifestData& Data);
+    static bool AddManifestRules(const UGuLiShipBuildCatalog& Catalog, FGuLiHybridManifestData& Data, FString& Error);
     void Orbit(FVector2D Delta);
     void Zoom(float Notches);
     void GetCameraView(FMinimalViewInfo& View) const;
@@ -107,11 +117,16 @@ public:
     int32 CoverageAt(const FVector& WorldPoint) const;
     FGuLiXuntianGroundCoverage SnapshotGroundCoverage() const;
     bool SurfaceAt(FVector XY, FVector& Point) const;
+    UFUNCTION(BlueprintPure, Category="巡天|舰腹火炮")
+    int32 GetBellyLevel() const;
     void RestartMountCache() { SeenLoadout = MAX_uint32; }
     void RefreshMounts();
     float InstrumentBlend() const;
     const TArray<FGuLiXuntianMount>& GetMounts() const {return Mounts;}
     const TArray<FGuLiCombatTargetSnapshot>& GetContacts() const {return Contacts;}
+    uint64 GetContactsRevision() const {return ContactsRevision;}
+    bool HasHealthContact(const UObject* Source, uint64 SoldierId) const
+    { return SoldierId ? ContactSoldiers.Contains(uint32(SoldierId)) : Source && ContactActors.Contains(Source); }
     const TArray<FGuLiXuntianKill>& GetFeed() const {return Feed;}
     const TArray<FGuLiXuntianCardSlot>& GetCards() const {return Cards;}
     // Full holdings snapshot, ordered by the four design branches. Empty slots have no card.
@@ -135,7 +150,9 @@ private:
     void RefreshContacts();
     void UpdateGroundHint();
     void OnDamage(const FGuLiDamageFeedback& Feedback);
-    bool Fire();
+    bool FireAir();
+    bool FireShell(FGuLiXuntianMount& Gun, UGuLiXuntianShellDefinition& Shell);
+    void AdvanceBelly(double Delta, bool bAllowFire);
     bool bTrigger = false, bViewStarted = false;
     double Boom = 9100, Cooldown = 0, NextContacts = 0, NextHint = 0;
     uint32 SeenLoadout = MAX_uint32;
@@ -144,6 +161,10 @@ private:
     TArray<FGuLiXuntianMount> Mounts;
     TArray<int32> BellyMounts;
     TArray<FGuLiCombatTargetSnapshot> Contacts;
+    TArray<FGuLiCombatTargetSnapshot> ContactScratch;
+    uint64 ContactsRevision = 0;
+    TSet<TWeakObjectPtr<const UObject>> ContactActors;
+    TSet<uint32> ContactSoldiers;
     TArray<FGuLiXuntianKill> Feed;
     TArray<FGuLiXuntianCardSlot> Cards;
 };

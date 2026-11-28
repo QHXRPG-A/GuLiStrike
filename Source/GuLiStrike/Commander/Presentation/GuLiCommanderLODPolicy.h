@@ -10,6 +10,20 @@ enum class EGuLiCommanderLODLevel : uint8
 	Minimal = 2
 };
 
+/** Bounds distance bands for effects that keep a far resource at any visible distance. */
+struct FGuLiWorldEffectDistanceBands
+{
+	double FullBelowCm;
+	double ReducedThroughCm;
+
+	constexpr EGuLiCommanderLODLevel Classify(double DistanceCm) const
+	{
+		if (DistanceCm < FullBelowCm) return EGuLiCommanderLODLevel::Full;
+		if (DistanceCm <= ReducedThroughCm) return EGuLiCommanderLODLevel::Reduced;
+		return EGuLiCommanderLODLevel::Minimal;
+	}
+};
+
 /** Runtime presentation tiers shared by units, buildings and player vehicles. */
 enum class EGuLiPresentationTier : uint8
 {

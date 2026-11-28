@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
+#include "Gameplay/Ship/UI/GuLiShipBlastComponent.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Ship/UI/GuLiXuntianHUDWidget.h"
 #include "Gameplay/Ship/UI/GuLiXuntianSceneGuide.h"
@@ -91,6 +92,20 @@ void UGuLiShipWorldHUDComponent::EndPlay(const EEndPlayReason::Type EndPlayReaso
 	Super::EndPlay(EndPlayReason);
 }
 
+bool UGuLiShipWorldHUDComponent::ShowsPilotContactHealth() const
+{
+	return XuntianHUD && XuntianHUD->IsInViewport() && ShouldPresent();
+}
+
+void UGuLiShipWorldHUDComponent::AddBlast(const FVector& Location, float Radius)
+{
+	if (BlastBatch && ShouldPresent())
+	{
+		BlastBatch->AddBlast(Location, Radius);
+		if (!IsComponentTickEnabled()) SetComponentTickEnabled(true);
+	}
+}
+
 void UGuLiShipWorldHUDComponent::TickComponent(
 	const float DeltaTime,
 	const ELevelTick TickType,
@@ -98,6 +113,7 @@ void UGuLiShipWorldHUDComponent::TickComponent(
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	(void)DeltaTime;
+	if (BlastBatch) BlastBatch->Publish(GetWorld()->GetTimeSeconds());
 	if (XuntianHUD && XuntianGuide && OwnerShip.IsValid())
 	{
 		const bool Visible=ShouldPresent() && !OwnerShip->IsCarrierDormant();
@@ -144,6 +160,12 @@ void UGuLiShipWorldHUDComponent::HandleOwnerControllerChanged()
 	}
 
 	LocalController = Controller;
+	if (!BlastBatch)
+	{
+		// Register the empty batch with the local seat; the first hit loads no assets or components.
+		BlastBatch = NewObject<UGuLiShipBlastComponent>(Ship, NAME_None, RF_Transient);
+		BlastBatch->RegisterComponent();
+	}
 	if (Ship->IsXuntian())
     {
         if (!XuntianHUD)
@@ -302,6 +324,7 @@ void UGuLiShipWorldHUDComponent::CreateRuntimeWidgets()
 
 void UGuLiShipWorldHUDComponent::DestroyRuntimeWidgets()
 {
+	if (BlastBatch) { BlastBatch->DestroyComponent(); BlastBatch=nullptr; }
 	if (XuntianHUD) { XuntianHUD->RemoveFromParent(); XuntianHUD=nullptr; }
 	if (XuntianGuide) { XuntianGuide->DestroyComponent(); XuntianGuide=nullptr; }
 	const bool bHadNodes = StatusWidget || FlightNode || CombatNode || ReticleNode || AimBoundsNode;
@@ -391,19 +414,22 @@ void UGuLiShipWorldHUDComponent::RefreshData()
 		: FGuLiCombatHealthState();
 	const bool bAlive = HealthComponent && HealthComponent->IsAlive();
 	const bool bReady = Ship->IsShipReady();
-	const int32 Health = GuLiShipWorldHUD::RoundedNonNegative(HealthState.Health);
-	const int32 MaximumHealth = GuLiShipWorldHUD::RoundedNonNegative(HealthState.MaxHealth);
+	const float Health = HealthState.Health;
+	const float MaximumHealth = HealthState.MaxHealth;
 	if (!bHasStatusSnapshot || bCachedReady != bReady || bCachedAlive != bAlive
-		|| CachedHealth != Health || CachedMaximumHealth != MaximumHealth)
+		|| CachedHealth != Health || CachedMaximumHealth != MaximumHealth
+		|| CachedShield != HealthState.Shield || CachedMaximumShield != HealthState.MaxShield)
 	{
 		if (StatusWidget)
 		{
-			StatusWidget->SetStatus(bReady, bAlive, HealthState.Health, HealthState.MaxHealth);
+			StatusWidget->SetStatus(bReady, bAlive, Health, MaximumHealth, HealthState.Shield, HealthState.MaxShield);
 		}
 		bCachedReady = bReady;
 		bCachedAlive = bAlive;
 		CachedHealth = Health;
 		CachedMaximumHealth = MaximumHealth;
+		CachedShield = HealthState.Shield;
+		CachedMaximumShield = HealthState.MaxShield;
 		bHasStatusSnapshot = true;
 	}
 

@@ -17,6 +17,7 @@ class UDataTable;
 class UGuLiCombatHealthComponent;
 class UGuLiShipAimComponent;
 class UGuLiXuntianGunnery;
+class UGuLiXuntianBellyChoice;
 class UGuLiShipHangarCapabilityComponent;
 class UGuLiShipAssemblyComponent;
 class UGuLiShipCapabilityComponent;
@@ -422,6 +423,14 @@ public:
 
 	/** 构造函数 */
 	AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	UFUNCTION(BlueprintCallable, Category="Ship|Build") GULISTRIKE_API void ToggleBellyChoice();
+	void SubmitBellyChoice(FGuid Id, int32 Level, int64 Epoch, int64 Revision);
+	UFUNCTION(Server, Unreliable) void ServerUpdateBellyAim(FVector_NetQuantize Point, bool Ground, bool Surface, uint32 Revision);
+	UFUNCTION(Server, Reliable) void ServerSetBellyTrigger(bool Down, FVector_NetQuantize Point, bool Ground, bool Surface, uint32 Revision);
+	UFUNCTION(Server, Reliable) void ServerChooseBellyLevel(FGuid Id, int32 Level, int64 Epoch, int64 Revision);
+	UFUNCTION(Client, Reliable) void ClientResolveBellyChoice(FGuid Id, bool bCommitted);
+	UPROPERTY(Transient) TObjectPtr<UGuLiXuntianBellyChoice> BellyChoice;
+	bool HullTouchesSphere(FVector Center, float Radius) const;
 	bool IntersectHull(const FVector& Start,const FVector& End,float Radius,float& HitTime) const;
 	bool IsBaseBatteryPart(FName Socket,const UGuLiStrikeShipPartComponent* Part) const;
 	bool IsXuntian() const { return HullModelId == 5002 || (HullModelId == 0 && TuningPreset == TEXT("Dreadnought")); }
@@ -625,7 +634,7 @@ public:
 public:
 	/** 本端只读；权限来自当前拥有者、Air 身份、公共握手和装配/移动配置屏障，与士兵名册无关。 */
 	UFUNCTION(BlueprintPure, Category="Ship|Network")
-	bool IsShipReady() const;
+	GULISTRIKE_API bool IsShipReady() const;
 
 	uint32 GetLoadoutRevision() const { return LoadoutState.Revision; }
 
@@ -643,6 +652,8 @@ public:
 
 private:
     UPROPERTY() bool bCarrierDormant=false;
+	bool ApplyRemoteBellyAim(FVector Point, bool Ground, bool Surface, uint32 Revision);
+	double NextBellyAimSend = 0;
 	friend class UGuLiXuntianGunnery;
     UFUNCTION() void OnRep_CarrierDormant();
 	UFUNCTION()

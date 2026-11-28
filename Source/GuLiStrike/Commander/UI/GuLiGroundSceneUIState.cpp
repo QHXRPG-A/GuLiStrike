@@ -1,10 +1,13 @@
 #include "Commander/UI/GuLiGroundSceneUIState.h"
+#include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+#include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/UI/GuLiGroundOutlinePool.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/Presentation/GuLiLocalTeamColors.h"
+#include "Network/GuLiHybridActorComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
@@ -90,7 +93,7 @@ void UGuLiGroundSceneUIState::Read(const FGuLiHybridObjectState& S,bool SeedOnly
     }
     LatestLives.Add(Identity,S.Key);
     const bool Eligible=S.LifeState==1&&!S.bPhased&&!S.bDormant&&!S.Health.bDead
-        && S.Health.IsWellFormed()&&S.Health.Health>0&&GuLiLocalTeamColors::IsEnemy(S.Affiliation,ViewTeam);
+        && S.Health.IsWellFormed()&&S.Health.Health>0;
     auto* Existing=Entries.Find(S.Key);
     if(!Eligible)
     {
@@ -105,22 +108,31 @@ void UGuLiGroundSceneUIState::Read(const FGuLiHybridObjectState& S,bool SeedOnly
     if(E.Vitals.Observe(S.Health,S.Affiliation,true,GetWorld()->GetTimeSeconds()))++Changes;
 }
 void UGuLiGroundSceneUIState::Update(const FSceneViewProjectionData& Projection,AGuLiCommanderPresentationActor* Presentation,
-    USceneCaptureComponent2D& Capture,TArray<FGuLiSceneUIHealthBar>& Bars)
+    USceneCaptureComponent2D& Capture,FGuLiWorldHealthBars& Models,TArray<FGuLiSceneUIHealthBar>& Bars)
 {
     TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundSceneUI_Update);
     Bars.Reset();ActiveEvents=VisibleBars=FarEvents=0;
     if(!Hybrid.IsValid()||!Controller.IsValid()||!OutlinePool)return;
     const double Now=GetWorld()->GetTimeSeconds();
+    const FVector Origin=GuLiHealthBars::ViewOrigin(*Controller.Get());
+    const auto* OwnerBinding=UGuLiHybridActorComponent::Find(Controller->GetViewTarget());
     const auto* Timing=GetDefault<UGuLiUnitFeedbackSettings>();
     FConvexVolume Frustum;GetViewFrustumBounds(Frustum,Projection.ComputeViewProjectionMatrix(),true);
     OutlinePool->Begin(Capture);
+    const auto* Roster = Presentation ? Presentation->GetSoldierRoster() : nullptr;
     for(auto& Pair:Entries)
     {
         const auto& Key=Pair.Key;auto& E=Pair.Value;
+        if(OwnerBinding && Key==OwnerBinding->GetObjectKey())continue;
+        const bool Enemy=GuLiLocalTeamColors::IsEnemy(E.Vitals.Team,ViewTeam);
         const float Event=Timing->HealthBarOpacity(Now,E.Vitals.LastChange);
+        const float Damage=GuLiHealthBars::DamageOpacity(Now,E.Vitals.LastDamage);
+        const float BarOpacity=GuLiHealthBars::Visibility(Origin,E.Location,Damage);
+        if(!Enemy && BarOpacity<=0)continue;
         if(Event>0)++ActiveEvents;
         UInstancedStaticMeshComponent* Instances=nullptr;int32 InstanceIndex=INDEX_NONE;
         AActor* Actor=nullptr;FBox Bounds(ForceInit);
+        double ModelWidth = 0;
         if(Key.Kind==EGuLiHybridObjectKind::Soldier)
         {
             if(!Presentation||!Presentation->GetSceneUIInstance(FGuLiSoldierId(E.Ordinal),Instances,InstanceIndex,Bounds))continue;
@@ -129,26 +141,36 @@ void UGuLiGroundSceneUIState::Update(const FSceneViewProjectionData& Projection,
         {
             Actor=Hybrid->FindBoundActor(Key);
             float Size=0;
-            if(!Actor||Actor->IsHidden()||!UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(Actor,Bounds,Size))continue;
+            if(!Actor||Actor->IsHidden()||!UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(Actor,Bounds,Size,BarOpacity>0 ? &ModelWidth : nullptr))continue;
         }
         if(!Bounds.IsValid)continue;
         const double Distance=FMath::Sqrt(Bounds.ComputeSquaredDistanceToPoint(Projection.ViewOrigin));
         if(Event>0&&Distance>=GetDefault<UGuLiGroundSceneUISettings>()->FadeEndCm)++FarEvents;
         if(!Frustum.IntersectBox(Bounds.GetCenter(),Bounds.GetExtent()))continue;
-        const float Outline=FMath::Max(DistanceOpacity(Distance),Event);
+        const float Outline=Enemy ? FMath::Max(DistanceOpacity(Distance),Event) : 0.f;
         if(Outline>0)
         {
             if(Instances)OutlinePool->SubmitInstance(Key,*Instances,InstanceIndex,Outline);
             else OutlinePool->SubmitActor(Key,*Actor,Outline);
         }
-        if(Event>0)
+        if(BarOpacity>0)
         {
+            uint32 Displacement = 0;
+            if (Instances)
+            {
+                const auto* State = Roster ? Roster->FindSoldierState(FGuLiSoldierId(E.Ordinal)) : nullptr;
+                if (!State) continue;
+                const FBox& Local = Models.SoldierBounds(*Presentation,State->UnitTypeId);
+                if (!Local.IsValid) continue;
+                ModelWidth = FMath::Max(Local.GetSize().X,Local.GetSize().Y);
+                Displacement = State->DisplacementFrameFloor;
+            }
             auto& Bar=Bars.AddDefaulted_GetRef();Bar.Key={this,E.Element,Key.LifeGeneration};Bar.Target=Key;
-            Bar.Center=Bounds.GetCenter();Bar.Center.Z=Bounds.Max.Z+4;
-            Bar.Fraction=FMath::Clamp(E.Vitals.Health.Health/E.Vitals.Health.MaxHealth,0.f,1.f);
-            Bar.bHasShield=E.Vitals.Health.MaxShield>0;
-            Bar.ShieldFraction=Bar.bHasShield?FMath::Clamp(E.Vitals.Health.Shield/E.Vitals.Health.MaxShield,0.f,1.f):0;
-            Bar.Opacity=Event;++VisibleBars;
+            Bar.Set(Bounds, ModelWidth);
+            Bar.DisplacementRevision = Displacement;
+            const auto& Health=E.Vitals.Health;
+            GuLiHealthBars::SetVitals(Bar,Health.Health,Health.MaxHealth,Health.Shield,Health.MaxShield);
+            Bar.Opacity=BarOpacity; Bar.bRecentDamage=Damage>0; ++VisibleBars;
         }
     }
     OutlinePool->End();

@@ -16,6 +16,7 @@ class UGuLiShipHangarCapabilityComponent;
 class UGuLiShipWorldAimBoundsWidget;
 class UGuLiXuntianHUDWidget;
 class UGuLiXuntianSceneGuide;
+class UGuLiShipBlastComponent;
 class UGuLiShipWorldCombatWidget;
 class UGuLiShipWorldFlightWidget;
 class UGuLiShipWorldReticleWidget;
@@ -40,6 +41,8 @@ public:
 
 	/** Re-evaluates local ownership and creates/destroys the screen HUD and world-space nodes. */
 	void HandleOwnerControllerChanged();
+	void AddBlast(const FVector& Location, float Radius);
+	bool ShowsPilotContactHealth() const;
 	void GatherSceneUIWidgets(TArray<FGuLiSceneUIWorldWidget>& Out) const;
 
 protected:
@@ -129,14 +132,17 @@ private:
 
 	UPROPERTY(Transient) TObjectPtr<UGuLiXuntianHUDWidget> XuntianHUD;
 	UPROPERTY(Transient) TObjectPtr<UGuLiXuntianSceneGuide> XuntianGuide;
+	UPROPERTY(Transient) TObjectPtr<UGuLiShipBlastComponent> BlastBatch;
 	TWeakObjectPtr<AGuLiStrikeShip> OwnerShip;
 	TWeakObjectPtr<APlayerController> LocalController;
 	TWeakObjectPtr<UStaticMeshComponent> HullMesh;
 	TWeakObjectPtr<UGuLiShipAimComponent> BoundAimComponent;
 	FDelegateHandle AimModeChangedHandle;
 	double NextDataRefreshTimeSeconds = 0.0;
-	int32 CachedHealth = MIN_int32;
-	int32 CachedMaximumHealth = MIN_int32;
+	float CachedHealth = -1;
+	float CachedMaximumHealth = -1;
+	float CachedShield = -1;
+	float CachedMaximumShield = -1;
 	int32 CachedCurrentSpeed = MIN_int32;
 	int32 CachedMaximumSpeed = MIN_int32;
 	bool bCachedReady = false;

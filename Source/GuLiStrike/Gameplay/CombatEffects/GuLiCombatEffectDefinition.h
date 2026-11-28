@@ -46,6 +46,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field", meta=(ClampMin="0", Units="cm")) float Radius = 160.0f;
 	/** Measure the blast against each target's combat body, including elevated meshes. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field") bool bUseTargetHitCenters = false;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field") bool bUseShipHulls = false;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field", meta=(ClampMin="0")) float AirTargetDamageMultiplier = 1.f;
 	/** Unscaled art radius. Never migrate together with the gameplay radius: that cancels the visual scale. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0.001", Units="cm")) float VisualReferenceRadius = 800.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field", meta=(ClampMin="0", Units="s")) float Delay = 0.0f;
@@ -178,6 +180,7 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category="Combat Effects") TSoftObjectPtr<UGuLiCombatEffectCatalog> Catalog;
 	/** Impact fields whose authored variants and layers must be ready before combat begins. */
 	UPROPERTY(Config, EditAnywhere, Category="Combat Effects") TArray<TSoftObjectPtr<UGuLiSpellFieldDefinition>> StartupExplosionFields;
+	UPROPERTY(Config, EditAnywhere, Category="Combat Effects") TArray<TSoftObjectPtr<UGuLiProjectileEffectDefinition>> StartupProjectiles;
 	UPROPERTY(Config, EditAnywhere, Category="Projectile Pool", meta=(ClampMin="1")) int32 ProjectilePoolInitialCapacity = 1024;
 	UPROPERTY(Config, EditAnywhere, Category="Projectile Pool", meta=(ClampMin="1")) int32 ProjectilePoolGrowthSize = 1024;
 	UPROPERTY(Config, EditAnywhere, Category="Client Flight Pool", meta=(ClampMin="1")) int32 ClientFlightPoolInitialCapacity = 512;

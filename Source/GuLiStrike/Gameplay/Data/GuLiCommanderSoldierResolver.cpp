@@ -230,6 +230,8 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 				Fallback.MaxHealth));
 	}
 
+	Resolved.MaxShield = ResolveFiniteRange(Row->MaxShield, 0.0f, MaximumSupportedHealth, Fallback.MaxShield,
+		TEXT("InvalidMaxShield"), TEXT("MaxShield"), bOutEntireDefinitionFromDataTable);
 	Resolved.Defense = ResolveFiniteRange(
 		Row->Defense,
 		0.0f,

@@ -1,0 +1,1347 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "build_target": "GuLiStrikeEditor Win64 Development",
+  "build_result": "Succeeded",
+  "projection": {
+    "minimum_at_1080p": 24,
+    "enter_at_1080p": 28,
+    "cap_at_1080p": 128,
+    "pose_sample_hz": 30,
+    "vital_publication_hz": 10,
+    "width_basis": "Longest horizontal local model dimension, with its presentation scale",
+    "height_gain": "14/86, or 18/86 with a shield",
+    "shield_divider_life": [
+      0.3,
+      0.1,
+      0.6
+    ],
+    "units_per_division": 100
+  },
+  "commander_pie": {
+    "near": {
+      "id": 174,
+      "label": "near",
+      "row": {
+        "source": "GuLiSoldierStateReplicator_0",
+        "element": "174",
+        "generation": "20",
+        "health": 1,
+        "max_health": 800,
+        "model_width_cm": 1364.5471524861132,
+        "cells": 8,
+        "shield": 1,
+        "has_shield": true,
+        "max_shield": 400,
+        "shield_cells": 4,
+        "selected": false,
+        "anchor": [
+          -32716.123453890545,
+          7183.272871723444,
+          1489.8856247256047
+        ],
+        "rect": [
+          903.7174234197619,
+          371.38337161412215,
+          1016.9747080510706,
+          395.0883846764891
+        ]
+      },
+      "viewport": [
+        1920,
+        1080
+      ],
+      "frame": 25164,
+      "eye": [
+        -55273.982763961496,
+        7179.10340028174,
+        17953.93338608605
+      ],
+      "direction": [
+        0.7981564817431795,
+        0.0,
+        -0.6024501893529037
+      ],
+      "fov": 45.0,
+      "slate_content": [
+        3.0,
+        35.0,
+        1923.0,
+        1115.0
+      ],
+      "depth_cm": 27923.47031393071,
+      "width_px": 113.257,
+      "height_px": 23.705,
+      "file": "ArtSource/UI/WorldVitalsPerspective_20261128/near.png"
+    },
+    "middle": {
+      "id": 174,
+      "label": "middle",
+      "row": {
+        "source": "GuLiSoldierStateReplicator_0",
+        "element": "174",
+        "generation": "20",
+        "health": 1,
+        "max_health": 800,
+        "model_width_cm": 1364.5471524861132,
+        "cells": 8,
+        "shield": 1,
+        "has_shield": true,
+        "max_shield": 400,
+        "shield_cells": 4,
+        "selected": false,
+        "anchor": [
+          -32715.821960939094,
+          7173.635296850658,
+          1428.9911651495022
+        ],
+        "rect": [
+          924.3698329494241,
+          441.66964829315276,
+          995.063589672885,
+          456.4660159794585
+        ]
+      },
+      "viewport": [
+        1920,
+        1080
+      ],
+      "frame": 26409,
+      "eye": [
+        -58613.64643818708,
+        7179.103400281738,
+        37907.374926225144
+      ],
+      "direction": [
+        0.5735764363510469,
+        0.0,
+        -0.8191520442889911
+      ],
+      "fov": 45.0,
+      "slate_content": [
+        3.0,
+        35.0,
+        1923.0,
+        1115.0
+      ],
+      "depth_cm": 44735.72450314827,
+      "width_px": 70.694,
+      "height_px": 14.796,
+      "file": "ArtSource/UI/WorldVitalsPerspective_20261128/middle.png"
+    },
+    "far": {
+      "id": 174,
+      "label": "far",
+      "row": {
+        "source": "GuLiSoldierStateReplicator_0",
+        "element": "174",
+        "generation": "20",
+        "health": 1,
+        "max_health": 800,
+        "model_width_cm": 1364.5471524861132,
+        "cells": 8,
+        "shield": 1,
+        "has_shield": true,
+        "max_shield": 400,
+        "shield_cells": 4,
+        "selected": false,
+        "anchor": [
+          -32713.214214905034,
+          7181.361864143419,
+          1434.806156934944
+        ],
+        "rect": [
+          940.7570997235222,
+          486.193299977601,
+          979.3707191854315,
+          494.27522033009365
+        ]
+      },
+      "viewport": [
+        1920,
+        1080
+      ],
+      "frame": 27761,
+      "eye": [
+        -79933.46913415774,
+        7179.103400281738,
+        68354.82705732092
+      ],
+      "direction": [
+        0.5735764363510469,
+        0.0,
+        -0.8191520442889911
+      ],
+      "fov": 45.0,
+      "slate_content": [
+        3.0,
+        35.0,
+        1923.0,
+        1115.0
+      ],
+      "depth_cm": 81902.09746458614,
+      "width_px": 38.614,
+      "height_px": 8.082,
+      "file": "ArtSource/UI/WorldVitalsPerspective_20261128/far.png"
+    },
+    "zoom": {
+      "id": 174,
+      "label": "zoom",
+      "row": {
+        "source": "GuLiSoldierStateReplicator_0",
+        "element": "174",
+        "generation": "20",
+        "health": 1,
+        "max_health": 800,
+        "model_width_cm": 1364.5471524861132,
+        "cells": 8,
+        "shield": 1,
+        "has_shield": true,
+        "max_shield": 400,
+        "shield_cells": 4,
+        "selected": false,
+        "anchor": [
+          -32719.602560699917,
+          7174.0026660686635,
+          1487.8930380767483
+        ],
+        "rect": [
+          934.422312213733,
+          468.1812601235467,
+          985.1980838784743,
+          478.8087472161669
+        ]
+      },
+      "viewport": [
+        1920,
+        1080
+      ],
+      "frame": 30019,
+      "eye": [
+        -58613.64643818708,
+        7179.103400281738,
+        37907.273363725144
+      ],
+      "direction": [
+        0.5735764363510469,
+        0.0,
+        -0.8191520442889911
+      ],
+      "fov": 60.0,
+      "slate_content": [
+        3.0,
+        35.0,
+        1923.0,
+        1115.0
+      ],
+      "depth_cm": 44685.22325545988,
+      "width_px": 50.776,
+      "height_px": 10.627
+    },
+    "hidden": {
+      "id": 174,
+      "label": "hidden",
+      "row": null,
+      "viewport": [
+        1920,
+        1080
+      ],
+      "frame": 28658,
+      "eye": [
+        -79933.46913415774,
+        7179.103400281738,
+        68354.73367353185
+      ],
+      "direction": [
+        0.5735764363510469,
+        0.0,
+        -0.8191520442889911
+      ],
+      "fov": 85.0,
+      "slate_content": [
+        3.0,
+        35.0,
+        1923.0,
+        1115.0
+      ]
+    },
+    "cap": {
+      "id": 174,
+      "label": "cap",
+      "row": {
+        "source": "GuLiSoldierStateReplicator_0",
+        "element": "174",
+        "generation": "20",
+        "health": 1,
+        "max_health": 800,
+        "model_width_cm": 1364.5471524861132,
+        "cells": 8,
+        "shield": 1,
+        "has_shield": true,
+        "max_shield": 400,
+        "shield_cells": 4,
+        "selected": false,
+        "anchor": [
+          -32717.151709675658,
+          7183.405865458566,
+          1506.224985562491
+        ],
+        "rect": [
+          896.7388528025913,
+          214.47337482218455,
+          1024.7388528025913,
+          241.26407249660315
+        ]
+      },
+      "viewport": [
+        1920,
+        1080
+      ],
+      "frame": 31274,
+      "eye": [
+        -45099.38181693677,
+        7179.103400281738,
+        6900.218704371389
+      ],
+      "direction": [
+        0.9006935389666954,
+        0.0,
+        -0.43445500211604204
+      ],
+      "fov": 45.0,
+      "slate_content": [
+        3.0,
+        35.0,
+        1923.0,
+        1115.0
+      ],
+      "depth_cm": 13496.042208128016,
+      "width_px": 128.0,
+      "height_px": 26.791
+    }
+  },
+  "comparison": {
+    "file": "ArtSource/UI/WorldVitalsPerspective_20261128/comparison.png",
+    "size": [
+      1058,
+      262
+    ],
+    "viewport_extract_xywh": [
+      3,
+      35,
+      1920,
+      1080
+    ],
+    "crop_per_target_source_px": [
+      220,
+      136
+    ],
+    "comparison_scale": 1.5
+  },
+  "ground_pie": {
+    "viewport": [
+      1923,
+      1102
+    ],
+    "measurement": "ordinary active hostile shield change on the same object",
+    "samples": {
+      "near": {
+        "target": "777FFE03975D9E7B19705F9E62C0555E",
+        "element": "136",
+        "generation": "1",
+        "width_px": 68.235,
+        "row": {
+          "source": "GuLiGroundSceneUIState_0",
+          "element": "136",
+          "generation": "1",
+          "health": 1,
+          "max_health": 100000,
+          "model_width_cm": 599.9999865889549,
+          "cells": 1000,
+          "shield": 0.99025,
+          "has_shield": true,
+          "max_shield": 10000,
+          "shield_cells": 100,
+          "selected": false,
+          "anchor": [
+            783.7770429255729,
+            52060,
+            1117.6769925949593
+          ],
+          "rect": [
+            833.3960879297,
+            476.9649476894836,
+            901.630751358974,
+            491.24662143049443
+          ]
+        },
+        "view_origin_cm": [
+          1416.105620042562,
+          60623.16113428643,
+          2213.253532670585
+        ],
+        "horizontal_fov": 90.00000762939453,
+        "visible_count": 12
+      },
+      "far": {
+        "target": "777FFE03975D9E7B19705F9E62C0555E",
+        "element": "136",
+        "generation": "1",
+        "width_px": 37.732,
+        "row": {
+          "source": "GuLiGroundSceneUIState_0",
+          "element": "136",
+          "generation": "1",
+          "health": 1,
+          "max_health": 100000,
+          "model_width_cm": 599.9999865889549,
+          "cells": 1000,
+          "shield": 0.988,
+          "has_shield": true,
+          "max_shield": 10000,
+          "shield_cells": 100,
+          "selected": false,
+          "anchor": [
+            783.7770429255729,
+            52060,
+            1117.6769925949593
+          ],
+          "rect": [
+            903.3242480438379,
+            416.8144054935625,
+            941.0557858883438,
+            424.71170411218003
+          ]
+        },
+        "view_origin_cm": [
+          1053.4448584396314,
+          67729.59402147651,
+          1791.7304169455308
+        ],
+        "horizontal_fov": 90.00000762939453,
+        "visible_count": 20
+      }
+    }
+  },
+  "pilot_pie": {
+    "near": {
+      "row": {
+        "id": 174,
+        "hp": 800,
+        "has_shield": true,
+        "shield_fraction": 1,
+        "vital_change": false,
+        "x": 911.2019734139866,
+        "y": 413.16919917583533,
+        "width": 99.12406287475324,
+        "height": 20.746896880762336,
+        "camera_depth_cm": 14589.396183020495
+      },
+      "frame": 22604,
+      "design_size": [
+        1920,
+        1080
+      ],
+      "hull_origin": [
+        988,
+        951.8
+      ]
+    },
+    "middle": {
+      "row": {
+        "id": 174,
+        "hp": 800,
+        "has_shield": true,
+        "shield_fraction": 1,
+        "vital_change": false,
+        "x": 932.5517069911709,
+        "y": 473.7407763280115,
+        "width": 55.40803556407354,
+        "height": 11.597030699457264,
+        "camera_depth_cm": 26100.18943692885
+      },
+      "frame": 21404,
+      "design_size": [
+        1920,
+        1080
+      ],
+      "hull_origin": [
+        988,
+        951.8
+      ]
+    },
+    "far": {
+      "row": {
+        "id": 174,
+        "hp": 800,
+        "has_shield": true,
+        "shield_fraction": 1,
+        "vital_change": false,
+        "x": 943.7896821936255,
+        "y": 497.33328195971023,
+        "width": 32.79829886027278,
+        "height": 6.864760226568762,
+        "camera_depth_cm": 44092.53756456492
+      },
+      "frame": 20639,
+      "design_size": [
+        1920,
+        1080
+      ],
+      "hull_origin": [
+        988,
+        951.8
+      ]
+    }
+  },
+  "performance": {
+    "workload": {
+      "description": "Default production room, identical 500-unit ID list primed on both builds. 24 of those units positioned on the same grid. Identical viewport, camera paths and ranges. Active units elsewhere continue simulation.",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "movers": [
+        1,
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65
+      ],
+      "mass_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        33,
+        39,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261,
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        282,
+        283,
+        284,
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313,
+        314,
+        315,
+        316,
+        317,
+        318,
+        319,
+        320,
+        321,
+        322,
+        323,
+        324,
+        325,
+        326,
+        327,
+        328,
+        329,
+        330,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        342,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349,
+        350,
+        351,
+        352,
+        353,
+        354,
+        355,
+        356,
+        357,
+        358,
+        359,
+        360,
+        361,
+        362,
+        363,
+        364,
+        365,
+        366,
+        367,
+        368,
+        369,
+        370,
+        371,
+        372,
+        373,
+        374,
+        375,
+        376,
+        377,
+        378,
+        379,
+        380,
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388,
+        389,
+        390,
+        391,
+        392,
+        393,
+        394,
+        395,
+        396,
+        397,
+        398,
+        399,
+        400,
+        401,
+        402,
+        403,
+        404,
+        405,
+        406,
+        407,
+        408,
+        409,
+        410,
+        411,
+        412,
+        413,
+        414,
+        415,
+        416,
+        417,
+        418,
+        419,
+        420,
+        421,
+        422,
+        423,
+        424,
+        425,
+        426,
+        427,
+        428,
+        429,
+        430,
+        431,
+        432,
+        433,
+        434,
+        435,
+        436,
+        437,
+        438,
+        439,
+        440,
+        441,
+        442,
+        443,
+        444,
+        445,
+        446,
+        447,
+        448,
+        449,
+        450,
+        451,
+        452,
+        453,
+        454,
+        455,
+        456,
+        457,
+        458,
+        459,
+        460,
+        461,
+        462,
+        463,
+        464,
+        465,
+        466,
+        467,
+        468,
+        469,
+        470,
+        471,
+        472,
+        473,
+        474,
+        475,
+        476,
+        477,
+        478,
+        479,
+        480,
+        481,
+        482,
+        483,
+        484,
+        485,
+        486,
+        487,
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        496,
+        497,
+        498,
+        499,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        518
+      ],
+      "initial_alive_after_setup": {
+        "baseline": 597,
+        "final": 600
+      },
+      "sample_ranges_in_native_csv": {
+        "static": [
+          30,
+          129
+        ],
+        "moving": [
+          170,
+          289
+        ]
+      },
+      "unit": "Game-thread milliseconds per frame, sum of Gather, Publish and Select. Excludes HUD submission, GPU, and other frame work."
+    },
+    "baseline": {
+      "primed": 500,
+      "cpu_ms": {
+        "static": {
+          "sample_frames": 100,
+          "aggregate": {
+            "mean": 0.39726,
+            "p95": 0.85793
+          },
+          "scopes": {
+            "GuLiCommanderHealthBars/GameThread/Gather": {
+              "mean": 0.39379,
+              "p95": 0.85364
+            },
+            "GuLiHealthBarLayout/GameThread/Publish": {
+              "mean": 0.0015,
+              "p95": 0.0019
+            },
+            "GuLiHealthBarLayout/GameThread/Select": {
+              "mean": 0.00198,
+              "p95": 0.00231
+            }
+          },
+          "visible": [
+            16
+          ]
+        },
+        "moving": {
+          "sample_frames": 120,
+          "aggregate": {
+            "mean": 0.40249,
+            "p95": 0.85449
+          },
+          "scopes": {
+            "GuLiCommanderHealthBars/GameThread/Gather": {
+              "mean": 0.3991,
+              "p95": 0.8509
+            },
+            "GuLiHealthBarLayout/GameThread/Publish": {
+              "mean": 0.00133,
+              "p95": 0.002
+            },
+            "GuLiHealthBarLayout/GameThread/Select": {
+              "mean": 0.00206,
+              "p95": 0.00221
+            }
+          },
+          "visible": [
+            16
+          ]
+        }
+      },
+      "counters": {
+        "static_start": {
+          "geometry_cache_hits": 13,
+          "health_bar_drawn": 16,
+          "health_bar_projected": 24,
+          "health_bar_publications": 1312
+        },
+        "static_end": {
+          "geometry_cache_hits": 13,
+          "health_bar_drawn": 16,
+          "health_bar_projected": 24,
+          "health_bar_publications": 1332
+        },
+        "push_start": {
+          "geometry_cache_hits": 13,
+          "health_bar_drawn": 16,
+          "health_bar_projected": 24,
+          "health_bar_publications": 1335
+        },
+        "push_end": {
+          "geometry_cache_hits": 13,
+          "health_bar_drawn": 16,
+          "health_bar_projected": 24,
+          "health_bar_publications": 1358
+        }
+      },
+      "moving_frames_with_16_visible": {
+        "count": 120,
+        "mean_ms": 0.40249,
+        "p95_ms": 0.85449
+      },
+      "sample_csv": "20261128-世界血条逐帧性能.csv",
+      "sample_run": "baseline"
+    },
+    "final": {
+      "primed": 500,
+      "cpu_ms": {
+        "static": {
+          "sample_frames": 100,
+          "aggregate": {
+            "mean": 0.05444,
+            "p95": 0.07106
+          },
+          "scopes": {
+            "GuLiCommanderHealthBars/GameThread/Gather": {
+              "mean": 0.05238,
+              "p95": 0.06856
+            },
+            "GuLiHealthBarLayout/GameThread/Publish": {
+              "mean": 0.00206,
+              "p95": 0.0029
+            },
+            "GuLiHealthBarLayout/GameThread/Select": {
+              "mean": 0.0,
+              "p95": 0.0
+            }
+          },
+          "visible": [
+            19
+          ]
+        },
+        "moving": {
+          "sample_frames": 120,
+          "aggregate": {
+            "mean": 0.05534,
+            "p95": 0.07997
+          },
+          "scopes": {
+            "GuLiCommanderHealthBars/GameThread/Gather": {
+              "mean": 0.04974,
+              "p95": 0.07341
+            },
+            "GuLiHealthBarLayout/GameThread/Publish": {
+              "mean": 0.00212,
+              "p95": 0.003
+            },
+            "GuLiHealthBarLayout/GameThread/Select": {
+              "mean": 0.00348,
+              "p95": 0.0047
+            }
+          },
+          "visible": [
+            15,
+            16,
+            18,
+            19
+          ]
+        }
+      },
+      "counters": {
+        "static_start": {
+          "geometry_cache_hits": 14,
+          "health_bar_drawn": 19,
+          "health_bar_projected": 24,
+          "health_bar_publications": 28,
+          "health_bar_builds": 20,
+          "health_bar_cache_hits": 67,
+          "health_bar_submissions": 29
+        },
+        "static_end": {
+          "geometry_cache_hits": 14,
+          "health_bar_drawn": 19,
+          "health_bar_projected": 24,
+          "health_bar_publications": 55,
+          "health_bar_builds": 24,
+          "health_bar_cache_hits": 183,
+          "health_bar_submissions": 149
+        },
+        "push_start": {
+          "geometry_cache_hits": 14,
+          "health_bar_drawn": 19,
+          "health_bar_projected": 24,
+          "health_bar_publications": 59,
+          "health_bar_builds": 34,
+          "health_bar_cache_hits": 193,
+          "health_bar_submissions": 169
+        },
+        "push_end": {
+          "geometry_cache_hits": 14,
+          "health_bar_drawn": 19,
+          "health_bar_projected": 24,
+          "health_bar_publications": 87,
+          "health_bar_builds": 174,
+          "health_bar_cache_hits": 193,
+          "health_bar_submissions": 309
+        }
+      },
+      "moving_frames_with_16_visible": {
+        "count": 4,
+        "mean_ms": 0.05307,
+        "p95_ms": 0.06401
+      },
+      "sample_csv": "20261128-世界血条逐帧性能.csv",
+      "sample_run": "review"
+    },
+    "final_with_16_framed": {
+      "primed": 500,
+      "layout": "Central 4x4 units spaced 440 cm, remaining eight displaced 10500 cm sideways to frame the same 16 subjects along the camera path.",
+      "counters": {
+        "static_start": {
+          "health_bar_builds": 13,
+          "health_bar_cache_hits": 424,
+          "health_bar_submissions": 325
+        },
+        "static_end": {
+          "health_bar_builds": 13,
+          "health_bar_cache_hits": 544,
+          "health_bar_submissions": 445
+        },
+        "push_start": {
+          "health_bar_builds": 23,
+          "health_bar_cache_hits": 554,
+          "health_bar_submissions": 465
+        },
+        "push_end": {
+          "health_bar_builds": 163,
+          "health_bar_cache_hits": 554,
+          "health_bar_submissions": 605
+        }
+      },
+      "cpu_ms": {
+        "static": {
+          "sample_frames": 100,
+          "aggregate": {
+            "mean": 0.04052,
+            "p95": 0.05591
+          },
+          "scopes": {
+            "GuLiCommanderHealthBars/GameThread/Gather": {
+              "mean": 0.03875,
+              "p95": 0.05412
+            },
+            "GuLiHealthBarLayout/GameThread/Publish": {
+              "mean": 0.00177,
+              "p95": 0.002
+            },
+            "GuLiHealthBarLayout/GameThread/Select": {
+              "mean": 0.0,
+              "p95": 0.0
+            }
+          },
+          "visible": [
+            16
+          ]
+        },
+        "moving": {
+          "sample_frames": 120,
+          "aggregate": {
+            "mean": 0.04425,
+            "p95": 0.06429
+          },
+          "scopes": {
+            "GuLiCommanderHealthBars/GameThread/Gather": {
+              "mean": 0.04031,
+              "p95": 0.05898
+            },
+            "GuLiHealthBarLayout/GameThread/Publish": {
+              "mean": 0.00155,
+              "p95": 0.00201
+            },
+            "GuLiHealthBarLayout/GameThread/Select": {
+              "mean": 0.00239,
+              "p95": 0.0035
+            }
+          },
+          "visible": [
+            13,
+            16
+          ]
+        }
+      },
+      "moving_frames_with_16_visible": {
+        "count": 74,
+        "mean_ms": 0.04358,
+        "p95_ms": 0.06088
+      },
+      "sample_csv": "20261128-世界血条逐帧性能.csv",
+      "sample_run": "controlled"
+    }
+  },
+  "automation": {
+    "prefix": "GuLiStrike.Commander.UI.HealthBar.",
+    "passed": [
+      "Activity",
+      "AllVisibleAndCadence",
+      "Pose30HzCameraPerFrame",
+      "ShieldChangeHistory",
+      "SizingPolicy",
+      "StackedTracks",
+      "VisibilityPolicy"
+    ],
+    "hold_seconds": 3,
+    "fade_seconds": 0.5,
+    "capture_override_hold_seconds": 180
+  },
+  "source_changes_note": "The independent PIE navigation startup saved the main map during preparation.",
+  "player_visual_review": "pending",
+  "editor_restored": {
+    "map": "/Game/Maps/LVL_CommanderMassPrototype",
+    "pie_sessions": 0,
+    "feedback_hold_seconds": 3,
+    "main_window_responsive": true
+  },
+  "project_document_check": {
+    "existing_errors": 6,
+    "existing_warnings": 20,
+    "missing_links_in_current_delivery": 0
+  }
+}

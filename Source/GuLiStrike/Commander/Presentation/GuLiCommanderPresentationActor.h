@@ -279,6 +279,8 @@ public:
 	bool TryGetPresentedSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
 	/** Model/display anchors only; movement, collision and selection retain the logical transform. */
 	bool TryGetPresentedVisualTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
+	/** Existing conservative frustum result across all local views. Reading it never evaluates an offscreen pose. */
+	bool GetVisibleSoldierLocation(FGuLiSoldierId SoldierId, FVector& Location, uint64& Generation) const;
 	/** Current display-model bounds center in world centimeters, including prediction and hover. */
 	bool TryGetPresentedSoldierModelCenter(FGuLiSoldierId SoldierId, FVector& OutCenter) const;
 	/** Local roster supplying the models in this presentation. */

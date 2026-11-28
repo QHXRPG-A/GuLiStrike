@@ -309,26 +309,30 @@ bool FGuLiWingmanPlayRange::Advance(UWorld& World, FString& Error)
     auto* Build = PC && PC->PlayerState ? PC->PlayerState->FindComponentByClass<UGuLiShipBuildComponent>() : nullptr;
     const auto* Binding = Ship ? Ship->FindComponentByClass<UGuLiHybridActorComponent>() : nullptr;
     if (!Binding || Binding->GetObjectKey() != Carrier || !Build
-        || !UGuLiHybridActorComponent::HasSimulation(Ship)) return true;
-    const auto* Hangar = Ship->FindComponentByClass<UGuLiShipHangarCapabilityComponent>();
+        || !Binding->CanControl()) return true;
+    const auto* Hangar = Ship->GetHangarCapability();
     if (Hangar && Hangar->IsCapabilityEnabled())
     {
         bReady = true;
         UE_LOG(LogTemp, Display, TEXT("[GuLiLocalPIE] Wingman range ready: hangar=08 targets=%d spawn_slots=%d"), Targets.Num(), ClearSpawnSlots);
         return true;
     }
+    const auto& State = Build->GetBuildState();
     if (EquipmentRequest.IsValid())
     {
         FGuLiShipChoiceResult Result;
-        if (Build->FindChoiceResult(EquipmentRequest, Result) && !Result.bCommitted)
+        if (!Build->FindChoiceResult(EquipmentRequest, Result) || Result.bCommitted) return true;
+        if (State.BuildRevision <= RequestedRevision)
             return Reject(Error, TEXT("Wingman range could not equip 08: ") + Result.Reason);
-        return true;
+        EquipmentRequest.Invalidate(); // Another selection committed first. Re-evaluate this node on the new build.
     }
-    const auto& State = Build->GetBuildState();
-    if (State.MatchEpoch == 0 || State.ChosenNodeIds.Contains(HangarNode)) return true;
+    if (State.MatchEpoch == 0 || State.ChosenNodeIds.Contains(HangarNode) || Ship->GetShipAssembly()->HasPendingChoiceForPilot()) return true;
     const auto Choices = Build->QueryChoices();
     if (Choices.ContainsByPredicate([](const auto& Choice){ return Choice.NodeId == HangarNode && Choice.bAvailable; }))
-        EquipmentRequest = Build->RequestConfirmedChoice(FGuid::NewGuid(), HangarNode, State.MatchEpoch, State.BuildRevision);
+    {
+        RequestedRevision = State.BuildRevision;
+        EquipmentRequest = Build->RequestConfirmedChoice(FGuid::NewGuid(), HangarNode, State.MatchEpoch, RequestedRevision);
+    }
     return true;
 }
 

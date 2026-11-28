@@ -4,6 +4,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GuLiHybridAuthoringLibrary.generated.h"
 
+class UMaterialInterface;
+
 /** Production-data export and authoring inspection; never starts a game world. */
 UCLASS()
 class GULISTRIKEEDITOR_API UGuLiHybridAuthoringLibrary final : public UBlueprintFunctionLibrary
@@ -23,6 +25,11 @@ public:
     /** Resolve saved HUD trial markers using the production Air and target families. */
     UFUNCTION(BlueprintCallable,Category="GuLiStrike|Hybrid|Authoring")
     static FString ExportXuntianHUDRange(const FString& File);
+    /** Structured readback and normal pilot inputs for the editor's Xuntian HUD range. */
+    UFUNCTION(BlueprintCallable,Category="GuLiStrike|Hybrid|Authoring") static FString InspectXuntianBattery(FName Action);
+    /** Wait for the active shader platform and inspect the render proxy. In PIE, omitting the asset checks the pilot's bound marker. */
+    UFUNCTION(BlueprintCallable,Category="GuLiStrike|Hybrid|Authoring")
+    static FString InspectXuntianMarkerMaterial(UMaterialInterface* Material=nullptr);
     /** Read back a file using the loaded runtime's registered contracts. */
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Hybrid|Authoring")
     static FString ValidateRuntimeManifest(const FString& File);

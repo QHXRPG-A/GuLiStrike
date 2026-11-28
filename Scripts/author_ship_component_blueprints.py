@@ -10,6 +10,7 @@ from pathlib import Path
 import unreal
 from Models.model_catalog import ship_part_model, resource
 import migrate_ship_part_visuals as visual_migration
+from author_component_skill_assets import ship_group_layouts
 
 PROJECT = Path('D:/UE5.7/test1')
 OUT = PROJECT / 'outputs/ship-component-blueprints'
@@ -33,23 +34,26 @@ def path(obj):
 
 
 def groups():
-    """Literal document assignments; red boxes in image-1/2/3/4 were inspected."""
+    layouts = ship_group_layouts()
+    rows = [
+        ('01', '1级底部炮台组', 'Ground', [], []),
+        ('02', '2级底部炮台组', 'Ground', ['01'], []),
+        ('03', '3级底部炮台组', 'Ground', ['02'], []),
+        ('04', '1级顶层对空炮台组', 'Air', [], ['06', '07']),
+        ('05', '2级顶层对空炮台组', 'Air', ['04'], ['06', '07']),
+        ('06', '1级顶层导弹仓', 'Ground', ['03'], ['04', '05']),
+        ('07', '2级顶层导弹仓', 'AirAndGround', ['06'], ['04', '05']),
+        ('08', '僚机仓', 'AirAndGround', [], ['11', '12', '13']),
+        ('09', '群体增益', 'Support', [], ['10']),
+        ('10', '护盾发生器', 'Defense', [], ['09']),
+        ('11', '燃烧弹发射仓', 'Ground', [], ['08']),
+        ('12', '燃烧弹发射仓二级', 'AirAndGround', ['11'], ['08']),
+        ('13', '燃烧弹发射仓三级', 'AirAndGround', ['12'], ['08']),
+    ]
     return [
-        dict(id='01', name='1级底部炮台组', role='Ground', prerequisites=[], exclusions=[],
-             members=[dict(part='Autocannon', sockets=['bottom_mid_0', 'bottom_mid_1', 'bottom_mid_2'])]),
-        dict(id='02', name='2级底部炮台组', role='Ground', prerequisites=['01'], exclusions=[],
-             members=[dict(part='Twin_Barrel_Turret', sockets=['bottom_mid_0', 'bottom_mid_2'])]),
-        dict(id='03', name='3级底部炮台组', role='Ground', prerequisites=['02'], exclusions=[],
-             members=[dict(part='Triple_Barrel_Turret', sockets=['bottom_0', 'bottom_2', 'bottom_3', 'bottom_4', 'bottom_5'])]),
-        dict(id='04', name='1级顶层对空炮台组', role='Air', prerequisites=[], exclusions=[],
-             members=[dict(part='CIWS', sockets=['air_' + str(i) for i in range(13, 42)])]),
-        dict(id='05', name='2级顶层对空炮台组', role='Air', prerequisites=['04'], exclusions=[],
-             members=[dict(part='Single_Barrel_Turret', sockets=['air_' + str(i) for i in range(1, 14)]),
-                      dict(part='CIWS', sockets=['air_' + str(i) for i in range(13, 42)])]),
-        dict(id='06', name='1级顶层导弹仓', role='Ground', prerequisites=['03'], exclusions=['04'],
-             members=[dict(part='Thor_MissilePod', sockets=['missilepod_1', 'missilepod_2', 'missilepod_3'])]),
-        dict(id='07', name='2级顶层导弹仓', role='AirAndGround', prerequisites=['06'], exclusions=['04'],
-             members=[dict(part='Thor_MissilePod_Lv2', sockets=['missilepod_1', 'missilepod_2', 'missilepod_3'])]),
+        dict(id=node, name=name, role=role, prerequisites=prerequisites, exclusions=exclusions,
+             members=[dict(part=part, sockets=slots) for part, slots in layouts[node]])
+        for node, name, role, prerequisites, exclusions in rows
     ]
 
 
@@ -139,10 +143,17 @@ def description(row):
     for g in row['groups']:
         lines.append('组' + g['id'] + ' ' + g['name'] + '；火力=' + g['role'] +
                      '；依赖=' + (','.join(g['prerequisites']) or '无') + '；互斥=' + (','.join(g['exclusions']) or '无'))
-    if not row['groups']:
-        lines.append('文档尚未分配组别和安装Socket；CompatibleSockets保持空。')
-    lines.append('分组依赖、互斥和目标类型为设计记录，升级判定与自动索敌尚未接入。')
-    lines.append('数值沿用原生默认值；PartId留空，待正式配置数据表。')
+    if row['groups']:
+        lines.extend([
+            '安装与路线选择通过 DA_ShipBuild_V1 处理。本蓝图提供配件模型与兼容挂点。',
+            '正式配件数值按 PartId 读取飞船配件表。',
+        ])
+    else:
+        lines.extend([
+            '文档尚未分配组别和安装Socket；CompatibleSockets保持空。',
+            '分组依赖、互斥和目标类型为设计记录，升级判定与自动索敌尚未接入。',
+            '数值沿用原生默认值；PartId留空，待正式配置数据表。',
+        ])
     return '\n'.join(lines)
 
 
@@ -220,7 +231,7 @@ def validate_parts():
             assert str(muzzle) == 'None' or asset.find_socket(muzzle), row['path']
         result[row['path']] = dict(valid=True, assigned_sockets=len(row['compatible_sockets']),
                                    missing_hull_sockets=[s for s in row['compatible_sockets'] if s not in hull_names])
-    report = dict(parts=result, preservation=verify_preservation(), known_group_overlap={'05': ['air_13']})
+    report = dict(parts=result, preservation=verify_preservation())
     write('parts-validation.json', report)
     return report
 

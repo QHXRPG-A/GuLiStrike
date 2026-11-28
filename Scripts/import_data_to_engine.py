@@ -590,6 +590,11 @@ try:
     if any(e.get('asset') == 'DT_GuLiStrikeShip_WingmanWeapons' and e.get('imported') for e in report['tables']):
         report['wingman_profiles'] = wire_secondary_wingman_profiles()
 
+    if any(e.get('asset') == 'DT_GuLiStrikeVfx_Effects' and e.get('imported') for e in report['tables']):
+        from runpy import run_path
+        belly_authoring = run_path(f'{PROJECT}/Scripts/author_xuntian_belly.py')
+        report['xuntian_impact_visuals_updated'] = belly_authoring['sync_impact_visuals']()
+
     if any(e.get('asset') == 'DT_GuLiStrikeShip_WingmanFlight' and e.get('imported') for e in report['tables']):
         report['wingman_flight_profiles'] = wire_wingman_flight_profiles()
 

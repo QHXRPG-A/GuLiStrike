@@ -29,6 +29,12 @@ bool GuLiRuntimeFields::AddRules(FGuLiHybridManifestData& Data,const FGuLiHybrid
         { Error=TEXT("Duplicate combat-effect manifest rule: ")+Rule.Id; return false; }
         Data.Rules.Add(Rule);
     }
+    if (const auto* Amount = Data.Numbers.Find(TEXT("air_damage/") + Damage.Id))
+    {
+        Settlement.Id += TEXT("/air");
+        Settlement.Damage = *Amount;
+        Data.Rules.Add(Settlement);
+    }
     return true;
 }
 

@@ -43,6 +43,9 @@ public:
 	/** Explicit PIE preparation only. Preserves health, ownership and combat rules. */
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Preparation", meta=(DevelopmentOnly))
 	static bool PrepareSoldierPositions(APlayerController* Controller, const TArray<int64>& Ids, const TArray<FVector>& Positions);
+	/** Open the ordinary vital-change window on existing local roster entries in a disposable PIE match. */
+	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Performance", meta=(DevelopmentOnly))
+	static int32 PrimeHealthBarReview(APlayerController* Controller, const TArray<int32>& SoldierIds);
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static bool CommitShipChoice(UGuLiShipBuildComponent* Component, FName NodeId, FString& Error);
 	UFUNCTION(BlueprintPure, Category="GuLiStrike|Editor|Skills") static FString WingmanSnapshot(UObject* WorldContext);
 };

@@ -83,6 +83,10 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float AltitudeMeters = 0.0f;
 
+	/** MaxShield (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	float MaxShield = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeCommander_Camera 的行结构（源: GuLiStrikeCommander.xlsx / Camera）。 */

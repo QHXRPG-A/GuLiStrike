@@ -1,0 +1,1535 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "stage": "complete",
+  "tiers": [
+    {
+      "tier": 1,
+      "sockets": [
+        "bottom_0",
+        "bottom_1",
+        "bottom_2"
+      ],
+      "before_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 1000,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "before_bursts": 0,
+      "before_commits": 0,
+      "max_warnings": 1,
+      "air_hits": [],
+      "after_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 1000,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "terrain_aim": true,
+      "aim": "X=-40000.000 Y=12000.000 Z=899.977",
+      "projectiles": 14,
+      "impacts": 13,
+      "after_commits": 970,
+      "after_bursts": 13,
+      "blast_component": {
+        "asset": "/Game/Stylized_Explosion_Pack_Vol1/VFX/N_Stylized_Explosion_1A_Classic_Explosion.N_Stylized_Explosion_1A_Classic_Explosion",
+        "area_scale": 4.0,
+        "radius_cm": 800.0
+      },
+      "warning_radii_cm": [
+        [
+          800.0,
+          800.0
+        ]
+      ],
+      "warnings_after": 0,
+      "shots": [
+        {
+          "id": "64510FDF40D4503C353361805FD3C200",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 0.8666666746139526,
+          "ground_warning": true
+        },
+        {
+          "id": "C3424F5A4E9618B6A44F50A9FA62CD7B",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 1.1666666269302368,
+          "ground_warning": true
+        },
+        {
+          "id": "613BF63C4ABDD8BBA5331CB4700DB81E",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 1.4166666269302368,
+          "ground_warning": true
+        },
+        {
+          "id": "3BB62ADD4FDC51F4F861E5AF4D1D9B0B",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 1.8833333253860474,
+          "ground_warning": true
+        },
+        {
+          "id": "CC0E7E284CA8EFBCD7BC5A93843D45BB",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 2.183333396911621,
+          "ground_warning": true
+        },
+        {
+          "id": "EF64BC2244BF65AAAD3BA19826F0FED7",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 2.4166667461395264,
+          "ground_warning": true
+        },
+        {
+          "id": "C1BC61994C9063A69FA41EB9CBB6EFA6",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 2.866666555404663,
+          "ground_warning": true
+        },
+        {
+          "id": "CA17D8BC4077094B59EC9E80A0DDE2E0",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 3.1666667461395264,
+          "ground_warning": true
+        },
+        {
+          "id": "B917990E4FA5596BF072A8A20D911E90",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 3.4166667461395264,
+          "ground_warning": true
+        },
+        {
+          "id": "1409B36E4EE0FA43A890F4BCCEF7A29A",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 3.866666555404663,
+          "ground_warning": true
+        },
+        {
+          "id": "3BA2A9C249C2FCE0FEF825836FA11ECC",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 4.166666507720947,
+          "ground_warning": true
+        },
+        {
+          "id": "D78E6D254E0E0C271D51149C1D4491C3",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 4.416666507720947,
+          "ground_warning": true
+        },
+        {
+          "id": "7278B1744879221801196FA0F838CDD4",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 4.866666793823242,
+          "ground_warning": true
+        },
+        {
+          "id": "9E0080EB4F07091D51EC40A87DFB9701",
+          "field": "XuntianBellyL1",
+          "projectile": true,
+          "radius": 800,
+          "speed": 14000,
+          "time": 5.183333396911621,
+          "ground_warning": true
+        }
+      ],
+      "fields": [
+        {
+          "id": "74BC4B80F00F79B41F57694479659CEA",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 2.1666667461395264,
+          "ground_warning": false
+        },
+        {
+          "id": "BF2D8F30065CF75198ABCF253746C0F8",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 2.4666666984558105,
+          "ground_warning": false
+        },
+        {
+          "id": "05AF3C0B0EF0D4BF5CF01E7CF020B51F",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 2.7333333492279053,
+          "ground_warning": false
+        },
+        {
+          "id": "850AFD28EAEF32C4316FE9708FC22FF8",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 3.200000047683716,
+          "ground_warning": false
+        },
+        {
+          "id": "08084C07357BB3DE41BA159C8D7FA578",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 3.5,
+          "ground_warning": false
+        },
+        {
+          "id": "492686E331B62DD303C50507084DA12B",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 3.7333333492279053,
+          "ground_warning": false
+        },
+        {
+          "id": "11B263D93572AC5496BD171B9386EA39",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 4.166666507720947,
+          "ground_warning": false
+        },
+        {
+          "id": "5A20B401587553A5F50B972A8C366AC4",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 4.4666666984558105,
+          "ground_warning": false
+        },
+        {
+          "id": "E6105D4BB7D813C20276D1D115E936CC",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 4.733333110809326,
+          "ground_warning": false
+        },
+        {
+          "id": "27C93E785BA8F8450021167E69ECD64F",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 5.166666507720947,
+          "ground_warning": false
+        },
+        {
+          "id": "2E6B266780B4DDFEC6C8D9F310A32043",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 5.4666666984558105,
+          "ground_warning": false
+        },
+        {
+          "id": "A6ADF69ACDC6D6950500657ADDC9DF75",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 5.733333110809326,
+          "ground_warning": false
+        },
+        {
+          "id": "114333E1E1022A4C4A6E01BF418A0DAA",
+          "field": "XuntianBellyL1",
+          "projectile": false,
+          "radius": 800,
+          "speed": 1200,
+          "time": 6.166666507720947,
+          "ground_warning": false
+        }
+      ]
+    },
+    {
+      "tier": 2,
+      "sockets": [
+        "bottom_0",
+        "bottom_2"
+      ],
+      "before_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 1000,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "before_bursts": 14,
+      "before_commits": 1342,
+      "max_warnings": 1,
+      "air_hits": [],
+      "after_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 1000,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "terrain_aim": true,
+      "aim": "X=-40000.000 Y=12000.000 Z=899.977",
+      "projectiles": 8,
+      "impacts": 8,
+      "after_commits": 2011,
+      "after_bursts": 22,
+      "warning_radii_cm": [
+        [
+          1200.0,
+          1200.0
+        ]
+      ],
+      "blast_component": {
+        "asset": "/Game/_VFXResources/Niagara_System/NS_Explosion_04.NS_Explosion_04",
+        "area_scale": 2.5210084915161133,
+        "radius_cm": 1200.0
+      },
+      "warnings_after": 0,
+      "shots": [
+        {
+          "id": "7F06B1004AE1D93D5E50A69293C7B350",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 9.216666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "9141EBFB449910CF7C5B7EB126D2B975",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 9.466666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "17BEE93C49BF56A8EA5DCFB35DB0F3B5",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 9.716666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "D21F93E74583E551AD8A61A992D3AAFA",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 9.966666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "0E15AC7E49B24AF9FD07F497D18DB3EC",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 12.216666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "BF339EF34E6243E5CE645DAC3F73AB96",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 12.466666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "5477F0C94687C787EDBABE96880D3A05",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 12.716666221618652,
+          "ground_warning": true
+        },
+        {
+          "id": "A5C109844E41FC3A110A68AE31B1FD40",
+          "field": "XuntianBellyL2",
+          "projectile": true,
+          "radius": 1200,
+          "speed": 14000,
+          "time": 12.966666221618652,
+          "ground_warning": true
+        }
+      ],
+      "fields": [
+        {
+          "id": "BCA9BBEA4164736B4F4DCC80F10FB222",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 10.433333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "56DEE3DAB5DFAA090C26F3B6B2DBDB4E",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 10.666666984558105,
+          "ground_warning": false
+        },
+        {
+          "id": "FAE40BFDB92F29726294B925647686AD",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 10.933333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "D055ED3AD524FBFCBAC36D565ECDEE85",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 11.166666984558105,
+          "ground_warning": false
+        },
+        {
+          "id": "54648C745CCE17FAD5C3BF24B5F44BD1",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 13.433333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "CFC719574DE93C3AC30645DEEAC2D0EA",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 13.666666984558105,
+          "ground_warning": false
+        },
+        {
+          "id": "BE1C5C0C368F79BB0C939C3C22710916",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 13.933333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "CD956C48E9F74983437CA4E58D116B5A",
+          "field": "XuntianBellyL2",
+          "projectile": false,
+          "radius": 1200,
+          "speed": 1200,
+          "time": 14.166666984558105,
+          "ground_warning": false
+        }
+      ]
+    },
+    {
+      "tier": 3,
+      "sockets": [
+        "bottom_0",
+        "bottom_2",
+        "bottom_3",
+        "bottom_4",
+        "bottom_5"
+      ],
+      "before_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 1000,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "before_bursts": 22,
+      "before_commits": 2315,
+      "max_warnings": 1,
+      "air_hits": [],
+      "after_health": {
+        "BP_CombatAvatarFly01_C_0": 1000,
+        "BP_CombatAvatarFly01_C_2": 1000,
+        "BP_CombatAvatarFly01_C_3": 1000,
+        "BP_CombatAvatarFly01_C_4": 1000
+      },
+      "terrain_aim": true,
+      "aim": "X=-40000.000 Y=12000.000 Z=899.977",
+      "projectiles": 30,
+      "impacts": 26,
+      "after_commits": 2785,
+      "after_bursts": 48,
+      "blast_component": {
+        "asset": "/Game/_VFXResources/Niagara_System/NS_Explosion_07.NS_Explosion_07",
+        "area_scale": 1.789709210395813,
+        "radius_cm": 1600.0
+      },
+      "warning_radii_cm": [
+        [
+          1600.0,
+          1600.0
+        ]
+      ],
+      "warnings_after": 0,
+      "shots": [
+        {
+          "id": "25A51C834CD3E5347471418E5E6D3FD2",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 16.633333206176758,
+          "ground_warning": true
+        },
+        {
+          "id": "F5115AAD424E3792DB6C709ABD6CDC58",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 16.58333396911621,
+          "ground_warning": true
+        },
+        {
+          "id": "F4DFD1054CCD272053E8398C9F687982",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 16.616666793823242,
+          "ground_warning": true
+        },
+        {
+          "id": "732AD5B640666ECC008B98BA17613298",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 17.183332443237305,
+          "ground_warning": true
+        },
+        {
+          "id": "5E02FDAB4188957269A1BBBE65B4678A",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 17.116666793823242,
+          "ground_warning": true
+        },
+        {
+          "id": "8077BA9F4EDBAF684DC46EA254FEFB3D",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 17.149999618530273,
+          "ground_warning": true
+        },
+        {
+          "id": "6380422D4E60436BB28278A0705F0762",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 17.566667556762695,
+          "ground_warning": true
+        },
+        {
+          "id": "5ED08D8B4B3A4ADEE30F239DACA52724",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 17.66666603088379,
+          "ground_warning": true
+        },
+        {
+          "id": "CEE601D943B933A9D6B056A17659A0DE",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 17.633333206176758,
+          "ground_warning": true
+        },
+        {
+          "id": "2E5BF2624D4DAC409A54E8A8504B046A",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 17.600000381469727,
+          "ground_warning": true
+        },
+        {
+          "id": "5BB3236B48C930DAD7ED8CAEF0640808",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 17.899999618530273,
+          "ground_warning": true
+        },
+        {
+          "id": "B7F99EDC40685E64D13C709C8EAFB371",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 18.133333206176758,
+          "ground_warning": true
+        },
+        {
+          "id": "6A2C13A14575EF545DF2A589F6A665C5",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 18.399999618530273,
+          "ground_warning": true
+        },
+        {
+          "id": "33C5DC17480E2DE87E8D0DA2FAECFB97",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 18.616666793823242,
+          "ground_warning": true
+        },
+        {
+          "id": "64B945E44EC97FD61805DEA46A2656EF",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 18.899999618530273,
+          "ground_warning": true
+        },
+        {
+          "id": "94EC1ADC4C3128B2480BC7BEF4781B0C",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 19.566667556762695,
+          "ground_warning": true
+        },
+        {
+          "id": "DA30748B46FE50933575BC914CFA2D17",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 19.600000381469727,
+          "ground_warning": true
+        },
+        {
+          "id": "5287BA7C4C12DDCA8AAB4BA241EF6155",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 19.616666793823242,
+          "ground_warning": true
+        },
+        {
+          "id": "B7F2150F47E48854B5188BBD80A17690",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 20.066667556762695,
+          "ground_warning": true
+        },
+        {
+          "id": "99F50BC54FB9032F2B27DF9BF88EE083",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 20.08333396911621,
+          "ground_warning": true
+        },
+        {
+          "id": "33E4126240C57C16B879ADB60FFA7F22",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 20.100000381469727,
+          "ground_warning": true
+        },
+        {
+          "id": "90417C7F46200BE16AB53CBE74A9F1D5",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 20.616666793823242,
+          "ground_warning": true
+        },
+        {
+          "id": "4DAE757645CF08457C8A57B7BA0701A1",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 20.66666603088379,
+          "ground_warning": true
+        },
+        {
+          "id": "DC1E79C94C2E500C0D92508D38D8EDDA",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 20.71666717529297,
+          "ground_warning": true
+        },
+        {
+          "id": "DC7F22294344A883C4E066995545B372",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 20.78333282470703,
+          "ground_warning": true
+        },
+        {
+          "id": "0E002E564027F93379D8A4B53188C886",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 20.91666603088379,
+          "ground_warning": true
+        },
+        {
+          "id": "CDBBA917485D4E9EC1F4A3972342ADB0",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 21.133333206176758,
+          "ground_warning": true
+        },
+        {
+          "id": "A7527129459E59ED0836F488A713D3F0",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 21.41666603088379,
+          "ground_warning": true
+        },
+        {
+          "id": "B429C7734164CE2D20A62CA894D04CD5",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 21.616666793823242,
+          "ground_warning": true
+        },
+        {
+          "id": "1C0FB61040AECA32ECE686B39FB208DC",
+          "field": "XuntianBellyL3",
+          "projectile": true,
+          "radius": 1600,
+          "speed": 14000,
+          "time": 21.899999618530273,
+          "ground_warning": true
+        }
+      ],
+      "fields": [
+        {
+          "id": "875B626B9E61562CA14EF80E71C7269E",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 17.799999237060547,
+          "ground_warning": false
+        },
+        {
+          "id": "3303A110E34AB6C8163A3C0B114F8208",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 17.83333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "706D2C5525B71CEEE0A97102E90F0534",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 17.83333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "AE0D49FEF824B842B68B2097A3D93328",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 18.33333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "C3C507ED4FFCA8439E47B68DF2A1B8BA",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 18.366666793823242,
+          "ground_warning": false
+        },
+        {
+          "id": "32068205280FAAE5D3A3AEAF74AC2B97",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 18.399999618530273,
+          "ground_warning": false
+        },
+        {
+          "id": "7900611ECE76A18C7001AF9179A153FE",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 18.766666412353516,
+          "ground_warning": false
+        },
+        {
+          "id": "C4C7B058DC075CF6F6FFB14F59FE27F3",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 18.866666793823242,
+          "ground_warning": false
+        },
+        {
+          "id": "703E2FEEDE52FB1D82A11F685A2CE576",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 18.83333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "9402F4B3031A38BB7E5D25766EC4FC0A",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 18.799999237060547,
+          "ground_warning": false
+        },
+        {
+          "id": "5A321CF2D11ACE48D90AFF20EB69E90B",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 19.200000762939453,
+          "ground_warning": false
+        },
+        {
+          "id": "8CF9EDABE8959178664B661C2E717AB7",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 19.33333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "07DDFDF6625CF68A2D65C19A2B6D13D0",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 19.700000762939453,
+          "ground_warning": false
+        },
+        {
+          "id": "BCCBEC614476517E950B739FBC71E4ED",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 19.83333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "71229EAD2219BC9CC0951DD00BF43DD0",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 20.200000762939453,
+          "ground_warning": false
+        },
+        {
+          "id": "6F6D284C44067FF0F5F3C11B1682FAE1",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 20.766666412353516,
+          "ground_warning": false
+        },
+        {
+          "id": "891CB48CD300B014BED9A5E8AB755965",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 20.799999237060547,
+          "ground_warning": false
+        },
+        {
+          "id": "4604B00F15F40FB6A5C20D4CE1FD29A5",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 20.83333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "87682FCB463709333C66246FB6E3C0D9",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 21.266666412353516,
+          "ground_warning": false
+        },
+        {
+          "id": "3C587E764CA56BDA22C1C71C86CEE6DC",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 21.299999237060547,
+          "ground_warning": false
+        },
+        {
+          "id": "BC90B3596FFFD012D9201CDDAEABE310",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 21.299999237060547,
+          "ground_warning": false
+        },
+        {
+          "id": "44EB4A9B5B196486283BF5A521781410",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 21.83333396911621,
+          "ground_warning": false
+        },
+        {
+          "id": "FA1290CE5B53338EA1EE89C7D9712071",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 21.866666793823242,
+          "ground_warning": false
+        },
+        {
+          "id": "2D00E7A1E3ABFD141F68F1939088E66B",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 21.933332443237305,
+          "ground_warning": false
+        },
+        {
+          "id": "E00CD36F11BDD7BB277EA2AA1F3DBB48",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 22,
+          "ground_warning": false
+        },
+        {
+          "id": "0F34191C558893A0F651D69EAE9E9FB9",
+          "field": "XuntianBellyL3",
+          "projectile": false,
+          "radius": 1600,
+          "speed": 1200,
+          "time": 22.233333587646484,
+          "ground_warning": false
+        }
+      ]
+    }
+  ],
+  "before_input": {
+    "ready": true,
+    "tier": 1,
+    "modal": false,
+    "coverage": 0,
+    "ground_bank": false,
+    "terrain_aim": false,
+    "aim": "X=0.000 Y=0.000 Z=0.000",
+    "sockets": [
+      "bottom_0",
+      "bottom_1",
+      "bottom_2"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "warnings": 0,
+    "bursts": 0,
+    "effects": [],
+    "commits": 0,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 1000,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 1000
+    }
+  },
+  "max_level_menu": {
+    "ready": true,
+    "tier": 3,
+    "modal": true,
+    "coverage": 5,
+    "ground_bank": true,
+    "terrain_aim": true,
+    "aim": "X=-40000.000 Y=12000.000 Z=899.977",
+    "sockets": [
+      "bottom_0",
+      "bottom_2",
+      "bottom_3",
+      "bottom_4",
+      "bottom_5"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "warnings": 0,
+    "bursts": 48,
+    "effects": [
+      {
+        "id": "CDBBA917485D4E9EC1F4A3972342ADB0",
+        "field": "XuntianBellyL3",
+        "projectile": true,
+        "radius": 1600,
+        "speed": 14000,
+        "time": 21.133333206176758,
+        "ground_warning": true
+      },
+      {
+        "id": "07DDFDF6625CF68A2D65C19A2B6D13D0",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 19.700000762939453,
+        "ground_warning": false
+      },
+      {
+        "id": "8CF9EDABE8959178664B661C2E717AB7",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 19.33333396911621,
+        "ground_warning": false
+      },
+      {
+        "id": "1C0FB61040AECA32ECE686B39FB208DC",
+        "field": "XuntianBellyL3",
+        "projectile": true,
+        "radius": 1600,
+        "speed": 14000,
+        "time": 21.899999618530273,
+        "ground_warning": true
+      },
+      {
+        "id": "A7527129459E59ED0836F488A713D3F0",
+        "field": "XuntianBellyL3",
+        "projectile": true,
+        "radius": 1600,
+        "speed": 14000,
+        "time": 21.41666603088379,
+        "ground_warning": true
+      },
+      {
+        "id": "B429C7734164CE2D20A62CA894D04CD5",
+        "field": "XuntianBellyL3",
+        "projectile": true,
+        "radius": 1600,
+        "speed": 14000,
+        "time": 21.616666793823242,
+        "ground_warning": true
+      },
+      {
+        "id": "0F34191C558893A0F651D69EAE9E9FB9",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 22.233333587646484,
+        "ground_warning": false
+      },
+      {
+        "id": "BCCBEC614476517E950B739FBC71E4ED",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 19.83333396911621,
+        "ground_warning": false
+      },
+      {
+        "id": "71229EAD2219BC9CC0951DD00BF43DD0",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 20.200000762939453,
+        "ground_warning": false
+      },
+      {
+        "id": "6F6D284C44067FF0F5F3C11B1682FAE1",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 20.766666412353516,
+        "ground_warning": false
+      },
+      {
+        "id": "891CB48CD300B014BED9A5E8AB755965",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 20.799999237060547,
+        "ground_warning": false
+      },
+      {
+        "id": "4604B00F15F40FB6A5C20D4CE1FD29A5",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 20.83333396911621,
+        "ground_warning": false
+      },
+      {
+        "id": "87682FCB463709333C66246FB6E3C0D9",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.266666412353516,
+        "ground_warning": false
+      },
+      {
+        "id": "3C587E764CA56BDA22C1C71C86CEE6DC",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.299999237060547,
+        "ground_warning": false
+      },
+      {
+        "id": "BC90B3596FFFD012D9201CDDAEABE310",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.299999237060547,
+        "ground_warning": false
+      },
+      {
+        "id": "44EB4A9B5B196486283BF5A521781410",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.83333396911621,
+        "ground_warning": false
+      },
+      {
+        "id": "FA1290CE5B53338EA1EE89C7D9712071",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.866666793823242,
+        "ground_warning": false
+      },
+      {
+        "id": "2D00E7A1E3ABFD141F68F1939088E66B",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.933332443237305,
+        "ground_warning": false
+      },
+      {
+        "id": "E00CD36F11BDD7BB277EA2AA1F3DBB48",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 22,
+        "ground_warning": false
+      }
+    ],
+    "commits": 2785,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 1000,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 1000
+    }
+  },
+  "passed": true,
+  "error": "",
+  "last_state": {
+    "ready": true,
+    "tier": 3,
+    "modal": false,
+    "coverage": 5,
+    "ground_bank": true,
+    "terrain_aim": true,
+    "aim": "X=-40000.000 Y=12000.000 Z=899.977",
+    "sockets": [
+      "bottom_0",
+      "bottom_2",
+      "bottom_3",
+      "bottom_4",
+      "bottom_5"
+    ],
+    "pending_compiles": 0,
+    "tiers_resident": [
+      true,
+      true,
+      true
+    ],
+    "warnings": 0,
+    "bursts": 48,
+    "effects": [
+      {
+        "id": "CDBBA917485D4E9EC1F4A3972342ADB0",
+        "field": "XuntianBellyL3",
+        "projectile": true,
+        "radius": 1600,
+        "speed": 14000,
+        "time": 21.133333206176758,
+        "ground_warning": true
+      },
+      {
+        "id": "07DDFDF6625CF68A2D65C19A2B6D13D0",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 19.700000762939453,
+        "ground_warning": false
+      },
+      {
+        "id": "8CF9EDABE8959178664B661C2E717AB7",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 19.33333396911621,
+        "ground_warning": false
+      },
+      {
+        "id": "1C0FB61040AECA32ECE686B39FB208DC",
+        "field": "XuntianBellyL3",
+        "projectile": true,
+        "radius": 1600,
+        "speed": 14000,
+        "time": 21.899999618530273,
+        "ground_warning": true
+      },
+      {
+        "id": "A7527129459E59ED0836F488A713D3F0",
+        "field": "XuntianBellyL3",
+        "projectile": true,
+        "radius": 1600,
+        "speed": 14000,
+        "time": 21.41666603088379,
+        "ground_warning": true
+      },
+      {
+        "id": "B429C7734164CE2D20A62CA894D04CD5",
+        "field": "XuntianBellyL3",
+        "projectile": true,
+        "radius": 1600,
+        "speed": 14000,
+        "time": 21.616666793823242,
+        "ground_warning": true
+      },
+      {
+        "id": "0F34191C558893A0F651D69EAE9E9FB9",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 22.233333587646484,
+        "ground_warning": false
+      },
+      {
+        "id": "BCCBEC614476517E950B739FBC71E4ED",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 19.83333396911621,
+        "ground_warning": false
+      },
+      {
+        "id": "71229EAD2219BC9CC0951DD00BF43DD0",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 20.200000762939453,
+        "ground_warning": false
+      },
+      {
+        "id": "6F6D284C44067FF0F5F3C11B1682FAE1",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 20.766666412353516,
+        "ground_warning": false
+      },
+      {
+        "id": "891CB48CD300B014BED9A5E8AB755965",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 20.799999237060547,
+        "ground_warning": false
+      },
+      {
+        "id": "4604B00F15F40FB6A5C20D4CE1FD29A5",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 20.83333396911621,
+        "ground_warning": false
+      },
+      {
+        "id": "87682FCB463709333C66246FB6E3C0D9",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.266666412353516,
+        "ground_warning": false
+      },
+      {
+        "id": "3C587E764CA56BDA22C1C71C86CEE6DC",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.299999237060547,
+        "ground_warning": false
+      },
+      {
+        "id": "BC90B3596FFFD012D9201CDDAEABE310",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.299999237060547,
+        "ground_warning": false
+      },
+      {
+        "id": "44EB4A9B5B196486283BF5A521781410",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.83333396911621,
+        "ground_warning": false
+      },
+      {
+        "id": "FA1290CE5B53338EA1EE89C7D9712071",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.866666793823242,
+        "ground_warning": false
+      },
+      {
+        "id": "2D00E7A1E3ABFD141F68F1939088E66B",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 21.933332443237305,
+        "ground_warning": false
+      },
+      {
+        "id": "E00CD36F11BDD7BB277EA2AA1F3DBB48",
+        "field": "XuntianBellyL3",
+        "projectile": false,
+        "radius": 1600,
+        "speed": 1200,
+        "time": 22,
+        "ground_warning": false
+      }
+    ],
+    "commits": 2785,
+    "other_ship_health": {
+      "BP_CombatAvatarFly01_C_0": 1000,
+      "BP_CombatAvatarFly01_C_2": 1000,
+      "BP_CombatAvatarFly01_C_3": 1000,
+      "BP_CombatAvatarFly01_C_4": 1000
+    }
+  },
+  "session": {
+    "active": true,
+    "error": "",
+    "room": "163ECD5C4B3C1A66825551B608583EFE",
+    "role": "Air",
+    "editor_pid": 40492,
+    "logic_processes": [
+      {
+        "pid": 6828,
+        "running": true
+      }
+    ],
+    "session_directory": "C:/Users/a/AppData/Local/Temp/GuLiStrikePIE/163ECD5C4B3C1A66825551B608583EFE",
+    "shutdown": [],
+    "cleanup_complete": false,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+    "standalone": true,
+    "can_present": true,
+    "world_ready": true,
+    "network_error": "",
+    "members": [
+      {
+        "player": "EA538AF7466A7A1578EFE68C0868E862",
+        "online": true,
+        "ready": true,
+        "team": "Blue",
+        "role": "Commander"
+      },
+      {
+        "player": "F319489648520331BABA4BAD9917F3E6",
+        "online": true,
+        "ready": true,
+        "team": "Red",
+        "role": "Air"
+      }
+    ],
+    "units": 615,
+    "peer_owned_objects": 577,
+    "controller": "/Script/GuLiStrike.GuLiCommanderPlayerController",
+    "pawn": "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01.BP_CombatAvatarFly01_C",
+    "hud": "/Script/GuLiStrike.GuLiCommanderHUD",
+    "commander_view_active": false,
+    "can_issue_orders": false,
+    "mouse_cursor_visible": false,
+    "commander_hud_widget": "",
+    "commander_hud_in_viewport": false,
+    "commander_hud_visible": false,
+    "commander_hud_owner_matches": false,
+    "commander_hud_width": 0,
+    "commander_hud_height": 0,
+    "ground_hud_widget": "",
+    "ground_hud_in_viewport": false,
+    "ground_hud_visible": false,
+    "ground_hud_owner_matches": false,
+    "ground_hud_width": 0,
+    "ground_hud_height": 0,
+    "resource_query_ready": true,
+    "legacy_resource_runtime_ready": false
+  }
+}

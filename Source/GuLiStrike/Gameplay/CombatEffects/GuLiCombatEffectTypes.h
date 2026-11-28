@@ -129,6 +129,8 @@ struct GULISTRIKE_API FGuLiCombatEffectState
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiProjectileEffectDefinition> ProjectileDefinition;
 	/** Optional generic ground cue, frozen at launch and reconstructed by rendering clients. */
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;
+	UPROPERTY() bool bHasWarningGroundPoint = false;
+    UPROPERTY() FVector_NetQuantize WarningGroundPoint = FVector::ZeroVector;
 	/** Optional shared guidance cue; distinct from each projectile's impact warning. */
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuid GuidanceBatchId;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize GuidanceCenter = FVector::ZeroVector;
@@ -238,6 +240,7 @@ struct GULISTRIKE_API FGuLiCombatAttackRequest
 	/** Authority-only ground machine-gun full cone angle, frozen for this shot. */
 	float ProjectileSpreadAngleDegrees = 0.0f;
 	UGuLiGroundWarningStyle* GroundWarningStyle = nullptr;
+    TOptional<FVector> WarningGroundPoint;
 	FGuid GuidanceBatchId;
 	FVector GuidanceCenter = FVector::ZeroVector;
 	float GuidanceRadius = 0.0f;

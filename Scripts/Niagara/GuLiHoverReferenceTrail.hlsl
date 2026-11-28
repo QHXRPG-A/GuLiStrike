@@ -10,6 +10,14 @@ WidthOut=SavedWidth;
 MoveAgeOut=SavedMoveAge;
 float speed=max(0.0,NozzleSize.y);
 bool active=Meta.g>0.5 && NozzleSize.x>0.0;
+int historyStride=Meta.a>0.5 ? max(1,(int)round(Meta.a)) : 1;
+if(active && Lane>0 && ((Lane-1)%historyStride)!=0)
+{
+    BornOut=-100000.0; WasMovingOut=0; LengthOut=0; SpanOut=0;
+    SampleDistanceOut=-100000.0; ViewFadeOut=0; MoveAgeOut=0;
+    PositionOut=NozzlePosition; AlignmentOut=SavedHeading; SizeOut=float2(0,0); ColorOut=float4(0,0,0,0);
+    return;
+}
 bool moving=active && speed>5.0;
 WasMovingOut=moving ? 1.0 : 0.0;
 float dt=Now-PreviousTime;
@@ -56,7 +64,7 @@ if(!starting && moving && dt>0.0)
             // history interval. The core cone remains in the other emitter.
             AnchorOut=NozzlePosition;
             HeadingOut=distanceMoved>0.001 ? normalize(float3(delta.xy,0)) : SavedHeading;
-            SampleDistanceOut=TravelOut; BornOut=Now; SpanOut=spacing*1.65;
+            SampleDistanceOut=TravelOut; BornOut=Now; SpanOut=spacing*1.65*historyStride;
         }
         else if(advance>0.00001 && laneBucket>(int)floor(SavedPhase))
         {
@@ -65,7 +73,7 @@ if(!starting && moving && dt>0.0)
             HeadingOut=distanceMoved>0.001 ? normalize(float3(delta.xy,0)) : SavedHeading;
             SampleDistanceOut=SavedTravel+distanceMoved*fraction;
             BornOut=Now-dt*(1.0-fraction);
-            SpanOut=spacing;
+            SpanOut=spacing*historyStride;
         }
     }
 }

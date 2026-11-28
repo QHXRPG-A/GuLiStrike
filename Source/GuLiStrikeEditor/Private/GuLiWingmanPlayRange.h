@@ -21,4 +21,5 @@ struct FGuLiWingmanPlayRange
 private:
     double FirstReadyTime = 0;
     FGuid EquipmentRequest;
+    int64 RequestedRevision = 0;
 };

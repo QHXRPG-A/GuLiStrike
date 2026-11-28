@@ -165,7 +165,11 @@ void AGuLiCommanderPlayerController::BeginPlay()
 }
 
 void AGuLiCommanderPlayerController::OpenRogueCards()
-{ if (RogueCardPresentation) RogueCardPresentation->Open(); }
+{
+    if (auto* Ship = Cast<AGuLiStrikeShip>(GetPawn()); Ship && Ship->IsXuntian())
+    { Ship->ToggleBellyChoice(); return; }
+    if (RogueCardPresentation) RogueCardPresentation->Open();
+}
 
 void AGuLiCommanderPlayerController::SetRogueCardModal(bool bActive)
 {

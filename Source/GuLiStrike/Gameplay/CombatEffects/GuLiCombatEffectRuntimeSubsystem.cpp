@@ -3,6 +3,7 @@
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Gameplay/GroundMech/Abilities/GuLiGroundStrikeSurface.h"
 #include "GameFramework/WorldSettings.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Network/GuLiHybridWorldSubsystem.h"
 
 #include "Engine/World.h"
@@ -597,6 +598,8 @@ bool UGuLiCombatEffectRuntimeSubsystem::PreparePointProjectile(
     if (!Request.bUseAuthoredPointTrajectory)
     { State.Motion.LiftSeconds = 0; State.Motion.LateralOffset = 0; State.Motion.VerticalCurve = 0; State.Motion.LongitudinalCurve = 0; }
     State.GroundWarningStyle = Request.GroundWarningStyle;
+    State.bHasWarningGroundPoint = Request.WarningGroundPoint.IsSet();
+    if (State.bHasWarningGroundPoint) State.WarningGroundPoint = Request.WarningGroundPoint.GetValue();
     State.GuidanceBatchId = Request.GuidanceBatchId;
     State.GuidanceCenter = Request.GuidanceCenter;
     State.GuidanceRadius = Request.GuidanceRadius;
@@ -861,7 +864,7 @@ void UGuLiCombatEffectRuntimeSubsystem::StepProjectile(const FGuid& Id, float De
 	if (Ledger->TryGetTargetSnapshot(State.Source, Source) && Source.CollisionActor.IsValid()) Params.AddIgnoredActor(Source.CollisionActor.Get());
 	if (Target.CollisionActor.IsValid()) Params.AddIgnoredActor(Target.CollisionActor.Get());
 	FVector Impact;
-	const bool bHit = SweepProjectilePath(Path, State.Motion.SweepRadius, State.SourceTeam, Params, bCheckBodies, Impact);
+	const bool bHit = SweepProjectilePath(Path, State.Motion.SweepRadius, State.SourceTeam, Params, bCheckBodies, Impact, Instance.Field && Instance.Field->bUseShipHulls);
 	Effects[Id] = Instance;
 	if (bHit || bArrived)
 	{
@@ -949,7 +952,7 @@ void UGuLiCombatEffectRuntimeSubsystem::BuildSpatialIndex()
 }
 
 bool UGuLiCombatEffectRuntimeSubsystem::SweepProjectilePath(TConstArrayView<FVector> Path, float Radius,
-	EGuLiTeam Team, const FCollisionQueryParams& Params, bool bCheckBodies, FVector& Impact)
+	EGuLiTeam Team, const FCollisionQueryParams& Params, bool bCheckBodies, FVector& Impact, bool bUseShipHulls)
 {
 	if (Path.Num() < 2) return false;
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCombatProjectileSweep);
@@ -959,6 +962,13 @@ bool UGuLiCombatEffectRuntimeSubsystem::SweepProjectilePath(TConstArrayView<FVec
 		FBox Bounds(ForceInit);
 		for (const FVector& Sample : Path) Bounds += Sample;
 		Ledger->GetNearbyTargetSnapshots(Bounds.ExpandBy(Radius), Candidates);
+		if (bUseShipHulls)
+		{
+			Candidates.RemoveAll([](const auto& T){ return T.Handle.Kind == EGuLiTargetKind::Ship; });
+			TArray<FGuLiCombatTargetSnapshot> Ships;
+			Ledger->GetTargetSnapshots(Ships, EGuLiTargetKind::Ship);
+			Candidates.Append(Ships);
+		}
 		Counters.CandidateChecks += Candidates.Num();
 	}
 	const FCollisionObjectQueryParams StaticObjects(ECC_WorldStatic);
@@ -985,6 +995,16 @@ bool UGuLiCombatEffectRuntimeSubsystem::SweepProjectilePath(TConstArrayView<FVec
 		for (const auto& Target : Candidates)
 		{
 			if (Target.Team == Team || Target.Team == EGuLiTeam::Unassigned) continue;
+			if (bUseShipHulls && Target.Handle.Kind == EGuLiTargetKind::Ship)
+			{
+				if (const auto* Ship = Cast<AGuLiStrikeShip>(Target.CollisionActor.Get()))
+				{
+					float Fraction = 0;
+					if (Target.bAlive && Ship->IntersectHull(Start, End, Radius, Fraction) && Fraction <= First)
+					{ First = Fraction; Impact = FMath::Lerp(Start, End, First); bHit = true; }
+					continue;
+				}
+			}
 			const FVector Center = Target.GetHitCenter();
 			double Entry;
 			if (!SphereEntry(Start, End, Center, Target.CollisionRadius + Radius, Entry) || Entry > First) continue;
@@ -998,7 +1018,7 @@ bool UGuLiCombatEffectRuntimeSubsystem::SweepProjectilePath(TConstArrayView<FVec
 	return false;
 }
 
-void UGuLiCombatEffectRuntimeSubsystem::QuerySphere(FVector Center, float Radius, TArray<FGuLiCombatTargetSnapshot>& OutTargets, bool bUseHitCenters)
+void UGuLiCombatEffectRuntimeSubsystem::QuerySphere(FVector Center, float Radius, TArray<FGuLiCombatTargetSnapshot>& OutTargets, bool bUseHitCenters, bool bUseShipHulls)
 {
 	if (bUseHitCenters)
 	{
@@ -1006,8 +1026,19 @@ void UGuLiCombatEffectRuntimeSubsystem::QuerySphere(FVector Center, float Radius
 		Counters.CandidateChecks += OutTargets.Num();
 		OutTargets.RemoveAll([&](const FGuLiCombatTargetSnapshot& Target)
 		{
-			return !GuLiCombatEffects::IntersectsSphere(Center, Radius, Target, true);
+			return (bUseShipHulls && Target.Handle.Kind == EGuLiTargetKind::Ship) || !GuLiCombatEffects::IntersectsSphere(Center, Radius, Target, true);
 		});
+		if (bUseShipHulls)
+		{
+			TArray<FGuLiCombatTargetSnapshot> Ships;
+			Ledger->GetTargetSnapshots(Ships, EGuLiTargetKind::Ship);
+			for (const auto& Target : Ships)
+			{
+				const auto* Ship = Cast<AGuLiStrikeShip>(Target.CollisionActor.Get());
+				if (Target.bAlive && (Ship ? Ship->HullTouchesSphere(Center, Radius) :
+					GuLiCombatEffects::IntersectsSphere(Center, Radius, Target, true))) OutTargets.Add(Target);
+			}
+		}
 		return;
 	}
 	if (!bIndexReady) BuildSpatialIndex();
@@ -1055,7 +1086,7 @@ void UGuLiCombatEffectRuntimeSubsystem::StepField(const FGuid& Id, float Now)
 		{
 			// Damage callbacks can move/register/remove targets between catch-up pulses.
 			if (Pulse>Instance.DeliveredPulses) bIndexReady=false;
-			QuerySphere(Instance.State.Location, Instance.State.Radius, Candidates, Instance.Field && Instance.Field->bUseTargetHitCenters);
+			QuerySphere(Instance.State.Location, Instance.State.Radius, Candidates, Instance.Field && Instance.Field->bUseTargetHitCenters, Instance.Field && Instance.Field->bUseShipHulls);
 			auto* Live = Effects.Find(Id); if (!Live) return;
 			// Advance before damage notifications: re-entrant queries/cancel cannot repeat this pulse.
 			Live->DeliveredPulses = Pulse + 1; ++Counters.Pulses;
@@ -1071,7 +1102,9 @@ void UGuLiCombatEffectRuntimeSubsystem::StepField(const FGuid& Id, float Now)
                     {GetWorld()->GetSubsystem<UGuLiHybridWorldSubsystem>()->Suspend(TEXT("Field pulse could not retain its pending hit"));return;}
                     continue;
                 }
-				const auto Request = MakeDamage(Instance.Context, GuLiCombatEffects::DamageId(Id, Pulse, Target.Handle), Target.Handle, Target.Location);
+				auto Request = MakeDamage(Instance.Context, GuLiCombatEffects::DamageId(Id, Pulse, Target.Handle), Target.Handle, Target.Location);
+				if (Instance.Field && (Target.Handle.Kind == EGuLiTargetKind::Ship || Target.Handle.Kind == EGuLiTargetKind::Wingman))
+					Request.Damage *= Instance.Field->AirTargetDamageMultiplier;
 				const TWeakObjectPtr<UGuLiCombatEffectRuntimeSubsystem> Weak(this); const uint32 SubmittedEpoch=Epoch;
 				Ledger->SubmitEffectDamage(Request,Instance.SourceLease,this,[Weak,SubmittedEpoch](const FGuLiDamageCommitResult& Result)
 				{

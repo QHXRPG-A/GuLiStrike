@@ -12,7 +12,6 @@ BUILD_PATH = SHIP_ROOT + '/Build/DA_ShipBuild_V1'
 HANGAR_PATH = SHIP_ROOT + '/Build/DA_ShipHangar_V1'
 COMMANDER_PATH = '/Game/GuLiStrike/Commander/Skills/DA_CommanderSkills_V1'
 SHIP_BP = SHIP_ROOT + '/BP_CombatAvatarFly01'
-PART_BP = SHIP_ROOT + '/Parts/BP_SC_Drone_LaunchBay'
 
 
 def asset(path, cls):
@@ -43,6 +42,94 @@ def compile_blueprint(blueprint):
     assert unreal.GuLiSkillAuthoringLibrary.compile_skill_blueprint(blueprint), blueprint.get_path_name() + ': Blueprint compile failed'
 
 
+def ship_group_layouts():
+    """The mount lists used by the build catalogue and the part class defaults."""
+    ciws_side_slots = [f'air_{index}' for index in range(14, 42) if index != 18]
+    missile_slots = ['missilepod_1', 'missilepod_2', 'missilepod_3']
+    bomb_slots = ['tracking_missile_launch_bay_1', 'tracking_missile_launch_bay_2']
+    return {
+        '01': [('Autocannon', ['bottom_0', 'bottom_1', 'bottom_2'])],
+        '02': [('Twin_Barrel_Turret', ['bottom_0', 'bottom_2'])],
+        '03': [('Triple_Barrel_Turret', ['bottom_0', 'bottom_2', 'bottom_3', 'bottom_4', 'bottom_5'])],
+        '04': [('CIWS', ['air_13', *ciws_side_slots])],
+        '05': [('Single_Barrel_Turret', [f'air_{index}' for index in range(1, 14)]),
+               ('CIWS', ciws_side_slots)],
+        '06': [('Thor_MissilePod', missile_slots)],
+        '07': [('Thor_MissilePod_Lv2', missile_slots)],
+        '08': [('Drone_LaunchBay', ['wingman_bay_1', 'wingman_bay_2'])],
+        '09': [('Electronic_JammingDevice', ['group_buff_generator'])],
+        '10': [('Shield_Generator', ['shield_generator'])],
+        '11': [('Incendiary_Bomb_LaunchBay', bomb_slots)],
+        '12': [('Incendiary_Bomb_LaunchBay', bomb_slots)],
+        '13': [('Incendiary_Bomb_LaunchBay', bomb_slots)],
+    }
+
+
+def configured_mounts(layout):
+    return [mount for part, slots in layout for mount in mounts('BP_SC_' + part, slots)]
+
+
+def sync_ship_part_sockets(layouts):
+    required = {}
+    for layout in layouts.values():
+        for part, slots in layout:
+            required.setdefault(part, {}).update(dict.fromkeys(slots))
+    changed = []
+    for part, slots in required.items():
+        blueprint = unreal.load_asset(SHIP_ROOT + '/Parts/BP_SC_' + part)
+        existing = unreal.get_default_object(blueprint.generated_class())
+        target = list(slots)
+        if [str(slot) for slot in existing.get_editor_property('compatible_sockets')] == target:
+            continue
+        existing.modify()
+        existing.set_editor_property('compatible_sockets', target)
+        blueprint.modify()
+        compile_blueprint(blueprint)
+        saved = unreal.get_default_object(blueprint.generated_class())
+        assert [str(slot) for slot in saved.get_editor_property('compatible_sockets')] == target, part
+        assert unreal.EditorAssetLibrary.save_loaded_asset(blueprint, False), part
+        changed.append(part)
+    return changed
+
+
+def sync_ship_mounts():
+    """Apply the layout to the saved Ship catalogue without rebuilding other skills."""
+    layouts = ship_group_layouts()
+    catalog = unreal.load_asset(BUILD_PATH)
+    ship_class = unreal.load_class(None, SHIP_BP + '.BP_CombatAvatarFly01_C')
+    hull = unreal.get_default_object(ship_class).get_hull_mesh_component()
+    hull_slots = {str(slot) for slot in hull.get_all_socket_names()}
+    groups = catalog.get_editor_property('groups')
+    assert {str(g.configuration_id) for g in groups} == {'Group_' + node for node in layouts}
+    for node, layout in layouts.items():
+        slots = [slot for _, part_slots in layout for slot in part_slots]
+        assert len(slots) == len(set(slots)), (node, slots)
+        assert set(slots) <= hull_slots, (node, sorted(set(slots) - hull_slots))
+    changed_parts = sync_ship_part_sockets(layouts)
+    changed_groups = []
+    for index, group in enumerate(groups):
+        node = str(group.configuration_id).removeprefix('Group_')
+        expected = configured_mounts(layouts[node])
+        actual = group.get_editor_property('mounts')
+        actual_mounts = [(str(m.socket_name), m.part_class) for m in actual]
+        expected_mounts = [(str(m.socket_name), m.part_class) for m in expected]
+        if actual_mounts == expected_mounts:
+            continue
+        group.set_editor_property('mounts', expected)
+        notes = str(group.get_editor_property('authoring_notes')).split(' 原方案', 1)[0]
+        group.set_editor_property('authoring_notes', notes)
+        groups[index] = group
+        changed_groups.append(node)
+    if changed_groups:
+        catalog.modify()
+        catalog.set_editor_property('groups', groups)
+        catalog.set_editor_property('revision', catalog.revision + 1)
+        issues = list(unreal.GuLiSkillAuthoringLibrary.validate_ship_catalog(catalog, ship_class))
+        assert not issues, '\n'.join(str(issue) for issue in issues)
+        assert unreal.EditorAssetLibrary.save_loaded_asset(catalog, False)
+    return {'groups': changed_groups, 'parts': changed_parts, 'revision': catalog.revision}
+
+
 def author():
     hangar = asset(HANGAR_PATH, unreal.GuLiShipHangarDefinition)
     actions = unreal.load_asset(SHIP_ROOT + '/Abilities/DA_ShipAbilitySet_WingmanV3')
@@ -54,39 +141,38 @@ def author():
     hangar.set_editor_property('ability_set', actions)
     hangar.set_editor_property('loadout', value(unreal.GuLiShipAbilityLoadoutState, ability_ids=selected))
 
-    # Draft configurations retain known model mappings. Unconfirmed layouts are recorded, not guessed.
+    layouts = ship_group_layouts()
     rows = [
-        ('01', 'Turret', 1, '', '机炮', 'BP_SC_Autocannon', ['bottom_mid_0', 'bottom_mid_1', 'bottom_mid_2']),
-        ('02', 'Turret', 2, '01', '双联火炮', 'BP_SC_Twin_Barrel_Turret', ['bottom_mid_0', 'bottom_mid_2']),
-        ('03', 'Turret', 3, '02', '三联火炮', 'BP_SC_Triple_Barrel_Turret', ['bottom_0', 'bottom_2', 'bottom_3', 'bottom_4', 'bottom_5']),
-        ('04', 'AirGuns', 1, '', '近防炮', 'BP_SC_CIWS', ['air_' + str(i) for i in range(13, 42)]),
-        ('05', 'AirGuns', 2, '04', '防空炮组', 'BP_SC_Single_Barrel_Turret', []),
-        ('06', 'MissilePods', 1, '', '雷神导弹舱', 'BP_SC_Thor_MissilePod', ['missilepod_1', 'missilepod_2', 'missilepod_3']),
-        ('07', 'MissilePods', 2, '06', '雷神导弹舱二级', 'BP_SC_Thor_MissilePod_Lv2', ['missilepod_1', 'missilepod_2', 'missilepod_3']),
-        ('08', 'Hangar', 1, '', '僚机仓', 'BP_SC_Drone_LaunchBay', ['wingman_bay_1', 'wingman_bay_2']),
-        ('09', 'ElectronicSupport', 1, '', '电子干扰装置', 'BP_SC_Electronic_JammingDevice', ['group_buff_generator']),
-        ('10', 'Shield', 1, '', '护盾发生器', 'BP_SC_Shield_Generator', ['shield_generator']),
-        ('11', 'BombBay', 1, '', '燃烧弹发射仓', 'BP_SC_Incendiary_Bomb_LaunchBay', ['tracking_missile_launch_bay_1', 'tracking_missile_launch_bay_2']),
-        ('12', 'BombBay', 2, '11', '燃烧弹发射仓二级', 'BP_SC_Incendiary_Bomb_LaunchBay', ['tracking_missile_launch_bay_1', 'tracking_missile_launch_bay_2']),
-        ('13', 'BombBay', 3, '12', '燃烧弹发射仓三级', 'BP_SC_Incendiary_Bomb_LaunchBay', ['tracking_missile_launch_bay_1', 'tracking_missile_launch_bay_2']),
+        ('01', 'Turret', 1, '', '机炮'),
+        ('02', 'Turret', 2, '01', '双联火炮'),
+        ('03', 'Turret', 3, '02', '三联火炮'),
+        ('04', 'AirGuns', 1, '', '近防炮'),
+        ('05', 'AirGuns', 2, '04', '防空炮组'),
+        ('06', 'MissilePods', 1, '', '雷神导弹舱'),
+        ('07', 'MissilePods', 2, '06', '雷神导弹舱二级'),
+        ('08', 'Hangar', 1, '', '僚机仓'),
+        ('09', 'ElectronicSupport', 1, '', '电子干扰装置'),
+        ('10', 'Shield', 1, '', '护盾发生器'),
+        ('11', 'BombBay', 1, '', '燃烧弹发射仓'),
+        ('12', 'BombBay', 2, '11', '燃烧弹发射仓二级'),
+        ('13', 'BombBay', 3, '12', '燃烧弹发射仓三级'),
     ]
     groups, upgrades = [], []
-    for node, route, level, predecessor, label, model, sockets in rows:
-        executable = node == '08'
+    for node, route, level, predecessor, label in rows:
+        belly = node in ('01', '02', '03')
+        executable = belly or node == '08'
         notes = '' if executable else '草稿：战斗执行未实现，不进入奖励池；数值继续引用原数据表。'
-        if node in ('01', '02'):
-            notes += ' 原方案 bottom_mid_* 在当前舰体上不存在，挂点布局待确认。'
-        if node == '04':
-            notes += ' 原方案 air_13–41 中 air_18 在当前舰体上不存在。'
-        if node == '05':
-            notes += (' 原方案 BP_SC_Single_Barrel_Turret 占 air_1–13，BP_SC_CIWS 占 air_13–41，'
-                      'air_13 重复且 air_18 缺失；整组挂点暂留空，待确认完整布局。')
         capability = value(unreal.GuLiShipCapabilityDefinition, capability_id=route)
-        if executable:
+        if belly:
+            shell = unreal.load_asset('/Game/GuLiStrike/FX/Xuntian/Belly/DA_XuntianBellyShell' + str(level))
+            assert shell, 'Run author_xuntian_belly.py first'
+            capability.set_editor_property('component_class', unreal.GuLiXuntianBellyBattery)
+            capability.set_editor_property('configuration', shell)
+        elif executable:
             capability.set_editor_property('component_class', unreal.GuLiShipHangarCapabilityComponent)
             capability.set_editor_property('configuration', hangar)
         groups.append(value(unreal.GuLiShipPartGroupDefinition, configuration_id='Group_' + node,
-                            group_id=route, mounts=mounts(model, sockets), capabilities=[capability],
+                            group_id=route, mounts=configured_mounts(layouts[node]), capabilities=[capability],
                             executable=executable, authoring_notes=notes))
         upgrade = value(unreal.GuLiShipUpgradeNode, node_id=node, display_name=label, route_id=route,
                         level=level, replaces_node_id=predecessor, group_configuration_id='Group_' + node)
@@ -95,17 +181,14 @@ def author():
             upgrade.set_editor_property('acquisition_requirements', value(unreal.GuLiShipRuleExpression, root=0, nodes=[requirement]))
         upgrades.append(upgrade)
     catalog = asset(BUILD_PATH, unreal.GuLiShipBuildCatalog)
-    catalog.set_editor_property('revision', 1)
+    catalog.set_editor_property('revision', max(catalog.revision, 2))
     catalog.set_editor_property('groups', groups)
     catalog.set_editor_property('upgrades', upgrades)
     catalog.set_editor_property('exclusions', [value(unreal.GuLiShipExclusionRule, rule_id=rule, routes=routes) for rule, routes in [
         ('AirGunsVsMissilePods', ['AirGuns', 'MissilePods']), ('HangarVsBombBay', ['Hangar', 'BombBay']),
         ('ElectronicSupportVsShield', ['ElectronicSupport', 'Shield'])]])
 
-    part = unreal.load_asset(PART_BP)
-    part_cdo = unreal.get_default_object(unreal.load_class(None, PART_BP + '.BP_SC_Drone_LaunchBay_C'))
-    part_cdo.set_editor_property('compatible_sockets', ['wingman_bay_1', 'wingman_bay_2'])
-    compile_blueprint(part)
+    sync_ship_part_sockets(layouts)
     for path in (SHIP_ROOT + '/BP_GuLiStrikeShip', SHIP_BP):
         blueprint = unreal.load_asset(path)
         cdo = unreal.get_default_object(unreal.load_class(None, path + '.' + path.rsplit('/', 1)[1] + '_C'))
@@ -128,7 +211,7 @@ def author():
     issues = list(unreal.GuLiSkillAuthoringLibrary.validate_ship_catalog(catalog, ship_class))
     issues += list(unreal.GuLiSkillAuthoringLibrary.validate_commander_catalog(commander))
     assert not issues, '\n'.join(str(i) for i in issues)
-    for item in (part, hangar, catalog, commander):
+    for item in (hangar, catalog, commander):
         assert unreal.EditorAssetLibrary.save_loaded_asset(item, only_if_is_dirty=False), item.get_path_name()
     # Strip removed GA fields on resave, while retaining all existing numeric data and references.
     for path in unreal.EditorAssetLibrary.list_assets(SHIP_ROOT + '/Abilities', recursive=True, include_folder=False):

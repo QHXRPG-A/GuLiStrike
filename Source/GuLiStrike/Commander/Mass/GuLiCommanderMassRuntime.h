@@ -53,6 +53,9 @@ struct GULISTRIKE_API FGuLiMassSoldierRuntimeFragment : public FMassFragment
 	uint8 NextMechanicalMuzzle = 0;
 	float Health = 100.0f;
 	float MaxHealth = 100.0f;
+	// Mirrored from the public combat ledger, including on ownership restore.
+	float Shield = 0.0f;
+	float MaxShield = 0.0f;
 	float Defense = 0.0f;
 	TSharedPtr<const TArray<FGuLiResolvedSkillProfile>> WeaponProfiles;
 	TArray<FGuLiSoldierWeaponRuntime> Weapons;

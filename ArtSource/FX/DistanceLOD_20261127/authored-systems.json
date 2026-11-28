@@ -1,0 +1,1105 @@
+{
+  "NS_Tornado_under": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundMaxRankTornado",
+    "source": "/Game/Assets/ExternalPacks/NiagaraBigVFX/Effects/Niagara/Tornado/NS_Tornado_under",
+    "bands_cm": {
+      "Gareki": [
+        0,
+        100000000.0
+      ],
+      "MeshMain004": [
+        0,
+        100000000.0
+      ],
+      "MeshMain006": [
+        0,
+        8000.0
+      ],
+      "PointLight": [
+        0,
+        8000.0
+      ],
+      "Smoke": [
+        0,
+        100000000.0
+      ],
+      "outSide_b": [
+        0,
+        8000.0
+      ],
+      "outSide_b_under": [
+        0,
+        100000000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Gareki",
+      "MeshMain004",
+      "Smoke",
+      "outSide_b_under"
+    ],
+    "far": [
+      "Gareki",
+      "MeshMain004",
+      "Smoke",
+      "outSide_b_under"
+    ],
+    "shaders": false,
+    "compile_errors": [],
+    "shared_middle": true
+  },
+  "NS_Hit_1": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/Weapons/NS_GroundHit",
+    "source": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Hit_1",
+    "bands_cm": {
+      "Debris": [
+        0,
+        8000.0
+      ],
+      "Flare": [
+        0,
+        8000.0
+      ],
+      "RIbbonTrailFollower": [
+        0,
+        15000.0
+      ],
+      "RibbonCore": [
+        0,
+        15000.0
+      ],
+      "Smoke": [
+        0,
+        8000.0
+      ],
+      "Sparks": [
+        0,
+        15000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Flash",
+      "Glow",
+      "RIbbonTrailFollower",
+      "RibbonCore",
+      "Sparks"
+    ],
+    "far": [
+      "Flash",
+      "Glow"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "P_UpgradeGlow_Converted": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundUpgradeGlow",
+    "source": "/Game/Assets/VFX/Upgrades/NiagaraUpgradeGlow/Particles/P_UpgradeGlow_Converted",
+    "bands_cm": {
+      "Circle02": [
+        0,
+        100000000.0
+      ],
+      "Circle03": [
+        0,
+        8000.0
+      ],
+      "Circle04": [
+        0,
+        8000.0
+      ],
+      "Circle05": [
+        0,
+        8000.0
+      ],
+      "Particle02": [
+        0,
+        100000000.0
+      ],
+      "Particle03": [
+        0,
+        8000.0
+      ],
+      "circle": [
+        0,
+        8000.0
+      ],
+      "circle001": [
+        0,
+        100000000.0
+      ],
+      "light01": [
+        0,
+        8000.0
+      ],
+      "light02": [
+        0,
+        8000.0
+      ],
+      "light03": [
+        0,
+        8000.0
+      ],
+      "light04": [
+        0,
+        100000000.0
+      ],
+      "mesh02": [
+        0,
+        100000000.0
+      ],
+      "mesh03": [
+        0,
+        100000000.0
+      ],
+      "mesh04": [
+        0,
+        8000.0
+      ],
+      "particles01": [
+        0,
+        100000000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Circle02",
+      "Particle02",
+      "circle001",
+      "light04",
+      "mesh02",
+      "mesh03",
+      "particles01"
+    ],
+    "far": [
+      "Circle02",
+      "Particle02",
+      "circle001",
+      "light04",
+      "mesh02",
+      "mesh03",
+      "particles01"
+    ],
+    "shaders": false,
+    "compile_errors": [],
+    "shared_middle": true
+  },
+  "NS_ConstructionComplete": {
+    "path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionComplete",
+    "source": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionComplete",
+    "bands_cm": {
+      "Decal": [
+        0,
+        15000.0
+      ],
+      "light02": [
+        0,
+        8000.0
+      ],
+      "mesh02": [
+        0,
+        15000.0
+      ],
+      "mesh03": [
+        0,
+        15000.0
+      ],
+      "mesh04": [
+        0,
+        8000.0
+      ],
+      "mesh05": [
+        0,
+        8000.0
+      ],
+      "mesh06": [
+        0,
+        8000.0
+      ],
+      "mesh07": [
+        0,
+        8000.0
+      ],
+      "mesh08": [
+        0,
+        8000.0
+      ],
+      "mesh09": [
+        0,
+        8000.0
+      ],
+      "star01": [
+        0,
+        15000.0
+      ],
+      "star02": [
+        0,
+        8000.0
+      ],
+      "star03": [
+        0,
+        8000.0
+      ],
+      "star05": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Decal",
+      "UP01",
+      "circle01",
+      "mesh01",
+      "mesh02",
+      "mesh03",
+      "star01"
+    ],
+    "far": [
+      "UP01",
+      "circle01",
+      "mesh01"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_ConstructionTopLoop": {
+    "path": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionTopLoop",
+    "source": "/Game/GuLiStrike/Buildings/Construction/NS_ConstructionTopLoop",
+    "bands_cm": {
+      "EdgeSparks": [
+        0,
+        8000.0
+      ],
+      "FloatingMotes": [
+        0,
+        15000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "FloatingMotes",
+      "TailColumns"
+    ],
+    "far": [
+      "TailColumns"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_WingmanBombardment_01": {
+    "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01",
+    "source": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01",
+    "bands_cm": {
+      "NE_Bullet_01": [
+        0,
+        8000.0
+      ],
+      "NE_Bullet_02": [
+        0,
+        8000.0
+      ],
+      "NE_CloudOut_01": [
+        0,
+        15000.0
+      ],
+      "NE_Cloud_02": [
+        0,
+        15000.0
+      ],
+      "NE_Cloud_03": [
+        0,
+        8000.0
+      ],
+      "NE_Cloud_04": [
+        0,
+        8000.0
+      ],
+      "NE_Core02": [
+        0,
+        8000.0
+      ],
+      "NE_DustOut_01": [
+        0,
+        15000.0
+      ],
+      "NE_Dust_Trail": [
+        0,
+        8000.0
+      ],
+      "NE_GlowOut": [
+        0,
+        15000.0
+      ],
+      "NE_Glow_Base": [
+        0,
+        8000.0
+      ],
+      "NE_Glow_End": [
+        0,
+        8000.0
+      ],
+      "NE_Ground_02": [
+        0,
+        8000.0
+      ],
+      "NE_Rock": [
+        0,
+        8000.0
+      ],
+      "NE_Rock001": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "NE_CloudOut_01",
+      "NE_Cloud_01",
+      "NE_Cloud_02",
+      "NE_Core01",
+      "NE_DustOut_01",
+      "NE_GlowOut",
+      "NE_Ground_01"
+    ],
+    "far": [
+      "NE_Cloud_01",
+      "NE_Core01",
+      "NE_Ground_01"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_WM01_Explosion_2A": {
+    "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_2A",
+    "source": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_2A",
+    "bands_cm": {
+      "Distortion": [
+        0,
+        8000.0
+      ],
+      "OmnidirectionalBurst": [
+        0,
+        15000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Explosion_Flipbook",
+      "OmnidirectionalBurst"
+    ],
+    "far": [
+      "Explosion_Flipbook"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_WM01_MissileFlight": {
+    "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+    "source": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+    "bands_cm": {
+      "Core": [
+        0,
+        100000000.0
+      ],
+      "Exhaust": [
+        0,
+        100000000.0
+      ],
+      "Trail": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Core",
+      "Exhaust"
+    ],
+    "far": [
+      "Core",
+      "Exhaust"
+    ],
+    "shaders": false,
+    "compile_errors": [],
+    "shared_middle": true
+  },
+  "NS_GroundMech_Blink": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink",
+    "source": "/Game/GuLiStrike/FX/GroundMech/Blink/NS_GroundMech_Blink",
+    "bands_cm": {
+      "ArmorFlecks_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "ArmorFlecks": [
+        0,
+        8000.0
+      ],
+      "Strands_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "Strands_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "Strands": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {
+      "Strands": [
+        "SpawnBurst_Instantaneous.Spawn Count",
+        1152,
+        576
+      ],
+      "ArmorFlecks": [
+        "SpawnBurst_Instantaneous.Spawn Count",
+        64,
+        0
+      ]
+    },
+    "medium": [
+      "ArmorFlecks",
+      "Strands"
+    ],
+    "far": [
+      "Strands"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_GroundBurningBurst": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst",
+    "source": "/Game/Assets/VFX/Buffs/BuffLoop/NS/Vfx_MagicShell",
+    "bands_cm": {},
+    "density": {},
+    "medium": [
+      "BurningShell"
+    ],
+    "far": [
+      "BurningShell"
+    ],
+    "all_distances_identical": true,
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_GroundBurningStatus": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus",
+    "source": "/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus",
+    "bands_cm": {
+      "Smoke001": [
+        0,
+        15000.0
+      ],
+      "Trails": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Dots",
+      "Smoke001"
+    ],
+    "far": [
+      "Dots"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_GroundElectromagneticArc": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/Electromagnetic/NS_GroundElectromagneticArc",
+    "source": "/Game/GuLiStrike/FX/GroundMech/Electromagnetic/NS_GroundElectromagneticArc",
+    "bands_cm": {
+      "Lightning": [
+        0,
+        100000000.0
+      ],
+      "glow": [
+        0,
+        100000000.0
+      ],
+      "smoke": [
+        0,
+        8000.0
+      ],
+      "spark": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Lightning",
+      "glow"
+    ],
+    "far": [
+      "Lightning",
+      "glow"
+    ],
+    "shaders": false,
+    "compile_errors": [],
+    "shared_middle": true
+  },
+  "NS_GroundExplosiveFlight_Toon": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon",
+    "source": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveFlight_Toon",
+    "bands_cm": {
+      "ExhaustPlume_Reduced": [
+        8000.0,
+        100000000.0
+      ],
+      "ExhaustPlume": [
+        0,
+        8000.0
+      ],
+      "ProjectileShell": [
+        0,
+        100000000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "ExhaustPlume",
+      "ProjectileShell"
+    ],
+    "far": [
+      "ExhaustPlume",
+      "ProjectileShell"
+    ],
+    "shaders": false,
+    "compile_errors": [],
+    "shared_middle": true
+  },
+  "NS_GroundExplosiveImpact": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact",
+    "source": "/Game/GuLiStrike/FX/GroundMech/ExplosivePackage/NS_GroundExplosiveImpact",
+    "bands_cm": {
+      "NE_Impact": [
+        0,
+        15000.0
+      ],
+      "NE_Main_Explosion001": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "NE_Impact",
+      "NE_Main_Explosion"
+    ],
+    "far": [
+      "NE_Main_Explosion"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_GroundMech_Muzzle_A3": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A3/NS_GroundMech_Muzzle_A3",
+    "source": "/Game/GuLiStrike/FX/GroundMech/FiringFeedback_A3/NS_GroundMech_Muzzle_A3",
+    "bands_cm": {
+      "NE_gun_nozzle_fire_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "NE_gun_nozzle_fire_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "NE_gun_nozzle_fire": [
+        0,
+        8000.0
+      ],
+      "NE_spread_spark": [
+        0,
+        15000.0
+      ]
+    },
+    "density": {
+      "NE_gun_nozzle_fire": [
+        "SpawnBurst_Instantaneous.Spawn Count",
+        7,
+        4
+      ]
+    },
+    "medium": [
+      "NE_gun_nozzle_fire",
+      "NE_spread_spark"
+    ],
+    "far": [
+      "NE_gun_nozzle_fire"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_GroundMech_RocketJet": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet",
+    "source": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_RocketJet",
+    "bands_cm": {
+      "NE_flash_point_light": [
+        0,
+        8000.0
+      ],
+      "NE_forward_simple_bullet001": [
+        0,
+        15000.0
+      ],
+      "NE_forward_simple_bullet002": [
+        0,
+        8000.0
+      ],
+      "NE_spread_spark": [
+        0,
+        15000.0
+      ],
+      "NE_spread_spark001": [
+        0,
+        8000.0
+      ],
+      "NE_spread_spark003": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "NE_forward_simple_bullet",
+      "NE_forward_simple_bullet001",
+      "NE_gun_nozzle_fire",
+      "NE_spread_spark"
+    ],
+    "far": [
+      "NE_forward_simple_bullet",
+      "NE_gun_nozzle_fire"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_NoSurvivorsCastFlash": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsCastFlash",
+    "source": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsCastFlash",
+    "bands_cm": {
+      "Borders_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "Borders_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "Borders": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "Borders"
+    ],
+    "far": [
+      "Borders"
+    ],
+    "shaders": true,
+    "compile_errors": []
+  },
+  "NS_NoSurvivorsCastLightning": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsCastLightning",
+    "source": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsCastLightning",
+    "bands_cm": {
+      "Lightning_Reduced": [
+        8000.0,
+        100000000.0
+      ],
+      "Lightning": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {
+      "Lightning": [
+        "SpawnRate.SpawnRate",
+        30,
+        30
+      ]
+    },
+    "medium": [
+      "Lightning"
+    ],
+    "far": [
+      "Lightning"
+    ],
+    "shaders": false,
+    "compile_errors": [],
+    "shared_middle": true
+  },
+  "NS_NoSurvivorsFlight": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsFlight",
+    "source": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsFlight",
+    "bands_cm": {
+      "NE_HeatHaze": [
+        0,
+        8000.0
+      ],
+      "NE_Smoke": [
+        0,
+        15000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "NE_Smoke",
+      "NE_Thrusters"
+    ],
+    "far": [
+      "NE_Thrusters"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_NoSurvivorsImpact": {
+    "path": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsImpact",
+    "source": "/Game/GuLiStrike/FX/GroundMech/NoSurvivors/NS_NoSurvivorsImpact",
+    "bands_cm": {
+      "NE_Bullet_01": [
+        0,
+        8000.0
+      ],
+      "NE_CloudOut_01": [
+        0,
+        8000.0
+      ],
+      "NE_Cloud_02": [
+        0,
+        15000.0
+      ],
+      "NE_Cloud_03": [
+        0,
+        8000.0
+      ],
+      "NE_Core02": [
+        0,
+        8000.0
+      ],
+      "NE_DustOut_01": [
+        0,
+        15000.0
+      ],
+      "NE_Dust_Trail": [
+        0,
+        8000.0
+      ],
+      "NE_GlowOut": [
+        0,
+        15000.0
+      ],
+      "NE_Glow_Base": [
+        0,
+        8000.0
+      ],
+      "NE_Glow_End": [
+        0,
+        8000.0
+      ],
+      "NE_Ground_02": [
+        0,
+        8000.0
+      ],
+      "NE_Rock": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "NE_Cloud_01",
+      "NE_Cloud_02",
+      "NE_Core01",
+      "NE_DustOut_01",
+      "NE_GlowOut",
+      "NE_Ground_01"
+    ],
+    "far": [
+      "NE_Cloud_01",
+      "NE_Core01",
+      "NE_Ground_01"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_TransitFlash": {
+    "path": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash",
+    "source": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash",
+    "bands_cm": {
+      "TransitFlash_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "TransitFlash_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "TransitFlash": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {},
+    "medium": [
+      "TransitFlash"
+    ],
+    "far": [
+      "TransitFlash"
+    ],
+    "shaders": true,
+    "compile_errors": []
+  },
+  "NS_TransitTrail": {
+    "path": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail",
+    "source": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail",
+    "bands_cm": {
+      "TransitRibbon_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "TransitRibbon_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "TransitRibbon": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {
+      "TransitRibbon": [
+        "SpawnRate.SpawnRate",
+        25,
+        12
+      ]
+    },
+    "medium": [
+      "TransitRibbon"
+    ],
+    "far": [
+      "TransitRibbon"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_WingmanFlightTrail": {
+    "path": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+    "source": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+    "bands_cm": {
+      "LeftEngineFlame_Reduced": [
+        8000.0,
+        100000000.0
+      ],
+      "LeftEngineFlame": [
+        0,
+        8000.0
+      ],
+      "LeftFlightRibbon_Reduced": [
+        8000.0,
+        100000000.0
+      ],
+      "LeftFlightRibbon": [
+        0,
+        8000.0
+      ],
+      "RightEngineFlame_Reduced": [
+        8000.0,
+        100000000.0
+      ],
+      "RightEngineFlame": [
+        0,
+        8000.0
+      ],
+      "RightFlightRibbon_Reduced": [
+        8000.0,
+        100000000.0
+      ],
+      "RightFlightRibbon": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {
+      "LeftEngineFlame": [
+        "SpawnRate.SpawnRate",
+        10,
+        10
+      ],
+      "RightEngineFlame": [
+        "SpawnRate.SpawnRate",
+        10,
+        10
+      ],
+      "LeftFlightRibbon": [
+        "SpawnRate.SpawnRate",
+        24,
+        24
+      ],
+      "RightFlightRibbon": [
+        "SpawnRate.SpawnRate",
+        24,
+        24
+      ]
+    },
+    "medium": [
+      "LeftEngineFlame",
+      "LeftFlightRibbon",
+      "RightEngineFlame",
+      "RightFlightRibbon"
+    ],
+    "far": [
+      "LeftEngineFlame",
+      "LeftFlightRibbon",
+      "RightEngineFlame",
+      "RightFlightRibbon"
+    ],
+    "shaders": false,
+    "compile_errors": [],
+    "shared_middle": true
+  },
+  "NS_XuntianSilverGlow": {
+    "path": "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianSilverGlow",
+    "source": "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianSilverGlow",
+    "bands_cm": {
+      "SilverGlow_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "SilverGlow_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "SilverGlow": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {
+      "SilverGlow": [
+        "SpawnRate.SpawnRate",
+        18,
+        9
+      ]
+    },
+    "medium": [
+      "SilverGlow"
+    ],
+    "far": [
+      "SilverGlow"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_Sparks": {
+    "path": "/Game/GuLiStrike/FX/ModelProjectiles/NS_Sparks",
+    "source": "/Game/MechaDestroyer/FX/NS_Sparks",
+    "bands_cm": {
+      "OmnidirectionalBurst_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "OmnidirectionalBurst_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "OmnidirectionalBurst": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {
+      "OmnidirectionalBurst": [
+        "SpawnBurst_Instantaneous.Spawn Count",
+        90,
+        24
+      ]
+    },
+    "medium": [
+      "OmnidirectionalBurst"
+    ],
+    "far": [
+      "OmnidirectionalBurst"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_Sparks_Smaller": {
+    "path": "/Game/GuLiStrike/FX/ModelProjectiles/NS_Sparks_Smaller",
+    "source": "/Game/MechaDestroyer/FX/NS_Sparks_Smaller",
+    "bands_cm": {
+      "OmnidirectionalBurst_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "OmnidirectionalBurst_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "OmnidirectionalBurst": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {
+      "OmnidirectionalBurst": [
+        "SpawnBurst_Instantaneous.Spawn Count",
+        90,
+        24
+      ]
+    },
+    "medium": [
+      "OmnidirectionalBurst"
+    ],
+    "far": [
+      "OmnidirectionalBurst"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  },
+  "NS_Trails": {
+    "path": "/Game/GuLiStrike/FX/ModelProjectiles/NS_Trails",
+    "source": "/Game/MechaDestroyer/FX/NS_Trails",
+    "bands_cm": {
+      "DirectionalBurst_Reduced": [
+        8000.0,
+        15000.0
+      ],
+      "DirectionalBurst_Minimal": [
+        15000.0,
+        100000000.0
+      ],
+      "DirectionalBurst": [
+        0,
+        8000.0
+      ],
+      "LocationBasedRibbon": [
+        0,
+        8000.0
+      ]
+    },
+    "density": {
+      "DirectionalBurst": [
+        "SpawnRate.SpawnRate",
+        150,
+        36
+      ]
+    },
+    "medium": [
+      "DirectionalBurst"
+    ],
+    "far": [
+      "DirectionalBurst"
+    ],
+    "shaders": false,
+    "compile_errors": []
+  }
+}

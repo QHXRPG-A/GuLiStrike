@@ -28,6 +28,11 @@ struct FGuLiLocalCombatEffect
 	GENERATED_BODY()
 	UPROPERTY() FGuLiCombatEffectState State;
 	UPROPERTY() TObjectPtr<UNiagaraComponent> Flight;
+	UPROPERTY() TObjectPtr<UNiagaraComponent> WorldSmoke;
+	UPROPERTY() TObjectPtr<UNiagaraComponent> HeadGlow;
+	TOptional<EGuLiCommanderLODLevel> AccentDetail;
+	double AccentDetailSince = -1;
+	double AccentsOffscreenSince = -1;
 	UPROPERTY() TObjectPtr<UNiagaraComponent> Waiting;
 	UPROPERTY() TObjectPtr<UNiagaraComponent> ActiveLoop;
 	UPROPERTY() TObjectPtr<class AGuLiFlightVisualActor> FlightActor;
@@ -58,6 +63,7 @@ struct FGuLiLocalCombatEffect
 	UPROPERTY() TArray<FGuLiGroundTraceSegment> GroundTrailSegments;
 	bool bActivationPlayed = false;
 	bool bSuppressOldBurst = false;
+	bool bPilotBlastArmed = false, bPilotBlastPlayed = false;
 	EGuLiCommanderLODLevel FlightDetailLevel=EGuLiCommanderLODLevel::Full;
 	double FlightDetailChangedAt=-1;
 };
@@ -308,11 +314,13 @@ private:
 		FGuLiCombatShotCue Cue;
 		FVector LastDirection = FVector::ForwardVector;
 		float ExpireServerTime = 0.0f;
+		float NextDetailRefresh = 0.0f;
 	};
 	float ServerTime() const;
 	UGuLiCombatEffectCatalog* GetCatalog();
 	UNiagaraComponent* SpawnPooled(int32 VfxId, FVector Location, float DynamicScale,
-		float Radius = 0, FRotator Rotation = FRotator::ZeroRotator, FName ScaleParameterName = NAME_None, bool bActivate = true);
+		float Radius = 0, FRotator Rotation = FRotator::ZeroRotator, FName ScaleParameterName = NAME_None, bool bActivate = true,
+		EGuLiCommanderLODLevel Detail = EGuLiCommanderLODLevel::Full);
 	void Retire(UNiagaraComponent* Component, float Seconds, bool bDeactivate = true);
 	void RemoveVisual(const FGuid& Id, bool bImmediate);
 	void QueueSustainedGunfire(float Now, bool bEnabled);
@@ -339,6 +347,8 @@ private:
 	bool GetSystemWorldBounds(UNiagaraSystem* System, const FTransform& Transform, FBox& OutBounds) const;
 	TMap<TWeakObjectPtr<UNiagaraComponent>,int32> SpawnedEffectIds;
 	void UpdateField(FGuLiLocalCombatEffect& Visual, float Now);
+	void UpdateFlightAccents(FGuLiLocalCombatEffect& Visual, const FVector& Position);
+	UPROPERTY(Transient) TArray<TObjectPtr<UNiagaraSystem>> ShellSmokeLODs;
 	void UpdateGroundWarning(const FGuLiCombatEffectState& State, bool bEnabled);
 	void RemoveGuidanceMember(const FGuLiCombatEffectState& State);
 	void RefreshGuidanceWarning(const FGuid& BatchId, bool bEnabled);

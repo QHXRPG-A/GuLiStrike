@@ -254,6 +254,12 @@ struct GULISTRIKE_API FGuLiCombatTargetSnapshot
 	float MaxHealth = 0.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
+	float Shield = 0.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
+	float MaxShield = 0.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
 	bool bAlive = false;
 
 	TWeakObjectPtr<AActor> CollisionActor;

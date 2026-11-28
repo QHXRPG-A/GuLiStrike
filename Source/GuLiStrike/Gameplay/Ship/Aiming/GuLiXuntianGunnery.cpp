@@ -1,6 +1,12 @@
 #include "Gameplay/Ship/Aiming/GuLiXuntianGunnery.h"
 #include "Gameplay/Ship/Aiming/GuLiXuntianBarrelAnim.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
+#include "Gameplay/Ship/Build/GuLiShipBuildCatalog.h"
+#include "Gameplay/Ship/Build/GuLiShipAssemblyComponent.h"
+#include "Gameplay/Ship/Capabilities/GuLiXuntianBellyBattery.h"
+#include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Gameplay/Ship/GuLiStrikeWeaponPart.h"
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Gameplay/Data/Generated/GuLiVfxIds.h"
@@ -21,7 +27,7 @@ namespace
 {
 struct FBatteryProfile { FName Skill; float Damage, Interval, Speed, TurnRate; };
 const FBatteryProfile Air{TEXT("Xuntian.AirGuns"), 10, .105f, 30500, 43};
-const FBatteryProfile Ground{TEXT("Xuntian.BellyGuns"), 30, .34f, 20000, 26};
+constexpr double BellyTurnRate = 26.;
 
 FTransform RefBone(const FReferenceSkeleton& Ref, int32 Index)
 {
@@ -87,27 +93,57 @@ bool UGuLiXuntianGunnery::BindRangeHull(FGuLiHybridManifestData& Data,FString& E
     return Class && FGuLiHybridAdapterRegistry::BindDefinition(Data,TEXT("range/xuntian_target"),TEXT("XuntianRangeHull"),Error)
         && FGuLiHybridComponentState::BindDefinitionLayout(Data,TEXT("range/xuntian_target"),*Class,Error);
 }
-void UGuLiXuntianGunnery::AddManifestRules(FGuLiHybridManifestData& Data)
+bool UGuLiXuntianGunnery::AddManifestRules(const UGuLiShipBuildCatalog& Catalog, FGuLiHybridManifestData& Data, FString& Error)
 {
-    for (const auto& Profile : {Air, Ground})
+    auto AddDamage = [&](FName Skill, float Damage) -> FGuLiHybridRuleEntry&
     {
         auto& Rule = Data.Rules.AddDefaulted_GetRef();
         Rule.Kind = EGuLiHybridRuleKind::Damage;
         Rule.SourceDefinition = TEXT("player/ship");
-        Rule.Id = FGuLiHybridManifest::MakeDamageRuleId(Rule.SourceDefinition, Profile.Skill, Profile.Skill);
-        Rule.Damage = Profile.Damage;
+        Rule.Id = FGuLiHybridManifest::MakeDamageRuleId(Rule.SourceDefinition, Skill, Skill);
+        Rule.Damage = Damage;
         Rule.MaximumTargets = 1;
         Rule.EffectTicks = 900;
-        Rule.CooldownTicks = 0; // Each independently admitted pooled round settles once.
-    }
+        Rule.CooldownTicks = 0;
+        return Rule;
+    };
+    AddDamage(Air.Skill, Air.Damage);
+    int32 Count = 0;
+    for (const auto& Group : Catalog.Groups)
+        for (const auto& Capability : Group.Capabilities)
+            if (const auto* Shell = Cast<UGuLiXuntianShellDefinition>(Capability.Configuration))
+            {
+                FGuLiSpellFieldConfig Field;
+                if (!UGuLiSpellFieldDataSubsystem::ResolveAuthoredConfig(Shell->FieldRow, Field))
+                { Error = TEXT("Missing Xuntian impact field: ") + Shell->FieldRow.ToString(); return false; }
+                auto& Rule = AddDamage(Shell->FieldRow, Field.Damage);
+                Rule.RequiredCapabilityCatalog = TEXT("ship");
+                Rule.RequiredCapabilityGroup = Group.ConfigurationId.ToString().ToLower();
+                Rule.RequiredCapability = Capability.CapabilityId.ToString().ToLower();
+                const auto* Impact = Shell->ImpactField.LoadSynchronous();
+                if (!Impact) { Error = TEXT("Missing Xuntian impact definition"); return false; }
+                Data.Numbers.Add(TEXT("air_damage/")+Rule.Id, Field.Damage * Impact->AirTargetDamageMultiplier);
+                ++Count;
+            }
+    if (Count != 3) { Error = TEXT("Three Xuntian battery tiers are required."); return false; }
+    Data.Strings.Add(TEXT("startup/ship_belly_node"), TEXT("01"));
+    return true;
 }
-void UGuLiXuntianGunnery::SetTrigger(bool Down) { bTrigger = Down; }
+void UGuLiXuntianGunnery::SetTrigger(bool Down)
+{
+    bTrigger = Down;
+    if (!Down) for (auto& Gun : Mounts) Gun.Salvo.bScheduled = false;
+}
 void UGuLiXuntianGunnery::ResetControls()
 {
+    for (auto& Gun : Mounts) { Gun.Salvo.bScheduled = false; Gun.Salvo.Remaining = 0; }
     bTrigger = bHasAim = bViewStarted = bGroundHint = bGround = bAimingAtSurface = false;
     ViewPitch = InitialViewPitch;
     Focus = {};
     Feed.Reset();
+    Contacts.Reset();
+    ContactActors.Reset();
+    ContactSoldiers.Reset();
     NextContacts = NextHint = 0;
 }
 void UGuLiXuntianGunnery::ApplyRemoteAim(FVector Point, bool GroundBank, float MinDeg, float MaxDeg)
@@ -124,13 +160,19 @@ void FGuLiXuntianBatteryState::SerializeAim(FGuLiHybridStateArchive& Ar)
     Ar.Value(bHasAim); Ar.Value(bGround); Ar.Value(Point); Ar.Value(MinAngle); Ar.Value(MaxAngle);
     if (!UGuLiXuntianGunnery::ValidLimits(MinAngle,MaxAngle)) Ar.Reject();
 }
-void FGuLiXuntianBatteryState::Serialize(FGuLiHybridStateArchive& Ar)
+void FGuLiXuntianBatteryState::Serialize(FGuLiHybridStateArchive& Ar, bool bHasSalvos)
 {
     SerializeAim(Ar);
     Ar.Value(Cooldown); Ar.Value(NextAir); Ar.Value(NextGround);
-    Ar.Array(Bores,128,[](auto& A, auto& B)
+    Ar.Array(Bores,128,[bHasSalvos](auto& A, auto& B)
     {
         A.Value(B.Socket); A.Value(B.Aim); A.Value(B.Barrel);
+        if (bHasSalvos)
+        {
+            A.Value(B.Salvo.RoundCooldown); A.Value(B.Salvo.ShotDelay); A.Value(B.Salvo.Remaining);
+            if (B.Salvo.RoundCooldown < 0 || B.Salvo.RoundCooldown > 3.01 || B.Salvo.ShotDelay < 0 ||
+                B.Salvo.ShotDelay > 1.51 || B.Salvo.Remaining < 0 || B.Salvo.Remaining > 2) A.Reject();
+        }
         if (B.Socket.IsNone() || B.Barrel<0 || B.Barrel>=16) A.Reject();
     });
     if (Cooldown<0 || Cooldown>1 || NextAir<0 || NextAir>=128 || NextGround<0 || NextGround>=128) Ar.Reject();
@@ -142,7 +184,7 @@ void UGuLiXuntianGunnery::ReadState(FGuLiXuntianBatteryState& S, bool Full) cons
     if (!Full) return;
     S.Cooldown=Cooldown; S.NextAir=NextAir; S.NextGround=NextGround;
     S.Bores.Reset(Mounts.Num());
-    for (const auto& M:Mounts) S.Bores.Add({M.Socket,M.Aim,M.Barrel});
+    for (const auto& M:Mounts) S.Bores.Add({M.Socket,M.Aim,M.Barrel,M.Salvo});
 }
 void UGuLiXuntianGunnery::RestoreState(const FGuLiXuntianBatteryState& S, bool Full)
 {
@@ -152,7 +194,7 @@ void UGuLiXuntianGunnery::RestoreState(const FGuLiXuntianBatteryState& S, bool F
     RestartMountCache(); RefreshMounts();
     for (auto& M:Mounts)
         if (const auto* B=S.Bores.FindByPredicate([&](const auto& E){return E.Socket==M.Socket;}))
-        { M.Aim=B->Aim; M.Barrel=B->Barrel%M.Bores.Num(); }
+        { M.Aim=B->Aim; M.Barrel=B->Barrel%M.Bores.Num(); M.Salvo=B->Salvo; }
 }
 
 void UGuLiXuntianGunnery::RefreshMounts()
@@ -195,6 +237,8 @@ void UGuLiXuntianGunnery::RefreshMounts()
         Mounts.Add(MoveTemp(Gun));
     }
     Mounts.Sort([](const auto& A,const auto& B){return A.Socket.LexicalLess(B.Socket);});
+    const int32 Level = GetBellyLevel();
+    if (Level > 0) Cards[1] = {TEXT("Belly"), Level};
     BellyMounts.Reset();
     for (int32 I=0;I<Mounts.Num();++I) if (Mounts[I].bGround) BellyMounts.Add(I);
 }
@@ -265,7 +309,7 @@ void UGuLiXuntianGunnery::UpdateGun(FGuLiXuntianMount& G, double Delta)
     Desired=Limit(Desired);
     const FQuat Wanted=FQuat::FindBetweenNormals(LocalRest,G.Frame.InverseTransformVectorNoScale(Desired));
     const double Distance=G.Aim.AngularDistance(Wanted);
-    const double Step=FMath::DegreesToRadians((G.bGround?Ground:Air).TurnRate)*Delta;
+    const double Step=FMath::DegreesToRadians((G.bGround ? BellyTurnRate : Air.TurnRate))*Delta;
     G.Aim=FQuat::Slerp(G.Aim,Wanted,Distance>UE_SMALL_NUMBER?FMath::Min(1.,Step/Distance):1.).GetNormalized();
     G.Direction=Limit(G.Frame.TransformVectorNoScale(G.Aim.RotateVector(LocalRest)).GetSafeNormal());
     G.Aim=FQuat::FindBetweenNormals(LocalRest,G.Frame.InverseTransformVectorNoScale(G.Direction));
@@ -275,9 +319,9 @@ void UGuLiXuntianGunnery::UpdateGun(FGuLiXuntianMount& G, double Delta)
     if (auto* Anim=Cast<UGuLiXuntianBarrelAnim>(Mesh->GetAnimInstance()))
     {
         const FQuat WorldBase=Pose.Yaw*G.Frame.GetRotation();
-        Mesh->SetWorldRotation(WorldBase);
+        if (!WorldBase.Equals(Mesh->GetComponentQuat(),1.e-7)) Mesh->SetWorldRotation(WorldBase);
         const FQuat HingeAxes=WorldBase*G.HingeAxes;
-        Anim->HingeRotation=(HingeAxes.Inverse()*Pose.Pitch*HingeAxes).GetNormalized();
+        Anim->SetHingeRotation((HingeAxes.Inverse()*Pose.Pitch*HingeAxes).GetNormalized());
     }
 }
 
@@ -319,23 +363,24 @@ void UGuLiXuntianGunnery::Advance(double Delta, bool bAllowFire)
     RefreshMounts();
     for (auto& G : Mounts) UpdateGun(G,Delta);
     Cooldown = FMath::Max(0.,Cooldown-Delta);
-    if (bAllowFire && bHasAim && bTrigger && Cooldown <= UE_SMALL_NUMBER && Fire())
-        Cooldown = (bGround ? Ground : Air).Interval;
+    AdvanceBelly(Delta, bAllowFire);
+    if (bAllowFire && !bGround && bHasAim && bTrigger && Cooldown <= UE_SMALL_NUMBER && FireAir())
+        Cooldown = Air.Interval;
 }
-bool UGuLiXuntianGunnery::Fire()
+bool UGuLiXuntianGunnery::FireAir()
 {
     auto* Pool = GetWorld()->GetSubsystem<UGuLiProjectilePoolSubsystem>();
     auto* Ledger = GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>();
     auto* Health = Ship()->GetCombatHealthComponent();
     const auto* PS = Ship()->GetPlayerState<AGuLiBattlePlayerState>();
     if (!Pool || !Ledger || !PS || !Health->IsAlive() || !Ship()->CanAcceptServerIntent()) return false;
-    const FBatteryProfile& Profile = bGround ? Ground : Air;
-    int32& Next = bGround ? NextGround : NextAir;
+    const FBatteryProfile& Profile = Air;
+    int32& Next = NextAir;
     for (int32 I=0; I<Mounts.Num(); ++I)
     {
         const int32 Index = (Next + I) % Mounts.Num();
         auto& G = Mounts[Index];
-        if (!G.Part.IsValid() || G.bGround != bGround || !G.bReachable) continue;
+        if (!G.Part.IsValid() || G.bGround || !G.bReachable) continue;
         FGuLiPooledProjectileLaunch Shot;
         auto& C = Shot.Context;
         C.Source = Health->GetTargetHandle();

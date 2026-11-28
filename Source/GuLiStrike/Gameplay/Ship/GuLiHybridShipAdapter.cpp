@@ -19,7 +19,7 @@
 
 namespace GuLiHybridShip
 {
-constexpr uint32 StateVersion=8;
+constexpr uint32 StateVersion=9;
 struct FPose
 {
     FTransform Transform=FTransform::Identity;
@@ -59,7 +59,7 @@ void Configuration(FGuLiHybridStateArchive& A,FGuLiShipMovementConfig& V)
 }
 void Private(FGuLiHybridStateArchive& A,FPrivate& V)
 {
-    uint32 Version=StateVersion; A.Value(Version); if (Version!=7 && Version!=StateVersion) A.Reject();
+    uint32 Version=StateVersion; A.Value(Version); if (Version<7 || Version>StateVersion) A.Reject();
     A.Value(V.Key); Pose(A,V.Pose); Input(A,V.Simulation); Input(A,V.ControllerInput);
     A.Value(V.bSemantic); A.Value(V.bDeathHandled); Configuration(A,V.Config);
     A.Value(V.LoadoutRevision); A.Value(V.ConfigRevision); A.Value(V.Barrier);
@@ -81,7 +81,7 @@ void Private(FGuLiHybridStateArchive& A,FPrivate& V)
         FGuLiHybridReflectedState::Value(Ar,S.Result.SelectedTarget);
         if (!S.Request.IsValid() || S.Result.LaunchedCount<0 || S.Result.LaunchedCount>GULI_WINGMAN_MEMBERS_PER_FLIGHT) Ar.Reject();
     });
-    if (Version>=8) V.Battery.Serialize(A);
+    if (Version>=8) V.Battery.Serialize(A,Version>=9);
     TSet<FGuid> Requests;for (const auto& S:V.Salvos) {if (Requests.Contains(S.Request)) A.Reject();Requests.Add(S.Request);}
     if (!V.Key.IsValid() || V.Key.Kind!=EGuLiHybridObjectKind::Ship || !V.LoadoutRevision || !V.ConfigRevision || !V.Barrier
         || V.GM.MaxSpeedMultiplier<0 || V.GM.AccelerationMultiplier<0) A.Reject();

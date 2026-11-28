@@ -53,8 +53,8 @@ try:
         ('MachineGunReview_ImpactAfter', (1800, 2200, 100), 2.0)]:
         actor = spawn(unreal.NiagaraActor, label, offset)
         component = actor.get_component_by_class(unreal.NiagaraComponent)
-        component.set_auto_activate(False)
         component.set_asset(flash)
+        component.set_editor_property('auto_activate', False)
         component.deactivate()
         actor.set_actor_scale3d(unreal.Vector(scale, scale, scale))
         component.set_cast_shadow(False)
@@ -67,8 +67,8 @@ try:
                                     ('MachineGunReview_TracerAfter', (2500, 4400, 0), True)]:
         actor = spawn(unreal.NiagaraActor, label, offset)
         component = actor.get_component_by_class(unreal.NiagaraComponent)
-        component.set_auto_activate(False)
         component.set_asset(system)
+        component.set_editor_property('auto_activate', False)
         component.deactivate()
         component.set_cast_shadow(False)
         component.set_editor_property('allow_cull_distance_volume', False)

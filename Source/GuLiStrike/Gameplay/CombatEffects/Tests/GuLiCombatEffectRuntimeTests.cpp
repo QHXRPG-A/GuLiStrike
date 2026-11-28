@@ -412,6 +412,34 @@ bool FGuLiScale020WarningPoolTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("pooled component reused"), Warnings->UpsertWarning(FGuid::NewGuid(), Params));
 	TestTrue(TEXT("reuse cannot compound .2 into .04"), FMath::IsNearlyEqual(Decal->DecalSize.Y * .96, 160.0, .001));
 	TestTrue(TEXT("reuse resets world anchor"), Decal->GetComponentLocation().Equals(Params.Location));
+	auto* Hybrid = F.World->GetSubsystem<UGuLiHybridWorldSubsystem>();
+	if (!TestNotNull(TEXT("battle clock"), Hybrid)) return false;
+	const double BattleTime = Hybrid->GetLocalLogicalSeconds();
+	F.World->TimeSeconds = BattleTime + 600.;
+	Warnings->Tick(0);
+	TestEqual(TEXT("world-time previews expire"), Warnings->GetActiveWarningCount(), 0);
+	Params.bUsesBattleClock = true;
+	Params.bPilotOutline = true;
+	Params.StartServerSeconds = BattleTime;
+	Params.ExpireServerSeconds = BattleTime + 10.;
+	for (float Radius : {800.f, 1200.f, 1600.f})
+	{
+		Params.Radius = Radius;
+		TestTrue(TEXT("a live shell survives world/battle clock drift"), Warnings->UpsertWarning(Id, Params));
+		Warnings->Tick(0);
+		int32 RimCount = 0;
+		Warnings->VisitPilotRims([&](TConstArrayView<FVector> Rim, const FLinearColor& Color)
+		{
+			++RimCount;
+			TestTrue(TEXT("projected warning is a closed red contour"), Rim.Num() > 3 && Rim[0] == Rim.Last() && Color.R > Color.G);
+			for (const FVector& Vertex : Rim)
+				TestTrue(TEXT("HUD and flight damage share the same XY radius"), FMath::IsNearlyEqual(FVector::DistXY(Params.Location, Vertex), double(Radius), .001));
+		});
+		TestEqual(TEXT("one live pilot contour per pooled circle"), RimCount, 1);
+		TestTrue(TEXT("ground decal and pilot contour coincide"), FMath::IsNearlyEqual(Decal->DecalSize.Y * .96, double(Radius), .001));
+		Warnings->RemoveWarning(Id);
+		Warnings->VisitPilotRims([&](TConstArrayView<FVector>, const FLinearColor&) { AddError(TEXT("terminal shell left a pilot contour")); });
+	}
 	return true;
 }
 

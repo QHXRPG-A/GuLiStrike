@@ -1,10 +1,10 @@
 #include "Gameplay/Ship/UI/GuLiXuntianSceneGuide.h"
 #include "Gameplay/Ship/Aiming/GuLiXuntianGunnery.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
+#include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Components/StaticMeshComponent.h"
-#include "Engine/GameViewportClient.h"
-#include "Engine/LocalPlayer.h"
+#include "DynamicMeshBuilder.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
@@ -14,6 +14,7 @@
 #include "MeshElementCollector.h"
 #include "PrimitiveSceneProxy.h"
 #include "PrimitiveViewRelevance.h"
+#include "RenderingThread.h"
 #include "SceneManagement.h"
 #include "SceneView.h"
 #include "UObject/ConstructorHelpers.h"
@@ -29,24 +30,102 @@ FIntPoint GroundCellCenter(const FVector& Origin,int32 Snap)
 }
 const FLinearColor Air(FColor::FromHex(TEXT("6AA4BE")));
 const FLinearColor Amber(FColor::FromHex(TEXT("EE9D58")));
-const FLinearColor Muted(FColor::FromHex(TEXT("D5C09C")));
 const FLinearColor Closed(FColor::FromHex(TEXT("EABCBA")));
-const FLinearColor Dark(FColor::FromHex(TEXT("2C3735")));
+
+using EAirBadge = EGuLiXuntianAirBadge;
+
+// Positions use an eye-relative origin to retain subpixel precision. UV0 is measured in
+// design pixels and UV1 identifies the shape drawn by the shared analytic ink material.
+struct FMarkerView
+{
+    FVector Right, Up, Forward;
+    double PixelAtUnitDepth;
+
+    FVector2D Project(const FVector& Relative, double Depth) const
+    {
+        return FVector2D(Relative.Dot(Right),Relative.Dot(Up))/(Depth*PixelAtUnitDepth);
+    }
+};
+
+void AddInkQuad(FDynamicMeshBuilder& Mesh, const FVector& A, const FVector& B, const FVector& HalfA, const FVector& HalfB,
+                float HalfWidth, float StartUV, float EndUV, FVector2f Style, FColor Ink)
+{
+    auto Add = [&](const FVector& Position, float X, float Y)
+    {
+        FDynamicMeshVertex Vertex(FVector3f(Position),FVector2f(X,Y),Ink);
+        Vertex.TextureCoordinate[1] = Style;
+        return Mesh.AddVertex(Vertex);
+    };
+    const int32 V0=Add(A-HalfA,-HalfWidth,StartUV), V1=Add(A+HalfA,HalfWidth,StartUV);
+    const int32 V2=Add(B+HalfB,HalfWidth,EndUV), V3=Add(B-HalfB,-HalfWidth,EndUV);
+    Mesh.AddTriangle(V0,V1,V2);
+    Mesh.AddTriangle(V0,V2,V3);
+}
+
+void AddAirMarker(FDynamicMeshBuilder& Mesh, const FGuLiXuntianAirMarker& Marker, const FVector& RelativeCenter,
+                  double HullHeight, double Depth, const FMarkerView& View)
+{
+    const bool bClosed=Marker.Badge==EAirBadge::Closed, bBelly=Marker.Badge==EAirBadge::Belly;
+    const FColor Ink=(bClosed ? Closed : bBelly ? Amber : Air).ToFColor(false);
+    const double Pixel=Depth*View.PixelAtUnitDepth;
+    const FVector Top=RelativeCenter-View.Right*(View.Right.GetAbs().Dot(Marker.Extent)+8*Pixel);
+    const FVector Center=Top-View.Right*(15*Pixel), X=View.Right*(12*Pixel), Y=View.Up*((bBelly?1.:-1.)*12*Pixel);
+    AddInkQuad(Mesh,Center-Y,Center+Y,X,X,12,-12,12,FVector2f(bClosed?1.f:0.f,0),Ink);
+
+    const double RelativeHullHeight=RelativeCenter.Z+(HullHeight-Marker.Center.Z);
+    FVector Foot(Top.X,Top.Y,RelativeHullHeight);
+    double FootDepth=Foot.Dot(View.Forward);
+    if (FootDepth>1)
+    {
+        const double FootPixel=FootDepth*View.PixelAtUnitDepth;
+        const FVector Cap=View.Right*(7*FootPixel), Width=View.Up*(3*FootPixel);
+        AddInkQuad(Mesh,Foot-Cap,Foot+Cap,Width,Width,3,-7,7,FVector2f(3,0),Ink);
+    }
+    else
+    {
+        Foot=FMath::Lerp(Top,Foot,(Depth-1)/(Depth-FootDepth));
+        FootDepth=1;
+    }
+    const FVector2D Segment=View.Project(Foot,FootDepth)-View.Project(Top,Depth);
+    const double Length=Segment.Size();
+    if (Length<1) return;
+    const FVector Side=(View.Up*Segment.X-View.Right*Segment.Y)*(3*View.PixelAtUnitDepth/Length);
+    // The pitch stays fixed until the continuous 24-dash limit is reached.
+    AddInkQuad(Mesh,Top,Foot,Side*Depth,Side*FootDepth,3,0,float(Length),
+               FVector2f(2,float(FMath::Max(9.,Length/24.))),Ink);
+}
 
 // Pilot marks use the regular depth-tested geometry pass, including in non-debug builds.
 class FPilotMarkProxy final : public FPrimitiveSceneProxy
 {
 public:
-    explicit FPilotMarkProxy(const UGuLiXuntianSceneGuide& Guide) : FPrimitiveSceneProxy(&Guide), Marks(Guide.BatchedLines)
+    FPilotMarkProxy(const UGuLiXuntianSceneGuide& Guide, const TArray<FGuLiXuntianAirMarker>& AirMarkers,
+                    double InHeight, double InReach, UMaterialInterface* Ink)
+        : FPrimitiveSceneProxy(&Guide), Marks(Guide.BatchedLines), Markers(AirMarkers), HullHeight(InHeight), Reach(InReach)
     {
         bWillEverBeLit=false;
+        if (Ink)
+        {
+            InkProxy=Ink->GetRenderProxy();
+            InkRelevance=Ink->GetRelevance_Concurrent(GetScene().GetShaderPlatform());
+        }
     }
     virtual SIZE_T GetTypeHash() const override { static uint8 Type; return reinterpret_cast<SIZE_T>(&Type); }
-    virtual uint32 GetMemoryFootprint() const override { return sizeof(*this)+Marks.GetAllocatedSize(); }
+    void Update(TArray<FGuLiXuntianAirMarker>&& InMarkers, double InHeight, double InReach,
+                TOptional<TArray<FBatchedLine>>&& SurveyLines)
+    {
+        Markers = MoveTemp(InMarkers);
+        HullHeight = InHeight;
+        Reach = InReach;
+        if (SurveyLines) Marks = MoveTemp(SurveyLines.GetValue());
+    }
+    virtual uint32 GetMemoryFootprint() const override { return sizeof(*this)+Marks.GetAllocatedSize()+Markers.GetAllocatedSize(); }
     virtual FPrimitiveViewRelevance GetViewRelevance(const FSceneView* View) const override
     {
         FPrimitiveViewRelevance R;
+        InkRelevance.SetPrimitiveViewRelevance(R);
         R.bDrawRelevance=IsShown(View); R.bDynamicRelevance=true; R.bNormalTranslucency=true;
+        R.bRenderInMainPass=ShouldRenderInMainPass();
         return R;
     }
     virtual void GetDynamicMeshElements(const TArray<const FSceneView*>& Views,const FSceneViewFamily& Family,
@@ -55,15 +134,46 @@ public:
         for (int32 I=0;I<Views.Num();++I)
         {
             if (!(Visible & (1u<<I))) continue;
-            const FIntRect Rect=Views[I]->UnscaledViewRect;
+            const FSceneView& View = *Views[I];
+            const FIntRect Rect=View.UnscaledViewRect;
             const float Scale=FMath::Min(Rect.Width()/1920.f,Rect.Height()/1080.f);
             auto* PDI=Collector.GetPDI(I);
             for (const auto& M : Marks)
                 PDI->DrawTranslucentLine(M.Start,M.End,M.Color,SDPG_World,M.Thickness*Scale,0,true);
+            const double ProjY = View.ViewMatrices.GetProjectionMatrix().M[1][1];
+            if (!InkProxy || Markers.IsEmpty() || Scale<=0 || ProjY<=0) continue;
+            const FMarkerView MarkerView{View.GetViewRight(),View.GetViewUp(),View.GetViewDirection(),2.*Scale/(Rect.Height()*ProjY)};
+            const FVector Eye = View.ViewMatrices.GetViewOrigin();
+            FDynamicMeshBuilder Mesh(View.GetFeatureLevel(),2);
+            Mesh.ReserveVertices(12*Markers.Num());
+            Mesh.ReserveTriangles(6*Markers.Num());
+            int32 BadgeCount=0, CrossCount=0;
+            for (const auto& Marker : Markers)
+            {
+                const FVector Offset = Marker.Center-Eye;
+                const double Depth = Offset.Dot(MarkerView.Forward);
+                if (Depth>1 && Offset.SizeSquared()<=FMath::Square(Reach))
+                {
+                    AddAirMarker(Mesh,Marker,Offset,HullHeight,Depth,MarkerView);
+                    ++BadgeCount;
+                    CrossCount+=Marker.Badge==EAirBadge::Closed;
+                }
+            }
+            if (BadgeCount)
+            {
+                Mesh.GetMesh(FTranslationMatrix(Eye),InkProxy,SDPG_World,true,false,false,I,Collector);
+                CSV_CUSTOM_STAT(GuLiXuntianCoverage,AirGunBadges,BadgeCount-CrossCount,ECsvCustomStatOp::Accumulate);
+                CSV_CUSTOM_STAT(GuLiXuntianCoverage,AirCrossBadges,CrossCount,ECsvCustomStatOp::Accumulate);
+                CSV_CUSTOM_STAT(GuLiXuntianCoverage,AirBadgeBatches,1,ECsvCustomStatOp::Accumulate);
+            }
         }
     }
 private:
     TArray<FBatchedLine> Marks;
+    TArray<FGuLiXuntianAirMarker> Markers;
+    const FMaterialRenderProxy* InkProxy=nullptr;
+    FMaterialRelevance InkRelevance;
+    double HullHeight, Reach;
 };
 
 void PrepareGuideMesh(UPrimitiveComponent& Mesh, USceneComponent& Parent)
@@ -94,19 +204,45 @@ UGuLiXuntianSceneGuide::UGuLiXuntianSceneGuide()
     PrimaryComponentTick.bCanEverTick=false;
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> Ground(TEXT("/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianCoverage"));
     static ConstructorHelpers::FObjectFinder<UMaterialInterface> AirGuide(TEXT("/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianAirGuide"));
+    static ConstructorHelpers::FObjectFinder<UMaterialInterface> Badge(TEXT("/Game/GuLiStrike/Ship/UI/Xuntian/M_XuntianAirMarker"));
     static ConstructorHelpers::FObjectFinder<UStaticMesh> Sphere(TEXT("/Engine/BasicShapes/Sphere"));
     GroundInk=Ground.Object; SkyInk=AirGuide.Object; DomeMesh=Sphere.Object;
+    MarkerInk=Badge.Object;
 }
 
 FPrimitiveSceneProxy* UGuLiXuntianSceneGuide::CreateSceneProxy()
 {
-    return BatchedLines.IsEmpty()?nullptr:new FPilotMarkProxy(*this);
+    return new FPilotMarkProxy(*this,AirMarkers,MarkerHullHeight,MarkerReach,MarkerInk);
+}
+
+void UGuLiXuntianSceneGuide::GetUsedMaterials(TArray<UMaterialInterface*>& OutMaterials, bool bGetDebugMaterials) const
+{
+    Super::GetUsedMaterials(OutMaterials,bGetDebugMaterials);
+    if (MarkerInk) OutMaterials.Add(MarkerInk);
+}
+
+void UGuLiXuntianSceneGuide::SendRenderDynamicData_Concurrent()
+{
+    Super::SendRenderDynamicData_Concurrent();
+    if (auto* Proxy = static_cast<FPilotMarkProxy*>(GetSceneProxy()))
+    {
+        TOptional<TArray<FBatchedLine>> Lines;
+        if (bSurveyLinesDirty) Lines.Emplace(BatchedLines);
+        bSurveyLinesDirty = false;
+        ENQUEUE_RENDER_COMMAND(GuLiXuntianUpdatePilotMarks)(
+            [Proxy, Markers=AirMarkers, Height=MarkerHullHeight, Reach=MarkerReach, Lines=MoveTemp(Lines)]
+            (FRHICommandListImmediate&) mutable
+            {
+                Proxy->Update(MoveTemp(Markers),Height,Reach,MoveTemp(Lines));
+            });
+    }
 }
 
 void UGuLiXuntianSceneGuide::OnRegister()
 {
     Super::OnRegister();
     if (IsTemplate() || !GetWorld() || !GetWorld()->IsGameWorld() || GetWorld()->IsNetMode(NM_DedicatedServer)) return;
+    FWorldDelegates::OnWorldPreSendAllEndOfFrameUpdates.AddUObject(this,&ThisClass::UpdateAirMarkersBeforeRender);
     Surface=NewObject<UProceduralMeshComponent>(GetOwner(),NAME_None,RF_Transient);
     PrepareGuideMesh(*Surface,*this);
     Surface->SetTranslucentSortPriority(-5);
@@ -124,11 +260,18 @@ void UGuLiXuntianSceneGuide::OnRegister()
 
 void UGuLiXuntianSceneGuide::OnUnregister()
 {
+    FWorldDelegates::OnWorldPreSendAllEndOfFrameUpdates.RemoveAll(this);
     CoverageTask={}; // An outstanding job owns its immutable inputs and cannot touch this component.
     GroundPatch.Reset();
     DisplayedPatch.Reset();
     Terrain.Reset();
     MissingSurfaceKeys.Reset();
+    AirContacts.Reset();
+    AirMarkers.Reset();
+    BatchedLines.Reset();
+    AirContactsRevision=MAX_uint64;
+    bSurveyLinesDirty=false;
+    bAirUpdatePending=bCheckAirCoverage=false;
     NextSurvey=NextMissingSurfaceRetry=0;
     LastBellyCount=INDEX_NONE;
     if (IsValid(Sky)) Sky->DestroyComponent();
@@ -320,104 +463,153 @@ void AddLevelMarks(TArray<FBatchedLine>& Lines,const FVector& Origin)
     }
 }
 
-void AddAirBadge(TArray<FBatchedLine>& Lines, const FVector& P, const FVector& Right, const FVector& Up,
-                 double Unit, bool Ground, int32 Count, int32 Total)
-{
-    const FLinearColor Ink=Count ? (Ground?Amber:Air) : Closed;
-    auto Point=[&](double X,double Y) { return P+(Right*X-Up*Y)*Unit; };
-    for (int32 Pass=0;Pass<2;++Pass)
-    {
-        auto Stroke=[&](double X,double Y,double U,double V)
-        { Line(Lines,Point(X,Y),Point(U,V),Pass?Ink:Dark,Pass?1.7f:3.8f); };
-        if (Count==0) { Stroke(-7,-7,7,7); Stroke(-7,7,7,-7); continue; }
-        const int32 S=Ground?-1:1;
-        Stroke(-8,6*S,5,6*S); Stroke(0,3*S,5,-5*S); Stroke(3,4*S,8,-4*S);
-        Stroke(-6,4*S,-4,0); Stroke(-4,0,0,0); Stroke(0,0,2,4*S); Stroke(2,4*S,-6,4*S);
-        if (Ground)
-            for (int32 I=0;I<Total;++I)
-            {
-                const double X=(I-(Total-1)*.5)*7;
-                Line(Lines,Point(X-2,10),Point(X+2,10),Pass?(I<Count?Amber:Muted):Dark,Pass?(I<Count?2.f:1.f):3.5f);
-            }
-    }
 }
+
+FVector UGuLiXuntianSceneGuide::FAirContact::InterpolatedCenter(double Now) const
+{
+    if (BlendSeconds<=0) return Sample;
+    return FMath::Lerp(From,Sample,FMath::Clamp((Now-SampleTime)/BlendSeconds,0.,1.));
+}
+
+void UGuLiXuntianSceneGuide::RefreshAirContacts(const UGuLiXuntianGunnery& Aim, EGuLiTeam Team, double Now)
+{
+    AirContactsRevision = Aim.GetContactsRevision();
+    if (Team!=AirViewerTeam) AirContacts.Reset();
+    AirViewerTeam = Team;
+    for (const auto& C : Aim.GetContacts())
+    {
+        if (C.Team==Team || (C.Handle.Kind!=EGuLiTargetKind::Wingman && C.Handle.Kind!=EGuLiTargetKind::Ship)) continue;
+        auto& Track = AirContacts.FindOrAdd(C.Handle);
+        Track.Revision = AirContactsRevision;
+        Track.Radius = C.CollisionRadius;
+        const AActor* Actor = C.CollisionActor.Get();
+        if (const auto* Wingman = Cast<AGuLiWingmanPawn>(Actor)) Track.Body = Wingman->GetBodyMesh();
+        else if (const auto* Ship = Cast<AGuLiStrikeShip>(Actor)) Track.Body = Ship->GetHullMeshComponent();
+        else Track.Body.Reset();
+
+        const FVector Center = C.GetHitCenter();
+        if (Track.SampleTime<0 || Center!=Track.Sample)
+        {
+            // Contacts without a local mesh arrive at the gunnery sampling rate.
+            const bool bSnap = Track.SampleTime<0 || FVector::DistSquared(Center,Track.Sample)>FMath::Square(10000.);
+            Track.From = bSnap ? Center : Track.InterpolatedCenter(Now);
+            Track.BlendSeconds = bSnap ? 0. : FMath::Clamp(Now-Track.SampleTime,.08,.12);
+            Track.Sample = Center;
+            Track.SampleTime = Now;
+            if (bSnap) Track.PendingSince = -1;
+        }
+    }
+    for (auto It=AirContacts.CreateIterator(); It; ++It)
+        if (It.Value().Revision!=AirContactsRevision) It.RemoveCurrent();
+}
+
+void UGuLiXuntianSceneGuide::UpdateAirMarkersBeforeRender(UWorld* World)
+{
+    // Hybrid wingmen publish their displayed pose at OnWorldTickEnd, after TG_PostUpdateWork.
+    if (!bAirUpdatePending || World!=GetWorld() || World->bInTick) return;
+    bAirUpdatePending = false;
+    const bool bCheckCoverage = bCheckAirCoverage;
+    bCheckAirCoverage = false;
+    const auto* Ship = Cast<AGuLiStrikeShip>(GetOwner());
+    if (!IsVisible() || !IsValid(Ship) || !Ship->GetXuntianGunnery()) return;
+    const auto& Aim = *Ship->GetXuntianGunnery();
+    const double HullHeight = Ship->GetHullMeshComponent()->Bounds.Origin.Z;
+    const double Now = World->GetTimeSeconds();
+    TRACE_CPUPROFILER_EVENT_SCOPE(GuLiXuntian_UpdateAirMarkers);
+    bool bChanged = MarkerHullHeight!=HullHeight || MarkerReach!=Aim.Reach;
+    MarkerHullHeight = HullHeight;
+    MarkerReach = Aim.Reach;
+    int32 Written = 0;
+    for (auto& Pair : AirContacts)
+    {
+        auto& Track = Pair.Value;
+        const auto* Body = Track.Body.Get();
+        if (!Body && Track.Body.IsStale()) continue;
+        if (Body && (!IsValid(Body->GetOwner()) || !Body->IsVisible() || Body->GetOwner()->IsHidden())) continue;
+        const FVector Center = Body ? Body->Bounds.Origin : Track.InterpolatedCenter(Now);
+        const FVector Extent = Body && Pair.Key.Kind==EGuLiTargetKind::Ship ? Body->Bounds.BoxExtent : FVector(Track.Radius);
+        if (Track.PendingSince<0 && !bCheckCoverage) continue;
+        if (bCheckCoverage)
+        {
+            // Only the displayed badge has a deadband at the hull plane and a dwell at the firing arc.
+            constexpr double HeightDeadbandCm = 150., ConfirmSeconds = .15;
+            const double DZ = Center.Z-HullHeight;
+            const bool bNew = Track.PendingSince<0;
+            if (bNew || FMath::Abs(DZ)>HeightDeadbandCm) Track.bBelow = DZ<0;
+            const EAirBadge Desired = Track.bBelow
+                ? (Aim.CoverageAt(Center)>0 ? EAirBadge::Belly : EAirBadge::Closed)
+                : (AirGunCount>0 ? EAirBadge::Air : EAirBadge::Closed);
+            if (bNew || Desired!=Track.Pending)
+            {
+                Track.Pending = Desired;
+                Track.PendingSince = Now;
+            }
+            if (bNew || Now-Track.PendingSince>=ConfirmSeconds) Track.Badge = Desired;
+        }
+        const FGuLiXuntianAirMarker Marker{Center,Extent,Track.Badge};
+        if (Written==AirMarkers.Num()) { AirMarkers.Add(Marker); bChanged=true; }
+        else
+        {
+            auto& Last = AirMarkers[Written];
+            bChanged |= Last.Center!=Center || Last.Extent!=Extent || Last.Badge!=Track.Badge;
+            Last = Marker;
+        }
+        ++Written;
+    }
+    bChanged |= Written!=AirMarkers.Num();
+    AirMarkers.SetNum(Written,EAllowShrinking::No);
+    if (bChanged || bSurveyLinesDirty) MarkRenderDynamicDataDirty();
 }
 
 void UGuLiXuntianSceneGuide::UpdateGuide(const UGuLiXuntianGunnery& Aim)
 {
-    auto* Ship=CastChecked<AGuLiStrikeShip>(GetOwner());
+    const auto* Ship=CastChecked<AGuLiStrikeShip>(GetOwner());
     const auto* PC=Cast<APlayerController>(Ship->GetController());
     if (!PC || !PC->PlayerCameraManager) return;
     const auto& View=PC->PlayerCameraManager->GetCameraCacheView();
     if (Sky) Sky->SetWorldLocation(View.Location);
     PublishGroundCoverage(Aim);
     const double Now=GetWorld()->GetTimeSeconds();
-    if (Now<NextSurvey) return;
-    NextSurvey=Now+.06;
-    int32 AirCount=0, BellyCount=0;
-    for (const auto& G : Aim.GetMounts())
-        if (G.Part.IsValid() && G.bHasGeometry) { if (G.bGround) ++BellyCount; else ++AirCount; }
+    const auto Team=Ship->GetCombatHealthComponent()->GetCombatTeam();
+    const bool bNewContacts=AirContactsRevision!=Aim.GetContactsRevision() || Team!=AirViewerTeam;
+    if (bNewContacts) RefreshAirContacts(Aim,Team,Now);
     const FVector Hull=Ship->GetHullMeshComponent()->Bounds.Origin;
-    SurveyGround(Aim,Ship->GetActorLocation(),BellyCount);
-    TArray<FBatchedLine> Lines;
-    Lines.Reserve(260+40*Aim.GetContacts().Num());
-    AddLevelMarks(Lines,Hull);
-    if (Aim.bGroundHint)
+    const bool bSurvey=Now>=NextSurvey;
+    int32 BellyGuns=0;
+    if (bNewContacts || bSurvey)
     {
-        const double Side=FMath::Clamp(FVector::Dist(View.Location,Aim.GroundHint)*.014,120.,800.);
-        for (int32 X : {-1,1}) for (int32 Y : {-1,1})
+        AirGunCount=0;
+        for (const auto& G : Aim.GetMounts())
+            if (G.Part.IsValid() && G.bHasGeometry) { if (G.bGround) ++BellyGuns; else ++AirGunCount; }
+        bCheckAirCoverage=true;
+    }
+    if (bSurvey)
+    {
+        NextSurvey=Now+.06;
+        SurveyGround(Aim,Ship->GetActorLocation(),BellyGuns);
+    }
+    if (bSurvey && (BatchedLines.IsEmpty() || Hull!=LevelMarkOrigin || Aim.bGroundHint || bHadGroundHint))
+    {
+        BatchedLines.Reset(224);
+        AddLevelMarks(BatchedLines,Hull);
+        LevelMarkOrigin=Hull;
+        bHadGroundHint=Aim.bGroundHint;
+        bSurveyLinesDirty=true;
+        if (Aim.bGroundHint)
         {
-            const FVector Corner=Aim.GroundHint+FVector(X*Side,Y*Side,0);
-            FVector A,B,C;
-            if (Aim.SurfaceAt(Corner,A) && Aim.SurfaceAt(Corner-FVector(X*Side*.45,0,0),B) &&
-                Aim.SurfaceAt(Corner-FVector(0,Y*Side*.45,0),C))
+            const double Side=FMath::Clamp(FVector::Dist(View.Location,Aim.GroundHint)*.014,120.,800.);
+            for (int32 X : {-1,1}) for (int32 Y : {-1,1})
             {
-                const FVector Lift(0,0,18);
-                Line(Lines,A+Lift,B+Lift,Amber,2); Line(Lines,A+Lift,C+Lift,Amber,2);
+                const FVector Corner=Aim.GroundHint+FVector(X*Side,Y*Side,0);
+                FVector A,B,C;
+                if (Aim.SurfaceAt(Corner,A) && Aim.SurfaceAt(Corner-FVector(X*Side*.45,0,0),B) &&
+                    Aim.SurfaceAt(Corner-FVector(0,Y*Side*.45,0),C))
+                {
+                    const FVector Lift(0,0,18);
+                    Line(BatchedLines,A+Lift,B+Lift,Amber,2); Line(BatchedLines,A+Lift,C+Lift,Amber,2);
+                }
             }
         }
     }
-    const FRotationMatrix Basis(View.Rotation);
-    const FVector Right=Basis.GetUnitAxis(EAxis::Y), Up=Basis.GetUnitAxis(EAxis::Z), Forward=Basis.GetUnitAxis(EAxis::X);
-    double PixelAtUnitDepth=2.*FMath::Tan(FMath::DegreesToRadians(27.))/1080.;
-    if (const auto* LP=PC->GetLocalPlayer();LP && LP->ViewportClient && LP->ViewportClient->Viewport)
-    {
-        FSceneViewProjectionData Projection;
-        if (LP->GetProjectionData(LP->ViewportClient->Viewport,Projection))
-        {
-            const FIntRect Rect=Projection.GetConstrainedViewRect();
-            if (Rect.Height()>0 && Projection.ProjectionMatrix.M[1][1]>0)
-            {
-                const double Scale=FMath::Min(Rect.Width()/1920.,Rect.Height()/1080.);
-                PixelAtUnitDepth=2.*Scale/(Rect.Height()*Projection.ProjectionMatrix.M[1][1]);
-            }
-        }
-    }
-    for (const auto& C : Aim.GetContacts())
-    {
-        if (C.Team==Ship->GetCombatHealthComponent()->GetCombatTeam() ||
-            (C.Handle.Kind!=EGuLiTargetKind::Ship && C.Handle.Kind!=EGuLiTargetKind::Wingman)) continue;
-        FVector P=C.GetHitCenter(), Extent(C.CollisionRadius);
-        if (const auto* Other=Cast<AGuLiStrikeShip>(C.CollisionActor.Get()))
-        {
-            const auto& TargetBounds=Other->GetHullMeshComponent()->Bounds;
-            P=TargetBounds.Origin; Extent=TargetBounds.BoxExtent;
-        }
-        const FVector Offset=P-View.Location;
-        const double Depth=Offset.Dot(Forward);
-        if (Depth<=1 || Offset.SizeSquared()>FMath::Square(double(Aim.Reach))) continue;
-        const double Pixel=Depth*PixelAtUnitDepth;
-        const bool Ground=P.Z<Hull.Z;
-        const int32 Count=Ground?Aim.CoverageAt(P):AirCount;
-        const FLinearColor Ink=Count?(Ground?Amber:Air):Closed;
-        const FVector Top=P-Right*(Right.GetAbs().Dot(Extent)+8*Pixel);
-        const FVector Foot(Top.X,Top.Y,Hull.Z);
-        Line(Lines,Foot-Right*(7*Pixel),Foot+Right*(7*Pixel),Ink*.82f,0);
-        const int32 Dashes=FMath::Clamp(FMath::CeilToInt(FMath::Abs(Hull.Z-P.Z)/(Pixel*9)),0,24);
-        for (int32 I=0;I<Dashes;++I)
-            Line(Lines,FMath::Lerp(Top,Foot,(I+.05)/Dashes),FMath::Lerp(Top,Foot,(I+.66)/Dashes),Ink*.82f,0);
-        AddAirBadge(Lines,Top-Right*(15*Pixel),Right,Up,Pixel*28./32,Ground,Count,BellyCount);
-    }
-    Flush();
-    DrawLines(Lines);
+    bAirUpdatePending=true;
 }

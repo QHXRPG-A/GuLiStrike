@@ -1,0 +1,75 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "isolated_map_copy": true,
+  "started": "2026-11-27T12:06:28.123028+08:00",
+  "finished": "2026-11-27T12:06:58.601357+08:00",
+  "samples": 11,
+  "sample_window_s": 18.64,
+  "pawn_classes": [
+    "BP_GroundMech_Light_C",
+    "SpectatorPawn"
+  ],
+  "resident_niagara": 68,
+  "native_accent_radius_cm": 350.0,
+  "catalog_variants_resident": {
+    "GroundDestruction": {
+      "ResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03",
+      "ReducedResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_GroundDestruction_Reduced",
+      "MinimalResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_GroundDestruction_Minimal"
+    },
+    "WingmanDestruction": {
+      "ResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05",
+      "ReducedResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_WingmanDestruction_Reduced",
+      "MinimalResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_WingmanDestruction_Minimal"
+    },
+    "XuntianBellyExplosion1": {
+      "ResourcePath": "/Game/Stylized_Explosion_Pack_Vol1/VFX/N_Stylized_Explosion_1A_Classic_Explosion",
+      "ReducedResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion1_Reduced",
+      "MinimalResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion1_Minimal"
+    },
+    "XuntianBellyExplosion2": {
+      "ResourcePath": "/Game/_VFXResources/Niagara_System/NS_Explosion_04",
+      "ReducedResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion2_Reduced",
+      "MinimalResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion2_Minimal"
+    },
+    "XuntianBellyExplosion3": {
+      "ResourcePath": "/Game/_VFXResources/Niagara_System/NS_Explosion_07",
+      "ReducedResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Reduced",
+      "MinimalResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBellyExplosion3_Minimal"
+    },
+    "XuntianBlackSmoke": {
+      "ResourcePath": "/Game/GuLiStrike/FX/Xuntian/Belly/NS_XuntianBlackSmoke",
+      "ReducedResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBlackSmoke_Reduced",
+      "MinimalResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/LOD/NS_XuntianBlackSmoke_Minimal"
+    }
+  },
+  "project_copies_resident": {
+    "NS_Tornado_under": "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundMaxRankTornado",
+    "NS_Hit_1": "/Game/GuLiStrike/FX/GroundMech/Weapons/NS_GroundHit",
+    "P_UpgradeGlow_Converted": "/Game/GuLiStrike/FX/GroundMech/Upgrades/NS_GroundUpgradeGlow",
+    "NS_Sparks": "/Game/GuLiStrike/FX/ModelProjectiles/NS_Sparks",
+    "NS_Sparks_Smaller": "/Game/GuLiStrike/FX/ModelProjectiles/NS_Sparks_Smaller",
+    "NS_Trails": "/Game/GuLiStrike/FX/ModelProjectiles/NS_Trails"
+  },
+  "table_references_verified": [
+    [
+      "DT_GuLiStrikeVfx_Effects",
+      1
+    ],
+    [
+      "DT_GuLiStrikeRogueCards_Cards",
+      14
+    ]
+  ],
+  "blueprint_bindings": {
+    "BP_Projectile_bullet": [
+      "/Game/GuLiStrike/FX/ModelProjectiles/NS_Sparks"
+    ],
+    "BP_Projectile_Rockets": [
+      "/Game/GuLiStrike/FX/ModelProjectiles/NS_Sparks",
+      "/Game/GuLiStrike/FX/ModelProjectiles/NS_Sparks_Smaller",
+      "/Game/GuLiStrike/FX/ModelProjectiles/NS_Trails"
+    ]
+  },
+  "errors": []
+}

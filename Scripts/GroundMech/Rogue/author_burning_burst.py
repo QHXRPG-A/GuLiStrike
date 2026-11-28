@@ -1,126 +1,178 @@
-"""Rebuild the finite pulse from the COMPLETE approved attached-burning system."""
-import ast
+"""Build the single red shell used by the radial Burning Burst gameplay event."""
 import json
-import traceback
+import sys
 from pathlib import Path
+
 import unreal
 
-ROOT=Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
-OUT=ROOT/'Artifacts/GroundHUDRevision_20261103'
-SOURCE='/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningStatus'
-SYSTEM='/Game/GuLiStrike/FX/GroundMech/Burning/NS_GroundBurningBurst'
-ASSETS=unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
-NS,EM=unreal.NiagaraService,unreal.NiagaraEmitterService
-SP=unreal.NiagaraScratchPadService
+ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
+sys.path.insert(0, str(ROOT / 'Scripts/Vfx'))
+from niagara_scratch import require, scratch
 
-def prop(value,name):return value.get_editor_property(name)
+BASE = '/Game/GuLiStrike/FX/GroundMech/Burning'
+SYSTEM = BASE + '/NS_GroundBurningBurst'
+MATERIAL = BASE + '/M_GroundBurningShell'
+REFERENCE = '/Game/Assets/VFX/Buffs/BuffLoop/NS/Vfx_MagicShell'
+REFERENCE_EMITTER = 'NE_MagicShield'
+EMITTER = 'BurningShell'
+RECIPE = 'RedMagicShell01'
+EXPANSION_SECONDS = 0.25
+FADE_SECONDS = 0.25
+ASSETS = unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
+NS = unreal.NiagaraService
+EM = unreal.NiagaraEmitterService
+EDIT = unreal.MaterialEditingLibrary
 
-def require(value,message):
-    if not value:raise RuntimeError(message)
-    return value
+
+def shell_material(noise):
+    material = ASSETS.load_asset(MATERIAL) if ASSETS.does_asset_exist(MATERIAL) else None
+    if not material:
+        material = unreal.AssetToolsHelpers.get_asset_tools().create_asset(
+            'M_GroundBurningShell', BASE, unreal.Material, unreal.MaterialFactoryNew())
+    require(material, MATERIAL)
+    if ASSETS.get_metadata_tag(material, 'GuLi.Burst.Recipe') == RECIPE:
+        return material
+    EDIT.delete_all_material_expressions(material)
+    material.set_editor_property('blend_mode', unreal.BlendMode.BLEND_ADDITIVE)
+    material.set_editor_property('shading_model', unreal.MaterialShadingModel.MSM_UNLIT)
+    material.set_editor_property('two_sided', False)
+    EDIT.set_material_usage(material, unreal.MaterialUsage.MATUSAGE_NIAGARA_MESH_PARTICLES)
+
+    def node(cls, x, y, **properties):
+        result = EDIT.create_material_expression(material, cls, x, y)
+        for key, value in properties.items():
+            result.set_editor_property(key, value)
+        return result
+
+    def connect(src, output, dest, pin):
+        require(EDIT.connect_material_expressions(src, output, dest, pin), 'Material input ' + pin)
+
+    uv = node(unreal.MaterialExpressionTextureCoordinate, -850, -170, u_tiling=6., v_tiling=1.)
+    age = node(unreal.MaterialExpressionParticleRelativeTime, -850, -40)
+    panner = node(unreal.MaterialExpressionPanner, -640, -155, speed_x=.01, speed_y=.15)
+    connect(uv, '', panner, 'Coordinate')
+    connect(age, '', panner, 'Time')
+    sample = node(unreal.MaterialExpressionTextureSample, -440, -185, texture=noise)
+    connect(panner, '', sample, 'UVs')
+    rim = node(unreal.MaterialExpressionFresnel, -440, -15, exponent=2.4, base_reflect_fraction=.04)
+    color = node(unreal.MaterialExpressionParticleColor, -440, 135)
+    mask = node(unreal.MaterialExpressionCustom, -140, -40,
+                output_type=unreal.CustomMaterialOutputType.CMOT_FLOAT1,
+                code='return Alpha * saturate(0.04 + 0.32*smoothstep(0.42,0.72,Noise) + 0.70*Rim);')
+    pins = []
+    for name in ('Noise', 'Rim', 'Alpha'):
+        pin = unreal.CustomInput()
+        pin.set_editor_property('input_name', name)
+        pins.append(pin)
+    mask.set_editor_property('inputs', pins)
+    connect(sample, 'R', mask, 'Noise')
+    connect(rim, '', mask, 'Rim')
+    connect(color, 'A', mask, 'Alpha')
+    require(EDIT.connect_material_property(color, 'RGB', unreal.MaterialProperty.MP_EMISSIVE_COLOR), 'Emissive')
+    require(EDIT.connect_material_property(mask, '', unreal.MaterialProperty.MP_OPACITY), 'Opacity')
+    EDIT.recompile_material(material)
+    diag = unreal.MaterialNodeService.get_material_diagnostics(MATERIAL)
+    require(diag.success and diag.is_compiled_ok and not diag.compile_errors, str(diag))
+    ASSETS.set_metadata_tag(material, 'GuLi.Burst.Recipe', RECIPE)
+    require(ASSETS.save_loaded_asset(material, False), MATERIAL)
+    return material
+
 
 def build():
-    require(not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor(),'Preserve active PIE')
-    dirty={p.get_name() for p in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()}
-    require(SYSTEM not in dirty or globals().get('GULI_BURST_RETRY_OWNED',False),'Preserve unsaved burst edits')
-    system=ASSETS.load_asset(SYSTEM) or require(ASSETS.duplicate_asset(SOURCE,SYSTEM),'Derive complete burning')
-    names=[str(e) for e in NS.summarize(SOURCE).emitter_names]
-    require(set(names)=={'Dots','Smoke001','Trails'},'Approved burning source changed')
-    # Rebuild this owned system in place, preserving its public asset identity.
-    for emitter in list(NS.summarize(SYSTEM).emitter_names):
-        require(NS.remove_emitter(SYSTEM,str(emitter)),'Remove superseded pulse emitter')
-    for name in names:require(NS.copy_emitter(SOURCE,name,SYSTEM,name)==name,'Copy full source emitter '+name)
-    tree=ast.parse((ROOT/'Scripts/build_commander_combat_effects.py').read_text(encoding='utf-8'))
-    fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='scratch')
-    exec(compile(ast.Module(body=[fn],type_ignores=[]),'shared_combat_scratch_helper','exec'),globals())
-    defaults=[('Radius','Float','500'),('StartRadius','Float','100'),('InitialAge','Float','0'),('Lifetime','Float','1'),
-              ('Seed','Int','0'),('ExpandSeconds','Float','0.5'),('FadeSeconds','Float','0.5')]
-    present={str(p.parameter_name).removeprefix('User.') for p in NS.list_parameters(SYSTEM)}
-    for name,kind,value in defaults:
-        if name not in present:require(NS.add_user_parameter(SYSTEM,name,kind,value),'Parameter '+name)
-        require(NS.set_parameter(SYSTEM,'User.'+name,value),'Parameter default '+name)
-    records=[]
-    def move(emitter,module,stage,index):
-        item=next(m for m in EM.list_modules(SYSTEM,emitter) if str(m.module_name)==module)
-        script=unreal.load_object(None,str(item.script_asset_path))
-        require(unreal.GuLiCombatEffectAuthoringLibrary.move_client_effect_module(system,unreal.Name(emitter),script,stage,index) is not None,'Module order '+module)
-    for emitter in names:
-        renderers=EM.list_renderers(SYSTEM,emitter)
-        ribbon=any(str(r.renderer_type)=='Ribbon' for r in renderers)
-        source_materials=[str(EM.get_renderer_details(SOURCE,emitter,i).material_path) for i in range(len(renderers))]
-        # Preserve source solver, color, shape location and InitializeRibbon.
-        # Only the emitter lifetime/spawn budget and a final presentation envelope change.
-        require(EM.remove_module(SYSTEM,emitter,'EmitterState'),'Replace stale template lifecycle')
-        require(EM.add_module(SYSTEM,emitter,'/Niagara/Modules/Emitter/EmitterState.EmitterState','EmitterUpdate'),'Finite lifecycle')
-        require(EM.set_module_input(SYSTEM,emitter,'EmitterState','Life Cycle Mode','NewEnumerator1'),'Self lifecycle')
-        require(EM.set_module_input(SYSTEM,emitter,'EmitterState','Loop Behavior','NewEnumerator1'),'Once')
-        require(NS.set_rapid_iteration_param_by_stage(SYSTEM,emitter,'EmitterUpdate',f'Constants.{emitter}.EmitterState.Loop Duration','1'),'Duration')
-        module,key,count=('SpawnBurst_Instantaneous','Spawn Count',96) if emitter=='Dots' else ('SpawnRate','SpawnRate',128 if ribbon else 48)
-        require(NS.set_rapid_iteration_param_by_stage(SYSTEM,emitter,'EmitterUpdate',f'Constants.{emitter}.{module}.{key}',str(count)),'Bounded spawn count')
-        common_in=[('PositionIn','Position','Particles.Position'),('SizeIn','vec2','Particles.SpriteSize'),
-            ('ColorIn','Color','Particles.Color'),('Expand','float','User.ExpandSeconds'),('Fade','float','User.FadeSeconds'),
-            ('Seed','int','User.Seed'),('VelocityIn','Vector','Particles.Velocity')]
-        common_out=[('BasePosition','Position','Particles.GuLiBurstBasePosition'),('BaseSize','vec2','Particles.GuLiBurstBaseSize'),
-            ('BaseTint','Color','Particles.GuLiBurstBaseTint'),('Life','float','Particles.Lifetime'),
-            ('PositionOut','Position','Particles.Position'),('VelocityOut','Vector','Particles.Velocity')]
-        if ribbon:
-            common_in += [('WidthIn','float','Particles.RibbonWidth')]
-            common_out += [('BaseWidth','float','Particles.GuLiBurstBaseWidth')]
-        capture=scratch(SYSTEM,emitter,'ParticleSpawn','GuLiBurstCapture',common_in,common_out,
-            '''float angle=frac(float(Seed & 32767)*0.6180339)*6.2831853;
-float c=cos(angle),s=sin(angle);
-BasePosition=float3(PositionIn.x*c-PositionIn.y*s,PositionIn.x*s+PositionIn.y*c,PositionIn.z);
-PositionOut=BasePosition;VelocityOut=float3(VelocityIn.x*c-VelocityIn.y*s,VelocityIn.x*s+VelocityIn.y*c,VelocityIn.z);
-BaseSize=SizeIn;BaseTint=ColorIn;Life=Expand+Fade;'''+('BaseWidth=WidthIn;' if ribbon else ''))
-        restore_in=[('BasePosition','Position','Particles.GuLiBurstBasePosition'),('BaseSize','vec2','Particles.GuLiBurstBaseSize'),('BaseTint','Color','Particles.GuLiBurstBaseTint')]
-        restore_out=[('PositionOut','Position','Particles.Position'),('SizeOut','vec2','Particles.SpriteSize'),('ColorOut','Color','Particles.Color')]
-        if ribbon:
-            restore_in += [('BaseWidth','float','Particles.GuLiBurstBaseWidth')]
-            restore_out += [('WidthOut','float','Particles.RibbonWidth')]
-        restore=scratch(SYSTEM,emitter,'ParticleUpdate','GuLiBurstRestore',restore_in,restore_out,
-            'PositionOut=BasePosition;SizeOut=BaseSize;ColorOut=BaseTint;'+('WidthOut=BaseWidth;' if ribbon else ''))
-        inputs=[('PositionIn','Position','Particles.Position'),('SizeIn','vec2','Particles.SpriteSize'),('Tint','Color','Particles.Color'),
-            ('SystemAge','float','System.Age'),('InitialAge','float','User.InitialAge'),('Start','float','User.StartRadius'),
-            ('Radius','float','User.Radius'),('Expand','float','User.ExpandSeconds'),('Fade','float','User.FadeSeconds')]
-        outputs=[('BasePosition','Position','Particles.GuLiBurstBasePosition'),('PositionOut','Position','Particles.Position'),
-            ('SizeOut','vec2','Particles.SpriteSize'),('ColorOut','Color','Particles.Color'),('Alive','bool','DataInstance.Alive')]
-        if ribbon:
-            inputs += [('WidthIn','float','Particles.RibbonWidth')]
-            outputs += [('WidthOut','float','Particles.RibbonWidth')]
-        code='''float t=max(SystemAge+InitialAge,0.0);float grow=saturate(t/max(Expand,.001));
-float envelope=lerp(min(Start,Radius),Radius,grow);
-BasePosition=PositionIn;float distance=length(PositionIn);
-float3 direction=distance>.0001?PositionIn/distance:float3(0,0,1);
-float normalDistance=saturate(distance/100.0);
-'''
-        code += '''float halfSize=min(abs(WidthIn)*envelope/200.0,envelope*.12);
-WidthOut=halfSize*2;SizeOut=SizeIn;''' if ribbon else '''float sourceHalf=length(SizeIn)*.5;
-float halfSize=min(sourceHalf*envelope/100.0,envelope*.25);
-SizeOut=SizeIn*(halfSize/max(sourceHalf,.001));'''
-        code += '''
-PositionOut=direction*(max(envelope-halfSize,0.0)*normalDistance);
-float f=saturate((t-Expand)/max(Fade,.001));float fade=1-f*f*(3-2*f);
-ColorOut=float4(Tint.rgb,Tint.a*fade);Alive=t<Expand+Fade;'''
-        envelope=scratch(SYSTEM,emitter,'ParticleUpdate','GuLiBurstEnvelope',inputs,outputs,code)
-        move(emitter,capture,'ParticleSpawn',-1)
-        move(emitter,restore,'ParticleUpdate',0)
-        move(emitter,envelope,'ParticleUpdate',-1)
-        actual=[str(EM.get_renderer_details(SYSTEM,emitter,i).material_path) for i in range(len(renderers))]
-        require(actual==source_materials,'Preserve all burning renderer materials')
-        records.append({'emitter':emitter,'ribbon':ribbon,'materials':actual,'spawn_budget':count,
-            'modules':[{'name':str(m.module_name),'stage':str(m.module_type)} for m in EM.list_modules(SYSTEM,emitter)]})
-    require(unreal.GuLiCombatEffectAuthoringLibrary.configure_buff_burst_system(system) is not None,'Bounds and simulation')
-    system.set_editor_property('max_pool_size',128);system.set_editor_property('pool_prime_size',0)
-    result=NS.compile_with_results(SYSTEM)
-    diagnostics=unreal.GuLiCombatEffectAuthoringLibrary.get_buff_compile_diagnostics(system)
-    require(result.success and not result.error_count and 'ERROR:' not in diagnostics and 'status=Error' not in diagnostics,'Burst compile: '+str(result)+' '+diagnostics)
-    require(NS.save_system(SYSTEM),'Save complete fire pulse')
-    return {'success':True,'source':SOURCE,'asset':system.get_path_name(),'emitters':records,'diagnostics':diagnostics,
-        'expansion_seconds':.5,'fade_seconds':.5,'lifetime_seconds':1,'radius_cm':500,'visual_acceptance':'pending_user'}
+    require(not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor(), 'Active PIE')
+    dirty = {pkg.get_name() for pkg in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()}
+    require(not dirty.intersection((MATERIAL, SYSTEM)), 'Unsaved changes on the burning-shell assets')
+    reference = EM.get_renderer_details(REFERENCE, REFERENCE_EMITTER, 0)
+    mesh = require(unreal.load_asset(str(reference.mesh_path)), 'Reference shell mesh')
+    source_material = require(unreal.load_asset(str(reference.material_path)), 'Reference shell material')
+    noise = require(EDIT.get_material_instance_texture_parameter_value(source_material, 'Noise'), 'Reference shell noise')
+    material = shell_material(noise)
+    system = ASSETS.load_asset(SYSTEM) if ASSETS.does_asset_exist(SYSTEM) else None
+    if not system:
+        require(NS.create_system('NS_GroundBurningBurst', BASE).success, 'Create burning shell')
+        system = require(ASSETS.load_asset(SYSTEM), SYSTEM)
+    lifetime = EXPANSION_SECONDS + FADE_SECONDS
+    timing = {'ExpandSeconds': EXPANSION_SECONDS, 'FadeSeconds': FADE_SECONDS, 'Lifetime': lifetime}
+    rebuild = ASSETS.get_metadata_tag(system, 'GuLi.Burst.Recipe') != RECIPE
+    defaults = [(key, 'Float', str(seconds)) for key, seconds in timing.items()]
+    if rebuild:
+        defaults.extend([('Radius','Float','500'), ('StartRadius','Float','100'), ('InitialAge','Float','0'), ('Seed','Int','0')])
+    present = {str(p.parameter_name) for p in NS.list_parameters(SYSTEM)}
+    for key, kind, value in defaults:
+        if 'User.' + key not in present:
+            require(NS.add_user_parameter(SYSTEM, key, kind, value), key)
+        if float(NS.get_parameter(SYSTEM, 'User.' + key).current_value) != float(value):
+            require(NS.set_parameter(SYSTEM, 'User.' + key, value), key)
+    if rebuild:
+        for old in NS.list_emitters(SYSTEM):
+            require(NS.remove_emitter(SYSTEM, str(old.emitter_name)), 'Remove superseded emitter')
+        template = '/Niagara/DefaultAssets/Templates/Emitters/Fountain.Fountain'
+        require(str(NS.add_emitter(SYSTEM, template, EMITTER)) == EMITTER, 'Add shell emitter')
+        keep = {'EmitterState', 'InitializeParticle', 'ParticleState'}
+        for module in list(EM.list_modules(SYSTEM, EMITTER)):
+            name = str(module.module_name)
+            if name not in keep:
+                require(EM.remove_module(SYSTEM, EMITTER, name), 'Remove template module ' + name)
+        require(EM.add_module(SYSTEM, EMITTER, '/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous', 'EmitterUpdate'), 'One shell')
+        for param in ('Life Cycle Mode', 'Loop Behavior'):
+            require(EM.set_module_input(SYSTEM, EMITTER, 'EmitterState', param, 'NewEnumerator1'), param)
+        require(NS.set_rapid_iteration_param_by_stage(SYSTEM, EMITTER, 'EmitterUpdate',
+                f'Constants.{EMITTER}.SpawnBurst_Instantaneous.Spawn Count', '1'), 'Shell count')
+        require(EM.remove_renderer(SYSTEM, EMITTER, 0), 'Remove template sprite')
+        require(EM.add_renderer(SYSTEM, EMITTER, 'Mesh'), 'Shell renderer')
+        for param, value in [('Meshes', f'((Mesh="{mesh.get_path_name()}"))'), ('bOverrideMaterials', 'True'),
+                             ('OverrideMaterials', f'((ExplicitMat="{material.get_path_name()}"))')]:
+            require(EM.set_renderer_property(SYSTEM, EMITTER, 0, param, value), param)
+        require(unreal.GuLiCombatEffectAuthoringLibrary.configure_buff_burst_system(system) is not None, 'Local-space fixed bounds')
+        box = mesh.get_bounding_box()
+        extent = (box.max-box.min)*.5
+        center = (box.max+box.min)*.5
+        dimensions = ','.join(f'{v:.8f}' for v in extent.to_tuple())
+        offset = ','.join(f'{v:.8f}' for v in center.to_tuple())
+        # The project's red #A34053 in linear space, with emissive gain.
+        red = [(((v/255.+.055)/1.055)**2.4)*4. for v in (0xA3, 0x40, 0x53)]
+        tint = ','.join(f'{x:.8f}' for x in red)
+        inputs = [('Clock','float','System.Age'),('InitialAge','float','User.InitialAge'),
+                  ('Radius','float','User.Radius'),('Start','float','User.StartRadius'),
+                  ('Expand','float','User.ExpandSeconds'),('Fade','float','User.FadeSeconds'),
+                  ('Duration','float','User.Lifetime')]
+        outputs = [('Pos','Position','Particles.Position'),('Size','Vector','Particles.Scale'),
+                   ('Tint','Color','Particles.Color'),('Life','float','Particles.Lifetime'),('Alive','bool','Particles.Alive')]
+        envelope = f'''float t=max(0.0,Clock+InitialAge);
+float rise=max(0.001,Expand);
+float limit=max(0.001,min(Duration,rise+max(Fade,0.0)));
+float endRadius=max(0.0,Radius);
+float u=saturate(t/rise);
+float r=lerp(clamp(Start,0.0,endRadius),endRadius,u*u*(3.0-2.0*u));
+Size=r/float3({dimensions});
+Pos=-float3({offset})*Size;
+float f=saturate((t-rise)/max(0.001,Fade));
+float alpha=1.0-f*f*(3.0-2.0*f);
+Tint=float4({tint},alpha);
+Life=max(0.001,limit-max(InitialAge,0.0));
+Alive=t<limit;'''
+        for stage, name in [('ParticleSpawn','StartBurningShell'),('ParticleUpdate','ExpandBurningShell')]:
+            scratch(SYSTEM, EMITTER, stage, name, inputs, outputs, envelope)
+        system.set_editor_property('max_pool_size',128)
+        system.set_editor_property('pool_prime_size',0)
+        ASSETS.set_metadata_tag(system, 'GuLi.Burst.Recipe', RECIPE)
+    loop_param = f'Constants.{EMITTER}.EmitterState.Loop Duration'
+    require(NS.set_rapid_iteration_param_by_stage(SYSTEM, EMITTER, 'EmitterUpdate', loop_param, str(lifetime)), loop_param)
+    result = NS.compile_with_results(SYSTEM)
+    require(result.success and not result.errors, str(result))
+    saved_timing = {key: float(NS.get_parameter(SYSTEM, 'User.' + key).current_value) for key in timing}
+    require(saved_timing == timing, str(saved_timing))
+    emitters = [str(e.emitter_name) for e in NS.list_emitters(SYSTEM) if e.is_enabled]
+    require(emitters == [EMITTER], str(emitters))
+    renderer = EM.get_renderer_details(SYSTEM, EMITTER, 0)
+    require(str(renderer.mesh_path) == mesh.get_path_name() and str(renderer.material_path) == material.get_path_name(), str(renderer))
+    require(ASSETS.save_loaded_asset(system, False), SYSTEM)
+    return {'success':True,'asset':system.get_path_name(),'source':REFERENCE,'mesh':mesh.get_path_name(),
+            'material':material.get_path_name(),'noise':noise.get_path_name(),'color_srgb':'#A34053',
+            'emitters':emitters,'burst_count':1,'radius_cm':500,'expansion_seconds':saved_timing['ExpandSeconds'],
+            'fade_seconds':saved_timing['FadeSeconds'],'lifetime_seconds':saved_timing['Lifetime'],
+            'visual_acceptance':'pending_user'}
 
-if __name__=='__main__':
-    OUT.mkdir(parents=True,exist_ok=True)
-    try:report=build()
-    except Exception:report={'success':False,'error':traceback.format_exc()}
-    (OUT/'burst_authoring.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
-    unreal.MCPythonHelper.submit_result(json.dumps({'success':report['success'],'report':str(OUT/'burst_authoring.json'),'error':report.get('error','')}))
+
+if __name__ == '__main__':
+    unreal.MCPythonHelper.submit_result(json.dumps(build()))

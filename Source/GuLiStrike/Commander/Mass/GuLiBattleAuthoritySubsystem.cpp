@@ -4378,6 +4378,7 @@ bool UGuLiBattleAuthoritySubsystem::RegisterCombatLedgerTarget(
 		// profiles, cooldowns or the rest of the combat debug presentation.
 		OutSnapshot={};OutSnapshot.Handle=Handle;OutSnapshot.Team=Soldier.Team;
 		OutSnapshot.Location=Soldier.Location;OutSnapshot.Health=Soldier.Health;OutSnapshot.MaxHealth=Soldier.MaxHealth;
+		OutSnapshot.Shield=Soldier.Shield;OutSnapshot.MaxShield=Soldier.MaxShield;
 		OutSnapshot.bAlive=Soldier.Health>0.f;
 		OutSnapshot.CollisionRadius=Authority->MemberAgentRadiusCentimeters;
 		if (const auto* Data=Authority->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
@@ -4559,13 +4560,9 @@ void UGuLiBattleAuthoritySubsystem::UnregisterCombatLedgerTargets()
 	RegisteredCombatLedgerTargets.Reset();
 }
 
-// 构造可靠复制使用的离散状态：生命、阵营、指令等；连续位置走下面独立的姿态通道。
-bool UGuLiBattleAuthoritySubsystem::BuildSoldierState(FGuLiSoldierId Id, FGuLiSoldierStateItem& State) const
+static FGuLiSoldierStateItem MakeSoldierRosterItem(const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier)
 {
- const int32* Index = AuthorityState ? AuthorityState->SoldierIndexById.Find(Id.Value) : nullptr;
- if (!Index) return false;
- const auto& Soldier = AuthorityState->Soldiers[*Index];
- if (Soldier.bEngineering) return false;
+	FGuLiSoldierStateItem State;
 	State.SoldierId = Soldier.SoldierId;
 	State.Team = Soldier.Team;
 	State.UnitTypeId = Soldier.UnitTypeId;
@@ -4574,6 +4571,8 @@ bool UGuLiBattleAuthoritySubsystem::BuildSoldierState(FGuLiSoldierId Id, FGuLiSo
 		: EGuLiSoldierLifeState::Destroyed;
 	State.Health = Soldier.Health;
 	State.MaxHealth = Soldier.MaxHealth;
+	State.Shield = Soldier.Shield;
+	State.MaxShield = Soldier.MaxShield;
 	State.StateRevision = Soldier.StateRevision;
 	State.ActiveOrderId = Soldier.ActiveOrderId;
 	State.bPhased = Soldier.bPhased;
@@ -4582,7 +4581,17 @@ bool UGuLiBattleAuthoritySubsystem::BuildSoldierState(FGuLiSoldierId Id, FGuLiSo
 	State.DisplacementLocation = Soldier.DisplacementLocation;
 	State.DisplacementYaw = Soldier.FacingYawDegrees;
 	State.DisplacementSimulationTime = Soldier.DisplacementSimulationTime;
- return true;
+	return State;
+}
+
+bool UGuLiBattleAuthoritySubsystem::BuildSoldierState(FGuLiSoldierId Id, FGuLiSoldierStateItem& State) const
+{
+	const int32* Index = AuthorityState ? AuthorityState->SoldierIndexById.Find(Id.Value) : nullptr;
+	if (!Index) return false;
+	const auto& Soldier = AuthorityState->Soldiers[*Index];
+	if (Soldier.bEngineering) return false;
+	State = MakeSoldierRosterItem(Soldier);
+	return true;
 }
 
 void UGuLiBattleAuthoritySubsystem::BuildSoldierStateSnapshot(
@@ -4597,23 +4606,7 @@ void UGuLiBattleAuthoritySubsystem::BuildSoldierStateSnapshot(
 	for (const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier : AuthorityState->Soldiers)
 	{
 		if (Soldier.bEngineering) continue;
-		FGuLiSoldierStateItem& State = OutStates.AddDefaulted_GetRef();
-		State.SoldierId = Soldier.SoldierId;
-		State.Team = Soldier.Team;
-		State.UnitTypeId = Soldier.UnitTypeId;
-		State.LifeState = Soldier.IsAlive()
-			? EGuLiSoldierLifeState::Alive
-			: EGuLiSoldierLifeState::Destroyed;
-		State.Health = Soldier.Health;
-		State.MaxHealth = Soldier.MaxHealth;
-		State.StateRevision = Soldier.StateRevision;
-		State.ActiveOrderId = Soldier.ActiveOrderId;
-		State.bPhased = Soldier.bPhased;
-		State.bExternalActionsLocked = Soldier.bExternalActionsLocked;
-		State.DisplacementFrameFloor = Soldier.DisplacementFrameFloor;
-		State.DisplacementLocation = Soldier.DisplacementLocation;
-		State.DisplacementYaw = Soldier.FacingYawDegrees;
-		State.DisplacementSimulationTime = Soldier.DisplacementSimulationTime;
+		OutStates.Add(MakeSoldierRosterItem(Soldier));
 	}
 }
 

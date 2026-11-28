@@ -24,7 +24,7 @@ class UVerticalBox;
 class UHorizontalBox;
 class UGuLiCommanderActionButton;
 class UGuLiCommanderUITheme;
-class UProgressBar;
+class UGuLiSegmentedHealthBar;
 class UBorder;
 class UScaleBox;
 enum class EGuLiCommanderToolMode : uint8;
@@ -161,7 +161,7 @@ private:
 	TArray<FVector> TaskLocations;
 	UPROPERTY(EditDefaultsOnly, Category="Commander|UI") TObjectPtr<UGuLiCommanderUITheme> ConsoleTheme;
 	UPROPERTY(Transient) TArray<TObjectPtr<UGuLiCommanderActionButton>> PortraitButtons;
-	UPROPERTY(Transient) TArray<TObjectPtr<UProgressBar>> PortraitHealth;
+	UPROPERTY(Transient) TArray<TObjectPtr<UGuLiSegmentedHealthBar>> PortraitHealth;
 	UPROPERTY(Transient) TArray<TObjectPtr<UGuLiCommanderActionButton>> TypeButtons;
 	UPROPERTY(Transient) TArray<TObjectPtr<UGuLiCommanderActionButton>> GroupButtons;
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> GroupCounts;
@@ -178,7 +178,7 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> TaskCaption;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> ContextCaption;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> MenuCaption;
-	UPROPERTY(Transient) TObjectPtr<UProgressBar> SelectionHealth;
+	UPROPERTY(Transient) TObjectPtr<UGuLiSegmentedHealthBar> SelectionHealth;
 	UPROPERTY(Transient) TObjectPtr<UBorder> ActionTooltip;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> ActionTooltipText;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> ActionTooltipTitle;

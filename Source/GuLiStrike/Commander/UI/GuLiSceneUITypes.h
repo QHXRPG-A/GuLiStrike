@@ -52,19 +52,34 @@ struct FGuLiSceneUIRing
 	bool operator==(const FGuLiSceneUIRing& R) const { return Key==R.Key && Center==R.Center && OuterRadiusCm==R.OuterRadiusCm && Team==R.Team && bSelected==R.bSelected; }
 };
 
-struct FGuLiSceneUIHealthBar
+/** Visible body in world centimetres. Width is measured in model axes, independently of facing. */
+struct FGuLiHealthBarModel
+{
+	FVector Center = FVector::ZeroVector;
+	FVector Extent = FVector::ZeroVector;
+	double Width = 0;
+	void Set(const FBox& Bounds, double LocalWidth)
+	{
+		Center = Bounds.GetCenter();
+		Extent = Bounds.GetExtent();
+		Width = LocalWidth;
+	}
+	bool operator==(const FGuLiHealthBarModel&) const = default;
+};
+
+struct FGuLiSceneUIHealthBar : FGuLiHealthBarModel
 {
     FGuLiSceneUIElementKey Key;
 	FGuLiHybridObjectKey Target;
-	FVector Center = FVector::ZeroVector;
 	float OverviewIconPixels = 0;
-	float Fraction = 0;
-	float ShieldFraction=0,Opacity=1;
-	bool bHasShield=false;
+	uint32 DisplacementRevision = 0;
+	float Fraction = 0, MaxHealth = 0;
+	float ShieldFraction=0,MaxShield=0,Opacity=1;
 	bool bSelected = false;
 	bool operator==(const FGuLiSceneUIHealthBar& R) const { return Key==R.Key && Target==R.Target
-		&& Center==R.Center && OverviewIconPixels==R.OverviewIconPixels && Fraction==R.Fraction && ShieldFraction==R.ShieldFraction && Opacity==R.Opacity
-		&& bHasShield==R.bHasShield && bSelected==R.bSelected; }
+		&& FGuLiHealthBarModel::operator==(R) && OverviewIconPixels==R.OverviewIconPixels && Fraction==R.Fraction && MaxHealth==R.MaxHealth && ShieldFraction==R.ShieldFraction && Opacity==R.Opacity
+		&& MaxShield==R.MaxShield && bSelected==R.bSelected && bRecentDamage==R.bRecentDamage; }
+	bool bRecentDamage = false;
 };
 
 struct FGuLiSceneUILine

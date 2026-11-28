@@ -1,0 +1,355 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "editor_target": "GuLiStrikeEditor Win64 Development",
+  "editor_module": "UnrealEditor-GuLiStrike-2823.dll",
+  "engine_build_id": "e2f98afe-ccc7-498e-ae00-6a1ee9d5b5f6",
+  "correction": {
+    "evidence": "air-marker-shader-pie.json",
+    "note": "The original compiled flag below sampled editor diagnostics before shader completion. The previous asset failed PCD3D_SM6 compilation and the render thread selected the default material. The batch counts below record submissions only."
+  },
+  "material": {
+    "compiled": true,
+    "loaded": true,
+    "errors": [],
+    "sample_count": 0,
+    "expression_count": 7
+  },
+  "live_combined_range": {
+    "pid": 41400,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "active": true,
+    "world_ready": true,
+    "error": "",
+    "room": "B97BC11F4280F2C9DC653AA5054E1B73",
+    "units": 36,
+    "tier": 1,
+    "installed_nodes": [
+      "01",
+      "08"
+    ],
+    "hangar_enabled": true,
+    "ready": true,
+    "wingmen": 50,
+    "capture": true,
+    "csv_frames": 180,
+    "frames_with_both_types": 172,
+    "frames_with_render_submissions": 172,
+    "submitted_batches": 180,
+    "submitted_gun_billboards": 2526,
+    "submitted_cross_billboards": 2154
+  },
+  "independent_combined_range": {
+    "module": "2822",
+    "wingmen_at_start_and_end": {
+      "before_capture": 50,
+      "end_capture": 50
+    },
+    "two_flight_altitudes_sampled": true,
+    "csv_frames": 649,
+    "frames_with_both_types": 629,
+    "frames_with_render_submissions": 629,
+    "submitted_batches": 648,
+    "submitted_gun_billboards": 10013,
+    "submitted_cross_billboards": 6835
+  },
+  "badge_batching": "One depth-tested mesh submission per view containing guns, crosses and their altitude guides. CSV counts are aggregated per profiler frame.",
+  "same_frame_request_before": {
+    "passed": false,
+    "room": "42FBF9B44734CE509AD930A76CFED9B9",
+    "participant_count": 2,
+    "logical_units": 600,
+    "reason": "Upgrade was not applied or modal still open",
+    "samples": [
+      {
+        "tier": 1,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_1",
+          "bottom_2"
+        ],
+        "ledger_nodes": [
+          "01"
+        ],
+        "player_nodes": [
+          "01"
+        ],
+        "installed_nodes": [
+          "01"
+        ],
+        "hangar_enabled": false,
+        "control": true,
+        "simulation": true
+      },
+      {
+        "tier": 1,
+        "modal": true,
+        "sockets": [
+          "bottom_0",
+          "bottom_1",
+          "bottom_2"
+        ],
+        "ledger_nodes": [
+          "01",
+          "08"
+        ],
+        "player_nodes": [
+          "01",
+          "08"
+        ],
+        "installed_nodes": [
+          "01",
+          "08"
+        ],
+        "hangar_enabled": true,
+        "control": true,
+        "simulation": true
+      }
+    ]
+  },
+  "same_frame_request_after": {
+    "module": "2823",
+    "evidence": "../XuntianBelly/f4-hangar-regression.json"
+  },
+  "normal_wingman_combined": {
+    "passed": true,
+    "room": "F5CA38F34BE3F8C4A7FF0290626E28D2",
+    "participant_count": 2,
+    "logical_units": 36,
+    "reason": "F4, installed hangar and renderer capture completed",
+    "samples": [
+      {
+        "tier": 1,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_1",
+          "bottom_2"
+        ],
+        "ledger_nodes": [
+          "01"
+        ],
+        "player_nodes": [
+          "01"
+        ],
+        "installed_nodes": [
+          "01"
+        ],
+        "hangar_enabled": false,
+        "control": true,
+        "simulation": true
+      },
+      {
+        "tier": 2,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_2"
+        ],
+        "ledger_nodes": [
+          "01",
+          "08",
+          "02"
+        ],
+        "player_nodes": [
+          "01",
+          "08",
+          "02"
+        ],
+        "installed_nodes": [
+          "01",
+          "08",
+          "02"
+        ],
+        "hangar_enabled": true,
+        "control": true,
+        "simulation": true
+      },
+      {
+        "tier": 3,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_2",
+          "bottom_3",
+          "bottom_4",
+          "bottom_5"
+        ],
+        "ledger_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "player_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "installed_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "hangar_enabled": true,
+        "control": true,
+        "simulation": true
+      },
+      {
+        "tier": 3,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_2",
+          "bottom_3",
+          "bottom_4",
+          "bottom_5"
+        ],
+        "ledger_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "player_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "installed_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "hangar_enabled": true,
+        "control": true,
+        "simulation": true
+      }
+    ]
+  },
+  "four_peer_wingman_air": {
+    "passed": true,
+    "room": "42C29369494969F71F34AEA0EF4DFC4B",
+    "participant_count": 4,
+    "logical_units": 0,
+    "reason": "F4 upgraded both tiers and retained hangar",
+    "samples": [
+      {
+        "tier": 1,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_1",
+          "bottom_2"
+        ],
+        "ledger_nodes": [
+          "01"
+        ],
+        "player_nodes": [
+          "01"
+        ],
+        "installed_nodes": [
+          "01"
+        ],
+        "hangar_enabled": false,
+        "control": true,
+        "simulation": true
+      },
+      {
+        "tier": 2,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_2"
+        ],
+        "ledger_nodes": [
+          "01",
+          "08",
+          "02"
+        ],
+        "player_nodes": [
+          "01",
+          "08",
+          "02"
+        ],
+        "installed_nodes": [
+          "01",
+          "08",
+          "02"
+        ],
+        "hangar_enabled": true,
+        "control": true,
+        "simulation": true
+      },
+      {
+        "tier": 3,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_2",
+          "bottom_3",
+          "bottom_4",
+          "bottom_5"
+        ],
+        "ledger_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "player_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "installed_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "hangar_enabled": true,
+        "control": true,
+        "simulation": true
+      },
+      {
+        "tier": 3,
+        "modal": false,
+        "sockets": [
+          "bottom_0",
+          "bottom_2",
+          "bottom_3",
+          "bottom_4",
+          "bottom_5"
+        ],
+        "ledger_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "player_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "installed_nodes": [
+          "01",
+          "08",
+          "02",
+          "03"
+        ],
+        "hangar_enabled": true,
+        "control": true,
+        "simulation": true
+      }
+    ]
+  },
+  "player_visual_acceptance": "pending"
+}

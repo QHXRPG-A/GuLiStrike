@@ -37,6 +37,8 @@ public:
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
     bool PrepareForPIE(FString& Error);
+    UFUNCTION(BlueprintCallable, Category="GuLiStrike|Local PIE") void QueueXuntianHUDRange();
+    UFUNCTION(BlueprintCallable, Category="GuLiStrike|Local PIE") void QueueWingmanAirRange(bool bIncludeGroundTargets=false);
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Local PIE") FString GetSessionStatus() const;
     /** Explicit performance fixture only; ordinary production commits remain unchanged. */
     UFUNCTION(BlueprintCallable, Category="GuLiStrike|Local PIE", meta=(DevelopmentOnly))

@@ -1,4 +1,5 @@
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "UI/GuLiSegmentedHealthBar.h"
 #include "Commander/UI/GuLiCommanderHUDDataSubsystem.h"
 #include "Commander/UI/GuLiCommanderHUDValueUpdates.h"
 #include "Gameplay/Data/GuLiGameText.h"
@@ -107,15 +108,16 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 		if(ConsoleTheme) GuLiHUDSetTexture(B->Icon,Row.Object.IsValid()?ConsoleTheme->FindIcon(TEXT("Unit")):ConsoleTheme->FindPortrait(uint16(Row.Type)),true);
 		B->SetDescription(FText::GetEmpty());
 		GuLiHUDSetEnabled(B,!Sync->HasUnresolvedSelectionIntent());
-		float GroupHealth=0,GroupMaximumHealth=0;
+		float GroupHealth=0,GroupMaximumHealth=0,GroupShield=0,GroupMaximumShield=0;
 		for(const int32 GroupMemberIndex:Group.MemberIndices)
 		{
-			GroupHealth+=Presentation.Members[GroupMemberIndex].Health;
-			GroupMaximumHealth+=Presentation.Members[GroupMemberIndex].MaximumHealth;
+			const auto& Member=Presentation.Members[GroupMemberIndex];
+			GroupHealth+=Member.Health;
+			GroupMaximumHealth+=Member.MaximumHealth;
+			GroupShield+=Member.Shield;
+			GroupMaximumShield+=Member.MaximumShield;
 		}
-		const float HealthPercent=GroupMaximumHealth>0?GroupHealth/GroupMaximumHealth:0;
-		GuLiHUDSetPercent(PortraitHealth[Cell],HealthPercent);
-		GuLiHUDSetFillColor(PortraitHealth[Cell],GroupMaximumHealth>0 && HealthPercent<.35f?FLinearColor(1,.18f,.13f):FLinearColor(.12f,.78f,.5f));
+		if (PortraitHealth[Cell]->SetHealth(GroupHealth,GroupMaximumHealth,GroupShield,GroupMaximumShield)) GuLiHUDRecordWrite(PortraitHealth[Cell]);
 	}
 	GuLiHUDSetText(SelectionCaption,FText::FromString(Presentation.bSyncing?GuLiGameText::Text(TEXT("UI.ConsoleView.048")):
 		GuLiGameText::Format(TEXT("UI.ConsoleView.035"), {FString::Printf(TEXT("%d"), Presentation.Members.Num()), FString::Printf(TEXT("%d"), VisibleMemberIndices.Num())})));
@@ -134,7 +136,8 @@ void UGuLiCommanderHUDWidget::RefreshConsoleSelection()
 	Attribute(TEXT("Defense"),Def!=nullptr,Def?FString::Printf(TEXT("%.0f"),Def->Defense):TEXT(""));
 	Attribute(TEXT("CargoBlue"),false,TEXT("")); Attribute(TEXT("CargoRed"),false,TEXT(""));
     RefreshSelectionCargo();
-	GuLiHUDSetText(SelectionDetails,FText::FromString(Detail)); GuLiHUDSetPercent(SelectionHealth,Max>0?HP/Max:0);
+	GuLiHUDSetText(SelectionDetails,FText::FromString(Detail));
+	if (SelectionHealth->SetHealth(HP,Max,Shield,MaxShield)) GuLiHUDRecordWrite(SelectionHealth);
 	if(ConsoleTheme) GuLiHUDSetTexture(PortraitImage,Type && Type<=MAX_uint16?ConsoleTheme->FindPortrait(uint16(Type)):ConsoleTheme->FindIcon(TEXT("Unit")),true);
 	GuLiHUDSetOpacity(PortraitImage,Presentation.Members.IsEmpty()?.3f:float(.96+.04*FMath::Sin(GetWorld()->GetRealTimeSeconds()*1.4)));
 }

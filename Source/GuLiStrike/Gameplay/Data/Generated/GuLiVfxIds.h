@@ -75,4 +75,8 @@ namespace GuLiVfxIds
 	inline constexpr int32 GroundEnhancedViolet = 70;
 	inline constexpr int32 GroundEnhancedSilver = 71;
 	inline constexpr int32 GroundElectromagneticArc = 72;
+	inline constexpr int32 XuntianBellyExplosion1 = 73;
+	inline constexpr int32 XuntianBellyExplosion2 = 74;
+	inline constexpr int32 XuntianBellyExplosion3 = 75;
+	inline constexpr int32 XuntianBlackSmoke = 76;
 }

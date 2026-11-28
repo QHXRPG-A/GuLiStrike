@@ -245,6 +245,18 @@ bool UGuLiCommanderLODSubsystem::ShouldRenderWorldEffectBounds(const FBox& Bound
 FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::EvaluateWorldEffectBounds(
 	const FGuLiCommanderLODQuery& Query, const double NonCommanderMaximumDistance)
 {
+	return EvaluateWorldEffectViews(Query, NonCommanderMaximumDistance, nullptr);
+}
+
+FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::EvaluateWorldEffectBounds(
+	const FGuLiCommanderLODQuery& Query, const FGuLiWorldEffectDistanceBands& Bands)
+{
+	return EvaluateWorldEffectViews(Query, 0., &Bands);
+}
+
+FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::EvaluateWorldEffectViews(
+	const FGuLiCommanderLODQuery& Query, const double NonCommanderMaximumDistance, const FGuLiWorldEffectDistanceBands* NonCommanderBands)
+{
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderLODWorldEffects);
 	EnsureViews(); ++QueryCount;
 	FGuLiCommanderLODDecision Result;
@@ -267,7 +279,10 @@ FGuLiCommanderLODDecision UGuLiCommanderLODSubsystem::EvaluateWorldEffectBounds(
 		if (!FMath::IsFinite(Distance) || !FMath::IsFinite(Screen)) continue;
 		Result.bVisible=true; Result.bCommanderView|=View.CameraLevel.IsSet();
 		Result.DistanceCentimeters=FMath::Min(Result.DistanceCentimeters,Distance); Result.ScreenFraction=FMath::Max(Result.ScreenFraction,Screen);
-		const auto Level=View.CameraLevel.IsSet() ? View.CameraLevel.GetValue() : EffectiveSettings.Classify(Distance,Screen,Query.CurrentLevel);
+		EGuLiCommanderLODLevel Level;
+		if (View.CameraLevel.IsSet()) Level = View.CameraLevel.GetValue();
+		else if (NonCommanderBands) Level = NonCommanderBands->Classify(Distance);
+		else Level = EffectiveSettings.Classify(Distance, Screen, Query.CurrentLevel);
 		if (uint8(Level)<uint8(Result.TargetLevel)) Result.TargetLevel=Level;
 	}
 	Result.bOverviewOnly=Overview && !Result.bVisible;

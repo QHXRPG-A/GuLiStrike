@@ -1,0 +1,174 @@
+{
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "target": "GuLiStrikeEditor Win64 Development",
+  "build": "Succeeded",
+  "inspection": "Runtime components, pooled decal dimensions, submitted HUD geometry and native automation",
+  "original_pie": {
+    "tier": 3,
+    "registered_turret_models": 5,
+    "visible_mesh_flags_before": 0,
+    "visible_mesh_flags_after_live_correction": 5,
+    "landscape_receiver": "Landscape_1.LandscapeComponent_15",
+    "receives_decals": true
+  },
+  "flight": [
+    {
+      "tier": 1,
+      "mounts": {
+        "bottom_0": {
+          "visible": true,
+          "asset": "SKM_SC_Autocannon"
+        },
+        "bottom_1": {
+          "visible": true,
+          "asset": "SKM_SC_Autocannon"
+        },
+        "bottom_2": {
+          "visible": true,
+          "asset": "SKM_SC_Autocannon"
+        }
+      },
+      "observed_flights": 1,
+      "observed_decal_edge_radii_cm": [
+        800
+      ],
+      "peak_active_warnings": 1,
+      "peak_hud_outline_strokes": 1,
+      "active_warnings_after_flight": 0,
+      "hud_strokes_after_flight": 0
+    },
+    {
+      "tier": 2,
+      "mounts": {
+        "bottom_2": {
+          "visible": true,
+          "asset": "SKM_SC_Twin_Barrel_Turret"
+        },
+        "bottom_0": {
+          "visible": true,
+          "asset": "SKM_SC_Twin_Barrel_Turret"
+        }
+      },
+      "observed_flights": 4,
+      "observed_decal_edge_radii_cm": [
+        1200,
+        1200
+      ],
+      "peak_active_warnings": 4,
+      "peak_hud_outline_strokes": 4,
+      "active_warnings_after_flight": 0,
+      "hud_strokes_after_flight": 0
+    },
+    {
+      "tier": 3,
+      "mounts": {
+        "bottom_3": {
+          "visible": true,
+          "asset": "SKM_SC_Triple_Barrel_Turret"
+        },
+        "bottom_4": {
+          "visible": true,
+          "asset": "SKM_SC_Triple_Barrel_Turret"
+        },
+        "bottom_5": {
+          "visible": true,
+          "asset": "SKM_SC_Triple_Barrel_Turret"
+        },
+        "bottom_2": {
+          "visible": true,
+          "asset": "SKM_SC_Triple_Barrel_Turret"
+        },
+        "bottom_0": {
+          "visible": true,
+          "asset": "SKM_SC_Triple_Barrel_Turret"
+        }
+      },
+      "observed_flights": 15,
+      "observed_decal_edge_radii_cm": [
+        1600
+      ],
+      "peak_active_warnings": 13,
+      "peak_hud_outline_strokes": 13,
+      "active_warnings_after_flight": 0,
+      "hud_strokes_after_flight": 0
+    }
+  ],
+  "clock_sample_seconds": {
+    "world": 15.757629223167896,
+    "battle": 9.983333333333333
+  },
+  "unit_503": {
+    "near_quiet": {
+      "horizontal_m": 195,
+      "health": 300,
+      "shield_fraction": 1,
+      "bar_width_design_px": 24,
+      "recent_damage": false
+    },
+    "far_quiet": {
+      "horizontal_m": 205,
+      "health": 300,
+      "shield_fraction": 1,
+      "bar_width_design_px": 0,
+      "recent_damage": false
+    },
+    "far_hit": {
+      "horizontal_m": 205,
+      "health": 300,
+      "shield_fraction": 0.2,
+      "bar_width_design_px": 24,
+      "recent_damage": true
+    },
+    "far_after": {
+      "horizontal_m": 205,
+      "health": 300,
+      "shield_fraction": 0.2,
+      "bar_width_design_px": 0,
+      "recent_damage": false
+    }
+  },
+  "observed_reveal_seconds": 3.467,
+  "native": {
+    "succeeded": 9,
+    "failed": 0,
+    "total_s": 3.9922380447387695,
+    "tests": [
+      {
+        "test": "GuLiStrike.Commander.UI.HealthBar.Activity",
+        "result": "Success"
+      },
+      {
+        "test": "GuLiStrike.Commander.UI.HealthBar.AllVisibleAndCadence",
+        "result": "Success"
+      },
+      {
+        "test": "GuLiStrike.Commander.UI.HealthBar.Pose30HzCameraPerFrame",
+        "result": "Success"
+      },
+      {
+        "test": "GuLiStrike.Commander.UI.HealthBar.ShieldChangeHistory",
+        "result": "Success"
+      },
+      {
+        "test": "GuLiStrike.Commander.UI.HealthBar.SizingPolicy",
+        "result": "Success"
+      },
+      {
+        "test": "GuLiStrike.Commander.UI.HealthBar.StackedTracks",
+        "result": "Success"
+      },
+      {
+        "test": "GuLiStrike.Commander.UI.HealthBar.VisibilityPolicy",
+        "result": "Success"
+      },
+      {
+        "test": "GuLiStrike.Scale020.GroundWarningPoolingAndRadius",
+        "result": "Success"
+      },
+      {
+        "test": "GuLiStrike.Ship.Parts.VisualLifecycleAndSockets",
+        "result": "Success"
+      }
+    ]
+  }
+}

@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiStrikeShip.h"
+#include "Gameplay/Ship/UI/GuLiXuntianBellyChoice.h"
+#include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Presentation/GuLiCommanderLODSubsystem.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Network/GuLiHybridActorComponent.h"
@@ -69,6 +71,8 @@
 namespace GuLiStrikeShipPrivate
 {
 	const FName GMRuntimeModifierName(TEXT("GM.Runtime"));
+	const TSoftObjectPtr<UInputMappingContext> BellyUpgradeMappings(
+		FSoftObjectPath(TEXT("/Game/GuLiStrike/Ship/Build/Input/IMC_XuntianBelly.IMC_XuntianBelly")));
 
 	uint32 AllocateShipGeneration()
 	{
@@ -216,7 +220,7 @@ void AGuLiStrikeShip::BeginPlay()
 	{
 		for (const auto& Group : ShipAssembly->Catalog->Groups)
 		{
-			if (Group.ConfigurationId != TEXT("Group_05") && Group.ConfigurationId != TEXT("Group_02")) continue;
+			if (Group.ConfigurationId != TEXT("Group_05")) continue;
 			for (const auto& Mount : Group.Mounts)
 			{
 				if (DefaultParts.ContainsByPredicate([&](const auto& P){ return P.SocketName == Mount.SocketName; })) continue;
@@ -332,6 +336,15 @@ void AGuLiStrikeShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	// 建立 Enhanced Input 动作绑定
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
+		if (IsXuntian())
+		{
+			const UInputAction* UpgradeAction = LoadObject<UInputAction>(nullptr,
+				TEXT("/Game/GuLiStrike/Input/Actions/IA_Xuntian_BellyUpgrade.IA_Xuntian_BellyUpgrade"));
+			if (ensure(UpgradeAction))
+			{
+				EnhancedInputComponent->BindAction(UpgradeAction, ETriggerEvent::Started, this, &AGuLiStrikeShip::ToggleBellyChoice);
+			}
+		}
 		if (IsXuntian() && BatteryFireAction)
 		{
 			EnhancedInputComponent->BindAction(BatteryFireAction, ETriggerEvent::Started, this, &AGuLiStrikeShip::BatteryPressed);
@@ -483,8 +496,87 @@ void AGuLiStrikeShip::CalcCamera(float DeltaTime, FMinimalViewInfo& View)
     if (IsXuntian() && XuntianGunnery && IsLocallyControlled()) XuntianGunnery->GetCameraView(View);
     else Super::CalcCamera(DeltaTime, View);
 }
-void AGuLiStrikeShip::BatteryPressed() { if (CanUseShipControls() && XuntianGunnery) XuntianGunnery->SetTrigger(true); }
-void AGuLiStrikeShip::BatteryReleased() { if (XuntianGunnery) XuntianGunnery->SetTrigger(false); }
+void AGuLiStrikeShip::ToggleBellyChoice()
+{
+    if (BellyChoice && BellyChoice->IsInViewport()) { BellyChoice->Close(); return; }
+    auto* PC = Cast<AGuLiCommanderPlayerController>(GetController());
+    if (!IsXuntian() || !PC || !IsLocallyControlled() || PC->IsHUDModal() || !CanUseShipControls()) return;
+    BatteryReleased();
+    BellyChoice = CreateWidget<UGuLiXuntianBellyChoice>(PC, UGuLiXuntianBellyChoice::StaticClass());
+    if (!BellyChoice) return;
+    BellyChoice->AddToPlayerScreen(120);
+    PC->SetRogueCardModal(true);
+    FInputModeGameAndUI Mode;
+    Mode.SetWidgetToFocus(BellyChoice->TakeWidget()).SetHideCursorDuringCapture(false);
+    PC->SetInputMode(Mode);
+    BellyChoice->SetKeyboardFocus();
+}
+
+void AGuLiStrikeShip::SubmitBellyChoice(FGuid Id, int32 Level, int64 Epoch, int64 Revision)
+{
+    if (!UGuLiNetworkSettings::IsHybrid(GetWorld()) && !HasAuthority())
+    { ServerChooseBellyLevel(Id, Level, Epoch, Revision); return; }
+    auto* PS = GetPlayerState<AGuLiBattlePlayerState>();
+    const auto* Binding = UGuLiHybridActorComponent::Find(this);
+    const bool CanChoose = UGuLiNetworkSettings::IsHybrid(GetWorld())
+        ? Binding && Binding->CanControl() && IsShipReady() && !UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)
+        : CanAcceptServerIntent();
+    if (PS && IsXuntian() && CanChoose && Level >= 2 && Level <= 3 &&
+        Level == XuntianGunnery->GetBellyLevel()+1 && PS->GetShipBuild()->RequestConfirmedChoice(
+            Id, Level == 2 ? FName(TEXT("02")) : FName(TEXT("03")), Epoch, Revision).IsValid()) return;
+    ClientResolveBellyChoice_Implementation(Id,false);
+}
+
+void AGuLiStrikeShip::ServerChooseBellyLevel_Implementation(FGuid Id, int32 Level, int64 Epoch, int64 Revision)
+{
+    if (!HasAuthority() || UGuLiNetworkSettings::IsHybrid(GetWorld())) return;
+    auto* PS = GetPlayerState<AGuLiBattlePlayerState>();
+    bool bCommitted = false;
+    if (Id.IsValid() && PS && IsXuntian() && CanAcceptServerIntent() && Level >= 2 && Level <= 3 &&
+        Level == XuntianGunnery->GetBellyLevel()+1)
+        bCommitted = PS->GetShipBuild()->CommitConfirmedChoice(Id, Level == 2 ? FName(TEXT("02")) : FName(TEXT("03")), Epoch, Revision).bCommitted;
+    ClientResolveBellyChoice(Id,bCommitted);
+}
+void AGuLiStrikeShip::ClientResolveBellyChoice_Implementation(FGuid Id, bool bCommitted)
+{
+    if (!BellyChoice) return;
+    FGuLiShipChoiceResult Result; Result.RequestId = Id; Result.bCommitted = bCommitted;
+    BellyChoice->OnResolved(Result);
+}
+
+void AGuLiStrikeShip::ServerUpdateBellyAim_Implementation(FVector_NetQuantize Point, bool Ground, bool Surface, uint32 Revision)
+{
+    ApplyRemoteBellyAim(Point,Ground,Surface,Revision);
+}
+bool AGuLiStrikeShip::ApplyRemoteBellyAim(FVector Point, bool Ground, bool Surface, uint32 Revision)
+{
+    if (!IsXuntian() || UGuLiNetworkSettings::IsHybrid(GetWorld()) || !CanAcceptServerIntent() ||
+        Revision != GetLoadoutRevision() || Point.ContainsNaN() ||
+        FVector::DistSquared(Point,GetActorLocation()) > FMath::Square(double(UGuLiXuntianGunnery::Reach)+30000.)) return false;
+    XuntianGunnery->ApplyRemoteAim(Point,Ground,XuntianGunnery->GroundMinDepression,XuntianGunnery->GroundMaxDepression);
+    XuntianGunnery->bAimingAtSurface = Ground && Surface;
+    return true;
+}
+void AGuLiStrikeShip::ServerSetBellyTrigger_Implementation(bool Down, FVector_NetQuantize Point, bool Ground, bool Surface, uint32 Revision)
+{
+    if (!IsXuntian() || UGuLiNetworkSettings::IsHybrid(GetWorld())) return;
+    if (!Down) { XuntianGunnery->SetTrigger(false); return; }
+    if (ApplyRemoteBellyAim(Point,Ground,Surface,Revision)) XuntianGunnery->SetTrigger(true);
+}
+void AGuLiStrikeShip::BatteryPressed()
+{
+    if (!CanUseShipControls() || !XuntianGunnery) return;
+    XuntianGunnery->SetTrigger(true);
+    if (!HasAuthority() && !UGuLiNetworkSettings::IsHybrid(GetWorld()))
+        ServerSetBellyTrigger(true,XuntianGunnery->AimPoint,XuntianGunnery->bGround,XuntianGunnery->bAimingAtSurface,GetLoadoutRevision());
+}
+void AGuLiStrikeShip::BatteryReleased()
+{
+    if (!XuntianGunnery) return;
+    XuntianGunnery->SetTrigger(false);
+    if (IsLocallyControlled() && !HasAuthority() && !UGuLiNetworkSettings::IsHybrid(GetWorld()))
+        ServerSetBellyTrigger(false,FVector::ZeroVector,false,false,GetLoadoutRevision());
+}
 
 void AGuLiStrikeShip::Tick(float DeltaTime)
 {
@@ -494,7 +586,16 @@ void AGuLiStrikeShip::Tick(float DeltaTime)
     {
         const bool bPilot = IsLocallyControlled() && !bCarrierDormant && !bShipDeathHandled;
         if (bPilot) XuntianGunnery->UpdateLocalView();
-        if (!UGuLiHybridActorComponent::Find(this)) XuntianGunnery->Advance(DeltaTime, bPilot && HasAuthority());
+        if (!UGuLiHybridActorComponent::Find(this))
+        {
+            if (bPilot && !HasAuthority() && GetWorld()->GetTimeSeconds() >= NextBellyAimSend)
+            {
+                NextBellyAimSend = GetWorld()->GetTimeSeconds()+.075;
+                ServerUpdateBellyAim(XuntianGunnery->AimPoint,XuntianGunnery->bGround,XuntianGunnery->bAimingAtSurface,GetLoadoutRevision());
+            }
+            const bool bRemoteBelly = HasAuthority() && !IsLocallyControlled() && XuntianGunnery->bGround && CanAcceptServerIntent();
+            XuntianGunnery->Advance(DeltaTime, HasAuthority() && (bPilot || bRemoteBelly));
+        }
         else if (!UGuLiHybridActorComponent::HasSimulation(this)) XuntianGunnery->Advance(DeltaTime, false);
     }
     else if (UGuLiNetworkSettings::CanPresent(GetWorld()) && IsLocallyControlled()) ResolveCameraArmCollision();
@@ -1339,6 +1440,7 @@ bool AGuLiStrikeShip::IsShipReady() const
 
 bool AGuLiStrikeShip::CanUseShipControls() const
 {
+	if (const auto* PC = Cast<AGuLiCommanderPlayerController>(GetController()); PC && PC->IsHUDModal()) return false;
 	if (UGuLiNetworkSettings::IsHybrid(GetWorld()))
 	{
 		const auto* Binding=UGuLiHybridActorComponent::Find(this);
@@ -1360,6 +1462,15 @@ bool AGuLiStrikeShip::CanAcceptServerIntent() const
 		&& BattleGS && BattleGS->IsMatchInProgress() && IsShipReady();
 }
 
+bool AGuLiStrikeShip::HullTouchesSphere(FVector Center, float Radius) const
+{
+    const UStaticMesh* HullAsset = HullMesh ? HullMesh->GetStaticMesh().Get() : nullptr;
+    if (!HullAsset) return false;
+    const FTransform& Transform = HullMesh->GetComponentTransform();
+    const FVector Closest = HullAsset->GetBoundingBox().GetClosestPointTo(Transform.InverseTransformPosition(Center));
+    return FVector::DistSquared(Center, Transform.TransformPosition(Closest)) <= FMath::Square(double(Radius));
+}
+
 bool AGuLiStrikeShip::IntersectHull(const FVector& Start,const FVector& End,float Radius,float& HitTime) const
 {
     const UStaticMesh* Asset=HullMesh?HullMesh->GetStaticMesh().Get():nullptr;
@@ -1378,7 +1489,7 @@ bool AGuLiStrikeShip::IsBaseBatteryPart(FName Socket,const UGuLiStrikeShipPartCo
     if (!IsXuntian() || !Part || !ShipAssembly || !ShipAssembly->Catalog) return false;
     return ShipAssembly->Catalog->Groups.ContainsByPredicate([&](const auto& Group)
     {
-        return (Group.ConfigurationId == TEXT("Group_05") || Group.ConfigurationId == TEXT("Group_02")) &&
+        return Group.ConfigurationId == TEXT("Group_05") &&
             Group.Mounts.ContainsByPredicate([&](const auto& M){return M.SocketName==Socket && M.PartClass.Get()==Part->GetClass();});
     });
 }
@@ -1387,7 +1498,7 @@ bool AGuLiStrikeShip::IsKnownPartClass(TSubclassOf<UGuLiStrikeShipPartComponent>
 {
 	return PartClass && !PartClass->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists)
 		&& ((IsXuntian() && ShipAssembly && ShipAssembly->Catalog && ShipAssembly->Catalog->Groups.ContainsByPredicate(
-            [&](const auto& Group){ return (Group.ConfigurationId == TEXT("Group_05") || Group.ConfigurationId == TEXT("Group_02")) &&
+            [&](const auto& Group){ return Group.ConfigurationId == TEXT("Group_05") &&
                 Group.Mounts.ContainsByPredicate([&](const auto& M){return M.PartClass.ToSoftObjectPath()==FSoftObjectPath(PartClass.Get());}); }))
             || PartCatalogue.Contains(PartClass) || DefaultParts.ContainsByPredicate(
 			[PartClass](const FGuLiStrikeShipDefaultPart& Entry) { return Entry.PartClass == PartClass; }));
@@ -1532,6 +1643,13 @@ void AGuLiStrikeShip::RemoveShipInputContext()
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = InstalledInputSubsystem.Get())
 	{
 		if (ShipMappingContext) { Subsystem->RemoveMappingContext(ShipMappingContext); }
+		if (IsXuntian())
+		{
+			if (auto* UpgradeMappings = GuLiStrikeShipPrivate::BellyUpgradeMappings.Get())
+			{
+				Subsystem->RemoveMappingContext(UpgradeMappings);
+			}
+		}
 	}
 	InstalledInputSubsystem.Reset();
 }
@@ -1551,6 +1669,13 @@ void AGuLiStrikeShip::UpdateShipInputContext()
 		if (DesiredSubsystem && ShipMappingContext)
 		{
 			DesiredSubsystem->AddMappingContext(ShipMappingContext, 0);
+			if (IsXuntian())
+			{
+				if (auto* UpgradeMappings = GuLiStrikeShipPrivate::BellyUpgradeMappings.LoadSynchronous())
+				{
+					DesiredSubsystem->AddMappingContext(UpgradeMappings, 0);
+				}
+			}
 			InstalledInputSubsystem = DesiredSubsystem;
 			OwningPC->SetInputMode(FInputModeGameOnly());
 			OwningPC->bShowMouseCursor = false;
@@ -2061,6 +2186,7 @@ void AGuLiStrikeShip::HandleShipDeath()
 
 void AGuLiStrikeShip::UnPossessed()
 {
+	if (BellyChoice && BellyChoice->IsInViewport()) BellyChoice->Close();
 	if (XuntianGunnery) XuntianGunnery->ResetControls();
 	HybridInput={}; bSemanticFlightInput=false; bHybridInputSent=false;
 	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
@@ -2080,6 +2206,7 @@ void AGuLiStrikeShip::UnPossessed()
 
 void AGuLiStrikeShip::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	if (BellyChoice && BellyChoice->IsInViewport()) BellyChoice->Close();
 	bEndingShipPlay = true;
 	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }

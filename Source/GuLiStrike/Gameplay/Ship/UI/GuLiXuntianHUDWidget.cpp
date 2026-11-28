@@ -1,6 +1,12 @@
 #include "Gameplay/Ship/UI/GuLiXuntianHUDWidget.h"
+#include "UI/GuLiSegmentedHealthBar.h"
+#include "Commander/UI/GuLiSceneUIWidget.h"
+#include "Commander/UI/GuLiHealthBarLayout.h"
+#include "Commander/UI/GuLiSceneUITypes.h"
+#include "Commander/UI/GuLiSceneUISubsystem.h"
 #include "Gameplay/Ship/UI/GuLiXuntianAtlas.h"
 #include "Gameplay/Ship/Aiming/GuLiXuntianGunnery.h"
+#include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/Font.h"
@@ -43,6 +49,11 @@ struct FPainter
     V2 Size;
     float Scale;
     int32 Layer;
+    GuLiHealthGrid::FMeshBatch& Bars;
+    GuLiHealthGrid::FCanvas BarCanvas;
+#if WITH_EDITOR
+    FGuLiXuntianHUDPaint* Inspection = nullptr;
+#endif
 
     FPaintGeometry Box(V2 P,V2 Extent) const
     {
@@ -219,34 +230,31 @@ struct FPresentationTarget
     double Radius=0,Range=0,DeltaZ=0;
 };
 
-void DrawContacts(const FPainter& H,const FProjection& View,const UGuLiXuntianGunnery& G,const FVector& Hull,
-                  EGuLiTeam Team,int32 BellyCount,FGuLiTargetHandle& LastFocus)
+void DrawContacts(const FPainter& H,const UGuLiXuntianGunnery& G,const FGuLiPilotHealthFrame& Frame,
+                  EGuLiTeam Team,FGuLiTargetHandle& LastFocus)
 {
     FPresentationTarget Best;
     double BestScore=TNumericLimits<double>::Max();
-    int32 GroundLabels=0;
-    for (const auto& C:G.GetContacts())
+    for (const auto& Item : Frame.Contacts)
     {
-        const FVector Point=ContactPoint(C), Delta=Point-Hull;
-        V2 P;
-        if (!View.Project(Point,P)) continue;
-        const bool Airborne=Flying(C), Exact=C.Handle==G.Focus;
-        const double Distance=Delta.Size();
-        const double Miss=FVector2D::Distance(P,View.Center);
-        if (!Airborne && !Exact && (Distance>65000 || (Miss>98 && GroundLabels>=6))) continue;
-        if (!Airborne) ++GroundLabels;
-        const double Radius=FMath::Clamp(C.CollisionRadius/FMath::Max(3000.,Distance)*H.Size.Y*.78,
-                                         Airborne?10.:12.,Airborne?30.:32.);
-        const V2 Flag=P-V2(0,Radius*.62+9);
+        const auto& C=G.GetContacts()[Item.Index];
+        const bool Exact=C.Handle==G.Focus;
         const bool Friend=C.Team==Team;
-        H.Sprite(Friend?Art::Friend:Art::Hostile,Flag);
-        if (Friend) continue;
-        if (!Airborne && G.bGround) H.GunTicks(Flag-V2(0,10),BellyCount,G.CoverageAt(Point));
+        if (Item.bBadge) H.Sprite(Friend?Art::Friend:Art::Hostile,Item.Flag);
+#if WITH_EDITOR
+        if (H.Inspection && C.Handle.Kind == EGuLiTargetKind::CommanderSoldier)
+            H.Inspection->Soldiers.Add({C.Handle.LocalId,Item.Life.Current,Item.Shield.Maximum>0 ? Item.Shield.Current/Item.Shield.Maximum : 0.f,
+                Item.Shield.Maximum>0,Item.bChanged, Item.Bar.bIsValid ? Item.Bar.Min : Item.Center,
+                Item.Bar.bIsValid ? Item.Bar.GetSize() : V2::ZeroVector,Item.Depth,
+                FVector::DistXY(G.GetOwner()->GetActorLocation(),C.Location)});
+#endif
+        if (!Item.bBadge || Friend) continue;
         const bool Previous=C.Handle==LastFocus;
-        if (!Exact && (G.Focus.IsValid() || Miss>(Previous?98:82))) continue;
-        const double Score=Exact?-1.:Miss-(Previous?10:0);
-        if (Score<BestScore) { BestScore=Score; Best={&C,P,Radius,Distance,Delta.Z}; }
+        if (!Exact && (G.Focus.IsValid() || Item.Miss>(Previous?98:82))) continue;
+        const double Score=Exact?-1.:Item.Miss-(Previous?10:0);
+        if (Score<BestScore) { BestScore=Score; Best={&C,Item.Center,Item.Radius,Item.Range,Item.DeltaZ}; }
     }
+    Frame.Bars.Submit(H.Draw,H.Layer);
     LastFocus=Best.Contact?Best.Contact->Handle:FGuLiTargetHandle();
     if (!Best.Contact) return;
     const V2 Extent(Best.Radius,Best.Radius*.62);
@@ -274,36 +282,42 @@ void DrawAltitudeTape(const FPainter& H,double Alt,double CenterY,float Ground)
     H.Path({V2(98,CenterY-4),V2(102,CenterY),V2(98,CenterY+4)},Alpha(Amber,Ground),2);
 }
 
-void DrawGauges(const FPainter& H,const UGuLiXuntianGunnery& G,double Health,double Speed,
+void DrawGauges(const FPainter& H,const UGuLiXuntianGunnery& G,const FGuLiCombatHealthState& Vitals,double Speed,
                 int32 Active,int32 Eligible,int32 BellyCount,float Blend)
 {
     const V2 C=H.Size*.5;
     const float Air=1-Blend;
+    const float Health=Vitals.MaxHealth>0?FMath::Clamp(Vitals.Health/Vitals.MaxHealth,0.f,1.f):0.f;
     const double Left=C.X-204,Right=C.X+204,PanelLeft=C.X-72,PanelY=H.Size.Y*.885;
     auto Mix=[&](double A,double B){return FMath::Lerp(A,B,double(Blend));};
     if (Air>0)
     {
         H.Sprite(Art::Dials,C,Air);
-        H.Arc(C,170,154,154+51*Health,Alpha(Aqua,.92f*Air),4);
         H.Arc(C,170,-25,-24+49*FMath::Clamp(Speed/32.4,0.,1.),Alpha(Amber,.98f*Air),3);
         H.Sprite(Art::Altitude,V2(Mix(Left-88,63),C.Y+16),Air);
     }
     if (Blend>0)
     {
         DrawAltitudeTape(H,G.HeightAGL,C.Y,Blend);
-        const V2 Panel(PanelLeft,PanelY-19);
-        H.Rect(Panel,V2(144,38),Alpha(Dark,.64f*Blend));
-        H.Line(Panel,Panel+V2(144,0),Alpha(Ivory,.48f*Blend));
-        H.Rect(Panel-V2(0,1),V2(23,2),Alpha(Aqua,Blend));
-        for (int32 I=0;I<6;++I)
-        {
-            const float Fill=FMath::Clamp(float(Health*6-I),0.f,1.f);
-            H.Rect(V2(PanelLeft+101+I*5,PanelY-4),V2(3.5,8),Alpha(Aqua,(.2f+.66f*Fill)*Blend));
-        }
     }
-    const double Y=Mix(C.Y-15,PanelY);
-    H.Sprite(Art::Hull,V2(Mix(Left-88,PanelLeft+20),Y));
-    H.Label(FString::Printf(TEXT("%d%%"),FMath::RoundToInt(Health*100)),V2(Mix(Left,PanelLeft+90),Y),Mix(26,23),Ivory,EAlign::Right,.5);
+    const bool Ground=G.bGround;
+    if (Ground)
+    {
+        const V2 Panel(PanelLeft,PanelY-19);
+        H.Rect(Panel,V2(144,38),Alpha(Dark,.64f));
+        H.Line(Panel,Panel+V2(144,0),Alpha(Ivory,.48f));
+        H.Rect(Panel-V2(0,1),V2(23,2),Aqua);
+    }
+    const double Y=Ground ? PanelY : C.Y-15;
+    const V2 BarOrigin=Ground ? V2(PanelLeft+100,Y-4) : V2(Left-88,Y+15);
+#if WITH_EDITOR
+    if (H.Inspection) { H.Inspection->bGround=Ground; H.Inspection->HullBarOrigin=BarOrigin; }
+#endif
+    H.Bars.Reset();
+    H.Bars.Add(H.BarCanvas,BarOrigin,V2(Ground ? 40 : 88,8),{Vitals.Health,Vitals.MaxHealth},{Vitals.Shield,Vitals.MaxShield},1.f,1.);
+    H.Bars.Submit(H.Draw,H.Layer);
+    H.Sprite(Art::Hull,V2(Ground ? PanelLeft+20 : Left-88,Y));
+    H.Label(FString::Printf(TEXT("%d%%"),FMath::RoundToInt(Health*100)),V2(Ground ? PanelLeft+90 : Left,Y),Ground ? 23 : 26,Ivory,EAlign::Right,.5);
     H.Label(FString::Printf(TEXT("%d m"),FMath::RoundToInt(G.HeightAGL)),V2(Mix(Left,90),Mix(C.Y+16,C.Y)),Mix(22,20),Ivory,EAlign::Right,.3);
     H.Sprite(Art::Speed,V2(Right,C.Y-15));
     H.Label(FString::Printf(TEXT("%.1f m/s"),Speed),V2(Right+17,C.Y-15),24,Ivory);
@@ -422,10 +436,21 @@ int32 UGuLiXuntianHUDWidget::NativePaint(const FPaintArgs& Args,const FGeometry&
     if (Size.X<1 || Size.Y<1) return Layer;
     const float Scale=FMath::Min(Size.X/1920.,Size.Y/1080.);
     const auto Measure=FSlateApplication::Get().GetRenderer()->GetFontMeasureService();
-    FPainter H{Geo,Draw,InstrumentBrush,PanelFont,NameFont,*Measure,Size/Scale,Scale,Layer+1};
-    const FProjection View{Projection.ComputeViewProjectionMatrix(),H.Size*.5};
+    FPainter H{Geo,Draw,InstrumentBrush,PanelFont,NameFont,*Measure,Size/Scale,Scale,Layer+1,VitalsMesh,{Geo,V2(Scale)}};
+#if WITH_EDITOR
+    if (bInspectNextPaint)
+    {
+        bInspectNextPaint=false;
+        H.Inspection=&LastInspectedPaint;
+        LastInspectedPaint.Frame=GFrameCounter;
+        LastInspectedPaint.WarningStrokes=0;
+        LastInspectedPaint.DesignSize=H.Size;
+        LastInspectedPaint.Soldiers.Reset();
+    }
+#endif
+    const FGuLiHealthBarView BarView(Projection,H.Size);
+    const FProjection View{BarView.Matrix,H.Size*.5};
     const auto& Health=Ship->GetCombatHealthComponent()->GetHealthState();
-    const double HP=Health.MaxHealth>0?FMath::Clamp(double(Health.Health/Health.MaxHealth),0.,1.):0.;
     const auto Team=Ship->GetCombatHealthComponent()->GetCombatTeam();
     const FVector Hull=Ship->GetHullMeshComponent()->Bounds.Origin;
     int32 Active=0,Eligible=0,BellyCount=0;
@@ -439,11 +464,48 @@ int32 UGuLiXuntianHUDWidget::NativePaint(const FPaintArgs& Args,const FGeometry&
     const bool HasEnemyAir=G->Focus.IsValid() && G->GetContacts().ContainsByPredicate([&](const auto& C)
         { return C.Handle==G->Focus && C.Team!=Team && Flying(C); });
     ShadeEdges(H,Blend); ++H.Layer;
+    if (const auto* Warnings=Ship->GetWorld()->GetSubsystem<UGuLiGroundWarningSubsystem>())
+    {
+        // The translucent ground-coverage layer is above decals. Composite the same
+        // ground footprint inside the pilot's HUD, below contacts and instruments.
+        TArray<FVector2f> Stroke;
+        Warnings->VisitPilotRims([&](TConstArrayView<FVector> Rim,const FLinearColor& Color)
+        {
+            FBox2D Bounds(ForceInit);
+            auto Submit=[&]
+            {
+                if (Stroke.Num()>=2 && Bounds.Intersect(BarView.Viewport))
+                {
+                    FSlateDrawElement::MakeLines(Draw,H.Layer,Geo.ToPaintGeometry(),Stroke,ESlateDrawEffect::None,Color,true,1.8f*Scale);
+#if WITH_EDITOR
+                    if (H.Inspection) ++H.Inspection->WarningStrokes;
+#endif
+                }
+                Stroke.Reset();
+                Bounds.Init();
+            };
+            Stroke.Reserve(Rim.Num());
+            for (const FVector& Vertex : Rim)
+            {
+                FGuLiHealthBarView::FPoint Point;
+                if (!BarView.Project(Vertex,Point)) { Submit(); continue; }
+                Bounds+=Point.Screen;
+                Stroke.Add(FVector2f(Point.Screen*Scale));
+            }
+            Submit();
+        });
+    }
     DrawCards(H,G->GetCards());
     DrawCompass(H,FRotator::ClampAxis(G->ViewYaw));
-    DrawContacts(H,View,*G,Hull,Team,BellyCount,LastLabelTarget);
+    const auto* Scene=LP->GetSubsystem<UGuLiSceneUISubsystem>();
+    if (const auto* Widget=Scene ? Scene->GetWidget() : nullptr)
+    {
+        H.BarCanvas.Clip = BarView.Viewport;
+        DrawContacts(H,*G,Widget->GetPilotHealthFrame(*G,BarView,H.BarCanvas,Ship->GetActorLocation()),Team,LastLabelTarget);
+        H.BarCanvas.Clip.Init();
+    }
     DrawRadar(H,*G,Hull,Team,1-Blend);
-    DrawGauges(H,*G,HP,Ship->GetVelocity().Size()/100,Active,Eligible,BellyCount,Blend);
+    DrawGauges(H,*G,Health,Ship->GetVelocity().Size()/100,Active,Eligible,BellyCount,Blend);
     DrawMatch(H,*G,Team,Ship->GetWorld()->GetTimeSeconds());
     ++H.Layer;
     DrawSights(H,View,*G,HasEnemyAir,Eligible);

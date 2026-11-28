@@ -8,6 +8,7 @@
 #include "NiagaraDataSet.h"
 #include "NiagaraDataSetAccessor.h"
 #include "Engine/World.h"
+#include "Engine/Blueprint.h"
 #include "NiagaraEmitter.h"
 #include "NiagaraMeshRendererProperties.h"
 #include "NiagaraSpriteRendererProperties.h"
@@ -22,6 +23,7 @@
 #include "RenderingThread.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "NiagaraScript.h"
+#include "NiagaraEditorUtilities.h"
 #include "NiagaraShared.h"
 #include "NiagaraConstants.h"
 #include "NiagaraScriptSource.h"
@@ -269,6 +271,164 @@ bool UGuLiCombatEffectAuthoringLibrary::WireGunfireReader(UNiagaraSystem* System
 	return true;
 }
 
+int32 UGuLiCombatEffectAuthoringLibrary::RetargetModelProjectileEffect(UBlueprint* Blueprint, UNiagaraSystem* Original, UNiagaraSystem* Replacement)
+{
+	if (!Blueprint || !Original || !Replacement) return -1;
+	const FString Owner = Blueprint->GetOutermost()->GetName();
+	if (Owner != TEXT("/Game/MechaDestroyer/Blueprints/BP_Projectile_bullet") &&
+		Owner != TEXT("/Game/MechaDestroyer/Blueprints/BP_Projectile_Rockets")) return -1;
+	if (!Original->GetOutermost()->GetName().StartsWith(TEXT("/Game/MechaDestroyer/FX/")) ||
+		!Replacement->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/ModelProjectiles/"))) return -1;
+
+	int32 Changes = 0;
+	TArray<UEdGraph*> Graphs;
+	Blueprint->GetAllGraphs(Graphs);
+	for (UEdGraph* Graph : Graphs)
+	{
+		for (UEdGraphNode* Node : Graph->Nodes)
+		{
+			if (!Node) continue;
+			for (UEdGraphPin* Pin : Node->Pins)
+			{
+				if (!Pin || Pin->DefaultObject != Original) continue;
+				Node->Modify();
+				Graph->GetSchema()->TrySetDefaultObject(*Pin, Replacement);
+				if (Pin->DefaultObject != Replacement) return -1;
+				++Changes;
+			}
+		}
+	}
+	for (TObjectIterator<UNiagaraComponent> It; It; ++It)
+	{
+		if (It->GetOutermost() != Blueprint->GetOutermost() || !It->IsTemplate() || It->GetAsset() != Original) continue;
+		It->Modify();
+		It->SetAsset(Replacement, false);
+		++Changes;
+	}
+	if (Changes) Blueprint->MarkPackageDirty();
+	return Changes;
+}
+
+
+bool UGuLiCombatEffectAuthoringLibrary::EnsureDistanceLODEmitter(UNiagaraSystem* System, FName SourceName, FName NewName)
+{
+	if (!System || !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/"))) return false;
+	FVersionedNiagaraEmitter Source;
+	FGuid Existing;
+	for (const FNiagaraEmitterHandle& Handle : System->GetEmitterHandles())
+	{
+		if (Handle.GetName() == SourceName) Source = Handle.GetInstance();
+		if (Handle.GetName() == NewName) Existing = Handle.GetId();
+	}
+	if (!Source.Emitter || (NewName != FName(SourceName.ToString()+TEXT("_Reduced")) &&
+		NewName != FName(SourceName.ToString()+TEXT("_Minimal")))) return false;
+	if (Existing.IsValid())
+	{
+		const FName State(NewName.ToString()+TEXT(".ExecutionState"));
+		if (System->GetSystemUpdateScript()->GetVMExecutableData().Attributes.ContainsByPredicate(
+			[State](const FNiagaraVariable& Variable) { return Variable.GetName() == State; })) return true;
+		System->RemoveEmitterHandlesById({Existing});
+	}
+	// The editor insertion also wires the emitter into both system VM graphs.
+	const FGuid Id = FNiagaraEditorUtilities::AddEmitterToSystem(*System, *Source.Emitter, Source.Version);
+	for (FNiagaraEmitterHandle& Handle : System->GetEmitterHandles())
+	{
+		if (Handle.GetId() != Id) continue;
+		Handle.SetName(NewName, *System);
+		System->MarkPackageDirty();
+		return true;
+	}
+	return false;
+}
+
+FString UGuLiCombatEffectAuthoringLibrary::ConfigureDistanceLODLimits(UNiagaraSystem* System, FName EmitterName, bool bLower, bool bUpper)
+{
+	if (!System || !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/"))) return TEXT("Expected project Niagara system");
+	for (const FNiagaraEmitterHandle& Handle : System->GetEmitterHandles())
+	{
+		if (Handle.GetName() != EmitterName) continue;
+		auto* Data = Handle.GetEmitterData();
+		auto* Source = Data ? Cast<UNiagaraScriptSource>(Data->GraphSource) : nullptr;
+		if (!Source || !Source->NodeGraph) break;
+		TArray<UNiagaraNodeFunctionCall*> Calls;
+		Source->NodeGraph->GetNodesOfClass(Calls);
+		for (auto* Call : Calls)
+		{
+			if (!Call->FunctionScript || Call->GetFunctionName()!=TEXT("EmitterState")) continue;
+			auto* Module = Cast<UNiagaraScriptSource>(Call->FunctionScript->GetLatestSource());
+			if (!Module || !Module->NodeGraph) break;
+			for (const FString Input : {FString(TEXT("bUseMinDistance")), FString(TEXT("bUseMaxDistance")),
+				FString(TEXT("Min Distance Response")), FString(TEXT("Max Distance Response"))})
+			{
+				auto* Variable = Module->NodeGraph->GetScriptVariable(FName(TEXT("Module.")+Input));
+				if (!Variable)
+				{
+					FString Available;
+					for (const auto& Pair : Module->NodeGraph->GetAllMetaData())
+						if (Pair.Key.GetName().ToString().Contains(TEXT("Distance"))) Available += TEXT(" ")+Pair.Key.GetName().ToString();
+					return TEXT("Unknown ")+Input+TEXT(" in")+Available;
+				}
+				const FNiagaraTypeDefinition Type = Variable->Variable.GetType();
+				FString Value;
+				if (Input.StartsWith(TEXT("bUse"))) Value = (Input.Contains(TEXT("Min")) ? bLower : bUpper) ? TEXT("true") : TEXT("false");
+				else
+				{
+					const UEnum* Responses = Type.GetEnum();
+					if (!Responses) return TEXT("Missing response enum for ")+Input;
+					// Niagara execution state 1 stops new spawns and lets existing particles expire.
+					Value = Responses->GetNameStringByValue(1);
+				}
+				auto& Pin = FNiagaraStackGraphUtilities::GetOrCreateStackFunctionInputOverridePin(*Call,
+					FNiagaraParameterHandle(FName(Call->GetFunctionName()+TEXT(".")+Input)), Type, Variable->Metadata.GetVariableGuid(), FGuid());
+				if (!Pin.LinkedTo.IsEmpty()) return TEXT("Unexpected linked distance input ")+Input;
+				if (Pin.DefaultValue != Value) Pin.GetSchema()->TrySetDefaultValue(Pin, Value, true);
+			}
+			Call->MarkNodeRequiresSynchronization(TEXT("Distance LOD limits"),true);
+			System->MarkPackageDirty();
+			return {};
+		}
+	}
+	return TEXT("EmitterState not found");
+}
+
+
+FString UGuLiCombatEffectAuthoringLibrary::GetDistanceLODPreviewState(UNiagaraComponent* Component)
+{
+	if (!Component || !Component->GetAsset()) return TEXT("{}");
+	const auto Controller = Component->GetSystemInstanceController();
+	const auto* System = Component->GetAsset();
+	auto Result = MakeShared<FJsonObject>();
+	Result->SetBoolField(TEXT("registered"), Component->IsRegistered());
+	Result->SetBoolField(TEXT("active"), Component->IsActive());
+	Result->SetBoolField(TEXT("ready"), System->IsReadyToRun());
+	Result->SetBoolField(TEXT("valid"), System->IsValid());
+	Result->SetBoolField(TEXT("allowed"), System->IsAllowedByScalability());
+	Result->SetBoolField(TEXT("world_ready"), Component->IsWorldReadyToRun());
+	Result->SetBoolField(TEXT("controller"), Controller.IsValid());
+	if (Controller)
+	{
+		if (auto* Instance = Controller->GetSystemInstance_Unsafe())
+		{
+			Result->SetNumberField(TEXT("distance"), Instance->GetLODDistance());
+			Result->SetNumberField(TEXT("age"), Instance->GetAge());
+			Result->SetNumberField(TEXT("state"), int32(Instance->GetActualExecutionState()));
+			Result->SetBoolField(TEXT("simulation"), Instance->GetSystemSimulation().IsValid());
+		}
+	}
+	FString Text;
+	FJsonSerializer::Serialize(Result,TJsonWriterFactory<>::Create(&Text));
+	return Text;
+}
+
+
+FString UGuLiCombatEffectAuthoringLibrary::GetDistanceLODTranslation(UNiagaraSystem* System)
+{
+	if (!System || !System->GetSystemUpdateScript()) return {};
+	System->RequestCompile(true);
+	System->WaitForCompilationComplete();
+	return System->GetSystemUpdateScript()->GetVMExecutableData().LastHlslTranslation;
+}
+
 bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* System)
 {
 	if (!InScope(System) && (!System || !System->GetOutermost()->GetName().StartsWith(
@@ -278,6 +438,7 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 			&& System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/RogueCards/NS_RogueUpgrade_Lite")
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/Mining/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/"))
+			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/Xuntian/Belly/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WarMachineHover/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/WM01Missiles/"))
 			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/FX/BulletTrails/"))

@@ -4,7 +4,9 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | done | partial | — | 2026-11-26 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../DevelopmentDocumentation/20261127-分格血条与飞船爆炸反馈.md) | done | partial | — | 2026-11-28 |
+| [巡天舰腹火炮接入](../DevelopmentDocumentation/20261126-巡天舰腹火炮.md) | done | partial | — | 2026-11-28 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | done | partial | — | 2026-11-28 |
 | [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | done | partial | — | 2026-11-25 |
 | [游骑兵世界UI分档与敌方变化提示 — 实施与验收](../DevelopmentDocumentation/20261106-游骑兵世界UI分档与敌方变化提示.md) | verification | partial | 在 GroundSceneUIFeedback_Entry 核验描边距离分档、阵营判定和同批次实例隔离。 | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | done | partial | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-11-25 |

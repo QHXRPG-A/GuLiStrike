@@ -1,4 +1,5 @@
 #include "Gameplay/GroundMech/UI/GuLiGroundHUDWidget.h"
+#include "UI/GuLiSegmentedHealthBar.h"
 #include "Gameplay/GroundMech/UI/GuLiGroundHUDVisuals.h"
 #include "Gameplay/GroundMech/UI/GuLiGroundMapWidget.h"
 #include "Gameplay/Data/Generated/GuLiStrikeGroundHUDTableRows.h"
@@ -9,7 +10,6 @@
 #include "Components/Border.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
-#include "Components/ProgressBar.h"
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
 #include "Components/HorizontalBox.h"
@@ -68,10 +68,7 @@ void UGuLiGroundHUDWidget::BuildLayout()
     HealthMaximum=Text(TEXT(""),22);HealthMaximum->SetColorAndOpacity(Color(TEXT("Secondary")));
     auto* MaximumSlot=HealthNumbers->AddChildToHorizontalBox(HealthMaximum);MaximumSlot->SetVerticalAlignment(VAlign_Bottom);MaximumSlot->SetPadding(FMargin(10,0,0,6));
     auto* NumberFit=WidgetTree->ConstructWidget<UScaleBox>();NumberFit->SetStretch(EStretch::ScaleToFit);NumberFit->SetStretchDirection(EStretchDirection::DownOnly);NumberFit->SetContent(HealthNumbers);CastChecked<UScaleBoxSlot>(HealthNumbers->Slot)->SetHorizontalAlignment(HAlign_Left);Add(HP,NumberFit,{143,48},{311,60});
-    HealthBar=WidgetTree->ConstructWidget<UProgressBar>();
-    FProgressBarStyle HealthStyle;HealthStyle.BackgroundImage=*FCoreStyle::Get().GetBrush("WhiteBrush");HealthStyle.FillImage=HealthStyle.BackgroundImage;
-    HealthStyle.BackgroundImage.TintColor=Color(TEXT("PanelRaised"));HealthStyle.FillImage.TintColor=FLinearColor::White;HealthBar->SetWidgetStyle(HealthStyle);
-    HealthBar->SetFillColorAndOpacity(GuLiGroundUI::Light(Color(TEXT("Line"))));HealthBar->SetBorderPadding({3,3});
+    HealthBar=WidgetTree->ConstructWidget<UGuLiSegmentedHealthBar>();
     Add(HP,HealthBar,{141,104},{313,25});
     ShieldText=Label(HP,TEXT(""),{230,135},{226,22},15,ETextJustify::Right);
     auto* EnergyRail=Icon(TEXT("EnergyRail"),{360,74});auto RailBrush=EnergyRail->GetBrush();RailBrush.SetUVRegion(FBox2f({.31f,.145f},{.69f,.47f}));EnergyRail->SetBrush(RailBrush);EnergyRail->SetRenderOpacity(.4f);Add(HP,EnergyRail,{121,84},{351,70},-1);

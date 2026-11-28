@@ -16,7 +16,7 @@ class GULISTRIKE_API UGuLiShipWorldStatusWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void SetStatus(bool bReady, bool bAlive, float Health, float MaxHealth);
+	void SetStatus(bool bReady, bool bAlive, float Health, float MaxHealth, float Shield = 0.f, float MaxShield = 0.f);
 
 protected:
 	virtual void NativeOnInitialized() override;

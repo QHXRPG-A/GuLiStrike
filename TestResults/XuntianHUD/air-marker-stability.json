@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-28",
+  "scenario": "僚机对空，巡天固定视角，独立双 Air 席位 PIE，同一条运动轨迹内配对。",
+  "build": "GuLiStrikeEditor Win64 Development",
+  "comparison": "legacy_cadence_same_motion 使用同一对局的实际接触快照和旧地形刷新节奏重建图标位置。两条曲线使用同一相机、视口和时间戳，移动统计计入相邻同形图标位移超过 0.05 屏幕像素的样本。",
+  "crossing_fixture": "开局后先记录自然飞行，再移动独立验证对局中敌舰的可视舰体，令其相对本舰等高线上下振荡 45 厘米，随后依次稳定在低 6 米和高 6 米处。",
+  "badge_values": {
+    "0": "对空炮",
+    "1": "舰腹炮",
+    "2": "不可射叉号"
+  },
+  "map": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype",
+  "pilot": "BP_CombatAvatarFly01_C_0",
+  "view_size": [
+    882,
+    462
+  ],
+  "module": "UnrealEditor-GuLiStrike-2812.dll",
+  "natural": {
+    "seconds": 7.991,
+    "frames": 579,
+    "min_max_markers": [
+      26,
+      26
+    ],
+    "empty": 0,
+    "guide_visible_frames": 579,
+    "guide_recently_rendered_frames": 579,
+    "sampled_wingman_meshes": 25,
+    "tracked_visible_wingmen": 25,
+    "matched_samples": 14475,
+    "outside_1m_match_count": 0,
+    "model_anchor_error_p95_cm": 0,
+    "model_anchor_error_max_cm": 0,
+    "new_per_frame": {
+      "pairs": 14440,
+      "moving_pairs": 12943,
+      "held_percentage": 10.37,
+      "moving_p50_px": 0.321,
+      "moving_p95_px": 0.809,
+      "max_px": 1.805
+    },
+    "legacy_cadence_same_motion": {
+      "pairs": 14440,
+      "moving_pairs": 1825,
+      "held_percentage": 87.36,
+      "moving_p50_px": 2.249,
+      "moving_p95_px": 6.011,
+      "max_px": 12.707
+    },
+    "survey_count": 119,
+    "frame_ms_median": 13.359
+  },
+  "camera_delta_cm": 0,
+  "camera_delta_deg": 0,
+  "crossing": {
+    "target": "BP_CombatAvatarFly01_C_1",
+    "captured_frames": 537,
+    "invalid_frames": 0,
+    "first_invalid": [],
+    "jitter_frames": 274,
+    "raw_plane_crossings": 14,
+    "jitter_badge_flips": 0,
+    "jitter_dz_range_cm": [
+      -44.994,
+      44.994
+    ],
+    "below_stable": {
+      "2": 47
+    },
+    "above_stable": {
+      "0": 50
+    },
+    "transitions": [
+      [
+        5.16,
+        0,
+        2
+      ],
+      [
+        6.361,
+        2,
+        0
+      ]
+    ]
+  },
+  "crossing_pass": true,
+  "motion_pass": true
+}

@@ -1,0 +1,12 @@
+Name,Id,Note,FieldType,Damage,RadiusCentimeters,Timing,DelaySeconds,DurationSeconds,PulseIntervalSeconds,DissipationSeconds,Level,bAllowPlayerVehicles,WindupSeconds,RecoverySeconds,BeamHeightCentimeters,MaxTargetWaitSeconds,MaxShipHeightCentimeters,LaneHeightCentimeters,AscentSeconds,AccelerationSeconds,DecelerationSeconds,ExitFlashSeconds,SpeedMultiplier,ExitRadiusCentimeters,EnergyVfxId,TrailVfxId,FlashVfxId
+WM01_MissileExplosion,1,WM01导弹命中后的即时球形法术场；伤害、范围和时序均在本行配置,Combat,30.0,300.0,Instant,0.0,0.0,1.0,3.0,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+WingmanGroundMissile,2,Ship僚机对地轰炸；全局共享AOE基础伤害、半径与时序,Combat,30.0,800.0,Instant,0.0,0.0,1.0,3.0,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+Teleport_L1,1001,指挥官双点传送；4级额外允许玩家WM/Ship及所属僚机,Teleport,0.0,800.0,,0.0,0.0,0.0,0.0,1,False,3.0,0.5,10000.0,10.0,2000.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+Teleport_L2,1002,指挥官双点传送；4级额外允许玩家WM/Ship及所属僚机,Teleport,0.0,2000.0,,0.0,0.0,0.0,0.0,2,False,3.0,0.5,10000.0,10.0,2000.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+Teleport_L3,1003,指挥官双点传送；4级额外允许玩家WM/Ship及所属僚机,Teleport,0.0,4000.0,,0.0,0.0,0.0,0.0,3,False,3.0,0.5,10000.0,10.0,2000.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+Teleport_L4,1004,指挥官双点传送；4级额外允许玩家WM/Ship及所属僚机,Teleport,0.0,10000.0,,0.0,0.0,0.0,0.0,4,True,3.0,0.5,10000.0,10.0,2000.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+StrongholdTransit,2001,工程车点击己方据点即时空中运输配置，无地面法阵；原型参数可调,StrongholdTransit,0.0,0.0,,0.0,0.0,0.0,0.0,0,False,0.0,0.0,0.0,0.0,0.0,2000.0,0.5,1.0,0.5,0.2,50.0,800.0,12,13,14
+GroundNoSurvivors,3,游骑兵超级导弹单发爆炸，原始一倍主爆发层实测半径,Combat,30.0,1484.0,Instant,0.0,0.0,1.0,5.25,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+XuntianBellyL1,11,巡天舰腹火炮单次爆炸,Combat,80.0,800.0,Instant,0.0,0.0,1.0,3.0,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+XuntianBellyL2,12,巡天舰腹火炮单次爆炸,Combat,100.0,1200.0,Instant,0.0,0.0,1.0,3.0,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0
+XuntianBellyL3,13,巡天舰腹火炮单次爆炸,Combat,120.0,1600.0,Instant,0.0,0.0,1.0,3.0,0,False,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,0,0

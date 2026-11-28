@@ -1,4 +1,5 @@
 #include "Network/GuLiNetworkSettings.h"
+#include "Gameplay/Ship/UI/GuLiShipBlastComponent.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiFlightVisualActor.h"
 #include "Gameplay/GroundMech/Weapons/GuLiGroundMechWeaponComponent.h"
@@ -248,6 +249,9 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyFlightEvent(const FGuLiFlightE
         return;
     }
 	const bool Finished = State.Phase==EGuLiCombatEffectPhase::Finished;
+	if (Finished && !Event.bBootstrap && Event.bExplosiveFlight
+		&& (State.EndReason==EGuLiCombatEffectEndReason::Impact || State.EndReason==EGuLiCombatEffectEndReason::Blocked))
+		UGuLiShipBlastComponent::NotifyPilots(*GetWorld(), State.Location, Event.ExplosiveRadius);
 	if (Finished && !Event.bBootstrap && ServerTime()-State.SampleTime<=.5f)
 	{
 		FGuLiStrikeVfxEffectsRow ImpactDefinition;

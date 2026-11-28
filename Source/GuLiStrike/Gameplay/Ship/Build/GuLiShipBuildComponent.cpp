@@ -1,6 +1,7 @@
 #include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
 #include "Network/GuLiNetworkSettings.h"
 #include "Gameplay/Ship/Build/GuLiShipAssemblyComponent.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "GameFramework/PlayerState.h"
 #include "GameFramework/Pawn.h"
@@ -43,7 +44,12 @@ bool UGuLiShipBuildComponent::RestoreShip(UGuLiShipAssemblyComponent& Assembly, 
 	FGuLiShipRunBuildState Candidate = State;
 	if (Candidate.MatchEpoch != GameState->GetMatchEpoch())
 	{
-		if (!UGuLiNetworkSettings::IsHybrid(GetWorld())) Candidate = {};
+		if (!UGuLiNetworkSettings::IsHybrid(GetWorld()))
+        {
+            Candidate = {};
+            const auto* Ship = Cast<AGuLiStrikeShip>(Pawn);
+            if (Ship && Ship->IsXuntian()) { Candidate.ChosenNodeIds.Add(TEXT("01")); Candidate.BuildRevision=2; }
+        }
 		Candidate.MatchEpoch = GameState->GetMatchEpoch(); Candidate.BuildRevision = FMath::Max<int64>(1,Candidate.BuildRevision);
 	}
 	if (Assembly.GetAppliedMatchEpoch() == Candidate.MatchEpoch && Assembly.GetAppliedBuildRevision() == Candidate.BuildRevision)

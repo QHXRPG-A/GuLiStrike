@@ -3,10 +3,14 @@ Run after a fresh ready Ground session with unrelated automatic combat isolated.
 No screenshots or synthetic damage/visual receipts.
 """
 import json
+import sys
 import time
 import traceback
 from pathlib import Path
 import unreal
+
+sys.path.insert(0,str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))/'Scripts/GroundMech/Rogue'))
+from inspect_burst_geometry import read_shell, shell_renderer
 
 OUT=Path(globals().get('GULI_PROBE_OUT',Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))/'Artifacts/GroundRevision_20261103'))
 WORLD=unreal.EditorLevelLibrary.get_game_world()
@@ -39,7 +43,7 @@ def finish(error=None):
     for component in unreal.ObjectIterator(unreal.NiagaraComponent):
         asset=component.get_asset()
         if asset and asset.get_name()=='NS_GroundBurningBurst' and component.get_world()==WORLD:
-            data=json.loads(unreal.GuLiCombatEffectAuthoringLibrary.inspect_burning_burst_component(component))
+            data=read_shell(component)
             REPORT['burst_particles_remaining']+=sum(e['particles'] for e in data.get('emitters',[]))
     if not error:
         presentation=REPORT['final']['presentation']
@@ -50,9 +54,9 @@ def finish(error=None):
         if len(at)!=4 or any(b-a!=120 for a,b in zip(at,at[1:])):
             REPORT['errors'].append('Expected four independent 120-tick periods: '+str(at))
         particles=[e for p in REPORT['particles'] for e in p['data']['emitters'] if e['particles']]
-        if not particles or any(e['outer_radius']>500.1 or abs(e['lifetime']-1)>.001 for e in particles):
-            REPORT['errors'].append('Burst geometry/lifetime must stay inside 500 cm / 1 second')
-        if not any(abs(e['outer_radius']-500)<.1 and e['max_age']>=.5 for e in particles):
+        if not particles or any(e['outer_radius']>500.1 or abs(e['lifetime']-.5)>.001 for e in particles):
+            REPORT['errors'].append('Expected a 0.5-second burst with a 500 cm maximum radius')
+        if not any(abs(e['outer_radius']-500)<.1 and e['max_age']>=.25 for e in particles):
             REPORT['errors'].append('No full-radius hold observed')
         if REPORT['burst_particles_remaining']:
             REPORT['errors'].append('Burst particles were not reclaimed after the last pulse')
@@ -109,7 +113,13 @@ def tick(delta):
             PAWN.submit_gameplay_input(unreal.Vector2D(),STATE['aim'],False,False,False,True,True)
             REPORT['materials_after_first_shot']={name:unreal.GuLiCombatEffectAuthoringLibrary.get_buff_compile_diagnostics(unreal.load_asset('/Game/GuLiStrike/FX/GroundMech/Burning/'+name)) for name in ('NS_GroundBurningBullet','NS_GroundBurningBurst')}
             for name,diagnostic in REPORT['materials_after_first_shot'].items():
-                assert 'Niagara renderer proxy fallback=0' in diagnostic and 'Niagara renderer proxy fallback=1' not in diagnostic and 'ERROR:' not in diagnostic,(name,diagnostic)
+                if name=='NS_GroundBurningBurst':
+                    renderer=shell_renderer('/Game/GuLiStrike/FX/GroundMech/Burning/'+name)
+                    material=renderer.get_editor_property('override_materials')[0].get_editor_property('explicit_mat')
+                    assert material and material.get_name()=='M_GroundBurningShell', str(material)
+                    assert 'ERROR:' not in diagnostic and 'status=Error' not in diagnostic, diagnostic
+                else:
+                    assert 'Niagara renderer proxy fallback=0' in diagnostic and 'Niagara renderer proxy fallback=1' not in diagnostic and 'ERROR:' not in diagnostic,(name,diagnostic)
             phase('observe');return
         if STATE['phase']=='observe':
             if now-STATE['sample']>=.12:
@@ -118,7 +128,7 @@ def tick(delta):
                 for component in unreal.ObjectIterator(unreal.NiagaraComponent):
                     asset=component.get_asset()
                     if asset and asset.get_name()=='NS_GroundBurningBurst' and component.get_world()==WORLD:
-                        data=json.loads(unreal.GuLiCombatEffectAuthoringLibrary.inspect_burning_burst_component(component))
+                        data=read_shell(component)
                         if any(e['particles'] for e in data.get('emitters',[])):
                             REPORT['particles'].append({'time':now-STATE['since'],'component':component.get_name(),'data':data})
             if now-STATE['since']>=10.8:

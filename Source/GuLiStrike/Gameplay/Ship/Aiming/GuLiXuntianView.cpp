@@ -105,20 +105,41 @@ void UGuLiXuntianGunnery::GetCameraView(FMinimalViewInfo& View) const
 
 void UGuLiXuntianGunnery::RefreshContacts()
 {
-    Contacts.Reset();
+    ContactScratch.Reset();
     if (auto* Ledger=GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>())
     {
         const FVector Center = Ship()->GetActorLocation(), Span(Reach+20000);
-        Ledger->GetNearbyTargetSnapshots(FBox(Center-Span,Center+Span),Contacts);
+        Ledger->GetNearbyTargetSnapshots(FBox(Center-Span,Center+Span),ContactScratch);
     }
     const auto Self = Ship()->GetCombatHealthComponent()->GetTargetHandle();
-    Contacts.RemoveAll([&](const auto& C){return !C.bAlive || C.Handle == Self || C.CollisionActor.Get() == Ship();});
+    ContactScratch.RemoveAll([&](const auto& C){return !C.bAlive || C.Handle == Self || C.CollisionActor.Get() == Ship();});
     const FVector Origin=Ship()->GetActorLocation();
-    Contacts.Sort([&](const auto& A,const auto& B)
+    ContactScratch.Sort([&](const auto& A,const auto& B)
     {
         if (IsFlying(A)!=IsFlying(B)) return IsFlying(A);
         return FVector::DistSquared(A.GetHitCenter(),Origin)<FVector::DistSquared(B.GetHitCenter(),Origin);
     });
+    bool Changed = ContactScratch.Num() != Contacts.Num();
+    for (int32 I = 0; !Changed && I < Contacts.Num(); ++I)
+    {
+        const auto& A = Contacts[I];
+        const auto& B = ContactScratch[I];
+        Changed = A.Handle != B.Handle || A.Team != B.Team || A.CollisionActor != B.CollisionActor ||
+            A.GetHitCenter() != B.GetHitCenter() || A.CollisionRadius != B.CollisionRadius ||
+            A.Health != B.Health || A.MaxHealth != B.MaxHealth || A.Shield != B.Shield || A.MaxShield != B.MaxShield;
+    }
+    Swap(Contacts, ContactScratch);
+    if (Changed)
+    {
+        ++ContactsRevision;
+        ContactActors.Reset();
+        ContactSoldiers.Reset();
+        for (const auto& Contact : Contacts)
+        {
+            if (Contact.Handle.Kind==EGuLiTargetKind::CommanderSoldier) ContactSoldiers.Add(Contact.Handle.LocalId);
+            else if (const auto* Actor=Contact.CollisionActor.Get()) ContactActors.Add(Actor);
+        }
+    }
 }
 void UGuLiXuntianGunnery::UpdateLocalView()
 {
@@ -208,6 +229,8 @@ bool UGuLiXuntianGunnery::SetOwnedCardSnapshot(int64 Revision, const TMap<FName,
     for (const auto& E : Entries)
         if (const int32 L=OwnedLevels.FindRef(FName(E.Id)); L>0)
             Cards[E.Slot]={FName(E.Symbol),FMath::Min(L,E.Max)};
+    if (const int32 Level=GetBellyLevel(); Level>0 && Cards[1].Card!=TEXT("Missile") && Cards[1].Card!=TEXT("Bomb"))
+        Cards[1]={TEXT("Belly"),Level};
     CardRevision=Revision;
     return true;
 }

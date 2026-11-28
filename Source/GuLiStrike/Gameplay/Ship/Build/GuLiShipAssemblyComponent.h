@@ -92,6 +92,7 @@ public:
     bool FindHybridChoiceResult(FGuid RequestId,FGuLiShipChoiceResult& Result) const;
     void AdvanceHybridChoices();
     TArray<FGuid> GetPendingHybridChoices() const;
+    bool HasPendingChoiceForPilot() const;
     void AdvanceHybridCapabilities(uint64 LogicalTick,double DeltaSeconds);
 protected:
 	virtual void BeginPlay() override;

@@ -42,7 +42,7 @@ void UGuLiStrikeShipPartComponent::OnUnregister()
 void UGuLiStrikeShipPartComponent::OnVisibilityChanged()
 {
 	Super::OnVisibilityChanged();
-	if (IsValid(VisualMeshComponent)) { VisualMeshComponent->SetVisibility(IsVisible(), true); }
+	if (IsValid(VisualMeshComponent)) { VisualMeshComponent->SetVisibility(GetVisibleFlag(), true); }
 }
 
 void UGuLiStrikeShipPartComponent::OnHiddenInGameChanged()
@@ -99,7 +99,8 @@ bool UGuLiStrikeShipPartComponent::RebuildVisualMesh()
 	Visual->SetReceivesDecals(bReceivesDecals);
 	Visual->SetRenderCustomDepth(bRenderCustomDepth);
 	Visual->SetCustomDepthStencilValue(CustomDepthStencilValue);
-	Visual->SetVisibility(IsVisible());
+	// Assembly stages the part hidden in game. Keep the independent visibility flag for commit.
+	Visual->SetVisibility(GetVisibleFlag());
 	Visual->SetHiddenInGame(bHiddenInGame);
 	for (int32 Index = 0; Index < OverrideMaterials.Num(); ++Index)
 	{

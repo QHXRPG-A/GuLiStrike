@@ -117,7 +117,7 @@ def main():
         existing[name]=ident
     upsert(vbook,vsheet,records)
     resource=next(k for k in vh if k in ("ResourcePath","Resource","Asset","System","AssetPath"))
-    upsert(vbook,vsheet,[{"id":existing["GroundMechImpact"],resource:"/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Hit_1.NS_Hit_1"}])
+    upsert(vbook,vsheet,[{"id":existing["GroundMechImpact"],resource:"/Game/GuLiStrike/FX/GroundMech/Weapons/NS_GroundHit.NS_GroundHit"}])
     table(buffs,"Burning",fields(("DurationSeconds","float"),("TickIntervalSeconds","float"),("MaxHealthDamageRatio","float"),("StatusVfxId","int"),("BulletVfxId","int")),[
         [1,"Burning","伤害不受折射直接伤害倍率影响",8.0,1.0,0.05,existing["GroundBurningStatus"],existing["GroundBurningBullet"]]])
     table(buffs,"BurningBurst",fields(("ParentBuffId","int"),("IntervalSeconds","float"),("LostHealthDamageRatio","float"),("RadiusCentimeters","float"),("BurstVfxId","int")),[

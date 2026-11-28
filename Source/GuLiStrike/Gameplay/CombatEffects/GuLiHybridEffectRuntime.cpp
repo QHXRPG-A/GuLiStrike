@@ -63,10 +63,12 @@ void State(FGuLiHybridStateArchive& A,FGuLiCombatEffectState& S)
     if (A.IsReading()) {S.Location=Position;S.Velocity=Velocity;S.LaunchLocation=Launch;S.LastTargetLocation=Target;S.LaunchDirection=Direction;}
     FGuLiHybridReflectedState::Value(A,S.Motion);A.Value(S.SlotId);A.Value(S.MuzzleOffset);A.Value(S.FireRateHz);
     // Old checkpoints store the fixed-point flag as a single byte (0 or 1).
-    uint8 PointFlags = (S.bFixedPoint ? 1 : 0) | (S.GroundStrike.IsEnabled() ? 2 : 0);
+    uint8 PointFlags = (S.bFixedPoint ? 1 : 0) | (S.GroundStrike.IsEnabled() ? 2 : 0) | (S.bHasWarningGroundPoint ? 4 : 0);
     A.Value(PointFlags);
-    if (PointFlags > 3 || PointFlags == 2) { A.Reject(); return; }
+    if (PointFlags > 7 || ((PointFlags & 6) && !(PointFlags & 1))) { A.Reject(); return; }
     if (A.IsReading()) { S.bFixedPoint = (PointFlags & 1) != 0; S.GroundStrike = {}; }
+    S.bHasWarningGroundPoint = (PointFlags & 4) != 0;
+    if (S.bHasWarningGroundPoint) { FVector Ground=S.WarningGroundPoint; A.Value(Ground); if (A.IsReading()) S.WarningGroundPoint=Ground; }
     if (PointFlags & 2)
     {
         A.Value(S.GroundStrike.HorizontalRange); A.Value(S.GroundStrike.DiveAcceleration); A.Value(S.GroundStrike.DiveStartAge);
@@ -196,7 +198,7 @@ struct FGuLiHybridEffectRuntime final:FGCObject
         auto* W=Runtime->GetWorld();
         if (GuLiFlightWire::IsFlight(S.Kind))
         {FGuLiFlightEvent E;E.State=S;E.bBootstrap=Bootstrap;return UGuLiCombatEffectReplicationComponent::ApplyHybridFlight(W,E);}
-        if (auto* Visuals=W->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyState(S);
+        if (auto* Visuals=W->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) Visuals->ApplyState(S,Bootstrap);
         return true;
     }
     bool PublishState(FRecord& R,FGuLiCombatEffectState State,bool Reliable,bool Bootstrap=false)

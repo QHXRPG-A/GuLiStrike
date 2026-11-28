@@ -66,6 +66,9 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	float MaxHealth = 100.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
+	float MaxShield = 0.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
 	TObjectPtr<UStaticMesh> Model = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")

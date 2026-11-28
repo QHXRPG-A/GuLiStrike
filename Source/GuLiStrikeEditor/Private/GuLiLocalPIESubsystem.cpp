@@ -94,6 +94,7 @@ struct UGuLiLocalPIESubsystem::FState
     bool CleanupComplete=false;
     double Started=0;
     bool Active=false,Began=false,ReachedReady=false;
+    GuLiLocalPIERolePicker::ETrial QueuedAirTrial=GuLiLocalPIERolePicker::ETrial::None;
     GuLiLocalPIERolePicker::ETrial Trial=GuLiLocalPIERolePicker::ETrial::None;
     FGuLiWingmanPlayRange WingmanRange;
     TOptional<EGuLiCommanderRole> LastSelectedRole;
@@ -143,6 +144,16 @@ void UGuLiLocalPIESubsystem::BeforePIE(bool Simulate)
     const auto Request=GEditor->GetPlaySessionRequest();
     if (Request.IsSet()) SingleWorld(Request->EditorPlaySettings);
 }
+void UGuLiLocalPIESubsystem::QueueXuntianHUDRange()
+{
+    if (!State->Active && !GEditor->PlayWorld) State->QueuedAirTrial = GuLiLocalPIERolePicker::ETrial::XuntianHUD;
+}
+void UGuLiLocalPIESubsystem::QueueWingmanAirRange(bool bIncludeGroundTargets)
+{
+    if (!State->Active && !GEditor->PlayWorld)
+        State->QueuedAirTrial = bIncludeGroundTargets ? GuLiLocalPIERolePicker::ETrial::WingmanCombined : GuLiLocalPIERolePicker::ETrial::WingmanAir;
+}
+
 bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
 {
     const auto* Settings=GetDefault<UGuLiLocalPIESettings>();
@@ -181,7 +192,13 @@ bool UGuLiLocalPIESubsystem::PrepareForPIE(FString& Error)
         return Fail(TEXT("Normal local PIE requires the production 600-unit manifest without acceptance supply."));
     // Keep unattended callers on their explicit role; interactive PIE chooses
     // before creating the room directory, stop event or logic peers.
-    if (Settings->bPromptForRole && !FApp::IsUnattended() && !IsRunningCommandlet())
+    if (State->QueuedAirTrial != GuLiLocalPIERolePicker::ETrial::None)
+    {
+        State->Trial = State->QueuedAirTrial;
+        State->QueuedAirTrial = GuLiLocalPIERolePicker::ETrial::None;
+        Config.Role = EGuLiCommanderRole::Air;
+    }
+    else if (Settings->bPromptForRole && !FApp::IsUnattended() && !IsRunningCommandlet())
     {
         const auto Selected = GuLiLocalPIERolePicker::Show(State->LastSelectedRole.Get(Settings->MainRole),State->Trial);
         if (!Selected.IsSet())

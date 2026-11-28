@@ -54,24 +54,9 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 		const int32 ExistingIndex = KnownIndex ? *KnownIndex : INDEX_NONE;
 		if (ExistingIndex == INDEX_NONE)
 		{
-			FGuLiSoldierStateItem& NewItem = ReplicatedSoldiers.Items.AddDefaulted_GetRef();
-			AuthorityItemIndices.Add(SanitizedState.SoldierId,ReplicatedSoldiers.Items.Num()-1);
-			NewItem.SoldierId = SanitizedState.SoldierId;
-			NewItem.Team = SanitizedState.Team;
-			NewItem.UnitTypeId = SanitizedState.UnitTypeId;
-			NewItem.LifeState = SanitizedState.LifeState;
-			NewItem.Health = SanitizedState.Health;
-			NewItem.MaxHealth = SanitizedState.MaxHealth;
-			NewItem.StateRevision = SanitizedState.StateRevision;
-			NewItem.ActiveOrderId = SanitizedState.ActiveOrderId;
-		NewItem.bPhased = SanitizedState.bPhased;
-		NewItem.bExternalActionsLocked = SanitizedState.bExternalActionsLocked;
-		NewItem.DisplacementFrameFloor = SanitizedState.DisplacementFrameFloor;
-		NewItem.DisplacementLocation = SanitizedState.DisplacementLocation;
-		NewItem.DisplacementYaw = SanitizedState.DisplacementYaw;
-		NewItem.DisplacementSimulationTime = SanitizedState.DisplacementSimulationTime;
-
-			ChangedStates.Add(NewItem);
+			const int32 NewIndex = ReplicatedSoldiers.Items.Add(SanitizedState);
+			AuthorityItemIndices.Add(SanitizedState.SoldierId, NewIndex);
+			ChangedStates.Add(SanitizedState);
 			++ChangedItemCount;
 			continue;
 		}
@@ -83,8 +68,7 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 		if (ExistingItem.Team == SanitizedState.Team
 			&& ExistingItem.UnitTypeId == SanitizedState.UnitTypeId
 			&& ExistingItem.LifeState == SanitizedState.LifeState
-			&& ExistingItem.Health == SanitizedState.Health
-			&& ExistingItem.MaxHealth == SanitizedState.MaxHealth
+			&& ExistingItem.HasSameVitals(SanitizedState)
 			&& ExistingItem.StateRevision == SanitizedState.StateRevision
 			&& ExistingItem.ActiveOrderId == SanitizedState.ActiveOrderId
 			&& ExistingItem.bPhased == SanitizedState.bPhased
@@ -96,19 +80,7 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthorityState(
 			continue;
 		}
 
-		ExistingItem.Team = SanitizedState.Team;
-		ExistingItem.UnitTypeId = SanitizedState.UnitTypeId;
-		ExistingItem.LifeState = SanitizedState.LifeState;
-		ExistingItem.Health = SanitizedState.Health;
-		ExistingItem.MaxHealth = SanitizedState.MaxHealth;
-		ExistingItem.StateRevision = SanitizedState.StateRevision;
-		ExistingItem.ActiveOrderId = SanitizedState.ActiveOrderId;
-		ExistingItem.bPhased = SanitizedState.bPhased;
-		ExistingItem.bExternalActionsLocked = SanitizedState.bExternalActionsLocked;
-		ExistingItem.DisplacementFrameFloor = SanitizedState.DisplacementFrameFloor;
-		ExistingItem.DisplacementLocation = SanitizedState.DisplacementLocation;
-		ExistingItem.DisplacementYaw = SanitizedState.DisplacementYaw;
-		ExistingItem.DisplacementSimulationTime = SanitizedState.DisplacementSimulationTime;
+		ExistingItem = SanitizedState;
 
 		// 只给变化条目标脏，静止不变的离散状态不随每次姿态捕获重复发送。
 		ChangedStates.Add(ExistingItem);
@@ -211,7 +183,7 @@ void AGuLiSoldierStateReplicator::ApplyLocalDelta(
 			EGuLiSoldierStateChange Flags = EGuLiSoldierStateChange::None;
 			if (Previous->UnitTypeId != State.UnitTypeId) Flags |= EGuLiSoldierStateChange::Type;
 			if (Previous->Team != State.Team) Flags |= EGuLiSoldierStateChange::Team;
-			if (Previous->Health != State.Health || Previous->MaxHealth != State.MaxHealth) Flags |= EGuLiSoldierStateChange::Health;
+			if (!Previous->HasSameVitals(State)) Flags |= EGuLiSoldierStateChange::Health;
 			if (Previous->LifeState != State.LifeState || Previous->IsAlive() != State.IsAlive()) Flags |= EGuLiSoldierStateChange::Life;
 			if (Previous->ActiveOrderId != State.ActiveOrderId) Flags |= EGuLiSoldierStateChange::Order;
 			if (Previous->bPhased != State.bPhased || Previous->bExternalActionsLocked != State.bExternalActionsLocked) Flags |= EGuLiSoldierStateChange::Phase;
@@ -228,7 +200,12 @@ void AGuLiSoldierStateReplicator::ApplyLocalDelta(
 				auto& Change = VitalChanges.FindOrAdd(State.SoldierId);
 				if (!Change.Generation) Change.Generation = NextBarGeneration++;
 				Change.LastChange = GetWorld()->GetTimeSeconds();
+				if (FGuLiHealthBarEvent::LostVitals(Previous->Health, Previous->Shield, State.Health, State.MaxHealth, State.Shield, State.MaxShield))
+					Change.LastDamage = Change.LastChange;
+				Change.MaxHealth = State.MaxHealth;
 				Change.HealthFraction = FMath::Clamp(State.Health / State.MaxHealth, 0.f, 1.f);
+				Change.MaxShield = State.MaxShield;
+				Change.ShieldFraction = State.MaxShield > 0.f ? State.Shield / State.MaxShield : 0.f;
 			}
 			if (Flags != EGuLiSoldierStateChange::None) Delta.Changed.FindOrAdd(State.SoldierId) |= Flags;
 		}

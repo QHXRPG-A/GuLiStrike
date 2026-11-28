@@ -1,6 +1,7 @@
 #include "Gameplay/Vfx/GuLiClientPresentationPolicy.h"
 #include "HAL/IConsoleManager.h"
 #include "NiagaraComponent.h"
+#include "NiagaraWorldManager.h"
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Commander/Presentation/GuLiCommanderLODPolicy.h"
 #include "Network/GuLiNetworkSettings.h"
@@ -18,6 +19,18 @@ bool GuLiClientPresentation::CanPresent(const UWorld* World) { return UGuLiNetwo
 bool GuLiClientPresentation::OffscreenUnitsEnabled() { return GOffscreenUnits.GetValueOnGameThread()!=0; }
 bool GuLiClientPresentation::OffscreenFlightsEnabled() { return GOffscreenFlights.GetValueOnGameThread()!=0; }
 bool GuLiClientPresentation::ThreeTierEffectsEnabled() { return GThreeTierEffects.GetValueOnGameThread()!=0; }
+EGuLiCommanderLODLevel GuLiClientPresentation::DistanceDetail(double DistanceSquared)
+{
+ if (DistanceSquared < FMath::Square(8000.0)) return EGuLiCommanderLODLevel::Full;
+ if (DistanceSquared < FMath::Square(15000.0)) return EGuLiCommanderLODLevel::Reduced;
+ return EGuLiCommanderLODLevel::Minimal;
+}
+
+EGuLiCommanderLODLevel GuLiClientPresentation::DistanceDetail(const UWorld* World, const FVector& Position)
+{
+ const FNiagaraWorldManager* Manager = World ? FNiagaraWorldManager::Get(World) : nullptr;
+ return Manager ? DistanceDetail(FMath::Square(Manager->GetLODDistance(Position))) : EGuLiCommanderLODLevel::Full;
+}
 void GuLiClientPresentation::ApplyEndpointDetail(UNiagaraComponent* Beam, EGuLiCommanderLODLevel Level)
 {
  if (!Beam || !Beam->GetAsset()) return;

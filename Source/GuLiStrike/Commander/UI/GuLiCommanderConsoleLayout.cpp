@@ -1,4 +1,5 @@
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "UI/GuLiSegmentedHealthBar.h"
 #include "Gameplay/Data/GuLiGameText.h"
 #include "Commander/UI/GuLiCommanderUITheme.h"
 #include "Commander/UI/GuLiCommanderActionButton.h"
@@ -19,7 +20,6 @@
 #include "Components/ScrollBox.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
-#include "Components/ProgressBar.h"
 #include "Engine/Texture2D.h"
 #include "Engine/Font.h"
 #include "Styling/CoreStyle.h"
@@ -35,13 +35,7 @@ namespace GuLiConsoleLayout
 		B.DrawAs = ESlateBrushDrawType::Box; B.Margin = FMargin(.22f); B.ImageSize = FVector2D(64);
 		return B;
 	}
-	void StyleHealth(UProgressBar* Bar, UGuLiCommanderUITheme* Theme)
-	{
-		FProgressBarStyle Style=Bar->GetWidgetStyle();
-		Style.FillImage=Brush(Theme?Theme->Bar.Get():nullptr,FLinearColor::White);
-		Style.BackgroundImage=Brush(nullptr,FLinearColor(.018f,.024f,.034f));
-		Bar->SetWidgetStyle(Style); Bar->SetFillColorAndOpacity(FLinearColor(.12f,.78f,.5f));
-	}
+
 }
 
 TSharedRef<SWidget> UGuLiCommanderHUDWidget::RebuildWidget()
@@ -216,9 +210,9 @@ void UGuLiCommanderHUDWidget::BuildConsoleLayout()
 	{
 		auto* B=MakeActionButton(*FString::Printf(TEXT("BTN_Portrait_%02d"),I),TEXT(""),TEXT("Portrait"),I,TEXT("Unit"));
 		PlaceConsoleWidget(Selection,B,{float(10+(I%8)*113),float(44+(I/8)*58)},{106,54}); PortraitButtons.Add(B);
-		auto* HP=WidgetTree->ConstructWidget<UProgressBar>(); GuLiConsoleLayout::StyleHealth(HP,ConsoleTheme);
+		auto* HP=WidgetTree->ConstructWidget<UGuLiSegmentedHealthBar>();
 		HP->SetVisibility(ESlateVisibility::HitTestInvisible);
-		PlaceConsoleWidget(Selection,HP,{float(12+(I%8)*113),float(95+(I/8)*58)},{102,3},3); PortraitHealth.Add(HP);
+		PlaceConsoleWidget(Selection,HP,{float(12+(I%8)*113),float(95+(I/8)*58)},{102,5},3); PortraitHealth.Add(HP);
 	}
 	SelectionCaption=MakeConsoleText(TEXT("TXT_SelectionCaption"),GuLiGameText::Text(TEXT("UI.ConsoleLayout.003")),14);
 	PlaceConsoleWidget(Selection,SelectionCaption,{12,199},{890,24});
@@ -242,7 +236,7 @@ void UGuLiCommanderHUDWidget::BuildConsoleLayout()
 		const float X=I<2?10.f:(I%2?104.f:10.f), Y=I<2?116.f+I*22.f:160.f+(I/2-1)*24.f;
 		PlaceConsoleWidget(Detail,Row,{X,Y},{I<2?176.f:82.f,22}); AttributeRows.Add(Key,Row);
 	}
-	SelectionHealth=WidgetTree->ConstructWidget<UProgressBar>(UProgressBar::StaticClass(),TEXT("PB_UnitTypeHealth")); GuLiConsoleLayout::StyleHealth(SelectionHealth,ConsoleTheme);
+	SelectionHealth=WidgetTree->ConstructWidget<UGuLiSegmentedHealthBar>(UGuLiSegmentedHealthBar::StaticClass(),TEXT("PB_UnitTypeHealth"));
 	SelectionHealth->SetVisibility(ESlateVisibility::HitTestInvisible); PlaceConsoleWidget(Detail,SelectionHealth,{10,210},{176,5});
 	auto* Commands=MakeConsolePanel(Surface,TEXT("C_Commands"),{1444,0},{444,276});
 	auto* CommandTitle=MakeConsoleText(TEXT("TXT_CommandTitle"),GuLiGameText::Text(TEXT("UI.ConsoleLayout.011")),16);

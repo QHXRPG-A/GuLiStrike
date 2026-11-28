@@ -91,7 +91,10 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | combat, presentation, ship, ui | 5/5 (100%) | — | 2026-11-26 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../DevelopmentDocumentation/20261127-分格血条与飞船爆炸反馈.md) | combat, presentation, ship, ui | — | — | 2026-11-28 |
+| [巡天舰腹火炮接入](../DevelopmentDocumentation/20261126-巡天舰腹火炮.md) | combat, presentation, ship, ui | — | — | 2026-11-28 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | combat, presentation, ship, ui | 5/5 (100%) | — | 2026-11-28 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-11-28 |
 | [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | movement, network, ship, wingman | — | — | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | combat, commander, network | — | 本会话已按用户要求收尾，不继续自动推进；已知限制和未执行验收保留原记录。 | 2026-11-25 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | combat, commander, resources, ship, vfx, wingman | 10/10 (100%) | — | 2026-11-25 |
@@ -103,7 +106,6 @@
 | [肉鸽牌关系图工具实施与交付](../DevelopmentDocumentation/20261109-肉鸽牌关系图工具.md) | combat, ui | — | — | 2026-11-23 |
 | [游骑兵人工智能引擎与锁定 HUD](../DevelopmentDocumentation/20261122-游骑兵人工智能引擎锁定HUD.md) | combat, presentation, ui | — | — | 2026-11-22 |
 | [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | assets, ui | 3/3 (100%) | — | 2026-11-21 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续视觉资源按统一色库制作，持续维护功能色／资产例外和具体版本的审核证据。 | 2026-11-21 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | combat, input, map, performance, vfx | — | — | 2026-11-19 |
 | [强化爆炸弹牌面与游骑兵图标会话结项](../DevelopmentDocumentation/20261118-强化爆炸弹牌面与游骑兵图标会话结项.md) | assets, ui | 6/6 (100%) | — | 2026-11-18 |
 | [四张游骑兵肉鸽牌正式资源 — 实施与交付](../DevelopmentDocumentation/20261117-四张游骑兵肉鸽牌正式资源.md) | assets, ui | 6/6 (100%) | — | 2026-11-17 |

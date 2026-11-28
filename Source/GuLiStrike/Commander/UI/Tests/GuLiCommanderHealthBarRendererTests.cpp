@@ -7,6 +7,10 @@
 #include "Commander/UI/GuLiHealthBarLayout.h"
 #include "Commander/UI/GuLiGroundSceneUIState.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
+#include "UI/GuLiSegmentedHealthBar.h"
+#include "Materials/Material.h"
+#include "MaterialShared.h"
+#include "SceneView.h"
 #include "Components/SceneComponent.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Engine/Engine.h"
@@ -25,12 +29,21 @@ bool FGuLiCommanderHealthBarActivityTest::RunTest(const FString& Parameters)
 	FGuLiSoldierStateItem State;
 	State.SoldierId = FGuLiSoldierId(1);
 	State.Health = State.MaxHealth = 100;
+	State.Shield = State.MaxShield = 400;
 	auto Apply = [&] { Source->ApplyAuthoritySnapshot({&State, 1}, 1); };
 	auto Event = [&] { return Source->GetActiveVitalChanges().Find(State.SoldierId); };
 	Apply();
 	TestNull(TEXT("Initial roster creates no bar"), Event());
 	State.ActiveOrderId = 3; Apply();
 	TestNull(TEXT("Orders create no bar"), Event());
+	State.Shield = 300; Apply();
+	if (const auto* ShieldHit = Event())
+	{
+		const auto Bar = GuLiHealthBars::FromEvent(Source, 1, *ShieldHit, World->GetTimeSeconds());
+		TestEqual(TEXT("Shield-only hits retain the capacity for four cells"), Bar.MaxShield, 400.f);
+		TestEqual(TEXT("Shield-only hits retain the remaining fraction"), Bar.ShieldFraction, .75f);
+	}
+	else AddError(TEXT("Shield damage failed to create a bar"));
 
 	State.Health = 75; Apply();
 	uint64 FirstGeneration = 0;
@@ -110,6 +123,7 @@ bool FGuLiCommanderHealthBarVisibilityPolicyTest::RunTest(const FString& Paramet
 		{
 			TestEqual(TEXT("Shield-only hit leaves hull at 80%"), Bar->HealthFraction, .8f);
 			TestEqual(TEXT("Shield-only hit displays remaining shield"), Bar->ShieldFraction, .6f);
+			TestEqual(TEXT("Actor feedback retains its partial shield cell capacity"), Bar->MaxShield, 50.f);
 			const double HitTime = Bar->LastChange;
 			World->TimeSeconds += 1.;
 			Apply();
@@ -147,19 +161,107 @@ bool FGuLiCommanderHealthBarSizingPolicyTest::RunTest(const FString& Parameters)
 {
 	FGuLiSceneUIHealthBar Bar;
 	const FVector2D Anchor(550, 400);
-	auto Bounds = [&](float DPI, bool Overview) { return FGuLiHealthBarLayout::ScreenBounds(Bar, Anchor, DPI, Overview); };
-	TestEqual(TEXT("Ordinary health bar is centered on the projected anchor"), Bounds(1, false).GetCenter(), Anchor);
-	TestEqual(TEXT("Health body and border are 86 by 14 pixels"), Bounds(1, false).GetSize(), FVector2D(86, 14));
-	Bar.bHasShield = true;
-	TestEqual(TEXT("Shield extends the rectangle downward"), Bounds(1, false).GetSize(), FVector2D(86, 18));
+	FSceneViewProjectionData Projection;
+	Projection.ViewOrigin = FVector::ZeroVector;
+	Projection.ViewRotationMatrix = FMatrix::Identity;
+	Projection.ProjectionMatrix = FReversedZPerspectiveMatrix(UE_DOUBLE_PI/4,1920.,1080.,1.,1.);
+	Projection.SetViewRectangle(FIntRect(0,0,1920,1080));
+	const FGuLiHealthBarView View(Projection,FVector2D(1920,1080));
+	FGuLiHealthBarView::FPoint Point;
+	FBox2D Rect(ForceInit);
+	auto At = [&](double Depth,double RawWidth)
+	{
+		Bar.Center=FVector(0,0,Depth);
+		Bar.Width=RawWidth;
+		Bar.Extent=FVector(10.);
+		return View.Project(Bar.Center,Point) && View.Place(Point,Bar,Bar.MaxShield>0,TNumericLimits<double>::Max(),Rect);
+	};
+	const double Width=86000./View.FocalX;
+	TestTrue(TEXT("Health only at reference depth"), At(1000,Width) && Rect.GetSize().Equals(FVector2D(86,14),.001));
+	TestTrue(TEXT("Bottom is above the visible body"), Rect.Max.Y < Point.Screen.Y && FMath::IsNearlyEqual(Rect.GetCenter().X,Point.Screen.X));
+	Bar.MaxShield = 400;
+	TestTrue(TEXT("Shield occupies same width"), At(1000,Width) && Rect.GetSize().Equals(FVector2D(86,18),.001));
+	TestTrue(TEXT("Twice the depth halves the width"), At(2000,Width) && FMath::IsNearlyEqual(Rect.GetSize().X,43.));
+	TestTrue(TEXT("Larger model at the same depth"), At(2000,2*Width) && FMath::IsNearlyEqual(Rect.GetSize().X,86.));
+	TestTrue(TEXT("Close width is capped"), At(200,Width) && FMath::IsNearlyEqual(Rect.GetSize().X,128.));
+	TestTrue(TEXT("A distant admitted target retains a readable width"), At(1000,.1*1000/View.FocalX) && FMath::IsNearlyEqual(Rect.GetSize().X,24.));
+	TestTrue(TEXT("Perspective resumes above the floor"), At(1000,26*1000/View.FocalX) && FMath::IsNearlyEqual(Rect.GetSize().X,26.));
+	const FVector Origin(100,200,100000);
+	TestTrue(TEXT("199.99 metres is in range even from high altitude"), GuLiHealthBars::IsNearby(Origin,Origin+FVector(19999,0,-95000)));
+	TestTrue(TEXT("Exactly 200 metres horizontally is included"), GuLiHealthBars::IsNearby(Origin,Origin+FVector(12000,16000,-95000)));
+	TestFalse(TEXT("200.01 metres horizontally is outside"), GuLiHealthBars::IsNearby(Origin,Origin+FVector(0,-20001,0)));
+	TestFalse(TEXT("Behind-camera marker is rejected"), At(-10,Width));
+	Projection.ProjectionMatrix.M[0][0] *= 2;
+	const FGuLiHealthBarView Zoomed(Projection,FVector2D(1920,1080));
+	Bar.Width=Width;
+	TestTrue(TEXT("Narrower FOV enlarges a marker at fixed depth"),Zoomed.Project(FVector(0,0,2000),Point)
+		&& Zoomed.Place(Point,Bar,true,400.,Rect) && FMath::IsNearlyEqual(Rect.GetSize().X,86.) && Rect.Max.Y<400);
+	Projection.SetViewRectangle(FIntRect(960,0,1920,540));
+	const FGuLiHealthBarView Split(Projection,FVector2D(960,540));
+	TestTrue(TEXT("Second view uses its local origin, pixel thresholds and zoom"),Split.Project(FVector(0,0,2000),Point)
+		&& Point.Screen.Equals(FVector2D(480,270)) && Split.Place(Point,Bar,true,400.,Rect) && FMath::IsNearlyEqual(Rect.GetSize().X,43.));
 	Bar.OverviewIconPixels = 30;
-	TestEqual(TEXT("Overview bar follows the icon width"), Bounds(1, true).GetSize(), FVector2D(32, 8));
-	TestEqual(TEXT("Overview minimum width and shield height follow DPI"), Bounds(2, true).GetSize(), FVector2D(48, 16));
-	TestTrue(TEXT("Overview bar begins below the icon"), Bounds(2, true).Min.Y > Anchor.Y + 15.);
+	auto Bounds = [&](float DPI) { return FGuLiHealthBarLayout::OverviewBounds(Bar, Anchor, DPI); };
+	TestEqual(TEXT("Overview bar follows the icon width"), Bounds(1).GetSize(), FVector2D(32, 8));
+	TestEqual(TEXT("Overview minimum width and shield height follow DPI"), Bounds(2).GetSize(), FVector2D(48, 16));
+	TestTrue(TEXT("Overview bar begins below the icon"), Bounds(2).Min.Y > Anchor.Y + 15.);
 
 	return true;
 }
 
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiStackedHealthBarTest,
+	"GuLiStrike.Commander.UI.HealthBar.StackedTracks", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiStackedHealthBarTest::RunTest(const FString&)
+{
+	const auto Geometry = FGeometry::MakeRoot(FVector2f(200, 100), FSlateLayoutTransform(1.f));
+	const GuLiHealthGrid::FCanvas Canvas(Geometry, FVector2D(1.));
+	GuLiHealthGrid::FMeshBatch Batch;
+	auto Paint = [&](GuLiHealthGrid::FBarValue Shield)
+	{
+		Batch.Reset();
+		const auto Size = GuLiHealthGrid::FMarkerSize::ForView(Shield.Maximum > 0).Size;
+		Batch.Add(Canvas, FVector2D(10, 10), Size, {800, 800}, Shield, 1.f, 1.);
+	};
+	Paint({400, 400});
+	if (!TestEqual(TEXT("One batch for the combined marker"), Batch.Meshes.Num(), 1)) return false;
+	const auto& Mesh = Batch.Meshes[0];
+	if (!TestEqual(TEXT("Both rows use one quad"), Mesh.Vertices.Num(), 4)) return false;
+	TestEqual(TEXT("One outline and two triangles"), Mesh.Indices.Num(), 6);
+	const auto& First = Mesh.Vertices[0];
+	TestEqual(TEXT("Eight health cells and four shield cells share a shader invocation"), First.MaterialTexCoords, FVector2f(8, 4));
+	TestTrue(TEXT("UVs cover the full original silhouette plus the antialiasing footprint"),
+		First.TexCoords[0] < 0 && First.TexCoords[1] < 0 && Mesh.Vertices[2].TexCoords[0] > 1 && Mesh.Vertices[2].TexCoords[1] > 1);
+	TestTrue(TEXT("Nominal dimensions are preserved independently of the antialiasing fringe"),
+		First.PixelSize[0] == 86 * 16 && First.PixelSize[1] == 18 * 16);
+	Paint({100, 250});
+	TestEqual(TEXT("Partial final shield cell"), Mesh.Vertices[0].MaterialTexCoords.Y, 2.5f);
+	TestEqual(TEXT("Remaining shield ends at the 100-point division"), Mesh.Vertices[0].TexCoords[3], .4f);
+	Paint({0, 400});
+	TestTrue(TEXT("A depleted shield retains its grid"), Mesh.Vertices[0].MaterialTexCoords.Y == 4 && Mesh.Vertices[0].TexCoords[3] == 0);
+	Paint({0, 0});
+	TestTrue(TEXT("No shield uses the full health-only footprint"), Mesh.Vertices[0].MaterialTexCoords.Y == 0 && Mesh.Vertices[0].PixelSize[1] == 14 * 16);
+	Batch.Reset();
+	const GuLiHealthGrid::FCanvas Clipped(Geometry, FVector2D(1.), FBox2D(FVector2D(35, 0), FVector2D(100, 100)));
+	Batch.Add(Clipped, FVector2D(10, 10), FVector2D(86, 18), {800, 800}, {400, 400}, 1.f, 1.);
+	TestTrue(TEXT("Viewport crop retains the original grid origin"), Mesh.Vertices[0].Position.X == 35 && Mesh.Vertices[0].TexCoords[0] > .29f);
+#if WITH_EDITOR
+	auto* Material = Cast<UMaterial>(UGuLiSegmentedHealthBar::GetBarBrush().GetResourceObject());
+	if (TestNotNull(TEXT("Hard-referenced shared UI material"), Material))
+	{
+		TestTrue(TEXT("The health marker is drawn in the UI pass"), Material->MaterialDomain == MD_UI);
+		auto* Resource = Material->GetMaterialResource(GMaxRHIShaderPlatform);
+		if (TestNotNull(TEXT("UI material resource for the active renderer"), Resource))
+		{
+			Resource->FinishCompilation();
+			for (const FString& Error : Resource->GetCompileErrors()) AddError(Error);
+			TestNotNull(TEXT("Rounded health material has its own compiled shader map"), Resource->GetGameThreadShaderMap());
+		}
+	}
+#endif
+	return true;
+}
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiSceneUIPositionLifetimeTest,
     "GuLiStrike.Commander.UI.SceneUI.PositionSamplingLifetimes",
@@ -202,7 +304,7 @@ bool FGuLiHealthBarScreenLayoutTest::RunTest(const FString&)
 		Bar.Key = {GetTransientPackage(), uint64(I + 1), 1};
 		Bar.Center = FVector(400, 300, 0);
 		Bar.Fraction = Bar.ShieldFraction = 1;
-		Bar.bHasShield = true;
+		Bar.MaxShield = 400;
 	}
 	const FBox2D Screen(FVector2D::ZeroVector, FVector2D(1920, 1080));
 	auto Select = [&](FGuLiHealthBarLayout& View, const FBox2D& Rect)
@@ -211,7 +313,7 @@ bool FGuLiHealthBarScreenLayoutTest::RunTest(const FString&)
 		{
 			const auto& B = Bars[Index];
 			const FVector2D P(B.Center.X, B.Center.Y);
-			Bounds = FBox2D(P, P + FVector2D(86, B.bHasShield ? 18 : 14));
+			Bounds = FBox2D(P, P + GuLiHealthGrid::FMarkerSize::ForView(B.MaxShield > 0.f).Size);
 			Opacity = B.Opacity;
 			return true;
 		});
@@ -227,14 +329,16 @@ bool FGuLiHealthBarScreenLayoutTest::RunTest(const FString&)
 	Bars[46].bSelected = true;
 	Bars[47].Fraction = .6f;
 	Bars[47].ShieldFraction = .4f;
+	Bars[47].MaxShield = 250;
 	Layout.Publish(Bars, .05);
 	TestTrue(TEXT("Sub-tick health and shield retain published values"),
-		Bars[47].Fraction == 1 && Bars[47].ShieldFraction == 1);
+		Bars[47].Fraction == 1 && Bars[47].ShieldFraction == 1 && Bars[47].MaxShield == 400);
 	Bars[47].Fraction = .6f; Bars[47].ShieldFraction = .4f;
+	Bars[47].MaxShield = 250;
 	Layout.Publish(Bars, .101);
 	Select(Layout, Screen);
 	TestEqual(TEXT("Selected, damaged and recovering neighbours can share a rectangle"), Layout.Visible.Num(), 96);
-	TestTrue(TEXT("Next 100 ms boundary publishes new values"), Bars[47].Fraction == .6f && Bars[47].ShieldFraction == .4f);
+	TestTrue(TEXT("Next 100 ms boundary publishes new values"), Bars[47].Fraction == .6f && Bars[47].ShieldFraction == .4f && Bars[47].MaxShield == 250);
 	Bars[47].Center.X = -86;
 	Layout.Publish(Bars, .14); Select(Layout, Screen);
 	TestFalse(TEXT("Entirely off-screen leader consumes no quota"), Has(Layout,47));
@@ -265,14 +369,22 @@ bool FGuLiHealthBarVitalHistoryTest::RunTest(const FString&)
 	State.Shield = State.MaxShield = 50;
 	History.Observe(State, EGuLiTeam::Red, true, 1.);
 	TestEqual(TEXT("First contact establishes a baseline"), History.LastChange, -1.);
+	TestEqual(TEXT("An initial snapshot does not reveal a far target"), GuLiHealthBars::DamageOpacity(1.,History.LastDamage), 0.f);
 	State.Shield = 30; History.Observe(State, EGuLiTeam::Red, true, 2.);
 	TestEqual(TEXT("Shield-only loss opens the display window"), History.LastChange, 2.);
 	History.Observe(State, EGuLiTeam::Red, true, 3.);
 	TestEqual(TEXT("Identical values do not extend the window"), History.LastChange, 2.);
 	State.Shield = 40; History.Observe(State, EGuLiTeam::Red, true, 4.);
 	TestEqual(TEXT("Recovery extends the window"), History.LastChange, 4.);
+	TestEqual(TEXT("Recovery leaves the shield hit's reveal time intact"), History.LastDamage, 2.);
+	TestEqual(TEXT("Shield-only hits reveal a distant marker"), GuLiHealthBars::DamageOpacity(5.,History.LastDamage), 1.f);
+	TestEqual(TEXT("Distant marker fades after the hold"), GuLiHealthBars::DamageOpacity(5.25,History.LastDamage), .5f);
+	TestEqual(TEXT("Distant marker is hidden when the fade ends"), GuLiHealthBars::DamageOpacity(5.5,History.LastDamage), 0.f);
+	State.MaxShield=State.Shield=20; History.Observe(State,EGuLiTeam::Red,true,4.5);
+	TestEqual(TEXT("Reducing capacity alone does not count as damage"), History.LastDamage, 2.);
 	History.Observe(State, EGuLiTeam::Blue, true, 5.);
 	TestEqual(TEXT("Changing affiliation starts a fresh baseline"), History.LastChange, -1.);
+	TestEqual(TEXT("A new life clears the damage reveal"), History.LastDamage, -1.);
 
 	return true;
 }
@@ -295,12 +407,12 @@ bool FGuLiHealthBarPoseCadenceTest::RunTest(const FString&)
 	auto At = [&](double Now, uint32 Displacement = 0)
 	{
 		View.Poses.BeginFrame(Now);
-		View.Poses.Resolve(Bar, [&](FVector& Center)
+		View.Poses.Resolve(Bar, [&](FGuLiHealthBarModel& Body)
 		{
 			++Reads;
-			Center = FVector(200 + 4800 * Now, 0, 0);
+			Body.Center = FVector(200 + 4800 * Now, 0, 0);
 			return true;
-		}, Bar.Center, Displacement);
+		}, Displacement);
 		View.Poses.EndFrame();
 	};
 	for (int32 Frame = 0; Frame <= 120; ++Frame)

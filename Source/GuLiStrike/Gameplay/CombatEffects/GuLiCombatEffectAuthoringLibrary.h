@@ -5,6 +5,7 @@
 
 class UNiagaraSystem;
 class UNiagaraScript;
+class UBlueprint;
 class UNiagaraDataChannelAsset;
 class UStaticMesh;
 class UNiagaraComponent;
@@ -16,6 +17,17 @@ class GULISTRIKE_API UGuLiCombatEffectAuthoringLibrary : public UBlueprintFuncti
 	GENERATED_BODY()
 public:
 #if WITH_EDITOR
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static int32 RetargetModelProjectileEffect(UBlueprint* Blueprint, UNiagaraSystem* Original, UNiagaraSystem* Replacement);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool EnsureDistanceLODEmitter(UNiagaraSystem* System, FName SourceName, FName NewName);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString ConfigureDistanceLODLimits(UNiagaraSystem* System, FName EmitterName, bool bLower, bool bUpper);
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetDistanceLODPreviewState(UNiagaraComponent* Component);
+	/** Inspect the compiled system update when validating emitter distance bands. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetDistanceLODTranslation(UNiagaraSystem* System);
 	/** Scoped BulletTrails candidates only: GPU strokes or CPU lights, one emitter, bounded capacity. Never saves. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool ConfigureBulletTrailSystem(UNiagaraSystem* System, bool bLights, FString& Error);

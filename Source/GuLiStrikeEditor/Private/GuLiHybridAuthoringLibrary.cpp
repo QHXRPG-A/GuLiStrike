@@ -283,8 +283,13 @@ FString UGuLiHybridAuthoringLibrary::ExportRuntimeManifest(int32 Population,cons
         const FString AuthoredId=Slot.AuthoredId.IsEmpty()?FString::Printf(TEXT("army/%u/%d/%d"),static_cast<uint8>(Slot.Team),Slot.FormationIndex,Slot.SlotIndex):Slot.AuthoredId;
         O.Key=FGuLiHybridManifest::MakeStableKey(Data.MapPackage,EGuLiHybridObjectKind::Soldier,AuthoredId);
         O.Definition=FString::Printf(TEXT("unit/%u"),Slot.UnitTypeId);
-        O.Location=GuLiUnitMovement::WorldPosition(Projected.Location,Definitions.FindChecked(Slot.UnitTypeId).AltitudeCentimeters);
-        O.FacingYawDegrees=Slot.FacingYawDegrees; O.Health=Slot.InitialMaxHealthOverride>0?Slot.InitialMaxHealthOverride:Definitions.FindChecked(Slot.UnitTypeId).MaxHealth;O.Shield=Slot.InitialShield;
+        const FGuLiSoldierDefinition& Unit = Definitions.FindChecked(Slot.UnitTypeId);
+        O.Location=GuLiUnitMovement::WorldPosition(Projected.Location,Unit.AltitudeCentimeters);
+        O.FacingYawDegrees=Slot.FacingYawDegrees;
+        O.Health = Slot.InitialMaxHealthOverride > 0 ? Slot.InitialMaxHealthOverride : Unit.MaxHealth;
+        // Existing custom-health deployments can intentionally start with an empty shield.
+        const bool bHasAuthoredVitals = Slot.InitialMaxHealthOverride > 0 || Slot.InitialShield > 0;
+        O.Shield = bHasAuthoredVitals ? Slot.InitialShield : Unit.MaxShield;
         if(!Slot.AuthoredId.IsEmpty())
         {
             const FString Prefix=TEXT("deployment/")+O.Key.StableId.ToString(EGuidFormats::Digits);

@@ -47,12 +47,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-28 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-28 |
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-11-27 |
 | [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
 | [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | development | done | 2026-11-23 |
 | [游骑兵增伤与折射会话结项](../Archive/20261123-游骑兵增伤与折射会话结项.md) | archive | recorded | 2026-11-23 |
 | [已开发肉鸽牌与关系图对齐及沙漏牌面接入](../Archive/20261123-已开发肉鸽牌与关系图对齐.md) | archive | recorded | 2026-11-23 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
 | [游骑兵引擎路线图标配色](../Archive/20261121-游骑兵引擎路线图标配色.md) | archive | recorded | 2026-11-21 |
 | [GOOD FX Status 缺件修复](../Archive/20261118-GOOD-FX-Status缺件修复.md) | archive | recorded | 2026-11-18 |
 | [升级、Buff 与武器特效资产迁移](../Archive/20261118-升级Buff与武器特效资产迁移.md) | archive | recorded | 2026-11-18 |
@@ -98,7 +99,6 @@
 | [游骑兵B2正式UE导入与资源核对](../Archive/20261023-游骑兵B2正式UE导入与资源核对.md) | archive | superseded | 2026-10-24 |
 | [游骑兵 A_v4 定稿与 Blender 成品候选](../Archive/20261023-游骑兵A_v4定稿与Blender成品候选.md) | archive | recorded | 2026-10-23 |
 | [游骑兵原包接入准备与折腿参考 A_v4](../Archive/20261023-游骑兵原包接入准备与折腿参考A_v4.md) | archive | recorded | 2026-10-23 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [十四模型仅配色 Blender 成品 B_v1](../RequirementDocument/20261008-十四模型仅配色Blender成品B_v1.md) | requirement | approved | 2026-10-09 |
 | [十四模型配色参考与三视图 A_v3](../RequirementDocument/20261008-十四模型配色参考与三视图A_v3.md) | requirement | approved | 2026-10-09 |
 | [十三模型配色参考与三视图 A_v2](../RequirementDocument/20261008-十三模型配色参考与三视图A_v2.md) | requirement | superseded | 2026-10-09 |
@@ -203,11 +203,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-28 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-28 |
+| [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-11-27 |
 | [游骑兵「增强持续伤害」六层视差牌面](../Archive/20261123-增强持续伤害六层视差牌面.md) | archive | recorded | 2026-11-23 |
 | [游骑兵「增强持续伤害」牌面与独立图标](../Archive/20261123-增强持续伤害牌面与独立图标.md) | archive | recorded | 2026-11-23 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
 | [五张肉鸽牌六层审核制作与交付](../DevelopmentDocumentation/20261120-五张肉鸽牌六层审核.md) | development | done | 2026-11-21 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
 | [游骑兵实战选牌整卡响应](../Archive/20261121-游骑兵实战选牌整卡响应.md) | archive | recorded | 2026-11-21 |
 | [游骑兵牌面整卡视差响应](../Archive/20261121-游骑兵牌面整卡视差响应.md) | archive | recorded | 2026-11-21 |
 | [游骑兵五张牌面与图标正式入库](../Archive/20261121-游骑兵五张牌面与图标正式入库.md) | archive | recorded | 2026-11-21 |
@@ -316,7 +317,6 @@
 | [SSF建筑B_v1正式资源入库且暂不接入玩法](../Archive/20261006-SSF建筑正式资源入库且暂不接入玩法.md) | archive | recorded | 2026-10-06 |
 | [指挥官三档LOD纠正与资源迁移](../RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md) | requirement | approved | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../RequirementDocument/20261005-彼之矛工程车建造与四足重炮.md) | requirement | approved | 2026-10-05 |
-| [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-10-05 |
 | [指挥官三档LOD纠正与资源迁移](../DevelopmentDocumentation/20261005-指挥官三档LOD纠正与资源迁移.md) | development | done | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../DevelopmentDocumentation/20261005-彼之矛工程车建造与四足重炮.md) | development | verification | 2026-10-05 |
 | [重防号能力卡 — 六层视差与可编辑文案交付](../DevelopmentDocumentation/20260926-重防号塔罗风视差卡牌复刻验证.md) | development | done | 2026-10-05 |
@@ -419,6 +419,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-11-27 |
 | [护盾交矿与先驱号兵营](../RequirementDocument/20261112-护盾交矿与先驱号兵营.md) | requirement | approved | 2026-11-12 |
 | [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-11-12 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-11-12 |
@@ -451,7 +452,6 @@
 | [四项PIE性能优化实施与对照交付](../Archive/20261009-四项PIE性能优化实施与对照交付.md) | archive | recorded | 2026-10-09 |
 | [场景UI源码与18组红蓝模型对照交付](../Archive/20261008-场景UI源码与红蓝模型对照交付.md) | archive | recorded | 2026-10-08 |
 | [彼之矛工程车建造与四足重炮](../RequirementDocument/20261005-彼之矛工程车建造与四足重炮.md) | requirement | approved | 2026-10-05 |
-| [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../DevelopmentDocumentation/20261005-彼之矛工程车建造与四足重炮.md) | development | verification | 2026-10-05 |
 | [指挥官部队StateTree接入与特殊任务退役 — 技术方案](../DevelopmentDocumentation/20260921-指挥官部队StateTree接入与特殊任务退役.md) | development | done | 2026-10-05 |
 | [指挥官三档LOD审核放行与正式资源切换](../Archive/20261005-指挥官三档LOD审核放行与正式资源切换.md) | archive | recorded | 2026-10-05 |
@@ -508,8 +508,22 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-26 |
-| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-26 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../RequirementDocument/20261127-分格血条与飞船爆炸反馈.md) | requirement | approved | 2026-11-28 |
+| [巡天舰腹火炮](../RequirementDocument/20261126-巡天舰腹火炮.md) | requirement | approved | 2026-11-28 |
+| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-28 |
+| [默认对局特效 LOD 审计](../Evidence/20261127-默认对局特效LOD审计.md) | reference | reference | 2026-11-28 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../DevelopmentDocumentation/20261127-分格血条与飞船爆炸反馈.md) | development | done | 2026-11-28 |
+| [巡天舰腹火炮接入](../DevelopmentDocumentation/20261126-巡天舰腹火炮.md) | development | done | 2026-11-28 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-28 |
+| [世界血条按模型和镜头透视缩放](../Archive/20261128-世界血条透视缩放.md) | archive | recorded | 2026-11-28 |
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-11-27 |
+| [生命护盾共用圆角框](../Archive/20261127-生命护盾共用圆角框.md) | archive | recorded | 2026-11-27 |
+| [护盾与生命上下分格](../Archive/20261127-护盾与生命上下分格.md) | archive | recorded | 2026-11-27 |
+| [Mass 护盾显示与巡天仪表切换](../Archive/20261127-Mass护盾显示与巡天仪表切换.md) | archive | recorded | 2026-11-27 |
+| [固定宽度生命与护甲条](../Archive/20261127-固定宽度生命与护甲条.md) | archive | recorded | 2026-11-27 |
+| [巡天战斗表现的首轮性能与数据读回](../Archive/20261127-分格血条与飞船爆炸反馈.md) | archive | recorded | 2026-11-27 |
+| [巡天舰腹火炮爆炸半径校准](../Archive/20261126-巡天舰腹爆炸半径校准.md) | archive | recorded | 2026-11-26 |
+| [巡天三级舰腹火炮与开局特效缓存](../Archive/20261126-巡天舰腹火炮.md) | archive | recorded | 2026-11-26 |
 | [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | archive | recorded | 2026-11-26 |
 | [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | archive | recorded | 2026-11-26 |
 | [游骑兵世界UI分档与敌方变化提示](../RequirementDocument/20261106-游骑兵世界UI分档与敌方变化提示.md) | requirement | approved | 2026-11-25 |
@@ -702,7 +716,6 @@
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-10-22 |
 | [近期性能优化 — 需求汇总（10月18–21日）](../RequirementDocument/20261021-近期性能优化.md) | requirement | approved | 2026-10-21 |
 | [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-10-21 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | development | in_progress | 2026-10-21 |
 | [近期性能优化整合归档（10月18–21日）](../Archive/20261021-近期性能优化整合归档.md) | archive | recorded | 2026-10-21 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -862,7 +875,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
+| [默认对局特效 LOD 审计](../Evidence/20261127-默认对局特效LOD审计.md) | reference | reference | 2026-11-28 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-28 |
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-11-27 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-27 |
+| [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-11-27 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
 | [CS-P2P实现与本地PIE交付](../DevelopmentDocumentation/20261011-同阵营固定分配与混合P2P架构.md) | development | done | 2026-11-25 |
@@ -871,7 +888,6 @@
 | [单位血条仅数值变化时全量显示](../Archive/20261125-单位血条仅数值变化时全量显示.md) | archive | recorded | 2026-11-25 |
 | [单位血条位置改为 30 Hz 采样](../Archive/20261125-单位血条位置改为30Hz采样.md) | archive | recorded | 2026-11-25 |
 | [单位血条逐帧跟随与屏幕密度](../Archive/20261125-单位血条逐帧跟随与屏幕密度.md) | archive | recorded | 2026-11-25 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [固定阵营分工与简化接管 — 技术方案](../DevelopmentDocumentation/20261115-固定阵营分工与简化接管.md) | development | verification | 2026-11-16 |
 | [指挥官掉线后无双接管Mass修复与复测](../Archive/20261116-指挥官掉线Mass接管修复与复测.md) | archive | recorded | 2026-11-16 |
 | [指挥官掉线后无双接管Mass失败实测](../Archive/20261116-指挥官掉线Mass接管失败实测.md) | archive | recorded | 2026-11-16 |
@@ -999,7 +1015,6 @@
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-10-21 |
 | [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
 | [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-10-21 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | development | in_progress | 2026-10-21 |
 | [近期性能优化整合归档（10月18–21日）](../Archive/20261021-近期性能优化整合归档.md) | archive | recorded | 2026-10-21 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -1051,7 +1066,6 @@
 | [Mass脚环20cm正式材质与环境影响核对](../Archive/20261007-Mass脚环20cm正式材质与环境影响核对.md) | archive | recorded | 2026-10-07 |
 | [指挥官三档LOD纠正与资源迁移](../RequirementDocument/20261005-指挥官三档LOD纠正与资源迁移.md) | requirement | approved | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../RequirementDocument/20261005-彼之矛工程车建造与四足重炮.md) | requirement | approved | 2026-10-05 |
-| [彼之矛](../Gameplay/彼之矛.md) | gameplay | current | 2026-10-05 |
 | [指挥官三档LOD纠正与资源迁移](../DevelopmentDocumentation/20261005-指挥官三档LOD纠正与资源迁移.md) | development | done | 2026-10-05 |
 | [彼之矛工程车建造与四足重炮](../DevelopmentDocumentation/20261005-彼之矛工程车建造与四足重炮.md) | development | verification | 2026-10-05 |
 | [飞行物批量启停同步与实际时间网络预算 — 实施记录](../DevelopmentDocumentation/20261004-飞行物批量启停同步与实际时间网络预算.md) | development | done | 2026-10-05 |
@@ -1266,6 +1280,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-11-27 |
 | [已开发肉鸽牌与关系图对齐](../RequirementDocument/20261123-已开发肉鸽牌与关系图对齐.md) | requirement | approved | 2026-11-23 |
 | [游骑兵范围与持续增伤](../RequirementDocument/20261123-游骑兵范围与持续增伤.md) | requirement | approved | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../RequirementDocument/20261123-游骑兵肉鸽卡牌与武器解耦.md) | requirement | approved | 2026-11-23 |
@@ -1284,7 +1299,6 @@
 | [游骑兵交叉蓄力与连射后坐](../Archive/20261119-游骑兵交叉蓄力与连射后坐.md) | archive | recorded | 2026-11-19 |
 | [游骑兵无人生还施放动作与升级表现](../Archive/20261119-游骑兵无人生还施放动作与升级表现.md) | archive | recorded | 2026-11-19 |
 | [游骑兵双路线与无人生还五级接入](../Archive/20261118-游骑兵双路线与无人生还五级接入.md) | archive | recorded | 2026-11-19 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [统一模型目录与本地阵营改色](../RequirementDocument/20261008-统一模型目录与本地阵营改色.md) | requirement | approved | 2026-10-09 |
 | [统一模型目录与本地阵营改色 — 源码与场景交付](../DevelopmentDocumentation/20261008-统一模型目录与本地阵营改色.md) | development | verification | 2026-10-09 |
 | [会话文档同步、临时清理与GitHub推送](../Archive/20261009-会话文档同步临时清理与GitHub推送.md) | archive | recorded | 2026-10-09 |
@@ -1316,6 +1330,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [默认对局特效 LOD 审计](../Evidence/20261127-默认对局特效LOD审计.md) | reference | reference | 2026-11-28 |
 | [开局网络优化会话结项证据](../Evidence/20261109-NetworkBudgetCloseout/README.md) | reference | reference | 2026-11-09 |
 | [游骑兵战斗会话结项证据](../Evidence/20261109-RangerCombatCloseout/README.md) | reference | reference | 2026-11-09 |
 | [Python工具清理与制作入口合并](../Archive/20261104-Python工具清理与制作入口合并.md) | archive | recorded | 2026-11-04 |
@@ -1674,7 +1689,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-28 |
+| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-11-27 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-27 |
 | [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | archive | recorded | 2026-11-26 |
 | [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
 | [CS-P2P架构与本地PIE需求](../RequirementDocument/20261011-同阵营固定分配与混合P2P架构.md) | requirement | approved | 2026-11-25 |
@@ -1690,7 +1707,6 @@
 | [肉鸽牌等级 GM 命令](../RequirementDocument/20261123-肉鸽牌等级GM命令.md) | requirement | approved | 2026-11-23 |
 | [游骑兵分裂枪管与电磁技术](../RequirementDocument/20261122-游骑兵分裂枪管与电磁技术.md) | requirement | approved | 2026-11-23 |
 | [游骑兵](../Gameplay/游骑兵.md) | gameplay | current | 2026-11-23 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [已开发肉鸽牌与关系图对齐](../DevelopmentDocumentation/20261123-已开发肉鸽牌与关系图对齐.md) | development | done | 2026-11-23 |
 | [游骑兵范围与持续增伤](../DevelopmentDocumentation/20261123-游骑兵范围与持续增伤.md) | development | done | 2026-11-23 |
 | [游骑兵肉鸽卡牌与武器解耦](../DevelopmentDocumentation/20261123-游骑兵肉鸽卡牌与武器解耦.md) | development | done | 2026-11-23 |
@@ -1845,7 +1861,6 @@
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-10-21 |
 | [指挥官性能正式版证据](../Evidence/20261021-CommanderPerformance/README.md) | reference | reference | 2026-10-21 |
 | [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-10-21 |
-| [先驱号与扫荡者召唤](../Gameplay/先驱号.md) | gameplay | current | 2026-10-21 |
 | [近期性能优化 — 开发汇总（10月18–21日）](../DevelopmentDocumentation/20261021-近期性能优化.md) | development | in_progress | 2026-10-21 |
 | [近期性能优化整合归档（10月18–21日）](../Archive/20261021-近期性能优化整合归档.md) | archive | recorded | 2026-10-21 |
 | [CS-P2P整合归档](../Archive/20261016-CS-P2P整合归档.md) | archive | recorded | 2026-10-18 |
@@ -2210,8 +2225,23 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-26 |
-| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-26 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../RequirementDocument/20261127-分格血条与飞船爆炸反馈.md) | requirement | approved | 2026-11-28 |
+| [巡天舰腹火炮](../RequirementDocument/20261126-巡天舰腹火炮.md) | requirement | approved | 2026-11-28 |
+| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-28 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../DevelopmentDocumentation/20261127-分格血条与飞船爆炸反馈.md) | development | done | 2026-11-28 |
+| [巡天舰腹火炮接入](../DevelopmentDocumentation/20261126-巡天舰腹火炮.md) | development | done | 2026-11-28 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-28 |
+| [巡天标记材质回退与升级点击复核](../Archive/20261128-巡天标记材质回退与升级点击复核.md) | archive | recorded | 2026-11-28 |
+| [巡天敌机图标抗锯齿与腹炮升级](../Archive/20261128-巡天图标抗锯齿与腹炮升级.md) | archive | superseded | 2026-11-28 |
+| [巡天敌机图标频闪修复](../Archive/20261128-巡天敌机图标频闪修复.md) | archive | recorded | 2026-11-28 |
+| [世界血条按模型和镜头透视缩放](../Archive/20261128-世界血条透视缩放.md) | archive | recorded | 2026-11-28 |
+| [生命护盾共用圆角框](../Archive/20261127-生命护盾共用圆角框.md) | archive | recorded | 2026-11-27 |
+| [护盾与生命上下分格](../Archive/20261127-护盾与生命上下分格.md) | archive | recorded | 2026-11-27 |
+| [Mass 护盾显示与巡天仪表切换](../Archive/20261127-Mass护盾显示与巡天仪表切换.md) | archive | recorded | 2026-11-27 |
+| [固定宽度生命与护甲条](../Archive/20261127-固定宽度生命与护甲条.md) | archive | recorded | 2026-11-27 |
+| [巡天战斗表现的首轮性能与数据读回](../Archive/20261127-分格血条与飞船爆炸反馈.md) | archive | recorded | 2026-11-27 |
+| [巡天舰腹火炮爆炸半径校准](../Archive/20261126-巡天舰腹爆炸半径校准.md) | archive | recorded | 2026-11-26 |
+| [巡天三级舰腹火炮与开局特效缓存](../Archive/20261126-巡天舰腹火炮.md) | archive | recorded | 2026-11-26 |
 | [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | archive | recorded | 2026-11-26 |
 | [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | archive | recorded | 2026-11-26 |
 | [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | archive | recorded | 2026-11-26 |
@@ -2346,8 +2376,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-28 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-28 |
 | [六座 SSF 建筑工业标识配色参考 A](../RequirementDocument/20261112-SSF建筑工业标识配色参考A.md) | requirement | approved | 2026-11-13 |
 | [六座 SSF 建筑配色与线稿会话结项](../Archive/20261113-六座SSF建筑配色与线稿会话结项.md) | archive | recorded | 2026-11-13 |
 | [游骑兵主线程整帧平均降低30%](../RequirementDocument/20261106-游骑兵主线程整帧降低30.md) | requirement | approved | 2026-11-06 |
@@ -2494,9 +2524,25 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-26 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
-| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-26 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../RequirementDocument/20261127-分格血条与飞船爆炸反馈.md) | requirement | approved | 2026-11-28 |
+| [巡天舰腹火炮](../RequirementDocument/20261126-巡天舰腹火炮.md) | requirement | approved | 2026-11-28 |
+| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-28 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-28 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../DevelopmentDocumentation/20261127-分格血条与飞船爆炸反馈.md) | development | done | 2026-11-28 |
+| [巡天舰腹火炮接入](../DevelopmentDocumentation/20261126-巡天舰腹火炮.md) | development | done | 2026-11-28 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-28 |
+| [巡天标记材质回退与升级点击复核](../Archive/20261128-巡天标记材质回退与升级点击复核.md) | archive | recorded | 2026-11-28 |
+| [巡天敌机图标抗锯齿与腹炮升级](../Archive/20261128-巡天图标抗锯齿与腹炮升级.md) | archive | superseded | 2026-11-28 |
+| [巡天敌机图标频闪修复](../Archive/20261128-巡天敌机图标频闪修复.md) | archive | recorded | 2026-11-28 |
+| [世界血条按模型和镜头透视缩放](../Archive/20261128-世界血条透视缩放.md) | archive | recorded | 2026-11-28 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-27 |
+| [生命护盾共用圆角框](../Archive/20261127-生命护盾共用圆角框.md) | archive | recorded | 2026-11-27 |
+| [护盾与生命上下分格](../Archive/20261127-护盾与生命上下分格.md) | archive | recorded | 2026-11-27 |
+| [Mass 护盾显示与巡天仪表切换](../Archive/20261127-Mass护盾显示与巡天仪表切换.md) | archive | recorded | 2026-11-27 |
+| [巡天战斗表现的首轮性能与数据读回](../Archive/20261127-分格血条与飞船爆炸反馈.md) | archive | recorded | 2026-11-27 |
+| [巡天驾驶席 F4 升级输入修复](../Archive/20261126-巡天驾驶席F4升级输入修复.md) | archive | recorded | 2026-11-26 |
+| [巡天舰腹火炮爆炸半径校准](../Archive/20261126-巡天舰腹爆炸半径校准.md) | archive | recorded | 2026-11-26 |
+| [巡天三级舰腹火炮与开局特效缓存](../Archive/20261126-巡天舰腹火炮.md) | archive | recorded | 2026-11-26 |
 | [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | archive | recorded | 2026-11-26 |
 | [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | archive | recorded | 2026-11-26 |
 | [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | archive | recorded | 2026-11-26 |
@@ -2511,7 +2557,6 @@
 | [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
 | [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-25 |
 | [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-25 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [巡天命名统一](../Archive/20261103-巡天命名统一.md) | archive | recorded | 2026-11-03 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
 | [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-10-22 |
@@ -2636,9 +2681,24 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-26 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
-| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-26 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../RequirementDocument/20261127-分格血条与飞船爆炸反馈.md) | requirement | approved | 2026-11-28 |
+| [巡天舰腹火炮](../RequirementDocument/20261126-巡天舰腹火炮.md) | requirement | approved | 2026-11-28 |
+| [巡天飞船 HUD 与 3C](../RequirementDocument/20261126-巡天飞船HUD与3C.md) | requirement | approved | 2026-11-28 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-28 |
+| [分格血条、飞船爆炸反馈与战斗表现性能](../DevelopmentDocumentation/20261127-分格血条与飞船爆炸反馈.md) | development | done | 2026-11-28 |
+| [巡天舰腹火炮接入](../DevelopmentDocumentation/20261126-巡天舰腹火炮.md) | development | done | 2026-11-28 |
+| [巡天飞船 HUD 与 3C 正式接入](../DevelopmentDocumentation/20261126-巡天飞船HUD与3C.md) | development | done | 2026-11-28 |
+| [巡天标记材质回退与升级点击复核](../Archive/20261128-巡天标记材质回退与升级点击复核.md) | archive | recorded | 2026-11-28 |
+| [巡天敌机图标抗锯齿与腹炮升级](../Archive/20261128-巡天图标抗锯齿与腹炮升级.md) | archive | superseded | 2026-11-28 |
+| [巡天敌机图标频闪修复](../Archive/20261128-巡天敌机图标频闪修复.md) | archive | recorded | 2026-11-28 |
+| [世界血条按模型和镜头透视缩放](../Archive/20261128-世界血条透视缩放.md) | archive | recorded | 2026-11-28 |
+| [生命护盾共用圆角框](../Archive/20261127-生命护盾共用圆角框.md) | archive | recorded | 2026-11-27 |
+| [护盾与生命上下分格](../Archive/20261127-护盾与生命上下分格.md) | archive | recorded | 2026-11-27 |
+| [Mass 护盾显示与巡天仪表切换](../Archive/20261127-Mass护盾显示与巡天仪表切换.md) | archive | recorded | 2026-11-27 |
+| [固定宽度生命与护甲条](../Archive/20261127-固定宽度生命与护甲条.md) | archive | recorded | 2026-11-27 |
+| [巡天战斗表现的首轮性能与数据读回](../Archive/20261127-分格血条与飞船爆炸反馈.md) | archive | recorded | 2026-11-27 |
+| [巡天驾驶席 F4 升级输入修复](../Archive/20261126-巡天驾驶席F4升级输入修复.md) | archive | recorded | 2026-11-26 |
+| [巡天三级舰腹火炮与开局特效缓存](../Archive/20261126-巡天舰腹火炮.md) | archive | recorded | 2026-11-26 |
 | [巡天 PIE 周期卡顿与转向地面射界优化](../Archive/20261126-巡天PIE周期卡顿与转向射界优化.md) | archive | recorded | 2026-11-26 |
 | [巡天 HUD 对齐 ground-reticle 试玩版](../Archive/20261126-巡天HUD对齐ground-reticle试玩版.md) | archive | recorded | 2026-11-26 |
 | [巡天自由观瞄与双套 HUD 接入 Air 席位](../Archive/20261126-巡天飞船HUD与3C正式接入.md) | archive | recorded | 2026-11-26 |
@@ -2908,12 +2968,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-28 |
+| [默认对局特效 LOD 审计](../Evidence/20261127-默认对局特效LOD审计.md) | reference | reference | 2026-11-28 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-28 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-27 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-11-25 |
 | [战场爆炸预载与僚机首次命中帧时间](../Archive/20261125-战场爆炸预载与首次命中帧时间.md) | archive | recorded | 2026-11-25 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
-| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-11-21 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-11-21 |
 | [游骑兵无人生还大招试玩](../RequirementDocument/20261118-游骑兵无人生还大招试玩.md) | requirement | approved | 2026-11-19 |
 | [游骑兵无人生还大招试玩](../DevelopmentDocumentation/20261118-游骑兵无人生还大招试玩.md) | development | done | 2026-11-19 |
 | [游骑兵无人生还结项与项目同步](../Archive/20261119-游骑兵无人生还结项与项目同步.md) | archive | recorded | 2026-11-19 |
@@ -3063,7 +3124,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-26 |
+| [默认对局特效 LOD 审计](../Evidence/20261127-默认对局特效LOD审计.md) | reference | reference | 2026-11-28 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-11-28 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-27 |
 | [僚机预测飞控与碰撞](../RequirementDocument/20261124-僚机预测飞控与碰撞.md) | requirement | approved | 2026-11-25 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-11-25 |
 | [僚机预测飞控与碰撞](../DevelopmentDocumentation/20261124-僚机预测飞控与碰撞.md) | development | done | 2026-11-25 |
@@ -3076,7 +3139,6 @@
 | [僚机试玩帧率、逐帧呈现与双编队综合场景](../Archive/20261125-僚机试玩帧率与双编队综合场景.md) | archive | recorded | 2026-11-25 |
 | [僚机试飞、对空与对地试玩场景](../Archive/20261124-僚机三项试玩场景.md) | archive | recorded | 2026-11-25 |
 | [僚机预测飞控与碰撞](../Archive/20261124-僚机预测飞控与碰撞.md) | archive | superseded | 2026-11-25 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-11-23 |
 | [飞行物网络与客户端表现](../Gameplay/飞行物网络与客户端表现.md) | gameplay | current | 2026-10-30 |
 | [僚机对地导弹共用表现与脉冲预警优化](../RequirementDocument/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | requirement | approved | 2026-10-10 |
 | [僚机对地导弹共用表现与脉冲预警优化 — 技术方案](../DevelopmentDocumentation/20261009-僚机对地导弹共用表现与脉冲预警优化.md) | development | verification | 2026-10-10 |
